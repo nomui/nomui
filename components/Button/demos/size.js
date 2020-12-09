@@ -2,6 +2,7 @@ define([], function () {
 
     return {
         text: '不同尺寸',
+        file: 'size',
         demo: function () {
             return {
                 children: [

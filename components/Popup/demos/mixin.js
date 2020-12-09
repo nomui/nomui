@@ -2,6 +2,7 @@ define([], function () {
 
     return {
         text: '混入选项',
+        file: 'minin',
         demo: function () {
             return {
                 children: [

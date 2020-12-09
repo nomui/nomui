@@ -2,6 +2,7 @@ define([], function () {
 
     return {
         text: '子组件',
+        file: 'children',
         demo: function () {
             return {
                 children: [

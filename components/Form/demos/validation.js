@@ -2,6 +2,7 @@ define([], function () {
 
     return {
         text: '表单验证',
+        file: 'validation',
         demo: function () {
             var demo = this;
 

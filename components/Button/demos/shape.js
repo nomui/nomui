@@ -1,6 +1,7 @@
 define([], function () {
     return {
         text: '不同形状',
+        file: 'shape',
         demo: function () {
             return {
                 children: [

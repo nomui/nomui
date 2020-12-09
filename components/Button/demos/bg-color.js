@@ -1,6 +1,7 @@
 define([], function () {
     return {
         text: '不同颜色',
+        file: 'bg-color',
         demo: function () {
             return {
                 children: [

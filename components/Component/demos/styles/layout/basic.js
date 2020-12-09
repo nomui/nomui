@@ -2,6 +2,7 @@ define([], function () {
 
     return {
         text: '排列与对齐',
+        file: 'basic',
         demo: function () {
             let demo = this,
                 flexDir = 'row',

@@ -2,6 +2,7 @@ define([], function () {
 
     return {
         text: '水平菜单',
+        file: 'horizontal',
         demo: function () {
             return {
                 children: [

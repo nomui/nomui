@@ -2,6 +2,7 @@ define([], function () {
 
     return {
         text: '表单数据',
+        file: 'value',
         demo: function () {
             return {
                 children: {

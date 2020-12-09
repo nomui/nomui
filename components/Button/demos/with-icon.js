@@ -1,6 +1,7 @@
 define([], function () {
     return {
         text: '带图标',
+        file: 'with-icon',
         demo: function () {
             return {
                 children: [

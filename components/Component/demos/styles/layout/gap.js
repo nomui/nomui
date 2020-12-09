@@ -2,6 +2,7 @@ define([], function () {
 
     return {
         text: '间隔',
+        file: 'gap',
         demo: function () {
             let demo = this
 

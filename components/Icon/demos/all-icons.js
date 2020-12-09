@@ -2,6 +2,7 @@ define([], function () {
 
     return {
         text: '所有图标',
+        file: 'all-icons',
         demo: function () {
             var navigationIcons = [
                 'arrow-up', 'arrow-right', 'arrow-down', 'arrow-left',
