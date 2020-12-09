@@ -1,0 +1,34 @@
+.nom-alert{
+    min-width: 400px;
+    border-radius: 4px;
+    background-color: #f7f9fa;
+    vertical-align: middle;
+    white-space: normal;
+    outline: none;
+    position: relative;
+
+    > .nom-alert-content{
+        padding: 2rem;
+    }
+
+    > .nom-alert-close-button{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
+
+.nom-alert-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
+    // counteract the pointer-events: none; in the .modal-dialog
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3rem;
+    // Remove focus outline from opened modal
+    outline: 0;
+}

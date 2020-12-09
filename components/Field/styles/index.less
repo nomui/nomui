@@ -1,0 +1,38 @@
+.nom-field {
+    > .nom-field-label {
+        margin-bottom: -.5rem;
+
+        > .nom-label {
+            display: block;
+        }
+    }
+
+    @media (min-width: @screen-sm-min) {
+
+        &.m-label-right,
+        &.m-label-left {
+            display: flex;
+
+            > .nom-field-label {
+                width: 10rem;
+                margin-bottom: 0;
+
+                > .nom-label {
+                    padding: (@padding-y-base);
+                }
+            }
+        }
+
+        &.m-label-right {
+            > .nom-field-label {
+                text-align: right;
+            }
+        }
+
+        &.m-label-left {
+            > .nom-field-label {
+                text-align: left;
+            }
+        }
+    }
+}

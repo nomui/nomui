@@ -1,0 +1,65 @@
+table.nom-table {
+    table-layout: fixed;
+    width: 99.99%;
+    border-collapse: collapse;
+    background-color: #fff;
+
+    td,
+    th {
+        padding: 8px 14px;
+    }
+
+    th {
+        position: relative;
+        padding-right: 2rem;
+        font-weight: 500;
+        background-color: #fafafa;
+
+        > .nom-table-filter {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            width: 2rem;
+            color: #bfbfbf;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    &.m-line-row {
+        td,
+        th {
+            border-bottom: 1px solid @oc-gray-2;
+        }
+    }
+
+    &.m-line-col {
+        td,
+        th {
+            border-right: 1px solid @oc-gray-2;
+
+            &:last-child {
+                border-right: 0;
+            }
+        }
+    }
+
+    &.m-line-both {
+        td,
+        th {
+            border-bottom: 1px solid @oc-gray-2;
+            border-right: 1px solid @oc-gray-2;
+
+            &:last-child {
+                border-right: 0;
+            }
+        }
+    }
+
+    &.m-bordered {
+        border: 1px solid @oc-gray-2;
+    }
+}

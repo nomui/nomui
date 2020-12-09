@@ -1,0 +1,104 @@
+[role=button] {
+    cursor: pointer
+}
+
+// Button sizes
+.button-size(@padding-y; @padding-x; @font-size; @line-height; @border-radius) {
+    padding: @padding-y @padding-x;
+    font-size: @font-size;
+    line-height: @line-height;
+    border-radius: @border-radius;
+}
+
+.nom-button {
+    /* Structure */
+    display: inline-block;
+    zoom: 1;
+    line-height: normal;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    -webkit-user-drag: none;
+    user-select: none;
+    .button-size(@padding-y-base; @padding-x-base; @font-size-base; @line-height-base; @border-radius);
+    border: 1px solid transparent;
+    text-decoration: none;
+    border-radius: 2px;
+    background-color: #fff;
+    border-color: @border-color;
+    color: @text-color-lt;
+
+    &:hover {
+        background-color: #e6e6e6;
+        background-color: rgba(0,0,0,0.05);
+        outline: none;
+    }
+
+    &:focus,
+    &:hover,
+    &:active,
+    &.active {
+        outline: none;
+    }
+
+    &.disabled,
+    &[disabled],
+    fieldset[disabled] & {
+        cursor: not-allowed;
+        opacity: .65;
+    }
+
+    a& {
+        &.disabled,
+        fieldset[disabled] & {
+            pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
+        }
+    }
+
+    &.m-size-sm {
+        // line-height: ensure proper height of button next to small input
+        .button-size(@padding-y-sm; @padding-x-sm; @font-size-sm; @line-height-sm; @border-radius-sm);
+    }
+
+    &.m-size-xs {
+        // line-height: ensure proper height of button next to small input
+        .button-size(@padding-y-xs; @padding-x-xs; @font-size-sm; @line-height-sm; @border-radius-sm);
+    }
+
+    &.u-size-lg {
+        // line-height: ensure proper height of button next to small input
+        .button-size(@padding-y-lg; @padding-x-lg; @font-size-lg; @line-height-lg; @border-radius-lg);
+    }
+
+    &.m-size-xl {
+        // line-height: ensure proper height of button next to small input
+        .button-size(@padding-y-xl; @padding-x-xl; @font-size-xl; @line-height-lg; @border-radius-lg);
+    }
+
+    &.m-plain {
+        border: 0;
+        background-color: transparent;
+
+        &:hover {
+            background-color: #e6e6e6;
+            outline: none;
+        }
+    }
+
+    &.m-with-icon{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /*> span {
+        display: inline-block;
+        line-height: 1;
+    }*/
+
+    > .nom-icon + span,
+    > span + .nom-icon {
+        margin-left: .5rem;
+    }
+}

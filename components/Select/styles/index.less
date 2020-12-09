@@ -1,0 +1,66 @@
+.nom-select {
+    position: relative;
+    background: white;
+    border: 1px solid gainsboro;
+    border-radius: 2px;
+    line-height: 1.42857;
+    padding: 6px 24px 6px 12px;
+    cursor: pointer;
+    min-height: 34px;
+    color:#000 !important;
+
+    .nom-select-display-single {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .nom-select-display-arrow {
+        position: absolute;        
+        top: 50%;
+        bottom: 0;
+        right: 8px;        
+        margin-top: -7px;
+        line-height: 1;
+    }   
+}
+
+.nom-select-list{
+    .nom-list-item{
+        padding: 5px 16px;
+        user-select: none;
+        &:hover{
+            background-color: #eee;
+        }
+        &.s-selected{
+            background-color: @primary; 
+            color: @white;
+        }
+    }
+}
+
+.nom-select-checker{
+    .nom-list-item{
+        position: relative;
+        padding: 5px 30px;
+
+        &:hover{
+            background-color: #eee;
+        }
+        &.nom-selected:before{
+            content: "\E632";
+            font-family: nom-icon;
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            -webkit-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);
+            -o-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            color: @primary;
+            font-weight: bold;
+            font-size: 16px;
+            z-index: 2;
+        }
+    }
+}

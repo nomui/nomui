@@ -1,0 +1,105 @@
+define([], function () {
+
+    return {
+        text: '槽（填充）',
+        demo: function () {
+            let demo = this
+
+            return {
+                children: [
+                    {
+                        ref: 'layout',
+                        children: [
+                            {
+                                children: [
+                                    {
+                                        component: 'Button',
+                                        text: 'button-item'
+                                    }
+                                ]
+                            },
+                            {
+                                children: [
+                                    {
+                                        component: 'Button',
+                                        text: 'button-item'
+                                    }
+                                ]
+                            },
+                            {
+                                children: [
+                                    {
+                                        component: 'Button',
+                                        text: 'button-item'
+                                    }
+                                ]
+                            }
+                        ],
+                        childDefaults: {
+                            styles: {
+                                bg: 'lprimary-light',
+                                border: 'all'
+                            }
+                        },
+                        styles: {
+                            flex: 'row',
+                            bg: 'lprimary',
+                            gutter: 'md'
+                        }
+                    },
+                    {
+                        children: [
+                            {
+                                component: 'RadioList',
+                                options: [
+                                    {
+                                        text: 'row', value: 'row'
+                                    },
+                                    {
+                                        text: 'column', value: 'column'
+                                    }
+                                ],
+                                value: 'row',
+                                events: {
+                                    valueChange: function (changed) {
+                                        if (changed.isInit === false) {
+                                            demo.refs.layout.update({ styles: { flex: changed.newValue } });
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                component: 'RadioList',
+                                options: [
+                                    {
+                                        text: 'gutter-sm', value: 'sm'
+                                    },
+                                    {
+                                        text: 'gutter-md', value: 'md'
+                                    },
+                                    {
+                                        text: 'gutter-lg', value: 'lg'
+                                    },
+                                    {
+                                        text: 'gutter-1px', value: '1px'
+                                    },
+                                    {
+                                        text: 'gutter-2px', value: '2px'
+                                    }
+                                ],
+                                value: 'md',
+                                events: {
+                                    valueChange: function (changed) {
+                                        if (changed.isInit === false) {
+                                            demo.refs.layout.update({ styles: { gutter: changed.newValue } });
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+})

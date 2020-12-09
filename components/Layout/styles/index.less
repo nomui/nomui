@@ -1,0 +1,36 @@
+.nom-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    >.nom-layout-header {
+        height: 4rem;
+        .u-border-bottom();
+    }
+
+    >.nom-layout-body {
+        flex: 1;
+        overflow: auto;
+        height: 100%;
+    }
+
+    &.m-has-sider {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+
+        >.nom-layout-sider {
+            width: 250px;
+            height: 100%;
+            .u-border-right();
+            overflow: auto;
+        }
+
+        >.nom-layout-body {
+            width: 100%;
+            flex-grow: 1;
+            overflow: auto;
+        }
+    }
+}

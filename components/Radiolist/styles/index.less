@@ -1,0 +1,77 @@
+.nom-radio-list.nom-radio-list-radio {
+    display: inline-flex;
+
+    >.nom-list>.nom-list-item-wrapper>label {
+        display: inline-flex;
+        vertical-align: middle;
+        line-height: @line-height-base;
+        padding-top: @padding-y-base;
+        padding-bottom: @padding-y-base;
+        padding-left: @padding-x-base;
+        padding-right: @padding-x-base;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s;
+
+        >span.radio {
+            position: relative;
+            background: none;
+            margin-right: .5rem;
+            height: ~"calc(1em + 2px)";
+            width: ~"calc(1em + 2px)";
+            border: 1px solid #bdc3d4;
+            border-radius: 50% !important;
+            margin-top:~"calc((1em * @{line-height-base} - 1em - 2px)/2)";
+        }
+
+        &.s-selected {
+            >span.radio::after {
+                display: block;
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-left: -3px;
+                margin-top: -3px;
+                height: 6px;
+                width: 6px;
+                border-radius: 100% !important;
+                border: solid #7281a4;
+                background: #7281a4;
+            }
+        }
+    }
+}
+
+.nom-radio-list.nom-radio-list-button {
+    display: inline-flex;
+
+    >label {
+        display: inline-flex;
+        position: relative;
+        line-height: @line-height-base;
+        padding-top: @padding-y-base;
+        padding-bottom: @padding-y-base;
+        padding-left: @padding-x-base;
+        padding-right: @padding-x-base;
+        border: 1px solid #d9d9d9;
+        margin-left: -1px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s;
+
+        &:first-child {
+            border-left: 1px solid #d9d9d9;
+            border-radius: 4px 0 0 4px;
+        }
+
+        &:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+
+        &.s-selected {
+            color: @primary;
+            border-color: @primary;
+        }
+    }
+}

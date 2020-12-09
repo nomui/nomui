@@ -1,0 +1,61 @@
+.nom-message {
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background-color: #fff;  
+
+    .nom-message-icon {      
+        i {
+            padding: 6px;
+            width: 30px;
+            text-align: center;
+            font-size: 16px;
+        }
+    }
+
+    > .nom-message-content{
+        padding: 6px;
+    }
+
+    &.nom-message-info {
+        background-color: #f5fbfe;
+        border-color: #30b2f2;
+
+        > .nom-message-inner > .nom-message-icon i {
+            color: @info;     
+        }
+    }
+
+    &.nom-message-success {
+        background-color: #f4fcf5;
+        border-color: #1dbf38;
+
+        > .nom-message-inner > .nom-message-icon i {
+            color: @success;
+        }
+    }
+
+    &.nom-message-warning {
+        background-color: #fff9f2;
+        border-color: #ff9000;
+
+        > .nom-message-inner > .nom-message-icon i {
+            color: @warning;
+        }
+    }
+
+    &.nom-message-error {
+        background-color: #fff7f7;
+        border-color: #ff5959;
+
+        > .nom-message-inner > .nom-message-icon i {
+            color: @danger;
+        }
+    }
+}    
+
+    .nom-message-nobg{
+        background-color: transparent;
+        border-color: transparent;
+    }

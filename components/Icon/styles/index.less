@@ -1,0 +1,53 @@
+.nom-icon {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    position: relative;
+
+    >i {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+        -ms-pointer-events: none;
+        pointer-events: none;
+    }
+
+    &.m-border {
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+        border: 1px solid;
+        text-align: center;
+        position: relative;
+
+        >i {
+            position: relative;
+            display: block;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+    }
+
+    &.m-bg {
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+        background-color: @oc-gray-2;
+        text-align: center;
+        position: relative;
+
+        >i {
+            position: relative;
+            display: block;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+    }
+}

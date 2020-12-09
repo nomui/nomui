@@ -1,0 +1,25 @@
+.nom-tab-list {
+    .list-unstyled();
+    margin: 0;
+
+    a {
+        color: inherit;
+
+        &:hover {
+            color: inherit;
+        }
+    }
+
+    &.nom-tab-list-horizontal {
+        display: flex;
+        flex-wrap: wrap;
+
+        >.nom-tab-item-wrapper>.nom-tab-item {
+            display: flex;
+            padding: 10px 15px;
+            text-decoration: none;
+            align-items: center;
+            white-space: nowrap;
+        }
+    }
+}

@@ -1,0 +1,56 @@
+.nom-form {
+    display: flex;
+    flex-wrap: wrap;
+
+    > .nom-field {
+        width: 100%;
+
+        > .nom-field-label {
+            padding: .5rem 1rem;
+        }
+
+        > .nom-field-control {
+            flex: 1;
+            padding: .5rem 1rem;
+
+            > .nom-form{
+                margin: -.5rem -1rem;
+            }
+        }
+    }
+
+    &.m-bordered {
+        > .nom-field {
+            border: 1px solid #ced4da;
+            margin: -1px 0 0 -1px;
+        }
+    }
+
+    &.m-splitline {
+        > .nom-field {
+            border-bottom: 1px solid #ced4da;
+        }
+    }
+
+    &.m-inline {
+        flex-wrap: nowrap;
+
+        > .nom-field {
+            > .nom-field-label {
+                width: auto;
+            }
+
+            > .nom-field-control {
+                flex-basis: auto;
+            }
+        }
+    }
+
+    &.m-striped {
+        > .nom-field {
+            > .nom-field-label {
+                .u-bg-lgray();
+            }
+        }
+    }
+}
