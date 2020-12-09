@@ -1,7 +1,7 @@
 # nomui
 ## 本地开发
 ```bash
-$ git clone git@github.com:nomui/nomui.git
+$ git clone https://github.com/nomui/nomui.git
 $ cd nomui
 $ npm install
 $ npm run dev
