@@ -490,7 +490,7 @@
       }
 
       config() {
-          this.props._config && this.props._config.call(this);        
+          this.props._config && this.props._config.call(this);
           this._callMixin('_config');
           isFunction(this._config) && this._config();
           this._setExpandableProps();
@@ -646,7 +646,7 @@
           }
           if (isFunction(props)) ;
           if (childDefaults !== null && childDefaults !== undefined) {
-              props = Component.extendProps(childDefaults, props);
+              props = Component.extendProps({}, childDefaults, props);
           }
           if (props) {
               props.component = props.component || Component;
