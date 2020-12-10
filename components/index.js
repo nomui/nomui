@@ -1,13 +1,14 @@
 
-import './index.less';
+import './index.less'
 
-export { default as Component } from './Component/index';
+export { default as Component } from './Component/index'
 
 export { default as Router } from './Router/index'
-export { default as App } from './App/index';
-export { default as View } from './App/View';
+export { default as App } from './App/index'
+export { default as View } from './App/View'
 
 export { default as Container } from './Container/index'
+export { default as Flex } from './Flex/index'
 
 export { default as Layer } from './Layer/index'
 export { default as Message } from './Message/index'

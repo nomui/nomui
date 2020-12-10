@@ -429,6 +429,8 @@
           this.mixins = [];
           this._scoped = false;
 
+          this._propStyleClasses = [];
+
           mixins && this._mixin(mixins);
 
           if (this.props.key) {
@@ -947,6 +949,19 @@
           for (var i = 0; i < componentTypeClasses.length; i++) {
               var componentTypeClass = componentTypeClasses[i];
               classes.push('nom-' + hyphenate(componentTypeClass));
+          }
+
+          for (var i = 0; i < this._propStyleClasses.length; i++) {
+              var modifier = this._propStyleClasses[i];
+              var modifierVal = this.props[modifier];
+              if (modifierVal !== null && modifierVal !== undefined) {
+                  if (modifierVal === true) {
+                      classes.push('p-' + modifier);
+                  }
+                  else if (typeof modifierVal === 'string') {
+                      classes.push('p-' + modifier + '-' + modifierVal);
+                  }
+              }
           }
 
           if (isPlainObject(props.classes)) {
@@ -1529,6 +1544,48 @@
   }
 
   Component.register(Container);
+
+  class FlexItem extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(FlexItem);
+
+  class Flex extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              wrap: false,
+              items: [],
+              itemDefaults: null,
+              direction: 'horizontal',
+              gap: 'md',
+              wrap: false
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          this._propStyleClasses = ['direction', 'gap', 'wrap'];
+          let items = this.props.items;
+          var children = [];
+          if (Array.isArray(items) && items.length > 0) {
+              for (var i = 0; i < items.length; i++) {
+                  let item = items[i];
+                  item = Component.extendProps({}, this.props.itemDefaults, item);
+                  children.push({ component: FlexItem, children: item });
+              }
+          }
+
+          this.setProps({
+              children: children
+          });
+      }
+  }
+
+  Component.register(Flex);
 
   let zIndex = 6666;
 
@@ -5234,6 +5291,7 @@
   exports.Container = Container;
   exports.Cssicon = Cssicon;
   exports.Field = Field;
+  exports.Flex = Flex;
   exports.Form = Form;
   exports.Icon = Icon;
   exports.Layer = Layer;

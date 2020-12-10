@@ -1,8 +1,6 @@
 define(
     [
         './basic.js',
-        './value.js',
-        './validation.js'
     ],
     function () {
         return {

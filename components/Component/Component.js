@@ -44,6 +44,8 @@ class Component {
         this.mixins = []
         this._scoped = false
 
+        this._propStyleClasses = []
+
         mixins && this._mixin(mixins)
 
         if (this.props.key) {
@@ -564,6 +566,19 @@ class Component {
         for (var i = 0; i < componentTypeClasses.length; i++) {
             var componentTypeClass = componentTypeClasses[i];
             classes.push('nom-' + hyphenate(componentTypeClass));
+        }
+
+        for (var i = 0; i < this._propStyleClasses.length; i++) {
+            var modifier = this._propStyleClasses[i];
+            var modifierVal = this.props[modifier];
+            if (modifierVal !== null && modifierVal !== undefined) {
+                if (modifierVal === true) {
+                    classes.push('p-' + modifier);
+                }
+                else if (typeof modifierVal === 'string') {
+                    classes.push('p-' + modifier + '-' + modifierVal);
+                }
+            }
         }
 
         if (isPlainObject(props.classes)) {

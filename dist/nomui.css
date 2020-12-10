@@ -3253,6 +3253,24 @@ img {
   flex-grow: 1;
   overflow: auto;
 }
+.nom-flex.p-direction-horizontal {
+  display: flex;
+}
+.nom-flex.p-gap-md > .nom-flex-item {
+  margin-right: 1rem;
+}
+.nom-flex.p-gap-md > .nom-flex-item:last-child {
+  margin-right: 0;
+}
+.nom-flex.p-wrap {
+  flex-wrap: wrap;
+}
+.nom-flex > .nom-list-item.s-selected {
+  z-index: 2;
+}
+.nom-flex > .nom-list-item > a {
+  display: block;
+}
 .nom-navbar {
   display: flex;
   width: 100%;

@@ -1,0 +1,43 @@
+.nom-flex {
+    display: flex;
+
+    &.p-direction-horizontal {
+        &.p-gap-sm {
+            >.nom-flex-item {
+                margin-right: .5rem;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        &.p-gap-md {
+            >.nom-flex-item {
+                margin-right: 1rem;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        &.p-gap-lg {
+            >.nom-flex-item {
+                margin-right: 1.5rem;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    &.p-direction-verticle {
+        flex-direction: column;
+    }
+
+    &.p-wrap {
+        flex-wrap: wrap;
+    }
+}
