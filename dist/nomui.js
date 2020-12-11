@@ -2735,86 +2735,6 @@
 
   Component.register(Layout);
 
-  class NavbarBody extends Component {
-      constructor(props, ...mixins) {
-          super(props);
-      }
-  }
-
-  Component.register(NavbarBody);
-
-  class NavbarTitle extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              heading: null,
-              subheading: null,
-              icon: null,
-              image: null
-          };
-
-          let tagProp = props.href ? { tag: 'a' } : {};
-
-          super(Component.extendProps(defaults, props, tagProp), ...mixins);
-      }
-
-      config() {
-          if (this.props.href) {
-              this.setProps({
-                  tag: 'a',
-                  attrs: {
-                      href: this.props.href
-                  }
-              });
-          }
-          this.setProps({
-              children: [
-                  this.props.heading && { component: Component, tag: 'h3', children: [this.props.heading.text, this.props.subheading && { component: Component, tag: 'small', children: this.props.subheading.text }] },
-                  //this.props.subheading && { component: Component, tag: 'span', children: this.props.subheading.text }
-              ]
-          });
-      }
-  }
-
-  Component.register(NavbarTitle);
-
-  class NavbarTools extends Component {
-      constructor(props, ...mixins) {
-          super(props);
-      }
-  }
-
-  Component.register(NavbarTools);
-
-  class Navbar extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              title: null,
-              body: {},
-              tools: null
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      config() {
-          this.setProps({
-              title: { component: NavbarTitle },
-              body: { component: NavbarBody },
-              tools: { component: NavbarTools }
-          });
-
-          this.setProps({
-              children: [
-                  this.props.title,
-                  this.props.body,
-                  this.props.tools
-              ]
-          });
-      }
-  }
-
-  Component.register(Navbar);
-
   class Cssicon extends Component {
       constructor(props, ...mixins) {
           const defaults = {
@@ -2882,6 +2802,106 @@
   };
 
   Component.register(Icon);
+
+  class Caption extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              title: '',
+              subtitle: '',
+              icon: null,
+              image: null
+          };
+
+          let tagProp = props.href ? { tag: 'a' } : {};
+
+          super(Component.extendProps(defaults, props, tagProp), ...mixins);
+      }
+
+      _config() {
+          let { title, subtitle, icon, image, href } = this.props;
+          let children = [];
+          if (image) {
+              children.push({ tag: 'img', attrs: { src: image } });
+          }
+          else if (icon) {
+              children.push(Component.normalizeIconProps(icon));
+          }
+          children.push({
+              tag: 'h3',
+              children: [
+                  title,
+                  subtitle && { tag: 'small', children: subtitle }
+              ]
+          });
+          if (href) {
+              this.setProps({ attrs: { href: href } });
+          }
+          this.setProps({
+              children: children
+          });
+      }
+  }
+
+  Component.register(Caption);
+
+  class NavbarCaption extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(NavbarCaption);
+
+  class NavbarNav extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(NavbarNav);
+
+  class NavbarTools extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(NavbarTools);
+
+  class Navbar extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              caption: null,
+              nav: null,
+              tools: null,
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      config() {
+          let { caption, nav, tools } = this.props;
+          let toolsProps;
+          let captionProps = caption ? Component.extendProps({ component: Caption }, caption) : null;
+          let navProps = nav ? Component.extendProps({ component: Flex }, nav) : null;
+          if (Array.isArray(tools)) {
+              toolsProps = { component: Flex, items: tools };
+          }
+          else if (isPlainObject(tools)) {
+              toolsProps = Component.extendProps({ component: Flex }, tools);
+          }
+
+          this.setProps({
+              children: [
+                  captionProps && { component: NavbarCaption, children: captionProps },
+                  navProps && { component: NavbarNav, children: navProps },
+                  toolsProps && { component: NavbarTools, children: toolsProps },
+              ]
+          });
+      }
+  }
+
+  Component.register(Navbar);
 
   var ListItemMixin = {
       _create: function () {
@@ -5285,6 +5305,7 @@
   exports.Alert = Alert;
   exports.App = App;
   exports.Button = Button;
+  exports.Caption = Caption;
   exports.Checkbox = Checkbox;
   exports.CheckboxList = CheckboxList;
   exports.Component = Component;

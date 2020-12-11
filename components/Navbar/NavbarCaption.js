@@ -1,11 +1,11 @@
 import Component from '../Component/index'
 
-class NavbarTools extends Component {
+class NavbarCaption extends Component {
     constructor(props, ...mixins) {
         super(props, ...mixins)
     }
 }
 
-Component.register(NavbarTools)
+Component.register(NavbarCaption)
 
-export default NavbarTools
+export default NavbarCaption

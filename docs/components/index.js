@@ -11,9 +11,9 @@ define(['/docs/demo-widget.js'], function (demoWidget) {
                     children: [
                         {
                             component: 'Navbar',
-                            title: {
-                                heading: { text: this.props.title },
-                                subheading: { text: this.props.subtitle }
+                            caption: {
+                                title: this.props.title,
+                                subtitle: this.props.subtitle,
                             }
                         }
                     ]

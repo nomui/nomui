@@ -1,31 +1,39 @@
-import Component from '../Component/index';
-import NavbarBody from './NavbarBody'
-import NavbarTitle from './NavbarTitle'
+import Component from '../Component/index'
+import Caption from "../Caption/index";
+import Flex from "../Flex/index";
+import NavbarCaption from './NavbarCaption'
+import NavbarNav from './NavbarNav'
 import NavbarTools from './NavbarTools'
+import { isPlainObject } from '../util/index'
 
 class Navbar extends Component {
     constructor(props, ...mixins) {
         const defaults = {
-            title: null,
-            body: {},
-            tools: null
+            caption: null,
+            nav: null,
+            tools: null,
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
     config() {
-        this.setProps({
-            title: { component: NavbarTitle },
-            body: { component: NavbarBody },
-            tools: { component: NavbarTools }
-        })
+        let { caption, nav, tools } = this.props
+        let toolsProps
+        let captionProps = caption ? Component.extendProps({ component: Caption }, caption) : null
+        let navProps = nav ? Component.extendProps({ component: Flex }, nav) : null
+        if (Array.isArray(tools)) {
+            toolsProps = { component: Flex, items: tools }
+        }
+        else if (isPlainObject(tools)) {
+            toolsProps = Component.extendProps({ component: Flex }, tools)
+        }
 
         this.setProps({
             children: [
-                this.props.title,
-                this.props.body,
-                this.props.tools
+                captionProps && { component: NavbarCaption, children: captionProps },
+                navProps && { component: NavbarNav, children: navProps },
+                toolsProps && { component: NavbarTools, children: toolsProps },
             ]
         })
     }

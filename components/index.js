@@ -18,6 +18,7 @@ export { default as Alert } from './Alert/index'
 export { default as Modal } from './Modal/index'
 export { default as Layout } from './Layout/index'
 export { default as Navbar } from './Navbar/index'
+export { default as Caption } from './Caption/index'
 export { default as Cssicon } from './Cssicon/index'
 export { default as Icon } from './Icon/index'
 

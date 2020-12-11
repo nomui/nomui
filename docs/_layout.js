@@ -2,43 +2,45 @@ define([], function () {
     return {
         component: 'Layout',
         header: {
+            styles: {
+                bg: 'primary'
+            },
             children:
             {
                 component: 'Navbar',
-                title: {
-                    heading: { text: 'NomUI' },
-                    href: '/'
+                caption: {
+                    title: 'NomUI',
+                    href: '/',
                 },
-                body: {
+                nav: {
+                    component: 'Menu',
+                    ref: 'topMenu',
                     styles: {
                         padding: 'l-2',
                     },
-                    children: {
-                        component: 'Menu',
-                        ref: 'topMenu',
-                        items: [
-                            { text: '教程', id: 'tutorials/index', url: '#!tutorials/index' },
-                            { text: '组件', id: 'components', url: '#!components!' }
-                        ],
-                        type: 'horizontal',
-                        itemDefaults: {
-                            key: function () {
-                                return this.props.id
+                    items: [
+                        { text: '教程', id: 'tutorials/index', url: '#!tutorials/index' },
+                        { text: '组件', id: 'components', url: '#!components!' }
+                    ],
+                    type: 'horizontal',
+                    itemDefaults: {
+                        key: function () {
+                            return this.props.id
+                        },
+                        styles: {
+                            hover: {
+                                bg: 'lighten'
                             },
-                            styles: {
-                                hover: {
-                                    bg: 'lighten'
-                                },
-                                selected: {
-                                    bg: 'lighten'
-                                }
+                            selected: {
+                                bg: 'lighten'
                             }
                         }
-                    },
+                    }
                 },
-                styles: {
-                    bg: 'primary'
-                }
+                tools: [
+                    'github',
+                    'github',
+                ],
             }
         },
         body: {

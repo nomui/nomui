@@ -3253,26 +3253,39 @@ img {
   flex-grow: 1;
   overflow: auto;
 }
-.nom-flex.p-direction-horizontal {
+.nom-caption {
   display: flex;
 }
-.nom-flex.p-gap-md > .nom-flex-item {
+.nom-flex {
+  display: flex;
+}
+.nom-flex.p-direction-horizontal.p-gap-sm > .nom-flex-item {
+  margin-right: 0.5rem;
+}
+.nom-flex.p-direction-horizontal.p-gap-sm > .nom-flex-item:last-child {
+  margin-right: 0;
+}
+.nom-flex.p-direction-horizontal.p-gap-md > .nom-flex-item {
   margin-right: 1rem;
 }
-.nom-flex.p-gap-md > .nom-flex-item:last-child {
+.nom-flex.p-direction-horizontal.p-gap-md > .nom-flex-item:last-child {
   margin-right: 0;
+}
+.nom-flex.p-direction-horizontal.p-gap-lg > .nom-flex-item {
+  margin-right: 1.5rem;
+}
+.nom-flex.p-direction-horizontal.p-gap-lg > .nom-flex-item:last-child {
+  margin-right: 0;
+}
+.nom-flex.p-direction-verticle {
+  flex-direction: column;
 }
 .nom-flex.p-wrap {
   flex-wrap: wrap;
 }
-.nom-flex > .nom-list-item.s-selected {
-  z-index: 2;
-}
-.nom-flex > .nom-list-item > a {
-  display: block;
-}
 .nom-navbar {
   display: flex;
+  justify-content: space-between;
   width: 100%;
   height: 100%;
   align-items: center;
@@ -3288,7 +3301,7 @@ img {
 .nom-navbar > .nom-navbar-title > .nom-text {
   margin-left: 1rem;
 }
-.nom-navbar > .nom-navbar-body {
+.nom-navbar > .nom-navbar-nav {
   flex-grow: 1;
   padding-left: 1rem;
 }
