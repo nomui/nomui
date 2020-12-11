@@ -7,7 +7,8 @@ class Caption extends Component {
             title: '',
             subtitle: '',
             icon: null,
-            image: null
+            image: null,
+            titleLevel: 5
         }
 
         let tagProp = props.href ? { tag: 'a' } : {}
@@ -16,7 +17,7 @@ class Caption extends Component {
     }
 
     _config() {
-        let { title, subtitle, icon, image, href } = this.props
+        let { title, subtitle, icon, image, href, titleLevel } = this.props
         let children = []
         if (image) {
             children.push({ tag: 'img', attrs: { src: image } })
@@ -24,8 +25,12 @@ class Caption extends Component {
         else if (icon) {
             children.push(Component.normalizeIconProps(icon))
         }
+        let titleTag = `h${titleLevel}`
         children.push({
-            tag: 'h3',
+            tag: titleTag,
+            classes: {
+                'nom-caption-title': true
+            },
             children: [
                 title,
                 subtitle && { tag: 'small', children: subtitle }

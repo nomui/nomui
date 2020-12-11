@@ -62,6 +62,7 @@ define([], {
                     {
                         text: '数据展示',
                         items: [
+                            { text: 'Widget', subtext: '部件', id: 'Widget', url: '#!components!index?type=Widget' },
                             { text: 'Avatar', subtext: '头像', id: 'Avatar', url: '#!components!index?type=Avatar' },
                             { text: 'Badge', subtext: '徽标', id: 'Badge', url: '#!components!index?type=Badge' },
                             { text: 'Collapse', subtext: '折叠面板', id: 'Collapse', url: '#!components!index?type=Collapse' },

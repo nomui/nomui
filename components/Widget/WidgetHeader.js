@@ -1,12 +1,12 @@
 import Component from '../Component/index'
 import Caption from "../Caption/index";
 import Flex from "../Flex/index";
-import NavbarCaption from './NavbarCaption'
-import NavbarNav from './NavbarNav'
-import NavbarTools from './NavbarTools'
+import WidgetHeaderCaption from './WidgetHeaderCaption'
+import WidgetHeaderNav from './WidgetHeaderNav'
+import WidgetHeaderTools from './WidgetHeaderTools'
 import { isPlainObject } from '../util/index'
 
-class Navbar extends Component {
+class WidgetHeader extends Component {
     constructor(props, ...mixins) {
         const defaults = {
             caption: null,
@@ -20,7 +20,7 @@ class Navbar extends Component {
     config() {
         let { caption, nav, tools } = this.props
         let toolsProps
-        let captionProps = caption ? Component.extendProps({ component: Caption, titleLevel: 3 }, caption) : null
+        let captionProps = caption ? Component.extendProps({ component: Caption }, caption) : null
         let navProps = nav ? Component.extendProps({ component: Flex }, nav) : null
         if (Array.isArray(tools)) {
             toolsProps = { component: Flex, items: tools }
@@ -31,14 +31,14 @@ class Navbar extends Component {
 
         this.setProps({
             children: [
-                captionProps && { component: NavbarCaption, children: captionProps },
-                navProps && { component: NavbarNav, children: navProps },
-                toolsProps && { component: NavbarTools, children: toolsProps },
+                captionProps && { component: WidgetHeaderCaption, children: captionProps },
+                navProps && { component: WidgetHeaderNav, children: navProps },
+                toolsProps && { component: WidgetHeaderTools, children: toolsProps },
             ]
         })
     }
 }
 
-Component.register(Navbar)
+Component.register(WidgetHeader)
 
-export default Navbar
+export default WidgetHeader

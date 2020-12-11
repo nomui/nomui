@@ -2809,7 +2809,8 @@
               title: '',
               subtitle: '',
               icon: null,
-              image: null
+              image: null,
+              titleLevel: 5
           };
 
           let tagProp = props.href ? { tag: 'a' } : {};
@@ -2818,7 +2819,7 @@
       }
 
       _config() {
-          let { title, subtitle, icon, image, href } = this.props;
+          let { title, subtitle, icon, image, href, titleLevel } = this.props;
           let children = [];
           if (image) {
               children.push({ tag: 'img', attrs: { src: image } });
@@ -2826,8 +2827,12 @@
           else if (icon) {
               children.push(Component.normalizeIconProps(icon));
           }
+          let titleTag = `h${titleLevel}`;
           children.push({
-              tag: 'h3',
+              tag: titleTag,
+              classes: {
+                  'nom-caption-title': true
+              },
               children: [
                   title,
                   subtitle && { tag: 'small', children: subtitle }
@@ -2882,7 +2887,7 @@
       config() {
           let { caption, nav, tools } = this.props;
           let toolsProps;
-          let captionProps = caption ? Component.extendProps({ component: Caption }, caption) : null;
+          let captionProps = caption ? Component.extendProps({ component: Caption, titleLevel: 3 }, caption) : null;
           let navProps = nav ? Component.extendProps({ component: Flex }, nav) : null;
           if (Array.isArray(tools)) {
               toolsProps = { component: Flex, items: tools };
@@ -3540,6 +3545,112 @@
   }
 
   Component.register(Pager);
+
+  class WidgetHeaderCaption extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(WidgetHeaderCaption);
+
+  class WidgetHeaderNav extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(WidgetHeaderNav);
+
+  class WidgetHeaderTools extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(WidgetHeaderTools);
+
+  class WidgetHeader extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              caption: null,
+              nav: null,
+              tools: null,
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      config() {
+          let { caption, nav, tools } = this.props;
+          let toolsProps;
+          let captionProps = caption ? Component.extendProps({ component: Caption }, caption) : null;
+          let navProps = nav ? Component.extendProps({ component: Flex }, nav) : null;
+          if (Array.isArray(tools)) {
+              toolsProps = { component: Flex, items: tools };
+          }
+          else if (isPlainObject(tools)) {
+              toolsProps = Component.extendProps({ component: Flex }, tools);
+          }
+
+          this.setProps({
+              children: [
+                  captionProps && { component: WidgetHeaderCaption, children: captionProps },
+                  navProps && { component: WidgetHeaderNav, children: navProps },
+                  toolsProps && { component: WidgetHeaderTools, children: toolsProps },
+              ]
+          });
+      }
+  }
+
+  Component.register(WidgetHeader);
+
+  class WidgetBody extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(WidgetBody);
+
+  class WidgetFooter extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(WidgetFooter);
+
+  class Widget extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              header: null,
+              body: null,
+              footer: null,
+              type: 'default',
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          let { header, body, footer } = this.props;
+
+          let headerProps = Component.extendProps({ component: WidgetHeader }, header);
+          let bodyProps = Component.extendProps({ component: WidgetBody }, body);
+          let footerProps = Component.extendProps({ component: WidgetFooter }, footer);
+
+          this.setProps({
+              children: [
+                  headerProps,
+                  bodyProps,
+                  footerProps,
+              ]
+          });
+      }
+  }
+
+  Component.register(Widget);
 
   class MenuItem extends Component {
       constructor(props, ...mixins) {
@@ -5334,6 +5445,7 @@
   exports.Tabs = Tabs;
   exports.Textbox = Textbox;
   exports.View = View;
+  exports.Widget = Widget;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

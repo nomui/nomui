@@ -1,5 +1,5 @@
-define([
-], function () {
+define([], function () {
+
     return {
         text: '基本用法',
         file: 'basic',

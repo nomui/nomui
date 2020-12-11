@@ -3256,6 +3256,9 @@ img {
 .nom-caption {
   display: flex;
 }
+.nom-caption > .nom-caption-title > small {
+  margin-left: 6px;
+}
 .nom-flex {
   display: flex;
 }
@@ -3283,27 +3286,38 @@ img {
 .nom-flex.p-wrap {
   flex-wrap: wrap;
 }
+.nom-widget.nom-widget-default {
+  border: 1px solid #D1D7DC;
+}
+.nom-widget.nom-widget-default > .nom-widget-header {
+  display: flex;
+  width: 100%;
+  height: 4rem;
+  align-items: center;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  border-bottom: 1px solid #ced4da;
+}
+.nom-widget.nom-widget-default > .nom-widget-header > .nom-widget-header-nav {
+  flex-grow: 1;
+}
+.nom-widget.nom-widget-default > .nom-widget-header > .nom-widget-header-tools {
+  padding-left: 1rem;
+  text-align: right;
+}
+.nom-widget.nom-widget-default > .nom-widget-body {
+  padding: 1rem !important;
+}
 .nom-navbar {
   display: flex;
-  justify-content: space-between;
   width: 100%;
   height: 100%;
   align-items: center;
   padding-left: 1rem;
   padding-right: 1rem;
 }
-.nom-navbar > .nom-navbar-title > h3 > small {
-  padding-left: 6px;
-}
-.nom-navbar > .nom-navbar-title > .nom-heading {
-  display: inline-block;
-}
-.nom-navbar > .nom-navbar-title > .nom-text {
-  margin-left: 1rem;
-}
 .nom-navbar > .nom-navbar-nav {
   flex-grow: 1;
-  padding-left: 1rem;
 }
 .nom-navbar > .nom-navbar-tools {
   padding-left: 1rem;

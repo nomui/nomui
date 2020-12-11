@@ -25,6 +25,7 @@ export { default as Icon } from './Icon/index'
 export { default as List, ListItemMixin } from './List/index'
 export { default as Tabs } from './Tabs/index'
 export { default as Pager } from './Pager/index'
+export { default as Widget } from './Widget/index'
 
 
 export { default as Menu } from './Menu/index'
