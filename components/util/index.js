@@ -13,10 +13,10 @@ String.prototype.trimEnd = function (characters) {
 
 String.prototype.prepend = function (character) {
   if (this[0] !== character) {
-      return (character + this).toString()
+    return (character + this).toString()
   }
   else {
-      return this.toString()
+    return this.toString()
   }
 }
 
@@ -145,7 +145,7 @@ export function accessProp(options, key) {
     key = parts.shift()
     if (parts.length) {
       curOption = options[key]
-      for (i = 0; i < parts.length - 1; i++) {
+      for (let i = 0; i < parts.length - 1; i++) {
         curOption[parts[i]] = curOption[parts[i]] || {};
         curOption = curOption[parts[i]]
       }
@@ -163,12 +163,12 @@ export function pathCombine() {
   var args = Array.from(arguments)
 
   args.forEach(function (item, index) {
-      if (index > 0) {
-          path += '/' + item.trim('/')
-      }
-      else {
-          path += item.trimEnd('/')
-      }
+    if (index > 0) {
+      path += '/' + item.trim('/')
+    }
+    else {
+      path += item.trimEnd('/')
+    }
   })
 
   return path
@@ -177,7 +177,7 @@ export function pathCombine() {
 var uppercaseRegex = /[A-Z]/g
 function toLowerCase(capital) { return "-" + capital.toLowerCase() }
 export function normalizeKey(key) {
-    return key[0] === "-" && key[1] === "-" ? key :
-        key === "cssFloat" ? "float" :
-            key.replace(uppercaseRegex, toLowerCase)
+  return key[0] === "-" && key[1] === "-" ? key :
+    key === "cssFloat" ? "float" :
+      key.replace(uppercaseRegex, toLowerCase)
 }

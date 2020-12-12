@@ -1,7 +1,5 @@
-
 import Component from '../Component/index'
 import List from '../List/index'
-
 
 class Pager extends Component {
     constructor(props, ...mixins) {
@@ -29,45 +27,46 @@ class Pager extends Component {
         var pager = this
 
         this.setProps({
-            children: [
-                {
-                    component: List,
-                    items: pager.getPageItems(),
-                    itemDefaults: {
-                        tag: 'a',
-                        key() {
-                            return this.props.pageNumber
+            children: {
+                component: List,
+                items: pager.getPageItems(),
+                itemDefaults: {
+                    tag: 'a',
+                    key() {
+                        return this.props.pageNumber
+                    },
+                    styles: {
+                        padding: '1',
+                        hover: {
+                            bg: 'gray'
                         },
-                        styles: {
-                            padding: '1',
-                            hover: {
-                                bg: 'gray'
-                            },
-                            selected: {
-                                bg: 'primary'
-                            }
-                        },
-                        children: '{{this.props.text}}',
-                        events: {
-                            select() {
-                                pager.props.pageIndex = this.props.pageNumber;
-                                //this.update({ items: pager.getPageItems() });
-                                pager.trigger("pageChange", {
-                                    pageIndex: pager.props.pageIndex,
-                                    pageSize: pager.props.pageSize
-                                });
-                            }
+                        selected: {
+                            bg: 'primary'
                         }
                     },
-                    itemSelectable: {
-                        byClick: true
+                    _config: function () {
+                        this.setProps({
+                            children: this.props.text + ''
+                        })
                     },
-                    selectedItems: pager.props.pageIndex,
-                    styles: {
-                        flex: 'row'
+                },
+                itemSelectable: {
+                    byClick: true
+                },
+                selectedItems: pager.props.pageIndex,
+                styles: {
+                    flex: 'row'
+                },
+                events: {
+                    itemSelectionChange: function () {
+                        pager.props.pageIndex = this.selectedItem.props.pageNumber
+                        pager.trigger("pageChange", {
+                            pageIndex: pager.props.pageIndex,
+                            pageSize: pager.props.pageSize,
+                        })
                     }
                 }
-            ]
+            }
         })
     }
 
@@ -122,7 +121,7 @@ class Pager extends Component {
                 items.push({
                     pageNumber: null,
                     text: props.texts.ellipse,
-                    classes: 'space',
+                    classes: { 'space': true },
                     space: true
                 })
             }
@@ -142,7 +141,7 @@ class Pager extends Component {
                 items.push({
                     pageNumber: null,
                     text: props.texts.ellipse,
-                    classes: 'space',
+                    classes: { 'space': true },
                     space: true
                 })
             }
@@ -161,7 +160,7 @@ class Pager extends Component {
             items.push({
                 pageNumber: pageIndex + 1,
                 text: props.texts.next,
-                classes: 'next'
+                classes: { 'next': true },
             })
         }
 

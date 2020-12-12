@@ -10,7 +10,9 @@ define([], function () {
                         totalCount: 100,
                         events: {
                             pageChange: function (params) {
-                                this.update(params);
+                                if (!params.isInit) {
+                                    this.update(params);
+                                }
                             }
                         }
                     }

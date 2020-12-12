@@ -19,10 +19,10 @@
 
   String.prototype.prepend = function (character) {
     if (this[0] !== character) {
-        return (character + this).toString()
+      return (character + this).toString()
     }
     else {
-        return this.toString()
+      return this.toString()
     }
   };
 
@@ -151,7 +151,7 @@
       key = parts.shift();
       if (parts.length) {
         curOption = options[key];
-        for (i = 0; i < parts.length - 1; i++) {
+        for (let i = 0; i < parts.length - 1; i++) {
           curOption[parts[i]] = curOption[parts[i]] || {};
           curOption = curOption[parts[i]];
         }
@@ -169,12 +169,12 @@
     var args = Array.from(arguments);
 
     args.forEach(function (item, index) {
-        if (index > 0) {
-            path += '/' + item.trim('/');
-        }
-        else {
-            path += item.trimEnd('/');
-        }
+      if (index > 0) {
+        path += '/' + item.trim('/');
+      }
+      else {
+        path += item.trimEnd('/');
+      }
     });
 
     return path
@@ -183,9 +183,9 @@
   var uppercaseRegex = /[A-Z]/g;
   function toLowerCase(capital) { return "-" + capital.toLowerCase() }
   function normalizeKey(key) {
-      return key[0] === "-" && key[1] === "-" ? key :
-          key === "cssFloat" ? "float" :
-              key.replace(uppercaseRegex, toLowerCase)
+    return key[0] === "-" && key[1] === "-" ? key :
+      key === "cssFloat" ? "float" :
+        key.replace(uppercaseRegex, toLowerCase)
   }
 
   // Events
@@ -396,7 +396,6 @@
               reference: document.body,
               placement: 'append',
               autoRender: true,
-              //delayRender: false,
 
               hidden: false,
               disabled: false,
@@ -510,14 +509,11 @@
 
           this._renderChildren();
 
-          this.props.selected && this._triggerSelect({ triggerSelect: true, triggerSelectionChange: true, isInit: this.rendered === false });
-          this.props.hidden === true ? isFunction(this._hide) && this._hide() : isFunction(this._show) && this._show();
-
-          this.rendered = true;
-
           isFunction(this._render) && this._render();
           this._callMixin('_render');
           isFunction(this.props._render) && this.props._render.call(this);
+
+          this.rendered = true;
       }
 
       remove() {
@@ -728,35 +724,15 @@
           if (this.props.selected === false) {
               this.props.selected = true;
               this.addClass('s-selected');
-              this._triggerSelect(selectOption);
+              isFunction(this._select) && this._select();
+              selectOption.triggerSelect === true && this.trigger('select', selectOption.isInit === true);
+              selectOption.triggerSelectionChange === true && this.trigger('selectionChange', selectOption.isInit === true);
 
               return true
           }
           else {
               return false
           }
-      }
-
-      _triggerSelect(selectOption) {
-          isFunction(this._select) && this._select();
-          selectOption.triggerSelect === true && this.trigger('select', selectOption.isInit === true);
-          selectOption.triggerSelectionChange === true && this.trigger('selectionChange', selectOption.isInit === true);
-      }
-
-      _selectInner(selectOption) {
-          selectOption = extend(
-              {
-                  triggerSelect: true,
-                  triggerSelectionChange: true,
-                  isInit: false
-              },
-              selectOption
-          );
-          this.props.selected = true;
-          this.addClass('s-selected');
-          isFunction(this._select) && this._select();
-          selectOption.triggerSelect === true && this.trigger('select', isInit);
-          selectOption.triggerSelectionChange === true && this.trigger('selectionChange', isInit);
       }
 
       unselect(unselectOption) {
@@ -1006,11 +982,6 @@
               var classNames = classes.join(' ');
               this.element.setAttribute('class', classNames);
           }
-
-          /*
-          if (props.hidden === true) {
-              this.addClass('s-hidden');
-          }*/
       }
 
       _handleEvents() {
@@ -1056,7 +1027,7 @@
               ctor = ctor.__proto__.prototype.constructor;
           }
 
-          return classArray;
+          return classArray
       }
 
       _parseTemplate(template) {
@@ -1066,8 +1037,8 @@
               var fn = new Function('return (' + key + ');');
               var val = fn.call(that);
 
-              return (typeof val !== "undefined" && val !== null) ? htmlEncode(val) : "";
-          });
+              return (typeof val !== "undefined" && val !== null) ? htmlEncode(val) : ""
+          })
       }
 
       _on(element, event, callback) {
@@ -1095,7 +1066,7 @@
               for (var key in this.__htmlEvents) {
                   if (this.__htmlEvents.hasOwnProperty(key)) {
                       var list = this.__htmlEvents[key];
-                      if (!list) continue;
+                      if (!list) continue
                       for (i = list.length - 1; i >= 0; i -= 1) {
                           that.element.removeEventListener(key, list[i], false);
                       }
@@ -1106,7 +1077,7 @@
           }
 
           list = cache[event];
-          if (!list) return;
+          if (!list) return
 
           if (!callback) {
               delete cache[event];
@@ -1135,7 +1106,7 @@
               componentType = Component;
           }
 
-          return new componentType(componentProps, ...mixins);
+          return new componentType(componentProps, ...mixins)
       }
 
       static register(component) {
@@ -1148,13 +1119,13 @@
           for (var i = 1; i < arguments.length; i++) {
               var obj = arguments[i];
 
-              if (!obj) continue;
+              if (!obj) continue
 
               for (var key in obj) {
                   // Prevent Object.prototype pollution
                   // Prevent never-ending loop
                   if (key === "__proto__" || out === obj[key]) {
-                      continue;
+                      continue
                   }
                   if (obj.hasOwnProperty(key) && isPlainObject(obj[key])) {
                       out[key] = Component.extendProps(out[key], obj[key]);
@@ -1165,7 +1136,7 @@
               }
           }
 
-          return out;
+          return out
       }
 
       static mixin(mixin) {
@@ -1174,7 +1145,7 @@
   }
   Component.normalizeTemplateProps = function (props) {
       if (props === null || props === undefined) {
-          return null;
+          return null
       }
       var templateProps = {};
       if (isString(props)) {
@@ -1184,7 +1155,7 @@
           templateProps = props;
       }
 
-      return templateProps;
+      return templateProps
   };
 
   Component.components = components;
@@ -2925,10 +2896,7 @@
 
           this.on('select', function () {
               if (listProps.itemSelectable.multiple === false) {
-                  if (listProps.selectedItems !== null) {
-                      this.list.getItem(listProps.selectedItems).unselect({ triggerSelectionChange: false });
-                      listProps.selectedItems = this.key;
-                  }
+                  listProps.selectedItems = this.key;
                   if (this.list.selectedItem !== null) {
                       this.list.selectedItem.unselect({ triggerSelectionChange: false });
                   }
@@ -2943,10 +2911,8 @@
                   this.list.selectedItem = null;
               }
           });
-          this.on('selectionChange', function (isInit) {
-              if (isInit !== true) {
-                  this.list.trigger('itemSelectionChange', false);
-              }
+          this.on('selectionChange', function () {
+              this.list.trigger('itemSelectionChange');
           });
 
           this.setProps({
@@ -2956,6 +2922,14 @@
                   canRevert: listProps.itemSelectable.multiple === true
               }
           });
+      },
+      _render: function () {
+          var listProps = this.list.props;
+          if (listProps.itemSelectable.multiple === false) {
+              if (this.props.selected) {
+                  this.list.selectedItem = this;
+              }
+          }
       }
   };
 
@@ -3026,13 +3000,6 @@
           this.setProps({
               children: children
           });
-      }
-
-      _render() {
-          let { selectItems } = this.props;
-          if (selectItems && selectItems.length) {
-              this.trigger('itemSelectionChange', true);
-          }
       }
 
       getItem(param) {
@@ -3404,45 +3371,46 @@
           var pager = this;
 
           this.setProps({
-              children: [
-                  {
-                      component: List,
-                      items: pager.getPageItems(),
-                      itemDefaults: {
-                          tag: 'a',
-                          key() {
-                              return this.props.pageNumber
+              children: {
+                  component: List,
+                  items: pager.getPageItems(),
+                  itemDefaults: {
+                      tag: 'a',
+                      key() {
+                          return this.props.pageNumber
+                      },
+                      styles: {
+                          padding: '1',
+                          hover: {
+                              bg: 'gray'
                           },
-                          styles: {
-                              padding: '1',
-                              hover: {
-                                  bg: 'gray'
-                              },
-                              selected: {
-                                  bg: 'primary'
-                              }
-                          },
-                          children: '{{this.props.text}}',
-                          events: {
-                              select() {
-                                  pager.props.pageIndex = this.props.pageNumber;
-                                  //this.update({ items: pager.getPageItems() });
-                                  pager.trigger("pageChange", {
-                                      pageIndex: pager.props.pageIndex,
-                                      pageSize: pager.props.pageSize
-                                  });
-                              }
+                          selected: {
+                              bg: 'primary'
                           }
                       },
-                      itemSelectable: {
-                          byClick: true
+                      _config: function () {
+                          this.setProps({
+                              children: this.props.text + ''
+                          });
                       },
-                      selectedItems: pager.props.pageIndex,
-                      styles: {
-                          flex: 'row'
+                  },
+                  itemSelectable: {
+                      byClick: true
+                  },
+                  selectedItems: pager.props.pageIndex,
+                  styles: {
+                      flex: 'row'
+                  },
+                  events: {
+                      itemSelectionChange: function () {
+                          pager.props.pageIndex = this.selectedItem.props.pageNumber;
+                          pager.trigger("pageChange", {
+                              pageIndex: pager.props.pageIndex,
+                              pageSize: pager.props.pageSize,
+                          });
                       }
                   }
-              ]
+              }
           });
       }
 
@@ -3497,7 +3465,7 @@
                   items.push({
                       pageNumber: null,
                       text: props.texts.ellipse,
-                      classes: 'space',
+                      classes: { 'space': true },
                       space: true
                   });
               }
@@ -3517,7 +3485,7 @@
                   items.push({
                       pageNumber: null,
                       text: props.texts.ellipse,
-                      classes: 'space',
+                      classes: { 'space': true },
                       space: true
                   });
               }
@@ -3536,7 +3504,7 @@
               items.push({
                   pageNumber: pageIndex + 1,
                   text: props.texts.next,
-                  classes: 'next'
+                  classes: { 'next': true },
               });
           }
 

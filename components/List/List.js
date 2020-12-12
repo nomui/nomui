@@ -41,13 +41,6 @@ class List extends Component {
         })
     }
 
-    _render() {
-        let { selectItems } = this.props
-        if (selectItems && selectItems.length) {
-            this.trigger('itemSelectionChange', true)
-        }
-    }
-
     getItem(param) {
         var retItem = null
 

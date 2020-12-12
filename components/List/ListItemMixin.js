@@ -15,10 +15,7 @@ export default {
 
         this.on('select', function () {
             if (listProps.itemSelectable.multiple === false) {
-                if (listProps.selectedItems !== null) {
-                    this.list.getItem(listProps.selectedItems).unselect({ triggerSelectionChange: false })
-                    listProps.selectedItems = this.key
-                }
+                listProps.selectedItems = this.key
                 if (this.list.selectedItem !== null) {
                     this.list.selectedItem.unselect({ triggerSelectionChange: false })
                 }
@@ -33,10 +30,8 @@ export default {
                 this.list.selectedItem = null
             }
         });
-        this.on('selectionChange', function (isInit) {
-            if (isInit !== true) {
-                this.list.trigger('itemSelectionChange', false)
-            }
+        this.on('selectionChange', function () {
+            this.list.trigger('itemSelectionChange')
         });
 
         this.setProps({
@@ -46,5 +41,13 @@ export default {
                 canRevert: listProps.itemSelectable.multiple === true
             }
         })
+    },
+    _render: function () {
+        var listProps = this.list.props
+        if (listProps.itemSelectable.multiple === false) {
+            if (this.props.selected) {
+                this.list.selectedItem = this
+            }
+        }
     }
 }

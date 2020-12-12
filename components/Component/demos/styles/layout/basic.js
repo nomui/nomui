@@ -16,7 +16,7 @@ define([], function () {
                             flex: 'row',
                             bg: 'lprimary',
                             align: 'center',
-                            justify: 'between'
+                            justify: 'center'
                         },
                         attrs: {
                             style: {
@@ -98,9 +98,7 @@ define([], function () {
                                 value: 'center',
                                 events: {
                                     valueChange: function (changed) {
-                                        if (changed.isInit === false) {
-                                            demo.refs.layout.update({ styles: { align: changed.newValue } });
-                                        }
+                                        demo.refs.layout.update({ styles: { align: changed.newValue } })
                                     }
                                 }
                             },
@@ -126,13 +124,11 @@ define([], function () {
                                 value: 'center',
                                 events: {
                                     valueChange: function (changed) {
-                                        if (changed.isInit === false) {
-                                            demo.refs.layout.update({
-                                                styles: {
-                                                    justify: changed.newValue
-                                                }
-                                            })
-                                        }
+                                        demo.refs.layout.update({
+                                            styles: {
+                                                justify: changed.newValue
+                                            }
+                                        })
                                     }
                                 }
                             },
@@ -141,21 +137,19 @@ define([], function () {
                                 text: 'fills',
                                 events: {
                                     valueChange: function (changed) {
-                                        if (changed.isInit === false) {
-                                            flexFills = changed.newValue;
-                                            let flexArr = [flexDir];
-                                            if (flexFills !== false) {
-                                                flexArr.push('fills');
-                                            }
-                                            else {
-                                                flexArr.push(false);
-                                            }
-                                            demo.refs.layout.update({
-                                                styles: {
-                                                    flex: flexArr
-                                                }
-                                            })
+                                        flexFills = changed.newValue
+                                        let flexArr = [flexDir]
+                                        if (flexFills !== false) {
+                                            flexArr.push('fills')
                                         }
+                                        else {
+                                            flexArr.push(false)
+                                        }
+                                        demo.refs.layout.update({
+                                            styles: {
+                                                flex: flexArr
+                                            }
+                                        })
                                     }
                                 }
                             }

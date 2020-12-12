@@ -11,7 +11,6 @@ class Component {
             reference: document.body,
             placement: 'append',
             autoRender: true,
-            //delayRender: false,
 
             hidden: false,
             disabled: false,
@@ -49,7 +48,7 @@ class Component {
         mixins && this._mixin(mixins)
 
         if (this.props.key) {
-            this.key = this.props.key;
+            this.key = this.props.key
             if (isFunction(this.props.key)) {
                 this.key = this.props.key.call(this)
             }
@@ -125,14 +124,11 @@ class Component {
 
         this._renderChildren()
 
-        this.props.selected && this._triggerSelect({ triggerSelect: true, triggerSelectionChange: true, isInit: this.rendered === false })
-        this.props.hidden === true ? isFunction(this._hide) && this._hide() : isFunction(this._show) && this._show();
-
-        this.rendered = true
-
         isFunction(this._render) && this._render()
         this._callMixin('_render')
         isFunction(this.props._render) && this.props._render.call(this)
+
+        this.rendered = true
     }
 
     remove() {
@@ -253,7 +249,7 @@ class Component {
         if (!childProps) {
             return
         }
-        var props = childProps;
+        var props = childProps
         if (isString(props)) {
             this.element.innerHTML = props
             return
@@ -341,39 +337,19 @@ class Component {
                 triggerSelectionChange: true
             },
             selectOption
-        );
+        )
         if (this.props.selected === false) {
             this.props.selected = true
             this.addClass('s-selected')
-            this._triggerSelect(selectOption)
+            isFunction(this._select) && this._select()
+            selectOption.triggerSelect === true && this.trigger('select', selectOption.isInit === true)
+            selectOption.triggerSelectionChange === true && this.trigger('selectionChange', selectOption.isInit === true)
 
             return true
         }
         else {
             return false
         }
-    }
-
-    _triggerSelect(selectOption) {
-        isFunction(this._select) && this._select()
-        selectOption.triggerSelect === true && this.trigger('select', selectOption.isInit === true)
-        selectOption.triggerSelectionChange === true && this.trigger('selectionChange', selectOption.isInit === true)
-    }
-
-    _selectInner(selectOption) {
-        selectOption = extend(
-            {
-                triggerSelect: true,
-                triggerSelectionChange: true,
-                isInit: false
-            },
-            selectOption
-        );
-        this.props.selected = true
-        this.addClass('s-selected')
-        isFunction(this._select) && this._select()
-        selectOption.triggerSelect === true && this.trigger('select', isInit)
-        selectOption.triggerSelectionChange === true && this.trigger('selectionChange', isInit)
     }
 
     unselect(unselectOption) {
@@ -387,18 +363,18 @@ class Component {
                 triggerSelectionChange: true
             },
             unselectOption
-        );
+        )
         if (this.props.selected === true) {
-            this.props.selected = false;
-            this.removeClass('s-selected');
-            isFunction(this._unselect) && this._unselect();
+            this.props.selected = false
+            this.removeClass('s-selected')
+            isFunction(this._unselect) && this._unselect()
 
             if (unselectOption.triggerUnselect === true) {
-                this.trigger('unselect');
+                this.trigger('unselect')
             }
 
             if (unselectOption.triggerSelectionChange === true) {
-                this.trigger('selectionChange');
+                this.trigger('selectionChange')
             }
 
             return true
@@ -423,7 +399,7 @@ class Component {
         if (expandTarget !== null && expandTarget !== undefined) {
             expandTarget.show()
         }
-        var expandedProps = this.props.expandable.expandedProps;
+        var expandedProps = this.props.expandable.expandedProps
         if (expandedProps) {
             this.update(expandedProps)
         }
@@ -467,12 +443,12 @@ class Component {
         if (isPlainObject(expandable)) {
             if (this.props.expanded) {
                 if (expandable.expandedProps) {
-                    this.setProps(expandable.expandedProps);
+                    this.setProps(expandable.expandedProps)
                 }
             }
             else {
                 if (expandable.collapsedProps) {
-                    this.setProps(expandable.collapsedProps);
+                    this.setProps(expandable.collapsedProps)
                 }
             }
         }
@@ -515,8 +491,8 @@ class Component {
     }
 
     getRef(refs, componentTypes) {
-        var retComponent = null;
-        componentTypes = componentTypes || Component;
+        var retComponent = null
+        componentTypes = componentTypes || Component
         if (isFunction(refs)) {
             retComponent = refs.call(this)
         }
@@ -558,25 +534,25 @@ class Component {
     }
 
     _handleStyles() {
-        var props = this.props;
+        var props = this.props
 
-        var classes = [];
+        var classes = []
 
-        var componentTypeClasses = this._getComponentTypeClasses(this);
+        var componentTypeClasses = this._getComponentTypeClasses(this)
         for (var i = 0; i < componentTypeClasses.length; i++) {
-            var componentTypeClass = componentTypeClasses[i];
-            classes.push('nom-' + hyphenate(componentTypeClass));
+            var componentTypeClass = componentTypeClasses[i]
+            classes.push('nom-' + hyphenate(componentTypeClass))
         }
 
         for (var i = 0; i < this._propStyleClasses.length; i++) {
-            var modifier = this._propStyleClasses[i];
-            var modifierVal = this.props[modifier];
+            var modifier = this._propStyleClasses[i]
+            var modifierVal = this.props[modifier]
             if (modifierVal !== null && modifierVal !== undefined) {
                 if (modifierVal === true) {
-                    classes.push('p-' + modifier);
+                    classes.push('p-' + modifier)
                 }
                 else if (typeof modifierVal === 'string') {
-                    classes.push('p-' + modifier + '-' + modifierVal);
+                    classes.push('p-' + modifier + '-' + modifierVal)
                 }
             }
         }
@@ -584,72 +560,67 @@ class Component {
         if (isPlainObject(props.classes)) {
             for (var className in props.classes) {
                 if (props.classes.hasOwnProperty(className) && props.classes[className] == true) {
-                    classes.push(className);
+                    classes.push(className)
                 }
             }
         }
 
         if (props.type !== undefined && props.type !== null) {
-            classes.push('nom-' + hyphenate(this.componentType) + '-' + props.type);
+            classes.push('nom-' + hyphenate(this.componentType) + '-' + props.type)
         }
 
-        var styles = props.styles;
+        var styles = props.styles
         if (isPlainObject(styles)) {
-            addStylesClass(styles);
+            addStylesClass(styles)
         }
 
         function addStylesClass(styles, className) {
-            className = className || '';
+            className = className || ''
             if (isPlainObject(styles)) {
                 for (var style in styles) {
                     if (styles.hasOwnProperty(style)) {
-                        addStylesClass(styles[style], className + '-' + style);
+                        addStylesClass(styles[style], className + '-' + style)
                     }
                 }
             }
             else if (Array.isArray(styles)) {
                 for (var i = 0; i < styles.length; i++) {
                     if (isString(styles[i])) {
-                        classes.push('u' + className + '-' + styles[i]);
+                        classes.push('u' + className + '-' + styles[i])
                     }
                 }
             }
             else if (isString(styles)) {
-                classes.push('u' + className + '-' + styles);
+                classes.push('u' + className + '-' + styles)
             }
         }
 
         if (classes.length) {
-            var classNames = classes.join(' ');
-            this.element.setAttribute('class', classNames);
+            var classNames = classes.join(' ')
+            this.element.setAttribute('class', classNames)
         }
-
-        /*
-        if (props.hidden === true) {
-            this.addClass('s-hidden');
-        }*/
     }
 
     _handleEvents() {
-        var props = this.props;
-        var events = this.props.events;
+        var props = this.props
+        var events = this.props.events
         for (var event in events) {
             if (events.hasOwnProperty(event)) {
-                this.on(event, events[event]);
+                this.on(event, events[event])
             }
         }
 
         if (props.selectable && props.selectable.byClick) {
-            this._on('click', this.toggleSelect);
+            this._on('click', this.toggleSelect)
         }
 
         if (props.expandable && props.expandable.byClick) {
-            this._on('click', this.toggleExpand);
+            this._on('click', this.toggleExpand)
         }
     }
 
     _setStyle(style) {
-        var element = this.element;
+        var element = this.element
         if (typeof style !== "object") {
             // New style is a string, let engine deal with patching.
             element.style.cssText = style
@@ -665,37 +636,37 @@ class Component {
     }
 
     _getComponentTypeClasses(instance) {
-        var classArray = [];
-        var ctor = instance.constructor;
+        var classArray = []
+        var ctor = instance.constructor
 
         while (ctor && ctor.name != 'Component') {
-            classArray.unshift(ctor.name);
-            ctor = ctor.__proto__.prototype.constructor;
+            classArray.unshift(ctor.name)
+            ctor = ctor.__proto__.prototype.constructor
         }
 
-        return classArray;
+        return classArray
     }
 
     _parseTemplate(template) {
-        var that = this;
+        var that = this
 
         return template.replace(/\{\{([^\}]*)\}\}/g, function (str, key) {
-            var fn = new Function('return (' + key + ');');
-            var val = fn.call(that);
+            var fn = new Function('return (' + key + ');')
+            var val = fn.call(that)
 
-            return (typeof val !== "undefined" && val !== null) ? htmlEncode(val) : "";
-        });
+            return (typeof val !== "undefined" && val !== null) ? htmlEncode(val) : ""
+        })
     }
 
     _on(element, event, callback) {
         if (!callback) {
-            callback = event;
-            event = element;
-            element = this.element;
+            callback = event
+            event = element
+            element = this.element
         }
-        var cache, list;
-        callback = callback.bind(this);
-        cache = this.__htmlEvents || (this.__htmlEvents = {});
+        var cache, list
+        callback = callback.bind(this)
+        cache = this.__htmlEvents || (this.__htmlEvents = {})
         list = cache[event] || (cache[event] = [])
         list.push(callback)
 
@@ -703,18 +674,18 @@ class Component {
     }
 
     _off(event, callback) {
-        var that = this;
-        var cache, list, i;
+        var that = this
+        var cache, list, i
 
         // No events, or removing *all* events.
         if (!(cache = this.__htmlEvents)) return this
         if (!(event || callback)) {
             for (var key in this.__htmlEvents) {
                 if (this.__htmlEvents.hasOwnProperty(key)) {
-                    var list = this.__htmlEvents[key];
-                    if (!list) continue;
+                    var list = this.__htmlEvents[key]
+                    if (!list) continue
                     for (i = list.length - 1; i >= 0; i -= 1) {
-                        that.element.removeEventListener(key, list[i], false);
+                        that.element.removeEventListener(key, list[i], false)
                     }
                 }
             }
@@ -723,7 +694,7 @@ class Component {
         }
 
         list = cache[event]
-        if (!list) return;
+        if (!list) return
 
         if (!callback) {
             delete cache[event]
@@ -732,8 +703,8 @@ class Component {
 
         for (i = list.length - 1; i >= 0; i -= 1) {
             if (list[i] === callback) {
-                list.splice(i, 1);
-                that.element.removeEventListener(event, callback, false);
+                list.splice(i, 1)
+                that.element.removeEventListener(event, callback, false)
             }
         }
     }
@@ -743,66 +714,66 @@ class Component {
     }
 
     static create(componentProps, ...mixins) {
-        let componentType = componentProps.component;
+        let componentType = componentProps.component
         if (isString(componentType)) {
-            componentType = components[componentType];
+            componentType = components[componentType]
         }
 
         if (componentType === undefined || componentType === null) {
-            componentType = Component;
+            componentType = Component
         }
 
-        return new componentType(componentProps, ...mixins);
+        return new componentType(componentProps, ...mixins)
     }
 
     static register(component) {
-        components[component.name] = component;
+        components[component.name] = component
     }
 
     static extendProps(out) {
-        out = out || {};
+        out = out || {}
 
         for (var i = 1; i < arguments.length; i++) {
-            var obj = arguments[i];
+            var obj = arguments[i]
 
-            if (!obj) continue;
+            if (!obj) continue
 
             for (var key in obj) {
                 // Prevent Object.prototype pollution
                 // Prevent never-ending loop
                 if (key === "__proto__" || out === obj[key]) {
-                    continue;
+                    continue
                 }
                 if (obj.hasOwnProperty(key) && isPlainObject(obj[key])) {
-                    out[key] = Component.extendProps(out[key], obj[key]);
+                    out[key] = Component.extendProps(out[key], obj[key])
                 }
                 else if (obj[key] !== undefined) {
-                    out[key] = obj[key];
+                    out[key] = obj[key]
                 }
             }
         }
 
-        return out;
+        return out
     }
 
     static mixin(mixin) {
-        mixins.push(mixin);
+        mixins.push(mixin)
     }
 }
 Component.normalizeTemplateProps = function (props) {
     if (props === null || props === undefined) {
-        return null;
+        return null
     }
-    var templateProps = {};
+    var templateProps = {}
     if (isString(props)) {
-        templateProps.children = props;
+        templateProps.children = props
     }
     else {
-        templateProps = props;
+        templateProps = props
     }
 
-    return templateProps;
-};
+    return templateProps
+}
 
 Component.components = components
 Component.mixins = mixins

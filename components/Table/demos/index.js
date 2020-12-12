@@ -1,7 +1,7 @@
 define(
     [
         './basic.js',
-        //'./with-pager.js'
+        './with-pager.js'
     ],
     function () {
         return {
