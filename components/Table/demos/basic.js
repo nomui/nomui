@@ -15,7 +15,7 @@ define([], function () {
 
 
     return {
-        text: '基础用法',
+        title: '基础用法',
         file: 'basic',
         demo: function () {
             var page = this

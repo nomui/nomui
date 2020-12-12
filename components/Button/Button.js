@@ -7,7 +7,7 @@ class Button extends Component {
             text: null,
             icon: null,
             rightIcon: null,
-            hoverable: true
+            hoverable: true,
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -34,7 +34,7 @@ class Button extends Component {
     }
 
     _disable() {
-        this.element.prop('disabled', true)
+        this.element.setAttribute('disabled', 'disabled')
     }
 }
 

@@ -124,6 +124,9 @@ class Component {
 
         this._renderChildren()
 
+        this.props.disabled === true && isFunction(this._disable) && this._disable()
+        this.props.selected === true && isFunction(this._select) && this._select()
+
         isFunction(this._render) && this._render()
         this._callMixin('_render')
         isFunction(this.props._render) && this.props._render.call(this)
@@ -131,6 +134,7 @@ class Component {
         this.rendered = true
     }
 
+    // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
     remove() {
         let el = this._removeCore()
         this.parent && this.parent.removeChild(this)
@@ -253,9 +257,6 @@ class Component {
         if (isString(props)) {
             this.element.innerHTML = props
             return
-            /*props = {
-                children: props
-            }*/
         }
         if (isFunction(props)) { // todo 处理混入 mixin
 
@@ -544,6 +545,9 @@ class Component {
             classes.push('nom-' + hyphenate(componentTypeClass))
         }
 
+        if (props.type) {
+            this._propStyleClasses.push('type')
+        }
         for (var i = 0; i < this._propStyleClasses.length; i++) {
             var modifier = this._propStyleClasses[i]
             var modifierVal = this.props[modifier]
@@ -552,7 +556,7 @@ class Component {
                     classes.push('p-' + modifier)
                 }
                 else if (typeof modifierVal === 'string') {
-                    classes.push('p-' + modifier + '-' + modifierVal)
+                    classes.push('p-' + hyphenate(modifier) + '-' + modifierVal)
                 }
             }
         }
@@ -563,10 +567,6 @@ class Component {
                     classes.push(className)
                 }
             }
-        }
-
-        if (props.type !== undefined && props.type !== null) {
-            classes.push('nom-' + hyphenate(this.componentType) + '-' + props.type)
         }
 
         var styles = props.styles

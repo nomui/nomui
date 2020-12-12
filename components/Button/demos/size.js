@@ -1,11 +1,12 @@
 define([], function () {
 
     return {
-        text: '不同尺寸',
+        title: '不同尺寸',
         file: 'size',
         demo: function () {
             return {
-                children: [
+                component: 'Flex',
+                items: [
                     {
                         text: 'Extra small button',
                         styles: {
@@ -28,11 +29,8 @@ define([], function () {
                         size: 'xl'
                     }
                 ],
-                childDefaults: {
+                itemDefaults: {
                     component: 'Button',
-                    styles: {
-                        margin: '1'
-                    }
                 }
             }
         }

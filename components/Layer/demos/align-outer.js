@@ -1,6 +1,6 @@
 define([], function () {
     return {
-        text: '对齐位置（外部）',
+        title: '对齐位置（外部）',
         file: 'align-outer',
         demo: function () {
             function getButton(align) {

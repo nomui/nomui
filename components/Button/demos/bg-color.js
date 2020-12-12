@@ -1,10 +1,11 @@
 define([], function () {
     return {
-        text: '不同颜色',
+        title: '不同颜色',
         file: 'bg-color',
         demo: function () {
             return {
-                children: [
+                component: 'Flex',
+                items: [
                     {
                         component: 'Button',
                         text: 'Primary',

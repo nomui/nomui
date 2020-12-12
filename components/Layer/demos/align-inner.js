@@ -1,6 +1,6 @@
 define([], function () {
     return {
-        text: '对齐位置（内部）',
+        title: '对齐位置（内部）',
         file: 'align-inner',
         demo: function () {
 

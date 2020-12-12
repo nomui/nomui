@@ -1,10 +1,11 @@
 define([], function () {
     return {
-        text: '不同形状',
+        title: '不同形状',
         file: 'shape',
         demo: function () {
             return {
-                children: [
+                component: 'Flex',
+                items: [
                     {
                         text: 'normal',
                     },
@@ -21,11 +22,8 @@ define([], function () {
                         }
                     }
                 ],
-                childDefaults: {
+                itemDefaults: {
                     component: 'Button',
-                    styles: {
-                        margin: '1'
-                    }
                 }
             };
         }

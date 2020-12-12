@@ -1,7 +1,7 @@
 define([], function () {
 
     return {
-        text: '所有图标',
+        title: '所有图标',
         file: 'all-icons',
         demo: function () {
             var navigationIcons = [

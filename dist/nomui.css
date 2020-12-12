@@ -2650,6 +2650,9 @@ template {
   margin-top: 8rem !important;
   margin-bottom: 8rem !important;
 }
+.u-margin-0 {
+  margin: 0;
+}
 .u-margin-x-auto {
   margin-left: auto;
   margin-right: auto;
@@ -3261,6 +3264,34 @@ img {
 }
 .nom-flex {
   display: flex;
+  align-items: center;
+}
+.nom-flex.p-align-start {
+  align-items: flex-start !important;
+}
+.nom-flex.p-align-end {
+  align-items: flex-end !important;
+}
+.nom-flex.p-align-center {
+  align-items: center !important;
+}
+.nom-flex.p-align-stretch {
+  align-items: stretch !important;
+}
+.nom-flex.p-justify-start {
+  justify-content: flex-start !important;
+}
+.nom-flex.p-justify-end {
+  justify-content: flex-end !important;
+}
+.nom-flex.p-justify-center {
+  justify-content: center !important;
+}
+.nom-flex.p-justify-between {
+  justify-content: space-between !important;
+}
+.nom-flex.p-justify-around {
+  justify-content: space-around !important;
 }
 .nom-flex.p-direction-horizontal.p-gap-sm > .nom-flex-item {
   margin-right: 0.5rem;
@@ -3286,10 +3317,10 @@ img {
 .nom-flex.p-wrap {
   flex-wrap: wrap;
 }
-.nom-widget.nom-widget-default {
+.nom-widget.p-type-default {
   border: 1px solid #D1D7DC;
 }
-.nom-widget.nom-widget-default > .nom-widget-header {
+.nom-widget.p-type-default > .nom-widget-header {
   display: flex;
   width: 100%;
   height: 4rem;
@@ -3298,15 +3329,30 @@ img {
   padding-right: 1rem !important;
   border-bottom: 1px solid #ced4da;
 }
-.nom-widget.nom-widget-default > .nom-widget-header > .nom-widget-header-nav {
+.nom-widget.p-type-default > .nom-widget-header > .nom-widget-header-nav {
   flex-grow: 1;
 }
-.nom-widget.nom-widget-default > .nom-widget-header > .nom-widget-header-tools {
+.nom-widget.p-type-default > .nom-widget-header > .nom-widget-header-tools {
   padding-left: 1rem;
   text-align: right;
 }
-.nom-widget.nom-widget-default > .nom-widget-body {
+.nom-widget.p-type-default > .nom-widget-body {
   padding: 1rem !important;
+}
+.nom-widget.p-type-default > .nom-widget-body > .u-attached {
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+.nom-widget.p-type-default > .nom-widget-body > .u-attached:last-child {
+  margin-bottom: -1rem;
+}
+.nom-widget.p-type-default > .nom-widget-footer {
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  border-top: 1px solid #ced4da;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
 }
 .nom-navbar {
   display: flex;
@@ -4100,24 +4146,24 @@ img {
   font-size: 12px;
   opacity: 0.67;
 }
-.nom-menu.nom-menu-horizontal {
+.nom-menu.p-type-horizontal {
   display: flex;
   flex-wrap: wrap;
 }
-.nom-menu.nom-menu-horizontal > .nom-menu-item-wrapper > .nom-menu-item {
+.nom-menu.p-type-horizontal > .nom-menu-item-wrapper > .nom-menu-item {
   display: flex;
   padding: 10px 15px;
   text-decoration: none;
   align-items: center;
   white-space: nowrap;
 }
-.nom-menu.nom-menu-vertical > .nom-menu-item-wrapper > .nom-menu-item {
+.nom-menu.p-type-vertical > .nom-menu-item-wrapper > .nom-menu-item {
   display: flex;
   align-items: center;
   padding: 10px 15px;
   text-decoration: none;
 }
-.nom-menu.nom-menu-vertical > .nom-menu-item-wrapper > .nom-menu-item > .title {
+.nom-menu.p-type-vertical > .nom-menu-item-wrapper > .nom-menu-item > .title {
   flex-grow: 1;
 }
 .nom-menu-sub {
@@ -4141,7 +4187,7 @@ img {
 .nom-menu-sub > .nom-menu-item-wrapper > .nom-menu-item > .title {
   flex-grow: 1;
 }
-.nom-menu-sub.nom-menu-horizontal > .nom-menu-item-wrapper > .nom-menu-item {
+.nom-menu-sub.p-type-horizontal > .nom-menu-item-wrapper > .nom-menu-item {
   min-width: 160px;
 }
 .nom-menu-stretch {
@@ -4504,10 +4550,10 @@ textarea .nom-textarea {
   transform: rotate(45deg) /*rtl:ignore*/;
   border: solid #7281a4;
 }
-.nom-radio-list.nom-radio-list-radio {
+.nom-radio-list.p-type-radio {
   display: inline-flex;
 }
-.nom-radio-list.nom-radio-list-radio > .nom-list > .nom-list-item-wrapper > label {
+.nom-radio-list.p-type-radio > .nom-list > .nom-list-item-wrapper > label {
   display: inline-flex;
   vertical-align: middle;
   line-height: 1.42857143;
@@ -4519,7 +4565,7 @@ textarea .nom-textarea {
   font-size: 1rem;
   transition: all 0.3s;
 }
-.nom-radio-list.nom-radio-list-radio > .nom-list > .nom-list-item-wrapper > label > span.radio {
+.nom-radio-list.p-type-radio > .nom-list > .nom-list-item-wrapper > label > span.radio {
   position: relative;
   background: none;
   margin-right: 0.5rem;
@@ -4529,7 +4575,7 @@ textarea .nom-textarea {
   border-radius: 50% !important;
   margin-top: calc((1em * 1.428571429 - 1em - 2px)/2);
 }
-.nom-radio-list.nom-radio-list-radio > .nom-list > .nom-list-item-wrapper > label.s-selected > span.radio::after {
+.nom-radio-list.p-type-radio > .nom-list > .nom-list-item-wrapper > label.s-selected > span.radio::after {
   display: block;
   content: '';
   position: absolute;

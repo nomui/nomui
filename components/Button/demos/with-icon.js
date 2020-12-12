@@ -1,10 +1,11 @@
 define([], function () {
     return {
-        text: '带图标',
+        title: '带图标',
         file: 'with-icon',
         demo: function () {
             return {
-                children: [
+                component: 'Flex',
+                items: [
                     {
                         text: 'Add',
                         icon: 'plus'
@@ -17,13 +18,10 @@ define([], function () {
                         rightIcon: 'arrow-right'
                     }
                 ],
-                childDefaults: {
+                itemDefaults: {
                     component: 'Button',
-                    styles: {
-                        margin: '1'
-                    }
                 }
-            };
+            }
         }
-    };
-});
+    }
+})

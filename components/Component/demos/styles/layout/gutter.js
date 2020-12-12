@@ -1,7 +1,7 @@
 define([], function () {
 
     return {
-        text: '槽（填充）',
+        title: '槽（填充）',
         file: 'gutter',
         demo: function () {
             let demo = this

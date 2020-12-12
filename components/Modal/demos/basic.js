@@ -1,6 +1,6 @@
 define([], function () {
     return {
-        text: '点击弹出',
+        title: '点击弹出',
         file: 'basic',
         demo: function () {
             return {

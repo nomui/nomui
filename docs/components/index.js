@@ -1,4 +1,4 @@
-define(['/docs/demo-widget.js'], function (demoWidget) {
+define(['/docs/DemoWidget.js'], function (demoWidget) {
 
     return {
         component: 'Layout',
@@ -29,6 +29,9 @@ define(['/docs/demo-widget.js'], function (demoWidget) {
                                         name: 'DemoMenu',
                                         items: this.props.demos,
                                         itemDefaults: {
+                                            _config: function () {
+                                                this.props.text = this.props.title
+                                            },
                                             styles: {
                                                 hover: {
                                                     text: 'primary'
@@ -42,7 +45,7 @@ define(['/docs/demo-widget.js'], function (demoWidget) {
                                 children: Array.prototype.slice.call(this.props.demos),
                                 childDefaults: {
                                     component: demoWidget,
-                                    type: this.route.query.type,
+                                    componentType: this.route.query.type,
                                     cat: this.route.query.cat
                                 },
                                 styles: {

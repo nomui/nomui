@@ -1,7 +1,7 @@
 define([], function () {
 
     return {
-        text: '多选',
+        title: '多选',
         file: 'multiple',
         demo: function () {
             return {

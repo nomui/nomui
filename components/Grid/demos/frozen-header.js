@@ -1,7 +1,7 @@
 define([], function () {
 
     return {
-        text: '冻结表头',
+        title: '冻结表头',
         file: 'frozen-header',
         demo: function () {
             return {

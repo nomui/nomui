@@ -1,7 +1,7 @@
 define([], function () {
 
     return {
-        text: '触发方式',
+        title: '触发方式',
         file: 'click-trigger',
         demo: function () {
             var that = this

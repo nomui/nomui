@@ -1,7 +1,7 @@
 define([], function () {
 
     return {
-        text: '带分页',
+        title: '带分页',
         file: 'with-pager',
         demo: function () {
             var demo = this;

@@ -1,7 +1,7 @@
 define([], function () {
 
     return {
-        text: '静态模板',
+        title: '静态模板',
         file: 'template',
         demo: function () {
             return {

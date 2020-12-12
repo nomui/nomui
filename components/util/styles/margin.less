@@ -6,33 +6,33 @@
         @spacer: "spacer-@{name}";
 
         .u-margin-@{name} {
-            margin: @@spacer !important;
+            margin: @@spacer  !important;
         }
 
         .u-margin-t-@{name} {
-            margin-top: @@spacer !important;
+            margin-top: @@spacer  !important;
         }
 
         .u-margin-r-@{name} {
-            margin-right: @@spacer !important;
+            margin-right: @@spacer  !important;
         }
 
         .u-margin-b-@{name} {
-            margin-bottom: @@spacer !important;
+            margin-bottom: @@spacer  !important;
         }
 
         .u-margin-l-@{name} {
-            margin-left: @@spacer !important;
+            margin-left: @@spacer  !important;
         }
 
         .u-margin-x-@{name} {
-            margin-top: @@spacer !important;
-            margin-bottom: @@spacer !important;
+            margin-top: @@spacer  !important;
+            margin-bottom: @@spacer  !important;
         }
 
         .u-margin-y-@{name} {
-            margin-top: @@spacer !important;
-            margin-bottom: @@spacer !important;
+            margin-top: @@spacer  !important;
+            margin-bottom: @@spacer  !important;
         }
 
         .generate-margins(@name, @i + 1);
@@ -41,18 +41,23 @@
 
 .make-margins(@spacer-list);
 
-.u-margin-x-auto{
+.u-margin-0 {
+    margin: 0
+}
+
+.u-margin-x-auto {
     margin-left: auto;
     margin-right: auto;
 }
 
 .u-margins-x {
-    > div,
-    > ul,
-    > a,
-    > p,
-    > li {
-        margin-bottom: @gutter-xl !important;
+
+    >div,
+    >ul,
+    >a,
+    >p,
+    >li {
+        margin-bottom: @gutter-xl  !important;
 
         &:last-child {
             margin-bottom: 0px;

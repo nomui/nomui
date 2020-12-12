@@ -16,7 +16,7 @@ class Flex extends Component {
     }
 
     _config() {
-        this._propStyleClasses = ['direction', 'gap', 'wrap']
+        this._propStyleClasses = ['direction', 'gap', 'wrap', 'justify']
         let items = this.props.items
         var children = []
         if (Array.isArray(items) && items.length > 0) {

@@ -1,4 +1,4 @@
-define(['/docs/demo-widget.js'], function (demoWidget) {
+define(['/docs/DemoWidget.js'], function (demoWidget) {
 
     return {
         component: demoWidget,

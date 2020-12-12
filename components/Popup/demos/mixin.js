@@ -1,7 +1,7 @@
 define([], function () {
 
     return {
-        text: '混入选项',
+        title: '混入选项',
         file: 'minin',
         demo: function () {
             return {

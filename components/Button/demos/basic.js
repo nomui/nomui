@@ -1,33 +1,26 @@
 define([], function () {
 
     return {
-        text: '基础用法',
+        title: '基础用法',
         file: 'basic',
         demo: function () {
             return {
-                children: [
+                component: 'Flex',
+                items: [
                     {
                         text: '普通',
-                        popup: {
-                            children: 'hello',
-                            triggerType: 'hover',
-                            render: false
-                        }
                     },
                     {
                         text: '禁用',
-                        disable: true
+                        disabled: true
                     },
                     {
                         text: '简单样式',
                         type: 'plain'
                     }
                 ],
-                childDefaults: {
+                itemDefaults: {
                     component: 'Button',
-                    styles: {
-                        margin: '1'
-                    }
                 }
             }
         }
