@@ -4349,39 +4349,39 @@ a.nom-button.disabled,
 fieldset[disabled] a.nom-button {
   pointer-events: none;
 }
-.nom-button.m-size-sm {
+.nom-button.p-size-sm {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: 0.2rem;
 }
-.nom-button.m-size-xs {
+.nom-button.p-size-xs {
   padding: 0.125rem 0.25rem;
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: 0.2rem;
 }
-.nom-button.u-size-lg {
+.nom-button.p-size-lg {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   line-height: 1.3333333;
   border-radius: 0.3rem;
 }
-.nom-button.m-size-xl {
+.nom-button.p-size-xl {
   padding: 0.75rem 1.25rem;
   font-size: 1.5rem;
   line-height: 1.3333333;
   border-radius: 0.3rem;
 }
-.nom-button.m-plain {
+.nom-button.p-plain {
   border: 0;
   background-color: transparent;
 }
-.nom-button.m-plain:hover {
+.nom-button.p-plain:hover {
   background-color: #e6e6e6;
   outline: none;
 }
-.nom-button.m-with-icon {
+.nom-button.p-with-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;

@@ -9,9 +9,7 @@ define([], function () {
                 items: [
                     {
                         text: 'Extra small button',
-                        styles: {
-                            size: 'xs'
-                        }
+                        size: 'xs'
                     },
                     {
                         text: 'Small button',

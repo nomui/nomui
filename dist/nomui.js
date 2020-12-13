@@ -3993,7 +3993,17 @@
       }
 
       _config() {
+          this._propStyleClasses = ['size'];
           let { icon, text, rightIcon, href } = this.props;
+
+          if (icon || rightIcon) {
+              this.setProps({
+                  classes: {
+                      'p-with-icon': true
+                  }
+              });
+          }
+
           this.setProps({
               children: [
                   Component.normalizeIconProps(icon),
@@ -4001,6 +4011,7 @@
                   Component.normalizeIconProps(rightIcon)
               ]
           });
+
           if (href) {
               this.setProps({
                   attrs: {
