@@ -3899,7 +3899,7 @@ img {
   transform-origin: 50% 100%;
   width: 0.1rem;
 }
-.nom-popup.nom-popup-default {
+.nom-popup.p-type-default {
   font-size: 1rem;
   text-align: left;
   background-color: white;

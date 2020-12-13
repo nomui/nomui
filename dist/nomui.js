@@ -511,6 +511,7 @@
 
           this.props.disabled === true && isFunction(this._disable) && this._disable();
           this.props.selected === true && isFunction(this._select) && this._select();
+          this.props.hidden === false && isFunction(this._show) && this._show();
 
           isFunction(this._render) && this._render();
           this._callMixin('_render');
