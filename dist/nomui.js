@@ -3383,10 +3383,10 @@
                       styles: {
                           padding: '1',
                           hover: {
-                              bg: 'gray'
+                              color: 'gray'
                           },
                           selected: {
-                              bg: 'primary'
+                              color: 'primary'
                           }
                       },
                       _config: function () {

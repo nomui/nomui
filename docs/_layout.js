@@ -3,7 +3,7 @@ define([], function () {
         component: 'Layout',
         header: {
             styles: {
-                bg: 'primary'
+                color: 'primary'
             },
             children:
             {
@@ -29,10 +29,10 @@ define([], function () {
                         },
                         styles: {
                             hover: {
-                                bg: 'lighten'
+                                color: 'lighten'
                             },
                             selected: {
-                                bg: 'lighten'
+                                color: 'lighten'
                             }
                         }
                     }

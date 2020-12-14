@@ -38,13 +38,13 @@ define([], function () {
                         ],
                         childDefaults: {
                             styles: {
-                                bg: 'lprimary-light',
+                                color: 'lprimary-light',
                                 border: 'all'
                             }
                         },
                         styles: {
                             flex: 'row',
-                            bg: 'lprimary',
+                            color: 'lprimary',
                             gutter: 'md'
                         }
                     },

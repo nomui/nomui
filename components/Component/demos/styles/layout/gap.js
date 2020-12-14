@@ -23,14 +23,14 @@ define([], function () {
                         ],
                         childDefaults: {
                             styles: {
-                                bg: 'lprimary-light',
+                                color: 'lprimary-light',
                                 border: 'all',
                                 padding: '1'
                             }
                         },
                         styles: {
                             flex: 'row',
-                            bg: 'lprimary',
+                            color: 'lprimary',
                             gap: 'md'
                         }
                     },

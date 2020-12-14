@@ -7,7 +7,7 @@ define([], function () {
                     margin: ['x-auto', 'b-1'],
                     padding: 'y-4',
                     text: 'center',
-                    bg: 'lprimary',
+                    color: 'lprimary',
                 },
                 children: [
                     {
@@ -29,7 +29,7 @@ define([], function () {
                         href: '#!tutorials/index',
                         styles: {
                             size: 'lg',
-                            bg: 'primary',
+                            color: 'primary',
                             shape: 'round',
                         },
                         attrs: {

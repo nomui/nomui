@@ -114,15 +114,15 @@ define([], {
                     },
                     styles: {
                         hover: {
-                            bg: 'darken'
+                            color: 'darken'
                         },
                         selected: {
-                            bg: 'darken'
+                            color: 'darken'
                         }
                     },
                     submenu: {
                         styles: {
-                            bg: 'lprimary-light'
+                            color: 'lprimary-light'
                         }
                     }
                 },
@@ -133,7 +133,7 @@ define([], {
             }
         ],
         styles: {
-            bg: 'lprimary'
+            color: 'lprimary'
         }
     },
     body: {

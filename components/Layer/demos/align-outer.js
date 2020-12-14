@@ -20,7 +20,7 @@ define([], function () {
                                     children: {
                                         styles: {
                                             padding: '1',
-                                            bg: 'white',
+                                            color: 'white',
                                             border: 'all'
                                         },
                                         children: '我是层内容'

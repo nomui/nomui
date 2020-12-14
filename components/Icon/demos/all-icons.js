@@ -61,7 +61,7 @@ define([], function () {
                                     padding: '1',
                                     text: 'center',
                                     hover: {
-                                        bg: 'lprimary'
+                                        color: 'lprimary'
                                     }
                                 }
                             })

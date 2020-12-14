@@ -14,7 +14,7 @@ define([], function () {
                         ref: 'layout',
                         styles: {
                             flex: 'row',
-                            bg: 'lprimary',
+                            color: 'lprimary',
                             align: 'center',
                             justify: 'center'
                         },
@@ -36,7 +36,7 @@ define([], function () {
                         ],
                         childDefaults: {
                             styles: {
-                                bg: 'lprimary-light',
+                                color: 'lprimary-light',
                                 padding: '1',
                                 border: 'all'
                             }

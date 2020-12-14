@@ -29,16 +29,16 @@ define([], function () {
                     },
                     styles: {
                         hover: {
-                            bg: 'darken'
+                            color: 'darken'
                         },
                         selected: {
-                            bg: 'darken'
+                            color: 'darken'
                         }
                     },
                 }
             },
             styles: {
-                bg: 'lprimary'
+                color: 'lprimary'
             }
         },
         body: {

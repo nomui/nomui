@@ -10,14 +10,14 @@ define([], function () {
                         component: 'Button',
                         text: 'Primary',
                         styles: {
-                            bg: 'primary'
+                            color: 'primary'
                         }
                     },
                     {
                         component: 'Button',
                         text: 'Info',
                         styles: {
-                            bg: 'info'
+                            color: 'info'
                         }
                     }
                 ]
