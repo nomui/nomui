@@ -88,7 +88,8 @@ define(['./Precode.js'], function (Precode) {
                             {
                                 tag: 'a',
                                 attrs: {
-                                    href: url
+                                    href: url,
+                                    target: '_blank'
                                 },
                                 children: '单独打开'
                             }

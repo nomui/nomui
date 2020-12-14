@@ -20,7 +20,10 @@ define([], function () {
                             {
                                 text: '温瑞安', value: 3
                             }
-                        ]
+                        ],
+                        _render: function () {
+                            window.RadioListTest = this
+                        }
                     },
                     {
                         component: 'RadioList',

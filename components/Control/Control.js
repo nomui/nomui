@@ -14,89 +14,86 @@ class Control extends Component {
     }
 
     _create() {
-        this.initValue = null;
-        this.oldValue = null;
-        this.currentValue = null;
+        this.initValue = null
+        this.oldValue = null
+        this.currentValue = null
 
         if (this.props.value !== undefined) {
-            this.initValue = clone(this.props.value);
+            this.initValue = clone(this.props.value)
         }
     }
 
     _config() {
         if (this.props.required === true) {
-            this.props.rules.unshift({ type: 'required', message: this.props.requiredMessage });
+            this.props.rules.unshift({ type: 'required', message: this.props.requiredMessage })
         }
-
-        /*if (this.props.value === undefined) {
-            this.props.value = null;
-        }*/
     }
 
     getValue() {
-        let value = isFunction(this._getValue) ? this._getValue() : null;
-        return value;
+        let value = isFunction(this._getValue) ? this._getValue() : null
+        return value
     }
 
     setValue(value) {
-        isFunction(this._setValue) && this._setValue(value);
-        this._onValueChange();
+        isFunction(this._setValue) && this._setValue(value)
     }
 
     validate() {
-        var invalids = this.invalids = [];
+        var invalids = this.invalids = []
 
         if (this.disabled === true) {
-            return true;
+            return true
         }
 
-        this.validateTriggered = true;
-        invalids = this._validate();
+        this.validateTriggered = true
+        invalids = this._validate()
         if (invalids.length > 0) {
-            invalids[0].focus();
+            invalids[0].focus()
         }
 
-        return invalids.length === 0;
+        return invalids.length === 0
     }
 
     _validate() {
         if ($.isArray(this.props.rules) && this.props.rules.length > 0) {
-            var validationResult = RuleManager.validate(this.props.rules, this.getValue());
+            var validationResult = RuleManager.validate(this.props.rules, this.getValue())
 
             if (validationResult === true) {
-                this.removeClass('s-invalid');
-                this.trigger('valid');
+                this.removeClass('s-invalid')
+                this.trigger('valid')
 
-                return true;
+                return true
             }
             else {
-                this.addClass('s-invalid');
-                this.trigger('invalid', validationResult);
-                return this;
+                this.addClass('s-invalid')
+                this.trigger('invalid', validationResult)
+                return this
             }
         }
 
-        return true;
+        return true
     }
 
     // 派生的控件子类内部适当位置调用
-    _onValueChange(isInit) {
+    _onValueChange() {
         var that = this;
-        this.oldValue = clone(this.currentValue);
-        this.currentValue = clone(this.getValue());
+        this.oldValue = clone(this.currentValue)
+        this.currentValue = clone(this.getValue())
         this.props.value = this.currentValue
+
         var changed = {
             name: this.name,
             oldValue: this.oldValue,
             newValue: this.currentValue,
-            isInit: isInit === true
-        };
+        }
+
         setTimeout(function () {
-            that.trigger("valueChange", changed);
+            that.trigger("valueChange", changed)
+            console.log(changed)
             if (that.validateTriggered) {
-                that._validate();
+                that._validate()
             }
-        }, 0);
+        }, 0)
     }
 }
 

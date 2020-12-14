@@ -63,9 +63,7 @@ define([], function () {
                                 value: 'row',
                                 events: {
                                     valueChange: function (changed) {
-                                        if (changed.isInit === false) {
-                                            demo.refs.layout.update({ styles: { flex: changed.newValue } });
-                                        }
+                                        demo.refs.layout.update({ styles: { flex: changed.newValue } })
                                     }
                                 }
                             },
@@ -91,9 +89,7 @@ define([], function () {
                                 value: 'md',
                                 events: {
                                     valueChange: function (changed) {
-                                        if (changed.isInit === false) {
-                                            demo.refs.layout.update({ styles: { gutter: changed.newValue } });
-                                        }
+                                        demo.refs.layout.update({ styles: { gutter: changed.newValue } })
                                     }
                                 }
                             }

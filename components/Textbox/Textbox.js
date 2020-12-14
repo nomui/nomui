@@ -35,8 +35,8 @@ class Textbox extends Control {
         this.setProps({
             tag: 'div',
             classes: {
-                'm-with-left-icon': !!this.props.leftIcon,
-                'm-with-right-icon': !!this.props.rightIcon
+                'p-with-left-icon': !!this.props.leftIcon,
+                'p-with-right-icon': !!this.props.rightIcon
             },
             children: [
                 this.props.input,
@@ -60,6 +60,12 @@ class Textbox extends Control {
 
     _setValue(value) {
         this.input.setText(value)
+        let newValue = this.getValue()
+        if (newValue != this.oldValue) {
+            super._onValueChange()
+        }
+        this.oldValue = this.currentValue
+        this.currentValue = newValue
     }
 
     focus() {

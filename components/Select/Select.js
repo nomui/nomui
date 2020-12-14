@@ -1,16 +1,26 @@
 import Component from "../Component/index";
 import Control from "../Control/index";
 import List from "../List/index";
-import Popup from '../Popup/index'
+import { } from '../Popup/index'
 
 class Select extends Control {
     constructor(props, ...mixins) {
         const defaults = {
             options: [],
             optionDefaults: {
-                children: '{{this.props.text}}'
+                _config: function () {
+                    this.setProps({
+                        children: this.props.text
+                    })
+                }
             },
-            selectedSingle: { children: '{{this.props.text}}' },
+            selectedSingle: {
+                _config: function () {
+                    this.setProps({
+                        children: this.props.text
+                    })
+                }
+            },
             selectedMultiple: {
                 component: List,
                 itemDefaults: {
@@ -86,7 +96,6 @@ class Select extends Control {
         this.setProps({
             children: children,
             popup: {
-                rendered: true,
                 children: {
                     component: List,
                     _create() {

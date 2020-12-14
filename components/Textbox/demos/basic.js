@@ -5,15 +5,14 @@ define([], function () {
         file: 'basic',
         demo: function () {
             return {
-                children: [
-                    {
-                        component: 'Textbox'
-                    },
-                    {
-                        component: 'Textbox',
-                        value: 'jerry'
+                children:
+                {
+                    component: 'Textbox',
+                    placeholder: 'basic usage',
+                    _render: function () {
+                        window.TextboxInst = this
                     }
-                ]
+                }
             }
         }
     }

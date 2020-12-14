@@ -93,7 +93,7 @@ class Popup extends Layer {
 }
 
 Component.mixin({
-    _config: function () {
+    _render: function () {
         if (this.props.popup) {
             this.props.popup.trigger = this
             this.popup = new Popup(this.props.popup)

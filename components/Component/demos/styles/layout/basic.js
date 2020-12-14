@@ -66,16 +66,14 @@ define([], function () {
                                         if (flexFills !== false) {
                                             flexArr.push(flexFills);
                                         }
-                                        if (changed.isInit === false) {
-                                            demo.refs.layout.update({
-                                                attrs: {
-                                                    style: {
-                                                        height: height
-                                                    }
-                                                },
-                                                styles: { flex: flexArr }
-                                            })
-                                        }
+                                        demo.refs.layout.update({
+                                            attrs: {
+                                                style: {
+                                                    height: height
+                                                }
+                                            },
+                                            styles: { flex: flexArr }
+                                        })
                                     }
                                 }
                             },

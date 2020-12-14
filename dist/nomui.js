@@ -727,8 +727,8 @@
               this.props.selected = true;
               this.addClass('s-selected');
               isFunction(this._select) && this._select();
-              selectOption.triggerSelect === true && this.trigger('select', selectOption.isInit === true);
-              selectOption.triggerSelectionChange === true && this.trigger('selectionChange', selectOption.isInit === true);
+              selectOption.triggerSelect === true && this.trigger('select');
+              selectOption.triggerSelectionChange === true && this.trigger('selectionChange');
 
               return true
           }
@@ -2375,7 +2375,7 @@
   }
 
   Component.mixin({
-      _config: function () {
+      _render: function () {
           if (this.props.popup) {
               this.props.popup.trigger = this;
               this.popup = new Popup(this.props.popup);
@@ -4487,27 +4487,22 @@
           if (this.props.required === true) {
               this.props.rules.unshift({ type: 'required', message: this.props.requiredMessage });
           }
-
-          /*if (this.props.value === undefined) {
-              this.props.value = null;
-          }*/
       }
 
       getValue() {
           let value = isFunction(this._getValue) ? this._getValue() : null;
-          return value;
+          return value
       }
 
       setValue(value) {
           isFunction(this._setValue) && this._setValue(value);
-          this._onValueChange();
       }
 
       validate() {
           var invalids = this.invalids = [];
 
           if (this.disabled === true) {
-              return true;
+              return true
           }
 
           this.validateTriggered = true;
@@ -4516,7 +4511,7 @@
               invalids[0].focus();
           }
 
-          return invalids.length === 0;
+          return invalids.length === 0
       }
 
       _validate() {
@@ -4527,32 +4522,34 @@
                   this.removeClass('s-invalid');
                   this.trigger('valid');
 
-                  return true;
+                  return true
               }
               else {
                   this.addClass('s-invalid');
                   this.trigger('invalid', validationResult);
-                  return this;
+                  return this
               }
           }
 
-          return true;
+          return true
       }
 
       // 派生的控件子类内部适当位置调用
-      _onValueChange(isInit) {
+      _onValueChange() {
           var that = this;
           this.oldValue = clone(this.currentValue);
           this.currentValue = clone(this.getValue());
           this.props.value = this.currentValue;
+
           var changed = {
               name: this.name,
               oldValue: this.oldValue,
               newValue: this.currentValue,
-              isInit: isInit === true
           };
+
           setTimeout(function () {
               that.trigger("valueChange", changed);
+              console.log(changed);
               if (that.validateTriggered) {
                   that._validate();
               }
@@ -4582,28 +4579,25 @@
       }
 
       _config() {
-          this.setProps({            
+          this.setProps({
               attrs: {
                   value: this.props.value,
-                  oninput: function(){
+                  oninput: function () {
                       if (!this.capsLock) {
                           this.textbox._onValueChange();
                       }
-                  }
-              },
-              events:
-              {
-                  'compositionstart'() {
+                  },
+                  onblur: function () {
+                      this.textbox.trigger("blur");
+                  },
+                  oncompositionstart: function () {
                       this.capsLock = true;
                   },
-                  'compositionend'() {
+                  oncompositionend: function () {
                       this.capsLock = false;
-                      this.element.trigger('input');
-                  },
-                  'blur'() {
-                      this.textbox.trigger("blur");
+                      this.element.dispatchEvent(new Event('input'));
                   }
-              }
+              },
           });
       }
 
@@ -4658,8 +4652,8 @@
           this.setProps({
               tag: 'div',
               classes: {
-                  'm-with-left-icon': !!this.props.leftIcon,
-                  'm-with-right-icon': !!this.props.rightIcon
+                  'p-with-left-icon': !!this.props.leftIcon,
+                  'p-with-right-icon': !!this.props.rightIcon
               },
               children: [
                   this.props.input,
@@ -4683,6 +4677,12 @@
 
       _setValue(value) {
           this.input.setText(value);
+          let newValue = this.getValue();
+          if (newValue != this.oldValue) {
+              super._onValueChange();
+          }
+          this.oldValue = this.currentValue;
+          this.currentValue = newValue;
       }
 
       focus() {
@@ -4976,10 +4976,6 @@
       constructor(props, ...mixins) {
           const defaults = {
               options: [],
-              optionDefaults: {
-                  tag: 'label',
-                  template: '<span class="radio"></span><span class="text">{{this.props.text}}</span>'
-              },
               type: 'radio'
           };
 
@@ -5117,9 +5113,19 @@
           const defaults = {
               options: [],
               optionDefaults: {
-                  children: '{{this.props.text}}'
+                  _config: function () {
+                      this.setProps({
+                          children: this.props.text
+                      });
+                  }
               },
-              selectedSingle: { children: '{{this.props.text}}' },
+              selectedSingle: {
+                  _config: function () {
+                      this.setProps({
+                          children: this.props.text
+                      });
+                  }
+              },
               selectedMultiple: {
                   component: List,
                   itemDefaults: {
@@ -5195,7 +5201,6 @@
           this.setProps({
               children: children,
               popup: {
-                  rendered: true,
                   children: {
                       component: List,
                       _create() {

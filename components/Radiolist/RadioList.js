@@ -1,16 +1,11 @@
 import Component from "../Component/index";
 import Control from "../Control/index";
-import List from '../List/index'
 import OptionList from './DefaultOptionList'
 
 class RadioList extends Control {
     constructor(props, ...mixins) {
         const defaults = {
             options: [],
-            optionDefaults: {
-                tag: 'label',
-                template: '<span class="radio"></span><span class="text">{{this.props.text}}</span>'
-            },
             type: 'radio'
         }
 

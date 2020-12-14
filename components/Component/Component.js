@@ -344,8 +344,8 @@ class Component {
             this.props.selected = true
             this.addClass('s-selected')
             isFunction(this._select) && this._select()
-            selectOption.triggerSelect === true && this.trigger('select', selectOption.isInit === true)
-            selectOption.triggerSelectionChange === true && this.trigger('selectionChange', selectOption.isInit === true)
+            selectOption.triggerSelect === true && this.trigger('select')
+            selectOption.triggerSelectionChange === true && this.trigger('selectionChange')
 
             return true
         }

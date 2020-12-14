@@ -20,28 +20,25 @@ class Input extends Component {
     }
 
     _config() {
-        this.setProps({            
+        this.setProps({
             attrs: {
                 value: this.props.value,
-                oninput: function(){
+                oninput: function () {
                     if (!this.capsLock) {
-                        this.textbox._onValueChange();
+                        this.textbox._onValueChange()
                     }
+                },
+                onblur: function () {
+                    this.textbox.trigger("blur")
+                },
+                oncompositionstart: function () {
+                    this.capsLock = true
+                },
+                oncompositionend: function () {
+                    this.capsLock = false
+                    this.element.dispatchEvent(new Event('input'))
                 }
             },
-            events:
-            {
-                'compositionstart'() {
-                    this.capsLock = true;
-                },
-                'compositionend'() {
-                    this.capsLock = false;
-                    this.element.trigger('input');
-                },
-                'blur'() {
-                    this.textbox.trigger("blur");
-                }
-            }
         })
     }
 
