@@ -1374,7 +1374,8 @@
               tag: 'body',
               placement: 'replace',
               defaultPath: '!',
-              viewsDir: '/'
+              viewsDir: '/',
+              isFixedLayout: true,
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
@@ -1400,6 +1401,10 @@
           this.setProps({
               children: { component: View }
           });
+
+          if (this.props.isFixedLayout === true) {
+              document.documentElement.setAttribute('class', 'app');
+          }
       }
 
       _render() {
