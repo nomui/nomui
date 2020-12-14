@@ -2685,7 +2685,7 @@
           if (this.props.sider) {
               this.setProps({
                   classes: {
-                      'm-has-sider': true
+                      'p-has-sider': true
                   },
                   children: [
                       this.props.sider && this.props.sider,
