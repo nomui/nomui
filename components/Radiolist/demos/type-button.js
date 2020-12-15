@@ -1,7 +1,7 @@
 define([], function () {
     return {
-        title: '基础用法',
-        file: 'basic',
+        title: '按钮样式',
+        file: 'type-button',
         demo: function () {
             return {
                 children: [
@@ -21,6 +21,7 @@ define([], function () {
                                 text: '温瑞安', value: 3
                             }
                         ],
+                        type: 'button',
                     },
                 ]
             }

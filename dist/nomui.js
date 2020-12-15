@@ -2828,7 +2828,11 @@
               itemSelectable: {
                   multiple: false,
                   byClick: false
-              }
+              },
+
+              //direction: 'horizontal',
+              gap: 'md',
+              wrap: false
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
@@ -2840,6 +2844,7 @@
       }
 
       _config() {
+          this._propStyleClasses = ['direction', 'gap', 'wrap', 'gutter', 'justify'];
           var items = this.props.items;
           var children = [];
           if (Array.isArray(items) && items.length > 0) {
@@ -3456,10 +3461,12 @@
 
       _config() {
           let { header, body, footer } = this.props;
-
+          let footerProps;
           let headerProps = Component.extendProps({ component: WidgetHeader }, header);
           let bodyProps = Component.extendProps({ component: WidgetBody }, body);
-          let footerProps = Component.extendProps({ component: WidgetFooter }, footer);
+          if (footer) {
+              footerProps = Component.extendProps({ component: WidgetFooter }, footer);
+          }
 
           this.setProps({
               children: [
@@ -5134,6 +5141,28 @@
 
   Component.register(Select);
 
+  class TimePicker extends Control {
+      constructor(props, ...mixins) {
+
+      }
+
+      _getTimeData(count) {
+          var data = [];
+          for (i = 0; i < count; i++) {
+              var val = i + '';
+              if (i < 10) {
+                  val = '0' + i;
+              }
+              data.push({
+                  text: val,
+                  value: val
+              });
+          }
+          
+          return data
+      }
+  }
+
   class FieldLabel extends Component {
       constructor(props, ...mixins) {
           super(props);
@@ -5285,6 +5314,7 @@
   exports.Table = Table;
   exports.Tabs = Tabs;
   exports.Textbox = Textbox;
+  exports.TimePicker = TimePicker;
   exports.View = View;
   exports.Widget = Widget;
 

@@ -17,10 +17,12 @@ class Widget extends Component {
 
     _config() {
         let { header, body, footer } = this.props
-
+        let footerProps
         let headerProps = Component.extendProps({ component: WidgetHeader }, header)
         let bodyProps = Component.extendProps({ component: WidgetBody }, body)
-        let footerProps = Component.extendProps({ component: WidgetFooter }, footer)
+        if (footer) {
+            footerProps = Component.extendProps({ component: WidgetFooter }, footer)
+        }
 
         this.setProps({
             children: [

@@ -3263,7 +3263,7 @@ img {
   margin-left: 6px;
 }
 .nom-flex {
-  display: flex;
+  display: inline-flex;
   align-items: center;
 }
 .nom-flex.p-align-start {
@@ -4101,11 +4101,66 @@ img {
   padding: 0;
   margin: 0;
 }
-.nom-list > .nom-list-item.s-selected {
+.nom-list > .nom-list-item-wrapper > .nom-list-item.s-selected {
   z-index: 2;
 }
-.nom-list > .nom-list-item > a {
+.nom-list > .nom-list-item-wrapper > .nom-list-item > a {
   display: block;
+}
+.nom-list.p-align-start {
+  align-items: flex-start !important;
+}
+.nom-list.p-align-end {
+  align-items: flex-end !important;
+}
+.nom-list.p-align-center {
+  align-items: center !important;
+}
+.nom-list.p-align-stretch {
+  align-items: stretch !important;
+}
+.nom-list.p-justify-start {
+  justify-content: flex-start !important;
+}
+.nom-list.p-justify-end {
+  justify-content: flex-end !important;
+}
+.nom-list.p-justify-center {
+  justify-content: center !important;
+}
+.nom-list.p-justify-between {
+  justify-content: space-between !important;
+}
+.nom-list.p-justify-around {
+  justify-content: space-around !important;
+}
+.nom-list.p-direction-horizontal {
+  display: flex;
+}
+.nom-list.p-direction-horizontal.p-gap-sm > .nom-flex-item {
+  margin-right: 0.5rem;
+}
+.nom-list.p-direction-horizontal.p-gap-sm > .nom-flex-item:last-child {
+  margin-right: 0;
+}
+.nom-list.p-direction-horizontal.p-gap-md > .nom-flex-item {
+  margin-right: 1rem;
+}
+.nom-list.p-direction-horizontal.p-gap-md > .nom-flex-item:last-child {
+  margin-right: 0;
+}
+.nom-list.p-direction-horizontal.p-gap-lg > .nom-flex-item {
+  margin-right: 1.5rem;
+}
+.nom-list.p-direction-horizontal.p-gap-lg > .nom-flex-item:last-child {
+  margin-right: 0;
+}
+.nom-list.p-direction-verticle {
+  display: flex;
+  flex-direction: column;
+}
+.nom-list.p-wrap {
+  flex-wrap: wrap;
 }
 .nom-tab-list {
   padding-left: 0;
@@ -4589,10 +4644,10 @@ textarea .nom-textarea {
   border: solid #7281a4;
   background: #7281a4;
 }
-.nom-radio-list.nom-radio-list-button {
+.nom-radio-list.p-type-button > .nom-list {
   display: inline-flex;
 }
-.nom-radio-list.nom-radio-list-button > label {
+.nom-radio-list.p-type-button > .nom-list > .nom-list-item-wrapper > label {
   display: inline-flex;
   position: relative;
   line-height: 1.42857143;
@@ -4606,14 +4661,14 @@ textarea .nom-textarea {
   font-size: 1rem;
   transition: all 0.3s;
 }
-.nom-radio-list.nom-radio-list-button > label:first-child {
+.nom-radio-list.p-type-button > .nom-list > .nom-list-item-wrapper > label:first-child {
   border-left: 1px solid #d9d9d9;
   border-radius: 4px 0 0 4px;
 }
-.nom-radio-list.nom-radio-list-button > label:last-child {
+.nom-radio-list.p-type-button > .nom-list > .nom-list-item-wrapper > label:last-child {
   border-radius: 0 4px 4px 0;
 }
-.nom-radio-list.nom-radio-list-button > label.s-selected {
+.nom-radio-list.p-type-button > .nom-list > .nom-list-item-wrapper > label.s-selected {
   color: #4263eb;
   border-color: #4263eb;
 }

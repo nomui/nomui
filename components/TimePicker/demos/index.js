@@ -1,12 +1,11 @@
 define(
     [
-        './basic.js',
-        './type-button.js'
+        './basic.js'
     ],
     function () {
         return {
-            title: 'RadioList',
-            subtitle: '单选列表',
+            title: 'TimePicker',
+            subtitle: '时间选择框',
             demos: Array.prototype.slice.call(arguments)
         }
     }

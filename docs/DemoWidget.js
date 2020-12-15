@@ -16,7 +16,7 @@ define(['./Precode.js'], function (Precode) {
             var that = this
             var demo = this.props.demo.call(this)
             var code = '        ' + this.props.demo.toString()
-            let { title, componentType, cat, file } = this.props
+            let { title, nav, componentType, cat, file } = this.props
             let url = ''
             if (cat) {
                 url = `#/components/demo?type=${componentType}&cat=${cat}&demo=${file}`
@@ -33,7 +33,8 @@ define(['./Precode.js'], function (Precode) {
                     },
                     caption: {
                         title: title
-                    }
+                    },
+                    nav: nav
                 },
                 body: {
                     children: [

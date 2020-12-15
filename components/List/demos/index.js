@@ -1,12 +1,12 @@
 define(
     [
         './basic.js',
-        './type-button.js'
+        './verticle.js',
     ],
     function () {
         return {
-            title: 'RadioList',
-            subtitle: '单选列表',
+            title: 'List',
+            subtitle: '列表',
             demos: Array.prototype.slice.call(arguments)
         }
     }
