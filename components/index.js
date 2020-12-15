@@ -6,6 +6,8 @@ export { default as Component } from './Component/index'
 export { default as App } from './App/index'
 export { default as View } from './App/View'
 
+export { default as Rows } from './Rows/index'
+export { default as Cols } from './Cols/index'
 export { default as Container } from './Container/index'
 export { default as Flex } from './Flex/index'
 

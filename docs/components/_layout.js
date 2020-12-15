@@ -33,7 +33,8 @@ define([], {
                         items: [
                             { text: 'Layout', subtext: '布局', id: 'Layout', url: '#!components!index?type=Layout' },
                             { text: 'Container', subtext: '容器', id: 'Container', url: '#!components!index?type=Container' },
-                            { text: 'Flex', subtext: '弹性布局', id: 'Flex', url: '#!components!index?type=Flex' },
+                            { text: 'Rows', subtext: '行布局', id: 'Rows', url: '#!components!index?type=Rows' },
+                            { text: 'Cols', subtext: '列布局', id: 'Cols', url: '#!components!index?type=Cols' },
                         ],
                     },
                     {

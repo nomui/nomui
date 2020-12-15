@@ -17,7 +17,6 @@ class List extends Component {
             },
 
             //direction: 'horizontal',
-            gap: 'md',
             wrap: false
         }
 
@@ -30,7 +29,7 @@ class List extends Component {
     }
 
     _config() {
-        this._propStyleClasses = ['direction', 'gap', 'wrap', 'gutter', 'justify']
+        this._propStyleClasses = ['direction', 'wrap', 'gutter', 'line', 'align', 'justify']
         var items = this.props.items
         var children = []
         if (Array.isArray(items) && items.length > 0) {

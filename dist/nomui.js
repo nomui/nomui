@@ -1363,6 +1363,86 @@
 
   Component.register(App);
 
+  class Row extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(Row);
+
+  class Rows extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              wrap: false,
+              items: [],
+              itemDefaults: null,
+              gutter: 'md',
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          this._propStyleClasses = ['gutter', 'align', 'justify'];
+          let items = this.props.items;
+          var children = [];
+          if (Array.isArray(items) && items.length > 0) {
+              for (var i = 0; i < items.length; i++) {
+                  let item = items[i];
+                  item = Component.extendProps({}, this.props.itemDefaults, item);
+                  children.push({ component: Row, children: item });
+              }
+          }
+
+          this.setProps({
+              children: children
+          });
+      }
+  }
+
+  Component.register(Rows);
+
+  class Col extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(Col);
+
+  class Cols extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              wrap: false,
+              items: [],
+              itemDefaults: null,
+              gutter: 'md',
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          this._propStyleClasses = ['gutter', 'align', 'justify'];
+          let items = this.props.items;
+          var children = [];
+          if (Array.isArray(items) && items.length > 0) {
+              for (var i = 0; i < items.length; i++) {
+                  let item = items[i];
+                  item = Component.extendProps({}, this.props.itemDefaults, item);
+                  children.push({ component: Col, children: item });
+              }
+          }
+
+          this.setProps({
+              children: children
+          });
+      }
+  }
+
+  Component.register(Cols);
+
   class Container extends Component {
       constructor(props, ...mixins) {
           const defaults = {
@@ -2831,7 +2911,6 @@
               },
 
               //direction: 'horizontal',
-              gap: 'md',
               wrap: false
           };
 
@@ -2844,7 +2923,7 @@
       }
 
       _config() {
-          this._propStyleClasses = ['direction', 'gap', 'wrap', 'gutter', 'justify'];
+          this._propStyleClasses = ['direction', 'wrap', 'gutter', 'line', 'align', 'justify'];
           var items = this.props.items;
           var children = [];
           if (Array.isArray(items) && items.length > 0) {
@@ -5290,6 +5369,7 @@
   exports.Caption = Caption;
   exports.Checkbox = Checkbox;
   exports.CheckboxList = CheckboxList;
+  exports.Cols = Cols;
   exports.Component = Component;
   exports.Container = Container;
   exports.Cssicon = Cssicon;
@@ -5310,6 +5390,7 @@
   exports.Pager = Pager;
   exports.Popup = Popup;
   exports.RadioList = RadioList;
+  exports.Rows = Rows;
   exports.Select = Select;
   exports.Table = Table;
   exports.Tabs = Tabs;

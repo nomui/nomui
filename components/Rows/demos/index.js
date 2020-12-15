@@ -1,14 +1,11 @@
 define(
     [
         './basic.js',
-        './verticle.js',
-        './horizontal.js',
-        './horizontal-wrap.js',
     ],
     function () {
         return {
-            title: 'List',
-            subtitle: '列表',
+            title: 'Rows',
+            subtitle: '行布局',
             demos: Array.prototype.slice.call(arguments)
         }
     }
