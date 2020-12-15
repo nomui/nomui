@@ -87,13 +87,9 @@ class Component {
         }
 
         this.componentType = this.__proto__.constructor.name
-        this.referenceElement = this.props.reference instanceof Component ? this.props.reference.element : this.props.reference
-        this.element = document.createElement(this.props.tag)
-        this._mountElement()
-        this.element.component = this
 
         this.create()
-        if (this.props.autoRender) {
+        if (this.props.autoRender === true) {
             this.config()
             this.render()
         }
@@ -114,8 +110,11 @@ class Component {
     }
 
     render() {
-        if (this.rendered) {
+        if (this.rendered === true) {
             this.emptyChildren()
+        }
+        else {
+            this._mountElement()
         }
 
         this._handleAttrs()
@@ -167,7 +166,9 @@ class Component {
 
     _mountElement() {
         var placement = this.props.placement
-
+        this.referenceElement = this.props.reference instanceof Component ? this.props.reference.element : this.props.reference
+        this.element = document.createElement(this.props.tag)
+        this.element.component = this
         if (placement === 'append') {
             this.referenceElement.appendChild(this.element)
         }
@@ -193,10 +194,6 @@ class Component {
         }
         else if (isString(children)) {
             this.element.innerHTML = children
-        }
-        else if (isString(this.props.template)) {
-            var parsedTemplate = this._parseTemplate(this.props.template)
-            this.element.innerHTML = parsedTemplate
         }
     }
 
@@ -648,34 +645,22 @@ class Component {
         return classArray
     }
 
-    _parseTemplate(template) {
-        var that = this
-
-        return template.replace(/\{\{([^\}]*)\}\}/g, function (str, key) {
-            var fn = new Function('return (' + key + ');')
-            var val = fn.call(that)
-
-            return (typeof val !== "undefined" && val !== null) ? htmlEncode(val) : ""
-        })
-    }
-
-    _on(element, event, callback) {
-        if (!callback) {
-            callback = event
-            event = element
-            element = this.element
-        }
+    _on(event, callback, context) {
         var cache, list
-        callback = callback.bind(this)
+        if (context) {
+            callback = callback.bind(context)
+        }
+        else {
+            callback = callback.bind(this)
+        }
         cache = this.__htmlEvents || (this.__htmlEvents = {})
         list = cache[event] || (cache[event] = [])
         list.push(callback)
 
-        element.addEventListener(event, callback, false)
+        this.element.addEventListener(event, callback, false)
     }
 
     _off(event, callback) {
-        var that = this
         var cache, list, i
 
         // No events, or removing *all* events.
@@ -686,7 +671,7 @@ class Component {
                     var list = this.__htmlEvents[key]
                     if (!list) continue
                     for (i = list.length - 1; i >= 0; i -= 1) {
-                        that.element.removeEventListener(key, list[i], false)
+                        this.element.removeEventListener(key, list[i], false)
                     }
                 }
             }
@@ -705,9 +690,14 @@ class Component {
         for (i = list.length - 1; i >= 0; i -= 1) {
             if (list[i] === callback) {
                 list.splice(i, 1)
-                that.element.removeEventListener(event, callback, false)
+                this.element.removeEventListener(event, callback, false)
             }
         }
+    }
+
+    _trigger(eventName) {
+        let event = new Event(eventName)
+        this.element.dispatchEvent(event)
     }
 
     _mixin(mixins) {
@@ -761,6 +751,7 @@ class Component {
         mixins.push(mixin)
     }
 }
+
 Component.normalizeTemplateProps = function (props) {
     if (props === null || props === undefined) {
         return null

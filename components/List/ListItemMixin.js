@@ -49,5 +49,8 @@ export default {
                 this.list.selectedItem = this
             }
         }
+    },
+    _remove: function () {
+        delete this.list.itemRefs[this.key]
     }
 }

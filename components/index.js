@@ -3,7 +3,6 @@ import './index.less'
 
 export { default as Component } from './Component/index'
 
-export { default as Router } from './Router/index'
 export { default as App } from './App/index'
 export { default as View } from './App/View'
 

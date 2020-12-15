@@ -1,7 +1,6 @@
 define(
     [
-        './click-trigger.js',
-        './mixin.js'
+        './basic.js',
     ],
     function () {
         return {

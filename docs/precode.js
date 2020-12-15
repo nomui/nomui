@@ -3,17 +3,40 @@ define([],
     function () {
 
         class Precode extends nomui.Component {
-            constructor(props){
-                const defaults= {
+            constructor(props) {
+                const defaults = {
                     code: '',
                     lang: 'html',
-                    template: '<pre class="lang-{{this.props.lang}} u-margin-0"><code class="{{this.props.lang}}">{{this.props.code}}</code></pre>'
                 }
 
                 super(nomui.Component.extendProps(defaults, props))
             }
 
-            _render () {
+            _config() {
+                let { lang, code } = this.props
+                let preClasses = {}
+                preClasses[`lang-${lang}`] = true
+
+                let codeClasses = {}
+                codeClasses[lang] = true
+
+                this.setProps({
+                    children: {
+                        tag: 'pre',
+                        classes: preClasses,
+                        styles: {
+                            margin: '0'
+                        },
+                        children: {
+                            tag: 'code',
+                            classes: codeClasses,
+                            children: code
+                        }
+                    }
+                })
+            }
+
+            _render() {
                 hljs.highlightBlock(this.element.querySelectorAll('code')[0]);
             }
         }

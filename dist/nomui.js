@@ -68,14 +68,6 @@
       .toLowerCase()
   }
 
-  function htmlEncode(value) {
-    // Create a in-memory element, set its inner text (which is automatically encoded)
-    // Then grab the encoded contents back out. The element never exists on the DOM.
-    var textarea = document.createElement('textarea');
-    textarea.textContent = value;
-    return textarea.innerHTML;
-  }
-
   function extend() {
     var options, name, src, copy, copyIsArray, clone,
       target = arguments[0] || {},
@@ -472,13 +464,9 @@
           }
 
           this.componentType = this.__proto__.constructor.name;
-          this.referenceElement = this.props.reference instanceof Component ? this.props.reference.element : this.props.reference;
-          this.element = document.createElement(this.props.tag);
-          this._mountElement();
-          this.element.component = this;
 
           this.create();
-          if (this.props.autoRender) {
+          if (this.props.autoRender === true) {
               this.config();
               this.render();
           }
@@ -499,8 +487,11 @@
       }
 
       render() {
-          if (this.rendered) {
+          if (this.rendered === true) {
               this.emptyChildren();
+          }
+          else {
+              this._mountElement();
           }
 
           this._handleAttrs();
@@ -552,7 +543,9 @@
 
       _mountElement() {
           var placement = this.props.placement;
-
+          this.referenceElement = this.props.reference instanceof Component ? this.props.reference.element : this.props.reference;
+          this.element = document.createElement(this.props.tag);
+          this.element.component = this;
           if (placement === 'append') {
               this.referenceElement.appendChild(this.element);
           }
@@ -578,10 +571,6 @@
           }
           else if (isString(children)) {
               this.element.innerHTML = children;
-          }
-          else if (isString(this.props.template)) {
-              var parsedTemplate = this._parseTemplate(this.props.template);
-              this.element.innerHTML = parsedTemplate;
           }
       }
 
@@ -1031,34 +1020,22 @@
           return classArray
       }
 
-      _parseTemplate(template) {
-          var that = this;
-
-          return template.replace(/\{\{([^\}]*)\}\}/g, function (str, key) {
-              var fn = new Function('return (' + key + ');');
-              var val = fn.call(that);
-
-              return (typeof val !== "undefined" && val !== null) ? htmlEncode(val) : ""
-          })
-      }
-
-      _on(element, event, callback) {
-          if (!callback) {
-              callback = event;
-              event = element;
-              element = this.element;
-          }
+      _on(event, callback, context) {
           var cache, list;
-          callback = callback.bind(this);
+          if (context) {
+              callback = callback.bind(context);
+          }
+          else {
+              callback = callback.bind(this);
+          }
           cache = this.__htmlEvents || (this.__htmlEvents = {});
           list = cache[event] || (cache[event] = []);
           list.push(callback);
 
-          element.addEventListener(event, callback, false);
+          this.element.addEventListener(event, callback, false);
       }
 
       _off(event, callback) {
-          var that = this;
           var cache, list, i;
 
           // No events, or removing *all* events.
@@ -1069,7 +1046,7 @@
                       var list = this.__htmlEvents[key];
                       if (!list) continue
                       for (i = list.length - 1; i >= 0; i -= 1) {
-                          that.element.removeEventListener(key, list[i], false);
+                          this.element.removeEventListener(key, list[i], false);
                       }
                   }
               }
@@ -1088,9 +1065,14 @@
           for (i = list.length - 1; i >= 0; i -= 1) {
               if (list[i] === callback) {
                   list.splice(i, 1);
-                  that.element.removeEventListener(event, callback, false);
+                  this.element.removeEventListener(event, callback, false);
               }
           }
+      }
+
+      _trigger(eventName) {
+          let event = new Event(eventName);
+          this.element.dispatchEvent(event);
       }
 
       _mixin(mixins) {
@@ -1144,6 +1126,7 @@
           mixins.push(mixin);
       }
   }
+
   Component.normalizeTemplateProps = function (props) {
       if (props === null || props === undefined) {
           return null
@@ -1163,136 +1146,6 @@
   Component.mixins = mixins;
 
   Object.assign(Component.prototype, Events.prototype);
-
-  String.prototype.trim = function (characters) {
-      return this.replace(new RegExp('^' + characters + '+|' + characters + '+$', 'g'), '')
-  };
-
-  String.prototype.startWith = function (str) {
-      var reg = new RegExp("^" + str);
-      return reg.test(this)
-  };
-
-  String.prototype.trimEnd = function (characters) {
-      return this.replace(new RegExp(characters + '+$', 'g'), '')
-  };
-
-  String.prototype.prepend = function (character) {
-      if (this[0] !== character) {
-          return (character + this).toString()
-      }
-      else {
-          return this.toString()
-      }
-  };
-
-  class Router extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              defaultPath: null
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          var that = this;
-          this.level = this.app.lastLevel;
-          this.app.lastLevel++;
-          this.app.routers[this.level] = this;
-          this.app.on('hashChange', function (p) {
-              that.view.trigger('hashChange');
-              if (p.queryChanged) {
-                  that.view.trigger('queryChange');
-              }
-              if (that.level === p.changedLevel + 1) {
-                  that.view.trigger('subpathChange');
-              }
-              if (that.level === p.changedLevel) {
-                  that.routeView();
-              }
-          });
-      }
-
-      _render() {
-          this.routeView();
-      }
-
-      destroy() {
-
-      }
-
-      routeView() {
-          var that = this;
-
-          var level = this.level;
-          if (this.props.defaultPath) {
-              if (!this.app.currentRoute.paths[level]) {
-                  this.app.currentRoute.paths[level] = this.props.defaultPath;
-              }
-          }
-
-          var url = this.getRouteUrl(level);
-          url = this.pathCombine(this.app.props.viewsDir, url) + '.js';
-
-          require([url], function (viewOptions) {
-              var extOptions = {
-                  reference: that.element,
-                  placement: 'replace',
-                  $scoped: true
-              };
-              viewOptions = Component.extendProps(viewOptions, extOptions);
-              that.view = Component.create(viewOptions);
-              that.element = that.view.element;
-          });
-      }
-
-      getRouteUrl(level) {
-          var that = this;
-          var paths = this.app.currentRoute.paths;
-          var maxLevel = this.app.currentRoute.maxLevel;
-          var path = paths[level];
-
-          if (level < maxLevel) {
-              path = this.pathCombine(path, '_layout');
-          }
-
-          path = prefix(path, level);
-
-          function prefix(path, level) {
-              if (level === 0) {
-                  return path;
-              }
-              if (path[0] !== '/') {
-                  path = that.pathCombine(paths[level - 1], path);
-                  return prefix(path, level - 1)
-              }
-              else {
-                  return path
-              }
-          }
-
-          return path
-      }
-
-      pathCombine() {
-          var path = '';
-          var args = Array.from(arguments);
-
-          args.forEach(function (item, index) {
-              if (index > 0) {
-                  path += '/' + item.trim('/');
-              }
-              else {
-                  path += item.trimEnd('/');
-              }
-          });
-
-          return path
-      }
-  }
-
-  Component.register(Router);
 
   class Route {
       constructor(defaultPath) {
@@ -1350,6 +1203,7 @@
       }
 
       render() {
+          this._mountElement();
           this.app.routeView(this.app.lastLevel, this.element, this.props.defaultPath);
       }
 
@@ -2287,14 +2141,14 @@
       constructor(props, ...mixins) {
           const defaults = {
               trigger: null,
-              triggerType: 'click',
+              triggerAction: 'click',
               align: 'bottom left',
               alignOuter: true,
 
               closeOnClickOutside: true,
               placement: 'append',
 
-              rendered: false,
+              autoRender: false,
               hidden: true,
 
               type: 'default'
@@ -2306,22 +2160,16 @@
       _create() {
           super._create();
 
-          if (this.props.trigger instanceof Component) {
-              this.triggerElem = this.props.trigger.element;
-              this.parent = this.props.trigger;
-          }
-          else {
-              this.triggerElem = this.props.trigger;
-          }
-          this.props.alignTo = this.triggerElem;
+          this.opener = this.props.trigger;
+          this.props.alignTo = this.opener.element;
           this.showTimer = null, this.hideTimer = null;
-          this.addRel(this.triggerElem);
+          this.addRel(this.opener.element);
           this._bindTrigger();
       }
 
       _bindTrigger() {
-          var triggerType = this.props.triggerType;
-          if (triggerType === 'click') {
+          var triggerAction = this.props.triggerAction;
+          if (triggerAction === 'click') {
               this._bindClick();
           } else {
               this._bindHover();
@@ -2329,25 +2177,21 @@
       }
 
       _bindClick() {
-          this._on(this.triggerElem, 'click', this.toggleHidden);
-      }
-
-      _onTriggerMouseEnter() {
-
+          this.opener._on('click', this.toggleHidden, this);
       }
 
       _bindHover() {
           var that = this;
           var delay = 100;
-
-          this._on(this.triggerElem, 'mouseenter', function () {
+          this.opener._on('mouseenter', function () {
               clearTimeout(this.hideTimer);
               this.hideTimer = null;
               this.showTimer = setTimeout(function () {
                   that.show();
               }, delay);
-          }, false);
-          this._on(this.triggerElem, 'mouseleave', this._leaveHandler);
+          }, this);
+
+          this.opener._on('mouseleave', this._leaveHandler, this);
       }
 
       _leaveHandler() {
@@ -2364,7 +2208,7 @@
       }
 
       _show() {
-          Layer.prototype._show.call(this);
+          super._show();
           this._off('mouseenter');
           this._on('mouseenter', function () {
               clearTimeout(this.hideTimer);
@@ -2936,6 +2780,9 @@
                   this.list.selectedItem = this;
               }
           }
+      },
+      _remove: function () {
+          delete this.list.itemRefs[this.key];
       }
   };
 
@@ -3863,7 +3710,7 @@
               this.setProps({
                   item: {
                       popup: {
-                          triggerType: 'hover',
+                          triggerAction: 'hover',
                           align: align,
                           reference: reference,
                           children: this.props.submenu,
@@ -5129,7 +4976,12 @@
               selectedMultiple: {
                   component: List,
                   itemDefaults: {
-                      children: '<span>{{this.props.text}}</span>'
+                      _config: function () {
+                          this.setProps({
+                              tag: 'span',
+                              children: this.props.text
+                          });
+                      }
                   },
                   styles: {
                       flex: 'row',
@@ -5256,7 +5108,7 @@
           if (selected !== null) {
               if (Array.isArray(selected)) {
                   var vals = selected.map(function (item) {
-                      return item.props.valu
+                      return item.props.value
                   });
 
                   return vals
@@ -5429,7 +5281,6 @@
   exports.Pager = Pager;
   exports.Popup = Popup;
   exports.RadioList = RadioList;
-  exports.Router = Router;
   exports.Select = Select;
   exports.Table = Table;
   exports.Tabs = Tabs;

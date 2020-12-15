@@ -72,7 +72,7 @@ class MenuItemWrapper extends Component {
             this.setProps({
                 item: {
                     popup: {
-                        triggerType: 'hover',
+                        triggerAction: 'hover',
                         align: align,
                         reference: reference,
                         children: this.props.submenu,

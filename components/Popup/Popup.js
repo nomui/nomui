@@ -5,14 +5,14 @@ class Popup extends Layer {
     constructor(props, ...mixins) {
         const defaults = {
             trigger: null,
-            triggerType: 'click',
+            triggerAction: 'click',
             align: 'bottom left',
             alignOuter: true,
 
             closeOnClickOutside: true,
             placement: 'append',
 
-            rendered: false,
+            autoRender: false,
             hidden: true,
 
             type: 'default'
@@ -24,22 +24,16 @@ class Popup extends Layer {
     _create() {
         super._create()
 
-        if (this.props.trigger instanceof Component) {
-            this.triggerElem = this.props.trigger.element
-            this.parent = this.props.trigger
-        }
-        else {
-            this.triggerElem = this.props.trigger
-        }
-        this.props.alignTo = this.triggerElem
+        this.opener = this.props.trigger
+        this.props.alignTo = this.opener.element
         this.showTimer = null, this.hideTimer = null
-        this.addRel(this.triggerElem)
+        this.addRel(this.opener.element)
         this._bindTrigger();
     }
 
     _bindTrigger() {
-        var triggerType = this.props.triggerType;
-        if (triggerType === 'click') {
+        var triggerAction = this.props.triggerAction;
+        if (triggerAction === 'click') {
             this._bindClick()
         } else {
             this._bindHover()
@@ -47,25 +41,21 @@ class Popup extends Layer {
     }
 
     _bindClick() {
-        this._on(this.triggerElem, 'click', this.toggleHidden)
-    }
-
-    _onTriggerMouseEnter() {
-
+        this.opener._on('click', this.toggleHidden, this)
     }
 
     _bindHover() {
         var that = this
         var delay = 100
-
-        this._on(this.triggerElem, 'mouseenter', function () {
+        this.opener._on('mouseenter', function () {
             clearTimeout(this.hideTimer)
             this.hideTimer = null
             this.showTimer = setTimeout(function () {
                 that.show()
             }, delay)
-        }, false);
-        this._on(this.triggerElem, 'mouseleave', this._leaveHandler)
+        }, this)
+
+        this.opener._on('mouseleave', this._leaveHandler, this)
     }
 
     _leaveHandler() {
@@ -82,7 +72,7 @@ class Popup extends Layer {
     }
 
     _show() {
-        Layer.prototype._show.call(this)
+        super._show()
         this._off('mouseenter')
         this._on('mouseenter', function () {
             clearTimeout(this.hideTimer)

@@ -24,7 +24,12 @@ class Select extends Control {
             selectedMultiple: {
                 component: List,
                 itemDefaults: {
-                    children: '<span>{{this.props.text}}</span>'
+                    _config: function () {
+                        this.setProps({
+                            tag: 'span',
+                            children: this.props.text
+                        })
+                    }
                 },
                 styles: {
                     flex: 'row',
@@ -151,7 +156,7 @@ class Select extends Control {
         if (selected !== null) {
             if (Array.isArray(selected)) {
                 var vals = selected.map(function (item) {
-                    return item.props.valu
+                    return item.props.value
                 });
 
                 return vals

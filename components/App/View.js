@@ -10,6 +10,7 @@ class View extends Component {
     }
 
     render() {
+        this._mountElement()
         this.app.routeView(this.app.lastLevel, this.element, this.props.defaultPath)
     }
 
