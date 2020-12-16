@@ -16,7 +16,7 @@ define([], function () {
             ]
 
             return {
-                component: 'Rows',              
+                component: 'Rows',
                 gutter: 'md',
                 items: [
                     {
@@ -84,7 +84,26 @@ define([], function () {
                                         })
                                     }
                                 },
-                            }
+                            },
+                            {
+                                component: 'RadioList',
+                                options: [
+                                    { text: '按钮宽度自动', value: null },
+                                    { text: '按钮宽度百分百', value: 'full' },
+                                ],
+                                type: 'button',
+                                events: {
+                                    valueChange: function (changed) {
+                                        demo.refs.buttonList.update({
+                                            itemDefaults: {
+                                                styles: {
+                                                    width: changed.newValue
+                                                }
+                                            }
+                                        })
+                                    }
+                                },
+                            },
                         ]
                     },
                     {
