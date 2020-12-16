@@ -59,7 +59,7 @@ RuleManager.ruleTypes = {
     minlength: {
         validate: function (value, ruleValue) {
             var length = 0;
-            if ($.isArray(value)) {
+            if (Array.isArray(value)) {
                 length = value.length;
             }
             else {
@@ -73,7 +73,7 @@ RuleManager.ruleTypes = {
     maxlength: {
         validate: function (value, ruleValue) {
             var length = 0;
-            if ($.isArray(value)) {
+            if (Array.isArray(value)) {
                 length = value.length;
             }
             else {
@@ -87,7 +87,7 @@ RuleManager.ruleTypes = {
     rangelength: {
         validate: function (value, ruleValue) {
             var length = 0;
-            if ($.isArray(value)) {
+            if (Array.isArray(value)) {
                 length = value.length;
             }
             else {
@@ -145,7 +145,7 @@ RuleManager.validate = function (rules, controlValue) {
 };
 
 function isEmpty(val) {
-    return val === undefined || val === null || val === '' || ($.isArray(val) && !val.length);
+    return val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length);
 }
 
 function checkRule(ruleSettings, controlValue) {
@@ -156,7 +156,7 @@ function checkRule(ruleSettings, controlValue) {
         if (!rule.validate(controlValue, ruleValue)) {
             var message = ruleSettings.message || rule.message;
             if (ruleValue !== null) {
-                if (!$.isArray(ruleValue)) {
+                if (!Array.isArray(ruleValue)) {
                     ruleValue = [ruleValue];
                 }
                 for (var i = 0; i < ruleValue.length; i++) {

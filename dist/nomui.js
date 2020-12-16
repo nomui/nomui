@@ -566,7 +566,7 @@
                   this.appendChild(child, this.props.childDefaults);
               }
           }
-          else if (isPlainObject(children)) {
+          else if (isPlainObject(children) || isFunction(children)) {
               this.appendChild(children);
           }
           else if (isString(children)) {
@@ -629,11 +629,16 @@
               return
           }
           var props = childProps;
+          let mixin = [];
           if (isString(props)) {
               this.element.innerHTML = props;
               return
           }
-          if (isFunction(props)) ;
+          if (isFunction(childProps)) {
+              let fnResult = childProps.call(this);
+              props = fnResult.props;
+              mixin = fnResult.mixins;
+          }
           if (childDefaults !== null && childDefaults !== undefined) {
               props = Component.extendProps({}, childDefaults, props);
           }
@@ -642,7 +647,7 @@
               props.reference = this.element;
               props.placement = 'append';
 
-              this.children.push(Component.create(props));
+              this.children.push(Component.create(props, ...mixin));
           }
       }
 
@@ -4240,7 +4245,7 @@
       minlength: {
           validate: function (value, ruleValue) {
               var length = 0;
-              if ($.isArray(value)) {
+              if (Array.isArray(value)) {
                   length = value.length;
               }
               else {
@@ -4254,7 +4259,7 @@
       maxlength: {
           validate: function (value, ruleValue) {
               var length = 0;
-              if ($.isArray(value)) {
+              if (Array.isArray(value)) {
                   length = value.length;
               }
               else {
@@ -4268,7 +4273,7 @@
       rangelength: {
           validate: function (value, ruleValue) {
               var length = 0;
-              if ($.isArray(value)) {
+              if (Array.isArray(value)) {
                   length = value.length;
               }
               else {
@@ -4326,7 +4331,7 @@
   };
 
   function isEmpty(val) {
-      return val === undefined || val === null || val === '' || ($.isArray(val) && !val.length);
+      return val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length);
   }
 
   function checkRule(ruleSettings, controlValue) {
@@ -4337,7 +4342,7 @@
           if (!rule.validate(controlValue, ruleValue)) {
               var message = ruleSettings.message || rule.message;
               if (ruleValue !== null) {
-                  if (!$.isArray(ruleValue)) {
+                  if (!Array.isArray(ruleValue)) {
                       ruleValue = [ruleValue];
                   }
                   for (var i = 0; i < ruleValue.length; i++) {
@@ -4403,8 +4408,9 @@
       }
 
       _validate() {
-          if ($.isArray(this.props.rules) && this.props.rules.length > 0) {
-              var validationResult = RuleManager.validate(this.props.rules, this.getValue());
+          let { rules } = this.props;
+          if (Array.isArray(rules) && rules.length > 0) {
+              var validationResult = RuleManager.validate(rules, this.getValue());
 
               if (validationResult === true) {
                   this.removeClass('s-invalid');
@@ -5251,9 +5257,20 @@
 
   Component.register(FieldLabel);
 
+  var ControlMixin = {
+      _config: function () {
+          this.field = this.parent.field;
+          this.field.control = this;
+      }
+  };
+
   class FieldControl extends Component {
       constructor(props, ...mixins) {
-          super(props);
+          const defaults = {
+              control: {}
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
       }
 
       _create() {
@@ -5262,13 +5279,21 @@
 
       _config() {
           this.setProps({
-              children: {
+              control: {
                   value: this.props.value
               }
           });
+          this.setProps({
+              control: this.field.props.control
+          });
 
           this.setProps({
-              children: this.field.props.control
+              children: function () {
+                  return {
+                      props: this.props.control,
+                      mixins: [ControlMixin]
+                  }
+              }
           });
       }
   }
@@ -5301,6 +5326,10 @@
                   { component: FieldControl, value: this.props.value }
               ]
           });
+      }
+
+      validate() {
+          this.control.validate && this.control.validate();
       }
   }
 
@@ -5343,6 +5372,22 @@
               children: children,
               childDefaults: this.props.fieldDefaults
           });
+      }
+
+      _validate() {
+          let invalids = [];
+          for (let i = 0; i < this.children.length; i++) {
+              let field = this.children[i];
+              if (field.validate) {
+                  let valResult = field.validate();
+
+                  if (valResult !== true) {
+                      invalids = invalids.concat(valResult);
+                  }
+              }
+          }
+
+          return invalids.length === 0
       }
   }
 

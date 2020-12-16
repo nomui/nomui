@@ -55,8 +55,9 @@ class Control extends Component {
     }
 
     _validate() {
-        if ($.isArray(this.props.rules) && this.props.rules.length > 0) {
-            var validationResult = RuleManager.validate(this.props.rules, this.getValue())
+        let { rules } = this.props
+        if (Array.isArray(rules) && rules.length > 0) {
+            var validationResult = RuleManager.validate(rules, this.getValue())
 
             if (validationResult === true) {
                 this.removeClass('s-invalid')

@@ -41,6 +41,22 @@ class Form extends Control {
             childDefaults: this.props.fieldDefaults
         })
     }
+
+    _validate() {
+        let invalids = [];
+        for (let i = 0; i < this.children.length; i++) {
+            let field = this.children[i]
+            if (field.validate) {
+                let valResult = field.validate()
+
+                if (valResult !== true) {
+                    invalids = invalids.concat(valResult);
+                }
+            }
+        }
+
+        return invalids.length === 0
+    }
 }
 
 Component.register(Form)

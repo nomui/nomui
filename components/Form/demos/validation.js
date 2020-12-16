@@ -78,7 +78,7 @@ define([], function () {
                             control: {
                                 component: 'Button',
                                 text: '提交',
-                                events: {
+                                attrs: {
                                     onclick: function () {
                                         demo.refs.form.validate();
                                     }

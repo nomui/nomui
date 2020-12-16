@@ -1,8 +1,13 @@
 import Component from '../Component/index'
+import ControlMixin from './ControlMixin'
 
 class FieldControl extends Component {
     constructor(props, ...mixins) {
-        super(props)
+        const defaults = {
+            control: {}
+        }
+
+        super(Component.extendProps(defaults, props), ...mixins)
     }
 
     _create() {
@@ -11,13 +16,21 @@ class FieldControl extends Component {
 
     _config() {
         this.setProps({
-            children: {
+            control: {
                 value: this.props.value
             }
-        });
+        })
+        this.setProps({
+            control: this.field.props.control
+        })
 
         this.setProps({
-            children: this.field.props.control
+            children: function () {
+                return {
+                    props: this.props.control,
+                    mixins: [ControlMixin]
+                }
+            }
         })
     }
 }

@@ -29,6 +29,10 @@ class Field extends Component {
             ]
         })
     }
+
+    validate() {
+        this.control.validate && this.control.validate()
+    }
 }
 
 Component.register(Field)

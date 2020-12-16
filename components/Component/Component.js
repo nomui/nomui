@@ -189,7 +189,7 @@ class Component {
                 this.appendChild(child, this.props.childDefaults)
             }
         }
-        else if (isPlainObject(children)) {
+        else if (isPlainObject(children) || isFunction(children)) {
             this.appendChild(children)
         }
         else if (isString(children)) {
@@ -252,12 +252,15 @@ class Component {
             return
         }
         var props = childProps
+        let mixin = []
         if (isString(props)) {
             this.element.innerHTML = props
             return
         }
-        if (isFunction(props)) { // todo 处理混入 mixin
-
+        if (isFunction(childProps)) {
+            let fnResult = childProps.call(this)
+            props = fnResult.props
+            mixin = fnResult.mixins
         }
         if (childDefaults !== null && childDefaults !== undefined) {
             props = Component.extendProps({}, childDefaults, props)
@@ -267,7 +270,7 @@ class Component {
             props.reference = this.element
             props.placement = 'append'
 
-            this.children.push(Component.create(props))
+            this.children.push(Component.create(props, ...mixin))
         }
     }
 
