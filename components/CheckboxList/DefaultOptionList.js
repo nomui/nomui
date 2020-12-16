@@ -14,7 +14,7 @@ class OptionList extends List {
                             {
                                 tag: 'span',
                                 classes: {
-                                    'radio': true,
+                                    'checkbox': true,
                                 },
                             },
                             {

@@ -1,16 +1,11 @@
 import Component from "../Component/index";
 import Control from "../Control/index";
-import List from '../List/index'
+import List from './DefaultOptionList'
 
 class CheckboxList extends Control {
     constructor(props, ...mixins) {
         const defaults = {
             options: [],
-            optionDefaults: {
-                tag: 'label',
-                children: '<span class="checkbox"></span><span class="text">{{this.props.text}}</span>'
-            },
-            type: 'check'
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -32,22 +27,6 @@ class CheckboxList extends Control {
         this.setProps({
             optionList: {
                 component: List,
-                _create: function () {
-                    that.optionList = this;
-                },
-                items: this.props.options,
-                itemDefaults: this.props.optionDefaults,
-                itemSelectable: {
-                    byClick: true,
-                    multiple: true
-                },
-                selectedItems: this.props.value,
-                events: {
-                    itemSelectionChange: function () {
-                        that._onValueChange();
-                        that.trigger('optionSelectionChange')
-                    }
-                }
             }
         })
 

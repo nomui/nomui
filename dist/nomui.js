@@ -4828,6 +4828,7 @@
   class OptionList extends List {
       constructor(props, ...mixins) {
           const defaults = {
+              gutter: 'x-md',
               itemDefaults: {
                   tag: 'label',
                   _config: function () {
@@ -4911,15 +4912,66 @@
 
   Component.register(RadioList);
 
+  var OptionListMixin$1 = {
+      _create: function () {
+          this.checkboxList = this.parent;
+          this.checkboxList.optionList = this;
+      },
+      _config: function () {
+          let listProps = this.checkboxList.props;
+          this.setProps({
+              items: listProps.options,
+              itemDefaults: listProps.optionDefaults,
+              itemSelectable: {
+                  byClick: true,
+                  multiple: true
+              },
+              selectedItems: listProps.value,
+              events: {
+                  itemSelectionChange: () => {
+                      this.checkboxList._onValueChange();
+                  }
+              }
+          });
+      }
+  };
+
+  class OptionList$1 extends List {
+      constructor(props, ...mixins) {
+          const defaults = {
+              gutter: 'x-md',
+              itemDefaults: {
+                  tag: 'label',
+                  _config: function () {
+                      this.setProps({
+                          children: [
+                              {
+                                  tag: 'span',
+                                  classes: {
+                                      'checkbox': true,
+                                  },
+                              },
+                              {
+                                  tag: 'span',
+                                  classes: {
+                                      'text': true,
+                                  },
+                                  children: this.props.text,
+                              },
+                          ],
+                      });
+                  }
+              }
+          };
+
+          super(Component.extendProps(defaults, props), OptionListMixin$1, ...mixins);
+      }
+  }
+
   class CheckboxList extends Control {
       constructor(props, ...mixins) {
           const defaults = {
               options: [],
-              optionDefaults: {
-                  tag: 'label',
-                  children: '<span class="checkbox"></span><span class="text">{{this.props.text}}</span>'
-              },
-              type: 'check'
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
@@ -4927,8 +4979,6 @@
 
       _config() {
           super._config();
-
-          var that = this;
 
           this.setProps({
               optionDefaults: {
@@ -4940,23 +4990,7 @@
 
           this.setProps({
               optionList: {
-                  component: List,
-                  _create: function () {
-                      that.optionList = this;
-                  },
-                  items: this.props.options,
-                  itemDefaults: this.props.optionDefaults,
-                  itemSelectable: {
-                      byClick: true,
-                      multiple: true
-                  },
-                  selectedItems: this.props.value,
-                  events: {
-                      itemSelectionChange: function () {
-                          that._onValueChange();
-                          that.trigger('optionSelectionChange');
-                      }
-                  }
+                  component: OptionList$1,
               }
           });
 
