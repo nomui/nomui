@@ -4,11 +4,7 @@ import OptionListMixin from './OptionListMixin'
 
 class OptionList extends List {
     constructor(props, ...mixins) {
-        super(props, OptionListMixin, ...mixins)
-    }
-
-    _config() {
-        this.setProps({
+        const defaults = {
             itemDefaults: {
                 tag: 'label',
                 _config: function () {
@@ -31,9 +27,9 @@ class OptionList extends List {
                     })
                 }
             }
-        })
+        }
 
-        super._config()
+        super(Component.extendProps(defaults, props), OptionListMixin, ...mixins)
     }
 }
 
