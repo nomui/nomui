@@ -1,11 +1,11 @@
 import Component from '../Component/index'
 
-class FlexItem extends Component {
+class PanelHeaderTools extends Component {
     constructor(props, ...mixins) {
         super(props, ...mixins)
     }
 }
 
-Component.register(FlexItem)
+Component.register(PanelHeaderTools)
 
-export default FlexItem
+export default PanelHeaderTools

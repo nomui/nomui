@@ -1,4 +1,4 @@
-define(['/docs/DemoWidget.js'], function (demoWidget) {
+define(['/docs/DemoPanel.js'], function (demoPanel) {
 
     return {
         component: 'Layout',
@@ -44,7 +44,7 @@ define(['/docs/DemoWidget.js'], function (demoWidget) {
                             body: {
                                 children: Array.prototype.slice.call(this.props.demos),
                                 childDefaults: {
-                                    component: demoWidget,
+                                    component: demoPanel,
                                     componentType: this.route.query.type,
                                     cat: this.route.query.cat
                                 },

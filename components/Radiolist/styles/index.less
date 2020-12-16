@@ -47,30 +47,32 @@
     >.nom-list {
         display: inline-flex;
 
-        >.nom-list-item-wrapper>label {
-            display: inline-flex;
-            position: relative;
-            line-height: @line-height-base;
-            padding-top: @padding-y-base;
-            padding-bottom: @padding-y-base;
-            padding-left: @padding-x-base;
-            padding-right: @padding-x-base;
-            border: 1px solid #d9d9d9;
-            margin-left: -1px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s;
+        >.nom-list-item-wrapper {
+            >label {
+                display: inline-flex;
+                position: relative;
+                line-height: @line-height-base;
+                padding-top: @padding-y-base;
+                padding-bottom: @padding-y-base;
+                padding-left: @padding-x-base;
+                padding-right: @padding-x-base;
+                border: 1px solid #d9d9d9;
+                margin-left: -1px;
+                cursor: pointer;
+                font-size: 1rem;
+                transition: all 0.3s;
+            }
 
-            &:first-child {
+            &:first-child>label {
                 border-left: 1px solid #d9d9d9;
                 border-radius: 4px 0 0 4px;
             }
 
-            &:last-child {
+            &:last-child>label {
                 border-radius: 0 4px 4px 0;
             }
 
-            &.s-selected {
+            >label.s-selected {
                 color: @primary;
                 border-color: @primary;
             }

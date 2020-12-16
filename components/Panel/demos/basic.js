@@ -6,7 +6,7 @@ define([], function () {
         demo: function () {
             return {
                 children: {
-                    component: 'Widget',
+                    component: 'Panel',
                     header: {
                         caption: {
                             title: '部件标题'

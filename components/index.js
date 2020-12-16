@@ -9,7 +9,6 @@ export { default as View } from './App/View'
 export { default as Rows } from './Rows/index'
 export { default as Cols } from './Cols/index'
 export { default as Container } from './Container/index'
-export { default as Flex } from './Flex/index'
 
 export { default as Layer } from './Layer/index'
 export { default as Message } from './Message/index'
@@ -26,7 +25,7 @@ export { default as Icon } from './Icon/index'
 export { default as List, ListItemMixin } from './List/index'
 export { default as Tabs } from './Tabs/index'
 export { default as Pager } from './Pager/index'
-export { default as Widget } from './Widget/index'
+export { default as Panel } from './Panel/index'
 
 
 export { default as Menu } from './Menu/index'

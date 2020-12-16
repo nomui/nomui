@@ -4,7 +4,7 @@ define([], function () {
         file: 'bg-color',
         demo: function () {
             return {
-                component: 'Flex',
+                component: 'Cols',
                 items: [
                     {
                         component: 'Button',

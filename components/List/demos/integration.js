@@ -1,19 +1,52 @@
 define([], function () {
 
     return {
-        title: '纵向列表',
-        file: 'verticle',
+        title: '综合示例',
+        file: 'integration',
         demo: function () {
             let demo = this
+            let items = [
+                { text: '飞狐外传' },
+                { text: '雪山飞狐' },
+                { text: '连城诀' },
+                { text: '天龙八部' },
+                { text: '射雕英雄传' },
+                { text: '白马啸西风' },
+                { text: '鹿鼎记' }
+            ]
 
             return {
-                children: [
+                component: 'Rows',              
+                gutter: 'md',
+                items: [
                     {
-                        component: 'Flex',
+                        component: 'Cols',
                         items: [
                             {
                                 component: 'RadioList',
-                                ref: 'gutterRadioList',
+                                options: [
+                                    { text: '自动', value: null },
+                                    { text: '1 列', value: 1 },
+                                    { text: '2 列', value: 2 },
+                                    { text: '3 列', value: 3 },
+                                    { text: '4 列', value: 4 },
+                                    { text: '5 列', value: 5 },
+                                    { text: '6 列', value: 6 },
+                                ],
+                                type: 'button',
+                                events: {
+                                    valueChange: function (changed) {
+                                        demo.refs.textList.update({
+                                            cols: changed.newValue
+                                        })
+                                        demo.refs.buttonList.update({
+                                            cols: changed.newValue
+                                        })
+                                    }
+                                },
+                            },
+                            {
+                                component: 'RadioList',
                                 options: [
                                     { text: '无间隔', value: null },
                                     { text: '小间隔', value: 'sm' },
@@ -34,11 +67,11 @@ define([], function () {
                             },
                             {
                                 component: 'RadioList',
-                                ref: 'lineRadioList',
                                 options: [
                                     { text: '没有线', value: null },
                                     { text: '分隔线', value: 'split' },
                                     { text: '网格线', value: 'grid' },
+                                    { text: '交叉线', value: 'cross' },
                                 ],
                                 type: 'button',
                                 events: {
@@ -55,10 +88,15 @@ define([], function () {
                         ]
                     },
                     {
-                        component: 'Flex',
+                        component: 'Cols',
+                        align: 'stretch',
+                        fills: true,
                         items: [
                             {
-                                component: 'Widget',
+                                component: 'Panel',
+                                styles: {
+                                    height: 'full'
+                                },
                                 header: {
                                     caption: {
                                         title: '文本项'
@@ -68,19 +106,13 @@ define([], function () {
                                     children: {
                                         component: 'List',
                                         ref: 'textList',
-                                        direction: 'vertical',
-                                        items: [
-                                            { title: '为什么金庸小说中的武林高手越来越弱' },
-                                            { title: '笑傲江湖中的政治斗争' },
-                                            { title: '论《葵花宝典》与《辟邪剑法》' },
-                                            { title: '武侠世界中的医者' },
-                                            { title: '《天龙八部》之文化思想的解读' },
-                                            { title: '金庸小说中的八大经典战役回顾' }
-                                        ],
+                                        direction: 'horizontal',
+                                        wrap: true,
+                                        items: items,
                                         itemDefaults: {
                                             _config: function () {
                                                 this.setProps({
-                                                    children: this.props.title
+                                                    children: this.props.text
                                                 })
                                             }
                                         }
@@ -88,7 +120,7 @@ define([], function () {
                                 }
                             },
                             {
-                                component: 'Widget',
+                                component: 'Panel',
                                 header: {
                                     caption: {
                                         title: '按钮项'
@@ -98,15 +130,9 @@ define([], function () {
                                     children: {
                                         component: 'List',
                                         ref: 'buttonList',
-                                        direction: 'vertical',
-                                        items: [
-                                            { text: '为什么金庸小说中的武林高手越来越弱' },
-                                            { text: '笑傲江湖中的政治斗争' },
-                                            { text: '论《葵花宝典》与《辟邪剑法》' },
-                                            { text: '武侠世界中的医者' },
-                                            { text: '《天龙八部》之文化思想的解读' },
-                                            { text: '金庸小说中的八大经典战役回顾' }
-                                        ],
+                                        direction: 'horizontal',
+                                        wrap: true,
+                                        items: items,
                                         itemDefaults: {
                                             component: 'Button'
                                         }
@@ -114,7 +140,7 @@ define([], function () {
                                 }
                             }
                         ]
-                    }
+                    },
                 ]
             }
         }

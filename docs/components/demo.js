@@ -1,7 +1,7 @@
-define(['/docs/DemoWidget.js'], function (demoWidget) {
+define(['/docs/DemoPanel.js'], function (demoPanel) {
 
     return {
-        component: demoWidget,
+        component: demoPanel,
         autoRender: false,
         _create: function () {
 

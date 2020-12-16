@@ -14,7 +14,7 @@ class Cols extends Component {
     }
 
     _config() {
-        this._propStyleClasses = ['gutter', 'align', 'justify']
+        this._propStyleClasses = ['gutter', 'align', 'justify', 'fills']
         let items = this.props.items
         var children = []
         if (Array.isArray(items) && items.length > 0) {

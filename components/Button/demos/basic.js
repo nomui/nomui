@@ -5,7 +5,7 @@ define([], function () {
         file: 'basic',
         demo: function () {
             return {
-                component: 'Flex',
+                component: 'Cols',
                 items: [
                     {
                         text: '普通',

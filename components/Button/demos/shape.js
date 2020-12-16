@@ -4,7 +4,7 @@ define([], function () {
         file: 'shape',
         demo: function () {
             return {
-                component: 'Flex',
+                component: 'Cols',
                 items: [
                     {
                         text: 'normal',

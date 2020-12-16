@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Caption from "../Caption/index";
-import Flex from "../Flex/index";
+import Cols from "../Cols/index";
 import NavbarCaption from './NavbarCaption'
 import NavbarNav from './NavbarNav'
 import NavbarTools from './NavbarTools'
@@ -21,12 +21,12 @@ class Navbar extends Component {
         let { caption, nav, tools } = this.props
         let toolsProps
         let captionProps = caption ? Component.extendProps({ component: Caption, titleLevel: 3 }, caption) : null
-        let navProps = nav ? Component.extendProps({ component: Flex }, nav) : null
+        let navProps = nav ? Component.extendProps({ component: Cols }, nav) : null
         if (Array.isArray(tools)) {
-            toolsProps = { component: Flex, items: tools }
+            toolsProps = { component: Cols, items: tools }
         }
         else if (isPlainObject(tools)) {
-            toolsProps = Component.extendProps({ component: Flex }, tools)
+            toolsProps = Component.extendProps({ component: Cols }, tools)
         }
 
         this.setProps({

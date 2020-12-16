@@ -4,7 +4,7 @@ define([], function () {
         file: 'with-icon',
         demo: function () {
             return {
-                component: 'Flex',
+                component: 'Cols',
                 items: [
                     {
                         text: 'Add',

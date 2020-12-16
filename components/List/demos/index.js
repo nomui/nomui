@@ -1,9 +1,7 @@
 define(
     [
         './basic.js',
-        './verticle.js',
-        './horizontal.js',
-        './horizontal-wrap.js',
+        './integration.js',
     ],
     function () {
         return {

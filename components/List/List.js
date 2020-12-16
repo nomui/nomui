@@ -14,10 +14,7 @@ class List extends Component {
             itemSelectable: {
                 multiple: false,
                 byClick: false
-            },
-
-            //direction: 'horizontal',
-            wrap: false
+            }
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -29,7 +26,7 @@ class List extends Component {
     }
 
     _config() {
-        this._propStyleClasses = ['direction', 'wrap', 'gutter', 'line', 'align', 'justify']
+        this._propStyleClasses = ['gutter', 'line', 'align', 'justify', 'cols']
         var items = this.props.items
         var children = []
         if (Array.isArray(items) && items.length > 0) {

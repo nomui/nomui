@@ -1,6 +1,6 @@
 define(['./Precode.js'], function (Precode) {
 
-    class DemoWidget extends nomui.Widget {
+    class DemoPanel extends nomui.Panel {
         constructor(props, ...mixins) {
             const defaults = {
                 title: 'title',
@@ -55,7 +55,7 @@ define(['./Precode.js'], function (Precode) {
                 },
                 footer: {
                     children: {
-                        component: 'Flex',
+                        component: 'Cols',
                         justify: 'between',
                         attrs: {
                             style: {
@@ -103,6 +103,6 @@ define(['./Precode.js'], function (Precode) {
         }
     }
 
-    return DemoWidget
+    return DemoPanel
 
 })

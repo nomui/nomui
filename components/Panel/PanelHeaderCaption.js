@@ -1,11 +1,11 @@
 import Component from '../Component/index'
 
-class WidgetHeaderCaption extends Component {
+class PanelHeaderCaption extends Component {
     constructor(props, ...mixins) {
         super(props, ...mixins)
     }
 }
 
-Component.register(WidgetHeaderCaption)
+Component.register(PanelHeaderCaption)
 
-export default WidgetHeaderCaption
+export default PanelHeaderCaption

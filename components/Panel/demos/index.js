@@ -4,7 +4,7 @@ define(
     ],
     function () {
         return {
-            title: 'Widget',
+            title: 'Panel',
             subtitle: '部件',
             demos: Array.prototype.slice.call(arguments)
         }

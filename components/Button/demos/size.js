@@ -5,7 +5,7 @@ define([], function () {
         file: 'size',
         demo: function () {
             return {
-                component: 'Flex',
+                component: 'Cols',
                 items: [
                     {
                         text: 'Extra small button',

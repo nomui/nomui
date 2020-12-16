@@ -928,7 +928,7 @@
                   if (modifierVal === true) {
                       classes.push('p-' + modifier);
                   }
-                  else if (typeof modifierVal === 'string') {
+                  else if (typeof modifierVal === 'string' || typeof modifierVal === 'number') {
                       classes.push('p-' + hyphenate(modifier) + '-' + modifierVal);
                   }
               }
@@ -1424,7 +1424,7 @@
       }
 
       _config() {
-          this._propStyleClasses = ['gutter', 'align', 'justify'];
+          this._propStyleClasses = ['gutter', 'align', 'justify', 'fills'];
           let items = this.props.items;
           var children = [];
           if (Array.isArray(items) && items.length > 0) {
@@ -1455,48 +1455,6 @@
   }
 
   Component.register(Container);
-
-  class FlexItem extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
-      }
-  }
-
-  Component.register(FlexItem);
-
-  class Flex extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              wrap: false,
-              items: [],
-              itemDefaults: null,
-              direction: 'horizontal',
-              gap: 'md',
-              wrap: false
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          this._propStyleClasses = ['direction', 'gap', 'wrap', 'justify'];
-          let items = this.props.items;
-          var children = [];
-          if (Array.isArray(items) && items.length > 0) {
-              for (var i = 0; i < items.length; i++) {
-                  let item = items[i];
-                  item = Component.extendProps({}, this.props.itemDefaults, item);
-                  children.push({ component: FlexItem, children: item });
-              }
-          }
-
-          this.setProps({
-              children: children
-          });
-      }
-  }
-
-  Component.register(Flex);
 
   let zIndex = 6666;
 
@@ -2789,12 +2747,12 @@
           let { caption, nav, tools } = this.props;
           let toolsProps;
           let captionProps = caption ? Component.extendProps({ component: Caption, titleLevel: 3 }, caption) : null;
-          let navProps = nav ? Component.extendProps({ component: Flex }, nav) : null;
+          let navProps = nav ? Component.extendProps({ component: Cols }, nav) : null;
           if (Array.isArray(tools)) {
-              toolsProps = { component: Flex, items: tools };
+              toolsProps = { component: Cols, items: tools };
           }
           else if (isPlainObject(tools)) {
-              toolsProps = Component.extendProps({ component: Flex }, tools);
+              toolsProps = Component.extendProps({ component: Cols }, tools);
           }
 
           this.setProps({
@@ -2908,10 +2866,7 @@
               itemSelectable: {
                   multiple: false,
                   byClick: false
-              },
-
-              //direction: 'horizontal',
-              wrap: false
+              }
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
@@ -2923,7 +2878,7 @@
       }
 
       _config() {
-          this._propStyleClasses = ['direction', 'wrap', 'gutter', 'line', 'align', 'justify'];
+          this._propStyleClasses = ['gutter', 'line', 'align', 'justify', 'cols'];
           var items = this.props.items;
           var children = [];
           if (Array.isArray(items) && items.length > 0) {
@@ -3451,31 +3406,31 @@
 
   Component.register(Pager);
 
-  class WidgetHeaderCaption extends Component {
+  class PanelHeaderCaption extends Component {
       constructor(props, ...mixins) {
           super(props, ...mixins);
       }
   }
 
-  Component.register(WidgetHeaderCaption);
+  Component.register(PanelHeaderCaption);
 
-  class WidgetHeaderNav extends Component {
+  class PanelHeaderNav extends Component {
       constructor(props, ...mixins) {
           super(props, ...mixins);
       }
   }
 
-  Component.register(WidgetHeaderNav);
+  Component.register(PanelHeaderNav);
 
-  class WidgetHeaderTools extends Component {
+  class PanelHeaderTools extends Component {
       constructor(props, ...mixins) {
           super(props, ...mixins);
       }
   }
 
-  Component.register(WidgetHeaderTools);
+  Component.register(PanelHeaderTools);
 
-  class WidgetHeader extends Component {
+  class PanelHeader extends Component {
       constructor(props, ...mixins) {
           const defaults = {
               caption: null,
@@ -3490,43 +3445,43 @@
           let { caption, nav, tools } = this.props;
           let toolsProps;
           let captionProps = caption ? Component.extendProps({ component: Caption }, caption) : null;
-          let navProps = nav ? Component.extendProps({ component: Flex }, nav) : null;
+          let navProps = nav ? Component.extendProps({ component: Cols }, nav) : null;
           if (Array.isArray(tools)) {
-              toolsProps = { component: Flex, items: tools };
+              toolsProps = { component: Cols, items: tools };
           }
           else if (isPlainObject(tools)) {
-              toolsProps = Component.extendProps({ component: Flex }, tools);
+              toolsProps = Component.extendProps({ component: Cols }, tools);
           }
 
           this.setProps({
               children: [
-                  captionProps && { component: WidgetHeaderCaption, children: captionProps },
-                  navProps && { component: WidgetHeaderNav, children: navProps },
-                  toolsProps && { component: WidgetHeaderTools, children: toolsProps },
+                  captionProps && { component: PanelHeaderCaption, children: captionProps },
+                  navProps && { component: PanelHeaderNav, children: navProps },
+                  toolsProps && { component: PanelHeaderTools, children: toolsProps },
               ]
           });
       }
   }
 
-  Component.register(WidgetHeader);
+  Component.register(PanelHeader);
 
-  class WidgetBody extends Component {
+  class PanelBody extends Component {
       constructor(props, ...mixins) {
           super(props, ...mixins);
       }
   }
 
-  Component.register(WidgetBody);
+  Component.register(PanelBody);
 
-  class WidgetFooter extends Component {
+  class PanelFooter extends Component {
       constructor(props, ...mixins) {
           super(props, ...mixins);
       }
   }
 
-  Component.register(WidgetFooter);
+  Component.register(PanelFooter);
 
-  class Widget extends Component {
+  class Panel extends Component {
       constructor(props, ...mixins) {
           const defaults = {
               header: null,
@@ -3541,10 +3496,10 @@
       _config() {
           let { header, body, footer } = this.props;
           let footerProps;
-          let headerProps = Component.extendProps({ component: WidgetHeader }, header);
-          let bodyProps = Component.extendProps({ component: WidgetBody }, body);
+          let headerProps = Component.extendProps({ component: PanelHeader }, header);
+          let bodyProps = Component.extendProps({ component: PanelBody }, body);
           if (footer) {
-              footerProps = Component.extendProps({ component: WidgetFooter }, footer);
+              footerProps = Component.extendProps({ component: PanelFooter }, footer);
           }
 
           this.setProps({
@@ -3557,7 +3512,7 @@
       }
   }
 
-  Component.register(Widget);
+  Component.register(Panel);
 
   class MenuItem extends Component {
       constructor(props, ...mixins) {
@@ -5374,7 +5329,6 @@
   exports.Container = Container;
   exports.Cssicon = Cssicon;
   exports.Field = Field;
-  exports.Flex = Flex;
   exports.Form = Form;
   exports.Icon = Icon;
   exports.Layer = Layer;
@@ -5388,6 +5342,7 @@
   exports.Navbar = Navbar;
   exports.Numberbox = Numberbox;
   exports.Pager = Pager;
+  exports.Panel = Panel;
   exports.Popup = Popup;
   exports.RadioList = RadioList;
   exports.Rows = Rows;
@@ -5397,7 +5352,6 @@
   exports.Textbox = Textbox;
   exports.TimePicker = TimePicker;
   exports.View = View;
-  exports.Widget = Widget;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

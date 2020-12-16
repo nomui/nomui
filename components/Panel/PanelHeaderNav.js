@@ -1,11 +1,11 @@
 import Component from '../Component/index'
 
-class WidgetHeaderNav extends Component {
+class PanelHeaderNav extends Component {
     constructor(props, ...mixins) {
         super(props, ...mixins)
     }
 }
 
-Component.register(WidgetHeaderNav)
+Component.register(PanelHeaderNav)
 
-export default WidgetHeaderNav
+export default PanelHeaderNav
