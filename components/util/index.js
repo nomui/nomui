@@ -181,3 +181,11 @@ export function normalizeKey(key) {
     key === "cssFloat" ? "float" :
       key.replace(uppercaseRegex, toLowerCase)
 }
+
+export function isNumeric(val) {
+  var num = Number(val),
+    type = typeof val;
+  return val != null && type != 'boolean' &&
+    (type != 'string' || val.length) &&
+    !isNaN(num) && isFinite(num) || false;
+}

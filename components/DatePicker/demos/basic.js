@@ -7,7 +7,7 @@ define([], function () {
             return {
                 children:
                 {
-                    component: 'Textbox',
+                    component: 'DatePicker',
                     placeholder: 'basic usage',
                 }
             }

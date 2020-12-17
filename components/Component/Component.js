@@ -1,4 +1,4 @@
-import { isPlainObject, isString, hyphenate, htmlEncode, isFunction, extend, normalizeKey } from '../util/index'
+import { isPlainObject, isString, hyphenate, isNumeric, isFunction, extend, normalizeKey } from '../util/index'
 import { Events } from '../util/events'
 
 let components = {}
@@ -195,7 +195,7 @@ class Component {
         else if (isPlainObject(children) || isFunction(children)) {
             this.appendChild(children)
         }
-        else if (isString(children)) {
+        else if (isString(children) || isNumeric(children)) {
             this.element.innerHTML = children
         }
     }
