@@ -23,18 +23,18 @@ class Input extends Component {
         this.setProps({
             attrs: {
                 value: this.props.value,
-                oninput: function () {
+                oninput: () => {
                     if (!this.capsLock) {
                         this.textbox._onValueChange()
                     }
                 },
-                onblur: function () {
+                onblur: () => {
                     this.textbox.trigger("blur")
                 },
-                oncompositionstart: function () {
+                oncompositionstart: () => {
                     this.capsLock = true
                 },
-                oncompositionend: function () {
+                oncompositionend: () => {
                     this.capsLock = false
                     this.element.dispatchEvent(new Event('input'))
                 }

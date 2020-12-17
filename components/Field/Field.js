@@ -28,7 +28,7 @@ class Field extends Component {
                 { component: FieldControl, value: this.props.value }
             ]
         })
-    }
+    }    
 
     validate() {
         this.control.validate && this.control.validate()

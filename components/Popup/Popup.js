@@ -24,6 +24,10 @@ class Popup extends Layer {
     _create() {
         super._create()
 
+        this._showHandler = this._showHandler.bind(this)
+        this._hideHandler = this._hideHandler.bind(this)
+        this._onOpenerClickHandler = this._onOpenerClickHandler.bind(this)
+
         this.opener = this.props.trigger
         this.props.alignTo = this.opener.element
         this.showTimer = null, this.hideTimer = null
@@ -41,44 +45,45 @@ class Popup extends Layer {
     }
 
     _bindClick() {
-        this.opener._on('click', this.toggleHidden, this)
+        this.opener._on('click', this._onOpenerClickHandler)
     }
 
     _bindHover() {
-        var that = this
-        var delay = 100
-        this.opener._on('mouseenter', function () {
-            clearTimeout(this.hideTimer)
-            this.hideTimer = null
-            this.showTimer = setTimeout(function () {
-                that.show()
-            }, delay)
-        }, this)
-
-        this.opener._on('mouseleave', this._leaveHandler, this)
+        this.opener._on('mouseenter', this._showHandler)
+        this.opener._on('mouseleave', this._hideHandler)
     }
 
-    _leaveHandler() {
-        var that = this
-        var delay = 100
+    _onOpenerClickHandler() {
+        this.toggleHidden()
+    }
+
+    _showHandler() {
+        clearTimeout(this.hideTimer)
+        this.hideTimer = null
+        this.showTimer = setTimeout(() => {
+            this.show()
+        }, this.delay)
+    }
+
+    _hideHandler() {
         clearTimeout(this.showTimer)
         this.showTimer = null
 
-        if (that.props.hidden === false) {
-            this.hideTimer = setTimeout(function () {
-                that.hide()
-            }, delay)
+        if (this.props.hidden === false) {
+            this.hideTimer = setTimeout(() => {
+                this.hide()
+            }, this.delay)
         }
     }
 
     _show() {
         super._show()
         this._off('mouseenter')
-        this._on('mouseenter', function () {
+        this._on('mouseenter', () => {
             clearTimeout(this.hideTimer)
         })
         this._off('mouseleave')
-        this._on('mouseleave', this._leaveHandler)
+        this._on('mouseleave', this._hideHandler)
     }
 }
 

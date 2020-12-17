@@ -1,3 +1,5 @@
+import { isFunction } from './index'
+
 let RuleManager = {};
 RuleManager.ruleTypes = {
     required: {
@@ -63,7 +65,7 @@ RuleManager.ruleTypes = {
                 length = value.length;
             }
             else {
-                length = $.trim(value).length;
+                length = value.trim().length;
             }
 
             return length >= ruleValue;
@@ -77,7 +79,7 @@ RuleManager.ruleTypes = {
                 length = value.length;
             }
             else {
-                length = $.trim(value).length;
+                length = value.trim().length;
             }
 
             return length <= ruleValue;
@@ -91,7 +93,7 @@ RuleManager.ruleTypes = {
                 length = value.length;
             }
             else {
-                length = $.trim(value).length;
+                length = value.trim().length;
             }
 
             return ruleValue[0] <= length && length <= ruleValue[1];
@@ -126,7 +128,7 @@ RuleManager.ruleTypes = {
     },
     func: {
         validate: function (value, ruleValue) {
-            if ($.isFunction(ruleValue)) {
+            if (isFunction(ruleValue)) {
                 return ruleValue(value);
             }
         }

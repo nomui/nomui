@@ -473,6 +473,9 @@
       }
 
       create() {
+          this._onClickToggleExpand = this._onClickToggleExpand.bind(this);
+          this._onClickToggleSelect = this._onClickToggleSelect.bind(this);
+
           isFunction(this._create) && this._create();
           this._callMixin('_create');
           this.props._create && this.props._create.call(this);
@@ -989,12 +992,20 @@
           }
 
           if (props.selectable && props.selectable.byClick) {
-              this._on('click', this.toggleSelect);
+              this._on('click', this._onClickToggleSelect);
           }
 
           if (props.expandable && props.expandable.byClick) {
-              this._on('click', this.toggleExpand);
+              this._on('click', this._onClickToggleExpand);
           }
+      }
+
+      _onClickToggleSelect() {
+          this.toggleSelect();
+      }
+
+      _onClickToggleExpand() {
+          this.toggleExpand();
       }
 
       _setStyle(style) {
@@ -1025,14 +1036,14 @@
           return classArray
       }
 
-      _on(event, callback, context) {
+      _on(event, callback) {
           var cache, list;
-          if (context) {
-              callback = callback.bind(context);
+          /*if (context) {
+              callback = callback.bind(context)
           }
           else {
-              callback = callback.bind(this);
-          }
+              callback = callback.bind(this)
+          }*/
           cache = this.__htmlEvents || (this.__htmlEvents = {});
           list = cache[event] || (cache[event] = []);
           list.push(callback);
@@ -2005,6 +2016,11 @@
           }
       }
 
+      _remove() {
+          window.removeEventListener('resize', this._onWindowResize, false);
+          document.removeEventListener('mousedown', this._onDocumentMousedown, false);
+      }
+
       _onWindowResize() {
           if (this.props.hidden === false) {
               this.setPosition();
@@ -2203,6 +2219,10 @@
       _create() {
           super._create();
 
+          this._showHandler = this._showHandler.bind(this);
+          this._hideHandler = this._hideHandler.bind(this);
+          this._onOpenerClickHandler = this._onOpenerClickHandler.bind(this);
+
           this.opener = this.props.trigger;
           this.props.alignTo = this.opener.element;
           this.showTimer = null, this.hideTimer = null;
@@ -2220,44 +2240,45 @@
       }
 
       _bindClick() {
-          this.opener._on('click', this.toggleHidden, this);
+          this.opener._on('click', this._onOpenerClickHandler);
       }
 
       _bindHover() {
-          var that = this;
-          var delay = 100;
-          this.opener._on('mouseenter', function () {
-              clearTimeout(this.hideTimer);
-              this.hideTimer = null;
-              this.showTimer = setTimeout(function () {
-                  that.show();
-              }, delay);
-          }, this);
-
-          this.opener._on('mouseleave', this._leaveHandler, this);
+          this.opener._on('mouseenter', this._showHandler);
+          this.opener._on('mouseleave', this._hideHandler);
       }
 
-      _leaveHandler() {
-          var that = this;
-          var delay = 100;
+      _onOpenerClickHandler() {
+          this.toggleHidden();
+      }
+
+      _showHandler() {
+          clearTimeout(this.hideTimer);
+          this.hideTimer = null;
+          this.showTimer = setTimeout(() => {
+              this.show();
+          }, this.delay);
+      }
+
+      _hideHandler() {
           clearTimeout(this.showTimer);
           this.showTimer = null;
 
-          if (that.props.hidden === false) {
-              this.hideTimer = setTimeout(function () {
-                  that.hide();
-              }, delay);
+          if (this.props.hidden === false) {
+              this.hideTimer = setTimeout(() => {
+                  this.hide();
+              }, this.delay);
           }
       }
 
       _show() {
           super._show();
           this._off('mouseenter');
-          this._on('mouseenter', function () {
+          this._on('mouseenter', () => {
               clearTimeout(this.hideTimer);
           });
           this._off('mouseleave');
-          this._on('mouseleave', this._leaveHandler);
+          this._on('mouseleave', this._hideHandler);
       }
   }
 
@@ -2282,7 +2303,7 @@
               closeOnClickOutside: true,
 
               autoRender: false,
-              hidden: true,
+              hidden: false,
 
               styles: {
                   color: 'black'
@@ -2295,37 +2316,71 @@
       _create() {
           super._create();
 
+          this._showHandler = this._showHandler.bind(this);
+          this._hideHandler = this._hideHandler.bind(this);
+          this._onOpenerFocusinHandler = this._onOpenerFocusinHandler.bind(this);
+          this._onOpenerFocusoutHandler = this._onOpenerFocusoutHandler.bind(this);
+
+          this._openerFocusing = false;
           this.opener = this.props.trigger;
           this.props.alignTo = this.opener.element;
           this.showTimer = null, this.hideTimer = null;
+          this.delay = 100;
           this.addRel(this.opener.element);
           this._bindHover();
       }
 
-      _bindHover() {
-          var that = this;
-          var delay = 100;
-          this.opener._on('mouseenter', function () {
-              clearTimeout(this.hideTimer);
-              this.hideTimer = null;
-              this.showTimer = setTimeout(function () {
-                  that.show();
-              }, delay);
-          }, this);
+      _remove() {
+          this.opener._off('mouseenter', this._showHandler);
+          this.opener._off('mouseleave', this._hideHandler);
+          this.opener._off('focusin', this._onOpenerFocusinHandler);
+          this.opener._off('focusout', this._onOpenerFocusoutHandler);
 
-          this.opener._on('mouseleave', this._leaveHandler, this);
+          this._off('mouseenter');
+          this._off('mouseleave');
+          clearTimeout(this.showTimer);
+          this.showTimer = null;
+          clearTimeout(this.hideTimer);
+          this.hideTimer = null;
+          super._remove();
       }
 
-      _leaveHandler() {
-          var that = this;
-          var delay = 100;
+      _bindHover() {
+          this.opener._on('mouseenter', this._showHandler);
+          this.opener._on('mouseleave', this._hideHandler);
+          this.opener._on('focusin', this._onOpenerFocusinHandler);
+          this.opener._on('focusout', this._onOpenerFocusoutHandler);
+      }
+
+      _onOpenerFocusinHandler() {
+          this._openerFocusing = true;
+          this._showHandler();
+      }
+
+      _onOpenerFocusoutHandler() {
+          this._openerFocusing = false;
+          this._hideHandler();
+      }
+
+      _showHandler() {
+          clearTimeout(this.hideTimer);
+          this.hideTimer = null;
+          this.showTimer = setTimeout(() => {
+              this.show();
+          }, this.delay);
+      }
+
+      _hideHandler() {
+          if (this._openerFocusing === true) {
+              return
+          }
           clearTimeout(this.showTimer);
           this.showTimer = null;
 
-          if (that.props.hidden === false) {
-              this.hideTimer = setTimeout(function () {
-                  that.hide();
-              }, delay);
+          if (this.props.hidden === false) {
+              this.hideTimer = setTimeout(() => {
+                  this.hide();
+              }, this.delay);
           }
       }
 
@@ -2335,8 +2390,8 @@
           this._on('mouseenter', function () {
               clearTimeout(this.hideTimer);
           });
-          this._off('mouseleave');
-          this._on('mouseleave', this._leaveHandler);
+          this._off('mouseleave', this._hideHandler);
+          this._on('mouseleave', this._hideHandler);
       }
   }
 
@@ -4332,7 +4387,7 @@
                   length = value.length;
               }
               else {
-                  length = $.trim(value).length;
+                  length = value.trim().length;
               }
 
               return length >= ruleValue;
@@ -4346,7 +4401,7 @@
                   length = value.length;
               }
               else {
-                  length = $.trim(value).length;
+                  length = value.trim().length;
               }
 
               return length <= ruleValue;
@@ -4360,7 +4415,7 @@
                   length = value.length;
               }
               else {
-                  length = $.trim(value).length;
+                  length = value.trim().length;
               }
 
               return ruleValue[0] <= length && length <= ruleValue[1];
@@ -4395,7 +4450,7 @@
       },
       func: {
           validate: function (value, ruleValue) {
-              if ($.isFunction(ruleValue)) {
+              if (isFunction(ruleValue)) {
                   return ruleValue(value);
               }
           }
@@ -4498,17 +4553,38 @@
               if (validationResult === true) {
                   this.removeClass('s-invalid');
                   this.trigger('valid');
-
+                  if (this.errorTip) {
+                      this.errorTip.remove();
+                      delete this.errorTip;
+                  }
                   return true
               }
               else {
                   this.addClass('s-invalid');
                   this.trigger('invalid', validationResult);
+                  this._invalid(validationResult);
                   return this
               }
           }
 
           return true
+      }
+
+      _invalid(message) {
+          if (!this.errorTip) {
+              this.errorTip = new Tooltip({
+                  trigger: this,
+                  styles: {
+                      color: 'danger',
+                  },
+                  children: message
+              });
+          }
+          else {
+              this.errorTip.update({
+                  children: message
+              });
+          }
       }
 
       // 派生的控件子类内部适当位置调用
@@ -4559,18 +4635,18 @@
           this.setProps({
               attrs: {
                   value: this.props.value,
-                  oninput: function () {
+                  oninput: () => {
                       if (!this.capsLock) {
                           this.textbox._onValueChange();
                       }
                   },
-                  onblur: function () {
+                  onblur: () => {
                       this.textbox.trigger("blur");
                   },
-                  oncompositionstart: function () {
+                  oncompositionstart: () => {
                       this.capsLock = true;
                   },
-                  oncompositionend: function () {
+                  oncompositionend: () => {
                       this.capsLock = false;
                       this.element.dispatchEvent(new Event('input'));
                   }
@@ -5409,7 +5485,7 @@
                   { component: FieldControl, value: this.props.value }
               ]
           });
-      }
+      }    
 
       validate() {
           this.control.validate && this.control.validate();

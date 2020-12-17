@@ -96,6 +96,9 @@ class Component {
     }
 
     create() {
+        this._onClickToggleExpand = this._onClickToggleExpand.bind(this)
+        this._onClickToggleSelect = this._onClickToggleSelect.bind(this)
+
         isFunction(this._create) && this._create()
         this._callMixin('_create')
         this.props._create && this.props._create.call(this)
@@ -612,12 +615,20 @@ class Component {
         }
 
         if (props.selectable && props.selectable.byClick) {
-            this._on('click', this.toggleSelect)
+            this._on('click', this._onClickToggleSelect)
         }
 
         if (props.expandable && props.expandable.byClick) {
-            this._on('click', this.toggleExpand)
+            this._on('click', this._onClickToggleExpand)
         }
+    }
+
+    _onClickToggleSelect() {
+        this.toggleSelect()
+    }
+
+    _onClickToggleExpand() {
+        this.toggleExpand()
     }
 
     _setStyle(style) {
@@ -648,14 +659,14 @@ class Component {
         return classArray
     }
 
-    _on(event, callback, context) {
+    _on(event, callback) {
         var cache, list
-        if (context) {
+        /*if (context) {
             callback = callback.bind(context)
         }
         else {
             callback = callback.bind(this)
-        }
+        }*/
         cache = this.__htmlEvents || (this.__htmlEvents = {})
         list = cache[event] || (cache[event] = [])
         list.push(callback)

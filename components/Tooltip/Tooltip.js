@@ -12,7 +12,7 @@ class Tooltip extends Layer {
             closeOnClickOutside: true,
 
             autoRender: false,
-            hidden: true,
+            hidden: false,
 
             styles: {
                 color: 'black'
@@ -25,37 +25,71 @@ class Tooltip extends Layer {
     _create() {
         super._create()
 
+        this._showHandler = this._showHandler.bind(this)
+        this._hideHandler = this._hideHandler.bind(this)
+        this._onOpenerFocusinHandler = this._onOpenerFocusinHandler.bind(this)
+        this._onOpenerFocusoutHandler = this._onOpenerFocusoutHandler.bind(this)
+
+        this._openerFocusing = false
         this.opener = this.props.trigger
         this.props.alignTo = this.opener.element
         this.showTimer = null, this.hideTimer = null
+        this.delay = 100
         this.addRel(this.opener.element)
         this._bindHover()
     }
 
-    _bindHover() {
-        var that = this
-        var delay = 100
-        this.opener._on('mouseenter', function () {
-            clearTimeout(this.hideTimer)
-            this.hideTimer = null
-            this.showTimer = setTimeout(function () {
-                that.show()
-            }, delay)
-        }, this)
+    _remove() {
+        this.opener._off('mouseenter', this._showHandler)
+        this.opener._off('mouseleave', this._hideHandler)
+        this.opener._off('focusin', this._onOpenerFocusinHandler)
+        this.opener._off('focusout', this._onOpenerFocusoutHandler)
 
-        this.opener._on('mouseleave', this._leaveHandler, this)
+        this._off('mouseenter')
+        this._off('mouseleave')
+        clearTimeout(this.showTimer)
+        this.showTimer = null
+        clearTimeout(this.hideTimer)
+        this.hideTimer = null
+        super._remove()
     }
 
-    _leaveHandler() {
-        var that = this
-        var delay = 100
+    _bindHover() {
+        this.opener._on('mouseenter', this._showHandler)
+        this.opener._on('mouseleave', this._hideHandler)
+        this.opener._on('focusin', this._onOpenerFocusinHandler)
+        this.opener._on('focusout', this._onOpenerFocusoutHandler)
+    }
+
+    _onOpenerFocusinHandler() {
+        this._openerFocusing = true
+        this._showHandler()
+    }
+
+    _onOpenerFocusoutHandler() {
+        this._openerFocusing = false
+        this._hideHandler()
+    }
+
+    _showHandler() {
+        clearTimeout(this.hideTimer)
+        this.hideTimer = null
+        this.showTimer = setTimeout(() => {
+            this.show()
+        }, this.delay)
+    }
+
+    _hideHandler() {
+        if (this._openerFocusing === true) {
+            return
+        }
         clearTimeout(this.showTimer)
         this.showTimer = null
 
-        if (that.props.hidden === false) {
-            this.hideTimer = setTimeout(function () {
-                that.hide()
-            }, delay)
+        if (this.props.hidden === false) {
+            this.hideTimer = setTimeout(() => {
+                this.hide()
+            }, this.delay)
         }
     }
 
@@ -65,8 +99,8 @@ class Tooltip extends Layer {
         this._on('mouseenter', function () {
             clearTimeout(this.hideTimer)
         })
-        this._off('mouseleave')
-        this._on('mouseleave', this._leaveHandler)
+        this._off('mouseleave', this._hideHandler)
+        this._on('mouseleave', this._hideHandler)
     }
 }
 

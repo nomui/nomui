@@ -76,6 +76,11 @@ class Layer extends Component {
         }
     }
 
+    _remove() {
+        window.removeEventListener('resize', this._onWindowResize, false);
+        document.removeEventListener('mousedown', this._onDocumentMousedown, false);
+    }
+
     _onWindowResize() {
         if (this.props.hidden === false) {
             this.setPosition();

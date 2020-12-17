@@ -1,6 +1,7 @@
 import Component from '../Component/index'
-import RuleManager from "../util/rule-manager";
+import RuleManager from "../util/rule-manager"
 import { clone, isFunction, extend } from '../util/index'
+import Tooltip from '../Tooltip/index'
 
 class Control extends Component {
     constructor(props, ...mixins) {
@@ -62,17 +63,38 @@ class Control extends Component {
             if (validationResult === true) {
                 this.removeClass('s-invalid')
                 this.trigger('valid')
-
+                if (this.errorTip) {
+                    this.errorTip.remove()
+                    delete this.errorTip
+                }
                 return true
             }
             else {
                 this.addClass('s-invalid')
                 this.trigger('invalid', validationResult)
+                this._invalid(validationResult)
                 return this
             }
         }
 
         return true
+    }
+
+    _invalid(message) {
+        if (!this.errorTip) {
+            this.errorTip = new Tooltip({
+                trigger: this,
+                styles: {
+                    color: 'danger',
+                },
+                children: message
+            })
+        }
+        else {
+            this.errorTip.update({
+                children: message
+            })
+        }
     }
 
     // 派生的控件子类内部适当位置调用
