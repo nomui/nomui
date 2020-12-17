@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Cssicon from '../Cssicon/index'
-import { isString } from '../util/index'
+import { isString, isPlainObject } from '../util/index'
 
 class Icon extends Component {
     constructor(props, ...mixins) {
@@ -38,8 +38,11 @@ Component.normalizeIconProps = function (props) {
     if (isString(props)) {
         iconProps.type = props
     }
-    else {
+    else if (isPlainObject(props)) {
         iconProps = props
+    }
+    else {
+        return null
     }
     iconProps.component = Icon
 

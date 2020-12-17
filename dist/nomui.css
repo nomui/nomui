@@ -4589,10 +4589,10 @@ textarea .nom-input {
 .nom-textbox .nom-field-control {
   position: relative;
 }
-.nom-textbox.nom-textbox-with-left-icon .nom-input {
+.nom-textbox.p-with-left-icon .nom-input {
   padding-left: 2.5rem;
 }
-.nom-textbox.nom-textbox-with-right-icon .nom-input {
+.nom-textbox.p-with-right-icon .nom-input {
   padding-right: 2.5rem;
 }
 .nom-textbox .nom-textbox-left-icon {

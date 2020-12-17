@@ -2795,8 +2795,11 @@
       if (isString(props)) {
           iconProps.type = props;
       }
-      else {
+      else if (isPlainObject(props)) {
           iconProps = props;
+      }
+      else {
+          return null
       }
       iconProps.component = Icon;
 
@@ -4687,33 +4690,41 @@
       }
 
       _config() {
-          super._config();
+          let { leftIcon, rightIcon, placeholder, value } = this.props;
 
-          this.setProps({
-              leftIcon: Component.normalizeIconProps(this.props.leftIcon),
-              rightIcon: Component.normalizeIconProps(this.props.rightIcon),
-              input: {
-                  component: Input,
-                  name: 'input',
-                  attrs: {
-                      value: this.props.value,
-                      placeholder: this.props.placeholder
-                  }
+          let leftIconProps = Component.normalizeIconProps(leftIcon);
+          if (leftIconProps != null) {
+              Component.extendProps(leftIconProps, { classes: { 'nom-textbox-left-icon': true } });
+          }
+
+          let rightIconProps = Component.normalizeIconProps(rightIcon);
+          if (rightIconProps != null) {
+              Component.extendProps(rightIconProps, { classes: { 'nom-textbox-right-icon': true } });
+          }
+
+          let inputProps = {
+              component: Input,
+              name: 'input',
+              attrs: {
+                  value: value,
+                  placeholder: placeholder
               }
-          });
+          };
 
           this.setProps({
               tag: 'div',
               classes: {
-                  'p-with-left-icon': !!this.props.leftIcon,
-                  'p-with-right-icon': !!this.props.rightIcon
+                  'p-with-left-icon': !!leftIcon,
+                  'p-with-right-icon': !!rightIcon
               },
               children: [
-                  this.props.input,
-                  this.props.leftIcon && this.props.leftIcon,
-                  this.props.rightIcon && this.props.rightIcon
+                  inputProps,
+                  leftIcon && leftIconProps,
+                  rightIcon && rightIconProps
               ]
           });
+
+          super._config();
       }
 
       getText() {

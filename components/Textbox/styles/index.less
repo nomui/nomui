@@ -1,12 +1,11 @@
 .nom-input-focus(@color: @input-border-focus) {
     @color-rgba: rgba(red(@color), green(@color), blue(@color), .6);
+
     &:focus {
-      border-color: @color;
-      outline: 0;
+        border-color: @color;
+        outline: 0;
     }
-  }
-
-
+}
 
 .nom-input {
     display: block;
@@ -22,11 +21,13 @@
     border-radius: @input-border-radius; // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
     // Customize the `:focus` state to imitate native WebKit styles.
     .nom-input-focus();
+
     // Unstyle the caret on `<select>`s in IE10+.
     &::-ms-expand {
         border: 0;
         background-color: transparent;
     }
+
     // Disabled and read-only inputs
     //
     // HTML5 says that controls under a fieldset > legend:first-child won't be
@@ -43,12 +44,13 @@
     fieldset[disabled] & {
         cursor: @cursor-disabled;
     }
+
     // Reset height for `textarea`s
     textarea & {
         height: auto;
     }
 
-    .s-invalid > & {
+    .s-invalid>& {
         border-color: #ffa8a8;
         background-color: #fff3f3;
         color: #000;
@@ -62,13 +64,13 @@
         position: relative;
     }
 
-    &.nom-textbox-with-left-icon {
+    &.p-with-left-icon {
         .nom-input {
             padding-left: 2.5rem;
         }
     }
 
-    &.nom-textbox-with-right-icon {
+    &.p-with-right-icon {
         .nom-input {
             padding-right: 2.5rem;
         }
