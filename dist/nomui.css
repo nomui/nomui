@@ -1442,6 +1442,10 @@ template {
   background-color: #ffffff;
   color: #343a40;
 }
+.u-color-black {
+  background-color: #000000;
+  color: #ffffff;
+}
 .u-padding-d125 {
   padding: 0.125rem !important;
 }
@@ -3962,6 +3966,10 @@ img {
   width: 50px;
   height: 50px;
   overflow: scroll;
+}
+.nom-tooltip {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem !important;
 }
 .nom-message {
   display: flex;

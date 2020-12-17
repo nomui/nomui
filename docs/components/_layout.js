@@ -46,6 +46,7 @@ define([], {
                             { text: 'Drawer', subtext: '抽屉', id: 'Drawer', url: '#!components!index?type=Drawer' },
                             { text: 'Alert', subtext: '警告框', id: 'Alert', url: '#!components!index?type=Alert' },
                             { text: 'Message', subtext: '消息', id: 'Message', url: '#!components!index?type=Message' },
+                            { text: 'Tooltip', subtext: '文字提示', id: 'Tooltip', url: '#!components!index?type=Tooltip' },
                             { text: 'Loading', subtext: '加载框', id: 'Loading', url: '#!components!index?type=Loading' }
                         ]
                     },

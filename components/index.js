@@ -13,6 +13,7 @@ export { default as Container } from './Container/index'
 export { default as Layer } from './Layer/index'
 export { default as Message } from './Message/index'
 export { default as Popup } from './Popup/index'
+export { default as Tooltip } from './Tooltip/index'
 
 export { default as Alert } from './Alert/index'
 export { default as Modal } from './Modal/index'
