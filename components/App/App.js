@@ -24,12 +24,12 @@ class App extends Component {
 
         this.views = {}
 
-        Object.defineProperty(Component.prototype, 'app', {
+        Object.defineProperty(Component.prototype, '$app', {
             get: function () { return this.root; }
         })
 
         Object.defineProperty(Component.prototype, 'route', {
-            get: function () { return this.app.currentRoute; }
+            get: function () { return this.$app.currentRoute; }
         })
     }
 
@@ -106,6 +106,9 @@ class App extends Component {
         url = pathCombine(this.props.viewsDir, url) + '.js';
 
         require([url], (viewOptions) => {
+            if (viewOptions.documentTitle) {
+                document.title = viewOptions.documentTitle
+            }
             var extOptions = {
                 reference: element,
                 placement: 'replace',

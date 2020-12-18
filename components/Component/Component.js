@@ -98,6 +98,7 @@ class Component {
     create() {
         this._onClickToggleExpand = this._onClickToggleExpand.bind(this)
         this._onClickToggleSelect = this._onClickToggleSelect.bind(this)
+        this._onClickHandler = this._onClickHandler.bind(this)
 
         isFunction(this._create) && this._create()
         this._callMixin('_create')
@@ -610,6 +611,9 @@ class Component {
         var events = this.props.events
         for (var event in events) {
             if (events.hasOwnProperty(event)) {
+                if (event === 'click') {
+                    this._on('click', this._onClickHandler)
+                }
                 this.on(event, events[event])
             }
         }
@@ -621,6 +625,10 @@ class Component {
         if (props.expandable && props.expandable.byClick) {
             this._on('click', this._onClickToggleExpand)
         }
+    }
+
+    _onClickHandler() {
+        this.trigger('click')
     }
 
     _onClickToggleSelect() {

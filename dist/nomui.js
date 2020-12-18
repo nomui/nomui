@@ -483,6 +483,7 @@
       create() {
           this._onClickToggleExpand = this._onClickToggleExpand.bind(this);
           this._onClickToggleSelect = this._onClickToggleSelect.bind(this);
+          this._onClickHandler = this._onClickHandler.bind(this);
 
           isFunction(this._create) && this._create();
           this._callMixin('_create');
@@ -995,6 +996,9 @@
           var events = this.props.events;
           for (var event in events) {
               if (events.hasOwnProperty(event)) {
+                  if (event === 'click') {
+                      this._on('click', this._onClickHandler);
+                  }
                   this.on(event, events[event]);
               }
           }
@@ -1006,6 +1010,10 @@
           if (props.expandable && props.expandable.byClick) {
               this._on('click', this._onClickToggleExpand);
           }
+      }
+
+      _onClickHandler() {
+          this.trigger('click');
       }
 
       _onClickToggleSelect() {
@@ -1228,21 +1236,37 @@
 
       render() {
           this._mountElement();
-          this.app.routeView(this.app.lastLevel, this.element, this.props.defaultPath);
+          this.$app.routeView(this.$app.lastLevel, this.element, this.props.defaultPath);
       }
 
   }
 
   Component.register(View);
 
+  Object.defineProperty(Component.prototype, '$view', {
+      get: function () {
+          let cur = this;
+          while (cur) {
+              if (cur.__isView === true) {
+                  return cur
+              }
+              else {
+                  cur = cur.parent;
+              }
+          }
+          return cur
+      }
+  });
+
   var ViewMixin = {
       _create: function () {
-          this.viewLevel = this.app.lastLevel;
-          this.app.lastLevel++;
+          this.viewLevel = this.$app.lastLevel;
+          this.$app.lastLevel++;
           this._scoped = true;
+          this.__isView = true;
       },
       _remove: function () {
-          delete this.app.views[this.viewLevel];
+          delete this.$app.views[this.viewLevel];
       }
   };
 
@@ -1266,12 +1290,12 @@
 
           this.views = {};
 
-          Object.defineProperty(Component.prototype, 'app', {
+          Object.defineProperty(Component.prototype, '$app', {
               get: function () { return this.root; }
           });
 
           Object.defineProperty(Component.prototype, 'route', {
-              get: function () { return this.app.currentRoute; }
+              get: function () { return this.$app.currentRoute; }
           });
       }
 
@@ -1348,6 +1372,9 @@
           url = pathCombine(this.props.viewsDir, url) + '.js';
 
           require([url], (viewOptions) => {
+              if (viewOptions.documentTitle) {
+                  document.title = viewOptions.documentTitle;
+              }
               var extOptions = {
                   reference: element,
                   placement: 'replace',
@@ -3873,7 +3900,6 @@
           var expanded = menuProps.type === 'horizontal' || menuProps.itemExpandable.initExpandLevel >= this.level;
 
           this.setProps({
-              item: { name: 'item' },
               submenu: menuProps.submenu
           });
 
@@ -4064,7 +4090,7 @@
               this.setProps({
                   attrs: {
                       onclick: () => {
-                          window.location.hash = href;
+                          window.location = href;
                       }
                   }
               });

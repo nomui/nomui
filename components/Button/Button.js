@@ -37,7 +37,7 @@ class Button extends Component {
             this.setProps({
                 attrs: {
                     onclick: () => {
-                        window.location.hash = href;
+                        window.location = href;
                     }
                 }
             })
