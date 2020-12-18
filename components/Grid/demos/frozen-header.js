@@ -7,7 +7,7 @@ define([], function () {
             return {
                 children: [
                     {
-                        component: 'grid',
+                        component: 'Grid',
                         columns: [
                             {
                                 field: 'name', title: '标题', width: 200,

@@ -1,50 +1,50 @@
-define(['../base/nom', '../base/component', './grid-header', './grid-body'],
+import Component from '../Component/index'
+import GridHeader from './GridHeader'
+import GridBody from './GridBody'
 
-    function (nom, Component, GridHeader, GridBody) {
-
-        function Grid(props) {
-            Component.call(this, props);
+class Grid extends Component {
+    constructor(props, ...mixins) {
+        const defaults = {
+            columns: [],
+            data: [],
+            frozenHeader: false
         }
 
-        nom.defineComponent('grid', Grid, {
-            defaults: {
-                columns: [],
-                data: [],
-                frozenHeader: false
-            },
-
-            _create: function () {
-                this.minWidth = 0;
-            },
-
-            _config: function () {
-                this._calcMinWidth();
-
-                this.setProps({
-                    classes: {
-                        'm-frozen-header': this.props.frozenHeader
-                    },
-                    children: [
-                        { component: GridHeader },
-                        { component: GridBody }
-                    ]
-                });
-            },
-
-            _calcMinWidth: function () {
-                var props = this.props;
-                for (var i = 0; i < props.columns.length; i++) {
-                    var column = props.columns[i];
-                    if (column.width) {
-                        this.minWidth += column.width;
-                    }
-                    else {
-                        this.minWidth += 120;
-                    }
-                }
-            },
-        });
-
-        return Grid;
+        super(Component.extendProps(defaults, props), ...mixins)
     }
-);
+
+    _create() {
+        this.minWidth = 0;
+    }
+
+    _config() {
+        this._calcMinWidth();
+
+        this.setProps({
+            classes: {
+                'm-frozen-header': this.props.frozenHeader
+            },
+            children: [
+                { component: GridHeader },
+                { component: GridBody }
+            ]
+        })
+    }
+
+    _calcMinWidth() {
+        var props = this.props;
+        for (var i = 0; i < props.columns.length; i++) {
+            var column = props.columns[i];
+            if (column.width) {
+                this.minWidth += column.width;
+            }
+            else {
+                this.minWidth += 120;
+            }
+        }
+    }
+}
+
+Component.register(Grid)
+
+export default Grid

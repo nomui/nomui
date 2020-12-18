@@ -1,43 +1,42 @@
-define(['../base/nom', '../base/component', '../table/table'],
+import Component from '../Component/index'
+import Table from '../Table/index'
 
-    function (nom, Component, Table) {
-
-        function GridBody(props) {
-            Component.call(this, props);
+class GridBody extends Component {
+    constructor(props, ...mixins) {
+        const defaults = {
+            children: { component: Table }
         }
 
-        nom.defineComponent('grid-body', GridBody, {
-            defaults: {
-                children: { component: Table }
-            },
-
-            _create: function () {
-                this.grid = this.parent;
-                this.grid.body = this;
-            },
-
-            _config: function () {
-                this.setProps({
-                    children: {
-                        columns: this.grid.props.columns,
-                        data: this.grid.data,
-                        attrs: {
-                            style: {
-                                minWidth: this.grid.minWidth + 'px'
-                            }
-                        },
-                        onlyBody: true
-                    },
-                    events: {
-                        onscroll: function () {
-                            var scrollLeft = this.element.scrollLeft;
-                            this.grid.header.element.scrollLeft = scrollLeft;
-                        }
-                    }
-                });
-            }
-        });
-
-        return GridBody;
+        super(Component.extendProps(defaults, props), ...mixins)
     }
-);
+
+    _create() {
+        this.grid = this.parent;
+        this.grid.body = this;
+    }
+
+    _config() {
+        this.setProps({
+            children: {
+                columns: this.grid.props.columns,
+                data: this.grid.props.data,
+                attrs: {
+                    style: {
+                        minWidth: this.grid.minWidth + 'px'
+                    }
+                },
+                onlyBody: true
+            },
+            attrs: {
+                onscroll: () => {
+                    var scrollLeft = this.element.scrollLeft;
+                    this.grid.header.element.scrollLeft = scrollLeft;
+                }
+            }
+        })
+    }
+}
+
+Component.register(GridBody)
+
+export default GridBody

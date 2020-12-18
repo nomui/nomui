@@ -4333,6 +4333,121 @@
 
   Component.register(Table);
 
+  class GridHeader extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              children: { component: Table }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.grid = this.parent;
+          this.grid.header = this;
+      }
+
+      _config() {
+          this.setProps({
+              children: {
+                  columns: this.grid.props.columns,
+                  data: this.grid.data,
+                  attrs: {
+                      style: {
+                          minWidth: this.grid.minWidth + 'px'
+                      }
+                  },
+                  onlyHead: true
+              }
+          });
+      }
+  }
+
+  Component.register(GridHeader);
+
+  class GridBody extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              children: { component: Table }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.grid = this.parent;
+          this.grid.body = this;
+      }
+
+      _config() {
+          this.setProps({
+              children: {
+                  columns: this.grid.props.columns,
+                  data: this.grid.props.data,
+                  attrs: {
+                      style: {
+                          minWidth: this.grid.minWidth + 'px'
+                      }
+                  },
+                  onlyBody: true
+              },
+              attrs: {
+                  onscroll: () => {
+                      var scrollLeft = this.element.scrollLeft;
+                      this.grid.header.element.scrollLeft = scrollLeft;
+                  }
+              }
+          });
+      }
+  }
+
+  Component.register(GridBody);
+
+  class Grid extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              columns: [],
+              data: [],
+              frozenHeader: false
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.minWidth = 0;
+      }
+
+      _config() {
+          this._calcMinWidth();
+
+          this.setProps({
+              classes: {
+                  'm-frozen-header': this.props.frozenHeader
+              },
+              children: [
+                  { component: GridHeader },
+                  { component: GridBody }
+              ]
+          });
+      }
+
+      _calcMinWidth() {
+          var props = this.props;
+          for (var i = 0; i < props.columns.length; i++) {
+              var column = props.columns[i];
+              if (column.width) {
+                  this.minWidth += column.width;
+              }
+              else {
+                  this.minWidth += 120;
+              }
+          }
+      }
+  }
+
+  Component.register(Grid);
+
   let RuleManager = {};
   RuleManager.ruleTypes = {
       required: {
@@ -4590,6 +4705,10 @@
                   },
                   children: message
               });
+
+              if (this.element.contains(document.activeElement)) {
+                  this.errorTip.show();
+              }
           }
           else {
               this.errorTip.update({
@@ -5681,6 +5800,7 @@
   exports.DatePicker = DatePicker;
   exports.Field = Field;
   exports.Form = Form;
+  exports.Grid = Grid;
   exports.Icon = Icon;
   exports.Layer = Layer;
   exports.Layout = Layout;

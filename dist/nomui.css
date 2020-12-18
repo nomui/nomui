@@ -4400,6 +4400,43 @@ table.nom-table.m-line-both th:last-child {
 table.nom-table.m-bordered {
   border: 1px solid #e9ecef;
 }
+.nom-grid {
+  position: relative;
+  overflow: hidden;
+}
+.nom-grid > .nom-grid-header {
+  overflow: hidden;
+}
+.nom-grid > .nom-grid-body {
+  position: relative;
+  overflow: auto;
+}
+.nom-grid > .nom-grid-body > .nom-grid-body-content {
+  overflow-x: auto;
+}
+.nom-grid.m-bordered {
+  border: 1px solid #e9ecef;
+}
+.nom-grid.m-frozen-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.nom-grid.m-frozen-header > .nom-grid-header {
+  padding-right: 17px;
+  background-color: #fafafa;
+}
+.nom-grid.m-frozen-header > .nom-grid-header > .nom-grid-header-content {
+  overflow: hidden;
+}
+.nom-grid.m-frozen-header > .nom-grid-body {
+  flex: 1;
+  height: 100%;
+}
+.nom-grid.m-frozen-header > .nom-grid-body > .nom-grid-body-content {
+  overflow-x: auto;
+  overflow-y: scroll;
+}
 .nom-icon {
   display: inline-block;
   height: 1em;

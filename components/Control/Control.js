@@ -89,6 +89,10 @@ class Control extends Component {
                 },
                 children: message
             })
+
+            if (this.element.contains(document.activeElement)) {
+                this.errorTip.show()
+            }
         }
         else {
             this.errorTip.update({

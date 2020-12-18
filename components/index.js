@@ -34,6 +34,7 @@ export { default as Menu } from './Menu/index'
 export { default as Button } from './Button/index'
 
 export { default as Table } from './Table/index'
+export { default as Grid } from './Grid/index' 
 
 export { default as Textbox } from './Textbox/index'
 export { default as MultilineTextbox } from './MultilineTextbox/index'
