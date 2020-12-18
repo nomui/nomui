@@ -2006,10 +2006,11 @@
               this.props.position = null;
           }
           this._normalizePosition();
+          this._zIndex = getzIndex();
           this.setProps({
               attrs: {
                   style: {
-                      zIndex: getzIndex()
+                      zIndex: this._zIndex
                   }
               }
           });
@@ -2069,7 +2070,17 @@
                   return;
               }
           }
-          this.hide();
+
+          var closestLayer = e.target.closest('.nom-layer');
+          if (closestLayer !== null) {
+              var idx = closestLayer.component._zIndex;
+              if (idx < this._zIndex) {
+                  this.hide();
+              }
+          }
+          else {
+              this.hide();
+          }
       }
 
       setPosition() {
@@ -2308,12 +2319,14 @@
 
       _show() {
           super._show();
-          this._off('mouseenter');
-          this._on('mouseenter', () => {
-              clearTimeout(this.hideTimer);
-          });
-          this._off('mouseleave');
-          this._on('mouseleave', this._hideHandler);
+          if (this.props.triggerAction === 'hover') {
+              this._off('mouseenter');
+              this._on('mouseenter', () => {
+                  clearTimeout(this.hideTimer);
+              });
+              this._off('mouseleave');
+              this._on('mouseleave', this._hideHandler);
+          }
       }
   }
 

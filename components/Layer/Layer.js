@@ -31,10 +31,11 @@ class Layer extends Component {
             this.props.position = null;
         }
         this._normalizePosition()
+        this._zIndex = getzIndex()
         this.setProps({
             attrs: {
                 style: {
-                    zIndex: getzIndex()
+                    zIndex: this._zIndex
                 }
             }
         })
@@ -94,7 +95,17 @@ class Layer extends Component {
                 return;
             }
         }
-        this.hide();
+
+        var closestLayer = e.target.closest('.nom-layer')
+        if (closestLayer !== null) {
+            var idx = closestLayer.component._zIndex;
+            if (idx < this._zIndex) {
+                this.hide()
+            }
+        }
+        else {
+            this.hide()
+        }
     }
 
     setPosition() {

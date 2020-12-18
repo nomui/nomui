@@ -78,12 +78,14 @@ class Popup extends Layer {
 
     _show() {
         super._show()
-        this._off('mouseenter')
-        this._on('mouseenter', () => {
-            clearTimeout(this.hideTimer)
-        })
-        this._off('mouseleave')
-        this._on('mouseleave', this._hideHandler)
+        if (this.props.triggerAction === 'hover') {
+            this._off('mouseenter')
+            this._on('mouseenter', () => {
+                clearTimeout(this.hideTimer)
+            })
+            this._off('mouseleave')
+            this._on('mouseleave', this._hideHandler)
+        }
     }
 }
 
