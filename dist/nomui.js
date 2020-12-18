@@ -4088,10 +4088,9 @@
 
           if (href) {
               this.setProps({
+                  tag: 'a',
                   attrs: {
-                      onclick: () => {
-                          window.location = href;
-                      }
+                      href: href
                   }
               });
           }

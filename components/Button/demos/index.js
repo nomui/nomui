@@ -4,7 +4,8 @@ define(
         './bg-color.js',
         './size.js',
         './with-icon.js',
-        './shape.js'
+        './shape.js',
+        './link.js'
     ],
     function () {
         return {
