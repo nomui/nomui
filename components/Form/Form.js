@@ -42,7 +42,7 @@ class Form extends Control {
         })
     }
 
-    _validate() {
+    validate() {
         let invalids = [];
         for (let i = 0; i < this.children.length; i++) {
             let field = this.children[i]
@@ -50,9 +50,13 @@ class Form extends Control {
                 let valResult = field.validate()
 
                 if (valResult !== true) {
-                    invalids = invalids.concat(valResult);
+                    invalids.push(field)
                 }
             }
+        }
+
+        if (invalids.length > 0) {
+            invalids[0].focus();
         }
 
         return invalids.length === 0

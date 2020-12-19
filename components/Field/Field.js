@@ -28,10 +28,19 @@ class Field extends Component {
                 { component: FieldControl, value: this.props.value }
             ]
         })
-    }    
+    }
 
     validate() {
-        this.control.validate && this.control.validate()
+        if (this.control.validate) {
+            return this.control.validate()
+        }
+        else {
+            return true
+        }
+    }
+
+    focus() {
+        this.control.focus && this.control.focus()
     }
 }
 

@@ -40,19 +40,7 @@ class Control extends Component {
     }
 
     validate() {
-        var invalids = this.invalids = []
-
-        if (this.disabled === true) {
-            return true
-        }
-
-        this.validateTriggered = true
-        invalids = this._validate()
-        if (invalids.length > 0) {
-            invalids[0].focus()
-        }
-
-        return invalids.length === 0
+        return this._validate()
     }
 
     _validate() {

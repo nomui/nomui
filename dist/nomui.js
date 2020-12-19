@@ -4694,19 +4694,7 @@
       }
 
       validate() {
-          var invalids = this.invalids = [];
-
-          if (this.disabled === true) {
-              return true
-          }
-
-          this.validateTriggered = true;
-          invalids = this._validate();
-          if (invalids.length > 0) {
-              invalids[0].focus();
-          }
-
-          return invalids.length === 0
+          return this._validate()
       }
 
       _validate() {
@@ -5758,10 +5746,19 @@
                   { component: FieldControl, value: this.props.value }
               ]
           });
-      }    
+      }
 
       validate() {
-          this.control.validate && this.control.validate();
+          if (this.control.validate) {
+              return this.control.validate()
+          }
+          else {
+              return true
+          }
+      }
+
+      focus() {
+          this.control.focus && this.control.focus();
       }
   }
 
@@ -5806,7 +5803,7 @@
           });
       }
 
-      _validate() {
+      validate() {
           let invalids = [];
           for (let i = 0; i < this.children.length; i++) {
               let field = this.children[i];
@@ -5814,9 +5811,13 @@
                   let valResult = field.validate();
 
                   if (valResult !== true) {
-                      invalids = invalids.concat(valResult);
+                      invalids.push(field);
                   }
               }
+          }
+
+          if (invalids.length > 0) {
+              invalids[0].focus();
           }
 
           return invalids.length === 0
