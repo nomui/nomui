@@ -2460,6 +2460,29 @@
 
   Component.register(Tooltip);
 
+  class Loading extends Layer {
+      constructor(props, ...mixins) {
+          const defaults = {
+              align: 'center'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          this.setProps({
+              alignTo: this.props.reference.element,
+              children: {
+                  component: Spinner
+              }
+          });
+
+          super._config();
+      }
+  }
+
+  Component.register(Loading);
+
   class ModalHeader extends Component {
       constructor(props, ...mixins) {
           const defaults = {
@@ -5897,6 +5920,7 @@
   exports.Layout = Layout;
   exports.List = List;
   exports.ListItemMixin = ListItemMixin;
+  exports.Loading = Loading;
   exports.Menu = Menu;
   exports.Message = Message;
   exports.Modal = Modal;
