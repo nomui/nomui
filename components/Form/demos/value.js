@@ -4,9 +4,12 @@ define([], function () {
         title: '表单数据',
         file: 'value',
         demo: function () {
+            let demo = this
+            
             return {
                 children: {
                     component: 'Form',
+                    ref: 'form',
                     value: {
                         name: 'Jerry'
                     },
@@ -69,10 +72,22 @@ define([], function () {
                                 ]
                             },
                             value: [1, 3]
+                        },
+                        {
+                            control: {
+                                component: 'Button',
+                                text: '提交',
+                                attrs: {
+                                    onclick: function () {
+                                        console.log(demo.refs.form.getValue())
+                                    }
+                                }
+                            }
                         }
                     ]
                 }
-            };
+            }
         }
-    };
-});
+    }
+
+})

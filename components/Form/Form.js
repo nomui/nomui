@@ -42,6 +42,26 @@ class Form extends Control {
         })
     }
 
+    getValue() {
+        let value = {}
+        for (let i = 0; i < this.children.length; i++) {
+            let field = this.children[i]
+            if (field.getValue && field.props.name) {
+                value[field.props.name] = field.getValue()
+            }
+        }
+        return value
+    }
+
+    setValue(value) {
+        for (let i = 0; i < this.children.length; i++) {
+            let field = this.children[i]
+            if (field.setValue && field.props.name) {
+                field.setValue(value[field.props.name])
+            }
+        }
+    }
+
     validate() {
         let invalids = [];
         for (let i = 0; i < this.children.length; i++) {

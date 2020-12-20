@@ -5678,9 +5678,15 @@
   Component.register(FieldLabel);
 
   var ControlMixin = {
-      _config: function () {
+      _create: function () {
           this.field = this.parent.field;
           this.field.control = this;
+          this.form = this.field.form;
+      },
+      _config: function () {
+          this.on('valueChange', function () {
+              this.field.trigger('valueChange');
+          });
       }
   };
 
@@ -5733,11 +5739,19 @@
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
+      _create() {
+          this.form = this.parent;
+      }
+
       _config() {
           var classes = {};
           if (this.props.label !== null && this.props.label !== undefined) {
               classes['m-label-' + this.props.labelAlign] = true;
           }
+
+          this.on('valueChange', function () {
+              this.form.trigger('valueChange');
+          });
 
           this.setProps({
               classes: classes,
@@ -5746,6 +5760,21 @@
                   { component: FieldControl, value: this.props.value }
               ]
           });
+      }
+
+      getValue() {
+          if (this.control.getValue) {
+              return this.control.getValue()
+          }
+          else {
+              return null
+          }
+      }
+
+      setValue(value) {
+          if (this.control.setValue) {
+              this.control.setValue(value);
+          }
       }
 
       validate() {
@@ -5801,6 +5830,26 @@
               children: children,
               childDefaults: this.props.fieldDefaults
           });
+      }
+
+      getValue() {
+          let value = {};
+          for (let i = 0; i < this.children.length; i++) {
+              let field = this.children[i];
+              if (field.getValue && field.props.name) {
+                  value[field.props.name] = field.getValue();
+              }
+          }
+          return value
+      }
+
+      setValue(value) {
+          for (let i = 0; i < this.children.length; i++) {
+              let field = this.children[i];
+              if (field.setValue && field.props.name) {
+                  field.setValue(value[field.props.name]);
+              }
+          }
       }
 
       validate() {

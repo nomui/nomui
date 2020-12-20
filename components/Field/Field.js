@@ -15,11 +15,19 @@ class Field extends Component {
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
+    _create() {
+        this.form = this.parent
+    }
+
     _config() {
         var classes = {}
         if (this.props.label !== null && this.props.label !== undefined) {
             classes['m-label-' + this.props.labelAlign] = true
         }
+
+        this.on('valueChange', function () {
+            this.form.trigger('valueChange')
+        })
 
         this.setProps({
             classes: classes,
@@ -28,6 +36,21 @@ class Field extends Component {
                 { component: FieldControl, value: this.props.value }
             ]
         })
+    }
+
+    getValue() {
+        if (this.control.getValue) {
+            return this.control.getValue()
+        }
+        else {
+            return null
+        }
+    }
+
+    setValue(value) {
+        if (this.control.setValue) {
+            this.control.setValue(value)
+        }
     }
 
     validate() {
