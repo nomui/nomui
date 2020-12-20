@@ -6,6 +6,8 @@ export { default as Component } from './Component/index'
 export { default as App } from './App/index'
 export { default as View } from './App/View'
 
+export { default as Spinner } from './Spinner/index'
+
 export { default as Rows } from './Rows/index'
 export { default as Cols } from './Cols/index'
 export { default as Container } from './Container/index'
@@ -34,7 +36,7 @@ export { default as Menu } from './Menu/index'
 export { default as Button } from './Button/index'
 
 export { default as Table } from './Table/index'
-export { default as Grid } from './Grid/index' 
+export { default as Grid } from './Grid/index'
 
 export { default as Textbox } from './Textbox/index'
 export { default as MultilineTextbox } from './MultilineTextbox/index'

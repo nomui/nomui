@@ -3406,6 +3406,25 @@ img {
   padding-left: 1rem !important;
   padding-right: 1rem !important;
 }
+@keyframes nom-spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.nom-spinner {
+  color: #4263eb;
+}
+.nom-spinner.p-type-border {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: text-bottom;
+  border: 0.2em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: nom-spinner-border 0.75s linear infinite;
+  animation: nom-spinner-border 0.75s linear infinite;
+}
 .nom-navbar {
   display: flex;
   width: 100%;

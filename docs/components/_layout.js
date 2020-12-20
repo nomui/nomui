@@ -105,7 +105,7 @@ define([], {
                         text: '反馈',
                         items: [
                             { text: 'Progress', subtext: '进度条', id: 'Progress', url: '#!components!index?type=Progress' },
-                            { text: 'Spin', subtext: '加载中', id: 'Spin', url: '#!components!index?type=Spin' },
+                            { text: 'Spinner', subtext: '加载中', id: 'Spinner', url: '#!components!index?type=Spinner' },
                             { text: 'Result', subtext: '结果', id: 'Result', url: '#!components!index?type=Result' },
                         ]
                     },

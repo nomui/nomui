@@ -1404,6 +1404,18 @@
 
   Component.register(App);
 
+  class Spinner extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              type: 'border'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+  }
+
+  Component.register(Spinner);
+
   class Row extends Component {
       constructor(props, ...mixins) {
           super(props, ...mixins);
@@ -5897,6 +5909,7 @@
   exports.RadioList = RadioList;
   exports.Rows = Rows;
   exports.Select = Select;
+  exports.Spinner = Spinner;
   exports.Table = Table;
   exports.Tabs = Tabs;
   exports.Textbox = Textbox;
