@@ -9,16 +9,18 @@ class TabList extends List {
                 component: TabItem
             },
             tabContent: null,
-            type: 'horizontal'
+            type: 'horizontal',
+            itemSelectable: {
+                byClick: true
+            },
+            gutter: 'md'
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
-    _create() {
-        super._create()
-
-        this.tabContent = this.getRef(this.props.tabContent);
+    getTabContent() {
+        return this.props.tabContent.call(this)
     }
 }
 

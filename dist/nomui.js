@@ -641,7 +641,7 @@
               return
           }
           var props = childProps;
-          let mixin = [];
+          let mixins = [];
           if (isString(props)) {
               this.element.innerHTML = props;
               return
@@ -649,7 +649,13 @@
           if (isFunction(childProps)) {
               let fnResult = childProps.call(this);
               props = fnResult.props;
-              mixin = fnResult.mixins;
+              mixins = fnResult.mixins;
+          }
+          if (isPlainObject(childProps)) {
+              if (childProps.props && childProps.mixins) {
+                  props = childProps.props;
+                  mixins = childProps.mixins;
+              }
           }
           if (childDefaults !== null && childDefaults !== undefined) {
               props = Component.extendProps({}, childDefaults, props);
@@ -659,7 +665,7 @@
               props.reference = this.element;
               props.placement = 'append';
 
-              this.children.push(Component.create(props, ...mixin));
+              this.children.push(Component.create(props, ...mixins));
           }
       }
 
@@ -879,22 +885,6 @@
           if (scope) {
               return scope.refs[name]
           }
-      }
-
-      getRef(refs, componentTypes) {
-          var retComponent = null;
-          componentTypes = componentTypes || Component;
-          if (isFunction(refs)) {
-              retComponent = refs.call(this);
-          }
-          else if (isString(refs)) {
-              retComponent = this.getScopedComponent(refs);
-          }
-          if (retComponent instanceof componentTypes) {
-              return retComponent
-          }
-
-          return retComponent
       }
 
       getChildren() {
@@ -3018,17 +3008,11 @@
       }
   };
 
-  class ListItem extends Component {
-      constructor(props, ...minxins) {
-          super(props, ListItemMixin, ...minxins);
-      }
-  }
-
   class ListItemWrapper extends Component {
       constructor(props, ...mixins) {
           const defaults = {
               tag: 'li',
-              item: { component: ListItem },
+              item: {},
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
@@ -3041,7 +3025,10 @@
       _config() {
           this.setProps({
               selectable: false,
-              children: [this.props.item],
+              children: {
+                  props: this.props.item,
+                  mixins: [ListItemMixin]
+              }
           });
       }
   }
@@ -3237,22 +3224,24 @@
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
-      
+
       _config() {
+          let { icon, text, subtext } = this.props;
           this.setProps({
               attrs: {
                   href: this.getItemUrl(this.props.url)
               },
               children: [
-                  { component: 'Icon', type: this.props.icon },
-                  { tag: 'span', children: this.props.text },
-                  { tag: 'span', children: this.props.subtext }
+                  icon && { component: 'Icon', type: icon },
+                  text && { tag: 'span', children: text },
+                  subtext && { tag: 'span', children: subtext }
               ]
           });
       }
 
       _select() {
-          this.list.tabContent && this.list.tabContent.showPanel(this.name);
+          let tabContent = this.list.getTabContent();
+          tabContent.showPanel(this.key);
       }
 
       getItemUrl(url) {
@@ -3274,16 +3263,18 @@
                   component: TabItem
               },
               tabContent: null,
-              type: 'horizontal'
+              type: 'horizontal',
+              itemSelectable: {
+                  byClick: true
+              },
+              gutter: 'md'
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
-      _create() {
-          super._create();
-
-          this.tabContent = this.getRef(this.props.tabContent);
+      getTabContent() {
+          return this.props.tabContent.call(this)
       }
   }
 
@@ -3300,7 +3291,7 @@
 
       _create() {
           this.tabContent = this.parent;
-          this.tabContent.panels[this.name] = this;
+          this.tabContent.panels[this.key] = this;
       }
 
       _config() {
@@ -3395,8 +3386,8 @@
           var tabPanles = [];
           for (var i = 0; i < this.props.tabs.length; i++) {
               var tab = this.props.tabs[i];
-              tab.item.name = tab.item.name || 'tab' + i;
-              tab.panel.name = tab.panel.name || 'tab' + i;
+              tab.item.key = tab.item.key || 'tab' + i;
+              tab.panel.key = tab.panel.key || 'tab' + i;
               tabItems.push(tab.item);
               tabPanles.push(tab.panel);
           }

@@ -11,7 +11,7 @@ class TabPanel extends Component {
 
     _create() {
         this.tabContent = this.parent
-        this.tabContent.panels[this.name] = this
+        this.tabContent.panels[this.key] = this
     }
 
     _config() {

@@ -256,7 +256,7 @@ class Component {
             return
         }
         var props = childProps
-        let mixin = []
+        let mixins = []
         if (isString(props)) {
             this.element.innerHTML = props
             return
@@ -264,7 +264,13 @@ class Component {
         if (isFunction(childProps)) {
             let fnResult = childProps.call(this)
             props = fnResult.props
-            mixin = fnResult.mixins
+            mixins = fnResult.mixins
+        }
+        if (isPlainObject(childProps)) {
+            if (childProps.props && childProps.mixins) {
+                props = childProps.props
+                mixins = childProps.mixins
+            }
         }
         if (childDefaults !== null && childDefaults !== undefined) {
             props = Component.extendProps({}, childDefaults, props)
@@ -274,7 +280,7 @@ class Component {
             props.reference = this.element
             props.placement = 'append'
 
-            this.children.push(Component.create(props, ...mixin))
+            this.children.push(Component.create(props, ...mixins))
         }
     }
 
@@ -494,22 +500,6 @@ class Component {
         if (scope) {
             return scope.refs[name]
         }
-    }
-
-    getRef(refs, componentTypes) {
-        var retComponent = null
-        componentTypes = componentTypes || Component
-        if (isFunction(refs)) {
-            retComponent = refs.call(this)
-        }
-        else if (isString(refs)) {
-            retComponent = this.getScopedComponent(refs)
-        }
-        if (retComponent instanceof componentTypes) {
-            return retComponent
-        }
-
-        return retComponent
     }
 
     getChildren() {

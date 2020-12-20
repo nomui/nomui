@@ -18,8 +18,8 @@ class Tabs extends Component {
         var tabPanles = []
         for (var i = 0; i < this.props.tabs.length; i++) {
             var tab = this.props.tabs[i]
-            tab.item.name = tab.item.name || 'tab' + i
-            tab.panel.name = tab.panel.name || 'tab' + i
+            tab.item.key = tab.item.key || 'tab' + i
+            tab.panel.key = tab.panel.key || 'tab' + i
             tabItems.push(tab.item)
             tabPanles.push(tab.panel)
         }

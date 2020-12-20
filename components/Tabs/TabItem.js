@@ -15,22 +15,24 @@ class TabItem extends Component {
 
         super(Component.extendProps(defaults, props), ...mixins)
     }
-    
+
     _config() {
+        let { icon, text, subtext } = this.props
         this.setProps({
             attrs: {
                 href: this.getItemUrl(this.props.url)
             },
             children: [
-                { component: 'Icon', type: this.props.icon },
-                { tag: 'span', children: this.props.text },
-                { tag: 'span', children: this.props.subtext }
+                icon && { component: 'Icon', type: icon },
+                text && { tag: 'span', children: text },
+                subtext && { tag: 'span', children: subtext }
             ]
         })
     }
 
     _select() {
-        this.list.tabContent && this.list.tabContent.showPanel(this.name)
+        let tabContent = this.list.getTabContent()
+        tabContent.showPanel(this.key)
     }
 
     getItemUrl(url) {
