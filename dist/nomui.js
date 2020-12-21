@@ -4161,10 +4161,15 @@
       }
 
       _config() {
+          let { width } = this.props.column;
+          let widthPx = null;
+          if (width) {
+              widthPx = width + 'px';
+          }
           this.setProps({
               attrs: {
                   style: {
-                      width: this.props.column.width || null
+                      width: widthPx
                   }
               }
           });
@@ -4187,15 +4192,18 @@
           this.columns = this.table.props.columns;
       }
 
-      _render() {
-          var children = Array.isArray(this.props.columns)
-              && this.props.columns.map(function (column) {
+      _config() {
+          let children = [];
+
+          if (Array.isArray(this.columns)) {
+              children = this.columns.map(function (column) {
                   return {
                       component: ColGroupCol,
                       name: column.field,
                       column: column
                   }
               });
+          }
 
           this.setProps({
               children: children

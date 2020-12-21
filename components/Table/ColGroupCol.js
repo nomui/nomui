@@ -11,10 +11,15 @@ class ColGroupCol extends Component {
     }
 
     _config() {
+        let { width } = this.props.column
+        let widthPx = null
+        if (width) {
+            widthPx = width + 'px'
+        }
         this.setProps({
             attrs: {
                 style: {
-                    width: this.props.column.width || null
+                    width: widthPx
                 }
             }
         })
