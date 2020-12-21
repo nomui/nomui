@@ -5,7 +5,8 @@ import Spinner from '../Spinner/index'
 class Loading extends Layer {
     constructor(props, ...mixins) {
         const defaults = {
-            align: 'center'
+            align: 'center',
+            container: document.body,
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -13,13 +14,32 @@ class Loading extends Layer {
 
     _config() {
         this.setProps({
-            alignTo: this.props.reference.element,
+            reference: this.props.container,
+            alignTo: this.props.container.element,
             children: {
                 component: Spinner
             }
         })
 
+        if (this.props.container instanceof Component) {
+            this.props.container.addClass('nom-loading-container')
+        }
+        else {
+            this.props.container.component.addClass('nom-loading-container')
+        }
+
         super._config()
+    }
+
+    _remove() {
+        if (this.props.container instanceof Component) {
+            this.props.container.removeClass('nom-loading-container')
+        }
+        else {
+            this.props.container.component.removeClass('nom-loading-container')
+        }
+
+        super._remove()
     }
 }
 

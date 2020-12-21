@@ -1985,6 +1985,7 @@
               align: null,
               alignTo: null,
               alignOuter: false,
+              within: window,
 
               closeOnClickOutside: false,
               closeToRemove: false,
@@ -2107,7 +2108,7 @@
 
           if (props.align) {
               props.position = {
-                  of: window, collision: "flipfit"
+                  of: window, collision: "flipfit", within: props.within
               };
 
               if (props.alignTo) {
@@ -2463,7 +2464,8 @@
   class Loading extends Layer {
       constructor(props, ...mixins) {
           const defaults = {
-              align: 'center'
+              align: 'center',
+              container: document.body,
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
@@ -2471,13 +2473,32 @@
 
       _config() {
           this.setProps({
-              alignTo: this.props.reference.element,
+              reference: this.props.container,
+              alignTo: this.props.container.element,
               children: {
                   component: Spinner
               }
           });
 
+          if (this.props.container instanceof Component) {
+              this.props.container.addClass('nom-loading-container');
+          }
+          else {
+              this.props.container.component.addClass('nom-loading-container');
+          }
+
           super._config();
+      }
+
+      _remove() {
+          if (this.props.container instanceof Component) {
+              this.props.container.removeClass('nom-loading-container');
+          }
+          else {
+              this.props.container.component.removeClass('nom-loading-container');
+          }
+
+          super._remove();
       }
   }
 

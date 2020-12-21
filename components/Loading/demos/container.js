@@ -23,9 +23,12 @@ define([], function () {
                         events: {
                             valueChange: function (changed) {
                                 if (changed.newValue === true) {
-                                    new nomui.Loading({
-                                        reference: demo.refs.container
+                                    this.Loading = new nomui.Loading({
+                                        container: demo.refs.container,
                                     })
+                                }
+                                else {
+                                    this.Loading.remove()
                                 }
                             }
                         }

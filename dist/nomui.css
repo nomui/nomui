@@ -4186,6 +4186,9 @@ img {
   border-radius: 0.3rem;
   outline: 0;
 }
+.nom-loading-container {
+  position: relative;
+}
 .nom-list {
   display: flex;
   flex-wrap: wrap;
