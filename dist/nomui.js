@@ -2041,6 +2041,7 @@
               alignTo: null,
               alignOuter: false,
               within: window,
+              collision: 'flipfit',
 
               closeOnClickOutside: false,
               closeToRemove: false,
@@ -2187,7 +2188,7 @@
 
           if (props.align) {
               props.position = {
-                  of: window, collision: "flipfit", within: props.within
+                  of: window, collision: props.collision, within: props.within
               };
 
               if (props.alignTo) {
@@ -2545,7 +2546,8 @@
           const defaults = {
               align: 'center',
               container: document.body,
-              backdrop: true
+              backdrop: true,
+              collision: 'none',
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
@@ -4499,6 +4501,16 @@
               ]
           });
       }
+
+      _render() {
+          this.loadingInst && this.loadingInst.remove();
+      }
+
+      loading() {
+          this.loadingInst = new Loading({
+              container: this.parent
+          });
+      }
   }
 
   Component.register(Table);
@@ -4613,6 +4625,10 @@
                   this.minWidth += 120;
               }
           }
+      }
+
+      loading() {
+          this.body && this.body.loading();
       }
   }
 

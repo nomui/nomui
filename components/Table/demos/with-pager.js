@@ -7,6 +7,7 @@ define([], function () {
             var demo = this;
 
             function getData(pageIndex) {
+                demo.refs.table.loading()
                 fetch(`https://randomuser.me/api?results=10&page=${pageIndex}`, { mode: 'cors' })
                     .then(res => res.json())
                     .then(function (data) {
@@ -41,7 +42,7 @@ define([], function () {
                         }
                     }
                 ],
-                _create: function () {
+                _render: function () {
                     getData(1)
                 }
             }

@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import ColGroup from './ColGroup'
 import Thead from './Thead'
 import Tbody from './Tbody'
+import Loading from '../Loading/index'
 
 class Table extends Component {
     constructor(props, ...mixins) {
@@ -25,6 +26,16 @@ class Table extends Component {
                 this.props.onlyBody !== true && { component: Thead },
                 this.props.onlyHead !== true && { component: Tbody }
             ]
+        })
+    }
+
+    _render() {
+        this.loadingInst && this.loadingInst.remove()
+    }
+
+    loading() {
+        this.loadingInst = new Loading({
+            container: this.parent
         })
     }
 }

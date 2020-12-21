@@ -43,6 +43,10 @@ class Grid extends Component {
             }
         }
     }
+
+    loading() {
+        this.body && this.body.loading()
+    }
 }
 
 Component.register(Grid)

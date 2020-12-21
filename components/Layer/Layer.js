@@ -10,6 +10,7 @@ class Layer extends Component {
             alignTo: null,
             alignOuter: false,
             within: window,
+            collision: 'flipfit',
 
             closeOnClickOutside: false,
             closeToRemove: false,
@@ -156,7 +157,7 @@ class Layer extends Component {
 
         if (props.align) {
             props.position = {
-                of: window, collision: "flipfit", within: props.within
+                of: window, collision: props.collision, within: props.within
             };
 
             if (props.alignTo) {

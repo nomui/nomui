@@ -7,7 +7,8 @@ class Loading extends Layer {
         const defaults = {
             align: 'center',
             container: document.body,
-            backdrop: true
+            backdrop: true,
+            collision: 'none',
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
