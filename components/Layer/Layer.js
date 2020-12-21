@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import getzIndex from '../util/index-manager'
 import position from '../util/position'
+import LayerBackdrop from './LayerBackdrop'
 
 class Layer extends Component {
     constructor(props, ...mixins) {
@@ -15,7 +16,10 @@ class Layer extends Component {
 
             position: null,
 
-            hidden: false
+            hidden: false,
+
+            backdrop: false,
+            closeOnClickBackdrop: false,
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -54,7 +58,24 @@ class Layer extends Component {
     }
 
     _render() {
+        let that = this
+
         this.addRel(this.element);
+        if (this.props.backdrop) {
+            this.backdrop = new LayerBackdrop({
+                zIndex: this._zIndex - 1,
+                reference: this.props.reference
+            })
+
+            if (this.props.closeOnClickBackdrop) {
+                this.backdrop._on('click', function (e) {
+                    if (e.target !== e.currentTarget) {
+                        return
+                    }
+                    that.remove()
+                })
+            }
+        }
     }
 
     _show() {
@@ -81,6 +102,10 @@ class Layer extends Component {
     _remove() {
         window.removeEventListener('resize', this._onWindowResize, false);
         document.removeEventListener('mousedown', this._onDocumentMousedown, false);
+
+        if (this.backdrop) {
+            this.backdrop.remove()
+        }
     }
 
     _onWindowResize() {

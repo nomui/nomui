@@ -2,7 +2,8 @@ define(
     [
         './basic.js',
         './align-inner.js',
-        './align-outer.js'
+        './align-outer.js',
+        './backdrop.js',
     ],
     function () {
         return {

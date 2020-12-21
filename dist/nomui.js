@@ -472,6 +472,7 @@
           }
 
           this.componentType = this.__proto__.constructor.name;
+          this.referenceElement = this.props.reference instanceof Component ? this.props.reference.element : this.props.reference;
 
           this.create();
           if (this.props.autoRender === true) {
@@ -568,6 +569,14 @@
               }
               this.referenceElement.parentNode.replaceChild(this.element, this.referenceElement);
           }
+      }
+
+      getComponent(componentOrElement) {
+          return componentOrElement instanceof Component ? componentOrElement : componentOrElement.component
+      }
+
+      getElement(componentOrElement) {
+          return componentOrElement instanceof Component ? componentOrElement.element : componentOrElement
       }
 
       _renderChildren() {
@@ -1002,8 +1011,8 @@
           }
       }
 
-      _onClickHandler() {
-          this.trigger('click');
+      _onClickHandler(e) {
+          this.trigger('click', e);
       }
 
       _onClickToggleSelect() {
@@ -1512,7 +1521,8 @@
   let zIndex = 6666;
 
   function getzIndex() {
-      return ++zIndex;
+      zIndex++;
+      return ++zIndex
   }
 
   var cachedScrollbarWidth,
@@ -1979,6 +1989,51 @@
       setOffset(elem, position);
   }
 
+  class LayerBackdrop extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              zIndex: 2,
+              attrs: {
+                  style: {
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      width: '100%',
+                      height: '100%',
+                      overflow: 'hidden',
+                      userSelect: 'none',
+                      opacity: 0.1,
+                      background: '#000'
+                  }
+              }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          this.setProps({
+              attrs: {
+                  style: {
+                      zIndex: this.props.zIndex
+                  }
+              }
+          });
+
+          if (this.referenceElement === document.body) {
+              this.setProps({
+                  attrs: {
+                      style: {
+                          position: 'fixed'
+                      }
+                  }
+              });
+          }
+      }
+  }
+
+  Component.register(LayerBackdrop);
+
   class Layer extends Component {
       constructor(props, ...mixins) {
           const defaults = {
@@ -1992,7 +2047,10 @@
 
               position: null,
 
-              hidden: false
+              hidden: false,
+
+              backdrop: false,
+              closeOnClickBackdrop: false,
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
@@ -2031,7 +2089,24 @@
       }
 
       _render() {
+          let that = this;
+
           this.addRel(this.element);
+          if (this.props.backdrop) {
+              this.backdrop = new LayerBackdrop({
+                  zIndex: this._zIndex - 1,
+                  reference: this.props.reference
+              });
+
+              if (this.props.closeOnClickBackdrop) {
+                  this.backdrop._on('click', function (e) {
+                      if (e.target !== e.currentTarget) {
+                          return
+                      }
+                      that.remove();
+                  });
+              }
+          }
       }
 
       _show() {
@@ -2058,6 +2133,10 @@
       _remove() {
           window.removeEventListener('resize', this._onWindowResize, false);
           document.removeEventListener('mousedown', this._onDocumentMousedown, false);
+
+          if (this.backdrop) {
+              this.backdrop.remove();
+          }
       }
 
       _onWindowResize() {
@@ -2466,6 +2545,7 @@
           const defaults = {
               align: 'center',
               container: document.body,
+              backdrop: true
           };
 
           super(Component.extendProps(defaults, props), ...mixins);

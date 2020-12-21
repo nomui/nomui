@@ -87,6 +87,7 @@ class Component {
         }
 
         this.componentType = this.__proto__.constructor.name
+        this.referenceElement = this.props.reference instanceof Component ? this.props.reference.element : this.props.reference
 
         this.create()
         if (this.props.autoRender === true) {
@@ -183,6 +184,14 @@ class Component {
             }
             this.referenceElement.parentNode.replaceChild(this.element, this.referenceElement)
         }
+    }
+
+    getComponent(componentOrElement) {
+        return componentOrElement instanceof Component ? componentOrElement : componentOrElement.component
+    }
+
+    getElement(componentOrElement) {
+        return componentOrElement instanceof Component ? componentOrElement.element : componentOrElement
     }
 
     _renderChildren() {
@@ -617,8 +626,8 @@ class Component {
         }
     }
 
-    _onClickHandler() {
-        this.trigger('click')
+    _onClickHandler(e) {
+        this.trigger('click', e)
     }
 
     _onClickToggleSelect() {
