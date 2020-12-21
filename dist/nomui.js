@@ -3493,20 +3493,12 @@
           this.setProps({
               children: {
                   component: List,
+                  gutter: 'md',
                   items: pager.getPageItems(),
                   itemDefaults: {
                       tag: 'a',
                       key() {
                           return this.props.pageNumber
-                      },
-                      styles: {
-                          padding: '1',
-                          hover: {
-                              color: 'gray'
-                          },
-                          selected: {
-                              color: 'primary'
-                          }
                       },
                       _config: function () {
                           this.setProps({
@@ -3518,9 +3510,6 @@
                       byClick: true
                   },
                   selectedItems: pager.props.pageIndex,
-                  styles: {
-                      flex: 'row'
-                  },
                   events: {
                       itemSelectionChange: function () {
                           pager.props.pageIndex = this.selectedItem.props.pageNumber;

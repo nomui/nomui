@@ -3443,6 +3443,19 @@ img {
   padding-left: 1rem;
   text-align: right;
 }
+.nom-pager > .nom-list > .nom-list-item-wrapper > a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #343a40;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+}
+.nom-pager > .nom-list > .nom-list-item-wrapper > a.s-selected {
+  font-weight: 500;
+  color: #4263eb;
+  border-color: #4263eb;
+}
 .nom-cssicon {
   display: inline-block;
   height: 1em;
