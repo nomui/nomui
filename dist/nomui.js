@@ -3054,6 +3054,7 @@
       }
 
       _create() {
+          this._propStyleClasses = ['span'];
           this.list = this.parent;
       }
 
@@ -3095,12 +3096,19 @@
 
       _config() {
           this._propStyleClasses = ['gutter', 'line', 'align', 'justify', 'cols'];
-          var items = this.props.items;
+          let { items, itemDefaults, wrappers, wrapperDefaults } = this.props;
           var children = [];
-          if (Array.isArray(items) && items.length > 0) {
+          if (Array.isArray(wrappers) && wrappers.length > 0) {
+              for (var i = 0; i < wrappers.length; i++) {
+                  let wrapper = wrappers[i];
+                  wrapper = Component.extendProps({}, { component: ListItemWrapper }, wrapperDefaults, wrapper);
+                  children.push(wrapper);
+              }
+          }
+          else if (Array.isArray(items) && items.length > 0) {
               for (var i = 0; i < items.length; i++) {
                   var item = items[i];
-                  item = Component.extendProps({}, this.props.itemDefaults, item);
+                  item = Component.extendProps({}, itemDefaults, item);
                   children.push({ component: ListItemWrapper, item: item });
               }
           }
