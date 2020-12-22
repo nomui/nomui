@@ -23,6 +23,7 @@ define([], function () {
                     {
                         component: 'Button',
                         text: 'primary-outline',
+                        rightIcon: 'arrow-down',
                         styles: {
                             color: 'primary-outline'
                         }

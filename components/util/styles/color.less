@@ -38,19 +38,20 @@
 
         .u-color-@{name}-outline {
             background-color: transparent !important;
-            color: lighten(@@color, 40%) !important;
-            border-color: lighten(@@color, 40%) !important;
+            color: @@color  !important;
+            border-color: @@color  !important;
 
-            &.s-hover {
+            &.s-hover,
+            &:hover {
                 background-color: lighten(@@color, 40%) !important;
-                color: @@color !important;
+                color: @@color  !important;
             }
         }
 
         .u-color-l@{name},
         .u-hover-color-l@{name}:hover,
         .u-selected-color-l@{name}.s-selected {
-            background-color: @@lcolor !important;
+            background-color: @@lcolor  !important;
         }
 
         .u-color-l@{name}-dark,
@@ -74,7 +75,7 @@
         .u-text-@{name},
         .u-hover-text-@{name}:hover,
         .u-selected-text-@{name}.s-selected {
-            color: @@color !important;
+            color: @@color  !important;
         }
 
         .u-border-@{name} {
@@ -115,4 +116,9 @@
 .u-color-black {
     background-color: @black  !important;
     color: @white  !important;
+}
+
+.u-color-transparent {
+    background-color: transparent !important;
+    color: inherit !important;
 }
