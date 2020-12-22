@@ -2295,6 +2295,10 @@
           };
 
           var icon = this.props.icon || iconMap[this.props.type];
+          let iconProps = Component.normalizeIconProps(icon);
+          if (iconProps) {
+              iconProps = Component.extendProps(iconProps, { classes: { 'nom-message-icon': true } });
+          }
           this.props.content = Component.normalizeTemplateProps(this.props.content);
           this.setProps({
               content: {
@@ -2304,8 +2308,8 @@
               }
           });
           this.setProps({
-              children:[
-                  Component.normalizeIconProps(icon),
+              children: [
+                  iconProps,
                   this.props.content,
                   this.props.showClose && { component: 'Button', icon: 'close' }
               ]

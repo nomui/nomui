@@ -1,10 +1,12 @@
 define([], function () {
+
     return {
         title: '基本用法',
         file: 'basic',
         demo: function () {
             return {
-                children: [
+                component: 'Rows',
+                items: [
                     {
                         component: 'Message',
                         content: '天下武功，唯快不破',
@@ -40,7 +42,8 @@ define([], function () {
                         position: null
                     }
                 ]
-            };
+            }
         }
     }
-});
+
+})

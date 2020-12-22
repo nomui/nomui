@@ -4053,32 +4053,32 @@ img {
 .nom-message > .nom-message-content {
   padding: 6px;
 }
-.nom-message.nom-message-info {
+.nom-message.p-type-info {
   background-color: #f5fbfe;
   border-color: #30b2f2;
 }
-.nom-message.nom-message-info > .nom-message-inner > .nom-message-icon i {
+.nom-message.p-type-info > .nom-message-inner > .nom-message-icon i {
   color: #1098ad;
 }
-.nom-message.nom-message-success {
+.nom-message.p-type-success {
   background-color: #f4fcf5;
   border-color: #1dbf38;
 }
-.nom-message.nom-message-success > .nom-message-inner > .nom-message-icon i {
+.nom-message.p-type-success > .nom-message-inner > .nom-message-icon i {
   color: #37b24d;
 }
-.nom-message.nom-message-warning {
+.nom-message.p-type-warning {
   background-color: #fff9f2;
   border-color: #ff9000;
 }
-.nom-message.nom-message-warning > .nom-message-inner > .nom-message-icon i {
+.nom-message.p-type-warning > .nom-message-inner > .nom-message-icon i {
   color: #f59f00;
 }
-.nom-message.nom-message-error {
+.nom-message.p-type-error {
   background-color: #fff7f7;
   border-color: #ff5959;
 }
-.nom-message.nom-message-error > .nom-message-inner > .nom-message-icon i {
+.nom-message.p-type-error > .nom-message-inner > .nom-message-icon i {
   color: #f03e3e;
 }
 .nom-message-nobg {
