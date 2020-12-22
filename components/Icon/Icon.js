@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import Cssicon from '../Cssicon/index'
+import Bsicon from '../Bsicon/index'
 import { isString, isPlainObject } from '../util/index'
 
 class Icon extends Component {
@@ -7,11 +7,9 @@ class Icon extends Component {
         const defaults = {
             border: false,
             background: false,
-            iconPrefix: 'icon',
-            tag: 'span',
             box: true,
             i: {
-                component: Cssicon
+                component: Bsicon
             }
         }
 
@@ -20,12 +18,13 @@ class Icon extends Component {
 
     _config() {
         this.setProps({
-            children: [
-                {
-                    component: Cssicon,
-                    type: this.props.type
-                }
-            ]
+            i: {
+                type: this.props.type
+            }
+        })
+        this.setProps({
+            tag: 'span',
+            children: this.props.i
         })
     }
 }

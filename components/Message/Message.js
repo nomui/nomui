@@ -28,7 +28,7 @@ class Message extends Layer {
             info: 'info',
             success: 'success',
             error: 'warn',
-            warning: 'warn'
+            warning: 'exclamation-circle'
         }
 
         var icon = this.props.icon || iconMap[this.props.type]

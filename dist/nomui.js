@@ -2291,7 +2291,7 @@
               info: 'info',
               success: 'success',
               error: 'warn',
-              warning: 'warn'
+              warning: 'exclamation-circle'
           };
 
           var icon = this.props.icon || iconMap[this.props.type];
@@ -2917,38 +2917,36 @@
 
   Component.register(Layout);
 
-  class Cssicon extends Component {
+  class Bsicon extends Component {
       constructor(props, ...mixins) {
           const defaults = {
               type: '',
-              tag: 'i'
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
       _config() {
-          var classes = {};
-          classes['icon-' + this.props.type] = true;
+          var classes = { 'bi': true };
+          classes['bi-' + this.props.type] = true;
 
           this.setProps({
-              classes: classes
+              tag: 'i',
+              classes: classes,
           });
       }
   }
 
-  Component.register(Cssicon);
+  Component.register(Bsicon);
 
   class Icon extends Component {
       constructor(props, ...mixins) {
           const defaults = {
               border: false,
               background: false,
-              iconPrefix: 'icon',
-              tag: 'span',
               box: true,
               i: {
-                  component: Cssicon
+                  component: Bsicon
               }
           };
 
@@ -2957,12 +2955,13 @@
 
       _config() {
           this.setProps({
-              children: [
-                  {
-                      component: Cssicon,
-                      type: this.props.type
-                  }
-              ]
+              i: {
+                  type: this.props.type
+              }
+          });
+          this.setProps({
+              tag: 'span',
+              children: this.props.i
           });
       }
   }
@@ -3092,6 +3091,28 @@
   }
 
   Component.register(Navbar);
+
+  class Cssicon extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              type: '',
+              tag: 'i'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          var classes = {};
+          classes['icon-' + this.props.type] = true;
+
+          this.setProps({
+              classes: classes
+          });
+      }
+  }
+
+  Component.register(Cssicon);
 
   var ListItemMixin = {
       _create: function () {
@@ -3853,13 +3874,13 @@
                   component: 'Icon',
                   expandable: {
                       expandedProps: {
-                          type: 'arrow-up'
+                          type: 'chevron-up'
                       },
                       collapsedProps: {
-                          type: 'arrow-down'
+                          type: 'chevron-down'
                       }
                   },
-                  type: 'arrow-down'
+                  type: 'chevron-down'
               }
           };
 
@@ -3882,9 +3903,9 @@
       _config() {
           var menu = this.menu, menuProps = menu.props;
 
-          var indicatorIconType = 'arrow-down';
+          var indicatorIconType = 'chevron-down';
           if (menuProps.type === 'horizontal' && this.level > 0) {
-              indicatorIconType = 'arrow-right';
+              indicatorIconType = 'chevron-right';
           }
 
 
@@ -6065,6 +6086,7 @@
 
   exports.Alert = Alert;
   exports.App = App;
+  exports.Bsicon = Bsicon;
   exports.Button = Button;
   exports.Caption = Caption;
   exports.Checkbox = Checkbox;
