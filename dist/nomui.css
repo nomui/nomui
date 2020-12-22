@@ -2870,6 +2870,15 @@ h6,
 .u-height-4 {
   height: 4rem !important;
 }
+.u-min-height-bar-md {
+  min-height: 3rem;
+}
+.u-min-height-bar-sm {
+  min-height: 2rem;
+}
+.u-min-height-bar-lg {
+  min-height: 4rem;
+}
 .u-height-full {
   height: 100% !important;
 }
@@ -4477,6 +4486,8 @@ table.nom-table.m-bordered {
 .nom-grid {
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .nom-grid > .nom-grid-header {
   overflow: hidden;
@@ -4484,6 +4495,8 @@ table.nom-table.m-bordered {
 .nom-grid > .nom-grid-body {
   position: relative;
   overflow: auto;
+  flex: 1;
+  height: 100%;
 }
 .nom-grid > .nom-grid-body > .nom-grid-body-content {
   overflow-x: auto;
