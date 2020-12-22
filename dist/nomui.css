@@ -4845,6 +4845,9 @@ textarea .nom-textarea {
   transform: rotate(45deg) /*rtl:ignore*/;
   border: solid #7281a4;
 }
+.nom-checkbox > label > .checkbox-text {
+  display: inline-block;
+}
 .nom-radio-list.p-type-radio {
   display: inline-flex;
 }

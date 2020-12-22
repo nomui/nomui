@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isFunction } from '../util/index'
 
 class Td extends Component {
     constructor(props, ...mixins) {
@@ -12,8 +13,12 @@ class Td extends Component {
     }
 
     _config() {
+        let children = this.props.data
+        if (isFunction(this.props.column.render)) {
+            children = this.props.column.render.call(this, this.props.data, this.props.record)
+        }
         this.setProps({
-            children: this.props.data
+            children: children
         })
     }
 }

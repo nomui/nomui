@@ -4400,8 +4400,12 @@
       }
 
       _config() {
+          let children = this.props.data;
+          if (isFunction(this.props.column.render)) {
+              children = this.props.column.render.call(this, this.props.data, this.props.record);
+          }
           this.setProps({
-              children: this.props.data
+              children: children
           });
       }
   }
@@ -4433,6 +4437,7 @@
                       component: Td,
                       name: column.field,
                       column: column,
+                      record: data,
                       data: accessProp(data, column.field)
                   }
               });
@@ -5236,7 +5241,7 @@
 
   Component.register(Numberbox);
 
-  class Checkbox extends Control {    
+  class Checkbox extends Control {
       constructor(props, ...mixins) {
           const defaults = {
               text: null
@@ -5257,6 +5262,7 @@
                           tag: 'input',
                           attrs: {
                               type: 'checkbox',
+                              checked: this.props.value,
                               onchange() {
                                   that._onValueChange();
                               }
@@ -5266,7 +5272,7 @@
                           },
                       },
                       { tag: 'span' },
-                      { tag: 'span', children: this.props.text }
+                      { tag: 'span', classes: { 'checkbox-text': true }, children: this.props.text || '' }
                   ]
               }
           });

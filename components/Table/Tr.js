@@ -27,6 +27,7 @@ class Tr extends Component {
                     component: Td,
                     name: column.field,
                     column: column,
+                    record: data,
                     data: accessProp(data, column.field)
                 }
             })

@@ -1,7 +1,7 @@
 import Component from "../Component/index";
 import Control from "../Control/index";
 
-class Checkbox extends Control {    
+class Checkbox extends Control {
     constructor(props, ...mixins) {
         const defaults = {
             text: null
@@ -22,6 +22,7 @@ class Checkbox extends Control {
                         tag: 'input',
                         attrs: {
                             type: 'checkbox',
+                            checked: this.props.value,
                             onchange() {
                                 that._onValueChange();
                             }
@@ -31,7 +32,7 @@ class Checkbox extends Control {
                         },
                     },
                     { tag: 'span' },
-                    { tag: 'span', children: this.props.text }
+                    { tag: 'span', classes: { 'checkbox-text': true }, children: this.props.text || '' }
                 ]
             }
         })
