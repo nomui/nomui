@@ -2556,7 +2556,7 @@
       _config() {
           this.setProps({
               reference: this.props.container,
-              alignTo: this.props.container.element,
+              alignTo: this.getElement(this.props.container),
               children: {
                   component: Spinner
               }
