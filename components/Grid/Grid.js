@@ -45,8 +45,14 @@ class Grid extends Component {
         }
     }
 
+    _render() {
+        this.loadingInst && this.loadingInst.remove()
+    }
+
     loading() {
-        this.body && this.body.loading()
+        this.loadingInst = new Loading({
+            container: this.parent
+        })
     }
 }
 
