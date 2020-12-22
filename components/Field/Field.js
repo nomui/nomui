@@ -25,8 +25,8 @@ class Field extends Component {
             classes['m-label-' + this.props.labelAlign] = true
         }
 
-        this.on('valueChange', function () {
-            this.form.trigger('valueChange')
+        this.on('valueChange', function (changed) {
+            this.form.trigger('valueChange', changed)
         })
 
         this.setProps({

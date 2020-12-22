@@ -5,8 +5,8 @@ export default {
         this.form = this.field.form
     },
     _config: function () {
-        this.on('valueChange', function () {
-            this.field.trigger('valueChange')
+        this.on('valueChange', function (changed) {
+            this.field.trigger('valueChange', changed)
         })
     }
 }

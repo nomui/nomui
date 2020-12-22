@@ -5624,7 +5624,7 @@
               children: children,
               popup: {
                   children: {
-                      component: List,
+                      component: List,                    
                       cols: 1,
                       _create() {
                           that.optionList = this;
@@ -5854,8 +5854,8 @@
           this.form = this.field.form;
       },
       _config: function () {
-          this.on('valueChange', function () {
-              this.field.trigger('valueChange');
+          this.on('valueChange', function (changed) {
+              this.field.trigger('valueChange', changed);
           });
       }
   };
@@ -5919,8 +5919,8 @@
               classes['m-label-' + this.props.labelAlign] = true;
           }
 
-          this.on('valueChange', function () {
-              this.form.trigger('valueChange');
+          this.on('valueChange', function (changed) {
+              this.form.trigger('valueChange', changed);
           });
 
           this.setProps({

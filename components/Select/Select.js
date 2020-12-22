@@ -102,7 +102,7 @@ class Select extends Control {
             children: children,
             popup: {
                 children: {
-                    component: List,
+                    component: List,                    
                     cols: 1,
                     _create() {
                         that.optionList = this;
