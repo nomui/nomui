@@ -30,7 +30,10 @@ class Table extends Component {
     }
 
     _render() {
-        this.loadingInst && this.loadingInst.remove()
+        if (this.loadingInst) {
+            this.loadingInst.remove()
+            this.loadingInst = null
+        }
     }
 
     loading() {

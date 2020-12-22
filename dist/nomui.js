@@ -4508,7 +4508,10 @@
       }
 
       _render() {
-          this.loadingInst && this.loadingInst.remove();
+          if (this.loadingInst) {
+              this.loadingInst.remove();
+              this.loadingInst = null;
+          }
       }
 
       loading() {
@@ -4634,7 +4637,10 @@
       }
 
       _render() {
-          this.loadingInst && this.loadingInst.remove();
+          if (this.loadingInst) {
+              this.loadingInst.remove();
+              this.loadingInst = null;
+          }
       }
 
       loading() {
