@@ -14,11 +14,11 @@ class Grid extends Component {
     }
 
     _create() {
-        this.minWidth = 0;
+        this.minWidth = 0
     }
 
     _config() {
-        this._calcMinWidth();
+        this._calcMinWidth()
 
         this.setProps({
             classes: {
@@ -32,14 +32,15 @@ class Grid extends Component {
     }
 
     _calcMinWidth() {
-        var props = this.props;
+        this.minWidth = 0
+        var props = this.props
         for (var i = 0; i < props.columns.length; i++) {
-            var column = props.columns[i];
+            var column = props.columns[i]
             if (column.width) {
-                this.minWidth += column.width;
+                this.minWidth += column.width
             }
             else {
-                this.minWidth += 120;
+                this.minWidth += 120
             }
         }
     }

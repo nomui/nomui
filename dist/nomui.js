@@ -4615,6 +4615,7 @@
       }
 
       _calcMinWidth() {
+          this.minWidth = 0;
           var props = this.props;
           for (var i = 0; i < props.columns.length; i++) {
               var column = props.columns[i];
