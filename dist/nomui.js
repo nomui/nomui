@@ -2541,7 +2541,7 @@
 
   Component.register(Tooltip);
 
-  class Loading$1 extends Layer {
+  class Loading extends Layer {
       constructor(props, ...mixins) {
           const defaults = {
               align: 'center',
@@ -2584,7 +2584,7 @@
       }
   }
 
-  Component.register(Loading$1);
+  Component.register(Loading);
 
   class ModalHeader extends Component {
       constructor(props, ...mixins) {
@@ -4512,7 +4512,7 @@
       }
 
       loading() {
-          this.loadingInst = new Loading$1({
+          this.loadingInst = new Loading({
               container: this.parent
           });
       }
@@ -6058,7 +6058,7 @@
   exports.Layout = Layout;
   exports.List = List;
   exports.ListItemMixin = ListItemMixin;
-  exports.Loading = Loading$1;
+  exports.Loading = Loading;
   exports.Menu = Menu;
   exports.Message = Message;
   exports.Modal = Modal;

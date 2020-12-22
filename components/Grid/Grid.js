@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import GridHeader from './GridHeader'
 import GridBody from './GridBody'
+import Loading from '../Loading/index'
 
 class Grid extends Component {
     constructor(props, ...mixins) {
