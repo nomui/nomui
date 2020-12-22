@@ -4842,6 +4842,7 @@
       }
 
       validate() {
+          this.validateTriggered = true;
           return this._validate()
       }
 
@@ -4899,7 +4900,7 @@
           this.props.value = this.currentValue;
 
           var changed = {
-              name: this.name,
+              name: this.props.name,
               oldValue: this.oldValue,
               newValue: this.currentValue,
           };
