@@ -3468,6 +3468,7 @@ img {
 }
 .nom-navbar > .nom-navbar-nav {
   flex-grow: 1;
+  padding-left: 1.5rem;
 }
 .nom-navbar > .nom-navbar-tools {
   padding-left: 1rem;
