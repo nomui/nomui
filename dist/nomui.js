@@ -5553,17 +5553,127 @@
 
   Component.register(CheckboxList);
 
+  var SelectListMixin = {
+      _create: function () {
+          this.selectControl = this.parent.select;
+          this.selectControl.optionList = this;
+      },
+      _config: function () {
+          let selectProps = this.selectControl.props;
+          this.setProps({
+              attrs: {
+                  style: {
+                      width: this.selectControl.offsetWidth() + 'px'
+                  }
+              },
+              items: selectProps.options,
+              itemDefaults: selectProps.optionDefaults,
+              itemSelectable: {
+                  multiple: selectProps.multiple,
+                  byClick: true
+              },
+              selectedItems: selectProps.value,
+              events: {
+                  itemSelectionChange: () => {
+                      this.selectControl._onValueChange();
+                  }
+              }
+          });
+      }
+  };
+
+  class SelectList extends List {
+      constructor(props, ...mixins) {
+          const defaults = {
+              gutter: 'x-md',
+              cols: 1,
+              itemDefaults: {
+                  key() {
+                      return this.props.value;
+                  },
+                  selectable: {
+                      byClick: true,
+                      canRevert: true
+                  },
+                  _config: function () {
+                      this.setProps({
+                          children: this.props.text,
+                          selectable: {
+                              canRevert: this.list.selectControl.props.multiple === true
+                          },
+                      });
+                  },
+                  events: {
+                      select() {
+                          let selectControl = this.list.selectControl,
+                              selectProps = selectControl.props;
+
+                          var selectedOption = { text: this.props.text, value: this.props.value };
+                          if (selectProps.multiple === false) {
+                              selectControl.selectedSingle.update(selectedOption);
+                              selectControl.popup.hide();
+                          }
+                          else {
+                              selectControl.selectedMultiple.appendItem(selectedOption);
+                          }
+                      },
+                      unselect() {
+                          let selectControl = this.list.selectControl,
+                              selectProps = selectControl.props;
+
+                          if (selectProps.multiple === true) {
+                              selectControl.selectedMultiple.removeItem(this.key);
+                          }
+                      }
+                  }
+              }
+          };
+
+          super(Component.extendProps(defaults, props), SelectListMixin, ...mixins);
+      }
+
+      _config() {
+          this.on('', function () {
+
+          });
+
+          super._config();
+      }
+  }
+
+  class SelectPopup extends Popup {
+      constructor(props, ...mixins) {
+          const defaults = {
+
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          super._create();
+
+          this.select = this.opener;
+      }
+
+      _config() {
+          this.setProps({
+              children: {
+                  component: SelectList
+              }
+          });
+
+          super._config();
+      }
+  }
+
+  Component.register(SelectPopup);
+
   class Select extends Control {
       constructor(props, ...mixins) {
           const defaults = {
               options: [],
-              optionDefaults: {
-                  _config: function () {
-                      this.setProps({
-                          children: this.props.text
-                      });
-                  }
-              },
+              optionDefaults: {},
               selectedSingle: {
                   _config: function () {
                       this.setProps({
@@ -5598,8 +5708,6 @@
       }
 
       _config() {
-          super._config();
-
           var that = this;
 
           this.setProps({
@@ -5618,71 +5726,19 @@
                       that.selectedMultiple = this;
                   }
               },
-              optionDefaults: {
-                  key() {
-                      return this.props.value;
-                  },
-                  selectable: {
-                      byClick: true,
-                      canRevert: true
-                  },
-                  events: {
-                      select() {
-                          var selectedOption = { text: this.props.text, value: this.props.value };
-                          if (that.props.multiple === false) {
-                              that.selectedSingle.update(selectedOption);
-                              that.popup.hide();
-                          }
-                          else {
-                              that.selectedMultiple.appendItem(selectedOption);
-                          }
-                      },
-                      unselect() {
-                          if (that.props.multiple === true) {
-                              that.selectedMultiple.removeItem(this.key);
-                          }
-                      }
-                  }
-              }
           });
 
           var children = this.props.multiple ? this.props.selectedMultiple : this.props.selectedSingle;
 
           this.setProps({
               children: children,
-              popup: {
-                  children: {
-                      component: List,                    
-                      cols: 1,
-                      _create() {
-                          that.optionList = this;
-                      },
-                      items: this.props.options,
-                      itemDefaults: this.props.optionDefaults,
-                      itemSelectable: {
-                          multiple: that.props.multiple,
-                          byClick: true
-                      },
-                      classes: {
-                          'nom-select-list': true
-                      },
-                      events: {
-                          itemSelectionChange() {
-                              that._onValueChange();
-                          }
-                      }
-                  },
-                  _config() {
-                      this.setProps({
-                          attrs: {
-                              style: {
-                                  width: that.offsetWidth() + 'px'
-                              }
-                          }
-                      });
-                  },
-              }
           });
+
+          super._config();
+      }
+
+      _render() {
+          this.popup = new SelectPopup({ trigger: this });
       }
 
       selectOption(option) {

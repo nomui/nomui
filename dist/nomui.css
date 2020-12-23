@@ -3376,6 +3376,10 @@ img {
   overflow: auto;
   height: 100%;
 }
+.nom-layout > .nom-layout-footer {
+  min-height: 4rem;
+  border-top: 1px solid #ced4da;
+}
 .nom-layout.p-has-sider {
   display: flex;
   flex-direction: row;
