@@ -5011,6 +5011,15 @@ textarea .nom-textarea {
 .nom-field > .nom-field-label > .nom-label {
   display: block;
 }
+.nom-field.p-required > .nom-field-label > .nom-label::before {
+  display: inline-block;
+  margin-right: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: "*";
+}
 @media (min-width: 576px) {
   .nom-field.m-label-right,
   .nom-field.m-label-left {

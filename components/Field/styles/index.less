@@ -1,9 +1,23 @@
 .nom-field {
-    > .nom-field-label {
+    >.nom-field-label {
         margin-bottom: -.5rem;
 
-        > .nom-label {
+        >.nom-label {
             display: block;
+        }
+    }
+
+    &.p-required.p-required-mark {
+        >.nom-field-label {
+            >.nom-label::before {
+                display: inline-block;
+                margin-right: 4px;
+                color: #ff4d4f;
+                font-size: 14px;
+                font-family: SimSun, sans-serif;
+                line-height: 1;
+                content: "*";
+            }
         }
     }
 
@@ -13,24 +27,24 @@
         &.m-label-left {
             display: flex;
 
-            > .nom-field-label {
+            >.nom-field-label {
                 width: 10rem;
                 margin-bottom: 0;
 
-                > .nom-label {
+                >.nom-label {
                     padding: (@padding-y-base);
                 }
             }
         }
 
         &.m-label-right {
-            > .nom-field-label {
+            >.nom-field-label {
                 text-align: right;
             }
         }
 
         &.m-label-left {
-            > .nom-field-label {
+            >.nom-field-label {
                 text-align: left;
             }
         }

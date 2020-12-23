@@ -18,6 +18,8 @@ class Form extends Control {
             bordered: false,
             splitline: false,
 
+            requiredMark: true,
+
             space: 'md',
             size: 'md'
         }

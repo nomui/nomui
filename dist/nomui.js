@@ -942,7 +942,7 @@
               var modifierVal = this.props[modifier];
               if (modifierVal !== null && modifierVal !== undefined) {
                   if (modifierVal === true) {
-                      classes.push('p-' + modifier);
+                      classes.push('p-' + hyphenate(modifier));
                   }
                   else if (typeof modifierVal === 'string' || typeof modifierVal === 'number') {
                       classes.push('p-' + hyphenate(modifier) + '-' + modifierVal);
@@ -6001,6 +6001,7 @@
       }
 
       _config() {
+          this._propStyleClasses = ['required', 'requiredMark'];
           var classes = {};
           if (this.props.label !== null && this.props.label !== undefined) {
               classes['m-label-' + this.props.labelAlign] = true;
@@ -6011,6 +6012,8 @@
           });
 
           this.setProps({
+              required: this.props.control.required,
+              requiredMark: this.form.props.requiredMark,
               classes: classes,
               children: [
                   { component: FieldLabel },
@@ -6064,6 +6067,8 @@
               striped: false,
               bordered: false,
               splitline: false,
+
+              requiredMark: true,
 
               space: 'md',
               size: 'md'
