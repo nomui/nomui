@@ -2614,7 +2614,7 @@
                   { tag: 'h5', children: this.props.title },
                   {
                       component: 'Button', 
-                      icon: 'close',                     
+                      icon: 'x',                     
                       attrs: {
                           onclick: function () {
                               that.modal.close();
@@ -2630,7 +2630,14 @@
 
   class ModalBody extends Component {
       constructor(props, ...mixins) {
-          super(props);
+          const defaults = {};
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.modalContent = this.parent;
+          this.modal = this.modalContent.modal;
       }
   }
 
@@ -2638,7 +2645,14 @@
 
   class ModalFooter extends Component {
       constructor(props, ...mixins) {
-          super(props);
+          const defaults = {};
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.modalContent = this.parent;
+          this.modal = this.modalContent.modal;
       }
   }
 
@@ -2684,16 +2698,21 @@
 
       _create() {
           this.modal = this.parent;
+          let content = this.modal.props.content;
+          if (isString(content)) {
+              require([content], (props) => {
+                  this.update({
+                      children: props
+                  });
+              });
+          }
       }
 
       _config() {
-          if (isString(this.props.content)) {
+          let content = this.modal.props.content;
+          if (isPlainObject(content)) {
               this.setProps({
-                  component: 'view',
-                  url: this.props.content,
-                  view: {
-                      component: ModalContent
-                  }
+                  children: content
               });
           }
       }
@@ -2719,7 +2738,6 @@
           this.setProps({
               children: {
                   component: ModalDialog,
-                  children: this.props.content
               }
           });
       }
@@ -2766,6 +2784,30 @@
           var fullWindowWidth = window.innerWidth;
           this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth;
           this.scrollbarWidth = positionTool.scrollbarWidth();
+      }
+
+      setScrollbar() {
+          /*var bodyPad = parseInt((this.bodyElem.css('padding-right') || 0), 10);
+          this.originalBodyPad = document.body.style.paddingRight || '';
+          this.originalBodyOverflow = document.body.style.overflow || '';
+          if (this.bodyIsOverflowing) {
+              this.bodyElem.css('padding-right', bodyPad + this.scrollbarWidth);
+          }
+          this.bodyElem.css("overflow", "hidden");
+          var modalCount = this.bodyElem.data('modalCount');
+          if (modalCount) {
+              modalCount++;
+              this.bodyElem.data('modalCount', modalCount);
+          }
+          else {
+              this.bodyElem.data('modalCount', 1);
+          }*/
+      }
+
+      resetScrollbar() {
+          /*this.bodyElem.css('padding-right', this.originalBodyPad);
+          this.bodyElem.css('overflow', this.originalBodyOverflow);
+          this.bodyElem.removeData('modalCount');*/
       }
   }
 

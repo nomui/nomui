@@ -4174,7 +4174,7 @@ img {
   flex: 1 1 auto;
   padding: 1rem;
 }
-.nom-modal-content > .nom-modal-ft {
+.nom-modal-content > .nom-modal-footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -5011,7 +5011,7 @@ textarea .nom-textarea {
 .nom-field > .nom-field-label > .nom-label {
   display: block;
 }
-.nom-field.p-required > .nom-field-label > .nom-label::before {
+.nom-field.p-required.p-required-mark > .nom-field-label > .nom-label::before {
   display: inline-block;
   margin-right: 4px;
   color: #ff4d4f;

@@ -24,7 +24,7 @@ class ModalHeader extends Component {
                 { tag: 'h5', children: this.props.title },
                 {
                     component: 'Button', 
-                    icon: 'close',                     
+                    icon: 'x',                     
                     attrs: {
                         onclick: function () {
                             that.modal.close();

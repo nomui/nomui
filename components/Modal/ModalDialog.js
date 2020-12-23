@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import ModalContent from './ModalContent'
-import { isString } from '../util/index'
+import { isString, isPlainObject } from '../util/index'
 
 class ModalDialog extends Component {
     constructor(props, ...mixins) {
@@ -13,17 +13,22 @@ class ModalDialog extends Component {
 
     _create() {
         this.modal = this.parent;
+        let content = this.modal.props.content
+        if (isString(content)) {
+            require([content], (props) => {
+                this.update({
+                    children: props
+                })
+            })
+        }
     }
 
     _config() {
-        if (isString(this.props.content)) {
+        let content = this.modal.props.content
+        if (isPlainObject(content)) {
             this.setProps({
-                component: 'view',
-                url: this.props.content,
-                view: {
-                    component: ModalContent
-                }
-            });
+                children: content
+            })
         }
     }
 }
