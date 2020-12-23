@@ -5,7 +5,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
         autoRender: false,
         _create: function () {
 
-            let { type, cat, demo } = this.route.query
+            let { type, cat, demo } = this.$route.query
             let url = `/components/${type}/demos/${demo}.js`
             if (cat) {
                 url = `/components/${type}/demos/${cat}/${demo}.js`

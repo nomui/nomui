@@ -28,7 +28,7 @@ class App extends Component {
             get: function () { return this.root; }
         })
 
-        Object.defineProperty(Component.prototype, 'route', {
+        Object.defineProperty(Component.prototype, '$route', {
             get: function () { return this.$app.currentRoute; }
         })
     }

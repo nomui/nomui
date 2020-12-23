@@ -157,9 +157,9 @@ define([], {
     },
     methods: {
         highLight: function () {
-            var componentType = this.route.query.type || 'component';
-            if (this.route.query.cat) {
-                componentType += '/' + this.route.query.cat;
+            var componentType = this.$route.query.type || 'component';
+            if (this.$route.query.cat) {
+                componentType += '/' + this.$route.query.cat;
             }
             this.refs.javascriptMenu.selectItem(componentType);
             this.refs.javascriptMenu.expandToItem(componentType);

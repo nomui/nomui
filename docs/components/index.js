@@ -45,8 +45,8 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                                 children: Array.prototype.slice.call(this.props.demos),
                                 childDefaults: {
                                     component: demoPanel,
-                                    componentType: this.route.query.type,
-                                    cat: this.route.query.cat
+                                    componentType: this.$route.query.type,
+                                    cat: this.$route.query.cat
                                 },
                                 styles: {
                                     padding: '1',
@@ -68,7 +68,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
         },
         methods: {
             renderDemoIndex: function () {
-                let { type = 'component', cat } = this.route.query
+                let { type = 'component', cat } = this.$route.query
                 var url = `/components/${type}/demos/index.js`
                 if (cat) {
                     url = `/components/${type}/demos/${cat}/index.js`

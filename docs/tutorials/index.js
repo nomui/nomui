@@ -60,7 +60,7 @@ define([], function () {
         },
         methods: {
             renderArticle: function () {
-                let article = this.route.query.article || 'getstarted'
+                let article = this.$route.query.article || 'getstarted'
                 var articleUrl = 'text!/docs/tutorials/' + article + '.md';
                 this.refs.articleMenu.selectItem(article);
                 this.refs.articleMenu.expandToItem(article);
