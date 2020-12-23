@@ -84,6 +84,9 @@ class Select extends Control {
     }
 
     getSelectedOption() {
+        if (!this.optionList) {
+            return null
+        }
         if (this.props.multiple === false) {
             return this.optionList.getSelectedItem()
         }

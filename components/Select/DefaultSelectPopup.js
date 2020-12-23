@@ -14,7 +14,7 @@ class SelectPopup extends Popup {
     _create() {
         super._create()
 
-        this.select = this.opener
+        this.selectControl = this.opener
     }
 
     _config() {

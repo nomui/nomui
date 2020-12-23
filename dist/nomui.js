@@ -5555,7 +5555,7 @@
 
   var SelectListMixin = {
       _create: function () {
-          this.selectControl = this.parent.select;
+          this.selectControl = this.parent.selectControl;
           this.selectControl.optionList = this;
       },
       _config: function () {
@@ -5653,7 +5653,7 @@
       _create() {
           super._create();
 
-          this.select = this.opener;
+          this.selectControl = this.opener;
       }
 
       _config() {
@@ -5750,6 +5750,9 @@
       }
 
       getSelectedOption() {
+          if (!this.optionList) {
+              return null
+          }
           if (this.props.multiple === false) {
               return this.optionList.getSelectedItem()
           }
