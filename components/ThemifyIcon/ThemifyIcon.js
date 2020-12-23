@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 
-class Bsicon extends Component {
+class ThemifyIcon extends Component {
     constructor(props, ...mixins) {
         const defaults = {
             type: '',
@@ -10,8 +10,8 @@ class Bsicon extends Component {
     }
 
     _config() {
-        var classes = { 'bi': true }
-        classes['bi-' + this.props.type] = true
+        var classes = {}
+        classes['ti-' + this.props.type] = true
 
         this.setProps({
             tag: 'i',
@@ -20,6 +20,6 @@ class Bsicon extends Component {
     }
 }
 
-Component.register(Bsicon)
+Component.register(ThemifyIcon)
 
-export default Bsicon
+export default ThemifyIcon

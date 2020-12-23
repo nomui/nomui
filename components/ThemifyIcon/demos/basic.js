@@ -21,7 +21,7 @@ define([], function () {
                     }
                 ],
                 itemDefaults: {
-                    component: 'Bsicon',
+                    component: 'ThemifyIcon',
                 }
             }
         }

@@ -12,13 +12,13 @@ class MenuItem extends Component {
                 component: 'Icon',
                 expandable: {
                     expandedProps: {
-                        type: 'chevron-up'
+                        type: 'angle-up'
                     },
                     collapsedProps: {
-                        type: 'chevron-down'
+                        type: 'angle-down'
                     }
                 },
-                type: 'chevron-down'
+                type: 'angle-down'
             }
         }
 
@@ -41,9 +41,9 @@ class MenuItem extends Component {
     _config() {
         var menu = this.menu, menuProps = menu.props
 
-        var indicatorIconType = 'chevron-down'
+        var indicatorIconType = 'angle-down'
         if (menuProps.type === 'horizontal' && this.level > 0) {
-            indicatorIconType = 'chevron-right'
+            indicatorIconType = 'angle-right'
         }
 
 

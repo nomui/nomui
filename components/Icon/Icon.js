@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import Bsicon from '../Bsicon/index'
+import ThemifyIcon from '../ThemifyIcon/index'
 import { isString, isPlainObject } from '../util/index'
 
 class Icon extends Component {
@@ -9,7 +9,7 @@ class Icon extends Component {
             background: false,
             box: true,
             i: { 
-                component: Bsicon
+                component: ThemifyIcon
             }
         }
 

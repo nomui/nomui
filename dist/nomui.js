@@ -2614,7 +2614,7 @@
                   { tag: 'h5', children: this.props.title },
                   {
                       component: 'Button', 
-                      icon: 'x',                     
+                      icon: 'close',                     
                       attrs: {
                           onclick: function () {
                               that.modal.close();
@@ -2981,7 +2981,7 @@
 
   Component.register(Layout);
 
-  class Bsicon extends Component {
+  class ThemifyIcon extends Component {
       constructor(props, ...mixins) {
           const defaults = {
               type: '',
@@ -2991,8 +2991,8 @@
       }
 
       _config() {
-          var classes = { 'bi': true };
-          classes['bi-' + this.props.type] = true;
+          var classes = {};
+          classes['ti-' + this.props.type] = true;
 
           this.setProps({
               tag: 'i',
@@ -3001,7 +3001,7 @@
       }
   }
 
-  Component.register(Bsicon);
+  Component.register(ThemifyIcon);
 
   class Icon extends Component {
       constructor(props, ...mixins) {
@@ -3010,7 +3010,7 @@
               background: false,
               box: true,
               i: { 
-                  component: Bsicon
+                  component: ThemifyIcon
               }
           };
 
@@ -3938,13 +3938,13 @@
                   component: 'Icon',
                   expandable: {
                       expandedProps: {
-                          type: 'chevron-up'
+                          type: 'angle-up'
                       },
                       collapsedProps: {
-                          type: 'chevron-down'
+                          type: 'angle-down'
                       }
                   },
-                  type: 'chevron-down'
+                  type: 'angle-down'
               }
           };
 
@@ -3967,9 +3967,9 @@
       _config() {
           var menu = this.menu, menuProps = menu.props;
 
-          var indicatorIconType = 'chevron-down';
+          var indicatorIconType = 'angle-down';
           if (menuProps.type === 'horizontal' && this.level > 0) {
-              indicatorIconType = 'chevron-right';
+              indicatorIconType = 'angle-right';
           }
 
 
@@ -6214,7 +6214,6 @@
 
   exports.Alert = Alert;
   exports.App = App;
-  exports.Bsicon = Bsicon;
   exports.Button = Button;
   exports.Caption = Caption;
   exports.Checkbox = Checkbox;
@@ -6249,6 +6248,7 @@
   exports.Table = Table;
   exports.Tabs = Tabs;
   exports.Textbox = Textbox;
+  exports.ThemifyIcon = ThemifyIcon;
   exports.TimePicker = TimePicker;
   exports.Tooltip = Tooltip;
   exports.View = View;
