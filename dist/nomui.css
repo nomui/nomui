@@ -4550,13 +4550,6 @@ table.nom-table.m-bordered {
   overflow-x: auto;
   overflow-y: scroll;
 }
-.nom-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5em;
-  height: 1.5em;
-}
 .nom-icon.m-border {
   display: inline-block;
   width: 1.5em;

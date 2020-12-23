@@ -11,7 +11,7 @@ define([], function () {
                         icon: 'plus'
                     },
                     {
-                        icon: 'minus'
+                        icon: 'plus'
                     },
                     {
                         text: 'Right icon',

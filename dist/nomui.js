@@ -3009,7 +3009,7 @@
               border: false,
               background: false,
               box: true,
-              i: {
+              i: { 
                   component: Bsicon
               }
           };

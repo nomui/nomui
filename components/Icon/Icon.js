@@ -8,7 +8,7 @@ class Icon extends Component {
             border: false,
             background: false,
             box: true,
-            i: {
+            i: { 
                 component: Bsicon
             }
         }
