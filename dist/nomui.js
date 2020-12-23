@@ -5128,19 +5128,19 @@
       _config() {
           this.setProps({
               attrs: {
-                  'oninput'() {
+                  'oninput': () => {
                       if (!this.capsLock) {
                           this.multilineTextbox._onValueChange();
                       }
                   },
-                  'oncompositionstart'() {
+                  'oncompositionstart': () => {
                       this.capsLock = true;
                   },
-                  'oncompositionend'() {
+                  'oncompositionend': () => {
                       this.capsLock = false;
                       this.element.trigger('input');
                   },
-                  'onblur'() {
+                  'onblur': () => {
                       this.multilineTextbox.trigger("blur");
                   }
               }
