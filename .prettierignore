@@ -1,0 +1,17 @@
+package.json
+/dist
+/libs
+.eslintignore
+.editorconfig
+.gitignore
+.prettierignore
+LICENSE
+.eslintcache
+*.lock
+yarn-error.log
+**/*.svg
+**/*.png
+**/*.jpg
+**/*.html
+**/*.ico
+*.yarnrc
