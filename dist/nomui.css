@@ -3412,7 +3412,7 @@ img {
 .nom-panel.p-type-default > .nom-panel-header {
   display: flex;
   width: 100%;
-  min-height: 3rem;
+  min-height: 3.5rem;
   align-items: center;
   padding-left: 1rem !important;
   padding-right: 1rem !important;
@@ -3438,7 +3438,7 @@ img {
 .nom-panel.p-type-default > .nom-panel-footer {
   display: flex;
   align-items: center;
-  min-height: 3rem;
+  min-height: 3.5rem;
   border-top: 1px solid #ced4da;
   padding-left: 1rem !important;
   padding-right: 1rem !important;

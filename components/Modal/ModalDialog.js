@@ -17,7 +17,23 @@ class ModalDialog extends Component {
         let content = this.modal.props.content
         if (isString(content)) {
             require([content], (props) => {
-                props = Component.extendProps({ component: Panel }, props)
+                props = Component.extendProps({
+                    component: Panel,
+                    header: {
+                        nav: {},
+                        tools: [
+                            {
+                                component: 'Button',
+                                icon: 'close',
+                                events: {
+                                    click: function () {
+                                        this.$modal.close()
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }, props)
                 this.update({
                     children: { props: props, mixins: [ModalContentMixin] }
                 })
