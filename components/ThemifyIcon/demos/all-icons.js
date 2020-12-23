@@ -1,4 +1,4 @@
-define(['/dist/bootstrap-icons.js'], function (icons) {
+define([], function () {
 
     return {
         title: '基础用法',
