@@ -1,0 +1,21 @@
+{
+  "eslint.validate": ["typescript", "typescriptreact"],
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.autoClosingBrackets": "always"
+  },
+  "[markdown]": {
+    "editor.formatOnSave": true,
+    "editor.wordWrap": "on",
+    "editor.renderWhitespace": "all",
+    "editor.acceptSuggestionOnEnter": "off"
+  },
+  "javascript.validate.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true,
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  }
+}
