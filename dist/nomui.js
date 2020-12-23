@@ -2662,21 +2662,20 @@
       get: function () {
           let cur = this;
           while (cur) {
-              if (cur.__isModal === true) {
-                  return cur
+              if (cur.__isModalContent === true) {
+                  return cur.modal
               }
               else {
                   cur = cur.parent;
               }
           }
-          return cur
+          return cur.modal
       }
   });
 
   var ModalContentMixin = {
       _create: function () {
-          this._scoped = true;
-          this.__isModal = true;
+          this.__isModalContent = true;
       }
   };
 
@@ -2753,6 +2752,7 @@
       }
 
       _create() {
+          this._scoped = true;
           this.bodyElem = document.body;
       }
 
@@ -2794,7 +2794,7 @@
               }
           }
 
-          this.trigger('close', { result: result });
+          this.trigger('close', result);
           this.remove();
       }
 

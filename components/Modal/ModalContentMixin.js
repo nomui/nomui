@@ -4,20 +4,19 @@ Object.defineProperty(Component.prototype, '$modal', {
     get: function () {
         let cur = this
         while (cur) {
-            if (cur.__isModal === true) {
-                return cur
+            if (cur.__isModalContent === true) {
+                return cur.modal
             }
             else {
                 cur = cur.parent
             }
         }
-        return cur
+        return cur.modal
     }
 })
 
 export default {
     _create: function () {
-        this._scoped = true
-        this.__isModal = true
+        this.__isModalContent = true
     }
 }

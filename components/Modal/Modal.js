@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import getzIndex from '../util/index-manager'
-import ModalDialog from './ModalDialog'
 import { positionTool } from '../util/position'
+import ModalDialog from './ModalDialog'
 
 class Modal extends Component {
     constructor(props, ...mixins) {
@@ -14,6 +14,7 @@ class Modal extends Component {
     }
 
     _create() {
+        this._scoped = true
         this.bodyElem = document.body
     }
 
@@ -55,7 +56,7 @@ class Modal extends Component {
             }
         }
 
-        this.trigger('close', { result: result });
+        this.trigger('close', result);
         this.remove();
     }
 
