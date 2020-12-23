@@ -2,14 +2,14 @@ define([], function () {
 
     return {
         header: {
-            title: '标题'
+            caption: { title: '标题' }
         },
         body: {
             children: '内容'
         },
         footer: {
             _config: function () {
-                let modal = this.modal
+                let modal = this.$modal
 
                 this.setProps({
                     children: {

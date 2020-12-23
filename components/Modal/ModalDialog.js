@@ -1,11 +1,12 @@
 import Component from '../Component/index'
-import ModalContent from './ModalContent'
+import Panel from '../Panel/index'
+import ModalContentMixin from './ModalContentMixin'
 import { isString, isPlainObject } from '../util/index'
 
 class ModalDialog extends Component {
     constructor(props, ...mixins) {
         const defaults = {
-            children: { component: ModalContent }
+            children: { component: Panel }
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -16,8 +17,9 @@ class ModalDialog extends Component {
         let content = this.modal.props.content
         if (isString(content)) {
             require([content], (props) => {
+                props = Component.extendProps({ component: Panel }, props)
                 this.update({
-                    children: props
+                    children: { props: props, mixins: [ModalContentMixin] }
                 })
             })
         }
@@ -27,7 +29,7 @@ class ModalDialog extends Component {
         let content = this.modal.props.content
         if (isPlainObject(content)) {
             this.setProps({
-                children: content
+                children: { props: content, mixins: [ModalContentMixin] }
             })
         }
     }

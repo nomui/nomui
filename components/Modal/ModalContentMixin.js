@@ -17,6 +17,15 @@ Object.defineProperty(Component.prototype, '$modal', {
 
 export default {
     _create: function () {
+        this.modal = this.parent.modal
         this.__isModalContent = true
+    },
+
+    _config: function () {
+        this.setProps({
+            classes: {
+                'nom-modal-content': true
+            }
+        })
     }
 }

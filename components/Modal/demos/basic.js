@@ -14,8 +14,11 @@ define([], function () {
                                 new nomui.Modal(
                                     {
                                         content: {
+                                            component: 'Panel',
                                             header: {
-                                                title: 'hello'
+                                                caption: {
+                                                    title: 'hello'
+                                                }
                                             },
                                             body: {
                                                 children: [

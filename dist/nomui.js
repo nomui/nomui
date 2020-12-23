@@ -2590,73 +2590,229 @@
 
   Component.register(Loading);
 
-  class ModalHeader extends Component {
+  class ThemifyIcon extends Component {
       constructor(props, ...mixins) {
           const defaults = {
-              icon: null,
-              image: null,
-              title: null
+              type: '',
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
-      _create() {
-          this.modalContent = this.parent;
-          this.modal = this.modalContent.modal;
+      _config() {
+          var classes = {};
+          classes['ti-' + this.props.type] = true;
+
+          this.setProps({
+              tag: 'i',
+              classes: classes,
+          });
+      }
+  }
+
+  Component.register(ThemifyIcon);
+
+  class Icon extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              border: false,
+              background: false,
+              box: true,
+              i: { 
+                  component: ThemifyIcon
+              }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
       }
 
       _config() {
-          var that = this;
+          this.setProps({
+              i: {
+                  type: this.props.type
+              }
+          });
+          this.setProps({
+              tag: 'span',
+              children: this.props.i
+          });
+      }
+  }
+
+  Component.normalizeIconProps = function (props) {
+      if (props === null || props === undefined) {
+          return null
+      }
+      var iconProps = {};
+      if (isString(props)) {
+          iconProps.type = props;
+      }
+      else if (isPlainObject(props)) {
+          iconProps = props;
+      }
+      else {
+          return null
+      }
+      iconProps.component = Icon;
+
+      return iconProps
+  };
+
+  Component.register(Icon);
+
+  class Caption extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              title: '',
+              subtitle: '',
+              icon: null,
+              image: null,
+              titleLevel: 5
+          };
+
+          let tagProp = props.href ? { tag: 'a' } : {};
+
+          super(Component.extendProps(defaults, props, tagProp), ...mixins);
+      }
+
+      _config() {
+          let { title, subtitle, icon, image, href, titleLevel } = this.props;
+          let children = [];
+          if (image) {
+              children.push({ tag: 'img', attrs: { src: image } });
+          }
+          else if (icon) {
+              children.push(Component.normalizeIconProps(icon));
+          }
+          let titleTag = `h${titleLevel}`;
+          children.push({
+              tag: titleTag,
+              classes: {
+                  'nom-caption-title': true
+              },
+              children: [
+                  title,
+                  subtitle && { tag: 'small', children: subtitle }
+              ]
+          });
+          if (href) {
+              this.setProps({ attrs: { href: href } });
+          }
+          this.setProps({
+              children: children
+          });
+      }
+  }
+
+  Component.register(Caption);
+
+  class PanelHeaderCaption extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(PanelHeaderCaption);
+
+  class PanelHeaderNav extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(PanelHeaderNav);
+
+  class PanelHeaderTools extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(PanelHeaderTools);
+
+  class PanelHeader extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              caption: null,
+              nav: null,
+              tools: null,
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      config() {
+          let { caption, nav, tools } = this.props;
+          let toolsProps;
+          let captionProps = caption ? Component.extendProps({ component: Caption }, caption) : null;
+          let navProps = nav ? Component.extendProps({ component: Cols }, nav) : null;
+          if (Array.isArray(tools)) {
+              toolsProps = { component: Cols, items: tools };
+          }
+          else if (isPlainObject(tools)) {
+              toolsProps = Component.extendProps({ component: Cols }, tools);
+          }
 
           this.setProps({
               children: [
-                  { tag: 'h5', children: this.props.title },
-                  {
-                      component: 'Button', 
-                      icon: 'close',                     
-                      attrs: {
-                          onclick: function () {
-                              that.modal.close();
-                          }
-                      }
-                  }
+                  captionProps && { component: PanelHeaderCaption, children: captionProps },
+                  navProps && { component: PanelHeaderNav, children: navProps },
+                  toolsProps && { component: PanelHeaderTools, children: toolsProps },
               ]
           });
       }
   }
 
-  Component.register(ModalHeader);
+  Component.register(PanelHeader);
 
-  class ModalBody extends Component {
+  class PanelBody extends Component {
       constructor(props, ...mixins) {
-          const defaults = {};
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(PanelBody);
+
+  class PanelFooter extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(PanelFooter);
+
+  class Panel extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              header: null,
+              body: null,
+              footer: null,
+              type: 'default',
+          };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
-      _create() {
-          this.modalContent = this.parent;
-          this.modal = this.modalContent.modal;
+      _config() {
+          let { header, body, footer } = this.props;
+          let footerProps;
+          let headerProps = Component.extendProps({ component: PanelHeader }, header);
+          let bodyProps = Component.extendProps({ component: PanelBody }, body);
+          if (footer) {
+              footerProps = Component.extendProps({ component: PanelFooter }, footer);
+          }
+
+          this.setProps({
+              children: [
+                  headerProps,
+                  bodyProps,
+                  footerProps,
+              ]
+          });
       }
   }
 
-  Component.register(ModalBody);
-
-  class ModalFooter extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {};
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.modalContent = this.parent;
-          this.modal = this.modalContent.modal;
-      }
-  }
-
-  Component.register(ModalFooter);
+  Component.register(Panel);
 
   Object.defineProperty(Component.prototype, '$modal', {
       get: function () {
@@ -2675,43 +2831,23 @@
 
   var ModalContentMixin = {
       _create: function () {
-          this.__isModalContent = true;
-      }
-  };
-
-  class ModalContent extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              header: { component: ModalHeader },
-              body: { component: ModalBody },
-              footer: { component: ModalFooter }
-          };
-
-          super(Component.extendProps(defaults, props), ModalContentMixin, ...mixins);
-      }
-
-      _create() {
           this.modal = this.parent.modal;
-      }
+          this.__isModalContent = true;
+      },
 
-      _config() {
+      _config: function () {
           this.setProps({
-              tag: 'div',
-              children: [
-                  this.props.header,
-                  this.props.body,
-                  this.props.footer
-              ]
+              classes: {
+                  'nom-modal-content': true
+              }
           });
       }
-  }
-
-  Component.register(ModalContent);
+  };
 
   class ModalDialog extends Component {
       constructor(props, ...mixins) {
           const defaults = {
-              children: { component: ModalContent }
+              children: { component: Panel }
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
@@ -2722,8 +2858,9 @@
           let content = this.modal.props.content;
           if (isString(content)) {
               require([content], (props) => {
+                  props = Component.extendProps({ component: Panel }, props);
                   this.update({
-                      children: props
+                      children: { props: props, mixins: [ModalContentMixin] }
                   });
               });
           }
@@ -2733,7 +2870,7 @@
           let content = this.modal.props.content;
           if (isPlainObject(content)) {
               this.setProps({
-                  children: content
+                  children: { props: content, mixins: [ModalContentMixin] }
               });
           }
       }
@@ -2980,122 +3117,6 @@
   }
 
   Component.register(Layout);
-
-  class ThemifyIcon extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              type: '',
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          var classes = {};
-          classes['ti-' + this.props.type] = true;
-
-          this.setProps({
-              tag: 'i',
-              classes: classes,
-          });
-      }
-  }
-
-  Component.register(ThemifyIcon);
-
-  class Icon extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              border: false,
-              background: false,
-              box: true,
-              i: { 
-                  component: ThemifyIcon
-              }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          this.setProps({
-              i: {
-                  type: this.props.type
-              }
-          });
-          this.setProps({
-              tag: 'span',
-              children: this.props.i
-          });
-      }
-  }
-
-  Component.normalizeIconProps = function (props) {
-      if (props === null || props === undefined) {
-          return null
-      }
-      var iconProps = {};
-      if (isString(props)) {
-          iconProps.type = props;
-      }
-      else if (isPlainObject(props)) {
-          iconProps = props;
-      }
-      else {
-          return null
-      }
-      iconProps.component = Icon;
-
-      return iconProps
-  };
-
-  Component.register(Icon);
-
-  class Caption extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              title: '',
-              subtitle: '',
-              icon: null,
-              image: null,
-              titleLevel: 5
-          };
-
-          let tagProp = props.href ? { tag: 'a' } : {};
-
-          super(Component.extendProps(defaults, props, tagProp), ...mixins);
-      }
-
-      _config() {
-          let { title, subtitle, icon, image, href, titleLevel } = this.props;
-          let children = [];
-          if (image) {
-              children.push({ tag: 'img', attrs: { src: image } });
-          }
-          else if (icon) {
-              children.push(Component.normalizeIconProps(icon));
-          }
-          let titleTag = `h${titleLevel}`;
-          children.push({
-              tag: titleTag,
-              classes: {
-                  'nom-caption-title': true
-              },
-              children: [
-                  title,
-                  subtitle && { tag: 'small', children: subtitle }
-              ]
-          });
-          if (href) {
-              this.setProps({ attrs: { href: href } });
-          }
-          this.setProps({
-              children: children
-          });
-      }
-  }
-
-  Component.register(Caption);
 
   class NavbarCaption extends Component {
       constructor(props, ...mixins) {
@@ -3817,114 +3838,6 @@
   }
 
   Component.register(Pager);
-
-  class PanelHeaderCaption extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
-      }
-  }
-
-  Component.register(PanelHeaderCaption);
-
-  class PanelHeaderNav extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
-      }
-  }
-
-  Component.register(PanelHeaderNav);
-
-  class PanelHeaderTools extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
-      }
-  }
-
-  Component.register(PanelHeaderTools);
-
-  class PanelHeader extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              caption: null,
-              nav: null,
-              tools: null,
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      config() {
-          let { caption, nav, tools } = this.props;
-          let toolsProps;
-          let captionProps = caption ? Component.extendProps({ component: Caption }, caption) : null;
-          let navProps = nav ? Component.extendProps({ component: Cols }, nav) : null;
-          if (Array.isArray(tools)) {
-              toolsProps = { component: Cols, items: tools };
-          }
-          else if (isPlainObject(tools)) {
-              toolsProps = Component.extendProps({ component: Cols }, tools);
-          }
-
-          this.setProps({
-              children: [
-                  captionProps && { component: PanelHeaderCaption, children: captionProps },
-                  navProps && { component: PanelHeaderNav, children: navProps },
-                  toolsProps && { component: PanelHeaderTools, children: toolsProps },
-              ]
-          });
-      }
-  }
-
-  Component.register(PanelHeader);
-
-  class PanelBody extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
-      }
-  }
-
-  Component.register(PanelBody);
-
-  class PanelFooter extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
-      }
-  }
-
-  Component.register(PanelFooter);
-
-  class Panel extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              header: null,
-              body: null,
-              footer: null,
-              type: 'default',
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          let { header, body, footer } = this.props;
-          let footerProps;
-          let headerProps = Component.extendProps({ component: PanelHeader }, header);
-          let bodyProps = Component.extendProps({ component: PanelBody }, body);
-          if (footer) {
-              footerProps = Component.extendProps({ component: PanelFooter }, footer);
-          }
-
-          this.setProps({
-              children: [
-                  headerProps,
-                  bodyProps,
-                  footerProps,
-              ]
-          });
-      }
-  }
-
-  Component.register(Panel);
 
   class MenuItem extends Component {
       constructor(props, ...mixins) {
