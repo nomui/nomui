@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import ModalHeader from './ModalHeader'
 import ModalBody from './ModalBody'
 import ModalFooter from './ModalFooter'
+import ModalContentMixin from './ModalContentMixin'
 
 class ModalContent extends Component {
     constructor(props, ...mixins) {
@@ -11,7 +12,7 @@ class ModalContent extends Component {
             footer: { component: ModalFooter }
         }
 
-        super(Component.extendProps(defaults, props), ...mixins)
+        super(Component.extendProps(defaults, props), ModalContentMixin, ...mixins)
     }
 
     _create() {

@@ -2658,6 +2658,28 @@
 
   Component.register(ModalFooter);
 
+  Object.defineProperty(Component.prototype, '$modal', {
+      get: function () {
+          let cur = this;
+          while (cur) {
+              if (cur.__isModal === true) {
+                  return cur
+              }
+              else {
+                  cur = cur.parent;
+              }
+          }
+          return cur
+      }
+  });
+
+  var ModalContentMixin = {
+      _create: function () {
+          this._scoped = true;
+          this.__isModal = true;
+      }
+  };
+
   class ModalContent extends Component {
       constructor(props, ...mixins) {
           const defaults = {
@@ -2666,7 +2688,7 @@
               footer: { component: ModalFooter }
           };
 
-          super(Component.extendProps(defaults, props), ...mixins);
+          super(Component.extendProps(defaults, props), ModalContentMixin, ...mixins);
       }
 
       _create() {
