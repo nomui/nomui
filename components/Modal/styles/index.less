@@ -64,12 +64,14 @@
     align-items: center;
 
     min-height: calc(100% - 1rem);
+
     // Ensure `modal-dialog-centered` extends the full height of the view (IE10/11)
     &::before {
         display: block; // IE10
         height: calc(100vh - 1rem);
         content: "";
     }
+
     // Ensure `.modal-body` shows scrollbar (IE10/11)
     &.nom-modal-dialog-scrollable {
         flex-direction: column;
@@ -96,32 +98,25 @@
     pointer-events: auto;
     background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.2);
+    border: 1px solid rgba(0, 0, 0, .2);
     border-radius: .3rem;
     // Remove focus outline from opened modal
     outline: 0;
 
-    > .nom-modal-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        padding: 1rem 1rem;
+    >.nom-panel-header {
         border-bottom: 1px solid #dee2e6;
         border-top-left-radius: .3rem;
         border-top-right-radius: .3rem;
     }
 
-    > .nom-modal-body {
+    >.nom-panel-body {
         position: relative;
         flex: 1 1 auto;
         padding: 1rem;
     }
 
-    > .nom-modal-footer {
-        display: flex;
-        align-items: center;
+    >.nom-panel-footer {
         justify-content: flex-end;
-        padding: 1rem;
         border-top: 1px solid #dee2e6;
         border-bottom-right-radius: .3rem;
         border-bottom-left-radius: .3rem;
@@ -130,6 +125,7 @@
 
 // Scale up the modal
 @media (min-width: @screen-sm-min) {
+
     // Automatically set modal's width for larger viewports
     .nom-modal-dialog {
         width: 560px;

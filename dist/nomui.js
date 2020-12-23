@@ -2866,6 +2866,9 @@
                               {
                                   component: 'Button',
                                   icon: 'close',
+                                  styles: {
+                                      border: 'none'
+                                  },
                                   events: {
                                       click: function () {
                                           this.$modal.close();

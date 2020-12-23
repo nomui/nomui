@@ -4160,25 +4160,18 @@ img {
   border-radius: 0.3rem;
   outline: 0;
 }
-.nom-modal-content > .nom-modal-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 1rem 1rem;
+.nom-modal-content > .nom-panel-header {
   border-bottom: 1px solid #dee2e6;
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
 }
-.nom-modal-content > .nom-modal-body {
+.nom-modal-content > .nom-panel-body {
   position: relative;
   flex: 1 1 auto;
   padding: 1rem;
 }
-.nom-modal-content > .nom-modal-footer {
-  display: flex;
-  align-items: center;
+.nom-modal-content > .nom-panel-footer {
   justify-content: flex-end;
-  padding: 1rem;
   border-top: 1px solid #dee2e6;
   border-bottom-right-radius: 0.3rem;
   border-bottom-left-radius: 0.3rem;
