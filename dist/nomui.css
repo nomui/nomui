@@ -4358,6 +4358,18 @@ img {
 .nom-list.p-cols-6 > .nom-list-item-wrapper {
   width: 16.66%;
 }
+.nom-list.p-cols-7 > .nom-list-item-wrapper {
+  width: 14.28%;
+}
+.nom-list.p-cols-8 > .nom-list-item-wrapper {
+  width: 12.5%;
+}
+.nom-list.p-cols-9 > .nom-list-item-wrapper {
+  width: 11.11%;
+}
+.nom-list.p-cols-10 > .nom-list-item-wrapper {
+  width: 10%;
+}
 .nom-tab-list {
   padding-left: 0;
   list-style: none;

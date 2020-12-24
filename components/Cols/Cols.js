@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Col from './Col'
+import { isString } from '../util/index'
 
 class Cols extends Component {
     constructor(props, ...mixins) {
@@ -20,6 +21,11 @@ class Cols extends Component {
         if (Array.isArray(items) && items.length > 0) {
             for (var i = 0; i < items.length; i++) {
                 let item = items[i]
+                if (isString(item)) {
+                    item = {
+                        children: item
+                    }
+                }
                 item = Component.extendProps({}, this.props.itemDefaults, item)
                 children.push({ component: Col, children: item })
             }

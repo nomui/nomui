@@ -1492,6 +1492,11 @@
           if (Array.isArray(items) && items.length > 0) {
               for (var i = 0; i < items.length; i++) {
                   let item = items[i];
+                  if (isString(item)) {
+                      item = {
+                          children: item
+                      };
+                  }
                   item = Component.extendProps({}, this.props.itemDefaults, item);
                   children.push({ component: Col, children: item });
               }
@@ -3343,6 +3348,11 @@
           else if (Array.isArray(items) && items.length > 0) {
               for (var i = 0; i < items.length; i++) {
                   var item = items[i];
+                  if (isString(item)) {
+                      item = {
+                          children: item
+                      };
+                  }
                   item = Component.extendProps({}, itemDefaults, item);
                   children.push({ component: ListItemWrapper, item: item });
               }
@@ -5651,7 +5661,7 @@
           this.setProps({
               attrs: {
                   style: {
-                      width: this.selectControl.offsetWidth() + 'px'
+                      width: this.selectControl.offsetWidth() + 'px',
                   }
               },
               children: {
@@ -5860,22 +5870,472 @@
       }
   }
 
+  /**
+   * Copyright (c)2005-2009 Matt Kruse (javascripttoolbox.com)
+   * 
+   * Dual licensed under the MIT and GPL licenses. 
+   * This basically means you can use this code however you want for
+   * free, but don't claim to have written it yourself!
+   * Donations always accepted: http://www.JavascriptToolbox.com/donate/
+   * 
+   * Please do not link to the .js files on javascripttoolbox.com from
+   * your site. Copy the files locally to your server instead.
+   * 
+   */
+  /*
+  Date functions
+   
+  These functions are used to parse, format, and manipulate Date objects.
+  See documentation and examples at http://www.JavascriptToolbox.com/lib/date/
+   
+  */
+  Date.$VERSION = 1.02;
+
+  // Utility function to append a 0 to single-digit numbers
+  Date.LZ = function (x) { return (x < 0 || x > 9 ? "" : "0") + x };
+  // Full month names. Change this for local month names
+  Date.monthNames = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+  // Month abbreviations. Change this for local month names
+  Date.monthAbbreviations = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+  // Full day names. Change this for local month names
+  Date.dayNames = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+  // Day abbreviations. Change this for local month names
+  Date.dayAbbreviations = new Array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+  // Used for parsing ambiguous dates like 1/2/2000 - default to preferring 'American' format meaning Jan 2.
+  // Set to false to prefer 'European' format meaning Feb 1
+  Date.preferAmericanFormat = true;
+
+  // If the getFullYear() method is not defined, create it
+  if (!Date.prototype.getFullYear) {
+      Date.prototype.getFullYear = function () { var yy = this.getYear(); return (yy < 1900 ? yy + 1900 : yy); };
+  }
+
+  // Parse a string and convert it to a Date object.
+  // If no format is passed, try a list of common formats.
+  // If string cannot be parsed, return null.
+  // Avoids regular expressions to be more portable.
+  Date.parseString = function (val, format) {
+      // If no format is specified, try a few common formats
+      if (typeof (format) == "undefined" || format == null || format == "") {
+          var generalFormats = new Array('y-M-d', 'MMM d, y', 'MMM d,y', 'y-MMM-d', 'd-MMM-y', 'MMM d', 'MMM-d', 'd-MMM');
+          var monthFirst = new Array('M/d/y', 'M-d-y', 'M.d.y', 'M/d', 'M-d');
+          var dateFirst = new Array('d/M/y', 'd-M-y', 'd.M.y', 'd/M', 'd-M');
+          var checkList = new Array(generalFormats, Date.preferAmericanFormat ? monthFirst : dateFirst, Date.preferAmericanFormat ? dateFirst : monthFirst);
+          for (var i = 0; i < checkList.length; i++) {
+              var l = checkList[i];
+              for (var j = 0; j < l.length; j++) {
+                  var d = Date.parseString(val, l[j]);
+                  if (d != null) {
+                      return d;
+                  }
+              }
+          }
+          return null;
+      }
+      this.isInteger = function (val) {
+          for (var i = 0; i < val.length; i++) {
+              if ("1234567890".indexOf(val.charAt(i)) == -1) {
+                  return false;
+              }
+          }
+          return true;
+      };
+      this.getInt = function (str, i, minlength, maxlength) {
+          for (var x = maxlength; x >= minlength; x--) {
+              var token = str.substring(i, i + x);
+              if (token.length < minlength) {
+                  return null;
+              }
+              if (this.isInteger(token)) {
+                  return token;
+              }
+          }
+          return null;
+      };
+      val = val + "";
+      format = format + "";
+      var i_val = 0;
+      var i_format = 0;
+      var c = "";
+      var token = "";
+      var x, y;
+      var year = new Date().getFullYear();
+      var month = 1;
+      var date = 1;
+      var hh = 0;
+      var mm = 0;
+      var ss = 0;
+      var ampm = "";
+      while (i_format < format.length) {
+          // Get next token from format string
+          c = format.charAt(i_format);
+          token = "";
+          while ((format.charAt(i_format) == c) && (i_format < format.length)) {
+              token += format.charAt(i_format++);
+          }
+          // Extract contents of value based on format token
+          if (token == "yyyy" || token == "yy" || token == "y") {
+              if (token == "yyyy") {
+                  x = 4; y = 4;
+              }
+              if (token == "yy") {
+                  x = 2; y = 2;
+              }
+              if (token == "y") {
+                  x = 2; y = 4;
+              }
+              year = this.getInt(val, i_val, x, y);
+              if (year == null) {
+                  return null;
+              }
+              i_val += year.length;
+              if (year.length == 2) {
+                  if (year > 70) {
+                      year = 1900 + (year - 0);
+                  }
+                  else {
+                      year = 2000 + (year - 0);
+                  }
+              }
+          }
+          else if (token == "MMM" || token == "NNN") {
+              month = 0;
+              var names = (token == "MMM" ? (Date.monthNames.concat(Date.monthAbbreviations)) : Date.monthAbbreviations);
+              for (var i = 0; i < names.length; i++) {
+                  var month_name = names[i];
+                  if (val.substring(i_val, i_val + month_name.length).toLowerCase() == month_name.toLowerCase()) {
+                      month = (i % 12) + 1;
+                      i_val += month_name.length;
+                      break;
+                  }
+              }
+              if ((month < 1) || (month > 12)) {
+                  return null;
+              }
+          }
+          else if (token == "EE" || token == "E") {
+              var names = (token == "EE" ? Date.dayNames : Date.dayAbbreviations);
+              for (var i = 0; i < names.length; i++) {
+                  var day_name = names[i];
+                  if (val.substring(i_val, i_val + day_name.length).toLowerCase() == day_name.toLowerCase()) {
+                      i_val += day_name.length;
+                      break;
+                  }
+              }
+          }
+          else if (token == "MM" || token == "M") {
+              month = this.getInt(val, i_val, token.length, 2);
+              if (month == null || (month < 1) || (month > 12)) {
+                  return null;
+              }
+              i_val += month.length;
+          }
+          else if (token == "dd" || token == "d") {
+              date = this.getInt(val, i_val, token.length, 2);
+              if (date == null || (date < 1) || (date > 31)) {
+                  return null;
+              }
+              i_val += date.length;
+          }
+          else if (token == "hh" || token == "h") {
+              hh = this.getInt(val, i_val, token.length, 2);
+              if (hh == null || (hh < 1) || (hh > 12)) {
+                  return null;
+              }
+              i_val += hh.length;
+          }
+          else if (token == "HH" || token == "H") {
+              hh = this.getInt(val, i_val, token.length, 2);
+              if (hh == null || (hh < 0) || (hh > 23)) {
+                  return null;
+              }
+              i_val += hh.length;
+          }
+          else if (token == "KK" || token == "K") {
+              hh = this.getInt(val, i_val, token.length, 2);
+              if (hh == null || (hh < 0) || (hh > 11)) {
+                  return null;
+              }
+              i_val += hh.length;
+              hh++;
+          }
+          else if (token == "kk" || token == "k") {
+              hh = this.getInt(val, i_val, token.length, 2);
+              if (hh == null || (hh < 1) || (hh > 24)) {
+                  return null;
+              }
+              i_val += hh.length;
+              hh--;
+          }
+          else if (token == "mm" || token == "m") {
+              mm = this.getInt(val, i_val, token.length, 2);
+              if (mm == null || (mm < 0) || (mm > 59)) {
+                  return null;
+              }
+              i_val += mm.length;
+          }
+          else if (token == "ss" || token == "s") {
+              ss = this.getInt(val, i_val, token.length, 2);
+              if (ss == null || (ss < 0) || (ss > 59)) {
+                  return null;
+              }
+              i_val += ss.length;
+          }
+          else if (token == "a") {
+              if (val.substring(i_val, i_val + 2).toLowerCase() == "am") {
+                  ampm = "AM";
+              }
+              else if (val.substring(i_val, i_val + 2).toLowerCase() == "pm") {
+                  ampm = "PM";
+              }
+              else {
+                  return null;
+              }
+              i_val += 2;
+          }
+          else {
+              if (val.substring(i_val, i_val + token.length) != token) {
+                  return null;
+              }
+              else {
+                  i_val += token.length;
+              }
+          }
+      }
+      // If there are any trailing characters left in the value, it doesn't match
+      if (i_val != val.length) {
+          return null;
+      }
+      // Is date valid for month?
+      if (month == 2) {
+          // Check for leap year
+          if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) { // leap year
+              if (date > 29) {
+                  return null;
+              }
+          }
+          else {
+              if (date > 28) {
+                  return null;
+              }
+          }
+      }
+      if ((month == 4) || (month == 6) || (month == 9) || (month == 11)) {
+          if (date > 30) {
+              return null;
+          }
+      }
+      // Correct hours value
+      if (hh < 12 && ampm == "PM") {
+          hh = hh - 0 + 12;
+      }
+      else if (hh > 11 && ampm == "AM") {
+          hh -= 12;
+      }
+      return new Date(year, month - 1, date, hh, mm, ss);
+  };
+
+  // Check if a date string is valid
+  Date.isValid = function (val, format) {
+      return (Date.parseString(val, format) != null);
+  };
+
+  // Check if a date object is before another date object
+  Date.prototype.isBefore = function (date2) {
+      if (date2 == null) {
+          return false;
+      }
+      return (this.getTime() < date2.getTime());
+  };
+
+  // Check if a date object is after another date object
+  Date.prototype.isAfter = function (date2) {
+      if (date2 == null) {
+          return false;
+      }
+      return (this.getTime() > date2.getTime());
+  };
+
+  // Check if two date objects have equal dates and times
+  Date.prototype.equals = function (date2) {
+      if (date2 == null) {
+          return false;
+      }
+      return (this.getTime() == date2.getTime());
+  };
+
+  // Check if two date objects have equal dates, disregarding times
+  Date.prototype.equalsIgnoreTime = function (date2) {
+      if (date2 == null) {
+          return false;
+      }
+      var d1 = new Date(this.getTime()).clearTime();
+      var d2 = new Date(date2.getTime()).clearTime();
+      return (d1.getTime() == d2.getTime());
+  };
+
+  // Format a date into a string using a given format string
+  Date.prototype.format = function (format) {
+      format = format + "";
+      var result = "";
+      var i_format = 0;
+      var c = "";
+      var token = "";
+      var y = this.getYear() + "";
+      var M = this.getMonth() + 1;
+      var d = this.getDate();
+      var E = this.getDay();
+      var H = this.getHours();
+      var m = this.getMinutes();
+      var s = this.getSeconds();
+      var H;
+      // Convert real date parts into formatted versions
+      var value = new Object();
+      if (y.length < 4) {
+          y = "" + (+y + 1900);
+      }
+      value["y"] = "" + y;
+      value["yyyy"] = y;
+      value["yy"] = y.substring(2, 4);
+      value["M"] = M;
+      value["MM"] = Date.LZ(M);
+      value["MMM"] = Date.monthNames[M - 1];
+      value["NNN"] = Date.monthAbbreviations[M - 1];
+      value["d"] = d;
+      value["dd"] = Date.LZ(d);
+      value["E"] = Date.dayAbbreviations[E];
+      value["EE"] = Date.dayNames[E];
+      value["H"] = H;
+      value["HH"] = Date.LZ(H);
+      if (H == 0) {
+          value["h"] = 12;
+      }
+      else if (H > 12) {
+          value["h"] = H - 12;
+      }
+      else {
+          value["h"] = H;
+      }
+      value["hh"] = Date.LZ(value["h"]);
+      value["K"] = value["h"] - 1;
+      value["k"] = value["H"] + 1;
+      value["KK"] = Date.LZ(value["K"]);
+      value["kk"] = Date.LZ(value["k"]);
+      if (H > 11) {
+          value["a"] = "PM";
+      }
+      else {
+          value["a"] = "AM";
+      }
+      value["m"] = m;
+      value["mm"] = Date.LZ(m);
+      value["s"] = s;
+      value["ss"] = Date.LZ(s);
+      while (i_format < format.length) {
+          c = format.charAt(i_format);
+          token = "";
+          while ((format.charAt(i_format) == c) && (i_format < format.length)) {
+              token += format.charAt(i_format++);
+          }
+          if (typeof (value[token]) != "undefined") {
+              result = result + value[token];
+          }
+          else {
+              result = result + token;
+          }
+      }
+      return result;
+  };
+
+  // Get the full name of the day for a date
+  Date.prototype.getDayName = function () {
+      return Date.dayNames[this.getDay()];
+  };
+
+  // Get the abbreviation of the day for a date
+  Date.prototype.getDayAbbreviation = function () {
+      return Date.dayAbbreviations[this.getDay()];
+  };
+
+  // Get the full name of the month for a date
+  Date.prototype.getMonthName = function () {
+      return Date.monthNames[this.getMonth()];
+  };
+
+  // Get the abbreviation of the month for a date
+  Date.prototype.getMonthAbbreviation = function () {
+      return Date.monthAbbreviations[this.getMonth()];
+  };
+
+  // Clear all time information in a date object
+  Date.prototype.clearTime = function () {
+      this.setHours(0);
+      this.setMinutes(0);
+      this.setSeconds(0);
+      this.setMilliseconds(0);
+      return this;
+  };
+
+  // Add an amount of time to a date. Negative numbers can be passed to subtract time.
+  Date.prototype.add = function (interval, number) {
+      if (typeof (interval) == "undefined" || interval == null || typeof (number) == "undefined" || number == null) {
+          return this;
+      }
+      number = +number;
+      if (interval == 'y') { // year
+          this.setFullYear(this.getFullYear() + number);
+      }
+      else if (interval == 'M') { // Month
+          this.setMonth(this.getMonth() + number);
+      }
+      else if (interval == 'd') { // Day
+          this.setDate(this.getDate() + number);
+      }
+      else if (interval == 'w') { // Weekday
+          var step = (number > 0) ? 1 : -1;
+          while (number != 0) {
+              this.add('d', step);
+              while (this.getDay() == 0 || this.getDay() == 6) {
+                  this.add('d', step);
+              }
+              number -= step;
+          }
+      }
+      else if (interval == 'h') { // Hour
+          this.setHours(this.getHours() + number);
+      }
+      else if (interval == 'm') { // Minute
+          this.setMinutes(this.getMinutes() + number);
+      }
+      else if (interval == 's') { // Second
+          this.setSeconds(this.getSeconds() + number);
+      }
+      return this;
+  };
+
   class DatePicker extends Textbox {
       constructor(props, ...mixins) {
           const defaults = {
-
+              format: 'yyyy-MM-dd',
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
       _config() {
-          this.setProps({
-              rightIcon: 'check'
-          });
+          let { value, format } = this.props,
+              currentDate = value !== null ? Date.parseString(value, format) : new Date(),
+              year = currentDate.getFullYear(),
+              month = currentDate.getMonth() + 1,
+              day = currentDate.getDate(),
+              that = this;
 
           this.setProps({
+              rightIcon: 'calendar',
               popup: {
+                  styles: {
+                      padding: '1'
+                  },
                   triggerAction: 'click',
                   attrs: {
                       style: {
@@ -5892,13 +6352,82 @@
                               items: [
                                   {
                                       component: Select,
+                                      value: year,
                                       options: this._getYears()
                                   },
                                   {
                                       component: Select,
+                                      value: month,
                                       options: this._getMonths()
                                   }
                               ]
+                          },
+                          {
+                              component: Cols,
+                              items: ['日', '一', '二', '三', '四', '五', '六'],
+                              fills: true,
+                              gutter: null,
+                              itemDefaults: {
+                                  styles: {
+                                      text: 'center',
+                                  },
+                              }
+                          },
+                          {
+                              component: List,
+                              gutter: 'sm',
+                              cols: 7,
+                              selectedItems: year + '-' + month + '-' + day,
+                              itemSelectable: {
+                                  byClick: true
+                              },
+                              items: this._getDays(year, month),
+                              itemDefaults: {
+                                  key: function () {
+                                      return this.props.date
+                                  },
+                                  styles: {
+                                      padding: ['x-d375', 'y-d375'],
+                                      hover: {
+                                          color: 'darken'
+                                      },
+                                      selected: {
+                                          color: 'primary'
+                                      }
+                                  },
+                                  attrs: {
+                                      role: 'button'
+                                  },
+                                  _config: function () {
+                                      let textStyles = ['center'],
+                                          isToday = this.props.date === new Date().format('yyyy-M-dd');
+
+                                      if (this.props.lastMonth === true || this.props.nextMonth === true) {
+                                          textStyles.push('muted');
+                                      }
+
+                                      if (isToday) {
+                                          this.setProps({
+                                              styles: {
+                                                  border: ['1px', 'primary']
+                                              }
+                                          });
+                                      }
+
+                                      this.setProps({
+                                          styles: {
+                                              text: textStyles
+                                          },
+                                          children: this.props.day
+                                      });
+                                  },
+                                  events: {
+                                      click: function () {
+                                          that.setValue(this.props.date);
+                                          that.popup.hide();
+                                      }
+                                  }
+                              }
                           }
                       ]
                   }
@@ -5935,14 +6464,69 @@
           return months;
       }
 
+      _getDays(year, month) {
+          var firstDay = this._getFirstDayOfMonth(year, month),
+              currentDayCount = this._getDaysInMonth(year, month),
+              lastDayCount = this._getDaysInMonth(year, month),
+              daysList = [],
+              i = 0,
+              lastMonthYear = year,
+              lastMonthMonth = month - 1,
+              nextMonthYear = year,
+              nextMonthMonth = month + 1;
+
+          if (month === 1) {
+              lastDayCount = this._getDaysInMonth(year - 1, 12);
+              lastMonthYear = year - 1;
+              lastMonthMonth = 11;
+          }
+
+          if (firstDay > 0) {
+              for (i = lastDayCount - firstDay + 1; i < lastDayCount + 1; i++) {
+                  daysList.push({
+                      day: i,
+                      year: lastMonthYear,
+                      month: lastMonthMonth,
+                      lastMonth: true,
+                      date: lastMonthYear + '-' + lastMonthMonth + '-' + i
+                  });
+              }
+          }
+
+          for (i = 1; i < currentDayCount + 1; i++) {
+              daysList.push({
+                  day: i,
+                  year: year,
+                  month: month,
+                  date: year + '-' + month + '-' + i
+              });
+          }
+          var nextMonthCount = 7 - ((daysList.length % 7) || 7);
+          if (month === 12) {
+              nextMonthYear++;
+              nextMonthMonth = 1;
+          }
+          for (i = 1; i < nextMonthCount + 1; i++) {
+              daysList.push({
+                  day: i,
+                  year: nextMonthYear,
+                  month: nextMonthMonth,
+                  nextMonth: true,
+                  date: nextMonthYear + '-' + nextMonthMonth + '-' + i
+              });
+          }
+          return daysList;
+
+      }
+
       /* 求XX年XX月1号是星期几 */
       _getFirstDayOfMonth(year, month) {
-          return new Date(year, month, 1).getDay();
+          return new Date(year, month - 1, 1).getDay();
       }
 
       /* 求XX年XX月有多少天 */
       _getDaysInMonth(year, month) {
-          return 32 - this._daylightSavingAdjust(new Date(year, month, 32)).getDate();
+          return 32 - this._daylightSavingAdjust(new Date(year, month - 1, 32)).getDate();
       }
 
       _daylightSavingAdjust(date) {
