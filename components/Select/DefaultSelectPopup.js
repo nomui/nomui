@@ -19,6 +19,11 @@ class SelectPopup extends Popup {
 
     _config() {
         this.setProps({
+            attrs: {
+                style: {
+                    width: this.selectControl.offsetWidth() + 'px'
+                }
+            },
             children: {
                 component: SelectList
             }

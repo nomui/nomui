@@ -5557,11 +5557,6 @@
       _config: function () {
           let selectProps = this.selectControl.props;
           this.setProps({
-              attrs: {
-                  style: {
-                      width: this.selectControl.offsetWidth() + 'px'
-                  }
-              },
               items: selectProps.options,
               itemDefaults: selectProps.optionDefaults,
               itemSelectable: {
@@ -5654,6 +5649,11 @@
 
       _config() {
           this.setProps({
+              attrs: {
+                  style: {
+                      width: this.selectControl.offsetWidth() + 'px'
+                  }
+              },
               children: {
                   component: SelectList
               }
@@ -5671,6 +5671,9 @@
               options: [],
               optionDefaults: {},
               selectedSingle: {
+                  classes: {
+                      'nom-select-single': true
+                  },
                   _config: function () {
                       this.setProps({
                           children: this.props.text
@@ -5692,9 +5695,6 @@
                       gap: 'sm'
                   }
               },
-              arrow: {
-                  type: 'arrow-down'
-              },
               multiple: false,
               showArrow: true,
               minItemsForSearch: 20
@@ -5705,6 +5705,8 @@
 
       _config() {
           var that = this;
+          let { multiple, selectedMultiple, selectedSingle, showArrow } = this.props,
+              children = [];
 
           this.setProps({
               selectedSingle: {
@@ -5724,7 +5726,22 @@
               },
           });
 
-          var children = this.props.multiple ? this.props.selectedMultiple : this.props.selectedSingle;
+          if (multiple) {
+              children.push(selectedMultiple);
+          }
+          else {
+              children.push(selectedSingle);
+          }
+
+          if (showArrow) {
+              children.push({
+                  component: Icon,
+                  type: 'angle-down',
+                  classes: {
+                      'nom-select-arrow': true
+                  }
+              });
+          }
 
           this.setProps({
               children: children,

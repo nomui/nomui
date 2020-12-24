@@ -1,7 +1,8 @@
-import Component from "../Component/index"
-import Control from "../Control/index"
-import List from "../List/index"
+import Component from '../Component/index'
+import Control from '../Control/index'
+import List from '../List/index'
 import SelectPopup from './DefaultSelectPopup'
+import Icon from '../Icon/index'
 
 class Select extends Control {
     constructor(props, ...mixins) {
@@ -9,6 +10,9 @@ class Select extends Control {
             options: [],
             optionDefaults: {},
             selectedSingle: {
+                classes: {
+                    'nom-select-single': true
+                },
                 _config: function () {
                     this.setProps({
                         children: this.props.text
@@ -30,9 +34,6 @@ class Select extends Control {
                     gap: 'sm'
                 }
             },
-            arrow: {
-                type: 'arrow-down'
-            },
             multiple: false,
             showArrow: true,
             minItemsForSearch: 20
@@ -43,6 +44,8 @@ class Select extends Control {
 
     _config() {
         var that = this
+        let { multiple, selectedMultiple, selectedSingle, showArrow } = this.props,
+            children = []
 
         this.setProps({
             selectedSingle: {
@@ -62,7 +65,22 @@ class Select extends Control {
             },
         })
 
-        var children = this.props.multiple ? this.props.selectedMultiple : this.props.selectedSingle
+        if (multiple) {
+            children.push(selectedMultiple)
+        }
+        else {
+            children.push(selectedSingle)
+        }
+
+        if (showArrow) {
+            children.push({
+                component: Icon,
+                type: 'angle-down',
+                classes: {
+                    'nom-select-arrow': true
+                }
+            })
+        }
 
         this.setProps({
             children: children,

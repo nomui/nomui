@@ -4942,12 +4942,12 @@ textarea .nom-textarea {
   min-height: 34px;
   color: #000 !important;
 }
-.nom-select .nom-select-display-single {
+.nom-select .nom-select-single {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.nom-select .nom-select-display-arrow {
+.nom-select .nom-select-arrow {
   position: absolute;
   top: 50%;
   bottom: 0;
