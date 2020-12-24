@@ -5,7 +5,7 @@ define([], function () {
         file: 'value',
         demo: function () {
             let demo = this
-            
+
             return {
                 children: {
                     component: 'Form',
@@ -72,6 +72,19 @@ define([], function () {
                                 ]
                             },
                             value: [1, 3]
+                        },
+                        {
+                            name: 'city',
+                            label: '城市',
+                            control: {
+                                component: 'Select',
+                                options: [
+                                    { text: '北京', value: 1 },
+                                    { text: '上海', value: 2 },
+                                    { text: '广州', value: 3 }
+                                ]
+                            },
+                            value: 3
                         },
                         {
                             control: {

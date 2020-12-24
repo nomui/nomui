@@ -5734,7 +5734,16 @@
       }
 
       _render() {
+          let { value, multiple } = this.props;
+
           this.popup = new SelectPopup({ trigger: this });
+
+          if (multiple === true) {
+              this.selectedMultiple.update({ items: this._getOptions(value) });
+          }
+          else {
+              this.selectedSingle.update(this._getOption(value));
+          }
       }
 
       selectOption(option) {
@@ -5776,9 +5785,33 @@
           }
       }
 
-      _setValue(value) {
+      _setValue(value, triggerChange) {
+          triggerChange = triggerChange !== false;
           this.optionList.unselectAllItems({ triggerSelectionChange: false });
-          this.selectOptions(value);
+          this.selectOptions(value, { triggerSelectionChange: triggerChange });
+      }
+
+      _getOption(value) {
+          let option = null,
+              { options } = this.props;
+          for (let i = 0; i < options.length; i++) {
+              if (options[i].value === value) {
+                  option = options[i];
+                  break
+              }
+          }
+          return option
+      }
+
+      _getOptions(value) {
+          let retOptions = [],
+              { options } = this.props;
+          for (let i = 0; i < options.length; i++) {
+              if (options[i].value === value) {
+                  retOptions.push(options[i]);
+              }
+          }
+          return retOptions
       }
 
       appendOption() {
