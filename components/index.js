@@ -36,6 +36,6 @@ export { default as Spinner } from './Spinner/index';
 export { default as Table } from './Table/index';
 export { default as Tabs } from './Tabs/index';
 export { default as Textbox } from './Textbox/index';
+export { default as ThemifyIcon } from './ThemifyIcon/index';
 export { default as TimePicker } from './TimePicker/index';
 export { default as Tooltip } from './Tooltip/index';
-

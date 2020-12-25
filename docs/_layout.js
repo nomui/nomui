@@ -59,8 +59,8 @@ define([], function () {
         },
         methods: {
             highLight: function () {
-                this.refs.topMenu.selectItem(this.route.paths[this.viewLevel + 1]);
-                this.refs.topMenu.expandToItem(this.route.paths[this.viewLevel + 1]);
+                this.refs.topMenu.selectItem(this.$route.paths[this.viewLevel + 1]);
+                this.refs.topMenu.expandToItem(this.$route.paths[this.viewLevel + 1]);
             }
         }
     }

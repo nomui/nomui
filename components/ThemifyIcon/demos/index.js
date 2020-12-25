@@ -1,12 +1,12 @@
 define(
     [
         './basic.js',
-        './view.js'
+        './all-icons.js'
     ],
     function () {
         return {
-            title: 'Modal',
-            subtitle: '模态框',
+            title: 'Bsicon',
+            subtitle: 'Boostrap 图标',
             demos: Array.prototype.slice.call(arguments)
         }
     }

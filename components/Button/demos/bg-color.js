@@ -19,6 +19,14 @@ define([], function () {
                         styles: {
                             color: 'info'
                         }
+                    },
+                    {
+                        component: 'Button',
+                        text: 'primary-outline',
+                        rightIcon: 'arrow-down',
+                        styles: {
+                            color: 'primary-outline'
+                        }
                     }
                 ]
             }

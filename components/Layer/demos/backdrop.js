@@ -16,7 +16,7 @@ define([], function () {
                             styles: {
                                 padding: '1',
                                 color: 'white',
-                                border: 'all'
+                                border: '1px'
                             },
                             children: '带遮罩的层'
                         })

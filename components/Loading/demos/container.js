@@ -13,7 +13,7 @@ define([], function () {
                         ref: 'container',
                         styles: {
                             padding: '4',
-                            border: 'all'
+                            border: '1px'
                         },
                         children: 'container'
                     },

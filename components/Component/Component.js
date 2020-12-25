@@ -557,7 +557,7 @@ class Component {
             var modifierVal = this.props[modifier]
             if (modifierVal !== null && modifierVal !== undefined) {
                 if (modifierVal === true) {
-                    classes.push('p-' + modifier)
+                    classes.push('p-' + hyphenate(modifier))
                 }
                 else if (typeof modifierVal === 'string' || typeof modifierVal === 'number') {
                     classes.push('p-' + hyphenate(modifier) + '-' + modifierVal)

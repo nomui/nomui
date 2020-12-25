@@ -1,6 +1,6 @@
 import Component from "../Component/index"
 import ListItemWrapper from "./ListItemWrapper"
-import { isFunction, extend } from "../util/index"
+import { isFunction, extend, isString } from "../util/index"
 
 class List extends Component {
     constructor(props, ...mixins) {
@@ -39,6 +39,11 @@ class List extends Component {
         else if (Array.isArray(items) && items.length > 0) {
             for (var i = 0; i < items.length; i++) {
                 var item = items[i]
+                if (isString(item)) {
+                    item = {
+                        children: item
+                    }
+                }
                 item = Component.extendProps({}, itemDefaults, item)
                 children.push({ component: ListItemWrapper, item: item })
             }

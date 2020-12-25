@@ -39,7 +39,7 @@ define([], function () {
                         childDefaults: {
                             styles: {
                                 color: 'lprimary-light',
-                                border: 'all'
+                                border: '1px'
                             }
                         },
                         styles: {

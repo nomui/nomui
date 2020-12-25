@@ -10,14 +10,15 @@ class Textbox extends Control {
             rightIcon: null,
             autofocus: false,
             placeholder: null,
-            value: null
+            value: null,
+            htmlType: 'text'
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
     _config() {
-        let { leftIcon, rightIcon, placeholder, value } = this.props
+        let { leftIcon, rightIcon, placeholder, value, htmlType } = this.props
 
         let leftIconProps = Component.normalizeIconProps(leftIcon)
         if (leftIconProps != null) {
@@ -34,7 +35,8 @@ class Textbox extends Control {
             name: 'input',
             attrs: {
                 value: value,
-                placeholder: placeholder
+                placeholder: placeholder,
+                type: htmlType
             }
         }
 

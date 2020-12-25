@@ -1,17 +1,18 @@
 .nom-grid {
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     >.nom-grid-header {
-
         overflow: hidden;
-
-        >.nom-grid-header-content {}
     }
 
     >.nom-grid-body {
         position: relative;
         overflow: auto;
+        flex: 1;
+        height: 100%;
 
         >.nom-grid-body-content {
             overflow-x: auto;

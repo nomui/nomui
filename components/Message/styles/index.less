@@ -3,9 +3,9 @@
     align-items: center;
     border: 1px solid transparent;
     border-radius: 2px;
-    background-color: #fff;  
+    background-color: #fff;
 
-    .nom-message-icon {      
+    .nom-message-icon {
         i {
             padding: 6px;
             width: 30px;
@@ -14,48 +14,48 @@
         }
     }
 
-    > .nom-message-content{
+    >.nom-message-content {
         padding: 6px;
     }
 
-    &.nom-message-info {
+    &.p-type-info {
         background-color: #f5fbfe;
         border-color: #30b2f2;
 
-        > .nom-message-inner > .nom-message-icon i {
-            color: @info;     
+        >.nom-message-icon i {
+            color: @info;
         }
     }
 
-    &.nom-message-success {
+    &.p-type-success {
         background-color: #f4fcf5;
         border-color: #1dbf38;
 
-        > .nom-message-inner > .nom-message-icon i {
+        >.nom-message-icon i {
             color: @success;
         }
     }
 
-    &.nom-message-warning {
+    &.p-type-warning {
         background-color: #fff9f2;
         border-color: #ff9000;
 
-        > .nom-message-inner > .nom-message-icon i {
+        >.nom-message-icon i {
             color: @warning;
         }
     }
 
-    &.nom-message-error {
+    &.p-type-error {
         background-color: #fff7f7;
         border-color: #ff5959;
 
-        > .nom-message-inner > .nom-message-icon i {
+        >.nom-message-icon i {
             color: @danger;
         }
     }
-}    
+}
 
-    .nom-message-nobg{
-        background-color: transparent;
-        border-color: transparent;
-    }
+.nom-message-nobg {
+    background-color: transparent;
+    border-color: transparent;
+}

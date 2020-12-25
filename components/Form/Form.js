@@ -18,6 +18,8 @@ class Form extends Control {
             bordered: false,
             splitline: false,
 
+            requiredMark: true,
+
             space: 'md',
             size: 'md'
         }
@@ -80,6 +82,17 @@ class Form extends Control {
         }
 
         return invalids.length === 0
+    }
+
+    getField(fieldName) {
+        for (let i = 0; i < this.children.length; i++) {
+            let field = this.children[i]
+            if (field.props.name === fieldName) {
+                return field
+            }
+        }
+
+        return null
     }
 }
 

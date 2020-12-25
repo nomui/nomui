@@ -20,16 +20,19 @@ class Field extends Component {
     }
 
     _config() {
+        this._propStyleClasses = ['required', 'requiredMark']
         var classes = {}
         if (this.props.label !== null && this.props.label !== undefined) {
             classes['m-label-' + this.props.labelAlign] = true
         }
 
-        this.on('valueChange', function () {
-            this.form.trigger('valueChange')
+        this.on('valueChange', function (changed) {
+            this.form.trigger('valueChange', changed)
         })
 
         this.setProps({
+            required: this.props.control.required,
+            requiredMark: this.form.props.requiredMark,
             classes: classes,
             children: [
                 { component: FieldLabel },

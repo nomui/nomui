@@ -1,20 +1,18 @@
-import Component from "../Component/index";
-import Control from "../Control/index";
-import List from "../List/index";
-import { } from '../Popup/index'
+import Component from '../Component/index'
+import Control from '../Control/index'
+import List from '../List/index'
+import SelectPopup from './DefaultSelectPopup'
+import Icon from '../Icon/index'
 
 class Select extends Control {
     constructor(props, ...mixins) {
         const defaults = {
             options: [],
-            optionDefaults: {
-                _config: function () {
-                    this.setProps({
-                        children: this.props.text
-                    })
-                }
-            },
+            optionDefaults: {},
             selectedSingle: {
+                classes: {
+                    'nom-select-single': true
+                },
                 _config: function () {
                     this.setProps({
                         children: this.props.text
@@ -36,9 +34,6 @@ class Select extends Control {
                     gap: 'sm'
                 }
             },
-            arrow: {
-                type: 'arrow-down'
-            },
             multiple: false,
             showArrow: true,
             minItemsForSearch: 20
@@ -48,9 +43,9 @@ class Select extends Control {
     }
 
     _config() {
-        super._config()
-
         var that = this
+        let { multiple, selectedMultiple, selectedSingle, showArrow } = this.props,
+            children = []
 
         this.setProps({
             selectedSingle: {
@@ -68,71 +63,43 @@ class Select extends Control {
                     that.selectedMultiple = this
                 }
             },
-            optionDefaults: {
-                key() {
-                    return this.props.value;
-                },
-                selectable: {
-                    byClick: true,
-                    canRevert: true
-                },
-                events: {
-                    select() {
-                        var selectedOption = { text: this.props.text, value: this.props.value };
-                        if (that.props.multiple === false) {
-                            that.selectedSingle.update(selectedOption);
-                            that.popup.hide();
-                        }
-                        else {
-                            that.selectedMultiple.appendItem(selectedOption);
-                        }
-                    },
-                    unselect() {
-                        if (that.props.multiple === true) {
-                            that.selectedMultiple.removeItem(this.key);
-                        }
-                    }
-                }
-            }
         })
 
-        var children = this.props.multiple ? this.props.selectedMultiple : this.props.selectedSingle
+        if (multiple) {
+            children.push(selectedMultiple)
+        }
+        else {
+            children.push(selectedSingle)
+        }
+
+        if (showArrow) {
+            children.push({
+                component: Icon,
+                type: 'angle-down',
+                classes: {
+                    'nom-select-arrow': true
+                }
+            })
+        }
 
         this.setProps({
             children: children,
-            popup: {
-                children: {
-                    component: List,
-                    cols: 1,
-                    _create() {
-                        that.optionList = this;
-                    },
-                    items: this.props.options,
-                    itemDefaults: this.props.optionDefaults,
-                    itemSelectable: {
-                        multiple: that.props.multiple,
-                        byClick: true
-                    },
-                    classes: {
-                        'nom-select-list': true
-                    },
-                    events: {
-                        itemSelectionChange() {
-                            that._onValueChange();
-                        }
-                    }
-                },
-                _config() {
-                    this.setProps({
-                        attrs: {
-                            style: {
-                                width: that.offsetWidth() + 'px'
-                            }
-                        }
-                    })
-                },
-            }
         })
+
+        super._config()
+    }
+
+    _render() {
+        let { value, multiple } = this.props
+
+        this.popup = new SelectPopup({ trigger: this })
+
+        if (multiple === true) {
+            this.selectedMultiple.update({ items: this._getOptions(value) })
+        }
+        else {
+            this.selectedSingle.update(this._getOption(value))
+        }
     }
 
     selectOption(option) {
@@ -144,6 +111,9 @@ class Select extends Control {
     }
 
     getSelectedOption() {
+        if (!this.optionList) {
+            return null
+        }
         if (this.props.multiple === false) {
             return this.optionList.getSelectedItem()
         }
@@ -171,9 +141,33 @@ class Select extends Control {
         }
     }
 
-    _setValue(value) {
+    _setValue(value, triggerChange) {
+        triggerChange = triggerChange !== false
         this.optionList.unselectAllItems({ triggerSelectionChange: false })
-        this.selectOptions(value)
+        this.selectOptions(value, { triggerSelectionChange: triggerChange })
+    }
+
+    _getOption(value) {
+        let option = null,
+            { options } = this.props
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value === value) {
+                option = options[i]
+                break
+            }
+        }
+        return option
+    }
+
+    _getOptions(value) {
+        let retOptions = [],
+            { options } = this.props
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value === value) {
+                retOptions.push(options[i])
+            }
+        }
+        return retOptions
     }
 
     appendOption() {

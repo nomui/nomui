@@ -38,7 +38,7 @@ define([], function () {
                             styles: {
                                 color: 'lprimary-light',
                                 padding: '1',
-                                border: 'all'
+                                border: '1px'
                             }
                         },
                     },

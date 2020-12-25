@@ -1,27 +1,30 @@
 define([], function () {
+
     return {
-        title: '带图标',
-        file: 'with-icon',
+        title: '基础用法',
+        file: 'basic',
         demo: function () {
             return {
                 component: 'Cols',
                 items: [
                     {
-                        text: 'Add',
-                        icon: 'plus'
+                        type: 'arrow-up'
                     },
                     {
-                        icon: 'plus'
+                        type: 'arrow-down'
                     },
                     {
-                        text: 'Right icon',
-                        rightIcon: 'arrow-right'
+                        type: 'arrow-right'
+                    },
+                    {
+                        type: 'arrow-left'
                     }
                 ],
-                itemDefaults: {
-                    component: 'Button',
+                childDefaults: {
+                    component: 'Bsicon',
                 }
             }
         }
     }
+
 })

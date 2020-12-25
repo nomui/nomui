@@ -40,6 +40,7 @@ class Control extends Component {
     }
 
     validate() {
+        this.validateTriggered = true
         return this._validate()
     }
 
@@ -97,7 +98,7 @@ class Control extends Component {
         this.props.value = this.currentValue
 
         var changed = {
-            name: this.name,
+            name: this.props.name,
             oldValue: this.oldValue,
             newValue: this.currentValue,
         }

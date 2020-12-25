@@ -35,6 +35,9 @@ export default {
         });
 
         this.setProps({
+            classes: {
+                'nom-list-item': true
+            },
             selected: selectedItems.indexOf(this.key) !== -1,
             selectable: {
                 byClick: listProps.itemSelectable.byClick,
