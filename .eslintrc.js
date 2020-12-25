@@ -15,4 +15,4 @@ module.exports = {
     'no-new': 0,
     'no-plusplus': 0,
   },
-};
+}
