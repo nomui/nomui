@@ -6353,12 +6353,28 @@
                                   {
                                       component: Select,
                                       value: year,
-                                      options: this._getYears()
+                                      options: this._getYears(),
+                                      events: {
+                                          valueChange: function (changed) {
+                                              year = changed.newValue;
+                                              that.days.update({
+                                                  items: that._getDays(year, month)
+                                              });
+                                          }
+                                      }
                                   },
                                   {
                                       component: Select,
                                       value: month,
-                                      options: this._getMonths()
+                                      options: this._getMonths(),
+                                      events: {
+                                          valueChange: function (changed) {
+                                              month = changed.newValue;
+                                              that.days.update({
+                                                  items: that._getDays(year, month)
+                                              });
+                                          }
+                                      }
                                   }
                               ]
                           },
@@ -6375,6 +6391,9 @@
                           },
                           {
                               component: List,
+                              _create: function () {
+                                  that.days = this;
+                              },
                               gutter: 'sm',
                               cols: 7,
                               selectedItems: year + '-' + month + '-' + day,
@@ -6387,7 +6406,7 @@
                                       return this.props.date
                                   },
                                   styles: {
-                                      padding: ['x-d375', 'y-d375'],
+                                      padding: 'd375',
                                       hover: {
                                           color: 'darken'
                                       },
