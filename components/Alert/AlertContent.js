@@ -1,5 +1,4 @@
 import Component from '../Component/index'
-import { isString } from '../util/index'
 import Button from '../Button/index'
 import Cols from '../Cols/index'
 

@@ -1178,351 +1178,6 @@
 
   Object.assign(Component.prototype, Events.prototype);
 
-  class Route {
-      constructor(defaultPath) {
-          var that = this;
-
-          this.hash = location.hash;
-          if (!this.hash) {
-              this.hash = "#" + defaultPath;
-          }
-          this.path = this.hash.substring(1);
-          this.paths = [null, null, null];
-          this.query = {};
-          this.queryStr = '';
-          var queryIndex = this.hash.indexOf('?');
-
-          if (this.hash.length > 1) {
-              if (queryIndex > -1) {
-                  this.path = this.hash.substring(1, queryIndex);
-
-                  var paramStr = this.queryStr = this.hash.substring(queryIndex + 1);
-                  var paramArr = paramStr.split('&');
-
-                  paramArr.forEach(function (e) {
-                      var item = e.split('='),
-                          key,
-                          val;
-                      key = item[0];
-                      val = item[1];
-                      if (key !== '') {
-                          that.query[key] = decodeURIComponent(val);
-                      }
-                  });
-              }
-          }
-
-          var pathArr = this.path.split('!');
-
-          this.maxLevel = pathArr.length - 1;
-
-          if (pathArr.length <= 3) {
-              pathArr.forEach(function (path, index) {
-                  that.paths[index] = path;
-              });
-          }
-      }
-  }
-
-  class View extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              defaultPath: null
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      render() {
-          this._mountElement();
-          this.$app.routeView(this.$app.lastLevel, this.element, this.props.defaultPath);
-      }
-
-  }
-
-  Component.register(View);
-
-  Object.defineProperty(Component.prototype, '$view', {
-      get: function () {
-          let cur = this;
-          while (cur) {
-              if (cur.__isView === true) {
-                  return cur
-              }
-              else {
-                  cur = cur.parent;
-              }
-          }
-          return cur
-      }
-  });
-
-  var ViewMixin = {
-      _create: function () {
-          this.viewLevel = this.$app.lastLevel;
-          this.$app.lastLevel++;
-          this._scoped = true;
-          this.__isView = true;
-      },
-      _remove: function () {
-          delete this.$app.views[this.viewLevel];
-      }
-  };
-
-  class App extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'body',
-              placement: 'replace',
-              defaultPath: '!',
-              viewsDir: '/',
-              isFixedLayout: true,
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.lastLevel = 0;
-          this.previousRoute = null;
-          this.currentRoute = new Route(this.props.defaultPath);
-
-          this.views = {};
-
-          Object.defineProperty(Component.prototype, '$app', {
-              get: function () { return this.root; }
-          });
-
-          Object.defineProperty(Component.prototype, '$route', {
-              get: function () { return this.$app.currentRoute; }
-          });
-      }
-
-      _config() {
-          this.setProps({
-              children: { component: View }
-          });
-
-          if (this.props.isFixedLayout === true) {
-              document.documentElement.setAttribute('class', 'app');
-          }
-      }
-
-      _render() {
-          var that = this;
-          window.addEventListener('hashchange', function () {
-              that.handleRoute();
-          });
-      }
-
-      handleRoute() {
-          var route = new Route();
-          console.info(JSON.stringify(route));
-
-          var changedLevel = null;
-          var queryChanged = false;
-
-          this.previousRoute = this.currentRoute;
-          this.currentRoute = route;
-
-          if (this.previousRoute !== null) {
-              var currentRoutePaths = this.currentRoute.paths;
-              var previousRoutePaths = this.previousRoute.paths;
-
-              if (currentRoutePaths[0] !== previousRoutePaths[0]) {
-                  changedLevel = 0;
-              }
-              else if (currentRoutePaths[1] !== previousRoutePaths[1]) {
-                  changedLevel = 1;
-              }
-              else if (currentRoutePaths[2] !== previousRoutePaths[2]) {
-                  changedLevel = 2;
-              }
-              else if ((this.previousRoute.queryStr || '') !== this.currentRoute.queryStr) {
-                  queryChanged = true;
-              }
-          }
-
-          for (var i = 0; i <= this.currentRoute.maxLevel; i++) {
-              var view = this.views[i];
-              view.trigger('hashChange');
-              if (queryChanged) {
-                  view.trigger('queryChange');
-              }
-              if (i === changedLevel - 1) {
-                  view.trigger('subpathChange');
-              }
-              if (i === changedLevel) {
-                  this.lastLevel = i;
-                  this.routeView(i, view.element);
-                  break
-              }
-          }
-      }
-
-      routeView(level, element, defaultPath) {
-          if (defaultPath) {
-              if (!this.currentRoute.paths[level]) {
-                  this.currentRoute.paths[level] = defaultPath;
-              }
-          }
-
-          var url = this.getRouteUrl(level);
-          url = pathCombine(this.props.viewsDir, url) + '.js';
-
-          require([url], (viewOptions) => {
-              if (viewOptions.documentTitle) {
-                  document.title = viewOptions.documentTitle;
-              }
-              var extOptions = {
-                  reference: element,
-                  placement: 'replace',
-              };
-              viewOptions = Component.extendProps(viewOptions, extOptions);
-              this.views[level] = Component.create(viewOptions, ViewMixin);
-          });
-      }
-
-      getRouteUrl(level) {
-          var paths = this.currentRoute.paths;
-          var maxLevel = this.currentRoute.maxLevel;
-          var path = paths[level];
-
-          if (level < maxLevel) {
-              path = pathCombine(path, '_layout');
-          }
-
-          path = prefix(path, level);
-
-          function prefix(path, level) {
-              if (level === 0) {
-                  return path;
-              }
-              if (path[0] !== '/') {
-                  path = pathCombine(paths[level - 1], path);
-                  return prefix(path, level - 1)
-              }
-              else {
-                  return path
-              }
-          }
-
-          return path
-      }
-  }
-
-  Component.register(App);
-
-  class Spinner extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              type: 'border'
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-  }
-
-  Component.register(Spinner);
-
-  class Row extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
-      }
-  }
-
-  Component.register(Row);
-
-  class Rows extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              wrap: false,
-              items: [],
-              itemDefaults: null,
-              gutter: 'md',
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          this._propStyleClasses = ['gutter', 'align', 'justify'];
-          let items = this.props.items;
-          var children = [];
-          if (Array.isArray(items) && items.length > 0) {
-              for (var i = 0; i < items.length; i++) {
-                  let item = items[i];
-                  item = Component.extendProps({}, this.props.itemDefaults, item);
-                  children.push({ component: Row, children: item });
-              }
-          }
-
-          this.setProps({
-              children: children
-          });
-      }
-  }
-
-  Component.register(Rows);
-
-  class Col extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
-      }
-  }
-
-  Component.register(Col);
-
-  class Cols extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              wrap: false,
-              items: [],
-              itemDefaults: null,
-              gutter: 'md',
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          this._propStyleClasses = ['gutter', 'align', 'justify', 'fills', 'inline'];
-          let items = this.props.items;
-          var children = [];
-          if (Array.isArray(items) && items.length > 0) {
-              for (var i = 0; i < items.length; i++) {
-                  let item = items[i];
-                  if (isString(item)) {
-                      item = {
-                          children: item
-                      };
-                  }
-                  item = Component.extendProps({}, this.props.itemDefaults, item);
-                  children.push({ component: Col, children: item });
-              }
-          }
-
-          this.setProps({
-              children: children
-          });
-      }
-  }
-
-  Component.register(Cols);
-
-  class Container extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              fluid: false,
-              type: null
-          };
-
-          super(Component.extendProps(defaults, props), mixins);
-      }
-  }
-
-  Component.register(Container);
-
   let zIndex = 6666;
 
   function getzIndex() {
@@ -1994,607 +1649,6 @@
       setOffset(elem, position);
   }
 
-  class LayerBackdrop extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              zIndex: 2,
-              attrs: {
-                  style: {
-                      position: 'absolute',
-                      left: 0,
-                      top: 0,
-                      width: '100%',
-                      height: '100%',
-                      overflow: 'hidden',
-                      userSelect: 'none',
-                      opacity: 0.1,
-                      background: '#000'
-                  }
-              }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          this.setProps({
-              attrs: {
-                  style: {
-                      zIndex: this.props.zIndex
-                  }
-              }
-          });
-
-          if (this.referenceElement === document.body) {
-              this.setProps({
-                  attrs: {
-                      style: {
-                          position: 'fixed'
-                      }
-                  }
-              });
-          }
-      }
-  }
-
-  Component.register(LayerBackdrop);
-
-  class Layer extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              align: null,
-              alignTo: null,
-              alignOuter: false,
-              within: window,
-              collision: 'flipfit',
-
-              closeOnClickOutside: false,
-              closeToRemove: false,
-
-              position: null,
-
-              hidden: false,
-
-              backdrop: false,
-              closeOnClickBackdrop: false,
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.relativeElements = [];
-          this._onDocumentMousedown = this._onDocumentMousedown.bind(this);
-          this._onWindowResize = this._onWindowResize.bind(this);
-      }
-
-      _config() {
-          if (this.props.placement === 'replace') {
-              this.props.position = null;
-          }
-          this._normalizePosition();
-          this._zIndex = getzIndex();
-          this.setProps({
-              attrs: {
-                  style: {
-                      zIndex: this._zIndex
-                  }
-              }
-          });
-          if (this.props.align) {
-              this.setProps({
-                  attrs: {
-                      style: {
-                          position: this.props.fixed ? 'fixed' : 'absolute',
-                          left: 0,
-                          top: 0
-                      }
-                  }
-              });
-          }
-      }
-
-      _render() {
-          let that = this;
-
-          this.addRel(this.element);
-          if (this.props.backdrop) {
-              this.backdrop = new LayerBackdrop({
-                  zIndex: this._zIndex - 1,
-                  reference: this.props.reference
-              });
-
-              if (this.props.closeOnClickBackdrop) {
-                  this.backdrop._on('click', function (e) {
-                      if (e.target !== e.currentTarget) {
-                          return
-                      }
-                      that.remove();
-                  });
-              }
-          }
-      }
-
-      _show() {
-          var props = this.props;
-
-          this.setPosition();
-          this._docClickHandler();
-
-          if (props.align) {
-              window.removeEventListener('resize', this._onWindowResize, false);
-              window.addEventListener('resize', this._onWindowResize, false);
-          }
-      }
-
-      _hide(forceRemove) {
-          window.removeEventListener('resize', this._onWindowResize, false);
-          document.removeEventListener('mousedown', this._onDocumentMousedown, false);
-
-          if (forceRemove === true || this.props.closeToRemove) {
-              this.element.remove();
-          }
-      }
-
-      _remove() {
-          window.removeEventListener('resize', this._onWindowResize, false);
-          document.removeEventListener('mousedown', this._onDocumentMousedown, false);
-
-          if (this.backdrop) {
-              this.backdrop.remove();
-          }
-      }
-
-      _onWindowResize() {
-          if (this.props.hidden === false) {
-              this.setPosition();
-          }
-      }
-
-      _onDocumentMousedown(e) {
-          for (var i = 0; i < this.relativeElements.length; i++) {
-              var el = this.relativeElements[i];
-              if (el === e.target || el.contains(e.target)) {
-                  return;
-              }
-          }
-
-          var closestLayer = e.target.closest('.nom-layer');
-          if (closestLayer !== null) {
-              var idx = closestLayer.component._zIndex;
-              if (idx < this._zIndex) {
-                  this.hide();
-              }
-          }
-          else {
-              this.hide();
-          }
-      }
-
-      setPosition() {
-          if (this.props.position) {
-              position(this.element, this.props.position);
-          }
-      }
-
-      addRel(elem) {
-          this.relativeElements.push(elem);
-      }
-
-      _docClickHandler() {
-          var that = this;
-          if (that.props.closeOnClickOutside) {
-              document.addEventListener('mousedown', this._onDocumentMousedown, false);
-          }
-      }
-
-      _normalizePosition() {
-          var props = this.props;
-
-          if (props.align) {
-              props.position = {
-                  of: window, collision: props.collision, within: props.within
-              };
-
-              if (props.alignTo) {
-                  props.position.of = props.alignTo;
-              }
-
-              if (props.alignTo && props.alignOuter === true) {
-                  var arr = props.align.split(' ');
-                  if (arr.length === 1) {
-                      arr[1] = 'center';
-                  }
-
-                  var myArr = ['center', 'center'];
-                  var atArr = ['center', 'center'];
-
-                  if (arr[1] === 'left') {
-                      myArr[0] = 'left';
-                      atArr[0] = 'left';
-                  }
-                  else if (arr[1] === 'right') {
-                      myArr[0] = 'right';
-                      atArr[0] = 'right';
-                  }
-                  else if (arr[1] === 'top') {
-                      myArr[1] = 'top';
-                      atArr[1] = 'top';
-                  }
-                  else if (arr[1] === 'bottom') {
-                      myArr[1] = 'bottom';
-                      atArr[1] = 'bottom';
-                  }
-
-                  if (arr[0] === 'top') {
-                      myArr[1] = 'bottom';
-                      atArr[1] = 'top';
-                  }
-                  else if (arr[0] === 'bottom') {
-                      myArr[1] = 'top';
-                      atArr[1] = 'bottom';
-                  }
-                  else if (arr[0] === 'left') {
-                      myArr[0] = 'right';
-                      atArr[0] = 'left';
-                  }
-                  else if (arr[0] === 'right') {
-                      myArr[0] = 'left';
-                      atArr[0] = 'right';
-                  }
-
-                  props.position.my = myArr[0] + ' ' + myArr[1];
-                  props.position.at = atArr[0] + ' ' + atArr[1];
-              }
-              else {
-                  var rhorizontal = /left|center|right/;
-                  var rvertical = /top|center|bottom/;
-                  var pos = props.align.split(' ');
-                  if (pos.length === 1) {
-                      pos = rhorizontal.test(pos[0]) ?
-                          pos.concat(["center"]) :
-                          rvertical.test(pos[0]) ?
-                              ["center"].concat(pos) :
-                              ["center", "center"];
-                  }
-                  pos[0] = rhorizontal.test(pos[0]) ? pos[0] : "center";
-                  pos[1] = rvertical.test(pos[1]) ? pos[1] : "center";
-
-                  props.position.my = pos[0] + ' ' + pos[1];
-                  props.position.at = pos[0] + ' ' + pos[1];
-              }
-          }
-      }
-  }
-
-  Component.register(Layer);
-
-  class Message extends Layer {
-      constructor(props, ...mixins) {
-          const defaults = {
-              type: null,
-              icon: null,
-              content: null,
-              commands: null,
-              duration: 2,
-              closeToRemove: true,
-              showClose: false,
-              position: {
-                  my: "center center",
-                  at: "center center",
-                  of: window
-              }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          super._config();
-
-          const iconMap = {
-              info: 'info',
-              success: 'success',
-              error: 'warn',
-              warning: 'exclamation-circle'
-          };
-
-          var icon = this.props.icon || iconMap[this.props.type];
-          let iconProps = Component.normalizeIconProps(icon);
-          if (iconProps) {
-              iconProps = Component.extendProps(iconProps, { classes: { 'nom-message-icon': true } });
-          }
-          this.props.content = Component.normalizeTemplateProps(this.props.content);
-          this.setProps({
-              content: {
-                  classes: {
-                      'nom-message-content': true
-                  }
-              }
-          });
-          this.setProps({
-              children: [
-                  iconProps,
-                  this.props.content,
-                  this.props.showClose && { component: 'Button', icon: 'close' }
-              ]
-          });
-      }
-
-      _render() {
-          var that = this, props = this.props;
-
-          if (props.duration) {
-              setTimeout(function () {
-                  that.close();
-              }, 1000 * props.duration);
-          }
-      }
-  }
-
-  Component.register(Message);
-
-  class Popup extends Layer {
-      constructor(props, ...mixins) {
-          const defaults = {
-              trigger: null,
-              triggerAction: 'click',
-              align: 'bottom left',
-              alignOuter: true,
-
-              closeOnClickOutside: true,
-              placement: 'append',
-
-              autoRender: false,
-              hidden: true,
-
-              type: 'default'
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          super._create();
-
-          this._showHandler = this._showHandler.bind(this);
-          this._hideHandler = this._hideHandler.bind(this);
-          this._onOpenerClickHandler = this._onOpenerClickHandler.bind(this);
-
-          this.opener = this.props.trigger;
-          this.props.alignTo = this.opener.element;
-          this.showTimer = null, this.hideTimer = null;
-          this.addRel(this.opener.element);
-          this._bindTrigger();
-      }
-
-      _bindTrigger() {
-          var triggerAction = this.props.triggerAction;
-          if (triggerAction === 'click') {
-              this._bindClick();
-          } else {
-              this._bindHover();
-          }
-      }
-
-      _bindClick() {
-          this.opener._on('click', this._onOpenerClickHandler);
-      }
-
-      _bindHover() {
-          this.opener._on('mouseenter', this._showHandler);
-          this.opener._on('mouseleave', this._hideHandler);
-      }
-
-      _onOpenerClickHandler() {
-          this.toggleHidden();
-      }
-
-      _showHandler() {
-          clearTimeout(this.hideTimer);
-          this.hideTimer = null;
-          this.showTimer = setTimeout(() => {
-              this.show();
-          }, this.delay);
-      }
-
-      _hideHandler() {
-          clearTimeout(this.showTimer);
-          this.showTimer = null;
-
-          if (this.props.hidden === false) {
-              this.hideTimer = setTimeout(() => {
-                  this.hide();
-              }, this.delay);
-          }
-      }
-
-      _show() {
-          super._show();
-          if (this.props.triggerAction === 'hover') {
-              this._off('mouseenter');
-              this._on('mouseenter', () => {
-                  clearTimeout(this.hideTimer);
-              });
-              this._off('mouseleave');
-              this._on('mouseleave', this._hideHandler);
-          }
-      }
-  }
-
-  Component.mixin({
-      _render: function () {
-          if (this.props.popup) {
-              this.props.popup.trigger = this;
-              this.popup = new Popup(this.props.popup);
-          }
-      }
-  });
-
-  Component.register(Popup);
-
-  class Tooltip extends Layer {
-      constructor(props, ...mixins) {
-          const defaults = {
-              trigger: null,
-              align: 'top',
-              alignOuter: true,
-
-              closeOnClickOutside: true,
-
-              autoRender: false,
-              hidden: false,
-
-              styles: {
-                  color: 'black'
-              }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          super._create();
-
-          this._showHandler = this._showHandler.bind(this);
-          this._hideHandler = this._hideHandler.bind(this);
-          this._onOpenerFocusinHandler = this._onOpenerFocusinHandler.bind(this);
-          this._onOpenerFocusoutHandler = this._onOpenerFocusoutHandler.bind(this);
-
-          this._openerFocusing = false;
-          this.opener = this.props.trigger;
-          this.props.alignTo = this.opener.element;
-          this.showTimer = null, this.hideTimer = null;
-          this.delay = 100;
-          this.addRel(this.opener.element);
-          this._bindHover();
-      }
-
-      _remove() {
-          this.opener._off('mouseenter', this._showHandler);
-          this.opener._off('mouseleave', this._hideHandler);
-          this.opener._off('focusin', this._onOpenerFocusinHandler);
-          this.opener._off('focusout', this._onOpenerFocusoutHandler);
-
-          this._off('mouseenter');
-          this._off('mouseleave');
-          clearTimeout(this.showTimer);
-          this.showTimer = null;
-          clearTimeout(this.hideTimer);
-          this.hideTimer = null;
-          super._remove();
-      }
-
-      _bindHover() {
-          this.opener._on('mouseenter', this._showHandler);
-          this.opener._on('mouseleave', this._hideHandler);
-          this.opener._on('focusin', this._onOpenerFocusinHandler);
-          this.opener._on('focusout', this._onOpenerFocusoutHandler);
-      }
-
-      _onOpenerFocusinHandler() {
-          this._openerFocusing = true;
-          this._showHandler();
-      }
-
-      _onOpenerFocusoutHandler() {
-          this._openerFocusing = false;
-          this._hideHandler();
-      }
-
-      _showHandler() {
-          clearTimeout(this.hideTimer);
-          this.hideTimer = null;
-          this.showTimer = setTimeout(() => {
-              this.show();
-          }, this.delay);
-      }
-
-      _hideHandler() {
-          if (this._openerFocusing === true) {
-              return
-          }
-          clearTimeout(this.showTimer);
-          this.showTimer = null;
-
-          if (this.props.hidden === false) {
-              this.hideTimer = setTimeout(() => {
-                  this.hide();
-              }, this.delay);
-          }
-      }
-
-      _show() {
-          super._show();
-          this._off('mouseenter');
-          this._on('mouseenter', function () {
-              clearTimeout(this.hideTimer);
-          });
-          this._off('mouseleave', this._hideHandler);
-          this._on('mouseleave', this._hideHandler);
-      }
-  }
-
-  Component.mixin({
-      _render: function () {
-          if (this.props.tooltip) {
-              if (isString(this.props.tooltip)) {
-                  this.tooltip = new Tooltip({ trigger: this, children: this.props.tooltip });
-              }
-              else {
-                  this.tooltip = new Tooltip(Component.extendProps({}, this.props.tooltip), { trigger: this });
-              }
-          }
-      }
-  });
-
-  Component.register(Tooltip);
-
-  class Loading extends Layer {
-      constructor(props, ...mixins) {
-          const defaults = {
-              align: 'center',
-              container: document.body,
-              backdrop: true,
-              collision: 'none',
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          this.setProps({
-              reference: this.props.container,
-              alignTo: this.getElement(this.props.container),
-              children: {
-                  component: Spinner
-              }
-          });
-
-          if (this.props.container instanceof Component) {
-              this.props.container.addClass('nom-loading-container');
-          }
-          else {
-              this.props.container.component.addClass('nom-loading-container');
-          }
-
-          super._config();
-      }
-
-      _remove() {
-          if (this.props.container instanceof Component) {
-              this.props.container.removeClass('nom-loading-container');
-          }
-          else {
-              this.props.container.component.removeClass('nom-loading-container');
-          }
-
-          super._remove();
-      }
-  }
-
-  Component.register(Loading);
-
   class ThemifyIcon extends Component {
       constructor(props, ...mixins) {
           const defaults = {
@@ -2710,6 +1764,51 @@
   }
 
   Component.register(Caption);
+
+  class Col extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(Col);
+
+  class Cols extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              wrap: false,
+              items: [],
+              itemDefaults: null,
+              gutter: 'md',
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          this._propStyleClasses = ['gutter', 'align', 'justify', 'fills', 'inline'];
+          let items = this.props.items;
+          var children = [];
+          if (Array.isArray(items) && items.length > 0) {
+              for (var i = 0; i < items.length; i++) {
+                  let item = items[i];
+                  if (isString(item)) {
+                      item = {
+                          children: item
+                      };
+                  }
+                  item = Component.extendProps({}, this.props.itemDefaults, item);
+                  children.push({ component: Col, children: item });
+              }
+          }
+
+          this.setProps({
+              children: children
+          });
+      }
+  }
+
+  Component.register(Cols);
 
   class PanelHeaderCaption extends Component {
       constructor(props, ...mixins) {
@@ -3196,166 +2295,964 @@
 
   Component.register(Alert);
 
-  class LayoutHeader extends Component {
-      constructor(props, ...mixins) {
-          super(props);
+  class Route {
+      constructor(defaultPath) {
+          var that = this;
+
+          this.hash = location.hash;
+          if (!this.hash) {
+              this.hash = "#" + defaultPath;
+          }
+          this.path = this.hash.substring(1);
+          this.paths = [null, null, null];
+          this.query = {};
+          this.queryStr = '';
+          var queryIndex = this.hash.indexOf('?');
+
+          if (this.hash.length > 1) {
+              if (queryIndex > -1) {
+                  this.path = this.hash.substring(1, queryIndex);
+
+                  var paramStr = this.queryStr = this.hash.substring(queryIndex + 1);
+                  var paramArr = paramStr.split('&');
+
+                  paramArr.forEach(function (e) {
+                      var item = e.split('='),
+                          key,
+                          val;
+                      key = item[0];
+                      val = item[1];
+                      if (key !== '') {
+                          that.query[key] = decodeURIComponent(val);
+                      }
+                  });
+              }
+          }
+
+          var pathArr = this.path.split('!');
+
+          this.maxLevel = pathArr.length - 1;
+
+          if (pathArr.length <= 3) {
+              pathArr.forEach(function (path, index) {
+                  that.paths[index] = path;
+              });
+          }
       }
   }
 
-  Component.register(LayoutHeader);
-
-  class LayoutBody extends Component {
-      constructor(props, ...mixins) {
-          super(props);
-      }
-  }
-
-  Component.register(LayoutBody);
-
-  class LayoutFooter extends Component {
-      constructor(props, ...mixins) {
-          super(props);
-      }
-  }
-
-  Component.register(LayoutFooter);
-
-  class LayoutSider extends Component {
-      constructor(props, ...mixins) {
-          super(props);
-      }
-  }
-
-  Component.register(LayoutSider);
-
-  class Layout extends Component {
+  class View extends Component {
       constructor(props, ...mixins) {
           const defaults = {
-              header: null,
-              body: null,
-              footer: null,
-              sider: null
+              defaultPath: null
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      render() {
+          this._mountElement();
+          this.$app.routeView(this.$app.lastLevel, this.element, this.props.defaultPath);
+      }
+
+  }
+
+  Component.register(View);
+
+  Object.defineProperty(Component.prototype, '$view', {
+      get: function () {
+          let cur = this;
+          while (cur) {
+              if (cur.__isView === true) {
+                  return cur
+              }
+              else {
+                  cur = cur.parent;
+              }
+          }
+          return cur
+      }
+  });
+
+  var ViewMixin = {
+      _create: function () {
+          this.viewLevel = this.$app.lastLevel;
+          this.$app.lastLevel++;
+          this._scoped = true;
+          this.__isView = true;
+      },
+      _remove: function () {
+          delete this.$app.views[this.viewLevel];
+      }
+  };
+
+  class App extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'body',
+              placement: 'replace',
+              defaultPath: '!',
+              viewsDir: '/',
+              isFixedLayout: true,
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.lastLevel = 0;
+          this.previousRoute = null;
+          this.currentRoute = new Route(this.props.defaultPath);
+
+          this.views = {};
+
+          Object.defineProperty(Component.prototype, '$app', {
+              get: function () { return this.root; }
+          });
+
+          Object.defineProperty(Component.prototype, '$route', {
+              get: function () { return this.$app.currentRoute; }
+          });
+      }
+
+      _config() {
+          this.setProps({
+              children: { component: View }
+          });
+
+          if (this.props.isFixedLayout === true) {
+              document.documentElement.setAttribute('class', 'app');
+          }
+      }
+
+      _render() {
+          var that = this;
+          window.addEventListener('hashchange', function () {
+              that.handleRoute();
+          });
+      }
+
+      handleRoute() {
+          var route = new Route();
+          console.info(JSON.stringify(route));
+
+          var changedLevel = null;
+          var queryChanged = false;
+
+          this.previousRoute = this.currentRoute;
+          this.currentRoute = route;
+
+          if (this.previousRoute !== null) {
+              var currentRoutePaths = this.currentRoute.paths;
+              var previousRoutePaths = this.previousRoute.paths;
+
+              if (currentRoutePaths[0] !== previousRoutePaths[0]) {
+                  changedLevel = 0;
+              }
+              else if (currentRoutePaths[1] !== previousRoutePaths[1]) {
+                  changedLevel = 1;
+              }
+              else if (currentRoutePaths[2] !== previousRoutePaths[2]) {
+                  changedLevel = 2;
+              }
+              else if ((this.previousRoute.queryStr || '') !== this.currentRoute.queryStr) {
+                  queryChanged = true;
+              }
+          }
+
+          for (var i = 0; i <= this.currentRoute.maxLevel; i++) {
+              var view = this.views[i];
+              view.trigger('hashChange');
+              if (queryChanged) {
+                  view.trigger('queryChange');
+              }
+              if (i === changedLevel - 1) {
+                  view.trigger('subpathChange');
+              }
+              if (i === changedLevel) {
+                  this.lastLevel = i;
+                  this.routeView(i, view.element);
+                  break
+              }
+          }
+      }
+
+      routeView(level, element, defaultPath) {
+          if (defaultPath) {
+              if (!this.currentRoute.paths[level]) {
+                  this.currentRoute.paths[level] = defaultPath;
+              }
+          }
+
+          var url = this.getRouteUrl(level);
+          url = pathCombine(this.props.viewsDir, url) + '.js';
+
+          require([url], (viewOptions) => {
+              if (viewOptions.documentTitle) {
+                  document.title = viewOptions.documentTitle;
+              }
+              var extOptions = {
+                  reference: element,
+                  placement: 'replace',
+              };
+              viewOptions = Component.extendProps(viewOptions, extOptions);
+              this.views[level] = Component.create(viewOptions, ViewMixin);
+          });
+      }
+
+      getRouteUrl(level) {
+          var paths = this.currentRoute.paths;
+          var maxLevel = this.currentRoute.maxLevel;
+          var path = paths[level];
+
+          if (level < maxLevel) {
+              path = pathCombine(path, '_layout');
+          }
+
+          path = prefix(path, level);
+
+          function prefix(path, level) {
+              if (level === 0) {
+                  return path;
+              }
+              if (path[0] !== '/') {
+                  path = pathCombine(paths[level - 1], path);
+                  return prefix(path, level - 1)
+              }
+              else {
+                  return path
+              }
+          }
+
+          return path
+      }
+  }
+
+  Component.register(App);
+
+  let RuleManager = {};
+  RuleManager.ruleTypes = {
+      required: {
+          validate: function (value) {
+              return !isEmpty(value);
+          },
+          message: "必填"
+      },
+      number: {
+          validate: function (value) {
+              return /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value);
+          },
+          message: "请输入有效的数字"
+      },
+      digits: {
+          validate: function (value) {
+              return /^\d+$/.test(value);
+          },
+          message: "只能输入数字"
+      },
+      regex: {
+          validate: function (value, ruleValue) {
+              return new RegExp(ruleValue.pattern, ruleValue.attributes).test(value);
+          }
+      },
+      email: {
+          validate: function (value) {
+              return /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(value);
+          },
+          message: "请输入有效的 Email 地址"
+      },
+      url: {
+          validate: function (value) {
+              return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+          },
+          message: "请输入有效的 URL"
+      },
+      min: {
+          validate: function (value, ruleValue) {
+              value = Number(value);
+              return value >= ruleValue;
+          },
+          message: '输入值不能小于 {0}'
+      },
+      max: {
+          validate: function (value, ruleValue) {
+              value = Number(value);
+              return value <= ruleValue;
+          },
+          message: '输入值不能大于 {0}'
+      },
+      range: {
+          validate: function (value, ruleValue) {
+              value = Number(value);
+              return value >= ruleValue[0] && value <= ruleValue[1];
+          },
+          message: "输入值必须介于 {0} 和 {1} 之间"
+      },
+      minlength: {
+          validate: function (value, ruleValue) {
+              var length = 0;
+              if (Array.isArray(value)) {
+                  length = value.length;
+              }
+              else {
+                  length = value.trim().length;
+              }
+
+              return length >= ruleValue;
+          },
+          message: '不能少于 {0} 个字'
+      },
+      maxlength: {
+          validate: function (value, ruleValue) {
+              var length = 0;
+              if (Array.isArray(value)) {
+                  length = value.length;
+              }
+              else {
+                  length = value.trim().length;
+              }
+
+              return length <= ruleValue;
+          },
+          message: '不能多于 {0} 个字'
+      },
+      rangelength: {
+          validate: function (value, ruleValue) {
+              var length = 0;
+              if (Array.isArray(value)) {
+                  length = value.length;
+              }
+              else {
+                  length = value.trim().length;
+              }
+
+              return ruleValue[0] <= length && length <= ruleValue[1];
+          },
+          message: '输入字数在 {0} 个到 {1} 个之间'
+      },
+      remote: {
+          validate: function (value, ruleValue) {
+              var data = {};
+              data[ruleValue[1]] = value;
+              var response = $.ajax({ url: ruleValue[0], dataType: "json", data: data, async: false, cache: false, type: "post" }).responseText;
+              return response === "true";
+          }, message: "Please fix this field"
+      },
+      date: {
+          validate: function (value, ruleValue) {
+              return true;
+          },
+          message: "请输入有效的日期格式."
+      },
+      identifier: {
+          validate: function (value) {
+              return /^[a-zA-Z][a-zA-Z0-9_]*$/.test(value);
+          },
+          message: '只能输入字母、数字、下划线且必须以字母开头'
+      },
+      phoneNumber: {
+          validate: function (value) {
+              return /^1[3|4|5|7|8][0-9]{9}$/.test(value);
+          },
+          message: '请输入正确的手机号'
+      },
+      func: {
+          validate: function (value, ruleValue) {
+              if (isFunction(ruleValue)) {
+                  return ruleValue(value);
+              }
+          }
+      }
+  };
+
+  RuleManager.validate = function (rules, controlValue) {
+      for (var i = 0; i < rules.length; i++) {
+          var checkResult = checkRule(rules[i], controlValue);
+          if (checkResult !== true) {
+              return checkResult;
+          }
+      }
+
+      return true;
+  };
+
+  function isEmpty(val) {
+      return val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length);
+  }
+
+  function checkRule(ruleSettings, controlValue) {
+      var rule = RuleManager.ruleTypes[ruleSettings.type];
+
+      if (rule) {
+          var ruleValue = ruleSettings.value || null;
+          if (!rule.validate(controlValue, ruleValue)) {
+              var message = ruleSettings.message || rule.message;
+              if (ruleValue !== null) {
+                  if (!Array.isArray(ruleValue)) {
+                      ruleValue = [ruleValue];
+                  }
+                  for (var i = 0; i < ruleValue.length; i++) {
+                      message = message.replace(new RegExp("\\{" + i + "\\}", "g"), ruleValue[i]);
+                  }
+              }
+              return message;
+          }
+      }
+      return true;
+  }
+
+  class LayerBackdrop extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              zIndex: 2,
+              attrs: {
+                  style: {
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      width: '100%',
+                      height: '100%',
+                      overflow: 'hidden',
+                      userSelect: 'none',
+                      opacity: 0.1,
+                      background: '#000'
+                  }
+              }
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
       _config() {
-          this.setProps(
-              {
-                  tag: 'div',
-                  header: this.props.header && { component: LayoutHeader },
-                  body: this.props.body && { component: LayoutBody },
-                  footer: this.props.footer && { component: LayoutFooter },
-                  sider: this.props.sider && { component: LayoutSider }
+          this.setProps({
+              attrs: {
+                  style: {
+                      zIndex: this.props.zIndex
+                  }
               }
-          );
+          });
 
-          if (this.props.sider) {
+          if (this.referenceElement === document.body) {
               this.setProps({
-                  classes: {
-                      'p-has-sider': true
-                  },
-                  children: [
-                      this.props.sider && this.props.sider,
-                      this.props.body && this.props.body
-                  ]
+                  attrs: {
+                      style: {
+                          position: 'fixed'
+                      }
+                  }
               });
+          }
+      }
+  }
+
+  Component.register(LayerBackdrop);
+
+  class Layer extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              align: null,
+              alignTo: null,
+              alignOuter: false,
+              within: window,
+              collision: 'flipfit',
+
+              closeOnClickOutside: false,
+              closeToRemove: false,
+
+              position: null,
+
+              hidden: false,
+
+              backdrop: false,
+              closeOnClickBackdrop: false,
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.relativeElements = [];
+          this._onDocumentMousedown = this._onDocumentMousedown.bind(this);
+          this._onWindowResize = this._onWindowResize.bind(this);
+      }
+
+      _config() {
+          if (this.props.placement === 'replace') {
+              this.props.position = null;
+          }
+          this._normalizePosition();
+          this._zIndex = getzIndex();
+          this.setProps({
+              attrs: {
+                  style: {
+                      zIndex: this._zIndex
+                  }
+              }
+          });
+          if (this.props.align) {
+              this.setProps({
+                  attrs: {
+                      style: {
+                          position: this.props.fixed ? 'fixed' : 'absolute',
+                          left: 0,
+                          top: 0
+                      }
+                  }
+              });
+          }
+      }
+
+      _render() {
+          let that = this;
+
+          this.addRel(this.element);
+          if (this.props.backdrop) {
+              this.backdrop = new LayerBackdrop({
+                  zIndex: this._zIndex - 1,
+                  reference: this.props.reference
+              });
+
+              if (this.props.closeOnClickBackdrop) {
+                  this.backdrop._on('click', function (e) {
+                      if (e.target !== e.currentTarget) {
+                          return
+                      }
+                      that.remove();
+                  });
+              }
+          }
+      }
+
+      _show() {
+          var props = this.props;
+
+          this.setPosition();
+          this._docClickHandler();
+
+          if (props.align) {
+              window.removeEventListener('resize', this._onWindowResize, false);
+              window.addEventListener('resize', this._onWindowResize, false);
+          }
+      }
+
+      _hide(forceRemove) {
+          window.removeEventListener('resize', this._onWindowResize, false);
+          document.removeEventListener('mousedown', this._onDocumentMousedown, false);
+
+          if (forceRemove === true || this.props.closeToRemove) {
+              this.element.remove();
+          }
+      }
+
+      _remove() {
+          window.removeEventListener('resize', this._onWindowResize, false);
+          document.removeEventListener('mousedown', this._onDocumentMousedown, false);
+
+          if (this.backdrop) {
+              this.backdrop.remove();
+          }
+      }
+
+      _onWindowResize() {
+          if (this.props.hidden === false) {
+              this.setPosition();
+          }
+      }
+
+      _onDocumentMousedown(e) {
+          for (var i = 0; i < this.relativeElements.length; i++) {
+              var el = this.relativeElements[i];
+              if (el === e.target || el.contains(e.target)) {
+                  return;
+              }
+          }
+
+          var closestLayer = e.target.closest('.nom-layer');
+          if (closestLayer !== null) {
+              var idx = closestLayer.component._zIndex;
+              if (idx < this._zIndex) {
+                  this.hide();
+              }
           }
           else {
-              this.setProps({
-                  children: [
-                      this.props.header && this.props.header,
-                      this.props.body && this.props.body,
-                      this.props.footer && this.props.footer
-                  ]
-              });
+              this.hide();
+          }
+      }
+
+      setPosition() {
+          if (this.props.position) {
+              position(this.element, this.props.position);
+          }
+      }
+
+      addRel(elem) {
+          this.relativeElements.push(elem);
+      }
+
+      _docClickHandler() {
+          var that = this;
+          if (that.props.closeOnClickOutside) {
+              document.addEventListener('mousedown', this._onDocumentMousedown, false);
+          }
+      }
+
+      _normalizePosition() {
+          var props = this.props;
+
+          if (props.align) {
+              props.position = {
+                  of: window, collision: props.collision, within: props.within
+              };
+
+              if (props.alignTo) {
+                  props.position.of = props.alignTo;
+              }
+
+              if (props.alignTo && props.alignOuter === true) {
+                  var arr = props.align.split(' ');
+                  if (arr.length === 1) {
+                      arr[1] = 'center';
+                  }
+
+                  var myArr = ['center', 'center'];
+                  var atArr = ['center', 'center'];
+
+                  if (arr[1] === 'left') {
+                      myArr[0] = 'left';
+                      atArr[0] = 'left';
+                  }
+                  else if (arr[1] === 'right') {
+                      myArr[0] = 'right';
+                      atArr[0] = 'right';
+                  }
+                  else if (arr[1] === 'top') {
+                      myArr[1] = 'top';
+                      atArr[1] = 'top';
+                  }
+                  else if (arr[1] === 'bottom') {
+                      myArr[1] = 'bottom';
+                      atArr[1] = 'bottom';
+                  }
+
+                  if (arr[0] === 'top') {
+                      myArr[1] = 'bottom';
+                      atArr[1] = 'top';
+                  }
+                  else if (arr[0] === 'bottom') {
+                      myArr[1] = 'top';
+                      atArr[1] = 'bottom';
+                  }
+                  else if (arr[0] === 'left') {
+                      myArr[0] = 'right';
+                      atArr[0] = 'left';
+                  }
+                  else if (arr[0] === 'right') {
+                      myArr[0] = 'left';
+                      atArr[0] = 'right';
+                  }
+
+                  props.position.my = myArr[0] + ' ' + myArr[1];
+                  props.position.at = atArr[0] + ' ' + atArr[1];
+              }
+              else {
+                  var rhorizontal = /left|center|right/;
+                  var rvertical = /top|center|bottom/;
+                  var pos = props.align.split(' ');
+                  if (pos.length === 1) {
+                      pos = rhorizontal.test(pos[0]) ?
+                          pos.concat(["center"]) :
+                          rvertical.test(pos[0]) ?
+                              ["center"].concat(pos) :
+                              ["center", "center"];
+                  }
+                  pos[0] = rhorizontal.test(pos[0]) ? pos[0] : "center";
+                  pos[1] = rvertical.test(pos[1]) ? pos[1] : "center";
+
+                  props.position.my = pos[0] + ' ' + pos[1];
+                  props.position.at = pos[0] + ' ' + pos[1];
+              }
           }
       }
   }
 
-  Component.register(Layout);
+  Component.register(Layer);
 
-  class NavbarCaption extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
+  class Tooltip extends Layer {
+    constructor(props, ...mixins) {
+      const defaults = {
+        trigger: null,
+        align: 'top',
+        alignOuter: true,
+
+        closeOnClickOutside: true,
+
+        autoRender: false,
+        hidden: false,
+
+        styles: {
+          color: 'black',
+        },
+      };
+
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+
+    _create() {
+      super._create();
+
+      this._showHandler = this._showHandler.bind(this);
+      this._hideHandler = this._hideHandler.bind(this);
+      this._onOpenerFocusinHandler = this._onOpenerFocusinHandler.bind(this);
+      this._onOpenerFocusoutHandler = this._onOpenerFocusoutHandler.bind(this);
+
+      this._openerFocusing = false;
+      this.opener = this.props.trigger;
+      this.props.alignTo = this.opener.element;
+      (this.showTimer = null), (this.hideTimer = null);
+      this.delay = 100;
+      this.addRel(this.opener.element);
+      this._bindHover();
+    }
+
+    _remove() {
+      this.opener._off('mouseenter', this._showHandler);
+      this.opener._off('mouseleave', this._hideHandler);
+      this.opener._off('focusin', this._onOpenerFocusinHandler);
+      this.opener._off('focusout', this._onOpenerFocusoutHandler);
+
+      this._off('mouseenter');
+      this._off('mouseleave');
+      clearTimeout(this.showTimer);
+      this.showTimer = null;
+      clearTimeout(this.hideTimer);
+      this.hideTimer = null;
+      super._remove();
+    }
+
+    _bindHover() {
+      this.opener._on('mouseenter', this._showHandler);
+      this.opener._on('mouseleave', this._hideHandler);
+      this.opener._on('focusin', this._onOpenerFocusinHandler);
+      this.opener._on('focusout', this._onOpenerFocusoutHandler);
+    }
+
+    _onOpenerFocusinHandler() {
+      this._openerFocusing = true;
+      this._showHandler();
+    }
+
+    _onOpenerFocusoutHandler() {
+      this._openerFocusing = false;
+      this._hideHandler();
+    }
+
+    _showHandler() {
+      clearTimeout(this.hideTimer);
+      this.hideTimer = null;
+      this.showTimer = setTimeout(() => {
+        this.show();
+      }, this.delay);
+    }
+
+    _hideHandler() {
+      if (this._openerFocusing === true) {
+        return;
       }
+      clearTimeout(this.showTimer);
+      this.showTimer = null;
+
+      if (this.props.hidden === false) {
+        this.hideTimer = setTimeout(() => {
+          this.hide();
+        }, this.delay);
+      }
+    }
+
+    _show() {
+      super._show();
+      this._off('mouseenter');
+      this._on('mouseenter', function () {
+        clearTimeout(this.hideTimer);
+      });
+      this._off('mouseleave', this._hideHandler);
+      this._on('mouseleave', this._hideHandler);
+    }
   }
 
-  Component.register(NavbarCaption);
-
-  class NavbarNav extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
+  Component.mixin({
+    _render: function () {
+      if (this.props.tooltip) {
+        if (isString(this.props.tooltip)) {
+          this.tooltip = new Tooltip({ trigger: this, children: this.props.tooltip });
+        } else {
+          this.tooltip = new Tooltip(Component.extendProps({}, this.props.tooltip), {
+            trigger: this,
+          });
+        }
       }
-  }
+    },
+  });
 
-  Component.register(NavbarNav);
+  Component.register(Tooltip);
 
-  class NavbarTools extends Component {
-      constructor(props, ...mixins) {
-          super(props, ...mixins);
-      }
-  }
-
-  Component.register(NavbarTools);
-
-  class Navbar extends Component {
+  class Control extends Component {
       constructor(props, ...mixins) {
           const defaults = {
-              caption: null,
-              nav: null,
-              tools: null,
+              rules: [],
+              required: false,
+              requiredMessage: "必填"
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
-      config() {
-          let { caption, nav, tools } = this.props;
-          let toolsProps;
-          let captionProps = caption ? Component.extendProps({ component: Caption, titleLevel: 3 }, caption) : null;
-          let navProps = nav ? Component.extendProps({ component: Cols }, nav) : null;
-          if (Array.isArray(tools)) {
-              toolsProps = { component: Cols, items: tools };
+      _create() {
+          this.initValue = null;
+          this.oldValue = null;
+          this.currentValue = null;
+
+          if (this.props.value !== undefined) {
+              this.initValue = clone(this.props.value);
           }
-          else if (isPlainObject(tools)) {
-              toolsProps = Component.extendProps({ component: Cols }, tools);
+      }
+
+      _config() {
+          if (this.props.required === true) {
+              this.props.rules.unshift({ type: 'required', message: this.props.requiredMessage });
+          }
+      }
+
+      getValue() {
+          let value = isFunction(this._getValue) ? this._getValue() : null;
+          return value
+      }
+
+      setValue(value) {
+          isFunction(this._setValue) && this._setValue(value);
+      }
+
+      validate() {
+          this.validateTriggered = true;
+          return this._validate()
+      }
+
+      _validate() {
+          let { rules } = this.props;
+          if (Array.isArray(rules) && rules.length > 0) {
+              var validationResult = RuleManager.validate(rules, this.getValue());
+
+              if (validationResult === true) {
+                  this.removeClass('s-invalid');
+                  this.trigger('valid');
+                  if (this.errorTip) {
+                      this.errorTip.remove();
+                      delete this.errorTip;
+                  }
+                  return true
+              }
+              else {
+                  this.addClass('s-invalid');
+                  this.trigger('invalid', validationResult);
+                  this._invalid(validationResult);
+                  return this
+              }
           }
 
-          this.setProps({
-              children: [
-                  captionProps && { component: NavbarCaption, children: captionProps },
-                  navProps && { component: NavbarNav, children: navProps },
-                  toolsProps && { component: NavbarTools, children: toolsProps },
-              ]
-          });
+          return true
+      }
+
+      _invalid(message) {
+          if (!this.errorTip) {
+              this.errorTip = new Tooltip({
+                  trigger: this,
+                  styles: {
+                      color: 'danger',
+                  },
+                  children: message
+              });
+
+              if (this.element.contains(document.activeElement)) {
+                  this.errorTip.show();
+              }
+          }
+          else {
+              this.errorTip.update({
+                  children: message
+              });
+          }
+      }
+
+      // 派生的控件子类内部适当位置调用
+      _onValueChange() {
+          var that = this;
+          this.oldValue = clone(this.currentValue);
+          this.currentValue = clone(this.getValue());
+          this.props.value = this.currentValue;
+
+          var changed = {
+              name: this.props.name,
+              oldValue: this.oldValue,
+              newValue: this.currentValue,
+          };
+
+          setTimeout(function () {
+              that.trigger("valueChange", changed);
+              console.log(changed);
+              if (that.validateTriggered) {
+                  that._validate();
+              }
+          }, 0);
       }
   }
 
-  Component.register(Navbar);
+  Component.register(Control);
 
-  class Cssicon extends Component {
+  class Checkbox extends Control {
       constructor(props, ...mixins) {
           const defaults = {
-              type: '',
-              tag: 'i'
+              text: null
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
       _config() {
-          var classes = {};
-          classes['icon-' + this.props.type] = true;
+          super._config();
 
+          var that = this;
           this.setProps({
-              classes: classes
+              children: {
+                  tag: 'label',
+                  children: [
+                      {
+                          tag: 'input',
+                          attrs: {
+                              type: 'checkbox',
+                              checked: this.props.value,
+                              onchange() {
+                                  that._onValueChange();
+                              }
+                          },
+                          _create() {
+                              that.input = this;
+                          },
+                      },
+                      { tag: 'span' },
+                      { tag: 'span', classes: { 'checkbox-text': true }, children: this.props.text || '' }
+                  ]
+              }
           });
+      }
+
+      _getValue() {
+          return this.input.element.checked
+      }
+
+      _setValue(value) {
+          this.input.element.checked = value === true;
       }
   }
 
-  Component.register(Cssicon);
+  Component.register(Checkbox);
 
   var ListItemMixin = {
       _create: function () {
@@ -3631,1427 +3528,154 @@
 
   Component.register(List);
 
-  class TabItem extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'a',
-              url: null,
-              icon: null,
-              text: null,
-              subtext: null,
-              selectable: {
-                  byClick: true
-              }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          let { icon, text, subtext } = this.props;
+  var OptionListMixin = {
+      _create: function () {
+          this.checkboxList = this.parent;
+          this.checkboxList.optionList = this;
+      },
+      _config: function () {
+          let listProps = this.checkboxList.props;
           this.setProps({
-              attrs: {
-                  href: this.getItemUrl(this.props.url)
-              },
-              children: [
-                  icon && { component: 'Icon', type: icon },
-                  text && { tag: 'span', children: text },
-                  subtext && { tag: 'span', children: subtext }
-              ]
-          });
-      }
-
-      _select() {
-          let tabContent = this.list.getTabContent();
-          tabContent.showPanel(this.key);
-      }
-
-      getItemUrl(url) {
-          if (url) {
-              return url
-          }
-          else {
-              return 'javascript:void(0);'
-          }
-      }
-  }
-
-  Component.register(TabItem);
-
-  class TabList extends List {
-      constructor(props, ...mixins) {
-          const defaults = {
-              itemDefaults: {
-                  component: TabItem
-              },
-              tabContent: null,
-              type: 'horizontal',
+              items: listProps.options,
+              itemDefaults: listProps.optionDefaults,
               itemSelectable: {
-                  byClick: true
+                  byClick: true,
+                  multiple: true
               },
-              gutter: 'md'
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      getTabContent() {
-          return this.props.tabContent.call(this)
-      }
-  }
-
-  Component.register(TabList);
-
-  class TabPanel extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              hidden: true
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.tabContent = this.parent;
-          this.tabContent.panels[this.key] = this;
-      }
-
-      _config() {
-          this.setProps({
-              hidden: this.key !== this.tabContent.props.selectedPanel
-          });
-      }
-
-      _show() {
-          this.tabContent.shownPanel && this.tabContent.shownPanel.hide();
-          this.tabContent.shownPanel = this;
-      }
-  }
-
-  Component.register(TabPanel);
-
-  class TabContent extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              panels: [],
-              panelDefaults: { component: TabPanel }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.panels = {};
-          this.shownPanel = null;
-      }
-
-      _config() {
-          var panels = this.props.panels;
-          var children = [];
-          if (Array.isArray(panels) && panels.length > 0) {
-              for (var i = 0; i < panels.length; i++) {
-                  var panel = panels[i];
-                  panel = Component.extendProps({}, this.props.panelDefaults, panel);
-                  children.push(panel);
-              }
-          }
-
-          this.setProps({
-              children: children
-          });
-      }
-
-      getPanel(param) {
-          var retPanel = null;
-
-          if (isString(param)) {
-              return this.panels[param]
-          }
-          else if (isFunction(param)) {
-              for (var panel in this.panels) {
-                  if (this.panels.hasOwnProperty(panel)) {
-                      if (param.call(this.panels[panel]) === true) {
-                          retPanel = this.panels[panel];
-                          break
-                      }
-                  }
-              }
-          }
-
-          return retPanel
-      }
-
-      showPanel(param) {
-          var panel = this.getPanel(param);
-          if (panel === null) {
-              return false
-          }
-          panel.show();
-      }
-  }
-
-  Component.register(TabContent);
-
-  class Tabs extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tabs: [],
-              selectedTab: 0
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          var that = this;
-          var tabItems = [];
-          var tabPanles = [];
-          for (var i = 0; i < this.props.tabs.length; i++) {
-              var tab = this.props.tabs[i];
-              tab.item.key = tab.item.key || 'tab' + i;
-              tab.panel.key = tab.panel.key || 'tab' + i;
-              tabItems.push(tab.item);
-              tabPanles.push(tab.panel);
-          }
-
-          this.setProps({
-              tabList: {
-                  component: TabList,
-                  name: 'tabList',
-                  items: tabItems,
-                  selectedItems: this.props.selectedTab,
-                  tabContent: function () {
-                      return that.tabContent;
-                  }
-              },
-              tabContent: {
-                  component: TabContent,
-                  panels: tabPanles,
-                  _create: function () {
-                      that.tabContent = this;
-                  }
-              }
-          });
-
-          this.setProps({
-              children: [
-                  this.props.tabList,
-                  this.props.tabContent
-              ]
-          });
-      }
-  }
-
-  Component.register(Tabs);
-
-  class Pager extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              pageIndex: 1,
-              pageSize: 10,
-              totalCount: 0,
-              displayItemCount: 5,
-              edgeItemCount: 1,
-
-              prevShowAlways: true,
-              nextShowAlways: true,
-
-              texts: {
-                  prev: '上一页',
-                  next: '下一页',
-                  ellipse: "..."
-              }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          var pager = this;
-
-          this.setProps({
-              children: {
-                  component: List,
-                  gutter: 'md',
-                  items: pager.getPageItems(),
-                  itemDefaults: {
-                      tag: 'a',
-                      key() {
-                          return this.props.pageNumber
-                      },
-                      _config: function () {
-                          this.setProps({
-                              children: this.props.text + ''
-                          });
-                      },
-                  },
-                  itemSelectable: {
-                      byClick: true
-                  },
-                  selectedItems: pager.props.pageIndex,
-                  events: {
-                      itemSelectionChange: function () {
-                          pager.props.pageIndex = this.selectedItem.props.pageNumber;
-                          pager.trigger("pageChange", {
-                              pageIndex: pager.props.pageIndex,
-                              pageSize: pager.props.pageSize,
-                          });
-                      }
-                  }
-              }
-          });
-      }
-
-      /**
-      * 极端分页的起始和结束点，取决于pageIndex 和 displayItemCount.
-      * @返回 {数组(Array)}
-      */
-      _getInterval() {
-          var props = this.props;
-          var pageIndex = props.pageIndex;
-          var displayItemHalf = Math.floor(props.displayItemCount / 2);
-          var pageCount = this._getPageCount();
-          var upper_limit = pageCount - props.displayItemCount;
-          var start = pageIndex > displayItemHalf ? Math.max(Math.min(pageIndex - displayItemHalf, upper_limit), 1) : 1;
-          var end = pageIndex > displayItemHalf ? Math.min(pageIndex + displayItemHalf, pageCount) : Math.min(props.displayItemCount, pageCount);
-          return [start, end]
-      }
-
-      _getPageCount() {
-          return Math.ceil(this.props.totalCount / this.props.pageSize)
-      }
-
-      getPageItems() {
-          var items = [];
-          var props = this.props;
-          if (props.totalCount === 0) {
-              return items
-          }
-          var pageIndex = props.pageIndex;
-          var interval = this._getInterval();
-          var pageCount = this._getPageCount();
-
-          // 产生"Previous"-链接
-          if (props.texts.prev && (pageIndex > 1 || props.prevShowAlways)) {
-              items.push({
-                  pageNumber: pageIndex - 1,
-                  text: props.texts.prev,
-                  classes: { 'prev': true }
-              });
-          }
-          // 产生起始点
-          if (interval[0] > 1 && props.edgeItemCount > 0) {
-              var end = Math.min(props.edgeItemCount, interval[0] - 1);
-              for (var i = 1; i <= end; i++) {
-                  items.push({
-                      pageNumber: i,
-                      text: i,
-                      classes: ''
-                  });
-              }
-              if (props.edgeItemCount < interval[0] - 1 && props.texts.ellipse) {
-                  items.push({
-                      pageNumber: null,
-                      text: props.texts.ellipse,
-                      classes: { 'space': true },
-                      space: true
-                  });
-              }
-          }
-
-          // 产生内部的那些链接
-          for (var i = interval[0]; i <= interval[1]; i++) {
-              items.push({
-                  pageNumber: i,
-                  text: i,
-                  classes: ''
-              });
-          }
-          // 产生结束点
-          if (interval[1] < pageCount && props.edgeItemCount > 0) {
-              if (pageCount - props.edgeItemCount > interval[1] && props.texts.ellipse) {
-                  items.push({
-                      pageNumber: null,
-                      text: props.texts.ellipse,
-                      classes: { 'space': true },
-                      space: true
-                  });
-              }
-              var begin = Math.max(pageCount - props.edgeItemCount + 1, interval[1]);
-              for (var i = begin; i <= pageCount; i++) {
-                  items.push({
-                      pageNumber: i,
-                      text: i,
-                      classes: ''
-                  });
-              }
-
-          }
-          // 产生 "Next"-链接
-          if (props.texts.next && (pageIndex < pageCount || props.nextShowAlways)) {
-              items.push({
-                  pageNumber: pageIndex + 1,
-                  text: props.texts.next,
-                  classes: { 'next': true },
-              });
-          }
-
-          return items
-      }
-  }
-
-  Component.register(Pager);
-
-  class MenuItem extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'a',
-              url: null,
-              icon: null,
-              text: null,
-              subtext: null,
-              indicator: {
-                  component: 'Icon',
-                  expandable: {
-                      expandedProps: {
-                          type: 'angle-up'
-                      },
-                      collapsedProps: {
-                          type: 'angle-down'
-                      }
-                  },
-                  type: 'angle-down'
-              }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.wrapper = this.parent;
-          this.wrapper.item = this;
-          this.menu = this.wrapper.menu;
-          this.level = this.wrapper.level;
-          this.isLeaf = this.wrapper.isLeaf;
-          this.menu.itemRefs[this.key] = this;
-          this.parentItem = null;
-          if (this.wrapper.parentWrapper) {
-              this.parentItem = this.wrapper.parentWrapper.item;
-          }
-      }
-
-      _config() {
-          var menu = this.menu, menuProps = menu.props;
-
-          var indicatorIconType = 'angle-down';
-          if (menuProps.type === 'horizontal' && this.level > 0) {
-              indicatorIconType = 'angle-right';
-          }
-
-
-          if (menuProps.type === 'horizontal') {
-              this.setProps({
-                  indicator: {
-                      expandable: false
-                  }
-              });
-          }
-
-          this.setProps({
-              indicator: {
-                  type: indicatorIconType,
-                  classes: { 'nom-menu-toggler': true },
-                  _create() {
-                      this.parent.indicator = this;
-                  }
-              },
-              expandable: {
-                  byClick: !this.isLeaf,
-                  target: function () {
-                      return this.wrapper.submenu
-                  },
-              },
-              attrs: {
-                  href: this.getItemUrl(this.props.url),
-                  style: {
-                      paddingLeft: menuProps.type === 'vertical' ? (this.level + 1) * menuProps.indent + 'rem' : null
-                  }
-              },
+              selectedItems: listProps.value,
               events: {
-                  select() {
-                      if (menu.selectedItem !== null) menu.selectedItem.unselect();
-                      menu.selectedItem = this;
-                  },
-                  unselect() {
-                      if (menu.selectedItem === this) menu.selectedItem = null;
+                  itemSelectionChange: () => {
+                      this.checkboxList._onValueChange();
                   }
               }
           });
-
-          this.setProps({
-              children: [
-                  this.props.icon && { component: 'icon', type: this.props.icon },
-                  { component: Component, tag: 'span', classes: { 'text': true }, children: this.props.text },
-                  this.props.subtext && { component: Component, tag: 'span', classes: { 'subtext': true }, children: this.props.subtext },
-                  this.props.indicator && !this.isLeaf && this.props.indicator
-              ]
-          });
       }
+  };
 
-      _collapse() {
-          this.indicator && this.indicator.collapse();
-          if (this.menu.props.itemExpandable.expandSingle === true) {
-              this.wrapper.parent.expandedChildItem = null;
-          }
-      }
-
-      _expand() {
-          this.indicator && this.indicator.expand();
-          if (this.menu.props.itemExpandable.expandSingle === true) {
-              if (this.wrapper.parent.expandedChildItem) {
-                  this.wrapper.parent.expandedChildItem.collapse();
+  class OptionList extends List {
+      constructor(props, ...mixins) {
+          const defaults = {
+              gutter: 'x-md',
+              itemDefaults: {
+                  tag: 'label',
+                  _config: function () {
+                      this.setProps({
+                          children: [
+                              {
+                                  tag: 'span',
+                                  classes: {
+                                      'checkbox': true,
+                                  },
+                              },
+                              {
+                                  tag: 'span',
+                                  classes: {
+                                      'text': true,
+                                  },
+                                  children: this.props.text,
+                              },
+                          ],
+                      });
+                  }
               }
-              this.wrapper.parent.expandedChildItem = this;
-          }
-      }
+          };
 
-      getItemUrl(url) {
-          if (url) {
-              return url;
-          }
-          else {
-              return 'javascript:void(0);'
-          }
+          super(Component.extendProps(defaults, props), OptionListMixin, ...mixins);
       }
   }
 
-  Component.register(MenuItem);
-
-  class MenuSub extends Component {
+  class CheckboxList extends Control {
       constructor(props, ...mixins) {
           const defaults = {
-              tag: 'ul',
-              itemDefaults: {
-                  component: 'menu-item'
-              }
+              options: [],
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
-      _create() {
-          this.wrapper = this.props.wrapper || this.parent;
-          this.wrapper.submenu = this;
-          this.menu = this.wrapper.menu;
-          this.props.itemDefaults = this.menu.props.itemDefaults;
-      }
-
       _config() {
-          var that = this;
+          super._config();
 
-          var children = Array.isArray(this.props.items) && this.props.items.map(function (item) {
-              return {
-                  component: 'MenuItemWrapper',
-                  item: Component.extendProps({}, that.props.itemDefaults, item),
-                  items: item.items
+          this.setProps({
+              optionDefaults: {
+                  key: function () {
+                      return this.props.value;
+                  }
               }
           });
 
-          var typeClass = 'nom-menu-' + this.menu.props.type;
+          this.setProps({
+              optionList: {
+                  component: OptionList,
+              }
+          });
+
+          this.setProps({
+              children: this.props.optionList
+          });
+      }
+
+      getSelectedOptions() {
+          return this.optionList.getSelectedItems()
+      }
+
+      _getValue() {
+          var selected = this.getSelectedOptions();
+          if (selected !== null && Array.isArray(selected)) {
+              var vals = selected.map(function (item) {
+                  return item.props.value
+              });
+
+              return vals
+          }
+          else {
+              return null
+          }
+      }
+
+      _setValue(value) {
+          this.optionList.selectItem(function () {
+              return this.props.value === value
+          });
+      }
+  }
+
+  Component.register(CheckboxList);
+
+  class Container extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              fluid: false,
+              type: null
+          };
+
+          super(Component.extendProps(defaults, props), mixins);
+      }
+  }
+
+  Component.register(Container);
+
+  class Cssicon extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              type: '',
+              tag: 'i'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
           var classes = {};
-          classes[typeClass] = true;
-          this.setProps({
-              classes: classes,
-              children: children
-          });
-      }
-  }
-
-  Component.register(MenuSub);
-
-  class MenuItemWrapper extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'li',
-              item: {
-                  component: MenuItem
-              }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.isLeaf = false;
-          this.level = 0;
-          this.parentWrapper = null;
-
-          if (this.parent instanceof Component.components['Menu']) {
-              this.menu = this.parent;
-          }
-          else if (this.parent instanceof Component.components['MenuSub']) {
-              this.menu = this.parent.menu;
-              this.parentWrapper = this.parent.wrapper;
-          }
-
-          if (this.parentWrapper) {
-              this.level = this.parentWrapper.level + 1;
-          }
-
-          this.isLeaf = !Array.isArray(this.props.item.items) || this.props.item.items.length < 1;
-      }
-
-      _config() {
-          var that = this;
-          var menu = this.menu, menuProps = menu.props;
-          var expanded = menuProps.type === 'horizontal' || menuProps.itemExpandable.initExpandLevel >= this.level;
+          classes['icon-' + this.props.type] = true;
 
           this.setProps({
-              submenu: menuProps.submenu
-          });
-
-          this.setProps({
-              submenu: {
-                  component: MenuSub,
-                  name: 'submenu',
-                  items: this.props.item.items,
-                  hidden: !expanded
-              }
-          });
-
-          if (menuProps.type === 'horizontal' && !this.isLeaf) {
-              var reference = document.body;
-              if (this.level > 0) {
-                  reference = this;
-              }
-              var align = 'bottom left';
-              if (this.level > 0) {
-                  align = 'right top';
-              }
-
-              this.setProps({
-                  submenu: {
-                      wrapper: that
-                  }
-              });
-
-              this.setProps({
-                  item: {
-                      popup: {
-                          triggerAction: 'hover',
-                          align: align,
-                          reference: reference,
-                          children: this.props.submenu,
-                      }
-                  }
-              });
-          }
-
-          this.setProps({
-              children: [
-                  this.props.item,
-                  (!this.isLeaf && menuProps.type === 'vertical') && this.props.submenu
-              ]
+              classes: classes
           });
       }
   }
 
-  Component.register(MenuItemWrapper);
-
-  class Menu extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'ul',
-              items: [],
-              itemDefaults: {
-                  component: MenuItem
-              },
-              itemSelectable: {
-                  onlyleaf: false
-              },
-              itemExpandable: {
-                  expandSingle: true,
-                  initExpandLevel: -1
-              },
-
-              indent: 1.5,
-
-              type: 'vertical'
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.itemRefs = [];
-          this.selectedItem = null;
-      }
-
-      _config() {
-          var that = this;
-          var children = this.props.items.map(function (item) {
-              return { component: MenuItemWrapper, item: Component.extendProps({}, that.props.itemDefaults, item) }
-          });
-
-          this.setProps({
-              children: children
-          });
-      }
-
-      getItem(param) {
-          var retItem = null;
-
-          if (isFunction(param)) {
-              for (var key in this.itemRefs) {
-                  if (this.itemRefs.hasOwnProperty(key)) {
-                      if (param.call(this.itemRefs[key]) === true) {
-                          retItem = this.itemRefs[key];
-                          break
-                      }
-                  }
-              }
-          }
-          else {
-              return this.itemRefs[param] || null
-          }
-
-          return retItem
-      }
-
-      selectItem(param, selectOption) {
-          var item = this.getItem(param);
-          if (item === null || item === undefined) {
-              return false
-          }
-          return item.select(selectOption)
-      }
-
-      unselectItem(param, unselectOption) {
-          unselectOption = extend(
-              {
-                  triggerUnselect: true,
-                  triggerSelectionChange: true
-              },
-              unselectOption
-          );
-          var item = this.getItem(param);
-          if (item === null) {
-              return false
-          } else {
-              return item.unselect(unselectOption)
-          }
-      }
-
-      getSelectedItem() {
-          return this.selectedItem
-      }
-
-      expandToItem(param) {
-          var item = this.getItem(param);
-          if (item !== null) {
-              var p = item.parentItem;
-              while (p) {
-                  p.expand();
-                  p = p.parentItem;
-              }
-          }
-      }
-  }
-
-  Component.register(Menu);
-
-  class ColGroupCol extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'col',
-              column: {}
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          let { width } = this.props.column;
-          let widthPx = null;
-          if (width) {
-              widthPx = width + 'px';
-          }
-          this.setProps({
-              attrs: {
-                  style: {
-                      width: widthPx
-                  }
-              }
-          });
-      }
-  }
-
-  Component.register(ColGroupCol);
-
-  class ColGroup extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'colgroup'
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.table = this.parent;
-          this.columns = this.table.props.columns;
-      }
-
-      _config() {
-          let children = [];
-
-          if (Array.isArray(this.columns)) {
-              children = this.columns.map(function (column) {
-                  return {
-                      component: ColGroupCol,
-                      name: column.field,
-                      column: column
-                  }
-              });
-          }
-
-          this.setProps({
-              children: children
-          });
-      }
-  }
-
-  Component.register(ColGroup);
-
-  class Th extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'th',
-              column: {}
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.tr = this.parent;
-          this.table = this.tr.table;
-      }
-
-      _config() {
-          let children = this.props.column.header || this.props.column.title;
-
-          this.setProps({
-              children
-          });
-      }
-  }
-
-  Component.register(Th);
-
-  class TheadTr extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'tr'
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.thead = this.parent;
-          this.table = this.thead.table;
-      }
-
-      _config() {
-          var columns = this.table.props.columns;
-
-          var children = Array.isArray(columns)
-              && columns.map(function (column) {
-                  return {
-                      component: Th,
-                      column: column
-                  }
-              });
-
-          this.setProps({
-              children: children
-          });
-      }
-  }
-
-  Component.register(TheadTr);
-
-  class Thead extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'thead'
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.table = this.parent;
-      }
-
-      _config() {
-          this.setProps({
-              children: [
-                  { component: TheadTr }
-              ]
-          });
-      }
-  }
-
-  Component.register(Thead);
-
-  class Td extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'td',
-              data: null,
-              column: {}
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          let children = this.props.data;
-          if (isFunction(this.props.column.render)) {
-              children = this.props.column.render.call(this, this.props.data, this.props.record);
-          }
-          this.setProps({
-              children: children
-          });
-      }
-  }
-
-  Component.register(Td);
-
-  class Tr extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'tr',
-              data: {}
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.tbody = this.parent;
-          this.table = this.tbody.table;
-      }
-
-      _config() {
-          var columns = this.table.props.columns;
-          var data = this.props.data;
-
-          var children = Array.isArray(columns)
-              && columns.map(function (column) {
-                  return {
-                      component: Td,
-                      name: column.field,
-                      column: column,
-                      record: data,
-                      data: accessProp(data, column.field)
-                  }
-              });
-
-          this.setProps({
-              key: data[this.table.props.keyField],
-              children: children
-          });
-      }
-  }
-
-  Component.register(Tr);
-
-  class Tbody extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'tbody'
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.table = this.parent;
-      }
-
-      _config() {
-          var data = this.table.props.data;
-          var children = Array.isArray(data)
-              && data.map(function (rowData) {
-                  return {
-                      component: Tr,
-                      data: rowData
-                  }
-              });
-
-          this.setProps({
-              children
-          });
-      }
-  }
-
-  Component.register(Tbody);
-
-  class Table extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'table',
-              columns: [],
-              row: {},
-              onlyHead: false,
-              onlyBody: false,
-              keyField: 'id'
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          this.setProps({
-              tag: 'table',
-              children: [
-                  { component: ColGroup },
-                  this.props.onlyBody !== true && { component: Thead },
-                  this.props.onlyHead !== true && { component: Tbody }
-              ]
-          });
-      }
-
-      _render() {
-          if (this.loadingInst) {
-              this.loadingInst.remove();
-              this.loadingInst = null;
-          }
-      }
-
-      loading() {
-          this.loadingInst = new Loading({
-              container: this.parent
-          });
-      }
-  }
-
-  Component.register(Table);
-
-  class GridHeader extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              children: { component: Table }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.grid = this.parent;
-          this.grid.header = this;
-      }
-
-      _config() {
-          this.setProps({
-              children: {
-                  columns: this.grid.props.columns,
-                  data: this.grid.data,
-                  attrs: {
-                      style: {
-                          minWidth: this.grid.minWidth + 'px'
-                      }
-                  },
-                  onlyHead: true
-              }
-          });
-      }
-  }
-
-  Component.register(GridHeader);
-
-  class GridBody extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              children: { component: Table }
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.grid = this.parent;
-          this.grid.body = this;
-      }
-
-      _config() {
-          this.setProps({
-              children: {
-                  columns: this.grid.props.columns,
-                  data: this.grid.props.data,
-                  attrs: {
-                      style: {
-                          minWidth: this.grid.minWidth + 'px'
-                      }
-                  },
-                  onlyBody: true
-              },
-              attrs: {
-                  onscroll: () => {
-                      var scrollLeft = this.element.scrollLeft;
-                      this.grid.header.element.scrollLeft = scrollLeft;
-                  }
-              }
-          });
-      }
-  }
-
-  Component.register(GridBody);
-
-  class Grid extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              columns: [],
-              data: [],
-              frozenHeader: false
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.minWidth = 0;
-      }
-
-      _config() {
-          this._calcMinWidth();
-
-          this.setProps({
-              classes: {
-                  'm-frozen-header': this.props.frozenHeader
-              },
-              children: [
-                  { component: GridHeader },
-                  { component: GridBody }
-              ]
-          });
-      }
-
-      _calcMinWidth() {
-          this.minWidth = 0;
-          var props = this.props;
-          for (var i = 0; i < props.columns.length; i++) {
-              var column = props.columns[i];
-              if (column.width) {
-                  this.minWidth += column.width;
-              }
-              else {
-                  this.minWidth += 120;
-              }
-          }
-      }
-
-      _render() {
-          if (this.loadingInst) {
-              this.loadingInst.remove();
-              this.loadingInst = null;
-          }
-      }
-
-      loading() {
-          this.loadingInst = new Loading({
-              container: this.parent
-          });
-      }
-  }
-
-  Component.register(Grid);
-
-  let RuleManager = {};
-  RuleManager.ruleTypes = {
-      required: {
-          validate: function (value) {
-              return !isEmpty(value);
-          },
-          message: "必填"
-      },
-      number: {
-          validate: function (value) {
-              return /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value);
-          },
-          message: "请输入有效的数字"
-      },
-      digits: {
-          validate: function (value) {
-              return /^\d+$/.test(value);
-          },
-          message: "只能输入数字"
-      },
-      regex: {
-          validate: function (value, ruleValue) {
-              return new RegExp(ruleValue.pattern, ruleValue.attributes).test(value);
-          }
-      },
-      email: {
-          validate: function (value) {
-              return /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(value);
-          },
-          message: "请输入有效的 Email 地址"
-      },
-      url: {
-          validate: function (value) {
-              return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
-          },
-          message: "请输入有效的 URL"
-      },
-      min: {
-          validate: function (value, ruleValue) {
-              value = Number(value);
-              return value >= ruleValue;
-          },
-          message: '输入值不能小于 {0}'
-      },
-      max: {
-          validate: function (value, ruleValue) {
-              value = Number(value);
-              return value <= ruleValue;
-          },
-          message: '输入值不能大于 {0}'
-      },
-      range: {
-          validate: function (value, ruleValue) {
-              value = Number(value);
-              return value >= ruleValue[0] && value <= ruleValue[1];
-          },
-          message: "输入值必须介于 {0} 和 {1} 之间"
-      },
-      minlength: {
-          validate: function (value, ruleValue) {
-              var length = 0;
-              if (Array.isArray(value)) {
-                  length = value.length;
-              }
-              else {
-                  length = value.trim().length;
-              }
-
-              return length >= ruleValue;
-          },
-          message: '不能少于 {0} 个字'
-      },
-      maxlength: {
-          validate: function (value, ruleValue) {
-              var length = 0;
-              if (Array.isArray(value)) {
-                  length = value.length;
-              }
-              else {
-                  length = value.trim().length;
-              }
-
-              return length <= ruleValue;
-          },
-          message: '不能多于 {0} 个字'
-      },
-      rangelength: {
-          validate: function (value, ruleValue) {
-              var length = 0;
-              if (Array.isArray(value)) {
-                  length = value.length;
-              }
-              else {
-                  length = value.trim().length;
-              }
-
-              return ruleValue[0] <= length && length <= ruleValue[1];
-          },
-          message: '输入字数在 {0} 个到 {1} 个之间'
-      },
-      remote: {
-          validate: function (value, ruleValue) {
-              var data = {};
-              data[ruleValue[1]] = value;
-              var response = $.ajax({ url: ruleValue[0], dataType: "json", data: data, async: false, cache: false, type: "post" }).responseText;
-              return response === "true";
-          }, message: "Please fix this field"
-      },
-      date: {
-          validate: function (value, ruleValue) {
-              return true;
-          },
-          message: "请输入有效的日期格式."
-      },
-      identifier: {
-          validate: function (value) {
-              return /^[a-zA-Z][a-zA-Z0-9_]*$/.test(value);
-          },
-          message: '只能输入字母、数字、下划线且必须以字母开头'
-      },
-      phoneNumber: {
-          validate: function (value) {
-              return /^1[3|4|5|7|8][0-9]{9}$/.test(value);
-          },
-          message: '请输入正确的手机号'
-      },
-      func: {
-          validate: function (value, ruleValue) {
-              if (isFunction(ruleValue)) {
-                  return ruleValue(value);
-              }
-          }
-      }
-  };
-
-  RuleManager.validate = function (rules, controlValue) {
-      for (var i = 0; i < rules.length; i++) {
-          var checkResult = checkRule(rules[i], controlValue);
-          if (checkResult !== true) {
-              return checkResult;
-          }
-      }
-
-      return true;
-  };
-
-  function isEmpty(val) {
-      return val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length);
-  }
-
-  function checkRule(ruleSettings, controlValue) {
-      var rule = RuleManager.ruleTypes[ruleSettings.type];
-
-      if (rule) {
-          var ruleValue = ruleSettings.value || null;
-          if (!rule.validate(controlValue, ruleValue)) {
-              var message = ruleSettings.message || rule.message;
-              if (ruleValue !== null) {
-                  if (!Array.isArray(ruleValue)) {
-                      ruleValue = [ruleValue];
-                  }
-                  for (var i = 0; i < ruleValue.length; i++) {
-                      message = message.replace(new RegExp("\\{" + i + "\\}", "g"), ruleValue[i]);
-                  }
-              }
-              return message;
-          }
-      }
-      return true;
-  }
-
-  class Control extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              rules: [],
-              required: false,
-              requiredMessage: "必填"
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _create() {
-          this.initValue = null;
-          this.oldValue = null;
-          this.currentValue = null;
-
-          if (this.props.value !== undefined) {
-              this.initValue = clone(this.props.value);
-          }
-      }
-
-      _config() {
-          if (this.props.required === true) {
-              this.props.rules.unshift({ type: 'required', message: this.props.requiredMessage });
-          }
-      }
-
-      getValue() {
-          let value = isFunction(this._getValue) ? this._getValue() : null;
-          return value
-      }
-
-      setValue(value) {
-          isFunction(this._setValue) && this._setValue(value);
-      }
-
-      validate() {
-          this.validateTriggered = true;
-          return this._validate()
-      }
-
-      _validate() {
-          let { rules } = this.props;
-          if (Array.isArray(rules) && rules.length > 0) {
-              var validationResult = RuleManager.validate(rules, this.getValue());
-
-              if (validationResult === true) {
-                  this.removeClass('s-invalid');
-                  this.trigger('valid');
-                  if (this.errorTip) {
-                      this.errorTip.remove();
-                      delete this.errorTip;
-                  }
-                  return true
-              }
-              else {
-                  this.addClass('s-invalid');
-                  this.trigger('invalid', validationResult);
-                  this._invalid(validationResult);
-                  return this
-              }
-          }
-
-          return true
-      }
-
-      _invalid(message) {
-          if (!this.errorTip) {
-              this.errorTip = new Tooltip({
-                  trigger: this,
-                  styles: {
-                      color: 'danger',
-                  },
-                  children: message
-              });
-
-              if (this.element.contains(document.activeElement)) {
-                  this.errorTip.show();
-              }
-          }
-          else {
-              this.errorTip.update({
-                  children: message
-              });
-          }
-      }
-
-      // 派生的控件子类内部适当位置调用
-      _onValueChange() {
-          var that = this;
-          this.oldValue = clone(this.currentValue);
-          this.currentValue = clone(this.getValue());
-          this.props.value = this.currentValue;
-
-          var changed = {
-              name: this.props.name,
-              oldValue: this.oldValue,
-              newValue: this.currentValue,
-          };
-
-          setTimeout(function () {
-              that.trigger("valueChange", changed);
-              console.log(changed);
-              if (that.validateTriggered) {
-                  that._validate();
-              }
-          }, 0);
-      }
-  }
-
-  Component.register(Control);
+  Component.register(Cssicon);
 
   class Input extends Component {
       constructor(props, ...mixins) {
@@ -5196,452 +3820,144 @@
 
   Component.register(Textbox);
 
-  class Textarea extends Component {
+  class Row extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(Row);
+
+  class Rows extends Component {
       constructor(props, ...mixins) {
           const defaults = {
-              tag: 'textarea',
-              attrs: {
-                  autocomplete: 'off'
+              wrap: false,
+              items: [],
+              itemDefaults: null,
+              gutter: 'md',
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          this._propStyleClasses = ['gutter', 'align', 'justify'];
+          let items = this.props.items;
+          var children = [];
+          if (Array.isArray(items) && items.length > 0) {
+              for (var i = 0; i < items.length; i++) {
+                  let item = items[i];
+                  item = Component.extendProps({}, this.props.itemDefaults, item);
+                  children.push({ component: Row, children: item });
               }
+          }
+
+          this.setProps({
+              children: children
+          });
+      }
+  }
+
+  Component.register(Rows);
+
+  class Popup extends Layer {
+      constructor(props, ...mixins) {
+          const defaults = {
+              trigger: null,
+              triggerAction: 'click',
+              align: 'bottom left',
+              alignOuter: true,
+
+              closeOnClickOutside: true,
+              placement: 'append',
+
+              autoRender: false,
+              hidden: true,
+
+              type: 'default'
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
       _create() {
-          this.multilineTextbox = this.parent;
-          this.multilineTextbox.textarea = this;
+          super._create();
 
-          this.capsLock = false;
+          this._showHandler = this._showHandler.bind(this);
+          this._hideHandler = this._hideHandler.bind(this);
+          this._onOpenerClickHandler = this._onOpenerClickHandler.bind(this);
+
+          this.opener = this.props.trigger;
+          this.props.alignTo = this.opener.element;
+          this.showTimer = null, this.hideTimer = null;
+          this.addRel(this.opener.element);
+          this._bindTrigger();
       }
 
-      _config() {
-          this.setProps({
-              attrs: {
-                  'oninput': () => {
-                      if (!this.capsLock) {
-                          this.multilineTextbox._onValueChange();
-                      }
-                  },
-                  'oncompositionstart': () => {
-                      this.capsLock = true;
-                  },
-                  'oncompositionend': () => {
-                      this.capsLock = false;
-                      this.element.trigger('input');
-                  },
-                  'onblur': () => {
-                      this.multilineTextbox.trigger("blur");
-                  }
-              }
-          });
-      }
-
-      _render() {
-          if (this.multilineTextbox.props.autofocus === true) {
-              this.focus();
+      _bindTrigger() {
+          var triggerAction = this.props.triggerAction;
+          if (triggerAction === 'click') {
+              this._bindClick();
+          } else {
+              this._bindHover();
           }
       }
 
-      getText() {
-          return this.element.value
+      _bindClick() {
+          this.opener._on('click', this._onOpenerClickHandler);
       }
 
-      setText(text) {
-          this.element.value = text;
+      _bindHover() {
+          this.opener._on('mouseenter', this._showHandler);
+          this.opener._on('mouseleave', this._hideHandler);
       }
 
-      focus() {
-          this.element.focus();
-      }
-  }
-
-  Component.register(Textarea);
-
-  class MultilineTextbox extends Control {
-      constructor(props, ...mixins) {
-          const defaults = {
-              autofocus: false,
-              placeholder: null
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
+      _onOpenerClickHandler() {
+          this.toggleHidden();
       }
 
-      _config() {
-          super._config();
-
-          this.setProps({
-              tag: 'div',
-              textarea: {
-                  component: Textarea,
-                  attrs: {
-                      placeholder: this.props.placeholder
-                  }
-              }
-          });
-
-          this.setProps({
-              children: this.props.textarea
-          });
+      _showHandler() {
+          clearTimeout(this.hideTimer);
+          this.hideTimer = null;
+          this.showTimer = setTimeout(() => {
+              this.show();
+          }, this.delay);
       }
 
-      getText() {
-          return this.textarea.getText()
-      }
+      _hideHandler() {
+          clearTimeout(this.showTimer);
+          this.showTimer = null;
 
-      _getValue() {
-          var inputText = this.getText();
-          if (inputText === '') {
-              return null
+          if (this.props.hidden === false) {
+              this.hideTimer = setTimeout(() => {
+                  this.hide();
+              }, this.delay);
           }
-          return inputText
       }
 
-      _setValue(value) {
-          this.textarea.setText(value);
-      }
-
-      focus() {
-          this.textarea.focus();
-      }
-  }
-
-  Component.register(MultilineTextbox);
-
-  class Numberbox extends Textbox {
-      constructor(props, ...mixins) {
-          const defaults = {
-              min: null,
-              max: null,
-              precision: 0
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          super._config();
-
-          var rules = [];
-
-          if (this.props.precision === 0) {
-              rules.push({
-                  type: 'regex',
-                  value: {
-                      pattern: '^(\\-|\\+)?(0|[1-9][0-9]*)$'
-                  },
-                  message: '请输入整数'
+      _show() {
+          super._show();
+          if (this.props.triggerAction === 'hover') {
+              this._off('mouseenter');
+              this._on('mouseenter', () => {
+                  clearTimeout(this.hideTimer);
               });
+              this._off('mouseleave');
+              this._on('mouseleave', this._hideHandler);
           }
-          if (this.props.precision > 0) {
-              rules.push({
-                  type: 'regex',
-                  value: {
-                      pattern: '^(\\-|\\+)?(0|[1-9][0-9]*)(\\.\\d{' + this.props.precision + '})$'
-                  },
-                  message: '请输入 ' + this.props.precision + ' 位小数'
-              });
-          }
-          if (this.props.min) {
-              rules.push({
-                  type: 'min',
-                  value: this.props.min
-              });
-          }
-          if (this.props.max) {
-              rules.push({
-                  type: 'max',
-                  value: this.props.max
-              });
-          }
-
-          this.setProps({ rules: rules });
-      }
-
-      _getValue() {
-          var data = this.input.getText();
-          data = parseFloat(data).toFixed(this.props.precision);
-          if (isNaN(data)) {
-              data = null;
-          }
-          return data
       }
   }
 
-  Component.register(Numberbox);
-
-  class Checkbox extends Control {
-      constructor(props, ...mixins) {
-          const defaults = {
-              text: null
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          super._config();
-
-          var that = this;
-          this.setProps({
-              children: {
-                  tag: 'label',
-                  children: [
-                      {
-                          tag: 'input',
-                          attrs: {
-                              type: 'checkbox',
-                              checked: this.props.value,
-                              onchange() {
-                                  that._onValueChange();
-                              }
-                          },
-                          _create() {
-                              that.input = this;
-                          },
-                      },
-                      { tag: 'span' },
-                      { tag: 'span', classes: { 'checkbox-text': true }, children: this.props.text || '' }
-                  ]
-              }
-          });
-      }
-
-      _getValue() {
-          return this.input.element.checked
-      }
-
-      _setValue(value) {
-          this.input.element.checked = value === true;
-      }
-  }
-
-  Component.register(Checkbox);
-
-  var OptionListMixin = {
-      _create: function () {
-          this.radioList = this.parent;
-          this.radioList.optionList = this;
-      },
-      _config: function () {
-          let listProps = this.radioList.props;
-          this.setProps({
-              items: listProps.options,
-              itemDefaults: listProps.optionDefaults,
-              itemSelectable: {
-                  byClick: true
-              },
-              selectedItems: listProps.value,
-              events: {
-                  itemSelectionChange: () => {
-                      this.radioList._onValueChange();
-                  }
-              }
-          });
-      }
-  };
-
-  class OptionList extends List {
-      constructor(props, ...mixins) {
-          const defaults = {
-              gutter: 'x-md',
-              itemDefaults: {
-                  tag: 'label',
-                  _config: function () {
-                      this.setProps({
-                          children: [
-                              {
-                                  tag: 'span',
-                                  classes: {
-                                      'radio': true,
-                                  },
-                              },
-                              {
-                                  tag: 'span',
-                                  classes: {
-                                      'text': true,
-                                  },
-                                  children: this.props.text,
-                              },
-                          ],
-                      });
-                  }
-              }
-          };
-
-          super(Component.extendProps(defaults, props), OptionListMixin, ...mixins);
-      }
-  }
-
-  class RadioList extends Control {
-      constructor(props, ...mixins) {
-          const defaults = {
-              options: [],
-              type: 'radio'
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          super._config();
-
-          this.setProps({
-              optionDefaults: {
-                  key() {
-                      return this.props.value
-                  }
-              }
-          });
-
-          this.setProps({
-              optionList: {
-                  component: OptionList
-              }
-          });
-
-          this.setProps({
-              children: this.props.optionList
-          });
-      }
-
-      getSelectedOption() {
-          return this.optionList.getSelectedItem()
-      }
-
-      _getValue() {
-          var selected = this.getSelectedOption();
-          if (selected !== null) {
-              return selected.props.value
-          }
-          else {
-              return null
+  Component.mixin({
+      _render: function () {
+          if (this.props.popup) {
+              this.props.popup.trigger = this;
+              this.popup = new Popup(this.props.popup);
           }
       }
+  });
 
-      _setValue(value) {
-          this.optionList.selectItem(function () {
-              return this.props.value === value
-          });
-      }
-  }
-
-  Component.register(RadioList);
-
-  var OptionListMixin$1 = {
-      _create: function () {
-          this.checkboxList = this.parent;
-          this.checkboxList.optionList = this;
-      },
-      _config: function () {
-          let listProps = this.checkboxList.props;
-          this.setProps({
-              items: listProps.options,
-              itemDefaults: listProps.optionDefaults,
-              itemSelectable: {
-                  byClick: true,
-                  multiple: true
-              },
-              selectedItems: listProps.value,
-              events: {
-                  itemSelectionChange: () => {
-                      this.checkboxList._onValueChange();
-                  }
-              }
-          });
-      }
-  };
-
-  class OptionList$1 extends List {
-      constructor(props, ...mixins) {
-          const defaults = {
-              gutter: 'x-md',
-              itemDefaults: {
-                  tag: 'label',
-                  _config: function () {
-                      this.setProps({
-                          children: [
-                              {
-                                  tag: 'span',
-                                  classes: {
-                                      'checkbox': true,
-                                  },
-                              },
-                              {
-                                  tag: 'span',
-                                  classes: {
-                                      'text': true,
-                                  },
-                                  children: this.props.text,
-                              },
-                          ],
-                      });
-                  }
-              }
-          };
-
-          super(Component.extendProps(defaults, props), OptionListMixin$1, ...mixins);
-      }
-  }
-
-  class CheckboxList extends Control {
-      constructor(props, ...mixins) {
-          const defaults = {
-              options: [],
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          super._config();
-
-          this.setProps({
-              optionDefaults: {
-                  key: function () {
-                      return this.props.value;
-                  }
-              }
-          });
-
-          this.setProps({
-              optionList: {
-                  component: OptionList$1,
-              }
-          });
-
-          this.setProps({
-              children: this.props.optionList
-          });
-      }
-
-      getSelectedOptions() {
-          return this.optionList.getSelectedItems()
-      }
-
-      _getValue() {
-          var selected = this.getSelectedOptions();
-          if (selected !== null && Array.isArray(selected)) {
-              var vals = selected.map(function (item) {
-                  return item.props.value
-              });
-
-              return vals
-          }
-          else {
-              return null
-          }
-      }
-
-      _setValue(value) {
-          this.optionList.selectItem(function () {
-              return this.props.value === value
-          });
-      }
-  }
-
-  Component.register(CheckboxList);
+  Component.register(Popup);
 
   var SelectListMixin = {
       _create: function () {
@@ -5931,28 +4247,6 @@
   }
 
   Component.register(Select);
-
-  class TimePicker extends Control {
-      constructor(props, ...mixins) {
-
-      }
-
-      _getTimeData(count) {
-          var data = [];
-          for (i = 0; i < count; i++) {
-              var val = i + '';
-              if (i < 10) {
-                  val = '0' + i;
-              }
-              data.push({
-                  text: val,
-                  value: val
-              });
-          }
-          
-          return data
-      }
-  }
 
   /**
    * Copyright (c)2005-2009 Matt Kruse (javascripttoolbox.com)
@@ -6880,6 +5174,1713 @@
   }
 
   Component.register(Form);
+
+  class ColGroupCol extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'col',
+              column: {}
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          let { width } = this.props.column;
+          let widthPx = null;
+          if (width) {
+              widthPx = width + 'px';
+          }
+          this.setProps({
+              attrs: {
+                  style: {
+                      width: widthPx
+                  }
+              }
+          });
+      }
+  }
+
+  Component.register(ColGroupCol);
+
+  class ColGroup extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'colgroup'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.table = this.parent;
+          this.columns = this.table.props.columns;
+      }
+
+      _config() {
+          let children = [];
+
+          if (Array.isArray(this.columns)) {
+              children = this.columns.map(function (column) {
+                  return {
+                      component: ColGroupCol,
+                      name: column.field,
+                      column: column
+                  }
+              });
+          }
+
+          this.setProps({
+              children: children
+          });
+      }
+  }
+
+  Component.register(ColGroup);
+
+  class Th extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'th',
+              column: {}
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.tr = this.parent;
+          this.table = this.tr.table;
+      }
+
+      _config() {
+          let children = this.props.column.header || this.props.column.title;
+
+          this.setProps({
+              children
+          });
+      }
+  }
+
+  Component.register(Th);
+
+  class TheadTr extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'tr'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.thead = this.parent;
+          this.table = this.thead.table;
+      }
+
+      _config() {
+          var columns = this.table.props.columns;
+
+          var children = Array.isArray(columns)
+              && columns.map(function (column) {
+                  return {
+                      component: Th,
+                      column: column
+                  }
+              });
+
+          this.setProps({
+              children: children
+          });
+      }
+  }
+
+  Component.register(TheadTr);
+
+  class Thead extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'thead'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.table = this.parent;
+      }
+
+      _config() {
+          this.setProps({
+              children: [
+                  { component: TheadTr }
+              ]
+          });
+      }
+  }
+
+  Component.register(Thead);
+
+  class Td extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'td',
+              data: null,
+              column: {}
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          let children = this.props.data;
+          if (isFunction(this.props.column.render)) {
+              children = this.props.column.render.call(this, this.props.data, this.props.record);
+          }
+          this.setProps({
+              children: children
+          });
+      }
+  }
+
+  Component.register(Td);
+
+  class Tr extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'tr',
+              data: {}
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.tbody = this.parent;
+          this.table = this.tbody.table;
+      }
+
+      _config() {
+          var columns = this.table.props.columns;
+          var data = this.props.data;
+
+          var children = Array.isArray(columns)
+              && columns.map(function (column) {
+                  return {
+                      component: Td,
+                      name: column.field,
+                      column: column,
+                      record: data,
+                      data: accessProp(data, column.field)
+                  }
+              });
+
+          this.setProps({
+              key: data[this.table.props.keyField],
+              children: children
+          });
+      }
+  }
+
+  Component.register(Tr);
+
+  class Tbody extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'tbody'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.table = this.parent;
+      }
+
+      _config() {
+          var data = this.table.props.data;
+          var children = Array.isArray(data)
+              && data.map(function (rowData) {
+                  return {
+                      component: Tr,
+                      data: rowData
+                  }
+              });
+
+          this.setProps({
+              children
+          });
+      }
+  }
+
+  Component.register(Tbody);
+
+  class Spinner extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              type: 'border'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+  }
+
+  Component.register(Spinner);
+
+  class Loading extends Layer {
+      constructor(props, ...mixins) {
+          const defaults = {
+              align: 'center',
+              container: document.body,
+              backdrop: true,
+              collision: 'none',
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          this.setProps({
+              reference: this.props.container,
+              alignTo: this.getElement(this.props.container),
+              children: {
+                  component: Spinner
+              }
+          });
+
+          if (this.props.container instanceof Component) {
+              this.props.container.addClass('nom-loading-container');
+          }
+          else {
+              this.props.container.component.addClass('nom-loading-container');
+          }
+
+          super._config();
+      }
+
+      _remove() {
+          if (this.props.container instanceof Component) {
+              this.props.container.removeClass('nom-loading-container');
+          }
+          else {
+              this.props.container.component.removeClass('nom-loading-container');
+          }
+
+          super._remove();
+      }
+  }
+
+  Component.register(Loading);
+
+  class Table extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'table',
+              columns: [],
+              row: {},
+              onlyHead: false,
+              onlyBody: false,
+              keyField: 'id'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          this.setProps({
+              tag: 'table',
+              children: [
+                  { component: ColGroup },
+                  this.props.onlyBody !== true && { component: Thead },
+                  this.props.onlyHead !== true && { component: Tbody }
+              ]
+          });
+      }
+
+      _render() {
+          if (this.loadingInst) {
+              this.loadingInst.remove();
+              this.loadingInst = null;
+          }
+      }
+
+      loading() {
+          this.loadingInst = new Loading({
+              container: this.parent
+          });
+      }
+  }
+
+  Component.register(Table);
+
+  class GridHeader extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              children: { component: Table }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.grid = this.parent;
+          this.grid.header = this;
+      }
+
+      _config() {
+          this.setProps({
+              children: {
+                  columns: this.grid.props.columns,
+                  data: this.grid.data,
+                  attrs: {
+                      style: {
+                          minWidth: this.grid.minWidth + 'px'
+                      }
+                  },
+                  onlyHead: true
+              }
+          });
+      }
+  }
+
+  Component.register(GridHeader);
+
+  class GridBody extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              children: { component: Table }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.grid = this.parent;
+          this.grid.body = this;
+      }
+
+      _config() {
+          this.setProps({
+              children: {
+                  columns: this.grid.props.columns,
+                  data: this.grid.props.data,
+                  attrs: {
+                      style: {
+                          minWidth: this.grid.minWidth + 'px'
+                      }
+                  },
+                  onlyBody: true
+              },
+              attrs: {
+                  onscroll: () => {
+                      var scrollLeft = this.element.scrollLeft;
+                      this.grid.header.element.scrollLeft = scrollLeft;
+                  }
+              }
+          });
+      }
+  }
+
+  Component.register(GridBody);
+
+  class Grid extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              columns: [],
+              data: [],
+              frozenHeader: false
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.minWidth = 0;
+      }
+
+      _config() {
+          this._calcMinWidth();
+
+          this.setProps({
+              classes: {
+                  'm-frozen-header': this.props.frozenHeader
+              },
+              children: [
+                  { component: GridHeader },
+                  { component: GridBody }
+              ]
+          });
+      }
+
+      _calcMinWidth() {
+          this.minWidth = 0;
+          var props = this.props;
+          for (var i = 0; i < props.columns.length; i++) {
+              var column = props.columns[i];
+              if (column.width) {
+                  this.minWidth += column.width;
+              }
+              else {
+                  this.minWidth += 120;
+              }
+          }
+      }
+
+      _render() {
+          if (this.loadingInst) {
+              this.loadingInst.remove();
+              this.loadingInst = null;
+          }
+      }
+
+      loading() {
+          this.loadingInst = new Loading({
+              container: this.parent
+          });
+      }
+  }
+
+  Component.register(Grid);
+
+  class LayoutHeader extends Component {
+      constructor(props, ...mixins) {
+          super(props);
+      }
+  }
+
+  Component.register(LayoutHeader);
+
+  class LayoutBody extends Component {
+      constructor(props, ...mixins) {
+          super(props);
+      }
+  }
+
+  Component.register(LayoutBody);
+
+  class LayoutFooter extends Component {
+      constructor(props, ...mixins) {
+          super(props);
+      }
+  }
+
+  Component.register(LayoutFooter);
+
+  class LayoutSider extends Component {
+      constructor(props, ...mixins) {
+          super(props);
+      }
+  }
+
+  Component.register(LayoutSider);
+
+  class Layout extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              header: null,
+              body: null,
+              footer: null,
+              sider: null
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          this.setProps(
+              {
+                  tag: 'div',
+                  header: this.props.header && { component: LayoutHeader },
+                  body: this.props.body && { component: LayoutBody },
+                  footer: this.props.footer && { component: LayoutFooter },
+                  sider: this.props.sider && { component: LayoutSider }
+              }
+          );
+
+          if (this.props.sider) {
+              this.setProps({
+                  classes: {
+                      'p-has-sider': true
+                  },
+                  children: [
+                      this.props.sider && this.props.sider,
+                      this.props.body && this.props.body
+                  ]
+              });
+          }
+          else {
+              this.setProps({
+                  children: [
+                      this.props.header && this.props.header,
+                      this.props.body && this.props.body,
+                      this.props.footer && this.props.footer
+                  ]
+              });
+          }
+      }
+  }
+
+  Component.register(Layout);
+
+  class MenuItem extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'a',
+              url: null,
+              icon: null,
+              text: null,
+              subtext: null,
+              indicator: {
+                  component: 'Icon',
+                  expandable: {
+                      expandedProps: {
+                          type: 'angle-up'
+                      },
+                      collapsedProps: {
+                          type: 'angle-down'
+                      }
+                  },
+                  type: 'angle-down'
+              }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.wrapper = this.parent;
+          this.wrapper.item = this;
+          this.menu = this.wrapper.menu;
+          this.level = this.wrapper.level;
+          this.isLeaf = this.wrapper.isLeaf;
+          this.menu.itemRefs[this.key] = this;
+          this.parentItem = null;
+          if (this.wrapper.parentWrapper) {
+              this.parentItem = this.wrapper.parentWrapper.item;
+          }
+      }
+
+      _config() {
+          var menu = this.menu, menuProps = menu.props;
+
+          var indicatorIconType = 'angle-down';
+          if (menuProps.type === 'horizontal' && this.level > 0) {
+              indicatorIconType = 'angle-right';
+          }
+
+
+          if (menuProps.type === 'horizontal') {
+              this.setProps({
+                  indicator: {
+                      expandable: false
+                  }
+              });
+          }
+
+          this.setProps({
+              indicator: {
+                  type: indicatorIconType,
+                  classes: { 'nom-menu-toggler': true },
+                  _create() {
+                      this.parent.indicator = this;
+                  }
+              },
+              expandable: {
+                  byClick: !this.isLeaf,
+                  target: function () {
+                      return this.wrapper.submenu
+                  },
+              },
+              attrs: {
+                  href: this.getItemUrl(this.props.url),
+                  style: {
+                      paddingLeft: menuProps.type === 'vertical' ? (this.level + 1) * menuProps.indent + 'rem' : null
+                  }
+              },
+              events: {
+                  select() {
+                      if (menu.selectedItem !== null) menu.selectedItem.unselect();
+                      menu.selectedItem = this;
+                  },
+                  unselect() {
+                      if (menu.selectedItem === this) menu.selectedItem = null;
+                  }
+              }
+          });
+
+          this.setProps({
+              children: [
+                  this.props.icon && { component: 'icon', type: this.props.icon },
+                  { component: Component, tag: 'span', classes: { 'text': true }, children: this.props.text },
+                  this.props.subtext && { component: Component, tag: 'span', classes: { 'subtext': true }, children: this.props.subtext },
+                  this.props.indicator && !this.isLeaf && this.props.indicator
+              ]
+          });
+      }
+
+      _collapse() {
+          this.indicator && this.indicator.collapse();
+          if (this.menu.props.itemExpandable.expandSingle === true) {
+              this.wrapper.parent.expandedChildItem = null;
+          }
+      }
+
+      _expand() {
+          this.indicator && this.indicator.expand();
+          if (this.menu.props.itemExpandable.expandSingle === true) {
+              if (this.wrapper.parent.expandedChildItem) {
+                  this.wrapper.parent.expandedChildItem.collapse();
+              }
+              this.wrapper.parent.expandedChildItem = this;
+          }
+      }
+
+      getItemUrl(url) {
+          if (url) {
+              return url;
+          }
+          else {
+              return 'javascript:void(0);'
+          }
+      }
+  }
+
+  Component.register(MenuItem);
+
+  class MenuSub extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'ul',
+              itemDefaults: {
+                  component: 'menu-item'
+              }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.wrapper = this.props.wrapper || this.parent;
+          this.wrapper.submenu = this;
+          this.menu = this.wrapper.menu;
+          this.props.itemDefaults = this.menu.props.itemDefaults;
+      }
+
+      _config() {
+          var that = this;
+
+          var children = Array.isArray(this.props.items) && this.props.items.map(function (item) {
+              return {
+                  component: 'MenuItemWrapper',
+                  item: Component.extendProps({}, that.props.itemDefaults, item),
+                  items: item.items
+              }
+          });
+
+          var typeClass = 'nom-menu-' + this.menu.props.type;
+          var classes = {};
+          classes[typeClass] = true;
+          this.setProps({
+              classes: classes,
+              children: children
+          });
+      }
+  }
+
+  Component.register(MenuSub);
+
+  class MenuItemWrapper extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'li',
+              item: {
+                  component: MenuItem
+              }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.isLeaf = false;
+          this.level = 0;
+          this.parentWrapper = null;
+
+          if (this.parent instanceof Component.components['Menu']) {
+              this.menu = this.parent;
+          }
+          else if (this.parent instanceof Component.components['MenuSub']) {
+              this.menu = this.parent.menu;
+              this.parentWrapper = this.parent.wrapper;
+          }
+
+          if (this.parentWrapper) {
+              this.level = this.parentWrapper.level + 1;
+          }
+
+          this.isLeaf = !Array.isArray(this.props.item.items) || this.props.item.items.length < 1;
+      }
+
+      _config() {
+          var that = this;
+          var menu = this.menu, menuProps = menu.props;
+          var expanded = menuProps.type === 'horizontal' || menuProps.itemExpandable.initExpandLevel >= this.level;
+
+          this.setProps({
+              submenu: menuProps.submenu
+          });
+
+          this.setProps({
+              submenu: {
+                  component: MenuSub,
+                  name: 'submenu',
+                  items: this.props.item.items,
+                  hidden: !expanded
+              }
+          });
+
+          if (menuProps.type === 'horizontal' && !this.isLeaf) {
+              var reference = document.body;
+              if (this.level > 0) {
+                  reference = this;
+              }
+              var align = 'bottom left';
+              if (this.level > 0) {
+                  align = 'right top';
+              }
+
+              this.setProps({
+                  submenu: {
+                      wrapper: that
+                  }
+              });
+
+              this.setProps({
+                  item: {
+                      popup: {
+                          triggerAction: 'hover',
+                          align: align,
+                          reference: reference,
+                          children: this.props.submenu,
+                      }
+                  }
+              });
+          }
+
+          this.setProps({
+              children: [
+                  this.props.item,
+                  (!this.isLeaf && menuProps.type === 'vertical') && this.props.submenu
+              ]
+          });
+      }
+  }
+
+  Component.register(MenuItemWrapper);
+
+  class Menu extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'ul',
+              items: [],
+              itemDefaults: {
+                  component: MenuItem
+              },
+              itemSelectable: {
+                  onlyleaf: false
+              },
+              itemExpandable: {
+                  expandSingle: true,
+                  initExpandLevel: -1
+              },
+
+              indent: 1.5,
+
+              type: 'vertical'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.itemRefs = [];
+          this.selectedItem = null;
+      }
+
+      _config() {
+          var that = this;
+          var children = this.props.items.map(function (item) {
+              return { component: MenuItemWrapper, item: Component.extendProps({}, that.props.itemDefaults, item) }
+          });
+
+          this.setProps({
+              children: children
+          });
+      }
+
+      getItem(param) {
+          var retItem = null;
+
+          if (isFunction(param)) {
+              for (var key in this.itemRefs) {
+                  if (this.itemRefs.hasOwnProperty(key)) {
+                      if (param.call(this.itemRefs[key]) === true) {
+                          retItem = this.itemRefs[key];
+                          break
+                      }
+                  }
+              }
+          }
+          else {
+              return this.itemRefs[param] || null
+          }
+
+          return retItem
+      }
+
+      selectItem(param, selectOption) {
+          var item = this.getItem(param);
+          if (item === null || item === undefined) {
+              return false
+          }
+          return item.select(selectOption)
+      }
+
+      unselectItem(param, unselectOption) {
+          unselectOption = extend(
+              {
+                  triggerUnselect: true,
+                  triggerSelectionChange: true
+              },
+              unselectOption
+          );
+          var item = this.getItem(param);
+          if (item === null) {
+              return false
+          } else {
+              return item.unselect(unselectOption)
+          }
+      }
+
+      getSelectedItem() {
+          return this.selectedItem
+      }
+
+      expandToItem(param) {
+          var item = this.getItem(param);
+          if (item !== null) {
+              var p = item.parentItem;
+              while (p) {
+                  p.expand();
+                  p = p.parentItem;
+              }
+          }
+      }
+  }
+
+  Component.register(Menu);
+
+  class Message extends Layer {
+      constructor(props, ...mixins) {
+          const defaults = {
+              type: null,
+              icon: null,
+              content: null,
+              commands: null,
+              duration: 2,
+              closeToRemove: true,
+              showClose: false,
+              position: {
+                  my: "center center",
+                  at: "center center",
+                  of: window
+              }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          super._config();
+
+          const iconMap = {
+              info: 'info',
+              success: 'success',
+              error: 'warn',
+              warning: 'exclamation-circle'
+          };
+
+          var icon = this.props.icon || iconMap[this.props.type];
+          let iconProps = Component.normalizeIconProps(icon);
+          if (iconProps) {
+              iconProps = Component.extendProps(iconProps, { classes: { 'nom-message-icon': true } });
+          }
+          this.props.content = Component.normalizeTemplateProps(this.props.content);
+          this.setProps({
+              content: {
+                  classes: {
+                      'nom-message-content': true
+                  }
+              }
+          });
+          this.setProps({
+              children: [
+                  iconProps,
+                  this.props.content,
+                  this.props.showClose && { component: 'Button', icon: 'close' }
+              ]
+          });
+      }
+
+      _render() {
+          var that = this, props = this.props;
+
+          if (props.duration) {
+              setTimeout(function () {
+                  that.close();
+              }, 1000 * props.duration);
+          }
+      }
+  }
+
+  Component.register(Message);
+
+  class Textarea extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'textarea',
+              attrs: {
+                  autocomplete: 'off'
+              }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.multilineTextbox = this.parent;
+          this.multilineTextbox.textarea = this;
+
+          this.capsLock = false;
+      }
+
+      _config() {
+          this.setProps({
+              attrs: {
+                  'oninput': () => {
+                      if (!this.capsLock) {
+                          this.multilineTextbox._onValueChange();
+                      }
+                  },
+                  'oncompositionstart': () => {
+                      this.capsLock = true;
+                  },
+                  'oncompositionend': () => {
+                      this.capsLock = false;
+                      this.element.trigger('input');
+                  },
+                  'onblur': () => {
+                      this.multilineTextbox.trigger("blur");
+                  }
+              }
+          });
+      }
+
+      _render() {
+          if (this.multilineTextbox.props.autofocus === true) {
+              this.focus();
+          }
+      }
+
+      getText() {
+          return this.element.value
+      }
+
+      setText(text) {
+          this.element.value = text;
+      }
+
+      focus() {
+          this.element.focus();
+      }
+  }
+
+  Component.register(Textarea);
+
+  class MultilineTextbox extends Control {
+      constructor(props, ...mixins) {
+          const defaults = {
+              autofocus: false,
+              placeholder: null
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          super._config();
+
+          this.setProps({
+              tag: 'div',
+              textarea: {
+                  component: Textarea,
+                  attrs: {
+                      placeholder: this.props.placeholder
+                  }
+              }
+          });
+
+          this.setProps({
+              children: this.props.textarea
+          });
+      }
+
+      getText() {
+          return this.textarea.getText()
+      }
+
+      _getValue() {
+          var inputText = this.getText();
+          if (inputText === '') {
+              return null
+          }
+          return inputText
+      }
+
+      _setValue(value) {
+          this.textarea.setText(value);
+      }
+
+      focus() {
+          this.textarea.focus();
+      }
+  }
+
+  Component.register(MultilineTextbox);
+
+  class NavbarCaption extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(NavbarCaption);
+
+  class NavbarNav extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(NavbarNav);
+
+  class NavbarTools extends Component {
+      constructor(props, ...mixins) {
+          super(props, ...mixins);
+      }
+  }
+
+  Component.register(NavbarTools);
+
+  class Navbar extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              caption: null,
+              nav: null,
+              tools: null,
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      config() {
+          let { caption, nav, tools } = this.props;
+          let toolsProps;
+          let captionProps = caption ? Component.extendProps({ component: Caption, titleLevel: 3 }, caption) : null;
+          let navProps = nav ? Component.extendProps({ component: Cols }, nav) : null;
+          if (Array.isArray(tools)) {
+              toolsProps = { component: Cols, items: tools };
+          }
+          else if (isPlainObject(tools)) {
+              toolsProps = Component.extendProps({ component: Cols }, tools);
+          }
+
+          this.setProps({
+              children: [
+                  captionProps && { component: NavbarCaption, children: captionProps },
+                  navProps && { component: NavbarNav, children: navProps },
+                  toolsProps && { component: NavbarTools, children: toolsProps },
+              ]
+          });
+      }
+  }
+
+  Component.register(Navbar);
+
+  class Numberbox extends Textbox {
+      constructor(props, ...mixins) {
+          const defaults = {
+              min: null,
+              max: null,
+              precision: 0
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          super._config();
+
+          var rules = [];
+
+          if (this.props.precision === 0) {
+              rules.push({
+                  type: 'regex',
+                  value: {
+                      pattern: '^(\\-|\\+)?(0|[1-9][0-9]*)$'
+                  },
+                  message: '请输入整数'
+              });
+          }
+          if (this.props.precision > 0) {
+              rules.push({
+                  type: 'regex',
+                  value: {
+                      pattern: '^(\\-|\\+)?(0|[1-9][0-9]*)(\\.\\d{' + this.props.precision + '})$'
+                  },
+                  message: '请输入 ' + this.props.precision + ' 位小数'
+              });
+          }
+          if (this.props.min) {
+              rules.push({
+                  type: 'min',
+                  value: this.props.min
+              });
+          }
+          if (this.props.max) {
+              rules.push({
+                  type: 'max',
+                  value: this.props.max
+              });
+          }
+
+          this.setProps({ rules: rules });
+      }
+
+      _getValue() {
+          var data = this.input.getText();
+          data = parseFloat(data).toFixed(this.props.precision);
+          if (isNaN(data)) {
+              data = null;
+          }
+          return data
+      }
+  }
+
+  Component.register(Numberbox);
+
+  class Pager extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              pageIndex: 1,
+              pageSize: 10,
+              totalCount: 0,
+              displayItemCount: 5,
+              edgeItemCount: 1,
+
+              prevShowAlways: true,
+              nextShowAlways: true,
+
+              texts: {
+                  prev: '上一页',
+                  next: '下一页',
+                  ellipse: "..."
+              }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          var pager = this;
+
+          this.setProps({
+              children: {
+                  component: List,
+                  gutter: 'md',
+                  items: pager.getPageItems(),
+                  itemDefaults: {
+                      tag: 'a',
+                      key() {
+                          return this.props.pageNumber
+                      },
+                      _config: function () {
+                          this.setProps({
+                              children: this.props.text + ''
+                          });
+                      },
+                  },
+                  itemSelectable: {
+                      byClick: true
+                  },
+                  selectedItems: pager.props.pageIndex,
+                  events: {
+                      itemSelectionChange: function () {
+                          pager.props.pageIndex = this.selectedItem.props.pageNumber;
+                          pager.trigger("pageChange", {
+                              pageIndex: pager.props.pageIndex,
+                              pageSize: pager.props.pageSize,
+                          });
+                      }
+                  }
+              }
+          });
+      }
+
+      /**
+      * 极端分页的起始和结束点，取决于pageIndex 和 displayItemCount.
+      * @返回 {数组(Array)}
+      */
+      _getInterval() {
+          var props = this.props;
+          var pageIndex = props.pageIndex;
+          var displayItemHalf = Math.floor(props.displayItemCount / 2);
+          var pageCount = this._getPageCount();
+          var upper_limit = pageCount - props.displayItemCount;
+          var start = pageIndex > displayItemHalf ? Math.max(Math.min(pageIndex - displayItemHalf, upper_limit), 1) : 1;
+          var end = pageIndex > displayItemHalf ? Math.min(pageIndex + displayItemHalf, pageCount) : Math.min(props.displayItemCount, pageCount);
+          return [start, end]
+      }
+
+      _getPageCount() {
+          return Math.ceil(this.props.totalCount / this.props.pageSize)
+      }
+
+      getPageItems() {
+          var items = [];
+          var props = this.props;
+          if (props.totalCount === 0) {
+              return items
+          }
+          var pageIndex = props.pageIndex;
+          var interval = this._getInterval();
+          var pageCount = this._getPageCount();
+
+          // 产生"Previous"-链接
+          if (props.texts.prev && (pageIndex > 1 || props.prevShowAlways)) {
+              items.push({
+                  pageNumber: pageIndex - 1,
+                  text: props.texts.prev,
+                  classes: { 'prev': true }
+              });
+          }
+          // 产生起始点
+          if (interval[0] > 1 && props.edgeItemCount > 0) {
+              var end = Math.min(props.edgeItemCount, interval[0] - 1);
+              for (var i = 1; i <= end; i++) {
+                  items.push({
+                      pageNumber: i,
+                      text: i,
+                      classes: ''
+                  });
+              }
+              if (props.edgeItemCount < interval[0] - 1 && props.texts.ellipse) {
+                  items.push({
+                      pageNumber: null,
+                      text: props.texts.ellipse,
+                      classes: { 'space': true },
+                      space: true
+                  });
+              }
+          }
+
+          // 产生内部的那些链接
+          for (var i = interval[0]; i <= interval[1]; i++) {
+              items.push({
+                  pageNumber: i,
+                  text: i,
+                  classes: ''
+              });
+          }
+          // 产生结束点
+          if (interval[1] < pageCount && props.edgeItemCount > 0) {
+              if (pageCount - props.edgeItemCount > interval[1] && props.texts.ellipse) {
+                  items.push({
+                      pageNumber: null,
+                      text: props.texts.ellipse,
+                      classes: { 'space': true },
+                      space: true
+                  });
+              }
+              var begin = Math.max(pageCount - props.edgeItemCount + 1, interval[1]);
+              for (var i = begin; i <= pageCount; i++) {
+                  items.push({
+                      pageNumber: i,
+                      text: i,
+                      classes: ''
+                  });
+              }
+
+          }
+          // 产生 "Next"-链接
+          if (props.texts.next && (pageIndex < pageCount || props.nextShowAlways)) {
+              items.push({
+                  pageNumber: pageIndex + 1,
+                  text: props.texts.next,
+                  classes: { 'next': true },
+              });
+          }
+
+          return items
+      }
+  }
+
+  Component.register(Pager);
+
+  var OptionListMixin$1 = {
+      _create: function () {
+          this.radioList = this.parent;
+          this.radioList.optionList = this;
+      },
+      _config: function () {
+          let listProps = this.radioList.props;
+          this.setProps({
+              items: listProps.options,
+              itemDefaults: listProps.optionDefaults,
+              itemSelectable: {
+                  byClick: true
+              },
+              selectedItems: listProps.value,
+              events: {
+                  itemSelectionChange: () => {
+                      this.radioList._onValueChange();
+                  }
+              }
+          });
+      }
+  };
+
+  class OptionList$1 extends List {
+      constructor(props, ...mixins) {
+          const defaults = {
+              gutter: 'x-md',
+              itemDefaults: {
+                  tag: 'label',
+                  _config: function () {
+                      this.setProps({
+                          children: [
+                              {
+                                  tag: 'span',
+                                  classes: {
+                                      'radio': true,
+                                  },
+                              },
+                              {
+                                  tag: 'span',
+                                  classes: {
+                                      'text': true,
+                                  },
+                                  children: this.props.text,
+                              },
+                          ],
+                      });
+                  }
+              }
+          };
+
+          super(Component.extendProps(defaults, props), OptionListMixin$1, ...mixins);
+      }
+  }
+
+  class RadioList extends Control {
+      constructor(props, ...mixins) {
+          const defaults = {
+              options: [],
+              type: 'radio'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          super._config();
+
+          this.setProps({
+              optionDefaults: {
+                  key() {
+                      return this.props.value
+                  }
+              }
+          });
+
+          this.setProps({
+              optionList: {
+                  component: OptionList$1
+              }
+          });
+
+          this.setProps({
+              children: this.props.optionList
+          });
+      }
+
+      getSelectedOption() {
+          return this.optionList.getSelectedItem()
+      }
+
+      _getValue() {
+          var selected = this.getSelectedOption();
+          if (selected !== null) {
+              return selected.props.value
+          }
+          else {
+              return null
+          }
+      }
+
+      _setValue(value) {
+          this.optionList.selectItem(function () {
+              return this.props.value === value
+          });
+      }
+  }
+
+  Component.register(RadioList);
+
+  class TabItem extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tag: 'a',
+              url: null,
+              icon: null,
+              text: null,
+              subtext: null,
+              selectable: {
+                  byClick: true
+              }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          let { icon, text, subtext } = this.props;
+          this.setProps({
+              attrs: {
+                  href: this.getItemUrl(this.props.url)
+              },
+              children: [
+                  icon && { component: 'Icon', type: icon },
+                  text && { tag: 'span', children: text },
+                  subtext && { tag: 'span', children: subtext }
+              ]
+          });
+      }
+
+      _select() {
+          let tabContent = this.list.getTabContent();
+          tabContent.showPanel(this.key);
+      }
+
+      getItemUrl(url) {
+          if (url) {
+              return url
+          }
+          else {
+              return 'javascript:void(0);'
+          }
+      }
+  }
+
+  Component.register(TabItem);
+
+  class TabList extends List {
+      constructor(props, ...mixins) {
+          const defaults = {
+              itemDefaults: {
+                  component: TabItem
+              },
+              tabContent: null,
+              type: 'horizontal',
+              itemSelectable: {
+                  byClick: true
+              },
+              gutter: 'md'
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      getTabContent() {
+          return this.props.tabContent.call(this)
+      }
+  }
+
+  Component.register(TabList);
+
+  class TabPanel extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              hidden: true
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.tabContent = this.parent;
+          this.tabContent.panels[this.key] = this;
+      }
+
+      _config() {
+          this.setProps({
+              hidden: this.key !== this.tabContent.props.selectedPanel
+          });
+      }
+
+      _show() {
+          this.tabContent.shownPanel && this.tabContent.shownPanel.hide();
+          this.tabContent.shownPanel = this;
+      }
+  }
+
+  Component.register(TabPanel);
+
+  class TabContent extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              panels: [],
+              panelDefaults: { component: TabPanel }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _create() {
+          this.panels = {};
+          this.shownPanel = null;
+      }
+
+      _config() {
+          var panels = this.props.panels;
+          var children = [];
+          if (Array.isArray(panels) && panels.length > 0) {
+              for (var i = 0; i < panels.length; i++) {
+                  var panel = panels[i];
+                  panel = Component.extendProps({}, this.props.panelDefaults, panel);
+                  children.push(panel);
+              }
+          }
+
+          this.setProps({
+              children: children
+          });
+      }
+
+      getPanel(param) {
+          var retPanel = null;
+
+          if (isString(param)) {
+              return this.panels[param]
+          }
+          else if (isFunction(param)) {
+              for (var panel in this.panels) {
+                  if (this.panels.hasOwnProperty(panel)) {
+                      if (param.call(this.panels[panel]) === true) {
+                          retPanel = this.panels[panel];
+                          break
+                      }
+                  }
+              }
+          }
+
+          return retPanel
+      }
+
+      showPanel(param) {
+          var panel = this.getPanel(param);
+          if (panel === null) {
+              return false
+          }
+          panel.show();
+      }
+  }
+
+  Component.register(TabContent);
+
+  class Tabs extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              tabs: [],
+              selectedTab: 0
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          var that = this;
+          var tabItems = [];
+          var tabPanles = [];
+          for (var i = 0; i < this.props.tabs.length; i++) {
+              var tab = this.props.tabs[i];
+              tab.item.key = tab.item.key || 'tab' + i;
+              tab.panel.key = tab.panel.key || 'tab' + i;
+              tabItems.push(tab.item);
+              tabPanles.push(tab.panel);
+          }
+
+          this.setProps({
+              tabList: {
+                  component: TabList,
+                  name: 'tabList',
+                  items: tabItems,
+                  selectedItems: this.props.selectedTab,
+                  tabContent: function () {
+                      return that.tabContent;
+                  }
+              },
+              tabContent: {
+                  component: TabContent,
+                  panels: tabPanles,
+                  _create: function () {
+                      that.tabContent = this;
+                  }
+              }
+          });
+
+          this.setProps({
+              children: [
+                  this.props.tabList,
+                  this.props.tabContent
+              ]
+          });
+      }
+  }
+
+  Component.register(Tabs);
+
+  class TimePicker extends Control {
+      constructor(props, ...mixins) {
+
+      }
+
+      _getTimeData(count) {
+          var data = [];
+          for (i = 0; i < count; i++) {
+              var val = i + '';
+              if (i < 10) {
+                  val = '0' + i;
+              }
+              data.push({
+                  text: val,
+                  value: val
+              });
+          }
+          
+          return data
+      }
+  }
 
   exports.Alert = Alert;
   exports.App = App;
