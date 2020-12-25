@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import Modal, { ModalDialog } from '../Modal/index'
+import Modal from '../Modal/index'
 import AlertContent from './AlertContent'
 
 class Alert extends Modal {
@@ -8,7 +8,7 @@ class Alert extends Modal {
             type: 'default',
             icon: null,
             title: null,
-            description: null
+            description: null,
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -16,17 +16,16 @@ class Alert extends Modal {
 
     _config() {
         this.setProps({
-            children: {
-                component: ModalDialog,
-                children: {
-                    component: AlertContent,
-                    type: this.props.type,
-                    icon: this.props.icon,
-                    title: this.props.title,
-                    description: this.props.description
-                }
+            content: {
+                component: AlertContent,
+                type: this.props.type,
+                icon: this.props.icon,
+                title: this.props.title,
+                description: this.props.description
             }
         })
+
+        super._config()
     }
 }
 

@@ -1486,7 +1486,7 @@
       }
 
       _config() {
-          this._propStyleClasses = ['gutter', 'align', 'justify', 'fills'];
+          this._propStyleClasses = ['gutter', 'align', 'justify', 'fills', 'inline'];
           let items = this.props.items;
           var children = [];
           if (Array.isArray(items) && items.length > 0) {
@@ -2996,35 +2996,170 @@
 
   Component.register(Modal);
 
-  class AlertContent extends Component {
+  class Button extends Component {
       constructor(props, ...mixins) {
           const defaults = {
-              title: null,
-              description: null,
+              tag: 'button',
+              text: null,
               icon: null,
-              type: null
+              rightIcon: null,
+              hoverable: true,
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
       }
 
       _config() {
-          var title = this.props.title;
-          if (isString(title)) {
-              title = {
-                  children: this.props.title
-              };
+          this._propStyleClasses = ['size'];
+          let { icon, text, rightIcon, href } = this.props;
+
+          if (icon || rightIcon) {
+              this.setProps({
+                  classes: {
+                      'p-with-icon': true
+                  }
+              });
           }
-          var description = this.props.description;
-          if (isString(description)) {
-              description = {
-                  children: this.props.description
-              };
-          }
+
           this.setProps({
               children: [
-                  title,
-                  description
+                  Component.normalizeIconProps(icon),
+                  text && { tag: 'span', children: text },
+                  Component.normalizeIconProps(rightIcon)
+              ]
+          });
+
+          if (href) {
+              this.setProps({
+                  tag: 'a',
+                  attrs: {
+                      href: href
+                  }
+              });
+          }
+      }
+
+      _disable() {
+          this.element.setAttribute('disabled', 'disabled');
+      }
+  }
+
+  Component.register(Button);
+
+  class AlertContent extends Component {
+      constructor(props, ...mixins) {
+          const defaults = {
+              title: null,
+              description: null,
+              icon: null,
+              type: null,
+              ok: {
+                  text: '确定'
+              },
+              cancel: {
+                  text: '取消'
+              }
+          };
+
+          super(Component.extendProps(defaults, props), ...mixins);
+      }
+
+      _config() {
+          let { title, description, icon, type, ok, cancel } = this.props,
+              alertInst = this.modal;
+
+          const iconMap = {
+              info: 'info-alt',
+              success: 'success',
+              danger: 'danger',
+              error: 'warn',
+              warning: 'help-alt'
+          };
+
+          icon = icon || iconMap[type];
+
+          let iconProps = icon ?
+              Component.extendProps(Component.normalizeIconProps(icon), { classes: { 'nom-alert-icon': true } })
+              : null;
+
+          let titleProps = title ?
+              Component.extendProps(Component.normalizeTemplateProps(title), { classes: { 'nom-alert-title': true } })
+              : null;
+
+          let descriptionProps = description ?
+              Component.extendProps(Component.normalizeTemplateProps(description), { classes: { 'nom-alert-description': true } })
+              : null;
+
+          let okProps = ok ?
+              Component.extendProps(
+                  ok,
+                  {
+                      component: Button,
+                      styles: {
+                          color: 'primary'
+                      },
+                      events: {
+                          click: function () {
+                              if (ok.callback) {
+                                  if (ok.callback.call(this, alertInst) !== false) {
+                                      alertInst.close();
+                                  }
+                              }
+                              else {
+                                  alertInst.close();
+                              }
+                          }
+                      }
+                  },
+              )
+              : null;
+
+          let cancelProps = cancel ?
+              Component.extendProps(
+                  cancel,
+                  {
+                      component: Button,
+                      events: {
+                          click: function () {
+                              alertInst.close();
+                          }
+                      }
+                  },
+              )
+              : null;
+
+          this.setProps({
+              children: [
+                  {
+                      classes: {
+                          'nom-alert-body': true,
+                      },
+                      children: [
+                          iconProps,
+                          {
+                              classes: {
+                                  'nom-alert-body-content': true,
+                              },
+                              children: [
+                                  titleProps,
+                                  descriptionProps
+                              ]
+                          }
+                      ]
+                  },
+                  {
+                      classes: {
+                          'nom-alert-actions': true
+                      },
+                      children: {
+                          component: Cols,
+                          inline: true,
+                          items: [
+                              cancelProps,
+                              okProps
+                          ]
+                      }
+                  }
               ]
           });
       }
@@ -3038,7 +3173,7 @@
               type: 'default',
               icon: null,
               title: null,
-              description: null
+              description: null,
           };
 
           super(Component.extendProps(defaults, props), ...mixins);
@@ -3046,17 +3181,16 @@
 
       _config() {
           this.setProps({
-              children: {
-                  component: ModalDialog,
-                  children: {
-                      component: AlertContent,
-                      type: this.props.type,
-                      icon: this.props.icon,
-                      title: this.props.title,
-                      description: this.props.description
-                  }
+              content: {
+                  component: AlertContent,
+                  type: this.props.type,
+                  icon: this.props.icon,
+                  title: this.props.title,
+                  description: this.props.description
               }
           });
+
+          super._config();
       }
   }
 
@@ -4225,56 +4359,6 @@
   }
 
   Component.register(Menu);
-
-  class Button extends Component {
-      constructor(props, ...mixins) {
-          const defaults = {
-              tag: 'button',
-              text: null,
-              icon: null,
-              rightIcon: null,
-              hoverable: true,
-          };
-
-          super(Component.extendProps(defaults, props), ...mixins);
-      }
-
-      _config() {
-          this._propStyleClasses = ['size'];
-          let { icon, text, rightIcon, href } = this.props;
-
-          if (icon || rightIcon) {
-              this.setProps({
-                  classes: {
-                      'p-with-icon': true
-                  }
-              });
-          }
-
-          this.setProps({
-              children: [
-                  Component.normalizeIconProps(icon),
-                  text && { tag: 'span', children: text },
-                  Component.normalizeIconProps(rightIcon)
-              ]
-          });
-
-          if (href) {
-              this.setProps({
-                  tag: 'a',
-                  attrs: {
-                      href: href
-                  }
-              });
-          }
-      }
-
-      _disable() {
-          this.element.setAttribute('disabled', 'disabled');
-      }
-  }
-
-  Component.register(Button);
 
   class ColGroupCol extends Component {
       constructor(props, ...mixins) {

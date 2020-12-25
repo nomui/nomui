@@ -4185,27 +4185,10 @@ img {
     width: 300px;
   }
 }
-.nom-alert {
-  min-width: 400px;
-  border-radius: 4px;
-  background-color: #f7f9fa;
-  vertical-align: middle;
-  white-space: normal;
-  outline: none;
-  position: relative;
-}
-.nom-alert > .nom-alert-content {
-  padding: 2rem;
-}
-.nom-alert > .nom-alert-close-button {
-  position: absolute;
-  top: 0;
-  right: 0;
+.nom-alert > .nom-modal-dialog {
+  width: 430px;
 }
 .nom-alert-content {
-  position: relative;
-  display: flex;
-  flex-direction: column;
   width: 100%;
   pointer-events: auto;
   background-color: #fff;
@@ -4213,6 +4196,41 @@ img {
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
   outline: 0;
+  padding: 1rem;
+}
+.nom-alert-content > .nom-alert-body {
+  display: flex;
+  flex-direction: row;
+}
+.nom-alert-content > .nom-alert-body > .nom-alert-icon {
+  font-size: 2rem;
+  padding: 0 1rem;
+}
+.nom-alert-content > .nom-alert-body > .nom-alert-body-content > .nom-alert-title {
+  padding: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+.nom-alert-content > .nom-alert-body > .nom-alert-body-content > .nom-alert-description {
+  padding: 0.25rem;
+  margin: 1rem 0;
+}
+.nom-alert-content > .nom-alert-actions {
+  margin-top: 1.5rem;
+  padding-right: 1rem;
+  text-align: right;
+}
+.nom-alert-content.p-type-info > .nom-alert-body > .nom-alert-icon {
+  color: #1098ad;
+}
+.nom-alert-content.p-type-success > .nom-alert-body > .nom-alert-icon {
+  color: #37b24d;
+}
+.nom-alert-content.p-type-danger > .nom-alert-body > .nom-alert-icon {
+  color: #f03e3e;
+}
+.nom-alert-content.p-type-warning > .nom-alert-body > .nom-alert-icon {
+  color: #f59f00;
 }
 .nom-loading-container {
   position: relative;
