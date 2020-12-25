@@ -8,15 +8,18 @@
     "watch": "rollup -c -w",
     "dev": "npm-run-all --parallel start watch",
     "start": "serve",
-    "postinstall": "husky install",
+    "patch": "npm version patch",
+    "minor": "npm version minor",
+    "major": "npm version major",
     "lint": "npm run lint:js && npm run lint:style && npm run lint:prettier",
+    "lint:js": "eslint --cache --ext .js --format=pretty ./components",
+    "lint:style": "stylelint --fix \"components/**/*.less\" --syntax less",
     "lint:prettier": "prettier --check \"components/**/*\" --end-of-line auto",
     "lint-staged": "lint-staged",
     "lint-staged:js": "eslint --ext .js",
     "lint:fix": "eslint --fix --cache --ext .js --format=pretty ./components && npm run lint:style",
-    "lint:js": "eslint --cache --ext .js --format=pretty ./components",
-    "lint:style": "stylelint --fix \"components/**/*.less\" --syntax less",
-    "prettier": "prettier -c --write \"components/**/*.{js,less,md,json}\""
+    "prettier": "prettier -c --write \"components/**/*.{js,less,md,json}\"",
+    "postversion": "git push --follow-tags"
   },
   "husky": {
     "hooks": {
@@ -31,14 +34,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@umijs/fabric": "^2.4.4",
+    "husky": "^4.3.6",
+    "lint-staged": "^10.5.3",
     "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
     "rollup": "^2.34.0",
     "rollup-plugin-less": "^1.1.2",
     "serve": "^11.3.2",
-    "@umijs/fabric": "^2.4.4",
-    "husky": "^5.0.6",
-    "lint-staged": "^10.5.3",
-    "prettier": "^2.2.1",
     "stylelint": "^13.8.0"
   }
 }
