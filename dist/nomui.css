@@ -4478,6 +4478,12 @@ textarea .nom-textarea {
   margin-top: -7px;
   line-height: 1;
 }
+.nom-select-popup > .nom-layout {
+  max-height: 300px;
+}
+.nom-select-popup > .nom-layout > .nom-layout-body {
+  overflow-x: hidden;
+}
 .nom-select-list .nom-list-item {
   padding: 5px 16px;
   user-select: none;

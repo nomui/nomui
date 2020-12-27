@@ -54,7 +54,7 @@ class SelectList extends List {
     _create() {
         super._create()
 
-        this.selectControl = this.parent.selectControl
+        this.selectControl = this.parent.parent.parent.selectControl
         this.selectControl.optionList = this
     }
 

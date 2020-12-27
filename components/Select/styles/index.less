@@ -7,7 +7,7 @@
     padding: 6px 24px 6px 12px;
     cursor: pointer;
     min-height: 34px;
-    color:#000 !important;
+    color: #000 !important;
 
     .nom-select-single {
         overflow: hidden;
@@ -16,47 +16,58 @@
     }
 
     .nom-select-arrow {
-        position: absolute;        
+        position: absolute;
         top: 50%;
         bottom: 0;
-        right: 8px;        
+        right: 8px;
         margin-top: -7px;
         line-height: 1;
-    }   
+    }
 }
 
-.nom-select-list{
-    .nom-list-item{
+.nom-select-popup>.nom-layout {
+    max-height: 300px;
+
+    >.nom-layout-body {
+        overflow-x: hidden;
+    }
+}
+
+.nom-select-list {
+    .nom-list-item {
         padding: 5px 16px;
         user-select: none;
-        &:hover{
+
+        &:hover {
             background-color: #eee;
         }
-        &.s-selected{
-            background-color: @primary; 
+
+        &.s-selected {
+            background-color: @primary;
             color: @white;
         }
     }
 }
 
-.nom-select-checker{
-    .nom-list-item{
+.nom-select-checker {
+    .nom-list-item {
         position: relative;
         padding: 5px 30px;
 
-        &:hover{
+        &:hover {
             background-color: #eee;
         }
-        &.nom-selected:before{
+
+        &.nom-selected:before {
             content: "\E632";
             font-family: nom-icon;
             position: absolute;
             left: 16px;
             top: 50%;
-            -webkit-transform: translate(-50%,-50%);
-            -ms-transform: translate(-50%,-50%);
-            -o-transform: translate(-50%,-50%);
-            transform: translate(-50%,-50%);
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
             color: @primary;
             font-weight: bold;
             font-size: 16px;

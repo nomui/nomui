@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import Popup from '../Popup/index'
 import SelectList from './SelectList'
+import Layout from '../Layout/index'
 
 class SelectPopup extends Popup {
     constructor(props, ...mixins) {
@@ -25,7 +26,12 @@ class SelectPopup extends Popup {
                 }
             },
             children: {
-                component: SelectList
+                component: Layout,
+                body: {
+                    children: {
+                        component: SelectList
+                    }
+                }
             }
         })
 
