@@ -75,7 +75,7 @@ class Select extends Control {
         if (showArrow) {
             children.push({
                 component: Icon,
-                type: 'angle-down',
+                type: 'down',
                 classes: {
                     'nom-select-arrow': true
                 }
