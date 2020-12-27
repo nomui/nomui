@@ -1,32 +1,27 @@
 import Component from '../Component/index'
-import ThemifyIcon from '../ThemifyIcon/index'
-import { isString, isPlainObject } from '../util/index'
+import { isString } from '../util/index'
 
 class Icon extends Component {
     constructor(props, ...mixins) {
         const defaults = {
-            border: false,
-            background: false,
-            box: true,
-            i: { 
-                component: ThemifyIcon
-            }
+            type: '',
+            tag: 'i'
         }
 
-        super(Component.extendProps(defaults, props), ...mixins)
+        super(Component.extendProps(defaults, props), ...mixins);
     }
 
     _config() {
         this.setProps({
-            i: {
-                type: this.props.type
-            }
-        })
-        this.setProps({
-            tag: 'span',
-            children: this.props.i
+            children: Icon.svgs[this.props.type] ? Icon.svgs[this.props.type].svg : null
         })
     }
+}
+
+Icon.svgs = {}
+
+Icon.add = function (type, svg, cat) {
+    Icon.svgs[type] = { type, svg, cat }
 }
 
 Component.normalizeIconProps = function (props) {

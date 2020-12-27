@@ -24,8 +24,6 @@ define([], {
                         text: '基本',
                         items: [
                             { text: 'Button', subtext: '按钮', id: 'Button', url: '#!components!index?type=Button' },
-                            { text: 'ThemifyIcon', subtext: 'Themify 图标', id: 'ThemifyIcon', url: '#!components!index?type=ThemifyIcon' },
-                            { text: 'Cssicon', subtext: 'css 图标', id: 'Cssicon', url: '#!components!index?type=Cssicon' },
                             { text: 'Icon', subtext: '图标', id: 'Icon', url: '#!components!index?type=Icon' },
                         ]
                     },

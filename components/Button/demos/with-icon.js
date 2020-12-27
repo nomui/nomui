@@ -8,14 +8,14 @@ define([], function () {
                 items: [
                     {
                         text: 'Add',
-                        icon: 'plus'
+                        icon: 'down'
                     },
                     {
-                        icon: 'plus'
+                        icon: 'up'
                     },
                     {
                         text: 'Right icon',
-                        rightIcon: 'arrow-right'
+                        rightIcon: 'info-circle'
                     }
                 ],
                 itemDefaults: {

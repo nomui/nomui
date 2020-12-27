@@ -10,11 +10,9 @@ class AlertContent extends Component {
             icon: null,
             type: null,
             ok: {
-                text: '确定'
+                text: '确 定'
             },
-            cancel: {
-                text: '取消'
-            }
+            cancel: false
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -25,11 +23,10 @@ class AlertContent extends Component {
             alertInst = this.modal
 
         const iconMap = {
-            info: 'info-alt',
-            success: 'success',
-            danger: 'danger',
-            error: 'warn',
-            warning: 'help-alt'
+            info: 'info-circle',
+            success: 'check-circle',
+            error: 'close-circle',
+            warning: 'exclamation-circle'
         }
 
         icon = icon || iconMap[type]

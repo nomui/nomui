@@ -208,6 +208,9 @@ class Component {
         else if (isString(children) || isNumeric(children)) {
             this.element.innerHTML = children
         }
+        else if (children instanceof DocumentFragment) {
+            this.element.appendChild(children)
+        }
     }
 
     _removeCore() {
@@ -280,6 +283,9 @@ class Component {
                 props = childProps.props
                 mixins = childProps.mixins
             }
+        }
+        else if (childProps instanceof DocumentFragment) {
+            this.element.appendChild(childProps)
         }
         if (childDefaults !== null && childDefaults !== undefined) {
             props = Component.extendProps({}, childDefaults, props)

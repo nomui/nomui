@@ -4,23 +4,9 @@ define([], function () {
         title: '所有图标',
         file: 'all-icons',
         demo: function () {
-            var navigationIcons = [
-                'arrow-up', 'arrow-right', 'arrow-down', 'arrow-left',
-                'upward', 'forward', 'downward', 'back',
-                'caret', 'menu', 'apps', 'more-horiz', 'more-vert'
-            ];
+            let icons = Object.keys(nomui.Icon.svgs)
 
-            var actionIcons = [
-                'resize-horiz', 'resize-vert', 'plus', 'minus',
-                'close', 'check', 'stop', 'shutdown',
-                'refresh', 'search', 'flag', 'bookmark', 'edit', 'delete', 'share', 'download', 'upload', 'copy'
-            ];
-
-            var objectIcons = [
-                'audio', 'mail', 'person', 'message',
-                'photo', 'time', 'location', 'link',
-                'emoji'
-            ]
+            console.log(icons)
 
             function getItems(icons) {
                 return icons.map(function (icon) {
@@ -31,20 +17,19 @@ define([], function () {
             return {
                 children: [
                     {
-                        items: getItems(navigationIcons),
+                        items: getItems(icons),
                         styles: {
                             lines: 'cross'
                         }
-                    },
-                    {
-                        items: getItems(actionIcons)
-                    },
-                    {
-                        items: getItems(objectIcons)
                     }
                 ],
                 childDefaults: {
                     component: 'List',
+                    styles: {
+                        flex: 'row-wrap',
+                        cols: '6',
+                        lines: 'grid'
+                    },
                     itemDefaults: {
                         _config() {
                             this.setProps({
@@ -67,17 +52,7 @@ define([], function () {
                             })
                         }
                     },
-                    styles: {
-                        flex: 'row-wrap',
-                        cols: '6',
-                        lines: 'grid'
-                    }
                 },
-                styles: {
-                    flex: 'column',
-                    gap: 'md',
-                    margins: 'x'
-                }
             }
         }
     }

@@ -35,13 +35,13 @@ define([], function () {
                     },
                     {
                         component: 'Button',
-                        text: 'danger',
+                        text: 'error',
                         attrs: {
                             onclick: function () {
                                 new nomui.Alert({
-                                    type: 'danger',
-                                    title: '我是危险信息标题',
-                                    description: '我是危险信息描述'
+                                    type: 'error',
+                                    title: '我是错误信息标题',
+                                    description: '我是错误信息描述'
                                 })
                             }
                         }
