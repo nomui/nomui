@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import Control from '../Control/index'
 import List from '../List/index'
-import SelectPopup from './DefaultSelectPopup'
+import SelectPopup from './SelectPopup'
 import Icon from '../Icon/index'
 
 class Select extends Control {

@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Popup from '../Popup/index'
-import SelectList from './DefaultSelectList'
+import SelectList from './SelectList'
 
 class SelectPopup extends Popup {
     constructor(props, ...mixins) {
