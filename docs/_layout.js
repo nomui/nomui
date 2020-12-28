@@ -38,8 +38,14 @@ define([], function () {
                     }
                 },
                 tools: [
-                    'github',
-                    'github',
+                    {
+                        component: 'Button',
+                        icon: 'github',
+                        href: 'https://github.com/nomui/nomui',
+                        styles: {
+                            color: 'transparent'
+                        }
+                    }
                 ],
             }
         },
