@@ -11,8 +11,8 @@
         .u-color-@{name},
         .u-hover-color-@{name}:hover,
         .u-selected-color-@{name}.s-selected {
-            background-color: @@color  !important;
             color: lighten(@@color, 40%) !important;
+            background-color: @@color  !important;
             border-color: darken(@@color, 5%) !important;
 
             a {
@@ -23,28 +23,28 @@
         .u-color-@{name}-dark,
         .u-hover-color-@{name}-dark:hover,
         .u-selected-color-@{name}-dark.s-selected {
-            background-color: saturate(darken(@@color, 10%), 2.5%) !important;
             color: lighten(@@color, 40%) !important;
+            background-color: saturate(darken(@@color, 10%), 2.5%) !important;
             border-color: darken(@@color, 5%) !important;
         }
 
         .u-color-@{name}-light,
         .u-hover-color-@{name}-light:hover,
         .u-selected-color-@{name}-light.s-selected {
-            background-color: saturate(darken(@@color, -10%), -2.5%) !important;
             color: lighten(@@color, 40%) !important;
+            background-color: saturate(darken(@@color, -10%), -2.5%) !important;
             border-color: darken(@@color, 5%) !important;
         }
 
         .u-color-@{name}-outline {
-            background-color: transparent !important;
             color: @@color  !important;
+            background-color: transparent !important;
             border-color: @@color  !important;
 
             &.s-hover,
             &:hover {
-                background-color: lighten(@@color, 40%) !important;
                 color: @@color  !important;
+                background-color: lighten(@@color, 40%) !important;
             }
         }
 
@@ -67,8 +67,8 @@
         }
 
         .u-outline-@{name} {
-            background-color: transparent !important;
             color: lighten(@@color, 40%);
+            background-color: transparent !important;
             border-color: lighten(@@color, 40%) !important;
         }
 
@@ -109,16 +109,16 @@
 }
 
 .u-color-white {
-    background-color: @white  !important;
     color: @text-color  !important;
+    background-color: @white  !important;
 }
 
 .u-color-black {
-    background-color: @black  !important;
     color: @white  !important;
+    background-color: @black  !important;
 }
 
 .u-color-transparent {
-    background-color: transparent !important;
     color: inherit !important;
+    background-color: transparent !important;
 }

@@ -11,9 +11,9 @@
     width: 100%;
     height: auto;
     padding: @padding-y-base @padding-x-base;
+    color: @input-color;
     font-size: @font-size-base;
     line-height: @line-height-base;
-    color: @input-color;
     background-color: @input-bg;
     background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
     border: 1px solid @input-border;
@@ -22,8 +22,8 @@
     .nom-textarea-focus();
     // Unstyle the caret on `<select>`s in IE10+.
     &::-ms-expand {
-        border: 0;
         background-color: transparent;
+        border: 0;
     }
     // Disabled and read-only inputs
     //
@@ -47,8 +47,8 @@
     }
 
     .s-invalid > & {
-        border-color: #ffa8a8;
-        background-color: #fff3f3;
         color: #000;
+        background-color: #fff3f3;
+        border-color: #ffa8a8;
     }
 }

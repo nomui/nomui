@@ -1,86 +1,82 @@
-import Component from "../Component/index";
-import Control from "../Control/index";
-import Input from "./Input";
-import { } from "../Icon/index";
+import Component from '../Component/index'
+import Control from '../Control/index'
+import {} from '../Icon/index'
+import Input from './Input'
 
 class Textbox extends Control {
-    constructor(props, ...mixins) {
-        const defaults = {
-            leftIcon: null,
-            rightIcon: null,
-            autofocus: false,
-            placeholder: null,
-            value: null,
-            htmlType: 'text'
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      leftIcon: null,
+      rightIcon: null,
+      autofocus: false,
+      placeholder: null,
+      value: null,
+      htmlType: 'text',
     }
 
-    _config() {
-        let { leftIcon, rightIcon, placeholder, value, htmlType } = this.props
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-        let leftIconProps = Component.normalizeIconProps(leftIcon)
-        if (leftIconProps != null) {
-            Component.extendProps(leftIconProps, { classes: { 'nom-textbox-left-icon': true } })
-        }
+  _config() {
+    const { leftIcon, rightIcon, placeholder, value, htmlType } = this.props
 
-        let rightIconProps = Component.normalizeIconProps(rightIcon)
-        if (rightIconProps != null) {
-            Component.extendProps(rightIconProps, { classes: { 'nom-textbox-right-icon': true } })
-        }
-
-        let inputProps = {
-            component: Input,
-            name: 'input',
-            attrs: {
-                value: value,
-                placeholder: placeholder,
-                type: htmlType
-            }
-        }
-
-        this.setProps({
-            tag: 'div',
-            classes: {
-                'p-with-left-icon': !!leftIcon,
-                'p-with-right-icon': !!rightIcon
-            },
-            children: [
-                inputProps,
-                leftIcon && leftIconProps,
-                rightIcon && rightIconProps
-            ]
-        })
-
-        super._config()
+    const leftIconProps = Component.normalizeIconProps(leftIcon)
+    if (leftIconProps != null) {
+      Component.extendProps(leftIconProps, { classes: { 'nom-textbox-left-icon': true } })
     }
 
-    getText() {
-        return this.input.getText()
+    const rightIconProps = Component.normalizeIconProps(rightIcon)
+    if (rightIconProps != null) {
+      Component.extendProps(rightIconProps, { classes: { 'nom-textbox-right-icon': true } })
     }
 
-    _getValue() {
-        var inputText = this.getText()
-        if (inputText === '') {
-            return null
-        }
-        return inputText
+    const inputProps = {
+      component: Input,
+      name: 'input',
+      attrs: {
+        value: value,
+        placeholder: placeholder,
+        type: htmlType,
+      },
     }
 
-    _setValue(value) {
-        this.input.setText(value)
-        let newValue = this.getValue()
-        if (newValue != this.oldValue) {
-            super._onValueChange()
-        }
-        this.oldValue = this.currentValue
-        this.currentValue = newValue
-    }
+    this.setProps({
+      tag: 'div',
+      classes: {
+        'p-with-left-icon': !!leftIcon,
+        'p-with-right-icon': !!rightIcon,
+      },
+      children: [inputProps, leftIcon && leftIconProps, rightIcon && rightIconProps],
+    })
 
-    focus() {
-        this.input.focus()
+    super._config()
+  }
+
+  getText() {
+    return this.input.getText()
+  }
+
+  _getValue() {
+    const inputText = this.getText()
+    if (inputText === '') {
+      return null
     }
+    return inputText
+  }
+
+  _setValue(value) {
+    this.input.setText(value)
+    const newValue = this.getValue()
+    if (newValue !== this.oldValue) {
+      super._onValueChange()
+    }
+    this.oldValue = this.currentValue
+    this.currentValue = newValue
+  }
+
+  focus() {
+    this.input.focus()
+  }
 }
 
 Component.register(Textbox)

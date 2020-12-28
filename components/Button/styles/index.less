@@ -1,104 +1,104 @@
-[role=button] {
-    cursor: pointer
+[role='button'] {
+  cursor: pointer;
 }
 
 // Button sizes
 .button-size(@padding-y; @padding-x; @font-size; @line-height; @border-radius) {
-    padding: @padding-y @padding-x;
-    font-size: @font-size;
-    line-height: @line-height;
-    border-radius: @border-radius;
+  padding: @padding-y @padding-x;
+  font-size: @font-size;
+  line-height: @line-height;
+  border-radius: @border-radius;
 }
 
 .nom-button {
-    /* Structure */
-    display: inline-block;
-    zoom: 1;
-    line-height: normal;
-    white-space: nowrap;
-    vertical-align: middle;
-    text-align: center;
-    cursor: pointer;
-    -webkit-user-drag: none;
-    user-select: none;
-    .button-size(@padding-y-base; @padding-x-base; @font-size-base; @line-height-base; @border-radius);
-    border: 1px solid transparent;
-    text-decoration: none;
-    border-radius: 2px;
-    background-color: #fff;
-    border-color: @border-color;
-    color: @text-color-lt;
+  /* Structure */
+  display: inline-block;
+  color: @text-color-lt;
+  line-height: normal;
+  white-space: nowrap;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-color: @border-color;
+  border-radius: 2px;
+  cursor: pointer;
+  user-select: none;
+  zoom: 1;
+  -webkit-user-drag: none;
+  .button-size(@padding-y-base; @padding-x-base; @font-size-base; @line-height-base; @border-radius);
+
+  &:hover {
+    background-color: #e6e6e6;
+    background-color: rgba(0, 0, 0, 0.05);
+    outline: none;
+  }
+
+  &:focus,
+  &:hover,
+  &:active,
+  &.active {
+    outline: none;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+
+  a& {
+    &.disabled,
+    fieldset[disabled] & {
+      pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
+    }
+  }
+
+  &.p-size-sm {
+    // line-height: ensure proper height of button next to small input
+    .button-size(@padding-y-sm; @padding-x-sm; @font-size-sm; @line-height-sm; @border-radius-sm);
+  }
+
+  &.p-size-xs {
+    // line-height: ensure proper height of button next to small input
+    .button-size(@padding-y-xs; @padding-x-xs; @font-size-sm; @line-height-sm; @border-radius-sm);
+  }
+
+  &.p-size-lg {
+    // line-height: ensure proper height of button next to small input
+    .button-size(@padding-y-lg; @padding-x-lg; @font-size-lg; @line-height-lg; @border-radius-lg);
+  }
+
+  &.p-size-xl {
+    // line-height: ensure proper height of button next to small input
+    .button-size(@padding-y-xl; @padding-x-xl; @font-size-xl; @line-height-lg; @border-radius-lg);
+  }
+
+  &.p-plain {
+    background-color: transparent;
+    border: 0;
 
     &:hover {
-        background-color: #e6e6e6;
-        background-color: rgba(0,0,0,0.05);
-        outline: none;
+      background-color: #e6e6e6;
+      outline: none;
     }
+  }
 
-    &:focus,
-    &:hover,
-    &:active,
-    &.active {
-        outline: none;
-    }
+  &.p-with-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    &.disabled,
-    &[disabled],
-    fieldset[disabled] & {
-        cursor: not-allowed;
-        opacity: .65;
-    }
-
-    a& {
-        &.disabled,
-        fieldset[disabled] & {
-            pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
-        }
-    }
-
-    &.p-size-sm {
-        // line-height: ensure proper height of button next to small input
-        .button-size(@padding-y-sm; @padding-x-sm; @font-size-sm; @line-height-sm; @border-radius-sm);
-    }
-
-    &.p-size-xs {
-        // line-height: ensure proper height of button next to small input
-        .button-size(@padding-y-xs; @padding-x-xs; @font-size-sm; @line-height-sm; @border-radius-sm);
-    }
-
-    &.p-size-lg {
-        // line-height: ensure proper height of button next to small input
-        .button-size(@padding-y-lg; @padding-x-lg; @font-size-lg; @line-height-lg; @border-radius-lg);
-    }
-
-    &.p-size-xl {
-        // line-height: ensure proper height of button next to small input
-        .button-size(@padding-y-xl; @padding-x-xl; @font-size-xl; @line-height-lg; @border-radius-lg);
-    }
-
-    &.p-plain {
-        border: 0;
-        background-color: transparent;
-
-        &:hover {
-            background-color: #e6e6e6;
-            outline: none;
-        }
-    }
-
-    &.p-with-icon{
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /*> span {
+  /* > span {
         display: inline-block;
         line-height: 1;
-    }*/
+    } */
 
-    > .nom-icon + span,
-    > span + .nom-icon {
-        margin-left: .5rem;
-    }
+  > .nom-icon + span,
+  > span + .nom-icon {
+    margin-left: 0.5rem;
+  }
 }

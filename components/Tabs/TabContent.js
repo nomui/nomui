@@ -1,65 +1,65 @@
 import Component from '../Component/index'
+import { isFunction, isString } from '../util/index'
 import TabPanel from './TabPanel'
-import { isString, isFunction } from '../util/index'
 
 class TabContent extends Component {
-    constructor(props, ...mixins) {
-        const defaults = {
-            panels: [],
-            panelDefaults: { component: TabPanel }
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      panels: [],
+      panelDefaults: { component: TabPanel },
     }
 
-    _create() {
-        this.panels = {}
-        this.shownPanel = null
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
+
+  _create() {
+    this.panels = {}
+    this.shownPanel = null
+  }
+
+  _config() {
+    const { panels } = this.props
+    const children = []
+    if (Array.isArray(panels) && panels.length > 0) {
+      for (let i = 0; i < panels.length; i++) {
+        let panel = panels[i]
+        panel = Component.extendProps({}, this.props.panelDefaults, panel)
+        children.push(panel)
+      }
     }
 
-    _config() {
-        var panels = this.props.panels
-        var children = []
-        if (Array.isArray(panels) && panels.length > 0) {
-            for (var i = 0; i < panels.length; i++) {
-                var panel = panels[i]
-                panel = Component.extendProps({}, this.props.panelDefaults, panel)
-                children.push(panel)
-            }
-        }
+    this.setProps({
+      children: children,
+    })
+  }
 
-        this.setProps({
-            children: children
-        })
+  getPanel(param) {
+    let retPanel = null
+
+    if (isString(param)) {
+      return this.panels[param]
+    }
+    if (isFunction(param)) {
+      for (const panel in this.panels) {
+        if (this.panels.hasOwnProperty(panel)) {
+          if (param.call(this.panels[panel]) === true) {
+            retPanel = this.panels[panel]
+            break
+          }
+        }
+      }
     }
 
-    getPanel(param) {
-        var retPanel = null
+    return retPanel
+  }
 
-        if (isString(param)) {
-            return this.panels[param]
-        }
-        else if (isFunction(param)) {
-            for (var panel in this.panels) {
-                if (this.panels.hasOwnProperty(panel)) {
-                    if (param.call(this.panels[panel]) === true) {
-                        retPanel = this.panels[panel]
-                        break
-                    }
-                }
-            }
-        }
-
-        return retPanel
+  showPanel(param) {
+    const panel = this.getPanel(param)
+    if (panel === null) {
+      return false
     }
-
-    showPanel(param) {
-        var panel = this.getPanel(param);
-        if (panel === null) {
-            return false
-        }
-        panel.show()
-    }
+    panel.show()
+  }
 }
 
 Component.register(TabContent)

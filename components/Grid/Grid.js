@@ -1,63 +1,59 @@
 import Component from '../Component/index'
-import GridHeader from './GridHeader'
-import GridBody from './GridBody'
 import Loading from '../Loading/index'
+import GridBody from './GridBody'
+import GridHeader from './GridHeader'
 
 class Grid extends Component {
-    constructor(props, ...mixins) {
-        const defaults = {
-            columns: [],
-            data: [],
-            frozenHeader: false
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      columns: [],
+      data: [],
+      frozenHeader: false,
     }
 
-    _create() {
-        this.minWidth = 0
-    }
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-    _config() {
-        this._calcMinWidth()
+  _create() {
+    this.minWidth = 0
+  }
 
-        this.setProps({
-            classes: {
-                'm-frozen-header': this.props.frozenHeader
-            },
-            children: [
-                { component: GridHeader },
-                { component: GridBody }
-            ]
-        })
-    }
+  _config() {
+    this._calcMinWidth()
 
-    _calcMinWidth() {
-        this.minWidth = 0
-        var props = this.props
-        for (var i = 0; i < props.columns.length; i++) {
-            var column = props.columns[i]
-            if (column.width) {
-                this.minWidth += column.width
-            }
-            else {
-                this.minWidth += 120
-            }
-        }
-    }
+    this.setProps({
+      classes: {
+        'm-frozen-header': this.props.frozenHeader,
+      },
+      children: [{ component: GridHeader }, { component: GridBody }],
+    })
+  }
 
-    _render() {
-        if (this.loadingInst) {
-            this.loadingInst.remove()
-            this.loadingInst = null
-        }
+  _calcMinWidth() {
+    this.minWidth = 0
+    const { props } = this
+    for (let i = 0; i < props.columns.length; i++) {
+      const column = props.columns[i]
+      if (column.width) {
+        this.minWidth += column.width
+      } else {
+        this.minWidth += 120
+      }
     }
+  }
 
-    loading() {
-        this.loadingInst = new Loading({
-            container: this.parent
-        })
+  _render() {
+    if (this.loadingInst) {
+      this.loadingInst.remove()
+      this.loadingInst = null
     }
+  }
+
+  loading() {
+    this.loadingInst = new Loading({
+      container: this.parent,
+    })
+  }
 }
 
 Component.register(Grid)

@@ -1,64 +1,64 @@
-import Component from "../Component/index";
+import Component from '../Component/index'
 
 class Input extends Component {
-    constructor(props, ...mixins) {
-        const defaults = {
-            tag: 'input',
-            attrs: {
-                type: 'text',
-                autocomplete: 'off'
-            }
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      tag: 'input',
+      attrs: {
+        type: 'text',
+        autocomplete: 'off',
+      },
     }
 
-    _create() {
-        this.textbox = this.parent
-        this.textbox.input = this
-        this.capsLock = false
-    }
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-    _config() {
-        this.setProps({
-            attrs: {
-                value: this.props.value,
-                oninput: () => {
-                    if (!this.capsLock) {
-                        this.textbox._onValueChange()
-                    }
-                },
-                onblur: () => {
-                    this.textbox.trigger("blur")
-                },
-                oncompositionstart: () => {
-                    this.capsLock = true
-                },
-                oncompositionend: () => {
-                    this.capsLock = false
-                    this.element.dispatchEvent(new Event('input'))
-                }
-            },
-        })
-    }
+  _create() {
+    this.textbox = this.parent
+    this.textbox.input = this
+    this.capsLock = false
+  }
 
-    _render() {
-        if (this.textbox.props.autofocus === true) {
-            this.focus()
-        }
-    }
+  _config() {
+    this.setProps({
+      attrs: {
+        value: this.props.value,
+        oninput: () => {
+          if (!this.capsLock) {
+            this.textbox._onValueChange()
+          }
+        },
+        onblur: () => {
+          this.textbox.trigger('blur')
+        },
+        oncompositionstart: () => {
+          this.capsLock = true
+        },
+        oncompositionend: () => {
+          this.capsLock = false
+          this.element.dispatchEvent(new Event('input'))
+        },
+      },
+    })
+  }
 
-    getText() {
-        return this.element.value
+  _render() {
+    if (this.textbox.props.autofocus === true) {
+      this.focus()
     }
+  }
 
-    setText(text) {
-        this.element.value = text
-    }
+  getText() {
+    return this.element.value
+  }
 
-    focus() {
-        this.element.focus()
-    }
+  setText(text) {
+    this.element.value = text
+  }
+
+  focus() {
+    this.element.focus()
+  }
 }
 
 export default Input

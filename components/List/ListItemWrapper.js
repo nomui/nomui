@@ -1,30 +1,30 @@
-import Component from "../Component/index";
+import Component from '../Component/index'
 import ListItemMixin from './ListItemMixin'
 
 class ListItemWrapper extends Component {
-    constructor(props, ...mixins) {
-        const defaults = {
-            tag: 'li',
-            item: {},
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      tag: 'li',
+      item: {},
     }
 
-    _create() {
-        this._propStyleClasses = ['span']
-        this.list = this.parent
-    }
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-    _config() {
-        this.setProps({
-            selectable: false,
-            children: {
-                props: this.props.item,
-                mixins: [ListItemMixin]
-            }
-        })
-    }
+  _create() {
+    this._propStyleClasses = ['span']
+    this.list = this.parent
+  }
+
+  _config() {
+    this.setProps({
+      selectable: false,
+      children: {
+        props: this.props.item,
+        mixins: [ListItemMixin],
+      },
+    })
+  }
 }
 
 Component.register(ListItemWrapper)

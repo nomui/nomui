@@ -1,9 +1,9 @@
 .nom-list {
     display: flex;
     flex-wrap: wrap;
-    .list-unstyled();
-    padding: 0;
     margin: 0;
+    padding: 0;
+    .list-unstyled();
 
     >.nom-list-item-wrapper {
         &.p-span-1 {
@@ -118,6 +118,7 @@
 
         >.nom-list-item-wrapper {
             .u-border-left();
+
             margin-left: -1px;
             padding-top: 0;
             padding-bottom: 0;
@@ -154,14 +155,15 @@
     }
 
     &.p-line-cross {
-        overflow: hidden;
         margin: 0 !important;
+        overflow: hidden;
 
         >.nom-list-item-wrapper {
             .u-border-left();
             .u-border-bottom();
-            margin-left: -1px;
+
             margin-bottom: -1px;
+            margin-left: -1px;
         }
     }
 

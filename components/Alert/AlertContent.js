@@ -1,121 +1,116 @@
-import Component from '../Component/index'
 import Button from '../Button/index'
 import Cols from '../Cols/index'
+import Component from '../Component/index'
 
 class AlertContent extends Component {
-    constructor(props, ...mixins) {
-        const defaults = {
-            title: null,
-            description: null,
-            icon: null,
-            type: null,
-            ok: {
-                text: '确 定'
-            },
-            cancel: false
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      title: null,
+      description: null,
+      icon: null,
+      type: null,
+      ok: {
+        text: '确 定',
+      },
+      cancel: false,
     }
 
-    _config() {
-        let { title, description, icon, type, ok, cancel } = this.props,
-            alertInst = this.modal
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-        const iconMap = {
-            info: 'info-circle',
-            success: 'check-circle',
-            error: 'close-circle',
-            warning: 'exclamation-circle'
-        }
+  _config() {
+    const { title, description, type, ok, cancel } = this.props
+    let { icon } = this.props
 
-        icon = icon || iconMap[type]
+    const alertInst = this.modal
 
-        let iconProps = icon ?
-            Component.extendProps(Component.normalizeIconProps(icon), { classes: { 'nom-alert-icon': true } })
-            : null
+    const iconMap = {
+      info: 'info-circle',
+      success: 'check-circle',
+      error: 'close-circle',
+      warning: 'exclamation-circle',
+    }
 
-        let titleProps = title ?
-            Component.extendProps(Component.normalizeTemplateProps(title), { classes: { 'nom-alert-title': true } })
-            : null
+    icon = icon || iconMap[type]
 
-        let descriptionProps = description ?
-            Component.extendProps(Component.normalizeTemplateProps(description), { classes: { 'nom-alert-description': true } })
-            : null
-
-        let okProps = ok ?
-            Component.extendProps(
-                ok,
-                {
-                    component: Button,
-                    styles: {
-                        color: 'primary'
-                    },
-                    events: {
-                        click: function () {
-                            if (ok.callback) {
-                                if (ok.callback.call(this, alertInst) !== false) {
-                                    alertInst.close()
-                                }
-                            }
-                            else {
-                                alertInst.close()
-                            }
-                        }
-                    }
-                },
-            )
-            : null
-
-        let cancelProps = cancel ?
-            Component.extendProps(
-                cancel,
-                {
-                    component: Button,
-                    events: {
-                        click: function () {
-                            alertInst.close()
-                        }
-                    }
-                },
-            )
-            : null
-
-        this.setProps({
-            children: [
-                {
-                    classes: {
-                        'nom-alert-body': true,
-                    },
-                    children: [
-                        iconProps,
-                        {
-                            classes: {
-                                'nom-alert-body-content': true,
-                            },
-                            children: [
-                                titleProps,
-                                descriptionProps
-                            ]
-                        }
-                    ]
-                },
-                {
-                    classes: {
-                        'nom-alert-actions': true
-                    },
-                    children: {
-                        component: Cols,
-                        inline: true,
-                        items: [
-                            cancelProps,
-                            okProps
-                        ]
-                    }
-                }
-            ]
+    const iconProps = icon
+      ? Component.extendProps(Component.normalizeIconProps(icon), {
+          classes: { 'nom-alert-icon': true },
         })
-    }
+      : null
+
+    const titleProps = title
+      ? Component.extendProps(Component.normalizeTemplateProps(title), {
+          classes: { 'nom-alert-title': true },
+        })
+      : null
+
+    const descriptionProps = description
+      ? Component.extendProps(Component.normalizeTemplateProps(description), {
+          classes: { 'nom-alert-description': true },
+        })
+      : null
+
+    const okProps = ok
+      ? Component.extendProps(ok, {
+          component: Button,
+          styles: {
+            color: 'primary',
+          },
+          events: {
+            click: function () {
+              if (ok.callback) {
+                if (ok.callback.call(this, alertInst) !== false) {
+                  alertInst.close()
+                }
+              } else {
+                alertInst.close()
+              }
+            },
+          },
+        })
+      : null
+
+    const cancelProps = cancel
+      ? Component.extendProps(cancel, {
+          component: Button,
+          events: {
+            click: function () {
+              alertInst.close()
+            },
+          },
+        })
+      : null
+
+    this.setProps({
+      children: [
+        {
+          classes: {
+            'nom-alert-body': true,
+          },
+          children: [
+            iconProps,
+            {
+              classes: {
+                'nom-alert-body-content': true,
+              },
+              children: [titleProps, descriptionProps],
+            },
+          ],
+        },
+        {
+          classes: {
+            'nom-alert-actions': true,
+          },
+          children: {
+            component: Cols,
+            inline: true,
+            items: [cancelProps, okProps],
+          },
+        },
+      ],
+    })
+  }
 }
 
 Component.register(AlertContent)

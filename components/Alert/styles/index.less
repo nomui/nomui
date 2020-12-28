@@ -6,36 +6,36 @@
 
 .nom-alert-content {
     width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
-    // counteract the pointer-events: none; in the .modal-dialog
-    pointer-events: auto;
+    padding: 1.5rem;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, .2);
     border-radius: .3rem;
     // Remove focus outline from opened modal
     outline: 0;
-    padding: 1.5rem;
+    // counteract the pointer-events: none; in the .modal-dialog
+    pointer-events: auto;
 
     >.nom-alert-body {
         display: flex;
         flex-direction: row;
 
         >.nom-alert-icon {
-            font-size: 2rem;
             padding: 0.125rem 1rem;
+            font-size: 2rem;
         }
 
         >.nom-alert-body-content {
 
             >.nom-alert-title {
                 padding: .25rem;
-                font-size: 1.5rem;
                 font-weight: 500;
+                font-size: 1.5rem;
             }
 
             >.nom-alert-description {
-                padding: .25rem;
                 margin: 1rem 0;
+                padding: .25rem;
             }
         }
     }

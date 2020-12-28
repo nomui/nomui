@@ -1,13 +1,13 @@
 .nom-select {
     position: relative;
+    min-height: 34px;
+    padding: 6px 24px 6px 12px;
+    color: #000 !important;
+    line-height: 1.42857;
     background: white;
     border: 1px solid gainsboro;
     border-radius: 2px;
-    line-height: 1.42857;
-    padding: 6px 24px 6px 12px;
     cursor: pointer;
-    min-height: 34px;
-    color: #000 !important;
 
     .nom-select-single {
         overflow: hidden;
@@ -18,8 +18,8 @@
     .nom-select-arrow {
         position: absolute;
         top: 50%;
-        bottom: 0;
         right: 8px;
+        bottom: 0;
         margin-top: -7px;
         line-height: 1;
     }
@@ -43,8 +43,8 @@
         }
 
         &.s-selected {
-            background-color: @primary;
             color: @white;
+            background-color: @primary;
         }
     }
 }
@@ -58,20 +58,20 @@
             background-color: #eee;
         }
 
-        &.nom-selected:before {
-            content: "\E632";
-            font-family: nom-icon;
+        &.nom-selected::before {
             position: absolute;
-            left: 16px;
             top: 50%;
+            left: 16px;
+            z-index: 2;
+            color: @primary;
+            font-weight: bold;
+            font-size: 16px;
+            font-family: nom-icon;
             -webkit-transform: translate(-50%, -50%);
             -ms-transform: translate(-50%, -50%);
             -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
-            color: @primary;
-            font-weight: bold;
-            font-size: 16px;
-            z-index: 2;
+            content: "\E632";
         }
     }
 }

@@ -1,25 +1,25 @@
 import Component from '../Component/index'
 
 class FieldLabel extends Component {
-    constructor(props, ...mixins) {
-        super(props)
-    }
+  // constructor(props, ...mixins) {
+  //   super(props)
+  // }
 
-    _create() {
-        this.field = this.parent
-    }
+  _create() {
+    this.field = this.parent
+  }
 
-    _config() {
-        this.setProps({
-            children: {
-                tag: 'label',
-                classes: {
-                    'nom-label': true
-                },
-                children: this.field.props.label
-            }
-        })
-    }
+  _config() {
+    this.setProps({
+      children: {
+        tag: 'label',
+        classes: {
+          'nom-label': true,
+        },
+        children: this.field.props.label,
+      },
+    })
+  }
 }
 
 Component.register(FieldLabel)

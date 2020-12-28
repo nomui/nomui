@@ -1,174 +1,185 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable no-control-regex */
 import { isFunction } from './index'
 
-let RuleManager = {};
+const RuleManager = {}
 RuleManager.ruleTypes = {
-    required: {
-        validate: function (value) {
-            return !isEmpty(value);
-        },
-        message: "必填"
+  required: {
+    validate: function (value) {
+      return !isEmpty(value)
     },
-    number: {
-        validate: function (value) {
-            return /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value);
-        },
-        message: "请输入有效的数字"
+    message: '必填',
+  },
+  number: {
+    validate: function (value) {
+      return /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value)
     },
-    digits: {
-        validate: function (value) {
-            return /^\d+$/.test(value);
-        },
-        message: "只能输入数字"
+    message: '请输入有效的数字',
+  },
+  digits: {
+    validate: function (value) {
+      return /^\d+$/.test(value)
     },
-    regex: {
-        validate: function (value, ruleValue) {
-            return new RegExp(ruleValue.pattern, ruleValue.attributes).test(value);
-        }
+    message: '只能输入数字',
+  },
+  regex: {
+    validate: function (value, ruleValue) {
+      return new RegExp(ruleValue.pattern, ruleValue.attributes).test(value)
     },
-    email: {
-        validate: function (value) {
-            return /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(value);
-        },
-        message: "请输入有效的 Email 地址"
+  },
+  email: {
+    validate: function (value) {
+      return /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(
+        value,
+      )
     },
-    url: {
-        validate: function (value) {
-            return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
-        },
-        message: "请输入有效的 URL"
+    message: '请输入有效的 Email 地址',
+  },
+  url: {
+    validate: function (value) {
+      return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(
+        value,
+      )
     },
-    min: {
-        validate: function (value, ruleValue) {
-            value = Number(value);
-            return value >= ruleValue;
-        },
-        message: '输入值不能小于 {0}'
+    message: '请输入有效的 URL',
+  },
+  min: {
+    validate: function (value, ruleValue) {
+      value = Number(value)
+      return value >= ruleValue
     },
-    max: {
-        validate: function (value, ruleValue) {
-            value = Number(value);
-            return value <= ruleValue;
-        },
-        message: '输入值不能大于 {0}'
+    message: '输入值不能小于 {0}',
+  },
+  max: {
+    validate: function (value, ruleValue) {
+      value = Number(value)
+      return value <= ruleValue
     },
-    range: {
-        validate: function (value, ruleValue) {
-            value = Number(value);
-            return value >= ruleValue[0] && value <= ruleValue[1];
-        },
-        message: "输入值必须介于 {0} 和 {1} 之间"
+    message: '输入值不能大于 {0}',
+  },
+  range: {
+    validate: function (value, ruleValue) {
+      value = Number(value)
+      return value >= ruleValue[0] && value <= ruleValue[1]
     },
-    minlength: {
-        validate: function (value, ruleValue) {
-            var length = 0;
-            if (Array.isArray(value)) {
-                length = value.length;
-            }
-            else {
-                length = value.trim().length;
-            }
+    message: '输入值必须介于 {0} 和 {1} 之间',
+  },
+  minlength: {
+    validate: function (value, ruleValue) {
+      let length = 0
+      if (Array.isArray(value)) {
+        length = value.length
+      } else {
+        length = value.trim().length
+      }
 
-            return length >= ruleValue;
-        },
-        message: '不能少于 {0} 个字'
+      return length >= ruleValue
     },
-    maxlength: {
-        validate: function (value, ruleValue) {
-            var length = 0;
-            if (Array.isArray(value)) {
-                length = value.length;
-            }
-            else {
-                length = value.trim().length;
-            }
+    message: '不能少于 {0} 个字',
+  },
+  maxlength: {
+    validate: function (value, ruleValue) {
+      let length = 0
+      if (Array.isArray(value)) {
+        length = value.length
+      } else {
+        length = value.trim().length
+      }
 
-            return length <= ruleValue;
-        },
-        message: '不能多于 {0} 个字'
+      return length <= ruleValue
     },
-    rangelength: {
-        validate: function (value, ruleValue) {
-            var length = 0;
-            if (Array.isArray(value)) {
-                length = value.length;
-            }
-            else {
-                length = value.trim().length;
-            }
+    message: '不能多于 {0} 个字',
+  },
+  rangelength: {
+    validate: function (value, ruleValue) {
+      let length = 0
+      if (Array.isArray(value)) {
+        length = value.length
+      } else {
+        length = value.trim().length
+      }
 
-            return ruleValue[0] <= length && length <= ruleValue[1];
-        },
-        message: '输入字数在 {0} 个到 {1} 个之间'
+      return ruleValue[0] <= length && length <= ruleValue[1]
     },
-    remote: {
-        validate: function (value, ruleValue) {
-            var data = {};
-            data[ruleValue[1]] = value;
-            var response = $.ajax({ url: ruleValue[0], dataType: "json", data: data, async: false, cache: false, type: "post" }).responseText;
-            return response === "true";
-        }, message: "Please fix this field"
+    message: '输入字数在 {0} 个到 {1} 个之间',
+  },
+  remote: {
+    validate: function (value, ruleValue) {
+      const data = {}
+      data[ruleValue[1]] = value
+      const response = $.ajax({
+        url: ruleValue[0],
+        dataType: 'json',
+        data: data,
+        async: false,
+        cache: false,
+        type: 'post',
+      }).responseText
+      return response === 'true'
     },
-    date: {
-        validate: function (value, ruleValue) {
-            return true;
-        },
-        message: "请输入有效的日期格式."
+    message: 'Please fix this field',
+  },
+  date: {
+    validate: function () {
+      return true
     },
-    identifier: {
-        validate: function (value) {
-            return /^[a-zA-Z][a-zA-Z0-9_]*$/.test(value);
-        },
-        message: '只能输入字母、数字、下划线且必须以字母开头'
+    message: '请输入有效的日期格式.',
+  },
+  identifier: {
+    validate: function (value) {
+      return /^[a-zA-Z][a-zA-Z0-9_]*$/.test(value)
     },
-    phoneNumber: {
-        validate: function (value) {
-            return /^1[3|4|5|7|8][0-9]{9}$/.test(value);
-        },
-        message: '请输入正确的手机号'
+    message: '只能输入字母、数字、下划线且必须以字母开头',
+  },
+  phoneNumber: {
+    validate: function (value) {
+      return /^1[3|4|5|7|8][0-9]{9}$/.test(value)
     },
-    func: {
-        validate: function (value, ruleValue) {
-            if (isFunction(ruleValue)) {
-                return ruleValue(value);
-            }
-        }
-    }
-};
+    message: '请输入正确的手机号',
+  },
+  func: {
+    validate: function (value, ruleValue) {
+      if (isFunction(ruleValue)) {
+        return ruleValue(value)
+      }
+    },
+  },
+}
 
 RuleManager.validate = function (rules, controlValue) {
-    for (var i = 0; i < rules.length; i++) {
-        var checkResult = checkRule(rules[i], controlValue);
-        if (checkResult !== true) {
-            return checkResult;
-        }
+  for (let i = 0; i < rules.length; i++) {
+    const checkResult = checkRule(rules[i], controlValue)
+    if (checkResult !== true) {
+      return checkResult
     }
+  }
 
-    return true;
-};
+  return true
+}
 
 function isEmpty(val) {
-    return val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length);
+  return val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length)
 }
 
 function checkRule(ruleSettings, controlValue) {
-    var rule = RuleManager.ruleTypes[ruleSettings.type];
+  const rule = RuleManager.ruleTypes[ruleSettings.type]
 
-    if (rule) {
-        var ruleValue = ruleSettings.value || null;
-        if (!rule.validate(controlValue, ruleValue)) {
-            var message = ruleSettings.message || rule.message;
-            if (ruleValue !== null) {
-                if (!Array.isArray(ruleValue)) {
-                    ruleValue = [ruleValue];
-                }
-                for (var i = 0; i < ruleValue.length; i++) {
-                    message = message.replace(new RegExp("\\{" + i + "\\}", "g"), ruleValue[i]);
-                }
-            }
-            return message;
+  if (rule) {
+    let ruleValue = ruleSettings.value || null
+    if (!rule.validate(controlValue, ruleValue)) {
+      let message = ruleSettings.message || rule.message
+      if (ruleValue !== null) {
+        if (!Array.isArray(ruleValue)) {
+          ruleValue = [ruleValue]
         }
+        for (let i = 0; i < ruleValue.length; i++) {
+          message = message.replace(new RegExp(`\\{${i}\\}`, 'g'), ruleValue[i])
+        }
+      }
+      return message
     }
-    return true;
+  }
+  return true
 }
 
 export default RuleManager

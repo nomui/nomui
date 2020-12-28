@@ -1,9 +1,9 @@
 import Component from '../Component/index'
 
 class LayoutFooter extends Component {
-    constructor(props, ...mixins) {
-        super(props);
-    }
+  // constructor(props, ...mixins) {
+  //     super(props);
+  // }
 }
 
 Component.register(LayoutFooter)
