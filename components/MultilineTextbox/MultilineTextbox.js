@@ -1,55 +1,54 @@
-
 import Component from '../Component/index'
 import Control from '../Control/index'
-import Textarea from "./Textarea";
+import Textarea from './Textarea'
 
 class MultilineTextbox extends Control {
-    constructor(props, ...mixins) {
-        const defaults = {
-            autofocus: false,
-            placeholder: null
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      autofocus: false,
+      placeholder: null,
     }
 
-    _config() {
-        super._config()
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-        this.setProps({
-            tag: 'div',
-            textarea: {
-                component: Textarea,
-                attrs: {
-                    placeholder: this.props.placeholder
-                }
-            }
-        })
+  _config() {
+    super._config()
 
-        this.setProps({
-            children: this.props.textarea
-        })
+    this.setProps({
+      tag: 'div',
+      textarea: {
+        component: Textarea,
+        attrs: {
+          placeholder: this.props.placeholder,
+        },
+      },
+    })
+
+    this.setProps({
+      children: this.props.textarea,
+    })
+  }
+
+  getText() {
+    return this.textarea.getText()
+  }
+
+  _getValue() {
+    const inputText = this.getText()
+    if (inputText === '') {
+      return null
     }
+    return inputText
+  }
 
-    getText() {
-        return this.textarea.getText()
-    }
+  _setValue(value) {
+    this.textarea.setText(value)
+  }
 
-    _getValue() {
-        var inputText = this.getText()
-        if (inputText === '') {
-            return null
-        }
-        return inputText
-    }
-
-    _setValue(value) {
-        this.textarea.setText(value)
-    }
-
-    focus() {
-        this.textarea.focus()
-    }
+  focus() {
+    this.textarea.focus()
+  }
 }
 
 Component.register(MultilineTextbox)

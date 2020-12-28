@@ -1,64 +1,64 @@
-import Component from "../Component/index";
-import Textbox from "../Textbox/index";
+import Component from '../Component/index'
+import Textbox from '../Textbox/index'
 
 class Numberbox extends Textbox {
-    constructor(props, ...mixins) {
-        const defaults = {
-            min: null,
-            max: null,
-            precision: 0
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      min: null,
+      max: null,
+      precision: 0,
     }
 
-    _config() {
-        super._config()
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-        var rules = []
+  _config() {
+    super._config()
 
-        if (this.props.precision === 0) {
-            rules.push({
-                type: 'regex',
-                value: {
-                    pattern: '^(\\-|\\+)?(0|[1-9][0-9]*)$'
-                },
-                message: '请输入整数'
-            })
-        }
-        if (this.props.precision > 0) {
-            rules.push({
-                type: 'regex',
-                value: {
-                    pattern: '^(\\-|\\+)?(0|[1-9][0-9]*)(\\.\\d{' + this.props.precision + '})$'
-                },
-                message: '请输入 ' + this.props.precision + ' 位小数'
-            })
-        }
-        if (this.props.min) {
-            rules.push({
-                type: 'min',
-                value: this.props.min
-            })
-        }
-        if (this.props.max) {
-            rules.push({
-                type: 'max',
-                value: this.props.max
-            })
-        }
+    const rules = []
 
-        this.setProps({ rules: rules })
+    if (this.props.precision === 0) {
+      rules.push({
+        type: 'regex',
+        value: {
+          pattern: '^(\\-|\\+)?(0|[1-9][0-9]*)$',
+        },
+        message: '请输入整数',
+      })
+    }
+    if (this.props.precision > 0) {
+      rules.push({
+        type: 'regex',
+        value: {
+          pattern: `^(\\-|\\+)?(0|[1-9][0-9]*)(\\.\\d{${this.props.precision}})$`,
+        },
+        message: `请输入 ${this.props.precision} 位小数`,
+      })
+    }
+    if (this.props.min) {
+      rules.push({
+        type: 'min',
+        value: this.props.min,
+      })
+    }
+    if (this.props.max) {
+      rules.push({
+        type: 'max',
+        value: this.props.max,
+      })
     }
 
-    _getValue() {
-        var data = this.input.getText()
-        data = parseFloat(data).toFixed(this.props.precision)
-        if (isNaN(data)) {
-            data = null
-        }
-        return data
+    this.setProps({ rules: rules })
+  }
+
+  _getValue() {
+    let data = this.input.getText()
+    data = parseFloat(data).toFixed(this.props.precision)
+    if (Number.isNaN(data)) {
+      data = null
     }
+    return data
+  }
 }
 
 Component.register(Numberbox)

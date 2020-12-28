@@ -1,48 +1,47 @@
 import Component from '../Component/index'
 
 class TabItem extends Component {
-    constructor(props, ...mixins) {
-        const defaults = {
-            tag: 'a',
-            url: null,
-            icon: null,
-            text: null,
-            subtext: null,
-            selectable: {
-                byClick: true
-            }
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      tag: 'a',
+      url: null,
+      icon: null,
+      text: null,
+      subtext: null,
+      selectable: {
+        byClick: true,
+      },
     }
 
-    _config() {
-        let { icon, text, subtext } = this.props
-        this.setProps({
-            attrs: {
-                href: this.getItemUrl(this.props.url)
-            },
-            children: [
-                icon && { component: 'Icon', type: icon },
-                text && { tag: 'span', children: text },
-                subtext && { tag: 'span', children: subtext }
-            ]
-        })
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
+
+  _config() {
+    const { icon, text, subtext } = this.props
+    this.setProps({
+      attrs: {
+        href: this.getItemUrl(this.props.url),
+      },
+      children: [
+        icon && { component: 'Icon', type: icon },
+        text && { tag: 'span', children: text },
+        subtext && { tag: 'span', children: subtext },
+      ],
+    })
+  }
+
+  _select() {
+    const tabContent = this.list.getTabContent()
+    tabContent.showPanel(this.key)
+  }
+
+  getItemUrl(url) {
+    if (url) {
+      return url
     }
 
-    _select() {
-        let tabContent = this.list.getTabContent()
-        tabContent.showPanel(this.key)
-    }
-
-    getItemUrl(url) {
-        if (url) {
-            return url
-        }
-        else {
-            return 'javascript:void(0);'
-        }
-    }
+    return 'javascript:void(0);'
+  }
 }
 
 Component.register(TabItem)

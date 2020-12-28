@@ -3,39 +3,39 @@
 
     >.nom-list>.nom-list-item-wrapper>label {
         display: inline-flex;
-        vertical-align: middle;
-        line-height: @line-height-base;
         padding-top: @padding-y-base;
         padding-bottom: @padding-y-base;
-        cursor: pointer;
         font-size: 1rem;
+        line-height: @line-height-base;
+        vertical-align: middle;
+        cursor: pointer;
         transition: all 0.3s;
 
         >span.radio {
             position: relative;
-            background: none;
-            margin-right: .5rem;
-            height: ~"calc(1em + 2px)";
             width: ~"calc(1em + 2px)";
+            height: ~"calc(1em + 2px)";
+            margin-top:~"calc((1em * @{line-height-base} - 1em - 2px)/2)";
+            margin-right: .5rem;
+            background: none;
             border: 1px solid #bdc3d4;
             border-radius: 50% !important;
-            margin-top:~"calc((1em * @{line-height-base} - 1em - 2px)/2)";
         }
 
         &.s-selected {
             >span.radio::after {
-                display: block;
-                content: '';
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                margin-left: -3px;
-                margin-top: -3px;
-                height: 6px;
+                display: block;
                 width: 6px;
-                border-radius: 100% !important;
-                border: solid #7281a4;
+                height: 6px;
+                margin-top: -3px;
+                margin-left: -3px;
                 background: #7281a4;
+                border: solid #7281a4;
+                border-radius: 100% !important;
+                content: '';
             }
         }
     }
@@ -47,17 +47,17 @@
 
         >.nom-list-item-wrapper {
             >label {
-                display: inline-flex;
                 position: relative;
-                line-height: @line-height-base;
+                display: inline-flex;
+                margin-left: -1px;
                 padding-top: @padding-y-base;
+                padding-right: @padding-x-base;
                 padding-bottom: @padding-y-base;
                 padding-left: @padding-x-base;
-                padding-right: @padding-x-base;
-                border: 1px solid #d9d9d9;
-                margin-left: -1px;
-                cursor: pointer;
                 font-size: 1rem;
+                line-height: @line-height-base;
+                border: 1px solid #d9d9d9;
+                cursor: pointer;
                 transition: all 0.3s;
             }
 

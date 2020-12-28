@@ -62,7 +62,6 @@
 .nom-modal-dialog-centered {
     display: flex;
     align-items: center;
-
     min-height: calc(100% - 1rem);
 
     // Ensure `modal-dialog-centered` extends the full height of the view (IE10/11)
@@ -94,14 +93,14 @@
     display: flex;
     flex-direction: column;
     width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
-    // counteract the pointer-events: none; in the .modal-dialog
-    pointer-events: auto;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, .2);
     border-radius: .3rem;
     // Remove focus outline from opened modal
     outline: 0;
+    // counteract the pointer-events: none; in the .modal-dialog
+    pointer-events: auto;
 
     >.nom-panel-header {
         border-bottom: 1px solid #dee2e6;

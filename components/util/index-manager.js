@@ -1,7 +1,6 @@
-
-let zIndex = 6666;
+let zIndex = 6666
 
 export default function getzIndex() {
-    zIndex++
-    return ++zIndex
-};
+  zIndex++
+  return ++zIndex
+}

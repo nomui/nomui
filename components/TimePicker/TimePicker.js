@@ -1,26 +1,23 @@
-import Component from '../Component/index'
 import Control from '../Control/index'
 
 class TimePicker extends Control {
-    constructor(props, ...mixins) {
+  // constructor(props, ...mixins) {}
 
+  _getTimeData(count) {
+    const data = []
+    for (let i = 0; i < count; i++) {
+      let val = `${i}`
+      if (i < 10) {
+        val = `0${i}`
+      }
+      data.push({
+        text: val,
+        value: val,
+      })
     }
 
-    _getTimeData(count) {
-        var data = []
-        for (i = 0; i < count; i++) {
-            var val = i + '';
-            if (i < 10) {
-                val = '0' + i;
-            }
-            data.push({
-                text: val,
-                value: val
-            })
-        }
-        
-        return data
-    }
+    return data
+  }
 }
 
 export default TimePicker

@@ -1,189 +1,200 @@
-import Component from "../Component/index"
-import ListItemWrapper from "./ListItemWrapper"
-import { isFunction, extend, isString } from "../util/index"
+import Component from '../Component/index'
+import { extend, isFunction, isString } from '../util/index'
+import ListItemWrapper from './ListItemWrapper'
 
 class List extends Component {
-    constructor(props, ...mixins) {
-        const defaults = {
-            tag: 'ul',
-            items: [],
-            itemDefaults: {},
+  constructor(props, ...mixins) {
+    const defaults = {
+      tag: 'ul',
+      items: [],
+      itemDefaults: {},
 
-            selectedItems: null,
+      selectedItems: null,
 
-            itemSelectable: {
-                multiple: false,
-                byClick: false
-            }
+      itemSelectable: {
+        multiple: false,
+        byClick: false,
+      },
+    }
+
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
+
+  _create() {
+    this.itemRefs = {}
+    this.selectedItem = null
+  }
+
+  _config() {
+    this._propStyleClasses = ['gutter', 'line', 'align', 'justify', 'cols']
+    const { items, itemDefaults, wrappers, wrapperDefaults } = this.props
+    const children = []
+    if (Array.isArray(wrappers) && wrappers.length > 0) {
+      for (let i = 0; i < wrappers.length; i++) {
+        let wrapper = wrappers[i]
+        wrapper = Component.extendProps(
+          {},
+          { component: ListItemWrapper },
+          wrapperDefaults,
+          wrapper,
+        )
+        children.push(wrapper)
+      }
+    } else if (Array.isArray(items) && items.length > 0) {
+      for (let i = 0; i < items.length; i++) {
+        let item = items[i]
+        if (isString(item)) {
+          item = {
+            children: item,
+          }
         }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+        item = Component.extendProps({}, itemDefaults, item)
+        children.push({ component: ListItemWrapper, item: item })
+      }
     }
 
-    _create() {
-        this.itemRefs = {}
-        this.selectedItem = null
-    }
+    this.setProps({
+      children: children,
+    })
+  }
 
-    _config() {
-        this._propStyleClasses = ['gutter', 'line', 'align', 'justify', 'cols']
-        let { items, itemDefaults, wrappers, wrapperDefaults } = this.props
-        var children = []
-        if (Array.isArray(wrappers) && wrappers.length > 0) {
-            for (var i = 0; i < wrappers.length; i++) {
-                let wrapper = wrappers[i]
-                wrapper = Component.extendProps({}, { component: ListItemWrapper }, wrapperDefaults, wrapper)
-                children.push(wrapper)
-            }
+  getItem(param) {
+    let retItem = null
+
+    if (isFunction(param)) {
+      for (const key in this.itemRefs) {
+        if (this.itemRefs.hasOwnProperty(key)) {
+          if (param.call(this.itemRefs[key]) === true) {
+            retItem = this.itemRefs[key]
+            break
+          }
         }
-        else if (Array.isArray(items) && items.length > 0) {
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i]
-                if (isString(item)) {
-                    item = {
-                        children: item
-                    }
-                }
-                item = Component.extendProps({}, itemDefaults, item)
-                children.push({ component: ListItemWrapper, item: item })
-            }
-        }
-
-        this.setProps({
-            children: children
-        })
+      }
+    } else {
+      return this.itemRefs[param]
     }
 
-    getItem(param) {
-        var retItem = null
+    return retItem
+  }
 
-        if (isFunction(param)) {
-            for (var key in this.itemRefs) {
-                if (this.itemRefs.hasOwnProperty(key)) {
-                    if (param.call(this.itemRefs[key]) === true) {
-                        retItem = this.itemRefs[key]
-                        break
-                    }
-                }
-            }
-        }
-        else {
-            return this.itemRefs[param]
-        }
+  selectItem(param, selectOption) {
+    const item = this.getItem(param)
+    item && item.select(selectOption)
+  }
 
-        return retItem
+  selectItems(param, selectOption) {
+    selectOption = extend(
+      {
+        triggerSelect: true,
+        triggerSelectionChange: true,
+      },
+      selectOption,
+    )
+    let itemSelectionChanged = false
+    param = Array.isArray(param) ? param : [param]
+    for (let i = 0; i < param.length; i++) {
+      itemSelectionChanged =
+        this.selectItem(param[i], {
+          triggerSelect: selectOption.triggerSelect,
+          triggerSelectionChange: false,
+        }) || itemSelectionChanged
     }
-
-    selectItem(param, selectOption) {
-        var item = this.getItem(param)
-        item && item.select(selectOption)
+    if (selectOption.triggerSelectionChange === true && itemSelectionChanged) {
+      this.trigger('itemSelectionChange')
     }
+    return itemSelectionChanged
+  }
 
-    selectItems(param, selectOption) {
-        selectOption = extend(
-            {
-                triggerSelect: true,
-                triggerSelectionChange: true
-            },
-            selectOption
-        );
-        var itemSelectionChanged = false
-        param = Array.isArray(param) ? param : [param]
-        for (var i = 0; i < param.length; i++) {
-            itemSelectionChanged = this.selectItem(param[i], { triggerSelect: selectOption.triggerSelect, triggerSelectionChange: false }) || itemSelectionChanged
-        }
-        if (selectOption.triggerSelectionChange === true && itemSelectionChanged) {
-            this.trigger('itemSelectionChange')
-        }
-        return itemSelectionChanged
-    }
+  selectAllItems(selectOption) {
+    return this.selectItems(this.getChildren(), selectOption)
+  }
 
-    selectAllItems(selectOption) {
-        return this.selectItems(this.getChildren(), selectOption)
-    }
+  unselectItem(param, unselectOption) {
+    unselectOption = extend(
+      {
+        triggerUnselect: true,
+        triggerSelectionChange: true,
+      },
+      unselectOption,
+    )
+    const item = this.getItem(param)
+    item && item.unselect(unselectOption)
+  }
 
-    unselectItem(param, unselectOption) {
-        unselectOption = extend(
-            {
-                triggerUnselect: true,
-                triggerSelectionChange: true
-            },
-            unselectOption
-        );
-        var item = this.getItem(param)
-        item && item.unselect(unselectOption)
+  unselectItems(param, unselectOption) {
+    unselectOption = extend(
+      {
+        triggerUnselect: true,
+        triggerSelectionChange: true,
+      },
+      unselectOption,
+    )
+    let itemSelectionChanged = false
+    if (Array.isArray(param)) {
+      for (let i = 0; i < param.length; i++) {
+        itemSelectionChanged =
+          this.unselectItem(param[i], {
+            triggerUnselect: unselectOption.triggerUnselect,
+            triggerSelectionChange: false,
+          }) || itemSelectionChanged
+      }
     }
+    if (unselectOption.triggerSelectionChange && itemSelectionChanged) {
+      this.trigger('itemSelectionChange')
+    }
+    return itemSelectionChanged
+  }
 
-    unselectItems(param, unselectOption) {
-        unselectOption = extend(
-            {
-                triggerUnselect: true,
-                triggerSelectionChange: true
-            },
-            unselectOption
-        );
-        var itemSelectionChanged = false
-        if (Array.isArray(param)) {
-            for (var i = 0; i < param.length; i++) {
-                itemSelectionChanged = this.unselectItem(param[i], { triggerUnselect: unselectOption.triggerUnselect, triggerSelectionChange: false }) || itemSelectionChanged
-            }
-        }
-        if (unselectOption.triggerSelectionChange && itemSelectionChanged) {
-            this.trigger('itemSelectionChange')
-        }
-        return itemSelectionChanged;
-    }
+  unselectAllItems(unselectOption) {
+    return this.unselectItems(this.getChildren(), unselectOption)
+  }
 
-    unselectAllItems(unselectOption) {
-        return this.unselectItems(this.getChildren(), unselectOption)
+  getAllItems() {
+    const items = []
+    const children = this.getChildren()
+    for (let i = 0; i < children.length; i++) {
+      const itemWrapper = children[i]
+      items.push(itemWrapper.item)
     }
+    return items
+  }
 
-    getAllItems() {
-        var items = []
-        var children = this.getChildren()
-        for (var i = 0; i < children.length; i++) {
-            var itemWrapper = children[i]
-            items.push(itemWrapper.item)
-        }
-        return items
-    }
+  getSelectedItem() {
+    return this.selectedItem
+  }
 
-    getSelectedItem() {
-        return this.selectedItem
+  getSelectedItems() {
+    const selectedItems = []
+    const children = this.getChildren()
+    for (let i = 0; i < children.length; i++) {
+      const { item } = children[i]
+      if (item.props.selected) {
+        selectedItems.push(item)
+      }
     }
+    return selectedItems
+  }
 
-    getSelectedItems() {
-        var selectedItems = []
-        var children = this.getChildren()
-        for (var i = 0; i < children.length; i++) {
-            var item = children[i].item
-            if (item.props.selected) {
-                selectedItems.push(item)
-            }
-        }
-        return selectedItems
-    }
+  appendItem(itemProps) {
+    itemProps = Component.extendProps({}, this.props.itemDefaults, itemProps)
+    const itemWrapperProps = { component: ListItemWrapper, item: itemProps }
+    this.appendChild(itemWrapperProps)
+  }
 
-    appendItem(itemProps) {
-        itemProps = Component.extendProps({}, this.props.itemDefaults, itemProps)
-        var itemWrapperProps = { component: ListItemWrapper, item: itemProps }
-        this.appendChild(itemWrapperProps)
+  removeItem(param) {
+    const item = this.getItem(param)
+    if (item !== null) {
+      item.wrapper.remove()
     }
+  }
 
-    removeItem(param) {
-        var item = this.getItem(param)
-        if (item !== null) {
-            item.wrapper.remove()
-        }
+  removeItems(param) {
+    if (Array.isArray(param)) {
+      for (let i = 0; i < param.length; i++) {
+        this.removeItem(param[i])
+      }
     }
-
-    removeItems(param) {
-        if (Array.isArray(param)) {
-            for (var i = 0; i < param.length; i++) {
-                this.removeItem(param[i])
-            }
-        }
-    }
+  }
 }
 
 Component.register(List)

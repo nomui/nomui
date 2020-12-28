@@ -1,3 +1,3 @@
-import RadioList from "./RadioList"
+import RadioList from './RadioList'
 
 export default RadioList

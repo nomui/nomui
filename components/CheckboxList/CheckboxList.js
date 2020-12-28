@@ -1,63 +1,60 @@
-import Component from "../Component/index";
-import Control from "../Control/index";
+import Component from '../Component/index'
+import Control from '../Control/index'
 import List from './DefaultOptionList'
 
 class CheckboxList extends Control {
-    constructor(props, ...mixins) {
-        const defaults = {
-            options: [],
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      options: [],
     }
 
-    _config() {
-        super._config()
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-        var that = this
+  _config() {
+    super._config()
 
-        this.setProps({
-            optionDefaults: {
-                key: function () {
-                    return this.props.value;
-                }
-            }
-        })
+    this.setProps({
+      optionDefaults: {
+        key: function () {
+          return this.props.value
+        },
+      },
+    })
 
-        this.setProps({
-            optionList: {
-                component: List,
-            }
-        })
+    this.setProps({
+      optionList: {
+        component: List,
+      },
+    })
 
-        this.setProps({
-            children: this.props.optionList
-        })
+    this.setProps({
+      children: this.props.optionList,
+    })
+  }
+
+  getSelectedOptions() {
+    return this.optionList.getSelectedItems()
+  }
+
+  _getValue() {
+    const selected = this.getSelectedOptions()
+    if (selected !== null && Array.isArray(selected)) {
+      const vals = selected.map(function (item) {
+        return item.props.value
+      })
+
+      return vals
     }
 
-    getSelectedOptions() {
-        return this.optionList.getSelectedItems()
-    }
+    return null
+  }
 
-    _getValue() {
-        var selected = this.getSelectedOptions();
-        if (selected !== null && Array.isArray(selected)) {
-            var vals = selected.map(function (item) {
-                return item.props.value
-            })
-
-            return vals
-        }
-        else {
-            return null
-        }
-    }
-
-    _setValue(value) {
-        this.optionList.selectItem(function () {
-            return this.props.value === value
-        })
-    }
+  _setValue(value) {
+    this.optionList.selectItem(function () {
+      return this.props.value === value
+    })
+  }
 }
 
 Component.register(CheckboxList)

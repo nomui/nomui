@@ -1,42 +1,40 @@
 import Component from '../Component/index'
+import Layout from '../Layout/index'
 import Popup from '../Popup/index'
 import SelectList from './SelectList'
-import Layout from '../Layout/index'
 
 class SelectPopup extends Popup {
-    constructor(props, ...mixins) {
-        const defaults = {
+  constructor(props, ...mixins) {
+    const defaults = {}
 
-        }
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-        super(Component.extendProps(defaults, props), ...mixins)
-    }
+  _create() {
+    super._create()
 
-    _create() {
-        super._create()
+    this.selectControl = this.opener
+  }
 
-        this.selectControl = this.opener
-    }
+  _config() {
+    this.setProps({
+      attrs: {
+        style: {
+          width: `${this.selectControl.offsetWidth()} px`,
+        },
+      },
+      children: {
+        component: Layout,
+        body: {
+          children: {
+            component: SelectList,
+          },
+        },
+      },
+    })
 
-    _config() {
-        this.setProps({
-            attrs: {
-                style: {
-                    width: this.selectControl.offsetWidth() + 'px',
-                }
-            },
-            children: {
-                component: Layout,
-                body: {
-                    children: {
-                        component: SelectList
-                    }
-                }
-            }
-        })
-
-        super._config()
-    }
+    super._config()
+  }
 }
 
 Component.register(SelectPopup)

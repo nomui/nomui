@@ -1,64 +1,63 @@
-
 import Component from '../Component/index'
 
 class Textarea extends Component {
-    constructor(props, ...mixins) {
-        const defaults = {
-            tag: 'textarea',
-            attrs: {
-                autocomplete: 'off'
-            }
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      tag: 'textarea',
+      attrs: {
+        autocomplete: 'off',
+      },
     }
 
-    _create() {
-        this.multilineTextbox = this.parent
-        this.multilineTextbox.textarea = this
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-        this.capsLock = false
-    }
+  _create() {
+    this.multilineTextbox = this.parent
+    this.multilineTextbox.textarea = this
 
-    _config() {
-        this.setProps({
-            attrs: {
-                'oninput': () => {
-                    if (!this.capsLock) {
-                        this.multilineTextbox._onValueChange();
-                    }
-                },
-                'oncompositionstart': () => {
-                    this.capsLock = true;
-                },
-                'oncompositionend': () => {
-                    this.capsLock = false;
-                    this.element.trigger('input');
-                },
-                'onblur': () => {
-                    this.multilineTextbox.trigger("blur");
-                }
-            }
-        })
-    }
+    this.capsLock = false
+  }
 
-    _render() {
-        if (this.multilineTextbox.props.autofocus === true) {
-            this.focus()
-        }
-    }
+  _config() {
+    this.setProps({
+      attrs: {
+        oninput: () => {
+          if (!this.capsLock) {
+            this.multilineTextbox._onValueChange()
+          }
+        },
+        oncompositionstart: () => {
+          this.capsLock = true
+        },
+        oncompositionend: () => {
+          this.capsLock = false
+          this.element.trigger('input')
+        },
+        onblur: () => {
+          this.multilineTextbox.trigger('blur')
+        },
+      },
+    })
+  }
 
-    getText() {
-        return this.element.value
+  _render() {
+    if (this.multilineTextbox.props.autofocus === true) {
+      this.focus()
     }
+  }
 
-    setText(text) {
-        this.element.value = text
-    }
+  getText() {
+    return this.element.value
+  }
 
-    focus() {
-        this.element.focus()
-    }
+  setText(text) {
+    this.element.value = text
+  }
+
+  focus() {
+    this.element.focus()
+  }
 }
 
 Component.register(Textarea)

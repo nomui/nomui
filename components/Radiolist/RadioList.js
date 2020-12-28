@@ -1,58 +1,57 @@
-import Component from "../Component/index";
-import Control from "../Control/index";
+import Component from '../Component/index'
+import Control from '../Control/index'
 import OptionList from './DefaultOptionList'
 
 class RadioList extends Control {
-    constructor(props, ...mixins) {
-        const defaults = {
-            options: [],
-            type: 'radio'
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+  constructor(props, ...mixins) {
+    const defaults = {
+      options: [],
+      type: 'radio',
     }
 
-    _config() {
-        super._config()
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
 
-        this.setProps({
-            optionDefaults: {
-                key() {
-                    return this.props.value
-                }
-            }
-        })
+  _config() {
+    super._config()
 
-        this.setProps({
-            optionList: {
-                component: OptionList
-            }
-        });
+    this.setProps({
+      optionDefaults: {
+        key() {
+          return this.props.value
+        },
+      },
+    })
 
-        this.setProps({
-            children: this.props.optionList
-        });
+    this.setProps({
+      optionList: {
+        component: OptionList,
+      },
+    })
+
+    this.setProps({
+      children: this.props.optionList,
+    })
+  }
+
+  getSelectedOption() {
+    return this.optionList.getSelectedItem()
+  }
+
+  _getValue() {
+    const selected = this.getSelectedOption()
+    if (selected !== null) {
+      return selected.props.value
     }
 
-    getSelectedOption() {
-        return this.optionList.getSelectedItem()
-    }
+    return null
+  }
 
-    _getValue() {
-        var selected = this.getSelectedOption()
-        if (selected !== null) {
-            return selected.props.value
-        }
-        else {
-            return null
-        }
-    }
-
-    _setValue(value) {
-        this.optionList.selectItem(function () {
-            return this.props.value === value
-        })
-    }
+  _setValue(value) {
+    this.optionList.selectItem(function () {
+      return this.props.value === value
+    })
+  }
 }
 
 Component.register(RadioList)
