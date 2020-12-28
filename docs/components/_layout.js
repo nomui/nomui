@@ -39,7 +39,7 @@ define([], {
                     {
                         text: '浮层',
                         items: [
-                            { text: 'Layer', subtext: '层', id: 'Layer', url: '#!components!index?type=layer' },
+                            { text: 'Layer', subtext: '层', id: 'Layer', url: '#!components!index?type=Layer' },
                             { text: 'Popup', subtext: '触发层', id: 'Popup', url: '#!components!index?type=Popup' },
                             { text: 'Modal', subtext: '模态框', id: 'Modal', url: '#!components!index?type=Modal' },
                             { text: 'Drawer', subtext: '抽屉', id: 'Drawer', url: '#!components!index?type=Drawer' },
