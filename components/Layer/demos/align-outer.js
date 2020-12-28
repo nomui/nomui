@@ -10,8 +10,10 @@ define([], function () {
                     attrs: {
                         style: {
                             width: '100px'
-                        },
-                        onclick: function () {
+                        }
+                    },
+                    events: {
+                        click: function () {
                             if (!this[align]) {
                                 this[align] = new nomui.Layer({
                                     align: align,
