@@ -3926,6 +3926,9 @@ img {
   padding: 10px 15px;
   text-decoration: none;
 }
+.nom-menu.p-type-vertical > .nom-menu-item-wrapper > .nom-menu-item > .nom-menu-item-icon {
+  margin-right: 10px;
+}
 .nom-menu.p-type-vertical > .nom-menu-item-wrapper > .nom-menu-item > .title {
   flex-grow: 1;
 }

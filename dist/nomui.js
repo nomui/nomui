@@ -5805,7 +5805,7 @@
 
           this.setProps({
               children: [
-                  this.props.icon && { component: 'icon', type: this.props.icon },
+                  this.props.icon && { component: 'Icon', type: this.props.icon, classes: { 'nom-menu-item-icon': true } },
                   { component: Component, tag: 'span', classes: { 'text': true }, children: this.props.text },
                   this.props.subtext && { component: Component, tag: 'span', classes: { 'subtext': true }, children: this.props.subtext },
                   this.props.indicator && !this.isLeaf && this.props.indicator
