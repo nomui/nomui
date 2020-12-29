@@ -36,7 +36,7 @@ define([], function () {
             component: 'Button',
             text: '按钮带圆点数字',
             badge: {
-              number: 115,
+              number: 105,
             },
           },
           {

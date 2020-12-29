@@ -8,6 +8,7 @@ class Badge extends Component {
       text: null,
       icon: null,
       number: null,
+      overflowCount: 99,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -15,7 +16,8 @@ class Badge extends Component {
 
   _config() {
     this._propStyleClasses = ['size']
-    const { icon, text, type, number } = this.props
+    const { icon, text, type, number, overflowCount } = this.props
+    console.log(overflowCount)
 
     if (icon) {
       this.setProps({
@@ -45,7 +47,7 @@ class Badge extends Component {
       children: [
         Component.normalizeIconProps(icon),
         text && { tag: 'span', children: text },
-        number && { tag: 'span', children: number > 99 ? '99+' : number },
+        number && { tag: 'span', children: number > overflowCount ? `${overflowCount}+` : number },
       ],
     })
   }
@@ -71,6 +73,9 @@ Component.mixin({
         type: 'dot',
       }
       badgeProps.number = this.props.badge.number ? this.props.badge.number : null
+      badgeProps.overflowCount = this.props.badge.overflowCount
+        ? this.props.badge.overflowCount
+        : 99
       badgeProps.styles = this.props.badge.styles ? this.props.badge.styles : { color: 'danger' }
       this.props.badge = badgeProps
       this.badge = new Badge(Component.extendProps({ reference: this }, this.props.badge))
