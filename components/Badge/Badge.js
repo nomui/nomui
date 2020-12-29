@@ -17,7 +17,6 @@ class Badge extends Component {
   _config() {
     this._propStyleClasses = ['size']
     const { icon, text, type, number, overflowCount } = this.props
-    console.log(overflowCount)
 
     if (icon) {
       this.setProps({
