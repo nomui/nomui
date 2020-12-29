@@ -43,12 +43,13 @@ class List extends Component {
     } else if (Array.isArray(items) && items.length > 0) {
       for (let i = 0; i < items.length; i++) {
         let item = items[i]
+        /*
         if (isString(item)) {
           item = {
             children: item,
           }
         }
-        item = Component.extendProps({}, itemDefaults, item)
+        item = Component.extendProps({}, itemDefaults, item)*/
         children.push({ component: ListItemWrapper, item: item })
       }
     }
