@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Control from '../Control/index'
-import OptionList from './DefaultOptionList'
+import OptionList from './OptionList'
 
 class RadioList extends Control {
   constructor(props, ...mixins) {

@@ -1,11 +1,9 @@
 import Component from '../Component/index'
 import List from '../List/index'
-import OptionListMixin from './OptionListMixin'
 
 class OptionList extends List {
   constructor(props, ...mixins) {
     const defaults = {
-      gutter: 'x-md',
       itemDefaults: {
         tag: 'label',
         _config: function () {
@@ -30,7 +28,38 @@ class OptionList extends List {
       },
     }
 
-    super(Component.extendProps(defaults, props), OptionListMixin, ...mixins)
+    super(Component.extendProps(defaults, props), ...mixins)
+  }
+
+  _create() {
+    super._create()
+
+    this.radioList = this.parent
+    this.radioList.optionList = this
+  }
+
+  _config() {
+    const listProps = this.radioList.props
+    if (listProps.type == 'radio') {
+      this.setProps({
+        gutter: 'x-md'
+      })
+    }
+    this.setProps({
+      items: listProps.options,
+      itemDefaults: listProps.optionDefaults,
+      itemSelectable: {
+        byClick: true,
+      },
+      selectedItems: listProps.value,
+      events: {
+        itemSelectionChange: () => {
+          this.radioList._onValueChange()
+        },
+      },
+    })
+
+    super._config()
   }
 }
 
