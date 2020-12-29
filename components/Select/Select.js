@@ -8,7 +8,16 @@ class Select extends Control {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
-      optionDefaults: {},
+      optionDefaults: {
+        key() {
+          return this.props.value
+        },
+        _config: function () {
+          this.setProps({
+            children: this.props.text
+          })
+        }
+      },
       selectedSingle: {
         classes: {
           'nom-select-single': true,
@@ -165,7 +174,7 @@ class Select extends Control {
     return retOptions
   }
 
-  appendOption() {}
+  appendOption() { }
 }
 
 Component.register(Select)

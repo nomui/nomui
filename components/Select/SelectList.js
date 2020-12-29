@@ -1,50 +1,12 @@
-import Component from '../Component/index'
+import Component, { n } from '../Component/index'
 import List from '../List/index'
+import SelectListItemMixin from './SelectListItemMixin'
 
 class SelectList extends List {
   constructor(props, ...mixins) {
     const defaults = {
       gutter: 'x-md',
       cols: 1,
-      itemDefaults: {
-        key() {
-          return this.props.value
-        },
-        selectable: {
-          byClick: true,
-          canRevert: true,
-        },
-        _config: function () {
-          this.setProps({
-            children: this.props.text,
-            selectable: {
-              canRevert: this.list.selectControl.props.multiple === true,
-            },
-          })
-        },
-        events: {
-          select() {
-            const { selectControl } = this.list
-            const selectProps = selectControl.props
-
-            const selectedOption = { text: this.props.text, value: this.props.value }
-            if (selectProps.multiple === false) {
-              selectControl.selectedSingle.update(selectedOption)
-              selectControl.popup.hide()
-            } else {
-              selectControl.selectedMultiple.appendItem(selectedOption)
-            }
-          },
-          unselect() {
-            const { selectControl } = this.list
-            const selectProps = selectControl.props
-
-            if (selectProps.multiple === true) {
-              selectControl.selectedMultiple.removeItem(this.key)
-            }
-          },
-        },
-      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -61,7 +23,7 @@ class SelectList extends List {
     const selectProps = this.selectControl.props
     this.setProps({
       items: selectProps.options,
-      itemDefaults: selectProps.optionDefaults,
+      itemDefaults: n(null, selectProps.optionDefaults, null, [SelectListItemMixin]),
       itemSelectable: {
         multiple: selectProps.multiple,
         byClick: true,
