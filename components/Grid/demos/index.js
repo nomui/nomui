@@ -1,6 +1,7 @@
 define(
     [
         './basic.js',
+        './styles.js',
         './frozen-header.js'
     ],
     function () {
