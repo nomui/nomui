@@ -45,7 +45,7 @@ class Badge extends Component {
       children: [
         Component.normalizeIconProps(icon),
         text && { tag: 'span', children: text },
-        number && { tag: 'span', children: number },
+        number && { tag: 'span', children: number > 99 ? '99+' : number },
       ],
     })
   }
