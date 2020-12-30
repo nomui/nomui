@@ -13,6 +13,8 @@ class Grid extends Component {
   }
 
   _config() {
+    this._propStyleClasses = ['bordered']
+    
     let { line } = this.props
 
     this._calcMinWidth()
