@@ -9,18 +9,18 @@ define([], function () {
                 items: [
                     {
                         component: 'Textbox',
-                        leftIcon: 'person',
+                        leftIcon: 'user',
                         placeholder: '左图标',
                     },
                     {
                         component: 'Textbox',
-                        rightIcon: 'check',
+                        rightIcon: 'check-circle',
                         placeholder: '右图标',
                     },
                     {
                         component: 'Textbox',
-                        leftIcon: 'person',
-                        rightIcon: 'check',
+                        leftIcon: 'left',
+                        rightIcon: 'right',
                         placeholder: '左右图标',
                     }
                 ]

@@ -1,4 +1,4 @@
-import Component from '../Component/index'
+import Component, { n } from '../Component/index'
 import Panel from '../Panel/index'
 import { isPlainObject, isString } from '../util/index'
 import ModalContentMixin from './ModalContentMixin'
@@ -41,7 +41,7 @@ class ModalDialog extends Component {
           props,
         )
         this.update({
-          children: { props: props, mixins: [ModalContentMixin] },
+          children: n(null, props, null, [ModalContentMixin]),
         })
       })
     }
@@ -51,7 +51,7 @@ class ModalDialog extends Component {
     const { content } = this.modal.props
     if (isPlainObject(content)) {
       this.setProps({
-        children: { props: content, mixins: [ModalContentMixin] },
+        children: n(null, content, null, [ModalContentMixin]),
       })
     }
   }
