@@ -7,6 +7,7 @@ class Tabs extends Component {
     const defaults = {
       tabs: [],
       selectedTab: 0,
+      uistyle: 'plain' // hat,card,line,pill
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

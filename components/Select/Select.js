@@ -103,9 +103,19 @@ class Select extends Control {
     this.popup = new SelectPopup({ trigger: this })
 
     if (multiple === true) {
-      this.selectedMultiple.update({ items: this._getOptions(value) })
+      let initValueOptions = this._getOptions(value)
+      if (initValueOptions.length) {
+        this.selectedMultiple.update({ items: initValueOptions })
+        this.currentValue = initValueOptions.map(function (item) {
+          return item.value
+        })
+      }
     } else {
-      this.selectedSingle.update(this._getOption(value))
+      let initOption = this._getOption(value)
+      if (initOption !== null) {
+        this.selectedSingle.update(initOption)
+        this.currentValue = initOption.value
+      }
     }
   }
 
@@ -129,20 +139,26 @@ class Select extends Control {
   }
 
   _getValue() {
-    const selected = this.getSelectedOption()
-    if (selected !== null) {
-      if (Array.isArray(selected)) {
-        const vals = selected.map(function (item) {
-          return item.props.value
-        })
-
-        return vals
-      }
-
-      return selected.props.value
+    if (!this.optionList) {
+      return this.currentValue
     }
+    else {
+      const selected = this.getSelectedOption()
+      if (selected !== null) {
+        if (Array.isArray(selected)) {
+          const vals = selected.map(function (item) {
+            return item.props.value
+          })
 
-    return null
+          return vals
+        }
+
+        return selected.props.value
+      }
+      else {
+        return null
+      }
+    }
   }
 
   _setValue(value, triggerChange) {
