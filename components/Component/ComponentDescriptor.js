@@ -9,6 +9,10 @@ class ComponentDescriptor {
     }
 
     getProps() {
+        if (this.props instanceof ComponentDescriptor) {
+            this.mixins = this.mixins.concat(this.props.mixins)
+            this.props = this.props.getProps()
+        }
         if (this.tagOrComponent) {
             this.props.component = this.tagOrComponent
         }
