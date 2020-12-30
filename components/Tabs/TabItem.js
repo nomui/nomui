@@ -31,8 +31,10 @@ class TabItem extends Component {
   }
 
   _select() {
-    const tabContent = this.list.getTabContent()
-    tabContent.showPanel(this.key)
+    setTimeout(() => {
+      const tabContent = this.list.getTabContent()
+      tabContent.showPanel(this.key)
+    }, 0)
   }
 
   getItemUrl(url) {

@@ -27,7 +27,7 @@ class List extends Component {
 
   _config() {
     this._propStyleClasses = ['gutter', 'line', 'align', 'justify', 'cols']
-    const { items, itemDefaults, wrappers, wrapperDefaults } = this.props
+    const { items, wrappers, wrapperDefaults } = this.props
     const children = []
     if (Array.isArray(wrappers) && wrappers.length > 0) {
       for (let i = 0; i < wrappers.length; i++) {
@@ -40,17 +40,10 @@ class List extends Component {
         )
         children.push(wrapper)
       }
-    } else if (Array.isArray(items) && items.length > 0) {
+    }
+    else if (Array.isArray(items) && items.length > 0) {
       for (let i = 0; i < items.length; i++) {
-        let item = items[i]
-        /*
-        if (isString(item)) {
-          item = {
-            children: item,
-          }
-        }
-        item = Component.extendProps({}, itemDefaults, item)*/
-        children.push({ component: ListItemWrapper, item: item })
+        children.push({ component: ListItemWrapper, item: items[i] })
       }
     }
 

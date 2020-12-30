@@ -584,6 +584,11 @@ class Component {
     if (props.type) {
       this._propStyleClasses.push('type')
     }
+
+    if (props.uistyle) {
+      this._propStyleClasses.push('uistyle')
+    }
+
     for (let i = 0; i < this._propStyleClasses.length; i++) {
       const modifier = this._propStyleClasses[i]
       const modifierVal = this.props[modifier]

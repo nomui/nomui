@@ -9,7 +9,7 @@ class TabList extends List {
         component: TabItem,
       },
       tabContent: null,
-      type: 'horizontal',
+      direction: 'horizontal',
       itemSelectable: {
         byClick: true,
       },
@@ -17,6 +17,12 @@ class TabList extends List {
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
+  }
+
+  _config() {
+    this._propStyleClasses = ['direction']
+
+    super._config()
   }
 
   getTabContent() {
