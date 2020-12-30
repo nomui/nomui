@@ -20,7 +20,7 @@ class SelectPopup extends Popup {
     this.setProps({
       attrs: {
         style: {
-          width: `${this.selectControl.offsetWidth()} px`,
+          width: `${this.selectControl.offsetWidth()}px`,
         },
       },
       children: {

@@ -87,7 +87,7 @@ define([], {
                             { text: 'RadioList', subtext: '单选列表', id: 'RadioList', url: '#!components!index?type=RadioList' },
                             { text: 'CheckboxList', subtext: '多选列表', id: 'CheckboxList', url: '#!components!index?type=CheckboxList' },
                             { text: 'Select', subtext: '下拉选择', id: 'Select', url: '#!components!index?type=Select' },
-                            { text: 'TreeSelect', subtext: '树选择', id: 'Select', url: '#!components!index?type=TreeSelect' },
+                            { text: 'TreeSelect', subtext: '树选择', id: 'TreeSelect', url: '#!components!index?type=TreeSelect' },
                             { text: 'AutoComplete', subtext: '自动完成', id: 'AutoComplete', url: '#!components!index?type=AutoComplete' },
                             { text: 'Transfer', subtext: '穿梭框', id: 'Transfer', url: '#!components!index?type=Transfer' },
                             { text: 'TimePicker', subtext: '时间选择', id: 'TimePicker', url: '#!components!index?type=TimePicker' },
