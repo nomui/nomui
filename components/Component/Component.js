@@ -8,6 +8,7 @@ import {
   isString,
   normalizeKey,
 } from '../util/index'
+import ComponentDescriptor from './ComponentDescriptor'
 
 const components = {}
 const MIXINS = []
@@ -211,15 +212,10 @@ class Component {
     const { children } = this.props
     if (Array.isArray(children)) {
       for (let i = 0; i < children.length; i++) {
-        const child = children[i]
-        this.appendChild(child, this.props.childDefaults)
+        this.appendChild(children[i])
       }
-    } else if (isPlainObject(children) || isFunction(children)) {
+    } else {
       this.appendChild(children)
-    } else if (isString(children) || isNumeric(children)) {
-      this.element.innerHTML = children
-    } else if (children instanceof DocumentFragment) {
-      this.element.appendChild(children)
     }
   }
 
@@ -273,39 +269,56 @@ class Component {
     this.props = Component.extendProps(this.props, newProps)
   }
 
-  appendChild(childProps, childDefaults) {
-    if (!childProps) {
+  appendChild(child) {
+    if (!child) {
       return
     }
-    let props = childProps
-    let mixins = []
-    if (isString(props)) {
-      this.element.innerHTML = props
-      return
-    }
-    if (isFunction(childProps)) {
-      const fnResult = childProps.call(this)
-      props = fnResult.props
-      mixins = fnResult.mixins
-    }
-    if (isPlainObject(childProps)) {
-      if (childProps.props && childProps.mixins) {
-        props = childProps.props
-        mixins = childProps.mixins
-      }
-    } else if (childProps instanceof DocumentFragment) {
-      this.element.appendChild(childProps)
-    }
-    if (childDefaults !== null && childDefaults !== undefined) {
-      props = Component.extendProps({}, childDefaults, props)
-    }
-    if (props) {
-      props.component = props.component || Component
-      props.reference = this.element
-      props.placement = 'append'
 
-      this.children.push(Component.create(props, ...mixins))
+    const childDefaults = this.props.childDefaults
+    let childDefaultsProps = {}
+    let childDefaultsMixins = []
+    let childProps = {}
+    let childMixins = []
+    let props = {}
+    let mixins = []
+
+    if (childDefaults) {
+      if (isPlainObject(childDefaults)) {
+        childDefaultsProps = childDefaults
+      } else if (childDefaults instanceof ComponentDescriptor) {
+        childDefaultsProps = childDefaults.getProps()
+        childDefaultsMixins = childDefaults.mixins
+      }
     }
+
+    if (isPlainObject(child)) {
+      childProps = child
+    } else if (child instanceof ComponentDescriptor) {
+      childProps = child.getProps()
+      childMixins = child.mixins
+    } else if (isString(child) || isNumeric(child)) {
+      if (isPlainObject(childDefaults)) {
+        childProps = { children: child }
+      } else if (child[0] === '<') {
+        this.element.innerHTML = child
+        return
+      } else {
+        this.element.appendChild(document.createTextNode(child))
+        return
+      }
+    } else if (child instanceof DocumentFragment) {
+      this.element.appendChild(child)
+      return
+    }
+
+    props = Component.extendProps({}, childDefaultsProps, childProps, {
+      reference: this.element,
+      placement: 'append',
+    })
+
+    mixins = [...childDefaultsMixins, ...childMixins]
+
+    this.children.push(Component.create(props, ...mixins))
   }
 
   disable() {
@@ -565,6 +578,11 @@ class Component {
     if (props.type) {
       this._propStyleClasses.push('type')
     }
+
+    if (props.uistyle) {
+      this._propStyleClasses.push('uistyle')
+    }
+
     for (let i = 0; i < this._propStyleClasses.length; i++) {
       const modifier = this._propStyleClasses[i]
       const modifierVal = this.props[modifier]
@@ -800,5 +818,9 @@ Component.components = components
 Component.mixins = MIXINS
 
 Object.assign(Component.prototype, Events.prototype)
+
+export function n(tagOrComponent, props, children, mixins) {
+  return new ComponentDescriptor(tagOrComponent, props, children, mixins)
+}
 
 export default Component

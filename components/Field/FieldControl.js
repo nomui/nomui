@@ -1,4 +1,4 @@
-import Component from '../Component/index'
+import Component, { n } from '../Component/index'
 import ControlMixin from './ControlMixin'
 
 class FieldControl extends Component {
@@ -25,12 +25,8 @@ class FieldControl extends Component {
     })
 
     this.setProps({
-      children: function () {
-        return {
-          props: this.props.control,
-          mixins: [ControlMixin],
-        }
-      },
+      children: this.props.control,
+      childDefaults: n(null, null, null, [ControlMixin])
     })
   }
 }

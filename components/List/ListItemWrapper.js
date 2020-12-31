@@ -1,4 +1,4 @@
-import Component from '../Component/index'
+import Component, { n } from '../Component/index'
 import ListItemMixin from './ListItemMixin'
 
 class ListItemWrapper extends Component {
@@ -17,12 +17,13 @@ class ListItemWrapper extends Component {
   }
 
   _config() {
+    const { item } = this.props
+    const { itemDefaults } = this.list.props
+
     this.setProps({
       selectable: false,
-      children: {
-        props: this.props.item,
-        mixins: [ListItemMixin],
-      },
+      children: item,
+      childDefaults: n(null, itemDefaults, null, [ListItemMixin]),
     })
   }
 }

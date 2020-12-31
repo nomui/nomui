@@ -5,13 +5,7 @@ import GridHeader from './GridHeader'
 
 class Grid extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      columns: [],
-      data: [],
-      frozenHeader: false,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Grid.defaults, props), ...mixins)
   }
 
   _create() {
@@ -19,13 +13,20 @@ class Grid extends Component {
   }
 
   _config() {
+    this._propStyleClasses = ['bordered']
+
+    const { line } = this.props
+
     this._calcMinWidth()
 
     this.setProps({
       classes: {
         'm-frozen-header': this.props.frozenHeader,
       },
-      children: [{ component: GridHeader }, { component: GridBody }],
+      children: [
+        { component: GridHeader, line: line },
+        { component: GridBody, line: line },
+      ],
     })
   }
 
@@ -54,6 +55,12 @@ class Grid extends Component {
       container: this.parent,
     })
   }
+}
+
+Grid.defaults = {
+  columns: [],
+  data: [],
+  frozenHeader: false,
 }
 
 Component.register(Grid)

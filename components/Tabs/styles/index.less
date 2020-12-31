@@ -5,13 +5,14 @@
 
     a {
         color: inherit;
+        text-decoration: none;
 
         &:hover {
-            color: inherit;
+            color: @link-hover-color;
         }
     }
 
-    &.nom-tab-list-horizontal {
+    &.p-direction-horizontal {
         display: flex;
         flex-wrap: wrap;
 
@@ -21,6 +22,22 @@
             padding: 10px 15px;
             white-space: nowrap;
             text-decoration: none;
+        }
+    }
+
+    &.p-uistyle-plain {
+        >.nom-list-item-wrapper>.nom-list-item {
+            &.s-selected {
+                color: @primary;
+            }
+        }
+    }
+}
+
+.nom-tabs {
+    &.p-uistyle-plain {
+        >.nom-tab-content {
+            margin-top: 1rem;
         }
     }
 }

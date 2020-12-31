@@ -8,7 +8,16 @@ class Select extends Control {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
-      optionDefaults: {},
+      optionDefaults: {
+        key() {
+          return this.props.value
+        },
+        _config: function () {
+          this.setProps({
+            children: this.props.text,
+          })
+        },
+      },
       selectedSingle: {
         classes: {
           'nom-select-single': true,
@@ -94,9 +103,19 @@ class Select extends Control {
     this.popup = new SelectPopup({ trigger: this })
 
     if (multiple === true) {
-      this.selectedMultiple.update({ items: this._getOptions(value) })
+      const initValueOptions = this._getOptions(value)
+      if (initValueOptions.length) {
+        this.selectedMultiple.update({ items: initValueOptions })
+        this.currentValue = initValueOptions.map(function (item) {
+          return item.value
+        })
+      }
     } else {
-      this.selectedSingle.update(this._getOption(value))
+      const initOption = this._getOption(value)
+      if (initOption !== null) {
+        this.selectedSingle.update(initOption)
+        this.currentValue = initOption.value
+      }
     }
   }
 
@@ -120,6 +139,10 @@ class Select extends Control {
   }
 
   _getValue() {
+    if (!this.optionList) {
+      return this.currentValue
+    }
+
     const selected = this.getSelectedOption()
     if (selected !== null) {
       if (Array.isArray(selected)) {

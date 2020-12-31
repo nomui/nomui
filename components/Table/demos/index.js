@@ -1,7 +1,8 @@
 define(
     [
-        './basic.js',
-        './with-pager.js'
+        './basic.js',        
+        './styles.js',
+        './with-pager.js',
     ],
     function () {
         return {

@@ -158,6 +158,7 @@ define([], {
                 id: 'Avatar',
                 url: '#!components!index?type=Avatar',
               },
+              { text: 'Badge', subtext: '徽标', id: 'Badge', url: '#!components!index?type=Badge' },
               {
                 text: 'Collapse',
                 subtext: '折叠面板',
@@ -247,7 +248,7 @@ define([], {
               {
                 text: 'TreeSelect',
                 subtext: '树选择',
-                id: 'Select',
+                id: 'TreeSelect',
                 url: '#!components!index?type=TreeSelect',
               },
               {

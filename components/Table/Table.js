@@ -19,6 +19,7 @@ class Table extends Component {
   }
 
   _config() {
+    this._propStyleClasses = ['line', 'bordered']
     this.setProps({
       tag: 'table',
       children: [

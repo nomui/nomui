@@ -13,9 +13,12 @@ table.nom-table {
         position: relative;
         padding-right: 2rem;
         font-weight: 500;
-        background-color: #fafafa;
+        line-height: 26px;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        background-color: #F8F8F8;
+        background-image: linear-gradient(to bottom, #FCFCFC 0, #F8F8F8 100%);
 
-        > .nom-table-filter {
+        >.nom-table-filter {
             position: absolute;
             top: 0;
             right: 0;
@@ -29,14 +32,16 @@ table.nom-table {
         }
     }
 
-    &.m-line-row {
+    &.p-line-row {
+
         td,
         th {
             border-bottom: 1px solid @oc-gray-2;
         }
     }
 
-    &.m-line-col {
+    &.p-line-col {
+
         td,
         th {
             border-right: 1px solid @oc-gray-2;
@@ -47,7 +52,8 @@ table.nom-table {
         }
     }
 
-    &.m-line-both {
+    &.p-line-both {
+
         td,
         th {
             border-right: 1px solid @oc-gray-2;
@@ -59,7 +65,7 @@ table.nom-table {
         }
     }
 
-    &.m-bordered {
+    &.p-bordered {
         border: 1px solid @oc-gray-2;
     }
 }
