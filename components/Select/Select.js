@@ -14,9 +14,9 @@ class Select extends Control {
         },
         _config: function () {
           this.setProps({
-            children: this.props.text
+            children: this.props.text,
           })
-        }
+        },
       },
       selectedSingle: {
         classes: {
@@ -103,7 +103,7 @@ class Select extends Control {
     this.popup = new SelectPopup({ trigger: this })
 
     if (multiple === true) {
-      let initValueOptions = this._getOptions(value)
+      const initValueOptions = this._getOptions(value)
       if (initValueOptions.length) {
         this.selectedMultiple.update({ items: initValueOptions })
         this.currentValue = initValueOptions.map(function (item) {
@@ -111,7 +111,7 @@ class Select extends Control {
         })
       }
     } else {
-      let initOption = this._getOption(value)
+      const initOption = this._getOption(value)
       if (initOption !== null) {
         this.selectedSingle.update(initOption)
         this.currentValue = initOption.value
@@ -142,23 +142,21 @@ class Select extends Control {
     if (!this.optionList) {
       return this.currentValue
     }
-    else {
-      const selected = this.getSelectedOption()
-      if (selected !== null) {
-        if (Array.isArray(selected)) {
-          const vals = selected.map(function (item) {
-            return item.props.value
-          })
 
-          return vals
-        }
+    const selected = this.getSelectedOption()
+    if (selected !== null) {
+      if (Array.isArray(selected)) {
+        const vals = selected.map(function (item) {
+          return item.props.value
+        })
 
-        return selected.props.value
+        return vals
       }
-      else {
-        return null
-      }
+
+      return selected.props.value
     }
+
+    return null
   }
 
   _setValue(value, triggerChange) {
@@ -190,7 +188,7 @@ class Select extends Control {
     return retOptions
   }
 
-  appendOption() { }
+  appendOption() {}
 }
 
 Component.register(Select)

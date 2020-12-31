@@ -14,8 +14,8 @@ class Grid extends Component {
 
   _config() {
     this._propStyleClasses = ['bordered']
-    
-    let { line } = this.props
+
+    const { line } = this.props
 
     this._calcMinWidth()
 
@@ -23,7 +23,10 @@ class Grid extends Component {
       classes: {
         'm-frozen-header': this.props.frozenHeader,
       },
-      children: [{ component: GridHeader, line: line }, { component: GridBody, line: line }],
+      children: [
+        { component: GridHeader, line: line },
+        { component: GridBody, line: line },
+      ],
     })
   }
 

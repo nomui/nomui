@@ -7,7 +7,7 @@ class Tabs extends Component {
     const defaults = {
       tabs: [],
       selectedTab: 'tab0',
-      uistyle: 'plain' // hat,card,line,pill
+      uistyle: 'plain', // hat,card,line,pill
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -17,7 +17,7 @@ class Tabs extends Component {
     const that = this
     const tabItems = []
     const tabPanles = []
-    let { tabs, uistyle } = this.props
+    const { tabs, uistyle } = this.props
     for (let i = 0; i < tabs.length; i++) {
       const tab = tabs[i]
       tab.item.key = tab.item.key || `tab${i}`

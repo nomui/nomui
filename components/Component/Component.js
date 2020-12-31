@@ -214,8 +214,7 @@ class Component {
       for (let i = 0; i < children.length; i++) {
         this.appendChild(children[i])
       }
-    }
-    else {
+    } else {
       this.appendChild(children)
     }
   }
@@ -275,19 +274,18 @@ class Component {
       return
     }
 
-    let childDefaults = this.props.childDefaults,
-      childDefaultsProps = {},
-      childDefaultsMixins = [],
-      childProps = {},
-      childMixins = [],
-      props = {},
-      mixins = []
+    const childDefaults = this.props.childDefaults
+    let childDefaultsProps = {}
+    let childDefaultsMixins = []
+    let childProps = {}
+    let childMixins = []
+    let props = {}
+    let mixins = []
 
     if (childDefaults) {
       if (isPlainObject(childDefaults)) {
         childDefaultsProps = childDefaults
-      }
-      else if (childDefaults instanceof ComponentDescriptor) {
+      } else if (childDefaults instanceof ComponentDescriptor) {
         childDefaultsProps = childDefaults.getProps()
         childDefaultsMixins = childDefaults.mixins
       }
@@ -295,32 +293,28 @@ class Component {
 
     if (isPlainObject(child)) {
       childProps = child
-    }
-    else if (child instanceof ComponentDescriptor) {
+    } else if (child instanceof ComponentDescriptor) {
       childProps = child.getProps()
       childMixins = child.mixins
-    }
-    else if (isString(child) || isNumeric(child)) {
+    } else if (isString(child) || isNumeric(child)) {
       if (isPlainObject(childDefaults)) {
         childProps = { children: child }
-      }
-      else if (child[0] === '<') {
+      } else if (child[0] === '<') {
         this.element.innerHTML = child
         return
-      }
-      else {
+      } else {
         this.element.appendChild(document.createTextNode(child))
         return
       }
-    }
-    else if (child instanceof DocumentFragment) {
+    } else if (child instanceof DocumentFragment) {
       this.element.appendChild(child)
       return
     }
 
-    props = Component.extendProps({},
-      childDefaultsProps, childProps,
-      { reference: this.element, placement: 'append' })
+    props = Component.extendProps({}, childDefaultsProps, childProps, {
+      reference: this.element,
+      placement: 'append',
+    })
 
     mixins = [...childDefaultsMixins, ...childMixins]
 

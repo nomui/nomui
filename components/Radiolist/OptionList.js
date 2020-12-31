@@ -40,9 +40,9 @@ class OptionList extends List {
 
   _config() {
     const listProps = this.radioList.props
-    if (listProps.type == 'radio') {
+    if (listProps.type === 'radio') {
       this.setProps({
-        gutter: 'x-md'
+        gutter: 'x-md',
       })
     }
     this.setProps({

@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { extend, isFunction, isString } from '../util/index'
+import { extend, isFunction } from '../util/index'
 import ListItemWrapper from './ListItemWrapper'
 
 class List extends Component {
@@ -40,8 +40,7 @@ class List extends Component {
         )
         children.push(wrapper)
       }
-    }
-    else if (Array.isArray(items) && items.length > 0) {
+    } else if (Array.isArray(items) && items.length > 0) {
       for (let i = 0; i < items.length; i++) {
         children.push({ component: ListItemWrapper, item: items[i] })
       }

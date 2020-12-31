@@ -17,13 +17,13 @@ class ListItemWrapper extends Component {
   }
 
   _config() {
-    let { item } = this.props,
-      { itemDefaults } = this.list.props
+    const { item } = this.props
+    const { itemDefaults } = this.list.props
 
     this.setProps({
       selectable: false,
       children: item,
-      childDefaults: n(null, itemDefaults, null, [ListItemMixin])
+      childDefaults: n(null, itemDefaults, null, [ListItemMixin]),
     })
   }
 }
