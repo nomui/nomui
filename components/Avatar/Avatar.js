@@ -17,7 +17,7 @@ class Avatar extends Component {
 
   _config() {
     const { text, icon, src, alt } = this.props
-
+    this._propStyleClasses = ['size']
     if (src) {
       this.setProps({
         classes: {

@@ -1,47 +1,47 @@
 .nom-icon {
+  display: inline-block;
+  color: inherit;
+  font-style: normal;
+  text-align: center;
+  text-transform: none;
+  vertical-align: -0.125em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  &.m-border {
+    position: relative;
     display: inline-block;
-    color: inherit;
-    font-style: normal;
+    width: 1.5em;
+    height: 1.5em;
     text-align: center;
-    text-transform: none;
-    vertical-align: -.125em;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    border: 1px solid;
 
-    &.m-border {
-        position: relative;
-        display: inline-block;
-        width: 1.5em;
-        height: 1.5em;
-        text-align: center;
-        border: 1px solid;
-
-        >i {
-            position: relative;
-            top: 50%;
-            left: 50%;
-            z-index: 2;
-            display: block;
-            transform: translate(-50%, -50%);
-        }
+    > i {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      z-index: 2;
+      display: block;
+      transform: translate(-50%, -50%);
     }
+  }
 
-    &.m-bg {
-        position: relative;
-        display: inline-block;
-        width: 1.5em;
-        height: 1.5em;
-        text-align: center;
-        background-color: @oc-gray-2;
+  &.m-bg {
+    position: relative;
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+    background-color: @oc-gray-2;
 
-        >i {
-            position: relative;
-            top: 50%;
-            left: 50%;
-            z-index: 2;
-            display: block;
-            transform: translate(-50%, -50%);
-        }
+    > i {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      z-index: 2;
+      display: block;
+      transform: translate(-50%, -50%);
     }
+  }
 }
