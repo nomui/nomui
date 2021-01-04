@@ -12,8 +12,7 @@ class TabList extends List {
       direction: 'horizontal',
       itemSelectable: {
         byClick: true,
-      },
-      gutter: 'md',
+      }
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

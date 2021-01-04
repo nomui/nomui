@@ -6,7 +6,7 @@ class RadioList extends Control {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
-      type: 'radio',
+      uistyle: 'radio',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

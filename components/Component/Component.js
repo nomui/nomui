@@ -568,6 +568,7 @@ class Component {
     const { props } = this
 
     const classes = []
+    let propClasses = []
 
     const componentTypeClasses = this._getComponentTypeClasses(this)
     for (let i = 0; i < componentTypeClasses.length; i++) {
@@ -575,16 +576,17 @@ class Component {
       classes.push(`nom-${hyphenate(componentTypeClass)}`)
     }
 
+    propClasses = propClasses.concat(this._propStyleClasses)
     if (props.type) {
-      this._propStyleClasses.push('type')
+      propClasses.push('type')
     }
 
     if (props.uistyle) {
-      this._propStyleClasses.push('uistyle')
+      propClasses.push('uistyle')
     }
 
-    for (let i = 0; i < this._propStyleClasses.length; i++) {
-      const modifier = this._propStyleClasses[i]
+    for (let i = 0; i < propClasses.length; i++) {
+      const modifier = propClasses[i]
       const modifierVal = this.props[modifier]
       if (modifierVal !== null && modifierVal !== undefined) {
         if (modifierVal === true) {

@@ -1,6 +1,7 @@
 define(
     [
-        './basic.js'
+        './basic.js',
+        './uistyle.js'
     ],
     function () {
         return {
