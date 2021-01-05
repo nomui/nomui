@@ -3,7 +3,7 @@
 ## TimeLine
 
 | 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | mode | 通过设置 mode 可以改变时间轴和内容的相对位置 | `left | alternate | right ` | left |
 | pending | 指定最后一个幽灵节点是否存在或内容 | `boolean | Component ` | false |
 | pendingDot | 当最后一个幽灵节点存在時，指定其时间图点 | `Component ` | `{component:'Icon',type:'loading'}` |
@@ -13,7 +13,7 @@
 ## TimeLineItem
 
 | 参数     | 说明                                                | 类型         | 默认值 |
-| -------- | --------------------------------------------------- | ------------ | ------ | --- |
+| -------- | --------------------------------------------------- | ------------ | ------ |
 | color    | 指定圆圈颜色 blue, red, green, gray，或自定义的色值 | `string `    | blue   |
 | dot      | 自定义时间轴点                                      | `Component ` | -      |
 | label    | 设置标签                                            | `Component ` | -      |
