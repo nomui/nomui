@@ -1,5 +1,3 @@
-import './index.less'
-
 export { default as Alert } from './Alert/index'
 export { default as App } from './App/index'
 export { default as View } from './App/View'
@@ -36,5 +34,6 @@ export { default as Spinner } from './Spinner/index'
 export { default as Table } from './Table/index'
 export { default as Tabs } from './Tabs/index'
 export { default as Textbox } from './Textbox/index'
+export { default as Timeline } from './Timeline/index'
 export { default as TimePicker } from './TimePicker/index'
 export { default as Tooltip } from './Tooltip/index'
