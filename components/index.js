@@ -1,5 +1,3 @@
-import './index.less'
-
 export { default as Alert } from './Alert/index'
 export { default as App } from './App/index'
 export { default as View } from './App/View'
