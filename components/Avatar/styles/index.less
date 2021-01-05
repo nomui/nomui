@@ -1,3 +1,4 @@
+@avatar-prefix-cls: ~'nom-avatar';
 @avatar-bg: #ccc;
 @avatar-color: #fff;
 
@@ -13,11 +14,8 @@
 @avatar-font-size-sm: 14px;
 @avatar-font-size-xs: 6px;
 @avatar-border-radius: @border-radius;
-// @avatar-group-overlapping: -8px;
-// @avatar-group-space: 3px;
-// @avatar-group-border-color: #fff;
 
-.nom-avatar {
+.@{avatar-prefix-cls} {
   position: relative;
   display: inline-block;
   overflow: hidden;
