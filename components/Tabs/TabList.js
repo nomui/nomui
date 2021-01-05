@@ -10,6 +10,7 @@ class TabList extends List {
       },
       tabContent: null,
       direction: 'horizontal',
+      uistyle: 'plain',
       itemSelectable: {
         byClick: true,
       }
@@ -20,6 +21,9 @@ class TabList extends List {
 
   _config() {
     this._propStyleClasses = ['direction']
+    this.setProps({
+      selectedItems: this.props.selectedTab
+    })
 
     super._config()
   }

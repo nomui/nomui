@@ -578,11 +578,11 @@ class Component {
 
     propClasses = propClasses.concat(this._propStyleClasses)
     if (props.type) {
-      propClasses.push('type')
+      propClasses.push('type') 
     }
 
     if (props.uistyle) {
-      propClasses.push('uistyle')
+      propClasses.push('uistyle') 
     }
 
     for (let i = 0; i < propClasses.length; i++) {

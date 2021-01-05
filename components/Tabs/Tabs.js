@@ -17,7 +17,7 @@ class Tabs extends Component {
     const that = this
     const tabItems = []
     const tabPanles = []
-    const { tabs, uistyle } = this.props
+    const { tabs, uistyle, selectedTab } = this.props
     for (let i = 0; i < tabs.length; i++) {
       const tab = tabs[i]
       tab.item.key = tab.item.key || `tab${i}`
@@ -32,7 +32,7 @@ class Tabs extends Component {
         name: 'tabList',
         items: tabItems,
         uistyle: uistyle,
-        selectedItems: this.props.selectedTab,
+        selectedTab: selectedTab,
         tabContent: function () {
           return that.tabContent
         },

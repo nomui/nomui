@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp build",
-    "watch":"gulp default",
+    "watch": "gulp default",
     "dev": "npm-run-all --parallel watch start",
     "start": "serve",
     "patch": "npm version patch",
