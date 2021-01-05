@@ -4,6 +4,8 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
     title: null,
     subtitle: null,
     demos: [],
+    docs: '敬请期待',
+    tab: 'demo',
     _config: function () {
       this.setProps({
         header: {
@@ -14,46 +16,81 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                 title: this.props.title,
                 subtitle: this.props.subtitle,
               },
+              nav: {
+                component: 'TabList',
+                selectedTab: this.props.tab,
+                tabContent: function () {
+                  return this.$view.refs.tabContent
+                },
+                items: [
+                  {
+                    key: 'demo',
+                    text: '示例'
+                  },
+                  {
+                    key: 'docs',
+                    text: '文档'
+                  }
+                ]
+              }
             },
           ],
         },
         body: {
-          children: [
-            {
-              component: 'Layout',
-              sider: {
-                children: [
-                  {
-                    component: 'Menu',
-                    name: 'DemoMenu',
-                    items: this.props.demos,
-                    itemDefaults: {
-                      _config: function () {
-                        this.props.text = this.props.title
-                      },
-                      styles: {
-                        hover: {
-                          text: 'primary',
+          children: {
+            component: 'TabContent',
+            ref: 'tabContent',
+            selectedPanel: this.props.tab,
+            attrs: {
+              id: 'DemoContent',
+            },
+            panels: [
+              {
+                key: 'demo',
+                children: {
+                  component: 'Layout',
+                  sider: {
+                    children: [
+                      {
+                        component: 'Menu',
+                        name: 'DemoMenu',
+                        items: this.props.demos,
+                        itemDefaults: {
+                          _config: function () {
+                            this.props.text = this.props.title
+                          },
+                          styles: {
+                            hover: {
+                              text: 'primary',
+                            },
+                          },
                         },
                       },
+                    ],
+                  },
+                  body: {
+                    children: Array.prototype.slice.call(this.props.demos),
+                    childDefaults: {
+                      component: demoPanel,
+                      componentType: this.$route.query.type,
+                      cat: this.$route.query.cat,
+                    },
+                    styles: {
+                      padding: '1',
+                      margins: 'x',
                     },
                   },
-                ],
+                }
               },
-              body: {
-                children: Array.prototype.slice.call(this.props.demos),
-                childDefaults: {
-                  component: demoPanel,
-                  componentType: this.$route.query.type,
-                  cat: this.$route.query.cat,
+              {
+                key: 'docs',
+                attrs: {
+                  id: 'nice'
                 },
-                styles: {
-                  padding: '1',
-                  margins: 'x',
-                },
-              },
-            },
-          ],
+                children: this.props.docs
+              }
+            ]
+          },
         },
       })
     },
@@ -67,13 +104,19 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
     },
     methods: {
       renderDemoIndex: function () {
-        const { type = 'component', cat } = this.$route.query
+        const { type = 'component', cat, tab = 'demo' } = this.$route.query
         let url = `/components/${type}/demos/index.js`
         if (cat) {
           url = `/components/${type}/demos/${cat}/index.js`
         }
+        let docUrl = `text!/components/${type}/index.md`
 
         require([url], (props) => {
+          require([docUrl], (docContent) => {
+            props.docs = marked(docContent)
+            props.tab = tab
+            this.update(props)
+          })
           this.update(props)
         })
       },

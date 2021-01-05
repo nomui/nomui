@@ -31,6 +31,10 @@ class TabList extends List {
   getTabContent() {
     return this.props.tabContent.call(this)
   }
+
+  selectTab(param, selectOptions) {
+    this.selectItems(param, selectOptions)
+  }
 }
 
 Component.register(TabList)
