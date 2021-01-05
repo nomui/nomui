@@ -158,6 +158,12 @@ define([], {
                 id: 'Avatar',
                 url: '#!components!index?type=Avatar',
               },
+              {
+                text: 'AvatarGroup',
+                subtext: '头像组',
+                id: 'AvatarGroup',
+                url: '#!components!index?type=AvatarGroup',
+              },
               { text: 'Badge', subtext: '徽标', id: 'Badge', url: '#!components!index?type=Badge' },
               {
                 text: 'Collapse',
