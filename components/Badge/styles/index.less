@@ -1,0 +1,135 @@
+// Button sizes
+.badge-size(@padding-y; @padding-x; @font-size; @line-height; @border-radius) {
+  padding: @padding-y @padding-x;
+  font-size: @font-size;
+  line-height: @line-height;
+  border-radius: @border-radius;
+}
+
+.nom-badge {
+  /* Structure */
+  display: inline-block;
+  color: @text-color-lt;
+  line-height: normal;
+  white-space: nowrap;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-color: @border-color;
+  border-radius: 2px;
+  cursor: pointer;
+  user-select: none;
+  zoom: 1;
+  .badge-size(@padding-y-base; @padding-x-base; @font-size-base; @line-height-base; @border-radius);
+
+  &:hover {
+    background-color: #e6e6e6;
+    background-color: rgba(0, 0, 0, 0.05);
+    outline: none;
+  }
+
+  &:focus,
+  &:hover,
+  &:active,
+  &.active {
+    outline: none;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+
+  a& {
+    &.disabled,
+    fieldset[disabled] & {
+      pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
+    }
+  }
+
+  &.p-size-sm {
+    // line-height: ensure proper height of button next to small input
+    .badge-size(@padding-y-sm; @padding-x-sm; @font-size-sm; @line-height-sm; @border-radius-sm);
+  }
+
+  &.p-size-xs {
+    // line-height: ensure proper height of button next to small input
+    .badge-size(@padding-y-xs; @padding-x-xs; @font-size-sm; @line-height-sm; @border-radius-sm);
+  }
+
+  &.p-size-lg {
+    // line-height: ensure proper height of button next to small input
+    .badge-size(@padding-y-lg; @padding-x-lg; @font-size-lg; @line-height-lg; @border-radius-lg);
+  }
+
+  &.p-size-xl {
+    // line-height: ensure proper height of button next to small input
+    .badge-size(@padding-y-xl; @padding-x-xl; @font-size-xl; @line-height-lg; @border-radius-lg);
+  }
+
+  &.p-plain {
+    background-color: transparent;
+    border: 0;
+
+    &:hover {
+      background-color: #e6e6e6;
+      outline: none;
+    }
+  }
+
+  &.p-with-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* > span {
+        display: inline-block;
+        line-height: 1;
+    } */
+
+  > .nom-icon + span,
+  > span + .nom-icon {
+    margin-left: 0.5rem;
+  }
+
+  &.p-type-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border-radius: 200px;
+    transform: translate(50%, -50%);
+  }
+  &.p-type-dot.p-with-number {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: auto;
+    min-width: 16px;
+    max-width: 30px;
+    height: 16px;
+    padding: 1px 3px;
+    overflow: hidden;
+    font-size: 10px;
+    line-height: 13px;
+    white-space: nowrap;
+    text-align: center;
+    text-overflow: ellipsis;
+    border-radius: 200px;
+    transform: translate(50%, -50%);
+  }
+}
+.nom-badge + .nom-badge {
+  margin-left: 10px;
+}
+
+.s-with-badge {
+  position: relative;
+}
