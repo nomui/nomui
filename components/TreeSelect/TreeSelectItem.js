@@ -4,51 +4,66 @@ import List from '../List/index'
 class TreeSelectItem extends List {
   constructor(props, ...mixins) {
     const defaults = {
-      tag: 'div',
+      tag: 'li',
       items: null,
       // itemSelectable: {
       //   multiple: false,
       //   byClick: true,
       // },
       selected: false,
+      collapsed: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { value, title, key, items, selected } = this.props
+    const { value, title, key, items, selected, collapsed } = this.props
     // const that = this
 
     this.setProps({
-      // tag: 'div',
-      value: value,
-      title: title,
-      key: key,
-      children: items
-        ? [
-            Component.normalizeIconProps(selected ? 'up' : 'down'),
-            {
-              tag: 'span',
-              children: title,
-            },
-            {
-              tag: 'div',
-              classes: {
-                'nom-tree-select-sub': true,
+      // tag:'ul',
+      children: {
+        value: value,
+        title: title,
+        key: key,
+        children: items
+          ? [
+              Component.normalizeIconProps(collapsed ? 'up' : 'right'),
+              {
+                tag: 'span',
+                children: [
+                  Component.normalizeIconProps(selected ? 'blank-square' : 'checked-square'),
+                  {
+                    tag: 'span',
+                    children: title,
+                  },
+                ],
               },
-              children: items,
+              {
+                tag: 'ul',
+                classes: {
+                  'nom-tree-select-sub': true,
+                },
+                children: items,
+              },
+            ]
+          : {
+              tag: 'li',
+              children: {
+                tag: 'span',
+                children: [
+                  Component.normalizeIconProps(selected ? 'blank-square' : 'checked-square'),
+                  {
+                    tag: 'span',
+                    children: title,
+                  },
+                ],
+              },
             },
-          ]
-        : [
-            Component.normalizeIconProps(selected ? 'up' : 'down'),
-            {
-              tag: 'span',
-              children: title,
-            },
-          ],
-      events: {
-        click: function () {},
+        events: {
+          click: function () {},
+        },
       },
     })
   }
