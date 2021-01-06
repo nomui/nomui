@@ -116,8 +116,10 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
             props.docs = marked(docContent)
             props.tab = tab
             this.update(props)
+          }, () => {
+            props.docs = '敬请期待'
+            this.update(props)
           })
-          this.update(props)
         })
       },
     },
