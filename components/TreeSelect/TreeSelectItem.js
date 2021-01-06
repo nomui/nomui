@@ -1,70 +1,41 @@
 import Component from '../Component/index'
+import List from '../List/index'
 
-class TreeSelectItem extends Component {
+class TreeSelectItem extends List {
   constructor(props, ...mixins) {
     const defaults = {
-      key: null,
-      title: null,
-      content: null,
-      collapsed: true,
+      tag: 'div',
+      items: [],
+      itemSelectable: {
+        multiple: false,
+        byClick: true,
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { key, title, content, collapsed } = this.props
-    const that = this
+    const { value, title, key, items } = this.props
+    // const that = this
+
     this.setProps({
       children: [
         {
           tag: 'div',
-          classes: { 'nom-collapse-item-title': true },
-          styles: {
-            padding: '3px',
-          },
+          value: value,
+          title: title,
           key: key,
           children: [
             {
-              ...Component.normalizeIconProps(
-                collapsed ? that.parent.props.icon.default : that.parent.props.icon.open,
-              ),
-              events: {
-                click: function () {
-                  if (!that.parent.props.iconOnly) return
-                  that.setProps({
-                    collapsed: collapsed !== true,
-                  })
-                  that.parent.setProps({
-                    activeKey: that.props.key,
-                  })
-                  that.update(collapsed)
-                },
-              },
+              tag: 'span',
+              children: title,
             },
-            { tag: 'span', children: title },
+            ...items,
           ],
           events: {
-            click: function () {
-              if (that.parent.props.iconOnly) return
-              that.setProps({
-                collapsed: collapsed !== true,
-              })
-              that.parent.setProps({
-                activeKey: that.props.key,
-              })
-              that.update(collapsed)
-            },
+            click: function () {},
           },
-        },
-        {
-          tag: 'div',
-          classes: { 'nom-collapse-item-content': true },
-          styles: {
-            padding: '3px',
-          },
-          hidden: collapsed,
-          children: content,
         },
       ],
     })

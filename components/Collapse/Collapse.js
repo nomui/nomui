@@ -32,7 +32,6 @@ class Collapse extends Component {
         },
       }
     })
-
     this.setProps({
       children: items,
     })

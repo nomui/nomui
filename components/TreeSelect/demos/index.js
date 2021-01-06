@@ -1,7 +1,7 @@
 define(['./basic.js'], function () {
   return {
-    title: 'Collapse',
-    subtitle: '折叠',
+    title: 'TreeSelect',
+    subtitle: '下拉树选择',
     demos: Array.prototype.slice.call(arguments),
   }
 })
