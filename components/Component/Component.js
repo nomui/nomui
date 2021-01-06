@@ -158,6 +158,7 @@ class Component {
   }
 
   update(props) {
+    this._propStyleClasses.length = 0
     this.setProps(props)
     this._off()
     this.off()
@@ -578,11 +579,11 @@ class Component {
 
     propClasses = propClasses.concat(this._propStyleClasses)
     if (props.type) {
-      propClasses.push('type') 
+      propClasses.push('type')
     }
 
     if (props.uistyle) {
-      propClasses.push('uistyle') 
+      propClasses.push('uistyle')
     }
 
     for (let i = 0; i < propClasses.length; i++) {
@@ -749,6 +750,12 @@ class Component {
   _trigger(eventName) {
     const event = new Event(eventName)
     this.element.dispatchEvent(event)
+  }
+
+  _addPropStyle(...props) {
+    props.forEach((value) => {
+      this._propStyleClasses.push(value)
+    })
   }
 
   _mixin(mixins) {
