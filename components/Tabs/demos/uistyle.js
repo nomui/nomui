@@ -25,6 +25,10 @@ define([], function () {
                 value: 'line',
               },
               {
+                text: 'card',
+                value: 'card',
+              },
+              {
                 text: 'pill',
                 value: 'pill',
               },
