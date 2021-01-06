@@ -10,13 +10,14 @@ class TreeSelectItem extends List {
       //   multiple: false,
       //   byClick: true,
       // },
+      selected: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { value, title, key, items } = this.props
+    const { value, title, key, items, selected } = this.props
     // const that = this
 
     this.setProps({
@@ -26,6 +27,7 @@ class TreeSelectItem extends List {
       key: key,
       children: items
         ? [
+            Component.normalizeIconProps(selected ? 'up' : 'down'),
             {
               tag: 'span',
               children: title,
@@ -39,6 +41,7 @@ class TreeSelectItem extends List {
             },
           ]
         : [
+            Component.normalizeIconProps(selected ? 'up' : 'down'),
             {
               tag: 'span',
               children: title,
