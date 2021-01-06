@@ -19,6 +19,12 @@ class TreeSelect extends Control {
             {
               title: 'Child Node2',
               value: '0-0-2',
+              children: [
+                {
+                  title: 'Child Child Node1',
+                  value: '0-0-0-1',
+                },
+              ],
             },
           ],
         },

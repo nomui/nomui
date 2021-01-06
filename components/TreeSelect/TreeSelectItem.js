@@ -5,11 +5,11 @@ class TreeSelectItem extends List {
   constructor(props, ...mixins) {
     const defaults = {
       tag: 'div',
-      items: [],
-      itemSelectable: {
-        multiple: false,
-        byClick: true,
-      },
+      items: null,
+      // itemSelectable: {
+      //   multiple: false,
+      //   byClick: true,
+      // },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -20,24 +20,33 @@ class TreeSelectItem extends List {
     // const that = this
 
     this.setProps({
-      children: [
-        {
-          tag: 'div',
-          value: value,
-          title: title,
-          key: key,
-          children: [
+      // tag: 'div',
+      value: value,
+      title: title,
+      key: key,
+      children: items
+        ? [
             {
               tag: 'span',
               children: title,
             },
-            ...items,
+            {
+              tag: 'div',
+              classes: {
+                'nom-tree-select-sub': true,
+              },
+              children: items,
+            },
+          ]
+        : [
+            {
+              tag: 'span',
+              children: title,
+            },
           ],
-          events: {
-            click: function () {},
-          },
-        },
-      ],
+      events: {
+        click: function () {},
+      },
     })
   }
 

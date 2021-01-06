@@ -41,7 +41,6 @@ class TreeSelectPopup extends Popup {
     }
 
     const children = mapTree(treeData)
-    console.log(children)
 
     this.setProps({
       attrs: {
