@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import TreeItem from './TreeItem'
+import TreeNode from './TreeNode'
 
 class Tree extends Component {
   constructor(props, ...mixins) {
@@ -58,7 +58,7 @@ class Tree extends Component {
         if (item.children && item.children.length > 0) {
           const c = mapTree(item.children)
           return {
-            component: TreeItem,
+            component: TreeNode,
             key: item.value,
             title: item.title,
             value: item.value,
@@ -67,7 +67,7 @@ class Tree extends Component {
           }
         }
         return {
-          component: TreeItem,
+          component: TreeNode,
           key: item.value,
           title: item.title,
           value: item.value,

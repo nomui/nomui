@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import List from '../List/index'
 
-class TreeItem extends List {
+class TreeNode extends List {
   constructor(props, ...mixins) {
     const defaults = {
       tag: 'li',
@@ -54,7 +54,7 @@ class TreeItem extends List {
           {
             tag: 'span',
             classes: {
-              'nom-tree-name': true,
+              'nom-tree-node-name': true,
             },
             children: [
               Component.normalizeIconProps({
@@ -83,7 +83,7 @@ class TreeItem extends List {
             tag: 'ul',
             hidden: !!collapsed,
             classes: {
-              'nom-tree-select-sub': true,
+              'nom-tree-node-sub': true,
             },
             children: items,
           },
@@ -97,7 +97,7 @@ class TreeItem extends List {
         children: {
           tag: 'span',
           classes: {
-            'nom-tree-name': true,
+            'nom-tree-node-name': true,
             indent: true,
           },
           children: [
@@ -129,6 +129,6 @@ class TreeItem extends List {
   }
 }
 
-Component.register(TreeItem)
+Component.register(TreeNode)
 
-export default TreeItem
+export default TreeNode
