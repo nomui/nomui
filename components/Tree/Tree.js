@@ -38,19 +38,28 @@ class Tree extends Component {
       selectable: {
         multiple: true,
       },
-      selected: ['0-0-2', '0-1'],
+      selected: ['0-0-0-1', '0-1'],
+      // selected: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _create() {
+    this.itemRefs = []
+  }
+
   _config() {
+    const that = this
     const { treeData, selected } = this.props
+
     let selectedList = []
-    if (typeof selected === 'string') {
-      selectedList.push(selected)
-    } else {
-      selectedList = selected
+    if (selected) {
+      if (typeof selected === 'string') {
+        selectedList.push(selected)
+      } else {
+        selectedList = selected
+      }
     }
 
     function mapTree(data) {
@@ -62,8 +71,9 @@ class Tree extends Component {
             key: item.value,
             title: item.title,
             value: item.value,
-            status: selectedList.indexOf(item.value) !== -1 ? 1 : 0,
+            checked: selectedList.indexOf(item.value) !== -1,
             items: c,
+            treeProps: that,
           }
         }
         return {
@@ -71,7 +81,8 @@ class Tree extends Component {
           key: item.value,
           title: item.title,
           value: item.value,
-          status: selectedList.indexOf(item.value) !== -1 ? 1 : 0,
+          checked: selectedList.indexOf(item.value) !== -1,
+          treeProps: that,
         }
       })
     }
@@ -86,6 +97,12 @@ class Tree extends Component {
         },
         children: children,
       },
+    })
+  }
+
+  getSelected() {
+    return Object.keys(this.itemRefs).filter((key) => {
+      return this.itemRefs[key].props.checked === true
     })
   }
 }

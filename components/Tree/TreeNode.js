@@ -11,30 +11,52 @@ class TreeNode extends List {
       //   byClick: true,
       // },
       status: 0,
-      selectChild: false,
       collapsed: false,
+      checked: false,
+      checkChild: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _config() {
-    if (this.parent.parent.props.selectChild) {
-      this.props.status = 1
-      this.props.selectChild = true
+  _create() {
+    this.parentTree = this.parent.parent
+    if (this.parentTree instanceof Component.components.Tree) {
+      this.tree = this.parentTree
+    } else if (this.parentTree instanceof Component.components.TreeNode) {
+      this.tree = this.parentTree.tree
     }
 
-    const { value, title, key, items, status, collapsed, selectChild } = this.props
+    this.tree.itemRefs[this.key] = this
+  }
+
+  _config() {
+    if (this.parentTree.props.checkChild) {
+      this.props.checked = true
+      if (this.props.items) {
+        this.props.checkChild = this.props.checked
+      }
+    }
+
+    const { value, title, key, items, checked, collapsed } = this.props
     const that = this
 
-    let checked = null
-    if (status === 0) {
-      checked = 'blank-square'
-    } else if (status === 1) {
-      checked = 'checked-square'
+    let checkIcon = null
+    if (checked) {
+      checkIcon = 'checked-square'
     } else {
-      checked = 'half-square'
+      checkIcon = 'blank-square'
     }
+
+    // console.log(checked)
+    // if (status === 0) {
+    //   checkIcon = 'blank-square'
+    // } else if (status === 1) {
+    //   debugger
+    //   checkIcon = 'checked-square'
+    // } else {
+    //   checkIcon = 'half-square'
+    // }
 
     if (items) {
       this.setProps({
@@ -58,18 +80,10 @@ class TreeNode extends List {
             },
             children: [
               Component.normalizeIconProps({
-                type: checked,
+                type: checkIcon,
                 events: {
                   click: function () {
-                    if (that.props.status === 0) {
-                      that.props.status = 1
-                      that.props.selectChild = true
-                    } else if (that.props.status === 1) {
-                      that.props.status = 0
-                      that.props.selectChild = false
-                    }
-                    that.update(status)
-                    that.update(selectChild)
+                    that.handleCheck()
                   },
                 },
               }),
@@ -102,15 +116,10 @@ class TreeNode extends List {
           },
           children: [
             Component.normalizeIconProps({
-              type: checked,
+              type: checkIcon,
               events: {
                 click: function () {
-                  if (that.props.status === 0) {
-                    that.props.status = 1
-                  } else if (that.props.status === 1) {
-                    that.props.status = 0
-                  }
-                  that.update(status)
+                  that.handleCheck()
                 },
               },
             }),
@@ -122,6 +131,36 @@ class TreeNode extends List {
         },
       })
     }
+  }
+
+  handleCheck() {
+    this.props.checked = !this.props.checked
+    if (this.props.items) {
+      this.props.checkChild = this.props.checked
+    }
+    this.update(this.props.checked)
+    this.update(this.props.checkChild)
+
+    // if (this.props.items) {
+    //   for (let x = 0; x < this.props.items.length; x++) {
+    //     this.props.items[x].checked = this.props.checked
+    //   }
+    // }
+
+    // function checkChild(data) {
+    //   for (let x = 0; x < this.children.length; x++) {
+    //     // this.children[5].children[0].handleCheck()
+
+    //     if (this.children[x].element && this.children[x].element.nodeName === 'UL') {
+    //       const c = this.children[x].children
+    //       for (let i = 0; i < c.length; i++) {
+    //         c[i].handleCheck()
+    //       }
+    //     }
+    //   }
+    // }
+    // // this.children[5].children[0].handleCheck()
+    // checkChild(this.props)
   }
 
   _disable() {
