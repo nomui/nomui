@@ -23,6 +23,10 @@ class Tree extends Component {
                 },
               ],
             },
+            {
+              title: 'Child Node3',
+              value: '0-0-3',
+            },
           ],
         },
         {

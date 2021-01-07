@@ -1,3 +1,29 @@
-.nom-tree-item {
-  display: block;
+.nom-tree {
+  .nom-tree-warpper {
+    ul {
+      margin-left: 6px;
+      padding-left: 20px;
+      border-left: 1px solid #ddd;
+    }
+    li {
+      padding: 2px 5px;
+    }
+  }
+  .nom-tree-item {
+    display: block;
+    > .nom-icon {
+      svg {
+        fill: #888;
+      }
+    }
+    .indent {
+      margin-left: 14px;
+    }
+    .nom-tree-name {
+      .nom-icon {
+        position: relative;
+        top: 1px;
+      }
+    }
+  }
 }

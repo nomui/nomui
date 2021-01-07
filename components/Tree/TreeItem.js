@@ -43,7 +43,7 @@ class TreeItem extends List {
         key: key,
         children: [
           Component.normalizeIconProps({
-            type: collapsed ? 'up' : 'right',
+            type: collapsed ? 'down' : 'right',
             events: {
               click: function () {
                 that.props.collapsed = !that.props.collapsed
@@ -54,7 +54,7 @@ class TreeItem extends List {
           {
             tag: 'span',
             classes: {
-              'nom-tree-node-name': true,
+              'nom-tree-name': true,
             },
             children: [
               Component.normalizeIconProps({
@@ -97,7 +97,8 @@ class TreeItem extends List {
         children: {
           tag: 'span',
           classes: {
-            'nom-tree-node-name': true,
+            'nom-tree-name': true,
+            indent: true,
           },
           children: [
             Component.normalizeIconProps({
