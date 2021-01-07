@@ -18,6 +18,7 @@ class Navbar extends Component {
   }
 
   config() {
+    this._addPropStyle('stretch')
     const { caption, nav, tools } = this.props
     let toolsProps
     const captionProps = caption

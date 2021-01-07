@@ -26,7 +26,7 @@ class List extends Component {
   }
 
   _config() {
-    this._propStyleClasses = ['gutter', 'line', 'align', 'justify', 'cols']
+    this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
     const { items, wrappers, wrapperDefaults } = this.props
     const children = []
     if (Array.isArray(wrappers) && wrappers.length > 0) {
