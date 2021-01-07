@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import TreeNode from './TreeNode'
+import TreeWrapper from './TreeWrapper'
 
 class Tree extends Component {
   constructor(props, ...mixins) {
@@ -50,7 +50,7 @@ class Tree extends Component {
   }
 
   _config() {
-    const that = this
+    // const that = this
     const { treeData, selected } = this.props
 
     let selectedList = []
@@ -67,22 +67,20 @@ class Tree extends Component {
         if (item.children && item.children.length > 0) {
           const c = mapTree(item.children)
           return {
-            component: TreeNode,
+            component: TreeWrapper,
             key: item.value,
             title: item.title,
             value: item.value,
             checked: selectedList.indexOf(item.value) !== -1,
             items: c,
-            treeProps: that,
           }
         }
         return {
-          component: TreeNode,
+          component: TreeWrapper,
           key: item.value,
           title: item.title,
           value: item.value,
           checked: selectedList.indexOf(item.value) !== -1,
-          treeProps: that,
         }
       })
     }
@@ -93,7 +91,7 @@ class Tree extends Component {
       children: {
         tag: 'ul',
         classes: {
-          'nom-tree-warpper': true,
+          'nom-tree-container': true,
         },
         children: children,
       },

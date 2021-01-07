@@ -4,12 +4,11 @@ import List from '../List/index'
 class TreeNode extends List {
   constructor(props, ...mixins) {
     const defaults = {
-      tag: 'li',
+      tag: 'div',
       items: null,
-      // itemSelectable: {
-      //   multiple: false,
-      //   byClick: true,
-      // },
+      key: null,
+      title: null,
+      value: null,
       status: 0,
       collapsed: false,
       checked: false,
@@ -20,25 +19,22 @@ class TreeNode extends List {
   }
 
   _create() {
-    this.parentTree = this.parent.parent
-    if (this.parentTree instanceof Component.components.Tree) {
-      this.tree = this.parentTree
-    } else if (this.parentTree instanceof Component.components.TreeNode) {
-      this.tree = this.parentTree.tree
-    }
+    this.wrapper = this.parent
+    this.wrapper.item = this
+    this.tree = this.wrapper.tree
 
-    this.tree.itemRefs[this.key] = this
+    // this.tree.itemRefs[this.key] = this
   }
 
   _config() {
-    if (this.parentTree.props.checkChild) {
-      this.props.checked = true
-      if (this.props.items) {
-        this.props.checkChild = this.props.checked
-      }
-    }
+    // if (this.parentTree.props.checkChild) {
+    //   this.props.checked = true
+    //   if (this.props.items) {
+    //     this.props.checkChild = this.props.checked
+    //   }
+    // }
 
-    const { value, title, key, items, checked, collapsed } = this.props
+    const { value, title, key, items, checked } = this.props
     const that = this
 
     let checkIcon = null
@@ -58,79 +54,32 @@ class TreeNode extends List {
     //   checkIcon = 'half-square'
     // }
 
-    if (items) {
-      this.setProps({
-        value: value,
-        title: title,
-        key: key,
+    this.setProps({
+      value: value,
+      title: title,
+      key: key,
+      children: {
+        tag: 'span',
+        classes: {
+          'nom-tree-node-name': true,
+          indent: !items,
+        },
         children: [
           Component.normalizeIconProps({
-            type: collapsed ? 'down' : 'right',
+            type: checkIcon,
             events: {
               click: function () {
-                that.props.collapsed = !that.props.collapsed
-                that.update(collapsed)
+                that.handleCheck()
               },
             },
           }),
           {
             tag: 'span',
-            classes: {
-              'nom-tree-node-name': true,
-            },
-            children: [
-              Component.normalizeIconProps({
-                type: checkIcon,
-                events: {
-                  click: function () {
-                    that.handleCheck()
-                  },
-                },
-              }),
-              {
-                tag: 'span',
-                children: title,
-              },
-            ],
-          },
-          {
-            tag: 'ul',
-            hidden: !!collapsed,
-            classes: {
-              'nom-tree-node-sub': true,
-            },
-            children: items,
+            children: title,
           },
         ],
-      })
-    } else {
-      this.setProps({
-        value: value,
-        title: title,
-        key: key,
-        children: {
-          tag: 'span',
-          classes: {
-            'nom-tree-node-name': true,
-            indent: true,
-          },
-          children: [
-            Component.normalizeIconProps({
-              type: checkIcon,
-              events: {
-                click: function () {
-                  that.handleCheck()
-                },
-              },
-            }),
-            {
-              tag: 'span',
-              children: title,
-            },
-          ],
-        },
-      })
-    }
+      },
+    })
   }
 
   handleCheck() {
@@ -161,10 +110,6 @@ class TreeNode extends List {
     // }
     // // this.children[5].children[0].handleCheck()
     // checkChild(this.props)
-  }
-
-  _disable() {
-    this.element.setAttribute('disabled', 'disabled')
   }
 }
 

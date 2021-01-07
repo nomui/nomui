@@ -1,5 +1,10 @@
 .nom-tree {
-  .nom-tree-warpper {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .nom-tree-container {
     ul {
       margin-left: 6px;
       padding-left: 20px;
@@ -10,14 +15,11 @@
     }
   }
   .nom-tree-node {
-    display: block;
+    display: inline-block;
     > .nom-icon {
       svg {
         fill: #888;
       }
-    }
-    .indent {
-      margin-left: 14px;
     }
     .nom-tree-node-name {
       .nom-icon {
