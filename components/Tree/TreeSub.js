@@ -11,12 +11,10 @@ class TreeSub extends Component {
   }
 
   _create() {
-    // this.parentTree = this.parent.parent
-    // if (this.parentTree instanceof Component.components.Tree) {
-    //   this.tree = this.parentTree
-    // } else if (this.parentTree instanceof Component.components.TreeNode) {
-    //   this.tree = this.parentTree.tree
-    // }
+    this.wrapper = this.props.wrapper || this.parent
+    this.wrapper.subtree = this
+    this.tree = this.wrapper.tree
+    // this.props.itemDefaults = this.tree.props.itemDefaults
   }
 
   _config() {

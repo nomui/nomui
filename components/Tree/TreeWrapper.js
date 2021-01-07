@@ -23,6 +23,8 @@ class TreeWrapper extends Component {
 
     if (this.parent instanceof Component.components.Tree) {
       this.tree = this.parent
+    } else if (this.parent instanceof Component.components.Tree) {
+      this.tree = this.parent.parent
     } else if (this.parent instanceof Component.components.TreeSub) {
       this.tree = this.parent.tree
       this.parentWrapper = this.parent.wrapper

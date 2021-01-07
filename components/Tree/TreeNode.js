@@ -27,13 +27,6 @@ class TreeNode extends List {
   }
 
   _config() {
-    // if (this.parentTree.props.checkChild) {
-    //   this.props.checked = true
-    //   if (this.props.items) {
-    //     this.props.checkChild = this.props.checked
-    //   }
-    // }
-
     const { value, title, key, items, checked } = this.props
     const that = this
 
@@ -43,16 +36,6 @@ class TreeNode extends List {
     } else {
       checkIcon = 'blank-square'
     }
-
-    // console.log(checked)
-    // if (status === 0) {
-    //   checkIcon = 'blank-square'
-    // } else if (status === 1) {
-    //   debugger
-    //   checkIcon = 'checked-square'
-    // } else {
-    //   checkIcon = 'half-square'
-    // }
 
     this.setProps({
       value: value,
@@ -89,27 +72,6 @@ class TreeNode extends List {
     }
     this.update(this.props.checked)
     this.update(this.props.checkChild)
-
-    // if (this.props.items) {
-    //   for (let x = 0; x < this.props.items.length; x++) {
-    //     this.props.items[x].checked = this.props.checked
-    //   }
-    // }
-
-    // function checkChild(data) {
-    //   for (let x = 0; x < this.children.length; x++) {
-    //     // this.children[5].children[0].handleCheck()
-
-    //     if (this.children[x].element && this.children[x].element.nodeName === 'UL') {
-    //       const c = this.children[x].children
-    //       for (let i = 0; i < c.length; i++) {
-    //         c[i].handleCheck()
-    //       }
-    //     }
-    //   }
-    // }
-    // // this.children[5].children[0].handleCheck()
-    // checkChild(this.props)
   }
 }
 
