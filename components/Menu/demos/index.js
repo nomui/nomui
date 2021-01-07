@@ -1,6 +1,7 @@
 define(
     [
-        './horizontal.js'
+        './horizontal.js',
+        './uistyle.js'
     ],
     function (...demos) {
         return {
