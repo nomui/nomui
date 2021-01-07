@@ -1,5 +1,4 @@
 import Component from '../Component/index'
-import List from '../List/index'
 import TreeItem from './TreeItem'
 
 class Tree extends Component {
@@ -31,51 +30,13 @@ class Tree extends Component {
           value: '0-1',
         },
       ],
-      optionDefaults: {
-        key() {
-          return this.props.value
-        },
-        _config: function () {
-          this.setProps({
-            children: this.props.text,
-          })
-        },
-      },
-      selectedSingle: {
-        classes: {
-          'nom-tree-select-single': true,
-        },
-        _config: function () {
-          this.setProps({
-            children: this.props.text,
-          })
-        },
-      },
-      selectedMultiple: {
-        component: List,
-        itemDefaults: {
-          _config: function () {
-            this.setProps({
-              tag: 'span',
-              children: this.props.text,
-            })
-          },
-        },
-        styles: {
-          flex: 'row',
-          gap: 'sm',
-        },
-      },
       multiple: false,
-      showArrow: true,
-      minItemsForSearch: 20,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const that = this
     const { treeData } = this.props
 
     function mapTree(data) {
@@ -100,35 +61,6 @@ class Tree extends Component {
     }
 
     const children = mapTree(treeData)
-    console.log(children)
-
-    this.setProps({
-      selectedSingle: {
-        _create() {
-          that.selectedSingle = this
-        },
-      },
-      selectedMultiple: {
-        itemDefaults: {
-          key() {
-            return this.props.value
-          },
-        },
-        _create() {
-          that.selectedMultiple = this
-        },
-      },
-    })
-
-    // if (showArrow) {
-    //   children.push({
-    //     component: Icon,
-    //     type: 'down',
-    //     classes: {
-    //       'nom-tree-select-arrow': true,
-    //     },
-    //   })
-    // }
 
     this.setProps({
       children: {
@@ -139,8 +71,6 @@ class Tree extends Component {
         children: children,
       },
     })
-
-    // super._config()
   }
 }
 

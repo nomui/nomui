@@ -10,7 +10,8 @@ class TreeItem extends List {
       //   multiple: false,
       //   byClick: true,
       // },
-      selected: false,
+      status: 0,
+      selectChild: false,
       collapsed: false,
     }
 
@@ -18,8 +19,22 @@ class TreeItem extends List {
   }
 
   _config() {
-    const { value, title, key, items, selected, collapsed } = this.props
-    // const that = this
+    if (this.parent.parent.props.selectChild) {
+      this.props.status = 1
+      this.props.selectChild = true
+    }
+
+    const { value, title, key, items, status, collapsed, selectChild } = this.props
+    const that = this
+
+    let checked = null
+    if (status === 0) {
+      checked = 'blank-square'
+    } else if (status === 1) {
+      checked = 'checked-square'
+    } else {
+      checked = 'half-square'
+    }
 
     if (items) {
       this.setProps({
@@ -27,14 +42,37 @@ class TreeItem extends List {
         title: title,
         key: key,
         children: [
-          Component.normalizeIconProps(collapsed ? 'up' : 'right'),
+          Component.normalizeIconProps({
+            type: collapsed ? 'up' : 'right',
+            events: {
+              click: function () {
+                that.props.collapsed = !that.props.collapsed
+                that.update(collapsed)
+              },
+            },
+          }),
           {
             tag: 'span',
             classes: {
               'nom-tree-node-name': true,
             },
             children: [
-              Component.normalizeIconProps(selected ? 'blank-square' : 'checked-square'),
+              Component.normalizeIconProps({
+                type: checked,
+                events: {
+                  click: function () {
+                    if (that.props.status === 0) {
+                      that.props.status = 1
+                      that.props.selectChild = true
+                    } else if (that.props.status === 1) {
+                      that.props.status = 0
+                      that.props.selectChild = false
+                    }
+                    that.update(status)
+                    that.update(selectChild)
+                  },
+                },
+              }),
               {
                 tag: 'span',
                 children: title,
@@ -43,6 +81,7 @@ class TreeItem extends List {
           },
           {
             tag: 'ul',
+            hidden: !!collapsed,
             classes: {
               'nom-tree-select-sub': true,
             },
@@ -61,7 +100,19 @@ class TreeItem extends List {
             'nom-tree-node-name': true,
           },
           children: [
-            Component.normalizeIconProps(selected ? 'blank-square' : 'checked-square'),
+            Component.normalizeIconProps({
+              type: checked,
+              events: {
+                click: function () {
+                  if (that.props.status === 0) {
+                    that.props.status = 1
+                  } else if (that.props.status === 1) {
+                    that.props.status = 0
+                  }
+                  that.update(status)
+                },
+              },
+            }),
             {
               tag: 'span',
               children: title,
@@ -70,45 +121,6 @@ class TreeItem extends List {
         },
       })
     }
-    //   this.setProps({
-    //     // tag:'ul',
-    //     children: {
-    //       value: value,
-    //       title: title,
-    //       key: key,
-    //       children: items
-    //         ? [
-    //             Component.normalizeIconProps(collapsed ? 'up' : 'right'),
-    //             {
-    //               tag: 'span',
-    //               children: [
-    //                 Component.normalizeIconProps(selected ? 'blank-square' : 'checked-square'),
-    //                 {
-    //                   tag: 'span',
-    //                   children: title,
-    //                 },
-    //               ],
-    //             },
-    //             {
-    //               tag: 'ul',
-    //               classes: {
-    //                 'nom-tree-select-sub': true,
-    //               },
-    //               children: items,
-    //             },
-    //           ]
-    //         : {
-    //             tag: 'a',
-    //             children: [
-    //               Component.normalizeIconProps(selected ? 'blank-square' : 'checked-square'),
-    //               {
-    //                 tag: 'span',
-    //                 children: title,
-    //               },
-    //             ],
-    //           },
-    //     },
-    //   })
   }
 
   _disable() {
