@@ -5,7 +5,7 @@ class TreeNode extends List {
   constructor(props, ...mixins) {
     const defaults = {
       tag: 'div',
-      items: null,
+      indent: false,
       key: null,
       title: null,
       value: null,
@@ -27,7 +27,7 @@ class TreeNode extends List {
   }
 
   _config() {
-    const { value, title, key, items, checked } = this.props
+    const { value, title, key, indent, checked } = this.props
     const that = this
 
     let checkIcon = null
@@ -45,7 +45,7 @@ class TreeNode extends List {
         tag: 'span',
         classes: {
           'nom-tree-node-name': true,
-          indent: !items,
+          indent: indent,
         },
         children: [
           Component.normalizeIconProps({
