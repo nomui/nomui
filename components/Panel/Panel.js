@@ -9,7 +9,7 @@ class Panel extends Component {
       header: null,
       body: null,
       footer: null,
-      type: 'default',
+      uistyle: 'default', // splitline,outline,card,bordered,plain
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
