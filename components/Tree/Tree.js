@@ -35,13 +35,23 @@ class Tree extends Component {
         },
       ],
       multiple: false,
+      selectable: {
+        multiple: true,
+      },
+      selected: ['0-0-2', '0-1'],
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { treeData } = this.props
+    const { treeData, selected } = this.props
+    let selectedList = []
+    if (typeof selected === 'string') {
+      selectedList.push(selected)
+    } else {
+      selectedList = selected
+    }
 
     function mapTree(data) {
       return data.map(function (item) {
@@ -52,6 +62,7 @@ class Tree extends Component {
             key: item.value,
             title: item.title,
             value: item.value,
+            status: selectedList.indexOf(item.value) !== -1 ? 1 : 0,
             items: c,
           }
         }
@@ -60,6 +71,7 @@ class Tree extends Component {
           key: item.value,
           title: item.title,
           value: item.value,
+          status: selectedList.indexOf(item.value) !== -1 ? 1 : 0,
         }
       })
     }
