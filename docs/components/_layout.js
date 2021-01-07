@@ -295,6 +295,12 @@ define([], {
                 url: '#!components!index?type=Slider',
               },
               {
+                text: 'TextControl',
+                subtext: '纯文本显示',
+                id: 'TextControl',
+                url: '#!components!index?type=TextControl',
+              },
+              {
                 text: 'FieldRepeater',
                 subtext: '重复字段组',
                 id: 'forms/FieldRepeater',
