@@ -32,10 +32,7 @@ class Pager extends Component {
         events: {
           itemSelectionChange: function () {
             pager.props.pageIndex = this.selectedItem.props.pageNumber
-            pager.trigger('pageChange', {
-              pageIndex: pager.props.pageIndex,
-              pageSize: pager.props.pageSize,
-            })
+            pager.trigger('pageChange', pager.getPageParams())
           },
         },
       },
