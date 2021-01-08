@@ -6,7 +6,11 @@ class MultilineTextbox extends Control {
   constructor(props, ...mixins) {
     const defaults = {
       autofocus: false,
+      autoSize: false, // boolean|{minRows:number,maxRows:number}
       placeholder: null,
+      value: null,
+      maxLength: null,
+      rows: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -14,14 +18,14 @@ class MultilineTextbox extends Control {
 
   _config() {
     super._config()
+    const { autofocus, autoSize, ...textProps } = this.props
 
     this.setProps({
       tag: 'div',
       textarea: {
         component: Textarea,
-        attrs: {
-          placeholder: this.props.placeholder,
-        },
+        autoSize,
+        attrs: textProps,
       },
     })
 
@@ -48,6 +52,10 @@ class MultilineTextbox extends Control {
 
   focus() {
     this.textarea.focus()
+  }
+
+  blur() {
+    this.textarea.blur()
   }
 }
 
