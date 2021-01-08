@@ -63,7 +63,7 @@ define([], function () {
           onPreview: function (file) {
             const { originFile, type } = file
             const imgType = /^image\/[A-Za-z*]+/i
-            if (!imgType.test(type) || !originFile instanceof Blob) return
+            if (!imgType.test(type) || !(originFile instanceof Blob)) return
 
             function transformBase64() {
               return new Promise(function (resolve, reject) {

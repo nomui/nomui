@@ -13,19 +13,38 @@ class FileItem extends Component {
 
   _config() {
     const { file, onPreview, onRemove, onDownload, extraAction } = this.props
-    const { name, size, type, uploadTime, uuid, status } = file
-    const that = this
+    const { name, size, uploadTime, uuid, status } = file
 
     if (uuid) {
       let imgDisplay = {}
       if (status === 'error') {
-        imgDisplay = { children: [{ component: 'Icon', type: 'file-error' }] }
+        imgDisplay = {
+          children: [
+            {
+              component: 'Icon',
+              type: 'file-error',
+              attrs: {
+                styles: { styles: { width: '100%', height: '100%' } },
+              },
+            },
+          ],
+        }
       } else {
         imgDisplay =
           status === 'done'
             ? // ? { tag: 'img', attrs: { src: URL.createObjectURL(file) } }
               this.renderUploadedFile(file)
-            : { children: [{ component: 'Icon', type: 'loading' }] }
+            : {
+                children: [
+                  {
+                    component: 'Icon',
+                    type: 'loading',
+                    attrs: {
+                      styles: { width: '100%', height: '100%' },
+                    },
+                  },
+                ],
+              }
       }
 
       const actions = [
@@ -140,7 +159,9 @@ class FileItem extends Component {
                           },
                           {
                             tag: 'span',
-                            children: `更新日期 : ${getDate(uploadTime) ?? 'NA'}`,
+                            children: `更新日期 : ${
+                              getDate(uploadTime) ? getDate(uploadTime) : 'NA'
+                            }`,
                             _config() {
                               this.setProps({
                                 classes: {
@@ -185,9 +206,21 @@ class FileItem extends Component {
     const { name } = file
     const suffix = getFileExtension(name)
     if (fileType.has(suffix)) {
-      return { component: 'Icon', type: suffix }
+      return {
+        component: 'Icon',
+        type: suffix,
+        attrs: {
+          styles: { styles: { width: '100%', height: '100%' } },
+        },
+      }
     }
-    return { component: 'Icon', type: 'default' }
+    return {
+      component: 'Icon',
+      type: 'default',
+      attrs: {
+        styles: { styles: { width: '100%', height: '100%' } },
+      },
+    }
   }
 }
 

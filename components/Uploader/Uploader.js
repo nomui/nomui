@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import Control from '../Control/index'
 import { isFunction } from '../util/index'
 import FileList from './FileList'
 import {
@@ -12,7 +13,7 @@ import {
 } from './helper'
 import Request from './request'
 
-class Uploader extends Component {
+class Uploader extends Control {
   constructor(props, ...mixins) {
     const defaults = {
       // 测试地址
@@ -24,7 +25,7 @@ class Uploader extends Component {
       multiple: true,
       name: 'file',
       data: {},
-      //request option
+      // request option
       method: 'post',
       headers: {},
       withCredentials: false,
@@ -63,7 +64,7 @@ class Uploader extends Component {
       icon: 'upload',
     }
 
-    let button = cButton ?? defaultButtonProps
+    let button = cButton || defaultButtonProps
     button = {
       ...button,
       attrs: {
@@ -85,7 +86,7 @@ class Uploader extends Component {
       attrs: {
         type: 'file',
         multiple: multiple,
-        accept: accept ?? DEFAULT_ACCEPT,
+        accept: accept || DEFAULT_ACCEPT,
         onchange: that._onChange.bind(that),
         onclick: (e) => {
           e.stopPropagation()
@@ -120,7 +121,7 @@ class Uploader extends Component {
   uploadFiles(files, uploadedFiles) {
     // 转为数组
     let fileList = Array.from(files)
-    let uploadedFileList = Array.from(uploadedFiles)
+    const uploadedFileList = Array.from(uploadedFiles)
     fileList = fileList.map((e) => {
       if (!e.uuid) {
         e.uuid = getUUID()
@@ -165,13 +166,12 @@ class Uploader extends Component {
     const that = this
     const { props } = this
     new Promise((resolve) => {
-      let actionRet = this.props.action
+      const actionRet = this.props.action
       resolve(isFunction(actionRet) ? actionRet(file) : actionRet)
     }).then((action) => {
-      let { data, method, headers, withCredentials } = props
+      const { data, method, headers, withCredentials } = props
       const option = {
         action,
-        name,
         data,
         file,
         filename: props.name,
@@ -293,7 +293,6 @@ class Uploader extends Component {
       if (remainsFileList) {
         file.status = 'removed'
         this.fileList = remainsFileList
-        this.reqs[file.uuid]
         if (this.reqs[file.uuid]) {
           this.reqs[file.uuid].abort()
           delete this.reqs[file.uuid]
