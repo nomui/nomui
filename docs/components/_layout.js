@@ -151,7 +151,7 @@ define([], {
           {
             text: '数据展示',
             items: [
-              { text: 'Panel', subtext: '部件', id: 'Panel', url: '#!components!index?type=Panel' },
+              { text: 'Panel', subtext: '面板', id: 'Panel', url: '#!components!index?type=Panel' },
               {
                 text: 'Avatar',
                 subtext: '头像',

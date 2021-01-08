@@ -28,7 +28,7 @@ define([], function () {
                 component: 'List',
                 cols: 2,
                 gutter: 'md',
-                items: getPanels('plain', 'bordered', 'card', 'splitline', 'outline')
+                items: getPanels('plain', 'bordered', 'card', 'splitline', 'outline', 'default')
             }
         }
     }
