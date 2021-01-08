@@ -26,7 +26,7 @@ class TreeWrapper extends Component {
     // }
 
     if (this.parent.parent instanceof Component.components.Tree) {
-      this.tree = this.parent
+      this.tree = this.parent.parent
     } else if (this.parent instanceof Component.components.TreeSub) {
       this.tree = this.parent.tree
       this.parentWrapper = this.parent.wrapper
@@ -67,7 +67,7 @@ class TreeWrapper extends Component {
           checked: checked,
           indent: !items,
         },
-        {
+        items && {
           component: TreeSub,
           hidden: collapsed,
           items: items,

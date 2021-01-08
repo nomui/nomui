@@ -23,7 +23,7 @@ class TreeNode extends List {
     this.wrapper.item = this
     this.tree = this.wrapper.tree
 
-    // this.tree.itemRefs[this.key] = this
+    this.tree.itemRefs[this.key] = this
   }
 
   _config() {
@@ -54,6 +54,14 @@ class TreeNode extends List {
               click: function () {
                 that.handleCheck()
               },
+              select() {
+                // if (that.tree.selectedList !== null) that.tree.selectedItem.unselect()
+
+                that.tree.selectedList.push(this.key)
+              },
+              deselect() {
+                // if (that.tree.selectedList !== null) that.tree.selectedItem.unselect()
+              },
             },
           }),
           {
@@ -67,11 +75,12 @@ class TreeNode extends List {
 
   handleCheck() {
     this.props.checked = !this.props.checked
-    if (this.props.items) {
-      this.props.checkChild = this.props.checked
-    }
     this.update(this.props.checked)
-    this.update(this.props.checkChild)
+    if (this.props.checked) {
+      this.select()
+    }
+
+    // this.wrapper.subtree && this.wrapper.subtree.handleCheck()
   }
 }
 

@@ -47,18 +47,18 @@ class Tree extends Component {
 
   _create() {
     this.itemRefs = []
+    this.selectedList = []
   }
 
   _config() {
-    // const that = this
+    const that = this
     const { treeData, selected } = this.props
 
-    let selectedList = []
     if (selected) {
       if (typeof selected === 'string') {
-        selectedList.push(selected)
+        this.selectedList.push(selected)
       } else {
-        selectedList = selected
+        this.selectedList = selected
       }
     }
 
@@ -71,7 +71,7 @@ class Tree extends Component {
             key: item.value,
             title: item.title,
             value: item.value,
-            checked: selectedList.indexOf(item.value) !== -1,
+            checked: that.selectedList.indexOf(item.value) !== -1,
             items: c,
           }
         }
@@ -80,7 +80,7 @@ class Tree extends Component {
           key: item.value,
           title: item.title,
           value: item.value,
-          checked: selectedList.indexOf(item.value) !== -1,
+          checked: that.selectedList.indexOf(item.value) !== -1,
         }
       })
     }
