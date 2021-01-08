@@ -333,6 +333,17 @@ define([], {
               },
             ],
           },
+          {
+            text: '其他',
+            items: [
+              {
+                text: 'Caption',
+                subtext: '标题',
+                id: 'Caption',
+                url: '#!components!index?type=Caption',
+              },
+            ],
+          },
         ],
         itemDefaults: {
           key: function () {

@@ -4,12 +4,8 @@ define([], function () {
     file: 'basic',
     demo: function () {
       return {
-        children: [
-          {
-            component: 'Checkbox',
-            text: '同意',
-          },
-        ],
+        component: 'Caption',
+        title: '基础标题',
       }
     },
   }
