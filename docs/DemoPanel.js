@@ -3,7 +3,7 @@ define(['./precode.js'], function (Precode) {
     constructor(props, ...mixins) {
       const defaults = {
         title: 'title',
-        description: 'description',
+        description: null,
         uistyle: 'card',
         demo: function () { },
       }
@@ -15,7 +15,7 @@ define(['./precode.js'], function (Precode) {
       this._scoped = true
       const that = this
       const demo = this.props.demo.call(this)
-      const code = `        ${this.props.demo.toString()}`
+      const code = `    ${this.props.demo.toString()}`
       const { title, description, nav, componentType, cat, file } = this.props
       let url = ''
       if (cat) {
@@ -25,11 +25,6 @@ define(['./precode.js'], function (Precode) {
       }
       this.setProps({
         header: {
-          attrs: {
-            style: {
-              background: '#eceff1',
-            },
-          },
           caption: {
             title: title,
           },
@@ -38,75 +33,68 @@ define(['./precode.js'], function (Precode) {
         body: {
           children: [
             demo,
-            {
-              component: Precode,
-              _create: function () {
-                that.preCode = this
-              },
-              lang: 'js',
-              code: code,
-              hidden: true,
-              classes: {
-                'u-attached': true,
-              },
-            },
+
           ],
         },
+        endAddons: [
+          description && {
+            styles: {
+              padding: '1',
+              border: ['top', 'lt'],
+            },
+            children: description,
+          },
+          {
+            component: Precode,
+            _create: function () {
+              that.preCode = this
+            },
+            lang: 'js',
+            code: code,
+            hidden: true,
+          },
+        ],
         footer: {
           children: [
             {
-              component: 'Rows',
-              gutter: 'xs',
+              component: 'Cols',
+              justify: 'between',
               attrs: {
                 style: {
                   width: '100%',
                 },
               },
               items: [
+                '',
                 {
-                  children: description,
-                },
-                {
-                  component: 'Cols',
-                  justify: 'between',
+                  children: '显示代码',
+                  styles: {
+                    text: ['muted'],
+                  },
                   attrs: {
-                    style: {
-                      width: '100%',
+                    role: 'button',
+                  },
+                  expandable: {
+                    target: function () {
+                      return that.preCode
+                    },
+                    byClick: true,
+                    collapsedProps: {
+                      children: '显示代码',
+                    },
+                    expandedProps: {
+                      children: '隐藏代码',
                     },
                   },
-                  items: [
-                    '',
-                    {
-                      children: '显示代码',
-                      styles: {
-                        text: ['muted'],
-                      },
-                      attrs: {
-                        role: 'button',
-                      },
-                      expandable: {
-                        target: function () {
-                          return that.preCode
-                        },
-                        byClick: true,
-                        collapsedProps: {
-                          children: '显示代码',
-                        },
-                        expandedProps: {
-                          children: '隐藏代码',
-                        },
-                      },
-                      collapsed: true,
-                    },
-                    {
-                      tag: 'a',
-                      attrs: {
-                        href: url,
-                        target: '_blank',
-                      },
-                      children: '单独打开',
-                    },
-                  ],
+                  collapsed: true,
+                },
+                {
+                  tag: 'a',
+                  attrs: {
+                    href: url,
+                    target: '_blank',
+                  },
+                  children: '单独打开',
                 },
               ],
             },

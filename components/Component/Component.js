@@ -624,9 +624,14 @@ class Component {
           if (isString(_styles[i])) {
             classes.push(`u${className}-${_styles[i]}`)
           }
+          else if (_styles[i] === true) {
+            classes.push(`u${className}`)
+          }
         }
       } else if (isString(_styles)) {
         classes.push(`u${className}-${_styles}`)
+      } else if (_styles === true) {
+        classes.push(`u${className}`)
       }
     }
 

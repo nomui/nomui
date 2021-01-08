@@ -9,11 +9,11 @@ define([], function () {
                     component: 'Panel',
                     header: {
                         caption: {
-                            title: '部件标题'
+                            title: '面板标题'
                         }
                     },
                     body: {
-                        children: '部件内容'
+                        children: '面板内容'
                     }
                 }
             }
