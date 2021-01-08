@@ -28,6 +28,8 @@ class Form extends Control {
   }
 
   _config() {
+    this._addPropStyle('inline')
+    
     const children = []
     for (let i = 0; i < this.props.fields.length; i++) {
       const field = this.props.fields[i]

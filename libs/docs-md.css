@@ -3,34 +3,36 @@
     height: 100%;
 }
 
-/*全局属性*/
+/* 全局属性 */
 #nice {
-    /*box-shadow: 0 0 60px rgba(0,0,0,.1);*/
-    font-size: 16px;
-    color: black;
-    padding: 25px 30px;
-    line-height: 1.6;
-    word-spacing: 0px;
-    letter-spacing: 0px;
-    word-break: break-word;
-    word-wrap: break-word;
-    text-align: justify;
-    font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     margin-top: -10px;
-    /*解决开头空隙过大问题*/
+    padding: 25px 30px;
+    color: black;
+
+    /* box-shadow: 0 0 60px rgba(0,0,0,.1); */
+    font-size: 16px;
+    font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-align: justify;
+    word-wrap: break-word;
+    word-break: break-word;
+    word-spacing: 0;
+
+    /* 解决开头空隙过大问题 */
 }
 
-/*段落*/
+/* 段落 */
 #nice p {
-    font-size: 16px;
+    margin: 0;
     padding-top: 8px;
     padding-bottom: 8px;
-    margin: 0;
-    line-height: 26px;
     color: black;
+    font-size: 16px;
+    line-height: 26px;
 }
 
-/*标题*/
+/* 标题 */
 #nice h1,
 #nice h2,
 #nice h3,
@@ -39,8 +41,8 @@
 #nice h6 {
     margin-top: 30px;
     margin-bottom: 15px;
-    font-weight: bold;
     color: black;
+    font-weight: bold;
 }
 
 #nice h1 {
@@ -84,7 +86,7 @@
     display: none;
 }
 
-/*列表*/
+/* 列表 */
 #nice ul,
 #nice ol {
     margin-top: 8px;
@@ -108,76 +110,77 @@
 #nice li section {
     margin-top: 5px;
     margin-bottom: 5px;
+    color: rgb(1, 1, 1);
+
+    /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。 */
+    font-weight: 500;
     line-height: 26px;
     text-align: left;
-    color: rgb(1, 1, 1);
-    /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
-    font-weight: 500;
 }
 
-/*引用*/
+/* 引用 */
 #nice blockquote {
     display: block;
-    font-size: 0.9em;
-    overflow: auto;
-    overflow-scrolling: touch;
-    border-left: 3px solid rgba(0, 0, 0, 0.4);
-    background: rgba(0, 0, 0, 0.05);
-    color: #6a737d;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left:12px;
     padding-top: 10px;
+    padding-right: 10px;
     padding-bottom: 10px;
     padding-left: 20px;
-    padding-right: 10px;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    overflow: auto;
+    color: #6a737d;
+    font-size: 0.9em;
+    background: rgba(0, 0, 0, 0.05);
+    border-left: 3px solid rgba(0, 0, 0, 0.4);
 }
 
 #nice blockquote p {
-    margin: 0px;
+    margin: 0;
     color: black;
     line-height: 26px;
 }
 
 #nice .table-of-contents a {
-    border: none;
     color: black;
     font-weight: normal;
+    border: none;
 }
 
-/*链接*/
+/* 链接 */
 #nice a {
-    text-decoration: none;
     color: #1e6bb8;
-    word-wrap: break-word;
     font-weight: bold;
+    text-decoration: none;
+    word-wrap: break-word;
     border-bottom: 1px solid #1e6bb8;
 }
 
-/*加粗*/
+/* 加粗 */
 #nice strong {
-    font-weight: bold;
     color: black;
+    font-weight: bold;
 }
 
-/*斜体*/
+/* 斜体 */
 #nice em {
-    font-style: italic;
     color: black;
+    font-style: italic;
 }
 
-/*加粗斜体*/
+/* 加粗斜体 */
 #nice em strong {
+    color: black;
     font-weight: bold;
-    color: black;
 }
 
-/*删除线*/
+/* 删除线 */
 #nice del {
-    font-style: italic;
     color: black;
+    font-style: italic;
 }
 
-/*分隔线*/
+/* 分隔线 */
 #nice hr {
     height: 1px;
     margin: 0;
@@ -187,7 +190,7 @@
     border-top: 1px solid black;
 }
 
-/*代码块*/
+/* 代码块 */
 #nice pre {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -195,9 +198,9 @@
 
 #nice pre code {
     display: -webkit-box;
-    font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
-    border-radius: 0px;
     font-size: 12px;
+    font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+    border-radius: 0;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -205,45 +208,45 @@
     line-height: 26px;
 }
 
-/*行内代码*/
+/* 行内代码 */
 #nice td code,
 #nice p code,
 #nice li code {
-    font-size: 14px;
-    word-wrap: break-word;
-    padding: 2px 4px;
-    border-radius: 4px;
     margin: 0 2px;
+    padding: 2px 4px;
     color: #1e6bb8;
-    background-color: rgba(27, 31, 35, .05);
+    font-size: 14px;
     font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+    word-wrap: break-word;
     word-break: break-all;
+    background-color: rgba(27, 31, 35, .05);
+    border-radius: 4px;
 }
 
-/*图片*/
+/* 图片 */
 #nice img {
     display: block;
-    margin: 0 auto;
     width: auto;
     max-width: 100%;
+    margin: 0 auto;
 }
 
-/*图片*/
+/* 图片 */
 #nice figure {
     margin: 0;
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-/*图片描述文字*/
+/* 图片描述文字 */
 #nice figcaption {
     margin-top: 5px;
-    text-align: center;
     color: #888;
     font-size: 14px;
+    text-align: center;
 }
 
-/*表格*/
+/* 表格 */
 #nice table {
     display: table;
     text-align: left;
@@ -255,9 +258,9 @@
 }
 
 #nice table tr {
+    background-color: white;
     border: 0;
     border-top: 1px solid #ccc;
-    background-color: white;
 }
 
 #nice table tr:nth-child(2n) {
@@ -266,10 +269,10 @@
 
 #nice table tr th,
 #nice table tr td {
-    font-size: 16px;
-    border: 1px solid #ccc;
     padding: 5px 10px;
+    font-size: 16px;
     text-align: left;
+    border: 1px solid #ccc;
 }
 
 #nice table tr th {
@@ -279,70 +282,70 @@
 
 /* 微信代码块 */
 #nice .code-snippet__fix {
-    word-wrap: break-word !important;
-    font-size: 14px;
-    margin: 10px 0;
-    display: block;
-    color: #333;
     position: relative;
+    display: block;
+    display: flex;
+    margin: 10px 0;
+    color: #333;
+    font-size: 14px;
+    line-height: 20px;
+    word-wrap: break-word !important;
     background-color: rgba(0, 0, 0, 0.03);
     border: 1px solid #f0f0f0;
     border-radius: 2px;
-    display: flex;
-    line-height: 20px;
 }
 
 #nice .code-snippet__fix pre {
+    margin-top: 0;
     margin-bottom: 10px;
-    margin-top: 0px;
 }
 
 #nice .code-snippet__fix .code-snippet__line-index {
-    counter-reset: line;
     flex-shrink: 0;
     height: 100%;
-    padding: 1em;
-    list-style-type: none;
-    padding: 16px;
     margin: 0;
+    padding: 1em;
+    padding: 16px;
+    list-style-type: none;
+    counter-reset: line;
 }
 
 #nice .code-snippet__fix .code-snippet__line-index li {
-    list-style-type: none;
-    text-align: right;
-    line-height: 26px;
-    color: black;
     margin: 0;
+    color: black;
+    line-height: 26px;
+    text-align: right;
+    list-style-type: none;
 }
 
 #nice .code-snippet__fix .code-snippet__line-index li::before {
-    min-width: 1.5em;
-    text-align: right;
     left: -2.5em;
-    counter-increment: line;
-    content: counter(line);
     display: inline;
+    min-width: 1.5em;
     color: rgba(0, 0, 0, 0.3);
+    text-align: right;
+    content: counter(line);
+    counter-increment: line;
 }
 
 #nice .code-snippet__fix pre {
-    overflow-x: auto;
+    flex: 1;
     padding: 16px;
     padding-left: 0;
+    overflow-x: auto;
     white-space: normal;
-    flex: 1;
     -webkit-overflow-scrolling: touch;
 }
 
 #nice .code-snippet__fix code {
-    text-align: left;
-    font-size: 14px;
-    display: block;
-    white-space: pre;
-    display: flex;
     position: relative;
+    display: block;
+    display: flex;
+    padding: 0;
+    font-size: 14px;
     font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    padding: 0px;
+    white-space: pre;
+    text-align: left;
 }
 
 #nice .footnote-word {
@@ -362,24 +365,25 @@
 #nice .footnote-num {
     display: inline;
     width: 10%;
-    /*神奇，50px就不可以*/
-    background: none;
     font-size: 80%;
-    opacity: 0.6;
-    line-height: 26px;
     font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    line-height: 26px;
+
+    /* 神奇，50px就不可以 */
+    background: none;
+    opacity: 0.6;
 }
 
 #nice .footnote-item p {
     display: inline;
-    font-size: 14px;
     width: 90%;
-    padding: 0px;
+    width: calc(100%-50);
     margin: 0;
-    line-height: 26px;
+    padding: 0;
     color: black;
-    word-break: break-all;
-    width: calc(100%-50)
+    font-size: 14px;
+    line-height: 26px;
+    word-break: break-all
 }
 
 #nice sub,
@@ -387,17 +391,18 @@ sup {
     line-height: 0;
 }
 
-#nice .footnotes-sep:before {
-    content: "参考资料";
+#nice .footnotes-sep::before {
     display: block;
+    content: "参考资料";
 }
 
 /* 解决公式问题 */
 #nice .block-equation {
     display: block;
-    text-align: center;
-    /*overflow: auto;*/
+
+    /* overflow: auto; */
     display: block;
+    text-align: center;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -412,24 +417,24 @@ sup {
 
 #nice .imageflow-layer1 {
     margin: 1em auto;
-    white-space: normal;
-    border: 0px none;
-    padding: 0px;
+    padding: 0;
     overflow: hidden;
+    white-space: normal;
+    border: 0 none;
 }
 
 #nice .imageflow-layer2 {
-    white-space: nowrap;
     width: 100%;
     overflow-x: scroll;
+    white-space: nowrap;
 }
 
 #nice .imageflow-layer3 {
     display: inline-block;
-    word-wrap: break-word;
+    width: 100%;
     white-space: normal;
     vertical-align: middle;
-    width: 100%;
+    word-wrap: break-word;
 }
 
 #nice .imageflow-img {

@@ -14,7 +14,6 @@ class AlertContent extends Component {
       },
       cancel: false,
     }
-
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
