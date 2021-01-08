@@ -1,14 +1,15 @@
 define([], function () {
   return {
-    title: '基础用法',
-    description: '默认的textarea',
-    file: 'basic',
+    title: '限制行范围',
+    description: '根据内容，高度在 2 行到 6 行内容之间自动调整',
+    file: 'limit-rows',
     demo: function () {
       return {
         children: [
           {
             component: 'MultilineTextbox',
             value: '大文本',
+            autoSize: { minRows: 2, maxRows: 6 },
           },
         ],
       }
