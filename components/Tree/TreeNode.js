@@ -4,12 +4,11 @@ import List from '../List/index'
 class TreeNode extends List {
   constructor(props, ...mixins) {
     const defaults = {
-      tag: 'li',
-      items: null,
-      // itemSelectable: {
-      //   multiple: false,
-      //   byClick: true,
-      // },
+      tag: 'div',
+      indent: false,
+      key: null,
+      title: null,
+      value: null,
       status: 0,
       collapsed: false,
       checked: false,
@@ -20,25 +19,24 @@ class TreeNode extends List {
   }
 
   _create() {
-    this.parentTree = this.parent.parent
-    if (this.parentTree instanceof Component.components.Tree) {
-      this.tree = this.parentTree
-    } else if (this.parentTree instanceof Component.components.TreeNode) {
-      this.tree = this.parentTree.tree
-    }
+    this.wrapper = this.parent
+    this.wrapper.item = this
+    this.tree = this.wrapper.tree
+
+    this.wrapper.treeNode = this
+    this.hasSubtree = !!this.subTree
 
     this.tree.itemRefs[this.key] = this
+
+    if (!this.wrapper.isRoot && !this.wrapper.parentWrapper.isLeaf) {
+      this.wrapper.parentWrapper.subTree.checkStatus[this.key] = this
+      this.parentKey = this.wrapper.parentWrapper.treeNode.key
+      this.wrapper.parentWrapper.treeNode.childKey = this.key
+    }
   }
 
   _config() {
-    if (this.parentTree.props.checkChild) {
-      this.props.checked = true
-      if (this.props.items) {
-        this.props.checkChild = this.props.checked
-      }
-    }
-
-    const { value, title, key, items, checked, collapsed } = this.props
+    const { value, title, key, indent, checked } = this.props
     const that = this
 
     let checkIcon = null
@@ -48,123 +46,164 @@ class TreeNode extends List {
       checkIcon = 'blank-square'
     }
 
-    // console.log(checked)
-    // if (status === 0) {
-    //   checkIcon = 'blank-square'
-    // } else if (status === 1) {
-    //   debugger
-    //   checkIcon = 'checked-square'
-    // } else {
-    //   checkIcon = 'half-square'
-    // }
-
-    if (items) {
-      this.setProps({
-        value: value,
-        title: title,
-        key: key,
+    this.setProps({
+      value: value,
+      title: title,
+      key: key,
+      children: {
+        tag: 'span',
+        classes: {
+          'nom-tree-node-name': true,
+          indent: indent,
+        },
         children: [
           Component.normalizeIconProps({
-            type: collapsed ? 'down' : 'right',
+            type: checkIcon,
             events: {
               click: function () {
-                that.props.collapsed = !that.props.collapsed
-                that.update(collapsed)
+                that.handleCheck()
+              },
+              select() {
+                // if (that.tree.selectedList !== null) that.tree.selectedItem.unselect()
+
+                that.tree.selectedList.push(this.key)
+              },
+              deselect() {
+                // if (that.tree.selectedList !== null) that.tree.selectedItem.unselect()
               },
             },
           }),
           {
             tag: 'span',
-            classes: {
-              'nom-tree-node-name': true,
-            },
-            children: [
-              Component.normalizeIconProps({
-                type: checkIcon,
-                events: {
-                  click: function () {
-                    that.handleCheck()
-                  },
-                },
-              }),
-              {
-                tag: 'span',
-                children: title,
-              },
-            ],
-          },
-          {
-            tag: 'ul',
-            hidden: !!collapsed,
-            classes: {
-              'nom-tree-node-sub': true,
-            },
-            children: items,
+            children: title,
           },
         ],
-      })
-    } else {
-      this.setProps({
-        value: value,
-        title: title,
-        key: key,
-        children: {
-          tag: 'span',
-          classes: {
-            'nom-tree-node-name': true,
-            indent: true,
-          },
-          children: [
-            Component.normalizeIconProps({
-              type: checkIcon,
-              events: {
-                click: function () {
-                  that.handleCheck()
-                },
-              },
-            }),
-            {
-              tag: 'span',
-              children: title,
-            },
-          ],
-        },
-      })
-    }
+      },
+    })
   }
 
-  handleCheck() {
-    this.props.checked = !this.props.checked
-    if (this.props.items) {
-      this.props.checkChild = this.props.checked
-    }
-    this.update(this.props.checked)
-    this.update(this.props.checkChild)
+  // getSubtreeStatus() {
+  //   if (this.hasSubtree) {
+  //     const sub = this.subTree.checkStatus
+  //     let x = 0
+  //     let y = 0
 
-    // if (this.props.items) {
-    //   for (let x = 0; x < this.props.items.length; x++) {
-    //     this.props.items[x].checked = this.props.checked
+  //     Object.keys(sub).forEach((key) => {
+  //       y += 1
+  //       if (!sub[key].props.checked) {
+  //         x += 1
+  //       }
+  //     })
+
+  //     if (x === 0) {
+  //       this.subTree.check = 'all'
+  //     } else if (x > 0 && x < y) {
+  //       this.subTree.check = 'part'
+  //     } else {
+  //       this.subTree.check = 'none'
+  //     }
+  //   }
+  // }
+
+  // getSiblingStatus() {
+  //   debugger
+  //   if (this.wrapper.isRoot) {
+  //     return
+  //   }
+  //   const sib = this.wrapper.parentWrapper.subTree.checkStatus
+  //   let x = 0
+  //   let y = 0
+
+  //   Object.keys(sib).forEach((key) => {
+  //     y += 1
+  //     if (!sib[key].props.checked) {
+  //       x += 1
+  //     }
+  //   })
+
+  //   if (x === 0) {
+  //     this.wrapper.parentWrapper.subTree.check = 'all'
+  //   } else if (x > 0 && x < y) {
+  //     this.wrapper.parentWrapper.subTree.check = 'part'
+  //   } else {
+  //     this.wrapper.parentWrapper.subTree.check = 'none'
+  //   }
+  // }
+
+  checkDown(status) {
+    if (this.wrapper.isLeaf) {
+      return
+    }
+
+    if (!status) {
+      const t = this.subTree.children
+
+      for (let i = 0; i < t.length; i++) {
+        t[i].treeNode.handleCheck(false)
+      }
+    } else {
+      const t = this.subTree.children
+
+      for (let i = 0; i < t.length; i++) {
+        t[i].treeNode.handleCheck(true)
+      }
+    }
+
+    // if (this.props.checked) {
+    //   if (this.subTree.check === 'all') {
+    //     return
+    //   }
+    //   const t = this.subTree.children
+
+    //   for (let i = 0; i < t.length; i++) {
+    //     t[i].treeNode.handleCheck(true)
     //   }
     // }
+    // if (!this.props.checked) {
+    //   if (this.subTree.check === 'none') {
+    //     return
+    //   }
 
-    // function checkChild(data) {
-    //   for (let x = 0; x < this.children.length; x++) {
-    //     // this.children[5].children[0].handleCheck()
+    //   if (this.subTree.check === 'part') {
+    //     this.props.checked = true
 
-    //     if (this.children[x].element && this.children[x].element.nodeName === 'UL') {
-    //       const c = this.children[x].children
-    //       for (let i = 0; i < c.length; i++) {
-    //         c[i].handleCheck()
-    //       }
+    //     const t = this.subTree.children
+    //     for (let i = 0; i < t.length; i++) {
+    //       t[i].treeNode.handleCheck(true)
+    //     }
+    //   } else {
+    //     const t = this.subTree.children
+    //     for (let i = 0; i < t.length; i++) {
+    //       t[i].treeNode.handleCheck(false)
     //     }
     //   }
     // }
-    // // this.children[5].children[0].handleCheck()
-    // checkChild(this.props)
+    this.update(this.props.checked)
   }
 
-  _disable() {
-    this.element.setAttribute('disabled', 'disabled')
+  checkUp(status) {
+    this.getSubtreeStatus()
+    if (this.wrapper.isRoot) {
+      return
+    }
+    if (status) {
+      this.props.checked = status
+    }
+    if (this.props.checked && this.wrapper.parentWrapper.subTree.check === 'all') {
+      this.wrapper.parentWrapper.treeNode.handleCheck(true)
+    }
+    if (!this.props.checked && this.wrapper.parentWrapper.subTree.check !== 'all') {
+      this.wrapper.parentWrapper.treeNode.handleCheck(false)
+    }
+  }
+
+  handleCheck(status) {
+    this.props.checked = status || !this.props.checked
+    this.update(this.props.checked)
+
+    // this.checkDown()
+    // this.checkUp()
+    this.tree.fixTreeNode()
   }
 }
 
