@@ -62,7 +62,7 @@ export const fileType = new Set(types)
 export function emptyFn() {}
 
 export function getUUID() {
-  return `wetrial-upload-${Math.random().toString().substr(2)}`
+  return `nom-upload-${Math.random().toString().substr(2)}`
 }
 
 export function getDate(timestamp) {
@@ -70,10 +70,9 @@ export function getDate(timestamp) {
     const date = new Date(timestamp)
     const month = date.getMonth() + 1
     const day = date.getDate()
-    return `${date.getFullYear()}-${month > 9 ? month : '0' + month}-${day > 9 ? day : '0' + day}`
-  } else {
-    return null
+    return `${date.getFullYear()}-${month > 9 ? month : `0${month}`}-${day > 9 ? day : `0${day}`}`
   }
+  return null
 }
 
 export function getFileSize(number) {
@@ -82,9 +81,11 @@ export function getFileSize(number) {
   }
   if (number < 1024) {
     return `${number} bytes`
-  } else if (number > 1024 && number < 1048576) {
+  }
+  if (number > 1024 && number < 1048576) {
     return `${(number / 1024).toFixed(2)} KB`
-  } else if (number > 1048576) {
+  }
+  if (number > 1048576) {
     return `${(number / 1048576).toFixed(2)} MB`
   }
 }
@@ -107,8 +108,8 @@ export function isPromiseLike(promiseLike) {
 }
 
 export function isBlobFile(file) {
-  const fileType = Object.prototype.toString.call(file)
-  return fileType === '[object File]' || fileType === '[object Blob]'
+  const ft = Object.prototype.toString.call(file)
+  return ft === '[object File]' || ft === '[object Blob]'
 }
 
 export function getFileFromList(file, fileList) {
