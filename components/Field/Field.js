@@ -5,7 +5,7 @@ import FieldLabel from './FieldLabel'
 class Field extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      label: '',
+      label: null,
       labelAlign: 'right',
       invalidTipAlign: 'top right',
       control: {},
@@ -20,10 +20,12 @@ class Field extends Component {
   }
 
   _config() {
-    this._propStyleClasses = ['required', 'requiredMark']
-    const classes = {}
-    if (this.props.label !== null && this.props.label !== undefined) {
-      classes[`m-label-${this.props.labelAlign}`] = true
+    this._propStyleClasses = ['required', 'requiredMark', 'labelAlign']
+    const { label } = this.props
+    const hasLabel = label !== null && label !== undefined
+
+    if (!hasLabel) {
+      this.props.labelAlign = null
     }
 
     this.on('valueChange', function (changed) {
@@ -33,8 +35,7 @@ class Field extends Component {
     this.setProps({
       required: this.props.control.required,
       requiredMark: this.form.props.requiredMark,
-      classes: classes,
-      children: [{ component: FieldLabel }, { component: FieldControl, value: this.props.value }],
+      children: [hasLabel && { component: FieldLabel }, { component: FieldControl, value: this.props.value }],
     })
   }
 

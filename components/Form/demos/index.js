@@ -2,7 +2,8 @@ define(
     [
         './basic.js',
         './value.js',
-        './validation.js'
+        './validation.js',
+        './inline.js'
     ],
     function () {
         return {
