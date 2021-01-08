@@ -5,9 +5,14 @@ class Container extends Component {
     const defaults = {
       fluid: false,
       type: null,
+      breakpoint: null,
     }
 
     super(Component.extendProps(defaults, props), mixins)
+  }
+
+  _config() {
+    this._addPropStyle('breakpoint')
   }
 }
 

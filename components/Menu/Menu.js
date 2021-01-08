@@ -13,6 +13,7 @@ class Menu extends Component {
       },
       itemSelectable: {
         onlyleaf: false,
+        byClick: false,
       },
       itemExpandable: {
         expandSingle: true,

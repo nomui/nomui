@@ -10,13 +10,15 @@ class Layout extends Component {
             header: null,
             body: null,
             footer: null,
-            sider: null
+            sider: null,
+            scroll: 'inner', // sticky
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
     _config() {
+        this._addPropStyle('scroll')
         this.setProps(
             {
                 tag: 'div',

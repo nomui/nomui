@@ -4,6 +4,7 @@ module.exports = {
     nomui: true,
     define: true,
     $: true,
+    hljs: true,
   },
   rules: {
     'no-underscore-dangle': 0,

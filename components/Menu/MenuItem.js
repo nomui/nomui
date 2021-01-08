@@ -63,6 +63,9 @@ class MenuItem extends Component {
           this.parent.indicator = this
         },
       },
+      selectable: {
+        byClick: menuProps.itemSelectable.byClick,
+      },
       expandable: {
         byClick: !this.isLeaf,
         target: function () {

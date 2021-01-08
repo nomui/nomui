@@ -1,6 +1,11 @@
 'use strict';
 
 (function (win) {
+    requirejs.onError = function (err) {
+        console.log(err)
+        console.log('modules: ' + err.requireModules)
+    }
+
     requirejs.config({
         baseUrl: "/",
         paths: {

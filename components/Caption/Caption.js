@@ -1,5 +1,6 @@
 import Component from '../Component/index'
-import {} from '../Icon/index'
+import { } from '../Icon/index'
+import { isPlainObject, isString } from '../util/index'
 
 class Caption extends Component {
   constructor(props, ...mixins) {
@@ -19,9 +20,13 @@ class Caption extends Component {
   _config() {
     const { title, subtitle, icon, image, href, titleLevel } = this.props
     const children = []
-    if (image) {
+    if (isPlainObject(image)) {
+      children.push(Component.extendProps({ tag: 'img' }, image))
+    }
+    else if (isString(image)) {
       children.push({ tag: 'img', attrs: { src: image } })
-    } else if (icon) {
+    }
+    else if (icon) {
       children.push(Component.normalizeIconProps(icon))
     }
     const titleTag = `h${titleLevel}`

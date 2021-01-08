@@ -158,6 +158,7 @@ class Component {
   }
 
   update(props) {
+    this._propStyleClasses.length = 0
     this.setProps(props)
     this._off()
     this.off()
@@ -749,6 +750,12 @@ class Component {
   _trigger(eventName) {
     const event = new Event(eventName)
     this.element.dispatchEvent(event)
+  }
+
+  _addPropStyle(...props) {
+    props.forEach((value) => {
+      this._propStyleClasses.push(value)
+    })
   }
 
   _mixin(mixins) {

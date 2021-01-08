@@ -72,6 +72,7 @@ define([], function () {
               },
             },
             {
+              label: '',
               control: {
                 component: 'Button',
                 text: '提交',
