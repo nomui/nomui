@@ -23,7 +23,14 @@ class TreeNode extends List {
     this.wrapper.item = this
     this.tree = this.wrapper.tree
 
+    this.wrapper.treeNode = this
+    this.hasSubtree = !!this.subTree
+
     this.tree.itemRefs[this.key] = this
+
+    if (!this.wrapper.isRoot && !this.wrapper.parentWrapper.isLeaf) {
+      this.wrapper.parentWrapper.subTree.checkStatus[this.key] = this
+    }
   }
 
   _config() {
@@ -73,14 +80,77 @@ class TreeNode extends List {
     })
   }
 
-  handleCheck() {
-    this.props.checked = !this.props.checked
-    this.update(this.props.checked)
-    if (this.props.checked) {
-      this.select()
-    }
+  checkSubtree() {
+    if (this.hasSubtree) {
+      const sub = this.subTree.checkStatus
+      let x = 0
+      let y = 0
 
-    // this.wrapper.subtree && this.wrapper.subtree.handleCheck()
+      Object.keys(sub).forEach((key) => {
+        y += 1
+        if (!sub[key].props.checked) {
+          x += 1
+        }
+      })
+
+      if (x === 0) {
+        this.subTree.check = 'all'
+      } else if (x > 0 && x < y) {
+        this.subTree.check = 'part'
+      } else {
+        this.subTree.check = 'none'
+      }
+    }
+  }
+
+  checkDown() {
+    if (this.wrapper.isLeaf) {
+      return
+    }
+    if (this.props.checked) {
+      if (this.subTree.check === 'all') {
+        return
+      }
+      const t = this.subTree.children
+
+      for (let i = 0; i < t.length; i++) {
+        t[i].treeNode.handleCheck(true)
+      }
+    }
+    if (!this.props.checked) {
+      if (this.subTree.check === 'none') {
+        return
+      }
+
+      if (this.subTree.check === 'part') {
+        this.props.checked = true
+
+        const t = this.subTree.children
+        for (let i = 0; i < t.length; i++) {
+          t[i].treeNode.handleCheck(true)
+        }
+      } else {
+        const t = this.subTree.children
+        for (let i = 0; i < t.length; i++) {
+          t[i].treeNode.handleCheck(false)
+        }
+      }
+    }
+    this.update(this.props.checked)
+  }
+
+  checkUp() {
+    if (!this.props.checked && !this.wrapper.isRoot) {
+      this.wrapper.parentWrapper.treeNode.handleCheck(false)
+    }
+  }
+
+  handleCheck(status) {
+    this.props.checked = status || !this.props.checked
+    this.update(this.props.checked)
+    this.checkSubtree()
+
+    this.checkDown()
   }
 }
 

@@ -17,7 +17,9 @@ class TreeWrapper extends Component {
   }
 
   _create() {
-    this.isLeaf = false
+    this.isLeaf = !this.props.items
+
+    this.isRoot = false
     this.level = 0
     this.parentWrapper = null
 
@@ -27,6 +29,7 @@ class TreeWrapper extends Component {
 
     if (this.parent.parent instanceof Component.components.Tree) {
       this.tree = this.parent.parent
+      this.isRoot = true
     } else if (this.parent instanceof Component.components.TreeSub) {
       this.tree = this.parent.tree
       this.parentWrapper = this.parent.wrapper
@@ -44,21 +47,20 @@ class TreeWrapper extends Component {
     // const treeProps = tree.props
     const that = this
 
-    console.log(that.level)
     const { key, title, value, checked, items, collapsed } = this.props
 
     this.setProps({
       children: [
-        items &&
-          Component.normalizeIconProps({
-            type: collapsed ? 'down' : 'right',
-            events: {
-              click: function () {
-                that.props.collapsed = !that.props.collapsed
-                that.update(collapsed)
-              },
+        Component.normalizeIconProps({
+          type: collapsed ? 'down' : 'right',
+          hidden: !items,
+          events: {
+            click: function () {
+              that.props.collapsed = !that.props.collapsed
+              that.update(collapsed)
             },
-          }),
+          },
+        }),
         {
           component: TreeNode,
           key: key,

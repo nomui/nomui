@@ -12,8 +12,13 @@ class TreeSub extends Component {
 
   _create() {
     this.wrapper = this.props.wrapper || this.parent
-    this.wrapper.subtree = this
+    this.wrapper.subTree = this
     this.tree = this.wrapper.tree
+
+    this.wrapper.treeNode.subTree = this.wrapper.subTree
+    this.wrapper.treeNode.hasSubtree = true
+    this.check = null
+    this.checkStatus = []
     // this.props.itemDefaults = this.tree.props.itemDefaults
   }
 
