@@ -103,6 +103,11 @@ class Tree extends Component {
       return this.itemRefs[key].props.checked === true
     })
   }
+
+  // fixTreeNode() {
+  //   const result = this.getSelected()
+
+  // }
 }
 
 Component.register(Tree)
