@@ -86,6 +86,24 @@ Icon.add(
   cat,
 )
 
+Icon.add(
+  'blank-square',
+  `<svg t="1609925372510" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1811" width="16" height="16"><path d="M845 179v666H179V179h666m0-64H179c-35.3 0-64 28.7-64 64v666c0 35.3 28.7 64 64 64h666c35.3 0 64-28.7 64-64V179c0-35.3-28.7-64-64-64z" p-id="1812"></path></svg>`,
+  cat,
+)
+
+Icon.add(
+  'checked-square',
+  `<svg t="1609925474194" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2089" width="16" height="16"><path d="M844 116H180c-35.3 0-64 28.7-64 64v664c0 35.3 28.7 64 64 64h664c35.3 0 64-28.7 64-64V180c0-35.3-28.7-64-64-64z m0 728H180V180h664v664z" p-id="2090"></path><path d="M433.4 670.6c6.2 6.2 14.4 9.4 22.6 9.4s16.4-3.1 22.6-9.4l272-272c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L456 602.7 342.6 489.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l136.1 135.9z" p-id="2091"></path></svg>`,
+  cat,
+)
+
+Icon.add(
+  'half-square',
+  `<svg t="1609936930955" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1365" width="16" height="16"><path d="M844 116H180c-35.3 0-64 28.7-64 64v664c0 35.3 28.7 64 64 64h664c35.3 0 64-28.7 64-64V180c0-35.3-28.7-64-64-64z m0 728H180V180h664v664z" p-id="1366"></path><path d="M320 544h384c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32z" p-id="1367"></path></svg>`,
+  cat,
+)
+
 /* Logo */
 cat = 'Logo'
 
