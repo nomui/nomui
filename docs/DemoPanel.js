@@ -4,7 +4,8 @@ define(['./precode.js'], function (Precode) {
       const defaults = {
         title: 'title',
         description: 'description',
-        demo: function () {},
+        uistyle: 'card',
+        demo: function () { },
       }
 
       super(nomui.Component.extendProps(defaults, props), ...mixins)

@@ -11,6 +11,7 @@ define([], function () {
           {
             component: 'RadioList',
             uistyle: 'button',
+            value: 'plain',
             options: [
               {
                 text: 'plain',
@@ -23,6 +24,10 @@ define([], function () {
               {
                 text: 'line',
                 value: 'line',
+              },
+              {
+                text: 'card',
+                value: 'card',
               },
               {
                 text: 'pill',

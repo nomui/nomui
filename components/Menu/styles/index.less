@@ -31,6 +31,24 @@
         }
     }
 
+    &.p-uistyle-pill {
+        >.nom-menu-item-wrapper {
+            margin-bottom: .3rem;
+
+            >.nom-menu-item {
+                .u-shape-round();
+
+                &:hover {
+                    background-color: @lprimary;
+                }
+
+                &.s-selected {
+                    .u-color-primary();
+                }
+            }
+        }
+    }
+
     &.p-type-vertical {
         >.nom-menu-item-wrapper>.nom-menu-item {
             display: flex;

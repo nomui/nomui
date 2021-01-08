@@ -12,6 +12,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
           children: [
             {
               component: 'Navbar',
+              stretch: true,
               caption: {
                 title: this.props.title,
                 subtitle: this.props.subtitle,
@@ -19,6 +20,8 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
               nav: {
                 component: 'TabList',
                 selectedTab: this.props.tab,
+                stretch: true,
+                uistyle: 'line',
                 tabContent: function () {
                   return this.$view.refs.tabContent
                 },

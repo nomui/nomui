@@ -1,24 +1,34 @@
 .nom-panel {
     background-color: white;
-    &.p-type-default {
+
+    >.nom-panel-header {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 3.5rem;
+
+        >.nom-panel-header-nav {
+            flex-grow: 1;
+        }
+
+        >.nom-panel-header-tools {
+            padding-left: 1rem;
+            text-align: right;
+        }
+    }
+
+    >.nom-panel-footer {
+        display: flex;
+        align-items: center;
+        min-height: 3.5rem;
+    }
+
+    &.p-uistyle-outline {
         border: 1px solid #D1D7DC;
 
         >.nom-panel-header {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            min-height: 3.5rem;
             .u-padding-x-1();
             .u-border-bottom();
-
-            >.nom-panel-header-nav {
-                flex-grow: 1;
-            }
-
-            >.nom-panel-header-tools {
-                padding-left: 1rem;
-                text-align: right;
-            }
         }
 
         >.nom-panel-body {
@@ -35,11 +45,81 @@
         }
 
         >.nom-panel-footer {
-            display: flex;
-            align-items: center;
-            min-height: 3.5rem;
             .u-border-top();
             .u-padding-x-1();
         }
+    }
+
+    &.p-uistyle-bordered {
+        border: 1px solid #D1D7DC;
+
+        >.nom-panel-header {
+            .u-padding-x-1();
+        }
+
+        >.nom-panel-body {
+            .u-padding-1();
+
+            >.u-attached {
+                margin-right: -1rem;
+                margin-left: -1rem;
+
+                &:last-child {
+                    margin-bottom: -1rem;
+                }
+            }
+        }
+
+        >.nom-panel-footer {
+            .u-border-top();
+            .u-padding-x-1();
+        }
+    }
+
+    &.p-uistyle-splitline {
+
+        >.nom-panel-header {
+            .u-border-bottom();
+        }
+
+        >.nom-panel-body {
+            .u-padding-y-1();
+        }
+
+        >.nom-panel-footer {
+            .u-border-top();
+        }
+    }
+
+    &.p-uistyle-card {
+        border: 1px solid #D1D7DC;
+
+        >.nom-panel-header {
+            .u-color-lgray();
+            .u-padding-x-1();
+            .u-border-bottom();
+        }
+
+        >.nom-panel-body {
+            .u-padding-1();
+
+            >.u-attached {
+                margin-right: -1rem;
+                margin-left: -1rem;
+
+                &:last-child {
+                    margin-bottom: -1rem;
+                }
+            }
+        }
+
+        >.nom-panel-footer {
+            .u-border-top();
+            .u-padding-x-1();
+        }
+    }
+
+    &.p-uistyle-default {
+        .p-uistyle-card();
     }
 }

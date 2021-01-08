@@ -1,13 +1,12 @@
 define(
     [
         './basic.js',
-        './uistyle.js'
     ],
     function () {
         return {
-            title: 'Panel',
-            subtitle: '面板',
+            title: 'TextControl',
+            subtitle: '纯文本显示',
             demos: Array.prototype.slice.call(arguments)
         }
     }
-);
+)

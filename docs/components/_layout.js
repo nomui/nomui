@@ -151,7 +151,7 @@ define([], {
           {
             text: '数据展示',
             items: [
-              { text: 'Panel', subtext: '部件', id: 'Panel', url: '#!components!index?type=Panel' },
+              { text: 'Panel', subtext: '面板', id: 'Panel', url: '#!components!index?type=Panel' },
               {
                 text: 'Avatar',
                 subtext: '头像',
@@ -293,6 +293,12 @@ define([], {
                 subtext: '滑动输入条',
                 id: 'Slider',
                 url: '#!components!index?type=Slider',
+              },
+              {
+                text: 'TextControl',
+                subtext: '纯文本显示',
+                id: 'TextControl',
+                url: '#!components!index?type=TextControl',
               },
               {
                 text: 'FieldRepeater',

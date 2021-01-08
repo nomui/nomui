@@ -10,9 +10,17 @@ define([], function () {
           component: 'Form',
           ref: 'form',
           value: {
+            country: '我是中国人',
             name: 'Jerry',
           },
           fields: [
+            {
+              name: 'country',
+              label: '国家',
+              control: {
+                component: 'TextControl',
+              },
+            },
             {
               name: 'name',
               label: '姓名',
