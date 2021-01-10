@@ -28,10 +28,6 @@ class Field extends Component {
       this.props.labelAlign = null
     }
 
-    this.on('valueChange', function (changed) {
-      this.form.trigger('valueChange', changed)
-    })
-
     this.setProps({
       required: this.props.control.required,
       requiredMark: this.form.props.requiredMark,
@@ -63,6 +59,11 @@ class Field extends Component {
 
   focus() {
     this.control.focus && this.control.focus()
+  }
+
+  _onValueChange(changed) {
+    this._callHandler(this.props.onValueChange, changed)
+    this.form.onValueChange(changed)
   }
 }
 

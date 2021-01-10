@@ -93,7 +93,7 @@ class List extends Component {
         }) || itemSelectionChanged
     }
     if (selectOption.triggerSelectionChange === true && itemSelectionChanged) {
-      this.trigger('itemSelectionChange')
+      this._onItemSelectionChange()
     }
     return itemSelectionChanged
   }
@@ -133,7 +133,7 @@ class List extends Component {
       }
     }
     if (unselectOption.triggerSelectionChange && itemSelectionChanged) {
-      this.trigger('itemSelectionChange')
+      this._onItemSelectionChange()
     }
     return itemSelectionChanged
   }
@@ -150,6 +150,10 @@ class List extends Component {
       items.push(itemWrapper.item)
     }
     return items
+  }
+
+  _onItemSelectionChange() {
+    this._callHandler(this.props.onItemSelectionChange)
   }
 
   getSelectedItem() {

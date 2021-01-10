@@ -21,19 +21,15 @@ define([], function () {
               {
                 component: 'Button',
                 text: '获得焦点',
-                events: {
-                  click: () => {
-                    this.refs.myTextArea.focus()
-                  },
+                onClick: () => {
+                  this.refs.myTextArea.focus()
                 },
               },
               {
                 component: 'Button',
                 text: '焦点离开',
-                events: {
-                  click: () => {
-                    this.refs.myTextArea.blur()
-                  },
+                onClick: () => {
+                  this.refs.myTextArea.blur()
                 },
               },
             ],

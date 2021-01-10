@@ -36,10 +36,12 @@ class MenuItem extends Component {
     if (this.wrapper.parentWrapper) {
       this.parentItem = this.wrapper.parentWrapper.item
     }
+    this.handleSelect = this.handleSelect.bind(this)
   }
 
   _config() {
     const { menu } = this
+    const { onSelect, onUnselect } = this.props
     const menuProps = menu.props
 
     let indicatorIconType = 'down'
@@ -79,14 +81,14 @@ class MenuItem extends Component {
             menuProps.type === 'vertical' ? `${(this.level + 1) * menuProps.indent}rem` : null,
         },
       },
-      events: {
-        select() {
-          if (menu.selectedItem !== null) menu.selectedItem.unselect()
-          menu.selectedItem = this
-        },
-        unselect() {
-          if (menu.selectedItem === this) menu.selectedItem = null
-        },
+      onSelect: () => {
+        if (menu.selectedItem !== null) menu.selectedItem.unselect()
+        menu.selectedItem = this
+        this._callHandler(onSelect)
+      },
+      onUnselect: () => {
+        if (menu.selectedItem === this) menu.selectedItem = null
+        this._callHandler(onUnselect)
       },
     })
 
@@ -107,6 +109,10 @@ class MenuItem extends Component {
         this.props.indicator && !this.isLeaf && this.props.indicator,
       ],
     })
+  }
+
+  handleSelect() {
+
   }
 
   _collapse() {

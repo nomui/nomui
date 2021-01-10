@@ -56,26 +56,24 @@ define([], function () {
                   },
                 ],
                 value: 'row',
-                events: {
-                  valueChange: function (changed) {
-                    let height = '100px'
-                    if (changed.newValue === 'column') {
-                      height = '200px'
-                    }
-                    flexDir = changed.newValue
-                    const flexArr = [flexDir]
-                    if (flexFills !== false) {
-                      flexArr.push(flexFills)
-                    }
-                    demo.refs.layout.update({
-                      attrs: {
-                        style: {
-                          height: height,
-                        },
+                onValueChange: function (changed) {
+                  let height = '100px'
+                  if (changed.newValue === 'column') {
+                    height = '200px'
+                  }
+                  flexDir = changed.newValue
+                  const flexArr = [flexDir]
+                  if (flexFills !== false) {
+                    flexArr.push(flexFills)
+                  }
+                  demo.refs.layout.update({
+                    attrs: {
+                      style: {
+                        height: height,
                       },
-                      styles: { flex: flexArr },
-                    })
-                  },
+                    },
+                    styles: { flex: flexArr },
+                  })
                 },
               },
               {
@@ -99,10 +97,8 @@ define([], function () {
                   },
                 ],
                 value: 'center',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.layout.update({ styles: { align: changed.newValue } })
-                  },
+                onValueChange: function (changed) {
+                  demo.refs.layout.update({ styles: { align: changed.newValue } })
                 },
               },
               {
@@ -130,34 +126,30 @@ define([], function () {
                   },
                 ],
                 value: 'center',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.layout.update({
-                      styles: {
-                        justify: changed.newValue,
-                      },
-                    })
-                  },
+                onValueChange: function (changed) {
+                  demo.refs.layout.update({
+                    styles: {
+                      justify: changed.newValue,
+                    },
+                  })
                 },
               },
               {
                 component: 'Checkbox',
                 text: 'fills',
-                events: {
-                  valueChange: function (changed) {
-                    flexFills = changed.newValue
-                    const flexArr = [flexDir]
-                    if (flexFills !== false) {
-                      flexArr.push('fills')
-                    } else {
-                      flexArr.push(false)
-                    }
-                    demo.refs.layout.update({
-                      styles: {
-                        flex: flexArr,
-                      },
-                    })
-                  },
+                onValueChange: function (changed) {
+                  flexFills = changed.newValue
+                  const flexArr = [flexDir]
+                  if (flexFills !== false) {
+                    flexArr.push('fills')
+                  } else {
+                    flexArr.push(false)
+                  }
+                  demo.refs.layout.update({
+                    styles: {
+                      flex: flexArr,
+                    },
+                  })
                 },
               },
             ],

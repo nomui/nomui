@@ -52,10 +52,8 @@ class OptionList extends List {
         byClick: true,
       },
       selectedItems: listProps.value,
-      events: {
-        itemSelectionChange: () => {
-          this.radioList._onValueChange()
-        },
+      onItemSelectionChange: () => {
+        this.radioList._onValueChange()
       },
     })
 

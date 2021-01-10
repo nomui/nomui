@@ -1,6 +1,30 @@
 define(['/docs/DemoPanel.js'], function (demoPanel) {
+
+  const renderDemoIndex = function () {
+    const { type = 'component', cat, tab = 'demo' } = nomapp.currentRoute.query
+    let url = `/components/${type}/demos/index.js`
+    if (cat) {
+      url = `/components/${type}/demos/${cat}/index.js`
+    }
+    let docUrl = `text!/components/${type}/index.md`
+
+    require([url], (props) => {
+      require([docUrl], (docContent) => {
+        props.docs = marked(docContent)
+        props.tab = tab
+        view.update(props)
+      }, () => {
+        props.docs = '敬请期待'
+        view.update(props)
+      })
+    })
+  }
+
   return {
     component: 'Layout',
+    reffn: function (c) {
+      view = c
+    },
     title: null,
     subtitle: null,
     demos: [],
@@ -23,7 +47,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                 stretch: true,
                 uistyle: 'line',
                 tabContent: function () {
-                  return this.$view.refs.tabContent
+                  return tabContent
                 },
                 items: [
                   {
@@ -43,6 +67,9 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
           children: {
             component: 'TabContent',
             ref: 'tabContent',
+            reffn: function (c) {
+              tabContent = c
+            },
             selectedPanel: this.props.tab,
             attrs: {
               id: 'DemoContent',
@@ -98,33 +125,12 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
       })
     },
     _create: function () {
-      this.renderDemoIndex()
+      renderDemoIndex()
     },
-    events: {
-      queryChange: function () {
-        this.renderDemoIndex()
-      },
-    },
-    methods: {
-      renderDemoIndex: function () {
-        const { type = 'component', cat, tab = 'demo' } = this.$route.query
-        let url = `/components/${type}/demos/index.js`
-        if (cat) {
-          url = `/components/${type}/demos/${cat}/index.js`
-        }
-        let docUrl = `text!/components/${type}/index.md`
-
-        require([url], (props) => {
-          require([docUrl], (docContent) => {
-            props.docs = marked(docContent)
-            props.tab = tab
-            this.update(props)
-          }, () => {
-            props.docs = '敬请期待'
-            this.update(props)
-          })
-        })
-      },
-    },
+    _render: function () {
+      this.on('queryChange', () => {
+        renderDemoIndex()
+      })
+    }
   }
 })

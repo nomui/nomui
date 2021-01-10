@@ -29,10 +29,8 @@ class ModalDialog extends Component {
                   styles: {
                     border: 'none',
                   },
-                  events: {
-                    click: function () {
-                      this.$modal.close()
-                    },
+                  onClick: function () {
+                    this.$modal.close()
                   },
                 },
               ],

@@ -31,13 +31,11 @@ define([], function () {
           {
             component: 'Button',
             text: '切换',
-            events: {
-              click: () => {
-                const reverse = this.refs.reverseTimeLine.props.reverse
-                this.refs.reverseTimeLine.update({
-                  reverse: !reverse,
-                })
-              },
+            onClick: () => {
+              const reverse = this.refs.reverseTimeLine.props.reverse
+              this.refs.reverseTimeLine.update({
+                reverse: !reverse,
+              })
             },
           },
         ],

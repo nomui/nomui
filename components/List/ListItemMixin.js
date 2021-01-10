@@ -6,6 +6,7 @@ export default {
     this.list.itemRefs[this.key] = this
   },
   _config: function () {
+    const { onSelect, onUnselect } = this.props
     const listProps = this.list.props
     const selectedItems =
       this.list.selectedItems !== null
@@ -13,27 +14,6 @@ export default {
           ? listProps.selectedItems
           : [listProps.selectedItems]
         : []
-
-    this.on('select', function () {
-      if (listProps.itemSelectable.multiple === false) {
-        listProps.selectedItems = this.key
-        if (this.list.selectedItem !== null) {
-          this.list.selectedItem.unselect({ triggerSelectionChange: false })
-        }
-        this.list.selectedItem = this
-      }
-    })
-    this.on('unselect', function () {
-      if (listProps.selectedItems === this.key) {
-        listProps.selectedItems = null
-      }
-      if (this.list.selectedItem === this) {
-        this.list.selectedItem = null
-      }
-    })
-    this.on('selectionChange', function () {
-      this.list.trigger('itemSelectionChange')
-    })
 
     this.setProps({
       classes: {
@@ -44,6 +24,30 @@ export default {
         byClick: listProps.itemSelectable.byClick,
         canRevert: listProps.itemSelectable.multiple === true,
       },
+      onSelect: () => {
+        if (listProps.itemSelectable.multiple === false) {
+          listProps.selectedItems = this.key
+          if (this.list.selectedItem !== null) {
+            this.list.selectedItem.unselect({ triggerSelectionChange: false })
+          }
+          this.list.selectedItem = this
+        }
+
+        this._callHandler(onSelect)
+      },
+      onUnselect: () => {
+        if (listProps.selectedItems === this.key) {
+          listProps.selectedItems = null
+        }
+        if (this.list.selectedItem === this) {
+          this.list.selectedItem = null
+        }
+
+        this._callHandler(onUnselect)
+      },
+      onSelectionChange: () => {
+        this.list._onItemSelectionChange()
+      }
     })
   },
   _render: function () {

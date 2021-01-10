@@ -52,11 +52,9 @@ define([], function () {
         },
         _render: function () {
             this.renderArticle();
-        },
-        events: {
-            queryChange: function () {
+            this.on('queryChange', () => {
                 this.renderArticle();
-            }
+            })
         },
         methods: {
             renderArticle: function () {

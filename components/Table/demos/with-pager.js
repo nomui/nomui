@@ -39,10 +39,8 @@ define([], function () {
           {
             component: 'Pager',
             ref: 'pager',
-            events: {
-              pageChange: function (params) {
-                getData(params.pageIndex)
-              },
+            onPageChange: function (params) {
+              getData(params.pageIndex)
             },
           },
         ],

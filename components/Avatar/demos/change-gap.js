@@ -19,25 +19,21 @@ define([], function () {
           {
             component: 'Button',
             text: '换英雄',
-            events: {
-              click: () => {
-                const index = Math.ceil(Math.random() * 100) % names.length
-                this.refs.userAvatar.update({
-                  text: names[index],
-                })
-              },
+            onClick: () => {
+              const index = Math.ceil(Math.random() * 100) % names.length
+              this.refs.userAvatar.update({
+                text: names[index],
+              })
             },
           },
           {
             component: 'Button',
             text: '修改间距',
-            events: {
-              click: () => {
-                const index = Math.ceil(Math.random() * 100) % gaps.length
-                this.refs.userAvatar.update({
-                  gap: gaps[index],
-                })
-              },
+            onClick: () => {
+              const index = Math.ceil(Math.random() * 100) % gaps.length
+              this.refs.userAvatar.update({
+                gap: gaps[index],
+              })
             },
           },
         ],

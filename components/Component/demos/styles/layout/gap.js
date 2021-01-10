@@ -48,10 +48,8 @@ define([], function () {
                   },
                 ],
                 value: 'row',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.layout.update({ styles: { flex: changed.newValue } })
-                  },
+                onValueChange: function (changed) {
+                  demo.refs.layout.update({ styles: { flex: changed.newValue } })
                 },
               },
               {
@@ -75,10 +73,8 @@ define([], function () {
                   },
                 ],
                 value: 'md',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.layout.update({ styles: { gap: changed.newValue } })
-                  },
+                onValueChange: function (changed) {
+                  demo.refs.layout.update({ styles: { gap: changed.newValue } })
                 },
               },
             ],

@@ -23,13 +23,11 @@ define([], function () {
                 value: 'alternate',
               },
             ],
-            events: {
-              valueChange: (changed) => {
-                const labelTimeLine = this.refs.labelTimeLine
-                labelTimeLine.update({
-                  mode: changed.newValue || 'left',
-                })
-              },
+            onValueChange: (e) => {
+              const labelTimeLine = this.refs.labelTimeLine
+              labelTimeLine.update({
+                mode: e.newValue || 'left',
+              })
             },
           },
           {

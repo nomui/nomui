@@ -21,12 +21,10 @@ define([], function () {
                   { text: '行列线条', value: 'both' },
                 ],
                 type: 'button',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.table.update({
-                      line: changed.newValue,
-                    })
-                  },
+                onValueChange: function (changed) {
+                  demo.refs.table.update({
+                    line: changed.newValue,
+                  })
                 },
               },
               {
@@ -36,12 +34,10 @@ define([], function () {
                   { text: '有边框', value: true },
                 ],
                 type: 'button',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.table.update({
-                      bordered: changed.newValue,
-                    })
-                  },
+                onValueChange: function (changed) {
+                  demo.refs.table.update({
+                    bordered: changed.newValue,
+                  })
                 },
               },
             ],

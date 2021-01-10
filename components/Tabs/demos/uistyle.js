@@ -3,7 +3,7 @@ define([], function () {
     title: '界面风格',
     file: 'uistyle',
     demo: function () {
-      const demo = this
+      let tabs = null
 
       return {
         component: 'Rows',
@@ -34,15 +34,14 @@ define([], function () {
                 value: 'pill',
               },
             ],
-            events: {
-              valueChange: function (changed) {
-                demo.refs.tabs.update({ uistyle: changed.newValue })
-              },
+            onValueChange: function (e) {
+              tabs.update({ uistyle: e.newValue })
             },
           },
           {
             component: 'Tabs',
             ref: 'tabs',
+            reffn: (c) => { tabs = c },
             tabs: [
               {
                 item: { text: 'Home' },

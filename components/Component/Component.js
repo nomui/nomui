@@ -51,6 +51,7 @@ class Component {
     this.refs = {}
     this.mixins = []
     this._scoped = false
+    this.firstRender = true
 
     this._propStyleClasses = []
 
@@ -87,6 +88,10 @@ class Component {
       this.scope.refs[this.props.ref] = this
     }
 
+    if (this.props.reffn) {
+      this.props.reffn(this)
+    }
+
     if (this.props.methods) {
       for (const method in this.props.methods) {
         if (this.props.methods.hasOwnProperty(method)) {
@@ -109,10 +114,7 @@ class Component {
   }
 
   create() {
-    this._onClickToggleExpand = this._onClickToggleExpand.bind(this)
-    this._onClickToggleSelect = this._onClickToggleSelect.bind(this)
-    this._onClickHandler = this._onClickHandler.bind(this)
-
+    this.__handleClick = this.__handleClick.bind(this)
     isFunction(this._create) && this._create()
     this._callMixin('_create')
     this.props._create && this.props._create.call(this)
@@ -135,7 +137,6 @@ class Component {
 
     this._handleAttrs()
     this._handleStyles()
-    this._handleEvents()
 
     this._renderChildren()
 
@@ -148,6 +149,7 @@ class Component {
     isFunction(this.props._render) && this.props._render.call(this)
 
     this.rendered = true
+    this.firstRender = false
   }
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
@@ -227,6 +229,7 @@ class Component {
     this._callMixin('_remove')
     this._off()
     this.off()
+    this.props.reffn && this.props.reffn(null)
 
     for (const p in this) {
       if (this.hasOwnProperty(p)) {
@@ -357,12 +360,7 @@ class Component {
     this.props.hidden = false
     this.removeClass('s-hidden')
     isFunction(this._show) && this._show()
-    this.trigger('show')
-  }
-
-  _triggerShow() {
-    isFunction(this._show) && this._show()
-    this.trigger('show')
+    this._callHandler(this.props.onShow)
   }
 
   hide() {
@@ -373,7 +371,7 @@ class Component {
     this.props.hidden = true
     this.addClass('s-hidden')
     isFunction(this._hide) && this._hide()
-    this.trigger('hide')
+    this._callHandler(this.props.onHide)
   }
 
   select(selectOption) {
@@ -392,8 +390,8 @@ class Component {
       this.props.selected = true
       this.addClass('s-selected')
       isFunction(this._select) && this._select()
-      selectOption.triggerSelect === true && this.trigger('select')
-      selectOption.triggerSelectionChange === true && this.trigger('selectionChange')
+      selectOption.triggerSelect === true && this._callHandler(this.props.onSelect)
+      selectOption.triggerSelectionChange === true && this._callHandler(this.props.onSelectionChange)
 
       return true
     }
@@ -419,11 +417,11 @@ class Component {
       isFunction(this._unselect) && this._unselect()
 
       if (unselectOption.triggerUnselect === true) {
-        this.trigger('unselect')
+        this._callHandler(this.props.onUnselect)
       }
 
       if (unselectOption.triggerSelectionChange === true) {
-        this.trigger('selectionChange')
+        this._callHandler(this.props.onSelectionChange)
       }
 
       return true
@@ -543,6 +541,7 @@ class Component {
   }
 
   _handleAttrs() {
+    this._processClick()
     for (const name in this.props.attrs) {
       const value = this.props.attrs[name]
       if (value == null) continue
@@ -641,37 +640,39 @@ class Component {
     }
   }
 
-  _handleEvents() {
-    const { props } = this
-    const { events } = this.props
-    for (const event in events) {
-      if (events.hasOwnProperty(event)) {
-        if (event === 'click') {
-          this._on('click', this._onClickHandler)
+  _processClick() {
+    const { onClick, selectable, expandable } = this.props
+    if (onClick || (selectable && selectable.byClick === true) || (expandable && expandable.byClick))
+      this.setProps({
+        attrs: {
+          onclick: this.__handleClick
         }
-        this.on(event, events[event])
+      })
+  }
+
+  __handleClick(event) {
+    const { onClick, selectable, expandable } = this.props
+    onClick && this._callHandler(onClick, null, event)
+    if (selectable && selectable.byClick === true) {
+      this.toggleSelect()
+    }
+    if (expandable && expandable.byClick === true) {
+      this.toggleExpand()
+    }
+  }
+
+  _callHandler(handler, argObj, event) {
+    argObj = isPlainObject(argObj) ? argObj : {}
+    event && (argObj.event = event)
+    argObj.sender = this
+    if (handler) {
+      if (isFunction(handler)) {
+        return handler(argObj);
+      }
+      if (isString(handler) && isFunction(this.props[handler])) {
+        return this.props[handler](argObj)
       }
     }
-
-    if (props.selectable && props.selectable.byClick) {
-      this._on('click', this._onClickToggleSelect)
-    }
-
-    if (props.expandable && props.expandable.byClick) {
-      this._on('click', this._onClickToggleExpand)
-    }
-  }
-
-  _onClickHandler(e) {
-    this.trigger('click', e)
-  }
-
-  _onClickToggleSelect() {
-    this.toggleSelect()
-  }
-
-  _onClickToggleExpand() {
-    this.toggleExpand()
   }
 
   _setStyle(style) {

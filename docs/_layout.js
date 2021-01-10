@@ -57,11 +57,9 @@ define([], function () {
         },
         _render: function () {
             this.highLight();
-        },
-        events: {
-            subpathChange: function () {
+            this.on('subpathChange', () => {
                 this.highLight();
-            }
+            })
         },
         methods: {
             highLight: function () {

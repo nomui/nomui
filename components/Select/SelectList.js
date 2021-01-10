@@ -29,10 +29,9 @@ class SelectList extends List {
         byClick: true,
       },
       selectedItems: selectProps.value,
-      events: {
-        itemSelectionChange: () => {
-          this.selectControl._onValueChange()
-        },
+
+      onItemSelectionChange: () => {
+        this.selectControl._onValueChange()
       },
     })
 

@@ -19,16 +19,14 @@ define([], function () {
           {
             component: 'Checkbox',
             text: '加载中',
-            events: {
-              valueChange: function (changed) {
-                if (changed.newValue === true) {
-                  this.Loading = new nomui.Loading({
-                    container: demo.refs.container,
-                  })
-                } else {
-                  this.Loading.remove()
-                }
-              },
+            onValueChange: function (changed) {
+              if (changed.newValue === true) {
+                this.Loading = new nomui.Loading({
+                  container: demo.refs.container,
+                })
+              } else {
+                this.Loading.remove()
+              }
             },
           },
         ],
