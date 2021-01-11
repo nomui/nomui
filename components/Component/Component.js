@@ -158,6 +158,7 @@ class Component {
   }
 
   update(props) {
+    this._propStyleClasses.length = 0
     this.setProps(props)
     this._off()
     this.off()
@@ -623,9 +624,14 @@ class Component {
           if (isString(_styles[i])) {
             classes.push(`u${className}-${_styles[i]}`)
           }
+          else if (_styles[i] === true) {
+            classes.push(`u${className}`)
+          }
         }
       } else if (isString(_styles)) {
         classes.push(`u${className}-${_styles}`)
+      } else if (_styles === true) {
+        classes.push(`u${className}`)
       }
     }
 
@@ -749,6 +755,12 @@ class Component {
   _trigger(eventName) {
     const event = new Event(eventName)
     this.element.dispatchEvent(event)
+  }
+
+  _addPropStyle(...props) {
+    props.forEach((value) => {
+      this._propStyleClasses.push(value)
+    })
   }
 
   _mixin(mixins) {

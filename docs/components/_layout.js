@@ -151,12 +151,18 @@ define([], {
           {
             text: '数据展示',
             items: [
-              { text: 'Panel', subtext: '部件', id: 'Panel', url: '#!components!index?type=Panel' },
+              { text: 'Panel', subtext: '面板', id: 'Panel', url: '#!components!index?type=Panel' },
               {
                 text: 'Avatar',
                 subtext: '头像',
                 id: 'Avatar',
                 url: '#!components!index?type=Avatar',
+              },
+              {
+                text: 'AvatarGroup',
+                subtext: '头像组',
+                id: 'AvatarGroup',
+                url: '#!components!index?type=AvatarGroup',
               },
               { text: 'Badge', subtext: '徽标', id: 'Badge', url: '#!components!index?type=Badge' },
               {
@@ -289,6 +295,12 @@ define([], {
                 url: '#!components!index?type=Slider',
               },
               {
+                text: 'TextControl',
+                subtext: '纯文本显示',
+                id: 'TextControl',
+                url: '#!components!index?type=TextControl',
+              },
+              {
                 text: 'FieldRepeater',
                 subtext: '重复字段组',
                 id: 'forms/FieldRepeater',
@@ -318,6 +330,17 @@ define([], {
                 subtext: '结果',
                 id: 'Result',
                 url: '#!components!index?type=Result',
+              },
+            ],
+          },
+          {
+            text: '其他',
+            items: [
+              {
+                text: 'Caption',
+                subtext: '标题',
+                id: 'Caption',
+                url: '#!components!index?type=Caption',
               },
             ],
           },

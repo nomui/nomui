@@ -1,15 +1,17 @@
 define([], function () {
-    return {
-        title: '基础用法',
-        file: 'basic',
-        demo: function () {
-            return {
-                children: [
-                    {
-                        component: 'MultilineTextbox'
-                    }
-                ]
-            };
-        }
-    };
-});
+  return {
+    title: '基础用法',
+    description: '默认的textarea',
+    file: 'basic',
+    demo: function () {
+      return {
+        children: [
+          {
+            component: 'MultilineTextbox',
+            value: '大文本',
+          },
+        ],
+      }
+    },
+  }
+})

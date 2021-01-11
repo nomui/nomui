@@ -9,14 +9,16 @@ class Panel extends Component {
       header: null,
       body: null,
       footer: null,
-      type: 'default',
+      uistyle: 'default', // splitline,outline,card,bordered,plain
+      startAddons: [],
+      endAddons: [],
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { header, body, footer } = this.props
+    const { header, body, footer, startAddons, endAddons } = this.props
     let footerProps
     const headerProps = Component.extendProps({ component: PanelHeader }, header)
     const bodyProps = Component.extendProps({ component: PanelBody }, body)
@@ -25,7 +27,7 @@ class Panel extends Component {
     }
 
     this.setProps({
-      children: [headerProps, bodyProps, footerProps],
+      children: [headerProps, ...startAddons, bodyProps, ...endAddons, footerProps],
     })
   }
 }

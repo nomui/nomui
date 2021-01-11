@@ -21,7 +21,7 @@ define([], function () {
                                 text: '温瑞安', value: 3
                             }
                         ],
-                        type: 'button',
+                        uistyle: 'button',
                     },
                 ]
             }

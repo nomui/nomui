@@ -3,24 +3,7 @@ import List from '../List/index'
 
 class Pager extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      pageIndex: 1,
-      pageSize: 10,
-      totalCount: 0,
-      displayItemCount: 5,
-      edgeItemCount: 1,
-
-      prevShowAlways: true,
-      nextShowAlways: true,
-
-      texts: {
-        prev: '上一页',
-        next: '下一页',
-        ellipse: '...',
-      },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Pager.defaults, props), ...mixins)
   }
 
   _config() {
@@ -49,10 +32,7 @@ class Pager extends Component {
         events: {
           itemSelectionChange: function () {
             pager.props.pageIndex = this.selectedItem.props.pageNumber
-            pager.trigger('pageChange', {
-              pageIndex: pager.props.pageIndex,
-              pageSize: pager.props.pageSize,
-            })
+            pager.trigger('pageChange', pager.getPageParams())
           },
         },
       },
@@ -82,6 +62,10 @@ class Pager extends Component {
 
   _getPageCount() {
     return Math.ceil(this.props.totalCount / this.props.pageSize)
+  }
+
+  getPageParams() {
+    return this.props.getPageParams.call(this)
   }
 
   getPageItems() {
@@ -159,6 +143,42 @@ class Pager extends Component {
     }
 
     return items
+  }
+}
+
+Pager.defaults = {
+  pageIndex: 1,
+  pageSize: 10,
+  totalCount: 0,
+  displayItemCount: 5,
+  edgeItemCount: 1,
+
+  prevShowAlways: true,
+  nextShowAlways: true,
+
+  texts: {
+    prev: '上一页',
+    next: '下一页',
+    ellipse: '...',
+  },
+
+  getPageParams: function () {
+    const { pageIndex, pageSize } = this.props
+    let params = {}
+    if (this.props.paramsType === 'skiptake') {
+      params = {
+        skipCount: (pageIndex - 1) * pageSize,
+        maxResultCount: pageSize
+      }
+    }
+    else {
+      params = {
+        pageIndex: pageIndex,
+        pageSize: pageSize
+      }
+    }
+
+    return params
   }
 }
 

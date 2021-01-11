@@ -9,19 +9,24 @@ class Alert extends Modal {
       icon: null,
       title: null,
       description: null,
+      // ok:undefined,
+      // cancel:undefined
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
+    const { type, icon, title, description, ok, cancel } = this.props
     this.setProps({
       content: {
         component: AlertContent,
-        type: this.props.type,
-        icon: this.props.icon,
-        title: this.props.title,
-        description: this.props.description,
+        type,
+        icon,
+        title,
+        description,
+        ok,
+        cancel,
       },
     })
 
