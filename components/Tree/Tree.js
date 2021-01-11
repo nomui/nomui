@@ -86,7 +86,7 @@ class Tree extends Component {
       that.itemRefs[key].setCheck(true)
     })
     const r = this.getSelected()
-    this.props.onCheck(r)
+    this.props.onCheck && this.props.onCheck(r)
   }
 
   unCheckAll() {
@@ -100,7 +100,7 @@ class Tree extends Component {
     const k = item.key
     const s = item.props.checked
     const r = this.getSelected()
-    this.props.onCheck(r, k, s)
+    this.props.onCheck && this.props.onCheck(r, k, s)
   }
 }
 
