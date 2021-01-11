@@ -4,41 +4,13 @@ import TreeWrapper from './TreeWrapper'
 class Tree extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      treeData: [
-        {
-          title: 'Node1',
-          value: '0-0',
-          children: [
-            {
-              title: 'Child Node1',
-              value: '0-0-1',
-            },
-            {
-              title: 'Child Node2',
-              value: '0-0-2',
-              children: [
-                {
-                  title: 'Child Child Node1',
-                  value: '0-0-0-1',
-                },
-              ],
-            },
-            {
-              title: 'Child Node3',
-              value: '0-0-3',
-            },
-          ],
-        },
-        {
-          title: 'Node2',
-          value: '0-1',
-        },
-      ],
-      multiple: false,
-      selectable: {
-        multiple: true,
-      },
-      selected: ['0-0-0-1', '0-1'],
+      treeData: null,
+      leafOnly: false,
+      multiple: true,
+      selected: null,
+      onCheck: null,
+      showLine: false,
+      toolbar: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -51,7 +23,7 @@ class Tree extends Component {
 
   _config() {
     const that = this
-    const { treeData, selected } = this.props
+    const { treeData, selected, showline } = this.props
 
     if (selected) {
       if (typeof selected === 'string') {
@@ -87,13 +59,18 @@ class Tree extends Component {
     const children = mapTree(treeData)
 
     this.setProps({
-      children: {
-        tag: 'ul',
-        classes: {
-          'nom-tree-container': true,
+      children: [
+        this.props.toolbar && this.props.toolbar.placement === 'before' && this.props.toolbar.item,
+        {
+          tag: 'ul',
+          classes: {
+            'nom-tree-container': true,
+            'nom-tree-showline': showline,
+          },
+          children: children,
         },
-        children: children,
-      },
+        this.props.toolbar && this.props.toolbar.placement === 'after' && this.props.toolbar.item,
+      ],
     })
   }
 
@@ -101,6 +78,29 @@ class Tree extends Component {
     return Object.keys(this.itemRefs).filter((key) => {
       return this.itemRefs[key].props.checked === true
     })
+  }
+
+  checkAll() {
+    const that = this
+    Object.keys(this.itemRefs).forEach(function (key) {
+      that.itemRefs[key].setCheck(true)
+    })
+    const r = this.getSelected()
+    this.props.onCheck(r)
+  }
+
+  unCheckAll() {
+    const that = this
+    Object.keys(this.itemRefs).forEach(function (key) {
+      that.itemRefs[key].setCheck(false)
+    })
+  }
+
+  triggerCheck(item) {
+    const k = item.key
+    const s = item.props.checked
+    const r = this.getSelected()
+    this.props.onCheck(r, k, s)
   }
 }
 

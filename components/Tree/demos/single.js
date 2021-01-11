@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '单选',
+    file: 'single',
     demo: function () {
       return {
         children: {
@@ -36,7 +36,10 @@ define([], function () {
               value: '0-1',
             },
           ],
-          selected: ['0-0-0-1', '0-1'],
+          leafOnly: true,
+          multiple: false,
+          showline: true,
+          selected: ['0-0-0-1'],
           onCheck: function (data, key, status) {
             console.log(`你选中了：${data}，当前触发的节点是${key}，它的值是${status}。`)
           },

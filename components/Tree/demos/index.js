@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './showline.js', './single.js', './checkall.js'], function () {
   return {
     title: 'Tree',
     subtitle: '树',

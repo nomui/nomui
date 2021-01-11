@@ -47,6 +47,9 @@ class TreeNode extends List {
     this.setProps({
       value: value,
       title: title,
+      classes: {
+        'nom-tree-node-disabled': that.tree.props.leafOnly && !that.wrapper.isLeaf,
+      },
       key: key,
       children: {
         tag: 'span',
@@ -59,7 +62,7 @@ class TreeNode extends List {
             type: checkIcon,
             events: {
               click: function () {
-                that.handleCheck()
+                that.handleClick()
               },
             },
           }),
@@ -183,12 +186,30 @@ class TreeNode extends List {
     }
   }
 
-  handleCheck() {
-    this.props.checked = !this.props.checked
+  setCheck(status) {
+    this.props.checked = status
+    this.update(this.props.checked)
+  }
+
+  handleClick(status) {
+    if (this.tree.props.leafOnly) {
+      if (!this.wrapper.isLeaf) {
+        return
+      }
+      if (!this.tree.props.multiple) {
+        this.tree.unCheckAll(true)
+      }
+    }
+
+    this.props.checked = status || !this.props.checked
     this.update(this.props.checked)
 
-    this.checkDown(null, true)
-    this.checkUp(null, true)
+    if (!this.tree.props.leafOnly) {
+      this.checkDown(null, true)
+      this.checkUp(null, true)
+    }
+
+    this.tree.triggerCheck(this)
   }
 }
 
