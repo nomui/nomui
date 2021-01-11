@@ -14,6 +14,8 @@ class View extends Component {
     this.currentView = null
     this.level = this.$app.lastLevel
     this.$app.views[this.level] = this
+    this.hashChange = this.hashChange.bind(this)
+    this.$app.on('hashChange', this.hashChange, this)
   }
 
   render() {
@@ -46,7 +48,7 @@ class View extends Component {
 
   remove() {
     this.$app.off('hashChange', this.hashChange)
-    delete this.$app.views[this.viewLevel]
+    delete this.$app.views[this.level]
   }
 
   routeView() {

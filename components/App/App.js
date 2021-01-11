@@ -78,12 +78,8 @@ class App extends Component {
         queryChanged = true
       }
     }
-    this.trigger('hashChange', { changedLevel, queryChanged })
 
-    for (let i = 0; i <= this.currentRoute.maxLevel; i++) {
-      const view = this.views[i]
-      view && view.hashChange({ changedLevel, queryChanged })
-    }
+    this.trigger('hashChange', { changedLevel, queryChanged })
   }
 
   routeView(level, element, defaultPath) {
