@@ -19,7 +19,6 @@ class TreeSub extends Component {
     this.wrapper.treeNode.hasSubtree = true
     this.check = null
     this.checkStatus = []
-    // this.props.itemDefaults = this.tree.props.itemDefaults
   }
 
   _config() {
@@ -28,12 +27,6 @@ class TreeSub extends Component {
     this.setProps({
       children: items,
     })
-  }
-
-  handleCheck() {
-    for (let i = 0; i < this.children.length; i++) {
-      this.children[i].handleCheck()
-    }
   }
 
   _disable() {

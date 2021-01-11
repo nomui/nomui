@@ -23,10 +23,6 @@ class TreeWrapper extends Component {
     this.level = 0
     this.parentWrapper = null
 
-    // if (this.parent instanceof Component.components.Tree) {
-    //   this.tree = this.parent.parent
-    // }
-
     if (this.parent.parent instanceof Component.components.Tree) {
       this.tree = this.parent.parent
       this.isRoot = true
@@ -38,13 +34,9 @@ class TreeWrapper extends Component {
     if (this.parentWrapper) {
       this.level = this.parentWrapper.level + 1
     }
-
-    // this.isLeaf = !Array.isArray(this.props.item.items) || this.props.item.items.length < 1
   }
 
   _config() {
-    // const { tree } = this
-    // const treeProps = tree.props
     const that = this
 
     const { key, title, value, checked, items, collapsed } = this.props
