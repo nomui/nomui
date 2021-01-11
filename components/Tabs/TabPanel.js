@@ -9,7 +9,7 @@ class TabPanel extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.tabContent = this.parent
     this.tabContent.panels[this.key] = this
   }

@@ -15,7 +15,7 @@ class Field extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.form = this.parent
   }
 

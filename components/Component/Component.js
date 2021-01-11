@@ -115,9 +115,9 @@ class Component {
 
   create() {
     this.__handleClick = this.__handleClick.bind(this)
-    isFunction(this._create) && this._create()
-    this._callMixin('_create')
-    this.props._create && this.props._create.call(this)
+    isFunction(this._created) && this._created()
+    this._callMixin('_created')
+    this.props._created && this.props._created.call(this)
   }
 
   config() {
@@ -144,9 +144,9 @@ class Component {
     this.props.selected === true && isFunction(this._select) && this._select()
     this.props.hidden === false && isFunction(this._show) && this._show()
 
-    isFunction(this._render) && this._render()
-    this._callMixin('_render')
-    isFunction(this.props._render) && this.props._render.call(this)
+    isFunction(this._rendered) && this._rendered()
+    this._callMixin('_rendered')
+    isFunction(this.props._rendered) && this.props._rendered.call(this)
 
     this.rendered = true
     this.firstRender = false

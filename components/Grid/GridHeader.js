@@ -10,7 +10,7 @@ class GridHeader extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.grid = this.parent
     this.grid.header = this
   }

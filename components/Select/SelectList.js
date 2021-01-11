@@ -12,8 +12,8 @@ class SelectList extends List {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
-    super._create()
+  _created() {
+    super._created()
 
     this.selectControl = this.parent.parent.parent.selectControl
     this.selectControl.optionList = this

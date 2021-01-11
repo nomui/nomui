@@ -31,8 +31,8 @@ class OptionList extends List {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
-    super._create()
+  _created() {
+    super._created()
 
     this.radioList = this.parent
     this.radioList.optionList = this

@@ -71,7 +71,7 @@ class Avatar extends Component {
     }
   }
 
-  _render() {
+  _rendered() {
     this._setScale()
   }
 }

@@ -384,7 +384,7 @@ define([], function () {
         },
       ],
     },
-    _render: function () {
+    _rendered: function () {
       this.highLight()
       this.on('queryChange', () => {
         this.highLight()

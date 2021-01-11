@@ -1,5 +1,5 @@
 export default {
-  _create: function () {
+  _created: function () {
     this.wrapper = this.parent
     this.wrapper.item = this
     this.list = this.wrapper.list
@@ -50,7 +50,7 @@ export default {
       }
     })
   },
-  _render: function () {
+  _rendered: function () {
     const listProps = this.list.props
     if (listProps.itemSelectable.multiple === false) {
       if (this.props.selected) {

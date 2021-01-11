@@ -66,7 +66,7 @@ Component.mixin({
       })
     }
   },
-  _render: function () {
+  _rendered: function () {
     if (this.props.badge) {
       const badgeProps = {
         type: 'dot',

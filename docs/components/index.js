@@ -124,10 +124,10 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
         },
       })
     },
-    _create: function () {
+    _created: function () {
       renderDemoIndex()
     },
-    _render: function () {
+    _rendered: function () {
       this.on('queryChange', () => {
         renderDemoIndex()
       })

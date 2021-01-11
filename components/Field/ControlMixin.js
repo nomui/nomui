@@ -1,5 +1,5 @@
 export default {
-  _create: function () {
+  _created: function () {
     this.field = this.parent.field
     this.field.control = this
     this.form = this.field.form

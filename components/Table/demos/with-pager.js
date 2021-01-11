@@ -44,7 +44,7 @@ define([], function () {
             },
           },
         ],
-        _render: function () {
+        _rendered: function () {
           getData(1)
         },
       }

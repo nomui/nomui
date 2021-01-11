@@ -80,7 +80,7 @@ class DatePicker extends Textbox {
             },
             {
               component: List,
-              _create: function () {
+              _created: function () {
                 that.days = this
               },
               gutter: 'sm',

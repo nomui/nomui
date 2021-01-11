@@ -18,7 +18,7 @@ class App extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.lastLevel = 0
     this.previousRoute = null
     this.currentRoute = new Route(this.props.defaultPath)
@@ -48,7 +48,7 @@ class App extends Component {
     }
   }
 
-  _render() {
+  _rendered() {
     const that = this
     window.addEventListener('hashchange', function () {
       that.handleRoute()

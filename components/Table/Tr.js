@@ -12,7 +12,7 @@ class Tr extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.tbody = this.parent
     this.table = this.tbody.table
   }

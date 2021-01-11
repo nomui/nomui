@@ -50,7 +50,7 @@ define([], function () {
                 padding: '1'
             }
         },
-        _render: function () {
+        _rendered: function () {
             this.renderArticle();
             this.on('queryChange', () => {
                 this.renderArticle();

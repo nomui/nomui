@@ -14,7 +14,7 @@ class Control extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.initValue = null
     this.oldValue = null
     this.currentValue = null

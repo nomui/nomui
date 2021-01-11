@@ -25,7 +25,7 @@ class MenuItem extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.wrapper = this.parent
     this.wrapper.item = this
     this.menu = this.wrapper.menu
@@ -61,7 +61,7 @@ class MenuItem extends Component {
       indicator: {
         type: indicatorIconType,
         classes: { 'nom-menu-toggler': true },
-        _create() {
+        _created() {
           this.parent.indicator = this
         },
       },

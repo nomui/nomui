@@ -15,7 +15,7 @@ Object.defineProperty(Component.prototype, '$view', {
 })
 
 export default {
-  _create: function () {
+  _created: function () {
     this.viewLevel = this.$app.lastLevel
     this.$app.lastLevel++
     this._scoped = true
