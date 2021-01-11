@@ -1,12 +1,13 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '指定日期格式',
+    file: 'with-format.js',
+    description: '指定格式为dd/MM/yyyy',
     demo: function () {
       return {
         children: {
           component: 'DatePicker',
-          placeholder: 'basic usage',
+          format: 'dd/MM/yyyy',
         },
       }
     },

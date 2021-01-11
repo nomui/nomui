@@ -59,6 +59,10 @@ class Input extends Component {
   focus() {
     this.element.focus()
   }
+
+  blur() {
+    this.element.blur()
+  }
 }
 
 export default Input

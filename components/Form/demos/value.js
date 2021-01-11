@@ -98,7 +98,9 @@ define([], function () {
                 text: '提交',
                 attrs: {
                   onclick: function () {
-                    console.log(demo.refs.form.getValue())
+                    if (demo.refs.form.validate()) {
+                      console.log(demo.refs.form.getValue())
+                    }
                   },
                 },
               },
