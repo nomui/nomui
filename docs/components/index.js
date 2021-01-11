@@ -1,6 +1,6 @@
 define(['/docs/DemoPanel.js'], function (demoPanel) {
   return function () {
-    let tabContent = null    
+    let tabContent = null
 
     const renderDemoIndex = () => {
       const { type = 'component', cat, tab = 'demo' } = this.$route.query
@@ -14,11 +14,11 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
         require([docUrl], (docContent) => {
           props.docs = marked(docContent)
           props.tab = tab
-          this.currentView.update(props)
         }, () => {
           props.docs = '敬请期待'
-          this.currentView.update(props)
+          //this.currentView.update(props)
         })
+        this.currentView.update(props)
       })
     }
 
@@ -31,6 +31,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
           demos: [],
           docs: '敬请期待',
           tab: 'demo',
+          autoRender: false,
           _config: function () {
             this.setProps({
               header: {
@@ -127,7 +128,9 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
         }
       },
       _rendered: () => {
-        renderDemoIndex()
+        if (this.firstRender) {
+          renderDemoIndex()
+        }
       },
       onQueryChange: () => {
         renderDemoIndex()

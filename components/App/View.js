@@ -34,6 +34,7 @@ class View extends Component {
     }
     else if (this.level === changed.changedLevel) {
       this.routeView(this.level, this.element)
+      this.$app.lastLevel = this.level + 1
     }
     else if (this.level === changed.changedLevel - 1) {
       this._callHandler(this.props.onSubpathChange)
