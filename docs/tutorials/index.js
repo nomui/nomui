@@ -3,6 +3,17 @@ define([], function () {
     return function () {
         let articleMenu = null, content = null
 
+        const renderArticle = () => {
+            let article = this.$route.query.article || 'getstarted'
+            var articleUrl = 'text!/docs/tutorials/' + article + '.md';
+            articleMenu.selectItem(article);
+            articleMenu.expandToItem(article);
+
+            require([articleUrl], (articleContent) => {
+                content.update({ children: marked(articleContent) })
+            })
+        }
+
         return {
             view: () => {
                 return {
@@ -59,25 +70,13 @@ define([], function () {
                             padding: '1'
                         }
                     },
-                    _rendered: function () {
-                        this.renderArticle();
-                        this.on('queryChange', () => {
-                            this.renderArticle();
-                        })
-                    },
-                    methods: {
-                        renderArticle: function () {
-                            let article = this.$route.query.article || 'getstarted'
-                            var articleUrl = 'text!/docs/tutorials/' + article + '.md';
-                            articleMenu.selectItem(article);
-                            articleMenu.expandToItem(article);
-
-                            require([articleUrl], (articleContent) => {
-                                content.update({ children: marked(articleContent) })
-                            })
-                        }
-                    }
                 }
+            },
+            _rendered: function () {
+                renderArticle()
+            },
+            onQueryChange: () => {
+                renderArticle()
             }
         }
     }

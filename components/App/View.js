@@ -31,6 +31,10 @@ class View extends Component {
       this._callHandler(this.props.onQueryChange)
     }
 
+    if (changed.changedLevel === null) {
+      return
+    }
+
     if (this.level > changed.changedLevel) {
       this.remove()
     }

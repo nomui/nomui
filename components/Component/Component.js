@@ -83,14 +83,6 @@ class Component {
       this.props.ref(this)
     }
 
-    if (this.props.methods) {
-      for (const method in this.props.methods) {
-        if (this.props.methods.hasOwnProperty(method)) {
-          this[method] = this.props.methods[method]
-        }
-      }
-    }
-
     this.componentType = this.__proto__.constructor.name
     this.referenceElement =
       this.props.reference instanceof Component
