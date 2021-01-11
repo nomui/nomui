@@ -47,10 +47,7 @@ class Component {
     this.children = []
     this.root = null
     this.rendered = false
-    this.scope = null
-    this.refs = {}
     this.mixins = []
-    this._scoped = false
     this.firstRender = true
 
     this._propStyleClasses = []
@@ -78,18 +75,12 @@ class Component {
 
     if (this.parent === null) {
       this.root = this
-      this.scope = this.root
     } else {
       this.root = this.parent.root
-      this.scope = this.parent._scoped ? this.parent : this.parent.scope
     }
 
-    if (this.props.ref && this.scope) {
-      this.scope.refs[this.props.ref] = this
-    }
-
-    if (this.props.reffn) {
-      this.props.reffn(this)
+    if (this.props.ref) {
+      this.props.ref(this)
     }
 
     if (this.props.methods) {
@@ -144,11 +135,14 @@ class Component {
     this.props.selected === true && isFunction(this._select) && this._select()
     this.props.hidden === false && isFunction(this._show) && this._show()
 
+    this._callRendered()
+  }
+
+  _callRendered() {
+    this.rendered = true
     isFunction(this._rendered) && this._rendered()
     this._callMixin('_rendered')
     isFunction(this.props._rendered) && this.props._rendered.call(this)
-
-    this.rendered = true
     this.firstRender = false
   }
 
@@ -229,7 +223,7 @@ class Component {
     this._callMixin('_remove')
     this._off()
     this.off()
-    this.props.reffn && this.props.reffn(null)
+    this.props.ref && this.props.ref(null)
 
     for (const p in this) {
       if (this.hasOwnProperty(p)) {
@@ -518,17 +512,8 @@ class Component {
     if (target instanceof Component) {
       return target
     }
-    if (isString(target)) {
-      return this.getScopedComponent(target)
-    }
     if (isFunction(target)) {
       return target.call(this)
-    }
-  }
-
-  getScopedComponent(name) {
-    if (this.scope) {
-      return this.scope.refs[name]
     }
   }
 

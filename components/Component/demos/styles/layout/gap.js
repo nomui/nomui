@@ -3,12 +3,14 @@ define([], function () {
     title: '间隔',
     file: 'gap',
     demo: function () {
-      const demo = this
+      let layout = null
 
       return {
         children: [
           {
-            ref: 'layout',
+            ref: (c) => {
+              layout = c
+            },
             children: [
               {
                 children: 'flex-item',
@@ -49,7 +51,7 @@ define([], function () {
                 ],
                 value: 'row',
                 onValueChange: function (changed) {
-                  demo.refs.layout.update({ styles: { flex: changed.newValue } })
+                  layout.update({ styles: { flex: changed.newValue } })
                 },
               },
               {
@@ -74,7 +76,7 @@ define([], function () {
                 ],
                 value: 'md',
                 onValueChange: function (changed) {
-                  demo.refs.layout.update({ styles: { gap: changed.newValue } })
+                  layout.update({ styles: { gap: changed.newValue } })
                 },
               },
             ],

@@ -3,14 +3,16 @@ define([], function () {
     title: '排列与对齐',
     file: 'basic',
     demo: function () {
-      const demo = this
+      let layout = null
       let flexDir = 'row'
       let flexFills = false
 
       return {
         children: [
           {
-            ref: 'layout',
+            ref: (c) => {
+              layout = c
+            },
             styles: {
               flex: 'row',
               color: 'lprimary',
@@ -66,7 +68,7 @@ define([], function () {
                   if (flexFills !== false) {
                     flexArr.push(flexFills)
                   }
-                  demo.refs.layout.update({
+                  layout && layout.update({
                     attrs: {
                       style: {
                         height: height,
@@ -98,7 +100,7 @@ define([], function () {
                 ],
                 value: 'center',
                 onValueChange: function (changed) {
-                  demo.refs.layout.update({ styles: { align: changed.newValue } })
+                  layout && layout.update({ styles: { align: changed.newValue } })
                 },
               },
               {
@@ -127,7 +129,7 @@ define([], function () {
                 ],
                 value: 'center',
                 onValueChange: function (changed) {
-                  demo.refs.layout.update({
+                  layout && layout.update({
                     styles: {
                       justify: changed.newValue,
                     },
@@ -145,7 +147,7 @@ define([], function () {
                   } else {
                     flexArr.push(false)
                   }
-                  demo.refs.layout.update({
+                  layout.update({
                     styles: {
                       flex: flexArr,
                     },

@@ -3,7 +3,9 @@ define([], function () {
     title: '综合示例',
     file: 'integration',
     demo: function () {
-      const demo = this
+      let textList = null
+      let buttonList = null
+
       const items = [
         { text: '飞狐外传' },
         { text: '雪山飞狐' },
@@ -34,10 +36,10 @@ define([], function () {
                 ],
                 type: 'button',
                 onValueChange: function (changed) {
-                  demo.refs.textList.update({
+                  textList.update({
                     cols: changed.newValue,
                   })
-                  demo.refs.buttonList.update({
+                  buttonList.update({
                     cols: changed.newValue,
                   })
                 },
@@ -52,10 +54,10 @@ define([], function () {
                 ],
                 type: 'button',
                 onValueChange: function (changed) {
-                  demo.refs.textList.update({
+                  textList.update({
                     gutter: changed.newValue,
                   })
-                  demo.refs.buttonList.update({
+                  buttonList.update({
                     gutter: changed.newValue,
                   })
                 },
@@ -70,10 +72,10 @@ define([], function () {
                 ],
                 type: 'button',
                 onValueChange: function (changed) {
-                  demo.refs.textList.update({
+                  textList.update({
                     line: changed.newValue,
                   })
-                  demo.refs.buttonList.update({
+                  buttonList.update({
                     line: changed.newValue,
                   })
                 },
@@ -86,7 +88,7 @@ define([], function () {
                 ],
                 type: 'button',
                 onValueChange: function (changed) {
-                  demo.refs.buttonList.update({
+                  buttonList.update({
                     itemDefaults: {
                       styles: {
                         width: changed.newValue,
@@ -115,7 +117,9 @@ define([], function () {
                 body: {
                   children: {
                     component: 'List',
-                    ref: 'textList',
+                    ref: (c) => {
+                      textList = c
+                    },
                     direction: 'horizontal',
                     wrap: true,
                     items: items,
@@ -139,7 +143,9 @@ define([], function () {
                 body: {
                   children: {
                     component: 'List',
-                    ref: 'buttonList',
+                    ref: (c) => {
+                      buttonList = c
+                    },
                     direction: 'horizontal',
                     wrap: true,
                     items: items,

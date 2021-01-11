@@ -3,13 +3,15 @@ define([], function () {
     title: '指定容器',
     file: 'basic',
     demo: function () {
-      const demo = this
+      let container = null
 
       return {
         component: 'Rows',
         items: [
           {
-            ref: 'container',
+            ref: (c) => {
+              container = c
+            },
             styles: {
               padding: '4',
               border: '1px',
@@ -22,7 +24,7 @@ define([], function () {
             onValueChange: function (changed) {
               if (changed.newValue === true) {
                 this.Loading = new nomui.Loading({
-                  container: demo.refs.container,
+                  container: container,
                 })
               } else {
                 this.Loading.remove()

@@ -40,8 +40,9 @@ define([], function () {
           },
           {
             component: 'Tabs',
-            ref: 'tabs',
-            reffn: (c) => { tabs = c },
+            ref: (c) => {
+              tabs = c
+            },
             tabs: [
               {
                 item: { text: 'Home' },

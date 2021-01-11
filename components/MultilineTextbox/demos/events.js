@@ -4,12 +4,16 @@ define([], function () {
     description: '触发focus、blur事件',
     file: 'events',
     demo: function () {
+      let myTextArea = null
+
       return {
         children: [
           {
             component: 'MultilineTextbox',
             value: '大文本',
-            ref: 'myTextArea',
+            ref: (c) => {
+              myTextArea = c
+            },
             autoSize: { minRows: 2, maxRows: 6 },
           },
           {
@@ -22,14 +26,14 @@ define([], function () {
                 component: 'Button',
                 text: '获得焦点',
                 onClick: () => {
-                  this.refs.myTextArea.focus()
+                  myTextArea.focus()
                 },
               },
               {
                 component: 'Button',
                 text: '焦点离开',
                 onClick: () => {
-                  this.refs.myTextArea.blur()
+                  myTextArea.blur()
                 },
               },
             ],

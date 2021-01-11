@@ -3,7 +3,6 @@ import Component from '../Component/index'
 import { pathCombine } from '../util/index'
 import { Route } from './Route'
 import View from './View'
-import ViewMixin from './ViewMixin'
 
 class App extends Component {
   constructor(props, ...mixins) {
@@ -79,21 +78,11 @@ class App extends Component {
         queryChanged = true
       }
     }
+    this.trigger('hashChange', { changedLevel, queryChanged })
 
     for (let i = 0; i <= this.currentRoute.maxLevel; i++) {
       const view = this.views[i]
-      view.trigger('hashChange')
-      if (queryChanged) {
-        view.trigger('queryChange')
-      }
-      if (i === changedLevel - 1) {
-        view.trigger('subpathChange')
-      }
-      if (i === changedLevel) {
-        this.lastLevel = i
-        this.routeView(i, view.element)
-        break
-      }
+      view && view.hashChange({ changedLevel, queryChanged })
     }
   }
 
@@ -116,7 +105,7 @@ class App extends Component {
         placement: 'replace',
       }
       viewOptions = Component.extendProps(viewOptions, extOptions)
-      this.views[level] = Component.create(viewOptions, ViewMixin)
+      this.views[level] = Component.create(viewOptions)
     })
   }
 
