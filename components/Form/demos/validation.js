@@ -3,12 +3,14 @@ define([], function () {
     title: '表单验证',
     file: 'validation',
     demo: function () {
-      const demo = this
+      let form = null
 
       return {
         children: {
           component: 'Form',
-          ref: 'form',
+          ref: (c) => {
+            form = c
+          },
           fields: [
             {
               name: 'name',
@@ -78,7 +80,7 @@ define([], function () {
                 text: '提交',
                 attrs: {
                   onclick: function () {
-                    demo.refs.form.validate()
+                    form.validate()
                   },
                 },
               },

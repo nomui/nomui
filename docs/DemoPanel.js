@@ -46,7 +46,7 @@ define(['./precode.js'], function (Precode) {
           },
           {
             component: Precode,
-            _create: function () {
+            _created: function () {
               that.preCode = this
             },
             lang: 'js',

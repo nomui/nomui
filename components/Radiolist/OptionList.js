@@ -31,8 +31,8 @@ class OptionList extends List {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
-    super._create()
+  _created() {
+    super._created()
 
     this.radioList = this.parent
     this.radioList.optionList = this
@@ -52,10 +52,8 @@ class OptionList extends List {
         byClick: true,
       },
       selectedItems: listProps.value,
-      events: {
-        itemSelectionChange: () => {
-          this.radioList._onValueChange()
-        },
+      onItemSelectionChange: () => {
+        this.radioList._onValueChange()
       },
     })
 

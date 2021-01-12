@@ -21,8 +21,8 @@ class Popup extends Layer {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
-    super._create()
+  _created() {
+    super._created()
 
     this._showHandler = this._showHandler.bind(this)
     this._hideHandler = this._hideHandler.bind(this)
@@ -91,7 +91,7 @@ class Popup extends Layer {
 }
 
 Component.mixin({
-  _render: function () {
+  _rendered: function () {
     if (this.props.popup) {
       this.props.popup.trigger = this
       this.popup = new Popup(this.props.popup)

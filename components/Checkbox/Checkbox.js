@@ -27,7 +27,7 @@ class Checkbox extends Control {
                 that._onValueChange()
               },
             },
-            _create() {
+            _created() {
               that.input = this
             },
           },

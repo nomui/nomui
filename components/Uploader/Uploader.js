@@ -9,7 +9,7 @@ import {
   getUUID,
   isBlobFile,
   isPromiseLike,
-  removeFile,
+  removeFile
 } from './helper'
 import Request from './request'
 
@@ -38,7 +38,7 @@ class Uploader extends Control {
     this.reqs = {}
   }
 
-  _create() {
+  _created() {
     this.fileList = this.props.defaultFileList
   }
 
@@ -80,7 +80,7 @@ class Uploader extends Control {
     const inputUploader = {
       tag: 'input',
       hidden: true,
-      _create() {
+      _created() {
         that.inputFile = this
       },
       attrs: {

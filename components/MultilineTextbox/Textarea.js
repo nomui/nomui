@@ -14,7 +14,7 @@ class Textarea extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.multilineTextbox = this.parent
     this.multilineTextbox.textarea = this
 
@@ -44,7 +44,7 @@ class Textarea extends Component {
     })
   }
 
-  _render() {
+  _rendered() {
     if (this.multilineTextbox.props.autofocus === true) {
       this.focus()
     }

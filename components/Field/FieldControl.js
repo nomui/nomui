@@ -10,7 +10,7 @@ class FieldControl extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.field = this.parent
   }
 

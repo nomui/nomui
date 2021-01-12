@@ -12,7 +12,7 @@ class ModalDialog extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.modal = this.parent
     const { content } = this.modal.props
     if (isString(content)) {
@@ -29,10 +29,8 @@ class ModalDialog extends Component {
                   styles: {
                     border: 'none',
                   },
-                  events: {
-                    click: function () {
-                      this.$modal.close()
-                    },
+                  onClick: function () {
+                    this.$modal.close()
                   },
                 },
               ],

@@ -33,7 +33,7 @@ define([], function () {
       })
     }
 
-    _render() {
+    _rendered() {
       hljs.highlightBlock(this.element.querySelectorAll('code')[0])
     }
   }

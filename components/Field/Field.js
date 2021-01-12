@@ -15,7 +15,7 @@ class Field extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.form = this.parent
   }
 
@@ -27,10 +27,6 @@ class Field extends Component {
     if (!hasLabel) {
       this.props.labelAlign = null
     }
-
-    this.on('valueChange', function (changed) {
-      this.form.trigger('valueChange', changed)
-    })
 
     this.setProps({
       required: this.props.control.required,
@@ -63,6 +59,11 @@ class Field extends Component {
 
   focus() {
     this.control.focus && this.control.focus()
+  }
+
+  _onValueChange(changed) {
+    this._callHandler(this.props.onValueChange, changed)
+    this.form.onValueChange(changed)
   }
 }
 

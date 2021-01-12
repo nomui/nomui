@@ -34,51 +34,47 @@ class AlertContent extends Component {
 
     const iconProps = icon
       ? Component.extendProps(Component.normalizeIconProps(icon), {
-          classes: { 'nom-alert-icon': true },
-        })
+        classes: { 'nom-alert-icon': true },
+      })
       : null
 
     const titleProps = title
       ? Component.extendProps(Component.normalizeTemplateProps(title), {
-          classes: { 'nom-alert-title': true },
-        })
+        classes: { 'nom-alert-title': true },
+      })
       : null
 
     const descriptionProps = description
       ? Component.extendProps(Component.normalizeTemplateProps(description), {
-          classes: { 'nom-alert-description': true },
-        })
+        classes: { 'nom-alert-description': true },
+      })
       : null
 
     const okProps = ok
       ? Component.extendProps(ok, {
-          component: Button,
-          styles: {
-            color: 'primary',
-          },
-          events: {
-            click: function () {
-              if (ok.callback) {
-                if (ok.callback.call(this, alertInst) !== false) {
-                  alertInst.close()
-                }
-              } else {
-                alertInst.close()
-              }
-            },
-          },
-        })
+        component: Button,
+        styles: {
+          color: 'primary',
+        },
+        onClick: function () {
+          if (ok.callback) {
+            if (ok.callback.call(this, alertInst) !== false) {
+              alertInst.close()
+            }
+          } else {
+            alertInst.close()
+          }
+        },
+      })
       : null
 
     const cancelProps = cancel
       ? Component.extendProps(cancel, {
-          component: Button,
-          events: {
-            click: function () {
-              alertInst.close()
-            },
-          },
-        })
+        component: Button,
+        onClick: function () {
+          alertInst.close()
+        },
+      })
       : null
 
     this.setProps({

@@ -2,7 +2,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
   return {
     component: demoPanel,
     autoRender: false,
-    _create: function () {
+    _created: function () {
       const { type, cat, demo } = this.$route.query
       let url = `/components/${type}/demos/${demo}.js`
       if (cat) {

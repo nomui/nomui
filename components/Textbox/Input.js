@@ -13,7 +13,7 @@ class Input extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.textbox = this.parent
     this.textbox.input = this
     this.capsLock = false
@@ -42,7 +42,7 @@ class Input extends Component {
     })
   }
 
-  _render() {
+  _rendered() {
     if (this.textbox.props.autofocus === true) {
       this.focus()
     }

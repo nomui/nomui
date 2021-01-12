@@ -10,7 +10,7 @@ class Th extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.tr = this.parent
     this.table = this.tr.table
   }
