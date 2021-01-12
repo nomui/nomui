@@ -1,4 +1,4 @@
-define(['./basic.js', './toggle-spinning.js'], function () {
+define(['./basic.js'], function () {
   return {
     title: 'Spinner',
     subtitle: '加载中',
