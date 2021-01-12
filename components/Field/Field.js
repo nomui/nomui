@@ -31,7 +31,10 @@ class Field extends Component {
     this.setProps({
       required: this.props.control.required,
       requiredMark: this.form.props.requiredMark,
-      children: [hasLabel && { component: FieldLabel }, { component: FieldControl, value: this.props.value }],
+      children: [
+        hasLabel && { component: FieldLabel },
+        { component: FieldControl, value: this.props.value },
+      ],
     })
   }
 
@@ -59,6 +62,10 @@ class Field extends Component {
 
   focus() {
     this.control.focus && this.control.focus()
+  }
+  
+  blur() {
+    this.control.blur && this.control.blur()
   }
 
   _onValueChange(changed) {

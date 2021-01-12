@@ -16,7 +16,6 @@ class Numberbox extends Textbox {
     super._config()
 
     const rules = []
-
     if (this.props.precision === 0) {
       rules.push({
         type: 'regex',

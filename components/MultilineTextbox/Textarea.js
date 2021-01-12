@@ -52,7 +52,6 @@ class Textarea extends Component {
   }
 
   _remove() {
-    // this.resizeObserver && this.resizeObserver.disconnect()
     cancelAnimationFrame && cancelAnimationFrame(this.resizeFrameId)
   }
 

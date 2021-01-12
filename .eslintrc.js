@@ -5,6 +5,7 @@ module.exports = {
     define: true,
     $: true,
     hljs: true,
+    marked: true,
   },
   rules: {
     'no-underscore-dangle': 0,
@@ -34,5 +35,6 @@ module.exports = {
     'no-extend-native': 0,
     camelcase: 0,
     'prefer-destructuring': 0,
+    'one-var': 0,
   },
 }
