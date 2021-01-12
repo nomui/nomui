@@ -34,7 +34,7 @@ define([], function () {
                                 { text: '教程', id: 'tutorials/index', url: '#!tutorials/index' },
                                 { text: '组件', id: 'components', url: '#!components!' }
                             ],
-                            type: 'horizontal',
+                            direction: 'horizontal',
                             itemDefaults: {
                                 key: function () {
                                     return this.props.id

@@ -21,8 +21,7 @@ class Menu extends Component {
       },
 
       indent: 1.5,
-
-      type: 'vertical',
+      direction: 'vertical'
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -34,6 +33,7 @@ class Menu extends Component {
   }
 
   _config() {
+    this._addPropStyle('direction')
     const that = this
     const children = this.props.items.map(function (item) {
       return {

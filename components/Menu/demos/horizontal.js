@@ -8,6 +8,7 @@ define([], function () {
                 children: [
                     {
                         component: 'Menu',
+                        direction: 'horizontal',
                         items: [
                             { text: '起步', id: 'css', url: '#!css!' },
                             {
@@ -28,7 +29,6 @@ define([], function () {
                             { text: '组件', id: 'components', url: '#!components!' },
                             { text: '单页应用', id: 'javascript', url: '#!components!demo' }
                         ],
-                        type: 'horizontal'
                     }
                 ]
             };
