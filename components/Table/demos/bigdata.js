@@ -16,12 +16,12 @@ define([], function () {
     title: '大数据',
     file: 'bigdata',
     demo: function () {
-      const page = this
+      let table = null
 
       function loadDataTableData(n) {
         const data = getSource(n)
         const start = performance.now()
-        page.refs.table.update({
+        table.update({
           data: data,
         })
         const end = performance.now()
@@ -72,7 +72,9 @@ define([], function () {
           },
           {
             component: 'Table',
-            ref: 'table',
+            ref: (c) => {
+              table = c
+            },
             columns: [
               {
                 field: 'name',

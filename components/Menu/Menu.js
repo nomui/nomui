@@ -28,7 +28,7 @@ class Menu extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.itemRefs = []
     this.selectedItem = null
   }

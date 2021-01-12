@@ -7,20 +7,18 @@ define([], function () {
             return {
                 component: 'Button',
                 text: '点击弹出遮罩层',
-                events: {
-                    click: function () {
-                        new nomui.Layer({
-                            align: 'center',
-                            backdrop: true,
-                            closeOnClickBackdrop: true,
-                            styles: {
-                                padding: '1',
-                                color: 'white',
-                                border: '1px'
-                            },
-                            children: '带遮罩的层'
-                        })
-                    }
+                onClick: function () {
+                    new nomui.Layer({
+                        align: 'center',
+                        backdrop: true,
+                        closeOnClickBackdrop: true,
+                        styles: {
+                            padding: '1',
+                            color: 'white',
+                            border: '1px'
+                        },
+                        children: '带遮罩的层'
+                    })
                 }
             }
         }

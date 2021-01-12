@@ -22,8 +22,8 @@ class Tooltip extends Layer {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
-    super._create()
+  _created() {
+    super._created()
 
     this._showHandler = this._showHandler.bind(this)
     this._hideHandler = this._hideHandler.bind(this)
@@ -106,7 +106,7 @@ class Tooltip extends Layer {
 }
 
 Component.mixin({
-  _render: function () {
+  _rendered: function () {
     if (this.props.tooltip) {
       if (isString(this.props.tooltip)) {
         this.tooltip = new Tooltip({ trigger: this, children: this.props.tooltip })

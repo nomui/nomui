@@ -14,7 +14,7 @@ class MenuItemWrapper extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.isLeaf = false
     this.level = 0
     this.parentWrapper = null

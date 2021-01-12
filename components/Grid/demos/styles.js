@@ -3,7 +3,7 @@ define([], function () {
     title: '不同样式',
     file: 'styles',
     demo: function () {
-      const demo = this
+      let table = null
 
       return {
         component: 'Rows',
@@ -20,13 +20,11 @@ define([], function () {
                   { text: '列线条', value: 'col' },
                   { text: '行列线条', value: 'both' },
                 ],
-                type: 'button',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.table.update({
-                      line: changed.newValue,
-                    })
-                  },
+                uistyle: 'button',
+                onValueChange: function (changed) {
+                  table.update({
+                    line: changed.newValue,
+                  })
                 },
               },
               {
@@ -35,20 +33,20 @@ define([], function () {
                   { text: '无边框', value: null },
                   { text: '有边框', value: true },
                 ],
-                type: 'button',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.table.update({
-                      bordered: changed.newValue,
-                    })
-                  },
+                uistyle: 'button',
+                onValueChange: function (changed) {
+                  table.update({
+                    bordered: changed.newValue,
+                  })
                 },
               },
             ],
           },
           {
             component: 'Grid',
-            ref: 'table',
+            ref: (c) => {
+              table = c
+            },
             columns: [
               {
                 field: 'name',

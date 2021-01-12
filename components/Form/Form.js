@@ -29,7 +29,7 @@ class Form extends Control {
 
   _config() {
     this._addPropStyle('inline')
-    
+
     const children = []
     for (let i = 0; i < this.props.fields.length; i++) {
       const field = this.props.fields[i]
@@ -95,6 +95,10 @@ class Form extends Control {
     }
 
     return null
+  }
+
+  _onValueChange(changed) {
+    this._callHandler(this.props.onValueChange, changed)
   }
 }
 

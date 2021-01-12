@@ -53,7 +53,7 @@ class Message extends Layer {
     })
   }
 
-  _render() {
+  _rendered() {
     const that = this
     const { props } = this
 

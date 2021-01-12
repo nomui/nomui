@@ -28,21 +28,17 @@ define([], function () {
                       {
                         component: 'Button',
                         text: '否',
-                        events: {
-                          click: function () {
-                            resolve(false)
-                            modal.close()
-                          },
+                        onClick: function () {
+                          resolve(false)
+                          modal.close()
                         },
                       },
                       {
                         component: 'Button',
                         text: '是',
-                        events: {
-                          click: function () {
-                            resolve(true)
-                            modal.close()
-                          },
+                        onClick: function () {
+                          resolve(true)
+                          modal.close()
                         },
                       },
                     ],
@@ -100,10 +96,8 @@ define([], function () {
                         children: {
                           component: 'Button',
                           text: '关闭',
-                          events: {
-                            click: function () {
-                              modal.close()
-                            },
+                          onClick: function () {
+                            modal.close()
                           },
                         },
                       })

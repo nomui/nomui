@@ -57,9 +57,8 @@ define([], function () {
                                     children: '文件上传日期:',
                                   },
                                   {
-                                    children: `${u.getFullYear()}-${
-                                      u.getMonth() + 1
-                                    }-${u.getDate()}`,
+                                    children: `${u.getFullYear()}-${u.getMonth() + 1
+                                      }-${u.getDate()}`,
                                   },
                                 ],
                               },
@@ -70,9 +69,8 @@ define([], function () {
                                     children: '文件最后修改日期:',
                                   },
                                   {
-                                    children: `${l.getFullYear()}-${
-                                      l.getMonth() + 1
-                                    }-${l.getDate()}`,
+                                    children: `${l.getFullYear()}-${l.getMonth() + 1
+                                      }-${l.getDate()}`,
                                   },
                                 ],
                               },
@@ -111,10 +109,8 @@ define([], function () {
                           children: {
                             component: 'Button',
                             text: '关闭',
-                            events: {
-                              click: function () {
-                                modal.close()
-                              },
+                            onClick: function () {
+                              modal.close()
                             },
                           },
                         })

@@ -13,7 +13,7 @@ class Modal extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this._scoped = true
     this.bodyElem = document.body
   }

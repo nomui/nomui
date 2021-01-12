@@ -12,7 +12,7 @@ class MenuSub extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.wrapper = this.props.wrapper || this.parent
     this.wrapper.submenu = this
     this.menu = this.wrapper.menu
