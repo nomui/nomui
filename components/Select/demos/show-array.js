@@ -1,12 +1,13 @@
 define([], function () {
   return {
-    title: '按钮样式',
-    file: 'type-button',
+    title: '无箭头',
+    file: 'show-array',
     demo: function () {
       return {
         children: [
           {
-            component: 'RadioList',
+            component: 'Select',
+            showArrow: false,
             options: [
               {
                 text: '金庸',
@@ -25,7 +26,6 @@ define([], function () {
                 value: 3,
               },
             ],
-            uistyle: 'button',
           },
         ],
       }

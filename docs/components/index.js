@@ -8,17 +8,17 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
       if (cat) {
         url = `/components/${type}/demos/${cat}/index.js`
       }
-      let docUrl = `text!/components/${type}/index.md`
+      const docUrl = `text!/components/${type}/index.md`
 
       require([url], (props) => {
         require([docUrl], (docContent) => {
           props.docs = marked(docContent)
           props.tab = tab
+          this.currentView.update(props)
         }, () => {
           props.docs = '敬请期待'
-          //this.currentView.update(props)
+          this.currentView.update(props)
         })
-        this.currentView.update(props)
       })
     }
 
@@ -53,14 +53,14 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                     items: [
                       {
                         key: 'demo',
-                        text: '示例'
+                        text: '示例',
                       },
                       {
                         key: 'docs',
-                        text: '文档'
-                      }
-                    ]
-                  }
+                        text: '文档',
+                      },
+                    ],
+                  },
                 },
               ],
             },
@@ -110,20 +110,20 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                           margins: 'x',
                         },
                       },
-                    }
+                    },
                   },
                   {
                     key: 'docs',
                     attrs: {
-                      id: 'nice'
+                      id: 'nice',
                     },
-                    children: this.props.docs
-                  }
-                ]
+                    children: this.props.docs,
+                  },
+                ],
               },
             },
           })
-        }
+        },
       },
       _rendered: () => {
         if (this.firstRender) {
@@ -132,8 +132,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
       },
       onQueryChange: () => {
         renderDemoIndex()
-      }
+      },
     }
   }
-
 })

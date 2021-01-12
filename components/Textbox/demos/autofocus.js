@@ -1,13 +1,13 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '自动获得焦点',
+    file: 'autofocus',
     demo: function () {
       return {
         children: {
           component: 'Textbox',
-          placeholder: 'basic usage',
-          value: '自动赋值',
+          placeholder: 'auto focus',
+          autofocus: true,
         },
       }
     },

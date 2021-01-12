@@ -54,7 +54,7 @@ class App extends Component {
   }
 
   handleRoute() {
-    const route = new Route()
+    const route = new Route(this.props.defaultPath)
     console.info(JSON.stringify(route))
 
     let changedLevel = null
