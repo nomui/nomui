@@ -30,9 +30,9 @@ jobs:
           git init
           git add .
           git commit -m "build"
-          git config --global user.email user.name "1002275364@qq.com"
-          git config --global user.name "xiexingen"
-          git config --global user.password "${{ secrets.XXG_PWD }}"
+          git config user.email user.name "1002275364@qq.com"
+          git config user.name "xiexingen"
+          git config user.password "${{ secrets.XXG_PWD }}"
           git remote add origin git@github.com:nomui/nomui.github.io.git
           git push -u origin main -f
         env:
