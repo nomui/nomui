@@ -38,6 +38,12 @@ class TreeSelect extends Control {
               size: 'xs',
               text: item.title,
               key: item.key,
+              // removable: function (param) {
+              //   that.props.selected = selected.filter(function (k) {
+              //     return k !== param
+              //   })
+              //   that.update(that.props.selected)
+              // },
             })
           }
         })

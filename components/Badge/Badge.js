@@ -3,12 +3,14 @@ import Component from '../Component/index'
 class Badge extends Component {
   constructor(props, ...mixins) {
     const defaults = {
+      key: null,
       tag: 'span',
       type: 'square',
       text: null,
       icon: null,
       number: null,
       overflowCount: 99,
+      removable: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -16,8 +18,9 @@ class Badge extends Component {
 
   _config() {
     this._propStyleClasses = ['size']
-    const { icon, text, type, number, overflowCount } = this.props
+    const { icon, text, type, number, overflowCount, removable } = this.props
 
+    const that = this
     if (icon) {
       this.setProps({
         classes: {
@@ -47,6 +50,19 @@ class Badge extends Component {
         Component.normalizeIconProps(icon),
         text && { tag: 'span', children: text },
         number && { tag: 'span', children: number > overflowCount ? `${overflowCount}+` : number },
+        removable &&
+          Component.normalizeIconProps({
+            type: 'times',
+            classes: {
+              'nom-badge-remove': true,
+            },
+            children: 'X',
+            events: {
+              click: function () {
+                that.props.removable(that.props.key)
+              },
+            },
+          }),
       ],
     })
   }
