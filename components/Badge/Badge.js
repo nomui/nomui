@@ -57,10 +57,8 @@ class Badge extends Component {
               'nom-badge-remove': true,
             },
             children: 'X',
-            events: {
-              click: function () {
-                that.props.removable(that.props.key)
-              },
+            onClick: function () {
+              that.props.removable(that.props.key)
             },
           }),
       ],
@@ -82,7 +80,7 @@ Component.mixin({
       })
     }
   },
-  _render: function () {
+  _rendered: function () {
     if (this.props.badge) {
       const badgeProps = {
         type: 'dot',

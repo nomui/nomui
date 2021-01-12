@@ -17,7 +17,7 @@ class TreeSelect extends Control {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.items = []
   }
 
@@ -40,12 +40,12 @@ class TreeSelect extends Control {
               size: 'xs',
               text: item.title,
               key: item.key,
-              // removable: function (param) {
-              //   that.props.selected = selected.filter(function (k) {
-              //     return k !== param
-              //   })
-              //   that.update(that.props.selected)
-              // },
+              removable: function (param) {
+                that.props.selected = selected.filter(function (k) {
+                  return k !== param
+                })
+                that.update(that.props.selected)
+              },
             })
           }
         })
@@ -59,6 +59,9 @@ class TreeSelect extends Control {
         {
           component: Icon,
           type: 'down',
+          _created: function () {
+            that.arrow = this
+          },
           classes: {
             'nom-tree-select-arrow': true,
           },
@@ -74,8 +77,8 @@ class TreeSelect extends Control {
     super._config()
   }
 
-  _render() {
-    this.popup = new TreeSelectPopup({ trigger: this, selected: this.props.selected })
+  _rendered() {
+    this.popup = new TreeSelectPopup({ trigger: this.arrow, selected: this.props.selected })
   }
 
   getList() {
@@ -100,21 +103,6 @@ class TreeSelect extends Control {
   setValue(data) {
     this.props.selected = data
     this.update(this.props.selected)
-    // const that = this
-    // if (data.length) {
-    //   this.props.items = []
-    //   this.selected = data
-    //   for (let i = 0; i < data.length; i++) {
-    //     that.props.items.push({
-    //       component: 'Badge',
-    //       key: that.tree.itemRefs[data[i]].props.key,
-    //       text: that.tree.itemRefs[data[i]].props.title,
-    //       size: 'xs',
-    //     })
-    //   }
-    //   that.update(that.props.selected)
-    //   //  that.update(that.props.items)
-    // }
   }
 }
 

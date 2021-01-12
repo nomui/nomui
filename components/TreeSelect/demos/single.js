@@ -34,6 +34,7 @@ define([], function () {
           ],
           selected: '0-0-1',
           multiple: false,
+          leafOnly: true,
         },
       }
     },

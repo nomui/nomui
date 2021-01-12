@@ -9,10 +9,9 @@ class TreeSelectPopup extends Popup {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
-    super._create()
-
-    this.selectControl = this.opener
+  _created() {
+    super._created()
+    this.selectControl = this.opener.parent
   }
 
   _config() {
@@ -36,7 +35,7 @@ class TreeSelectPopup extends Popup {
             onCheck: function (data, key, status) {
               that.selectControl.setValue(data, key, status)
             },
-            _create: function () {
+            _created: function () {
               that.selectControl.tree = this
             },
           },
