@@ -28,6 +28,6 @@ jobs:
         uses: s0/git-publish-subdir-action@develop
         env:
           REPO: git@github.com:nomui/nomui.github.io.git
-          BRANCH: main
+          BRANCH: gh-pages
           FOLDER: doc-sites
-          SSH_PRIVATE_KEY: ${{ secrets.GITHUB_TOKEN }}
+          SSH_PRIVATE_KEY: ${{ secrets.Wetrial_NOM_SITE }}
