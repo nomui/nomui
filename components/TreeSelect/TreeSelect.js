@@ -24,14 +24,15 @@ class TreeSelect extends Control {
     const { showArrow, selected } = this.props
     const items = []
     const that = this
-    // if (typeof selected === 'string') {
-    //   const l = [].push(selected)
-    //   this.props.selected = l
-    // }
+    if (typeof selected === 'string') {
+      const temp = []
+      temp.push(selected)
+      that.props.selected = temp
+    }
 
     if (selected) {
       that.getList().forEach(function (item) {
-        selected.forEach(function (key) {
+        that.props.selected.forEach(function (key) {
           if (key === item.key) {
             items.push({
               component: 'Badge',

@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '单选',
+    file: 'single',
     demo: function () {
       return {
         children: {
@@ -32,7 +32,7 @@ define([], function () {
               value: '0-1',
             },
           ],
-          selected: ['0-0-1', '0-1'],
+          selected: '0-0-1',
         },
       }
     },

@@ -58,14 +58,15 @@ class TreeNode extends List {
           indent: indent,
         },
         children: [
-          Component.normalizeIconProps({
-            type: checkIcon,
-            events: {
-              click: function () {
-                that.handleClick()
+          (that.wrapper.isLeaf || !that.tree.props.leafOnly) &&
+            Component.normalizeIconProps({
+              type: checkIcon,
+              events: {
+                click: function () {
+                  that.handleClick()
+                },
               },
-            },
-          }),
+            }),
           {
             tag: 'span',
             children: title,

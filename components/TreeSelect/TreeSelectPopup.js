@@ -31,6 +31,8 @@ class TreeSelectPopup extends Popup {
             component: 'Tree',
             treeData: this.selectControl.props.treeData,
             selected: that.props.selected,
+            multiple: that.selectControl.props.multiple,
+            leafOnly: !that.selectControl.props.multiple,
             onCheck: function (data, key, status) {
               that.selectControl.setValue(data, key, status)
             },
