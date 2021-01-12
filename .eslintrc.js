@@ -5,6 +5,7 @@ module.exports = {
     define: true,
     $: true,
     hljs: true,
+    marked: true,
   },
   rules: {
     'no-underscore-dangle': 0,
