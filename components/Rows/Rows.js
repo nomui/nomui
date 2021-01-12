@@ -8,7 +8,6 @@ class Rows extends Component {
       items: [],
       itemDefaults: null,
       gutter: 'md',
-      align: 'start',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

@@ -104,6 +104,10 @@ class TreeSelect extends Control {
     this.props.selected = data
     this.update(this.props.selected)
   }
+
+  _getValue() {
+    return this.props.selected
+  }
 }
 
 Component.register(TreeSelect)
