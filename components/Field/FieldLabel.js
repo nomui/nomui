@@ -5,7 +5,7 @@ class FieldLabel extends Component {
   //   super(props)
   // }
 
-  _create() {
+  _created() {
     this.field = this.parent
   }
 

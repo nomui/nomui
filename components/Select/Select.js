@@ -58,7 +58,7 @@ class Select extends Control {
 
     this.setProps({
       selectedSingle: {
-        _create() {
+        _created() {
           that.selectedSingle = this
         },
       },
@@ -68,7 +68,7 @@ class Select extends Control {
             return this.props.value
           },
         },
-        _create() {
+        _created() {
           that.selectedMultiple = this
         },
       },
@@ -97,7 +97,7 @@ class Select extends Control {
     super._config()
   }
 
-  _render() {
+  _rendered() {
     const { value, multiple } = this.props
 
     this.popup = new SelectPopup({ trigger: this })
@@ -188,7 +188,7 @@ class Select extends Control {
     return retOptions
   }
 
-  appendOption() {}
+  appendOption() { }
 }
 
 Component.register(Select)

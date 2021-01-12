@@ -1,0 +1,26 @@
+# name: Deploy Doc
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@master
+#       - run: npm i
+#       - name: Build and Deploy
+#         uses: JamesIves/github-pages-deploy-action@master
+#         env:
+#           CI: true
+#           PROGRESS: none
+#           GIT_CONFIG_NAME: xiexingen
+#           GIT_CONFIG_EMAIL: 1002275364@qq.com
+#           NODE_OPTIONS: --max_old_space_size=4096
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           BRANCH: gh-pages
+#           FOLDER: 'build-docs/'
+#           BUILD_SCRIPT: npm run build && mkdir build-docs && cp -rif ./{components,docs,libs,index.html,index.js} build-docs

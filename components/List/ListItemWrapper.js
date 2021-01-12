@@ -11,7 +11,7 @@ class ListItemWrapper extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this._propStyleClasses = ['span']
     this.list = this.parent
   }

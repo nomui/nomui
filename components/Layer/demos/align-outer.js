@@ -12,27 +12,26 @@ define([], function () {
                             width: '100px'
                         }
                     },
-                    events: {
-                        click: function () {
-                            if (!this[align]) {
-                                this[align] = new nomui.Layer({
-                                    align: align,
-                                    alignTo: this.element,
-                                    alignOuter: true,
-                                    children: {
-                                        styles: {
-                                            padding: '1',
-                                            color: 'white',
-                                            border: '1px'
-                                        },
-                                        children: '我是层内容'
+                    onClick: (arg) => {
+                        const sender = arg.sender
+                        if (!sender[align]) {
+                            sender[align] = new nomui.Layer({
+                                align: align,
+                                alignTo: sender.element,
+                                alignOuter: true,
+                                children: {
+                                    styles: {
+                                        padding: '1',
+                                        color: 'white',
+                                        border: '1px'
                                     },
-                                    closeOnClickOutside: true
-                                })
-                            }
-
-                            this[align].show()
+                                    children: '我是层内容'
+                                },
+                                closeOnClickOutside: true
+                            })
                         }
+
+                        sender[align].show()
                     }
                 }
             }

@@ -3,7 +3,9 @@ define([], function () {
     title: '综合示例',
     file: 'integration',
     demo: function () {
-      const demo = this
+      let textList = null
+      let buttonList = null
+
       const items = [
         { text: '飞狐外传' },
         { text: '雪山飞狐' },
@@ -33,15 +35,13 @@ define([], function () {
                   { text: '6 列', value: 6 },
                 ],
                 type: 'button',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.textList.update({
-                      cols: changed.newValue,
-                    })
-                    demo.refs.buttonList.update({
-                      cols: changed.newValue,
-                    })
-                  },
+                onValueChange: function (changed) {
+                  textList.update({
+                    cols: changed.newValue,
+                  })
+                  buttonList.update({
+                    cols: changed.newValue,
+                  })
                 },
               },
               {
@@ -53,15 +53,13 @@ define([], function () {
                   { text: '大间隔', value: 'lg' },
                 ],
                 type: 'button',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.textList.update({
-                      gutter: changed.newValue,
-                    })
-                    demo.refs.buttonList.update({
-                      gutter: changed.newValue,
-                    })
-                  },
+                onValueChange: function (changed) {
+                  textList.update({
+                    gutter: changed.newValue,
+                  })
+                  buttonList.update({
+                    gutter: changed.newValue,
+                  })
                 },
               },
               {
@@ -73,15 +71,13 @@ define([], function () {
                   { text: '交叉线', value: 'cross' },
                 ],
                 type: 'button',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.textList.update({
-                      line: changed.newValue,
-                    })
-                    demo.refs.buttonList.update({
-                      line: changed.newValue,
-                    })
-                  },
+                onValueChange: function (changed) {
+                  textList.update({
+                    line: changed.newValue,
+                  })
+                  buttonList.update({
+                    line: changed.newValue,
+                  })
                 },
               },
               {
@@ -91,16 +87,14 @@ define([], function () {
                   { text: '按钮宽度百分百', value: 'full' },
                 ],
                 type: 'button',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.buttonList.update({
-                      itemDefaults: {
-                        styles: {
-                          width: changed.newValue,
-                        },
+                onValueChange: function (changed) {
+                  buttonList.update({
+                    itemDefaults: {
+                      styles: {
+                        width: changed.newValue,
                       },
-                    })
-                  },
+                    },
+                  })
                 },
               },
             ],
@@ -123,7 +117,9 @@ define([], function () {
                 body: {
                   children: {
                     component: 'List',
-                    ref: 'textList',
+                    ref: (c) => {
+                      textList = c
+                    },
                     direction: 'horizontal',
                     wrap: true,
                     items: items,
@@ -147,7 +143,9 @@ define([], function () {
                 body: {
                   children: {
                     component: 'List',
-                    ref: 'buttonList',
+                    ref: (c) => {
+                      buttonList = c
+                    },
                     direction: 'horizontal',
                     wrap: true,
                     items: items,

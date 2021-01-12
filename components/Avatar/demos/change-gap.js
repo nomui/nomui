@@ -7,37 +7,37 @@ define([], function () {
       '对于字符型的头像，当字符串较长时，字体大小可以根据头像宽度自动调整。也可使用 gap 来设置字符距离左右两侧边界单位像素',
     file: 'change-gap',
     demo: function () {
+      let userAvatar = null
+
       return {
         component: 'Cols',
         items: [
           {
             component: 'Avatar',
-            ref: 'userAvatar',
+            ref: (c) => {
+              userAvatar = c
+            },
             size: 'xl',
             text: '小马',
           },
           {
             component: 'Button',
             text: '换英雄',
-            events: {
-              click: () => {
-                const index = Math.ceil(Math.random() * 100) % names.length
-                this.refs.userAvatar.update({
-                  text: names[index],
-                })
-              },
+            onClick: () => {
+              const index = Math.ceil(Math.random() * 100) % names.length
+              userAvatar.update({
+                text: names[index],
+              })
             },
           },
           {
             component: 'Button',
             text: '修改间距',
-            events: {
-              click: () => {
-                const index = Math.ceil(Math.random() * 100) % gaps.length
-                this.refs.userAvatar.update({
-                  gap: gaps[index],
-                })
-              },
+            onClick: () => {
+              const index = Math.ceil(Math.random() * 100) % gaps.length
+              userAvatar.update({
+                gap: gaps[index],
+              })
             },
           },
         ],
