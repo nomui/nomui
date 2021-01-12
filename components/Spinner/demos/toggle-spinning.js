@@ -4,11 +4,23 @@ define([], function () {
     file: 'basic',
     demo: function () {
       return {
-        component: 'Cols',
+        component: 'Rows',
+        ref: 'test',
         items: [
           {
             component: 'Spinner',
             ref: 'mySpinner',
+            children: {
+              component: 'Panel',
+              header: {
+                caption: {
+                  title: 'Spinner带chindren',
+                },
+              },
+              body: {
+                children: '可以直接把内容内嵌到 Spin 中，将现有容器变为加载状态。',
+              },
+            },
           },
           {
             component: 'Button',

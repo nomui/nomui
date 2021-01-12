@@ -23,7 +23,7 @@
 
 | 参数     | 说明                           | 类型                 |
 | -------- | ------------------------------ | -------------------- |
-| getField | 获取指定表单中指定 name 的组件 | `boolean`            |
+| getField | 获取指定表单中指定 name 的组件 | `Props`              |
 | getValue | 获取表单的数据                 | `()=>{}`             |
 | setValue | 设置表单的数据                 | `(value:Object)=>{}` |
 | validate | 验证表单                       | `boolean`            |

@@ -34,5 +34,6 @@ module.exports = {
     'no-extend-native': 0,
     camelcase: 0,
     'prefer-destructuring': 0,
+    'one-var': 0,
   },
 }
