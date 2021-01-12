@@ -77,6 +77,10 @@ class Textbox extends Control {
   focus() {
     this.input.focus()
   }
+
+  blur() {
+    this.input.blur()
+  }
 }
 
 Component.register(Textbox)
