@@ -63,7 +63,7 @@ class Field extends Component {
 
   _onValueChange(changed) {
     this._callHandler(this.props.onValueChange, changed)
-    this.form.onValueChange(changed)
+    this.form._onValueChange(changed)
   }
 }
 
