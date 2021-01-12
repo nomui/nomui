@@ -10,7 +10,7 @@ class TreeSub extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.wrapper = this.props.wrapper || this.parent
     this.wrapper.subTree = this
     this.tree = this.wrapper.tree

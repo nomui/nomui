@@ -16,7 +16,7 @@ class TreeWrapper extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.isLeaf = !this.props.items
 
     this.isRoot = false
@@ -46,11 +46,9 @@ class TreeWrapper extends Component {
         Component.normalizeIconProps({
           type: collapsed ? 'down' : 'right',
           hidden: !items,
-          events: {
-            click: function () {
-              that.props.collapsed = !that.props.collapsed
-              that.update(collapsed)
-            },
+          onClick: function () {
+            that.props.collapsed = !that.props.collapsed
+            that.update(collapsed)
           },
         }),
         {
