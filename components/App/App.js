@@ -67,13 +67,14 @@ class App extends Component {
       const currentRoutePaths = this.currentRoute.paths
       const previousRoutePaths = this.previousRoute.paths
 
-      if (currentRoutePaths[0] !== previousRoutePaths[0]) {
-        changedLevel = 0
-      } else if (currentRoutePaths[1] !== previousRoutePaths[1]) {
-        changedLevel = 1
-      } else if (currentRoutePaths[2] !== previousRoutePaths[2]) {
-        changedLevel = 2
-      } else if ((this.previousRoute.queryStr || '') !== this.currentRoute.queryStr) {
+      const length = Math.min(previousRoutePaths.length, currentRoutePaths.length)
+      for (let i = 1; i < length; i++) {
+        if (previousRoutePaths[i] !== currentRoutePaths[i]) {
+          changedLevel = i
+          break
+        }
+      }
+      if ((this.previousRoute.queryStr || '') !== this.currentRoute.queryStr) {
         queryChanged = true
       }
     }
