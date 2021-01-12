@@ -30,6 +30,8 @@ jobs:
           git init
           git add .
           git commit -m "build"
+          git config user.name "xiexingen"
+          git config user.password "${{ secrets.XXG_PWD }}"
           git remote add origin git@github.com:nomui/nomui.github.io.git
           git push -u origin main -f
         env:
