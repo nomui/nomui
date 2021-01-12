@@ -23,108 +23,106 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
     }
 
     return {
-      view: () => {
-        return {
-          component: 'Layout',
-          title: null,
-          subtitle: null,
-          demos: [],
-          docs: '敬请期待',
-          tab: 'demo',
-          autoRender: false,
-          _config: function () {
-            this.setProps({
-              header: {
-                children: [
-                  {
-                    component: 'Navbar',
+      view: {
+        component: 'Layout',
+        title: null,
+        subtitle: null,
+        demos: [],
+        docs: '敬请期待',
+        tab: 'demo',
+        autoRender: false,
+        _config: function () {
+          this.setProps({
+            header: {
+              children: [
+                {
+                  component: 'Navbar',
+                  stretch: true,
+                  caption: {
+                    title: this.props.title,
+                    subtitle: this.props.subtitle,
+                  },
+                  nav: {
+                    component: 'TabList',
+                    selectedTab: this.props.tab,
                     stretch: true,
-                    caption: {
-                      title: this.props.title,
-                      subtitle: this.props.subtitle,
+                    uistyle: 'line',
+                    tabContent: function () {
+                      return tabContent
                     },
-                    nav: {
-                      component: 'TabList',
-                      selectedTab: this.props.tab,
-                      stretch: true,
-                      uistyle: 'line',
-                      tabContent: function () {
-                        return tabContent
+                    items: [
+                      {
+                        key: 'demo',
+                        text: '示例'
                       },
-                      items: [
-                        {
-                          key: 'demo',
-                          text: '示例'
-                        },
-                        {
-                          key: 'docs',
-                          text: '文档'
-                        }
-                      ]
-                    }
-                  },
-                ],
-              },
-              body: {
-                children: {
-                  component: 'TabContent',
-                  ref: (c) => {
-                    tabContent = c
-                  },
-                  selectedPanel: this.props.tab,
-                  attrs: {
-                    id: 'DemoContent',
-                  },
-                  panels: [
-                    {
-                      key: 'demo',
-                      children: {
-                        component: 'Layout',
-                        sider: {
-                          children: [
-                            {
-                              component: 'Menu',
-                              name: 'DemoMenu',
-                              items: this.props.demos,
-                              itemDefaults: {
-                                _config: function () {
-                                  this.props.text = this.props.title
-                                },
-                                styles: {
-                                  hover: {
-                                    text: 'primary',
-                                  },
+                      {
+                        key: 'docs',
+                        text: '文档'
+                      }
+                    ]
+                  }
+                },
+              ],
+            },
+            body: {
+              children: {
+                component: 'TabContent',
+                ref: (c) => {
+                  tabContent = c
+                },
+                selectedPanel: this.props.tab,
+                attrs: {
+                  id: 'DemoContent',
+                },
+                panels: [
+                  {
+                    key: 'demo',
+                    children: {
+                      component: 'Layout',
+                      sider: {
+                        children: [
+                          {
+                            component: 'Menu',
+                            name: 'DemoMenu',
+                            items: this.props.demos,
+                            itemDefaults: {
+                              _config: function () {
+                                this.props.text = this.props.title
+                              },
+                              styles: {
+                                hover: {
+                                  text: 'primary',
                                 },
                               },
                             },
-                          ],
-                        },
-                        body: {
-                          children: Array.prototype.slice.call(this.props.demos),
-                          childDefaults: {
-                            component: demoPanel,
-                            componentType: this.$route.query.type,
-                            cat: this.$route.query.cat,
                           },
-                          styles: {
-                            padding: '1',
-                            margins: 'x',
-                          },
-                        },
-                      }
-                    },
-                    {
-                      key: 'docs',
-                      attrs: {
-                        id: 'nice'
+                        ],
                       },
-                      children: this.props.docs
+                      body: {
+                        children: Array.prototype.slice.call(this.props.demos),
+                        childDefaults: {
+                          component: demoPanel,
+                          componentType: this.$route.query.type,
+                          cat: this.$route.query.cat,
+                        },
+                        styles: {
+                          padding: '1',
+                          margins: 'x',
+                        },
+                      },
                     }
-                  ]
-                },
+                  },
+                  {
+                    key: 'docs',
+                    attrs: {
+                      id: 'nice'
+                    },
+                    children: this.props.docs
+                  }
+                ]
               },
-            })
-          }
+            },
+          })
         }
       },
       _rendered: () => {

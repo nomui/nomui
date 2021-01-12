@@ -1,6 +1,6 @@
 export { default as Alert } from './Alert/index'
 export { default as App } from './App/index'
-export { default as View } from './App/View'
+export { default as Router } from './App/Router'
 export { default as Avatar } from './Avatar/index'
 export { default as AvatarGroup } from './AvatarGroup/index'
 export { default as Badge } from './Badge/index'
