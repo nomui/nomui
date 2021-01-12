@@ -56,7 +56,7 @@ class Modal extends Component {
       }
     }
 
-    this.trigger('close', result)
+    this._callHandler(this.props.onClose, { result: result })
     this.remove()
   }
 
