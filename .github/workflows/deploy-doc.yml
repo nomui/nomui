@@ -31,4 +31,3 @@ jobs:
           BRANCH: main
           FOLDER: doc-sites
           SSH_PRIVATE_KEY: ${{ secrets.GITHUB_TOKEN }}
-          KNOWN_HOSTS_FILE: resources/known_hosts # Path relative to the root of the repository
