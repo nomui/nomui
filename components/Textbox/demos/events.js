@@ -4,11 +4,14 @@ define([], function () {
     description: '触发focus、blur事件',
     file: 'events',
     demo: function () {
+      let myTextBoxRef
       return {
         children: [
           {
             component: 'Textbox',
-            ref: 'myTextBox',
+            ref: (c) => {
+              myTextBoxRef = c
+            },
           },
           {
             component: 'Cols',
@@ -19,19 +22,15 @@ define([], function () {
               {
                 component: 'Button',
                 text: '获得焦点',
-                events: {
-                  click: () => {
-                    this.refs.myTextBox.focus()
-                  },
+                onClick: () => {
+                  myTextBoxRef.focus()
                 },
               },
               {
                 component: 'Button',
                 text: '焦点离开',
-                events: {
-                  click: () => {
-                    this.refs.myTextBox.blur()
-                  },
+                onClick: () => {
+                  myTextBoxRef.blur()
                 },
               },
             ],

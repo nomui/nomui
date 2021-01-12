@@ -5,12 +5,8 @@ define([], function () {
     file: 'basic',
     demo: function () {
       return {
-        children: [
-          {
-            component: 'MultilineTextbox',
-            value: '大文本',
-          },
-        ],
+        component: 'MultilineTextbox',
+        value: '大文本',
       }
     },
   }

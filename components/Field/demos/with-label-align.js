@@ -3,13 +3,16 @@ define([], function () {
     title: 'label对齐方式',
     file: 'with-label-align',
     demo: function () {
+      let myInputRef = null
       return {
         component: 'Rows',
         items: [
           {
             component: 'Field',
             label: '姓名',
-            ref: 'myInput',
+            ref: (c) => {
+              myInputRef = c
+            },
             labelAlign: 'left',
             control: {
               component: 'Textbox',
@@ -30,12 +33,10 @@ define([], function () {
                   },
                 ],
                 uistyle: 'button',
-                events: {
-                  valueChange: (e) => {
-                    this.refs.myInput.update({
-                      labelAlign: e.newValue,
-                    })
-                  },
+                onValueChange: (e) => {
+                  myInputRef.update({
+                    labelAlign: e.newValue,
+                  })
                 },
               },
             ],
