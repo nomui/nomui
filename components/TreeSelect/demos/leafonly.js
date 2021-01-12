@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '单选',
-    file: 'single',
+    title: '只允许叶子层级',
+    file: 'leafonly',
     demo: function () {
       return {
         children: {
@@ -32,8 +32,8 @@ define([], function () {
               value: '0-1',
             },
           ],
-          selected: '0-0-1',
-          multiple: false,
+          selected: ['0-0-1', '0-1'],
+          leafOnly: true,
         },
       }
     },

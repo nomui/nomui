@@ -8,7 +8,8 @@ class TreeSelect extends Control {
     const defaults = {
       treeData: null,
 
-      multiple: false,
+      multiple: true,
+      leafOnly: false,
       showArrow: true,
       selected: null,
     }
