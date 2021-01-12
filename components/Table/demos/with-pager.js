@@ -3,22 +3,25 @@ define([], function () {
     title: '带分页',
     file: 'with-pager',
     demo: function () {
-      const demo = this
+      let table = null
+      let pager = null
 
       function getData(pageIndex) {
-        demo.refs.table.loading()
+        table.loading()
         fetch(`https://randomuser.me/api?results=10&page=${pageIndex}`, { mode: 'cors' })
           .then((res) => res.json())
           .then(function (data) {
-            demo.refs.table.update({ data: data.results })
-            demo.refs.pager.update({ totalCount: 200, pageIndex: pageIndex })
+            table.update({ data: data.results })
+            pager.update({ totalCount: 200, pageIndex: pageIndex })
           })
       }
       return {
         children: [
           {
             component: 'Table',
-            ref: 'table',
+            ref: (c) => {
+              table = c
+            },
             columns: [
               {
                 field: 'name.first',
@@ -38,15 +41,15 @@ define([], function () {
           },
           {
             component: 'Pager',
-            ref: 'pager',
-            events: {
-              pageChange: function (params) {
-                getData(params.pageIndex)
-              },
+            ref: (c) => {
+              pager = c
+            },
+            onPageChange: function (params) {
+              getData(params.pageIndex)
             },
           },
         ],
-        _render: function () {
+        _rendered: function () {
           getData(1)
         },
       }

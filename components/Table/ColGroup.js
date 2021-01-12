@@ -10,7 +10,7 @@ class ColGroup extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.table = this.parent
     this.columns = this.table.props.columns
   }

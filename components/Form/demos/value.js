@@ -3,12 +3,14 @@ define([], function () {
     title: '表单数据',
     file: 'value',
     demo: function () {
-      const demo = this
+      let form = null
 
       return {
         children: {
           component: 'Form',
-          ref: 'form',
+          ref: (c) => {
+            form = c
+          },
           value: {
             country: '我是中国人',
             name: 'Jerry',
@@ -98,7 +100,7 @@ define([], function () {
                 text: '提交',
                 attrs: {
                   onclick: function () {
-                    console.log(demo.refs.form.getValue())
+                    form.getValue()
                   },
                 },
               },

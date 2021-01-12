@@ -8,10 +8,8 @@ define([], function () {
                     {
                         component: 'Pager',
                         totalCount: 100,
-                        events: {
-                            pageChange: function (params) {
-                                this.update(params)
-                            }
+                        onPageChange: function (params) {
+                            this.update(params)
                         }
                     }
                 ]

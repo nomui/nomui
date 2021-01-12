@@ -26,7 +26,7 @@ class Layer extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.relativeElements = []
     this._onDocumentMousedown = this._onDocumentMousedown.bind(this)
     this._onWindowResize = this._onWindowResize.bind(this)
@@ -58,7 +58,7 @@ class Layer extends Component {
     }
   }
 
-  _render() {
+  _rendered() {
     const that = this
 
     this.addRel(this.element)
@@ -212,8 +212,8 @@ class Layer extends Component {
           pos = rhorizontal.test(pos[0])
             ? pos.concat(['center'])
             : rvertical.test(pos[0])
-            ? ['center'].concat(pos)
-            : ['center', 'center']
+              ? ['center'].concat(pos)
+              : ['center', 'center']
         }
         pos[0] = rhorizontal.test(pos[0]) ? pos[0] : 'center'
         pos[1] = rvertical.test(pos[1]) ? pos[1] : 'center'

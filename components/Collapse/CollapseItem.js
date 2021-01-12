@@ -29,32 +29,28 @@ class CollapseItem extends Component {
               ...Component.normalizeIconProps(
                 collapsed ? that.parent.props.icon.default : that.parent.props.icon.open,
               ),
-              events: {
-                click: function () {
-                  if (!that.parent.props.iconOnly) return
-                  that.setProps({
-                    collapsed: collapsed !== true,
-                  })
-                  that.parent.setProps({
-                    activeKey: that.props.key,
-                  })
-                  that.update(collapsed)
-                },
+              onClick: function () {
+                if (!that.parent.props.iconOnly) return
+                that.setProps({
+                  collapsed: collapsed !== true,
+                })
+                that.parent.setProps({
+                  activeKey: that.props.key,
+                })
+                that.update(collapsed)
               },
             },
             { tag: 'span', children: title },
           ],
-          events: {
-            click: function () {
-              if (that.parent.props.iconOnly) return
-              that.setProps({
-                collapsed: collapsed !== true,
-              })
-              that.parent.setProps({
-                activeKey: that.props.key,
-              })
-              that.update(collapsed)
-            },
+          onClick: function () {
+            if (that.parent.props.iconOnly) return
+            that.setProps({
+              collapsed: collapsed !== true,
+            })
+            that.parent.setProps({
+              activeKey: that.props.key,
+            })
+            that.update(collapsed)
           },
         },
         {

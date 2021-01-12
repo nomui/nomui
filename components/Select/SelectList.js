@@ -12,8 +12,8 @@ class SelectList extends List {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
-    super._create()
+  _created() {
+    super._created()
 
     this.selectControl = this.parent.parent.parent.selectControl
     this.selectControl.optionList = this
@@ -29,10 +29,9 @@ class SelectList extends List {
         byClick: true,
       },
       selectedItems: selectProps.value,
-      events: {
-        itemSelectionChange: () => {
-          this.selectControl._onValueChange()
-        },
+
+      onItemSelectionChange: () => {
+        this.selectControl._onValueChange()
       },
     })
 

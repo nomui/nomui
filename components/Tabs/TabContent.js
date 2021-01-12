@@ -12,7 +12,7 @@ class TabContent extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.panels = {}
     this.shownPanel = null
   }

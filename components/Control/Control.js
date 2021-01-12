@@ -14,7 +14,7 @@ class Control extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.initValue = null
     this.oldValue = null
     this.currentValue = null
@@ -102,8 +102,7 @@ class Control extends Component {
     }
 
     setTimeout(function () {
-      that.trigger('valueChange', changed)
-      console.log(changed)
+      that._callHandler(that.props.onValueChange, changed)
       if (that.validateTriggered) {
         that._validate()
       }

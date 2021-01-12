@@ -29,14 +29,16 @@ class Pager extends Component {
           byClick: true,
         },
         selectedItems: pager.props.pageIndex,
-        events: {
-          itemSelectionChange: function () {
-            pager.props.pageIndex = this.selectedItem.props.pageNumber
-            pager.trigger('pageChange', pager.getPageParams())
-          },
+        onItemSelectionChange: function () {
+          pager.props.pageIndex = this.selectedItem.props.pageNumber
+          pager._onPageChange()
         },
       },
     })
+  }
+
+  _onPageChange() {
+    this._callHandler(this.props.onPageChange, this.getPageParams())
   }
 
   /**

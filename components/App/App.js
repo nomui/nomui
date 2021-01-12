@@ -1,9 +1,7 @@
 /* eslint-disable no-shadow */
 import Component from '../Component/index'
-import { pathCombine } from '../util/index'
 import { Route } from './Route'
-import View from './View'
-import ViewMixin from './ViewMixin'
+import Router from './Router'
 
 class App extends Component {
   constructor(props, ...mixins) {
@@ -18,12 +16,12 @@ class App extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.lastLevel = 0
     this.previousRoute = null
     this.currentRoute = new Route(this.props.defaultPath)
 
-    this.views = {}
+    this.routers = {}
 
     Object.defineProperty(Component.prototype, '$app', {
       get: function () {
@@ -40,7 +38,7 @@ class App extends Component {
 
   _config() {
     this.setProps({
-      children: { component: View },
+      children: { component: Router },
     })
 
     if (this.props.isFixedLayout === true) {
@@ -48,7 +46,7 @@ class App extends Component {
     }
   }
 
-  _render() {
+  _rendered() {
     const that = this
     window.addEventListener('hashchange', function () {
       that.handleRoute()
@@ -80,70 +78,7 @@ class App extends Component {
       }
     }
 
-    for (let i = 0; i <= this.currentRoute.maxLevel; i++) {
-      const view = this.views[i]
-      view.trigger('hashChange')
-      if (queryChanged) {
-        view.trigger('queryChange')
-      }
-      if (i === changedLevel - 1) {
-        view.trigger('subpathChange')
-      }
-      if (i === changedLevel) {
-        this.lastLevel = i
-        this.routeView(i, view.element)
-        break
-      }
-    }
-  }
-
-  routeView(level, element, defaultPath) {
-    if (defaultPath) {
-      if (!this.currentRoute.paths[level]) {
-        this.currentRoute.paths[level] = defaultPath
-      }
-    }
-
-    let url = this.getRouteUrl(level)
-    url = `${pathCombine(this.props.viewsDir, url)}.js`
-
-    require([url], (viewOptions) => {
-      if (viewOptions.documentTitle) {
-        document.title = viewOptions.documentTitle
-      }
-      const extOptions = {
-        reference: element,
-        placement: 'replace',
-      }
-      viewOptions = Component.extendProps(viewOptions, extOptions)
-      this.views[level] = Component.create(viewOptions, ViewMixin)
-    })
-  }
-
-  getRouteUrl(level) {
-    const paths = this.currentRoute.paths
-    const maxLevel = this.currentRoute.maxLevel
-    let path = paths[level]
-
-    if (level < maxLevel) {
-      path = pathCombine(path, '_layout')
-    }
-
-    path = prefix(path, level)
-
-    function prefix(path, level) {
-      if (level === 0) {
-        return path
-      }
-      if (path[0] !== '/') {
-        path = pathCombine(paths[level - 1], path)
-        return prefix(path, level - 1)
-      }
-
-      return path
-    }
-
-    return path
+    this.trigger('hashChange', { changedLevel, queryChanged })
   }
 }
 

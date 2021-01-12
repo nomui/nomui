@@ -4,6 +4,8 @@ define([], function () {
         title: '选项与内容分开',
         file: 'separate',
         demo: function () {
+            let tabContent
+
             return {
                 component: 'Panel',
                 header: {
@@ -17,7 +19,7 @@ define([], function () {
                         {
                             component: 'TabList',
                             tabContent: () => {
-                                return this.refs.tabContent
+                                return tabContent
                             },
                             selectedItems: 'tab1',
                             items: [
@@ -34,7 +36,9 @@ define([], function () {
                 body: {
                     children: {
                         component: 'TabContent',
-                        ref: 'tabContent',
+                        ref: (c) => {
+                            tabContent = c
+                        },
                         selectedPanel: 'tab1',
                         panels: [
                             {

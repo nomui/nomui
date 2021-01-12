@@ -8,7 +8,7 @@ class Grid extends Component {
     super(Component.extendProps(Grid.defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.minWidth = 0
   }
 
@@ -43,7 +43,7 @@ class Grid extends Component {
     }
   }
 
-  _render() {
+  _rendered() {
     if (this.loadingInst) {
       this.loadingInst.remove()
       this.loadingInst = null

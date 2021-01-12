@@ -4,7 +4,7 @@ import List from '../List/index'
 import Rows from '../Rows/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
-import {} from '../util/date'
+import { } from '../util/date'
 
 class DatePicker extends Textbox {
   constructor(props, ...mixins) {
@@ -47,26 +47,22 @@ class DatePicker extends Textbox {
                   component: Select,
                   value: year,
                   options: this._getYears(),
-                  events: {
-                    valueChange: function (changed) {
-                      year = changed.newValue
-                      that.days.update({
-                        items: that._getDays(year, month),
-                      })
-                    },
+                  onValueChange: (changed) => {
+                    year = changed.newValue
+                    that.days.update({
+                      items: that._getDays(year, month),
+                    })
                   },
                 },
                 {
                   component: Select,
                   value: month,
                   options: this._getMonths(),
-                  events: {
-                    valueChange: function (changed) {
-                      month = changed.newValue
-                      that.days.update({
-                        items: that._getDays(year, month),
-                      })
-                    },
+                  onValueChange: function (changed) {
+                    month = changed.newValue
+                    that.days.update({
+                      items: that._getDays(year, month),
+                    })
                   },
                 },
               ],
@@ -84,7 +80,7 @@ class DatePicker extends Textbox {
             },
             {
               component: List,
-              _create: function () {
+              _created: function () {
                 that.days = this
               },
               gutter: 'sm',
@@ -133,11 +129,9 @@ class DatePicker extends Textbox {
                     children: this.props.day,
                   })
                 },
-                events: {
-                  click: function () {
-                    that.setValue(this.props.date)
-                    that.popup.hide()
-                  },
+                onClick: function () {
+                  that.setValue(this.props.date)
+                  that.popup.hide()
                 },
               },
             },

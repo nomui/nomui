@@ -3,12 +3,14 @@ define([], function () {
     title: '槽（填充）',
     file: 'gutter',
     demo: function () {
-      const demo = this
+      let layout = null
 
       return {
         children: [
           {
-            ref: 'layout',
+            ref: (c) => {
+              layout = c
+            },
             children: [
               {
                 children: [
@@ -62,10 +64,8 @@ define([], function () {
                   },
                 ],
                 value: 'row',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.layout.update({ styles: { flex: changed.newValue } })
-                  },
+                onValueChange: function (changed) {
+                  layout.update({ styles: { flex: changed.newValue } })
                 },
               },
               {
@@ -93,10 +93,8 @@ define([], function () {
                   },
                 ],
                 value: 'md',
-                events: {
-                  valueChange: function (changed) {
-                    demo.refs.layout.update({ styles: { gutter: changed.newValue } })
-                  },
+                onValueChange: function (changed) {
+                  layout.update({ styles: { gutter: changed.newValue } })
                 },
               },
             ],

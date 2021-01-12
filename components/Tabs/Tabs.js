@@ -40,7 +40,7 @@ class Tabs extends Component {
       tabContent: {
         component: TabContent,
         panels: tabPanles,
-        _create: function () {
+        _created: function () {
           that.tabContent = this
         },
       },

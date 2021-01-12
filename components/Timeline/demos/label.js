@@ -4,6 +4,8 @@ define([], function () {
     file: 'label',
     description: '使用 label 标签单独展示时间。',
     demo: function () {
+      let labelTimeLine = null
+
       return {
         component: 'Rows',
         items: [
@@ -23,18 +25,17 @@ define([], function () {
                 value: 'alternate',
               },
             ],
-            events: {
-              valueChange: (changed) => {
-                const labelTimeLine = this.refs.labelTimeLine
-                labelTimeLine.update({
-                  mode: changed.newValue || 'left',
-                })
-              },
+            onValueChange: (e) => {
+              labelTimeLine.update({
+                mode: e.newValue || 'left',
+              })
             },
           },
           {
             component: 'Timeline',
-            ref: 'labelTimeLine',
+            ref: (c) => {
+              labelTimeLine = c
+            },
             items: [
               {
                 label: '2015-09-01',

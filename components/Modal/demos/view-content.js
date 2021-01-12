@@ -14,10 +14,8 @@ define([], function () {
           children: {
             component: 'Button',
             text: '关闭',
-            events: {
-              click: function () {
-                modal.close()
-              },
+            onClick: function () {
+              modal.close()
             },
           },
         })
