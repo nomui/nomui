@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction, pathCombine } from '../util/index'
+import { isFunction, isString, pathCombine } from '../util/index'
 
 class Router extends Component {
   constructor(props, ...mixins) {
@@ -12,7 +12,6 @@ class Router extends Component {
 
   _created() {
     this.currentView = null
-    this.subpath = null
     this.path = null
     this.level = this.$app.lastLevel
     this.$app.routers[this.level] = this
@@ -49,6 +48,16 @@ class Router extends Component {
     }
   }
 
+  getSubpath() {
+    let subpath = null
+    const { paths } = this.$app.currentRoute
+    if (this.level < paths.length) {
+      subpath = paths[this.level + 1]
+    }
+
+    return subpath
+  }
+
   _removeCore() {
   }
 
@@ -66,36 +75,36 @@ class Router extends Component {
     const level = this.level
     const element = this.element
     const defaultPath = this.props.defaultPath
+    const { paths } = this.$app.currentRoute
 
     if (defaultPath) {
-      if (!this.$app.currentRoute.paths[level]) {
-        this.$app.currentRoute.paths[level] = defaultPath
+      if (!paths[level]) {
+        paths[level] = defaultPath
       }
-    }
-
-    if (this.level < this.$app.currentRoute.maxLevel) {
-      this.subpath = this.$app.currentRoute.paths[level + 1]
     }
 
     let url = this.getRouteUrl(level)
     url = `${pathCombine(this.$app.props.viewsDir, url)}.js`
 
-    require([url], (viewOptionsFunc) => {
-      let routerOptions = {}
-      if (isFunction(viewOptionsFunc)) {
-        routerOptions = viewOptionsFunc.call(this)
+    require([url], (viewPropsOrRouterPropsFunc) => {
+      let routerProps = {}
+      if (isFunction(viewPropsOrRouterPropsFunc)) {
+        routerProps = viewPropsOrRouterPropsFunc.call(this)
       }
       else {
-        routerOptions.view = viewOptionsFunc
+        routerProps.view = viewPropsOrRouterPropsFunc
+      }
+      if (isString(routerProps.title)) {
+        document.title = routerProps.title
       }
       const extOptions = {
         reference: element,
         placement: 'replace',
       }
-      const viewOptions = Component.extendProps(routerOptions.view, extOptions)
+      const viewOptions = Component.extendProps(routerProps.view, extOptions)
       this.currentView = Component.create(viewOptions)
       this.element = this.currentView.element
-      this.setProps(routerOptions)
+      this.setProps(routerProps)
       this._callRendered()
     })
   }

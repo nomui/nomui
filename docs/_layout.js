@@ -4,8 +4,8 @@ define([], function () {
         let topMenu = null
 
         const highLight = () => {
-            topMenu && topMenu.selectItem(this.subpath);
-            topMenu && topMenu.expandToItem(this.subpath);
+            topMenu && topMenu.selectItem(this.getSubpath());
+            topMenu && topMenu.expandToItem(this.getSubpath());
         }
 
         return {
