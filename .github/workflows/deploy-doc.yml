@@ -12,22 +12,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: npm intall, build
+      - name: Intall, Build
         run: |
           npm i
           npm run build
         env:
           CI: true
 
-      - name: copy doc site
+      - name: Copy Doc Site
         run: mkdir doc-sites && cp -rif ./{components,docs,libs,index.html,index.js,README.md,LICENSE} doc-sites
         env:
           CI: true
 
-      - name: Deploy
-        uses: s0/git-publish-subdir-action@develop
+      - name: Deploy to nomui.github.io
+        run: |
+          cd doc-sites
+          git init
+          git add .
+          git commit -m "build"
+          git remote add origin git@github.com:nomui/nomui.github.io.git
+          git push -u origin main -f
         env:
-          REPO: git@github.com:nomui/nomui.github.io.git
-          BRANCH: gh-pages
-          FOLDER: doc-sites
-          SSH_PRIVATE_KEY: ${{ secrets.Wetrial_NOM_SITE }}
+          CI: true
+
+      # - name: Deploy
+      #   uses: s0/git-publish-subdir-action@develop
+      #   env:
+      #     REPO: git@github.com:nomui/nomui.github.io.git
+      #     BRANCH: gh-pages
+      #     FOLDER: doc-sites
+      #     SSH_PRIVATE_KEY: ${{ secrets.Wetrial_NOM_SITE }}
