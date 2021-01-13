@@ -29,6 +29,7 @@ define([], function () {
                                 items: [
                                     { text: '起步', id: 'getstarted', url: '#!tutorials/index?article=getstarted' },
                                     { text: '组件', id: 'component', url: '#!tutorials/index?article=component' },
+                                    { text: '事件', id: 'event', url: '#!tutorials/index?article=event' },
                                 ]
                             },
                             {
