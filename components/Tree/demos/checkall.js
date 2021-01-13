@@ -66,8 +66,8 @@ define([], function () {
               },
             },
           },
-          onCheck: function (data) {
-            console.log(`你选中了：${data}`)
+          onCheck: function (param) {
+            console.log(`你选中了：${param.items}。`)
           },
         },
       }

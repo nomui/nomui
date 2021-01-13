@@ -38,8 +38,10 @@ define([], function () {
           ],
           showline: true,
           selectedNodes: ['0-0-0-1', '0-1'],
-          onCheck: function (data, key, status) {
-            console.log(`你选中了：${data}，当前触发的节点是${key}，它的值是${status}。`)
+          onCheck: function (param) {
+            console.log(
+              `你选中了：${param.items}，当前触发的节点是${param.key}，它的值是${param.status}。`,
+            )
           },
         },
       }
