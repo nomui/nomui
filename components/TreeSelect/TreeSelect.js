@@ -11,7 +11,7 @@ class TreeSelect extends Control {
       multiple: true,
       leafOnly: false,
       showArrow: true,
-      selected: null,
+      selectedNodes: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -22,18 +22,18 @@ class TreeSelect extends Control {
   }
 
   _config() {
-    const { showArrow, selected } = this.props
+    const { showArrow, selectedNodes } = this.props
     const items = []
     const that = this
-    if (typeof selected === 'string') {
+    if (typeof selectedNodes === 'string') {
       const temp = []
-      temp.push(selected)
-      that.props.selected = temp
+      temp.push(selectedNodes)
+      that.props.selectedNodes = temp
     }
 
-    if (selected) {
+    if (selectedNodes) {
       that.getList().forEach(function (item) {
-        that.props.selected.forEach(function (key) {
+        that.props.selectedNodes.forEach(function (key) {
           if (key === item.key) {
             items.push({
               component: 'Badge',
@@ -41,10 +41,10 @@ class TreeSelect extends Control {
               text: item.title,
               key: item.key,
               removable: function (param) {
-                that.props.selected = selected.filter(function (k) {
+                that.props.selectedNodes = selectedNodes.filter(function (k) {
                   return k !== param
                 })
-                that.update(that.props.selected)
+                that.update(that.props.selectedNodes)
               },
             })
           }
@@ -78,7 +78,7 @@ class TreeSelect extends Control {
   }
 
   _rendered() {
-    this.popup = new TreeSelectPopup({ trigger: this.arrow, selected: this.props.selected })
+    this.popup = new TreeSelectPopup({ trigger: this.arrow, selectedNodes: this.props.selected })
   }
 
   getList() {
@@ -101,12 +101,12 @@ class TreeSelect extends Control {
   }
 
   setValue(data) {
-    this.props.selected = data
-    this.update(this.props.selected)
+    this.props.selectedNodes = data
+    this.update(this.props.selectedNodes)
   }
 
   _getValue() {
-    return this.props.selected
+    return this.props.selectedNodes
   }
 }
 

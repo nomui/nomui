@@ -1,4 +1,4 @@
-define(['./basic.js', './single.js', './leafonly.js'], function () {
+define(['./basic.js', './single.js', './leafOnly.js'], function () {
   return {
     title: 'TreeSelect',
     subtitle: '下拉树选择',

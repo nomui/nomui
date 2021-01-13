@@ -40,7 +40,7 @@ define([], function () {
           ],
           multiple: true,
           showline: true,
-          selected: ['0-0-0-1', '0-1'],
+          selectedNodes: ['0-0-0-1', '0-1'],
           toolbar: {
             placement: 'before',
             item: {
@@ -66,8 +66,8 @@ define([], function () {
               },
             },
           },
-          onCheck: function (data) {
-            console.log(`你选中了：${data}`)
+          onCheck: function (param) {
+            console.log(`你选中了：${param.items}。`)
           },
         },
       }
