@@ -29,8 +29,8 @@ class Pager extends Component {
           byClick: true,
         },
         selectedItems: pager.props.pageIndex,
-        onItemSelectionChange: function () {
-          pager.props.pageIndex = this.selectedItem.props.pageNumber
+        onItemSelectionChange: function (e) {
+          pager.props.pageIndex = e.sender.selectedItem.props.pageNumber
           pager._onPageChange()
         },
       },

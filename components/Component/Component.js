@@ -762,29 +762,8 @@ class Component {
     components[component.name] = component
   }
 
-  static extendProps(out) {
-    out = out || {}
-
-    for (let i = 1; i < arguments.length; i++) {
-      const obj = arguments[i]
-
-      if (!obj) continue
-
-      for (const key in obj) {
-        // Prevent Object.prototype pollution
-        // Prevent never-ending loop
-        if (key === '__proto__' || out === obj[key]) {
-          continue
-        }
-        if (obj.hasOwnProperty(key) && isPlainObject(obj[key])) {
-          out[key] = Component.extendProps(out[key], obj[key])
-        } else if (obj[key] !== undefined) {
-          out[key] = obj[key]
-        }
-      }
-    }
-
-    return out
+  static extendProps(...args) {
+    return extend(true, {}, ...args)
   }
 
   static mixin(mixin) {

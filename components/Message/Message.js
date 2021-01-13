@@ -48,9 +48,19 @@ class Message extends Layer {
       children: [
         iconProps,
         this.props.content,
-        this.props.showClose && { component: 'Button', icon: 'close' },
+        this.props.showClose && {
+          component: 'Button',
+          icon: 'times',
+          onClick: () => {
+            this.close()
+          },
+        },
       ],
     })
+  }
+
+  close() {
+    this.remove()
   }
 
   _rendered() {

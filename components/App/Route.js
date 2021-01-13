@@ -34,10 +34,8 @@ export class Route {
 
     this.maxLevel = pathArr.length - 1
 
-    if (pathArr.length <= 3) {
-      pathArr.forEach(function (path, index) {
-        that.paths[index] = path
-      })
-    }
+    pathArr.forEach(function (path, index) {
+      that.paths[index] = path
+    })
   }
 }

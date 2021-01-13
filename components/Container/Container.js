@@ -4,7 +4,7 @@ class Container extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       fluid: false,
-      type: null,
+      // type: null,
       breakpoint: null,
     }
 

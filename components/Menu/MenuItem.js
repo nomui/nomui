@@ -45,11 +45,11 @@ class MenuItem extends Component {
     const menuProps = menu.props
 
     let indicatorIconType = 'down'
-    if (menuProps.type === 'horizontal' && this.level > 0) {
+    if (menuProps.direction === 'horizontal' && this.level > 0) {
       indicatorIconType = 'right'
     }
 
-    if (menuProps.type === 'horizontal') {
+    if (menuProps.direction === 'horizontal') {
       this.setProps({
         indicator: {
           expandable: false,
@@ -78,7 +78,7 @@ class MenuItem extends Component {
         href: this.getItemUrl(this.props.url),
         style: {
           paddingLeft:
-            menuProps.type === 'vertical' ? `${(this.level + 1) * menuProps.indent}rem` : null,
+            menuProps.direction === 'vertical' ? `${(this.level + 1) * menuProps.indent}rem` : null,
         },
       },
       onSelect: () => {
