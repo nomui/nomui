@@ -18,7 +18,7 @@ class TreeNode extends List {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _create() {
+  _created() {
     this.wrapper = this.parent
     this.wrapper.item = this
     this.tree = this.wrapper.tree
@@ -58,14 +58,13 @@ class TreeNode extends List {
           indent: indent,
         },
         children: [
-          Component.normalizeIconProps({
-            type: checkIcon,
-            events: {
-              click: function () {
+          (that.wrapper.isLeaf || !that.tree.props.leafOnly) &&
+            Component.normalizeIconProps({
+              type: checkIcon,
+              onClick: function () {
                 that.handleClick()
               },
-            },
-          }),
+            }),
           {
             tag: 'span',
             children: title,

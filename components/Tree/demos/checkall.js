@@ -3,9 +3,11 @@ define([], function () {
     title: '额外工具栏 & 全选',
     file: 'checkall',
     demo: function () {
+      let mybutton = null
       return {
         children: {
           component: 'Tree',
+
           treeData: [
             {
               title: 'Node1',
@@ -46,18 +48,20 @@ define([], function () {
               children: {
                 component: 'Button',
                 text: '全选',
-                events: {
-                  click: function () {
-                    if (this.props.text === '全选') {
-                      this.props.text = '清空'
-                      this.update(this.props.text)
-                      this.parent.parent.checkAll()
-                    } else if (this.props.text === '清空') {
-                      this.props.text = '全选'
-                      this.update(this.props.text)
-                      this.parent.parent.unCheckAll()
-                    }
-                  },
+                ref: (c) => {
+                  // eslint-disable-next-line no-unused-vars
+                  mybutton = c
+                },
+                onClick: function () {
+                  if (mybutton.props.text === '全选') {
+                    mybutton.props.text = '清空'
+                    mybutton.update(mybutton.props.text)
+                    mybutton.parent.parent.checkAll()
+                  } else if (mybutton.props.text === '清空') {
+                    mybutton.props.text = '全选'
+                    mybutton.update(mybutton.props.text)
+                    mybutton.parent.parent.unCheckAll()
+                  }
                 },
               },
             },
