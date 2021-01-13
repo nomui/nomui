@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './border.js', './iconOnly.js', './customIcon.js'], function () {
   return {
     title: 'Collapse',
     subtitle: '折叠',
