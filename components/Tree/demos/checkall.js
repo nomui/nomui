@@ -40,7 +40,7 @@ define([], function () {
           ],
           multiple: true,
           showline: true,
-          selected: ['0-0-0-1', '0-1'],
+          selectedNodes: ['0-0-0-1', '0-1'],
           toolbar: {
             placement: 'before',
             item: {

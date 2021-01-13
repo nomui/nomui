@@ -7,7 +7,7 @@ class Tree extends Component {
       treeData: null,
       leafOnly: false,
       multiple: true,
-      selected: null,
+      selectedNodes: null,
       onCheck: null,
       showLine: false,
       toolbar: null,
@@ -23,13 +23,13 @@ class Tree extends Component {
 
   _config() {
     const that = this
-    const { treeData, selected, showline } = this.props
+    const { treeData, selectedNodes, showline } = this.props
 
-    if (selected) {
-      if (typeof selected === 'string') {
-        this.selectedList.push(selected)
+    if (selectedNodes) {
+      if (typeof selectedNodes === 'string') {
+        this.selectedList.push(selectedNodes)
       } else {
-        this.selectedList = selected
+        this.selectedList = selectedNodes
       }
     }
 
