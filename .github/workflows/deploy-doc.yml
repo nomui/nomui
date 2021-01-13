@@ -1,47 +1,36 @@
-# name: Deploy Doc
+name: Deploy Doc
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   build-and-deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
 
-#       - name: Intall, Build
-#         run: |
-#           npm i
-#           npm run build
-#         env:
-#           CI: true
+      - name: Intall, Build
+        run: |
+          npm i
+          npm run build
+        env:
+          CI: true
 
-#       - name: Copy Doc Site
-#         run: mkdir doc-sites && cp -rif ./{components,docs,libs,index.html,index.js,README.md,LICENSE} doc-sites
-#         env:
-#           CI: true
+      - name: Copy Doc Site
+        run: mkdir doc-sites && cp -rif ./{components,docs,libs,index.html,index.js,README.md,LICENSE} doc-sites
+        env:
+          CI: true
 
-#       - name: Deploy to nomui.github.io
-#         run: |
-#           cd doc-sites
-#           git init
-#           git add .
-#           git commit -m "build"
-#           git config --global user.email user.name "1002275364@qq.com"
-#           git config --global user.name "xiexingen"
-#           git config user.password "${{ secrets.XXG_PWD }}"
-#           git remote add origin git@github.com:nomui/nomui.github.io.git
-#           git push -u origin main -f
-#         env:
-#           CI: true
-
-#       # - name: Deploy
-#       #   uses: s0/git-publish-subdir-action@develop
-#       #   env:
-#       #     REPO: git@github.com:nomui/nomui.github.io.git
-#       #     BRANCH: gh-pages
-#       #     FOLDER: doc-sites
-#       #     SSH_PRIVATE_KEY: ${{ secrets.Wetrial_NOM_SITE }}
+      - name: Deploy Doc Site
+        uses: JamesIves/github-pages-deploy-action@master
+        env:
+          CI: true
+          PROGRESS: none
+          GIT_CONFIG_NAME: xiexingen
+          GIT_CONFIG_EMAIL: 1002275364@qq.com
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: 'doc-sites/'
