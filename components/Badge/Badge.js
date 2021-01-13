@@ -56,7 +56,6 @@ class Badge extends Component {
             classes: {
               'nom-badge-remove': true,
             },
-            children: 'X',
             onClick: function () {
               that.props.removable(that.props.key)
             },

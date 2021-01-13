@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '指定容器',
-    file: 'basic',
+    file: 'container',
     demo: function () {
       let container = null
 
