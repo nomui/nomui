@@ -1,6 +1,6 @@
 {
   "name": "nomui",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "description": "no magic ui for web",
   "main": "index.js",
   "scripts": {
