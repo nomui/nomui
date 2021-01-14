@@ -1,8 +1,14 @@
 {
   "name": "nomui",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.5",
   "description": "no magic ui for web",
-  "main": "index.js",
+  "module": "nomui.js",
+  "main": "nomui.js",
+  "files": [
+    "nomui.js",
+    "nomui.css",
+    "package.json"
+  ],
   "scripts": {
     "build": "gulp build",
     "watch": "gulp default",

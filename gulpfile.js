@@ -43,6 +43,6 @@ function watchChange(cb) {
   cb()
 }
 
-exports.build = gulp.parallel(buildLess, buildJs)
+exports.build = gulp.series(buildLess, buildJs)
 
 exports.default = gulp.parallel(buildLess, buildJs, watchChange)
