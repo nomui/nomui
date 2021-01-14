@@ -139,6 +139,12 @@ define([], function () {
                       url: '#!components!index?type=Alert',
                     },
                     {
+                      text: 'Confirm',
+                      subtext: '确认框',
+                      id: 'Confirm',
+                      url: '#!components!index?type=Confirm',
+                    },
+                    {
                       text: 'Message',
                       subtext: '消息',
                       id: 'Message',

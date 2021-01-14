@@ -1,4 +1,5 @@
 export { default as Alert } from './Alert/index'
+export { default as Confirm } from './Confirm/index'
 export { default as App } from './App/index'
 export { default as Router } from './App/Router'
 export { default as Avatar } from './Avatar/index'

@@ -9,7 +9,13 @@ class Modal extends Component {
       content: {},
       closeOnClickOutside: false,
       okText: '确 定',
-      cancelText: '取 消'
+      cancelText: '取 消',
+      onOk: (e) => {
+        e.sender.close()
+      },
+      onCancel: (e) => {
+        e.sender.close()
+      }
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -96,8 +102,12 @@ class Modal extends Component {
         this.bodyElem.removeData('modalCount'); */
   }
 
-  _handleOnOk() {
+  _handleOk() {
     this._callHandler(this.props.onOk)
+  }
+
+  _handleCancel() {
+    this._callHandler(this.props.onCancel)
   }
 }
 

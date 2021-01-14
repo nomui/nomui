@@ -55,7 +55,7 @@ class AlertContent extends Component {
       },
       text: okText,
       onClick: () => {
-        alertInst._handleOnOk()
+        alertInst._handleOk()
       }
     }
 
