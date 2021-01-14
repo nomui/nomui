@@ -62,11 +62,15 @@ jobs:
           asset_name: dist.zip
           asset_content_type: application/gzip
 
-      - name: release to npm
-        run: npm run release --npm_token=${{ secrets.NPM_TOKEN }}
-        env:
-          CI: true
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+
+      # - name: release to npm
+      #   run: npm publish --npm_token=${{ secrets.NPM_TOKEN }}
+      #   env:
+      #     CI: true
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # - name: Generate ChangeLog
       #   run: |
