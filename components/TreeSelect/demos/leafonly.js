@@ -32,7 +32,7 @@ define([], function () {
               value: '0-1',
             },
           ],
-          selected: ['0-0-1', '0-1'],
+          selectedNodes: ['0-0-1', '0-1'],
           leafOnly: true,
         },
       }

@@ -7,7 +7,7 @@ class Tree extends Component {
       treeData: null,
       leafOnly: false,
       multiple: true,
-      selected: null,
+      selectedNodes: null,
       onCheck: null,
       showLine: false,
       toolbar: null,
@@ -23,13 +23,13 @@ class Tree extends Component {
 
   _config() {
     const that = this
-    const { treeData, selected, showline } = this.props
+    const { treeData, selectedNodes, showline } = this.props
 
-    if (selected) {
-      if (typeof selected === 'string') {
-        this.selectedList.push(selected)
+    if (selectedNodes) {
+      if (typeof selectedNodes === 'string') {
+        this.selectedList.push(selectedNodes)
       } else {
-        this.selectedList = selected
+        this.selectedList = selectedNodes
       }
     }
 
@@ -85,8 +85,8 @@ class Tree extends Component {
     Object.keys(this.itemRefs).forEach(function (key) {
       that.itemRefs[key].setCheck(true)
     })
-    const r = this.getSelected()
-    this.props.onCheck && this.props.onCheck(r)
+    const data = { items: this.getSelected() }
+    this.props.onCheck && this._callHandler(this.props.onCheck, data)
   }
 
   unCheckAll() {
@@ -97,10 +97,13 @@ class Tree extends Component {
   }
 
   triggerCheck(item) {
-    const k = item.key
-    const s = item.props.checked
-    const r = this.getSelected()
-    this.props.onCheck && this.props.onCheck(r, k, s)
+    const data = {
+      items: this.getSelected(),
+      key: item.key,
+      status: item.props.checked,
+    }
+
+    this.props.onCheck && this._callHandler(this.props.onCheck, data)
   }
 }
 

@@ -1,0 +1,36 @@
+# name: Deploy Doc
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@master
+
+#       - name: Intall, Build
+#         run: |
+#           npm i
+#           npm run build
+#         env:
+#           CI: true
+
+#       - name: Copy Doc Site
+#         run: mkdir doc-sites && cp -rif ./{components,docs,libs,index.html,index.js,README.md,LICENSE} doc-sites
+#         env:
+#           CI: true
+
+#       - name: Deploy Doc Site
+#         uses: JamesIves/github-pages-deploy-action@master
+#         env:
+#           CI: true
+#           PROGRESS: none
+#           GIT_CONFIG_NAME: xiexingen
+#           GIT_CONFIG_EMAIL: 1002275364@qq.com
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           BRANCH: gh-pages
+#           FOLDER: 'doc-sites/'

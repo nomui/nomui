@@ -9,6 +9,6 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | treeData | 源数据,至少应该包含 `title` 与 `value`，并且 `value` 唯一 | `array ` | [] |
-| selected | 默认选中的节点 | `array \| string ` | - |
+| selectedNodes | 默认选中的节点 | `array \| string ` | - |
 | multiple | 是否允许多选 | `boolean ` | `true` |
 | leafOnly | 是否只允许选择叶子层级 | `boolean ` | `false` |
