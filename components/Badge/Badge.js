@@ -5,26 +5,21 @@ class Badge extends Component {
     const defaults = {
       key: null,
       tag: 'span',
-      type: 'square',
-      styles: {
-        color: 'primary',
-      },
+      type: 'round',
       text: null,
       icon: null,
       number: null,
       overflowCount: 99,
-      removable: false,
-      size: 'sm',
+      size: 'xs',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    this._propStyleClasses = ['size']
-    const { icon, text, type, number, overflowCount, removable } = this.props
+    this._propStyleClasses = ['size', 'color']
+    const { icon, text, type, number, overflowCount } = this.props
 
-    const that = this
     if (icon) {
       this.setProps({
         classes: {
@@ -54,16 +49,6 @@ class Badge extends Component {
         Component.normalizeIconProps(icon),
         text && { tag: 'span', children: text },
         number && { tag: 'span', children: number > overflowCount ? `${overflowCount}+` : number },
-        removable &&
-          Component.normalizeIconProps({
-            type: 'times',
-            classes: {
-              'nom-badge-remove': true,
-            },
-            onClick: function () {
-              that.props.removable(that.props.key)
-            },
-          }),
       ],
     })
   }

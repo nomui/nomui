@@ -4,28 +4,21 @@ define([], function () {
     file: 'basic',
     demo: function () {
       return {
-        children: [
+        component: 'Cols',
+        items: [
           {
             component: 'Badge',
-            text: '默认',
+            text: 'badge',
           },
           {
             component: 'Badge',
             text: '带图标',
-            icon: 'plus',
-            styles: {
-              color: 'primary',
-            },
+            icon: 'eye',
           },
           {
             component: 'Badge',
-            text: '带数字',
-            number: '5',
-          },
-          {
-            component: 'Badge',
-            text: '圆形',
-            shape: 'round',
+            number: '255',
+            color: 'olive',
           },
           {
             component: 'Button',

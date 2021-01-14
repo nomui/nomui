@@ -1,7 +1,5 @@
 define([], function () {
-
   return function () {
-
     let javascriptMenu = null
 
     highLight = () => {
@@ -70,7 +68,12 @@ define([], function () {
                       id: 'Button',
                       url: '#!components!index?type=Button',
                     },
-                    { text: 'Icon', subtext: '图标', id: 'Icon', url: '#!components!index?type=Icon' },
+                    {
+                      text: 'Icon',
+                      subtext: '图标',
+                      id: 'Icon',
+                      url: '#!components!index?type=Icon',
+                    },
                   ],
                 },
                 {
@@ -88,14 +91,29 @@ define([], function () {
                       id: 'Container',
                       url: '#!components!index?type=Container',
                     },
-                    { text: 'Rows', subtext: '行布局', id: 'Rows', url: '#!components!index?type=Rows' },
-                    { text: 'Cols', subtext: '列布局', id: 'Cols', url: '#!components!index?type=Cols' },
+                    {
+                      text: 'Rows',
+                      subtext: '行布局',
+                      id: 'Rows',
+                      url: '#!components!index?type=Rows',
+                    },
+                    {
+                      text: 'Cols',
+                      subtext: '列布局',
+                      id: 'Cols',
+                      url: '#!components!index?type=Cols',
+                    },
                   ],
                 },
                 {
                   text: '浮层',
                   items: [
-                    { text: 'Layer', subtext: '层', id: 'Layer', url: '#!components!index?type=Layer' },
+                    {
+                      text: 'Layer',
+                      subtext: '层',
+                      id: 'Layer',
+                      url: '#!components!index?type=Layer',
+                    },
                     {
                       text: 'Popup',
                       subtext: '触发层',
@@ -143,7 +161,12 @@ define([], function () {
                 {
                   text: '导航',
                   items: [
-                    { text: 'Menu', subtext: '菜单', id: 'Menu', url: '#!components!index?type=Menu' },
+                    {
+                      text: 'Menu',
+                      subtext: '菜单',
+                      id: 'Menu',
+                      url: '#!components!index?type=Menu',
+                    },
                     {
                       text: 'Dropdown',
                       subtext: '下拉菜单',
@@ -156,20 +179,35 @@ define([], function () {
                       id: 'Navbar',
                       url: '#!components!index?type=Navbar',
                     },
-                    { text: 'Tabs', subtext: '选项卡', id: 'Tabs', url: '#!components!index?type=Tabs' },
+                    {
+                      text: 'Tabs',
+                      subtext: '选项卡',
+                      id: 'Tabs',
+                      url: '#!components!index?type=Tabs',
+                    },
                     {
                       text: 'Steps',
                       subtext: '步骤条',
                       id: 'Steps',
                       url: '#!components!index?type=Steps',
                     },
-                    { text: 'Pager', subtext: '分页', id: 'Pager', url: '#!components!index?type=Pager' },
+                    {
+                      text: 'Pager',
+                      subtext: '分页',
+                      id: 'Pager',
+                      url: '#!components!index?type=Pager',
+                    },
                   ],
                 },
                 {
                   text: '数据展示',
                   items: [
-                    { text: 'Panel', subtext: '面板', id: 'Panel', url: '#!components!index?type=Panel' },
+                    {
+                      text: 'Panel',
+                      subtext: '面板',
+                      id: 'Panel',
+                      url: '#!components!index?type=Panel',
+                    },
                     {
                       text: 'Avatar',
                       subtext: '头像',
@@ -182,7 +220,12 @@ define([], function () {
                       id: 'AvatarGroup',
                       url: '#!components!index?type=AvatarGroup',
                     },
-                    { text: 'Badge', subtext: '徽标', id: 'Badge', url: '#!components!index?type=Badge' },
+                    {
+                      text: 'Badge',
+                      subtext: '徽标',
+                      id: 'Badge',
+                      url: '#!components!index?type=Badge',
+                    },
                     {
                       text: 'Collapse',
                       subtext: '折叠面板',
@@ -195,15 +238,30 @@ define([], function () {
                       id: 'Empty',
                       url: '#!components!index?type=Empty',
                     },
-                    { text: 'Badge', subtext: '徽标', id: 'Badge', url: '#!components!index?type=Badge' },
                     {
                       text: 'Timeline',
                       subtext: '时间轴',
                       id: 'Timeline',
                       url: '#!components!index?type=Timeline',
                     },
-                    { text: 'List', subtext: '列表', id: 'List', url: '#!components!index?type=List' },
-                    { text: 'Tree', subtext: '树', id: 'Tree', url: '#!components!index?type=Tree' },
+                    {
+                      text: 'List',
+                      subtext: '列表',
+                      id: 'List',
+                      url: '#!components!index?type=List',
+                    },
+                    {
+                      text: 'Tag',
+                      subtext: '标签',
+                      id: 'Tag',
+                      url: '#!components!index?type=Tag',
+                    },
+                    {
+                      text: 'Tree',
+                      subtext: '树',
+                      id: 'Tree',
+                      url: '#!components!index?type=Tree',
+                    },
                     {
                       text: 'Table',
                       subtext: '普通表格',
@@ -305,7 +363,12 @@ define([], function () {
                       id: 'Uploader',
                       url: '#!components!index?type=Uploader',
                     },
-                    { text: 'Rate', subtext: '评分', id: 'Rate', url: '#!components!index?type=Rate' },
+                    {
+                      text: 'Rate',
+                      subtext: '评分',
+                      id: 'Rate',
+                      url: '#!components!index?type=Rate',
+                    },
                     {
                       text: 'Slider',
                       subtext: '滑动输入条',
@@ -324,8 +387,18 @@ define([], function () {
                       id: 'forms/FieldRepeater',
                       url: '#!components!index?type=forms/FieldRepeater',
                     },
-                    { text: 'Field', subtext: '字段', id: 'field', url: '#!components!index?type=field' },
-                    { text: 'Form', subtext: '表单', id: 'form', url: '#!components!index?type=form' },
+                    {
+                      text: 'Field',
+                      subtext: '字段',
+                      id: 'field',
+                      url: '#!components!index?type=field',
+                    },
+                    {
+                      text: 'Form',
+                      subtext: '表单',
+                      id: 'form',
+                      url: '#!components!index?type=form',
+                    },
                   ],
                 },
                 {
@@ -359,6 +432,12 @@ define([], function () {
                       subtext: '标题',
                       id: 'Caption',
                       url: '#!components!index?type=Caption',
+                    },
+                    {
+                      text: 'SecureInfo',
+                      subtext: '敏感信息打码',
+                      id: 'SecureInfo',
+                      url: '#!components!index?type=SecureInfo',
                     },
                   ],
                 },
@@ -398,16 +477,14 @@ define([], function () {
               defaultPath: 'index',
             },
           ],
-        }
+        },
       },
       _rendered: function () {
         highLight()
       },
       onQueryChange: function () {
         highLight()
-      }
+      },
     }
-
   }
-
 })
