@@ -1,12 +1,12 @@
 {
   "name": "nomui",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "no magic ui for web",
-  "jsdelivr":["dist"],
-  "module": "dist/index.js",
-  "main": "dist/index.js",
+  "module": "dist/nomui.js",
+  "main": "dist/nomui.js",
   "files": [
-    "dist",
+    "dist/nomui.js",
+    "dist/nomui.css",
     "package.json",
     "README.md"
   ],
