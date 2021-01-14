@@ -1,6 +1,6 @@
 import Component, { n } from '../Component/index'
 import Panel from '../Panel/index'
-import { isPlainObject, isString } from '../util/index'
+import { isFunction, isPlainObject, isString } from '../util/index'
 import ModalContentMixin from './ModalContentMixin'
 
 class ModalDialog extends Component {
@@ -13,10 +13,15 @@ class ModalDialog extends Component {
   }
 
   _created() {
-    this.modal = this.parent
-    const { content } = this.modal.props
+    const modal = this.modal = this.parent
+    const { content, okText: modalOkText, onOk: modalOnOk, cancelText: modalCancelText, onCancel: modalOnCancel } = this.modal.props
     if (isString(content)) {
-      require([content], (props) => {
+      require([content], (contentConfig) => {
+        let props = contentConfig
+        if (isFunction(props)) {
+          props = contentConfig.call(this, modal)
+        }
+        const { okText, onOk, onCancel } = props
         props = Component.extendProps(
           {
             component: Panel,
@@ -29,12 +34,36 @@ class ModalDialog extends Component {
                   styles: {
                     border: 'none',
                   },
-                  onClick: function (e) {
-                    e.sender.$modal.close()
+                  onClick: function () {
+                    modal.close()
                   },
                 },
               ],
             },
+            footer: {
+              children: {
+                component: 'Cols',
+                items: [
+                  {
+                    component: 'Button',
+                    styles: {
+                      color: 'primary'
+                    },
+                    text: okText || modalOkText || '确 定',
+                    onClick: onOk || modalOnOk || (() => {
+                      modal.close()
+                    })
+                  },
+                  {
+                    component: 'Button',
+                    text: okText || modalCancelText || '取消',
+                    onClick: onCancel || modalOnCancel || (() => {
+                      modal.close()
+                    })
+                  }
+                ]
+              }
+            }
           },
           props,
         )
@@ -53,6 +82,8 @@ class ModalDialog extends Component {
       })
     }
   }
+
+
 }
 
 Component.register(ModalDialog)
