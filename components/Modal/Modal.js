@@ -8,6 +8,8 @@ class Modal extends Component {
     const defaults = {
       content: {},
       closeOnClickOutside: false,
+      okText: '确 定',
+      cancelText: '取 消'
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
