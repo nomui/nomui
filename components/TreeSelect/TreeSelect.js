@@ -36,7 +36,7 @@ class TreeSelect extends Control {
         that.props.selectedNodes.forEach(function (key) {
           if (key === item.key) {
             items.push({
-              component: 'Badge',
+              component: 'Tag',
               type: 'round',
               size: 'xs',
               text: item.title,
