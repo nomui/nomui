@@ -29,11 +29,11 @@ class TreeSelectPopup extends Popup {
           children: {
             component: 'Tree',
             treeData: this.selectControl.props.treeData,
-            selected: that.props.selected,
+            selectedNodes: that.props.selectedNodes,
             multiple: that.selectControl.props.multiple,
             leafOnly: that.selectControl.props.leafOnly,
-            onCheck: function (data, key, status) {
-              that.selectControl.setValue(data, key, status)
+            onCheck: function (data) {
+              that.selectControl.setValue(data)
             },
             _created: function () {
               that.selectControl.tree = this

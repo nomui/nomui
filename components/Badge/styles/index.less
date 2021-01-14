@@ -9,6 +9,7 @@
 .nom-badge {
   /* Structure */
   display: inline-block;
+  padding: 1px 8px !important;
   color: @text-color-lt;
   line-height: normal;
   white-space: nowrap;
@@ -21,7 +22,7 @@
   border-radius: 2px;
   cursor: pointer;
   user-select: none;
-  zoom: 1;
+  zoom: 0.95;
   .badge-size(@padding-y-base; @padding-x-base; @font-size-base; @line-height-base; @border-radius);
 
   &:hover {
@@ -103,9 +104,10 @@
     right: 0;
     width: 8px;
     height: 8px;
-    padding: 0;
+    padding: 0 !important;
     border-radius: 200px;
     transform: translate(50%, -50%);
+    zoom: 1;
   }
   &.p-type-dot.p-with-number {
     position: absolute;
@@ -138,4 +140,7 @@
   position: relative;
   top: 2px;
   margin-left: 1px !important;
+  svg {
+    fill: #fff;
+  }
 }

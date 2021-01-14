@@ -53,7 +53,7 @@ class Select extends Control {
 
   _config() {
     const that = this
-    const { multiple, selectedMultiple, selectedSingle, showArrow } = this.props
+    const { multiple, showArrow } = this.props
     const children = []
 
     this.setProps({
@@ -75,9 +75,9 @@ class Select extends Control {
     })
 
     if (multiple) {
-      children.push(selectedMultiple)
+      children.push(this.props.selectedMultiple)
     } else {
-      children.push(selectedSingle)
+      children.push(this.props.selectedSingle)
     }
 
     if (showArrow) {

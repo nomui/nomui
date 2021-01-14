@@ -37,11 +37,12 @@ class TreeSelect extends Control {
           if (key === item.key) {
             items.push({
               component: 'Badge',
+              type: 'round',
               size: 'xs',
               text: item.title,
               key: item.key,
               removable: function (param) {
-                that.props.selectedNodes = selectedNodes.filter(function (k) {
+                that.props.selectedNodes = that.props.selectedNodes.filter(function (k) {
                   return k !== param
                 })
                 that.update(that.props.selectedNodes)
@@ -52,10 +53,11 @@ class TreeSelect extends Control {
       })
     }
     let children = []
+    const badges = { children: items }
 
     if (showArrow) {
       children = [
-        ...items,
+        badges,
         {
           component: Icon,
           type: 'down',
@@ -70,15 +72,19 @@ class TreeSelect extends Control {
     }
 
     this.setProps({
-      tag: 'div',
+      children: null,
+    })
+    this.setProps({
       children: children,
     })
-
     super._config()
   }
 
   _rendered() {
-    this.popup = new TreeSelectPopup({ trigger: this.arrow, selectedNodes: this.props.selected })
+    this.popup = new TreeSelectPopup({
+      trigger: this.arrow,
+      selectedNodes: this.props.selectedNodes,
+    })
   }
 
   getList() {
@@ -101,7 +107,7 @@ class TreeSelect extends Control {
   }
 
   setValue(data) {
-    this.props.selectedNodes = data
+    this.props.selectedNodes = data.items
     this.update(this.props.selectedNodes)
   }
 
