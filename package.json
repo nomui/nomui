@@ -1,14 +1,13 @@
 {
   "name": "nomui",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "no magic ui for web",
-  "module": "dist/nomui.js",
-  "main": "dist/nomui.js",
+  "module": "nomui.js",
+  "main": "nomui.js",
   "files": [
-    "dist/nomui.js",
-    "dist/nomui.css",
-    "package.json",
-    "README.md"
+    "nomui.js",
+    "nomui.css",
+    "package.json"
   ],
   "scripts": {
     "build": "gulp build",
