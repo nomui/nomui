@@ -12,7 +12,7 @@ define([], function () {
             onClick: () => {
               new nomui.Message({
                 content: '这是一条普通提示消息',
-                duration: false
+                type: 'info'
               })
             }
           }
