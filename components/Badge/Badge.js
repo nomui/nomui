@@ -6,11 +6,15 @@ class Badge extends Component {
       key: null,
       tag: 'span',
       type: 'square',
+      styles: {
+        color: 'primary',
+      },
       text: null,
       icon: null,
       number: null,
       overflowCount: 99,
       removable: false,
+      size: 'sm',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

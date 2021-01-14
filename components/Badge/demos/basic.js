@@ -25,7 +25,7 @@ define([], function () {
           {
             component: 'Badge',
             text: '圆形',
-            type: 'round',
+            shape: 'round',
           },
           {
             component: 'Button',
