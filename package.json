@@ -1,6 +1,6 @@
 {
   "name": "nomui",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "no magic ui for web",
   "jsdelivr":["dist"],
   "module": "dist/index.js",
