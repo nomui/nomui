@@ -17,6 +17,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
           this.currentView.update(props)
         }, () => {
           props.docs = '敬请期待'
+          this.currentView.props.demos = []
           this.currentView.update(props)
         })
       })
