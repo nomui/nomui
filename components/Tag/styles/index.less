@@ -1,12 +1,12 @@
 // Button sizes
-.badge-size(@padding-y; @padding-x; @font-size; @line-height; @border-radius) {
+.tag-size(@padding-y; @padding-x; @font-size; @line-height; @border-radius) {
   padding: @padding-y @padding-x;
   font-size: @font-size;
   line-height: @line-height;
   border-radius: @border-radius;
 }
 
-.nom-badge {
+.nom-tag {
   /* Structure */
   display: inline-block;
   color: @text-color-lt;
@@ -22,35 +22,52 @@
   cursor: pointer;
   user-select: none;
   zoom: 0.95;
-  .badge-size(@padding-y-base; @padding-x-base;@font-size-base; @line-height-base; @border-radius);
+  .tag-size(@padding-y-base; @padding-x-base;@font-size-base; @line-height-base; @border-radius);
 
   &.p-size-sm {
     // line-height: ensure proper height of button next to small input
-    .badge-size(@padding-y-sm; @padding-x-sm; @font-size-sm; @line-height-sm; @border-radius-sm);
+    .tag-size(@padding-y-sm; @padding-x-sm; @font-size-sm; @line-height-sm; @border-radius-sm);
   }
 
   &.p-size-xs {
     // line-height: ensure proper height of button next to small input
-    .badge-size(@padding-y-xs; @padding-x-xs; @font-size-sm; @line-height-sm; @border-radius-sm);
+    .tag-size(@padding-y-xs; @padding-x-xs; @font-size-sm; @line-height-sm; @border-radius-sm);
   }
 
   &.p-size-lg {
     // line-height: ensure proper height of button next to small input
-    .badge-size(@padding-y-lg; @padding-x-lg; @font-size-lg; @line-height-lg; @border-radius-lg);
+    .tag-size(@padding-y-lg; @padding-x-lg; @font-size-lg; @line-height-lg; @border-radius-lg);
   }
 
   &.p-size-xl {
     // line-height: ensure proper height of button next to small input
-    .badge-size(@padding-y-xl; @padding-x-xl; @font-size-xl; @line-height-lg; @border-radius-lg);
+    .tag-size(@padding-y-xl; @padding-x-xl; @font-size-xl; @line-height-lg; @border-radius-lg);
   }
 
-  &.p-plain {
-    background-color: transparent;
-    border: 0;
+  &.p-with-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    &:hover {
-      background-color: #e6e6e6;
-      outline: none;
+  > .nom-icon {
+    display: inline-flex;
+  }
+  > .nom-icon + span,
+  > span + .nom-icon {
+    margin-left: 0.1rem;
+  }
+  .nom-tag-remove {
+    position: relative;
+    top: 2px;
+    margin-left: 1px !important;
+    svg {
+      fill: #fff;
+    }
+    &.nom-tag-remove-basic {
+      svg {
+        fill: #888;
+      }
     }
   }
 
@@ -137,60 +154,4 @@
     background-color: #f2f2f2;
     border-color: #f2f2f2;
   }
-
-  &.p-with-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  > .nom-icon {
-    display: inline-flex;
-  }
-  > .nom-icon + span,
-  > span + .nom-icon {
-    margin-left: 0.1rem;
-  }
-
-  &.p-type-dot {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 8px;
-    height: 8px;
-    padding: 0 !important;
-    border-radius: 200px;
-    transform: translate(50%, -50%);
-    zoom: 1;
-  }
-  &.p-type-dot.p-with-number {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: auto;
-    min-width: 16px;
-    max-width: 30px;
-    height: 16px;
-    padding: 1px 3px;
-    overflow: hidden;
-    font-size: 10px;
-    line-height: 13px;
-    white-space: nowrap;
-    text-align: center;
-    text-overflow: ellipsis;
-    border-radius: 200px;
-    transform: translate(50%, -50%);
-  }
-  .nom-badge-remove {
-    position: relative;
-    top: 2px;
-    margin-left: 1px !important;
-    svg {
-      fill: #fff;
-    }
-  }
-}
-
-.s-with-badge {
-  position: relative;
 }
