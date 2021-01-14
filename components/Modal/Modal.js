@@ -95,6 +95,10 @@ class Modal extends Component {
         this.bodyElem.css('overflow', this.originalBodyOverflow);
         this.bodyElem.removeData('modalCount'); */
   }
+
+  _handleOnOk() {
+    this._callHandler(this.props.onOk)
+  }
 }
 
 Component.register(Modal)
