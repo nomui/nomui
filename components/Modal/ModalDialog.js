@@ -21,7 +21,7 @@ class ModalDialog extends Component {
         if (isFunction(props)) {
           props = contentConfig.call(this, modal)
         }
-        const { okText, onOk, onCancel } = props
+        const { okText, onOk, cancelText, onCancel } = props
         props = Component.extendProps(
           {
             component: Panel,
@@ -56,7 +56,7 @@ class ModalDialog extends Component {
                   },
                   {
                     component: 'Button',
-                    text: okText || modalCancelText || '取消',
+                    text: cancelText || modalCancelText || '取 消',
                     onClick: onCancel || modalOnCancel || (() => {
                       modal.close()
                     })
