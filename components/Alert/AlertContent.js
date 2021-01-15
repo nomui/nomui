@@ -1,6 +1,7 @@
 import Button from '../Button/index'
 import Cols from '../Cols/index'
 import Component from '../Component/index'
+import { isPlainObject } from '../util/index'
 
 class AlertContent extends Component {
   constructor(props, ...mixins) {
@@ -9,16 +10,13 @@ class AlertContent extends Component {
       description: null,
       icon: null,
       type: null,
-      ok: {
-        text: '确 定',
-      },
-      cancel: false,
+      okText: null,
     }
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { title, description, type, ok, cancel } = this.props
+    const { title, description, type, okText, action } = this.props
     let { icon } = this.props
 
     const alertInst = this.modal
@@ -50,32 +48,30 @@ class AlertContent extends Component {
       })
       : null
 
-    const okProps = ok
-      ? Component.extendProps(ok, {
-        component: Button,
-        styles: {
-          color: 'primary',
-        },
-        onClick: function () {
-          if (ok.callback) {
-            if (ok.callback.call(this, alertInst) !== false) {
-              alertInst.close()
-            }
-          } else {
-            alertInst.close()
-          }
-        },
-      })
-      : null
+    const okButtonProps = {
+      component: Button,
+      styles: {
+        color: 'primary'
+      },
+      text: okText,
+      onClick: () => {
+        alertInst._handleOk()
+      }
+    }
 
-    const cancelProps = cancel
-      ? Component.extendProps(cancel, {
-        component: Button,
-        onClick: function () {
-          alertInst.close()
-        },
-      })
-      : null
+    let actionProps = {
+      component: Cols,
+      justify: 'end',
+    }
+    if (!action) {
+      actionProps.items = [okButtonProps]
+    }
+    else if (isPlainObject(action)) {
+      actionProps = Component.extendProps(actionProps, action)
+    }
+    else if (Array.isArray(action)) {
+      actionProps.items = action
+    }
 
     this.setProps({
       children: [
@@ -97,11 +93,7 @@ class AlertContent extends Component {
           classes: {
             'nom-alert-actions': true,
           },
-          children: {
-            component: Cols,
-            inline: true,
-            items: [cancelProps, okProps],
-          },
+          children: actionProps,
         },
       ],
     })

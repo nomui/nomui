@@ -9,6 +9,9 @@ class Cols extends Component {
       items: [],
       itemDefaults: null,
       gutter: 'md',
+      childDefaults: {
+        component: Col
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -29,11 +32,11 @@ class Cols extends Component {
         item = Component.extendProps({}, this.props.itemDefaults, item)
         children.push({ component: Col, children: item })
       }
-    }
 
-    this.setProps({
-      children: children,
-    })
+      this.setProps({
+        children: children,
+      })
+    }
   }
 }
 

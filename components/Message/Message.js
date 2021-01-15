@@ -7,10 +7,8 @@ class Message extends Layer {
       type: null,
       icon: null,
       content: null,
-      commands: null,
       duration: 2,
       closeToRemove: true,
-      showClose: false,
       position: {
         my: 'center center',
         at: 'center center',
@@ -21,13 +19,12 @@ class Message extends Layer {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _config() {
-    super._config()
-
+  _config() {   
+    this._addPropStyle('type')
     const iconMap = {
-      info: 'info',
-      success: 'success',
-      error: 'warn',
+      info: 'info-circle',
+      success: 'check-circle',
+      error: 'close-circle',
       warning: 'exclamation-circle',
     }
 
@@ -48,15 +45,10 @@ class Message extends Layer {
       children: [
         iconProps,
         this.props.content,
-        this.props.showClose && {
-          component: 'Button',
-          icon: 'times',
-          onClick: () => {
-            this.close()
-          },
-        },
       ],
     })
+
+    super._config()
   }
 
   close() {

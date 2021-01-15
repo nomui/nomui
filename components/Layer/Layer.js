@@ -45,7 +45,7 @@ class Layer extends Component {
         },
       },
     })
-    if (this.props.align) {
+    if (this.props.align || this.props.position) {
       this.setProps({
         attrs: {
           style: {
@@ -96,7 +96,7 @@ class Layer extends Component {
     document.removeEventListener('mousedown', this._onDocumentMousedown, false)
 
     if (forceRemove === true || this.props.closeToRemove) {
-      this.element.remove()
+      this.remove()
     }
   }
 
