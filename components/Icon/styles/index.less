@@ -1,47 +1,23 @@
 .nom-icon {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: inherit;
   font-style: normal;
-  text-align: center;
   text-transform: none;
-  vertical-align: -0.125em;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  &.m-border {
-    position: relative;
-    display: inline-block;
+  &.p-bordered {
     width: 1.5em;
     height: 1.5em;
-    text-align: center;
     border: 1px solid;
-
-    > i {
-      position: relative;
-      top: 50%;
-      left: 50%;
-      z-index: 2;
-      display: block;
-      transform: translate(-50%, -50%);
-    }
   }
 
-  &.m-bg {
-    position: relative;
-    display: inline-block;
+  &.p-bg {
     width: 1.5em;
     height: 1.5em;
-    text-align: center;
     background-color: @oc-gray-2;
-
-    > i {
-      position: relative;
-      top: 50%;
-      left: 50%;
-      z-index: 2;
-      display: block;
-      transform: translate(-50%, -50%);
-    }
   }
 }
