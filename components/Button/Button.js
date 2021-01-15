@@ -23,6 +23,14 @@ class Button extends Component {
           'p-with-icon': true,
         },
       })
+
+      if (!text) {
+        this.setProps({
+          classes: {
+            'p-only-icon': true,
+          },
+        })
+      }
     }
 
     this.setProps({

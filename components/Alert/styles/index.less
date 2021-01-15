@@ -20,9 +20,13 @@
         display: flex;
         flex-direction: row;
 
-        >.nom-alert-icon {
-            padding: 0.125rem 1rem;
-            font-size: 2rem;
+        >.nom-alert-body-icon {
+            padding-top: 0.3rem;
+            padding-right: 1rem;
+
+            >.nom-alert-icon {
+                font-size: 2rem;
+            }
         }
 
         >.nom-alert-body-content {
@@ -48,32 +52,40 @@
 
     &.p-type-info {
         >.nom-alert-body {
-            >.nom-alert-icon {
-                color: @info;
+            >.nom-alert-body-icon {
+                >.nom-alert-icon {
+                    color: @info;
+                }
             }
         }
     }
 
     &.p-type-success {
         >.nom-alert-body {
-            >.nom-alert-icon {
-                color: @success;
+            >.nom-alert-body-icon {
+                >.nom-alert-icon {
+                    color: @success;
+                }
             }
         }
     }
 
     &.p-type-error {
         >.nom-alert-body {
-            >.nom-alert-icon {
-                color: @danger;
+            >.nom-alert-body-icon {
+                >.nom-alert-icon {
+                    color: @danger;
+                }
             }
         }
     }
 
     &.p-type-warning {
         >.nom-alert-body {
-            >.nom-alert-icon {
-                color: @warning;
+            >.nom-alert-body-icon {
+                >.nom-alert-icon {
+                    color: @warning;
+                }
             }
         }
     }

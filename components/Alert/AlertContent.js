@@ -80,7 +80,12 @@ class AlertContent extends Component {
             'nom-alert-body': true,
           },
           children: [
-            iconProps,
+            {
+              classes: {
+                'nom-alert-body-icon': true
+              },
+              children: iconProps
+            },
             {
               classes: {
                 'nom-alert-body-content': true,

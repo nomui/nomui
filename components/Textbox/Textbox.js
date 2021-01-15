@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Control from '../Control/index'
-import {} from '../Icon/index'
+import { } from '../Icon/index'
 import Input from './Input'
 
 class Textbox extends Control {
@@ -20,14 +20,14 @@ class Textbox extends Control {
   _config() {
     const { leftIcon, rightIcon, placeholder, value, htmlType } = this.props
 
-    const leftIconProps = Component.normalizeIconProps(leftIcon)
+    let leftIconProps = Component.normalizeIconProps(leftIcon)
     if (leftIconProps != null) {
-      Component.extendProps(leftIconProps, { classes: { 'nom-textbox-left-icon': true } })
+      leftIconProps = Component.extendProps(leftIconProps, { classes: { 'nom-textbox-left-icon': true } })
     }
 
-    const rightIconProps = Component.normalizeIconProps(rightIcon)
+    let rightIconProps = Component.normalizeIconProps(rightIcon)
     if (rightIconProps != null) {
-      Component.extendProps(rightIconProps, { classes: { 'nom-textbox-right-icon': true } })
+      rightIconProps = Component.extendProps(rightIconProps, { classes: { 'nom-textbox-right-icon': true } })
     }
 
     const inputProps = {

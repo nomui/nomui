@@ -4,10 +4,25 @@
 
 // Button sizes
 .button-size(@padding-y; @padding-x; @font-size; @line-height; @border-radius) {
+
+  @iconsize: unit(@line-height, em);
+
   padding: @padding-y @padding-x;
   font-size: @font-size;
   line-height: @line-height;
   border-radius: @border-radius;
+
+  >.nom-icon {
+    height: @iconsize;
+  }
+
+  &.p-only-icon.u-shape-circle {
+    padding: @padding-y;
+
+    >.nom-icon {
+      width: @iconsize;
+    }
+  }
 }
 
 .nom-button {
@@ -50,6 +65,7 @@
   }
 
   a& {
+
     &.disabled,
     fieldset[disabled] & {
       pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
@@ -97,8 +113,8 @@
         line-height: 1;
     } */
 
-  > .nom-icon + span,
-  > span + .nom-icon {
+  >.nom-icon+span,
+  >span+.nom-icon {
     margin-left: 0.5rem;
   }
 }
