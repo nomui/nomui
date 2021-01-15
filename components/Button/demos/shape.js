@@ -21,6 +21,18 @@ define([], function () {
               shape: 'circle',
             },
           },
+          {
+            icon: 'plus',
+            styles: {
+              shape: 'round',
+            },
+          },
+          {
+            icon: 'edit',
+            styles: {
+              shape: 'circle',
+            },
+          },
         ],
         itemDefaults: {
           component: 'Button',
