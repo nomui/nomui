@@ -54,9 +54,8 @@ define([], function () {
                                 component: 'Button',
                                 icon: 'github',
                                 href: 'https://github.com/nomui/nomui',
-                                styles: {
-                                    color: 'transparent'
-                                }
+                                target: '_blank',
+                                type: 'text'
                             }
                         ],
                     }

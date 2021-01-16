@@ -1,9 +1,11 @@
 define([
-  './basic.js',
-  './bg-color.js',
+  './type.js',
   './size.js',
-  './with-icon.js',
   './shape.js',
+  './ghost.js',
+  './danger.js',
+  './with-icon.js',
+
   './link.js',
 ], function () {
   return {

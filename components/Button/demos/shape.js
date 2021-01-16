@@ -1,6 +1,6 @@
 define([], function () {
   return {
-    title: '不同形状',
+    title: '按钮形状',
     file: 'shape',
     demo: function () {
       return {
@@ -11,27 +11,19 @@ define([], function () {
           },
           {
             text: 'round',
-            styles: {
-              shape: 'round',
-            },
+            shape: 'round',
           },
           {
             text: 'circle',
-            styles: {
-              shape: 'circle',
-            },
+            shape: 'circle',
           },
           {
             icon: 'plus',
-            styles: {
-              shape: 'round',
-            },
+            shape: 'round',
           },
           {
             icon: 'edit',
-            styles: {
-              shape: 'circle',
-            },
+            shape: 'circle',
           },
         ],
         itemDefaults: {
