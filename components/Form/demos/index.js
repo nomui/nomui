@@ -10,6 +10,7 @@ define(
     './splitline.js',
     './outline.js',
     './styles.js',
+    './complex-control.js'
   ],
   function () {
     return {
