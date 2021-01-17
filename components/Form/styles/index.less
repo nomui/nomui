@@ -46,11 +46,38 @@
         }
     }
 
-    &.m-striped {
+    &.p-striped {
         >.nom-field {
             >.nom-field-label {
                 .u-color-lgray();
             }
+        }
+    }
+
+    &.p-line-split {
+        margin: 0 !important;
+        overflow: hidden;
+
+        >.nom-field {
+            .u-border-left();
+            .u-border-bottom();
+
+            margin-bottom: -1px;
+            margin-left: -1px;
+        }
+    }
+
+    &.p-line-outline {
+        margin: 0 !important;
+        overflow: hidden;
+        .u-border();
+
+        >.nom-field {
+            .u-border-left();
+            .u-border-bottom();
+
+            margin-bottom: -1px;
+            margin-left: -1px;
         }
     }
 }

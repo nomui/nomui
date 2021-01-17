@@ -18,6 +18,8 @@ class Form extends Control {
       bordered: false,
       splitline: false,
 
+      line: null,
+
       requiredMark: true,
 
       space: 'md',
@@ -28,7 +30,7 @@ class Form extends Control {
   }
 
   _config() {
-    this._addPropStyle('inline')
+    this._addPropStyle('inline', 'striped', 'line')
 
     const children = []
     for (let i = 0; i < this.props.fields.length; i++) {
