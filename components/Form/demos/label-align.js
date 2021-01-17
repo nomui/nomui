@@ -10,6 +10,7 @@ define([], function () {
                 items: [
                     {
                         component: 'RadioList',
+                        uistyle: 'button',
                         options: [
                             { text: '左边对齐', value: 'left' },
                             { text: '右边对齐', value: 'right' },

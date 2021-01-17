@@ -8,7 +8,8 @@ define(
     './label-align.js',
     './striped.js',
     './splitline.js',
-    './outline.js'
+    './outline.js',
+    './styles.js',
   ],
   function () {
     return {

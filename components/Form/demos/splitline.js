@@ -29,7 +29,7 @@ define([], function () {
                         ref: (c) => {
                             form = c
                         },
-                        line: 'split',
+                        line: 'splitline',
                         fieldDefaults: {
                             span: 12,
                         },
