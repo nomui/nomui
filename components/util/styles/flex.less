@@ -1,0 +1,167 @@
+﻿@import './flex-mixin.less';
+
+.u-flex-row {
+    display: flex;
+}
+
+.u-flex-row-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.u-flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.u-flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.u-flex-grow {
+    -ms-flex-positive: 1 !important;
+    flex-grow: 1 !important;
+}
+
+.u-flex-shrink {
+    flex-shrink: 1;
+}
+
+.u-flex-fill {
+    flex: 1 1 auto !important;
+}
+
+.u-flex-fills > * {
+    flex: 1 1 auto !important;
+}
+
+.u-align-start {
+    align-items: flex-start !important;
+}
+
+.u-align-end {
+    align-items: flex-end !important;
+}
+
+.u-align-center {
+    align-items: center !important;
+}
+
+.u-align-stretch {
+    align-items: stretch !important;
+}
+
+.u-justify-start {
+    justify-content: flex-start !important;
+}
+
+.u-justify-end {
+    justify-content: flex-end !important;
+}
+
+.u-justify-center {
+    justify-content: center !important;
+}
+
+.u-justify-between {
+    justify-content: space-between !important;
+}
+
+.u-justify-around {
+    justify-content: space-around !important;
+}
+
+.u-flex-wrap-wrap {
+    flex-wrap: wrap;
+}
+
+
+
+.u-cols-2 {
+    >* {
+        width: 50%;
+    }
+}
+
+.u-cols-3 {
+    >* {
+        width: 33.33%;
+    }
+}
+
+.u-cols-4 {
+    >* {
+        width: 25%;
+    }
+}
+
+.u-cols-5 {
+    >* {
+        width: 25%;
+    }
+}
+
+.u-cols-6 {
+    >* {
+        width: 16.66%;
+    }
+}
+
+.u-col {
+    position: relative;
+    max-width: 100%;
+    // Prevent columns from collapsing when empty
+    min-height: 1px;
+  }
+  
+  .make-grid();
+  
+  // Extra small grid
+  //
+  // Columns, offsets, pushes, and pulls for extra small devices like
+  // smartphones.
+  
+  .make-grid(-xs);
+  
+  // Small grid
+  //
+  // Columns, offsets, pushes, and pulls for the small device range, from phones
+  // to tablets.
+  
+  @media (min-width: @screen-sm-min) {
+    .make-grid(-sm);
+  }
+  
+  // Medium grid
+  //
+  // Columns, offsets, pushes, and pulls for the desktop device range.
+  
+  @media (min-width: @screen-md-min) {
+    .make-grid(-md);
+  }
+  
+  // Large grid
+  //
+  // Columns, offsets, pushes, and pulls for the large desktop device range.
+  
+  @media (min-width: @screen-lg-min) {
+    .make-grid(-lg);
+  }
+  
+  // Extra Large grid
+  //
+  // Columns, offsets, pushes, and pulls for the full hd device range.
+  
+  @media (min-width: @screen-xl-min) {
+    .make-grid(-xl);
+  }
+  
+  // Extra Extra Large grid
+  //
+  // Columns, offsets, pushes, and pulls for the full hd device range.
+  
+  @media (min-width: @screen-xxl-min) {
+    .make-grid(-xxl);
+  }
