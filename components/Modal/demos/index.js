@@ -1,7 +1,8 @@
 define(
     [
         './basic.js',
-        './view.js'
+        './view.js',
+        './long-content.js'
     ],
     function () {
         return {
