@@ -1,7 +1,7 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './size.js', './with-text.js'], function () {
   return {
     title: 'Switch',
     subtitle: '开关',
-    demos: Array.prototype.slice.call(arguments),
+    demos: Array.from(arguments),
   }
 })

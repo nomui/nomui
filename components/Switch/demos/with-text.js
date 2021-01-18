@@ -1,6 +1,6 @@
 define([], function () {
   return {
-    title: '基本用法',
+    title: '自定义文本',
     file: 'basic',
     demo: function () {
       return {
@@ -8,11 +8,8 @@ define([], function () {
           component: 'Switch',
           text: 'switch',
           name: 'x',
-          value: true,
-          onValueChange(changed) {
-            // eslint-disable-next-line
-            console.log(changed)
-          },
+          selectedText: 'on',
+          unselectedText: 'off',
         },
       }
     },
