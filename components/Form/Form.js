@@ -38,7 +38,10 @@ class Form extends Control {
     for (let i = 0; i < fields.length; i++) {
       const field = fields[i]
       if (isPlainObject(value)) {
-        if (field.value === null || field.value === undefined) {
+        if (field.flatValue === true) {
+          field.value = value
+        }
+        else if (field.value === null || field.value === undefined) {
           field.value = value[field.name]
         }
       }
@@ -54,13 +57,11 @@ class Form extends Control {
     const value = {}
     for (let i = 0; i < this.children.length; i++) {
       const field = this.children[i]
-      if (field.getValue && field.props.name) {
-        if (field.props.flatValue === true) {
-          extend(value, field.getValue())
-        }
-        else {
-          value[field.props.name] = field.getValue()
-        }
+      if (field.props.flatValue === true) {
+        extend(value, field.getValue())
+      }
+      else if (field.getValue && field.props.name) {
+        value[field.props.name] = field.getValue()
       }
     }
     return value
@@ -69,7 +70,10 @@ class Form extends Control {
   setValue(value) {
     for (let i = 0; i < this.children.length; i++) {
       const field = this.children[i]
-      if (field.setValue && field.props.name) {
+      if (field.props.flatValue === true) {
+        field.setValue(value)
+      }
+      else if (field.setValue && field.props.name) {
         field.setValue(value[field.props.name])
       }
     }
