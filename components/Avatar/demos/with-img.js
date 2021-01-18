@@ -11,7 +11,7 @@ define([], function () {
             component: 'Avatar',
             text: '小马',
             src: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-            size: 'xs',
+            size: 'xsmall',
           },
           {
             component: 'Avatar',
@@ -22,7 +22,7 @@ define([], function () {
             component: 'Avatar',
             text: '小马',
             src: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-            size: 'lg',
+            size: 'xlarge',
           },
         ],
       }

@@ -17,7 +17,7 @@ define([], function () {
             ref: (c) => {
               userAvatar = c
             },
-            size: 'xl',
+            size: 'xlarge',
             text: '小马',
           },
           {

@@ -211,8 +211,9 @@ class Component {
   _removeCore() {
     this.emptyChildren()
     const el = this.element
-    isFunction(this._remove) && this._remove()
+    isFunction(this.props._remove) && this.props._remove.call(this)
     this._callMixin('_remove')
+    isFunction(this._remove) && this._remove()    
     this._off()
     this.off()
     this.props.ref && this.props.ref(null)
