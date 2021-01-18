@@ -7,15 +7,17 @@ class Button extends Component {
       text: null,
       icon: null,
       rightIcon: null,
-      hoverable: true,
+      type: null, // null(default) primary,dashed,text,link
+      ghost: false,
+      danger: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    this._propStyleClasses = ['size']
-    const { icon, text, rightIcon, href } = this.props
+    this._propStyleClasses = ['type', 'ghost', 'size', 'shape', 'danger']
+    const { icon, text, rightIcon, href, target } = this.props
 
     if (icon || rightIcon) {
       this.setProps({
@@ -23,6 +25,14 @@ class Button extends Component {
           'p-with-icon': true,
         },
       })
+
+      if (!text) {
+        this.setProps({
+          classes: {
+            'p-only-icon': true,
+          },
+        })
+      }
     }
 
     this.setProps({
@@ -38,6 +48,7 @@ class Button extends Component {
         tag: 'a',
         attrs: {
           href: href,
+          target: target || '_self'
         },
       })
     }

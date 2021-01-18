@@ -597,14 +597,14 @@ class Component {
         }
       } else if (Array.isArray(_styles)) {
         for (let i = 0; i < _styles.length; i++) {
-          if (isString(_styles[i])) {
+          if (isString(_styles[i]) || isNumeric(_styles)) {
             classes.push(`u${className}-${_styles[i]}`)
           }
           else if (_styles[i] === true) {
             classes.push(`u${className}`)
           }
         }
-      } else if (isString(_styles)) {
+      } else if (isString(_styles) || isNumeric(_styles)) {
         classes.push(`u${className}-${_styles}`)
       } else if (_styles === true) {
         classes.push(`u${className}`)

@@ -98,11 +98,9 @@ define([], function () {
               control: {
                 component: 'Button',
                 text: '提交',
-                attrs: {
-                  onclick: function () {
-                    form.getValue()
-                  },
-                },
+                onClick: () => {
+                  console.log(form.getValue())
+                }
               },
             },
           ],

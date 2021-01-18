@@ -1,4 +1,4 @@
-define(['./basic.js', './type.js', './custom-button.js'], function () {
+define(['./basic.js', './type.js', './action-items.js'], function () {
   return {
     title: 'Alert',
     subtitle: '警告框',

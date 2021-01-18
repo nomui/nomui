@@ -10,6 +10,7 @@ class Field extends Component {
       invalidTipAlign: 'top right',
       control: {},
       value: null,
+      span: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -21,11 +22,19 @@ class Field extends Component {
 
   _config() {
     this._propStyleClasses = ['required', 'requiredMark', 'labelAlign']
-    const { label } = this.props
+    const { label, span } = this.props
     const hasLabel = label !== null && label !== undefined
 
     if (!hasLabel) {
       this.props.labelAlign = null
+    }
+
+    if (span) {
+      this.setProps({
+        styles: {
+          col: span
+        }
+      })
     }
 
     this.setProps({
@@ -63,7 +72,7 @@ class Field extends Component {
   focus() {
     this.control.focus && this.control.focus()
   }
-  
+
   blur() {
     this.control.blur && this.control.blur()
   }

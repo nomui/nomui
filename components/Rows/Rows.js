@@ -8,6 +8,9 @@ class Rows extends Component {
       items: [],
       itemDefaults: null,
       gutter: 'md',
+      childDefaults: {
+        component: Row
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -23,11 +26,11 @@ class Rows extends Component {
         item = Component.extendProps({}, this.props.itemDefaults, item)
         children.push({ component: Row, children: item })
       }
-    }
 
-    this.setProps({
-      children: children,
-    })
+      this.setProps({
+        children: children,
+      })
+    }
   }
 }
 

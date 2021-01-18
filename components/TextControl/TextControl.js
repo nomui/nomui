@@ -22,6 +22,10 @@ class TextControl extends Control {
       value,
     })
   }
+
+  _getValue() {
+    return this.props.value
+  }
 }
 
 Component.register(TextControl)

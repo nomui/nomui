@@ -9,15 +9,18 @@ class Alert extends Modal {
       icon: null,
       title: null,
       description: null,
-      // ok:undefined,
-      // cancel:undefined
+      okText: '知道了',
+      onOk: (e) => {
+        e.sender.close()
+      },
+      action: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { type, icon, title, description, ok, cancel } = this.props
+    const { type, icon, title, description, okText, action } = this.props
     this.setProps({
       content: {
         component: AlertContent,
@@ -25,8 +28,8 @@ class Alert extends Modal {
         icon,
         title,
         description,
-        ok,
-        cancel,
+        okText,
+        action,
       },
     })
 

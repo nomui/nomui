@@ -1,29 +1,29 @@
 define([], function () {
   return {
-    title: '不同尺寸',
+    title: '按钮尺寸',
     file: 'size',
     demo: function () {
       return {
         component: 'Cols',
         items: [
           {
-            text: 'xs',
-            size: 'xs',
+            text: 'xsmall',
+            size: 'xsmall',
           },
           {
-            text: 'sm',
-            size: 'sm',
+            text: 'small',
+            size: 'small',
           },
           {
             text: 'default',
           },
           {
-            text: 'lg',
-            size: 'lg',
+            text: 'large',
+            size: 'large',
           },
           {
-            text: 'xl',
-            size: 'xl',
+            text: 'xlarge',
+            size: 'xlarge',
           },
         ],
         itemDefaults: {

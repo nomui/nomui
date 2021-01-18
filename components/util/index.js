@@ -19,6 +19,28 @@ String.prototype.prepend = function (character) {
   return this.toString()
 }
 
+String.prototype.format = function (args) {
+  let result = this
+  if (arguments.length > 0) {
+    if (arguments.length === 1 && typeof args === 'object') {
+      for (const key in args) {
+        if (args[key] !== undefined) {
+          const reg = new RegExp(`({${key}})`, 'g')
+          result = result.replace(reg, args[key])
+        }
+      }
+    } else {
+      for (let i = 0; i < arguments.length; i++) {
+        if (arguments[i] !== undefined) {
+          const reg = new RegExp(`({)${i}(})`, 'g')
+          result = result.replace(reg, arguments[i])
+        }
+      }
+    }
+  }
+  return result
+}
+
 /**
  * Strict object type check. Only returns true
  * for plain JavaScript objects.
@@ -72,7 +94,6 @@ export function extend() {
   let name
   let src
   let copy
-  let copyIsArray
   let _clone
   let target = arguments[0] || {}
   let i = 1
@@ -103,14 +124,9 @@ export function extend() {
         if (target === copy) {
           continue
         }
-        // Recurse if we're merging plain objects or arrays
-        if (deep && copy && (isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))) {
-          if (copyIsArray) {
-            copyIsArray = false
-            _clone = src && Array.isArray(src) ? src : []
-          } else {
-            _clone = src && isPlainObject(src) ? src : {}
-          }
+        // Recurse if we're merging plain objects
+        if (deep && copy && isPlainObject(copy)) {
+          _clone = src && isPlainObject(src) ? src : {}
           // Never move original objects, clone them
           target[name] = extend(deep, _clone, copy)
           // Don't bring in undefined values
@@ -175,8 +191,8 @@ export function normalizeKey(key) {
   return key[0] === '-' && key[1] === '-'
     ? key
     : key === 'cssFloat'
-    ? 'float'
-    : key.replace(uppercaseRegex, toLowerCase)
+      ? 'float'
+      : key.replace(uppercaseRegex, toLowerCase)
 }
 
 export function isNumeric(val) {
