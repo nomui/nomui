@@ -2,55 +2,76 @@
     display: flex;
     flex-wrap: wrap;
 
-    > .nom-field {
+    >.nom-field {
         width: 100%;
 
-        > .nom-field-label {
-            padding: .5rem 1rem;
+        >.nom-field-label {
+            padding: .5rem .5rem;
         }
 
-        > .nom-field-control {
+        >.nom-field-control {
             flex: 1;
-            padding: .5rem 1rem;
-
-            > .nom-form{
-                margin: -.5rem -1rem;
-            }
+            padding: .5rem .5rem;
         }
     }
 
     &.m-bordered {
-        > .nom-field {
+        >.nom-field {
             margin: -1px 0 0 -1px;
             border: 1px solid #ced4da;
         }
     }
 
-    &.m-splitline {
-        > .nom-field {
-            border-bottom: 1px solid #ced4da;
-        }
-    }
-
     &.p-inline {
-        flex-wrap: nowrap;
+        margin: -.5rem -.5rem;
 
-        > .nom-field {
-            > .nom-field-label {
+        >.nom-field {
+            width: auto;
+
+            >.nom-field-label {
                 width: auto;
+                padding-left: 0;
+                padding-right: 0;
             }
 
-            > .nom-field-control {
+            >.nom-field-control {
                 flex-basis: auto;
             }
         }
     }
 
-    &.m-striped {
-        > .nom-field {
-            > .nom-field-label {
+    &.p-striped {
+        >.nom-field {
+            >.nom-field-label {
                 .u-color-lgray();
             }
+        }
+    }
+
+    &.p-line-splitline {
+        margin: 0 !important;
+        overflow: hidden;
+
+        >.nom-field {
+            .u-border-left();
+            .u-border-bottom();
+
+            margin-bottom: -1px;
+            margin-left: -1px;
+        }
+    }
+
+    &.p-line-outline {
+        margin: 0 !important;
+        overflow: hidden;
+        .u-border();
+
+        >.nom-field {
+            .u-border-left();
+            .u-border-bottom();
+
+            margin-bottom: -1px;
+            margin-left: -1px;
         }
     }
 }

@@ -5,6 +5,7 @@
 
 /* 全局属性 */
 #nice {
+    height: auto !important;
     margin-top: -10px;
     padding: 25px 30px;
     color: black;
@@ -123,7 +124,7 @@
     display: block;
     margin-top: 20px;
     margin-bottom: 20px;
-    margin-left:12px;
+    margin-left: 12px;
     padding-top: 10px;
     padding-right: 10px;
     padding-bottom: 10px;

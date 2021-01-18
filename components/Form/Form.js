@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import Control from '../Control/index'
 import Field from '../Field/index'
-import { isPlainObject } from '../util/index'
+import { extend, isPlainObject } from '../util/index'
 
 class Form extends Control {
   constructor(props, ...mixins) {
@@ -18,6 +18,8 @@ class Form extends Control {
       bordered: false,
       splitline: false,
 
+      line: null,
+
       requiredMark: true,
 
       space: 'md',
@@ -28,21 +30,23 @@ class Form extends Control {
   }
 
   _config() {
-    this._addPropStyle('inline')
+    this._addPropStyle('inline', 'striped', 'line')
+
+    const { fields, value, fieldDefaults } = this.props
 
     const children = []
-    for (let i = 0; i < this.props.fields.length; i++) {
-      const field = this.props.fields[i]
-      if (isPlainObject(this.props.value)) {
+    for (let i = 0; i < fields.length; i++) {
+      const field = fields[i]
+      if (isPlainObject(value)) {
         if (field.value === null || field.value === undefined) {
-          field.value = this.props.value[field.name]
+          field.value = value[field.name]
         }
       }
       children.push(field)
     }
     this.setProps({
       children: children,
-      childDefaults: this.props.fieldDefaults,
+      childDefaults: fieldDefaults,
     })
   }
 
@@ -51,7 +55,12 @@ class Form extends Control {
     for (let i = 0; i < this.children.length; i++) {
       const field = this.children[i]
       if (field.getValue && field.props.name) {
-        value[field.props.name] = field.getValue()
+        if (field.props.flatValue === true) {
+          extend(value, field.getValue())
+        }
+        else {
+          value[field.props.name] = field.getValue()
+        }
       }
     }
     return value
