@@ -9,7 +9,7 @@ import {
   getUUID,
   isBlobFile,
   isPromiseLike,
-  removeFile
+  removeFile,
 } from './helper'
 import Request from './request'
 
@@ -53,6 +53,7 @@ class Uploader extends Control {
       onPreview,
       onDownload,
       extraAction,
+      // fileList,
     } = this.props
     const files = this.fileList
     const children = []
@@ -106,8 +107,11 @@ class Uploader extends Control {
         extraAction,
       })
     }
+
     this.setProps({
-      tag: 'div',
+      children: null,
+    })
+    this.setProps({
       children,
     })
   }
@@ -199,7 +203,7 @@ class Uploader extends Control {
 
     const { onChange: onChangeProp } = this.props
     // 这里要改下
-    this.update({ files: [...info.fileList] })
+    this.update({ fileList: [...info.fileList] })
     if (onChangeProp) {
       onChangeProp({
         ...info,
@@ -293,6 +297,7 @@ class Uploader extends Control {
       if (remainsFileList) {
         file.status = 'removed'
         this.fileList = remainsFileList
+        // this.emptyChildren()
         if (this.reqs[file.uuid]) {
           this.reqs[file.uuid].abort()
           delete this.reqs[file.uuid]
