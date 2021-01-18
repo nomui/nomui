@@ -9,22 +9,22 @@ define([], function () {
         items: [
           {
             text: '小马',
-            size: 'xs',
+            size: 'xsmall',
           },
           {
             text: '小马',
-            size: 'sm',
+            size: 'small',
           },
           {
             text: '小马',
           },
           {
             text: '小马',
-            size: 'lg',
+            size: 'large',
           },
           {
             text: '小马',
-            size: 'xl',
+            size: 'xlarge',
           },
         ],
         itemDefaults: {
