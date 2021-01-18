@@ -3,6 +3,7 @@ import Control from '../Control/index'
 import Icon from '../Icon/index'
 import List from '../List/index'
 import SelectPopup from './SelectPopup'
+import { isString } from '../util/index'
 
 class Select extends Control {
   constructor(props, ...mixins) {
@@ -53,7 +54,7 @@ class Select extends Control {
 
   _config() {
     const that = this
-    const { multiple, showArrow } = this.props
+    const { multiple, showArrow, placeholder } = this.props
     const children = []
 
     this.setProps({
@@ -78,6 +79,16 @@ class Select extends Control {
       children.push(this.props.selectedMultiple)
     } else {
       children.push(this.props.selectedSingle)
+    }
+
+    if (isString(placeholder)) {
+      children.push({
+        _created() {
+          that.placeholder = this
+        },
+        classes: { 'nom-select-placeholder': true },
+        children: placeholder
+      })
     }
 
     if (showArrow) {
@@ -186,6 +197,15 @@ class Select extends Control {
       }
     }
     return retOptions
+  }
+
+  __onValueChange(changed) {
+    if (changed.newValue !== null || (Array.isArray(changed.newValue) && changed.newValue.length > 0)) {
+      this.placeholder.hide()
+    }
+    else {
+      this.placeholder.show()
+    }
   }
 
   appendOption() { }
