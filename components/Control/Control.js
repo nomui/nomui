@@ -103,7 +103,7 @@ class Control extends Component {
 
     setTimeout(function () {
       that._callHandler(that.props.onValueChange, changed)
-      isFunction(that.__onValueChange) && that.__onValueChange(changed)
+      isFunction(that._valueChange) && that._valueChange(changed)
       if (that.validateTriggered) {
         that._validate()
       }

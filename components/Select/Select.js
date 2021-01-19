@@ -199,12 +199,12 @@ class Select extends Control {
     return retOptions
   }
 
-  __onValueChange(changed) {
-    if (changed.newValue !== null || (Array.isArray(changed.newValue) && changed.newValue.length > 0)) {
-      this.placeholder.hide()
+  _valueChange(changed) {
+    if ((Array.isArray(changed.newValue) && changed.newValue.length === 0) || (changed.newValue === null || changed.newValue === undefined)) {
+      this.placeholder.show()
     }
     else {
-      this.placeholder.show()
+      this.placeholder.hide()
     }
   }
 

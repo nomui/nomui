@@ -213,7 +213,7 @@ class Component {
     const el = this.element
     isFunction(this.props._remove) && this.props._remove.call(this)
     this._callMixin('_remove')
-    isFunction(this._remove) && this._remove()    
+    isFunction(this._remove) && this._remove()
     this._off()
     this.off()
     this.props.ref && this.props.ref(null)
@@ -419,6 +419,10 @@ class Component {
 
   toggleSelect() {
     if (!this.rendered) return
+    const { selected, selectable } = this.props
+    if (selectable && selectable.canRevert === false && selected === true) {
+      return
+    }
     this.props.selected === true ? this.unselect() : this.select()
   }
 

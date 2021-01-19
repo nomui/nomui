@@ -28,12 +28,6 @@ export default {
                 if (selectProps.multiple === true) {
                     selectControl.selectedMultiple.removeItem(this.key)
                 }
-                else {
-                    if (this !== this.list.selectedItem) {
-                        selectControl.selectedSingle.update({ text: null })
-                    }
-                    selectControl.popup.hide()
-                }
 
                 this._callHandler(onUnselect)
             }
