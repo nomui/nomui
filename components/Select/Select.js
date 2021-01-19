@@ -128,6 +128,8 @@ class Select extends Control {
         this.currentValue = initOption.value
       }
     }
+
+    this._valueChange({ newValue: this.currentValue })
   }
 
   selectOption(option) {
@@ -200,11 +202,13 @@ class Select extends Control {
   }
 
   _valueChange(changed) {
-    if ((Array.isArray(changed.newValue) && changed.newValue.length === 0) || (changed.newValue === null || changed.newValue === undefined)) {
-      this.placeholder.show()
-    }
-    else {
-      this.placeholder.hide()
+    if (this.placeholder) {
+      if ((Array.isArray(changed.newValue) && changed.newValue.length === 0) || (changed.newValue === null || changed.newValue === undefined)) {
+        this.placeholder.show()
+      }
+      else {
+        this.placeholder.hide()
+      }
     }
   }
 

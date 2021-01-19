@@ -1,4 +1,4 @@
-define(['./basic.js', './multiple.js', './show-array.js'], function () {
+define(['./basic.js', './multiple.js', './show-array.js', './custom.js'], function () {
   return {
     title: 'Select',
     subtitle: '下拉选择',

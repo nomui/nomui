@@ -11,7 +11,7 @@ export default {
                 const { selectControl } = this.list
                 const selectProps = selectControl.props
 
-                const selectedOption = { text: this.props.text, value: this.props.value }
+                const selectedOption = { text: this.props.text, value: this.props.value, option: this.props }
                 if (selectProps.multiple === false) {
                     selectControl.selectedSingle.update(selectedOption)
                     selectControl.popup.hide()

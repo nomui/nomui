@@ -9,8 +9,6 @@ define([], function () {
                 component: 'Form',
                 value: {
                     name: 'jerry',
-                    province: 1,
-                    city: 1,
                     address: {
                         province: 2,
                         city: 2,
@@ -44,6 +42,7 @@ define([], function () {
                                     },
                                     control: {
                                         component: 'Select',
+                                        placeholder: '省份',
                                         options: [
                                             { text: '湖南', value: 1 },
                                             { text: '广东', value: 2 }
@@ -65,6 +64,7 @@ define([], function () {
                                     },
                                     control: {
                                         component: 'Select',
+                                        placeholder: '城市',
                                         options: [
                                             { text: '长沙', value: 1 },
                                             { text: '广州', value: 2 }
@@ -90,6 +90,7 @@ define([], function () {
                                     },
                                     control: {
                                         component: 'Select',
+                                        placeholder: '省份',
                                         options: [
                                             { text: '湖南', value: 1 },
                                             { text: '广东', value: 2 }
@@ -111,6 +112,7 @@ define([], function () {
                                     },
                                     control: {
                                         component: 'Select',
+                                        placeholder: '城市',
                                         options: [
                                             { text: '长沙', value: 1 },
                                             { text: '广州', value: 2 }
