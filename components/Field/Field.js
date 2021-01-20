@@ -1,6 +1,9 @@
 import Component from '../Component/index'
-import FieldControl from './FieldControl'
+import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
+import { extend } from '../util/index'
+
+let nameSeq = 0
 
 class Field extends Component {
   constructor(props, ...mixins) {
@@ -9,6 +12,10 @@ class Field extends Component {
       labelAlign: 'right',
       invalidTipAlign: 'top right',
       control: {},
+      fields: null,
+      fieldDefaults: { component: Field },
+      groupDefaults: null,
+      type: 'single', // single,group,list
       value: null,
       span: null,
     }
@@ -18,11 +25,14 @@ class Field extends Component {
 
   _created() {
     this.form = this.parent
+    this.name = this.props.name || `field${++nameSeq}`
+    this.group = this.props.__group || null
+    this.fields = []
   }
 
   _config() {
-    this._propStyleClasses = ['required', 'requiredMark', 'labelAlign']
-    const { label, span } = this.props
+    this._addPropStyle('type', 'required', 'requiredMark', 'labelAlign')
+    const { label, span, type } = this.props
     const hasLabel = label !== null && label !== undefined
 
     if (!hasLabel) {
@@ -37,36 +47,111 @@ class Field extends Component {
       })
     }
 
+    if (type === 'group') {
+      this._addPropStyle('inline', 'striped', 'line')
+    }
+
     this.setProps({
       required: this.props.control.required,
-      requiredMark: this.form.props.requiredMark,
+      requiredMark: this.props.requiredMark,
       children: [
         hasLabel && { component: FieldLabel },
-        { component: FieldControl, value: this.props.value },
+        { component: FieldContent, value: this.props.value },
       ],
     })
   }
 
   getValue() {
-    if (this.control.getValue) {
-      return this.control.getValue()
+    const { type } = this.props
+    let value = null
+
+    if (type === 'single') {
+      if (this.control.getValue) {
+        value = this.control.getValue()
+      }
+    }
+    else if (type === 'group') {
+      value = {}
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i]
+        if (field.getValue) {
+          const fieldValue = field.getValue()
+          if (field.props.flatValue === true) {
+            extend(value, fieldValue)
+          }
+          else {
+            value[field.name] = fieldValue
+          }
+        }
+      }
     }
 
-    return null
+    return value
   }
 
   setValue(value) {
-    if (this.control.setValue) {
-      this.control.setValue(value)
+    const { type } = this.props
+
+    if (type === 'single') {
+      if (this.control.setValue) {
+        this.control.setValue(value)
+      }
+    }
+    else if (type === 'group') {
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i]
+        if (field.setValue) {
+          if (field.props.flatValue === false) {
+            value = value[field.name]
+          }
+          field.setValue(value)
+        }
+      }
     }
   }
 
   validate() {
-    if (this.control.validate) {
-      return this.control.validate()
+    const { type } = this.props
+
+    let valid = true
+
+    if (type === 'single') {
+      if (this.control.validate) {
+        valid = this.control.validate()
+      }
+    }
+    else if (type === 'group') {
+      const invalids = []
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i]
+        if (field.validate) {
+          const valResult = field.validate()
+
+          if (valResult !== true) {
+            invalids.push(field)
+          }
+        }
+      }
+
+      if (invalids.length > 0) {
+        invalids[0].focus()
+      }
+
+      valid = invalids.length === 0
     }
 
-    return true
+    return valid
+  }
+
+  getField(fieldName) {
+    for (let i = 0; i < this.fileds.length; i++) {
+      const field = this.fileds[i]
+      if (field.name === fieldName) {
+        return field
+      }
+    }
+
+    return null
   }
 
   focus() {
@@ -79,7 +164,7 @@ class Field extends Component {
 
   _onValueChange(changed) {
     this._callHandler(this.props.onValueChange, changed)
-    this.form._onValueChange(changed)
+    this.group && this.group._onValueChange(changed)
   }
 }
 

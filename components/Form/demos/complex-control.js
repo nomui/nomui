@@ -28,51 +28,49 @@ define([], function () {
                     },
                     {
                         label: '籍贯',
+                        type: 'group',
                         flatValue: true,
-                        control: {
-                            component: 'Form',
-                            inline: true,
-                            fields: [
-                                {
-                                    name: 'province',
-                                    attrs: {
-                                        style: {
-                                            width: '120px'
-                                        }
-                                    },
-                                    control: {
-                                        component: 'Select',
-                                        placeholder: '省份',
-                                        options: [
-                                            { text: '湖南', value: 1 },
-                                            { text: '广东', value: 2 }
-                                        ]
+                        inline: true,
+                        fields: [
+                            {
+                                name: 'province',
+                                attrs: {
+                                    style: {
+                                        width: '120px'
                                     }
                                 },
-                                {
-                                    control: {
-                                        component: 'TextControl',
-                                        value: '-'
+                                control: {
+                                    component: 'Select',
+                                    placeholder: '省份',
+                                    options: [
+                                        { text: '湖南', value: 1 },
+                                        { text: '广东', value: 2 }
+                                    ]
+                                }
+                            },
+                            {
+                                control: {
+                                    component: 'TextControl',
+                                    value: '-'
+                                }
+                            },
+                            {
+                                name: 'city',
+                                attrs: {
+                                    style: {
+                                        width: '120px'
                                     }
                                 },
-                                {
-                                    name: 'city',
-                                    attrs: {
-                                        style: {
-                                            width: '120px'
-                                        }
-                                    },
-                                    control: {
-                                        component: 'Select',
-                                        placeholder: '城市',
-                                        options: [
-                                            { text: '长沙', value: 1 },
-                                            { text: '广州', value: 2 }
-                                        ]
-                                    }
-                                },
-                            ]
-                        },
+                                control: {
+                                    component: 'Select',
+                                    placeholder: '城市',
+                                    options: [
+                                        { text: '长沙', value: 1 },
+                                        { text: '广州', value: 2 }
+                                    ]
+                                }
+                            },
+                        ]
                     },
                     {
                         label: '现住址',
