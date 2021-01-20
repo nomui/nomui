@@ -440,6 +440,12 @@ define([], function () {
                       url: '#!components!index?type=Caption',
                     },
                     {
+                      text: 'Ellipsis',
+                      subtext: '文字溢出省略',
+                      id: 'Ellipsis',
+                      url: '#!components!index?type=Ellipsis',
+                    },
+                    {
                       text: 'SecureInfo',
                       subtext: '敏感信息打码',
                       id: 'SecureInfo',
