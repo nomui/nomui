@@ -574,7 +574,7 @@ class Component {
         if (modifierVal === true) {
           classes.push(`p-${hyphenate(modifier)}`)
         } else if (typeof modifierVal === 'string' || typeof modifierVal === 'number') {
-          classes.push(`p-${hyphenate(modifier)}-${modifierVal}`)
+          classes.push(`p-${hyphenate(modifier)}-${hyphenate(modifierVal + '')}`)
         }
       }
     }
