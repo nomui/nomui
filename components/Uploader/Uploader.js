@@ -25,6 +25,7 @@ class Uploader extends Control {
       multiple: true,
       name: 'file',
       data: {},
+      display: true,
       // request option
       method: 'post',
       headers: {},
@@ -50,6 +51,7 @@ class Uploader extends Control {
       accept,
       button: cButton,
       multiple,
+      display,
       onPreview,
       onDownload,
       extraAction,
@@ -97,7 +99,7 @@ class Uploader extends Control {
 
     children.push(inputUploader)
     children.push(button)
-    if (files && files.length > 0) {
+    if (display && files && files.length > 0) {
       children.push({
         component: FileList,
         files,
