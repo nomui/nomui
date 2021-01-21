@@ -35,8 +35,8 @@ class Field extends Component {
 
   _config() {
     this._addPropStyle('type', 'required', 'requiredMark', 'labelAlign')
-    const { label, span, type } = this.props
-    const hasLabel = label !== null && label !== undefined
+    const { label, span, type, labelAlign } = this.props
+    const hasLabel = label !== null && label !== undefined && labelAlign !== 'none'
 
     if (!hasLabel) {
       this.props.labelAlign = null
