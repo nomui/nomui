@@ -3,6 +3,18 @@
     height: 100%;
 }
 
+code {
+    margin: 0 2px;
+    padding: 2px 4px;
+    color: #1e6bb8;
+    font-size: 14px;
+    font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+    word-wrap: break-word;
+    word-break: break-all;
+    background-color: rgba(27, 31, 35, .05);
+    border-radius: 4px;
+}
+
 /* 全局属性 */
 #nice {
     height: auto !important;
