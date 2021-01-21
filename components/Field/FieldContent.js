@@ -1,6 +1,6 @@
 import Component, { n } from '../Component/index'
-import ControlMixin from './ControlMixin'
 import { isPlainObject } from '../util/index'
+import ControlMixin from './ControlMixin'
 
 class FieldContent extends Component {
     constructor(props, ...mixins) {
@@ -19,11 +19,11 @@ class FieldContent extends Component {
         const { type: fieldType, control, fields, fieldDefaults, value } = this.field.props
         let children = null
         let childDefaults = null
-        if (fieldType === 'single') {
+        if (fieldType === 'Single') {
             children = control
             childDefaults = n(null, { value: value }, null, [ControlMixin])
         }
-        else if (fieldType === 'group') {
+        else if (fieldType === 'Group') {
             children = []
             for (let i = 0; i < fields.length; i++) {
                 const fieldProps = fields[i]
@@ -35,6 +35,7 @@ class FieldContent extends Component {
                         fieldProps.value = value[fieldProps.name]
                     }
                 }
+                fieldProps.__group = this.field
                 children.push(fieldProps)
             }
             childDefaults = fieldDefaults

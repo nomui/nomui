@@ -1,7 +1,7 @@
 import Component from '../Component/index'
+import { extend } from '../util/index'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
-import { extend } from '../util/index'
 
 let nameSeq = 0
 
@@ -15,7 +15,7 @@ class Field extends Component {
       fields: null,
       fieldDefaults: { component: Field },
       groupDefaults: null,
-      type: 'single', // single,group,list
+      type: 'Single', // single,group,list
       value: null,
       span: null,
     }
@@ -25,9 +25,12 @@ class Field extends Component {
 
   _created() {
     this.form = this.parent
-    this.name = this.props.name || `field${++nameSeq}`
+    this.name = this.props.name || `__field${++nameSeq}`
     this.group = this.props.__group || null
     this.fields = []
+    if (this.group) {
+      this.group.fields.push(this)
+    }
   }
 
   _config() {
@@ -47,7 +50,7 @@ class Field extends Component {
       })
     }
 
-    if (type === 'group') {
+    if (type === 'Group') {
       this._addPropStyle('inline', 'striped', 'line')
     }
 
@@ -65,12 +68,12 @@ class Field extends Component {
     const { type } = this.props
     let value = null
 
-    if (type === 'single') {
+    if (type === 'Single') {
       if (this.control.getValue) {
         value = this.control.getValue()
       }
     }
-    else if (type === 'group') {
+    else if (type === 'Group') {
       value = {}
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i]
@@ -92,12 +95,12 @@ class Field extends Component {
   setValue(value) {
     const { type } = this.props
 
-    if (type === 'single') {
+    if (type === 'Single') {
       if (this.control.setValue) {
         this.control.setValue(value)
       }
     }
-    else if (type === 'group') {
+    else if (type === 'Group') {
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i]
         if (field.setValue) {
@@ -115,12 +118,12 @@ class Field extends Component {
 
     let valid = true
 
-    if (type === 'single') {
+    if (type === 'Single') {
       if (this.control.validate) {
         valid = this.control.validate()
       }
     }
-    else if (type === 'group') {
+    else if (type === 'Group') {
       const invalids = []
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i]
@@ -144,8 +147,27 @@ class Field extends Component {
   }
 
   getField(fieldName) {
-    for (let i = 0; i < this.fileds.length; i++) {
-      const field = this.fileds[i]
+    if (typeof fieldName === 'string') {
+      // Handle nested keys, e.g., "foo.bar"
+      const parts = fieldName.split('.')
+      let curField = this
+      if (parts.length) {
+        for (let i = 0; i < parts.length; i++) {
+          let part = parts[i]
+          curField = curField._getSubField(part)
+          if (!curField) {
+            break
+          }
+        }
+      }
+
+      return curField
+    }
+  }
+
+  _getSubField(fieldName) {
+    for (let i = 0; i < this.fields.length; i++) {
+      const field = this.fields[i]
       if (field.name === fieldName) {
         return field
       }

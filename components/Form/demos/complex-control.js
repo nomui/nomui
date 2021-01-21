@@ -27,8 +27,9 @@ define([], function () {
                         },
                     },
                     {
-                        label: '籍贯',
-                        type: 'group',
+                        name: 'jiguan',
+                        label: '籍贯',                        
+                        type: 'Group',
                         flatValue: true,
                         inline: true,
                         fields: [
@@ -138,6 +139,7 @@ define([], function () {
                             component: 'Button',
                             text: '提交',
                             onClick: () => {
+                                console.log(form.getField('jiguan.city'))
                                 console.log(form.getValue())
                             }
                         },

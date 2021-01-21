@@ -4,7 +4,7 @@ import Field from '../Field/index'
 class Form extends Field {
   constructor(props, ...mixins) {
     const defaults = {
-      type: 'group'
+      type: 'Group'
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
