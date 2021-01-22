@@ -1,6 +1,6 @@
 export default {
   _created: function () {
-    this.checkboxList = this.parent
+    this.checkboxList = this.parent.parent
     this.checkboxList.optionList = this
   },
   _config: function () {

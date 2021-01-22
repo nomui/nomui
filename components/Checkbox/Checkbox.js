@@ -1,7 +1,7 @@
 import Component from '../Component/index'
-import Control from '../Control/index'
+import Field from '../Field/index'
 
-class Checkbox extends Control {
+class Checkbox extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       text: null,
@@ -11,11 +11,9 @@ class Checkbox extends Control {
   }
 
   _config() {
-    super._config()
-
     const that = this
     this.setProps({
-      children: {
+      content: {
         tag: 'label',
         children: [
           {
@@ -36,6 +34,8 @@ class Checkbox extends Control {
         ],
       },
     })
+
+    super._config()
   }
 
   _getValue() {

@@ -34,7 +34,7 @@ class OptionList extends List {
   _created() {
     super._created()
 
-    this.radioList = this.parent
+    this.radioList = this.parent.parent
     this.radioList.optionList = this
   }
 

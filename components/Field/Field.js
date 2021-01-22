@@ -1,7 +1,9 @@
 import Component from '../Component/index'
-import { extend } from '../util/index'
+import { isFunction, clone } from '../util/index'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
+import Tooltip from '../Tooltip/index'
+import RuleManager from '../util/rule-manager'
 
 let nameSeq = 0
 
@@ -11,11 +13,6 @@ class Field extends Component {
       label: null,
       labelAlign: 'right',
       invalidTipAlign: 'top right',
-      control: {},
-      fields: null,
-      fieldDefaults: { component: Field },
-      groupDefaults: null,
-      type: 'Single', // single,group,list
       value: null,
       span: null,
     }
@@ -24,8 +21,11 @@ class Field extends Component {
   }
 
   _created() {
-    this.form = this.parent
-    this.name = this.props.name || `__field${++nameSeq}`
+    const { name, value } = this.props
+    this.initValue = value !== undefined ? clone(this.props.value) : null
+    this.oldValue = null
+    this.currentValue = null
+    this.name = name || `__field${++nameSeq}`
     this.group = this.props.__group || null
     this.fields = []
     if (this.group) {
@@ -34,9 +34,13 @@ class Field extends Component {
   }
 
   _config() {
-    this._addPropStyle('type', 'required', 'requiredMark', 'labelAlign')
-    const { label, span, type, labelAlign } = this.props
+    this._addPropStyle('required', 'requiredMark', 'labelAlign')
+    const { label, span, type, labelAlign, required, requiredMessage, rules } = this.props
     const hasLabel = label !== null && label !== undefined && labelAlign !== 'none'
+
+    if (required === true) {
+      rules.unshift({ type: 'required', message: requiredMessage })
+    }
 
     if (!hasLabel) {
       this.props.labelAlign = null
@@ -55,8 +59,6 @@ class Field extends Component {
     }
 
     this.setProps({
-      required: this.props.control.required,
-      requiredMark: this.props.requiredMark,
       children: [
         hasLabel && { component: FieldLabel },
         { component: FieldContent, value: this.props.value },
@@ -65,85 +67,11 @@ class Field extends Component {
   }
 
   getValue() {
-    const { type } = this.props
-    let value = null
-
-    if (type === 'Single') {
-      if (this.control.getValue) {
-        value = this.control.getValue()
-      }
-    }
-    else if (type === 'Group') {
-      value = {}
-      for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i]
-        if (field.getValue) {
-          const fieldValue = field.getValue()
-          if (field.props.flatValue === true) {
-            extend(value, fieldValue)
-          }
-          else {
-            value[field.name] = fieldValue
-          }
-        }
-      }
-    }
-
-    return value
+    return this._getValue()
   }
 
   setValue(value) {
-    const { type } = this.props
-
-    if (type === 'Single') {
-      if (this.control.setValue) {
-        this.control.setValue(value)
-      }
-    }
-    else if (type === 'Group') {
-      for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i]
-        if (field.setValue) {
-          if (field.props.flatValue === false) {
-            value = value[field.name]
-          }
-          field.setValue(value)
-        }
-      }
-    }
-  }
-
-  validate() {
-    const { type } = this.props
-
-    let valid = true
-
-    if (type === 'Single') {
-      if (this.control.validate) {
-        valid = this.control.validate()
-      }
-    }
-    else if (type === 'Group') {
-      const invalids = []
-      for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i]
-        if (field.validate) {
-          const valResult = field.validate()
-
-          if (valResult !== true) {
-            invalids.push(field)
-          }
-        }
-      }
-
-      if (invalids.length > 0) {
-        invalids[0].focus()
-      }
-
-      valid = invalids.length === 0
-    }
-
-    return valid
+    this._setValue(value)
   }
 
   getField(fieldName) {
@@ -162,6 +90,55 @@ class Field extends Component {
       }
 
       return curField
+    }
+  }
+
+  validate() {
+    this.validateTriggered = true
+    return this._validate()
+  }
+
+  _validate() {
+    const { rules } = this.props
+    if (Array.isArray(rules) && rules.length > 0) {
+      const validationResult = RuleManager.validate(rules, this.getValue())
+
+      if (validationResult === true) {
+        this.removeClass('s-invalid')
+        this.trigger('valid')
+        if (this.errorTip) {
+          this.errorTip.remove()
+          delete this.errorTip
+        }
+        return true
+      }
+
+      this.addClass('s-invalid')
+      this.trigger('invalid', validationResult)
+      this._invalid(validationResult)
+      return this
+    }
+
+    return true
+  }
+
+  _invalid(message) {
+    if (!this.errorTip) {
+      this.errorTip = new Tooltip({
+        trigger: this,
+        styles: {
+          color: 'danger',
+        },
+        children: message,
+      })
+
+      if (this.element.contains(document.activeElement)) {
+        this.errorTip.show()
+      }
+    } else {
+      this.errorTip.update({
+        children: message,
+      })
     }
   }
 
@@ -184,9 +161,27 @@ class Field extends Component {
     this.control.blur && this.control.blur()
   }
 
-  _onValueChange(changed) {
-    this._callHandler(this.props.onValueChange, changed)
-    this.group && this.group._onValueChange(changed)
+  // 派生的控件子类内部适当位置调用
+  _onValueChange() {
+    const that = this
+    this.oldValue = clone(this.currentValue)
+    this.currentValue = clone(this.getValue())
+    this.props.value = this.currentValue
+
+    const changed = {
+      name: this.props.name,
+      oldValue: this.oldValue,
+      newValue: this.currentValue,
+    }
+
+    setTimeout(function () {
+      that._callHandler(that.props.onValueChange, changed)
+      this.group && this.group._onValueChange(changed)
+      isFunction(that._valueChange) && that._valueChange(changed)
+      if (that.validateTriggered) {
+        that._validate()
+      }
+    }, 0)
   }
 }
 

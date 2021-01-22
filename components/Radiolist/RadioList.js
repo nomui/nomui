@@ -1,8 +1,8 @@
 import Component from '../Component/index'
-import Control from '../Control/index'
+import Field from '../Field/index'
 import OptionList from './OptionList'
 
-class RadioList extends Control {
+class RadioList extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
@@ -13,8 +13,6 @@ class RadioList extends Control {
   }
 
   _config() {
-    super._config()
-
     this.setProps({
       optionDefaults: {
         key() {
@@ -30,8 +28,10 @@ class RadioList extends Control {
     })
 
     this.setProps({
-      children: this.props.optionList,
+      content: this.props.optionList,
     })
+
+    super._config()
   }
 
   getSelectedOption() {

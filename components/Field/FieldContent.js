@@ -16,34 +16,10 @@ class FieldContent extends Component {
     }
 
     _config() {
-        const { type: fieldType, control, fields, fieldDefaults, value } = this.field.props
-        let children = null
-        let childDefaults = null
-        if (fieldType === 'Single') {
-            children = control
-            childDefaults = n(null, { value: value }, null, [ControlMixin])
-        }
-        else if (fieldType === 'Group') {
-            children = []
-            for (let i = 0; i < fields.length; i++) {
-                const fieldProps = fields[i]
-                if (isPlainObject(value)) {
-                    if (fieldProps.flatValue === true) {
-                        fieldProps.value = value
-                    }
-                    else if (fieldProps.value === null || fieldProps.value === undefined) {
-                        fieldProps.value = value[fieldProps.name]
-                    }
-                }
-                fieldProps.__group = this.field
-                children.push(fieldProps)
-            }
-            childDefaults = fieldDefaults
-        }
+        const { content } = this.field.props
 
         this.setProps({
-            children: children,
-            childDefaults: childDefaults
+            children: content
         })
     }
 }

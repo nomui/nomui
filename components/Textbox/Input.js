@@ -14,8 +14,6 @@ class Input extends Component {
   }
 
   _created() {
-    this.textbox = this.parent
-    this.textbox.input = this
     this.capsLock = false
   }
 

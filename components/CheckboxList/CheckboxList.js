@@ -1,8 +1,8 @@
 import Component from '../Component/index'
-import Control from '../Control/index'
+import Field from '../Field/index'
 import List from './DefaultOptionList'
 
-class CheckboxList extends Control {
+class CheckboxList extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
@@ -12,8 +12,6 @@ class CheckboxList extends Control {
   }
 
   _config() {
-    super._config()
-
     this.setProps({
       optionDefaults: {
         key: function () {
@@ -29,8 +27,10 @@ class CheckboxList extends Control {
     })
 
     this.setProps({
-      children: this.props.optionList,
+      content: this.props.optionList,
     })
+
+    super._config()
   }
 
   getSelectedOptions() {

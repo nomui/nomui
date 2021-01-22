@@ -7,23 +7,23 @@ define([], function () {
         component: 'Cols',
         items: [
           {
-            text: 'xs',
-            size: 'xs',
+            text: 'xsmall',
+            size: 'xsmall',
           },
           {
-            text: 'sm',
-            size: 'sm',
+            text: 'small',
+            size: 'small',
           },
           {
             text: 'default',
           },
           {
-            text: 'lg',
-            size: 'lg',
+            text: 'large',
+            size: 'large',
           },
           {
-            text: 'xl',
-            size: 'xl',
+            text: 'xlarge',
+            size: 'xlarge',
           },
         ],
         itemDefaults: {

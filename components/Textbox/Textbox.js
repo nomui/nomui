@@ -1,9 +1,9 @@
 import Component from '../Component/index'
-import Control from '../Control/index'
+import Field from '../Field/index'
 import { } from '../Icon/index'
 import Input from './Input'
 
-class Textbox extends Control {
+class Textbox extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       leftIcon: null,
@@ -18,6 +18,7 @@ class Textbox extends Control {
   }
 
   _config() {
+    const that = this
     const { leftIcon, rightIcon, placeholder, value, htmlType } = this.props
 
     let leftIconProps = Component.normalizeIconProps(leftIcon)
@@ -38,15 +39,24 @@ class Textbox extends Control {
         placeholder: placeholder,
         type: htmlType,
       },
+      _created: function () {
+        this.textbox = that
+        this.textbox.input = this
+      }
     }
 
     this.setProps({
-      tag: 'div',
       classes: {
         'p-with-left-icon': !!leftIcon,
         'p-with-right-icon': !!rightIcon,
       },
-      children: [inputProps, leftIcon && leftIconProps, rightIcon && rightIconProps],
+      content: {
+        tag: 'div',
+        classes: {
+          'nom-textbox-wrapper': true,
+        },
+        children: [inputProps, leftIcon && leftIconProps, rightIcon && rightIconProps],
+      }
     })
 
     super._config()

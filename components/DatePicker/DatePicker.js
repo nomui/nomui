@@ -129,8 +129,8 @@ class DatePicker extends Textbox {
                     children: this.props.day,
                   })
                 },
-                onClick: function () {
-                  that.setValue(this.props.date)
+                onClick: function (args) {
+                  that.setValue(args.sender.props.date)
                   that.popup.hide()
                 },
               },

@@ -1,11 +1,11 @@
 import Component from '../Component/index'
-import Control from '../Control/index'
+import Field from '../Field/index'
 import Icon from '../Icon/index'
 import List from '../List/index'
 import SelectPopup from './SelectPopup'
 import { isString } from '../util/index'
 
-class Select extends Control {
+class Select extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
@@ -102,7 +102,10 @@ class Select extends Control {
     }
 
     this.setProps({
-      children: children,
+      content: {
+        classes: { 'nom-select-wrapper': true },
+        children: children,
+      }
     })
 
     super._config()
