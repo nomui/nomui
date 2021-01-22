@@ -51,9 +51,11 @@
 
     &.p-striped {
         >.nom-field-content {
-            >.nom-field {
-                >.nom-field-label {
-                    .u-color-lgray();
+            >.nom-control {
+                >.nom-field {
+                    >.nom-field-label {
+                        .u-color-lgray();
+                    }
                 }
             }
         }
@@ -64,12 +66,14 @@
         overflow: hidden;
 
         >.nom-field-content {
-            >.nom-field {
-                .u-border-left();
-                .u-border-bottom();
+            >.nom-control {
+                >.nom-field {
+                    .u-border-left();
+                    .u-border-bottom();
 
-                margin-bottom: -1px;
-                margin-left: -1px;
+                    margin-bottom: -1px;
+                    margin-left: -1px;
+                }
             }
         }
     }
@@ -80,12 +84,14 @@
         .u-border();
 
         >.nom-field-content {
-            margin-bottom: -1px;
-            margin-left: -1px;
+            >.nom-control {
+                margin-bottom: -1px;
+                margin-left: -1px;
 
-            >.nom-field {
-                .u-border-left();
-                .u-border-bottom();
+                >.nom-field {
+                    .u-border-left();
+                    .u-border-bottom();
+                }
             }
         }
     }
