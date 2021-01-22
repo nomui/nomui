@@ -1,0 +1,145 @@
+.nom-field {
+    >.nom-field-label {
+        margin-bottom: -.5rem;
+
+        >.nom-label {
+            display: block;
+        }
+    }
+
+    &.p-required.p-required-mark {
+        >.nom-field-label {
+            >.nom-label::before {
+                display: inline-block;
+                margin-right: 4px;
+                color: #ff4d4f;
+                font-size: 14px;
+                font-family: SimSun, sans-serif;
+                line-height: 1;
+                content: "*";
+            }
+        }
+    }
+
+    @media (min-width: @screen-sm-min) {
+
+        &.p-label-align-right,
+        &.p-label-align-left {
+            display: flex;
+
+            >.nom-field-label {
+                width: 10rem;
+                margin-bottom: 0;
+
+                >.nom-label {
+                    padding: (@padding-y-base);
+                }
+            }
+        }
+
+        &.p-label-align-right {
+            >.nom-field-label {
+                text-align: right;
+            }
+        }
+
+        &.m-label-align-left {
+            >.nom-field-label {
+                text-align: left;
+            }
+        }
+    }
+
+    &.p-span-auto {
+        width: auto;
+    }
+
+    &.p-type-group {
+        >.nom-field-content {
+            display: flex;
+            flex-wrap: wrap;
+
+            >.nom-field {
+                width: 100%;
+                margin: 0;
+
+                >.nom-field-label {
+                    padding: .5rem .5rem;
+                }
+
+                >.nom-field-content {
+                    flex: 1;
+                    padding: .5rem .5rem;
+                }
+
+                &.p-inline {
+                    >.nom-field-content {
+                        flex: 1;
+                        padding: 0;
+                    }
+                }
+            }
+        }
+
+        &.p-inline {
+            margin: -.5rem -.5rem;
+
+            >.nom-field-content {
+                >.nom-field {
+                    width: auto;
+
+                    >.nom-field-label {
+                        width: auto;
+                        padding-left: 0;
+                        padding-right: 0;
+                    }
+
+                    >.nom-field-content {
+                        flex-basis: auto;
+                    }
+                }
+            }
+        }
+
+        &.p-striped {
+            >.nom-field-content {
+                >.nom-field {
+                    >.nom-field-label {
+                        .u-color-lgray();
+                    }
+                }
+            }
+        }
+
+        &.p-line-splitline {
+            margin: 0 !important;
+            overflow: hidden;
+
+            >.nom-field-content {
+                >.nom-field {
+                    .u-border-left();
+                    .u-border-bottom();
+
+                    margin-bottom: -1px;
+                    margin-left: -1px;
+                }
+            }
+        }
+
+        &.p-line-outline {
+            margin: 0 !important;
+            overflow: hidden;
+            .u-border();
+
+            >.nom-field-content {
+                margin-bottom: -1px;
+                margin-left: -1px;
+
+                >.nom-field {
+                    .u-border-left();
+                    .u-border-bottom();
+                }
+            }
+        }
+    }
+}
