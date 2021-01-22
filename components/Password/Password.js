@@ -21,13 +21,13 @@ class Password extends Control {
         ref: (c) => {
           that.text = c
         },
-        rightIcon: 'eye',
+        // rightIcon: 'eye',
         onValueChange: () => {
           const pass = that.text.getValue()
 
           const start = that.text.input.element.selectionStart
 
-          const fake = pass.length ? pass.split('') : []
+          const fake = pass ? pass.split('') : []
           let real = that.realValue.split('')
           const clen = fake.length - real.length
 
@@ -51,8 +51,6 @@ class Password extends Control {
             that.realValue = real.join('')
           }
 
-          console.log(pass)
-          console.log(that.realValue)
           that.text.setValue(pass.replace(/./g, '*'))
 
           if (start < pass.length) {
