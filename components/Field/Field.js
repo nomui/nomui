@@ -67,11 +67,12 @@ class Field extends Component {
   }
 
   getValue() {
-    return this._getValue()
+    const value = isFunction(this._getValue) ? this._getValue() : null
+    return value
   }
 
   setValue(value) {
-    this._setValue(value)
+    isFunction(this._setValue) && this._setValue(value)
   }
 
   validate() {
@@ -97,7 +98,7 @@ class Field extends Component {
       this.addClass('s-invalid')
       this.trigger('invalid', validationResult)
       this._invalid(validationResult)
-      return this
+      return false
     }
 
     return true
@@ -123,23 +124,12 @@ class Field extends Component {
     }
   }
 
-  _getSubField(fieldName) {
-    for (let i = 0; i < this.fields.length; i++) {
-      const field = this.fields[i]
-      if (field.name === fieldName) {
-        return field
-      }
-    }
-
-    return null
-  }
-
   focus() {
-    this.control.focus && this.control.focus()
+    isFunction(this._focus) && this._focus()
   }
 
   blur() {
-    this.control.blur && this.control.blur()
+    isFunction(this._blur) && this._blur()
   }
 
   // 派生的控件子类内部适当位置调用
