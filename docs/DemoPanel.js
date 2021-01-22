@@ -42,7 +42,7 @@ define(['./precode.js'], function (Precode) {
               padding: '1',
               border: ['top', 'lt'],
             },
-            children: description,
+            children: marked(description),
           },
           {
             component: Precode,
