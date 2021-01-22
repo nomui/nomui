@@ -20,7 +20,7 @@ define([], function () {
                             { text: '城市（address.city）', value: 'address.city' }
                         ],
                         onValueChange: (args) => {
-                            let fieldName = args.newValue
+                            const fieldName = args.newValue
                             if (currentField !== null) {
                                 currentField.update({
                                     styles: {

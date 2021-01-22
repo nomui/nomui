@@ -74,25 +74,6 @@ class Field extends Component {
     this._setValue(value)
   }
 
-  getField(fieldName) {
-    if (typeof fieldName === 'string') {
-      // Handle nested keys, e.g., "foo.bar"
-      const parts = fieldName.split('.')
-      let curField = this
-      if (parts.length) {
-        for (let i = 0; i < parts.length; i++) {
-          let part = parts[i]
-          curField = curField._getSubField(part)
-          if (!curField) {
-            break
-          }
-        }
-      }
-
-      return curField
-    }
-  }
-
   validate() {
     this.validateTriggered = true
     return this._validate()

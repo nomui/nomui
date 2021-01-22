@@ -1,14 +1,8 @@
-import Component, { n } from '../Component/index'
-import { isPlainObject } from '../util/index'
-import ControlMixin from './ControlMixin'
+import Component from '../Component/index'
 
 class FieldContent extends Component {
     constructor(props, ...mixins) {
-        const defaults = {
-            control: {},
-        }
-
-        super(Component.extendProps(defaults, props), ...mixins)
+        super(props, ...mixins)
     }
 
     _created() {

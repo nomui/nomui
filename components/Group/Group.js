@@ -20,7 +20,7 @@ class Group extends Field {
     _config() {
         this._addPropStyle('inline', 'striped', 'line')
         const { fields, fieldDefaults, value } = this.props
-        let children = []
+        const children = []
 
         for (let i = 0; i < fields.length; i++) {
             let fieldProps = fields[i]
@@ -45,7 +45,7 @@ class Group extends Field {
     }
 
     getValue() {
-        let value = {}
+        const value = {}
         for (let i = 0; i < this.fields.length; i++) {
             const field = this.fields[i]
             if (field.getValue) {
@@ -101,7 +101,7 @@ class Group extends Field {
             let curField = this
             if (parts.length) {
                 for (let i = 0; i < parts.length; i++) {
-                    let part = parts[i]
+                    const part = parts[i]
                     curField = curField._getSubField(part)
                     if (!curField) {
                         break
