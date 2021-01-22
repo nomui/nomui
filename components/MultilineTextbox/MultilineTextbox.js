@@ -21,8 +21,7 @@ class MultilineTextbox extends Field {
         const { autofocus, autoSize, ...textProps } = this.props
 
         this.setProps({
-            content: {
-                tag: 'div',
+            control: {
                 children: {
                     component: Textarea,
                     autoSize,

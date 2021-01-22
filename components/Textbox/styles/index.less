@@ -50,7 +50,7 @@
     height: auto;
   }
 
-  .s-invalid > & {
+  .s-invalid>& {
     color: #000;
     background-color: #fff3f3;
     border-color: #ffa8a8;
@@ -58,21 +58,29 @@
 }
 
 .nom-textbox {
-  position: relative;
-
-  .nom-field-control {
-    position: relative;
+  >.nom-field-content {
+    .nom-control {
+      position: relative;
+    }
   }
 
   &.p-with-left-icon {
-    .nom-input {
-      padding-left: 2.5rem;
+    >.nom-field-content {
+      .nom-control {
+        .nom-input {
+          padding-left: 2.5rem;
+        }
+      }
     }
   }
 
   &.p-with-right-icon {
-    .nom-input {
-      padding-right: 2.5rem;
+    >.nom-field-content {
+      .nom-control {
+        .nom-input {
+          padding-right: 2.5rem;
+        }
+      }
     }
   }
 

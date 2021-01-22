@@ -102,8 +102,7 @@ class Select extends Field {
     }
 
     this.setProps({
-      content: {
-        classes: { 'nom-select-wrapper': true },
+      control: {
         children: children,
       }
     })

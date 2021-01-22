@@ -13,7 +13,7 @@ class Checkbox extends Field {
   _config() {
     const that = this
     this.setProps({
-      content: {
+      control: {
         tag: 'label',
         children: [
           {

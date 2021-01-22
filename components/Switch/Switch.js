@@ -18,7 +18,7 @@ class Switch extends Field {
 
     this._propStyleClasses = ['size']
     this.setProps({
-      content: {
+      control: {
         tag: 'button',
         classes: { 'nom-switch-control': true, 'nom-switch-active': !!value },
         attrs: {

@@ -38,7 +38,7 @@ class Group extends Field {
         }
 
         this.setProps({
-            content: children
+            control: { children: children }
         })
 
         super._config()

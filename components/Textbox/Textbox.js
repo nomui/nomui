@@ -50,11 +50,7 @@ class Textbox extends Field {
         'p-with-left-icon': !!leftIcon,
         'p-with-right-icon': !!rightIcon,
       },
-      content: {
-        tag: 'div',
-        classes: {
-          'nom-textbox-wrapper': true,
-        },
+      control: {
         children: [inputProps, leftIcon && leftIconProps, rightIcon && rightIconProps],
       }
     })

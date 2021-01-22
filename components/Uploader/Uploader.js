@@ -110,7 +110,7 @@ class Uploader extends Field {
       })
     }
     this.setProps({
-      content: {
+      control: {
         children,
       }
     })

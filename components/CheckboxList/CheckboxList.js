@@ -27,7 +27,7 @@ class CheckboxList extends Field {
     })
 
     this.setProps({
-      content: this.props.optionList,
+      control: this.props.optionList,
     })
 
     super._config()

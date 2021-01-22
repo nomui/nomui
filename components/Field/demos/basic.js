@@ -8,7 +8,7 @@ define([], function () {
         children: [
           {
             component: 'Field', label: '我是标签',
-            content: '我是内容'
+            control: '我是内容'
           },
         ],
       }

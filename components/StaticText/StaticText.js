@@ -12,8 +12,7 @@ class StaticText extends Field {
 
     _config() {
         this.setProps({
-            content: {
-                classes: { 'nom-static-text-wrapper': true },
+            control: {
                 children: this.props.value,
             }
         })

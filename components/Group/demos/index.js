@@ -4,6 +4,7 @@ define(
         './nest.js',
         './get-field.js',
         './validate.js',
+        './inline.js',
     ],
     function () {
 
