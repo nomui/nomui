@@ -56,7 +56,8 @@ define([], function () {
                             component: 'Field', label: '',
                             content: {
                                 component: 'Button',
-                                text: '提交',
+                                text: '提 交',
+                                type: 'Primary',
                                 onClick: function () {
                                     group.validate()
                                 },

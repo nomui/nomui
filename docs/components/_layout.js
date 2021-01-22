@@ -388,16 +388,16 @@ define([], function () {
                       url: '#!components!index?type=StaticText',
                     },
                     {
-                      text: 'Group',
-                      subtext: '字段组',
-                      id: 'Group',
-                      url: '#!components!index?type=Group',
-                    },
-                    {
                       text: 'Field',
                       subtext: '字段',
                       id: 'field',
                       url: '#!components!index?type=field',
+                    },
+                    {
+                      text: 'Group',
+                      subtext: '字段组',
+                      id: 'Group',
+                      url: '#!components!index?type=Group',
                     },
                     {
                       text: 'Form',
