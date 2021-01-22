@@ -32,7 +32,7 @@ class Group extends Field {
                     fieldProps.value = value[fieldProps.name]
                 }
             }
-            fieldProps.__group = this.field
+            fieldProps.__group = this
             fieldProps = Component.extendProps(fieldDefaults, fieldProps)
             children.push(fieldProps)
         }

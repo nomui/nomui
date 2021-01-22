@@ -1,6 +1,9 @@
 define(
     [
-        './basic.js'
+        './basic.js',
+        './nest.js',
+        './get-field.js',
+        './validate.js',
     ],
     function () {
 
