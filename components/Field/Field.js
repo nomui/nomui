@@ -45,8 +45,8 @@ class Field extends Component {
     if (span) {
       this.setProps({
         styles: {
-          col: span
-        }
+          col: span,
+        },
       })
     }
 
@@ -72,8 +72,7 @@ class Field extends Component {
       if (this.control.getValue) {
         value = this.control.getValue()
       }
-    }
-    else if (type === 'Group') {
+    } else if (type === 'Group') {
       value = {}
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i]
@@ -81,8 +80,7 @@ class Field extends Component {
           const fieldValue = field.getValue()
           if (field.props.flatValue === true) {
             extend(value, fieldValue)
-          }
-          else {
+          } else {
             value[field.name] = fieldValue
           }
         }
@@ -99,8 +97,7 @@ class Field extends Component {
       if (this.control.setValue) {
         this.control.setValue(value)
       }
-    }
-    else if (type === 'Group') {
+    } else if (type === 'Group') {
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i]
         if (field.setValue) {
@@ -122,8 +119,7 @@ class Field extends Component {
       if (this.control.validate) {
         valid = this.control.validate()
       }
-    }
-    else if (type === 'Group') {
+    } else if (type === 'Group') {
       const invalids = []
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i]
@@ -153,7 +149,7 @@ class Field extends Component {
       let curField = this
       if (parts.length) {
         for (let i = 0; i < parts.length; i++) {
-          let part = parts[i]
+          const part = parts[i]
           curField = curField._getSubField(part)
           if (!curField) {
             break
