@@ -4,12 +4,13 @@
 
 | 参数            | 说明                   | 类型            | 默认值      |
 | --------------- | ---------------------- | --------------- | ----------- |
-| type           | 字段类型               | `Single`\|`Group`\|`List`\|`Matrix`        | `Single`        |
-| name           | 字段名称               | `string`        | `__field` + 自增长序号        |
+| name           | 字段名称，未设置时会自动设置一个自增格式               | `string`        | `__field` + 自增长序号        |
 | value           | 字段值               | `string`        | -           |
-| label           | 标签文本      | `string`        | -           |
-| labelAlign      | 标签对齐方式，当为 none 值时表示不显示 label 栏         | `left`\|`right`\|`top`\|`none`   | 'right'     |
+| label           | 标签文本，当未定义或为 null 时不显示标签栏      | `string`        | -           |
+| labelAlign      | 标签对齐方式      | `left`\|`right`\|`top`   | `right`     |
 | invalidTipAlign | 验证错误信息提示的位置 | `Layer层组合值` | `top right` |
+| notShowLabel      | 不显示标签，不管 label 是否设置      | `boolean`   | `false`    |
+| control      | 字段控件设置，可自定义配置控件内容，或者在特定字段类型中配置      | `props`   | -    |
 
 ## Method
 

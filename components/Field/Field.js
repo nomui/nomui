@@ -15,7 +15,7 @@ class Field extends Component {
       invalidTipAlign: 'top right',
       value: null,
       span: null,
-      alwaysShowLabel: false,
+      notShowLabel: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -36,8 +36,8 @@ class Field extends Component {
 
   _config() {
     this._addPropStyle('required', 'requiredMark', 'labelAlign')
-    const { label, span, type, alwaysShowLabel, required, requiredMessage, rules } = this.props
-    const showLabel = alwaysShowLabel === true || !!label
+    const { label, span, type, notShowLabel, required, requiredMessage, rules } = this.props
+    const showLabel = notShowLabel === false && !!label
 
     if (required === true) {
       rules.unshift({ type: 'required', message: requiredMessage })
