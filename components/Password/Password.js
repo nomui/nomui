@@ -1,7 +1,7 @@
 import Component from '../Component/index'
-import Control from '../Control/index'
+import Textbox from '../Textbox/index'
 
-class Password extends Control {
+class Password extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {}
 
@@ -14,55 +14,52 @@ class Password extends Control {
 
   _config() {
     const that = this
+    const { onValueChange } = this.props
 
     this.setProps({
-      children: {
-        component: 'Textbox',
-        ref: (c) => {
-          that.text = c
-        },
-        // rightIcon: 'eye',
-        onValueChange: () => {
-          const pass = that.text.getValue()
+      onValueChange: () => {
+        const pass = that.getText()
 
-          const start = that.text.input.element.selectionStart // 光标位置
+        const start = that.input.element.selectionStart // 光标位置
 
-          const fake = pass ? pass.split('') : []
-          let real = that.realValue ? that.realValue.split('') : []
-          const clen = fake.length - real.length
+        const fake = pass ? pass.split('') : []
+        let real = that.realValue ? that.realValue.split('') : []
+        const clen = fake.length - real.length
 
-          // 处理Value
-          if (!pass) {
-            that.realValue = null
-          } else {
-            if (clen > 0) {
-              const inArr = fake.join('').replace(/\*/g, '').split('')
-              const right = fake.length - start > 0 ? real.slice(-(fake.length - start)) : []
-              real = [].concat(real.slice(0, start - inArr.length), inArr, right)
-            }
-
-            if (clen < 0) {
-              real.splice(start, Math.abs(clen))
-            }
-            fake.forEach(function (value, index) {
-              if (value !== '*') {
-                real[index] = value
-              }
-            })
-            that.realValue = real.join('')
+        // 处理Value
+        if (!pass) {
+          that.realValue = null
+        } else {
+          if (clen > 0) {
+            const middle = fake.join('').replace(/\*/g, '').split('')
+            const right = fake.length - start > 0 ? real.slice(-(fake.length - start)) : []
+            real = [].concat(real.slice(0, start - middle.length), middle, right)
           }
 
-          that.text.setValue(pass ? pass.replace(/./g, '*') : null)
-
-          // 让光标回到正确位置
-
-          if (pass && start < pass.length) {
-            that.text.input.element.selectionStart = start
-            that.text.input.element.selectionEnd = start
+          if (clen < 0) {
+            real.splice(start, Math.abs(clen))
           }
-        },
+          fake.forEach(function (value, index) {
+            if (value !== '*') {
+              real[index] = value
+            }
+          })
+          that.realValue = real.join('')
+        }
+
+        that.setValue(pass ? pass.replace(/./g, '*') : null)
+
+        // 让光标回到正确位置
+
+        if (pass && start < pass.length) {
+          that.input.element.selectionStart = start
+          that.input.element.selectionEnd = start
+        }
+
+        that._callHandler(onValueChange)
       },
     })
+
     super._config()
   }
 

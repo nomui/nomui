@@ -16,14 +16,17 @@ define([], function () {
             label: '密码',
             control: {
               component: 'Password',
+              required: true,
             },
           },
+
           {
             label: '',
             control: {
               component: 'Button',
               text: '提交',
               onClick: () => {
+                form.validate()
                 console.log(form.getValue())
               },
             },
