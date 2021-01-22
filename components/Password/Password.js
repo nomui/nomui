@@ -25,12 +25,13 @@ class Password extends Control {
         onValueChange: () => {
           const pass = that.text.getValue()
 
-          const start = that.text.input.element.selectionStart
+          const start = that.text.input.element.selectionStart // 光标位置
 
           const fake = pass ? pass.split('') : []
           let real = that.realValue.split('')
           const clen = fake.length - real.length
 
+          // 处理Value
           if (!pass) {
             that.realValue = null
           } else {
@@ -52,6 +53,8 @@ class Password extends Control {
           }
 
           that.text.setValue(pass.replace(/./g, '*'))
+
+          // 让光标回到正确位置
 
           if (start < pass.length) {
             that.text.input.element.selectionStart = start
