@@ -11,7 +11,6 @@ class FieldContent extends Component {
 
     _config() {
         const { control } = this.field.props
-
         this.setProps({
             children: Component.extendProps(control, { classes: { 'nom-control': true } })
         })

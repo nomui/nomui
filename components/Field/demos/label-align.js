@@ -1,11 +1,11 @@
 define([], function () {
 
   return {
-    title: 'label对齐方式',
-    file: 'with-label-align',
+    title: '标签对齐方式',
+    file: 'label-align',
     demo: function () {
+      let field = null
 
-      let myInputRef = null
       return {
         component: 'Rows',
         items: [
@@ -27,16 +27,16 @@ define([], function () {
             ],
             value: 'right',
             uistyle: 'button',
-            onValueChange: (e) => {
-              myInputRef.update({
-                labelAlign: e.newValue,
+            onValueChange: (args) => {
+              field.update({
+                labelAlign: args.newValue,
               })
             },
           },
           {
             component: 'Textbox', label: '姓名',
             ref: (c) => {
-              myInputRef = c
+              field = c
             },
             labelAlign: 'right',
           },
