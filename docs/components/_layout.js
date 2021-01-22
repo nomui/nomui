@@ -382,16 +382,16 @@ define([], function () {
                       url: '#!components!index?type=Slider',
                     },
                     {
-                      text: 'TextControl',
+                      text: 'StaticText',
                       subtext: '纯文本显示',
-                      id: 'TextControl',
-                      url: '#!components!index?type=TextControl',
+                      id: 'StaticText',
+                      url: '#!components!index?type=StaticText',
                     },
                     {
-                      text: 'FieldRepeater',
-                      subtext: '重复字段组',
-                      id: 'forms/FieldRepeater',
-                      url: '#!components!index?type=forms/FieldRepeater',
+                      text: 'Group',
+                      subtext: '字段组',
+                      id: 'Group',
+                      url: '#!components!index?type=Group',
                     },
                     {
                       text: 'Field',

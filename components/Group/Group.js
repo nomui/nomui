@@ -1,6 +1,6 @@
 import Component from '../Component/index'
-import { extend } from '../util/index'
-import Field from './Field'
+import { extend, isPlainObject } from '../util/index'
+import Field from '../Field/index'
 
 class Group extends Field {
     constructor(props, ...mixins) {
@@ -20,11 +20,10 @@ class Group extends Field {
     _config() {
         this._addPropStyle('inline', 'striped', 'line')
         const { fields, fieldDefaults, value } = this.props
-        let children = null
-        let childDefaults = null
-        children = []
+        let children = []
+
         for (let i = 0; i < fields.length; i++) {
-            const fieldProps = fields[i]
+            let fieldProps = fields[i]
             if (isPlainObject(value)) {
                 if (fieldProps.flatValue === true) {
                     fieldProps.value = value
@@ -34,16 +33,15 @@ class Group extends Field {
                 }
             }
             fieldProps.__group = this.field
+            fieldProps = Component.extendProps(fieldDefaults, fieldProps)
             children.push(fieldProps)
         }
-        childDefaults = fieldDefaults
 
         this.setProps({
-            content: {
-                children: children,
-                childDefaults: childDefaults
-            }
+            content: children
         })
+
+        super._config()
     }
 
     getValue() {
