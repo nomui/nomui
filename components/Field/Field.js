@@ -133,6 +133,22 @@ class Field extends Component {
     isFunction(this._blur) && this._blur()
   }
 
+  reset() {
+    isFunction(this._reset) && this._reset()
+  }
+
+  clear() {
+    isFunction(this._clear) && this._clear()
+  }
+
+  _reset() {
+    this.setValue(this.initValue)
+  }
+
+  _clear() {
+    this.setValue(null)
+  }
+
   // 派生的控件子类内部适当位置调用
   _onValueChange() {
     const that = this

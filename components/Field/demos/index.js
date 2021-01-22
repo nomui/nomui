@@ -2,6 +2,7 @@ define(
   [
     './basic.js',
     './label-align.js',
+    './value.js',
   ],
   function () {
 
