@@ -66,10 +66,16 @@ class Group extends Field {
         for (let i = 0; i < this.fields.length; i++) {
             const field = this.fields[i]
             if (field.setValue) {
+                let fieldValue = value
                 if (field.props.flatValue === false) {
-                    value = value[field.name]
+                    if (isPlainObject(value)) {
+                        fieldValue = value[field.name]
+                    }
                 }
-                field.setValue(value)
+                if (fieldValue === undefined) {
+                    fieldValue = null
+                }
+                field.setValue(fieldValue)
             }
         }
     }
@@ -122,6 +128,15 @@ class Group extends Field {
         }
 
         return null
+    }
+
+    _clear() {
+        for (let i = 0; i < this.fields.length; i++) {
+            const field = this.fields[i]
+            if (field.setValue) {
+                field.setValue(null)
+            }
+        }
     }
 }
 

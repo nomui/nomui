@@ -68,12 +68,31 @@ define([], function () {
                         {
                             component: 'Field', label: '',
                             control: {
-                                component: 'Button',
-                                type: 'primary',
-                                text: '提 交',
-                                onClick: () => {
-                                    console.log(group.getValue())
-                                }
+                                component: 'Cols',
+                                items: [
+                                    {
+                                        component: 'Button',
+                                        type: 'primary',
+                                        text: '提 交',
+                                        onClick: () => {
+                                            console.log(group.getValue())
+                                        }
+                                    },
+                                    {
+                                        component: 'Button',
+                                        text: '重 置',
+                                        onClick: () => {
+                                            group.reset()
+                                        }
+                                    },
+                                    {
+                                        component: 'Button',
+                                        text: '清除',
+                                        onClick: () => {
+                                            group.clear()
+                                        }
+                                    },
+                                ],
                             },
                         },
                     ],

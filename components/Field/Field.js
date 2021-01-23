@@ -14,6 +14,7 @@ class Field extends Component {
       labelAlign: 'right',
       invalidTipAlign: 'top right',
       value: null,
+      flatValue: false,
       span: null,
       notShowLabel: false,
     }
