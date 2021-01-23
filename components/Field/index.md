@@ -20,4 +20,6 @@
 | blur     | 失焦                    |               |
 | getValue | 获取 value 值           |               |
 | setValue | 设置 value 值           | `(value)=>{}` |
-| validate | 验证 |               |
+| validate | 验证                    |               |
+| reset    | 重置字段值为初始值       |               |
+| clear    | 清除字段值              |               |
