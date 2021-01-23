@@ -48,9 +48,14 @@ class RadioList extends Field {
   }
 
   _setValue(value) {
-    this.optionList.selectItem(function () {
-      return this.props.value === value
-    })
+    if (value === null) {
+      this.optionList.unselectAllItems()
+    }
+    else {
+      this.optionList.selectItem(function () {
+        return this.props.value === value
+      })
+    }
   }
 }
 

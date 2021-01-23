@@ -130,11 +130,17 @@ class Select extends Field {
           return item.value
         })
       }
+      else {
+        this.selectedMultiple.unselectAllItems()
+      }
     } else {
       const valueOption = this._getOption(value)
       if (valueOption !== null) {
         this.selectedSingle.update(valueOption)
         this.currentValue = valueOption.value
+      }
+      else {
+        this.selectedSingle.emptyChildren()
       }
     }
   }
@@ -182,7 +188,7 @@ class Select extends Field {
   _setValue(value, triggerChange) {
     triggerChange = triggerChange !== false
     if (this.optionList) {
-      this.optionList.unselectAllItems({ triggerSelectionChange: false })
+      this.optionList.unselectAllItems({ triggerSelectionChange: value === null })
       this.selectOptions(value, { triggerSelectionChange: triggerChange })
     }
     else {

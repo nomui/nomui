@@ -51,6 +51,9 @@ class CheckboxList extends Field {
   }
 
   _setValue(value) {
+    if (value === null) {
+      this.optionList.unselectAllItems()
+    }
     this.optionList.selectItem(function () {
       return this.props.value === value
     })
