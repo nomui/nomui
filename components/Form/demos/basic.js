@@ -2,6 +2,7 @@ define([], function () {
   return {
     title: '基础用法',
     file: 'basic',
+    description: '`Form` 继承自 `Group`，因此用法与 `Group` 一致，当前尚未对 `Form` 增加特定的功能',
     demo: function () {
       return {
         component: 'Form',

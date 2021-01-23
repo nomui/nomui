@@ -37,7 +37,7 @@ class Field extends Component {
   _config() {
     this._addPropStyle('required', 'requiredMark', 'labelAlign')
     const { label, span, type, notShowLabel, required, requiredMessage, rules } = this.props
-    const showLabel = notShowLabel === false && !!label
+    const showLabel = notShowLabel === false && (label !== undefined && label !== null)
 
     if (required === true) {
       rules.unshift({ type: 'required', message: requiredMessage })
@@ -109,6 +109,7 @@ class Field extends Component {
     if (!this.errorTip) {
       this.errorTip = new Tooltip({
         trigger: this,
+        reference: this.content,
         styles: {
           color: 'danger',
         },

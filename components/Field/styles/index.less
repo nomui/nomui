@@ -23,6 +23,10 @@
         }
     }
 
+    >.nom-field-content {
+        position: relative;
+    }
+
     &.p-required.p-required-mark {
         >.nom-field-label {
             >.nom-label::before {
@@ -41,7 +45,10 @@
         >.nom-field-content {
             color: #000;
             background-color: #fff3f3;
-            border-color: #ffa8a8;
+
+            >.nom-control {
+                border-color: #ffa8a8;
+            }
         }
     }
 

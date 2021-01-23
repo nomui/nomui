@@ -7,6 +7,7 @@ class FieldContent extends Component {
 
     _created() {
         this.field = this.parent
+        this.field.content = this
     }
 
     _config() {

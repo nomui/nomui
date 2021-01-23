@@ -1,17 +1,24 @@
 define([], function () {
     return {
-        title: '验证字段组',
-        file: 'validate',
+        title: '字段组值',
+        file: 'value',
         demo: function () {
             let group = null
 
             return {
                 children: {
-                    component: 'Group',
+                    component: 'Form',
                     ref: (c) => {
                         group = c
                     },
+                    value: {
+                        country: '我是中国人',
+                        name: 'Jerry',
+                    },
                     fields: [
+                        {
+                            component: 'TextControl', name: 'country', label: '国家',
+                        },
                         {
                             component: 'Textbox', name: 'name', label: '姓名', required: true,
                             rules: [
@@ -33,34 +40,40 @@ define([], function () {
                         },
                         {
                             component: 'RadioList', name: 'gender', label: '性别',
+                            value: 0,
                             options: [
-                                { text: '射雕英雄传', value: 0 },
-                                { text: '白马啸西风', value: 1 },
-                                { text: '射雕英雄传', value: 0 },
-                                { text: '白马啸西风', value: 1 },
-                                { text: '射雕英雄传', value: 0 },
-                                { text: '白马啸西风', value: 1 },
-                                { text: '射雕英雄传', value: 0 },
-                                { text: '白马啸西风', value: 1 },
+                                { text: '男', value: 0 },
+                                { text: '女', value: 1 },
                             ],
                         },
                         {
                             component: 'CheckboxList', name: 'hobbies', label: '爱好',
+                            value: [1, 3],
                             options: [
                                 { text: '唱歌', value: 1 },
                                 { text: '跳舞', value: 2 },
                                 { text: '旅游', value: 3 },
+                            ],
+
+                        },
+                        {
+                            component: 'Select', name: 'city', label: '城市',
+                            value: 3,
+                            options: [
+                                { text: '北京', value: 1 },
+                                { text: '上海', value: 2 },
+                                { text: '广州', value: 3 },
                             ],
                         },
                         {
                             component: 'Field', label: '',
                             control: {
                                 component: 'Button',
+                                type: 'primary',
                                 text: '提 交',
-                                type: 'Primary',
-                                onClick: function () {
-                                    group.validate()
-                                },
+                                onClick: () => {
+                                    console.log(group.getValue())
+                                }
                             },
                         },
                     ],

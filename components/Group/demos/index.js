@@ -3,8 +3,14 @@ define(
         './basic.js',
         './nest.js',
         './get-field.js',
+        './value.js',
         './validate.js',
         './inline.js',
+        './span.js',
+        './striped.js',
+        './splitline.js',
+        './outline.js',
+        './styles.js',
     ],
     function () {
 
