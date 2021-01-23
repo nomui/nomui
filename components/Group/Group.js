@@ -7,6 +7,7 @@ class Group extends Field {
         const defaults = {
             fields: [],
             fieldDefaults: { component: Field },
+            action: null,
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -19,7 +20,7 @@ class Group extends Field {
 
     _config() {
         this._addPropStyle('inline', 'striped', 'line')
-        const { fields, fieldDefaults, value } = this.props
+        const { action, fields, fieldDefaults, value } = this.props
         const children = []
 
         for (let i = 0; i < fields.length; i++) {
@@ -35,6 +36,14 @@ class Group extends Field {
             fieldProps.__group = this
             fieldProps = Component.extendProps(fieldDefaults, fieldProps)
             children.push(fieldProps)
+        }
+
+        if (action) {
+            children.push({
+                component: Field,
+                control: action
+            })
+
         }
 
         this.setProps({

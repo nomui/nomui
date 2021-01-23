@@ -400,6 +400,12 @@ define([], function () {
                       url: '#!components!index?type=Group',
                     },
                     {
+                      text: 'GroupList',
+                      subtext: '字段组列表',
+                      id: 'GroupList',
+                      url: '#!components!index?type=GroupList',
+                    },
+                    {
                       text: 'Form',
                       subtext: '表单',
                       id: 'form',
