@@ -12,10 +12,12 @@ class FieldContent extends Component {
     }
 
     _config() {
-        const { control } = this.field.props
+        const { control, lastControlAddons } = this.field.props
         this.setProps({
-            children: Component.extendProps(control, { classes: { 'nom-control': true } }),
-            childDefaults: n(null, { 'nom-control': true }, null, [ControlMixin])
+            children: [
+                n(null, Component.extendProps(control, { classes: { 'nom-control': true } }), null, [ControlMixin]),
+                lastControlAddons && Component.extendProps(lastControlAddons, { classes: { 'nom-control-addon': true } })
+            ]
         })
     }
 }

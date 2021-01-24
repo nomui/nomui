@@ -111,7 +111,7 @@ class Group extends Field {
 
     getField(fieldName) {
         if (typeof fieldName === 'string') {
-            // Handle nested keys, e.g., "foo.bar"
+            // Handle nested keys, e.g., "foo.bar" "foo[1].bar" "foo[key].bar"
             const parts = fieldName.split('.')
             let curField = this
             if (parts.length) {
