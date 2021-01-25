@@ -292,6 +292,12 @@ define([], function () {
                       url: '#!components!index?type=Textbox',
                     },
                     {
+                      text: 'Password',
+                      subtext: '密码框',
+                      id: 'Password',
+                      url: '#!components!index?type=Password',
+                    },
+                    {
                       text: 'Multiline Textbox',
                       subtext: '多行文本框',
                       id: 'MultilineTextbox',
@@ -338,6 +344,12 @@ define([], function () {
                       subtext: '树选择',
                       id: 'TreeSelect',
                       url: '#!components!index?type=TreeSelect',
+                    },
+                    {
+                      text: 'Cascader',
+                      subtext: '级联选择',
+                      id: 'Cascader',
+                      url: '#!components!index?type=Cascader',
                     },
                     {
                       text: 'AutoComplete',

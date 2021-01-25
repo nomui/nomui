@@ -4,7 +4,7 @@ import List from '../List/index'
 import Rows from '../Rows/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
-import { } from '../util/date'
+import {} from '../util/date'
 
 class DatePicker extends Textbox {
   constructor(props, ...mixins) {

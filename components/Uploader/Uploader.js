@@ -24,8 +24,8 @@ class Uploader extends Field {
       defaultFileList: [],
       multiple: true,
       name: 'file',
-      data: {},
       display: true,
+      data: {},
       // request option
       method: 'post',
       headers: {},
@@ -51,10 +51,10 @@ class Uploader extends Field {
       accept,
       button: cButton,
       multiple,
-      display,
       onPreview,
       onDownload,
       extraAction,
+      display,
       // fileList,
     } = this.props
     const files = this.fileList

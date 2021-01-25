@@ -51,8 +51,8 @@ class Field extends Component {
     if (span) {
       this.setProps({
         styles: {
-          col: span
-        }
+          col: span,
+        },
       })
     }
 
