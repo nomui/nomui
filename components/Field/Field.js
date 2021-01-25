@@ -17,6 +17,7 @@ class Field extends Component {
       flatValue: false,
       span: null,
       notShowLabel: false,
+      rules: [],
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
