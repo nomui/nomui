@@ -178,12 +178,22 @@ class Component {
     this.element.component = this
     if (placement === 'append') {
       this.referenceElement.appendChild(this.element)
-    } else if (placement === 'replace') {
+    }
+    else if (placement === 'prepend') {
+      this.referenceElement.insertBefore(this.element, this.referenceElement.firstChild);
+    }
+    else if (placement === 'replace') {
       if (this.referenceComponent) {
         this.referenceComponent._removeCore()
         this.parent && this.parent.replaceChild(this.referenceComponent, this)
       }
       this.referenceElement.parentNode.replaceChild(this.element, this.referenceElement)
+    }
+    else if (placement === 'after') {
+      this.referenceElement.insertAdjacentElement('afterend', this.element);
+    }
+    else if (placement === 'before') {
+      this.referenceElement.insertAdjacentElement('beforebegin', this.element);
     }
   }
 
@@ -310,6 +320,52 @@ class Component {
     mixins = [...childDefaultsMixins, ...childMixins]
 
     this.children.push(Component.create(props, ...mixins))
+  }
+
+  before(props) {
+    if (!props) {
+      return
+    }
+
+    const { normalizedProps, mixins } = this._normalizeProps(props)
+
+    const extNormalizedProps = Component.extendProps({}, normalizedProps, {
+      reference: this.element,
+      placement: 'before',
+    })
+
+    // todo:需要改为插到正确的位置
+    this.parent.children.push(Component.create(extNormalizedProps, ...mixins))
+  }
+
+  after(props) {
+    if (!props) {
+      return
+    }
+
+    const { normalizedProps, mixins } = this._normalizeProps(props)
+
+    const extNormalizedProps = Component.extendProps({}, normalizedProps, {
+      reference: this.element,
+      placement: 'after',
+    })
+
+    this.parent.children.push(Component.create(extNormalizedProps, ...mixins))
+  }
+
+  _normalizeProps(props) {
+    let normalizedProps = {}
+    let mixins = []
+
+    if (isPlainObject(props)) {
+      normalizedProps = props
+    } else if (props instanceof ComponentDescriptor) {
+      normalizedProps = props.getProps()
+      mixins = props.mixins
+    } else if (isString(props) || isNumeric(props)) {
+      normalizedProps = { children: props }
+    }
+    return { normalizedProps, mixins }
   }
 
   disable() {
@@ -575,7 +631,7 @@ class Component {
         if (modifierVal === true) {
           classes.push(`p-${hyphenate(modifier)}`)
         } else if (typeof modifierVal === 'string' || typeof modifierVal === 'number') {
-          classes.push(`p-${hyphenate(modifier)}-${hyphenate(`${modifierVal}`)}`)
+          classes.push(`p-${hyphenate(modifier)}-${hyphenate(String(modifierVal))}`)
         }
       }
     }

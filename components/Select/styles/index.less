@@ -1,29 +1,33 @@
 .nom-select {
-    position: relative;
-    min-height: 34px;
-    padding: 6px 24px 6px 12px;
-    color: #000 !important;
-    line-height: 1.42857;
-    background: white;
-    border: 1px solid gainsboro;
-    border-radius: 2px;
-    cursor: pointer;
+    >.nom-field-content {
+        .nom-control {
+            position: relative;
+            min-height: 34px;
+            padding: 6px 24px 6px 12px;
+            color: #000 !important;
+            line-height: 1.42857;
+            background: white;
+            border: 1px solid gainsboro;
+            border-radius: 2px;
+            cursor: pointer;
 
-    .nom-select-single {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
+            .nom-select-single {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
 
-    .nom-select-arrow {
-        position: absolute;
-        top: 0;
-        right: 8px;
-        bottom: 0;
-    }
+            .nom-select-arrow {
+                position: absolute;
+                top: 0;
+                right: 8px;
+                bottom: 0;
+            }
 
-    .nom-select-placeholder {
-        color: #bfbfbf;
+            .nom-select-placeholder {
+                color: #bfbfbf;
+            }
+        }
     }
 }
 

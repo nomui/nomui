@@ -8,6 +8,6 @@
 
 | 参数           | 说明                     | 类型             | 默认值  |
 | -------------- | ------------------------ | ---------------- | ------- |
-| size           | 指定 Switch 的大小       | `xs\|sm\|lg\|xl` | default |
+| size           | 指定 Switch 的大小       | `xsmall\|small\|large\|xlarge` | default |
 | selectedText   | 自定义选中时的显示文本   | `string`         | -       |
 | unselectedText | 自定义未选中时的显示文本 | `string`         | -       |

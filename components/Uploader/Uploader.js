@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import Control from '../Control/index'
+import Field from '../Field/index'
 import { isFunction } from '../util/index'
 import FileList from './FileList'
 import {
@@ -13,7 +13,7 @@ import {
 } from './helper'
 import Request from './request'
 
-class Uploader extends Control {
+class Uploader extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       // 测试地址
@@ -109,13 +109,13 @@ class Uploader extends Control {
         extraAction,
       })
     }
+    this.setProps({
+      control: {
+        children,
+      }
+    })
 
-    this.setProps({
-      children: null,
-    })
-    this.setProps({
-      children,
-    })
+    super._config()
   }
 
   _onChange(e) {

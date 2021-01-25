@@ -54,6 +54,10 @@ class List extends Component {
   getItem(param) {
     let retItem = null
 
+    if (param instanceof Component) {
+      return param
+    }
+
     if (isFunction(param)) {
       for (const key in this.itemRefs) {
         if (this.itemRefs.hasOwnProperty(key)) {
@@ -139,7 +143,7 @@ class List extends Component {
   }
 
   unselectAllItems(unselectOption) {
-    return this.unselectItems(this.getChildren(), unselectOption)
+    return this.unselectItems(this.getAllItems(), unselectOption)
   }
 
   getAllItems() {

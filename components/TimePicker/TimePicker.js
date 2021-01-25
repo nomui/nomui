@@ -1,6 +1,6 @@
-import Control from '../Control/index'
+import Field from '../Field/index'
 
-class TimePicker extends Control {
+class TimePicker extends Field {
   // constructor(props, ...mixins) {}
 
   _getTimeData(count) {

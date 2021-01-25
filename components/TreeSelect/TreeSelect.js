@@ -1,9 +1,9 @@
 import Component from '../Component/index'
-import Control from '../Control/index'
+import Field from '../Field/index'
 import Icon from '../Icon/index'
 import TreeSelectPopup from './TreeSelectPopup'
 
-class TreeSelect extends Control {
+class TreeSelect extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       treeData: null,
@@ -18,6 +18,7 @@ class TreeSelect extends Control {
   }
 
   _created() {
+    super._created()
     this.items = []
   }
 
@@ -72,11 +73,11 @@ class TreeSelect extends Control {
     }
 
     this.setProps({
-      children: null,
+      control: {
+        children: children,
+      }
     })
-    this.setProps({
-      children: children,
-    })
+
     super._config()
   }
 

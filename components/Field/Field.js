@@ -1,7 +1,9 @@
 import Component from '../Component/index'
-import { extend } from '../util/index'
+import { isFunction, clone } from '../util/index'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
+import Tooltip from '../Tooltip/index'
+import RuleManager from '../util/rule-manager'
 
 let nameSeq = 0
 
@@ -11,21 +13,21 @@ class Field extends Component {
       label: null,
       labelAlign: 'right',
       invalidTipAlign: 'top right',
-      control: {},
-      fields: null,
-      fieldDefaults: { component: Field },
-      groupDefaults: null,
-      type: 'Single', // single,group,list
       value: null,
+      flatValue: false,
       span: null,
+      notShowLabel: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _created() {
-    this.form = this.parent
-    this.name = this.props.name || `__field${++nameSeq}`
+    const { name, value } = this.props
+    this.initValue = value !== undefined ? clone(this.props.value) : null
+    this.oldValue = null
+    this.currentValue = null
+    this.name = name || `__field${++nameSeq}`
     this.group = this.props.__group || null
     this.fields = []
     if (this.group) {
@@ -34,11 +36,15 @@ class Field extends Component {
   }
 
   _config() {
-    this._addPropStyle('type', 'required', 'requiredMark', 'labelAlign')
-    const { label, span, type, labelAlign } = this.props
-    const hasLabel = label !== null && label !== undefined && labelAlign !== 'none'
+    this._addPropStyle('required', 'requiredMark', 'labelAlign')
+    const { label, span, type, notShowLabel, required, requiredMessage, rules } = this.props
+    const showLabel = notShowLabel === false && (label !== undefined && label !== null)
 
-    if (!hasLabel) {
+    if (required === true) {
+      rules.unshift({ type: 'required', message: requiredMessage })
+    }
+
+    if (showLabel === false) {
       this.props.labelAlign = null
     }
 
@@ -55,134 +61,117 @@ class Field extends Component {
     }
 
     this.setProps({
-      required: this.props.control.required,
-      requiredMark: this.props.requiredMark,
       children: [
-        hasLabel && { component: FieldLabel },
+        showLabel && { component: FieldLabel },
         { component: FieldContent, value: this.props.value },
       ],
     })
   }
 
   getValue() {
-    const { type } = this.props
-    let value = null
-
-    if (type === 'Single') {
-      if (this.control.getValue) {
-        value = this.control.getValue()
-      }
-    } else if (type === 'Group') {
-      value = {}
-      for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i]
-        if (field.getValue) {
-          const fieldValue = field.getValue()
-          if (field.props.flatValue === true) {
-            extend(value, fieldValue)
-          } else {
-            value[field.name] = fieldValue
-          }
-        }
-      }
-    }
-
+    const value = isFunction(this._getValue) ? this._getValue() : null
     return value
   }
 
   setValue(value) {
-    const { type } = this.props
-
-    if (type === 'Single') {
-      if (this.control.setValue) {
-        this.control.setValue(value)
-      }
-    } else if (type === 'Group') {
-      for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i]
-        if (field.setValue) {
-          if (field.props.flatValue === false) {
-            value = value[field.name]
-          }
-          field.setValue(value)
-        }
-      }
-    }
+    isFunction(this._setValue) && this._setValue(value)
   }
 
   validate() {
-    const { type } = this.props
-
-    let valid = true
-
-    if (type === 'Single') {
-      if (this.control.validate) {
-        valid = this.control.validate()
-      }
-    } else if (type === 'Group') {
-      const invalids = []
-      for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i]
-        if (field.validate) {
-          const valResult = field.validate()
-
-          if (valResult !== true) {
-            invalids.push(field)
-          }
-        }
-      }
-
-      if (invalids.length > 0) {
-        invalids[0].focus()
-      }
-
-      valid = invalids.length === 0
-    }
-
-    return valid
+    this.validateTriggered = true
+    return this._validate()
   }
 
-  getField(fieldName) {
-    if (typeof fieldName === 'string') {
-      // Handle nested keys, e.g., "foo.bar"
-      const parts = fieldName.split('.')
-      let curField = this
-      if (parts.length) {
-        for (let i = 0; i < parts.length; i++) {
-          const part = parts[i]
-          curField = curField._getSubField(part)
-          if (!curField) {
-            break
-          }
+  _validate() {
+    const { rules } = this.props
+    if (Array.isArray(rules) && rules.length > 0) {
+      const validationResult = RuleManager.validate(rules, this.getValue())
+
+      if (validationResult === true) {
+        this.removeClass('s-invalid')
+        this.trigger('valid')
+        if (this.errorTip) {
+          this.errorTip.remove()
+          delete this.errorTip
         }
+        return true
       }
 
-      return curField
+      this.addClass('s-invalid')
+      this.trigger('invalid', validationResult)
+      this._invalid(validationResult)
+      return false
     }
+
+    return true
   }
 
-  _getSubField(fieldName) {
-    for (let i = 0; i < this.fields.length; i++) {
-      const field = this.fields[i]
-      if (field.name === fieldName) {
-        return field
-      }
-    }
+  _invalid(message) {
+    if (!this.errorTip) {
+      this.errorTip = new Tooltip({
+        trigger: this,
+        reference: this.content,
+        styles: {
+          color: 'danger',
+        },
+        children: message,
+      })
 
-    return null
+      if (this.element.contains(document.activeElement)) {
+        this.errorTip.show()
+      }
+    } else {
+      this.errorTip.update({
+        children: message,
+      })
+    }
   }
 
   focus() {
-    this.control.focus && this.control.focus()
+    isFunction(this._focus) && this._focus()
   }
 
   blur() {
-    this.control.blur && this.control.blur()
+    isFunction(this._blur) && this._blur()
   }
 
-  _onValueChange(changed) {
-    this._callHandler(this.props.onValueChange, changed)
-    this.group && this.group._onValueChange(changed)
+  reset() {
+    isFunction(this._reset) && this._reset()
+  }
+
+  clear() {
+    isFunction(this._clear) && this._clear()
+  }
+
+  _reset() {
+    this.setValue(this.initValue)
+  }
+
+  _clear() {
+    this.setValue(null)
+  }
+
+  // 派生的控件子类内部适当位置调用
+  _onValueChange() {
+    const that = this
+    this.oldValue = clone(this.currentValue)
+    this.currentValue = clone(this.getValue())
+    this.props.value = this.currentValue
+
+    const changed = {
+      name: this.props.name,
+      oldValue: this.oldValue,
+      newValue: this.currentValue,
+    }
+
+    setTimeout(function () {
+      that._callHandler(that.props.onValueChange, changed)
+      this.group && this.group._onValueChange(changed)
+      isFunction(that._valueChange) && that._valueChange(changed)
+      if (that.validateTriggered) {
+        that._validate()
+      }
+    }, 0)
   }
 }
 
