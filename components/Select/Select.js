@@ -113,7 +113,7 @@ class Select extends Field {
   _rendered() {
     const { value } = this.props
 
-    this.popup = new SelectPopup({ trigger: this })
+    this.popup = new SelectPopup({ trigger: this.control })
 
     this._directSetValue(value)
 
