@@ -4,17 +4,13 @@
 
 | 参数            | 说明                   | 类型            | 默认值      |
 | --------------- | ---------------------- | --------------- | ----------- |
-| type           | 字段类型               | `Single`\|`Group`\|`List`\|`Matrix`        | `Single`        |
-| name           | 字段名称               | `string`        | `__field` + 自增长序号        |
+| name           | 字段名称，未设置时会自动设置一个自增格式               | `string`        | `__field` + 自增长序号        |
 | value           | 字段值               | `string`        | -           |
-| label           | 标签文本      | `string`        | -           |
-| labelAlign      | 标签对齐方式，当为 none 值时表示不显示 label 栏         | `left`\|`right`\|`top`\|`none`   | 'right'     |
+| label           | 标签文本，当未定义或为 null 时不显示标签栏      | `string`        | -           |
+| labelAlign      | 标签对齐方式      | `left`\|`right`\|`top`   | `right`     |
 | invalidTipAlign | 验证错误信息提示的位置 | `Layer层组合值` | `top right` |
-| control         | 关联的 Control 组件，当 `type` 为 `Single` 时使用    | `Props`         | -           |
-| fields         | 子字段数组，当 `type` 不为 `Single` 时使用    | `Array`         | -           |
-| inline         | 内联布局，当 `type` 为 `Group` 时有效    | `Boolean`         | -           |
-| striped         | 条纹样式，标签栏有背景色，当 `type` 为 `Group` 时有效    | `Boolean`         | -           |
-| line         | 线条样式，当 `type` 为 `Group` 时有效    | `splitline`\|`outline`         | -           |
+| notShowLabel      | 不显示标签，不管 label 是否设置      | `boolean`   | `false`    |
+| control      | 字段控件设置，可自定义配置控件内容，或者在特定字段类型中配置      | `props`   | -    |
 
 ## Method
 
@@ -24,5 +20,6 @@
 | blur     | 失焦                    |               |
 | getValue | 获取 value 值           |               |
 | setValue | 设置 value 值           | `(value)=>{}` |
-| validate | 验证 |               |
-| getField | 获取子字段，参数为字段名，可有圆点分隔，例如`foo.bar`来获取多层级的子孙字段 |               |
+| validate | 验证                    |               |
+| reset    | 重置字段值为初始值       |               |
+| clear    | 清除字段值              |               |

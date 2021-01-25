@@ -1,11 +1,11 @@
 import Component from '../Component/index'
-import Control from '../Control/index'
+import Field from '../Field/index'
 import Icon from '../Icon/index'
 import List from '../List/index'
 import SelectPopup from './SelectPopup'
 import { isString } from '../util/index'
 
-class Select extends Control {
+class Select extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
@@ -102,34 +102,47 @@ class Select extends Control {
     }
 
     this.setProps({
-      children: children,
+      control: {
+        children: children,
+      }
     })
 
     super._config()
   }
 
   _rendered() {
-    const { value, multiple } = this.props
+    const { value } = this.props
 
     this.popup = new SelectPopup({ trigger: this })
 
+    this._directSetValue(value)
+
+    this._valueChange({ newValue: this.currentValue })
+  }
+
+  _directSetValue(value) {
+    const { multiple } = this.props
     if (multiple === true) {
-      const initValueOptions = this._getOptions(value)
-      if (initValueOptions.length) {
-        this.selectedMultiple.update({ items: initValueOptions })
-        this.currentValue = initValueOptions.map(function (item) {
+      const valueOptions = this._getOptions(value)
+      if (valueOptions.length) {
+        this.selectedMultiple.update({ items: valueOptions })
+        this.currentValue = valueOptions.map(function (item) {
           return item.value
         })
       }
+      else {
+        this.selectedMultiple.unselectAllItems()
+      }
     } else {
-      const initOption = this._getOption(value)
-      if (initOption !== null) {
-        this.selectedSingle.update(initOption)
-        this.currentValue = initOption.value
+      const valueOption = this._getOption(value)
+      if (valueOption !== null) {
+        this.selectedSingle.update(valueOption)
+        this.currentValue = valueOption.value
+      }
+      else {
+        this.selectedSingle.emptyChildren()
       }
     }
-
-    this._valueChange({ newValue: this.currentValue })
   }
 
   selectOption(option) {
@@ -174,8 +187,16 @@ class Select extends Control {
 
   _setValue(value, triggerChange) {
     triggerChange = triggerChange !== false
-    this.optionList.unselectAllItems({ triggerSelectionChange: false })
-    this.selectOptions(value, { triggerSelectionChange: triggerChange })
+    if (this.optionList) {
+      this.optionList.unselectAllItems({ triggerSelectionChange: value === null })
+      this.selectOptions(value, { triggerSelectionChange: triggerChange })
+    }
+    else {
+      this._directSetValue(value)
+      if (triggerChange) {
+        this._onValueChange()
+      }
+    }
   }
 
   _getOption(value) {

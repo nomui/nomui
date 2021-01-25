@@ -2,53 +2,34 @@ define([], function () {
   return {
     title: '基础用法',
     file: 'basic',
+    description: '`Form` 继承自 `Group`，因此用法与 `Group` 一致，当前尚未对 `Form` 增加特定的功能',
     demo: function () {
       return {
         component: 'Form',
         fields: [
           {
-            name: 'name',
-            label: '姓名',
-            control: {
-              component: 'Textbox',
-            },
+            component: 'Textbox', name: 'name', label: '姓名',
           },
           {
-            name: 'age',
-            label: '年龄',
-            control: {
-              component: 'Numberbox',
-            },
+            component: 'Numberbox', name: 'age', label: '年龄',
           },
           {
-            name: 'email',
-            label: 'Email',
-            control: {
-              component: 'Textbox',
-            },
+            component: 'Textbox', name: 'email', label: 'Email',
           },
           {
-            name: 'gender',
-            label: '性别',
-            control: {
-              component: 'RadioList',
-              options: [
-                { text: '男', value: 0 },
-                { text: '女', value: 1 },
-              ],
-            },
+            component: 'RadioList', name: 'gender', label: '性别',
+            options: [
+              { text: '男', value: 0 },
+              { text: '女', value: 1 },
+            ],
           },
           {
-            name: 'hobbies',
-            label: '爱好',
-            control: {
-              component: 'CheckboxList',
-              options: [
-                { text: '唱歌', value: 1 },
-                { text: '跳舞', value: 2 },
-                { text: '旅游', value: 3 },
-              ],
-            },
+            component: 'CheckboxList', name: 'hobbies', label: '爱好',
+            options: [
+              { text: '唱歌', value: 1 },
+              { text: '跳舞', value: 2 },
+              { text: '旅游', value: 3 },
+            ],
           },
         ],
       }

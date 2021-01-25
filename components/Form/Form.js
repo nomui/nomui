@@ -1,10 +1,9 @@
 import Component from '../Component/index'
-import Field from '../Field/index'
+import Group from '../Group/index'
 
-class Form extends Field {
+class Form extends Group {
   constructor(props, ...mixins) {
     const defaults = {
-      type: 'Group'
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

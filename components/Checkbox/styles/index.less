@@ -1,52 +1,54 @@
 .nom-checkbox {
-    >label {
-        position: relative;
-        display: inline-block;
-        padding-left: 30px;
-        font-size: 1rem;
-        cursor: pointer;
-        -webkit-transition: all 0.3s;
-        transition: all 0.3s;
+    >.nom-field-content {
+        >.nom-control {
+            position: relative;
+            display: inline-block;
+            padding-left: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            -webkit-transition: all 0.3s;
+            transition: all 0.3s;
 
-        >input {
-            position: absolute;
-            z-index: -1;
-            opacity: 0;
-            filter: alpha(opacity=0);
-
-            +span {
+            >input {
                 position: absolute;
-                top: 1px;
-                left: 0;
-                width: 18px;
-                height: 18px;
-                background: none;
-                border: 1px solid #bdc3d4;
+                z-index: -1;
+                opacity: 0;
+                filter: alpha(opacity=0);
+
+                +span {
+                    position: absolute;
+                    top: 1px;
+                    left: 0;
+                    width: 18px;
+                    height: 18px;
+                    background: none;
+                    border: 1px solid #bdc3d4;
+                }
+
+                &:checked+span::after {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    display: block;
+                    width: 5px;
+                    height: 10px;
+                    margin-top: -6px;
+                    margin-left: -2px;
+                    border: solid #7281a4;
+                    border-width: 0 2px 2px 0
+                        /*rtl:ignore*/
+                         !important;
+                    -webkit-transform: rotate(45deg);
+                    transform: rotate(45deg)
+                        /*rtl:ignore*/
+                    ;
+                    content: '';
+                }
             }
 
-            &:checked+span::after {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                display: block;
-                width: 5px;
-                height: 10px;
-                margin-top: -6px;
-                margin-left: -2px;
-                border: solid #7281a4;
-                border-width: 0 2px 2px 0
-                    /*rtl:ignore*/
-                     !important;
-                -webkit-transform: rotate(45deg);
-                transform: rotate(45deg)
-                    /*rtl:ignore*/
-                ;
-                content: '';
+            >.checkbox-text {
+                display: inline-block
             }
-        }
-
-        >.checkbox-text {
-            display: inline-block
         }
     }
 }

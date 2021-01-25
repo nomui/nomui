@@ -13,8 +13,6 @@ class Numberbox extends Textbox {
   }
 
   _config() {
-    super._config()
-
     const rules = []
     if (this.props.precision === 0) {
       rules.push({
@@ -48,6 +46,8 @@ class Numberbox extends Textbox {
     }
 
     this.setProps({ rules: rules })
+
+    super._config()
   }
 
   _getValue() {
