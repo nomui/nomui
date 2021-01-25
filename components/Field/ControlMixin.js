@@ -8,6 +8,7 @@ export default {
     const { onValueChange } = this.props
     this.setProps({
       onValueChange: (changed) => {
+        this.field.props.value = changed.newValue
         this.field._onValueChange(changed)
         this._callHandler(onValueChange, changed)
       }

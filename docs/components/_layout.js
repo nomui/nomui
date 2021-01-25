@@ -293,6 +293,12 @@ define([], function () {
                       url: '#!components!index?type=Textbox',
                     },
                     {
+                      text: 'Password',
+                      subtext: '密码框',
+                      id: 'Password',
+                      url: '#!components!index?type=Password',
+                    },
+                    {
                       text: 'Multiline Textbox',
                       subtext: '多行文本框',
                       id: 'MultilineTextbox',
@@ -339,6 +345,12 @@ define([], function () {
                       subtext: '树选择',
                       id: 'TreeSelect',
                       url: '#!components!index?type=TreeSelect',
+                    },
+                    {
+                      text: 'Cascader',
+                      subtext: '级联选择',
+                      id: 'Cascader',
+                      url: '#!components!index?type=Cascader',
                     },
                     {
                       text: 'AutoComplete',
@@ -439,6 +451,12 @@ define([], function () {
                       subtext: '标题',
                       id: 'Caption',
                       url: '#!components!index?type=Caption',
+                    },
+                    {
+                      text: 'Ellipsis',
+                      subtext: '文字溢出省略',
+                      id: 'Ellipsis',
+                      url: '#!components!index?type=Ellipsis',
                     },
                     {
                       text: 'SecureInfo',

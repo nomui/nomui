@@ -378,7 +378,8 @@ class Component {
       this.addClass('s-selected')
       isFunction(this._select) && this._select()
       selectOption.triggerSelect === true && this._callHandler(this.props.onSelect)
-      selectOption.triggerSelectionChange === true && this._callHandler(this.props.onSelectionChange)
+      selectOption.triggerSelectionChange === true &&
+        this._callHandler(this.props.onSelectionChange)
 
       return true
     }
@@ -574,7 +575,7 @@ class Component {
         if (modifierVal === true) {
           classes.push(`p-${hyphenate(modifier)}`)
         } else if (typeof modifierVal === 'string' || typeof modifierVal === 'number') {
-          classes.push(`p-${hyphenate(modifier)}-${modifierVal}`)
+          classes.push(`p-${hyphenate(modifier)}-${hyphenate(`${modifierVal}`)}`)
         }
       }
     }
@@ -604,8 +605,7 @@ class Component {
         for (let i = 0; i < _styles.length; i++) {
           if (isString(_styles[i]) || isNumeric(_styles)) {
             classes.push(`u${className}-${_styles[i]}`)
-          }
-          else if (_styles[i] === true) {
+          } else if (_styles[i] === true) {
             classes.push(`u${className}`)
           }
         }
@@ -624,11 +624,15 @@ class Component {
 
   _processClick() {
     const { onClick, selectable, expandable } = this.props
-    if (onClick || (selectable && selectable.byClick === true) || (expandable && expandable.byClick))
+    if (
+      onClick ||
+      (selectable && selectable.byClick === true) ||
+      (expandable && expandable.byClick)
+    )
       this.setProps({
         attrs: {
-          onclick: this.__handleClick
-        }
+          onclick: this.__handleClick,
+        },
       })
   }
 
@@ -649,7 +653,7 @@ class Component {
     argObj.sender = this
     if (handler) {
       if (isFunction(handler)) {
-        return handler(argObj);
+        return handler(argObj)
       }
       if (isString(handler) && isFunction(this.props[handler])) {
         return this.props[handler](argObj)

@@ -24,6 +24,7 @@ class Uploader extends Control {
       defaultFileList: [],
       multiple: true,
       name: 'file',
+      display: true,
       data: {},
       // request option
       method: 'post',
@@ -53,6 +54,7 @@ class Uploader extends Control {
       onPreview,
       onDownload,
       extraAction,
+      display,
       // fileList,
     } = this.props
     const files = this.fileList
@@ -97,7 +99,7 @@ class Uploader extends Control {
 
     children.push(inputUploader)
     children.push(button)
-    if (files && files.length > 0) {
+    if (display && files && files.length > 0) {
       children.push({
         component: FileList,
         files,
