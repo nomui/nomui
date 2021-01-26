@@ -465,10 +465,10 @@ define([], function () {
                       url: '#!components!index?type=Ellipsis',
                     },
                     {
-                      text: 'SecureInfo',
+                      text: 'MaskInfo',
                       subtext: '敏感信息打码',
-                      id: 'SecureInfo',
-                      url: '#!components!index?type=SecureInfo',
+                      id: 'MaskInfo',
+                      url: '#!components!index?type=MaskInfo',
                     },
                     {
                       text: 'SlideCaptcha',

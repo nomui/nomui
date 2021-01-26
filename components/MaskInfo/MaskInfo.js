@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 
-class SecureInfo extends Component {
+class MaskInfo extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       tag: 'span',
@@ -22,7 +22,10 @@ class SecureInfo extends Component {
     const that = this
 
     if (this.props.mask === true) {
-      this.props.text = this.formatSecuredInfo(text, type)
+      this.props.text = MaskInfo.format({
+        value: text,
+        type: type,
+      })
     } else {
       this.props.text = this.originText
     }
@@ -82,79 +85,81 @@ class SecureInfo extends Component {
     this.update(this.props.mask)
   }
 
-  formatSecuredInfo(text, type) {
-    if (!text) {
+  static format(data) {
+    const { value, type } = data
+
+    if (!value) {
       return ''
     }
-    if (text === 'NA' || text === '') {
-      return text
+    if (value === 'NA' || value === '') {
+      return value
     }
 
     let newText = ''
 
     // 手机号
     if (type === 'mobile') {
-      newText = text.replace(/(\d{1,3})(\d{4})(\d+)/g, '$1****$3')
+      newText = value.replace(/(\d{1,3})(\d{4})(\d+)/g, '$1****$3')
     }
     // 电话号码
     else if (type === 'phone') {
-      newText = text.replace(/(\d+)(\d{4})/g, '$1*****')
+      newText = value.replace(/(\d+)(\d{4})/g, '$1*****')
     }
     // 传真号码
     else if (type === 'fax') {
-      newText = text.replace(/(\d+)(\d{4})/g, '$1*****')
+      newText = value.replace(/(\d+)(\d{4})/g, '$1*****')
     }
     // 邮箱
     else if (type === 'mail') {
       let strend
-      if (text.indexOf('@') < 5) {
-        strend = text.substring(1, text.lastIndexOf('@') - 1)
+      if (value.indexOf('@') < 5) {
+        strend = value.substring(1, value.lastIndexOf('@') - 1)
       } else {
-        strend = text.substring(2, text.lastIndexOf('@') - 2)
+        strend = value.substring(2, value.lastIndexOf('@') - 2)
       }
-      newText = text.replace(strend, '***')
+      newText = value.replace(strend, '***')
     }
     // 银行卡
     else if (type === 'card') {
-      const strend = text.substring(0, text.length - 4)
-      newText = text.replace(strend, '************')
+      const strend = value.substring(0, value.length - 4)
+      newText = value.replace(strend, '************')
     }
 
     // 身份证
     else if (type === 'identity') {
-      newText = text.replace(/(\d{4}).*(\w{3})/gi, '$1***********$2')
+      newText = value.replace(/(\d{4}).*(\w{3})/gi, '$1***********$2')
     }
     // 姓名
     else if (type === 'name') {
-      const strend = text.substring(0, text.length - 1)
+      const strend = value.substring(0, value.length - 1)
       let star = ''
       for (let i = 0; i < strend.length; i++) {
         star += '*'
       }
-      newText = text.replace(strend, star)
+      newText = value.replace(strend, star)
     }
     // 中间
     else if (type === 'middle') {
-      if (text.length <= 4) {
+      if (value.length <= 4) {
         newText = '****'
-      } else if (text.length > 4 && text.length <= 8) {
-        const strend = text.substring(text.length - 4, text.length)
+      } else if (value.length > 4 && value.length <= 8) {
+        const strend = value.substring(value.length - 4, value.length)
         newText = `****${strend}`
       } else {
-        const strend = text.substring(0, text.length - 8)
-        const strend2 = text.substring(text.length - 4, text.length)
+        const strend = value.substring(0, value.length - 8)
+        const strend2 = value.substring(value.length - 4, value.length)
         newText = `${strend}****${strend2}`
       }
     }
 
     // 其他
     else if (!type || type === 'other') {
-      if (text.length > 4) {
-        const strend = text.substring(0, text.length - 4)
+      if (value.length > 4) {
+        const strend = value.substring(0, value.length - 4)
         newText = `${strend}****`
       } else {
         newText = ''
-        for (let i = 0; i < text.length; i++) {
+        for (let i = 0; i < value.length; i++) {
           newText += '*'
         }
       }
@@ -163,6 +168,6 @@ class SecureInfo extends Component {
   }
 }
 
-Component.register(SecureInfo)
+Component.register(MaskInfo)
 
-export default SecureInfo
+export default MaskInfo
