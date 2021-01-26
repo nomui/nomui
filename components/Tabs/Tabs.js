@@ -33,6 +33,10 @@ class Tabs extends Component {
         items: tabItems,
         uistyle: uistyle,
         selectedTab: selectedTab,
+        created: function () {
+          this.tabs = that
+          that.tabList = this
+        },
         tabContent: function () {
           return that.tabContent
         },
@@ -49,6 +53,10 @@ class Tabs extends Component {
     this.setProps({
       children: [this.props.tabList, this.props.tabContent],
     })
+  }
+
+  getSelectedTab() {
+    return this.tabList.getSelectedItem()
   }
 }
 
