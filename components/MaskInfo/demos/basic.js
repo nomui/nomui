@@ -7,17 +7,17 @@ define([], function () {
         component: 'Cols',
         items: [
           {
-            component: 'SecureInfo',
+            component: 'MaskInfo',
             type: 'mail',
             text: 'snoopdog@dogs.com',
           },
           {
-            component: 'SecureInfo',
+            component: 'MaskInfo',
             type: 'name',
             text: '张小花',
           },
           {
-            component: 'SecureInfo',
+            component: 'MaskInfo',
             type: 'mobile',
             text: '13548612345',
           },
