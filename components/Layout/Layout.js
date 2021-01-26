@@ -3,6 +3,7 @@ import LayoutHeader from './LayoutHeader'
 import LayoutBody from './LayoutBody'
 import LayoutFooter from './LayoutFooter'
 import LayoutSider from './LayoutSider'
+import LayoutAsider from './LayoutAsider'
 
 class Layout extends Component {
     constructor(props, ...mixins) {
@@ -11,6 +12,7 @@ class Layout extends Component {
             body: null,
             footer: null,
             sider: null,
+            asider: null,
             scroll: 'inner', // sticky
         }
 
@@ -18,34 +20,38 @@ class Layout extends Component {
     }
 
     _config() {
+        const { header, body, footer, sider, asider } = this.props
         this._addPropStyle('scroll')
+
         this.setProps(
             {
                 tag: 'div',
-                header: this.props.header && { component: LayoutHeader },
-                body: this.props.body && { component: LayoutBody },
-                footer: this.props.footer && { component: LayoutFooter },
-                sider: this.props.sider && { component: LayoutSider }
+                header: header && { component: LayoutHeader },
+                body: body && { component: LayoutBody },
+                footer: footer && { component: LayoutFooter },
+                sider: sider && { component: LayoutSider },
+                asider: asider && { component: LayoutAsider }
             }
         )
 
-        if (this.props.sider) {
+        if (sider || asider) {
             this.setProps({
                 classes: {
                     'p-has-sider': true
                 },
                 children: [
-                    this.props.sider && this.props.sider,
-                    this.props.body && this.props.body
+                    this.props.sider,
+                    this.props.body,
+                    this.props.asider
                 ]
             })
         }
         else {
             this.setProps({
                 children: [
-                    this.props.header && this.props.header,
-                    this.props.body && this.props.body,
-                    this.props.footer && this.props.footer
+                    this.props.header,
+                    this.props.body,
+                    this.props.footer
                 ]
             })
         }

@@ -17,6 +17,9 @@ define([], function () {
         sider: {
           children: '我是侧边栏，配置了我的时候，头部与脚部无效',
         },
+        asider: {
+          children: '我是另一边的侧边栏'
+        }
       }
     },
   }
