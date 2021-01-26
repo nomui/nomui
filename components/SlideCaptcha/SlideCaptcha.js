@@ -326,8 +326,8 @@ class SlideCaptcha extends Component {
                 classes: {
                   'refesh-bg': true,
                 },
-                onClick: that.handleRefreshCaptcha,
                 attrs: {
+                  onclick: that.handleRefreshCaptcha,
                   style: {
                     left: `${width - 20}px`,
                     display: 'block',

@@ -18,14 +18,20 @@ class MultilineTextbox extends Field {
 
   _config() {
     const that = this
-    const { autoSize, attrs } = this.props
+    const { autoSize, value, placeholder, autofocus, rows, maxLength } = this.props
 
     this.setProps({
       control: {
         children: {
           component: Textarea,
           autoSize,
-          attrs,
+          attrs: {
+            value,
+            placeholder,
+            autofocus,
+            rows,
+            maxLength,
+          },
           _created: function () {
             this.multilineTextbox = that
             this.multilineTextbox.textarea = this
