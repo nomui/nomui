@@ -13,14 +13,14 @@ class SelectPopup extends Popup {
   _created() {
     super._created()
 
-    this.selectControl = this.opener
+    this.selectControl = this.opener.field
   }
 
   _config() {
     this.setProps({
       attrs: {
         style: {
-          width: `${this.selectControl.offsetWidth()}px`,
+          width: `${this.selectControl.control.offsetWidth()}px`,
         },
       },
       children: {
