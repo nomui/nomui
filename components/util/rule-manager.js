@@ -79,6 +79,7 @@ RuleManager.ruleTypes = {
   },
   maxlength: {
     validate: function (value, ruleValue) {
+      if (value === undefined || value === null) return true
       let length = 0
       if (Array.isArray(value)) {
         length = value.length
