@@ -2,8 +2,9 @@ define([], function () {
   return function () {
     let javascriptMenu = null
 
-    highLight = () => {
-      let { type = 'component', cat } = this.$route.query
+    const highLight = () => {
+      let { type = 'component' } = this.$route.query
+      const { cat } = this.$route.query
       if (cat) {
         type += `/${cat}`
       }
@@ -468,6 +469,12 @@ define([], function () {
                       subtext: '敏感信息打码',
                       id: 'SecureInfo',
                       url: '#!components!index?type=SecureInfo',
+                    },
+                    {
+                      text: 'SlideCaptcha',
+                      subtext: '拖拽验证码',
+                      id: 'SlideCaptcha',
+                      url: '#!components!index?type=SlideCaptcha',
                     },
                   ],
                 },
