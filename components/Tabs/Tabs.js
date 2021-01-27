@@ -6,7 +6,7 @@ class Tabs extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       tabs: [],
-      selectedTab: 'tab0',
+      // selectedTab: 'tab0',
       uistyle: 'plain', // hat,card,line,pill
     }
 
@@ -17,13 +17,19 @@ class Tabs extends Component {
     const that = this
     const tabItems = []
     const tabPanles = []
-    const { tabs, uistyle, selectedTab } = this.props
+    const { tabs, uistyle } = this.props
+    let { selectedTab } = this.props
     for (let i = 0; i < tabs.length; i++) {
       const tab = tabs[i]
-      tab.item.key = tab.item.key || `tab${i}`
-      tab.panel.key = tab.panel.key || `tab${i}`
+      const key = tab.key || `tab${i}`
+      tab.item.key = key
+      tab.panel.key = key
       tabItems.push(tab.item)
       tabPanles.push(tab.panel)
+    }
+
+    if (selectedTab === undefined) {
+      selectedTab = tabItems[0] && tabItems[0].key
     }
 
     this.setProps({
@@ -57,6 +63,10 @@ class Tabs extends Component {
 
   getSelectedTab() {
     return this.tabList.getSelectedItem()
+  }
+
+  selectTab(key) {
+    return this.tabList.selectItem(key)
   }
 }
 
