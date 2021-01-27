@@ -52,6 +52,9 @@ class Numberbox extends Textbox {
 
   _getValue() {
     let data = this.input.getText()
+    if (data === '') {
+      return null
+    }
     data = parseFloat(data).toFixed(this.props.precision)
     if (Number.isNaN(data)) {
       data = null
