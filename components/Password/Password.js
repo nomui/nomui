@@ -9,8 +9,8 @@ class Password extends Textbox {
   }
 
   _created() {
-    this.realValue = ''
     super._created()
+    this.realValue = ''
   }
 
   _config() {
