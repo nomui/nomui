@@ -15,6 +15,7 @@ class SlideCaptcha extends Component {
       // onFinishFailed:()=>{},
       refreshTitle: '换一张',
       tip: '向右滑动完成拼图',
+      autoRefreshOnFail: true, // 失败后是否自动刷新图片
     }
 
     super(
@@ -155,17 +156,18 @@ class SlideCaptcha extends Component {
    * @param {*} currentPageX 当前所处位置距离浏览器最左边的位置
    */
   dragEnd() {
-    const { state, validate, onFinish, token, onFinishFailed } = this.props
+    const that = this
+    const { state, validate, autoRefreshOnFail, onFinish, token, onFinishFailed } = that.props
     // 距离不能少于5 否则算没拖动
     if (!state.isMove || state.distance < 5) {
-      this.dispatch({ type: 'reset' })
-      return
+      that.dispatch({ type: 'reset' })
+      return true
     }
-    this.dispatch({ type: 'setMove', payload: false })
+    that.dispatch({ type: 'setMove', payload: false })
     if (state.poorX === undefined) {
-      return
+      return true
     }
-    this.dispatch({ type: 'setEndTime', payload: new Date() })
+    that.dispatch({ type: 'setEndTime', payload: new Date() })
     setTimeout(() => {
       // 调用远程进行校验
       validate &&
@@ -180,9 +182,11 @@ class SlideCaptcha extends Component {
           })
           .catch((err) => {
             if (onFinishFailed) {
-              onFinishFailed(err)
+              onFinishFailed(err, that.refresh)
             }
-            this.refresh()
+            if (autoRefreshOnFail) {
+              that.refresh()
+            }
           })
     })
   }
@@ -195,19 +199,11 @@ class SlideCaptcha extends Component {
     this.dragEnd()
   }
 
-  // handleTouchMove(e) {
-  //   this.dragMoving(e.targetTouches.touches[0].pageX)
-  // }
-
-  // handleTouchend() {
-  //   this.dragEnd()
-  //   // 阻止页面的滑动默认事件
-  //   document.removeEventListener('touchmove', this.defaultEvent, false)
-  // }
-
-  handleRefreshCaptcha({ event }) {
-    event.preventDefault()
+  handleRefreshCaptcha(e) {
     this.refresh()
+    e.preventDefault && e.preventDefault()
+    e.stopPropagation && e.stopPropagation()
+    e.stopImmediatePropagation && e.stopImmediatePropagation()
   }
 
   _config() {
@@ -249,6 +245,7 @@ class SlideCaptcha extends Component {
               classes: {
                 'small-drag': true,
               },
+
               attrs: {
                 style: {
                   backgroundImage: `url(${captchSrc})`,
@@ -307,33 +304,22 @@ class SlideCaptcha extends Component {
                 onmousedown: function (e) {
                   that.dragStart(e.pageX)
                 },
-                // ontouchstart: function (e) {
-                //   that.dragStart(e.touches[0].pageX)
-                // },
               },
             },
             {
-              tag: 'a',
-              attrs: {
-                title: refreshTitle,
-                style: {
-                  width: '16px',
-                  height: '16px',
-                },
+              classes: {
+                'refesh-btn': true,
               },
-              children: {
-                tag: 'div',
-                classes: {
-                  'refesh-bg': true,
+              component: 'Button',
+              icon: 'refresh',
+              shape: 'circle',
+              type: 'link',
+              attrs: {
+                onmouseup: this.handleRefreshCaptcha,
+                style: {
+                  visibility: state.isMove ? 'hidden' : 'visible',
                 },
-                attrs: {
-                  onclick: that.handleRefreshCaptcha,
-                  style: {
-                    left: `${width - 20}px`,
-                    display: 'block',
-                    visibility: state.isMove ? 'hidden' : 'visible',
-                  },
-                },
+                title: refreshTitle,
               },
             },
           ],
@@ -345,25 +331,21 @@ class SlideCaptcha extends Component {
   _created() {
     this.handleMouseMove = this.handleMouseMove.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
-    // this.handleTouchMove = this.handleTouchMove.bind(this)
-    // this.handleTouchend = this.handleTouchend.bind(this)
+    this.dragStart = this.dragStart.bind(this)
+    this.dragEnd = this.dragEnd.bind(this)
+    this.dragMoving = this.dragMoving.bind(this)
+
     this.handleRefreshCaptcha = this.handleRefreshCaptcha.bind(this)
     this.defaultEvent = this.defaultEvent.bind(this)
 
     // 移动鼠标、松开鼠标
-    window.addEventListener('mousemove', this.handleMouseMove, false)
-    window.addEventListener('mouseup', this.handleMouseUp, false)
-
-    // 触摸移动 结束
-    // window.addEventListener('touchmove', this.handleTouchMove, false)
-    // window.addEventListener('touchend', this.handleTouchend, false)
+    this.referenceElement.addEventListener('mousemove', this.handleMouseMove, true)
+    this.referenceElement.addEventListener('mouseup', this.handleMouseUp)
   }
 
   _remove() {
-    window.removeEventListener('mousemove', this.handleMouseMove, false)
-    window.removeEventListener('mouseup', this.handleMouseUp, false)
-    // window.removeEventListener('touchmove', this.handleTouchMove, false)
-    // window.removeEventListener('touchend', this.handleTouchend, false)
+    this.referenceElement.removeEventListener('mousemove', this.handleMouseMove, true)
+    this.referenceElement.removeEventListener('mouseup', this.handleMouseUp)
   }
 }
 

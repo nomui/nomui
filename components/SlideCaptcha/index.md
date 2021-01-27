@@ -29,6 +29,7 @@
 | onRefresh | 刷新图片时触发 | `()=>{}` | - |
 | validate | 拖拽结束后触发验证,如果是 200 则算验证成功 | `({token,point,timespan,datelist})=>{}` | - |
 | onFinish | 验证成功的回调,会带上 validate 请求返回的结果 | `(result)=>{}` | - |
-| onFinishFailed | 验证失败的回调,会带上 validate 请求返回的结果 | `(result)=>{}` | - |
+| onFinishFailed | 验证失败的回调,会带上 validate 请求返回的结果以及 refresh 方法，可以调用 refresh 方法来刷新图片以及重置拖拽滑块位置 | `(result,refresh)=>{}` | - |
 | refreshTitle | 刷新图标提示文字 | `string` | `换一张` |
+| autoRefreshOnFail | 失败后是否自动刷新图片 | `boolean` | `true` |
 | tip | 下方的提示文字内容 | `string` | `向右滑动完成拼图` |
