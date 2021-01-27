@@ -10,6 +10,7 @@ class Password extends Textbox {
 
   _created() {
     this.realValue = ''
+    super._created()
   }
 
   _config() {
@@ -68,6 +69,7 @@ class Password extends Textbox {
   }
 
   _getValue() {
+    console.log('get')
     if (!this.realValue || this.realValue === '') {
       return null
     }
