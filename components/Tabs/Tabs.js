@@ -33,7 +33,7 @@ class Tabs extends Component {
         items: tabItems,
         uistyle: uistyle,
         selectedTab: selectedTab,
-        created: function () {
+        _created: function () {
           this.tabs = that
           that.tabList = this
         },

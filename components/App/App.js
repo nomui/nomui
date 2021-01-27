@@ -68,7 +68,7 @@ class App extends Component {
       const previousRoutePaths = this.previousRoute.paths
 
       const length = Math.min(previousRoutePaths.length, currentRoutePaths.length)
-      for (let i = 1; i < length; i++) {
+      for (let i = 0; i < length - 1; i++) {
         if (previousRoutePaths[i] !== currentRoutePaths[i]) {
           changedLevel = i
           break
