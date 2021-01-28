@@ -14,10 +14,8 @@ define([], function () {
           {
             name: 'password',
             label: '密码',
-            control: {
-              component: 'Password',
-              required: true,
-            },
+            component: 'Password',
+            required: true,
           },
 
           {
