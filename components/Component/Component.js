@@ -319,7 +319,11 @@ class Component {
 
     mixins = [...childDefaultsMixins, ...childMixins]
 
-    this.children.push(Component.create(props, ...mixins))
+    const compt = Component.create(props, ...mixins)
+
+    this.children.push(compt)
+
+    return compt
   }
 
   before(props) {

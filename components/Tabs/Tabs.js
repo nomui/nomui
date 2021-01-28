@@ -68,6 +68,11 @@ class Tabs extends Component {
   selectTab(key) {
     return this.tabList.selectItem(key)
   }
+
+  updatePanel(key, newPanelProps) {
+    const panel = this.tabContent.getPanel(key)
+    panel.update(newPanelProps)
+  }
 }
 
 Component.register(Tabs)

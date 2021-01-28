@@ -130,7 +130,7 @@ class Group extends Field {
 
     appendField(fieldProps) {
         const { fieldDefaults } = this.props
-        this.control.appendChild(Component.extendProps(fieldDefaults, fieldProps))
+        return this.control.appendChild(Component.extendProps(fieldDefaults, fieldProps))
     }
 
     _getSubField(fieldName) {
