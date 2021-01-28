@@ -161,4 +161,15 @@
             padding: 1rem;
         }
     }
+
+    &.p-stretch {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        >.nom-tab-content {
+            flex-grow: 1;
+            overflow: auto;
+        }
+    }
 }
