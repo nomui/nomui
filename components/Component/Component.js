@@ -823,8 +823,13 @@ class Component {
     return new componentType(componentProps, ...mixins)
   }
 
-  static register(component) {
-    components[component.name] = component
+  static register(component, name) {
+    if (name !== undefined) {
+      components[name] = component
+    }
+    else {
+      components[component.name] = component
+    }
   }
 
   static extendProps(...args) {
