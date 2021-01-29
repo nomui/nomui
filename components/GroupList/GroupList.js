@@ -66,6 +66,30 @@ class GroupList extends Field {
 
         super._config()
     }
+
+    getValue() {
+        const value = []
+        for (let i = 0; i < this.fields.length; i++) {
+            const field = this.fields[i]
+            if (field.getValue) {
+                const fieldValue = field.getValue()
+                value.push(fieldValue)
+            }
+        }
+
+        return value
+    }
+
+    setValue(value) {
+        if (Array.isArray(value)) {
+            for (let i = 0; i < this.fields.length; i++) {
+                const field = this.fields[i]
+                if (field.setValue) {
+                    field.setValue(value[i])
+                }
+            }
+        }
+    }
 }
 
 Component.register(GroupList)
