@@ -12,6 +12,15 @@ define([], function () {
                         component: 'Cols',
                         items: [
                             {
+                                component: 'Checkbox',
+                                text: '不换行',
+                                onValueChange: (args) => {
+                                    group.update({
+                                        nowrap: args.newValue
+                                    })
+                                }
+                            },
+                            {
                                 component: 'RadioList',
                                 uistyle: 'button',
                                 options: [
@@ -39,6 +48,17 @@ define([], function () {
                                 onValueChange: (args) => {
                                     group.update({
                                         line: args.newValue
+                                    })
+                                }
+                            },
+                            {
+                                component: 'Checkbox',
+                                text: '不显示标签',
+                                onValueChange: (args) => {
+                                    group.update({
+                                        fieldDefaults: {
+                                            notShowLabel: args.newValue
+                                        }
                                     })
                                 }
                             },

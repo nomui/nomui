@@ -5,6 +5,7 @@ define(
         './get-field.js',
         './value.js',
         './validate.js',
+        './nowrap.js',
         './inline.js',
         './span.js',
         './striped.js',

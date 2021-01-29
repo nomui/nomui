@@ -19,7 +19,7 @@ class Group extends Field {
     }
 
     _config() {
-        this._addPropStyle('inline', 'striped', 'line')
+        this._addPropStyle('inline', 'striped', 'line', 'nowrap')
         const { action, fields, fieldDefaults, value } = this.props
         const children = []
 
