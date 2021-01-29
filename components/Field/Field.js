@@ -152,6 +152,19 @@ class Field extends Component {
     this.setValue(null)
   }
 
+  _remove() {
+    if (this.group && Array.isArray(this.group.fields)) {
+      const fields = this.group.fields
+
+      for (let i = 0; i < fields.length; i++) {
+        if (fields[i] === this) {
+          delete fields[i]
+          fields.splice(i, 1)
+        }
+      }
+    }
+  }
+
   // 派生的控件子类内部适当位置调用
   _onValueChange() {
     const that = this

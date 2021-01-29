@@ -30,6 +30,7 @@ class GroupList extends Field {
                         text: '移除',
                         onClick: () => {
                             group.remove()
+                            that._onValueChange()
                         }
                     }
                 })
@@ -58,8 +59,10 @@ class GroupList extends Field {
                 onClick: () => {
                     that.control.appendChild(Component.extendProps(extGroupDefaults, {
                         component: Group,
-                        fields: fields
+                        fields: fields,
+                        __group: that
                     }))
+                    that._onValueChange()
                 }
             },
         })
