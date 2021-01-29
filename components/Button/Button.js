@@ -48,7 +48,7 @@ class Button extends Component {
         tag: 'a',
         attrs: {
           href: href,
-          target: target || '_self'
+          target: target || '_self',
         },
       })
     }
@@ -56,6 +56,10 @@ class Button extends Component {
 
   _disable() {
     this.element.setAttribute('disabled', 'disabled')
+  }
+
+  _enable() {
+    this.element.removeAttribute('disabled')
   }
 }
 
