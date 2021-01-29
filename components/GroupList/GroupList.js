@@ -42,7 +42,7 @@ class GroupList extends Field {
                 groups.push(Component.extendProps(extGroupDefaults, {
                     component: Group,
                     fields: fields, value: item,
-                    __group: this
+                    __group: that
                 }))
             })
         }
