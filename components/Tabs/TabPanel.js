@@ -21,8 +21,12 @@ class TabPanel extends Component {
   }
 
   _show() {
+    if (this.tabContent.shownPanel === this) {
+      return
+    }
     this.tabContent.shownPanel && this.tabContent.shownPanel.hide()
     this.tabContent.shownPanel = this
+    this.tabContent.props.selectedPanel = this.key
   }
 }
 

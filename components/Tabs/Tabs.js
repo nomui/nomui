@@ -14,6 +14,7 @@ class Tabs extends Component {
   }
 
   _config() {
+    this._addPropStyle('stretch')
     const that = this
     const tabItems = []
     const tabPanles = []
@@ -67,6 +68,11 @@ class Tabs extends Component {
 
   selectTab(key) {
     return this.tabList.selectItem(key)
+  }
+
+  updatePanel(key, newPanelProps) {
+    const panel = this.tabContent.getPanel(key)
+    panel.update(newPanelProps)
   }
 }
 

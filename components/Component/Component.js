@@ -319,7 +319,11 @@ class Component {
 
     mixins = [...childDefaultsMixins, ...childMixins]
 
-    this.children.push(Component.create(props, ...mixins))
+    const compt = Component.create(props, ...mixins)
+
+    this.children.push(compt)
+
+    return compt
   }
 
   before(props) {
@@ -823,8 +827,13 @@ class Component {
     return new componentType(componentProps, ...mixins)
   }
 
-  static register(component) {
-    components[component.name] = component
+  static register(component, name) {
+    if (name !== undefined) {
+      components[name] = component
+    }
+    else {
+      components[component.name] = component
+    }
   }
 
   static extendProps(...args) {
