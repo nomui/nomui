@@ -20,7 +20,8 @@ class Panel extends Component {
   _config() {
     const { header, body, footer, startAddons, endAddons } = this.props
     let footerProps
-    const headerProps = Component.extendProps({ component: PanelHeader }, header)
+    const headerProps =
+      header !== false && Component.extendProps({ component: PanelHeader }, header)
     const bodyProps = Component.extendProps({ component: PanelBody }, body)
     if (footer) {
       footerProps = Component.extendProps({ component: PanelFooter }, footer)

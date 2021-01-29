@@ -30,7 +30,7 @@ define([], function () {
                   onOk: (args) => {
                     new nomui.Message({ type: 'info', content: '点击了确定按钮' })
                     args.sender.close()
-                  }
+                  },
                 })
               },
             },

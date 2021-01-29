@@ -4,8 +4,8 @@ class SlideCaptcha extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       token: null,
-      bgSrc: null,
-      captchSrc: null,
+      bgSrc: '',
+      captchSrc: '',
       width: 300,
       height: 300,
       top: 0,

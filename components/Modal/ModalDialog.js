@@ -13,7 +13,7 @@ class ModalDialog extends Component {
   }
 
   _created() {
-    const modal = this.modal = this.parent
+    const modal = (this.modal = this.parent)
     const { content } = this.modal.props
     if (isString(content)) {
       require([content], (contentConfig) => {
@@ -21,7 +21,7 @@ class ModalDialog extends Component {
         if (isFunction(props)) {
           props = contentConfig.call(this, modal)
         }
-        props = Component.extendProps(this._getDefaultPanelContent(props), props,)
+        props = Component.extendProps(this._getDefaultPanelContent(props), props)
         this.update({
           children: n(null, props, null, [ModalContentMixin]),
         })
@@ -35,7 +35,7 @@ class ModalDialog extends Component {
       okText: contentProps.okText,
       onOk: contentProps.onOk,
       cancelText: contentProps.cancelText,
-      onCancel: contentProps.onCancel
+      onCancel: contentProps.onCancel,
     })
 
     const { okText, cancelText } = modal.props
@@ -64,23 +64,23 @@ class ModalDialog extends Component {
             {
               component: 'Button',
               styles: {
-                color: 'primary'
+                color: 'primary',
               },
               text: okText,
-              onClick: (() => {
+              onClick: () => {
                 modal._handleOk()
-              })
+              },
             },
             {
               component: 'Button',
               text: cancelText,
-              onClick: (() => {
+              onClick: () => {
                 modal._handleCancel()
-              })
-            }
-          ]
-        }
-      }
+              },
+            },
+          ],
+        },
+      },
     }
   }
 
@@ -93,8 +93,6 @@ class ModalDialog extends Component {
       })
     }
   }
-
-
 }
 
 Component.register(ModalDialog)
