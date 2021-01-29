@@ -1,4 +1,10 @@
-define(['./basic.js', './active-key.js', './uistyle.js', './separate.js', './stretch.js'], function () {
+define([
+  './basic.js',
+  './tab-operator.js',
+  './uistyle.js',
+  './separate.js',
+  './stretch.js',
+], function () {
   return {
     title: 'Tabs',
     subtitle: '选项卡',

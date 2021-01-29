@@ -1,6 +1,6 @@
 define([], function () {
   return {
-    title: '控制激活的tab',
+    title: '自定义控制tab',
     file: 'basic',
     demo: function () {
       let tabRef
@@ -22,6 +22,17 @@ define([], function () {
                 onClick: function () {
                   // eslint-disable-next-line no-alert
                   alert(`选中的Tab:${tabRef.getSelectedTab().key}`)
+                },
+              },
+              {
+                component: 'Button',
+                text: '隐藏/显示 Tabs头',
+                onClick: function () {
+                  if (tabRef.tabList.props.hidden) {
+                    tabRef.tabList.show()
+                  } else {
+                    tabRef.tabList.hide()
+                  }
                 },
               },
             ],
