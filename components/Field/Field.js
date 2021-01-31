@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import { isFunction, clone } from '../util/index'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
+import FieldAction from './FieldAction'
 import Tooltip from '../Tooltip/index'
 import RuleManager from '../util/rule-manager'
 
@@ -38,15 +39,11 @@ class Field extends Component {
 
   _config() {
     this._addPropStyle('required', 'requiredMark', 'labelAlign')
-    const { label, span, type, notShowLabel, required, requiredMessage, rules } = this.props
+    const { label, span, type, notShowLabel, required, requiredMessage, rules, actions } = this.props
     const showLabel = notShowLabel === false && (label !== undefined && label !== null)
 
     if (required === true) {
       rules.unshift({ type: 'required', message: requiredMessage })
-    }
-
-    if (showLabel === false) {
-      this.props.labelAlign = null
     }
 
     if (span) {
@@ -65,6 +62,7 @@ class Field extends Component {
       children: [
         showLabel && { component: FieldLabel },
         { component: FieldContent, value: this.props.value },
+        actions && { component: FieldAction, children: { component: 'Cols', items: actions } }
       ],
     })
   }

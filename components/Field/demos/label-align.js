@@ -72,6 +72,7 @@ define([], function () {
               field = c
             },
             labelAlign: 'right',
+            actions: [{ component: 'Button', text: '我是操作' }]
           },
         ],
       }

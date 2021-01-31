@@ -1,12 +1,10 @@
 import Component from '../Component/index'
-import Field from '../Field/index'
 import Group from '../Group/Group'
 
-class GroupList extends Field {
+class GroupList extends Group {
     constructor(props, ...mixins) {
         const defaults = {
-            fields: [],
-            fieldDefaults: { component: Field }
+            fieldDefaults: { component: Group }
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -14,13 +12,11 @@ class GroupList extends Field {
 
     _created() {
         super._created()
-
-        this.groups = []
     }
 
     _config() {
         const that = this
-        const { fields, groupDefaults, value } = this.props
+        const { groupDefaults, value } = this.props
         const extGroupDefaults = Component.extendProps(groupDefaults, {
             _config: function () {
                 const group = this
@@ -40,31 +36,21 @@ class GroupList extends Field {
         const groups = []
         if (Array.isArray(value)) {
             value.forEach(function (item) {
-                groups.push(Component.extendProps(extGroupDefaults, {
-                    component: Group,
-                    fields: fields, value: item,
-                    __group: that
-                }))
+                groups.push(Component.extendProps(extGroupDefaults, { value: item }))
             })
         }
+
         this.setProps({
-            control: {
-                children: [
-                    ...groups,
-                ]
-            },
-            lastControlAddons: {
+            fields: groups,
+            fieldDefaults: extGroupDefaults,
+            contentActions: [{
                 component: 'Button',
                 text: '添加',
                 onClick: () => {
-                    that.control.appendChild(Component.extendProps(extGroupDefaults, {
-                        component: Group,
-                        fields: fields,
-                        __group: that
-                    }))
+                    that.appendField(extGroupDefaults)
                     that._onValueChange()
                 }
-            },
+            }],
         })
 
         super._config()

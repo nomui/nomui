@@ -1,5 +1,6 @@
 import Component, { n } from '../Component/index'
 import ControlMixin from './ControlMixin'
+import FieldContentAction from './FieldContentAction'
 
 class FieldContent extends Component {
     constructor(props, ...mixins) {
@@ -12,11 +13,12 @@ class FieldContent extends Component {
     }
 
     _config() {
-        const { control, lastControlAddons } = this.field.props
+        const { control, lastControlAddons, contentActions } = this.field.props
         this.setProps({
             children: [
                 n(null, Component.extendProps(control, { classes: { 'nom-control': true } }), null, [ControlMixin]),
-                lastControlAddons && Component.extendProps(lastControlAddons, { classes: { 'nom-control-addon': true } })
+                lastControlAddons && Component.extendProps(lastControlAddons, { classes: { 'nom-control-addon': true } }),
+                contentActions && { component: FieldContentAction, children: { component: 'Cols', items: contentActions } }
             ]
         })
     }
