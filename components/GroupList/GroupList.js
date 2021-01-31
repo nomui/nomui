@@ -21,14 +21,14 @@ class GroupList extends Group {
             _config: function () {
                 const group = this
                 this.setProps({
-                    action: {
+                    actions: [{
                         component: 'Button',
                         text: '移除',
                         onClick: () => {
                             group.remove()
                             that._onValueChange()
                         }
-                    }
+                    }]
                 })
             }
         })
