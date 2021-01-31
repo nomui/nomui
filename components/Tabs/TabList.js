@@ -9,7 +9,6 @@ class TabList extends List {
         component: TabItem,
       },
       tabContent: null,
-      direction: 'horizontal',
       uistyle: 'plain',
       itemSelectable: {
         byClick: true,

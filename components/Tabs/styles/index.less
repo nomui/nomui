@@ -1,8 +1,4 @@
 .nom-tab-list {
-    .list-unstyled();
-
-    margin: 0;
-
     a {
         color: inherit;
         text-decoration: none;
@@ -15,127 +11,129 @@
     &.p-stretch {
         height: 100%;
 
-        >.nom-list-item-wrapper {
+        >.nom-list-content {
             height: 100%;
 
-            >.nom-tab-item {
+            >.nom-list-item-wrapper {
                 height: 100%;
+
+                >.nom-tab-item {
+                    height: 100%;
+                }
             }
         }
     }
 
-    &.p-direction-horizontal {
-        display: flex !important;
-        flex-wrap: wrap;
-
-        >.nom-list-item-wrapper>.nom-tab-item {
-            display: flex !important;
-            align-items: center;
-            padding: 10px 15px;
-            white-space: nowrap;
-            text-decoration: none;
-        }
-    }
-
     &.p-uistyle-plain {
-        >.nom-list-item-wrapper>.nom-list-item {
-            display: block;
-            padding: .5rem 1rem;
-            text-decoration: none;
-            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+        >.nom-list-content {
+            >.nom-list-item-wrapper>.nom-list-item {
+                display: block;
+                padding: .5rem 1rem;
+                text-decoration: none;
+                transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
 
-            &.s-selected {
-                color: @primary;
+                &.s-selected {
+                    color: @primary;
+                }
             }
         }
     }
 
     &.p-uistyle-hat {
-        border-bottom: 1px solid #dee2e6;
+        >.nom-list-content {
+            border-bottom: 1px solid #dee2e6;
 
-        >.nom-list-item-wrapper>.nom-list-item {
-            display: block;
-            margin-bottom: -1px;
-            padding: .5rem 1rem;
-            text-decoration: none;
-            border: 1px solid transparent;
-            border-top-left-radius: .25rem;
-            border-top-right-radius: .25rem;
-            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+            >.nom-list-item-wrapper>.nom-list-item {
+                display: block;
+                margin-bottom: -1px;
+                padding: .5rem 1rem;
+                text-decoration: none;
+                border: 1px solid transparent;
+                border-top-left-radius: .25rem;
+                border-top-right-radius: .25rem;
+                transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
 
-            &.s-selected {
-                color: @primary;
-                background-color: #fff;
-                border-color: #dee2e6 #dee2e6 #fff;
+                &.s-selected {
+                    color: @primary;
+                    background-color: #fff;
+                    border-color: #dee2e6 #dee2e6 #fff;
+                }
             }
         }
     }
 
     &.p-uistyle-line {
-        >.nom-list-item-wrapper>.nom-list-item {
-            display: block;
-            padding: .5rem 1rem;
-            text-decoration: none;
-            border-bottom: 2px solid transparent;
-            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+        >.nom-list-content {
+            >.nom-list-item-wrapper>.nom-list-item {
+                display: block;
+                padding: .5rem 1rem;
+                text-decoration: none;
+                border-bottom: 2px solid transparent;
+                transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
 
-            &.s-selected {
-                color: @primary;
-                font-weight: 500;
-                border-bottom-color: @primary;
+                &.s-selected {
+                    color: @primary;
+                    font-weight: 500;
+                    border-bottom-color: @primary;
+                }
             }
         }
     }
 
     &.p-uistyle-card {
-        background-color: #f5f7fa;
-        border-bottom: 1px solid #dee2e6;
+        >.nom-list-content {
+            background-color: #f5f7fa;
+            border-bottom: 1px solid #dee2e6;
 
-        >.nom-list-item-wrapper {
-            &:first-child {
-                >.nom-list-item {
-                    margin-left: -1px;
+            >.nom-list-item-wrapper {
+                &:first-child {
+                    >.nom-list-item {
+                        margin-left: -1px;
+                    }
                 }
-            }
 
-            >.nom-list-item {
-                display: block;
-                margin-bottom: -1px;
-                padding: .5rem 1rem;
-                color: #909399;
-                text-decoration: none;
-                border: 1px solid transparent;
-                transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+                >.nom-list-item {
+                    display: block;
+                    margin-bottom: -1px;
+                    padding: .5rem 1rem;
+                    color: #909399;
+                    text-decoration: none;
+                    border: 1px solid transparent;
+                    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
 
-                &.s-selected {
-                    color: #495057;
-                    background-color: #fff;
-                    border-color: #fff #dee2e6;
+                    &.s-selected {
+                        color: #495057;
+                        background-color: #fff;
+                        border-color: #fff #dee2e6;
+                    }
                 }
             }
         }
     }
 
     &.p-uistyle-pill {
-        >.nom-list-item-wrapper {
-            margin-right: .5rem;
+        >.nom-list-content {
+            >.nom-list-item-wrapper {
+                margin-right: .5rem;
 
-            &:first-child {
+                &:first-child {
+                    >.nom-list-item {
+                        margin-left: -1px;
+                    }
+                }
+
                 >.nom-list-item {
-                    margin-left: -1px;
-                }
-            }
+                    display: block;
+                    padding: .5rem 1rem;
+                    .u-shape-round();
 
-            >.nom-list-item {
-                padding: .5rem 1rem;
-                .u-shape-round();
+                    &:hover {
+                        background-color: @lprimary;
+                    }
 
-                &:hover {
-                    background-color: @lprimary;
-                }
-
-                &.s-selected {
-                    .u-color-primary();
+                    &.s-selected {
+                        .u-color-primary();
+                    }
                 }
             }
         }

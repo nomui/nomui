@@ -1,49 +1,50 @@
 .nom-radio-list.p-uistyle-radio {
     >.nom-field-content {
-
         >.nom-list {
-            margin: -.5rem -.5rem;
+            >.nom-list-content {
+                margin: -.5rem -.5rem;
 
-            >.nom-list-item-wrapper {
-                padding: .5rem .5rem;
-            }
-        }
+                >.nom-list-item-wrapper {
+                    padding: .5rem .5rem;
 
-        >.nom-list>.nom-list-item-wrapper>label {
-            display: inline-flex;
-            padding-top: @padding-y-base;
-            padding-bottom: @padding-y-base;
-            font-size: 1rem;
-            line-height: @line-height-base;
-            vertical-align: middle;
-            cursor: pointer;
-            transition: all 0.3s;
+                    >label {
+                        display: inline-flex;
+                        padding-top: @padding-y-base;
+                        padding-bottom: @padding-y-base;
+                        font-size: 1rem;
+                        line-height: @line-height-base;
+                        vertical-align: middle;
+                        cursor: pointer;
+                        transition: all 0.3s;
 
-            >span.radio {
-                position: relative;
-                width: ~"calc(1em + 2px)";
-                height: ~"calc(1em + 2px)";
-                margin-top:~"calc((1em * @{line-height-base} - 1em - 2px)/2)";
-                margin-right: .5rem;
-                background: none;
-                border: 1px solid #bdc3d4;
-                border-radius: 50% !important;
-            }
+                        >span.radio {
+                            position: relative;
+                            width: ~"calc(1em + 2px)";
+                            height: ~"calc(1em + 2px)";
+                            margin-top:~"calc((1em * @{line-height-base} - 1em - 2px)/2)";
+                            margin-right: .5rem;
+                            background: none;
+                            border: 1px solid #bdc3d4;
+                            border-radius: 50% !important;
+                        }
 
-            &.s-selected {
-                >span.radio::after {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    display: block;
-                    width: 6px;
-                    height: 6px;
-                    margin-top: -3px;
-                    margin-left: -3px;
-                    background: #7281a4;
-                    border: solid #7281a4;
-                    border-radius: 100% !important;
-                    content: '';
+                        &.s-selected {
+                            >span.radio::after {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                display: block;
+                                width: 6px;
+                                height: 6px;
+                                margin-top: -3px;
+                                margin-left: -3px;
+                                background: #7281a4;
+                                border: solid #7281a4;
+                                border-radius: 100% !important;
+                                content: '';
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -53,36 +54,42 @@
 .nom-radio-list.p-uistyle-button {
     >.nom-field-content {
         >.nom-list {
-            display: inline-flex;
+            >.nom-list-content {
+                display: inline-flex;
 
-            >.nom-list-item-wrapper {
-                >label {
-                    position: relative;
-                    display: inline-flex;
-                    margin-left: -1px;
-                    padding-top: @padding-y-base;
-                    padding-right: @padding-x-base;
-                    padding-bottom: @padding-y-base;
-                    padding-left: @padding-x-base;
-                    font-size: 1rem;
-                    line-height: @line-height-base;
-                    border: 1px solid #d9d9d9;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                }
+                >.nom-list-item-wrapper {
+                    &:first-child {
+                        padding-left: 1px;
+                    }
 
-                &:first-child>label {
-                    border-left: 1px solid #d9d9d9;
-                    border-radius: 4px 0 0 4px;
-                }
+                    >label {
+                        position: relative;
+                        display: inline-flex;
+                        margin-left: -1px;
+                        padding-top: @padding-y-base;
+                        padding-right: @padding-x-base;
+                        padding-bottom: @padding-y-base;
+                        padding-left: @padding-x-base;
+                        font-size: 1rem;
+                        line-height: @line-height-base;
+                        border: 1px solid #d9d9d9;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                    }
 
-                &:last-child>label {
-                    border-radius: 0 4px 4px 0;
-                }
+                    &:first-child>label {
+                        border-left: 1px solid #d9d9d9;
+                        border-radius: 4px 0 0 4px;
+                    }
 
-                >label.s-selected {
-                    color: @primary;
-                    border-color: @primary;
+                    &:last-child>label {
+                        border-radius: 0 4px 4px 0;
+                    }
+
+                    >label.s-selected {
+                        color: @primary;
+                        border-color: @primary;
+                    }
                 }
             }
         }
