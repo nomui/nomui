@@ -6,6 +6,7 @@ module.exports = {
     $: true,
     hljs: true,
     marked: true,
+    requirejs: true,
   },
   rules: {
     'no-underscore-dangle': 0,
