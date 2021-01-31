@@ -39,7 +39,7 @@ class Field extends Component {
 
   _config() {
     this._addPropStyle('required', 'requiredMark', 'labelAlign')
-    const { label, span, type, notShowLabel, required, requiredMessage, rules, actions } = this.props
+    const { label, span, notShowLabel, required, requiredMessage, rules, actions } = this.props
     const showLabel = notShowLabel === false && (label !== undefined && label !== null)
 
     if (required === true) {
@@ -52,10 +52,6 @@ class Field extends Component {
           col: span,
         },
       })
-    }
-
-    if (type === 'Group') {
-      this._addPropStyle('inline', 'striped', 'line')
     }
 
     this.setProps({

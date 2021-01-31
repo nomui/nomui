@@ -24,7 +24,7 @@ class Group extends Field {
         const children = []
 
         for (let i = 0; i < fields.length; i++) {
-            let fieldProps = fields[i]
+            let fieldProps = extend(true, {}, fields[i])
             if (isPlainObject(value)) {
                 if (fieldProps.flatValue === true) {
                     fieldProps.value = value

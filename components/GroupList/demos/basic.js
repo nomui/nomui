@@ -23,25 +23,8 @@ define([], function () {
                             ],
                         },
 
-                        value: [{}, {}]
+                        value: [{ school: '小学' }, { school: '大学' }]
                     },
-                    {
-                        component: 'GroupList',
-                        label: '工作经历',
-                        groupDefaults: {
-                            inline: true,
-                            fields: [
-                                {
-                                    component: 'Textbox', name: 'school', label: '学校名称',
-                                },
-                                {
-                                    component: 'Numberbox', name: 'startYear', label: '入学年份',
-                                },
-                            ],
-                        },
-
-                        value: [{}, {}]
-                    }
                 ]
             }
         },
