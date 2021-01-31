@@ -12,7 +12,7 @@ define([], function () {
                         component: 'GroupList',
                         label: '教育经历',
                         groupDefaults: {
-                            inline: true,
+                            nowrap: true,
                             fields: [
                                 {
                                     component: 'Textbox', name: 'school', label: '学校名称',

@@ -48,6 +48,7 @@ class GroupList extends Group {
                 type: 'dashed',
                 text: '添加',
                 span: 12,
+                block: true,
                 onClick: () => {
                     that.appendField(extGroupDefaults)
                     that._onValueChange()
