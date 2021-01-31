@@ -45,7 +45,9 @@ class GroupList extends Group {
             fieldDefaults: extGroupDefaults,
             contentActions: [{
                 component: 'Button',
+                type: 'dashed',
                 text: '添加',
+                span: 12,
                 onClick: () => {
                     that.appendField(extGroupDefaults)
                     that._onValueChange()

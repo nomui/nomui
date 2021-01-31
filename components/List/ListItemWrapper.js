@@ -21,6 +21,7 @@ class ListItemWrapper extends Component {
     const { itemDefaults } = this.list.props
 
     this.setProps({
+      span: item.span || false,
       selectable: false,
       children: item,
       childDefaults: n(null, itemDefaults, null, [ListItemMixin]),

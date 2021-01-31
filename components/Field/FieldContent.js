@@ -18,7 +18,7 @@ class FieldContent extends Component {
             children: [
                 n(null, Component.extendProps(control, { classes: { 'nom-control': true } }), null, [ControlMixin]),
                 lastControlAddons && Component.extendProps(lastControlAddons, { classes: { 'nom-control-addon': true } }),
-                contentActions && { component: FieldContentAction, children: { component: 'Cols', items: contentActions } }
+                contentActions && { component: FieldContentAction, children: { component: 'List', items: contentActions } }
             ]
         })
     }
