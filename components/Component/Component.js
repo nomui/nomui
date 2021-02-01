@@ -811,6 +811,19 @@ class Component {
   }
 
   _mixin(mixins) {
+    for (let i = 0; i < mixins.length; i++) {
+      const mixin = mixins[i]
+      if (isPlainObject(mixin) && isPlainObject(mixin.methods)) {
+        for (const key in mixin.methods) {
+          if (mixin.methods.hasOwnProperty(key)) {
+            if (!this[key]) {
+              this[key] = mixin.methods[key]
+            }
+          }
+        }
+      }
+    }
+
     this.mixins = [...this.mixins, ...mixins]
   }
 
