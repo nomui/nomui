@@ -12,16 +12,21 @@ class ListItemWrapper extends Component {
   }
 
   _created() {
-    this._propStyleClasses = ['span']
     this.list = this.parent.list
   }
 
   _config() {
-    const { item } = this.props
+    this._addPropStyle('span')
+    const { item, span } = this.props
     const { itemDefaults } = this.list.props
 
+    if (!span && item.span) {
+      this.setProps({
+        span: item.span
+      })
+    }
+
     this.setProps({
-      span: item.span || false,
       selectable: false,
       children: item,
       childDefaults: n(null, itemDefaults, null, [ListItemMixin]),

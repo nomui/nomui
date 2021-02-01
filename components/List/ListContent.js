@@ -18,10 +18,22 @@ class ListContent extends Component {
 
     _config() {
         this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
-        const { items } = this.list.props
+        const { items, wrappers, wrapperDefaults } = this.list.props
         const children = []
 
-        if (Array.isArray(items) && items.length > 0) {
+        if (Array.isArray(wrappers) && wrappers.length > 0) {
+            for (let i = 0; i < wrappers.length; i++) {
+                let wrapper = wrappers[i]
+                wrapper = Component.extendProps(
+                    {},
+                    { component: ListItemWrapper },
+                    wrapperDefaults,
+                    wrapper,
+                )
+                children.push(wrapper)
+            }
+        }
+        else if (Array.isArray(items) && items.length > 0) {
             for (let i = 0; i < items.length; i++) {
                 children.push({ component: ListItemWrapper, item: items[i] })
             }
