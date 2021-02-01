@@ -17,7 +17,7 @@ define([], function () {
                     },
                     fields: [
                         {
-                            component: 'TextControl', name: 'country', label: '国家',
+                            component: 'StaticText', name: 'country', label: '国家',
                         },
                         {
                             component: 'Textbox', name: 'name', label: '姓名', required: true,

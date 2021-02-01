@@ -5,25 +5,26 @@ define([], function () {
         demo: function () {
             return {
                 component: 'Form',
-                line:'outline',
-                striped:true,
+                line: 'outline',
+                striped: true,
                 fields: [
                     {
                         component: 'GroupList',
-                        label: '教育经历',                        
+                        label: '教育经历',
                         groupDefaults: {
-                            inline: true,                            
+                            nowrap: true,
+                            fields: [
+                                {
+                                    component: 'Textbox', name: 'school', label: '学校名称',
+                                },
+                                {
+                                    component: 'Numberbox', name: 'startYear', label: '入学年份',
+                                },
+                            ],
                         },
-                        fields: [
-                            {
-                                component: 'Textbox', name: 'school', label: '学校名称',
-                            },
-                            {
-                                component: 'Numberbox', name: 'startYear', label: '入学年份',
-                            },
-                        ],
-                        value: [{}, {}]
-                    }
+
+                        value: [{ school: '小学' }, { school: '大学' }]
+                    },
                 ]
             }
         },

@@ -1,25 +1,34 @@
 &.nom-group {
     >.nom-field-content {
+        padding: 0;
+
         >.nom-control {
             display: flex;
             flex-wrap: wrap;
 
             >.nom-field {
                 width: 100%;
-                margin: 0;
+            }
+        }
 
-                >.nom-field-label {
-                    padding: .5rem .5rem;
-                }
+        >.nom-field-content-action {
+            padding: .875rem;
+        }
+    }
 
-                >.nom-field-content {
-                    padding: .5rem .5rem;
-                }
+    &.p-nowrap {
+        >.nom-field-content {
+            >.nom-control {
+                flex-wrap: nowrap;
 
-                &.p-inline {
+                >.nom-field {
+                    >.nom-field-label {
+                        width: auto;
+                        flex-basis: auto;
+                    }
+
                     >.nom-field-content {
-                        flex: 1;
-                        padding: 0;
+                        flex-basis: auto;
                     }
                 }
             }
@@ -27,17 +36,15 @@
     }
 
     &.p-inline {
-        margin: -.5rem -.5rem;
-
         >.nom-field-content {
             >.nom-control {
                 >.nom-field {
                     width: auto;
+                    flex-basis: auto;
 
                     >.nom-field-label {
                         width: auto;
-                        padding-right: 0;
-                        padding-left: 0;
+                        flex-basis: auto;
                     }
 
                     >.nom-field-content {

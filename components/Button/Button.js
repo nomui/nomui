@@ -16,7 +16,7 @@ class Button extends Component {
   }
 
   _config() {
-    this._propStyleClasses = ['type', 'ghost', 'size', 'shape', 'danger']
+    this._propStyleClasses = ['type', 'ghost', 'size', 'shape', 'danger', 'block']
     const { icon, text, rightIcon, href, target } = this.props
 
     if (icon || rightIcon) {

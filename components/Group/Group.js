@@ -7,7 +7,6 @@ class Group extends Field {
         const defaults = {
             fields: [],
             fieldDefaults: { component: Field },
-            action: null,
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -19,12 +18,12 @@ class Group extends Field {
     }
 
     _config() {
-        this._addPropStyle('inline', 'striped', 'line')
-        const { action, fields, fieldDefaults, value } = this.props
+        this._addPropStyle('inline', 'striped', 'line', 'nowrap')
+        const { fields, fieldDefaults, value } = this.props
         const children = []
 
         for (let i = 0; i < fields.length; i++) {
-            let fieldProps = fields[i]
+            let fieldProps = extend(true, {}, fields[i])
             if (isPlainObject(value)) {
                 if (fieldProps.flatValue === true) {
                     fieldProps.value = value
@@ -36,14 +35,6 @@ class Group extends Field {
             fieldProps.__group = this
             fieldProps = Component.extendProps(fieldDefaults, fieldProps)
             children.push(fieldProps)
-        }
-
-        if (action) {
-            children.push({
-                component: Field,
-                control: action
-            })
-
         }
 
         this.setProps({
@@ -130,7 +121,8 @@ class Group extends Field {
 
     appendField(fieldProps) {
         const { fieldDefaults } = this.props
-        return this.control.appendChild(Component.extendProps(fieldDefaults, fieldProps))
+        this.props.fields.push(fieldProps)
+        return this.control.appendChild(Component.extendProps(fieldDefaults, fieldProps, { __group: this }))
     }
 
     _getSubField(fieldName) {

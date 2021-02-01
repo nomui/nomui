@@ -1,11 +1,11 @@
 import Component from '../Component/index'
 import { extend, isFunction } from '../util/index'
-import ListItemWrapper from './ListItemWrapper'
+import ListContent from './ListContent'
 
 class List extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      tag: 'ul',
+      tag: 'div',
       items: [],
       itemDefaults: {},
 
@@ -14,7 +14,7 @@ class List extends Component {
       itemSelectable: {
         multiple: false,
         byClick: false,
-      },
+      },      
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -27,27 +27,9 @@ class List extends Component {
 
   _config() {
     this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
-    const { items, wrappers, wrapperDefaults } = this.props
-    const children = []
-    if (Array.isArray(wrappers) && wrappers.length > 0) {
-      for (let i = 0; i < wrappers.length; i++) {
-        let wrapper = wrappers[i]
-        wrapper = Component.extendProps(
-          {},
-          { component: ListItemWrapper },
-          wrapperDefaults,
-          wrapper,
-        )
-        children.push(wrapper)
-      }
-    } else if (Array.isArray(items) && items.length > 0) {
-      for (let i = 0; i < items.length; i++) {
-        children.push({ component: ListItemWrapper, item: items[i] })
-      }
-    }
 
     this.setProps({
-      children: children,
+      children: { component: ListContent },
     })
   }
 
@@ -177,9 +159,7 @@ class List extends Component {
   }
 
   appendItem(itemProps) {
-    itemProps = Component.extendProps({}, this.props.itemDefaults, itemProps)
-    const itemWrapperProps = { component: ListItemWrapper, item: itemProps }
-    this.appendChild(itemWrapperProps)
+    this.content.appendChild(itemProps)
   }
 
   removeItem(param) {

@@ -32,6 +32,18 @@ define([], function () {
             ],
           },
         ],
+        contentActions: [
+          {
+            component: 'Button',
+            text: '保 存',
+            type: 'primary'
+
+          },
+          {
+            component: 'Button',
+            text: '取 消'
+          }
+        ]
       }
     },
   }

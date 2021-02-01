@@ -20,14 +20,25 @@
     display: flex;
 
     >.nom-field-label {
+        padding: .5rem .5rem;
+
         >.nom-label {
             display: block;
         }
     }
 
     >.nom-field-content {
+        padding: .5rem .5rem;
         position: relative;
         flex-grow: 1;
+    }
+
+    >.nom-field-action {
+        padding: .5rem .5rem;
+    }
+
+    &.p-inline:not(.nom-group) {
+        display: inline-flex !important;
     }
 
     &.p-required:not(.p-required-mark-optional) {
@@ -57,15 +68,14 @@
 
     @media (min-width: @screen-sm-min) {
         &.p-label-align-top {
-            display: block;
+            flex-direction: column;
         }
 
         &.p-label-align-right,
         &.p-label-align-left {
-            display: flex;
-
             >.nom-field-label {
-                width: 10rem;
+                flex: 0 0 10rem;
+                max-width: 10rem;
                 margin-bottom: 0;
 
                 >.nom-label {

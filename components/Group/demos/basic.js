@@ -7,14 +7,6 @@ define([], function () {
                 component: 'Rows',
                 items: [
                     {
-                        component: 'Form',
-                        fields: [
-                            {
-                                component: 'Textbox', name: 'name', label: '姓名',
-                            },
-                        ]
-                    },
-                    {
                         component: 'Group',
                         fields: [
                             {

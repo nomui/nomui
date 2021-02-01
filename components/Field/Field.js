@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import { isFunction, clone } from '../util/index'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
+import FieldAction from './FieldAction'
 import Tooltip from '../Tooltip/index'
 import RuleManager from '../util/rule-manager'
 
@@ -38,15 +39,11 @@ class Field extends Component {
 
   _config() {
     this._addPropStyle('required', 'requiredMark', 'labelAlign')
-    const { label, span, type, notShowLabel, required, requiredMessage, rules } = this.props
+    const { label, span, notShowLabel, required, requiredMessage, rules, actions } = this.props
     const showLabel = notShowLabel === false && (label !== undefined && label !== null)
 
     if (required === true) {
       rules.unshift({ type: 'required', message: requiredMessage })
-    }
-
-    if (showLabel === false) {
-      this.props.labelAlign = null
     }
 
     if (span) {
@@ -57,14 +54,11 @@ class Field extends Component {
       })
     }
 
-    if (type === 'Group') {
-      this._addPropStyle('inline', 'striped', 'line')
-    }
-
     this.setProps({
       children: [
         showLabel && { component: FieldLabel },
         { component: FieldContent, value: this.props.value },
+        actions && { component: FieldAction, children: { component: 'Cols', items: actions } }
       ],
     })
   }
@@ -150,6 +144,19 @@ class Field extends Component {
 
   _clear() {
     this.setValue(null)
+  }
+
+  _remove() {
+    if (this.group && Array.isArray(this.group.fields)) {
+      const fields = this.group.fields
+
+      for (let i = 0; i < fields.length; i++) {
+        if (fields[i] === this) {
+          delete fields[i]
+          fields.splice(i, 1)
+        }
+      }
+    }
   }
 
   // 派生的控件子类内部适当位置调用
