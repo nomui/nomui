@@ -38,11 +38,8 @@ define([], function () {
                   },
                   {
                     component: 'List',
-                    styles: {
-                      flex: 'row-wrap',
-                      cols: '6',
-                      lines: 'grid',
-                    },
+                    cols: '6',
+                    line: 'grid',
                     _config: function () {
                       this.setProps({
                         items: cat.props.icons,
@@ -53,6 +50,9 @@ define([], function () {
                                 {
                                   component: 'Icon',
                                   type: this.props.type,
+                                  styles: {
+                                    text: '1d5'
+                                  }
                                 },
                                 {
                                   children: this.props.type,

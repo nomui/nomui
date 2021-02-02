@@ -85,7 +85,7 @@ class List extends Component {
   }
 
   selectAllItems(selectOption) {
-    return this.selectItems(this.getChildren(), selectOption)
+    return this.selectItems(this.content.getChildren(), selectOption)
   }
 
   unselectItem(param, unselectOption) {
@@ -130,7 +130,7 @@ class List extends Component {
 
   getAllItems() {
     const items = []
-    const children = this.getChildren()
+    const children = this.content.getChildren()
     for (let i = 0; i < children.length; i++) {
       const itemWrapper = children[i]
       items.push(itemWrapper.item)
@@ -148,7 +148,7 @@ class List extends Component {
 
   getSelectedItems() {
     const selectedItems = []
-    const children = this.getChildren()
+    const children = this.content.getChildren()
     for (let i = 0; i < children.length; i++) {
       const { item } = children[i]
       if (item.props.selected) {
@@ -159,7 +159,7 @@ class List extends Component {
   }
 
   appendItem(itemProps) {
-    this.content.appendChild(itemProps)
+    this.content.appendItem(itemProps)
   }
 
   removeItem(param) {
