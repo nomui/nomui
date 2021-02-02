@@ -39,10 +39,7 @@ class Select extends Field {
             })
           },
         },
-        styles: {
-          flex: 'row',
-          gap: 'sm',
-        },
+        gutter: 'md',
       },
       multiple: false,
       showArrow: true,

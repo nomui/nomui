@@ -159,7 +159,7 @@ class List extends Component {
   }
 
   appendItem(itemProps) {
-    this.content.appendChild(itemProps)
+    this.content.appendItem(itemProps)
   }
 
   removeItem(param) {
