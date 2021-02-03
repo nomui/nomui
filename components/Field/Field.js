@@ -31,6 +31,7 @@ class Field extends Component {
     this.currentValue = null
     this.name = name || `__field${++nameSeq}`
     this.group = this.props.__group || null
+    this.rootField = this.group === null ? this : this.group.rootField;
     this.fields = []
     if (this.group) {
       this.group.fields.push(this)
