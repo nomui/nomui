@@ -3,6 +3,7 @@ define(
     './basic.js',
     './label-align.js',
     './value.js',
+    './control-width.js',
   ],
   function () {
 
