@@ -4,6 +4,7 @@ define(
     './label-align.js',
     './value.js',
     './control-width.js',
+    './label-width.js',
   ],
   function () {
 
