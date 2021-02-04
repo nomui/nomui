@@ -211,9 +211,11 @@ class Select extends Field {
   _getOptions(value) {
     const retOptions = []
     const { options } = this.props
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].value === value) {
-        retOptions.push(options[i])
+    if (Array.isArray(value)) {
+      for (let i = 0; i < options.length; i++) {
+        if (value.indexOf(options[i].value) !== -1) {
+          retOptions.push(options[i])
+        }
       }
     }
     return retOptions

@@ -31,6 +31,7 @@ class Field extends Component {
     this.currentValue = null
     this.name = name || `__field${++nameSeq}`
     this.group = this.props.__group || null
+    this.rootField = this.group === null ? this : this.group.rootField;
     this.fields = []
     if (this.group) {
       this.group.fields.push(this)
@@ -38,8 +39,8 @@ class Field extends Component {
   }
 
   _config() {
-    this._addPropStyle('required', 'requiredMark', 'labelAlign')
-    const { label, span, notShowLabel, required, requiredMessage, rules, actions } = this.props
+    this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth')
+    const { label, labelWidth, span, notShowLabel, required, requiredMessage, rules, actions } = this.props
     const showLabel = notShowLabel === false && (label !== undefined && label !== null)
 
     if (required === true) {
@@ -54,9 +55,22 @@ class Field extends Component {
       })
     }
 
+
+    let labelProps = showLabel ? { component: FieldLabel } : null
+    if (labelProps && labelWidth) {
+      labelProps = Component.extendProps(labelProps, {
+        attrs: {
+          style: {
+            width: `${labelWidth}px`,
+            maxWidth: `${labelWidth}px`,
+            flexBasis: `${labelWidth}px`,
+          }
+        }
+      })
+    }
     this.setProps({
       children: [
-        showLabel && { component: FieldLabel },
+        labelProps,
         { component: FieldContent, value: this.props.value },
         actions && { component: FieldAction, children: { component: 'Cols', items: actions } }
       ],
