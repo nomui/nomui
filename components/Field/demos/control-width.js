@@ -8,24 +8,24 @@ define([], function () {
                 component: 'Group',
                 fields: [
                     {
-                        component: 'Textbox', label: 'xs',
-                        controlWidth: 'xs'
+                        component: 'Textbox', label: 'xsmall',
+                        controlWidth: 'xsmall'
                     },
                     {
-                        component: 'Textbox', label: 'sm',
-                        controlWidth: 'sm'
+                        component: 'Textbox', label: 'small',
+                        controlWidth: 'small'
                     },
                     {
-                        component: 'Textbox', label: 'md',
-                        controlWidth: 'md'
+                        component: 'Textbox', label: 'medium',
+                        controlWidth: 'medium'
                     },
                     {
-                        component: 'Textbox', label: 'lg',
-                        controlWidth: 'lg'
+                        component: 'Textbox', label: 'large',
+                        controlWidth: 'large'
                     },
                     {
-                        component: 'Textbox', label: 'xl',
-                        controlWidth: 'xl'
+                        component: 'Textbox', label: 'xlarge',
+                        controlWidth: 'xlarge'
                     },
                 ],
             }
