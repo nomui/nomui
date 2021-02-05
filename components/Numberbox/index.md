@@ -12,3 +12,12 @@
 | min       | 最小值     | `number` | Number.MIN_SAFE_INTEGER |
 | max       | 最大值     | `number` | Number.MAX_SAFE_INTEGER |
 | precision | 数值精度   | `number` | 0                       |
+
+## 事件
+
+| 参数       | 说明           | 类型                   |
+| ---------- | -------------- | ---------------------- |
+| focus      | 获取焦点       | -                      |
+| blur       | 取消焦点       | -                      |
+| \_getValue | 获取文本框的值 | `()=>string`           |
+| \_setValue | 为文本框设置值 | `(value:string)=>void` |

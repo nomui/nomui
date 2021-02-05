@@ -7,17 +7,15 @@
 
 ## API
 
-| 参数      | 说明             | 类型      | 默认值 |
-| --------- | ---------------- | --------- | ------ | -------- | ----- | ------- | ------ |
-| autofocus | 是否自动获得焦点 | `boolean` | -      |
-| value     | 输入框内容       | `string`  | -      |
-| htmlType  | 设置原生的类型   | `text     | tel    | password | email | url...` | `text` |
-| leftIcon  | 左侧的图标       | `string`  |        |
-| rightIcon | 右侧的图标       | `string`  |        |
+更多请[查看 Field 组件](#!components!index?type=Field)
+
+| 参数      | 说明             | 类型                                      | 默认值 |
+| --------- | ---------------- | ----------------------------------------- | ------ |
+| autofocus | 是否自动获得焦点 | `boolean`                                 | -      |
+| htmlType  | 设置原生的类型   | `text \| tel \| password \| email \| url` | `text` |
+| leftIcon  | 左侧的图标       | `string\|Props`                           |        |
+| rightIcon | 右侧的图标       | `string\|Props`                           |        |
 
 ## 事件
 
-| 参数  | 说明     | 类型 |
-| ----- | -------- | ---- |
-| focus | 获取焦点 | -    |
-| blur  | 取消焦点 | -    |
+更多请[查看 Field 组件](#!components!index?type=Field)

@@ -31,6 +31,6 @@ jobs:
           PROGRESS: none
           GIT_CONFIG_NAME: xiexingen
           GIT_CONFIG_EMAIL: 1002275364@qq.com
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           BRANCH: gh-pages
           FOLDER: 'doc-sites/'
