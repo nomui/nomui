@@ -32,10 +32,6 @@ class Field extends Component {
     this.name = name || `__field${++nameSeq}`
     this.group = this.props.__group || null
     this.rootField = this.group === null ? this : this.group.rootField;
-    this.fields = []
-    if (this.group) {
-      this.group.fields.push(this)
-    }
   }
 
   _config() {
@@ -196,6 +192,12 @@ class Field extends Component {
     }, 0)
   }
 }
+
+Object.defineProperty(Field.prototype, 'fields', {
+  get: function () {
+    return this.control.children
+  },
+})
 
 Component.register(Field)
 

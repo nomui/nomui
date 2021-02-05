@@ -191,9 +191,23 @@ class Component {
     }
     else if (placement === 'after') {
       this.referenceElement.insertAdjacentElement('afterend', this.element);
+      if (this.referenceComponent) {
+        const refParent = this.referenceComponent.parent
+        if (refParent) {
+          const refIndex = refParent.indexOf(this.referenceComponent)
+          refParent.children.splice(refIndex + 1, 0, this)
+        }
+      }
     }
     else if (placement === 'before') {
       this.referenceElement.insertAdjacentElement('beforebegin', this.element);
+      if (this.referenceComponent) {
+        const refParent = this.referenceComponent.parent
+        if (refParent) {
+          const refIndex = refParent.indexOf(this.referenceComponent)
+          refParent.children.splice(refIndex, 0, this)
+        }
+      }
     }
   }
 
@@ -332,14 +346,12 @@ class Component {
     }
 
     const { normalizedProps, mixins } = this._normalizeProps(props)
-
     const extNormalizedProps = Component.extendProps({}, normalizedProps, {
       reference: this.element,
       placement: 'before',
     })
 
-    // todo:需要改为插到正确的位置
-    this.parent.children.push(Component.create(extNormalizedProps, ...mixins))
+    return Component.create(extNormalizedProps, ...mixins)
   }
 
   after(props) {
@@ -348,13 +360,21 @@ class Component {
     }
 
     const { normalizedProps, mixins } = this._normalizeProps(props)
-
     const extNormalizedProps = Component.extendProps({}, normalizedProps, {
       reference: this.element,
       placement: 'after',
     })
 
-    this.parent.children.push(Component.create(extNormalizedProps, ...mixins))
+    return Component.create(extNormalizedProps, ...mixins)
+  }
+
+  indexOf(child) {
+    for (let i = 0; i < this.children.length; i++) {
+      const c = this.children[i]
+      if (c === child) {
+        return i
+      }
+    }
   }
 
   _normalizeProps(props) {

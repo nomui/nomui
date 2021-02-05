@@ -12,11 +12,6 @@ class Group extends Field {
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
-    _created() {
-        super._created()
-        this.fields = []
-    }
-
     _config() {
         this._addPropStyle('inline', 'striped', 'line', 'nowrap')
         const { fields, fieldDefaults, value } = this.props
