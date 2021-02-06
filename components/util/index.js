@@ -207,3 +207,7 @@ export function isNumeric(val) {
     false
   )
 }
+
+export default{
+  extend,
+}
