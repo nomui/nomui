@@ -148,6 +148,13 @@ class Field extends Component {
     isFunction(this._clear) && this._clear()
   }
 
+  after(props) {
+    if (props) {
+      props.__group = this.group
+    }
+    return super.after(props)
+  }
+
   _reset() {
     this.setValue(this.initValue)
   }
@@ -193,10 +200,10 @@ class Field extends Component {
   }
 }
 
-Object.defineProperty(Field.prototype, 'fields', {
+  Object.defineProperty(Field.prototype, 'fields', {
   get: function () {
-    return this.control.children
-  },
+  return this.control.children
+},
 })
 
 Component.register(Field)

@@ -457,7 +457,7 @@ class Component {
       this.props.selected = true
       this.addClass('s-selected')
       isFunction(this._select) && this._select()
-      selectOption.triggerSelect === true && this._callHandler(this.props.onSelect)
+      selectOption.triggerSelect === true && this._callHandler(this.props.onSelect, null, selectOption.event)
       selectOption.triggerSelectionChange === true &&
         this._callHandler(this.props.onSelectionChange)
 
@@ -485,7 +485,7 @@ class Component {
       isFunction(this._unselect) && this._unselect()
 
       if (unselectOption.triggerUnselect === true) {
-        this._callHandler(this.props.onUnselect)
+        this._callHandler(this.props.onUnselect, null, unselectOption.event)
       }
 
       if (unselectOption.triggerSelectionChange === true) {
@@ -498,13 +498,13 @@ class Component {
     return false
   }
 
-  toggleSelect() {
+  toggleSelect(event) {
     if (!this.rendered) return
     const { selected, selectable } = this.props
     if (selectable && selectable.canRevert === false && selected === true) {
       return
     }
-    this.props.selected === true ? this.unselect() : this.select()
+    this.props.selected === true ? this.unselect({ event: event }) : this.select({ event })
   }
 
   expand() {
@@ -720,7 +720,7 @@ class Component {
     const { onClick, selectable, expandable } = this.props
     onClick && this._callHandler(onClick, null, event)
     if (selectable && selectable.byClick === true) {
-      this.toggleSelect()
+      this.toggleSelect(event)
     }
     if (expandable && expandable.byClick === true) {
       this.toggleExpand()
