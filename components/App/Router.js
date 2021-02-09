@@ -40,7 +40,7 @@ class Router extends Component {
       this.remove()
     }
     else if (this.level === changed.changedLevel) {
-      this.routeView(this.level, this.element)
+      this.routeView()
       this.$app.lastLevel = this.level + 1
     }
     else if (this.level === changed.changedLevel - 1) {
@@ -76,6 +76,7 @@ class Router extends Component {
     const element = this.element
     const defaultPath = this.props.defaultPath
     const { paths } = this.$app.currentRoute
+    const that = this
 
     if (defaultPath) {
       if (!paths[level]) {
@@ -102,8 +103,11 @@ class Router extends Component {
         placement: 'replace',
       }
       const viewOptions = Component.extendProps(routerProps.view, extOptions)
-      this.currentView = Component.create(viewOptions)
-      this.element = this.currentView.element
+      this.currentView = Component.create(viewOptions, {
+        _rendered: function () {
+          that.element = this.element
+        }
+      })
       this.setProps(routerProps)
       this._callRendered()
     })
