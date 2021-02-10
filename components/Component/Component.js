@@ -314,11 +314,11 @@ class Component {
     } else if (isString(child) || isNumeric(child)) {
       if (isPlainObject(childDefaults)) {
         childProps = { children: child }
-      } else if (child[0] === '<') {
-        this.element.innerHTML = child
+      } else if (child[0] === '#') {
+        this.element.innerHTML = child.slice(1)
         return
       } else {
-        this.element.appendChild(document.createTextNode(child))
+        this.element.textContent = child
         return
       }
     } else if (child instanceof DocumentFragment) {
