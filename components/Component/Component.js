@@ -191,9 +191,23 @@ class Component {
     }
     else if (placement === 'after') {
       this.referenceElement.insertAdjacentElement('afterend', this.element);
+      if (this.referenceComponent) {
+        const refParent = this.referenceComponent.parent
+        if (refParent) {
+          const refIndex = refParent.indexOf(this.referenceComponent)
+          refParent.children.splice(refIndex + 1, 0, this)
+        }
+      }
     }
     else if (placement === 'before') {
       this.referenceElement.insertAdjacentElement('beforebegin', this.element);
+      if (this.referenceComponent) {
+        const refParent = this.referenceComponent.parent
+        if (refParent) {
+          const refIndex = refParent.indexOf(this.referenceComponent)
+          refParent.children.splice(refIndex, 0, this)
+        }
+      }
     }
   }
 
@@ -300,11 +314,11 @@ class Component {
     } else if (isString(child) || isNumeric(child)) {
       if (isPlainObject(childDefaults)) {
         childProps = { children: child }
-      } else if (child[0] === '<') {
-        this.element.innerHTML = child
+      } else if (child[0] === '#') {
+        this.element.innerHTML = child.slice(1)
         return
       } else {
-        this.element.appendChild(document.createTextNode(child))
+        this.element.textContent = child
         return
       }
     } else if (child instanceof DocumentFragment) {
@@ -332,14 +346,12 @@ class Component {
     }
 
     const { normalizedProps, mixins } = this._normalizeProps(props)
-
     const extNormalizedProps = Component.extendProps({}, normalizedProps, {
       reference: this.element,
       placement: 'before',
     })
 
-    // todo:需要改为插到正确的位置
-    this.parent.children.push(Component.create(extNormalizedProps, ...mixins))
+    return Component.create(extNormalizedProps, ...mixins)
   }
 
   after(props) {
@@ -348,13 +360,21 @@ class Component {
     }
 
     const { normalizedProps, mixins } = this._normalizeProps(props)
-
     const extNormalizedProps = Component.extendProps({}, normalizedProps, {
       reference: this.element,
       placement: 'after',
     })
 
-    this.parent.children.push(Component.create(extNormalizedProps, ...mixins))
+    return Component.create(extNormalizedProps, ...mixins)
+  }
+
+  indexOf(child) {
+    for (let i = 0; i < this.children.length; i++) {
+      const c = this.children[i]
+      if (c === child) {
+        return i
+      }
+    }
   }
 
   _normalizeProps(props) {
@@ -437,7 +457,7 @@ class Component {
       this.props.selected = true
       this.addClass('s-selected')
       isFunction(this._select) && this._select()
-      selectOption.triggerSelect === true && this._callHandler(this.props.onSelect)
+      selectOption.triggerSelect === true && this._callHandler(this.props.onSelect, null, selectOption.event)
       selectOption.triggerSelectionChange === true &&
         this._callHandler(this.props.onSelectionChange)
 
@@ -465,7 +485,7 @@ class Component {
       isFunction(this._unselect) && this._unselect()
 
       if (unselectOption.triggerUnselect === true) {
-        this._callHandler(this.props.onUnselect)
+        this._callHandler(this.props.onUnselect, null, unselectOption.event)
       }
 
       if (unselectOption.triggerSelectionChange === true) {
@@ -478,13 +498,13 @@ class Component {
     return false
   }
 
-  toggleSelect() {
+  toggleSelect(event) {
     if (!this.rendered) return
     const { selected, selectable } = this.props
     if (selectable && selectable.canRevert === false && selected === true) {
       return
     }
-    this.props.selected === true ? this.unselect() : this.select()
+    this.props.selected === true ? this.unselect({ event: event }) : this.select({ event })
   }
 
   expand() {
@@ -700,7 +720,7 @@ class Component {
     const { onClick, selectable, expandable } = this.props
     onClick && this._callHandler(onClick, null, event)
     if (selectable && selectable.byClick === true) {
-      this.toggleSelect()
+      this.toggleSelect(event)
     }
     if (expandable && expandable.byClick === true) {
       this.toggleExpand()

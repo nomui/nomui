@@ -10,10 +10,6 @@ class GroupList extends Group {
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
-    _created() {
-        super._created()
-    }
-
     _config() {
         const that = this
         const { groupDefaults, value } = this.props
