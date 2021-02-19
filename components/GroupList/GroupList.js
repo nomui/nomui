@@ -39,7 +39,7 @@ class GroupList extends Group {
         this.setProps({
             fields: groups,
             fieldDefaults: extGroupDefaults,
-            contentActions: [{
+            controlAction: [{
                 component: 'Button',
                 type: 'dashed',
                 text: '添加',
