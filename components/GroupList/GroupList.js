@@ -17,7 +17,7 @@ class GroupList extends Group {
             _config: function () {
                 const group = this
                 this.setProps({
-                    actions: [{
+                    action: [{
                         component: 'Button',
                         text: '移除',
                         onClick: () => {

@@ -36,7 +36,7 @@ class Field extends Component {
 
   _config() {
     this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth')
-    const { label, labelWidth, span, notShowLabel, required, requiredMessage, rules, actions } = this.props
+    const { label, labelWidth, span, notShowLabel, required, requiredMessage, rules, action } = this.props
     const showLabel = notShowLabel === false && (label !== undefined && label !== null)
 
     if (required === true) {
@@ -68,7 +68,7 @@ class Field extends Component {
       children: [
         labelProps,
         { component: FieldContent, value: this.props.value },
-        actions && { component: FieldAction, children: { component: 'Cols', items: actions } }
+        action && { component: FieldAction, children: { component: 'Cols', items: action } }
       ],
     })
   }
