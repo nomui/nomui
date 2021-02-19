@@ -12,7 +12,7 @@ class Container extends Component {
   }
 
   _config() {
-    this._addPropStyle('breakpoint')
+    this._addPropStyle('breakpoint', 'fluid')
   }
 }
 
