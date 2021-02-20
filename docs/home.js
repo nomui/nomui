@@ -42,13 +42,10 @@ define([], function () {
       },
       {
         component: 'Container',
-        type: 'lg',
+        fluid: true,
         children: {
           component: 'List',
-          styles: {
-            flex: 'row-wrap',
-            cols: '3',
-          },
+          cols: 3,
           items: [
             {
               title: '没有新概念',
