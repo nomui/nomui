@@ -125,4 +125,16 @@
     &.p-uistyle-default {
         .p-uistyle-card();
     }
+
+    &.p-fit{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        >.nom-panel-body {
+            flex: 1;
+            height: 100%;
+            overflow: auto;
+        }
+    }
 }

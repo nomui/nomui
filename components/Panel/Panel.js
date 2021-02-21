@@ -12,12 +12,15 @@ class Panel extends Component {
       uistyle: 'default', // splitline,outline,card,bordered,plain
       startAddons: [],
       endAddons: [],
+      fit: false
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
+    this._addPropStyle('fit')
+
     const { header, body, footer, startAddons, endAddons } = this.props
     let footerProps
     const headerProps =
