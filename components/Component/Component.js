@@ -103,7 +103,7 @@ class Component {
     this.props._created && this.props._created.call(this)
   }
 
-  _created(){
+  _created() {
 
   }
 
@@ -115,7 +115,7 @@ class Component {
     this._setStatusProps()
   }
 
-  _config(){
+  _config() {
 
   }
 
@@ -263,8 +263,8 @@ class Component {
     return el
   }
 
-  _remove(){
-    
+  _remove() {
+
   }
 
   _callMixin(hookType) {
@@ -298,6 +298,10 @@ class Component {
 
   setProps(newProps) {
     this.props = Component.extendProps(this.props, newProps)
+  }
+
+  assignProps(newProps) {
+    this.props = { ...this.props, ...newProps }
   }
 
   appendChild(child) {
