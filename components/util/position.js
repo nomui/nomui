@@ -42,9 +42,16 @@ function getOffsetParent(el) {
 
 function setOffset(elem, coordinates) {
   const parentOffset = getOffsetParent(elem).getBoundingClientRect()
-  const props = {
+
+  let props = {
     top: coordinates.top - parentOffset.top,
     left: coordinates.left - parentOffset.left,
+  }
+  if (getOffsetParent(elem).tagName.toLowerCase() === 'body') {
+    props = {
+      top: coordinates.top,
+      left: coordinates.left,
+    }
   }
 
   if (getComputedStyle(elem).position === 'static') props.position = 'relative'
