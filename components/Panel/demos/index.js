@@ -1,7 +1,8 @@
 define(
     [
         './basic.js',
-        './uistyle.js'
+        './uistyle.js',
+        './fit.js',
     ],
     function () {
         return {
