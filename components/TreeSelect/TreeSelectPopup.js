@@ -11,7 +11,7 @@ class TreeSelectPopup extends Popup {
 
   _created() {
     super._created()
-    this.selectControl = this.opener.parent
+    this.selectControl = this.opener.parent.parent.parent
   }
 
   _config() {
@@ -28,7 +28,7 @@ class TreeSelectPopup extends Popup {
         body: {
           children: {
             component: 'Tree',
-            treeData: this.selectControl.props.treeData,
+            treeData: that.selectControl.props.treeData,
             selectedNodes: that.props.selectedNodes,
             multiple: that.selectControl.props.multiple,
             leafOnly: that.selectControl.props.leafOnly,

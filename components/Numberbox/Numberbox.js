@@ -51,15 +51,75 @@ class Numberbox extends Textbox {
   }
 
   _getValue() {
-    let data = this.input.getText()
-    if (data === '') {
-      return null
+    const { precision } = this.props
+
+    let numberValue = null
+    const textValue = this.input.getText()
+
+    if (precision) {
+      const dotCount = this._dotCount(textValue);
+      if (precision >= 0 && dotCount > precision) {
+        numberValue = this._toDecimal(textValue, precision);
+      }
+      else {
+        numberValue = parseFloat(textValue);
+      }
     }
-    data = parseFloat(data).toFixed(this.props.precision)
-    if (Number.isNaN(data)) {
-      data = null
+    else {
+      numberValue = parseFloat(textValue);
     }
-    return data
+
+    if (Number.isNaN(textValue)) {
+      numberValue = null
+    }
+
+    return numberValue
+  }
+
+  _setValue(value) {
+    const { precision } = this.props
+
+    this.currentValue = this.getValue();
+
+    if (precision !== null && precision !== undefined) {
+      if (precision >= 0) {
+        const dotCount = this._dotCount(value);
+        if (dotCount > precision) {
+          value = this._toDecimal(value, precision);
+        }
+      }
+    }
+
+    if (Number.isNaN(value)) {
+      value = '';
+    }
+
+    super._setValue(value)
+  }
+
+  _toDecimal(val, precision, notRound) {
+    if (notRound === undefined) {
+      notRound = false;
+    }
+    let f = parseFloat(val);
+    if (Number.isNaN(f)) {
+      return;
+    }
+    if (notRound === true) {
+      f = Math.floor(val * (10 ** precision)) / (10 ** precision);
+    }
+    else {
+      f = Math.round(val * (10 ** precision)) / (10 ** precision);
+    }
+    return f;
+  }
+
+  _dotCount(val) {
+    val = String(val);
+    const dotPos = val.indexOf('.')
+    const len = val.substr(dotPos + 1).length
+
+    return len;
   }
 }
 

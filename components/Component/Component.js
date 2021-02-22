@@ -103,12 +103,20 @@ class Component {
     this.props._created && this.props._created.call(this)
   }
 
+  _created() {
+
+  }
+
   config() {
     this.props._config && this.props._config.call(this)
     this._callMixin('_config')
     isFunction(this._config) && this._config()
     this._setExpandableProps()
     this._setStatusProps()
+  }
+
+  _config() {
+
   }
 
   render() {
@@ -136,6 +144,10 @@ class Component {
     this._callMixin('_rendered')
     isFunction(this.props._rendered) && this.props._rendered.call(this)
     this.firstRender = false
+  }
+
+  _rendered() {
+
   }
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
@@ -251,6 +263,10 @@ class Component {
     return el
   }
 
+  _remove() {
+
+  }
+
   _callMixin(hookType) {
     for (let i = 0; i < MIXINS.length; i++) {
       const mixin = MIXINS[i]
@@ -282,6 +298,10 @@ class Component {
 
   setProps(newProps) {
     this.props = Component.extendProps(this.props, newProps)
+  }
+
+  assignProps(newProps) {
+    this.props = { ...this.props, ...newProps }
   }
 
   appendChild(child) {

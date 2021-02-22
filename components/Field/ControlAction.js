@@ -1,11 +1,11 @@
 import Component from '../Component/index'
 
-class FieldContentAction extends Component {
+class ControlAction extends Component {
     constructor(props, ...mixins) {
         super(props, ...mixins)
     }
 }
 
-Component.register(FieldContentAction)
+Component.register(ControlAction)
 
-export default FieldContentAction
+export default ControlAction
