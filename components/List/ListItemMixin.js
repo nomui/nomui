@@ -9,7 +9,7 @@ export default {
     const { onSelect, onUnselect } = this.props
     const listProps = this.list.props
     const selectedItems =
-      this.list.selectedItems !== null
+      listProps.selectedItems !== null && listProps.selectedItems !== undefined
         ? Array.isArray(listProps.selectedItems)
           ? listProps.selectedItems
           : [listProps.selectedItems]
