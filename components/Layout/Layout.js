@@ -13,7 +13,7 @@ class Layout extends Component {
             footer: null,
             sider: null,
             asider: null,
-            scroll: 'inner', // sticky
+            fit: true
         }
 
         super(Component.extendProps(defaults, props), ...mixins)
@@ -21,7 +21,7 @@ class Layout extends Component {
 
     _config() {
         const { header, body, footer, sider, asider } = this.props
-        this._addPropStyle('scroll')
+        this._addPropStyle('fit')
 
         this.setProps(
             {
