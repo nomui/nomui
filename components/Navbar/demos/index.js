@@ -1,9 +1,10 @@
 define([
     './basic.js',
+    './caption-before-after.js',
   ], function () {
     return {
       title: 'Navbar',
-      subtitle: '导航条',
+      subtitle: '标题前后自定义',
       demos: Array.prototype.slice.call(arguments),
     }
   })
