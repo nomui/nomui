@@ -19,7 +19,7 @@ class TabList extends List {
   }
 
   _config() {
-    this._addPropStyle('direction', 'stretch')
+    this._addPropStyle('direction', 'fit')
     this.setProps({
       selectedItems: this.props.selectedTab
     })

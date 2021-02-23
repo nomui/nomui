@@ -46,7 +46,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                   nav: {
                     component: 'TabList',
                     selectedTab: this.props.tab,
-                    stretch: true,
+                    fit: true,
                     uistyle: 'line',
                     tabContent: function () {
                       return tabContent
