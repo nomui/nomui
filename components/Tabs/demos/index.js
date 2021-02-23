@@ -3,7 +3,7 @@ define([
   './tab-operator.js',
   './uistyle.js',
   './separate.js',
-  './stretch.js',
+  './fit.js',
 ], function () {
   return {
     title: 'Tabs',

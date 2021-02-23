@@ -1,8 +1,8 @@
 define([], function () {
     return {
         title: '拉伸高度',
-        file: 'stretch',
-        description: '设置 `stretch` 为 `true`，会让 tabs 拉伸充满父容器的高度，同时选项内容超过高度时出现滚动条。',
+        file: 'fit',
+        description: '设置 `fit` 为 `true`，会让 tabs 拉伸充满父容器的高度，同时选项内容超过高度时出现滚动条。',
         demo: function () {
             return {
                 attrs: {
@@ -14,7 +14,7 @@ define([], function () {
                     {
                         component: 'Tabs',
                         uistyle: 'card',
-                        stretch: true,
+                        fit: true,
                         tabs: [
                             {
                                 item: { text: 'Home' },
