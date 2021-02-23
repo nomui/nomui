@@ -1,7 +1,7 @@
 define(['./basic.js', './cols.js'], function () {
   return {
-    title: 'Tag',
-    subtitle: '标签',
+    title: 'Ellipsis',
+    subtitle: '文字溢出省略',
     demos: Array.prototype.slice.call(arguments),
   }
 })

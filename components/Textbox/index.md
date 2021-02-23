@@ -7,7 +7,7 @@
 
 ## API
 
-更多请[查看 Field 组件](#!components!index?type=Field)
+更多请[查看 Field 组件](#!components!index?type=Field&tab=docs)
 
 | 参数      | 说明             | 类型                                      | 默认值 |
 | --------- | ---------------- | ----------------------------------------- | ------ |
@@ -18,4 +18,4 @@
 
 ## 事件
 
-更多请[查看 Field 组件](#!components!index?type=Field)
+更多请[查看 Field 组件](#!components!index?type=Field&tab=docs)
