@@ -38,7 +38,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
               children: [
                 {
                   component: 'Navbar',
-                  stretch: true,
+                  fit: true,
                   caption: {
                     title: this.props.title,
                     subtitle: this.props.subtitle,
