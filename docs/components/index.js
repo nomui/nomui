@@ -118,7 +118,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                     attrs: {
                       id: 'nice',
                     },
-                    children: this.props.docs,
+                    children: `#${this.props.docs}`,
                   },
                 ],
               },
