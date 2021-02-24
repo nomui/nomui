@@ -61,6 +61,14 @@ class Input extends Component {
   blur() {
     this.element.blur()
   }
+
+  disable(){
+    this.element.setAttribute('disabled', 'disabled')
+  }
+
+  enable(){
+    this.element.removeAttribute('disabled', 'disabled')
+  }
 }
 
 export default Input
