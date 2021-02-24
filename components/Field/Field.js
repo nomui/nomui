@@ -29,15 +29,30 @@ class Field extends Component {
     this.initValue = value !== undefined ? clone(this.props.value) : null
     this.oldValue = null
     this.currentValue = null
-    this.name = name || `__field${++nameSeq}`
+    if (name) {
+      this.name = name
+      this._autoName = false
+    } else {
+      this._autoName = true
+      this.name = `__field${++nameSeq}`
+    }
     this.group = this.props.__group || null
-    this.rootField = this.group === null ? this : this.group.rootField;
+    this.rootField = this.group === null ? this : this.group.rootField
   }
 
   _config() {
     this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth')
-    const { label, labelWidth, span, notShowLabel, required, requiredMessage, rules, action } = this.props
-    const showLabel = notShowLabel === false && (label !== undefined && label !== null)
+    const {
+      label,
+      labelWidth,
+      span,
+      notShowLabel,
+      required,
+      requiredMessage,
+      rules,
+      action,
+    } = this.props
+    const showLabel = notShowLabel === false && label !== undefined && label !== null
 
     if (required === true) {
       rules.unshift({ type: 'required', message: requiredMessage })
@@ -51,7 +66,6 @@ class Field extends Component {
       })
     }
 
-
     let labelProps = showLabel ? { component: FieldLabel } : null
     if (labelProps && labelWidth) {
       labelProps = Component.extendProps(labelProps, {
@@ -60,15 +74,15 @@ class Field extends Component {
             width: `${labelWidth}px`,
             maxWidth: `${labelWidth}px`,
             flexBasis: `${labelWidth}px`,
-          }
-        }
+          },
+        },
       })
     }
     this.setProps({
       children: [
         labelProps,
         { component: FieldContent, value: this.props.value },
-        action && { component: FieldAction, children: { component: 'Cols', items: action } }
+        action && { component: FieldAction, children: { component: 'Cols', items: action } },
       ],
     })
   }
@@ -200,10 +214,10 @@ class Field extends Component {
   }
 }
 
-  Object.defineProperty(Field.prototype, 'fields', {
+Object.defineProperty(Field.prototype, 'fields', {
   get: function () {
-  return this.control.children
-},
+    return this.control.children
+  },
 })
 
 Component.register(Field)
