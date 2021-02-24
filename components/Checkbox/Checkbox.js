@@ -46,6 +46,14 @@ class Checkbox extends Field {
     this.input.element.checked = value === true
     this._onValueChange()
   }
+
+  _disable() {
+    this.input.element.setAttribute('disabled', 'disabled')
+  }
+
+  _enable() {
+    this.input.element.removeAttribute('disabled', 'disabled')
+  }
 }
 
 Component.register(Checkbox)
