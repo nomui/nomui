@@ -102,7 +102,10 @@ class Field extends Component {
   }
 
   _validate() {
-    const { rules } = this.props
+    const { rules, disabled, hidden } = this.props
+    if (disabled || hidden) {
+      return true
+    }
     if (Array.isArray(rules) && rules.length > 0) {
       const validationResult = RuleManager.validate(rules, this.getValue())
 
