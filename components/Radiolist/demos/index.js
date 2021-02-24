@@ -1,4 +1,4 @@
-define(['./basic.js', './type-button.js'], function () {
+define(['./basic.js', './disabled-option.js', './type-button.js'], function () {
   return {
     title: 'RadioList',
     subtitle: '单选列表',
