@@ -41,10 +41,8 @@ class Group extends Field {
   getValue(options) {
     options = extend(
       {
-        ignore: {
-          disabled: true,
-          hidden: true,
-        },
+        ignoreDisabled: true,
+        ignoreHidden: true,
       },
       options,
     )
@@ -65,22 +63,11 @@ class Group extends Field {
     return value
   }
 
-  _needHandleValue(field, options) {
-    return (
-      field._autoName === false &&
-      Object.keys(options.ignore).every((value) => {
-        return field.props[value] !== options.ignore[value]
-      })
-    )
-  }
-
   setValue(value, options) {
     options = extend(
       {
-        ignore: {
-          disabled: true,
-          hidden: true,
-        },
+        ignoreDisabled: true,
+        ignoreHidden: true,
       },
       options,
     )
@@ -167,6 +154,21 @@ class Group extends Field {
         field.setValue(null)
       }
     }
+  }
+
+  _needHandleValue(field, options) {
+    const { disabled, hidden } = field.props
+    if (field._autoName) {
+      return false
+    }
+    if (options.ignoreDisabled && disabled === true) {
+      return false
+    }
+    if (options.ignoreHidden && hidden === true) {
+      return false
+    }
+
+    return true
   }
 }
 

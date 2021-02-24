@@ -26,6 +26,7 @@ define([], function () {
               name: 'name',
               label: '姓名',
               required: true,
+              disabled: true,
               rules: [
                 { type: 'identifier' },
                 { type: 'minlength', value: 2 },
@@ -59,7 +60,7 @@ define([], function () {
             },
             {
               component: 'DatePicker',
-              name: 'gender',
+              name: 'birthDate',
               label: '出生日期',
             },
             {
