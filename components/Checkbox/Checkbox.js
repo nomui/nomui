@@ -44,6 +44,7 @@ class Checkbox extends Field {
 
   _setValue(value) {
     this.input.element.checked = value === true
+    this._onValueChange()
   }
 }
 
