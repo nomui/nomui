@@ -1,12 +1,13 @@
 define([], function () {
   return {
-    title: '基础用法',
-    description: '默认的textarea',
-    file: 'basic',
+    title: '禁用状态',
+    description: '设置 `disabled` 为 true',
+    file: 'disabled',
     demo: function () {
       return {
         component: 'MultilineTextbox',
         value: '多行文本',
+        disabled: true,
       }
     },
   }

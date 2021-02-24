@@ -65,6 +65,14 @@ class MultilineTextbox extends Field {
   blur() {
     this.textarea.blur()
   }
+
+  _disable() {
+    this.textarea.disable()
+  }
+
+  _enable() {
+    this.textarea.enable()
+  }
 }
 
 Component.register(MultilineTextbox)
