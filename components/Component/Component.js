@@ -726,6 +726,9 @@ class Component {
   }
 
   __handleClick(event) {
+    if (this.props._shouldHandleClick && this.props._shouldHandleClick.call(this) === false) {
+      return
+    }
     if (this.props.disabled === true) {
       return
     }
