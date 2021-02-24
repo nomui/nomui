@@ -69,7 +69,7 @@ class Numberbox extends Textbox {
       numberValue = parseFloat(textValue);
     }
 
-    if (Number.isNaN(textValue)) {
+    if (Number.isNaN(numberValue)) {
       numberValue = null
     }
 
