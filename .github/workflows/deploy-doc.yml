@@ -25,7 +25,7 @@ jobs:
           CI: true
 
       - name: deploy Doc Site
-        run: easingthemes/ssh-deploy@v2.0.8
+        run: easingthemes/ssh-deploy@v2.1.5
         env:
           # settings => secrets 添加服务器私钥
           SSH_PRIVATE_KEY: ${{ secrets.SSH_TOKEN }}
@@ -36,8 +36,8 @@ jobs:
           # 登录账户
           REMOTE_USER: root
           # 需要发送至远程服务器的文件 'build'为React打包产物
-          SOURCE: 'doc-sites'
+          SOURCE: 'doc-sites/'
           # 服务器存储位置
-          TARGET: '/sites/nomui'
+          TARGET: '/sites/nomui/'
           # rsync参数，一般默认如下即可
-          ARGS: '-avzr --delete'
+          ARGS: '-rltgoDzvO'
