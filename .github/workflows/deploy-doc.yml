@@ -1,0 +1,43 @@
+name: Deploy Doc
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Intall, Build
+        run: |
+          npm i
+          npm run build
+        env:
+          CI: true
+
+      - name: Copy Doc Site
+        run: mkdir doc-sites && cp -rif ./{components,dist,docs,libs,index.html,index.js,README.md,LICENSE} doc-sites
+        env:
+          CI: true
+
+      - name: deploy Doc Site
+        run: easingthemes/ssh-deploy@v2.0.8
+        env:
+          # settings => secrets 添加服务器私钥
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_TOKEN }}
+          # 服务器地址，可以直接写，也可以在secrets创建（即私密不公开）
+          REMOTE_HOST: 111.230.249.41
+          # 服务器ssh端口，默认22，改过端口才需要配置
+          REMOTE_PORT: 22
+          # 登录账户
+          REMOTE_USER: root
+          # 需要发送至远程服务器的文件 'build'为React打包产物
+          SOURCE: '/doc-sites'
+          # 服务器存储位置
+          TARGET: '/sites/nomui'
+          # rsync参数，一般默认如下即可
+          ARGS: '-avzr --delete'
