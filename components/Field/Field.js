@@ -1,10 +1,10 @@
 import Component from '../Component/index'
-import { isFunction, clone } from '../util/index'
+import Tooltip from '../Tooltip/index'
+import { clone, isFunction } from '../util/index'
+import RuleManager from '../util/rule-manager'
+import FieldAction from './FieldAction'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
-import FieldAction from './FieldAction'
-import Tooltip from '../Tooltip/index'
-import RuleManager from '../util/rule-manager'
 
 let nameSeq = 0
 
