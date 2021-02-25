@@ -9,7 +9,7 @@ class Table extends Component {
     const defaults = {
       tag: 'table',
       columns: [],
-      row: {},
+      rowDefaults: {},
       onlyHead: false,
       onlyBody: false,
       keyField: 'id',

@@ -10,7 +10,7 @@ define([], function () {
             articleMenu.expandToItem(article);
 
             require([articleUrl], (articleContent) => {
-                content.update({ children: marked(articleContent) })
+                content.update({ children: `#${marked(articleContent)}` })
             })
         }
 

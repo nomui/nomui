@@ -32,7 +32,7 @@ define([], function () {
             ],
           },
         ],
-        contentActions: [
+        controlAction: [
           {
             component: 'Button',
             text: '保 存',

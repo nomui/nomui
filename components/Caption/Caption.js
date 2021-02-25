@@ -18,16 +18,17 @@ class Caption extends Component {
   }
 
   _config() {
+    this._addPropStyle('subtitleWrap')
     const { title, subtitle, icon, image, href, titleLevel } = this.props
     const children = []
     if (isPlainObject(image)) {
-      children.push(Component.extendProps({ tag: 'img' }, image))
+      children.push(Component.extendProps({ tag: 'img', classes: { 'nom-caption-image': true } }, image))
     }
     else if (isString(image)) {
-      children.push({ tag: 'img', attrs: { src: image } })
+      children.push({ tag: 'img', classes: { 'nom-caption-image': true }, attrs: { src: image } })
     }
     else if (icon) {
-      children.push(Component.normalizeIconProps(icon))
+      children.push(Component.extendProps({ classes: { 'nom-caption-icon': true } }, Component.normalizeIconProps(icon)))
     }
     const titleTag = `h${titleLevel}`
     children.push({

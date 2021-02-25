@@ -38,7 +38,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
               children: [
                 {
                   component: 'Navbar',
-                  stretch: true,
+                  fit: true,
                   caption: {
                     title: this.props.title,
                     subtitle: this.props.subtitle,
@@ -46,7 +46,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                   nav: {
                     component: 'TabList',
                     selectedTab: this.props.tab,
-                    stretch: true,
+                    fit: true,
                     uistyle: 'line',
                     tabContent: function () {
                       return tabContent
@@ -118,7 +118,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                     attrs: {
                       id: 'nice',
                     },
-                    children: this.props.docs,
+                    children: `#${this.props.docs}`,
                   },
                 ],
               },

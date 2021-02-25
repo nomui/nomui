@@ -10,10 +10,6 @@ class GroupList extends Group {
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
-    _created() {
-        super._created()
-    }
-
     _config() {
         const that = this
         const { groupDefaults, value } = this.props
@@ -21,7 +17,7 @@ class GroupList extends Group {
             _config: function () {
                 const group = this
                 this.setProps({
-                    actions: [{
+                    action: [{
                         component: 'Button',
                         text: '移除',
                         onClick: () => {
@@ -43,7 +39,7 @@ class GroupList extends Group {
         this.setProps({
             fields: groups,
             fieldDefaults: extGroupDefaults,
-            contentActions: [{
+            controlAction: [{
                 component: 'Button',
                 type: 'dashed',
                 text: '添加',

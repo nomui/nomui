@@ -103,6 +103,8 @@ class Component {
     this.props._created && this.props._created.call(this)
   }
 
+  _created() {}
+
   config() {
     this.props._config && this.props._config.call(this)
     this._callMixin('_config')
@@ -110,6 +112,8 @@ class Component {
     this._setExpandableProps()
     this._setStatusProps()
   }
+
+  _config() {}
 
   render() {
     if (this.rendered === true) {
@@ -137,6 +141,8 @@ class Component {
     isFunction(this.props._rendered) && this.props._rendered.call(this)
     this.firstRender = false
   }
+
+  _rendered() {}
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
   remove() {
@@ -188,8 +194,22 @@ class Component {
       this.referenceElement.parentNode.replaceChild(this.element, this.referenceElement)
     } else if (placement === 'after') {
       this.referenceElement.insertAdjacentElement('afterend', this.element)
+      if (this.referenceComponent) {
+        const refParent = this.referenceComponent.parent
+        if (refParent) {
+          const refIndex = refParent.indexOf(this.referenceComponent)
+          refParent.children.splice(refIndex + 1, 0, this)
+        }
+      }
     } else if (placement === 'before') {
       this.referenceElement.insertAdjacentElement('beforebegin', this.element)
+      if (this.referenceComponent) {
+        const refParent = this.referenceComponent.parent
+        if (refParent) {
+          const refIndex = refParent.indexOf(this.referenceComponent)
+          refParent.children.splice(refIndex, 0, this)
+        }
+      }
     }
   }
 
@@ -233,6 +253,8 @@ class Component {
     return el
   }
 
+  _remove() {}
+
   _callMixin(hookType) {
     for (let i = 0; i < MIXINS.length; i++) {
       const mixin = MIXINS[i]
@@ -266,6 +288,10 @@ class Component {
     this.props = Component.extendProps(this.props, newProps)
   }
 
+  assignProps(newProps) {
+    this.props = { ...this.props, ...newProps }
+  }
+
   appendChild(child) {
     if (!child) {
       return
@@ -296,11 +322,11 @@ class Component {
     } else if (isString(child) || isNumeric(child)) {
       if (isPlainObject(childDefaults)) {
         childProps = { children: child }
-      } else if (child[0] === '<') {
-        this.element.innerHTML = child
+      } else if (child[0] === '#') {
+        this.element.innerHTML = child.slice(1)
         return
       } else {
-        this.element.appendChild(document.createTextNode(child))
+        this.element.textContent = child
         return
       }
     } else if (child instanceof DocumentFragment) {
@@ -328,14 +354,12 @@ class Component {
     }
 
     const { normalizedProps, mixins } = this._normalizeProps(props)
-
     const extNormalizedProps = Component.extendProps({}, normalizedProps, {
       reference: this.element,
       placement: 'before',
     })
 
-    // todo:需要改为插到正确的位置
-    this.parent.children.push(Component.create(extNormalizedProps, ...mixins))
+    return Component.create(extNormalizedProps, ...mixins)
   }
 
   after(props) {
@@ -344,13 +368,21 @@ class Component {
     }
 
     const { normalizedProps, mixins } = this._normalizeProps(props)
-
     const extNormalizedProps = Component.extendProps({}, normalizedProps, {
       reference: this.element,
       placement: 'after',
     })
 
-    this.parent.children.push(Component.create(extNormalizedProps, ...mixins))
+    return Component.create(extNormalizedProps, ...mixins)
+  }
+
+  indexOf(child) {
+    for (let i = 0; i < this.children.length; i++) {
+      const c = this.children[i]
+      if (c === child) {
+        return i
+      }
+    }
   }
 
   _normalizeProps(props) {
@@ -433,7 +465,8 @@ class Component {
       this.props.selected = true
       this.addClass('s-selected')
       isFunction(this._select) && this._select()
-      selectOption.triggerSelect === true && this._callHandler(this.props.onSelect)
+      selectOption.triggerSelect === true &&
+        this._callHandler(this.props.onSelect, null, selectOption.event)
       selectOption.triggerSelectionChange === true &&
         this._callHandler(this.props.onSelectionChange)
 
@@ -461,7 +494,7 @@ class Component {
       isFunction(this._unselect) && this._unselect()
 
       if (unselectOption.triggerUnselect === true) {
-        this._callHandler(this.props.onUnselect)
+        this._callHandler(this.props.onUnselect, null, unselectOption.event)
       }
 
       if (unselectOption.triggerSelectionChange === true) {
@@ -474,13 +507,13 @@ class Component {
     return false
   }
 
-  toggleSelect() {
+  toggleSelect(event) {
     if (!this.rendered) return
     const { selected, selectable } = this.props
     if (selectable && selectable.canRevert === false && selected === true) {
       return
     }
-    this.props.selected === true ? this.unselect() : this.select()
+    this.props.selected === true ? this.unselect({ event: event }) : this.select({ event })
   }
 
   expand() {
@@ -693,10 +726,16 @@ class Component {
   }
 
   __handleClick(event) {
+    if (this.props._shouldHandleClick && this.props._shouldHandleClick.call(this) === false) {
+      return
+    }
+    if (this.props.disabled === true) {
+      return
+    }
     const { onClick, selectable, expandable } = this.props
     onClick && this._callHandler(onClick, null, event)
     if (selectable && selectable.byClick === true) {
-      this.toggleSelect()
+      this.toggleSelect(event)
     }
     if (expandable && expandable.byClick === true) {
       this.toggleExpand()

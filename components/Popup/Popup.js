@@ -55,25 +55,31 @@ class Popup extends Layer {
   }
 
   _onOpenerClickHandler() {
-    this.toggleHidden()
+    if (this.opener.props.disabled !== true) {
+      this.toggleHidden()
+    }
   }
 
   _showHandler() {
-    clearTimeout(this.hideTimer)
-    this.hideTimer = null
-    this.showTimer = setTimeout(() => {
-      this.show()
-    }, this.delay)
+    if (this.opener.props.disabled !== true) {
+      clearTimeout(this.hideTimer)
+      this.hideTimer = null
+      this.showTimer = setTimeout(() => {
+        this.show()
+      }, this.delay)
+    }
   }
 
   _hideHandler() {
-    clearTimeout(this.showTimer)
-    this.showTimer = null
+    if (this.opener.props.disabled !== true) {
+      clearTimeout(this.showTimer)
+      this.showTimer = null
 
-    if (this.props.hidden === false) {
-      this.hideTimer = setTimeout(() => {
-        this.hide()
-      }, this.delay)
+      if (this.props.hidden === false) {
+        this.hideTimer = setTimeout(() => {
+          this.hide()
+        }, this.delay)
+      }
     }
   }
 

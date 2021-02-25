@@ -29,13 +29,15 @@ class Field extends Component {
     this.initValue = value !== undefined ? clone(this.props.value) : null
     this.oldValue = null
     this.currentValue = null
-    this.name = name || `__field${++nameSeq}`
+    if (name) {
+      this.name = name
+      this._autoName = false
+    } else {
+      this._autoName = true
+      this.name = `__field${++nameSeq}`
+    }
     this.group = this.props.__group || null
     this.rootField = this.group === null ? this : this.group.rootField
-    this.fields = []
-    if (this.group) {
-      this.group.fields.push(this)
-    }
   }
 
   _config() {
@@ -48,7 +50,7 @@ class Field extends Component {
       required,
       requiredMessage,
       rules,
-      actions,
+      action,
     } = this.props
     const showLabel = notShowLabel === false && label !== undefined && label !== null
 
@@ -80,7 +82,7 @@ class Field extends Component {
       children: [
         labelProps,
         { component: FieldContent, value: this.props.value },
-        actions && { component: FieldAction, children: { component: 'Cols', items: actions } },
+        action && { component: FieldAction, children: { component: 'Cols', items: action } },
       ],
     })
   }
@@ -100,7 +102,10 @@ class Field extends Component {
   }
 
   _validate() {
-    const { rules } = this.props
+    const { rules, disabled, hidden } = this.props
+    if (disabled || hidden) {
+      return true
+    }
     if (Array.isArray(rules) && rules.length > 0) {
       const validationResult = RuleManager.validate(rules, this.getValue())
 
@@ -160,6 +165,13 @@ class Field extends Component {
     isFunction(this._clear) && this._clear()
   }
 
+  after(props) {
+    if (props) {
+      props.__group = this.group
+    }
+    return super.after(props)
+  }
+
   _reset() {
     this.setValue(this.initValue)
   }
@@ -204,6 +216,12 @@ class Field extends Component {
     }, 0)
   }
 }
+
+Object.defineProperty(Field.prototype, 'fields', {
+  get: function () {
+    return this.control.children
+  },
+})
 
 Component.register(Field)
 

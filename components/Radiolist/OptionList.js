@@ -46,6 +46,7 @@ class OptionList extends List {
       })
     }
     this.setProps({
+      disabled: listProps.disabled,
       items: listProps.options,
       itemDefaults: listProps.optionDefaults,
       itemSelectable: {

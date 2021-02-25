@@ -12,6 +12,7 @@ define(
         './splitline.js',
         './outline.js',
         './styles.js',
+        './uistyle.js',
     ],
     function () {
 

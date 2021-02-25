@@ -14,7 +14,7 @@ class Tabs extends Component {
   }
 
   _config() {
-    this._addPropStyle('stretch')
+    this._addPropStyle('fit')
     const that = this
     const tabItems = []
     const tabPanles = []

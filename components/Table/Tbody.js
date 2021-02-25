@@ -15,7 +15,7 @@ class Tbody extends Component {
   }
 
   _config() {
-    const { data } = this.table.props
+    const { data, rowDefaults } = this.table.props
     const children =
       Array.isArray(data) &&
       data.map(function (rowData) {
@@ -27,6 +27,7 @@ class Tbody extends Component {
 
     this.setProps({
       children,
+      childDefaults: rowDefaults
     })
   }
 }

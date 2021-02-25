@@ -32,6 +32,10 @@ define([], function () {
                             ],
                         },
                         {
+                            component: 'Textbox', name: 'address', label: '住址', required: true,
+                            disabled: true,
+                        },
+                        {
                             component: 'RadioList', name: 'gender', label: '性别',
                             options: [
                                 { text: '射雕英雄传', value: 0 },

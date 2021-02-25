@@ -1,5 +1,5 @@
 @input-bg: #fff;
-@input-bg-disabled: lighten(@gray, 50);
+@input-bg-disabled: #e9ecef;
 
 @input-color: @text-color;
 @input-border: #ccc;
@@ -17,109 +17,109 @@
 @cursor-disabled: not-allowed;
 
 .nom-field {
-    display: flex;
+  display: flex;
 
-    >.nom-field-label {
-        padding: .5rem .5rem;
+  > .nom-field-label {
+    padding: 0.5rem 0.5rem;
 
-        >.nom-label {
-            display: block;
-        }
+    > .nom-label {
+      display: block;
+    }
+  }
+
+  > .nom-field-content {
+    padding: 0.5rem 0.5rem;
+    position: relative;
+    flex-grow: 1;
+
+    > .nom-control {
+      .p-control-width-xsmall& {
+        max-width: 104px;
+      }
+
+      .p-control-width-small& {
+        max-width: 216px;
+      }
+
+      .p-control-width-medium& {
+        max-width: 328px;
+      }
+
+      .p-control-width-large& {
+        max-width: 440px;
+      }
+
+      .p-control-width-xlarge& {
+        max-width: 552px;
+      }
+    }
+  }
+
+  > .nom-field-action {
+    padding: 0.5rem 0.5rem;
+  }
+
+  &.p-inline:not(.nom-group) {
+    display: inline-flex !important;
+  }
+
+  &.p-required:not(.p-required-mark-optional) {
+    > .nom-field-label {
+      > .nom-label::before {
+        display: inline-block;
+        margin-right: 4px;
+        color: #ff4d4f;
+        font-size: 14px;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+        content: '*';
+      }
+    }
+  }
+
+  &.s-invalid {
+    > .nom-field-content {
+      color: #000;
+      background-color: #fff3f3;
+
+      > .nom-control {
+        border-color: #ffa8a8;
+      }
+    }
+  }
+
+  @media (min-width: @screen-sm-min) {
+    &.p-label-align-top {
+      flex-direction: column;
     }
 
-    >.nom-field-content {
-        padding: .5rem .5rem;
-        position: relative;
-        flex-grow: 1;
+    &.p-label-align-right,
+    &.p-label-align-left {
+      > .nom-field-label {
+        flex: 0 0 10rem;
+        max-width: 10rem;
+        margin-bottom: 0;
 
-        >.nom-control {
-            .p-control-width-xsmall& {
-                max-width: 104px;
-            }
-
-            .p-control-width-small& {
-                max-width: 216px;
-            }
-
-            .p-control-width-medium& {
-                max-width: 328px;
-            }
-
-            .p-control-width-large& {
-                max-width: 440px;
-            }
-
-            .p-control-width-xlarge& {
-                max-width: 552px;
-            }
+        > .nom-label {
+          padding: (@padding-y-base);
         }
+      }
     }
 
-    >.nom-field-action {
-        padding: .5rem .5rem;
+    &.p-label-align-right {
+      > .nom-field-label {
+        text-align: right;
+      }
     }
 
-    &.p-inline:not(.nom-group) {
-        display: inline-flex !important;
+    &.p-label-align-left {
+      > .nom-field-label {
+        text-align: left;
+      }
     }
+  }
 
-    &.p-required:not(.p-required-mark-optional) {
-        >.nom-field-label {
-            >.nom-label::before {
-                display: inline-block;
-                margin-right: 4px;
-                color: #ff4d4f;
-                font-size: 14px;
-                font-family: SimSun, sans-serif;
-                line-height: 1;
-                content: "*";
-            }
-        }
-    }
-
-    &.s-invalid {
-        >.nom-field-content {
-            color: #000;
-            background-color: #fff3f3;
-
-            >.nom-control {
-                border-color: #ffa8a8;
-            }
-        }
-    }
-
-    @media (min-width: @screen-sm-min) {
-        &.p-label-align-top {
-            flex-direction: column;
-        }
-
-        &.p-label-align-right,
-        &.p-label-align-left {
-            >.nom-field-label {
-                flex: 0 0 10rem;
-                max-width: 10rem;
-                margin-bottom: 0;
-
-                >.nom-label {
-                    padding: (@padding-y-base);
-                }
-            }
-        }
-
-        &.p-label-align-right {
-            >.nom-field-label {
-                text-align: right;
-            }
-        }
-
-        &.p-label-align-left {
-            >.nom-field-label {
-                text-align: left;
-            }
-        }
-    }
-
-    &.p-span-auto {
-        width: auto;
-    }
+  &.p-span-auto {
+    width: auto;
+  }
 }

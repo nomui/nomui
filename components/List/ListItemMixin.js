@@ -9,7 +9,7 @@ export default {
     const { onSelect, onUnselect } = this.props
     const listProps = this.list.props
     const selectedItems =
-      this.list.selectedItems !== null
+      listProps.selectedItems !== null && listProps.selectedItems !== undefined
         ? Array.isArray(listProps.selectedItems)
           ? listProps.selectedItems
           : [listProps.selectedItems]
@@ -23,6 +23,11 @@ export default {
       selectable: {
         byClick: listProps.itemSelectable.byClick,
         canRevert: listProps.itemSelectable.multiple === true,
+      },
+      _shouldHandleClick: function () {
+        if (listProps.disabled === true) {
+          return false
+        }
       },
       onSelect: () => {
         if (listProps.itemSelectable.multiple === false) {
@@ -47,7 +52,7 @@ export default {
       },
       onSelectionChange: () => {
         this.list._onItemSelectionChange()
-      }
+      },
     })
   },
   _rendered: function () {

@@ -15,7 +15,7 @@ class Grid extends Component {
   _config() {
     this._propStyleClasses = ['bordered']
 
-    const { line } = this.props
+    const { line, rowDefaults } = this.props
 
     this._calcMinWidth()
 
@@ -25,7 +25,7 @@ class Grid extends Component {
       },
       children: [
         { component: GridHeader, line: line },
-        { component: GridBody, line: line },
+        { component: GridBody, line: line, rowDefaults: rowDefaults },
       ],
     })
   }

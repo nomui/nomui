@@ -9,6 +9,12 @@ define([], function () {
         children: [
           {
             component: 'Textbox',
+            label: 'aaaa',
+            value: 'init text',
+            labelAlign: 'center',
+            labelWidth: 200,
+            controlWidth: 'small',
+            action: [{ component: 'Button', text: '我是操作' }],
             ref: (c) => {
               myTextBoxRef = c
             },

@@ -13,7 +13,8 @@ class Icon extends Component {
 
   _config() {
     this.setProps({
-      children: Icon.svgs[this.props.type] ? Icon.svgs[this.props.type].svg : null,
+      // eslint-disable-next-line prefer-template
+      children: Icon.svgs[this.props.type] ? '#' + Icon.svgs[this.props.type].svg : null,
     })
   }
 }
