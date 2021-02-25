@@ -19,7 +19,7 @@ class TimePickerPopup extends Popup {
     this.setProps({
       attrs: {
         style: {
-          width: `${this.pickerControl.offsetWidth()}px`,
+          width: `300px`,
         },
       },
       children: {

@@ -17,6 +17,8 @@ class TimePickerWrapper extends Component {
     this.setProps({
       children: {
         component: 'Cols',
+        fills: true,
+        justify: 'center',
         children: [
           {
             component: TimePickerList,

@@ -19,8 +19,6 @@ class SelectList extends List {
   }
 
   _config() {
-    const that = this
-
     let items = []
 
     if (this.props.type === 'hour') {
@@ -39,14 +37,15 @@ class SelectList extends List {
       },
       selectedItems: null,
 
-      onItemSelectionChange: (data) => {
-        this.onChange(data)
+      onItemSelectionChange: () => {
+        this.onChange()
       },
     })
 
-    console.log(that)
     super._config()
   }
+
+  onChange() {}
 }
 
 export default SelectList
