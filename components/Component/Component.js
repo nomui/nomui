@@ -160,6 +160,10 @@ class Component {
     this.render()
   }
 
+  replace(props) {
+    Component.create(Component.extendProps(props, { placement: 'replace', reference: this }))
+  }
+
   emptyChildren() {
     while (this.element.firstChild) {
       if (this.element.firstChild.component) {
