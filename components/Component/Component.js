@@ -178,22 +178,18 @@ class Component {
     this.element.component = this
     if (placement === 'append') {
       this.referenceElement.appendChild(this.element)
-    }
-    else if (placement === 'prepend') {
-      this.referenceElement.insertBefore(this.element, this.referenceElement.firstChild);
-    }
-    else if (placement === 'replace') {
+    } else if (placement === 'prepend') {
+      this.referenceElement.insertBefore(this.element, this.referenceElement.firstChild)
+    } else if (placement === 'replace') {
       if (this.referenceComponent) {
         this.referenceComponent._removeCore()
         this.parent && this.parent.replaceChild(this.referenceComponent, this)
       }
       this.referenceElement.parentNode.replaceChild(this.element, this.referenceElement)
-    }
-    else if (placement === 'after') {
-      this.referenceElement.insertAdjacentElement('afterend', this.element);
-    }
-    else if (placement === 'before') {
-      this.referenceElement.insertAdjacentElement('beforebegin', this.element);
+    } else if (placement === 'after') {
+      this.referenceElement.insertAdjacentElement('afterend', this.element)
+    } else if (placement === 'before') {
+      this.referenceElement.insertAdjacentElement('beforebegin', this.element)
     }
   }
 
@@ -843,8 +839,7 @@ class Component {
   static register(component, name) {
     if (name !== undefined) {
       components[name] = component
-    }
-    else {
+    } else {
       components[component.name] = component
     }
   }

@@ -1,10 +1,10 @@
 import Component from '../Component/index'
-import { isFunction, clone } from '../util/index'
+import Tooltip from '../Tooltip/index'
+import { clone, isFunction } from '../util/index'
+import RuleManager from '../util/rule-manager'
+import FieldAction from './FieldAction'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
-import FieldAction from './FieldAction'
-import Tooltip from '../Tooltip/index'
-import RuleManager from '../util/rule-manager'
 
 let nameSeq = 0
 
@@ -31,7 +31,7 @@ class Field extends Component {
     this.currentValue = null
     this.name = name || `__field${++nameSeq}`
     this.group = this.props.__group || null
-    this.rootField = this.group === null ? this : this.group.rootField;
+    this.rootField = this.group === null ? this : this.group.rootField
     this.fields = []
     if (this.group) {
       this.group.fields.push(this)
@@ -40,8 +40,17 @@ class Field extends Component {
 
   _config() {
     this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth')
-    const { label, labelWidth, span, notShowLabel, required, requiredMessage, rules, actions } = this.props
-    const showLabel = notShowLabel === false && (label !== undefined && label !== null)
+    const {
+      label,
+      labelWidth,
+      span,
+      notShowLabel,
+      required,
+      requiredMessage,
+      rules,
+      actions,
+    } = this.props
+    const showLabel = notShowLabel === false && label !== undefined && label !== null
 
     if (required === true) {
       rules.unshift({ type: 'required', message: requiredMessage })
@@ -55,7 +64,6 @@ class Field extends Component {
       })
     }
 
-
     let labelProps = showLabel ? { component: FieldLabel } : null
     if (labelProps && labelWidth) {
       labelProps = Component.extendProps(labelProps, {
@@ -64,15 +72,15 @@ class Field extends Component {
             width: `${labelWidth}px`,
             maxWidth: `${labelWidth}px`,
             flexBasis: `${labelWidth}px`,
-          }
-        }
+          },
+        },
       })
     }
     this.setProps({
       children: [
         labelProps,
         { component: FieldContent, value: this.props.value },
-        actions && { component: FieldAction, children: { component: 'Cols', items: actions } }
+        actions && { component: FieldAction, children: { component: 'Cols', items: actions } },
       ],
     })
   }

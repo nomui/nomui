@@ -1,0 +1,76 @@
+.nom-cascader {
+  > .nom-field-content {
+    .nom-control {
+      &:hover {
+        border: 1px solid @primary;
+      }
+
+      position: relative;
+      min-height: 34px;
+      padding: 6px 24px 6px 12px;
+      color: #000 !important;
+      line-height: 1.42857;
+      background: white;
+      border: 1px solid gainsboro;
+      border-radius: 2px;
+      cursor: pointer;
+
+      .nom-cascader-content {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .nom-cascader-icon {
+        position: absolute;
+        top: 0;
+        right: 8px;
+        bottom: 0;
+      }
+
+      .nom-cascader-placeholder {
+        color: #bfbfbf;
+      }
+    }
+  }
+}
+
+.nom-cascader-popup > .nom-layout {
+  max-height: 300px;
+
+  > .nom-layout-body {
+    overflow-x: hidden;
+
+    .nom-cascader-menu {
+      display: inline-block;
+      min-width: 111px;
+      margin: 0;
+      padding: 4px 0;
+      overflow: auto;
+      white-space: nowrap;
+      vertical-align: top;
+      list-style: none;
+      border-right: 1px solid #f0f0f0;
+
+      > .nom-cascader-menu-item {
+        &:hover {
+          background-color: #f5f5f5;
+          cursor: pointer;
+        }
+
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 5px 12px;
+        > .nom-cascader-menu-item-expand-icon {
+          position: absolute;
+          right: 12px;
+        }
+      }
+
+      > .nom-cascader-menu-item-active {
+        background-color: #e6f7ff;
+      }
+    }
+  }
+}
