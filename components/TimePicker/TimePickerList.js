@@ -56,6 +56,15 @@ class SelectList extends List {
 
   onChange() {
     this.scrollToKey()
+    this.setTime()
+  }
+
+  setTime() {
+    const key = this.getSelectedItem().key
+    this.pickerControl.setTime({
+      type: this.props.type,
+      value: key,
+    })
   }
 
   scrollToKey() {
