@@ -24,6 +24,9 @@ jobs:
         env:
           CI: true
 
+      - name: Print Log
+        run: ls doc-sites
+
       - name: deploy Doc Site
         run: easingthemes/ssh-deploy@v2.1.5
         env:
