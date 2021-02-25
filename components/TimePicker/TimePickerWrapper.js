@@ -17,6 +17,7 @@ class TimePickerWrapper extends Component {
     this.setProps({
       children: {
         component: 'Rows',
+        gutter: null,
         items: [
           {
             component: 'Cols',
@@ -38,6 +39,29 @@ class TimePickerWrapper extends Component {
               {
                 component: TimePickerList,
                 type: 'second',
+              },
+            ],
+          },
+          {
+            component: 'Cols',
+            justify: 'between',
+            attrs: {
+              style: {
+                padding: '5px',
+                'border-top': '1px solid #ddd',
+              },
+            },
+            items: [
+              {
+                component: 'Button',
+                size: 'small',
+                text: '此刻',
+              },
+              {
+                component: 'Button',
+                type: 'Primary',
+                size: 'small',
+                text: '确定',
               },
             ],
           },
