@@ -8,9 +8,9 @@ class TimePicker extends Textbox {
       allowClear: false,
       value: null,
       format: 'HH:mm:ss',
-      hourStep: 6,
+      hourStep: 0,
       minuteStep: 0,
-      secondStep: 15,
+      secondStep: 0,
       inputReadOnly: true,
       placeholder: null,
       showNow: true,
@@ -153,22 +153,6 @@ class TimePicker extends Textbox {
     }
     return second
   }
-
-  // _getTimeData(count) {
-  //   const data = []
-  //   for (let i = 0; i < count; i++) {
-  //     let val = `${i}`
-  //     if (i < 10) {
-  //       val = `0${i}`
-  //     }
-  //     data.push({
-  //       text: val,
-  //       value: val,
-  //     })
-  //   }
-
-  //   return data
-  // }
 }
 
 Component.register(TimePicker)

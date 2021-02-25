@@ -16,21 +16,30 @@ class TimePickerWrapper extends Component {
   _config() {
     this.setProps({
       children: {
-        component: 'Cols',
-        fills: true,
-        justify: 'center',
-        children: [
+        component: 'Rows',
+        items: [
           {
-            component: TimePickerList,
-            type: 'hour',
-          },
-          {
-            component: TimePickerList,
-            type: 'minute',
-          },
-          {
-            component: TimePickerList,
-            type: 'second',
+            component: 'Cols',
+            gutter: null,
+            classes: {
+              'timepicker-group': true,
+            },
+            fills: true,
+            align: 'start',
+            items: [
+              {
+                component: TimePickerList,
+                type: 'hour',
+              },
+              {
+                component: TimePickerList,
+                type: 'minute',
+              },
+              {
+                component: TimePickerList,
+                type: 'second',
+              },
+            ],
           },
         ],
       },

@@ -4,7 +4,7 @@ import List from '../List/index'
 class SelectList extends List {
   constructor(props, ...mixins) {
     const defaults = {
-      gutter: 'x-md',
+      gutter: 'sm',
       cols: 1,
     }
 
@@ -14,7 +14,8 @@ class SelectList extends List {
   _created() {
     super._created()
 
-    this.timeWrapper = this.parent.parent
+    this.scroller = this.parent
+    this.timeWrapper = this.parent.parent.parent.parent.parent
     this.pickerControl = this.timeWrapper.parentPopup.pickerControl
   }
 
@@ -30,6 +31,14 @@ class SelectList extends List {
     }
 
     this.setProps({
+      styles: {
+        padding: '3px',
+      },
+      attrs: {
+        style: {
+          'border-left': this.props.type === 'hour' ? 'none' : '1px solid #ddd',
+        },
+      },
       items: items,
       itemSelectable: {
         multiple: false,
@@ -45,7 +54,14 @@ class SelectList extends List {
     super._config()
   }
 
-  onChange() {}
+  onChange() {
+    this.scrollToKey()
+  }
+
+  scrollToKey() {
+    const top = this.getSelectedItem().element.offsetTop - 3
+    this.scroller.element.scrollTop = top
+  }
 }
 
 export default SelectList
