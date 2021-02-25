@@ -34,11 +34,7 @@ class SelectList extends List {
       styles: {
         padding: '3px',
       },
-      attrs: {
-        style: {
-          'border-left': this.props.type === 'hour' ? 'none' : '1px solid #ddd',
-        },
-      },
+
       items: items,
       itemSelectable: {
         multiple: false,

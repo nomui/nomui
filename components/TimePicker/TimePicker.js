@@ -8,9 +8,9 @@ class TimePicker extends Textbox {
       allowClear: false,
       value: null,
       format: 'HH:mm:ss',
-      hourStep: 0,
-      minuteStep: 0,
-      secondStep: 0,
+      hourStep: 3,
+      minuteStep: 10,
+      secondStep: 5,
       readOnly: true,
       placeholder: null,
       showNow: true,
@@ -50,7 +50,7 @@ class TimePicker extends Textbox {
       })
       for (let i = 0; i < 24; i++) {
         if ((i + 1) % this.props.hourStep === 0 && i !== 23) {
-          if (i < 10) {
+          if (i < 9) {
             hour.push({
               key: `0${i + 1}`,
               children: `0${i + 1}`,
@@ -89,7 +89,7 @@ class TimePicker extends Textbox {
       })
       for (let i = 0; i < 60; i++) {
         if ((i + 1) % this.props.minuteStep === 0 && i !== 59) {
-          if (i < 10) {
+          if (i < 9) {
             minute.push({
               key: `0${i + 1}`,
               children: `0${i + 1}`,
@@ -128,7 +128,7 @@ class TimePicker extends Textbox {
       })
       for (let i = 0; i < 60; i++) {
         if ((i + 1) % this.props.secondStep === 0 && i !== 59) {
-          if (i < 10) {
+          if (i < 9) {
             second.push({
               key: `0${i + 1}`,
               children: `0${i + 1}`,

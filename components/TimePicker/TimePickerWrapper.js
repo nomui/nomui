@@ -26,7 +26,7 @@ class TimePickerWrapper extends Component {
               'timepicker-group': true,
             },
             fills: true,
-            align: 'start',
+            align: 'stretch',
             items: [
               {
                 component: TimePickerList,
