@@ -21,6 +21,7 @@ jobs:
           GIT_CONFIG_EMAIL: 1002275364@qq.com
           NODE_OPTIONS: --max_old_space_size=4096
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_BRANCH: main # The branch the action should deploy from.
           BRANCH: 'gh-pages'
           FOLDER: 'doc-sites/'
           BUILD_SCRIPT: npm install && npm run build && mkdir doc-sites && cp -rif ./{components,dist,docs,libs,index.html,index.js,README.md,LICENSE} doc-sites
