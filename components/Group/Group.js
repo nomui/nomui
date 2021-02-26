@@ -39,11 +39,14 @@ class Group extends Field {
   }
 
   getValue(options) {
+    const { valueOptions } = this.props
     options = extend(
       {
         ignoreDisabled: true,
         ignoreHidden: true,
+        merge: false,
       },
+      valueOptions,
       options,
     )
 
@@ -60,6 +63,9 @@ class Group extends Field {
       }
     }
 
+    if (options.merge === true) {
+      return extend(this.currentValue, value)
+    }
     return value
   }
 

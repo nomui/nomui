@@ -28,7 +28,7 @@ class Field extends Component {
     const { name, value } = this.props
     this.initValue = value !== undefined ? clone(this.props.value) : null
     this.oldValue = null
-    this.currentValue = null
+    this.currentValue = this.initValue
     if (name) {
       this.name = name
       this._autoName = false
@@ -219,7 +219,7 @@ class Field extends Component {
 
 Object.defineProperty(Field.prototype, 'fields', {
   get: function () {
-    return this.control.children
+    return this.control.getChildren()
   },
 })
 
