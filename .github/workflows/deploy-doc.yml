@@ -12,18 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Intall, Build
-        run: |
-          npm i
-          npm run build
-        env:
-          CI: true
-
-      - name: Copy Doc Site
-        run: mkdir doc-sites && cp -rif ./{components,dist,docs,libs,index.html,index.js,README.md,LICENSE} doc-sites
-        env:
-          CI: true
-
       - name: Build and Deploy
         uses: JamesIves/github-pages-deploy-action@master
         env:
@@ -33,5 +21,6 @@ jobs:
           GIT_CONFIG_EMAIL: 1002275364@qq.com
           NODE_OPTIONS: --max_old_space_size=4096
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
+          BRANCH: 'gh-pages'
           FOLDER: 'doc-sites/'
+          BUILD_SCRIPT: npm install && npm run build && mkdir doc-sites && cp -rif ./{components,dist,docs,libs,index.html,index.js,README.md,LICENSE} doc-sites
