@@ -20,7 +20,7 @@ jobs:
           CI: true
 
       - name: Copy Doc Site
-        run: mkdir doc-sites && cp -rif ./{components,dist,docs,libs,index.html,index.js,README.md,LICENSE,CNAME,.nojekyll,_config.yml} doc-sites
+        run: mkdir doc-sites && cp -rif ./{components,dist,docs,libs,index.html,index.js,README.md,LICENSE,CNAME,.nojekyll} doc-sites
         env:
           CI: true
 
