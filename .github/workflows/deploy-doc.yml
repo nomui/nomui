@@ -24,21 +24,14 @@ jobs:
         env:
           CI: true
 
-      - name: Print Log
-        run: ls doc-sites
-
-      - name: deploy Doc Site
-        run: easingthemes/ssh-deploy@v2.1.5
+      - name: Build and Deploy
+        uses: JamesIves/github-pages-deploy-action@master
         env:
-          # settings => secrets 添加服务器私钥
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_TOKEN }}
-          # 服务器地址，可以直接写，也可以在secrets创建（即私密不公开）
-          REMOTE_HOST: 111.230.249.41
-          # 服务器ssh端口，默认22，改过端口才需要配置
-          REMOTE_PORT: 22
-          # 登录账户
-          REMOTE_USER: root
-          # 需要发送至远程服务器的文件
-          SOURCE: './'
-          # 服务器存储位置
-          TARGET: '/sites/nomui/'
+          CI: true
+          PROGRESS: none
+          GIT_CONFIG_NAME: xiexingen
+          GIT_CONFIG_EMAIL: 1002275364@qq.com
+          NODE_OPTIONS: --max_old_space_size=4096
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: 'doc-sites/'
