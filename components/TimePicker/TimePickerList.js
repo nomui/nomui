@@ -56,7 +56,7 @@ class SelectList extends List {
   }
 
   setTime() {
-    const key = this.getSelectedItem().key
+    const key = this.getSelectedItem().key || '00'
     this.pickerControl.setTime({
       type: this.props.type,
       value: key,

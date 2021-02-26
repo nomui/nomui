@@ -27,18 +27,27 @@ class TimePickerWrapper extends Component {
             },
             fills: true,
             align: 'stretch',
-            items: [
+            children: [
               {
-                component: TimePickerList,
-                type: 'hour',
+                hidden: !this.pickerControl.props.format.includes('HH'),
+                children: {
+                  component: TimePickerList,
+                  type: 'hour',
+                },
               },
               {
-                component: TimePickerList,
-                type: 'minute',
+                hidden: !this.pickerControl.props.format.includes('mm'),
+                children: {
+                  component: TimePickerList,
+                  type: 'minute',
+                },
               },
               {
-                component: TimePickerList,
-                type: 'second',
+                hidden: !this.pickerControl.props.format.includes('ss'),
+                children: {
+                  component: TimePickerList,
+                  type: 'second',
+                },
               },
             ],
           },

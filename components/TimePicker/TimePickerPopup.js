@@ -17,19 +17,11 @@ class TimePickerPopup extends Popup {
 
   _config() {
     this.setProps({
-      attrs: {
-        style: {
-          width: `180px`,
-        },
-      },
       children: {
         component: Layout,
         body: {
           children: {
             component: TimePickerWrapper,
-            onConfirm: () => {
-              // debugger
-            },
           },
         },
       },

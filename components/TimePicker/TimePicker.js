@@ -22,9 +22,9 @@ class TimePicker extends Textbox {
   _created() {
     super._created()
     this.time = {
-      hour: null,
-      minute: null,
-      second: null,
+      hour: '00',
+      minute: '00',
+      second: '00',
     }
   }
 
@@ -161,14 +161,17 @@ class TimePicker extends Textbox {
 
   setTime(data) {
     this.time[data.type] = data.value
-    const result = `${this.time.hour ? this.time.hour : '00'}:${
-      this.time.minute ? this.time.minute : '00'
-    }:${this.time.second ? this.time.second : '00'}`
-    this.setValue(result)
+
+    const realTime = this.props.format
+      .replace('HH', this.time.hour)
+      .replace('mm', this.time.minute)
+      .replace('ss', this.time.second)
+
+    this.setValue(realTime)
   }
 
   clearTime() {
-    this.setValue(null)
+    this.setValue(undefined)
   }
 }
 
