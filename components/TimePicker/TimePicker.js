@@ -6,11 +6,11 @@ class TimePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
       allowClear: false,
-      value: null,
+      value: '12:00:00',
       format: 'HH:mm:ss',
-      hourStep: 3,
-      minuteStep: 10,
-      secondStep: 5,
+      hourStep: 0,
+      minuteStep: 0,
+      secondStep: 0,
       readOnly: true,
       placeholder: null,
       showNow: true,
@@ -21,10 +21,18 @@ class TimePicker extends Textbox {
 
   _created() {
     super._created()
+
     this.time = {
       hour: '00',
       minute: '00',
       second: '00',
+    }
+
+    if (this.props.value) {
+      const t = this.props.value.split(':')
+      this.time.hour = t[0] || '00'
+      this.time.minute = t[1] || '00'
+      this.time.second = t[2] || '00'
     }
   }
 
@@ -166,7 +174,6 @@ class TimePicker extends Textbox {
       .replace('HH', this.time.hour)
       .replace('mm', this.time.minute)
       .replace('ss', this.time.second)
-
     this.setValue(realTime)
   }
 

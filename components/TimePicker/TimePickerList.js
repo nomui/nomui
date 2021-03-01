@@ -21,13 +21,17 @@ class SelectList extends List {
 
   _config() {
     let items = []
+    const selected = []
 
     if (this.props.type === 'hour') {
       items = this.pickerControl.getHour()
+      selected.push(this.pickerControl.time.hour)
     } else if (this.props.type === 'minute') {
       items = this.pickerControl.getMinute()
+      selected.push(this.pickerControl.time.minute)
     } else if (this.props.type === 'second') {
       items = this.pickerControl.getSecond()
+      selected.push(this.pickerControl.time.second)
     }
 
     this.setProps({
@@ -40,7 +44,7 @@ class SelectList extends List {
         multiple: false,
         byClick: true,
       },
-      selectedItems: null,
+      selectedItems: selected,
 
       onItemSelectionChange: () => {
         this.onChange()
