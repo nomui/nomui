@@ -14,6 +14,7 @@ class TimePickerWrapper extends Component {
   }
 
   _config() {
+    const that = this
     this.setProps({
       children: {
         component: 'Rows',
@@ -71,6 +72,11 @@ class TimePickerWrapper extends Component {
                 type: 'Primary',
                 size: 'small',
                 text: '确定',
+                onClick: function () {
+                  that.pickerControl.confirm = true
+                  that.pickerControl.popup.hide()
+                  that.pickerControl.defaultValue = that.pickerControl.props.value
+                },
               },
             ],
           },

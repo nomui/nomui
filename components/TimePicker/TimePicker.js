@@ -63,6 +63,7 @@ class TimePicker extends Textbox {
         }
       },
       onShown: () => {
+        this.confirm = false
         Object.keys(this.timeList).forEach(function (key) {
           that.timeList[key].scrollToKey()
         })
