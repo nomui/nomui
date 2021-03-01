@@ -17,6 +17,7 @@ class SelectList extends List {
     this.scroller = this.parent
     this.timeWrapper = this.parent.parent.parent.parent.parent
     this.pickerControl = this.timeWrapper.parentPopup.pickerControl
+    this.pickerControl.timeList[this.props.type] = this
   }
 
   _config() {
@@ -65,6 +66,21 @@ class SelectList extends List {
       type: this.props.type,
       value: key,
     })
+  }
+
+  resetTime() {
+    if (this.pickerControl.defaultValue) {
+      const t = this.pickerControl.defaultValue.split(':')
+      if (this.props.type === 'hour') {
+        this.selectItem(t[0])
+      } else if (this.props.type === 'minute') {
+        this.selectItem(t[1])
+      } else {
+        this.selectItem(t[2])
+      }
+    } else {
+      this.unselectAllItems()
+    }
   }
 
   scrollToKey() {

@@ -11,6 +11,9 @@ class Layer extends Component {
       alignOuter: false,
       within: window,
       collision: 'flipfit',
+      onClose: null,
+      onHide: null,
+      onShown: null,
 
       closeOnClickOutside: false,
       closeToRemove: false,
@@ -89,6 +92,7 @@ class Layer extends Component {
       window.removeEventListener('resize', this._onWindowResize, false)
       window.addEventListener('resize', this._onWindowResize, false)
     }
+    this.props.onShown && this._callHandler(this.props.onShown)
   }
 
   _hide(forceRemove) {
@@ -96,7 +100,10 @@ class Layer extends Component {
     document.removeEventListener('mousedown', this._onDocumentMousedown, false)
 
     if (forceRemove === true || this.props.closeToRemove) {
+      this.props.onClose && this._callHandler(this.props.onClose)
       this.remove()
+    } else {
+      this.props.onHide && this._callHandler(this.props.onHide)
     }
   }
 
@@ -212,8 +219,8 @@ class Layer extends Component {
           pos = rhorizontal.test(pos[0])
             ? pos.concat(['center'])
             : rvertical.test(pos[0])
-              ? ['center'].concat(pos)
-              : ['center', 'center']
+            ? ['center'].concat(pos)
+            : ['center', 'center']
         }
         pos[0] = rhorizontal.test(pos[0]) ? pos[0] : 'center'
         pos[1] = rvertical.test(pos[1]) ? pos[1] : 'center'
