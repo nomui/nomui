@@ -34,7 +34,7 @@ class CascaderPopup extends Popup {
   }
 
   remove() {
-    this.element.remove()
+    this && this.element && this.element.remove()
   }
 }
 
