@@ -17,7 +17,10 @@ class DatePicker extends Textbox {
 
   _config() {
     const { value, format, disabled } = this.props
-    const currentDate = value !== null ? Date.parseString(value, format) : new Date()
+    let currentDate = value !== null ? Date.parseString(value, format) : new Date()
+    if (!currentDate) {
+      currentDate = new Date()
+    }
     let year = currentDate.getFullYear()
     let month = currentDate.getMonth() + 1
     const day = currentDate.getDate()

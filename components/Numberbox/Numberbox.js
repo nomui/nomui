@@ -57,16 +57,14 @@ class Numberbox extends Textbox {
     const textValue = this.input.getText()
 
     if (precision) {
-      const dotCount = this._dotCount(textValue);
+      const dotCount = this._dotCount(textValue)
       if (precision >= 0 && dotCount > precision) {
-        numberValue = this._toDecimal(textValue, precision);
+        numberValue = this._toDecimal(textValue, precision)
+      } else {
+        numberValue = parseFloat(textValue)
       }
-      else {
-        numberValue = parseFloat(textValue);
-      }
-    }
-    else {
-      numberValue = parseFloat(textValue);
+    } else {
+      numberValue = parseFloat(textValue)
     }
 
     if (Number.isNaN(numberValue)) {
@@ -79,19 +77,19 @@ class Numberbox extends Textbox {
   _setValue(value) {
     const { precision } = this.props
 
-    this.currentValue = this.getValue();
+    this.currentValue = this.getValue()
 
     if (precision !== null && precision !== undefined) {
       if (precision >= 0) {
-        const dotCount = this._dotCount(value);
+        const dotCount = this._dotCount(value)
         if (dotCount > precision) {
-          value = this._toDecimal(value, precision);
+          value = this._toDecimal(value, precision)
         }
       }
     }
 
     if (Number.isNaN(value)) {
-      value = '';
+      value = ''
     }
 
     super._setValue(value)
@@ -99,27 +97,30 @@ class Numberbox extends Textbox {
 
   _toDecimal(val, precision, notRound) {
     if (notRound === undefined) {
-      notRound = false;
+      notRound = false
     }
-    let f = parseFloat(val);
+    let f = parseFloat(val)
     if (Number.isNaN(f)) {
-      return;
+      return
     }
     if (notRound === true) {
-      f = Math.floor(val * (10 ** precision)) / (10 ** precision);
+      f = Math.floor(val * 10 ** precision) / 10 ** precision
+    } else {
+      f = Math.round(val * 10 ** precision) / 10 ** precision
     }
-    else {
-      f = Math.round(val * (10 ** precision)) / (10 ** precision);
-    }
-    return f;
+    return f
   }
 
   _dotCount(val) {
-    val = String(val);
+    val = String(val)
     const dotPos = val.indexOf('.')
     const len = val.substr(dotPos + 1).length
 
-    return len;
+    return len
+  }
+
+  _getRawValue() {
+    return this.input.getText()
   }
 }
 
