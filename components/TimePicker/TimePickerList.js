@@ -26,13 +26,13 @@ class SelectList extends List {
 
     if (this.props.type === 'hour') {
       items = this.pickerControl.getHour()
-      selected.push(this.pickerControl.time.hour)
+      !this.pickerControl.empty && selected.push(this.pickerControl.time.hour)
     } else if (this.props.type === 'minute') {
       items = this.pickerControl.getMinute()
-      selected.push(this.pickerControl.time.minute)
+      !this.pickerControl.empty && selected.push(this.pickerControl.time.minute)
     } else if (this.props.type === 'second') {
       items = this.pickerControl.getSecond()
-      selected.push(this.pickerControl.time.second)
+      !this.pickerControl.empty && selected.push(this.pickerControl.time.second)
     }
 
     this.setProps({
@@ -84,7 +84,7 @@ class SelectList extends List {
   }
 
   scrollToKey() {
-    const top = this.getSelectedItem().element.offsetTop - 3
+    const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
     this.scroller.element.scrollTop = top
   }
 }

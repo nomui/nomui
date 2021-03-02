@@ -25,6 +25,7 @@ class TimePicker extends Textbox {
     this.timeList = []
 
     this.confirm = false
+    this.empty = !this.props.value
 
     this.time = {
       hour: '00',
@@ -45,6 +46,13 @@ class TimePicker extends Textbox {
   _config() {
     this.setProps({
       leftIcon: 'clock',
+      rightIcon: {
+        type: 'times',
+        onClick: (args) => {
+          this.clearTime()
+          args.event && args.event.stopPropagation()
+        },
+      },
     })
 
     super._config()
@@ -57,9 +65,7 @@ class TimePicker extends Textbox {
       onHide: () => {
         if (this.confirm === false) {
           this.setValue(this.defaultValue)
-          Object.keys(this.timeList).forEach(function (key) {
-            that.timeList[key].resetTime()
-          })
+          this.resetList()
         }
       },
       onShown: () => {
@@ -68,6 +74,13 @@ class TimePicker extends Textbox {
           that.timeList[key].scrollToKey()
         })
       },
+    })
+  }
+
+  resetList() {
+    const that = this
+    Object.keys(this.timeList).forEach(function (key) {
+      that.timeList[key].resetTime()
     })
   }
 
@@ -199,7 +212,16 @@ class TimePicker extends Textbox {
   }
 
   clearTime() {
-    this.setValue(undefined)
+    this.setValue(null)
+    this.empty = true
+    this.defaultValue = null
+    this.time = {
+      hour: '00',
+      minute: '00',
+      second: '00',
+    }
+    this.resetList()
+    this.popup.hide()
   }
 }
 
