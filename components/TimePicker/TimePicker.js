@@ -77,13 +77,6 @@ class TimePicker extends Textbox {
     })
   }
 
-  resetList() {
-    const that = this
-    Object.keys(this.timeList).forEach(function (key) {
-      that.timeList[key].resetTime()
-    })
-  }
-
   getHour() {
     const hour = []
     if (this.props.hourStep) {
@@ -211,6 +204,13 @@ class TimePicker extends Textbox {
     this.setValue(realTime)
   }
 
+  resetList() {
+    const that = this
+    Object.keys(this.timeList).forEach(function (key) {
+      that.timeList[key].resetTime()
+    })
+  }
+
   clearTime() {
     this.setValue(null)
     this.empty = true
@@ -222,6 +222,19 @@ class TimePicker extends Textbox {
     }
     this.resetList()
     this.popup.hide()
+  }
+
+  setNow() {
+    const c = new Date().format('HH:mm:ss')
+    this.setValue(c)
+    this.defaultValue = c
+    const t = c.split(':')
+    this.time.hour = t[0] || '00'
+    this.time.minute = t[1] || '00'
+    this.time.second = t[2] || '00'
+
+    this.empty = false
+    this.resetList()
   }
 }
 

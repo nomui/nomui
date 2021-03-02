@@ -67,9 +67,9 @@ class TimePickerWrapper extends Component {
                 size: 'small',
                 text: '此刻',
                 onClick: function () {
+                  that.pickerControl.setNow()
                   that.pickerControl.confirm = true
                   that.pickerControl.popup.hide()
-                  that.pickerControl.setNow()
                 },
               },
               {
