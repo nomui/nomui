@@ -1,4 +1,10 @@
-define(['./basic.js', './autofocus.js', './with-icon.js', './events.js'], function () {
+define([
+  './basic.js',
+  './disabled.js',
+  './autofocus.js',
+  './with-icon.js',
+  './events.js',
+], function () {
   return {
     title: 'Textbox',
     subtitle: '文本框',

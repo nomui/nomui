@@ -1,10 +1,10 @@
 import Component from '../Component/index'
-import { isFunction, clone } from '../util/index'
+import Tooltip from '../Tooltip/index'
+import { clone, isFunction } from '../util/index'
+import RuleManager from '../util/rule-manager'
+import FieldAction from './FieldAction'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
-import FieldAction from './FieldAction'
-import Tooltip from '../Tooltip/index'
-import RuleManager from '../util/rule-manager'
 
 let nameSeq = 0
 
@@ -28,16 +28,31 @@ class Field extends Component {
     const { name, value } = this.props
     this.initValue = value !== undefined ? clone(this.props.value) : null
     this.oldValue = null
-    this.currentValue = null
-    this.name = name || `__field${++nameSeq}`
+    this.currentValue = this.initValue
+    if (name) {
+      this.name = name
+      this._autoName = false
+    } else {
+      this._autoName = true
+      this.name = `__field${++nameSeq}`
+    }
     this.group = this.props.__group || null
-    this.rootField = this.group === null ? this : this.group.rootField;
+    this.rootField = this.group === null ? this : this.group.rootField
   }
 
   _config() {
     this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth')
-    const { label, labelWidth, span, notShowLabel, required, requiredMessage, rules, action } = this.props
-    const showLabel = notShowLabel === false && (label !== undefined && label !== null)
+    const {
+      label,
+      labelWidth,
+      span,
+      notShowLabel,
+      required,
+      requiredMessage,
+      rules,
+      action,
+    } = this.props
+    const showLabel = notShowLabel === false && label !== undefined && label !== null
 
     if (required === true) {
       rules.unshift({ type: 'required', message: requiredMessage })
@@ -51,7 +66,6 @@ class Field extends Component {
       })
     }
 
-
     let labelProps = showLabel ? { component: FieldLabel } : null
     if (labelProps && labelWidth) {
       labelProps = Component.extendProps(labelProps, {
@@ -60,15 +74,15 @@ class Field extends Component {
             width: `${labelWidth}px`,
             maxWidth: `${labelWidth}px`,
             flexBasis: `${labelWidth}px`,
-          }
-        }
+          },
+        },
       })
     }
     this.setProps({
       children: [
         labelProps,
         { component: FieldContent, value: this.props.value },
-        action && { component: FieldAction, children: { component: 'Cols', items: action } }
+        action && { component: FieldAction, children: { component: 'Cols', items: action } },
       ],
     })
   }
@@ -88,9 +102,14 @@ class Field extends Component {
   }
 
   _validate() {
-    const { rules } = this.props
+    const { rules, disabled, hidden } = this.props
+    if (disabled || hidden) {
+      return true
+    }
+    const value = this._getRawValue ? this._getRawValue() : this.getValue()
+
     if (Array.isArray(rules) && rules.length > 0) {
-      const validationResult = RuleManager.validate(rules, this.getValue())
+      const validationResult = RuleManager.validate(rules, value)
 
       if (validationResult === true) {
         this.removeClass('s-invalid')
@@ -200,10 +219,10 @@ class Field extends Component {
   }
 }
 
-  Object.defineProperty(Field.prototype, 'fields', {
+Object.defineProperty(Field.prototype, 'fields', {
   get: function () {
-  return this.control.children
-},
+    return this.control.getChildren()
+  },
 })
 
 Component.register(Field)

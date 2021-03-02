@@ -58,6 +58,18 @@ class CheckboxList extends Field {
       return this.props.value === value
     })
   }
+
+  _disable() {
+    if (this.firstRender === false) {
+      this.optionList.disable()
+    }
+  }
+
+  _enable() {
+    if (this.firstRender === false) {
+      this.optionList.enable()
+    }
+  }
 }
 
 Component.register(CheckboxList)

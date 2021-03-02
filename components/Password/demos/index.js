@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './disabled.js'], function () {
   return {
     title: 'Password',
     subtitle: '密码框',

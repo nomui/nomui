@@ -341,16 +341,16 @@ define([], function () {
                       url: '#!components!index?type=Select',
                     },
                     {
-                      text: 'TreeSelect',
-                      subtext: '树选择',
-                      id: 'TreeSelect',
-                      url: '#!components!index?type=TreeSelect',
-                    },
-                    {
                       text: 'Cascader',
                       subtext: '级联选择',
                       id: 'Cascader',
                       url: '#!components!index?type=Cascader',
+                    },
+                    {
+                      text: 'TreeSelect',
+                      subtext: '树选择',
+                      id: 'TreeSelect',
+                      url: '#!components!index?type=TreeSelect',
                     },
                     {
                       text: 'AutoComplete',

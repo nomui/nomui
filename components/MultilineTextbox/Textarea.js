@@ -107,6 +107,14 @@ class Textarea extends Component {
   blur() {
     this.element.blur()
   }
+
+  disable() {
+    this.element.setAttribute('disabled', 'disabled')
+  }
+
+  enable() {
+    this.element.removeAttribute('disabled', 'disabled')
+  }
 }
 
 Component.register(Textarea)

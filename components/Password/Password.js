@@ -64,10 +64,6 @@ class Password extends Textbox {
     super._config()
   }
 
-  _disable() {
-    this.element.setAttribute('disabled', 'disabled')
-  }
-
   _getValue() {
     if (!this.realValue || this.realValue === '') {
       return null

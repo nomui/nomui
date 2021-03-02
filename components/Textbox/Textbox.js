@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { } from '../Icon/index'
+import {} from '../Icon/index'
 import Input from './Input'
 
 class Textbox extends Field {
@@ -23,12 +23,16 @@ class Textbox extends Field {
 
     let leftIconProps = Component.normalizeIconProps(leftIcon)
     if (leftIconProps != null) {
-      leftIconProps = Component.extendProps(leftIconProps, { classes: { 'nom-textbox-left-icon': true } })
+      leftIconProps = Component.extendProps(leftIconProps, {
+        classes: { 'nom-textbox-left-icon': true },
+      })
     }
 
     let rightIconProps = Component.normalizeIconProps(rightIcon)
     if (rightIconProps != null) {
-      rightIconProps = Component.extendProps(rightIconProps, { classes: { 'nom-textbox-right-icon': true } })
+      rightIconProps = Component.extendProps(rightIconProps, {
+        classes: { 'nom-textbox-right-icon': true },
+      })
     }
 
     const inputProps = {
@@ -42,7 +46,7 @@ class Textbox extends Field {
       _created: function () {
         this.textbox = that
         this.textbox.input = this
-      }
+      },
     }
 
     this.setProps({
@@ -52,7 +56,7 @@ class Textbox extends Field {
       },
       control: {
         children: [inputProps, leftIcon && leftIconProps, rightIcon && rightIconProps],
-      }
+      },
     })
 
     super._config()
@@ -86,6 +90,14 @@ class Textbox extends Field {
 
   blur() {
     this.input.blur()
+  }
+
+  _disable() {
+    this.input.disable()
+  }
+
+  _enable() {
+    this.input.enable()
   }
 }
 

@@ -50,11 +50,22 @@ class RadioList extends Field {
   _setValue(value) {
     if (value === null) {
       this.optionList.unselectAllItems()
-    }
-    else {
+    } else {
       this.optionList.selectItem(function () {
         return this.props.value === value
       })
+    }
+  }
+
+  _disable() {
+    if (this.firstRender === false) {
+      this.optionList.disable()
+    }
+  }
+
+  _enable() {
+    if (this.firstRender === false) {
+      this.optionList.enable()
     }
   }
 }

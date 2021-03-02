@@ -51,7 +51,7 @@ class Select extends Field {
 
   _config() {
     const that = this
-    const { multiple, showArrow, placeholder } = this.props
+    const { multiple, showArrow, placeholder, disabled } = this.props
     const children = []
 
     this.setProps({
@@ -84,7 +84,7 @@ class Select extends Field {
           that.placeholder = this
         },
         classes: { 'nom-select-placeholder': true },
-        children: placeholder
+        children: placeholder,
       })
     }
 
@@ -100,8 +100,9 @@ class Select extends Field {
 
     this.setProps({
       control: {
+        disabled: disabled,
         children: children,
-      }
+      },
     })
 
     super._config()
@@ -126,8 +127,7 @@ class Select extends Field {
         this.currentValue = valueOptions.map(function (item) {
           return item.value
         })
-      }
-      else {
+      } else {
         this.selectedMultiple.unselectAllItems()
       }
     } else {
@@ -135,8 +135,7 @@ class Select extends Field {
       if (valueOption !== null) {
         this.selectedSingle.update(valueOption)
         this.currentValue = valueOption.value
-      }
-      else {
+      } else {
         this.selectedSingle.emptyChildren()
       }
     }
@@ -187,8 +186,7 @@ class Select extends Field {
     if (this.optionList) {
       this.optionList.unselectAllItems({ triggerSelectionChange: value === null })
       this.selectOptions(value, { triggerSelectionChange: triggerChange })
-    }
-    else {
+    } else {
       this._directSetValue(value)
       if (triggerChange) {
         this._onValueChange()
@@ -223,16 +221,31 @@ class Select extends Field {
 
   _valueChange(changed) {
     if (this.placeholder) {
-      if ((Array.isArray(changed.newValue) && changed.newValue.length === 0) || (changed.newValue === null || changed.newValue === undefined)) {
+      if (
+        (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
+        changed.newValue === null ||
+        changed.newValue === undefined
+      ) {
         this.placeholder.show()
-      }
-      else {
+      } else {
         this.placeholder.hide()
       }
     }
   }
 
-  appendOption() { }
+  _disable() {
+    if (this.firstRender === false) {
+      this.control.disable()
+    }
+  }
+
+  _enable() {
+    if (this.firstRender === false) {
+      this.control.enable()
+    }
+  }
+
+  appendOption() {}
 }
 
 Component.register(Select)

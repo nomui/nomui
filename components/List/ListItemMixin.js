@@ -24,6 +24,11 @@ export default {
         byClick: listProps.itemSelectable.byClick,
         canRevert: listProps.itemSelectable.multiple === true,
       },
+      _shouldHandleClick: function () {
+        if (listProps.disabled === true) {
+          return false
+        }
+      },
       onSelect: () => {
         if (listProps.itemSelectable.multiple === false) {
           listProps.selectedItems = this.key
@@ -47,7 +52,7 @@ export default {
       },
       onSelectionChange: () => {
         this.list._onItemSelectionChange()
-      }
+      },
     })
   },
   _rendered: function () {

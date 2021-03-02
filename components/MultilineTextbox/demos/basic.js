@@ -6,7 +6,7 @@ define([], function () {
     demo: function () {
       return {
         component: 'MultilineTextbox',
-        value: '大文本',
+        value: '多行文本',
       }
     },
   }

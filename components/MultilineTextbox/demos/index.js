@@ -1,4 +1,10 @@
-define(['./basic.js', './auto-height.js', './limit-rows.js', './events.js'], function () {
+define([
+  './basic.js',
+  './disabled.js',
+  './auto-height.js',
+  './limit-rows.js',
+  './events.js',
+], function () {
   return {
     title: 'Multiline Textbox',
     subtitle: '多行文本框',

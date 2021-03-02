@@ -103,9 +103,7 @@ class Component {
     this.props._created && this.props._created.call(this)
   }
 
-  _created() {
-
-  }
+  _created() {}
 
   config() {
     this.props._config && this.props._config.call(this)
@@ -115,9 +113,7 @@ class Component {
     this._setStatusProps()
   }
 
-  _config() {
-
-  }
+  _config() {}
 
   render() {
     if (this.rendered === true) {
@@ -146,9 +142,7 @@ class Component {
     this.firstRender = false
   }
 
-  _rendered() {
-
-  }
+  _rendered() {}
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
   remove() {
@@ -164,6 +158,10 @@ class Component {
     this.off()
     this.config()
     this.render()
+  }
+
+  replace(props) {
+    Component.create(Component.extendProps(props, { placement: 'replace', reference: this }))
   }
 
   emptyChildren() {
@@ -190,19 +188,16 @@ class Component {
     this.element.component = this
     if (placement === 'append') {
       this.referenceElement.appendChild(this.element)
-    }
-    else if (placement === 'prepend') {
-      this.referenceElement.insertBefore(this.element, this.referenceElement.firstChild);
-    }
-    else if (placement === 'replace') {
+    } else if (placement === 'prepend') {
+      this.referenceElement.insertBefore(this.element, this.referenceElement.firstChild)
+    } else if (placement === 'replace') {
       if (this.referenceComponent) {
         this.referenceComponent._removeCore()
         this.parent && this.parent.replaceChild(this.referenceComponent, this)
       }
       this.referenceElement.parentNode.replaceChild(this.element, this.referenceElement)
-    }
-    else if (placement === 'after') {
-      this.referenceElement.insertAdjacentElement('afterend', this.element);
+    } else if (placement === 'after') {
+      this.referenceElement.insertAdjacentElement('afterend', this.element)
       if (this.referenceComponent) {
         const refParent = this.referenceComponent.parent
         if (refParent) {
@@ -210,9 +205,8 @@ class Component {
           refParent.children.splice(refIndex + 1, 0, this)
         }
       }
-    }
-    else if (placement === 'before') {
-      this.referenceElement.insertAdjacentElement('beforebegin', this.element);
+    } else if (placement === 'before') {
+      this.referenceElement.insertAdjacentElement('beforebegin', this.element)
       if (this.referenceComponent) {
         const refParent = this.referenceComponent.parent
         if (refParent) {
@@ -263,9 +257,7 @@ class Component {
     return el
   }
 
-  _remove() {
-
-  }
+  _remove() {}
 
   _callMixin(hookType) {
     for (let i = 0; i < MIXINS.length; i++) {
@@ -477,7 +469,8 @@ class Component {
       this.props.selected = true
       this.addClass('s-selected')
       isFunction(this._select) && this._select()
-      selectOption.triggerSelect === true && this._callHandler(this.props.onSelect, null, selectOption.event)
+      selectOption.triggerSelect === true &&
+        this._callHandler(this.props.onSelect, null, selectOption.event)
       selectOption.triggerSelectionChange === true &&
         this._callHandler(this.props.onSelectionChange)
 
@@ -737,6 +730,12 @@ class Component {
   }
 
   __handleClick(event) {
+    if (this.props._shouldHandleClick && this.props._shouldHandleClick.call(this) === false) {
+      return
+    }
+    if (this.props.disabled === true) {
+      return
+    }
     const { onClick, selectable, expandable } = this.props
     onClick && this._callHandler(onClick, null, event)
     if (selectable && selectable.byClick === true) {
@@ -883,8 +882,7 @@ class Component {
   static register(component, name) {
     if (name !== undefined) {
       components[name] = component
-    }
-    else {
+    } else {
       components[component.name] = component
     }
   }

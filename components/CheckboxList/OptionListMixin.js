@@ -7,6 +7,7 @@ export default {
     const { itemSelectionChange } = this.props
     const listProps = this.checkboxList.props
     this.setProps({
+      disabled: listProps.disabled,
       items: listProps.options,
       itemDefaults: listProps.optionDefaults,
       itemSelectable: {
@@ -17,7 +18,7 @@ export default {
       onItemSelectionChange: () => {
         this.checkboxList._onValueChange()
         this._callHandler(itemSelectionChange)
-      }
+      },
     })
   },
 }
