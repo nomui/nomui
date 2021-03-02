@@ -9,7 +9,7 @@ define(['./data.js'], function (options) {
         items: [
           {
             component: 'Cascader',
-            name: 'aaa',
+            name: 'treatment',
             label: '治疗领域',
             labelAlign: 'left',
             ref: (c) => {

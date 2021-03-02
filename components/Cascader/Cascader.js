@@ -120,16 +120,23 @@ class Cascader extends Field {
       attrs: {
         onmouseover() {
           cascader.close.show()
-          cascader.down.hide()
+          showArrow && cascader.down.hide()
         },
         onmouseleave() {
-          cascader.down.show()
+          showArrow && cascader.down.show()
           cascader.close.hide()
         },
       },
     })
 
     super._config()
+  }
+
+  remove() {
+    if (this.popup) {
+      this.popup.remove()
+    }
+    super.remove()
   }
 
   _itemSelected(selectedKey, isLeaf = false) {
