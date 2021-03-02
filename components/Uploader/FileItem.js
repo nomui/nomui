@@ -23,8 +23,8 @@ class FileItem extends Component {
             {
               component: 'Icon',
               type: 'file-error',
-              attrs: {
-                style: { 'font-size': '48px' },
+              classes: {
+                'file-img': true,
               },
             },
           ],
@@ -39,8 +39,8 @@ class FileItem extends Component {
                   {
                     component: 'Icon',
                     type: 'loading',
-                    attrs: {
-                      style: { 'font-size': '48px' },
+                    classes: {
+                      'file-img': true,
                     },
                   },
                 ],
@@ -209,16 +209,16 @@ class FileItem extends Component {
       return {
         component: 'Icon',
         type: suffix,
-        attrs: {
-          style: { 'font-size': '48px' },
+        classes: {
+          'file-img': true,
         },
       }
     }
     return {
       component: 'Icon',
       type: 'default',
-      attrs: {
-        style: { 'font-size': '48px' },
+      classes: {
+        'file-img': true,
       },
     }
   }
