@@ -916,6 +916,9 @@ Component.mixins = MIXINS
 Object.assign(Component.prototype, Events.prototype)
 
 export function n(tagOrComponent, props, children, mixins) {
+  if (arguments.length === 2) {
+    return new ComponentDescriptor(null, tagOrComponent, null, props)
+  }
   return new ComponentDescriptor(tagOrComponent, props, children, mixins)
 }
 
