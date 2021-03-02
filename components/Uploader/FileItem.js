@@ -24,7 +24,7 @@ class FileItem extends Component {
               component: 'Icon',
               type: 'file-error',
               attrs: {
-                style: { width: '100%', height: '100%' },
+                style: { 'font-size': '48px' },
               },
             },
           ],
@@ -40,7 +40,7 @@ class FileItem extends Component {
                     component: 'Icon',
                     type: 'loading',
                     attrs: {
-                      style: { width: '100%', height: '100%' },
+                      style: { 'font-size': '48px' },
                     },
                   },
                 ],
@@ -210,7 +210,7 @@ class FileItem extends Component {
         component: 'Icon',
         type: suffix,
         attrs: {
-          style: { width: '100%', height: '100%' },
+          style: { 'font-size': '48px' },
         },
       }
     }
@@ -218,7 +218,7 @@ class FileItem extends Component {
       component: 'Icon',
       type: 'default',
       attrs: {
-        style: { width: '100%', height: '100%' },
+        style: { 'font-size': '48px' },
       },
     }
   }
