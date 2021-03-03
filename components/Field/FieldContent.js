@@ -3,6 +3,7 @@ import ControlMixin from './ControlMixin'
 import ControlAction from './ControlAction'
 
 class FieldContent extends Component {
+    // eslint-disable-next-line no-useless-constructor
     constructor(props, ...mixins) {
         super(props, ...mixins)
     }
