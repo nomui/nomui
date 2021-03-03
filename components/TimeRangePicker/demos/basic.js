@@ -12,8 +12,8 @@ define([], function () {
         },
         fields: [
           {
-            name: 'timepicker',
-            label: '时间选择',
+            name: 'TimeRangePicker',
+            label: '时间范围选择',
             component: 'TimeRangePicker',
           },
 

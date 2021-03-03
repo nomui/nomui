@@ -14,6 +14,8 @@ class TimePicker extends Textbox {
       readOnly: true,
       placeholder: null,
       showNow: true,
+      minValue: '10:10:10',
+      maxValue: '20:20:20',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
