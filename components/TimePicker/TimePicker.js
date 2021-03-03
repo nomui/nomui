@@ -5,8 +5,8 @@ import TimePickerPopup from './TimePickerPopup'
 class TimePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
-      allowClear: false,
-      value: '06:06:06',
+      allowClear: true,
+      value: null,
       format: 'HH:mm:ss',
       hourStep: 0,
       minuteStep: 0,
@@ -48,6 +48,7 @@ class TimePicker extends Textbox {
       leftIcon: 'clock',
       rightIcon: {
         type: 'times',
+        hidden: !this.props.allowClear,
         onClick: (args) => {
           this.clearTime()
           args.event && args.event.stopPropagation()
@@ -235,6 +236,14 @@ class TimePicker extends Textbox {
 
     this.empty = false
     this.resetList()
+  }
+
+  handleChange() {
+    this.props.onChange && this._callHandler(this.props.onChange)
+  }
+
+  showPopup() {
+    this.popup.show()
   }
 }
 

@@ -70,6 +70,7 @@ class TimePickerWrapper extends Component {
                   that.pickerControl.setNow()
                   that.pickerControl.confirm = true
                   that.pickerControl.popup.hide()
+                  that.pickerControl.handleChange()
                 },
               },
               {
@@ -80,6 +81,7 @@ class TimePickerWrapper extends Component {
                 onClick: function () {
                   that.pickerControl.confirm = true
                   that.pickerControl.popup.hide()
+                  that.pickerControl.handleChange()
                   that.pickerControl.defaultValue = that.pickerControl.props.value
                 },
               },

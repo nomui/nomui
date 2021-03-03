@@ -371,6 +371,12 @@ define([], function () {
                       url: '#!components!index?type=TimePicker',
                     },
                     {
+                      text: 'TimeRangePicker',
+                      subtext: '时间选择',
+                      id: 'TimeRangePicker',
+                      url: '#!components!index?type=TimeRangePicker',
+                    },
+                    {
                       text: 'DatePicker',
                       subtext: '日期选择',
                       id: 'DatePicker',
