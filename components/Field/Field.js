@@ -106,8 +106,10 @@ class Field extends Component {
     if (disabled || hidden) {
       return true
     }
+    const value = this._getRawValue ? this._getRawValue() : this.getValue()
+
     if (Array.isArray(rules) && rules.length > 0) {
-      const validationResult = RuleManager.validate(rules, this.getValue())
+      const validationResult = RuleManager.validate(rules, value)
 
       if (validationResult === true) {
         this.removeClass('s-invalid')

@@ -1,6 +1,6 @@
 define([], function () {
   return {
-    title: '样式综合示例',
+    title: '界面风格',
     file: 'styles',
     demo: function () {
       let group = null
@@ -17,6 +17,7 @@ define([], function () {
                 options: [
                   { text: '默认', value: null },
                   { text: 'table', value: 'table' },
+                  { text: 'inline', value: 'inline' },
                 ],
                 value: null,
                 onValueChange: (args) => {
