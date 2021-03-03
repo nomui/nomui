@@ -208,6 +208,7 @@ export function isNumeric(val) {
   )
 }
 
-export default{
+export default {
   extend,
+  isFunction,
 }
