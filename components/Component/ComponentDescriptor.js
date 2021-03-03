@@ -1,7 +1,7 @@
 class ComponentDescriptor {
   constructor(tagOrComponent, props, children, mixins) {
     this.tagOrComponent = tagOrComponent
-    this.props = props || {} // todo:处理 props 是 ComponentDescriptor 对象的情况
+    this.props = props || {}
     this.children = children
     this.mixins = Array.isArray(mixins) ? mixins : []
   }

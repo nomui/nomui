@@ -132,13 +132,6 @@ class Cascader extends Field {
     super._config()
   }
 
-  remove() {
-    if (this.popup) {
-      this.popup.remove()
-    }
-    super.remove()
-  }
-
   _itemSelected(selectedKey, isLeaf = false) {
     if (!this.items) return
     this.selectedOption = []

@@ -32,10 +32,6 @@ class CascaderPopup extends Popup {
 
     super._config()
   }
-
-  remove() {
-    this.element.remove()
-  }
 }
 
 Component.register(CascaderPopup)
