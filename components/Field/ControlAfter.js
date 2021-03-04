@@ -1,12 +1,12 @@
 import Component from '../Component/index'
 
-class ControlAction extends Component {
+class ControlAfter extends Component {
     // eslint-disable-next-line no-useless-constructor
     constructor(props, ...mixins) {
         super(props, ...mixins)
     }
 }
 
-Component.register(ControlAction)
+Component.register(ControlAfter)
 
-export default ControlAction
+export default ControlAfter
