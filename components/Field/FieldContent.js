@@ -2,7 +2,7 @@ import Component, { n } from '../Component/index'
 import ControlMixin from './ControlMixin'
 import ControlAction from './ControlAction'
 import ControlBefore from './ControlBefore'
-import ControlAfter from './ControlAfter'
+import ControlAfterMixin from './ControlAfterMixin'
 
 class FieldContent extends Component {
   // eslint-disable-next-line no-useless-constructor
@@ -17,6 +17,17 @@ class FieldContent extends Component {
 
   _config() {
     const { control, controlBefore, controlAfter, controlAction } = this.field.props
+
+    let controlAfterProps = null
+    if (controlAfter) {
+      controlAfterProps = { component: 'List', classes: { 'nom-control-after': true } }
+      if (Array.isArray(controlAfter)) {
+        controlAfterProps = Component.extendProps(controlAfterProps, { items: controlAfter })
+      } else {
+        controlAfterProps = Component.extendProps(controlAfterProps, controlAfter)
+      }
+    }
+
     this.setProps({
       children: [
         controlBefore && {
@@ -26,10 +37,7 @@ class FieldContent extends Component {
         n(null, Component.extendProps(control, { classes: { 'nom-control': true } }), null, [
           ControlMixin,
         ]),
-        controlAfter && {
-          component: ControlAfter,
-          children: { component: 'List', items: controlAfter },
-        },
+        controlAfterProps && n(controlAfterProps, [ControlAfterMixin]),
         controlAction && {
           component: ControlAction,
           children: { component: 'List', items: controlAction },

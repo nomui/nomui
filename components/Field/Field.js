@@ -1,10 +1,10 @@
-import Component from '../Component/index'
+import Component, { n } from '../Component/index'
 import Tooltip from '../Tooltip/index'
 import { clone, isFunction } from '../util/index'
 import RuleManager from '../util/rule-manager'
-import FieldAction from './FieldAction'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
+import FieldActionMixin from './FieldActionMixin'
 
 let nameSeq = 0
 
@@ -78,11 +78,22 @@ class Field extends Component {
         },
       })
     }
+
+    let actionProps = null
+    if (action) {
+      actionProps = { component: 'List', classes: { 'nom-field-action': true } }
+      if (Array.isArray(action)) {
+        actionProps = Component.extendProps(actionProps, { items: action })
+      } else {
+        actionProps = Component.extendProps(actionProps, action)
+      }
+    }
+
     this.setProps({
       children: [
         labelProps,
         { component: FieldContent, value: this.props.value },
-        action && { component: FieldAction, children: { component: 'Cols', items: action } },
+        actionProps && n(actionProps, [FieldActionMixin]),
       ],
     })
   }
