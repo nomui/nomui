@@ -98,8 +98,8 @@ class Field extends Component {
     })
   }
 
-  getValue() {
-    const value = isFunction(this._getValue) ? this._getValue() : null
+  getValue(options) {
+    const value = isFunction(this._getValue) ? this._getValue(options) : null
     return value
   }
 

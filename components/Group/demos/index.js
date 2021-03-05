@@ -4,6 +4,7 @@ define(
         './nest.js',
         './get-field.js',
         './value.js',
+        './options-value-as-array.js',
         './validate.js',
         './nowrap.js',
         './inline.js',

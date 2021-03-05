@@ -3,7 +3,7 @@ import Field from '../Field/index'
 import Icon from '../Icon/index'
 import List from '../List/index'
 import SelectPopup from './SelectPopup'
-import { isString } from '../util/index'
+import { isString, extend } from '../util/index'
 
 class Select extends Field {
   constructor(props, ...mixins) {
@@ -118,23 +118,35 @@ class Select extends Field {
     this._valueChange({ newValue: this.currentValue })
   }
 
-  _directSetValue(value) {
+  _directSetValue(value, options) {
+    const { valueOptions } = this.props
+    options = extend(
+      {
+        asArray: false,
+      },
+      valueOptions,
+      options,
+    )
+
     const { multiple } = this.props
     if (multiple === true) {
-      const valueOptions = this._getOptions(value)
-      if (valueOptions.length) {
-        this.selectedMultiple.update({ items: valueOptions })
-        this.currentValue = valueOptions.map(function (item) {
+      const selValueOptions = this._getOptions(value)
+      if (selValueOptions.length) {
+        this.selectedMultiple.update({ items: selValueOptions })
+        this.currentValue = selValueOptions.map(function (item) {
           return item.value
         })
       } else {
         this.selectedMultiple.unselectAllItems()
       }
     } else {
-      const valueOption = this._getOption(value)
-      if (valueOption !== null) {
-        this.selectedSingle.update(valueOption)
-        this.currentValue = valueOption.value
+      if (options.asArray === true) {
+        value = value[0]
+      }
+      const selValueOption = this._getOption(value)
+      if (selValueOption !== null) {
+        this.selectedSingle.update(selValueOption)
+        this.currentValue = selValueOption.value
       } else {
         this.selectedSingle.emptyChildren()
       }
@@ -160,7 +172,16 @@ class Select extends Field {
     return this.optionList.getSelectedItems()
   }
 
-  _getValue() {
+  _getValue(options) {
+    const { valueOptions } = this.props
+    options = extend(
+      {
+        asArray: false,
+      },
+      valueOptions,
+      options,
+    )
+
     if (!this.optionList) {
       return this.currentValue
     }
@@ -174,7 +195,9 @@ class Select extends Field {
 
         return vals
       }
-
+      if (options.asArray === true) {
+        return [selected.props.value]
+      }
       return selected.props.value
     }
 

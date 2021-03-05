@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
 import OptionList from './OptionList'
+import { extend } from '../util/index'
 
 class RadioList extends Field {
   constructor(props, ...mixins) {
@@ -38,9 +39,21 @@ class RadioList extends Field {
     return this.optionList.getSelectedItem()
   }
 
-  _getValue() {
+  _getValue(options) {
+    const { valueOptions } = this.props
+    options = extend(
+      {
+        asArray: false,
+      },
+      valueOptions,
+      options,
+    )
+
     const selected = this.getSelectedOption()
     if (selected !== null) {
+      if (options.asArray === true) {
+        return [selected.props.value]
+      }
       return selected.props.value
     }
 
@@ -51,6 +64,9 @@ class RadioList extends Field {
     if (value === null) {
       this.optionList.unselectAllItems()
     } else {
+      if (Array.isArray(value)) {
+        value = value[0]
+      }
       this.optionList.selectItem(function () {
         return this.props.value === value
       })
