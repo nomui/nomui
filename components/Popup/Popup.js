@@ -15,7 +15,7 @@ class Popup extends Layer {
       autoRender: false,
       hidden: true,
 
-      type: 'default',
+      uistyle: 'default',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -40,7 +40,12 @@ class Popup extends Layer {
     const { triggerAction } = this.props
     if (triggerAction === 'click') {
       this._bindClick()
-    } else {
+    }
+    if (triggerAction === 'hover') {
+      this._bindHover()
+    }
+    if (triggerAction === 'both') {
+      this._bindClick()
       this._bindHover()
     }
   }
