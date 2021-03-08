@@ -30,7 +30,16 @@ class Pager extends Component {
         },
         selectedItems: pager.props.pageIndex,
         onItemSelectionChange: function (e) {
-          pager.props.pageIndex = e.sender.selectedItem.props.pageNumber
+          const n = e.sender.selectedItem.props.pageNumber
+
+          if (n < 1) {
+            pager.props.pageIndex = 1
+          } else if (n > pager._getPageCount()) {
+            pager.props.pageIndex = pager._getPageCount()
+          } else {
+            pager.props.pageIndex = n
+          }
+
           pager._onPageChange()
         },
       },
@@ -170,18 +179,17 @@ Pager.defaults = {
     if (this.props.paramsType === 'skiptake') {
       params = {
         skipCount: (pageIndex - 1) * pageSize,
-        maxResultCount: pageSize
+        maxResultCount: pageSize,
       }
-    }
-    else {
+    } else {
       params = {
         pageIndex: pageIndex,
-        pageSize: pageSize
+        pageSize: pageSize,
       }
     }
 
     return params
-  }
+  },
 }
 
 Component.register(Pager)
