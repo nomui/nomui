@@ -16,6 +16,10 @@ class TabItem extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    this.firstShow = true
+  }
+
   _config() {
     const { icon, text, subtext } = this.props
     this.setProps({
@@ -34,6 +38,8 @@ class TabItem extends Component {
     setTimeout(() => {
       const tabContent = this.list.getTabContent()
       tabContent.showPanel(this.key)
+      !this.list.firstSelect && this.list.triggerChange()
+      this.list.firstSelect = false
     }, 0)
   }
 

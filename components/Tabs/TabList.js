@@ -12,16 +12,23 @@ class TabList extends List {
       uistyle: 'plain',
       itemSelectable: {
         byClick: true,
-      }
+      },
+      onTabSelectionChange: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    super._created()
+
+    this.firstSelect = true
+  }
+
   _config() {
     this._addPropStyle('direction', 'fit')
     this.setProps({
-      selectedItems: this.props.selectedTab
+      selectedItems: this.props.selectedTab,
     })
 
     super._config()
@@ -33,6 +40,14 @@ class TabList extends List {
 
   selectTab(param, selectOptions) {
     this.selectItems(param, selectOptions)
+  }
+
+  triggerChange() {
+    if (this.parent.componentType && this.parent.componentType === 'Tabs') {
+      this._callHandler(this.parent.props.onTabSelectionChange)
+    } else {
+      this._callHandler(this.props.onTabSelectionChange)
+    }
   }
 }
 

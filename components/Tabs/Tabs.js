@@ -8,6 +8,7 @@ class Tabs extends Component {
       tabs: [],
       // selectedTab: 'tab0',
       uistyle: 'plain', // hat,card,line,pill
+      onTabSelectionChange: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
