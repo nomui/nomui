@@ -15,7 +15,55 @@ class Grid extends Component {
   _config() {
     this._propStyleClasses = ['bordered']
 
-    const { line, rowDefaults } = this.props
+    const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
+
+    if (frozenLeftCols || frozenRightCols) {
+      const rev = this.props.columns.length - frozenRightCols
+
+      const c = this.props.columns.map(function (n, i) {
+        if (i + 1 < frozenLeftCols) {
+          return {
+            ...{
+              fixed: 'left',
+            },
+            ...n,
+          }
+        }
+
+        if (i + 1 === frozenLeftCols) {
+          return {
+            ...{
+              fixed: 'left',
+              lastLeft: true,
+            },
+            ...n,
+          }
+        }
+
+        if (i === rev) {
+          return {
+            ...{
+              fixed: 'right',
+              firstRight: true,
+            },
+            ...n,
+          }
+        }
+
+        if (i > rev) {
+          return {
+            ...{
+              fixed: 'right',
+            },
+            ...n,
+          }
+        }
+
+        return n
+      })
+      console.log(c)
+      this.props.columns = c
+    }
 
     this._calcMinWidth()
 
@@ -61,6 +109,8 @@ Grid.defaults = {
   columns: [],
   data: [],
   frozenHeader: false,
+  frozenLeftCols: null,
+  frozenRightCols: null,
 }
 
 Component.register(Grid)
