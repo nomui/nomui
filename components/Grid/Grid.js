@@ -61,7 +61,7 @@ class Grid extends Component {
 
         return n
       })
-      console.log(c)
+
       this.props.columns = c
     }
 
