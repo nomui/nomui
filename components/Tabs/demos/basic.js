@@ -7,6 +7,9 @@ define([], function () {
         children: [
           {
             component: 'Tabs',
+            onTabSelectionChange: () => {
+              console.log('Tab Changed')
+            },
             tabs: [
               {
                 item: { text: 'Home' },
