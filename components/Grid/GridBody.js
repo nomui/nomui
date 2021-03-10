@@ -27,12 +27,20 @@ class GridBody extends Component {
         },
         onlyBody: true,
         line: this.props.line,
-        rowDefaults: this.props.rowDefaults
+        rowDefaults: this.props.rowDefaults,
       },
       attrs: {
         onscroll: () => {
           const { scrollLeft } = this.element
+
           this.grid.header.element.scrollLeft = scrollLeft
+
+          // this.grid.update({
+          //   classes: {
+          //     'nom-table-has-left-fixed': scrollLeft > 0,
+          //     'nom-table-has-right-fixed': scrollLeft !== this.element.scrollWidth,
+          //   },
+          // })
         },
       },
     })
