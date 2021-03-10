@@ -44,7 +44,6 @@ class Component {
     this.props = Component.extendProps(defaults, props)
 
     this.parent = null
-    this.children = []
     this.root = null
     this.rendered = false
     this.mixins = []
@@ -93,6 +92,8 @@ class Component {
     if (this.props.autoRender === true) {
       this.config()
       this.render()
+    } else {
+      this._mountPlaceHolder()
     }
   }
 
@@ -178,14 +179,36 @@ class Component {
     return this.element.offsetWidth
   }
 
+  _mountPlaceHolder() {
+    const { placement } = this.props
+
+    this._placeHolderElement = document.createElement('div')
+    this._placeHolderElement.classList.add('placeholder')
+
+    if (placement === 'append') {
+      this.referenceElement.appendChild(this._placeHolderElement)
+    } else if (placement === 'prepend') {
+      this.referenceElement.insertBefore(this._placeHolderElement, this.referenceElement.firstChild)
+    } else if (placement === 'after') {
+      this.referenceElement.insertAdjacentElement('afterend', this._placeHolderElement)
+    } else if (placement === 'before') {
+      this.referenceElement.insertAdjacentElement('beforebegin', this._placeHolderElement)
+    } else if (placement === 'replace') {
+      this._placeHolderElement = this.referenceElement
+    }
+  }
+
   _mountElement() {
     const { placement } = this.props
-    this.referenceElement =
-      this.props.reference instanceof Component
-        ? this.props.reference.element
-        : this.props.reference
+
     this.element = document.createElement(this.props.tag)
     this.element.component = this
+
+    if (this._placeHolderElement) {
+      this._placeHolderElement.parentNode.replaceChild(this.element, this._placeHolderElement)
+      return
+    }
+
     if (placement === 'append') {
       this.referenceElement.appendChild(this.element)
     } else if (placement === 'prepend') {
@@ -193,27 +216,12 @@ class Component {
     } else if (placement === 'replace') {
       if (this.referenceComponent) {
         this.referenceComponent._removeCore()
-        this.parent && this.parent.replaceChild(this.referenceComponent, this)
       }
       this.referenceElement.parentNode.replaceChild(this.element, this.referenceElement)
     } else if (placement === 'after') {
       this.referenceElement.insertAdjacentElement('afterend', this.element)
-      if (this.referenceComponent) {
-        const refParent = this.referenceComponent.parent
-        if (refParent) {
-          const refIndex = refParent.indexOf(this.referenceComponent)
-          refParent.children.splice(refIndex + 1, 0, this)
-        }
-      }
     } else if (placement === 'before') {
       this.referenceElement.insertAdjacentElement('beforebegin', this.element)
-      if (this.referenceComponent) {
-        const refParent = this.referenceComponent.parent
-        if (refParent) {
-          const refIndex = refParent.indexOf(this.referenceComponent)
-          refParent.children.splice(refIndex, 0, this)
-        }
-      }
     }
   }
 
@@ -267,24 +275,6 @@ class Component {
     for (let i = 0; i < this.mixins.length; i++) {
       const mixin = this.mixins[i]
       mixin[hookType] && mixin[hookType].call(this)
-    }
-  }
-
-  removeChild(childInstance) {
-    for (let i = 0; i < this.children.length; i++) {
-      if (this.children[i] === childInstance) {
-        delete this.children[i]
-        this.children.splice(i, 1)
-      }
-    }
-  }
-
-  replaceChild(oldChild, newChild) {
-    for (let i = 0; i < this.children.length; i++) {
-      if (this.children[i] === oldChild) {
-        delete this.children[i]
-        this.children[i] = newChild
-      }
     }
   }
 
@@ -347,8 +337,6 @@ class Component {
 
     const compt = Component.create(props, ...mixins)
 
-    this.children.push(compt)
-
     return compt
   }
 
@@ -378,15 +366,6 @@ class Component {
     })
 
     return Component.create(extNormalizedProps, ...mixins)
-  }
-
-  indexOf(child) {
-    for (let i = 0; i < this.children.length; i++) {
-      const c = this.children[i]
-      if (c === child) {
-        return i
-      }
-    }
   }
 
   _normalizeProps(props) {
@@ -914,6 +893,12 @@ Component.components = components
 Component.mixins = MIXINS
 
 Object.assign(Component.prototype, Events.prototype)
+
+Object.defineProperty(Component.prototype, 'children', {
+  get: function () {
+    return this.getChildren()
+  },
+})
 
 export function n(tagOrComponent, props, children, mixins) {
   if (arguments.length === 2) {
