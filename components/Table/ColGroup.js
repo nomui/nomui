@@ -27,6 +27,17 @@ class ColGroup extends Component {
         }
       })
     }
+    if (
+      this.table.parent.componentType === 'GridHeader' &&
+      this.table.parent.parent.props.frozenHeader
+    ) {
+      children.push({
+        component: ColGroupCol,
+        column: {
+          width: 17,
+        },
+      })
+    }
 
     this.setProps({
       children: children,

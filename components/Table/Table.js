@@ -18,6 +18,16 @@ class Table extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    super._created()
+
+    this.hasGrid = this.parent.parent.componentType === 'Grid'
+
+    if (this.hasGrid) {
+      this.grid = this.parent.parent
+    }
+  }
+
   _config() {
     this._propStyleClasses = ['line', 'bordered']
     this.setProps({
