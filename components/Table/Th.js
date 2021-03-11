@@ -27,6 +27,7 @@ class Th extends Component {
         {
           component: 'Icon',
           type: 'sort',
+          hidden: !this.props.column.sortable,
         },
         {
           component: 'Icon',
