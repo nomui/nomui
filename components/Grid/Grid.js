@@ -103,6 +103,14 @@ class Grid extends Component {
       container: this.parent,
     })
   }
+
+  // handlePinClick(data) {
+  //   const { columns } = this.props
+
+  //   const arr = columns.filter(function (item) {
+  //     return item.field === data.field
+  //   })
+  // }
 }
 
 Grid.defaults = {
@@ -111,6 +119,7 @@ Grid.defaults = {
   frozenHeader: false,
   frozenLeftCols: null,
   frozenRightCols: null,
+  allowFrozenCols: false,
 }
 
 Component.register(Grid)

@@ -26,7 +26,7 @@ class GridHeader extends Component {
           },
         },
         onlyHead: true,
-        line: this.props.line
+        line: this.props.line,
       },
     })
   }

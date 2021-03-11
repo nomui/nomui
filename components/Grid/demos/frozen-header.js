@@ -40,7 +40,7 @@ define([], function () {
             ],
             frozenHeader: true,
             frozenLeftCols: 1,
-            frozenRightCols: 1,
+            frozenRightCols: 0,
             attrs: {
               style: {
                 height: '170px',

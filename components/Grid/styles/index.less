@@ -1,55 +1,54 @@
 .nom-grid {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  > .nom-grid-header {
+    overflow: hidden;
+  }
+
+  > .nom-grid-body {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+
+    > .nom-grid-body-content {
+      overflow-x: auto;
+    }
+  }
+
+  &.p-bordered {
+    border: 1px solid @oc-gray-2;
+
+    > .nom-grid-body {
+      margin-bottom: -1px;
+    }
+  }
+
+  &.m-frozen-header {
     position: relative;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 
-    >.nom-grid-header {
+    > .nom-grid-header {
+      background-color: #fafafa;
+
+      > .nom-grid-header-content {
         overflow: hidden;
+      }
     }
 
-    >.nom-grid-body {
-        position: relative;
-        flex: 1;
-        height: 100%;
-        overflow: auto;
+    > .nom-grid-body {
+      flex: 1;
+      height: 100%;
+      overflow-y: scroll;
 
-        >.nom-grid-body-content {
-            overflow-x: auto;
-        }
+      > .nom-grid-body-content {
+        overflow-x: auto;
+        overflow-y: scroll;
+      }
     }
-
-    &.p-bordered {
-        border: 1px solid @oc-gray-2;
-
-        >.nom-grid-body {
-            margin-bottom: -1px;
-        }
-    }
-
-    &.m-frozen-header {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-
-
-        >.nom-grid-header {
-            padding-right: 17px;
-            background-color: #fafafa;
-
-            >.nom-grid-header-content {
-                overflow: hidden;
-            }
-        }
-
-        >.nom-grid-body {
-            flex: 1;
-            height: 100%;
-
-            >.nom-grid-body-content {
-                overflow-x: auto;
-                overflow-y: scroll;
-            }
-        }
-    }
+  }
 }

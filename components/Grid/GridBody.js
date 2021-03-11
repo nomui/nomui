@@ -35,6 +35,12 @@ class GridBody extends Component {
 
           this.grid.header.element.scrollLeft = scrollLeft
 
+          // console.log(scrollLeft)
+          // console.log(this.grid.header.element.scrollLeft)
+          // if (scrollLeft > this.grid.header.element.scrollLeft) {
+          //   debugger
+          // }
+
           // this.grid.update({
           //   classes: {
           //     'nom-table-has-left-fixed': scrollLeft > 0,

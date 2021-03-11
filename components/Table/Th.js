@@ -16,7 +16,28 @@ class Th extends Component {
   }
 
   _config() {
-    const children = this.props.column.header || this.props.column.title
+    const that = this
+    const children = {
+      component: 'Cols',
+      align: 'center',
+      items: [
+        {
+          children: this.props.column.header || this.props.column.title,
+        },
+        {
+          component: 'Icon',
+          type: 'sort',
+        },
+        {
+          component: 'Icon',
+          type: 'pin',
+          hidden: !that.table.hasGrid || !that.table.grid.props.allowFrozenCols,
+          onClick: function () {
+            // that.table.grid.handlePinClick(that.props.column)
+          },
+        },
+      ],
+    }
 
     this.setProps({
       children: children,
