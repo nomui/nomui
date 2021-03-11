@@ -11,37 +11,82 @@ class Pager extends Component {
 
     this.setProps({
       children: {
-        component: List,
-        gutter: 'md',
-        items: pager.getPageItems(),
-        itemDefaults: {
-          tag: 'a',
-          key() {
-            return this.props.pageNumber
-          },
-          _config: function () {
-            this.setProps({
-              children: `${this.props.text}`,
-            })
-          },
-        },
-        itemSelectable: {
-          byClick: true,
-        },
-        selectedItems: pager.props.pageIndex,
-        onItemSelectionChange: function (e) {
-          const n = e.sender.selectedItem.props.pageNumber
+        component: 'Cols',
+        justify: 'between',
+        items: [
+          {
+            component: List,
+            gutter: 'md',
+            items: pager.getPageItems(),
+            itemDefaults: {
+              tag: 'a',
+              key() {
+                return this.props.pageNumber
+              },
+              _config: function () {
+                this.setProps({
+                  children: `${this.props.text}`,
+                })
+              },
+            },
+            itemSelectable: {
+              byClick: true,
+            },
+            selectedItems: pager.props.pageIndex,
+            onItemSelectionChange: function (e) {
+              const n = e.sender.selectedItem.props.pageNumber
 
-          if (n < 1) {
-            pager.props.pageIndex = 1
-          } else if (n > pager._getPageCount()) {
-            pager.props.pageIndex = pager._getPageCount()
-          } else {
-            pager.props.pageIndex = n
-          }
+              if (n < 1) {
+                pager.props.pageIndex = 1
+              } else if (n > pager._getPageCount()) {
+                pager.props.pageIndex = pager._getPageCount()
+              } else {
+                pager.props.pageIndex = n
+              }
 
-          pager._onPageChange()
-        },
+              pager._onPageChange()
+            },
+          },
+          {
+            component: 'Cols',
+            gutter: 'xs',
+            items: [
+              {
+                children: `共有数据${this.props.totalCount}条`,
+              },
+              {
+                component: 'Select',
+                value: pager.props.pageSize || 10,
+                onValueChange: (data) => {
+                  pager.props.pageSize = data.newValue
+                  pager._onPageChange()
+                },
+                options: [
+                  {
+                    text: '10条/页',
+                    value: 10,
+                  },
+                  {
+                    text: '20条/页',
+                    value: 20,
+                  },
+                  {
+                    text: '30条/页',
+                    value: 30,
+                  },
+                  {
+                    text: '40条/页',
+                    value: 40,
+                  },
+                  {
+                    text: '50条/页',
+                    value: 50,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
     })
   }
