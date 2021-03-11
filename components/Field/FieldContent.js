@@ -1,7 +1,7 @@
 import Component, { n } from '../Component/index'
 import ControlMixin from './ControlMixin'
-import ControlAction from './ControlAction'
-import ControlBefore from './ControlBefore'
+import ControlActionMixin from './ControlActionMixin'
+import ControlBeforeMixin from './ControlBeforeMixin'
 import ControlAfterMixin from './ControlAfterMixin'
 
 class FieldContent extends Component {
@@ -28,20 +28,38 @@ class FieldContent extends Component {
       }
     }
 
+    let controlBeforeProps = null
+    if (controlBefore) {
+      controlBeforeProps = { component: 'List', classes: { 'nom-control-before': true } }
+      if (Array.isArray(controlAfter)) {
+        controlBeforeProps = Component.extendProps(controlBeforeProps, { items: controlBefore })
+      } else {
+        controlBeforeProps = Component.extendProps(controlBeforeProps, controlBefore)
+      }
+    }
+
+    let controlActionProps = null
+    if (controlAction) {
+      controlActionProps = {
+        component: 'List',
+        gutter: 'sm',
+        classes: { 'nom-control-action': true },
+      }
+      if (Array.isArray(controlAction)) {
+        controlActionProps = Component.extendProps(controlActionProps, { items: controlAction })
+      } else {
+        controlActionProps = Component.extendProps(controlActionProps, controlAction)
+      }
+    }
+
     this.setProps({
       children: [
-        controlBefore && {
-          component: ControlBefore,
-          children: { component: 'List', items: controlBefore },
-        },
+        controlBeforeProps && n(controlBeforeProps, [ControlBeforeMixin]),
         n(null, Component.extendProps(control, { classes: { 'nom-control': true } }), null, [
           ControlMixin,
         ]),
         controlAfterProps && n(controlAfterProps, [ControlAfterMixin]),
-        controlAction && {
-          component: ControlAction,
-          children: { component: 'List', items: controlAction },
-        },
+        controlActionProps && n(controlActionProps, [ControlActionMixin]),
       ],
     })
   }
