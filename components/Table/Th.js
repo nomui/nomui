@@ -5,6 +5,7 @@ class Th extends Component {
     const defaults = {
       tag: 'th',
       column: {},
+      sortStatus: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -17,6 +18,15 @@ class Th extends Component {
 
   _config() {
     const that = this
+    let sortIcon = 'sort'
+    if (this.props.column.sortStatus === 'asc') {
+      sortIcon = 'sort-up'
+    }
+
+    if (this.props.column.sortStatus === 'desc') {
+      sortIcon = 'sort-down'
+    }
+
     const children = {
       component: 'Cols',
       align: 'center',
@@ -26,8 +36,11 @@ class Th extends Component {
         },
         {
           component: 'Icon',
-          type: 'sort',
+          type: sortIcon,
           hidden: !this.props.column.sortable,
+          onClick: function () {
+            that.onSortChange()
+          },
         },
         {
           component: 'Icon',
@@ -61,6 +74,20 @@ class Th extends Component {
         }px`,
       })
     }
+  }
+
+  onSortChange() {
+    const that = this
+    if (that.props.column.sortStatus === 'asc') {
+      that.update({
+        column: { ...that.props.column, ...{ sortStatus: 'desc' } },
+      })
+    } else {
+      that.update({
+        column: { ...that.props.column, ...{ sortStatus: 'asc' } },
+      })
+    }
+    that.table.grid.handleSort(that.props.column)
   }
 }
 

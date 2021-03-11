@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Loading from '../Loading/index'
+import { isFunction, isString } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 
@@ -10,6 +11,7 @@ class Grid extends Component {
 
   _created() {
     this.minWidth = 0
+    this.lastSortField = null
   }
 
   _config() {
@@ -102,6 +104,62 @@ class Grid extends Component {
     this.loadingInst = new Loading({
       container: this.parent,
     })
+  }
+
+  setSortStaus(sorter) {
+    const c = this.props.columns.map(function (item) {
+      if (item.field === sorter.field) {
+        return {
+          ...item,
+          ...{
+            sortStatus: sorter.sortStatus,
+          },
+        }
+      }
+      return {
+        ...item,
+        ...{
+          sortStatus: null,
+        },
+      }
+    })
+
+    this.update({ columns: c })
+  }
+
+  handleSort(sorter) {
+    const key = sorter.field
+    let arr = []
+
+    if (this.lastSortField === key) {
+      arr = this.props.data.reverse()
+      this.setSortStaus(sorter)
+      this.update({ data: arr })
+      this.lastSortField = key
+      return
+    }
+
+    if (isFunction(sorter.sortable)) {
+      arr = this.props.data.sort(sorter.sortable)
+    } else {
+      const ascData = this.props.data.sort(function (a, b) {
+        const x = a[key]
+        const y = b[key]
+        if (isString(x)) {
+          return x.localeCompare(y)
+        }
+        return x - y
+      })
+      if (sorter.sortStatus === 'asc') {
+        arr = ascData
+      } else if (sorter.sortStatus === 'desc') {
+        arr = ascData.reverse()
+      }
+    }
+
+    this.setSortStaus(sorter)
+    this.update({ data: arr })
+    this.lastSortField = key
   }
 
   // handlePinClick(data) {
