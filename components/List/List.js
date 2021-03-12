@@ -14,7 +14,7 @@ class List extends Component {
       itemSelectable: {
         multiple: false,
         byClick: false,
-      },      
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -31,6 +31,7 @@ class List extends Component {
     this.setProps({
       children: { component: ListContent },
     })
+    console.log(this)
   }
 
   getItem(param) {

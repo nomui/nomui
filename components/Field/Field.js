@@ -2,9 +2,9 @@ import Component, { n } from '../Component/index'
 import Tooltip from '../Tooltip/index'
 import { clone, isFunction } from '../util/index'
 import RuleManager from '../util/rule-manager'
+import FieldActionMixin from './FieldActionMixin'
 import FieldContent from './FieldContent'
 import FieldLabel from './FieldLabel'
-import FieldActionMixin from './FieldActionMixin'
 
 let nameSeq = 0
 
