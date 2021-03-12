@@ -41,6 +41,8 @@ class Field extends Component {
   }
 
   _config() {
+    delete this.errorTip
+    
     this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth')
     const {
       label,

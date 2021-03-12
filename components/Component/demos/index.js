@@ -1,7 +1,8 @@
 define(
     [
         './template.js',
-        './children.js'
+        './children.js',
+        './auto-render-false.js'
     ],
     function () {
         return {
