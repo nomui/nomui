@@ -5,12 +5,14 @@ define([], function () {
     demo: function () {
       return {
         component: 'Grid',
+        onSort: (data) => {
+          console.log(data)
+        },
         columns: [
           {
             field: 'name',
             title: '标题',
             width: 200,
-            // sortable: (a, b) => a.sales - b.sales,
             sortable: true,
           },
           {
@@ -20,7 +22,7 @@ define([], function () {
           {
             field: 'sales',
             title: '销量',
-            sortable: true,
+            sortable: (a, b) => a.sales - b.sales,
           },
 
           {

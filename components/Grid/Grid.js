@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Loading from '../Loading/index'
-import { isFunction, isString } from '../util/index'
+import { isFunction } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 
@@ -106,20 +106,20 @@ class Grid extends Component {
     })
   }
 
-  setSortStaus(sorter) {
+  setSortDirection(sorter) {
     const c = this.props.columns.map(function (item) {
       if (item.field === sorter.field) {
         return {
           ...item,
           ...{
-            sortStatus: sorter.sortStatus,
+            sortDirection: sorter.sortDirection,
           },
         }
       }
       return {
         ...item,
         ...{
-          sortStatus: null,
+          sortDirection: null,
         },
       }
     })
@@ -129,36 +129,27 @@ class Grid extends Component {
 
   handleSort(sorter) {
     const key = sorter.field
-    let arr = []
+    if (!sorter.sortDirection) return
 
-    if (this.lastSortField === key) {
-      arr = this.props.data.reverse()
-      this.setSortStaus(sorter)
+    if (isFunction(sorter.sortable)) {
+      let arr = []
+      if (this.lastSortField === key) {
+        arr = this.props.data.reverse()
+      } else {
+        arr = this.props.data.sort(sorter.sortable)
+      }
+      this.setSortDirection(sorter)
       this.update({ data: arr })
       this.lastSortField = key
       return
     }
 
-    if (isFunction(sorter.sortable)) {
-      arr = this.props.data.sort(sorter.sortable)
-    } else {
-      const ascData = this.props.data.sort(function (a, b) {
-        const x = a[key]
-        const y = b[key]
-        if (isString(x)) {
-          return x.localeCompare(y)
-        }
-        return x - y
-      })
-      if (sorter.sortStatus === 'asc') {
-        arr = ascData
-      } else if (sorter.sortStatus === 'desc') {
-        arr = ascData.reverse()
-      }
-    }
+    this._callHandler(this.props.onSort, {
+      field: sorter.field,
+      sortDirection: sorter.sortDirection,
+    })
 
-    this.setSortStaus(sorter)
-    this.update({ data: arr })
+    this.setSortDirection(sorter)
     this.lastSortField = key
   }
 
@@ -178,6 +169,7 @@ Grid.defaults = {
   frozenLeftCols: null,
   frozenRightCols: null,
   allowFrozenCols: false,
+  onSort: null,
 }
 
 Component.register(Grid)
