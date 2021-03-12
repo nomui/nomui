@@ -5,6 +5,7 @@ class TheadTr extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       tag: 'tr',
+      columns: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -13,11 +14,10 @@ class TheadTr extends Component {
   _created() {
     this.thead = this.parent
     this.table = this.thead.table
-    this.theadList = []
   }
 
   _config() {
-    const { columns } = this.table.props
+    const { columns } = this.props
 
     const children =
       Array.isArray(columns) &&
@@ -31,22 +31,6 @@ class TheadTr extends Component {
     this.setProps({
       children: children,
     })
-  }
-
-  createTheads(data) {
-    const that = this
-    data.forEach(function (column) {
-      if (column.children && column.children.length > 0) {
-        that.createCols(column.children)
-      } else {
-        that.theadList.push({
-          component: Th,
-          column: column,
-        })
-      }
-    })
-
-    return that.theadList
   }
 }
 

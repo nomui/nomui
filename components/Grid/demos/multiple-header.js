@@ -3,44 +3,101 @@ define([], function () {
     title: '基础用法',
     file: 'multiple-header',
     demo: function () {
+      const c = [
+        {
+          title: '姓名',
+          field: 'name',
+          key: 'name',
+        },
+        {
+          title: '其它',
+          children: [
+            {
+              title: '年龄',
+              field: 'age',
+              key: 'age',
+            },
+            {
+              title: '住址',
+              children: [
+                {
+                  title: '街道',
+                  field: 'street',
+                  key: 'street',
+                },
+                {
+                  title: '小区',
+                  children: [
+                    {
+                      title: '单元',
+                      field: 'building',
+                      key: 'building',
+                    },
+                    {
+                      title: '门牌',
+                      field: 'number',
+                      key: 'number',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          title: '公司',
+          children: [
+            {
+              title: '地址',
+              field: 'companyAddress',
+              key: 'companyAddress',
+            },
+            {
+              title: '名称',
+              field: 'companyName',
+              key: 'companyName',
+            },
+          ],
+        },
+        {
+          title: '性别',
+          field: 'gender',
+          key: 'gender',
+        },
+      ]
+
+      const source = [
+        {
+          key: '1',
+          name: '胡彦斌',
+          age: 32,
+          street: '拱墅区和睦街道',
+          building: 1,
+          number: 2033,
+          companyAddress: '西湖区湖底公园',
+          companyName: '湖底有限公司',
+          gender: '男',
+        },
+        {
+          key: '2',
+          name: '胡彦祖',
+          age: 42,
+          street: '拱墅区和睦街道',
+          building: 3,
+          number: 2035,
+          companyAddress: '西湖区湖底公园',
+          companyName: '湖底有限公司',
+          gender: '男',
+        },
+      ]
+
       return {
         component: 'Grid',
         onSort: (data) => {
           console.log(data)
         },
-        columns: [
-          {
-            field: 'name',
-            title: '标题',
-            width: 200,
-            sortable: true,
-          },
-          {
-            title: '分组',
-            children: [
-              {
-                field: 'author',
-                title: '作者',
-              },
-              {
-                field: 'sales',
-                title: '销量',
-                // sortable: (a, b) => a.sales - b.sales,
-              },
-            ],
-          },
-
-          {
-            field: 'role',
-            title: '主角',
-            width: 500,
-          },
-        ],
-        data: [
-          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
-          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
-          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
-        ],
+        columns: c,
+        data: source,
       }
     },
   }

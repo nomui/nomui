@@ -61,6 +61,10 @@ class Th extends Component {
         'nom-table-fixed-right': this.props.column.fixed === 'right',
         'nom-table-fixed-right-first': this.props.column.firstRight,
       },
+      attrs: {
+        colspan: this.props.column.colSpan,
+        rowspan: this.props.column.rowSpan,
+      },
     })
   }
 

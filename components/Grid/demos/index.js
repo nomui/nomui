@@ -1,4 +1,4 @@
-define(['./multiple-header.js', './frozen-header.js'], function () {
+define(['./multiple-header.js'], function () {
   return {
     title: 'Grid',
     subtitle: '高级表格',
