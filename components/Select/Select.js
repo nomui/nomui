@@ -78,16 +78,12 @@ class Select extends Field {
     } else if (showSearch) {
       const { onSearch } = this.props
       that.checked = true
+      that.checkedOption = that._getOption(this.props.value)
       const searchInput = {
         tag: 'input',
         classes: { 'nom-select-search-input': true },
         _created() {
           that.selectedSingle = this
-        },
-        _config() {
-          that.checkedOption = that._getOption(this.props.value)
-          that.checked = true
-          // if (that.optionList) that.updateSearchPopup(this.checkedOption?.value)
         },
         _rendered() {
           this.element.value = this.props.text
@@ -100,7 +96,9 @@ class Select extends Field {
             isFunction(onSearch) && onSearch(this.value)
           },
           onchange() {
+            if (!that.checked) return
             this.value = that.checkedOption ? that.checkedOption?.text : null
+            that.updateSearchPopup(this.value)
           },
         },
       }
@@ -253,6 +251,16 @@ class Select extends Field {
   _setValue(value, triggerChange) {
     triggerChange = triggerChange !== false
 
+    if (this.props.showSearch) {
+      const selectedOption = this.props.options.find((e) => e.value === value)
+      if (selectedOption) {
+        this.checked = true
+        this.checkedOption = selectedOption
+        this.updateSearchPopup(selectedOption.text)
+        this._directSetValue(value)
+      }
+    }
+
     if (this.optionList) {
       this.optionList.unselectAllItems({ triggerSelectionChange: value === null })
       this.selectOptions(value, { triggerSelectionChange: triggerChange })
@@ -303,6 +311,9 @@ class Select extends Field {
     }
 
     if (this.props.showSearch) {
+      const selectedOption = this.props.options.find((e) => e.value === changed.newValue)
+      this.checkedOption = selectedOption
+      this.updateSearchPopup(selectedOption.text)
       this.checked = true
     }
   }
@@ -322,7 +333,7 @@ class Select extends Field {
   appendOption() {}
 
   updateSearchPopup(text) {
-    this.optionList.update({ text })
+    if (this.optionList) this.optionList.update({ text })
   }
 
   handleFilter(text, options) {

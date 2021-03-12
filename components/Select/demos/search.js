@@ -26,27 +26,34 @@ define([], function () {
               { text: '项目111111111', value: 9 },
               { text: '项目1111111112', value: 10 },
             ],
-            // onSearch(val) {
-            //   console.log(val)
-            // },
-            // onValueChange(changed) {
-            //   console.log(changed)
-            // },
-          },
-          {
-            component: 'Button',
-            text: 'Get Value',
-            onClick: () => {
+            onSearch(text) {
               // eslint-disable-next-line
-              console.log(select.getValue())
+              console.log(text)
+            },
+            onValueChange(changed) {
+              // eslint-disable-next-line
+              console.log(changed)
             },
           },
           {
-            component: 'Button',
-            text: 'Set value',
-            onClick() {
-              select.setValue(3)
-            },
+            component: 'Cols',
+            items: [
+              {
+                component: 'Button',
+                text: 'Get Value',
+                onClick: () => {
+                  // eslint-disable-next-line
+                  console.log(select.getValue())
+                },
+              },
+              {
+                component: 'Button',
+                text: 'Set value',
+                onClick() {
+                  select.setValue(3)
+                },
+              },
+            ],
           },
         ],
       }

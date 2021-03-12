@@ -31,7 +31,6 @@ class List extends Component {
     this.setProps({
       children: { component: ListContent },
     })
-    console.log(this)
   }
 
   getItem(param) {
