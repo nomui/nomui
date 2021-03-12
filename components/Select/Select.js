@@ -2,8 +2,8 @@ import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
 import List from '../List/index'
+import { extend, isFunction, isString } from '../util/index'
 import SelectPopup from './SelectPopup'
-import { isString, extend } from '../util/index'
 
 class Select extends Field {
   constructor(props, ...mixins) {
@@ -44,6 +44,7 @@ class Select extends Field {
       multiple: false,
       showArrow: true,
       minItemsForSearch: 20,
+      filterOption: (text, options) => options.filter((o) => o.text.indexOf(text) >= 0),
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -51,7 +52,7 @@ class Select extends Field {
 
   _config() {
     const that = this
-    const { multiple, showArrow, placeholder, disabled } = this.props
+    const { multiple, showArrow, placeholder, disabled, showSearch } = this.props
     const children = []
 
     this.setProps({
@@ -74,6 +75,35 @@ class Select extends Field {
 
     if (multiple) {
       children.push(this.props.selectedMultiple)
+    } else if (showSearch) {
+      const { onSearch } = this.props
+      that.checked = true
+      that.checkedOption = that._getOption(this.props.value)
+      const searchInput = {
+        tag: 'input',
+        classes: { 'nom-select-search-input': true },
+        _created() {
+          that.selectedSingle = this
+        },
+        _rendered() {
+          this.element.value = this.props.text
+        },
+        attrs: {
+          autocomplete: 'false',
+          oninput() {
+            that.checked = false
+            that.updateSearchPopup(this.value)
+            isFunction(onSearch) && onSearch(this.value)
+          },
+          onchange() {
+            if (!that.checked) return
+            this.value = that.checkedOption ? that.checkedOption?.text : null
+            that.updateSearchPopup(this.value)
+          },
+        },
+      }
+
+      children.push(searchInput)
     } else {
       children.push(this.props.selectedSingle)
     }
@@ -100,8 +130,14 @@ class Select extends Field {
 
     this.setProps({
       control: {
+        attrs: {
+          style: { cursor: 'text' },
+        },
         disabled: disabled,
         children: children,
+      },
+      onClick: () => {
+        showSearch && this.selectedSingle.element.focus()
       },
     })
 
@@ -173,7 +209,7 @@ class Select extends Field {
   }
 
   _getValue(options) {
-    const { valueOptions } = this.props
+    const { valueOptions, showSearch } = this.props
     options = extend(
       {
         asArray: false,
@@ -186,7 +222,14 @@ class Select extends Field {
       return this.currentValue
     }
 
+    if (showSearch) {
+      const selectedSearch = this.getSelectedOption()
+      if (selectedSearch && selectedSearch.props) return selectedSearch.props.value
+      return this.currentValue
+    }
+
     const selected = this.getSelectedOption()
+
     if (selected !== null) {
       if (Array.isArray(selected)) {
         const vals = selected.map(function (item) {
@@ -198,6 +241,7 @@ class Select extends Field {
       if (options.asArray === true) {
         return [selected.props.value]
       }
+
       return selected.props.value
     }
 
@@ -206,6 +250,17 @@ class Select extends Field {
 
   _setValue(value, triggerChange) {
     triggerChange = triggerChange !== false
+
+    if (this.props.showSearch) {
+      const selectedOption = this.props.options.find((e) => e.value === value)
+      if (selectedOption) {
+        this.checked = true
+        this.checkedOption = selectedOption
+        this.updateSearchPopup(selectedOption.text)
+        this._directSetValue(value)
+      }
+    }
+
     if (this.optionList) {
       this.optionList.unselectAllItems({ triggerSelectionChange: value === null })
       this.selectOptions(value, { triggerSelectionChange: triggerChange })
@@ -254,6 +309,13 @@ class Select extends Field {
         this.placeholder.hide()
       }
     }
+
+    if (this.props.showSearch) {
+      const selectedOption = this.props.options.find((e) => e.value === changed.newValue)
+      this.checkedOption = selectedOption
+      this.updateSearchPopup(selectedOption.text)
+      this.checked = true
+    }
   }
 
   _disable() {
@@ -269,6 +331,15 @@ class Select extends Field {
   }
 
   appendOption() {}
+
+  updateSearchPopup(text) {
+    if (this.optionList) this.optionList.update({ text })
+  }
+
+  handleFilter(text, options) {
+    const { filterOption } = this.props
+    return filterOption(text, options)
+  }
 }
 
 Component.register(Select)

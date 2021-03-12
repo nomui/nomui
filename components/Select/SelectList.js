@@ -20,15 +20,27 @@ class SelectList extends List {
   }
 
   _config() {
-    const selectProps = this.selectControl.props
+    const {
+      showSearch,
+      options,
+      optionDefaults,
+      value,
+      multiple,
+      filterOption,
+    } = this.selectControl.props
+    const { text } = this.props
+    const { checked, checkedOption } = this.selectControl
+    const filterStr = checked ? checkedOption?.text : text
+    const filterOptions = filterOption(filterStr, options)
+
     this.setProps({
-      items: selectProps.options,
-      itemDefaults: n(null, selectProps.optionDefaults, null, [SelectListItemMixin]),
+      items: showSearch ? filterOptions : options,
+      itemDefaults: n(null, optionDefaults, null, [SelectListItemMixin]),
       itemSelectable: {
-        multiple: selectProps.multiple,
+        multiple: multiple,
         byClick: true,
       },
-      selectedItems: selectProps.value,
+      selectedItems: showSearch ? checkedOption?.value : value,
 
       onItemSelectionChange: () => {
         this.selectControl._onValueChange()
