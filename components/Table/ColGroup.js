@@ -13,20 +13,24 @@ class ColGroup extends Component {
   _created() {
     this.table = this.parent
     this.columns = this.table.props.columns
+    this.colList = []
   }
 
   _config() {
     let children = []
 
     if (Array.isArray(this.columns)) {
-      children = this.columns.map(function (column) {
-        return {
-          component: ColGroupCol,
-          name: column.field,
-          column: column,
-        }
-      })
+      // children = this.columns.map(function (column) {
+      //   return {
+      //     component: ColGroupCol,
+      //     name: column.field,
+      //     column: column,
+      //   }
+      // })
+      this.colList = []
+      children = this.createCols(this.columns)
     }
+
     if (
       this.table.parent.componentType === 'GridHeader' &&
       this.table.parent.parent.props.frozenHeader
@@ -42,6 +46,23 @@ class ColGroup extends Component {
     this.setProps({
       children: children,
     })
+  }
+
+  createCols(data) {
+    const that = this
+    data.forEach(function (column) {
+      if (column.children && column.children.length > 0) {
+        that.createCols(column.children)
+      } else {
+        that.colList.push({
+          component: ColGroupCol,
+          name: column.field,
+          column: column,
+        })
+      }
+    })
+
+    return that.colList
   }
 }
 

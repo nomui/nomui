@@ -13,6 +13,7 @@ class TheadTr extends Component {
   _created() {
     this.thead = this.parent
     this.table = this.thead.table
+    this.theadList = []
   }
 
   _config() {
@@ -30,6 +31,22 @@ class TheadTr extends Component {
     this.setProps({
       children: children,
     })
+  }
+
+  createTheads(data) {
+    const that = this
+    data.forEach(function (column) {
+      if (column.children && column.children.length > 0) {
+        that.createCols(column.children)
+      } else {
+        that.theadList.push({
+          component: Th,
+          column: column,
+        })
+      }
+    })
+
+    return that.theadList
   }
 }
 
