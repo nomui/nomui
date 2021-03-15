@@ -38,6 +38,7 @@ class Tr extends Component {
   createTds(item) {
     const data = this.props.data
     const that = this
+
     item.forEach(function (column) {
       if (column.children && column.children.length > 0) {
         that.createTds(column.children)

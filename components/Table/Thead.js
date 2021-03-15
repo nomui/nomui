@@ -55,9 +55,9 @@ class Thead extends Component {
           cell.hasSubColumns = true
         }
 
-        if ('colSpan' in column) {
-          ;({ colSpan } = column)
-        }
+        // if ('colSpan' in column) {
+        //   ;({ colSpan } = column)
+        // }
 
         if ('rowSpan' in column) {
           cell.rowSpan = column.rowSpan
