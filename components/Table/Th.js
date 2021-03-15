@@ -38,7 +38,7 @@ class Th extends Component {
         {
           component: 'Icon',
           type: sortIcon,
-          hidden: !this.props.column.sortable,
+          hidden: !this.props.column.sortable || this.props.column.colSpan > 1,
           onClick: function () {
             that.onSortChange()
           },
