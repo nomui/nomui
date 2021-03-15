@@ -30,6 +30,7 @@ class Th extends Component {
     const children = {
       component: 'Cols',
       align: 'center',
+      justify: this.props.column.colSpan > 1 ? 'center' : null,
       items: [
         {
           children: this.props.column.header || this.props.column.title,
@@ -60,6 +61,7 @@ class Th extends Component {
         'nom-table-fixed-left-last': this.props.column.lastLeft,
         'nom-table-fixed-right': this.props.column.fixed === 'right',
         'nom-table-fixed-right-first': this.props.column.firstRight,
+        'nom-table-parent-th': this.props.column.colSpan > 1,
       },
       attrs: {
         colspan: this.props.column.colSpan,

@@ -99,6 +99,7 @@ define([], function () {
         columns: c,
         line: 'both',
         data: source,
+        bordered: true,
       }
     },
   }
