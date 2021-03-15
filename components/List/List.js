@@ -14,7 +14,7 @@ class List extends Component {
       itemSelectable: {
         multiple: false,
         byClick: false,
-      },      
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
