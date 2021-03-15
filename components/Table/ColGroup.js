@@ -20,13 +20,6 @@ class ColGroup extends Component {
     let children = []
 
     if (Array.isArray(this.columns)) {
-      // children = this.columns.map(function (column) {
-      //   return {
-      //     component: ColGroupCol,
-      //     name: column.field,
-      //     column: column,
-      //   }
-      // })
       this.colList = []
       children = this.createCols(this.columns)
     }

@@ -17,7 +17,6 @@ class Thead extends Component {
   _config() {
     const { columns } = this.table.props
     const arr = this.mapHeadData(columns)
-    console.log(arr)
 
     const children = []
     for (let i = 0; i < arr.length; i++) {
@@ -25,7 +24,6 @@ class Thead extends Component {
     }
 
     this.setProps({
-      // children: [{ component: TheadTr }],
       children: children,
     })
   }

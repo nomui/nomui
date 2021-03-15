@@ -97,6 +97,7 @@ define([], function () {
           console.log(data)
         },
         columns: c,
+        line: 'both',
         data: source,
       }
     },
