@@ -11,6 +11,10 @@ class Tree extends Component {
       onCheck: null,
       showLine: false,
       toolbar: null,
+      fields: {
+        title: 'title',
+        value: 'value',
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -24,6 +28,8 @@ class Tree extends Component {
   _config() {
     const that = this
     const { treeData, selectedNodes, showline } = this.props
+
+    const { title, value } = this.props.fields
 
     if (selectedNodes) {
       if (typeof selectedNodes === 'string') {
@@ -39,19 +45,20 @@ class Tree extends Component {
           const c = mapTree(item.children)
           return {
             component: TreeWrapper,
-            key: item.value,
-            title: item.title,
-            value: item.value,
-            checked: that.selectedList.indexOf(item.value) !== -1,
+            key: item[value],
+            title: item[title],
+            value: item[value],
+            checked: that.selectedList.indexOf(item[value]) !== -1,
             items: c,
           }
         }
+
         return {
           component: TreeWrapper,
-          key: item.value,
-          title: item.title,
-          value: item.value,
-          checked: that.selectedList.indexOf(item.value) !== -1,
+          key: item[value],
+          title: item[title],
+          value: item[value],
+          checked: that.selectedList.indexOf(item[value]) !== -1,
         }
       })
     }

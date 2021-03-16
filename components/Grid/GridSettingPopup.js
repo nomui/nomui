@@ -1,6 +1,5 @@
 import Component from '../Component/index'
 import Layer from '../Layer/index'
-import Layout from '../Layout/index'
 
 class GridSettingPopup extends Layer {
   constructor(props, ...mixins) {
@@ -24,24 +23,52 @@ class GridSettingPopup extends Layer {
         },
       },
       children: {
-        component: Layout,
+        component: 'Panel',
+        uistyle: 'card',
+        fit: true,
         styles: {
-          color: 'white',
-          border: true,
-          padding: 'small',
-
+          shadow: 'sm',
           rounded: 'sm',
+        },
+        classes: {
+          'nom-grid-setting-panel': true,
+        },
+        header: {
+          caption: {
+            title: '列设置',
+          },
         },
         body: {
           children: {
             component: 'Tree',
+            showline: true,
             treeData: that.grid.props.columns,
             selectedNodes: that.grid.props.selectedColumns,
             multiple: true,
             leafOnly: false,
+            fields: {
+              title: 'title',
+              value: 'field',
+            },
             onCheck: function (data) {
               that.grid.handleColumnsSetting(data)
             },
+          },
+        },
+        footer: {
+          children: {
+            component: 'Cols',
+            gutter: 'xs',
+            items: [
+              {
+                component: 'Button',
+                text: '确定',
+              },
+              {
+                component: 'Button',
+                text: '取消',
+              },
+            ],
           },
         },
       },

@@ -85,6 +85,7 @@ class Grid extends Component {
             classes: {
               'nom-grid-setting': true,
             },
+            tooltip: '列设置',
             onClick: () => {
               that.handleSetting()
             },
