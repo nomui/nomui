@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import { isFunction } from '../util/index'
-import { fileType, getDate, getFileExtension, getFileSize } from './helper'
+import { getDate, getFileSize } from './helper'
 
 class FileItem extends Component {
   constructor(props, ...mixins) {
@@ -12,7 +12,7 @@ class FileItem extends Component {
   }
 
   _config() {
-    const { file, onPreview, onRemove, onDownload, extraAction } = this.props
+    const { file, onRemove, extraAction } = this.props
     const { name, size, uploadTime, uuid, status } = file
 
     if (uuid) {
@@ -32,8 +32,7 @@ class FileItem extends Component {
       } else {
         imgDisplay =
           status === 'done'
-            ? // ? { tag: 'img', attrs: { src: URL.createObjectURL(file) } }
-              this.renderUploadedFile(file)
+            ? this.renderUploadedFile(file)
             : {
                 children: [
                   {
@@ -47,40 +46,16 @@ class FileItem extends Component {
               }
       }
 
-      const actions = [
-        {
-          tag: 'a',
-          children: '删除',
-          attrs: {
-            href: 'javascript:void(0)',
-            onclick: () => onRemove(file),
-          },
-        },
-        {
-          tag: 'a',
-          children: '下载',
-          attrs: {
-            href: 'javascript:void(0)',
-            onclick: () => {
-              if (isFunction(onDownload)) {
-                onDownload(file)
-              } else if (file.url) {
-                window.open(file.url)
-              }
-            },
-          },
-        },
-      ]
-
-      if (onPreview) {
+      const actions = []
+      if (onRemove) {
         actions.push({
           tag: 'a',
-          children: '预览',
+          children: onRemove.text || '删除',
           attrs: {
             href: 'javascript:void(0)',
             onclick: (e) => {
               e.preventDefault()
-              if (isFunction(onPreview)) onPreview(file)
+              status !== 'removing' && onRemove.action(e, file)
             },
           },
         })
@@ -94,10 +69,8 @@ class FileItem extends Component {
             attrs: {
               href: 'javascript:void(0)',
               onclick: (e) => {
-                if (isFunction(action)) {
-                  e.preventDefault()
-                  action(file)
-                }
+                e.preventDefault()
+                isFunction(action) && action(e, file)
               },
             },
           })
@@ -143,13 +116,13 @@ class FileItem extends Component {
                                     classes: { 'upload-file-name': true },
                                   })
                                 },
-                                attrs: {
-                                  href: 'javascript:void(0)',
-                                  onclick: (e) => {
-                                    e.preventDefault()
-                                    if (isFunction(onPreview)) onPreview(file)
-                                  },
-                                },
+                                // attrs: {
+                                //   href: 'javascript:void(0)',
+                                //   onclick: (e) => {
+                                //     e.preventDefault()
+                                //     if (isFunction(onPreview)) onPreview(file)
+                                //   },
+                                // },
                               },
                             ],
                           },
@@ -179,7 +152,10 @@ class FileItem extends Component {
                     tag: 'div',
                     _config() {
                       this.setProps({
-                        classes: { 'upload-opt-btn': true },
+                        classes: {
+                          'upload-opt-btn': true,
+                          'upload-opt-removing': status === 'removing',
+                        },
                       })
                     },
                     children: actions,
@@ -203,12 +179,11 @@ class FileItem extends Component {
   }
 
   renderUploadedFile(file) {
-    const { name } = file
-    const suffix = getFileExtension(name)
-    if (fileType.has(suffix)) {
+    // const { name } = file
+    const renderer = this.props.renderer
+    if (isFunction(renderer)) {
       return {
-        component: 'Icon',
-        type: suffix,
+        ...renderer(file),
         classes: {
           'file-img': true,
         },
@@ -221,6 +196,23 @@ class FileItem extends Component {
         'file-img': true,
       },
     }
+    // const suffix = getFileExtension(name)
+    // if (fileType.has(suffix)) {
+    //   return {
+    //     component: 'Icon',
+    //     type: suffix,
+    //     classes: {
+    //       'file-img': true,
+    //     },
+    //   }
+    // }
+    // return {
+    //   component: 'Icon',
+    //   type: 'default',
+    //   classes: {
+    //     'file-img': true,
+    //   },
+    // }
   }
 }
 
