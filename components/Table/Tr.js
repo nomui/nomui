@@ -15,28 +15,45 @@ class Tr extends Component {
   _created() {
     this.tbody = this.parent
     this.table = this.tbody.table
+    this.tdList = []
   }
 
   _config() {
     const columns = this.table.props.columns
     const data = this.props.data
 
-    const children =
-      Array.isArray(columns) &&
-      columns.map(function (column) {
-        return {
-          component: Td,
-          name: column.field,
-          column: column,
-          record: data,
-          data: accessProp(data, column.field),
-        }
-      })
+    let children = []
+
+    if (Array.isArray(columns)) {
+      this.TdList = []
+      children = this.createTds(columns)
+    }
 
     this.setProps({
       key: data[this.table.props.keyField],
       children: children,
     })
+  }
+
+  createTds(item) {
+    const data = this.props.data
+    const that = this
+
+    item.forEach(function (column) {
+      if (column.children && column.children.length > 0) {
+        that.createTds(column.children)
+      } else {
+        that.tdList.push({
+          component: Td,
+          name: column.field,
+          column: column,
+          record: data,
+          data: accessProp(data, column.field),
+        })
+      }
+    })
+
+    return that.tdList
   }
 }
 

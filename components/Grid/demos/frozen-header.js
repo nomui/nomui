@@ -41,6 +41,7 @@ define([], function () {
             frozenHeader: true,
             frozenLeftCols: 1,
             frozenRightCols: 0,
+            // allowFrozenCols: true,
             attrs: {
               style: {
                 height: '170px',

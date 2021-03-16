@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Loading from '../Loading/index'
+import { isFunction } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 
@@ -10,6 +11,7 @@ class Grid extends Component {
 
   _created() {
     this.minWidth = 0
+    this.lastSortField = null
   }
 
   _config() {
@@ -104,6 +106,53 @@ class Grid extends Component {
     })
   }
 
+  setSortDirection(sorter) {
+    const c = this.props.columns.map(function (item) {
+      if (item.field === sorter.field) {
+        return {
+          ...item,
+          ...{
+            sortDirection: sorter.sortDirection,
+          },
+        }
+      }
+      return {
+        ...item,
+        ...{
+          sortDirection: null,
+        },
+      }
+    })
+
+    this.update({ columns: c })
+  }
+
+  handleSort(sorter) {
+    const key = sorter.field
+    if (!sorter.sortDirection) return
+
+    if (isFunction(sorter.sortable)) {
+      let arr = []
+      if (this.lastSortField === key) {
+        arr = this.props.data.reverse()
+      } else {
+        arr = this.props.data.sort(sorter.sortable)
+      }
+      this.setSortDirection(sorter)
+      this.update({ data: arr })
+      this.lastSortField = key
+      return
+    }
+
+    this._callHandler(this.props.onSort, {
+      field: sorter.field,
+      sortDirection: sorter.sortDirection,
+    })
+
+    this.setSortDirection(sorter)
+    this.lastSortField = key
+  }
+
   // handlePinClick(data) {
   //   const { columns } = this.props
 
@@ -120,6 +169,7 @@ Grid.defaults = {
   frozenLeftCols: null,
   frozenRightCols: null,
   allowFrozenCols: false,
+  onSort: null,
 }
 
 Component.register(Grid)

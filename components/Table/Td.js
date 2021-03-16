@@ -16,11 +16,21 @@ class Td extends Component {
     let children = this.props.data
 
     if (isFunction(this.props.column.render)) {
-      children = this.props.column.render.call(this, this.props.data, this.props.record)
+      children = this.props.column.render.call(
+        this,
+        this.props.data,
+        this.props.record,
+        this.parent.props.index,
+      )
     }
 
     this.setProps({
       children: children,
+      attrs: {
+        colspan: this.props.column.colSpan,
+        rowspan: this.props.column.rowSpan,
+      },
+      hidden: this.props.column.colSpan === 0 || this.props.column.rowSpan === 0,
       classes: {
         'nom-table-fixed-left': this.props.column.fixed === 'left',
         'nom-table-fixed-left-last': this.props.column.lastLeft,
