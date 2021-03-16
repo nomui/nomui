@@ -18,9 +18,10 @@ class Td extends Component {
   }
 
   _config() {
-    const { level, isLeaf } = this.tr.props
+    const that = this
+    const { level, isLeaf, data: rowData } = this.tr.props
     const { column } = this.props
-    const { treeField } = this.table.props
+    const { treeField, treeConfig } = this.table.props
 
     let children = this.props.data
 
@@ -43,9 +44,33 @@ class Td extends Component {
             },
           },
         },
-        !isLeaf && { component: 'Button', icon: 'plus' },
+        !isLeaf && {
+          component: 'Icon',
+          type: 'plus',
+          classes: { 'nom-tr-expand-indicator': true },
+          _created: function () {
+            that.indicator = this
+          },
+        },
         { tag: 'span', children: children },
       ]
+
+      if (!isLeaf) {
+        this.setProps({
+          expanded: treeConfig.initExpandLevel === -1 || treeConfig.initExpandLevel > level,
+          expandable: {
+            byClick: true,
+            target: () => {
+              return rowData.children.map((subrowData) => {
+                return this.table.rowRefs[subrowData[this.table.props.keyField]]
+              })
+            },
+            indicator: () => {
+              return that.indicator
+            },
+          },
+        })
+      }
     }
 
     this.setProps({
@@ -76,7 +101,13 @@ class Td extends Component {
     }
   }
 
-  _toggleSubrows() {}
+  _expand() {
+    this.tr._onExpand()
+  }
+
+  _collapse() {
+    this.tr._onCollapse()
+  }
 }
 
 Component.register(Td)

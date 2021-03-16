@@ -24,34 +24,34 @@ define([], function () {
             ],
             data: [
               {
-                id: 1,
+                id: '1',
                 class: '小学',
                 count: '-',
                 children: [
                   {
-                    id: 1,
+                    id: '1.1',
                     class: '一年级',
                     count: '-',
                     children: [
                       {
-                        id: 1,
+                        id: '1.1.1',
                         class: '1班',
                         count: 30,
                       },
                       {
-                        id: 1,
+                        id: '1.1.2',
                         class: '2班',
                         count: 31,
                       },
                     ],
                   },
                   {
-                    id: 1,
+                    id: '2',
                     class: '二年级',
                     count: '-',
                     children: [
                       {
-                        id: 1,
+                        id: '2.1',
                         class: '1班',
                         count: '-',
                       },
@@ -60,17 +60,17 @@ define([], function () {
                 ],
               },
               {
-                id: 1,
+                id: '3',
                 class: '中学',
                 count: '-',
                 children: [
                   {
-                    id: 1,
+                    id: '3.1',
                     class: '七年级',
                     count: '-',
                     children: [
                       {
-                        id: 1,
+                        id: '3.1.1',
                         class: '1班',
                         count: '-',
                       },

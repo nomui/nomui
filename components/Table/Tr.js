@@ -16,7 +16,9 @@ class Tr extends Component {
     this.tbody = this.parent
     this.table = this.tbody.table
     this.tdList = []
-    this.table.rowRefs[this.table.props.keyField] = this
+    if (this.props.data[this.table.props.keyField]) {
+      this.table.rowRefs[this.props.data[this.table.props.keyField]] = this
+    }
   }
 
   _config() {
@@ -60,6 +62,50 @@ class Tr extends Component {
     })
 
     return that.tdList
+  }
+
+  _onExpand() {
+    this.setProps({
+      classes: {
+        's-expanded': true,
+      },
+    })
+    this.addClass('s-expanded')
+    this._expanded = true
+  }
+
+  _onCollapse() {
+    this.setProps({
+      classes: {
+        's-expanded': false,
+      },
+    })
+    this.removeClass('s-expanded')
+    this._expanded = false
+  }
+
+  _show() {
+    const { data: rowData } = this.props
+
+    if (Array.isArray(rowData.children)) {
+      rowData.children.forEach((subrowData) => {
+        if (this._expanded) {
+          const row = this.table.getRow(subrowData)
+          row && row.show && row.show()
+        }
+      })
+    }
+  }
+
+  _hide() {
+    const { data: rowData } = this.props
+
+    if (Array.isArray(rowData.children)) {
+      rowData.children.forEach((subrowData) => {
+        const row = this.table.getRow(subrowData)
+        row && row.hide && row.hide()
+      })
+    }
   }
 }
 
