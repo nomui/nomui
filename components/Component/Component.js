@@ -37,6 +37,7 @@ class Component {
         byClick: false,
         byHover: false,
         target: null,
+        trigger: null,
         expandedProps: false,
         collapsedProps: false,
       },
@@ -584,6 +585,19 @@ class Component {
     }
     if (isFunction(target)) {
       return target.call(this)
+    }
+  }
+
+  _getExpandTrigger() {
+    const { trigger } = this.props.expandable
+    if (trigger === undefined || trigger === null) {
+      return null
+    }
+    if (trigger instanceof Component) {
+      return trigger
+    }
+    if (isFunction(trigger)) {
+      return trigger.call(this)
     }
   }
 

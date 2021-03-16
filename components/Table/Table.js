@@ -13,6 +13,11 @@ class Table extends Component {
       onlyHead: false,
       onlyBody: false,
       keyField: 'id',
+      treeField: null,
+      treeConfig: {
+        column:null,
+        initExpandLevel: -1,
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -26,6 +31,8 @@ class Table extends Component {
     if (this.hasGrid) {
       this.grid = this.parent.parent
     }
+
+    this.rowRefs = {}
   }
 
   _config() {

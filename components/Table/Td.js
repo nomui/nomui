@@ -12,7 +12,16 @@ class Td extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    this.tr = this.parent
+    this.table = this.parent.table
+  }
+
   _config() {
+    const { level, isLeaf } = this.tr.props
+    const { column } = this.props
+    const { treeField } = this.table.props
+
     let children = this.props.data
 
     if (isFunction(this.props.column.render)) {
@@ -22,6 +31,21 @@ class Td extends Component {
         this.props.record,
         this.parent.props.index,
       )
+    }
+
+    if (treeField && column.field === treeField) {
+      children = [
+        {
+          tag: 'span',
+          attrs: {
+            style: {
+              paddingLeft: `${level * 15}px`,
+            },
+          },
+        },
+        !isLeaf && { component: 'Button', icon: 'plus' },
+        { tag: 'span', children: children },
+      ]
     }
 
     this.setProps({
@@ -51,6 +75,8 @@ class Td extends Component {
       })
     }
   }
+
+  _toggleSubrows() {}
 }
 
 Component.register(Td)

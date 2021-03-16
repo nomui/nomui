@@ -16,11 +16,13 @@ class Tr extends Component {
     this.tbody = this.parent
     this.table = this.tbody.table
     this.tdList = []
+    this.table.rowRefs[this.table.props.keyField] = this
   }
 
   _config() {
     const columns = this.table.props.columns
-    const data = this.props.data
+    const { data, level } = this.props
+    const { treeConfig } = this.table.props
 
     let children = []
 
@@ -31,6 +33,10 @@ class Tr extends Component {
 
     this.setProps({
       key: data[this.table.props.keyField],
+      attrs: {
+        level: level,
+      },
+      hidden: treeConfig.initExpandLevel !== -1 && treeConfig.initExpandLevel < level,
       children: children,
     })
   }

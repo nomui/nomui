@@ -15,21 +15,31 @@ class Tbody extends Component {
   }
 
   _config() {
-    const { data, rowDefaults } = this.table.props
-    const children =
-      Array.isArray(data) &&
-      data.map(function (rowData, index) {
-        return {
-          component: Tr,
-          data: rowData,
-          index: index,
-        }
-      })
+    const { data = [], rowDefaults } = this.table.props
+    const rows = []
+    this._getRows(data, rows, 0, 0)
 
     this.setProps({
-      children,
+      children: rows,
       childDefaults: rowDefaults,
     })
+  }
+
+  _getRows(data, rows, index, level) {
+    const curLevel = level
+    for (const item of data) {
+      rows.push({
+        component: Tr,
+        data: item,
+        index: index++,
+        level: curLevel,
+        isLeaf: !(item.children && item.children.length > 0),
+      })
+
+      if (item.children && item.children.length > 0) {
+        this._getRows(item.children, rows, index, curLevel + 1)
+      }
+    }
   }
 }
 

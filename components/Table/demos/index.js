@@ -1,4 +1,4 @@
-define(['./basic.js', './styles.js', './with-pager.js'], function () {
+define(['./basic.js', './styles.js', './with-pager.js', './tree-table.js'], function () {
   return {
     title: 'Table',
     subtitle: '表格',
