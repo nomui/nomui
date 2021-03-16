@@ -35,6 +35,7 @@ define([], function () {
             })
 
             if (successCount + failCount === fileList.length) {
+              // eslint-disable-next-line
               console.log(`文件上传完毕，上传成功${successCount}个,失败${failCount}个`)
             }
           },

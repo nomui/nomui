@@ -27,7 +27,7 @@
 ### 监控上传状态
 
 - 通过`onChange`回调函数监控文件的上传状态
-- file 中的`status`字段指定了当前文件所处的状态，文件的状态有`uploading`,`done`,`error`,`removed`分别对应正在上传,上传成功,上传失败,和文件已被删除
+- file 中的`status`字段指定了当前文件所处的状态，文件的状态有`uploading`,`done`,`error`,`removing`,`removed`分别对应正在上传,上传成功,上传失败,和文件已被删除
 - 回调函数 onChange 中有一个参数，其中包含了 file 和 fileList 两个属性,对应当前文件和上传文件列表
 - 具体用法参见示例**监控文件上传状态**
 
@@ -54,6 +54,7 @@
 | --- | --- | --- | --- | --- |
 | accept | 接受上传的文件类型, 详见 [input accept Attribute](https://developer.mozill a.org/en-US/docs/Web/HTML/Element/input/file#accept) | string | - |  |
 | action | 上传的地址 | string \| (file) => Promise | - |  |
+| button | 自定义上传按钮 | Button \| `false`| Button(设置为false则不显示上传按钮) |  |
 | method | 上传请求的 http method | string | `post` |  |
 | beforeUpload | 上传文件之前的钩子，参数为上传的文件，若返回 `false` 则停止上传。支持返回一个 Promise 对象，Promise 对象 reject 时则停止上传，resolve 时开始上传（ resolve 传入 `File` 或 `Blob` 对象则上传 resolve 传入对象）。**注意：IE9 不支持该方法** | (file, fileList) => boolean \| Promise | - |  |
 | data | 上传所需额外参数或返回上传额外参数的方法 | object\|(file) => object \| Promise&lt;object> | - |  |
@@ -63,6 +64,6 @@
 | name | 发到后台的文件参数名 | string | `file` |  |
 | withCredentials | 上传请求时是否携带 cookie | boolean | false |  |
 | onChange | 上传文件改变时的状态 | function | - |  |
-| onPreview | 点击文件链接或预览图标时的回调 | function(file) | - |  |
-| onRemove   | 点击移除文件时的回调，返回值为 false 时不移除。支持返回一个 Promise 对象，Promise 对象 resolve(false) 或 reject 时不移除               | function(file): boolean \| Promise | -   |  |
-| onDownload | 点击下载文件时的回调，如果没有指定，则默认跳转到文件 url 对应的标签页 | function(file): void | (跳转新标签页) |  |
+| onRemove   | 点击移除文件时的回调，返回值为 false 时不移除。支持返回一个 Promise 对象，Promise 对象 resolve(false) 或 reject 时不移除               | `Array<{text:string,action:Function\|Promise}>` | -   |  |
+| extraAction | 自定义 | `Array<{text:string,action:Function}>` | [] |  |
+| renderer | 自定义文件显示的回调 | function(file): component | null |  |
