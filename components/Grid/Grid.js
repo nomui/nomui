@@ -3,6 +3,7 @@ import Loading from '../Loading/index'
 import { isFunction } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
+import GridSettingPopup from './GridSettingPopup'
 
 class Grid extends Component {
   constructor(props, ...mixins) {
@@ -15,6 +16,7 @@ class Grid extends Component {
   }
 
   _config() {
+    const that = this
     this._propStyleClasses = ['bordered']
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
@@ -74,6 +76,20 @@ class Grid extends Component {
         'm-frozen-header': this.props.frozenHeader,
       },
       children: [
+        this.props.allowCustomColumns && {
+          children: {
+            component: 'Button',
+            icon: 'setting',
+            size: 'small',
+            type: 'text',
+            classes: {
+              'nom-grid-setting': true,
+            },
+            onClick: () => {
+              that.handleSetting()
+            },
+          },
+        },
         { component: GridHeader, line: line },
         { component: GridBody, line: line, rowDefaults: rowDefaults },
       ],
@@ -153,6 +169,20 @@ class Grid extends Component {
     this.lastSortField = key
   }
 
+  handleSetting() {
+    this.popup = new GridSettingPopup({
+      align: 'center',
+      alignTo: window,
+      // selectedColumns: this.props.selectedColumns,
+      // columns: this.props.columns,
+      grid: this,
+    })
+  }
+
+  handleColumnsSetting(columns) {
+    console.log(columns)
+  }
+
   // handlePinClick(data) {
   //   const { columns } = this.props
 
@@ -170,6 +200,8 @@ Grid.defaults = {
   frozenRightCols: null,
   allowFrozenCols: false,
   onSort: null,
+  allowCustomColumns: true,
+  selectedColumns: null,
 }
 
 Component.register(Grid)
