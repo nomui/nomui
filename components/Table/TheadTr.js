@@ -5,6 +5,7 @@ class TheadTr extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       tag: 'tr',
+      columns: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -16,7 +17,7 @@ class TheadTr extends Component {
   }
 
   _config() {
-    const { columns } = this.table.props
+    const { columns } = this.props
 
     const children =
       Array.isArray(columns) &&

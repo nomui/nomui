@@ -138,7 +138,9 @@ class DatePicker extends Textbox {
                     })
                   },
                   onClick: function (args) {
-                    that.setValue(args.sender.props.date)
+                    const { year: selYear, month: selMonth, day: selDay } = args.sender.props
+                    const selDate = new Date(selYear, selMonth - 1, selDay)
+                    that.setValue(selDate.format(format))
                     that.popup.hide()
                   },
                 },

@@ -5,6 +5,7 @@ class Th extends Component {
     const defaults = {
       tag: 'th',
       column: {},
+      sortDirection: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -17,17 +18,30 @@ class Th extends Component {
 
   _config() {
     const that = this
+    let sortIcon = 'sort'
+    if (this.props.column.sortDirection === 'asc') {
+      sortIcon = 'sort-up'
+    }
+
+    if (this.props.column.sortDirection === 'desc') {
+      sortIcon = 'sort-down'
+    }
+
     const children = {
       component: 'Cols',
       align: 'center',
+      justify: this.props.column.colSpan > 1 ? 'center' : null,
       items: [
         {
           children: this.props.column.header || this.props.column.title,
         },
         {
           component: 'Icon',
-          type: 'sort',
-          hidden: !this.props.column.sortable,
+          type: sortIcon,
+          hidden: !this.props.column.sortable || this.props.column.colSpan > 1,
+          onClick: function () {
+            that.onSortChange()
+          },
         },
         {
           component: 'Icon',
@@ -47,6 +61,11 @@ class Th extends Component {
         'nom-table-fixed-left-last': this.props.column.lastLeft,
         'nom-table-fixed-right': this.props.column.fixed === 'right',
         'nom-table-fixed-right-first': this.props.column.firstRight,
+        'nom-table-parent-th': this.props.column.colSpan > 1,
+      },
+      attrs: {
+        colspan: this.props.column.colSpan,
+        rowspan: this.props.column.rowSpan,
       },
     })
   }
@@ -61,6 +80,24 @@ class Th extends Component {
         }px`,
       })
     }
+  }
+
+  onSortChange() {
+    const that = this
+    if (that.props.column.sortDirection === 'asc') {
+      that.update({
+        column: { ...that.props.column, ...{ sortDirection: 'desc' } },
+      })
+    } else if (that.props.column.sortDirection === 'desc') {
+      that.update({
+        column: { ...that.props.column, ...{ sortDirection: null } },
+      })
+    } else {
+      that.update({
+        column: { ...that.props.column, ...{ sortDirection: 'asc' } },
+      })
+    }
+    that.table.grid.handleSort(that.props.column)
   }
 }
 

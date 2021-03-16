@@ -18,16 +18,17 @@ class Tbody extends Component {
     const { data, rowDefaults } = this.table.props
     const children =
       Array.isArray(data) &&
-      data.map(function (rowData) {
+      data.map(function (rowData, index) {
         return {
           component: Tr,
           data: rowData,
+          index: index,
         }
       })
 
     this.setProps({
       children,
-      childDefaults: rowDefaults
+      childDefaults: rowDefaults,
     })
   }
 }
