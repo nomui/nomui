@@ -15,10 +15,10 @@ class Table extends Component {
       onlyBody: false,
       keyField: 'id',
       treeConfig: {
-        childrenField:'children',
+        childrenField: 'children',
         treeNodeColumn: null,
         initExpandLevel: -1,
-        indentSize: 6
+        indentSize: 6,
       },
     }
 
@@ -35,6 +35,7 @@ class Table extends Component {
     }
 
     this.rowRefs = {}
+    this.checkedRowRefs = {}
   }
 
   _config() {
@@ -85,6 +86,16 @@ class Table extends Component {
     this.loadingInst = new Loading({
       container: this.parent,
     })
+  }
+
+  getCheckedRows() {
+    return Object.keys(this.checkedRowRefs).map((key) => {
+      return this.checkedRowRefs[key]
+    })
+  }
+
+  getKeyValue(rowData) {
+    return rowData[this.props.keyField]
   }
 }
 

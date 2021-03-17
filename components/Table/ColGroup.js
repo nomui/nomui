@@ -17,11 +17,21 @@ class ColGroup extends Component {
   }
 
   _config() {
-    let children = []
+    const children = []
+    const { checkable } = this.table.props
+
+    if (checkable) {
+      children.push({
+        component: ColGroupCol,
+        column: {
+          width: 70,
+        },
+      })
+    }
 
     if (Array.isArray(this.columns)) {
       this.colList = []
-      children = this.createCols(this.columns)
+      children.push(...this.createCols(this.columns))
     }
 
     if (

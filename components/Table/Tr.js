@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import { accessProp } from '../util/index'
 import Td from './Td'
+import Checkbox from '../Checkbox/index'
 
 class Tr extends Component {
   constructor(props, ...mixins) {
@@ -22,15 +23,37 @@ class Tr extends Component {
   }
 
   _config() {
+    const that = this
     const columns = this.table.props.columns
     const { data, level } = this.props
-    const { treeConfig } = this.table.props
+    const { treeConfig, checkable } = this.table.props
+    const table = this.table
 
-    let children = []
+    const children = []
+
+    if (checkable) {
+      children.push({
+        component: Td,
+        column: {
+          render: function () {
+            return {
+              component: Checkbox,
+              onValueChange: (args) => {
+                if (args.newValue === true) {
+                  table.checkedRowRefs[table.getKeyValue(data)] = that
+                } else {
+                  delete table.checkedRowRefs[[table.getKeyValue(data)]]
+                }
+              },
+            }
+          },
+        },
+      })
+    }
 
     if (Array.isArray(columns)) {
       this.TdList = []
-      children = this.createTds(columns)
+      children.push(...this.createTds(columns))
     }
 
     this.setProps({

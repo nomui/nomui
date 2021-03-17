@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Th from './Th'
+import Checkbox from '../Checkbox/index'
 
 class TheadTr extends Component {
   constructor(props, ...mixins) {
@@ -18,7 +19,20 @@ class TheadTr extends Component {
 
   _config() {
     const { columns } = this.props
+    const { checkable } = this.table.props
 
+    const thArr = []
+    if (checkable) {
+      thArr.push({
+        component: Th,
+        column: {
+          header: {
+            component: Checkbox,
+          },
+          width: 70,
+        },
+      })
+    }
     const children =
       Array.isArray(columns) &&
       columns.map(function (column) {
@@ -28,8 +42,10 @@ class TheadTr extends Component {
         }
       })
 
+    thArr.push(...children)
+
     this.setProps({
-      children: children,
+      children: thArr,
     })
   }
 }
