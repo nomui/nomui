@@ -88,7 +88,7 @@ class Grid extends Component {
             },
             tooltip: '列设置',
             onClick: () => {
-              that.handleSetting()
+              that.showSetting()
             },
           },
         },
@@ -171,7 +171,7 @@ class Grid extends Component {
     this.lastSortField = key
   }
 
-  handleSetting() {
+  showSetting() {
     this.popup = new GridSettingPopup({
       align: 'center',
       alignTo: window,
