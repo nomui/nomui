@@ -14,10 +14,11 @@ class Table extends Component {
       onlyHead: false,
       onlyBody: false,
       keyField: 'id',
-      treeField: null,
       treeConfig: {
-        column: null,
+        childrenField:'children',
+        treeNodeColumn: null,
         initExpandLevel: -1,
+        indentSize: 6
       },
     }
 

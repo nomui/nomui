@@ -18,10 +18,9 @@ class Td extends Component {
   }
 
   _config() {
-    const that = this
     const { level, isLeaf, data: rowData } = this.tr.props
     const { column } = this.props
-    const { treeField, treeConfig } = this.table.props
+    const { treeConfig } = this.table.props
 
     let children = this.props.data
 
@@ -34,7 +33,36 @@ class Td extends Component {
       )
     }
 
-    if (treeField && column.field === treeField) {
+    const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
+
+    if (isTreeNodeColumn) {
+      if (!isLeaf) {
+        this.setProps({
+          expanded: treeConfig.initExpandLevel === -1 || treeConfig.initExpandLevel > level,
+        })
+
+        this._setExpandable({
+          byClick: true,
+          target: () => {
+            return rowData.children.map((subrowData) => {
+              return this.table.rowRefs[subrowData[this.table.props.keyField]]
+            })
+          },
+          indicator: {
+            component: 'Icon',
+            classes: { 'nom-tr-expand-indicator': true },
+            expandable: {
+              expandedProps: {
+                type: 'down',
+              },
+              collapsedProps: {
+                type: 'right',
+              },
+            },
+          },
+        })
+      }
+
       children = [
         {
           tag: 'span',
@@ -44,33 +72,9 @@ class Td extends Component {
             },
           },
         },
-        !isLeaf && {
-          component: 'Icon',
-          type: 'plus',
-          classes: { 'nom-tr-expand-indicator': true },
-          _created: function () {
-            that.indicator = this
-          },
-        },
+        !isLeaf && this.props.expandable.indicator,
         { tag: 'span', children: children },
       ]
-
-      if (!isLeaf) {
-        this.setProps({
-          expanded: treeConfig.initExpandLevel === -1 || treeConfig.initExpandLevel > level,
-          expandable: {
-            byClick: true,
-            target: () => {
-              return rowData.children.map((subrowData) => {
-                return this.table.rowRefs[subrowData[this.table.props.keyField]]
-              })
-            },
-            indicator: () => {
-              return that.indicator
-            },
-          },
-        })
-      }
     }
 
     this.setProps({
@@ -81,6 +85,8 @@ class Td extends Component {
       },
       hidden: this.props.column.colSpan === 0 || this.props.column.rowSpan === 0,
       classes: {
+        'nom-td-tree-node': isTreeNodeColumn,
+        'nom-td-tree-node-leaf': isTreeNodeColumn && isLeaf,
         'nom-table-fixed-left': this.props.column.fixed === 'left',
         'nom-table-fixed-left-last': this.props.column.lastLeft,
         'nom-table-fixed-right': this.props.column.fixed === 'right',

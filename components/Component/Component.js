@@ -109,6 +109,7 @@ class Component {
   _created() {}
 
   config() {
+    this._setExpandableProps()
     this.props._config && this.props._config.call(this)
     this._callMixin('_config')
     isFunction(this._config) && this._config()
@@ -518,9 +519,8 @@ class Component {
         expandTarget.show && expandTarget.show()
       }
     }
-    const expandIndicator = this._getExpandIndicator()
     if (!this.props.expandable.byIndicator) {
-      expandIndicator && expandIndicator.expand()
+      this._expandIndicator && this._expandIndicator.expand()
     }
     const { expandedProps } = this.props.expandable
     if (expandedProps) {
@@ -544,9 +544,8 @@ class Component {
         expandTarget.hide && expandTarget.hide()
       }
     }
-    const expandIndicator = this._getExpandIndicator()
     if (!this.props.expandable.byIndicator) {
-      expandIndicator && expandIndicator.collapse()
+      this._expandIndicator && this._expandIndicator.collapse()
     }
     isFunction(this._collapse) && this._collapse()
     const { collapsedProps } = this.props.expandable
@@ -571,9 +570,31 @@ class Component {
     this.element.classList.remove(className)
   }
 
-  _setExpandableProps() {
+  _setExpandable(expandableProps) {
     const that = this
+
+    this.setProps({
+      expandable: expandableProps,
+    })
     const { expandable, expanded } = this.props
+    if (isPlainObject(expandable)) {
+      if (isPlainObject(expandable.indicator)) {
+        this.setProps({
+          expandable: {
+            indicator: {
+              expanded: expanded,
+              _created: function () {
+                that._expandIndicator = this
+              },
+            },
+          },
+        })
+      }
+    }
+  }
+
+  _setExpandableProps() {
+    const { expandable } = this.props
     if (isPlainObject(expandable)) {
       if (this.props.expanded) {
         if (expandable.expandedProps) {
@@ -581,12 +602,6 @@ class Component {
         }
       } else if (expandable.collapsedProps) {
         this.setProps(expandable.collapsedProps)
-      }
-      if (isPlainObject(expandable.indicator)) {
-        expandable.indicator._created = function () {
-          that._expandIndicator = this
-        }
-        expandable.indicator.expanded = expanded
       }
     }
   }

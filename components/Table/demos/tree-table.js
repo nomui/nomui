@@ -7,8 +7,8 @@ define([], function () {
         children: [
           {
             component: 'Table',
-            treeField: 'class',
             treeConfig: {
+              treeNodeColumn:'class',
               initExpandLevel: 1,
             },
             columns: [
