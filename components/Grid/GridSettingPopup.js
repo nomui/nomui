@@ -43,7 +43,7 @@ class GridSettingPopup extends Layer {
           children: {
             component: 'Tree',
             showline: true,
-            treeData: that.grid.props.columns,
+            treeData: that.grid.originColumns,
             selectedNodes: that.grid.props.selectedColumns,
             multiple: true,
             leafOnly: false,

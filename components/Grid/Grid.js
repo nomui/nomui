@@ -213,6 +213,8 @@ class Grid extends Component {
     addTreeInfo(tree)
 
     this.update({ columns: tree })
+
+    this.popup.hide()
   }
 
   // handlePinClick(data) {
