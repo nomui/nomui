@@ -87,6 +87,47 @@ class Tree extends Component {
     })
   }
 
+  getSelectedTree() {
+    const arr = []
+
+    Object.keys(this.itemRefs).forEach((key) => {
+      if (this.itemRefs[key].props.checked === true) {
+        arr.push({
+          key: this.itemRefs[key].key,
+          parentKey: this.itemRefs[key].wrapper.isRoot
+            ? null
+            : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
+        })
+      }
+    })
+
+    function setTreeData(data) {
+      // 删除所有的children,以防止多次调用
+      data.forEach(function (item) {
+        delete item.children
+      })
+      const map = {} // 构建map
+      data.forEach((i) => {
+        map[i.key] = i // 构建以area_id为键 当前数据为值
+      })
+      const treeData = []
+      data.forEach((child) => {
+        const mapItem = map[child.parentKey] // 判断当前数据的parent_id是否存在map中
+        if (mapItem) {
+          // 存在则表示当前数据不是最顶层的数据
+          // 注意： 这里的map中的数据是引用了arr的它的指向还是arr,当mapItem改变时arr也会改变，踩坑点
+          ;(mapItem.children || (mapItem.children = [])).push(child) // 这里判断mapItem中是否存在child
+        } else {
+          // 不存在则是顶层数据
+          treeData.push(child)
+        }
+      })
+      return treeData
+    }
+
+    return setTreeData(arr)
+  }
+
   checkAll() {
     const that = this
     Object.keys(this.itemRefs).forEach(function (key) {

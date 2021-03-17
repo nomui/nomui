@@ -13,6 +13,7 @@ class Grid extends Component {
   _created() {
     this.minWidth = 0
     this.lastSortField = null
+    this.originColumns = this.props.columns
   }
 
   _config() {
@@ -174,14 +175,44 @@ class Grid extends Component {
     this.popup = new GridSettingPopup({
       align: 'center',
       alignTo: window,
-      // selectedColumns: this.props.selectedColumns,
-      // columns: this.props.columns,
       grid: this,
     })
   }
 
-  handleColumnsSetting(columns) {
-    console.log(columns)
+  handleColumnsSetting(params) {
+    const tree = params
+
+    const that = this
+
+    let treeInfo = null
+    function findTreeInfo(origin, key) {
+      origin.forEach(function (item) {
+        if (item.children) {
+          findTreeInfo(item.children, key)
+        }
+        if (item.key === key) {
+          treeInfo = item
+        }
+      })
+      if (treeInfo !== null) return treeInfo
+    }
+
+    function addTreeInfo(data) {
+      data.forEach(function (item) {
+        if (item.children) {
+          addTreeInfo(item.children)
+        }
+
+        const myinfo = findTreeInfo(that.originColumns, item.key)
+        if (myinfo) {
+          item.title = myinfo.title
+          item.field = myinfo.field || null
+        }
+      })
+    }
+    addTreeInfo(tree)
+
+    this.update({ columns: tree })
   }
 
   // handlePinClick(data) {

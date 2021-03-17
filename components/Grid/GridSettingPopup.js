@@ -11,6 +11,7 @@ class GridSettingPopup extends Layer {
   _created() {
     super._created()
     this.grid = this.props.grid
+    this.tree = null
   }
 
   _config() {
@@ -46,12 +47,12 @@ class GridSettingPopup extends Layer {
             selectedNodes: that.grid.props.selectedColumns,
             multiple: true,
             leafOnly: false,
+            ref: (c) => {
+              this.tree = c
+            },
             fields: {
               title: 'title',
-              value: 'field',
-            },
-            onCheck: function (data) {
-              that.grid.handleColumnsSetting(data)
+              value: 'key',
             },
           },
         },
@@ -63,6 +64,10 @@ class GridSettingPopup extends Layer {
               {
                 component: 'Button',
                 text: '确定',
+                onClick: function () {
+                  const list = that.tree.getSelectedTree()
+                  that.grid.handleColumnsSetting(list)
+                },
               },
               {
                 component: 'Button',
