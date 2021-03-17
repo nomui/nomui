@@ -5,6 +5,7 @@ define([
   './colspan.js',
   './multiple-header.js',
   './custom-columns.js',
+  './tree-grid.js',
 ], function () {
   return {
     title: 'Grid',

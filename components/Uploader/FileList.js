@@ -10,19 +10,39 @@ class FileList extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    super._created()
+
+    this.uploaderControl = this.parent.parent.parent.control
+    this.uploaderControl.list = this
+  }
+
   _config() {
-    const { files, onPreview, onRemove, onDownload, extraAction } = this.props
+    const { files, onRemove, extraAction, initializing, renderer } = this.props
     const children = []
     if (Array.isArray(files) && files.length > 0) {
       files.forEach((file) => {
-        children.push({ component: FileItem, file, onPreview, onRemove, onDownload, extraAction })
+        children.push({ component: FileItem, file, onRemove, extraAction, renderer })
       })
     }
 
-    this.setProps({
-      tag: 'div',
-      children,
-    })
+    if (initializing) {
+      this.setProps({
+        tag: 'div',
+        children: {
+          component: 'Icon',
+          type: 'loading',
+          classes: {
+            'file-img': true,
+          },
+        },
+      })
+    } else {
+      this.setProps({
+        tag: 'div',
+        children,
+      })
+    }
   }
 }
 

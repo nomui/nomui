@@ -6,6 +6,7 @@ define([
   './customize-action.js',
   './defaultFileList.js',
   './dataAndHeaders.js',
+  './async.js',
 ], function () {
   return {
     title: 'Uploader',

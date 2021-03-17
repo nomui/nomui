@@ -31,8 +31,7 @@ class Uploader extends Field {
       headers: {},
       withCredentials: false,
       onRemove: null,
-      onPreview: null,
-      onDownload: null,
+      renderer: null,
       extraAction: [],
     }
     super(Component.extendProps(defaults, props), ...mixins)
@@ -51,33 +50,32 @@ class Uploader extends Field {
       accept,
       button: cButton,
       multiple,
-      onPreview,
-      onDownload,
       extraAction,
       display,
-      // fileList,
+      onRemove,
+      renderer,
     } = this.props
-    const files = this.fileList
+
+    let initializing = true
+    if (isPromiseLike(this.fileList)) {
+      this.fileList.then((fs) => {
+        initializing = false
+        this.fileList = fs
+
+        if (!disabled && this.button) {
+          this.button._enable()
+        }
+        this.list.update({ initializing: false, files: this.fileList })
+      })
+    } else {
+      initializing = false
+    }
     const children = []
 
     const defaultButtonProps = {
       component: 'Button',
-      disabled,
       text: '上传',
       icon: 'upload',
-    }
-
-    let button = cButton || defaultButtonProps
-    button = {
-      ...button,
-      attrs: {
-        onclick() {
-          that._handleClick()
-        },
-        onKeyDown(e) {
-          that._onKeyDowne(e)
-        },
-      },
     }
 
     const inputUploader = {
@@ -98,21 +96,67 @@ class Uploader extends Field {
     }
 
     children.push(inputUploader)
-    children.push(button)
-    if (display && files && files.length > 0) {
-      children.push({
-        component: FileList,
-        files,
-        onRemove: this.handleRemove.bind(that),
-        onPreview,
-        onDownload,
-        extraAction,
-      })
+
+    let button = cButton
+    if (!button && button !== false) button = defaultButtonProps
+
+    if (button !== false) {
+      button = {
+        ...button,
+        disabled: disabled || initializing,
+        // disabled,
+        ref: (c) => {
+          this.button = c
+        },
+        attrs: {
+          onclick() {
+            that._handleClick()
+          },
+          onKeyDown(e) {
+            that._onKeyDowne(e)
+          },
+        },
+      }
+      children.push(button)
     }
+
+    // if (display && files && files.length > 0) {
+    //   console.log('display')
+    //   children.push({
+    //     component: FileList,
+    //     initializing,
+    //     files,
+    //     onRemove: this.handleRemove.bind(that),
+    //     extraAction,
+    //   })
+    // }
+    if (display) {
+      if (initializing || (this.fileList && this.fileList.length > 0)) {
+        children.push({
+          component: FileList,
+          classes: {
+            'nom-file-list-only': button === false,
+          },
+          ref: (c) => {
+            this.list = c
+          },
+          initializing,
+          files: this.fileList,
+          renderer,
+          onRemove: onRemove &&
+            isFunction(onRemove.action) && {
+              ...onRemove,
+              action: that.handleRemove.bind(that),
+            },
+          extraAction,
+        })
+      }
+    }
+
     this.setProps({
       control: {
         children,
-      }
+      },
     })
 
     super._config()
@@ -204,8 +248,18 @@ class Uploader extends Field {
     this.fileList = info.fileList
 
     const { onChange: onChangeProp } = this.props
-    // 这里要改下
     this.update({ fileList: [...info.fileList] })
+
+    if (this.button) {
+      const disableBtn = this.fileList.some((file) =>
+        ['removing', 'uploading'].includes(file.status),
+      )
+
+      if (!this.props.disabled) {
+        disableBtn ? this.button._disable() : this.button._enable()
+      }
+    }
+
     if (onChangeProp) {
       onChangeProp({
         ...info,
@@ -288,9 +342,22 @@ class Uploader extends Field {
     })
   }
 
-  handleRemove(file) {
-    const { onRemove } = this.props
-    Promise.resolve(isFunction(onRemove) ? onRemove(file) : onRemove).then((ret) => {
+  handleRemove(e, file) {
+    const {
+      onRemove: { action },
+    } = this.props
+    // removing
+    file.status = 'removing'
+    this.fileList = this.fileList.map((f) =>
+      f.uuid === file.uuid ? { ...f, status: 'removing' } : f,
+    )
+
+    this.onChange({
+      file,
+      fileList: this.fileList,
+    })
+
+    Promise.resolve(isFunction(action) ? action(e, file) : action).then((ret) => {
       if (ret === false) {
         return
       }
@@ -299,7 +366,6 @@ class Uploader extends Field {
       if (remainsFileList) {
         file.status = 'removed'
         this.fileList = remainsFileList
-        // this.emptyChildren()
         if (this.reqs[file.uuid]) {
           this.reqs[file.uuid].abort()
           delete this.reqs[file.uuid]

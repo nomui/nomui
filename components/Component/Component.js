@@ -37,6 +37,8 @@ class Component {
         byClick: false,
         byHover: false,
         target: null,
+        indicator: null,
+        byIndicator: false,
         expandedProps: false,
         collapsedProps: false,
       },
@@ -107,6 +109,7 @@ class Component {
   _created() {}
 
   config() {
+    this._setExpandableProps()
     this.props._config && this.props._config.call(this)
     this._callMixin('_config')
     isFunction(this._config) && this._config()
@@ -123,14 +126,15 @@ class Component {
       this._mountElement()
     }
 
+    this._renderChildren()
+
     this._handleAttrs()
     this._handleStyles()
-
-    this._renderChildren()
 
     this.props.disabled === true && isFunction(this._disable) && this._disable()
     this.props.selected === true && isFunction(this._select) && this._select()
     this.props.hidden === false && isFunction(this._show) && this._show()
+    this.props.expanded === true && isFunction(this._expand) && this._expand()
 
     this._callRendered()
   }
@@ -507,7 +511,16 @@ class Component {
     this.addClass('s-expanded')
     const expandTarget = this._getExpandTarget()
     if (expandTarget !== null && expandTarget !== undefined) {
-      expandTarget.show()
+      if (Array.isArray(expandTarget)) {
+        expandTarget.forEach((t) => {
+          t.show && t.show()
+        })
+      } else {
+        expandTarget.show && expandTarget.show()
+      }
+    }
+    if (!this.props.expandable.byIndicator) {
+      this._expandIndicator && this._expandIndicator.expand()
     }
     const { expandedProps } = this.props.expandable
     if (expandedProps) {
@@ -523,7 +536,16 @@ class Component {
     this.removeClass('s-expanded')
     const expandTarget = this._getExpandTarget()
     if (expandTarget !== null && expandTarget !== undefined) {
-      expandTarget.hide()
+      if (Array.isArray(expandTarget)) {
+        expandTarget.forEach((t) => {
+          t.hide && t.hide()
+        })
+      } else {
+        expandTarget.hide && expandTarget.hide()
+      }
+    }
+    if (!this.props.expandable.byIndicator) {
+      this._expandIndicator && this._expandIndicator.collapse()
     }
     isFunction(this._collapse) && this._collapse()
     const { collapsedProps } = this.props.expandable
@@ -546,6 +568,29 @@ class Component {
 
   removeClass(className) {
     this.element.classList.remove(className)
+  }
+
+  _setExpandable(expandableProps) {
+    const that = this
+
+    this.setProps({
+      expandable: expandableProps,
+    })
+    const { expandable, expanded } = this.props
+    if (isPlainObject(expandable)) {
+      if (isPlainObject(expandable.indicator)) {
+        this.setProps({
+          expandable: {
+            indicator: {
+              expanded: expanded,
+              _created: function () {
+                that._expandIndicator = this
+              },
+            },
+          },
+        })
+      }
+    }
   }
 
   _setExpandableProps() {
@@ -584,6 +629,19 @@ class Component {
     }
     if (isFunction(target)) {
       return target.call(this)
+    }
+  }
+
+  _getExpandIndicator() {
+    const { indicator } = this.props.expandable
+    if (indicator === undefined || indicator === null) {
+      return null
+    }
+    if (indicator instanceof Component) {
+      return indicator
+    }
+    if (isFunction(indicator)) {
+      return indicator.call(this)
     }
   }
 
@@ -699,13 +757,21 @@ class Component {
     if (
       onClick ||
       (selectable && selectable.byClick === true) ||
-      (expandable && expandable.byClick)
-    )
-      this.setProps({
-        attrs: {
-          onclick: this.__handleClick,
-        },
-      })
+      (expandable && expandable.byClick && !expandable.byIndicator)
+    ) {
+      if (expandable.byIndicator) {
+        const indicator = this._getExpandIndicator
+        indicator._on('click', () => {
+          this.toggleExpand()
+        })
+      } else {
+        this.setProps({
+          attrs: {
+            onclick: this.__handleClick,
+          },
+        })
+      }
+    }
   }
 
   __handleClick(event) {

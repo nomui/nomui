@@ -12,7 +12,16 @@ class Td extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    this.tr = this.parent
+    this.table = this.parent.table
+  }
+
   _config() {
+    const { level, isLeaf, data: rowData } = this.tr.props
+    const { column } = this.props
+    const { treeConfig } = this.table.props
+
     let children = this.props.data
 
     if (isFunction(this.props.column.render)) {
@@ -24,6 +33,50 @@ class Td extends Component {
       )
     }
 
+    const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
+
+    if (isTreeNodeColumn) {
+      if (!isLeaf) {
+        this.setProps({
+          expanded: treeConfig.initExpandLevel === -1 || treeConfig.initExpandLevel > level,
+        })
+
+        this._setExpandable({
+          byClick: true,
+          target: () => {
+            return rowData.children.map((subrowData) => {
+              return this.table.rowRefs[subrowData[this.table.props.keyField]]
+            })
+          },
+          indicator: {
+            component: 'Icon',
+            classes: { 'nom-tr-expand-indicator': true },
+            expandable: {
+              expandedProps: {
+                type: 'down',
+              },
+              collapsedProps: {
+                type: 'right',
+              },
+            },
+          },
+        })
+      }
+
+      children = [
+        {
+          tag: 'span',
+          attrs: {
+            style: {
+              paddingLeft: `${level * 15}px`,
+            },
+          },
+        },
+        !isLeaf && this.props.expandable.indicator,
+        { tag: 'span', children: children },
+      ]
+    }
+
     this.setProps({
       children: children,
       attrs: {
@@ -32,6 +85,8 @@ class Td extends Component {
       },
       hidden: this.props.column.colSpan === 0 || this.props.column.rowSpan === 0,
       classes: {
+        'nom-td-tree-node': isTreeNodeColumn,
+        'nom-td-tree-node-leaf': isTreeNodeColumn && isLeaf,
         'nom-table-fixed-left': this.props.column.fixed === 'left',
         'nom-table-fixed-left-last': this.props.column.lastLeft,
         'nom-table-fixed-right': this.props.column.fixed === 'right',
@@ -50,6 +105,14 @@ class Td extends Component {
         }px`,
       })
     }
+  }
+
+  _expand() {
+    this.tr._onExpand()
+  }
+
+  _collapse() {
+    this.tr._onCollapse()
   }
 }
 
