@@ -67,6 +67,13 @@ define([], function () {
           title: '性别',
           field: 'gender',
           key: 'gender',
+          render: (data) => {
+            return {
+              component: 'Tag',
+              text: data,
+              color: 'yellow',
+            }
+          },
         },
       ]
 

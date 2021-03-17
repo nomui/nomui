@@ -205,15 +205,14 @@ class Grid extends Component {
 
         const myinfo = findTreeInfo(that.originColumns, item.key)
         if (myinfo) {
-          item.title = myinfo.title
-          item.field = myinfo.field || null
+          Object.keys(myinfo).forEach(function (key) {
+            item[key] = myinfo[key]
+          })
         }
       })
     }
     addTreeInfo(tree)
-
     this.update({ columns: tree })
-
     this.popup.hide()
   }
 
