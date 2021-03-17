@@ -133,6 +133,7 @@ define([], function () {
         line: 'both',
         data: source,
         bordered: true,
+        allowCustomColumns: true,
       }
     },
   }

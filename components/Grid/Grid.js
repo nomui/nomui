@@ -233,7 +233,7 @@ Grid.defaults = {
   frozenRightCols: null,
   allowFrozenCols: false,
   onSort: null,
-  allowCustomColumns: true,
+  allowCustomColumns: false,
   selectedColumns: null,
 }
 
