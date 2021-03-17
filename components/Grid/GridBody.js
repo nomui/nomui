@@ -28,6 +28,7 @@ class GridBody extends Component {
         onlyBody: true,
         line: this.props.line,
         rowDefaults: this.props.rowDefaults,
+        treeConfig: this.grid.props.treeConfig,
       },
       attrs: {
         onscroll: () => {

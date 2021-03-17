@@ -2,6 +2,7 @@ define([
   // './basic.js', './styles.js', './frozen-header.js',
   './colspan.js',
   './multiple-header.js',
+  './tree-grid.js',
 ], function () {
   return {
     title: 'Grid',
