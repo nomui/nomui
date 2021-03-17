@@ -1,4 +1,4 @@
-define(['./basic.js', './disabled.js'], function () {
+define(['./basic.js', './disabled.js', './part-check.js'], function () {
   return {
     title: 'Checkbox',
     subtitle: '复选框',

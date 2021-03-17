@@ -15,13 +15,20 @@ class Tbody extends Component {
   }
 
   _config() {
-    const { data = [], rowDefaults } = this.table.props
+    const { data = [], rowDefaults, keyField } = this.table.props
     const rows = []
     this._getRows(data, rows, 0, 0)
 
     this.setProps({
       children: rows,
-      childDefaults: rowDefaults,
+      childDefaults: Component.extendProps(
+        {
+          key: function () {
+            return this.props.data[keyField]
+          },
+        },
+        rowDefaults,
+      ),
     })
   }
 

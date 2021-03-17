@@ -18,6 +18,7 @@ class TheadTr extends Component {
   }
 
   _config() {
+    const table = this.table
     const { columns } = this.props
     const { checkable } = this.table.props
 
@@ -28,6 +29,16 @@ class TheadTr extends Component {
         column: {
           header: {
             component: Checkbox,
+            _created: function () {
+              table._checkboxAllRef = this
+            },
+            onValueChange: (args) => {
+              if (args.newValue === true) {
+                table.checkAllRows(false)
+              } else {
+                table.uncheckAllRows(false)
+              }
+            },
           },
           width: 70,
         },

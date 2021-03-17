@@ -11,7 +11,18 @@ define([], function () {
             component: 'Button',
             text: '获取选中行',
             onClick: () => {
-              console.log(tableRef.getCheckedRows())
+              new nomui.Alert({
+                type: 'info',
+                description: {
+                  component: 'Rows',
+                  items: [
+                    {
+                      children: tableRef.getCheckedRowsKeys().toString(),
+                    },
+                  ],
+                },
+              })
+              // console.log(tableRef.getCheckedRows())
             },
           },
           {

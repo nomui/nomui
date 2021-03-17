@@ -1,7 +1,7 @@
+import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import { accessProp } from '../util/index'
 import Td from './Td'
-import Checkbox from '../Checkbox/index'
 
 class Tr extends Component {
   constructor(props, ...mixins) {
@@ -18,7 +18,7 @@ class Tr extends Component {
     this.table = this.tbody.table
     this.tdList = []
     if (this.props.data[this.table.props.keyField]) {
-      this.table.rowRefs[this.props.data[this.table.props.keyField]] = this
+      this.table.rowsRefs[this.props.data[this.table.props.keyField]] = this
     }
   }
 
@@ -38,12 +38,16 @@ class Tr extends Component {
           render: function () {
             return {
               component: Checkbox,
+              _created: function () {
+                that._checkboxRef = this
+              },
               onValueChange: (args) => {
                 if (args.newValue === true) {
-                  table.checkedRowRefs[table.getKeyValue(data)] = that
+                  table.checkedRowsRefs[table.getKeyValue(data)] = that
                 } else {
-                  delete table.checkedRowRefs[[table.getKeyValue(data)]]
+                  delete table.checkedRowsRefs[[table.getKeyValue(data)]]
                 }
+                table.changeCheckAllState()
               },
             }
           },
@@ -64,6 +68,14 @@ class Tr extends Component {
       hidden: treeConfig.initExpandLevel !== -1 && treeConfig.initExpandLevel < level,
       children: children,
     })
+  }
+
+  check(triggerChange) {
+    this._checkboxRef.setValue(true, triggerChange)
+  }
+
+  uncheck(triggerChange) {
+    this._checkboxRef.setValue(false, triggerChange)
   }
 
   createTds(item) {
