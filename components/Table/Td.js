@@ -45,7 +45,7 @@ class Td extends Component {
           byClick: true,
           target: () => {
             return rowData.children.map((subrowData) => {
-              return this.table.rowsRefs[subrowData[this.table.props.keyField]]
+              return this.table.grid.rowsRefs[subrowData[this.table.props.keyField]]
             })
           },
           indicator: {
