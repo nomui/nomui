@@ -77,13 +77,23 @@ class Td extends Component {
       ]
     }
 
+    const colSpan =
+      this.props.colSpan !== null && this.props.colSpan !== undefined
+        ? this.props.colSpan
+        : this.props.column.colSpan
+
+    const rowSpan =
+      this.props.rowSpan !== null && this.props.rowSpan !== undefined
+        ? this.props.rowSpan
+        : this.props.column.rowSpan
+
     this.setProps({
       children: children,
       attrs: {
-        colspan: this.props.column.colSpan,
-        rowspan: this.props.column.rowSpan,
+        colspan: colSpan,
+        rowspan: rowSpan,
       },
-      hidden: this.props.column.colSpan === 0 || this.props.column.rowSpan === 0,
+      hidden: colSpan === 0 || rowSpan === 0,
       classes: {
         'nom-td-tree-node': isTreeNodeColumn,
         'nom-td-tree-node-leaf': isTreeNodeColumn && isLeaf,
