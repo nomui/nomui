@@ -1,3 +1,4 @@
+import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import Th from './Th'
 
@@ -17,8 +18,32 @@ class TheadTr extends Component {
   }
 
   _config() {
+    const table = this.table
     const { columns } = this.props
+    const { checkable } = this.table.props
 
+    const thArr = []
+    if (checkable) {
+      thArr.push({
+        component: Th,
+        column: {
+          header: {
+            component: Checkbox,
+            _created: function () {
+              table._checkboxAllRef = this
+            },
+            onValueChange: (args) => {
+              if (args.newValue === true) {
+                table.checkAllRows(false)
+              } else {
+                table.uncheckAllRows(false)
+              }
+            },
+          },
+          width: 70,
+        },
+      })
+    }
     const children =
       Array.isArray(columns) &&
       columns.map(function (column) {
@@ -28,8 +53,10 @@ class TheadTr extends Component {
         }
       })
 
+    thArr.push(...children)
+
     this.setProps({
-      children: children,
+      children: thArr,
     })
   }
 }

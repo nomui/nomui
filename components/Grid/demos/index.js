@@ -1,7 +1,11 @@
 define([
-  // './basic.js', './styles.js', './frozen-header.js',
+  './basic.js',
+  './styles.js',
+  './frozen-header.js',
   './colspan.js',
   './multiple-header.js',
+  './custom-columns.js',
+  './tree-grid.js',
 ], function () {
   return {
     title: 'Grid',
