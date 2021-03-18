@@ -42,6 +42,7 @@ class Tr extends Component {
             render: function () {
               return {
                 component: Checkbox,
+                plain: true,
                 _created: function () {
                   that._checkboxRef = this
                 },
