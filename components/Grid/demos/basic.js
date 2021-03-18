@@ -11,22 +11,26 @@ define([], function () {
         columns: [
           {
             field: 'name',
+            key: 'name',
             title: '标题',
             width: 200,
             sortable: true,
           },
           {
             field: 'author',
+            key: 'author',
             title: '作者',
           },
           {
             field: 'sales',
+            key: 'sales',
             title: '销量',
             sortable: (a, b) => a.sales - b.sales,
           },
 
           {
             field: 'role',
+            key: 'role',
             title: '主角',
             width: 500,
           },
