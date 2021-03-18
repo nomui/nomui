@@ -96,7 +96,7 @@ class Select extends Field {
             isFunction(onSearch) && onSearch(this.value)
           },
           onchange() {
-            if (!that.checked) return
+            if (that.checked) return
             this.value = that.checkedOption ? that.checkedOption?.text : null
             that.updateSearchPopup(this.value)
           },
