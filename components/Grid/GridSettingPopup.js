@@ -44,7 +44,9 @@ class GridSettingPopup extends Layer {
             component: 'Tree',
             showline: true,
             treeData: that.grid.originColumns,
-            selectedNodes: that.grid.props.selectedColumns,
+            selectedNodes: that.grid.props.visibleColumns
+              ? that.getMappedColumns(that.grid.props.visibleColumns)
+              : that.grid.getMappedColumns(),
             multiple: true,
             leafOnly: false,
             ref: (c) => {
@@ -80,6 +82,20 @@ class GridSettingPopup extends Layer {
     })
 
     super._config()
+  }
+
+  getMappedColumns(param) {
+    const arr = []
+    function mapColumns(data) {
+      data.forEach(function (item) {
+        if (item.children) {
+          mapColumns(item.children)
+        }
+        arr.push(item.key)
+      })
+    }
+    mapColumns(param)
+    return arr
   }
 }
 

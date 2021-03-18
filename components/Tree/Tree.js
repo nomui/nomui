@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import Sortable from '../util/sortable.core.esm'
 import TreeWrapper from './TreeWrapper'
 
 class Tree extends Component {
@@ -152,6 +153,18 @@ class Tree extends Component {
     }
 
     this.props.onCheck && this._callHandler(this.props.onCheck, data)
+  }
+
+  _rendered() {
+    const uls = this.element.getElementsByTagName('ul')
+    for (let i = 0; i < uls.length; i++) {
+      new Sortable(uls[i], {
+        group: 'nested',
+        animation: 150,
+        fallbackOnBody: true,
+        swapThreshold: 0.65,
+      })
+    }
   }
 }
 
