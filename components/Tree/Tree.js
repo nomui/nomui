@@ -11,6 +11,10 @@ class Tree extends Component {
       onCheck: null,
       showLine: false,
       toolbar: null,
+      fields: {
+        title: 'title',
+        value: 'value',
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -24,6 +28,8 @@ class Tree extends Component {
   _config() {
     const that = this
     const { treeData, selectedNodes, showline } = this.props
+
+    const { title, value } = this.props.fields
 
     if (selectedNodes) {
       if (typeof selectedNodes === 'string') {
@@ -39,19 +45,20 @@ class Tree extends Component {
           const c = mapTree(item.children)
           return {
             component: TreeWrapper,
-            key: item.value,
-            title: item.title,
-            value: item.value,
-            checked: that.selectedList.indexOf(item.value) !== -1,
+            key: item[value],
+            title: item[title],
+            value: item[value],
+            checked: that.selectedList.indexOf(item[value]) !== -1,
             items: c,
           }
         }
+
         return {
           component: TreeWrapper,
-          key: item.value,
-          title: item.title,
-          value: item.value,
-          checked: that.selectedList.indexOf(item.value) !== -1,
+          key: item[value],
+          title: item[title],
+          value: item[value],
+          checked: that.selectedList.indexOf(item[value]) !== -1,
         }
       })
     }
@@ -78,6 +85,47 @@ class Tree extends Component {
     return Object.keys(this.itemRefs).filter((key) => {
       return this.itemRefs[key].props.checked === true
     })
+  }
+
+  getSelectedTree() {
+    const arr = []
+
+    Object.keys(this.itemRefs).forEach((key) => {
+      if (this.itemRefs[key].props.checked === true) {
+        arr.push({
+          key: this.itemRefs[key].key,
+          parentKey: this.itemRefs[key].wrapper.isRoot
+            ? null
+            : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
+        })
+      }
+    })
+
+    function setTreeData(data) {
+      // 删除所有的children,以防止多次调用
+      data.forEach(function (item) {
+        delete item.children
+      })
+      const map = {} // 构建map
+      data.forEach((i) => {
+        map[i.key] = i // 构建以area_id为键 当前数据为值
+      })
+      const treeData = []
+      data.forEach((child) => {
+        const mapItem = map[child.parentKey] // 判断当前数据的parent_id是否存在map中
+        if (mapItem) {
+          // 存在则表示当前数据不是最顶层的数据
+          // 注意： 这里的map中的数据是引用了arr的它的指向还是arr,当mapItem改变时arr也会改变，踩坑点
+          ;(mapItem.children || (mapItem.children = [])).push(child) // 这里判断mapItem中是否存在child
+        } else {
+          // 不存在则是顶层数据
+          treeData.push(child)
+        }
+      })
+      return treeData
+    }
+
+    return setTreeData(arr)
   }
 
   checkAll() {

@@ -1,6 +1,6 @@
+import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import Th from './Th'
-import Checkbox from '../Checkbox/index'
 
 class TheadTr extends Component {
   constructor(props, ...mixins) {

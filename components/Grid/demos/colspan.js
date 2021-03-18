@@ -1,6 +1,6 @@
 define([], function () {
   return {
-    title: '基础用法',
+    title: '行列合并',
     file: 'basic',
     demo: function () {
       return {

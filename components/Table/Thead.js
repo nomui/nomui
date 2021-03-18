@@ -42,6 +42,8 @@ class Thead extends Component {
           title: column.title,
           width: column.width || null,
           sortable: column.sortable || null,
+          fixed: column.fixed || null,
+          lastLeft: column.lastLeft || null,
         }
 
         let colSpan = 1

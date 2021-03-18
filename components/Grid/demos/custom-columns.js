@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '多级表头',
-    file: 'multiple-header',
+    title: '列设置',
+    file: 'custom-columns',
     demo: function () {
       const c = [
         {
@@ -11,6 +11,7 @@ define([], function () {
         },
         {
           title: '其它',
+          key: 'other',
           children: [
             {
               title: '年龄',
@@ -19,6 +20,7 @@ define([], function () {
             },
             {
               title: '住址',
+              key: 'address',
               children: [
                 {
                   title: '街道',
@@ -27,6 +29,7 @@ define([], function () {
                 },
                 {
                   title: '小区',
+                  key: 'area',
                   children: [
                     {
                       title: '单元',
@@ -46,6 +49,7 @@ define([], function () {
         },
         {
           title: '公司',
+          key: 'company',
           children: [
             {
               title: '地址',
@@ -63,6 +67,13 @@ define([], function () {
           title: '性别',
           field: 'gender',
           key: 'gender',
+          render: (data) => {
+            return {
+              component: 'Tag',
+              text: data,
+              color: 'yellow',
+            }
+          },
         },
       ]
 
@@ -122,6 +133,7 @@ define([], function () {
         line: 'both',
         data: source,
         bordered: true,
+        allowCustomColumns: true,
       }
     },
   }

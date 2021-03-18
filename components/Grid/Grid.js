@@ -3,6 +3,7 @@ import Loading from '../Loading/index'
 import { isFunction, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
+import GridSettingPopup from './GridSettingPopup'
 
 class Grid extends Component {
   constructor(props, ...mixins) {
@@ -14,9 +15,11 @@ class Grid extends Component {
     this.lastSortField = null
     this.rowsRefs = {}
     this.checkedRowsRefs = {}
+    this.originColumns = this.props.columns
   }
 
   _config() {
+    const that = this
     this._propStyleClasses = ['bordered']
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
@@ -76,6 +79,21 @@ class Grid extends Component {
         'm-frozen-header': this.props.frozenHeader,
       },
       children: [
+        this.props.allowCustomColumns && {
+          children: {
+            component: 'Button',
+            icon: 'setting',
+            size: 'small',
+            type: 'text',
+            classes: {
+              'nom-grid-setting': true,
+            },
+            tooltip: '列设置',
+            onClick: () => {
+              that.showSetting()
+            },
+          },
+        },
         { component: GridHeader, line: line },
         { component: GridBody, line: line, rowDefaults: rowDefaults },
       ],
@@ -229,6 +247,51 @@ class Grid extends Component {
   getKeyValue(rowData) {
     return rowData[this.props.keyField]
   }
+  
+  showSetting() {
+    this.popup = new GridSettingPopup({
+      align: 'center',
+      alignTo: window,
+      grid: this,
+    })
+  }
+
+  handleColumnsSetting(params) {
+    const tree = params
+
+    const that = this
+
+    let treeInfo = null
+    function findTreeInfo(origin, key) {
+      origin.forEach(function (item) {
+        if (item.children) {
+          findTreeInfo(item.children, key)
+        }
+        if (item.key === key) {
+          treeInfo = item
+        }
+      })
+      if (treeInfo !== null) return treeInfo
+    }
+
+    function addTreeInfo(data) {
+      data.forEach(function (item) {
+        if (item.children) {
+          addTreeInfo(item.children)
+        }
+
+        const myinfo = findTreeInfo(that.originColumns, item.key)
+        if (myinfo) {
+          Object.keys(myinfo).forEach(function (key) {
+            item[key] = myinfo[key]
+          })
+        }
+      })
+    }
+    addTreeInfo(tree)
+    this.update({ columns: tree })
+    this.popup.hide()
+  }
 
   // handlePinClick(data) {
   //   const { columns } = this.props
@@ -254,6 +317,8 @@ Grid.defaults = {
     initExpandLevel: -1,
     indentSize: 6,
   },
+  allowCustomColumns: false,
+  selectedColumns: null,
 }
 
 Component.register(Grid)
