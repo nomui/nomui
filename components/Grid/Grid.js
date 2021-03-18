@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Loading from '../Loading/index'
-import { isFunction } from '../util/index'
+import { isFunction, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 
@@ -12,6 +12,8 @@ class Grid extends Component {
   _created() {
     this.minWidth = 0
     this.lastSortField = null
+    this.rowsRefs = {}
+    this.checkedRowsRefs = {}
   }
 
   _config() {
@@ -153,6 +155,81 @@ class Grid extends Component {
     this.lastSortField = key
   }
 
+  getRow(param) {
+    let result = null
+
+    if (param instanceof Component) {
+      return param
+    }
+
+    if (isFunction(param)) {
+      for (const key in this.rowsRefs) {
+        if (this.rowsRefs.hasOwnProperty(key)) {
+          if (param.call(this.rowsRefs[key]) === true) {
+            result = this.rowsRefs[key]
+            break
+          }
+        }
+      }
+    } else if (isPlainObject(param)) {
+      return this.rowsRefs[param[this.props.keyField]]
+    } else {
+      return this.rowsRefs[param]
+    }
+
+    return result
+  }
+
+  getCheckedRows() {
+    return Object.keys(this.checkedRowsRefs).map((key) => {
+      return this.checkedRowsRefs[key]
+    })
+  }
+
+  getCheckedRowsKeys() {
+    return Object.keys(this.checkedRowsRefs).map((key) => {
+      return this.checkedRowsRefs[key].key
+    })
+  }
+
+  checkAllRows(triggerChange) {
+    Object.keys(this.rowsRefs).forEach((key) => {
+      this.rowsRefs[key] && this.rowsRefs[key].check(triggerChange)
+    })
+  }
+
+  uncheckAllRows(triggerChange) {
+    Object.keys(this.rowsRefs).forEach((key) => {
+      this.rowsRefs[key] && this.rowsRefs[key].uncheck(triggerChange)
+    })
+  }
+
+  checkRows(rows) {
+    rows = Array.isArray(rows) ? rows : [rows]
+    rows.forEach((row) => {
+      const rowRef = this.getRow(row)
+      rowRef && rowRef.check()
+    })
+  }
+
+  changeCheckAllState() {
+    const checkedRowsLength = Object.keys(this.checkedRowsRefs).length
+    if (checkedRowsLength === 0) {
+      this._checkboxAllRef.setValue(false, false)
+    } else {
+      const allRowsLength = Object.keys(this.rowsRefs).length
+      if (allRowsLength === checkedRowsLength) {
+        this._checkboxAllRef.setValue(true, false)
+      } else {
+        this._checkboxAllRef.partCheck(false)
+      }
+    }
+  }
+
+  getKeyValue(rowData) {
+    return rowData[this.props.keyField]
+  }
+
   // handlePinClick(data) {
   //   const { columns } = this.props
 
@@ -170,6 +247,13 @@ Grid.defaults = {
   frozenRightCols: null,
   allowFrozenCols: false,
   onSort: null,
+  keyField: 'id',
+  treeConfig: {
+    childrenField: 'children',
+    treeNodeColumn: null,
+    initExpandLevel: -1,
+    indentSize: 6,
+  },
 }
 
 Component.register(Grid)

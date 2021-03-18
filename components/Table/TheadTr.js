@@ -18,32 +18,35 @@ class TheadTr extends Component {
   }
 
   _config() {
-    const table = this.table
+    const grid = this.table.grid
     const { columns } = this.props
-    const { checkable } = this.table.props
-
     const thArr = []
-    if (checkable) {
-      thArr.push({
-        component: Th,
-        column: {
-          header: {
-            component: Checkbox,
-            _created: function () {
-              table._checkboxAllRef = this
+    if (grid) {
+      const { checkable } = grid.props
+
+      if (checkable) {
+        thArr.push({
+          component: Th,
+          column: {
+            header: {
+              component: Checkbox,
+              _created: function () {
+                grid._checkboxAllRef = this
+              },
+              onValueChange: (args) => {
+                if (args.newValue === true) {
+                  grid.checkAllRows(false)
+                } else {
+                  grid.uncheckAllRows(false)
+                }
+              },
             },
-            onValueChange: (args) => {
-              if (args.newValue === true) {
-                table.checkAllRows(false)
-              } else {
-                table.uncheckAllRows(false)
-              }
-            },
+            width: 70,
           },
-          width: 70,
-        },
-      })
+        })
+      }
     }
+
     const children =
       Array.isArray(columns) &&
       columns.map(function (column) {
