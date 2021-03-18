@@ -37,14 +37,7 @@ class Thead extends Component {
 
       let currentColIndex = colIndex
       const colSpans = columns.filter(Boolean).map((column) => {
-        const cell = {
-          field: column.field || null,
-          title: column.title,
-          width: column.width || null,
-          sortable: column.sortable || null,
-          fixed: column.fixed || null,
-          lastLeft: column.lastLeft || null,
-        }
+        const cell = { ...column }
 
         let colSpan = 1
 

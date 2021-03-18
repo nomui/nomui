@@ -86,7 +86,7 @@ class Select extends Field {
           that.selectedSingle = this
         },
         _rendered() {
-          this.element.value = this.props.text
+          this.element.value = this.props.text || ''
         },
         attrs: {
           autocomplete: 'false',
@@ -96,7 +96,7 @@ class Select extends Field {
             isFunction(onSearch) && onSearch(this.value)
           },
           onchange() {
-            if (!that.checked) return
+            if (that.checked) return
             this.value = that.checkedOption ? that.checkedOption?.text : null
             that.updateSearchPopup(this.value)
           },
@@ -313,7 +313,7 @@ class Select extends Field {
     if (this.props.showSearch) {
       const selectedOption = this.props.options.find((e) => e.value === changed.newValue)
       this.checkedOption = selectedOption
-      this.updateSearchPopup(selectedOption.text)
+      this.updateSearchPopup(selectedOption?.text)
       this.checked = true
     }
   }

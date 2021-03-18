@@ -126,6 +126,20 @@ class Grid extends Component {
     })
   }
 
+  getMappedColumns() {
+    const arr = []
+    function mapColumns(data) {
+      data.forEach(function (item) {
+        if (item.children) {
+          mapColumns(item.children)
+        }
+        arr.push(item.key)
+      })
+    }
+    mapColumns(this.originColumns)
+    return arr
+  }
+
   setSortDirection(sorter) {
     const c = this.props.columns.map(function (item) {
       if (item.field === sorter.field) {
@@ -260,6 +274,7 @@ class Grid extends Component {
     const tree = params
 
     const that = this
+    that.props.visibleColumns = params
 
     let treeInfo = null
     function findTreeInfo(origin, key) {
@@ -318,7 +333,7 @@ Grid.defaults = {
     indentSize: 6,
   },
   allowCustomColumns: false,
-  selectedColumns: null,
+  visibleColumns: null,
 }
 
 Component.register(Grid)

@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '行列合并',
-    file: 'basic',
+    file: 'colspan',
     demo: function () {
       return {
         component: 'Grid',
@@ -15,16 +15,12 @@ define([], function () {
             render: function (data, row, idx) {
               if (idx === 2) {
                 this.setProps({
-                  attrs: {
-                    rowspan: 3,
-                  },
+                  rowSpan: 3,
                 })
               }
               if (idx > 2) {
                 this.setProps({
-                  classes: {
-                    hidden: true,
-                  },
+                  rowSpan: 0,
                 })
               }
 
