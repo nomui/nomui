@@ -129,6 +129,9 @@ class Tr extends Component {
   }
 
   _show() {
+    if (this.firstRender) {
+      return
+    }
     const { data: rowData } = this.props
 
     if (Array.isArray(rowData.children)) {
@@ -142,6 +145,9 @@ class Tr extends Component {
   }
 
   _hide() {
+    if (this.firstRender) {
+      return
+    }
     const { data: rowData } = this.props
 
     if (Array.isArray(rowData.children)) {
