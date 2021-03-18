@@ -34,7 +34,11 @@ class Checkbox extends Field {
             },
           },
           { tag: 'span' },
-          { tag: 'span', classes: { 'checkbox-text': true }, children: this.props.text || '' },
+          {
+            tag: 'span',
+            classes: { 'checkbox-text': true, 'checkbox-text-none': !this.props.text },
+            children: this.props.text || '',
+          },
         ],
       },
     })
