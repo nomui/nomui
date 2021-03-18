@@ -13,6 +13,9 @@ class Checkbox extends Field {
   _config() {
     const that = this
     this.setProps({
+      classes: {
+        's-checked-part': !this.props.value && this.props.partChecked,
+      },
       control: {
         tag: 'label',
         children: [
@@ -22,6 +25,7 @@ class Checkbox extends Field {
               type: 'checkbox',
               checked: this.props.value,
               onchange() {
+                that.removeClass('s-checked-part')
                 that._onValueChange()
               },
             },
@@ -38,13 +42,19 @@ class Checkbox extends Field {
     super._config()
   }
 
+  partCheck(triggerChange) {
+    this.setValue(false, triggerChange)
+    this.addClass('s-checked-part')
+  }
+
   _getValue() {
     return this.input.element.checked
   }
 
-  _setValue(value) {
+  _setValue(value, triggerChange) {
+    this.removeClass('s-checked-part')
     this.input.element.checked = value === true
-    this._onValueChange()
+    triggerChange !== false && this._onValueChange()
   }
 
   _disable() {

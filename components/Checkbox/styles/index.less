@@ -27,6 +27,19 @@
           height: 18px;
           background: none;
           border: 1px solid #bdc3d4;
+
+          .s-checked-part&::after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background-color: #7281a4;
+            border: 0;
+            -webkit-transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1);
+            content: ' ';
+          }
         }
 
         &:checked + span::after {

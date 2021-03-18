@@ -1,7 +1,7 @@
+import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import { accessProp } from '../util/index'
 import Td from './Td'
-import Checkbox from '../Checkbox/index'
 
 class Tr extends Component {
   constructor(props, ...mixins) {
@@ -17,8 +17,9 @@ class Tr extends Component {
     this.tbody = this.parent
     this.table = this.tbody.table
     this.tdList = []
-    if (this.props.data[this.table.props.keyField]) {
-      this.table.rowRefs[this.props.data[this.table.props.keyField]] = this
+
+    if (this.table.hasGrid && this.props.data[this.table.props.keyField]) {
+      this.table.grid.rowsRefs[this.props.data[this.table.props.keyField]] = this
     }
   }
 
@@ -26,29 +27,37 @@ class Tr extends Component {
     const that = this
     const columns = this.table.props.columns
     const { data, level } = this.props
-    const { treeConfig, checkable } = this.table.props
-    const table = this.table
+
+    const grid = this.table.grid
 
     const children = []
-
-    if (checkable) {
-      children.push({
-        component: Td,
-        column: {
-          render: function () {
-            return {
-              component: Checkbox,
-              onValueChange: (args) => {
-                if (args.newValue === true) {
-                  table.checkedRowRefs[table.getKeyValue(data)] = that
-                } else {
-                  delete table.checkedRowRefs[[table.getKeyValue(data)]]
-                }
-              },
-            }
+    let hidden = false
+    if (grid) {
+      const { checkable, treeConfig } = grid.props
+      hidden = treeConfig.initExpandLevel !== -1 && treeConfig.initExpandLevel < level
+      if (checkable) {
+        children.push({
+          component: Td,
+          column: {
+            render: function () {
+              return {
+                component: Checkbox,
+                _created: function () {
+                  that._checkboxRef = this
+                },
+                onValueChange: (args) => {
+                  if (args.newValue === true) {
+                    grid.checkedRowsRefs[grid.getKeyValue(data)] = that
+                  } else {
+                    delete grid.checkedRowsRefs[[grid.getKeyValue(data)]]
+                  }
+                  grid.changeCheckAllState()
+                },
+              }
+            },
           },
-        },
-      })
+        })
+      }
     }
 
     if (Array.isArray(columns)) {
@@ -61,9 +70,21 @@ class Tr extends Component {
       attrs: {
         level: level,
       },
-      hidden: treeConfig.initExpandLevel !== -1 && treeConfig.initExpandLevel < level,
+      hidden: hidden,
       children: children,
     })
+  }
+
+  check(triggerChange) {
+    const grid = this.table.grid
+    this._checkboxRef.setValue(true, triggerChange)
+    grid.checkedRowsRefs[this.key] = this
+  }
+
+  uncheck(triggerChange) {
+    const grid = this.table.grid
+    this._checkboxRef.setValue(false, triggerChange)
+    delete grid.checkedRowsRefs[[this.key]]
   }
 
   createTds(item) {
@@ -113,7 +134,7 @@ class Tr extends Component {
     if (Array.isArray(rowData.children)) {
       rowData.children.forEach((subrowData) => {
         if (this._expanded) {
-          const row = this.table.getRow(subrowData)
+          const row = this.table.grid.getRow(subrowData)
           row && row.show && row.show()
         }
       })
@@ -125,7 +146,7 @@ class Tr extends Component {
 
     if (Array.isArray(rowData.children)) {
       rowData.children.forEach((subrowData) => {
-        const row = this.table.getRow(subrowData)
+        const row = this.table.grid.getRow(subrowData)
         row && row.hide && row.hide()
       })
     }

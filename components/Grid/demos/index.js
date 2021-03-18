@@ -4,6 +4,7 @@ define([
   './frozen-header.js',
   './colspan.js',
   './multiple-header.js',
+  './checkable.js',
   './custom-columns.js',
   './tree-grid.js',
 ], function () {

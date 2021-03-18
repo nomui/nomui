@@ -2,8 +2,6 @@ define([
   './basic.js',
   './styles.js',
   './with-pager.js',
-  './checkable.js',
-  './tree-table.js',
 ], function () {
   return {
     title: 'Table',

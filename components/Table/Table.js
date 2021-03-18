@@ -3,7 +3,6 @@ import Loading from '../Loading/index'
 import ColGroup from './ColGroup'
 import Tbody from './Tbody'
 import Thead from './Thead'
-import { isFunction, isPlainObject } from '../util/index'
 
 class Table extends Component {
   constructor(props, ...mixins) {
@@ -33,9 +32,6 @@ class Table extends Component {
     if (this.hasGrid) {
       this.grid = this.parent.parent
     }
-
-    this.rowRefs = {}
-    this.checkedRowRefs = {}
   }
 
   _config() {
@@ -57,45 +53,10 @@ class Table extends Component {
     }
   }
 
-  getRow(param) {
-    let result = null
-
-    if (param instanceof Component) {
-      return param
-    }
-
-    if (isFunction(param)) {
-      for (const key in this.rowRefs) {
-        if (this.rowRefs.hasOwnProperty(key)) {
-          if (param.call(this.rowRefs[key]) === true) {
-            result = this.rowRefs[key]
-            break
-          }
-        }
-      }
-    } else if (isPlainObject(param)) {
-      return this.rowRefs[param[this.props.keyField]]
-    } else {
-      return this.rowRefs[param]
-    }
-
-    return result
-  }
-
   loading() {
     this.loadingInst = new Loading({
       container: this.parent,
     })
-  }
-
-  getCheckedRows() {
-    return Object.keys(this.checkedRowRefs).map((key) => {
-      return this.checkedRowRefs[key]
-    })
-  }
-
-  getKeyValue(rowData) {
-    return rowData[this.props.keyField]
   }
 }
 

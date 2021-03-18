@@ -105,8 +105,8 @@ class Field extends Component {
     return value
   }
 
-  setValue(value) {
-    isFunction(this._setValue) && this._setValue(value)
+  setValue(value, triggerChange) {
+    isFunction(this._setValue) && this._setValue(value, triggerChange)
   }
 
   validate() {
