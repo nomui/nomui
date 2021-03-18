@@ -10,7 +10,7 @@ define([], function () {
           {
             component: 'Select',
             showSearch: true,
-            value: 6,
+            // value: 6,
             ref: (c) => {
               select = c
             },

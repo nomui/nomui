@@ -30,7 +30,9 @@ class SelectList extends List {
     } = this.selectControl.props
     const { text } = this.props
     const { checked, checkedOption } = this.selectControl
-    const filterStr = checked ? checkedOption?.text : text
+    let filterStr = checked ? checkedOption?.text : text
+    // null或undefined处理
+    filterStr = filterStr || ''
     const filterOptions = filterOption(filterStr, options)
 
     this.setProps({
