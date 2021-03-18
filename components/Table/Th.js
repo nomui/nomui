@@ -30,27 +30,28 @@ class Th extends Component {
     const children = {
       component: 'Cols',
       align: 'center',
+      gutter: 'xs',
       justify: this.props.column.colSpan > 1 ? 'center' : null,
       items: [
         {
           children: this.props.column.header || this.props.column.title,
         },
-        {
-          component: 'Icon',
-          type: sortIcon,
-          hidden: !this.props.column.sortable || this.props.column.colSpan > 1,
-          onClick: function () {
-            that.onSortChange()
+        this.props.column.sortable &&
+          this.props.column.colSpan > 1 && {
+            component: 'Icon',
+            type: sortIcon,
+            onClick: function () {
+              that.onSortChange()
+            },
           },
-        },
-        {
-          component: 'Icon',
-          type: 'pin',
-          hidden: !that.table.hasGrid || !that.table.grid.props.allowFrozenCols,
-          onClick: function () {
-            // that.table.grid.handlePinClick(that.props.column)
+        that.table.hasGrid &&
+          that.table.grid.props.allowFrozenCols && {
+            component: 'Icon',
+            type: 'pin',
+            onClick: function () {
+              // that.table.grid.handlePinClick(that.props.column)
+            },
           },
-        },
       ],
     }
 
