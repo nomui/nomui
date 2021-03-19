@@ -89,16 +89,33 @@ class Tree extends Component {
     })
   }
 
+  _getNewTree() {
+    const arr = []
+    function mapTree(data) {
+      data.forEach(function (n) {
+        if (n.children) {
+          mapTree(n.children)
+        }
+        arr.push(n)
+      })
+    }
+    mapTree(this.getTreeData())
+    return arr
+  }
+
   getSelectedTree() {
     const arr = []
+    const newTree = this._getNewTree()
+    const that = this
 
-    Object.keys(this.itemRefs).forEach((key) => {
-      if (this.itemRefs[key].props.checked === true) {
+    newTree.forEach(function (n) {
+      const key = n.key
+      if (that.itemRefs[key].props.checked === true) {
         arr.push({
-          key: this.itemRefs[key].key,
-          parentKey: this.itemRefs[key].wrapper.isRoot
+          key: that.itemRefs[key].key,
+          parentKey: that.itemRefs[key].wrapper.isRoot
             ? null
-            : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
+            : that.itemRefs[key].wrapper.parentWrapper.treeNode.key,
         })
       }
     })
@@ -126,7 +143,6 @@ class Tree extends Component {
       })
       return treeData
     }
-
     return setTreeData(arr)
   }
 
@@ -156,26 +172,25 @@ class Tree extends Component {
     this.props.onCheck && this._callHandler(this.props.onCheck, data)
   }
 
-  getArray() {
-    const arr = []
+  // getArray() {
+  //   const arr = []
+  //   Object.keys(this.itemRefs).forEach((key) => {
+  //     arr.push({
+  //       key: this.itemRefs[key].key,
+  //       parentKey: this.itemRefs[key].wrapper.isRoot
+  //         ? null
+  //         : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
+  //     })
+  //   })
 
-    Object.keys(this.itemRefs).forEach((key) => {
-      arr.push({
-        key: this.itemRefs[key].key,
-        parentKey: this.itemRefs[key].wrapper.isRoot
-          ? null
-          : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
-      })
-    })
-
-    return arr
-  }
+  //   return arr
+  // }
 
   getTreeData() {
     return this.props.treeData
   }
 
-  getNewOrder(params) {
+  _getNewOrder(params) {
     const that = this
 
     const treeData = this.getTreeData()
@@ -226,7 +241,7 @@ class Tree extends Component {
   }
 
   setOrder(params) {
-    const treeData = this.getNewOrder(params)
+    const treeData = this._getNewOrder(params)
     this.update({
       treeData: treeData,
     })
