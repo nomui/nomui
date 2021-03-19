@@ -42,6 +42,7 @@ class Tr extends Component {
             render: function () {
               return {
                 component: Checkbox,
+                plain: true,
                 _created: function () {
                   that._checkboxRef = this
                 },
@@ -129,6 +130,9 @@ class Tr extends Component {
   }
 
   _show() {
+    if (this.firstRender) {
+      return
+    }
     const { data: rowData } = this.props
 
     if (Array.isArray(rowData.children)) {
@@ -142,6 +146,9 @@ class Tr extends Component {
   }
 
   _hide() {
+    if (this.firstRender) {
+      return
+    }
     const { data: rowData } = this.props
 
     if (Array.isArray(rowData.children)) {

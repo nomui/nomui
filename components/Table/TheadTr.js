@@ -30,6 +30,7 @@ class TheadTr extends Component {
           column: {
             header: {
               component: Checkbox,
+              plain: true,
               _created: function () {
                 grid._checkboxAllRef = this
               },
