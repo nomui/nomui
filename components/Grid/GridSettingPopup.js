@@ -58,7 +58,7 @@ class GridSettingPopup extends Layer {
         footer: {
           children: {
             component: 'Cols',
-            gutter: 'xs',
+            gutter: 'sm',
             items: [
               {
                 component: 'Button',
@@ -75,6 +75,9 @@ class GridSettingPopup extends Layer {
               {
                 component: 'Button',
                 text: '取消',
+                onClick: () => {
+                  this.hide()
+                },
               },
             ],
           },
