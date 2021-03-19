@@ -155,14 +155,96 @@ class Tree extends Component {
     this.props.onCheck && this._callHandler(this.props.onCheck, data)
   }
 
+  getArray() {
+    const arr = []
+
+    Object.keys(this.itemRefs).forEach((key) => {
+      arr.push({
+        key: this.itemRefs[key].key,
+        parentKey: this.itemRefs[key].wrapper.isRoot
+          ? null
+          : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
+      })
+    })
+
+    return arr
+  }
+
+  setOrder(params) {
+    const that = this
+
+    // arr.forEach(function (item, index) {
+    //   if (item.key === params.key) {
+    //     debugger
+    //     // newIndex = index + params.newIndex - params.oldIndex
+    //     // oldIndex = index
+    //   }
+    // })
+
+    const t = this.props.treeData
+
+    function isParent(data) {
+      let result = false
+      data.forEach(function (n) {
+        if (n[that.props.fields.value] === params.key) {
+          result = true
+        }
+      })
+      return result
+    }
+
+    function resort(data) {
+      data.forEach(function (n) {
+        if (n.children) {
+          const c = n.children
+          if (isParent(c)) {
+            // const oldIndex = c[params.oldIndex]
+            // const newIndex = c[params.newIndex]
+          } else {
+            resort(c)
+          }
+        }
+      })
+    }
+
+    resort(t)
+    console.log(t)
+  }
+
   _rendered() {
+    const tree = this
     const uls = this.element.getElementsByTagName('ul')
     for (let i = 0; i < uls.length; i++) {
-      new Sortable(uls[i], {
-        group: 'nested',
+      const target = uls[i]
+
+      new Sortable(target, {
         animation: 150,
         fallbackOnBody: true,
         swapThreshold: 0.65,
+        dataIdAttr: 'key',
+        onEnd: function (evt) {
+          const el = evt.item // dragged HTMLElement
+          // evt.to // target list
+          // evt.from // previous list
+          // evt.oldIndex // element's old index within old parent
+          // evt.newIndex // element's new index within new parent
+          // evt.oldDraggableIndex // element's old index within old parent, only counting draggable elements
+          // evt.newDraggableIndex // element's new index within new parent, only counting draggable elements
+          // evt.clone // the clone element
+          // evt.pullMode // when item is in another sortable: `"clone"` if cloning, `true` if moving
+
+          const key = el.getAttribute('key')
+
+          const arr = this.toArray()
+
+          tree.setOrder({
+            key: key,
+            oldIndex: evt.oldIndex,
+            newIndex: evt.newIndex,
+            order: arr,
+            event: evt,
+          })
+        },
       })
     }
   }

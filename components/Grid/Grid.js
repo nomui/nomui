@@ -120,6 +120,10 @@ class Grid extends Component {
     }
   }
 
+  getColumns() {
+    return this.props.columns
+  }
+
   loading() {
     this.loadingInst = new Loading({
       container: this.parent,
@@ -141,7 +145,7 @@ class Grid extends Component {
   }
 
   setSortDirection(sorter) {
-    const c = this.props.columns.map(function (item) {
+    const c = this.getColumns().map(function (item) {
       if (item.field === sorter.field) {
         return {
           ...item,
@@ -261,7 +265,7 @@ class Grid extends Component {
   getKeyValue(rowData) {
     return rowData[this.props.keyField]
   }
-  
+
   showSetting() {
     this.popup = new GridSettingPopup({
       align: 'center',
