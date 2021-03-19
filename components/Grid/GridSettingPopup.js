@@ -49,6 +49,7 @@ class GridSettingPopup extends Layer {
               : that.grid.getMappedColumns(),
             multiple: true,
             leafOnly: false,
+            sortable: true,
             ref: (c) => {
               this.tree = c
             },
@@ -68,6 +69,7 @@ class GridSettingPopup extends Layer {
                 text: '确定',
                 onClick: function () {
                   const list = that.tree.getSelectedTree()
+
                   that.grid.handleColumnsSetting(list)
                 },
               },
