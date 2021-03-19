@@ -42,6 +42,9 @@ class TreeWrapper extends Component {
     const { key, title, value, checked, items, collapsed } = this.props
 
     this.setProps({
+      attrs: {
+        key: key,
+      },
       children: [
         Component.normalizeIconProps({
           type: collapsed ? 'down' : 'right',
