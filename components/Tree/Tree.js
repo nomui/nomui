@@ -16,6 +16,7 @@ class Tree extends Component {
         title: 'title',
         value: 'value',
       },
+      sortable: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -88,16 +89,33 @@ class Tree extends Component {
     })
   }
 
+  _getNewTree() {
+    const arr = []
+    function mapTree(data) {
+      data.forEach(function (n) {
+        if (n.children) {
+          mapTree(n.children)
+        }
+        arr.push(n)
+      })
+    }
+    mapTree(this.getTreeData())
+    return arr
+  }
+
   getSelectedTree() {
     const arr = []
+    const newTree = this._getNewTree()
+    const that = this
 
-    Object.keys(this.itemRefs).forEach((key) => {
-      if (this.itemRefs[key].props.checked === true) {
+    newTree.forEach(function (n) {
+      const key = n.key
+      if (that.itemRefs[key].props.checked === true) {
         arr.push({
-          key: this.itemRefs[key].key,
-          parentKey: this.itemRefs[key].wrapper.isRoot
+          key: that.itemRefs[key].key,
+          parentKey: that.itemRefs[key].wrapper.isRoot
             ? null
-            : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
+            : that.itemRefs[key].wrapper.parentWrapper.treeNode.key,
         })
       }
     })
@@ -125,7 +143,6 @@ class Tree extends Component {
       })
       return treeData
     }
-
     return setTreeData(arr)
   }
 
@@ -155,33 +172,28 @@ class Tree extends Component {
     this.props.onCheck && this._callHandler(this.props.onCheck, data)
   }
 
-  getArray() {
-    const arr = []
+  // getArray() {
+  //   const arr = []
+  //   Object.keys(this.itemRefs).forEach((key) => {
+  //     arr.push({
+  //       key: this.itemRefs[key].key,
+  //       parentKey: this.itemRefs[key].wrapper.isRoot
+  //         ? null
+  //         : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
+  //     })
+  //   })
 
-    Object.keys(this.itemRefs).forEach((key) => {
-      arr.push({
-        key: this.itemRefs[key].key,
-        parentKey: this.itemRefs[key].wrapper.isRoot
-          ? null
-          : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
-      })
-    })
+  //   return arr
+  // }
 
-    return arr
+  getTreeData() {
+    return this.props.treeData
   }
 
-  setOrder(params) {
+  _getNewOrder(params) {
     const that = this
 
-    // arr.forEach(function (item, index) {
-    //   if (item.key === params.key) {
-    //     debugger
-    //     // newIndex = index + params.newIndex - params.oldIndex
-    //     // oldIndex = index
-    //   }
-    // })
-
-    const t = this.props.treeData
+    const treeData = this.getTreeData()
 
     function isParent(data) {
       let result = false
@@ -193,13 +205,30 @@ class Tree extends Component {
       return result
     }
 
+    function moveData(data) {
+      if (params.newIndex < params.oldIndex) {
+        const c = data
+        const oldObj = { ...c[params.oldIndex] }
+        c.splice(params.newIndex, 0, oldObj)
+        c.splice(params.oldIndex + 1, 1)
+      }
+      if (params.newIndex > params.oldIndex) {
+        const c = data
+        const oldObj = { ...c[params.oldIndex] }
+        c.splice(params.newIndex + 1, 0, oldObj)
+        c.splice(params.oldIndex, 1)
+      }
+    }
+
     function resort(data) {
+      if (isParent(data)) {
+        moveData(data)
+      }
       data.forEach(function (n) {
         if (n.children) {
           const c = n.children
           if (isParent(c)) {
-            // const oldIndex = c[params.oldIndex]
-            // const newIndex = c[params.newIndex]
+            moveData(c)
           } else {
             resort(c)
           }
@@ -207,11 +236,21 @@ class Tree extends Component {
       })
     }
 
-    resort(t)
-    console.log(t)
+    resort(treeData)
+    return treeData
+  }
+
+  setOrder(params) {
+    const treeData = this._getNewOrder(params)
+    this.update({
+      treeData: treeData,
+    })
   }
 
   _rendered() {
+    if (!this.props.sortable) {
+      return
+    }
     const tree = this
     const uls = this.element.getElementsByTagName('ul')
     for (let i = 0; i < uls.length; i++) {
@@ -224,25 +263,16 @@ class Tree extends Component {
         dataIdAttr: 'key',
         onEnd: function (evt) {
           const el = evt.item // dragged HTMLElement
-          // evt.to // target list
-          // evt.from // previous list
-          // evt.oldIndex // element's old index within old parent
-          // evt.newIndex // element's new index within new parent
-          // evt.oldDraggableIndex // element's old index within old parent, only counting draggable elements
-          // evt.newDraggableIndex // element's new index within new parent, only counting draggable elements
-          // evt.clone // the clone element
-          // evt.pullMode // when item is in another sortable: `"clone"` if cloning, `true` if moving
-
           const key = el.getAttribute('key')
 
-          const arr = this.toArray()
+          if (evt.oldIndex === evt.newIndex) {
+            return
+          }
 
           tree.setOrder({
             key: key,
             oldIndex: evt.oldIndex,
             newIndex: evt.newIndex,
-            order: arr,
-            event: evt,
           })
         },
       })

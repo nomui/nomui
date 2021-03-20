@@ -18,22 +18,18 @@ class GridSettingPopup extends Layer {
     const that = this
 
     this.setProps({
-      attrs: {
-        style: {
-          width: 300,
-        },
+      classes: {
+        'nom-grid-setting-panel': true,
       },
+      styles: {
+        shadow: 'sm',
+        rounded: 'md',
+      },
+
       children: {
         component: 'Panel',
         uistyle: 'card',
         fit: true,
-        styles: {
-          shadow: 'sm',
-          rounded: 'sm',
-        },
-        classes: {
-          'nom-grid-setting-panel': true,
-        },
         header: {
           caption: {
             title: '列设置',
@@ -49,6 +45,7 @@ class GridSettingPopup extends Layer {
               : that.grid.getMappedColumns(),
             multiple: true,
             leafOnly: false,
+            sortable: true,
             ref: (c) => {
               this.tree = c
             },
@@ -61,19 +58,26 @@ class GridSettingPopup extends Layer {
         footer: {
           children: {
             component: 'Cols',
-            gutter: 'xs',
+            gutter: 'sm',
             items: [
               {
                 component: 'Button',
                 text: '确定',
                 onClick: function () {
                   const list = that.tree.getSelectedTree()
+                  that.update({
+                    treeData: list,
+                  })
+
                   that.grid.handleColumnsSetting(list)
                 },
               },
               {
                 component: 'Button',
                 text: '取消',
+                onClick: () => {
+                  this.hide()
+                },
               },
             ],
           },
@@ -82,6 +86,14 @@ class GridSettingPopup extends Layer {
     })
 
     super._config()
+  }
+
+  _rendered() {
+    const wh = window.innerHeight
+    const mh = this.element.offsetHeight
+    if (mh + 50 > wh) {
+      this.element.style.height = `${wh - 100}px`
+    }
   }
 
   getMappedColumns(param) {
