@@ -1,4 +1,3 @@
-import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import { accessProp } from '../util/index'
 import Td from './Td'
@@ -24,7 +23,6 @@ class Tr extends Component {
   }
 
   _config() {
-    const that = this
     const columns = this.table.props.columns
     const { data, level } = this.props
 
@@ -33,32 +31,8 @@ class Tr extends Component {
     const children = []
     let hidden = false
     if (grid) {
-      const { checkable, treeConfig } = grid.props
+      const { treeConfig } = grid.props
       hidden = treeConfig.initExpandLevel !== -1 && treeConfig.initExpandLevel < level
-      if (checkable) {
-        children.push({
-          component: Td,
-          column: {
-            render: function () {
-              return {
-                component: Checkbox,
-                plain: true,
-                _created: function () {
-                  that._checkboxRef = this
-                },
-                onValueChange: (args) => {
-                  if (args.newValue === true) {
-                    grid.checkedRowsRefs[grid.getKeyValue(data)] = that
-                  } else {
-                    delete grid.checkedRowsRefs[[grid.getKeyValue(data)]]
-                  }
-                  grid.changeCheckAllState()
-                },
-              }
-            },
-          },
-        })
-      }
     }
 
     if (Array.isArray(columns)) {
