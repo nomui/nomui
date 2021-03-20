@@ -4,6 +4,7 @@ import { isFunction, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 import GridSettingPopup from './GridSettingPopup'
+import Checkbox from '../Checkbox/index'
 
 class Grid extends Component {
   constructor(props, ...mixins) {
@@ -23,6 +24,8 @@ class Grid extends Component {
     this._propStyleClasses = ['bordered']
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
+
+    this._processCheckableColumn()
 
     if (frozenLeftCols || frozenRightCols) {
       const rev = this.props.columns.length - frozenRightCols
@@ -310,6 +313,53 @@ class Grid extends Component {
     addTreeInfo(tree)
     this.update({ columns: tree })
     this.popup.hide()
+  }
+
+  _processCheckableColumn() {
+    const grid = this
+    const { rowCheckable, columns } = this.props
+    if (rowCheckable) {
+      columns.unshift({
+        width: 50,
+        header: {
+          component: Checkbox,
+          plain: true,
+          _created: function () {
+            grid._checkboxAllRef = this
+          },
+          onValueChange: (args) => {
+            if (args.newValue === true) {
+              grid.checkAllRows(false)
+            } else {
+              grid.uncheckAllRows(false)
+            }
+          },
+        },
+        render: function () {
+          const td = this
+          const tr = td.tr
+          return {
+            component: Checkbox,
+            plain: true,
+            _created: function () {
+              tr._checkboxRef = this
+            },
+            onValueChange: (args) => {
+              const rowData = tr.props.data
+              if (args.newValue === true) {
+                grid.checkedRowsRefs[grid.getKeyValue(rowData)] = tr
+              } else {
+                delete grid.checkedRowsRefs[[grid.getKeyValue(rowData)]]
+              }
+              grid.changeCheckAllState()
+            },
+          }
+        },
+      })
+      this.setProps({
+        columns: columns,
+      })
+    }
   }
 
   // handlePinClick(data) {
