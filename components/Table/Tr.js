@@ -53,13 +53,13 @@ class Tr extends Component {
   check(triggerChange) {
     const grid = this.table.grid
     this._checkboxRef.setValue(true, triggerChange)
-    grid.checkedRowsRefs[this.key] = this
+    grid.checkedRowRefs[this.key] = this
   }
 
   uncheck(triggerChange) {
     const grid = this.table.grid
     this._checkboxRef.setValue(false, triggerChange)
-    delete grid.checkedRowsRefs[[this.key]]
+    delete grid.checkedRowRefs[[this.key]]
   }
 
   createTds(item) {

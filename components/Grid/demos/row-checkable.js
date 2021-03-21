@@ -17,7 +17,7 @@ define([], function () {
                   component: 'Rows',
                   items: [
                     {
-                      children: gridRef.getCheckedRowsKeys().toString(),
+                      children: gridRef.getCheckedRowKeys().toString(),
                     },
                   ],
                 },
@@ -29,7 +29,7 @@ define([], function () {
             ref: (c) => {
               gridRef = c
             },
-            rowCheckable: { checkedRowsKeys: [1, 5] },
+            rowCheckable: { checkedRowKeys: [1, 5] },
             columns: [
               {
                 field: 'name',
