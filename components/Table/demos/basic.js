@@ -54,7 +54,7 @@ define([], function () {
                 field: 'isMiddle',
                 title: '是否中篇',
                 width: 200,
-                render: function (isMiddle) {
+                cellRender: ({ cellData: isMiddle }) => {
                   return {
                     component: 'Checkbox',
                     value: isMiddle,
