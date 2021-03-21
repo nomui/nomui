@@ -1,3 +1,4 @@
+import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import Loading from '../Loading/index'
 import { isFunction, isPlainObject } from '../util/index'
@@ -14,7 +15,7 @@ class Grid extends Component {
     this.minWidth = 0
     this.lastSortField = null
     this.rowsRefs = {}
-    this.checkedRowsRefs = {}
+    this.checkedRowRefs = {}
     this.originColumns = this.props.columns
   }
 
@@ -23,6 +24,8 @@ class Grid extends Component {
     this._propStyleClasses = ['bordered']
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
+
+    this._processCheckableColumn()
 
     if (frozenLeftCols || frozenRightCols) {
       const rev = this.props.columns.length - frozenRightCols
@@ -217,14 +220,14 @@ class Grid extends Component {
   }
 
   getCheckedRows() {
-    return Object.keys(this.checkedRowsRefs).map((key) => {
-      return this.checkedRowsRefs[key]
+    return Object.keys(this.checkedRowRefs).map((key) => {
+      return this.checkedRowRefs[key]
     })
   }
 
-  getCheckedRowsKeys() {
-    return Object.keys(this.checkedRowsRefs).map((key) => {
-      return this.checkedRowsRefs[key].key
+  getCheckedRowKeys() {
+    return Object.keys(this.checkedRowRefs).map((key) => {
+      return this.checkedRowRefs[key].key
     })
   }
 
@@ -249,7 +252,7 @@ class Grid extends Component {
   }
 
   changeCheckAllState() {
-    const checkedRowsLength = Object.keys(this.checkedRowsRefs).length
+    const checkedRowsLength = Object.keys(this.checkedRowRefs).length
     if (checkedRowsLength === 0) {
       this._checkboxAllRef.setValue(false, false)
     } else {
@@ -310,6 +313,70 @@ class Grid extends Component {
     addTreeInfo(tree)
     this.update({ columns: tree })
     this.popup.hide()
+  }
+
+  _processCheckableColumn() {
+    const grid = this
+    const { rowCheckable, columns } = this.props
+    if (rowCheckable) {
+      let normalizedRowCheckable = rowCheckable
+      if (!isPlainObject(rowCheckable)) {
+        normalizedRowCheckable = {}
+      }
+      const { checkedRowKeys = [] } = normalizedRowCheckable
+      const checkedRowKeysHash = {}
+      checkedRowKeys.forEach((rowKey) => {
+        checkedRowKeysHash[rowKey] = true
+      })
+
+      columns.unshift({
+        width: 50,
+        header: {
+          component: Checkbox,
+          plain: true,
+          _created: function () {
+            grid._checkboxAllRef = this
+          },
+          onValueChange: (args) => {
+            if (args.newValue === true) {
+              grid.checkAllRows(false)
+            } else {
+              grid.uncheckAllRows(false)
+            }
+          },
+        },
+        render: function () {
+          const td = this
+          const tr = td.tr
+          const rowData = tr.props.data
+
+          if (checkedRowKeysHash[tr.key] === true) {
+            grid.checkedRowRefs[grid.getKeyValue(rowData)] = tr
+          }
+          return {
+            component: Checkbox,
+            plain: true,
+            _created: function () {
+              tr._checkboxRef = this
+            },
+            value: checkedRowKeysHash[tr.key] === true,
+            onValueChange: (args) => {
+              if (args.newValue === true) {
+                tr._check()
+                // grid.checkedRowRefs[grid.getKeyValue(rowData)] = tr
+              } else {
+                tr._uncheck()
+                // delete grid.checkedRowRefs[[grid.getKeyValue(rowData)]]
+              }
+              grid.changeCheckAllState()
+            },
+          }
+        },
+      })
+      this.setProps({
+        columns: columns,
+      })
+    }
   }
 
   // handlePinClick(data) {

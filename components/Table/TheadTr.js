@@ -1,4 +1,3 @@
-import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import Th from './Th'
 
@@ -18,35 +17,8 @@ class TheadTr extends Component {
   }
 
   _config() {
-    const grid = this.table.grid
     const { columns } = this.props
     const thArr = []
-    if (grid) {
-      const { checkable } = grid.props
-
-      if (checkable) {
-        thArr.push({
-          component: Th,
-          column: {
-            header: {
-              component: Checkbox,
-              plain: true,
-              _created: function () {
-                grid._checkboxAllRef = this
-              },
-              onValueChange: (args) => {
-                if (args.newValue === true) {
-                  grid.checkAllRows(false)
-                } else {
-                  grid.uncheckAllRows(false)
-                }
-              },
-            },
-            width: 70,
-          },
-        })
-      }
-    }
 
     const children =
       Array.isArray(columns) &&

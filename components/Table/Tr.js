@@ -1,6 +1,5 @@
-import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
-import { accessProp } from '../util/index'
+import { accessProp, extend } from '../util/index'
 import Td from './Td'
 
 class Tr extends Component {
@@ -24,7 +23,6 @@ class Tr extends Component {
   }
 
   _config() {
-    const that = this
     const columns = this.table.props.columns
     const { data, level } = this.props
 
@@ -33,32 +31,8 @@ class Tr extends Component {
     const children = []
     let hidden = false
     if (grid) {
-      const { checkable, treeConfig } = grid.props
+      const { treeConfig } = grid.props
       hidden = treeConfig.initExpandLevel !== -1 && treeConfig.initExpandLevel < level
-      if (checkable) {
-        children.push({
-          component: Td,
-          column: {
-            render: function () {
-              return {
-                component: Checkbox,
-                plain: true,
-                _created: function () {
-                  that._checkboxRef = this
-                },
-                onValueChange: (args) => {
-                  if (args.newValue === true) {
-                    grid.checkedRowsRefs[grid.getKeyValue(data)] = that
-                  } else {
-                    delete grid.checkedRowsRefs[[grid.getKeyValue(data)]]
-                  }
-                  grid.changeCheckAllState()
-                },
-              }
-            },
-          },
-        })
-      }
     }
 
     if (Array.isArray(columns)) {
@@ -76,16 +50,41 @@ class Tr extends Component {
     })
   }
 
-  check(triggerChange) {
+  check(checkOptions) {
+    checkOptions = extend(
+      {
+        triggerChange: true,
+      },
+      checkOptions,
+    )
+    this._check()
     const grid = this.table.grid
-    this._checkboxRef.setValue(true, triggerChange)
-    grid.checkedRowsRefs[this.key] = this
+    this._checkboxRef.setValue(true, false)
+    grid.changeCheckAllState()
+    if (checkOptions.triggerChange) {
+      this._callHandler('onCheck')
+    }
+  }
+
+  _check() {
+    this.props.checked = true
+    this.addClass('s-checked')
+    const grid = this.table.grid
+    grid.checkedRowRefs[this.key] = this
   }
 
   uncheck(triggerChange) {
     const grid = this.table.grid
     this._checkboxRef.setValue(false, triggerChange)
-    delete grid.checkedRowsRefs[[this.key]]
+    this._uncheck()
+    grid.changeCheckAllState()
+  }
+
+  _uncheck() {
+    this.props.checked = false
+    this.removeClass('s-checked')
+    const grid = this.table.grid
+    delete grid.checkedRowRefs[this.key]
   }
 
   createTds(item) {

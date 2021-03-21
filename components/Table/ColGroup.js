@@ -18,18 +18,6 @@ class ColGroup extends Component {
 
   _config() {
     const children = []
-    if (this.table.hasGrid) {
-      const { checkable } = this.table.grid.props
-
-      if (checkable) {
-        children.push({
-          component: ColGroupCol,
-          column: {
-            width: 50,
-          },
-        })
-      }
-    }
 
     if (Array.isArray(this.columns)) {
       this.colList = []
