@@ -28,7 +28,10 @@ class Router extends Component {
   handleHashChange(changed) {
     this._callHandler(this.props.onHashChange) // 可以在这里做路由变更前处理
 
-    if (changed.queryChanged && (changed.changedLevel === null || this.level < changed.changedLevel)) {
+    if (
+      changed.queryChanged &&
+      (changed.changedLevel === null || this.level < changed.changedLevel)
+    ) {
       this._callHandler(this.props.onQueryChange)
     }
 
@@ -38,12 +41,10 @@ class Router extends Component {
 
     if (this.level > changed.changedLevel) {
       this.remove()
-    }
-    else if (this.level === changed.changedLevel) {
+    } else if (this.level === changed.changedLevel) {
       this.routeView()
       this.$app.lastLevel = this.level + 1
-    }
-    else if (this.level === changed.changedLevel - 1) {
+    } else if (this.level === changed.changedLevel - 1) {
       this._callHandler(this.props.onSubpathChange)
     }
   }
@@ -58,8 +59,7 @@ class Router extends Component {
     return subpath
   }
 
-  _removeCore() {
-  }
+  _removeCore() {}
 
   remove() {
     this.$app.off('hashChange', this.handleHashChange)
@@ -90,9 +90,11 @@ class Router extends Component {
     require([url], (viewPropsOrRouterPropsFunc) => {
       let routerProps = {}
       if (isFunction(viewPropsOrRouterPropsFunc)) {
-        routerProps = viewPropsOrRouterPropsFunc.call(this)
-      }
-      else {
+        routerProps = viewPropsOrRouterPropsFunc.call(this, {
+          route: this.$app.currentRoute,
+          app: this.$app,
+        })
+      } else {
         routerProps.view = viewPropsOrRouterPropsFunc
       }
       if (isString(routerProps.title)) {
@@ -106,7 +108,7 @@ class Router extends Component {
       this.currentView = Component.create(viewOptions, {
         _rendered: function () {
           that.element = this.element
-        }
+        },
       })
       this.setProps(routerProps)
       this._callRendered()
