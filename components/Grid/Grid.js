@@ -319,6 +319,16 @@ class Grid extends Component {
     const grid = this
     const { rowCheckable, columns } = this.props
     if (rowCheckable) {
+      let normalizedRowCheckable = rowCheckable
+      if (!isPlainObject(rowCheckable)) {
+        normalizedRowCheckable = {}
+      }
+      const { checkedRowsKeys = [] } = normalizedRowCheckable
+      const checkedRowsKeysHash = {}
+      checkedRowsKeys.forEach((rowKey) => {
+        checkedRowsKeysHash[rowKey] = true
+      })
+
       columns.unshift({
         width: 50,
         header: {
@@ -338,14 +348,19 @@ class Grid extends Component {
         render: function () {
           const td = this
           const tr = td.tr
+          const rowData = tr.props.data
+
+          if (checkedRowsKeysHash[tr.key] === true) {
+            grid.checkedRowsRefs[grid.getKeyValue(rowData)] = tr
+          }
           return {
             component: Checkbox,
             plain: true,
             _created: function () {
               tr._checkboxRef = this
             },
+            value: checkedRowsKeysHash[tr.key] === true,
             onValueChange: (args) => {
-              const rowData = tr.props.data
               if (args.newValue === true) {
                 grid.checkedRowsRefs[grid.getKeyValue(rowData)] = tr
               } else {

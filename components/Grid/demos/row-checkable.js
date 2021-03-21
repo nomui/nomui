@@ -22,7 +22,6 @@ define([], function () {
                   ],
                 },
               })
-              // console.log(tableRef.getCheckedRows())
             },
           },
           {
@@ -30,7 +29,7 @@ define([], function () {
             ref: (c) => {
               gridRef = c
             },
-            rowCheckable: true,
+            rowCheckable: { checkedRowsKeys: [1, 5] },
             columns: [
               {
                 field: 'name',
