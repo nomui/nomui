@@ -58,7 +58,7 @@ class Component {
     if (this.props.key) {
       this.key = this.props.key
       if (isFunction(this.props.key)) {
-        this.key = this.props.key.call(this)
+        this.key = this.props.key.call(this, this)
       }
     }
 
