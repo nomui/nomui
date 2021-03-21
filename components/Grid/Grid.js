@@ -362,9 +362,11 @@ class Grid extends Component {
             value: checkedRowKeysHash[tr.key] === true,
             onValueChange: (args) => {
               if (args.newValue === true) {
-                grid.checkedRowRefs[grid.getKeyValue(rowData)] = tr
+                tr._check()
+                // grid.checkedRowRefs[grid.getKeyValue(rowData)] = tr
               } else {
-                delete grid.checkedRowRefs[[grid.getKeyValue(rowData)]]
+                tr._uncheck()
+                // delete grid.checkedRowRefs[[grid.getKeyValue(rowData)]]
               }
               grid.changeCheckAllState()
             },

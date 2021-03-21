@@ -5,6 +5,7 @@ define([
   './colspan.js',
   './multiple-header.js',
   './row-checkable.js',
+  './row-checkable-events.js',
   './custom-columns.js',
   './tree-grid.js',
 ], function () {

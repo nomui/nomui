@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { accessProp } from '../util/index'
+import { accessProp, extend } from '../util/index'
 import Td from './Td'
 
 class Tr extends Component {
@@ -50,16 +50,41 @@ class Tr extends Component {
     })
   }
 
-  check(triggerChange) {
+  check(checkOptions) {
+    checkOptions = extend(
+      {
+        triggerChange: true,
+      },
+      checkOptions,
+    )
+    this._check()
     const grid = this.table.grid
-    this._checkboxRef.setValue(true, triggerChange)
+    this._checkboxRef.setValue(true, false)
+    grid.changeCheckAllState()
+    if (checkOptions.triggerChange) {
+      this._callHandler('onCheck')
+    }
+  }
+
+  _check() {
+    this.props.checked = true
+    this.addClass('s-checked')
+    const grid = this.table.grid
     grid.checkedRowRefs[this.key] = this
   }
 
   uncheck(triggerChange) {
     const grid = this.table.grid
     this._checkboxRef.setValue(false, triggerChange)
-    delete grid.checkedRowRefs[[this.key]]
+    this._uncheck()
+    grid.changeCheckAllState()
+  }
+
+  _uncheck() {
+    this.props.checked = false
+    this.removeClass('s-checked')
+    const grid = this.table.grid
+    delete grid.checkedRowRefs[this.key]
   }
 
   createTds(item) {
