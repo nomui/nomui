@@ -24,7 +24,16 @@ class Td extends Component {
 
     let children = this.props.data
 
-    if (isFunction(this.props.column.render)) {
+    if (isFunction(column.cellRender)) {
+      children = column.cellRender({
+        cell: this,
+        row: this.tr,
+        talbe: this.table,
+        cellData: this.props.data,
+        rowData: this.tr.props.data,
+        index: this.tr.props.index,
+      })
+    } else if (isFunction(this.props.column.render)) {
       children = this.props.column.render.call(
         this,
         this.props.data,

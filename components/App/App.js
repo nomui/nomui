@@ -79,7 +79,7 @@ class App extends Component {
       }
     }
 
-    this.trigger('hashChange', { changedLevel, queryChanged })
+    this.trigger('hashChange', { changedLevel, queryChanged, route: this.currentRoute, app: this })
   }
 }
 

@@ -1,12 +1,35 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '选择',
+    file: 'row-checkable',
     demo: function () {
+      let gridRef = null
       return {
-        children: [
+        component: 'Rows',
+        items: [
           {
-            component: 'Table',
+            component: 'Button',
+            text: '获取选中行',
+            onClick: () => {
+              new nomui.Alert({
+                type: 'info',
+                description: {
+                  component: 'Rows',
+                  items: [
+                    {
+                      children: gridRef.getCheckedRowKeys().toString(),
+                    },
+                  ],
+                },
+              })
+            },
+          },
+          {
+            component: 'Grid',
+            ref: (c) => {
+              gridRef = c
+            },
+            rowCheckable: { checkedRowKeys: [1, 5] },
             columns: [
               {
                 field: 'name',
@@ -54,7 +77,7 @@ define([], function () {
                 field: 'isMiddle',
                 title: '是否中篇',
                 width: 200,
-                cellRender: ({ cellData: isMiddle }) => {
+                render: function (isMiddle) {
                   return {
                     component: 'Checkbox',
                     value: isMiddle,

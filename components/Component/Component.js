@@ -58,7 +58,7 @@ class Component {
     if (this.props.key) {
       this.key = this.props.key
       if (isFunction(this.props.key)) {
-        this.key = this.props.key.call(this)
+        this.key = this.props.key.call(this, this)
       }
     }
 
@@ -103,14 +103,14 @@ class Component {
     this.__handleClick = this.__handleClick.bind(this)
     isFunction(this._created) && this._created()
     this._callMixin('_created')
-    this.props._created && this.props._created.call(this)
+    this.props._created && this.props._created.call(this, this)
   }
 
   _created() {}
 
   config() {
     this._setExpandableProps()
-    this.props._config && this.props._config.call(this)
+    this.props._config && this.props._config.call(this, this)
     this._callMixin('_config')
     isFunction(this._config) && this._config()
     this._setExpandableProps()
@@ -143,7 +143,7 @@ class Component {
     this.rendered = true
     isFunction(this._rendered) && this._rendered()
     this._callMixin('_rendered')
-    isFunction(this.props._rendered) && this.props._rendered.call(this)
+    isFunction(this.props._rendered) && this.props._rendered.call(this, this)
     this.firstRender = false
   }
 
@@ -253,7 +253,7 @@ class Component {
   _removeCore() {
     this.emptyChildren()
     const el = this.element
-    isFunction(this.props._remove) && this.props._remove.call(this)
+    isFunction(this.props._remove) && this.props._remove.call(this, this)
     this._callMixin('_remove')
     isFunction(this._remove) && this._remove()
     this._off()
@@ -274,11 +274,11 @@ class Component {
   _callMixin(hookType) {
     for (let i = 0; i < MIXINS.length; i++) {
       const mixin = MIXINS[i]
-      mixin[hookType] && mixin[hookType].call(this)
+      mixin[hookType] && mixin[hookType].call(this, this)
     }
     for (let i = 0; i < this.mixins.length; i++) {
       const mixin = this.mixins[i]
-      mixin[hookType] && mixin[hookType].call(this)
+      mixin[hookType] && mixin[hookType].call(this, this)
     }
   }
 
@@ -628,7 +628,7 @@ class Component {
       return target
     }
     if (isFunction(target)) {
-      return target.call(this)
+      return target.call(this, this)
     }
   }
 
@@ -641,7 +641,7 @@ class Component {
       return indicator
     }
     if (isFunction(indicator)) {
-      return indicator.call(this)
+      return indicator.call(this, this)
     }
   }
 
@@ -775,7 +775,7 @@ class Component {
   }
 
   __handleClick(event) {
-    if (this.props._shouldHandleClick && this.props._shouldHandleClick.call(this) === false) {
+    if (this.props._shouldHandleClick && this.props._shouldHandleClick.call(this, this) === false) {
       return
     }
     if (this.props.disabled === true) {

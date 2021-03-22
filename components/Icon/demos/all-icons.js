@@ -25,37 +25,36 @@ define([], function () {
           component: 'Rows',
           items: catArray,
           itemDefaults: {
-            _config: function () {
-              const cat = this
-              this.setProps({
+            _config: (catInst) => {
+              catInst.setProps({
                 children: [
                   {
                     tag: 'h4',
                     styles: {
                       padding: 'y-1',
                     },
-                    children: cat.props.cat,
+                    children: catInst.props.cat,
                   },
                   {
                     component: 'List',
                     cols: '6',
                     line: 'grid',
-                    _config: function () {
-                      this.setProps({
-                        items: cat.props.icons,
+                    _config: (iconListInst) => {
+                      iconListInst.setProps({
+                        items: catInst.props.icons,
                         itemDefaults: {
-                          _config() {
-                            this.setProps({
+                          _config: (iconInst) => {
+                            iconInst.setProps({
                               children: [
                                 {
                                   component: 'Icon',
-                                  type: this.props.type,
+                                  type: iconInst.props.type,
                                   styles: {
-                                    text: '1d5'
-                                  }
+                                    text: '1d5',
+                                  },
                                 },
                                 {
-                                  children: this.props.type,
+                                  children: iconInst.props.type,
                                 },
                               ],
                               styles: {
