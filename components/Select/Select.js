@@ -147,7 +147,12 @@ class Select extends Field {
   _rendered() {
     const { value } = this.props
 
-    this.popup = new SelectPopup({ trigger: this.control })
+    this.popup = new SelectPopup({
+      trigger: this.control,
+      onShown: () => {
+        this.optionList.scrollToSelected()
+      },
+    })
 
     this._directSetValue(value)
 

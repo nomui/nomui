@@ -60,6 +60,7 @@ export default {
     if (listProps.itemSelectable.multiple === false) {
       if (this.props.selected) {
         this.list.selectedItem = this
+        this.list.scrollTo(this.list.selectedItem)
       }
     }
   },
