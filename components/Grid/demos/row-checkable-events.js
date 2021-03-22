@@ -29,7 +29,12 @@ define([], function () {
             ref: (c) => {
               gridRef = c
             },
-            rowCheckable: { checkedRowKeys: [1, 5] },
+            rowCheckable: {
+              checkedRowKeys: [1, 5],
+              onUncheck: ({ row }) => {
+                row.permissions.setValue(null, false)
+              },
+            },
             columns: [
               {
                 field: 'menu',
@@ -38,10 +43,12 @@ define([], function () {
               {
                 field: 'permissions',
                 title: '权限',
-                render: function () {
-                  const row = this.tr
+                cellRender: ({ row }) => {
                   return {
                     component: 'CheckboxList',
+                    _created: (inst) => {
+                      row.permissions = inst
+                    },
                     options: [
                       { text: '新增', value: 'add' },
                       { text: '修改', value: 'update' },
@@ -51,8 +58,6 @@ define([], function () {
                     onValueChange(args) {
                       if (args.newValue.length) {
                         row.check()
-                      } else {
-                        row.uncheck()
                       }
                     },
                   }
