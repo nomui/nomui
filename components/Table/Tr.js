@@ -51,6 +51,8 @@ class Tr extends Component {
   }
 
   check(checkOptions) {
+    const grid = this.table.grid
+
     checkOptions = extend(
       {
         triggerChange: true,
@@ -58,12 +60,16 @@ class Tr extends Component {
       checkOptions,
     )
     this._check()
-    const grid = this.table.grid
     this._checkboxRef.setValue(true, false)
     grid.changeCheckAllState()
     if (checkOptions.triggerChange) {
-      this._callHandler('onCheck')
+      this._onCheck()
+      grid._onRowCheck(this)
     }
+  }
+
+  _onCheck() {
+    this._callHandler('onCheck')
   }
 
   _check() {
@@ -73,11 +79,21 @@ class Tr extends Component {
     grid.checkedRowRefs[this.key] = this
   }
 
-  uncheck(triggerChange) {
+  uncheck(uncheckOptions) {
     const grid = this.table.grid
-    this._checkboxRef.setValue(false, triggerChange)
+    uncheckOptions = extend(
+      {
+        triggerChange: true,
+      },
+      uncheckOptions,
+    )
+    this._checkboxRef.setValue(false, false)
     this._uncheck()
     grid.changeCheckAllState()
+    if (uncheckOptions.triggerChange) {
+      this._onUncheck()
+      grid._onRowUncheck(this)
+    }
   }
 
   _uncheck() {
@@ -85,6 +101,10 @@ class Tr extends Component {
     this.removeClass('s-checked')
     const grid = this.table.grid
     delete grid.checkedRowRefs[this.key]
+  }
+
+  _onUncheck() {
+    this._callHandler('onUncheck')
   }
 
   createTds(item) {

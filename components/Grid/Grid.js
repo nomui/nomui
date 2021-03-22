@@ -231,23 +231,23 @@ class Grid extends Component {
     })
   }
 
-  checkAllRows(triggerChange) {
+  checkAllRows(options) {
     Object.keys(this.rowsRefs).forEach((key) => {
-      this.rowsRefs[key] && this.rowsRefs[key].check(triggerChange)
+      this.rowsRefs[key] && this.rowsRefs[key].check(options)
     })
   }
 
-  uncheckAllRows(triggerChange) {
+  uncheckAllRows(options) {
     Object.keys(this.rowsRefs).forEach((key) => {
-      this.rowsRefs[key] && this.rowsRefs[key].uncheck(triggerChange)
+      this.rowsRefs[key] && this.rowsRefs[key].uncheck(options)
     })
   }
 
-  checkRows(rows) {
+  checkRows(rows, options) {
     rows = Array.isArray(rows) ? rows : [rows]
     rows.forEach((row) => {
       const rowRef = this.getRow(row)
-      rowRef && rowRef.check()
+      rowRef && rowRef.check(options)
     })
   }
 
@@ -334,8 +334,8 @@ class Grid extends Component {
         header: {
           component: Checkbox,
           plain: true,
-          _created: function () {
-            grid._checkboxAllRef = this
+          _created: (inst) => {
+            grid._checkboxAllRef = inst
           },
           onValueChange: (args) => {
             if (args.newValue === true) {
@@ -345,28 +345,26 @@ class Grid extends Component {
             }
           },
         },
-        render: function () {
-          const td = this
-          const tr = td.tr
-          const rowData = tr.props.data
-
-          if (checkedRowKeysHash[tr.key] === true) {
-            grid.checkedRowRefs[grid.getKeyValue(rowData)] = tr
+        cellRender: ({ row, rowData }) => {
+          if (checkedRowKeysHash[row.key] === true) {
+            grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
           }
           return {
             component: Checkbox,
             plain: true,
-            _created: function () {
-              tr._checkboxRef = this
+            _created: (inst) => {
+              row._checkboxRef = inst
             },
-            value: checkedRowKeysHash[tr.key] === true,
+            value: checkedRowKeysHash[row.key] === true,
             onValueChange: (args) => {
               if (args.newValue === true) {
-                tr._check()
-                // grid.checkedRowRefs[grid.getKeyValue(rowData)] = tr
+                row._check()
+                row._onCheck()
+                grid._onRowCheck(row)
               } else {
-                tr._uncheck()
-                // delete grid.checkedRowRefs[[grid.getKeyValue(rowData)]]
+                row._uncheck()
+                row._onUncheck()
+                grid._onRowUncheck(row)
               }
               grid.changeCheckAllState()
             },
@@ -376,6 +374,30 @@ class Grid extends Component {
       this.setProps({
         columns: columns,
       })
+    }
+  }
+
+  _onRowCheck(row) {
+    const { rowCheckable } = this.props
+    if (rowCheckable) {
+      let normalizedRowCheckable = rowCheckable
+      if (!isPlainObject(rowCheckable)) {
+        normalizedRowCheckable = {}
+      }
+      const { onCheck } = normalizedRowCheckable
+      this._callHandler(onCheck, { row: row })
+    }
+  }
+
+  _onRowUncheck(row) {
+    const { rowCheckable } = this.props
+    if (rowCheckable) {
+      let normalizedRowCheckable = rowCheckable
+      if (!isPlainObject(rowCheckable)) {
+        normalizedRowCheckable = {}
+      }
+      const { onUncheck } = normalizedRowCheckable
+      this._callHandler(onUncheck, { row: row })
     }
   }
 
