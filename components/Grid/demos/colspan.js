@@ -12,19 +12,17 @@ define([], function () {
             field: 'name',
             title: '标题',
             width: 200,
-            render: function (data, row, idx) {
-              if (idx === 2) {
-                this.setProps({
+            cellMerge: function (data) {
+              if (data.index === 2) {
+                return {
                   rowSpan: 3,
-                })
+                }
               }
-              if (idx > 2) {
-                this.setProps({
+              if (data.index > 2) {
+                return {
                   rowSpan: 0,
-                })
+                }
               }
-
-              return data
             },
           },
           {
