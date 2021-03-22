@@ -423,7 +423,7 @@ Grid.defaults = {
     childrenField: 'children',
     treeNodeColumn: null,
     initExpandLevel: -1,
-    indentSize: 6,
+    indentSize: 16,
   },
   allowCustomColumns: false,
   visibleColumns: null,

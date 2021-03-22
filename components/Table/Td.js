@@ -77,7 +77,7 @@ class Td extends Component {
           tag: 'span',
           attrs: {
             style: {
-              paddingLeft: `${level * 15}px`,
+              paddingLeft: `${level * treeConfig.indentSize + 20}px`,
             },
           },
         },
