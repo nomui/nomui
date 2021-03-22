@@ -111,9 +111,13 @@ class MenuItem extends Component {
     })
   }
 
-  handleSelect() {
-
+  _rendered() {
+    if (this.props.selected) {
+      this.list.selectedItem = this
+    }
   }
+
+  handleSelect() {}
 
   _collapse() {
     this.indicator && this.indicator.collapse()

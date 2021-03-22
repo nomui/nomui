@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import { extend, isFunction } from '../util/index'
 import MenuItem from './MenuItem'
 import MenuItemWrapper from './MenuItemWrapper'
+import scrollIntoView from '../util/scrollIntoView'
 
 class Menu extends Component {
   constructor(props, ...mixins) {
@@ -21,7 +22,7 @@ class Menu extends Component {
       },
 
       indent: 1.5,
-      direction: 'vertical'
+      direction: 'vertical',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -71,7 +72,9 @@ class Menu extends Component {
     if (item === null || item === undefined) {
       return false
     }
-    return item.select(selectOption)
+    item.select(selectOption)
+    this.scrollTo(item)
+    return item
   }
 
   unselectItem(param, unselectOption) {
@@ -102,6 +105,27 @@ class Menu extends Component {
         p = p.parentItem
       }
     }
+  }
+
+  scrollTo(param) {
+    const item = this.getItem(param)
+    if (item) {
+      scrollIntoView(item.wrapper.element, {
+        behavior: 'smooth',
+        scrollMode: 'if-needed',
+      })
+    }
+  }
+
+  scrollToSelected() {
+    if (this.selectedItem) {
+      this.scrollTo(this.selectedItem)
+    }
+  }
+
+  _rendered() {
+    super._rendered()
+    this.scrollToSelected()
   }
 }
 
