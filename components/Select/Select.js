@@ -260,7 +260,7 @@ class Select extends Field {
       if (selectedOption) {
         this.checked = true
         this.checkedOption = selectedOption
-        this.updateSearchPopup(selectedOption.text)
+        this.updateSearchPopup(selectedOption && selectedOption.text)
         this._directSetValue(value)
       }
     }
@@ -317,7 +317,7 @@ class Select extends Field {
     if (this.props.showSearch) {
       const selectedOption = this.props.options.find((e) => e.value === changed.newValue)
       this.checkedOption = selectedOption
-      this.updateSearchPopup(selectedOption.text)
+      this.updateSearchPopup(selectedOption && selectedOption.text)
       this.checked = true
     }
   }
