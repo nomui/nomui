@@ -97,7 +97,7 @@ class Select extends Field {
           },
           onchange() {
             if (that.checked) return
-            this.value = that.checkedOption ? that.checkedOption?.text : null
+            this.value = that.checkedOption ? that.checkedOption.text : null
             that.updateSearchPopup(this.value)
           },
         },
@@ -248,8 +248,12 @@ class Select extends Field {
     return null
   }
 
-  _setValue(value, triggerChange) {
-    triggerChange = triggerChange !== false
+  _setValue(value, options) {
+    if (options === false) {
+      options = { triggerChange: false }
+    } else {
+      options = extend({ triggerChange: true }, options)
+    }
 
     if (this.props.showSearch) {
       const selectedOption = this.props.options.find((e) => e.value === value)
@@ -262,11 +266,11 @@ class Select extends Field {
     }
 
     if (this.optionList) {
-      this.optionList.unselectAllItems({ triggerSelectionChange: value === null })
-      this.selectOptions(value, { triggerSelectionChange: triggerChange })
+      this.optionList.unselectAllItems({ triggerSelectionChange: false })
+      this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
     } else {
       this._directSetValue(value)
-      if (triggerChange) {
+      if (options.triggerChange) {
         this._onValueChange()
       }
     }
@@ -313,7 +317,7 @@ class Select extends Field {
     if (this.props.showSearch) {
       const selectedOption = this.props.options.find((e) => e.value === changed.newValue)
       this.checkedOption = selectedOption
-      this.updateSearchPopup(selectedOption?.text)
+      this.updateSearchPopup(selectedOption.text)
       this.checked = true
     }
   }

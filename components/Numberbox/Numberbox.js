@@ -74,7 +74,7 @@ class Numberbox extends Textbox {
     return numberValue
   }
 
-  _setValue(value) {
+  _setValue(value, options) {
     const { precision } = this.props
 
     this.currentValue = this.getValue()
@@ -92,7 +92,7 @@ class Numberbox extends Textbox {
       value = ''
     }
 
-    super._setValue(value)
+    super._setValue(value, options)
   }
 
   _toDecimal(val, precision, notRound) {
