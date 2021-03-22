@@ -12,13 +12,13 @@ define([], function () {
             field: 'name',
             title: '标题',
             width: 200,
-            cellMerge: function (data) {
-              if (data.index === 2) {
+            cellMerge: ({ index }) => {
+              if (index === 2) {
                 return {
                   rowSpan: 3,
                 }
               }
-              if (data.index > 2) {
+              if (index > 2) {
                 return {
                   rowSpan: 0,
                 }
