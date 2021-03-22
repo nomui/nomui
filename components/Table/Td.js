@@ -114,6 +114,7 @@ class Td extends Component {
       attrs: {
         colspan: colSpan,
         rowspan: rowSpan,
+        'data-field': this.props.column.field,
       },
       hidden: colSpan === 0 || rowSpan === 0,
       classes: {

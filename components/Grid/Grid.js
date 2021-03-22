@@ -121,6 +121,10 @@ class Grid extends Component {
       this.loadingInst.remove()
       this.loadingInst = null
     }
+
+    if (this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
+      this.autoMergeCols()
+    }
   }
 
   getColumns() {
@@ -379,6 +383,34 @@ class Grid extends Component {
     }
   }
 
+  autoMergeCols() {
+    const that = this
+    this.props.autoMergeColumns.forEach(function (key) {
+      that._mergeColumn(key)
+    })
+  }
+
+  _mergeColumn(key) {
+    const el = this.body.element.getElementsByTagName('table')[0]
+    function getIndex(data) {
+      for (let i = 0; i < el.rows[0].cells.length; i++) {
+        if (el.rows[0].cells[i].getAttribute('data-field') === data) {
+          return i
+        }
+      }
+    }
+    const index = getIndex(key)
+
+    for (let i = el.rows.length - 1; i > 0; i--) {
+      el.rows[i].cells[index].rowSpan = el.rows[i].cells[index].rowSpan || 1
+      if (el.rows[i].cells[index].innerHTML === el.rows[i - 1].cells[index].innerHTML) {
+        el.rows[i - 1].cells[index].rowSpan = el.rows[i].cells[index].rowSpan + 1
+        el.rows[i].cells[index].rowSpan = 0
+        el.rows[i].cells[index].style.display = 'none'
+      }
+    }
+  }
+
   // handlePinClick(data) {
   //   const { columns } = this.props
 
@@ -404,6 +436,7 @@ Grid.defaults = {
     indentSize: 6,
   },
   allowCustomColumns: false,
+  autoMerge: null,
   visibleColumns: null,
 }
 
