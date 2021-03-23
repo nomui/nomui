@@ -51,6 +51,10 @@ class Menu extends Component {
   getItem(param) {
     let retItem = null
 
+    if (param instanceof Component) {
+      return param
+    }
+
     if (isFunction(param)) {
       for (const key in this.itemRefs) {
         if (this.itemRefs.hasOwnProperty(key)) {
@@ -75,6 +79,12 @@ class Menu extends Component {
     item.select(selectOption)
     this.scrollTo(item)
     return item
+  }
+
+  selectToItem(param) {
+    this.expandToItem(param)
+    this.selectItem(param)
+    this.scrollTo(param)
   }
 
   unselectItem(param, unselectOption) {
@@ -107,13 +117,16 @@ class Menu extends Component {
     }
   }
 
-  scrollTo(param) {
+  scrollTo(
+    param,
+    scrollToOptions = {
+      behavior: 'smooth',
+      scrollMode: 'if-needed',
+    },
+  ) {
     const item = this.getItem(param)
     if (item) {
-      scrollIntoView(item.wrapper.element, {
-        behavior: 'smooth',
-        scrollMode: 'if-needed',
-      })
+      scrollIntoView(item.wrapper.element, scrollToOptions)
     }
   }
 

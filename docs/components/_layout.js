@@ -1,6 +1,6 @@
 define([], function () {
   return function () {
-    let javascriptMenu = null
+    let javascriptMenuRef = null
 
     const highLight = () => {
       let { type = 'component' } = this.$route.query
@@ -8,8 +8,7 @@ define([], function () {
       if (cat) {
         type += `/${cat}`
       }
-      javascriptMenu && javascriptMenu.selectItem(type)
-      javascriptMenu && javascriptMenu.expandToItem(type)
+      javascriptMenuRef && javascriptMenuRef.selectToItem(type)
     }
 
     return {
@@ -20,7 +19,7 @@ define([], function () {
             {
               component: 'Menu',
               ref: (c) => {
-                javascriptMenu = c
+                javascriptMenuRef = c
               },
               items: [
                 {
