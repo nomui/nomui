@@ -1,6 +1,7 @@
 define([
   './basic.js',
   './styles.js',
+  './resizable.js',
   './frozen-header.js',
   './colspan.js',
   './auto-merge.js',

@@ -411,6 +411,11 @@ class Grid extends Component {
     }
   }
 
+  resizeCol(data) {
+    this.header && this.header.resizeCol(data)
+    // this.body && this.body.resizeCol(data);
+  }
+
   // handlePinClick(data) {
   //   const { columns } = this.props
 
