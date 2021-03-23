@@ -35,10 +35,10 @@ class GridHeader extends Component {
     const col = this.table.colRefs[data.field]
     const w = col.props.column.width
     let result = w + data.distance
+
     if (result < 60) {
       result = 60
     }
-    console.log(result)
     col.update({ column: { width: result } })
   }
 }

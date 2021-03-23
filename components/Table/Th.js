@@ -15,6 +15,7 @@ class Th extends Component {
     this.tr = this.parent
     this.table = this.tr.table
     this.resizer = null
+    this.lastDistance = 0
   }
 
   _config() {
@@ -102,13 +103,18 @@ class Th extends Component {
 
     resizer.onmousedown = function (evt) {
       const startX = evt.clientX
+      that.lastDistance = 0
+
       document.onmousemove = function (e) {
         const endX = e.clientX
         const moveLen = endX - startX
+
+        const distance = moveLen - that.lastDistance
         that.table.grid.resizeCol({
           field: that.props.column.field,
-          distance: moveLen,
+          distance: distance,
         })
+        that.lastDistance = moveLen
       }
     }
     document.onmouseup = function () {
