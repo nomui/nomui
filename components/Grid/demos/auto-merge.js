@@ -1,6 +1,6 @@
 define([], function () {
   return {
-    title: '行列合并',
+    title: '自动行合并',
     file: 'auto-merge',
     demo: function () {
       return {
