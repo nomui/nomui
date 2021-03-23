@@ -13,6 +13,7 @@ export default {
       itemSelectable: {
         byClick: true,
         multiple: true,
+        scrollIntoView: false,
       },
       selectedItems: listProps.value,
       onItemSelectionChange: () => {

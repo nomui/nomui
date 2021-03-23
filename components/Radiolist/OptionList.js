@@ -51,6 +51,7 @@ class OptionList extends List {
       itemDefaults: listProps.optionDefaults,
       itemSelectable: {
         byClick: true,
+        scrollIntoView: false,
       },
       selectedItems: listProps.value,
       onItemSelectionChange: () => {
