@@ -8,6 +8,7 @@ define([
   './row-checkable-events.js',
   './custom-columns.js',
   './tree-grid.js',
+  './row-expandable.js',
 ], function () {
   return {
     title: 'Grid',

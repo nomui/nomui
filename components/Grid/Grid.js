@@ -5,6 +5,8 @@ import { isFunction, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 import GridSettingPopup from './GridSettingPopup'
+import Icon from '../Icon/index'
+import ExpandedTr from '../Table/ExpandedTr'
 
 class Grid extends Component {
   constructor(props, ...mixins) {
@@ -26,6 +28,7 @@ class Grid extends Component {
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
 
     this._processCheckableColumn()
+    this._processExpandableColumn()
 
     if (frozenLeftCols || frozenRightCols) {
       const rev = this.props.columns.length - frozenRightCols
@@ -375,6 +378,39 @@ class Grid extends Component {
         columns: columns,
       })
     }
+  }
+
+  _processExpandableColumn() {
+    const { columns } = this.props
+    columns.unshift({
+      width: 50,
+      cellRender: ({ row, rowData }) => {
+        return {
+          component: Icon,
+          expandable: {
+            byClick: true,
+            expandedProps: {
+              type: 'minus-square',
+            },
+            collapsedProps: {
+              type: 'plus-square',
+            },
+            target: () => {
+              if (!row.expandedRow) {
+                row.expandedRow = row.after({
+                  component: ExpandedTr,
+                  data: rowData,
+                })
+              }
+              return row.expandedRow
+            },
+          },
+        }
+      },
+    })
+    this.setProps({
+      columns: columns,
+    })
   }
 
   _onRowCheck(row) {

@@ -363,13 +363,23 @@ class Component {
       return
     }
 
-    const { normalizedProps, mixins } = this._normalizeProps(props)
-    const extNormalizedProps = Component.extendProps({}, normalizedProps, {
+    let { normalizedProps, mixins } = this._normalizeProps(props)
+    
+    normalizedProps = Component.extendProps({}, normalizedProps, {
       reference: this.element,
       placement: 'after',
     })
 
-    return Component.create(extNormalizedProps, ...mixins)
+    if (this.parent && this.parent.props.childDefaults) {
+      const {
+        normalizedProps: childDefaultsProps,
+        mixins: childDefaultsMixins,
+      } = this._normalizeProps(this.parent.props.childDefaults)
+      normalizedProps = Component.extendProps(childDefaultsProps, normalizedProps)
+      mixins = [...childDefaultsMixins, ...mixins]
+    }
+
+    return Component.create(normalizedProps, ...mixins)
   }
 
   _normalizeProps(props) {
