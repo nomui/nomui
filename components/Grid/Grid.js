@@ -381,36 +381,38 @@ class Grid extends Component {
   }
 
   _processExpandableColumn() {
-    const { columns } = this.props
-    columns.unshift({
-      width: 50,
-      cellRender: ({ row, rowData }) => {
-        return {
-          component: Icon,
-          expandable: {
-            byClick: true,
-            expandedProps: {
-              type: 'minus-square',
+    const { rowExpandable, columns } = this.props
+    if (rowExpandable) {
+      columns.unshift({
+        width: 50,
+        cellRender: ({ row, rowData }) => {
+          return {
+            component: Icon,
+            expandable: {
+              byClick: true,
+              expandedProps: {
+                type: 'minus-square',
+              },
+              collapsedProps: {
+                type: 'plus-square',
+              },
+              target: () => {
+                if (!row.expandedRow) {
+                  row.expandedRow = row.after({
+                    component: ExpandedTr,
+                    data: rowData,
+                  })
+                }
+                return row.expandedRow
+              },
             },
-            collapsedProps: {
-              type: 'plus-square',
-            },
-            target: () => {
-              if (!row.expandedRow) {
-                row.expandedRow = row.after({
-                  component: ExpandedTr,
-                  data: rowData,
-                })
-              }
-              return row.expandedRow
-            },
-          },
-        }
-      },
-    })
-    this.setProps({
-      columns: columns,
-    })
+          }
+        },
+      })
+      this.setProps({
+        columns: columns,
+      })
+    }
   }
 
   _onRowCheck(row) {
