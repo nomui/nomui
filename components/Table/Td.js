@@ -109,6 +109,10 @@ class Td extends Component {
         ? spanProps.rowSpan
         : this.props.column.rowSpan
 
+    if (rowSpan > 1) {
+      this.table.hasRowGroup = true
+    }
+
     this.setProps({
       children: children,
       attrs: {

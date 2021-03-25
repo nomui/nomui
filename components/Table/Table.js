@@ -13,6 +13,7 @@ class Table extends Component {
       onlyHead: false,
       onlyBody: false,
       keyField: 'id',
+      striped: false,
       treeConfig: {
         childrenField: 'children',
         treeNodeColumn: null,
@@ -33,12 +34,19 @@ class Table extends Component {
       this.grid = this.parent.parent
       this.parent.table = this
     }
+    this.hasRowGroup = false
   }
 
   _config() {
     this._propStyleClasses = ['line', 'bordered']
+    const isStriped =
+      (this.hasGrid && this.grid.props.striped === true) || this.props.striped === true || false
+
     this.setProps({
       tag: 'table',
+      classes: {
+        'nom-table-striped': isStriped,
+      },
       children: [
         { component: ColGroup },
         this.props.onlyBody !== true && { component: Thead },
@@ -51,6 +59,14 @@ class Table extends Component {
     if (this.loadingInst) {
       this.loadingInst.remove()
       this.loadingInst = null
+    }
+
+    if ((this.hasGrid && this.grid.props.autoMergeColumns) || this.hasRowGroup) {
+      this.grid.setProps({
+        classes: {
+          'nom-table-has-row-group': true,
+        },
+      })
     }
   }
 

@@ -40,6 +40,19 @@ define([], function () {
                   })
                 },
               },
+              {
+                component: 'RadioList',
+                options: [
+                  { text: '无斑马线', value: false },
+                  { text: '有斑马线', value: true },
+                ],
+                uistyle: 'button',
+                onValueChange: function (changed) {
+                  table.update({
+                    striped: changed.newValue,
+                  })
+                },
+              },
             ],
           },
           {

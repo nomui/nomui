@@ -501,9 +501,10 @@ Grid.defaults = {
     indentSize: 16,
   },
   allowCustomColumns: false,
-  autoMerge: null,
+  autoMergeColumns: null,
   visibleColumns: null,
   columnResizable: false,
+  striped: false,
 }
 
 Component.register(Grid)
