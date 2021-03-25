@@ -109,12 +109,22 @@ class Td extends Component {
         ? spanProps.rowSpan
         : this.props.column.rowSpan
 
+    if (rowSpan > 1) {
+      this.table.hasRowGroup = true
+    }
+
     this.setProps({
       children: children,
       attrs: {
         colspan: colSpan,
         rowspan: rowSpan,
         'data-field': this.props.column.field,
+        title:
+          (this.table.hasGrid && this.table.grid.props.showTitle) ||
+          this.table.props.showTitle ||
+          this.props.column.ellipsis
+            ? children
+            : null,
       },
       hidden: colSpan === 0 || rowSpan === 0,
       classes: {
@@ -124,6 +134,7 @@ class Td extends Component {
         'nom-table-fixed-left-last': this.props.column.lastLeft,
         'nom-table-fixed-right': this.props.column.fixed === 'right',
         'nom-table-fixed-right-first': this.props.column.firstRight,
+        'nom-table-ellipsis': this.props.column.ellipsis,
       },
     })
   }

@@ -1,6 +1,7 @@
 define([
   './basic.js',
   './styles.js',
+  './ellipsis.js',
   './sort.js',
   './resizable.js',
   './frozen-header.js',

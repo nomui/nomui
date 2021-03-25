@@ -14,6 +14,7 @@ class ColGroup extends Component {
     this.table = this.parent
     this.columns = this.table.props.columns
     this.colList = []
+    this.hasColumnGroup = false
   }
 
   _config() {

@@ -3,6 +3,18 @@ table.nom-table {
   table-layout: fixed;
   background-color: #fff;
   border-collapse: collapse;
+  tbody tr:hover {
+    background-color: #f5f5f5;
+    transition: all ease-in 0.25s;
+  }
+  &.nom-table-striped {
+    tbody tr:nth-child(even) {
+      background-color: #fbfbfb;
+      &:hover {
+        background-color: #f2f2f2;
+      }
+    }
+  }
 
   td,
   th {
@@ -19,6 +31,12 @@ table.nom-table {
       > .nom-icon {
         cursor: pointer;
       }
+    }
+    &.nom-table-ellipsis {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      word-break: keep-all;
     }
     .nom-table-resize-handler {
       position: absolute !important;
