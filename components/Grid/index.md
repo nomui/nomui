@@ -44,7 +44,7 @@
 | treeConfig | 树形表格配置 | `object` | - |
 | bordered | 是否显示边框 | `boolean` | `false` |
 | line | 线条样式，`row` 为行线条，`col` 为列线条，`both` 为行列线条 | `row` \| `col` \| `both` | - |
-| columnResizable | 是否允许拖动列宽（此项为 true 以后，同时还需要对应的列 column.resizable:true） | `boolean` | `false` |
+| columnResizable | 是否允许拖动列宽（此项为 true 以后，如果有某些列不想改变宽度，可单独设置 column.resizable:false） | `boolean` | `false` |
 
 ### column
 
