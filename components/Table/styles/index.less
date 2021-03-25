@@ -7,11 +7,19 @@ table.nom-table {
   td,
   th {
     padding: 8px 14px;
+    user-select: none;
     &.nom-table-fixed-left,
     &.nom-table-fixed-right {
       position: sticky;
       z-index: 2;
       background: #fff;
+    }
+    .nom-table-resize-handler {
+      position: absolute !important;
+      right: 0;
+      bottom: 0;
+      color: #888 !important;
+      cursor: e-resize;
     }
   }
 

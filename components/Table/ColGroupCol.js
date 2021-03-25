@@ -10,6 +10,11 @@ class ColGroupCol extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    this.table = this.parent.table
+    this.table.colRefs[this.props.column.field] = this
+  }
+
   _config() {
     const { width } = this.props.column
     let widthPx = null
@@ -21,6 +26,7 @@ class ColGroupCol extends Component {
         style: {
           width: widthPx,
         },
+        'data-field': this.props.column.field || null,
       },
     })
   }

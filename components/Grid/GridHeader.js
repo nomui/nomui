@@ -30,6 +30,17 @@ class GridHeader extends Component {
       },
     })
   }
+
+  resizeCol(data) {
+    const col = this.table.colRefs[data.field]
+    const w = col.props.column.width
+    let result = w + data.distance
+
+    if (result < 60) {
+      result = 60
+    }
+    col.update({ column: { width: result } })
+  }
 }
 
 Component.register(GridHeader)

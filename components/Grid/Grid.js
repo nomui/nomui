@@ -1,12 +1,12 @@
 import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
+import Icon from '../Icon/index'
 import Loading from '../Loading/index'
+import ExpandedTr from '../Table/ExpandedTr'
 import { isFunction, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 import GridSettingPopup from './GridSettingPopup'
-import Icon from '../Icon/index'
-import ExpandedTr from '../Table/ExpandedTr'
 
 class Grid extends Component {
   constructor(props, ...mixins) {
@@ -123,6 +123,10 @@ class Grid extends Component {
     if (this.loadingInst) {
       this.loadingInst.remove()
       this.loadingInst = null
+    }
+
+    if (this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
+      this.autoMergeCols()
     }
   }
 
@@ -380,6 +384,39 @@ class Grid extends Component {
     }
   }
 
+  autoMergeCols() {
+    const that = this
+    this.props.autoMergeColumns.forEach(function (key) {
+      that._mergeColumn(key)
+    })
+  }
+
+  _mergeColumn(key) {
+    const el = this.body.element.getElementsByTagName('table')[0]
+    function getIndex(data) {
+      for (let i = 0; i < el.rows[0].cells.length; i++) {
+        if (el.rows[0].cells[i].getAttribute('data-field') === data) {
+          return i
+        }
+      }
+    }
+    const index = getIndex(key)
+
+    for (let i = el.rows.length - 1; i > 0; i--) {
+      el.rows[i].cells[index].rowSpan = el.rows[i].cells[index].rowSpan || 1
+      if (el.rows[i].cells[index].innerHTML === el.rows[i - 1].cells[index].innerHTML) {
+        el.rows[i - 1].cells[index].rowSpan = el.rows[i].cells[index].rowSpan + 1
+        el.rows[i].cells[index].rowSpan = 0
+        el.rows[i].cells[index].style.display = 'none'
+      }
+    }
+  }
+
+  resizeCol(data) {
+    this.header && this.header.resizeCol(data)
+    this.body && this.body.resizeCol(data)
+  }
+
   _processExpandableColumn() {
     const { rowExpandable, columns } = this.props
     if (rowExpandable) {
@@ -464,6 +501,7 @@ Grid.defaults = {
     indentSize: 16,
   },
   allowCustomColumns: false,
+  autoMerge: null,
   visibleColumns: null,
 }
 

@@ -26,11 +26,12 @@ class Table extends Component {
 
   _created() {
     super._created()
-
+    this.colRefs = []
     this.hasGrid = this.parent.parent.componentType === 'Grid'
 
     if (this.hasGrid) {
       this.grid = this.parent.parent
+      this.parent.table = this
     }
   }
 
