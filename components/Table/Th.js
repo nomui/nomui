@@ -51,9 +51,9 @@ class Th extends Component {
           },
         },
       that.table.hasGrid &&
-        that.table.grid.props.resizable &&
-        this.props.column.colSpan === 1 &&
-        this.props.column.width && {
+        that.table.grid.props.columnResizable &&
+        this.props.column.resizable &&
+        this.props.column.colSpan === 1 && {
           component: 'Icon',
           ref: (c) => {
             that.resizer = c

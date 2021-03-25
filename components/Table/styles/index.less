@@ -18,8 +18,14 @@ table.nom-table {
       position: absolute !important;
       right: 0;
       bottom: 0;
-      color: #888 !important;
+      color: #666 !important;
+      visibility: hidden;
       cursor: e-resize;
+    }
+    &:hover {
+      .nom-table-resize-handler {
+        visibility: visible;
+      }
     }
   }
 

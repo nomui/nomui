@@ -503,6 +503,7 @@ Grid.defaults = {
   allowCustomColumns: false,
   autoMerge: null,
   visibleColumns: null,
+  columnResizable: false,
 }
 
 Component.register(Grid)
