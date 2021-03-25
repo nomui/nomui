@@ -505,6 +505,7 @@ Grid.defaults = {
   visibleColumns: null,
   columnResizable: false,
   striped: false,
+  showTitle: false,
 }
 
 Component.register(Grid)

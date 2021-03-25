@@ -20,6 +20,7 @@ class Table extends Component {
         initExpandLevel: -1,
         indentSize: 6,
       },
+      showTitle: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

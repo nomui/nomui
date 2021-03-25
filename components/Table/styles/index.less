@@ -32,6 +32,12 @@ table.nom-table {
         cursor: pointer;
       }
     }
+    &.nom-table-ellipsis {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      word-break: keep-all;
+    }
     .nom-table-resize-handler {
       position: absolute !important;
       right: 0;
