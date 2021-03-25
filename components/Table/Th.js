@@ -33,6 +33,9 @@ class Th extends Component {
       {
         tag: 'span',
         children: this.props.column.header || this.props.column.title,
+        onClick: function () {
+          that.onSortChange()
+        },
       },
       this.props.column.sortable &&
         this.props.column.colSpan > 0 && {
@@ -51,9 +54,9 @@ class Th extends Component {
           },
         },
       that.table.hasGrid &&
-        that.table.grid.props.resizable &&
-        this.props.column.colSpan === 1 &&
-        this.props.column.width && {
+        that.table.grid.props.columnResizable &&
+        this.props.column.resizable &&
+        this.props.column.colSpan === 1 && {
           component: 'Icon',
           ref: (c) => {
             that.resizer = c
