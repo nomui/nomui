@@ -31,15 +31,19 @@
 
 ### Grid
 
-| 参数            | 说明                           | 类型                  | 默认值  |
-| --------------- | ------------------------------ | --------------------- | ------- |
-| columns         | 表格列的配置描述，具体项见下表 | `array`               | []      |
-| data            | 表格数据数组                   | `array`               | `[]`    |
-| frozenHeader    | 冻结表头                       | `boolean`             | `false` |
-| frozenLeftCols  | 指定冻结左侧多少列             | `number`              | -       |
-| frozenRightCols | 指定冻结右侧多少列             | `number`              | -       |
-| keyField        | 表格行数据的主键字段           | `string`              | `id`    |
-| rowCheckable    | 表格行是否可选择               | `object` \| `boolean` | `id`    |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| columns | 表格列的配置描述，具体项见下表 | `array` | `[]` |
+| data | 表格数据数组 | `array` | `[]` |
+| frozenHeader | 冻结表头 | `boolean` | `false` |
+| frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
+| frozenRightCols | 指定冻结右侧多少列 | `number` | - |
+| keyField | 表格行数据的主键字段 | `string` | `id` |
+| rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
+| rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |
+| treeConfig | 树形表格配置 | `object` | - |
+| bordered | 是否显示边框 | `boolean` | `false` |
+| line | 线条样式，`row` 为行线条，`col` 为列线条，`both` 为行列线条 | `row` \| `col` \| `both` | - |
 
 ### column
 
@@ -59,22 +63,28 @@
     component:'Grid',
     columns:[
         {
-            field:'tags', title:'标签',
+            field: 'tags', title: '标签',
             cellRender:({
                 cellData,   // 单元格数据
                 cell,       // 单元格组件实例
                 rowData,    // 行数据
                 row,        // 行组件实例
                 table       // 表格组件实例
-            }) =>{
+            }) => {
+                const tagItems = cellData.map(function (item) {
+                    return {
+                      text: item,
+                    }
+                  })
+
                 return {
-                    component:'List',
-                    items:cellData,
-                    itemDefaults:{
-                        component:'Tag',
-                        _config:itemInst=>{
+                    component: 'List',
+                    items: tagItems,
+                    itemDefaults: {
+                        component: 'Tag',
+                        _config: itemInst => {
                             itemInst.setProps({
-                                text:''
+                                text: itemInst.props.text
                             })
                         }
                     }
