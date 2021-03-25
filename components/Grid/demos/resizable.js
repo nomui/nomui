@@ -18,13 +18,11 @@ define([], function () {
             field: 'author',
             key: 'author',
             title: '作者',
-            resizable: true,
           },
           {
             field: 'sales',
             key: 'sales',
             title: '销量',
-            resizable: true,
           },
 
           {
@@ -32,7 +30,6 @@ define([], function () {
             key: 'role',
             title: '主角',
             width: 500,
-            resizable: true,
           },
         ],
         data: [
