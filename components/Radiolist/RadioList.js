@@ -60,9 +60,15 @@ class RadioList extends Field {
     return null
   }
 
-  _setValue(value) {
+  _setValue(value, options) {
+    if (options === false) {
+      options = { triggerChange: false }
+    } else {
+      options = extend({ triggerChange: true }, options)
+    }
+
     if (value === null) {
-      this.optionList.unselectAllItems()
+      this.optionList.unselectAllItems({ triggerSelectionChange: options.triggerChange })
     } else {
       if (Array.isArray(value)) {
         value = value[0]

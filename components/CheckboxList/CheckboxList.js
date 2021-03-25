@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
 import List from './DefaultOptionList'
+import { extend } from '../util/index'
 
 class CheckboxList extends Field {
   constructor(props, ...mixins) {
@@ -50,13 +51,22 @@ class CheckboxList extends Field {
     return null
   }
 
-  _setValue(value) {
-    if (value === null) {
-      this.optionList.unselectAllItems()
+  _setValue(value, options) {
+    if (options === false) {
+      options = { triggerChange: false }
+    } else {
+      options = extend({ triggerChange: true }, options)
     }
-    this.optionList.selectItem(function () {
-      return this.props.value === value
-    })
+
+    if (value === null) {
+      this.optionList.unselectAllItems({ triggerSelectionChange: options.triggerChange })
+    }
+    this.optionList.selectItem(
+      function () {
+        return this.props.value === value
+      },
+      { triggerSelectionChange: options.triggerChange },
+    )
   }
 
   _disable() {

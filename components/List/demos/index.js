@@ -2,6 +2,7 @@ define(
     [
         './basic.js',
         './integration.js',
+        './scroll-to.js',
     ],
     function () {
         return {

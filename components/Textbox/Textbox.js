@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import Field from '../Field/index'
 import {} from '../Icon/index'
 import Input from './Input'
+import { extend } from '../util/index'
 
 class Textbox extends Field {
   constructor(props, ...mixins) {
@@ -74,11 +75,19 @@ class Textbox extends Field {
     return inputText
   }
 
-  _setValue(value) {
+  _setValue(value, options) {
+    if (options === false) {
+      options = { triggerChange: false }
+    } else {
+      options = extend({ triggerChange: true }, options)
+    }
+
     this.input.setText(value)
     const newValue = this.getValue()
-    if (newValue !== this.oldValue) {
-      super._onValueChange()
+    if (options.triggerChange) {
+      if (newValue !== this.oldValue) {
+        super._onValueChange()
+      }
     }
     this.oldValue = this.currentValue
     this.currentValue = newValue

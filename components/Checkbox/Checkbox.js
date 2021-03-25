@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
+import { extend } from '../util/index'
 
 class Checkbox extends Field {
   constructor(props, ...mixins) {
@@ -55,10 +56,15 @@ class Checkbox extends Field {
     return this.input.element.checked
   }
 
-  _setValue(value, triggerChange) {
+  _setValue(value, options) {
+    if (options === false) {
+      options = { triggerChange: false }
+    } else {
+      options = extend({}, options)
+    }
     this.removeClass('s-checked-part')
     this.input.element.checked = value === true
-    triggerChange !== false && this._onValueChange()
+    options.triggerChange !== false && this._onValueChange()
   }
 
   _disable() {

@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import { extend, isFunction } from '../util/index'
 import ListContent from './ListContent'
+import scrollIntoView from '../util/scrollIntoView'
 
 class List extends Component {
   constructor(props, ...mixins) {
@@ -14,6 +15,7 @@ class List extends Component {
       itemSelectable: {
         multiple: false,
         byClick: false,
+        scrollIntoView: true,
       },
     }
 
@@ -59,6 +61,9 @@ class List extends Component {
   selectItem(param, selectOption) {
     const item = this.getItem(param)
     item && item.select(selectOption)
+    if (this.props.itemSelectable.scrollIntoView) {
+      this.scrollTo(item)
+    }
   }
 
   selectItems(param, selectOption) {
@@ -174,6 +179,22 @@ class List extends Component {
       for (let i = 0; i < param.length; i++) {
         this.removeItem(param[i])
       }
+    }
+  }
+
+  scrollTo(param) {
+    const item = this.getItem(param)
+    if (item) {
+      scrollIntoView(item.wrapper.element, {
+        behavior: 'smooth',
+        scrollMode: 'if-needed',
+      })
+    }
+  }
+
+  scrollToSelected() {
+    if (this.selectedItem) {
+      this.scrollTo(this.selectedItem)
     }
   }
 }

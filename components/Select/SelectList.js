@@ -30,10 +30,10 @@ class SelectList extends List {
     } = this.selectControl.props
     const { text } = this.props
     const { checked, checkedOption } = this.selectControl
-    let filterStr = checked ? checkedOption?.text : text
+    let filterStr = checked ? checkedOption && checkedOption.text : text
     // null或undefined处理
     filterStr = filterStr || ''
-    const filterOptions = filterOption(filterStr, options)
+    const filterOptions = showSearch && filterOption(filterStr, options)
 
     this.setProps({
       items: showSearch ? filterOptions : options,
@@ -42,7 +42,7 @@ class SelectList extends List {
         multiple: multiple,
         byClick: true,
       },
-      selectedItems: showSearch ? checkedOption?.value : value,
+      selectedItems: showSearch ? checkedOption && checkedOption.value : value,
 
       onItemSelectionChange: () => {
         this.selectControl._onValueChange()

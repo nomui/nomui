@@ -110,6 +110,10 @@ class Router extends Component {
           that.element = this.element
         },
       })
+      delete this.props._created
+      delete this.props._rendered
+      delete this.props._config
+      delete this.props._remove
       this.setProps(routerProps)
       this._callRendered()
     })

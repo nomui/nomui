@@ -1,6 +1,6 @@
 import Component, { n } from '../Component/index'
 import Tooltip from '../Tooltip/index'
-import { clone, isFunction } from '../util/index'
+import { clone, extend, isFunction } from '../util/index'
 import RuleManager from '../util/rule-manager'
 import FieldActionMixin from './FieldActionMixin'
 import FieldContent from './FieldContent'
@@ -105,8 +105,13 @@ class Field extends Component {
     return value
   }
 
-  setValue(value, triggerChange) {
-    isFunction(this._setValue) && this._setValue(value, triggerChange)
+  setValue(value, options) {
+    if (options === false) {
+      options = { triggerChange: false }
+    } else {
+      options = extend({ triggerChange: true }, options)
+    }
+    isFunction(this._setValue) && this._setValue(value, options)
   }
 
   validate() {

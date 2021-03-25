@@ -19,9 +19,13 @@ class PanelHeader extends Component {
 
   config() {
     const { caption, nav, tools } = this.props
-    let toolsProps
+    let toolsProps, navProps
     const captionProps = caption ? Component.extendProps({ component: Caption }, caption) : null
-    const navProps = nav ? Component.extendProps({ component: Cols }, nav) : null
+    if (Array.isArray(nav)) {
+      navProps = { component: Cols, items: nav }
+    } else if (isPlainObject(nav)) {
+      navProps = Component.extendProps({ component: Cols }, nav)
+    }
     if (Array.isArray(tools)) {
       toolsProps = { component: Cols, items: tools }
     } else if (isPlainObject(tools)) {

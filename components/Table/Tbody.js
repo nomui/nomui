@@ -23,6 +23,7 @@ class Tbody extends Component {
       children: rows,
       childDefaults: Component.extendProps(
         {
+          component: Tr,
           key: function () {
             return this.props.data[keyField]
           },
