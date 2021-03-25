@@ -14,13 +14,19 @@ table.nom-table {
       z-index: 2;
       background: #fff;
     }
+    &.nom-table-sortable {
+      > span,
+      > .nom-icon {
+        cursor: pointer;
+      }
+    }
     .nom-table-resize-handler {
       position: absolute !important;
       right: 0;
       bottom: 0;
       color: #666 !important;
       visibility: hidden;
-      cursor: e-resize;
+      cursor: col-resize;
     }
     &:hover {
       .nom-table-resize-handler {

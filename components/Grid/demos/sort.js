@@ -1,27 +1,32 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '列排序',
+    file: 'sort',
     demo: function () {
       return {
         component: 'Grid',
-
+        onSort: (data) => {
+          console.log(data)
+        },
         columns: [
           {
             field: 'name',
             key: 'name',
             title: '标题',
             width: 200,
+            sortable: true,
           },
           {
             field: 'author',
             key: 'author',
             title: '作者',
+            sortable: true,
           },
           {
             field: 'sales',
             key: 'sales',
             title: '销量',
+            sortable: (a, b) => a.sales - b.sales,
           },
 
           {

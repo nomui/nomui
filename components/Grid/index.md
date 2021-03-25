@@ -44,17 +44,20 @@
 | treeConfig | 树形表格配置 | `object` | - |
 | bordered | 是否显示边框 | `boolean` | `false` |
 | line | 线条样式，`row` 为行线条，`col` 为列线条，`both` 为行列线条 | `row` \| `col` \| `both` | - |
+| columnResizable | 是否允许拖动列宽（此项为 true 以后，同时还需要对应的列 column.resizable:true） | `boolean` | `false` |
 
 ### column
 
 列描述数据对象，是 columns 中的一项，column 使用相同的 API。
 
-| 参数       | 说明                         | 类型                                      | 默认值 |
-| ---------- | ---------------------------- | ----------------------------------------- | ------ |
-| field      | 行数据（对象）的字段名       | `string`                                  | -      |
-| title      | 列头显示标题                 | `string`                                  | -      |
-| width      | 列宽度，单位 px              | `boolean`                                 | 120    |
-| cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | -      |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| field | 行数据（对象）的字段名 | `string` | - |
+| title | 列头显示标题 | `string` | - |
+| width | 列宽度，单位 px | `boolean` | 120 |
+| cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
+| resizable | 是否允许拖动列宽 | `boolean` | `false` |
+| sortable | 是否启用排序，为 true 时后端排序，也可以传自定义排序函数进行前端排序，如：`(a, b) => a.sales - b.sales` | `boolean` \| `function` | `false` |
 
 #### `cellRender` 使用示例及参数说明
 
