@@ -34,7 +34,7 @@ class Th extends Component {
         tag: 'span',
         children: this.props.column.header || this.props.column.title,
         onClick: function () {
-          that.onSortChange()
+          that.props.column.sortable && that.props.column.colSpan > 0 && that.onSortChange()
         },
       },
       this.props.column.sortable &&
