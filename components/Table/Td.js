@@ -113,6 +113,10 @@ class Td extends Component {
       this.table.hasRowGroup = true
     }
 
+    const isEllipsis =
+      (this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'body') &&
+      this.props.column.ellipsis !== false
+
     this.setProps({
       children: children,
       attrs: {
@@ -122,7 +126,7 @@ class Td extends Component {
         title:
           (this.table.hasGrid && this.table.grid.props.showTitle) ||
           this.table.props.showTitle ||
-          this.props.column.ellipsis
+          isEllipsis
             ? children
             : null,
       },
@@ -134,7 +138,7 @@ class Td extends Component {
         'nom-table-fixed-left-last': this.props.column.lastLeft,
         'nom-table-fixed-right': this.props.column.fixed === 'right',
         'nom-table-fixed-right-first': this.props.column.firstRight,
-        'nom-table-ellipsis': this.props.column.ellipsis,
+        'nom-table-ellipsis': isEllipsis,
       },
     })
   }

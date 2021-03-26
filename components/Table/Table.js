@@ -21,6 +21,7 @@ class Table extends Component {
         indentSize: 6,
       },
       showTitle: false,
+      ellipsis: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -42,6 +43,10 @@ class Table extends Component {
     this._propStyleClasses = ['line', 'bordered']
     const isStriped =
       (this.hasGrid && this.grid.props.striped === true) || this.props.striped === true || false
+
+    if (this.hasGrid) {
+      this.props.ellipsis = this.grid.props.ellipsis
+    }
 
     this.setProps({
       tag: 'table',

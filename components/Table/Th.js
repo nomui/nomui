@@ -74,6 +74,10 @@ class Th extends Component {
         },
     ]
 
+    const isEllipsis =
+      (this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'header') &&
+      this.props.column.ellipsis !== false
+
     this.setProps({
       children: children,
       classes: {
@@ -84,6 +88,7 @@ class Th extends Component {
         'nom-table-parent-th': this.props.column.colSpan > 1,
         'nom-table-leaf-th': this.props.column.colSpan === 1,
         'nom-table-sortable': !!(this.props.column.sortable && this.props.column.colSpan > 0),
+        'nom-table-ellipsis': isEllipsis,
       },
       attrs: {
         colspan: this.props.column.colSpan,
