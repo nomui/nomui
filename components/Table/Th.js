@@ -29,14 +29,19 @@ class Th extends Component {
       sortIcon = 'sort-down'
     }
 
+    const headerProps = {
+      tag: 'span',
+      children: this.props.column.header || this.props.column.title,
+    }
+
+    if (that.props.column.sortable && that.props.column.colSpan > 0) {
+      headerProps.onClick = function () {
+        that.onSortChange()
+      }
+    }
+
     const children = [
-      {
-        tag: 'span',
-        children: this.props.column.header || this.props.column.title,
-        onClick: function () {
-          that.props.column.sortable && that.props.column.colSpan > 0 && that.onSortChange()
-        },
-      },
+      headerProps,
       this.props.column.sortable &&
         this.props.column.colSpan > 0 && {
           component: 'Icon',
