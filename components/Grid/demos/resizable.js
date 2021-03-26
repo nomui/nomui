@@ -1,17 +1,18 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '改变列宽',
+    file: 'resizable',
     demo: function () {
       return {
         component: 'Grid',
-
+        columnResizable: true,
         columns: [
           {
             field: 'name',
             key: 'name',
             title: '标题',
             width: 200,
+            resizable: false,
           },
           {
             field: 'author',

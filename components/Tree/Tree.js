@@ -16,7 +16,7 @@ class Tree extends Component {
         title: 'title',
         value: 'value',
       },
-      sortable: true,
+      sortable: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

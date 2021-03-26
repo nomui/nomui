@@ -1,6 +1,8 @@
 import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
+import Icon from '../Icon/index'
 import Loading from '../Loading/index'
+import ExpandedTr from '../Table/ExpandedTr'
 import { isFunction, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
@@ -16,7 +18,6 @@ class Grid extends Component {
     this.lastSortField = null
     this.rowsRefs = {}
     this.checkedRowRefs = {}
-    this.originColumns = this.props.columns
   }
 
   _config() {
@@ -25,7 +26,14 @@ class Grid extends Component {
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
 
+    if (this.firstRender === false) {
+      this.props.columns = this.originColumns.slice()
+    } else {
+      this.originColumns = this.props.columns.slice()
+    }
+
     this._processCheckableColumn()
+    this._processExpandableColumn()
 
     if (frozenLeftCols || frozenRightCols) {
       const rev = this.props.columns.length - frozenRightCols
@@ -120,6 +128,10 @@ class Grid extends Component {
     if (this.loadingInst) {
       this.loadingInst.remove()
       this.loadingInst = null
+    }
+
+    if (this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
+      this.autoMergeCols()
     }
   }
 
@@ -377,6 +389,74 @@ class Grid extends Component {
     }
   }
 
+  autoMergeCols() {
+    const that = this
+    this.props.autoMergeColumns.forEach(function (key) {
+      that._mergeColumn(key)
+    })
+  }
+
+  _mergeColumn(key) {
+    const el = this.body.element.getElementsByTagName('table')[0]
+    function getIndex(data) {
+      for (let i = 0; i < el.rows[0].cells.length; i++) {
+        if (el.rows[0].cells[i].getAttribute('data-field') === data) {
+          return i
+        }
+      }
+    }
+    const index = getIndex(key)
+
+    for (let i = el.rows.length - 1; i > 0; i--) {
+      el.rows[i].cells[index].rowSpan = el.rows[i].cells[index].rowSpan || 1
+      if (el.rows[i].cells[index].innerHTML === el.rows[i - 1].cells[index].innerHTML) {
+        el.rows[i - 1].cells[index].rowSpan = el.rows[i].cells[index].rowSpan + 1
+        el.rows[i].cells[index].rowSpan = 0
+        el.rows[i].cells[index].style.display = 'none'
+      }
+    }
+  }
+
+  resizeCol(data) {
+    this.header && this.header.resizeCol(data)
+    this.body && this.body.resizeCol(data)
+  }
+
+  _processExpandableColumn() {
+    const { rowExpandable, columns } = this.props
+    if (rowExpandable) {
+      columns.unshift({
+        width: 50,
+        cellRender: ({ row, rowData }) => {
+          return {
+            component: Icon,
+            expandable: {
+              byClick: true,
+              expandedProps: {
+                type: 'minus-square',
+              },
+              collapsedProps: {
+                type: 'plus-square',
+              },
+              target: () => {
+                if (!row.expandedRow) {
+                  row.expandedRow = row.after({
+                    component: ExpandedTr,
+                    data: rowData,
+                  })
+                }
+                return row.expandedRow
+              },
+            },
+          }
+        },
+      })
+      this.setProps({
+        columns: columns,
+      })
+    }
+  }
+
   _onRowCheck(row) {
     const { rowCheckable } = this.props
     if (rowCheckable) {
@@ -426,7 +506,11 @@ Grid.defaults = {
     indentSize: 16,
   },
   allowCustomColumns: false,
+  autoMergeColumns: null,
   visibleColumns: null,
+  columnResizable: false,
+  striped: false,
+  showTitle: false,
 }
 
 Component.register(Grid)

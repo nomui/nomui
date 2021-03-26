@@ -3,15 +3,53 @@ table.nom-table {
   table-layout: fixed;
   background-color: #fff;
   border-collapse: collapse;
+  tbody tr:hover {
+    background-color: #f5f5f5;
+    transition: all ease-in 0.25s;
+  }
+  &.nom-table-striped {
+    tbody tr:nth-child(even) {
+      background-color: #fbfbfb;
+      &:hover {
+        background-color: #f2f2f2;
+      }
+    }
+  }
 
   td,
   th {
     padding: 8px 14px;
+    user-select: none;
     &.nom-table-fixed-left,
     &.nom-table-fixed-right {
       position: sticky;
       z-index: 2;
       background: #fff;
+    }
+    &.nom-table-sortable {
+      > span,
+      > .nom-icon {
+        cursor: pointer;
+      }
+    }
+    &.nom-table-ellipsis {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      word-break: keep-all;
+    }
+    .nom-table-resize-handler {
+      position: absolute !important;
+      right: 0;
+      bottom: 0;
+      color: #666 !important;
+      visibility: hidden;
+      cursor: col-resize;
+    }
+    &:hover {
+      .nom-table-resize-handler {
+        visibility: visible;
+      }
     }
   }
 

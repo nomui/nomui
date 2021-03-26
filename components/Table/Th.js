@@ -14,6 +14,8 @@ class Th extends Component {
   _created() {
     this.tr = this.parent
     this.table = this.tr.table
+    this.resizer = null
+    this.lastDistance = 0
   }
 
   _config() {
@@ -27,33 +29,50 @@ class Th extends Component {
       sortIcon = 'sort-down'
     }
 
-    const children = {
-      component: 'Cols',
-      align: 'center',
-      gutter: 'xs',
-      justify: this.props.column.colSpan > 1 ? 'center' : null,
-      items: [
-        {
-          children: this.props.column.header || this.props.column.title,
-        },
-        this.props.column.sortable &&
-          this.props.column.colSpan > 1 && {
-            component: 'Icon',
-            type: sortIcon,
-            onClick: function () {
-              that.onSortChange()
-            },
-          },
-        that.table.hasGrid &&
-          that.table.grid.props.allowFrozenCols && {
-            component: 'Icon',
-            type: 'pin',
-            onClick: function () {
-              // that.table.grid.handlePinClick(that.props.column)
-            },
-          },
-      ],
+    const headerProps = {
+      tag: 'span',
+      children: this.props.column.header || this.props.column.title,
     }
+
+    if (that.props.column.sortable && that.props.column.colSpan > 0) {
+      headerProps.onClick = function () {
+        that.onSortChange()
+      }
+    }
+
+    const children = [
+      headerProps,
+      this.props.column.sortable &&
+        this.props.column.colSpan > 0 && {
+          component: 'Icon',
+          type: sortIcon,
+          onClick: function () {
+            that.onSortChange()
+          },
+        },
+      that.table.hasGrid &&
+        that.table.grid.props.allowFrozenCols && {
+          component: 'Icon',
+          type: 'pin',
+          onClick: function () {
+            // that.table.grid.handlePinClick(that.props.column)
+          },
+        },
+      that.table.hasGrid &&
+        that.table.grid.props.columnResizable &&
+        this.props.column.resizable !== false &&
+        this.props.column.colSpan === 1 && {
+          component: 'Icon',
+          ref: (c) => {
+            that.resizer = c
+          },
+          type: 'resize-handler',
+          classes: { 'nom-table-resize-handler': true },
+          onClick: function () {
+            // that.table.grid.handlePinClick(that.props.column)
+          },
+        },
+    ]
 
     this.setProps({
       children: children,
@@ -63,6 +82,8 @@ class Th extends Component {
         'nom-table-fixed-right': this.props.column.fixed === 'right',
         'nom-table-fixed-right-first': this.props.column.firstRight,
         'nom-table-parent-th': this.props.column.colSpan > 1,
+        'nom-table-leaf-th': this.props.column.colSpan === 1,
+        'nom-table-sortable': !!(this.props.column.sortable && this.props.column.colSpan > 0),
       },
       attrs: {
         colspan: this.props.column.colSpan,
@@ -80,6 +101,33 @@ class Th extends Component {
           this.parent.element.offsetWidth - this.element.offsetLeft - this.element.offsetWidth
         }px`,
       })
+    }
+
+    this.resizer && this.handleResize()
+  }
+
+  handleResize() {
+    const resizer = this.resizer.element
+    const that = this
+
+    resizer.onmousedown = function (evt) {
+      const startX = evt.clientX
+      that.lastDistance = 0
+
+      document.onmousemove = function (e) {
+        const endX = e.clientX
+        const moveLen = endX - startX
+
+        const distance = moveLen - that.lastDistance
+        that.table.grid.resizeCol({
+          field: that.props.column.field,
+          distance: distance,
+        })
+        that.lastDistance = moveLen
+      }
+    }
+    document.onmouseup = function () {
+      document.onmousemove = null
     }
   }
 

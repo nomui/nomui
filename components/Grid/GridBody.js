@@ -36,22 +36,22 @@ class GridBody extends Component {
           const { scrollLeft } = this.element
 
           this.grid.header.element.scrollLeft = scrollLeft
-
-          // console.log(scrollLeft)
-          // console.log(this.grid.header.element.scrollLeft)
-          // if (scrollLeft > this.grid.header.element.scrollLeft) {
-          //   debugger
-          // }
-
-          // this.grid.update({
-          //   classes: {
-          //     'nom-table-has-left-fixed': scrollLeft > 0,
-          //     'nom-table-has-right-fixed': scrollLeft !== this.element.scrollWidth,
-          //   },
-          // })
         },
       },
     })
+  }
+
+  resizeCol(data) {
+    const col = this.table.colRefs[data.field]
+    const tdWidth = this.table.element.rows[0].cells[col.props.index].offsetWidth
+    const colWidth = col.props.column.width || tdWidth
+
+    let result = colWidth + data.distance
+
+    if (result < 60) {
+      result = 60
+    }
+    col.update({ column: { width: result } })
   }
 }
 

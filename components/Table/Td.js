@@ -14,13 +14,15 @@ class Td extends Component {
 
   _created() {
     this.tr = this.parent
-    this.table = this.parent.table
+    this.table = this.tr.table
   }
 
   _config() {
     const { level, isLeaf, data: rowData } = this.tr.props
     const { column } = this.props
     const { treeConfig } = this.table.props
+
+    let spanProps = null
 
     let children = this.props.data
 
@@ -38,8 +40,19 @@ class Td extends Component {
         this,
         this.props.data,
         this.props.record,
-        this.parent.props.index,
+        this.tr.props.index,
       )
+    }
+
+    if (isFunction(column.cellMerge)) {
+      spanProps = column.cellMerge({
+        cell: this,
+        row: this.tr,
+        talbe: this.table,
+        cellData: this.props.data,
+        rowData: this.tr.props.data,
+        index: this.tr.props.index,
+      })
     }
 
     const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
@@ -87,20 +100,31 @@ class Td extends Component {
     }
 
     const colSpan =
-      this.props.colSpan !== null && this.props.colSpan !== undefined
-        ? this.props.colSpan
+      spanProps && spanProps.colSpan !== null && spanProps.colSpan !== undefined
+        ? spanProps.colSpan
         : this.props.column.colSpan
 
     const rowSpan =
-      this.props.rowSpan !== null && this.props.rowSpan !== undefined
-        ? this.props.rowSpan
+      spanProps && spanProps.rowSpan !== null && spanProps.rowSpan !== undefined
+        ? spanProps.rowSpan
         : this.props.column.rowSpan
+
+    if (rowSpan > 1) {
+      this.table.hasRowGroup = true
+    }
 
     this.setProps({
       children: children,
       attrs: {
         colspan: colSpan,
         rowspan: rowSpan,
+        'data-field': this.props.column.field,
+        title:
+          (this.table.hasGrid && this.table.grid.props.showTitle) ||
+          this.table.props.showTitle ||
+          this.props.column.ellipsis
+            ? children
+            : null,
       },
       hidden: colSpan === 0 || rowSpan === 0,
       classes: {
@@ -110,6 +134,7 @@ class Td extends Component {
         'nom-table-fixed-left-last': this.props.column.lastLeft,
         'nom-table-fixed-right': this.props.column.fixed === 'right',
         'nom-table-fixed-right-first': this.props.column.firstRight,
+        'nom-table-ellipsis': this.props.column.ellipsis,
       },
     })
   }

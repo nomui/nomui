@@ -14,6 +14,7 @@ class ColGroup extends Component {
     this.table = this.parent
     this.columns = this.table.props.columns
     this.colList = []
+    this.hasColumnGroup = false
   }
 
   _config() {
@@ -43,14 +44,17 @@ class ColGroup extends Component {
 
   createCols(data) {
     const that = this
+    let index = -1
     data.forEach(function (column) {
       if (column.children && column.children.length > 0) {
         that.createCols(column.children)
       } else {
+        index += 1
         that.colList.push({
           component: ColGroupCol,
           name: column.field,
           column: column,
+          index: index,
         })
       }
     })
