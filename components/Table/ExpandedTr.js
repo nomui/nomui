@@ -15,6 +15,7 @@ class ExpandedTr extends Component {
   _created() {
     this.tbody = this.parent
     this.table = this.tbody.table
+    this.grid = this.table.grid
   }
 
   _config() {
@@ -33,7 +34,7 @@ class ExpandedTr extends Component {
           attrs: {
             colspan: columns.length,
           },
-          children: render({ row: this, rowData: this.props.data }),
+          children: render({ row: this, rowData: this.props.data, grid: this.grid }),
         },
       })
     }
