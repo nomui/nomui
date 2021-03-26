@@ -18,7 +18,6 @@ class Grid extends Component {
     this.lastSortField = null
     this.rowsRefs = {}
     this.checkedRowRefs = {}
-    this.originColumns = this.props.columns
   }
 
   _config() {
@@ -26,6 +25,12 @@ class Grid extends Component {
     this._propStyleClasses = ['bordered']
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
+
+    if (this.firstRender === false) {
+      this.props.columns = this.originColumns.slice()
+    } else {
+      this.originColumns = this.props.columns.slice()
+    }
 
     this._processCheckableColumn()
     this._processExpandableColumn()
