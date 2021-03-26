@@ -114,6 +114,11 @@ class Field extends Component {
     isFunction(this._setValue) && this._setValue(value, options)
   }
 
+  getValueText() {
+    const value = isFunction(this._getValueText) ? this._getValueText() : null
+    return value
+  }
+
   validate() {
     this.validateTriggered = true
     return this._validate()

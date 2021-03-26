@@ -51,6 +51,19 @@ class CheckboxList extends Field {
     return null
   }
 
+  _getValueText() {
+    const selected = this.getSelectedOptions()
+    if (selected !== null && Array.isArray(selected)) {
+      const vals = selected.map(function (item) {
+        return item.props.text
+      })
+
+      return vals
+    }
+
+    return null
+  }
+
   _setValue(value, options) {
     if (options === false) {
       options = { triggerChange: false }

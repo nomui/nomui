@@ -213,6 +213,40 @@ class Select extends Field {
     return this.optionList.getSelectedItems()
   }
 
+  _getValueText(options) {
+    const { valueOptions } = this.props
+    options = extend(
+      {
+        asArray: false,
+      },
+      valueOptions,
+      options,
+    )
+
+    if (!this.optionList) {
+      return this.currentValue
+    }
+
+    const selected = this.getSelectedOption()
+
+    if (selected !== null) {
+      if (Array.isArray(selected)) {
+        const vals = selected.map(function (item) {
+          return item.props.text
+        })
+
+        return vals
+      }
+      if (options.asArray === true) {
+        return [selected.props.text]
+      }
+
+      return selected.props.text
+    }
+
+    return null
+  }
+
   _getValue(options) {
     const { valueOptions, showSearch } = this.props
     options = extend(

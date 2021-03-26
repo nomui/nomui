@@ -39,6 +39,27 @@ class RadioList extends Field {
     return this.optionList.getSelectedItem()
   }
 
+  _getValueText(options) {
+    const { valueOptions } = this.props
+    options = extend(
+      {
+        asArray: false,
+      },
+      valueOptions,
+      options,
+    )
+
+    const selected = this.getSelectedOption()
+    if (selected !== null) {
+      if (options.asArray === true) {
+        return [selected.props.text]
+      }
+      return selected.props.text
+    }
+
+    return null
+  }
+
   _getValue(options) {
     const { valueOptions } = this.props
     options = extend(
