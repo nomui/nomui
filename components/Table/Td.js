@@ -61,28 +61,27 @@ class Td extends Component {
       if (!isLeaf) {
         this.setProps({
           expanded: treeConfig.initExpandLevel === -1 || treeConfig.initExpandLevel > level,
-        })
-
-        this._setExpandable({
-          byClick: true,
-          target: () => {
-            return rowData.children.map((subrowData) => {
-              return this.table.grid.rowsRefs[subrowData[this.table.props.keyField]]
-            })
-          },
-          indicator: {
-            component: 'Icon',
-            classes: { 'nom-tr-expand-indicator': true },
-            expandable: {
-              expandedProps: {
-                type: 'down',
-              },
-              collapsedProps: {
-                type: 'right',
+          expandable:{
+            byClick: true,
+            target: () => {
+              return rowData.children.map((subrowData) => {
+                return this.table.grid.rowsRefs[subrowData[this.table.props.keyField]]
+              })
+            },
+            indicator: {
+              component: 'Icon',
+              classes: { 'nom-tr-expand-indicator': true },
+              expandable: {
+                expandedProps: {
+                  type: 'down',
+                },
+                collapsedProps: {
+                  type: 'right',
+                },
               },
             },
-          },
-        })
+          }
+        })        
       }
 
       children = [
@@ -94,7 +93,7 @@ class Td extends Component {
             },
           },
         },
-        !isLeaf && this.props.expandable.indicator,
+        !isLeaf && this.getExpandableIndicatorProps(),
         { tag: 'span', children: children },
       ]
     }

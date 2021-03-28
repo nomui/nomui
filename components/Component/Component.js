@@ -364,7 +364,7 @@ class Component {
     }
 
     let { normalizedProps, mixins } = this._normalizeProps(props)
-    
+
     normalizedProps = Component.extendProps({}, normalizedProps, {
       reference: this.element,
       placement: 'after',
@@ -580,12 +580,8 @@ class Component {
     this.element.classList.remove(className)
   }
 
-  _setExpandable(expandableProps) {
+  _setExpandableProps() {
     const that = this
-
-    this.setProps({
-      expandable: expandableProps,
-    })
     const { expandable, expanded } = this.props
     if (isPlainObject(expandable)) {
       if (isPlainObject(expandable.indicator)) {
@@ -600,12 +596,7 @@ class Component {
           },
         })
       }
-    }
-  }
 
-  _setExpandableProps() {
-    const { expandable } = this.props
-    if (isPlainObject(expandable)) {
       if (this.props.expanded) {
         if (expandable.expandedProps) {
           this.setProps(expandable.expandedProps)
@@ -642,17 +633,29 @@ class Component {
     }
   }
 
-  _getExpandIndicator() {
+  getExpandableIndicatorProps(expanded = null) {
+    const that = this
     const { indicator } = this.props.expandable
+    if (expanded == null) {
+      expanded = this.props.expanded
+    }
+
     if (indicator === undefined || indicator === null) {
       return null
     }
-    if (indicator instanceof Component) {
-      return indicator
+    if (isPlainObject(indicator)) {
+      this.setProps({
+        expandable: {
+          indicator: {
+            expanded: expanded,
+            _created: function () {
+              that._expandIndicator = this
+            },
+          },
+        },
+      })
     }
-    if (isFunction(indicator)) {
-      return indicator.call(this, this)
-    }
+    return this.props.expandable.indicator
   }
 
   getChildren() {
@@ -769,18 +772,19 @@ class Component {
       (selectable && selectable.byClick === true) ||
       (expandable && expandable.byClick && !expandable.byIndicator)
     ) {
-      if (expandable.byIndicator) {
-        const indicator = this._getExpandIndicator
-        indicator._on('click', () => {
-          this.toggleExpand()
-        })
-      } else {
-        this.setProps({
-          attrs: {
-            onclick: this.__handleClick,
-          },
-        })
-      }
+      this.setProps({
+        attrs: {
+          onclick: this.__handleClick,
+        },
+      })
+    }
+
+    if (expandable.byIndicator) {
+      const indicator = this._expandIndicator
+      indicator._on('click', (event) => {
+        this.toggleExpand()
+        event.stopPropagation()
+      })
     }
   }
 
