@@ -9,11 +9,12 @@ define([], function () {
           initExpandLevel: -1,
           nodes: [
             {
-              text: 'one',
-              nodes: [{ text: 'one 1' }],
+              text: '层级 1',
+              nodes: [{ text: '层级 1.1', nodes: [{ text: '层级 1.1.1' }, { text: '层级 1.2' }] }],
             },
             {
-              text: 'two',
+              text: '层级 2',
+              nodes: [{ text: '层级 2.1' }, { text: '层级 2.2' }],
             },
           ],
         },

@@ -529,9 +529,9 @@ class Component {
         expandTarget.show && expandTarget.show()
       }
     }
-    if (!this.props.expandable.byIndicator) {
-      this._expandIndicator && this._expandIndicator.expand()
-    }
+    // if (!this.props.expandable.byIndicator) {
+    this._expandIndicator && this._expandIndicator.expand()
+    // }
     const { expandedProps } = this.props.expandable
     if (expandedProps) {
       this.update(expandedProps)
@@ -554,9 +554,9 @@ class Component {
         expandTarget.hide && expandTarget.hide()
       }
     }
-    if (!this.props.expandable.byIndicator) {
-      this._expandIndicator && this._expandIndicator.collapse()
-    }
+    //  if (!this.props.expandable.byIndicator) {
+    this._expandIndicator && this._expandIndicator.collapse()
+    // }
     isFunction(this._collapse) && this._collapse()
     const { collapsedProps } = this.props.expandable
     if (collapsedProps) {
@@ -635,7 +635,7 @@ class Component {
 
   getExpandableIndicatorProps(expanded = null) {
     const that = this
-    const { indicator } = this.props.expandable
+    const { indicator, byIndicator } = this.props.expandable
     if (expanded == null) {
       expanded = this.props.expanded
     }
@@ -654,6 +654,21 @@ class Component {
           },
         },
       })
+
+      if (byIndicator === true) {
+        this.setProps({
+          expandable: {
+            indicator: {
+              attrs: {
+                onclick: (event) => {
+                  that.toggleExpand()
+                  event.stopPropagation()
+                },
+              },
+            },
+          },
+        })
+      }
     }
     return this.props.expandable.indicator
   }
@@ -779,13 +794,13 @@ class Component {
       })
     }
 
-    if (expandable.byIndicator) {
+    /* if (expandable.byIndicator) {
       const indicator = this._expandIndicator
       indicator._on('click', (event) => {
         this.toggleExpand()
         event.stopPropagation()
       })
-    }
+    } */
   }
 
   __handleClick(event) {
