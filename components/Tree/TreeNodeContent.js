@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import Checkbox from '../Checkbox/index'
 
 class TreeNodeContent extends Component {
   constructor(props, ...mixins) {
@@ -17,7 +18,7 @@ class TreeNodeContent extends Component {
 
   _config() {
     const { text } = this.node.props
-    const { initExpandLevel } = this.tree.props
+    const { initExpandLevel, checkable } = this.tree.props
     const expanded = initExpandLevel === -1 || initExpandLevel > this.level
     this.setProps({
       expanded,
@@ -49,9 +50,20 @@ class TreeNodeContent extends Component {
     this.setProps({
       children: [
         this.getExpandableIndicatorProps(expanded),
+        checkable && this._getCheckbox(),
         { tag: 'span', classes: { 'nom-tree-node-content-text': true }, children: text },
       ],
     })
+  }
+
+  _getCheckbox() {
+    return {
+      component: Checkbox,
+      plain: true,
+      classes: {
+        'nom-tree-node-checkbox': true,
+      },
+    }
   }
 }
 
