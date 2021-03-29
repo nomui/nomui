@@ -15,8 +15,10 @@ class TreeNode extends Component {
     this.parentNode = this.parent.parentNode
     if (this.parentNode !== null) {
       this.level = this.parentNode.level + 1
+      this.parentNode.subnodeRefs[this.key] = this
     }
     this.tree = this.parent.tree
+    this.subnodeRefs = {}
   }
 
   _config() {
