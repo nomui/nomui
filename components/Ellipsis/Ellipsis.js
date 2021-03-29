@@ -23,7 +23,7 @@ class Ellipsis extends Component {
 
 Component.mixin({
   _config: function () {
-    if (this.props.ellipsis) {
+    if (this.props.ellipsis === true && this.parent.componentType !== 'Tr') {
       this.setProps({
         classes: {
           'nom-ellipsis-block': true,

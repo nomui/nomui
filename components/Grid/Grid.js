@@ -511,6 +511,7 @@ Grid.defaults = {
   columnResizable: false,
   striped: false,
   showTitle: false,
+  ellipsis: false,
 }
 
 Component.register(Grid)
