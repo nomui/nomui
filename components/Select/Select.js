@@ -232,24 +232,26 @@ class Select extends Field {
     )
 
     if (!this.optionList) {
-      return this.currentValue
+      value = this.currentValue
     }
 
     const selected = value !== undefined ? this._getOptionsByValue(value) : this.getSelectedOption()
 
     if (selected !== null) {
-      if (Array.isArray(selected)) {
+      if (Array.isArray(selected) && selected.length > 0) {
         const vals = selected.map(function (item) {
           return item.props ? item.props.text : item.text
         })
 
         return vals
       }
-      if (options.asArray === true) {
+      if (options.asArray === true && !Array.isArray(selected)) {
         return selected.props ? [selected.props.text] : [selected.text]
       }
 
-      return selected.props ? selected.props.text : selected.text
+      if (!Array.isArray(selected)) {
+        return selected.props ? selected.props.text : selected.text
+      }
     }
 
     return null
@@ -278,18 +280,20 @@ class Select extends Field {
     const selected = this.getSelectedOption()
 
     if (selected !== null) {
-      if (Array.isArray(selected)) {
+      if (Array.isArray(selected) && selected.length > 0) {
         const vals = selected.map(function (item) {
           return item.props.value
         })
 
         return vals
       }
-      if (options.asArray === true) {
+      if (options.asArray === true && !Array.isArray(selected)) {
         return [selected.props.value]
       }
 
-      return selected.props.value
+      if (!Array.isArray(selected)) {
+        return selected.props.value
+      }
     }
 
     return null

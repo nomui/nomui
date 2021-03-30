@@ -40,7 +40,7 @@ class CheckboxList extends Field {
 
   _getValue() {
     const selected = this.getSelectedOptions()
-    if (selected !== null && Array.isArray(selected)) {
+    if (selected !== null && Array.isArray(selected) && selected.length > 0) {
       const vals = selected.map(function (item) {
         return item.props.value
       })
@@ -54,7 +54,7 @@ class CheckboxList extends Field {
   _getValueText(options, value) {
     const selected =
       value !== undefined ? this._getOptionsByValue(value) : this.getSelectedOptions()
-    if (selected !== null && Array.isArray(selected)) {
+    if (selected !== null && Array.isArray(selected) && selected.length > 0) {
       const vals = selected.map(function (item) {
         return item.props ? item.props.text : item.text
       })
