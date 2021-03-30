@@ -24,11 +24,8 @@ class TimePickerPanel extends Component {
   _created() {
     super._created()
 
-    if (this.parent.parent.parent.componentType === 'TimePickerPopup') {
-      this.timePickerPopup = this.parent.parent.parent
-      this.timePicker = this.timePickerPopup.pickerControl
-      this.timePicker.panel = this
-    }
+    this.datePicker = this.parent.parent.parent.opener.parent.parent
+    this.datePicker.timePicker = this
 
     this.defaultValue = this.props.value
     this.timeList = []
@@ -197,7 +194,7 @@ class TimePickerPanel extends Component {
 
   setValue(c) {
     this.timeText.setValue(c)
-    this.props.onValueChange && this._callHandler(this.props.onValueChange(c))
+    this.props.onValueChange && this._callHandler(this.props.onValueChange(this.time))
   }
 
   setTime(data) {
@@ -216,18 +213,6 @@ class TimePickerPanel extends Component {
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].resetTime()
     })
-  }
-
-  clearTime() {
-    this.setValue(null)
-    this.empty = true
-    this.defaultValue = null
-    this.time = {
-      hour: '00',
-      minute: '00',
-      second: '00',
-    }
-    this.resetList()
   }
 
   onShown() {

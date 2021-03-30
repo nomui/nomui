@@ -10,14 +10,21 @@ import TimePickerPanel from './TimePickerPanel'
 class DatePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
-      format: 'yyyy-MM-dd',
+      format: 'yyyy-MM-dd HH:mm:ss',
       disabledTime: null,
       minDate: null,
       maxDate: null,
       yearRange: [50, 20],
+      showTime: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
+  }
+
+  _created() {
+    super._created()
+    this.dateInfo = null
+    this.todayItem = null
   }
 
   _config() {
@@ -44,18 +51,20 @@ class DatePicker extends Textbox {
           },
           classes: {
             'nom-date-picker-popup': true,
+            'nom-date-picker-with-time': this.props.showTime,
           },
           triggerAction: 'click',
-          attrs: {
-            style: {
-              width: '500px',
-            },
-          },
+
           children: {
             component: 'Cols',
             items: [
               {
                 component: Rows,
+                attrs: {
+                  style: {
+                    width: '260px',
+                  },
+                },
                 items: [
                   {
                     component: Cols,
@@ -157,6 +166,7 @@ class DatePicker extends Textbox {
                         }
 
                         if (isToday) {
+                          that.todayItem = this
                           this.setProps({
                             styles: {
                               border: ['1px', 'primary'],
@@ -174,16 +184,31 @@ class DatePicker extends Textbox {
                       },
                       onClick: function (args) {
                         const { year: selYear, month: selMonth, day: selDay } = args.sender.props
-                        const selDate = new Date(selYear, selMonth - 1, selDay)
-                        that.setValue(selDate.format(format))
-                        that.popup.hide()
+
+                        that.dateInfo = {
+                          ...that.dateInfo,
+                          ...{
+                            year: selYear,
+                            month: selMonth - 1,
+                            day: selDay,
+                          },
+                        }
+
+                        that.updateValue()
+                        !that.props.showTime && that.popup.hide()
                       },
                     },
                   },
                 ],
               },
-              {
+              this.props.showTime && {
                 component: TimePickerPanel,
+                attrs: {
+                  style: {
+                    // 'border-left': '1px solid #ddd',
+                    'padding-left': '5px',
+                  },
+                },
                 onValueChange: (data) => {
                   this.handleTimeChange(data)
                 },
@@ -319,8 +344,33 @@ class DatePicker extends Textbox {
     }
   }
 
-  handleTimeChange(data) {
-    console.log(data)
+  handleTimeChange(param) {
+    if (!this.days.getSelectedItem()) {
+      this.days.selectItem(this.todayItem)
+    }
+    this.dateInfo = {
+      ...this.dateInfo,
+      ...{
+        hour: param.hour,
+        minute: param.minute,
+        second: param.second,
+      },
+    }
+
+    this.updateValue()
+  }
+
+  updateValue() {
+    const date = new Date(
+      this.dateInfo.year || new Date().format('yyyy'),
+      this.dateInfo.month || new Date().format('MM') - 1,
+      this.dateInfo.day || new Date().format('dd'),
+      this.dateInfo.hour || '00',
+      this.dateInfo.minute || '00',
+      this.dateInfo.second || '00',
+    )
+
+    this.setValue(date.format(this.props.format))
   }
 }
 
