@@ -1,8 +1,8 @@
 import Component from '../Component/index'
 import { extend, isFunction } from '../util/index'
+import scrollIntoView from '../util/scrollIntoView'
 import MenuItem from './MenuItem'
 import MenuItemWrapper from './MenuItemWrapper'
-import scrollIntoView from '../util/scrollIntoView'
 
 class Menu extends Component {
   constructor(props, ...mixins) {
@@ -125,7 +125,7 @@ class Menu extends Component {
     },
   ) {
     const item = this.getItem(param)
-    if (item) {
+    if (item && item.wrapper) {
       scrollIntoView(item.wrapper.element, scrollToOptions)
     }
   }
