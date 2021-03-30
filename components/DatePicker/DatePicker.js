@@ -10,6 +10,10 @@ class DatePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
       format: 'yyyy-MM-dd',
+      disabledTime: null,
+      minDate: null,
+      maxDate: null,
+      yearRange: [50, 20],
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -116,7 +120,30 @@ class DatePicker extends Textbox {
                   },
                   _config: function () {
                     const textStyles = ['center']
-                    const isToday = this.props.date === new Date().format('yyyy-M-dd')
+                    const date = that._getDateString(
+                      this.props.year,
+                      this.props.month,
+                      this.props.day,
+                    )
+                    const isToday = date === new Date().format('yyyy-MM-dd')
+                    let isDisabled = false
+                    if (that.props.disabledTime) {
+                      isDisabled = that.props.disabledTime(date)
+                    }
+
+                    if (
+                      that.props.minDate &&
+                      new Date(date).isBefore(new Date(that.props.minDate))
+                    ) {
+                      isDisabled = true
+                    }
+
+                    if (
+                      that.props.maxDate &&
+                      new Date(date).isAfter(new Date(that.props.maxDate))
+                    ) {
+                      isDisabled = true
+                    }
 
                     if (this.props.lastMonth === true || this.props.nextMonth === true) {
                       textStyles.push('muted')
@@ -135,6 +162,7 @@ class DatePicker extends Textbox {
                         text: textStyles,
                       },
                       children: this.props.day,
+                      disabled: !!isDisabled,
                     })
                   },
                   onClick: function (args) {
@@ -158,7 +186,7 @@ class DatePicker extends Textbox {
     const years = []
     const thisYear = new Date().getFullYear()
 
-    for (let i = thisYear + 20; i > thisYear - 30; i--) {
+    for (let i = thisYear + this.props.yearRange[1]; i > thisYear - this.props.yearRange[0]; i--) {
       years.push({
         text: i,
         value: i,
@@ -205,7 +233,6 @@ class DatePicker extends Textbox {
           year: lastMonthYear,
           month: lastMonthMonth,
           lastMonth: true,
-          date: `${lastMonthYear}-${lastMonthMonth}-${i}`,
         })
       }
     }
@@ -215,7 +242,6 @@ class DatePicker extends Textbox {
         day: i,
         year: year,
         month: month,
-        date: `${year}-${month}-${i}`,
       })
     }
     const nextMonthCount = 7 - (daysList.length % 7 || 7)
@@ -229,7 +255,6 @@ class DatePicker extends Textbox {
         year: nextMonthYear,
         month: nextMonthMonth,
         nextMonth: true,
-        date: `${nextMonthYear}-${nextMonthMonth}-${i}`,
       })
     }
     return daysList
@@ -243,6 +268,18 @@ class DatePicker extends Textbox {
   /* 求XX年XX月有多少天 */
   _getDaysInMonth(year, month) {
     return 32 - this._daylightSavingAdjust(new Date(year, month - 1, 32)).getDate()
+  }
+
+  _getDoubleDigit(num) {
+    if (num < 10) {
+      return `0${num}`
+    }
+
+    return num
+  }
+
+  _getDateString(year, month, day) {
+    return `${year}-${this._getDoubleDigit(month)}-${this._getDoubleDigit(day)}`
   }
 
   _daylightSavingAdjust(date) {

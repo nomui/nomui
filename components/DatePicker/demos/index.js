@@ -1,4 +1,4 @@
-define(['./basic.js', './disabled.js', './with-format.js'], function () {
+define(['./basic.js', './disabled.js', './disabledTime.js', './with-format.js'], function () {
   return {
     title: 'DatePicker',
     subtitle: '日期',
