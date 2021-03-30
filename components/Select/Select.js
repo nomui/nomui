@@ -172,7 +172,7 @@ class Select extends Field {
     const { multiple } = this.props
     if (multiple === true) {
       const selValueOptions = this._getOptions(value)
-      if (selValueOptions.length) {
+      if (Array.isArray(selValueOptions) && selValueOptions.length) {
         this.selectedMultiple.update({ items: selValueOptions })
         this.currentValue = selValueOptions.map(function (item) {
           return item.value
@@ -182,7 +182,7 @@ class Select extends Field {
       }
     } else {
       if (options.asArray === true) {
-        value = value[0]
+        value = Array.isArray(value) ? value[0] : value
       }
       const selValueOption = this._getOption(value)
       if (selValueOption !== null) {
@@ -213,7 +213,15 @@ class Select extends Field {
     return this.optionList.getSelectedItems()
   }
 
-  _getValueText(options) {
+  _getOptionsByValue(value) {
+    if (this.props.multiple === false) {
+      return this._getOption(value)
+    }
+
+    return this._getOptions(value)
+  }
+
+  _getValueText(options, value) {
     const { valueOptions } = this.props
     options = extend(
       {
@@ -227,21 +235,21 @@ class Select extends Field {
       return this.currentValue
     }
 
-    const selected = this.getSelectedOption()
+    const selected = value !== undefined ? this._getOptionsByValue(value) : this.getSelectedOption()
 
     if (selected !== null) {
       if (Array.isArray(selected)) {
         const vals = selected.map(function (item) {
-          return item.props.text
+          return item.props ? item.props.text : item.text
         })
 
         return vals
       }
       if (options.asArray === true) {
-        return [selected.props.text]
+        return selected.props ? [selected.props.text] : [selected.text]
       }
 
-      return selected.props.text
+      return selected.props ? selected.props.text : selected.text
     }
 
     return null
@@ -318,6 +326,9 @@ class Select extends Field {
   _getOption(value) {
     let option = null
     const { options } = this.props
+    if (Array.isArray(value)) {
+      value = value[0]
+    }
     for (let i = 0; i < options.length; i++) {
       if (options[i].value === value) {
         option = options[i]
@@ -328,9 +339,10 @@ class Select extends Field {
   }
 
   _getOptions(value) {
-    const retOptions = []
+    let retOptions = null
     const { options } = this.props
     if (Array.isArray(value)) {
+      retOptions = []
       for (let i = 0; i < options.length; i++) {
         if (value.indexOf(options[i].value) !== -1) {
           retOptions.push(options[i])
