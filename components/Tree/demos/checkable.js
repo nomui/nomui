@@ -7,7 +7,7 @@ define([], function () {
         children: {
           component: 'Tree',
           initExpandLevel: -1,
-          checkable: true,
+          nodeCheckable: true,
           nodes: [
             {
               text: '层级 1',

@@ -15,7 +15,26 @@ class Tree extends Component {
   }
 
   _config() {
-    const { nodes } = this.props
+    const { nodes, nodeCheckable } = this.props
+    if (nodeCheckable) {
+      this.setProps({
+        nodeCheckable: Component.extendProps(
+          {
+            cascadeCheckParent: true,
+            cascadeUncheckChildren: true,
+            cascade: false,
+            checkedKeys: [],
+          },
+          nodeCheckable,
+        ),
+      })
+
+      this.checkedKeysHash = {}
+      this.props.nodeCheckable.checkedKeys.forEach((key) => {
+        this.checkedKeysHash[key] = true
+      })
+    }
+
     this.setProps({
       children: {
         component: TreeNodes,

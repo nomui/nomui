@@ -39,6 +39,23 @@ class TreeNode extends Component {
       children,
     })
   }
+
+  check(checkOptions = { checkCheckbox: true }) {
+    const { checkCheckbox } = checkOptions
+    this.parentNode && this.parentNode.check()
+    if (checkCheckbox === true) {
+      this.checkboxRef.setValue(true, { triggerChange: false })
+    }
+  }
+
+  uncheck(uncheckOptions = { uncheckCheckbox: true }) {
+    const { uncheckCheckbox } = uncheckOptions
+
+    uncheckCheckbox && this.checkboxRef.setValue(false, { triggerChange: false })
+    Object.keys(this.subnodeRefs).forEach((key) => {
+      this.subnodeRefs[key].uncheck()
+    })
+  }
 }
 
 Component.register(TreeNode)

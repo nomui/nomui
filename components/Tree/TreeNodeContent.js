@@ -18,7 +18,7 @@ class TreeNodeContent extends Component {
 
   _config() {
     const { text } = this.node.props
-    const { initExpandLevel, checkable } = this.tree.props
+    const { initExpandLevel, nodeCheckable } = this.tree.props
     const expanded = initExpandLevel === -1 || initExpandLevel > this.level
     this.setProps({
       expanded,
@@ -50,7 +50,7 @@ class TreeNodeContent extends Component {
     this.setProps({
       children: [
         this.getExpandableIndicatorProps(expanded),
-        checkable && this._getCheckbox(),
+        nodeCheckable && this._getCheckbox(),
         { tag: 'span', classes: { 'nom-tree-node-content-text': true }, children: text },
       ],
     })
@@ -62,6 +62,17 @@ class TreeNodeContent extends Component {
       plain: true,
       classes: {
         'nom-tree-node-checkbox': true,
+      },
+      _created: (inst) => {
+        this.node.checkboxRef = inst
+      },
+      value: this.tree.checkedKeysHash[this.node.key] === true,
+      onValueChange: ({ newValue }) => {
+        if (newValue === true) {
+          this.node.check({ checkCheckbox: false })
+        } else {
+          this.node.uncheck({ uncheckCheckbox: false })
+        }
       },
     }
   }

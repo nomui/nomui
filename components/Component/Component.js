@@ -12,6 +12,7 @@ import ComponentDescriptor from './ComponentDescriptor'
 
 const components = {}
 const MIXINS = []
+let keySeq = 0
 
 class Component {
   constructor(props, ...mixins) {
@@ -60,6 +61,10 @@ class Component {
       if (isFunction(this.props.key)) {
         this.key = this.props.key.call(this, this)
       }
+    }
+
+    if (this.key === undefined || this.key === null) {
+      this.key = `__key${++keySeq}`
     }
 
     this.referenceComponent =
