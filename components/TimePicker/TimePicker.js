@@ -200,11 +200,15 @@ class TimePicker extends Textbox {
   setTime(data) {
     this.time[data.type] = data.value
 
-    const realTime = this.props.format
-      .replace('HH', this.time.hour)
-      .replace('mm', this.time.minute)
-      .replace('ss', this.time.second)
-    this.setValue(realTime)
+    const result = new Date(
+      '2000',
+      '01',
+      '01',
+      this.time.hour,
+      this.time.minute,
+      this.time.second,
+    ).format(this.props.format)
+    this.setValue(result)
   }
 
   resetList() {
