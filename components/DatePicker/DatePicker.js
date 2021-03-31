@@ -15,7 +15,8 @@ class DatePicker extends Textbox {
       minDate: null,
       maxDate: null,
       yearRange: [50, 20],
-      showTime: true,
+      showTime: false,
+      allowClear: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -39,7 +40,16 @@ class DatePicker extends Textbox {
     const that = this
 
     this.setProps({
-      rightIcon: 'calendar',
+      leftIcon: 'calendar',
+      rightIcon: {
+        component: 'Icon',
+        type: 'times',
+        hidden: !this.props.allowClear,
+        onClick: (args) => {
+          this.clearTime()
+          args.event && args.event.stopPropagation()
+        },
+      },
       control: {
         disabled: disabled,
         popup: {
@@ -48,6 +58,9 @@ class DatePicker extends Textbox {
           },
           styles: {
             padding: '1',
+          },
+          onShown: () => {
+            that.timePicker.onShown()
           },
           classes: {
             'nom-date-picker-popup': true,
@@ -205,7 +218,7 @@ class DatePicker extends Textbox {
                 component: TimePickerPanel,
                 attrs: {
                   style: {
-                    // 'border-left': '1px solid #ddd',
+                    'border-left': '1px solid #ddd',
                     'padding-left': '5px',
                   },
                 },
@@ -358,6 +371,12 @@ class DatePicker extends Textbox {
     }
 
     this.updateValue()
+  }
+
+  clearTime() {
+    this.setValue(null)
+    this.days.unselectAllItems()
+    this.timePicker.resetList()
   }
 
   updateValue() {

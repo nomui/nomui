@@ -51,16 +51,19 @@ class TimePickerPanel extends Component {
 
   _config() {
     const that = this
+    if (this.datePicker.props.showTime.format) {
+      this.props.format = this.datePicker.props.showTime.format
+    }
     this.setProps({
       children: {
         component: 'Rows',
         gutter: 'xs',
         items: [
           {
-            component: 'StaticText',
-            styles: {
-              text: 'center',
+            classes: {
+              'time-display': true,
             },
+
             ref: (c) => {
               that.timeText = c
             },
@@ -193,7 +196,7 @@ class TimePickerPanel extends Component {
   }
 
   setValue(c) {
-    this.timeText.setValue(c)
+    this.timeText.update({ children: c })
     this.props.onValueChange && this._callHandler(this.props.onValueChange(this.time))
   }
 
@@ -213,6 +216,7 @@ class TimePickerPanel extends Component {
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].resetTime()
     })
+    this.timeText.update({ children: '' })
   }
 
   onShown() {
