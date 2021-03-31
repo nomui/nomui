@@ -12,7 +12,6 @@ class AutoCompletePopup extends Popup {
 
   _created() {
     super._created()
-
     this.autoCompleteControl = this.opener.field
   }
 
@@ -28,6 +27,7 @@ class AutoCompletePopup extends Popup {
         body: {
           children: {
             component: AutoCompleteList,
+            options: this.props.options,
           },
         },
       },
