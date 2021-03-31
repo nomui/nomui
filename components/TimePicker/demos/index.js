@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './min-max.js'], function () {
   return {
     title: 'TimePicker',
     subtitle: '时间选择框',

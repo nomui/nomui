@@ -14,8 +14,8 @@ class TimePicker extends Textbox {
       readOnly: true,
       placeholder: null,
       showNow: true,
-      minValue: '10:10:10',
-      maxValue: '20:20:20',
+      minTime: null,
+      maxTime: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -43,9 +43,47 @@ class TimePicker extends Textbox {
     }
 
     this.defaultTime = this.time
+
+    this.minTime = null
+    this.maxTime = null
+    this.timeRange = {
+      hour: {
+        min: '00',
+        max: '23',
+      },
+      minute: {
+        min: '00',
+        max: '59',
+      },
+      second: {
+        min: '00',
+        max: '59',
+      },
+    }
   }
 
   _config() {
+    const { minTime, maxTime } = this.props
+    if (minTime) {
+      const time = new Date(`2000 ${minTime}`)
+      this.minTime = {
+        hour: time.getHours(),
+        minute: time.getMinutes(),
+        second: time.getSeconds(),
+      }
+    }
+    if (maxTime) {
+      const time = new Date(`2000 ${maxTime}`)
+      this.maxTime = {
+        hour: time.getHours(),
+        minute: time.getMinutes(),
+        second: time.getSeconds(),
+      }
+    }
+    this.timeRange.hour = {
+      min: this.minTime.hour,
+      max: this.maxTime.hour,
+    }
     this.setProps({
       leftIcon: 'clock',
       rightIcon: {
@@ -199,6 +237,7 @@ class TimePicker extends Textbox {
 
   setTime(data) {
     this.time[data.type] = data.value
+    this.checkTimeRange()
 
     const result = new Date(
       '2000',
@@ -250,6 +289,24 @@ class TimePicker extends Textbox {
 
   showPopup() {
     this.popup.show()
+  }
+
+  checkTimeRange() {
+    if (this.time.hour === this.timeRange.hour.min) {
+      this.timeRange.minute = {
+        min: this.minTime.minute,
+        max: '59',
+      }
+    }
+    if (
+      this.time.hour === this.timeRange.hour.min &&
+      this.time.minute === this.timeRange.minute.min
+    ) {
+      this.timeRange.second = {
+        min: this.minTime.second,
+        max: '59',
+      }
+    }
   }
 }
 

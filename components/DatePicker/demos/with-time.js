@@ -7,7 +7,10 @@ define([], function () {
         children: {
           component: 'DatePicker',
           placeholder: '带时间',
-          showTime: true,
+          showTime: {
+            format: 'HH:mm:ss',
+          },
+          format: 'yyyy-MM-dd HH:mm:ss',
         },
       }
     },

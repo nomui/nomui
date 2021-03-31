@@ -23,6 +23,7 @@ class SelectList extends List {
   _config() {
     let items = []
     const selected = []
+    const that = this
 
     if (this.props.type === 'hour') {
       items = this.pickerControl.getHour()
@@ -46,6 +47,20 @@ class SelectList extends List {
         byClick: true,
       },
       selectedItems: selected,
+      itemDefaults: {
+        _config: function () {
+          const key = this.props.key
+
+          if (
+            key < that.pickerControl.timeRange[that.props.type].min ||
+            key > that.pickerControl.timeRange[that.props.type].max
+          ) {
+            this.setProps({
+              disabled: true,
+            })
+          }
+        },
+      },
 
       onItemSelectionChange: () => {
         this.onChange()
