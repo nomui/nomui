@@ -6,14 +6,22 @@ class Numberbox extends Textbox {
     const defaults = {
       min: null,
       max: null,
-      precision: 0,
+      precision: -1,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
+    const { precision = -1 } = this.props
     const rules = []
+
+    if (precision === -1) {
+      rules.push({
+        type: 'number',
+      })
+    }
+
     if (this.props.precision === 0) {
       rules.push({
         type: 'regex',
@@ -23,6 +31,7 @@ class Numberbox extends Textbox {
         message: '请输入整数',
       })
     }
+
     if (this.props.precision > 0) {
       rules.push({
         type: 'regex',
@@ -32,6 +41,7 @@ class Numberbox extends Textbox {
         message: `请输入 ${this.props.precision} 位小数`,
       })
     }
+
     if (this.props.min) {
       rules.push({
         type: 'min',
@@ -51,7 +61,7 @@ class Numberbox extends Textbox {
   }
 
   _getValue() {
-    const { precision } = this.props
+    const { precision = -1 } = this.props
 
     let numberValue = null
     const textValue = this.input.getText()
@@ -75,7 +85,7 @@ class Numberbox extends Textbox {
   }
 
   _setValue(value, options) {
-    const { precision } = this.props
+    const { precision = -1 } = this.props
 
     this.currentValue = this.getValue()
 
