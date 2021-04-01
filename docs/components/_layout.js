@@ -103,6 +103,12 @@ define([], function () {
                       id: 'Cols',
                       url: '#!components!index?type=Cols',
                     },
+                    {
+                      text: 'Divider',
+                      subtext: '分割线',
+                      id: 'Divider',
+                      url: '#!components!index?type=Divider',
+                    },
                   ],
                 },
                 {
