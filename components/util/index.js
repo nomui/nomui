@@ -208,6 +208,16 @@ export function isNumeric(val) {
   )
 }
 
+export function newGuid() {
+  return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (n) {
+    // eslint-disable-next-line no-bitwise
+    const t = (Math.random() * 16) | 0
+    // eslint-disable-next-line no-bitwise
+    const i = n === 'x' ? t : (t & 3) | 8
+    return i.toString(16)
+  })
+}
+
 export default {
   extend,
   isFunction,
