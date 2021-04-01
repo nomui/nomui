@@ -1,8 +1,8 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
 import {} from '../Icon/index'
-import Input from './Input'
 import { extend } from '../util/index'
+import Input from './Input'
 
 class Textbox extends Field {
   constructor(props, ...mixins) {
