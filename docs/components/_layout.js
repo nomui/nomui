@@ -310,6 +310,12 @@ define([], function () {
                       url: '#!components!index?type=Numberbox',
                     },
                     {
+                      text: 'NumberSpinner',
+                      subtext: '数字微调器',
+                      id: 'NumberSpinner',
+                      url: '#!components!index?type=NumberSpinner',
+                    },
+                    {
                       text: 'Checkbox',
                       subtext: '复选框',
                       id: 'Checkbox',
