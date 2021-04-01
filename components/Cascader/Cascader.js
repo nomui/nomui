@@ -25,8 +25,25 @@ class Cascader extends Field {
     this._valueChange({ newValue: this.currentValue })
   }
 
-  _created() {
-    super._created()
+  // _created() {
+  //   super._created()
+  //   const { value, options, fieldsMapping } = this.props
+  //   this.internalOption = JSON.parse(JSON.stringify(options))
+  //   this.handleOptions(this.internalOption, fieldsMapping)
+  //   this.flatItems(this.internalOption)
+
+  //   this.initValue = isFunction(value) ? value() : value
+  //   this.selectedOption = []
+  //   this.handleOptionSelected(this.initValue)
+  //   this.currentValue = this.initValue
+  //   this.checked = true
+  // }
+
+  _config() {
+    const cascader = this
+    const children = []
+    const { showArrow, placeholder, separator, valueType } = this.props
+
     const { value, options, fieldsMapping } = this.props
     this.internalOption = JSON.parse(JSON.stringify(options))
     this.handleOptions(this.internalOption, fieldsMapping)
@@ -37,12 +54,6 @@ class Cascader extends Field {
     this.handleOptionSelected(this.initValue)
     this.currentValue = this.initValue
     this.checked = true
-  }
-
-  _config() {
-    const cascader = this
-    const children = []
-    const { showArrow, placeholder, separator, valueType } = this.props
 
     children.push({
       classes: { 'nom-cascader-content': true },

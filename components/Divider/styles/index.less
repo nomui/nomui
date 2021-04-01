@@ -1,0 +1,106 @@
+@heading-color: fade(@black, 85%);
+@divider-orientation-margin: 5%;
+@divider-text-padding: 1em;
+@divider-color: rgba(0, 0, 0, 6%);
+
+.nom-divider {
+  .reset-component();
+
+  border-top: @border-width solid @divider-color;
+
+  &.p-type-vertical {
+    position: relative;
+    top: -0.06em;
+    display: inline-block;
+    height: 0.9em;
+    margin: 0 8px;
+    vertical-align: middle;
+    border-top: 0;
+    border-left: @border-width solid @divider-color;
+  }
+
+  &.p-type-horizontal {
+    display: flex;
+    clear: both;
+    width: 100%;
+    min-width: 100%;
+    margin: 24px 0;
+  }
+
+  &.p-type-horizontal&-with-text {
+    display: flex;
+    margin: 16px 0;
+    color: @heading-color;
+    font-weight: 500;
+    font-size: @font-size-lg;
+    white-space: nowrap;
+    text-align: center;
+    border-top: 0;
+    border-top-color: @divider-color;
+
+    &::before,
+    &::after {
+      position: relative;
+      top: 50%;
+      width: 50%;
+      border-top: @border-width solid transparent;
+      // Chrome not accept `inherit` in `border-top`
+      border-top-color: inherit;
+      border-bottom: 0;
+      transform: translateY(50%);
+      content: '';
+    }
+  }
+
+  &.p-type-horizontal&-with-text-left {
+    &::before {
+      top: 50%;
+      width: @divider-orientation-margin;
+    }
+    &::after {
+      top: 50%;
+      width: 100% - @divider-orientation-margin;
+    }
+  }
+
+  &.p-type-horizontal&-with-text-right {
+    &::before {
+      top: 50%;
+      width: 100% - @divider-orientation-margin;
+    }
+    &::after {
+      top: 50%;
+      width: @divider-orientation-margin;
+    }
+  }
+
+  &-inner-text {
+    display: inline-block;
+    padding: 0 @divider-text-padding;
+  }
+
+  &-dashed {
+    background: none;
+    border-color: @divider-color;
+    border-style: dashed;
+    border-width: @border-width 0 0;
+  }
+
+  &.p-type-horizontal&-with-text&-dashed {
+    border-top: 0;
+    &::before,
+    &::after {
+      border-style: dashed none none;
+    }
+  }
+
+  &.p-type-vertical&-dashed {
+    border-width: 0 0 0 @border-width;
+  }
+
+  &-plain&-with-text {
+    color: @text-color !important;
+    font-weight: normal !important;
+    font-size: @font-size-base !important;
+  }
+}

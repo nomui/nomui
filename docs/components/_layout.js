@@ -103,6 +103,12 @@ define([], function () {
                       id: 'Cols',
                       url: '#!components!index?type=Cols',
                     },
+                    {
+                      text: 'Divider',
+                      subtext: '分割线',
+                      id: 'Divider',
+                      url: '#!components!index?type=Divider',
+                    },
                   ],
                 },
                 {
@@ -314,6 +320,12 @@ define([], function () {
                       subtext: '数字框',
                       id: 'Numberbox',
                       url: '#!components!index?type=Numberbox',
+                    },
+                    {
+                      text: 'NumberSpinner',
+                      subtext: '数字微调器',
+                      id: 'NumberSpinner',
+                      url: '#!components!index?type=NumberSpinner',
                     },
                     {
                       text: 'Checkbox',

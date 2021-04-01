@@ -7,6 +7,9 @@ define([], function () {
       return {
         component: 'MultilineTextbox',
         value: '多行文本',
+        onValueChange: (e) => {
+          console.log(e.newValue)
+        },
       }
     },
   }
