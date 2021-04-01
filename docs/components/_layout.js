@@ -151,6 +151,12 @@ define([], function () {
                       url: '#!components!index?type=Message',
                     },
                     {
+                      text: 'Notification',
+                      subtext: '通知',
+                      id: 'Notification',
+                      url: '#!components!index?type=Notification',
+                    },
+                    {
                       text: 'Tooltip',
                       subtext: '文字提示',
                       id: 'Tooltip',

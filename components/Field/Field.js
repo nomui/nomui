@@ -229,7 +229,6 @@ class Field extends Component {
       oldValue: this.oldValue,
       newValue: this.currentValue,
     }
-
     setTimeout(function () {
       that._callHandler(that.props.onValueChange, changed)
       that.group && that.group._onValueChange(changed)

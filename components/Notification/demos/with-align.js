@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '对齐位置（外部）',
-    file: 'align-outer',
+    title: '指定不同位置',
+    file: 'with-align',
     demo: function () {
       function getButton(align) {
         return {
@@ -15,19 +15,10 @@ define([], function () {
           onClick: (arg) => {
             const sender = arg.sender
             if (!sender[align]) {
-              sender[align] = new nomui.Layer({
+              nomui.Notification.open({
                 align: align,
-                alignTo: sender.element,
-                alignOuter: true,
-                children: {
-                  styles: {
-                    padding: '1',
-                    color: 'white',
-                    border: '1px',
-                  },
-                  children: '我是层内容',
-                },
-                closeOnClickOutside: true,
+                title: '收款提醒',
+                description: '收到用户付款100000万元',
               })
             }
 
