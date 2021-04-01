@@ -6,6 +6,8 @@ class SelectList extends List {
     const defaults = {
       gutter: 'sm',
       cols: 1,
+      min: '00',
+      max: '59',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -18,6 +20,10 @@ class SelectList extends List {
     this.timeWrapper = this.parent.parent.parent.parent.parent
     this.pickerControl = this.timeWrapper.parentPopup.pickerControl
     this.pickerControl.timeList[this.props.type] = this
+    if (this.props.type === 'hour') {
+      this.props.min = this.pickerControl.minTime.hour
+      this.props.max = this.pickerControl.maxTime.hour
+    }
   }
 
   _config() {
@@ -51,10 +57,7 @@ class SelectList extends List {
         _config: function () {
           const key = this.props.key
 
-          if (
-            key < that.pickerControl.timeRange[that.props.type].min ||
-            key > that.pickerControl.timeRange[that.props.type].max
-          ) {
+          if (key < that.props.min || key > that.props.max) {
             this.setProps({
               disabled: true,
             })
@@ -96,6 +99,16 @@ class SelectList extends List {
     } else {
       this.unselectAllItems()
     }
+  }
+
+  refresh() {
+    const selected = []
+    this.getSelectedItem() && selected.push(this.getSelectedItem().props.key)
+    this.props.selectedItems = selected
+
+    this.update()
+
+    this.scrollToKey()
   }
 
   scrollToKey() {

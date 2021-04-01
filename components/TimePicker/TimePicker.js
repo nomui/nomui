@@ -29,6 +29,34 @@ class TimePicker extends Textbox {
     this.confirm = false
     this.empty = !this.props.value
 
+    this.minTime = {
+      hour: '00',
+      minute: '00',
+      second: '00',
+    }
+    this.maxTime = {
+      hour: '23',
+      minute: '59',
+      second: '59',
+    }
+
+    if (this.props.minTime) {
+      const time = new Date(`2000 ${this.props.minTime}`)
+      this.minTime = {
+        hour: this.getDoubleDigit(time.getHours()),
+        minute: this.getDoubleDigit(time.getMinutes()),
+        second: this.getDoubleDigit(time.getSeconds()),
+      }
+    }
+    if (this.props.maxTime) {
+      const time = new Date(`2000 ${this.props.maxTime}`)
+      this.maxTime = {
+        hour: this.getDoubleDigit(time.getHours()),
+        minute: this.getDoubleDigit(time.getMinutes()),
+        second: this.getDoubleDigit(time.getSeconds()),
+      }
+    }
+
     this.time = {
       hour: '00',
       minute: '00',
@@ -43,47 +71,14 @@ class TimePicker extends Textbox {
     }
 
     this.defaultTime = this.time
-
-    this.minTime = null
-    this.maxTime = null
-    this.timeRange = {
-      hour: {
-        min: '00',
-        max: '23',
-      },
-      minute: {
-        min: '00',
-        max: '59',
-      },
-      second: {
-        min: '00',
-        max: '59',
-      },
+    this.steps = {
+      hour: true,
+      minute: false,
+      second: false,
     }
   }
 
   _config() {
-    const { minTime, maxTime } = this.props
-    if (minTime) {
-      const time = new Date(`2000 ${minTime}`)
-      this.minTime = {
-        hour: time.getHours(),
-        minute: time.getMinutes(),
-        second: time.getSeconds(),
-      }
-    }
-    if (maxTime) {
-      const time = new Date(`2000 ${maxTime}`)
-      this.maxTime = {
-        hour: time.getHours(),
-        minute: time.getMinutes(),
-        second: time.getSeconds(),
-      }
-    }
-    this.timeRange.hour = {
-      min: this.minTime.hour,
-      max: this.maxTime.hour,
-    }
     this.setProps({
       leftIcon: 'clock',
       rightIcon: {
@@ -235,9 +230,22 @@ class TimePicker extends Textbox {
     return second
   }
 
+  adjustTime(data) {
+    if (data.type === 'hour' && data.value === this.minTime.hour) {
+      this.time.minute = this.minTime.minute
+    }
+  }
+
   setTime(data) {
     this.time[data.type] = data.value
-    this.checkTimeRange()
+    // if (data.type === 'hour') {
+    //   this.steps.minute = true
+    //   this.steps.second = false
+    // }
+    // if (data.type === 'minute') {
+    //   this.steps.second = true
+    // }
+    this.checkTimeRange(data)
 
     const result = new Date(
       '2000',
@@ -272,12 +280,12 @@ class TimePicker extends Textbox {
 
   setNow() {
     const c = new Date().format('HH:mm:ss')
-    this.setValue(c)
+    this.setValue(c.format(this.props.format))
     this.defaultValue = c
     const t = c.split(':')
-    this.time.hour = t[0] || '00'
-    this.time.minute = t[1] || '00'
-    this.time.second = t[2] || '00'
+    this.time.hour = t[0]
+    this.time.minute = t[1]
+    this.time.second = t[2]
 
     this.empty = false
     this.resetList()
@@ -291,22 +299,28 @@ class TimePicker extends Textbox {
     this.popup.show()
   }
 
-  checkTimeRange() {
-    if (this.time.hour === this.timeRange.hour.min) {
-      this.timeRange.minute = {
-        min: this.minTime.minute,
-        max: '59',
-      }
+  getDoubleDigit(num) {
+    if (num < 10) {
+      return `0${num}`
     }
-    if (
-      this.time.hour === this.timeRange.hour.min &&
-      this.time.minute === this.timeRange.minute.min
-    ) {
-      this.timeRange.second = {
-        min: this.minTime.second,
-        max: '59',
-      }
+    return `${num}`
+  }
+
+  checkTimeRange(data) {
+    const that = this
+    if (data.type === 'hour') {
+      this.timeList.minute.props.min = this.time.minute =
+        data.value === this.minTime.hour ? this.minTime.minute : '00'
     }
+    if (data.type === 'minute') {
+      this.timeList.second.props.min = this.time.second =
+        data.value === this.minTime.minute ? this.minTime.second : '00'
+    }
+
+    this.empty = false
+    Object.keys(this.timeList).forEach(function (key) {
+      that.timeList[key].refresh()
+    })
   }
 }
 

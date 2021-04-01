@@ -15,7 +15,7 @@ define([], function () {
             name: 'timepicker',
             label: '时间选择',
             component: 'TimePicker',
-            minTime: '10:10:10',
+            minTime: '08:08:08',
             maxTime: '20:20:20',
           },
 
