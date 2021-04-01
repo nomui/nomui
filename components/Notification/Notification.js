@@ -3,33 +3,33 @@ import Layer from '../Layer/index'
 import { newGuid } from '../util/index'
 import NotificationContent from './NotificationContent'
 
-let NOMUI_NOTIFICATION_DEFAULTS = {
-  align: 'right top',
-  duration: 4500,
-  bottom: 24,
-  top: 24,
-  left: 24,
-  right: 24,
-}
-
-// 保存Notification实例,以key为键，实例对象为值
-const NOMUI_NOTIFICATION_INSTANCES = {}
-
 class Notification extends Layer {
-  /**
-   * 全局受影响，配置默认参数
-   * @param {*} props
-   */
-  static configDefault(props) {
-    NOMUI_NOTIFICATION_DEFAULTS = {
-      ...NOMUI_NOTIFICATION_DEFAULTS,
-      ...props,
-    }
+  static NOMUI_NOTIFICATION_DEFAULTS = {
+    align: 'right top',
+    duration: 4500,
+    bottom: 24,
+    top: 24,
+    left: 24,
+    right: 24,
   }
+
+  // 保存Notification实例,以key为键，实例对象为值
+  static NOMUI_NOTIFICATION_INSTANCES = {}
+
+  // /**
+  //  * 全局受影响，配置默认参数
+  //  * @param {*} props
+  //  */
+  // static configDefault(props) {
+  //   Notification.NOMUI_NOTIFICATION_DEFAULTS = {
+  //     ...Notification.NOMUI_NOTIFICATION_DEFAULTS,
+  //     ...props,
+  //   }
+  // }
 
   constructor(props, ...mixins) {
     const defaults = {
-      ...NOMUI_NOTIFICATION_DEFAULTS,
+      ...Notification.NOMUI_NOTIFICATION_DEFAULTS,
       // type:'',
       closeIcon: 'close',
       // alignTo: document.body,
@@ -44,7 +44,7 @@ class Notification extends Layer {
   }
 
   static open(config) {
-    const curInsance = NOMUI_NOTIFICATION_INSTANCES[config.key]
+    const curInsance = Notification.NOMUI_NOTIFICATION_INSTANCES[config.key]
     if (!curInsance) {
       return new nomui.Notification(config)
     }
@@ -83,8 +83,8 @@ class Notification extends Layer {
   }
 
   static close(key) {
-    if (NOMUI_NOTIFICATION_INSTANCES[key]) {
-      NOMUI_NOTIFICATION_INSTANCES[key].close()
+    if (Notification.NOMUI_NOTIFICATION_INSTANCES[key]) {
+      Notification.NOMUI_NOTIFICATION_INSTANCES[key].close()
     }
   }
 
@@ -93,7 +93,7 @@ class Notification extends Layer {
     this.timer = null
 
     const { key } = this.props
-    NOMUI_NOTIFICATION_INSTANCES[key] = this
+    Notification.NOMUI_NOTIFICATION_INSTANCES[key] = this
   }
 
   _registerAutoClose(duration) {
@@ -160,7 +160,7 @@ class Notification extends Layer {
   close() {
     this.timer && clearTimeout(this.timer)
     const { key } = this.props
-    delete NOMUI_NOTIFICATION_INSTANCES[key]
+    delete Notification.NOMUI_NOTIFICATION_INSTANCES[key]
 
     this.props.onClose && this.props.onClose()
     this.remove()

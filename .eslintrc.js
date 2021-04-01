@@ -1,4 +1,5 @@
 module.exports = {
+  parser: 'babel-eslint',
   extends: [require.resolve('@umijs/fabric/dist/eslint')],
   globals: {
     nomui: true,
