@@ -8,9 +8,9 @@ class TimePicker extends Textbox {
       allowClear: true,
       value: null,
       format: 'HH:mm:ss',
-      hourStep: 0,
-      minuteStep: 0,
-      secondStep: 0,
+      hourStep: null,
+      minuteStep: null,
+      secondStep: null,
       readOnly: true,
       placeholder: null,
       showNow: true,
@@ -40,8 +40,26 @@ class TimePicker extends Textbox {
       second: '59',
     }
 
+    this.time = {
+      hour: '00',
+      minute: '00',
+      second: '00',
+    }
+
+    if (this.props.value) {
+      const t = this.props.value.split(':')
+      this.time.hour = t[0] || '00'
+      this.time.minute = t[1] || '00'
+      this.time.second = t[2] || '00'
+    }
+
+    this.defaultTime = this.time
+  }
+
+  _config() {
     if (this.props.minTime) {
       const time = new Date(`2000 ${this.props.minTime}`)
+
       this.minTime = {
         hour: this.getDoubleDigit(time.getHours()),
         minute: this.getDoubleDigit(time.getMinutes()),
@@ -63,28 +81,6 @@ class TimePicker extends Textbox {
       second: ['00', '59'],
     }
 
-    this.time = {
-      hour: '00',
-      minute: '00',
-      second: '00',
-    }
-
-    if (this.props.value) {
-      const t = this.props.value.split(':')
-      this.time.hour = t[0] || '00'
-      this.time.minute = t[1] || '00'
-      this.time.second = t[2] || '00'
-    }
-
-    this.defaultTime = this.time
-    this.steps = {
-      hour: true,
-      minute: false,
-      second: false,
-    }
-  }
-
-  _config() {
     this.setProps({
       leftIcon: 'clock',
       rightIcon: {
@@ -123,6 +119,7 @@ class TimePicker extends Textbox {
     const hour = []
     if (this.props.hourStep) {
       hour.push({
+        key: '00',
         children: '00',
       })
       for (let i = 0; i < 24; i++) {
@@ -148,6 +145,7 @@ class TimePicker extends Textbox {
     const minute = []
     if (this.props.minuteStep) {
       minute.push({
+        key: '00',
         children: '00',
       })
       for (let i = 0; i < 60; i++) {
@@ -173,13 +171,14 @@ class TimePicker extends Textbox {
     const second = []
     if (this.props.secondStep) {
       second.push({
+        key: '00',
         children: '00',
       })
       for (let i = 0; i < 60; i++) {
         if ((i + 1) % this.props.secondStep === 0 && i !== 59) {
           second.push({
-            key: this.getDoubleDigit(i),
-            children: this.getDoubleDigit(i),
+            key: this.getDoubleDigit(i + 1),
+            children: this.getDoubleDigit(i + 1),
           })
         }
       }
@@ -198,6 +197,7 @@ class TimePicker extends Textbox {
     this.time[data.type] = data.value
 
     if (this.time.hour <= this.minTime.hour) {
+      this.time.hour = this.minTime.hour
       if (this.time.minute <= this.minTime.minute) {
         this.time.minute = this.minTime.minute
       }
@@ -274,6 +274,7 @@ class TimePicker extends Textbox {
     const that = this
 
     if (that.time.hour <= that.minTime.hour) {
+      that.timeRange.hour = [that.minTime.hour, that.maxTime.hour]
       that.timeRange.minute = [that.minTime.minute, '59']
       if (that.time.minute <= that.minTime.minute) {
         that.timeRange.second = [that.minTime.second, '59']

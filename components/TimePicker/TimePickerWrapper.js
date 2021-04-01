@@ -62,17 +62,19 @@ class TimePickerWrapper extends Component {
               },
             },
             items: [
-              {
-                component: 'Button',
-                size: 'small',
-                text: '此刻',
-                onClick: function () {
-                  that.pickerControl.setNow()
-                  that.pickerControl.confirm = true
-                  that.pickerControl.popup.hide()
-                  that.pickerControl.handleChange()
+              !that.pickerControl.props.hourStep &&
+                !that.pickerControl.props.minuteStep &&
+                !that.pickerControl.props.secondStep && {
+                  component: 'Button',
+                  size: 'small',
+                  text: '此刻',
+                  onClick: function () {
+                    that.pickerControl.setNow()
+                    that.pickerControl.confirm = true
+                    that.pickerControl.popup.hide()
+                    that.pickerControl.handleChange()
+                  },
                 },
-              },
               {
                 component: 'Button',
                 type: 'Primary',
