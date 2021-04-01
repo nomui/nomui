@@ -127,33 +127,19 @@ class TimePicker extends Textbox {
       })
       for (let i = 0; i < 24; i++) {
         if ((i + 1) % this.props.hourStep === 0 && i !== 23) {
-          if (i < 9) {
-            hour.push({
-              key: `0${i + 1}`,
-              children: `0${i + 1}`,
-            })
-          } else {
-            hour.push({
-              key: `${i + 1}`,
-              children: `${i + 1}`,
-            })
-          }
+          hour.push({
+            key: this.getDoubleDigit(i + 1),
+            children: this.getDoubleDigit(i + 1),
+          })
         }
       }
       return hour
     }
     for (let i = 0; i < 24; i++) {
-      if (i < 10) {
-        hour.push({
-          key: `0${i}`,
-          children: `0${i}`,
-        })
-      } else {
-        hour.push({
-          key: `${i}`,
-          children: `${i}`,
-        })
-      }
+      hour.push({
+        key: this.getDoubleDigit(i),
+        children: this.getDoubleDigit(i),
+      })
     }
     return hour
   }
@@ -166,33 +152,19 @@ class TimePicker extends Textbox {
       })
       for (let i = 0; i < 60; i++) {
         if ((i + 1) % this.props.minuteStep === 0 && i !== 59) {
-          if (i < 9) {
-            minute.push({
-              key: `0${i + 1}`,
-              children: `0${i + 1}`,
-            })
-          } else {
-            minute.push({
-              key: `${i + 1}`,
-              children: `${i + 1}`,
-            })
-          }
+          minute.push({
+            key: this.getDoubleDigit(i + 1),
+            children: this.getDoubleDigit(i + 1),
+          })
         }
       }
       return minute
     }
     for (let i = 0; i < 60; i++) {
-      if (i < 10) {
-        minute.push({
-          key: `0${i}`,
-          children: `0${i}`,
-        })
-      } else {
-        minute.push({
-          key: `${i}`,
-          children: `${i}`,
-        })
-      }
+      minute.push({
+        key: this.getDoubleDigit(i),
+        children: this.getDoubleDigit(i),
+      })
     }
     return minute
   }
@@ -205,41 +177,21 @@ class TimePicker extends Textbox {
       })
       for (let i = 0; i < 60; i++) {
         if ((i + 1) % this.props.secondStep === 0 && i !== 59) {
-          if (i < 9) {
-            second.push({
-              key: `0${i + 1}`,
-              children: `0${i + 1}`,
-            })
-          } else {
-            second.push({
-              key: `${i + 1}`,
-              children: `${i + 1}`,
-            })
-          }
+          second.push({
+            key: this.getDoubleDigit(i),
+            children: this.getDoubleDigit(i),
+          })
         }
       }
       return second
     }
     for (let i = 0; i < 60; i++) {
-      if (i < 10) {
-        second.push({
-          key: `0${i}`,
-          children: `0${i}`,
-        })
-      } else {
-        second.push({
-          key: `${i}`,
-          children: `${i}`,
-        })
-      }
+      second.push({
+        key: this.getDoubleDigit(i),
+        children: this.getDoubleDigit(i),
+      })
     }
     return second
-  }
-
-  adjustTime(data) {
-    if (data.type === 'hour' && data.value === this.minTime.hour) {
-      this.time.minute = this.minTime.minute
-    }
   }
 
   setTime(data) {
@@ -255,9 +207,7 @@ class TimePicker extends Textbox {
         }
       }
     }
-
     this.checkTimeRange()
-
     const result = new Date(
       '2000',
       '01',
@@ -267,13 +217,6 @@ class TimePicker extends Textbox {
       this.time.second,
     ).format(this.props.format)
     this.setValue(result)
-  }
-
-  resetList() {
-    const that = this
-    Object.keys(this.timeList).forEach(function (key) {
-      that.timeList[key].resetTime()
-    })
   }
 
   clearTime() {
@@ -303,6 +246,13 @@ class TimePicker extends Textbox {
     this.empty = false
     this.resetList()
     this.popup.hide()
+  }
+
+  resetList() {
+    const that = this
+    Object.keys(this.timeList).forEach(function (key) {
+      that.timeList[key].resetTime()
+    })
   }
 
   handleChange() {
