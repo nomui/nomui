@@ -57,6 +57,12 @@ class TimePicker extends Textbox {
       }
     }
 
+    this.timeRange = {
+      hour: [this.minTime.hour, this.maxTime.hour],
+      minute: ['00', '59'],
+      second: ['00', '59'],
+    }
+
     this.time = {
       hour: '00',
       minute: '00',
@@ -238,14 +244,19 @@ class TimePicker extends Textbox {
 
   setTime(data) {
     this.time[data.type] = data.value
-    // if (data.type === 'hour') {
-    //   this.steps.minute = true
-    //   this.steps.second = false
-    // }
-    // if (data.type === 'minute') {
-    //   this.steps.second = true
-    // }
-    this.checkTimeRange(data)
+
+    if (this.time.hour <= this.minTime.hour) {
+      if (this.time.minute <= this.minTime.minute) {
+        this.time.minute = this.minTime.minute
+      }
+      if (this.time.minute <= this.minTime.minute) {
+        if (this.time.second <= this.minTime.second) {
+          this.time.second = this.minTime.second
+        }
+      }
+    }
+
+    this.checkTimeRange()
 
     const result = new Date(
       '2000',
@@ -280,15 +291,18 @@ class TimePicker extends Textbox {
 
   setNow() {
     const c = new Date().format('HH:mm:ss')
-    this.setValue(c.format(this.props.format))
-    this.defaultValue = c
     const t = c.split(':')
     this.time.hour = t[0]
     this.time.minute = t[1]
     this.time.second = t[2]
+    this.checkTimeRange()
+    this.setValue(c.format(this.props.format))
+
+    this.defaultValue = c
 
     this.empty = false
     this.resetList()
+    this.popup.hide()
   }
 
   handleChange() {
@@ -306,15 +320,25 @@ class TimePicker extends Textbox {
     return `${num}`
   }
 
-  checkTimeRange(data) {
+  checkTimeRange() {
     const that = this
-    if (data.type === 'hour') {
-      this.timeList.minute.props.min = this.time.minute =
-        data.value === this.minTime.hour ? this.minTime.minute : '00'
-    }
-    if (data.type === 'minute') {
-      this.timeList.second.props.min = this.time.second =
-        data.value === this.minTime.minute ? this.minTime.second : '00'
+
+    if (that.time.hour <= that.minTime.hour) {
+      that.timeRange.minute = [that.minTime.minute, '59']
+      if (that.time.minute <= that.minTime.minute) {
+        that.timeRange.second = [that.minTime.second, '59']
+      } else {
+        that.timeRange.second = ['00', '59']
+      }
+    } else if (that.time.hour >= that.maxTime.hour) {
+      that.timeRange.minute = ['00', that.maxTime.minute]
+      if (that.time.minute >= that.maxTime.minute) {
+        that.timeRange.second = ['00', that.maxTime.second]
+      } else {
+        that.timeRange.second = ['00', '59']
+      }
+    } else {
+      that.timeRange.minute = that.timeRange.second = ['00', '59']
     }
 
     this.empty = false

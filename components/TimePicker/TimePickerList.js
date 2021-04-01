@@ -20,16 +20,14 @@ class SelectList extends List {
     this.timeWrapper = this.parent.parent.parent.parent.parent
     this.pickerControl = this.timeWrapper.parentPopup.pickerControl
     this.pickerControl.timeList[this.props.type] = this
-    if (this.props.type === 'hour') {
-      this.props.min = this.pickerControl.minTime.hour
-      this.props.max = this.pickerControl.maxTime.hour
-    }
   }
 
   _config() {
     let items = []
     const selected = []
     const that = this
+    this.props.min = this.pickerControl.timeRange[this.props.type][0]
+    this.props.max = this.pickerControl.timeRange[this.props.type][1]
 
     if (this.props.type === 'hour') {
       items = this.pickerControl.getHour()
@@ -89,12 +87,16 @@ class SelectList extends List {
   resetTime() {
     if (this.pickerControl.defaultValue) {
       const t = this.pickerControl.defaultValue.split(':')
+
       if (this.props.type === 'hour') {
-        this.selectItem(t[0])
+        // this.selectItem(t[0])
+        this.update({ selectedItems: t[0] })
       } else if (this.props.type === 'minute') {
-        this.selectItem(t[1])
+        // this.selectItem(t[1])
+        this.update({ selectedItems: t[1] })
       } else {
-        this.selectItem(t[2])
+        // this.selectItem(t[2])
+        this.update({ selectedItems: t[2] })
       }
     } else {
       this.unselectAllItems()
