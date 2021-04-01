@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import Textarea from './Textarea'
 import { extend } from '../util/index'
+import Textarea from './Textarea'
 
 class MultilineTextbox extends Field {
   constructor(props, ...mixins) {

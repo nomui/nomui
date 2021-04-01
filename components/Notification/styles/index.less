@@ -1,0 +1,90 @@
+.nom-notification {
+  width: 384px;
+}
+
+.nom-notification-content {
+  width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
+  padding: 0.8rem;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  // Remove focus outline from opened modal
+  outline: 0;
+  // counteract the pointer-events: none; in the .modal-dialog
+  pointer-events: auto;
+
+  > .nom-notification-body {
+    display: flex;
+    flex-direction: row;
+
+    > .nom-notification-body-icon {
+      padding-top: 0.3rem;
+      padding-right: 1rem;
+
+      > .nom-notification-icon {
+        font-size: 2rem;
+      }
+    }
+
+    > .nom-notification-body-content {
+      flex: 1;
+      .nom-notification-title {
+        padding: 0.25rem;
+        font-weight: 500;
+        font-size: 1.5rem;
+      }
+
+      .nom-notification-description {
+        margin: 1rem 0;
+        padding: 0.25rem;
+      }
+    }
+  }
+
+  > .nom-notification-actions {
+    margin-top: 0.5rem;
+    padding-right: 1rem;
+    text-align: right;
+  }
+
+  &.p-type-info {
+    > .nom-notification-body {
+      > .nom-notification-body-icon {
+        > .nom-notification-icon {
+          color: @info;
+        }
+      }
+    }
+  }
+
+  &.p-type-success {
+    > .nom-notification-body {
+      > .nom-notification-body-icon {
+        > .nom-notification-icon {
+          color: @success;
+        }
+      }
+    }
+  }
+
+  &.p-type-error {
+    > .nom-notification-body {
+      > .nom-notification-body-icon {
+        > .nom-notification-icon {
+          color: @danger;
+        }
+      }
+    }
+  }
+
+  &.p-type-warning {
+    > .nom-notification-body {
+      > .nom-notification-body-icon {
+        > .nom-notification-icon {
+          color: @warning;
+        }
+      }
+    }
+  }
+}

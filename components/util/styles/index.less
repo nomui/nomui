@@ -1,40 +1,41 @@
-@import "vars.less";
-@import "normalize.less";
-@import "color.less";
-@import "padding.less";
-@import "margin.less";
-@import "border.less";
-@import "radius.less";
-@import "shadow.less";
-@import "typo.less";
-@import "text.less";
-@import "size.less";
-@import "shape.less";
-@import "rounded.less";
-@import "flex.less";
-@import "gutter.less";
-@import "gaps.less";
-@import "lines.less";
-@import "display.less";
+@import 'vars.less';
+@import 'mixins.less';
+@import 'normalize.less';
+@import 'color.less';
+@import 'padding.less';
+@import 'margin.less';
+@import 'border.less';
+@import 'radius.less';
+@import 'shadow.less';
+@import 'typo.less';
+@import 'text.less';
+@import 'size.less';
+@import 'shape.less';
+@import 'rounded.less';
+@import 'flex.less';
+@import 'gutter.less';
+@import 'gaps.less';
+@import 'lines.less';
+@import 'display.less';
 
 *,
 *::before,
 *::after {
-    box-sizing: border-box; // 1
+  box-sizing: border-box; // 1
 }
 
 html {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 body {
-    color: @body-color;
-    font-weight: @font-weight-base;
-    font-size: @font-size-base;
-    font-family: @font-family-base;
-    line-height: @line-height-base;
-    text-align: left;
-    background-color: @body-bg;
+  color: @body-color;
+  font-weight: @font-weight-base;
+  font-size: @font-size-base;
+  font-family: @font-family-base;
+  line-height: @line-height-base;
+  text-align: left;
+  background-color: @body-bg;
 }
 
 //
@@ -42,16 +43,16 @@ body {
 //
 
 a {
-    color: @link-color;
-    text-decoration: @link-decoration;
-    background-color: transparent; // Remove the gray background on active links in IE 10.
-    -webkit-text-decoration-skip: objects; // Remove gaps in links underline in iOS 8+ and Safari 8+.
-    cursor: pointer;
+  color: @link-color;
+  text-decoration: @link-decoration;
+  background-color: transparent; // Remove the gray background on active links in IE 10.
+  -webkit-text-decoration-skip: objects; // Remove gaps in links underline in iOS 8+ and Safari 8+.
+  cursor: pointer;
 
-    &:hover {
-        color: @link-hover-color;
-        text-decoration: @link-hover-decoration;
-    }
+  &:hover {
+    color: @link-hover-color;
+    text-decoration: @link-hover-decoration;
+  }
 }
 
 //
@@ -59,8 +60,8 @@ a {
 //
 
 hr {
-    border: 0;
-    border-top: @hr-border-width solid @hr-border-color;
+  border: 0;
+  border-top: @hr-border-width solid @hr-border-color;
 }
 
 //
@@ -68,8 +69,8 @@ hr {
 //
 
 .list-unstyled {
-    padding-left: 0;
-    list-style: none;
+  padding-left: 0;
+  list-style: none;
 }
 
 //
@@ -78,16 +79,16 @@ hr {
 
 // Builds on `abbr`
 .initialism {
-    font-size: 90%;
-    text-transform: uppercase;
+  font-size: 90%;
+  text-transform: uppercase;
 }
 
 img {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 .app {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }

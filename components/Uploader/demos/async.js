@@ -34,7 +34,7 @@ define([], function () {
           },
         ],
         defaultFileList: new Promise((resolve) => {
-          setInterval(() => {
+          setTimeout(() => {
             resolve([
               {
                 uuid: '-1',

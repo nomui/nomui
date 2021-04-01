@@ -114,9 +114,8 @@ class Field extends Component {
     isFunction(this._setValue) && this._setValue(value, options)
   }
 
-  getValueText() {
-    const value = isFunction(this._getValueText) ? this._getValueText() : null
-    return value
+  getValueText(options, value) {
+    return isFunction(this._getValueText) ? this._getValueText(options, value) : null
   }
 
   validate() {
@@ -230,7 +229,6 @@ class Field extends Component {
       oldValue: this.oldValue,
       newValue: this.currentValue,
     }
-
     setTimeout(function () {
       that._callHandler(that.props.onValueChange, changed)
       that.group && that.group._onValueChange(changed)
