@@ -6,8 +6,7 @@ define([], function () {
       return {
         component: 'NumberSpinner',
         label: '数字微调器',
-        align: 'horizontal',
-        showSpinner: false,
+        value: 100,
       }
     },
   }
