@@ -70,21 +70,19 @@ class TimePickerWrapper extends Component {
                   text: '此刻',
                   onClick: function () {
                     that.pickerControl.setNow()
-                    that.pickerControl.confirm = true
+
                     that.pickerControl.popup.hide()
                     that.pickerControl.handleChange()
                   },
                 },
-              {
+              that.pickerControl.props.defaultValue && {
                 component: 'Button',
-                type: 'Primary',
                 size: 'small',
-                text: '确定',
+                text: '重置',
                 onClick: function () {
-                  that.pickerControl.confirm = true
                   that.pickerControl.popup.hide()
                   that.pickerControl.handleChange()
-                  that.pickerControl.defaultValue = that.pickerControl.props.value
+                  that.pickerControl.defaultValue = that.pickerControl.props.defaultValue
                 },
               },
             ],

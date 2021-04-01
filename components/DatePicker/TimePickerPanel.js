@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+// import { isPlainObject } from '../util'
 import TimePickerWrapper from './TimePickerWrapper'
 
 class TimePickerPanel extends Component {
@@ -30,8 +31,18 @@ class TimePickerPanel extends Component {
     this.defaultValue = this.props.value
     this.timeList = []
 
-    this.confirm = false
     this.empty = !this.props.value
+
+    this.minTime = {
+      hour: '00',
+      minute: '00',
+      second: '00',
+    }
+    this.maxTime = {
+      hour: '23',
+      minute: '59',
+      second: '59',
+    }
 
     this.time = {
       hour: '00',
@@ -51,9 +62,34 @@ class TimePickerPanel extends Component {
 
   _config() {
     const that = this
-    if (this.datePicker.props.showTime.format) {
-      this.props.format = this.datePicker.props.showTime.format
+    if (this.datePicker.props.showTime && this.datePicker.props.showTime !== true) {
+      this.props = { ...this.props, ...this.datePicker.props.showTime }
     }
+
+    if (this.props.minTime) {
+      const time = new Date(`2000 ${this.props.minTime}`)
+
+      this.minTime = {
+        hour: this.getDoubleDigit(time.getHours()),
+        minute: this.getDoubleDigit(time.getMinutes()),
+        second: this.getDoubleDigit(time.getSeconds()),
+      }
+    }
+    if (this.props.maxTime) {
+      const time = new Date(`2000 ${this.props.maxTime}`)
+      this.maxTime = {
+        hour: this.getDoubleDigit(time.getHours()),
+        minute: this.getDoubleDigit(time.getMinutes()),
+        second: this.getDoubleDigit(time.getSeconds()),
+      }
+    }
+
+    this.timeRange = {
+      hour: [this.minTime.hour, this.maxTime.hour],
+      minute: ['00', '59'],
+      second: ['00', '59'],
+    }
+
     this.setProps({
       children: {
         component: 'Rows',
@@ -82,37 +118,24 @@ class TimePickerPanel extends Component {
     const hour = []
     if (this.props.hourStep) {
       hour.push({
+        key: '00',
         children: '00',
       })
       for (let i = 0; i < 24; i++) {
         if ((i + 1) % this.props.hourStep === 0 && i !== 23) {
-          if (i < 9) {
-            hour.push({
-              key: `0${i + 1}`,
-              children: `0${i + 1}`,
-            })
-          } else {
-            hour.push({
-              key: `${i + 1}`,
-              children: `${i + 1}`,
-            })
-          }
+          hour.push({
+            key: this.getDoubleDigit(i + 1),
+            children: this.getDoubleDigit(i + 1),
+          })
         }
       }
       return hour
     }
     for (let i = 0; i < 24; i++) {
-      if (i < 10) {
-        hour.push({
-          key: `0${i}`,
-          children: `0${i}`,
-        })
-      } else {
-        hour.push({
-          key: `${i}`,
-          children: `${i}`,
-        })
-      }
+      hour.push({
+        key: this.getDoubleDigit(i),
+        children: this.getDoubleDigit(i),
+      })
     }
     return hour
   }
@@ -121,37 +144,24 @@ class TimePickerPanel extends Component {
     const minute = []
     if (this.props.minuteStep) {
       minute.push({
+        key: '00',
         children: '00',
       })
       for (let i = 0; i < 60; i++) {
         if ((i + 1) % this.props.minuteStep === 0 && i !== 59) {
-          if (i < 9) {
-            minute.push({
-              key: `0${i + 1}`,
-              children: `0${i + 1}`,
-            })
-          } else {
-            minute.push({
-              key: `${i + 1}`,
-              children: `${i + 1}`,
-            })
-          }
+          minute.push({
+            key: this.getDoubleDigit(i + 1),
+            children: this.getDoubleDigit(i + 1),
+          })
         }
       }
       return minute
     }
     for (let i = 0; i < 60; i++) {
-      if (i < 10) {
-        minute.push({
-          key: `0${i}`,
-          children: `0${i}`,
-        })
-      } else {
-        minute.push({
-          key: `${i}`,
-          children: `${i}`,
-        })
-      }
+      minute.push({
+        key: this.getDoubleDigit(i),
+        children: this.getDoubleDigit(i),
+      })
     }
     return minute
   }
@@ -160,37 +170,24 @@ class TimePickerPanel extends Component {
     const second = []
     if (this.props.secondStep) {
       second.push({
+        key: '00',
         children: '00',
       })
       for (let i = 0; i < 60; i++) {
         if ((i + 1) % this.props.secondStep === 0 && i !== 59) {
-          if (i < 9) {
-            second.push({
-              key: `0${i + 1}`,
-              children: `0${i + 1}`,
-            })
-          } else {
-            second.push({
-              key: `${i + 1}`,
-              children: `${i + 1}`,
-            })
-          }
+          second.push({
+            key: this.getDoubleDigit(i + 1),
+            children: this.getDoubleDigit(i + 1),
+          })
         }
       }
       return second
     }
     for (let i = 0; i < 60; i++) {
-      if (i < 10) {
-        second.push({
-          key: `0${i}`,
-          children: `0${i}`,
-        })
-      } else {
-        second.push({
-          key: `${i}`,
-          children: `${i}`,
-        })
-      }
+      second.push({
+        key: this.getDoubleDigit(i),
+        children: this.getDoubleDigit(i),
+      })
     }
     return second
   }
@@ -203,16 +200,34 @@ class TimePickerPanel extends Component {
   setTime(data) {
     this.time[data.type] = data.value
 
-    const realTime = this.props.format
-      .replace('HH', this.time.hour)
-      .replace('mm', this.time.minute)
-      .replace('ss', this.time.second)
+    if (this.time.hour <= this.minTime.hour) {
+      this.time.hour = this.minTime.hour
+      if (this.time.minute <= this.minTime.minute) {
+        this.time.minute = this.minTime.minute
+      }
+      if (this.time.minute <= this.minTime.minute) {
+        if (this.time.second <= this.minTime.second) {
+          this.time.second = this.minTime.second
+        }
+      }
+    }
+    this.checkTimeRange()
+    const result = new Date(
+      '2000',
+      '01',
+      '01',
+      this.time.hour,
+      this.time.minute,
+      this.time.second,
+    ).format(this.props.format)
 
-    this.setValue(realTime)
+    this.setValue(result)
+    this.defaultValue = result
   }
 
   resetList() {
     const that = this
+    this.defaultValue = null
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].resetTime()
     })
@@ -228,12 +243,14 @@ class TimePickerPanel extends Component {
 
   setNow() {
     const c = new Date().format('HH:mm:ss')
-    this.setValue(c)
-    this.defaultValue = c
     const t = c.split(':')
-    this.time.hour = t[0] || '00'
-    this.time.minute = t[1] || '00'
-    this.time.second = t[2] || '00'
+    this.time.hour = t[0]
+    this.time.minute = t[1]
+    this.time.second = t[2]
+    this.checkTimeRange()
+    this.setValue(c.format(this.props.format))
+
+    this.defaultValue = c
 
     this.empty = false
     this.resetList()
@@ -241,6 +258,41 @@ class TimePickerPanel extends Component {
 
   handleChange() {
     this.props.onChange && this._callHandler(this.props.onChange)
+  }
+
+  getDoubleDigit(num) {
+    if (num < 10) {
+      return `0${num}`
+    }
+    return `${num}`
+  }
+
+  checkTimeRange() {
+    const that = this
+
+    if (that.time.hour <= that.minTime.hour) {
+      that.timeRange.hour = [that.minTime.hour, that.maxTime.hour]
+      that.timeRange.minute = [that.minTime.minute, '59']
+      if (that.time.minute <= that.minTime.minute) {
+        that.timeRange.second = [that.minTime.second, '59']
+      } else {
+        that.timeRange.second = ['00', '59']
+      }
+    } else if (that.time.hour >= that.maxTime.hour) {
+      that.timeRange.minute = ['00', that.maxTime.minute]
+      if (that.time.minute >= that.maxTime.minute) {
+        that.timeRange.second = ['00', that.maxTime.second]
+      } else {
+        that.timeRange.second = ['00', '59']
+      }
+    } else {
+      that.timeRange.minute = that.timeRange.second = ['00', '59']
+    }
+
+    this.empty = false
+    Object.keys(this.timeList).forEach(function (key) {
+      that.timeList[key].refresh()
+    })
   }
 }
 

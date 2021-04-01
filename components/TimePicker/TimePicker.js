@@ -6,7 +6,7 @@ class TimePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
       allowClear: true,
-      value: null,
+      value: '12:15:00',
       format: 'HH:mm:ss',
       hourStep: null,
       minuteStep: null,
@@ -26,7 +26,7 @@ class TimePicker extends Textbox {
     this.defaultValue = this.props.value
     this.timeList = []
 
-    this.confirm = false
+    // this.confirm = false
     this.empty = !this.props.value
 
     this.minTime = {
@@ -100,14 +100,14 @@ class TimePicker extends Textbox {
     const that = this
     this.popup = new TimePickerPopup({
       trigger: this.control,
-      onHide: () => {
-        if (this.confirm === false) {
-          this.setValue(this.defaultValue)
-          this.resetList()
-        }
-      },
+      // onHide: () => {
+      //   if (this.confirm === false) {
+      //     this.setValue(this.defaultValue)
+      //     this.resetList()
+      //   }
+      // },
       onShown: () => {
-        this.confirm = false
+        // this.confirm = false
         Object.keys(this.timeList).forEach(function (key) {
           that.timeList[key].scrollToKey()
         })
@@ -216,7 +216,9 @@ class TimePicker extends Textbox {
       this.time.minute,
       this.time.second,
     ).format(this.props.format)
+
     this.setValue(result)
+    this.defaultValue = result
   }
 
   clearTime() {
