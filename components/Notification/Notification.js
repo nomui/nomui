@@ -96,7 +96,7 @@ class Notification extends Layer {
     NOMUI_NOTIFICATION_INSTANCES[key] = this
   }
 
-  registerAutoClose(duration) {
+  _registerAutoClose(duration) {
     this.timer && clearTimeout(this.timer)
     this.timer = setTimeout(() => {
       this.close()
@@ -106,8 +106,8 @@ class Notification extends Layer {
   _rendered() {
     const { duration } = this.props
     const that = this
-    if (duration === null) {
-      that.registerAutoClose(duration)
+    if (duration !== null) {
+      that._registerAutoClose(duration)
 
       this.element.addEventListener(
         'mouseenter',
@@ -120,7 +120,7 @@ class Notification extends Layer {
       this.element.addEventListener(
         'mouseleave',
         function () {
-          that.registerAutoClose(duration)
+          that._registerAutoClose(duration)
         },
         false,
       )
