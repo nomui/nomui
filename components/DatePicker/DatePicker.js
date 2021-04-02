@@ -427,6 +427,13 @@ class DatePicker extends Textbox {
   onHide() {
     this.getValue() && this.props.onChange && this._callHandler(this.props.onChange)
   }
+
+  _onBlur() {
+    if (!Date.isValid(this.getValue(), this.props.format)) {
+      this.input.setText(null)
+    }
+    super._onBlur()
+  }
 }
 
 Component.register(DatePicker)
