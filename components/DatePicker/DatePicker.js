@@ -10,7 +10,7 @@ import TimePickerPanel from './TimePickerPanel'
 class DatePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
-      format: 'yyyy-MM-dd HH:mm:ss',
+      format: 'yyyy-MM-dd',
       disabledTime: null,
       minDate: null,
       maxDate: null,
