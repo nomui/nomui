@@ -14,6 +14,10 @@ class TimeRangePicker extends Group {
       placeholder: null,
       showNow: true,
       onChange: null,
+      fieldName: {
+        start: 'start',
+        end: 'end',
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -32,12 +36,15 @@ class TimeRangePicker extends Group {
       fields: [
         {
           component: 'TimePicker',
-          name: 'start',
+          name: that.props.fieldName.start,
           ref: (c) => {
             that.startPicker = c
           },
-          onChange: () => {
+          onChange: function (args) {
             that.endPicker.focus()
+
+            that.checkRange(args.sender.name)
+
             that.endPicker.showPopup()
           },
           format,
@@ -52,12 +59,12 @@ class TimeRangePicker extends Group {
         },
         {
           component: 'TimePicker',
-          name: 'end',
+          name: that.props.fieldName.end,
           ref: (c) => {
             that.endPicker = c
           },
-          onChange: () => {
-            that.handleChange()
+          onChange: function (args) {
+            that.checkRange(args.sender.name)
           },
           format,
           hourStep,
@@ -73,6 +80,27 @@ class TimeRangePicker extends Group {
 
   handleChange() {
     this.props.onChange && this._callHandler(this.props.onChange)
+  }
+
+  checkRange(type) {
+    const that = this
+    const active = type === this.props.fieldName.start ? this.startPicker : this.endPicker
+    const opposite = type === this.props.fieldName.start ? this.endPicker : this.startPicker
+
+    if (active.getValue()) {
+      if (active.name === that.props.fieldName.start) {
+        opposite.update({ minTime: active.getValue() })
+        if (opposite.getValue() && opposite.getValue() < active.getValue()) {
+          opposite.clearTime()
+        }
+      } else if (opposite.getValue() && opposite.getValue() > active.getValue()) {
+        opposite.clearTime()
+      }
+    }
+
+    if (active.getValue() && opposite.getValue()) {
+      that.handleChange()
+    }
   }
 }
 
