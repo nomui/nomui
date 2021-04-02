@@ -17,7 +17,8 @@ class NumberSpinner extends Field {
 
   _config() {
     const numberSpinner = this
-    const { align, component: com, reference, value, tag, ...contentProps } = this.props
+    const { align, showSpinner, component: com, reference, tag, ...contentProps } = this.props
+    const { left, right, horizontal } = SPINNER_POSITION
 
     // console.log('props', contentProps)
     const inputProps = {
@@ -29,9 +30,18 @@ class NumberSpinner extends Field {
         this.textbox.input = this
       },
       classes: {
-        'nom-number-spinner-input': true,
+        'spinner-input-with-left-icon': align === left,
+        'spinner-input-with-right-icon': align === right && showSpinner === true,
+        'spinner-input-with-double-icon': align === horizontal,
       },
       attrs: {
+        onkeydown(key) {
+          if (key.keyCode === 38) {
+            numberSpinner._handlePlus()
+          } else if (key.keyCode === 40) {
+            numberSpinner._handleMinus()
+          }
+        },
         onmouseover() {
           // numberSpinner._handleInputMouseover()
         },
@@ -54,7 +64,7 @@ class NumberSpinner extends Field {
 
   _handleSpinnerIcon() {
     const { align, showSpinner } = this.props
-    if (showSpinner === false) return null
+    if (showSpinner === false) return []
 
     const numberSpinner = this
     const { left, right, horizontal } = SPINNER_POSITION
@@ -108,7 +118,7 @@ class NumberSpinner extends Field {
       ]
     }
 
-    return null
+    return []
   }
 
   _handleInputMouseover() {
@@ -120,20 +130,24 @@ class NumberSpinner extends Field {
   }
 
   _handlePlus(args) {
-    const { event } = args
-    if (event) {
-      event.preventDefault && event.preventDefault()
-      event.stopPropagation && event.stopPropagation()
+    if (args) {
+      const { event } = args
+      if (event) {
+        event.preventDefault && event.preventDefault()
+        event.stopPropagation && event.stopPropagation()
+      }
     }
     console.log('do plus')
     // const n = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(123456.789)
   }
 
   _handleMinus(args) {
-    const { event } = args
-    if (event) {
-      event.preventDefault && event.preventDefault()
-      event.stopPropagation && event.stopPropagation()
+    if (args) {
+      const { event } = args
+      if (event) {
+        event.preventDefault && event.preventDefault()
+        event.stopPropagation && event.stopPropagation()
+      }
     }
     console.log('do minus')
   }
