@@ -66,7 +66,15 @@ class TimePickerPanel extends Component {
       this.props = { ...this.props, ...this.datePicker.props.showTime }
     }
 
-    if (this.props.minTime) {
+    if (this.props.startTime) {
+      const time = new Date(`2000 ${this.props.startTime}`)
+
+      this.minTime = {
+        hour: this.getDoubleDigit(time.getHours()),
+        minute: this.getDoubleDigit(time.getMinutes()),
+        second: this.getDoubleDigit(time.getSeconds()),
+      }
+    } else if (this.props.minTime) {
       const time = new Date(`2000 ${this.props.minTime}`)
 
       this.minTime = {

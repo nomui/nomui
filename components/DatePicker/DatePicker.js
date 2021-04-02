@@ -27,6 +27,7 @@ class DatePicker extends Textbox {
     super._created()
     this.dateInfo = null
     this.todayItem = null
+    this.startTime = null
   }
 
   _config() {
@@ -39,6 +40,15 @@ class DatePicker extends Textbox {
     let month = currentDate.getMonth() + 1
     const day = currentDate.getDate()
     const that = this
+
+    const minTime =
+      this.props.showTime && this.props.minDate
+        ? new Date(this.props.minDate).format(this.props.showTime.format || 'HH:mm:ss')
+        : '00:00:00'
+
+    this.startTime = minTime
+
+    this.props.minDate = new Date(this.props.minDate).format('yyyy-MM-dd')
 
     this.setProps({
       leftIcon: 'calendar',
@@ -211,6 +221,19 @@ class DatePicker extends Textbox {
                           },
                         }
 
+                        if (that.props.minDate) {
+                          const myday = parseInt(new Date(that.props.minDate).format('d'), 10)
+                          if (myday === args.sender.props.day) {
+                            that.timePicker.update({
+                              startTime: that.startTime,
+                            })
+                          } else if (myday < args.sender.props.day) {
+                            that.timePicker.update({
+                              startTime: '00:00:00',
+                            })
+                          }
+                        }
+
                         that.updateValue()
                         !that.props.showTime && that.popup.hide()
                       },
@@ -229,6 +252,7 @@ class DatePicker extends Textbox {
                 onValueChange: (data) => {
                   this.handleTimeChange(data)
                 },
+                startTime: minTime,
               },
             ],
           },
