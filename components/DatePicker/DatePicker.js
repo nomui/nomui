@@ -60,7 +60,7 @@ class DatePicker extends Textbox {
             padding: '1',
           },
           onShown: () => {
-            that.timePicker.onShown()
+            that.props.showTime && that.timePicker.onShown()
           },
           classes: {
             'nom-date-picker-popup': true,
