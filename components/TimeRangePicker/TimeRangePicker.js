@@ -41,11 +41,7 @@ class TimeRangePicker extends Group {
             that.startPicker = c
           },
           onChange: function (args) {
-            that.endPicker.focus()
-
             that.checkRange(args.sender.name)
-
-            that.endPicker.showPopup()
           },
           format,
           hourStep,
@@ -92,6 +88,13 @@ class TimeRangePicker extends Group {
         opposite.update({ minTime: active.getValue() })
         if (opposite.getValue() && opposite.getValue() < active.getValue()) {
           opposite.clearTime()
+          opposite.focus()
+
+          opposite.showPopup()
+        } else if (!opposite.getValue()) {
+          opposite.focus()
+
+          opposite.showPopup()
         }
       } else if (opposite.getValue() && opposite.getValue() > active.getValue()) {
         opposite.clearTime()
