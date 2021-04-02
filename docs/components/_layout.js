@@ -400,6 +400,12 @@ define([], function () {
                       url: '#!components!index?type=DatePicker',
                     },
                     {
+                      text: 'DateRangePicker',
+                      subtext: '日期范围选择',
+                      id: 'DateRangePicker',
+                      url: '#!components!index?type=DateRangePicker',
+                    },
+                    {
                       text: 'Uploader',
                       subtext: '上传',
                       id: 'Uploader',

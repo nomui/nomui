@@ -10,13 +10,14 @@ import TimePickerPanel from './TimePickerPanel'
 class DatePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
-      format: 'yyyy-MM-dd HH:mm:ss',
+      format: 'yyyy-MM-dd',
       disabledTime: null,
       minDate: null,
       maxDate: null,
       yearRange: [50, 20],
       showTime: false,
       allowClear: true,
+      onChange: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -26,6 +27,7 @@ class DatePicker extends Textbox {
     super._created()
     this.dateInfo = null
     this.todayItem = null
+    this.startTime = null
   }
 
   _config() {
@@ -38,6 +40,15 @@ class DatePicker extends Textbox {
     let month = currentDate.getMonth() + 1
     const day = currentDate.getDate()
     const that = this
+
+    const minTime =
+      this.props.showTime && this.props.minDate
+        ? new Date(this.props.minDate).format(this.props.showTime.format || 'HH:mm:ss')
+        : '00:00:00'
+
+    this.startTime = minTime
+
+    this.props.minDate = new Date(this.props.minDate).format('yyyy-MM-dd')
 
     this.setProps({
       leftIcon: 'calendar',
@@ -61,6 +72,9 @@ class DatePicker extends Textbox {
           },
           onShown: () => {
             that.props.showTime && that.timePicker.onShown()
+          },
+          onHide: () => {
+            that.onHide()
           },
           classes: {
             'nom-date-picker-popup': true,
@@ -207,6 +221,19 @@ class DatePicker extends Textbox {
                           },
                         }
 
+                        if (that.props.minDate) {
+                          const myday = parseInt(new Date(that.props.minDate).format('d'), 10)
+                          if (myday === args.sender.props.day) {
+                            that.timePicker.update({
+                              startTime: that.startTime,
+                            })
+                          } else if (myday < args.sender.props.day) {
+                            that.timePicker.update({
+                              startTime: '00:00:00',
+                            })
+                          }
+                        }
+
                         that.updateValue()
                         !that.props.showTime && that.popup.hide()
                       },
@@ -225,6 +252,7 @@ class DatePicker extends Textbox {
                 onValueChange: (data) => {
                   this.handleTimeChange(data)
                 },
+                startTime: minTime,
               },
             ],
           },
@@ -376,7 +404,7 @@ class DatePicker extends Textbox {
   clearTime() {
     this.setValue(null)
     this.days.unselectAllItems()
-    this.timePicker.resetList()
+    this.props.showTime && this.timePicker.resetList()
   }
 
   updateValue() {
@@ -390,6 +418,14 @@ class DatePicker extends Textbox {
     )
 
     this.setValue(date.format(this.props.format))
+  }
+
+  showPopup() {
+    this.popup.show()
+  }
+
+  onHide() {
+    this.getValue() && this.props.onChange && this._callHandler(this.props.onChange)
   }
 
   _onBlur() {
