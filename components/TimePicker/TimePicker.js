@@ -100,12 +100,9 @@ class TimePicker extends Textbox {
     const that = this
     this.popup = new TimePickerPopup({
       trigger: this.control,
-      // onHide: () => {
-      //   if (this.confirm === false) {
-      //     this.setValue(this.defaultValue)
-      //     this.resetList()
-      //   }
-      // },
+      onHide: () => {
+        that.getValue() !== that.defaultValue && that.handleChange()
+      },
       onShown: () => {
         // this.confirm = false
         Object.keys(this.timeList).forEach(function (key) {
@@ -218,13 +215,12 @@ class TimePicker extends Textbox {
     ).format(this.props.format)
 
     this.setValue(result)
-    this.defaultValue = result
   }
 
   clearTime() {
     this.setValue(null)
     this.empty = true
-    this.defaultValue = null
+
     this.time = {
       hour: '00',
       minute: '00',
@@ -242,8 +238,6 @@ class TimePicker extends Textbox {
     this.time.second = t[2]
     this.checkTimeRange()
     this.setValue(c.format(this.props.format))
-
-    this.defaultValue = c
 
     this.empty = false
     this.resetList()
