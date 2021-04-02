@@ -391,6 +391,13 @@ class DatePicker extends Textbox {
 
     this.setValue(date.format(this.props.format))
   }
+
+  _onBlur() {
+    if (!Date.isValid(this.getValue(), this.props.format)) {
+      this.input.setText(null)
+    }
+    super._onBlur()
+  }
 }
 
 Component.register(DatePicker)
