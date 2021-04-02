@@ -4,15 +4,13 @@ import Group from '../Group/index'
 class DateRangePicker extends Group {
   constructor(props, ...mixins) {
     const defaults = {
-      allowClear: false,
-      value: null,
-      format: 'HH:mm:ss',
-      hourStep: 0,
-      minuteStep: 0,
-      secondStep: 0,
-      readOnly: true,
-      placeholder: null,
-      showNow: true,
+      format: 'yyyy-MM-dd',
+      disabledTime: null,
+      minDate: null,
+      maxDate: null,
+      yearRange: [50, 20],
+      showTime: false,
+      allowClear: true,
       onChange: null,
       fieldName: {
         start: 'start',
@@ -29,14 +27,15 @@ class DateRangePicker extends Group {
 
   _config() {
     const that = this
-    const { format, hourStep, minuteStep, secondStep, allowClear } = this.props
+    const { format, allowClear, minDate, maxDate, yearRange, showTime } = this.props
 
     this.setProps({
       inline: true,
       fields: [
         {
-          component: 'TimePicker',
+          component: 'DatePicker',
           name: that.props.fieldName.start,
+          placeholder: '开始日期',
           ref: (c) => {
             that.startPicker = c
           },
@@ -44,18 +43,20 @@ class DateRangePicker extends Group {
             that.checkRange(args.sender.name)
           },
           format,
-          hourStep,
-          minuteStep,
-          secondStep,
           allowClear,
+          minDate,
+          maxDate,
+          yearRange,
+          showTime,
         },
         {
           component: 'StaticText',
           value: '-',
         },
         {
-          component: 'TimePicker',
+          component: 'DatePicker',
           name: that.props.fieldName.end,
+          placeholder: '结束日期',
           ref: (c) => {
             that.endPicker = c
           },
@@ -63,10 +64,11 @@ class DateRangePicker extends Group {
             that.checkRange(args.sender.name)
           },
           format,
-          hourStep,
-          minuteStep,
-          secondStep,
           allowClear,
+          minDate,
+          maxDate,
+          yearRange,
+          showTime,
         },
       ],
     })
@@ -85,7 +87,7 @@ class DateRangePicker extends Group {
 
     if (active.getValue()) {
       if (active.name === that.props.fieldName.start) {
-        opposite.update({ minTime: active.getValue() })
+        opposite.update({ minDate: active.getValue() })
         if (opposite.getValue() && opposite.getValue() < active.getValue()) {
           opposite.clearTime()
           opposite.focus()

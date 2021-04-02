@@ -4,7 +4,7 @@ import Group from '../Group/index'
 class TimeRangePicker extends Group {
   constructor(props, ...mixins) {
     const defaults = {
-      allowClear: false,
+      allowClear: true,
       value: null,
       format: 'HH:mm:ss',
       hourStep: 0,
@@ -29,7 +29,7 @@ class TimeRangePicker extends Group {
 
   _config() {
     const that = this
-    const { format, hourStep, minuteStep, secondStep, allowClear } = this.props
+    const { format, hourStep, minuteStep, secondStep, allowClear, minTime, maxTime } = this.props
 
     this.setProps({
       inline: true,
@@ -37,6 +37,7 @@ class TimeRangePicker extends Group {
         {
           component: 'TimePicker',
           name: that.props.fieldName.start,
+          placeholder: '开始时间',
           ref: (c) => {
             that.startPicker = c
           },
@@ -48,6 +49,9 @@ class TimeRangePicker extends Group {
           minuteStep,
           secondStep,
           allowClear,
+
+          minTime,
+          maxTime,
         },
         {
           component: 'StaticText',
@@ -56,17 +60,22 @@ class TimeRangePicker extends Group {
         {
           component: 'TimePicker',
           name: that.props.fieldName.end,
+          placeholder: '结束时间',
           ref: (c) => {
             that.endPicker = c
           },
           onChange: function (args) {
             that.checkRange(args.sender.name)
           },
+
           format,
           hourStep,
           minuteStep,
           secondStep,
           allowClear,
+
+          minTime,
+          maxTime,
         },
       ],
     })

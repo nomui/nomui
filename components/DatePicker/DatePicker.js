@@ -17,6 +17,7 @@ class DatePicker extends Textbox {
       yearRange: [50, 20],
       showTime: false,
       allowClear: true,
+      onChange: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -376,7 +377,7 @@ class DatePicker extends Textbox {
   clearTime() {
     this.setValue(null)
     this.days.unselectAllItems()
-    this.timePicker.resetList()
+    this.props.showTime && this.timePicker.resetList()
   }
 
   updateValue() {
@@ -390,6 +391,11 @@ class DatePicker extends Textbox {
     )
 
     this.setValue(date.format(this.props.format))
+    this.props.onChange && this._callHandler(this.props.onChange)
+  }
+
+  showPopup() {
+    this.popup.show()
   }
 }
 
