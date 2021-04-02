@@ -5,14 +5,27 @@ import Rows from '../Rows/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
 import {} from '../util/date'
+import TimePickerPanel from './TimePickerPanel'
 
 class DatePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
-      format: 'yyyy-MM-dd',
+      format: 'yyyy-MM-dd HH:mm:ss',
+      disabledTime: null,
+      minDate: null,
+      maxDate: null,
+      yearRange: [50, 20],
+      showTime: false,
+      allowClear: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
+  }
+
+  _created() {
+    super._created()
+    this.dateInfo = null
+    this.todayItem = null
   }
 
   _config() {
@@ -27,7 +40,16 @@ class DatePicker extends Textbox {
     const that = this
 
     this.setProps({
-      rightIcon: 'calendar',
+      leftIcon: 'calendar',
+      rightIcon: {
+        component: 'Icon',
+        type: 'times',
+        hidden: !this.props.allowClear,
+        onClick: (args) => {
+          this.clearTime()
+          args.event && args.event.stopPropagation()
+        },
+      },
       control: {
         disabled: disabled,
         popup: {
@@ -37,112 +59,171 @@ class DatePicker extends Textbox {
           styles: {
             padding: '1',
           },
-          triggerAction: 'click',
-          attrs: {
-            style: {
-              width: '300px',
-            },
+          onShown: () => {
+            that.timePicker.onShown()
           },
+          classes: {
+            'nom-date-picker-popup': true,
+            'nom-date-picker-with-time': this.props.showTime,
+          },
+          triggerAction: 'click',
+
           children: {
-            component: Rows,
+            component: 'Cols',
             items: [
               {
-                component: Cols,
-                justify: 'between',
-                fills: true,
+                component: Rows,
+                attrs: {
+                  style: {
+                    width: '260px',
+                  },
+                },
                 items: [
                   {
-                    component: Select,
-                    value: year,
-                    options: this._getYears(),
-                    onValueChange: (changed) => {
-                      year = changed.newValue
-                      that.days.update({
-                        items: that._getDays(year, month),
-                      })
+                    component: Cols,
+                    justify: 'between',
+                    fills: true,
+                    items: [
+                      {
+                        component: Select,
+                        value: year,
+                        options: this._getYears(),
+                        onValueChange: (changed) => {
+                          year = changed.newValue
+                          that.days.update({
+                            items: that._getDays(year, month),
+                          })
+                        },
+                      },
+                      {
+                        component: Select,
+                        value: month,
+                        options: this._getMonths(),
+                        onValueChange: function (changed) {
+                          month = changed.newValue
+                          that.days.update({
+                            items: that._getDays(year, month),
+                          })
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Cols,
+                    items: ['日', '一', '二', '三', '四', '五', '六'],
+                    fills: true,
+                    gutter: null,
+                    itemDefaults: {
+                      styles: {
+                        text: 'center',
+                      },
                     },
                   },
                   {
-                    component: Select,
-                    value: month,
-                    options: this._getMonths(),
-                    onValueChange: function (changed) {
-                      month = changed.newValue
-                      that.days.update({
-                        items: that._getDays(year, month),
-                      })
+                    component: List,
+                    _created: function () {
+                      that.days = this
+                    },
+                    gutter: 'sm',
+                    cols: 7,
+                    selectedItems: `${year}-${month}-${day}`,
+                    itemSelectable: {
+                      byClick: true,
+                    },
+                    items: this._getDays(year, month),
+                    itemDefaults: {
+                      key: function () {
+                        return this.props.date
+                      },
+                      styles: {
+                        padding: 'd375',
+                        hover: {
+                          color: 'darken',
+                        },
+                        selected: {
+                          color: 'primary',
+                        },
+                      },
+                      attrs: {
+                        role: 'button',
+                      },
+                      _config: function () {
+                        const textStyles = ['center']
+                        const date = that._getDateString(
+                          this.props.year,
+                          this.props.month,
+                          this.props.day,
+                        )
+                        const isToday = date === new Date().format('yyyy-MM-dd')
+                        let isDisabled = false
+                        if (that.props.disabledTime) {
+                          isDisabled = that.props.disabledTime(date)
+                        }
+
+                        if (
+                          that.props.minDate &&
+                          new Date(date).isBefore(new Date(that.props.minDate))
+                        ) {
+                          isDisabled = true
+                        }
+
+                        if (
+                          that.props.maxDate &&
+                          new Date(date).isAfter(new Date(that.props.maxDate))
+                        ) {
+                          isDisabled = true
+                        }
+
+                        if (this.props.lastMonth === true || this.props.nextMonth === true) {
+                          textStyles.push('muted')
+                        }
+
+                        if (isToday) {
+                          that.todayItem = this
+                          this.setProps({
+                            styles: {
+                              border: ['1px', 'primary'],
+                            },
+                          })
+                        }
+
+                        this.setProps({
+                          styles: {
+                            text: textStyles,
+                          },
+                          children: this.props.day,
+                          disabled: !!isDisabled,
+                        })
+                      },
+                      onClick: function (args) {
+                        const { year: selYear, month: selMonth, day: selDay } = args.sender.props
+
+                        that.dateInfo = {
+                          ...that.dateInfo,
+                          ...{
+                            year: selYear,
+                            month: selMonth - 1,
+                            day: selDay,
+                          },
+                        }
+
+                        that.updateValue()
+                        !that.props.showTime && that.popup.hide()
+                      },
                     },
                   },
                 ],
               },
-              {
-                component: Cols,
-                items: ['日', '一', '二', '三', '四', '五', '六'],
-                fills: true,
-                gutter: null,
-                itemDefaults: {
-                  styles: {
-                    text: 'center',
+              this.props.showTime && {
+                component: TimePickerPanel,
+                attrs: {
+                  style: {
+                    'border-left': '1px solid #ddd',
+                    'padding-left': '5px',
                   },
                 },
-              },
-              {
-                component: List,
-                _created: function () {
-                  that.days = this
-                },
-                gutter: 'sm',
-                cols: 7,
-                selectedItems: `${year}-${month}-${day}`,
-                itemSelectable: {
-                  byClick: true,
-                },
-                items: this._getDays(year, month),
-                itemDefaults: {
-                  key: function () {
-                    return this.props.date
-                  },
-                  styles: {
-                    padding: 'd375',
-                    hover: {
-                      color: 'darken',
-                    },
-                    selected: {
-                      color: 'primary',
-                    },
-                  },
-                  attrs: {
-                    role: 'button',
-                  },
-                  _config: function () {
-                    const textStyles = ['center']
-                    const isToday = this.props.date === new Date().format('yyyy-M-dd')
-
-                    if (this.props.lastMonth === true || this.props.nextMonth === true) {
-                      textStyles.push('muted')
-                    }
-
-                    if (isToday) {
-                      this.setProps({
-                        styles: {
-                          border: ['1px', 'primary'],
-                        },
-                      })
-                    }
-
-                    this.setProps({
-                      styles: {
-                        text: textStyles,
-                      },
-                      children: this.props.day,
-                    })
-                  },
-                  onClick: function (args) {
-                    const { year: selYear, month: selMonth, day: selDay } = args.sender.props
-                    const selDate = new Date(selYear, selMonth - 1, selDay)
-                    that.setValue(selDate.format(format))
-                    that.popup.hide()
-                  },
+                onValueChange: (data) => {
+                  this.handleTimeChange(data)
                 },
               },
             ],
@@ -158,7 +239,7 @@ class DatePicker extends Textbox {
     const years = []
     const thisYear = new Date().getFullYear()
 
-    for (let i = thisYear + 20; i > thisYear - 30; i--) {
+    for (let i = thisYear + this.props.yearRange[1]; i > thisYear - this.props.yearRange[0]; i--) {
       years.push({
         text: i,
         value: i,
@@ -205,7 +286,6 @@ class DatePicker extends Textbox {
           year: lastMonthYear,
           month: lastMonthMonth,
           lastMonth: true,
-          date: `${lastMonthYear}-${lastMonthMonth}-${i}`,
         })
       }
     }
@@ -215,7 +295,6 @@ class DatePicker extends Textbox {
         day: i,
         year: year,
         month: month,
-        date: `${year}-${month}-${i}`,
       })
     }
     const nextMonthCount = 7 - (daysList.length % 7 || 7)
@@ -229,7 +308,6 @@ class DatePicker extends Textbox {
         year: nextMonthYear,
         month: nextMonthMonth,
         nextMonth: true,
-        date: `${nextMonthYear}-${nextMonthMonth}-${i}`,
       })
     }
     return daysList
@@ -243,6 +321,18 @@ class DatePicker extends Textbox {
   /* 求XX年XX月有多少天 */
   _getDaysInMonth(year, month) {
     return 32 - this._daylightSavingAdjust(new Date(year, month - 1, 32)).getDate()
+  }
+
+  _getDoubleDigit(num) {
+    if (num < 10) {
+      return `0${num}`
+    }
+
+    return num
+  }
+
+  _getDateString(year, month, day) {
+    return `${year}-${this._getDoubleDigit(month)}-${this._getDoubleDigit(day)}`
   }
 
   _daylightSavingAdjust(date) {
@@ -265,6 +355,41 @@ class DatePicker extends Textbox {
     if (this.firstRender === false) {
       this.control.enable()
     }
+  }
+
+  handleTimeChange(param) {
+    if (!this.days.getSelectedItem()) {
+      this.days.selectItem(this.todayItem)
+    }
+    this.dateInfo = {
+      ...this.dateInfo,
+      ...{
+        hour: param.hour,
+        minute: param.minute,
+        second: param.second,
+      },
+    }
+
+    this.updateValue()
+  }
+
+  clearTime() {
+    this.setValue(null)
+    this.days.unselectAllItems()
+    this.timePicker.resetList()
+  }
+
+  updateValue() {
+    const date = new Date(
+      this.dateInfo.year || new Date().format('yyyy'),
+      this.dateInfo.month || new Date().format('MM') - 1,
+      this.dateInfo.day || new Date().format('dd'),
+      this.dateInfo.hour || '00',
+      this.dateInfo.minute || '00',
+      this.dateInfo.second || '00',
+    )
+
+    this.setValue(date.format(this.props.format))
   }
 }
 

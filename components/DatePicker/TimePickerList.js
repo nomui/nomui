@@ -18,7 +18,7 @@ class SelectList extends List {
 
     this.scroller = this.parent
     this.timeWrapper = this.parent.parent.parent.parent.parent
-    this.pickerControl = this.timeWrapper.parentPopup.pickerControl
+    this.pickerControl = this.timeWrapper.pickerControl
     this.pickerControl.timeList[this.props.type] = this
   }
 
@@ -44,11 +44,15 @@ class SelectList extends List {
       styles: {
         padding: '3px',
       },
-
       items: items,
       itemSelectable: {
         multiple: false,
         byClick: true,
+      },
+      attrs: {
+        style: {
+          position: 'relative',
+        },
       },
       selectedItems: selected,
       itemDefaults: {

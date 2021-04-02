@@ -9,12 +9,10 @@ class TimePickerWrapper extends Component {
   }
 
   _created() {
-    this.parentPopup = this.parent.parent.parent
-    this.pickerControl = this.parentPopup.pickerControl
+    this.pickerControl = this.parent.parent.parent
   }
 
   _config() {
-    const that = this
     this.setProps({
       children: {
         component: 'Rows',
@@ -48,41 +46,6 @@ class TimePickerWrapper extends Component {
                 children: {
                   component: TimePickerList,
                   type: 'second',
-                },
-              },
-            ],
-          },
-          {
-            component: 'Cols',
-            justify: 'between',
-            attrs: {
-              style: {
-                padding: '5px',
-                'border-top': '1px solid #ddd',
-              },
-            },
-            items: [
-              !that.pickerControl.props.hourStep &&
-                !that.pickerControl.props.minuteStep &&
-                !that.pickerControl.props.secondStep && {
-                  component: 'Button',
-                  size: 'small',
-                  text: '此刻',
-                  onClick: function () {
-                    that.pickerControl.setNow()
-
-                    that.pickerControl.popup.hide()
-                    that.pickerControl.handleChange()
-                  },
-                },
-              that.pickerControl.props.defaultValue && {
-                component: 'Button',
-                size: 'small',
-                text: '重置',
-                onClick: function () {
-                  that.pickerControl.popup.hide()
-                  that.pickerControl.handleChange()
-                  that.pickerControl.defaultValue = that.pickerControl.props.defaultValue
                 },
               },
             ],
