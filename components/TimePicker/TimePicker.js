@@ -6,7 +6,7 @@ class TimePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
       allowClear: true,
-      value: '12:15:00',
+      value: null,
       format: 'HH:mm:ss',
       hourStep: null,
       minuteStep: null,
