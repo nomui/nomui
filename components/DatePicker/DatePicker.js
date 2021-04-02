@@ -63,6 +63,9 @@ class DatePicker extends Textbox {
           onShown: () => {
             that.props.showTime && that.timePicker.onShown()
           },
+          onHide: () => {
+            that.onHide()
+          },
           classes: {
             'nom-date-picker-popup': true,
             'nom-date-picker-with-time': this.props.showTime,
@@ -391,11 +394,14 @@ class DatePicker extends Textbox {
     )
 
     this.setValue(date.format(this.props.format))
-    this.props.onChange && this._callHandler(this.props.onChange)
   }
 
   showPopup() {
     this.popup.show()
+  }
+
+  onHide() {
+    this.getValue() && this.props.onChange && this._callHandler(this.props.onChange)
   }
 }
 

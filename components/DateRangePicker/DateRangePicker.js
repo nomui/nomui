@@ -4,12 +4,14 @@ import Group from '../Group/index'
 class DateRangePicker extends Group {
   constructor(props, ...mixins) {
     const defaults = {
-      format: 'yyyy-MM-dd',
+      format: 'yyyy-MM-dd HH:mm:ss',
       disabledTime: null,
       minDate: null,
       maxDate: null,
       yearRange: [50, 20],
-      showTime: false,
+      showTime: {
+        format: 'HH:mm:ss',
+      },
       allowClear: true,
       onChange: null,
       fieldName: {
