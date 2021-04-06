@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction } from '../util/index'
+import { isFunction, isNumeric, isString } from '../util/index'
 
 class Td extends Component {
   constructor(props, ...mixins) {
@@ -117,6 +117,10 @@ class Td extends Component {
       (this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'body') &&
       this.props.column.ellipsis !== false
 
+    const showTitle =
+      ((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
+      this.props.column.showTitle !== false
+
     this.setProps({
       children: children,
       attrs: {
@@ -124,9 +128,7 @@ class Td extends Component {
         rowspan: rowSpan,
         'data-field': this.props.column.field,
         title:
-          (this.table.hasGrid && this.table.grid.props.showTitle) ||
-          this.table.props.showTitle ||
-          isEllipsis
+          (isString(children) || isNumeric(children)) && (isEllipsis || showTitle)
             ? children
             : null,
       },
