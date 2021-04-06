@@ -10,7 +10,7 @@ class TimeRangePicker extends Group {
       hourStep: 0,
       minuteStep: 0,
       secondStep: 0,
-      readOnly: true,
+      readonly: true,
       placeholder: null,
       showNow: true,
       onChange: null,
