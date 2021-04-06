@@ -30,25 +30,30 @@ define([], function () {
               gridRef = c
             },
             rowCheckable: { checkedRowKeys: [1, 5] },
+            columnsCustomizable: true,
             columns: [
               {
                 field: 'name',
                 title: '标题',
+                key: '001',
               },
               {
                 field: 'author',
                 title: '作者',
                 width: 200,
+                key: '002',
               },
               {
                 field: 'role',
                 title: '主角',
                 width: 200,
+                key: '003',
               },
               {
                 field: 'tags',
                 title: '标签',
                 width: 200,
+                key: '004',
                 render: function (tags) {
                   const tagItems = tags.map(function (tag) {
                     return {
@@ -77,6 +82,7 @@ define([], function () {
                 field: 'isMiddle',
                 title: '是否中篇',
                 width: 200,
+                key: '005',
                 render: function (isMiddle) {
                   return {
                     component: 'Checkbox',

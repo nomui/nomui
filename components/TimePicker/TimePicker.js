@@ -11,7 +11,7 @@ class TimePicker extends Textbox {
       hourStep: null,
       minuteStep: null,
       secondStep: null,
-      readOnly: true,
+      readonly: true,
       placeholder: null,
       showNow: true,
       minTime: null,
