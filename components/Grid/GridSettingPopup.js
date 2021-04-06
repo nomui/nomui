@@ -51,7 +51,7 @@ class GridSettingPopup extends Layer {
             },
             fields: {
               title: 'title',
-              value: 'key',
+              value: 'field',
             },
           },
         },
@@ -104,7 +104,7 @@ class GridSettingPopup extends Layer {
         if (item.children) {
           mapColumns(item.children)
         }
-        arr.push(item.key)
+        arr.push(item.field)
       })
     }
     mapColumns(param)
