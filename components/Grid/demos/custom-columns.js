@@ -77,6 +77,63 @@ define([], function () {
         },
       ]
 
+      const s = [
+        {
+          title: '姓名',
+          field: 'name',
+          key: 'name',
+        },
+        {
+          title: '其它',
+          key: 'other',
+          children: [
+            {
+              title: '年龄',
+              field: 'age',
+              key: 'age',
+            },
+            {
+              title: '住址',
+              key: 'address',
+              children: [
+                {
+                  title: '小区',
+                  key: 'area',
+                  children: [
+                    {
+                      title: '单元',
+                      field: 'building',
+                      key: 'building',
+                    },
+                    {
+                      title: '门牌',
+                      field: 'number',
+                      key: 'number',
+                    },
+                  ],
+                },
+                {
+                  title: '街道',
+                  field: 'street',
+                  key: 'street',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          title: '公司',
+          key: 'company',
+          children: [
+            {
+              title: '地址',
+              field: 'companyAddress',
+              key: 'companyAddress',
+            },
+          ],
+        },
+      ]
+
       const source = [
         {
           key: '1',
@@ -133,7 +190,9 @@ define([], function () {
         line: 'both',
         data: source,
         bordered: true,
-        allowCustomColumns: true,
+        columnsCustomizable: {
+          selected: s,
+        },
       }
     },
   }

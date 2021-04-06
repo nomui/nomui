@@ -65,6 +65,7 @@ class GridSettingPopup extends Layer {
                 text: '确定',
                 onClick: function () {
                   const list = that.tree.getSelectedTree()
+
                   that.update({
                     treeData: list,
                   })
