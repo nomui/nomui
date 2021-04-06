@@ -155,10 +155,11 @@ class Grid extends Component {
         if (item.children) {
           mapColumns(item.children)
         }
-        arr.push(item.key)
+        arr.push(item.field)
       })
     }
     mapColumns(this.originColumns)
+
     return arr
   }
 
@@ -304,10 +305,11 @@ class Grid extends Component {
         if (item.children) {
           findTreeInfo(item.children, key)
         }
-        if (item.key === key) {
+        if (item.field === key) {
           treeInfo = item
         }
       })
+
       if (treeInfo !== null) return treeInfo
     }
 
