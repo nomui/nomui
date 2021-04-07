@@ -322,6 +322,12 @@ define([], function () {
                       url: '#!components!index?type=Numberbox',
                     },
                     {
+                      text: 'NumberSpinner',
+                      subtext: '数字微调器',
+                      id: 'NumberSpinner',
+                      url: '#!components!index?type=NumberSpinner',
+                    },
+                    {
                       text: 'Checkbox',
                       subtext: '复选框',
                       id: 'Checkbox',
@@ -392,6 +398,12 @@ define([], function () {
                       subtext: '日期选择',
                       id: 'DatePicker',
                       url: '#!components!index?type=DatePicker',
+                    },
+                    {
+                      text: 'DateRangePicker',
+                      subtext: '日期范围选择',
+                      id: 'DateRangePicker',
+                      url: '#!components!index?type=DateRangePicker',
                     },
                     {
                       text: 'Uploader',

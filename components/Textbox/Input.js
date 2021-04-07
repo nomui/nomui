@@ -28,6 +28,7 @@ class Input extends Component {
         },
         onblur: () => {
           this.textbox.trigger('blur')
+          this.textbox._onBlur()
         },
         oncompositionstart: () => {
           this.capsLock = true
@@ -62,11 +63,11 @@ class Input extends Component {
     this.element.blur()
   }
 
-  disable(){
+  disable() {
     this.element.setAttribute('disabled', 'disabled')
   }
 
-  enable(){
+  enable() {
     this.element.removeAttribute('disabled', 'disabled')
   }
 }

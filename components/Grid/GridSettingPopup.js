@@ -51,7 +51,7 @@ class GridSettingPopup extends Layer {
             },
             fields: {
               title: 'title',
-              value: 'key',
+              value: 'field',
             },
           },
         },
@@ -65,6 +65,7 @@ class GridSettingPopup extends Layer {
                 text: '确定',
                 onClick: function () {
                   const list = that.tree.getSelectedTree()
+
                   that.update({
                     treeData: list,
                   })
@@ -103,7 +104,7 @@ class GridSettingPopup extends Layer {
         if (item.children) {
           mapColumns(item.children)
         }
-        arr.push(item.key)
+        arr.push(item.field)
       })
     }
     mapColumns(param)

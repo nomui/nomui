@@ -109,7 +109,7 @@ class Tree extends Component {
     const that = this
 
     newTree.forEach(function (n) {
-      const key = n.key
+      const key = n[that.props.fields.value]
       if (that.itemRefs[key].props.checked === true) {
         arr.push({
           key: that.itemRefs[key].key,
@@ -143,6 +143,7 @@ class Tree extends Component {
       })
       return treeData
     }
+
     return setTreeData(arr)
   }
 

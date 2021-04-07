@@ -101,6 +101,10 @@ class Textbox extends Field {
     this.input.blur()
   }
 
+  _onBlur() {
+    this._callHandler(this.props.onBlur)
+  }
+
   _disable() {
     this.input.disable()
   }

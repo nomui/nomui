@@ -1,21 +1,22 @@
 import Component from '../Component/index'
-import Textbox from '../Textbox/index'
-import TimePickerPopup from './TimePickerPopup'
+// import { isPlainObject } from '../util'
+import TimePickerWrapper from './TimePickerWrapper'
 
-class TimePicker extends Textbox {
+class TimePickerPanel extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       allowClear: true,
       value: null,
       format: 'HH:mm:ss',
-      hourStep: null,
-      minuteStep: null,
-      secondStep: null,
-      readonly: true,
+      hourStep: 0,
+      minuteStep: 0,
+      secondStep: 0,
+      readOnly: true,
       placeholder: null,
       showNow: true,
-      minTime: null,
-      maxTime: null,
+      minValue: '10:10:10',
+      maxValue: '20:20:20',
+      onValueChange: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -23,10 +24,13 @@ class TimePicker extends Textbox {
 
   _created() {
     super._created()
+
+    this.datePicker = this.parent.parent.parent.opener.parent.parent
+    this.datePicker.timePicker = this
+
     this.defaultValue = this.props.value
     this.timeList = []
 
-    // this.confirm = false
     this.empty = !this.props.value
 
     this.minTime = {
@@ -57,7 +61,20 @@ class TimePicker extends Textbox {
   }
 
   _config() {
-    if (this.props.minTime) {
+    const that = this
+    if (this.datePicker.props.showTime && this.datePicker.props.showTime !== true) {
+      this.props = { ...this.props, ...this.datePicker.props.showTime }
+    }
+
+    if (this.props.startTime) {
+      const time = new Date(`2000 ${this.props.startTime}`)
+
+      this.minTime = {
+        hour: this.getDoubleDigit(time.getHours()),
+        minute: this.getDoubleDigit(time.getMinutes()),
+        second: this.getDoubleDigit(time.getSeconds()),
+      }
+    } else if (this.props.minTime) {
       const time = new Date(`2000 ${this.props.minTime}`)
 
       this.minTime = {
@@ -82,34 +99,27 @@ class TimePicker extends Textbox {
     }
 
     this.setProps({
-      leftIcon: 'clock',
-      rightIcon: {
-        type: 'times',
-        hidden: !this.props.allowClear,
-        onClick: (args) => {
-          this.clearTime()
-          args.event && args.event.stopPropagation()
-        },
+      children: {
+        component: 'Rows',
+        gutter: 'xs',
+        items: [
+          {
+            classes: {
+              'time-display': true,
+            },
+
+            ref: (c) => {
+              that.timeText = c
+            },
+          },
+          {
+            component: TimePickerWrapper,
+          },
+        ],
       },
     })
 
     super._config()
-  }
-
-  _rendered() {
-    const that = this
-    this.popup = new TimePickerPopup({
-      trigger: this.control,
-      onHide: () => {
-        that.getValue() !== that.defaultValue && that.handleChange()
-      },
-      onShown: () => {
-        // this.confirm = false
-        Object.keys(this.timeList).forEach(function (key) {
-          that.timeList[key].scrollToKey()
-        })
-      },
-    })
   }
 
   getHour() {
@@ -190,6 +200,11 @@ class TimePicker extends Textbox {
     return second
   }
 
+  setValue(c) {
+    this.timeText.update({ children: c })
+    this.props.onValueChange && this._callHandler(this.props.onValueChange(this.time))
+  }
+
   setTime(data) {
     this.time[data.type] = data.value
 
@@ -215,19 +230,23 @@ class TimePicker extends Textbox {
     ).format(this.props.format)
 
     this.setValue(result)
+    this.defaultValue = result
   }
 
-  clearTime() {
-    this.setValue(null)
-    this.empty = true
+  resetList() {
+    const that = this
+    this.defaultValue = null
+    Object.keys(this.timeList).forEach(function (key) {
+      that.timeList[key].resetTime()
+    })
+    this.timeText.update({ children: '' })
+  }
 
-    this.time = {
-      hour: '00',
-      minute: '00',
-      second: '00',
-    }
-    this.resetList()
-    this.popup.hide()
+  onShown() {
+    const that = this
+    Object.keys(this.timeList).forEach(function (key) {
+      that.timeList[key].scrollToKey()
+    })
   }
 
   setNow() {
@@ -239,24 +258,14 @@ class TimePicker extends Textbox {
     this.checkTimeRange()
     this.setValue(c.format(this.props.format))
 
+    this.defaultValue = c
+
     this.empty = false
     this.resetList()
-    this.popup.hide()
-  }
-
-  resetList() {
-    const that = this
-    Object.keys(this.timeList).forEach(function (key) {
-      that.timeList[key].resetTime()
-    })
   }
 
   handleChange() {
     this.props.onChange && this._callHandler(this.props.onChange)
-  }
-
-  showPopup() {
-    this.popup.show()
   }
 
   getDoubleDigit(num) {
@@ -295,5 +304,5 @@ class TimePicker extends Textbox {
   }
 }
 
-Component.register(TimePicker)
-export default TimePicker
+Component.register(TimePickerPanel)
+export default TimePickerPanel
