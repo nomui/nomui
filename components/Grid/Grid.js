@@ -18,6 +18,11 @@ class Grid extends Component {
     this.lastSortField = null
     this.rowsRefs = {}
     this.checkedRowRefs = {}
+
+    this.originColumns = this.props.columns
+    if (this.props.columnsCustomizable && this.props.columnsCustomizable.selected) {
+      this.props.visibleColumns = this.props.columnsCustomizable.selected
+    }
   }
 
   _config() {
@@ -26,14 +31,12 @@ class Grid extends Component {
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
 
-    if (this.firstRender === false) {
-      this.props.columns = this.originColumns.slice()
-    } else {
-      this.originColumns = this.props.columns.slice()
-    }
-
     this._processCheckableColumn()
     this._processExpandableColumn()
+
+    if (this.props.visibleColumns) {
+      this.props.columns = this.props.visibleColumns
+    }
 
     if (frozenLeftCols || frozenRightCols) {
       const rev = this.props.columns.length - frozenRightCols
@@ -90,7 +93,7 @@ class Grid extends Component {
         'm-frozen-header': this.props.frozenHeader,
       },
       children: [
-        this.props.allowCustomColumns && {
+        this.props.columnsCustomizable && {
           children: {
             component: 'Button',
             icon: 'setting',
@@ -152,10 +155,11 @@ class Grid extends Component {
         if (item.children) {
           mapColumns(item.children)
         }
-        arr.push(item.key)
+        arr.push(item.field)
       })
     }
     mapColumns(this.originColumns)
+
     return arr
   }
 
@@ -301,10 +305,11 @@ class Grid extends Component {
         if (item.children) {
           findTreeInfo(item.children, key)
         }
-        if (item.key === key) {
+        if (item.field === key) {
           treeInfo = item
         }
       })
+
       if (treeInfo !== null) return treeInfo
     }
 
@@ -322,6 +327,7 @@ class Grid extends Component {
         }
       })
     }
+
     addTreeInfo(tree)
     this.update({ columns: tree })
     this.popup.hide()
@@ -341,8 +347,13 @@ class Grid extends Component {
         checkedRowKeysHash[rowKey] = true
       })
 
+      if (columns.filter((item) => item.isChecker).length > 0) {
+        return
+      }
+
       columns.unshift({
         width: 50,
+        isChecker: true,
         header: {
           component: Checkbox,
           plain: true,
@@ -505,12 +516,13 @@ Grid.defaults = {
     initExpandLevel: -1,
     indentSize: 16,
   },
-  allowCustomColumns: false,
+  columnsCustomizable: false,
   autoMergeColumns: null,
   visibleColumns: null,
   columnResizable: false,
   striped: false,
   showTitle: false,
+  ellipsis: false,
 }
 
 Component.register(Grid)

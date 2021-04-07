@@ -32,31 +32,31 @@ class AlertContent extends Component {
 
     const iconProps = icon
       ? Component.extendProps(Component.normalizeIconProps(icon), {
-        classes: { 'nom-alert-icon': true },
-      })
+          classes: { 'nom-alert-icon': true },
+        })
       : null
 
     const titleProps = title
       ? Component.extendProps(Component.normalizeTemplateProps(title), {
-        classes: { 'nom-alert-title': true },
-      })
+          classes: { 'nom-alert-title': true },
+        })
       : null
 
     const descriptionProps = description
       ? Component.extendProps(Component.normalizeTemplateProps(description), {
-        classes: { 'nom-alert-description': true },
-      })
+          classes: { 'nom-alert-description': true },
+        })
       : null
 
     const okButtonProps = {
       component: Button,
       styles: {
-        color: 'primary'
+        color: 'primary',
       },
       text: okText,
       onClick: () => {
         alertInst._handleOk()
-      }
+      },
     }
 
     let actionProps = {
@@ -65,11 +65,9 @@ class AlertContent extends Component {
     }
     if (!action) {
       actionProps.items = [okButtonProps]
-    }
-    else if (isPlainObject(action)) {
+    } else if (isPlainObject(action)) {
       actionProps = Component.extendProps(actionProps, action)
-    }
-    else if (Array.isArray(action)) {
+    } else if (Array.isArray(action)) {
       actionProps.items = action
     }
 
@@ -82,9 +80,9 @@ class AlertContent extends Component {
           children: [
             {
               classes: {
-                'nom-alert-body-icon': true
+                'nom-alert-body-icon': true,
               },
-              children: iconProps
+              children: iconProps,
             },
             {
               classes: {

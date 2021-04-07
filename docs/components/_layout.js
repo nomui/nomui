@@ -103,6 +103,12 @@ define([], function () {
                       id: 'Cols',
                       url: '#!components!index?type=Cols',
                     },
+                    {
+                      text: 'Divider',
+                      subtext: '分割线',
+                      id: 'Divider',
+                      url: '#!components!index?type=Divider',
+                    },
                   ],
                 },
                 {
@@ -149,6 +155,12 @@ define([], function () {
                       subtext: '消息',
                       id: 'Message',
                       url: '#!components!index?type=Message',
+                    },
+                    {
+                      text: 'Notification',
+                      subtext: '通知',
+                      id: 'Notification',
+                      url: '#!components!index?type=Notification',
                     },
                     {
                       text: 'Tooltip',
@@ -310,6 +322,12 @@ define([], function () {
                       url: '#!components!index?type=Numberbox',
                     },
                     {
+                      text: 'NumberSpinner',
+                      subtext: '数字微调器',
+                      id: 'NumberSpinner',
+                      url: '#!components!index?type=NumberSpinner',
+                    },
+                    {
                       text: 'Checkbox',
                       subtext: '复选框',
                       id: 'Checkbox',
@@ -380,6 +398,12 @@ define([], function () {
                       subtext: '日期选择',
                       id: 'DatePicker',
                       url: '#!components!index?type=DatePicker',
+                    },
+                    {
+                      text: 'DateRangePicker',
+                      subtext: '日期范围选择',
+                      id: 'DateRangePicker',
+                      url: '#!components!index?type=DateRangePicker',
                     },
                     {
                       text: 'Uploader',

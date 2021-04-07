@@ -3,10 +3,19 @@ const less = require('gulp-less')
 const rename = require('gulp-rename')
 const { rollup } = require('rollup')
 const chalk = require('chalk')
+const { default: banner } = require('rollup-plugin-banner')
+const { version } = require('./package.json')
 
 function buildJs(cb) {
   rollup({
     input: 'components/index.js',
+    plugins: [
+      banner(`
+      nomui v${version}
+      License: MIT
+      Copyright (c) 2021-2021, Wetrial
+    `),
+    ],
   }).then(
     ({ write }) => {
       write({

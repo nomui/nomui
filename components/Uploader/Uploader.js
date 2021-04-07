@@ -57,15 +57,15 @@ class Uploader extends Field {
     } = this.props
 
     let initializing = true
-    if (isPromiseLike(this.fileList)) {
-      this.fileList.then((fs) => {
+    if (isPromiseLike(that.fileList)) {
+      that.fileList.then((fs) => {
         initializing = false
-        this.fileList = fs
+        that.fileList = fs
 
         if (!disabled && this.button) {
-          this.button._enable()
+          that.button._enable()
         }
-        this.list.update({ initializing: false, files: this.fileList })
+        that.list && that.list.update({ initializing: false, files: this.fileList })
       })
     } else {
       initializing = false
@@ -106,7 +106,7 @@ class Uploader extends Field {
         disabled: disabled || initializing,
         // disabled,
         ref: (c) => {
-          this.button = c
+          that.button = c
         },
         attrs: {
           onclick() {
@@ -138,7 +138,7 @@ class Uploader extends Field {
             'nom-file-list-only': button === false,
           },
           ref: (c) => {
-            this.list = c
+            that.list = c
           },
           initializing,
           files: this.fileList,
