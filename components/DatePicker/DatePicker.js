@@ -28,7 +28,6 @@ class DatePicker extends Textbox {
     this.dateInfo = null
     this.todayItem = null
     this.startTime = null
-    this.hidden = null
   }
 
   _config() {
@@ -71,13 +70,11 @@ class DatePicker extends Textbox {
           styles: {
             padding: '1',
           },
-          onShown: () => {
-            that.hidden = false
-            that.props.showTime && that.timePicker.onShown()
+          onShow: () => {
+            that.props.showTime && that.timePicker.onShow()
           },
           onHide: () => {
-            !that.hidden && that.onPopupHide()
-            that.hidden = true
+            that.onPopupHide()
           },
           classes: {
             'nom-date-picker-popup': true,

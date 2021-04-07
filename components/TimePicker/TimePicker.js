@@ -54,6 +54,8 @@ class TimePicker extends Textbox {
     }
 
     this.defaultTime = this.time
+
+    this.hasPopup = false
   }
 
   _config() {
@@ -98,18 +100,36 @@ class TimePicker extends Textbox {
 
   _rendered() {
     const that = this
+
     this.popup = new TimePickerPopup({
       trigger: this.control,
       onHide: () => {
         that.getValue() !== that.defaultValue && that.handleChange()
       },
-      onShown: () => {
-        // this.confirm = false
+      onShow: () => {
         Object.keys(this.timeList).forEach(function (key) {
           that.timeList[key].scrollToKey()
         })
       },
     })
+
+    // if (!this.hasPopup) {
+    //   this.popup = new TimePickerPopup({
+    //     trigger: this.control,
+    //     onHide: () => {
+    //       !this.hidden && that.getValue() !== that.defaultValue && that.handleChange()
+    //       this.hidden = true
+    //     },
+    //     onShow: () => {
+    //       this.hidden = false
+    //       // this.confirm = false
+    //       Object.keys(this.timeList).forEach(function (key) {
+    //         that.timeList[key].scrollToKey()
+    //       })
+    //     },
+    //   })
+    // }
+    // this.hasPopup = true
   }
 
   getHour() {

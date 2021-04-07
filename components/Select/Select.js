@@ -149,7 +149,7 @@ class Select extends Field {
 
     this.popup = new SelectPopup({
       trigger: this.control,
-      onShown: () => {
+      onShow: () => {
         this.optionList.scrollToSelected()
       },
     })
