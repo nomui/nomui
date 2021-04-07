@@ -242,7 +242,7 @@ class TimePickerPanel extends Component {
     this.timeText.update({ children: '' })
   }
 
-  onShown() {
+  onShow() {
     const that = this
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].scrollToKey()
