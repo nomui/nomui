@@ -187,6 +187,9 @@ class CirclePath extends Component {
         },
         ...getStokeList(),
       ],
+      _rendered() {
+        this.element.outerHTML = `${this.element.outerHTML}`
+      },
     })
   }
 }

@@ -42,7 +42,7 @@ define([], function () {
                     onClick: () => {
                       let percent = circleProgressRef.props.percent
                       percent -= 5
-                      percent = Math.min(0, percent)
+                      percent = Math.max(0, percent)
                       if (percent >= 0) {
                         circleProgressRef.update({
                           percent,
