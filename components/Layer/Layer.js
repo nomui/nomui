@@ -20,7 +20,7 @@ class Layer extends Component {
 
       position: null,
 
-      hidden: true,
+      hidden: false,
 
       backdrop: false,
       closeOnClickBackdrop: false,
@@ -39,6 +39,7 @@ class Layer extends Component {
     if (this.props.placement === 'replace') {
       this.props.position = null
     }
+
     this._normalizePosition()
     this._zIndex = getzIndex()
     this.setProps({

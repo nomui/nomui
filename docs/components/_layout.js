@@ -406,6 +406,12 @@ define([], function () {
                       url: '#!components!index?type=DateRangePicker',
                     },
                     {
+                      text: 'PartialDatePicker',
+                      subtext: '部分日期选择',
+                      id: 'PartialDatePicker',
+                      url: '#!components!index?type=PartialDatePicker',
+                    },
+                    {
                       text: 'Uploader',
                       subtext: '上传',
                       id: 'Uploader',

@@ -70,62 +70,56 @@ define([], function () {
         },
       ]
 
-      // const s = [
-      //   {
-      //     title: '姓名',
-      //     field: 'name',
-      //     key: 'name',
-      //   },
-      //   {
-      //     title: '其它',
-      //     key: 'other',
-      //     children: [
-      //       {
-      //         title: '年龄',
-      //         field: 'age',
-      //         key: 'age',
-      //       },
-      //       {
-      //         title: '住址',
-      //         key: 'address',
-      //         children: [
-      //           {
-      //             title: '小区',
-      //             key: 'area',
-      //             children: [
-      //               {
-      //                 title: '单元',
-      //                 field: 'building',
-      //                 key: 'building',
-      //               },
-      //               {
-      //                 title: '门牌',
-      //                 field: 'number',
-      //                 key: 'number',
-      //               },
-      //             ],
-      //           },
-      //           {
-      //             title: '街道',
-      //             field: 'street',
-      //             key: 'street',
-      //           },
-      //         ],
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     title: '公司',
-      //     key: 'company',
-      //     children: [
-      //       {
-      //         title: '地址',
-      //         field: 'companyAddress',
-      //         key: 'companyAddress',
-      //       },
-      //     ],
-      //   },
-      // ]
+      const s = [
+        {
+          title: '姓名',
+          field: 'name',
+        },
+        {
+          title: '其它',
+          field: 'other',
+          children: [
+            {
+              title: '年龄',
+              field: 'age',
+            },
+            {
+              title: '住址',
+              field: 'address',
+              children: [
+                {
+                  title: '小区',
+                  field: 'area',
+                  children: [
+                    {
+                      title: '单元',
+                      field: 'building',
+                    },
+                    {
+                      title: '门牌',
+                      field: 'number',
+                    },
+                  ],
+                },
+                {
+                  title: '街道',
+                  field: 'street',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          title: '公司',
+          field: 'company',
+          children: [
+            {
+              title: '地址',
+              field: 'companyAddress',
+            },
+          ],
+        },
+      ]
 
       const source = [
         {
@@ -183,7 +177,9 @@ define([], function () {
         line: 'both',
         data: source,
         bordered: true,
-        columnsCustomizable: true,
+        columnsCustomizable: {
+          selected: s,
+        },
       }
     },
   }
