@@ -422,6 +422,9 @@ class PartialDatePicker extends Textbox {
   }
 
   getDateString(format) {
+    if (!this.getValue()) {
+      return null
+    }
     let date = null
     switch (this.props.mode) {
       case 'year':

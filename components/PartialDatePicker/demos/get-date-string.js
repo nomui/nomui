@@ -1,6 +1,6 @@
 define([], function () {
   return {
-    title: '基础用法',
+    title: '获取值对应的日期',
     file: 'get-date-string',
     demo: function () {
       let picker = null
