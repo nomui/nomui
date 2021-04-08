@@ -40,9 +40,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.13.14",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@umijs/fabric": "^2.4.4",
-    "acorn": "6.1.0",
-    "acorn-static-class-features": "^1.0.0",
     "babel-eslint": "^10.1.0",
     "chalk": "^4.1.0",
     "gulp": "^4.0.2",
