@@ -314,6 +314,7 @@ class PartialDatePicker extends Textbox {
       this.weekPicker.update({
         items: this._getWeek(this.year),
       })
+      this.weekPicker.unselectAllItems()
       return
     }
     this.updateValue()
