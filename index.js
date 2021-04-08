@@ -5,9 +5,7 @@
   }
 
   requirejs.config({
-    baseUrl: window.location.host.endsWith('.github.io')
-      ? 'https://cdn.jsdelivr.net/gh/nomui/nomui@gh-pages/'
-      : '/',
+    baseUrl: '/',
     paths: {
       text: 'libs/text',
     },
