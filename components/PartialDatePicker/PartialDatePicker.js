@@ -229,7 +229,7 @@ class PartialDatePicker extends Textbox {
     return quarter
   }
 
-  _getWeek(param) {
+  _mapWeekData(param) {
     const that = this
     // 时间戳转年月日  参数是秒的时间戳 函数返回一个对象 对象里有年 月 日
     function yearDay(long) {
@@ -280,9 +280,14 @@ class PartialDatePicker extends Textbox {
       return arr
     }
 
-    const week = whichWeek(param).map(function (item, index) {
+    return whichWeek(param)
+  }
+
+  _getWeek(param) {
+    const week = this._mapWeekData(param).map(function (item, index) {
       return {
         key: `${index + 1}`,
+        firstDay: `${item.year}-${item.month}-${item.day}`,
         children: {
           component: 'List',
           items: [
@@ -414,6 +419,46 @@ class PartialDatePicker extends Textbox {
       default:
         break
     }
+  }
+
+  getDateString(format) {
+    let date = null
+    switch (this.props.mode) {
+      case 'year':
+        date = new Date(this.year)
+        break
+      case 'quarter':
+        switch (this.quarter) {
+          case '1':
+            date = new Date(`${this.year}-01-01`)
+            break
+          case '2':
+            date = new Date(`${this.year}-04-01`)
+            break
+          case '3':
+            date = new Date(`${this.year}-07-01`)
+            break
+          case '4':
+            date = new Date(`${this.year}-10-01`)
+            break
+          default:
+            break
+        }
+
+        break
+      case 'month':
+        date = new Date(this.getValue())
+        break
+      case 'week': {
+        const time = this._mapWeekData(this.year)[parseInt(this.week, 10) - 1]
+        date = new Date(time.year, time.month - 1, time.day)
+        break
+      }
+      default:
+        break
+    }
+
+    return date.format(format || 'yyyy-MM-dd')
   }
 }
 
