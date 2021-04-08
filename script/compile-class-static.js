@@ -8,7 +8,10 @@ function compileClassStaticProps() {
         minified: false,
         comments: true,
         compact: true,
-        plugins: ['@babel/plugin-proposal-class-properties'],
+        plugins: [
+          '@babel/plugin-proposal-class-properties',
+          ['@babel/plugin-proposal-object-rest-spread', { loose: true, useBuiltIns: true }],
+        ],
       })
     },
   }
