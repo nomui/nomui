@@ -6,7 +6,6 @@ define([], function () {
       return {
         children: {
           component: 'YearPicker',
-          placeholder: 'basic usage',
         },
       }
     },
