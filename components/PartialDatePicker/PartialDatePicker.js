@@ -11,6 +11,7 @@ class PartialDatePicker extends Textbox {
       allowClear: true,
       onChange: null,
       placeholder: '选择年份',
+      value: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -63,6 +64,8 @@ class PartialDatePicker extends Textbox {
           onShow: () => {
             if (!that.getValue()) {
               that.yearPicker.scrollTo(new Date().format('yyyy'))
+            } else {
+              that.activeItem()
             }
           },
 
@@ -181,6 +184,12 @@ class PartialDatePicker extends Textbox {
     super._config()
   }
 
+  _rendered() {
+    if (this.props.value) {
+      this.resolveValue()
+    }
+  }
+
   _getYear() {
     const years = []
     const thisYear = new Date().getFullYear()
@@ -214,7 +223,7 @@ class PartialDatePicker extends Textbox {
     for (let i = 1; i < 5; i++) {
       quarter.push({
         key: `${i}`,
-        children: `第${i}季度`,
+        children: `${i}季度`,
       })
     }
     return quarter
@@ -277,7 +286,7 @@ class PartialDatePicker extends Textbox {
         children: {
           component: 'List',
           items: [
-            { children: `第${index + 1}周` },
+            { children: `${index + 1}周` },
             {
               classes: {
                 'nom-week-subtitle': true,
@@ -300,6 +309,10 @@ class PartialDatePicker extends Textbox {
   }
 
   clearTime() {
+    this.year = null
+    this.quarter = null
+    this.month = null
+    this.week = null
     this.setValue(null)
   }
 
@@ -355,6 +368,49 @@ class PartialDatePicker extends Textbox {
         this.year && this.week && this.setValue(`${this.year} ${this.week}周`)
         break
 
+      default:
+        break
+    }
+  }
+
+  resolveValue() {
+    const v = this.getValue()
+    const year = this.props.mode === 'year' ? v : v.substring(0, 4)
+    const after = this.props.mode === 'year' ? null : Math.abs(parseInt(v.substring(4), 10))
+
+    this.year = year
+    switch (this.props.mode) {
+      case 'year':
+        break
+      case 'quarter':
+        this.quarter = `${after}`
+        break
+      case 'month':
+        this.month = `${after}`
+        break
+      case 'week':
+        this.week = `${after}`
+        break
+      default:
+        break
+    }
+  }
+
+  activeItem() {
+    this.yearPicker.selectItem(this.year)
+
+    switch (this.props.mode) {
+      case 'year':
+        break
+      case 'quarter':
+        this.quarterPicker.selectItem(this.quarter)
+        break
+      case 'month':
+        this.monthPicker.selectItem(this.month)
+        break
+      case 'week':
+        this.weekPicker.selectItem(this.week)
+        break
       default:
         break
     }
