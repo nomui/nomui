@@ -54,6 +54,10 @@ class Tree extends Component {
   getCheckedNodeKeys() {}
 
   getCheckedData() {}
+
+  _onNodeClick(args) {
+    this._callHandler('onNodeClick', args)
+  }
 }
 
 Component.register(Tree)

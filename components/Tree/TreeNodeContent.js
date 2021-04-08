@@ -1,5 +1,5 @@
-import Component from '../Component/index'
 import Checkbox from '../Checkbox/index'
+import Component from '../Component/index'
 
 class TreeNodeContent extends Component {
   constructor(props, ...mixins) {
@@ -53,6 +53,9 @@ class TreeNodeContent extends Component {
         nodeCheckable && this._getCheckbox(),
         { tag: 'span', classes: { 'nom-tree-node-content-text': true }, children: text },
       ],
+      onClick: () => {
+        this.tree_onNodeCheck({ node: this.node })
+      },
     })
   }
 
