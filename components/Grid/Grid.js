@@ -329,6 +329,10 @@ class Grid extends Component {
     }
 
     addTreeInfo(tree)
+
+    this.props.columnsCustomizable.callback &&
+      this._callHandler(this.props.columnsCustomizable.callback(tree))
+
     this.update({ columns: tree })
     this.popup.hide()
   }
