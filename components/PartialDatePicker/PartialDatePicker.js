@@ -2,7 +2,7 @@ import Component from '../Component/index'
 import Textbox from '../Textbox/index'
 import {} from '../util/date'
 
-class YearPicker extends Textbox {
+class PartialDatePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
       disabledTime: null,
@@ -50,7 +50,7 @@ class YearPicker extends Textbox {
             that.popup = this
           },
           classes: {
-            'nom-year-picker-popup': true,
+            'nom-partial-date-picker-popup': true,
           },
           styles: {
             padding: '1',
@@ -247,6 +247,6 @@ class YearPicker extends Textbox {
   }
 }
 
-Component.register(YearPicker)
+Component.register(PartialDatePicker)
 
-export default YearPicker
+export default PartialDatePicker

@@ -406,10 +406,10 @@ define([], function () {
                       url: '#!components!index?type=DateRangePicker',
                     },
                     {
-                      text: 'YearPicker',
+                      text: 'PartialDatePicker',
                       subtext: '年选择',
-                      id: 'YearPicker',
-                      url: '#!components!index?type=YearPicker',
+                      id: 'PartialDatePicker',
+                      url: '#!components!index?type=PartialDatePicker',
                     },
                     {
                       text: 'Uploader',
