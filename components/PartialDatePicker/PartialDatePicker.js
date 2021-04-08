@@ -10,7 +10,7 @@ class PartialDatePicker extends Textbox {
       mode: 'year',
       allowClear: true,
       onChange: null,
-      placeholder: '请选择年份',
+      placeholder: '选择年份',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -18,18 +18,16 @@ class PartialDatePicker extends Textbox {
 
   _created() {
     super._created()
+    this.year = null
+    this.quarter = null
+    this.month = null
+    this.week = null
   }
 
   _config() {
     const { disabled, placeholder } = this.props
 
     const that = this
-
-    // this.setProps({
-    //   disabled: disabled,
-    //   placeholder: placeholder,
-    //   options: that._getYears(),
-    // })
 
     this.setProps({
       leftIcon: 'calendar',
@@ -62,6 +60,11 @@ class PartialDatePicker extends Textbox {
             },
           },
           triggerAction: 'click',
+          onShow: () => {
+            if (!that.getValue()) {
+              that.yearPicker.scrollTo(new Date().format('yyyy'))
+            }
+          },
 
           children: {
             component: 'Cols',
@@ -79,8 +82,37 @@ class PartialDatePicker extends Textbox {
                   },
                   gutter: 'sm',
                   cols: 1,
+                  ref: (c) => {
+                    that.yearPicker = c
+                  },
 
-                  onItemSelectionChange: () => {},
+                  onItemSelectionChange: (args) => {
+                    const key = args.sender.props.selectedItems
+                    that.handleYearChange(key)
+                  },
+                  itemDefaults: {
+                    _config: function () {},
+                  },
+                },
+              },
+              that.props.mode === 'quarter' && {
+                children: {
+                  component: 'List',
+                  items: that._getQuarter(),
+                  itemSelectable: {
+                    multiple: false,
+                    byClick: true,
+                  },
+                  gutter: 'sm',
+                  cols: 1,
+                  ref: (c) => {
+                    that.quarterPicker = c
+                  },
+
+                  onItemSelectionChange: (args) => {
+                    const key = args.sender.props.selectedItems
+                    that.handleQuarterChange(key)
+                  },
                   itemDefaults: {
                     _config: function () {},
                   },
@@ -96,14 +128,21 @@ class PartialDatePicker extends Textbox {
                   },
                   gutter: 'sm',
                   cols: 1,
+                  ref: (c) => {
+                    that.monthPicker = c
+                  },
 
-                  onItemSelectionChange: () => {},
+                  onItemSelectionChange: (args) => {
+                    const key = args.sender.props.selectedItems
+                    that.handleMonthChange(key)
+                  },
                   itemDefaults: {
                     _config: function () {},
                   },
                 },
               },
               that.props.mode === 'week' && {
+                hidden: !this.year,
                 children: {
                   component: 'List',
 
@@ -114,6 +153,9 @@ class PartialDatePicker extends Textbox {
                   },
                   gutter: 'sm',
                   cols: 1,
+                  ref: (c) => {
+                    that.weekPicker = c
+                  },
                   _created: (me) => {
                     me.parent.setProps({
                       classes: {
@@ -121,7 +163,10 @@ class PartialDatePicker extends Textbox {
                       },
                     })
                   },
-                  onItemSelectionChange: () => {},
+                  onItemSelectionChange: (args) => {
+                    const key = args.sender.props.selectedItems
+                    that.handleWeekChange(key)
+                  },
                   itemDefaults: {
                     _config: function () {},
                   },
@@ -161,6 +206,18 @@ class PartialDatePicker extends Textbox {
       })
     }
     return month
+  }
+
+  _getQuarter() {
+    const quarter = []
+
+    for (let i = 1; i < 5; i++) {
+      quarter.push({
+        key: `${i}`,
+        children: `第${i}季度`,
+      })
+    }
+    return quarter
   }
 
   _getWeek(param) {
@@ -216,7 +273,7 @@ class PartialDatePicker extends Textbox {
 
     const week = whichWeek(param).map(function (item, index) {
       return {
-        key: that._getDoubleDigit(index + 1),
+        key: `${index + 1}`,
         children: {
           component: 'List',
           items: [
@@ -244,6 +301,62 @@ class PartialDatePicker extends Textbox {
 
   clearTime() {
     this.setValue(null)
+  }
+
+  handleYearChange(key) {
+    this.year = key
+    if (this.props.mode === 'week') {
+      this.setValue(null)
+      this.weekPicker.parent.props.hidden &&
+        this.weekPicker.parent.update({
+          hidden: false,
+        })
+      this.weekPicker.update({
+        items: this._getWeek(this.year),
+      })
+      return
+    }
+    this.updateValue()
+  }
+
+  handleQuarterChange(key) {
+    this.quarter = key
+    this.updateValue()
+  }
+
+  handleMonthChange(key) {
+    this.month = key
+    this.updateValue()
+  }
+
+  handleWeekChange(key) {
+    this.week = key
+    this.updateValue()
+  }
+
+  updateValue() {
+    switch (this.props.mode) {
+      case 'year':
+        this.year && this.setValue(this.year)
+        break
+
+      case 'quarter':
+        this.year && this.quarter && this.setValue(`${this.year} ${this.quarter}季度`)
+        break
+
+      case 'month':
+        this.year &&
+          this.month &&
+          this.setValue(new Date(`${this.year}-${this.month}`).format('yyyy-MM'))
+        break
+
+      case 'week':
+        this.year && this.week && this.setValue(`${this.year} ${this.week}周`)
+        break
+
+      default:
+        break
+    }
   }
 }
 

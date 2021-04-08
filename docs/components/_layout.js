@@ -407,7 +407,7 @@ define([], function () {
                     },
                     {
                       text: 'PartialDatePicker',
-                      subtext: '年选择',
+                      subtext: '部分日期选择',
                       id: 'PartialDatePicker',
                       url: '#!components!index?type=PartialDatePicker',
                     },

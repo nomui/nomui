@@ -11,6 +11,11 @@ define([], function () {
           },
           {
             component: 'PartialDatePicker',
+            placeholder: '选择季度',
+            mode: 'quarter',
+          },
+          {
+            component: 'PartialDatePicker',
             placeholder: '选择月',
             mode: 'month',
           },
