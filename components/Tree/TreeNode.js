@@ -23,17 +23,19 @@ class TreeNode extends Component {
 
   _config() {
     this.props.dataToNode({ data: this.props.data, node: this })
+    this.key = this.props.key
     const { nodes, childrenData } = this.props
     const children = [
       {
         component: TreeNodeContent,
       },
     ]
-    this.isLeaf = !nodes
+    this.isLeaf = !nodes && !childrenData
     if (Array.isArray(nodes) || Array.isArray(childrenData)) {
       children.push({
         component: 'TreeNodes',
         nodes,
+        childrenData,
       })
     }
     this.setProps({

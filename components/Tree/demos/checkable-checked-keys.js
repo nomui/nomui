@@ -10,15 +10,15 @@ define([], function () {
           nodeCheckable: {
             checkedKeys: ['1', '1.1', '2.1'],
           },
-          nodes: [
+          data: [
             {
               text: '层级 1',
               key: '1',
-              nodes: [
+              children: [
                 {
                   text: '层级 1.1',
                   key: '1.1',
-                  nodes: [
+                  children: [
                     { text: '层级 1.1.1', key: '1.1.1' },
                     { text: '层级 1.2', key: '1.2' },
                   ],
@@ -28,7 +28,7 @@ define([], function () {
             {
               text: '层级 2',
               key: '2',
-              nodes: [
+              children: [
                 { text: '层级 2.1', key: '2.1' },
                 { text: '层级 2.2', key: '2.2' },
               ],

@@ -8,14 +8,16 @@ define([], function () {
           component: 'Tree',
           initExpandLevel: -1,
           nodeCheckable: true,
-          nodes: [
+          data: [
             {
               text: '层级 1',
-              nodes: [{ text: '层级 1.1', nodes: [{ text: '层级 1.1.1' }, { text: '层级 1.2' }] }],
+              children: [
+                { text: '层级 1.1', children: [{ text: '层级 1.1.1' }, { text: '层级 1.2' }] },
+              ],
             },
             {
               text: '层级 2',
-              nodes: [{ text: '层级 2.1' }, { text: '层级 2.2' }],
+              children: [{ text: '层级 2.1' }, { text: '层级 2.2' }],
             },
           ],
         },

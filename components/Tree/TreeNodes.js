@@ -11,6 +11,7 @@ class TreeNodes extends Component {
         component: TreeNode,
         dataToNode: ({ data, node }) => {
           if (isPlainObject(data)) {
+            node.props.key = data.key
             node.props.text = data.text
             node.props.childrenData = data.children
           }
