@@ -5,6 +5,7 @@ class Tree extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       nodes: null,
+      nodeDefaults: {},
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -15,7 +16,7 @@ class Tree extends Component {
   }
 
   _config() {
-    const { nodes, nodeCheckable } = this.props
+    const { nodes, data, nodeCheckable } = this.props
     if (nodeCheckable) {
       this.setProps({
         nodeCheckable: Component.extendProps(
@@ -39,9 +40,20 @@ class Tree extends Component {
       children: {
         component: TreeNodes,
         nodes,
+        childrenData: data,
       },
     })
   }
+
+  _dataToNodes() {}
+
+  getData() {}
+
+  getCheckedNodes() {}
+
+  getCheckedNodeKeys() {}
+
+  getCheckedData() {}
 }
 
 Component.register(Tree)

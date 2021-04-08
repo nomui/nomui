@@ -1,12 +1,20 @@
 import Component from '../Component/index'
+import { isPlainObject } from '../util/index'
 import TreeNode from './TreeNode'
 
 class TreeNodes extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       nodes: null,
+      childrenData: null,
       childDefaults: {
         component: TreeNode,
+        dataToNode: ({ data, node }) => {
+          if (isPlainObject(data)) {
+            node.props.text = data.text
+            node.props.childrenData = data.children
+          }
+        },
       },
     }
 
@@ -26,10 +34,17 @@ class TreeNodes extends Component {
   }
 
   _config() {
-    const { nodes } = this.props
-
+    const { nodes, childrenData } = this.props
+    let nodesProps = nodes
+    if (Array.isArray(childrenData)) {
+      nodesProps = childrenData.map((item) => {
+        return {
+          data: item,
+        }
+      })
+    }
     this.setProps({
-      children: nodes,
+      children: nodesProps,
     })
   }
 }
