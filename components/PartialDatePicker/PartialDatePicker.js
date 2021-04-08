@@ -230,6 +230,7 @@ class PartialDatePicker extends Textbox {
   }
 
   _mapWeekData(param) {
+    if (!param) return
     const that = this
     // 时间戳转年月日  参数是秒的时间戳 函数返回一个对象 对象里有年 月 日
     function yearDay(long) {
