@@ -5,6 +5,7 @@ const { rollup } = require('rollup')
 const chalk = require('chalk')
 const { default: banner } = require('rollup-plugin-banner')
 const { version } = require('./package.json')
+const compileClassStatic = require('./script/compile-class-static')
 
 function buildJs(cb) {
   rollup({
@@ -15,6 +16,7 @@ function buildJs(cb) {
       License: MIT
       Copyright (c) 2021-2021, Wetrial
     `),
+      compileClassStatic(),
     ],
   }).then(
     ({ write }) => {
