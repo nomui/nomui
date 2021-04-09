@@ -1,6 +1,6 @@
 define([], function () {
   return {
-    title: 'Align',
+    title: '排列',
     file: 'alignment',
     demo: function () {
       return {
@@ -8,34 +8,27 @@ define([], function () {
         items: [
           {
             component: 'NumberSpinner',
-            label: '右边排列',
+            label: '右图标',
             // 默认为right，也可以不写
             align: 'right',
-            // showSpinner: false,
             value: 100,
           },
           {
             component: 'NumberSpinner',
-            label: '左边排列',
-            // 默认为right，也可以不写
+            label: '左图标',
             align: 'left',
-            // showSpinner: false,
             value: 100,
           },
           {
             component: 'NumberSpinner',
-            label: '两边排列',
-            // 默认为right，也可以不写
+            label: '两端图标',
             align: 'horizontal',
-            // showSpinner: false,
             value: 100,
           },
           {
             component: 'NumberSpinner',
-            label: '不显示',
-            // 默认为right，也可以不写
+            label: '不显示图标',
             showSpinner: false,
-            // showSpinner: false,
             value: 100,
           },
         ],
