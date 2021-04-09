@@ -179,6 +179,9 @@ define([], function () {
         bordered: true,
         columnsCustomizable: {
           selected: s,
+          callback: (param) => {
+            console.log(param)
+          },
         },
       }
     },
