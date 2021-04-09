@@ -12,6 +12,7 @@ class PartialDatePicker extends Textbox {
       onChange: null,
       placeholder: '选择年份',
       value: null,
+      minDate: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -23,6 +24,9 @@ class PartialDatePicker extends Textbox {
     this.quarter = null
     this.month = null
     this.week = null
+    this.hasRange = false
+    this.minSub = '00'
+    this.maxSub = '60'
   }
 
   _config() {
@@ -67,6 +71,7 @@ class PartialDatePicker extends Textbox {
             } else {
               that.activeItem()
             }
+            this.hasRange && this.updateList()
           },
 
           children: {
@@ -94,7 +99,15 @@ class PartialDatePicker extends Textbox {
                     that.handleYearChange(key)
                   },
                   itemDefaults: {
-                    _config: function () {},
+                    _config: function () {
+                      const key = this.props.key
+
+                      if (key < that.minYear || key > that.maxYear) {
+                        this.setProps({
+                          disabled: true,
+                        })
+                      }
+                    },
                   },
                 },
               },
@@ -110,6 +123,9 @@ class PartialDatePicker extends Textbox {
                   cols: 1,
                   ref: (c) => {
                     that.quarterPicker = c
+                    if (that.props.mode === 'quarter') {
+                      that.subPicker = c
+                    }
                   },
 
                   onItemSelectionChange: (args) => {
@@ -117,7 +133,18 @@ class PartialDatePicker extends Textbox {
                     that.handleQuarterChange(key)
                   },
                   itemDefaults: {
-                    _config: function () {},
+                    _config: function () {
+                      const key = this.props.key
+
+                      if (
+                        parseInt(key, 10) < parseInt(that.minSub, 10) ||
+                        parseInt(key, 10) > parseInt(that.maxSub, 10)
+                      ) {
+                        this.setProps({
+                          disabled: true,
+                        })
+                      }
+                    },
                   },
                 },
               },
@@ -133,6 +160,9 @@ class PartialDatePicker extends Textbox {
                   cols: 1,
                   ref: (c) => {
                     that.monthPicker = c
+                    if (that.props.mode === 'month') {
+                      that.subPicker = c
+                    }
                   },
 
                   onItemSelectionChange: (args) => {
@@ -140,7 +170,18 @@ class PartialDatePicker extends Textbox {
                     that.handleMonthChange(key)
                   },
                   itemDefaults: {
-                    _config: function () {},
+                    _config: function () {
+                      const key = this.props.key
+
+                      if (
+                        parseInt(key, 10) < parseInt(that.minSub, 10) ||
+                        parseInt(key, 10) > parseInt(that.maxSub, 10)
+                      ) {
+                        this.setProps({
+                          disabled: true,
+                        })
+                      }
+                    },
                   },
                 },
               },
@@ -158,6 +199,9 @@ class PartialDatePicker extends Textbox {
                   cols: 1,
                   ref: (c) => {
                     that.weekPicker = c
+                    if (that.props.mode === 'week') {
+                      that.subPicker = c
+                    }
                   },
                   _created: (me) => {
                     me.parent.setProps({
@@ -171,7 +215,18 @@ class PartialDatePicker extends Textbox {
                     that.handleWeekChange(key)
                   },
                   itemDefaults: {
-                    _config: function () {},
+                    _config: function () {
+                      const key = this.props.key
+
+                      if (
+                        parseInt(key, 10) < parseInt(that.minSub, 10) ||
+                        parseInt(key, 10) > parseInt(that.maxSub, 10)
+                      ) {
+                        this.setProps({
+                          disabled: true,
+                        })
+                      }
+                    },
                   },
                 },
               },
@@ -187,6 +242,9 @@ class PartialDatePicker extends Textbox {
   _rendered() {
     if (this.props.value) {
       this.resolveValue()
+    }
+    if (this.props.minDate || this.props.maxDate) {
+      this.resolveRange()
     }
   }
 
@@ -324,6 +382,29 @@ class PartialDatePicker extends Textbox {
 
   handleYearChange(key) {
     this.year = key
+
+    let noUpdate = false
+
+    if (this.hasRange) {
+      if (this.year <= this.minYear) {
+        this.minSub = this.minAfter
+        this.setValue(null)
+        this.subPicker.unselectAllItems()
+        noUpdate = true
+      } else {
+        this.minSub = '00'
+      }
+      if (this.year >= this.maxYear) {
+        this.maxSub = this.maxAfter
+        this.setValue(null)
+        this.subPicker.unselectAllItems()
+        noUpdate = true
+      } else {
+        this.maxSub = '60'
+      }
+      this.updateList(true)
+    }
+
     if (this.props.mode === 'week') {
       this.setValue(null)
       this.weekPicker.parent.props.hidden &&
@@ -334,9 +415,10 @@ class PartialDatePicker extends Textbox {
         items: this._getWeek(this.year),
       })
       this.weekPicker.unselectAllItems()
-      return
+      noUpdate = true
     }
-    this.updateValue()
+
+    !noUpdate && this.updateValue()
   }
 
   handleQuarterChange(key) {
@@ -402,6 +484,21 @@ class PartialDatePicker extends Textbox {
     }
   }
 
+  resolveRange() {
+    const min = this.props.minDate
+    const max = this.props.maxDate
+    if (min) {
+      this.minYear = this.props.mode === 'year' ? min : min.substring(0, 4)
+      this.minAfter = this.props.mode === 'year' ? null : Math.abs(parseInt(min.substring(4), 10))
+      this.hasRange = true
+    }
+    if (max) {
+      this.maxYear = this.props.mode === 'year' ? max : max.substring(0, 4)
+      this.maxAfter = this.props.mode === 'year' ? null : Math.abs(parseInt(max.substring(4), 10))
+      this.hasRange = true
+    }
+  }
+
   activeItem() {
     this.yearPicker.selectItem(this.year)
 
@@ -409,17 +506,25 @@ class PartialDatePicker extends Textbox {
       case 'year':
         break
       case 'quarter':
-        this.quarterPicker.selectItem(this.quarter)
+        this.subPicker.selectItem(this.quarter)
         break
       case 'month':
-        this.monthPicker.selectItem(this.month)
+        this.subPicker.selectItem(this.month)
         break
       case 'week':
-        this.weekPicker.selectItem(this.week)
+        this.subPicker.selectItem(this.week)
         break
       default:
         break
     }
+  }
+
+  updateList(noyear) {
+    if (!noyear) {
+      this.yearPicker.update()
+    }
+
+    this.subPicker.update()
   }
 
   getDateString(format) {
