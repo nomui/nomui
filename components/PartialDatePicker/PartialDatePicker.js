@@ -13,6 +13,7 @@ class PartialDatePicker extends Textbox {
       placeholder: '选择年份',
       value: null,
       minDate: null,
+      maxDate: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
