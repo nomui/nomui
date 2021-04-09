@@ -529,7 +529,7 @@ class PartialDatePicker extends Textbox {
       this.yearPicker.update()
     }
 
-    this.subPicker.update()
+    this.props.mode !== 'year' && this.subPicker.update()
   }
 
   getDateString(format) {
