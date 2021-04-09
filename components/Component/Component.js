@@ -364,7 +364,7 @@ class Component {
     }
 
     let { normalizedProps, mixins } = this._normalizeProps(props)
-    
+
     normalizedProps = Component.extendProps({}, normalizedProps, {
       reference: this.element,
       placement: 'after',

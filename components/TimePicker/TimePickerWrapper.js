@@ -15,6 +15,22 @@ class TimePickerWrapper extends Component {
 
   _config() {
     const that = this
+    const noStep =
+      !that.pickerControl.props.hourStep &&
+      !that.pickerControl.props.minuteStep &&
+      !that.pickerControl.props.secondStep
+
+    const nowInRange =
+      (!(
+        that.pickerControl.props.minTime &&
+        that.pickerControl.props.minTime > new Date().format(that.pickerControl.props.format)
+      ) &&
+        !(
+          that.pickerControl.props.maxTime &&
+          that.pickerControl.props.maxTime < new Date().format(that.pickerControl.props.format)
+        )) ||
+      (!that.pickerControl.props.minTime && !that.pickerControl.props.maxTime)
+
     this.setProps({
       children: {
         component: 'Rows',
@@ -62,27 +78,26 @@ class TimePickerWrapper extends Component {
               },
             },
             items: [
-              {
+              noStep && {
                 component: 'Button',
                 size: 'small',
                 text: '此刻',
+                disabled: !nowInRange,
                 onClick: function () {
                   that.pickerControl.setNow()
-                  that.pickerControl.confirm = true
+
                   that.pickerControl.popup.hide()
                   that.pickerControl.handleChange()
                 },
               },
-              {
+              that.pickerControl.props.defaultValue && {
                 component: 'Button',
-                type: 'Primary',
                 size: 'small',
-                text: '确定',
+                text: '重置',
                 onClick: function () {
-                  that.pickerControl.confirm = true
                   that.pickerControl.popup.hide()
                   that.pickerControl.handleChange()
-                  that.pickerControl.defaultValue = that.pickerControl.props.value
+                  that.pickerControl.defaultValue = that.pickerControl.props.defaultValue
                 },
               },
             ],

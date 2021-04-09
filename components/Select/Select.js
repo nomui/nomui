@@ -149,7 +149,7 @@ class Select extends Field {
 
     this.popup = new SelectPopup({
       trigger: this.control,
-      onShown: () => {
+      onShow: () => {
         this.optionList.scrollToSelected()
       },
     })
@@ -188,6 +188,9 @@ class Select extends Field {
       if (selValueOption !== null) {
         this.selectedSingle.update(selValueOption)
         this.currentValue = selValueOption.value
+        if (options.asArray === true) {
+          this.currentValue = [selValueOption.value]
+        }
       } else {
         this.selectedSingle.emptyChildren()
       }

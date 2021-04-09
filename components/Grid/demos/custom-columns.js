@@ -7,39 +7,34 @@ define([], function () {
         {
           title: '姓名',
           field: 'name',
-          key: 'name',
         },
         {
           title: '其它',
-          key: 'other',
+          field: 'other',
           children: [
             {
               title: '年龄',
               field: 'age',
-              key: 'age',
             },
             {
               title: '住址',
-              key: 'address',
+              field: 'address',
               children: [
                 {
                   title: '街道',
                   field: 'street',
-                  key: 'street',
                 },
                 {
                   title: '小区',
-                  key: 'area',
+                  field: 'area',
                   children: [
                     {
                       title: '单元',
                       field: 'building',
-                      key: 'building',
                     },
                     {
                       title: '门牌',
                       field: 'number',
-                      key: 'number',
                     },
                   ],
                 },
@@ -49,24 +44,22 @@ define([], function () {
         },
         {
           title: '公司',
-          key: 'company',
+          field: 'company',
           children: [
             {
               title: '地址',
               field: 'companyAddress',
-              key: 'companyAddress',
             },
             {
               title: '名称',
               field: 'companyName',
-              key: 'companyName',
             },
           ],
         },
         {
           title: '性别',
           field: 'gender',
-          key: 'gender',
+
           render: (data) => {
             return {
               component: 'Tag',
@@ -74,6 +67,57 @@ define([], function () {
               color: 'yellow',
             }
           },
+        },
+      ]
+
+      const s = [
+        {
+          title: '姓名',
+          field: 'name',
+        },
+        {
+          title: '其它',
+          field: 'other',
+          children: [
+            {
+              title: '年龄',
+              field: 'age',
+            },
+            {
+              title: '住址',
+              field: 'address',
+              children: [
+                {
+                  title: '小区',
+                  field: 'area',
+                  children: [
+                    {
+                      title: '单元',
+                      field: 'building',
+                    },
+                    {
+                      title: '门牌',
+                      field: 'number',
+                    },
+                  ],
+                },
+                {
+                  title: '街道',
+                  field: 'street',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          title: '公司',
+          field: 'company',
+          children: [
+            {
+              title: '地址',
+              field: 'companyAddress',
+            },
+          ],
         },
       ]
 
@@ -133,7 +177,12 @@ define([], function () {
         line: 'both',
         data: source,
         bordered: true,
-        allowCustomColumns: true,
+        columnsCustomizable: {
+          selected: s,
+          callback: (param) => {
+            console.log(param)
+          },
+        },
       }
     },
   }

@@ -5,6 +5,7 @@ define([], function () {
     demo: function () {
       return {
         component: 'Grid',
+        showTitle: true,
 
         columns: [
           {
@@ -29,6 +30,7 @@ define([], function () {
             key: 'role',
             title: '主角',
             width: 500,
+            showTitle: false,
           },
         ],
         data: [
