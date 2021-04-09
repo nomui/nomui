@@ -188,6 +188,9 @@ class Select extends Field {
       if (selValueOption !== null) {
         this.selectedSingle.update(selValueOption)
         this.currentValue = selValueOption.value
+        if (options.asArray === true) {
+          this.currentValue = [selValueOption.value]
+        }
       } else {
         this.selectedSingle.emptyChildren()
       }
