@@ -5,7 +5,6 @@ import {} from '../util/date'
 class PartialDatePicker extends Textbox {
   constructor(props, ...mixins) {
     const defaults = {
-      disabledTime: null,
       yearRange: [50, 20],
       mode: 'year',
       allowClear: true,
@@ -73,6 +72,11 @@ class PartialDatePicker extends Textbox {
               that.activeItem()
             }
             this.hasRange && this.updateList()
+          },
+          onHide: () => {
+            that.getValue() &&
+              that.props.onClick &&
+              that._callHandler(that.props.onChange(that.getValue()))
           },
 
           children: {
