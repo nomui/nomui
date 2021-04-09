@@ -119,6 +119,7 @@ class TimePickerPanel extends Component {
       },
     })
 
+    this.onShow()
     super._config()
   }
 
@@ -244,6 +245,7 @@ class TimePickerPanel extends Component {
 
   onShow() {
     const that = this
+
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].scrollToKey()
     })
