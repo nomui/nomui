@@ -236,10 +236,7 @@ class DatePicker extends Textbox {
 
                         that.updateValue()
 
-                        that.timePicker &&
-                          that.timePicker.timeText.update({
-                            children: that.timePicker.defaultValue,
-                          })
+                        that.timePicker && that.timePicker.onShow()
                         !that.props.showTime && that.popup.hide()
                       },
                     },
