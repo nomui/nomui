@@ -1,11 +1,12 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '禁用',
+    file: 'disabled',
     demo: function () {
       return {
         component: 'NumberSpinner',
-        label: '数字微调器',
+        disabled: true,
+        label: '禁用状态',
         placeholder: '请输入',
         value: 100,
       }
