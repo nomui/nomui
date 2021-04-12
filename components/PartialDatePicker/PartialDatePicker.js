@@ -75,8 +75,8 @@ class PartialDatePicker extends Textbox {
           },
           onHide: () => {
             that.getValue() &&
-              that.props.onClick &&
-              that._callHandler(that.props.onChange(that.getValue()))
+              that.props.onChange &&
+              that._callHandler(that.props.onChange, that.getValue())
           },
 
           children: {
@@ -375,6 +375,10 @@ class PartialDatePicker extends Textbox {
       return `0${num}`
     }
     return `${num}`
+  }
+
+  showPopup() {
+    this.popup.show()
   }
 
   clearTime() {
