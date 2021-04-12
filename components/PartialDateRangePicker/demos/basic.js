@@ -14,6 +14,7 @@ define([], function () {
           {
             name: 'PartialDateRangePicker',
             label: '日期范围选择',
+            mode: 'week',
             component: 'PartialDateRangePicker',
           },
 

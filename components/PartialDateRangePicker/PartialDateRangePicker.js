@@ -4,12 +4,10 @@ import Group from '../Group/index'
 class PartialDateRangePicker extends Group {
   constructor(props, ...mixins) {
     const defaults = {
-      format: 'yyyy-MM-dd',
-      disabledTime: null,
+      mode: 'year',
       minDate: null,
       maxDate: null,
       yearRange: [50, 20],
-      showTime: false,
       allowClear: true,
       onChange: null,
       fieldName: {
@@ -27,13 +25,13 @@ class PartialDateRangePicker extends Group {
 
   _config() {
     const that = this
-    const { format, allowClear, minDate, maxDate, yearRange, showTime } = this.props
+    const { allowClear, minDate, maxDate, yearRange, mode } = this.props
 
     this.setProps({
       inline: true,
       fields: [
         {
-          component: 'DatePicker',
+          component: 'PartialDatePicker',
           name: that.props.fieldName.start,
           placeholder: '开始日期',
           ref: (c) => {
@@ -42,19 +40,18 @@ class PartialDateRangePicker extends Group {
           onChange: function (args) {
             that.checkRange(args.sender.name)
           },
-          format,
           allowClear,
           minDate,
           maxDate,
           yearRange,
-          showTime,
+          mode,
         },
         {
           component: 'StaticText',
           value: '-',
         },
         {
-          component: 'DatePicker',
+          component: 'PartialDatePicker',
           name: that.props.fieldName.end,
           placeholder: '结束日期',
           ref: (c) => {
@@ -63,12 +60,11 @@ class PartialDateRangePicker extends Group {
           onChange: function (args) {
             that.checkRange(args.sender.name)
           },
-          format,
           allowClear,
           minDate,
           maxDate,
           yearRange,
-          showTime,
+          mode,
         },
       ],
     })
