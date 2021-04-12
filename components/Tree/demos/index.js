@@ -1,4 +1,10 @@
-define(['./basic.js', './checkable.js', './checkable-checked-keys.js', 'callback.js'], function () {
+define([
+  './basic.js',
+  './checkable.js',
+  './checkable-checked-keys.js',
+  './methods.js',
+  './callback.js',
+], function () {
   return {
     title: 'Tree',
     subtitle: '树',

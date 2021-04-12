@@ -20,6 +20,7 @@ class TreeNodeContent extends Component {
     const { text } = this.node.props
     const { initExpandLevel, nodeCheckable } = this.tree.props
     const expanded = initExpandLevel === -1 || initExpandLevel > this.level
+    const tree = this.tree
     this.setProps({
       expanded,
       expandable: {
@@ -40,10 +41,18 @@ class TreeNodeContent extends Component {
           },
         },
       },
+      selectable: {
+        byClick: this.tree.props.nodeSelectable.byClick,
+      },
       attrs: {
         style: {
           paddingLeft: `${this.level * 16}px`,
         },
+      },
+      onSelect: () => {
+        if (tree.selectedNode !== null) tree.selectedNode.unselect()
+        tree.selectedNode = this
+        tree._onNodeSelect({ node: this.node })
       },
     })
 
@@ -54,7 +63,7 @@ class TreeNodeContent extends Component {
         { tag: 'span', classes: { 'nom-tree-node-content-text': true }, children: text },
       ],
       onClick: () => {
-        this.tree_onNodeCheck({ node: this.node })
+        this.tree._onNodeClick({ node: this.node })
       },
     })
   }

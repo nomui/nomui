@@ -6,6 +6,10 @@ class Tree extends Component {
     const defaults = {
       nodes: null,
       nodeDefaults: {},
+      nodeSelectable: {
+        onlyleaf: false,
+        byClick: true,
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -13,6 +17,7 @@ class Tree extends Component {
 
   _created() {
     this.nodeRefs = {}
+    this.selectedNode = null
   }
 
   _config() {
@@ -55,8 +60,16 @@ class Tree extends Component {
 
   getCheckedData() {}
 
+  getSelectedNode(){
+    return this.selectedNode
+  }
+
   _onNodeClick(args) {
     this._callHandler('onNodeClick', args)
+  }
+
+  _onNodeSelect(args) {
+    this._callHandler('onNodeSelect', args)
   }
 }
 
