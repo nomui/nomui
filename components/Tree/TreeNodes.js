@@ -48,6 +48,8 @@ class TreeNodes extends Component {
       children: nodesProps,
     })
   }
+
+  iterateNodes() {}
 }
 
 Component.register(TreeNodes)

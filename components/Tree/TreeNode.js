@@ -44,20 +44,35 @@ class TreeNode extends Component {
   }
 
   check(checkOptions = { checkCheckbox: true }) {
+    const { checked } = this.props
+    if (checked === true) {
+      return
+    }
     const { checkCheckbox } = checkOptions
     this.parentNode && this.parentNode.check()
     if (checkCheckbox === true) {
       this.checkboxRef.setValue(true, { triggerChange: false })
     }
+
+    this.props.checked = true
   }
 
   uncheck(uncheckOptions = { uncheckCheckbox: true }) {
+    const { checked } = this.props
+    if (checked === false) {
+      return
+    }
     const { uncheckCheckbox } = uncheckOptions
 
     uncheckCheckbox && this.checkboxRef.setValue(false, { triggerChange: false })
     Object.keys(this.subnodeRefs).forEach((key) => {
       this.subnodeRefs[key].uncheck()
     })
+    this.props.checked = false
+  }
+
+  isChecked() {
+    return this.props.checked === true
   }
 }
 
