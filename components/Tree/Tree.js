@@ -10,6 +10,10 @@ class Tree extends Component {
         onlyleaf: false,
         byClick: true,
       },
+      fields: {
+        key: 'key',
+        text: 'text',
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -54,14 +58,34 @@ class Tree extends Component {
 
   getData() {}
 
-  getCheckedNodes() {}
+  getCheckedNodes(node) {
+    if (node === undefined) {
+      node = this
+    }
+    const checkedNodes = []
+
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      if (childNode.isChecked() === true) {
+        checkedNodes.push(childNode)
+
+        childNode.checkedNodes = this.getCheckedNodes(childNode)
+      }
+    })
+
+    return checkedNodes
+  }
 
   getCheckedNodeKeys() {}
 
   getCheckedData() {}
 
-  getSelectedNode(){
+  getSelectedNode() {
     return this.selectedNode
+  }
+
+  getChildNodes() {
+    return this.nodesRef.getChildren()
   }
 
   _onNodeClick(args) {

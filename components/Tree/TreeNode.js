@@ -74,6 +74,10 @@ class TreeNode extends Component {
   isChecked() {
     return this.props.checked === true
   }
+
+  getChildNodes() {
+    return this.nodesRef ? this.nodesRef.getChildren() : []
+  }
 }
 
 Component.register(TreeNode)
