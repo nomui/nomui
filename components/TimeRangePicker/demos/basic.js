@@ -15,6 +15,14 @@ define([], function () {
             name: 'TimeRangePicker',
             label: '时间范围选择',
             component: 'TimeRangePicker',
+            fieldName: {
+              start: 'start',
+              end: 'end',
+            },
+            value: {
+              start: '09:00:00',
+              end: '17:30:00',
+            },
           },
 
           {
