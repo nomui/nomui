@@ -1,11 +1,12 @@
-import Button from '../Button/index'
 import Component from '../Component/index'
 
-class Dropdown extends Button {
+class Dropdown extends Component {
   constructor(props, ...mixins) {
     const defaults = {
+      tag: 'span',
       triggerAction: 'click',
       rightIcon: 'down',
+      split: false,
       items: [
         {
           text: '导出Word',
@@ -31,28 +32,49 @@ class Dropdown extends Button {
 
   _config() {
     const that = this
-    const { items, triggerAction } = this.props
+    const { items, triggerAction, split, text, type } = this.props
 
-    this.setProps({
-      popup: {
-        triggerAction: triggerAction,
-        classes: {
-          'nom-dropdown-popup': true,
+    const children = [
+      split && {
+        component: 'Button',
+        text: text,
+        type: type,
+        onClick: () => {
+          that._callHandler(that.props.event)
         },
-        ref: (c) => {
-          that.popup = c
-        },
-        children: {
-          component: 'Menu',
-          itemDefaults: {
-            styles: {
-              hover: {
-                color: 'lighten',
+      },
+      {
+        component: 'Button',
+        text: split ? null : that.props.text,
+        rightIcon: that.props.rightIcon,
+        type: type,
+        popup: {
+          triggerAction: triggerAction,
+          classes: {
+            'nom-dropdown-popup': true,
+          },
+          ref: (c) => {
+            that.popup = c
+          },
+          children: {
+            component: 'Menu',
+            itemDefaults: {
+              styles: {
+                hover: {
+                  color: 'primary',
+                },
               },
             },
+            items: items,
           },
-          items: items,
         },
+      },
+    ]
+
+    this.setProps({
+      children: children,
+      classes: {
+        'nom-split-button': this.props.split,
       },
     })
 
