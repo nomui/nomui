@@ -7,6 +7,7 @@ class Dropdown extends Component {
       triggerAction: 'click',
       rightIcon: 'down',
       split: false,
+      event: null,
       items: [
         {
           text: '导出Word',
