@@ -8,20 +8,7 @@ class Dropdown extends Component {
       rightIcon: 'down',
       split: false,
       event: null,
-      items: [
-        {
-          text: '导出Word',
-          onClick: () => {},
-        },
-        {
-          text: '导出Word',
-          onClick: () => {},
-        },
-        {
-          text: '导出Word',
-          onClick: () => {},
-        },
-      ],
+      items: [],
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

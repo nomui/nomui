@@ -13,6 +13,16 @@ define([], function () {
           {
             component: 'Dropdown',
             text: '下拉菜单',
+            items: [
+              {
+                text: '导出Word',
+                onClick: () => {},
+              },
+              {
+                text: '导出Word',
+                onClick: () => {},
+              },
+            ],
           },
           {
             component: 'Dropdown',
@@ -22,6 +32,20 @@ define([], function () {
             event: () => {
               console.log('点击左边按钮')
             },
+            items: [
+              {
+                text: '导出Word',
+                onClick: () => {},
+              },
+              {
+                text: '导出Word',
+                onClick: () => {},
+              },
+              {
+                text: '导出Word',
+                onClick: () => {},
+              },
+            ],
           },
         ],
       }
