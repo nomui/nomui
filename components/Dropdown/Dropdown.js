@@ -7,7 +7,7 @@ class Dropdown extends Component {
       triggerAction: 'click',
       rightIcon: 'down',
       split: false,
-      event: null,
+      onClick: null,
       items: [],
     }
 
@@ -16,6 +16,7 @@ class Dropdown extends Component {
 
   _created() {
     super._created()
+    this.onClick = this.props.onClick
   }
 
   _config() {
@@ -27,8 +28,9 @@ class Dropdown extends Component {
         component: 'Button',
         text: text,
         type: type,
-        onClick: () => {
-          that._callHandler(that.props.event)
+        onClick: (args) => {
+          that._callHandler(that.onClick)
+          args.event.stopPropagation()
         },
       },
       {
@@ -60,6 +62,7 @@ class Dropdown extends Component {
     ]
 
     this.setProps({
+      onClick: null,
       children: children,
       classes: {
         'nom-split-button': this.props.split,

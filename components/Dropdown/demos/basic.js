@@ -13,6 +13,7 @@ define([], function () {
           {
             component: 'Dropdown',
             text: '下拉菜单',
+            triggerAction: 'hover',
             items: [
               {
                 text: '导出Word',
@@ -29,7 +30,7 @@ define([], function () {
             text: '分割菜单',
             type: 'primary',
             split: true,
-            event: () => {
+            onClick: () => {
               console.log('点击左边按钮')
             },
             items: [
