@@ -6,18 +6,23 @@ const chalk = require('chalk')
 const { default: banner } = require('rollup-plugin-banner')
 const { version } = require('./package.json')
 const compileClassStatic = require('./script/compile-class-static')
+const compilePrettier = require('./script/compile-prettier')
 
+const isDev = process.env.WT_ENV === 'dev'
 function buildJs(cb) {
   rollup({
     input: 'components/index.js',
-    plugins: [
-      banner(`
+    plugins: isDev
+      ? []
+      : [
+          banner(`
       nomui v${version}
       License: MIT
       Copyright (c) 2021-2021, Wetrial
     `),
-      compileClassStatic(),
-    ],
+          compileClassStatic(),
+          compilePrettier(),
+        ],
   }).then(
     ({ write }) => {
       write({

@@ -76,7 +76,7 @@ class NotificationContent extends Component {
           color: 'primary',
         },
         size: 'small',
-        text: btn.text || '我知道了',
+        text: btn.text || '知道了',
         onClick: () => {
           onClose()
         },
