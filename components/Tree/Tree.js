@@ -10,9 +10,11 @@ class Tree extends Component {
         onlyleaf: false,
         byClick: true,
       },
-      fields: {
+      dataFields: {
         key: 'key',
         text: 'text',
+        children: 'children',
+        parentId: 'parentId',
       },
     }
 
@@ -78,7 +80,7 @@ class Tree extends Component {
 
   getCheckedNodeKeys() {}
 
-  getCheckedData() {}
+  getCheckedNodesData() {}
 
   getSelectedNode() {
     return this.selectedNode
