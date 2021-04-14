@@ -204,12 +204,6 @@ define([], function () {
                       url: '#!components!index?type=Tabs',
                     },
                     {
-                      text: 'Steps',
-                      subtext: '步骤条',
-                      id: 'Steps',
-                      url: '#!components!index?type=Steps',
-                    },
-                    {
                       text: 'Pager',
                       subtext: '分页',
                       id: 'Pager',
@@ -291,6 +285,12 @@ define([], function () {
                       subtext: '高级表格',
                       id: 'Grid',
                       url: '#!components!index?type=Grid',
+                    },
+                    {
+                      text: 'Steps',
+                      subtext: '步骤条',
+                      id: 'Steps',
+                      url: '#!components!index?type=Steps',
                     },
                   ],
                 },
@@ -481,6 +481,12 @@ define([], function () {
                       subtext: '结果',
                       id: 'Result',
                       url: '#!components!index?type=Result',
+                    },
+                    {
+                      text: 'Steps',
+                      subtext: '步骤条',
+                      id: 'Steps',
+                      url: '#!components!index?type=Steps',
                     },
                   ],
                 },
