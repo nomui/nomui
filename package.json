@@ -12,7 +12,7 @@
   "scripts": {
     "build": "gulp build",
     "watch": "gulp default",
-    "dev": "npm-run-all --parallel watch start",
+    "dev": "cross-env WT_ENV=dev npm-run-all --parallel watch start",
     "start": "serve",
     "patch": "npm version patch",
     "minor": "npm version minor",
@@ -46,6 +46,7 @@
     "@umijs/fabric": "^2.4.4",
     "babel-eslint": "^10.1.0",
     "chalk": "^4.1.0",
+    "cross-env": "^7.0.3",
     "gulp": "^4.0.2",
     "gulp-less": "^4.0.1",
     "gulp-rename": "^2.0.0",

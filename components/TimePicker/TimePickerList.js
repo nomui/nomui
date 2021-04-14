@@ -114,8 +114,9 @@ class SelectList extends List {
   }
 
   scrollToKey() {
-    const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
-    this.scroller.element.scrollTop = top
+    // const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
+    // this.scroller.element.scrollTop = top
+    this.scrollToSelected()
   }
 }
 

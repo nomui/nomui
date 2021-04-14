@@ -6,6 +6,7 @@ define([
   './mode-alternate.js',
   './mode-right.js',
   './label.js',
+  './version-history.js',
 ], function () {
   return {
     title: 'Timeline',

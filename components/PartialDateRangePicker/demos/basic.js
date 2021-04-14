@@ -12,21 +12,10 @@ define([], function () {
         },
         fields: [
           {
-            name: 'DateRangePicker',
+            name: 'PartialDateRangePicker',
             label: '日期范围选择',
-            component: 'DateRangePicker',
-            format: 'yyyy-MM-dd HH:mm',
-            showTime: {
-              format: 'HH:mm',
-            },
-            fieldName: {
-              start: 'start',
-              end: 'end',
-            },
-            value: {
-              start: '2020-01-05 12:00',
-              end: '2020-01-20 12:00',
-            },
+            mode: 'week',
+            component: 'PartialDateRangePicker',
           },
 
           {

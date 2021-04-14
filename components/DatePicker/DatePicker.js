@@ -5,6 +5,7 @@ import Rows from '../Rows/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
 import {} from '../util/date'
+import { isNumeric } from '../util/index'
 import TimePickerPanel from './TimePickerPanel'
 
 class DatePicker extends Textbox {
@@ -235,6 +236,8 @@ class DatePicker extends Textbox {
                         }
 
                         that.updateValue()
+
+                        that.timePicker && that.timePicker.onShow()
                         !that.props.showTime && that.popup.hide()
                       },
                     },
@@ -403,14 +406,14 @@ class DatePicker extends Textbox {
 
   clearTime() {
     this.setValue(null)
-    this.days.unselectAllItems()
-    this.props.showTime && this.timePicker.resetList()
+    this.days && this.days.unselectAllItems()
+    this.props.showTime && this.timePicker && this.timePicker.resetList()
   }
 
   updateValue() {
     const date = new Date(
       this.dateInfo.year || new Date().format('yyyy'),
-      this.dateInfo.month || new Date().format('MM') - 1,
+      isNumeric(this.dateInfo.month) ? this.dateInfo.month : new Date().format('MM') - 1,
       this.dateInfo.day || new Date().format('dd'),
       this.dateInfo.hour || '00',
       this.dateInfo.minute || '00',
