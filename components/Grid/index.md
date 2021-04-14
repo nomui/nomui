@@ -46,6 +46,10 @@
 | showTitle | 单元格显示 title | `boolean` | `false` |
 | line | 线条样式，`row` 为行线条，`col` 为列线条，`both` 为行列线条 | `row` \| `col` \| `both` | - |
 | columnResizable | 是否允许拖动列宽（此项为 true 以后，如果有某些列不想改变宽度，可单独设置 column.resizable:false） | `boolean` | `false` |
+| columnsCustomizable | 是否允许自定义列(如果是多级表头，父层级也必须有`field`)、如果有默认显示哪些列，可以传一个对象`columnsCustomizable:{selected:arr}` | `object` \| `boolean` | `false` |
+| ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
+| striped | 是否显示斑马间隔 | `boolean` | `false` |
+| onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
 
 ### column
 
