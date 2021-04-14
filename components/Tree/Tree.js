@@ -78,9 +78,38 @@ class Tree extends Component {
     return checkedNodes
   }
 
-  getCheckedNodeKeys() {}
+  getCheckedNodeKeys(getOptions, checkedKeys, node) {
+    getOptions = getOptions || {}
+    checkedKeys = checkedKeys || []
+    node = node || this
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      if (childNode.isChecked() === true) {
+        checkedKeys.push(childNode.key)
 
-  getCheckedNodesData() {}
+        this.getCheckedNodeKeys(getOptions, checkedKeys, childNode)
+      }
+    })
+
+    return checkedKeys
+  }
+
+  getCheckedNodesData(getOptions, node) {
+    getOptions = getOptions || {}
+    node = node || this
+    const checkedNodesData = []
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      if (childNode.isChecked() === true) {
+        const childNodeData = { ...childNode.props.data }
+        checkedNodesData.push(childNodeData)
+
+        childNodeData.children = this.getCheckedNodesData(getOptions, childNode)
+      }
+    })
+
+    return checkedNodesData
+  }
 
   getSelectedNode() {
     return this.selectedNode

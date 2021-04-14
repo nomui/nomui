@@ -18,6 +18,20 @@ define([], function () {
                   console.log(treeRef.getCheckedNodes())
                 },
               },
+              {
+                component: 'Button',
+                text: '获取选中节点键值数组',
+                onClick: () => {
+                  console.log(treeRef.getCheckedNodeKeys())
+                },
+              },
+              {
+                component: 'Button',
+                text: '获取选中节点数据（树形）',
+                onClick: () => {
+                  console.log(treeRef.getCheckedNodesData())
+                },
+              },
             ],
           },
           {
@@ -27,6 +41,9 @@ define([], function () {
             },
             initExpandLevel: -1,
             nodeCheckable: true,
+            dataFields: {
+              key: 'text',
+            },
             data: [
               {
                 text: '层级 1',

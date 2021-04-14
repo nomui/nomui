@@ -19,11 +19,18 @@ class TreeNode extends Component {
     }
     this.tree = this.parent.tree
     this.subnodeRefs = {}
+    const { data } = this.props
+    const { dataFields } = this.tree.props
+    Object.keys(dataFields).forEach((dataField) => {
+      data[dataField] = data[dataFields[dataField]]
+    })
   }
 
   _config() {
     this.props.dataToNode({ data: this.props.data, node: this })
-    this.key = this.props.key
+    if (this.props.key) {
+      this.key = this.props.key
+    }
     const { nodes, childrenData } = this.props
     const children = [
       {
