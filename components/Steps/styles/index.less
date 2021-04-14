@@ -1,0 +1,201 @@
+.nom-steps {
+  &:not(.nom-step-label-vertical) .nom-step:first-child {
+    padding-left: 0;
+  }
+
+  &:not(.nom-step-label-vertical) .nom-step {
+    padding-left: 1rem;
+    white-space: nowrap;
+  }
+
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.85);
+  text-align: initial;
+  list-style: none;
+
+  .nom-step {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    vertical-align: top;
+
+    > .nom-step-item-container {
+      outline: none;
+      > .nom-step-item-tail {
+        display: none;
+      }
+      > .nom-step-item-icon {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        margin: 0 0.5rem 0 0;
+        line-height: 2rem;
+        text-align: center;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        border-radius: 2rem;
+        &.nom-step-item-icon-customer {
+          font-size: 2rem;
+          border: none;
+        }
+      }
+      .nom-step-item-content {
+        position: relative;
+        display: inline-block;
+        padding-right: 1rem;
+        vertical-align: top;
+
+        .nom-step-item-title {
+          display: inline-block;
+          color: rgba(0, 0, 0, 0.85);
+          font-size: 16px;
+          line-height: 2rem;
+        }
+        .nom-step-item-subtitle {
+          display: inline;
+          margin-left: 0.5rem;
+          color: rgba(0, 0, 0, 0.45);
+          font-weight: 400;
+          font-size: 14px;
+        }
+        .nom-step-item-description {
+          color: rgba(0, 0, 0, 0.85);
+          font-size: 14px;
+        }
+      }
+    }
+
+    &.nom-step-item-wait {
+      .nom-step-item-icon {
+        color: rgba(0, 0, 0, 0.25);
+        background-color: #fff;
+        border-color: rgba(0, 0, 0, 0.25);
+      }
+    }
+
+    &.nom-step-item-process {
+      .nom-step-item-icon {
+        color: #fff;
+        background-color: @primary;
+        border-color: @primary;
+      }
+      .nom-step-item-container {
+        > .nom-step-item-icon-customer {
+          color: @primary;
+          background-color: #fff;
+        }
+      }
+    }
+
+    &.nom-step-item-finish {
+      .nom-step-item-icon {
+        color: @primary;
+        border-color: @primary;
+      }
+    }
+
+    &.nom-step-item-error {
+      .nom-step-item-icon {
+        color: @danger;
+        background-color: #fff;
+        border-color: @danger;
+      }
+      .nom-step-item-content {
+        .nom-step-item-title {
+          color: @danger;
+          opacity: 0.85;
+        }
+        .nom-step-item-subtitle {
+          color: @danger;
+          opacity: 0.45;
+        }
+        .nom-step-item-description {
+          color: @danger;
+          opacity: 0.85;
+        }
+      }
+    }
+
+    &:not(:last-child) {
+      .nom-step-item-title {
+        &::after {
+          position: absolute;
+          top: 1rem;
+          left: 100%;
+          display: block;
+          width: 9999px;
+          height: 1px;
+          background-color: #f0f0f0;
+          content: '';
+        }
+      }
+
+      &.nom-step-item-finish {
+        .nom-step-item-title {
+          &::after {
+            background-color: @primary;
+          }
+        }
+      }
+    }
+  }
+
+  // vertical布局
+  &.nom-steps-vertical {
+    flex-direction: column;
+    > .nom-step {
+      flex: 1 0 auto;
+      padding-left: 0;
+      overflow: visible;
+      > .nom-step-item-container {
+        > .nom-step-item-content {
+          > .nom-step-item-title {
+            &::after {
+              display: none;
+            }
+          }
+          > .nom-step-item-description {
+            padding-bottom: 1rem;
+          }
+        }
+      }
+
+      &:not(:last-child) {
+        > .nom-step-item-container {
+          > .nom-step-item-tail {
+            position: absolute;
+            top: 0;
+            left: 1rem;
+            display: block;
+            width: 1px;
+            height: 100%;
+            padding: 2.5rem 0 0.5rem;
+            &::after {
+              display: inline-block;
+              width: 1px;
+              height: 100%;
+              background-color: #f0f0f0;
+              border-radius: 1px;
+              content: '';
+            }
+          }
+        }
+
+        &.nom-step-item-finish {
+          > .nom-step-item-container {
+            > .nom-step-item-tail {
+              &::after {
+                background-color: @primary;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
