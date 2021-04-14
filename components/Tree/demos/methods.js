@@ -32,6 +32,13 @@ define([], function () {
                   console.log(treeRef.getCheckedNodesData())
                 },
               },
+              {
+                component: 'Button',
+                text: '获取所有数据（树形）',
+                onClick: () => {
+                  console.log(treeRef.getData())
+                },
+              },
             ],
           },
           {

@@ -58,7 +58,20 @@ class Tree extends Component {
 
   _dataToNodes() {}
 
-  getData() {}
+  getData(getOptions, node) {
+    getOptions = getOptions || {}
+    node = node || this
+    const nodesData = []
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      const childNodeData = { ...childNode.props.data }
+      nodesData.push(childNodeData)
+
+      childNodeData.children = this.getData(getOptions, childNode)
+    })
+
+    return nodesData
+  }
 
   getCheckedNodes(node) {
     if (node === undefined) {
