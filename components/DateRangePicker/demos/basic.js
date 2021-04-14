@@ -23,6 +23,10 @@ define([], function () {
               start: 'start',
               end: 'end',
             },
+            value: {
+              start: '2020-01-05 12:00',
+              end: '2020-01-20 12:00',
+            },
           },
 
           {
