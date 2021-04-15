@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import List from '../List/index'
 
-class SelectList extends List {
+class DateTimePickerList extends List {
   constructor(props, ...mixins) {
     const defaults = {
       gutter: 'sm',
@@ -124,4 +124,4 @@ class SelectList extends List {
   }
 }
 
-export default SelectList
+export default DateTimePickerList
