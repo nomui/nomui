@@ -22,7 +22,7 @@ define([], function () {
               {
                 field: 'author',
                 title: '作者',
-                width: 1000,
+                width: 2000,
               },
               {
                 field: 'role',
@@ -39,7 +39,7 @@ define([], function () {
               { id: 6, name: '白马啸西风' },
             ],
             frozenHeader: true,
-            frozenLeftCols: 1,
+            frozenLeftCols: 0,
             frozenRightCols: 0,
             // allowFrozenCols: true,
             attrs: {
