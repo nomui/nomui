@@ -192,6 +192,12 @@ define([], function () {
                       url: '#!components!index?type=Dropdown',
                     },
                     {
+                      text: 'Toolbar',
+                      subtext: '工具按钮组',
+                      id: 'Toolbar',
+                      url: '#!components!index?type=Toolbar',
+                    },
+                    {
                       text: 'Navbar',
                       subtext: '导航条',
                       id: 'Navbar',
