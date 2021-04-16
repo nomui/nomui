@@ -31,6 +31,7 @@ class TreeNode extends Component {
     if (this.props.key) {
       this.key = this.props.key
     }
+    this.tree.nodeRefs[this.key] = this
     const { nodes, childrenData } = this.props
     const children = [
       {
@@ -45,9 +46,16 @@ class TreeNode extends Component {
         childrenData,
       })
     }
+
     this.setProps({
       children,
     })
+
+    if (this.tree.props.nodeCheckable) {
+      this.setProps({
+        checked: this.tree.checkedKeysHash[this.key] === true,
+      })
+    }
   }
 
   check(checkOptions = { checkCheckbox: true }) {
@@ -84,6 +92,14 @@ class TreeNode extends Component {
 
   getChildNodes() {
     return this.nodesRef ? this.nodesRef.getChildren() : []
+  }
+
+  select() {
+    this.content.select()
+  }
+
+  unselect() {
+    this.content.unselect()
   }
 }
 

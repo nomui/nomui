@@ -12,6 +12,7 @@ class TreeNodeContent extends Component {
 
   _created() {
     this.node = this.parent
+    this.node.content = this
     this.level = this.node.level
     this.tree = this.node.tree
   }
@@ -51,10 +52,14 @@ class TreeNodeContent extends Component {
       },
       onSelect: () => {
         if (tree.selectedNode !== null) tree.selectedNode.unselect()
-        tree.selectedNode = this
+        tree.selectedNode = this.node
         tree._onNodeSelect({ node: this.node })
       },
     })
+
+    if (this.tree.props.nodeSelectable.onlyleaf === true && this.node.isLeaf === false) {
+      this.setProps({ selectable: false })
+    }
 
     this.setProps({
       children: [

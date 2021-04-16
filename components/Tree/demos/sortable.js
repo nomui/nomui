@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'methods',
+    title: '可排序',
+    file: 'sortable',
     demo: function () {
       let treeRef = null
 
@@ -11,27 +11,6 @@ define([], function () {
           {
             component: 'Cols',
             items: [
-              {
-                component: 'Button',
-                text: '获取选中节点',
-                onClick: () => {
-                  console.log(treeRef.getCheckedNodes())
-                },
-              },
-              {
-                component: 'Button',
-                text: '获取选中节点键值数组',
-                onClick: () => {
-                  console.log(treeRef.getCheckedNodeKeys())
-                },
-              },
-              {
-                component: 'Button',
-                text: '获取选中节点数据（树形）',
-                onClick: () => {
-                  console.log(treeRef.getCheckedNodesData())
-                },
-              },
               {
                 component: 'Button',
                 text: '获取所有数据（树形）',
@@ -47,7 +26,7 @@ define([], function () {
               treeRef = c
             },
             initExpandLevel: -1,
-            nodeCheckable: true,
+            sortable: true,
             dataFields: {
               key: 'text',
             },

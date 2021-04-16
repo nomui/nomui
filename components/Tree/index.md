@@ -4,14 +4,51 @@
 
 ## API
 
-### Tree
+### Tree props
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| treeData | 源数据,至少应该包含 `title` 与 `value`，并且 `value` 唯一 | `array ` | [] |
-| selectedNodes | 默认选中的节点 | `array \| string ` | - |
-| multiple | 是否允许多选 | `boolean ` | `true` |
-| leafOnly | 是否只允许选择叶子层级 | `boolean ` | `false` |
-| showLine | 是否显示层级线条 | `boolean` | `false` |
-| toolbar | 额外工具条,其中 `placement` 可选`before \| after`，控制工具条出现的位置 | `{ placement:string, item:Component}` | - |
-| onCheck | 点击勾选框的回调，其中 `items` 是已选中数据，`key` 是当前点击节点的 key，`status` 是当前点击节点的勾选状态 | `{items,key,status} ` | - |
+| data | 源数据,至少应该包含 `text` 与 `key`，并且 `key` 唯一 | `array ` | [] |
+| dataFields | 数据字段映射，将传递的数据字段映射成树组件所需的 | `object` | `{key:'key',text:'text',children:'children'}` |
+| nodeSelectable | 节点可选中 | `boolean` \| `object` | - |
+| nodeCheckable | 节点可勾选配置 | `boolean` \| `object` | - |
+| onNodeClick | 点击节点的回调 | `({node}) => {}` | - |
+
+### Tree methods
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| getData | 获取所有节点数据 | `(options:getDataOptions) => TreeData[]` | - |
+| getCheckedNodeKeys | 获取勾选的节点键值数组 | `(options:getCheckedNodeKeysOptions) => string[]` | - |
+| getCheckedNodesData | 获取勾选的节点数据，树形解构 | `(options:getCheckedNodesDataOptions) => TreeData[]` | - |
+
+### nodeCheckable
+
+节点可勾选配置
+
+| 参数           | 说明               | 类型             | 默认值 |
+| -------------- | ------------------ | ---------------- | ------ |
+| checkedRowKeys | 初始选中行主键数组 | `array`          | -      |
+| onNodeCheck    | 节点勾选回调       | `({node}) => {}` | -      |
+| onNodeUncheck  | 节点取消勾选回调   | `({node}) => {}` | -      |
+
+### nodeSelectable
+
+节点可选中配置
+
+目前只支持单选，多选用 nodeCheckable
+
+| 参数           | 说明             | 类型             | 默认值 |
+| -------------- | ---------------- | ---------------- | ------ |
+| onlyleaf       | 仅叶子节点可选中 | `boolean`        | false  |
+| byClick        | 点击节点时选中   | `boolean`        | true   |
+| onNodeSelect   | 节点选中回调     | `({node}) => {}` | -      |
+| onNodeUnselect | 节点取消选中回调 | `({node}) => {}` | -      |
+
+### TreeData
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| getData | 获取所有节点数据 | `(options:getDataOptions) => TreeData[]` | - |
+| getCheckedNodeKeys | 获取勾选的节点键值数组 | `(options:getCheckedNodeKeysOptions) => string[]` | - |
+| getCheckedNodesData | 获取勾选的节点数据，树形解构 | `({row})=>{}` | - |

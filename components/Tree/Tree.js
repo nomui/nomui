@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import TreeNodes from './TreeNodes'
+import { isFunction } from '../util/index'
 
 class Tree extends Component {
   constructor(props, ...mixins) {
@@ -16,6 +17,8 @@ class Tree extends Component {
         children: 'children',
         parentId: 'parentId',
       },
+      sortable: false,
+      initExpandLevel: -1,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -27,6 +30,9 @@ class Tree extends Component {
   }
 
   _config() {
+    this.nodeRefs = {}
+    this.selectedNode = null
+
     const { nodes, data, nodeCheckable } = this.props
     if (nodeCheckable) {
       this.setProps({
@@ -124,6 +130,29 @@ class Tree extends Component {
     return checkedNodesData
   }
 
+  getNode(param) {
+    let retNode = null
+
+    if (param instanceof Component) {
+      return param
+    }
+
+    if (isFunction(param)) {
+      for (const key in this.nodeRefs) {
+        if (this.nodeRefs.hasOwnProperty(key)) {
+          if (param.call(this.nodeRefs[key]) === true) {
+            retNode = this.nodeRefs[key]
+            break
+          }
+        }
+      }
+    } else {
+      return this.nodeRefs[param]
+    }
+
+    return retNode
+  }
+
   getSelectedNode() {
     return this.selectedNode
   }
@@ -132,12 +161,19 @@ class Tree extends Component {
     return this.nodesRef.getChildren()
   }
 
+  selectNode(param) {
+    const node = this.getNode(param)
+
+    node.select()
+  }
+
   _onNodeClick(args) {
     this._callHandler('onNodeClick', args)
   }
 
   _onNodeSelect(args) {
-    this._callHandler('onNodeSelect', args)
+    const { onNodeSelect } = this.props.nodeSelectable
+    this._callHandler(onNodeSelect, args)
   }
 }
 
