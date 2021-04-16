@@ -7,6 +7,7 @@ define([
   './defaultFileList.js',
   './dataAndHeaders.js',
   './async.js',
+  './hide.js',
 ], function () {
   return {
     title: 'Uploader',

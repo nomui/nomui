@@ -54,7 +54,8 @@
 | --- | --- | --- | --- | --- |
 | accept | 接受上传的文件类型, 详见 [input accept Attribute](https://developer.mozill a.org/en-US/docs/Web/HTML/Element/input/file#accept) | string | - |  |
 | action | 上传的地址 | string \| (file) => Promise | - |  |
-| button | 自定义上传按钮 | Button \| `false`| Button(设置为false则不显示上传按钮) |  |
+| button | 自定义上传按钮 | Button \| `false` | Button(设置为 false 则不显示上传按钮) |  |
+| display | 显示隐藏上传列表 | `boolean` | `true` |
 | method | 上传请求的 http method | string | `post` |  |
 | beforeUpload | 上传文件之前的钩子，参数为上传的文件，若返回 `false` 则停止上传。支持返回一个 Promise 对象，Promise 对象 reject 时则停止上传，resolve 时开始上传（ resolve 传入 `File` 或 `Blob` 对象则上传 resolve 传入对象）。**注意：IE9 不支持该方法** | (file, fileList) => boolean \| Promise | - |  |
 | data | 上传所需额外参数或返回上传额外参数的方法 | object\|(file) => object \| Promise&lt;object> | - |  |
