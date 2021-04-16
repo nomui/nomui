@@ -1,0 +1,21 @@
+.nom-popup {
+    &.p-uistyle-default {
+        font-size: @font-size-base;
+        text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
+        background-color: white;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, .15);
+        ;
+        border-radius: 2px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    }
+}
+
+// Measure scrollbar width for padding body during modal show/hide
+.modal-scrollbar-measure {
+    position: absolute;
+    top: -9999px;
+    width: 50px;
+    height: 50px;
+    overflow: scroll;
+}

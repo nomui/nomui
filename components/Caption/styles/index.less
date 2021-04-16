@@ -1,0 +1,23 @@
+.nom-caption {
+    display: flex;
+    align-items: center;
+
+    &:not(.p-subtitle-wrap)>.nom-caption-title {
+        >small {
+            margin-left: 6px;
+        }
+    }
+
+    &.p-subtitle-wrap>.nom-caption-title>small {
+        display: block;
+        margin-top: 3px;
+    }
+
+    >.nom-caption-icon+.nom-caption-title {
+        margin-left: 6px;
+    }
+
+    >.nom-caption-image+.nom-caption-title {
+        margin-left: 6px;
+    }
+}

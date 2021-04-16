@@ -1,0 +1,88 @@
+@avatar-prefix-cls: ~'nom-avatar';
+@avatar-bg: #ccc;
+@avatar-color: #fff;
+
+@avatar-size-base: 2.29rem;
+@avatar-size-xl: 3.43rem;
+@avatar-size-lg: 2.86rem;
+@avatar-size-sm: 1.86rem;
+@avatar-size-xs: 1.15rem;
+
+@avatar-font-size-base: @font-size-base;
+@avatar-font-size-xl: @font-size-xl;
+@avatar-font-size-lg: @font-size-lg;
+@avatar-font-size-sm: @font-size-sm;
+@avatar-font-size-xs: @font-size-sm;
+@avatar-border-radius: @border-radius;
+
+.@{avatar-prefix-cls} {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  color: @avatar-color;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+  background: @avatar-bg;
+
+  &.avatar-image {
+    background: transparent;
+  }
+
+  > .nom-avatar-string {
+    position: absolute;
+    left: 50%;
+    -webkit-transform-origin: 0 center;
+    transform-origin: 0 center;
+  }
+
+  .img {
+    display: block;
+  }
+
+  .avatar-size(@avatar-size-base, @avatar-font-size-base);
+
+  &.p-size-xlarge {
+    .avatar-size(@avatar-size-xl, @avatar-font-size-xl);
+  }
+
+  &.p-size-large {
+    .avatar-size(@avatar-size-lg, @avatar-font-size-lg);
+  }
+
+  &.p-size-small {
+    .avatar-size(@avatar-size-sm, @avatar-font-size-sm);
+  }
+
+  &.p-size-xsmall {
+    .avatar-size(@avatar-size-xs, @avatar-font-size-xs);
+  }
+
+  &.u-shape-square {
+    border-radius: @avatar-border-radius;
+  }
+
+  & > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.avatar-size(@size, @font-size) {
+  width: @size;
+  height: @size;
+  line-height: @size;
+  border-radius: 50%;
+
+  &-string {
+    position: absolute;
+    left: 50%;
+    transform-origin: 0 center;
+  }
+
+  > .nom-icon {
+    font-size: @font-size;
+  }
+}

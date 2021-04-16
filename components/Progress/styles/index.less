@@ -1,0 +1,206 @@
+@iconfont-css-prefix: anticon;
+@component-background: #fff;
+@progress-steps-item-bg: #f3f3f3;
+@progress-remaining-color: hsv(0, 0, 96%);
+@progress-radius: 100px;
+@ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+@ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+
+.nom-progress {
+  .reset-component();
+
+  display: inline-block;
+
+  &-line {
+    position: relative;
+    width: 100%;
+    font-size: @font-size-base;
+  }
+
+  &-steps {
+    display: inline-block;
+    &-outer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    &-item {
+      flex-shrink: 0;
+      min-width: 2px;
+      margin-right: 2px;
+      background: @progress-steps-item-bg;
+      transition: all 0.3s;
+
+      &-active {
+        background: @primary;
+      }
+    }
+  }
+
+  &-small&-line,
+  &-small&-line &-text .@{iconfont-css-prefix} {
+    font-size: @font-size-sm;
+  }
+
+  &-outer {
+    display: inline-block;
+    width: 100%;
+    margin-right: 0;
+    padding-right: 0;
+    .nom-progress-show-info & {
+      margin-right: ~'calc(-2em - 8px)';
+      padding-right: ~'calc(2em + 8px)';
+    }
+  }
+
+  &-inner {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    vertical-align: middle;
+    background-color: @progress-remaining-color;
+    border-radius: @progress-radius;
+  }
+
+  &-circle-trail {
+    stroke: @progress-remaining-color;
+  }
+
+  &-circle-path {
+    animation: nom-progress-appear 0.3s;
+  }
+
+  &-inner:not(.nom-progress-circle-gradient) {
+    .nom-progress-circle-path {
+      stroke: @primary;
+    }
+  }
+
+  &-success-bg,
+  &-bg {
+    position: relative;
+    background-color: @primary;
+    border-radius: @progress-radius;
+    transition: all 0.4s @ease-out-circ 0s;
+  }
+
+  &-success-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: @success;
+  }
+
+  &-text {
+    display: inline-block;
+    width: 2em;
+    margin-left: 8px;
+    color: @black;
+    font-size: 1em;
+    line-height: 1;
+    white-space: nowrap;
+    text-align: left;
+    vertical-align: middle;
+    word-break: normal;
+    .@{iconfont-css-prefix} {
+      font-size: @font-size-base;
+    }
+  }
+
+  &-status-active {
+    .nom-progress-bg::before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: @component-background;
+      border-radius: 10px;
+      opacity: 0;
+      animation: nom-progress-active 2.4s @ease-out-quint infinite;
+      content: '';
+    }
+  }
+
+  &-status-exception {
+    .nom-progress-bg {
+      background-color: @danger;
+    }
+    .nom-progress-text {
+      color: @danger;
+    }
+  }
+
+  &-status-exception &-inner:not(.nom-progress-circle-gradient) {
+    .nom-progress-circle-path {
+      stroke: @danger;
+    }
+  }
+
+  &-status-success {
+    .nom-progress-bg {
+      background-color: @success;
+    }
+    .nom-progress-text {
+      color: @success;
+    }
+  }
+
+  &-status-success &-inner:not(.nom-progress-circle-gradient) {
+    .nom-progress-circle-path {
+      stroke: @success;
+    }
+  }
+
+  &-circle &-inner {
+    position: relative;
+    line-height: 1;
+    background-color: transparent;
+  }
+
+  &-circle &-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color: @text-color;
+    font-size: 1em;
+    line-height: 1;
+    white-space: normal;
+    text-align: center;
+    transform: translate(-50%, -50%);
+
+    .@{iconfont-css-prefix} {
+      font-size: (14 / 12em);
+    }
+  }
+
+  &-circle&-status-exception {
+    .nom-progress-text {
+      color: @danger;
+    }
+  }
+  &-circle&-status-success {
+    .nom-progress-text {
+      color: @success;
+    }
+  }
+}
+
+@keyframes nom-progress-active {
+  0% {
+    width: 0;
+    opacity: 0.1;
+  }
+  20% {
+    width: 0;
+    opacity: 0.5;
+  }
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+}

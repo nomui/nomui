@@ -1,0 +1,54 @@
+.nom-textarea-focus(@color: @input-border-focus) {
+    @color-rgba: rgba(red(@color), green(@color), blue(@color), .6);
+    &:focus {
+      border-color: @color;
+      outline: 0;
+    }
+  }
+
+.nom-textarea {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: @padding-y-base @padding-x-base;
+    color: @input-color;
+    font-size: @font-size-base;
+    line-height: @line-height-base;
+    background-color: @input-bg;
+    background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+    border: 1px solid @input-border;
+    border-radius: @input-border-radius; // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+    // Customize the `:focus` state to imitate native WebKit styles.
+    .nom-textarea-focus();
+    // Unstyle the caret on `<select>`s in IE10+.
+    &::-ms-expand {
+        background-color: transparent;
+        border: 0;
+    }
+    // Disabled and read-only inputs
+    //
+    // HTML5 says that controls under a fieldset > legend:first-child won't be
+    // disabled if the fieldset is disabled. Due to implementation difficulty, we
+    // don't honor that edge case; we style them as disabled anyway.
+    &[disabled],
+    &[readonly],
+    fieldset[disabled] & {
+        background-color: @input-bg-disabled;
+        opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
+    }
+
+    &[disabled],
+    fieldset[disabled] & {
+        cursor: @cursor-disabled;
+    }
+    // Reset height for `textarea`s
+    textarea & {
+        height: auto;
+    }
+
+    .s-invalid > & {
+        color: #000;
+        background-color: #fff3f3;
+        border-color: #ffa8a8;
+    }
+}

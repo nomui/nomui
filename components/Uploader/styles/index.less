@@ -1,0 +1,68 @@
+.nom-uploader {
+  padding: 1em;
+  &:hover {
+    background-color: @lblue;
+  }
+}
+
+.nom-file-list {
+  margin-top: 2em;
+}
+
+.nom-file-list > :not(:last-child) {
+  margin-bottom: 1em;
+}
+
+.nom-file-list-only {
+  margin-top: 0;
+}
+
+.upload-img-container {
+  width: 48px;
+  height: 48px;
+  margin-right: 10px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.upload-info-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.upload-file-name {
+  margin-right: 10px;
+  color: @primary;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.upload-file-update {
+  margin-left: 10px;
+  padding-left: 10px;
+}
+
+.upload-opt-btn > a {
+  color: @gray;
+  &:hover {
+    color: @primary;
+    text-decoration: none;
+  }
+}
+
+.upload-opt-btn > :not(:last-child) {
+  margin-right: 20px;
+}
+
+.upload-opt-removing > a {
+  cursor: not-allowed;
+}
+
+.file-img {
+  font-size: 48px;
+}

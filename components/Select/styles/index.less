@@ -1,0 +1,95 @@
+.nom-select {
+  > .nom-field-content {
+    .nom-control {
+      position: relative;
+      min-height: 34px;
+      padding: 6px 24px 6px 12px;
+      color: #000 !important;
+      line-height: 1.42857;
+      background: white;
+      border: 1px solid gainsboro;
+      border-radius: 2px;
+      cursor: pointer;
+
+      .nom-select-single {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .nom-select-search-input {
+        width: 100%;
+        border: none;
+        outline: none;
+      }
+
+      .nom-select-arrow {
+        position: absolute;
+        top: 0;
+        right: 8px;
+        bottom: 0;
+      }
+
+      .nom-select-placeholder {
+        color: #bfbfbf;
+      }
+
+      .s-disabled& {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.nom-select-popup > .nom-layout {
+  max-height: 300px;
+
+  > .nom-layout-body {
+    overflow-x: hidden;
+  }
+}
+
+.nom-select-list {
+  .nom-list-item {
+    padding: 5px 16px;
+    user-select: none;
+
+    &:hover {
+      background-color: #eee;
+    }
+
+    &.s-selected {
+      color: @white;
+      background-color: @primary;
+    }
+  }
+}
+
+.nom-select-checker {
+  .nom-list-item {
+    position: relative;
+    padding: 5px 30px;
+
+    &:hover {
+      background-color: #eee;
+    }
+
+    &.nom-selected::before {
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      z-index: 2;
+      color: @primary;
+      font-weight: bold;
+      font-size: 16px;
+      font-family: nom-icon;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      content: '\E632';
+    }
+  }
+}

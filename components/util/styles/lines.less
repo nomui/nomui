@@ -1,0 +1,34 @@
+@lineColor: #f0f0f0;
+
+.u-lines-grid {
+    //margin: 0 !important;
+
+    >* {
+        box-shadow: 0 1px 0 0 @lineColor, 1px 1px 0 0 @lineColor, 1px 0 0 0 @lineColor inset, 0 1px 0 0 @lineColor inset;
+    }
+}
+
+.u-lines-cross.u-flex-row-wrap {
+    overflow: hidden;
+    //margin: 0 !important;
+
+    >* {
+        .u-border-left();
+        .u-border-bottom();
+
+        margin-bottom: -1px;
+        margin-left: -1px;
+    }
+}
+
+.u-lines-split {
+    &.u-flex-row {
+        > * {
+            .u-border-right();
+
+            &:last-child {
+                border-right: 0;
+            }
+        }
+    }
+}

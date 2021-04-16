@@ -1,0 +1,49 @@
+.nom-confirm {
+    >.nom-modal-dialog {
+        width: 430px;
+    }
+}
+
+.nom-confirm-content {
+    width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
+    padding: 1.5rem;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: .3rem;
+    // Remove focus outline from opened modal
+    outline: 0;
+    // counteract the pointer-events: none; in the .modal-dialog
+    pointer-events: auto;
+
+    >.nom-confirm-body {
+        display: flex;
+        flex-direction: row;
+
+        >.nom-confirm-icon {
+            padding: 0.125rem 1rem;
+            color: @warning;
+            font-size: 2rem;
+        }
+
+        >.nom-confirm-body-content {
+
+            >.nom-confirm-title {
+                padding: .25rem;
+                font-weight: 500;
+                font-size: 1.5rem;
+            }
+
+            >.nom-confirm-description {
+                margin: 1rem 0;
+                padding: .25rem;
+            }
+        }
+    }
+
+    >.nom-confirm-actions {
+        margin-top: 1.5rem;
+        padding-right: 1rem;
+        text-align: right;
+    }
+}

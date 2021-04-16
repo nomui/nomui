@@ -1,0 +1,124 @@
+/* colors */
+
+.make-colors(@colors) {
+    .generate-colors(length(@colors));
+
+    .generate-colors(@name, @i: 1) when (@i =< length(@colors)) {
+        @name: extract(@colors, @i);
+        @color: "@{name}";
+        @lcolor: "l@{name}";
+
+        .u-color-@{name},
+        .u-hover-color-@{name}:hover,
+        .u-selected-color-@{name}.s-selected {
+            color: lighten(@@color, 40%) !important;
+            background-color: @@color  !important;
+            border-color: darken(@@color, 5%) !important;
+
+            a {
+                color: inherit !important;
+            }
+        }
+
+        .u-color-@{name}-dark,
+        .u-hover-color-@{name}-dark:hover,
+        .u-selected-color-@{name}-dark.s-selected {
+            color: lighten(@@color, 40%) !important;
+            background-color: saturate(darken(@@color, 10%), 2.5%) !important;
+            border-color: darken(@@color, 5%) !important;
+        }
+
+        .u-color-@{name}-light,
+        .u-hover-color-@{name}-light:hover,
+        .u-selected-color-@{name}-light.s-selected {
+            color: lighten(@@color, 40%) !important;
+            background-color: saturate(darken(@@color, -10%), -2.5%) !important;
+            border-color: darken(@@color, 5%) !important;
+        }
+
+        .u-color-@{name}-outline {
+            color: @@color  !important;
+            background-color: transparent !important;
+            border-color: @@color  !important;
+
+            &.s-hover,
+            &:hover {
+                color: @@color  !important;
+                background-color: lighten(@@color, 40%) !important;
+            }
+        }
+
+        .u-color-l@{name},
+        .u-hover-color-l@{name}:hover,
+        .u-selected-color-l@{name}.s-selected {
+            background-color: @@lcolor  !important;
+        }
+
+        .u-color-l@{name}-dark,
+        .u-hover-color-l@{name}-dark:hover,
+        .u-selected-color-l@{name}-dark.s-selected {
+            background-color: saturate(darken(@@lcolor, 5%), 2.5%) !important;
+        }
+
+        .u-color-l@{name}-light,
+        .u-hover-color-l@{name}-light:hover,
+        .u-selected-color-l@{name}-light.s-selected {
+            background-color: saturate(darken(@@lcolor, -2.5%), -2.5%) !important;
+        }
+
+        .u-outline-@{name} {
+            color: lighten(@@color, 40%);
+            background-color: transparent !important;
+            border-color: lighten(@@color, 40%) !important;
+        }
+
+        .u-text-@{name},
+        .u-hover-text-@{name}:hover,
+        .u-selected-text-@{name}.s-selected {
+            color: @@color  !important;
+        }
+
+        .u-border-@{name} {
+            border-color: @@color  !important;
+        }
+
+        .u-border-l@{name} {
+            border-color: @@lcolor  !important;
+        }
+
+        .generate-colors(@name, @i + 1);
+    }
+}
+
+.make-colors(@color-list);
+
+.u-hover-color-darken:hover:not(.s-selected) {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.u-hover-color-lighten:not(.s-selected):hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.u-selected-color-darken.s-selected {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.u-selected-color-lighten.s-selected {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.u-color-white {
+    color: @text-color  !important;
+    background-color: @white  !important;
+}
+
+.u-color-black {
+    color: @white  !important;
+    background-color: @black  !important;
+}
+
+.u-color-transparent {
+    color: inherit !important;
+    background-color: transparent !important;
+}

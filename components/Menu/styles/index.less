@@ -1,0 +1,112 @@
+.nom-menu {
+    .list-unstyled();
+
+    margin: 0;
+
+    a {
+        color: inherit;
+
+        &:hover {
+            color: inherit;
+        }
+
+        >.subtext {
+            margin-left: 6px;
+            font-weight: 400;
+            font-size: 12px;
+            opacity: .67;
+        }
+    }
+
+    &.p-direction-horizontal {
+        display: flex;
+        flex-wrap: wrap;
+
+        >.nom-menu-item-wrapper>.nom-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+    }
+
+    &.p-uistyle-pill {
+        >.nom-menu-item-wrapper {
+            margin-bottom: .3rem;
+
+            >.nom-menu-item {
+                .u-shape-round();
+
+                &:hover {
+                    background-color: @lprimary;
+                }
+
+                &.s-selected {
+                    .u-color-primary();
+                }
+            }
+        }
+    }
+
+    &.p-direction-vertical {
+        >.nom-menu-item-wrapper>.nom-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            text-decoration: none;
+
+            >.nom-menu-item-icon {
+                margin-right: 10px;
+            }
+
+            >.title {
+                flex-grow: 1;
+            }
+        }
+    }
+}
+
+.nom-menu-sub {
+    .list-unstyled();
+
+    margin: 0;
+
+    a {
+        color: inherit;
+
+        &:hover {
+            color: inherit;
+        }
+    }
+
+    >.nom-menu-item-wrapper>.nom-menu-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        white-space: nowrap;
+        text-decoration: none;
+
+        >.title {
+            flex-grow: 1;
+        }
+    }
+
+    &.p-direction-horizontal {
+        >.nom-menu-item-wrapper>.nom-menu-item {
+            min-width: 160px;
+        }
+    }
+}
+
+&.nom-menu-stretch {
+    height: 100%;
+
+    >.nom-menu-item-wrapper>.nom-menu-item {
+        height: 100%;
+    }
+}
+
+.nom-menu-toggler {
+    margin-left: auto;
+}

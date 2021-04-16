@@ -1,0 +1,139 @@
+// .modal-open      - body class for killing the scroll
+// .modal           - container to scroll within
+// .modal-dialog    - positioning shell for the actual modal
+// .modal-content   - actual modal w/ bg and corners and stuff
+
+
+.nom-modal-open {
+    // Kill the scroll on the body
+    overflow: hidden;
+
+    .nom-modal {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+}
+
+// Container that the modal scrolls within
+.nom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    // We deliberately don't use `-webkit-overflow-scrolling: touch;` due to a
+    // gnarly iOS Safari bug: https://bugs.webkit.org/show_bug.cgi?id=158342
+    // See also https://github.com/twbs/bootstrap/issues/17695
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    // Prevent Chrome on Windows from adding a focus outline. For details, see
+    // https://github.com/twbs/bootstrap/pull/10951.
+    outline: 0;
+}
+
+// Shell div to position the modal with bottom padding
+.nom-modal-dialog {
+    position: relative;
+    width: auto;
+    margin: .5rem;
+    // allow clicks to pass through for custom click handling to close modal
+    pointer-events: none;
+}
+
+.nom-modal-dialog-scrollable {
+    display: flex; // IE10/11
+    max-height: calc(100% - 1rem);
+
+    .nom-modal-content {
+        max-height: calc(100vh - 1rem); // IE10/11
+        overflow: hidden;
+    }
+
+    .panel-header,
+    .panel-ft {
+        flex-shrink: 0;
+    }
+
+    .panel-body {
+        overflow-y: auto;
+    }
+}
+
+.nom-modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+
+    // Ensure `modal-dialog-centered` extends the full height of the view (IE10/11)
+    &::before {
+        display: block; // IE10
+        height: calc(100vh - 1rem);
+        content: "";
+    }
+
+    // Ensure `.modal-body` shows scrollbar (IE10/11)
+    &.nom-modal-dialog-scrollable {
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+
+        .nom-modal-content {
+            max-height: none;
+        }
+
+        &::before {
+            content: none;
+        }
+    }
+}
+
+// Actual modal
+.nom-modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: .3rem;
+    // Remove focus outline from opened modal
+    outline: 0;
+    // counteract the pointer-events: none; in the .modal-dialog
+    pointer-events: auto;
+
+    >.nom-panel-header {
+        border-bottom: 1px solid #dee2e6;
+        border-top-left-radius: .3rem;
+        border-top-right-radius: .3rem;
+    }
+
+    >.nom-panel-body {
+        position: relative;
+        flex: 1 1 auto;
+        padding: 1rem;
+    }
+
+    >.nom-panel-footer {
+        justify-content: flex-end;
+        border-top: 1px solid #dee2e6;
+        border-bottom-right-radius: .3rem;
+        border-bottom-left-radius: .3rem;
+    }
+}
+
+// Scale up the modal
+@media (min-width: @screen-sm-min) {
+
+    // Automatically set modal's width for larger viewports
+    .nom-modal-dialog {
+        width: 560px;
+        margin: 1.75rem auto;
+    }
+
+    // Modal sizes
+    .nom-modal-sm {
+        width: 300px;
+    }
+}

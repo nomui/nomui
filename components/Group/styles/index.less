@@ -1,0 +1,117 @@
+.nom-group {
+  > .nom-field-content {
+    padding: 0;
+
+    > .nom-control {
+      display: flex;
+      flex-wrap: wrap;
+
+      > .nom-field {
+        width: 100%;
+      }
+    }
+
+    > .nom-control-after {
+      margin-top: 6px;
+    }
+
+    > .nom-control-action {
+      padding: 0.875rem;
+    }
+  }
+
+  &.p-nowrap {
+    > .nom-field-content {
+      > .nom-control {
+        flex-wrap: nowrap;
+
+        > .nom-field {
+          > .nom-field-label {
+            width: auto;
+            flex-basis: auto;
+          }
+
+          > .nom-field-content {
+            flex-basis: auto;
+          }
+        }
+      }
+    }
+  }
+
+  &.p-inline {
+    > .nom-field-content {
+      > .nom-control {
+        > .nom-field {
+          width: auto;
+          flex-basis: auto;
+
+          > .nom-field-label {
+            width: auto;
+            flex-basis: auto;
+          }
+
+          > .nom-field-content {
+            flex-basis: auto;
+          }
+        }
+      }
+    }
+  }
+
+  &.p-striped {
+    > .nom-field-content {
+      > .nom-control {
+        > .nom-field {
+          > .nom-field-label {
+            .u-color-lgray();
+          }
+        }
+      }
+    }
+  }
+
+  &.p-line-splitline {
+    margin: 0 !important;
+    overflow: hidden;
+
+    > .nom-field-content {
+      > .nom-control {
+        > .nom-field {
+          .u-border-left();
+          .u-border-bottom();
+
+          margin-bottom: -1px;
+          margin-left: -1px;
+        }
+      }
+    }
+  }
+
+  &.p-line-outline {
+    margin: 0 !important;
+    overflow: hidden;
+    .u-border();
+
+    > .nom-field-content {
+      > .nom-control {
+        margin-bottom: -1px;
+        margin-left: -1px;
+
+        > .nom-field {
+          .u-border-left();
+          .u-border-bottom();
+        }
+      }
+    }
+  }
+
+  &.p-uistyle-table {
+    .p-line-outline();
+    .p-striped();
+  }
+
+  &.p-uistyle-inline {
+    .p-inline();
+  }
+}

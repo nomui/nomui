@@ -1,0 +1,79 @@
+@h1-font-size: @font-size-base * 2.5;
+@h2-font-size: @font-size-base * 2;
+@h3-font-size: @font-size-base * 1.75;
+@h4-font-size: @font-size-base * 1.5;
+@h5-font-size: @font-size-base * 1.25;
+@h6-font-size: @font-size-base;
+
+
+@headings-margin-bottom: @spacer-1 / 2;
+@headings-font-family: inherit;
+@headings-font-weight: 500;
+@headings-line-height: 1.2;
+@headings-color: inherit;
+
+@lead-font-size: (@font-size-base * 1.25);
+@lead-font-weight: 300;
+
+
+
+  //
+// Headings
+//
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: @headings-color;
+  font-weight: @headings-font-weight;
+  font-family: @headings-font-family;
+  line-height: @headings-line-height;
+}
+
+h1,
+.h1 {
+  font-size: @h1-font-size;
+}
+h2,
+.h2 {
+  font-size: @h2-font-size;
+}
+h3,
+.h3 {
+  font-size: @h3-font-size;
+}
+h4,
+.h4 {
+  font-size: @h4-font-size;
+}
+h5,
+.h5 {
+  font-size: @h5-font-size;
+}
+h6,
+.h6 {
+  font-size: @h6-font-size;
+}
+
+.lead {
+  font-weight: @lead-font-weight;
+  font-size: @lead-font-size;
+} 
+
+.article{
+  h1,h2,h3,h4,h5,h6{
+    margin-bottom: 1rem;
+  }
+}
+  

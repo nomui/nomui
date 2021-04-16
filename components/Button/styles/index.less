@@ -1,0 +1,161 @@
+[role='button'] {
+  cursor: pointer;
+}
+
+// Button sizes
+.button-size(@padding-y; @padding-x; @font-size; @line-height; @border-radius) {
+
+  @iconsize: unit(@line-height, em);
+
+  padding: @padding-y @padding-x;
+  font-size: @font-size;
+  line-height: @line-height;
+  border-radius: @border-radius;
+
+  >.nom-icon {
+    height: @iconsize;
+  }
+
+  &.p-only-icon.p-shape-circle {
+    padding: @padding-y;
+
+    >.nom-icon {
+      width: @iconsize;
+    }
+  }
+}
+
+.nom-button {
+  /* Structure */
+  display: inline-block;
+  color: @text-color-lt;
+  line-height: normal;
+  white-space: nowrap;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-color: @border-color;
+  border-radius: 2px;
+  cursor: pointer;
+  user-select: none;
+  zoom: 1;
+  -webkit-user-drag: none;
+  .button-size(@padding-y-base; @padding-x-base; @font-size-base; @line-height-base; @border-radius);
+
+  &:hover {
+    background-color: #e6e6e6;
+    background-color: rgba(0, 0, 0, 0.05);
+    outline: none;
+  }
+
+  &:focus,
+  &:hover,
+  &:active,
+  &.active {
+    outline: none;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+
+  a& {
+
+    &.disabled,
+    fieldset[disabled] & {
+      pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
+    }
+  }
+
+  &.p-block {
+    width: 100%;
+  }
+
+  &.p-danger {
+    .u-color-danger-outline();
+
+    &.p-type-primary {
+      .u-color-danger()
+    }
+  }
+
+  &.p-type-primary {
+    .u-color-primary()
+  }
+
+  &.p-type-dashed {
+    border-style: dashed;
+  }
+
+  &.p-type-text {
+    background-color: transparent !important;
+    border-color: transparent !important;
+
+    &:hover {
+      background: rgba(0, 0, 0, .018);
+    }
+  }
+
+  &.p-type-link {
+    color: @link-color;
+    background-color: transparent;
+    border-color: transparent !important;
+  }
+
+  &.p-ghost {
+    color: inherit !important;
+    background-color: transparent !important;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    &.p-type-primary {
+      .u-color-primary-outline();
+    }
+  }
+
+  &.p-size-small {
+    // line-height: ensure proper height of button next to small input
+    .button-size(@padding-y-sm; @padding-x-sm; @font-size-sm; @line-height-sm; @border-radius-sm);
+  }
+
+  &.p-size-xsmall {
+    // line-height: ensure proper height of button next to small input
+    .button-size(@padding-y-xs; @padding-x-xs; @font-size-sm; @line-height-sm; @border-radius-sm);
+  }
+
+  &.p-size-large {
+    // line-height: ensure proper height of button next to small input
+    .button-size(@padding-y-lg; @padding-x-lg; @font-size-lg; @line-height-lg; @border-radius-lg);
+  }
+
+  &.p-size-xlarge {
+    // line-height: ensure proper height of button next to small input
+    .button-size(@padding-y-xl; @padding-x-xl; @font-size-xl; @line-height-lg; @border-radius-lg);
+  }
+
+  &.p-shape-round {
+    .u-shape-round();
+  }
+
+  &.p-shape-circle {
+    .u-shape-circle();
+  }
+
+  &.p-with-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  >.nom-icon+span,
+  >span+.nom-icon {
+    margin-left: 0.5rem;
+  }
+}

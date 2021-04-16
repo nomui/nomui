@@ -1,0 +1,143 @@
+@input-bg: #fff;
+@input-bg-disabled: #e9ecef;
+
+@input-color: @text-color;
+@input-border: #ccc;
+
+@input-border-radius: @border-radius;
+@input-border-radius-large: @border-radius-lg;
+@input-border-radius-small: @border-radius-sm;
+
+@input-border-focus: #66afe9;
+
+@input-height-base: calc(~'@{line-height-computed} + (@{padding-y-base} * 2) + 2px');
+@input-height-large: (ceil(@font-size-lg * @line-height-lg) + (@padding-y-lg * 2) + 2);
+@input-height-small: (floor(@font-size-sm * @line-height-sm) + (@padding-y-sm * 2) + 2);
+
+@cursor-disabled: not-allowed;
+
+.nom-field {
+  display: flex;
+
+  &.p-plain {
+    > .nom-field-label {
+      padding: 0;
+    }
+
+    > .nom-field-content {
+      padding: 0;
+    }
+  }
+
+  > .nom-field-label {
+    padding: 0.5rem 0.5rem;
+
+    > .nom-label {
+      display: block;
+    }
+  }
+
+  > .nom-field-content {
+    padding: 0.5rem 0.5rem;
+    position: relative;
+    flex-grow: 1;
+
+    > .nom-control {
+      .p-control-width-xsmall& {
+        max-width: 104px;
+      }
+
+      .p-control-width-small& {
+        max-width: 216px;
+      }
+
+      .p-control-width-medium& {
+        max-width: 328px;
+      }
+
+      .p-control-width-large& {
+        max-width: 440px;
+      }
+
+      .p-control-width-xlarge& {
+        max-width: 552px;
+      }
+    }
+
+    > .nom-control-before.nom-list {
+      padding: 0.5rem 0.5rem;
+    }
+
+    > .nom-control-after.nom-list {
+      padding: 0.5rem 0.5rem;
+    }
+  }
+
+  > .nom-field-action.nom-list {
+    padding: 0.5rem 0.5rem;
+  }
+
+  &.p-inline:not(.nom-group) {
+    display: inline-flex !important;
+  }
+
+  &.p-required:not(.p-required-mark-optional) {
+    > .nom-field-label {
+      > .nom-label::before {
+        display: inline-block;
+        margin-right: 4px;
+        color: #ff4d4f;
+        font-size: 14px;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+        content: '*';
+      }
+    }
+  }
+
+  &.s-invalid {
+    > .nom-field-content {
+      color: #000;
+      background-color: #fff3f3;
+
+      > .nom-control {
+        border-color: #ffa8a8;
+      }
+    }
+  }
+
+  @media (min-width: @screen-sm-min) {
+    &.p-label-align-top {
+      flex-direction: column;
+    }
+
+    &.p-label-align-right,
+    &.p-label-align-left {
+      > .nom-field-label {
+        flex: 0 0 10rem;
+        max-width: 10rem;
+        margin-bottom: 0;
+
+        > .nom-label {
+          padding: (@padding-y-base);
+        }
+      }
+    }
+
+    &.p-label-align-right {
+      > .nom-field-label {
+        text-align: right;
+      }
+    }
+
+    &.p-label-align-left {
+      > .nom-field-label {
+        text-align: left;
+      }
+    }
+  }
+
+  &.p-span-auto {
+    width: auto;
+  }
+}

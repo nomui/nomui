@@ -1,0 +1,262 @@
+// --------------------------------------------------
+// colors
+// --------------------------------------------------
+
+@gray: #868e96;
+@brown: #a57868;
+@red: #f03e3e;
+@orange: #f76707;
+@yellow: #f59f00;
+@green: #37b24d;
+@teal: #0ca678;
+@blue: #1c7ed6;
+@indigo: #4263eb;
+@purple: #ae3ec9;
+@pink: #d6336c;
+@cyan: #1098ad;
+
+@lgray: #f8f9fa;
+@lbrown: #e8dcd8;
+@lred: #fff5f5;
+@lorange: #fff4e6;
+@lyellow: #fff9db;
+@lgreen: #ebfbee;
+@lteal: #e6fcf5;
+@lblue: #e7f5ff;
+@lindigo: #edf2ff;
+@lpurple: #f8f0fc;
+@lpink: #fff0f6;
+@lcyan: #e3fafc;
+
+@black: #000000;
+@white: #ffffff;
+@transparent: rgba(0, 0, 0, 0);
+
+@primary: @indigo;
+@lprimary: @lindigo;
+
+@success: @green;
+@info: @cyan;
+@warning: @yellow;
+@danger: @red;
+
+@lsuccess: @lgreen;
+@linfo: @lcyan;
+@lwarning: @lyellow;
+@ldanger: @lred;
+
+@color-list: gray, brown, red, orange, yellow, green, teal, blue, indigo, purple, pink, cyan,primary,success,info,warning,danger;
+@color-list-length: length(@color-list);
+
+@brand-color-list: primary, success, info, warning, danger;
+@brand-color-list-length: length(@brand-color-list);
+
+
+//  Gray
+//  ───────────────────────────────────
+
+@oc-gray-list: #f8f9fa, #f1f3f5, #e9ecef, #dee2e6, #ced4da, #adb5bd, #868e96, #495057, #343a40, #212529;
+
+@oc-gray-0: extract(@oc-gray-list, 1);
+@oc-gray-1: extract(@oc-gray-list, 2);
+@oc-gray-2: extract(@oc-gray-list, 3);
+@oc-gray-3: extract(@oc-gray-list, 4);
+@oc-gray-4: extract(@oc-gray-list, 5);
+@oc-gray-5: extract(@oc-gray-list, 6);
+@oc-gray-6: extract(@oc-gray-list, 7);
+@oc-gray-7: extract(@oc-gray-list, 8);
+@oc-gray-8: extract(@oc-gray-list, 9);
+@oc-gray-9: extract(@oc-gray-list, 10);
+
+// --------------------------------------------------
+// spacers
+// --------------------------------------------------
+
+@spacer-d125: .125rem;
+@spacer-d25: .25rem;
+@spacer-d375: .375rem;
+@spacer-d5: .5rem;
+@spacer-d625: .625rem;
+@spacer-d75: .75rem;
+@spacer-d825: .825rem;
+@spacer-1: 1rem;
+@spacer-1d125: 1.125rem;
+@spacer-1d25: 1.25rem;
+@spacer-1d375: 1.375rem;
+@spacer-1d5: 1.5rem;
+@spacer-1d625: 1.625rem;
+@spacer-1d75: 1.75rem;
+@spacer-1d825: 1.825rem;
+@spacer-2: 2rem;
+@spacer-2d25: 2.25rem;
+@spacer-2d5: 2.5rem;
+@spacer-2d75: 2.75rem;
+@spacer-3: 3rem;
+@spacer-3d5: 3.5rem;
+@spacer-4: 4rem;
+@spacer-5: 5rem;
+@spacer-6: 6rem;
+@spacer-7: 7rem;
+@spacer-8: 8rem;
+
+@spacer-list: ~'d125', ~'d25', ~'d375', ~'d5', ~'d625',~'d75', ~'d825', ~'1', ~'1d125', ~'1d25', ~'1d375', ~'1d5', ~'1d625', ~'1d75', ~'1d825', ~'2', ~'2d25', ~'2d5', ~'2d75', ~'3', ~'3d5',~'4',~'5',~'6',~'7',~'8';
+
+@border-width: 1px;
+@border-color: @oc-gray-4;
+@border-color-lt: @oc-gray-3;
+@border-color-dk: @oc-gray-5;
+@border-color-disabled: @oc-gray-2;
+
+@separator-color: @oc-gray-3;
+
+@text-color: @oc-gray-8;
+@text-color-lt: @oc-gray-7;
+@text-color-dk: @oc-gray-9;
+@text-color-disabled: @oc-gray-9;
+
+@border-radius: 0.25rem;
+@border-radius-lg: 0.3rem;
+@border-radius-sm: 0.2rem;
+
+// Body
+//
+// Settings for the `<body>` element.
+
+@body-bg: @white;
+@body-color: @text-color;
+
+
+// Links
+//
+// Style anchor elements.
+
+@link-color: @primary;
+@link-decoration: none;
+@link-hover-color: darken(@link-color, 15%);
+@link-hover-decoration: underline;
+
+// Paragraphs
+//
+// Style p element.
+
+@paragraph-margin-bottom: 1rem;
+
+// Fonts
+//
+// Font, line-height, and color for body text, headings, and more.
+
+// stylelint-disable value-keyword-case
+@font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+@font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+@font-family-base: @font-family-sans-serif;
+// stylelint-enable value-keyword-case
+
+@font-size-base: 1rem; // Assumes the browser default, typically `16px`
+@font-size-lg: (@font-size-base * 1.25);
+@font-size-xl: (@font-size-base * 1.5);
+@font-size-sm: (@font-size-base * 0.875);
+
+@font-weight-light: 300;
+@font-weight-normal: 400;
+@font-weight-bold: 700;
+
+@font-weight-base: @font-weight-normal;
+
+
+@hr-border-color: @border-color-lt;
+@hr-border-width: @border-width;
+
+// Components
+//
+// Define common padding and border radius sizes and more.
+@line-height-base: 1.428571429;
+@line-height-lg: 1.3333333;
+@line-height-sm: 1.5;
+
+//** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
+@line-height-computed: @font-size-base * @line-height-base; // ~20px
+
+
+@padding-y-base: .375rem;
+@padding-x-base: .75rem;
+
+@padding-y-lg: .5rem;
+@padding-x-lg: 1rem;
+
+@padding-y-xl: .75rem;
+@padding-x-xl: 1.25rem;
+
+@padding-y-sm: .25rem;
+@padding-x-sm: .5rem;
+
+@padding-y-xs: .125rem;
+@padding-x-xs: .25rem;
+
+@nav-padding-y-base: .375rem;
+@nav-padding-x-base: .75rem;
+
+@content-padding-y-base: .375rem;
+@content-padding-x-base: .75rem;
+
+@padding-base: 1rem;
+@padding-lg: 1.25rem;
+@padding-xl: 1.5rem;
+@padding-sm: .75rem;
+@padding-xs: .5rem;
+
+@gutter-base: .5rem;
+@gutter-lg: .75rem;
+@gutter-xl: 1rem;
+@gutter-sm: .25rem;
+@gutter-xs: .125rem;
+
+
+// Media queries breakpoints
+// Extra small screen / phone
+@screen-xs-min: 480px;
+
+// Small screen / tablet
+@screen-sm-min: 576px;
+
+// Medium screen / desktop
+@screen-md-min: 768px;
+
+// Large screen / wide desktop
+@screen-lg-min: 992px;
+
+// Extra large screen / full hd
+@screen-xl-min: 1200px;
+
+// Extra extra large screen / large descktop
+@screen-xxl-min: 1600px;
+
+// provide a maximum
+@screen-xs-max: (@screen-sm-min - 1px);
+@screen-sm-max: (@screen-md-min - 1px);
+@screen-md-max: (@screen-lg-min - 1px);
+@screen-lg-max: (@screen-xl-min - 1px);
+@screen-xl-max: (@screen-xxl-min - 1px);
+
+// Grid system
+@grid-columns: 12;
+@grid-gutter-width: 2rem;
+
+//== Container sizes
+//
+//## Define the maximum width of `.container` for different screen sizes.
+
+// Small screen / tablet
+@container-tablet: (720px + @grid-gutter-width);
+//** For `@screen-sm-min` and up.
+@container-sm: @container-tablet;
+
+// Medium screen / desktop
+@container-desktop: (940px + @grid-gutter-width);
+//** For `@screen-md-min` and up.
+@container-md: @container-desktop;
+
+// Large screen / wide desktop
+@container-large-desktop: (1140px + @grid-gutter-width);
+//** For `@screen-lg-min` and up.
+@container-lg: @container-large-desktop;
+

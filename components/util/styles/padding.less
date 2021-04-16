@@ -1,0 +1,56 @@
+.make-paddings(@spacers) {
+    .generate-paddings(length(@spacers));
+
+    .generate-paddings(@name, @i: 1) when (@i =< length(@spacers)) {
+        @name: extract(@spacers, @i);
+        @spacer: "spacer-@{name}";
+
+        .u-padding-@{name} {
+            padding: @@spacer !important;
+        }
+
+        .u-padding-t-@{name} {
+            padding-top: @@spacer !important;
+        }
+
+        .u-padding-r-@{name} {
+            padding-right: @@spacer !important;
+        }
+
+        .u-padding-b-@{name} {
+            padding-bottom: @@spacer !important;
+        }
+
+        .u-padding-l-@{name} {
+            padding-left: @@spacer !important;
+        }
+
+        .u-padding-x-@{name} {
+            padding-right: @@spacer !important;
+            padding-left: @@spacer !important;
+        }
+
+        .u-padding-y-@{name} {
+            padding-top: @@spacer !important;
+            padding-bottom: @@spacer !important;
+        }
+
+        .generate-paddings(@name, @i + 1);
+    }
+}
+
+.make-paddings(@spacer-list);
+
+.u-padding-0 {
+    padding: 0 !important;
+}
+
+.u-padding-1px {
+    padding: 1px !important;
+}
+.u-padding-2px {
+    padding: 2px !important;
+}
+.u-padding-3px {
+    padding: 3px !important;
+}

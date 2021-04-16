@@ -1,0 +1,29 @@
+// 不允许空less文件，添加一个无用的样式保留此文件。
+.timepicker-group {
+  > .nom-col {
+    width: 60px;
+    max-height: 200px;
+    overflow-y: hidden;
+    text-align: left;
+    scroll-behavior: smooth;
+    border-left: 1px solid #ddd;
+    &:first-child {
+      border-left: none;
+    }
+    &:hover {
+      overflow-y: auto;
+    }
+    .nom-list-item {
+      padding-left: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background: #f2f2f2;
+      }
+      &.s-selected {
+        color: #333;
+        background-color: #e6f7ff;
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+.nom-pager {
+  .nom-col {
+    > .nom-list {
+      > .nom-list-content {
+        > .nom-list-item-wrapper {
+          > a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: @text-color;
+            background-color: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+
+            &.s-selected {
+              color: @primary;
+              font-weight: 500;
+              border-color: @primary;
+            }
+          }
+        }
+      }
+    }
+  }
+}

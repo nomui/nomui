@@ -1,0 +1,52 @@
+.nom-layout {
+    >.nom-layout-header {
+        height: 4rem;
+        .u-border-bottom();
+    }
+
+    >.nom-layout-footer {
+        min-height: 4rem;
+        .u-border-top();
+    }
+
+    &.p-fit {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        >.nom-layout-body {
+            flex: 1;
+            height: 100%;
+            overflow: auto;
+        }
+
+        &.p-has-sider {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 100%;
+
+            >.nom-layout-sider {
+                width: 250px;
+                height: 100%;
+                .u-border-right();
+
+                overflow: auto;
+            }
+
+            >.nom-layout-asider {
+                width: 250px;
+                height: 100%;
+                .u-border-left();
+
+                overflow: auto;
+            }
+
+            >.nom-layout-body {
+                flex-grow: 1;
+                width: 100%;
+                overflow: auto;
+            }
+        }
+    }
+}

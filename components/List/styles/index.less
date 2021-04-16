@@ -1,0 +1,282 @@
+.nom-list {
+  overflow: hidden;
+
+  > .nom-list-content {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    .list-unstyled();
+
+    > .nom-list-item-wrapper {
+      &.p-span-1 {
+        width: 8.33%;
+      }
+
+      &.p-span-2 {
+        width: 16.66%;
+      }
+
+      &.p-span-3 {
+        width: 25%;
+      }
+
+      &.p-span-4 {
+        width: 33.33%;
+      }
+
+      &.p-span-5 {
+        width: 41.66%;
+      }
+
+      &.p-span-6 {
+        width: 50%;
+      }
+
+      &.p-span-7 {
+        width: 58.33%;
+      }
+
+      &.p-span-8 {
+        width: 66.66%;
+      }
+
+      &.p-span-9 {
+        width: 75%;
+      }
+
+      &.p-span-10 {
+        width: 83.33%;
+      }
+
+      &.p-span-11 {
+        width: 91.66%;
+      }
+
+      &.p-span-12 {
+        width: 100%;
+      }
+    }
+
+    > .nom-list-item-wrapper > .nom-list-item {
+      &.s-selected {
+        z-index: 2;
+      }
+
+      .s-disabled&,
+      &.s-disabled {
+        opacity: 0.5;
+      }
+
+      > a {
+        display: block;
+      }
+    }
+  }
+
+  &.p-gutter-sm {
+    > .nom-list-content {
+      margin: -0.25rem -0.25rem;
+
+      > .nom-list-item-wrapper {
+        padding: 0.25rem 0.25rem;
+      }
+    }
+  }
+
+  &.p-gutter-md {
+    > .nom-list-content {
+      margin: -0.5rem -0.5rem;
+
+      > .nom-list-item-wrapper {
+        padding: 0.5rem 0.5rem;
+      }
+    }
+  }
+
+  &.p-gutter-lg {
+    > .nom-list-content {
+      margin: -1rem -1rem;
+
+      > .nom-list-item-wrapper {
+        padding: 1rem 1rem;
+      }
+    }
+  }
+
+  &.p-gutter-x-sm {
+    > .nom-list-content {
+      margin: 0 -0.25rem;
+
+      > .nom-list-item-wrapper {
+        padding: 0 0.25rem;
+      }
+    }
+  }
+
+  &.p-gutter-x-md {
+    > .nom-list-content {
+      margin: 0 -0.5rem;
+
+      > .nom-list-item-wrapper {
+        padding: 0 0.5rem;
+      }
+    }
+  }
+
+  &.p-gutter-x-lg {
+    > .nom-list-content {
+      margin: 0 -1rem;
+
+      > .nom-list-item-wrapper {
+        padding: 0 1rem;
+      }
+    }
+  }
+
+  &.p-line-split {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        .u-border-left();
+
+        margin-left: -1px;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+    }
+
+    &.p-gutter-sm {
+      > .nom-list-content {
+        > .nom-list-item-wrapper {
+          margin-top: 0.25rem;
+          margin-bottom: 0.25rem;
+        }
+      }
+    }
+
+    &.p-gutter-md {
+      > .nom-list-content {
+        > .nom-list-item-wrapper {
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+
+    &.p-gutter-lg {
+      > .nom-list-content {
+        > .nom-list-item-wrapper {
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+        }
+      }
+    }
+  }
+
+  &.p-line-cross,
+  &.p-line-grid {
+    > .nom-list-content {
+      margin: 0 !important;
+
+      > .nom-list-item-wrapper {
+        .u-border-left();
+        .u-border-bottom();
+
+        margin-bottom: -1px;
+        margin-left: -1px;
+      }
+    }
+  }
+
+  &.p-line-grid {
+    > .nom-list-content {
+      .u-border-top();
+      .u-border-right();
+      .u-border-bottom();
+
+      > .nom-list-item-wrapper {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &.p-cols-1 {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        width: 100%;
+      }
+    }
+  }
+
+  &.p-cols-2 {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        width: 50%;
+      }
+    }
+  }
+
+  &.p-cols-3 {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        width: 33.33%;
+      }
+    }
+  }
+
+  &.p-cols-4 {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        width: 25%;
+      }
+    }
+  }
+
+  &.p-cols-5 {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        width: 20%;
+      }
+    }
+  }
+
+  &.p-cols-6 {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        width: 16.66%;
+      }
+    }
+  }
+
+  &.p-cols-7 {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        width: 14.28%;
+      }
+    }
+  }
+
+  &.p-cols-8 {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        width: 12.5%;
+      }
+    }
+  }
+
+  &.p-cols-9 {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        width: 11.11%;
+      }
+    }
+  }
+
+  &.p-cols-10 {
+    > .nom-list-content {
+      > .nom-list-item-wrapper {
+        width: 10%;
+      }
+    }
+  }
+}
