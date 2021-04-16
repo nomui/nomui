@@ -9,6 +9,7 @@ class Dropdown extends Component {
       split: false,
       onClick: null,
       items: [],
+      size: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -21,13 +22,14 @@ class Dropdown extends Component {
 
   _config() {
     const that = this
-    const { items, triggerAction, split, text, type } = this.props
+    const { items, triggerAction, split, text, type, size } = this.props
 
     const children = [
       split && {
         component: 'Button',
         text: text,
         type: type,
+        size: size,
         onClick: (args) => {
           that._callHandler(that.onClick)
           args.event.stopPropagation()
@@ -38,6 +40,7 @@ class Dropdown extends Component {
         text: split ? null : that.props.text,
         rightIcon: that.props.rightIcon,
         type: type,
+        size: size,
         popup: {
           triggerAction: triggerAction,
           classes: {
@@ -54,6 +57,7 @@ class Dropdown extends Component {
                   color: 'primary',
                 },
               },
+              size: size,
             },
             items: items,
           },

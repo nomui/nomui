@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 // import { isPlainObject } from '../util'
-import TimePickerWrapper from './TimePickerWrapper'
+import DateTimePickerWrapper from './TimePickerWrapper'
 
 class TimePickerPanel extends Component {
   constructor(props, ...mixins) {
@@ -113,7 +113,7 @@ class TimePickerPanel extends Component {
             },
           },
           {
-            component: TimePickerWrapper,
+            component: DateTimePickerWrapper,
           },
         ],
       },
