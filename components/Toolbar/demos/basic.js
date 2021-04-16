@@ -4,10 +4,38 @@ define([], function () {
     file: 'basic',
     demo: function () {
       return {
-        component: 'Cols',
+        component: 'Toolbar',
+        visibleItems: 3,
         items: [
           {
-            component: 'Toolbar',
+            text: '按钮1',
+            onClick: () => {
+              console.log('按钮1')
+            },
+          },
+          {
+            text: '按钮2',
+            onClick: () => {
+              console.log('按钮2')
+            },
+          },
+          {
+            text: '按钮3',
+            onClick: () => {
+              console.log('按钮3')
+            },
+          },
+          {
+            text: '按钮4',
+            onClick: () => {
+              console.log('按钮4')
+            },
+          },
+          {
+            text: '按钮5',
+            onClick: () => {
+              console.log('按钮5')
+            },
           },
         ],
       }
