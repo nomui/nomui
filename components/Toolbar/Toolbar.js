@@ -40,8 +40,6 @@ class Toolbar extends Component {
       },
     })
   }
-
-  _rendered() {}
 }
 
 Component.register(Toolbar)
