@@ -1,7 +1,7 @@
 import Component from '../Component/index'
-import TimePickerList from './TimePickerList'
+import DateTimePickerList from './TimePickerList'
 
-class TimePickerWrapper extends Component {
+class DateTimePickerWrapper extends Component {
   constructor(props, ...mixins) {
     const defaults = {}
 
@@ -30,21 +30,21 @@ class TimePickerWrapper extends Component {
               {
                 hidden: !this.pickerControl.props.format.includes('HH'),
                 children: {
-                  component: TimePickerList,
+                  component: DateTimePickerList,
                   type: 'hour',
                 },
               },
               {
                 hidden: !this.pickerControl.props.format.includes('mm'),
                 children: {
-                  component: TimePickerList,
+                  component: DateTimePickerList,
                   type: 'minute',
                 },
               },
               {
                 hidden: !this.pickerControl.props.format.includes('ss'),
                 children: {
-                  component: TimePickerList,
+                  component: DateTimePickerList,
                   type: 'second',
                 },
               },
@@ -56,5 +56,5 @@ class TimePickerWrapper extends Component {
   }
 }
 
-Component.register(TimePickerWrapper)
-export default TimePickerWrapper
+Component.register(DateTimePickerWrapper)
+export default DateTimePickerWrapper
