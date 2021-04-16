@@ -57,6 +57,7 @@ class Dropdown extends Component {
                   color: 'primary',
                 },
               },
+              size: size,
             },
             items: items,
           },

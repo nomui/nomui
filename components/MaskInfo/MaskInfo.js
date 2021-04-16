@@ -57,16 +57,16 @@ class MaskInfo extends Component {
     }
 
     const children = [
-      textNode,
       this.props.mask &&
         !!icon &&
-        this.props.value &&
+        this.props.text &&
         Component.normalizeIconProps({
           type: 'eye',
           onClick: function () {
             that.handleClick()
           },
         }),
+      textNode,
     ]
 
     this.setProps({
