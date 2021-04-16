@@ -6,7 +6,7 @@ define(['./data.js'], function (options) {
       let cascader = null
       setTimeout(() => {
         cascader.update({ options })
-      }, 3000)
+      }, 1000)
       return {
         component: 'Cascader',
         ref: (c) => {
@@ -19,7 +19,7 @@ define(['./data.js'], function (options) {
           value: 'Name',
           children: 'Childs',
         },
-        value: ['内分泌', '肥胖症', 'aaa'],
+        value: ['血液肿瘤', '急性淋巴细胞白血病'],
         options: [],
       }
     },
