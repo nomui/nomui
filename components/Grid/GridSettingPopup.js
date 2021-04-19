@@ -39,19 +39,20 @@ class GridSettingPopup extends Layer {
           children: {
             component: 'Tree',
             showline: true,
-            treeData: that.grid.originColumns,
+            data: that.grid.originColumns,
             selectedNodes: that.grid.props.visibleColumns
               ? that.getMappedColumns(that.grid.props.visibleColumns)
               : that.grid.getMappedColumns(),
+            nodeCheckable: true,
             multiple: true,
             leafOnly: false,
             sortable: true,
             ref: (c) => {
               this.tree = c
             },
-            fields: {
-              title: 'title',
-              value: 'field',
+            dataFields: {
+              text: 'title',
+              key: 'field',
             },
           },
         },

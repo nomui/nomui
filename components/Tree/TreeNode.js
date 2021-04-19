@@ -53,7 +53,7 @@ class TreeNode extends Component {
 
     if (this.tree.props.nodeCheckable) {
       this.setProps({
-        checked: this.tree.checkedKeysHash[this.key] === true,
+        checked: this.tree.checkedNodeKeysHash[this.key] === true,
       })
     }
   }

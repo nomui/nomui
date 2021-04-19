@@ -34,7 +34,7 @@ define([], function () {
               treeRef = c
             },
             nodeCheckable: {
-              checkedKeys: ['层级 1', '层级 1.1', '层级 2.1'],
+              checkedNodeKeys: ['层级 1', '层级 1.1', '层级 2.1'],
             },
             dataFields: {
               key: 'text',

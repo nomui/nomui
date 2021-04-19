@@ -1,6 +1,6 @@
 import Component from '../Component/index'
-import TreeNodes from './TreeNodes'
 import { isFunction } from '../util/index'
+import TreeNodes from './TreeNodes'
 
 class Tree extends Component {
   constructor(props, ...mixins) {
@@ -41,15 +41,15 @@ class Tree extends Component {
             cascadeCheckParent: true,
             cascadeUncheckChildren: true,
             cascade: false,
-            checkedKeys: [],
+            checkedNodeKeys: [],
           },
           nodeCheckable,
         ),
       })
 
-      this.checkedKeysHash = {}
-      this.props.nodeCheckable.checkedKeys.forEach((key) => {
-        this.checkedKeysHash[key] = true
+      this.checkedNodeKeysHash = {}
+      this.props.nodeCheckable.checkedNodeKeys.forEach((key) => {
+        this.checkedNodeKeysHash[key] = true
       })
     }
 
@@ -97,20 +97,20 @@ class Tree extends Component {
     return checkedNodes
   }
 
-  getCheckedNodeKeys(getOptions, checkedKeys, node) {
+  getCheckedNodeKeys(getOptions, checkedNodeKeys, node) {
     getOptions = getOptions || {}
-    checkedKeys = checkedKeys || []
+    checkedNodeKeys = checkedNodeKeys || []
     node = node || this
     const childNodes = node.getChildNodes()
     childNodes.forEach((childNode) => {
       if (childNode.isChecked() === true) {
-        checkedKeys.push(childNode.key)
+        checkedNodeKeys.push(childNode.key)
 
-        this.getCheckedNodeKeys(getOptions, checkedKeys, childNode)
+        this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode)
       }
     })
 
-    return checkedKeys
+    return checkedNodeKeys
   }
 
   getCheckedNodesData(getOptions, node) {
