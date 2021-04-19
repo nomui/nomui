@@ -1,4 +1,10 @@
-define(['./basic.js', './selectable.js', './checkable.js', './sortable.js'], function () {
+define([
+  './basic.js',
+  './selectable.js',
+  './checkable.js',
+  './sortable.js',
+  './flat-data.js',
+], function () {
   return {
     title: 'Tree',
     subtitle: '树',

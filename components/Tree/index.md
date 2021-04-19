@@ -9,7 +9,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | data | 源数据,至少应该包含 `text` 与 `key`，并且 `key` 唯一 | `TreeData[]` | [] |
-| dataFields | 数据字段映射，将传递的数据字段映射成树组件所需的 | `object` | `{key:'key',text:'text',children:'children'}` |
+| dataFields | 数据字段映射，将传递的数据字段映射成树组件所需的 | `object` | `{key:'key',text:'text',children:'children',parentKey:'parentKey'}` |
 | nodeSelectable | 节点可选中配置 | `boolean` \| `object` | - |
 | nodeCheckable | 节点可勾选配置 | `boolean` \| `object` | - |
 | onNodeClick | 点击节点的回调 | `({node}) => {}` | - |

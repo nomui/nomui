@@ -16,8 +16,9 @@ class Tree extends Component {
         key: 'key',
         text: 'text',
         children: 'children',
-        parentId: 'parentId',
+        parentKey: 'parentKey',
       },
+      flatData: false,
       sortable: false,
       initExpandLevel: -1,
     }
@@ -34,7 +35,12 @@ class Tree extends Component {
     this.nodeRefs = {}
     this.selectedNode = null
 
-    const { nodes, data, nodeCheckable } = this.props
+    const { nodes, data, flatData, nodeCheckable } = this.props
+    if (flatData === true) {
+      this.setProps({
+        data: this._toTreeData(data),
+      })
+    }
     if (nodeCheckable) {
       this.setProps({
         nodeCheckable: Component.extendProps(
@@ -58,7 +64,7 @@ class Tree extends Component {
       children: {
         component: TreeNodes,
         nodes,
-        childrenData: data,
+        childrenData: this.props.data,
       },
     })
   }
@@ -175,6 +181,35 @@ class Tree extends Component {
   _onNodeSelect(args) {
     const { onNodeSelect } = this.props.nodeSelectable
     this._callHandler(onNodeSelect, args)
+  }
+
+  _toTreeData(arrayData) {
+    const { key, parentKey, children } = this.props.dataFields
+
+    if (!key || key === '' || !arrayData) return []
+
+    if (Array.isArray(arrayData)) {
+      const r = []
+      const tmpMap = []
+      arrayData.forEach((item) => {
+        tmpMap[item[key]] = item
+      })
+
+      arrayData.forEach((item) => {
+        tmpMap[item[key]] = item
+
+        if (tmpMap[item[parentKey]] && item[key] !== item[parentKey]) {
+          if (!tmpMap[item[parentKey]][children]) tmpMap[item[parentKey]][children] = []
+          tmpMap[item[parentKey]][children].push(item)
+        } else {
+          r.push(item)
+        }
+      })
+
+      return r
+    }
+
+    return [arrayData]
   }
 }
 
