@@ -32,6 +32,9 @@ class TreeNode extends Component {
       this.key = this.props.key
     }
     this.tree.nodeRefs[this.key] = this
+    if (this.tree.props.nodeSelectable.selectedNodeKey === this.key) {
+      this.tree.selectedNode = this
+    }
     const { nodes, childrenData } = this.props
     const children = [
       {

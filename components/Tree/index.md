@@ -8,9 +8,9 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| data | 源数据,至少应该包含 `text` 与 `key`，并且 `key` 唯一 | `array ` | [] |
+| data | 源数据,至少应该包含 `text` 与 `key`，并且 `key` 唯一 | `TreeData[]` | [] |
 | dataFields | 数据字段映射，将传递的数据字段映射成树组件所需的 | `object` | `{key:'key',text:'text',children:'children'}` |
-| nodeSelectable | 节点可选中 | `boolean` \| `object` | - |
+| nodeSelectable | 节点可选中配置 | `boolean` \| `object` | - |
 | nodeCheckable | 节点可勾选配置 | `boolean` \| `object` | - |
 | onNodeClick | 点击节点的回调 | `({node}) => {}` | - |
 
@@ -20,17 +20,7 @@
 | --- | --- | --- | --- |
 | getData | 获取所有节点数据 | `(options:getDataOptions) => TreeData[]` | - |
 | getCheckedNodeKeys | 获取勾选的节点键值数组 | `(options:getCheckedNodeKeysOptions) => string[]` | - |
-| getCheckedNodesData | 获取勾选的节点数据，树形解构 | `(options:getCheckedNodesDataOptions) => TreeData[]` | - |
-
-### nodeCheckable
-
-节点可勾选配置
-
-| 参数           | 说明               | 类型             | 默认值 |
-| -------------- | ------------------ | ---------------- | ------ |
-| checkedRowKeys | 初始选中行主键数组 | `array`          | -      |
-| onNodeCheck    | 节点勾选回调       | `({node}) => {}` | -      |
-| onNodeUncheck  | 节点取消勾选回调   | `({node}) => {}` | -      |
+| getCheckedNodesData | 获取勾选的节点数据，树形结构 | `(options:getCheckedNodesDataOptions) => TreeData[]` | - |
 
 ### nodeSelectable
 
@@ -45,10 +35,20 @@
 | onNodeSelect   | 节点选中回调     | `({node}) => {}` | -      |
 | onNodeUnselect | 节点取消选中回调 | `({node}) => {}` | -      |
 
+### nodeCheckable
+
+节点可勾选配置
+
+| 参数            | 说明                   | 类型             | 默认值 |
+| --------------- | ---------------------- | ---------------- | ------ |
+| checkedNodeKeys | 初始选中节点数据键数组 | `array`          | -      |
+| onNodeCheck     | 节点勾选回调           | `({node}) => {}` | -      |
+| onNodeUncheck   | 节点取消勾选回调       | `({node}) => {}` | -      |
+
 ### TreeData
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| getData | 获取所有节点数据 | `(options:getDataOptions) => TreeData[]` | - |
-| getCheckedNodeKeys | 获取勾选的节点键值数组 | `(options:getCheckedNodeKeysOptions) => string[]` | - |
-| getCheckedNodesData | 获取勾选的节点数据，树形解构 | `({row})=>{}` | - |
+| 参数     | 说明           | 类型       | 默认值 |
+| -------- | -------------- | ---------- | ------ |
+| key      | 键             | `string`   | -      |
+| text     | 文本           | `string`   | -      |
+| children | 子节点数据数组 | `string[]` | -      |

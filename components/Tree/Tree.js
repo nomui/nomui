@@ -10,6 +10,7 @@ class Tree extends Component {
       nodeSelectable: {
         onlyleaf: false,
         byClick: true,
+        selectedNodeKey: null,
       },
       dataFields: {
         key: 'key',

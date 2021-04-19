@@ -82,10 +82,15 @@ define([], function () {
               },
             ],
             nodeSelectable: {
+              selectedNodeKey: '层级 1.2',
               onNodeSelect: ({ node }) => {
                 selectedNode = node
                 updateSelectedInfo()
               },
+            },
+            _rendered: (inst) => {
+              selectedNode = inst.getNode('层级 1.2')
+              updateSelectedInfo()
             },
           },
         ],

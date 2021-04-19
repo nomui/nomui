@@ -45,6 +45,7 @@ class TreeNodeContent extends Component {
       selectable: {
         byClick: this.tree.props.nodeSelectable.byClick,
       },
+      selected: this.tree.props.nodeSelectable.selectedNodeKey === this.node.key,
       attrs: {
         style: {
           paddingLeft: `${this.level * 16}px`,
