@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import List from '../List/index'
 
-class SelectList extends List {
+class DateTimePickerList extends List {
   constructor(props, ...mixins) {
     const defaults = {
       gutter: 'sm',
@@ -118,9 +118,10 @@ class SelectList extends List {
   }
 
   scrollToKey() {
-    const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
-    this.scroller.element.scrollTop = top
+    // const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
+    // this.scroller.element.scrollTop = top
+    this.scrollToSelected()
   }
 }
 
-export default SelectList
+export default DateTimePickerList

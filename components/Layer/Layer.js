@@ -13,7 +13,7 @@ class Layer extends Component {
       collision: 'flipfit',
       onClose: null,
       onHide: null,
-      onShown: null,
+      onShow: null,
 
       closeOnClickOutside: false,
       closeToRemove: false,
@@ -39,6 +39,7 @@ class Layer extends Component {
     if (this.props.placement === 'replace') {
       this.props.position = null
     }
+
     this._normalizePosition()
     this._zIndex = getzIndex()
     this.setProps({
@@ -92,7 +93,7 @@ class Layer extends Component {
       window.removeEventListener('resize', this._onWindowResize, false)
       window.addEventListener('resize', this._onWindowResize, false)
     }
-    this.props.onShown && this._callHandler(this.props.onShown)
+    this.props.onShow && this._callHandler(this.props.onShow)
   }
 
   _hide(forceRemove) {
@@ -102,8 +103,6 @@ class Layer extends Component {
     if (forceRemove === true || this.props.closeToRemove) {
       this.props.onClose && this._callHandler(this.props.onClose)
       this.remove()
-    } else {
-      this.props.onHide && this._callHandler(this.props.onHide)
     }
   }
 

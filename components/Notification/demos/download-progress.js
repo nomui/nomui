@@ -20,7 +20,7 @@ define([], function () {
                     description: {
                       component: 'Progress',
                       status: 'active',
-                      percent: { progress },
+                      percent: progress,
                     },
                     key,
                   })

@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 // import { isPlainObject } from '../util'
-import TimePickerWrapper from './TimePickerWrapper'
+import DateTimePickerWrapper from './TimePickerWrapper'
 
 class TimePickerPanel extends Component {
   constructor(props, ...mixins) {
@@ -113,12 +113,13 @@ class TimePickerPanel extends Component {
             },
           },
           {
-            component: TimePickerWrapper,
+            component: DateTimePickerWrapper,
           },
         ],
       },
     })
 
+    this.onShow()
     super._config()
   }
 
@@ -242,8 +243,12 @@ class TimePickerPanel extends Component {
     this.timeText.update({ children: '' })
   }
 
-  onShown() {
+  onShow() {
     const that = this
+    this.timeText &&
+      this.timeText.update({
+        children: this.defaultValue,
+      })
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].scrollToKey()
     })

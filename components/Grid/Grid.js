@@ -329,6 +329,10 @@ class Grid extends Component {
     }
 
     addTreeInfo(tree)
+
+    this.props.columnsCustomizable.callback &&
+      this._callHandler(this.props.columnsCustomizable.callback(tree))
+
     this.update({ columns: tree })
     this.popup.hide()
   }
@@ -337,6 +341,9 @@ class Grid extends Component {
     const grid = this
     const { rowCheckable, columns } = this.props
     if (rowCheckable) {
+      if (columns.filter((item) => item.isChecker).length > 0) {
+        return
+      }
       let normalizedRowCheckable = rowCheckable
       if (!isPlainObject(rowCheckable)) {
         normalizedRowCheckable = {}
@@ -346,10 +353,6 @@ class Grid extends Component {
       checkedRowKeys.forEach((rowKey) => {
         checkedRowKeysHash[rowKey] = true
       })
-
-      if (columns.filter((item) => item.isChecker).length > 0) {
-        return
-      }
 
       columns.unshift({
         width: 50,
@@ -436,8 +439,12 @@ class Grid extends Component {
   _processExpandableColumn() {
     const { rowExpandable, columns } = this.props
     if (rowExpandable) {
+      if (columns.filter((item) => item.isTreeMark).length > 0) {
+        return
+      }
       columns.unshift({
         width: 50,
+        isTreeMark: true,
         cellRender: ({ row, rowData }) => {
           return {
             component: Icon,

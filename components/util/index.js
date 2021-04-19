@@ -218,15 +218,15 @@ export function newGuid() {
   })
 }
 
-export default {
-  extend,
-  isFunction,
-}
-
 export function isPromiseLike(promiseLike) {
   return (
     promiseLike !== null &&
     (typeof promiseLike === 'object' || typeof promiseLike === 'function') &&
     typeof promiseLike.then === 'function'
   )
+}
+
+export default {
+  extend,
+  isFunction,
 }

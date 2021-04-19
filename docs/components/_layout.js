@@ -204,12 +204,6 @@ define([], function () {
                       url: '#!components!index?type=Tabs',
                     },
                     {
-                      text: 'Steps',
-                      subtext: '步骤条',
-                      id: 'Steps',
-                      url: '#!components!index?type=Steps',
-                    },
-                    {
                       text: 'Pager',
                       subtext: '分页',
                       id: 'Pager',
@@ -291,6 +285,12 @@ define([], function () {
                       subtext: '高级表格',
                       id: 'Grid',
                       url: '#!components!index?type=Grid',
+                    },
+                    {
+                      text: 'Steps',
+                      subtext: '步骤条',
+                      id: 'Steps',
+                      url: '#!components!index?type=Steps',
                     },
                   ],
                 },
@@ -406,6 +406,18 @@ define([], function () {
                       url: '#!components!index?type=DateRangePicker',
                     },
                     {
+                      text: 'PartialDatePicker',
+                      subtext: '部分日期选择',
+                      id: 'PartialDatePicker',
+                      url: '#!components!index?type=PartialDatePicker',
+                    },
+                    {
+                      text: 'PartialDateRangePicker',
+                      subtext: '部分日期选择',
+                      id: 'PartialDateRangePicker',
+                      url: '#!components!index?type=PartialDateRangePicker',
+                    },
+                    {
                       text: 'Uploader',
                       subtext: '上传',
                       id: 'Uploader',
@@ -475,6 +487,12 @@ define([], function () {
                       subtext: '结果',
                       id: 'Result',
                       url: '#!components!index?type=Result',
+                    },
+                    {
+                      text: 'Steps',
+                      subtext: '步骤条',
+                      id: 'Steps',
+                      url: '#!components!index?type=Steps',
                     },
                   ],
                 },
