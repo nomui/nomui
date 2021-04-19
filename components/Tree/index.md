@@ -28,27 +28,30 @@
 
 目前只支持单选，多选用 nodeCheckable
 
-| 参数           | 说明             | 类型             | 默认值 |
-| -------------- | ---------------- | ---------------- | ------ |
-| onlyleaf       | 仅叶子节点可选中 | `boolean`        | false  |
-| byClick        | 点击节点时选中   | `boolean`        | true   |
-| onNodeSelect   | 节点选中回调     | `({node}) => {}` | -      |
-| onNodeUnselect | 节点取消选中回调 | `({node}) => {}` | -      |
+| 参数            | 说明             | 类型             | 默认值 |
+| --------------- | ---------------- | ---------------- | ------ |
+| onlyleaf        | 仅叶子节点可选中 | `boolean`        | false  |
+| byClick         | 点击节点时选中   | `boolean`        | true   |
+| selectedNodeKey | 选中的节点键     | `string`         | true   |
+| onNodeSelect    | 节点选中回调     | `({node}) => {}` | -      |
+| onNodeUnselect  | 节点取消选中回调 | `({node}) => {}` | -      |
 
 ### nodeCheckable
 
 节点可勾选配置
 
-| 参数            | 说明                   | 类型             | 默认值 |
-| --------------- | ---------------------- | ---------------- | ------ |
-| checkedNodeKeys | 初始选中节点数据键数组 | `array`          | -      |
-| onNodeCheck     | 节点勾选回调           | `({node}) => {}` | -      |
-| onNodeUncheck   | 节点取消勾选回调       | `({node}) => {}` | -      |
+| 参数                   | 说明                   | 类型             | 默认值 |
+| ---------------------- | ---------------------- | ---------------- | ------ |
+| cascadeCheckParent     | 级联勾选父节点         | `boolean`        | true   |
+| cascadeUncheckChildren | 级联取消勾选子节点     | `boolean`        | true   |
+| checkedNodeKeys        | 初始选中节点数据键数组 | `array`          | -      |
+| onNodeCheck            | 节点勾选回调           | `({node}) => {}` | -      |
+| onNodeUncheck          | 节点取消勾选回调       | `({node}) => {}` | -      |
 
 ### TreeData
 
-| 参数     | 说明           | 类型       | 默认值 |
-| -------- | -------------- | ---------- | ------ |
-| key      | 键             | `string`   | -      |
-| text     | 文本           | `string`   | -      |
-| children | 子节点数据数组 | `string[]` | -      |
+| 参数     | 说明           | 类型         | 默认值 |
+| -------- | -------------- | ------------ | ------ |
+| key      | 键             | `string`     | -      |
+| text     | 文本           | `string`     | -      |
+| children | 子节点数据数组 | `TreeData[]` | -      |
