@@ -34,21 +34,21 @@ define([], function () {
               treeRef = c
             },
             nodeCheckable: {
-              checkedNodeKeys: ['层级 1', '层级 1.1', '层级 2.1'],
+              checkedNodeKeys: ['节点 1', '节点 1.1', '节点 2.1'],
             },
             dataFields: {
               key: 'text',
             },
             data: [
               {
-                text: '层级 1',
+                text: '节点 1',
                 children: [
-                  { text: '层级 1.1', children: [{ text: '层级 1.1.1' }, { text: '层级 1.2' }] },
+                  { text: '节点 1.1', children: [{ text: '节点 1.1.1' }, { text: '节点 1.2' }] },
                 ],
               },
               {
-                text: '层级 2',
-                children: [{ text: '层级 2.1' }, { text: '层级 2.2' }],
+                text: '节点 2',
+                children: [{ text: '节点 2.1' }, { text: '节点 2.2' }],
               },
             ],
           },

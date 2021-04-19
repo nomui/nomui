@@ -37,9 +37,9 @@ define([], function () {
               },
               {
                 component: 'Button',
-                text: '选中节点：层级 2.1',
+                text: '选中节点：节点 2.1',
                 onClick: () => {
-                  treeRef.selectNode('层级 2.1')
+                  treeRef.selectNode('节点 2.1')
                 },
               },
             ],
@@ -70,26 +70,26 @@ define([], function () {
             },
             data: [
               {
-                text: '层级 1',
+                text: '节点 1',
                 children: [
-                  { text: '层级 1.1', children: [{ text: '层级 1.1.1' }, { text: '层级 1.1.2' }] },
-                  { text: '层级 1.2' },
+                  { text: '节点 1.1', children: [{ text: '节点 1.1.1' }, { text: '节点 1.1.2' }] },
+                  { text: '节点 1.2' },
                 ],
               },
               {
-                text: '层级 2',
-                children: [{ text: '层级 2.1' }, { text: '层级 2.2' }],
+                text: '节点 2',
+                children: [{ text: '节点 2.1' }, { text: '节点 2.2' }],
               },
             ],
             nodeSelectable: {
-              selectedNodeKey: '层级 1.2',
+              selectedNodeKey: '节点 1.2',
               onNodeSelect: ({ node }) => {
                 selectedNode = node
                 updateSelectedInfo()
               },
             },
             _rendered: (inst) => {
-              selectedNode = inst.getNode('层级 1.2')
+              selectedNode = inst.getNode('节点 1.2')
               updateSelectedInfo()
             },
           },

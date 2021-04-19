@@ -9,25 +9,25 @@ define([], function () {
           component: 'Tree',
           data: [
             {
-              text: '层级 1',
+              text: '节点 1',
               children: [
                 {
-                  text: '层级 1.1',
+                  text: '节点 1.1',
                   children: [
-                    { text: '层级 1.1.1' },
-                    { text: '层级 1.1.2' },
-                    { text: '层级 1.1.3' },
+                    { text: '节点 1.1.1' },
+                    { text: '节点 1.1.2' },
+                    { text: '节点 1.1.3' },
                   ],
                 },
               ],
             },
             {
-              text: '层级 2',
-              children: [{ text: '层级 2.1' }, { text: '层级 2.2' }],
+              text: '节点 2',
+              children: [{ text: '节点 2.1' }, { text: '节点 2.2' }],
             },
             {
-              text: '层级 3',
-              children: [{ text: '层级 3.1' }, { text: '层级 3.2' }],
+              text: '节点 3',
+              children: [{ text: '节点 3.1' }, { text: '节点 3.2' }],
             },
           ],
         },
