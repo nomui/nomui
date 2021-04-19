@@ -17,9 +17,21 @@ class Cascader extends Field {
   }
 
   _rendered() {
+    const cascader = this
     this.popup = new CascaderPopup({
       trigger: this.control,
       popMenu: this.getSelectedMenu(),
+      onShow: () => {
+        const { optionList } = cascader
+        if (optionList && optionList.selected && optionList.selected.length > 0) {
+          optionList.selected.forEach((item) => {
+            item.element.scrollIntoView({
+              behavior: 'auto',
+              scrollMode: 'if-needed',
+            })
+          })
+        }
+      },
     })
 
     this._valueChange({ newValue: this.currentValue })
@@ -160,6 +172,7 @@ class Cascader extends Field {
     if (this.checked && this.triggerChange(selectedItem.value)) {
       this._onValueChange()
     }
+
     this.popup.update({ popMenu: this.getSelectedMenu() })
   }
 

@@ -18,8 +18,12 @@ class CascaderPopup extends Popup {
 
   _config() {
     const { popMenu } = this.props
+
     this.setProps({
       children: {
+        classes: {
+          'nom-cascader-pop-container': true,
+        },
         component: Layout,
         body: {
           children: {
