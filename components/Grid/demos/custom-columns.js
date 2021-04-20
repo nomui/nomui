@@ -180,7 +180,7 @@ define([], function () {
         columnsCustomizable: {
           selected: s,
           callback: (param) => {
-            console.log(param)
+            console.log('selected:', param)
           },
         },
       }
