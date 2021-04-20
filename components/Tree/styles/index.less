@@ -1,49 +1,28 @@
 .nom-tree {
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .nom-tree-container {
-    &.nom-tree-showline {
-      ul {
-        border-left: 1px solid #ddd;
-      }
+  .nom-tree-node-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px 12px;
+    cursor: pointer;
+    &:hover {
+      .u-color-lgray();
     }
-    ul {
-      margin-left: 6px;
-      padding-left: 20px;
+    &.s-selected {
+      .u-color-lprimary();
     }
-    li {
-      padding: 2px 5px;
-    }
-  }
-  .nom-tree-wrapper {
-    > .nom-icon {
-      svg {
-        fill: #888;
-      }
-    }
-  }
-  .nom-tree-node {
-    display: inline-flex;
-    &.nom-tree-node-disabled {
-      .nom-tree-node-name {
-        .nom-icon {
-          cursor: not-allowed;
-        }
+
+    > .nom-tree-node-expandable-indicator {
+      width: 30px;
+      height: 24px;
+
+      &.is-leaf {
+        color: transparent;
       }
     }
 
-    .indent {
-      margin-left: 14px;
-    }
-    .nom-tree-node-name {
-      display: inline-flex;
-      .nom-icon {
-        position: relative;
-        left: -2px;
-      }
+    > .nom-tree-node-checkbox {
+      margin-right: 6px;
     }
   }
 }
