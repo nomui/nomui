@@ -34,7 +34,7 @@ define([], function () {
               {
                 text: '节点 1',
                 children: [
-                  { text: '节点 1.1', children: [{ text: '节点 1.1.1' }, { text: '节点 1.2' }] },
+                  { text: '节点 1.1', children: [{ text: '节点 1.1.1' }, { text: '节点 1.1.2' }] },
                 ],
               },
               {
