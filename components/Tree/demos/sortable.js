@@ -18,6 +18,13 @@ define([], function () {
                   console.log(treeRef.getData())
                 },
               },
+              {
+                component: 'Button',
+                text: '获取勾选数据（树形）',
+                onClick: () => {
+                  console.log(treeRef.getCheckedNodesData())
+                },
+              },
             ],
           },
           {
@@ -27,6 +34,7 @@ define([], function () {
             },
             initExpandLevel: -1,
             sortable: true,
+            nodeCheckable: true,
             dataFields: {
               key: 'text',
             },
