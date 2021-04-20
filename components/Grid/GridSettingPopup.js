@@ -68,13 +68,6 @@ class GridSettingPopup extends Layer {
                 text: '确定',
                 onClick: function () {
                   const list = that.tree.getCheckedNodesData()
-
-                  console.log(list)
-
-                  that.update({
-                    treeData: list,
-                  })
-
                   that.grid.handleColumnsSetting(list)
                 },
               },
