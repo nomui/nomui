@@ -17,6 +17,8 @@ class CascaderList extends Component {
     const { popMenu } = this.props
     const value = this.cascaderControl.selectedOption.map((e) => e.key)
 
+    this.selected = []
+
     this.setProps({
       children: popMenu
         ? popMenu.map((menu, index) => {
@@ -24,10 +26,12 @@ class CascaderList extends Component {
           })
         : null,
     })
+
+    super._config()
   }
 
   getMenuItems(menu, currentVal) {
-    // const that = this
+    const cascaderList = this
     if (!menu) {
       return null
     }
@@ -41,12 +45,15 @@ class CascaderList extends Component {
         if (item.children) {
           return {
             tag: 'li',
+            _rendered() {
+              item.key === currentVal && cascaderList.selected.push(this)
+            },
             classes: {
               'nom-cascader-menu-item': true,
               'nom-cascader-menu-item-active': item.key === currentVal,
             },
             onClick: () => {
-              this.cascaderControl._itemSelected(item.key)
+              cascaderList.cascaderControl._itemSelected(item.key)
             },
             children: [
               {
@@ -66,12 +73,15 @@ class CascaderList extends Component {
 
         return {
           tag: 'li',
+          _rendered() {
+            item.key === currentVal && cascaderList.selected.push(this)
+          },
           classes: {
             'nom-cascader-menu-item': true,
             'nom-cascader-menu-item-active': item.key === currentVal,
           },
           onClick: () => {
-            this.cascaderControl._itemSelected(item.key, true)
+            cascaderList.cascaderControl._itemSelected(item.key, true)
           },
           children: [
             {

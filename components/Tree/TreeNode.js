@@ -1,214 +1,108 @@
 import Component from '../Component/index'
-import List from '../List/index'
+import TreeNodeContent from './TreeNodeContent'
 
-class TreeNode extends List {
+class TreeNode extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      tag: 'div',
-      indent: false,
-      key: null,
-      title: null,
-      value: null,
-      status: 0,
-      collapsed: false,
-      checked: false,
-      checkChild: false,
+      nodes: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _created() {
-    this.wrapper = this.parent
-    this.wrapper.item = this
-    this.tree = this.wrapper.tree
-
-    this.wrapper.treeNode = this
-    this.hasSubtree = !!this.subTree
-
-    this.tree.itemRefs[this.key] = this
-
-    if (!this.wrapper.isRoot && !this.wrapper.parentWrapper.isLeaf) {
-      this.wrapper.parentWrapper.subTree.checkStatus[this.key] = this
+    this.level = 0
+    this.parentNode = this.parent.parentNode
+    if (this.parentNode !== null) {
+      this.level = this.parentNode.level + 1
+      this.parentNode.subnodeRefs[this.key] = this
     }
+    this.tree = this.parent.tree
+    this.subnodeRefs = {}
+    const { data } = this.props
+    const { dataFields } = this.tree.props
+    Object.keys(dataFields).forEach((dataField) => {
+      data[dataField] = data[dataFields[dataField]]
+    })
   }
 
   _config() {
-    const { value, title, key, indent, checked } = this.props
-    const that = this
-
-    let checkIcon = null
-    if (checked) {
-      checkIcon = 'checked-square'
-    } else {
-      checkIcon = 'blank-square'
+    this.props.dataToNode({ data: this.props.data, node: this })
+    if (this.props.key) {
+      this.key = this.props.key
+    }
+    this.tree.nodeRefs[this.key] = this
+    if (this.tree.props.nodeSelectable.selectedNodeKey === this.key) {
+      this.tree.selectedNode = this
+    }
+    const { nodes, childrenData } = this.props
+    const children = [
+      {
+        component: TreeNodeContent,
+      },
+    ]
+    this.isLeaf = !nodes && !childrenData
+    if (Array.isArray(nodes) || Array.isArray(childrenData)) {
+      children.push({
+        component: 'TreeNodes',
+        nodes,
+        childrenData,
+      })
     }
 
     this.setProps({
-      value: value,
-      title: title,
-      classes: {
-        'nom-tree-node-disabled': that.tree.props.leafOnly && !that.wrapper.isLeaf,
-      },
-      key: key,
-      children: {
-        tag: 'span',
-        classes: {
-          'nom-tree-node-name': true,
-          indent: indent,
-        },
-        children: [
-          (that.wrapper.isLeaf || !that.tree.props.leafOnly) &&
-            Component.normalizeIconProps({
-              type: checkIcon,
-              onClick: function () {
-                that.handleClick()
-              },
-            }),
-          {
-            tag: 'span',
-            children: title,
-          },
-        ],
-      },
+      children,
     })
-  }
 
-  getSubtreeStatus() {
-    if (this.hasSubtree) {
-      const sub = this.subTree.checkStatus
-      let x = 0
-      let y = 0
-
-      Object.keys(sub).forEach((key) => {
-        y += 1
-        if (!sub[key].props.checked) {
-          x += 1
-        }
+    if (this.tree.props.nodeCheckable) {
+      this.setProps({
+        checked: this.tree.checkedNodeKeysHash[this.key] === true,
       })
-
-      if (x === 0) {
-        this.subTree.check = 'all'
-      } else if (x > 0 && x < y) {
-        this.subTree.check = 'part'
-      } else {
-        this.subTree.check = 'none'
-      }
     }
   }
 
-  getSiblingStatus() {
-    if (this.wrapper.isRoot) {
+  check(checkOptions = { checkCheckbox: true }) {
+    const { checked } = this.props
+    if (checked === true) {
       return
     }
-    const sib = this.wrapper.parentWrapper.subTree.checkStatus
-    let x = 0
-    let y = 0
+    const { checkCheckbox } = checkOptions
+    this.parentNode && this.parentNode.check()
+    if (checkCheckbox === true) {
+      this.checkboxRef.setValue(true, { triggerChange: false })
+    }
 
-    Object.keys(sib).forEach((key) => {
-      y += 1
-      if (!sib[key].props.checked) {
-        x += 1
-      }
+    this.props.checked = true
+  }
+
+  uncheck(uncheckOptions = { uncheckCheckbox: true }) {
+    const { checked } = this.props
+    if (checked === false) {
+      return
+    }
+    const { uncheckCheckbox } = uncheckOptions
+
+    uncheckCheckbox && this.checkboxRef.setValue(false, { triggerChange: false })
+    Object.keys(this.subnodeRefs).forEach((key) => {
+      this.subnodeRefs[key].uncheck()
     })
-
-    if (x === 0) {
-      this.wrapper.parentWrapper.subTree.check = 'all'
-    } else if (x > 0 && x < y) {
-      this.wrapper.parentWrapper.subTree.check = 'part'
-    } else {
-      this.wrapper.parentWrapper.subTree.check = 'none'
-    }
+    this.props.checked = false
   }
 
-  checkDown(status, self) {
-    if (!self) {
-      this.props.checked = status !== null ? status : !this.props.checked
-      this.update(this.props.checked)
-    }
-    this.getSubtreeStatus()
-    if (this.wrapper.isLeaf) {
-      return
-    }
-
-    if (this.props.checked) {
-      if (this.subTree.check === 'all') {
-        return
-      }
-      const t = this.subTree.children
-
-      for (let i = 0; i < t.length; i++) {
-        t[i].treeNode.checkDown(true, false)
-      }
-    }
-    if (!this.props.checked) {
-      if (this.subTree.check === 'none') {
-        return
-      }
-
-      if (this.subTree.check === 'part') {
-        this.props.checked = true
-
-        const t = this.subTree.children
-        for (let i = 0; i < t.length; i++) {
-          t[i].treeNode.checkDown(true, false)
-        }
-      } else {
-        const t = this.subTree.children
-        for (let i = 0; i < t.length; i++) {
-          t[i].treeNode.checkDown(false, false)
-        }
-      }
-    }
-    this.update(this.props.checked)
+  isChecked() {
+    return this.props.checked === true
   }
 
-  checkUp(status, self) {
-    if (!self) {
-      this.props.checked = status !== null ? status : !this.props.checked
-      this.update(this.props.checked)
-    }
-
-    this.getSiblingStatus()
-    if (this.wrapper.isRoot) {
-      return
-    }
-    if (status) {
-      this.props.checked = status
-    }
-
-    if (this.props.checked && this.wrapper.parentWrapper.subTree.check === 'all') {
-      this.wrapper.parentWrapper.treeNode.checkUp(true, false)
-    }
-    if (!this.props.checked && this.wrapper.parentWrapper.subTree.check !== 'all') {
-      this.wrapper.parentWrapper.treeNode.checkUp(false, false)
-    }
+  getChildNodes() {
+    return this.nodesRef ? this.nodesRef.getChildren() : []
   }
 
-  setCheck(status) {
-    this.props.checked = status
-    this.update(this.props.checked)
+  select() {
+    this.content.select()
   }
 
-  handleClick(status) {
-    if (this.tree.props.leafOnly) {
-      if (!this.wrapper.isLeaf) {
-        return
-      }
-      if (!this.tree.props.multiple) {
-        this.tree.unCheckAll(true)
-      }
-    }
-
-    this.props.checked = status || !this.props.checked
-    this.update(this.props.checked)
-
-    if (!this.tree.props.leafOnly) {
-      this.checkDown(null, true)
-      this.checkUp(null, true)
-    }
-
-    this.tree.triggerCheck(this)
+  unselect() {
+    this.content.unselect()
   }
 }
 
