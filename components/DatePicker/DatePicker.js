@@ -5,7 +5,7 @@ import Rows from '../Rows/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
 import {} from '../util/date'
-import { isNumeric } from '../util/index'
+import { formatDate, isNumeric } from '../util/index'
 import TimePickerPanel from './TimePickerPanel'
 
 class DatePicker extends Textbox {
@@ -32,6 +32,8 @@ class DatePicker extends Textbox {
   }
 
   _config() {
+    this.props.value = formatDate(this.props.value, this.props.format)
+
     const { value, format, disabled } = this.props
     let currentDate = value !== null ? Date.parseString(value, format) : new Date()
     if (!currentDate) {
