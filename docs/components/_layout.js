@@ -251,12 +251,6 @@ define([], function () {
                       url: '#!components!index?type=Collapse',
                     },
                     {
-                      text: 'Empty',
-                      subtext: '空状态',
-                      id: 'Empty',
-                      url: '#!components!index?type=Empty',
-                    },
-                    {
                       text: 'Timeline',
                       subtext: '时间轴',
                       id: 'Timeline',
@@ -487,6 +481,12 @@ define([], function () {
                       subtext: '加载中',
                       id: 'Spinner',
                       url: '#!components!index?type=Spinner',
+                    },
+                    {
+                      text: 'Empty',
+                      subtext: '空状态',
+                      id: 'Empty',
+                      url: '#!components!index?type=Empty',
                     },
                     {
                       text: 'Result',
