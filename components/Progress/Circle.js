@@ -2,7 +2,7 @@ import Component from '../Component/index'
 import CirclePath from './CirclePath'
 import { validProgress } from './utils'
 
-class Circle extends Component {
+class ProgressCircle extends Component {
   static _prefixClass = 'nom-progress'
 
   constructor(props, ...mixins) {
@@ -70,8 +70,8 @@ class Circle extends Component {
     const gapDegree = this._getGapDegree()
     this.setProps({
       classes: {
-        [`${Circle._prefixClass}-inner`]: true,
-        [`${Circle._prefixClass}-circle-gradient`]: isGradient,
+        [`${ProgressCircle._prefixClass}-inner`]: true,
+        [`${ProgressCircle._prefixClass}-circle-gradient`]: isGradient,
       },
       attrs: {
         style: {
@@ -89,7 +89,7 @@ class Circle extends Component {
           strokeColor: strokeColor,
           strokeLinecap: strokeLinecap,
           trailColor: trailColor,
-          prefixCls: Circle._prefixClass,
+          prefixCls: ProgressCircle._prefixClass,
           gapDegree: gapDegree,
           gapPosition: gapPos,
         },
@@ -99,4 +99,4 @@ class Circle extends Component {
   }
 }
 
-export default Circle
+export default ProgressCircle

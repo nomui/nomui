@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import { handleGradient, validProgress } from './utils'
 
-class Line extends Component {
+class ProgressLine extends Component {
   static _prefixClass = 'nom-progress'
 
   constructor(props, ...mixins) {
@@ -31,7 +31,7 @@ class Line extends Component {
       successPercent !== undefined
         ? {
             classes: {
-              [`${Line._prefixClass}-success-bg`]: true,
+              [`${ProgressLine._prefixClass}-success-bg`]: true,
             },
             attrs: {
               style: {
@@ -68,11 +68,11 @@ class Line extends Component {
       children: [
         {
           classes: {
-            [`${Line._prefixClass}-outer`]: true,
+            [`${ProgressLine._prefixClass}-outer`]: true,
           },
           children: {
             classes: {
-              [`${Line._prefixClass}-inner`]: true,
+              [`${ProgressLine._prefixClass}-inner`]: true,
             },
             attrs: {
               style: trailStyle,
@@ -80,7 +80,7 @@ class Line extends Component {
             children: [
               {
                 classes: {
-                  [`${Line._prefixClass}-bg`]: true,
+                  [`${ProgressLine._prefixClass}-bg`]: true,
                 },
                 attrs: {
                   style: percentStyle,
@@ -96,4 +96,4 @@ class Line extends Component {
   }
 }
 
-export default Line
+export default ProgressLine
