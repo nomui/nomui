@@ -15,6 +15,7 @@ class MaskInfo extends Component {
 
   _created() {
     this.originText = this.props.text
+    this.showText = ''
   }
 
   _config() {
@@ -22,12 +23,12 @@ class MaskInfo extends Component {
     const that = this
 
     if (this.props.mask === true) {
-      this.props.text = MaskInfo.format({
+      this.showText = MaskInfo.format({
         value: text,
         type: type,
       })
     } else {
-      this.props.text = this.originText
+      this.showText = this.props.text
     }
 
     let textNode = null
@@ -35,12 +36,12 @@ class MaskInfo extends Component {
     if (icon) {
       textNode = {
         tag: 'span',
-        children: this.props.text,
+        children: this.showText,
       }
     } else if (!this.props.mask) {
       textNode = {
         tag: 'span',
-        children: this.props.text,
+        children: this.showText,
       }
       if (that.tooltip) {
         that.tooltip.remove()
@@ -49,7 +50,7 @@ class MaskInfo extends Component {
     } else {
       textNode = {
         tag: 'span',
-        children: this.props.text,
+        children: this.showText,
         onClick: () => {
           that.handleClick()
         },
@@ -82,7 +83,6 @@ class MaskInfo extends Component {
 
   handleClick() {
     this.props.mask = false
-    this.update(this.props.text)
     this.update(this.props.mask)
   }
 

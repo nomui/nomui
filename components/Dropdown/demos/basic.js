@@ -36,15 +36,21 @@ define([], function () {
             items: [
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => {
+                  console.log('点击下拉按钮')
+                },
               },
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => {
+                  console.log('点击下拉按钮')
+                },
               },
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => {
+                  console.log('点击下拉按钮')
+                },
               },
             ],
           },

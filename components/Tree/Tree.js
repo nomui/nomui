@@ -1,283 +1,215 @@
 import Component from '../Component/index'
-import Sortable from '../util/sortable.core.esm'
-import TreeWrapper from './TreeWrapper'
+import { isFunction } from '../util/index'
+import TreeNodes from './TreeNodes'
 
 class Tree extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      treeData: null,
-      leafOnly: false,
-      multiple: true,
-      selectedNodes: null,
-      onCheck: null,
-      showLine: false,
-      toolbar: null,
-      fields: {
-        title: 'title',
-        value: 'value',
+      nodes: null,
+      nodeDefaults: {},
+      nodeSelectable: {
+        onlyleaf: false,
+        byClick: true,
+        selectedNodeKey: null,
       },
+      dataFields: {
+        key: 'key',
+        text: 'text',
+        children: 'children',
+        parentKey: 'parentKey',
+      },
+      flatData: false,
       sortable: false,
+      initExpandLevel: -1,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _created() {
-    this.itemRefs = []
-    this.selectedList = []
+    this.nodeRefs = {}
+    this.selectedNode = null
   }
 
   _config() {
-    const that = this
-    const { treeData, selectedNodes, showline } = this.props
+    this.nodeRefs = {}
+    this.selectedNode = null
 
-    const { title, value } = this.props.fields
-
-    if (selectedNodes) {
-      if (typeof selectedNodes === 'string') {
-        this.selectedList.push(selectedNodes)
-      } else {
-        this.selectedList = selectedNodes
-      }
-    }
-
-    function mapTree(data) {
-      return data.map(function (item) {
-        if (item.children && item.children.length > 0) {
-          const c = mapTree(item.children)
-          return {
-            component: TreeWrapper,
-            key: item[value],
-            title: item[title],
-            value: item[value],
-            checked: that.selectedList.indexOf(item[value]) !== -1,
-            items: c,
-          }
-        }
-
-        return {
-          component: TreeWrapper,
-          key: item[value],
-          title: item[title],
-          value: item[value],
-          checked: that.selectedList.indexOf(item[value]) !== -1,
-        }
+    const { nodes, data, flatData, nodeCheckable } = this.props
+    if (flatData === true) {
+      this.setProps({
+        data: this._toTreeData(data),
       })
     }
+    if (nodeCheckable) {
+      this.setProps({
+        nodeCheckable: Component.extendProps(
+          {
+            cascadeCheckParent: true,
+            cascadeUncheckChildren: true,
+            cascade: false,
+            checkedNodeKeys: [],
+          },
+          nodeCheckable,
+        ),
+      })
 
-    const children = mapTree(treeData)
+      this.checkedNodeKeysHash = {}
+      this.props.nodeCheckable.checkedNodeKeys.forEach((key) => {
+        this.checkedNodeKeysHash[key] = true
+      })
+    }
 
     this.setProps({
-      children: [
-        this.props.toolbar && this.props.toolbar.placement === 'before' && this.props.toolbar.item,
-        {
-          tag: 'ul',
-          classes: {
-            'nom-tree-container': true,
-            'nom-tree-showline': showline,
-          },
-          children: children,
-        },
-        this.props.toolbar && this.props.toolbar.placement === 'after' && this.props.toolbar.item,
-      ],
+      children: {
+        component: TreeNodes,
+        nodes,
+        childrenData: this.props.data,
+      },
     })
   }
 
-  getSelected() {
-    return Object.keys(this.itemRefs).filter((key) => {
-      return this.itemRefs[key].props.checked === true
+  _dataToNodes() {}
+
+  getData(getOptions, node) {
+    getOptions = getOptions || {}
+    node = node || this
+    const nodesData = []
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      const childNodeData = { ...childNode.props.data }
+      nodesData.push(childNodeData)
+
+      childNodeData.children = this.getData(getOptions, childNode)
     })
+
+    return nodesData
   }
 
-  _getNewTree() {
-    const arr = []
-    function mapTree(data) {
-      data.forEach(function (n) {
-        if (n.children) {
-          mapTree(n.children)
-        }
-        arr.push(n)
-      })
+  getCheckedNodes(node) {
+    if (node === undefined) {
+      node = this
     }
-    mapTree(this.getTreeData())
-    return arr
-  }
+    const checkedNodes = []
 
-  getSelectedTree() {
-    const arr = []
-    const newTree = this._getNewTree()
-    const that = this
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      if (childNode.isChecked() === true) {
+        checkedNodes.push(childNode)
 
-    newTree.forEach(function (n) {
-      const key = n[that.props.fields.value]
-      if (that.itemRefs[key].props.checked === true) {
-        arr.push({
-          key: that.itemRefs[key].key,
-          parentKey: that.itemRefs[key].wrapper.isRoot
-            ? null
-            : that.itemRefs[key].wrapper.parentWrapper.treeNode.key,
-        })
+        childNode.checkedNodes = this.getCheckedNodes(childNode)
       }
     })
 
-    function setTreeData(data) {
-      // 删除所有的children,以防止多次调用
-      data.forEach(function (item) {
-        delete item.children
+    return checkedNodes
+  }
+
+  getCheckedNodeKeys(getOptions, checkedNodeKeys, node) {
+    getOptions = getOptions || {}
+    checkedNodeKeys = checkedNodeKeys || []
+    node = node || this
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      if (childNode.isChecked() === true) {
+        checkedNodeKeys.push(childNode.key)
+
+        this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode)
+      }
+    })
+
+    return checkedNodeKeys
+  }
+
+  getCheckedNodesData(getOptions, node) {
+    getOptions = getOptions || {}
+    node = node || this
+    const checkedNodesData = []
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      if (childNode.isChecked() === true) {
+        const childNodeData = { ...childNode.props.data }
+        checkedNodesData.push(childNodeData)
+
+        childNodeData.children = this.getCheckedNodesData(getOptions, childNode)
+      }
+    })
+
+    return checkedNodesData
+  }
+
+  getNode(param) {
+    let retNode = null
+
+    if (param instanceof Component) {
+      return param
+    }
+
+    if (isFunction(param)) {
+      for (const key in this.nodeRefs) {
+        if (this.nodeRefs.hasOwnProperty(key)) {
+          if (param.call(this.nodeRefs[key]) === true) {
+            retNode = this.nodeRefs[key]
+            break
+          }
+        }
+      }
+    } else {
+      return this.nodeRefs[param]
+    }
+
+    return retNode
+  }
+
+  getSelectedNode() {
+    return this.selectedNode
+  }
+
+  getChildNodes() {
+    return this.nodesRef.getChildren()
+  }
+
+  selectNode(param) {
+    const node = this.getNode(param)
+
+    node.select()
+  }
+
+  _onNodeClick(args) {
+    this._callHandler('onNodeClick', args)
+  }
+
+  _onNodeSelect(args) {
+    const { onNodeSelect } = this.props.nodeSelectable
+    this._callHandler(onNodeSelect, args)
+  }
+
+  _toTreeData(arrayData) {
+    const { key, parentKey, children } = this.props.dataFields
+
+    if (!key || key === '' || !arrayData) return []
+
+    if (Array.isArray(arrayData)) {
+      const r = []
+      const tmpMap = []
+      arrayData.forEach((item) => {
+        tmpMap[item[key]] = item
       })
-      const map = {} // 构建map
-      data.forEach((i) => {
-        map[i.key] = i // 构建以area_id为键 当前数据为值
-      })
-      const treeData = []
-      data.forEach((child) => {
-        const mapItem = map[child.parentKey] // 判断当前数据的parent_id是否存在map中
-        if (mapItem) {
-          // 存在则表示当前数据不是最顶层的数据
-          // 注意： 这里的map中的数据是引用了arr的它的指向还是arr,当mapItem改变时arr也会改变，踩坑点
-          ;(mapItem.children || (mapItem.children = [])).push(child) // 这里判断mapItem中是否存在child
+
+      arrayData.forEach((item) => {
+        tmpMap[item[key]] = item
+
+        if (tmpMap[item[parentKey]] && item[key] !== item[parentKey]) {
+          if (!tmpMap[item[parentKey]][children]) tmpMap[item[parentKey]][children] = []
+          tmpMap[item[parentKey]][children].push(item)
         } else {
-          // 不存在则是顶层数据
-          treeData.push(child)
+          r.push(item)
         }
       })
-      return treeData
+
+      return r
     }
 
-    return setTreeData(arr)
-  }
-
-  checkAll() {
-    const that = this
-    Object.keys(this.itemRefs).forEach(function (key) {
-      that.itemRefs[key].setCheck(true)
-    })
-    const data = { items: this.getSelected() }
-    this.props.onCheck && this._callHandler(this.props.onCheck, data)
-  }
-
-  unCheckAll() {
-    const that = this
-    Object.keys(this.itemRefs).forEach(function (key) {
-      that.itemRefs[key].setCheck(false)
-    })
-  }
-
-  triggerCheck(item) {
-    const data = {
-      items: this.getSelected(),
-      key: item.key,
-      status: item.props.checked,
-    }
-
-    this.props.onCheck && this._callHandler(this.props.onCheck, data)
-  }
-
-  // getArray() {
-  //   const arr = []
-  //   Object.keys(this.itemRefs).forEach((key) => {
-  //     arr.push({
-  //       key: this.itemRefs[key].key,
-  //       parentKey: this.itemRefs[key].wrapper.isRoot
-  //         ? null
-  //         : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
-  //     })
-  //   })
-
-  //   return arr
-  // }
-
-  getTreeData() {
-    return this.props.treeData
-  }
-
-  _getNewOrder(params) {
-    const that = this
-
-    const treeData = this.getTreeData()
-
-    function isParent(data) {
-      let result = false
-      data.forEach(function (n) {
-        if (n[that.props.fields.value] === params.key) {
-          result = true
-        }
-      })
-      return result
-    }
-
-    function moveData(data) {
-      if (params.newIndex < params.oldIndex) {
-        const c = data
-        const oldObj = { ...c[params.oldIndex] }
-        c.splice(params.newIndex, 0, oldObj)
-        c.splice(params.oldIndex + 1, 1)
-      }
-      if (params.newIndex > params.oldIndex) {
-        const c = data
-        const oldObj = { ...c[params.oldIndex] }
-        c.splice(params.newIndex + 1, 0, oldObj)
-        c.splice(params.oldIndex, 1)
-      }
-    }
-
-    function resort(data) {
-      if (isParent(data)) {
-        moveData(data)
-      }
-      data.forEach(function (n) {
-        if (n.children) {
-          const c = n.children
-          if (isParent(c)) {
-            moveData(c)
-          } else {
-            resort(c)
-          }
-        }
-      })
-    }
-
-    resort(treeData)
-    return treeData
-  }
-
-  setOrder(params) {
-    const treeData = this._getNewOrder(params)
-    this.update({
-      treeData: treeData,
-    })
-  }
-
-  _rendered() {
-    if (!this.props.sortable) {
-      return
-    }
-    const tree = this
-    const uls = this.element.getElementsByTagName('ul')
-    for (let i = 0; i < uls.length; i++) {
-      const target = uls[i]
-
-      new Sortable(target, {
-        animation: 150,
-        fallbackOnBody: true,
-        swapThreshold: 0.65,
-        dataIdAttr: 'key',
-        onEnd: function (evt) {
-          const el = evt.item // dragged HTMLElement
-          const key = el.getAttribute('key')
-
-          if (evt.oldIndex === evt.newIndex) {
-            return
-          }
-
-          tree.setOrder({
-            key: key,
-            oldIndex: evt.oldIndex,
-            newIndex: evt.newIndex,
-          })
-        },
-      })
-    }
+    return [arrayData]
   }
 }
 
