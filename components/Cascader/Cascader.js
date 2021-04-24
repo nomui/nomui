@@ -339,7 +339,7 @@ class Cascader extends Field {
     const internalOption = this.internalOption
     let recur = internalOption
 
-    const options = [internalOption]
+    const options = internalOption && internalOption.length ? [internalOption] : []
 
     for (let i = 0; i < val.length; i++) {
       for (let j = 0; j < recur.length; j++) {
