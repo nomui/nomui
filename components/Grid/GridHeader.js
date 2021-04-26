@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import Scrollbar from '../Scrollbar/index'
 import Table from '../Table/index'
 
 class GridHeader extends Component {
@@ -34,18 +35,50 @@ class GridHeader extends Component {
   _rendered() {
     if (this.grid.props.container) {
       const parent = this.grid.props.container
+      if (!this.scrollbar) {
+        this.scrollbar = new Scrollbar()
+      }
+      let position = null,
+        size = null
+
       parent.setProps({
         attrs: {
           onscroll: () => {
             this.element.style.transform = `translateY(0px)`
             const pRect = parent.element.getBoundingClientRect()
             const mRect = this.element.getBoundingClientRect()
-            // const gRect = this.grid.element.getBoundingClientRect()
+            const gRect = this.grid.element.getBoundingClientRect()
+            const innerWidth = this.element.scrollWidth
+            if (!position) {
+              position = {
+                left: `${gRect.left}px`,
+                top: `${pRect.top + pRect.height - 17}px`,
+              }
+              size = {
+                width: `${gRect.width}px`,
+                innerWidth: `${innerWidth}px`,
+              }
+
+              this.scrollbar.update({
+                position: position,
+                size: size,
+              })
+            }
             if (mRect.top < pRect.top) {
               this.element.style.transform = `translateY(${pRect.top - mRect.top}px)`
             }
-            // if (gRect.height > pRect.height) {
-            // }
+            if (gRect.height > pRect.height) {
+              if (
+                gRect.top > pRect.height ||
+                gRect.top + gRect.height - 17 < pRect.height + pRect.top
+              ) {
+                this.scrollbar.hide()
+              } else {
+                this.scrollbar.show()
+              }
+            } else {
+              this.scrollbar.hide()
+            }
           },
         },
       })
