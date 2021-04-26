@@ -14,6 +14,7 @@ define([
   './tree-grid.js',
   './row-expandable.js',
   './nest-grid.js',
+  './sticky.js',
 ], function () {
   return {
     title: 'Grid',

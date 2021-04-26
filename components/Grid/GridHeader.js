@@ -31,6 +31,29 @@ class GridHeader extends Component {
     })
   }
 
+  _rendered() {
+    if (this.grid.props.container) {
+      const parent = this.grid.props.container
+      const pt = 112
+
+      parent.setProps({
+        attrs: {
+          onscroll: () => {
+            this.element.style.transform = `translateY(0px)`
+            const mt = this.element.getBoundingClientRect().top
+
+            if (mt < pt) {
+              this.element.style.transform = `translateY(${pt - mt}px)`
+              console.log('pt', pt)
+              console.log('mt', mt)
+              console.log(pt - mt)
+            }
+          },
+        },
+      })
+    }
+  }
+
   resizeCol(data) {
     const col = this.table.colRefs[data.field]
     const tdWidth = this.table.element.rows[0].cells[col.props.index].offsetWidth
