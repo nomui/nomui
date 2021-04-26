@@ -8,6 +8,8 @@ define([], function () {
         showTitle: true,
         line: 'both',
         bordered: true,
+        frozenHeader: true,
+        frozenLeftCols: 1,
         container: this.parent,
         columns: [
           {
@@ -20,11 +22,13 @@ define([], function () {
             field: 'author',
             key: 'author',
             title: '作者',
+            width: 1000,
           },
           {
             field: 'sales',
             key: 'sales',
             title: '销量',
+            width: 200,
           },
 
           {
