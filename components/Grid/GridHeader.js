@@ -37,12 +37,15 @@ class GridHeader extends Component {
       parent.setProps({
         attrs: {
           onscroll: () => {
-            const pt = parent.element.getBoundingClientRect().top
             this.element.style.transform = `translateY(0px)`
-            const mt = this.element.getBoundingClientRect().top
-            if (mt < pt) {
-              this.element.style.transform = `translateY(${pt - mt}px)`
+            const pRect = parent.element.getBoundingClientRect()
+            const mRect = this.element.getBoundingClientRect()
+            // const gRect = this.grid.element.getBoundingClientRect()
+            if (mRect.top < pRect.top) {
+              this.element.style.transform = `translateY(${pRect.top - mRect.top}px)`
             }
+            // if (gRect.height > pRect.height) {
+            // }
           },
         },
       })
