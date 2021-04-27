@@ -7,7 +7,7 @@ class Scrollbar extends Component {
       hidden: true,
       position: {
         left: 0,
-        top: 0,
+        bottom: 0,
       },
       size: {
         width: 0,
@@ -26,7 +26,7 @@ class Scrollbar extends Component {
         style: {
           width: size.width,
           left: position.left,
-          top: position.top,
+          bottom: position.bottom,
           'overflow-x': 'auto',
           'overflow-y': 'hidden',
         },

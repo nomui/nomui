@@ -14,7 +14,6 @@ class GridHeader extends Component {
   _created() {
     this.grid = this.parent
     this.grid.header = this
-    this.windowResized = false
   }
 
   _config() {
@@ -49,7 +48,7 @@ class GridHeader extends Component {
     if (this.grid.props.sticky === true) {
       this.scrollParent = window
       this.scrollParent.onscroll = function () {
-        that._onWindowScroll()
+        that._onPageScroll()
       }
     } else {
       this.scrollParent = this.grid.props.sticky
@@ -57,35 +56,19 @@ class GridHeader extends Component {
         that._onPageScroll()
       })
     }
-
-    // window.onresize = () => {
-    //   this.windowResized = true
-    // }
-  }
-
-  _onWindowScroll() {
-    this.element.style.transform = `translateY(0px)`
-    const gRect = this.grid.element.getBoundingClientRect()
-    const pRect = {
-      top: 0,
-      height: window.innerHeight,
-    }
-
-    !this.position &&
-      this._setScrollerRect({
-        pRect: pRect,
-        gRect: gRect,
-      })
-
-    this._setScrollerVisible({
-      pRect: pRect,
-      gRect: gRect,
-    })
   }
 
   _onPageScroll() {
     this.element.style.transform = `translateY(0px)`
-    const pRect = this.scrollParent.element.getBoundingClientRect()
+    let pRect = null
+    if (this.grid.props.sticky === true) {
+      pRect = {
+        top: 0,
+        height: window.innerHeight,
+      }
+    } else {
+      pRect = this.scrollParent.element.getBoundingClientRect()
+    }
     const gRect = this.grid.element.getBoundingClientRect()
 
     !this.position &&
@@ -104,9 +87,11 @@ class GridHeader extends Component {
     const { pRect, gRect } = data
     const innerWidth = this.element.scrollWidth
 
+    const bottom = window.innerHeight - (pRect.top + pRect.height)
+
     this.position = {
       left: `${gRect.left}px`,
-      top: `${pRect.top + pRect.height - 17}px`,
+      bottom: `${bottom < 0 ? 0 : bottom}px`,
     }
     this.size = {
       width: `${gRect.width}px`,
@@ -117,7 +102,6 @@ class GridHeader extends Component {
       position: this.position,
       size: this.size,
     })
-    this.windowResized = false
   }
 
   _setScrollerVisible(data) {
