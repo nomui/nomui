@@ -8,13 +8,13 @@ define([
   './colspan.js',
   './auto-merge.js',
   './multiple-header.js',
+  './sticky.js',
   './row-checkable.js',
   './row-checkable-events.js',
   './custom-columns.js',
   './tree-grid.js',
   './row-expandable.js',
   './nest-grid.js',
-  './sticky.js',
 ], function () {
   return {
     title: 'Grid',

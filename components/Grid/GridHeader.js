@@ -36,7 +36,9 @@ class GridHeader extends Component {
     if (this.grid.props.container) {
       const parent = this.grid.props.container
       if (!this.scrollbar) {
-        this.scrollbar = new Scrollbar()
+        this.scrollbar = new Scrollbar({
+          target: this.grid,
+        })
       }
       let position = null,
         size = null
@@ -46,7 +48,6 @@ class GridHeader extends Component {
           onscroll: () => {
             this.element.style.transform = `translateY(0px)`
             const pRect = parent.element.getBoundingClientRect()
-            const mRect = this.element.getBoundingClientRect()
             const gRect = this.grid.element.getBoundingClientRect()
             const innerWidth = this.element.scrollWidth
             if (!position) {
@@ -64,8 +65,8 @@ class GridHeader extends Component {
                 size: size,
               })
             }
-            if (mRect.top < pRect.top) {
-              this.element.style.transform = `translateY(${pRect.top - mRect.top}px)`
+            if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
+              this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
             }
             if (gRect.height > pRect.height) {
               if (

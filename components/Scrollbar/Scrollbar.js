@@ -3,6 +3,7 @@ import Component from '../Component/index'
 class Scrollbar extends Component {
   constructor(props, ...mixins) {
     const defaults = {
+      target: null,
       hidden: true,
       position: {
         left: 0,
@@ -29,6 +30,11 @@ class Scrollbar extends Component {
           'overflow-x': 'auto',
           'overflow-y': 'hidden',
         },
+        onscroll: () => {
+          const { scrollLeft } = this.element
+
+          this.props.target.body.element.scrollLeft = scrollLeft
+        },
       },
       children: {
         classes: {
@@ -44,15 +50,17 @@ class Scrollbar extends Component {
   }
 
   show() {
-    this.update({
-      hidden: false,
-    })
+    this.props.hidden &&
+      this.update({
+        hidden: false,
+      })
   }
 
   hide() {
-    this.update({
-      hidden: true,
-    })
+    !this.props.hidden &&
+      this.update({
+        hidden: true,
+      })
   }
 }
 
