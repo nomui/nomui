@@ -33,6 +33,7 @@ class GridHeader extends Component {
   }
 
   _rendered() {
+    const that = this
     if (this.grid.props.container) {
       const parent = this.grid.props.container
       if (!this.scrollbar) {
@@ -40,49 +41,46 @@ class GridHeader extends Component {
           target: this.grid,
         })
       }
-      let position = null,
-        size = null
-
-      parent.setProps({
-        attrs: {
-          onscroll: () => {
-            this.element.style.transform = `translateY(0px)`
-            const pRect = parent.element.getBoundingClientRect()
-            const gRect = this.grid.element.getBoundingClientRect()
-            const innerWidth = this.element.scrollWidth
-            if (!position) {
-              position = {
-                left: `${gRect.left}px`,
-                top: `${pRect.top + pRect.height - 17}px`,
-              }
-              size = {
-                width: `${gRect.width}px`,
-                innerWidth: `${innerWidth}px`,
-              }
-
-              this.scrollbar.update({
-                position: position,
-                size: size,
-              })
-            }
-            if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
-              this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
-            }
-            if (gRect.height > pRect.height) {
-              if (
-                gRect.top > pRect.height ||
-                gRect.top + gRect.height - 17 < pRect.height + pRect.top
-              ) {
-                this.scrollbar.hide()
-              } else {
-                this.scrollbar.show()
-              }
-            } else {
-              this.scrollbar.hide()
-            }
-          },
-        },
+      this.position = null
+      this.size = null
+      parent.element.addEventListener('scroll', function () {
+        that._onPageScroll()
       })
+    }
+  }
+
+  _onPageScroll() {
+    const parent = this.grid.props.container
+    this.element.style.transform = `translateY(0px)`
+    const pRect = parent.element.getBoundingClientRect()
+    const gRect = this.grid.element.getBoundingClientRect()
+    const innerWidth = this.element.scrollWidth
+    if (!this.position) {
+      this.position = {
+        left: `${gRect.left}px`,
+        top: `${pRect.top + pRect.height - 17}px`,
+      }
+      this.size = {
+        width: `${gRect.width}px`,
+        innerWidth: `${innerWidth}px`,
+      }
+
+      this.scrollbar.update({
+        position: this.position,
+        size: this.size,
+      })
+    }
+    if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
+      this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
+    }
+    if (gRect.height > pRect.height) {
+      if (gRect.top > pRect.height || gRect.top + gRect.height - 17 < pRect.height + pRect.top) {
+        this.scrollbar.hide()
+      } else {
+        this.scrollbar.show()
+      }
+    } else {
+      this.scrollbar.hide()
     }
   }
 
