@@ -34,25 +34,66 @@ class GridHeader extends Component {
 
   _rendered() {
     const that = this
-    if (this.grid.props.container) {
-      const parent = this.grid.props.container
-      if (!this.scrollbar) {
-        this.scrollbar = new Scrollbar({
-          target: this.grid,
-        })
+    if (!this.grid.props.sticky) {
+      return
+    }
+    if (!this.scrollbar) {
+      this.scrollbar = new Scrollbar({
+        target: this.grid,
+      })
+    }
+    this.position = null
+    this.size = null
+
+    if (this.grid.props.sticky === true) {
+      this.scrollParent = window
+      this.scrollParent.onscroll = function () {
+        that._onWindowScroll()
       }
-      this.position = null
-      this.size = null
-      parent.element.addEventListener('scroll', function () {
+    } else {
+      this.scrollParent = this.grid.props.sticky
+      this.scrollParent._on('scroll', function () {
         that._onPageScroll()
       })
     }
   }
 
+  _onWindowScroll() {
+    const gRect = this.grid.element.getBoundingClientRect()
+    const innerWidth = this.element.scrollWidth
+
+    if (!this.position) {
+      this.position = {
+        left: `${gRect.left}px`,
+        top: `${window.innerHeight - 17}px`,
+      }
+      this.size = {
+        width: `${gRect.width}px`,
+        innerWidth: `${innerWidth}px`,
+      }
+
+      this.scrollbar.update({
+        position: this.position,
+        size: this.size,
+      })
+    }
+    if (gRect.top < 0 && gRect.top + gRect.height > 0) {
+      this.element.style.transform = `translateY(${0 - gRect.top - 2}px)`
+    }
+    if (gRect.height > window.innerHeight) {
+      if (gRect.top > window.innerHeight || gRect.top + gRect.height - 17 < window.innerHeight) {
+        this.scrollbar.hide()
+      } else {
+        this.scrollbar.show()
+      }
+    } else {
+      this.scrollbar.hide()
+    }
+  }
+
   _onPageScroll() {
-    const parent = this.grid.props.container
     this.element.style.transform = `translateY(0px)`
-    const pRect = parent.element.getBoundingClientRect()
+    const pRect = this.scrollParent.element.getBoundingClientRect()
     const gRect = this.grid.element.getBoundingClientRect()
     const innerWidth = this.element.scrollWidth
     if (!this.position) {

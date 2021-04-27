@@ -250,7 +250,6 @@ define([], function () {
         onSort: (data) => {
           console.log(data)
         },
-        container: this.parent,
         columns: c,
         line: 'both',
         data: source,
