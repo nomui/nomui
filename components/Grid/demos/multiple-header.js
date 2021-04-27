@@ -250,6 +250,7 @@ define([], function () {
         onSort: (data) => {
           console.log(data)
         },
+        sticky: this.parent,
         columns: c,
         line: 'both',
         data: source,
