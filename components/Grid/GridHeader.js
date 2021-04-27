@@ -14,6 +14,7 @@ class GridHeader extends Component {
   _created() {
     this.grid = this.parent
     this.grid.header = this
+    this.windowResized = false
   }
 
   _config() {
@@ -56,64 +57,76 @@ class GridHeader extends Component {
         that._onPageScroll()
       })
     }
+
+    // window.onresize = () => {
+    //   this.windowResized = true
+    // }
   }
 
   _onWindowScroll() {
+    this.element.style.transform = `translateY(0px)`
     const gRect = this.grid.element.getBoundingClientRect()
-    const innerWidth = this.element.scrollWidth
+    const pRect = {
+      top: 0,
+      height: window.innerHeight,
+    }
 
-    if (!this.position) {
-      this.position = {
-        left: `${gRect.left}px`,
-        top: `${window.innerHeight - 17}px`,
-      }
-      this.size = {
-        width: `${gRect.width}px`,
-        innerWidth: `${innerWidth}px`,
-      }
-
-      this.scrollbar.update({
-        position: this.position,
-        size: this.size,
+    !this.position &&
+      this._setScrollerRect({
+        pRect: pRect,
+        gRect: gRect,
       })
-    }
-    if (gRect.top < 0 && gRect.top + gRect.height > 0) {
-      this.element.style.transform = `translateY(${0 - gRect.top - 2}px)`
-    }
-    if (gRect.height > window.innerHeight) {
-      if (gRect.top > window.innerHeight || gRect.top + gRect.height - 17 < window.innerHeight) {
-        this.scrollbar.hide()
-      } else {
-        this.scrollbar.show()
-      }
-    } else {
-      this.scrollbar.hide()
-    }
+
+    this._setScrollerVisible({
+      pRect: pRect,
+      gRect: gRect,
+    })
   }
 
   _onPageScroll() {
     this.element.style.transform = `translateY(0px)`
     const pRect = this.scrollParent.element.getBoundingClientRect()
     const gRect = this.grid.element.getBoundingClientRect()
-    const innerWidth = this.element.scrollWidth
-    if (!this.position) {
-      this.position = {
-        left: `${gRect.left}px`,
-        top: `${pRect.top + pRect.height - 17}px`,
-      }
-      this.size = {
-        width: `${gRect.width}px`,
-        innerWidth: `${innerWidth}px`,
-      }
 
-      this.scrollbar.update({
-        position: this.position,
-        size: this.size,
+    !this.position &&
+      this._setScrollerRect({
+        pRect: pRect,
+        gRect: gRect,
       })
+
+    this._setScrollerVisible({
+      pRect: pRect,
+      gRect: gRect,
+    })
+  }
+
+  _setScrollerRect(data) {
+    const { pRect, gRect } = data
+    const innerWidth = this.element.scrollWidth
+
+    this.position = {
+      left: `${gRect.left}px`,
+      top: `${pRect.top + pRect.height - 17}px`,
     }
+    this.size = {
+      width: `${gRect.width}px`,
+      innerWidth: `${innerWidth}px`,
+    }
+
+    this.scrollbar.update({
+      position: this.position,
+      size: this.size,
+    })
+    this.windowResized = false
+  }
+
+  _setScrollerVisible(data) {
+    const { pRect, gRect } = data
+
     if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
       this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
     }
+
     if (gRect.height > pRect.height) {
       if (gRect.top > pRect.height || gRect.top + gRect.height - 17 < pRect.height + pRect.top) {
         this.scrollbar.hide()
