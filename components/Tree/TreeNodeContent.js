@@ -1,5 +1,6 @@
 import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
+import Icon from '../Icon/index'
 
 class TreeNodeContent extends Component {
   constructor(props, ...mixins) {
@@ -18,7 +19,7 @@ class TreeNodeContent extends Component {
   }
 
   _config() {
-    const { text } = this.node.props
+    const { text, icon, tools } = this.node.props
     const { initExpandLevel, nodeCheckable } = this.tree.props
     const expanded = initExpandLevel === -1 || initExpandLevel > this.level
     const tree = this.tree
@@ -30,7 +31,7 @@ class TreeNodeContent extends Component {
           return this.node.nodesRef
         },
         indicator: {
-          component: 'Icon',
+          component: Icon,
           classes: { 'nom-tree-node-expandable-indicator': true, 'is-leaf': this.node.isLeaf },
           expandable: {
             expandedProps: {
@@ -66,7 +67,20 @@ class TreeNodeContent extends Component {
       children: [
         this.getExpandableIndicatorProps(expanded),
         nodeCheckable && this._getCheckbox(),
-        { tag: 'span', classes: { 'nom-tree-node-content-text': true }, children: text },
+        icon &&
+          Component.extendProps(
+            { classes: { 'nom-tree-node-content-icon': true } },
+            Component.normalizeIconProps(icon),
+          ),
+        Component.extendProps(
+          { tag: 'span', classes: { 'nom-tree-node-content-text': true } },
+          Component.normalizeTemplateProps(text),
+        ),
+        tools &&
+          Component.extendProps(
+            { classes: { 'nom-tree-node-content-tools': true } },
+            Component.normalizeIconProps(tools),
+          ),
       ],
       onClick: () => {
         this.tree._onNodeClick({ node: this.node })

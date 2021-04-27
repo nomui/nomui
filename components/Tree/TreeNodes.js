@@ -8,16 +8,6 @@ class TreeNodes extends Component {
     const defaults = {
       nodes: null,
       childrenData: null,
-      childDefaults: {
-        component: TreeNode,
-        dataToNode: ({ data, node }) => {
-          if (isPlainObject(data)) {
-            node.props.key = data.key
-            node.props.text = data.text
-            node.props.childrenData = data.children
-          }
-        },
-      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -45,8 +35,23 @@ class TreeNodes extends Component {
         }
       })
     }
+    const childDefaults = Component.extendProps(
+      {
+        component: TreeNode,
+        dataToNode: ({ data, node }) => {
+          if (isPlainObject(data)) {
+            node.props.key = data.key
+            node.props.text = data.text
+            node.props.icon = data.icon
+            node.props.childrenData = data.children
+          }
+        },
+      },
+      this.tree.props.nodeDefaults,
+    )
     this.setProps({
       children: nodesProps,
+      childDefaults,
     })
   }
 
