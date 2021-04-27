@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import Scrollbar from '../Scrollbar/index'
 import Table from '../Table/index'
+import { isFunction } from '../util/index'
 
 class GridHeader extends Component {
   constructor(props, ...mixins) {
@@ -51,7 +52,12 @@ class GridHeader extends Component {
         that._onPageScroll()
       }
     } else {
-      this.scrollParent = this.grid.props.sticky
+      if (isFunction(this.grid.props.sticky)) {
+        this.scrollParent = this.grid.props.sticky()
+      } else {
+        this.scrollParent = this.grid.props.sticky
+      }
+
       this.scrollParent._on('scroll', function () {
         that._onPageScroll()
       })
