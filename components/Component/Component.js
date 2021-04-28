@@ -171,7 +171,7 @@ class Component {
   }
 
   replace(props) {
-    Component.create(Component.extendProps(props, { placement: 'replace', reference: this }))
+    return Component.create(Component.extendProps(props, { placement: 'replace', reference: this }))
   }
 
   emptyChildren() {
