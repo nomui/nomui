@@ -7,6 +7,7 @@ define([], function () {
       return {
         children: {
           component: 'Tree',
+          initExpandLevel: 1,
           data: [
             {
               text: '节点 1',

@@ -27,6 +27,9 @@ class TreeNodes extends Component {
 
   _config() {
     const { nodes, childrenData } = this.props
+    const { initExpandLevel } = this.tree.props
+    const expanded =
+      initExpandLevel === -1 || initExpandLevel > (this.parentNode ? this.parentNode.level : -1)
     let nodesProps = nodes
     if (Array.isArray(childrenData)) {
       nodesProps = childrenData.map((item) => {
@@ -52,6 +55,7 @@ class TreeNodes extends Component {
     this.setProps({
       children: nodesProps,
       childDefaults,
+      hidden: expanded === false,
     })
   }
 
