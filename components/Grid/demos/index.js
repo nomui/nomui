@@ -8,6 +8,8 @@ define([
   './colspan.js',
   './auto-merge.js',
   './multiple-header.js',
+  './sticky.js',
+  './sticky-window.js',
   './row-checkable.js',
   './row-checkable-events.js',
   './custom-columns.js',

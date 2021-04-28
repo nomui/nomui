@@ -1,0 +1,83 @@
+define([], function () {
+  return {
+    title: '吸附表头以及滚动条(window)',
+    file: 'sticky-window',
+    demo: function () {
+      return {
+        component: 'Grid',
+        showTitle: true,
+        line: 'both',
+        bordered: true,
+        frozenHeader: true,
+        frozenLeftCols: 1,
+        sticky: true, // 指定有滚动条的父容器，自动开启吸附表头跟吸附滚动条，设为true则指定window为滚动容器（window滚动,单独打开一个页面才能看到效果）
+        columns: [
+          {
+            field: 'name',
+            key: 'name',
+            title: '标题',
+            width: 200,
+          },
+          {
+            field: 'author',
+            key: 'author',
+            title: '作者',
+            width: 1000,
+          },
+          {
+            field: 'sales',
+            key: 'sales',
+            title: '销量',
+            width: 200,
+          },
+
+          {
+            field: 'role',
+            key: 'role',
+            title: '主角',
+            width: 500,
+            showTitle: false,
+          },
+        ],
+        data: [
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+          { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+        ],
+      }
+    },
+  }
+})

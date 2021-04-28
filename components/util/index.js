@@ -226,6 +226,26 @@ export function isPromiseLike(promiseLike) {
   )
 }
 
+export function formatDate(date, format) {
+  if (!date) {
+    return null
+  }
+  let mydate = null
+  if (typeof date === 'string') {
+    const arr = date
+      .replace(/\d+(?=-[^-]+$)/, function (a) {
+        return parseInt(a, 10) - 1
+      })
+      .match(/\d+/g)
+
+    mydate = new Date(...arr)
+  } else if (typeof date === 'number') {
+    mydate = new Date(date)
+  }
+
+  return new Date(mydate).format(format)
+}
+
 export default {
   extend,
   isFunction,

@@ -13,3 +13,4 @@
 | orientation | 分割线标题的位置           | `left \| right \| center` | `center`     |
 | plain       | 文字是否显示为普通正文样式 | `boolean`                 | `false`      |
 | type        | 水平还是垂直类型           | `horizontal \| vertical`  | `horizontal` |
+| children    | 内容                       | `props`                   | -            |

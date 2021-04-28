@@ -19,7 +19,7 @@ class Tbody extends Component {
     const rows = []
     this._getRows(data, rows, 0, 0)
 
-    this.setProps({
+    let props = {
       children: rows,
       childDefaults: Component.extendProps(
         {
@@ -30,7 +30,27 @@ class Tbody extends Component {
         },
         rowDefaults,
       ),
-    })
+    }
+
+    if (!rows.length) {
+      props = {
+        component: Tr,
+        children: {
+          tag: 'Td',
+          attrs: {
+            colspan: this.table.colLength,
+            style: {
+              padding: '25px 0',
+            },
+          },
+          children: {
+            component: 'Empty',
+          },
+        },
+      }
+    }
+
+    this.setProps(props)
   }
 
   _getRows(data, rows, index, level) {

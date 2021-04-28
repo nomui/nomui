@@ -28,6 +28,7 @@ class AutoComplete extends Textbox {
   }
 
   _created() {
+    super._created()
     this.placeholder = this.props.placeholder
     this.capsLock = false
     this.searchMode = false

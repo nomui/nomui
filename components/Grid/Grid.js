@@ -322,7 +322,9 @@ class Grid extends Component {
         const myinfo = findTreeInfo(that.originColumns, item.key)
         if (myinfo) {
           Object.keys(myinfo).forEach(function (key) {
-            item[key] = myinfo[key]
+            if (key !== 'children') {
+              item[key] = myinfo[key]
+            }
           })
         }
       })
@@ -530,6 +532,7 @@ Grid.defaults = {
   striped: false,
   showTitle: false,
   ellipsis: false,
+  sticky: false,
 }
 
 Component.register(Grid)

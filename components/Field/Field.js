@@ -37,6 +37,9 @@ class Field extends Component {
       this.name = `__field${++nameSeq}`
     }
     this.group = this.props.__group || null
+    if (this.parent && this.parent.__isControl === true) {
+      this.group = this.parent.field
+    }
     this.rootField = this.group === null ? this : this.group.rootField
   }
 
@@ -218,21 +221,21 @@ class Field extends Component {
   }
 
   // 派生的控件子类内部适当位置调用
-  _onValueChange() {
+  _onValueChange(args) {
     const that = this
     this.oldValue = clone(this.currentValue)
     this.currentValue = clone(this.getValue())
     this.props.value = this.currentValue
 
-    const changed = {
+    args = extend(true, args, {
       name: this.props.name,
       oldValue: this.oldValue,
       newValue: this.currentValue,
-    }
+    })
     setTimeout(function () {
-      that._callHandler(that.props.onValueChange, changed)
-      that.group && that.group._onValueChange(changed)
-      isFunction(that._valueChange) && that._valueChange(changed)
+      that._callHandler(that.props.onValueChange, args)
+      that.group && that.group._onValueChange({ changedField: args.changedField || that })
+      isFunction(that._valueChange) && that._valueChange(args)
       if (that.validateTriggered) {
         that._validate()
       }

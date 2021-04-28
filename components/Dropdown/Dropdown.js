@@ -61,6 +61,9 @@ class Dropdown extends Component {
             },
             items: items,
           },
+          onClick: (args) => {
+            args.sender.hide()
+          },
         },
       },
     ]

@@ -39,19 +39,22 @@ class GridSettingPopup extends Layer {
           children: {
             component: 'Tree',
             showline: true,
-            treeData: that.grid.originColumns,
-            selectedNodes: that.grid.props.visibleColumns
-              ? that.getMappedColumns(that.grid.props.visibleColumns)
-              : that.grid.getMappedColumns(),
+            data: that.grid.originColumns,
+            nodeCheckable: {
+              checkedNodeKeys: that.grid.props.visibleColumns
+                ? that.getMappedColumns(that.grid.props.visibleColumns)
+                : that.grid.getMappedColumns(),
+            },
             multiple: true,
             leafOnly: false,
             sortable: true,
+
             ref: (c) => {
               this.tree = c
             },
-            fields: {
-              title: 'title',
-              value: 'field',
+            dataFields: {
+              text: 'title',
+              key: 'field',
             },
           },
         },
@@ -64,12 +67,7 @@ class GridSettingPopup extends Layer {
                 component: 'Button',
                 text: '确定',
                 onClick: function () {
-                  const list = that.tree.getSelectedTree()
-
-                  that.update({
-                    treeData: list,
-                  })
-
+                  const list = that.tree.getCheckedNodesData()
                   that.grid.handleColumnsSetting(list)
                 },
               },

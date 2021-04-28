@@ -8,6 +8,10 @@
     white-space: nowrap;
   }
 
+  &.nom-steps-horizontal .nom-step:last-child {
+    flex-grow: 1;
+  }
+
   position: relative;
   display: flex;
   box-sizing: border-box;
@@ -21,6 +25,7 @@
   .nom-step {
     position: relative;
     flex: 1;
+    flex-grow: 2;
     overflow: hidden;
     vertical-align: top;
 

@@ -1,4 +1,12 @@
-define(['./basic.js', './showline.js', './single.js', './checkall.js'], function () {
+define([
+  './basic.js',
+  './selectable.js',
+  './checkable.js',
+  './sortable.js',
+  './flat-data.js',
+  './icon.js',
+  './node-defaults.js',
+], function () {
   return {
     title: 'Tree',
     subtitle: '树',

@@ -5142,6 +5142,9 @@ table.nom-table.p-bordered {
   flex-direction: column;
   overflow: hidden;
 }
+.nom-grid .nom-grid-header {
+  z-index: 10;
+}
 .nom-grid .hidden {
   display: none;
 }
@@ -5699,6 +5702,9 @@ textarea .nom-textarea {
 .nom-checkbox > .nom-field-content > .nom-control > .checkbox-text:not(.checkbox-text-none) {
   padding-left: 30px;
 }
+.nom-checkbox > .nom-field-content > .nom-control > .checkbox-text.checkbox-text-none {
+  width: 20px;
+}
 .nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content {
   margin: -0.5rem -0.5rem;
 }
@@ -6120,17 +6126,20 @@ textarea .nom-textarea {
   color: #333;
   background-color: #e6f7ff;
 }
-.time-range-picker {
+.nom-time-range-picker {
   text-decoration: inherit;
+}
+.nom-time-range-picker > .nom-field-content > .nom-control {
+  flex-wrap: nowrap !important;
+}
+.nom-time-range-picker > .nom-field-content > .nom-control > .nom-field.nom-time-picker {
+  flex-grow: 1;
 }
 .nom-static-text > .nom-field-content > .nom-control {
   height: calc(1.42857143rem + (0.375rem * 2) + 2px);
   padding: 0.375rem 0;
   font-size: 1rem;
   line-height: 1.42857143;
-}
-.nom-date-picker {
-  width: 300px;
 }
 .nom-date-picker-popup .time-display {
   height: 40px;
@@ -6162,8 +6171,14 @@ textarea .nom-textarea {
   color: #333;
   background-color: #e6f7ff;
 }
-.Date-range-picker {
+.nom-date-range-picker {
   text-decoration: inherit;
+}
+.nom-date-range-picker > .nom-field-content > .nom-control {
+  flex-wrap: nowrap !important;
+}
+.nom-date-range-picker > .nom-field-content > .nom-control > .nom-field.nom-date-picker {
+  flex-grow: 1;
 }
 .nom-divider {
   box-sizing: border-box;
@@ -6679,39 +6694,31 @@ textarea .nom-textarea {
   border: 1px solid #ddd;
   border-top: none;
 }
-.nom-tree ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.nom-tree .nom-tree-node-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 12px;
+  cursor: pointer;
 }
-.nom-tree .nom-tree-container.nom-tree-showline ul {
-  border-left: 1px solid #ddd;
+.nom-tree .nom-tree-node-content:hover {
+  background-color: #f8f9fa !important;
 }
-.nom-tree .nom-tree-container ul {
-  margin-left: 6px;
-  padding-left: 20px;
+.nom-tree .nom-tree-node-content.s-selected {
+  background-color: #edf2ff !important;
 }
-.nom-tree .nom-tree-container li {
-  padding: 2px 5px;
+.nom-tree .nom-tree-node-content > .nom-tree-node-expandable-indicator {
+  width: 30px;
+  height: 24px;
 }
-.nom-tree .nom-tree-wrapper > .nom-icon svg {
-  fill: #888;
+.nom-tree .nom-tree-node-content > .nom-tree-node-expandable-indicator.is-leaf {
+  color: transparent;
 }
-.nom-tree .nom-tree-node {
-  display: inline-flex;
+.nom-tree .nom-tree-node-content > .nom-tree-node-content-icon {
+  margin-right: 6px;
 }
-.nom-tree .nom-tree-node.nom-tree-node-disabled .nom-tree-node-name .nom-icon {
-  cursor: not-allowed;
-}
-.nom-tree .nom-tree-node .indent {
-  margin-left: 14px;
-}
-.nom-tree .nom-tree-node .nom-tree-node-name {
-  display: inline-flex;
-}
-.nom-tree .nom-tree-node .nom-tree-node-name .nom-icon {
-  position: relative;
-  left: -2px;
+.nom-tree .nom-tree-node-content > .nom-tree-node-checkbox {
+  margin-right: 6px;
 }
 .nom-tree-select {
   position: relative;
@@ -6978,6 +6985,40 @@ textarea .nom-textarea {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.nom-empty {
+  margin: 0 8px;
+  font-size: 1rem;
+  line-height: 1.42857143;
+  text-align: center;
+}
+.nom-empty-image {
+  height: 100px;
+  margin-bottom: 8px;
+}
+.nom-empty-image img {
+  height: 100%;
+}
+.nom-empty-image svg {
+  height: 100%;
+  margin: auto;
+}
+.nom-empty-footer {
+  margin-top: 16px;
+}
+.nom-empty-normal {
+  margin: 32px 0;
+  color: #aeb8c2;
+}
+.nom-empty-normal .nom-empty-image {
+  height: 40px;
+}
+.nom-empty-small {
+  margin: 8px 0;
+  color: #aeb8c2;
+}
+.nom-empty-small .nom-empty-image {
+  height: 35px;
+}
 .nom-cascader > .nom-field-content .nom-control {
   position: relative;
   min-height: 34px;
@@ -7145,9 +7186,13 @@ textarea .nom-textarea {
   padding-left: 1rem;
   white-space: nowrap;
 }
+.nom-steps.nom-steps-horizontal .nom-step:last-child {
+  flex-grow: 1;
+}
 .nom-steps .nom-step {
   position: relative;
   flex: 1;
+  flex-grow: 2;
   overflow: hidden;
   vertical-align: top;
 }
@@ -7299,4 +7344,14 @@ textarea .nom-textarea {
 }
 .nom-mask-info .nom-icon.p-type-eye svg {
   fill: #888;
+}
+.nom-scrollbar {
+  position: fixed;
+  z-index: 2050;
+  height: 17px;
+  background: rgba(0, 0, 0, 0);
+}
+.nom-scrollbar .nom-scrollbar-inner {
+  height: 17px;
+  background: rgba(0, 0, 0, 0);
 }

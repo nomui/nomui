@@ -388,6 +388,23 @@ function _defineProperty2(obj, key, value) {
       return i.toString(16);
     });
   }
+  function formatDate(date, format) {
+    if (!date) {
+      return null;
+    }
+    let mydate = null;
+    if (typeof date === "string") {
+      const arr = date
+        .replace(/\d+(?=-[^-]+$)/, function (a) {
+          return parseInt(a, 10) - 1;
+        })
+        .match(/\d+/g);
+      mydate = new Date(...arr);
+    } else if (typeof date === "number") {
+      mydate = new Date(date);
+    }
+    return new Date(mydate).format(format);
+  }
   var index$1 = { extend: extend$1, isFunction };
   class ComponentDescriptor {
     constructor(tagOrComponent, props, children, mixins) {
@@ -412,6 +429,7 @@ function _defineProperty2(obj, key, value) {
   }
   const components = {};
   const MIXINS = [];
+  let keySeq = 0;
   class Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -453,6 +471,9 @@ function _defineProperty2(obj, key, value) {
         if (isFunction(this.props.key)) {
           this.key = this.props.key.call(this, this);
         }
+      }
+      if (this.key === undefined || this.key === null) {
+        this.key = `__key${++keySeq}`;
       }
       this.referenceComponent =
         this.props.reference instanceof Component
@@ -545,7 +566,7 @@ function _defineProperty2(obj, key, value) {
       this.render();
     }
     replace(props) {
-      Component.create(
+      return Component.create(
         Component.extendProps(props, { placement: "replace", reference: this })
       );
     }
@@ -872,10 +893,8 @@ function _defineProperty2(obj, key, value) {
         } else {
           expandTarget.show && expandTarget.show();
         }
-      }
-      if (!this.props.expandable.byIndicator) {
-        this._expandIndicator && this._expandIndicator.expand();
-      }
+      } // if (!this.props.expandable.byIndicator) {
+      this._expandIndicator && this._expandIndicator.expand(); // }
       const { expandedProps } = this.props.expandable;
       if (expandedProps) {
         this.update(expandedProps);
@@ -896,10 +915,8 @@ function _defineProperty2(obj, key, value) {
         } else {
           expandTarget.hide && expandTarget.hide();
         }
-      }
-      if (!this.props.expandable.byIndicator) {
-        this._expandIndicator && this._expandIndicator.collapse();
-      }
+      } //  if (!this.props.expandable.byIndicator) {
+      this._expandIndicator && this._expandIndicator.collapse(); // }
       isFunction(this._collapse) && this._collapse();
       const { collapsedProps } = this.props.expandable;
       if (collapsedProps) {
@@ -918,9 +935,8 @@ function _defineProperty2(obj, key, value) {
     removeClass(className) {
       this.element.classList.remove(className);
     }
-    _setExpandable(expandableProps) {
+    _setExpandableProps() {
       const that = this;
-      this.setProps({ expandable: expandableProps });
       const { expandable, expanded } = this.props;
       if (isPlainObject(expandable)) {
         if (isPlainObject(expandable.indicator)) {
@@ -935,11 +951,6 @@ function _defineProperty2(obj, key, value) {
             },
           });
         }
-      }
-    }
-    _setExpandableProps() {
-      const { expandable } = this.props;
-      if (isPlainObject(expandable)) {
         if (this.props.expanded) {
           if (expandable.expandedProps) {
             this.setProps(expandable.expandedProps);
@@ -972,17 +983,42 @@ function _defineProperty2(obj, key, value) {
         return target.call(this, this);
       }
     }
-    _getExpandIndicator() {
-      const { indicator } = this.props.expandable;
+    getExpandableIndicatorProps(expanded = null) {
+      const that = this;
+      const { indicator, byIndicator } = this.props.expandable;
+      if (expanded == null) {
+        expanded = this.props.expanded;
+      }
       if (indicator === undefined || indicator === null) {
         return null;
       }
-      if (indicator instanceof Component) {
-        return indicator;
+      if (isPlainObject(indicator)) {
+        this.setProps({
+          expandable: {
+            indicator: {
+              expanded: expanded,
+              _created: function () {
+                that._expandIndicator = this;
+              },
+            },
+          },
+        });
+        if (byIndicator === true) {
+          this.setProps({
+            expandable: {
+              indicator: {
+                attrs: {
+                  onclick: (event) => {
+                    that.toggleExpand();
+                    event.stopPropagation();
+                  },
+                },
+              },
+            },
+          });
+        }
       }
-      if (isFunction(indicator)) {
-        return indicator.call(this, this);
-      }
+      return this.props.expandable.indicator;
     }
     getChildren() {
       const children = [];
@@ -1094,15 +1130,14 @@ function _defineProperty2(obj, key, value) {
         (selectable && selectable.byClick === true) ||
         (expandable && expandable.byClick && !expandable.byIndicator)
       ) {
-        if (expandable.byIndicator) {
-          const indicator = this._getExpandIndicator;
-          indicator._on("click", () => {
-            this.toggleExpand();
-          });
-        } else {
-          this.setProps({ attrs: { onclick: this.__handleClick } });
-        }
-      }
+        this.setProps({ attrs: { onclick: this.__handleClick } });
+      } /* if (expandable.byIndicator) {
+        const indicator = this._expandIndicator
+        indicator._on('click', (event) => {
+          this.toggleExpand()
+          event.stopPropagation()
+        })
+      } */
     }
     __handleClick(event) {
       if (
@@ -2003,6 +2038,21 @@ function _defineProperty2(obj, key, value) {
   Icon.add(
     "file-error",
     `<svg t="1609815861438" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2630" width="1em" height="1em"><path d="M960.002941 320.008822H576.004901V0h63.989218v256.003921H960.002941v64.004901zM339.197745 678.411175l300.796374-300.812057 44.808136 44.808136-300.796374 300.796373-44.808136-44.792452z" p-id="2631" fill="#f03e3e"></path><path d="M339.197745 422.407254l44.808136-44.808136 300.796374 300.812057-44.808136 44.792452-300.796374-300.796373z" p-id="2632" fill="#f03e3e"></path><path d="M870.355302 1024h-716.741971A89.616272 89.616272 0 0 1 64.012743 934.399412V89.600588A89.616272 89.616272 0 0 1 153.613331 0h486.380788l319.946087 249.604999v684.794413a89.616272 89.616272 0 0 1-89.584904 89.600588z m-716.741971-959.995099c-19.196765 0-25.595687 12.797844-25.595687 25.595687v844.798824a25.595687 25.595687 0 0 0 25.595687 25.61137h716.741971c19.196765 0 25.595687-12.797844 25.595687-25.595687V275.200686L620.797353 64.004901z" p-id="2633" fill="#f03e3e"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "folder",
+    `<svg viewBox="64 64 896 896" focusable="false" data-icon="folder" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M880 298.4H521L403.7 186.2a8.15 8.15 0 00-5.5-2.2H144c-17.7 0-32 14.3-32 32v592c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V330.4c0-17.7-14.3-32-32-32zM840 768H184V256h188.5l119.6 114.4H840V768z"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "folder-filled",
+    `<svg viewBox="64 64 896 896" focusable="false" data-icon="folder" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M880 298.4H521L403.7 186.2a8.15 8.15 0 00-5.5-2.2H144c-17.7 0-32 14.3-32 32v592c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V330.4c0-17.7-14.3-32-32-32z"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "file",
+    `<svg viewBox="64 64 896 896" focusable="false" data-icon="file" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494z"></path></svg>`,
     cat
   );
   class Caption extends Component {
@@ -3305,6 +3355,7 @@ function _defineProperty2(obj, key, value) {
       this.field = this.parent.field;
       this.field.control = this;
       this.form = this.field.form;
+      this.__isControl = true;
     },
   };
   var ControlActionMixin = {
@@ -3457,6 +3508,9 @@ function _defineProperty2(obj, key, value) {
         this.name = `__field${++nameSeq}`;
       }
       this.group = this.props.__group || null;
+      if (this.parent && this.parent.__isControl === true) {
+        this.group = this.parent.field;
+      }
       this.rootField = this.group === null ? this : this.group.rootField;
     }
     _config() {
@@ -3613,20 +3667,23 @@ function _defineProperty2(obj, key, value) {
         }
       }
     } // 派生的控件子类内部适当位置调用
-    _onValueChange() {
+    _onValueChange(args) {
       const that = this;
       this.oldValue = clone$1(this.currentValue);
       this.currentValue = clone$1(this.getValue());
       this.props.value = this.currentValue;
-      const changed = {
+      args = extend$1(true, args, {
         name: this.props.name,
         oldValue: this.oldValue,
         newValue: this.currentValue,
-      };
+      });
       setTimeout(function () {
-        that._callHandler(that.props.onValueChange, changed);
-        that.group && that.group._onValueChange(changed);
-        isFunction(that._valueChange) && that._valueChange(changed);
+        that._callHandler(that.props.onValueChange, args);
+        that.group &&
+          that.group._onValueChange({
+            changedField: args.changedField || that,
+          });
+        isFunction(that._valueChange) && that._valueChange(args);
         if (that.validateTriggered) {
           that._validate();
         }
@@ -3791,6 +3848,48 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(Textbox);
+  class Empty extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        description: "暂无数据",
+        image: Empty.PRESENTED_IMAGE_DEFAULT,
+        imageStyle: {},
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const { image, imageStyle, description } = this.props;
+      let imageNode = image;
+      if (typeof image === "string" && !image.startsWith("#")) {
+        imageNode = { tag: "img", attrs: { src: image, alt: description } };
+      }
+      const { children } = this.props;
+      this.setProps({
+        classes: {
+          [`nom-empty-normal`]: image === Empty.PRESENTED_IMAGE_SIMPLE,
+        },
+        children: [
+          {
+            classes: { [`nom-empty-image`]: true },
+            attrs: { style: imageStyle },
+            children: imageNode,
+          },
+          description
+            ? {
+                classes: { [`nom-empty-description`]: true },
+                children: description,
+              }
+            : undefined,
+          children
+            ? { classes: { [`nom-empty-footer`]: true }, children: children }
+            : undefined,
+        ],
+      });
+    }
+  }
+  Empty.PRESENTED_IMAGE_SIMPLE = `#<svg t="1619148284824" class="nom-empty-img-simple"  width="64" height="64" viewBox="0 0 1351 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2122" width="200" height="200"><path d="M467.21267 479.648s2.688 2.688 8.096 2.688h393.44c2.688 0 5.376-2.688 8.096-2.688V358.4h409.6c-2.688-8.096-2.688-13.472-8.096-21.568L1014.25267 59.264H335.18067L71.08467 336.832c-5.376 2.688-8.096 10.784-8.096 21.568h409.6v121.248h-5.376z m-409.6-61.952v476.96c0 37.728 40.416 70.048 88.928 70.048h1053.632c48.512 0 88.928-32.352 88.928-70.048V412.288H936.07667v64.672c0 32.352-29.632 59.296-61.984 59.296h-393.44c-35.04 0-61.984-26.944-61.984-59.296v-64.672H62.95667v5.376zM1200.20467 1024H146.57267C65.74067 1024 1.06867 964.704 1.06867 894.656v-476.96c-2.688-48.512-2.688-94.304 29.632-123.968L313.64467 0h724.896l282.944 293.728c32.352 29.632 29.632 83.552 29.632 142.816v455.424C1345.74067 964.736 1278.34867 1024 1200.20467 1024z" p-id="2123" fill="#d9d9d9"></path></svg>`;
+  Empty.PRESENTED_IMAGE_DEFAULT = `#<svg t="1619147741727" class="nom-empty-img-normal"  width="184" height="152" viewBox="0 0 1084 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4197" width="200" height="200"><path d="M0 933.456842a456.737684 85.342316 0 1 0 913.475368 0 456.737684 85.342316 0 1 0-913.475368 0Z" fill="#F5F5F7" fill-opacity=".8" p-id="4198"></path><path d="M822.130526 682.738526L660.944842 484.372211c-7.733895-9.337263-19.038316-14.989474-30.942316-14.989474h-346.543158c-11.897263 0-23.201684 5.652211-30.935579 14.989474L91.351579 682.738526v103.632842h730.778947V682.738526z" fill="#AEB8C2" p-id="4199"></path><path d="M775.390316 794.165895L634.543158 624.990316c-6.743579-8.131368-16.889263-12.577684-27.270737-12.577684H305.071158c-10.374737 0-20.527158 4.446316-27.270737 12.577684L136.953263 794.165895v92.914526h638.437053V794.165895z" fill="#000000" p-id="4200"></path><path d="M227.907368 213.355789h457.653895a26.947368 26.947368 0 0 1 26.947369 26.947369v628.843789a26.947368 26.947368 0 0 1-26.947369 26.947369H227.907368a26.947368 26.947368 0 0 1-26.947368-26.947369V240.303158a26.947368 26.947368 0 0 1 26.947368-26.947369z" fill="#F5F5F7" p-id="4201"></path><path d="M287.514947 280.407579h338.438737a13.473684 13.473684 0 0 1 13.473684 13.473684V462.012632a13.473684 13.473684 0 0 1-13.473684 13.473684H287.514947a13.473684 13.473684 0 0 1-13.473684-13.473684V293.881263a13.473684 13.473684 0 0 1 13.473684-13.473684z m1.765053 268.220632h334.908632a15.238737 15.238737 0 0 1 0 30.477473H289.28a15.238737 15.238737 0 0 1 0-30.477473z m0 79.245473h334.908632a15.245474 15.245474 0 0 1 0 30.484211H289.28a15.245474 15.245474 0 0 1 0-30.484211z m531.354947 293.066105c-5.221053 20.688842-23.558737 36.109474-45.372631 36.109474H138.206316c-21.813895 0-40.151579-15.427368-45.365895-36.109474a49.300211 49.300211 0 0 1-1.495579-12.058947V682.745263h177.300211c19.584 0 35.368421 16.491789 35.368421 36.513684v0.269474c0 20.015158 15.966316 36.176842 35.550315 36.176842h234.341053c19.584 0 35.550316-16.309895 35.550316-36.331789V719.292632c0-20.021895 15.784421-36.554105 35.368421-36.554106h177.30021v226.149053a49.381053 49.381053 0 0 1-1.488842 12.05221z" fill="#DCE0E6" p-id="4202"></path><path d="M842.920421 224.282947l-46.012632 17.852632a6.736842 6.736842 0 0 1-8.872421-8.286316l13.049264-41.815579c-17.441684-19.833263-27.681684-44.018526-27.681685-70.117052C773.402947 54.581895 841.566316 0 925.655579 0 1009.724632 0 1077.894737 54.581895 1077.894737 121.916632c0 67.334737-68.163368 121.916632-152.245895 121.916631-30.504421 0-58.906947-7.181474-82.728421-19.550316z" fill="#DCE0E6" p-id="4203"></path><path d="M985.626947 106.004211c10.597053 0 19.193263 8.488421 19.193264 18.96421s-8.596211 18.964211-19.193264 18.964211c-10.597053 0-19.193263-8.488421-19.193263-18.964211s8.596211-18.964211 19.193263-18.96421z m-119.619368 2.371368l18.863158 33.185684h-38.386526l19.523368-33.185684z m76.43621 0v33.185684h-33.583157v-33.185684h33.583157z" fill="#FFFFFF" p-id="4204"></path></svg>`;
+  Component.register(Empty);
   class LayoutHeader extends Component {
     // constructor(props, ...mixins) {
     //   super(props)
@@ -4652,22 +4751,38 @@ function _defineProperty2(obj, key, value) {
       this.autoCompleteControl = this.opener.field;
     }
     _config() {
-      this.setProps({
-        attrs: {
-          style: {
-            width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-          },
-        },
-        children: {
-          component: Layout,
-          body: {
-            children: {
-              component: AutoCompleteList,
-              options: this.props.options,
+      const { options } = this.props;
+      if (options && options.length) {
+        this.setProps({
+          attrs: {
+            style: {
+              width: `${this.autoCompleteControl.control.offsetWidth()}px`,
             },
           },
-        },
-      });
+          children: {
+            component: Layout,
+            body: {
+              children: {
+                component: AutoCompleteList,
+                options: this.props.options,
+              },
+            },
+          },
+        });
+      } else {
+        this.setProps({
+          attrs: {
+            style: {
+              width: `${this.autoCompleteControl.control.offsetWidth()}px`,
+            },
+          },
+          children: {
+            component: Layout,
+            styles: { padding: 2 },
+            body: { children: { component: Empty } },
+          },
+        });
+      }
       super._config();
     }
   }
@@ -4694,6 +4809,7 @@ function _defineProperty2(obj, key, value) {
       this._doSearch.bind(this);
     }
     _created() {
+      super._created();
       this.placeholder = this.props.placeholder;
       this.capsLock = false;
       this.searchMode = false;
@@ -5045,13 +5161,23 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const { popMenu } = this.props;
-      this.setProps({
-        children: {
-          classes: { "nom-cascader-pop-container": true },
-          component: Layout,
-          body: { children: { component: CascaderList, popMenu } },
-        },
-      });
+      if (popMenu && popMenu.length) {
+        this.setProps({
+          children: {
+            classes: { "nom-cascader-pop-container": true },
+            component: Layout,
+            body: { children: { component: CascaderList, popMenu } },
+          },
+        });
+      } else {
+        this.setProps({
+          children: {
+            styles: { padding: 2 },
+            component: Layout,
+            body: { children: { component: Empty } },
+          },
+        });
+      }
       super._config();
     }
   }
@@ -5340,7 +5466,8 @@ function _defineProperty2(obj, key, value) {
       const val = this.selectedOption.map((e) => e.value);
       const internalOption = this.internalOption;
       let recur = internalOption;
-      const options = [internalOption];
+      const options =
+        internalOption && internalOption.length ? [internalOption] : [];
       for (let i = 0; i < val.length; i++) {
         for (let j = 0; j < recur.length; j++) {
           if (val[i] === recur[j].value) {
@@ -7084,6 +7211,7 @@ function _defineProperty2(obj, key, value) {
       this.startTime = null;
     }
     _config() {
+      this.props.value = formatDate(this.props.value, this.props.format);
       const { value, format, disabled } = this.props;
       let currentDate =
         value !== null ? Date.parseString(value, format) : new Date();
@@ -7768,6 +7896,9 @@ function _defineProperty2(obj, key, value) {
               },
               items: items,
             },
+            onClick: (args) => {
+              args.sender.hide();
+            },
           },
         },
       ];
@@ -7904,22 +8035,22 @@ function _defineProperty2(obj, key, value) {
             expanded:
               treeConfig.initExpandLevel === -1 ||
               treeConfig.initExpandLevel > level,
-          });
-          this._setExpandable({
-            byClick: true,
-            target: () => {
-              return rowData.children.map((subrowData) => {
-                return this.table.grid.rowsRefs[
-                  subrowData[this.table.props.keyField]
-                ];
-              });
-            },
-            indicator: {
-              component: "Icon",
-              classes: { "nom-tr-expand-indicator": true },
-              expandable: {
-                expandedProps: { type: "down" },
-                collapsedProps: { type: "right" },
+            expandable: {
+              byClick: true,
+              target: () => {
+                return rowData.children.map((subrowData) => {
+                  return this.table.grid.rowsRefs[
+                    subrowData[this.table.props.keyField]
+                  ];
+                });
+              },
+              indicator: {
+                component: "Icon",
+                classes: { "nom-tr-expand-indicator": true },
+                expandable: {
+                  expandedProps: { type: "down" },
+                  collapsedProps: { type: "right" },
+                },
               },
             },
           });
@@ -7931,7 +8062,7 @@ function _defineProperty2(obj, key, value) {
               style: { paddingLeft: `${level * treeConfig.indentSize + 20}px` },
             },
           },
-          !isLeaf && this.props.expandable.indicator,
+          !isLeaf && this.getExpandableIndicatorProps(),
           { tag: "span", children: children },
         ];
       }
@@ -8089,6 +8220,7 @@ function _defineProperty2(obj, key, value) {
         this.colList = [];
         children.push(...this.createCols(this.columns));
       }
+      this.table.colLength = children.length;
       if (
         this.table.parent.componentType === "GridHeader" &&
         this.table.parent.parent.props.frozenHeader
@@ -8263,7 +8395,7 @@ function _defineProperty2(obj, key, value) {
       const { data = [], rowDefaults, keyField } = this.table.props;
       const rows = [];
       this._getRows(data, rows, 0, 0);
-      this.setProps({
+      let props = {
         children: rows,
         childDefaults: Component.extendProps(
           {
@@ -8274,7 +8406,21 @@ function _defineProperty2(obj, key, value) {
           },
           rowDefaults
         ),
-      });
+      };
+      if (!rows.length) {
+        props = {
+          component: Tr,
+          children: {
+            tag: "Td",
+            attrs: {
+              colspan: this.table.colLength,
+              style: { padding: "25px 0" },
+            },
+            children: { component: "Empty" },
+          },
+        };
+      }
+      this.setProps(props);
     }
     _getRows(data, rows, index, level) {
       const curLevel = level;
@@ -8633,6 +8779,46 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(GridBody);
+  class Scrollbar extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        target: null,
+        hidden: true,
+        position: { left: 0, bottom: 0 },
+        size: { width: 0, innerWidth: 0 },
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const { position, size } = this.props;
+      this.setProps({
+        attrs: {
+          style: {
+            width: size.width,
+            left: position.left,
+            bottom: position.bottom,
+            "overflow-x": "auto",
+            "overflow-y": "hidden",
+          },
+          onscroll: () => {
+            const { scrollLeft } = this.element;
+            this.props.target.body.element.scrollLeft = scrollLeft;
+          },
+        },
+        children: {
+          classes: { "nom-scrollbar-inner": true },
+          attrs: { style: { width: size.innerWidth } },
+        },
+      });
+    }
+    show() {
+      this.props.hidden && this.update({ hidden: false });
+    }
+    hide() {
+      !this.props.hidden && this.update({ hidden: true });
+    }
+  }
+  Component.register(Scrollbar);
   class GridHeader extends Component {
     constructor(props, ...mixins) {
       const defaults = { children: { component: Table } };
@@ -8652,6 +8838,75 @@ function _defineProperty2(obj, key, value) {
           line: this.props.line,
         },
       });
+    }
+    _rendered() {
+      const that = this;
+      if (!this.grid.props.sticky) {
+        return;
+      }
+      if (!this.scrollbar) {
+        this.scrollbar = new Scrollbar({ target: this.grid });
+      }
+      this.position = null;
+      this.size = null;
+      if (this.grid.props.sticky === true) {
+        this.scrollParent = window;
+        this.scrollParent.onscroll = function () {
+          that._onPageScroll();
+        };
+      } else {
+        if (isFunction(this.grid.props.sticky)) {
+          this.scrollParent = this.grid.props.sticky();
+        } else {
+          this.scrollParent = this.grid.props.sticky;
+        }
+        this.scrollParent._on("scroll", function () {
+          that._onPageScroll();
+        });
+      }
+    }
+    _onPageScroll() {
+      this.element.style.transform = `translateY(0px)`;
+      let pRect = null;
+      if (this.grid.props.sticky === true) {
+        pRect = { top: 0, height: window.innerHeight };
+      } else {
+        pRect = this.scrollParent.element.getBoundingClientRect();
+      }
+      const gRect = this.grid.element.getBoundingClientRect();
+      !this.position && this._setScrollerRect({ pRect: pRect, gRect: gRect });
+      this._setScrollerVisible({ pRect: pRect, gRect: gRect });
+    }
+    _setScrollerRect(data) {
+      const { pRect, gRect } = data;
+      const innerWidth = this.element.scrollWidth;
+      const bottom = window.innerHeight - (pRect.top + pRect.height);
+      this.position = {
+        left: `${gRect.left}px`,
+        bottom: `${bottom < 0 ? 0 : bottom}px`,
+      };
+      this.size = { width: `${gRect.width}px`, innerWidth: `${innerWidth}px` };
+      this.scrollbar.update({ position: this.position, size: this.size });
+    }
+    _setScrollerVisible(data) {
+      const { pRect, gRect } = data;
+      if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
+        this.element.style.transform = `translateY(${
+          pRect.top - gRect.top - 2
+        }px)`;
+      }
+      if (gRect.height > pRect.height) {
+        if (
+          gRect.top > pRect.height ||
+          gRect.top + gRect.height - 17 < pRect.height + pRect.top
+        ) {
+          this.scrollbar.hide();
+        } else {
+          this.scrollbar.show();
+        }
+      } else {
+        this.scrollbar.hide();
+      }
     }
     resizeCol(data) {
       const col = this.table.colRefs[data.field];
@@ -8690,17 +8945,19 @@ function _defineProperty2(obj, key, value) {
             children: {
               component: "Tree",
               showline: true,
-              treeData: that.grid.originColumns,
-              selectedNodes: that.grid.props.visibleColumns
-                ? that.getMappedColumns(that.grid.props.visibleColumns)
-                : that.grid.getMappedColumns(),
+              data: that.grid.originColumns,
+              nodeCheckable: {
+                checkedNodeKeys: that.grid.props.visibleColumns
+                  ? that.getMappedColumns(that.grid.props.visibleColumns)
+                  : that.grid.getMappedColumns(),
+              },
               multiple: true,
               leafOnly: false,
               sortable: true,
               ref: (c) => {
                 this.tree = c;
               },
-              fields: { title: "title", value: "field" },
+              dataFields: { text: "title", key: "field" },
             },
           },
           footer: {
@@ -8712,8 +8969,7 @@ function _defineProperty2(obj, key, value) {
                   component: "Button",
                   text: "确定",
                   onClick: function () {
-                    const list = that.tree.getSelectedTree();
-                    that.update({ treeData: list });
+                    const list = that.tree.getCheckedNodesData();
                     that.grid.handleColumnsSetting(list);
                   },
                 },
@@ -8991,7 +9247,9 @@ function _defineProperty2(obj, key, value) {
           const myinfo = findTreeInfo(that.originColumns, item.key);
           if (myinfo) {
             Object.keys(myinfo).forEach(function (key) {
-              item[key] = myinfo[key];
+              if (key !== "children") {
+                item[key] = myinfo[key];
+              }
             });
           }
         });
@@ -9179,6 +9437,7 @@ function _defineProperty2(obj, key, value) {
     striped: false,
     showTitle: false,
     ellipsis: false,
+    sticky: false,
   };
   Component.register(Grid);
   class GroupList extends Group {
@@ -9270,20 +9529,21 @@ function _defineProperty2(obj, key, value) {
     }
     _created() {
       this.originText = this.props.text;
+      this.showText = "";
     }
     _config() {
       const { text, type, icon } = this.props;
       const that = this;
       if (this.props.mask === true) {
-        this.props.text = MaskInfo.format({ value: text, type: type });
+        this.showText = MaskInfo.format({ value: text, type: type });
       } else {
-        this.props.text = this.originText;
+        this.showText = this.props.text;
       }
       let textNode = null;
       if (icon) {
-        textNode = { tag: "span", children: this.props.text };
+        textNode = { tag: "span", children: this.showText };
       } else if (!this.props.mask) {
-        textNode = { tag: "span", children: this.props.text };
+        textNode = { tag: "span", children: this.showText };
         if (that.tooltip) {
           that.tooltip.remove();
           delete that.tooltip;
@@ -9291,7 +9551,7 @@ function _defineProperty2(obj, key, value) {
       } else {
         textNode = {
           tag: "span",
-          children: this.props.text,
+          children: this.showText,
           onClick: () => {
             that.handleClick();
           },
@@ -9321,7 +9581,6 @@ function _defineProperty2(obj, key, value) {
     }
     handleClick() {
       this.props.mask = false;
-      this.update(this.props.text);
       this.update(this.props.mask);
     }
     static format(data) {
@@ -11948,7 +12207,7 @@ function _defineProperty2(obj, key, value) {
     }
     return { backgroundImage: `linear-gradient(${direction}, ${from}, ${to})` };
   };
-  class Circle extends Component {
+  class ProgressCircle extends Component {
     constructor(props, ...mixins) {
       const defaults = {
         width: 120, // strokeWidth:6
@@ -12006,8 +12265,8 @@ function _defineProperty2(obj, key, value) {
       const gapDegree = this._getGapDegree();
       this.setProps({
         classes: {
-          [`${Circle._prefixClass}-inner`]: true,
-          [`${Circle._prefixClass}-circle-gradient`]: isGradient,
+          [`${ProgressCircle._prefixClass}-inner`]: true,
+          [`${ProgressCircle._prefixClass}-circle-gradient`]: isGradient,
         },
         attrs: {
           style: {
@@ -12025,7 +12284,7 @@ function _defineProperty2(obj, key, value) {
             strokeColor: strokeColor,
             strokeLinecap: strokeLinecap,
             trailColor: trailColor,
-            prefixCls: Circle._prefixClass,
+            prefixCls: ProgressCircle._prefixClass,
             gapDegree: gapDegree,
             gapPosition: gapPos,
           },
@@ -12034,8 +12293,8 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
-  _defineProperty2(Circle, "_prefixClass", "nom-progress");
-  class Line extends Component {
+  _defineProperty2(ProgressCircle, "_prefixClass", "nom-progress");
+  class ProgressLine extends Component {
     constructor(props, ...mixins) {
       const defaults = {
         // steps:100,
@@ -12059,7 +12318,7 @@ function _defineProperty2(obj, key, value) {
       const successSegment =
         successPercent !== undefined
           ? {
-              classes: { [`${Line._prefixClass}-success-bg`]: true },
+              classes: { [`${ProgressLine._prefixClass}-success-bg`]: true },
               attrs: {
                 style: {
                   width: `${validProgress(successPercent)}%`,
@@ -12089,13 +12348,13 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         children: [
           {
-            classes: { [`${Line._prefixClass}-outer`]: true },
+            classes: { [`${ProgressLine._prefixClass}-outer`]: true },
             children: {
-              classes: { [`${Line._prefixClass}-inner`]: true },
+              classes: { [`${ProgressLine._prefixClass}-inner`]: true },
               attrs: { style: trailStyle },
               children: [
                 {
-                  classes: { [`${Line._prefixClass}-bg`]: true },
+                  classes: { [`${ProgressLine._prefixClass}-bg`]: true },
                   attrs: { style: percentStyle },
                 },
                 successSegment,
@@ -12107,8 +12366,8 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
-  _defineProperty2(Line, "_prefixClass", "nom-progress");
-  class Steps$1 extends Component {
+  _defineProperty2(ProgressLine, "_prefixClass", "nom-progress");
+  class ProgressSteps extends Component {
     constructor(props, ...mixins) {
       const defaults = { strokeWidth: 8, percent: 0 };
       super(Component.extendProps(defaults, props), ...mixins);
@@ -12129,8 +12388,9 @@ function _defineProperty2(obj, key, value) {
       for (let i = 0; i < steps; i += 1) {
         styledSteps.push({
           classes: {
-            [`${Steps$1._prefixClass}-steps-item`]: true,
-            [`${Steps$1._prefixClass}-steps-item-active`]: i <= current - 1,
+            [`${ProgressSteps._prefixClass}-steps-item`]: true,
+            [`${ProgressSteps._prefixClass}-steps-item-active`]:
+              i <= current - 1,
           },
           attrs: {
             style: {
@@ -12142,12 +12402,12 @@ function _defineProperty2(obj, key, value) {
         });
       }
       this.setProps({
-        classes: { [`${Steps$1._prefixClass}-steps-outer`]: true },
+        classes: { [`${ProgressSteps._prefixClass}-steps-outer`]: true },
         children: [...styledSteps, children],
       });
     }
   }
-  _defineProperty2(Steps$1, "_prefixClass", "nom-progress");
+  _defineProperty2(ProgressSteps, "_prefixClass", "nom-progress");
   class Progress extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -12262,15 +12522,15 @@ function _defineProperty2(obj, key, value) {
           children = Object.assign({}, children, {
             strokeColor:
               typeof strokeColor === "string" ? strokeColor : undefined,
-            component: Steps$1,
+            component: ProgressSteps,
             steps,
           });
         } else {
-          children = Object.assign({}, children, { component: Line });
+          children = Object.assign({}, children, { component: ProgressLine });
         }
       } else if (type === "circle" || type === "dashboard") {
         children = Object.assign({}, children, {
-          component: Circle,
+          component: ProgressCircle,
           type,
           width,
           strokeLinecap,
@@ -13951,9 +14211,184 @@ function _defineProperty2(obj, key, value) {
         },
       });
     }
-    _rendered() {}
   }
   Component.register(Toolbar);
+  class TreeNodeContent extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { text: null };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.node = this.parent;
+      this.node.content = this;
+      this.level = this.node.level;
+      this.tree = this.node.tree;
+    }
+    _config() {
+      const { text, icon, tools } = this.node.props;
+      const { initExpandLevel, nodeCheckable } = this.tree.props;
+      const expanded = initExpandLevel === -1 || initExpandLevel > this.level;
+      const tree = this.tree;
+      this.setProps({
+        expanded,
+        expandable: {
+          byIndicator: true,
+          target: () => {
+            return this.node.nodesRef;
+          },
+          indicator: {
+            component: Icon,
+            classes: {
+              "nom-tree-node-expandable-indicator": true,
+              "is-leaf": this.node.isLeaf,
+            },
+            expandable: {
+              expandedProps: { type: "down" },
+              collapsedProps: { type: "right" },
+            },
+          },
+        },
+        selectable: { byClick: this.tree.props.nodeSelectable.byClick },
+        selected:
+          this.tree.props.nodeSelectable.selectedNodeKey === this.node.key,
+        attrs: { style: { paddingLeft: `${this.level * 16}px` } },
+        onSelect: () => {
+          if (tree.selectedNode !== null) tree.selectedNode.unselect();
+          tree.selectedNode = this.node;
+          tree._onNodeSelect({ node: this.node });
+        },
+      });
+      if (
+        this.tree.props.nodeSelectable.onlyleaf === true &&
+        this.node.isLeaf === false
+      ) {
+        this.setProps({ selectable: false });
+      }
+      this.setProps({
+        children: [
+          this.getExpandableIndicatorProps(expanded),
+          nodeCheckable && this._getCheckbox(),
+          icon &&
+            Component.extendProps(
+              { classes: { "nom-tree-node-content-icon": true } },
+              Component.normalizeIconProps(icon)
+            ),
+          Component.extendProps(
+            { tag: "span", classes: { "nom-tree-node-content-text": true } },
+            Component.normalizeTemplateProps(text)
+          ),
+          tools &&
+            Component.extendProps(
+              { classes: { "nom-tree-node-content-tools": true } },
+              Component.normalizeIconProps(tools)
+            ),
+        ],
+        onClick: () => {
+          this.tree._onNodeClick({ node: this.node });
+        },
+      });
+    }
+    _getCheckbox() {
+      return {
+        component: Checkbox,
+        plain: true,
+        classes: { "nom-tree-node-checkbox": true },
+        _created: (inst) => {
+          this.node.checkboxRef = inst;
+        },
+        value: this.tree.checkedNodeKeysHash[this.node.key] === true,
+        onValueChange: ({ newValue }) => {
+          if (newValue === true) {
+            this.node.check({ checkCheckbox: false });
+          } else {
+            this.node.uncheck({ uncheckCheckbox: false });
+          }
+        },
+      };
+    }
+  }
+  Component.register(TreeNodeContent);
+  class TreeNode extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { nodes: null };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.level = 0;
+      this.parentNode = this.parent.parentNode;
+      if (this.parentNode !== null) {
+        this.level = this.parentNode.level + 1;
+        this.parentNode.subnodeRefs[this.key] = this;
+      }
+      this.tree = this.parent.tree;
+      this.subnodeRefs = {};
+      const { data } = this.props;
+      const { dataFields } = this.tree.props;
+      Object.keys(dataFields).forEach((dataField) => {
+        data[dataField] = data[dataFields[dataField]];
+      });
+    }
+    _config() {
+      this.props.dataToNode({ data: this.props.data, node: this });
+      if (this.props.key) {
+        this.key = this.props.key;
+      }
+      this.tree.nodeRefs[this.key] = this;
+      if (this.tree.props.nodeSelectable.selectedNodeKey === this.key) {
+        this.tree.selectedNode = this;
+      }
+      const { nodes, childrenData } = this.props;
+      const children = [{ component: TreeNodeContent }];
+      this.isLeaf = !nodes && !childrenData;
+      if (Array.isArray(nodes) || Array.isArray(childrenData)) {
+        children.push({ component: "TreeNodes", nodes, childrenData });
+      }
+      this.setProps({ children });
+      if (this.tree.props.nodeCheckable) {
+        this.setProps({
+          checked: this.tree.checkedNodeKeysHash[this.key] === true,
+        });
+      }
+    }
+    check(checkOptions = { checkCheckbox: true }) {
+      const { checked } = this.props;
+      if (checked === true) {
+        return;
+      }
+      const { checkCheckbox } = checkOptions;
+      this.parentNode && this.parentNode.check();
+      if (checkCheckbox === true) {
+        this.checkboxRef.setValue(true, { triggerChange: false });
+      }
+      this.props.checked = true;
+    }
+    uncheck(uncheckOptions = { uncheckCheckbox: true }) {
+      const { checked } = this.props;
+      if (checked === false) {
+        return;
+      }
+      const { uncheckCheckbox } = uncheckOptions;
+      uncheckCheckbox &&
+        this.checkboxRef.setValue(false, { triggerChange: false });
+      Object.keys(this.subnodeRefs).forEach((key) => {
+        this.subnodeRefs[key].uncheck();
+      });
+      this.props.checked = false;
+    }
+    isChecked() {
+      return this.props.checked === true;
+    }
+    getChildNodes() {
+      return this.nodesRef ? this.nodesRef.getChildren() : [];
+    }
+    select() {
+      this.content.select();
+    }
+    unselect() {
+      this.content.unselect();
+    }
+  }
+  Component.register(TreeNode);
   /* eslint-disable */ /**!
    * Sortable 1.13.0
    * @author	RubaXa   <trash@rubaxa.org>
@@ -16597,509 +17032,233 @@ function _defineProperty2(obj, key, value) {
     drop: drop,
   };
   _extends(Remove, { pluginName: "removeOnSpill" });
-  class TreeNode extends List {
+  class TreeNodes extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        tag: "div",
-        indent: false,
-        key: null,
-        title: null,
-        value: null,
-        status: 0,
-        collapsed: false,
-        checked: false,
-        checkChild: false,
-      };
+      const defaults = { nodes: null, childrenData: null };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
-      this.wrapper = this.parent;
-      this.wrapper.item = this;
-      this.tree = this.wrapper.tree;
-      this.wrapper.treeNode = this;
-      this.hasSubtree = !!this.subTree;
-      this.tree.itemRefs[this.key] = this;
-      if (!this.wrapper.isRoot && !this.wrapper.parentWrapper.isLeaf) {
-        this.wrapper.parentWrapper.subTree.checkStatus[this.key] = this;
-      }
-    }
-    _config() {
-      const { value, title, key, indent, checked } = this.props;
-      const that = this;
-      let checkIcon = null;
-      if (checked) {
-        checkIcon = "checked-square";
+      if (this.parent instanceof Component.components.Tree) {
+        this.tree = this.parent;
+        this.tree.nodesRef = this;
+        this.parentNode = null;
       } else {
-        checkIcon = "blank-square";
-      }
-      this.setProps({
-        value: value,
-        title: title,
-        classes: {
-          "nom-tree-node-disabled":
-            that.tree.props.leafOnly && !that.wrapper.isLeaf,
-        },
-        key: key,
-        children: {
-          tag: "span",
-          classes: { "nom-tree-node-name": true, indent: indent },
-          children: [
-            (that.wrapper.isLeaf || !that.tree.props.leafOnly) &&
-              Component.normalizeIconProps({
-                type: checkIcon,
-                onClick: function () {
-                  that.handleClick();
-                },
-              }),
-            { tag: "span", children: title },
-          ],
-        },
-      });
-    }
-    getSubtreeStatus() {
-      if (this.hasSubtree) {
-        const sub = this.subTree.checkStatus;
-        let x = 0;
-        let y = 0;
-        Object.keys(sub).forEach((key) => {
-          y += 1;
-          if (!sub[key].props.checked) {
-            x += 1;
-          }
-        });
-        if (x === 0) {
-          this.subTree.check = "all";
-        } else if (x > 0 && x < y) {
-          this.subTree.check = "part";
-        } else {
-          this.subTree.check = "none";
-        }
-      }
-    }
-    getSiblingStatus() {
-      if (this.wrapper.isRoot) {
-        return;
-      }
-      const sib = this.wrapper.parentWrapper.subTree.checkStatus;
-      let x = 0;
-      let y = 0;
-      Object.keys(sib).forEach((key) => {
-        y += 1;
-        if (!sib[key].props.checked) {
-          x += 1;
-        }
-      });
-      if (x === 0) {
-        this.wrapper.parentWrapper.subTree.check = "all";
-      } else if (x > 0 && x < y) {
-        this.wrapper.parentWrapper.subTree.check = "part";
-      } else {
-        this.wrapper.parentWrapper.subTree.check = "none";
-      }
-    }
-    checkDown(status, self) {
-      if (!self) {
-        this.props.checked = status !== null ? status : !this.props.checked;
-        this.update(this.props.checked);
-      }
-      this.getSubtreeStatus();
-      if (this.wrapper.isLeaf) {
-        return;
-      }
-      if (this.props.checked) {
-        if (this.subTree.check === "all") {
-          return;
-        }
-        const t = this.subTree.children;
-        for (let i = 0; i < t.length; i++) {
-          t[i].treeNode.checkDown(true, false);
-        }
-      }
-      if (!this.props.checked) {
-        if (this.subTree.check === "none") {
-          return;
-        }
-        if (this.subTree.check === "part") {
-          this.props.checked = true;
-          const t = this.subTree.children;
-          for (let i = 0; i < t.length; i++) {
-            t[i].treeNode.checkDown(true, false);
-          }
-        } else {
-          const t = this.subTree.children;
-          for (let i = 0; i < t.length; i++) {
-            t[i].treeNode.checkDown(false, false);
-          }
-        }
-      }
-      this.update(this.props.checked);
-    }
-    checkUp(status, self) {
-      if (!self) {
-        this.props.checked = status !== null ? status : !this.props.checked;
-        this.update(this.props.checked);
-      }
-      this.getSiblingStatus();
-      if (this.wrapper.isRoot) {
-        return;
-      }
-      if (status) {
-        this.props.checked = status;
-      }
-      if (
-        this.props.checked &&
-        this.wrapper.parentWrapper.subTree.check === "all"
-      ) {
-        this.wrapper.parentWrapper.treeNode.checkUp(true, false);
-      }
-      if (
-        !this.props.checked &&
-        this.wrapper.parentWrapper.subTree.check !== "all"
-      ) {
-        this.wrapper.parentWrapper.treeNode.checkUp(false, false);
-      }
-    }
-    setCheck(status) {
-      this.props.checked = status;
-      this.update(this.props.checked);
-    }
-    handleClick(status) {
-      if (this.tree.props.leafOnly) {
-        if (!this.wrapper.isLeaf) {
-          return;
-        }
-        if (!this.tree.props.multiple) {
-          this.tree.unCheckAll(true);
-        }
-      }
-      this.props.checked = status || !this.props.checked;
-      this.update(this.props.checked);
-      if (!this.tree.props.leafOnly) {
-        this.checkDown(null, true);
-        this.checkUp(null, true);
-      }
-      this.tree.triggerCheck(this);
-    }
-  }
-  Component.register(TreeNode);
-  class TreeSub extends Component {
-    constructor(props, ...mixins) {
-      const defaults = { tag: "ul", items: null };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this.wrapper = this.props.wrapper || this.parent;
-      this.wrapper.subTree = this;
-      this.tree = this.wrapper.tree;
-      this.wrapper.treeNode.subTree = this.wrapper.subTree;
-      this.wrapper.treeNode.hasSubtree = true;
-      this.check = null;
-      this.checkStatus = [];
-    }
-    _config() {
-      const { items } = this.props;
-      this.setProps({ children: items });
-    }
-    _disable() {
-      this.element.setAttribute("disabled", "disabled");
-    }
-  }
-  Component.register(TreeSub);
-  class TreeWrapper extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {
-        tag: "li",
-        key: null,
-        title: null,
-        value: null,
-        checked: null,
-        items: null,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this.isLeaf = !this.props.items;
-      this.isRoot = false;
-      this.level = 0;
-      this.parentWrapper = null;
-      if (this.parent.parent instanceof Component.components.Tree) {
-        this.tree = this.parent.parent;
-        this.isRoot = true;
-      } else if (this.parent instanceof Component.components.TreeSub) {
-        this.tree = this.parent.tree;
-        this.parentWrapper = this.parent.wrapper;
-      }
-      if (this.parentWrapper) {
-        this.level = this.parentWrapper.level + 1;
+        this.parentNode = this.parent;
+        this.parentNode.nodesRef = this;
+        this.tree = this.parentNode.tree;
       }
     }
     _config() {
-      const that = this;
-      const { key, title, value, checked, items, collapsed } = this.props;
-      this.setProps({
-        attrs: { key: key },
-        children: [
-          Component.normalizeIconProps({
-            type: collapsed ? "down" : "right",
-            hidden: !items,
-            onClick: function () {
-              that.props.collapsed = !that.props.collapsed;
-              that.update(collapsed);
-            },
-          }),
-          {
-            component: TreeNode,
-            key: key,
-            title: title,
-            value: value,
-            checked: checked,
-            indent: !items,
-          },
-          items && { component: TreeSub, hidden: collapsed, items: items },
-        ],
-      });
-    }
-  }
-  Component.register(TreeWrapper);
-  class Tree extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {
-        treeData: null,
-        leafOnly: false,
-        multiple: true,
-        selectedNodes: null,
-        onCheck: null,
-        showLine: false,
-        toolbar: null,
-        fields: { title: "title", value: "value" },
-        sortable: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this.itemRefs = [];
-      this.selectedList = [];
-    }
-    _config() {
-      const that = this;
-      const { treeData, selectedNodes, showline } = this.props;
-      const { title, value } = this.props.fields;
-      if (selectedNodes) {
-        if (typeof selectedNodes === "string") {
-          this.selectedList.push(selectedNodes);
-        } else {
-          this.selectedList = selectedNodes;
-        }
-      }
-      function mapTree(data) {
-        return data.map(function (item) {
-          if (item.children && item.children.length > 0) {
-            const c = mapTree(item.children);
-            return {
-              component: TreeWrapper,
-              key: item[value],
-              title: item[title],
-              value: item[value],
-              checked: that.selectedList.indexOf(item[value]) !== -1,
-              items: c,
-            };
-          }
-          return {
-            component: TreeWrapper,
-            key: item[value],
-            title: item[title],
-            value: item[value],
-            checked: that.selectedList.indexOf(item[value]) !== -1,
-          };
+      const { nodes, childrenData } = this.props;
+      let nodesProps = nodes;
+      if (Array.isArray(childrenData)) {
+        nodesProps = childrenData.map((item) => {
+          return { data: item };
         });
       }
-      const children = mapTree(treeData);
-      this.setProps({
-        children: [
-          this.props.toolbar &&
-            this.props.toolbar.placement === "before" &&
-            this.props.toolbar.item,
-          {
-            tag: "ul",
-            classes: {
-              "nom-tree-container": true,
-              "nom-tree-showline": showline,
-            },
-            children: children,
-          },
-          this.props.toolbar &&
-            this.props.toolbar.placement === "after" &&
-            this.props.toolbar.item,
-        ],
-      });
-    }
-    getSelected() {
-      return Object.keys(this.itemRefs).filter((key) => {
-        return this.itemRefs[key].props.checked === true;
-      });
-    }
-    _getNewTree() {
-      const arr = [];
-      function mapTree(data) {
-        data.forEach(function (n) {
-          if (n.children) {
-            mapTree(n.children);
-          }
-          arr.push(n);
-        });
-      }
-      mapTree(this.getTreeData());
-      return arr;
-    }
-    getSelectedTree() {
-      const arr = [];
-      const newTree = this._getNewTree();
-      const that = this;
-      newTree.forEach(function (n) {
-        const key = n[that.props.fields.value];
-        if (that.itemRefs[key].props.checked === true) {
-          arr.push({
-            key: that.itemRefs[key].key,
-            parentKey: that.itemRefs[key].wrapper.isRoot
-              ? null
-              : that.itemRefs[key].wrapper.parentWrapper.treeNode.key,
-          });
-        }
-      });
-      function setTreeData(data) {
-        // 删除所有的children,以防止多次调用
-        data.forEach(function (item) {
-          delete item.children;
-        });
-        const map = {}; // 构建map
-        data.forEach((i) => {
-          map[i.key] = i; // 构建以area_id为键 当前数据为值
-        });
-        const treeData = [];
-        data.forEach((child) => {
-          const mapItem = map[child.parentKey]; // 判断当前数据的parent_id是否存在map中
-          if (mapItem) {
-            (mapItem.children || (mapItem.children = [])).push(child); // 这里判断mapItem中是否存在child
-          } else {
-            // 不存在则是顶层数据
-            treeData.push(child);
-          }
-        });
-        return treeData;
-      }
-      return setTreeData(arr);
-    }
-    checkAll() {
-      const that = this;
-      Object.keys(this.itemRefs).forEach(function (key) {
-        that.itemRefs[key].setCheck(true);
-      });
-      const data = { items: this.getSelected() };
-      this.props.onCheck && this._callHandler(this.props.onCheck, data);
-    }
-    unCheckAll() {
-      const that = this;
-      Object.keys(this.itemRefs).forEach(function (key) {
-        that.itemRefs[key].setCheck(false);
-      });
-    }
-    triggerCheck(item) {
-      const data = {
-        items: this.getSelected(),
-        key: item.key,
-        status: item.props.checked,
-      };
-      this.props.onCheck && this._callHandler(this.props.onCheck, data);
-    } // getArray() {
-    //   const arr = []
-    //   Object.keys(this.itemRefs).forEach((key) => {
-    //     arr.push({
-    //       key: this.itemRefs[key].key,
-    //       parentKey: this.itemRefs[key].wrapper.isRoot
-    //         ? null
-    //         : this.itemRefs[key].wrapper.parentWrapper.treeNode.key,
-    //     })
-    //   })
-    //   return arr
-    // }
-    getTreeData() {
-      return this.props.treeData;
-    }
-    _getNewOrder(params) {
-      const that = this;
-      const treeData = this.getTreeData();
-      function isParent(data) {
-        let result = false;
-        data.forEach(function (n) {
-          if (n[that.props.fields.value] === params.key) {
-            result = true;
-          }
-        });
-        return result;
-      }
-      function moveData(data) {
-        if (params.newIndex < params.oldIndex) {
-          const c = data;
-          const oldObj = Object.assign({}, c[params.oldIndex]);
-          c.splice(params.newIndex, 0, oldObj);
-          c.splice(params.oldIndex + 1, 1);
-        }
-        if (params.newIndex > params.oldIndex) {
-          const c = data;
-          const oldObj = Object.assign({}, c[params.oldIndex]);
-          c.splice(params.newIndex + 1, 0, oldObj);
-          c.splice(params.oldIndex, 1);
-        }
-      }
-      function resort(data) {
-        if (isParent(data)) {
-          moveData(data);
-        }
-        data.forEach(function (n) {
-          if (n.children) {
-            const c = n.children;
-            if (isParent(c)) {
-              moveData(c);
-            } else {
-              resort(c);
+      const childDefaults = Component.extendProps(
+        {
+          component: TreeNode,
+          dataToNode: ({ data, node }) => {
+            if (isPlainObject(data)) {
+              node.props.key = data.key;
+              node.props.text = data.text;
+              node.props.icon = data.icon;
+              node.props.childrenData = data.children;
             }
-          }
-        });
-      }
-      resort(treeData);
-      return treeData;
-    }
-    setOrder(params) {
-      const treeData = this._getNewOrder(params);
-      this.update({ treeData: treeData });
+          },
+        },
+        this.tree.props.nodeDefaults
+      );
+      this.setProps({ children: nodesProps, childDefaults });
     }
     _rendered() {
-      if (!this.props.sortable) {
-        return;
-      }
-      const tree = this;
-      const uls = this.element.getElementsByTagName("ul");
-      for (let i = 0; i < uls.length; i++) {
-        const target = uls[i];
-        new Sortable(target, {
+      const { sortable } = this.tree.props;
+      if (sortable !== false) {
+        new Sortable(this.element, {
+          group: this.key,
           animation: 150,
           fallbackOnBody: true,
           swapThreshold: 0.65,
-          dataIdAttr: "key",
-          onEnd: function (evt) {
-            const el = evt.item; // dragged HTMLElement
-            const key = el.getAttribute("key");
-            if (evt.oldIndex === evt.newIndex) {
-              return;
-            }
-            tree.setOrder({
-              key: key,
-              oldIndex: evt.oldIndex,
-              newIndex: evt.newIndex,
-            });
-          },
         });
       }
+    }
+    iterateNodes() {}
+  }
+  Component.register(TreeNodes);
+  class Tree extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        nodes: null,
+        nodeDefaults: {},
+        nodeSelectable: {
+          onlyleaf: false,
+          byClick: true,
+          selectedNodeKey: null,
+        },
+        dataFields: {
+          key: "key",
+          text: "text",
+          children: "children",
+          parentKey: "parentKey",
+        },
+        flatData: false,
+        sortable: false,
+        initExpandLevel: -1,
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.nodeRefs = {};
+      this.selectedNode = null;
+    }
+    _config() {
+      this.nodeRefs = {};
+      this.selectedNode = null;
+      const { nodes, data, flatData, nodeCheckable } = this.props;
+      if (flatData === true) {
+        this.setProps({ data: this._toTreeData(data) });
+      }
+      if (nodeCheckable) {
+        this.setProps({
+          nodeCheckable: Component.extendProps(
+            {
+              cascadeCheckParent: true,
+              cascadeUncheckChildren: true,
+              cascade: false,
+              checkedNodeKeys: [],
+            },
+            nodeCheckable
+          ),
+        });
+        this.checkedNodeKeysHash = {};
+        this.props.nodeCheckable.checkedNodeKeys.forEach((key) => {
+          this.checkedNodeKeysHash[key] = true;
+        });
+      }
+      this.setProps({
+        children: {
+          component: TreeNodes,
+          nodes,
+          childrenData: this.props.data,
+        },
+      });
+    }
+    _dataToNodes() {}
+    getData(getOptions, node) {
+      getOptions = getOptions || {};
+      node = node || this;
+      const nodesData = [];
+      const childNodes = node.getChildNodes();
+      childNodes.forEach((childNode) => {
+        const childNodeData = Object.assign({}, childNode.props.data);
+        nodesData.push(childNodeData);
+        childNodeData.children = this.getData(getOptions, childNode);
+      });
+      return nodesData;
+    }
+    getCheckedNodes(node) {
+      if (node === undefined) {
+        node = this;
+      }
+      const checkedNodes = [];
+      const childNodes = node.getChildNodes();
+      childNodes.forEach((childNode) => {
+        if (childNode.isChecked() === true) {
+          checkedNodes.push(childNode);
+          childNode.checkedNodes = this.getCheckedNodes(childNode);
+        }
+      });
+      return checkedNodes;
+    }
+    getCheckedNodeKeys(getOptions, checkedNodeKeys, node) {
+      getOptions = getOptions || {};
+      checkedNodeKeys = checkedNodeKeys || [];
+      node = node || this;
+      const childNodes = node.getChildNodes();
+      childNodes.forEach((childNode) => {
+        if (childNode.isChecked() === true) {
+          checkedNodeKeys.push(childNode.key);
+          this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode);
+        }
+      });
+      return checkedNodeKeys;
+    }
+    getCheckedNodesData(getOptions, node) {
+      getOptions = getOptions || {};
+      node = node || this;
+      const checkedNodesData = [];
+      const childNodes = node.getChildNodes();
+      childNodes.forEach((childNode) => {
+        if (childNode.isChecked() === true) {
+          const childNodeData = Object.assign({}, childNode.props.data);
+          checkedNodesData.push(childNodeData);
+          childNodeData.children = this.getCheckedNodesData(
+            getOptions,
+            childNode
+          );
+        }
+      });
+      return checkedNodesData;
+    }
+    getNode(param) {
+      let retNode = null;
+      if (param instanceof Component) {
+        return param;
+      }
+      if (isFunction(param)) {
+        for (const key in this.nodeRefs) {
+          if (this.nodeRefs.hasOwnProperty(key)) {
+            if (param.call(this.nodeRefs[key]) === true) {
+              retNode = this.nodeRefs[key];
+              break;
+            }
+          }
+        }
+      } else {
+        return this.nodeRefs[param];
+      }
+      return retNode;
+    }
+    getSelectedNode() {
+      return this.selectedNode;
+    }
+    getChildNodes() {
+      return this.nodesRef.getChildren();
+    }
+    selectNode(param) {
+      const node = this.getNode(param);
+      node.select();
+    }
+    _onNodeClick(args) {
+      this._callHandler("onNodeClick", args);
+    }
+    _onNodeSelect(args) {
+      const { onNodeSelect } = this.props.nodeSelectable;
+      this._callHandler(onNodeSelect, args);
+    }
+    _toTreeData(arrayData) {
+      const { key, parentKey, children } = this.props.dataFields;
+      if (!key || key === "" || !arrayData) return [];
+      if (Array.isArray(arrayData)) {
+        const r = [];
+        const tmpMap = [];
+        arrayData.forEach((item) => {
+          tmpMap[item[key]] = item;
+        });
+        arrayData.forEach((item) => {
+          tmpMap[item[key]] = item;
+          if (tmpMap[item[parentKey]] && item[key] !== item[parentKey]) {
+            if (!tmpMap[item[parentKey]][children])
+              tmpMap[item[parentKey]][children] = [];
+            tmpMap[item[parentKey]][children].push(item);
+          } else {
+            r.push(item);
+          }
+        });
+        return r;
+      }
+      return [arrayData];
     }
   }
   Component.register(Tree);
@@ -17923,6 +18082,7 @@ function _defineProperty2(obj, key, value) {
   exports.Divider = Divider;
   exports.Dropdown = Dropdown;
   exports.Ellipsis = Ellipsis;
+  exports.Empty = Empty;
   exports.Field = Field;
   exports.Form = Form;
   exports.Grid = Grid;
@@ -17953,6 +18113,7 @@ function _defineProperty2(obj, key, value) {
   exports.RadioList = RadioList;
   exports.Router = Router;
   exports.Rows = Rows;
+  exports.Scrollbar = Scrollbar;
   exports.Select = Select;
   exports.SlideCaptcha = SlideCaptcha;
   exports.Spinner = Spinner;

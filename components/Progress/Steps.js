@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 
-class Steps extends Component {
+class ProgressSteps extends Component {
   static _prefixClass = 'nom-progress'
 
   constructor(props, ...mixins) {
@@ -19,8 +19,8 @@ class Steps extends Component {
     for (let i = 0; i < steps; i += 1) {
       styledSteps.push({
         classes: {
-          [`${Steps._prefixClass}-steps-item`]: true,
-          [`${Steps._prefixClass}-steps-item-active`]: i <= current - 1,
+          [`${ProgressSteps._prefixClass}-steps-item`]: true,
+          [`${ProgressSteps._prefixClass}-steps-item-active`]: i <= current - 1,
         },
         attrs: {
           style: {
@@ -34,11 +34,11 @@ class Steps extends Component {
 
     this.setProps({
       classes: {
-        [`${Steps._prefixClass}-steps-outer`]: true,
+        [`${ProgressSteps._prefixClass}-steps-outer`]: true,
       },
       children: [...styledSteps, children],
     })
   }
 }
 
-export default Steps
+export default ProgressSteps
