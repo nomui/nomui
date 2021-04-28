@@ -36,3 +36,7 @@ jobs:
           BASE_BRANCH: main
           BRANCH: gh-pages
           FOLDER: 'doc-sites/'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages # The branch the action should deploy to.
+          folder: doc-sites/ # The folder the action should deploy.
