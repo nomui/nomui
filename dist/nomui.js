@@ -14339,7 +14339,9 @@ function _defineProperty2(obj, key, value) {
       }
       const { nodes, childrenData } = this.props;
       const children = [{ component: TreeNodeContent }];
-      this.isLeaf = !nodes && !childrenData;
+      this.isLeaf = !(
+        this._isNotEmptyArray(nodes) || this._isNotEmptyArray(childrenData)
+      );
       if (Array.isArray(nodes) || Array.isArray(childrenData)) {
         children.push({ component: "TreeNodes", nodes, childrenData });
       }
@@ -14349,6 +14351,9 @@ function _defineProperty2(obj, key, value) {
           checked: this.tree.checkedNodeKeysHash[this.key] === true,
         });
       }
+    }
+    _isNotEmptyArray(arr) {
+      return Array.isArray(arr) && arr.length > 0;
     }
     check(checkOptions = { checkCheckbox: true }) {
       const { checked } = this.props;
@@ -17050,6 +17055,10 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const { nodes, childrenData } = this.props;
+      const { initExpandLevel } = this.tree.props;
+      const expanded =
+        initExpandLevel === -1 ||
+        initExpandLevel > (this.parentNode ? this.parentNode.level : -1);
       let nodesProps = nodes;
       if (Array.isArray(childrenData)) {
         nodesProps = childrenData.map((item) => {
@@ -17070,7 +17079,11 @@ function _defineProperty2(obj, key, value) {
         },
         this.tree.props.nodeDefaults
       );
-      this.setProps({ children: nodesProps, childDefaults });
+      this.setProps({
+        children: nodesProps,
+        childDefaults,
+        hidden: expanded === false,
+      });
     }
     _rendered() {
       const { sortable } = this.tree.props;
