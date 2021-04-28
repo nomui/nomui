@@ -38,7 +38,7 @@ class Tbody extends Component {
         children: {
           tag: 'Td',
           attrs: {
-            colspan: this.table.element.rows[0].childElementCount,
+            colspan: this.table.colLength,
             style: {
               padding: '25px 0',
             },
