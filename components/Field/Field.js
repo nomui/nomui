@@ -37,6 +37,9 @@ class Field extends Component {
       this.name = `__field${++nameSeq}`
     }
     this.group = this.props.__group || null
+    if (this.parent && this.parent.__isControl === true) {
+      this.group = this.parent.field
+    }
     this.rootField = this.group === null ? this : this.group.rootField
   }
 

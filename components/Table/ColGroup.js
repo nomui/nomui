@@ -25,6 +25,8 @@ class ColGroup extends Component {
       children.push(...this.createCols(this.columns))
     }
 
+    this.table.colLength = children.length
+
     if (
       this.table.parent.componentType === 'GridHeader' &&
       this.table.parent.parent.props.frozenHeader
