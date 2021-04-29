@@ -8,18 +8,11 @@
 
 | 参数      | 说明               | 类型             | 默认值  |
 | --------- | ------------------ | ---------------- | ------- |
-| size      | 设置头像组的大小      | `number\|'x'\|'sm'\|'lg'\|'xl'`      | default      |
-| maxCount      | 显示的最大头像个数      | `'number'`      | -      |
-| maxPopoverPlacement      | 多余头像气泡弹出位置      | `'top'\|'bottom'`      | top      |
-| items      | 显示的子头像列表      | `[]`      | -      |
+| icon      | 带图标      | `'eye'`      | -      |
+| number      | 展示的数字，大于 overflowCount 时显示为 ${overflowCount}+，为 0 时隐藏      | `'number'`      | -      |
+| overflowCount      | 展示封顶的数字值      | `number`      | 99      |
+| size      | 设置小圆点的大小      | `xs\|sm\|lg\|xl`      | xs      |
+| color      | 自定义小圆点的颜色      | `string`      | danger      |
+| badge      | 按钮带圆点      | `boolean`      | -      |
+| text      | 设置状态点的文本      | `string`      | -      |
 
-> Tip：单个头像配置可参考 Avatar头像 文档
-
-      key: null,
-      tag: 'span',
-      type: 'round',
-      text: null,
-      icon: null,
-      number: null,
-      overflowCount: 99,
-      size: 'xs',

@@ -5,7 +5,6 @@ define([], function () {
     demo: function () {
       return {
         component: 'Collapse',
-        bordered: true,
         iconOnly: true,
         items: [
           {
