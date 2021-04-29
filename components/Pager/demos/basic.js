@@ -10,6 +10,7 @@ define([], function () {
                         totalCount: 100,
                         onPageChange: function (e) {
                             e.sender.update(e)
+                            console.log(e)
                         }
                     }
                 ]

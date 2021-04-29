@@ -1,12 +1,13 @@
 define(
     [
-        './basic.js'
+        './basic.js',
+        './more.js'
     ],
-    function () {
+    function (...demos) {
         return {
             title: 'Pager',
             subtitle: '分页',
-            demos: Array.prototype.slice.call(arguments)
+            demos: demos
         }
     }
 );

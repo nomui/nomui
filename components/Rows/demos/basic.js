@@ -14,6 +14,10 @@ define([], function () {
                     {
                         component: 'Button',
                         text: 'item'
+                    },
+                    {
+                        component: 'Button',
+                        text: 'item'
                     }
                 ]
             }

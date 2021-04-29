@@ -34,17 +34,19 @@ class Tbody extends Component {
 
     if (!rows.length) {
       props = {
-        component: Tr,
         children: {
-          tag: 'Td',
-          attrs: {
-            colspan: this.table.element.rows[0].childElementCount,
-            style: {
-              padding: '25px 0',
-            },
-          },
+          tag: 'tr',
           children: {
-            component: 'Empty',
+            tag: 'Td',
+            attrs: {
+              colspan: this.table.colLength,
+              style: {
+                padding: '25px 0',
+              },
+            },
+            children: {
+              component: 'Empty',
+            },
           },
         },
       }
