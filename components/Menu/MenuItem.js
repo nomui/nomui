@@ -117,7 +117,7 @@ class MenuItem extends Component {
     }
   }
 
-  handleSelect() {}
+  handleSelect() { }
 
   _collapse() {
     this.indicator && this.indicator.collapse()
