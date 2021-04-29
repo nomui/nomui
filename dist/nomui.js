@@ -8409,14 +8409,16 @@ function _defineProperty2(obj, key, value) {
       };
       if (!rows.length) {
         props = {
-          component: Tr,
           children: {
-            tag: "Td",
-            attrs: {
-              colspan: this.table.colLength,
-              style: { padding: "25px 0" },
+            tag: "tr",
+            children: {
+              tag: "Td",
+              attrs: {
+                colspan: this.table.colLength,
+                style: { padding: "25px 0" },
+              },
+              children: { component: "Empty" },
             },
-            children: { component: "Empty" },
           },
         };
       }

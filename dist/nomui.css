@@ -5152,7 +5152,7 @@ table.nom-table.p-bordered {
   position: absolute;
   top: 7px;
   right: 0;
-  z-index: 5;
+  z-index: 11;
 }
 .nom-grid > .nom-grid-header {
   overflow: hidden;
