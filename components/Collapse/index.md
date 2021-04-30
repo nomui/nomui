@@ -13,8 +13,11 @@
 | bordered      | 带边框风格的折叠面板      | `boolean`      | false      |
 | title      | 面板标题      | `string`      | -      |
 | content      | 面板内容      | `string`      | -      |
-| icon.default      | 自定义切换图标      | `'plus'\|'right'`      | right      |
-| icon.open      | 图标的方向      | `'up'\|'down'\|'right'\|'left'\|`      | up      |
 | iconOnly      | 仅点击图标触发      | `boolean`      | false      |
 
+### icon
 
+| 参数      | 说明               | 类型             | 默认值  |
+| --------- | ------------------ | ---------------- | ------- |
+| default      | 自定义切换图标      | `'plus'\|'right'`      | right      |
+| open      | 图标的方向      | `'up'\|'down'\|'right'\|'left'\|`      | up      |
