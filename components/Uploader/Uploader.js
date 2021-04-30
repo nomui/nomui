@@ -9,7 +9,7 @@ import {
   getUUID,
   isBlobFile,
   isPromiseLike,
-  removeFile,
+  removeFile
 } from './helper'
 import Request from './request'
 
@@ -63,7 +63,7 @@ class Uploader extends Field {
         that.fileList = fs
 
         if (!disabled && this.button) {
-          that.button._enable()
+          that.button.enable()
         }
         that.list && that.list.update({ initializing: false, files: this.fileList })
       })
@@ -256,7 +256,7 @@ class Uploader extends Field {
       )
 
       if (!this.props.disabled) {
-        disableBtn ? this.button._disable() : this.button._enable()
+        disableBtn ? this.button.disable() : this.button.enable()
       }
     }
 

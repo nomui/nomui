@@ -13002,6 +13002,110 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(StaticText);
+  const CSS_PREFIX = "nom-statistic-"; // 给数字添加千分位符号
+  function formatDecimal(num, groupSeparator, decimalSeparator) {
+    const isNegative = num.toString().startWith("-");
+    const absoluteValue = num.toString().replace(/^-/, "");
+    let result;
+    let decimal = "";
+    let absoluteInteger = absoluteValue;
+    if (absoluteInteger.includes(".")) {
+      [absoluteInteger, decimal] = absoluteValue.split(".");
+    }
+    const len = absoluteInteger.length;
+    if (len <= 3) return num.toString();
+    let temp = "";
+    const remainder = len % 3;
+    if (decimal) temp = `${decimalSeparator}${decimal}`;
+    if (remainder > 0) {
+      result = `${absoluteInteger.slice(0, remainder)},${absoluteInteger
+        .slice(remainder, len)
+        .match(/\d{3}/g)
+        .join(groupSeparator)}${temp}`;
+    } else {
+      result = `${absoluteInteger
+        .slice(0, len)
+        .match(/\d{3}/g)
+        .join(groupSeparator)}${temp}`;
+    }
+    return isNegative ? `-${result}` : result;
+  }
+  class Statistic extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        groupSeparator: ",",
+        decimalSeparator: ".",
+        precision: 0,
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const statisticRef = this;
+      const {
+        title,
+        value,
+        precision,
+        groupSeparator,
+        decimalSeparator,
+        formatter,
+        prefix,
+        suffix,
+      } = this.props; // 非数字则不格式化了
+      let formatValue = decimalSeparator
+        ? value.replace(decimalSeparator, ".")
+        : value;
+      if (isNumeric(formatValue)) {
+        formatValue = isFunction(formatter)
+          ? formatter(value)
+          : formatDecimal(
+              Number(formatValue).toFixed(precision),
+              groupSeparator,
+              decimalSeparator
+            );
+      }
+      const content = [];
+      prefix &&
+        content.push({
+          tag: "span",
+          _created() {
+            statisticRef.prefixRef = this;
+          },
+          classes: { [`${CSS_PREFIX}content-prefix`]: true },
+          children: prefix,
+        });
+      value &&
+        content.push({
+          tag: "span",
+          _created() {
+            statisticRef.valueRef = this;
+          },
+          classes: { [`${CSS_PREFIX}content-value`]: true },
+          children: formatValue,
+        });
+      suffix &&
+        content.push({
+          tag: "span",
+          _created() {
+            statisticRef.suffixRef = this;
+          },
+          classes: { [`${CSS_PREFIX}content-suffix`]: true },
+          children: suffix,
+        });
+      this.setProps({
+        children: [
+          {
+            _created() {
+              statisticRef.captionRef = this;
+            },
+            classes: { [`${CSS_PREFIX}title`]: true },
+            children: title,
+          },
+          { classes: { "nom-statistic-content": true }, children: content },
+        ],
+      });
+    }
+  }
+  Component.register(Statistic);
   const STATUS = {
     WAIT: "wait",
     PROCESS: "process",
@@ -17810,7 +17914,7 @@ function _defineProperty2(obj, key, value) {
           initializing = false;
           that.fileList = fs;
           if (!disabled && this.button) {
-            that.button._enable();
+            that.button.enable();
           }
           that.list &&
             that.list.update({ initializing: false, files: this.fileList });
@@ -17977,7 +18081,7 @@ function _defineProperty2(obj, key, value) {
           ["removing", "uploading"].includes(file.status)
         );
         if (!this.props.disabled) {
-          disableBtn ? this.button._disable() : this.button._enable();
+          disableBtn ? this.button.disable() : this.button.enable();
         }
       }
       if (onChangeProp) {
@@ -18133,6 +18237,7 @@ function _defineProperty2(obj, key, value) {
   exports.SlideCaptcha = SlideCaptcha;
   exports.Spinner = Spinner;
   exports.StaticText = StaticText;
+  exports.Statistic = Statistic;
   exports.Steps = Steps;
   exports.Switch = Switch;
   exports.Table = Table;
