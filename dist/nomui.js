@@ -2354,6 +2354,7 @@ function _defineProperty2(obj, key, value) {
         onCancel: (e) => {
           e.sender.close();
         },
+        width: 960,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -2362,7 +2363,14 @@ function _defineProperty2(obj, key, value) {
       this.bodyElem = document.body;
     }
     _config() {
-      this.setProps({ children: { component: ModalDialog } });
+      const { width } = this.props;
+      const myWidth = isNumeric(width) ? `${width}px` : width;
+      this.setProps({
+        children: {
+          component: ModalDialog,
+          attrs: { style: { width: this.props.width ? myWidth : "auto" } },
+        },
+      });
     }
     _show() {
       this.setzIndex();
@@ -3851,7 +3859,7 @@ function _defineProperty2(obj, key, value) {
   class Empty extends Component {
     constructor(props, ...mixins) {
       const defaults = {
-        description: "暂无数据",
+        description: false,
         image: Empty.PRESENTED_IMAGE_DEFAULT,
         imageStyle: {},
       };
@@ -8417,7 +8425,7 @@ function _defineProperty2(obj, key, value) {
                 colspan: this.table.colLength,
                 style: { padding: "25px 0" },
               },
-              children: { component: "Empty" },
+              children: { component: "Empty", description: false },
             },
           },
         };

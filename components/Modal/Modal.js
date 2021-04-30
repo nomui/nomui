@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isNumeric } from '../util/index'
 import getzIndex from '../util/index-manager'
 import { positionTool } from '../util/position'
 import ModalDialog from './ModalDialog'
@@ -15,7 +16,8 @@ class Modal extends Component {
       },
       onCancel: (e) => {
         e.sender.close()
-      }
+      },
+      width: 960,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -27,9 +29,16 @@ class Modal extends Component {
   }
 
   _config() {
+    const { width } = this.props
+    const myWidth = isNumeric(width) ? `${width}px` : width
     this.setProps({
       children: {
         component: ModalDialog,
+        attrs: {
+          style: {
+            width: this.props.width ? myWidth : 'auto',
+          },
+        },
       },
     })
   }
