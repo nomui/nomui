@@ -13,8 +13,6 @@ define([], function () {
         body: {
           children: {
             component: 'Collapse',
-            bordered: true,
-            iconOnly: true,
             icon: {
               default: 'plus',
               open: 'up',
