@@ -1,17 +1,15 @@
 define([], function () {
     return {
-        title: '更多用法',
-        file: 'more',
+        title: '上一页下一页的显示与隐藏',
+        file: 'prev-show',
         demo: function () {
             return {
                 children: [
                     {
                         component: 'Pager',
-                        totalCount: 1000,
-                        pageIndex: 3,
-                        pageSize: 20,
-                        displayItemCount: 6,
-                        edgeItemCount: 2,
+                        totalCount: 100,
+                        prevShowAlways: false,
+                        nextShowAlways: false,
                         onPageChange: function (e) {
                             e.sender.update(e)
                             console.log(e)

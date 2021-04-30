@@ -1,6 +1,8 @@
 define(
     [
         './basic.js',
+        './prev-show.js',
+        './icon-text.js',
         './more.js'
     ],
     function (...demos) {

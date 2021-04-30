@@ -6,7 +6,6 @@ define([], function () {
       return {
         children: {
           component: 'Collapse',
-          bordered: true,
           items: [
             {
               key: 1,
