@@ -16,8 +16,15 @@ class Button extends Component {
   }
 
   _config() {
+
     this._propStyleClasses = ['type', 'ghost', 'size', 'shape', 'danger', 'block']
-    const { icon, text, rightIcon, href, target } = this.props
+    const {
+      icon,
+      text,
+      rightIcon,
+      href,
+      target
+    } = this.props
 
     if (icon || rightIcon) {
       this.setProps({
@@ -38,7 +45,10 @@ class Button extends Component {
     this.setProps({
       children: [
         Component.normalizeIconProps(icon),
-        text && { tag: 'span', children: text },
+        text && {
+          tag: 'span',
+          children: text
+        },
         Component.normalizeIconProps(rightIcon),
       ],
     })
