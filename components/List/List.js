@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import { extend, isFunction } from '../util/index'
-import ListContent from './ListContent'
 import scrollIntoView from '../util/scrollIntoView'
+import ListContent from './ListContent'
 
 class List extends Component {
   constructor(props, ...mixins) {
