@@ -33,7 +33,8 @@ class Cols extends Component {
         children.push({ component: Col, children: item })
       }
 
-      this.setProps({
+      const newLocal = this
+      newLocal.setProps({
         children: children,
       })
     }

@@ -218,8 +218,8 @@ class Layer extends Component {
           pos = rhorizontal.test(pos[0])
             ? pos.concat(['center'])
             : rvertical.test(pos[0])
-            ? ['center'].concat(pos)
-            : ['center', 'center']
+              ? ['center'].concat(pos)
+              : ['center', 'center']
         }
         pos[0] = rhorizontal.test(pos[0]) ? pos[0] : 'center'
         pos[1] = rvertical.test(pos[1]) ? pos[1] : 'center'

@@ -6,7 +6,7 @@ import {
   isNumeric,
   isPlainObject,
   isString,
-  normalizeKey,
+  normalizeKey
 } from '../util/index'
 import ComponentDescriptor from './ComponentDescriptor'
 
@@ -45,7 +45,6 @@ class Component {
       },
     }
     this.props = Component.extendProps(defaults, props)
-
     this.parent = null
     this.root = null
     this.rendered = false
@@ -111,7 +110,7 @@ class Component {
     this.props._created && this.props._created.call(this, this)
   }
 
-  _created() {}
+  _created() { }
 
   config() {
     this._setExpandableProps()
@@ -122,7 +121,7 @@ class Component {
     this._setStatusProps()
   }
 
-  _config() {}
+  _config() { }
 
   render() {
     if (this.rendered === true) {
@@ -152,7 +151,7 @@ class Component {
     this.firstRender = false
   }
 
-  _rendered() {}
+  _rendered() { }
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
   remove() {
@@ -274,7 +273,7 @@ class Component {
     return el
   }
 
-  _remove() {}
+  _remove() { }
 
   _callMixin(hookType) {
     for (let i = 0; i < MIXINS.length; i++) {

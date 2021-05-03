@@ -1,9 +1,9 @@
 import Component from '../Component/index'
-import LayoutHeader from './LayoutHeader'
+import LayoutAsider from './LayoutAsider'
 import LayoutBody from './LayoutBody'
 import LayoutFooter from './LayoutFooter'
+import LayoutHeader from './LayoutHeader'
 import LayoutSider from './LayoutSider'
-import LayoutAsider from './LayoutAsider'
 
 class Layout extends Component {
     constructor(props, ...mixins) {

@@ -4,7 +4,12 @@ define([], function () {
     file: 'template',
     demo: function () {
       let asyncRef = null
+      let asyncRefss = null
       return {
+        ref: (c) => {
+          asyncRefss = c
+        },
+        autoRender: false,
         children: [
           {
             children: '我是第一个节点',
@@ -22,7 +27,10 @@ define([], function () {
         ],
         _created: function () {
           setTimeout(function () {
-            asyncRef.update()
+            asyncRefss.update()
+            setTimeout(function () {
+              asyncRef.update()
+            }, 1000)
           }, 500)
         },
       }
