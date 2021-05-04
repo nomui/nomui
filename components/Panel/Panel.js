@@ -29,7 +29,7 @@ class Panel extends Component {
     if (footer) {
       footerProps = Component.extendProps({ component: PanelFooter }, footer)
     }
-
+    /* console.log(this.props) */
     this.setProps({
       children: [headerProps, ...startAddons, bodyProps, ...endAddons, footerProps],
     })
