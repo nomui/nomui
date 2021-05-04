@@ -6,6 +6,7 @@ define([], function () {
         demo: function () {
             return {
                 component: 'Rows',
+                gutter: 'lg',
                 items: [
                     {
                         component: 'Button',
