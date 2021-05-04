@@ -74,6 +74,7 @@ class Layer extends Component {
 
       if (this.props.closeOnClickBackdrop) {
         this.backdrop._on('click', function (e) {
+          /* console.log(e) */
           if (e.target !== e.currentTarget) {
             return
           }
