@@ -15,6 +15,7 @@ class Loading extends Layer {
   }
 
   _config() {
+    /*     console.log(this.props.container, this.props.container.component) */
     this.setProps({
       reference: this.props.container,
       alignTo: this.getElement(this.props.container),

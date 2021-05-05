@@ -127,7 +127,7 @@ class Notification extends Layer {
     }
   }
 
-  _registerDuritionClose() {}
+  _registerDuritionClose() { }
 
   _getMarginStyle() {
     const { top, right, bottom, left } = this.props
