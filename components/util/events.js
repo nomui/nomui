@@ -16,7 +16,7 @@ const eventSplitter = /\s+/
 //     object.on('expand', function(){ alert('expanded'); });
 //     object.trigger('expand');
 //
-function Events() {}
+function Events() { }
 
 // Bind one or more space separated events, `events`, to a `callback`
 // function. Passing `"all"` will bind the callback to all events fired.

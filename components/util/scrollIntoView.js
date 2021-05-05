@@ -30,10 +30,10 @@ function r(t, e, n, r, i, o, l, d) {
   return (o < t && l > e) || (o > t && l < e)
     ? 0
     : (o <= t && d <= n) || (l >= e && d >= n)
-    ? o - t - r
-    : (l > e && d < n) || (o < t && d > n)
-    ? l - e + i
-    : 0
+      ? o - t - r
+      : (l > e && d < n) || (o < t && d > n)
+        ? l - e + i
+        : 0
 }
 function compute(e, i) {
   var o = window,
@@ -46,8 +46,8 @@ function compute(e, i) {
       'function' == typeof h
         ? h
         : function (t) {
-            return t !== h
-          }
+          return t !== h
+        }
   if (!t(e)) throw new TypeError('Invalid target')
   for (
     var f = document.scrollingElement || document.documentElement, s = [], p = e;
@@ -58,25 +58,25 @@ function compute(e, i) {
       s.push(p)
       break
     }
-    ;(null != p && p === document.body && n(p) && !n(document.documentElement)) ||
+    ; (null != p && p === document.body && n(p) && !n(document.documentElement)) ||
       (null != p && n(p, a) && s.push(p))
   }
   for (
     var m = o.visualViewport ? o.visualViewport.width : innerWidth,
-      g = o.visualViewport ? o.visualViewport.height : innerHeight,
-      w = window.scrollX || pageXOffset,
-      v = window.scrollY || pageYOffset,
-      W = e.getBoundingClientRect(),
-      b = W.height,
-      H = W.width,
-      y = W.top,
-      E = W.right,
-      M = W.bottom,
-      V = W.left,
-      x = 'start' === d || 'nearest' === d ? y : 'end' === d ? M : y + b / 2,
-      I = 'center' === u ? V + H / 2 : 'end' === u ? E : V,
-      C = [],
-      T = 0;
+    g = o.visualViewport ? o.visualViewport.height : innerHeight,
+    w = window.scrollX || pageXOffset,
+    v = window.scrollY || pageYOffset,
+    W = e.getBoundingClientRect(),
+    b = W.height,
+    H = W.width,
+    y = W.top,
+    E = W.right,
+    M = W.bottom,
+    V = W.left,
+    x = 'start' === d || 'nearest' === d ? y : 'end' === d ? M : y + b / 2,
+    I = 'center' === u ? V + H / 2 : 'end' === u ? E : V,
+    C = [],
+    T = 0;
     T < s.length;
     T++
   ) {
@@ -114,41 +114,41 @@ function compute(e, i) {
         'start' === d
           ? x
           : 'end' === d
-          ? x - g
-          : 'nearest' === d
-          ? r(v, v + g, g, q, A, v + x, v + x + b, b)
-          : x - g / 2),
+            ? x - g
+            : 'nearest' === d
+              ? r(v, v + g, g, q, A, v + x, v + x + b, b)
+              : x - g / 2),
         (G =
           'start' === u
             ? I
             : 'center' === u
-            ? I - m / 2
-            : 'end' === u
-            ? I - m
-            : r(w, w + m, m, j, z, w + I, w + I + H, H)),
+              ? I - m / 2
+              : 'end' === u
+                ? I - m
+                : r(w, w + m, m, j, z, w + I, w + I + H, H)),
         (F = Math.max(0, F + v)),
         (G = Math.max(0, G + w))
     else {
-      ;(F =
+      ; (F =
         'start' === d
           ? x - R - q
           : 'end' === d
-          ? x - Y + A + K
-          : 'nearest' === d
-          ? r(R, Y, D, q, A + K, x, x + b, b)
-          : x - (R + D / 2) + K / 2),
+            ? x - Y + A + K
+            : 'nearest' === d
+              ? r(R, Y, D, q, A + K, x, x + b, b)
+              : x - (R + D / 2) + K / 2),
         (G =
           'start' === u
             ? I - L - j
             : 'center' === u
-            ? I - (L + O / 2) + J / 2
-            : 'end' === u
-            ? I - X + z + J
-            : r(L, X, O, j, z + J, I, I + H, H))
+              ? I - (L + O / 2) + J / 2
+              : 'end' === u
+                ? I - X + z + J
+                : r(L, X, O, j, z + J, I, I + H, H))
       var N = k.scrollLeft,
         P = k.scrollTop
-      ;(x += P - (F = Math.max(0, Math.min(P + F, k.scrollHeight - D + K)))),
-        (I += N - (G = Math.max(0, Math.min(N + G, k.scrollWidth - O + J))))
+        ; (x += P - (F = Math.max(0, Math.min(P + F, k.scrollHeight - D + K)))),
+          (I += N - (G = Math.max(0, Math.min(N + G, k.scrollWidth - O + J))))
     }
     C.push({ el: k, top: F, left: G })
   }
