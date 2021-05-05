@@ -54,7 +54,7 @@ class Numberbox extends Textbox {
         value: this.props.max,
       })
     }
-
+    /* console.log(rules) */
     this.setProps({ rules: rules })
 
     super._config()

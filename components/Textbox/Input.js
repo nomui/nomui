@@ -4,9 +4,17 @@ class Input extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       tag: 'input',
+      /*       styles: {
+              height: 4,
+              shadow: 'md',
+            }, */
       attrs: {
         type: 'text',
         autocomplete: 'off',
+        /*         style: {
+                  backgroundColor: 'lightgreen',
+                }, */
+
       },
     }
 

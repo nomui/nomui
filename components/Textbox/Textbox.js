@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import {} from '../Icon/index'
+import { } from '../Icon/index'
 import { extend } from '../util/index'
 import Input from './Input'
 
@@ -23,11 +23,13 @@ class Textbox extends Field {
     const { leftIcon, rightIcon, placeholder, value, htmlType } = this.props
 
     let leftIconProps = Component.normalizeIconProps(leftIcon)
+    /* console.log('1', leftIconProps) */
     if (leftIconProps != null) {
       leftIconProps = Component.extendProps(leftIconProps, {
         classes: { 'nom-textbox-left-icon': true },
       })
     }
+    /* console.log('2', leftIconProps) */
 
     let rightIconProps = Component.normalizeIconProps(rightIcon)
     if (rightIconProps != null) {
