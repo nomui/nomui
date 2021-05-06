@@ -246,6 +246,10 @@ export function formatDate(date, format) {
   return new Date(mydate).format(format)
 }
 
+export function isDate(date) {
+  return toString.call(date) === '[object Date]'
+}
+
 export default {
   extend,
   isFunction,
