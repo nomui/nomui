@@ -6,7 +6,7 @@ define([], function () {
       return {
         component: 'Countdown',
         title: '倒计时',
-        value: new Date().getTime() + 12 * 1000,
+        value: new Date().getTime() + 60 * 1000,
         interval: 2000,
       }
     },
