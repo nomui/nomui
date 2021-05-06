@@ -2363,8 +2363,11 @@ function _defineProperty2(obj, key, value) {
       this.bodyElem = document.body;
     }
     _config() {
-      const { width } = this.props;
-      const myWidth = isNumeric(width) ? `${width}px` : width;
+      const { size, width } = this.props;
+      let myWidth = isNumeric(width) ? `${width}px` : width;
+      if (size) {
+        myWidth = "auto";
+      }
       this.setProps({
         children: {
           component: ModalDialog,
@@ -6817,7 +6820,13 @@ function _defineProperty2(obj, key, value) {
   };
   class DateTimePickerList extends List {
     constructor(props, ...mixins) {
-      const defaults = { gutter: "sm", cols: 1, min: "00", max: "59" };
+      const defaults = {
+        gutter: "sm",
+        cols: 1,
+        min: "00",
+        max: "59",
+        scrollIntoView: false,
+      };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
@@ -6899,9 +6908,10 @@ function _defineProperty2(obj, key, value) {
       this.scrollToKey();
     }
     scrollToKey() {
-      // const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
-      // this.scroller.element.scrollTop = top
-      this.scrollToSelected();
+      const top = this.getSelectedItem()
+        ? this.getSelectedItem().element.offsetTop - 3
+        : 0;
+      this.scroller.element.scrollTop = top; // this.scrollToSelected()
     }
   }
   class DateTimePickerWrapper extends Component {
@@ -8827,6 +8837,9 @@ function _defineProperty2(obj, key, value) {
     hide() {
       !this.props.hidden && this.update({ hidden: true });
     }
+    _remove() {
+      this.element.remove();
+    }
   }
   Component.register(Scrollbar);
   class GridHeader extends Component {
@@ -8874,6 +8887,9 @@ function _defineProperty2(obj, key, value) {
           that._onPageScroll();
         });
       }
+    }
+    _remove() {
+      this.scrollbar && this.scrollbar._remove();
     }
     _onPageScroll() {
       this.element.style.transform = `translateY(0px)`;
@@ -13733,7 +13749,13 @@ function _defineProperty2(obj, key, value) {
   Component.register(Timeline);
   class TimePickerList extends List {
     constructor(props, ...mixins) {
-      const defaults = { gutter: "sm", cols: 1, min: "00", max: "59" };
+      const defaults = {
+        gutter: "sm",
+        cols: 1,
+        min: "00",
+        max: "59",
+        scrollIntoView: false,
+      };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
@@ -13790,8 +13812,10 @@ function _defineProperty2(obj, key, value) {
       this.pickerControl.setTime({ type: this.props.type, value: key });
     }
     resetTime() {
-      if (this.pickerControl.defaultValue) {
-        const t = this.pickerControl.defaultValue.split(":");
+      if (this.pickerControl.getValue() || this.pickerControl.defaultValue) {
+        const t = this.pickerControl.getValue()
+          ? this.pickerControl.getValue().split(":")
+          : this.pickerControl.defaultValue.split(":");
         if (this.props.type === "hour") {
           // this.selectItem(t[0])
           this.update({ selectedItems: t[0] });
@@ -13814,9 +13838,10 @@ function _defineProperty2(obj, key, value) {
       this.scrollToKey();
     }
     scrollToKey() {
-      // const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
-      // this.scroller.element.scrollTop = top
-      this.scrollToSelected();
+      const top = this.getSelectedItem()
+        ? this.getSelectedItem().element.offsetTop - 3
+        : 0;
+      this.scroller.element.scrollTop = top; // this.scrollToSelected()
     }
   }
   class TimePickerWrapper extends Component {
