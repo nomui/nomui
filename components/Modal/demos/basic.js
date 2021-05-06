@@ -31,6 +31,7 @@ define([], function () {
                     new nomui.Message({ type: 'info', content: '点击了确定按钮' })
                     args.sender.close()
                   },
+                  width: 1200, // 自定义宽度，默认960
                 })
               },
             },
