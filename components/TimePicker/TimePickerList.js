@@ -8,6 +8,7 @@ class TimePickerList extends List {
       cols: 1,
       min: '00',
       max: '59',
+      scrollIntoView: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -85,8 +86,10 @@ class TimePickerList extends List {
   }
 
   resetTime() {
-    if (this.pickerControl.defaultValue) {
-      const t = this.pickerControl.defaultValue.split(':')
+    if (this.pickerControl.getValue() || this.pickerControl.defaultValue) {
+      const t = this.pickerControl.getValue()
+        ? this.pickerControl.getValue().split(':')
+        : this.pickerControl.defaultValue.split(':')
 
       if (this.props.type === 'hour') {
         // this.selectItem(t[0])
@@ -114,9 +117,9 @@ class TimePickerList extends List {
   }
 
   scrollToKey() {
-    // const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
-    // this.scroller.element.scrollTop = top
-    this.scrollToSelected()
+    const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
+    this.scroller.element.scrollTop = top
+    // this.scrollToSelected()
   }
 }
 

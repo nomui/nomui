@@ -64,6 +64,10 @@ class GridHeader extends Component {
     }
   }
 
+  _remove() {
+    this.scrollbar && this.scrollbar._remove()
+  }
+
   _onPageScroll() {
     this.element.style.transform = `translateY(0px)`
     let pRect = null

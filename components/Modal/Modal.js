@@ -29,8 +29,12 @@ class Modal extends Component {
   }
 
   _config() {
-    const { width } = this.props
-    const myWidth = isNumeric(width) ? `${width}px` : width
+    const { size, width } = this.props
+
+    let myWidth = isNumeric(width) ? `${width}px` : width
+    if (size) {
+      myWidth = 'auto'
+    }
     this.setProps({
       children: {
         component: ModalDialog,

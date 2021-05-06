@@ -8,6 +8,7 @@ class DateTimePickerList extends List {
       cols: 1,
       min: '00',
       max: '59',
+      scrollIntoView: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -118,9 +119,9 @@ class DateTimePickerList extends List {
   }
 
   scrollToKey() {
-    // const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
-    // this.scroller.element.scrollTop = top
-    this.scrollToSelected()
+    const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
+    this.scroller.element.scrollTop = top
+    // this.scrollToSelected()
   }
 }
 
