@@ -11,12 +11,14 @@ class Button extends Component {
       ghost: false,
       danger: false,
     }
-
+    /* 执行父类有参数构造方法
+    先将子类默认参数（defaults）与子类传参（props）合并，然后传递给父类的参数，父类参数（mixins）便有了所有当前的参数配置，然后super执行 */
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
 
+    /* 用来给当前组件加如‘p-size-small’式的样式（组件属性控制的样式类前缀 p-，例如 p-bordered） */
     this._propStyleClasses = ['type', 'ghost', 'size', 'shape', 'danger', 'block']
     const {
       icon,

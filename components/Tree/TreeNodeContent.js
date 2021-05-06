@@ -68,19 +68,19 @@ class TreeNodeContent extends Component {
         this.getExpandableIndicatorProps(expanded),
         nodeCheckable && this._getCheckbox(),
         icon &&
-          Component.extendProps(
-            { classes: { 'nom-tree-node-content-icon': true } },
-            Component.normalizeIconProps(icon),
-          ),
+        Component.extendProps(
+          { classes: { 'nom-tree-node-content-icon': true } },
+          Component.normalizeIconProps(icon),
+        ),
         Component.extendProps(
           { tag: 'span', classes: { 'nom-tree-node-content-text': true } },
           Component.normalizeTemplateProps(text),
         ),
         tools &&
-          Component.extendProps(
-            { classes: { 'nom-tree-node-content-tools': true } },
-            Component.normalizeIconProps(tools),
-          ),
+        Component.extendProps(
+          { classes: { 'nom-tree-node-content-tools': true } },
+          Component.normalizeIconProps(tools),
+        ),
       ],
       onClick: () => {
         this.tree._onNodeClick({ node: this.node })

@@ -22,11 +22,13 @@ class Component {
             placement: 'append',
             autoRender: true,
 
+            /* 状态类（状态样式类前缀 s-，例如 s-disabled, s-selected, s-expanded） */
             hidden: false,
             disabled: false,
             selected: false,
             expanded: false,
 
+            /* 选择行为相关的 props */
             selectable: {
                 byClick: false,
                 byHover: false,
@@ -34,6 +36,7 @@ class Component {
                 selectedProps: null,
                 unselectedProps: null,
             },
+            /* 扩展行为相关的 props */
             expandable: {
                 byClick: false,
                 byHover: false,
