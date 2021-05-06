@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isNumeric } from '../util/index'
+import { isNumeric, isPlainObject } from '../util/index'
 import getzIndex from '../util/index-manager'
 import { positionTool } from '../util/position'
 import ModalDialog from './ModalDialog'
@@ -17,7 +17,7 @@ class Modal extends Component {
       onCancel: (e) => {
         e.sender.close()
       },
-      width: 960,
+      size: 'small',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -29,18 +29,25 @@ class Modal extends Component {
   }
 
   _config() {
-    const { size, width } = this.props
+    this._propStyleClasses = ['size']
+    const { size } = this.props
 
-    let myWidth = isNumeric(width) ? `${width}px` : width
+    let myWidth = null
+
     if (size) {
-      myWidth = 'auto'
+      if (isPlainObject(size)) {
+        if (size.width) {
+          myWidth = isNumeric(size.width) ? `${size.width}px` : size.width
+        }
+      }
     }
+
     this.setProps({
       children: {
         component: ModalDialog,
         attrs: {
           style: {
-            width: this.props.width ? myWidth : 'auto',
+            width: myWidth || null,
           },
         },
       },
