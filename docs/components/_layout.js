@@ -292,6 +292,12 @@ define([], function () {
                       id: 'Statistic',
                       url: '#!components!index?type=Statistic',
                     },
+                    {
+                      text: 'Countdown',
+                      id: 'Countdown',
+                      subtext: '倒计时',
+                      url: '#!components!index?type=Countdown',
+                    },
                   ],
                 },
                 {

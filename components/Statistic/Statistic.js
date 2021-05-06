@@ -26,8 +26,9 @@ class Statistic extends Component {
       suffix,
     } = this.props
 
+    const valueStr = value ? value.toString() : ''
     // 非数字则不格式化了
-    let formatValue = decimalSeparator ? value.replace(decimalSeparator, '.') : value
+    let formatValue = decimalSeparator ? valueStr.replace(decimalSeparator, '.') : valueStr
 
     if (isNumeric(formatValue)) {
       formatValue = isFunction(formatter)
