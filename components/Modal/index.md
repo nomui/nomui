@@ -12,4 +12,4 @@
 | onOk       | 确定回调                       | `(e)=>{}`          | `(e)=>{ e.sender.close()}` |
 | onClose    | 关闭的回调，不管是确定还是取消 | `(e)=>{}`          | -                          |
 | onCancel   | 取消回调                       | `(e)=>{}`          | `(e)=>{ e.sender.close()}` |
-| width      | 宽度                           | `number \| string` | 960                        |
+| size | 模态框尺寸，除了字符串以外，也可以通过 size.width 来控制宽度 | `object` \|`xsmall \| small \| middle \| large \| xlarge` | 'small' |

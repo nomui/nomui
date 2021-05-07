@@ -62,6 +62,10 @@ class Scrollbar extends Component {
         hidden: true,
       })
   }
+
+  _remove() {
+    this.element.remove()
+  }
 }
 
 Component.register(Scrollbar)
