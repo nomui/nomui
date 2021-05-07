@@ -2357,7 +2357,7 @@ function _defineProperty2(obj, key, value) {
         onCancel: (e) => {
           e.sender.close();
         },
-        width: 960,
+        size: "small",
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -2366,15 +2366,20 @@ function _defineProperty2(obj, key, value) {
       this.bodyElem = document.body;
     }
     _config() {
-      const { size, width } = this.props;
-      let myWidth = isNumeric(width) ? `${width}px` : width;
+      this._propStyleClasses = ["size"];
+      const { size } = this.props;
+      let myWidth = null;
       if (size) {
-        myWidth = "auto";
+        if (isPlainObject(size)) {
+          if (size.width) {
+            myWidth = isNumeric(size.width) ? `${size.width}px` : size.width;
+          }
+        }
       }
       this.setProps({
         children: {
           component: ModalDialog,
-          attrs: { style: { width: this.props.width ? myWidth : "auto" } },
+          attrs: { style: { width: myWidth || null } },
         },
       });
     }

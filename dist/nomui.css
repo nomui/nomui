@@ -4483,7 +4483,7 @@ img {
 .nom-modal-dialog-centered::before {
   display: block;
   height: calc(100vh - 1rem);
-  content: "";
+  content: '';
 }
 .nom-modal-dialog-centered.nom-modal-dialog-scrollable {
   flex-direction: column;
@@ -4524,12 +4524,27 @@ img {
   border-bottom-right-radius: 0.3rem;
   border-bottom-left-radius: 0.3rem;
 }
+.nom-modal.p-size-xsmall .nom-modal-dialog {
+  width: 300px;
+}
+.nom-modal.p-size-small .nom-modal-dialog {
+  width: 560px;
+}
+.nom-modal.p-size-middle .nom-modal-dialog {
+  width: 900px;
+}
+.nom-modal.p-size-large .nom-modal-dialog {
+  width: 1200px;
+}
+.nom-modal.p-size-xlarge .nom-modal-dialog {
+  width: 100vw;
+}
 @media (min-width: 576px) {
   .nom-modal-dialog {
     width: 560px;
     margin: 1.75rem auto;
   }
-  .nom-modal-sm {
+  .nom-modal-sm .nom-modal-dialog {
     width: 300px;
   }
 }
