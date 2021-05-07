@@ -535,6 +535,12 @@ define([], function () {
                       id: 'SlideCaptcha',
                       url: '#!components!index?type=SlideCaptcha',
                     },
+                    {
+                      text: 'AAAcomment',
+                      subtext: '评论',
+                      id: 'AAAcomment',
+                      url: '#!components!index?type=AAAcomment',
+                    },
                   ],
                 },
               ],
