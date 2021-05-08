@@ -7395,7 +7395,7 @@ function _defineProperty2(obj, key, value) {
       const that = this;
       this.props.value = null;
       this.defaultValue = null;
-      this.time = { hour: "00", minute: "00", second: "00" };
+      this.defaultTime = this.time = { hour: "00", minute: "00", second: "00" };
       this.timeText.update({ children: "" });
       Object.keys(this.timeList).forEach(function (key) {
         that.timeList[key].resetTime();
@@ -7601,11 +7601,10 @@ function _defineProperty2(obj, key, value) {
                           that.days = this;
                         },
                         gutter: "sm",
-                        cols: 7,
-                        selectedItems: that.props.value
-                          ? `${that.year}-${that.month}-${that.day}`
-                          : null,
-                        itemSelectable: { byClick: true },
+                        cols: 7, // selectedItems: that.props.value
+                        //   ? `${that.year}-${that.month}-${that.day}`
+                        //   : null,
+                        itemSelectable: { byClick: true, multiple: false },
                         items: this._getDays(that.year, that.month),
                         itemDefaults: {
                           key: function () {
@@ -7761,7 +7760,7 @@ function _defineProperty2(obj, key, value) {
     _getDays(year, month) {
       const firstDay = this._getFirstDayOfMonth(year, month);
       const currentDayCount = this._getDaysInMonth(year, month);
-      let lastDayCount = this._getDaysInMonth(year, month);
+      let lastDayCount = this._getDaysInMonth(year, month - 1);
       const daysList = [];
       let i = 0;
       let lastMonthYear = year;
@@ -7856,12 +7855,13 @@ function _defineProperty2(obj, key, value) {
       this.year = currentDate.getFullYear();
       this.month = currentDate.getMonth() + 1;
       this.day = currentDate.getDate();
-      this.props.value &&
-        this.props.showTime &&
-        this.timePicker &&
+      if (this.props.value && this.props.showTime && this.timePicker) {
         this.timePicker.setValue(
           new Date(this.props.value).format(this.props.showTime.format)
         );
+      } else if (!this.props.value && this.props.showTime && this.timePicker) {
+        this.timePicker.clearTime();
+      }
     }
     handleTimeChange(param) {
       if (!this.days.getSelectedItem()) {
@@ -7877,6 +7877,7 @@ function _defineProperty2(obj, key, value) {
     clearTime() {
       this.props.value = null;
       this.setValue(null);
+      this.dateInfo = null;
       this.days && this.days.unselectAllItems();
       if (this.props.showTime && this.timePicker) {
         this.timePicker.clearTime();
