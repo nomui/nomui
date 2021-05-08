@@ -28,7 +28,6 @@ class TimePickerPanel extends Component {
     this.datePicker = this.parent.parent.parent.opener.parent.parent
     this.datePicker.timePicker = this
 
-    this.defaultValue = this.props.value
     this.timeList = []
 
     this.empty = !this.props.value
@@ -62,6 +61,7 @@ class TimePickerPanel extends Component {
 
   _config() {
     const that = this
+    this.defaultValue = this.props.value
     if (this.datePicker.props.showTime && this.datePicker.props.showTime !== true) {
       this.props = { ...this.props, ...this.datePicker.props.showTime }
     }
@@ -203,6 +203,12 @@ class TimePickerPanel extends Component {
 
   setValue(c) {
     this.timeText.update({ children: c })
+    this.defaultValue = c
+    const t = c.split(':')
+    this.time.hour = t[0] || '00'
+    this.time.minute = t[1] || '00'
+    this.time.second = t[2] || '00'
+    this.resetList()
     this.props.onValueChange && this._callHandler(this.props.onValueChange(this.time))
   }
 
@@ -236,22 +242,32 @@ class TimePickerPanel extends Component {
 
   resetList() {
     const that = this
-    this.defaultValue = null
+
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].resetTime()
+      that.timeList[key].scrollToKey()
     })
-    this.timeText.update({ children: '' })
+  }
+
+  clearTime() {
+    const that = this
+    this.props.value = null
+    this.defaultValue = null
+    this.timeText.update({
+      children: '',
+    })
+    Object.keys(this.timeList).forEach(function (key) {
+      that.timeList[key].resetTime()
+      that.timeList[key].scrollToKey()
+    })
   }
 
   onShow() {
-    const that = this
     this.timeText &&
       this.timeText.update({
         children: this.defaultValue,
       })
-    Object.keys(this.timeList).forEach(function (key) {
-      that.timeList[key].scrollToKey()
-    })
+    this.resetList()
   }
 
   setNow() {
