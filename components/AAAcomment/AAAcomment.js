@@ -9,7 +9,7 @@ class AAAcomment extends Component {
                     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                     content: '我是葫芦娃',
                     datetime: '/Date(1489368353683)/',
-                    reply: {} /* 回复时，别人的留言 */,
+                    reply: {} // 回复时，别人的留言,
                 },
                 {
                     author: '红孩儿',
@@ -50,7 +50,7 @@ class AAAcomment extends Component {
         })
     }
 
-    /* 列表 */
+    // 列表
     getList(arry) {
         const _that = this
         return arry.map(function (currentValue) {
@@ -210,13 +210,13 @@ class AAAcomment extends Component {
         })
     }
 
-    /* 字符提取时间 */
+    // 字符提取时间
     getTime(str) {
         const number = new RegExp('\\d+', 'g')
         return new Date(Number(str.match(number))).format('yyyy-MM-dd hh:mm')
     }
 
-    /* 有无回复 */
+    // 有无回复
     isReply(val) {
         return JSON.stringify(val) !== '{}'
     }
