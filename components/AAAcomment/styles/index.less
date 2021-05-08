@@ -1,15 +1,15 @@
 .nom-comment-author {
   margin-right: 1rem;
-  text-decoration: none;
+  text-decoration: none!important;
 }
 .nom-comment-action-btn {
+  display: none;
+  float: right;
   margin-right: 1rem;
-  text-decoration: none;
-  visibility: hidden;
+  text-decoration: none!important;
 }
 .nom-comment-reply {
   margin-left: 3rem;
-  padding-top: 1rem;
   padding-left: 0.5rem;
   color: #aaa;
   font-size: 10px;
@@ -19,12 +19,12 @@
   margin-bottom: 1rem;
 }
 .nom-comment-list:hover .nom-comment-action-btn {
-  visibility: visible;
+  display: inline-block;
 }
 .nom-comment-reply-to {
   display: none;
   margin-right: 0.5rem;
-  color: #aaa;
+  text-decoration: none!important;
 }
 .nom-comment-reply-to-show {
   display: inline-block;
