@@ -9,7 +9,7 @@ class AAAcomment extends Component {
                     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                     content: '我是葫芦娃',
                     datetime: '/Date(1489368353683)/',
-                    reply: {},/* 回复时，别人的留言 */
+                    reply: {} /* 回复时，别人的留言 */,
                 },
                 {
                     author: '红孩儿',
@@ -46,20 +46,19 @@ class AAAcomment extends Component {
         const { commentList } = this.props
         const object_list = this.getList(commentList)
         this.setProps({
-            children: object_list
+            children: object_list,
         })
-
     }
 
     /* 列表 */
     getList(arry) {
-        const _that = this;
+        const _that = this
         return arry.map(function (currentValue) {
             const list = {
                 children: [
                     {
                         classes: {
-                            "nom-comment-list": true,
+                            'nom-comment-list': true,
                         },
                         children: {
                             component: 'Cols',
@@ -76,7 +75,7 @@ class AAAcomment extends Component {
                                             tag: 'a',
                                             children: currentValue.author,
                                             classes: {
-                                                "nom-comment-author": true,
+                                                'nom-comment-author': true,
                                             },
                                         },
                                         {
@@ -87,8 +86,8 @@ class AAAcomment extends Component {
                                             children: [
                                                 {
                                                     classes: {
-                                                        "nom-comment-reply-to": true,
-                                                        "nom-comment-reply-to-show": _that.isReply(currentValue.reply),
+                                                        'nom-comment-reply-to': true,
+                                                        'nom-comment-reply-to-show': _that.isReply(currentValue.reply),
                                                     },
                                                     tag: 'span',
                                                     children: `@${currentValue.reply.author}`,
@@ -98,35 +97,34 @@ class AAAcomment extends Component {
                                                     children: currentValue.content,
                                                 },
                                             ],
-
                                         },
                                         {
                                             tag: 'a',
                                             children: '回复',
                                             classes: {
-                                                "nom-comment-action-btn": true,
+                                                'nom-comment-action-btn': true,
                                             },
                                         },
                                         {
                                             tag: 'a',
                                             children: '删除',
                                             classes: {
-                                                "nom-comment-action-btn": true,
+                                                'nom-comment-action-btn': true,
                                             },
                                         },
                                     ],
                                 },
                             ],
                         },
-                    }
-                ]
+                    },
+                ],
             }
             if (_that.isReply(currentValue.reply)) {
                 if (!currentValue.reply.deleted) {
                     list.children.push({
                         classes: {
-                            "nom-comment-list": true,
-                            "nom-comment-reply": true,
+                            'nom-comment-list': true,
+                            'nom-comment-reply': true,
                         },
                         children: {
                             component: 'Cols',
@@ -144,7 +142,7 @@ class AAAcomment extends Component {
                                             tag: 'a',
                                             children: currentValue.reply.author,
                                             classes: {
-                                                "nom-comment-author": true,
+                                                'nom-comment-author': true,
                                             },
                                         },
                                         {
@@ -158,14 +156,14 @@ class AAAcomment extends Component {
                                             tag: 'a',
                                             children: '回复',
                                             classes: {
-                                                "nom-comment-action-btn": true,
+                                                'nom-comment-action-btn': true,
                                             },
                                         },
                                         {
                                             tag: 'a',
                                             children: '删除',
                                             classes: {
-                                                "nom-comment-action-btn": true,
+                                                'nom-comment-action-btn': true,
                                             },
                                         },
                                     ],
@@ -176,8 +174,8 @@ class AAAcomment extends Component {
                 } else {
                     list.children.push({
                         classes: {
-                            "nom-comment-list": true,
-                            "nom-comment-reply": true,
+                            'nom-comment-list': true,
+                            'nom-comment-reply': true,
                         },
                         children: {
                             component: 'Cols',
@@ -195,14 +193,14 @@ class AAAcomment extends Component {
                                             tag: 'a',
                                             children: currentValue.reply.author,
                                             classes: {
-                                                "nom-comment-author": true,
+                                                'nom-comment-author': true,
                                             },
                                         },
                                         {
                                             children: '评论已删除',
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             ],
                         },
                     })
@@ -227,6 +225,3 @@ class AAAcomment extends Component {
 Component.register(AAAcomment)
 
 export default AAAcomment
-
-
-
