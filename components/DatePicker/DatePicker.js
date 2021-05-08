@@ -184,6 +184,12 @@ class DatePicker extends Textbox {
                       items: this._getDays(that.year, that.month),
                       itemDefaults: {
                         key: function () {
+                          this.props.date = new Date(
+                            this.props.year,
+                            this.props.month - 1,
+                            this.props.day,
+                          ).format('yyyy-M-d')
+
                           return this.props.date
                         },
                         styles: {
@@ -205,6 +211,7 @@ class DatePicker extends Textbox {
                             this.props.month,
                             this.props.day,
                           )
+
                           const isToday = date === new Date().format('yyyy-MM-dd')
                           let isDisabled = false
                           if (that.props.disabledTime) {
