@@ -253,11 +253,12 @@ class TimePickerPanel extends Component {
     const that = this
     this.props.value = null
     this.defaultValue = null
-    this.time = {
+    this.defaultTime = this.time = {
       hour: '00',
       minute: '00',
       second: '00',
     }
+
     this.timeText.update({
       children: '',
     })

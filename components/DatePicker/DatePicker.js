@@ -177,11 +177,12 @@ class DatePicker extends Textbox {
                       },
                       gutter: 'sm',
                       cols: 7,
-                      selectedItems: that.props.value
-                        ? `${that.year}-${that.month}-${that.day}`
-                        : null,
+                      // selectedItems: that.props.value
+                      //   ? `${that.year}-${that.month}-${that.day}`
+                      //   : null,
                       itemSelectable: {
                         byClick: true,
+                        multiple: false,
                       },
                       items: this._getDays(that.year, that.month),
                       itemDefaults: {
@@ -362,7 +363,7 @@ class DatePicker extends Textbox {
   _getDays(year, month) {
     const firstDay = this._getFirstDayOfMonth(year, month)
     const currentDayCount = this._getDaysInMonth(year, month)
-    let lastDayCount = this._getDaysInMonth(year, month)
+    let lastDayCount = this._getDaysInMonth(year, month - 1)
     const daysList = []
     let i = 0
     let lastMonthYear = year
@@ -472,10 +473,11 @@ class DatePicker extends Textbox {
     this.month = currentDate.getMonth() + 1
     this.day = currentDate.getDate()
 
-    this.props.value &&
-      this.props.showTime &&
-      this.timePicker &&
+    if (this.props.value && this.props.showTime && this.timePicker) {
       this.timePicker.setValue(new Date(this.props.value).format(this.props.showTime.format))
+    } else if (!this.props.value && this.props.showTime && this.timePicker) {
+      this.timePicker.clearTime()
+    }
   }
 
   handleTimeChange(param) {
@@ -497,7 +499,7 @@ class DatePicker extends Textbox {
   clearTime() {
     this.props.value = null
     this.setValue(null)
-
+    this.dateInfo = null
     this.days && this.days.unselectAllItems()
     if (this.props.showTime && this.timePicker) {
       this.timePicker.clearTime()
