@@ -33,17 +33,20 @@ class DatePicker extends Textbox {
   }
 
   _config() {
+    const that = this
     this.props.value = formatDate(this.props.value, this.props.format)
 
-    const { value, format, disabled } = this.props
-    let currentDate = value !== null ? Date.parseString(value, format) : new Date()
-    if (!currentDate) {
-      currentDate = new Date()
-    }
-    let year = currentDate.getFullYear()
-    let month = currentDate.getMonth() + 1
-    const day = currentDate.getDate()
-    const that = this
+    const { disabled } = this.props
+    // let currentDate = value !== null ? Date.parseString(value, format) : new Date()
+    // if (!currentDate) {
+    //   currentDate = new Date()
+    // }
+
+    // let year = currentDate.getFullYear()
+    // let month = currentDate.getMonth() + 1
+    // const day = currentDate.getDate()
+
+    this.getCurrentDate()
 
     const minTime =
       this.props.showTime && this.props.minDate
@@ -96,6 +99,8 @@ class DatePicker extends Textbox {
             padding: '1',
           },
           onShow: () => {
+            this.getCurrentDate()
+            this.reActiveList()
             that.props.showTime && that.timePicker.onShow()
           },
           onHide: () => {
@@ -126,23 +131,29 @@ class DatePicker extends Textbox {
                       items: [
                         {
                           component: Select,
-                          value: year,
+                          value: that.year,
+                          _created: function () {
+                            that.years = this
+                          },
                           options: this._getYears(),
                           onValueChange: (changed) => {
-                            year = changed.newValue
+                            that.year = changed.newValue
                             that.days.update({
-                              items: that._getDays(year, month),
+                              items: that._getDays(that.year, that.month),
                             })
                           },
                         },
                         {
                           component: Select,
-                          value: month,
+                          value: that.month,
+                          _created: function () {
+                            that.months = this
+                          },
                           options: this._getMonths(),
                           onValueChange: function (changed) {
-                            month = changed.newValue
+                            that.month = changed.newValue
                             that.days.update({
-                              items: that._getDays(year, month),
+                              items: that._getDays(that.year, that.month),
                             })
                           },
                         },
@@ -166,11 +177,11 @@ class DatePicker extends Textbox {
                       },
                       gutter: 'sm',
                       cols: 7,
-                      selectedItems: `${year}-${month}-${day}`,
+                      selectedItems: `${that.year}-${that.month}-${that.day}`,
                       itemSelectable: {
                         byClick: true,
                       },
-                      items: this._getDays(year, month),
+                      items: this._getDays(that.year, that.month),
                       itemDefaults: {
                         key: function () {
                           return this.props.date
@@ -431,6 +442,24 @@ class DatePicker extends Textbox {
     if (this.firstRender === false) {
       this.control.enable()
     }
+  }
+
+  reActiveList() {
+    this.years.setValue(this.year)
+    this.months.setValue(this.month)
+    this.days.update({ selectedItems: `${this.year}-${this.month}-${this.day}` })
+  }
+
+  getCurrentDate() {
+    let currentDate =
+      this.props.value !== null ? Date.parseString(this.props.value, this.props.format) : new Date()
+    if (!currentDate) {
+      currentDate = new Date()
+    }
+
+    this.year = currentDate.getFullYear()
+    this.month = currentDate.getMonth() + 1
+    this.day = currentDate.getDate()
   }
 
   handleTimeChange(param) {
