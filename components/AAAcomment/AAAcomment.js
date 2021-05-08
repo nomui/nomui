@@ -7,7 +7,7 @@ class AAAcomment extends Component {
                 {
                     author: '葫芦娃',
                     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                    content: '我是葫芦娃',
+                    content: '我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃我是葫芦娃',
                     datetime: '/Date(1489368353683)/',
                     reply: {} // 回复时，别人的留言,
                 },
@@ -63,11 +63,6 @@ class AAAcomment extends Component {
                         children: {
                             component: 'Cols',
                             align: 'start',
-                            attrs: {
-                                style: {
-                                    width: '100%',
-                                },
-                            },
                             items: [
                                 {
                                     component: 'Avatar',
@@ -106,14 +101,14 @@ class AAAcomment extends Component {
                                         },
                                         {
                                             tag: 'a',
-                                            children: '回复',
+                                            children: '删除',
                                             classes: {
                                                 'nom-comment-action-btn': true,
                                             },
                                         },
                                         {
                                             tag: 'a',
-                                            children: '删除',
+                                            children: '回复',
                                             classes: {
                                                 'nom-comment-action-btn': true,
                                             },
@@ -135,11 +130,6 @@ class AAAcomment extends Component {
                         children: {
                             component: 'Cols',
                             align: 'start',
-                            attrs: {
-                                style: {
-                                    width: '100%',
-                                },
-                            },
                             items: [
                                 {
                                     component: 'Avatar',
@@ -166,14 +156,14 @@ class AAAcomment extends Component {
                                         },
                                         {
                                             tag: 'a',
-                                            children: '回复',
+                                            children: '删除',
                                             classes: {
                                                 'nom-comment-action-btn': true,
                                             },
                                         },
                                         {
                                             tag: 'a',
-                                            children: '删除',
+                                            children: '回复',
                                             classes: {
                                                 'nom-comment-action-btn': true,
                                             },
@@ -192,11 +182,6 @@ class AAAcomment extends Component {
                         children: {
                             component: 'Cols',
                             align: 'start',
-                            attrs: {
-                                style: {
-                                    width: '100%',
-                                },
-                            },
                             items: [
                                 {
                                     component: 'Avatar',
@@ -231,7 +216,7 @@ class AAAcomment extends Component {
     // 字符提取时间
     getTime(str) {
         const number = new RegExp('\\d+', 'g')
-        return new Date(Number(str.match(number))).format('yyyy-MM-dd hh:mm');
+        return new Date(Number(str.match(number))).format('yyyy-MM-dd hh:mm')
     }
 
     // 有无回复
