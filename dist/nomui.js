@@ -2122,6 +2122,7 @@ function _defineProperty2(obj, key, value) {
         itemDefaults: null,
         gutter: "md",
         childDefaults: { component: Col },
+        strechIndex: null,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -2142,7 +2143,18 @@ function _defineProperty2(obj, key, value) {
             item = { children: item };
           }
           item = Component.extendProps({}, this.props.itemDefaults, item);
-          children.push({ component: Col, children: item });
+          if (
+            isNumeric(this.props.strechIndex) &&
+            this.props.strechIndex === i
+          ) {
+            children.push({
+              component: Col,
+              classes: { "nom-col-strech": true },
+              children: item,
+            });
+          } else {
+            children.push({ component: Col, children: item });
+          }
         }
         this.setProps({ children: children });
       }
@@ -7193,7 +7205,6 @@ function _defineProperty2(obj, key, value) {
       super._created();
       this.datePicker = this.parent.parent.parent.opener.parent.parent;
       this.datePicker.timePicker = this;
-      this.defaultValue = this.props.value;
       this.timeList = [];
       this.empty = !this.props.value;
       this.minTime = { hour: "00", minute: "00", second: "00" };
@@ -7209,6 +7220,7 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const that = this;
+      this.defaultValue = this.props.value;
       if (
         this.datePicker.props.showTime &&
         this.datePicker.props.showTime !== true
@@ -7333,6 +7345,12 @@ function _defineProperty2(obj, key, value) {
     }
     setValue(c) {
       this.timeText.update({ children: c });
+      this.defaultValue = c;
+      const t = c.split(":");
+      this.time.hour = t[0] || "00";
+      this.time.minute = t[1] || "00";
+      this.time.second = t[2] || "00";
+      this.resetList();
       this.props.onValueChange &&
         this._callHandler(this.props.onValueChange(this.time));
     }
@@ -7363,18 +7381,25 @@ function _defineProperty2(obj, key, value) {
     }
     resetList() {
       const that = this;
-      this.defaultValue = null;
       Object.keys(this.timeList).forEach(function (key) {
         that.timeList[key].resetTime();
-      });
-      this.timeText.update({ children: "" });
-    }
-    onShow() {
-      const that = this;
-      this.timeText && this.timeText.update({ children: this.defaultValue });
-      Object.keys(this.timeList).forEach(function (key) {
         that.timeList[key].scrollToKey();
       });
+    }
+    clearTime() {
+      const that = this;
+      this.props.value = null;
+      this.defaultValue = null;
+      this.time = { hour: "00", minute: "00", second: "00" };
+      this.timeText.update({ children: "" });
+      Object.keys(this.timeList).forEach(function (key) {
+        that.timeList[key].resetTime();
+        that.timeList[key].scrollToKey();
+      });
+    }
+    onShow() {
+      this.timeText && this.timeText.update({ children: this.defaultValue });
+      this.resetList();
     }
     setNow() {
       const c = new Date().format("HH:mm:ss");
@@ -7435,6 +7460,7 @@ function _defineProperty2(obj, key, value) {
         showTime: false,
         allowClear: true,
         onChange: null,
+        showNow: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -7445,25 +7471,44 @@ function _defineProperty2(obj, key, value) {
       this.startTime = null;
     }
     _config() {
-      this.props.value = formatDate(this.props.value, this.props.format);
-      const { value, format, disabled } = this.props;
-      let currentDate =
-        value !== null ? Date.parseString(value, format) : new Date();
-      if (!currentDate) {
-        currentDate = new Date();
-      }
-      let year = currentDate.getFullYear();
-      let month = currentDate.getMonth() + 1;
-      const day = currentDate.getDate();
       const that = this;
+      this.props.value = formatDate(this.props.value, this.props.format);
+      const { disabled } = this.props; // let currentDate = value !== null ? Date.parseString(value, format) : new Date()
+      // if (!currentDate) {
+      //   currentDate = new Date()
+      // }
+      // let year = currentDate.getFullYear()
+      // let month = currentDate.getMonth() + 1
+      // const day = currentDate.getDate()
+      this.getCurrentDate();
       const minTime =
         this.props.showTime && this.props.minDate
           ? new Date(this.props.minDate).format(
               this.props.showTime.format || "HH:mm:ss"
             )
           : "00:00:00";
+      const maxTime =
+        this.props.showTime && this.props.maxDate
+          ? new Date(this.props.maxDate).format(
+              this.props.showTime.format || "HH:mm:ss"
+            )
+          : "23:59:59";
       this.startTime = minTime;
-      this.props.minDate = new Date(this.props.minDate).format("yyyy-MM-dd");
+      this.endTime = maxTime;
+      this.props.minDate = this.props.minDate
+        ? new Date(this.props.minDate).format("yyyy-MM-dd")
+        : null;
+      this.props.maxDate = this.props.maxDate
+        ? new Date(this.props.maxDate).format("yyyy-MM-dd")
+        : null;
+      this.showNow = true;
+      if (
+        (this.props.minDate &&
+          new Date().isBefore(new Date(this.props.minDate))) ||
+        (this.props.maxDate && new Date().isAfter(new Date(this.props.maxDate)))
+      ) {
+        this.showNow = false;
+      }
       this.setProps({
         leftIcon: "calendar",
         rightIcon: {
@@ -7483,6 +7528,8 @@ function _defineProperty2(obj, key, value) {
             },
             styles: { padding: "1" },
             onShow: () => {
+              this.getCurrentDate();
+              this.reActiveList();
               that.props.showTime && that.timePicker.onShow();
             },
             onHide: () => {
@@ -7493,161 +7540,195 @@ function _defineProperty2(obj, key, value) {
               "nom-date-picker-with-time": this.props.showTime,
             },
             triggerAction: "click",
-            children: {
-              component: "Cols",
-              items: [
-                {
-                  component: Rows,
-                  attrs: { style: { width: "260px" } },
-                  items: [
-                    {
-                      component: Cols,
-                      justify: "between",
-                      fills: true,
-                      items: [
-                        {
-                          component: Select,
-                          value: year,
-                          options: this._getYears(),
-                          onValueChange: (changed) => {
-                            year = changed.newValue;
-                            that.days.update({
-                              items: that._getDays(year, month),
-                            });
-                          },
-                        },
-                        {
-                          component: Select,
-                          value: month,
-                          options: this._getMonths(),
-                          onValueChange: function (changed) {
-                            month = changed.newValue;
-                            that.days.update({
-                              items: that._getDays(year, month),
-                            });
-                          },
-                        },
-                      ],
-                    },
-                    {
-                      component: Cols,
-                      items: ["日", "一", "二", "三", "四", "五", "六"],
-                      fills: true,
-                      gutter: null,
-                      itemDefaults: { styles: { text: "center" } },
-                    },
-                    {
-                      component: List,
-                      _created: function () {
-                        that.days = this;
-                      },
-                      gutter: "sm",
-                      cols: 7,
-                      selectedItems: `${year}-${month}-${day}`,
-                      itemSelectable: { byClick: true },
-                      items: this._getDays(year, month),
-                      itemDefaults: {
-                        key: function () {
-                          return this.props.date;
-                        },
-                        styles: {
-                          padding: "d375",
-                          hover: { color: "darken" },
-                          selected: { color: "primary" },
-                        },
-                        attrs: { role: "button" },
-                        _config: function () {
-                          const textStyles = ["center"];
-                          const date = that._getDateString(
-                            this.props.year,
-                            this.props.month,
-                            this.props.day
-                          );
-                          const isToday =
-                            date === new Date().format("yyyy-MM-dd");
-                          let isDisabled = false;
-                          if (that.props.disabledTime) {
-                            isDisabled = that.props.disabledTime(date);
-                          }
-                          if (
-                            that.props.minDate &&
-                            new Date(date).isBefore(
-                              new Date(that.props.minDate)
-                            )
-                          ) {
-                            isDisabled = true;
-                          }
-                          if (
-                            that.props.maxDate &&
-                            new Date(date).isAfter(new Date(that.props.maxDate))
-                          ) {
-                            isDisabled = true;
-                          }
-                          if (
-                            this.props.lastMonth === true ||
-                            this.props.nextMonth === true
-                          ) {
-                            textStyles.push("muted");
-                          }
-                          if (isToday) {
-                            that.todayItem = this;
-                            this.setProps({
-                              styles: { border: ["1px", "primary"] },
-                            });
-                          }
-                          this.setProps({
-                            styles: { text: textStyles },
-                            children: this.props.day,
-                            disabled: !!isDisabled,
-                          });
-                        },
-                        onClick: function (args) {
-                          const {
-                            year: selYear,
-                            month: selMonth,
-                            day: selDay,
-                          } = args.sender.props;
-                          that.dateInfo = Object.assign({}, that.dateInfo, {
-                            year: selYear,
-                            month: selMonth - 1,
-                            day: selDay,
-                          });
-                          if (that.props.minDate && that.props.showTime) {
-                            const myday = parseInt(
-                              new Date(that.props.minDate).format("d"),
-                              10
-                            );
-                            if (myday === args.sender.props.day) {
-                              that.timePicker.update({
-                                startTime: that.startTime,
+            children: [
+              {
+                component: "Cols",
+                items: [
+                  {
+                    component: Rows,
+                    attrs: { style: { width: "260px" } },
+                    items: [
+                      {
+                        component: Cols,
+                        justify: "between",
+                        fills: true,
+                        items: [
+                          {
+                            component: Select,
+                            value: that.year,
+                            _created: function () {
+                              that.years = this;
+                            },
+                            options: this._getYears(),
+                            onValueChange: (changed) => {
+                              that.year = changed.newValue;
+                              that.days.update({
+                                items: that._getDays(that.year, that.month),
                               });
-                            } else if (myday < args.sender.props.day) {
-                              that.timePicker.update({ startTime: "00:00:00" });
+                            },
+                          },
+                          {
+                            component: Select,
+                            value: that.month,
+                            _created: function () {
+                              that.months = this;
+                            },
+                            options: this._getMonths(),
+                            onValueChange: function (changed) {
+                              that.month = changed.newValue;
+                              that.days.update({
+                                items: that._getDays(that.year, that.month),
+                              });
+                            },
+                          },
+                        ],
+                      },
+                      {
+                        component: Cols,
+                        items: ["日", "一", "二", "三", "四", "五", "六"],
+                        fills: true,
+                        gutter: null,
+                        itemDefaults: { styles: { text: "center" } },
+                      },
+                      {
+                        component: List,
+                        _created: function () {
+                          that.days = this;
+                        },
+                        gutter: "sm",
+                        cols: 7,
+                        selectedItems: that.props.value
+                          ? `${that.year}-${that.month}-${that.day}`
+                          : null,
+                        itemSelectable: { byClick: true },
+                        items: this._getDays(that.year, that.month),
+                        itemDefaults: {
+                          key: function () {
+                            this.props.date = new Date(
+                              this.props.year,
+                              this.props.month - 1,
+                              this.props.day
+                            ).format("yyyy-M-d");
+                            return this.props.date;
+                          },
+                          styles: {
+                            padding: "d375",
+                            hover: { color: "darken" },
+                            selected: { color: "primary" },
+                          },
+                          attrs: { role: "button" },
+                          _config: function () {
+                            const textStyles = ["center"];
+                            const date = that._getDateString(
+                              this.props.year,
+                              this.props.month,
+                              this.props.day
+                            );
+                            const isToday =
+                              date === new Date().format("yyyy-MM-dd");
+                            let isDisabled = false;
+                            if (that.props.disabledTime) {
+                              isDisabled = that.props.disabledTime(date);
                             }
-                          }
-                          that.updateValue();
-                          that.timePicker && that.timePicker.onShow();
-                          !that.props.showTime && that.popup.hide();
+                            if (
+                              that.props.minDate &&
+                              new Date(date).isBefore(
+                                new Date(that.props.minDate)
+                              )
+                            ) {
+                              isDisabled = true;
+                            }
+                            if (
+                              that.props.maxDate &&
+                              new Date(date).isAfter(
+                                new Date(that.props.maxDate)
+                              )
+                            ) {
+                              isDisabled = true;
+                            }
+                            if (
+                              this.props.lastMonth === true ||
+                              this.props.nextMonth === true
+                            ) {
+                              textStyles.push("muted");
+                            }
+                            if (isToday) {
+                              that.todayItem = this;
+                              this.setProps({
+                                styles: { border: ["1px", "primary"] },
+                              });
+                            }
+                            this.setProps({
+                              styles: { text: textStyles },
+                              children: this.props.day,
+                              disabled: !!isDisabled,
+                            });
+                          },
+                          onClick: function (args) {
+                            const {
+                              year: selYear,
+                              month: selMonth,
+                              day: selDay,
+                            } = args.sender.props;
+                            that.dateInfo = Object.assign({}, that.dateInfo, {
+                              year: selYear,
+                              month: selMonth - 1,
+                              day: selDay,
+                            });
+                            if (that.props.minDate && that.props.showTime) {
+                              const myday = parseInt(
+                                new Date(that.props.minDate).format("d"),
+                                10
+                              );
+                              if (myday === args.sender.props.day) {
+                                that.timePicker.update({
+                                  startTime: that.startTime,
+                                });
+                              } else if (myday < args.sender.props.day) {
+                                that.timePicker.update({
+                                  startTime: "00:00:00",
+                                });
+                              }
+                            }
+                            that.updateValue();
+                            that.timePicker && that.timePicker.onShow();
+                            !that.props.showTime && that.popup.hide();
+                          },
                         },
                       },
+                    ],
+                  },
+                  this.props.showTime && {
+                    component: TimePickerPanel,
+                    attrs: {
+                      style: {
+                        "border-left": "1px solid #ddd",
+                        "padding-left": "5px",
+                      },
                     },
-                  ],
-                },
-                this.props.showTime && {
-                  component: TimePickerPanel,
-                  attrs: {
-                    style: {
-                      "border-left": "1px solid #ddd",
-                      "padding-left": "5px",
+                    onValueChange: (data) => {
+                      this.handleTimeChange(data);
+                    },
+                    startTime: minTime, // value: new Date(this.props.value).format(this.props.showTime.format),
+                  },
+                ],
+              },
+              this.props.showNow && {
+                component: "Cols",
+                attrs: { style: { padding: "5px 0" } },
+                items: [
+                  {
+                    component: "Button",
+                    size: "small",
+                    text: "此刻",
+                    disabled: !this.showNow,
+                    onClick: () => {
+                      this.setNow();
                     },
                   },
-                  onValueChange: (data) => {
-                    this.handleTimeChange(data);
-                  },
-                  startTime: minTime,
-                },
-              ],
-            },
+                ],
+              },
+            ],
           },
         },
       });
@@ -7751,6 +7832,32 @@ function _defineProperty2(obj, key, value) {
         this.control.enable();
       }
     }
+    reActiveList() {
+      this.years.setValue(this.year);
+      this.months.setValue(this.month);
+      this.props.value &&
+        this.days.update({
+          selectedItems: `${this.year}-${this.month}-${this.day}`,
+        });
+    }
+    getCurrentDate() {
+      let currentDate =
+        this.props.value !== null
+          ? Date.parseString(this.props.value, this.props.format)
+          : new Date();
+      if (!currentDate) {
+        currentDate = new Date();
+      }
+      this.year = currentDate.getFullYear();
+      this.month = currentDate.getMonth() + 1;
+      this.day = currentDate.getDate();
+      this.props.value &&
+        this.props.showTime &&
+        this.timePicker &&
+        this.timePicker.setValue(
+          new Date(this.props.value).format(this.props.showTime.format)
+        );
+    }
     handleTimeChange(param) {
       if (!this.days.getSelectedItem()) {
         this.days.selectItem(this.todayItem);
@@ -7763,9 +7870,16 @@ function _defineProperty2(obj, key, value) {
       this.updateValue();
     }
     clearTime() {
+      this.props.value = null;
       this.setValue(null);
       this.days && this.days.unselectAllItems();
-      this.props.showTime && this.timePicker && this.timePicker.resetList();
+      if (this.props.showTime && this.timePicker) {
+        this.timePicker.clearTime();
+      }
+    }
+    setNow() {
+      this.setValue(new Date().format(this.props.format));
+      this.popup.hide();
     }
     updateValue() {
       const date = new Date(
