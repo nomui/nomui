@@ -2345,9 +2345,14 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const { content } = this.modal.props;
       if (isPlainObject(content)) {
+        const extendContent = {};
+        if (isFunction(content.footer)) {
+          extendContent.footer = content.footer.call(this.modal, this.modal);
+        }
         const contentProps = Component.extendProps(
           this._getDefaultPanelContent(content),
-          content
+          content,
+          extendContent
         );
         this.setProps({
           children: n$1(null, contentProps, null, [ModalContentMixin]),
