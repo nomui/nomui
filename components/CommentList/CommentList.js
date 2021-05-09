@@ -95,6 +95,9 @@ class CommentList extends Component {
                 },
                 children: [
                     {
+                        classes: {
+                            'nom-comment-one': true,
+                        },
                         component: 'Cols',
                         align: 'start',
                         items: [
@@ -167,6 +170,7 @@ class CommentList extends Component {
                     list.children.push({
                         classes: {
                             'nom-comment-reply': true,
+                            'nom-comment-one': true,
                         },
                         children: {
                             component: 'Cols',
@@ -227,6 +231,7 @@ class CommentList extends Component {
                     list.children.push({
                         classes: {
                             'nom-comment-reply': true,
+                            'nom-comment-one': true,
                         },
                         children: {
                             component: 'Cols',
