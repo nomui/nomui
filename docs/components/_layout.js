@@ -536,10 +536,10 @@ define([], function () {
                       url: '#!components!index?type=SlideCaptcha',
                     },
                     {
-                      text: 'AAAcomment',
+                      text: 'CommentList',
                       subtext: '评论',
-                      id: 'AAAcomment',
-                      url: '#!components!index?type=AAAcomment',
+                      id: 'CommentList',
+                      url: '#!components!index?type=CommentList',
                     },
                   ],
                 },
