@@ -29,9 +29,12 @@ class CommentList extends Component {
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
+
+
     _config() {
         const { commentItem } = this.props
         const arry_list = this.getList(commentItem)
+        const _that = this
         let asyncRefmain = null
         let asyncRefdown = null
         let asyncRefup = null
@@ -47,10 +50,7 @@ class CommentList extends Component {
                         },
                         children: `展开显示${commentItem.length}条更多评论`,
                         onClick: () => {
-                            asyncRefmain.element.setAttribute('style', 'height: 100% ')
-                            asyncRefup.show()
-                            asyncRefdown.hide()
-
+                            _that.showMore(asyncRefmain, asyncRefup, asyncRefdown)
                         },
                     },
                     {
@@ -63,9 +63,7 @@ class CommentList extends Component {
                         children: `收起更多评论`,
                         autoRender: false,
                         onClick: () => {
-                            asyncRefmain.element.setAttribute('style', 'height: 300px ')
-                            asyncRefdown.show()
-                            asyncRefup.hide()
+                            _that.hideMore(asyncRefmain, asyncRefup, asyncRefdown)
                         },
                     },
                     {
@@ -144,7 +142,7 @@ class CommentList extends Component {
                                             'nom-comment-action-btn-none': !currentValue.delbtn,
                                         },
                                         onClick: (e) => {
-                                            e.sender.parent.parent.parent.parent.remove()
+                                            _that.deleted(e)
                                             currentValue.onDeleted()
                                         },
                                     },
@@ -156,6 +154,7 @@ class CommentList extends Component {
                                             'nom-comment-action-btn-none': !currentValue.repbtn,
                                         },
                                         onClick: () => {
+                                            _that.reply()
                                             currentValue.onReply()
                                         },
                                     },
@@ -207,7 +206,7 @@ class CommentList extends Component {
                                                 'nom-comment-action-btn-none': !currentValue.reply.delbtn,
                                             },
                                             onClick: (e) => {
-                                                e.sender.parent.parent.parent.parent.remove()
+                                                _that.deleted(e)
                                                 currentValue.onDeleted()
                                             },
                                         },
@@ -219,6 +218,7 @@ class CommentList extends Component {
                                                 'nom-comment-action-btn-none': !currentValue.reply.repbtn,
                                             },
                                             onClick: () => {
+                                                _that.reply()
                                                 currentValue.onReply()
                                             },
                                         },
@@ -277,6 +277,33 @@ class CommentList extends Component {
     isReply(val) {
         return JSON.stringify(val) !== '{}'
     }
+
+    // 展开
+    showMore(asyncRefmain, asyncRefup, asyncRefdown) {
+        asyncRefmain.element.setAttribute('style', 'height: 100% ')
+        asyncRefup.show()
+        asyncRefdown.hide()
+    }
+
+    // 收起
+    hideMore(asyncRefmain, asyncRefup, asyncRefdown) {
+        asyncRefmain.element.setAttribute('style', 'height: 300px ')
+        asyncRefdown.show()
+        asyncRefup.hide()
+    }
+
+    // 删除
+    deleted(e) {
+        e.sender.parent.parent.parent.parent.remove()
+
+    }
+
+    // 回复
+    reply() { }
+
+    // 添加评论
+    addComment() { }
+
 }
 
 Component.register(CommentList)

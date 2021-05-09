@@ -1,7 +1,6 @@
-import CommentList from '../CommentList/index'
 import Component from '../Component/index'
 
-class Comment extends CommentList {
+class Comment extends Component {
     constructor(props, ...mixins) {
         const defaults = {
             submitComment: () => { },
@@ -50,13 +49,13 @@ class Comment extends CommentList {
                                 },
                                 attrs: {
                                     rows: 4,
-                                    placeholder: '发表评论',
+                                    placeholder: '留下你的评论吧',
                                 },
                                 children: '',
                             },
                             {
                                 classes: {
-                                    'nom-comment-footer': true,
+                                    'nom-comment-bottom': true,
                                 },
                                 children: [
                                     {

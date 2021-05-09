@@ -34,6 +34,7 @@ class CommentList extends Component {
     _config() {
         const { commentItem } = this.props
         const arry_list = this.getList(commentItem)
+        const _that = this
         let asyncRefmain = null
         let asyncRefdown = null
         let asyncRefup = null
@@ -49,7 +50,7 @@ class CommentList extends Component {
                         },
                         children: `展开显示${commentItem.length}条更多评论`,
                         onClick: () => {
-                            this.showMore(asyncRefmain, asyncRefup, asyncRefdown)
+                            _that.showMore(asyncRefmain, asyncRefup, asyncRefdown)
                         },
                     },
                     {
@@ -62,7 +63,7 @@ class CommentList extends Component {
                         children: `收起更多评论`,
                         autoRender: false,
                         onClick: () => {
-                            this.hideMore(asyncRefmain, asyncRefup, asyncRefdown)
+                            _that.hideMore(asyncRefmain, asyncRefup, asyncRefdown)
                         },
                     },
                     {
@@ -141,7 +142,7 @@ class CommentList extends Component {
                                             'nom-comment-action-btn-none': !currentValue.delbtn,
                                         },
                                         onClick: (e) => {
-                                            this.deleted(e)
+                                            _that.deleted(e)
                                             currentValue.onDeleted()
                                         },
                                     },
@@ -153,7 +154,7 @@ class CommentList extends Component {
                                             'nom-comment-action-btn-none': !currentValue.repbtn,
                                         },
                                         onClick: () => {
-                                            this.reply()
+                                            _that.reply()
                                             currentValue.onReply()
                                         },
                                     },
@@ -205,7 +206,7 @@ class CommentList extends Component {
                                                 'nom-comment-action-btn-none': !currentValue.reply.delbtn,
                                             },
                                             onClick: (e) => {
-                                                this.deleted(e)
+                                                _that.deleted(e)
                                                 currentValue.onDeleted()
                                             },
                                         },
@@ -217,7 +218,7 @@ class CommentList extends Component {
                                                 'nom-comment-action-btn-none': !currentValue.reply.repbtn,
                                             },
                                             onClick: () => {
-                                                this.reply()
+                                                _that.reply()
                                                 currentValue.onReply()
                                             },
                                         },
