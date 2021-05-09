@@ -39,7 +39,6 @@ class ModalDialog extends Component {
     })
 
     const { okText, cancelText } = modal.props
-
     return {
       component: Panel,
       header: {
@@ -87,7 +86,15 @@ class ModalDialog extends Component {
   _config() {
     const { content } = this.modal.props
     if (isPlainObject(content)) {
-      const contentProps = Component.extendProps(this._getDefaultPanelContent(content), content)
+      const extendContent = {}
+      if (isFunction(content.footer)) {
+        extendContent.footer = content.footer.call(this.modal, this.modal)
+      }
+      const contentProps = Component.extendProps(
+        this._getDefaultPanelContent(content),
+        content,
+        extendContent,
+      )
       this.setProps({
         children: n(null, contentProps, null, [ModalContentMixin]),
       })
