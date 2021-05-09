@@ -537,9 +537,15 @@ define([], function () {
                     },
                     {
                       text: 'CommentList',
-                      subtext: '评论',
+                      subtext: '评论列表',
                       id: 'CommentList',
                       url: '#!components!index?type=CommentList',
+                    },
+                    {
+                      text: 'Comment',
+                      subtext: '评论',
+                      id: 'Comment',
+                      url: '#!components!index?type=Comment',
                     },
                   ],
                 },

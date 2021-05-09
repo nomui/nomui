@@ -1,7 +1,7 @@
 define(['./basic.js'], function () {
   return {
-    title: 'CommentList',
-    subtitle: '评论列表',
+    title: 'Comment',
+    subtitle: '评论',
     demos: Array.prototype.slice.call(arguments),
   }
 })
