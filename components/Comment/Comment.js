@@ -1,15 +1,18 @@
 import Component from '../Component/index'
+import UserList from './UserList'
 
 class Comment extends Component {
     constructor(props, ...mixins) {
         const defaults = {
+            author: '',
+            avatar: '',
             submitComment: () => { },
         }
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
     _config() {
-        const { submitComment, commentItem } = this.props
+        const { submitComment, commentItem, author, avatar } = this.props
         let refTextarea = null
         this.setProps(
             {
@@ -64,8 +67,8 @@ class Comment extends Component {
                                         },
                                         component: 'Icon',
                                         type: 'smile',
-                                        onClick: () => {
-                                            this.showEmoji()
+                                        onClick: (arg) => {
+                                            this.showEmoji(arg)
                                         },
                                     },
                                     {
@@ -73,8 +76,8 @@ class Comment extends Component {
                                             'nom-comment-user': true,
                                         },
                                         children: '@',
-                                        onClick: () => {
-                                            this.showUser()
+                                        onClick: (arg) => {
+                                            this.showUser(arg)
                                         },
                                     },
                                     {
@@ -85,7 +88,7 @@ class Comment extends Component {
                                         text: '发表评论',
                                         type: 'primary',
                                         onClick: () => {
-                                            this.submitReply(refTextarea)
+                                            this.submitReply(author, avatar, refTextarea)
                                             submitComment()
                                         },
                                     },
@@ -101,15 +104,59 @@ class Comment extends Component {
     }
 
     // 发表评论
-    submitReply(refTextarea) {
-        console.log(refTextarea.element.value, refTextarea.element.placeholder)
+    submitReply(author, avatar, refTextarea) {
+        console.log(author, avatar, refTextarea.element.value, refTextarea.element.placeholder, new Date().format('yyyy-MM-dd hh:mm'))
     }
 
     // 打开emoji面板
-    showEmoji() { }
+    showEmoji(arg) {
+        const align = 'top left'
+        const sender = arg.sender
+        if (!sender[align]) {
+            sender[align] = new nomui.Layer({
+                align: align,
+                alignTo: sender.element,
+                alignOuter: true,
+                children: {
+                    styles: {
+                        padding: '1',
+                        color: 'white',
+                        border: '1px',
+                    },
+                    children: '我是层内容',
+                },
+                closeOnClickOutside: true,
+            })
+        }
+
+        sender[align].show()
+    }
 
     // 打开@用户列表
-    showUser() { }
+    showUser(arg) {
+        const align = 'top left'
+        const sender = arg.sender
+        if (!sender[align]) {
+            sender[align] = new nomui.Layer({
+                align: align,
+                alignTo: sender.element,
+                alignOuter: true,
+                children: {
+                    styles: {
+                        padding: '1',
+                        color: 'white',
+                        border: '1px',
+                    },
+                    children: {
+                        component: UserList,
+                    },
+                },
+                closeOnClickOutside: true,
+            })
+        }
+
+        sender[align].show()
+    }
 
 
 }

@@ -7,6 +7,8 @@ define([], function () {
         children: [
           {
             component: 'Comment',
+            author: '爷爷',
+            avatar: '',
             submitComment: () => { },
             commentItem: [
               {
