@@ -14,10 +14,15 @@ class Comment extends Component {
     _config() {
         const { submitComment, commentItem, author, avatar } = this.props
         let refTextarea = null
+        let refCommentList = null
+
         this.setProps(
             {
                 children: [
                     {
+                        ref: (c) => {
+                            refCommentList = c
+                        },
                         component: 'CommentList',
                         commentItem,
                         // commentItem: [
@@ -88,7 +93,7 @@ class Comment extends Component {
                                         text: '发表评论',
                                         type: 'primary',
                                         onClick: () => {
-                                            this.submitReply(author, avatar, refTextarea)
+                                            this.submitReply(author, avatar, refTextarea, refCommentList)
                                             submitComment()
                                         },
                                     },
@@ -104,8 +109,9 @@ class Comment extends Component {
     }
 
     // 发表评论
-    submitReply(author, avatar, refTextarea) {
-        console.log(author, avatar, refTextarea.element.value, refTextarea.element.placeholder, new Date().format('yyyy-MM-dd hh:mm'))
+    submitReply(author, avatar, refTextarea, refCommentList) {
+        // console.log(author, avatar, refTextarea, refCommentList, new Date().format('yyyy-MM-dd hh:mm'))
+        refCommentList.addComment(author, avatar, refTextarea)
     }
 
     // 打开emoji面板

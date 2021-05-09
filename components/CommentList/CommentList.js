@@ -302,7 +302,9 @@ class CommentList extends Component {
     reply() { }
 
     // 添加评论
-    addComment() { }
+    addComment(author, avatar, refTextarea) {
+        console.log(this, author, avatar, refTextarea)
+    }
 
 }
 

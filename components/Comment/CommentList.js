@@ -302,8 +302,8 @@ class CommentList extends Component {
     reply() { }
 
     // 添加评论
-    addComment() {
-        // console.log(1)
+    addComment(...arg) {
+        console.log(arg)
     }
 
 }
