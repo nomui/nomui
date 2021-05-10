@@ -1,28 +1,21 @@
-import Component from '../Component/index'
+import Component from '../Component/index';
 
 class CommentList extends Component {
     constructor(props, ...mixins) {
         const defaults = {
             commentItem: [
                 {
+                    key: '',
                     author: '',
                     avatar: '',
                     content: '',
                     datetime: '',
-                    repbtn: false,
-                    delbtn: false,
-                    /* 回复谁的留言 */
                     reply: {
-                        deleted: false,// 评论是否已删除
                         author: '',
                         avatar: '',
                         content: '',
                         datetime: '',
-                        repbtn: false,
-                        delbtn: false,
                     },
-                    onReply: () => { },
-                    onDeleted: () => { },
                 },
             ],
         }
@@ -30,32 +23,33 @@ class CommentList extends Component {
     }
 
 
+    _created() {
+        this._comment = this.parent
+        this._comment._list = this
+    }
 
     _config() {
-        const { commentItem } = this.props
-        const arry_list = this.getList(commentItem)
         const _that = this
-        let asyncRefmain = null
-        let asyncRefdown = null
-        let asyncRefup = null
+        const { commentItem } = this.props
+        const listArry = this.getList(commentItem)
         this.setProps(
             {
                 children: [
                     {
                         ref: (c) => {
-                            asyncRefdown = c
+                            this.downRef = c
                         },
                         classes: {
                             'nom-comment-more': true,
                         },
                         children: `展开显示${commentItem.length}条更多评论`,
                         onClick: () => {
-                            _that.showMore(asyncRefmain, asyncRefup, asyncRefdown)
+                            _that.showMore()
                         },
                     },
                     {
                         ref: (c) => {
-                            asyncRefup = c
+                            this.upRef = c
                         },
                         classes: {
                             'nom-comment-more': true,
@@ -63,17 +57,17 @@ class CommentList extends Component {
                         children: `收起更多评论`,
                         autoRender: false,
                         onClick: () => {
-                            _that.hideMore(asyncRefmain, asyncRefup, asyncRefdown)
+                            _that.hideMore()
                         },
                     },
                     {
                         ref: (c) => {
-                            asyncRefmain = c
+                            this.boxRef = c
                         },
                         classes: {
                             'nom-comment-item-box': true,
                         },
-                        children: arry_list,
+                        children: listArry,
                     },
                 ]
 
@@ -123,7 +117,7 @@ class CommentList extends Component {
                                             {
                                                 classes: {
                                                     'nom-comment-reply-to': true,
-                                                    'nom-comment-reply-to-show': _that.isReply(currentValue.reply),
+                                                    'nom-comment-reply-to-show': _that.hasReply(currentValue.reply),
                                                 },
                                                 tag: 'a',
                                                 children: `@${currentValue.reply.author}:`,
@@ -139,11 +133,11 @@ class CommentList extends Component {
                                         children: '删除',
                                         classes: {
                                             'nom-comment-action-btn': true,
-                                            'nom-comment-action-btn-none': !currentValue.delbtn,
+                                            'nom-comment-action-btn-none': (currentValue.author !== _that.parent.props.author),
                                         },
-                                        onClick: (e) => {
-                                            _that.deleted(e)
-                                            currentValue.onDeleted()
+                                        onClick: () => {
+                                            _that.deleted(currentValue.key)
+                                            _that.parent.props.onDeleted(currentValue.key, _that.props.commentItem)
                                         },
                                     },
                                     {
@@ -151,11 +145,10 @@ class CommentList extends Component {
                                         children: '回复',
                                         classes: {
                                             'nom-comment-action-btn': true,
-                                            'nom-comment-action-btn-none': !currentValue.repbtn,
                                         },
                                         onClick: () => {
-                                            _that.reply()
-                                            currentValue.onReply()
+                                            _that.reply(currentValue.key)
+                                            _that.parent.props.onReply(currentValue.key, _that.props.commentItem)
                                         },
                                     },
                                 ],
@@ -164,104 +157,45 @@ class CommentList extends Component {
                     },
                 ],
             }
-            if (_that.isReply(currentValue.reply)) {
-                if (!currentValue.reply.deleted) {
-                    list.children.push({
-                        classes: {
-                            'nom-comment-reply': true,
-                            'nom-comment-one': true,
-                        },
-                        children: {
-                            component: 'Cols',
-                            align: 'start',
-                            items: [
-                                {
-                                    component: 'Avatar',
-                                    size: 'small',
-                                    alt: currentValue.reply.author,
-                                    text: currentValue.reply.author,
-                                    src: currentValue.reply.avatar,
-                                },
-                                {
-                                    children: [
-                                        {
-                                            tag: 'a',
-                                            children: currentValue.reply.author,
-                                            classes: {
-                                                'nom-comment-author': true,
-                                            },
+            if (_that.hasReply(currentValue.reply)) {
+                list.children.push({
+                    classes: {
+                        'nom-comment-reply': true,
+                        'nom-comment-one': true,
+                    },
+                    children: {
+                        component: 'Cols',
+                        align: 'start',
+                        items: [
+                            {
+                                component: 'Avatar',
+                                size: 'small',
+                                alt: currentValue.reply.author,
+                                text: currentValue.reply.author,
+                                src: currentValue.reply.avatar,
+                            },
+                            {
+                                children: [
+                                    {
+                                        tag: 'a',
+                                        children: currentValue.reply.author,
+                                        classes: {
+                                            'nom-comment-author': true,
                                         },
-                                        {
-                                            tag: 'span',
-                                            children: _that.getTime(currentValue.reply.datetime),
-                                        },
-                                        {
-                                            children: currentValue.reply.content,
-                                        },
-                                        {
-                                            tag: 'a',
-                                            children: '删除',
-                                            classes: {
-                                                'nom-comment-action-btn': true,
-                                                'nom-comment-action-btn-none': !currentValue.reply.delbtn,
-                                            },
-                                            onClick: (e) => {
-                                                _that.deleted(e)
-                                                currentValue.onDeleted()
-                                            },
-                                        },
-                                        {
-                                            tag: 'a',
-                                            children: '回复',
-                                            classes: {
-                                                'nom-comment-action-btn': true,
-                                                'nom-comment-action-btn-none': !currentValue.reply.repbtn,
-                                            },
-                                            onClick: () => {
-                                                _that.reply()
-                                                currentValue.onReply()
-                                            },
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    })
-                } else {
-                    list.children.push({
-                        classes: {
-                            'nom-comment-reply': true,
-                            'nom-comment-one': true,
-                        },
-                        children: {
-                            component: 'Cols',
-                            align: 'start',
-                            items: [
-                                {
-                                    component: 'Avatar',
-                                    size: 'small',
-                                    alt: currentValue.reply.author,
-                                    text: currentValue.reply.author,
-                                    src: currentValue.reply.avatar,
-                                },
-                                {
-                                    children: [
-                                        {
-                                            tag: 'a',
-                                            children: currentValue.reply.author,
-                                            classes: {
-                                                'nom-comment-author': true,
-                                            },
-                                        },
-                                        {
-                                            children: '评论已删除',
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    })
-                }
+                                    },
+                                    {
+                                        tag: 'span',
+                                        children: _that.getTime(currentValue.reply.datetime),
+                                    },
+                                    {
+                                        children: currentValue.reply.content,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                })
+
             }
             return list
         })
@@ -274,36 +208,55 @@ class CommentList extends Component {
     }
 
     // 有无回复
-    isReply(val) {
+    hasReply(val) {
         return JSON.stringify(val) !== '{}'
     }
 
     // 展开
-    showMore(asyncRefmain, asyncRefup, asyncRefdown) {
-        asyncRefmain.element.setAttribute('style', 'height: 100% ')
-        asyncRefup.show()
-        asyncRefdown.hide()
+    showMore() {
+        this.boxRef.element.setAttribute('style', 'height: 100% ')
+        this.upRef.show()
+        this.downRef.hide()
     }
 
     // 收起
-    hideMore(asyncRefmain, asyncRefup, asyncRefdown) {
-        asyncRefmain.element.setAttribute('style', 'height: 300px ')
-        asyncRefdown.show()
-        asyncRefup.hide()
+    hideMore() {
+        this.boxRef.element.setAttribute('style', 'height: 300px ')
+        this.downRef.show()
+        this.upRef.hide()
     }
 
     // 删除
-    deleted(e) {
-        e.sender.parent.parent.parent.parent.remove()
-
+    deleted(key) {
+        this.parent.props.commentItem = this.props.commentItem = this.props.commentItem.filter(function (currentValue) {
+            return key !== currentValue.key
+        })
+        this.boxRef.update({
+            children: this.getList(this.props.commentItem)
+        })
     }
 
     // 回复
-    reply() { }
+    reply(key) {
+        this._comment._textareaFocus(key)
+    }
 
     // 添加评论
-    addComment(...arg) {
-        console.log(arg)
+    _addComment(val) {
+        console.log(val)
+
+
+        // this.props.commentItem.unshift({
+        //     key: newGuid(),
+        //     author: this.parent.props.author,
+        //     avatar: this.parent.props.avatar,
+        //     content: val,
+        //     datetime: `/Date(${new Date().getTime()})/`,
+        //     reply: {},
+        // })
+        // this.boxRef.update({
+        //     children: this.getList(this.props.commentItem)
+        // })
     }
 
 }

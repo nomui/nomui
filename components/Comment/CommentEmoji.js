@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 
-class Emoji extends Component {
+class CommentEmoji extends Component {
     constructor(props, ...mixins) {
         const defaults = {
 
@@ -29,6 +29,6 @@ class Emoji extends Component {
 
 }
 
-Component.register(Emoji)
+Component.register(CommentEmoji)
 
-export default Emoji
+export default CommentEmoji

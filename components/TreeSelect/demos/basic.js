@@ -31,6 +31,14 @@ define([], function () {
               title: 'Node2',
               value: '0-1',
             },
+            {
+              title: 'Node5',
+              value: '0-5',
+            },
+            {
+              title: 'Node8',
+              value: '0-8',
+            },
           ],
           selectedNodes: ['0-0-1', '0-1'],
         },

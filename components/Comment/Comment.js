@@ -1,46 +1,34 @@
 import Component from '../Component/index'
-import UserList from './UserList'
+import CommentEmoji from './CommentEmoji'
+import CommentList from './CommentList'
+import CommentUser from './CommentUser'
 
 class Comment extends Component {
     constructor(props, ...mixins) {
         const defaults = {
             author: '',
             avatar: '',
-            submitComment: () => { },
+            // 存放被@的用户列表
+            atUsers: [],
+            onComment: () => { },
+            onReply: () => { },
+            onDeleted: () => { },
         }
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
     _config() {
-        const { submitComment, commentItem, author, avatar } = this.props
-        let refTextarea = null
-        let refCommentList = null
+        const { onComment, commentItem } = this.props
 
         this.setProps(
             {
                 children: [
                     {
                         ref: (c) => {
-                            refCommentList = c
+                            this.listRef = c
                         },
-                        component: 'CommentList',
+                        component: CommentList,
                         commentItem,
-                        // commentItem: [
-                        //     {
-                        //         author: '葫芦娃',
-                        //         avatar: '',
-                        //         content: '我是葫芦娃',
-                        //         datetime: '/Date(1489368353683)/',
-                        //         repbtn: true,
-                        //         delbtn: false,
-                        //         reply: {},
-                        //         onReply: () => {
-                        //             refTextarea.element.focus()
-                        //             refTextarea.element.setAttribute("placeholder", '回复 葫芦娃:')
-                        //         },
-                        //         onDeleted: () => { },
-                        //     }
-                        // ],
                     },
                     {
                         classes: {
@@ -49,15 +37,14 @@ class Comment extends Component {
                         children: [
                             {
                                 ref: (c) => {
-                                    refTextarea = c
+                                    this.textareaRef = c
                                 },
-                                tag: 'textarea',
+                                tag: 'div',
                                 classes: {
                                     'nom-comment-textarea': true,
                                 },
                                 attrs: {
-                                    rows: 4,
-                                    placeholder: '留下你的评论吧',
+                                    contenteditable: true,
                                 },
                                 children: '',
                             },
@@ -68,7 +55,7 @@ class Comment extends Component {
                                 children: [
                                     {
                                         classes: {
-                                            'nom-comment-emoji': true,
+                                            'nom-comment-icon-emoji': true,
                                         },
                                         component: 'Icon',
                                         type: 'smile',
@@ -78,7 +65,7 @@ class Comment extends Component {
                                     },
                                     {
                                         classes: {
-                                            'nom-comment-user': true,
+                                            'nom-comment-icon-user': true,
                                         },
                                         children: '@',
                                         onClick: (arg) => {
@@ -93,8 +80,9 @@ class Comment extends Component {
                                         text: '发表评论',
                                         type: 'primary',
                                         onClick: () => {
-                                            this.submitReply(author, avatar, refTextarea, refCommentList)
-                                            submitComment()
+                                            const val = this.getDomValue(this.textareaRef.element).replace(/^\n/, "").replace(/\n$/, "")
+                                            this.addComment(val)
+                                            onComment(val)
                                         },
                                     },
                                 ]
@@ -108,10 +96,18 @@ class Comment extends Component {
 
     }
 
+    // 文本域获得焦点
+    _textareaFocus(key) {
+        const target = this.props.commentItem.find(function (currentValue) {
+            return currentValue.key === key
+        })
+        this.textareaRef && this.textareaRef.element.focus()
+        this.handleSelectUser(target)
+    }
+
     // 发表评论
-    submitReply(author, avatar, refTextarea, refCommentList) {
-        // console.log(author, avatar, refTextarea, refCommentList, new Date().format('yyyy-MM-dd hh:mm'))
-        refCommentList.addComment(author, avatar, refTextarea)
+    addComment(val) {
+        this._list._addComment(val)
     }
 
     // 打开emoji面板
@@ -124,17 +120,11 @@ class Comment extends Component {
                 alignTo: sender.element,
                 alignOuter: true,
                 children: {
-                    styles: {
-                        padding: '1',
-                        color: 'white',
-                        border: '1px',
-                    },
-                    children: '我是层内容',
+                    component: CommentEmoji,
                 },
                 closeOnClickOutside: true,
             })
         }
-
         sender[align].show()
     }
 
@@ -148,22 +138,166 @@ class Comment extends Component {
                 alignTo: sender.element,
                 alignOuter: true,
                 children: {
-                    styles: {
-                        padding: '1',
-                        color: 'white',
-                        border: '1px',
-                    },
-                    children: {
-                        component: UserList,
-                    },
+                    component: CommentUser,
+                    options: this.props.options,
                 },
                 closeOnClickOutside: true,
             })
         }
-
         sender[align].show()
     }
 
+    // 获取目标节点的纯文本内容
+    // 这里只涉及到了之后可能会用到的一些节点
+    getDomValue(elem) {
+        let res = ''
+        Array.from(elem.childNodes).forEach((child) => {
+            if (child.nodeName === '#text') {
+                res += child.nodeValue
+            } else if (child.nodeName === 'BR') {
+                res += '\n'
+            } else if (child.nodeName === 'BUTTON') {
+                res += this.getDomValue(child)
+            } else if (child.nodeName === 'IMG') {
+                res += child.alt
+            } else if (child.nodeName === 'DIV') {
+                res += `\n${this.getDomValue(child)}`
+            }
+        })
+        return res
+    }
+
+    // 往光标位置插入HTML片段
+    insertHtmlAtCaret(html) {
+        let sel, range, frag
+        if (window.getSelection) {
+            sel = window.getSelection()
+            if (sel.getRangeAt && sel.rangeCount) {
+                range = sel.getRangeAt(0)
+                range.deleteContents()
+                const el = document.createElement('div')
+                el.innerHTML = html
+                frag = document.createDocumentFragment()
+                let node
+                let lastNode
+                while ((node = el.firstChild)) {
+                    lastNode = frag.appendChild(node)
+                }
+                range.insertNode(frag)
+                if (lastNode) {
+                    range = range.cloneRange()
+                    range.setStartAfter(lastNode)
+                    range.collapse(true)
+                    sel.removeAllRanges()
+                    sel.addRange(range)
+                }
+            }
+        }
+    }
+
+    // 获取光标位置
+    getCursortPosition(element) {
+        let caretOffset = 0
+        const doc = element.ownerDocument || element.document
+        const win = doc.defaultView || doc.parentWindow
+        let sel
+        if (element.tagName === 'DIV') { // 谷歌、火狐
+            sel = win.getSelection()
+            if (sel.rangeCount > 0) { // 选中的区域
+                const range = win.getSelection().getRangeAt(0)
+                const preCaretRange = range.cloneRange() // 克隆一个选中区域
+                preCaretRange.selectNodeContents(element) // 设置选中区域的节点内容为当前节点
+                preCaretRange.setEnd(range.endContainer, range.endOffset)  // 重置选中区域的结束位置
+                // caretOffset = preCaretRange.toString().length
+                const tempElem = preCaretRange.cloneContents()
+                caretOffset = this.getDomValue(tempElem).replace(/\n/g, '').length
+            }
+        } else { // IE
+            caretOffset = element.selectionEnd
+        }
+        return caretOffset
+    }
+
+    // 防抖函数
+    debounce(func, wait) {
+        let timer = null;
+
+        return function () {
+            const context = this
+            const args = arguments
+
+            timer && clearTimeout(timer)
+            timer = setTimeout(function () {
+                func.apply(context, args)
+            }, wait)
+        }
+    }
+
+    // 处理节点的删除
+    handleDOMRemoved(e) {
+        if (e.keyCode === 8) {
+            // 获取输入框中的值
+            const fullText = this.textarea.value.replace(/\n/g, "");
+            // 获取光标位置
+            const end = this.getCursortPosition(this.textarea);
+            // 光标之前用户名最大可能长度的文本
+            // const content = fullText.slice(end - this.maxLength, end);
+            // 获取离光标最近的一个@的位置
+            const lastAtIndex = fullText.lastIndexOf("@");
+            if (lastAtIndex > -1) {
+                // 如果存在 @
+                const user = fullText
+                    .slice(lastAtIndex, end)
+                    .trim()
+                    .replace(/@/, "");
+                const index = this.props.atUsers.indexOf(user);
+                if (index > -1) {
+                    // 从@列表中删除被@的用户
+                    this.props.atUsers.splice(index, 1);
+                }
+            }
+        }
+    }
+
+    onPaste(e) {
+        e.preventDefault();
+        let text = "";
+
+        if (window.clipboardData && window.clipboardData.setData) {
+            // IE
+            text = window.clipboardData.getData("text");
+        } else {
+            text = (e.originalEvent || e).clipboardData.getData("text/plain") || "";
+        }
+        // 过滤转义html标签
+        text = text.replace(/</g, "&lt").replace(/>/g, "&gt");
+        text = text.replace(/\r\n/g, "<br>");
+        document.execCommand("insertHTML", false, text);
+    }
+
+    // 艾特用户
+    handleSelectUser(target) {
+        console.log(this.textareaRef, this.textareaRef.element, this.textareaRef.element.value)
+        // 获取输入框中的值
+        // const fullText = this.textareaRef.element.textContent.replace(/\n/g, "")
+        // // 获取光标位置
+        // const end = this.getCursortPosition(this.textareaRef.element)
+        // // 获取离光标最近的一个@的位置
+        // const lastAtIndex = fullText.lastIndexOf("@")
+        // const offset = end - lastAtIndex
+        // // 删除之前的内容
+        // const range = window.getSelection().getRangeAt(0)
+        // range.setStart(range.endContainer, range.endOffset - offset)
+        // range.deleteContents()
+        // 插入选中的user
+        const input = `<button contenteditable="false" class="nom-comment-atbtn">@${target.author}&nbsp;</button>`
+        this.insertHtmlAtCaret(input)
+        // 添加用户
+        if (!this.props.atUsers.includes(target.author)) {
+            this.props.atUsers.push(target.author)
+        }
+        console.log(this.props.atUsers)
+    }
 
 }
 

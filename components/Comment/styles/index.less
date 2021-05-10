@@ -1,23 +1,86 @@
-.nom-comment-body {
-  padding-top: 1rem;
-  ;
+.nom-comment-item-box {
+  height: 300px;
+  overflow-y: auto;
 }
 
-textarea.nom-comment-textarea {
+.nom-comment-author {
+  margin-right: 1rem;
+  text-decoration: none !important;
+}
+
+.nom-comment-action-btn {
+  float: right;
+  margin-right: 1rem;
+  text-decoration: none !important;
+  visibility: hidden;
+}
+
+.nom-comment-reply {
+  margin-left: 3rem;
+  padding-left: 0.5rem;
+  color: #aaa;
+  font-size: 10px;
+  border-left: 4px solid #dadada;
+}
+
+.nom-comment-one:hover .nom-comment-action-btn {
+  visibility: visible;
+}
+
+.nom-comment-reply-to {
+  display: none;
+  margin-right: 0.5rem;
+  text-decoration: none !important;
+}
+
+.nom-comment-reply-to-show {
+  display: inline-block;
+}
+
+.nom-comment-item .nom-col:nth-child(2) {
+  width: 100%;
+}
+
+.nom-comment-item {
+  margin-bottom: 1rem;
+}
+
+.nom-comment-action-btn-none {
+  display: none;
+}
+
+.nom-comment-more {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.nom-comment-body {
+  padding-top: 1rem;
+}
+
+.nom-comment-textarea {
   display: block;
   width: 100%;
-  min-height: 32px;
+  min-height: 90px;
+  max-height: 300px;
+  margin-right: auto;
+  margin-left: auto;
   padding: 4px 11px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  word-wrap: break-word;
   background-color: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 2px;
+  outline: 0;
+  -webkit-user-modify: read-write-plaintext-only;
 
 }
 
-textarea.nom-comment-textarea:focus {
+.nom-comment-textarea:focus {
   border-color: #40a9ff;
-  border-right-width: 1px !important;
-  outline: 0;
   box-shadow: 0 0 0 2px rgba(24, 144, 255, .2);
 }
 
@@ -26,14 +89,14 @@ textarea.nom-comment-textarea:focus {
   overflow: hidden;
 }
 
-.nom-comment-emoji {
+.nom-comment-icon-emoji {
   float: left;
   font-size: 19px;
   cursor: pointer;
 
 }
 
-.nom-comment-user {
+.nom-comment-icon-user {
   float: left;
   margin-left: 1rem;
   font-size: 22px;
@@ -43,4 +106,21 @@ textarea.nom-comment-textarea:focus {
 
 .nom-comment-submit {
   float: right;
+}
+
+.nom-comment-atbtn {
+  margin: 0;
+  padding: 0;
+  color: #38b7e9;
+  background: transparent;
+  border-style: none;
+}
+
+.nom-comment-user {
+  width: 200px;
+  height: 200px;
+  padding: 6px 0;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
 }

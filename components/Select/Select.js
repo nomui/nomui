@@ -392,7 +392,7 @@ class Select extends Field {
     }
   }
 
-  appendOption() {}
+  appendOption() { }
 
   updateSearchPopup(text) {
     if (this.optionList) this.optionList.update({ text })
