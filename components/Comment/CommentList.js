@@ -3,20 +3,26 @@ import Component from '../Component/index';
 class CommentList extends Component {
     constructor(props, ...mixins) {
         const defaults = {
+            // 留言列表
             commentItem: [
                 {
-                    key: '',
+                    userId: '',// 用户id唯一
+                    key: '',// 每条留言唯一key值
                     author: '',
                     avatar: '',
+                    atRelevant: [],// 该条留言@了哪些人
                     content: '',
                     datetime: '',
+                    // 回复了谁
                     reply: {
                         author: '',
                         avatar: '',
+                        atRelevant: [],
                         content: '',
                         datetime: '',
                     },
                 },
+
             ],
         }
         super(Component.extendProps(defaults, props), ...mixins)
@@ -42,7 +48,16 @@ class CommentList extends Component {
                         classes: {
                             'nom-comment-more': true,
                         },
-                        children: `展开显示${commentItem.length}条更多评论`,
+                        children:
+                            [
+                                {
+                                    children: `展开 ${commentItem.length} 条更多评论`,
+                                },
+                                {
+                                    component: 'Icon',
+                                    type: 'down',
+                                },
+                            ],
                         onClick: () => {
                             _that.showMore()
                         },
@@ -54,7 +69,16 @@ class CommentList extends Component {
                         classes: {
                             'nom-comment-more': true,
                         },
-                        children: `收起更多评论`,
+                        children:
+                            [
+                                {
+                                    children: `收起更多评论`,
+                                },
+                                {
+                                    component: 'Icon',
+                                    type: 'up',
+                                },
+                            ],
                         autoRender: false,
                         onClick: () => {
                             _that.hideMore()
@@ -119,12 +143,21 @@ class CommentList extends Component {
                                                     'nom-comment-reply-to': true,
                                                     'nom-comment-reply-to-show': _that.hasReply(currentValue.reply),
                                                 },
-                                                tag: 'a',
-                                                children: `@${currentValue.reply.author}:`,
+                                                tag: 'span',
+                                                children: _that.hasReply(currentValue.reply) ? `回复 ${currentValue.reply.author}:` : '',
                                             },
                                             {
                                                 tag: 'span',
-                                                children: currentValue.content,
+                                                children: [
+                                                    {
+                                                        tag: 'a',
+                                                        children: _that.atFormat(currentValue.atRelevant),
+                                                    },
+                                                    {
+                                                        tag: 'span',
+                                                        children: currentValue.content
+                                                    },
+                                                ],
                                             },
                                         ],
                                     },
@@ -133,11 +166,17 @@ class CommentList extends Component {
                                         children: '删除',
                                         classes: {
                                             'nom-comment-action-btn': true,
-                                            'nom-comment-action-btn-none': (currentValue.author !== _that.parent.props.author),
+                                            'nom-comment-action-btn-none': (currentValue.userId !== _that.parent.props.userId),
                                         },
                                         onClick: () => {
-                                            _that.deleted(currentValue.key)
-                                            _that.parent.props.onDeleted(currentValue.key, _that.props.commentItem)
+                                            new nomui.Confirm({
+                                                title: '确定删除吗 ？',
+                                                onOk: function () {
+                                                    _that.deleted(currentValue.key)
+                                                    _that.parent.props.onDeleted(currentValue.key, _that.props.commentItem)
+                                                },
+                                            })
+
                                         },
                                     },
                                     {
@@ -165,7 +204,7 @@ class CommentList extends Component {
                     },
                     children: {
                         component: 'Cols',
-                        align: 'start',
+                        align: 'center',
                         items: [
                             {
                                 component: 'Avatar',
@@ -188,7 +227,16 @@ class CommentList extends Component {
                                         children: _that.getTime(currentValue.reply.datetime),
                                     },
                                     {
-                                        children: currentValue.reply.content,
+                                        children: [
+                                            {
+                                                tag: 'a',
+                                                children: _that.atFormat(currentValue.reply.atRelevant),
+                                            },
+                                            {
+                                                tag: 'span',
+                                                children: currentValue.reply.content,
+                                            },
+                                        ],
                                     },
                                 ],
                             },
@@ -199,6 +247,14 @@ class CommentList extends Component {
             }
             return list
         })
+    }
+
+    // 艾特格式化
+    atFormat(val) {
+        const arry = val.map(function (currentValue) {
+            return `@${currentValue}\n`
+        })
+        return arry.join('')
     }
 
     // 字符提取时间

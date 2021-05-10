@@ -8,6 +8,7 @@ class Comment extends Component {
         const defaults = {
             author: '',
             avatar: '',
+            userId: '',
             // 存放被@的用户列表
             atUsers: [],
             onComment: () => { },
@@ -15,6 +16,11 @@ class Comment extends Component {
             onDeleted: () => { },
         }
         super(Component.extendProps(defaults, props), ...mixins)
+    }
+
+    _created() {
+        this.replyTitle = ''
+        this.commentUserModal = null
     }
 
     _config() {
@@ -35,6 +41,20 @@ class Comment extends Component {
                             'nom-comment-body': true,
                         },
                         children: [
+                            {
+                                ref: (c) => {
+                                    this.replyTitleRef = c
+                                },
+                                tag: 'span',
+                                classes: {
+                                    'nom-comment-title': true,
+                                },
+                                autoRender: false,
+                                children: '',
+                                onClick: () => {
+                                    this.closeReply()
+                                },
+                            },
                             {
                                 ref: (c) => {
                                     this.textareaRef = c
@@ -80,7 +100,16 @@ class Comment extends Component {
                                         text: '发表评论',
                                         type: 'primary',
                                         onClick: () => {
+
                                             const val = this.getDomValue(this.textareaRef.element).replace(/^\n/, "").replace(/\n$/, "")
+                                            if (val.trim().length === 0) {
+                                                new nomui.Message({
+                                                    content: '请输入评论内容',
+                                                    type: 'info',
+                                                    duration: 2.5,
+                                                })
+                                                return false
+                                            }
                                             this.addComment(val)
                                             onComment(val)
                                         },
@@ -96,18 +125,30 @@ class Comment extends Component {
 
     }
 
+    // 取消回复
+    closeReply() {
+        this.replyTitleRef.hide()
+        this.replyTitle = ''
+    }
+
     // 文本域获得焦点
     _textareaFocus(key) {
         const target = this.props.commentItem.find(function (currentValue) {
             return currentValue.key === key
         })
         this.textareaRef && this.textareaRef.element.focus()
-        this.handleSelectUser(target)
+        this.replyTitleRef.update({
+            children: `回复 ${target.author}:`,
+
+        })
+        this.replyTitleRef.show()
+        this.replyTitle = target.author
+        // this.handleSelectUser(target)
     }
 
     // 发表评论
     addComment(val) {
-        this._list._addComment(val)
+        this._list._addComment(this.replyTitle, val)
     }
 
     // 打开emoji面板
@@ -131,20 +172,24 @@ class Comment extends Component {
     // 打开@用户列表
     showUser(arg) {
         const align = 'top left'
-        const sender = arg.sender
-        if (!sender[align]) {
-            sender[align] = new nomui.Layer({
+        this.commentUserModal = arg.sender
+        if (!this.commentUserModal[align]) {
+            this.commentUserModal[align] = new nomui.Layer({
                 align: align,
-                alignTo: sender.element,
+                alignTo: this.commentUserModal.element,
                 alignOuter: true,
                 children: {
                     component: CommentUser,
-                    options: this.props.options,
+                    atUserLists: this.props.atUserLists,
+                },
+                onHide: function () {
+                    document.onkeydown = null
                 },
                 closeOnClickOutside: true,
+
             })
         }
-        sender[align].show()
+        this.commentUserModal[align].show()
     }
 
     // 获取目标节点的纯文本内容
