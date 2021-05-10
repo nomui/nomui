@@ -1,26 +1,53 @@
+.nom-comment a {
+  text-decoration: none !important;
+}
+
+.nom-comment-title {
+  position: relative;
+  display: inline-block;
+  margin-bottom: .4rem;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.nom-comment-title::after {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  width: 12px;
+  height: 12px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 10px;
+  text-align: center;
+  background-color: red;
+  border-radius: 50%;
+  cursor: pointer;
+  content: 'x';
+}
+
 .nom-comment-item-box {
   height: 300px;
   overflow-y: auto;
+  transition: all .1s;
 }
 
 .nom-comment-author {
   margin-right: 1rem;
-  text-decoration: none !important;
 }
 
 .nom-comment-action-btn {
   float: right;
   margin-right: 1rem;
-  text-decoration: none !important;
   visibility: hidden;
 }
 
 .nom-comment-reply {
   margin-left: 3rem;
-  padding-left: 0.5rem;
-  color: #aaa;
+  padding: 0.5rem;
   font-size: 10px;
-  border-left: 4px solid #dadada;
+  background-color: #eee;
 }
 
 .nom-comment-one:hover .nom-comment-action-btn {
@@ -30,7 +57,8 @@
 .nom-comment-reply-to {
   display: none;
   margin-right: 0.5rem;
-  text-decoration: none !important;
+  color: #aaa;
+  cursor: pointer;
 }
 
 .nom-comment-reply-to-show {
@@ -117,10 +145,90 @@
 }
 
 .nom-comment-user {
-  width: 200px;
-  height: 200px;
-  padding: 6px 0;
+  width: 268px;
+  height: 326px;
+  padding: 10px;
   background-color: #fff;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+}
+
+.nom-comment-user li {
+  list-style: none;
+}
+
+.nom-comment-search {
+  position: relative;
+  height: 32.5px;
+  font-size: 14px;
+  line-height: 32.5px;
+}
+
+.nom-comment-input-search {
+  width: 100%;
+  height: 32.5px;
+  padding: 4px 40px 4px 11px;
+  overflow: hidden;
+  line-height: 32.5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  outline: none;
+  transition: all .3s;
+}
+
+.nom-comment-input-search:focus {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, .2);
+}
+
+.nom-comment-search-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none !;
+}
+
+.nom-comment-atboxs {
+  height: 270px;
+  margin: 0;
+  padding: 0;
+  padding: 12px 10px;
+  overflow-y: auto
+}
+
+.nom-comment-atboxs-li {
+  width: 100%;
+  margin-bottom: 4px;
+  padding: 2px;
+  cursor: pointer;
+  transition: border-radius .2s;
+
+  /*   animation: hahahaLinear .3s linear 0s 1 normal forwards; */
+}
+
+@keyframes hahahaLinear {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.nom-comment-atboxs-li-name {
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.nom-comment-atboxs-li.on,
+.nom-comment-atboxs-li:hover {
+  color: #fff;
+  background-color: #4263eb;
+  border-radius: 4px;
 }
