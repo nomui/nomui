@@ -12504,6 +12504,11 @@ function _defineProperty2(obj, key, value) {
     _created() {
       super._created();
       this.realValue = "";
+      this.hasDefaultValue = false;
+      if (this.props.value) {
+        this.realValue = this.props.value;
+        this.hasDefaultValue = true;
+      }
     }
     _config() {
       const that = this;
@@ -12549,6 +12554,15 @@ function _defineProperty2(obj, key, value) {
         },
       });
       super._config();
+    }
+    _rendered() {
+      if (this.hasDefaultValue && this.firstRender) {
+        let stars = "";
+        for (let i = 0; i < this.realValue.length; i++) {
+          stars = `*${stars}`;
+        }
+        this.setValue(stars);
+      }
     }
     _getValue() {
       if (!this.realValue || this.realValue === "") {
