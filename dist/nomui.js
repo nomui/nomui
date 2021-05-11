@@ -282,6 +282,13 @@ function _defineProperty2(obj, key, value) {
       .replace(hyphenateRE, "$1-$2")
       .toLowerCase();
   }
+  function htmlEncode(value) {
+    // Create a in-memory element, set its inner text (which is automatically encoded)
+    // Then grab the encoded contents back out. The element never exists on the DOM.
+    const textarea = document.createElement("textarea");
+    textarea.textContent = value;
+    return textarea.innerHTML;
+  }
   function extend$1() {
     let options;
     let name;
@@ -388,6 +395,13 @@ function _defineProperty2(obj, key, value) {
       return i.toString(16);
     });
   }
+  function isPromiseLike$1(promiseLike) {
+    return (
+      promiseLike !== null &&
+      (typeof promiseLike === "object" || typeof promiseLike === "function") &&
+      typeof promiseLike.then === "function"
+    );
+  }
   function formatDate(date, format) {
     if (!date) {
       return null;
@@ -408,7 +422,24 @@ function _defineProperty2(obj, key, value) {
   function isDate(date) {
     return toString.call(date) === "[object Date]";
   }
-  var index$1 = { extend: extend$1, isFunction };
+  var index$1 = /*#__PURE__*/ Object.freeze({
+    __proto__: null,
+    isPlainObject: isPlainObject,
+    isString: isString,
+    isFunction: isFunction,
+    hyphenate: hyphenate,
+    htmlEncode: htmlEncode,
+    extend: extend$1,
+    clone: clone$1,
+    accessProp: accessProp,
+    pathCombine: pathCombine,
+    normalizeKey: normalizeKey,
+    isNumeric: isNumeric,
+    newGuid: newGuid,
+    isPromiseLike: isPromiseLike$1,
+    formatDate: formatDate,
+    isDate: isDate,
+  });
   class ComponentDescriptor {
     constructor(tagOrComponent, props, children, mixins) {
       this.tagOrComponent = tagOrComponent;
@@ -18519,6 +18550,6 @@ function _defineProperty2(obj, key, value) {
   exports.TreeSelect = TreeSelect;
   exports.Uploader = Uploader;
   exports.n = n$1;
-  exports.util = index$1;
+  exports.utils = index$1;
   Object.defineProperty(exports, "__esModule", { value: true });
 });
