@@ -18,11 +18,11 @@ class FileList extends Component {
   }
 
   _config() {
-    const { files, onRemove, extraAction, initializing, renderer } = this.props
+    const { files, onRemove, extraAction, initializing, renderer, customizeInfo } = this.props
     const children = []
     if (Array.isArray(files) && files.length > 0) {
       files.forEach((file) => {
-        children.push({ component: FileItem, file, onRemove, extraAction, renderer })
+        children.push({ component: FileItem, file, onRemove, extraAction, renderer, customizeInfo })
       })
     }
 
