@@ -18087,8 +18087,11 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
-      const { file, onRemove, extraAction } = this.props;
-      const { name, size, uploadTime, uuid, status } = file;
+      const { file, onRemove, extraAction, customizeInfo } = this.props;
+      const { uuid, status } = file;
+      const _info = isFunction(customizeInfo)
+        ? customizeInfo(file)
+        : this._handleDefaultCustomizeInfo(file);
       if (uuid) {
         let imgDisplay = {};
         if (status === "error") {
@@ -18160,51 +18163,13 @@ function _defineProperty2(obj, key, value) {
                 this.setProps({
                   children: [
                     {
-                      tag: "div",
+                      // tag: 'div',
                       _config() {
-                        this.setProps({
-                          children: [
-                            {
-                              tag: "span",
-                              children: [
-                                {
-                                  tag: "a",
-                                  children: name,
-                                  _config() {
-                                    this.setProps({
-                                      classes: { "upload-file-name": true },
-                                    });
-                                  }, // attrs: {
-                                  //   href: 'javascript:void(0)',
-                                  //   onclick: (e) => {
-                                  //     e.preventDefault()
-                                  //     if (isFunction(onPreview)) onPreview(file)
-                                  //   },
-                                  // },
-                                },
-                              ],
-                            },
-                            { tag: "span", children: getFileSize(size) },
-                            {
-                              tag: "span",
-                              children: `更新日期 : ${
-                                getDate(uploadTime) ? getDate(uploadTime) : "NA"
-                              }`,
-                              _config() {
-                                this.setProps({
-                                  classes: {
-                                    "upload-file-update": true,
-                                    "u-border-left ": true,
-                                  },
-                                });
-                              },
-                            },
-                          ],
-                        });
+                        this.setProps({ children: _info });
                       },
                     },
                     {
-                      tag: "div",
+                      // tag: 'div',
                       _config() {
                         this.setProps({
                           classes: {
@@ -18237,23 +18202,27 @@ function _defineProperty2(obj, key, value) {
         component: "Icon",
         type: "default",
         classes: { "file-img": true },
-      }; // const suffix = getFileExtension(name)
-      // if (fileType.has(suffix)) {
-      //   return {
-      //     component: 'Icon',
-      //     type: suffix,
-      //     classes: {
-      //       'file-img': true,
-      //     },
-      //   }
-      // }
-      // return {
-      //   component: 'Icon',
-      //   type: 'default',
-      //   classes: {
-      //     'file-img': true,
-      //   },
-      // }
+      };
+    }
+    _handleDefaultCustomizeInfo(file) {
+      if (!file) return null;
+      const { name, size, uploadTime } = file;
+      return [
+        {
+          tag: "span",
+          children: [
+            { tag: "a", children: name, classes: { "upload-file-name": true } },
+          ],
+        },
+        { tag: "span", children: getFileSize(size) },
+        {
+          tag: "span",
+          children: `更新日期 : ${
+            getDate(uploadTime) ? getDate(uploadTime) : "NA"
+          }`,
+          classes: { "upload-file-update": true, "u-border-left ": true },
+        },
+      ];
     }
   }
   class FileList extends Component {
@@ -18273,6 +18242,7 @@ function _defineProperty2(obj, key, value) {
         extraAction,
         initializing,
         renderer,
+        customizeInfo,
       } = this.props;
       const children = [];
       if (Array.isArray(files) && files.length > 0) {
@@ -18283,6 +18253,7 @@ function _defineProperty2(obj, key, value) {
             onRemove,
             extraAction,
             renderer,
+            customizeInfo,
           });
         });
       }
@@ -18396,6 +18367,7 @@ function _defineProperty2(obj, key, value) {
         onRemove: null,
         renderer: null,
         extraAction: [],
+        customizeInfo: null,
       };
       super(Component.extendProps(defaults, props), ...mixins);
       this.reqs = {};
@@ -18414,6 +18386,7 @@ function _defineProperty2(obj, key, value) {
         display,
         onRemove,
         renderer,
+        customizeInfo,
       } = this.props;
       let initializing = true;
       if (isPromiseLike(that.fileList)) {
@@ -18498,6 +18471,7 @@ function _defineProperty2(obj, key, value) {
                 action: that.handleRemove.bind(that),
               }),
             extraAction,
+            customizeInfo,
           });
         }
       }
