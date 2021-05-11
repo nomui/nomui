@@ -8229,7 +8229,205 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
-  Component.register(Divider);
+  Component.register(Divider); // 正整数
+  const POSITIVE_INTEGER = /^[1-9]\d*$/; // 不支持cm mm in pt pc等单位
+  const CSS_UNIT = /^(-)?\d+(.)?\d+[px|rem|em|vw|vh|%]*$/i;
+  const VALID_INTEGER = /^[-]?\d+$/;
+  const settles = ["top", "right", "bottom", "left"];
+  function isValidZIndex(index) {
+    return VALID_INTEGER.test(index);
+  }
+  class Drawer extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        closable: true,
+        closeIcon: "close",
+        maskClosable: true,
+        showMasker: true,
+        visible: false,
+        settle: "right",
+        okText: "确 定",
+        cancelText: "取 消",
+        placeGlobal: true,
+        onOk: (e) => {
+          e.sender.close();
+        },
+        onCancel: (e) => {
+          e.sender.close();
+        },
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const drawerRef = this;
+      const {
+        zIndex,
+        settle,
+        visible,
+        maskClosable,
+        showMasker,
+        placeGlobal,
+        width,
+        height,
+      } = this.props;
+      if (!placeGlobal && this.parent && this.parent.element) {
+        this.parent.element.style.position = "relative";
+      }
+      const _settle = settles.includes(settle) ? settle : "right";
+      const children = []; // mask
+      if (showMasker) {
+        children.push({ classes: { "nom-drawer-mask": true } });
+      } // content
+      children.push({
+        classes: { "nom-drawer-content-wrapper": true },
+        attrs: {
+          style: ["left", "right"].includes(_settle)
+            ? Object.assign(
+                {},
+                drawerRef._handleSize(width, "width"),
+                drawerRef._animation(visible, true)
+              )
+            : Object.assign(
+                {},
+                drawerRef._handleSize(height, "height"),
+                drawerRef._animation(visible, false)
+              ),
+        },
+        children: drawerRef._handleContent(),
+      }); // 是否挂在到body或是当前dom
+      let _style = placeGlobal ? {} : { position: "absolute" }; // customize z-index
+      _style = isValidZIndex(zIndex)
+        ? Object.assign({}, _style, { "z-index": zIndex })
+        : _style;
+      this.setProps({
+        classes: {
+          // [`nom-drawer-${_settle}`]: true,
+          "nom-drawer-top": _settle === "top",
+          "nom-drawer-right": _settle === "right",
+          "nom-drawer-bottom": _settle === "bottom",
+          "nom-drawer-left": _settle === "left",
+          "nom-drawer-open": visible,
+        },
+        onClick: () => {
+          maskClosable && drawerRef.close(drawerRef);
+        },
+        attrs: { style: _style },
+        children,
+      });
+    }
+    _handleContent() {
+      const drawerRef = this;
+      const {
+        visible,
+        closable,
+        closeIcon,
+        title,
+        content,
+        footer,
+        okText,
+        cancelText,
+        onOk,
+        onCancel,
+      } = this.props;
+      const children = [];
+      if (title) {
+        children.push({
+          classes: { "nom-drawer-header": true },
+          children: closable
+            ? [
+                title,
+                Component.extendProps(Component.normalizeIconProps(closeIcon), {
+                  classes: { "nom-drawer-close-icon": true },
+                  onClick: () => {
+                    drawerRef.close();
+                  },
+                }),
+              ]
+            : title,
+        });
+      } else if (closable) {
+        children.push({
+          classes: { "nom-drawer-no-header": true },
+          children: Component.extendProps(
+            Component.normalizeIconProps(closeIcon),
+            {
+              classes: { "nom-drawer-close-icon": true },
+              onClick: () => {
+                drawerRef.close();
+              },
+            }
+          ),
+        });
+      }
+      children.push({
+        classes: { "nom-drawer-content": true },
+        _config() {
+          if (content) {
+            this.setProps({ children: content });
+          }
+        },
+      });
+      if (footer !== null) {
+        children.push({
+          classes: { "nom-drawer-footer": true },
+          _config() {
+            if (footer) {
+              this.setProps({ children: footer });
+            } else {
+              this.setProps({
+                children: {
+                  component: "Cols",
+                  justify: "center",
+                  items: [
+                    {
+                      component: "Button",
+                      type: "primary",
+                      text: okText,
+                      onClick: () => {
+                        drawerRef._callHandler(onOk);
+                      },
+                    },
+                    {
+                      component: "Button",
+                      text: cancelText,
+                      onClick: () => {
+                        drawerRef._callHandler(onCancel);
+                      },
+                    },
+                  ],
+                },
+              });
+            }
+          },
+        });
+      }
+      return visible
+        ? [
+            {
+              classes: { "nom-drawer-body": true },
+              onClick: ({ event }) => {
+                event.stopPropagation();
+              },
+              children,
+            },
+          ]
+        : null;
+    }
+    _handleSize(size, unit) {
+      if (!CSS_UNIT.test(size)) return {};
+      return isNumeric(size) ? { [unit]: `${size}px` } : { [unit]: size };
+    }
+    _animation(visible, x) {
+      if (visible) return {};
+      return x
+        ? { transform: "translateX(100%)" }
+        : { transform: "translateY(100%)" };
+    }
+    close() {
+      this.update({ visible: false });
+    }
+  }
+  Component.register(Drawer);
   class Dropdown extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -17805,8 +18003,7 @@ function _defineProperty2(obj, key, value) {
       return this.props.selectedNodes;
     }
   }
-  Component.register(TreeSelect); // 正整数
-  const POSITIVE_INTEGER = /^[1-9]\d*$/;
+  Component.register(TreeSelect);
   const DEFAULT_ACCEPT =
     "image/*,application/msword,application/pdf,application/x-rar-compressed,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.ms-works,application/zip,audio/*,video/*,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/vnd.ms-word.document.macroEnabled.12,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.template.macroEnabled.12,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.ms-powerpoint.addin.macroEnabled.12,application/vnd.ms-powerpoint.presentation.macroEnabled.12,application/vnd.ms-powerpoint.slideshow.macroEnabled.12,application/csv";
   function getUUID() {
@@ -18496,6 +18693,7 @@ function _defineProperty2(obj, key, value) {
   exports.DatePicker = DatePicker;
   exports.DateRangePicker = DateRangePicker;
   exports.Divider = Divider;
+  exports.Drawer = Drawer;
   exports.Dropdown = Dropdown;
   exports.Ellipsis = Ellipsis;
   exports.Empty = Empty;
