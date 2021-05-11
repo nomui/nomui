@@ -19,7 +19,7 @@ class Comment extends Component {
         this.replyObj = {}
         this.userModal = null
         this.emojiModal = null
-        this.commentCursortPosition = null
+        this.lastEditRange = null
     }
 
     _config() {
@@ -122,6 +122,29 @@ class Comment extends Component {
 
     }
 
+    _rendered() {
+        this.init()
+    }
+
+    init() {
+        const _that = this
+        this.textareaRef.element.addEventListener('input', function () {
+            const rang = window.getSelection().getRangeAt(0).endOffset
+            _that.lastEditRange = rang
+            console.log(rang)
+        })
+        this.textareaRef.element.addEventListener('click', function () {
+            const rang = window.getSelection().getRangeAt(0).endOffset
+            _that.lastEditRange = rang
+            console.log(rang)
+        })
+        this.textareaRef.element.addEventListener('keyup', function () {
+            const rang = window.getSelection().getRangeAt(0).endOffset
+            _that.lastEditRange = rang
+            console.log(rang)
+        })
+    }
+
     // 取消回复
     closeReply() {
         this.replyTitleRef.hide()
@@ -133,13 +156,14 @@ class Comment extends Component {
         const target = this.props.commentItem.find(function (currentValue) {
             return currentValue.key === key
         })
-        this.textareaRef && this.textareaRef.element.focus()
+        // this.textareaRef.element.focus()
         this.replyTitleRef.update({
             children: `回复 ${target.author}:`,
 
         })
         this.replyTitleRef.show()
         this.replyObj = target
+        this.keepLastIndex(this.textareaRef.element)
     }
 
     // 发表评论
@@ -149,7 +173,7 @@ class Comment extends Component {
 
     // 打开emoji面板
     showEmoji(arg) {
-        this.commentCursortPosition = this.getCursortPosition(this.textareaRef.element)
+        console.log(this.lastEditRange)
         const align = 'top left'
         const _that = this
         this.emojiModal = arg.sender
@@ -172,7 +196,7 @@ class Comment extends Component {
 
     // 打开@用户列表
     showUser(arg) {
-        this.commentCursortPosition = this.getCursortPosition(this.textareaRef.element)
+        console.log(this.lastEditRange)
         const align = 'top left'
         const _that = this
         this.userModal = arg.sender
@@ -280,56 +304,44 @@ class Comment extends Component {
     }
 
     // 获取光标位置
-    getCursortPosition(element) {
-        let caretOffset = 0
-        const doc = element.ownerDocument || element.document
-        const win = doc.defaultView || doc.parentWindow
-        let sel
-        if (element.tagName === 'DIV') { // 谷歌、火狐
-            sel = win.getSelection()
-            if (sel.rangeCount > 0) { // 选中的区域
-                const range = win.getSelection().getRangeAt(0)
-                const preCaretRange = range.cloneRange() // 克隆一个选中区域
-                preCaretRange.selectNodeContents(element) // 设置选中区域的节点内容为当前节点
-                preCaretRange.setEnd(range.endContainer, range.endOffset)  // 重置选中区域的结束位置
-                // caretOffset = preCaretRange.toString().length
-                const tempElem = preCaretRange.cloneContents()
-                caretOffset = this.getDomValue(tempElem).replace(/\n/g, '').length
-            }
-        } else { // IE
-            caretOffset = element.selectionEnd
-        }
-        return caretOffset
+    getCursortPosition() {
+        return window.getSelection().getRangeAt(0).endOffset
     }
 
     // 设置光标位置
-    setCursortPosition(textDom, pos) {
-        if (textDom.setSelectionRange) {
-            // IE Support
-            textDom.focus()
-            textDom.setSelectionRange(pos, pos)
-        } else if (textDom.createTextRange) {
-            // Firefox support
-            const range = textDom.createTextRange()
-            range.collapse(true)
-            range.moveEnd('character', pos)
-            range.moveStart('character', pos)
+    setFocusFun(ele, focusOffset) {
+        const sel = window.getSelection()
+        const rang = document.createRange()// 创建一个rang对象
+        const content = ele.firstChild
+        rang.setStart(content, 0)
+        rang.setEnd(content, focusOffset)
+        rang.collapse(false)// 起始位置和终止位置是否相同的布尔值
+        sel.removeAllRanges()// 移除选中区域的range对象
+        sel.addRange(rang)// 给选中区域添加range对象
+    }
+
+    // 光标移至最后
+    keepLastIndex(obj) {
+        if (window.getSelection) {// ie11 10 9 ff safari
+            obj.focus() // 解决ff不获取焦点无法定位问题
+            const range = window.getSelection()// 创建range
+            range.selectAllChildren(obj)// range 选择obj下所有子内容
+            range.collapseToEnd()// 光标移至最后
+        }
+        else if (document.selection) {// ie10 9 8 7 6 5
+            const range = document.selection.createRange()// 创建选择对象
+            // var range = document.body.createTextRange();
+            range.moveToElementText(obj)// range定位到obj
+            range.collapse(false)// 光标移至最后
             range.select()
         }
     }
 
     _insertUser(userObj) {
-        // console.log(this.textareaRef, this.textareaRef.element, this.textareaRef.element.value)
-
-        // // 获取输入框中的值
-        // const fullText = this.textareaRef.element.textContent.replace(/\n/g, '')
-        // console.log(fullText.length)
-        // // // 获取光标位置
-        // const end = this.getCursortPosition(this.textareaRef.element)
-        // // console.log(end)
-        // this.setCursortPosition(this.textareaRef.element, end)
-
-        this.textareaRef.element.focus()
+        // TODO:需要获取光标原来的位置插入
+        console.log(this.lastEditRange)
+        this.setFocusFun(this.textareaRef.element, this.lastEditRange)
+        // this.textareaRef.element.focus()
         const button = `<button contenteditable="false" class="nom-comment-atbtn">@${userObj.author}</button>`
         this.insertHtmlAtCaret(button)
     }
@@ -340,7 +352,9 @@ class Comment extends Component {
 
     _insertEmoji(val) {
         // TODO:需要获取光标原来的位置插入
-        this.textareaRef.element.focus()
+        console.log(this.lastEditRange)
+        this.setFocusFun(this.textareaRef.element, this.lastEditRange)
+        // this.textareaRef.element.focus()
         const img = `<img class="nom-comment-emoji-img" src="${val}">`
         this.insertHtmlAtCaret(img)
     }
