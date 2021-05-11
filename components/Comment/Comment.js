@@ -63,7 +63,8 @@ class Comment extends Component {
                                     'nom-comment-textarea': true,
                                 },
                                 attrs: {
-                                    contenteditable: true,
+                                    contenteditable: 'true',
+
                                 },
                                 children: '',
                             },
@@ -99,8 +100,8 @@ class Comment extends Component {
                                         text: '发表评论',
                                         type: 'primary',
                                         onClick: () => {
-                                            const val = this.getDomValue(this.textareaRef.element).replace(/^\n/, "").replace(/\n$/, "")
-                                            if (val.trim().length === 0) {
+                                            const val = this.getValueDom(this.textareaRef.element).replace(/^\n/, "").replace(/\n$/, "")
+                                            if (val.length === 0) {
                                                 new nomui.Message({
                                                     content: '请输入评论内容',
                                                     type: 'info',
@@ -108,7 +109,8 @@ class Comment extends Component {
                                                 })
                                                 return false
                                             }
-                                            onComment(this.replyObj, this.getCommentValue(this.textareaRef.element))
+                                            console.log(val, this.getValueObj(this.textareaRef.element))
+                                            onComment(this.replyObj, this.getValueObj(this.textareaRef.element))
                                         },
                                     },
                                 ]
@@ -123,25 +125,18 @@ class Comment extends Component {
     }
 
     _rendered() {
-        this.init()
+        this.initComment()
     }
 
-    init() {
-        const _that = this
-        this.textareaRef.element.addEventListener('input', function () {
-            const rang = window.getSelection().getRangeAt(0).endOffset
-            _that.lastEditRange = rang
-            console.log(rang)
+    initComment() {
+        this.textareaRef.element.addEventListener('DOMNodeInserted', () => {
+            this.keepCursor()
         })
-        this.textareaRef.element.addEventListener('click', function () {
-            const rang = window.getSelection().getRangeAt(0).endOffset
-            _that.lastEditRange = rang
-            console.log(rang)
+        this.textareaRef.element.addEventListener('click', () => {
+            this.keepCursor()
         })
-        this.textareaRef.element.addEventListener('keyup', function () {
-            const rang = window.getSelection().getRangeAt(0).endOffset
-            _that.lastEditRange = rang
-            console.log(rang)
+        this.textareaRef.element.addEventListener('keyup', () => {
+            this.keepCursor()
         })
     }
 
@@ -151,19 +146,18 @@ class Comment extends Component {
         this.replyObj = {}
     }
 
-    // 文本域获得焦点
+    // 回复
     _textareaFocus(key) {
         const target = this.props.commentItem.find(function (currentValue) {
             return currentValue.key === key
         })
-        // this.textareaRef.element.focus()
         this.replyTitleRef.update({
             children: `回复 ${target.author}:`,
 
         })
         this.replyTitleRef.show()
         this.replyObj = target
-        this.keepLastIndex(this.textareaRef.element)
+        this.setCursor()
     }
 
     // 发表评论
@@ -173,7 +167,6 @@ class Comment extends Component {
 
     // 打开emoji面板
     showEmoji(arg) {
-        console.log(this.lastEditRange)
         const align = 'top left'
         const _that = this
         this.emojiModal = arg.sender
@@ -196,7 +189,6 @@ class Comment extends Component {
 
     // 打开@用户列表
     showUser(arg) {
-        console.log(this.lastEditRange)
         const align = 'top left'
         const _that = this
         this.userModal = arg.sender
@@ -212,9 +204,6 @@ class Comment extends Component {
                     },
                     atUserLists: this.props.atUserLists,
                 },
-                onHide: function () {
-                    document.onkeydown = null
-                },
                 closeOnClickOutside: true,
 
             })
@@ -222,7 +211,7 @@ class Comment extends Component {
         this.userModal[align].show()
     }
 
-    getCommentValue(elem) {
+    getValueObj(elem) {
         const res = []
         Array.from(elem.childNodes).forEach((child) => {
             if (child.nodeName === '#text') {
@@ -238,7 +227,7 @@ class Comment extends Component {
             } else if (child.nodeName === 'BUTTON') {
                 res.push({
                     type: 'BUTTON',
-                    content: this.getDomValue(child).replace(/^\n/, '').replace(/\n$/, '').replace(/@/, ''),
+                    content: this.getValueDom(child).replace(/@/, ''),
                 })
             } else if (child.nodeName === 'IMG') {
                 res.push({
@@ -248,7 +237,7 @@ class Comment extends Component {
             } else if (child.nodeName === 'DIV') {
                 res.push({
                     type: 'DIV',
-                    content: `\n${this.getDomValue(child)}`,
+                    content: `\n${this.getValueDom(child)}`,
                 })
             }
         })
@@ -257,7 +246,7 @@ class Comment extends Component {
 
     // 获取目标节点的纯文本内容
     // 这里只涉及到了之后可能会用到的一些节点
-    getDomValue(elem) {
+    getValueDom(elem) {
         let res = ''
         Array.from(elem.childNodes).forEach((child) => {
             if (child.nodeName === '#text') {
@@ -265,18 +254,18 @@ class Comment extends Component {
             } else if (child.nodeName === 'BR') {
                 res += '\n'
             } else if (child.nodeName === 'BUTTON') {
-                res += this.getDomValue(child)
+                res += this.getValueDom(child)
             } else if (child.nodeName === 'IMG') {
                 res += child.src
             } else if (child.nodeName === 'DIV') {
-                res += `\n${this.getDomValue(child)}`
+                res += `\n${this.getValueDom(child)}`
             }
         })
         return res
     }
 
     // 往光标位置插入HTML片段
-    insertHtmlAtCaret(html) {
+    insertHtml(html) {
         let sel, range, frag
         if (window.getSelection) {
             sel = window.getSelection()
@@ -303,25 +292,28 @@ class Comment extends Component {
         }
     }
 
-    // 获取光标位置
-    getCursortPosition() {
-        return window.getSelection().getRangeAt(0).endOffset
+    // 保存光标对象
+    keepCursor() {
+        // 获取选定对象
+        const selection = window.getSelection()
+        // 设置最后光标对象
+        this.lastEditRange = selection.getRangeAt(0)
+        // console.log('keep', this.lastEditRange)
     }
 
     // 设置光标位置
-    setFocusFun(ele, focusOffset) {
-        const sel = window.getSelection()
-        const rang = document.createRange()// 创建一个rang对象
-        const content = ele.firstChild
-        rang.setStart(content, 0)
-        rang.setEnd(content, focusOffset)
-        rang.collapse(false)// 起始位置和终止位置是否相同的布尔值
-        sel.removeAllRanges()// 移除选中区域的range对象
-        sel.addRange(rang)// 给选中区域添加range对象
+    setCursor() {
+        this.lastCursor(this.textareaRef.element)
+        const selection = window.getSelection()
+        if (this.lastEditRange) {
+            // 存在最后光标对象，选定对象清除所有光标并添加最后光标还原之前的状态
+            selection.removeAllRanges()
+            selection.addRange(this.lastEditRange)
+        }
     }
 
     // 光标移至最后
-    keepLastIndex(obj) {
+    lastCursor(obj) {
         if (window.getSelection) {// ie11 10 9 ff safari
             obj.focus() // 解决ff不获取焦点无法定位问题
             const range = window.getSelection()// 创建range
@@ -330,7 +322,6 @@ class Comment extends Component {
         }
         else if (document.selection) {// ie10 9 8 7 6 5
             const range = document.selection.createRange()// 创建选择对象
-            // var range = document.body.createTextRange();
             range.moveToElementText(obj)// range定位到obj
             range.collapse(false)// 光标移至最后
             range.select()
@@ -338,12 +329,10 @@ class Comment extends Component {
     }
 
     _insertUser(userObj) {
-        // TODO:需要获取光标原来的位置插入
-        console.log(this.lastEditRange)
-        this.setFocusFun(this.textareaRef.element, this.lastEditRange)
-        // this.textareaRef.element.focus()
-        const button = `<button contenteditable="false" class="nom-comment-atbtn">@${userObj.author}</button>`
-        this.insertHtmlAtCaret(button)
+        this.setCursor()
+        const button = `<button contenteditable="false" class="nom-comment-atbtn">@${userObj.author}&nbsp;</button>`
+        this.insertHtml(button)
+        this.textareaRef.element.dispatchEvent(new Event('click'))
     }
 
     _closeUserModal() {
@@ -351,12 +340,10 @@ class Comment extends Component {
     }
 
     _insertEmoji(val) {
-        // TODO:需要获取光标原来的位置插入
-        console.log(this.lastEditRange)
-        this.setFocusFun(this.textareaRef.element, this.lastEditRange)
-        // this.textareaRef.element.focus()
+        this.setCursor()
         const img = `<img class="nom-comment-emoji-img" src="${val}">`
-        this.insertHtmlAtCaret(img)
+        this.insertHtml(img)
+        this.textareaRef.element.dispatchEvent(new Event('click'))
     }
 
     _closeEmojiModal() {

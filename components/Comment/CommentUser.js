@@ -72,7 +72,7 @@ class CommentUser extends Component {
     }
 
     _rendered() {
-        this.init()
+        this.initUser()
     }
 
     getList(arry) {
@@ -113,7 +113,7 @@ class CommentUser extends Component {
         })
     }
 
-    init() {
+    initUser() {
         const _that = this
         const search = this.searchInputRef.element
         search.focus()
@@ -132,18 +132,22 @@ class CommentUser extends Component {
             _that.debounce(_that.autoSearch(this.value), 500)
         })
         // TODO:键盘响应事件
-        document.onkeydown = function (e) {
-            const keyNum = window.event ? e.keyCode : e.which
-            if (keyNum === 13) {
-                _that.keyEnter()
-            }
-            if (keyNum === 38) {
-                _that.keyUp()
-            }
-            if (keyNum === 40) {
-                _that.keyDown()
-            }
-        }
+        // document.onkeydown = function (e) {
+        //     const keyNum = window.event ? e.keyCode : e.which
+        //     if (keyNum === 13) {
+        //         _that.keyEnter()
+        //     }
+        //     // ↑
+        //     if (keyNum === 38) {
+        //         _that.keyUp()
+        //     }
+        //     // ↓
+        //     if (keyNum === 40) {
+        //         _that.keyDown()
+        //     }
+        //     e.preventDefault()
+        //     e.stopPropagation()
+        // }
     }
 
     keyUp() {
@@ -248,11 +252,9 @@ class CommentUser extends Component {
     // 防抖函数
     debounce(func, wait) {
         let timer = null;
-
         return function () {
             const context = this
             const args = arguments
-
             timer && clearTimeout(timer)
             timer = setTimeout(function () {
                 func.apply(context, args)

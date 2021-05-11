@@ -54,10 +54,10 @@ class CommentEmoji extends Component {
     }
 
     selectEmoji(e) {
-        const target = e.event.target
-        if (target.nodeName === 'IMG') {
+        const emoji = e.event.target
+        if (emoji.nodeName === 'IMG') {
             this.closeEmojiModal()
-            this._comment._insertEmoji(target.dataset.src)
+            this._comment._insertEmoji(emoji.dataset.src)
         }
     }
 

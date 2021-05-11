@@ -99,13 +99,19 @@
   padding: 4px 11px;
   overflow-x: hidden;
   overflow-y: auto;
+  _overflow-y: visible;
   word-wrap: break-word;
   background-color: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 2px;
   outline: 0;
-  -webkit-user-modify: read-write-plaintext-only;
+  -webkit-user-select: text; // 解决IOS部分手机不支持contenteditable=true属性问题
+  -webkit-user-modify: read-write-plaintext-only; // 只是编辑text文本，只能解决webkit内核里面问题，手机端适用
 
+}
+
+.nom-comment-textarea p {
+  margin: 0;
 }
 
 .nom-comment-textarea:focus {
@@ -139,7 +145,6 @@
 }
 
 .nom-comment-atbtn {
-  margin-right: 5px;
   padding: 0;
   color: #38b7e9;
   background: transparent;
@@ -258,8 +263,4 @@
 
 .nom-comment-emoji-item:hover {
   background: #dadada;
-}
-
-.nom-comment-emoji-img {
-  margin-right: 5px;
 }

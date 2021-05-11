@@ -43,6 +43,7 @@ define([], function () {
             },
           ]
           commentRef.addComment(commentItem)
+          commentRef.textareaRef.element.innerHTML = ''
         },
         // 删除
         onDeleted: (items) => {
