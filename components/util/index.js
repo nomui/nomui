@@ -249,3 +249,54 @@ export function formatDate(date, format) {
 export function isDate(date) {
   return toString.call(date) === '[object Date]'
 }
+
+/**
+ * 解析url中的query转换成对象
+ * @param {string} url 要解析的url
+ * @returns Object
+ */
+export function parseToQuery(url) {
+  // 提取url中？后面的字符串
+  const queryStr = /.+\?(.+)$/.exec(url)[1]
+  const queryArr = queryStr.split('&')
+  const paramsObj = {}
+  queryArr.forEach((param) => {
+    if (/=/.test(param)) {
+      // 使用= 分隔键和值
+      // eslint-disable-next-line prefer-const
+      let [key, val] = param.split('=')
+      // 解码
+      val = decodeURIComponent(val)
+      // 判断是否数字，并转换
+      val = /^\d+$/.test(val) ? parseFloat(val) : val
+      // 如果有重复的key，则转换为数组
+      if (paramsObj.hasOwnProperty(key)) {
+        paramsObj[key] = [].concat(paramsObj[key], val)
+      } else {
+        paramsObj[key] = val
+      }
+    }
+    // 没有=赋值的算作true
+    else {
+      paramsObj[param] = true
+    }
+  })
+
+  return paramsObj
+}
+
+/**
+ * 将对象转换成string query形式
+ * @param {object}} obj
+ * @returns
+ */
+export function parseToQueryString(obj) {
+  const result = []
+  for (const key in obj) {
+    if (Object.hasOwnProperty.call(obj, key)) {
+      const value = obj[key]
+      result.push(`${key}=${encodeURIComponent(value)}`)
+    }
+  }
+  return result.join('&')
+}

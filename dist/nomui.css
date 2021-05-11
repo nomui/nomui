@@ -5798,6 +5798,60 @@ textarea .nom-textarea {
   color: #4263eb;
   border-color: #4263eb;
 }
+.nom-result {
+  padding: 48px 32px;
+}
+.nom-result-success .nom-result-icon > .anticon {
+  color: #37b24d;
+}
+.nom-result-error .nom-result-icon > .anticon {
+  color: #f03e3e;
+}
+.nom-result-info .nom-result-icon > .anticon {
+  color: #1098ad;
+}
+.nom-result-warning .nom-result-icon > .anticon {
+  color: #f59f00;
+}
+.nom-result-image {
+  width: 250px;
+  height: 295px;
+  margin: auto;
+}
+.nom-result-icon {
+  margin-bottom: 24px;
+  text-align: center;
+}
+.nom-result-icon > .anticon {
+  font-size: 72px;
+}
+.nom-result-title {
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 24px;
+  line-height: 1.8;
+  text-align: center;
+}
+.nom-result-subtitle {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+.nom-result-extra {
+  margin: 24px 0 0 0;
+  text-align: center;
+}
+.nom-result-extra > * {
+  margin-right: 8px;
+}
+.nom-result-extra > *:last-child {
+  margin-right: 0;
+}
+.nom-result-content {
+  margin-top: 24px;
+  padding: 24px 40px;
+  background-color: rgba(255, 255, 255, 0.04);
+}
 .nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label {
   display: inline-flex;
   padding-top: 0.375rem;
