@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isString } from '../util/index'
+import { isNumeric, isString } from '../util/index'
 import Col from './Col'
 
 class Cols extends Component {
@@ -10,8 +10,9 @@ class Cols extends Component {
       itemDefaults: null,
       gutter: 'md',
       childDefaults: {
-        component: Col
+        component: Col,
       },
+      strechIndex: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -30,7 +31,17 @@ class Cols extends Component {
           }
         }
         item = Component.extendProps({}, this.props.itemDefaults, item)
-        children.push({ component: Col, children: item })
+        if (isNumeric(this.props.strechIndex) && this.props.strechIndex === i) {
+          children.push({
+            component: Col,
+            classes: {
+              'nom-col-strech': true,
+            },
+            children: item,
+          })
+        } else {
+          children.push({ component: Col, children: item })
+        }
       }
 
       this.setProps({

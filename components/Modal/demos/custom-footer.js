@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '点击弹出',
-    file: 'basic',
+    title: '自定义底部操作栏',
+    file: 'custom-footer',
     demo: function () {
       return {
         children: [
@@ -26,10 +26,25 @@ define([], function () {
                         },
                       ],
                     },
-                  },
-                  onOk: (args) => {
-                    new nomui.Message({ type: 'info', content: '点击了确定按钮' })
-                    args.sender.close()
+                    footer: (modal) => {
+                      return {
+                        children: {
+                          component: 'Cols',
+                          items: [
+                            {
+                              component: 'Button',
+                              styles: {
+                                color: 'primary',
+                              },
+                              text: '我知道了',
+                              onClick: function () {
+                                modal.close()
+                              },
+                            },
+                          ],
+                        },
+                      }
+                    },
                   },
                 })
               },
