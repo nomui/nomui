@@ -11,6 +11,12 @@ class Password extends Textbox {
   _created() {
     super._created()
     this.realValue = ''
+    this.hasDefaultValue = false
+    if (this.props.value) {
+      this.realValue = this.props.value
+
+      this.hasDefaultValue = true
+    }
   }
 
   _config() {
@@ -62,6 +68,16 @@ class Password extends Textbox {
     })
 
     super._config()
+  }
+
+  _rendered() {
+    if (this.hasDefaultValue && this.firstRender) {
+      let stars = ''
+      for (let i = 0; i < this.realValue.length; i++) {
+        stars = `*${stars}`
+      }
+      this.setValue(stars)
+    }
   }
 
   _getValue() {
