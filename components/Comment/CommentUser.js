@@ -18,85 +18,75 @@ class CommentUser extends Component {
 
     _created() {
         this.capsLock = false
-        this.searchMode = false
-        this.clearContent = true
-        this.searechRelated = []
+        this.atUserListsCopy = []
     }
 
     _config() {
         const { atUserLists } = this.props
         const listArry = this.getList(atUserLists)
-        this.setProps(
-            {
-                children: [
-                    {
-
-                        classes: {
-                            'nom-comment-search': true,
-                        },
-                        children: [
-                            {
-                                ref: (c) => {
-                                    this.commentUserSearch = c
-                                },
-                                classes: {
-                                    'nom-comment-input-search': true,
-                                },
-                                tag: 'input',
-                                attrs: {
-                                    type: 'search',
-                                },
-                            },
-                            {
-                                classes: {
-                                    'nom-comment-search-button': true,
-                                },
-                                component: 'Button',
-                                icon: 'search',
-                                type: 'text',
-
-                            },
-                        ],
+        this.setProps({
+            ref: (c) => {
+                this.atUserRef = c
+            },
+            children: [
+                {
+                    classes: {
+                        'nom-comment-search': true,
                     },
-                    {
-                        ref: (c) => {
-                            this.commentUserBoxs = c
+                    children: [
+                        {
+                            ref: (c) => {
+                                this.searchInputRef = c
+                            },
+                            classes: {
+                                'nom-comment-input-search': true,
+                            },
+                            tag: 'input',
+                            attrs: {
+                                type: 'search',
+                                placeholder: '支持用户id或名字搜索',
+                            },
                         },
-                        classes: {
-                            'nom-comment-atboxs': true,
+                        {
+                            classes: {
+                                'nom-comment-search-button': true,
+                            },
+                            component: 'Button',
+                            icon: 'search',
+                            type: 'text',
                         },
-                        tag: 'ul',
-                        children: listArry,
+                    ],
+                },
+                {
+                    ref: (c) => {
+                        this.atBoxsRef = c
                     },
-                ]
-            }
-        )
+                    classes: {
+                        'nom-comment-atboxs': true,
+                    },
+                    tag: 'ul',
+                    children: listArry,
+                },
+            ]
+        })
     }
 
     _rendered() {
-
-        this.commentUserSearch && this.init()
-    }
-
-    _remove() {
-        document.onkeydown = null
+        this.init()
     }
 
     getList(arry) {
         const _that = this
-        return arry.map(function (currentValue) {
+        return arry.map(function (item) {
             return {
-                ref: (c) => {
-                    _that.commentUserItem = c
-                },
                 classes: {
-                    'nom-comment-atboxs-li': true,
-                    'on': currentValue.active && !!currentValue.active,
+                    'nom-comment-atboxs-item': true,
+                    'on': item.active && !!item.active,
                 },
                 tag: 'li',
                 attrs: {
-                    userId: currentValue.userId,
-                    key: currentValue.key,
+                    userId: item.userId,
+                    key: item.key,
                 },
                 children: {
                     component: 'Cols',
@@ -104,20 +94,20 @@ class CommentUser extends Component {
                     items: [
                         {
                             component: 'Avatar',
-                            alt: currentValue.author,
-                            text: currentValue.author,
-                            src: currentValue.avatar,
+                            alt: item.author,
+                            text: item.author,
+                            src: item.avatar,
                         },
                         {
                             classes: {
-                                'nom-comment-atboxs-li-name': true,
+                                'nom-comment-atboxs-name': true,
                             },
-                            children: currentValue.author,
+                            children: item.author,
                         },
                     ],
                 },
                 onClick: () => {
-                    _that.clickUser(currentValue)
+                    _that.selectUser(item)
                 },
             }
         })
@@ -125,156 +115,150 @@ class CommentUser extends Component {
 
     init() {
         const _that = this
-        let timer
-        let input
-        this.commentUserSearch.element.addEventListener('input', function () {
+        const search = this.searchInputRef.element
+        search.focus()
+        search.addEventListener('input', function () {
             if (!_that.capsLock) {
-                clearTimeout(timer)
-                input = this
-                timer = setTimeout(function () {
-                    _that.searchUser(input.value)
-                }, 500)
-
+                _that.debounce(_that.autoSearch(this.value), 500)
             }
         })
 
-        this.commentUserSearch.element.addEventListener('compositionstart', function () {
+        search.addEventListener('compositionstart', function () {
             _that.capsLock = true
         })
-        this.commentUserSearch.element.addEventListener('compositionend', function () {
+
+        search.addEventListener('compositionend', function () {
             _that.capsLock = false
-            clearTimeout(timer)
-            input = this
-            timer = setTimeout(function () {
-                _that.searchUser(input.value)
-            }, 500)
+            _that.debounce(_that.autoSearch(this.value), 500)
         })
-        this.commentUserItem.element.addEventListener('mouseenter', function () {
-            this.searechRelated.forEach(function (currentValue) {
-                currentValue.active = false
-            })
-            this.commentUserBoxs.update({
-                children: this.getList(this.searechRelated)
-            })
-        })
-
+        // TODO:键盘响应事件
         document.onkeydown = function (e) {
-            const keyNum = window.event ? e.keyCode : e.which;
-
+            const keyNum = window.event ? e.keyCode : e.which
             if (keyNum === 13) {
-                if (_that.searechRelated.length !== 0) {
-                    const none = _that.searechRelated.some(function (currentValue) {
-                        return currentValue.active
-                    })
-                    if (!none) {
-                        _that.searechRelated[0].active = true
-                        _that.commentUserBoxs.update({
-                            children: _that.getList(_that.searechRelated)
-                        })
-                    } else {
-                        _that.clickUser(_that.searechRelated[0])
-                    }
-                }
-
+                _that.keyEnter()
             }
-
             if (keyNum === 38) {
-                if (_that.searechRelated.length !== 0) {
-                    const none = _that.searechRelated.some(function (currentValue) {
-                        return currentValue.active
-                    })
-                    if (!none) {
-                        _that.searechRelated[0].active = true
-                        _that.commentUserBoxs.update({
-                            children: _that.getList(_that.searechRelated)
-                        })
-                    } else {
-                        let pointer = null
-                        _that.searechRelated.forEach(function (currentValue, index) {
-                            if (currentValue.active === true) {
-                                pointer = --index
-                                currentValue.active = false
-                            }
-                        })
-                        if (pointer >= 0) {
-                            _that.searechRelated[pointer].active = true
-                            _that.commentUserBoxs.update({
-                                children: _that.getList(_that.searechRelated)
-                            })
-                            /* _that.commentUserBoxs.element.scrollTop = 100 */
-                        }
-                    }
-                }
+                _that.keyUp()
             }
-
             if (keyNum === 40) {
-                if (_that.searechRelated.length !== 0) {
-                    const none = _that.searechRelated.some(function (currentValue) {
-                        return currentValue.active
-                    })
-                    if (!none) {
-                        _that.searechRelated[0].active = true
-                        _that.commentUserBoxs.update({
-                            children: _that.getList(_that.searechRelated)
-                        })
-                    } else {
-                        let pointer = null
-                        _that.searechRelated.forEach(function (currentValue, index) {
-                            if (currentValue.active === true) {
-                                pointer = ++index
-                                currentValue.active = false
-                            }
-                        })
-                        if (pointer <= _that.searechRelated.length) {
-                            _that.searechRelated[pointer].active = true
-                            _that.commentUserBoxs.update({
-                                children: _that.getList(_that.searechRelated)
-                            })
-                            _that.commentUserBoxs.element.scrollTop = 100
-                        }
-                    }
-                }
+                _that.keyDown()
             }
-
         }
     }
 
-    // 选中用户
-    clickUser(val) {
-        console.log(val)
-
+    keyUp() {
+        if (this.atUserListsCopy.length !== 0) {
+            const none = this.atUserListsCopy.some(function (item) {
+                return item.active
+            })
+            if (!none) {
+                this.atUserListsCopy[0].active = true
+                this.atBoxsRef.update({
+                    children: this.getList(this.atUserListsCopy)
+                })
+            } else {
+                let pointer = null
+                this.atUserListsCopy.forEach(function (item, index) {
+                    if (item.active === true) {
+                        pointer = --index
+                        item.active = false
+                    }
+                })
+                if (pointer >= 0) {
+                    this.atUserListsCopy[pointer].active = true
+                    this.atBoxsRef.update({
+                        children: this.getList(this.atUserListsCopy)
+                    })
+                    /* this.atBoxs.element.scrollTop = 100 */
+                }
+            }
+        }
     }
 
-    // 选择
-    selectedUser() {
-
+    keyDown() {
+        if (this.atUserListsCopy.length !== 0) {
+            const none = this.atUserListsCopy.some(function (item) {
+                return item.active
+            })
+            if (!none) {
+                this.atUserListsCopy[0].active = true
+                this.atBoxsRef.update({
+                    children: this.getList(this.atUserListsCopy)
+                })
+            } else {
+                let pointer = null
+                this.atUserListsCopy.forEach(function (item, index) {
+                    if (item.active === true) {
+                        pointer = ++index
+                        item.active = false
+                    }
+                })
+                if (pointer <= this.atUserListsCopy.length) {
+                    this.atUserListsCopy[pointer].active = true
+                    this.atBoxsRef.update({
+                        children: this.getList(this.atUserListsCopy)
+                    })
+                    this.atBoxsRef.element.scrollTop = 100
+                }
+            }
+        }
     }
 
-    // 搜索用户
-    searchUser(val) {
-        // console.log(val, this.props.atUserLists)
-        this.searechRelated = this.props.atUserLists.filter(function (currentValue) {
-            return (val === String(currentValue.author) || val === String(currentValue.userId) || String(currentValue.author).includes(val))
+    keyEnter() {
+        if (this.atUserListsCopy.length !== 0) {
+            const none = this.atUserListsCopy.some(function (item) {
+                return item.active
+            })
+            if (!none) {
+                this.atUserListsCopy[0].active = true
+                this.atBoxsRef.update({
+                    children: this.getList(this.atUserListsCopy)
+                })
+            } else {
+                this.selectUser(this.atUserListsCopy[0])
+            }
+        }
+    }
 
+    selectUser(obj) {
+        this.closeUserModal()
+        this._comment._insertUser(obj)
+    }
+
+    closeUserModal() {
+        this._comment._closeUserModal()
+    }
+
+    autoSearch(val) {
+        const { atUserLists } = this.props
+        this.atUserListsCopy = atUserLists.filter(function (item) {
+            return (val === String(item.author) || String(item.author).includes(val) || val === String(item.userId))
         })
-        // console.log(this.searechRelated)
-        if (this.commentUserSearch.element.value.length === 0) {
-            this.commentUserBoxs.update({
-                children: this.getList(this.props.atUserLists)
+        if (this.searchInputRef.element.value.trim().length === 0) {
+            this.atBoxsRef.update({
+                children: this.getList(atUserLists)
             })
         } else {
-            this.commentUserBoxs.update({
-                children: this.getList(this.searechRelated)
+            this.atBoxsRef.update({
+                children: this.getList(this.atUserListsCopy)
             })
         }
-
     }
 
-    // 关闭
-    closeUser() { }
+    // 防抖函数
+    debounce(func, wait) {
+        let timer = null;
 
+        return function () {
+            const context = this
+            const args = arguments
 
-
+            timer && clearTimeout(timer)
+            timer = setTimeout(function () {
+                func.apply(context, args)
+            }, wait)
+        }
+    }
 }
 
 Component.register(CommentUser)

@@ -82,6 +82,7 @@
   font-size: 16px;
   text-align: center;
   cursor: pointer;
+  user-select: none;
 }
 
 .nom-comment-body {
@@ -127,6 +128,7 @@
 .nom-comment-icon-user {
   float: left;
   margin-left: 1rem;
+  font-weight: 500;
   font-size: 22px;
   line-height: 19px;
   cursor: pointer;
@@ -137,7 +139,7 @@
 }
 
 .nom-comment-atbtn {
-  margin: 0;
+  margin-right: 5px;
   padding: 0;
   color: #38b7e9;
   background: transparent;
@@ -151,8 +153,10 @@
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+  animation: hahaha .3s linear 0s 1 normal forwards;
 }
 
+.nom-comment-emoji li,
 .nom-comment-user li {
   list-style: none;
 }
@@ -196,39 +200,66 @@
   margin: 0;
   padding: 0;
   padding: 12px 10px;
-  overflow-y: auto
+  overflow-y: auto;
 }
 
-.nom-comment-atboxs-li {
+.nom-comment-atboxs-item {
   width: 100%;
   margin-bottom: 4px;
   padding: 2px;
   cursor: pointer;
   transition: border-radius .2s;
-
-  /*   animation: hahahaLinear .3s linear 0s 1 normal forwards; */
 }
 
-@keyframes hahahaLinear {
+@keyframes hahaha {
   from {
     transform: scaleX(0);
+
   }
 
   to {
     transform: scaleX(1);
+
   }
 }
 
-.nom-comment-atboxs-li-name {
+.nom-comment-atboxs-name {
   max-width: 150px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.nom-comment-atboxs-li.on,
-.nom-comment-atboxs-li:hover {
+.nom-comment-atboxs-item.on,
+.nom-comment-atboxs-item:hover {
   color: #fff;
   background-color: #4263eb;
   border-radius: 4px;
+}
+
+.nom-comment-emoji {
+  width: 400px;
+  height: 250px;
+  padding: 10px;
+  overflow-y: auto;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+  animation: hahaha .3s linear 0s 1 normal forwards;
+}
+
+.nom-comment-emoji-item {
+  float: left;
+  width: 30px;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.nom-comment-emoji-item:hover {
+  background: #dadada;
+}
+
+.nom-comment-emoji-img {
+  margin-right: 5px;
 }

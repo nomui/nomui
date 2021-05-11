@@ -9,18 +9,17 @@ class Comment extends Component {
             author: '',
             avatar: '',
             userId: '',
-            // 存放被@的用户列表
-            atUsers: [],
             onComment: () => { },
-            onReply: () => { },
             onDeleted: () => { },
         }
         super(Component.extendProps(defaults, props), ...mixins)
     }
 
     _created() {
-        this.replyTitle = ''
-        this.commentUserModal = null
+        this.replyObj = {}
+        this.userModal = null
+        this.emojiModal = null
+        this.commentCursortPosition = null
     }
 
     _config() {
@@ -100,7 +99,6 @@ class Comment extends Component {
                                         text: '发表评论',
                                         type: 'primary',
                                         onClick: () => {
-
                                             const val = this.getDomValue(this.textareaRef.element).replace(/^\n/, "").replace(/\n$/, "")
                                             if (val.trim().length === 0) {
                                                 new nomui.Message({
@@ -110,8 +108,7 @@ class Comment extends Component {
                                                 })
                                                 return false
                                             }
-                                            this.addComment(val)
-                                            onComment(val)
+                                            onComment(this.replyObj, this.getCommentValue(this.textareaRef.element))
                                         },
                                     },
                                 ]
@@ -128,7 +125,7 @@ class Comment extends Component {
     // 取消回复
     closeReply() {
         this.replyTitleRef.hide()
-        this.replyTitle = ''
+        this.replyObj = {}
     }
 
     // 文本域获得焦点
@@ -142,44 +139,53 @@ class Comment extends Component {
 
         })
         this.replyTitleRef.show()
-        this.replyTitle = target.author
-        // this.handleSelectUser(target)
+        this.replyObj = target
     }
 
     // 发表评论
-    addComment(val) {
-        this._list._addComment(this.replyTitle, val)
+    addComment(commentItem) {
+        this._list._addComment(commentItem)
     }
 
     // 打开emoji面板
     showEmoji(arg) {
+        this.commentCursortPosition = this.getCursortPosition(this.textareaRef.element)
         const align = 'top left'
-        const sender = arg.sender
-        if (!sender[align]) {
-            sender[align] = new nomui.Layer({
+        const _that = this
+        this.emojiModal = arg.sender
+        if (!this.emojiModal[align]) {
+            this.emojiModal[align] = new nomui.Layer({
                 align: align,
-                alignTo: sender.element,
+                alignTo: this.emojiModal.element,
                 alignOuter: true,
                 children: {
                     component: CommentEmoji,
+                    _created() {
+                        this._comment = _that;
+                    },
                 },
                 closeOnClickOutside: true,
             })
         }
-        sender[align].show()
+        this.emojiModal[align].show()
     }
 
     // 打开@用户列表
     showUser(arg) {
+        this.commentCursortPosition = this.getCursortPosition(this.textareaRef.element)
         const align = 'top left'
-        this.commentUserModal = arg.sender
-        if (!this.commentUserModal[align]) {
-            this.commentUserModal[align] = new nomui.Layer({
+        const _that = this
+        this.userModal = arg.sender
+        if (!this.userModal[align]) {
+            this.userModal[align] = new nomui.Layer({
                 align: align,
-                alignTo: this.commentUserModal.element,
+                alignTo: this.userModal.element,
                 alignOuter: true,
                 children: {
                     component: CommentUser,
+                    _created() {
+                        this._comment = _that;
+                    },
                     atUserLists: this.props.atUserLists,
                 },
                 onHide: function () {
@@ -189,7 +195,40 @@ class Comment extends Component {
 
             })
         }
-        this.commentUserModal[align].show()
+        this.userModal[align].show()
+    }
+
+    getCommentValue(elem) {
+        const res = []
+        Array.from(elem.childNodes).forEach((child) => {
+            if (child.nodeName === '#text') {
+                res.push({
+                    type: 'text',
+                    content: child.nodeValue,
+                })
+            } else if (child.nodeName === 'BR') {
+                res.push({
+                    type: 'BR',
+                    content: '\n',
+                })
+            } else if (child.nodeName === 'BUTTON') {
+                res.push({
+                    type: 'BUTTON',
+                    content: this.getDomValue(child).replace(/^\n/, '').replace(/\n$/, '').replace(/@/, ''),
+                })
+            } else if (child.nodeName === 'IMG') {
+                res.push({
+                    type: 'IMG',
+                    content: child.src,
+                })
+            } else if (child.nodeName === 'DIV') {
+                res.push({
+                    type: 'DIV',
+                    content: `\n${this.getDomValue(child)}`,
+                })
+            }
+        })
+        return res
     }
 
     // 获取目标节点的纯文本内容
@@ -204,7 +243,7 @@ class Comment extends Component {
             } else if (child.nodeName === 'BUTTON') {
                 res += this.getDomValue(child)
             } else if (child.nodeName === 'IMG') {
-                res += child.alt
+                res += child.src
             } else if (child.nodeName === 'DIV') {
                 res += `\n${this.getDomValue(child)}`
             }
@@ -263,85 +302,51 @@ class Comment extends Component {
         return caretOffset
     }
 
-    // 防抖函数
-    debounce(func, wait) {
-        let timer = null;
-
-        return function () {
-            const context = this
-            const args = arguments
-
-            timer && clearTimeout(timer)
-            timer = setTimeout(function () {
-                func.apply(context, args)
-            }, wait)
+    // 设置光标位置
+    setCursortPosition(textDom, pos) {
+        if (textDom.setSelectionRange) {
+            // IE Support
+            textDom.focus()
+            textDom.setSelectionRange(pos, pos)
+        } else if (textDom.createTextRange) {
+            // Firefox support
+            const range = textDom.createTextRange()
+            range.collapse(true)
+            range.moveEnd('character', pos)
+            range.moveStart('character', pos)
+            range.select()
         }
     }
 
-    // 处理节点的删除
-    handleDOMRemoved(e) {
-        if (e.keyCode === 8) {
-            // 获取输入框中的值
-            const fullText = this.textarea.value.replace(/\n/g, "");
-            // 获取光标位置
-            const end = this.getCursortPosition(this.textarea);
-            // 光标之前用户名最大可能长度的文本
-            // const content = fullText.slice(end - this.maxLength, end);
-            // 获取离光标最近的一个@的位置
-            const lastAtIndex = fullText.lastIndexOf("@");
-            if (lastAtIndex > -1) {
-                // 如果存在 @
-                const user = fullText
-                    .slice(lastAtIndex, end)
-                    .trim()
-                    .replace(/@/, "");
-                const index = this.props.atUsers.indexOf(user);
-                if (index > -1) {
-                    // 从@列表中删除被@的用户
-                    this.props.atUsers.splice(index, 1);
-                }
-            }
-        }
-    }
+    _insertUser(userObj) {
+        // console.log(this.textareaRef, this.textareaRef.element, this.textareaRef.element.value)
 
-    onPaste(e) {
-        e.preventDefault();
-        let text = "";
-
-        if (window.clipboardData && window.clipboardData.setData) {
-            // IE
-            text = window.clipboardData.getData("text");
-        } else {
-            text = (e.originalEvent || e).clipboardData.getData("text/plain") || "";
-        }
-        // 过滤转义html标签
-        text = text.replace(/</g, "&lt").replace(/>/g, "&gt");
-        text = text.replace(/\r\n/g, "<br>");
-        document.execCommand("insertHTML", false, text);
-    }
-
-    // 艾特用户
-    handleSelectUser(target) {
-        console.log(this.textareaRef, this.textareaRef.element, this.textareaRef.element.value)
-        // 获取输入框中的值
-        // const fullText = this.textareaRef.element.textContent.replace(/\n/g, "")
-        // // 获取光标位置
+        // // 获取输入框中的值
+        // const fullText = this.textareaRef.element.textContent.replace(/\n/g, '')
+        // console.log(fullText.length)
+        // // // 获取光标位置
         // const end = this.getCursortPosition(this.textareaRef.element)
-        // // 获取离光标最近的一个@的位置
-        // const lastAtIndex = fullText.lastIndexOf("@")
-        // const offset = end - lastAtIndex
-        // // 删除之前的内容
-        // const range = window.getSelection().getRangeAt(0)
-        // range.setStart(range.endContainer, range.endOffset - offset)
-        // range.deleteContents()
-        // 插入选中的user
-        const input = `<button contenteditable="false" class="nom-comment-atbtn">@${target.author}&nbsp;</button>`
-        this.insertHtmlAtCaret(input)
-        // 添加用户
-        if (!this.props.atUsers.includes(target.author)) {
-            this.props.atUsers.push(target.author)
-        }
-        console.log(this.props.atUsers)
+        // // console.log(end)
+        // this.setCursortPosition(this.textareaRef.element, end)
+
+        this.textareaRef.element.focus()
+        const button = `<button contenteditable="false" class="nom-comment-atbtn">@${userObj.author}</button>`
+        this.insertHtmlAtCaret(button)
+    }
+
+    _closeUserModal() {
+        this.userModal['top left'].hide()
+    }
+
+    _insertEmoji(val) {
+        // TODO:需要获取光标原来的位置插入
+        this.textareaRef.element.focus()
+        const img = `<img class="nom-comment-emoji-img" src="${val}">`
+        this.insertHtmlAtCaret(img)
+    }
+
+    _closeEmojiModal() {
+        this.emojiModal['top left'].hide()
     }
 
 }
