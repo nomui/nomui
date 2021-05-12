@@ -100,6 +100,12 @@ class Router extends Component {
       if (isString(routerProps.title)) {
         document.title = routerProps.title
       }
+
+      // 路由组件插件执行
+      Router.plugins.forEach((plugin) => {
+        plugin(routerProps)
+      })
+
       const extOptions = {
         reference: element,
         placement: 'replace',
@@ -145,6 +151,8 @@ class Router extends Component {
     return path
   }
 }
+
+Router.plugins = []
 
 Component.register(Router)
 

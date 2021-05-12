@@ -43,6 +43,7 @@ class Component {
         expandedProps: false,
         collapsedProps: false,
       },
+      prefixClass: 'nom-',
     }
     this.props = Component.extendProps(defaults, props)
 
@@ -719,7 +720,7 @@ class Component {
     const componentTypeClasses = this._getComponentTypeClasses(this)
     for (let i = 0; i < componentTypeClasses.length; i++) {
       const componentTypeClass = componentTypeClasses[i]
-      classes.push(`nom-${hyphenate(componentTypeClass)}`)
+      classes.push(`${props.prefixClass}${hyphenate(componentTypeClass)}`)
     }
 
     propClasses = propClasses.concat(this._propStyleClasses)

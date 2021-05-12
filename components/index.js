@@ -73,3 +73,12 @@ export { default as Tree } from './Tree/index'
 export { default as TreeSelect } from './TreeSelect/index'
 export { default as Uploader } from './Uploader/index'
 export * as utils from './util/index'
+
+/**
+ * nomui的插件机制
+ * @param {install:(nomui)=>{}} plugin
+ * @description plugin必须包含一个install对象
+ */
+export function use(plugin) {
+  plugin.install(this)
+}
