@@ -111,9 +111,11 @@ Component.mixin({
       if (isString(this.props.tooltip)) {
         this.tooltip = new Tooltip({ trigger: this, children: this.props.tooltip })
       } else {
-        this.tooltip = new Tooltip(Component.extendProps({}, this.props.tooltip), {
-          trigger: this,
-        })
+        this.tooltip = new Tooltip(
+          Component.extendProps({}, this.props.tooltip, {
+            trigger: this,
+          }),
+        )
       }
     }
   },

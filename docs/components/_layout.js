@@ -127,6 +127,12 @@ define([], function () {
                       url: '#!components!index?type=Popup',
                     },
                     {
+                      text: 'Popconfirm',
+                      subtext: '弹出确认框',
+                      id: 'Popconfirm',
+                      url: '#!components!index?type=Popconfirm',
+                    },
+                    {
                       text: 'Modal',
                       subtext: '模态框',
                       id: 'Modal',
