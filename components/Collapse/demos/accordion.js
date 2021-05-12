@@ -1,15 +1,12 @@
 define([], function () {
   return {
-    title: '默认激活指定面板,以及回调',
-    file: 'active-key',
+    title: '手风琴',
+    file: 'accordin',
     demo: function () {
       return {
         children: {
           component: 'Collapse',
-          activeKey: 2,
-          onChange: (args) => {
-            console.log(args)
-          },
+          accordion: true,
           items: [
             {
               key: 1,

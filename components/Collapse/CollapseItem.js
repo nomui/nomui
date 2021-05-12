@@ -7,9 +7,14 @@ class CollapseItem extends Component {
       title: null,
       content: null,
       collapsed: true,
+      onChange: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
+  }
+
+  _created() {
+    this.parent.itemRef[this.props.key] = this
   }
 
   _config() {
@@ -31,26 +36,14 @@ class CollapseItem extends Component {
               ),
               onClick: function () {
                 if (!that.parent.props.iconOnly) return
-                that.setProps({
-                  collapsed: collapsed !== true,
-                })
-                that.parent.setProps({
-                  activeKey: that.props.key,
-                })
-                that.update(collapsed)
+                that._handleCollapse()
               },
             },
             { tag: 'span', children: title },
           ],
           onClick: function () {
             if (that.parent.props.iconOnly) return
-            that.setProps({
-              collapsed: collapsed !== true,
-            })
-            that.parent.setProps({
-              activeKey: that.props.key,
-            })
-            that.update(collapsed)
+            that._handleCollapse()
           },
         },
         {
@@ -64,6 +57,21 @@ class CollapseItem extends Component {
         },
       ],
     })
+  }
+
+  close() {
+    this.update({
+      collapsed: true,
+    })
+  }
+
+  _handleCollapse() {
+    this.setProps({
+      collapsed: this.props.collapsed !== true,
+    })
+
+    this.update(this.props.collapsed)
+    this.parent._onCollapse(this.props.key, !this.props.collapsed)
   }
 
   _disable() {
