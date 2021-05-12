@@ -515,6 +515,7 @@ function _defineProperty2(obj, key, value) {
         reference: document.body,
         placement: "append",
         autoRender: true,
+        renderIf: true,
         hidden: false,
         disabled: false,
         selected: false,
@@ -735,9 +736,11 @@ function _defineProperty2(obj, key, value) {
       const { children } = this.props;
       if (Array.isArray(children)) {
         for (let i = 0; i < children.length; i++) {
-          this.appendChild(children[i]);
+          if (children[i] && children[i].renderIf !== false) {
+            this.appendChild(children[i]);
+          }
         }
-      } else {
+      } else if (children && children.renderIf !== false) {
         this.appendChild(children);
       }
     }
