@@ -7,11 +7,12 @@ class Popconfirm extends Popup {
     const defaults = {
       triggerAction: 'click',
       closeOnClickOutside: false,
-      title: null,
       content: null,
       onConfirm: null,
       okText: '是',
       cancelText: '否',
+      icon: 'info-circle',
+      align: 'top left',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -20,52 +21,62 @@ class Popconfirm extends Popup {
   _config() {
     const that = this
 
-    const { content, okText, cancelText } = this.props
+    const { content, okText, cancelText, icon } = this.props
     this.setProps({
       children: {
-        component: 'Rows',
-        items: [
-          {
-            component: 'Cols',
-            items: [
-              {
-                component: 'Icon',
-                type: 'info-circle',
-                attrs: {
-                  style: {
-                    'font-size': '1.8rem',
+        attrs: {
+          style: {
+            'max-width': '350px',
+            padding: '15px',
+          },
+        },
+        children: {
+          component: 'Rows',
+          items: [
+            {
+              component: 'Cols',
+              items: [
+                {
+                  component: 'Icon',
+                  type: icon,
+                  attrs: {
+                    style: {
+                      'font-size': '2.5rem',
+                      color: '#fa0',
+                    },
                   },
                 },
-              },
-              { children: content },
-            ],
-          },
-          {
-            component: 'Cols',
-            gutter: 'sm',
-            items: [
-              {
-                component: 'Button',
-                styles: {
-                  color: 'primary',
+                { children: isString(content) ? content : content() },
+              ],
+            },
+            {
+              component: 'Cols',
+              justify: 'end',
+              gutter: 'sm',
+              items: [
+                {
+                  component: 'Button',
+                  styles: {
+                    color: 'primary',
+                  },
+
+                  text: okText,
+                  onClick: () => {
+                    that._handleOk()
+                  },
                 },
-                size: 'small',
-                text: okText,
-                onClick: () => {
-                  that._handleOk()
+                {
+                  component: 'Button',
+                  text: cancelText,
+
+                  onClick: () => {
+                    that._handleCancel()
+                  },
                 },
-              },
-              {
-                component: 'Button',
-                text: cancelText,
-                size: 'small',
-                onClick: () => {
-                  that._handleCancel()
-                },
-              },
-            ],
-          },
-        ],
+              ],
+            },
+          ],
+        },
       },
     })
     super._config()
