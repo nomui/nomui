@@ -535,6 +535,7 @@ function _defineProperty2(obj, key, value) {
           expandedProps: false,
           collapsedProps: false,
         },
+        prefixClass: "nom-",
       };
       this.props = Component.extendProps(defaults, props);
       this.parent = null;
@@ -1135,7 +1136,7 @@ function _defineProperty2(obj, key, value) {
       const componentTypeClasses = this._getComponentTypeClasses(this);
       for (let i = 0; i < componentTypeClasses.length; i++) {
         const componentTypeClass = componentTypeClasses[i];
-        classes.push(`nom-${hyphenate(componentTypeClass)}`);
+        classes.push(`${props.prefixClass}${hyphenate(componentTypeClass)}`);
       }
       propClasses = propClasses.concat(this._propStyleClasses);
       if (props.type) {
@@ -2816,7 +2817,10 @@ function _defineProperty2(obj, key, value) {
         }
         if (isString(routerProps.title)) {
           document.title = routerProps.title;
-        }
+        } // 路由组件插件执行
+        Router.plugins.forEach((plugin) => {
+          plugin(routerProps);
+        });
         const extOptions = { reference: element, placement: "replace" };
         const viewOptions = Component.extendProps(routerProps.view, extOptions);
         this.currentView = Component.create(viewOptions, {
@@ -2853,6 +2857,7 @@ function _defineProperty2(obj, key, value) {
       return path;
     }
   }
+  Router.plugins = [];
   Component.register(Router);
   /* eslint-disable no-shadow */ class App extends Component {
     constructor(props, ...mixins) {
@@ -19648,6 +19653,13 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(Uploader);
+  /**
+   * nomui的插件机制
+   * @param {install:(nomui)=>{}} plugin
+   * @description plugin必须包含一个install对象
+   */ function use(plugin) {
+    plugin.install(this);
+  }
   exports.Alert = Alert;
   exports.App = App;
   exports.AutoComplete = AutoComplete;
@@ -19724,6 +19736,7 @@ function _defineProperty2(obj, key, value) {
   exports.TreeSelect = TreeSelect;
   exports.Uploader = Uploader;
   exports.n = n$1;
+  exports.use = use;
   exports.utils = index$1;
   Object.defineProperty(exports, "__esModule", { value: true });
 });
