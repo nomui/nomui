@@ -10,6 +10,7 @@
 | --- | --- | --- | --- |
 | data | 源数据,至少应该包含 `text` 与 `key`，并且 `key` 唯一 | `TreeData[]` | [] |
 | dataFields | 数据字段映射，将传递的数据字段映射成树组件所需的字段 | `object` | `{key:'key',text:'text',children:'children',parentKey:'parentKey'}` |
+| initExpandLevel | 初始展开节点的级别，默认为 -1 展开所有级别。从 0 级开始 | `number` | - |
 | nodeSelectable | 节点可选中配置 | `boolean` \| `object` | - |
 | nodeCheckable | 节点可勾选配置 | `boolean` \| `object` | - |
 | onNodeClick | 点击节点的回调 | `({node}) => {}` | - |
