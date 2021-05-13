@@ -21,6 +21,7 @@ class Component {
       reference: document.body,
       placement: 'append',
       autoRender: true,
+      renderIf: true,
 
       hidden: false,
       disabled: false,
@@ -43,6 +44,7 @@ class Component {
         expandedProps: false,
         collapsedProps: false,
       },
+      prefixClass: 'nom-',
     }
     this.props = Component.extendProps(defaults, props)
 
@@ -248,9 +250,11 @@ class Component {
     const { children } = this.props
     if (Array.isArray(children)) {
       for (let i = 0; i < children.length; i++) {
-        this.appendChild(children[i])
+        if (children[i] && children[i].renderIf !== false) {
+          this.appendChild(children[i])
+        }
       }
-    } else {
+    } else if (children && children.renderIf !== false) {
       this.appendChild(children)
     }
   }
@@ -719,7 +723,7 @@ class Component {
     const componentTypeClasses = this._getComponentTypeClasses(this)
     for (let i = 0; i < componentTypeClasses.length; i++) {
       const componentTypeClass = componentTypeClasses[i]
-      classes.push(`nom-${hyphenate(componentTypeClass)}`)
+      classes.push(`${props.prefixClass}${hyphenate(componentTypeClass)}`)
     }
 
     propClasses = propClasses.concat(this._propStyleClasses)

@@ -47,9 +47,11 @@ export { default as Panel } from './Panel/index'
 export { default as PartialDatePicker } from './PartialDatePicker/index'
 export { default as PartialDateRangePicker } from './PartialDateRangePicker/index'
 export { default as Password } from './Password/index'
+export { default as Popconfirm } from './Popconfirm/index'
 export { default as Popup } from './Popup/index'
 export { default as Progress } from './Progress/index'
 export { default as RadioList } from './Radiolist/index'
+export { default as Result } from './Result/index'
 export { default as Rows } from './Rows/index'
 export { default as Scrollbar } from './Scrollbar/index'
 export { default as Select } from './Select/index'
@@ -72,3 +74,12 @@ export { default as Tree } from './Tree/index'
 export { default as TreeSelect } from './TreeSelect/index'
 export { default as Uploader } from './Uploader/index'
 export * as utils from './util/index'
+
+/**
+ * nomui的插件机制
+ * @param {install:(nomui)=>{}} plugin
+ * @description plugin必须包含一个install对象
+ */
+export function use(plugin) {
+  plugin.install(this)
+}

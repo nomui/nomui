@@ -104,6 +104,18 @@ define([], function () {
                       url: '#!components!index?type=Cols',
                     },
                     {
+                      text: 'Panel',
+                      subtext: '面板',
+                      id: 'Panel',
+                      url: '#!components!index?type=Panel',
+                    },
+                    {
+                      text: 'Collapse',
+                      subtext: '折叠面板',
+                      id: 'Collapse',
+                      url: '#!components!index?type=Collapse',
+                    },
+                    {
                       text: 'Divider',
                       subtext: '分割线',
                       id: 'Divider',
@@ -125,6 +137,12 @@ define([], function () {
                       subtext: '触发层',
                       id: 'Popup',
                       url: '#!components!index?type=Popup',
+                    },
+                    {
+                      text: 'Popconfirm',
+                      subtext: '弹出确认框',
+                      id: 'Popconfirm',
+                      url: '#!components!index?type=Popconfirm',
                     },
                     {
                       text: 'Modal',
@@ -221,12 +239,6 @@ define([], function () {
                   text: '数据展示',
                   items: [
                     {
-                      text: 'Panel',
-                      subtext: '面板',
-                      id: 'Panel',
-                      url: '#!components!index?type=Panel',
-                    },
-                    {
                       text: 'Avatar',
                       subtext: '头像',
                       id: 'Avatar',
@@ -243,12 +255,6 @@ define([], function () {
                       subtext: '徽标',
                       id: 'Badge',
                       url: '#!components!index?type=Badge',
-                    },
-                    {
-                      text: 'Collapse',
-                      subtext: '折叠面板',
-                      id: 'Collapse',
-                      url: '#!components!index?type=Collapse',
                     },
                     {
                       text: 'Timeline',
