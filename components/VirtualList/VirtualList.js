@@ -4,13 +4,15 @@ class VirtualList extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       dataSource: [], // 列表数据源
+      clientHeight: 200, // 可视区高度
+      size: 30, // 每个列表项高度预估值，默认值30
     }
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _created() {
     this.data = this.props.dataSource // 元数据
-    this.estimatedItemSize = 30 // 每个列表项高度预估值，默认值30
+    this.estimatedItemSize = this.props.size // 每个列表项高度预估值
     this.lastMeasuredIndex = -1 // 最后一次计算尺寸、偏移的 index
     this.startIndex = 0
     this.sizeAndOffsetCahce = {} // 存储缓存结果
@@ -18,6 +20,9 @@ class VirtualList extends Component {
   }
 
   _config() {
+    const { clientHeight, dataSource } = this.props
+    const end = this.findNearestItemIndex(clientHeight) + 1
+    this.visibleData = dataSource.slice(0, Math.min(end + 1, dataSource.length))
     const listArry = this.getList(this.visibleData)
     this.setProps({
       children: {
@@ -26,6 +31,11 @@ class VirtualList extends Component {
         },
         classes: {
           'list-view': true,
+        },
+        attrs: {
+          style: {
+            height: `${clientHeight}px`,
+          },
         },
         children: [
           {
@@ -46,7 +56,6 @@ class VirtualList extends Component {
             ref: (c) => {
               this.contentRef = c
             },
-            autoRender: false,
             classes: {
               'list-view-content': true,
             },
@@ -61,7 +70,6 @@ class VirtualList extends Component {
     this.listRef.element.addEventListener('scroll', () => {
       this.handleScroll()
     })
-    this.updateVisibleData()
   }
 
   getList(arry) {
@@ -80,11 +88,10 @@ class VirtualList extends Component {
           'data-s': _that.startIndex,
           'data-i': index,
           style: {
-            'border-bottom': '1px solid #eee',
             height: `${h}px`,
           },
         },
-        children: `${item.value}`,
+        children: item,
       }
 
       return list
@@ -107,14 +114,16 @@ class VirtualList extends Component {
   }
 
   // 获取列表项高度
-  itemSizeGetter(item) {
-    return 30 + (item.value % 10)
+  itemSizeGetter() {
+    // return 30 + (item.value % 10)
+    return this.estimatedItemSize
   }
 
   // 某个列表项在列表中的 top
   getItemSizeAndOffset(index) {
     console.log('getItemSizeAndOffset', index)
-    const { lastMeasuredIndex, sizeAndOffsetCahce, data, itemSizeGetter } = this
+    // const { lastMeasuredIndex, sizeAndOffsetCahce, data, itemSizeGetter } = this
+    const { lastMeasuredIndex, sizeAndOffsetCahce, data } = this
     if (lastMeasuredIndex >= index) {
       return sizeAndOffsetCahce[index] || { offset: 0, size: 0 }
     }
@@ -129,7 +138,8 @@ class VirtualList extends Component {
 
     for (let i = lastMeasuredIndex + 1; i <= index && i < data.length; i++) {
       const item = data[i]
-      const size = itemSizeGetter.call(null, item, i)
+      // const size = itemSizeGetter.call(null, item, i)
+      const size = this.itemSizeGetter(item)
       sizeAndOffsetCahce[i] = {
         size,
         offset,
