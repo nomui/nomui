@@ -547,6 +547,12 @@ define([], function () {
                       id: 'Comment',
                       url: '#!components!index?type=Comment',
                     },
+                    {
+                      text: 'VirtualList',
+                      subtext: '虚拟滚动列表',
+                      id: 'VirtualList',
+                      url: '#!components!index?type=VirtualList',
+                    },
                   ],
                 },
               ],
