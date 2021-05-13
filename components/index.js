@@ -12,7 +12,6 @@ export { default as Checkbox } from './Checkbox/index'
 export { default as CheckboxList } from './CheckboxList/index'
 export { default as Collapse } from './Collapse/index'
 export { default as Cols } from './Cols/index'
-export { default as Comment } from './Comment/index'
 export { default as Component, n } from './Component/index'
 export { default as Confirm } from './Confirm/index'
 export { default as Container } from './Container/index'
@@ -20,6 +19,7 @@ export { default as Countdown } from './Countdown/index'
 export { default as DatePicker } from './DatePicker/index'
 export { default as DateRangePicker } from './DateRangePicker/index'
 export { default as Divider } from './Divider/index'
+export { default as Drawer } from './Drawer/index'
 export { default as Dropdown } from './Dropdown/index'
 export { default as Ellipsis } from './Ellipsis/index'
 export { default as Empty } from './Empty/index'
@@ -47,9 +47,11 @@ export { default as Panel } from './Panel/index'
 export { default as PartialDatePicker } from './PartialDatePicker/index'
 export { default as PartialDateRangePicker } from './PartialDateRangePicker/index'
 export { default as Password } from './Password/index'
+export { default as Popconfirm } from './Popconfirm/index'
 export { default as Popup } from './Popup/index'
 export { default as Progress } from './Progress/index'
 export { default as RadioList } from './Radiolist/index'
+export { default as Result } from './Result/index'
 export { default as Rows } from './Rows/index'
 export { default as Scrollbar } from './Scrollbar/index'
 export { default as Select } from './Select/index'
@@ -71,5 +73,13 @@ export { default as Tooltip } from './Tooltip/index'
 export { default as Tree } from './Tree/index'
 export { default as TreeSelect } from './TreeSelect/index'
 export { default as Uploader } from './Uploader/index'
-export { default as util } from './util/index'
+export * as utils from './util/index'
 
+/**
+ * nomui的插件机制
+ * @param {install:(nomui)=>{}} plugin
+ * @description plugin必须包含一个install对象
+ */
+export function use(plugin) {
+  plugin.install(this)
+}

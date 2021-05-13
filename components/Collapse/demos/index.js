@@ -1,4 +1,11 @@
-define(['./basic.js', './border.js', './iconOnly.js', './customIcon.js', './active-key.js'], function () {
+define([
+  './basic.js',
+  './accordion.js',
+  './border.js',
+  './iconOnly.js',
+  './customIcon.js',
+  './active-key.js',
+], function () {
   return {
     title: 'Collapse',
     subtitle: '折叠',

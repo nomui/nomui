@@ -68,3 +68,4 @@
 | onRemove   | 点击移除文件时的回调，返回值为 false 时不移除。支持返回一个 Promise 对象，Promise 对象 resolve(false) 或 reject 时不移除               | `Array<{text:string,action:Function\|Promise}>` | -   |  |
 | extraAction | 自定义 | `Array<{text:string,action:Function}>` | [] |  |
 | renderer | 自定义文件显示的回调 | function(file): component | null |  |
+| customizeInfo | 自定义文件详情展示 | `(file)=>Component\|[]Component\|string` |  | null |

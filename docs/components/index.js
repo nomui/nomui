@@ -1,6 +1,7 @@
 define(['/docs/DemoPanel.js'], function (demoPanel) {
   return function () {
     let tabContent = null
+    let bodyRef = null
 
     const renderDemoIndex = () => {
       const { type = 'component', cat, tab = 'demo' } = this.$route.query
@@ -33,6 +34,9 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
         tab: 'demo',
         autoRender: false,
         _config: function () {
+          const path = `#${this.$app.currentRoute.path}?`
+          const query = this.$app.currentRoute.query
+
           this.setProps({
             header: {
               children: [
@@ -50,6 +54,13 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                     uistyle: 'line',
                     tabContent: function () {
                       return tabContent
+                    },
+                    onTabSelectionChange: (e) => {
+                      const tab = e.sender.getSelectedItem().key
+                      window.location.href = `${path}${nomui.utils.parseToQueryString({
+                        ...query,
+                        tab: tab,
+                      })}`
                     },
                     items: [
                       {
@@ -89,11 +100,23 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                             itemDefaults: {
                               _config: function () {
                                 this.props.text = this.props.title
+                                this.setProps({
+                                  attrs: {
+                                    'data-target-key': this.props.file,
+                                  },
+                                })
                               },
                               styles: {
                                 hover: {
                                   text: 'primary',
                                 },
+                              },
+                              onClick: ({ event }) => {
+                                const targetFile = event.currentTarget.dataset.targetKey
+                                const targetDemo = bodyRef.element.querySelector(
+                                  `[data-target-demo='${targetFile}']`,
+                                )
+                                targetDemo.scrollIntoView(true)
                               },
                             },
                           },
@@ -101,7 +124,17 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                       },
                       body: {
                         children: Array.prototype.slice.call(this.props.demos),
+                        ref: (c) => {
+                          bodyRef = c
+                        },
                         childDefaults: {
+                          _config: function () {
+                            this.setProps({
+                              attrs: {
+                                'data-target-demo': this.props.file,
+                              },
+                            })
+                          },
                           component: demoPanel,
                           componentType: this.$route.query.type,
                           cat: this.$route.query.cat,

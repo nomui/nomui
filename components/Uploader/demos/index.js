@@ -8,6 +8,7 @@ define([
   './dataAndHeaders.js',
   './async.js',
   './hide.js',
+  './customize.js',
 ], function () {
   return {
     title: 'Uploader',

@@ -9,7 +9,7 @@ import {
   getUUID,
   isBlobFile,
   isPromiseLike,
-  removeFile
+  removeFile,
 } from './helper'
 import Request from './request'
 
@@ -33,6 +33,7 @@ class Uploader extends Field {
       onRemove: null,
       renderer: null,
       extraAction: [],
+      customizeInfo: null,
     }
     super(Component.extendProps(defaults, props), ...mixins)
     this.reqs = {}
@@ -54,6 +55,7 @@ class Uploader extends Field {
       display,
       onRemove,
       renderer,
+      customizeInfo,
     } = this.props
 
     let initializing = true
@@ -149,6 +151,7 @@ class Uploader extends Field {
               action: that.handleRemove.bind(that),
             },
           extraAction,
+          customizeInfo,
         })
       }
     }

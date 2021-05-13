@@ -8,6 +8,7 @@
 | reference | 父级元素 | `dom` | `document.body` |
 | placement | 渲染方式 | `prepend`\|`append`\|`replace`\|`before`\|`after` | `append` |
 | autoRender | 是否自动渲染 | `boolean` | `true` |
+| renderIf | 是否渲染该组件 | `boolean` | `true` |
 | hidden | 是否隐藏 | `boolean` | `false` |
 | disabled | 是否禁用状态 | `boolean` | `false` |
 | selected | 是否可选择 | `boolean` | `false` |

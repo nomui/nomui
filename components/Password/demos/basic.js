@@ -16,6 +16,7 @@ define([], function () {
             label: '密码',
             component: 'Password',
             required: true,
+            value: 'abcdefg12345',
           },
 
           {

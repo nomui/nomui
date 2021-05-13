@@ -1,0 +1,66 @@
+.nom-result {
+  padding: 48px 32px;
+  &-success &-icon > .anticon {
+    color: @success;
+  }
+
+  &-error &-icon > .anticon {
+    color: @red;
+  }
+
+  &-info &-icon > .anticon {
+    color: @info;
+  }
+
+  &-warning &-icon > .anticon {
+    color: @warning;
+  }
+
+  // Exception Status image
+  &-image {
+    width: 250px;
+    height: 295px;
+    margin: auto;
+  }
+
+  &-icon {
+    margin-bottom: 24px;
+    text-align: center;
+
+    > .anticon {
+      font-size: 72px;
+    }
+  }
+
+  &-title {
+    color: fade(@black, 85%);
+    font-size: 24px;
+    line-height: 1.8;
+    text-align: center;
+  }
+
+  &-subtitle {
+    color: fade(@black, 45%);
+    font-size: @font-size-base;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  &-extra {
+    margin: 24px 0 0 0;
+    text-align: center;
+    > * {
+      margin-right: 8px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &-content {
+    margin-top: 24px;
+    padding: 24px 40px;
+    background-color: fade(@white, 4%);
+  }
+}
