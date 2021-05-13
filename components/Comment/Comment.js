@@ -6,6 +6,7 @@ import CommentUser from './CommentUser'
 class Comment extends Component {
     constructor(props, ...mixins) {
         const defaults = {
+            userId: '',
             onComment: () => { },
             onDeleted: () => { },
         }

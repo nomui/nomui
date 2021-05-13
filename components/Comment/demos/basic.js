@@ -9,6 +9,7 @@ define([], function () {
           commentRef = c
         },
         component: 'Comment',
+        userId: 1994,// 用户id唯一
         // 评论
         onComment: (reply, val) => {
           console.log(reply, val)
