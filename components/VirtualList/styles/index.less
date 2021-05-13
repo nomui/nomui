@@ -1,19 +1,21 @@
-.list-view {
+.wetrial-virtual-list-container {
   position: relative;
   overflow: auto;
   border: 1px solid #ced4da;
+  -webkit-overflow-scrolling: touch;
 }
 
-.list-view-phantom {
+.wetrial-virtual-list-phantom {
   position: absolute;
   top: 0;
+  right: 0;
   left: 0;
   z-index: -1;
 }
 
-.list-view-content {
+.wetrial-virtual-list-content {
   position: absolute;
   top: 0;
+  right: 0;
   left: 0;
-  transform: translate3d(0, 0, 0);
 }

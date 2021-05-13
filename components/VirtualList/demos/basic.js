@@ -4,8 +4,8 @@ define([], function () {
     for (let index = 0; index < len; index++) {
       const data = {
         component: 'Caption',
-        title: `标题${index}`,
-        subtitle: '子标题换行显示',
+        title: '老铁们双击666，✈️🚀走一波',
+        subtitle: `我是第${index}条数据`,
         subtitleWrap: true,
         icon: {
           type: 'github',
@@ -24,9 +24,10 @@ define([], function () {
     demo: function () {
       return {
         component: 'VirtualList',
-        dataSource: getData(100), // 列表数据源arry
-        clientHeight: 500, // 可视区高度默认200px
-        size: 80, // 每个列表项高度预估值，默认值30
+        listData: getData(10000), // 列表数据源arry
+        height: 300, // 容器高度默认400
+        size: 40, // 每个列表项高度预估值，默认值30
+        bufferScale: 1, // 缓冲区比例默认1
       }
     },
   }

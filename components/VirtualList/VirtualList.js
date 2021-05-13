@@ -3,38 +3,54 @@ import Component from '../Component/index'
 class VirtualList extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      dataSource: [], // 列表数据源
-      clientHeight: 200, // 可视区高度
+      listData: [], // 列表数据源
+      height: '400', // 容器高度
       size: 30, // 每个列表项高度预估值，默认值30
+      bufferScale: 1, // 缓冲区比例
     }
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _created() {
-    this.data = this.props.dataSource // 元数据
-    this.estimatedItemSize = this.props.size // 每个列表项高度预估值
-    this.lastMeasuredIndex = -1 // 最后一次计算尺寸、偏移的 index
-    this.startIndex = 0
-    this.sizeAndOffsetCahce = {} // 存储缓存结果
-    this.visibleData = [] // 可见区域的数据
+    // 起始索引
+    this.start = 0
+    // 结束索引
+    this.end = 0
+    // 用于列表项渲染后存储 每一项的高度以及位置信息
+    this.positions = [
+      // {
+      //   top:0,
+      //   bottom:100,
+      //   height:100
+      // }
+    ]
+    // 当前列表项arry
+    this.itemsRefs = []
+    // 所有列表数据
+    this.listData = this.props.listData
+    // 可视区域高度
+    this.screenHeight = this.props.height
+    // 预估高度
+    this.estimatedItemSize = this.props.size
+    // 缓冲区比例
+    this.bufferScale = this.props.bufferScale
+    this.initPositions()
   }
 
   _config() {
-    const { clientHeight, dataSource } = this.props
-    const end = this.findNearestItemIndex(clientHeight) + 1
-    this.visibleData = dataSource.slice(0, Math.min(end + 1, dataSource.length))
-    const listArry = this.getList(this.visibleData)
+    const listArry = this.getList(this.visibleData())
+    const height = this.positions[this.positions.length - 1].bottom
     this.setProps({
       children: {
         ref: (c) => {
           this.listRef = c
         },
         classes: {
-          'list-view': true,
+          'wetrial-virtual-list-container': true,
         },
         attrs: {
           style: {
-            height: `${clientHeight}px`,
+            height: `${this.screenHeight}px`,
           },
         },
         children: [
@@ -43,11 +59,11 @@ class VirtualList extends Component {
               this.phantomRef = c
             },
             classes: {
-              'list-view-phantom': true,
+              'wetrial-virtual-list-phantom': true,
             },
             attrs: {
               style: {
-                height: `${this.contentHeight()}px`,
+                height: `${height}px`,
               },
             },
             children: '',
@@ -57,7 +73,7 @@ class VirtualList extends Component {
               this.contentRef = c
             },
             classes: {
-              'list-view-content': true,
+              'wetrial-virtual-list-content': true,
             },
             children: listArry,
           },
@@ -68,178 +84,180 @@ class VirtualList extends Component {
 
   _rendered() {
     this.listRef.element.addEventListener('scroll', () => {
-      this.handleScroll()
+      this.scrollEvent()
     })
   }
 
   getList(arry) {
     const _that = this
-    return arry.map(function (item, index) {
-      const h = _that.getItemSizeAndOffset(_that.startIndex + index).size
-      // console.log(h)
+    this.itemsRefs = []
+    return arry.map(function (items) {
       const list = {
         ref: (c) => {
-          _that.itemRef = c
+          const ref = c
+          new Promise((resolve) => {
+            if (ref) resolve(ref)
+          }).then((res) => {
+            _that.itemsRefs.push(res)
+          })
         },
         classes: {
-          'list-view-item': true,
+          'wetrial-virtual-list-item': true,
         },
         attrs: {
-          'data-s': _that.startIndex,
-          'data-i': index,
-          style: {
-            height: `${h}px`,
-          },
+          'data-key': items._index,
         },
-        children: item,
+        children: items.item,
       }
-
       return list
     })
   }
 
-  // 计算可滚动区域高度值
-  contentHeight() {
-    const { data, lastMeasuredIndex, estimatedItemSize } = this
-    const itemCount = data.length
-    if (lastMeasuredIndex >= 0) {
-      const lastMeasuredSizeAndOffset = this.getLastMeasuredSizeAndOffset()
-      return (
-        lastMeasuredSizeAndOffset.offset +
-        lastMeasuredSizeAndOffset.size +
-        (itemCount - 1 - lastMeasuredIndex) * estimatedItemSize
-      )
+  // 需要在 渲染完成后，获取列表每项的位置信息并缓存
+  updated() {
+    if (!this.itemsRefs || !this.itemsRefs.length) {
+      return
     }
-    return itemCount * estimatedItemSize
-  }
+    // 获取真实元素大小，修改对应的尺寸缓存
+    this.updateItemsSize()
+    // 更新列表总高度
+    const height = this.positions[this.positions.length - 1].bottom
+    this.phantomRef.update({
+      attrs: {
+        style: {
+          height: `${height}px`,
+        },
+      },
+    })
 
-  // 获取列表项高度
-  itemSizeGetter() {
-    // return 30 + (item.value % 10)
-    return this.estimatedItemSize
-  }
-
-  // 某个列表项在列表中的 top
-  getItemSizeAndOffset(index) {
-    console.log('getItemSizeAndOffset', index)
-    // const { lastMeasuredIndex, sizeAndOffsetCahce, data, itemSizeGetter } = this
-    const { lastMeasuredIndex, sizeAndOffsetCahce, data } = this
-    if (lastMeasuredIndex >= index) {
-      return sizeAndOffsetCahce[index] || { offset: 0, size: 0 }
-    }
-
-    let offset = 0
-    if (lastMeasuredIndex >= 0) {
-      const lastMeasured = sizeAndOffsetCahce[lastMeasuredIndex]
-      if (lastMeasured) {
-        offset = lastMeasured.offset + lastMeasured.size
-      }
-    }
-
-    for (let i = lastMeasuredIndex + 1; i <= index && i < data.length; i++) {
-      const item = data[i]
-      // const size = itemSizeGetter.call(null, item, i)
-      const size = this.itemSizeGetter(item)
-      sizeAndOffsetCahce[i] = {
-        size,
-        offset,
-      }
-      offset += size
-    }
-    this.lastMeasuredIndex = Math.min(index, data.length - 1)
-    return sizeAndOffsetCahce[index] || { offset: 0, size: 0 }
-  }
-
-  // 得到最后缓存值
-  getLastMeasuredSizeAndOffset() {
-    return this.lastMeasuredIndex >= 0
-      ? this.sizeAndOffsetCahce[this.lastMeasuredIndex]
-      : { offset: 0, size: 0 }
-  }
-
-  // 二分查找来优化已缓存的结果的搜索性能，把时间复杂度降低到 O(lgN)
-  binarySearch(low, high, offset) {
-    let index
-
-    while (low <= high) {
-      const middle = Math.floor((low + high) / 2)
-      const middleOffset = this.getItemSizeAndOffset(middle).offset
-      if (middleOffset === offset) {
-        index = middle
-        break
-      } else if (middleOffset > offset) {
-        high = middle - 1
-      } else {
-        low = middle + 1
-      }
-    }
-
-    if (low > 0) {
-      index = low - 1
-    }
-
-    if (typeof index === 'undefined') {
-      index = 0
-    }
-    console.log('binarySearch', index)
-    return index
-  }
-
-  exponentialSearch(scrollTop) {
-    let bound = 1
-    const data = this.data
-    const start = this.lastMeasuredIndex >= 0 ? this.lastMeasuredIndex : 0
-    while (
-      start + bound < data.length &&
-      this.getItemSizeAndOffset(start + bound).offset < scrollTop
-    ) {
-      bound *= 2
-    }
-    console.log('exponentialSearch binarySearch', bound)
-    return this.binarySearch(
-      start + Math.floor(bound / 2),
-      Math.min(start + bound, data.length),
-      scrollTop,
-    )
-  }
-
-  // 计算可视区域的索引
-  findNearestItemIndex(scrollTop) {
-    // const { data } = this
-    console.log('findNearestItemIndex', scrollTop)
-    const lastMeasuredOffset = this.getLastMeasuredSizeAndOffset().offset
-    if (lastMeasuredOffset > scrollTop) {
-      return this.binarySearch(0, this.lastMeasuredIndex, scrollTop)
-    }
-    return this.exponentialSearch(scrollTop)
-  }
-
-  // 虚拟列表的更新逻辑
-  updateVisibleData(scrollTop) {
-    scrollTop = scrollTop || 0
-    const start = this.findNearestItemIndex(scrollTop) // 取得可见区域的起始数据索引
-    console.log('start', start)
-    const end = this.findNearestItemIndex(scrollTop + this.listRef.element.clientHeight) + 1 // 取得可见区域的结束数据索引
-    console.log('end', end)
-    this.visibleData = this.data.slice(start, Math.min(end + 1, this.data.length)) // 计算出可见区域对应的数据
-    console.log('visibleData', this.visibleData)
-    this.startIndex = start
-    const webkitTransform = `translate3d(0, ${this.getItemSizeAndOffset(start).offset}px, 0)` // 把可见区域的 top 设置为起始元素在整个列表中的位置（使用 transform 是为了更好的性能）
-    // 更新可视区域
     this.contentRef.update({
       attrs: {
         style: {
-          transform: webkitTransform,
+          transform: `translate3d(0,${this.setStartOffset()}px,0)`,
         },
       },
-      children: this.getList(this.visibleData),
+      children: this.getList(this.visibleData()),
     })
   }
 
-  handleScroll() {
+  // 初始时根据 estimatedItemSize对 positions进行初始化
+  initPositions() {
+    this.positions = this.listData.map((d, index) => ({
+      index,
+      height: this.estimatedItemSize,
+      top: index * this.estimatedItemSize,
+      bottom: (index + 1) * this.estimatedItemSize,
+    }))
+  }
+
+  // 获取列表起始索引
+  getStartIndex(scrollTop = 0) {
+    // 二分法查找
+    return this.binarySearch(this.positions, scrollTop)
+  }
+
+  binarySearch(list, value) {
+    let start = 0
+    let end = list.length - 1
+    let tempIndex = null
+
+    while (start <= end) {
+      const midIndex = parseInt((start + end) / 2, 10)
+      const midValue = list[midIndex].bottom
+      if (midValue === value) {
+        return midIndex + 1
+      }
+      if (midValue < value) {
+        start = midIndex + 1
+      } else if (midValue > value) {
+        if (tempIndex === null || tempIndex > midIndex) {
+          tempIndex = midIndex
+        }
+        end -= 1
+      }
+    }
+    return tempIndex
+  }
+
+  // 获取列表项的当前尺寸
+  updateItemsSize() {
+    const nodes = this.itemsRefs
+    nodes.forEach((node) => {
+      if (!node.rendered) return
+      const rect = node.element.getBoundingClientRect()
+      const height = rect.height
+      const index = +node.element.dataset.key.slice(1)
+      const oldHeight = this.positions[index].height
+      const dValue = oldHeight - height
+      // 存在差值
+      if (dValue) {
+        this.positions[index].bottom -= dValue
+        this.positions[index].height = height
+        for (let k = index + 1; k < this.positions.length; k++) {
+          this.positions[k].top = this.positions[k - 1].bottom
+          this.positions[k].bottom -= dValue
+        }
+      }
+    })
+  }
+
+  // 设置当前的偏移量
+  setStartOffset() {
+    let startOffset
+    if (this.start >= 1) {
+      const size =
+        this.positions[this.start].top -
+        (this.positions[this.start - this.aboveCount()]
+          ? this.positions[this.start - this.aboveCount()].top
+          : 0)
+      startOffset = this.positions[this.start - 1].bottom - size
+    } else {
+      startOffset = 0
+    }
+    return startOffset
+  }
+
+  // 滚动事件
+  scrollEvent() {
+    // 当前滚动位置
     const scrollTop = this.listRef.element.scrollTop
-    // console.log(scrollTop)
-    this.updateVisibleData(scrollTop)
+    // 此时的开始索引
+    this.start = this.getStartIndex(scrollTop)
+    // 此时的结束索引
+    this.end = this.start + this.visibleCount()
+    // 更新列表
+    this.updated()
+  }
+
+  _listData() {
+    return this.listData.map((item, index) => {
+      return {
+        _index: `_${index}`,
+        item,
+      }
+    })
+  }
+
+  // 可显示的列表项数
+  visibleCount() {
+    return Math.ceil(this.screenHeight / this.estimatedItemSize)
+  }
+
+  // 可视区上方渲染条数
+  aboveCount() {
+    return Math.min(this.start, this.bufferScale * this.visibleCount())
+  }
+
+  // 可视区下方渲染条数
+  belowCount() {
+    return Math.min(this.listData.length - this.end, this.bufferScale * this.visibleCount())
+  }
+
+  // 获取真实显示列表数据
+  visibleData() {
+    const start = this.start - this.aboveCount()
+    const end = this.end + this.belowCount()
+    return this._listData().slice(start, end)
   }
 }
 
