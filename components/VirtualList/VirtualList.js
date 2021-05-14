@@ -46,7 +46,7 @@ class VirtualList extends Component {
           this.listRef = c
         },
         classes: {
-          'wetrial-virtual-list-container': true,
+          'nom-virtual-list-container': true,
         },
         attrs: {
           style: {
@@ -59,7 +59,7 @@ class VirtualList extends Component {
               this.phantomRef = c
             },
             classes: {
-              'wetrial-virtual-list-phantom': true,
+              'nom-virtual-list-phantom': true,
             },
             attrs: {
               style: {
@@ -73,7 +73,7 @@ class VirtualList extends Component {
               this.contentRef = c
             },
             classes: {
-              'wetrial-virtual-list-content': true,
+              'nom-virtual-list-content': true,
             },
             children: listArry,
           },
@@ -102,7 +102,7 @@ class VirtualList extends Component {
           })
         },
         classes: {
-          'wetrial-virtual-list-item': true,
+          'nom-virtual-list-item': true,
         },
         attrs: {
           'data-key': items._index,
