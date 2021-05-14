@@ -8315,7 +8315,18 @@ function _defineProperty2(obj, key, value) {
   const settles = ["top", "right", "bottom", "left"];
   function isValidZIndex(index) {
     return VALID_INTEGER.test(index);
-  }
+  } // /**
+  //  *
+  //  * @param container dom容器
+  //  * @param direction 方位(top,right,bottom,left)
+  //  */
+  // export function getRelativePosition(container) {
+  //   if (container instanceof HTMLElement) {
+  //     const { top, left, width, height } = container.getBoundingClientRect()
+  //     return { width: `${width}px`, height: `${height}px`, left: `${left}px`, top: `${top}px` }
+  //   }
+  //   return null
+  // }
   class Drawer extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -8323,11 +8334,9 @@ function _defineProperty2(obj, key, value) {
         closeIcon: "close",
         maskClosable: true,
         showMasker: true,
-        visible: false,
         settle: "right",
         okText: "确 定",
         cancelText: "取 消",
-        placeGlobal: true,
         onOk: (e) => {
           e.sender.close();
         },
@@ -8342,17 +8351,18 @@ function _defineProperty2(obj, key, value) {
       const {
         zIndex,
         settle,
-        visible,
         maskClosable,
         showMasker,
-        placeGlobal,
         width,
         height,
-      } = this.props;
-      if (!placeGlobal && this.parent && this.parent.element) {
-        this.parent.element.style.position = "relative";
-      }
+      } = this.props; // if (!placeGlobal && this.parent && this.parent.element) {
+      //   this.parent.element.style.position = 'relative'
+      // }
       const _settle = settles.includes(settle) ? settle : "right";
+      let _style = {};
+      if (isValidZIndex(zIndex)) {
+        _style = Object.assign({}, _style, { "z-index": zIndex });
+      }
       const children = []; // mask
       if (showMasker) {
         children.push({ classes: { "nom-drawer-mask": true } });
@@ -8361,23 +8371,18 @@ function _defineProperty2(obj, key, value) {
         classes: { "nom-drawer-content-wrapper": true },
         attrs: {
           style: ["left", "right"].includes(_settle)
-            ? Object.assign(
-                {},
-                drawerRef._handleSize(width, "width"),
-                drawerRef._animation(visible, true)
-              )
-            : Object.assign(
-                {},
-                drawerRef._handleSize(height, "height"),
-                drawerRef._animation(visible, false)
-              ),
+            ? Object.assign({}, drawerRef._handleSize(width, "width"))
+            : Object.assign({}, drawerRef._handleSize(height, "height")),
         },
         children: drawerRef._handleContent(),
-      }); // 是否挂在到body或是当前dom
-      let _style = placeGlobal ? {} : { position: "absolute" }; // customize z-index
-      _style = isValidZIndex(zIndex)
-        ? Object.assign({}, _style, { "z-index": zIndex })
-        : _style;
+      });
+      const _container = this._getContainerElement();
+      if (_container !== document.body) {
+        // this.referenceElement = _container instanceof Component ? _container.element : _container
+        this.referenceElement = _container;
+        _container.style.position = "relative";
+        _style = Object.assign({}, _style, { position: "absolute" });
+      }
       this.setProps({
         classes: {
           // [`nom-drawer-${_settle}`]: true,
@@ -8385,7 +8390,6 @@ function _defineProperty2(obj, key, value) {
           "nom-drawer-right": _settle === "right",
           "nom-drawer-bottom": _settle === "bottom",
           "nom-drawer-left": _settle === "left",
-          "nom-drawer-open": visible,
         },
         onClick: () => {
           maskClosable && drawerRef.close(drawerRef);
@@ -8397,7 +8401,6 @@ function _defineProperty2(obj, key, value) {
     _handleContent() {
       const drawerRef = this;
       const {
-        visible,
         closable,
         closeIcon,
         title,
@@ -8480,17 +8483,42 @@ function _defineProperty2(obj, key, value) {
           },
         });
       }
-      return visible
-        ? [
-            {
-              classes: { "nom-drawer-body": true },
-              onClick: ({ event }) => {
-                event.stopPropagation();
-              },
-              children,
-            },
-          ]
-        : null;
+      return [
+        {
+          classes: { "nom-drawer-body": true },
+          onClick: ({ event }) => {
+            event.stopPropagation();
+          },
+          children,
+        },
+      ];
+    }
+    _getRelativePosition(container) {
+      if (container instanceof HTMLElement) {
+        return container.getBoundingClientRect();
+      }
+    }
+    _getContainerElement() {
+      let _containerElement = document.body;
+      const { getContainer } = this.props;
+      if (isFunction(getContainer)) {
+        const c = getContainer();
+        if (c instanceof Component && c.element) {
+          _containerElement = c.element;
+        } else if (c instanceof HTMLElement) {
+          _containerElement = c;
+        }
+      }
+      return _containerElement;
+    }
+    _getContainerRect(e) {
+      if (e instanceof HTMLElement) {
+        return e.getBoundingClientRect();
+      }
+      return null;
+    }
+    close() {
+      this.remove();
     }
     _handleSize(size, unit) {
       if (!CSS_UNIT.test(size)) return {};
@@ -8501,9 +8529,6 @@ function _defineProperty2(obj, key, value) {
       return x
         ? { transform: "translateX(100%)" }
         : { transform: "translateY(100%)" };
-    }
-    close() {
-      this.update({ visible: false });
     }
   }
   Component.register(Drawer);

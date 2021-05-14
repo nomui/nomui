@@ -7446,65 +7446,48 @@ textarea .nom-textarea {
 }
 .nom-drawer {
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 1000;
   width: 100%;
   height: 100%;
 }
-.nom-drawer.nom-drawer-top {
-  top: 0;
-  left: 0;
-  height: 0;
-}
-.nom-drawer.nom-drawer-right {
-  top: 0;
-  right: 0;
-  width: 0;
-}
-.nom-drawer.nom-drawer-bottom {
-  bottom: 0;
-  left: 0;
-  height: 0;
-}
-.nom-drawer.nom-drawer-left {
-  top: 0;
-  left: 0;
-  width: 0;
-}
-.nom-drawer.nom-drawer-open {
-  width: 100%;
-  height: 100%;
-}
-.nom-drawer.nom-drawer-open.nom-drawer-left > .nom-drawer-content-wrapper {
-  left: 0;
-  width: 256px;
-  height: 100%;
-}
-.nom-drawer.nom-drawer-open.nom-drawer-right > .nom-drawer-content-wrapper {
-  right: 0;
-  width: 256px;
-  height: 100%;
-}
-.nom-drawer.nom-drawer-open.nom-drawer-top > .nom-drawer-content-wrapper {
-  top: 0;
-  width: 100%;
-  height: 256px;
-}
-.nom-drawer.nom-drawer-open.nom-drawer-bottom > .nom-drawer-content-wrapper {
-  bottom: 0;
-  width: 100%;
-  height: 256px;
-}
-.nom-drawer.nom-drawer-open .nom-drawer-mask {
+.nom-drawer > .nom-drawer-mask {
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.45);
   opacity: 1;
 }
-.nom-drawer.nom-drawer-open .nom-drawer-content-wrapper {
+.nom-drawer.nom-drawer-top > .nom-drawer-content-wrapper {
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 256px;
 }
-.nom-drawer.nom-drawer-open .nom-drawer-content-wrapper .nom-drawer-body {
+.nom-drawer.nom-drawer-right > .nom-drawer-content-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 256px;
+  height: 100%;
+}
+.nom-drawer.nom-drawer-bottom > .nom-drawer-content-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 256px;
+}
+.nom-drawer.nom-drawer-left > .nom-drawer-content-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 256px;
+  height: 100%;
+}
+.nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body {
   position: relative;
   z-index: 1;
   display: flex;
@@ -7515,7 +7498,15 @@ textarea .nom-textarea {
   overflow: auto;
   background-color: #ffffff;
 }
-.nom-drawer.nom-drawer-open .nom-drawer-content-wrapper .nom-drawer-body .nom-drawer-close-icon {
+.nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body > .nom-drawer-header {
+  position: relative;
+  padding: 16px 24px;
+  font-weight: 500;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #f0f0f0;
+  border-radius: 2px 2px 0 0;
+}
+.nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body > .nom-drawer-header > .nom-drawer-close-icon {
   position: absolute;
   top: 0;
   right: 0;
@@ -7524,43 +7515,16 @@ textarea .nom-textarea {
   font-size: 16px;
   cursor: pointer;
 }
-.nom-drawer.nom-drawer-open .nom-drawer-content-wrapper .nom-drawer-body .nom-drawer-header {
-  position: relative;
-  padding: 16px 24px;
-  font-weight: 500;
-  font-size: 1.2rem;
-  border-bottom: 1px solid #f0f0f0;
-  border-radius: 2px 2px 0 0;
-}
-.nom-drawer.nom-drawer-open .nom-drawer-content-wrapper .nom-drawer-body .nom-drawer-content {
+.nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body > .nom-drawer-content {
   flex-grow: 1;
   padding: 24px;
   overflow: auto;
   overflow-wrap: break-word;
 }
-.nom-drawer.nom-drawer-open .nom-drawer-content-wrapper .nom-drawer-body .nom-drawer-footer {
+.nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body > .nom-drawer-footer {
   flex-shrink: 0;
   padding: 10px 16px;
   border-top: 1px solid #f0f0f0;
-}
-.nom-drawer > * {
-  transition: transform 0.3s cubic-bezier(0.7, 0.3, 0.1, 1), box-shadow 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
-}
-.nom-drawer .nom-drawer-open .nom-drawer-mask {
-  height: 100%;
-  opacity: 1;
-  transition: none;
-  -webkit-animation: antddrawerfadein 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
-  animation: antdDrawerFadeIn 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
-  pointer-events: auto;
-}
-@keyframes antdDrawerFadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 .nom-dropdown.nom-split-button > button:first-child {
   border-top-right-radius: 0;
