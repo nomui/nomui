@@ -1,13 +1,13 @@
 define(['./helper.js'], function (helper) {
   return {
-    title: '基本用法',
-    file: 'basic',
+    title: '同时支持内容多样化',
+    file: 'more',
     demo: function () {
       return {
         component: 'VirtualList',
-        listData: helper.getData1(10000),
-        height: 300,
-        size: 40,
+        listData: helper.getData2(10000),
+        height: 400,
+        size: 100,
         bufferScale: 1,
       }
     },
