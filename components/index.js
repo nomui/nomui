@@ -74,6 +74,7 @@ export { default as Tree } from './Tree/index'
 export { default as TreeSelect } from './TreeSelect/index'
 export { default as Uploader } from './Uploader/index'
 export * as utils from './util/index'
+export { default as VirtualList } from './VirtualList/index'
 
 /**
  * nomui的插件机制
