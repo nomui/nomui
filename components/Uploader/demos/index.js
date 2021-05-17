@@ -9,6 +9,8 @@ define([
   './async.js',
   './hide.js',
   './customize.js',
+  './action.js',
+  './fileList.js',
 ], function () {
   return {
     title: 'Uploader',
