@@ -11,8 +11,13 @@ class FileItem extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    this._uploader = this.parent.parent.parent.parent
+  }
+
   _config() {
-    const { file, onRemove, extraAction, customizeInfo } = this.props
+    const that = this
+    const { file, onRemove, allowUpdate, extraAction, customizeInfo } = this.props
     const { uuid, status } = file
 
     const _info = isFunction(customizeInfo)
@@ -59,8 +64,18 @@ class FileItem extends Component {
             href: 'javascript:void(0)',
             onclick: (e) => {
               e.preventDefault()
-              status !== 'removing' && onRemove.action(e, file)
+              status !== 'removing' && onRemove.action({ sender: that._uploader, file })
             },
+          },
+        })
+      }
+
+      if (allowUpdate) {
+        actions.push({
+          tag: 'a',
+          children: '更新',
+          onClick() {
+            that._uploader._handleUpdate({ file })
           },
         })
       }
@@ -74,7 +89,7 @@ class FileItem extends Component {
               href: 'javascript:void(0)',
               onclick: (e) => {
                 e.preventDefault()
-                isFunction(action) && action(e, file)
+                isFunction(action) && action({ sender: that._uploader, file })
               },
             },
           })

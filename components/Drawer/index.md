@@ -9,13 +9,12 @@ Drawer 抽屉
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| visible | Drawer 是否可见 | `boolean` | `false` |
 | closable | 是否显示右上角的关闭按钮 | `boolean` | `false` |
 | closeIcon | 自定义关闭图标 | `Icon` | `close` |
 | maskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | showMasker | 是否显示蒙层 | `boolean` | `true` |
 | settle | 抽屉弹出的方向 | `top\|right\|bottom\|left` | `right` |
-| placeGlobal | 是否挂在在 body 上，选否则挂在在当前父容器上 | `boolean` | `true` |
+| getContainer | 指定 Drawer 挂载的节点 | `-` | `()=>Component\|HTMLElement` |
 | width | 抽屉的宽度，仅当弹出方向为左或右时生效，支持 rem,em,px,% | `-` | `256px` |
 | height | 抽屉的高度，仅当弹出方向为上或下时生效，支持 rem,em,px,% | `-` | `256px` |
 | title | 抽屉的标题 | `string \| Component` | `-` |

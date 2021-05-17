@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isNumeric } from '../util/index'
+import { isFunction, isNumeric } from '../util/index'
 import { CSS_UNIT } from '../util/reg'
 import { isValidZIndex, settles } from './helper'
 
@@ -10,11 +10,9 @@ class Drawer extends Component {
       closeIcon: 'close',
       maskClosable: true,
       showMasker: true,
-      visible: false,
       settle: 'right',
       okText: '确 定',
       cancelText: '取 消',
-      placeGlobal: true,
       onOk: (e) => {
         e.sender.close()
       },
@@ -28,22 +26,19 @@ class Drawer extends Component {
 
   _config() {
     const drawerRef = this
-    const {
-      zIndex,
-      settle,
-      visible,
-      maskClosable,
-      showMasker,
-      placeGlobal,
-      width,
-      height,
-    } = this.props
+    const { zIndex, settle, maskClosable, showMasker, width, height } = this.props
 
-    if (!placeGlobal && this.parent && this.parent.element) {
-      this.parent.element.style.position = 'relative'
-    }
+    // if (!placeGlobal && this.parent && this.parent.element) {
+    //   this.parent.element.style.position = 'relative'
+    // }
 
     const _settle = settles.includes(settle) ? settle : 'right'
+
+    let _style = {}
+
+    if (isValidZIndex(zIndex)) {
+      _style = { ..._style, 'z-index': zIndex }
+    }
 
     const children = []
 
@@ -61,16 +56,20 @@ class Drawer extends Component {
       },
       attrs: {
         style: ['left', 'right'].includes(_settle)
-          ? { ...drawerRef._handleSize(width, 'width'), ...drawerRef._animation(visible, true) }
-          : { ...drawerRef._handleSize(height, 'height'), ...drawerRef._animation(visible, false) },
+          ? { ...drawerRef._handleSize(width, 'width') }
+          : { ...drawerRef._handleSize(height, 'height') },
       },
       children: drawerRef._handleContent(),
     })
 
-    // 是否挂在到body或是当前dom
-    let _style = placeGlobal ? {} : { position: 'absolute' }
-    // customize z-index
-    _style = isValidZIndex(zIndex) ? { ..._style, 'z-index': zIndex } : _style
+    const _container = this._getContainerElement()
+
+    if (_container !== document.body) {
+      // this.referenceElement = _container instanceof Component ? _container.element : _container
+      this.referenceElement = _container
+      _container.style.position = 'relative'
+      _style = { ..._style, position: 'absolute' }
+    }
 
     this.setProps({
       classes: {
@@ -79,7 +78,6 @@ class Drawer extends Component {
         'nom-drawer-right': _settle === 'right',
         'nom-drawer-bottom': _settle === 'bottom',
         'nom-drawer-left': _settle === 'left',
-        'nom-drawer-open': visible,
       },
       onClick: () => {
         maskClosable && drawerRef.close(drawerRef)
@@ -94,7 +92,6 @@ class Drawer extends Component {
   _handleContent() {
     const drawerRef = this
     const {
-      visible,
       closable,
       closeIcon,
       title,
@@ -193,19 +190,51 @@ class Drawer extends Component {
       })
     }
 
-    return visible
-      ? [
-          {
-            classes: {
-              'nom-drawer-body': true,
-            },
-            onClick: ({ event }) => {
-              event.stopPropagation()
-            },
-            children,
-          },
-        ]
-      : null
+    return [
+      {
+        classes: {
+          'nom-drawer-body': true,
+        },
+        onClick: ({ event }) => {
+          event.stopPropagation()
+        },
+        children,
+      },
+    ]
+  }
+
+  _getRelativePosition(container) {
+    if (container instanceof HTMLElement) {
+      return container.getBoundingClientRect()
+    }
+  }
+
+  _getContainerElement() {
+    let _containerElement = document.body
+    const { getContainer } = this.props
+
+    if (isFunction(getContainer)) {
+      const c = getContainer()
+
+      if (c instanceof Component && c.element) {
+        _containerElement = c.element
+      } else if (c instanceof HTMLElement) {
+        _containerElement = c
+      }
+    }
+    return _containerElement
+  }
+
+  _getContainerRect(e) {
+    if (e instanceof HTMLElement) {
+      return e.getBoundingClientRect()
+    }
+
+    return null
+  }
+
+  close() {
+    this.remove()
   }
 
   _handleSize(size, unit) {
@@ -218,10 +247,6 @@ class Drawer extends Component {
     if (visible) return {}
 
     return x ? { transform: 'translateX(100%)' } : { transform: 'translateY(100%)' }
-  }
-
-  close() {
-    this.update({ visible: false })
   }
 }
 
