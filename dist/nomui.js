@@ -8309,7 +8309,7 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(Divider); // 正整数
-  const POSITIVE_INTEGER = /^[1-9]\d*$/; // 不支持cm mm in pt pc等单位
+  // 不支持cm mm in pt pc等单位
   const CSS_UNIT = /^(-)?\d+(.)?\d+[px|rem|em|vw|vh|%]*$/i;
   const VALID_INTEGER = /^[-]?\d+$/;
   const settles = ["top", "right", "bottom", "left"];
@@ -19156,17 +19156,23 @@ function _defineProperty2(obj, key, value) {
     "image/*,application/msword,application/pdf,application/x-rar-compressed,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.ms-works,application/zip,audio/*,video/*,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/vnd.ms-word.document.macroEnabled.12,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.template.macroEnabled.12,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.ms-powerpoint.addin.macroEnabled.12,application/vnd.ms-powerpoint.presentation.macroEnabled.12,application/vnd.ms-powerpoint.slideshow.macroEnabled.12,application/csv";
   function getUUID() {
     return `nom-upload-${Math.random().toString().substr(2)}`;
+  } // export function getDate(timestamp) {
+  //   if (isNumeric(timestamp) && POSITIVE_INTEGER.test(timestamp.toString())) {
+  //     const date = new Date(timestamp)
+  //     const month = date.getMonth() + 1
+  //     const day = date.getDate()
+  //     return `${date.getFullYear()}-${month > 9 ? month : `0${month}`}-${day > 9 ? day : `0${day}`}`
+  //   }
+  //   return null
+  // }
+  function isValidDate(date) {
+    return (
+      (Number.isNaN(date) && !Number.isNaN(Date.parse(date))) || isNumeric(date)
+    );
   }
-  function getDate(timestamp) {
-    if (isNumeric(timestamp) && POSITIVE_INTEGER.test(timestamp.toString())) {
-      const date = new Date(timestamp);
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-      return `${date.getFullYear()}-${month > 9 ? month : `0${month}`}-${
-        day > 9 ? day : `0${day}`
-      }`;
-    }
-    return null;
+  function getDate(d) {
+    if (!isValidDate(d)) return null;
+    return formatDate(d, "yyyy-MM-dd");
   }
   function getFileSize(number) {
     if (!isNumeric(number)) {
@@ -19220,8 +19226,18 @@ function _defineProperty2(obj, key, value) {
       const defaults = { disabled: false, file: null };
       super(Component.extendProps(defaults, props), ...mixins);
     }
+    _created() {
+      this._uploader = this.parent.parent.parent.parent;
+    }
     _config() {
-      const { file, onRemove, extraAction, customizeInfo } = this.props;
+      const that = this;
+      const {
+        file,
+        onRemove,
+        allowUpdate,
+        extraAction,
+        customizeInfo,
+      } = this.props;
       const { uuid, status } = file;
       const _info = isFunction(customizeInfo)
         ? customizeInfo(file)
@@ -19261,8 +19277,18 @@ function _defineProperty2(obj, key, value) {
               href: "javascript:void(0)",
               onclick: (e) => {
                 e.preventDefault();
-                status !== "removing" && onRemove.action(e, file);
+                status !== "removing" &&
+                  onRemove.action({ sender: that._uploader, file });
               },
+            },
+          });
+        }
+        if (allowUpdate) {
+          actions.push({
+            tag: "a",
+            children: "更新",
+            onClick() {
+              that._uploader._handleUpdate({ file });
             },
           });
         }
@@ -19275,7 +19301,8 @@ function _defineProperty2(obj, key, value) {
                 href: "javascript:void(0)",
                 onclick: (e) => {
                   e.preventDefault();
-                  isFunction(action) && action(e, file);
+                  isFunction(action) &&
+                    action({ sender: that._uploader, file });
                 },
               },
             });
@@ -19373,6 +19400,7 @@ function _defineProperty2(obj, key, value) {
       const {
         files,
         onRemove,
+        allowUpdate,
         extraAction,
         initializing,
         renderer,
@@ -19385,6 +19413,7 @@ function _defineProperty2(obj, key, value) {
             component: FileItem,
             file,
             onRemove,
+            allowUpdate,
             extraAction,
             renderer,
             customizeInfo,
@@ -19498,6 +19527,7 @@ function _defineProperty2(obj, key, value) {
         method: "post",
         headers: {},
         withCredentials: false,
+        allowUpdate: false,
         onRemove: null,
         renderer: null,
         extraAction: [],
@@ -19505,9 +19535,12 @@ function _defineProperty2(obj, key, value) {
       };
       super(Component.extendProps(defaults, props), ...mixins);
       this.reqs = {};
+      this.onChange.bind(this);
+      this._changeUploadMode.bind(this);
     }
     _created() {
-      this.fileList = this.props.defaultFileList;
+      // this.fileList = this.props.fileList || this.props.defaultFileList
+      this._updateFile = null;
     }
     _config() {
       const that = this; // const { disabled, accept, button: cButton, multiple, files } = this.props;
@@ -19518,10 +19551,12 @@ function _defineProperty2(obj, key, value) {
         multiple,
         extraAction,
         display,
+        allowUpdate,
         onRemove,
         renderer,
         customizeInfo,
       } = this.props;
+      this.fileList = this.props.fileList || this.props.defaultFileList;
       let initializing = true;
       if (isPromiseLike(that.fileList)) {
         that.fileList.then((fs) => {
@@ -19577,16 +19612,7 @@ function _defineProperty2(obj, key, value) {
           },
         });
         children.push(button);
-      } // if (display && files && files.length > 0) {
-      //   console.log('display')
-      //   children.push({
-      //     component: FileList,
-      //     initializing,
-      //     files,
-      //     onRemove: this.handleRemove.bind(that),
-      //     extraAction,
-      //   })
-      // }
+      }
       if (display) {
         if (initializing || (this.fileList && this.fileList.length > 0)) {
           children.push({
@@ -19604,6 +19630,7 @@ function _defineProperty2(obj, key, value) {
               Object.assign({}, onRemove, {
                 action: that.handleRemove.bind(that),
               }),
+            allowUpdate,
             extraAction,
             customizeInfo,
           });
@@ -19621,13 +19648,29 @@ function _defineProperty2(obj, key, value) {
       // 转为数组
       let fileList = Array.from(files);
       const uploadedFileList = Array.from(uploadedFiles);
-      fileList = fileList.map((e) => {
-        if (!e.uuid) {
-          e.uuid = getUUID();
-        }
-        e.uploadTime = new Date().getTime();
-        return e;
-      });
+      if (this._updateFile) {
+        fileList = fileList.map((e) => {
+          e.uuid = this._updateFile;
+          e.uploadTime = new Date().getTime();
+          return e;
+        });
+        uploadedFiles.map((file) => {
+          if (file.uuid === this._updateFile) {
+            const f = fileList[0] || [];
+            f.uuid = this._updateFile;
+            return f;
+          }
+          return file;
+        });
+      } else {
+        fileList = fileList.map((e) => {
+          if (!e.uuid) {
+            e.uuid = getUUID();
+          }
+          e.uploadTime = new Date().getTime();
+          return e;
+        });
+      }
       fileList.forEach((file) => {
         this.upload(file, [...uploadedFileList, ...fileList]);
       });
@@ -19684,6 +19727,8 @@ function _defineProperty2(obj, key, value) {
         };
         this.onStart(file);
         this.reqs[file.uuid] = upload(option);
+        this._updateFile = null;
+        this._changeUploadMode();
       });
     }
     onChange(info) {
@@ -19693,19 +19738,24 @@ function _defineProperty2(obj, key, value) {
       this.update({ fileList: [...info.fileList] });
       if (this.button) {
         const disableBtn = this.fileList.some((file) =>
-          ["removing", "uploading"].includes(file.status)
+          ["removing", "uploading", "updating"].includes(file.status)
         );
         if (!this.props.disabled) {
           disableBtn ? this.button.disable() : this.button.enable();
         }
       }
       if (onChangeProp) {
-        onChangeProp(Object.assign({}, info, { fileList: [...this.fileList] }));
+        onChangeProp(
+          Object.assign({}, info, {
+            sender: this,
+            fileList: [...this.fileList],
+          })
+        );
       }
     }
     onStart(file) {
       const uploadFile = cloneFileWithInfo(file);
-      uploadFile.status = "uploading"; // 这里要改
+      uploadFile.status = this._updateFile ? "updating" : "uploading"; // 这里要改
       const nextFileList = Array.from(this.fileList);
       const findIndex = nextFileList.findIndex(
         (f) => f.uuid === uploadFile.uuid
@@ -19756,7 +19806,7 @@ function _defineProperty2(obj, key, value) {
       uploadFile.response = response;
       this.onChange({ file: uploadFile, fileList: [...this.fileList] });
     }
-    handleRemove(e, file) {
+    handleRemove({ sender, file }) {
       const {
         onRemove: { action },
       } = this.props; // removing
@@ -19765,23 +19815,39 @@ function _defineProperty2(obj, key, value) {
         f.uuid === file.uuid ? Object.assign({}, f, { status: "removing" }) : f
       );
       this.onChange({ file, fileList: this.fileList });
-      Promise.resolve(isFunction(action) ? action(e, file) : action).then(
-        (ret) => {
-          if (ret === false) {
-            return;
-          }
-          const remainsFileList = removeFile(file, this.fileList);
-          if (remainsFileList) {
-            file.status = "removed";
-            this.fileList = remainsFileList;
-            if (this.reqs[file.uuid]) {
-              this.reqs[file.uuid].abort();
-              delete this.reqs[file.uuid];
-            }
-          }
-          this.onChange({ file, fileList: remainsFileList });
+      Promise.resolve(
+        isFunction(action) ? action({ sender, file }) : action
+      ).then((ret) => {
+        if (ret === false) {
+          return;
         }
-      );
+        const remainsFileList = removeFile(file, this.fileList);
+        if (remainsFileList) {
+          file.status = "removed";
+          this.fileList = remainsFileList;
+          if (this.reqs[file.uuid]) {
+            this.reqs[file.uuid].abort();
+            delete this.reqs[file.uuid];
+          }
+        }
+        this.onChange({ file, fileList: remainsFileList });
+      });
+    }
+    _handleUpdate({ file }) {
+      if (file && file.uuid) {
+        this._updateFile = file.uuid;
+      }
+      this._changeUploadMode();
+      this._handleClick(file);
+    }
+    _changeUploadMode() {
+      if (this.inputFile && this.inputFile.element) {
+        if (this._updateFile) {
+          this.inputFile.element.multiple = false;
+        } else {
+          this.inputFile.element.multiple = this.props.multiple;
+        }
+      }
     }
     _handleClick() {
       if (this.inputFile) {
