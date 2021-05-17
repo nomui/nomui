@@ -86,6 +86,15 @@ class VirtualList extends Component {
     this.listRef.element.addEventListener('scroll', () => {
       this.scrollEvent()
     })
+    // let isScroll = false
+    // this.listRef.element.addEventListener('scroll', () => {
+    //   if (isScroll) return
+    //   isScroll = true
+    //   this.scrollEvent()
+    //   setTimeout(() => {
+    //     isScroll = false
+    //   }, 500)
+    // })
   }
 
   getList(arry) {
@@ -252,6 +261,19 @@ class VirtualList extends Component {
     const start = this.start - this.aboveCount()
     const end = this.end + this.belowCount()
     return this._listData().slice(start, end)
+  }
+
+  // 防抖函数
+  debounce(func, wait) {
+    let timer = null
+    return function () {
+      const context = this
+      const args = arguments
+      timer && clearTimeout(timer)
+      timer = setTimeout(function () {
+        func.apply(context, args)
+      }, wait)
+    }
   }
 }
 
