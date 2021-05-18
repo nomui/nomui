@@ -90,6 +90,7 @@ class Carousel extends Component {
     return newList.map(function (item) {
       return {
         ref: (c) => {
+          console.log(c)
           if (c) _that.sildeRefs.push(c)
         },
         classes: {
@@ -185,6 +186,7 @@ class Carousel extends Component {
 
   updateItemsSize() {
     const nodes = this.sildeRefs
+    console.log(this.sildeRefs)
     nodes.forEach((node, index) => {
       if (!node.rendered) return
       const rect = node.element.getBoundingClientRect()
