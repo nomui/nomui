@@ -541,6 +541,12 @@ define([], function () {
                       id: 'SlideCaptcha',
                       url: '#!components!index?type=SlideCaptcha',
                     },
+                    {
+                      text: 'Anchor',
+                      subtext: '锚点',
+                      id: 'Anchor',
+                      url: '#!components!index?type=Anchor',
+                    },
                   ],
                 },
               ],
