@@ -310,6 +310,12 @@ define([], function () {
                       subtext: '倒计时',
                       url: '#!components!index?type=Countdown',
                     },
+                    {
+                      text: 'Carousel',
+                      id: 'Carousel',
+                      subtext: '走马灯',
+                      url: '#!components!index?type=Carousel',
+                    },
                   ],
                 },
                 {
