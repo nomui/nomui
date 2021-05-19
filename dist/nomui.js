@@ -12243,7 +12243,7 @@ function _defineProperty2(obj, key, value) {
       const { column } = this.props;
       const { treeConfig } = this.table.props;
       let spanProps = null;
-      let children = this.props.data;
+      let children = this.props.data === 0 ? "0" : this.props.data;
       if (isFunction(column.cellRender)) {
         children = column.cellRender({
           cell: this,

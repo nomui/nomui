@@ -124,6 +124,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                         children: {
                           component: 'Anchor',
                           name: 'DemoMenu',
+                          border: false,
                           items: this.props.demos,
                           itemDefaults: {
                             key: function () {
