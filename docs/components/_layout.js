@@ -364,6 +364,12 @@ define([], function () {
                       url: '#!components!index?type=CheckboxList',
                     },
                     {
+                      text: 'CheckboxTree',
+                      subtext: '多选树',
+                      id: 'CheckboxTree',
+                      url: '#!components!index?type=CheckboxTree',
+                    },
+                    {
                       text: 'Select',
                       subtext: '下拉选择',
                       id: 'Select',

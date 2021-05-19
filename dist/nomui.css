@@ -6782,6 +6782,10 @@ textarea .nom-textarea {
 .nom-tree .nom-tree-node-content.s-selected {
   background-color: #edf2ff !important;
 }
+.s-disabled.nom-tree .nom-tree-node-content,
+.nom-tree .nom-tree-node-content.s-disabled {
+  opacity: 0.5;
+}
 .nom-tree .nom-tree-node-content > .nom-tree-node-expandable-indicator {
   width: 30px;
   height: 24px;
