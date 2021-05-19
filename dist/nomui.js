@@ -5196,6 +5196,246 @@ function _defineProperty2(obj, key, value) {
     },
   });
   Component.register(Badge);
+  class Carousel extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        imgs: [],
+        height: 100,
+        arrows: false,
+        autoplay: false,
+        autoplaySpeed: 1000,
+        speed: 300,
+        dots: true,
+        defaultActiveIndex: 1,
+        easing: "linear",
+        pauseOnHover: true,
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      const { imgs, defaultActiveIndex } = this.props;
+      const cloneImgs = [...imgs];
+      cloneImgs.push(imgs[0]);
+      this.loopImgs = cloneImgs;
+      this.positions = [
+        // {
+        //   left:0,
+        //   width:100
+        // }
+      ];
+      this.activeId = defaultActiveIndex;
+      this.activeIdOld = defaultActiveIndex;
+      this.sildeRefs = [];
+      this.paginationRef = [];
+      this.slideWidth = null;
+      this.autoplayInterval = null;
+    }
+    _config() {
+      this.setProps({
+        children: {
+          ref: (c) => {
+            this.containerRef = c;
+          },
+          classes: { "nom-carousel-container": true },
+          children: [
+            {
+              ref: (c) => {
+                this.wrapperRef = c;
+              },
+              classes: { "nom-carousel-wrapper": true },
+              children: this.slideList(),
+            },
+            {
+              classes: {
+                "nom-carousel-pagination": true,
+                "nom-carousel-pagination-show": this.props.dots,
+              },
+              children: this.paginationList(),
+            },
+            {
+              classes: {
+                "nom-carousel-buttons": true,
+                "nom-carousel-buttons-show": this.props.arrows,
+              },
+              children: [
+                {
+                  classes: { "nom-carousel-button-prev": true },
+                  onClick: () => {
+                    this.prevClick();
+                  },
+                  component: "Icon",
+                  type: "left",
+                },
+                {
+                  classes: { "nom-carousel-button-next": true },
+                  onClick: () => {
+                    this.nextClick();
+                  },
+                  component: "Icon",
+                  type: "right",
+                },
+              ],
+            },
+          ],
+        },
+      });
+    }
+    _rendered() {
+      const {
+        autoplay,
+        autoplaySpeed,
+        pauseOnHover,
+        defaultActiveIndex,
+      } = this.props;
+      this.initPositions();
+      if (autoplay) {
+        this.autoplayInterval = setInterval(() => {
+          this.nextClick();
+        }, autoplaySpeed);
+      }
+      if (pauseOnHover) {
+        this.containerRef.element.addEventListener("mouseover", () => {
+          clearInterval(this.autoplayInterval);
+        });
+        this.containerRef.element.addEventListener("mouseout", () => {
+          if (autoplay) {
+            this.autoplayInterval = setInterval(() => {
+              this.nextClick();
+            }, autoplaySpeed);
+          }
+        });
+      }
+      setTimeout(() => {
+        this.paginationClick(defaultActiveIndex);
+      }, 500);
+    }
+    slideList() {
+      const _that = this;
+      return this.loopImgs.map(function (item) {
+        return {
+          ref: (c) => {
+            if (c) _that.sildeRefs.push(c);
+          },
+          classes: { "nom-carousel-slide": true },
+          attrs: { style: { height: `${_that.props.height}px` } },
+          children: { tag: "img", attrs: { src: item }, children: "" },
+        };
+      });
+    }
+    paginationList() {
+      const _that = this;
+      return this.props.imgs.map(function (d, index) {
+        return {
+          ref: (c) => {
+            if (c) _that.paginationRef.push(c);
+          },
+          classes: {
+            "nom-carousel-pagination-bullet": true,
+            "nom-carousel-pagination-bullet-active":
+              index === _that.defaultActiveIndex - 1,
+          },
+          tag: "span",
+          children: index + 1,
+          onClick: () => {
+            _that.paginationClick(index + 1);
+          },
+        };
+      });
+    }
+    paginationClick(index) {
+      this.activeId = index;
+      this.animate("pagination");
+    }
+    prevClick() {
+      this.activeId -= 1;
+      if (this.activeId <= 0) {
+        this.activeId = this.loopImgs.length - 1;
+      }
+      this.animate();
+    }
+    nextClick() {
+      this.activeId += 1;
+      if (this.activeId > this.loopImgs.length) {
+        this.activeId = 2;
+      }
+      this.animate();
+    }
+    animate(val) {
+      this.updateSlideSize();
+      if (
+        this.activeId === this.loopImgs.length - 1 &&
+        this.activeIdOld === 1 &&
+        val !== "pagination"
+      ) {
+        // 首去末
+        this.wrapperRef.element.setAttribute(
+          "style",
+          `transform:translate3d(${-this.positions[this.loopImgs.length - 1]
+            .left}px, 0, 0);transition: transform 0ms;`
+        );
+        setTimeout(() => {
+          this.wrapperRef.element.setAttribute(
+            "style",
+            `transform:translate3d(${-this.positions[this.loopImgs.length - 2]
+              .left}px, 0, 0);transition: transform ${this.props.speed}ms ${
+              this.props.easing
+            };`
+          );
+        }, 0);
+      } else {
+        this.wrapperRef.element.setAttribute(
+          "style",
+          `transform:translate3d(${-this.positions[this.activeId - 1]
+            .left}px, 0, 0);transition: transform ${this.props.speed}ms ${
+            this.props.easing
+          };`
+        );
+      } // 分页器
+      this.paginationRef[this.activeIdOld - 1].element.classList.remove(
+        "nom-carousel-pagination-bullet-active"
+      );
+      if (this.activeId === this.loopImgs.length) {
+        // 末去首
+        this.paginationRef[0].element.classList.add(
+          "nom-carousel-pagination-bullet-active"
+        );
+        this.activeIdOld = 1;
+        setTimeout(() => {
+          this.wrapperRef.element.setAttribute(
+            "style",
+            `transform:translate3d(0, 0, 0);transition: transform 0ms;`
+          );
+        }, 300);
+      } else {
+        this.paginationRef[this.activeId - 1].element.classList.add(
+          "nom-carousel-pagination-bullet-active"
+        );
+        this.activeIdOld = this.activeId;
+      }
+    } // 初始设置值
+    initPositions() {
+      this.positions = this.loopImgs.map(() => ({ left: 0, width: 0 }));
+    } // 更新
+    updateSlideSize() {
+      const nodes = this.sildeRefs;
+      let firstLeft = 0;
+      if (this.slideWidth === nodes[0].element.getBoundingClientRect().width)
+        return;
+      nodes.forEach((node, index) => {
+        if (!node.rendered) return;
+        const rect = node.element.getBoundingClientRect();
+        this.positions[index].width = rect.width;
+        if (index === 0) {
+          this.positions[index].left = 0;
+          firstLeft = rect.left;
+          this.slideWidth = rect.width;
+        } else {
+          this.positions[index].left = rect.left - firstLeft;
+        }
+      });
+    }
+  }
+  Component.register(Carousel);
   class CascaderList extends Component {
     constructor(props, ...mixins) {
       const defaults = {};
@@ -19990,6 +20230,213 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(Uploader);
+  class VirtualList extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        listData: [], // 列表数据源
+        height: "400", // 容器高度
+        size: 30, // 每个列表项高度预估值
+        bufferScale: 1, // 缓冲区比例
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      // 起始索引
+      this.start = 0; // 结束索引
+      this.end = 0; // 用于列表项渲染后存储 每一项的高度以及位置信息
+      this.positions = [
+        // {
+        //   top:0,
+        //   bottom:100,
+        //   height:100
+        // }
+      ]; // 当前列表项arry
+      this.itemsRefs = []; // 所有列表数据
+      this.listData = this.props.listData; // 可视区域高度
+      this.screenHeight = this.props.height; // 预估高度
+      this.estimatedItemSize = this.props.size; // 缓冲区比例
+      this.bufferScale = this.props.bufferScale;
+      this.initPositions();
+    }
+    _config() {
+      const listArry = this.getList(this.visibleData());
+      const height = this.positions[this.positions.length - 1].bottom;
+      this.setProps({
+        children: {
+          ref: (c) => {
+            this.listRef = c;
+          },
+          classes: { "nom-virtual-list-container": true },
+          attrs: { style: { height: `${this.screenHeight}px` } },
+          children: [
+            {
+              ref: (c) => {
+                this.phantomRef = c;
+              },
+              classes: { "nom-virtual-list-phantom": true },
+              attrs: { style: { height: `${height}px` } },
+              children: "",
+            },
+            {
+              ref: (c) => {
+                this.contentRef = c;
+              },
+              classes: { "nom-virtual-list-content": true },
+              children: listArry,
+            },
+          ],
+        },
+      });
+    }
+    _rendered() {
+      this.listRef.element.addEventListener("scroll", () => {
+        this.scrollEvent();
+      }); // let isScroll = false
+      // this.listRef.element.addEventListener('scroll', () => {
+      //   if (isScroll) return
+      //   isScroll = true
+      //   this.scrollEvent()
+      //   setTimeout(() => {
+      //     isScroll = false
+      //   }, 500)
+      // })
+    }
+    getList(arry) {
+      const _that = this;
+      this.itemsRefs = [];
+      return arry.map(function (items) {
+        return {
+          ref: (c) => {
+            if (c) _that.itemsRefs.push(c);
+          },
+          classes: { "nom-virtual-list-item": true },
+          attrs: { "data-key": items._index },
+          children: items.item,
+        };
+      });
+    } // 需要在 渲染完成后，获取列表每项的位置信息并缓存
+    updated() {
+      if (!this.itemsRefs || !this.itemsRefs.length) {
+        return;
+      } // 获取真实元素大小，修改对应的尺寸缓存
+      this.updateItemsSize(); // 更新列表总高度
+      const height = this.positions[this.positions.length - 1].bottom;
+      this.phantomRef.update({ attrs: { style: { height: `${height}px` } } });
+      this.contentRef.update({
+        attrs: {
+          style: { transform: `translate3d(0,${this.setStartOffset()}px,0)` },
+        },
+        children: this.getList(this.visibleData()),
+      });
+    } // 初始时根据 estimatedItemSize对 positions进行初始化
+    initPositions() {
+      this.positions = this.listData.map((d, index) => ({
+        index,
+        height: this.estimatedItemSize,
+        top: index * this.estimatedItemSize,
+        bottom: (index + 1) * this.estimatedItemSize,
+      }));
+    } // 获取列表起始索引
+    getStartIndex(scrollTop = 0) {
+      // 二分法查找
+      return this.binarySearch(this.positions, scrollTop);
+    }
+    binarySearch(list, value) {
+      let start = 0;
+      let end = list.length - 1;
+      let tempIndex = null;
+      while (start <= end) {
+        const midIndex = parseInt((start + end) / 2, 10);
+        const midValue = list[midIndex].bottom;
+        if (midValue === value) {
+          return midIndex + 1;
+        }
+        if (midValue < value) {
+          start = midIndex + 1;
+        } else if (midValue > value) {
+          if (tempIndex === null || tempIndex > midIndex) {
+            tempIndex = midIndex;
+          }
+          end -= 1;
+        }
+      }
+      return tempIndex;
+    } // 获取列表项的当前尺寸
+    updateItemsSize() {
+      const nodes = this.itemsRefs;
+      nodes.forEach((node) => {
+        if (!node.rendered) return;
+        const rect = node.element.getBoundingClientRect();
+        const height = rect.height;
+        const index = +node.element.dataset.key.slice(1);
+        const oldHeight = this.positions[index].height;
+        const dValue = oldHeight - height; // 存在差值
+        if (dValue) {
+          this.positions[index].bottom -= dValue;
+          this.positions[index].height = height;
+          for (let k = index + 1; k < this.positions.length; k++) {
+            this.positions[k].top = this.positions[k - 1].bottom;
+            this.positions[k].bottom -= dValue;
+          }
+        }
+      });
+    } // 设置当前的偏移量
+    setStartOffset() {
+      let startOffset;
+      if (this.start >= 1) {
+        const size =
+          this.positions[this.start].top -
+          (this.positions[this.start - this.aboveCount()]
+            ? this.positions[this.start - this.aboveCount()].top
+            : 0);
+        startOffset = this.positions[this.start - 1].bottom - size;
+      } else {
+        startOffset = 0;
+      }
+      return startOffset;
+    } // 滚动事件
+    scrollEvent() {
+      // 当前滚动位置
+      const scrollTop = this.listRef.element.scrollTop; // 此时的开始索引
+      this.start = this.getStartIndex(scrollTop); // 此时的结束索引
+      this.end = this.start + this.visibleCount(); // 更新列表
+      this.updated();
+    }
+    _listData() {
+      return this.listData.map((item, index) => {
+        return { _index: `_${index}`, item };
+      });
+    } // 可显示的列表项数
+    visibleCount() {
+      return Math.ceil(this.screenHeight / this.estimatedItemSize);
+    } // 可视区上方渲染条数
+    aboveCount() {
+      return Math.min(this.start, this.bufferScale * this.visibleCount());
+    } // 可视区下方渲染条数
+    belowCount() {
+      return Math.min(
+        this.listData.length - this.end,
+        this.bufferScale * this.visibleCount()
+      );
+    } // 获取真实显示列表数据
+    visibleData() {
+      const start = this.start - this.aboveCount();
+      const end = this.end + this.belowCount();
+      return this._listData().slice(start, end);
+    } // 防抖函数
+    debounce(func, wait) {
+      let timer = null;
+      return function () {
+        const context = this;
+        const args = arguments;
+        timer && clearTimeout(timer);
+        timer = setTimeout(function () {
+          func.apply(context, args);
+        }, wait);
+      };
+    }
+  }
+  Component.register(VirtualList);
   /**
    * nomui的插件机制
    * @param {install:(nomui)=>{}} plugin
@@ -20005,6 +20452,7 @@ function _defineProperty2(obj, key, value) {
   exports.Badge = Badge;
   exports.Button = Button;
   exports.Caption = Caption;
+  exports.Carousel = Carousel;
   exports.Cascader = Cascader;
   exports.Checkbox = Checkbox;
   exports.CheckboxList = CheckboxList;
@@ -20074,6 +20522,7 @@ function _defineProperty2(obj, key, value) {
   exports.Tree = Tree;
   exports.TreeSelect = TreeSelect;
   exports.Uploader = Uploader;
+  exports.VirtualList = VirtualList;
   exports.n = n$1;
   exports.use = use;
   exports.utils = index$1;

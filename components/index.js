@@ -7,6 +7,7 @@ export { default as AvatarGroup } from './AvatarGroup/index'
 export { default as Badge } from './Badge/index'
 export { default as Button } from './Button/index'
 export { default as Caption } from './Caption/index'
+export { default as Carousel } from './Carousel/index'
 export { default as Cascader } from './Cascader/index'
 export { default as Checkbox } from './Checkbox/index'
 export { default as CheckboxList } from './CheckboxList/index'
@@ -75,6 +76,7 @@ export { default as Tree } from './Tree/index'
 export { default as TreeSelect } from './TreeSelect/index'
 export { default as Uploader } from './Uploader/index'
 export * as utils from './util/index'
+export { default as VirtualList } from './VirtualList/index'
 
 /**
  * nomui的插件机制
