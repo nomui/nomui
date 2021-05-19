@@ -4,7 +4,7 @@ import { isFunction, isNumeric } from '../util/index'
 class Anchor extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      content: null,
+      container: null,
       items: [],
       border: 'left',
       onItemClick: null,
@@ -75,14 +75,16 @@ class Anchor extends Component {
       })
     }
 
-    this.props.content._on('scroll', function () {
-      that._onContentScroll()
+    this.props.container._on('scroll', function () {
+      that._onContainerScroll()
     })
   }
 
   _scrollToKey(target) {
-    const content = this.props.content.element.getElementsByClassName(`nom-anchor-target-${target}`)
-    content.length && content[0].scrollIntoView({ behavior: 'smooth' })
+    const container = this.props.container.element.getElementsByClassName(
+      `nom-anchor-target-${target}`,
+    )
+    container.length && container[0].scrollIntoView({ behavior: 'smooth' })
   }
 
   _fixPosition() {
@@ -103,9 +105,9 @@ class Anchor extends Component {
     }
   }
 
-  _onContentScroll() {
-    const list = this.props.content.element.getElementsByClassName('nom-anchor-content')
-    const pRect = this.props.content.element.getBoundingClientRect()
+  _onContainerScroll() {
+    const list = this.props.container.element.getElementsByClassName('nom-anchor-content')
+    const pRect = this.props.container.element.getBoundingClientRect()
     let current = 0
     for (let i = 0; i < list.length; i++) {
       const top = list[i].getBoundingClientRect().top
