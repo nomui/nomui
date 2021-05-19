@@ -13,6 +13,7 @@ class Carousel extends Component {
       defaultActiveIndex: 1,
       easing: 'linear',
       pauseOnHover: true,
+      triggerType: 'click',
     }
     super(Component.extendProps(defaults, props), ...mixins)
   }
@@ -31,7 +32,7 @@ class Carousel extends Component {
     this.activeId = defaultActiveIndex
     this.activeIdOld = defaultActiveIndex
     this.sildeRefs = []
-    this.paginationRef = []
+    this.dotsRef = []
     this.slideWidth = null
     this.autoplayInterval = null
   }
@@ -56,6 +57,9 @@ class Carousel extends Component {
             children: this.slideList(),
           },
           {
+            ref: (c) => {
+              this.paginationRef = c
+            },
             classes: {
               'nom-carousel-pagination': true,
               'nom-carousel-pagination-show': this.props.dots,
@@ -96,16 +100,18 @@ class Carousel extends Component {
   }
 
   _rendered() {
-    const { autoplay, autoplaySpeed, pauseOnHover, defaultActiveIndex } = this.props
+    const { autoplay, autoplaySpeed, pauseOnHover, defaultActiveIndex, triggerType } = this.props
 
     this.initPositions()
 
+    // 是否自动播放
     if (autoplay) {
       this.autoplayInterval = setInterval(() => {
         this.nextClick()
       }, autoplaySpeed)
     }
 
+    // 在鼠标悬浮时自动停止轮播
     if (pauseOnHover) {
       this.containerRef.element.addEventListener('mouseover', () => {
         clearInterval(this.autoplayInterval)
@@ -119,9 +125,33 @@ class Carousel extends Component {
       })
     }
 
+    // 初始被激活的轮播图
     setTimeout(() => {
       this.paginationClick(defaultActiveIndex)
     }, 500)
+
+    // 锚点导航触发方式
+    if (triggerType === 'hover') {
+      this.dotsRef.forEach((item) => {
+        item.element.onmouseenter = (e) => {
+          const target = e.target
+          if (target.nodeName === 'SPAN') {
+            this.paginationClick(target.dataset.index)
+          }
+        }
+      })
+    } else {
+      this.paginationRef.element.addEventListener('click', (e) => {
+        const target = e.target
+        if (target.nodeName === 'SPAN') {
+          this.paginationClick(target.dataset.index)
+        }
+      })
+    }
+  }
+
+  _remove() {
+    clearInterval(this.autoplayInterval)
   }
 
   slideList() {
@@ -155,17 +185,17 @@ class Carousel extends Component {
     return this.props.imgs.map(function (d, index) {
       return {
         ref: (c) => {
-          if (c) _that.paginationRef.push(c)
+          if (c) _that.dotsRef.push(c)
         },
         classes: {
           'nom-carousel-pagination-bullet': true,
           'nom-carousel-pagination-bullet-active': index === _that.defaultActiveIndex - 1,
         },
         tag: 'span',
-        children: index + 1,
-        onClick: () => {
-          _that.paginationClick(index + 1)
+        attrs: {
+          'data-index': index + 1,
         },
+        children: index + 1,
       }
     })
   }
@@ -219,13 +249,13 @@ class Carousel extends Component {
       )
     }
     // 分页器
-    this.paginationRef[this.activeIdOld - 1].element.classList.remove(
+    this.dotsRef[this.activeIdOld - 1].element.classList.remove(
       'nom-carousel-pagination-bullet-active',
     )
 
     if (this.activeId === this.loopImgs.length) {
       // 末去首
-      this.paginationRef[0].element.classList.add('nom-carousel-pagination-bullet-active')
+      this.dotsRef[0].element.classList.add('nom-carousel-pagination-bullet-active')
       this.activeIdOld = 1
       setTimeout(() => {
         this.wrapperRef.element.setAttribute(
@@ -234,9 +264,7 @@ class Carousel extends Component {
         )
       }, 300)
     } else {
-      this.paginationRef[this.activeId - 1].element.classList.add(
-        'nom-carousel-pagination-bullet-active',
-      )
+      this.dotsRef[this.activeId - 1].element.classList.add('nom-carousel-pagination-bullet-active')
       this.activeIdOld = this.activeId
     }
   }

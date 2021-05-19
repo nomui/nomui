@@ -15,3 +15,4 @@
 | defaultActiveIndex | 初始被激活的轮播图     | `number`         | 1       |
 | easing | 动画效果,在 cubic-bezier 函数中定义自己的值。可能的值是 0 至 1 之间的数值。     | `linear\|ease\|ease-in\|ease-out\|ease-in-out\|cubic-bezier(n,n,n,n)`         | linear       |
 | pauseOnHover |  在鼠标悬浮时自动停止轮播     | `boolean`         | true       |
+| triggerType |  锚点导航触发方式     | `'click'或'hover'`         | click       |
