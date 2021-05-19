@@ -21,6 +21,7 @@ define([], function () {
         defaultActiveIndex: 1,
         easing: 'linear',
         pauseOnHover: true,
+        triggerType: 'click',
       }
     },
   }
