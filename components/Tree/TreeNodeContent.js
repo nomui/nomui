@@ -89,12 +89,16 @@ class TreeNodeContent extends Component {
   }
 
   _getCheckbox() {
+    const { disabled: treeDisabled } = this.tree.props
+    const { disabled: nodeDisabled } = this.node.props
+
     return {
       component: Checkbox,
       plain: true,
       classes: {
         'nom-tree-node-checkbox': true,
       },
+      disabled: treeDisabled || nodeDisabled,
       _created: (inst) => {
         this.node.checkboxRef = inst
       },
