@@ -5,7 +5,7 @@ define(['./precode.js'], function (Precode) {
         title: 'title',
         description: null,
         uistyle: 'card',
-        demo: function () { },
+        demo: function () {},
       }
 
       super(nomui.Component.extendProps(defaults, props), ...mixins)
@@ -31,10 +31,7 @@ define(['./precode.js'], function (Precode) {
           nav: nav,
         },
         body: {
-          children: [
-            demo,
-
-          ],
+          children: [demo],
         },
         endAddons: [
           description && {

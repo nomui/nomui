@@ -7561,6 +7561,21 @@ textarea .nom-textarea {
 .nom-dropdown-popup .nom-menu-item-wrapper > a {
   padding-right: 1.5rem !important;
 }
+.nom-anchor:not(.nom-anchor-border-left) > .nom-menu .nom-menu-item.s-selected > span {
+  color: #08c;
+}
+.nom-anchor.nom-anchor-border-left > .nom-menu .nom-menu-item {
+  border-left: 1px solid #ddd;
+}
+.nom-anchor.nom-anchor-border-left > .nom-menu .nom-menu-item.s-selected {
+  border-left: 1px solid #08c;
+}
+.nom-anchor.nom-anchor-border-right > .nom-menu .nom-menu-item {
+  border-right: 1px solid #ddd;
+}
+.nom-anchor.nom-anchor-border-right > .nom-menu .nom-menu-item.s-selected {
+  border-right: 1px solid #08c;
+}
 .nom-carousel-container {
   position: relative;
   z-index: 1;
