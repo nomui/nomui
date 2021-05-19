@@ -1,3 +1,23 @@
 .nom-anchor {
-  text-decoration: inherit;
+  &.nom-anchor-border-left {
+    > .nom-menu {
+      .nom-menu-item {
+        border-left: 1px solid #ddd;
+        &.s-selected {
+          border-left: 1px solid #08c;
+        }
+      }
+    }
+  }
+
+  &.nom-anchor-border-right {
+    > .nom-menu {
+      .nom-menu-item {
+        border-right: 1px solid #ddd;
+        &.s-selected {
+          border-right: 1px solid #08c;
+        }
+      }
+    }
+  }
 }

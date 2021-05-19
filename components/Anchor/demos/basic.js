@@ -5,111 +5,74 @@ define([], function () {
     demo: function () {
       return {
         component: 'Cols',
+        align: 'start',
         items: [
           {
-            component: 'Tag',
-            text: '默认',
-          },
-          {
-            component: 'Tag',
-            text: '带图标',
-            icon: 'plus',
-          },
-          {
-            component: 'Tag',
-            text: '带数字',
-            number: '5',
-          },
-          {
-            component: 'Tag',
-            text: '尺寸',
-            size: 'xxl',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'red',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'orange',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'yellow',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'olive',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'green',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'teal',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'blue',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'violet',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'purple',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'pink',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'brown',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'crimson',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'skyblue',
-          },
-          {
-            component: 'Tag',
-            text: '颜色',
-            color: 'silver',
-          },
+            component: 'Anchor',
 
-          {
-            component: 'Tag',
-            text: '药丸型',
-            type: 'round',
-            color: 'red',
+            sticky: this.parent,
+            content: this.parent,
+            items: [
+              { text: '锚点1', key: 'div1' },
+              {
+                text: '锚点2',
+                key: 'div2',
+                items: [
+                  { text: '锚点2-1', key: 'div2-1' },
+                  {
+                    text: '锚点2-2',
+                    key: 'div2-2',
+                  },
+                ],
+              },
+              { text: '锚点3', key: 'div3' },
+              { text: '锚点4', key: 'div4' },
+            ],
           },
           {
-            component: 'Tag',
-            text: '可删除',
-            type: 'round',
-            key: '001',
-            removable: (key) => {
-              console.log(key)
-            },
+            component: 'Rows',
+            items: [
+              {
+                component: 'AnchorContent',
+                key: 'div1',
+                attrs: {
+                  style: {
+                    height: '500px',
+                  },
+                },
+                children: 'div1',
+              },
+              {
+                component: 'AnchorContent',
+                key: 'div2',
+                attrs: {
+                  style: {
+                    height: '500px',
+                  },
+                },
+                children: 'div2',
+              },
+              {
+                component: 'AnchorContent',
+                key: 'div3',
+                attrs: {
+                  style: {
+                    height: '500px',
+                  },
+                },
+                children: 'div3',
+              },
+              {
+                component: 'AnchorContent',
+                key: 'div4',
+                attrs: {
+                  style: {
+                    height: '500px',
+                  },
+                },
+                children: 'div4',
+              },
+            ],
           },
         ],
       }
