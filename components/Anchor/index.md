@@ -13,7 +13,7 @@
 | onItemClick | 点击锚点回调 | `(args)=>{}` | - |
 | width | 锚点菜单宽度 | `number` | `180` |
 | sticky | 是否固定锚点菜单，为`true`时以`window`作为滚动容器，否则传入锚点依附的滚动容器，false 的时候锚点菜单不固定 | `object \| function \| boolean` | - |
-| content | 锚点内容依附的滚动容器 | `object` | - |
+| container | 锚点内容依附的滚动容器 | `object` | - |
 
 ### AnchorContent 锚点内容组件
 
