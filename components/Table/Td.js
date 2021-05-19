@@ -24,7 +24,7 @@ class Td extends Component {
 
     let spanProps = null
 
-    let children = this.props.data
+    let children = this.props.data === 0 ? '0' : this.props.data
 
     if (isFunction(column.cellRender)) {
       children = column.cellRender({
@@ -61,7 +61,7 @@ class Td extends Component {
       if (!isLeaf) {
         this.setProps({
           expanded: treeConfig.initExpandLevel === -1 || treeConfig.initExpandLevel > level,
-          expandable:{
+          expandable: {
             byClick: true,
             target: () => {
               return rowData.children.map((subrowData) => {
@@ -80,8 +80,8 @@ class Td extends Component {
                 },
               },
             },
-          }
-        })        
+          },
+        })
       }
 
       children = [
