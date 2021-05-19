@@ -5,7 +5,7 @@ class VirtualList extends Component {
     const defaults = {
       listData: [], // 列表数据源
       height: '400', // 容器高度
-      size: 30, // 每个列表项高度预估值，默认值30
+      size: 30, // 每个列表项高度预估值
       bufferScale: 1, // 缓冲区比例
     }
     super(Component.extendProps(defaults, props), ...mixins)
@@ -86,20 +86,24 @@ class VirtualList extends Component {
     this.listRef.element.addEventListener('scroll', () => {
       this.scrollEvent()
     })
+    // let isScroll = false
+    // this.listRef.element.addEventListener('scroll', () => {
+    //   if (isScroll) return
+    //   isScroll = true
+    //   this.scrollEvent()
+    //   setTimeout(() => {
+    //     isScroll = false
+    //   }, 500)
+    // })
   }
 
   getList(arry) {
     const _that = this
     this.itemsRefs = []
     return arry.map(function (items) {
-      const list = {
+      return {
         ref: (c) => {
-          const ref = c
-          new Promise((resolve) => {
-            if (ref) resolve(ref)
-          }).then((res) => {
-            _that.itemsRefs.push(res)
-          })
+          if (c) _that.itemsRefs.push(c)
         },
         classes: {
           'nom-virtual-list-item': true,
@@ -109,7 +113,6 @@ class VirtualList extends Component {
         },
         children: items.item,
       }
-      return list
     })
   }
 
@@ -258,6 +261,19 @@ class VirtualList extends Component {
     const start = this.start - this.aboveCount()
     const end = this.end + this.belowCount()
     return this._listData().slice(start, end)
+  }
+
+  // 防抖函数
+  debounce(func, wait) {
+    let timer = null
+    return function () {
+      const context = this
+      const args = arguments
+      timer && clearTimeout(timer)
+      timer = setTimeout(function () {
+        func.apply(context, args)
+      }, wait)
+    }
   }
 }
 

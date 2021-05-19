@@ -55,9 +55,11 @@ class Tree extends Component {
       })
 
       this.checkedNodeKeysHash = {}
-      this.props.nodeCheckable.checkedNodeKeys.forEach((key) => {
-        this.checkedNodeKeysHash[key] = true
-      })
+      if (Array.isArray(this.props.nodeCheckable.checkedNodeKeys)) {
+        this.props.nodeCheckable.checkedNodeKeys.forEach((key) => {
+          this.checkedNodeKeysHash[key] = true
+        })
+      }
     }
 
     this.setProps({
@@ -121,16 +123,22 @@ class Tree extends Component {
   }
 
   getCheckedNodesData(getOptions, node) {
-    getOptions = getOptions || {}
+    getOptions = getOptions || { flatData: false }
     node = node || this
-    const checkedNodesData = []
+    let checkedNodesData = []
     const childNodes = node.getChildNodes()
     childNodes.forEach((childNode) => {
       if (childNode.isChecked() === true) {
         const childNodeData = { ...childNode.props.data }
         checkedNodesData.push(childNodeData)
 
-        childNodeData.children = this.getCheckedNodesData(getOptions, childNode)
+        if (getOptions.flatData === true) {
+          checkedNodesData = checkedNodesData.concat(
+            this.getCheckedNodesData(getOptions, childNode),
+          )
+        } else {
+          childNodeData.children = this.getCheckedNodesData(getOptions, childNode)
+        }
       }
     })
 
