@@ -9,7 +9,6 @@ define([], function () {
         items: [
           {
             component: 'Anchor',
-
             sticky: this.parent,
             content: this.parent,
             items: [
