@@ -9,8 +9,8 @@ define([], function () {
         items: [
           {
             component: 'Anchor',
-            sticky: this.parent,
-            container: this.parent,
+            sticky: this.parent.parent.parent,
+            container: this.parent.parent.parent,
             items: [
               { text: '锚点1', key: 'div1' },
               {

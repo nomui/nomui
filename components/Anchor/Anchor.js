@@ -10,14 +10,21 @@ class Anchor extends Component {
       onItemClick: null,
       width: 180,
       sticky: false,
+      itemDefaults: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    this.container = isFunction(this.props.container)
+      ? this.props.container()
+      : this.props.container
+  }
+
   _config() {
     const that = this
-    const { items, border, width } = this.props
+    const { items, border, width, itemDefaults } = this.props
     const myWidth = isNumeric(width) ? `${width}px` : width
 
     this.setProps({
@@ -40,10 +47,13 @@ class Anchor extends Component {
         },
         items: items,
         itemDefaults: {
-          onClick: function (args) {
-            that.props.onItemClick &&
-              that._callHandler(that.props.onItemClick, args.sender.props.key)
-            that._scrollToKey(args.sender.props.key)
+          ...itemDefaults,
+          ...{
+            onClick: function (args) {
+              const key = args.sender.key
+              that.props.onItemClick && that._callHandler(that.props.onItemClick, key)
+              that._scrollToKey(key)
+            },
           },
         },
       },
@@ -52,38 +62,36 @@ class Anchor extends Component {
 
   _rendered() {
     const that = this
-    if (!this.props.sticky) {
-      return
-    }
+
     this.position = null
     this.size = null
 
-    if (this.props.sticky === true) {
-      this.scrollParent = window
-      this.scrollParent.onscroll = function () {
-        that._fixPosition()
-      }
-    } else {
-      if (isFunction(this.props.sticky)) {
-        this.scrollParent = this.props.sticky()
+    if (this.props.sticky) {
+      if (this.props.sticky === true) {
+        this.scrollParent = window
+        this.scrollParent.onscroll = function () {
+          that._fixPosition()
+        }
       } else {
-        this.scrollParent = this.props.sticky
-      }
+        if (isFunction(this.props.sticky)) {
+          this.scrollParent = this.props.sticky()
+        } else {
+          this.scrollParent = this.props.sticky
+        }
 
-      this.scrollParent._on('scroll', function () {
-        that._fixPosition()
-      })
+        this.scrollParent._on('scroll', function () {
+          that._fixPosition()
+        })
+      }
     }
 
-    this.props.container._on('scroll', function () {
+    this.container._on('scroll', function () {
       that._onContainerScroll()
     })
   }
 
   _scrollToKey(target) {
-    const container = this.props.container.element.getElementsByClassName(
-      `nom-anchor-target-${target}`,
-    )
+    const container = this.container.element.getElementsByClassName(`nom-anchor-target-${target}`)
     container.length && container[0].scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -106,18 +114,20 @@ class Anchor extends Component {
   }
 
   _onContainerScroll() {
-    const list = this.props.container.element.getElementsByClassName('nom-anchor-content')
-    const pRect = this.props.container.element.getBoundingClientRect()
+    const list = this.container.element.getElementsByClassName('nom-anchor-content')
+    const pRect = this.container.element.getBoundingClientRect()
     let current = 0
     for (let i = 0; i < list.length; i++) {
       const top = list[i].getBoundingClientRect().top
-      if (top < pRect.bottom) {
+      const lastTop = i > 0 ? list[i - 1].getBoundingClientRect().top : 0
+      if (top < pRect.bottom && lastTop < pRect.top) {
         current = i
       }
     }
     const classes = list[current].classList.value
     const idx = classes.indexOf('target-')
     const result = classes.slice(idx + 7)
+
     this._activeAnchor(result)
   }
 

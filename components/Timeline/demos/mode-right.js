@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '右侧时间轴点',
-    file: 'mode-alternate',
+    file: 'mode-right',
     description: '时间轴点可以在内容的右边。',
     demo: function () {
       return {
