@@ -1,4 +1,6 @@
 export { default as Alert } from './Alert/index'
+export { default as Anchor } from './Anchor/index'
+export { default as AnchorContent } from './AnchorContent/index'
 export { default as App } from './App/index'
 export { default as Router } from './App/Router'
 export { default as AutoComplete } from './AutoComplete/index'

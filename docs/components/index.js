@@ -91,57 +91,51 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                     key: 'demo',
                     children: {
                       component: 'Layout',
-                      sider: {
-                        children: [
-                          {
-                            component: 'Menu',
-                            name: 'DemoMenu',
-                            items: this.props.demos,
-                            itemDefaults: {
-                              _config: function () {
-                                this.props.text = this.props.title
-                                this.setProps({
-                                  attrs: {
-                                    'data-target-key': this.props.file,
-                                  },
-                                })
-                              },
-                              styles: {
-                                hover: {
-                                  text: 'primary',
-                                },
-                              },
-                              onClick: ({ event }) => {
-                                const targetFile = event.currentTarget.dataset.targetKey
-                                const targetDemo = bodyRef.element.querySelector(
-                                  `[data-target-demo='${targetFile}']`,
-                                )
-                                targetDemo.scrollIntoView(true)
-                              },
-                            },
-                          },
-                        ],
-                      },
                       body: {
-                        children: Array.prototype.slice.call(this.props.demos),
                         ref: (c) => {
                           bodyRef = c
                         },
-                        childDefaults: {
-                          _config: function () {
-                            this.setProps({
-                              attrs: {
-                                'data-target-demo': this.props.file,
+                        children: {
+                          children: Array.prototype.slice.call(this.props.demos),
+
+                          childDefaults: {
+                            component: 'AnchorContent',
+                            _config: function () {
+                              this.setProps({
+                                key: this.props.file,
+                              })
+                            },
+                            children: {
+                              component: demoPanel,
+                              _created: function () {
+                                this.props = { ...this.props, ...this.parent.props }
                               },
-                            })
+                              componentType: this.$route.query.type,
+                              cat: this.$route.query.cat,
+                            },
                           },
-                          component: demoPanel,
-                          componentType: this.$route.query.type,
-                          cat: this.$route.query.cat,
+                          styles: {
+                            padding: '2',
+                            margins: 'x',
+                          },
                         },
-                        styles: {
-                          padding: '1',
-                          margins: 'x',
+                      },
+                      asider: {
+                        children: {
+                          component: 'Anchor',
+                          name: 'DemoMenu',
+                          items: this.props.demos,
+                          itemDefaults: {
+                            key: function () {
+                              return this.props.file
+                            },
+                            _created: function () {
+                              this.props.text = this.props.title
+                            },
+                          },
+                          container: () => {
+                            return bodyRef
+                          },
                         },
                       },
                     },
