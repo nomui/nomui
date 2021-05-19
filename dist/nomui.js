@@ -5335,6 +5335,7 @@ function _defineProperty2(obj, key, value) {
         defaultActiveIndex: 1,
         easing: "linear",
         pauseOnHover: true,
+        triggerType: "click",
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -5352,7 +5353,7 @@ function _defineProperty2(obj, key, value) {
       this.activeId = defaultActiveIndex;
       this.activeIdOld = defaultActiveIndex;
       this.sildeRefs = [];
-      this.paginationRef = [];
+      this.dotsRef = [];
       this.slideWidth = null;
       this.autoplayInterval = null;
     }
@@ -5372,6 +5373,9 @@ function _defineProperty2(obj, key, value) {
               children: this.slideList(),
             },
             {
+              ref: (c) => {
+                this.paginationRef = c;
+              },
               classes: {
                 "nom-carousel-pagination": true,
                 "nom-carousel-pagination-show": this.props.dots,
@@ -5412,13 +5416,14 @@ function _defineProperty2(obj, key, value) {
         autoplaySpeed,
         pauseOnHover,
         defaultActiveIndex,
+        triggerType,
       } = this.props;
-      this.initPositions();
+      this.initPositions(); // 是否自动播放
       if (autoplay) {
         this.autoplayInterval = setInterval(() => {
           this.nextClick();
         }, autoplaySpeed);
-      }
+      } // 在鼠标悬浮时自动停止轮播
       if (pauseOnHover) {
         this.containerRef.element.addEventListener("mouseover", () => {
           clearInterval(this.autoplayInterval);
@@ -5430,10 +5435,30 @@ function _defineProperty2(obj, key, value) {
             }, autoplaySpeed);
           }
         });
-      }
+      } // 初始被激活的轮播图
       setTimeout(() => {
         this.paginationClick(defaultActiveIndex);
-      }, 500);
+      }, 500); // 锚点导航触发方式
+      if (triggerType === "hover") {
+        this.dotsRef.forEach((item) => {
+          item.element.onmouseenter = (e) => {
+            const target = e.target;
+            if (target.nodeName === "SPAN") {
+              this.paginationClick(target.dataset.index);
+            }
+          };
+        });
+      } else {
+        this.paginationRef.element.addEventListener("click", (e) => {
+          const target = e.target;
+          if (target.nodeName === "SPAN") {
+            this.paginationClick(target.dataset.index);
+          }
+        });
+      }
+    }
+    _remove() {
+      clearInterval(this.autoplayInterval);
     }
     slideList() {
       const _that = this;
@@ -5453,7 +5478,7 @@ function _defineProperty2(obj, key, value) {
       return this.props.imgs.map(function (d, index) {
         return {
           ref: (c) => {
-            if (c) _that.paginationRef.push(c);
+            if (c) _that.dotsRef.push(c);
           },
           classes: {
             "nom-carousel-pagination-bullet": true,
@@ -5461,10 +5486,8 @@ function _defineProperty2(obj, key, value) {
               index === _that.defaultActiveIndex - 1,
           },
           tag: "span",
+          attrs: { "data-index": index + 1 },
           children: index + 1,
-          onClick: () => {
-            _that.paginationClick(index + 1);
-          },
         };
       });
     }
@@ -5517,12 +5540,12 @@ function _defineProperty2(obj, key, value) {
           };`
         );
       } // 分页器
-      this.paginationRef[this.activeIdOld - 1].element.classList.remove(
+      this.dotsRef[this.activeIdOld - 1].element.classList.remove(
         "nom-carousel-pagination-bullet-active"
       );
       if (this.activeId === this.loopImgs.length) {
         // 末去首
-        this.paginationRef[0].element.classList.add(
+        this.dotsRef[0].element.classList.add(
           "nom-carousel-pagination-bullet-active"
         );
         this.activeIdOld = 1;
@@ -5533,7 +5556,7 @@ function _defineProperty2(obj, key, value) {
           );
         }, 300);
       } else {
-        this.paginationRef[this.activeId - 1].element.classList.add(
+        this.dotsRef[this.activeId - 1].element.classList.add(
           "nom-carousel-pagination-bullet-active"
         );
         this.activeIdOld = this.activeId;
