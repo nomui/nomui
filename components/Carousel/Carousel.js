@@ -5,29 +5,43 @@ class Carousel extends Component {
     const defaults = {
       imgs: [],
       height: 100,
+      arrows: false,
+      autoplay: false,
+      autoplaySpeed: 1000,
+      speed: 300,
+      dots: true,
+      defaultActiveIndex: 1,
+      easing: 'linear',
+      pauseOnHover: true,
     }
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _created() {
-    this.imgs = this.props.imgs
+    const { imgs, defaultActiveIndex } = this.props
+    const cloneImgs = [...imgs]
+    cloneImgs.push(imgs[0])
+    this.loopImgs = cloneImgs
     this.positions = [
       // {
       //   left:0,
-      //   width:100,
-      //   height:100
+      //   width:100
       // }
     ]
-    this.activeId = 1
-    this.activeIdOld = 1
+    this.activeId = defaultActiveIndex
+    this.activeIdOld = defaultActiveIndex
     this.sildeRefs = []
     this.paginationRef = []
-    this.initPositions()
+    this.slideWidth = null
+    this.autoplayInterval = null
   }
 
   _config() {
     this.setProps({
       children: {
+        ref: (c) => {
+          this.containerRef = c
+        },
         classes: {
           'nom-carousel-container': true,
         },
@@ -44,12 +58,14 @@ class Carousel extends Component {
           {
             classes: {
               'nom-carousel-pagination': true,
+              'nom-carousel-pagination-show': this.props.dots,
             },
             children: this.paginationList(),
           },
           {
             classes: {
               'nom-carousel-buttons': true,
+              'nom-carousel-buttons-show': this.props.arrows,
             },
             children: [
               {
@@ -80,17 +96,39 @@ class Carousel extends Component {
   }
 
   _rendered() {
-    this.updateItemsSize()
+    const { autoplay, autoplaySpeed, pauseOnHover, defaultActiveIndex } = this.props
+
+    this.initPositions()
+
+    if (autoplay) {
+      this.autoplayInterval = setInterval(() => {
+        this.nextClick()
+      }, autoplaySpeed)
+    }
+
+    if (pauseOnHover) {
+      this.containerRef.element.addEventListener('mouseover', () => {
+        clearInterval(this.autoplayInterval)
+      })
+      this.containerRef.element.addEventListener('mouseout', () => {
+        if (autoplay) {
+          this.autoplayInterval = setInterval(() => {
+            this.nextClick()
+          }, autoplaySpeed)
+        }
+      })
+    }
+
+    setTimeout(() => {
+      this.paginationClick(defaultActiveIndex)
+    }, 500)
   }
 
   slideList() {
-    const newList = [...this.imgs]
     const _that = this
-    // newList.push(this.imgs[0])
-    return newList.map(function (item) {
+    return this.loopImgs.map(function (item) {
       return {
         ref: (c) => {
-          console.log(c)
           if (c) _that.sildeRefs.push(c)
         },
         classes: {
@@ -114,17 +152,14 @@ class Carousel extends Component {
 
   paginationList() {
     const _that = this
-    return this.imgs.map(function (d, index) {
+    return this.props.imgs.map(function (d, index) {
       return {
         ref: (c) => {
           if (c) _that.paginationRef.push(c)
         },
         classes: {
           'nom-carousel-pagination-bullet': true,
-          'nom-carousel-pagination-bullet-active': index === 0,
-        },
-        attrs: {
-          'data-index': index + 1,
+          'nom-carousel-pagination-bullet-active': index === _that.defaultActiveIndex - 1,
         },
         tag: 'span',
         children: index + 1,
@@ -137,71 +172,100 @@ class Carousel extends Component {
 
   paginationClick(index) {
     this.activeId = index
-    console.log(this.activeId)
-    this.animate()
+    this.animate('pagination')
   }
 
   prevClick() {
     this.activeId -= 1
-    console.log(this.activeId)
+    if (this.activeId <= 0) {
+      this.activeId = this.loopImgs.length - 1
+    }
     this.animate()
   }
 
   nextClick() {
     this.activeId += 1
-    console.log(this.activeId)
+    if (this.activeId > this.loopImgs.length) {
+      this.activeId = 2
+    }
     this.animate()
   }
 
-  animate() {
-    const left = this.positions[this.activeId - 1].left
-    this.wrapperRef.update({
-      attrs: {
-        style: {
-          transform: `translate3d(${-left}px, 0, 0)`,
-        },
-      },
-    })
-    this.paginationRef[this.activeIdOld - 1].update({
-      classes: {
-        'nom-carousel-pagination-bullet-active': false,
-      },
-    })
+  animate(val) {
+    this.updateSlideSize()
+    if (
+      this.activeId === this.loopImgs.length - 1 &&
+      this.activeIdOld === 1 &&
+      val !== 'pagination'
+    ) {
+      // 首去末
+      this.wrapperRef.element.setAttribute(
+        'style',
+        `transform:translate3d(${-this.positions[this.loopImgs.length - 1]
+          .left}px, 0, 0);transition: transform 0ms;`,
+      )
+      setTimeout(() => {
+        this.wrapperRef.element.setAttribute(
+          'style',
+          `transform:translate3d(${-this.positions[this.loopImgs.length - 2]
+            .left}px, 0, 0);transition: transform ${this.props.speed}ms ${this.props.easing};`,
+        )
+      }, 0)
+    } else {
+      this.wrapperRef.element.setAttribute(
+        'style',
+        `transform:translate3d(${-this.positions[this.activeId - 1]
+          .left}px, 0, 0);transition: transform ${this.props.speed}ms ${this.props.easing};`,
+      )
+    }
+    // 分页器
+    this.paginationRef[this.activeIdOld - 1].element.classList.remove(
+      'nom-carousel-pagination-bullet-active',
+    )
 
-    this.paginationRef[this.activeId - 1].update({
-      classes: {
-        'nom-carousel-pagination-bullet-active': true,
-      },
-    })
-    this.activeIdOld = this.activeId
+    if (this.activeId === this.loopImgs.length) {
+      // 末去首
+      this.paginationRef[0].element.classList.add('nom-carousel-pagination-bullet-active')
+      this.activeIdOld = 1
+      setTimeout(() => {
+        this.wrapperRef.element.setAttribute(
+          'style',
+          `transform:translate3d(0, 0, 0);transition: transform 0ms;`,
+        )
+      }, 300)
+    } else {
+      this.paginationRef[this.activeId - 1].element.classList.add(
+        'nom-carousel-pagination-bullet-active',
+      )
+      this.activeIdOld = this.activeId
+    }
   }
 
+  // 初始设置值
   initPositions() {
-    this.positions = this.imgs.map(() => ({
+    this.positions = this.loopImgs.map(() => ({
       left: 0,
       width: 0,
-      height: 0,
     }))
   }
 
-  updateItemsSize() {
+  // 更新
+  updateSlideSize() {
     const nodes = this.sildeRefs
-    console.log(this.sildeRefs)
+    let firstLeft = 0
+    if (this.slideWidth === nodes[0].element.getBoundingClientRect().width) return
     nodes.forEach((node, index) => {
       if (!node.rendered) return
       const rect = node.element.getBoundingClientRect()
-      console.log(rect)
-      const width = rect.width
-      const height = rect.height
-      this.positions[index].width = width
-      this.positions[index].height = height
-      let left = 0
-      for (let i = 0; i < index; i++) {
-        left += this.positions[i].width
+      this.positions[index].width = rect.width
+      if (index === 0) {
+        this.positions[index].left = 0
+        firstLeft = rect.left
+        this.slideWidth = rect.width
+      } else {
+        this.positions[index].left = rect.left - firstLeft
       }
-      this.positions[index].left = left
     })
-    console.log(this.positions)
   }
 }
 

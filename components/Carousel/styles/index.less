@@ -13,7 +13,6 @@
   width: 100%;
   height: 100%;
   transform: translate3d(0, 0, 0);
-  transition: transform 1s;
 
   .nom-carousel-slide {
     position: relative;
@@ -22,12 +21,9 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    background: #fff;
-    transition: transform 1s;
+    background: rgba(0, 0, 0, 0.5);
     img {
       display: block;
-      width: 100%;
-      height: 100%;
       object-fit: cover;
     }
   }
@@ -37,9 +33,10 @@
   bottom: 10px;
   left: 0;
   z-index: 10;
+  display: none;
   width: 100%;
+  line-height: 8px;
   text-align: center;
-  transform: translate3d(0, 0, 0);
   transition: opacity 0.3s;
   .nom-carousel-pagination-bullet {
     display: inline-block;
@@ -58,12 +55,14 @@
     opacity: 1;
   }
 }
-
+.nom-carousel-pagination-show {
+  display: block;
+}
 .nom-carousel-buttons {
   position: absolute;
   top: 50%;
   z-index: 10;
-  display: flex;
+  display: none;
   justify-content: space-between;
   width: 100%;
   color: #fff;
@@ -76,7 +75,7 @@
     justify-content: center;
     width: 4rem;
     height: 4rem;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
     cursor: pointer;
   }
   .nom-carousel-button-prev {
@@ -89,4 +88,7 @@
   .nom-carousel-button-next:hover {
     background-color: rgba(0, 0, 0, 0.5);
   }
+}
+.nom-carousel-buttons-show {
+  display: flex;
 }
