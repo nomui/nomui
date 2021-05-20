@@ -9309,7 +9309,7 @@ function _defineProperty2(obj, key, value) {
       const { disabled } = this.props;
       return {
         component: Checkbox,
-        classes: { "nom-tree-checkall": true },
+        classes: { "nom-tree-check-all": true },
         text: this.props.nodeCheckable.checkAllText,
         disabled: disabled,
         _created: (inst) => {
@@ -9365,6 +9365,7 @@ function _defineProperty2(obj, key, value) {
         control: {
           component: DefaultCheckboxOptionTree,
           data: options,
+          fit: true,
           nodeCheckable: { showCheckAll, checkAllText },
         },
       });

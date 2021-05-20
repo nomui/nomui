@@ -44,7 +44,7 @@ class Tree extends Component {
     }
 
     this._addPropStyle('fit')
-    
+
     if (nodeCheckable) {
       this.setProps({
         nodeCheckable: Component.extendProps(
@@ -260,7 +260,7 @@ class Tree extends Component {
     return {
       component: Checkbox,
       classes: {
-        'nom-tree-checkall': true,
+        'nom-tree-check-all': true,
       },
       text: this.props.nodeCheckable.checkAllText,
       disabled: disabled,

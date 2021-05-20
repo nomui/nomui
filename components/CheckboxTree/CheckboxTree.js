@@ -21,6 +21,7 @@ class CheckboxTree extends Field {
       control: {
         component: DefaultCheckboxOptionTree,
         data: options,
+        fit: true,
         nodeCheckable: {
           showCheckAll,
           checkAllText,
