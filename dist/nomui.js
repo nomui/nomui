@@ -464,6 +464,10 @@ function _defineProperty2(obj, key, value) {
     }
     return result.join("&");
   }
+  function isFalsy(value) {
+    if (value === 0) return false;
+    return !value;
+  }
   var index$1 = /*#__PURE__*/ Object.freeze({
     __proto__: null,
     isPlainObject: isPlainObject,
@@ -483,6 +487,7 @@ function _defineProperty2(obj, key, value) {
     isDate: isDate,
     parseToQuery: parseToQuery,
     parseToQueryString: parseToQueryString,
+    isFalsy: isFalsy,
   });
   class ComponentDescriptor {
     constructor(tagOrComponent, props, children, mixins) {
@@ -1452,7 +1457,7 @@ function _defineProperty2(obj, key, value) {
     elem.style.left = `${props.left}px`;
     elem.style.position = props.position;
   }
-  function getOffset(elem) {
+  function getOffset$1(elem) {
     if (
       document.documentElement !== elem &&
       !document.documentElement.contains(elem)
@@ -1541,7 +1546,7 @@ function _defineProperty2(obj, key, value) {
         element: withinElement,
         isWindow: isElemWindow,
         isDocument: isDocument,
-        offset: hasOffset ? getOffset(element) : { left: 0, top: 0 },
+        offset: hasOffset ? getOffset$1(element) : { left: 0, top: 0 },
         scrollLeft: getScrollLeft(withinElement),
         scrollTop: getScrollTop(withinElement),
         width: isWindow ? withinElement.innerWidth : withinElement.offsetWidth,
@@ -18346,6 +18351,149 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(SlideCaptcha);
+  function getValidMax(value) {
+    if (!isNumeric(value)) return 100;
+    if (value <= 0) return 100;
+    return value;
+  }
+  function getValidValue(val, max = 100) {
+    if (!val || !isNumeric(val) || val < 0) return 0;
+    if (val > max) return max;
+    return val;
+  }
+  function getOffset(container, offset, max = 100) {
+    let _container = container;
+    if (!_container) {
+      return null;
+    }
+    if (_container instanceof Component) {
+      _container = container.element;
+    }
+    if (!(_container instanceof HTMLElement)) {
+      return null;
+    }
+    const { left, width } = _container.getBoundingClientRect();
+    let result = ((offset - left) * max) / width;
+    result = Math.min(max, result);
+    result = Math.max(0, result);
+    return result;
+  }
+  class Slider extends Field {
+    constructor(props, ...mixins) {
+      const defaults = { disable: false, max: 100 };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      const { value } = this.props; // 最大值不能小于或等于0，否则重置为默认值100
+      const max = getValidMax();
+      this.initValue = getValidValue(value, max);
+      super._created();
+    }
+    _config() {
+      const sliderRef = this;
+      const { value, disable, showTip } = this.props;
+      this._max = getValidMax(this.props.max);
+      sliderRef._offset = getValidValue(value, this._max);
+      this.setProps({
+        control: {
+          children: {
+            classes: {
+              "nom-slider-content": true,
+              "nom-slider-content-disabled": disable,
+            },
+            _created() {
+              sliderRef._bar = this;
+            },
+            onClick: disable
+              ? null
+              : ({ event }) => {
+                  event.target.focus();
+                  const _offset = getOffset(
+                    sliderRef._bar,
+                    event.clientX,
+                    sliderRef._max
+                  );
+                  sliderRef.setValue(Math.round(_offset));
+                },
+            attrs: {
+              tabindex: "0",
+              onkeydown: sliderRef._handleKeyDown.bind(sliderRef),
+            },
+            children: [
+              { classes: { "nom-slider-rail": true } },
+              {
+                classes: { "nom-slider-track": true },
+                _created() {
+                  sliderRef._track = this;
+                },
+                _config() {
+                  // const { offset } = this.props
+                  const offset = sliderRef.getValue();
+                  const _offset = offset / sliderRef._max;
+                  this.setProps({
+                    attrs: { style: { left: 0, width: `${_offset * 100}%` } },
+                  });
+                },
+              }, // {
+              //   classes: {
+              //     'nom-slider-step': true,
+              //   },
+              // },
+              {
+                classes: { "nom-slider-handle": true },
+                _created() {
+                  sliderRef._handler = this;
+                },
+                _config() {
+                  const offset = sliderRef.getValue();
+                  const _offset = offset / sliderRef._max;
+                  const tip = isFalsy(offset) ? 0 : offset.toString();
+                  let tooltip = showTip === false ? null : tip;
+                  if (showTip && isFunction(showTip)) {
+                    tooltip = showTip(tip);
+                  }
+                  this.setProps({
+                    attrs: { style: { left: `${_offset * 100}%` } },
+                    tooltip,
+                  });
+                },
+              },
+            ],
+          },
+        },
+      });
+      super._config();
+    }
+    _getValue() {
+      return getValidValue(this._offset, this._max);
+    }
+    _setValue(value) {
+      const _value = value === null ? 0 : value;
+      if (!isNumeric(_value) || _value < 0 || _value > this.props.max) return;
+      if (this._handler && _value !== this.oldValue) {
+        this._offset = _value;
+        this._handler.update();
+        this._track.update();
+        super._onValueChange();
+        this.oldValue = this.currentValue;
+        this.currentValue = _value;
+      }
+    }
+    _handleKeyDown(e) {
+      const { keyCode } = e;
+      const value = this.getValue();
+      if (keyCode === 38) {
+        if (value <= this.props.max) {
+          this.setValue(value + 1);
+        }
+      } else if (keyCode === 40) {
+        if (value >= 0) {
+          this.setValue(value - 1);
+        }
+      }
+    }
+  }
+  Component.register(Slider);
   class StaticText extends Field {
     constructor(props, ...mixins) {
       const defaults = { value: null };
@@ -20700,6 +20848,7 @@ function _defineProperty2(obj, key, value) {
   exports.Scrollbar = Scrollbar;
   exports.Select = Select;
   exports.SlideCaptcha = SlideCaptcha;
+  exports.Slider = Slider;
   exports.Spinner = Spinner;
   exports.StaticText = StaticText;
   exports.Statistic = Statistic;

@@ -7571,6 +7571,48 @@ textarea .nom-textarea {
 .nom-dropdown-popup .nom-menu-item-wrapper > a {
   padding-right: 1.5rem !important;
 }
+.nom-slider .nom-slider-content {
+  position: relative;
+  height: 12px;
+  margin: 10px 6px;
+  padding: 4px 0;
+  color: rgba(0, 0, 0, 0.85);
+  outline: none;
+  cursor: pointer;
+}
+.nom-slider .nom-slider-content.nom-slider-content-disabled {
+  cursor: not-allowed;
+}
+.nom-slider .nom-slider-content.nom-slider-content-disabled .nom-slider-track {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+.nom-slider .nom-slider-content.nom-slider-content-disabled .nom-slider-handle {
+  border: 2px solid rgba(0, 0, 0, 0.25);
+}
+.nom-slider .nom-slider-content .nom-slider-rail {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background-color: #f5f5f5;
+  border-radius: 2px;
+}
+.nom-slider .nom-slider-content .nom-slider-track {
+  position: absolute;
+  height: 4px;
+  background-color: #4263eb;
+  border-radius: 2px;
+}
+.nom-slider .nom-slider-content .nom-slider-handle {
+  position: absolute;
+  width: 1rem;
+  height: 5px;
+  height: 1rem;
+  margin-top: -5px;
+  background-color: #fff;
+  border: 2px solid #4263eb;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
 .nom-anchor:not(.nom-anchor-border-left) > .nom-menu .nom-menu-item.s-selected > span {
   color: #08c;
 }

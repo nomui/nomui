@@ -300,3 +300,8 @@ export function parseToQueryString(obj) {
   }
   return result.join('&')
 }
+
+export function isFalsy(value) {
+  if (value === 0) return false
+  return !value
+}
