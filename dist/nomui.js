@@ -25,7 +25,7 @@ function _defineProperty2(obj, key, value) {
 }
 /**
  *
- *       nomui v1.0.0-alpha.16
+ *       nomui v1.0.0-alpha.17
  *       License: MIT
  *       Copyright (c) 2021-2021, Wetrial
  *
@@ -14234,6 +14234,15 @@ function _defineProperty2(obj, key, value) {
       this._addPropStyle("direction");
       const that = this;
       const children = this.props.items.map(function (item) {
+        if (!item) {
+          return;
+        }
+        if (
+          (item.type && item.type.toLowerCase() === "divider") ||
+          (item.component && item.component === "Divider")
+        ) {
+          return { tag: "li", classes: { "nom-menu-divider": true } };
+        }
         return {
           component: MenuItemWrapper,
           item: Component.extendProps({}, that.props.itemDefaults, item),
