@@ -6,6 +6,7 @@ define([
   './flat-data.js',
   './icon.js',
   './node-defaults.js',
+  './fit.js',
 ], function () {
   return {
     title: 'Tree',

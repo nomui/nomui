@@ -7,18 +7,25 @@ class CheckboxTree extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
+      showCheckAll: false,
+      checkAllText: '全选',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { options } = this.props
+    const { options, showCheckAll, checkAllText } = this.props
 
     this.setProps({
       control: {
         component: DefaultCheckboxOptionTree,
         data: options,
+        fit: true,
+        nodeCheckable: {
+          showCheckAll,
+          checkAllText,
+        },
       },
     })
 

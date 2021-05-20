@@ -1,13 +1,13 @@
 define([], function () {
   return {
-    title: '禁用',
-    file: 'disabled',
+    title: '显示全选框',
+    file: 'show-check-all',
     demo: function () {
       return {
         children: [
           {
             component: 'CheckboxTree',
-            disabled: true,
+            showCheckAll: true,
             options: [
               {
                 text: '节点 1',

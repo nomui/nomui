@@ -495,6 +495,12 @@ define([], function () {
                       id: 'form',
                       url: '#!components!index?type=form',
                     },
+                    {
+                      text: 'Slider',
+                      subtext: '滑动输入条',
+                      id: 'Slider',
+                      url: '#!components!index?type=Slider',
+                    },
                   ],
                 },
                 {

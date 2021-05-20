@@ -1,13 +1,19 @@
 define([], function () {
   return {
-    title: '禁用',
-    file: 'disabled',
+    title: '设定高度',
+    file: 'fit',
+    description: '组合的 Tree 组件的 `fit` 配置默认为 `true`，所以通过 attrs 设定字段的高度时，树部分会表现出自适应父容器的效果',
     demo: function () {
       return {
         children: [
           {
             component: 'CheckboxTree',
-            disabled: true,
+            showCheckAll: true,
+            attrs: {
+              style: {
+                height: '300px',
+              },
+            },
             options: [
               {
                 text: '节点 1',
