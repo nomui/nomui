@@ -13,6 +13,7 @@
 | initExpandLevel | 初始展开节点的级别，默认为 -1 展开所有级别。从 0 级开始 | `number` | - |
 | nodeSelectable | 节点可选中配置 | `boolean` \| `object` | - |
 | nodeCheckable | 节点可勾选配置 | `boolean` \| `object` | - |
+| fit | 自适应父容器高度，当树超出高度时出现滚动条，如果有全选框，该全选框会固定 | `boolean` | false |
 | onNodeClick | 点击节点的回调 | `({node}) => {}` | - |
 
 ### Tree methods

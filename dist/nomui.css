@@ -6818,6 +6818,16 @@ textarea .nom-textarea {
 .nom-tree .nom-tree-node-content > .nom-tree-node-checkbox {
   margin-right: 6px;
 }
+.nom-tree.p-fit {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.nom-tree.p-fit > .nom-tree-nodes {
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+}
 .nom-tree-select {
   position: relative;
   min-height: 34px;
