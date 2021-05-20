@@ -11,6 +11,10 @@
     &.s-selected {
       .u-color-lprimary();
     }
+    .s-disabled&,
+    &.s-disabled {
+      opacity: 0.5;
+    }
 
     > .nom-tree-node-expandable-indicator {
       width: 30px;
@@ -27,6 +31,18 @@
 
     > .nom-tree-node-checkbox {
       margin-right: 6px;
+    }
+  }
+
+  &.p-fit {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    > .nom-tree-nodes {
+      flex: 1;
+      height: 100%;
+      overflow: auto;
     }
   }
 }

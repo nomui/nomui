@@ -269,6 +269,12 @@ define([], function () {
                       url: '#!components!index?type=List',
                     },
                     {
+                      text: 'VirtualList',
+                      subtext: '列表',
+                      id: 'VirtualList',
+                      url: '#!components!index?type=VirtualList',
+                    },
+                    {
                       text: 'Tag',
                       subtext: '标签',
                       id: 'Tag',
@@ -303,6 +309,12 @@ define([], function () {
                       id: 'Countdown',
                       subtext: '倒计时',
                       url: '#!components!index?type=Countdown',
+                    },
+                    {
+                      text: 'Carousel',
+                      id: 'Carousel',
+                      subtext: '走马灯',
+                      url: '#!components!index?type=Carousel',
                     },
                   ],
                 },
@@ -362,6 +374,12 @@ define([], function () {
                       subtext: '多选列表',
                       id: 'CheckboxList',
                       url: '#!components!index?type=CheckboxList',
+                    },
+                    {
+                      text: 'CheckboxTree',
+                      subtext: '多选树',
+                      id: 'CheckboxTree',
+                      url: '#!components!index?type=CheckboxTree',
                     },
                     {
                       text: 'Select',
@@ -546,6 +564,12 @@ define([], function () {
                       subtext: '拖拽验证码',
                       id: 'SlideCaptcha',
                       url: '#!components!index?type=SlideCaptcha',
+                    },
+                    {
+                      text: 'Anchor',
+                      subtext: '锚点',
+                      id: 'Anchor',
+                      url: '#!components!index?type=Anchor',
                     },
                   ],
                 },

@@ -77,7 +77,7 @@ class Menu extends Component {
       return false
     }
     item.select(selectOption)
-    this.scrollTo(item)
+    selectOption && selectOption.scrollIntoView && this.scrollTo(item)
     return item
   }
 
