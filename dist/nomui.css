@@ -6005,6 +6005,9 @@ textarea .nom-textarea {
   transform: translate(-50%, -50%);
   content: '\E632';
 }
+.nom-control > .nom-select {
+  display: block;
+}
 .nom-slide-captcha {
   position: relative;
   display: inline-block;
