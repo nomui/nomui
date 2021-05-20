@@ -42,6 +42,9 @@ class Tree extends Component {
         data: this._toTreeData(data),
       })
     }
+
+    this._addPropStyle('fit')
+    
     if (nodeCheckable) {
       this.setProps({
         nodeCheckable: Component.extendProps(
