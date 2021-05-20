@@ -35,10 +35,22 @@ class Menu extends Component {
 
   _config() {
     this._addPropStyle('direction')
+
     const that = this
     const children = this.props.items.map(function (item) {
       if (!item) {
         return
+      }
+      if (
+        (item.type && item.type.toLowerCase() === 'divider') ||
+        (item.component && item.component === 'Divider')
+      ) {
+        return {
+          tag: 'li',
+          classes: {
+            'nom-menu-divider': true,
+          },
+        }
       }
       return {
         component: MenuItemWrapper,
