@@ -13,6 +13,13 @@ define([], function () {
             component: 'Cols',
             items: [
               {
+                component: 'Checkbox',
+                text: '显示全选',
+                onValueChange: ({ newValue }) => {
+                  treeRef.update({ nodeCheckable: { showCheckAll: newValue } })
+                },
+              },
+              {
                 component: 'Button',
                 text: '获取选中节点键值数组',
                 onClick: () => {
