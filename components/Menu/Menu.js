@@ -37,6 +37,9 @@ class Menu extends Component {
     this._addPropStyle('direction')
     const that = this
     const children = this.props.items.map(function (item) {
+      if (!item) {
+        return
+      }
       return {
         component: MenuItemWrapper,
         item: Component.extendProps({}, that.props.itemDefaults, item),
