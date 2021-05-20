@@ -9352,13 +9352,21 @@ function _defineProperty2(obj, key, value) {
   }
   class CheckboxTree extends Field {
     constructor(props, ...mixins) {
-      const defaults = { options: [] };
+      const defaults = {
+        options: [],
+        showCheckAll: false,
+        checkAllText: "全选",
+      };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
-      const { options } = this.props;
+      const { options, showCheckAll, checkAllText } = this.props;
       this.setProps({
-        control: { component: DefaultCheckboxOptionTree, data: options },
+        control: {
+          component: DefaultCheckboxOptionTree,
+          data: options,
+          nodeCheckable: { showCheckAll, checkAllText },
+        },
       });
       super._config();
     }
