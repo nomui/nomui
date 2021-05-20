@@ -1,4 +1,4 @@
-define(['./basic.js', './disabled.js'], function () {
+define(['./basic.js', './disabled.js', './show-check-all.js'], function () {
   return {
     title: 'CheckboxTree',
     subtitle: '多选树',
