@@ -9,19 +9,21 @@ class CheckboxTree extends Field {
       options: [],
       showCheckAll: false,
       checkAllText: '全选',
+      treeDataFields: {},
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { options, showCheckAll, checkAllText } = this.props
+    const { options, showCheckAll, checkAllText, treeDataFields } = this.props
 
     this.setProps({
       control: {
         component: DefaultCheckboxOptionTree,
         data: options,
         fit: true,
+        dataFields: treeDataFields,
         nodeCheckable: {
           showCheckAll,
           checkAllText,
@@ -36,13 +38,25 @@ class CheckboxTree extends Field {
     return this.optionTree.getCheckedNodesData({ flatData: true })
   }
 
-  _getValue() {
+  _getValue(options) {
+    const { valueOptions } = this.props
+    options = extend(
+      {
+        asString: false,
+      },
+      valueOptions,
+      options,
+    )
+
     const selected = this.getSelectedOptions()
     if (selected !== null && Array.isArray(selected) && selected.length > 0) {
       const vals = selected.map(function (item) {
         return item.value
       })
 
+      if(options.asString){
+        return vals.join()
+      }
       return vals
     }
 
