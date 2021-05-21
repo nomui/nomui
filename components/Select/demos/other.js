@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '测试',
-    file: 'test',
+    title: '其他',
+    file: 'other',
     demo: function () {
       let formRef = null
       return {
