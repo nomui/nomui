@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '表单值',
+    file: 'value',
     demo: function () {
       let formRef = null
       let sliderRef = null
