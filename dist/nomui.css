@@ -7754,3 +7754,28 @@ textarea .nom-textarea {
 .nom-carousel-buttons-show {
   display: flex;
 }
+.nom-back-top-container {
+  position: absolute;
+  z-index: 9999;
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.nom-back-top-container .nom-back-top-icons {
+  padding: 8px 12px;
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+}
+.nom-back-top-container .nom-back-top-text {
+  padding: 10px;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+}
+.nom-back-top-container:hover {
+  background-color: rgba(0, 0, 0, 0.85);
+}

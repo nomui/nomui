@@ -5259,6 +5259,374 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(AvatarGroup);
+  /* eslint-disable no-return-assign */ /* eslint-disable no-restricted-properties */ /*
+   * Tween.js
+   * t: current time（当前时间）
+   * b: beginning value（初始值）
+   * c: change in value（变化量）
+   * d: duration（持续时间）
+   */ const Tween = {
+    Linear: function (t, b, c, d) {
+      return (c * t) / d + b;
+    },
+    Quad: {
+      easeIn: function (t, b, c, d) {
+        return c * (t /= d) * t + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return -c * (t /= d) * (t - 2) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if ((t /= d / 2) < 1) return (c / 2) * t * t + b;
+        return (-c / 2) * (--t * (t - 2) - 1) + b;
+      },
+    },
+    Cubic: {
+      easeIn: function (t, b, c, d) {
+        return c * (t /= d) * t * t + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t + 1) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if ((t /= d / 2) < 1) return (c / 2) * t * t * t + b;
+        return (c / 2) * ((t -= 2) * t * t + 2) + b;
+      },
+    },
+    Quart: {
+      easeIn: function (t, b, c, d) {
+        return c * (t /= d) * t * t * t + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return -c * ((t = t / d - 1) * t * t * t - 1) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if ((t /= d / 2) < 1) return (c / 2) * t * t * t * t + b;
+        return (-c / 2) * ((t -= 2) * t * t * t - 2) + b;
+      },
+    },
+    Quint: {
+      easeIn: function (t, b, c, d) {
+        return c * (t /= d) * t * t * t * t + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if ((t /= d / 2) < 1) return (c / 2) * t * t * t * t * t + b;
+        return (c / 2) * ((t -= 2) * t * t * t * t + 2) + b;
+      },
+    },
+    Sine: {
+      easeIn: function (t, b, c, d) {
+        return -c * Math.cos((t / d) * (Math.PI / 2)) + c + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return c * Math.sin((t / d) * (Math.PI / 2)) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        return (-c / 2) * (Math.cos((Math.PI * t) / d) - 1) + b;
+      },
+    },
+    Expo: {
+      easeIn: function (t, b, c, d) {
+        return t === 0 ? b : c * Math.pow(2, 10 * (t / d - 1)) + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return t === d ? b + c : c * (-Math.pow(2, (-10 * t) / d) + 1) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if (t === 0) return b;
+        if (t === d) return b + c;
+        if ((t /= d / 2) < 1) return (c / 2) * Math.pow(2, 10 * (t - 1)) + b;
+        return (c / 2) * (-Math.pow(2, -10 * --t) + 2) + b;
+      },
+    },
+    Circ: {
+      easeIn: function (t, b, c, d) {
+        return -c * (Math.sqrt(1 - (t /= d) * t) - 1) + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return c * Math.sqrt(1 - (t = t / d - 1) * t) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if ((t /= d / 2) < 1) return (-c / 2) * (Math.sqrt(1 - t * t) - 1) + b;
+        return (c / 2) * (Math.sqrt(1 - (t -= 2) * t) + 1) + b;
+      },
+    },
+    Elastic: {
+      easeIn: function (t, b, c, d, a, p) {
+        let s;
+        if (t === 0) return b;
+        if ((t /= d) === 1) return b + c;
+        if (typeof p === "undefined") p = d * 0.3;
+        if (!a || a < Math.abs(c)) {
+          s = p / 4;
+          a = c;
+        } else {
+          s = (p / (2 * Math.PI)) * Math.asin(c / a);
+        }
+        return (
+          -(
+            a *
+            Math.pow(2, 10 * (t -= 1)) *
+            Math.sin(((t * d - s) * (2 * Math.PI)) / p)
+          ) + b
+        );
+      },
+      easeOut: function (t, b, c, d, a, p) {
+        let s;
+        if (t === 0) return b;
+        if ((t /= d) === 1) return b + c;
+        if (typeof p === "undefined") p = d * 0.3;
+        if (!a || a < Math.abs(c)) {
+          a = c;
+          s = p / 4;
+        } else {
+          s = (p / (2 * Math.PI)) * Math.asin(c / a);
+        }
+        return (
+          a *
+            Math.pow(2, -10 * t) *
+            Math.sin(((t * d - s) * (2 * Math.PI)) / p) +
+          c +
+          b
+        );
+      },
+      easeInOut: function (t, b, c, d, a, p) {
+        let s;
+        if (t === 0) return b;
+        if ((t /= d / 2) === 2) return b + c;
+        if (typeof p === "undefined") p = d * (0.3 * 1.5);
+        if (!a || a < Math.abs(c)) {
+          a = c;
+          s = p / 4;
+        } else {
+          s = (p / (2 * Math.PI)) * Math.asin(c / a);
+        }
+        if (t < 1)
+          return (
+            -0.5 *
+              (a *
+                Math.pow(2, 10 * (t -= 1)) *
+                Math.sin(((t * d - s) * (2 * Math.PI)) / p)) +
+            b
+          );
+        return (
+          a *
+            Math.pow(2, -10 * (t -= 1)) *
+            Math.sin(((t * d - s) * (2 * Math.PI)) / p) *
+            0.5 +
+          c +
+          b
+        );
+      },
+    },
+    Back: {
+      easeIn: function (t, b, c, d, s) {
+        if (typeof s === "undefined") s = 1.70158;
+        return c * (t /= d) * t * ((s + 1) * t - s) + b;
+      },
+      easeOut: function (t, b, c, d, s) {
+        if (typeof s === "undefined") s = 1.70158;
+        return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
+      },
+      easeInOut: function (t, b, c, d, s) {
+        if (typeof s === "undefined") s = 1.70158;
+        if ((t /= d / 2) < 1)
+          return (c / 2) * (t * t * (((s *= 1.525) + 1) * t - s)) + b;
+        return (c / 2) * ((t -= 2) * t * (((s *= 1.525) + 1) * t + s) + 2) + b;
+      },
+    },
+    Bounce: {
+      easeIn: function (t, b, c, d) {
+        return c - Tween.Bounce.easeOut(d - t, 0, c, d) + b;
+      },
+      easeOut: function (t, b, c, d) {
+        if ((t /= d) < 1 / 2.75) {
+          return c * (7.5625 * t * t) + b;
+        }
+        if (t < 2 / 2.75) {
+          return c * (7.5625 * (t -= 1.5 / 2.75) * t + 0.75) + b;
+        }
+        if (t < 2.5 / 2.75) {
+          return c * (7.5625 * (t -= 2.25 / 2.75) * t + 0.9375) + b;
+        }
+        return c * (7.5625 * (t -= 2.625 / 2.75) * t + 0.984375) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if (t < d / 2) {
+          return Tween.Bounce.easeIn(t * 2, 0, c, d) * 0.5 + b;
+        }
+        return Tween.Bounce.easeOut(t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b;
+      },
+    },
+  };
+  class BackTop extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        duration: 100,
+        animations: "Linear",
+        target: "window",
+        height: 400,
+        right: 30,
+        bottom: 30,
+        text: "",
+        parent: "",
+        onClick: () => {},
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      const { parent, target } = this.props;
+      if (target === "window") {
+        this.parentNode = document.documentElement || document.body;
+      } else if (this.hasClass(parent.element, target)) {
+        this.parentNode = parent.element;
+      } else {
+        this.parentNode = parent.element.getElementsByClassName(target)[0];
+      }
+      this.once = true;
+      this.initRequestAnimationFrame();
+    }
+    _config() {
+      const { right, bottom } = this.props;
+      this.setProps({
+        children: {
+          ref: (c) => {
+            this.backTopRef = c;
+          },
+          classes: { "nom-back-top-container": true },
+          attrs: { style: { right: `${right}px`, bottom: `${bottom}px` } },
+          children: this.backTopButton(),
+          onClick: () => {
+            this.backTopEvent();
+          },
+        },
+      });
+    }
+    _rendered() {
+      const { height, target } = this.props;
+      let ele;
+      if (target === "window") {
+        ele = window;
+      } else {
+        ele = this.parentNode;
+      }
+      ele.addEventListener("scroll", () => {
+        if (this.once === true) {
+          this.once = false;
+          this.iconRef.update();
+          if (ele === window) {
+            this.parentNode.appendChild(this.backTopRef.element);
+            this.backTopRef.element.style.position = "fixed";
+          } else {
+            this.parentNode.parentElement.style.position = "relative";
+            this.parentNode.parentElement.appendChild(this.backTopRef.element);
+          }
+        }
+        if (this.parentNode.scrollTop >= height) {
+          this.backTopRef.show();
+        } else {
+          this.backTopRef.hide();
+        }
+      });
+    }
+    hasClass(ele, className) {
+      const reg = new RegExp(`(^|\\s)${className}(\\s|$)`);
+      return reg.test(ele.className);
+    }
+    backTopButton() {
+      const { text } = this.props;
+      let obj;
+      if (text.length > 0) {
+        obj = {
+          ref: (c) => {
+            this.iconRef = c;
+          },
+          classes: { "nom-back-top-text": true },
+          autoRender: false,
+          children: text,
+        };
+      } else {
+        obj = {
+          ref: (c) => {
+            this.iconRef = c;
+          },
+          classes: { "nom-back-top-icons": true },
+          autoRender: false,
+          component: "Icon",
+          type: "up",
+        };
+      }
+      return obj;
+    }
+    initRequestAnimationFrame() {
+      let lastTime = 0;
+      const vendors = ["webkit", "moz"];
+      for (
+        let x = 0;
+        x < vendors.length && !window.requestAnimationFrame;
+        ++x
+      ) {
+        window.requestAnimationFrame =
+          window[`${vendors[x]}RequestAnimationFrame`];
+        window.cancelAnimationFrame =
+          window[`${vendors[x]}CancelAnimationFrame`] ||
+          window[`${vendors[x]}CancelRequestAnimationFrame`];
+      }
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = function (callback) {
+          const currTime = new Date().getTime();
+          const timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
+          const id = window.setTimeout(function () {
+            callback(currTime + timeToCall);
+          }, timeToCall);
+          lastTime = currTime + timeToCall;
+          return id;
+        };
+      }
+      if (!window.cancelAnimationFrame) {
+        window.cancelAnimationFrame = function (id) {
+          clearTimeout(id);
+        };
+      }
+    }
+    backTopEvent() {
+      const { animations, duration } = this.props;
+      const element = this.parentNode;
+      let start = 0;
+      const begin = element.scrollTop;
+      const end = -element.scrollTop;
+      const during = Math.round((duration * 10) / 167);
+      const paramArry = animations.split(".");
+      const scrollAnimation = function () {
+        if (element.scrollTop === 0) return false;
+        let top; // 当前的运动位置
+        if (paramArry[1]) {
+          top = Tween[paramArry[0]][paramArry[1]](start, begin, end, during);
+        } else {
+          top = Tween[paramArry[0]](start, begin, end, during);
+        }
+        element.scrollTop = top; // 时间递增
+        start++; // 如果还没有运动到位，继续
+        if (start <= during && element.scrollTop !== 0) {
+          requestAnimationFrame(scrollAnimation);
+        }
+      };
+      if (element) scrollAnimation();
+    }
+  }
+  Component.mixin({
+    _rendered: function () {
+      if (this.props.backtop) {
+        this.backtop = new BackTop(
+          Component.extendProps({}, this.props.backtop, { parent: this })
+        );
+      }
+    },
+  });
+  Component.register(BackTop);
   class Badge extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -20831,6 +21199,7 @@ function _defineProperty2(obj, key, value) {
   exports.AutoComplete = AutoComplete;
   exports.Avatar = Avatar;
   exports.AvatarGroup = AvatarGroup;
+  exports.BackTop = BackTop;
   exports.Badge = Badge;
   exports.Button = Button;
   exports.Caption = Caption;
