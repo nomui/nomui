@@ -35,8 +35,23 @@ class Menu extends Component {
 
   _config() {
     this._addPropStyle('direction')
+
     const that = this
     const children = this.props.items.map(function (item) {
+      if (!item) {
+        return
+      }
+      if (
+        (item.type && item.type.toLowerCase() === 'divider') ||
+        (item.component && item.component === 'Divider')
+      ) {
+        return {
+          tag: 'li',
+          classes: {
+            'nom-menu-divider': true,
+          },
+        }
+      }
       return {
         component: MenuItemWrapper,
         item: Component.extendProps({}, that.props.itemDefaults, item),
@@ -77,7 +92,7 @@ class Menu extends Component {
       return false
     }
     item.select(selectOption)
-    this.scrollTo(item)
+    selectOption && selectOption.scrollIntoView && this.scrollTo(item)
     return item
   }
 

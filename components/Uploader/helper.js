@@ -1,5 +1,6 @@
-import { isNumeric, isPlainObject, isString } from '../util/index'
-import { IMAGE_FILE, POSITIVE_INTEGER } from '../util/reg'
+import {} from '../util/date'
+import { formatDate, isNumeric, isPlainObject, isString } from '../util/index'
+import { IMAGE_FILE } from '../util/reg'
 
 export const DEFAULT_ACCEPT =
   'image/*,application/msword,application/pdf,application/x-rar-compressed,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.ms-works,application/zip,audio/*,video/*,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/vnd.ms-word.document.macroEnabled.12,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.template.macroEnabled.12,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.ms-powerpoint.addin.macroEnabled.12,application/vnd.ms-powerpoint.presentation.macroEnabled.12,application/vnd.ms-powerpoint.slideshow.macroEnabled.12,application/csv'
@@ -65,14 +66,23 @@ export function getUUID() {
   return `nom-upload-${Math.random().toString().substr(2)}`
 }
 
-export function getDate(timestamp) {
-  if (isNumeric(timestamp) && POSITIVE_INTEGER.test(timestamp.toString())) {
-    const date = new Date(timestamp)
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    return `${date.getFullYear()}-${month > 9 ? month : `0${month}`}-${day > 9 ? day : `0${day}`}`
-  }
-  return null
+// export function getDate(timestamp) {
+//   if (isNumeric(timestamp) && POSITIVE_INTEGER.test(timestamp.toString())) {
+//     const date = new Date(timestamp)
+//     const month = date.getMonth() + 1
+//     const day = date.getDate()
+//     return `${date.getFullYear()}-${month > 9 ? month : `0${month}`}-${day > 9 ? day : `0${day}`}`
+//   }
+//   return null
+// }
+
+function isValidDate(date) {
+  return (Number.isNaN(date) && !Number.isNaN(Date.parse(date))) || isNumeric(date)
+}
+
+export function getDate(d) {
+  if (!isValidDate(d)) return null
+  return formatDate(d, 'yyyy-MM-dd')
 }
 
 export function getFileSize(number) {

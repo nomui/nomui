@@ -1,0 +1,34 @@
+.nom-anchor {
+  &:not(.nom-anchor-border-left) {
+    > .nom-menu {
+      .nom-menu-item {
+        &.s-selected {
+          > span {
+            color: @primary;
+          }
+        }
+      }
+    }
+  }
+  &.nom-anchor-border-left {
+    > .nom-menu {
+      .nom-menu-item {
+        border-left: 1px solid #ddd;
+        &.s-selected {
+          border-left: 1px solid @primary;
+        }
+      }
+    }
+  }
+
+  &.nom-anchor-border-right {
+    > .nom-menu {
+      .nom-menu-item {
+        border-right: 1px solid #ddd;
+        &.s-selected {
+          border-right: 1px solid @primary;
+        }
+      }
+    }
+  }
+}

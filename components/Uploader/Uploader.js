@@ -30,6 +30,7 @@ class Uploader extends Field {
       method: 'post',
       headers: {},
       withCredentials: false,
+      allowUpdate: false,
       onRemove: null,
       renderer: null,
       extraAction: [],
@@ -37,10 +38,13 @@ class Uploader extends Field {
     }
     super(Component.extendProps(defaults, props), ...mixins)
     this.reqs = {}
+    this.onChange.bind(this)
+    this._changeUploadMode.bind(this)
   }
 
   _created() {
-    this.fileList = this.props.defaultFileList
+    // this.fileList = this.props.fileList || this.props.defaultFileList
+    this._updateFile = null
   }
 
   _config() {
@@ -53,10 +57,13 @@ class Uploader extends Field {
       multiple,
       extraAction,
       display,
+      allowUpdate,
       onRemove,
       renderer,
       customizeInfo,
     } = this.props
+
+    this.fileList = this.props.fileList || this.props.defaultFileList
 
     let initializing = true
     if (isPromiseLike(that.fileList)) {
@@ -122,16 +129,6 @@ class Uploader extends Field {
       children.push(button)
     }
 
-    // if (display && files && files.length > 0) {
-    //   console.log('display')
-    //   children.push({
-    //     component: FileList,
-    //     initializing,
-    //     files,
-    //     onRemove: this.handleRemove.bind(that),
-    //     extraAction,
-    //   })
-    // }
     if (display) {
       if (initializing || (this.fileList && this.fileList.length > 0)) {
         children.push({
@@ -150,6 +147,7 @@ class Uploader extends Field {
               ...onRemove,
               action: that.handleRemove.bind(that),
             },
+          allowUpdate,
           extraAction,
           customizeInfo,
         })
@@ -175,13 +173,31 @@ class Uploader extends Field {
     // 转为数组
     let fileList = Array.from(files)
     const uploadedFileList = Array.from(uploadedFiles)
-    fileList = fileList.map((e) => {
-      if (!e.uuid) {
-        e.uuid = getUUID()
-      }
-      e.uploadTime = new Date().getTime()
-      return e
-    })
+
+    if (this._updateFile) {
+      fileList = fileList.map((e) => {
+        e.uuid = this._updateFile
+        e.uploadTime = new Date().getTime()
+        return e
+      })
+
+      uploadedFiles.map((file) => {
+        if (file.uuid === this._updateFile) {
+          const f = fileList[0] || []
+          f.uuid = this._updateFile
+          return f
+        }
+        return file
+      })
+    } else {
+      fileList = fileList.map((e) => {
+        if (!e.uuid) {
+          e.uuid = getUUID()
+        }
+        e.uploadTime = new Date().getTime()
+        return e
+      })
+    }
 
     fileList.forEach((file) => {
       this.upload(file, [...uploadedFileList, ...fileList])
@@ -243,6 +259,8 @@ class Uploader extends Field {
       }
       this.onStart(file)
       this.reqs[file.uuid] = Request(option)
+      this._updateFile = null
+      this._changeUploadMode()
     })
   }
 
@@ -255,7 +273,7 @@ class Uploader extends Field {
 
     if (this.button) {
       const disableBtn = this.fileList.some((file) =>
-        ['removing', 'uploading'].includes(file.status),
+        ['removing', 'uploading', 'updating'].includes(file.status),
       )
 
       if (!this.props.disabled) {
@@ -266,6 +284,7 @@ class Uploader extends Field {
     if (onChangeProp) {
       onChangeProp({
         ...info,
+        sender: this,
         fileList: [...this.fileList],
       })
     }
@@ -273,7 +292,7 @@ class Uploader extends Field {
 
   onStart(file) {
     const uploadFile = cloneFileWithInfo(file)
-    uploadFile.status = 'uploading'
+    uploadFile.status = this._updateFile ? 'updating' : 'uploading'
 
     // 这里要改
     const nextFileList = Array.from(this.fileList)
@@ -345,7 +364,7 @@ class Uploader extends Field {
     })
   }
 
-  handleRemove(e, file) {
+  handleRemove({ sender, file }) {
     const {
       onRemove: { action },
     } = this.props
@@ -360,7 +379,7 @@ class Uploader extends Field {
       fileList: this.fileList,
     })
 
-    Promise.resolve(isFunction(action) ? action(e, file) : action).then((ret) => {
+    Promise.resolve(isFunction(action) ? action({ sender, file }) : action).then((ret) => {
       if (ret === false) {
         return
       }
@@ -380,6 +399,24 @@ class Uploader extends Field {
         fileList: remainsFileList,
       })
     })
+  }
+
+  _handleUpdate({ file }) {
+    if (file && file.uuid) {
+      this._updateFile = file.uuid
+    }
+    this._changeUploadMode()
+    this._handleClick(file)
+  }
+
+  _changeUploadMode() {
+    if (this.inputFile && this.inputFile.element) {
+      if (this._updateFile) {
+        this.inputFile.element.multiple = false
+      } else {
+        this.inputFile.element.multiple = this.props.multiple
+      }
+    }
   }
 
   _handleClick() {

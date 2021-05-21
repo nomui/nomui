@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import { isFunction } from '../util/index'
 import TreeNodes from './TreeNodes'
+import Checkbox from '../Checkbox/index'
 
 class Tree extends Component {
   constructor(props, ...mixins) {
@@ -41,6 +42,9 @@ class Tree extends Component {
         data: this._toTreeData(data),
       })
     }
+
+    this._addPropStyle('fit')
+
     if (nodeCheckable) {
       this.setProps({
         nodeCheckable: Component.extendProps(
@@ -48,6 +52,8 @@ class Tree extends Component {
             cascadeCheckParent: true,
             cascadeUncheckChildren: true,
             cascade: false,
+            showCheckAll: false,
+            checkAllText: '全选',
             checkedNodeKeys: [],
           },
           nodeCheckable,
@@ -55,17 +61,25 @@ class Tree extends Component {
       })
 
       this.checkedNodeKeysHash = {}
-      this.props.nodeCheckable.checkedNodeKeys.forEach((key) => {
-        this.checkedNodeKeysHash[key] = true
-      })
+      if (Array.isArray(this.props.nodeCheckable.checkedNodeKeys)) {
+        this.props.nodeCheckable.checkedNodeKeys.forEach((key) => {
+          this.checkedNodeKeysHash[key] = true
+        })
+      }
     }
 
+    const children = []
+    if (this.props.nodeCheckable && this.props.nodeCheckable.showCheckAll === true) {
+      children.push(this._getCheckAllCheckbox())
+    }
+    children.push({
+      component: TreeNodes,
+      nodes,
+      childrenData: this.props.data,
+    })
+
     this.setProps({
-      children: {
-        component: TreeNodes,
-        nodes,
-        childrenData: this.props.data,
-      },
+      children: children,
     })
   }
 
@@ -121,16 +135,22 @@ class Tree extends Component {
   }
 
   getCheckedNodesData(getOptions, node) {
-    getOptions = getOptions || {}
+    getOptions = getOptions || { flatData: false }
     node = node || this
-    const checkedNodesData = []
+    let checkedNodesData = []
     const childNodes = node.getChildNodes()
     childNodes.forEach((childNode) => {
       if (childNode.isChecked() === true) {
         const childNodeData = { ...childNode.props.data }
         checkedNodesData.push(childNodeData)
 
-        childNodeData.children = this.getCheckedNodesData(getOptions, childNode)
+        if (getOptions.flatData === true) {
+          checkedNodesData = checkedNodesData.concat(
+            this.getCheckedNodesData(getOptions, childNode),
+          )
+        } else {
+          childNodeData.children = this.getCheckedNodesData(getOptions, childNode)
+        }
       }
     })
 
@@ -174,6 +194,28 @@ class Tree extends Component {
     node.select()
   }
 
+  checkAllNodes() {
+    Object.keys(this.nodeRefs).forEach((nodeKey) => {
+      this.nodeRefs[nodeKey].check({ triggerCheckChange: false })
+    })
+
+    this._onCheckChange()
+  }
+
+  uncheckAllNodes() {
+    Object.keys(this.nodeRefs).forEach((nodeKey) => {
+      this.nodeRefs[nodeKey].uncheck({ triggerCheckChange: false })
+    })
+
+    this._onCheckChange()
+  }
+
+  _onCheckChange(args) {
+    const { onCheckChange } = this.props.nodeCheckable
+
+    this._callHandler(onCheckChange, args)
+  }
+
   _onNodeClick(args) {
     this._callHandler('onNodeClick', args)
   }
@@ -210,6 +252,30 @@ class Tree extends Component {
     }
 
     return [arrayData]
+  }
+
+  _getCheckAllCheckbox() {
+    const { disabled } = this.props
+
+    return {
+      component: Checkbox,
+      classes: {
+        'nom-tree-check-all': true,
+      },
+      text: this.props.nodeCheckable.checkAllText,
+      disabled: disabled,
+      _created: (inst) => {
+        this.checkAllRef = inst
+      },
+      // value: this.tree.checkedNodeKeysHash[this.node.key] === true,
+      onValueChange: ({ newValue }) => {
+        if (newValue === true) {
+          this.checkAllNodes()
+        } else {
+          this.uncheckAllNodes()
+        }
+      },
+    }
   }
 }
 
