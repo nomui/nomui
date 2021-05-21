@@ -5,11 +5,12 @@ class BackTop extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       duration: 100,
-      target: 'body',
-      visibilityHeight: 400,
       animations: 'Linear',
+      target: 'window',
+      height: 400,
       right: 30,
       bottom: 30,
+      text: '',
       parent: '',
       onClick: () => {},
     }
@@ -19,14 +20,13 @@ class BackTop extends Component {
 
   _created() {
     const { parent, target } = this.props
-    if (target === 'body') {
-      this.parentNode = document.getElementsByTagName('body')
+    if (target === 'window') {
+      this.parentNode = document.documentElement || document.body
     } else if (this.hasClass(parent.element, target)) {
       this.parentNode = parent.element
     } else {
       this.parentNode = parent.element.getElementsByClassName(target)[0]
     }
-    this.parentNode.style.position = 'relative'
 
     this.once = true
     this.initRequestAnimationFrame()
@@ -37,7 +37,7 @@ class BackTop extends Component {
     this.setProps({
       children: {
         ref: (c) => {
-          this.backtopRef = c
+          this.backTopRef = c
         },
         classes: {
           'nom-back-top-container': true,
@@ -48,14 +48,7 @@ class BackTop extends Component {
             bottom: `${bottom}px`,
           },
         },
-        children: {
-          ref: (c) => {
-            this.iconRef = c
-          },
-          autoRender: false,
-          component: 'Icon',
-          type: 'up',
-        },
+        children: this.backTopButton(),
         onClick: () => {
           this.backTopEvent()
         },
@@ -64,32 +57,66 @@ class BackTop extends Component {
   }
 
   _rendered() {
-    const { visibilityHeight } = this.props
-    this.parentNode.addEventListener('scroll', () => {
+    const { height, target } = this.props
+    let ele
+    if (target === 'window') {
+      ele = window
+    } else {
+      ele = this.parentNode
+    }
+    ele.addEventListener('scroll', () => {
       if (this.once === true) {
         this.once = false
         this.iconRef.update()
-        if (this.hasClass(this.parentNode, 'nom-virtual-list-container')) {
+        if (ele === window) {
+          this.parentNode.appendChild(this.backTopRef.element)
+          this.backTopRef.element.style.position = 'fixed'
+        } else {
           this.parentNode.parentElement.style.position = 'relative'
-          this.parentNode.parentElement.appendChild(this.backtopRef.element)
+          this.parentNode.parentElement.appendChild(this.backTopRef.element)
         }
       }
-      if (this.parentNode.scrollTop >= visibilityHeight) {
-        this.backtopRef.show()
+      if (this.parentNode.scrollTop >= height) {
+        this.backTopRef.show()
       } else {
-        this.backtopRef.hide()
+        this.backTopRef.hide()
       }
     })
   }
-  /**
-   * ele: html 元素
-   * className (string): 要判断的类名
-   * 返回值: 元素含有该类名返回 true,不包含返回 false
-   */
 
   hasClass(ele, className) {
     const reg = new RegExp(`(^|\\s)${className}(\\s|$)`)
     return reg.test(ele.className)
+  }
+
+  backTopButton() {
+    const { text } = this.props
+    let obj
+    if (text.length > 0) {
+      obj = {
+        ref: (c) => {
+          this.iconRef = c
+        },
+        classes: {
+          'nom-back-top-text': true,
+        },
+        autoRender: false,
+        children: text,
+      }
+    } else {
+      obj = {
+        ref: (c) => {
+          this.iconRef = c
+        },
+        classes: {
+          'nom-back-top-icons': true,
+        },
+        autoRender: false,
+        component: 'Icon',
+        type: 'up',
+      }
+    }
+    return obj
   }
 
   initRequestAnimationFrame() {
@@ -98,7 +125,7 @@ class BackTop extends Component {
     for (let x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
       window.requestAnimationFrame = window[`${vendors[x]}RequestAnimationFrame`]
       window.cancelAnimationFrame =
-        window[`${vendors[x]}CancelAnimationFrame`] || // name has changed in Webkit
+        window[`${vendors[x]}CancelAnimationFrame`] ||
         window[`${vendors[x]}CancelRequestAnimationFrame`]
     }
 
@@ -121,37 +148,36 @@ class BackTop extends Component {
   }
 
   backTopEvent() {
-    const { target, animations, duration } = this.props
-    const nowScroll = document.getElementsByClassName(target)[0]
+    const { animations, duration } = this.props
+    const element = this.parentNode
 
-    // 当前时间
     let start = 0
-    // 初始值
-    const begin = nowScroll.scrollTop
-    // 变化量
-    const end = -nowScroll.scrollTop
-    // 持续时间
+    const begin = element.scrollTop
+    const end = -element.scrollTop
     const during = Math.round((duration * 10) / 167)
+    const paramArry = animations.split('.')
 
-    const funScroll = function () {
-      if (nowScroll.scrollTop === 0) return false
+    const scrollAnimation = function () {
+      if (element.scrollTop === 0) return false
+      let top
+
       // 当前的运动位置
-      const top = Tween[animations](start, begin, end, during)
-      nowScroll.scrollTop = top
+      if (paramArry[1]) {
+        top = Tween[paramArry[0]][paramArry[1]](start, begin, end, during)
+      } else {
+        top = Tween[paramArry[0]](start, begin, end, during)
+      }
+
+      element.scrollTop = top
       // 时间递增
       start++
       // 如果还没有运动到位，继续
-      if (start <= during && nowScroll.scrollTop !== 0) {
-        requestAnimationFrame(funScroll)
-      } else {
-        // 动画结束，这里可以插入回调...
-        // callback()...
+      if (start <= during && element.scrollTop !== 0) {
+        requestAnimationFrame(scrollAnimation)
       }
     }
 
-    if (nowScroll) {
-      funScroll()
-    }
+    if (element) scrollAnimation()
   }
 }
 

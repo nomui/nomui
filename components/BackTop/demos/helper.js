@@ -103,6 +103,17 @@ define([], function (_, exports) {
     }
     return arry
   }
+  function getData3(len) {
+    const arry = []
+    for (let index = 0; index < len; index++) {
+      const data = {
+        children: '新年快乐~！',
+      }
+      arry.push(data)
+    }
+    return arry
+  }
   exports.getData1 = getData1
   exports.getData2 = getData2
+  exports.getData3 = getData3
 })
