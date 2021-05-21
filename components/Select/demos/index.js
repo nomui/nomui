@@ -1,12 +1,13 @@
 define([
-  './basic.js',
-  './disabled-option.js',
-  './disabled.js',
-  './multiple.js',
-  './value.js',
-  './show-array.js',
-  './custom.js',
-  './search.js',
+  // './basic.js',
+  // './disabled-option.js',
+  // './disabled.js',
+  // './multiple.js',
+  // './value.js',
+  // './show-array.js',
+  // './custom.js',
+  // './search.js',
+  './test.js',
 ], function () {
   return {
     title: 'Select',
