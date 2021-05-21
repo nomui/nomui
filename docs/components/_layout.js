@@ -565,6 +565,12 @@ define([], function () {
                       id: 'Anchor',
                       url: '#!components!index?type=Anchor',
                     },
+                    {
+                      text: 'BackTop',
+                      subtext: '回到顶部',
+                      id: 'BackTop',
+                      url: '#!components!index?type=BackTop',
+                    },
                   ],
                 },
               ],
