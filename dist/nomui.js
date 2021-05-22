@@ -5156,7 +5156,7 @@ function _defineProperty2(obj, key, value) {
       const { onSearch, filterOption, options } = this.props;
       isFunction(filterOption) &&
         this.popup.update({ options: filterOption(txt, options) });
-      isFunction(onSearch) && onSearch(txt);
+      isFunction(onSearch) && onSearch({ text: txt, sender: this });
     }
   }
   Component.register(AutoComplete);

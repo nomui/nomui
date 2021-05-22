@@ -5931,6 +5931,9 @@ textarea .nom-textarea {
   transform: rotate(45deg);
   content: '';
 }
+.nom-select > .nom-field-content {
+  overflow: hidden;
+}
 .nom-select > .nom-field-content .nom-control {
   position: relative;
   min-height: 34px;
@@ -6004,9 +6007,6 @@ textarea .nom-textarea {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   content: '\E632';
-}
-.nom-control > .nom-select {
-  display: block;
 }
 .nom-slide-captcha {
   position: relative;
