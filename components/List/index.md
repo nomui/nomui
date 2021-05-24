@@ -14,6 +14,7 @@
 | itemDefaults      | 列表数据源的统一默认配置      | `{}`      | -      |
 | cols      | 列表展示为多少列      | `'number'`      | -      |
 | onItemSelectionChange      | 当列表选项改变时触发      | `'function'`      | -      |
+| virtualSupport      | 虚拟渲染功能，见下表      | `{}`      | -      |
 
 
 
@@ -24,7 +25,14 @@
 | multiple   | 是否允许多选           | `boolean`                              | false  |
 | byClick      | 点击项目时选中 | `boolean`         | false       |
 
+### virtualSupport
 
+| 参数      | 说明               | 类型             | 默认值  |
+| --------- | ------------------ | ---------------- | ------- |
+| open   | 开启虚拟渲染功能           | `boolean`                              | false  |
+| height      | 可视区高度     | `number` | 400       |
+| size      | 子节点高度预估值,尽量合理     | `number`         | 30       |
+| bufferScale | 缓冲区比例     | `number`         | 1       |
 
 
 

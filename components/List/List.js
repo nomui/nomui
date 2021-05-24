@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import { extend, isFunction } from '../util/index'
-import ListContent from './ListContent'
 import scrollIntoView from '../util/scrollIntoView'
+import ListContent from './ListContent'
 
 class List extends Component {
   constructor(props, ...mixins) {
@@ -16,6 +16,12 @@ class List extends Component {
         multiple: false,
         byClick: false,
         scrollIntoView: true,
+      },
+      virtualSupport: {
+        open: false,
+        height: '400', // 容器高度
+        size: 30, // 每个列表项高度预估值
+        bufferScale: 1, // 缓冲区比例
       },
     }
 

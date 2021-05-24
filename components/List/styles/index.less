@@ -280,3 +280,28 @@
     }
   }
 }
+
+/* 虚拟列表支持函数-start */
+.nom-virtual-list-container {
+  position: relative;
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #ced4da;
+  -webkit-overflow-scrolling: touch;
+  .nom-virtual-list-phantom {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+  .nom-virtual-list-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+}
+
+/* 虚拟列表支持函数-end */

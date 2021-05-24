@@ -5,7 +5,19 @@ define(['./helper.js'], function (helper) {
     demo: function () {
       return {
         component: 'List',
-        items: helper.getData1(10),
+        itemSelectable: {
+          byClick: true,
+        },
+        onItemSelectionChange({ sender }) {
+          console.log(sender)
+        },
+        virtualSupport: {
+          open: true,
+          height: 300,
+          size: 40,
+          bufferScale: 1,
+        },
+        items: helper.getData1(10000),
       }
     },
   }
