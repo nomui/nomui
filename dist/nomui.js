@@ -745,6 +745,8 @@ function _defineProperty2(obj, key, value) {
             this.appendChild(children[i]);
           }
         }
+      } else if (children === 0) {
+        this.appendChild(`${children}`);
       } else if (children && children.renderIf !== false) {
         this.appendChild(children);
       }
