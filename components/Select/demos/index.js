@@ -7,6 +7,7 @@ define([
   './show-array.js',
   './custom.js',
   './search.js',
+  './other.js',
 ], function () {
   return {
     title: 'Select',

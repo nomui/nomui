@@ -193,6 +193,7 @@ class Select extends Field {
         }
       } else {
         this.selectedSingle.emptyChildren()
+        this.currentValue = null
       }
     }
   }
@@ -317,16 +318,27 @@ class Select extends Field {
         this.updateSearchPopup(selectedOption && selectedOption.text)
         this._directSetValue(value)
       }
-    }
-
-    if (this.optionList) {
-      this.optionList.unselectAllItems({ triggerSelectionChange: false })
-      this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
     } else {
-      this._directSetValue(value)
+      if (this.optionList) {
+        this.optionList.unselectAllItems({ triggerSelectionChange: false })
+        this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
+      }
+
       if (options.triggerChange) {
         this._onValueChange()
       }
+
+      this._directSetValue(value)
+
+      // if (this.optionList) {
+      //   this.optionList.unselectAllItems({ triggerSelectionChange: false })
+      //   this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
+      // } else {
+      //   this._directSetValue(value)
+      //   if (options.triggerChange) {
+      //     this._onValueChange()
+      //   }
+      // }
     }
   }
 
