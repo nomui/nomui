@@ -37,7 +37,9 @@ class ListContent extends Component {
         children.push({ component: ListItemWrapper, item: items[i] })
       }
     }
-
+    // console.log('wrappers', wrappers)
+    // console.log('children', children)
+    // console.log('wrapperDefaults', wrapperDefaults)
     this.setProps({
       children: children,
       childDefaults: wrapperDefaults,
