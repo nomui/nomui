@@ -30,7 +30,11 @@ class BackTop extends Component {
       this.parentNode = parent.element.getElementsByClassName(target)[0]
       this.bindEle = this.parentNode
     }
-
+    const parentRemoveClone = parent._remove
+    parent._remove = () => {
+      parentRemoveClone()
+      this.remove()
+    }
     this.once = true
     this.onWindowScroll = () => {
       this.backTopFun()
