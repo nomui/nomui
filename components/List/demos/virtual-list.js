@@ -11,12 +11,7 @@ define(['./helper.js'], function (helper) {
         onItemSelectionChange({ sender }) {
           console.log(sender)
         },
-        virtualSupport: {
-          open: true,
-          height: 300,
-          size: 40,
-          bufferScale: 1,
-        },
+        virtualOpen: true,
         items: helper.getData1(10000),
       }
     },

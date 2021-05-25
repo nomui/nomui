@@ -17,9 +17,9 @@ class List extends Component {
         byClick: false,
         scrollIntoView: true,
       },
+      virtualOpen: false,
       virtualSupport: {
-        open: false,
-        height: '400', // 容器高度
+        height: typeof props.virtualOpen === 'number' ? props.virtualOpen : 400, // 容器高度
         size: 30, // 每个列表项高度预估值
         bufferScale: 1, // 缓冲区比例
       },
