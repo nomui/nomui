@@ -26,6 +26,7 @@ define([], function () {
                 value: 3,
               },
             ],
+            // virtualOpen: true,
           },
           {
             component: 'Select',

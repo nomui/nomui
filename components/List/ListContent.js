@@ -15,6 +15,7 @@ class ListContent extends Component {
     this.list = this.parent
     this.list.content = this
     if (this.list.props.virtualOpen === true || typeof this.list.props.virtualOpen === 'number') {
+      // console.log(this.list, '进入虚拟渲染了')
       const { items, virtualSupport } = this.list.props
       this.vir = {
         // 起始索引

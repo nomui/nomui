@@ -303,30 +303,30 @@
       }
     }
   }
-}
 
-/* 虚拟列表支持函数-start */
-.nom-virtual-list-container {
-  position: relative;
-  width: 100%;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  .nom-virtual-list-phantom {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: -1;
+  /* 虚拟列表支持函数-start */
+  .nom-virtual-list-container {
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    .nom-virtual-list-phantom {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .nom-virtual-list-content {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      flex-wrap: wrap;
+    }
   }
 
-  .nom-virtual-list-content {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    display: flex;
-    flex-wrap: wrap;
-  }
+  /* 虚拟列表支持函数-end */
 }
-
-/* 虚拟列表支持函数-end */
