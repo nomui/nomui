@@ -14,6 +14,7 @@
 | itemDefaults      | 列表数据源的统一默认配置      | `{}`      | -      |
 | cols      | 列表展示为多少列      | `'number'`      | -      |
 | onItemSelectionChange      | 当列表选项改变时触发      | `'function'`      | -      |
+| virtualOpen      | 开启虚拟渲染，值为 number 则为可视区的高度配置（number默认为400）      | `boolean\|number`      | false      |
 
 
 
