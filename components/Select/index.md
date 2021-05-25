@@ -14,3 +14,4 @@
 | showArrow  | 是否显示下拉箭头       | `boolean`                              | true   |
 | showSearch | 使单选模式可搜索       | `boolean`                              | true   |
 | onSearch   | 搜索文本值变化时的回调 | `boolean`                              | true   |
+<!-- | virtualOpen      | 开启虚拟渲染，值为 number 则为可视区的高度配置（number默认为400）      | `boolean\|number`      | false      | -->
