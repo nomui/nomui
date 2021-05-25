@@ -23,6 +23,7 @@ class Grid extends Component {
     if (this.props.columnsCustomizable && this.props.columnsCustomizable.selected) {
       this.props.visibleColumns = this.props.columnsCustomizable.selected
     }
+    this.filter = {}
   }
 
   _config() {
@@ -208,6 +209,10 @@ class Grid extends Component {
 
     this.setSortDirection(sorter)
     this.lastSortField = key
+  }
+
+  handleFilter() {
+    this.props.onFilter && this._callHandler(this.props.onFilter, this.filter)
   }
 
   getRow(param) {
@@ -518,6 +523,7 @@ Grid.defaults = {
   frozenRightCols: null,
   allowFrozenCols: false,
   onSort: null,
+  onFilter: null,
   keyField: 'id',
   treeConfig: {
     childrenField: 'children',

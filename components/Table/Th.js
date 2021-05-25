@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isFunction } from '../util/index'
 
 class Th extends Component {
   constructor(props, ...mixins) {
@@ -48,6 +49,51 @@ class Th extends Component {
           type: sortIcon,
           onClick: function () {
             that.onSortChange()
+          },
+        },
+      this.props.column.filter &&
+        this.props.column.colSpan > 0 && {
+          component: 'Icon',
+          type: 'filter',
+          popup: {
+            align: 'bottom right',
+            children: {
+              attrs: {
+                style: {
+                  padding: '10px',
+                  'min-width': '150px',
+                },
+              },
+              children: [
+                {
+                  component: 'Group',
+                  ref: (c) => {
+                    this.filterGroup = c
+                  },
+                  fields: [
+                    {
+                      ...(isFunction(that.props.column.filter)
+                        ? that.props.column.filter()
+                        : that.props.column.filter),
+                      name: that.props.column.field,
+                    },
+                  ],
+                },
+                {
+                  component: 'Cols',
+                  items: [
+                    {
+                      component: 'Button',
+                      text: '确定',
+                      size: 'small',
+                      onClick: () => {
+                        this.onFilterChange()
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
           },
         },
       that.table.hasGrid &&
@@ -152,6 +198,11 @@ class Th extends Component {
       })
     }
     that.table.grid.handleSort(that.props.column)
+  }
+
+  onFilterChange() {
+    this.table.grid.filter = { ...this.table.grid.filter, ...this.filterGroup.getValue() }
+    this.table.grid.handleFilter()
   }
 }
 
