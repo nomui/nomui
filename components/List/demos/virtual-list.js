@@ -1,6 +1,6 @@
 define(['./helper.js'], function (helper) {
   return {
-    title: '开启虚拟渲染功能',
+    title: '开启虚拟渲染功能的列表',
     file: 'basic',
     demo: function () {
       return {
@@ -8,6 +8,9 @@ define(['./helper.js'], function (helper) {
         itemSelectable: {
           byClick: true,
         },
+        gutter: 'lg',
+        line: 'split',
+        cols: 2,
         onItemSelectionChange({ sender }) {
           console.log(sender)
         },

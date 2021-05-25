@@ -65,9 +65,7 @@ class ListContent extends Component {
         children.push({ component: ListItemWrapper, item: items[i] })
       }
     }
-    // console.log('wrappers', wrappers)
-    // console.log('children', children)
-    // console.log('wrapperDefaults', wrapperDefaults)
+
     // 开启虚拟列表功能
     if (virtualOpen === true || typeof virtualOpen === 'number') {
       this.vir.listData = children
@@ -291,10 +289,7 @@ class ListContent extends Component {
         attrs: {
           'data-key': items._index,
         },
-        children: {
-          component: ListItemWrapper,
-          item: items.item,
-        },
+        children: items.item,
       }
     })
   }
