@@ -495,6 +495,12 @@ define([], function () {
                       id: 'form',
                       url: '#!components!index?type=form',
                     },
+                    {
+                      text: 'Slider',
+                      subtext: '滑动输入条',
+                      id: 'Slider',
+                      url: '#!components!index?type=Slider',
+                    },
                   ],
                 },
                 {
@@ -564,6 +570,12 @@ define([], function () {
                       subtext: '锚点',
                       id: 'Anchor',
                       url: '#!components!index?type=Anchor',
+                    },
+                    {
+                      text: 'BackTop',
+                      subtext: '回到顶部',
+                      id: 'BackTop',
+                      url: '#!components!index?type=BackTop',
                     },
                   ],
                 },

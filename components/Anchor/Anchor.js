@@ -20,6 +20,13 @@ class Anchor extends Component {
     this.container = isFunction(this.props.container)
       ? this.props.container()
       : this.props.container
+
+    this.containerElem = document
+
+    this.onWindowScroll = () => {
+      this._fixPosition()
+      this._onContainerScroll()
+    }
   }
 
   _config() {
@@ -69,9 +76,8 @@ class Anchor extends Component {
     if (this.props.sticky) {
       if (this.props.sticky === true) {
         this.scrollParent = window
-        this.scrollParent.onscroll = function () {
-          that._fixPosition()
-        }
+
+        window.addEventListener('scroll', this.onWindowScroll)
       } else {
         if (isFunction(this.props.sticky)) {
           this.scrollParent = this.props.sticky()
@@ -85,13 +91,18 @@ class Anchor extends Component {
       }
     }
 
-    this.container._on('scroll', function () {
-      that._onContainerScroll()
-    })
+    if (this.container !== window) {
+      this.container._on('scroll', function () {
+        that.containerElem = that.container.element
+        that._onContainerScroll()
+      })
+    } else {
+      window.addEventListener('scroll', this.onWindowScroll)
+    }
   }
 
   _scrollToKey(target) {
-    const container = this.container.element.getElementsByClassName(`nom-anchor-target-${target}`)
+    const container = this.containerElem.getElementsByClassName(`nom-anchor-target-${target}`)
     container.length && container[0].scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -114,8 +125,12 @@ class Anchor extends Component {
   }
 
   _onContainerScroll() {
-    const list = this.container.element.getElementsByClassName('nom-anchor-content')
-    const pRect = this.container.element.getBoundingClientRect()
+    const list = this.containerElem.getElementsByClassName('nom-anchor-content')
+    if (!list.length) return
+    const pRect =
+      this.container === window
+        ? { top: 0, bottom: window.innerHeight }
+        : this.containerElem.getBoundingClientRect()
     let current = 0
     for (let i = 0; i < list.length; i++) {
       const top = list[i].getBoundingClientRect().top
@@ -135,6 +150,10 @@ class Anchor extends Component {
     this.menu.selectItem(key, {
       scrollIntoView: false,
     })
+  }
+
+  _remove() {
+    window.removeEventListener('scroll', this.onWindowScroll)
   }
 }
 

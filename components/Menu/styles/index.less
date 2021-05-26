@@ -1,112 +1,138 @@
 .nom-menu {
-    .list-unstyled();
+  .list-unstyled();
 
-    margin: 0;
+  margin: 0;
 
-    a {
-        color: inherit;
+  a {
+    color: inherit;
+
+    &:hover {
+      color: inherit;
+    }
+
+    > .subtext {
+      margin-left: 6px;
+      font-weight: 400;
+      font-size: 12px;
+      opacity: 0.67;
+    }
+  }
+
+  &.p-direction-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+
+    > .nom-menu-item-wrapper > .nom-menu-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    > .nom-menu-divider {
+      position: relative;
+      padding: 0 10px;
+      &::after {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        bottom: 5px;
+        display: block;
+        border-right: 1px solid #ddd;
+        content: '';
+      }
+    }
+  }
+
+  &.p-uistyle-pill {
+    > .nom-menu-item-wrapper {
+      margin-bottom: 0.3rem;
+
+      > .nom-menu-item {
+        .u-shape-round();
 
         &:hover {
-            color: inherit;
+          background-color: @lprimary;
         }
 
-        >.subtext {
-            margin-left: 6px;
-            font-weight: 400;
-            font-size: 12px;
-            opacity: .67;
+        &.s-selected {
+          .u-color-primary();
         }
+      }
     }
+  }
 
-    &.p-direction-horizontal {
-        display: flex;
-        flex-wrap: wrap;
+  &.p-direction-vertical {
+    > .nom-menu-item-wrapper > .nom-menu-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      text-decoration: none;
 
-        >.nom-menu-item-wrapper>.nom-menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            white-space: nowrap;
-            text-decoration: none;
-        }
+      > .nom-menu-item-icon {
+        margin-right: 10px;
+      }
+
+      > .title {
+        flex-grow: 1;
+      }
     }
-
-    &.p-uistyle-pill {
-        >.nom-menu-item-wrapper {
-            margin-bottom: .3rem;
-
-            >.nom-menu-item {
-                .u-shape-round();
-
-                &:hover {
-                    background-color: @lprimary;
-                }
-
-                &.s-selected {
-                    .u-color-primary();
-                }
-            }
-        }
+    > .nom-menu-divider {
+      position: relative;
+      padding: 10px 0;
+      &::after {
+        position: absolute;
+        right: 15px;
+        bottom: 10px;
+        left: 20px;
+        display: block;
+        border-top: 1px solid #ddd;
+        content: '';
+      }
     }
-
-    &.p-direction-vertical {
-        >.nom-menu-item-wrapper>.nom-menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            text-decoration: none;
-
-            >.nom-menu-item-icon {
-                margin-right: 10px;
-            }
-
-            >.title {
-                flex-grow: 1;
-            }
-        }
-    }
+  }
 }
 
 .nom-menu-sub {
-    .list-unstyled();
+  .list-unstyled();
 
-    margin: 0;
+  margin: 0;
 
-    a {
-        color: inherit;
+  a {
+    color: inherit;
 
-        &:hover {
-            color: inherit;
-        }
+    &:hover {
+      color: inherit;
     }
+  }
 
-    >.nom-menu-item-wrapper>.nom-menu-item {
-        display: flex;
-        align-items: center;
-        padding: 10px 15px;
-        white-space: nowrap;
-        text-decoration: none;
+  > .nom-menu-item-wrapper > .nom-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    white-space: nowrap;
+    text-decoration: none;
 
-        >.title {
-            flex-grow: 1;
-        }
+    > .title {
+      flex-grow: 1;
     }
+  }
 
-    &.p-direction-horizontal {
-        >.nom-menu-item-wrapper>.nom-menu-item {
-            min-width: 160px;
-        }
+  &.p-direction-horizontal {
+    > .nom-menu-item-wrapper > .nom-menu-item {
+      min-width: 160px;
     }
+  }
 }
 
 &.nom-menu-stretch {
-    height: 100%;
+  height: 100%;
 
-    >.nom-menu-item-wrapper>.nom-menu-item {
-        height: 100%;
-    }
+  > .nom-menu-item-wrapper > .nom-menu-item {
+    height: 100%;
+  }
 }
 
 .nom-menu-toggler {
-    margin-left: auto;
+  margin-left: auto;
 }

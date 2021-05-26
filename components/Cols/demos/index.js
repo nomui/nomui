@@ -1,4 +1,4 @@
-define(['./basic.js', './flex.js'], function () {
+define(['./basic.js', './empty.js', './flex.js'], function () {
   return {
     title: 'Cols',
     subtitle: '列布局',

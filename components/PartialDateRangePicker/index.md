@@ -13,3 +13,4 @@
 | minDate | 最小可选日期，格式与 value 一致 | `string` | - |
 | maxDate | 最大可选日期，格式与 value 一致 | `string` | - |
 | fieldName | 起止输入框的 name | `object` | `{start:'start',end:'end'}` |
+| flatValue | 取值是否扁平化 | `boolean` | `true` |

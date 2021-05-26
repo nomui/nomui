@@ -6,7 +6,9 @@ define([
   './value.js',
   './show-array.js',
   './custom.js',
-  './search.js',
+  './searchable-local.js',
+  './searchable-remote.js',
+  './other.js',
 ], function () {
   return {
     title: 'Select',

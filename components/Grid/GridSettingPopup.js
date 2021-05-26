@@ -1,7 +1,7 @@
 import Component from '../Component/index'
-import Layer from '../Layer/index'
+import Modal from '../Modal/index'
 
-class GridSettingPopup extends Layer {
+class GridSettingPopup extends Modal {
   constructor(props, ...mixins) {
     const defaults = {}
 
@@ -21,12 +21,8 @@ class GridSettingPopup extends Layer {
       classes: {
         'nom-grid-setting-panel': true,
       },
-      styles: {
-        shadow: 'sm',
-        rounded: 'md',
-      },
 
-      children: {
+      content: {
         component: 'Panel',
         uistyle: 'card',
         fit: true,
@@ -85,14 +81,6 @@ class GridSettingPopup extends Layer {
     })
 
     super._config()
-  }
-
-  _rendered() {
-    const wh = window.innerHeight
-    const mh = this.element.offsetHeight
-    if (mh + 50 > wh) {
-      this.element.style.height = `${wh - 100}px`
-    }
   }
 
   getMappedColumns(param) {

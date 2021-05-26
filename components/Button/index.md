@@ -14,11 +14,11 @@
 
 ## API
 
-| 参数      | 说明               | 类型             | 默认值  |
-| --------- | ------------------ | ---------------- | ------- |
-| text      | 按钮内容           | `string`         | -       |
-| size      | 指定按钮的大小     | `xs\|sm\|lg\|xl` | default |
-| icon      | 按钮左侧的图标     | `string`         | -       |
-| rightIcon | 按钮右侧的图标     | `string`         | -       |
-| type      | 设置按钮类型       | `primary` \| `dashed` \| `text` \| `link` | - |
-| href      | 点击按钮跳转的链接 | `string`         | -       |
+| 参数      | 说明               | 类型                                      | 默认值  |
+| --------- | ------------------ | ----------------------------------------- | ------- |
+| text      | 按钮内容           | `string`                                  | -       |
+| size      | 指定按钮的大小     | `xsmall\|small\|large\|xlarge`            | default |
+| icon      | 按钮左侧的图标     | `string`                                  | -       |
+| rightIcon | 按钮右侧的图标     | `string`                                  | -       |
+| type      | 设置按钮类型       | `primary` \| `dashed` \| `text` \| `link` | -       |
+| href      | 点击按钮跳转的链接 | `string`                                  | -       |

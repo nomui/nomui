@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './empty.js'], function () {
   return {
     title: 'Rows',
     subtitle: '行布局',

@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isPlainObject } from '../util/index'
 import Row from './Row'
 
 class Rows extends Component {
@@ -9,8 +10,9 @@ class Rows extends Component {
       itemDefaults: null,
       gutter: 'md',
       childDefaults: {
-        component: Row
+        component: Row,
       },
+      showEmpty: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -30,6 +32,21 @@ class Rows extends Component {
       this.setProps({
         children: children,
       })
+    } else if (this.props.showEmpty) {
+      if (isPlainObject(this.props.showEmpty)) {
+        this.setProps({
+          children: {
+            component: 'Empty',
+            ...this.props.showEmpty,
+          },
+        })
+      } else {
+        this.setProps({
+          children: {
+            component: 'Empty',
+          },
+        })
+      }
     }
   }
 }

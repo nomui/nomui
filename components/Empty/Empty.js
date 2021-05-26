@@ -6,12 +6,14 @@ class Empty extends Component {
       description: false,
       image: Empty.PRESENTED_IMAGE_DEFAULT,
       imageStyle: {},
+      size: 'xsmall',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
+    this._propStyleClasses = ['size']
     const { image, imageStyle, description } = this.props
     let imageNode = image
     if (typeof image === 'string' && !image.startsWith('#')) {

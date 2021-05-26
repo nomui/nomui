@@ -17,7 +17,8 @@ class Tbody extends Component {
   _config() {
     const { data = [], rowDefaults, keyField } = this.table.props
     const rows = []
-    this._getRows(data, rows, 0, 0)
+
+    Array.isArray(data) && this._getRows(data, rows, 0, 0)
 
     let props = {
       children: rows,
@@ -32,7 +33,7 @@ class Tbody extends Component {
       ),
     }
 
-    if (!rows.length) {
+    if (this.table.props.data && !this.table.props.data.length) {
       props = {
         children: {
           tag: 'tr',
@@ -46,6 +47,7 @@ class Tbody extends Component {
             },
             children: {
               component: 'Empty',
+              size: 'large',
               description: false,
             },
           },

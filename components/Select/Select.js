@@ -31,6 +31,7 @@ class Select extends Field {
       },
       selectedMultiple: {
         component: List,
+        // virtual: true,
         itemDefaults: {
           _config: function () {
             this.setProps({
@@ -54,6 +55,8 @@ class Select extends Field {
     const that = this
     const { multiple, showArrow, placeholder, disabled, showSearch } = this.props
     const children = []
+
+    this._normalizeSearchable()
 
     this.setProps({
       selectedSingle: {
@@ -193,6 +196,7 @@ class Select extends Field {
         }
       } else {
         this.selectedSingle.emptyChildren()
+        this.currentValue = null
       }
     }
   }
@@ -317,16 +321,27 @@ class Select extends Field {
         this.updateSearchPopup(selectedOption && selectedOption.text)
         this._directSetValue(value)
       }
-    }
-
-    if (this.optionList) {
-      this.optionList.unselectAllItems({ triggerSelectionChange: false })
-      this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
     } else {
-      this._directSetValue(value)
+      if (this.optionList) {
+        this.optionList.unselectAllItems({ triggerSelectionChange: false })
+        this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
+      }
+
       if (options.triggerChange) {
         this._onValueChange()
       }
+
+      this._directSetValue(value)
+
+      // if (this.optionList) {
+      //   this.optionList.unselectAllItems({ triggerSelectionChange: false })
+      //   this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
+      // } else {
+      //   this._directSetValue(value)
+      //   if (options.triggerChange) {
+      //     this._onValueChange()
+      //   }
+      // }
     }
   }
 
@@ -401,6 +416,31 @@ class Select extends Field {
   handleFilter(text, options) {
     const { filterOption } = this.props
     return filterOption(text, options)
+  }
+
+  _normalizeSearchable() {
+    const { searchable } = this.props
+    if (searchable) {
+      this.setProps({
+        searchable: Component.extendProps(
+          {
+            placeholder: null,
+            filter: ({ inputValue, options }) => {
+              const reg = new RegExp(inputValue, 'i')
+              const filteredOptions = []
+              options.forEach((option) => {
+                if (reg.test(option.text)) {
+                  filteredOptions.push(option)
+                }
+              })
+
+              return filteredOptions
+            },
+          },
+          searchable,
+        ),
+      })
+    }
   }
 }
 

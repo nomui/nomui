@@ -122,7 +122,7 @@ class AutoComplete extends Textbox {
     const { onSearch, filterOption, options } = this.props
 
     isFunction(filterOption) && this.popup.update({ options: filterOption(txt, options) })
-    isFunction(onSearch) && onSearch(txt)
+    isFunction(onSearch) && onSearch({ text: txt, sender: this })
   }
 }
 

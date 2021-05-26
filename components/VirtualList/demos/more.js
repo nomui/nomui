@@ -7,8 +7,6 @@ define(['./helper.js'], function (helper) {
         component: 'VirtualList',
         listData: helper.getData2(10000),
         height: 400,
-        size: 100,
-        bufferScale: 1,
       }
     },
   }

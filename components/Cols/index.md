@@ -6,15 +6,16 @@
 
 ### Cols
 
-| 参数        | 说明                                         | 类型             | 默认值 |
-| ----------- | -------------------------------------------- | ---------------- | ------ |
-| items       | 子级对象                                     | `array `         | []     |
-| gutter      | 栅格间距                                     | `sm \| md \| lg` | `md`   |
-| align       | 子对象在纵轴的对齐方式，参考 flex 布局文档   | `string`         | -      |
-| justify     | 子对象在横轴的对齐方式，参考 flex 布局文档   | `string`         | -      |
-| inline      | 显示方式改为 inline-flex，参考 flex 布局文档 | `string`         | -      |
-| fills       | 子对象会自动占满空间，参考 flex 布局文档     | `string`         | -      |
-| strechIndex | 拉伸对应索引值的子对象，让其占满空余空间     | `number`         | -      |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| items | 子级对象 | `array ` | [] |
+| gutter | 栅格间距 | `sm \| md \| lg` | `md` |
+| align | 子对象在纵轴的对齐方式，参考 flex 布局文档 | `string` | - |
+| justify | 子对象在横轴的对齐方式，参考 flex 布局文档 | `string` | - |
+| inline | 显示方式改为 inline-flex，参考 flex 布局文档 | `string` | - |
+| fills | 子对象会自动占满空间，参考 flex 布局文档 | `string` | - |
+| strechIndex | 拉伸对应索引值的子对象，让其占满空余空间 | `number` | - |
+| showEmpty | 数据为空的时候是否显示空信息提示，可以是布尔值也可以是`{Empty组件的属性}` | `boolean \| object` | `false` |
 
 ## 参考文档
 

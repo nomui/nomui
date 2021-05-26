@@ -41,9 +41,6 @@ define([], function () {
                 ],
               },
             ],
-            onValueChange: ({ oldValue, newValue }) => {
-              console.log(oldValue, newValue)
-            },
           },
         ],
       }

@@ -12,7 +12,7 @@ class ListItemWrapper extends Component {
   }
 
   _created() {
-    this.list = this.parent.list
+    this.list = this.parent.list || this.parent.parent.parent.parent.list
   }
 
   _config() {
@@ -22,7 +22,7 @@ class ListItemWrapper extends Component {
 
     if (!span && item.span) {
       this.setProps({
-        span: item.span
+        span: item.span,
       })
     }
 
