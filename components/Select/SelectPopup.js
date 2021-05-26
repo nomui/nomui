@@ -75,7 +75,7 @@ class SelectPopup extends Popup {
 
   _show() {
     super._show()
-    this.selectControl.searchBox.focus()
+    this.selectControl.searchBox && this.selectControl.searchBox.focus()
   }
 }
 
