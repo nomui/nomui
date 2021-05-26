@@ -2004,6 +2004,16 @@ function _defineProperty2(obj, key, value) {
     cat
   );
   Icon.add(
+    "filter",
+    `<svg t="1621992626834" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3088" width="1em" height="1em" fill="currentColor" ><path d="M426.666667 597.333333L170.666667 213.333333V128h682.666666v85.333333l-256 384v256l-170.666666 85.333334z" p-id="3089"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "filter-remove",
+    `<svg t="1621992691799" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3229" width="1em" height="1em" fill="currentColor" ><path d="M295.637333 21.973333L898.986667 625.365333l-60.330667 60.330667-163.114667-163.072L597.333333 640v298.666667h-170.666666v-298.666667L170.666667 256H128V170.666667h195.626667l-88.32-88.362667L295.637333 21.973333zM896 170.666667v85.333333h-42.666667l-81.706666 122.538667L563.754667 170.666667H896z" p-id="3230"></path></svg>`,
+    cat
+  );
+  Icon.add(
     "setting",
     `<svg t="1615863726011" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3943" width="1em" height="1em"><path d="M785.183686 139.674311c-14.716642-25.494575-50.839308-46.344043-80.272592-46.344044H326.227815c-29.433284 0-65.55595 20.849468-80.272592 46.344044L56.618935 467.614608c-14.716642 25.494575-14.716642 67.193511 0 92.688087l189.336288 327.951c14.716642 25.494575 50.839308 46.344043 80.272592 46.344043h378.683279c29.433284 0 65.55595-20.849468 80.272592-46.344043L974.530677 560.302695c14.716642-25.494575 14.716642-67.193511 0-92.688087L785.183686 139.674311zM741.932814 813.332609c-14.716642 25.494575-50.839308 46.344043-80.272593 46.344043H369.478688c-29.433284 0-65.55595-20.849468-80.272592-46.344043l-146.074712-253.019211c-14.716642-25.494575-14.716642-67.193511 0-92.688087L289.206096 214.595397c14.716642-25.494575 50.839308-46.344043 80.272592-46.344043H661.660221c29.433284 0 65.55595 20.849468 80.272593 46.344043l146.096118 253.019211c14.716642 25.494575 14.716642 67.193511 0 92.688087L741.932814 813.332609z" fill="#3E3A39" p-id="3944"></path><path d="M515.574806 358.743567c-85.731129 0-155.225788 69.494659-155.225787 155.225787s69.494659 155.225788 155.225787 155.225788 155.225788-69.494659 155.225788-155.225788-69.494659-155.225788-155.225788-155.225787z m0 235.519786c-44.278362 0-80.304701-36.026339-80.304701-80.304702s36.026339-80.304701 80.304701-80.304701 80.304701 36.026339 80.304701 80.304701-36.026339 80.304701-80.304701 80.304702z" fill="currentColor" p-id="3945"></path></svg>`,
     cat
@@ -13424,6 +13434,78 @@ function _defineProperty2(obj, key, value) {
               that.onSortChange();
             },
           },
+        this.props.column.filter &&
+          this.props.column.colSpan > 0 && {
+            component: "Icon",
+            type: "filter",
+            ref: (c) => {
+              this.filterBtn = c;
+            },
+            attrs: { style: { cursor: "pointer" } },
+            popup: {
+              align: "bottom right",
+              ref: (c) => {
+                this.filterPopup = c;
+              },
+              onShow: () => {
+                that.filterGroup && that.filterGroup.setValue(that.filterValue);
+              },
+              children: {
+                attrs: {
+                  style: {
+                    padding: "10px",
+                    "min-width": "180px",
+                    "max-width": "250px",
+                  },
+                },
+                children: [
+                  {
+                    component: "Group",
+                    ref: (c) => {
+                      this.filterGroup = c;
+                    },
+                    fields: [
+                      Object.assign(
+                        {},
+                        isFunction(that.props.column.filter)
+                          ? that.props.column.filter()
+                          : that.props.column.filter,
+                        { name: that.props.column.field }
+                      ),
+                    ],
+                  },
+                  {
+                    attrs: {
+                      style: { "text-align": "right", padding: "0 10px" },
+                    },
+                    children: {
+                      component: "Cols",
+                      justify: "end",
+                      gutter: "sm",
+                      items: [
+                        {
+                          component: "Button",
+                          text: "确定",
+                          size: "small",
+                          onClick: () => {
+                            this.onFilterChange();
+                          },
+                        },
+                        {
+                          component: "Button",
+                          text: "重置",
+                          size: "small",
+                          onClick: () => {
+                            this.onFilterReset();
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          },
         that.table.hasGrid &&
           that.table.grid.props.allowFrozenCols && {
             component: "Icon",
@@ -13526,6 +13608,29 @@ function _defineProperty2(obj, key, value) {
         });
       }
       that.table.grid.handleSort(that.props.column);
+    }
+    onFilterChange(isReset) {
+      if (this.filterGroup.getValue()[this.props.column.field]) {
+        this.filterValue = this.filterGroup.getValue();
+      }
+      this.table.grid.filter = Object.assign(
+        {},
+        this.table.grid.filter,
+        this.filterGroup.getValue()
+      );
+      this.filterPopup.hide();
+      this.table.grid.handleFilter(isReset);
+      this.resetFilterStatus();
+    }
+    onFilterReset() {
+      this.filterGroup.reset();
+      this.filterValue = null;
+      this.onFilterChange(true);
+    }
+    resetFilterStatus() {
+      this.filterBtn.update({
+        classes: { "nom-filter-active": !!this.filterValue },
+      });
     }
   }
   Component.register(Th);
@@ -13873,7 +13978,7 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(GridHeader);
-  class GridSettingPopup extends Layer {
+  class GridSettingPopup extends Modal {
     constructor(props, ...mixins) {
       const defaults = {};
       super(Component.extendProps(defaults, props), ...mixins);
@@ -13887,8 +13992,7 @@ function _defineProperty2(obj, key, value) {
       const that = this;
       this.setProps({
         classes: { "nom-grid-setting-panel": true },
-        styles: { shadow: "sm", rounded: "md" },
-        children: {
+        content: {
           component: "Panel",
           uistyle: "card",
           fit: true,
@@ -13939,13 +14043,6 @@ function _defineProperty2(obj, key, value) {
       });
       super._config();
     }
-    _rendered() {
-      const wh = window.innerHeight;
-      const mh = this.element.offsetHeight;
-      if (mh + 50 > wh) {
-        this.element.style.height = `${wh - 100}px`;
-      }
-    }
     getMappedColumns(param) {
       const arr = [];
       function mapColumns(data) {
@@ -13977,6 +14074,7 @@ function _defineProperty2(obj, key, value) {
       ) {
         this.props.visibleColumns = this.props.columnsCustomizable.selected;
       }
+      this.filter = {};
     }
     _config() {
       const that = this;
@@ -14103,6 +14201,19 @@ function _defineProperty2(obj, key, value) {
       });
       this.setSortDirection(sorter);
       this.lastSortField = key;
+    }
+    handleFilter(isReset) {
+      const that = this;
+      if (
+        !isReset &&
+        Object.keys(this.filter).filter(function (key) {
+          return key !== "sender" && that.filter[key] !== null;
+        }) < 1
+      ) {
+        return;
+      }
+      this.props.onFilter &&
+        this._callHandler(this.props.onFilter, this.filter);
     }
     getRow(param) {
       let result = null;
@@ -14375,6 +14486,7 @@ function _defineProperty2(obj, key, value) {
     frozenRightCols: null,
     allowFrozenCols: false,
     onSort: null,
+    onFilter: null,
     keyField: "id",
     treeConfig: {
       childrenField: "children",

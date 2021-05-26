@@ -5264,6 +5264,9 @@ table.nom-table.p-line-both th:last-child {
 table.nom-table.p-bordered {
   border: 1px solid #e9ecef;
 }
+.nom-filter-active {
+  color: #4263eb !important;
+}
 .nom-grid {
   position: relative;
   display: flex;
