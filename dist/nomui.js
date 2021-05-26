@@ -11113,7 +11113,7 @@ function _defineProperty2(obj, key, value) {
     }
     _show() {
       super._show();
-      this.selectControl.searchBox.focus();
+      this.selectControl.searchBox && this.selectControl.searchBox.focus();
     }
   }
   Component.register(SelectPopup);
