@@ -22,12 +22,10 @@ class List extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _created() {
+  _config() {
     this.itemRefs = {}
     this.selectedItem = null
-  }
 
-  _config() {
     this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
 
     this.setProps({
