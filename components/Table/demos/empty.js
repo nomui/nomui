@@ -7,6 +7,7 @@ define([], function () {
         children: [
           {
             component: 'Table',
+            data: [],
             columns: [
               {
                 field: 'name',
@@ -62,7 +63,6 @@ define([], function () {
                 },
               },
             ],
-            data: [],
           },
         ],
       }

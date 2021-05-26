@@ -32,7 +32,7 @@ class Tbody extends Component {
       ),
     }
 
-    if (!rows.length) {
+    if (this.table.props.data && !this.table.props.data.length) {
       props = {
         children: {
           tag: 'tr',
@@ -46,6 +46,7 @@ class Tbody extends Component {
             },
             children: {
               component: 'Empty',
+              size: 'large',
               description: false,
             },
           },
