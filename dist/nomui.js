@@ -13452,7 +13452,7 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const { data = [], rowDefaults, keyField } = this.table.props;
       const rows = [];
-      this._getRows(data, rows, 0, 0);
+      Array.isArray(data) && this._getRows(data, rows, 0, 0);
       let props = {
         children: rows,
         childDefaults: Component.extendProps(
@@ -13465,7 +13465,7 @@ function _defineProperty2(obj, key, value) {
           rowDefaults
         ),
       };
-      if (!rows.length) {
+      if (this.table.props.data && !this.table.props.data.length) {
         props = {
           children: {
             tag: "tr",
@@ -13475,7 +13475,11 @@ function _defineProperty2(obj, key, value) {
                 colspan: this.table.colLength,
                 style: { padding: "25px 0" },
               },
-              children: { component: "Empty", description: false },
+              children: {
+                component: "Empty",
+                size: "large",
+                description: false,
+              },
             },
           },
         };
@@ -14584,7 +14588,7 @@ function _defineProperty2(obj, key, value) {
   }
   Grid.defaults = {
     columns: [],
-    data: [],
+    data: null,
     frozenHeader: false,
     frozenLeftCols: null,
     frozenRightCols: null,
