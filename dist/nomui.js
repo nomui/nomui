@@ -5000,12 +5000,9 @@ function _defineProperty2(obj, key, value) {
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
-    _created() {
-      // console.log(this.props.virtual)
+    _config() {
       this.itemRefs = {};
       this.selectedItem = null;
-    }
-    _config() {
       this._addPropStyle("gutter", "line", "align", "justify", "cols");
       this.setProps({ children: { component: ListContent } });
     }
@@ -11069,16 +11066,54 @@ function _defineProperty2(obj, key, value) {
       this.selectControl = this.opener.field;
     }
     _config() {
+      const { searchable, options: originOptions } = this.selectControl.props;
       this.setProps({
         attrs: {
           style: { width: `${this.selectControl.control.offsetWidth()}px` },
         },
         children: {
           component: Layout,
+          header: searchable
+            ? {
+                children: {
+                  component: Textbox,
+                  placeholder: searchable.placeholder,
+                  _created: (inst) => {
+                    this.selectControl.searchBox = inst;
+                  },
+                  onValueChange: ({ newValue }) => {
+                    this.timer && clearTimeout(this.timer);
+                    this.timer = setTimeout(() => {
+                      const loading = new nomui.Loading({
+                        container: this.selectControl.optionList.parent,
+                      });
+                      const result = searchable.filter({
+                        inputValue: newValue,
+                        options: originOptions,
+                      });
+                      if (result && result.then) {
+                        return result.then((value) => {
+                          this.selectControl.props.options = value;
+                          this.selectControl.optionList.update();
+                          loading && loading.remove();
+                        });
+                      }
+                      loading && loading.remove();
+                      this.selectControl.props.options = result;
+                      result && this.selectControl.optionList.update();
+                    }, 300);
+                  },
+                },
+              }
+            : null,
           body: { children: { component: SelectList } },
         },
       });
       super._config();
+    }
+    _show() {
+      super._show();
+      this.selectControl.searchBox.focus();
     }
   }
   Component.register(SelectPopup);
@@ -11127,6 +11162,7 @@ function _defineProperty2(obj, key, value) {
         showSearch,
       } = this.props;
       const children = [];
+      this._normalizeSearchable();
       this.setProps({
         selectedSingle: {
           _created() {
@@ -11425,6 +11461,29 @@ function _defineProperty2(obj, key, value) {
     handleFilter(text, options) {
       const { filterOption } = this.props;
       return filterOption(text, options);
+    }
+    _normalizeSearchable() {
+      const { searchable } = this.props;
+      if (searchable) {
+        this.setProps({
+          searchable: Component.extendProps(
+            {
+              placeholder: null,
+              filter: ({ inputValue, options }) => {
+                const reg = new RegExp(inputValue, "i");
+                const filteredOptions = [];
+                options.forEach((option) => {
+                  if (reg.test(option.text)) {
+                    filteredOptions.push(option);
+                  }
+                });
+                return filteredOptions;
+              },
+            },
+            searchable
+          ),
+        });
+      }
     }
   }
   Component.register(Select);
