@@ -56,7 +56,26 @@ define([], function () {
             title: '主角',
             filter: () => {
               return {
-                component: 'Textbox',
+                component: 'CheckboxList',
+                cols: 1,
+                options: [
+                  {
+                    text: '金庸',
+                    value: 0,
+                  },
+                  {
+                    text: '古龙',
+                    value: 1,
+                  },
+                  {
+                    text: '梁羽生',
+                    value: 3,
+                  },
+                  {
+                    text: '温瑞安',
+                    value: 4,
+                  },
+                ],
               }
             },
             width: 500,

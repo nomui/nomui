@@ -55,13 +55,28 @@ class Th extends Component {
         this.props.column.colSpan > 0 && {
           component: 'Icon',
           type: 'filter',
+          ref: (c) => {
+            this.filterBtn = c
+          },
+          attrs: {
+            style: {
+              cursor: 'pointer',
+            },
+          },
           popup: {
             align: 'bottom right',
+            ref: (c) => {
+              this.filterPopup = c
+            },
+            onShow: () => {
+              that.filterGroup && that.filterGroup.setValue(that.filterValue)
+            },
             children: {
               attrs: {
                 style: {
                   padding: '10px',
-                  'min-width': '150px',
+                  'min-width': '180px',
+                  'max-width': '250px',
                 },
               },
               children: [
@@ -80,17 +95,35 @@ class Th extends Component {
                   ],
                 },
                 {
-                  component: 'Cols',
-                  items: [
-                    {
-                      component: 'Button',
-                      text: '确定',
-                      size: 'small',
-                      onClick: () => {
-                        this.onFilterChange()
-                      },
+                  attrs: {
+                    style: {
+                      'text-align': 'right',
+                      padding: '0 10px',
                     },
-                  ],
+                  },
+                  children: {
+                    component: 'Cols',
+                    justify: 'end',
+                    gutter: 'sm',
+                    items: [
+                      {
+                        component: 'Button',
+                        text: '确定',
+                        size: 'small',
+                        onClick: () => {
+                          this.onFilterChange()
+                        },
+                      },
+                      {
+                        component: 'Button',
+                        text: '重置',
+                        size: 'small',
+                        onClick: () => {
+                          this.onFilterReset()
+                        },
+                      },
+                    ],
+                  },
                 },
               ],
             },
@@ -200,9 +233,28 @@ class Th extends Component {
     that.table.grid.handleSort(that.props.column)
   }
 
-  onFilterChange() {
+  onFilterChange(isReset) {
+    if (this.filterGroup.getValue()[this.props.column.field]) {
+      this.filterValue = this.filterGroup.getValue()
+    }
     this.table.grid.filter = { ...this.table.grid.filter, ...this.filterGroup.getValue() }
-    this.table.grid.handleFilter()
+    this.filterPopup.hide()
+    this.table.grid.handleFilter(isReset)
+    this.resetFilterStatus()
+  }
+
+  onFilterReset() {
+    this.filterGroup.reset()
+    this.filterValue = null
+    this.onFilterChange(true)
+  }
+
+  resetFilterStatus() {
+    this.filterBtn.update({
+      classes: {
+        'nom-filter-active': !!this.filterValue,
+      },
+    })
   }
 }
 

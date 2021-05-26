@@ -8,25 +8,10 @@ define([], function () {
         component: 'Rows',
         items: [
           {
-            component: 'RadioList',
-            uistyle: 'button',
-            options: [
-              {
-                text: '禁用',
-                value: true,
-              },
-              {
-                text: '启用',
-                value: false,
-              },
-            ],
-            value: true,
-            onValueChange: (args) => {
-              if (args.newValue === true) {
-                checkboxListRef.disable()
-              } else {
-                checkboxListRef.enable()
-              }
+            component: 'Button',
+            text: 'test',
+            onClick: () => {
+              checkboxListRef.setValue([0, 1])
             },
           },
           {
@@ -34,7 +19,7 @@ define([], function () {
             ref: (c) => {
               checkboxListRef = c
             },
-            disabled: true,
+            disabled: false,
             options: [
               {
                 text: '金庸',
@@ -43,7 +28,6 @@ define([], function () {
               {
                 text: '古龙',
                 value: 1,
-                disabled: true,
               },
               {
                 text: '梁羽生',
@@ -52,7 +36,6 @@ define([], function () {
               {
                 text: '温瑞安',
                 value: 3,
-                disabled: true,
               },
             ],
           },

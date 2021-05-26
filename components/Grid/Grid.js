@@ -211,7 +211,16 @@ class Grid extends Component {
     this.lastSortField = key
   }
 
-  handleFilter() {
+  handleFilter(isReset) {
+    const that = this
+    if (
+      !isReset &&
+      Object.keys(this.filter).filter(function (key) {
+        return key !== 'sender' && that.filter[key] !== null
+      }) < 1
+    ) {
+      return
+    }
     this.props.onFilter && this._callHandler(this.props.onFilter, this.filter)
   }
 
