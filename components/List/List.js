@@ -17,9 +17,9 @@ class List extends Component {
         byClick: false,
         scrollIntoView: true,
       },
-      virtualOpen: false,
+      virtual: false,
       virtualSupport: {
-        height: typeof props.virtualOpen === 'number' ? props.virtualOpen : 400, // 容器高度
+        height: typeof props.virtual === 'number' ? props.virtual : 400, // 容器高度
         size: 30, // 每个列表项高度预估值
         bufferScale: 1, // 缓冲区比例
       },
@@ -29,6 +29,7 @@ class List extends Component {
   }
 
   _created() {
+    // console.log(this.props.virtual)
     this.itemRefs = {}
     this.selectedItem = null
   }

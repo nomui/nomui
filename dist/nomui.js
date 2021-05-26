@@ -4625,8 +4625,8 @@ function _defineProperty2(obj, key, value) {
       this.list = this.parent;
       this.list.content = this;
       if (
-        this.list.props.virtualOpen === true ||
-        typeof this.list.props.virtualOpen === "number"
+        this.list.props.virtual === true ||
+        typeof this.list.props.virtual === "number"
       ) {
         // console.log(this.list, '进入虚拟渲染了')
         const { items, virtualSupport } = this.list.props;
@@ -4652,7 +4652,7 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       this._addPropStyle("gutter", "line", "align", "justify", "cols");
-      const { items, wrappers, wrapperDefaults, virtualOpen } = this.list.props;
+      const { items, wrappers, wrapperDefaults, virtual } = this.list.props;
       const children = [];
       if (Array.isArray(wrappers) && wrappers.length > 0) {
         for (let i = 0; i < wrappers.length; i++) {
@@ -4670,7 +4670,7 @@ function _defineProperty2(obj, key, value) {
           children.push({ component: ListItemWrapper, item: items[i] });
         }
       } // 开启虚拟列表功能
-      if (virtualOpen === true || typeof virtualOpen === "number") {
+      if (virtual === true || typeof virtual === "number") {
         this.vir.listData = children;
         this.vir.wrapperDefaults = wrapperDefaults;
         this.virProps();
@@ -4981,10 +4981,9 @@ function _defineProperty2(obj, key, value) {
           byClick: false,
           scrollIntoView: true,
         },
-        virtualOpen: false,
+        virtual: false,
         virtualSupport: {
-          height:
-            typeof props.virtualOpen === "number" ? props.virtualOpen : 400, // 容器高度
+          height: typeof props.virtual === "number" ? props.virtual : 400, // 容器高度
           size: 30, // 每个列表项高度预估值
           bufferScale: 1, // 缓冲区比例
         },
@@ -4992,6 +4991,7 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
+      // console.log(this.props.virtual)
       this.itemRefs = {};
       this.selectedItem = null;
     }
@@ -11091,7 +11091,7 @@ function _defineProperty2(obj, key, value) {
           },
         },
         selectedMultiple: {
-          component: List,
+          component: List, // virtual: true,
           itemDefaults: {
             _config: function () {
               this.setProps({ tag: "span", children: this.props.text });

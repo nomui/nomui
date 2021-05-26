@@ -31,6 +31,7 @@ class Select extends Field {
       },
       selectedMultiple: {
         component: List,
+        // virtual: true,
         itemDefaults: {
           _config: function () {
             this.setProps({
