@@ -5264,9 +5264,6 @@ table.nom-table.p-line-both th:last-child {
 table.nom-table.p-bordered {
   border: 1px solid #e9ecef;
 }
-.nom-filter-active {
-  color: #4263eb !important;
-}
 .nom-grid {
   position: relative;
   display: flex;
@@ -5294,11 +5291,13 @@ table.nom-table.p-bordered {
 .nom-grid > .nom-grid-header .nom-th .nom-icon {
   position: relative;
   top: 2px;
+  margin-left: 5px;
   color: #aaa;
 }
 .nom-grid > .nom-grid-header .nom-th .nom-icon.p-type-sort-up,
-.nom-grid > .nom-grid-header .nom-th .nom-icon.p-type-sort-down {
-  color: #666;
+.nom-grid > .nom-grid-header .nom-th .nom-icon.p-type-sort-down,
+.nom-grid > .nom-grid-header .nom-th .nom-icon.nom-filter-active {
+  color: #4263eb;
 }
 .nom-grid > .nom-grid-body {
   position: relative;

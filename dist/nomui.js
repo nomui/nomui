@@ -12506,6 +12506,7 @@ function _defineProperty2(obj, key, value) {
         allowClear: true,
         onChange: null,
         fieldName: { start: "start", end: "end" },
+        flatValue: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -13095,13 +13096,15 @@ function _defineProperty2(obj, key, value) {
         this.table.hasRowGroup = true;
       }
       const isEllipsis =
-        (this.table.props.ellipsis === "both" ||
+        ((this.table.props.ellipsis === "both" ||
           this.table.props.ellipsis === "body") &&
-        this.props.column.ellipsis !== false;
+          this.props.column.ellipsis !== false) ||
+        this.props.column.ellipsis === true;
       const showTitle =
-        ((this.table.hasGrid && this.table.grid.props.showTitle) ||
+        (((this.table.hasGrid && this.table.grid.props.showTitle) ||
           this.table.props.showTitle) &&
-        this.props.column.showTitle !== false;
+          this.props.column.showTitle !== false) ||
+        this.props.column.showTitle === true;
       this.setProps({
         children: children,
         attrs: {
@@ -16955,6 +16958,7 @@ function _defineProperty2(obj, key, value) {
         allowClear: true,
         onChange: null,
         fieldName: { start: "start", end: "end" },
+        flatValue: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -20411,6 +20415,7 @@ function _defineProperty2(obj, key, value) {
         showNow: true,
         onChange: null,
         fieldName: { start: "start", end: "end" },
+        flatValue: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
