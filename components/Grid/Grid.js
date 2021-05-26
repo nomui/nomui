@@ -526,7 +526,7 @@ class Grid extends Component {
 
 Grid.defaults = {
   columns: [],
-  data: [],
+  data: null,
   frozenHeader: false,
   frozenLeftCols: null,
   frozenRightCols: null,
