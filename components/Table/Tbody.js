@@ -17,7 +17,8 @@ class Tbody extends Component {
   _config() {
     const { data = [], rowDefaults, keyField } = this.table.props
     const rows = []
-    this._getRows(data, rows, 0, 0)
+
+    Array.isArray(data) && this._getRows(data, rows, 0, 0)
 
     let props = {
       children: rows,
