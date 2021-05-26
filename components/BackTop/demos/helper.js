@@ -16,8 +16,8 @@ define([], function (_, exports) {
     for (let index = 0; index < len; index++) {
       const data = {
         component: 'Caption',
-        title: '老铁们双击666，✈️🚀走一波',
-        subtitle: `我是第${index}条数据`,
+        title: `${index}`,
+        subtitle: '老铁们双击666，✈️🚀走一波~',
         subtitleWrap: true,
         icon: {
           type: 'github',
@@ -107,7 +107,7 @@ define([], function (_, exports) {
     const arry = []
     for (let index = 0; index < len; index++) {
       const data = {
-        children: '新年快乐~！',
+        children: '新年快乐~',
       }
       arry.push(data)
     }
