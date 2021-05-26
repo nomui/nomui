@@ -14,7 +14,7 @@ class ListContent extends Component {
   _created() {
     this.list = this.parent
     this.list.content = this
-    if (this.list.props.virtualOpen === true || typeof this.list.props.virtualOpen === 'number') {
+    if (this.list.props.virtual === true || typeof this.list.props.virtual === 'number') {
       // console.log(this.list, '进入虚拟渲染了')
       const { items, virtualSupport } = this.list.props
       this.vir = {
@@ -47,7 +47,7 @@ class ListContent extends Component {
 
   _config() {
     this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
-    const { items, wrappers, wrapperDefaults, virtualOpen } = this.list.props
+    const { items, wrappers, wrapperDefaults, virtual } = this.list.props
     const children = []
 
     if (Array.isArray(wrappers) && wrappers.length > 0) {
@@ -68,7 +68,7 @@ class ListContent extends Component {
     }
 
     // 开启虚拟列表功能
-    if (virtualOpen === true || typeof virtualOpen === 'number') {
+    if (virtual === true || typeof virtual === 'number') {
       this.vir.listData = children
       this.vir.wrapperDefaults = wrapperDefaults
       this.virProps()
