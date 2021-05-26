@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isNumeric, isString } from '../util/index'
+import { isNumeric, isPlainObject, isString } from '../util/index'
 import Col from './Col'
 
 class Cols extends Component {
@@ -49,12 +49,20 @@ class Cols extends Component {
         children: children,
       })
     } else if (this.props.showEmpty) {
-      this.setProps({
-        justify: 'center',
-        children: {
-          component: 'Empty',
-        },
-      })
+      if (isPlainObject(this.props.showEmpty)) {
+        this.setProps({
+          children: {
+            component: 'Empty',
+            ...this.props.showEmpty,
+          },
+        })
+      } else {
+        this.setProps({
+          children: {
+            component: 'Empty',
+          },
+        })
+      }
     }
   }
 }

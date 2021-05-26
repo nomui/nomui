@@ -6,7 +6,9 @@ define([], function () {
       return {
         component: 'List',
         gutter: 'md',
-        showEmpty: true,
+        showEmpty: {
+          size: 'large',
+        },
       }
     },
   }

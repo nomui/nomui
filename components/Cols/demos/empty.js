@@ -5,7 +5,7 @@ define([], function () {
     demo: function () {
       return {
         component: 'Cols',
-        showEmpty: true,
+        showEmpty: { size: 'large' },
       }
     },
   }

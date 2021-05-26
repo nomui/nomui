@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isPlainObject } from '../util/index'
 import Row from './Row'
 
 class Rows extends Component {
@@ -32,11 +33,20 @@ class Rows extends Component {
         children: children,
       })
     } else if (this.props.showEmpty) {
-      this.setProps({
-        children: {
-          component: 'Empty',
-        },
-      })
+      if (isPlainObject(this.props.showEmpty)) {
+        this.setProps({
+          children: {
+            component: 'Empty',
+            ...this.props.showEmpty,
+          },
+        })
+      } else {
+        this.setProps({
+          children: {
+            component: 'Empty',
+          },
+        })
+      }
     }
   }
 }
