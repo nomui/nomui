@@ -3,6 +3,7 @@ define([
   './styles.js',
   './ellipsis.js',
   './sort.js',
+  './filter.js',
   './resizable.js',
   './frozen-header.js',
   './colspan.js',
