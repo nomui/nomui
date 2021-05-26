@@ -34,8 +34,10 @@ class List extends Component {
 
     this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
 
+    const children = this.props.items.length ? { component: ListContent } : { component: 'Empty' }
+
     this.setProps({
-      children: { component: ListContent },
+      children: children,
     })
   }
 
