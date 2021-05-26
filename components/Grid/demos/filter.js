@@ -19,6 +19,7 @@ define([], function () {
                 component: 'Textbox',
               }
             },
+            sortable: true,
           },
           {
             field: 'author',
