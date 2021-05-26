@@ -23,6 +23,7 @@ class List extends Component {
         size: 30, // 每个列表项高度预估值
         bufferScale: 1, // 缓冲区比例
       },
+      showEmpty: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -34,7 +35,10 @@ class List extends Component {
 
     this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
 
-    const children = this.props.items.length ? { component: ListContent } : { component: 'Empty' }
+    const children =
+      !this.props.items.length && this.props.showEmpty
+        ? { component: 'Empty' }
+        : { component: ListContent }
 
     this.setProps({
       children: children,

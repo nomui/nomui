@@ -22,6 +22,7 @@ class Cols extends Component {
     this._propStyleClasses = ['gutter', 'align', 'justify', 'fills', 'inline']
     const { items } = this.props
     const children = []
+
     if (Array.isArray(items) && items.length > 0) {
       for (let i = 0; i < items.length; i++) {
         let item = items[i]
@@ -46,6 +47,13 @@ class Cols extends Component {
 
       this.setProps({
         children: children,
+      })
+    } else if (this.props.showEmpty) {
+      this.setProps({
+        justify: 'center',
+        children: {
+          component: 'Empty',
+        },
       })
     }
   }

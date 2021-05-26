@@ -9,8 +9,9 @@ class Rows extends Component {
       itemDefaults: null,
       gutter: 'md',
       childDefaults: {
-        component: Row
+        component: Row,
       },
+      showEmpty: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -29,6 +30,12 @@ class Rows extends Component {
 
       this.setProps({
         children: children,
+      })
+    } else if (this.props.showEmpty) {
+      this.setProps({
+        children: {
+          component: 'Empty',
+        },
       })
     }
   }
