@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isNumeric, isString } from '../util/index'
+import { isNumeric, isPlainObject, isString } from '../util/index'
 import Col from './Col'
 
 class Cols extends Component {
@@ -22,6 +22,7 @@ class Cols extends Component {
     this._propStyleClasses = ['gutter', 'align', 'justify', 'fills', 'inline']
     const { items } = this.props
     const children = []
+
     if (Array.isArray(items) && items.length > 0) {
       for (let i = 0; i < items.length; i++) {
         let item = items[i]
@@ -47,6 +48,21 @@ class Cols extends Component {
       this.setProps({
         children: children,
       })
+    } else if (this.props.showEmpty) {
+      if (isPlainObject(this.props.showEmpty)) {
+        this.setProps({
+          children: {
+            component: 'Empty',
+            ...this.props.showEmpty,
+          },
+        })
+      } else {
+        this.setProps({
+          children: {
+            component: 'Empty',
+          },
+        })
+      }
     }
   }
 }

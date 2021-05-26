@@ -2253,6 +2253,17 @@ function _defineProperty2(obj, key, value) {
           }
         }
         this.setProps({ children: children });
+      } else if (this.props.showEmpty) {
+        if (isPlainObject(this.props.showEmpty)) {
+          this.setProps({
+            children: Object.assign(
+              { component: "Empty" },
+              this.props.showEmpty
+            ),
+          });
+        } else {
+          this.setProps({ children: { component: "Empty" } });
+        }
       }
     }
   }
@@ -4130,10 +4141,12 @@ function _defineProperty2(obj, key, value) {
         description: false,
         image: Empty.PRESENTED_IMAGE_DEFAULT,
         imageStyle: {},
+        size: "xsmall",
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
+      this._propStyleClasses = ["size"];
       const { image, imageStyle, description } = this.props;
       let imageNode = image;
       if (typeof image === "string" && !image.startsWith("#")) {
@@ -4997,6 +5010,7 @@ function _defineProperty2(obj, key, value) {
           size: 30, // 每个列表项高度预估值
           bufferScale: 1, // 缓冲区比例
         },
+        showEmpty: false,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -5004,7 +5018,17 @@ function _defineProperty2(obj, key, value) {
       this.itemRefs = {};
       this.selectedItem = null;
       this._addPropStyle("gutter", "line", "align", "justify", "cols");
-      this.setProps({ children: { component: ListContent } });
+      let empty = null;
+      if (isPlainObject(this.props.showEmpty)) {
+        empty = Object.assign({ component: "Empty" }, this.props.showEmpty);
+      } else {
+        empty = { component: "Empty" };
+      }
+      const children =
+        !this.props.items.length && this.props.showEmpty
+          ? empty
+          : { component: ListContent };
+      this.setProps({ children: children });
     }
     getItem(param) {
       let retItem = null;
@@ -10971,6 +10995,7 @@ function _defineProperty2(obj, key, value) {
         itemDefaults: null,
         gutter: "md",
         childDefaults: { component: Row },
+        showEmpty: false,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -10985,6 +11010,17 @@ function _defineProperty2(obj, key, value) {
           children.push({ component: Row, children: item });
         }
         this.setProps({ children: children });
+      } else if (this.props.showEmpty) {
+        if (isPlainObject(this.props.showEmpty)) {
+          this.setProps({
+            children: Object.assign(
+              { component: "Empty" },
+              this.props.showEmpty
+            ),
+          });
+        } else {
+          this.setProps({ children: { component: "Empty" } });
+        }
       }
     }
   }

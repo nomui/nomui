@@ -7223,6 +7223,18 @@ textarea .nom-textarea {
 .nom-empty-small .nom-empty-image {
   height: 35px;
 }
+.nom-empty.p-size-small {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.nom-empty.p-size-large {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+.nom-empty.p-size-xlarge {
+  padding-top: 150px;
+  padding-bottom: 150px;
+}
 .nom-cascader > .nom-field-content .nom-control {
   position: relative;
   min-height: 34px;

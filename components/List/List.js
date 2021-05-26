@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { extend, isFunction } from '../util/index'
+import { extend, isFunction, isPlainObject } from '../util/index'
 import scrollIntoView from '../util/scrollIntoView'
 import ListContent from './ListContent'
 
@@ -23,6 +23,7 @@ class List extends Component {
         size: 30, // 每个列表项高度预估值
         bufferScale: 1, // 缓冲区比例
       },
+      showEmpty: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -34,8 +35,24 @@ class List extends Component {
 
     this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
 
+    let empty = null
+
+    if (isPlainObject(this.props.showEmpty)) {
+      empty = {
+        component: 'Empty',
+        ...this.props.showEmpty,
+      }
+    } else {
+      empty = {
+        component: 'Empty',
+      }
+    }
+
+    const children =
+      !this.props.items.length && this.props.showEmpty ? empty : { component: ListContent }
+
     this.setProps({
-      children: { component: ListContent },
+      children: children,
     })
   }
 
