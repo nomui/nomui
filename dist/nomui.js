@@ -2912,6 +2912,18 @@ function _defineProperty2(obj, key, value) {
         that.paths[index] = path;
       });
     }
+    push(route) {
+      if (isString(route)) {
+        window.location.href = `#${route}`;
+      } else {
+        const pathname = route.pathname || this.path;
+        let strQuery = parseToQueryString(route.query || {});
+        if (strQuery) {
+          strQuery = `?${strQuery}`;
+        }
+        window.location.href = `#${pathname}${strQuery}`;
+      }
+    }
   }
   class Router extends Component {
     constructor(props, ...mixins) {
