@@ -548,6 +548,7 @@ Grid.defaults = {
   showTitle: false,
   ellipsis: false,
   sticky: false,
+  line: 'row',
 }
 
 Component.register(Grid)
