@@ -56,6 +56,8 @@ class Select extends Field {
     const { multiple, showArrow, placeholder, disabled, showSearch } = this.props
     const children = []
 
+    this._normalizeSearchable()
+
     this.setProps({
       selectedSingle: {
         _created() {
@@ -414,6 +416,31 @@ class Select extends Field {
   handleFilter(text, options) {
     const { filterOption } = this.props
     return filterOption(text, options)
+  }
+
+  _normalizeSearchable() {
+    const { searchable } = this.props
+    if (searchable) {
+      this.setProps({
+        searchable: Component.extendProps(
+          {
+            placeholder: null,
+            filter: ({ inputValue, options }) => {
+              const reg = new RegExp(inputValue, 'i')
+              const filteredOptions = []
+              options.forEach((option) => {
+                if (reg.test(option.text)) {
+                  filteredOptions.push(option)
+                }
+              })
+
+              return filteredOptions
+            },
+          },
+          searchable,
+        ),
+      })
+    }
   }
 }
 

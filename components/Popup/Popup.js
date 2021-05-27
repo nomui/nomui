@@ -29,6 +29,9 @@ class Popup extends Layer {
     this._onOpenerClickHandler = this._onOpenerClickHandler.bind(this)
 
     this.opener = this.props.trigger
+    this.opener.on('remove', () => {
+      this.remove()
+    })
     this.props.alignTo = this.opener.element
     this.showTimer = null
     this.hideTimer = null

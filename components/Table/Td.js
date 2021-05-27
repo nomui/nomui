@@ -113,12 +113,14 @@ class Td extends Component {
     }
 
     const isEllipsis =
-      (this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'body') &&
-      this.props.column.ellipsis !== false
+      ((this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'body') &&
+        this.props.column.ellipsis !== false) ||
+      this.props.column.ellipsis === true
 
     const showTitle =
-      ((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
-      this.props.column.showTitle !== false
+      (((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
+        this.props.column.showTitle !== false) ||
+      this.props.column.showTitle === true
 
     this.setProps({
       children: children,
