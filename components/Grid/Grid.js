@@ -211,6 +211,13 @@ class Grid extends Component {
     this.lastSortField = key
   }
 
+  resetSort() {
+    if (this.lastSortField) {
+      this.header.table.thRefs[this.lastSortField].resetSort()
+    }
+    this.lastSortField = null
+  }
+
   handleFilter(isReset) {
     const that = this
     if (
