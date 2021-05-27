@@ -5562,8 +5562,8 @@ fieldset[disabled] a.nom-button {
   border-style: dashed;
 }
 .nom-button.p-type-text {
-  padding-right: 0.15rem;
-  padding-left: 0.15rem;
+  padding-right: 0.25rem;
+  padding-left: 0.25rem;
   background-color: transparent !important;
   border-color: transparent !important;
 }
@@ -5571,8 +5571,8 @@ fieldset[disabled] a.nom-button {
   background: rgba(0, 0, 0, 0.018);
 }
 .nom-button.p-type-link {
-  padding-right: 0.15rem;
-  padding-left: 0.15rem;
+  padding-right: 0.25rem;
+  padding-left: 0.25rem;
   color: #4263eb;
   background-color: transparent;
   border-color: transparent !important;

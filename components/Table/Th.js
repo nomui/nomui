@@ -17,6 +17,7 @@ class Th extends Component {
     this.table = this.tr.table
     this.resizer = null
     this.lastDistance = 0
+    this.table.thRefs[this.props.column.field] = this
   }
 
   _config() {
@@ -231,6 +232,10 @@ class Th extends Component {
       })
     }
     that.table.grid.handleSort(that.props.column)
+  }
+
+  resetSort() {
+    this.update({ column: { sortDirection: null } })
   }
 
   onFilterChange(isReset) {

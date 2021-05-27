@@ -13536,6 +13536,7 @@ function _defineProperty2(obj, key, value) {
       this.table = this.tr.table;
       this.resizer = null;
       this.lastDistance = 0;
+      this.table.thRefs[this.props.column.field] = this;
     }
     _config() {
       const that = this;
@@ -13740,6 +13741,9 @@ function _defineProperty2(obj, key, value) {
       }
       that.table.grid.handleSort(that.props.column);
     }
+    resetSort() {
+      this.update({ column: { sortDirection: null } });
+    }
     onFilterChange(isReset) {
       if (this.filterGroup.getValue()[this.props.column.field]) {
         this.filterValue = this.filterGroup.getValue();
@@ -13874,6 +13878,7 @@ function _defineProperty2(obj, key, value) {
     _created() {
       super._created();
       this.colRefs = [];
+      this.thRefs = [];
       this.hasGrid =
         this.parent.componentType === "GridHeader" ||
         this.parent.componentType === "GridBody";
@@ -14054,6 +14059,9 @@ function _defineProperty2(obj, key, value) {
       this.scrollbar && this.scrollbar._remove();
     }
     _onPageScroll() {
+      if (!this.props) {
+        return;
+      }
       this.element.style.transform = `translateY(0px)`;
       let pRect = null;
       if (this.grid.props.sticky === true) {
@@ -14332,6 +14340,12 @@ function _defineProperty2(obj, key, value) {
       });
       this.setSortDirection(sorter);
       this.lastSortField = key;
+    }
+    resetSort() {
+      if (this.lastSortField) {
+        this.header.table.thRefs[this.lastSortField].resetSort();
+      }
+      this.lastSortField = null;
     }
     handleFilter(isReset) {
       const that = this;
@@ -14633,6 +14647,7 @@ function _defineProperty2(obj, key, value) {
     showTitle: false,
     ellipsis: false,
     sticky: false,
+    line: "row",
   };
   Component.register(Grid);
   class GroupList extends Group {
