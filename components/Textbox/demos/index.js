@@ -3,6 +3,7 @@ define([
   './disabled.js',
   './autofocus.js',
   './with-icon.js',
+  './with-button.js',
   './events.js',
 ], function () {
   return {

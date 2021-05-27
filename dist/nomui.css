@@ -5717,6 +5717,18 @@ textarea .nom-input {
 .nom-textbox.p-with-right-icon > .nom-field-content .nom-control .nom-input {
   padding-right: 2.5rem;
 }
+.nom-textbox.p-with-button > .nom-field-content > .nom-control {
+  display: flex;
+}
+.nom-textbox.p-with-button > .nom-field-content > .nom-control > .nom-input {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+.nom-textbox.p-with-button > .nom-field-content > .nom-control > .nom-textbox-button {
+  border-left: transparent;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
 .nom-textbox .nom-textbox-left-icon {
   position: absolute;
   top: 0;

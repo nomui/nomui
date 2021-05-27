@@ -15,6 +15,7 @@
 | htmlType  | 设置原生的类型   | `text \| tel \| password \| email \| url` | `text` |
 | leftIcon  | 左侧的图标       | `string\|Props`                           |        |
 | rightIcon | 右侧的图标       | `string\|Props`                           |        |
+| button    | 按钮配置         | `Props`                                   | -      |
 
 ## 事件
 
