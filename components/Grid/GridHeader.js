@@ -69,6 +69,9 @@ class GridHeader extends Component {
   }
 
   _onPageScroll() {
+    if (!this.props) {
+      return
+    }
     this.element.style.transform = `translateY(0px)`
     let pRect = null
     if (this.grid.props.sticky === true) {
