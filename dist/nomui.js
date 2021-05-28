@@ -4079,6 +4079,7 @@ function _defineProperty2(obj, key, value) {
         value,
         htmlType,
         button,
+        readonly,
       } = this.props;
       let leftIconProps = Component.normalizeIconProps(leftIcon);
       if (leftIconProps != null) {
@@ -4101,7 +4102,12 @@ function _defineProperty2(obj, key, value) {
       const inputProps = {
         component: Input,
         name: "input",
-        attrs: { value: value, placeholder: placeholder, type: htmlType },
+        attrs: {
+          value: value,
+          placeholder: placeholder,
+          type: htmlType,
+          readonly: readonly ? "readonly" : null,
+        },
         _created: function () {
           this.textbox = that;
           this.textbox.input = this;

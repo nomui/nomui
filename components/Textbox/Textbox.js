@@ -21,7 +21,7 @@ class Textbox extends Field {
 
   _config() {
     const that = this
-    const { leftIcon, rightIcon, placeholder, value, htmlType, button } = this.props
+    const { leftIcon, rightIcon, placeholder, value, htmlType, button, readonly } = this.props
 
     let leftIconProps = Component.normalizeIconProps(leftIcon)
     if (leftIconProps != null) {
@@ -51,6 +51,7 @@ class Textbox extends Field {
         value: value,
         placeholder: placeholder,
         type: htmlType,
+        readonly: readonly ? 'readonly' : null,
       },
       _created: function () {
         this.textbox = that
