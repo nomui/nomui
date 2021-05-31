@@ -71,6 +71,9 @@ class GridHeader extends Component {
 
   _hideScrolls() {
     const scrolls = document.getElementsByClassName('nom-scrollbar')
+    if (!scrolls.length) {
+      return
+    }
     for (let i = 0; i < scrolls.length; i++) {
       scrolls[i].classList.add('s-hidden')
     }
