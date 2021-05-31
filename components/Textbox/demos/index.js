@@ -1,8 +1,10 @@
 define([
   './basic.js',
   './disabled.js',
+  './readonly.js',
   './autofocus.js',
   './with-icon.js',
+  './with-button.js',
   './events.js',
 ], function () {
   return {

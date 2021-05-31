@@ -139,3 +139,9 @@
 | treeNodeColumn  | 树节点列，被指定列会显示展开及折叠图标，可点击切换展开与否 | `string` | -      |
 | initExpandLevel | 初始展开层级，默认为 -1，代表展开所有层级                  | `number` | -1     |
 | indentSize      | 缩进尺寸，单位 px                                          | `number` | 16     |
+
+## Method
+
+| 参数      | 说明               | 参数 |
+| --------- | ------------------ | ---- |
+| resetSort | 重置表格的排序状态 | -    |

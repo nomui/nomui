@@ -211,6 +211,13 @@ class Grid extends Component {
     this.lastSortField = key
   }
 
+  resetSort() {
+    if (this.lastSortField) {
+      this.header.table.thRefs[this.lastSortField].resetSort()
+    }
+    this.lastSortField = null
+  }
+
   handleFilter(isReset) {
     const that = this
     if (
@@ -548,6 +555,7 @@ Grid.defaults = {
   showTitle: false,
   ellipsis: false,
   sticky: false,
+  line: 'row',
 }
 
 Component.register(Grid)

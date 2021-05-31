@@ -4,7 +4,7 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| text | 选项卡标题 | `string` | - |
+| tabs | 内容,格式为`[{item:{icon:'图标',text:'tab文字'},panel:{children:'tab内容区'}}]` | `array` | - |
 | fit | 让 tabs 拉伸充满父容器的高度，同时选项内容超过高度时出现滚动条 | `boolean` | - |
 | selectedTab | 选中的 tab 页 | `string` | - |
 | uistyle | 页签的基本样式 | `'plain'\|'hat'\|'card'\|'line'\|'pill'` | plain |

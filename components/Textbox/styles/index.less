@@ -50,7 +50,7 @@
     height: auto;
   }
 
-  .s-invalid>& {
+  .s-invalid > & {
     color: #000;
     background-color: #fff3f3;
     border-color: #ffa8a8;
@@ -58,14 +58,14 @@
 }
 
 .nom-textbox {
-  >.nom-field-content {
+  > .nom-field-content {
     .nom-control {
       position: relative;
     }
   }
 
   &.p-with-left-icon {
-    >.nom-field-content {
+    > .nom-field-content {
       .nom-control {
         .nom-input {
           padding-left: 2.5rem;
@@ -75,10 +75,29 @@
   }
 
   &.p-with-right-icon {
-    >.nom-field-content {
+    > .nom-field-content {
       .nom-control {
         .nom-input {
           padding-right: 2.5rem;
+        }
+      }
+    }
+  }
+
+  &.p-with-button {
+    > .nom-field-content {
+      > .nom-control {
+        display: flex;
+
+        > .nom-input {
+          border-bottom-right-radius: 0;
+          border-top-right-radius: 0;
+        }
+
+        > .nom-textbox-button {
+          border-left: transparent;
+          border-bottom-left-radius: 0;
+          border-top-left-radius: 0;
         }
       }
     }

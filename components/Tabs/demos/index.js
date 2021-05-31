@@ -1,5 +1,6 @@
 define([
   './basic.js',
+  './icon.js',
   './tab-operator.js',
   './uistyle.js',
   './separate.js',

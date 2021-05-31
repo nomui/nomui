@@ -81,11 +81,12 @@ class CheckboxList extends Field {
     this.props.options.forEach((ele) => {
       optionsArry.push(ele.value)
     })
-    value.forEach((ele) => {
-      if (optionsArry.includes(ele)) {
-        _that.optionList.selectItem(ele, { triggerSelectionChange: options.triggerChange })
-      }
-    })
+    Array.isArray(value) &&
+      value.forEach((ele) => {
+        if (optionsArry.includes(ele)) {
+          _that.optionList.selectItem(ele, { triggerSelectionChange: options.triggerChange })
+        }
+      })
   }
 
   _disable() {

@@ -1,8 +1,9 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { } from '../Icon/index'
-import { extend } from '../util/index'
+import {} from '../Icon/index'
+import { extend, isPlainObject } from '../util/index'
 import Input from './Input'
+import Button from '../Button/index'
 
 class Textbox extends Field {
   constructor(props, ...mixins) {
@@ -20,16 +21,14 @@ class Textbox extends Field {
 
   _config() {
     const that = this
-    const { leftIcon, rightIcon, placeholder, value, htmlType } = this.props
+    const { leftIcon, rightIcon, placeholder, value, htmlType, button, readonly } = this.props
 
     let leftIconProps = Component.normalizeIconProps(leftIcon)
-    /* console.log('1', leftIconProps) */
     if (leftIconProps != null) {
       leftIconProps = Component.extendProps(leftIconProps, {
         classes: { 'nom-textbox-left-icon': true },
       })
     }
-    /* console.log('2', leftIconProps) */
 
     let rightIconProps = Component.normalizeIconProps(rightIcon)
     if (rightIconProps != null) {
@@ -38,6 +37,13 @@ class Textbox extends Field {
       })
     }
 
+    const buttonProps = isPlainObject(button)
+      ? Component.extendProps(
+          { component: Button, classes: { 'nom-textbox-button': true } },
+          button,
+        )
+      : null
+
     const inputProps = {
       component: Input,
       name: 'input',
@@ -45,6 +51,7 @@ class Textbox extends Field {
         value: value,
         placeholder: placeholder,
         type: htmlType,
+        readonly: readonly ? 'readonly' : null,
       },
       _created: function () {
         this.textbox = that
@@ -56,9 +63,10 @@ class Textbox extends Field {
       classes: {
         'p-with-left-icon': !!leftIcon,
         'p-with-right-icon': !!rightIcon,
+        'p-with-button': buttonProps !== null,
       },
       control: {
-        children: [inputProps, leftIcon && leftIconProps, rightIcon && rightIconProps],
+        children: [inputProps, leftIcon && leftIconProps, rightIcon && rightIconProps, buttonProps],
       },
     })
 

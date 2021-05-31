@@ -16,6 +16,7 @@ define([], function () {
             label: '日期范围选择',
             mode: 'week',
             component: 'PartialDateRangePicker',
+            flatValue: true,
           },
 
           {
