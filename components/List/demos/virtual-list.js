@@ -8,9 +8,9 @@ define(['./helper.js'], function (helper) {
         itemSelectable: {
           byClick: true,
         },
-        gutter: 'lg',
+        gutter: 'md',
         line: 'split',
-        cols: 2,
+        cols: 1,
         onItemSelectionChange({ sender }) {
           console.log(sender)
         },
