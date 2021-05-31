@@ -1,3 +1,5 @@
+import { isString, parseToQueryString } from '../util/index'
+
 export class Route {
   constructor(defaultPath) {
     const that = this
@@ -37,5 +39,18 @@ export class Route {
     pathArr.forEach(function (path, index) {
       that.paths[index] = path
     })
+  }
+
+  push(route) {
+    if (isString(route)) {
+      window.location.href = `#${route}`
+    } else {
+      const pathname = route.pathname || this.path
+      let strQuery = parseToQueryString(route.query || {})
+      if (strQuery) {
+        strQuery = `?${strQuery}`
+      }
+      window.location.href = `#${pathname}${strQuery}`
+    }
   }
 }
