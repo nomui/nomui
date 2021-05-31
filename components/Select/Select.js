@@ -31,7 +31,6 @@ class Select extends Field {
       },
       selectedMultiple: {
         component: List,
-        // virtual: true,
         itemDefaults: {
           _config: function () {
             this.setProps({
@@ -46,6 +45,7 @@ class Select extends Field {
       showArrow: true,
       minItemsForSearch: 20,
       filterOption: (text, options) => options.filter((o) => o.text.indexOf(text) >= 0),
+      virtual: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -110,7 +110,6 @@ class Select extends Field {
     } else {
       children.push(this.props.selectedSingle)
     }
-
     if (isString(placeholder)) {
       children.push({
         _created() {
@@ -143,15 +142,14 @@ class Select extends Field {
         showSearch && this.selectedSingle.element.focus()
       },
     })
-
     super._config()
   }
 
   _rendered() {
-    const { value } = this.props
-
+    const { value, virtual } = this.props
     this.popup = new SelectPopup({
       trigger: this.control,
+      virtual,
       onShow: () => {
         this.optionList.scrollToSelected()
       },
