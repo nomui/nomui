@@ -19,7 +19,7 @@ class List extends Component {
       },
       virtual: false,
       virtualSupport: {
-        height: typeof props.virtual === 'number' ? props.virtual : 400, // 容器高度
+        height: typeof props.virtual === 'number' ? props.virtual : 300, // 容器高度
         size: 30, // 每个列表项高度预估值
         bufferScale: 1, // 缓冲区比例
       },

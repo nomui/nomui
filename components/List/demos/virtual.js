@@ -1,7 +1,7 @@
 define(['./helper.js'], function (helper) {
   return {
-    title: '开启虚拟渲染功能的列表',
-    file: 'basic',
+    title: '列表开启虚拟渲染',
+    file: 'virtual',
     demo: function () {
       return {
         component: 'List',
