@@ -467,6 +467,17 @@ function _defineProperty2(obj, key, value) {
   function isFalsy(value) {
     if (value === 0) return false;
     return !value;
+  } // 防抖函数
+  function debounce(func, wait) {
+    let timer = null;
+    return function () {
+      const context = this;
+      const args = arguments;
+      timer && clearTimeout(timer);
+      timer = setTimeout(function () {
+        func.apply(context, args);
+      }, wait);
+    };
   }
   var index$1 = /*#__PURE__*/ Object.freeze({
     __proto__: null,
@@ -488,6 +499,7 @@ function _defineProperty2(obj, key, value) {
     parseToQuery: parseToQuery,
     parseToQueryString: parseToQueryString,
     isFalsy: isFalsy,
+    debounce: debounce,
   });
   class ComponentDescriptor {
     constructor(tagOrComponent, props, children, mixins) {
@@ -4719,7 +4731,19 @@ function _defineProperty2(obj, key, value) {
           classes: { "nom-virtual-list-content": true },
           children: this.list.virGetList(this.list.virVisibleData()),
           childDefaults: wrapperDefaults,
-        });
+        }); // if (this.list.virtual.selectedItems) {
+        //   clearTimeout(this.list.virtual.selectedTimer)
+        //   this.list.virtual.selectedTimer = setTimeout(() => {
+        //     const arry = this.list.virtual.selectedItems.map((item) => {
+        //       return item.value
+        //     })
+        //     console.log(arry)
+        //     this.list.selectItems(arry, {
+        //       triggerSelect: false,
+        //       triggerSelectionChange: false,
+        //     })
+        //   }, 500)
+        // }
       } else {
         this.setProps({ children: children, childDefaults: wrapperDefaults });
       }
@@ -5039,6 +5063,7 @@ function _defineProperty2(obj, key, value) {
     /* 虚拟列表支持函数-start */ virCreated() {
       const { items, virtualSupport } = this.props;
       this.virtual = {
+        virtualTimer: null,
         start: 0,
         end: 0,
         positions: [
@@ -5048,6 +5073,7 @@ function _defineProperty2(obj, key, value) {
           //   height:100,
           // }
         ],
+        selectedItems: [], // 下拉选择中选中数据
         itemsRefs: [], // 当前列表项arry
         listData: items, // 所有列表数据
         ListHeight: virtualSupport.height, // 可视区域高度
@@ -5179,11 +5205,14 @@ function _defineProperty2(obj, key, value) {
     } // 滚动事件
     virScrollEvent() {
       // 当前滚动位置
-      const scrollTop = this.element.scrollTop;
-      if (!this.virGetStartIndex(scrollTop)) return; // 此时的开始索引
-      this.virtual.start = this.virGetStartIndex(scrollTop); // 此时的结束索引
-      this.virtual.end = this.virtual.start + this.virVisibleCount(); // 更新列表
-      this.virUpdated();
+      const scrollTop = this.element.scrollTop; // if (!this.virGetStartIndex(scrollTop)) return
+      this.virtual.virtualTimer && clearTimeout(this.virtual.virtualTimer);
+      this.virtual.virtualTimer = setTimeout(() => {
+        // 此时的开始索引
+        this.virtual.start = this.virGetStartIndex(scrollTop); // 此时的结束索引
+        this.virtual.end = this.virtual.start + this.virVisibleCount(); // 更新列表
+        this.virUpdated();
+      }, 100);
     }
     virListData() {
       return this.virtual.listData.map((obj, index) => {
@@ -11090,6 +11119,9 @@ function _defineProperty2(obj, key, value) {
           } else {
             selectControl.selectedMultiple.appendItem(selectedOption);
           }
+          if (selectProps.virtual === true) {
+            this.list.virtual.selectedItems.push(selectedOption);
+          }
           this._callHandler(onSelect);
         },
         onUnselect: () => {
@@ -11097,6 +11129,15 @@ function _defineProperty2(obj, key, value) {
           const selectProps = selectControl.props;
           if (selectProps.multiple === true) {
             selectControl.selectedMultiple.removeItem(this.key);
+          }
+          if (selectProps.virtual === true) {
+            const { selectedItems } = this.list.virtual;
+            selectedItems.splice(
+              selectedItems.findIndex(
+                (item) => item.value === this.props.value
+              ),
+              1
+            );
           }
           this._callHandler(onUnselect);
         },
@@ -21697,17 +21738,6 @@ function _defineProperty2(obj, key, value) {
       const start = this.start - this.aboveCount();
       const end = this.end + this.belowCount();
       return this._listData().slice(start, end);
-    } // 防抖函数
-    debounce(func, wait) {
-      let timer = null;
-      return function () {
-        const context = this;
-        const args = arguments;
-        timer && clearTimeout(timer);
-        timer = setTimeout(function () {
-          func.apply(context, args);
-        }, wait);
-      };
     }
   }
   Component.register(VirtualList);

@@ -305,3 +305,16 @@ export function isFalsy(value) {
   if (value === 0) return false
   return !value
 }
+
+// 防抖函数
+export function debounce(func, wait) {
+  let timer = null
+  return function () {
+    const context = this
+    const args = arguments
+    timer && clearTimeout(timer)
+    timer = setTimeout(function () {
+      func.apply(context, args)
+    }, wait)
+  }
+}

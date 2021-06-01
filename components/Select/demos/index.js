@@ -9,7 +9,7 @@ define([
   './searchable-local.js',
   './searchable-remote.js',
   './other.js',
-  './virtual.js',
+  // './virtual.js',
 ], function () {
   return {
     title: 'Select',
