@@ -19843,10 +19843,21 @@ function _defineProperty2(obj, key, value) {
       this.selectItems(param, selectOptions);
     }
     triggerChange() {
-      if (this.parent.componentType && this.parent.componentType === "Tabs") {
-        this._callHandler(this.parent.props.onTabSelectionChange);
+      const selectedItem = this.getSelectedItem();
+      if (
+        this.parent.componentType &&
+        (this.parent.componentType === "Tabs" ||
+          this.parent.componentType === "TabList")
+      ) {
+        this._callHandler(this.parent.props.onTabSelectionChange, {
+          selectedItem: selectedItem,
+          key: selectedItem.key,
+        });
       } else {
-        this._callHandler(this.props.onTabSelectionChange);
+        this._callHandler(this.props.onTabSelectionChange, {
+          selectedItem: selectedItem,
+          key: selectedItem.key,
+        });
       }
     }
   }
