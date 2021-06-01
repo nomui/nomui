@@ -3,7 +3,7 @@ define([
   './empty.js',
   './integration.js',
   './scroll-to.js',
-  './virtual-list.js',
+  './virtual.js',
 ], function () {
   return {
     title: 'List',

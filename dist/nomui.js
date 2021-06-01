@@ -4134,7 +4134,8 @@ function _defineProperty2(obj, key, value) {
       return this.input.getText();
     }
     _getValue() {
-      const inputText = this.getText();
+      let inputText = this.getText();
+      inputText = inputText.trim(" ");
       if (inputText === "") {
         return null;
       }
@@ -4688,31 +4689,6 @@ function _defineProperty2(obj, key, value) {
     _created() {
       this.list = this.parent;
       this.list.content = this;
-      if (
-        this.list.props.virtual === true ||
-        typeof this.list.props.virtual === "number"
-      ) {
-        // console.log(this.list, '进入虚拟渲染了')
-        const { items, virtualSupport } = this.list.props;
-        this.vir = {
-          // 起始索引
-          start: 0, // 结束索引
-          end: 0, // 用于列表项渲染后存储 每一项的高度以及位置信息
-          positions: [
-            // {
-            //   top:0,
-            //   bottom:100,
-            //   height:100
-            // }
-          ], // 当前列表项arry
-          itemsRefs: [], // 所有列表数据
-          listData: items, // 可视区域高度
-          screenHeight: virtualSupport.height, // 预估高度
-          estimatedItemSize: virtualSupport.size, // 缓冲区比例
-          bufferScale: virtualSupport.bufferScale,
-        };
-        this.virInitPositions();
-      }
     }
     _config() {
       this._addPropStyle("gutter", "line", "align", "justify", "cols");
@@ -4734,10 +4710,16 @@ function _defineProperty2(obj, key, value) {
           children.push({ component: ListItemWrapper, item: items[i] });
         }
       } // 开启虚拟列表功能
-      if (virtual === true || typeof virtual === "number") {
-        this.vir.listData = children;
-        this.vir.wrapperDefaults = wrapperDefaults;
-        this.virProps();
+      if (
+        (virtual === true || typeof virtual === "number") &&
+        children.length !== 0
+      ) {
+        this.list.virtual.listData = children;
+        this.setProps({
+          classes: { "nom-virtual-list-content": true },
+          children: this.list.virGetList(this.list.virVisibleData()),
+          childDefaults: wrapperDefaults,
+        });
       } else {
         this.setProps({ children: children, childDefaults: wrapperDefaults });
       }
@@ -4865,172 +4847,6 @@ function _defineProperty2(obj, key, value) {
         }
       }
     }
-    /* 虚拟列表支持函数-start */ virProps() {
-      const listArry = this.virGetList(this.virVisibleData());
-      const height = this.vir.positions[this.vir.positions.length - 1].bottom;
-      this.setProps({
-        children: {
-          ref: (c) => {
-            this.virListRef = c;
-          },
-          classes: { "nom-virtual-list-container": true },
-          attrs: {
-            style: { height: `${this.vir.screenHeight}px` },
-            onscroll: () => {
-              this.virScrollEvent();
-            },
-          },
-          children: [
-            {
-              ref: (c) => {
-                this.virPhantomRef = c;
-              },
-              classes: { "nom-virtual-list-phantom": true },
-              attrs: { style: { height: `${height}px` } },
-              children: "",
-            },
-            {
-              ref: (c) => {
-                this.virContentRef = c;
-              },
-              classes: { "nom-virtual-list-content": true },
-              children: listArry,
-              childDefaults: this.vir.wrapperDefaults,
-            },
-          ],
-        },
-      });
-    }
-    virGetList(arry) {
-      const _that = this;
-      this.vir.itemsRefs = [];
-      return arry.map(function (items) {
-        return {
-          ref: (c) => {
-            if (c) _that.vir.itemsRefs.push(c);
-          },
-          classes: { "nom-virtual-list-item": true },
-          attrs: { "data-key": items._index },
-          children: items.item,
-        };
-      });
-    } // 需要在 渲染完成后，获取列表每项的位置信息并缓存
-    virUpdated() {
-      if (!this.vir.itemsRefs || !this.vir.itemsRefs.length) {
-        return;
-      } // 获取真实元素大小，修改对应的尺寸缓存
-      this.virUpdateItemsSize(); // 更新列表总高度
-      const height = this.vir.positions[this.vir.positions.length - 1].bottom;
-      this.virPhantomRef.update({
-        attrs: { style: { height: `${height}px` } },
-      });
-      this.virContentRef.update({
-        attrs: {
-          style: {
-            transform: `translate3d(0,${this.virSetStartOffset()}px,0)`,
-          },
-        },
-        children: this.virGetList(this.virVisibleData()),
-      });
-    } // 初始时根据 estimatedItemSize对 positions进行初始化
-    virInitPositions() {
-      this.vir.positions = this.vir.listData.map((d, index) => ({
-        index,
-        height: this.vir.estimatedItemSize,
-        top: index * this.vir.estimatedItemSize,
-        bottom: (index + 1) * this.vir.estimatedItemSize,
-      }));
-    } // 获取列表起始索引
-    virGetStartIndex(scrollTop = 0) {
-      // 二分法查找
-      return this.virBinarySearch(this.vir.positions, scrollTop);
-    }
-    virBinarySearch(list, value) {
-      let start = 0;
-      let end = list.length - 1;
-      let tempIndex = null;
-      while (start <= end) {
-        const midIndex = parseInt((start + end) / 2, 10);
-        const midValue = list[midIndex].bottom;
-        if (midValue === value) {
-          return midIndex + 1;
-        }
-        if (midValue < value) {
-          start = midIndex + 1;
-        } else if (midValue > value) {
-          if (tempIndex === null || tempIndex > midIndex) {
-            tempIndex = midIndex;
-          }
-          end -= 1;
-        }
-      }
-      return tempIndex;
-    } // 获取列表项的当前尺寸
-    virUpdateItemsSize() {
-      const nodes = this.vir.itemsRefs;
-      nodes.forEach((node) => {
-        if (!node.rendered) return;
-        const rect = node.element.getBoundingClientRect();
-        const height = rect.height;
-        const index = +node.element.dataset.key.slice(1);
-        const oldHeight = this.vir.positions[index].height;
-        const dValue = oldHeight - height; // 存在差值
-        if (dValue) {
-          this.vir.positions[index].bottom -= dValue;
-          this.vir.positions[index].height = height;
-          for (let k = index + 1; k < this.vir.positions.length; k++) {
-            this.vir.positions[k].top = this.vir.positions[k - 1].bottom;
-            this.vir.positions[k].bottom -= dValue;
-          }
-        }
-      });
-    } // 设置当前的偏移量
-    virSetStartOffset() {
-      let startOffset;
-      if (this.vir.start >= 1) {
-        const size =
-          this.vir.positions[this.vir.start].top -
-          (this.vir.positions[this.vir.start - this.virAboveCount()]
-            ? this.vir.positions[this.vir.start - this.virAboveCount()].top
-            : 0);
-        startOffset = this.vir.positions[this.vir.start - 1].bottom - size;
-      } else {
-        startOffset = 0;
-      }
-      return startOffset;
-    } // 滚动事件
-    virScrollEvent() {
-      // 当前滚动位置
-      const scrollTop = this.virListRef.element.scrollTop; // 此时的开始索引
-      this.vir.start = this.virGetStartIndex(scrollTop); // 此时的结束索引
-      this.vir.end = this.vir.start + this.virVisibleCount(); // 更新列表
-      this.virUpdated();
-    }
-    virListData() {
-      return this.vir.listData.map((item, index) => {
-        return { _index: `_${index}`, item };
-      });
-    } // 可显示的列表项数
-    virVisibleCount() {
-      return Math.ceil(this.vir.screenHeight / this.vir.estimatedItemSize);
-    } // 可视区上方渲染条数
-    virAboveCount() {
-      return Math.min(
-        this.vir.start,
-        this.vir.bufferScale * this.virVisibleCount()
-      );
-    } // 可视区下方渲染条数
-    virBelowCount() {
-      return Math.min(
-        this.vir.listData.length - this.vir.end,
-        this.vir.bufferScale * this.virVisibleCount()
-      );
-    } // 获取真实显示列表数据
-    virVisibleData() {
-      const start = this.vir.start - this.virAboveCount();
-      const end = this.vir.end + this.virBelowCount();
-      return this.virListData().slice(start, end);
-    } /* 虚拟列表支持函数-end */
   }
   Component.register(ListContent);
   class List extends Component {
@@ -5047,7 +4863,7 @@ function _defineProperty2(obj, key, value) {
         },
         virtual: false,
         virtualSupport: {
-          height: typeof props.virtual === "number" ? props.virtual : 400, // 容器高度
+          height: typeof props.virtual === "number" ? props.virtual : 300, // 容器高度
           size: 30, // 每个列表项高度预估值
           bufferScale: 1, // 缓冲区比例
         },
@@ -5056,6 +4872,13 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
+      const { virtual } = this.props;
+      if (
+        this.firstRender &&
+        (virtual === true || typeof virtual === "number")
+      ) {
+        this.virCreated();
+      }
       this.itemRefs = {};
       this.selectedItem = null;
       this._addPropStyle("gutter", "line", "align", "justify", "cols");
@@ -5069,7 +4892,11 @@ function _defineProperty2(obj, key, value) {
         !this.props.items.length && this.props.showEmpty
           ? empty
           : { component: ListContent };
-      this.setProps({ children: children });
+      if (virtual === true || typeof virtual === "number") {
+        this.virChildren(children);
+      } else {
+        this.setProps({ children: children });
+      }
     }
     getItem(param) {
       let retItem = null;
@@ -5209,6 +5036,180 @@ function _defineProperty2(obj, key, value) {
         this.scrollTo(this.selectedItem);
       }
     }
+    /* 虚拟列表支持函数-start */ virCreated() {
+      const { items, virtualSupport } = this.props;
+      this.virtual = {
+        start: 0,
+        end: 0,
+        positions: [
+          // {
+          //   top:0,
+          //   bottom:100,
+          //   height:100,
+          // }
+        ],
+        itemsRefs: [], // 当前列表项arry
+        listData: items, // 所有列表数据
+        ListHeight: virtualSupport.height, // 可视区域高度
+        estimatedSize: virtualSupport.size, // 预估高度
+        bufferScale: virtualSupport.bufferScale, // 缓冲区比例
+        toolDivRef: null,
+      };
+      this.virInitPositions();
+    }
+    virChildren(childObj) {
+      const { positions, ListHeight } = this.virtual;
+      const toolDivHeight = positions[positions.length - 1].bottom;
+      this.setProps({
+        classes: { "nom-virtual-list-container": true },
+        attrs: {
+          style: { height: `${ListHeight}px` },
+          onscroll: () => {
+            this.virScrollEvent();
+          },
+        },
+        children: [
+          {
+            ref: (c) => {
+              this.virtual.toolDivRef = c;
+            },
+            classes: { "nom-virtual-list-tooldiv": true },
+            attrs: { style: { height: `${toolDivHeight}px` } },
+            children: "",
+          },
+          childObj,
+        ],
+      });
+    }
+    virGetList(arry) {
+      this.virtual.itemsRefs = [];
+      const _that = this;
+      return arry.map(function (obj) {
+        return Component.extendProps(obj, {
+          ref: (c) => {
+            if (c) _that.virtual.itemsRefs.push(c);
+          },
+          classes: { "nom-virtual-list-item": true },
+          attrs: { "data-key": obj._index },
+        });
+      });
+    } // 需要在 渲染完成后，获取列表每项的位置信息并缓存
+    virUpdated() {
+      if (!this.virtual.itemsRefs || !this.virtual.itemsRefs.length) {
+        return;
+      }
+      const { positions, toolDivRef } = this.virtual;
+      this.virUpdateItemsSize();
+      const toolDivHeight = positions[positions.length - 1].bottom;
+      toolDivRef.element.style.height = `${toolDivHeight}px`;
+      this.content.update({
+        attrs: {
+          style: {
+            transform: `translate3d(0,${this.virSetStartOffset()}px,0)`,
+          },
+        },
+      });
+    } // 初始化位置信息
+    virInitPositions() {
+      const { estimatedSize, listData } = this.virtual;
+      this.virtual.positions = listData.map((d, index) => ({
+        index,
+        height: estimatedSize,
+        top: index * estimatedSize,
+        bottom: (index + 1) * estimatedSize,
+      }));
+    } // 获取列表起始索引
+    virGetStartIndex(scrollTop = 0) {
+      return this.virBinarySearch(this.virtual.positions, scrollTop);
+    } // 二分法
+    virBinarySearch(list, value) {
+      let start = 0;
+      let end = list.length - 1;
+      let tempIndex = null;
+      while (start <= end) {
+        const midIndex = parseInt((start + end) / 2, 10);
+        const midValue = list[midIndex].bottom;
+        if (midValue === value) {
+          return midIndex + 1;
+        }
+        if (midValue < value) {
+          start = midIndex + 1;
+        } else if (midValue > value) {
+          if (tempIndex === null || tempIndex > midIndex) {
+            tempIndex = midIndex;
+          }
+          end -= 1;
+        }
+      }
+      return tempIndex;
+    } // 获取列表项的当前尺寸
+    virUpdateItemsSize() {
+      const { itemsRefs, positions } = this.virtual;
+      itemsRefs.forEach((node) => {
+        if (!node.rendered) return;
+        const rect = node.element.getBoundingClientRect();
+        const height = rect.height;
+        const index = +node.element.dataset.key.slice(1);
+        const oldHeight = positions[index].height;
+        const dValue = oldHeight - height; // 存在差值
+        if (dValue) {
+          positions[index].bottom -= dValue;
+          positions[index].height = height;
+          for (let k = index + 1; k < positions.length; k++) {
+            positions[k].top = positions[k - 1].bottom;
+            positions[k].bottom -= dValue;
+          }
+        }
+      });
+    } // 设置当前的偏移量
+    virSetStartOffset() {
+      const { start, positions } = this.virtual;
+      let startOffset;
+      if (start >= 1 && positions[start]) {
+        const size =
+          positions[start].top -
+          (positions[start - this.virAboveCount()]
+            ? positions[start - this.virAboveCount()].top
+            : 0);
+        startOffset = positions[start - 1].bottom - size;
+      } else {
+        startOffset = 0;
+      }
+      return startOffset;
+    } // 滚动事件
+    virScrollEvent() {
+      // 当前滚动位置
+      const scrollTop = this.element.scrollTop;
+      if (!this.virGetStartIndex(scrollTop)) return; // 此时的开始索引
+      this.virtual.start = this.virGetStartIndex(scrollTop); // 此时的结束索引
+      this.virtual.end = this.virtual.start + this.virVisibleCount(); // 更新列表
+      this.virUpdated();
+    }
+    virListData() {
+      return this.virtual.listData.map((obj, index) => {
+        return Object.assign({}, obj, { _index: `_${index}` });
+      });
+    } // 可显示的列表项数
+    virVisibleCount() {
+      return Math.ceil(this.virtual.ListHeight / this.virtual.estimatedSize);
+    } // 可视区上方渲染条数
+    virAboveCount() {
+      return Math.min(
+        this.virtual.start,
+        this.virtual.bufferScale * this.virVisibleCount()
+      );
+    } // 可视区下方渲染条数
+    virBelowCount() {
+      return Math.min(
+        this.virtual.listData.length - this.virtual.end,
+        this.virtual.bufferScale * this.virVisibleCount()
+      );
+    } // 获取真实显示列表数据
+    virVisibleData() {
+      const start = this.virtual.start - this.virAboveCount();
+      const end = this.virtual.end + this.virBelowCount();
+      return this.virListData().slice(start, end);
+    } /* 虚拟列表支持函数-end */
   }
   Component.register(List);
   var AutoCompleteListItemMixin = {
@@ -11190,7 +11191,9 @@ function _defineProperty2(obj, key, value) {
                 },
               }
             : null,
-          body: { children: { component: SelectList } },
+          body: {
+            children: { component: SelectList, virtual: this.props.virtual },
+          },
         },
       });
       super._config();
@@ -11220,7 +11223,7 @@ function _defineProperty2(obj, key, value) {
           },
         },
         selectedMultiple: {
-          component: List, // virtual: true,
+          component: List,
           itemDefaults: {
             _config: function () {
               this.setProps({ tag: "span", children: this.props.text });
@@ -11233,6 +11236,7 @@ function _defineProperty2(obj, key, value) {
         minItemsForSearch: 20,
         filterOption: (text, options) =>
           options.filter((o) => o.text.indexOf(text) >= 0),
+        virtual: false,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -11326,9 +11330,10 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     _rendered() {
-      const { value } = this.props;
+      const { value, virtual } = this.props;
       this.popup = new SelectPopup({
         trigger: this.control,
+        virtual,
         onShow: () => {
           this.optionList.scrollToSelected();
         },
@@ -14056,6 +14061,7 @@ function _defineProperty2(obj, key, value) {
       if (!this.scrollbar) {
         this.scrollbar = new Scrollbar({ target: this.grid });
       }
+      this._hideScrolls();
       this.position = null;
       this.size = null;
       if (this.grid.props.sticky === true) {
@@ -14076,6 +14082,15 @@ function _defineProperty2(obj, key, value) {
     }
     _remove() {
       this.scrollbar && this.scrollbar._remove();
+    }
+    _hideScrolls() {
+      const scrolls = document.getElementsByClassName("nom-scrollbar");
+      if (!scrolls.length) {
+        return;
+      }
+      for (let i = 0; i < scrolls.length; i++) {
+        scrolls[i].classList.add("s-hidden");
+      }
     }
     _onPageScroll() {
       if (!this.props) {
@@ -14302,6 +14317,7 @@ function _defineProperty2(obj, key, value) {
         this.loadingInst = null;
       }
       if (
+        this.props.data &&
         this.props.autoMergeColumns &&
         this.props.autoMergeColumns.length > 0
       ) {
@@ -17213,10 +17229,11 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _getValue() {
-      if (!this.realValue || this.realValue === "") {
+      const val = this.realValue ? this.realValue.trim(" ") : this.realValue;
+      if (!val || val === "") {
         return null;
       }
-      return this.realValue;
+      return val;
     }
   }
   Component.register(Password);

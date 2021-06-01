@@ -134,7 +134,7 @@ class Grid extends Component {
       this.loadingInst = null
     }
 
-    if (this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
+    if (this.props.data && this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
       this.autoMergeCols()
     }
   }

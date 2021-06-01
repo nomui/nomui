@@ -4645,8 +4645,6 @@ img {
 }
 .nom-list {
   overflow: hidden;
-  /* 虚拟列表支持函数-start */
-  /* 虚拟列表支持函数-end */
 }
 .nom-list > .nom-list-content {
   display: flex;
@@ -4844,27 +4842,27 @@ img {
 .nom-list.p-cols-10 > .nom-list-content .nom-virtual-list-item {
   width: 10%;
 }
-.nom-list .nom-virtual-list-container {
+/* 虚拟列表支持函数-start */
+.nom-list.nom-virtual-list-container {
   position: relative;
   width: 100%;
-  overflow: auto;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-.nom-list .nom-virtual-list-container .nom-virtual-list-phantom {
+.nom-list.nom-virtual-list-container .nom-virtual-list-tooldiv {
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
   z-index: -1;
 }
-.nom-list .nom-virtual-list-container .nom-virtual-list-content {
+.nom-list.nom-virtual-list-container .nom-virtual-list-content {
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
-  display: flex;
-  flex-wrap: wrap;
 }
+/* 虚拟列表支持函数-end */
 .nom-virtual-list .nom-virtual-list-container {
   position: relative;
   overflow: auto;

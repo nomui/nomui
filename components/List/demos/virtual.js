@@ -1,16 +1,16 @@
 define(['./helper.js'], function (helper) {
   return {
-    title: '开启虚拟渲染功能的列表',
-    file: 'basic',
+    title: '列表开启虚拟渲染',
+    file: 'virtual',
     demo: function () {
       return {
         component: 'List',
         itemSelectable: {
           byClick: true,
         },
-        gutter: 'lg',
+        gutter: 'md',
         line: 'split',
-        cols: 2,
+        cols: 1,
         onItemSelectionChange({ sender }) {
           console.log(sender)
         },
