@@ -78,7 +78,8 @@ class Textbox extends Field {
   }
 
   _getValue() {
-    const inputText = this.getText()
+    let inputText = this.getText()
+    inputText = inputText.trim(' ')
     if (inputText === '') {
       return null
     }

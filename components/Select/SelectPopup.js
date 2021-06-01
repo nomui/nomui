@@ -1,8 +1,8 @@
 import Component from '../Component/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
-import SelectList from './SelectList'
 import Textbox from '../Textbox/index'
+import SelectList from './SelectList'
 
 class SelectPopup extends Popup {
   constructor(props, ...mixins) {
@@ -65,11 +65,11 @@ class SelectPopup extends Popup {
         body: {
           children: {
             component: SelectList,
+            virtual: this.props.virtual,
           },
         },
       },
     })
-
     super._config()
   }
 

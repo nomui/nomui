@@ -81,10 +81,11 @@ class Password extends Textbox {
   }
 
   _getValue() {
-    if (!this.realValue || this.realValue === '') {
+    const val = this.realValue ? this.realValue.trim(' ') : this.realValue
+    if (!val || val === '') {
       return null
     }
-    return this.realValue
+    return val
   }
 }
 
