@@ -48,6 +48,19 @@ class ListContent extends Component {
         children: this.list.virGetList(this.list.virVisibleData()),
         childDefaults: wrapperDefaults,
       })
+      // if (this.list.virtual.selectedItems) {
+      //   clearTimeout(this.list.virtual.selectedTimer)
+      //   this.list.virtual.selectedTimer = setTimeout(() => {
+      //     const arry = this.list.virtual.selectedItems.map((item) => {
+      //       return item.value
+      //     })
+      //     console.log(arry)
+      //     this.list.selectItems(arry, {
+      //       triggerSelect: false,
+      //       triggerSelectionChange: false,
+      //     })
+      //   }, 500)
+      // }
     } else {
       this.setProps({
         children: children,

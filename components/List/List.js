@@ -231,6 +231,7 @@ class List extends Component {
   virCreated() {
     const { items, virtualSupport } = this.props
     this.virtual = {
+      virtualTimer: null,
       start: 0,
       end: 0,
       positions: [
@@ -240,6 +241,7 @@ class List extends Component {
         //   height:100,
         // }
       ],
+      selectedItems: [], // 下拉选择中选中数据
       itemsRefs: [], // 当前列表项arry
       listData: items, // 所有列表数据
       ListHeight: virtualSupport.height, // 可视区域高度
@@ -403,13 +405,16 @@ class List extends Component {
   virScrollEvent() {
     // 当前滚动位置
     const scrollTop = this.element.scrollTop
-    if (!this.virGetStartIndex(scrollTop)) return
-    // 此时的开始索引
-    this.virtual.start = this.virGetStartIndex(scrollTop)
-    // 此时的结束索引
-    this.virtual.end = this.virtual.start + this.virVisibleCount()
-    // 更新列表
-    this.virUpdated()
+    // if (!this.virGetStartIndex(scrollTop)) return
+    this.virtual.virtualTimer && clearTimeout(this.virtual.virtualTimer)
+    this.virtual.virtualTimer = setTimeout(() => {
+      // 此时的开始索引
+      this.virtual.start = this.virGetStartIndex(scrollTop)
+      // 此时的结束索引
+      this.virtual.end = this.virtual.start + this.virVisibleCount()
+      // 更新列表
+      this.virUpdated()
+    }, 100)
   }
 
   virListData() {
