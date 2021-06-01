@@ -282,12 +282,6 @@ define([], function () {
                       url: '#!components!index?type=List',
                     },
                     {
-                      text: 'VirtualList',
-                      subtext: '列表',
-                      id: 'VirtualList',
-                      url: '#!components!index?type=VirtualList',
-                    },
-                    {
                       text: 'Tag',
                       subtext: '标签',
                       id: 'Tag',
