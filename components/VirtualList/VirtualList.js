@@ -262,19 +262,6 @@ class VirtualList extends Component {
     const end = this.end + this.belowCount()
     return this._listData().slice(start, end)
   }
-
-  // 防抖函数
-  debounce(func, wait) {
-    let timer = null
-    return function () {
-      const context = this
-      const args = arguments
-      timer && clearTimeout(timer)
-      timer = setTimeout(function () {
-        func.apply(context, args)
-      }, wait)
-    }
-  }
 }
 
 Component.register(VirtualList)
