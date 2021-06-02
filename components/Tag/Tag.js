@@ -42,7 +42,7 @@ class Tag extends Component {
     this.setProps({
       children: [
         Component.normalizeIconProps(icon),
-        text && { tag: 'span', children: text },
+        { tag: 'span', children: text },
         number && { tag: 'span', children: number > overflowCount ? `${overflowCount}+` : number },
         removable &&
           Component.normalizeIconProps({

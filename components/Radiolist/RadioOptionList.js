@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import List from '../List/index'
 
-class OptionList extends List {
+class RadioOptionList extends List {
   constructor(props, ...mixins) {
     const defaults = {
       itemDefaults: {
@@ -63,4 +63,4 @@ class OptionList extends List {
   }
 }
 
-export default OptionList
+export default RadioOptionList
