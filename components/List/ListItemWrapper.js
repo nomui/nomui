@@ -19,6 +19,9 @@ class ListItemWrapper extends Component {
     this._addPropStyle('span')
     const { item, span } = this.props
     const { itemDefaults } = this.list.props
+    if (this.props.disabled) {
+      item.disabled = true
+    }
 
     if (!span && item.span) {
       this.setProps({

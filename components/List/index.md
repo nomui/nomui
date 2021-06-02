@@ -11,6 +11,7 @@
 | gutter | 栅格间隔 | `'sm'\|'md'\|'lg'` | - |
 | line | 分割线、网格线、交叉线 | `'null'\|'split'\|'grid'\|'cross'` | null |
 | items | 列表数据源 | `[]` | - |
+| disabledItems | 禁用的选项，传入想要禁用选项的 key 的数组 | `[key]` | - |
 | itemDefaults | 列表数据源的统一默认配置 | `{}` | - |
 | cols | 列表展示为多少列 | `'number'` | - |
 | onItemSelectionChange | 当列表选项改变时触发 | `'function'` | - |
