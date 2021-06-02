@@ -6977,7 +6977,10 @@ function _defineProperty2(obj, key, value) {
         onSelect: () => {
           if (tree.selectedNode !== null) tree.selectedNode.unselect();
           tree.selectedNode = this.node;
-          tree._onNodeSelect({ node: this.node });
+          tree._onNodeSelect({
+            node: this.node,
+            nodeData: this.node.props.data,
+          });
         },
       });
       if (
@@ -9846,6 +9849,7 @@ function _defineProperty2(obj, key, value) {
           onlyleaf: false,
           byClick: true,
           selectedNodeKey: null,
+          scrollIntoView: true,
         },
         dataFields: {
           key: "key",
@@ -9996,7 +10000,21 @@ function _defineProperty2(obj, key, value) {
     }
     selectNode(param) {
       const node = this.getNode(param);
-      node.select();
+      if (node) {
+        node.select();
+        if (this.props.nodeSelectable.scrollIntoView) {
+          this.scrollTo(node);
+        }
+      }
+    }
+    scrollTo(param) {
+      const node = this.getNode(param);
+      if (node) {
+        scrollIntoView(node.element, {
+          behavior: "smooth",
+          scrollMode: "if-needed",
+        });
+      }
     }
     checkAllNodes() {
       Object.keys(this.nodeRefs).forEach((nodeKey) => {
