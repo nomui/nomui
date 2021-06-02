@@ -90,14 +90,14 @@
         display: flex;
 
         > .nom-input {
-          border-bottom-right-radius: 0;
           border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
         }
 
         > .nom-textbox-button {
           border-left: transparent;
-          border-bottom-left-radius: 0;
           border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
         }
       }
     }
@@ -123,5 +123,12 @@
     color: #a4a2bb;
     font-size: 16px;
     line-height: @input-height-base;
+  }
+}
+
+.nom-time-picker,
+.nom-date-picker {
+  .nom-input[readonly] {
+    background: none;
   }
 }
