@@ -14,6 +14,7 @@ class TabList extends List {
         byClick: true,
       },
       onTabSelectionChange: null,
+      disabledItems: [],
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

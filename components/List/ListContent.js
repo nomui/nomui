@@ -34,7 +34,14 @@ class ListContent extends Component {
       }
     } else if (Array.isArray(items) && items.length > 0) {
       for (let i = 0; i < items.length; i++) {
-        children.push({ component: ListItemWrapper, item: items[i] })
+        if (
+          this.list.props.disabledItems.length &&
+          this.list.props.disabledItems.includes(items[i].key)
+        ) {
+          children.push({ component: ListItemWrapper, item: items[i], disabled: true })
+        } else {
+          children.push({ component: ListItemWrapper, item: items[i] })
+        }
       }
     }
 
@@ -94,6 +101,7 @@ class ListContent extends Component {
 
   selectItem(param, selectOption) {
     const item = this.getItem(param)
+
     item && item.select(selectOption)
   }
 

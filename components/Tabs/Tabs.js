@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isFunction } from '../util/index'
 import TabContent from './TabContent'
 import TabList from './TabList'
 
@@ -9,6 +10,8 @@ class Tabs extends Component {
       // selectedTab: 'tab0',
       uistyle: 'plain', // hat,card,line,pill
       onTabSelectionChange: null,
+      disabledItems: [],
+      tools: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -19,7 +22,7 @@ class Tabs extends Component {
     const that = this
     const tabItems = []
     const tabPanles = []
-    const { tabs, uistyle } = this.props
+    const { tabs, uistyle, disabledItems } = this.props
     let { selectedTab } = this.props
     for (let i = 0; i < tabs.length; i++) {
       const tab = tabs[i]
@@ -41,6 +44,7 @@ class Tabs extends Component {
         items: tabItems,
         uistyle: uistyle,
         selectedTab: selectedTab,
+        disabledItems: disabledItems,
         _created: function () {
           this.tabs = that
           that.tabList = this
@@ -58,9 +62,25 @@ class Tabs extends Component {
       },
     })
 
-    this.setProps({
-      children: [this.props.tabList, this.props.tabContent],
-    })
+    if (this.props.tools) {
+      this.setProps({
+        children: [
+          {
+            component: 'Cols',
+            strechIndex: 0,
+            items: [
+              this.props.tabList,
+              isFunction(this.props.tools) ? this.props.tools() : this.props.tools,
+            ],
+          },
+          this.props.tabContent,
+        ],
+      })
+    } else {
+      this.setProps({
+        children: [this.props.tabList, this.props.tabContent],
+      })
+    }
   }
 
   getSelectedTab() {
