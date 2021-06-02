@@ -11,14 +11,6 @@ class AutoComplete extends Textbox {
       interval: 300,
       filterOption: (value, options) => options.filter((o) => o.value.includes(value)),
       allowClear: true,
-      // rightIcon: {
-      //   compoent: 'Icon',
-      //   type: 'close',
-      //   hidden: true,
-      //   onClick({ event }) {
-      //     event.stopPropagation()
-      //   },
-      // },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -37,16 +29,43 @@ class AutoComplete extends Textbox {
 
   _rendered() {
     this.input && this._init()
-    this.popup && this.popup.remove()
+    const { options } = this.props.options
 
     this.popup = new AutoCompletePopup({
       trigger: this.control,
-      options: this.props.options,
+      options,
     })
   }
 
   _remove() {
     this.timer && clearTimeout(this.timer)
+  }
+
+  _config() {
+    const autoCompleteRef = this
+    const { allowClear, options } = this.props
+    if (allowClear) {
+      this.setProps({
+        rightIcon: {
+          component: 'Icon',
+          type: 'close',
+          classes: {
+            'nom-auto-complete-clear': true,
+          },
+          onClick: ({ event }) => {
+            event.stopPropagation()
+            autoCompleteRef.clear()
+            autoCompleteRef.popup && autoCompleteRef.popup.hide()
+          },
+        },
+      })
+    }
+
+    if (options && this.popup) {
+      this.popup.update({ options, hidden: false })
+    }
+
+    super._config()
   }
 
   _init() {
@@ -91,6 +110,10 @@ class AutoComplete extends Textbox {
 
   _setValue(value, options) {
     super._setValue(value, options)
+  }
+
+  blur() {
+    super.blur()
   }
 
   focus() {

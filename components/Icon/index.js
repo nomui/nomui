@@ -282,11 +282,11 @@ Icon.add(
 
 /* FileType */
 cat = 'FileType'
-Icon.add(
-  'default',
-  `<svg t="1609743512982" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="26933" width="1em" height="1em"><path d="M0 0h1024v1024H0z" fill="#D8D8D8" fill-opacity="0" p-id="26934"></path><path d="M553.356 187.733L768 402.823v342.649c0 40.719-33.01 73.728-73.728 73.728H329.728c-40.719 0-73.728-33.01-73.728-73.728v-484.01c0-40.72 33.01-73.729 73.728-73.729h223.628z" fill="#DBDFE7" p-id="26935"></path><path d="M549.85 187.733L768 405.883v3.717H644.437c-54.291 0-98.304-44.012-98.304-98.304V187.733h3.716z" fill="#C0C4CC" p-id="26936"></path></svg>`,
-  cat,
-)
+// Icon.add(
+//   'default',
+//   `<svg t="1609743512982" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="26933" width="1em" height="1em"><path d="M0 0h1024v1024H0z" fill="#D8D8D8" fill-opacity="0" p-id="26934"></path><path d="M553.356 187.733L768 402.823v342.649c0 40.719-33.01 73.728-73.728 73.728H329.728c-40.719 0-73.728-33.01-73.728-73.728v-484.01c0-40.72 33.01-73.729 73.728-73.729h223.628z" fill="#DBDFE7" p-id="26935"></path><path d="M549.85 187.733L768 405.883v3.717H644.437c-54.291 0-98.304-44.012-98.304-98.304V187.733h3.716z" fill="#C0C4CC" p-id="26936"></path></svg>`,
+//   cat,
+// )
 
 Icon.add(
   'file-error',
