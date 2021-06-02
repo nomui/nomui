@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '自定义控制tab',
-    file: 'basic',
+    file: 'tab-operator',
     demo: function () {
       let tabRef
       return {
@@ -14,6 +14,18 @@ define([], function () {
                 text: '激活Profile',
                 onClick: function () {
                   tabRef.selectTab('profile')
+                },
+              },
+              {
+                component: 'Button',
+                text: '禁用Contact',
+                onClick: function () {
+                  // eslint-disable-next-line no-alert
+                  tabRef.update({
+                    tabList: {
+                      disabledItems: ['contract'],
+                    },
+                  })
                 },
               },
               {
