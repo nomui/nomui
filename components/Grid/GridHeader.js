@@ -43,6 +43,7 @@ class GridHeader extends Component {
         target: this.grid,
       })
     }
+    this._hideScrolls()
     this.position = null
     this.size = null
 
@@ -68,7 +69,20 @@ class GridHeader extends Component {
     this.scrollbar && this.scrollbar._remove()
   }
 
+  _hideScrolls() {
+    const scrolls = document.getElementsByClassName('nom-scrollbar')
+    if (!scrolls.length) {
+      return
+    }
+    for (let i = 0; i < scrolls.length; i++) {
+      scrolls[i].classList.add('s-hidden')
+    }
+  }
+
   _onPageScroll() {
+    if (!this.props) {
+      return
+    }
     this.element.style.transform = `translateY(0px)`
     let pRect = null
     if (this.grid.props.sticky === true) {

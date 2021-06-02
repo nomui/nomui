@@ -4,7 +4,6 @@
 
 // Button sizes
 .button-size(@padding-y; @padding-x; @font-size; @line-height; @border-radius) {
-
   @iconsize: unit(@line-height, em);
 
   padding: @padding-y @padding-x;
@@ -12,14 +11,14 @@
   line-height: @line-height;
   border-radius: @border-radius;
 
-  >.nom-icon {
+  > .nom-icon {
     height: @iconsize;
   }
 
   &.p-only-icon.p-shape-circle {
     padding: @padding-y;
 
-    >.nom-icon {
+    > .nom-icon {
       width: @iconsize;
     }
   }
@@ -65,7 +64,6 @@
   }
 
   a& {
-
     &.disabled,
     fieldset[disabled] & {
       pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
@@ -80,12 +78,12 @@
     .u-color-danger-outline();
 
     &.p-type-primary {
-      .u-color-danger()
+      .u-color-danger();
     }
   }
 
   &.p-type-primary {
-    .u-color-primary()
+    .u-color-primary();
   }
 
   &.p-type-dashed {
@@ -93,15 +91,18 @@
   }
 
   &.p-type-text {
+    padding-right: 0.25rem;
+    padding-left: 0.25rem;
     background-color: transparent !important;
     border-color: transparent !important;
-
     &:hover {
-      background: rgba(0, 0, 0, .018);
+      background: rgba(0, 0, 0, 0.018);
     }
   }
 
   &.p-type-link {
+    padding-right: 0.25rem;
+    padding-left: 0.25rem;
     color: @link-color;
     background-color: transparent;
     border-color: transparent !important;
@@ -154,8 +155,8 @@
     justify-content: center;
   }
 
-  >.nom-icon+span,
-  >span+.nom-icon {
+  > .nom-icon + span,
+  > span + .nom-icon {
     margin-left: 0.5rem;
   }
 }

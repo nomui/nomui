@@ -18,7 +18,7 @@ class ListContent extends Component {
 
   _config() {
     this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
-    const { items, wrappers, wrapperDefaults } = this.list.props
+    const { items, wrappers, wrapperDefaults, virtual } = this.list.props
     const children = []
 
     if (Array.isArray(wrappers) && wrappers.length > 0) {
@@ -38,10 +38,35 @@ class ListContent extends Component {
       }
     }
 
-    this.setProps({
-      children: children,
-      childDefaults: wrapperDefaults,
-    })
+    // 开启虚拟列表功能
+    if ((virtual === true || typeof virtual === 'number') && children.length !== 0) {
+      this.list.virtual.listData = children
+      this.setProps({
+        classes: {
+          'nom-virtual-list-content': true,
+        },
+        children: this.list.virGetList(this.list.virVisibleData()),
+        childDefaults: wrapperDefaults,
+      })
+      // if (this.list.virtual.selectedItems) {
+      //   clearTimeout(this.list.virtual.selectedTimer)
+      //   this.list.virtual.selectedTimer = setTimeout(() => {
+      //     const arry = this.list.virtual.selectedItems.map((item) => {
+      //       return item.value
+      //     })
+      //     console.log(arry)
+      //     this.list.selectItems(arry, {
+      //       triggerSelect: false,
+      //       triggerSelectionChange: false,
+      //     })
+      //   }, 500)
+      // }
+    } else {
+      this.setProps({
+        children: children,
+        childDefaults: wrapperDefaults,
+      })
+    }
   }
 
   getItem(param) {

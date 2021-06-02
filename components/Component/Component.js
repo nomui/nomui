@@ -254,17 +254,24 @@ class Component {
           this.appendChild(children[i])
         }
       }
+    } else if (children === 0) {
+      this.appendChild(`${children}`)
     } else if (children && children.renderIf !== false) {
       this.appendChild(children)
     }
   }
 
   _removeCore() {
-    this.emptyChildren()
-    const el = this.element
+    let el = this.element
+    if (el) {
+      this.emptyChildren()
+    } else {
+      el = this._placeHolderElement
+    }
     isFunction(this.props._remove) && this.props._remove.call(this, this)
     this._callMixin('_remove')
     isFunction(this._remove) && this._remove()
+    this.trigger('remove')
     this._off()
     this.off()
     this.props.ref && this.props.ref(null)

@@ -8,7 +8,8 @@
     padding: 0;
     .list-unstyled();
 
-    > .nom-list-item-wrapper {
+    > .nom-list-item-wrapper,
+    .nom-virtual-list-item {
       &.p-span-1 {
         width: 8.33%;
       }
@@ -58,7 +59,8 @@
       }
     }
 
-    > .nom-list-item-wrapper > .nom-list-item {
+    > .nom-list-item-wrapper > .nom-list-item,
+    .nom-virtual-list-item .nom-list-item {
       &.s-selected {
         z-index: 2;
       }
@@ -78,7 +80,8 @@
     > .nom-list-content {
       margin: -0.25rem -0.25rem;
 
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         padding: 0.25rem 0.25rem;
       }
     }
@@ -88,7 +91,8 @@
     > .nom-list-content {
       margin: -0.5rem -0.5rem;
 
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         padding: 0.5rem 0.5rem;
       }
     }
@@ -98,7 +102,8 @@
     > .nom-list-content {
       margin: -1rem -1rem;
 
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         padding: 1rem 1rem;
       }
     }
@@ -108,7 +113,8 @@
     > .nom-list-content {
       margin: 0 -0.25rem;
 
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         padding: 0 0.25rem;
       }
     }
@@ -118,7 +124,8 @@
     > .nom-list-content {
       margin: 0 -0.5rem;
 
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         padding: 0 0.5rem;
       }
     }
@@ -128,7 +135,8 @@
     > .nom-list-content {
       margin: 0 -1rem;
 
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         padding: 0 1rem;
       }
     }
@@ -136,7 +144,8 @@
 
   &.p-line-split {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         .u-border-left();
 
         margin-left: -1px;
@@ -147,7 +156,8 @@
 
     &.p-gutter-sm {
       > .nom-list-content {
-        > .nom-list-item-wrapper {
+        > .nom-list-item-wrapper,
+        .nom-virtual-list-item {
           margin-top: 0.25rem;
           margin-bottom: 0.25rem;
         }
@@ -156,7 +166,8 @@
 
     &.p-gutter-md {
       > .nom-list-content {
-        > .nom-list-item-wrapper {
+        > .nom-list-item-wrapper,
+        .nom-virtual-list-item {
           margin-top: 0.5rem;
           margin-bottom: 0.5rem;
         }
@@ -165,7 +176,8 @@
 
     &.p-gutter-lg {
       > .nom-list-content {
-        > .nom-list-item-wrapper {
+        > .nom-list-item-wrapper,
+        .nom-virtual-list-item {
           margin-top: 1rem;
           margin-bottom: 1rem;
         }
@@ -178,7 +190,8 @@
     > .nom-list-content {
       margin: 0 !important;
 
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         .u-border-left();
         .u-border-bottom();
 
@@ -194,7 +207,8 @@
       .u-border-right();
       .u-border-bottom();
 
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         margin-left: 0;
       }
     }
@@ -202,7 +216,8 @@
 
   &.p-cols-1 {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         width: 100%;
       }
     }
@@ -210,7 +225,8 @@
 
   &.p-cols-2 {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         width: 50%;
       }
     }
@@ -218,7 +234,8 @@
 
   &.p-cols-3 {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         width: 33.33%;
       }
     }
@@ -226,7 +243,8 @@
 
   &.p-cols-4 {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         width: 25%;
       }
     }
@@ -234,7 +252,8 @@
 
   &.p-cols-5 {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         width: 20%;
       }
     }
@@ -242,7 +261,8 @@
 
   &.p-cols-6 {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         width: 16.66%;
       }
     }
@@ -250,7 +270,8 @@
 
   &.p-cols-7 {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         width: 14.28%;
       }
     }
@@ -258,7 +279,8 @@
 
   &.p-cols-8 {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         width: 12.5%;
       }
     }
@@ -266,7 +288,8 @@
 
   &.p-cols-9 {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         width: 11.11%;
       }
     }
@@ -274,9 +297,34 @@
 
   &.p-cols-10 {
     > .nom-list-content {
-      > .nom-list-item-wrapper {
+      > .nom-list-item-wrapper,
+      .nom-virtual-list-item {
         width: 10%;
       }
     }
   }
 }
+
+/* 虚拟列表支持函数-start */
+.nom-list.nom-virtual-list-container {
+  position: relative;
+  width: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  .nom-virtual-list-tooldiv {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+  .nom-virtual-list-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+}
+
+/* 虚拟列表支持函数-end */

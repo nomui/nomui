@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isFunction } from '../util/index'
 
 class Th extends Component {
   constructor(props, ...mixins) {
@@ -16,6 +17,7 @@ class Th extends Component {
     this.table = this.tr.table
     this.resizer = null
     this.lastDistance = 0
+    this.table.thRefs[this.props.column.field] = this
   }
 
   _config() {
@@ -48,6 +50,84 @@ class Th extends Component {
           type: sortIcon,
           onClick: function () {
             that.onSortChange()
+          },
+        },
+      this.props.column.filter &&
+        this.props.column.colSpan > 0 && {
+          component: 'Icon',
+          type: 'filter',
+          ref: (c) => {
+            this.filterBtn = c
+          },
+          attrs: {
+            style: {
+              cursor: 'pointer',
+            },
+          },
+          popup: {
+            align: 'bottom right',
+            ref: (c) => {
+              this.filterPopup = c
+            },
+            onShow: () => {
+              that.filterGroup && that.filterGroup.setValue(that.filterValue)
+            },
+            children: {
+              attrs: {
+                style: {
+                  padding: '10px',
+                  'min-width': '180px',
+                  'max-width': '250px',
+                },
+              },
+              children: [
+                {
+                  component: 'Group',
+                  ref: (c) => {
+                    this.filterGroup = c
+                  },
+                  fields: [
+                    {
+                      ...(isFunction(that.props.column.filter)
+                        ? that.props.column.filter()
+                        : that.props.column.filter),
+                      name: that.props.column.field,
+                    },
+                  ],
+                },
+                {
+                  attrs: {
+                    style: {
+                      'text-align': 'right',
+                      padding: '0 10px',
+                    },
+                  },
+                  children: {
+                    component: 'Cols',
+                    justify: 'end',
+                    gutter: 'sm',
+                    items: [
+                      {
+                        component: 'Button',
+                        text: '确定',
+                        size: 'small',
+                        onClick: () => {
+                          this.onFilterChange()
+                        },
+                      },
+                      {
+                        component: 'Button',
+                        text: '重置',
+                        size: 'small',
+                        onClick: () => {
+                          this.onFilterReset()
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
           },
         },
       that.table.hasGrid &&
@@ -152,6 +232,34 @@ class Th extends Component {
       })
     }
     that.table.grid.handleSort(that.props.column)
+  }
+
+  resetSort() {
+    this.update({ column: { sortDirection: null } })
+  }
+
+  onFilterChange(isReset) {
+    if (this.filterGroup.getValue()[this.props.column.field]) {
+      this.filterValue = this.filterGroup.getValue()
+    }
+    this.table.grid.filter = { ...this.table.grid.filter, ...this.filterGroup.getValue() }
+    this.filterPopup.hide()
+    this.table.grid.handleFilter(isReset)
+    this.resetFilterStatus()
+  }
+
+  onFilterReset() {
+    this.filterGroup.reset()
+    this.filterValue = null
+    this.onFilterChange(true)
+  }
+
+  resetFilterStatus() {
+    this.filterBtn.update({
+      classes: {
+        'nom-filter-active': !!this.filterValue,
+      },
+    })
   }
 }
 

@@ -1,33 +1,30 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '带图标',
+    file: 'icon',
     demo: function () {
       return {
         children: [
           {
             component: 'Tabs',
-            onTabSelectionChange: ({ key }) => {
-              console.log(`选中的key:${key}`)
+            onTabSelectionChange: () => {
+              console.log('Tab Changed')
             },
             tabs: [
               {
-                key: 'home',
-                item: { text: 'Home' },
+                item: { icon: 'info-circle', text: 'Home' },
                 panel: {
                   children: 'home content',
                 },
               },
               {
-                key: 'profile',
-                item: { text: 'Profile' },
+                item: { icon: 'clock', text: 'Profile' },
                 panel: {
                   children: 'profile content',
                 },
               },
               {
-                key: 'contact',
-                item: { text: 'Contact' },
+                item: { icon: 'calendar', text: 'Contact' },
                 panel: {
                   children: 'contact content',
                 },

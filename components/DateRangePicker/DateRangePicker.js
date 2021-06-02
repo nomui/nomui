@@ -16,6 +16,7 @@ class DateRangePicker extends Group {
         start: 'start',
         end: 'end',
       },
+      flatValue: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

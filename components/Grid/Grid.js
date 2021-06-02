@@ -23,6 +23,7 @@ class Grid extends Component {
     if (this.props.columnsCustomizable && this.props.columnsCustomizable.selected) {
       this.props.visibleColumns = this.props.columnsCustomizable.selected
     }
+    this.filter = {}
   }
 
   _config() {
@@ -133,7 +134,7 @@ class Grid extends Component {
       this.loadingInst = null
     }
 
-    if (this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
+    if (this.props.data && this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
       this.autoMergeCols()
     }
   }
@@ -208,6 +209,26 @@ class Grid extends Component {
 
     this.setSortDirection(sorter)
     this.lastSortField = key
+  }
+
+  resetSort() {
+    if (this.lastSortField) {
+      this.header.table.thRefs[this.lastSortField].resetSort()
+    }
+    this.lastSortField = null
+  }
+
+  handleFilter(isReset) {
+    const that = this
+    if (
+      !isReset &&
+      Object.keys(this.filter).filter(function (key) {
+        return key !== 'sender' && that.filter[key] !== null
+      }) < 1
+    ) {
+      return
+    }
+    this.props.onFilter && this._callHandler(this.props.onFilter, this.filter)
   }
 
   getRow(param) {
@@ -512,12 +533,13 @@ class Grid extends Component {
 
 Grid.defaults = {
   columns: [],
-  data: [],
+  data: null,
   frozenHeader: false,
   frozenLeftCols: null,
   frozenRightCols: null,
   allowFrozenCols: false,
   onSort: null,
+  onFilter: null,
   keyField: 'id',
   treeConfig: {
     childrenField: 'children',
@@ -533,6 +555,7 @@ Grid.defaults = {
   showTitle: false,
   ellipsis: false,
   sticky: false,
+  line: 'row',
 }
 
 Component.register(Grid)

@@ -15,6 +15,7 @@ define([], function () {
             name: 'DateRangePicker',
             label: '日期范围选择',
             component: 'DateRangePicker',
+            flatValue: true,
             format: 'yyyy-MM-dd HH:mm',
             showTime: {
               format: 'HH:mm',

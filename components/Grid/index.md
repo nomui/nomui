@@ -50,6 +50,7 @@
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
 | striped | 是否显示斑马间隔 | `boolean` | `false` |
 | onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
+| onFilter | 列头筛选触发回调 | `({params})=>{}` | - |
 | sticky | 是否开启吸附式表头以及虚拟滚动条,需要指定有滚动条的父容器，设为 true 则指定 window 为滚动容器 | `boolean` \| `component`\| `()=>{}` | false |
 
 ### column
@@ -65,6 +66,7 @@
 | resizable | 是否允许拖动列宽 | `boolean` | `false` |
 | ellipsis | 单元格是否文字超出自动省略 | `boolean` | `false` |
 | sortable | 是否启用排序，为 true 时后端排序，也可以传自定义排序函数进行前端排序，如：`(a, b) => a.sales - b.sales` | `boolean` \| `function` | `false` |
+| filter | 是否启用列头筛选，启用的时候传入表单组件如：Textbox Select Checkbox，组件自动使用当前列的 field 作为表单 name | `component` | `false` |
 
 #### `cellRender` 使用示例及参数说明
 
@@ -137,3 +139,9 @@
 | treeNodeColumn  | 树节点列，被指定列会显示展开及折叠图标，可点击切换展开与否 | `string` | -      |
 | initExpandLevel | 初始展开层级，默认为 -1，代表展开所有层级                  | `number` | -1     |
 | indentSize      | 缩进尺寸，单位 px                                          | `number` | 16     |
+
+## Method
+
+| 参数      | 说明               | 参数 |
+| --------- | ------------------ | ---- |
+| resetSort | 重置表格的排序状态 | -    |

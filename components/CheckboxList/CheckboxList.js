@@ -75,12 +75,18 @@ class CheckboxList extends Field {
     if (value === null) {
       this.optionList.unselectAllItems({ triggerSelectionChange: options.triggerChange })
     }
-    this.optionList.selectItem(
-      function () {
-        return this.props.value === value
-      },
-      { triggerSelectionChange: options.triggerChange },
-    )
+
+    const _that = this
+    const optionsArry = []
+    this.props.options.forEach((ele) => {
+      optionsArry.push(ele.value)
+    })
+    Array.isArray(value) &&
+      value.forEach((ele) => {
+        if (optionsArry.includes(ele)) {
+          _that.optionList.selectItem(ele, { triggerSelectionChange: options.triggerChange })
+        }
+      })
   }
 
   _disable() {

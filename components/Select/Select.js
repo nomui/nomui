@@ -45,6 +45,7 @@ class Select extends Field {
       showArrow: true,
       minItemsForSearch: 20,
       filterOption: (text, options) => options.filter((o) => o.text.indexOf(text) >= 0),
+      virtual: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -54,6 +55,8 @@ class Select extends Field {
     const that = this
     const { multiple, showArrow, placeholder, disabled, showSearch } = this.props
     const children = []
+
+    this._normalizeSearchable()
 
     this.setProps({
       selectedSingle: {
@@ -107,7 +110,6 @@ class Select extends Field {
     } else {
       children.push(this.props.selectedSingle)
     }
-
     if (isString(placeholder)) {
       children.push({
         _created() {
@@ -140,15 +142,14 @@ class Select extends Field {
         showSearch && this.selectedSingle.element.focus()
       },
     })
-
     super._config()
   }
 
   _rendered() {
-    const { value } = this.props
-
+    const { value, virtual } = this.props
     this.popup = new SelectPopup({
       trigger: this.control,
+      virtual,
       onShow: () => {
         this.optionList.scrollToSelected()
       },
@@ -413,6 +414,31 @@ class Select extends Field {
   handleFilter(text, options) {
     const { filterOption } = this.props
     return filterOption(text, options)
+  }
+
+  _normalizeSearchable() {
+    const { searchable } = this.props
+    if (searchable) {
+      this.setProps({
+        searchable: Component.extendProps(
+          {
+            placeholder: null,
+            filter: ({ inputValue, options }) => {
+              const reg = new RegExp(inputValue, 'i')
+              const filteredOptions = []
+              options.forEach((option) => {
+                if (reg.test(option.text)) {
+                  filteredOptions.push(option)
+                }
+              })
+
+              return filteredOptions
+            },
+          },
+          searchable,
+        ),
+      })
+    }
   }
 }
 

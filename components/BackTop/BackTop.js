@@ -22,13 +22,23 @@ class BackTop extends Component {
     const { parent, target } = this.props
     if (target === 'window') {
       this.parentNode = document.documentElement || document.body
+      this.bindEle = window
     } else if (this.hasClass(parent.element, target)) {
       this.parentNode = parent.element
+      this.bindEle = this.parentNode
     } else {
       this.parentNode = parent.element.getElementsByClassName(target)[0]
+      this.bindEle = this.parentNode
     }
-
+    const parentRemoveClone = parent._remove
+    parent._remove = () => {
+      parentRemoveClone()
+      this.remove()
+    }
     this.once = true
+    this.onWindowScroll = () => {
+      this.backTopFun()
+    }
     this.initRequestAnimationFrame()
   }
 
@@ -57,31 +67,32 @@ class BackTop extends Component {
   }
 
   _rendered() {
-    const { height, target } = this.props
-    let ele
-    if (target === 'window') {
-      ele = window
-    } else {
-      ele = this.parentNode
-    }
-    ele.addEventListener('scroll', () => {
-      if (this.once === true) {
-        this.once = false
-        this.iconRef.update()
-        if (ele === window) {
-          this.parentNode.appendChild(this.backTopRef.element)
-          this.backTopRef.element.style.position = 'fixed'
-        } else {
-          this.parentNode.parentElement.style.position = 'relative'
-          this.parentNode.parentElement.appendChild(this.backTopRef.element)
-        }
-      }
-      if (this.parentNode.scrollTop >= height) {
-        this.backTopRef.show()
+    this.bindEle.addEventListener('scroll', this.onWindowScroll)
+  }
+
+  _remove() {
+    this.bindEle.removeEventListener('scroll', this.onWindowScroll)
+  }
+
+  backTopFun() {
+    const { height } = this.props
+
+    if (this.once === true) {
+      this.once = false
+      this.iconRef.update()
+      if (this.bindEle === window) {
+        this.parentNode.appendChild(this.backTopRef.element)
+        this.backTopRef.element.style.position = 'fixed'
       } else {
-        this.backTopRef.hide()
+        this.parentNode.parentElement.style.position = 'relative'
+        this.parentNode.parentElement.appendChild(this.backTopRef.element)
       }
-    })
+    }
+    if (this.parentNode.scrollTop >= height) {
+      this.backTopRef.show()
+    } else {
+      this.backTopRef.hide()
+    }
   }
 
   hasClass(ele, className) {

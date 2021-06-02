@@ -16,3 +16,4 @@
 | allowClear | 是否显示清空按钮 | `boolean` | `true` |
 | onChange | 面板关闭且值发生改变时触发回调 | `function` | - |
 | fieldName | 起止输入框的 name | `object` | `{start:'start',end:'end'}` |
+| flatValue | 取值是否扁平化 | `boolean` | `true` |
