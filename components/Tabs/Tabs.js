@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isFunction } from '../util/index'
 import TabContent from './TabContent'
 import TabList from './TabList'
 
@@ -10,6 +11,7 @@ class Tabs extends Component {
       uistyle: 'plain', // hat,card,line,pill
       onTabSelectionChange: null,
       disabledItems: [],
+      tools: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -60,9 +62,25 @@ class Tabs extends Component {
       },
     })
 
-    this.setProps({
-      children: [this.props.tabList, this.props.tabContent],
-    })
+    if (this.props.tools) {
+      this.setProps({
+        children: [
+          {
+            component: 'Cols',
+            strechIndex: 0,
+            items: [
+              this.props.tabList,
+              isFunction(this.props.tools) ? this.props.tools() : this.props.tools,
+            ],
+          },
+          this.props.tabContent,
+        ],
+      })
+    } else {
+      this.setProps({
+        children: [this.props.tabList, this.props.tabContent],
+      })
+    }
   }
 
   getSelectedTab() {
