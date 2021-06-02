@@ -2145,12 +2145,11 @@ function _defineProperty2(obj, key, value) {
     `<svg width="1em" height="1em" viewBox="0 0 50 50" style="enable-background: new 0 0 50 50" xml:space="preserve"><path fill='#4263eb' d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform>`,
     cat
   );
-  /* FileType */ cat = "FileType";
-  Icon.add(
-    "default",
-    `<svg t="1609743512982" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="26933" width="1em" height="1em"><path d="M0 0h1024v1024H0z" fill="#D8D8D8" fill-opacity="0" p-id="26934"></path><path d="M553.356 187.733L768 402.823v342.649c0 40.719-33.01 73.728-73.728 73.728H329.728c-40.719 0-73.728-33.01-73.728-73.728v-484.01c0-40.72 33.01-73.729 73.728-73.729h223.628z" fill="#DBDFE7" p-id="26935"></path><path d="M549.85 187.733L768 405.883v3.717H644.437c-54.291 0-98.304-44.012-98.304-98.304V187.733h3.716z" fill="#C0C4CC" p-id="26936"></path></svg>`,
-    cat
-  );
+  /* FileType */ cat = "FileType"; // Icon.add(
+  //   'default',
+  //   `<svg t="1609743512982" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="26933" width="1em" height="1em"><path d="M0 0h1024v1024H0z" fill="#D8D8D8" fill-opacity="0" p-id="26934"></path><path d="M553.356 187.733L768 402.823v342.649c0 40.719-33.01 73.728-73.728 73.728H329.728c-40.719 0-73.728-33.01-73.728-73.728v-484.01c0-40.72 33.01-73.729 73.728-73.729h223.628z" fill="#DBDFE7" p-id="26935"></path><path d="M549.85 187.733L768 405.883v3.717H644.437c-54.291 0-98.304-44.012-98.304-98.304V187.733h3.716z" fill="#C0C4CC" p-id="26936"></path></svg>`,
+  //   cat,
+  // )
   Icon.add(
     "file-error",
     `<svg t="1609815861438" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2630" width="1em" height="1em"><path d="M960.002941 320.008822H576.004901V0h63.989218v256.003921H960.002941v64.004901zM339.197745 678.411175l300.796374-300.812057 44.808136 44.808136-300.796374 300.796373-44.808136-44.792452z" p-id="2631" fill="#f03e3e"></path><path d="M339.197745 422.407254l44.808136-44.808136 300.796374 300.812057-44.808136 44.792452-300.796374-300.796373z" p-id="2632" fill="#f03e3e"></path><path d="M870.355302 1024h-716.741971A89.616272 89.616272 0 0 1 64.012743 934.399412V89.600588A89.616272 89.616272 0 0 1 153.613331 0h486.380788l319.946087 249.604999v684.794413a89.616272 89.616272 0 0 1-89.584904 89.600588z m-716.741971-959.995099c-19.196765 0-25.595687 12.797844-25.595687 25.595687v844.798824a25.595687 25.595687 0 0 0 25.595687 25.61137h716.741971c19.196765 0 25.595687-12.797844 25.595687-25.595687V275.200686L620.797353 64.004901z" p-id="2633" fill="#f03e3e"></path></svg>`,
@@ -5313,7 +5312,10 @@ function _defineProperty2(obj, key, value) {
       this.autoCompleteControl.optionList = this;
     }
     _config() {
-      const { optionDefaults, value, options } = this.props;
+      const { optionDefaults, options } = this.props;
+      const value = this.autoCompleteControl.props.value
+        ? this.autoCompleteControl.props.value
+        : "";
       this.setProps({
         items: options || [],
         itemDefaults: n$1(null, optionDefaults, null, [
@@ -5330,7 +5332,7 @@ function _defineProperty2(obj, key, value) {
   }
   class AutoCompletePopup extends Popup {
     constructor(props, ...mixins) {
-      const defaults = {};
+      const defaults = { autoRender: false };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
@@ -5339,7 +5341,11 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const { options } = this.props;
-      if (options && options.length) {
+      const { filterOption, value } = this.autoCompleteControl.props;
+      const opts = isFunction(filterOption)
+        ? filterOption(value || "", options)
+        : options;
+      if (opts && opts.length) {
         this.setProps({
           attrs: {
             style: {
@@ -5348,12 +5354,7 @@ function _defineProperty2(obj, key, value) {
           },
           children: {
             component: Layout,
-            body: {
-              children: {
-                component: AutoCompleteList,
-                options: this.props.options,
-              },
-            },
+            body: { children: { component: AutoCompleteList, options: opts } },
           },
         });
       } else {
@@ -5365,8 +5366,12 @@ function _defineProperty2(obj, key, value) {
           },
           children: {
             component: Layout,
-            styles: { padding: 2 },
-            body: { children: { component: Empty } },
+            body: {
+              // styles: {
+              //   padding: 2,
+              // },
+              children: { component: Empty },
+            },
           },
         });
       }
@@ -5381,14 +5386,7 @@ function _defineProperty2(obj, key, value) {
         interval: 300,
         filterOption: (value, options) =>
           options.filter((o) => o.value.includes(value)),
-        allowClear: true, // rightIcon: {
-        //   compoent: 'Icon',
-        //   type: 'close',
-        //   hidden: true,
-        //   onClick({ event }) {
-        //     event.stopPropagation()
-        //   },
-        // },
+        allowClear: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
       this._init.bind(this);
@@ -5404,14 +5402,33 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {
       this.input && this._init();
-      this.popup && this.popup.remove();
-      this.popup = new AutoCompletePopup({
-        trigger: this.control,
-        options: this.props.options,
-      });
+      const { options } = this.props.options;
+      this.popup = new AutoCompletePopup({ trigger: this.control, options });
     }
     _remove() {
       this.timer && clearTimeout(this.timer);
+    }
+    _config() {
+      const autoCompleteRef = this;
+      const { allowClear, options } = this.props;
+      if (allowClear) {
+        this.setProps({
+          rightIcon: {
+            component: "Icon",
+            type: "close",
+            classes: { "nom-auto-complete-clear": true },
+            onClick: ({ event }) => {
+              event.stopPropagation();
+              autoCompleteRef.clear();
+              autoCompleteRef.popup && autoCompleteRef.popup.hide();
+            },
+          },
+        });
+      }
+      if (options && this.popup) {
+        this.popup.update({ options, hidden: false });
+      }
+      super._config();
     }
     _init() {
       const autoComplete = this;
@@ -5453,6 +5470,9 @@ function _defineProperty2(obj, key, value) {
     }
     _setValue(value, options) {
       super._setValue(value, options);
+    }
+    blur() {
+      super.blur();
     }
     focus() {
       this.clearContent = false;
@@ -10207,6 +10227,10 @@ function _defineProperty2(obj, key, value) {
                     : that.parent.props.icon.open
                 ),
                 {
+                  classes: {
+                    "nom-collapse-right-icon":
+                      that.parent.props.icon.align === "right",
+                  },
                   onClick: function () {
                     if (!that.parent.props.iconOnly) return;
                     that._handleCollapse();
@@ -10249,7 +10273,7 @@ function _defineProperty2(obj, key, value) {
         activeKey: 1,
         items: null,
         bordered: false,
-        icon: { default: "right", open: "up" },
+        icon: { default: "right", open: "up", align: "left" },
         iconOnly: false,
         accordion: false,
       };
@@ -21093,11 +21117,7 @@ function _defineProperty2(obj, key, value) {
           classes: { "file-img": true },
         });
       }
-      return {
-        component: "Icon",
-        type: "default",
-        classes: { "file-img": true },
-      };
+      return { component: "Icon", type: "file", classes: { "file-img": true } };
     }
     _handleDefaultCustomizeInfo(file) {
       if (!file) return null;

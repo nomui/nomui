@@ -6904,6 +6904,14 @@ textarea .nom-textarea {
   border: 1px solid #ddd;
   border-top: none;
 }
+.nom-collapse-item > .nom-collapse-item-title {
+  position: relative;
+}
+.nom-collapse-item > .nom-collapse-item-title > .nom-collapse-right-icon {
+  position: absolute;
+  right: 0;
+  transform: translateX(-50%);
+}
 .nom-tree .nom-tree-node-content {
   display: flex;
   flex-direction: row;
@@ -7877,4 +7885,18 @@ textarea .nom-textarea {
 }
 .nom-back-top-container:hover {
   background-color: rgba(0, 0, 0, 0.85);
+}
+.nom-auto-complete-list .nom-list-item-wrapper:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+.nom-auto-complete-list .nom-list-item-wrapper > .nom-list-item {
+  padding: 5px 16px;
+}
+.nom-auto-complete-list .nom-list-item-wrapper > .s-selected {
+  color: #ffffff;
+  background-color: #4263eb;
+}
+.nom-auto-complete .nom-auto-complete-clear {
+  cursor: pointer;
 }
