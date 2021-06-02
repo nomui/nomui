@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '其他',
+    file: 'other',
     demo: function () {
       const myPromise = (text) =>
         new Promise((resolve) => {
@@ -13,6 +13,7 @@ define([], function () {
         component: 'AutoComplete',
         debounce: true,
         interval: 600,
+        filterOption: null,
         options: [{ value: 'a' }, { value: 'aa' }, { value: 'ab' }],
         onSearch({ sender, text }) {
           myPromise(text).then((options) => {

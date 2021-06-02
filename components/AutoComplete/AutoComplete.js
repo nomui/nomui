@@ -62,7 +62,7 @@ class AutoComplete extends Textbox {
     }
 
     if (options && this.popup) {
-      this.popup.update({ options })
+      this.popup.update({ options, hidden: false })
     }
 
     super._config()
