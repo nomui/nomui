@@ -22,9 +22,7 @@ define([], function () {
                 onClick: function () {
                   // eslint-disable-next-line no-alert
                   tabRef.update({
-                    tabList: {
-                      disabledItems: ['contract'],
-                    },
+                    disabledItems: ['contract'],
                   })
                 },
               },

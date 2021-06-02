@@ -9,6 +9,7 @@ class Tabs extends Component {
       // selectedTab: 'tab0',
       uistyle: 'plain', // hat,card,line,pill
       onTabSelectionChange: null,
+      disabledItems: [],
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -19,7 +20,7 @@ class Tabs extends Component {
     const that = this
     const tabItems = []
     const tabPanles = []
-    const { tabs, uistyle } = this.props
+    const { tabs, uistyle, disabledItems } = this.props
     let { selectedTab } = this.props
     for (let i = 0; i < tabs.length; i++) {
       const tab = tabs[i]
@@ -41,6 +42,7 @@ class Tabs extends Component {
         items: tabItems,
         uistyle: uistyle,
         selectedTab: selectedTab,
+        disabledItems: disabledItems,
         _created: function () {
           this.tabs = that
           that.tabList = this
