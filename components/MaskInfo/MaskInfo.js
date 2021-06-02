@@ -111,7 +111,7 @@ class MaskInfo extends Component {
       newText = value.replace(/(\d+)(\d{4})/g, '$1*****')
     }
     // 邮箱
-    else if (type === 'mail') {
+    else if (type === 'mail' || type === 'email') {
       let strend
       if (value.indexOf('@') < 5) {
         strend = value.substring(1, value.lastIndexOf('@') - 1)
