@@ -10,7 +10,7 @@ define([], function () {
         renderer: (file) => {
           return {
             component: 'Icon',
-            type: 'default',
+            type: 'file',
           }
         },
         onRemove: {
