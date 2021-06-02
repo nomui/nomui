@@ -4682,6 +4682,9 @@ function _defineProperty2(obj, key, value) {
       this._addPropStyle("span");
       const { item, span } = this.props;
       const { itemDefaults } = this.list.props;
+      if (this.props.disabled) {
+        item.disabled = true;
+      }
       if (!span && item.span) {
         this.setProps({ span: item.span });
       }
@@ -4719,7 +4722,18 @@ function _defineProperty2(obj, key, value) {
         }
       } else if (Array.isArray(items) && items.length > 0) {
         for (let i = 0; i < items.length; i++) {
-          children.push({ component: ListItemWrapper, item: items[i] });
+          if (
+            this.list.props.disabledItems.length &&
+            this.list.props.disabledItems.includes(items[i].key)
+          ) {
+            children.push({
+              component: ListItemWrapper,
+              item: items[i],
+              disabled: true,
+            });
+          } else {
+            children.push({ component: ListItemWrapper, item: items[i] });
+          }
         }
       } // 开启虚拟列表功能
       if (
@@ -4885,6 +4899,7 @@ function _defineProperty2(obj, key, value) {
           byClick: false,
           scrollIntoView: true,
         },
+        disabledItems: [],
         virtual: false,
         virtualSupport: {
           height: typeof props.virtual === "number" ? props.virtual : 300, // 容器高度
@@ -19824,6 +19839,7 @@ function _defineProperty2(obj, key, value) {
         uistyle: "plain",
         itemSelectable: { byClick: true },
         onTabSelectionChange: null,
+        disabledItems: [],
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -19868,6 +19884,8 @@ function _defineProperty2(obj, key, value) {
         tabs: [], // selectedTab: 'tab0',
         uistyle: "plain", // hat,card,line,pill
         onTabSelectionChange: null,
+        disabledItems: [],
+        tools: null,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -19876,7 +19894,7 @@ function _defineProperty2(obj, key, value) {
       const that = this;
       const tabItems = [];
       const tabPanles = [];
-      const { tabs, uistyle } = this.props;
+      const { tabs, uistyle, disabledItems } = this.props;
       let { selectedTab } = this.props;
       for (let i = 0; i < tabs.length; i++) {
         const tab = tabs[i];
@@ -19896,6 +19914,7 @@ function _defineProperty2(obj, key, value) {
           items: tabItems,
           uistyle: uistyle,
           selectedTab: selectedTab,
+          disabledItems: disabledItems,
           _created: function () {
             this.tabs = that;
             that.tabList = this;
@@ -19912,7 +19931,27 @@ function _defineProperty2(obj, key, value) {
           },
         },
       });
-      this.setProps({ children: [this.props.tabList, this.props.tabContent] });
+      if (this.props.tools) {
+        this.setProps({
+          children: [
+            {
+              component: "Cols",
+              strechIndex: 0,
+              items: [
+                this.props.tabList,
+                isFunction(this.props.tools)
+                  ? this.props.tools()
+                  : this.props.tools,
+              ],
+            },
+            this.props.tabContent,
+          ],
+        });
+      } else {
+        this.setProps({
+          children: [this.props.tabList, this.props.tabContent],
+        });
+      }
     }
     getSelectedTab() {
       return this.tabList.getSelectedItem();

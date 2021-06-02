@@ -5724,13 +5724,13 @@ textarea .nom-input {
   display: flex;
 }
 .nom-textbox.p-with-button > .nom-field-content > .nom-control > .nom-input {
-  border-bottom-right-radius: 0;
   border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 .nom-textbox.p-with-button > .nom-field-content > .nom-control > .nom-textbox-button {
   border-left: transparent;
-  border-bottom-left-radius: 0;
   border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 .nom-textbox .nom-textbox-left-icon {
   position: absolute;
@@ -5751,6 +5751,10 @@ textarea .nom-input {
   color: #a4a2bb;
   font-size: 16px;
   line-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
+}
+.nom-time-picker .nom-input[readonly],
+.nom-date-picker .nom-input[readonly] {
+  background-color: none;
 }
 .nom-textarea {
   display: block;

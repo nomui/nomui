@@ -17,6 +17,7 @@ class List extends Component {
         byClick: false,
         scrollIntoView: true,
       },
+      disabledItems: [],
       virtual: false,
       virtualSupport: {
         height: typeof props.virtual === 'number' ? props.virtual : 300, // 容器高度
