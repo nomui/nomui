@@ -52,6 +52,7 @@ class Tabs extends Component {
         tabContent: function () {
           return that.tabContent
         },
+        parentTab: this,
       },
       tabContent: {
         component: TabContent,

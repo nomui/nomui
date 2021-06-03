@@ -45,11 +45,8 @@ class TabList extends List {
 
   triggerChange() {
     const selectedItem = this.getSelectedItem()
-    if (
-      this.parent.componentType &&
-      (this.parent.componentType === 'Tabs' || this.parent.componentType === 'TabList')
-    ) {
-      this._callHandler(this.parent.props.onTabSelectionChange, {
+    if (this.props.parentTab) {
+      this._callHandler(this.props.parentTab.props.onTabSelectionChange, {
         selectedItem: selectedItem,
         key: selectedItem.key,
       })
