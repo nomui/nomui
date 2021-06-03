@@ -13112,13 +13112,20 @@ function _defineProperty2(obj, key, value) {
   Component.register(Dropdown);
   class Ellipsis extends Component {
     constructor(props, ...mixins) {
-      const defaults = { text: null };
+      const defaults = { text: null, showTitle: true };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
       this.setProps({
         children: {
           classes: { "nom-ellipsis-inner": true },
+          attrs: {
+            title:
+              this.props.showTitle &&
+              (isString(this.props.text) || isNumeric(this.props.text))
+                ? this.props.text
+                : null,
+          },
           children: this.props.text ? this.props.text : this.props.children,
         },
       });
@@ -19899,12 +19906,8 @@ function _defineProperty2(obj, key, value) {
     }
     triggerChange() {
       const selectedItem = this.getSelectedItem();
-      if (
-        this.parent.componentType &&
-        (this.parent.componentType === "Tabs" ||
-          this.parent.componentType === "TabList")
-      ) {
-        this._callHandler(this.parent.props.onTabSelectionChange, {
+      if (this.props.parentTab) {
+        this._callHandler(this.props.parentTab.props.onTabSelectionChange, {
           selectedItem: selectedItem,
           key: selectedItem.key,
         });
@@ -19961,6 +19964,7 @@ function _defineProperty2(obj, key, value) {
           tabContent: function () {
             return that.tabContent;
           },
+          parentTab: this,
         },
         tabContent: {
           component: TabContent,
