@@ -13,13 +13,18 @@ define([], function () {
             icon: 'upload',
             text: '上传图片',
           },
-          onPreview(file) {
-            const { originFile } = file
-            if (originFile && originFile instanceof Blob) {
-              const src = URL.createObjectURL(originFile)
-              window.open(src)
-            }
-          },
+          extraAction: [
+            {
+              text: '预览',
+              action: ({ file }) => {
+                const { originFile } = file
+                if (originFile && originFile instanceof File) {
+                  const src = URL.createObjectURL(originFile)
+                  window.open(src)
+                }
+              },
+            },
+          ],
         },
       }
     },

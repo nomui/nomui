@@ -10,6 +10,7 @@ class Collapse extends Component {
       icon: {
         default: 'right',
         open: 'up',
+        align: 'left',
       },
       iconOnly: false,
       accordion: false,

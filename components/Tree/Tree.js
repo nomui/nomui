@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import { isFunction } from '../util/index'
 import TreeNodes from './TreeNodes'
 import Checkbox from '../Checkbox/index'
+import scrollIntoView from '../util/scrollIntoView'
 
 class Tree extends Component {
   constructor(props, ...mixins) {
@@ -12,6 +13,7 @@ class Tree extends Component {
         onlyleaf: false,
         byClick: true,
         selectedNodeKey: null,
+        scrollIntoView: true,
       },
       dataFields: {
         key: 'key',
@@ -191,7 +193,22 @@ class Tree extends Component {
   selectNode(param) {
     const node = this.getNode(param)
 
-    node.select()
+    if (node) {
+      node.select()
+      if (this.props.nodeSelectable.scrollIntoView) {
+        this.scrollTo(node)
+      }
+    }
+  }
+
+  scrollTo(param) {
+    const node = this.getNode(param)
+    if (node) {
+      scrollIntoView(node.element, {
+        behavior: 'smooth',
+        scrollMode: 'if-needed',
+      })
+    }
   }
 
   checkAllNodes() {
