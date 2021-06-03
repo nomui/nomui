@@ -5399,7 +5399,7 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {
       this.input && this._init();
-      const { options } = this.props.options;
+      const { options } = this.props;
       this.popup = new AutoCompletePopup({ trigger: this.control, options });
     }
     _remove() {
