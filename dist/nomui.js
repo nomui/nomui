@@ -11585,10 +11585,10 @@ function _defineProperty2(obj, key, value) {
             triggerSelectionChange: options.triggerChange,
           });
         }
+        this._directSetValue(value);
         if (options.triggerChange) {
           this._onValueChange();
-        }
-        this._directSetValue(value); // if (this.optionList) {
+        } // if (this.optionList) {
         //   this.optionList.unselectAllItems({ triggerSelectionChange: false })
         //   this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
         // } else {
@@ -11988,7 +11988,9 @@ function _defineProperty2(obj, key, value) {
       return second;
     }
     setValue(c) {
-      this.timeText.update({ children: c });
+      this.timeText &&
+        this.timeText.props &&
+        this.timeText.update({ children: c });
       this.defaultValue = c;
       const t = c.split(":");
       this.time.hour = t[0] || "00";
@@ -12042,7 +12044,9 @@ function _defineProperty2(obj, key, value) {
       });
     }
     onShow() {
-      this.timeText && this.timeText.update({ children: this.defaultValue });
+      this.timeText &&
+        this.timeText.props &&
+        this.timeText.update({ children: this.defaultValue });
       this.resetList();
     }
     setNow() {
@@ -12484,10 +12488,13 @@ function _defineProperty2(obj, key, value) {
         });
     }
     getCurrentDate() {
-      let currentDate =
-        this.props.value !== null
-          ? Date.parseString(this.props.value, this.props.format)
-          : new Date();
+      let currentDate = new Date();
+      if (this.props.value !== null) {
+        currentDate = Date.parseString(this.props.value, this.props.format);
+      } else if (this.props.minDate) {
+        currentDate = new Date(this.props.minDate);
+      } // let currentDate =
+      //   this.props.value !== null ? Date.parseString(this.props.value, this.props.format) : new Date()
       if (!currentDate) {
         currentDate = new Date();
       }
@@ -12503,7 +12510,11 @@ function _defineProperty2(obj, key, value) {
       }
     }
     handleTimeChange(param) {
-      if (!this.days.getSelectedItem()) {
+      if (
+        !this.days.getSelectedItem() &&
+        this.todayItem &&
+        this.todayItem.props
+      ) {
         this.days.selectItem(this.todayItem);
       }
       this.dateInfo = Object.assign({}, this.dateInfo, {
@@ -12517,8 +12528,8 @@ function _defineProperty2(obj, key, value) {
       this.props.value = null;
       this.setValue(null);
       this.dateInfo = null;
-      this.days && this.days.unselectAllItems();
-      if (this.props.showTime && this.timePicker) {
+      this.days && this.days.props && this.days.unselectAllItems();
+      if (this.props.showTime && this.timePicker && this.timePicker.props) {
         this.timePicker.clearTime();
       }
     }
