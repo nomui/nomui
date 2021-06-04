@@ -5055,6 +5055,18 @@ function _defineProperty2(obj, key, value) {
         }
       }
     }
+    hideItem(param) {
+      const item = this.getItem(param);
+      if (item !== null) {
+        item.wrapper.hide();
+      }
+    }
+    showItem(param) {
+      const item = this.getItem(param);
+      if (item !== null) {
+        item.wrapper.show();
+      }
+    }
     scrollTo(param) {
       const item = this.getItem(param);
       if (item) {
@@ -6859,6 +6871,15 @@ function _defineProperty2(obj, key, value) {
     }
     getSelectedOptions() {
       return this.optionList.getSelectedItems();
+    }
+    hideOption(value, alsoUnselect = true) {
+      this.optionList.hideItem(value);
+      if (alsoUnselect === true) {
+        this.optionList.unselectItem(value);
+      }
+    }
+    showOption(value) {
+      this.optionList.showItem(value);
     }
     _getValue() {
       const selected = this.getSelectedOptions();

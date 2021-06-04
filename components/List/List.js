@@ -211,6 +211,20 @@ class List extends Component {
     }
   }
 
+  hideItem(param) {
+    const item = this.getItem(param)
+    if (item !== null) {
+      item.wrapper.hide()
+    }
+  }
+
+  showItem(param) {
+    const item = this.getItem(param)
+    if (item !== null) {
+      item.wrapper.show()
+    }
+  }
+
   scrollTo(param) {
     const item = this.getItem(param)
     if (item) {

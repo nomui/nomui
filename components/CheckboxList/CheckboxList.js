@@ -38,6 +38,17 @@ class CheckboxList extends Field {
     return this.optionList.getSelectedItems()
   }
 
+  hideOption(value, alsoUnselect = true) {
+    this.optionList.hideItem(value)
+    if (alsoUnselect === true) {
+      this.optionList.unselectItem(value)
+    }
+  }
+
+  showOption(value) {
+    this.optionList.showItem(value)
+  }
+
   _getValue() {
     const selected = this.getSelectedOptions()
     if (selected !== null && Array.isArray(selected) && selected.length > 0) {
