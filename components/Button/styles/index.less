@@ -43,7 +43,7 @@
   -webkit-user-drag: none;
   .button-size(@padding-y-base; @padding-x-base; @font-size-base; @line-height-base; @border-radius);
 
-  &:hover {
+  &:not(.s-disabled):hover {
     background-color: #e6e6e6;
     background-color: rgba(0, 0, 0, 0.05);
     outline: none;
@@ -162,9 +162,8 @@
 
   &:not(.p-type-default),
   &:not(.p-type-text),
-  &:not(.p-type-dashed),
-  &:not([disabled]) {
-    &:hover {
+  &:not(.p-type-dashed) {
+    &:not([disabled]):hover {
       filter: brightness(0.9);
     }
   }
