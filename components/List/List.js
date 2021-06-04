@@ -81,7 +81,7 @@ class List extends Component {
         }
       }
     } else {
-      return this.itemRefs[param]
+      return this.itemRefs[param] || null
     }
 
     return retItem

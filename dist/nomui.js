@@ -4946,7 +4946,7 @@ function _defineProperty2(obj, key, value) {
           }
         }
       } else {
-        return this.itemRefs[param];
+        return this.itemRefs[param] || null;
       }
       return retItem;
     }
