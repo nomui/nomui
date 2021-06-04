@@ -29,7 +29,7 @@ class AutoComplete extends Textbox {
 
   _rendered() {
     this.input && this._init()
-    const { options } = this.props.options
+    const { options } = this.props
 
     this.popup = new AutoCompletePopup({
       trigger: this.control,
