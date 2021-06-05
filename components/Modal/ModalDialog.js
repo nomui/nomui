@@ -38,9 +38,10 @@ class ModalDialog extends Component {
       onCancel: contentProps.onCancel,
     })
 
-    const { okText, cancelText } = modal.props
+    const { okText, cancelText, fit } = modal.props
     return {
       component: Panel,
+      fit: fit,
       header: {
         nav: {},
         tools: [
