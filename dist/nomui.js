@@ -2422,9 +2422,10 @@ function _defineProperty2(obj, key, value) {
         cancelText: contentProps.cancelText,
         onCancel: contentProps.onCancel,
       });
-      const { okText, cancelText } = modal.props;
+      const { okText, cancelText, fit } = modal.props;
       return {
         component: Panel,
+        fit: fit,
         header: {
           nav: {},
           tools: [
@@ -2503,7 +2504,7 @@ function _defineProperty2(obj, key, value) {
       this.bodyElem = document.body;
     }
     _config() {
-      this._propStyleClasses = ["size"];
+      this._propStyleClasses = ["size", "fit"];
       const { size } = this.props;
       let myWidth = null;
       if (size) {
@@ -4602,7 +4603,7 @@ function _defineProperty2(obj, key, value) {
       this.list.itemRefs[this.key] = this;
     },
     _config: function () {
-      const { onSelect, onUnselect } = this.props;
+      const { onSelect, onUnselect, selected } = this.props;
       const listProps = this.list.props;
       const selectedItems =
         listProps.selectedItems !== null &&
@@ -4613,7 +4614,7 @@ function _defineProperty2(obj, key, value) {
           : [];
       this.setProps({
         classes: { "nom-list-item": true },
-        selected: selectedItems.indexOf(this.key) !== -1,
+        selected: selected === true || selectedItems.indexOf(this.key) !== -1,
         selectable: {
           byClick: listProps.itemSelectable.byClick,
           canRevert: listProps.itemSelectable.multiple === true,
@@ -5038,6 +5039,17 @@ function _defineProperty2(obj, key, value) {
         }
       }
       return selectedItems;
+    }
+    getUnselectedItems() {
+      const UnselectedItems = [];
+      const children = this.content.getChildren();
+      for (let i = 0; i < children.length; i++) {
+        const { item } = children[i];
+        if (!item.props.selected) {
+          UnselectedItems.push(item);
+        }
+      }
+      return UnselectedItems;
     }
     appendItem(itemProps) {
       this.content.appendItem(itemProps);
@@ -6874,6 +6886,9 @@ function _defineProperty2(obj, key, value) {
     }
     getSelectedOptions() {
       return this.optionList.getSelectedItems();
+    }
+    getUnselectedOptions() {
+      return this.optionList.getUnselectedItems();
     }
     hideOption(value, alsoUnselect = true) {
       this.optionList.hideItem(value);
