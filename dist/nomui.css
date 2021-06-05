@@ -5513,7 +5513,7 @@ table.nom-table.p-bordered {
 .nom-button.p-only-icon.p-shape-circle > .nom-icon {
   width: 1.42857143em;
 }
-.nom-button:hover {
+.nom-button:not(.s-disabled):hover {
   background-color: #e6e6e6;
   background-color: rgba(0, 0, 0, 0.05);
   outline: none;
@@ -5674,9 +5674,9 @@ fieldset[disabled] a.nom-button {
 .nom-button > span + .nom-icon {
   margin-left: 0.5rem;
 }
-.nom-button:not(.p-type-default):hover,
-.nom-button:not(.p-type-text):hover,
-.nom-button:not(.p-type-dashed):hover {
+.nom-button:not(.p-type-default):not([disabled]):hover,
+.nom-button:not(.p-type-text):not([disabled]):hover,
+.nom-button:not(.p-type-dashed):not([disabled]):hover {
   filter: brightness(0.9);
 }
 .nom-input {

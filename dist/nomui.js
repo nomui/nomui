@@ -14815,6 +14815,7 @@ function _defineProperty2(obj, key, value) {
     ellipsis: false,
     sticky: false,
     line: "row",
+    bordered: true,
   };
   Component.register(Grid);
   class GroupList extends Group {
