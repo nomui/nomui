@@ -10,6 +10,7 @@ class OptionList extends List {
         tag: 'label',
         _config: function () {
           this.setProps({
+            selected: this.props.checked === true,
             children: [
               {
                 tag: 'span',

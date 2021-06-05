@@ -6837,6 +6837,7 @@ function _defineProperty2(obj, key, value) {
           tag: "label",
           _config: function () {
             this.setProps({
+              selected: this.props.checked === true,
               children: [
                 { tag: "span", classes: { checkbox: true } },
                 {
@@ -6865,7 +6866,9 @@ function _defineProperty2(obj, key, value) {
           },
         },
       });
-      this.setProps({ optionList: { component: OptionList } });
+      this.setProps({
+        optionList: { component: OptionList, cols: this.props.cols },
+      });
       this.setProps({ control: this.props.optionList });
       super._config();
     }
