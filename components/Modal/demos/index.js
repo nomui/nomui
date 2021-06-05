@@ -5,6 +5,7 @@ define([
   './custom-footer.js',
   './size.js',
   './fit.js',
+  './custom-ok-cancel.js',
 ], function () {
   return {
     title: 'Modal',

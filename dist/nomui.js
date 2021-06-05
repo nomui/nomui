@@ -2421,8 +2421,15 @@ function _defineProperty2(obj, key, value) {
         onOk: contentProps.onOk,
         cancelText: contentProps.cancelText,
         onCancel: contentProps.onCancel,
+        okButton: contentProps.okButton,
       });
-      const { okText, cancelText, fit } = modal.props;
+      const {
+        okText,
+        cancelText,
+        fit,
+        okButton = {},
+        cancelButton = {},
+      } = modal.props;
       return {
         component: Panel,
         fit: fit,
@@ -2443,21 +2450,29 @@ function _defineProperty2(obj, key, value) {
           children: {
             component: "Cols",
             items: [
-              {
-                component: "Button",
-                styles: { color: "primary" },
-                text: okText,
-                onClick: () => {
-                  modal._handleOk();
-                },
-              },
-              {
-                component: "Button",
-                text: cancelText,
-                onClick: () => {
-                  modal._handleCancel();
-                },
-              },
+              okButton !== false &&
+                Component.extendProps(
+                  {
+                    component: "Button",
+                    styles: { color: "primary" },
+                    text: okText,
+                    onClick: () => {
+                      modal._handleOk();
+                    },
+                  },
+                  okButton
+                ),
+              cancelButton !== false &&
+                Component.extendProps(
+                  {
+                    component: "Button",
+                    text: cancelText,
+                    onClick: () => {
+                      modal._handleCancel();
+                    },
+                  },
+                  cancelButton
+                ),
             ],
           },
         },
