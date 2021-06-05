@@ -192,6 +192,18 @@ class List extends Component {
     return selectedItems
   }
 
+  getUnselectedItems() {
+    const UnselectedItems = []
+    const children = this.content.getChildren()
+    for (let i = 0; i < children.length; i++) {
+      const { item } = children[i]
+      if (!item.props.selected) {
+        UnselectedItems.push(item)
+      }
+    }
+    return UnselectedItems
+  }
+
   appendItem(itemProps) {
     this.content.appendItem(itemProps)
   }
