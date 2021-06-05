@@ -1,4 +1,10 @@
-define(['./basic.js', './disabled-option.js', './disabled.js', './show-hide-option.js'], function () {
+define([
+  './basic.js',
+  './disabled-option.js',
+  './disabled.js',
+  './show-hide-option.js',
+  './cols.js',
+], function () {
   return {
     title: 'CheckboxList',
     subtitle: '多选列表',

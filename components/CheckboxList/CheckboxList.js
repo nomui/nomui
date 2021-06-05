@@ -24,6 +24,7 @@ class CheckboxList extends Field {
     this.setProps({
       optionList: {
         component: List,
+        cols: this.props.cols,
       },
     })
 
