@@ -39,6 +39,10 @@ class CheckboxList extends Field {
     return this.optionList.getSelectedItems()
   }
 
+  getUnselectedOptions() {
+    return this.optionList.getUnselectedItems()
+  }
+
   hideOption(value, alsoUnselect = true) {
     this.optionList.hideItem(value)
     if (alsoUnselect === true) {
