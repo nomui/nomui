@@ -6512,9 +6512,9 @@ function _defineProperty2(obj, key, value) {
       const cascader = this;
       const children = [];
       const { showArrow, placeholder, separator, valueType } = this.props;
-      const { value, options, fieldsMapping } = this.props;
-      this.internalOption = JSON.parse(JSON.stringify(options));
-      this.handleOptions(this.internalOption, fieldsMapping);
+      const { value, options } = this.props;
+      this.internalOption = JSON.parse(JSON.stringify(options)); // this.handleOptions(this.internalOption, fieldsMapping)
+      this._normalizeInternalOptions(options);
       this.flatItems(this.internalOption);
       this.initValue = isFunction(value) ? value() : value;
       this.selectedOption = [];
@@ -6590,6 +6590,31 @@ function _defineProperty2(obj, key, value) {
         },
       });
       super._config();
+    }
+    _normalizeInternalOptions(options) {
+      if (!Array.isArray(options) || !options.length) return options;
+      const { fieldsMapping } = this.props;
+      const { children } = this.props.fieldsMapping;
+      this.internalOption = clone$1(options);
+      this.internalOption = this._filterEmptyChild(options, children);
+      this.handleOptions(this.internalOption, fieldsMapping);
+    }
+    _filterEmptyChild(options, childrenMapping) {
+      return options.map((option) => {
+        if (
+          Array.isArray(option[childrenMapping]) &&
+          option[childrenMapping].length
+        ) {
+          return Object.assign({}, option, {
+            childrenMapping: this._filterEmptyChild(
+              option[childrenMapping],
+              childrenMapping
+            ),
+          });
+        }
+        option[childrenMapping] = null;
+        return option;
+      });
     }
     _itemSelected(selectedKey, isLeaf = false) {
       if (!this.items) return;
