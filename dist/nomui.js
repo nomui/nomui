@@ -21007,13 +21007,16 @@ function _defineProperty2(obj, key, value) {
   //   return null
   // }
   function isValidDate(date) {
-    return (
-      (Number.isNaN(date) && !Number.isNaN(Date.parse(date))) || isNumeric(date)
-    );
+    if (date === null || date === undefined) return null;
+    let _date = date;
+    if (!isDate(_date)) {
+      _date = new Date(_date);
+    }
+    return !Number.isNaN(_date.getTime());
   }
-  function getDate(d) {
+  function getDate(d, format = "yyyy-MM-dd") {
     if (!isValidDate(d)) return null;
-    return formatDate(d, "yyyy-MM-dd");
+    return isString(d) ? formatDate(d, format) : d.format(format);
   }
   function getFileSize(number) {
     if (!isNumeric(number)) {
