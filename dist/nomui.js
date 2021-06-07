@@ -13527,7 +13527,6 @@ function _defineProperty2(obj, key, value) {
     _created() {
       this.tbody = this.parent;
       this.table = this.tbody.table;
-      this.tdList = [];
       if (this.table.hasGrid && this.props.data[this.table.props.keyField]) {
         this.table.grid.rowsRefs[
           this.props.data[this.table.props.keyField]
@@ -13537,6 +13536,7 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const columns = this.table.props.columns;
       const { data, level } = this.props;
+      this.tdList = [];
       const grid = this.table.grid;
       const children = [];
       let hidden = false;
