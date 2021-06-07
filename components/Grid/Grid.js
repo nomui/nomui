@@ -556,6 +556,7 @@ Grid.defaults = {
   ellipsis: false,
   sticky: false,
   line: 'row',
+  bordered: true,
 }
 
 Component.register(Grid)

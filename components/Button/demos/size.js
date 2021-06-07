@@ -13,6 +13,7 @@ define([], function () {
           {
             text: 'small',
             size: 'small',
+            disabled: true,
           },
           {
             text: 'default',
