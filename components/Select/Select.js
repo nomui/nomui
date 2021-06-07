@@ -325,11 +325,11 @@ class Select extends Field {
         this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
       }
 
+      this._directSetValue(value)
+
       if (options.triggerChange) {
         this._onValueChange()
       }
-
-      this._directSetValue(value)
 
       // if (this.optionList) {
       //   this.optionList.unselectAllItems({ triggerSelectionChange: false })

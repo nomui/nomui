@@ -241,6 +241,7 @@ class DatePicker extends Textbox {
 
                           if (isToday) {
                             that.todayItem = this
+
                             this.setProps({
                               styles: {
                                 border: ['1px', 'primary'],
@@ -463,8 +464,16 @@ class DatePicker extends Textbox {
   }
 
   getCurrentDate() {
-    let currentDate =
-      this.props.value !== null ? Date.parseString(this.props.value, this.props.format) : new Date()
+    let currentDate = new Date()
+    if (this.props.value !== null) {
+      currentDate = Date.parseString(this.props.value, this.props.format)
+    } else if (this.props.minDate) {
+      currentDate = new Date(this.props.minDate)
+    }
+
+    // let currentDate =
+    //   this.props.value !== null ? Date.parseString(this.props.value, this.props.format) : new Date()
+
     if (!currentDate) {
       currentDate = new Date()
     }
@@ -481,7 +490,7 @@ class DatePicker extends Textbox {
   }
 
   handleTimeChange(param) {
-    if (!this.days.getSelectedItem()) {
+    if (!this.days.getSelectedItem() && this.todayItem && this.todayItem.props) {
       this.days.selectItem(this.todayItem)
     }
     this.dateInfo = {
@@ -500,8 +509,8 @@ class DatePicker extends Textbox {
     this.props.value = null
     this.setValue(null)
     this.dateInfo = null
-    this.days && this.days.unselectAllItems()
-    if (this.props.showTime && this.timePicker) {
+    this.days && this.days.props && this.days.unselectAllItems()
+    if (this.props.showTime && this.timePicker && this.timePicker.props) {
       this.timePicker.clearTime()
     }
   }
