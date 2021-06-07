@@ -1,5 +1,5 @@
 import {} from '../util/date'
-import { formatDate, isNumeric, isPlainObject, isString } from '../util/index'
+import { formatDate, isDate, isNumeric, isPlainObject, isString } from '../util/index'
 import { IMAGE_FILE } from '../util/reg'
 
 export const DEFAULT_ACCEPT =
@@ -77,12 +77,17 @@ export function getUUID() {
 // }
 
 function isValidDate(date) {
-  return (Number.isNaN(date) && !Number.isNaN(Date.parse(date))) || isNumeric(date)
+  if (date === null || date === undefined) return null
+  let _date = date
+  if (!isDate(_date)) {
+    _date = new Date(_date)
+  }
+  return !Number.isNaN(_date.getTime())
 }
 
-export function getDate(d) {
+export function getDate(d, format = 'yyyy-MM-dd') {
   if (!isValidDate(d)) return null
-  return formatDate(d, 'yyyy-MM-dd')
+  return isString(d) ? formatDate(d, format) : d.format(format)
 }
 
 export function getFileSize(number) {
