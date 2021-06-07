@@ -6,3 +6,4 @@
 | --- | --- | --- | --- |
 | text | 加密文字内容 | `string` | - |
 | type | 加密文字类型 | `mobile \| phone \| fax \| mail \| identity \| card \| name \| middle \| other` | - |
+| empty | 内容为空时显示的占位文字 | `string` | - |

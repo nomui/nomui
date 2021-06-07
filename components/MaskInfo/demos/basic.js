@@ -21,6 +21,12 @@ define([], function () {
             type: 'mobile',
             text: '13548612345',
           },
+          {
+            component: 'MaskInfo',
+            type: 'mobile',
+            empty: '暂无内容',
+            text: '',
+          },
         ],
       }
     },

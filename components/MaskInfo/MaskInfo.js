@@ -8,6 +8,7 @@ class MaskInfo extends Component {
       text: null,
       mask: true,
       icon: true,
+      empty: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -71,7 +72,7 @@ class MaskInfo extends Component {
     ]
 
     this.setProps({
-      children: children,
+      children: this.props.text ? children : this.props.empty,
     })
   }
 
