@@ -11551,7 +11551,7 @@ function _defineProperty2(obj, key, value) {
       this.optionList.selectItems(options);
     }
     getSelectedOption() {
-      if (!this.optionList) {
+      if (!this.optionList || !this.optionList.props) {
         return null;
       }
       if (this.props.multiple === false) {
@@ -11695,8 +11695,8 @@ function _defineProperty2(obj, key, value) {
         } else {
           this.placeholder.hide();
         }
-      }
-      if (this.props.showSearch) {
+      } // 此处有问题，暂时添加判断屏蔽报错，问题原因是调用了已销毁组件的方法导致this是个空对象
+      if (this.props && this.props.showSearch) {
         const selectedOption = this.props.options.find(
           (e) => e.value === changed.newValue
         );
@@ -14960,6 +14960,8 @@ function _defineProperty2(obj, key, value) {
         text: null,
         mask: true,
         icon: true,
+        empty: null,
+        showTitle: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -15005,7 +15007,9 @@ function _defineProperty2(obj, key, value) {
           }),
         textNode,
       ];
-      this.setProps({ children: children });
+      this.setProps({
+        children: this.props.text ? children : this.props.empty,
+      });
     }
     _rendered() {
       if (this.props.mask && !this.props.icon) {
@@ -15016,8 +15020,8 @@ function _defineProperty2(obj, key, value) {
       }
     }
     handleClick() {
-      this.props.mask = false;
-      this.update(this.props.mask);
+      // this.props.mask = false
+      this.update({ mask: false, attrs: { title: this.props.text } });
     }
     static format(data) {
       const { value, type } = data;
@@ -16632,10 +16636,11 @@ function _defineProperty2(obj, key, value) {
                 { children: `共有数据${this.props.totalCount}条` },
                 {
                   component: "Select",
+                  showSearch: false,
                   value: pager.props.pageSize || 10,
                   onValueChange: (data) => {
                     pager.props.pageSize = data.newValue;
-                    pager._onPageChange();
+                    pager._onPageChange(true);
                   },
                   options: [
                     { text: "10条/页", value: 10 },
@@ -16651,8 +16656,12 @@ function _defineProperty2(obj, key, value) {
         },
       });
     }
-    _onPageChange() {
-      this._callHandler(this.props.onPageChange, this.getPageParams());
+    _onPageChange(pageSizeChanged) {
+      const params = this.getPageParams();
+      if (pageSizeChanged) {
+        params.pageIndex = 1;
+      }
+      this._callHandler(this.props.onPageChange, params);
     }
     /**
      * 极端分页的起始和结束点，取决于pageIndex 和 displayItemCount.

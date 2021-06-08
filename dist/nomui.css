@@ -5155,7 +5155,6 @@ table.nom-table td,
 table.nom-table th {
   padding: 8px;
   word-break: break-all;
-  user-select: none;
 }
 table.nom-table td.nom-table-fixed-left,
 table.nom-table th.nom-table-fixed-left,
@@ -5222,6 +5221,7 @@ table.nom-table th {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   background-color: #f8f8f8;
   background-image: linear-gradient(to bottom, #fcfcfc 0, #f8f8f8 100%);
+  user-select: none;
 }
 table.nom-table th.nom-table-fixed-left,
 table.nom-table th.nom-table-fixed-right {
@@ -6006,6 +6006,7 @@ textarea .nom-textarea {
 .nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label > span.checkbox {
   position: relative;
   width: 1rem;
+  min-width: 1rem;
   height: 1rem;
   margin-top: calc((1em * 1.428571429 - 1em)/2 + 0px);
   margin-right: 0.5em;
@@ -7581,6 +7582,9 @@ textarea .nom-textarea {
 }
 .Date-range-picker {
   text-decoration: inherit;
+}
+.nom-dropdown {
+  white-space: nowrap;
 }
 .nom-dropdown.nom-split-button > button:first-child {
   border-top-right-radius: 0;
