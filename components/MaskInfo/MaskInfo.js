@@ -9,6 +9,7 @@ class MaskInfo extends Component {
       mask: true,
       icon: true,
       empty: null,
+      showTitle: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -83,8 +84,13 @@ class MaskInfo extends Component {
   }
 
   handleClick() {
-    this.props.mask = false
-    this.update(this.props.mask)
+    // this.props.mask = false
+    this.update({
+      mask: false,
+      attrs: {
+        title: this.props.text,
+      },
+    })
   }
 
   static format(data) {

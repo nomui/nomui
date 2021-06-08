@@ -10,6 +10,7 @@ define([], function () {
             component: 'MaskInfo',
             type: 'mail',
             text: 'snoopdog@dogs.com',
+            showTitle: true,
           },
           {
             component: 'MaskInfo',
