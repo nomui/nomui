@@ -50,6 +50,7 @@ define([], function () {
                     url: '#!tutorials/index?article=bus-authority',
                   },
                   { text: 'ajax', id: 'bus-ajax', url: '#!tutorials/index?article=bus-ajax' },
+                  { text: 'utils', id: 'bus-utils', url: '#!tutorials/index?article=bus-utils' },
                 ],
               },
             ],
