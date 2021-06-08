@@ -385,7 +385,7 @@ class Select extends Field {
       }
     }
 
-    if (this.props.showSearch) {
+    if (this.props && this.props.showSearch) {
       const selectedOption = this.props.options.find((e) => e.value === changed.newValue)
       this.checkedOption = selectedOption
       this.updateSearchPopup(selectedOption && selectedOption.text)
