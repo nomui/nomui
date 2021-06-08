@@ -50,6 +50,11 @@ axios.get('', {
 一般用于表单提交的数据包含用户的身份证、手机、邮箱、银行卡、密码等场景
 
 ```js
+// get请求带响应加密
+axios.get('url', {
+  crypto: 1,
+})
+
 axios.post('', data, {
   crypto: 1,
 })
@@ -77,7 +82,7 @@ axios.post('', data, {
 
 加密传输需要前后端的搭配使用，后端提供了 Attribute 过滤器一般为 [ApiEncryptResponseFilter]、 [ApiDecryptRequestFilter] 之类的，具体根据后端定义的情况来
 
-## 全局定义拦截器
+## 高级篇-全局定义拦截器
 
 ```js
 axios.interceptors.request.use((config) => {
