@@ -384,7 +384,7 @@ class Select extends Field {
         this.placeholder.hide()
       }
     }
-
+    // 此处有问题，暂时添加判断屏蔽报错，问题原因是调用了已销毁组件的方法导致this是个空对象
     if (this.props && this.props.showSearch) {
       const selectedOption = this.props.options.find((e) => e.value === changed.newValue)
       this.checkedOption = selectedOption
