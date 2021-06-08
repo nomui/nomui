@@ -208,7 +208,7 @@ class Select extends Field {
   }
 
   getSelectedOption() {
-    if (!this.optionList && !this.optionList.props) {
+    if (!this.optionList || !this.optionList.props) {
       return null
     }
     if (this.props.multiple === false) {
