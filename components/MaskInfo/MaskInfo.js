@@ -9,7 +9,7 @@ class MaskInfo extends Component {
       mask: true,
       icon: true,
       empty: null,
-      showTitle: false,
+      showTitle: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
