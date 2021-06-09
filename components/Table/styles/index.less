@@ -20,7 +20,7 @@ table.nom-table {
   th {
     padding: 8px;
     word-break: break-all;
-    user-select: none;
+
     &.nom-table-fixed-left,
     &.nom-table-fixed-right {
       position: sticky;
@@ -82,12 +82,13 @@ table.nom-table {
 
   th {
     position: relative;
-    // padding-right: 2rem;
     font-weight: 500;
     line-height: 26px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     background-color: #f8f8f8;
     background-image: linear-gradient(to bottom, #fcfcfc 0, #f8f8f8 100%);
+    // padding-right: 2rem;
+    user-select: none;
     &.nom-table-fixed-left,
     &.nom-table-fixed-right {
       position: sticky;
