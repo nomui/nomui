@@ -21050,7 +21050,8 @@ function _defineProperty2(obj, key, value) {
   }
   function getDate(d, format = "yyyy-MM-dd") {
     if (!isValidDate(d)) return null;
-    return isString(d) ? formatDate(d, format) : d.format(format);
+    const _date = isDate(d) ? d : new Date(d); // return isString(d) ? formatDate(d, format) : d.format(format)
+    return _date.format(format);
   }
   function getFileSize(number) {
     if (!isNumeric(number)) {
