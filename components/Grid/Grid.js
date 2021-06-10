@@ -166,6 +166,14 @@ class Grid extends Component {
 
   setSortDirection(sorter) {
     const c = this.getColumns().map(function (item) {
+      if (!sorter) {
+        return {
+          ...item,
+          ...{
+            sortDirection: null,
+          },
+        }
+      }
       if (item.field === sorter.field) {
         return {
           ...item,
