@@ -170,7 +170,7 @@ class FileItem extends Component {
     }
     return {
       component: 'Icon',
-      type: 'default',
+      type: 'file',
       classes: {
         'file-img': true,
       },

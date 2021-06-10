@@ -6,7 +6,7 @@ export default {
     this.list.itemRefs[this.key] = this
   },
   _config: function () {
-    const { onSelect, onUnselect } = this.props
+    const { onSelect, onUnselect, selected } = this.props
     const listProps = this.list.props
     const selectedItems =
       listProps.selectedItems !== null && listProps.selectedItems !== undefined
@@ -19,7 +19,7 @@ export default {
       classes: {
         'nom-list-item': true,
       },
-      selected: selectedItems.indexOf(this.key) !== -1,
+      selected: selected === true || selectedItems.indexOf(this.key) !== -1,
       selectable: {
         byClick: listProps.itemSelectable.byClick,
         canRevert: listProps.itemSelectable.multiple === true,

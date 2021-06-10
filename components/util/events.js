@@ -1,3 +1,4 @@
+import { isFunction } from '../util/index'
 // Events
 // -----------------
 // Thanks to:
@@ -217,10 +218,6 @@ function triggerEvents(list, args, context) {
   }
   // trigger will return false if one of the callbacks return false
   return pass
-}
-
-function isFunction(func) {
-  return Object.prototype.toString.call(func) === '[object Function]'
 }
 
 export { Events }

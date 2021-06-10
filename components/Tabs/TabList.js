@@ -14,6 +14,7 @@ class TabList extends List {
         byClick: true,
       },
       onTabSelectionChange: null,
+      disabledItems: [],
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -43,10 +44,17 @@ class TabList extends List {
   }
 
   triggerChange() {
-    if (this.parent.componentType && this.parent.componentType === 'Tabs') {
-      this._callHandler(this.parent.props.onTabSelectionChange)
+    const selectedItem = this.getSelectedItem()
+    if (this.props.parentTab) {
+      this._callHandler(this.props.parentTab.props.onTabSelectionChange, {
+        selectedItem: selectedItem,
+        key: selectedItem.key,
+      })
     } else {
-      this._callHandler(this.props.onTabSelectionChange)
+      this._callHandler(this.props.onTabSelectionChange, {
+        selectedItem: selectedItem,
+        key: selectedItem.key,
+      })
     }
   }
 }

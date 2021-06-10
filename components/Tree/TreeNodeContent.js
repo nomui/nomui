@@ -55,7 +55,7 @@ class TreeNodeContent extends Component {
       onSelect: () => {
         if (tree.selectedNode !== null) tree.selectedNode.unselect()
         tree.selectedNode = this.node
-        tree._onNodeSelect({ node: this.node })
+        tree._onNodeSelect({ node: this.node, nodeData: this.node.props.data })
       },
     })
 

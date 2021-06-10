@@ -7,7 +7,7 @@ class Button extends Component {
       text: null,
       icon: null,
       rightIcon: null,
-      type: null, // null(default) primary,dashed,text,link
+      type: 'default', // null(default) primary,dashed,text,link
       ghost: false,
       danger: false,
     }

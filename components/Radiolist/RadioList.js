@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
 import { extend } from '../util/index'
-import OptionList from './OptionList'
+import RadioOptionList from './RadioOptionList'
 
 class RadioList extends Field {
   constructor(props, ...mixins) {
@@ -24,7 +24,7 @@ class RadioList extends Field {
 
     this.setProps({
       optionList: {
-        component: OptionList,
+        component: RadioOptionList,
       },
     })
 

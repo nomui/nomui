@@ -1,6 +1,7 @@
 define([
   './basic.js',
   './empty.js',
+  './disabled.js',
   './integration.js',
   './scroll-to.js',
   './virtual.js',
