@@ -1,5 +1,5 @@
 import {} from '../util/date'
-import { formatDate, isDate, isNumeric, isPlainObject, isString } from '../util/index'
+import { isDate, isNumeric, isPlainObject, isString } from '../util/index'
 import { IMAGE_FILE } from '../util/reg'
 
 export const DEFAULT_ACCEPT =
@@ -87,7 +87,9 @@ function isValidDate(date) {
 
 export function getDate(d, format = 'yyyy-MM-dd') {
   if (!isValidDate(d)) return null
-  return isString(d) ? formatDate(d, format) : d.format(format)
+  const _date = isDate(d) ? d : new Date(d)
+  // return isString(d) ? formatDate(d, format) : d.format(format)
+  return _date.format(format)
 }
 
 export function getFileSize(number) {
