@@ -3,6 +3,8 @@ define([
   './cols.js',
   './rows-cols.js',
   './align-justify-fills.js',
+  './rows-gap.js',
+  './cols-gap.js',
   './rows-fit.js',
 ], function () {
   return {
