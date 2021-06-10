@@ -3902,6 +3902,67 @@ img {
 .nom-cols.p-gutter-lg > .nom-col:last-child {
   margin-right: 0;
 }
+.nom-flex {
+  display: flex;
+}
+.nom-flex.p-direction-row {
+  flex-direction: row;
+}
+.nom-flex.p-direction-column {
+  flex-direction: column;
+}
+.nom-flex.p-inline {
+  display: inline-flex;
+}
+.nom-flex.p-fit {
+  height: 100%;
+}
+.nom-flex.p-fit.p-direction-row > .nom-flex-item.p-is-body {
+  flex-grow: 1;
+  width: 100%;
+  overflow: auto;
+}
+.nom-flex.p-fit.p-direction-column > .nom-flex-item.p-is-body {
+  flex-grow: 1;
+  height: 100%;
+  overflow: auto;
+}
+.nom-flex.p-fills > .nom-flex-item {
+  flex: 1 1 auto !important;
+}
+.nom-flex.p-align-start {
+  align-items: flex-start !important;
+}
+.nom-flex.p-align-end {
+  align-items: flex-end !important;
+}
+.nom-flex.p-align-center {
+  align-items: center !important;
+}
+.nom-flex.p-align-stretch {
+  align-items: stretch !important;
+}
+.nom-flex.p-justify-start {
+  justify-content: flex-start !important;
+}
+.nom-flex.p-justify-end {
+  justify-content: flex-end !important;
+}
+.nom-flex.p-justify-center {
+  justify-content: center !important;
+}
+.nom-flex.p-justify-between {
+  justify-content: space-between !important;
+}
+.nom-flex.p-justify-around {
+  justify-content: space-around !important;
+}
+.nom-flex > .nom-flex-item.p-grow {
+  flex-grow: 1 !important;
+}
+.nom-flex > .nom-flex-item.p-shrink {
+  flex-shrink: 1 !important;
+}
 .nom-layout > .nom-layout-header {
   height: 4rem;
   border-bottom: 1px solid #ced4da;
