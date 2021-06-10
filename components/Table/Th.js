@@ -236,6 +236,7 @@ class Th extends Component {
 
   resetSort() {
     this.update({ column: { sortDirection: null } })
+    this.table.grid && this.table.grid.setSortDirection()
   }
 
   onFilterChange(isReset) {
