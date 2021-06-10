@@ -3963,6 +3963,54 @@ img {
 .nom-flex > .nom-flex-item.p-shrink {
   flex-shrink: 1 !important;
 }
+.nom-flex.p-gap-small.p-direction-row > .nom-flex-item {
+  margin-right: 0.5rem;
+}
+.nom-flex.p-gap-small.p-direction-row > .nom-flex-item:last-child {
+  margin-right: 0;
+}
+.nom-flex.p-gap-small.p-direction-row.p-wrap > .nom-flex-item {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.nom-flex.p-gap-small.p-direction-column > .nom-flex-item {
+  margin-bottom: 0.5rem;
+}
+.nom-flex.p-gap-small.p-direction-column > .nom-flex-item:last-child {
+  margin-bottom: 0;
+}
+.nom-flex.p-gap-medium.p-direction-row > .nom-flex-item {
+  margin-right: 1rem;
+}
+.nom-flex.p-gap-medium.p-direction-row > .nom-flex-item:last-child {
+  margin-right: 0;
+}
+.nom-flex.p-gap-medium.p-direction-row.p-wrap > .nom-flex-item {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+.nom-flex.p-gap-medium.p-direction-column > .nom-flex-item {
+  margin-bottom: 1rem;
+}
+.nom-flex.p-gap-medium.p-direction-column > .nom-flex-item:last-child {
+  margin-bottom: 0;
+}
+.nom-flex.p-gap-large.p-direction-row > .nom-flex-item {
+  margin-right: 1.5rem;
+}
+.nom-flex.p-gap-large.p-direction-row > .nom-flex-item:last-child {
+  margin-right: 0;
+}
+.nom-flex.p-gap-large.p-direction-row.p-wrap > .nom-flex-item {
+  margin-right: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.nom-flex.p-gap-large.p-direction-column > .nom-flex-item {
+  margin-bottom: 1.5rem;
+}
+.nom-flex.p-gap-large.p-direction-column > .nom-flex-item:last-child {
+  margin-bottom: 0;
+}
 .nom-layout > .nom-layout-header {
   height: 4rem;
   border-bottom: 1px solid #ced4da;
