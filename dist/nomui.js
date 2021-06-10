@@ -2229,7 +2229,7 @@ function _defineProperty2(obj, key, value) {
         wrap: false,
         items: [],
         itemDefaults: null,
-        gutter: "md",
+        gutter: "sm",
         childDefaults: { component: Col },
         strechIndex: null,
       };
@@ -14050,6 +14050,7 @@ function _defineProperty2(obj, key, value) {
     }
     resetSort() {
       this.update({ column: { sortDirection: null } });
+      this.table.grid && this.table.grid.setSortDirection();
     }
     onFilterChange(isReset) {
       if (this.filterGroup.getValue()[this.props.column.field]) {
@@ -14628,6 +14629,9 @@ function _defineProperty2(obj, key, value) {
     }
     setSortDirection(sorter) {
       const c = this.getColumns().map(function (item) {
+        if (!sorter) {
+          return Object.assign({}, item, { sortDirection: null });
+        }
         if (item.field === sorter.field) {
           return Object.assign({}, item, {
             sortDirection: sorter.sortDirection,
