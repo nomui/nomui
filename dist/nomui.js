@@ -3024,6 +3024,7 @@ function _defineProperty2(obj, key, value) {
           routerProps = viewPropsOrRouterPropsFunc.call(this, {
             route: this.$app.currentRoute,
             app: this.$app,
+            router: this,
           });
         } else {
           routerProps.view = viewPropsOrRouterPropsFunc;
@@ -3035,15 +3036,38 @@ function _defineProperty2(obj, key, value) {
           plugin(routerProps);
         });
         const extOptions = { reference: element, placement: "replace" };
-        const viewOptions = Component.extendProps(routerProps.view, extOptions);
-        this.currentView = Component.create(viewOptions, {
-          _rendered: function () {
-            that.element = this.element;
-          },
-        });
+        const renderView = () => {
+          if (isFunction(routerProps.view)) {
+            routerProps.view = routerProps.view.call(this);
+          }
+          const viewOptions = Component.extendProps(
+            routerProps.view,
+            extOptions
+          );
+          this.currentView = Component.create(viewOptions, {
+            _rendered: function () {
+              that.element = this.element;
+            },
+          });
+        };
+        if (isFunction(routerProps.onRender)) {
+          const onRenderResult = routerProps.onRender.call(this, this);
+          if (onRenderResult.then) {
+            onRenderResult.then(() => {
+              renderView();
+            });
+          } else {
+            renderView();
+          }
+        } else {
+          renderView();
+        }
         delete this.props;
         this.props = { defaultPath: defaultPath };
         this.setProps(routerProps);
+        if (isFunction(routerProps.onRendered)) {
+          routerProps.onRendered.call(this, this);
+        }
         this._callRendered();
       });
     }
