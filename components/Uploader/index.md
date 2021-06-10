@@ -18,10 +18,9 @@
 
 ### 事件回调
 
-- 控件提供了三个回调函数，onDownload,onPreview,onRemove
+- 控件提供了三个回调函数，onDownload,onRemove
 - 回调函数的参数都为 file 对象
 - onRemove 回调函数会监控文件上传后的删除操作，参数为一个函数或一个 Promise 对象。当返回 false 或 resolve(false)时则不移除。
-- onPreview 和 onDownload 则对应文件预览和下载的回调，对于下载的回调，如果指定了 file 参数的 url，则默认会跳转到文件 url 对应的标签页
 - 具体用法参见**事件回调**
 
 ### 监控上传状态

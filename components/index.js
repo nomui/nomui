@@ -30,6 +30,7 @@ export { default as Dropdown } from './Dropdown/index'
 export { default as Ellipsis } from './Ellipsis/index'
 export { default as Empty } from './Empty/index'
 export { default as Field } from './Field/index'
+export { default as Flex } from './Flex/index'
 export { default as Form } from './Form/index'
 export { default as Grid } from './Grid/index'
 export { default as Group } from './Group/index'
@@ -81,7 +82,6 @@ export { default as Tree } from './Tree/index'
 export { default as TreeSelect } from './TreeSelect/index'
 export { default as Uploader } from './Uploader/index'
 export * as utils from './util/index'
-export { default as VirtualList } from './VirtualList/index'
 
 /**
  * nomui的插件机制

@@ -56,9 +56,10 @@ class Cascader extends Field {
     const children = []
     const { showArrow, placeholder, separator, valueType } = this.props
 
-    const { value, options, fieldsMapping } = this.props
+    const { value, options } = this.props
     this.internalOption = JSON.parse(JSON.stringify(options))
-    this.handleOptions(this.internalOption, fieldsMapping)
+    // this.handleOptions(this.internalOption, fieldsMapping)
+    this._normalizeInternalOptions(options)
     this.flatItems(this.internalOption)
 
     this.initValue = isFunction(value) ? value() : value
@@ -153,6 +154,30 @@ class Cascader extends Field {
     })
 
     super._config()
+  }
+
+  _normalizeInternalOptions(options) {
+    if (!Array.isArray(options) || !options.length) return options
+
+    const { fieldsMapping } = this.props
+    const { children } = this.props.fieldsMapping
+    this.internalOption = clone(options)
+    this.internalOption = this._filterEmptyChild(options, children)
+    this.handleOptions(this.internalOption, fieldsMapping)
+  }
+
+  _filterEmptyChild(options, childrenMapping) {
+    return options.map((option) => {
+      if (Array.isArray(option[childrenMapping]) && option[childrenMapping].length) {
+        return {
+          ...option,
+          childrenMapping: this._filterEmptyChild(option[childrenMapping], childrenMapping),
+        }
+      }
+
+      option[childrenMapping] = null
+      return option
+    })
   }
 
   _itemSelected(selectedKey, isLeaf = false) {

@@ -22,3 +22,4 @@
 | rightIcon | 按钮右侧的图标     | `string`                                  | -       |
 | type      | 设置按钮类型       | `primary` \| `dashed` \| `text` \| `link` | -       |
 | href      | 点击按钮跳转的链接 | `string`                                  | -       |
+| target    | 打开方式           | `_self` \|`_blank`                        | `_self` |

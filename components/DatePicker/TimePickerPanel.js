@@ -202,7 +202,7 @@ class TimePickerPanel extends Component {
   }
 
   setValue(c) {
-    this.timeText.update({ children: c })
+    this.timeText && this.timeText.props && this.timeText.update({ children: c })
     this.defaultValue = c
     const t = c.split(':')
     this.time.hour = t[0] || '00'
@@ -270,6 +270,7 @@ class TimePickerPanel extends Component {
 
   onShow() {
     this.timeText &&
+      this.timeText.props &&
       this.timeText.update({
         children: this.defaultValue,
       })

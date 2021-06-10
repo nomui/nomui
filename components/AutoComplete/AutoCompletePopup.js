@@ -2,11 +2,14 @@ import Component from '../Component/index'
 import Empty from '../Empty/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
+import { isFunction } from '../util/index'
 import AutoCompleteList from './AutoCompleteList'
 
 class AutoCompletePopup extends Popup {
   constructor(props, ...mixins) {
-    const defaults = {}
+    const defaults = {
+      autoRender: false,
+    }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
@@ -18,8 +21,10 @@ class AutoCompletePopup extends Popup {
 
   _config() {
     const { options } = this.props
+    const { filterOption, value } = this.autoCompleteControl.props
+    const opts = isFunction(filterOption) ? filterOption(value || '', options) : options
 
-    if (options && options.length) {
+    if (opts && opts.length) {
       this.setProps({
         attrs: {
           style: {
@@ -31,7 +36,7 @@ class AutoCompletePopup extends Popup {
           body: {
             children: {
               component: AutoCompleteList,
-              options: this.props.options,
+              options: opts,
             },
           },
         },
@@ -45,10 +50,10 @@ class AutoCompletePopup extends Popup {
         },
         children: {
           component: Layout,
-          styles: {
-            padding: 2,
-          },
           body: {
+            // styles: {
+            //   padding: 2,
+            // },
             children: {
               component: Empty,
             },

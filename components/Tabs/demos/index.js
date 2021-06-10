@@ -5,6 +5,7 @@ define([
   './uistyle.js',
   './separate.js',
   './fit.js',
+  './tools.js',
 ], function () {
   return {
     title: 'Tabs',

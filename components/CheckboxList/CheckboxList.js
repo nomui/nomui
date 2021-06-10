@@ -24,6 +24,7 @@ class CheckboxList extends Field {
     this.setProps({
       optionList: {
         component: List,
+        cols: this.props.cols,
       },
     })
 
@@ -36,6 +37,21 @@ class CheckboxList extends Field {
 
   getSelectedOptions() {
     return this.optionList.getSelectedItems()
+  }
+
+  getUnselectedOptions() {
+    return this.optionList.getUnselectedItems()
+  }
+
+  hideOption(value, alsoUnselect = true) {
+    this.optionList.hideItem(value)
+    if (alsoUnselect === true) {
+      this.optionList.unselectItem(value)
+    }
+  }
+
+  showOption(value) {
+    this.optionList.showItem(value)
   }
 
   _getValue() {

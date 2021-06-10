@@ -92,6 +92,12 @@ define([], function () {
                       url: '#!components!index?type=Container',
                     },
                     {
+                      text: 'Flex',
+                      subtext: '弹性布局',
+                      id: 'Flex',
+                      url: '#!components!index?type=Flex',
+                    },
+                    {
                       text: 'Rows',
                       subtext: '行布局',
                       id: 'Rows',
@@ -267,12 +273,6 @@ define([], function () {
                       subtext: '列表',
                       id: 'List',
                       url: '#!components!index?type=List',
-                    },
-                    {
-                      text: 'VirtualList',
-                      subtext: '列表',
-                      id: 'VirtualList',
-                      url: '#!components!index?type=VirtualList',
                     },
                     {
                       text: 'Tag',

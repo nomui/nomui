@@ -29,7 +29,7 @@ class Modal extends Component {
   }
 
   _config() {
-    this._propStyleClasses = ['size']
+    this._propStyleClasses = ['size', 'fit']
     const { size } = this.props
 
     let myWidth = null

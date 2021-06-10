@@ -34,6 +34,9 @@ class CollapseItem extends Component {
               ...Component.normalizeIconProps(
                 collapsed ? that.parent.props.icon.default : that.parent.props.icon.open,
               ),
+              classes: {
+                'nom-collapse-right-icon': that.parent.props.icon.align === 'right',
+              },
               onClick: function () {
                 if (!that.parent.props.iconOnly) return
                 that._handleCollapse()

@@ -57,10 +57,11 @@ class Pager extends Component {
               },
               {
                 component: 'Select',
+                showSearch: false,
                 value: pager.props.pageSize || 10,
                 onValueChange: (data) => {
                   pager.props.pageSize = data.newValue
-                  pager._onPageChange()
+                  pager._onPageChange(true)
                 },
                 options: [
                   {
@@ -92,8 +93,12 @@ class Pager extends Component {
     })
   }
 
-  _onPageChange() {
-    this._callHandler(this.props.onPageChange, this.getPageParams())
+  _onPageChange(pageSizeChanged) {
+    const params = this.getPageParams()
+    if (pageSizeChanged) {
+      params.pageIndex = 1
+    }
+    this._callHandler(this.props.onPageChange, params)
   }
 
   /**

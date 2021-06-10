@@ -17,6 +17,7 @@ class List extends Component {
         byClick: false,
         scrollIntoView: true,
       },
+      disabledItems: [],
       virtual: false,
       virtualSupport: {
         height: typeof props.virtual === 'number' ? props.virtual : 300, // 容器高度
@@ -80,7 +81,7 @@ class List extends Component {
         }
       }
     } else {
-      return this.itemRefs[param]
+      return this.itemRefs[param] || null
     }
 
     return retItem
@@ -191,6 +192,18 @@ class List extends Component {
     return selectedItems
   }
 
+  getUnselectedItems() {
+    const UnselectedItems = []
+    const children = this.content.getChildren()
+    for (let i = 0; i < children.length; i++) {
+      const { item } = children[i]
+      if (!item.props.selected) {
+        UnselectedItems.push(item)
+      }
+    }
+    return UnselectedItems
+  }
+
   appendItem(itemProps) {
     this.content.appendItem(itemProps)
   }
@@ -207,6 +220,20 @@ class List extends Component {
       for (let i = 0; i < param.length; i++) {
         this.removeItem(param[i])
       }
+    }
+  }
+
+  hideItem(param) {
+    const item = this.getItem(param)
+    if (item !== null) {
+      item.wrapper.hide()
+    }
+  }
+
+  showItem(param) {
+    const item = this.getItem(param)
+    if (item !== null) {
+      item.wrapper.show()
     }
   }
 
@@ -231,6 +258,7 @@ class List extends Component {
   virCreated() {
     const { items, virtualSupport } = this.props
     this.virtual = {
+      virtualTimer: null,
       start: 0,
       end: 0,
       positions: [
@@ -240,6 +268,7 @@ class List extends Component {
         //   height:100,
         // }
       ],
+      selectedItems: [], // 下拉选择中选中数据
       itemsRefs: [], // 当前列表项arry
       listData: items, // 所有列表数据
       ListHeight: virtualSupport.height, // 可视区域高度
@@ -403,13 +432,16 @@ class List extends Component {
   virScrollEvent() {
     // 当前滚动位置
     const scrollTop = this.element.scrollTop
-    if (!this.virGetStartIndex(scrollTop)) return
-    // 此时的开始索引
-    this.virtual.start = this.virGetStartIndex(scrollTop)
-    // 此时的结束索引
-    this.virtual.end = this.virtual.start + this.virVisibleCount()
-    // 更新列表
-    this.virUpdated()
+    // if (!this.virGetStartIndex(scrollTop)) return
+    this.virtual.virtualTimer && clearTimeout(this.virtual.virtualTimer)
+    this.virtual.virtualTimer = setTimeout(() => {
+      // 此时的开始索引
+      this.virtual.start = this.virGetStartIndex(scrollTop)
+      // 此时的结束索引
+      this.virtual.end = this.virtual.start + this.virVisibleCount()
+      // 更新列表
+      this.virUpdated()
+    }, 100)
   }
 
   virListData() {

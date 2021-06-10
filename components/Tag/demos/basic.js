@@ -8,7 +8,7 @@ define([], function () {
         items: [
           {
             component: 'Tag',
-            text: '默认',
+            text: 0,
           },
           {
             component: 'Tag',

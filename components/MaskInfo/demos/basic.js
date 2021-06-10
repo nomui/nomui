@@ -10,6 +10,7 @@ define([], function () {
             component: 'MaskInfo',
             type: 'mail',
             text: 'snoopdog@dogs.com',
+            showTitle: true,
           },
           {
             component: 'MaskInfo',
@@ -20,6 +21,12 @@ define([], function () {
             component: 'MaskInfo',
             type: 'mobile',
             text: '13548612345',
+          },
+          {
+            component: 'MaskInfo',
+            type: 'mobile',
+            empty: '暂无内容',
+            text: '',
           },
         ],
       }

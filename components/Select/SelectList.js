@@ -34,7 +34,6 @@ class SelectList extends List {
     // null或undefined处理
     filterStr = filterStr || ''
     const filterOptions = showSearch && filterOption(filterStr, options)
-
     this.setProps({
       items: showSearch ? filterOptions : options,
       itemDefaults: n(null, optionDefaults, null, [SelectListItemMixin]),
