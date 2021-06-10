@@ -18245,7 +18245,9 @@ function _defineProperty2(obj, key, value) {
           },
         },
       });
-      this.setProps({ optionList: { component: RadioOptionList } });
+      this.setProps({
+        optionList: { component: RadioOptionList, cols: this.props.cols },
+      });
       this.setProps({ control: this.props.optionList });
       super._config();
     }
