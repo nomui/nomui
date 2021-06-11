@@ -120,7 +120,7 @@ Icon.add(
 
 Icon.add(
   'sort-right',
-  `<svg t="1618369427378" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4408" width="1em" height="1em"><path d="M718.848 512L307.2 926.72V96.768l411.648 415.232z" p-id="4409"></path></svg>`,
+  `<svg t="1618369427378" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4408" width="1em" height="1em" fill="currentColor"><path d="M718.848 512L307.2 926.72V96.768l411.648 415.232z" p-id="4409"></path></svg>`,
   cat,
 )
 
