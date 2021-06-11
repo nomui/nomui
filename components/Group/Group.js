@@ -99,7 +99,7 @@ class Group extends Field {
     // 如果当前group是禁用状态 直接跳过
     const { disabled, hidden } = this.props
     if (disabled || hidden) {
-      return
+      return true
     }
     const invalids = []
     for (let i = 0; i < this.fields.length; i++) {
