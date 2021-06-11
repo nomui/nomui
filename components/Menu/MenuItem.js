@@ -20,6 +20,7 @@ class MenuItem extends Component {
         },
         type: 'down',
       },
+      tools: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -41,8 +42,18 @@ class MenuItem extends Component {
 
   _config() {
     const { menu } = this
+
     const { onSelect, onUnselect } = this.props
     const menuProps = menu.props
+
+    let tools = null
+
+    if (this.wrapper.props.item.toolsRender) {
+      tools = this.wrapper.props.item.toolsRender(this, menu)
+      tools.onClick = (args) => {
+        args.event.stopPropagation()
+      }
+    }
 
     let indicatorIconType = 'down'
     if (menuProps.direction === 'horizontal' && this.level > 0) {
@@ -61,6 +72,11 @@ class MenuItem extends Component {
       indicator: {
         type: indicatorIconType,
         classes: { 'nom-menu-toggler': true },
+        attrs: {
+          style: {
+            'padding-left': '.5rem',
+          },
+        },
         _created() {
           this.parent.indicator = this
         },
@@ -99,13 +115,28 @@ class MenuItem extends Component {
           type: this.props.icon,
           classes: { 'nom-menu-item-icon': true },
         },
-        { component: Component, tag: 'span', classes: { text: true }, children: this.props.text },
+        {
+          component: Component,
+          tag: 'span',
+          classes: { text: true },
+          attrs: {
+            style: { 'flex-grow': this.props.subtext ? null : '2' },
+            title: this.props.text,
+          },
+          children: this.props.subtext
+            ? `${this.props.text} ${this.props.subtext}`
+            : this.props.text,
+        },
         this.props.subtext && {
           component: Component,
           tag: 'span',
           classes: { subtext: true },
+          attrs: {
+            style: { 'flex-grow': '2' },
+          },
           children: this.props.subtext,
         },
+        menu.props.direction !== 'horizontal' && tools && tools,
         this.props.indicator && !this.isLeaf && this.props.indicator,
       ],
     })
@@ -117,7 +148,7 @@ class MenuItem extends Component {
     }
   }
 
-  handleSelect() { }
+  handleSelect() {}
 
   _collapse() {
     this.indicator && this.indicator.collapse()
