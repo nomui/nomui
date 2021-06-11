@@ -4,6 +4,7 @@ define([
   './disabled.js',
   './show-hide-option.js',
   './cols.js',
+  './value-options.js',
 ], function () {
   return {
     title: 'CheckboxList',
