@@ -5791,6 +5791,16 @@ fieldset[disabled] a.nom-button {
 .nom-button:not(.p-type-dashed):not([disabled]):hover {
   filter: brightness(0.9);
 }
+a.nom-button.p-type-link {
+  display: inline;
+  padding: 0;
+  white-space: normal;
+  text-align: left;
+}
+a.nom-button.p-type-link:hover {
+  text-decoration: underline;
+  background: none;
+}
 .nom-input {
   display: block;
   width: 100%;
