@@ -1,12 +1,15 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { extend } from '../util/index'
+import { extend, isString } from '../util/index'
 import List from './DefaultOptionList'
 
 class CheckboxList extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
+      valueOptions: {
+        asArray: true,
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -54,14 +57,23 @@ class CheckboxList extends Field {
     this.optionList.showItem(value)
   }
 
-  _getValue() {
+  _getValue(options) {
+    const { valueOptions } = this.props
+    options = extend(
+      {
+        asArray: true,
+      },
+      valueOptions,
+      options,
+    )
+
     const selected = this.getSelectedOptions()
     if (selected !== null && Array.isArray(selected) && selected.length > 0) {
       const vals = selected.map(function (item) {
         return item.props.value
       })
 
-      return vals
+      return options.asArray ? vals : vals.join(',')
     }
 
     return null
@@ -82,14 +94,19 @@ class CheckboxList extends Field {
   }
 
   _setValue(value, options) {
+    const { valueOptions } = this.props
     if (options === false) {
       options = { triggerChange: false }
     } else {
-      options = extend({ triggerChange: true }, options)
+      options = extend({ triggerChange: true }, valueOptions, options)
     }
 
     if (value === null) {
       this.optionList.unselectAllItems({ triggerSelectionChange: options.triggerChange })
+    }
+
+    if (options.asArray === false && isString(value)) {
+      value = value.split(',')
     }
 
     const _that = this
