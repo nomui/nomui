@@ -1,6 +1,6 @@
 import Component from '../Component/index'
-import { extend, isPlainObject } from '../util/index'
 import Field from '../Field/index'
+import { extend, isPlainObject } from '../util/index'
 
 class Group extends Field {
   constructor(props, ...mixins) {
@@ -96,6 +96,11 @@ class Group extends Field {
   }
 
   validate() {
+    // 如果当前group是禁用状态 直接跳过
+    const { disabled, hidden } = this.props
+    if (disabled || hidden) {
+      return
+    }
     const invalids = []
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i]
