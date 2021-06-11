@@ -6888,6 +6888,7 @@ function _defineProperty2(obj, key, value) {
     _config: function () {
       const { itemSelectionChange } = this.props;
       const listProps = this.checkboxList.props;
+      const asArray = listProps.valueOptions.asArray;
       this.setProps({
         disabled: listProps.disabled,
         items: listProps.options,
@@ -6897,7 +6898,12 @@ function _defineProperty2(obj, key, value) {
           multiple: true,
           scrollIntoView: false,
         },
-        selectedItems: listProps.value,
+        selectedItems:
+          asArray === true
+            ? listProps.value
+            : isString(listProps.value)
+            ? listProps.value.split(",")
+            : null,
         onItemSelectionChange: () => {
           this.checkboxList._onValueChange();
           this._callHandler(itemSelectionChange);
@@ -6931,7 +6937,7 @@ function _defineProperty2(obj, key, value) {
   }
   class CheckboxList extends Field {
     constructor(props, ...mixins) {
-      const defaults = { options: [] };
+      const defaults = { options: [], valueOptions: { asArray: true } };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
@@ -6963,13 +6969,15 @@ function _defineProperty2(obj, key, value) {
     showOption(value) {
       this.optionList.showItem(value);
     }
-    _getValue() {
+    _getValue(options) {
+      const { valueOptions } = this.props;
+      options = extend$1({ asArray: true }, valueOptions, options);
       const selected = this.getSelectedOptions();
       if (selected !== null && Array.isArray(selected) && selected.length > 0) {
         const vals = selected.map(function (item) {
           return item.props.value;
         });
-        return vals;
+        return options.asArray ? vals : vals.join(",");
       }
       return null;
     }
@@ -6987,15 +6995,19 @@ function _defineProperty2(obj, key, value) {
       return null;
     }
     _setValue(value, options) {
+      const { valueOptions } = this.props;
       if (options === false) {
         options = { triggerChange: false };
       } else {
-        options = extend$1({ triggerChange: true }, options);
+        options = extend$1({ triggerChange: true }, valueOptions, options);
       }
       if (value === null) {
         this.optionList.unselectAllItems({
           triggerSelectionChange: options.triggerChange,
         });
+      }
+      if (options.asArray === false && isString(value)) {
+        value = value.split(",");
       }
       const _that = this;
       const optionsArry = [];

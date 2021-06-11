@@ -4,4 +4,4 @@
 
 | 参数    | 说明       | 类型                                   | 默认值 |
 | ------- | ---------- | -------------------------------------- | ------ |
-| options | 单选项配置 | `[{text:string,value:number\|string}]` | -      |
+| options | 选项配置 | `[{text:string,value:number\|string}]` | -      |
