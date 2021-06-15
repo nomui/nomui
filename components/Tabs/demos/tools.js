@@ -7,6 +7,7 @@ define([], function () {
         children: [
           {
             component: 'Tabs',
+            uistyle: 'card',
             onTabSelectionChange: ({ key }) => {
               console.log(`选中的key:${key}`)
             },
