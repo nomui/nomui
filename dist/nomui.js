@@ -25,7 +25,7 @@ function _defineProperty2(obj, key, value) {
 }
 /**
  *
- *       nomui v1.0.0-alpha.17
+ *       nomui v1.0.0-alpha.18
  *       License: MIT
  *       Copyright (c) 2021-2021, Wetrial
  *
@@ -20205,12 +20205,19 @@ function _defineProperty2(obj, key, value) {
           children: [
             {
               component: "Cols",
+              fit: true,
               strechIndex: 0,
+              gutter: "xs",
               items: [
                 this.props.tabList,
-                isFunction(this.props.tools)
-                  ? this.props.tools()
-                  : this.props.tools,
+                this.props.tools
+                  ? {
+                      classes: { "nom-tabs-tools": true },
+                      children: isFunction(this.props.tools)
+                        ? this.props.tools()
+                        : this.props.tools,
+                    }
+                  : null,
               ],
             },
             this.props.tabContent,

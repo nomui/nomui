@@ -5112,6 +5112,13 @@ img {
   background: #fff;
   border: 1px solid #dcdfe6;
 }
+.nom-tabs.p-uistyle-card .nom-tabs-tools {
+  height: 50px;
+  padding: 0 1rem;
+  line-height: 45px;
+  background-color: #f5f7fa;
+  border-bottom: 1px solid #dee2e6;
+}
 .nom-tabs.p-uistyle-card > .nom-tab-content {
   padding: 1rem;
 }
