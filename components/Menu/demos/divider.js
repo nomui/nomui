@@ -9,36 +9,6 @@ define([], function () {
           items: [
             {
               component: 'Menu',
-              direction: 'horizontal',
-              items: [
-                { text: '起步', id: 'css', url: '#!css!' },
-
-                {
-                  text: '样式',
-                  id: 'css',
-                  items: [
-                    { text: '起步', id: 'css', url: '#!css!' },
-                    {
-                      text: '样式',
-                      id: 'css',
-                      url: '#!css!',
-                      items: [
-                        { text: '起步', id: 'css', url: '#!css!' },
-                        { text: '样式', id: 'css', url: '#!css!' },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  type: 'divider',
-                },
-
-                { text: '组件', id: 'components', url: '#!components!' },
-                { text: '单页应用', id: 'javascript', url: '#!components!demo' },
-              ],
-            },
-            {
-              component: 'Menu',
               itemSelectable: {
                 byClick: true,
               },
@@ -49,10 +19,49 @@ define([], function () {
                 },
               },
               items: [
-                { text: '起步', id: 'css', url: '#!css!' },
                 {
-                  text: '样式',
+                  text: '起步',
                   id: 'css',
+                  url: '#!css!',
+                },
+                {
+                  text: '文字很长的标题看看溢出效果(tools)',
+                  id: 'css',
+                  toolsRender: (item, menu) => {
+                    return {
+                      component: 'Cols',
+                      gutter: 'xs',
+                      items: [
+                        {
+                          component: 'Button',
+                          type: 'text',
+                          size: 'xsmall',
+                          icon: 'refresh',
+                          onClick: () => {
+                            console.log(item)
+                          },
+                        },
+                        {
+                          component: 'Button',
+                          type: 'text',
+                          size: 'xsmall',
+                          icon: 'refresh',
+                          onClick: () => {
+                            console.log(menu)
+                          },
+                        },
+                        {
+                          component: 'Button',
+                          type: 'text',
+                          size: 'xsmall',
+                          icon: 'refresh',
+                          onClick: () => {
+                            console.log(menu)
+                          },
+                        },
+                      ],
+                    }
+                  },
                   items: [
                     { text: '起步', id: 'css', url: '#!css!' },
                     {
