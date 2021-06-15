@@ -5136,6 +5136,11 @@ img {
 .nom-menu a:hover {
   color: inherit;
 }
+.nom-menu a > .text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .nom-menu a > .subtext {
   margin-left: 6px;
   font-weight: 400;
@@ -5924,11 +5929,14 @@ textarea .nom-textarea {
   background-color: #fff3f3;
   border-color: #ffa8a8;
 }
+.nom-checkbox > .nom-field-content {
+  line-height: 2.28571429;
+}
 .nom-checkbox > .nom-field-content > .nom-control {
   position: relative;
   display: inline-block;
-  line-height: 1.42857143;
   font-size: 1rem;
+  line-height: 1.42857143;
   cursor: pointer;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;

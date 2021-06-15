@@ -1,5 +1,6 @@
 .nom-checkbox {
   > .nom-field-content {
+    line-height: @line-height-base*1.6;
     > .nom-control {
       .s-disabled& {
         opacity: 0.5;
@@ -7,12 +8,11 @@
 
       position: relative;
       display: inline-block;
-      line-height: @line-height-base;
       font-size: 1rem;
+      line-height: @line-height-base;
       cursor: pointer;
       -webkit-transition: all 0.3s;
       transition: all 0.3s;
-
       > input {
         position: absolute;
         z-index: -1;

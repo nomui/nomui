@@ -15217,6 +15217,7 @@ function _defineProperty2(obj, key, value) {
           },
           type: "down",
         },
+        tools: null,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -15237,6 +15238,13 @@ function _defineProperty2(obj, key, value) {
       const { menu } = this;
       const { onSelect, onUnselect } = this.props;
       const menuProps = menu.props;
+      let tools = null;
+      if (this.wrapper.props.item.toolsRender) {
+        tools = this.wrapper.props.item.toolsRender(this, menu);
+        tools.onClick = (args) => {
+          args.event.stopPropagation();
+        };
+      }
       let indicatorIconType = "down";
       if (menuProps.direction === "horizontal" && this.level > 0) {
         indicatorIconType = "right";
@@ -15248,6 +15256,7 @@ function _defineProperty2(obj, key, value) {
         indicator: {
           type: indicatorIconType,
           classes: { "nom-menu-toggler": true },
+          attrs: { style: { "padding-left": ".5rem" } },
           _created() {
             this.parent.indicator = this;
           },
@@ -15289,14 +15298,22 @@ function _defineProperty2(obj, key, value) {
             component: Component,
             tag: "span",
             classes: { text: true },
-            children: this.props.text,
+            attrs: {
+              style: { "flex-grow": this.props.subtext ? null : "2" },
+              title: this.props.text,
+            },
+            children: this.props.subtext
+              ? `${this.props.text} ${this.props.subtext}`
+              : this.props.text,
           },
           this.props.subtext && {
             component: Component,
             tag: "span",
             classes: { subtext: true },
+            attrs: { style: { "flex-grow": "2" } },
             children: this.props.subtext,
           },
+          menu.props.direction !== "horizontal" && tools && tools,
           this.props.indicator && !this.isLeaf && this.props.indicator,
         ],
       });
