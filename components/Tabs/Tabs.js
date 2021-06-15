@@ -75,14 +75,8 @@ class Tabs extends Component {
               this.props.tabList,
               this.props.tools
                 ? {
-                    attrs: {
-                      style: {
-                        height: '50px',
-                        'line-height': '45px',
-                        'background-color': '#f5f7fa',
-                        'border-bottom': '1px solid #dee2e6',
-                        padding: '0 1rem',
-                      },
+                    classes: {
+                      'nom-tabs-tools': true,
                     },
                     children: isFunction(this.props.tools) ? this.props.tools() : this.props.tools,
                   }
