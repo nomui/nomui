@@ -60,6 +60,7 @@ class Tbody extends Component {
   }
 
   _rendered() {
+    const that = this
     if (this.table.hasGrid && this.table.grid.props.rowSortable) {
       new Sortable(this.element, {
         group: this.key,
@@ -67,6 +68,10 @@ class Tbody extends Component {
         fallbackOnBody: true,
         swapThreshold: 0.65,
         handle: '.nom-grid-drag-handler',
+        onEnd: function () {
+          // const data = { oldIndex: evt.oldIndex, newIndex: evt.newIndex }
+          that.table.grid.handleDrag()
+        },
       })
     }
   }

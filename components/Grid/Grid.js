@@ -368,6 +368,12 @@ class Grid extends Component {
     this.popup.hide()
   }
 
+  handleDrag() {
+    if (this.props.rowSortable && this.props.rowSortable.onEnd) {
+      this._callHandler(this.props.rowSortable.onEnd)
+    }
+  }
+
   _processCheckableColumn() {
     const grid = this
     const { rowCheckable, columns } = this.props
