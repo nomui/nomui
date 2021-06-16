@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import Sortable from '../util/sortable.core.esm'
 import Tr from './Tr'
 
 class Tbody extends Component {
@@ -56,6 +57,17 @@ class Tbody extends Component {
     }
 
     this.setProps(props)
+  }
+
+  _rendered() {
+    if (this.table.hasGrid && this.table.grid.props.rowSortable) {
+      new Sortable(this.element, {
+        group: this.key,
+        animation: 150,
+        fallbackOnBody: true,
+        swapThreshold: 0.65,
+      })
+    }
   }
 
   _getRows(data, rows, index, level) {

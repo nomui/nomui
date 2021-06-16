@@ -99,7 +99,7 @@ class Grid extends Component {
             component: 'Button',
             icon: 'setting',
             size: 'small',
-            type: 'text',
+            // type: 'text',
             classes: {
               'nom-grid-setting': true,
             },

@@ -18,6 +18,7 @@ class Modal extends Component {
         e.sender.close()
       },
       size: 'small',
+      centered: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
