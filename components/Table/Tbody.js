@@ -21,6 +21,13 @@ class Tbody extends Component {
 
     Array.isArray(data) && this._getRows(data, rows, 0, 0)
 
+    // const gridProps = this.table.hasGrid ? this.table.grid.props : this.table.props
+
+    // const emptyHeight =
+    //   gridProps.attrs && gridProps.attrs.style && gridProps.attrs.style.height
+    //     ? `${parseInt(gridProps.attrs.style.height, 10) - 45}px`
+    //     : '200px'
+
     let props = {
       children: rows,
       childDefaults: Component.extendProps(
@@ -43,12 +50,12 @@ class Tbody extends Component {
             attrs: {
               colspan: this.table.colLength,
               style: {
-                padding: '25px 0',
+                'vertical-align': 'middle',
               },
             },
             children: {
               component: 'Empty',
-              size: 'large',
+
               description: false,
             },
           },
