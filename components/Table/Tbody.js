@@ -66,6 +66,7 @@ class Tbody extends Component {
         animation: 150,
         fallbackOnBody: true,
         swapThreshold: 0.65,
+        handle: '.nom-grid-drag-handler',
       })
     }
   }

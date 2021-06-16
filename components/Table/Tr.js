@@ -34,6 +34,24 @@ class Tr extends Component {
       hidden = treeConfig.initExpandLevel !== -1 && treeConfig.initExpandLevel < level
     }
 
+    if (grid && grid.props.rowSortable) {
+      children.push({
+        component: Td,
+        classes: {
+          'nom-grid-drag-handler': true,
+        },
+        data: {
+          component: 'Icon',
+          type: 'swap',
+          attrs: {
+            style: {
+              cursor: 'pointer',
+            },
+          },
+        },
+      })
+    }
+
     if (Array.isArray(columns)) {
       this.TdList = []
       children.push(...this.createTds(columns))

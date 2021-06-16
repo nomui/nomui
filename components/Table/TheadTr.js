@@ -20,6 +20,12 @@ class TheadTr extends Component {
     const { columns } = this.props
     const thArr = []
 
+    if (this.table.grid && this.table.grid.props.rowSortable) {
+      thArr.push({
+        component: Th,
+      })
+    }
+
     const children =
       Array.isArray(columns) &&
       columns.map(function (column) {
