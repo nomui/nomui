@@ -4595,11 +4595,6 @@ img {
   align-items: center;
   min-height: calc(100% - 3.5rem);
 }
-.nom-modal-dialog-centered::before {
-  display: block;
-  height: calc(100vh - 1rem);
-  content: '';
-}
 .nom-modal-dialog-centered.nom-modal-dialog-scrollable {
   flex-direction: column;
   justify-content: center;
