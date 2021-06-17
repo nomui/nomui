@@ -99,7 +99,7 @@ class Grid extends Component {
             component: 'Button',
             icon: 'setting',
             size: 'small',
-            type: 'text',
+            // type: 'text',
             classes: {
               'nom-grid-setting': true,
             },
@@ -366,6 +366,32 @@ class Grid extends Component {
 
     this.update({ columns: tree })
     this.popup.hide()
+  }
+
+  handleDrag() {
+    if (this.props.rowSortable && this.props.rowSortable.onEnd) {
+      this._callHandler(this.props.rowSortable.onEnd)
+    }
+  }
+
+  getData() {
+    const that = this
+    const keys = this.getDataKeys()
+    const data = keys.map(function (key) {
+      return that.props.data.filter(function (item) {
+        return parseInt(item[that.props.keyField], 10) === parseInt(key, 10)
+      })
+    })
+    return data
+  }
+
+  getDataKeys() {
+    const order = []
+    const trs = this.body.table.element.rows
+    for (let i = 0; i < trs.length; i++) {
+      order.push(trs[i].dataset.key)
+    }
+    return order
   }
 
   _processCheckableColumn() {

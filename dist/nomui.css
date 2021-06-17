@@ -5408,7 +5408,7 @@ table.nom-table.p-bordered {
 .nom-grid .nom-grid-setting {
   position: absolute;
   top: 7px;
-  right: 0;
+  right: 5px;
   z-index: 11;
 }
 .nom-grid > .nom-grid-header {

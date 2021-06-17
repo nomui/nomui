@@ -4,6 +4,7 @@ define([
   './ellipsis.js',
   './sort.js',
   './filter.js',
+  './row-sortable.js',
   './resizable.js',
   './frozen-header.js',
   './colspan.js',
