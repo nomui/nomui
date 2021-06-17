@@ -4593,7 +4593,7 @@ img {
 .nom-modal-dialog-centered {
   display: flex;
   align-items: center;
-  min-height: calc(100% - 1rem);
+  min-height: calc(100% - 3.5rem);
 }
 .nom-modal-dialog-centered::before {
   display: block;
