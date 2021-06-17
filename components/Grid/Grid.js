@@ -374,6 +374,26 @@ class Grid extends Component {
     }
   }
 
+  getData() {
+    const that = this
+    const keys = this.getDataKeys()
+    const data = keys.map(function (key) {
+      return that.props.data.filter(function (item) {
+        return parseInt(item[that.props.keyField], 10) === parseInt(key, 10)
+      })
+    })
+    return data
+  }
+
+  getDataKeys() {
+    const order = []
+    const trs = this.body.table.element.rows
+    for (let i = 0; i < trs.length; i++) {
+      order.push(trs[i].dataset.key)
+    }
+    return order
+  }
+
   _processCheckableColumn() {
     const grid = this
     const { rowCheckable, columns } = this.props

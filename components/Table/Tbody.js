@@ -29,6 +29,13 @@ class Tbody extends Component {
           key: function () {
             return this.props.data[keyField]
           },
+          _config: function () {
+            this.setProps({
+              attrs: {
+                'data-key': this.props.data[keyField],
+              },
+            })
+          },
         },
         rowDefaults,
       ),

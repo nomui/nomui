@@ -1,12 +1,21 @@
 define([], function () {
+  let grid
   return {
-    title: '行拖动排序',
+    title: '行拖拽顺序',
     file: 'row-sortable',
     demo: function () {
       return {
         component: 'Grid',
         showTitle: true,
-        rowSortable: true,
+        ref: (c) => {
+          grid = c
+        },
+        rowSortable: {
+          onEnd: () => {
+            console.log(grid.getDataKeys()) // 获取keyField对应新排序的数组
+            console.log(grid.getData()) // 获取整个data对应新排序的数组
+          },
+        },
         columns: [
           {
             field: 'name',
