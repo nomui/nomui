@@ -105,10 +105,16 @@ class ModalDialog extends Component {
         content,
         extendContent,
       )
+
       this.setProps({
         children: n(null, contentProps, null, [ModalContentMixin]),
       })
     }
+    this.setProps({
+      classes: {
+        'nom-modal-dialog-centered': this.modal.props.centered,
+      },
+    })
   }
 }
 
