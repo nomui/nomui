@@ -11,7 +11,7 @@ class Anchor extends Component {
       width: 180,
       sticky: false,
       itemDefaults: null,
-      offset: 20,
+      offset: 0,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -98,13 +98,27 @@ class Anchor extends Component {
         that._onContainerScroll()
       })
     } else {
-      window.addEventListener('scroll', this.onWindowScroll)
+      // 判断是否滚动完毕，再次添加滚动事件
+      let temp = 0
+      setTimeout(function judge() {
+        const temp1 = document.getElementsByTagName('html')[0].scrollTop
+        if (temp !== temp1) {
+          // 两次滚动高度不等，则认为还没有滚动完毕
+          setTimeout(judge, 100)
+          temp = temp1 // 滚动高度赋值
+        } else {
+          window.addEventListener('scroll', this.onWindowScroll)
+          temp = null // 放弃引用
+        }
+      }, 100)
     }
   }
 
   _scrollToKey(target) {
     const container = this.containerElem.getElementsByClassName(`nom-anchor-target-${target}`)
-    container.length && container[0].scrollIntoView({ behavior: 'smooth' })
+    if (container.length) {
+      container[0].scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   _fixPosition() {
@@ -118,9 +132,10 @@ class Anchor extends Component {
     } else {
       pRect = this.scrollParent.element.getBoundingClientRect()
     }
+
     const gRect = this.element.getBoundingClientRect()
 
-    if (gRect.top < pRect.top + this.props.offset) {
+    if (gRect.top < pRect.top) {
       this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
     }
   }
