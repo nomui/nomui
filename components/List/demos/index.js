@@ -5,6 +5,7 @@ define([
   './integration.js',
   './scroll-to.js',
   './virtual.js',
+  './data.js',
 ], function () {
   return {
     title: 'List',
