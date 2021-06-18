@@ -11,6 +11,7 @@ class Anchor extends Component {
       width: 180,
       sticky: false,
       itemDefaults: null,
+      offset: 20,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -119,12 +120,13 @@ class Anchor extends Component {
     }
     const gRect = this.element.getBoundingClientRect()
 
-    if (gRect.top < pRect.top) {
+    if (gRect.top < pRect.top + this.props.offset) {
       this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
     }
   }
 
   _onContainerScroll() {
+    const that = this
     const list = this.containerElem.getElementsByClassName('nom-anchor-content')
     if (!list.length) return
     const pRect =
@@ -135,7 +137,7 @@ class Anchor extends Component {
     for (let i = 0; i < list.length; i++) {
       const top = list[i].getBoundingClientRect().top
       const lastTop = i > 0 ? list[i - 1].getBoundingClientRect().top : 0
-      if (top < pRect.bottom && lastTop < pRect.top) {
+      if (top < pRect.bottom && lastTop < pRect.top + that.props.offset) {
         current = i
       }
     }
