@@ -10,6 +10,7 @@ class Button extends Component {
       type: 'default', // null(default) primary,dashed,text,link
       ghost: false,
       danger: false,
+      inline: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -17,7 +18,7 @@ class Button extends Component {
 
   _config() {
     this._propStyleClasses = ['type', 'ghost', 'size', 'shape', 'danger', 'block']
-    const { icon, text, rightIcon, href, target } = this.props
+    const { icon, text, rightIcon, href, target, inline } = this.props
 
     if (icon || rightIcon) {
       this.setProps({
@@ -33,6 +34,14 @@ class Button extends Component {
           },
         })
       }
+    }
+
+    if (inline) {
+      this.setProps({
+        classes: {
+          'nom-button-inline': true,
+        },
+      })
     }
 
     this.setProps({
