@@ -5799,14 +5799,16 @@ fieldset[disabled] a.nom-button {
   filter: brightness(0.9);
 }
 a.nom-button.p-type-link {
-  display: inline;
   padding: 0;
-  white-space: normal;
-  text-align: left;
 }
 a.nom-button.p-type-link:hover {
   text-decoration: underline;
   background: none;
+}
+a.nom-button-inline {
+  display: inline;
+  white-space: normal;
+  text-align: left;
 }
 .nom-input {
   display: block;
@@ -7909,6 +7911,9 @@ textarea .nom-textarea {
 }
 .nom-anchor.nom-anchor-border-right > .nom-menu .nom-menu-item.s-selected {
   border-right: 1px solid #4263eb;
+}
+.nom-anchor-content {
+  text-decoration: inherit;
 }
 .nom-carousel .nom-carousel-container {
   position: relative;

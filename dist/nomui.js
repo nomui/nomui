@@ -2620,6 +2620,7 @@ function _defineProperty2(obj, key, value) {
         type: "default", // null(default) primary,dashed,text,link
         ghost: false,
         danger: false,
+        inline: false,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -2632,12 +2633,15 @@ function _defineProperty2(obj, key, value) {
         "danger",
         "block",
       ];
-      const { icon, text, rightIcon, href, target } = this.props;
+      const { icon, text, rightIcon, href, target, inline } = this.props;
       if (icon || rightIcon) {
         this.setProps({ classes: { "p-with-icon": true } });
         if (!text) {
           this.setProps({ classes: { "p-only-icon": true } });
         }
+      }
+      if (inline) {
+        this.setProps({ classes: { "nom-button-inline": true } });
       }
       this.setProps({
         children: [
@@ -2779,6 +2783,7 @@ function _defineProperty2(obj, key, value) {
         width: 180,
         sticky: false,
         itemDefaults: null,
+        offset: 0,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -2845,14 +2850,28 @@ function _defineProperty2(obj, key, value) {
           that._onContainerScroll();
         });
       } else {
-        window.addEventListener("scroll", this.onWindowScroll);
+        // 判断是否滚动完毕，再次添加滚动事件
+        let temp = 0;
+        setTimeout(function judge() {
+          const temp1 = document.getElementsByTagName("html")[0].scrollTop;
+          if (temp !== temp1) {
+            // 两次滚动高度不等，则认为还没有滚动完毕
+            setTimeout(judge, 100);
+            temp = temp1; // 滚动高度赋值
+          } else {
+            window.addEventListener("scroll", this.onWindowScroll);
+            temp = null; // 放弃引用
+          }
+        }, 100);
       }
     }
     _scrollToKey(target) {
       const container = this.containerElem.getElementsByClassName(
         `nom-anchor-target-${target}`
       );
-      container.length && container[0].scrollIntoView({ behavior: "smooth" });
+      if (container.length) {
+        container[0].scrollIntoView({ behavior: "smooth" });
+      }
     }
     _fixPosition() {
       this.element.style.transform = `translateY(0px)`;
@@ -2870,6 +2889,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _onContainerScroll() {
+      const that = this;
       const list = this.containerElem.getElementsByClassName(
         "nom-anchor-content"
       );
@@ -2882,7 +2902,7 @@ function _defineProperty2(obj, key, value) {
       for (let i = 0; i < list.length; i++) {
         const top = list[i].getBoundingClientRect().top;
         const lastTop = i > 0 ? list[i - 1].getBoundingClientRect().top : 0;
-        if (top < pRect.bottom && lastTop < pRect.top) {
+        if (top < pRect.bottom && lastTop < pRect.top + that.props.offset) {
           current = i;
         }
       }
@@ -4028,8 +4048,11 @@ function _defineProperty2(obj, key, value) {
     } // 派生的控件子类内部适当位置调用
     _onValueChange(args) {
       const that = this;
-      this.oldValue = clone$1(this.currentValue);
-      this.currentValue = clone$1(this.getValue());
+      this.oldValue = clone$1(this.currentValue); // 如果有子fields则不直接覆盖组件原始值
+      this.currentValue =
+        this.props.fields && this.props.fields.length
+          ? clone$1(extend$1(this.currentValue, this.getValue()))
+          : clone$1(this.getValue());
       this.props.value = this.currentValue;
       args = extend$1(true, args, {
         name: this.props.name,
@@ -15132,12 +15155,18 @@ function _defineProperty2(obj, key, value) {
       });
       super._config();
     }
-    getValue() {
+    getValue(options) {
+      const { valueOptions } = this.props;
+      const opts = extend$1(
+        { ignoreDisabled: true, ignoreHidden: true, merge: false },
+        valueOptions,
+        options
+      );
       const value = [];
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i];
         if (field.getValue) {
-          const fieldValue = field.getValue();
+          const fieldValue = field.getValue(opts);
           value.push(fieldValue);
         }
       }
