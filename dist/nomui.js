@@ -4750,9 +4750,35 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       this._addPropStyle("gutter", "line", "align", "justify", "cols");
-      const { items, wrappers, wrapperDefaults, virtual } = this.list.props;
+      const {
+        items,
+        wrappers,
+        wrapperDefaults,
+        virtual,
+        data,
+        itemRender,
+      } = this.list.props;
       const children = [];
-      if (Array.isArray(wrappers) && wrappers.length > 0) {
+      if (Array.isArray(data) && data.length > 0) {
+        let realItemRender = itemRender;
+        if (!isFunction(itemRender)) {
+          realItemRender = ({ itemData }) => {
+            return { children: itemData };
+          };
+        }
+        for (let i = 0; i < data.length; i++) {
+          const itemData = data[i];
+          let itemProps = realItemRender({ itemData, list: this.list });
+          if (!isPlainObject(itemProps)) {
+            itemProps = {};
+          }
+          children.push({
+            component: ListItemWrapper,
+            item: itemProps,
+            data: itemData,
+          });
+        }
+      } else if (Array.isArray(wrappers) && wrappers.length > 0) {
         for (let i = 0; i < wrappers.length; i++) {
           let wrapper = wrappers[i];
           wrapper = Component.extendProps(
@@ -5101,6 +5127,9 @@ function _defineProperty2(obj, key, value) {
     }
     appendItem(itemProps) {
       this.content.appendItem(itemProps);
+    }
+    appendDataItem(itemData) {
+      this.content.appendDataItem(itemData);
     }
     removeItem(param) {
       const item = this.getItem(param);
