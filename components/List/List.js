@@ -208,6 +208,10 @@ class List extends Component {
     this.content.appendItem(itemProps)
   }
 
+  appendDataItem(itemData) {
+    this.content.appendDataItem(itemData)
+  }
+
   removeItem(param) {
     const item = this.getItem(param)
     if (item !== null) {
