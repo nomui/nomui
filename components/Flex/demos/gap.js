@@ -2,6 +2,7 @@ define([], function () {
   return {
     title: '间隔',
     file: 'gap',
+    description: '`gap` 用来配置子项之间的间距大小',
     demo: function () {
       let rowflexRef = null,
         colFlexRef = null

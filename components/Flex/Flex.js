@@ -78,6 +78,7 @@ class Flex extends Component {
       if (Array.isArray(subRows) || Array.isArray(subCols)) {
         subChildren.component = Flex
       }
+      itemProps = item
       itemProps.children = subChildren
     } else {
       itemProps = item
