@@ -13424,6 +13424,10 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       this._propStyleClasses = ["grow", "shrink", "isBody"];
+      const { span } = this.props;
+      if (span) {
+        this.setProps({ styles: { col: span } });
+      }
     }
   }
   Component.register(FlexItem);
@@ -13457,22 +13461,30 @@ function _defineProperty2(obj, key, value) {
       ];
       const { rows, cols, itemDefaults } = this.props;
       let { direction } = this.props;
-      let children = rows;
-      if (Array.isArray(cols) && cols.length) {
+      let children = [];
+      if (Array.isArray(rows) && rows.length) {
+        direction = "column";
+        children = rows;
+      } else if (Array.isArray(cols) && cols.length) {
         direction = "row";
         children = cols;
       }
       children = children.map((item) => {
-        return Component.extendProps(itemDefaults, this._normalizeItem(item), {
-          component: FlexItem,
-        });
+        if (isPlainObject(item)) {
+          return Component.extendProps(
+            itemDefaults,
+            this._normalizeItem(item),
+            { component: FlexItem }
+          );
+        }
+        return item;
       });
       this.setProps({
         direction: direction,
         children: children,
-        childDefaults: null,
+        childDefaults: { component: FlexItem },
       });
-    }
+    } // todo:  maybe move some logic to FlexItem
     _normalizeItem(item) {
       let itemProps = {};
       const { component, tag, rows, cols, children: subChildren } = item;
@@ -13489,6 +13501,7 @@ function _defineProperty2(obj, key, value) {
         if (Array.isArray(subRows) || Array.isArray(subCols)) {
           subChildren.component = Flex;
         }
+        itemProps = item;
         itemProps.children = subChildren;
       } else {
         itemProps = item;

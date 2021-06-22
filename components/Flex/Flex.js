@@ -35,24 +35,33 @@ class Flex extends Component {
 
     const { rows, cols, itemDefaults } = this.props
     let { direction } = this.props
-    let children = rows
+    let children = []
 
-    if (Array.isArray(cols) && cols.length) {
+    if (Array.isArray(rows) && rows.length) {
+      direction = 'column'
+      children = rows
+    } else if (Array.isArray(cols) && cols.length) {
       direction = 'row'
       children = cols
     }
 
     children = children.map((item) => {
-      return Component.extendProps(itemDefaults, this._normalizeItem(item), { component: FlexItem })
+      if (isPlainObject(item)) {
+        return Component.extendProps(itemDefaults, this._normalizeItem(item), {
+          component: FlexItem,
+        })
+      }
+      return item
     })
 
     this.setProps({
       direction: direction,
       children: children,
-      childDefaults: null,
+      childDefaults: { component: FlexItem },
     })
   }
 
+  // todo:  maybe move some logic to FlexItem
   _normalizeItem(item) {
     let itemProps = {}
     const { component, tag, rows, cols, children: subChildren } = item
@@ -69,6 +78,7 @@ class Flex extends Component {
       if (Array.isArray(subRows) || Array.isArray(subCols)) {
         subChildren.component = Flex
       }
+      itemProps = item
       itemProps.children = subChildren
     } else {
       itemProps = item
