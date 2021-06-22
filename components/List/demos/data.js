@@ -19,18 +19,33 @@ define([], function () {
         gap: 'medium',
         rows: [
           {
-            children: {
-              component: 'Button',
-              text: '新增',
-              type: 'primary',
-              onClick: () => {
-                listRef.appendDataItem({
-                  name: '飞狐外传',
-                  publisher: '三联出版社',
-                  publication_year: '1980',
-                })
+            gap: 'medium',
+            cols: [
+              {
+                component: 'Button',
+                text: '新增飞狐外传',
+                type: 'primary',
+                onClick: () => {
+                  listRef.appendDataItem({
+                    name: '飞狐外传',
+                    publisher: '三联出版社',
+                    publication_year: '1980',
+                  })
+                },
               },
-            },
+              {
+                component: 'Button',
+                text: '新增天龙八部',
+                type: 'primary',
+                onClick: () => {
+                  listRef.appendDataItem({
+                    name: '天龙八部',
+                    publisher: '三联出版社',
+                    publication_year: '1980',
+                  })
+                },
+              },
+            ],
           },
           {
             children: {
@@ -46,11 +61,9 @@ define([], function () {
                   gap: 'small',
                   rows: [
                     {
-                      children: {
-                        tag: 'img',
-                        attrs: {
-                          src: `/docs/images/books/${itemData.name}.jpg`,
-                        },
+                      tag: 'img',
+                      attrs: {
+                        src: `/docs/images/books/${itemData.name}.jpg`,
                       },
                     },
                     { children: itemData.name },
@@ -63,20 +76,16 @@ define([], function () {
                       },
                     },
                     {
-                      children: {
-                        cols: [
-                          {
-                            children: {
-                              component: 'Button',
-                              text: '删除',
-                              danger: true,
-                              onClick: () => {
-                                item.remove()
-                              },
-                            },
+                      cols: [
+                        {
+                          component: 'Button',
+                          text: '删除',
+                          danger: true,
+                          onClick: () => {
+                            item.remove()
                           },
-                        ],
-                      },
+                        },
+                      ],
                     },
                   ],
                 }
