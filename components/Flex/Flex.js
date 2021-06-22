@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isPlainObject } from '../util/index'
+import { isPlainObject, isString } from '../util/index'
 import FlexItem from './FlexItem'
 
 class Flex extends Component {
@@ -22,7 +22,16 @@ class Flex extends Component {
   }
 
   _config() {
-    this._propStyleClasses = ['direction', 'wrap', 'align', 'justify', 'gap', 'gutter', 'fills', 'fit']
+    this._propStyleClasses = [
+      'direction',
+      'wrap',
+      'align',
+      'justify',
+      'gap',
+      'gutter',
+      'fills',
+      'fit',
+    ]
 
     const { rows, cols, itemDefaults } = this.props
     let { direction } = this.props
@@ -33,25 +42,39 @@ class Flex extends Component {
       children = cols
     }
 
-    const childDefaults = Component.extendProps(itemDefaults, {
-      component: FlexItem,
-      _config: (flexItem) => {
-        const { children: subChildren } = flexItem.props
-        if (isPlainObject(subChildren)) {
-          const { rows: subRows, cols: subCols, component } = subChildren
-          if (!component && (Array.isArray(subRows) || Array.isArray(subCols))) {
-            subChildren.component = Flex
-          }
-          flexItem.props.children = subChildren
-        }
-      },
+    children = children.map((item) => {
+      return Component.extendProps(itemDefaults, this._normalizeItem(item), { component: FlexItem })
     })
 
     this.setProps({
       direction: direction,
       children: children,
-      childDefaults: childDefaults,
+      childDefaults: null,
     })
+  }
+
+  _normalizeItem(item) {
+    let itemProps = {}
+    const { component, tag, rows, cols, children: subChildren } = item
+    if (
+      (component && component !== FlexItem && component !== 'FlexItem') ||
+      (component !== FlexItem && component !== 'FlexItem' && isString(tag))
+    ) {
+      itemProps.children = item
+    } else if (Array.isArray(rows) || Array.isArray(cols)) {
+      item.component = Flex
+      itemProps.children = item
+    } else if (isPlainObject(subChildren)) {
+      const { rows: subRows, cols: subCols } = subChildren
+      if (Array.isArray(subRows) || Array.isArray(subCols)) {
+        subChildren.component = Flex
+      }
+      itemProps.children = subChildren
+    } else {
+      itemProps = item
+    }
+
+    return itemProps
   }
 }
 
