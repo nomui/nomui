@@ -4762,6 +4762,103 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(ListItemWrapper);
+  var ListItemContentMixin = {
+    _created: function () {
+      this.parent.content = this;
+    },
+    _config: function () {
+      const { onSelect, onUnselect, selected } = this.props;
+      const listProps = this.parent.parent.parent.props;
+      const selectedItems =
+        listProps.selectedItems !== null &&
+        listProps.selectedItems !== undefined
+          ? Array.isArray(listProps.selectedItems)
+            ? listProps.selectedItems
+            : [listProps.selectedItems]
+          : [];
+      this.setProps({
+        classes: { "nom-list-item-content": true },
+        selected: selected === true || selectedItems.indexOf(this.key) !== -1,
+        selectable: {
+          byClick: listProps.itemSelectable.byClick,
+          canRevert: listProps.itemSelectable.multiple === true,
+        },
+        _shouldHandleClick: function () {
+          if (listProps.disabled === true) {
+            return false;
+          }
+        },
+        onSelect: () => {
+          const list = this.parent.parent.parent;
+          if (listProps.itemSelectable.multiple === false) {
+            listProps.selectedItems = this.key;
+            if (list.selectedItem !== null) {
+              list.selectedItem.unselect({ triggerSelectionChange: false });
+            }
+            list.selectedItem = this;
+          }
+          this._callHandler(onSelect);
+        },
+        onUnselect: () => {
+          const list = this.parent.parent.parent;
+          if (listProps.selectedItems === this.key) {
+            listProps.selectedItems = null;
+          }
+          if (list.selectedItem === this) {
+            list.selectedItem = null;
+          }
+          this._callHandler(onUnselect);
+        },
+        onSelectionChange: () => {
+          const list = this.parent.parent.parent;
+          list._onItemSelectionChange();
+        },
+      });
+    },
+    _rendered: function () {
+      const list = this.parent.parent.parent;
+      const listProps = list.props;
+      if (listProps.itemSelectable.multiple === false) {
+        if (this.props.selected) {
+          list.selectedItem = this;
+          if (listProps.itemSelectable.multiple.scrollIntoValue) {
+            list.scrollTo(list.selectedItem);
+          }
+        }
+      }
+    },
+  };
+  class ListItem extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { tag: "li", data: null };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.list = this.parent.list;
+      const { data, dataFields = { key: "key" } } = this.list.props;
+      Object.keys(dataFields).forEach((dataField) => {
+        this.props[dataField] = data[dataFields[dataField]];
+      });
+      this.list.itemRefs[this.key] = this;
+    }
+    _config() {
+      const {
+        itemRender = ({ itemData }) => {
+          return { children: itemData };
+        },
+      } = this.list.props;
+      const { data } = this.props;
+      this.setProps({
+        selectable: { byClick: false },
+        children: itemRender({ itemData: data, list: this.list, item: this }),
+        childDefaults: n$1(null, null, null, [ListItemContentMixin]),
+      });
+    }
+    _remove() {
+      delete this.list.itemRefs[this.key];
+    }
+  }
+  Component.register(ListItem);
   class ListContent extends Component {
     constructor(props, ...mixins) {
       const defaults = { tag: "ul" };
@@ -4779,27 +4876,12 @@ function _defineProperty2(obj, key, value) {
         wrapperDefaults,
         virtual,
         data,
-        itemRender,
       } = this.list.props;
       const children = [];
       if (Array.isArray(data) && data.length > 0) {
-        let realItemRender = itemRender;
-        if (!isFunction(itemRender)) {
-          realItemRender = ({ itemData }) => {
-            return { children: itemData };
-          };
-        }
         for (let i = 0; i < data.length; i++) {
           const itemData = data[i];
-          let itemProps = realItemRender({ itemData, list: this.list });
-          if (!isPlainObject(itemProps)) {
-            itemProps = {};
-          }
-          children.push({
-            component: ListItemWrapper,
-            item: itemProps,
-            data: itemData,
-          });
+          children.push({ component: ListItem, data: itemData });
         }
       } else if (Array.isArray(wrappers) && wrappers.length > 0) {
         for (let i = 0; i < wrappers.length; i++) {
@@ -4963,6 +5045,14 @@ function _defineProperty2(obj, key, value) {
       itemProps = Component.extendProps({}, this.props.itemDefaults, itemProps);
       const itemWrapperProps = { component: ListItemWrapper, item: itemProps };
       this.appendChild(itemWrapperProps);
+    }
+    appendDataItem(itemData) {
+      const itemProps = { component: ListItem, data: itemData };
+      this.appendChild(itemProps);
+    }
+    prependDataItem(itemData) {
+      const itemProps = { component: ListItem, data: itemData };
+      this.prependChild(itemProps);
     }
     removeItem(param) {
       const item = this.getItem(param);
@@ -5153,6 +5243,9 @@ function _defineProperty2(obj, key, value) {
     }
     appendDataItem(itemData) {
       this.content.appendDataItem(itemData);
+    }
+    prependDataItem(itemData) {
+      this.content.prependDataItem(itemData);
     }
     removeItem(param) {
       const item = this.getItem(param);
