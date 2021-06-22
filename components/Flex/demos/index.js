@@ -3,9 +3,10 @@ define([
   './cols.js',
   './rows-cols.js',
   './align-justify-fills.js',
-  './rows-gap.js',
-  './cols-gap.js',
+  './gap.js',
+  './gutter.js',
   './rows-fit.js',
+  './shorthand.js',
 ], function () {
   return {
     title: 'Flex',
