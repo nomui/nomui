@@ -224,7 +224,11 @@ class Field extends Component {
   _onValueChange(args) {
     const that = this
     this.oldValue = clone(this.currentValue)
-    this.currentValue = clone(this.getValue())
+    // 如果有子fields则不直接覆盖组件原始值
+    this.currentValue =
+      this.props.fields && this.props.fields.length
+        ? clone(extend(this.currentValue, this.getValue()))
+        : clone(this.getValue())
     this.props.value = this.currentValue
 
     args = extend(true, args, {
