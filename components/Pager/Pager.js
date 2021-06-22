@@ -61,6 +61,7 @@ class Pager extends Component {
                 value: pager.props.pageSize || 10,
                 onValueChange: (data) => {
                   pager.props.pageSize = data.newValue
+                  pager.props.pageIndex = 1
                   pager._onPageChange(true)
                 },
                 options: [
