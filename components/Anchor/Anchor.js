@@ -144,7 +144,7 @@ class Anchor extends Component {
     if (this.menu.element.offsetParent === null) {
       return
     }
-    const that = this
+
     const domlist = this.containerElem.getElementsByClassName('nom-anchor-content')
     if (!domlist.length) return
     const list = []
@@ -162,7 +162,7 @@ class Anchor extends Component {
     for (let i = 0; i < list.length; i++) {
       const top = list[i].getBoundingClientRect().top
       const lastTop = i > 0 ? list[i - 1].getBoundingClientRect().top : 0
-      if (top < pRect.bottom && lastTop < pRect.top + that.props.offset) {
+      if (top < pRect.bottom && lastTop < pRect.top) {
         current = i
       }
     }
