@@ -74,9 +74,6 @@ class GroupList extends Group {
       valueOptions,
       options,
     )
-    // if (opts.merge) {
-    //   return this.fullValue
-    // }
     const value = []
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i]

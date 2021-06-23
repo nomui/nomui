@@ -29,7 +29,7 @@ class Field extends Component {
     this.initValue = value !== undefined ? clone(this.props.value) : null
     this.oldValue = null
     this.currentValue = this.initValue
-    this.fullValue = this.initValue
+
     if (name) {
       this.name = name
       this._autoName = false
