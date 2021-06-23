@@ -1,6 +1,6 @@
 import Component, { n } from '../Component/index'
 import Tooltip from '../Tooltip/index'
-import { clone, extend, isFunction, isPlainObject } from '../util/index'
+import { clone, extend, isFunction } from '../util/index'
 import RuleManager from '../util/rule-manager'
 import FieldActionMixin from './FieldActionMixin'
 import FieldContent from './FieldContent'
@@ -226,15 +226,15 @@ class Field extends Component {
     const that = this
     this.oldValue = clone(this.currentValue)
 
-    this.currentValue = clone(this.getValue())
-    if (Array.isArray(this.fullValue)) {
-      this.fullValue = this.fullValue.map(function (item, index) {
-        return { ...item, ...(that.currentValue[index] || {}) }
-      })
-    }
-    if (isPlainObject(this.fullValue)) {
-      this.fullValue = { ...that.fullValue, ...that.currentValue }
-    }
+    const oldValue = clone(this.oldValue)
+
+    // 如果有子fields则不直接覆盖组件原始值
+    this.currentValue =
+      this.props.fields && this.props.fields.length
+        ? clone(extend(this.currentValue, this.props.value))
+        : clone(this.getValue())
+
+    this.oldValue = oldValue
 
     this.props.value = this.currentValue
 
