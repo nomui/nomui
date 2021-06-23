@@ -212,6 +212,10 @@ class List extends Component {
     this.content.appendDataItem(itemData)
   }
 
+  prependDataItem(itemData) {
+    this.content.prependDataItem(itemData)
+  }
+
   removeItem(param) {
     const item = this.getItem(param)
     if (item !== null) {

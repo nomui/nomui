@@ -1,6 +1,7 @@
 import Component from '../Component/index'
-import { extend, isFunction, isPlainObject } from '../util/index'
+import { extend, isFunction } from '../util/index'
 import ListItemWrapper from './ListItemWrapper'
+import ListItem from './ListItem'
 
 class ListContent extends Component {
   constructor(props, ...mixins) {
@@ -18,25 +19,13 @@ class ListContent extends Component {
 
   _config() {
     this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
-    const { items, wrappers, wrapperDefaults, virtual, data, itemRender } = this.list.props
+    const { items, wrappers, wrapperDefaults, virtual, data } = this.list.props
     const children = []
 
     if (Array.isArray(data) && data.length > 0) {
-      let realItemRender = itemRender
-      if (!isFunction(itemRender)) {
-        realItemRender = ({ itemData }) => {
-          return {
-            children: itemData,
-          }
-        }
-      }
       for (let i = 0; i < data.length; i++) {
         const itemData = data[i]
-        let itemProps = realItemRender({ itemData, list: this.list })
-        if (!isPlainObject(itemProps)) {
-          itemProps = {}
-        }
-        children.push({ component: ListItemWrapper, item: itemProps, data: itemData })
+        children.push({ component: ListItem, data: itemData })
       }
     } else if (Array.isArray(wrappers) && wrappers.length > 0) {
       for (let i = 0; i < wrappers.length; i++) {
@@ -223,6 +212,16 @@ class ListContent extends Component {
     itemProps = Component.extendProps({}, this.props.itemDefaults, itemProps)
     const itemWrapperProps = { component: ListItemWrapper, item: itemProps }
     this.appendChild(itemWrapperProps)
+  }
+
+  appendDataItem(itemData) {
+    const itemProps = { component: ListItem, data: itemData }
+    this.appendChild(itemProps)
+  }
+
+  prependDataItem(itemData) {
+    const itemProps = { component: ListItem, data: itemData }
+    this.prependChild(itemProps)
   }
 
   removeItem(param) {
