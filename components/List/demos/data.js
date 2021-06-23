@@ -23,8 +23,7 @@ define([], function () {
             cols: [
               {
                 component: 'Button',
-                text: '新增飞狐外传',
-                type: 'primary',
+                text: '后面新增飞狐外传',
                 onClick: () => {
                   listRef.appendDataItem({
                     name: '飞狐外传',
@@ -35,10 +34,9 @@ define([], function () {
               },
               {
                 component: 'Button',
-                text: '新增天龙八部',
-                type: 'primary',
+                text: '前面新增天龙八部',
                 onClick: () => {
-                  listRef.appendDataItem({
+                  listRef.prependDataItem({
                     name: '天龙八部',
                     publisher: '三联出版社',
                     publication_year: '1980',

@@ -574,7 +574,10 @@ function _defineProperty2(obj, key, value) {
           ? this.props.reference
           : this.props.reference.component;
       if (this.referenceComponent) {
-        if (this.props.placement === "append") {
+        if (
+          this.props.placement === "append" ||
+          this.props.placement === "prepend"
+        ) {
           this.parent = this.referenceComponent;
         } else {
           this.parent = this.referenceComponent.parent;
@@ -839,6 +842,55 @@ function _defineProperty2(obj, key, value) {
       props = Component.extendProps({}, childDefaultsProps, childProps, {
         reference: this.element,
         placement: "append",
+      });
+      mixins = [...childDefaultsMixins, ...childMixins];
+      const compt = Component.create(props, ...mixins);
+      return compt;
+    }
+    prependChild(child) {
+      if (!child) {
+        return;
+      }
+      const childDefaults = this.props.childDefaults;
+      let childDefaultsProps = {};
+      let childDefaultsMixins = [];
+      let childProps = {};
+      let childMixins = [];
+      let props = {};
+      let mixins = [];
+      if (childDefaults) {
+        if (isPlainObject(childDefaults)) {
+          childDefaultsProps = childDefaults;
+        } else if (childDefaults instanceof ComponentDescriptor) {
+          childDefaultsProps = childDefaults.getProps();
+          childDefaultsMixins = childDefaults.mixins;
+        }
+      }
+      if (isPlainObject(child)) {
+        childProps = child;
+      } else if (child instanceof ComponentDescriptor) {
+        childProps = child.getProps();
+        childMixins = child.mixins;
+      } else if (isString(child) || isNumeric(child)) {
+        if (isPlainObject(childDefaults)) {
+          childProps = { children: child };
+        } else if (child[0] === "#") {
+          this.element.innerHTML = child.slice(1);
+          return;
+        } else {
+          this.element.textContent = child;
+          return;
+        }
+      } else if (child instanceof DocumentFragment) {
+        this.referenceElement.insertBefore(
+          child,
+          this.referenceElement.firstChild
+        );
+        return;
+      }
+      props = Component.extendProps({}, childDefaultsProps, childProps, {
+        reference: this.element,
+        placement: "prepend",
       });
       mixins = [...childDefaultsMixins, ...childMixins];
       const compt = Component.create(props, ...mixins);
