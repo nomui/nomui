@@ -54,7 +54,7 @@ class Group extends Field {
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i]
       if (field.getValue && this._needHandleValue(field, options)) {
-        const fieldValue = field.getValue()
+        const fieldValue = field.getValue(options)
         if (field.props.flatValue === true) {
           extend(value, fieldValue)
         } else {
