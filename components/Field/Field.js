@@ -226,22 +226,13 @@ class Field extends Component {
     const that = this
     this.oldValue = clone(this.currentValue)
 
-    const oldValue = clone(this.oldValue)
-
-    // 如果有子fields则不直接覆盖组件原始值
-    this.currentValue =
-      this.props.fields && this.props.fields.length
-        ? clone(extend(this.currentValue, this.props.value))
-        : clone(this.getValue())
-
-    this.oldValue = oldValue
-
+    this.currentValue = clone(this.getValue({ merge: true }))
     this.props.value = this.currentValue
 
     args = extend(true, args, {
       name: this.props.name,
       oldValue: this.oldValue,
-      newValue: this.currentValue,
+      newValue: clone(this.getValue()),
     })
 
     setTimeout(function () {
