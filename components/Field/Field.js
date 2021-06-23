@@ -225,10 +225,7 @@ class Field extends Component {
   _onValueChange(args) {
     const that = this
     this.oldValue = clone(this.currentValue)
-    // if (args && args.fullValue) {
-    //   this.fullValue = { ...this.fullValue, ...args.fullValue }
-    // }
-    // const fullValue = { ...this.fullValue, ...this.getValue() }
+
     this.currentValue = clone(this.getValue())
     if (Array.isArray(this.fullValue)) {
       this.fullValue = this.fullValue.map(function (item, index) {
