@@ -1,6 +1,6 @@
 import Component, { n } from '../Component/index'
 import Tooltip from '../Tooltip/index'
-import { clone, extend, isFunction } from '../util/index'
+import { clone, extend, isFunction, isPlainObject } from '../util/index'
 import RuleManager from '../util/rule-manager'
 import FieldActionMixin from './FieldActionMixin'
 import FieldContent from './FieldContent'
@@ -29,6 +29,7 @@ class Field extends Component {
     this.initValue = value !== undefined ? clone(this.props.value) : null
     this.oldValue = null
     this.currentValue = this.initValue
+    this.fullValue = this.initValue
     if (name) {
       this.name = name
       this._autoName = false
@@ -224,11 +225,20 @@ class Field extends Component {
   _onValueChange(args) {
     const that = this
     this.oldValue = clone(this.currentValue)
-    // 如果有子fields则不直接覆盖组件原始值
-    this.currentValue =
-      this.props.fields && this.props.fields.length
-        ? clone(extend(this.currentValue, this.getValue()))
-        : clone(this.getValue())
+    // if (args && args.fullValue) {
+    //   this.fullValue = { ...this.fullValue, ...args.fullValue }
+    // }
+    // const fullValue = { ...this.fullValue, ...this.getValue() }
+    this.currentValue = clone(this.getValue())
+    if (Array.isArray(this.fullValue)) {
+      this.fullValue = this.fullValue.map(function (item, index) {
+        return { ...item, ...that.currentValue[index] }
+      })
+    }
+    if (isPlainObject(this.fullValue)) {
+      this.fullValue = { ...that.fullValue, ...that.currentValue }
+    }
+
     this.props.value = this.currentValue
 
     args = extend(true, args, {
@@ -236,6 +246,7 @@ class Field extends Component {
       oldValue: this.oldValue,
       newValue: this.currentValue,
     })
+
     setTimeout(function () {
       that._callHandler(that.props.onValueChange, args)
       that.group && that.group._onValueChange({ changedField: args.changedField || that })

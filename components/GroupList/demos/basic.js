@@ -1,5 +1,4 @@
 define([], function () {
-  let group = null
   return {
     title: '基础用法',
     file: 'basic',
@@ -13,10 +12,10 @@ define([], function () {
             component: 'GroupList',
             label: '教育经历',
             ref: (c) => {
-              group = c
+              window.group = c
             },
-            onValueChange: () => {
-              console.log(group.getValue())
+            onValueChange: (args) => {
+              console.log(args)
             },
             groupDefaults: {
               nowrap: true,
@@ -34,7 +33,10 @@ define([], function () {
               ],
             },
 
-            value: [{ school: '小学' }, { school: '大学' }],
+            value: [
+              { school: '小学', age: '7' },
+              { school: '大学', age: '18' },
+            ],
           },
         ],
       }
