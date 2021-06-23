@@ -1,6 +1,6 @@
 import Component from '../Component/index'
-import { extend, isPlainObject } from '../util/index'
 import Field from '../Field/index'
+import { extend, isPlainObject } from '../util/index'
 
 class Group extends Field {
   constructor(props, ...mixins) {

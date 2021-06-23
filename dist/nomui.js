@@ -4100,16 +4100,13 @@ function _defineProperty2(obj, key, value) {
     } // 派生的控件子类内部适当位置调用
     _onValueChange(args) {
       const that = this;
-      this.oldValue = clone$1(this.currentValue); // 如果有子fields则不直接覆盖组件原始值
-      this.currentValue =
-        this.props.fields && this.props.fields.length
-          ? clone$1(extend$1(this.currentValue, this.getValue()))
-          : clone$1(this.getValue());
+      this.oldValue = clone$1(this.currentValue);
+      this.currentValue = clone$1(this.getValue({ merge: true }));
       this.props.value = this.currentValue;
       args = extend$1(true, args, {
         name: this.props.name,
         oldValue: this.oldValue,
-        newValue: this.currentValue,
+        newValue: clone$1(this.getValue()),
       });
       setTimeout(function () {
         that._callHandler(that.props.onValueChange, args);
@@ -17058,6 +17055,7 @@ function _defineProperty2(obj, key, value) {
                   value: pager.props.pageSize || 10,
                   onValueChange: (data) => {
                     pager.props.pageSize = data.newValue;
+                    pager.props.pageIndex = 1;
                     pager._onPageChange(true);
                   },
                   options: [
