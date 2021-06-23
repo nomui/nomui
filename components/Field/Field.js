@@ -232,7 +232,7 @@ class Field extends Component {
     this.currentValue = clone(this.getValue())
     if (Array.isArray(this.fullValue)) {
       this.fullValue = this.fullValue.map(function (item, index) {
-        return { ...item, ...that.currentValue[index] }
+        return { ...item, ...(that.currentValue[index] || {}) }
       })
     }
     if (isPlainObject(this.fullValue)) {
