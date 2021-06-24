@@ -21927,6 +21927,7 @@ function _defineProperty2(obj, key, value) {
     _created() {
       // this.fileList = this.props.fileList || this.props.defaultFileList
       this._updateFile = null;
+      super._created();
     }
     _config() {
       const that = this; // const { disabled, accept, button: cButton, multiple, files } = this.props;
