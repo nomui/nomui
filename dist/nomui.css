@@ -6303,6 +6303,14 @@ textarea .nom-textarea {
   right: 8px;
   bottom: 0;
 }
+.nom-select > .nom-field-content .nom-control .nom-select-clear {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  bottom: 0;
+  background: #fff;
+  cursor: pointer;
+}
 .nom-select > .nom-field-content .nom-control .nom-select-placeholder {
   color: #bfbfbf;
 }

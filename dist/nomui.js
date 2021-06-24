@@ -2908,13 +2908,13 @@ function _defineProperty2(obj, key, value) {
           const temp1 = document.getElementsByTagName("html")[0].scrollTop;
           if (temp !== temp1) {
             // 两次滚动高度不等，则认为还没有滚动完毕
-            setTimeout(judge, 100);
+            setTimeout(judge, 500);
             temp = temp1; // 滚动高度赋值
           } else {
             window.addEventListener("scroll", this.onWindowScroll);
             temp = null; // 放弃引用
           }
-        }, 100);
+        }, 500);
       }
     }
     _scrollToKey(target) {
@@ -2941,11 +2941,19 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _onContainerScroll() {
-      const that = this;
-      const list = this.containerElem.getElementsByClassName(
+      if (this.menu.element.offsetParent === null) {
+        return;
+      }
+      const domlist = this.containerElem.getElementsByClassName(
         "nom-anchor-content"
       );
-      if (!list.length) return;
+      if (!domlist.length) return;
+      const list = [];
+      for (let i = 0; i < domlist.length; i++) {
+        if (domlist[i].offsetParent !== null) {
+          list.push(domlist[i]);
+        }
+      }
       const pRect =
         this.container === window
           ? { top: 0, bottom: window.innerHeight }
@@ -2954,7 +2962,7 @@ function _defineProperty2(obj, key, value) {
       for (let i = 0; i < list.length; i++) {
         const top = list[i].getBoundingClientRect().top;
         const lastTop = i > 0 ? list[i - 1].getBoundingClientRect().top : 0;
-        if (top < pRect.bottom && lastTop < pRect.top + that.props.offset) {
+        if (top < pRect.bottom && lastTop < pRect.top) {
           current = i;
         }
       }
@@ -3541,7 +3549,10 @@ function _defineProperty2(obj, key, value) {
       }, this.delay);
     }
     _hideHandler() {
-      if (this._openerFocusing === true) {
+      if (
+        this._openerFocusing === true &&
+        this.opener.componentType !== "Button"
+      ) {
         return;
       }
       clearTimeout(this.showTimer);
@@ -4101,12 +4112,12 @@ function _defineProperty2(obj, key, value) {
     _onValueChange(args) {
       const that = this;
       this.oldValue = clone$1(this.currentValue);
-      this.currentValue = clone$1(this.getValue({ merge: true }));
+      this.currentValue = clone$1(this.getValue());
       this.props.value = this.currentValue;
       args = extend$1(true, args, {
         name: this.props.name,
         oldValue: this.oldValue,
-        newValue: clone$1(this.getValue()),
+        newValue: this.currentValue,
       });
       setTimeout(function () {
         that._callHandler(that.props.onValueChange, args);
@@ -11648,6 +11659,7 @@ function _defineProperty2(obj, key, value) {
         filterOption: (text, options) =>
           options.filter((o) => o.text.indexOf(text) >= 0),
         virtual: false,
+        allowClear: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -11659,6 +11671,7 @@ function _defineProperty2(obj, key, value) {
         placeholder,
         disabled,
         showSearch,
+        allowClear,
       } = this.props;
       const children = [];
       this._normalizeSearchable();
@@ -11726,6 +11739,22 @@ function _defineProperty2(obj, key, value) {
           component: Icon,
           type: "down",
           classes: { "nom-select-arrow": true },
+        });
+      }
+      if (allowClear) {
+        children.push({
+          component: Icon,
+          type: "times",
+          classes: { "nom-select-clear": true },
+          hidden: true,
+          ref: (c) => {
+            this.clear = c;
+          },
+          onClick: (args) => {
+            this.setValue(null);
+            this.clear.hide();
+            args.event && args.event.stopPropagation();
+          },
         });
       }
       this.setProps({
@@ -11924,6 +11953,9 @@ function _defineProperty2(obj, key, value) {
       return retOptions;
     }
     _valueChange(changed) {
+      if (changed.newValue) {
+        this.clear.show();
+      }
       if (this.placeholder) {
         if (
           (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
