@@ -190,6 +190,33 @@ class Grid extends Component {
       }
     })
 
+    if (this.props.visibleColumns) {
+      const vc = this.props.visibleColumns.map(function (item) {
+        if (!sorter) {
+          return {
+            ...item,
+            ...{
+              sortDirection: null,
+            },
+          }
+        }
+        if (item.field === sorter.field) {
+          return {
+            ...item,
+            ...{
+              sortDirection: sorter.sortDirection,
+            },
+          }
+        }
+        return {
+          ...item,
+          ...{
+            sortDirection: null,
+          },
+        }
+      })
+      this.props.visibleColumns = vc
+    }
     this.update({ columns: c })
   }
 

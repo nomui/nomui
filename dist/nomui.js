@@ -11755,11 +11755,11 @@ function _defineProperty2(obj, key, value) {
           classes: { "nom-select-clear": true },
           hidden: true,
           ref: (c) => {
-            this.clear = c;
+            this.clearIcon = c;
           },
           onClick: (args) => {
             this.setValue(null);
-            this.clear.hide();
+            this.clearIcon.hide();
             args.event && args.event.stopPropagation();
           },
         });
@@ -11961,7 +11961,7 @@ function _defineProperty2(obj, key, value) {
     }
     _valueChange(changed) {
       if (changed.newValue) {
-        this.clear.show();
+        this.clearIcon.show();
       }
       if (this.placeholder) {
         if (
@@ -14961,6 +14961,20 @@ function _defineProperty2(obj, key, value) {
         }
         return Object.assign({}, item, { sortDirection: null });
       });
+      if (this.props.visibleColumns) {
+        const vc = this.props.visibleColumns.map(function (item) {
+          if (!sorter) {
+            return Object.assign({}, item, { sortDirection: null });
+          }
+          if (item.field === sorter.field) {
+            return Object.assign({}, item, {
+              sortDirection: sorter.sortDirection,
+            });
+          }
+          return Object.assign({}, item, { sortDirection: null });
+        });
+        this.props.visibleColumns = vc;
+      }
       this.update({ columns: c });
     }
     handleSort(sorter) {

@@ -140,11 +140,11 @@ class Select extends Field {
         },
         hidden: true,
         ref: (c) => {
-          this.clear = c
+          this.clearIcon = c
         },
         onClick: (args) => {
           this.setValue(null)
-          this.clear.hide()
+          this.clearIcon.hide()
           args.event && args.event.stopPropagation()
         },
       })
@@ -395,7 +395,7 @@ class Select extends Field {
 
   _valueChange(changed) {
     if (changed.newValue) {
-      this.clear.show()
+      this.clearIcon.show()
     }
     if (this.placeholder) {
       if (
