@@ -30,7 +30,18 @@ class TimeRangePicker extends Group {
 
   _config() {
     const that = this
-    const { format, hourStep, minuteStep, secondStep, allowClear, minTime, maxTime } = this.props
+    const {
+      format,
+      hourStep,
+      minuteStep,
+      secondStep,
+      allowClear,
+      minTime,
+      maxTime,
+      required,
+      requiredMessage,
+      rules,
+    } = this.props
 
     this.setProps({
       inline: true,
@@ -53,6 +64,9 @@ class TimeRangePicker extends Group {
 
           minTime,
           maxTime,
+          required,
+          requiredMessage,
+          rules,
         },
         {
           component: 'StaticText',
@@ -77,6 +91,9 @@ class TimeRangePicker extends Group {
 
           minTime,
           maxTime,
+          required,
+          requiredMessage,
+          rules,
         },
       ],
     })
