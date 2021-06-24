@@ -36,10 +36,7 @@ class Grid extends Component {
     this._processExpandableColumn()
 
     if (this.props.visibleColumns) {
-      this.props.columns = this.setSortDirection({
-        columns: this.props.visibleColumns,
-        sorter: this.sortInfo,
-      })
+      this.props.columns = this.props.visibleColumns
     }
 
     if (frozenLeftCols || frozenRightCols) {
@@ -167,9 +164,8 @@ class Grid extends Component {
     return arr
   }
 
-  setSortDirection({ columns, sorter }) {
-    if (!columns) columns = this.getColumns()
-    const c = columns.map(function (item) {
+  setSortDirection(sorter) {
+    const c = this.getColumns().map(function (item) {
       if (!sorter) {
         return {
           ...item,
@@ -193,11 +189,38 @@ class Grid extends Component {
         },
       }
     })
-    return c
+
+    if (this.props.visibleColumns) {
+      const vc = this.props.visibleColumns.map(function (item) {
+        if (!sorter) {
+          return {
+            ...item,
+            ...{
+              sortDirection: null,
+            },
+          }
+        }
+        if (item.field === sorter.field) {
+          return {
+            ...item,
+            ...{
+              sortDirection: sorter.sortDirection,
+            },
+          }
+        }
+        return {
+          ...item,
+          ...{
+            sortDirection: null,
+          },
+        }
+      })
+      this.props.visibleColumns = vc
+    }
+    this.update({ columns: c })
   }
 
   handleSort(sorter) {
-    this.sortInfo = sorter
     const key = sorter.field
     if (!sorter.sortDirection) return
 
@@ -208,12 +231,7 @@ class Grid extends Component {
       } else {
         arr = this.props.data.sort(sorter.sortable)
       }
-      this.update({
-        columns: this.setSortDirection({
-          columns: null,
-          sorter: sorter,
-        }),
-      })
+      this.setSortDirection(sorter)
       this.update({ data: arr })
       this.lastSortField = key
       return
@@ -224,12 +242,7 @@ class Grid extends Component {
       sortDirection: sorter.sortDirection,
     })
 
-    this.update({
-      columns: this.setSortDirection({
-        columns: null,
-        sorter: sorter,
-      }),
-    })
+    this.setSortDirection(sorter)
     this.lastSortField = key
   }
 
@@ -237,7 +250,6 @@ class Grid extends Component {
     if (this.lastSortField) {
       this.header.table.thRefs[this.lastSortField].resetSort()
     }
-    this.sortInfo = null
     this.lastSortField = null
   }
 
