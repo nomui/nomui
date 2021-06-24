@@ -655,6 +655,7 @@ function _defineProperty2(obj, key, value) {
       el.parentNode.removeChild(el);
     }
     update(props) {
+      isFunction(this._update) && this._update();
       this._propStyleClasses.length = 0;
       this.setProps(props);
       this._off();
@@ -3954,6 +3955,7 @@ function _defineProperty2(obj, key, value) {
         this.group = this.parent.field;
       }
       this.rootField = this.group === null ? this : this.group.rootField;
+      this.rules = [];
     }
     _config() {
       delete this.errorTip;
@@ -3971,13 +3973,14 @@ function _defineProperty2(obj, key, value) {
         notShowLabel,
         required,
         requiredMessage,
-        rules,
+        rules = [],
         action,
       } = this.props;
       const showLabel =
         notShowLabel === false && label !== undefined && label !== null;
+      this.rules = this.rules.concat(rules);
       if (required === true) {
-        rules.unshift({ type: "required", message: requiredMessage });
+        this.rules.unshift({ type: "required", message: requiredMessage });
       }
       if (span) {
         this.setProps({ styles: { col: span } });
@@ -4014,6 +4017,9 @@ function _defineProperty2(obj, key, value) {
         ],
       });
     }
+    _update() {
+      this.rules = [];
+    }
     getValue(options) {
       const value = isFunction(this._getValue) ? this._getValue(options) : null;
       return value;
@@ -4036,10 +4042,11 @@ function _defineProperty2(obj, key, value) {
       return this._validate();
     }
     _validate() {
-      const { rules, disabled, hidden } = this.props;
+      const { disabled, hidden } = this.props;
       if (disabled || hidden) {
         return true;
       }
+      const rules = this.rules;
       const value = this._getRawValue ? this._getRawValue() : this.getValue();
       if (Array.isArray(rules) && rules.length > 0) {
         const validationResult = RuleManager.validate(rules, value);
@@ -16572,19 +16579,18 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const { precision = -1 } = this.props;
-      const rules = [];
       if (precision === -1) {
-        rules.push({ type: "number" });
+        this.rules.push({ type: "number" });
       }
       if (this.props.precision === 0) {
-        rules.push({
+        this.rules.push({
           type: "regex",
           value: { pattern: "^(\\-|\\+)?(0|[1-9][0-9]*)$" },
           message: "请输入整数",
         });
       }
       if (this.props.precision > 0) {
-        rules.push({
+        this.rules.push({
           type: "regex",
           value: {
             pattern: `^(\\-|\\+)?(0|[1-9][0-9]*)(\\.\\d{${this.props.precision}})$`,
@@ -16593,12 +16599,11 @@ function _defineProperty2(obj, key, value) {
         });
       }
       if (this.props.min) {
-        rules.push({ type: "min", value: this.props.min });
+        this.rules.push({ type: "min", value: this.props.min });
       }
       if (this.props.max) {
-        rules.push({ type: "max", value: this.props.max });
+        this.rules.push({ type: "max", value: this.props.max });
       }
-      this.setProps({ rules: rules });
       super._config();
     }
     _getValue() {
