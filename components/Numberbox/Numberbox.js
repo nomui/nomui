@@ -13,8 +13,8 @@ class Numberbox extends Textbox {
   }
 
   _config() {
-    const { precision = -1 } = this.props
-    const rules = []
+    const { precision = -1, rules: propRules = [] } = this.props
+    const rules = [].concat(propRules)
 
     if (precision === -1) {
       rules.push({
