@@ -42,6 +42,7 @@ class Field extends Component {
       this.group = this.parent.field
     }
     this.rootField = this.group === null ? this : this.group.rootField
+    this.rules = []
   }
 
   _config() {
@@ -55,13 +56,15 @@ class Field extends Component {
       notShowLabel,
       required,
       requiredMessage,
-      rules,
+      rules = [],
       action,
     } = this.props
     const showLabel = notShowLabel === false && label !== undefined && label !== null
 
+    this.rules = this.rules.concat(rules)
+
     if (required === true) {
-      rules.unshift({ type: 'required', message: requiredMessage })
+      this.rules.unshift({ type: 'required', message: requiredMessage })
     }
 
     if (span) {
@@ -104,6 +107,10 @@ class Field extends Component {
     })
   }
 
+  _update() {
+    this.rules = []
+  }
+
   getValue(options) {
     const value = isFunction(this._getValue) ? this._getValue(options) : null
     return value
@@ -128,10 +135,11 @@ class Field extends Component {
   }
 
   _validate() {
-    const { rules, disabled, hidden } = this.props
+    const { disabled, hidden } = this.props
     if (disabled || hidden) {
       return true
     }
+    const rules = this.rules
     const value = this._getRawValue ? this._getRawValue() : this.getValue()
 
     if (Array.isArray(rules) && rules.length > 0) {

@@ -14,16 +14,15 @@ class Numberbox extends Textbox {
 
   _config() {
     const { precision = -1 } = this.props
-    const rules = []
 
     if (precision === -1) {
-      rules.push({
+      this.rules.push({
         type: 'number',
       })
     }
 
     if (this.props.precision === 0) {
-      rules.push({
+      this.rules.push({
         type: 'regex',
         value: {
           pattern: '^(\\-|\\+)?(0|[1-9][0-9]*)$',
@@ -33,7 +32,7 @@ class Numberbox extends Textbox {
     }
 
     if (this.props.precision > 0) {
-      rules.push({
+      this.rules.push({
         type: 'regex',
         value: {
           pattern: `^(\\-|\\+)?(0|[1-9][0-9]*)(\\.\\d{${this.props.precision}})$`,
@@ -43,19 +42,17 @@ class Numberbox extends Textbox {
     }
 
     if (this.props.min) {
-      rules.push({
+      this.rules.push({
         type: 'min',
         value: this.props.min,
       })
     }
     if (this.props.max) {
-      rules.push({
+      this.rules.push({
         type: 'max',
         value: this.props.max,
       })
     }
-
-    this.setProps({ rules: rules })
 
     super._config()
   }
