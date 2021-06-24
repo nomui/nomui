@@ -226,13 +226,13 @@ class Field extends Component {
     const that = this
     this.oldValue = clone(this.currentValue)
 
-    this.currentValue = clone(this.getValue({ merge: true }))
+    this.currentValue = clone(this.getValue())
     this.props.value = this.currentValue
 
     args = extend(true, args, {
       name: this.props.name,
       oldValue: this.oldValue,
-      newValue: clone(this.getValue()),
+      newValue: this.currentValue,
     })
 
     setTimeout(function () {

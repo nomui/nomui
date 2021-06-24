@@ -81,7 +81,7 @@ class Tooltip extends Layer {
   }
 
   _hideHandler() {
-    if (this._openerFocusing === true) {
+    if (this._openerFocusing === true && this.opener.componentType !== 'Button') {
       return
     }
     clearTimeout(this.showTimer)

@@ -11,7 +11,6 @@ define([], function () {
             component: 'Anchor',
             sticky: true,
             container: window,
-            offset: 200,
             items: [
               { text: '锚点1', key: 'div1' },
               {

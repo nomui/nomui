@@ -104,13 +104,13 @@ class Anchor extends Component {
         const temp1 = document.getElementsByTagName('html')[0].scrollTop
         if (temp !== temp1) {
           // 两次滚动高度不等，则认为还没有滚动完毕
-          setTimeout(judge, 100)
+          setTimeout(judge, 500)
           temp = temp1 // 滚动高度赋值
         } else {
           window.addEventListener('scroll', this.onWindowScroll)
           temp = null // 放弃引用
         }
-      }, 100)
+      }, 500)
     }
   }
 
@@ -141,9 +141,19 @@ class Anchor extends Component {
   }
 
   _onContainerScroll() {
-    const that = this
-    const list = this.containerElem.getElementsByClassName('nom-anchor-content')
-    if (!list.length) return
+    if (this.menu.element.offsetParent === null) {
+      return
+    }
+
+    const domlist = this.containerElem.getElementsByClassName('nom-anchor-content')
+    if (!domlist.length) return
+    const list = []
+    for (let i = 0; i < domlist.length; i++) {
+      if (domlist[i].offsetParent !== null) {
+        list.push(domlist[i])
+      }
+    }
+
     const pRect =
       this.container === window
         ? { top: 0, bottom: window.innerHeight }
@@ -152,7 +162,7 @@ class Anchor extends Component {
     for (let i = 0; i < list.length; i++) {
       const top = list[i].getBoundingClientRect().top
       const lastTop = i > 0 ? list[i - 1].getBoundingClientRect().top : 0
-      if (top < pRect.bottom && lastTop < pRect.top + that.props.offset) {
+      if (top < pRect.bottom && lastTop < pRect.top) {
         current = i
       }
     }
