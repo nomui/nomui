@@ -45,6 +45,8 @@ class Uploader extends Field {
   _created() {
     // this.fileList = this.props.fileList || this.props.defaultFileList
     this._updateFile = null
+
+    super._created()
   }
 
   _config() {
