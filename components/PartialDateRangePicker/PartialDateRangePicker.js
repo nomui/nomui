@@ -26,7 +26,16 @@ class PartialDateRangePicker extends Group {
 
   _config() {
     const that = this
-    const { allowClear, minDate, maxDate, yearRange, mode } = this.props
+    const {
+      allowClear,
+      minDate,
+      maxDate,
+      yearRange,
+      mode,
+      required,
+      requiredMessage,
+      rules,
+    } = this.props
 
     this.setProps({
       inline: true,
@@ -46,6 +55,9 @@ class PartialDateRangePicker extends Group {
           maxDate,
           yearRange,
           mode,
+          required,
+          requiredMessage,
+          rules,
         },
         {
           component: 'StaticText',
@@ -66,6 +78,9 @@ class PartialDateRangePicker extends Group {
           maxDate,
           yearRange,
           mode,
+          required,
+          requiredMessage,
+          rules,
         },
       ],
     })

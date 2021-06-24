@@ -17,6 +17,8 @@ class DateRangePicker extends Group {
         end: 'end',
       },
       flatValue: true,
+      required: false,
+      requiredMessage: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -28,7 +30,17 @@ class DateRangePicker extends Group {
 
   _config() {
     const that = this
-    const { format, allowClear, minDate, maxDate, yearRange, showTime } = this.props
+    const {
+      format,
+      allowClear,
+      minDate,
+      maxDate,
+      yearRange,
+      showTime,
+      required,
+      requiredMessage,
+      rules,
+    } = this.props
 
     this.setProps({
       inline: true,
@@ -49,6 +61,9 @@ class DateRangePicker extends Group {
           maxDate,
           yearRange,
           showTime,
+          required,
+          requiredMessage,
+          rules,
         },
         {
           component: 'StaticText',
@@ -70,6 +85,9 @@ class DateRangePicker extends Group {
           maxDate,
           yearRange,
           showTime,
+          required,
+          requiredMessage,
+          rules,
         },
       ],
     })

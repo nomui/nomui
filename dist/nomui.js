@@ -13057,6 +13057,8 @@ function _defineProperty2(obj, key, value) {
         onChange: null,
         fieldName: { start: "start", end: "end" },
         flatValue: true,
+        required: false,
+        requiredMessage: null,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -13072,6 +13074,9 @@ function _defineProperty2(obj, key, value) {
         maxDate,
         yearRange,
         showTime,
+        required,
+        requiredMessage,
+        rules,
       } = this.props;
       this.setProps({
         inline: true,
@@ -13092,6 +13097,9 @@ function _defineProperty2(obj, key, value) {
             maxDate,
             yearRange,
             showTime,
+            required,
+            requiredMessage,
+            rules,
           },
           { component: "StaticText", value: "-" },
           {
@@ -13110,6 +13118,9 @@ function _defineProperty2(obj, key, value) {
             maxDate,
             yearRange,
             showTime,
+            required,
+            requiredMessage,
+            rules,
           },
         ],
       });
@@ -17739,7 +17750,16 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const that = this;
-      const { allowClear, minDate, maxDate, yearRange, mode } = this.props;
+      const {
+        allowClear,
+        minDate,
+        maxDate,
+        yearRange,
+        mode,
+        required,
+        requiredMessage,
+        rules,
+      } = this.props;
       this.setProps({
         inline: true,
         fields: [
@@ -17758,6 +17778,9 @@ function _defineProperty2(obj, key, value) {
             maxDate,
             yearRange,
             mode,
+            required,
+            requiredMessage,
+            rules,
           },
           { component: "StaticText", value: "-" },
           {
@@ -17775,6 +17798,9 @@ function _defineProperty2(obj, key, value) {
             maxDate,
             yearRange,
             mode,
+            required,
+            requiredMessage,
+            rules,
           },
         ],
       });
@@ -21246,6 +21272,9 @@ function _defineProperty2(obj, key, value) {
         allowClear,
         minTime,
         maxTime,
+        required,
+        requiredMessage,
+        rules,
       } = this.props;
       this.setProps({
         inline: true,
@@ -21267,6 +21296,9 @@ function _defineProperty2(obj, key, value) {
             allowClear,
             minTime,
             maxTime,
+            required,
+            requiredMessage,
+            rules,
           },
           { component: "StaticText", value: "-" },
           {
@@ -21286,6 +21318,9 @@ function _defineProperty2(obj, key, value) {
             allowClear,
             minTime,
             maxTime,
+            required,
+            requiredMessage,
+            rules,
           },
         ],
       });
