@@ -36,7 +36,10 @@ class Grid extends Component {
     this._processExpandableColumn()
 
     if (this.props.visibleColumns) {
-      this.props.columns = this.props.visibleColumns
+      this.props.columns = this.setSortDirection({
+        columns: this.props.visibleColumns,
+        sorter: this.sortInfo,
+      })
     }
 
     if (frozenLeftCols || frozenRightCols) {
@@ -164,8 +167,9 @@ class Grid extends Component {
     return arr
   }
 
-  setSortDirection(sorter) {
-    const c = this.getColumns().map(function (item) {
+  setSortDirection({ columns, sorter }) {
+    if (!columns) columns = this.getColumns()
+    const c = columns.map(function (item) {
       if (!sorter) {
         return {
           ...item,
@@ -189,11 +193,11 @@ class Grid extends Component {
         },
       }
     })
-
-    this.update({ columns: c })
+    return c
   }
 
   handleSort(sorter) {
+    this.sortInfo = sorter
     const key = sorter.field
     if (!sorter.sortDirection) return
 
@@ -204,7 +208,12 @@ class Grid extends Component {
       } else {
         arr = this.props.data.sort(sorter.sortable)
       }
-      this.setSortDirection(sorter)
+      this.update({
+        columns: this.setSortDirection({
+          columns: null,
+          sorter: sorter,
+        }),
+      })
       this.update({ data: arr })
       this.lastSortField = key
       return
@@ -215,7 +224,12 @@ class Grid extends Component {
       sortDirection: sorter.sortDirection,
     })
 
-    this.setSortDirection(sorter)
+    this.update({
+      columns: this.setSortDirection({
+        columns: null,
+        sorter: sorter,
+      }),
+    })
     this.lastSortField = key
   }
 
@@ -223,6 +237,7 @@ class Grid extends Component {
     if (this.lastSortField) {
       this.header.table.thRefs[this.lastSortField].resetSort()
     }
+    this.sortInfo = null
     this.lastSortField = null
   }
 

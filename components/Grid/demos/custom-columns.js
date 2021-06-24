@@ -7,10 +7,12 @@ define([], function () {
         {
           title: '姓名',
           field: 'name',
+          sortable: true,
         },
         {
           title: '其它',
           field: 'other',
+
           children: [
             {
               title: '年龄',
@@ -74,6 +76,7 @@ define([], function () {
         {
           title: '姓名',
           field: 'name',
+          sortable: true,
         },
         {
           title: '其它',
