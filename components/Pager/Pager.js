@@ -64,6 +64,7 @@ class Pager extends Component {
                   pager.props.pageIndex = 1
                   pager._onPageChange(true)
                 },
+                allowClear: false,
                 options: [
                   {
                     text: '10条/页',
