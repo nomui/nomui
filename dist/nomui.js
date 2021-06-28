@@ -11759,7 +11759,7 @@ function _defineProperty2(obj, key, value) {
           },
           onClick: (args) => {
             this.setValue(null);
-            this.clearIcon.hide();
+            this.props.allowClear && this.clearIcon.hide();
             args.event && args.event.stopPropagation();
           },
         });
@@ -11961,7 +11961,7 @@ function _defineProperty2(obj, key, value) {
     }
     _valueChange(changed) {
       if (changed.newValue) {
-        this.clearIcon.show();
+        this.props.allowClear && this.clearIcon.show();
       }
       if (this.placeholder) {
         if (
@@ -17120,6 +17120,7 @@ function _defineProperty2(obj, key, value) {
                     pager.props.pageIndex = 1;
                     pager._onPageChange(true);
                   },
+                  allowClear: false,
                   options: [
                     { text: "10条/页", value: 10 },
                     { text: "20条/页", value: 20 },

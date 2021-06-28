@@ -5911,15 +5911,13 @@ fieldset[disabled] a.nom-button {
 .nom-button:not(.p-type-dashed):not([disabled]):hover {
   filter: brightness(0.9);
 }
-a.nom-button.p-type-link {
-  padding: 0;
-}
 a.nom-button.p-type-link:hover {
   text-decoration: underline;
   background: none;
 }
 a.nom-button-inline {
   display: inline;
+  padding: 0;
   white-space: normal;
   text-align: left;
 }
