@@ -14,3 +14,5 @@
 | maxDate | 最大可选日期，格式与 value 一致 | `string` | - |
 | fieldName | 起止输入框的 name | `object` | `{start:'start',end:'end'}` |
 | flatValue | 取值是否扁平化 | `boolean` | `true` |
+| startPickerProps | 开始日期选择器参数，与 PartialDatePicker 相同 | `object` | `{placeholder:'开始时间'}` |
+| endPickerProps | 结束日期选择器参数，与 PartialDatePicker 相同 | `object` | `{placeholder:'结束时间'}` |
