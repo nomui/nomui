@@ -13059,6 +13059,8 @@ function _defineProperty2(obj, key, value) {
         flatValue: true,
         required: false,
         requiredMessage: null,
+        startPickerProps: { placeholder: "开始日期" },
+        endPickerProps: { placeholder: "结束日期" },
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -13077,51 +13079,57 @@ function _defineProperty2(obj, key, value) {
         required,
         requiredMessage,
         rules,
+        startPickerProps,
+        endPickerProps,
       } = this.props;
       this.setProps({
         inline: true,
         fields: [
-          {
-            component: "DatePicker",
-            name: that.props.fieldName.start,
-            placeholder: "开始日期",
-            ref: (c) => {
-              that.startPicker = c;
+          Object.assign(
+            {
+              component: "DatePicker",
+              name: that.props.fieldName.start,
+              ref: (c) => {
+                that.startPicker = c;
+              },
+              onChange: function (args) {
+                that.checkRange(args.sender.name);
+              },
+              format,
+              allowClear,
+              minDate,
+              maxDate,
+              yearRange,
+              showTime,
+              required,
+              requiredMessage,
+              rules,
             },
-            onChange: function (args) {
-              that.checkRange(args.sender.name);
-            },
-            format,
-            allowClear,
-            minDate,
-            maxDate,
-            yearRange,
-            showTime,
-            required,
-            requiredMessage,
-            rules,
-          },
+            startPickerProps
+          ),
           { component: "StaticText", value: "-" },
-          {
-            component: "DatePicker",
-            name: that.props.fieldName.end,
-            placeholder: "结束日期",
-            ref: (c) => {
-              that.endPicker = c;
+          Object.assign(
+            {
+              component: "DatePicker",
+              name: that.props.fieldName.end,
+              ref: (c) => {
+                that.endPicker = c;
+              },
+              onChange: function (args) {
+                that.checkRange(args.sender.name);
+              },
+              format,
+              allowClear,
+              minDate,
+              maxDate,
+              yearRange,
+              showTime,
+              required,
+              requiredMessage,
+              rules,
             },
-            onChange: function (args) {
-              that.checkRange(args.sender.name);
-            },
-            format,
-            allowClear,
-            minDate,
-            maxDate,
-            yearRange,
-            showTime,
-            required,
-            requiredMessage,
-            rules,
-          },
+            endPickerProps
+          ),
         ],
       });
       super._config();
@@ -17757,6 +17765,8 @@ function _defineProperty2(obj, key, value) {
         onChange: null,
         fieldName: { start: "start", end: "end" },
         flatValue: true,
+        startPickerProps: { placeholder: "开始日期" },
+        endPickerProps: { placeholder: "结束日期" },
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -17774,49 +17784,55 @@ function _defineProperty2(obj, key, value) {
         required,
         requiredMessage,
         rules,
+        startPickerProps,
+        endPickerProps,
       } = this.props;
       this.setProps({
         inline: true,
         fields: [
-          {
-            component: "PartialDatePicker",
-            name: that.props.fieldName.start,
-            placeholder: "开始日期",
-            ref: (c) => {
-              that.startPicker = c;
+          Object.assign(
+            {
+              component: "PartialDatePicker",
+              name: that.props.fieldName.start,
+              ref: (c) => {
+                that.startPicker = c;
+              },
+              onChange: function (args) {
+                that.checkRange(args.sender.name);
+              },
+              allowClear,
+              minDate,
+              maxDate,
+              yearRange,
+              mode,
+              required,
+              requiredMessage,
+              rules,
             },
-            onChange: function (args) {
-              that.checkRange(args.sender.name);
-            },
-            allowClear,
-            minDate,
-            maxDate,
-            yearRange,
-            mode,
-            required,
-            requiredMessage,
-            rules,
-          },
+            startPickerProps
+          ),
           { component: "StaticText", value: "-" },
-          {
-            component: "PartialDatePicker",
-            name: that.props.fieldName.end,
-            placeholder: "结束日期",
-            ref: (c) => {
-              that.endPicker = c;
+          Object.assign(
+            {
+              component: "PartialDatePicker",
+              name: that.props.fieldName.end,
+              ref: (c) => {
+                that.endPicker = c;
+              },
+              onChange: function (args) {
+                that.checkRange(args.sender.name);
+              },
+              allowClear,
+              minDate,
+              maxDate,
+              yearRange,
+              mode,
+              required,
+              requiredMessage,
+              rules,
             },
-            onChange: function (args) {
-              that.checkRange(args.sender.name);
-            },
-            allowClear,
-            minDate,
-            maxDate,
-            yearRange,
-            mode,
-            required,
-            requiredMessage,
-            rules,
-          },
+            endPickerProps
+          ),
         ],
       });
       super._config();
@@ -21271,6 +21287,8 @@ function _defineProperty2(obj, key, value) {
         onChange: null,
         fieldName: { start: "start", end: "end" },
         flatValue: true,
+        startPickerProps: { placeholder: "开始时间" },
+        endPickerProps: { placeholder: "结束时间" },
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -21290,53 +21308,60 @@ function _defineProperty2(obj, key, value) {
         required,
         requiredMessage,
         rules,
+        startPickerProps,
+        endPickerProps,
       } = this.props;
       this.setProps({
         inline: true,
         fields: [
-          {
-            component: "TimePicker",
-            name: that.props.fieldName.start,
-            placeholder: "开始时间",
-            ref: (c) => {
-              that.startPicker = c;
+          Object.assign(
+            {
+              component: "TimePicker",
+              name: that.props.fieldName.start,
+              ref: (c) => {
+                that.startPicker = c;
+              },
+              onChange: function (args) {
+                that.checkRange(args.sender.name);
+              },
+              format,
+              hourStep,
+              minuteStep,
+              secondStep,
+              allowClear,
+              minTime,
+              maxTime,
+              required,
+              requiredMessage,
+              rules,
             },
-            onChange: function (args) {
-              that.checkRange(args.sender.name);
-            },
-            format,
-            hourStep,
-            minuteStep,
-            secondStep,
-            allowClear,
-            minTime,
-            maxTime,
-            required,
-            requiredMessage,
-            rules,
-          },
+            startPickerProps
+          ),
           { component: "StaticText", value: "-" },
-          {
-            component: "TimePicker",
-            name: that.props.fieldName.end,
-            placeholder: "结束时间",
-            ref: (c) => {
-              that.endPicker = c;
+          Object.assign(
+            {
+              component: "TimePicker",
+              name: that.props.fieldName.end,
+              placeholder: "结束时间",
+              ref: (c) => {
+                that.endPicker = c;
+              },
+              onChange: function (args) {
+                that.checkRange(args.sender.name);
+              },
+              format,
+              hourStep,
+              minuteStep,
+              secondStep,
+              allowClear,
+              minTime,
+              maxTime,
+              required,
+              requiredMessage,
+              rules,
             },
-            onChange: function (args) {
-              that.checkRange(args.sender.name);
-            },
-            format,
-            hourStep,
-            minuteStep,
-            secondStep,
-            allowClear,
-            minTime,
-            maxTime,
-            required,
-            requiredMessage,
-            rules,
-          },
+            endPickerProps
+          ),
         ],
       });
       super._config();
