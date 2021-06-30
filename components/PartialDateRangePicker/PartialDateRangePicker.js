@@ -15,6 +15,12 @@ class PartialDateRangePicker extends Group {
         end: 'end',
       },
       flatValue: true,
+      startPickerProps: {
+        placeholder: '开始日期',
+      },
+      endPickerProps: {
+        placeholder: '结束日期',
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -35,6 +41,8 @@ class PartialDateRangePicker extends Group {
       required,
       requiredMessage,
       rules,
+      startPickerProps,
+      endPickerProps,
     } = this.props
 
     this.setProps({
@@ -43,7 +51,6 @@ class PartialDateRangePicker extends Group {
         {
           component: 'PartialDatePicker',
           name: that.props.fieldName.start,
-          placeholder: '开始日期',
           ref: (c) => {
             that.startPicker = c
           },
@@ -58,6 +65,7 @@ class PartialDateRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          ...startPickerProps,
         },
         {
           component: 'StaticText',
@@ -66,7 +74,6 @@ class PartialDateRangePicker extends Group {
         {
           component: 'PartialDatePicker',
           name: that.props.fieldName.end,
-          placeholder: '结束日期',
           ref: (c) => {
             that.endPicker = c
           },
@@ -81,6 +88,7 @@ class PartialDateRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          ...endPickerProps,
         },
       ],
     })

@@ -19,6 +19,12 @@ class TimeRangePicker extends Group {
         end: 'end',
       },
       flatValue: true,
+      startPickerProps: {
+        placeholder: '开始时间',
+      },
+      endPickerProps: {
+        placeholder: '结束时间',
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -41,6 +47,8 @@ class TimeRangePicker extends Group {
       required,
       requiredMessage,
       rules,
+      startPickerProps,
+      endPickerProps,
     } = this.props
 
     this.setProps({
@@ -49,7 +57,6 @@ class TimeRangePicker extends Group {
         {
           component: 'TimePicker',
           name: that.props.fieldName.start,
-          placeholder: '开始时间',
           ref: (c) => {
             that.startPicker = c
           },
@@ -67,6 +74,7 @@ class TimeRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          ...startPickerProps,
         },
         {
           component: 'StaticText',
@@ -94,6 +102,7 @@ class TimeRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          ...endPickerProps,
         },
       ],
     })
