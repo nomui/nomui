@@ -8167,3 +8167,37 @@ textarea .nom-textarea {
 .nom-auto-complete .nom-auto-complete-clear {
   cursor: pointer;
 }
+.nom-breadcrumb {
+  color: rgba(0, 0, 0, 0.45);
+}
+.nom-breadcrumb > .nom-breadcrumb-item.p-with-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.nom-breadcrumb > .nom-breadcrumb-item > .nom-breadcrumb-link + .nom-icon {
+  padding-left: 0.25rem;
+}
+.nom-breadcrumb > .nom-breadcrumb-item > .nom-icon + .nom-breadcrumb-link {
+  padding-left: 0.25rem;
+}
+.nom-breadcrumb > .nom-breadcrumb-item > .nom-breadcrumb-separator {
+  padding: 0 0.5rem;
+}
+.nom-breadcrumb > .nom-breadcrumb-item > .nom-breadcrumb-link a {
+  color: #00000073;
+  text-decoration: none;
+  outline: none;
+}
+.nom-breadcrumb > .nom-breadcrumb-item > .nom-breadcrumb-link a:hover {
+  color: #40a9ff;
+}
+.nom-breadcrumb > .nom-breadcrumb-item:last-child {
+  color: rgba(0, 0, 0, 0.85);
+}
+.nom-breadcrumb > .nom-breadcrumb-item:last-child > .nom-breadcrumb-link > a {
+  color: rgba(0, 0, 0, 0.85);
+}
+.nom-breadcrumb > .nom-breadcrumb-item:last-child > .nom-breadcrumb-separator {
+  display: none;
+}

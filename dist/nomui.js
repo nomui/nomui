@@ -307,6 +307,9 @@ function _defineProperty2(obj, key, value) {
       }, wait);
     };
   }
+  function isNotEmptyArray(array) {
+    return Array.isArray(array) && array.length > 0;
+  }
   var index$1 = /*#__PURE__*/ Object.freeze({
     __proto__: null,
     isPlainObject: isPlainObject,
@@ -328,6 +331,7 @@ function _defineProperty2(obj, key, value) {
     parseToQueryString: parseToQueryString,
     isFalsy: isFalsy,
     debounce: debounce,
+    isNotEmptyArray: isNotEmptyArray,
   }); // Events
   // -----------------
   // Thanks to:
@@ -6341,6 +6345,77 @@ function _defineProperty2(obj, key, value) {
     },
   });
   Component.register(Badge);
+  class BreadcrumbItem extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { tag: "span", url: null };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      // const that = this
+      // const { icon, rightIcon, separator, url, text, overlay } = this.props
+      const { icon, rightIcon, separator, url, text } = this.props;
+      if (icon || rightIcon) {
+        this.setProps({ classes: { "p-with-icon": true } });
+        if (!text) {
+          this.setProps({ classes: { "p-only-icon": true } });
+        }
+      } // if (isNotEmptyArray(overlay)) {
+      //   this.setProps({
+      //     popup: {
+      //       triggerAction: 'hover',
+      //       aligin: 'left bottom',
+      //       children: {
+      //         component: BreadcrumbSub,
+      //         items: overlay,
+      //       },
+      //     },
+      //   })
+      // }
+      this.setProps({
+        children: [
+          Component.normalizeIconProps(icon),
+          {
+            tag: "span",
+            classes: { "nom-breadcrumb-link": true },
+            children: url
+              ? { tag: "a", attrs: { href: url }, children: text }
+              : text,
+          },
+          Component.normalizeIconProps(rightIcon),
+          {
+            tag: "span",
+            classes: { "nom-breadcrumb-separator": true },
+            children: separator,
+          },
+        ],
+      });
+    }
+  }
+  Component.register(BreadcrumbItem);
+  class Breadcrumb extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        separator: "/",
+        itemDefaults: { component: BreadcrumbItem },
+      };
+      super(Component.extendProps(defaults, props), mixins);
+    }
+    _config() {
+      const { separator, items, itemDefaults } = this.props;
+      console.log(items);
+      const children = isNotEmptyArray(items)
+        ? items.map((item, idx) => {
+            const isLeaf = idx === items.length - 1;
+            return Object.assign(
+              {},
+              Component.extendProps({ separator, isLeaf }, itemDefaults, item)
+            );
+          })
+        : [];
+      this.setProps({ children, attrs: { style: { padding: "10px 15px" } } });
+    }
+  }
+  Component.register(Breadcrumb);
   class Carousel extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -22486,6 +22561,7 @@ function _defineProperty2(obj, key, value) {
   exports.AvatarGroup = AvatarGroup;
   exports.BackTop = BackTop;
   exports.Badge = Badge;
+  exports.Breadcrumb = Breadcrumb;
   exports.Button = Button;
   exports.Caption = Caption;
   exports.Carousel = Carousel;

@@ -318,3 +318,7 @@ export function debounce(func, wait) {
     }, wait)
   }
 }
+
+export function isNotEmptyArray(array) {
+  return Array.isArray(array) && array.length > 0
+}
