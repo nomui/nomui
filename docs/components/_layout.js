@@ -239,6 +239,12 @@ define([], function () {
                       id: 'Pager',
                       url: '#!components!index?type=Pager',
                     },
+                    {
+                      text: 'Breadcrumb',
+                      subtext: '面包屑',
+                      id: 'Breadcrumb',
+                      url: '#!components!index?type=Breadcrumb',
+                    },
                   ],
                 },
                 {
