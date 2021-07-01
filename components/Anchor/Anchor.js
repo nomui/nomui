@@ -11,6 +11,7 @@ class Anchor extends Component {
       width: 180,
       sticky: false,
       itemDefaults: null,
+      offset: 0,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -97,13 +98,27 @@ class Anchor extends Component {
         that._onContainerScroll()
       })
     } else {
-      window.addEventListener('scroll', this.onWindowScroll)
+      // 判断是否滚动完毕，再次添加滚动事件
+      let temp = 0
+      setTimeout(function judge() {
+        const temp1 = document.getElementsByTagName('html')[0].scrollTop
+        if (temp !== temp1) {
+          // 两次滚动高度不等，则认为还没有滚动完毕
+          setTimeout(judge, 500)
+          temp = temp1 // 滚动高度赋值
+        } else {
+          window.addEventListener('scroll', this.onWindowScroll)
+          temp = null // 放弃引用
+        }
+      }, 500)
     }
   }
 
   _scrollToKey(target) {
     const container = this.containerElem.getElementsByClassName(`nom-anchor-target-${target}`)
-    container.length && container[0].scrollIntoView({ behavior: 'smooth' })
+    if (container.length) {
+      container[0].scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   _fixPosition() {
@@ -117,6 +132,7 @@ class Anchor extends Component {
     } else {
       pRect = this.scrollParent.element.getBoundingClientRect()
     }
+
     const gRect = this.element.getBoundingClientRect()
 
     if (gRect.top < pRect.top) {
@@ -125,8 +141,19 @@ class Anchor extends Component {
   }
 
   _onContainerScroll() {
-    const list = this.containerElem.getElementsByClassName('nom-anchor-content')
-    if (!list.length) return
+    if (this.menu.element.offsetParent === null) {
+      return
+    }
+
+    const domlist = this.containerElem.getElementsByClassName('nom-anchor-content')
+    if (!domlist.length) return
+    const list = []
+    for (let i = 0; i < domlist.length; i++) {
+      if (domlist[i].offsetParent !== null) {
+        list.push(domlist[i])
+      }
+    }
+
     const pRect =
       this.container === window
         ? { top: 0, bottom: window.innerHeight }

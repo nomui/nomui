@@ -22,7 +22,41 @@ define([], function () {
                     body: {
                       children: [
                         {
-                          children: 'I am a modal',
+                          component: 'Select',
+                          options: [
+                            {
+                              text: '金庸',
+                              value: 0,
+                            },
+                            {
+                              text: '古龙',
+                              value: 1,
+                            },
+                            {
+                              text: '梁羽生',
+                              value: 2,
+                            },
+                            {
+                              text: '温瑞安',
+                              value: 3,
+                            },
+                            {
+                              text: '金庸',
+                              value: 4,
+                            },
+                            {
+                              text: '古龙',
+                              value: 5,
+                            },
+                            {
+                              text: '梁羽生',
+                              value: 6,
+                            },
+                            {
+                              text: '温瑞安',
+                              value: 7,
+                            },
+                          ],
                         },
                       ],
                     },

@@ -17,6 +17,14 @@ class DateRangePicker extends Group {
         end: 'end',
       },
       flatValue: true,
+      required: false,
+      requiredMessage: null,
+      startPickerProps: {
+        placeholder: '开始日期',
+      },
+      endPickerProps: {
+        placeholder: '结束日期',
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -28,7 +36,19 @@ class DateRangePicker extends Group {
 
   _config() {
     const that = this
-    const { format, allowClear, minDate, maxDate, yearRange, showTime } = this.props
+    const {
+      format,
+      allowClear,
+      minDate,
+      maxDate,
+      yearRange,
+      showTime,
+      required,
+      requiredMessage,
+      rules,
+      startPickerProps,
+      endPickerProps,
+    } = this.props
 
     this.setProps({
       inline: true,
@@ -36,7 +56,6 @@ class DateRangePicker extends Group {
         {
           component: 'DatePicker',
           name: that.props.fieldName.start,
-          placeholder: '开始日期',
           ref: (c) => {
             that.startPicker = c
           },
@@ -49,6 +68,10 @@ class DateRangePicker extends Group {
           maxDate,
           yearRange,
           showTime,
+          required,
+          requiredMessage,
+          rules,
+          ...startPickerProps,
         },
         {
           component: 'StaticText',
@@ -57,7 +80,6 @@ class DateRangePicker extends Group {
         {
           component: 'DatePicker',
           name: that.props.fieldName.end,
-          placeholder: '结束日期',
           ref: (c) => {
             that.endPicker = c
           },
@@ -70,6 +92,10 @@ class DateRangePicker extends Group {
           maxDate,
           yearRange,
           showTime,
+          required,
+          requiredMessage,
+          rules,
+          ...endPickerProps,
         },
       ],
     })

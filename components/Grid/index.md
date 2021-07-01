@@ -41,6 +41,7 @@
 | keyField | 表格行数据的主键字段 | `string` | `id` |
 | rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
 | rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |
+| rowSortable | 表格行是否可拖动顺序 | `object` \| `boolean` | `false` |
 | treeConfig | 树形表格配置 | `object` | - |
 | bordered | 是否显示边框 | `boolean` | `false` |
 | showTitle | 单元格显示 title | `boolean` | `false` |
@@ -129,6 +130,14 @@
 | ------ | ---------------- | --------------------- | ------ |
 | render | 被展开行渲染函数 | `({rowData,row})=>{}` | -      |
 
+### rowSortable
+
+表格行可拖动顺序
+
+| 参数  | 说明                     | 类型     | 默认值 |
+| ----- | ------------------------ | -------- | ------ |
+| onEnd | 表格行每次拖拽完成的回调 | `()=>{}` | -      |
+
 ### treeConfig
 
 树形表格配置
@@ -142,6 +151,8 @@
 
 ## Method
 
-| 参数      | 说明               | 参数 |
-| --------- | ------------------ | ---- |
-| resetSort | 重置表格的排序状态 | -    |
+| 参数        | 说明                         | 参数 |
+| ----------- | ---------------------------- | ---- |
+| resetSort   | 重置表格的排序状态           | -    |
+| getDataKeys | 获取当前顺序的 keyField 数组 | -    |
+| getData     | 获取当前顺序的表格 data      | -    |

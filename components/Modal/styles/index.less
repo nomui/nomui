@@ -62,14 +62,14 @@
 .nom-modal-dialog-centered {
   display: flex;
   align-items: center;
-  min-height: calc(100% - 1rem);
+  min-height: calc(100% - 3.5rem);
 
   // Ensure `modal-dialog-centered` extends the full height of the view (IE10/11)
-  &::before {
-    display: block; // IE10
-    height: calc(100vh - 1rem);
-    content: '';
-  }
+  // &::before {
+  //   display: block; // IE10
+  //   height: calc(100vh - 1rem);
+  //   content: '';
+  // }
 
   // Ensure `.modal-body` shows scrollbar (IE10/11)
   &.nom-modal-dialog-scrollable {

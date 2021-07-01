@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Group from '../Group/Group'
-import { isFunction } from '../util/index'
+import { extend, isFunction } from '../util/index'
 
 class GroupList extends Group {
   constructor(props, ...mixins) {
@@ -63,12 +63,22 @@ class GroupList extends Group {
     super._config()
   }
 
-  getValue() {
+  getValue(options) {
+    const { valueOptions } = this.props
+    const opts = extend(
+      {
+        ignoreDisabled: true,
+        ignoreHidden: true,
+        merge: false,
+      },
+      valueOptions,
+      options,
+    )
     const value = []
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i]
       if (field.getValue) {
-        const fieldValue = field.getValue()
+        const fieldValue = field.getValue(opts)
         value.push(fieldValue)
       }
     }
