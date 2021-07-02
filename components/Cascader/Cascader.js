@@ -12,6 +12,7 @@ class Cascader extends Field {
       separator: ' / ',
       fieldsMapping: { label: 'label', value: 'value', children: 'children' },
       valueType: 'cascade',
+      changeOnSelect: false,
     }
     super(Component.extendProps(defaults, props), ...mixins)
   }
