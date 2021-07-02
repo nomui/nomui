@@ -6725,7 +6725,7 @@ function _defineProperty2(obj, key, value) {
         } else {
           // 单击事件
           this._timer = setTimeout(() => {
-            cascaderList.cascaderControl._itemSelected(key);
+            cascaderList.cascaderControl._itemSelected(key, true, false);
           }, 300);
         }
       } else {
@@ -6850,18 +6850,11 @@ function _defineProperty2(obj, key, value) {
         },
       });
       this._valueChange({ newValue: this.currentValue });
-    } // _created() {
-    //   super._created()
-    //   const { value, options, fieldsMapping } = this.props
-    //   this.internalOption = JSON.parse(JSON.stringify(options))
-    //   this.handleOptions(this.internalOption, fieldsMapping)
-    //   this.flatItems(this.internalOption)
-    //   this.initValue = isFunction(value) ? value() : value
-    //   this.selectedOption = []
-    //   this.handleOptionSelected(this.initValue)
-    //   this.currentValue = this.initValue
-    //   this.checked = true
-    // }
+    }
+    _created() {
+      super._created();
+      this._hidePopup = true;
+    }
     _config() {
       const cascader = this;
       const children = [];
@@ -6970,23 +6963,28 @@ function _defineProperty2(obj, key, value) {
         return option;
       });
     }
-    _itemSelected(selectedKey, isLeaf = false) {
+    _itemSelected(selectedKey, checked = false, hidePopup = true) {
       if (!this.items) return;
       this.selectedOption = [];
       let recur = this.items.get(selectedKey);
       while (recur) {
         this.selectedOption.unshift(recur);
         recur = this.items.get(recur.pid);
-      }
-      this.checked = isLeaf;
+      } // this.checked = checked
+      this.checked = checked;
+      this._hidePopup = hidePopup;
       const selectedItem = this.items.get(selectedKey);
       if (!selectedItem) return;
-      if (this.checked && this.triggerChange(selectedItem.value)) {
+      if (
+        (this.checked && this.triggerChange(selectedItem.value)) ||
+        this.props.changeOnSelect
+      ) {
         this._onValueChange();
       }
       this.popup.update({ popMenu: this.getSelectedMenu() });
     }
     _valueChange(changed) {
+      console.log(this.checked);
       if (this.placeholder) {
         if (
           (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
@@ -6998,7 +6996,7 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this.content && this.content.update();
-      this.popup && this.popup.hide();
+      this.popup && this._hidePopup && this.popup.hide();
     }
     _getValue() {
       if (!this.checked) {
