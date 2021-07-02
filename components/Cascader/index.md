@@ -17,4 +17,4 @@
 | showArrow | 是否显示下拉箭头 | `boolean` | true |
 | valueType | 设/取值类型 | `cascade\|single` | `cascade` |
 | fieldsMapping | 自定义 options 中 label value children key 的字段 | `object` | `{ label: label, value: value, children: children }`,`key`默认值与`value`字段相同 |
-| changeOnSelect | 当此项为 true 时，点选每级菜单选项值都会发生变化(`双击选择非叶子节点`参见示例`字段值`) | `boolean` | `false` |
+| changeOnSelect | 当此项为 true 时，点选每级菜单选项值都会发生变化(参见示例`选择即改变`) | `boolean` | `false` |

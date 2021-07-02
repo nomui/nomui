@@ -62,7 +62,7 @@ class CascaderList extends Component {
       } else {
         // 单击事件
         this._timer = setTimeout(() => {
-          cascaderList.cascaderControl._itemSelected(key)
+          cascaderList.cascaderControl._itemSelected(key, true, false)
         }, 300)
       }
     } else {

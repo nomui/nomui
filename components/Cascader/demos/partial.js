@@ -1,7 +1,7 @@
 define(['./data.js'], function (options) {
   let cascader = null
   return {
-    title: '字段值',
+    title: '选择即改变',
     file: 'field',
     demo: function () {
       return {
@@ -23,6 +23,7 @@ define(['./data.js'], function (options) {
               children: 'Childs',
             },
             value: ['内分泌', '肥胖症', 'bbb'],
+            changeOnSelect: true,
             onValueChange(changed) {
               // eslint-disable-next-line
               console.log(changed)
