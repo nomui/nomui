@@ -122,6 +122,16 @@ class Router extends Component {
             that.element = this.element
           },
         })
+
+        delete this.props
+        this.props = { defaultPath: defaultPath }
+        this.setProps(routerProps)
+
+        if (isFunction(routerProps.onRendered)) {
+          routerProps.onRendered.call(this, this)
+        }
+
+        this._callRendered()
       }
 
       if (isFunction(routerProps.onRender)) {
@@ -136,16 +146,6 @@ class Router extends Component {
       } else {
         renderView()
       }
-
-      delete this.props
-      this.props = { defaultPath: defaultPath }
-      this.setProps(routerProps)
-
-      if (isFunction(routerProps.onRendered)) {
-        routerProps.onRendered.call(this, this)
-      }
-
-      this._callRendered()
     })
   }
 
