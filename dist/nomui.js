@@ -6685,8 +6685,14 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
+      this._timer = null;
+      this._clickedKey = null;
+      this._clickTime = null;
       this.cascaderControl = this.parent.parent.parent.cascaderControl;
       this.cascaderControl.optionList = this;
+    }
+    _remove() {
+      this._timer && clearTimeout(this._timer);
     }
     _config() {
       const { popMenu } = this.props;
@@ -6700,6 +6706,32 @@ function _defineProperty2(obj, key, value) {
           : null,
       });
       super._config();
+    } // 处理非叶子节点点击事件
+    _handleNoLeafClick(key) {
+      const cascaderList = this;
+      const changeOnSelect = this.cascaderControl.props.changeOnSelect;
+      if (changeOnSelect) {
+        const triggerTime = Date.now(); // console.log(())
+        let interval = Number.MAX_SAFE_INTEGER;
+        if (key === this._clickedKey && isNumeric(this._clickTime)) {
+          interval = triggerTime - this._clickTime;
+        }
+        this._clickTime = triggerTime;
+        this._clickedKey = key;
+        if (interval < 300) {
+          // 双击事件
+          cascaderList.cascaderControl._itemSelected(key, true);
+          this._timer && clearTimeout(this._timer);
+        } else {
+          // 单击事件
+          this._timer = setTimeout(() => {
+            cascaderList.cascaderControl._itemSelected(key);
+          }, 300);
+        }
+      } else {
+        // 单击
+        cascaderList.cascaderControl._itemSelected(key);
+      }
     }
     getMenuItems(menu, currentVal) {
       const cascaderList = this;
@@ -6721,7 +6753,8 @@ function _defineProperty2(obj, key, value) {
                 "nom-cascader-menu-item-active": item.key === currentVal,
               },
               onClick: () => {
-                cascaderList.cascaderControl._itemSelected(item.key);
+                // cascaderList.cascaderControl._itemSelected(item.key)
+                cascaderList._handleNoLeafClick(item.key);
               },
               children: [
                 { tag: "span", children: item.label },
@@ -6791,6 +6824,7 @@ function _defineProperty2(obj, key, value) {
         separator: " / ",
         fieldsMapping: { label: "label", value: "value", children: "children" },
         valueType: "cascade",
+        changeOnSelect: false,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }

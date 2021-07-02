@@ -23,6 +23,7 @@ define(['./data.js'], function (options) {
               children: 'Childs',
             },
             value: ['内分泌', '肥胖症', 'bbb'],
+            changeOnSelect: true,
             onValueChange(changed) {
               // eslint-disable-next-line
               console.log(changed)
