@@ -3143,6 +3143,13 @@ function _defineProperty2(obj, key, value) {
               that.element = this.element;
             },
           });
+          delete this.props;
+          this.props = { defaultPath: defaultPath };
+          this.setProps(routerProps);
+          if (isFunction(routerProps.onRendered)) {
+            routerProps.onRendered.call(this, this);
+          }
+          this._callRendered();
         };
         if (isFunction(routerProps.onRender)) {
           const onRenderResult = routerProps.onRender.call(this, this);
@@ -3156,13 +3163,6 @@ function _defineProperty2(obj, key, value) {
         } else {
           renderView();
         }
-        delete this.props;
-        this.props = { defaultPath: defaultPath };
-        this.setProps(routerProps);
-        if (isFunction(routerProps.onRendered)) {
-          routerProps.onRendered.call(this, this);
-        }
-        this._callRendered();
       });
     }
     getRouteUrl(level) {
