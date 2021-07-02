@@ -38,19 +38,10 @@ class Cascader extends Field {
     this._valueChange({ newValue: this.currentValue })
   }
 
-  // _created() {
-  //   super._created()
-  //   const { value, options, fieldsMapping } = this.props
-  //   this.internalOption = JSON.parse(JSON.stringify(options))
-  //   this.handleOptions(this.internalOption, fieldsMapping)
-  //   this.flatItems(this.internalOption)
-
-  //   this.initValue = isFunction(value) ? value() : value
-  //   this.selectedOption = []
-  //   this.handleOptionSelected(this.initValue)
-  //   this.currentValue = this.initValue
-  //   this.checked = true
-  // }
+  _created() {
+    super._created()
+    this._hidePopup = true
+  }
 
   _config() {
     const cascader = this
@@ -181,7 +172,7 @@ class Cascader extends Field {
     })
   }
 
-  _itemSelected(selectedKey, isLeaf = false) {
+  _itemSelected(selectedKey, checked = false, hidePopup = true) {
     if (!this.items) return
     this.selectedOption = []
     let recur = this.items.get(selectedKey)
@@ -191,11 +182,13 @@ class Cascader extends Field {
       recur = this.items.get(recur.pid)
     }
 
-    this.checked = isLeaf
+    // this.checked = checked
+    this.checked = checked
+    this._hidePopup = hidePopup
 
     const selectedItem = this.items.get(selectedKey)
     if (!selectedItem) return
-    if (this.checked && this.triggerChange(selectedItem.value)) {
+    if ((this.checked && this.triggerChange(selectedItem.value)) || this.props.changeOnSelect) {
       this._onValueChange()
     }
 
@@ -203,6 +196,7 @@ class Cascader extends Field {
   }
 
   _valueChange(changed) {
+    console.log(this.checked)
     if (this.placeholder) {
       if ((Array.isArray(changed.newValue) && changed.newValue.length === 0) || !changed.newValue) {
         this.placeholder.show()
@@ -212,7 +206,7 @@ class Cascader extends Field {
     }
 
     this.content && this.content.update()
-    this.popup && this.popup.hide()
+    this.popup && this._hidePopup && this.popup.hide()
   }
 
   _getValue() {
