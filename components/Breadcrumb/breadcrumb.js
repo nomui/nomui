@@ -14,7 +14,6 @@ class Breadcrumb extends Component {
 
   _config() {
     const { separator, items, itemDefaults } = this.props
-    console.log(items)
 
     const children = isNotEmptyArray(items)
       ? items.map((item, idx) => {
