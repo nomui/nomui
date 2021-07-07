@@ -196,7 +196,6 @@ class Cascader extends Field {
   }
 
   _valueChange(changed) {
-    console.log(this.checked)
     if (this.placeholder) {
       if ((Array.isArray(changed.newValue) && changed.newValue.length === 0) || !changed.newValue) {
         this.placeholder.show()

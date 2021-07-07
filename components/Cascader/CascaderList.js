@@ -45,7 +45,6 @@ class CascaderList extends Component {
 
     if (changeOnSelect) {
       const triggerTime = Date.now()
-      // console.log(())
 
       let interval = Number.MAX_SAFE_INTEGER
       if (key === this._clickedKey && isNumeric(this._clickTime)) {
