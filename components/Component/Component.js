@@ -111,6 +111,7 @@ class Component {
     isFunction(this._created) && this._created()
     this._callMixin('_created')
     this.props._created && this.props._created.call(this, this)
+    isFunction(this.props.onCreated) && this.props.onCreated({ inst: this, props: this.props })
   }
 
   _created() {}
@@ -118,6 +119,7 @@ class Component {
   config() {
     this._setExpandableProps()
     this.props._config && this.props._config.call(this, this)
+    isFunction(this.props.onConfig) && this.props.onConfig({ inst: this, props: this.props })
     this._callMixin('_config')
     isFunction(this._config) && this._config()
     this._setExpandableProps()
@@ -151,6 +153,7 @@ class Component {
     isFunction(this._rendered) && this._rendered()
     this._callMixin('_rendered')
     isFunction(this.props._rendered) && this.props._rendered.call(this, this)
+    isFunction(this.props.onRendered) && this.props.onRendered({ inst: this, props: this.props })
     this.firstRender = false
   }
 
@@ -270,6 +273,7 @@ class Component {
       el = this._placeHolderElement
     }
     isFunction(this.props._remove) && this.props._remove.call(this, this)
+    isFunction(this.props.onRemove) && this.props.onRemove({ inst: this, props: this.props })
     this._callMixin('_remove')
     isFunction(this._remove) && this._remove()
     this.trigger('remove')
