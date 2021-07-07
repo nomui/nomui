@@ -107,16 +107,14 @@ class Router extends Component {
         plugin(routerProps)
       })
 
-      const extOptions = {
-        reference: element,
-        placement: 'replace',
-      }
-
       const renderView = () => {
         if (isFunction(routerProps.view)) {
           routerProps.view = routerProps.view.call(this)
         }
-        const viewOptions = Component.extendProps(routerProps.view, extOptions)
+        const viewOptions = Component.extendProps(routerProps.view, {
+          reference: element,
+          placement: 'replace',
+        })
         this.currentView = Component.create(viewOptions, {
           _rendered: function () {
             that.element = this.element
