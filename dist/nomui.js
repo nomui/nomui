@@ -6402,7 +6402,6 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const { separator, items, itemDefaults } = this.props;
-      console.log(items);
       const children = isNotEmptyArray(items)
         ? items.map((item, idx) => {
             const isLeaf = idx === items.length - 1;
@@ -6711,7 +6710,7 @@ function _defineProperty2(obj, key, value) {
       const cascaderList = this;
       const changeOnSelect = this.cascaderControl.props.changeOnSelect;
       if (changeOnSelect) {
-        const triggerTime = Date.now(); // console.log(())
+        const triggerTime = Date.now();
         let interval = Number.MAX_SAFE_INTEGER;
         if (key === this._clickedKey && isNumeric(this._clickTime)) {
           interval = triggerTime - this._clickTime;
@@ -6984,7 +6983,6 @@ function _defineProperty2(obj, key, value) {
       this.popup.update({ popMenu: this.getSelectedMenu() });
     }
     _valueChange(changed) {
-      console.log(this.checked);
       if (this.placeholder) {
         if (
           (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
