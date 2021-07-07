@@ -13841,6 +13841,9 @@ function _defineProperty2(obj, key, value) {
             },
           },
         });
+        if (isPlainObject(treeConfig.indicator)) {
+          this.setProps({ expandable: { indicator: treeConfig.indicator } });
+        }
         if (isLeaf) {
           this.setProps({
             expandable: {

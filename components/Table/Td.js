@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction, isNumeric, isString } from '../util/index'
+import { isFunction, isNumeric, isPlainObject, isString } from '../util/index'
 
 class Td extends Component {
   constructor(props, ...mixins) {
@@ -81,6 +81,14 @@ class Td extends Component {
           },
         },
       })
+
+      if (isPlainObject(treeConfig.indicator)) {
+        this.setProps({
+          expandable: {
+            indicator: treeConfig.indicator,
+          },
+        })
+      }
 
       if (isLeaf) {
         this.setProps({
