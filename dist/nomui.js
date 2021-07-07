@@ -3101,10 +3101,8 @@ function _defineProperty2(obj, key, value) {
     }
     routeView() {
       const level = this.level;
-      const element = this.element;
       const defaultPath = this.props.defaultPath;
       const { paths } = this.$app.currentRoute;
-      const that = this;
       if (defaultPath) {
         if (!paths[level]) {
           paths[level] = defaultPath;
@@ -3120,50 +3118,49 @@ function _defineProperty2(obj, key, value) {
             app: this.$app,
             router: this,
           });
-        } else {
-          routerProps.view = viewPropsOrRouterPropsFunc;
-        }
-        if (isString(routerProps.title)) {
-          document.title = routerProps.title;
-        } // 路由组件插件执行
-        Router.plugins.forEach((plugin) => {
-          plugin(routerProps);
-        });
-        const extOptions = { reference: element, placement: "replace" };
-        const renderView = () => {
-          if (isFunction(routerProps.view)) {
-            routerProps.view = routerProps.view.call(this);
-          }
-          const viewOptions = Component.extendProps(
-            routerProps.view,
-            extOptions
-          );
-          this.currentView = Component.create(viewOptions, {
-            _rendered: function () {
-              that.element = this.element;
-            },
-          });
-          delete this.props;
-          this.props = { defaultPath: defaultPath };
-          this.setProps(routerProps);
-          if (isFunction(routerProps.onRendered)) {
-            routerProps.onRendered.call(this, this);
-          }
-          this._callRendered();
-        };
-        if (isFunction(routerProps.onRender)) {
-          const onRenderResult = routerProps.onRender.call(this, this);
-          if (onRenderResult.then) {
-            onRenderResult.then(() => {
-              renderView();
+          if (routerProps.then) {
+            routerProps.then((result) => {
+              routerProps = result;
+              this.processProps(routerProps);
             });
           } else {
-            renderView();
+            this.processProps(routerProps);
           }
         } else {
-          renderView();
+          routerProps.view = viewPropsOrRouterPropsFunc;
+          this.processProps(routerProps);
         }
       });
+    }
+    processProps(routerProps) {
+      const that = this;
+      const defaultPath = this.props.defaultPath;
+      const element = this.element;
+      Router.plugins.forEach((plugin) => {
+        plugin(routerProps);
+      });
+      if (isString(routerProps.title)) {
+        document.title = routerProps.title;
+      }
+      if (isFunction(routerProps.view)) {
+        routerProps.view = routerProps.view.call(this);
+      }
+      const viewOptions = Component.extendProps(routerProps.view, {
+        reference: element,
+        placement: "replace",
+      });
+      this.currentView = Component.create(viewOptions, {
+        _rendered: function () {
+          that.element = this.element;
+        },
+      });
+      delete this.props;
+      this.props = { defaultPath: defaultPath };
+      this.setProps(routerProps);
+      if (isFunction(routerProps.onRendered)) {
+        routerProps.onRendered.call(this, this);
+      }
+      this._callRendered();
     }
     getRouteUrl(level) {
       const paths = this.$app.currentRoute.paths;
