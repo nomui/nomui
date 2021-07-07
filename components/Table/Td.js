@@ -58,25 +58,37 @@ class Td extends Component {
     const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
 
     if (isTreeNodeColumn) {
-      if (!isLeaf) {
-        this.setProps({
-          expanded: treeConfig.initExpandLevel === -1 || treeConfig.initExpandLevel > level,
-          expandable: {
-            byClick: true,
-            target: () => {
-              return rowData.children.map((subrowData) => {
-                return this.table.grid.rowsRefs[subrowData[this.table.props.keyField]]
-              })
+      this.setProps({
+        expanded: treeConfig.initExpandLevel === -1 || treeConfig.initExpandLevel > level,
+        expandable: {
+          byClick: true,
+          target: () => {
+            return rowData.children.map((subrowData) => {
+              return this.table.grid.rowsRefs[subrowData[this.table.props.keyField]]
+            })
+          },
+          indicator: {
+            component: 'Icon',
+            classes: { 'nom-tr-expand-indicator': true },
+            expandable: {
+              expandedProps: {
+                type: 'down',
+              },
+              collapsedProps: {
+                type: 'right',
+              },
             },
+          },
+        },
+      })
+
+      if (isLeaf) {
+        this.setProps({
+          expandable: {
             indicator: {
-              component: 'Icon',
-              classes: { 'nom-tr-expand-indicator': true },
-              expandable: {
-                expandedProps: {
-                  type: 'down',
-                },
-                collapsedProps: {
-                  type: 'right',
+              attrs: {
+                style: {
+                  visibility: 'hidden',
                 },
               },
             },
@@ -89,11 +101,11 @@ class Td extends Component {
           tag: 'span',
           attrs: {
             style: {
-              paddingLeft: `${level * treeConfig.indentSize + 20}px`,
+              paddingLeft: `${level * treeConfig.indentSize}px`,
             },
           },
         },
-        !isLeaf && this.getExpandableIndicatorProps(),
+        this.getExpandableIndicatorProps(),
         { tag: 'span', children: children },
       ]
     }

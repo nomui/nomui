@@ -13818,28 +13818,33 @@ function _defineProperty2(obj, key, value) {
       const isTreeNodeColumn =
         treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn;
       if (isTreeNodeColumn) {
-        if (!isLeaf) {
+        this.setProps({
+          expanded:
+            treeConfig.initExpandLevel === -1 ||
+            treeConfig.initExpandLevel > level,
+          expandable: {
+            byClick: true,
+            target: () => {
+              return rowData.children.map((subrowData) => {
+                return this.table.grid.rowsRefs[
+                  subrowData[this.table.props.keyField]
+                ];
+              });
+            },
+            indicator: {
+              component: "Icon",
+              classes: { "nom-tr-expand-indicator": true },
+              expandable: {
+                expandedProps: { type: "down" },
+                collapsedProps: { type: "right" },
+              },
+            },
+          },
+        });
+        if (isLeaf) {
           this.setProps({
-            expanded:
-              treeConfig.initExpandLevel === -1 ||
-              treeConfig.initExpandLevel > level,
             expandable: {
-              byClick: true,
-              target: () => {
-                return rowData.children.map((subrowData) => {
-                  return this.table.grid.rowsRefs[
-                    subrowData[this.table.props.keyField]
-                  ];
-                });
-              },
-              indicator: {
-                component: "Icon",
-                classes: { "nom-tr-expand-indicator": true },
-                expandable: {
-                  expandedProps: { type: "down" },
-                  collapsedProps: { type: "right" },
-                },
-              },
+              indicator: { attrs: { style: { visibility: "hidden" } } },
             },
           });
         }
@@ -13847,10 +13852,10 @@ function _defineProperty2(obj, key, value) {
           {
             tag: "span",
             attrs: {
-              style: { paddingLeft: `${level * treeConfig.indentSize + 20}px` },
+              style: { paddingLeft: `${level * treeConfig.indentSize}px` },
             },
           },
-          !isLeaf && this.getExpandableIndicatorProps(),
+          this.getExpandableIndicatorProps(),
           { tag: "span", children: children },
         ];
       }
