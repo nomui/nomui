@@ -1,8 +1,8 @@
 define([], function () {
   return {
-    title: '树形数据',
-    file: 'tree-grid',
-    description: '通过配置 `treeConfig` 展示树形数据',
+    title: '树形数据-自定义展开折叠图标',
+    file: 'tree-grid-indicator',
+    description: '通过配置 `treeConfig.indicator` 自定义展开折叠图标',
     demo: function () {
       return {
         children: [
@@ -11,6 +11,16 @@ define([], function () {
             treeConfig: {
               treeNodeColumn: 'class',
               initExpandLevel: 1,
+              indicator: {
+                expandable: {
+                  expandedProps: {
+                    type: 'minus-square',
+                  },
+                  collapsedProps: {
+                    type: 'plus-square',
+                  },
+                },
+              },
             },
             columns: [
               {
