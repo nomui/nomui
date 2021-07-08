@@ -43,6 +43,12 @@ define([], function () {
                           id: 'component/styles/layout',
                           url: '#!components!index?type=component&cat=styles/layout',
                         },
+                        {
+                          text: 'Color',
+                          subtext: '颜色',
+                          id: 'component/styles/color',
+                          url: '#!components!index?type=component&cat=styles/color',
+                        },
                       ],
                     },
                     {
