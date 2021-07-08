@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './style.js'], function () {
   return {
     title: 'Selectable',
     subtitle: '可选中',
