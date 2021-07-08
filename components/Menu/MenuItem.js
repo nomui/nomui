@@ -123,9 +123,7 @@ class MenuItem extends Component {
             style: { 'flex-grow': this.props.subtext ? null : '2' },
             title: this.props.text,
           },
-          children: this.props.subtext
-            ? `${this.props.text} ${this.props.subtext}`
-            : this.props.text,
+          children: this.props.text,
         },
         this.props.subtext && {
           component: Component,
