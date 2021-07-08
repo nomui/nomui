@@ -655,7 +655,11 @@ function _defineProperty2(obj, key, value) {
       this._callMixin("_rendered");
       isFunction(this.props._rendered) && this.props._rendered.call(this, this);
       isFunction(this.props.onRendered) &&
-        this.props.onRendered({ inst: this, props: this.props });
+        this.props.onRendered({
+          inst: this,
+          props: this.props,
+          isUpdate: this.firstRender === false,
+        });
       this.firstRender = false;
     }
     _rendered() {} // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作

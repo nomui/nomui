@@ -153,7 +153,8 @@ class Component {
     isFunction(this._rendered) && this._rendered()
     this._callMixin('_rendered')
     isFunction(this.props._rendered) && this.props._rendered.call(this, this)
-    isFunction(this.props.onRendered) && this.props.onRendered({ inst: this, props: this.props })
+    isFunction(this.props.onRendered) &&
+      this.props.onRendered({ inst: this, props: this.props, isUpdate: this.firstRender === false })
     this.firstRender = false
   }
 
