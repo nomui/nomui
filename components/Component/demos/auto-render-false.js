@@ -20,7 +20,7 @@ define([], function () {
             children: '我是最后一个节点',
           },
         ],
-        _created: function () {
+        onCreated: () => {
           setTimeout(function () {
             asyncRef.update()
           }, 500)
