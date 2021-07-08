@@ -120,11 +120,13 @@ class Component {
 
   config() {
     this._setExpandableProps()
+    this._setSelectableProps()
     this.props._config && this.props._config.call(this, this)
     isFunction(this.props.onConfig) && this.props.onConfig({ inst: this, props: this.props })
     this._callMixin('_config')
     isFunction(this._config) && this._config()
     this._setExpandableProps()
+    this._setSelectableProps()
     this._setStatusProps()
   }
 
@@ -539,6 +541,10 @@ class Component {
     if (this.props.selected === false) {
       this.props.selected = true
       this.addClass('s-selected')
+      const { selectedProps } = this.props.selectable
+      if (selectedProps) {
+        this.update(selectedProps)
+      }
       isFunction(this._select) && this._select()
       selectOption.triggerSelect === true &&
         this._callHandler(this.props.onSelect, null, selectOption.event)
@@ -566,6 +572,10 @@ class Component {
     if (this.props.selected === true) {
       this.props.selected = false
       this.removeClass('s-selected')
+      const { unselectedProps } = this.props.selectable
+      if (unselectedProps) {
+        this.update(unselectedProps)
+      }
       isFunction(this._unselect) && this._unselect()
 
       if (unselectOption.triggerUnselect === true) {
@@ -677,6 +687,19 @@ class Component {
         }
       } else if (expandable.collapsedProps) {
         this.setProps(expandable.collapsedProps)
+      }
+    }
+  }
+
+  _setSelectableProps() {
+    const { selectable, selected } = this.props
+    if (isPlainObject(selectable)) {
+      if (selected) {
+        if (selectable.selectedProps) {
+          this.setProps(selectable.selectedProps)
+        }
+      } else if (selectable.unselectedProps) {
+        this.setProps(selectable.unselectedProps)
       }
     }
   }
