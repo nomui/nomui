@@ -1,19 +1,16 @@
 define([], function () {
-
-  return function (modal) {
-
+  return ({ modal, args }) => {
+    const { name, description } = args
     return {
       header: {
-        caption: { title: '标题' },
+        caption: { title: name },
       },
       body: {
-        children: '内容',
+        children: description,
       },
       onOk: () => {
         modal.close()
-      }
+      },
     }
-
   }
-
 })

@@ -19,7 +19,12 @@ class ModalDialog extends Component {
       require([content], (contentConfig) => {
         let props = contentConfig
         if (isFunction(props)) {
-          props = contentConfig.call(this, modal)
+          const pNames = this.getParameterNames(props)
+          if (pNames.length && pNames[0] === '{') {
+            props = contentConfig({ modal: modal, args: modal.props.args })
+          } else {
+            props = contentConfig.call(this, modal)
+          }
         }
         props = Component.extendProps(this._getDefaultPanelContent(props), props)
         this.update({
@@ -115,6 +120,12 @@ class ModalDialog extends Component {
         'nom-modal-dialog-centered': this.modal.props.centered,
       },
     })
+  }
+
+  getParameterNames(fn) {
+    const code = fn.toString()
+    const result = code.slice(code.indexOf('(') + 1, code.indexOf(')')).match(/([^\s,]+)/g)
+    return result === null ? [] : result
   }
 }
 
