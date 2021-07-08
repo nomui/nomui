@@ -108,6 +108,8 @@ class Component {
 
   create() {
     this.__handleClick = this.__handleClick.bind(this)
+    this.__handleMouseEnter = this.__handleMouseEnter.bind(this)
+    this.__handleMouseLeave = this.__handleMouseLeave.bind(this)
     isFunction(this._created) && this._created()
     this._callMixin('_created')
     this.props._created && this.props._created.call(this, this)
@@ -605,9 +607,7 @@ class Component {
         expandTarget.show && expandTarget.show()
       }
     }
-    // if (!this.props.expandable.byIndicator) {
     this._expandIndicator && this._expandIndicator.expand()
-    // }
     const { expandedProps } = this.props.expandable
     if (expandedProps) {
       this.update(expandedProps)
@@ -630,9 +630,7 @@ class Component {
         expandTarget.hide && expandTarget.hide()
       }
     }
-    //  if (!this.props.expandable.byIndicator) {
     this._expandIndicator && this._expandIndicator.collapse()
-    // }
     isFunction(this._collapse) && this._collapse()
     const { collapsedProps } = this.props.expandable
     if (collapsedProps) {
@@ -711,7 +709,7 @@ class Component {
 
   getExpandableIndicatorProps(expanded = null) {
     const that = this
-    const { indicator, byIndicator } = this.props.expandable
+    const { indicator, byIndicator, byClick, byHover } = this.props.expandable
     if (expanded == null) {
       expanded = this.props.expanded
     }
@@ -732,18 +730,38 @@ class Component {
       })
 
       if (byIndicator === true) {
-        this.setProps({
-          expandable: {
-            indicator: {
-              attrs: {
-                onclick: (event) => {
-                  that.toggleExpand()
-                  event.stopPropagation()
+        if (byClick === true) {
+          this.setProps({
+            expandable: {
+              indicator: {
+                attrs: {
+                  onclick: (event) => {
+                    that.toggleExpand()
+                    event.stopPropagation()
+                  },
                 },
               },
             },
-          },
-        })
+          })
+        }
+        if (byHover === true) {
+          this.setProps({
+            expandable: {
+              indicator: {
+                attrs: {
+                  onmouseenter: (event) => {
+                    that.expand()
+                    event.stopPropagation()
+                  },
+                  onmouseleave: (event) => {
+                    that.collapse()
+                    event.stopPropagation()
+                  },
+                },
+              },
+            },
+          })
+        }
       }
     }
     return this.props.expandable.indicator
@@ -759,6 +777,7 @@ class Component {
 
   _handleAttrs() {
     this._processClick()
+    this._processHover()
     for (const name in this.props.attrs) {
       const value = this.props.attrs[name]
       if (value == null) continue
@@ -869,14 +888,6 @@ class Component {
         },
       })
     }
-
-    /* if (expandable.byIndicator) {
-      const indicator = this._expandIndicator
-      indicator._on('click', (event) => {
-        this.toggleExpand()
-        event.stopPropagation()
-      })
-    } */
   }
 
   __handleClick(event) {
@@ -893,6 +904,54 @@ class Component {
     }
     if (expandable && expandable.byClick === true) {
       this.toggleExpand()
+    }
+  }
+
+  _processHover() {
+    const { onClick, selectable, expandable } = this.props
+    if (
+      onClick ||
+      (selectable && selectable.byHover === true) ||
+      (expandable && expandable.byHover && !expandable.byIndicator)
+    ) {
+      this.setProps({
+        attrs: {
+          onmouseenter: this.__handleMouseEnter,
+          onmouseleave: this.__handleMouseLeave,
+        },
+      })
+    }
+  }
+
+  __handleMouseEnter() {
+    const { _shouldHandleClick, disabled, selectable, expandable } = this.props
+    if (_shouldHandleClick && _shouldHandleClick.call(this, this) === false) {
+      return
+    }
+    if (disabled === true) {
+      return
+    }
+    if (selectable && selectable.byHover === true) {
+      this.select()
+    }
+    if (expandable && expandable.byHover === true) {
+      this.expand()
+    }
+  }
+
+  __handleMouseLeave() {
+    const { _shouldHandleClick, disabled, selectable, expandable } = this.props
+    if (_shouldHandleClick && _shouldHandleClick.call(this, this) === false) {
+      return
+    }
+    if (disabled === true) {
+      return
+    }
+    if (selectable && selectable.byHover === true) {
+      this.unselect()
+    }
+    if (expandable && expandable.byHover === true) {
+      this.collapse()
     }
   }
 
