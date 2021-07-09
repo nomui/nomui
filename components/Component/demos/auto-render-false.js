@@ -1,7 +1,8 @@
 define([], function () {
   return {
-    title: '异步数据',
-    file: 'template',
+    title: '异步更新',
+    file: 'auto-render-false',
+    description:'配置 `autoRender` 为 false，这样组件不会自动渲染，然后在 `onCreated` 生命周期钩子函数中异步更新 ',
     demo: function () {
       let asyncRef = null
       return {

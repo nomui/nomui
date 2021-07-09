@@ -3,7 +3,7 @@ define([], function () {
     title: '基本用法',
     file: 'basic',
     description:
-      '通过 `style.color` 配置组件的背景色及前景色（文本颜色）；`style.hover.color` 配置鼠标悬浮颜色；`style.selected.color` 配置选中状态颜色',
+      '通过 `styles.color` 配置组件的背景色及前景色（文本颜色）；`styles.hover.color` 配置鼠标悬浮颜色；`styles.selected.color` 配置选中状态颜色',
     demo: function () {
       return {
         component: 'Flex',
