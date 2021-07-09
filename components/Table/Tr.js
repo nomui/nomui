@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { accessProp, extend } from '../util/index'
+import { accessProp, clone, extend } from '../util/index'
 import Td from './Td'
 
 class Tr extends Component {
@@ -93,7 +93,7 @@ class Tr extends Component {
     this.props.checked = true
     this.addClass('s-checked')
     const grid = this.table.grid
-    grid.checkedRowRefs[this.key] = this
+    grid.checkedRowRefs[this.key] = clone(this.props.data)
   }
 
   uncheck(uncheckOptions) {
