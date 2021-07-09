@@ -23,15 +23,28 @@ Component 组件时所有组件的基类组件，其定义了一些所有组件�
 | onRendered | 渲染完成后回调 | `({ inst, props, isUpdate }) => { }` | - |
 | onRemove | 组件移除前回调 | `({ inst, props }) => { }` | - |
 | onClick | 点击组件回调 | `({ sender, event }) => { }` | - |
+| onShow | 显示回调 | `({ sender }) => { }` | - |
+| onHide | 隐藏回调 | `({ sender }) => { }` | - |
+| onSelect | 选中回调 | `({ sender }) => { }` | - |
+| onUnselect | 取消选中回调 | `({ sender }) => { }` | - |
+| onSelectionChange | 选则状态变更回调 | `({ sender }) => { }` | - |
 
 ### methods
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| tag | 标签类型 | `string` | `div` |
-| reference | 参考元素 | `dom` | `document.body` |
-| placement | 渲染位置 | `prepend`\|`append`\|`replace`\|`before`\|`after` | `append` |
-| autoRender | 是否自动渲染 | `boolean` | `true` |
-| renderIf | 是否渲染该组件 | `boolean` | `true` |
+
+| 名称 | 说明 | 类型 |
+| --- | --- | --- |
+| update | 更新，传入的 props 会跟现有 props 合并然后更新渲染 | `(props)=>{}` |
+| replace | 替换，会用传入的 props 重新渲染 | `(props)=>{}` |
+| setProps | 设置属性，深拷贝，常用于 onConfig 回调里设置属性 | `(props)=>{}` |
+| assignProps | 设置属性，浅拷贝，常用于 onConfig 回调里设置属性 | `(props)=>{}` |
+| show | 显示 | `() => {}` |
+| hide | 隐藏 | `() => {}` |
+| disable | 禁用 | `() => {}` |
+| enable | 启用 | `() => {}` |
+| select | 选中 | `({triggerSelect, triggerSelectionChange}) => {}` |
+| unselect | 取消选中 | `({triggerSelect, triggerSelectionChange}) => {}` |
+| expand | 展开 | `() => {}` |
+| collapse | 折叠 | `() => {}` |
 
 ### attrs props
 
@@ -60,7 +73,12 @@ Component 组件时所有组件的基类组件，其定义了一些所有组件�
 
 ### styles props
 
-`styles` 配置会将每个属性加上前缀 `u-`,如果属性本身是对象类型，则会继续用连字符连接下去，所有属性生成的字符串会做为样式类应用到组件上。
+`styles` 配置的值类型为 object，会遍历处理该 object 的每个属性，每个属性处理完后的结果会做为样式类应用到组件上。处理规则为：
+
+1. 属性名加上前缀 `u-`；
+2. 属性值类型为布尔型，若值为假则该属性不应用任何样式类，若值为真则得到的处理结果为 `u-propName`；
+3. 属性值类型为字符串或者数值，则得到的处理结果是 `u-propName-propValue`；
+4. 属性值类型为对象，则继续按前述规则处理。
 
 ```javascript
 {
