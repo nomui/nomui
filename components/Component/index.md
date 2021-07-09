@@ -1,4 +1,4 @@
-Component 组件时所有组件的基类组件，其定义了一些所有组件都共有的状态和行为。
+Component 组件是所有组件的基类组件，其定义了一些所有组件都共有的状态和行为。
 
 ## props
 
@@ -16,8 +16,10 @@ Component 组件时所有组件的基类组件，其定义了一些所有组件�
 | ref | 组件实例引用配置回调。参数为组件自身实例，一般用法为在该函数里给某个变量赋予组件实例的引用，这样在其他地方就可以操作该组件了。 | `(c)=>{}` | - |
 | styles | 样式设置，会组合生成样式类 | `object` | - |
 | attrs | html 属性配置 | `object` | - |
+| classes | 样式类设置，值为对象类型，属性值为 true 的会做为样式类应用到组件上,例如 `{ className1: true, className2: false }` 会应用样式名 className1 到组件上 | `object` | - |
 | selectable | 可选择配置项 | `SelectProp` | `{byClick:false,byHover:false,canRevert:false,selectedProps:null,unselectedProps:null}` |
 | expandable | 可展开配置项 | `ExpandableProp` | `{byClick: false,byHover: false,target: null,indicator: null,byIndicator: false,expandedProps: false,collapsedProps: false}` |
+| childDefaults | 子组件默认属性配置，所有的子组件都会合并该属性值。 | `props` | - |
 | onCreated | 组件实例创建后的回调，在组件实例化后调用，当组件更新时不会再次调用 | `({ inst, props }) => { }` | - |
 | onConfig | 组件开始配置时的回调，在组件已创建，即将进行内部配置的时候调用，当组件更新时会再次调用 | `({ inst, props }) => { }` | - |
 | onRendered | 渲染完成后回调 | `({ inst, props, isUpdate }) => { }` | - |
@@ -48,7 +50,7 @@ Component 组件时所有组件的基类组件，其定义了一些所有组件�
 
 ### attrs props
 
-`attrs` 用来配置 html 元素属性，例如 id，其中 style 属性用来配置元素对应的样式属性。与 js 操作元素的属性和样式类似。
+`attrs` 用来配置 html 元素属性，例如 id，其中 style 属性用来配置元素对应的样式属性。与用 js dom api 操作元素的属性和样式时所用的属性名和属性值一致。
 
 ```javascript
 {
@@ -73,12 +75,17 @@ Component 组件时所有组件的基类组件，其定义了一些所有组件�
 
 ### styles props
 
-`styles` 配置的值类型为 object，会遍历处理该 object 的每个属性，每个属性处理完后的结果会做为样式类应用到组件上。处理规则为：
+`styles` 配置的值类型为 object，会遍历处理该 object 的每个属性，每个属性处理完后的结果会做为样式类名应用到组件上。处理步骤为：
 
-1. 属性名加上前缀 `u-`；
-2. 属性值类型为布尔型，若值为假则该属性不应用任何样式类，若值为真则得到的处理结果为 `u-propName`；
-3. 属性值类型为字符串或者数值，则得到的处理结果是 `u-propName-propValue`；
-4. 属性值类型为对象，则继续按前述规则处理。
+1. 初始化样式类名为空字符 ``；
+2. 样式类名通过连字符连接属性名称 `-propName`；
+3. 属性值类型为布尔型，若值为假则样式类名重置为空字符串，若值为真则样式类名为上一步的结果`；
+4. 属性值类型为字符串或者数值，则样式类名通过连字符连接属性值 `-propName-propValue`；
+5. 属性值类型为数组，则对每个数组元素按前述 3，4 步骤处理，有多少个元素就会得到多少个样式类名；
+6. 属性值类型为对象，则对该对象的属性继续按前述 2，3，4，5 步骤处理。
+7. 处理完后的样式类名为空字符串则丢弃，如果不为空字符串则在前面加上字符 `u` 做为最后的样式类名应用到组件上。
+
+`styles` 设计成这样方便了针对样式的编程操作。
 
 ```javascript
 {
@@ -87,8 +94,9 @@ Component 组件时所有组件的基类组件，其定义了一些所有组件�
         padding: '1',
         text: 'center',
         rounded: true,
+        text: [ 'primary', 'center' ]
         hover: {
-            color: 'primary'
+            color: 'primary',
         }
   }
 }
@@ -97,7 +105,9 @@ Component 组件时所有组件的基类组件，其定义了一些所有组件�
 上面代码渲染出来的 html 代码如下
 
 ```html
-<div class="u-padding-1 u-text-center u-rounded u-hover-color-primary"></div>
+<div
+  class="u-padding-1 u-text-center u-rounded u-hover-color-primary u-text-primary u-text-center"
+></div>
 ```
 
 ### selectable props
