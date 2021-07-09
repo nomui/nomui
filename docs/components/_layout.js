@@ -46,6 +46,12 @@ define([], function () {
                       ],
                     },
                     {
+                      text: 'Events',
+                      subtext: '事件',
+                      id: 'component/events',
+                      url: '#!components!index?type=component&cat=events',
+                    },
+                    {
                       text: 'Behavior',
                       subtext: '行为',
                       id: 'component/behavior',
