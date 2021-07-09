@@ -294,13 +294,13 @@ class Grid extends Component {
   getCheckedRows() {
     return Object.keys(this.checkedRowRefs).map((key) => {
       return this.checkedRowRefs[key]
-    })
+    }).filter(rowRef => rowRef && rowRef.key)
   }
 
   getCheckedRowKeys() {
     return Object.keys(this.checkedRowRefs).map((key) => {
       return this.checkedRowRefs[key].key
-    })
+    }).filter(key => key)
   }
 
   checkAllRows(options) {
