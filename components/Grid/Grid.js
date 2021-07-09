@@ -299,7 +299,7 @@ class Grid extends Component {
 
   getCheckedRowKeys() {
     return Object.keys(this.checkedRowRefs).map((key) => {
-      return this.checkedRowRefs[key][this.props.keyField]
+      return this.checkedRowRefs[key].key
     })
   }
 
@@ -457,7 +457,7 @@ class Grid extends Component {
         },
         cellRender: ({ row, rowData }) => {
           if (checkedRowKeysHash[row.key] === true) {
-            grid.checkedRowRefs[grid.getKeyValue(rowData)] = rowData
+            grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
           }
           return {
             component: Checkbox,
