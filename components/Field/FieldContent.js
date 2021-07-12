@@ -1,8 +1,8 @@
 import Component, { n } from '../Component/index'
-import ControlMixin from './ControlMixin'
 import ControlActionMixin from './ControlActionMixin'
-import ControlBeforeMixin from './ControlBeforeMixin'
 import ControlAfterMixin from './ControlAfterMixin'
+import ControlBeforeMixin from './ControlBeforeMixin'
+import ControlMixin from './ControlMixin'
 
 class FieldContent extends Component {
   // eslint-disable-next-line no-useless-constructor
@@ -16,7 +16,7 @@ class FieldContent extends Component {
   }
 
   _config() {
-    const { control, controlBefore, controlAfter, controlAction } = this.field.props
+    const { control, controlBefore, controlAfter, controlAction, extra } = this.field.props
 
     let controlAfterProps = null
     if (controlAfter) {
@@ -58,6 +58,11 @@ class FieldContent extends Component {
         n(null, Component.extendProps(control, { classes: { 'nom-control': true } }), null, [
           ControlMixin,
         ]),
+        extra && {
+          tag: 'div',
+          classes: { 'nom-control-extra': true },
+          children: extra,
+        },
         controlAfterProps && n(controlAfterProps, [ControlAfterMixin]),
         controlActionProps && n(controlActionProps, [ControlActionMixin]),
       ],
