@@ -3,7 +3,7 @@ import Component from '../Component/index'
 import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
-import { isFunction, isPlainObject } from '../util/index'
+import { isFunction, isNullish, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 import GridSettingPopup from './GridSettingPopup'
@@ -292,15 +292,19 @@ class Grid extends Component {
   }
 
   getCheckedRows() {
-    return Object.keys(this.checkedRowRefs).map((key) => {
-      return this.checkedRowRefs[key]
-    })
+    return Object.keys(this.checkedRowRefs)
+      .map((key) => {
+        return this.checkedRowRefs[key]
+      })
+      .filter((rowRef) => !isNullish(rowRef.key))
   }
 
   getCheckedRowKeys() {
-    return Object.keys(this.checkedRowRefs).map((key) => {
-      return this.checkedRowRefs[key].key
-    })
+    return Object.keys(this.checkedRowRefs)
+      .map((key) => {
+        return this.checkedRowRefs[key].key
+      })
+      .filter((key) => !isNullish(key))
   }
 
   checkAllRows(options) {
