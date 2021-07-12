@@ -97,6 +97,9 @@ function _defineProperty2(obj, key, value) {
   }
   function isFunction(val) {
     return toString.call(val) === "[object Function]";
+  } // 值为 null 或 undefined
+  function isNullish(val) {
+    return val === null || val === undefined;
   }
   /**
    * Hyphenate a camelCase string.
@@ -315,6 +318,7 @@ function _defineProperty2(obj, key, value) {
     isPlainObject: isPlainObject,
     isString: isString,
     isFunction: isFunction,
+    isNullish: isNullish,
     hyphenate: hyphenate,
     htmlEncode: htmlEncode,
     extend: extend$1,
@@ -4331,7 +4335,9 @@ function _defineProperty2(obj, key, value) {
     constructor(props, ...mixins) {
       const defaults = {
         leftIcon: null,
+        prefix: null, // 前缀
         rightIcon: null,
+        suffix: null, // 后缀
         autofocus: false,
         placeholder: null,
         value: null,
@@ -4343,7 +4349,9 @@ function _defineProperty2(obj, key, value) {
       const that = this;
       const {
         leftIcon,
+        prefix,
         rightIcon,
+        suffix,
         placeholder,
         value,
         htmlType,
@@ -4382,17 +4390,27 @@ function _defineProperty2(obj, key, value) {
           this.textbox.input = this;
         },
       };
+      const getAffixSpan = (affix, type = "prefix") => ({
+        tag: "span",
+        classes: { "nom-input-affix": true, [`nom-input-${type}`]: true },
+        children: affix,
+      }); // 无左icon 有prefixx || 无右icon 有suffix
+      const affixWrapper = leftIcon || prefix || rightIcon || suffix;
       this.setProps({
         classes: {
-          "p-with-left-icon": !!leftIcon,
-          "p-with-right-icon": !!rightIcon,
+          "nom-textbox-affix-wrapper": !!affixWrapper,
           "p-with-button": buttonProps !== null,
         },
         control: {
           children: [
-            inputProps,
             leftIcon && leftIconProps,
+            !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),
+            inputProps,
             rightIcon && rightIconProps,
+            !rightIcon &&
+              suffix &&
+              isString(suffix) &&
+              getAffixSpan(suffix, "suffix"),
             buttonProps,
           ],
         },
@@ -15281,14 +15299,18 @@ function _defineProperty2(obj, key, value) {
       return result;
     }
     getCheckedRows() {
-      return Object.keys(this.checkedRowRefs).map((key) => {
-        return this.checkedRowRefs[key];
-      });
+      return Object.keys(this.checkedRowRefs)
+        .map((key) => {
+          return this.checkedRowRefs[key];
+        })
+        .filter((rowRef) => !isNullish(rowRef.key));
     }
     getCheckedRowKeys() {
-      return Object.keys(this.checkedRowRefs).map((key) => {
-        return this.checkedRowRefs[key].key;
-      });
+      return Object.keys(this.checkedRowRefs)
+        .map((key) => {
+          return this.checkedRowRefs[key].key;
+        })
+        .filter((key) => !isNullish(key));
     }
     checkAllRows(options) {
       Object.keys(this.rowsRefs).forEach((key) => {
