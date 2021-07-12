@@ -6814,6 +6814,7 @@ textarea .nom-textarea {
 .nom-field > .nom-field-content {
   padding: 0.5rem 0.5rem;
   position: relative;
+  flex: 1;
   flex-grow: 1;
 }
 .p-control-width-xsmall.nom-field > .nom-field-content > .nom-control {
@@ -6836,6 +6837,11 @@ textarea .nom-textarea {
 }
 .nom-field > .nom-field-content > .nom-control-after.nom-list {
   padding: 0.5rem 0.5rem;
+}
+.nom-field > .nom-field-content .nom-control-extra {
+  margin-top: 0.5rem;
+  color: #868e96;
+  word-break: break-all;
 }
 .nom-field > .nom-field-action.nom-list {
   padding: 0.5rem 0.5rem;

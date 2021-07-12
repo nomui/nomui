@@ -1,5 +1,4 @@
 define([], function () {
-
   return {
     title: '标签显示及对齐',
     file: 'label-align',
@@ -14,7 +13,7 @@ define([], function () {
             component: 'Cols',
             attrs: {
               style: {
-                minHeight: '40px'
+                minHeight: '40px',
               },
             },
             items: [
@@ -25,17 +24,16 @@ define([], function () {
                   if (args.newValue === true) {
                     radioList.hide()
                     field.update({
-                      notShowLabel: true
+                      notShowLabel: true,
                     })
-                  }
-                  else {
+                  } else {
                     radioList.show()
                     field.update({
                       labelAlign: radioList.getValue(),
-                      notShowLabel: false
+                      notShowLabel: false,
                     })
                   }
-                }
+                },
               },
               {
                 component: 'RadioList',
@@ -64,19 +62,19 @@ define([], function () {
                   })
                 },
               },
-            ]
+            ],
           },
           {
-            component: 'Textbox', label: '姓名',
+            component: 'Textbox',
+            label: '姓名',
             ref: (c) => {
               field = c
             },
             labelAlign: 'right',
-            action: [{ component: 'Button', text: '我是操作' }]
+            action: [{ component: 'Button', text: '我是操作' }],
           },
         ],
       }
     },
   }
-
 })

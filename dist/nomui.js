@@ -3921,18 +3921,16 @@ function _defineProperty2(obj, key, value) {
       this.field.action = this;
     },
   };
-  var ControlMixin = {
-    _created: function () {
-      this.field = this.parent.field;
-      this.field.control = this;
-      this.form = this.field.form;
-      this.__isControl = true;
-    },
-  };
   var ControlActionMixin = {
     _created: function () {
       this.field = this.parent.field;
       this.field.controlAction = this;
+    },
+  };
+  var ControlAfterMixin = {
+    _created: function () {
+      this.field = this.parent.field;
+      this.field.controlAfter = this;
     },
   };
   var ControlBeforeMixin = {
@@ -3941,10 +3939,12 @@ function _defineProperty2(obj, key, value) {
       this.field.controlBefore = this;
     },
   };
-  var ControlAfterMixin = {
+  var ControlMixin = {
     _created: function () {
       this.field = this.parent.field;
-      this.field.controlAfter = this;
+      this.field.control = this;
+      this.form = this.field.form;
+      this.__isControl = true;
     },
   };
   class FieldContent extends Component {
@@ -3962,6 +3962,7 @@ function _defineProperty2(obj, key, value) {
         controlBefore,
         controlAfter,
         controlAction,
+        extra,
       } = this.field.props;
       let controlAfterProps = null;
       if (controlAfter) {
@@ -4026,6 +4027,11 @@ function _defineProperty2(obj, key, value) {
             null,
             [ControlMixin]
           ),
+          extra && {
+            tag: "div",
+            classes: { "nom-control-extra": true },
+            children: extra,
+          },
           controlAfterProps && n$1(controlAfterProps, [ControlAfterMixin]),
           controlActionProps && n$1(controlActionProps, [ControlActionMixin]),
         ],
@@ -4063,6 +4069,7 @@ function _defineProperty2(obj, key, value) {
         span: null,
         notShowLabel: false,
         rules: [],
+        extra: null,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }

@@ -11,6 +11,7 @@
 | invalidTipAlign | 验证错误信息提示的位置 | `Layer层组合值` | `top right` |
 | flatValue | 是否平面化数据 | `boolean` | `false` |
 | notShowLabel | 不显示标签，不管 label 是否设置 | `boolean` | `false` |
+| extra | 表单元素的拓展展示内容 | `string` | - |
 | labelWidth | 表单元素项提示文字宽度 | `number` | `126` |
 | controlWidth | 表单元素项的宽度 | `xsmall\|small\|mediu\|large\|xlarge` | `false` |
 | rules | 配置的验证规则 | `Array` | `[]` |
