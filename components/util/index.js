@@ -69,6 +69,11 @@ export function isFunction(val) {
   return toString.call(val) === '[object Function]'
 }
 
+// 值为 null 或 undefined
+export function isNullish(val) {
+  return val === null || val === undefined
+}
+
 /**
  * Hyphenate a camelCase string.
  *

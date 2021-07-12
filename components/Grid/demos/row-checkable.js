@@ -33,22 +33,50 @@ define([], function () {
                 onClick: () => {
                   gridRef.update({
                     data: [
-                      { id: 6, name: '大主宰', author: '土豆', role: '林动', tags: ['玄幻', '都市'], isMiddle: true },
-                      { id: 7, name: '武动乾坤', author: '土豆', role: '林动', tags: ['玄幻', '都市'], isMiddle: true },
-                      { id: 8, name: '斗破苍穹', author: '土豆', role: '萧炎', tags: ['玄幻', '都市'], isMiddle: true },
-                      { id: 9, name: '斗罗大陆', author: '三少', role: '令狐冲', tags: ['中篇', '明朝'], isMiddle: true },
-                    ]
+                      {
+                        id: 6,
+                        name: '大主宰',
+                        author: '土豆',
+                        role: '林动',
+                        tags: ['玄幻', '都市'],
+                        isMiddle: true,
+                      },
+                      {
+                        id: 7,
+                        name: '武动乾坤',
+                        author: '土豆',
+                        role: '林动',
+                        tags: ['玄幻', '都市'],
+                        isMiddle: true,
+                      },
+                      {
+                        id: 8,
+                        name: '斗破苍穹',
+                        author: '土豆',
+                        role: '萧炎',
+                        tags: ['玄幻', '都市'],
+                        isMiddle: true,
+                      },
+                      {
+                        id: 9,
+                        name: '斗罗大陆',
+                        author: '三少',
+                        role: '令狐冲',
+                        tags: ['中篇', '明朝'],
+                        isMiddle: true,
+                      },
+                    ],
                   })
                 },
-              }
-            ]
+              },
+            ],
           },
           {
             component: 'Grid',
             ref: (c) => {
               gridRef = c
             },
-            rowCheckable: { checkedRowKeys: [1, 5] },
+            rowCheckable: { checkedRowKeys: [0, 5] },
             columnsCustomizable: true,
             columns: [
               {
@@ -112,7 +140,7 @@ define([], function () {
             ],
             data: [
               {
-                id: 1,
+                id: 0,
                 name: '笑傲江湖',
                 author: '金庸',
                 role: '令狐冲',
