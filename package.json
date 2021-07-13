@@ -31,7 +31,7 @@
     "hooks": {
       "pre-commit": "npm run lint-staged",
       "pre-commit1": "echo \"[Husky] pre-commit\"",
-      "commit-msg": "npm run test && echo succeed" 
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
@@ -44,6 +44,8 @@
     "@babel/core": "^7.13.14",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.13.8",
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
     "@umijs/fabric": "^2.4.4",
     "babel-eslint": "^10.1.0",
     "chalk": "^4.1.0",
