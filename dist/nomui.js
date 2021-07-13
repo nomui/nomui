@@ -17458,7 +17458,7 @@ function _defineProperty2(obj, key, value) {
         }
         if (props.edgeItemCount < interval[0] - 1 && props.texts.ellipse) {
           items.push({
-            pageNumber: null,
+            pageNumber: interval[0] - 1,
             text: props.texts.ellipse,
             classes: { space: true },
             space: true,
@@ -17474,7 +17474,7 @@ function _defineProperty2(obj, key, value) {
           props.texts.ellipse
         ) {
           items.push({
-            pageNumber: null,
+            pageNumber: interval[1] + 1,
             text: props.texts.ellipse,
             classes: { space: true },
             space: true,
