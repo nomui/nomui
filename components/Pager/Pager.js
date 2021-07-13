@@ -162,7 +162,7 @@ class Pager extends Component {
       }
       if (props.edgeItemCount < interval[0] - 1 && props.texts.ellipse) {
         items.push({
-          pageNumber: null,
+          pageNumber: interval[0] - 1,
           text: props.texts.ellipse,
           classes: { space: true },
           space: true,
@@ -182,7 +182,7 @@ class Pager extends Component {
     if (interval[1] < pageCount && props.edgeItemCount > 0) {
       if (pageCount - props.edgeItemCount > interval[1] && props.texts.ellipse) {
         items.push({
-          pageNumber: null,
+          pageNumber: interval[1] + 1,
           text: props.texts.ellipse,
           classes: { space: true },
           space: true,
