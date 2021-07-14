@@ -14665,20 +14665,20 @@ function _defineProperty2(obj, key, value) {
     }
     onSortChange() {
       const that = this;
-      if (that.props.column.sortDirection === "asc") {
+      if (that.props.column.sortDirection === "desc") {
         that.update({
           column: Object.assign({}, that.props.column, {
-            sortDirection: "desc",
+            sortDirection: "asc",
           }),
         });
-      } else if (that.props.column.sortDirection === "desc") {
+      } else if (that.props.column.sortDirection === "asc") {
         that.update({
           column: Object.assign({}, that.props.column, { sortDirection: null }),
         });
       } else {
         that.update({
           column: Object.assign({}, that.props.column, {
-            sortDirection: "asc",
+            sortDirection: "desc",
           }),
         });
       }

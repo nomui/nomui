@@ -218,17 +218,17 @@ class Th extends Component {
 
   onSortChange() {
     const that = this
-    if (that.props.column.sortDirection === 'asc') {
+    if (that.props.column.sortDirection === 'desc') {
       that.update({
-        column: { ...that.props.column, ...{ sortDirection: 'desc' } },
+        column: { ...that.props.column, ...{ sortDirection: 'asc' } },
       })
-    } else if (that.props.column.sortDirection === 'desc') {
+    } else if (that.props.column.sortDirection === 'asc') {
       that.update({
         column: { ...that.props.column, ...{ sortDirection: null } },
       })
     } else {
       that.update({
-        column: { ...that.props.column, ...{ sortDirection: 'asc' } },
+        column: { ...that.props.column, ...{ sortDirection: 'desc' } },
       })
     }
     that.table.grid.handleSort(that.props.column)
