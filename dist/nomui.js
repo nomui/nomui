@@ -17429,7 +17429,7 @@ function _defineProperty2(obj, key, value) {
               gutter: "xs",
               items: [
                 { children: `共有数据${this.props.totalCount}条` },
-                {
+                !pager.props.simple && {
                   component: "Select",
                   showSearch: false,
                   value: pager.props.pageSize || 10,
@@ -17492,60 +17492,75 @@ function _defineProperty2(obj, key, value) {
         return items;
       }
       const { pageIndex } = props;
-      const interval = this._getInterval();
       const pageCount = this._getPageCount(); // 产生"Previous"-链接
       if (props.texts.prev && (pageIndex > 1 || props.prevShowAlways)) {
         items.push({
           pageNumber: pageIndex - 1,
           text: props.texts.prev,
+          disabled: pageIndex <= 1,
           classes: { prev: true },
         });
-      } // 产生起始点
-      if (interval[0] > 1 && props.edgeItemCount > 0) {
-        const end = Math.min(props.edgeItemCount, interval[0] - 1);
-        for (let i = 1; i <= end; i++) {
-          items.push({ pageNumber: i, text: i, classes: "" });
-        }
-        if (props.edgeItemCount < interval[0] - 1 && props.texts.ellipse) {
-          items.push({
-            pageNumber: interval[0] - 1,
-            text: props.texts.ellipse,
-            classes: { space: true },
-            space: true,
-          });
-        }
-      } // 产生内部的那些链接
-      for (let i = interval[0]; i <= interval[1]; i++) {
-        items.push({ pageNumber: i, text: i, classes: "" });
-      } // 产生结束点
-      if (interval[1] < pageCount && props.edgeItemCount > 0) {
-        if (
-          pageCount - props.edgeItemCount > interval[1] &&
-          props.texts.ellipse
-        ) {
-          items.push({
-            pageNumber: interval[1] + 1,
-            text: props.texts.ellipse,
-            classes: { space: true },
-            space: true,
-          });
-        }
-        const begin = Math.max(
-          pageCount - props.edgeItemCount + 1,
-          interval[1]
-        );
-        for (let i = begin; i <= pageCount; i++) {
-          items.push({ pageNumber: i, text: i, classes: "" });
-        }
-      } // 产生 "Next"-链接
+      }
+      this._getMiddleItems(items, pageCount); // 产生 "Next"-链接
       if (props.texts.next && (pageIndex < pageCount || props.nextShowAlways)) {
         items.push({
           pageNumber: pageIndex + 1,
           text: props.texts.next,
+          disabled: pageIndex >= pageCount,
           classes: { next: true },
         });
       }
       return items;
+    } // 获取中间的页面展示
+    _getMiddleItems(items, pageCount) {
+      const { props } = this;
+      const interval = this._getInterval(); // 简洁模式则不需要中间的页码
+      if (!props.simple) {
+        // 产生起始点
+        if (interval[0] > 1 && props.edgeItemCount > 0) {
+          const end = Math.min(props.edgeItemCount, interval[0] - 1);
+          for (let i = 1; i <= end; i++) {
+            items.push({ pageNumber: i, text: i, classes: "" });
+          }
+          if (props.edgeItemCount < interval[0] - 1 && props.texts.ellipse) {
+            items.push({
+              pageNumber: interval[0] - 1,
+              text: props.texts.ellipse,
+              classes: { space: true },
+              space: true,
+            });
+          }
+        } // 产生内部的那些链接
+        for (let i = interval[0]; i <= interval[1]; i++) {
+          items.push({ pageNumber: i, text: i, classes: "" });
+        } // 产生结束点
+        if (interval[1] < pageCount && props.edgeItemCount > 0) {
+          if (
+            pageCount - props.edgeItemCount > interval[1] &&
+            props.texts.ellipse
+          ) {
+            items.push({
+              pageNumber: interval[1] + 1,
+              text: props.texts.ellipse,
+              classes: { space: true },
+              space: true,
+            });
+          }
+          const begin = Math.max(
+            pageCount - props.edgeItemCount + 1,
+            interval[1]
+          );
+          for (let i = begin; i <= pageCount; i++) {
+            items.push({ pageNumber: i, text: i, classes: "" });
+          }
+        }
+      } else {
+        items.push({
+          pageNumber: props.pageIndex,
+          text: props.pageIndex,
+          classes: "",
+        });
+      }
     }
   }
   Pager.defaults = {
@@ -17554,6 +17569,7 @@ function _defineProperty2(obj, key, value) {
     totalCount: 0,
     displayItemCount: 5,
     edgeItemCount: 1,
+    simple: false, // 简洁模式，只展示总数和上一页，下一页按钮
     prevShowAlways: true,
     nextShowAlways: true,
     texts: { prev: "上一页", next: "下一页", ellipse: "..." },
