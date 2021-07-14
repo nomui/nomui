@@ -568,15 +568,7 @@ function _defineProperty2(obj, key, value) {
       this.firstRender = true;
       this._propStyleClasses = [];
       mixins && this._mixin(mixins);
-      if (this.props.key) {
-        this.key = this.props.key;
-        if (isFunction(this.props.key)) {
-          this.key = this.props.key.call(this, this);
-        }
-      }
-      if (this.key === undefined || this.key === null) {
-        this.key = `__key${++keySeq}`;
-      }
+      this._setKey();
       this.referenceComponent =
         this.props.reference instanceof Component
           ? this.props.reference
@@ -623,6 +615,17 @@ function _defineProperty2(obj, key, value) {
         this.props.onCreated({ inst: this, props: this.props });
     }
     _created() {}
+    _setKey() {
+      if (this.props.key) {
+        this.key = this.props.key;
+        if (isFunction(this.props.key)) {
+          this.key = this.props.key.call(this, this);
+        }
+      }
+      if (this.key === undefined || this.key === null) {
+        this.key = `__key${++keySeq}`;
+      }
+    }
     config() {
       this._setExpandableProps();
       this._setSelectableProps();
@@ -3244,6 +3247,7 @@ function _defineProperty2(obj, key, value) {
             route: this.$app.currentRoute,
             app: this.$app,
             router: this,
+            context: this.$app.context,
           });
           if (routerProps.then) {
             routerProps.then((result) => {
@@ -3284,9 +3288,6 @@ function _defineProperty2(obj, key, value) {
       delete this.props;
       this.props = { defaultPath: defaultPath };
       this.setProps(routerProps);
-      if (isFunction(routerProps.onRendered)) {
-        routerProps.onRendered.call(this, this);
-      }
       this._callRendered();
     }
     getRouteUrl(level) {
@@ -3328,6 +3329,7 @@ function _defineProperty2(obj, key, value) {
       this.previousRoute = null;
       this.currentRoute = new Route(this.props.defaultPath);
       this.routers = {};
+      this.contextGetted = false;
       Object.defineProperty(Component.prototype, "$app", {
         get: function () {
           return this.root;
@@ -3338,11 +3340,30 @@ function _defineProperty2(obj, key, value) {
           return this.$app.currentRoute;
         },
       });
+      const { context } = this.props;
+      if (isFunction(context)) {
+        const contextResult = context({ route: this.currentRoute });
+        if (contextResult.then) {
+          contextResult.then((result) => {
+            this.context = result;
+            this.contextGetted = true;
+            this.update();
+          });
+        } else {
+          this.context = context;
+          this.contextGetted = true;
+        }
+      } else {
+        this.context = context;
+        this.contextGetted = true;
+      }
     }
     _config() {
-      this.setProps({ children: { component: Router } });
-      if (this.props.isFixedLayout === true) {
-        document.documentElement.setAttribute("class", "app");
+      if (this.contextGetted === true) {
+        this.setProps({ children: { component: Router } });
+        if (this.props.isFixedLayout === true) {
+          document.documentElement.setAttribute("class", "app");
+        }
       }
     }
     _rendered() {
@@ -5051,10 +5072,12 @@ function _defineProperty2(obj, key, value) {
     }
     _created() {
       this.list = this.parent.list;
-      const { data, dataFields = { key: "key" } } = this.list.props;
+      const { dataFields = { key: "key" } } = this.list.props;
+      const { data } = this.props;
       Object.keys(dataFields).forEach((dataField) => {
         this.props[dataField] = data[dataFields[dataField]];
       });
+      this._setKey();
       this.list.itemRefs[this.key] = this;
     }
     _config() {
@@ -5072,6 +5095,12 @@ function _defineProperty2(obj, key, value) {
     }
     _remove() {
       delete this.list.itemRefs[this.key];
+    }
+    select() {
+      this.content.select();
+    }
+    unselect() {
+      this.content.unselect();
     }
   }
   Component.register(ListItem);
@@ -5491,7 +5520,8 @@ function _defineProperty2(obj, key, value) {
     scrollTo(param) {
       const item = this.getItem(param);
       if (item) {
-        scrollIntoView(item.wrapper.element, {
+        const itemElement = item.wrapper ? item.wrapper.element : item.element;
+        scrollIntoView(itemElement, {
           behavior: "smooth",
           scrollMode: "if-needed",
         });

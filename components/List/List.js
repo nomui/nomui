@@ -248,7 +248,8 @@ class List extends Component {
   scrollTo(param) {
     const item = this.getItem(param)
     if (item) {
-      scrollIntoView(item.wrapper.element, {
+      const itemElement = item.wrapper ? item.wrapper.element : item.element
+      scrollIntoView(itemElement, {
         behavior: 'smooth',
         scrollMode: 'if-needed',
       })
