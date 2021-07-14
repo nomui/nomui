@@ -92,6 +92,7 @@ class Router extends Component {
           route: this.$app.currentRoute,
           app: this.$app,
           router: this,
+          context: this.$app.context,
         })
         if (routerProps.then) {
           routerProps.then((result) => {
@@ -134,10 +135,6 @@ class Router extends Component {
     delete this.props
     this.props = { defaultPath: defaultPath }
     this.setProps(routerProps)
-
-    if (isFunction(routerProps.onRendered)) {
-      routerProps.onRendered.call(this, this)
-    }
 
     this._callRendered()
   }

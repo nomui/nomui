@@ -13,10 +13,12 @@ class ListItem extends Component {
 
   _created() {
     this.list = this.parent.list
-    const { data, dataFields = { key: 'key' } } = this.list.props
+    const { dataFields = { key: 'key' } } = this.list.props
+    const { data } = this.props
     Object.keys(dataFields).forEach((dataField) => {
       this.props[dataField] = data[dataFields[dataField]]
     })
+    this._setKey()
     this.list.itemRefs[this.key] = this
   }
 
@@ -39,6 +41,14 @@ class ListItem extends Component {
 
   _remove() {
     delete this.list.itemRefs[this.key]
+  }
+
+  select() {
+    this.content.select()
+  }
+
+  unselect() {
+    this.content.unselect()
   }
 }
 
