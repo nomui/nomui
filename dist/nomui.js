@@ -17557,7 +17557,7 @@ function _defineProperty2(obj, key, value) {
       } else {
         items.push({
           pageNumber: props.pageIndex,
-          text: props.pageIndex,
+          text: `${props.pageIndex}/${pageCount}`,
           classes: "",
         });
       }

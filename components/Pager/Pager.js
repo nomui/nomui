@@ -222,7 +222,7 @@ class Pager extends Component {
     } else {
       items.push({
         pageNumber: props.pageIndex,
-        text: props.pageIndex,
+        text: `${props.pageIndex}/${pageCount}`,
         classes: '',
       })
     }
