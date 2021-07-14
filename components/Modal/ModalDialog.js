@@ -22,14 +22,28 @@ class ModalDialog extends Component {
           const pNames = this.getParameterNames(props)
           if (pNames.length && pNames[0] === '{') {
             props = contentConfig({ modal: modal, args: modal.props.args })
+            if (props.then) {
+              props.then((result) => {
+                props = result
+                props = Component.extendProps(this._getDefaultPanelContent(props), props)
+                this.update({
+                  children: n(null, props, null, [ModalContentMixin]),
+                })
+              })
+            } else {
+              props = Component.extendProps(this._getDefaultPanelContent(props), props)
+              this.update({
+                children: n(null, props, null, [ModalContentMixin]),
+              })
+            }
           } else {
             props = contentConfig.call(this, modal)
+            props = Component.extendProps(this._getDefaultPanelContent(props), props)
+            this.update({
+              children: n(null, props, null, [ModalContentMixin]),
+            })
           }
         }
-        props = Component.extendProps(this._getDefaultPanelContent(props), props)
-        this.update({
-          children: n(null, props, null, [ModalContentMixin]),
-        })
       })
     }
   }
