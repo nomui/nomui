@@ -58,16 +58,7 @@ class Component {
 
     mixins && this._mixin(mixins)
 
-    if (this.props.key) {
-      this.key = this.props.key
-      if (isFunction(this.props.key)) {
-        this.key = this.props.key.call(this, this)
-      }
-    }
-
-    if (this.key === undefined || this.key === null) {
-      this.key = `__key${++keySeq}`
-    }
+    this._setKey()
 
     this.referenceComponent =
       this.props.reference instanceof Component
@@ -117,6 +108,19 @@ class Component {
   }
 
   _created() {}
+
+  _setKey() {
+    if (this.props.key) {
+      this.key = this.props.key
+      if (isFunction(this.props.key)) {
+        this.key = this.props.key.call(this, this)
+      }
+    }
+
+    if (this.key === undefined || this.key === null) {
+      this.key = `__key${++keySeq}`
+    }
+  }
 
   config() {
     this._setExpandableProps()
