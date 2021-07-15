@@ -5136,25 +5136,6 @@ img {
   left: 0;
 }
 /* 虚拟列表支持函数-end */
-.nom-virtual-list .nom-virtual-list-container {
-  position: relative;
-  overflow: auto;
-  border: 1px solid #ced4da;
-  -webkit-overflow-scrolling: touch;
-}
-.nom-virtual-list .nom-virtual-list-container .nom-virtual-list-phantom {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: -1;
-}
-.nom-virtual-list .nom-virtual-list-container .nom-virtual-list-content {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-}
 .nom-tab-list a {
   color: inherit;
   text-decoration: none;
@@ -6053,6 +6034,10 @@ textarea .nom-input {
 .nom-textbox .nom-textbox-left-icon,
 .nom-textbox .nom-textbox-right-icon {
   color: #a4a2bb;
+}
+.nom-time-picker .nom-input[readonly]:not([disabled]),
+.nom-date-picker .nom-input[readonly]:not([disabled]) {
+  background-color: transparent;
 }
 .nom-time-picker .nom-input[readonly]:not([disabled]),
 .nom-date-picker .nom-input[readonly]:not([disabled]) {
