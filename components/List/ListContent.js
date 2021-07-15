@@ -1,7 +1,8 @@
 import Component from '../Component/index'
 import { extend, isFunction } from '../util/index'
-import ListItemWrapper from './ListItemWrapper'
+import Sortable from '../util/sortable.core.esm'
 import ListItem from './ListItem'
+import ListItemWrapper from './ListItemWrapper'
 
 class ListContent extends Component {
   constructor(props, ...mixins) {
@@ -78,6 +79,26 @@ class ListContent extends Component {
       this.setProps({
         children: children,
         childDefaults: wrapperDefaults,
+      })
+    }
+  }
+
+  _rendered() {
+    const { sortable, virtual } = this.list.props
+    const that = this
+
+    // 虚拟渲染不支持拓展排序
+    if (sortable && !virtual) {
+      new Sortable(this.element, {
+        group: this.key,
+        animation: 150,
+        fallbackOnBody: true,
+        swapThreshold: 0.65,
+        filter: '.s-disabled',
+        onEnd: function (event) {
+          // const data = { oldIndex: evt.oldIndex, newIndex: evt.newIndex }
+          that.list.handleDrag(event)
+        },
       })
     }
   }
