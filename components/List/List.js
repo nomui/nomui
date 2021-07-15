@@ -171,7 +171,8 @@ class List extends Component {
     const children = this.content.getChildren()
     for (let i = 0; i < children.length; i++) {
       const itemWrapper = children[i]
-      items.push(itemWrapper.item)
+      // 为自定义渲染时直接返回 itemWrapper
+      items.push(itemWrapper.item || itemWrapper)
     }
     return items
   }
