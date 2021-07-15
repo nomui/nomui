@@ -1,7 +1,8 @@
 import Component from '../Component/index'
 import { extend, isFunction } from '../util/index'
-import ListItemWrapper from './ListItemWrapper'
+import Sortable from '../util/sortable.core.esm'
 import ListItem from './ListItem'
+import ListItemWrapper from './ListItemWrapper'
 
 class ListContent extends Component {
   constructor(props, ...mixins) {
@@ -25,14 +26,18 @@ class ListContent extends Component {
     if (Array.isArray(data) && data.length > 0) {
       for (let i = 0; i < data.length; i++) {
         const itemData = data[i]
-        children.push({ component: ListItem, data: itemData })
+        children.push({
+          component: ListItem,
+          data: itemData,
+          classes: { ...this._getDragClassNames(itemData) },
+        })
       }
     } else if (Array.isArray(wrappers) && wrappers.length > 0) {
       for (let i = 0; i < wrappers.length; i++) {
         let wrapper = wrappers[i]
         wrapper = Component.extendProps(
           {},
-          { component: ListItemWrapper },
+          { component: ListItemWrapper, classes: { ...this._getDragClassNames(wrappers[i]) } },
           wrapperDefaults,
           wrapper,
         )
@@ -44,9 +49,18 @@ class ListContent extends Component {
           this.list.props.disabledItems.length &&
           this.list.props.disabledItems.includes(items[i].key)
         ) {
-          children.push({ component: ListItemWrapper, item: items[i], disabled: true })
+          children.push({
+            component: ListItemWrapper,
+            item: items[i],
+            disabled: true,
+            classes: { ...this._getDragClassNames(items[i]) },
+          })
         } else {
-          children.push({ component: ListItemWrapper, item: items[i] })
+          children.push({
+            component: ListItemWrapper,
+            item: items[i],
+            classes: { ...this._getDragClassNames(items[i]) },
+          })
         }
       }
     }
@@ -79,6 +93,32 @@ class ListContent extends Component {
         children: children,
         childDefaults: wrapperDefaults,
       })
+    }
+  }
+
+  _rendered() {
+    const { sortable, virtual } = this.list.props
+    const that = this
+
+    // 虚拟渲染不支持拓展排序
+    if (sortable && !virtual) {
+      const _options = {
+        group: this.key,
+        animation: 150,
+        fallbackOnBody: true,
+        swapThreshold: 0.65,
+        handle: sortable.handleClassName,
+        filter: '.s-disabled',
+        draggable: '.could-drag',
+        onEnd: function (event) {
+          // const data = { oldIndex: evt.oldIndex, newIndex: evt.newIndex }
+          that.list.handleDrag(event)
+        },
+      }
+      if (sortable.draggableClassName) {
+        _options.draggable = sortable.draggableClassName
+      }
+      new Sortable(this.element, _options)
     }
   }
 
@@ -206,6 +246,16 @@ class ListContent extends Component {
       }
     }
     return selectedItems
+  }
+
+  _getDragClassNames(item) {
+    const { sortable, disDragItems } = this.list.props
+    const dragClasses = {}
+
+    if (!disDragItems.includes(item.key)) {
+      dragClasses[sortable.draggableClassName || 'could-drag'] = true
+    }
+    return dragClasses
   }
 
   appendItem(itemProps) {

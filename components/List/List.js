@@ -9,6 +9,7 @@ class List extends Component {
       tag: 'div',
       items: [],
       itemDefaults: {},
+      data: null, // 自定义渲染时使用data
 
       selectedItems: null,
 
@@ -25,6 +26,9 @@ class List extends Component {
         bufferScale: 1, // 缓冲区比例
       },
       showEmpty: false,
+      // Boolean || { onEnd: Funciton}
+      sortable: false,
+      disDragItems: [],
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -89,6 +93,7 @@ class List extends Component {
 
   selectItem(param, selectOption) {
     const item = this.getItem(param)
+    console.log('🚀 ~ file: List.js ~  ~ item', item, param, this.itemRefs)
     item && item.select(selectOption)
     if (this.props.itemSelectable.scrollIntoView) {
       this.scrollTo(item)
@@ -167,7 +172,8 @@ class List extends Component {
     const children = this.content.getChildren()
     for (let i = 0; i < children.length; i++) {
       const itemWrapper = children[i]
-      items.push(itemWrapper.item)
+      // 为自定义渲染时直接返回 itemWrapper
+      items.push(itemWrapper.item || itemWrapper)
     }
     return items
   }
@@ -487,6 +493,27 @@ class List extends Component {
     return this.virListData().slice(start, end)
   }
   /* 虚拟列表支持函数-end */
+
+  handleDrag(event) {
+    const { oldIndex, newIndex } = event
+    this._lastDragIndex = newIndex
+
+    const { data, items } = this.props
+    const _listData = data && data.length ? data : items
+    const _dragerItem = _listData.splice(oldIndex, 1)[0]
+    _listData.splice(newIndex, 0, _dragerItem)
+
+    if (this.props.sortable && this.props.sortable.onEnd) {
+      this._callHandler(this.props.sortable.onEnd)
+    }
+  }
+
+  getLastDragItem() {
+    if (!this._lastDragIndex) return
+    const { data, items } = this.props
+    const _listData = data && data.length ? data : items
+    return _listData[this._lastDragIndex]
+  }
 }
 
 Component.register(List)
