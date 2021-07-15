@@ -6,6 +6,7 @@ define([
   './scroll-to.js',
   './virtual.js',
   './data.js',
+  './sortable.js',
 ], function () {
   return {
     title: 'List',
