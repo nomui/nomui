@@ -25,7 +25,7 @@
     "lint-staged:js": "eslint --ext .js",
     "lint:fix": "eslint --fix --cache --ext .js --format=pretty ./components && npm run lint:style",
     "prettier": "prettier -c --write \"components/**/*.{js,less,md,json}\"",
-    "postversion": "git push --follow-tags",
+    "postversion": "git push origin --follow-tags",
     "release": "standard-version"
   },
   "husky": {
