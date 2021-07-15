@@ -2,6 +2,7 @@ define([], function () {
   return {
     title: '树形数据',
     file: 'tree-grid',
+    description: '通过配置 `treeConfig` 展示树形数据',
     demo: function () {
       return {
         children: [
@@ -77,6 +78,11 @@ define([], function () {
                     ],
                   },
                 ],
+              },
+              {
+                id: '4',
+                class: '大学',
+                count: '-',
               },
             ],
           },

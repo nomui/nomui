@@ -64,26 +64,6 @@
     }
   }
 
-  &.p-with-left-icon {
-    > .nom-field-content {
-      .nom-control {
-        .nom-input {
-          padding-left: 2.5rem;
-        }
-      }
-    }
-  }
-
-  &.p-with-right-icon {
-    > .nom-field-content {
-      .nom-control {
-        .nom-input {
-          padding-right: 2.5rem;
-        }
-      }
-    }
-  }
-
   &.p-with-button {
     > .nom-field-content {
       > .nom-control {
@@ -103,26 +83,36 @@
     }
   }
 
-  .nom-textbox-left-icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 2.5rem;
-    height: @input-height-base;
-    color: #a4a2bb;
-    font-size: 16px;
-    line-height: @input-height-base;
+  &.nom-textbox-affix-wrapper {
+    .nom-input-affix {
+      flex: none;
+    }
+    .nom-input-prefix,
+    .nom-textbox-left-icon {
+      margin-right: 4px;
+    }
+    .nom-input-suffix,
+    .nom-textbox-right-icon {
+      margin-left: 4px;
+    }
+    > .nom-field-content {
+      .nom-control {
+        display: flex;
+        align-items: center;
+        border: 1px solid @input-border;
+        padding: 0 @padding-x-base;
+        .nom-input {
+          padding: 0;
+          border: none;
+          outline: none;
+        }
+      }
+    }
   }
 
+  .nom-textbox-left-icon,
   .nom-textbox-right-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 2.5rem;
-    height: @input-height-base;
     color: #a4a2bb;
-    font-size: 16px;
-    line-height: @input-height-base;
   }
 }
 

@@ -8,7 +8,7 @@ class Cols extends Component {
       wrap: false,
       items: [],
       itemDefaults: null,
-      gutter: 'md',
+      gutter: 'sm',
       childDefaults: {
         component: Col,
       },

@@ -68,10 +68,19 @@ class Tabs extends Component {
         children: [
           {
             component: 'Cols',
+            fit: true,
             strechIndex: 0,
+            gutter: 'xs',
             items: [
               this.props.tabList,
-              isFunction(this.props.tools) ? this.props.tools() : this.props.tools,
+              this.props.tools
+                ? {
+                    classes: {
+                      'nom-tabs-tools': true,
+                    },
+                    children: isFunction(this.props.tools) ? this.props.tools() : this.props.tools,
+                  }
+                : null,
             ],
           },
           this.props.tabContent,

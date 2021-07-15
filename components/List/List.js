@@ -208,6 +208,14 @@ class List extends Component {
     this.content.appendItem(itemProps)
   }
 
+  appendDataItem(itemData) {
+    this.content.appendDataItem(itemData)
+  }
+
+  prependDataItem(itemData) {
+    this.content.prependDataItem(itemData)
+  }
+
   removeItem(param) {
     const item = this.getItem(param)
     if (item !== null) {
@@ -240,7 +248,8 @@ class List extends Component {
   scrollTo(param) {
     const item = this.getItem(param)
     if (item) {
-      scrollIntoView(item.wrapper.element, {
+      const itemElement = item.wrapper ? item.wrapper.element : item.element
+      scrollIntoView(itemElement, {
         behavior: 'smooth',
         scrollMode: 'if-needed',
       })

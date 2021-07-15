@@ -288,6 +288,23 @@ code {
     border: 1px solid #ccc;
 }
 
+#nice table tr td:nth-child(1) {
+    width: 18%;
+}
+
+#nice table tr td:nth-child(2) {
+    width: 55%;
+}
+
+#nice table tr td:nth-child(3) {
+    color: #c41d7f;
+    font-size: 13px;
+}
+
+#nice table tr td:nth-child(4) {
+    font-size: 13px;
+}
+
 #nice table tr th {
     font-weight: bold;
     background-color: #f0f0f0;

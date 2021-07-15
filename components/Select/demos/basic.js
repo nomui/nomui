@@ -8,6 +8,7 @@ define([], function () {
         items: [
           {
             component: 'Select',
+            value: 1,
             options: [
               {
                 text: '金庸',

@@ -13,6 +13,16 @@ class FlexItem extends Component {
 
   _config() {
     this._propStyleClasses = ['grow', 'shrink', 'isBody']
+
+    const { span } = this.props
+
+    if (span) {
+      this.setProps({
+        styles: {
+          col: span,
+        },
+      })
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import Sortable from '../util/sortable.core.esm'
 import Tr from './Tr'
 
 class Tbody extends Component {
@@ -28,6 +29,13 @@ class Tbody extends Component {
           key: function () {
             return this.props.data[keyField]
           },
+          _config: function () {
+            this.setProps({
+              attrs: {
+                'data-key': this.props.data[keyField],
+              },
+            })
+          },
         },
         rowDefaults,
       ),
@@ -42,12 +50,12 @@ class Tbody extends Component {
             attrs: {
               colspan: this.table.colLength,
               style: {
-                padding: '25px 0',
+                'vertical-align': 'middle',
               },
             },
             children: {
               component: 'Empty',
-              size: 'large',
+
               description: false,
             },
           },
@@ -56,6 +64,23 @@ class Tbody extends Component {
     }
 
     this.setProps(props)
+  }
+
+  _rendered() {
+    const that = this
+    if (this.table.hasGrid && this.table.grid.props.rowSortable) {
+      new Sortable(this.element, {
+        group: this.key,
+        animation: 150,
+        fallbackOnBody: true,
+        swapThreshold: 0.65,
+        handle: '.nom-grid-drag-handler',
+        onEnd: function () {
+          // const data = { oldIndex: evt.oldIndex, newIndex: evt.newIndex }
+          that.table.grid.handleDrag()
+        },
+      })
+    }
   }
 
   _getRows(data, rows, index, level) {

@@ -32,7 +32,7 @@ define([], function () {
                 field: 'sales',
                 key: 'sales',
                 title: '销量',
-                sortable: (a, b) => a.sales - b.sales,
+                sortable: (a, b) => b.sales - a.sales,
               },
 
               {

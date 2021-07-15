@@ -1,15 +1,17 @@
+import Button from '../Button/index'
 import Component from '../Component/index'
 import Field from '../Field/index'
-import {} from '../Icon/index'
-import { extend, isPlainObject } from '../util/index'
+import { } from '../Icon/index'
+import { extend, isPlainObject, isString } from '../util/index'
 import Input from './Input'
-import Button from '../Button/index'
 
 class Textbox extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       leftIcon: null,
+      prefix: null, // 前缀
       rightIcon: null,
+      suffix: null, // 后缀
       autofocus: false,
       placeholder: null,
       value: null,
@@ -21,7 +23,7 @@ class Textbox extends Field {
 
   _config() {
     const that = this
-    const { leftIcon, rightIcon, placeholder, value, htmlType, button, readonly } = this.props
+    const { leftIcon, prefix, rightIcon, suffix, placeholder, value, htmlType, button, readonly } = this.props
 
     let leftIconProps = Component.normalizeIconProps(leftIcon)
     if (leftIconProps != null) {
@@ -39,9 +41,9 @@ class Textbox extends Field {
 
     const buttonProps = isPlainObject(button)
       ? Component.extendProps(
-          { component: Button, classes: { 'nom-textbox-button': true } },
-          button,
-        )
+        { component: Button, classes: { 'nom-textbox-button': true } },
+        button,
+      )
       : null
 
     const inputProps = {
@@ -59,14 +61,32 @@ class Textbox extends Field {
       },
     }
 
+    const getAffixSpan = (affix, type = 'prefix') => ({
+      tag: 'span',
+      classes: {
+        'nom-input-affix': true,
+        [`nom-input-${type}`]: true,
+      },
+      children: affix
+    })
+
+    // 无左icon 有prefixx || 无右icon 有suffix
+    const affixWrapper = leftIcon || prefix || rightIcon || suffix
+
     this.setProps({
       classes: {
-        'p-with-left-icon': !!leftIcon,
-        'p-with-right-icon': !!rightIcon,
+        'nom-textbox-affix-wrapper': !!affixWrapper,
         'p-with-button': buttonProps !== null,
       },
       control: {
-        children: [inputProps, leftIcon && leftIconProps, rightIcon && rightIconProps, buttonProps],
+        children: [
+          leftIcon && leftIconProps,
+          !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),
+          inputProps,
+          rightIcon && rightIconProps,
+          !rightIcon && suffix && isString(suffix) && getAffixSpan(suffix, 'suffix'),
+          buttonProps
+        ],
       },
     })
 

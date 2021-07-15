@@ -17,7 +17,7 @@ class PanelHeader extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  config() {
+  _config() {
     const { caption, nav, tools } = this.props
     let toolsProps, navProps
     const captionProps = caption ? Component.extendProps({ component: Caption }, caption) : null

@@ -20,6 +20,15 @@ class ColGroup extends Component {
   _config() {
     const children = []
 
+    if (this.table.grid && this.table.grid.props.rowSortable) {
+      children.push({
+        component: ColGroupCol,
+        column: {
+          width: 30,
+        },
+      })
+    }
+
     if (Array.isArray(this.columns)) {
       this.colList = []
       children.push(...this.createCols(this.columns))

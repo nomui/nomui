@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 import Component from '../Component/index'
+import { isFunction } from '../util/index'
 import { Route } from './Route'
 import Router from './Router'
 
@@ -22,6 +23,7 @@ class App extends Component {
     this.currentRoute = new Route(this.props.defaultPath)
 
     this.routers = {}
+    this.contextGetted = false
 
     Object.defineProperty(Component.prototype, '$app', {
       get: function () {
@@ -34,15 +36,35 @@ class App extends Component {
         return this.$app.currentRoute
       },
     })
+
+    const { context } = this.props
+    if (isFunction(context)) {
+      const contextResult = context({ route: this.currentRoute })
+      if (contextResult.then) {
+        contextResult.then((result) => {
+          this.context = result
+          this.contextGetted = true
+          this.update()
+        })
+      } else {
+        this.context = context
+        this.contextGetted = true
+      }
+    } else {
+      this.context = context
+      this.contextGetted = true
+    }
   }
 
   _config() {
-    this.setProps({
-      children: { component: Router },
-    })
+    if (this.contextGetted === true) {
+      this.setProps({
+        children: { component: Router },
+      })
 
-    if (this.props.isFixedLayout === true) {
-      document.documentElement.setAttribute('class', 'app')
+      if (this.props.isFixedLayout === true) {
+        document.documentElement.setAttribute('class', 'app')
+      }
     }
   }
 

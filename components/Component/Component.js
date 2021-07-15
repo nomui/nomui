@@ -58,23 +58,14 @@ class Component {
 
     mixins && this._mixin(mixins)
 
-    if (this.props.key) {
-      this.key = this.props.key
-      if (isFunction(this.props.key)) {
-        this.key = this.props.key.call(this, this)
-      }
-    }
-
-    if (this.key === undefined || this.key === null) {
-      this.key = `__key${++keySeq}`
-    }
+    this._setKey()
 
     this.referenceComponent =
       this.props.reference instanceof Component
         ? this.props.reference
         : this.props.reference.component
     if (this.referenceComponent) {
-      if (this.props.placement === 'append') {
+      if (this.props.placement === 'append' || this.props.placement === 'prepend') {
         this.parent = this.referenceComponent
       } else {
         this.parent = this.referenceComponent.parent
@@ -108,19 +99,38 @@ class Component {
 
   create() {
     this.__handleClick = this.__handleClick.bind(this)
+    this.__handleMouseEnter = this.__handleMouseEnter.bind(this)
+    this.__handleMouseLeave = this.__handleMouseLeave.bind(this)
     isFunction(this._created) && this._created()
     this._callMixin('_created')
     this.props._created && this.props._created.call(this, this)
+    isFunction(this.props.onCreated) && this.props.onCreated({ inst: this, props: this.props })
   }
 
   _created() {}
 
+  _setKey() {
+    if (this.props.key) {
+      this.key = this.props.key
+      if (isFunction(this.props.key)) {
+        this.key = this.props.key.call(this, this)
+      }
+    }
+
+    if (this.key === undefined || this.key === null) {
+      this.key = `__key${++keySeq}`
+    }
+  }
+
   config() {
     this._setExpandableProps()
+    this._setSelectableProps()
     this.props._config && this.props._config.call(this, this)
+    isFunction(this.props.onConfig) && this.props.onConfig({ inst: this, props: this.props })
     this._callMixin('_config')
     isFunction(this._config) && this._config()
     this._setExpandableProps()
+    this._setSelectableProps()
     this._setStatusProps()
   }
 
@@ -151,6 +161,8 @@ class Component {
     isFunction(this._rendered) && this._rendered()
     this._callMixin('_rendered')
     isFunction(this.props._rendered) && this.props._rendered.call(this, this)
+    isFunction(this.props.onRendered) &&
+      this.props.onRendered({ inst: this, props: this.props, isUpdate: this.firstRender === false })
     this.firstRender = false
   }
 
@@ -164,6 +176,7 @@ class Component {
   }
 
   update(props) {
+    isFunction(this._update) && this._update()
     this._propStyleClasses.length = 0
     this.setProps(props)
     this._off()
@@ -269,6 +282,7 @@ class Component {
       el = this._placeHolderElement
     }
     isFunction(this.props._remove) && this.props._remove.call(this, this)
+    isFunction(this.props.onRemove) && this.props.onRemove({ inst: this, props: this.props })
     this._callMixin('_remove')
     isFunction(this._remove) && this._remove()
     this.trigger('remove')
@@ -351,6 +365,60 @@ class Component {
     props = Component.extendProps({}, childDefaultsProps, childProps, {
       reference: this.element,
       placement: 'append',
+    })
+
+    mixins = [...childDefaultsMixins, ...childMixins]
+
+    const compt = Component.create(props, ...mixins)
+
+    return compt
+  }
+
+  prependChild(child) {
+    if (!child) {
+      return
+    }
+
+    const childDefaults = this.props.childDefaults
+    let childDefaultsProps = {}
+    let childDefaultsMixins = []
+    let childProps = {}
+    let childMixins = []
+    let props = {}
+    let mixins = []
+
+    if (childDefaults) {
+      if (isPlainObject(childDefaults)) {
+        childDefaultsProps = childDefaults
+      } else if (childDefaults instanceof ComponentDescriptor) {
+        childDefaultsProps = childDefaults.getProps()
+        childDefaultsMixins = childDefaults.mixins
+      }
+    }
+
+    if (isPlainObject(child)) {
+      childProps = child
+    } else if (child instanceof ComponentDescriptor) {
+      childProps = child.getProps()
+      childMixins = child.mixins
+    } else if (isString(child) || isNumeric(child)) {
+      if (isPlainObject(childDefaults)) {
+        childProps = { children: child }
+      } else if (child[0] === '#') {
+        this.element.innerHTML = child.slice(1)
+        return
+      } else {
+        this.element.textContent = child
+        return
+      }
+    } else if (child instanceof DocumentFragment) {
+      this.referenceElement.insertBefore(child, this.referenceElement.firstChild)
+      return
+    }
+
+    props = Component.extendProps({}, childDefaultsProps, childProps, {
+      reference: this.element,
+      placement: 'prepend',
     })
 
     mixins = [...childDefaultsMixins, ...childMixins]
@@ -477,6 +545,10 @@ class Component {
     if (this.props.selected === false) {
       this.props.selected = true
       this.addClass('s-selected')
+      const { selectedProps } = this.props.selectable
+      if (selectedProps) {
+        this.update(selectedProps)
+      }
       isFunction(this._select) && this._select()
       selectOption.triggerSelect === true &&
         this._callHandler(this.props.onSelect, null, selectOption.event)
@@ -504,6 +576,10 @@ class Component {
     if (this.props.selected === true) {
       this.props.selected = false
       this.removeClass('s-selected')
+      const { unselectedProps } = this.props.selectable
+      if (unselectedProps) {
+        this.update(unselectedProps)
+      }
       isFunction(this._unselect) && this._unselect()
 
       if (unselectOption.triggerUnselect === true) {
@@ -545,9 +621,7 @@ class Component {
         expandTarget.show && expandTarget.show()
       }
     }
-    // if (!this.props.expandable.byIndicator) {
     this._expandIndicator && this._expandIndicator.expand()
-    // }
     const { expandedProps } = this.props.expandable
     if (expandedProps) {
       this.update(expandedProps)
@@ -570,9 +644,7 @@ class Component {
         expandTarget.hide && expandTarget.hide()
       }
     }
-    //  if (!this.props.expandable.byIndicator) {
     this._expandIndicator && this._expandIndicator.collapse()
-    // }
     isFunction(this._collapse) && this._collapse()
     const { collapsedProps } = this.props.expandable
     if (collapsedProps) {
@@ -623,6 +695,19 @@ class Component {
     }
   }
 
+  _setSelectableProps() {
+    const { selectable, selected } = this.props
+    if (isPlainObject(selectable)) {
+      if (selected) {
+        if (selectable.selectedProps) {
+          this.setProps(selectable.selectedProps)
+        }
+      } else if (selectable.unselectedProps) {
+        this.setProps(selectable.unselectedProps)
+      }
+    }
+  }
+
   _setStatusProps() {
     const { props } = this
 
@@ -651,7 +736,7 @@ class Component {
 
   getExpandableIndicatorProps(expanded = null) {
     const that = this
-    const { indicator, byIndicator } = this.props.expandable
+    const { indicator, byIndicator, byClick, byHover } = this.props.expandable
     if (expanded == null) {
       expanded = this.props.expanded
     }
@@ -672,18 +757,38 @@ class Component {
       })
 
       if (byIndicator === true) {
-        this.setProps({
-          expandable: {
-            indicator: {
-              attrs: {
-                onclick: (event) => {
-                  that.toggleExpand()
-                  event.stopPropagation()
+        if (byClick === true) {
+          this.setProps({
+            expandable: {
+              indicator: {
+                attrs: {
+                  onclick: (event) => {
+                    that.toggleExpand()
+                    event.stopPropagation()
+                  },
                 },
               },
             },
-          },
-        })
+          })
+        }
+        if (byHover === true) {
+          this.setProps({
+            expandable: {
+              indicator: {
+                attrs: {
+                  onmouseenter: (event) => {
+                    that.expand()
+                    event.stopPropagation()
+                  },
+                  onmouseleave: (event) => {
+                    that.collapse()
+                    event.stopPropagation()
+                  },
+                },
+              },
+            },
+          })
+        }
       }
     }
     return this.props.expandable.indicator
@@ -699,6 +804,7 @@ class Component {
 
   _handleAttrs() {
     this._processClick()
+    this._processHover()
     for (const name in this.props.attrs) {
       const value = this.props.attrs[name]
       if (value == null) continue
@@ -809,14 +915,6 @@ class Component {
         },
       })
     }
-
-    /* if (expandable.byIndicator) {
-      const indicator = this._expandIndicator
-      indicator._on('click', (event) => {
-        this.toggleExpand()
-        event.stopPropagation()
-      })
-    } */
   }
 
   __handleClick(event) {
@@ -833,6 +931,54 @@ class Component {
     }
     if (expandable && expandable.byClick === true) {
       this.toggleExpand()
+    }
+  }
+
+  _processHover() {
+    const { onClick, selectable, expandable } = this.props
+    if (
+      onClick ||
+      (selectable && selectable.byHover === true) ||
+      (expandable && expandable.byHover && !expandable.byIndicator)
+    ) {
+      this.setProps({
+        attrs: {
+          onmouseenter: this.__handleMouseEnter,
+          onmouseleave: this.__handleMouseLeave,
+        },
+      })
+    }
+  }
+
+  __handleMouseEnter() {
+    const { _shouldHandleClick, disabled, selectable, expandable } = this.props
+    if (_shouldHandleClick && _shouldHandleClick.call(this, this) === false) {
+      return
+    }
+    if (disabled === true) {
+      return
+    }
+    if (selectable && selectable.byHover === true) {
+      this.select()
+    }
+    if (expandable && expandable.byHover === true) {
+      this.expand()
+    }
+  }
+
+  __handleMouseLeave() {
+    const { _shouldHandleClick, disabled, selectable, expandable } = this.props
+    if (_shouldHandleClick && _shouldHandleClick.call(this, this) === false) {
+      return
+    }
+    if (disabled === true) {
+      return
+    }
+    if (selectable && selectable.byHover === true) {
+      this.unselect()
+    }
+    if (expandable && expandable.byHover === true) {
+      this.collapse()
     }
   }
 

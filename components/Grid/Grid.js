@@ -3,7 +3,7 @@ import Component from '../Component/index'
 import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
-import { isFunction, isPlainObject } from '../util/index'
+import { isFunction, isNullish, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 import GridSettingPopup from './GridSettingPopup'
@@ -99,7 +99,7 @@ class Grid extends Component {
             component: 'Button',
             icon: 'setting',
             size: 'small',
-            type: 'text',
+            // type: 'text',
             classes: {
               'nom-grid-setting': true,
             },
@@ -166,6 +166,14 @@ class Grid extends Component {
 
   setSortDirection(sorter) {
     const c = this.getColumns().map(function (item) {
+      if (!sorter) {
+        return {
+          ...item,
+          ...{
+            sortDirection: null,
+          },
+        }
+      }
       if (item.field === sorter.field) {
         return {
           ...item,
@@ -182,6 +190,33 @@ class Grid extends Component {
       }
     })
 
+    if (this.props.visibleColumns) {
+      const vc = this.props.visibleColumns.map(function (item) {
+        if (!sorter) {
+          return {
+            ...item,
+            ...{
+              sortDirection: null,
+            },
+          }
+        }
+        if (item.field === sorter.field) {
+          return {
+            ...item,
+            ...{
+              sortDirection: sorter.sortDirection,
+            },
+          }
+        }
+        return {
+          ...item,
+          ...{
+            sortDirection: null,
+          },
+        }
+      })
+      this.props.visibleColumns = vc
+    }
     this.update({ columns: c })
   }
 
@@ -257,15 +292,19 @@ class Grid extends Component {
   }
 
   getCheckedRows() {
-    return Object.keys(this.checkedRowRefs).map((key) => {
-      return this.checkedRowRefs[key]
-    })
+    return Object.keys(this.checkedRowRefs)
+      .map((key) => {
+        return this.checkedRowRefs[key]
+      })
+      .filter((rowRef) => !isNullish(rowRef.key))
   }
 
   getCheckedRowKeys() {
-    return Object.keys(this.checkedRowRefs).map((key) => {
-      return this.checkedRowRefs[key].key
-    })
+    return Object.keys(this.checkedRowRefs)
+      .map((key) => {
+        return this.checkedRowRefs[key].key
+      })
+      .filter((key) => !isNullish(key))
   }
 
   checkAllRows(options) {
@@ -358,6 +397,32 @@ class Grid extends Component {
 
     this.update({ columns: tree })
     this.popup.hide()
+  }
+
+  handleDrag() {
+    if (this.props.rowSortable && this.props.rowSortable.onEnd) {
+      this._callHandler(this.props.rowSortable.onEnd)
+    }
+  }
+
+  getData() {
+    const that = this
+    const keys = this.getDataKeys()
+    const data = keys.map(function (key) {
+      return that.props.data.filter(function (item) {
+        return parseInt(item[that.props.keyField], 10) === parseInt(key, 10)
+      })
+    })
+    return data
+  }
+
+  getDataKeys() {
+    const order = []
+    const trs = this.body.table.element.rows
+    for (let i = 0; i < trs.length; i++) {
+      order.push(trs[i].dataset.key)
+    }
+    return order
   }
 
   _processCheckableColumn() {

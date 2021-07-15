@@ -46,6 +46,7 @@ class Select extends Field {
       minItemsForSearch: 20,
       filterOption: (text, options) => options.filter((o) => o.text.indexOf(text) >= 0),
       virtual: false,
+      allowClear: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -53,7 +54,7 @@ class Select extends Field {
 
   _config() {
     const that = this
-    const { multiple, showArrow, placeholder, disabled, showSearch } = this.props
+    const { multiple, showArrow, placeholder, disabled, showSearch, allowClear } = this.props
     const children = []
 
     this._normalizeSearchable()
@@ -130,6 +131,25 @@ class Select extends Field {
       })
     }
 
+    if (allowClear) {
+      children.push({
+        component: Icon,
+        type: 'times',
+        classes: {
+          'nom-select-clear': true,
+        },
+        hidden: true,
+        ref: (c) => {
+          this.clearIcon = c
+        },
+        onClick: (args) => {
+          this.setValue(null)
+          this.props.allowClear && this.clearIcon.hide()
+          args.event && args.event.stopPropagation()
+        },
+      })
+    }
+
     this.setProps({
       control: {
         attrs: {
@@ -142,6 +162,7 @@ class Select extends Field {
         showSearch && this.selectedSingle.element.focus()
       },
     })
+
     super._config()
   }
 
@@ -373,6 +394,9 @@ class Select extends Field {
   }
 
   _valueChange(changed) {
+    if (changed.newValue) {
+      this.props.allowClear && this.clearIcon.show()
+    }
     if (this.placeholder) {
       if (
         (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||

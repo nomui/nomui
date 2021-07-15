@@ -25,6 +25,7 @@ class RadioList extends Field {
     this.setProps({
       optionList: {
         component: RadioOptionList,
+        cols: this.props.cols,
       },
     })
 

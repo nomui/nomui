@@ -1,3 +1,5 @@
+import { isString } from '../util/index'
+
 export default {
   _created: function () {
     this.checkboxList = this.parent.parent
@@ -6,6 +8,7 @@ export default {
   _config: function () {
     const { itemSelectionChange } = this.props
     const listProps = this.checkboxList.props
+    const asArray = listProps.valueOptions.asArray
     this.setProps({
       disabled: listProps.disabled,
       items: listProps.options,
@@ -15,7 +18,12 @@ export default {
         multiple: true,
         scrollIntoView: false,
       },
-      selectedItems: listProps.value,
+      selectedItems:
+        asArray === true
+          ? listProps.value
+          : isString(listProps.value)
+          ? listProps.value.split(',')
+          : null,
       onItemSelectionChange: () => {
         this.checkboxList._onValueChange()
         this._callHandler(itemSelectionChange)

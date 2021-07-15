@@ -19,12 +19,31 @@ class ModalDialog extends Component {
       require([content], (contentConfig) => {
         let props = contentConfig
         if (isFunction(props)) {
-          props = contentConfig.call(this, modal)
+          const pNames = this.getParameterNames(props)
+          if (pNames.length && pNames[0] === '{') {
+            props = contentConfig({ modal: modal, args: modal.props.args })
+            if (props.then) {
+              props.then((result) => {
+                props = result
+                props = Component.extendProps(this._getDefaultPanelContent(props), props)
+                this.update({
+                  children: n(null, props, null, [ModalContentMixin]),
+                })
+              })
+            } else {
+              props = Component.extendProps(this._getDefaultPanelContent(props), props)
+              this.update({
+                children: n(null, props, null, [ModalContentMixin]),
+              })
+            }
+          } else {
+            props = contentConfig.call(this, modal)
+            props = Component.extendProps(this._getDefaultPanelContent(props), props)
+            this.update({
+              children: n(null, props, null, [ModalContentMixin]),
+            })
+          }
         }
-        props = Component.extendProps(this._getDefaultPanelContent(props), props)
-        this.update({
-          children: n(null, props, null, [ModalContentMixin]),
-        })
       })
     }
   }
@@ -105,10 +124,22 @@ class ModalDialog extends Component {
         content,
         extendContent,
       )
+
       this.setProps({
         children: n(null, contentProps, null, [ModalContentMixin]),
       })
     }
+    this.setProps({
+      classes: {
+        'nom-modal-dialog-centered': this.modal.props.centered,
+      },
+    })
+  }
+
+  getParameterNames(fn) {
+    const code = fn.toString()
+    const result = code.slice(code.indexOf('(') + 1, code.indexOf(')')).match(/([^\s,]+)/g)
+    return result === null ? [] : result
   }
 }
 

@@ -1,6 +1,7 @@
 define([
   './basic.js',
   './view.js',
+  './async-view.js',
   './long-content.js',
   './custom-footer.js',
   './size.js',

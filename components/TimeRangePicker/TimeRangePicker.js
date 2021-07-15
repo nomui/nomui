@@ -19,6 +19,12 @@ class TimeRangePicker extends Group {
         end: 'end',
       },
       flatValue: true,
+      startPickerProps: {
+        placeholder: '开始时间',
+      },
+      endPickerProps: {
+        placeholder: '结束时间',
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -30,7 +36,20 @@ class TimeRangePicker extends Group {
 
   _config() {
     const that = this
-    const { format, hourStep, minuteStep, secondStep, allowClear, minTime, maxTime } = this.props
+    const {
+      format,
+      hourStep,
+      minuteStep,
+      secondStep,
+      allowClear,
+      minTime,
+      maxTime,
+      required,
+      requiredMessage,
+      rules,
+      startPickerProps,
+      endPickerProps,
+    } = this.props
 
     this.setProps({
       inline: true,
@@ -38,7 +57,6 @@ class TimeRangePicker extends Group {
         {
           component: 'TimePicker',
           name: that.props.fieldName.start,
-          placeholder: '开始时间',
           ref: (c) => {
             that.startPicker = c
           },
@@ -53,6 +71,10 @@ class TimeRangePicker extends Group {
 
           minTime,
           maxTime,
+          required,
+          requiredMessage,
+          rules,
+          ...startPickerProps,
         },
         {
           component: 'StaticText',
@@ -77,6 +99,10 @@ class TimeRangePicker extends Group {
 
           minTime,
           maxTime,
+          required,
+          requiredMessage,
+          rules,
+          ...endPickerProps,
         },
       ],
     })

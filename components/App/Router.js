@@ -73,10 +73,8 @@ class Router extends Component {
 
   routeView() {
     const level = this.level
-    const element = this.element
     const defaultPath = this.props.defaultPath
     const { paths } = this.$app.currentRoute
-    const that = this
 
     if (defaultPath) {
       if (!paths[level]) {
@@ -93,34 +91,52 @@ class Router extends Component {
         routerProps = viewPropsOrRouterPropsFunc.call(this, {
           route: this.$app.currentRoute,
           app: this.$app,
+          router: this,
+          context: this.$app.context,
         })
+        if (routerProps.then) {
+          routerProps.then((result) => {
+            routerProps = result
+            this.processProps(routerProps)
+          })
+        } else {
+          this.processProps(routerProps)
+        }
       } else {
         routerProps.view = viewPropsOrRouterPropsFunc
+        this.processProps(routerProps)
       }
-      if (isString(routerProps.title)) {
-        document.title = routerProps.title
-      }
-
-      // 路由组件插件执行
-      Router.plugins.forEach((plugin) => {
-        plugin(routerProps)
-      })
-
-      const extOptions = {
-        reference: element,
-        placement: 'replace',
-      }
-      const viewOptions = Component.extendProps(routerProps.view, extOptions)
-      this.currentView = Component.create(viewOptions, {
-        _rendered: function () {
-          that.element = this.element
-        },
-      })
-      delete this.props
-      this.props = { defaultPath: defaultPath }
-      this.setProps(routerProps)
-      this._callRendered()
     })
+  }
+
+  processProps(routerProps) {
+    const that = this
+    const defaultPath = this.props.defaultPath
+    const element = this.element
+    Router.plugins.forEach((plugin) => {
+      plugin(routerProps)
+    })
+    if (isString(routerProps.title)) {
+      document.title = routerProps.title
+    }
+    if (isFunction(routerProps.view)) {
+      routerProps.view = routerProps.view.call(this)
+    }
+    const viewOptions = Component.extendProps(routerProps.view, {
+      reference: element,
+      placement: 'replace',
+    })
+    this.currentView = Component.create(viewOptions, {
+      _rendered: function () {
+        that.element = this.element
+      },
+    })
+
+    delete this.props
+    this.props = { defaultPath: defaultPath }
+    this.setProps(routerProps)
+
+    this._callRendered()
   }
 
   getRouteUrl(level) {

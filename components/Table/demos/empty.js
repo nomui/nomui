@@ -7,6 +7,11 @@ define([], function () {
         children: [
           {
             component: 'Table',
+            attrs: {
+              style: {
+                height: '400px',
+              },
+            },
             data: [],
             columns: [
               {
