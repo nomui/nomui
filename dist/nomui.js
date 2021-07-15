@@ -4923,2852 +4923,6 @@ function _defineProperty2(obj, key, value) {
       computeOptions.behavior
     );
   }
-  var ListItemMixin = {
-    _created: function () {
-      this.wrapper = this.parent;
-      this.wrapper.item = this;
-      this.list = this.wrapper.list;
-      this.list.itemRefs[this.key] = this;
-    },
-    _config: function () {
-      const { onSelect, onUnselect, selected } = this.props;
-      const listProps = this.list.props;
-      const selectedItems =
-        listProps.selectedItems !== null &&
-        listProps.selectedItems !== undefined
-          ? Array.isArray(listProps.selectedItems)
-            ? listProps.selectedItems
-            : [listProps.selectedItems]
-          : [];
-      this.setProps({
-        classes: { "nom-list-item": true },
-        selected: selected === true || selectedItems.indexOf(this.key) !== -1,
-        selectable: {
-          byClick: listProps.itemSelectable.byClick,
-          canRevert: listProps.itemSelectable.multiple === true,
-        },
-        _shouldHandleClick: function () {
-          if (listProps.disabled === true) {
-            return false;
-          }
-        },
-        onSelect: () => {
-          if (listProps.itemSelectable.multiple === false) {
-            listProps.selectedItems = this.key;
-            if (this.list.selectedItem !== null) {
-              this.list.selectedItem.unselect({
-                triggerSelectionChange: false,
-              });
-            }
-            this.list.selectedItem = this;
-          }
-          this._callHandler(onSelect);
-        },
-        onUnselect: () => {
-          if (listProps.selectedItems === this.key) {
-            listProps.selectedItems = null;
-          }
-          if (this.list.selectedItem === this) {
-            this.list.selectedItem = null;
-          }
-          this._callHandler(onUnselect);
-        },
-        onSelectionChange: () => {
-          this.list._onItemSelectionChange();
-        },
-      });
-    },
-    _rendered: function () {
-      const listProps = this.list.props;
-      if (listProps.itemSelectable.multiple === false) {
-        if (this.props.selected) {
-          this.list.selectedItem = this;
-          if (listProps.itemSelectable.multiple.scrollIntoValue) {
-            this.list.scrollTo(this.list.selectedItem);
-          }
-        }
-      }
-    },
-    _remove: function () {
-      delete this.list.itemRefs[this.key];
-    },
-  };
-  class ListItemWrapper extends Component {
-    constructor(props, ...mixins) {
-      const defaults = { tag: "li", item: {} };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this.list = this.parent.list || this.parent.parent.parent.parent.list;
-    }
-    _config() {
-      this._addPropStyle("span");
-      const { item, span } = this.props;
-      const { itemDefaults } = this.list.props;
-      if (this.props.disabled) {
-        item.disabled = true;
-      }
-      if (!span && item.span) {
-        this.setProps({ span: item.span });
-      }
-      this.setProps({
-        selectable: false,
-        children: item,
-        childDefaults: n$1(null, itemDefaults, null, [ListItemMixin]),
-      });
-    }
-  }
-  Component.register(ListItemWrapper);
-  var ListItemContentMixin = {
-    _created: function () {
-      this.parent.content = this;
-    },
-    _config: function () {
-      const { onSelect, onUnselect, selected } = this.props;
-      const listProps = this.parent.parent.parent.props;
-      const selectedItems =
-        listProps.selectedItems !== null &&
-        listProps.selectedItems !== undefined
-          ? Array.isArray(listProps.selectedItems)
-            ? listProps.selectedItems
-            : [listProps.selectedItems]
-          : [];
-      this.setProps({
-        classes: { "nom-list-item-content": true },
-        selected: selected === true || selectedItems.indexOf(this.key) !== -1,
-        selectable: {
-          byClick: listProps.itemSelectable.byClick,
-          canRevert: listProps.itemSelectable.multiple === true,
-        },
-        _shouldHandleClick: function () {
-          if (listProps.disabled === true) {
-            return false;
-          }
-        },
-        onSelect: () => {
-          const list = this.parent.parent.parent;
-          if (listProps.itemSelectable.multiple === false) {
-            listProps.selectedItems = this.key;
-            if (list.selectedItem !== null) {
-              list.selectedItem.unselect({ triggerSelectionChange: false });
-            }
-            list.selectedItem = this;
-          }
-          this._callHandler(onSelect);
-        },
-        onUnselect: () => {
-          const list = this.parent.parent.parent;
-          if (listProps.selectedItems === this.key) {
-            listProps.selectedItems = null;
-          }
-          if (list.selectedItem === this) {
-            list.selectedItem = null;
-          }
-          this._callHandler(onUnselect);
-        },
-        onSelectionChange: () => {
-          const list = this.parent.parent.parent;
-          list._onItemSelectionChange();
-        },
-      });
-    },
-    _rendered: function () {
-      const list = this.parent.parent.parent;
-      const listProps = list.props;
-      if (listProps.itemSelectable.multiple === false) {
-        if (this.props.selected) {
-          list.selectedItem = this;
-          if (listProps.itemSelectable.multiple.scrollIntoValue) {
-            list.scrollTo(list.selectedItem);
-          }
-        }
-      }
-    },
-  };
-  class ListItem extends Component {
-    constructor(props, ...mixins) {
-      const defaults = { tag: "li", data: null };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this.list = this.parent.list;
-      const { dataFields = { key: "key" } } = this.list.props;
-      const { data } = this.props;
-      Object.keys(dataFields).forEach((dataField) => {
-        this.props[dataField] = data[dataFields[dataField]];
-      });
-      this._setKey();
-      this.list.itemRefs[this.key] = this;
-    }
-    _config() {
-      const {
-        itemRender = ({ itemData }) => {
-          return { children: itemData };
-        },
-      } = this.list.props;
-      const { data } = this.props;
-      this.setProps({
-        selectable: { byClick: false },
-        children: itemRender({ itemData: data, list: this.list, item: this }),
-        childDefaults: n$1(null, null, null, [ListItemContentMixin]),
-      });
-    }
-    _remove() {
-      delete this.list.itemRefs[this.key];
-    }
-    select() {
-      this.content.select();
-    }
-    unselect() {
-      this.content.unselect();
-    }
-  }
-  Component.register(ListItem);
-  class ListContent extends Component {
-    constructor(props, ...mixins) {
-      const defaults = { tag: "ul" };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this.list = this.parent;
-      this.list.content = this;
-    }
-    _config() {
-      this._addPropStyle("gutter", "line", "align", "justify", "cols");
-      const {
-        items,
-        wrappers,
-        wrapperDefaults,
-        virtual,
-        data,
-      } = this.list.props;
-      const children = [];
-      if (Array.isArray(data) && data.length > 0) {
-        for (let i = 0; i < data.length; i++) {
-          const itemData = data[i];
-          children.push({ component: ListItem, data: itemData });
-        }
-      } else if (Array.isArray(wrappers) && wrappers.length > 0) {
-        for (let i = 0; i < wrappers.length; i++) {
-          let wrapper = wrappers[i];
-          wrapper = Component.extendProps(
-            {},
-            { component: ListItemWrapper },
-            wrapperDefaults,
-            wrapper
-          );
-          children.push(wrapper);
-        }
-      } else if (Array.isArray(items) && items.length > 0) {
-        for (let i = 0; i < items.length; i++) {
-          if (
-            this.list.props.disabledItems.length &&
-            this.list.props.disabledItems.includes(items[i].key)
-          ) {
-            children.push({
-              component: ListItemWrapper,
-              item: items[i],
-              disabled: true,
-            });
-          } else {
-            children.push({ component: ListItemWrapper, item: items[i] });
-          }
-        }
-      } // 开启虚拟列表功能
-      if (
-        (virtual === true || typeof virtual === "number") &&
-        children.length !== 0
-      ) {
-        this.list.virtual.listData = children;
-        this.setProps({
-          classes: { "nom-virtual-list-content": true },
-          children: this.list.virGetList(this.list.virVisibleData()),
-          childDefaults: wrapperDefaults,
-        }); // if (this.list.virtual.selectedItems) {
-        //   clearTimeout(this.list.virtual.selectedTimer)
-        //   this.list.virtual.selectedTimer = setTimeout(() => {
-        //     const arry = this.list.virtual.selectedItems.map((item) => {
-        //       return item.value
-        //     })
-        //     console.log(arry)
-        //     this.list.selectItems(arry, {
-        //       triggerSelect: false,
-        //       triggerSelectionChange: false,
-        //     })
-        //   }, 500)
-        // }
-      } else {
-        this.setProps({ children: children, childDefaults: wrapperDefaults });
-      }
-    }
-    getItem(param) {
-      let retItem = null;
-      if (param instanceof Component) {
-        return param;
-      }
-      if (isFunction(param)) {
-        for (const key in this.itemRefs) {
-          if (this.itemRefs.hasOwnProperty(key)) {
-            if (param.call(this.itemRefs[key]) === true) {
-              retItem = this.itemRefs[key];
-              break;
-            }
-          }
-        }
-      } else {
-        return this.itemRefs[param];
-      }
-      return retItem;
-    }
-    selectItem(param, selectOption) {
-      const item = this.getItem(param);
-      item && item.select(selectOption);
-    }
-    selectItems(param, selectOption) {
-      selectOption = extend$1(
-        { triggerSelect: true, triggerSelectionChange: true },
-        selectOption
-      );
-      let itemSelectionChanged = false;
-      param = Array.isArray(param) ? param : [param];
-      for (let i = 0; i < param.length; i++) {
-        itemSelectionChanged =
-          this.selectItem(param[i], {
-            triggerSelect: selectOption.triggerSelect,
-            triggerSelectionChange: false,
-          }) || itemSelectionChanged;
-      }
-      if (
-        selectOption.triggerSelectionChange === true &&
-        itemSelectionChanged
-      ) {
-        this._onItemSelectionChange();
-      }
-      return itemSelectionChanged;
-    }
-    selectAllItems(selectOption) {
-      return this.selectItems(this.getChildren(), selectOption);
-    }
-    unselectItem(param, unselectOption) {
-      unselectOption = extend$1(
-        { triggerUnselect: true, triggerSelectionChange: true },
-        unselectOption
-      );
-      const item = this.getItem(param);
-      item && item.unselect(unselectOption);
-    }
-    unselectItems(param, unselectOption) {
-      unselectOption = extend$1(
-        { triggerUnselect: true, triggerSelectionChange: true },
-        unselectOption
-      );
-      let itemSelectionChanged = false;
-      if (Array.isArray(param)) {
-        for (let i = 0; i < param.length; i++) {
-          itemSelectionChanged =
-            this.unselectItem(param[i], {
-              triggerUnselect: unselectOption.triggerUnselect,
-              triggerSelectionChange: false,
-            }) || itemSelectionChanged;
-        }
-      }
-      if (unselectOption.triggerSelectionChange && itemSelectionChanged) {
-        this._onItemSelectionChange();
-      }
-      return itemSelectionChanged;
-    }
-    unselectAllItems(unselectOption) {
-      return this.unselectItems(this.getAllItems(), unselectOption);
-    }
-    getAllItems() {
-      const items = [];
-      const children = this.getChildren();
-      for (let i = 0; i < children.length; i++) {
-        const itemWrapper = children[i];
-        items.push(itemWrapper.item);
-      }
-      return items;
-    }
-    _onItemSelectionChange() {
-      this._callHandler(this.props.onItemSelectionChange);
-    }
-    getSelectedItem() {
-      return this.selectedItem;
-    }
-    getSelectedItems() {
-      const selectedItems = [];
-      const children = this.getChildren();
-      for (let i = 0; i < children.length; i++) {
-        const { item } = children[i];
-        if (item.props.selected) {
-          selectedItems.push(item);
-        }
-      }
-      return selectedItems;
-    }
-    appendItem(itemProps) {
-      itemProps = Component.extendProps({}, this.props.itemDefaults, itemProps);
-      const itemWrapperProps = { component: ListItemWrapper, item: itemProps };
-      this.appendChild(itemWrapperProps);
-    }
-    appendDataItem(itemData) {
-      const itemProps = { component: ListItem, data: itemData };
-      this.appendChild(itemProps);
-    }
-    prependDataItem(itemData) {
-      const itemProps = { component: ListItem, data: itemData };
-      this.prependChild(itemProps);
-    }
-    removeItem(param) {
-      const item = this.getItem(param);
-      if (item !== null) {
-        item.wrapper.remove();
-      }
-    }
-    removeItems(param) {
-      if (Array.isArray(param)) {
-        for (let i = 0; i < param.length; i++) {
-          this.removeItem(param[i]);
-        }
-      }
-    }
-  }
-  Component.register(ListContent);
-  class List extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {
-        tag: "div",
-        items: [],
-        itemDefaults: {},
-        selectedItems: null,
-        itemSelectable: {
-          multiple: false,
-          byClick: false,
-          scrollIntoView: true,
-        },
-        disabledItems: [],
-        virtual: false,
-        virtualSupport: {
-          height: typeof props.virtual === "number" ? props.virtual : 300, // 容器高度
-          size: 30, // 每个列表项高度预估值
-          bufferScale: 1, // 缓冲区比例
-        },
-        showEmpty: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _config() {
-      const { virtual } = this.props;
-      if (
-        this.firstRender &&
-        (virtual === true || typeof virtual === "number")
-      ) {
-        this.virCreated();
-      }
-      this.itemRefs = {};
-      this.selectedItem = null;
-      this._addPropStyle("gutter", "line", "align", "justify", "cols");
-      let empty = null;
-      if (isPlainObject(this.props.showEmpty)) {
-        empty = Object.assign({ component: "Empty" }, this.props.showEmpty);
-      } else {
-        empty = { component: "Empty" };
-      }
-      const children =
-        !this.props.items.length && this.props.showEmpty
-          ? empty
-          : { component: ListContent };
-      if (virtual === true || typeof virtual === "number") {
-        this.virChildren(children);
-      } else {
-        this.setProps({ children: children });
-      }
-    }
-    getItem(param) {
-      let retItem = null;
-      if (param instanceof Component) {
-        return param;
-      }
-      if (isFunction(param)) {
-        for (const key in this.itemRefs) {
-          if (this.itemRefs.hasOwnProperty(key)) {
-            if (param.call(this.itemRefs[key]) === true) {
-              retItem = this.itemRefs[key];
-              break;
-            }
-          }
-        }
-      } else {
-        return this.itemRefs[param] || null;
-      }
-      return retItem;
-    }
-    selectItem(param, selectOption) {
-      const item = this.getItem(param);
-      item && item.select(selectOption);
-      if (this.props.itemSelectable.scrollIntoView) {
-        this.scrollTo(item);
-      }
-    }
-    selectItems(param, selectOption) {
-      selectOption = extend$1(
-        { triggerSelect: true, triggerSelectionChange: true },
-        selectOption
-      );
-      let itemSelectionChanged = false;
-      param = Array.isArray(param) ? param : [param];
-      for (let i = 0; i < param.length; i++) {
-        itemSelectionChanged =
-          this.selectItem(param[i], {
-            triggerSelect: selectOption.triggerSelect,
-            triggerSelectionChange: false,
-          }) || itemSelectionChanged;
-      }
-      if (
-        selectOption.triggerSelectionChange === true &&
-        itemSelectionChanged
-      ) {
-        this._onItemSelectionChange();
-      }
-      return itemSelectionChanged;
-    }
-    selectAllItems(selectOption) {
-      return this.selectItems(this.content.getChildren(), selectOption);
-    }
-    unselectItem(param, unselectOption) {
-      unselectOption = extend$1(
-        { triggerUnselect: true, triggerSelectionChange: true },
-        unselectOption
-      );
-      const item = this.getItem(param);
-      item && item.unselect(unselectOption);
-    }
-    unselectItems(param, unselectOption) {
-      unselectOption = extend$1(
-        { triggerUnselect: true, triggerSelectionChange: true },
-        unselectOption
-      );
-      let itemSelectionChanged = false;
-      if (Array.isArray(param)) {
-        for (let i = 0; i < param.length; i++) {
-          itemSelectionChanged =
-            this.unselectItem(param[i], {
-              triggerUnselect: unselectOption.triggerUnselect,
-              triggerSelectionChange: false,
-            }) || itemSelectionChanged;
-        }
-      }
-      if (unselectOption.triggerSelectionChange && itemSelectionChanged) {
-        this._onItemSelectionChange();
-      }
-      return itemSelectionChanged;
-    }
-    unselectAllItems(unselectOption) {
-      return this.unselectItems(this.getAllItems(), unselectOption);
-    }
-    getAllItems() {
-      const items = [];
-      const children = this.content.getChildren();
-      for (let i = 0; i < children.length; i++) {
-        const itemWrapper = children[i];
-        items.push(itemWrapper.item);
-      }
-      return items;
-    }
-    _onItemSelectionChange() {
-      this._callHandler(this.props.onItemSelectionChange);
-    }
-    getSelectedItem() {
-      return this.selectedItem;
-    }
-    getSelectedItems() {
-      const selectedItems = [];
-      const children = this.content.getChildren();
-      for (let i = 0; i < children.length; i++) {
-        const { item } = children[i];
-        if (item.props.selected) {
-          selectedItems.push(item);
-        }
-      }
-      return selectedItems;
-    }
-    getUnselectedItems() {
-      const UnselectedItems = [];
-      const children = this.content.getChildren();
-      for (let i = 0; i < children.length; i++) {
-        const { item } = children[i];
-        if (!item.props.selected) {
-          UnselectedItems.push(item);
-        }
-      }
-      return UnselectedItems;
-    }
-    appendItem(itemProps) {
-      this.content.appendItem(itemProps);
-    }
-    appendDataItem(itemData) {
-      this.content.appendDataItem(itemData);
-    }
-    prependDataItem(itemData) {
-      this.content.prependDataItem(itemData);
-    }
-    removeItem(param) {
-      const item = this.getItem(param);
-      if (item !== null) {
-        item.wrapper.remove();
-      }
-    }
-    removeItems(param) {
-      if (Array.isArray(param)) {
-        for (let i = 0; i < param.length; i++) {
-          this.removeItem(param[i]);
-        }
-      }
-    }
-    hideItem(param) {
-      const item = this.getItem(param);
-      if (item !== null) {
-        item.wrapper.hide();
-      }
-    }
-    showItem(param) {
-      const item = this.getItem(param);
-      if (item !== null) {
-        item.wrapper.show();
-      }
-    }
-    scrollTo(param) {
-      const item = this.getItem(param);
-      if (item) {
-        const itemElement = item.wrapper ? item.wrapper.element : item.element;
-        scrollIntoView(itemElement, {
-          behavior: "smooth",
-          scrollMode: "if-needed",
-        });
-      }
-    }
-    scrollToSelected() {
-      if (this.selectedItem) {
-        this.scrollTo(this.selectedItem);
-      }
-    }
-    /* 虚拟列表支持函数-start */ virCreated() {
-      const { items, virtualSupport } = this.props;
-      this.virtual = {
-        virtualTimer: null,
-        start: 0,
-        end: 0,
-        positions: [
-          // {
-          //   top:0,
-          //   bottom:100,
-          //   height:100,
-          // }
-        ],
-        selectedItems: [], // 下拉选择中选中数据
-        itemsRefs: [], // 当前列表项arry
-        listData: items, // 所有列表数据
-        ListHeight: virtualSupport.height, // 可视区域高度
-        estimatedSize: virtualSupport.size, // 预估高度
-        bufferScale: virtualSupport.bufferScale, // 缓冲区比例
-        toolDivRef: null,
-      };
-      this.virInitPositions();
-    }
-    virChildren(childObj) {
-      const { positions, ListHeight } = this.virtual;
-      const toolDivHeight = positions[positions.length - 1].bottom;
-      this.setProps({
-        classes: { "nom-virtual-list-container": true },
-        attrs: {
-          style: { height: `${ListHeight}px` },
-          onscroll: () => {
-            this.virScrollEvent();
-          },
-        },
-        children: [
-          {
-            ref: (c) => {
-              this.virtual.toolDivRef = c;
-            },
-            classes: { "nom-virtual-list-tooldiv": true },
-            attrs: { style: { height: `${toolDivHeight}px` } },
-            children: "",
-          },
-          childObj,
-        ],
-      });
-    }
-    virGetList(arry) {
-      this.virtual.itemsRefs = [];
-      const _that = this;
-      return arry.map(function (obj) {
-        return Component.extendProps(obj, {
-          ref: (c) => {
-            if (c) _that.virtual.itemsRefs.push(c);
-          },
-          classes: { "nom-virtual-list-item": true },
-          attrs: { "data-key": obj._index },
-        });
-      });
-    } // 需要在 渲染完成后，获取列表每项的位置信息并缓存
-    virUpdated() {
-      if (!this.virtual.itemsRefs || !this.virtual.itemsRefs.length) {
-        return;
-      }
-      const { positions, toolDivRef } = this.virtual;
-      this.virUpdateItemsSize();
-      const toolDivHeight = positions[positions.length - 1].bottom;
-      toolDivRef.element.style.height = `${toolDivHeight}px`;
-      this.content.update({
-        attrs: {
-          style: {
-            transform: `translate3d(0,${this.virSetStartOffset()}px,0)`,
-          },
-        },
-      });
-    } // 初始化位置信息
-    virInitPositions() {
-      const { estimatedSize, listData } = this.virtual;
-      this.virtual.positions = listData.map((d, index) => ({
-        index,
-        height: estimatedSize,
-        top: index * estimatedSize,
-        bottom: (index + 1) * estimatedSize,
-      }));
-    } // 获取列表起始索引
-    virGetStartIndex(scrollTop = 0) {
-      return this.virBinarySearch(this.virtual.positions, scrollTop);
-    } // 二分法
-    virBinarySearch(list, value) {
-      let start = 0;
-      let end = list.length - 1;
-      let tempIndex = null;
-      while (start <= end) {
-        const midIndex = parseInt((start + end) / 2, 10);
-        const midValue = list[midIndex].bottom;
-        if (midValue === value) {
-          return midIndex + 1;
-        }
-        if (midValue < value) {
-          start = midIndex + 1;
-        } else if (midValue > value) {
-          if (tempIndex === null || tempIndex > midIndex) {
-            tempIndex = midIndex;
-          }
-          end -= 1;
-        }
-      }
-      return tempIndex;
-    } // 获取列表项的当前尺寸
-    virUpdateItemsSize() {
-      const { itemsRefs, positions } = this.virtual;
-      itemsRefs.forEach((node) => {
-        if (!node.rendered) return;
-        const rect = node.element.getBoundingClientRect();
-        const height = rect.height;
-        const index = +node.element.dataset.key.slice(1);
-        const oldHeight = positions[index].height;
-        const dValue = oldHeight - height; // 存在差值
-        if (dValue) {
-          positions[index].bottom -= dValue;
-          positions[index].height = height;
-          for (let k = index + 1; k < positions.length; k++) {
-            positions[k].top = positions[k - 1].bottom;
-            positions[k].bottom -= dValue;
-          }
-        }
-      });
-    } // 设置当前的偏移量
-    virSetStartOffset() {
-      const { start, positions } = this.virtual;
-      let startOffset;
-      if (start >= 1 && positions[start]) {
-        const size =
-          positions[start].top -
-          (positions[start - this.virAboveCount()]
-            ? positions[start - this.virAboveCount()].top
-            : 0);
-        startOffset = positions[start - 1].bottom - size;
-      } else {
-        startOffset = 0;
-      }
-      return startOffset;
-    } // 滚动事件
-    virScrollEvent() {
-      // 当前滚动位置
-      const scrollTop = this.element.scrollTop; // if (!this.virGetStartIndex(scrollTop)) return
-      this.virtual.virtualTimer && clearTimeout(this.virtual.virtualTimer);
-      this.virtual.virtualTimer = setTimeout(() => {
-        // 此时的开始索引
-        this.virtual.start = this.virGetStartIndex(scrollTop); // 此时的结束索引
-        this.virtual.end = this.virtual.start + this.virVisibleCount(); // 更新列表
-        this.virUpdated();
-      }, 100);
-    }
-    virListData() {
-      return this.virtual.listData.map((obj, index) => {
-        return Object.assign({}, obj, { _index: `_${index}` });
-      });
-    } // 可显示的列表项数
-    virVisibleCount() {
-      return Math.ceil(this.virtual.ListHeight / this.virtual.estimatedSize);
-    } // 可视区上方渲染条数
-    virAboveCount() {
-      return Math.min(
-        this.virtual.start,
-        this.virtual.bufferScale * this.virVisibleCount()
-      );
-    } // 可视区下方渲染条数
-    virBelowCount() {
-      return Math.min(
-        this.virtual.listData.length - this.virtual.end,
-        this.virtual.bufferScale * this.virVisibleCount()
-      );
-    } // 获取真实显示列表数据
-    virVisibleData() {
-      const start = this.virtual.start - this.virAboveCount();
-      const end = this.virtual.end + this.virBelowCount();
-      return this.virListData().slice(start, end);
-    } /* 虚拟列表支持函数-end */
-  }
-  Component.register(List);
-  var AutoCompleteListItemMixin = {
-    _config: function () {
-      const { onSelect, onUnselect } = this.props;
-      this.setProps({
-        selectable: {
-          byClick: true,
-          canRevert: this.list.autoCompleteControl.props.multiple === false,
-        },
-        onSelect: () => {
-          const { autoCompleteControl } = this.list; // const selectProps = selectControl.props
-          // const autoCompleteProps = autoCompleteControl.props
-          const autoCompleteOption = {
-            value: this.props.value, // text: this.props.text,
-            option: this.props,
-          };
-          autoCompleteControl.input.update(autoCompleteOption);
-          autoCompleteControl.popup.hide(); // if (selectProps.multiple === false) {
-          //   selectControl.selectedSingle.update(selectedOption)
-          //   selectControl.popup.hide()
-          // } else {
-          //   selectControl.selectedMultiple.appendItem(selectedOption)
-          // }
-          this._callHandler(onSelect);
-        },
-        onUnselect: () => {
-          // const { selectControl } = this.list
-          // const selectProps = selectControl.props
-          // if (selectProps.multiple === true) {
-          //   selectControl.selectedMultiple.removeItem(this.key)
-          // }
-          this._callHandler(onUnselect);
-        },
-      });
-    },
-  };
-  class AutoCompleteList extends List {
-    constructor(props, ...mixins) {
-      const defaults = {
-        gutter: "x-md",
-        cols: 1,
-        optionDefaults: {
-          key() {
-            return this.props.value;
-          },
-          _config: function () {
-            this.setProps({ children: this.props.value });
-          },
-        },
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      super._created();
-      this.autoCompleteControl = this.parent.parent.parent.autoCompleteControl;
-      this.autoCompleteControl.optionList = this;
-    }
-    _config() {
-      const { optionDefaults, options } = this.props;
-      const value = this.autoCompleteControl.props.value
-        ? this.autoCompleteControl.props.value
-        : "";
-      this.setProps({
-        items: options || [],
-        itemDefaults: n$1(null, optionDefaults, null, [
-          AutoCompleteListItemMixin,
-        ]),
-        itemSelectable: { multiple: false, byClick: true },
-        selectedItems: value,
-        onItemSelectionChange: () => {
-          this.autoCompleteControl._onValueChange();
-        },
-      });
-      super._config();
-    }
-  }
-  class AutoCompletePopup extends Popup {
-    constructor(props, ...mixins) {
-      const defaults = { autoRender: false };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      super._created();
-      this.autoCompleteControl = this.opener.field;
-    }
-    _config() {
-      const { options } = this.props;
-      const { filterOption, value } = this.autoCompleteControl.props;
-      const opts = isFunction(filterOption)
-        ? filterOption(value || "", options)
-        : options;
-      if (opts && opts.length) {
-        this.setProps({
-          attrs: {
-            style: {
-              width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-            },
-          },
-          children: {
-            component: Layout,
-            body: { children: { component: AutoCompleteList, options: opts } },
-          },
-        });
-      } else {
-        this.setProps({
-          attrs: {
-            style: {
-              width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-            },
-          },
-          children: {
-            component: Layout,
-            body: {
-              // styles: {
-              //   padding: 2,
-              // },
-              children: { component: Empty },
-            },
-          },
-        });
-      }
-      super._config();
-    }
-  }
-  class AutoComplete extends Textbox {
-    constructor(props, ...mixins) {
-      const defaults = {
-        options: [],
-        debounce: true,
-        interval: 300,
-        filterOption: (value, options) =>
-          options.filter((o) => o.value.includes(value)),
-        allowClear: true,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-      this._init.bind(this);
-      this._handleSearch.bind(this);
-      this._doSearch.bind(this);
-    }
-    _created() {
-      super._created();
-      this.placeholder = this.props.placeholder;
-      this.capsLock = false;
-      this.searchMode = false;
-      this.clearContent = true;
-    }
-    _rendered() {
-      this.input && this._init();
-      const { options } = this.props;
-      this.popup = new AutoCompletePopup({ trigger: this.control, options });
-    }
-    _remove() {
-      this.timer && clearTimeout(this.timer);
-    }
-    _config() {
-      const autoCompleteRef = this;
-      const { allowClear, options } = this.props;
-      if (allowClear) {
-        this.setProps({
-          rightIcon: {
-            component: "Icon",
-            type: "close",
-            classes: { "nom-auto-complete-clear": true },
-            onClick: ({ event }) => {
-              event.stopPropagation();
-              autoCompleteRef.clear();
-              autoCompleteRef.popup && autoCompleteRef.popup.hide();
-            },
-          },
-        });
-      }
-      if (options && this.popup) {
-        this.popup.update({ options, hidden: false });
-      }
-      super._config();
-    }
-    _init() {
-      const autoComplete = this;
-      this.input.element.addEventListener("focus", function () {
-        autoComplete.currentValue = this.value;
-        if (autoComplete.clearContent) {
-          this.placeholder = this.value;
-          this.value = "";
-        } else {
-          autoComplete.clearContent = true;
-        }
-        autoComplete.popup &&
-          autoComplete.popup.update({ options: autoComplete.props.options });
-      });
-      this.input.element.addEventListener("input", function () {
-        if (!autoComplete.capsLock) {
-          autoComplete._handleSearch(this.value);
-        }
-      });
-      this.input.element.addEventListener("blur", function () {
-        // 没有输入则需重置,此动作只能在blur事件而非change事件中进行
-        if (!autoComplete.searchMode) {
-          // 重置
-          this.value = autoComplete.currentValue;
-        }
-        this.placeholder = autoComplete.placeholder || "";
-        autoComplete.searchMode = false;
-      });
-      this.input.element.addEventListener("compositionstart", function () {
-        autoComplete.capsLock = true;
-      });
-      this.input.element.addEventListener("compositionend", function () {
-        autoComplete.capsLock = false;
-        autoComplete._handleSearch(this.value);
-      });
-    }
-    _getValue() {
-      return super._getValue();
-    }
-    _setValue(value, options) {
-      super._setValue(value, options);
-    }
-    blur() {
-      super.blur();
-    }
-    focus() {
-      this.clearContent = false;
-      super.focus();
-    }
-    _isFocus() {
-      if (!this.input) return false;
-      return document.activeElement === this.input.element;
-    }
-    _handleSearch(txt) {
-      const autoComplete = this;
-      const { debounce, interval } = this.props; // 防抖
-      this.timer && clearTimeout(this.timer);
-      if (debounce) {
-        this.timer = setTimeout(function () {
-          autoComplete._doSearch(txt);
-        }, interval);
-      } else {
-        autoComplete._doSearch(txt);
-      }
-    }
-    _doSearch(txt) {
-      this.searchMode = true;
-      const { onSearch, filterOption, options } = this.props;
-      isFunction(filterOption) &&
-        this.popup.update({ options: filterOption(txt, options) });
-      isFunction(onSearch) && onSearch({ text: txt, sender: this });
-    }
-  }
-  Component.register(AutoComplete);
-  class Avatar extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {
-        tag: "span",
-        size: "default",
-        alt: "图片",
-        gap: 4, // 字符类型距离左右两侧边界单位像素
-        text: null, // 文本
-        icon: null, // 图标
-        src: null, // 图片地址
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _config() {
-      const { text, icon, src, alt } = this.props;
-      this._propStyleClasses = ["size"];
-      if (src) {
-        this.setProps({
-          classes: { "avatar-image": true },
-          children: [{ tag: "img", attrs: { src, alt } }],
-        });
-      } else if (icon) {
-        this.setProps({ children: [Component.normalizeIconProps(icon)] });
-      } else {
-        this.setProps({
-          children: [
-            text && {
-              tag: "span",
-              classes: { "nom-avatar-string": true },
-              children: text,
-            },
-          ],
-        });
-      }
-    }
-    _setScale() {
-      const { gap, src, icon } = this.props;
-      if (src || icon) {
-        return;
-      }
-      const childrenWidth = this.element.lastChild.offsetWidth;
-      const nodeWidth = this.element.offsetWidth;
-      if (childrenWidth !== 0 && nodeWidth !== 0) {
-        if (gap * 2 < nodeWidth) {
-          const scale =
-            nodeWidth - gap * 2 < childrenWidth
-              ? (nodeWidth - gap * 2) / childrenWidth
-              : 1;
-          const transformString = `scale(${scale}) translateX(-50%)`;
-          const child = this.children[this.children.length - 1];
-          child.update({
-            attrs: {
-              style: {
-                "-ms-transform": transformString,
-                "-webkit-transform": transformString,
-                transform: transformString,
-              },
-            },
-          });
-        }
-      }
-    }
-    _rendered() {
-      this._setScale();
-    }
-  }
-  Component.register(Avatar);
-  class AvatarGroup extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {
-        tag: "div",
-        size: "default", // 通过设置 mode 可以改变时间轴和内容的相对位置 left | alternate | right
-        maxCount: null, // 显示的最大头像个数
-        maxPopoverPlacement: "top", // 多余头像气泡弹出位置
-        items: [], // 子元素项列表
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _config() {
-      const {
-        size,
-        items,
-        maxCount,
-        maxPopoverPlacement,
-        itemDefaults,
-      } = this.props; // 赋size值
-      const avatars = items.map((item) => {
-        return Object.assign({ component: Avatar, size }, itemDefaults, item);
-      });
-      const numOfChildren = avatars.length;
-      if (maxCount && maxCount < numOfChildren) {
-        const childrenShow = avatars.slice(0, maxCount);
-        const childrenHidden = avatars.slice(maxCount, numOfChildren);
-        childrenShow.push(
-          Object.assign(
-            { component: Avatar, text: `+${numOfChildren - maxCount}`, size },
-            itemDefaults,
-            {
-              popup: {
-                triggerAction: "hover",
-                align: maxPopoverPlacement,
-                children: childrenHidden,
-                attrs: { style: { padding: "8px 12px" } },
-              },
-            }
-          )
-        );
-        this.setProps({ children: childrenShow });
-      } else {
-        this.setProps({ children: avatars });
-      }
-    }
-  }
-  Component.register(AvatarGroup);
-  /* eslint-disable no-return-assign */ /* eslint-disable no-restricted-properties */ /*
-   * Tween.js
-   * t: current time（当前时间）
-   * b: beginning value（初始值）
-   * c: change in value（变化量）
-   * d: duration（持续时间）
-   */ const Tween = {
-    Linear: function (t, b, c, d) {
-      return (c * t) / d + b;
-    },
-    Quad: {
-      easeIn: function (t, b, c, d) {
-        return c * (t /= d) * t + b;
-      },
-      easeOut: function (t, b, c, d) {
-        return -c * (t /= d) * (t - 2) + b;
-      },
-      easeInOut: function (t, b, c, d) {
-        if ((t /= d / 2) < 1) return (c / 2) * t * t + b;
-        return (-c / 2) * (--t * (t - 2) - 1) + b;
-      },
-    },
-    Cubic: {
-      easeIn: function (t, b, c, d) {
-        return c * (t /= d) * t * t + b;
-      },
-      easeOut: function (t, b, c, d) {
-        return c * ((t = t / d - 1) * t * t + 1) + b;
-      },
-      easeInOut: function (t, b, c, d) {
-        if ((t /= d / 2) < 1) return (c / 2) * t * t * t + b;
-        return (c / 2) * ((t -= 2) * t * t + 2) + b;
-      },
-    },
-    Quart: {
-      easeIn: function (t, b, c, d) {
-        return c * (t /= d) * t * t * t + b;
-      },
-      easeOut: function (t, b, c, d) {
-        return -c * ((t = t / d - 1) * t * t * t - 1) + b;
-      },
-      easeInOut: function (t, b, c, d) {
-        if ((t /= d / 2) < 1) return (c / 2) * t * t * t * t + b;
-        return (-c / 2) * ((t -= 2) * t * t * t - 2) + b;
-      },
-    },
-    Quint: {
-      easeIn: function (t, b, c, d) {
-        return c * (t /= d) * t * t * t * t + b;
-      },
-      easeOut: function (t, b, c, d) {
-        return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
-      },
-      easeInOut: function (t, b, c, d) {
-        if ((t /= d / 2) < 1) return (c / 2) * t * t * t * t * t + b;
-        return (c / 2) * ((t -= 2) * t * t * t * t + 2) + b;
-      },
-    },
-    Sine: {
-      easeIn: function (t, b, c, d) {
-        return -c * Math.cos((t / d) * (Math.PI / 2)) + c + b;
-      },
-      easeOut: function (t, b, c, d) {
-        return c * Math.sin((t / d) * (Math.PI / 2)) + b;
-      },
-      easeInOut: function (t, b, c, d) {
-        return (-c / 2) * (Math.cos((Math.PI * t) / d) - 1) + b;
-      },
-    },
-    Expo: {
-      easeIn: function (t, b, c, d) {
-        return t === 0 ? b : c * Math.pow(2, 10 * (t / d - 1)) + b;
-      },
-      easeOut: function (t, b, c, d) {
-        return t === d ? b + c : c * (-Math.pow(2, (-10 * t) / d) + 1) + b;
-      },
-      easeInOut: function (t, b, c, d) {
-        if (t === 0) return b;
-        if (t === d) return b + c;
-        if ((t /= d / 2) < 1) return (c / 2) * Math.pow(2, 10 * (t - 1)) + b;
-        return (c / 2) * (-Math.pow(2, -10 * --t) + 2) + b;
-      },
-    },
-    Circ: {
-      easeIn: function (t, b, c, d) {
-        return -c * (Math.sqrt(1 - (t /= d) * t) - 1) + b;
-      },
-      easeOut: function (t, b, c, d) {
-        return c * Math.sqrt(1 - (t = t / d - 1) * t) + b;
-      },
-      easeInOut: function (t, b, c, d) {
-        if ((t /= d / 2) < 1) return (-c / 2) * (Math.sqrt(1 - t * t) - 1) + b;
-        return (c / 2) * (Math.sqrt(1 - (t -= 2) * t) + 1) + b;
-      },
-    },
-    Elastic: {
-      easeIn: function (t, b, c, d, a, p) {
-        let s;
-        if (t === 0) return b;
-        if ((t /= d) === 1) return b + c;
-        if (typeof p === "undefined") p = d * 0.3;
-        if (!a || a < Math.abs(c)) {
-          s = p / 4;
-          a = c;
-        } else {
-          s = (p / (2 * Math.PI)) * Math.asin(c / a);
-        }
-        return (
-          -(
-            a *
-            Math.pow(2, 10 * (t -= 1)) *
-            Math.sin(((t * d - s) * (2 * Math.PI)) / p)
-          ) + b
-        );
-      },
-      easeOut: function (t, b, c, d, a, p) {
-        let s;
-        if (t === 0) return b;
-        if ((t /= d) === 1) return b + c;
-        if (typeof p === "undefined") p = d * 0.3;
-        if (!a || a < Math.abs(c)) {
-          a = c;
-          s = p / 4;
-        } else {
-          s = (p / (2 * Math.PI)) * Math.asin(c / a);
-        }
-        return (
-          a *
-            Math.pow(2, -10 * t) *
-            Math.sin(((t * d - s) * (2 * Math.PI)) / p) +
-          c +
-          b
-        );
-      },
-      easeInOut: function (t, b, c, d, a, p) {
-        let s;
-        if (t === 0) return b;
-        if ((t /= d / 2) === 2) return b + c;
-        if (typeof p === "undefined") p = d * (0.3 * 1.5);
-        if (!a || a < Math.abs(c)) {
-          a = c;
-          s = p / 4;
-        } else {
-          s = (p / (2 * Math.PI)) * Math.asin(c / a);
-        }
-        if (t < 1)
-          return (
-            -0.5 *
-              (a *
-                Math.pow(2, 10 * (t -= 1)) *
-                Math.sin(((t * d - s) * (2 * Math.PI)) / p)) +
-            b
-          );
-        return (
-          a *
-            Math.pow(2, -10 * (t -= 1)) *
-            Math.sin(((t * d - s) * (2 * Math.PI)) / p) *
-            0.5 +
-          c +
-          b
-        );
-      },
-    },
-    Back: {
-      easeIn: function (t, b, c, d, s) {
-        if (typeof s === "undefined") s = 1.70158;
-        return c * (t /= d) * t * ((s + 1) * t - s) + b;
-      },
-      easeOut: function (t, b, c, d, s) {
-        if (typeof s === "undefined") s = 1.70158;
-        return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
-      },
-      easeInOut: function (t, b, c, d, s) {
-        if (typeof s === "undefined") s = 1.70158;
-        if ((t /= d / 2) < 1)
-          return (c / 2) * (t * t * (((s *= 1.525) + 1) * t - s)) + b;
-        return (c / 2) * ((t -= 2) * t * (((s *= 1.525) + 1) * t + s) + 2) + b;
-      },
-    },
-    Bounce: {
-      easeIn: function (t, b, c, d) {
-        return c - Tween.Bounce.easeOut(d - t, 0, c, d) + b;
-      },
-      easeOut: function (t, b, c, d) {
-        if ((t /= d) < 1 / 2.75) {
-          return c * (7.5625 * t * t) + b;
-        }
-        if (t < 2 / 2.75) {
-          return c * (7.5625 * (t -= 1.5 / 2.75) * t + 0.75) + b;
-        }
-        if (t < 2.5 / 2.75) {
-          return c * (7.5625 * (t -= 2.25 / 2.75) * t + 0.9375) + b;
-        }
-        return c * (7.5625 * (t -= 2.625 / 2.75) * t + 0.984375) + b;
-      },
-      easeInOut: function (t, b, c, d) {
-        if (t < d / 2) {
-          return Tween.Bounce.easeIn(t * 2, 0, c, d) * 0.5 + b;
-        }
-        return Tween.Bounce.easeOut(t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b;
-      },
-    },
-  };
-  class BackTop extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {
-        duration: 100,
-        animations: "Linear",
-        target: "window",
-        height: 400,
-        right: 30,
-        bottom: 30,
-        text: "",
-        parent: "",
-        onClick: () => {},
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      const { parent, target } = this.props;
-      if (target === "window") {
-        this.parentNode = document.documentElement || document.body;
-        this.bindEle = window;
-      } else if (this.hasClass(parent.element, target)) {
-        this.parentNode = parent.element;
-        this.bindEle = this.parentNode;
-      } else {
-        this.parentNode = parent.element.getElementsByClassName(target)[0];
-        this.bindEle = this.parentNode;
-      }
-      const parentRemoveClone = parent._remove;
-      parent._remove = () => {
-        parentRemoveClone();
-        this.remove();
-      };
-      this.once = true;
-      this.onWindowScroll = () => {
-        this.backTopFun();
-      };
-      this.initRequestAnimationFrame();
-    }
-    _config() {
-      const { right, bottom } = this.props;
-      this.setProps({
-        children: {
-          ref: (c) => {
-            this.backTopRef = c;
-          },
-          classes: { "nom-back-top-container": true },
-          attrs: { style: { right: `${right}px`, bottom: `${bottom}px` } },
-          children: this.backTopButton(),
-          onClick: () => {
-            this.backTopEvent();
-          },
-        },
-      });
-    }
-    _rendered() {
-      this.bindEle.addEventListener("scroll", this.onWindowScroll);
-    }
-    _remove() {
-      this.bindEle.removeEventListener("scroll", this.onWindowScroll);
-    }
-    backTopFun() {
-      const { height } = this.props;
-      if (this.once === true) {
-        this.once = false;
-        this.iconRef.update();
-        if (this.bindEle === window) {
-          this.parentNode.appendChild(this.backTopRef.element);
-          this.backTopRef.element.style.position = "fixed";
-        } else {
-          this.parentNode.parentElement.style.position = "relative";
-          this.parentNode.parentElement.appendChild(this.backTopRef.element);
-        }
-      }
-      if (this.parentNode.scrollTop >= height) {
-        this.backTopRef.show();
-      } else {
-        this.backTopRef.hide();
-      }
-    }
-    hasClass(ele, className) {
-      const reg = new RegExp(`(^|\\s)${className}(\\s|$)`);
-      return reg.test(ele.className);
-    }
-    backTopButton() {
-      const { text } = this.props;
-      let obj;
-      if (text.length > 0) {
-        obj = {
-          ref: (c) => {
-            this.iconRef = c;
-          },
-          classes: { "nom-back-top-text": true },
-          autoRender: false,
-          children: text,
-        };
-      } else {
-        obj = {
-          ref: (c) => {
-            this.iconRef = c;
-          },
-          classes: { "nom-back-top-icons": true },
-          autoRender: false,
-          component: "Icon",
-          type: "up",
-        };
-      }
-      return obj;
-    }
-    initRequestAnimationFrame() {
-      let lastTime = 0;
-      const vendors = ["webkit", "moz"];
-      for (
-        let x = 0;
-        x < vendors.length && !window.requestAnimationFrame;
-        ++x
-      ) {
-        window.requestAnimationFrame =
-          window[`${vendors[x]}RequestAnimationFrame`];
-        window.cancelAnimationFrame =
-          window[`${vendors[x]}CancelAnimationFrame`] ||
-          window[`${vendors[x]}CancelRequestAnimationFrame`];
-      }
-      if (!window.requestAnimationFrame) {
-        window.requestAnimationFrame = function (callback) {
-          const currTime = new Date().getTime();
-          const timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
-          const id = window.setTimeout(function () {
-            callback(currTime + timeToCall);
-          }, timeToCall);
-          lastTime = currTime + timeToCall;
-          return id;
-        };
-      }
-      if (!window.cancelAnimationFrame) {
-        window.cancelAnimationFrame = function (id) {
-          clearTimeout(id);
-        };
-      }
-    }
-    backTopEvent() {
-      const { animations, duration } = this.props;
-      const element = this.parentNode;
-      let start = 0;
-      const begin = element.scrollTop;
-      const end = -element.scrollTop;
-      const during = Math.round((duration * 10) / 167);
-      const paramArry = animations.split(".");
-      const scrollAnimation = function () {
-        if (element.scrollTop === 0) return false;
-        let top; // 当前的运动位置
-        if (paramArry[1]) {
-          top = Tween[paramArry[0]][paramArry[1]](start, begin, end, during);
-        } else {
-          top = Tween[paramArry[0]](start, begin, end, during);
-        }
-        element.scrollTop = top; // 时间递增
-        start++; // 如果还没有运动到位，继续
-        if (start <= during && element.scrollTop !== 0) {
-          requestAnimationFrame(scrollAnimation);
-        }
-      };
-      if (element) scrollAnimation();
-    }
-  }
-  Component.mixin({
-    _rendered: function () {
-      if (this.props.backtop) {
-        this.backtop = new BackTop(
-          Component.extendProps({}, this.props.backtop, { parent: this })
-        );
-      }
-    },
-  });
-  Component.register(BackTop);
-  class Badge extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {
-        key: null,
-        tag: "span",
-        type: "round",
-        text: null,
-        icon: null,
-        number: null,
-        overflowCount: 99,
-        size: "xs",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _config() {
-      this._propStyleClasses = ["size", "color"];
-      const { icon, text, type, number, overflowCount } = this.props;
-      if (icon) {
-        this.setProps({ classes: { "p-with-icon": true } });
-      }
-      if (type === "round") {
-        this.setProps({ classes: { "u-shape-round": true } });
-      } else if (type === "dot") {
-        if (number > 0) {
-          this.setProps({ classes: { "p-with-number": true } });
-        }
-      }
-      this.setProps({
-        children: [
-          Component.normalizeIconProps(icon),
-          { tag: "span", children: text },
-          number && {
-            tag: "span",
-            children: number > overflowCount ? `${overflowCount}+` : number,
-          },
-        ],
-      });
-    }
-    _disable() {
-      this.element.setAttribute("disabled", "disabled");
-    }
-  }
-  Component.mixin({
-    _config: function () {
-      if (this.props.badge) {
-        this.setProps({ classes: { "s-with-badge": true } });
-      }
-    },
-    _rendered: function () {
-      if (this.props.badge) {
-        const badgeProps = { type: "dot" };
-        badgeProps.number = this.props.badge.number
-          ? this.props.badge.number
-          : null;
-        badgeProps.overflowCount = this.props.badge.overflowCount
-          ? this.props.badge.overflowCount
-          : 99;
-        badgeProps.styles = this.props.badge.styles
-          ? this.props.badge.styles
-          : { color: "danger" };
-        this.props.badge = badgeProps;
-        this.badge = new Badge(
-          Component.extendProps({ reference: this }, this.props.badge)
-        );
-      }
-    },
-  });
-  Component.register(Badge);
-  class BreadcrumbItem extends Component {
-    constructor(props, ...mixins) {
-      const defaults = { tag: "span", url: null };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _config() {
-      // const that = this
-      // const { icon, rightIcon, separator, url, text, overlay } = this.props
-      const { icon, rightIcon, separator, url, text } = this.props;
-      if (icon || rightIcon) {
-        this.setProps({ classes: { "p-with-icon": true } });
-        if (!text) {
-          this.setProps({ classes: { "p-only-icon": true } });
-        }
-      } // if (isNotEmptyArray(overlay)) {
-      //   this.setProps({
-      //     popup: {
-      //       triggerAction: 'hover',
-      //       aligin: 'left bottom',
-      //       children: {
-      //         component: BreadcrumbSub,
-      //         items: overlay,
-      //       },
-      //     },
-      //   })
-      // }
-      this.setProps({
-        children: [
-          Component.normalizeIconProps(icon),
-          {
-            tag: "span",
-            classes: { "nom-breadcrumb-link": true },
-            children: url
-              ? { tag: "a", attrs: { href: url }, children: text }
-              : text,
-          },
-          Component.normalizeIconProps(rightIcon),
-          {
-            tag: "span",
-            classes: { "nom-breadcrumb-separator": true },
-            children: separator,
-          },
-        ],
-      });
-    }
-  }
-  Component.register(BreadcrumbItem);
-  class Breadcrumb extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {
-        separator: "/",
-        itemDefaults: { component: BreadcrumbItem },
-      };
-      super(Component.extendProps(defaults, props), mixins);
-    }
-    _config() {
-      const { separator, items, itemDefaults } = this.props;
-      const children = isNotEmptyArray(items)
-        ? items.map((item, idx) => {
-            const isLeaf = idx === items.length - 1;
-            return Object.assign(
-              {},
-              Component.extendProps({ separator, isLeaf }, itemDefaults, item)
-            );
-          })
-        : [];
-      this.setProps({ children, attrs: { style: { padding: "10px 15px" } } });
-    }
-  }
-  Component.register(Breadcrumb);
-  class Carousel extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {
-        imgs: [],
-        height: 100,
-        arrows: false,
-        autoplay: false,
-        autoplaySpeed: 1000,
-        speed: 300,
-        dots: true,
-        defaultActiveIndex: 1,
-        easing: "linear",
-        pauseOnHover: true,
-        triggerType: "click",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      const { imgs, defaultActiveIndex } = this.props;
-      const cloneImgs = [...imgs];
-      cloneImgs.push(imgs[0]);
-      this.loopImgs = cloneImgs;
-      this.positions = [
-        // {
-        //   left:0,
-        //   width:100
-        // }
-      ];
-      this.activeId = defaultActiveIndex;
-      this.activeIdOld = defaultActiveIndex;
-      this.sildeRefs = [];
-      this.dotsRef = [];
-      this.slideWidth = null;
-      this.autoplayInterval = null;
-    }
-    _config() {
-      this.setProps({
-        children: {
-          ref: (c) => {
-            this.containerRef = c;
-          },
-          classes: { "nom-carousel-container": true },
-          children: [
-            {
-              ref: (c) => {
-                this.wrapperRef = c;
-              },
-              classes: { "nom-carousel-wrapper": true },
-              children: this.slideList(),
-            },
-            {
-              ref: (c) => {
-                this.paginationRef = c;
-              },
-              classes: {
-                "nom-carousel-pagination": true,
-                "nom-carousel-pagination-show": this.props.dots,
-              },
-              children: this.paginationList(),
-            },
-            {
-              classes: {
-                "nom-carousel-buttons": true,
-                "nom-carousel-buttons-show": this.props.arrows,
-              },
-              children: [
-                {
-                  classes: { "nom-carousel-button-prev": true },
-                  onClick: () => {
-                    this.prevClick();
-                  },
-                  component: "Icon",
-                  type: "left",
-                },
-                {
-                  classes: { "nom-carousel-button-next": true },
-                  onClick: () => {
-                    this.nextClick();
-                  },
-                  component: "Icon",
-                  type: "right",
-                },
-              ],
-            },
-          ],
-        },
-      });
-    }
-    _rendered() {
-      const {
-        autoplay,
-        autoplaySpeed,
-        pauseOnHover,
-        defaultActiveIndex,
-        triggerType,
-      } = this.props;
-      this.initPositions(); // 是否自动播放
-      if (autoplay) {
-        this.autoplayInterval = setInterval(() => {
-          this.nextClick();
-        }, autoplaySpeed);
-      } // 在鼠标悬浮时自动停止轮播
-      if (pauseOnHover) {
-        this.containerRef.element.addEventListener("mouseover", () => {
-          clearInterval(this.autoplayInterval);
-        });
-        this.containerRef.element.addEventListener("mouseout", () => {
-          if (autoplay) {
-            this.autoplayInterval = setInterval(() => {
-              this.nextClick();
-            }, autoplaySpeed);
-          }
-        });
-      } // 初始被激活的轮播图
-      setTimeout(() => {
-        this.paginationClick(defaultActiveIndex);
-      }, 500); // 锚点导航触发方式
-      if (triggerType === "hover") {
-        this.dotsRef.forEach((item) => {
-          item.element.onmouseenter = (e) => {
-            const target = e.target;
-            if (target.nodeName === "SPAN") {
-              this.paginationClick(target.dataset.index);
-            }
-          };
-        });
-      } else {
-        this.paginationRef.element.addEventListener("click", (e) => {
-          const target = e.target;
-          if (target.nodeName === "SPAN") {
-            this.paginationClick(target.dataset.index);
-          }
-        });
-      }
-    }
-    _remove() {
-      clearInterval(this.autoplayInterval);
-    }
-    slideList() {
-      const _that = this;
-      return this.loopImgs.map(function (item) {
-        return {
-          ref: (c) => {
-            if (c) _that.sildeRefs.push(c);
-          },
-          classes: { "nom-carousel-slide": true },
-          attrs: { style: { height: `${_that.props.height}px` } },
-          children: { tag: "img", attrs: { src: item }, children: "" },
-        };
-      });
-    }
-    paginationList() {
-      const _that = this;
-      return this.props.imgs.map(function (d, index) {
-        return {
-          ref: (c) => {
-            if (c) _that.dotsRef.push(c);
-          },
-          classes: {
-            "nom-carousel-pagination-bullet": true,
-            "nom-carousel-pagination-bullet-active":
-              index === _that.defaultActiveIndex - 1,
-          },
-          tag: "span",
-          attrs: { "data-index": index + 1 },
-          children: index + 1,
-        };
-      });
-    }
-    paginationClick(index) {
-      this.activeId = index;
-      this.animate("pagination");
-    }
-    prevClick() {
-      this.activeId -= 1;
-      if (this.activeId <= 0) {
-        this.activeId = this.loopImgs.length - 1;
-      }
-      this.animate();
-    }
-    nextClick() {
-      this.activeId += 1;
-      if (this.activeId > this.loopImgs.length) {
-        this.activeId = 2;
-      }
-      this.animate();
-    }
-    animate(val) {
-      this.updateSlideSize();
-      if (
-        this.activeId === this.loopImgs.length - 1 &&
-        this.activeIdOld === 1 &&
-        val !== "pagination"
-      ) {
-        // 首去末
-        this.wrapperRef.element.setAttribute(
-          "style",
-          `transform:translate3d(${-this.positions[this.loopImgs.length - 1]
-            .left}px, 0, 0);transition: transform 0ms;`
-        );
-        setTimeout(() => {
-          this.wrapperRef.element.setAttribute(
-            "style",
-            `transform:translate3d(${-this.positions[this.loopImgs.length - 2]
-              .left}px, 0, 0);transition: transform ${this.props.speed}ms ${
-              this.props.easing
-            };`
-          );
-        }, 0);
-      } else {
-        this.wrapperRef.element.setAttribute(
-          "style",
-          `transform:translate3d(${-this.positions[this.activeId - 1]
-            .left}px, 0, 0);transition: transform ${this.props.speed}ms ${
-            this.props.easing
-          };`
-        );
-      } // 分页器
-      this.dotsRef[this.activeIdOld - 1].element.classList.remove(
-        "nom-carousel-pagination-bullet-active"
-      );
-      if (this.activeId === this.loopImgs.length) {
-        // 末去首
-        this.dotsRef[0].element.classList.add(
-          "nom-carousel-pagination-bullet-active"
-        );
-        this.activeIdOld = 1;
-        setTimeout(() => {
-          this.wrapperRef.element.setAttribute(
-            "style",
-            `transform:translate3d(0, 0, 0);transition: transform 0ms;`
-          );
-        }, 300);
-      } else {
-        this.dotsRef[this.activeId - 1].element.classList.add(
-          "nom-carousel-pagination-bullet-active"
-        );
-        this.activeIdOld = this.activeId;
-      }
-    } // 初始设置值
-    initPositions() {
-      this.positions = this.loopImgs.map(() => ({ left: 0, width: 0 }));
-    } // 更新
-    updateSlideSize() {
-      const nodes = this.sildeRefs;
-      let firstLeft = 0;
-      if (this.slideWidth === nodes[0].element.getBoundingClientRect().width)
-        return;
-      nodes.forEach((node, index) => {
-        if (!node.rendered) return;
-        const rect = node.element.getBoundingClientRect();
-        this.positions[index].width = rect.width;
-        if (index === 0) {
-          this.positions[index].left = 0;
-          firstLeft = rect.left;
-          this.slideWidth = rect.width;
-        } else {
-          this.positions[index].left = rect.left - firstLeft;
-        }
-      });
-    }
-  }
-  Component.register(Carousel);
-  class CascaderList extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {};
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this._timer = null;
-      this._clickedKey = null;
-      this._clickTime = null;
-      this.cascaderControl = this.parent.parent.parent.cascaderControl;
-      this.cascaderControl.optionList = this;
-    }
-    _remove() {
-      this._timer && clearTimeout(this._timer);
-    }
-    _config() {
-      const { popMenu } = this.props;
-      const value = this.cascaderControl.selectedOption.map((e) => e.key);
-      this.selected = [];
-      this.setProps({
-        children: popMenu
-          ? popMenu.map((menu, index) => {
-              return this.getMenuItems(menu, value[index]);
-            })
-          : null,
-      });
-      super._config();
-    } // 处理非叶子节点点击事件
-    _handleNoLeafClick(key) {
-      const cascaderList = this;
-      const changeOnSelect = this.cascaderControl.props.changeOnSelect;
-      if (changeOnSelect) {
-        const triggerTime = Date.now();
-        let interval = Number.MAX_SAFE_INTEGER;
-        if (key === this._clickedKey && isNumeric(this._clickTime)) {
-          interval = triggerTime - this._clickTime;
-        }
-        this._clickTime = triggerTime;
-        this._clickedKey = key;
-        if (interval < 300) {
-          // 双击事件
-          cascaderList.cascaderControl._itemSelected(key, true);
-          this._timer && clearTimeout(this._timer);
-        } else {
-          // 单击事件
-          this._timer = setTimeout(() => {
-            cascaderList.cascaderControl._itemSelected(key, true, false);
-          }, 300);
-        }
-      } else {
-        // 单击
-        cascaderList.cascaderControl._itemSelected(key);
-      }
-    }
-    getMenuItems(menu, currentVal) {
-      const cascaderList = this;
-      if (!menu) {
-        return null;
-      }
-      return {
-        tag: "ul",
-        classes: { "nom-cascader-menu": true },
-        children: menu.map((item) => {
-          if (item.children) {
-            return {
-              tag: "li",
-              _rendered() {
-                item.key === currentVal && cascaderList.selected.push(this);
-              },
-              classes: {
-                "nom-cascader-menu-item": true,
-                "nom-cascader-menu-item-active": item.key === currentVal,
-              },
-              onClick: () => {
-                // cascaderList.cascaderControl._itemSelected(item.key)
-                cascaderList._handleNoLeafClick(item.key);
-              },
-              children: [
-                { tag: "span", children: item.label },
-                {
-                  component: Icon,
-                  type: "right",
-                  classes: { "nom-cascader-menu-item-expand-icon": true },
-                },
-              ],
-            };
-          }
-          return {
-            tag: "li",
-            _rendered() {
-              item.key === currentVal && cascaderList.selected.push(this);
-            },
-            classes: {
-              "nom-cascader-menu-item": true,
-              "nom-cascader-menu-item-active": item.key === currentVal,
-            },
-            onClick: () => {
-              cascaderList.cascaderControl._itemSelected(item.key, true);
-            },
-            children: [{ tag: "span", children: item.label }],
-          };
-        }),
-      };
-    }
-  }
-  class CascaderPopup extends Popup {
-    constructor(props, ...mixins) {
-      const defaults = {};
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      super._created();
-      this.cascaderControl = this.opener.field;
-    }
-    _config() {
-      const { popMenu } = this.props;
-      if (popMenu && popMenu.length) {
-        this.setProps({
-          children: {
-            classes: { "nom-cascader-pop-container": true },
-            component: Layout,
-            body: { children: { component: CascaderList, popMenu } },
-          },
-        });
-      } else {
-        this.setProps({
-          children: {
-            styles: { padding: 2 },
-            component: Layout,
-            body: { children: { component: Empty } },
-          },
-        });
-      }
-      super._config();
-    }
-  }
-  Component.register(CascaderPopup);
-  class Cascader extends Field {
-    constructor(props, ...mixins) {
-      const defaults = {
-        options: [],
-        showArrow: true,
-        separator: " / ",
-        fieldsMapping: { label: "label", value: "value", children: "children" },
-        valueType: "cascade",
-        changeOnSelect: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _rendered() {
-      const cascader = this;
-      this.popup = new CascaderPopup({
-        trigger: this.control,
-        popMenu: this.getSelectedMenu(),
-        onShow: () => {
-          const { optionList } = cascader;
-          if (
-            optionList &&
-            optionList.selected &&
-            optionList.selected.length > 0
-          ) {
-            optionList.selected.forEach((item) => {
-              item.element.scrollIntoView({
-                behavior: "auto",
-                scrollMode: "if-needed",
-              });
-            });
-          }
-        },
-      });
-      this._valueChange({ newValue: this.currentValue });
-    }
-    _created() {
-      super._created();
-      this._hidePopup = true;
-    }
-    _config() {
-      const cascader = this;
-      const children = [];
-      const { showArrow, placeholder, separator, valueType } = this.props;
-      const { value, options } = this.props;
-      this.internalOption = JSON.parse(JSON.stringify(options)); // this.handleOptions(this.internalOption, fieldsMapping)
-      this._normalizeInternalOptions(options);
-      this.flatItems(this.internalOption);
-      this.initValue = isFunction(value) ? value() : value;
-      this.selectedOption = [];
-      this.handleOptionSelected(this.initValue);
-      this.currentValue = this.initValue;
-      this.checked = true;
-      children.push({
-        classes: { "nom-cascader-content": true },
-        _created() {
-          cascader.content = this;
-        },
-        _config() {
-          const selectedOpt = cascader.selectedOption;
-          let c;
-          if (selectedOpt.length === 0) {
-            c = null;
-          } else {
-            c =
-              valueType === "cascade"
-                ? selectedOpt.map((e) => e.label).join(separator)
-                : selectedOpt[selectedOpt.length - 1].label;
-          }
-          this.setProps({ children: c });
-        },
-      });
-      if (isString(placeholder)) {
-        children.push({
-          _created() {
-            cascader.placeholder = this;
-          },
-          classes: { "nom-cascader-placeholder": true },
-          children: placeholder,
-        });
-      }
-      if (showArrow) {
-        children.push({
-          component: Icon,
-          type: "down",
-          classes: { "nom-cascader-icon": true },
-          _created() {
-            cascader.down = this;
-          },
-        });
-      }
-      children.push({
-        component: Icon,
-        type: "close",
-        classes: { "nom-cascader-icon": true },
-        hidden: true,
-        _created() {
-          cascader.close = this;
-        },
-        onClick: ({ event }) => {
-          event.stopPropagation();
-          if (this.selectedOption.length === 0) return;
-          this.selectedOption = [];
-          this.checked = true;
-          this.popup.update({ popMenu: this.getSelectedMenu() });
-          this._onValueChange();
-        },
-      });
-      this.setProps({
-        control: { children },
-        attrs: {
-          onmouseover() {
-            cascader.close.show();
-            showArrow && cascader.down.hide();
-          },
-          onmouseleave() {
-            showArrow && cascader.down.show();
-            cascader.close.hide();
-          },
-        },
-      });
-      super._config();
-    }
-    _normalizeInternalOptions(options) {
-      if (!Array.isArray(options) || !options.length) return options;
-      const { fieldsMapping } = this.props;
-      const { children } = this.props.fieldsMapping;
-      this.internalOption = clone$1(options);
-      this.internalOption = this._filterEmptyChild(options, children);
-      this.handleOptions(this.internalOption, fieldsMapping);
-    }
-    _filterEmptyChild(options, childrenMapping) {
-      return options.map((option) => {
-        if (
-          Array.isArray(option[childrenMapping]) &&
-          option[childrenMapping].length
-        ) {
-          return Object.assign({}, option, {
-            childrenMapping: this._filterEmptyChild(
-              option[childrenMapping],
-              childrenMapping
-            ),
-          });
-        }
-        option[childrenMapping] = null;
-        return option;
-      });
-    }
-    _itemSelected(selectedKey, checked = false, hidePopup = true) {
-      if (!this.items) return;
-      this.selectedOption = [];
-      let recur = this.items.get(selectedKey);
-      while (recur) {
-        this.selectedOption.unshift(recur);
-        recur = this.items.get(recur.pid);
-      } // this.checked = checked
-      this.checked = checked;
-      this._hidePopup = hidePopup;
-      const selectedItem = this.items.get(selectedKey);
-      if (!selectedItem) return;
-      if (
-        (this.checked && this.triggerChange(selectedItem.value)) ||
-        this.props.changeOnSelect
-      ) {
-        this._onValueChange();
-      }
-      this.popup.update({ popMenu: this.getSelectedMenu() });
-    }
-    _valueChange(changed) {
-      if (this.placeholder) {
-        if (
-          (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
-          !changed.newValue
-        ) {
-          this.placeholder.show();
-        } else {
-          this.placeholder.hide();
-        }
-      }
-      this.content && this.content.update();
-      this.popup && this._hidePopup && this.popup.hide();
-    }
-    _getValue() {
-      if (!this.checked) {
-        return this.currentValue;
-      }
-      if (this.props.valueType === "cascade") {
-        const result = this.selectedOption.map((e) => e.value);
-        return result.length ? result : null;
-      }
-      return this.selectedOption.length
-        ? this.selectedOption[this.selectedOption.length - 1].value
-        : null;
-    }
-    _setValue(value) {
-      if (this.triggerChange(value)) {
-        this.handleOptionSelected(value);
-        this._onValueChange();
-      }
-    }
-    _onValueChange() {
-      const that = this;
-      this.oldValue = clone$1(this.currentValue);
-      this.currentValue = clone$1(this.getValue());
-      this.props.value = this.currentValue;
-      const changed = {
-        name: this.props.name,
-        oldValue: this.oldValue,
-        newValue: this.currentValue,
-        checkedOption:
-          this.props.valueType === "cascade"
-            ? this.selectedOption
-            : this.selectedOption[this.selectedOption.length - 1],
-      };
-      setTimeout(function () {
-        that._callHandler(that.props.onValueChange, changed);
-        that.group && that.group._onValueChange(changed);
-        isFunction(that._valueChange) && that._valueChange(changed);
-        if (that.validateTriggered) {
-          that._validate();
-        }
-      }, 0);
-    }
-    triggerChange(value) {
-      if (!value || !this.currentValue || !Array.isArray(value))
-        return value !== this.currentValue;
-      return this.currentValue.toString() !== value.toString();
-    }
-    handleOptions(options, fieldsMapping) {
-      const {
-        key: keyField,
-        label: labelField,
-        value: valueField,
-        children: childrenField,
-      } = fieldsMapping;
-      const key = keyField || valueField;
-      if (!Array.isArray(options)) return [];
-      const internalOption = options;
-      for (let i = 0; i < internalOption.length; i++) {
-        const item = internalOption[i];
-        item.label = item[labelField];
-        item.value = item[valueField];
-        item.key = item[key];
-        item.children = item[childrenField];
-        if (Array.isArray(item.children) && item.children.length > 0) {
-          this.handleOptions(item.children, fieldsMapping);
-        }
-      }
-    }
-    flatItems(options, level = 0, pid = null) {
-      if (!options || !Array.isArray(options)) {
-        return null;
-      }
-      if (level === 0) {
-        this.items = new Map();
-      }
-      for (let i = 0; i < options.length; i++) {
-        const { key, value, label, children } = options[i];
-        this.items.set(key, { key, label, value, pid, level, leaf: !children });
-        if (children) {
-          this.flatItems(children, level + 1, key);
-        }
-      }
-    }
-    handleOptionSelected(value) {
-      let key = null;
-      const { valueType } = this.props;
-      this.checked = false;
-      const oldCheckedOption = this.selectedOption;
-      this.selectedOption = [];
-      if (!value) this.checked = true;
-      if (!this.items || this.items.size === 0) return;
-      if (valueType === "single") {
-        for (const v of this.items.values()) {
-          if (v.leaf && v.value === value) {
-            key = v.key;
-          }
-        }
-        if (!key) return;
-        while (key) {
-          this.selectedOption.unshift(this.items.get(key));
-          key = this.items.get(key).pid;
-        }
-      } else {
-        if (!Array.isArray(value)) return;
-        let opt = null;
-        let options = this.internalOption;
-        for (let i = 0; i < value.length; i++) {
-          opt = options ? options.find((e) => e.value === value[i]) : null;
-          if (!opt) {
-            this.selectedOption = oldCheckedOption;
-            return;
-          }
-          this.selectedOption.push(this.items.get(opt.key));
-          options = opt.children;
-        }
-      }
-      this.checked = true;
-      if (this.popup) this.popup.update({ popMenu: this.getSelectedMenu() });
-      if (this.content) this.content.update();
-    }
-    getSelectedMenu() {
-      if (!this.selectedOption) {
-        return null;
-      }
-      const val = this.selectedOption.map((e) => e.value);
-      const internalOption = this.internalOption;
-      let recur = internalOption;
-      const options =
-        internalOption && internalOption.length ? [internalOption] : [];
-      for (let i = 0; i < val.length; i++) {
-        for (let j = 0; j < recur.length; j++) {
-          if (val[i] === recur[j].value) {
-            if (recur[j].children) {
-              options.push([...recur[j].children]);
-              recur = recur[j].children;
-              break;
-            }
-          }
-        }
-      }
-      return options;
-    }
-  }
-  Component.register(Cascader);
-  class Checkbox extends Field {
-    constructor(props, ...mixins) {
-      const defaults = { text: null };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _config() {
-      const that = this;
-      this.setProps({
-        classes: {
-          "s-checked-part": !this.props.value && this.props.partChecked,
-        },
-        control: {
-          tag: "label",
-          children: [
-            {
-              tag: "input",
-              attrs: {
-                type: "checkbox",
-                checked: this.props.value,
-                onchange() {
-                  that.removeClass("s-checked-part");
-                  that._onValueChange();
-                },
-              },
-              _created() {
-                that.input = this;
-              },
-            },
-            { tag: "span" },
-            {
-              tag: "span",
-              classes: {
-                "checkbox-text": true,
-                "checkbox-text-none": !this.props.text,
-              },
-              children: this.props.text || "",
-            },
-          ],
-        },
-      });
-      super._config();
-    }
-    partCheck(triggerChange) {
-      this.setValue(false, triggerChange);
-      this.addClass("s-checked-part");
-    }
-    _getValue() {
-      return this.input.element.checked;
-    }
-    _setValue(value, options) {
-      if (options === false) {
-        options = { triggerChange: false };
-      } else {
-        options = extend$1({}, options);
-      }
-      this.removeClass("s-checked-part");
-      this.input.element.checked = value === true;
-      options.triggerChange !== false && this._onValueChange();
-    }
-    _disable() {
-      this.input.element.setAttribute("disabled", "disabled");
-    }
-    _enable() {
-      this.input.element.removeAttribute("disabled", "disabled");
-    }
-  }
-  Component.register(Checkbox);
-  var OptionListMixin = {
-    _created: function () {
-      this.checkboxList = this.parent.parent;
-      this.checkboxList.optionList = this;
-    },
-    _config: function () {
-      const { itemSelectionChange } = this.props;
-      const listProps = this.checkboxList.props;
-      const asArray = listProps.valueOptions.asArray;
-      this.setProps({
-        disabled: listProps.disabled,
-        items: listProps.options,
-        itemDefaults: listProps.optionDefaults,
-        itemSelectable: {
-          byClick: true,
-          multiple: true,
-          scrollIntoView: false,
-        },
-        selectedItems:
-          asArray === true
-            ? listProps.value
-            : isString(listProps.value)
-            ? listProps.value.split(",")
-            : null,
-        onItemSelectionChange: () => {
-          this.checkboxList._onValueChange();
-          this._callHandler(itemSelectionChange);
-        },
-      });
-    },
-  };
-  class OptionList extends List {
-    constructor(props, ...mixins) {
-      const defaults = {
-        gutter: "x-md",
-        itemDefaults: {
-          tag: "label",
-          _config: function () {
-            this.setProps({
-              selected: this.props.checked === true,
-              children: [
-                { tag: "span", classes: { checkbox: true } },
-                {
-                  tag: "span",
-                  classes: { text: true },
-                  children: this.props.text,
-                },
-              ],
-            });
-          },
-        },
-      };
-      super(Component.extendProps(defaults, props), OptionListMixin, ...mixins);
-    }
-  }
-  class CheckboxList extends Field {
-    constructor(props, ...mixins) {
-      const defaults = { options: [], valueOptions: { asArray: true } };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _config() {
-      this.setProps({
-        optionDefaults: {
-          key: function () {
-            return this.props.value;
-          },
-        },
-      });
-      this.setProps({
-        optionList: { component: OptionList, cols: this.props.cols },
-      });
-      this.setProps({ control: this.props.optionList });
-      super._config();
-    }
-    getSelectedOptions() {
-      return this.optionList.getSelectedItems();
-    }
-    getUnselectedOptions() {
-      return this.optionList.getUnselectedItems();
-    }
-    hideOption(value, alsoUnselect = true) {
-      this.optionList.hideItem(value);
-      if (alsoUnselect === true) {
-        this.optionList.unselectItem(value);
-      }
-    }
-    showOption(value) {
-      this.optionList.showItem(value);
-    }
-    _getValue(options) {
-      const { valueOptions } = this.props;
-      options = extend$1({ asArray: true }, valueOptions, options);
-      const selected = this.getSelectedOptions();
-      if (selected !== null && Array.isArray(selected) && selected.length > 0) {
-        const vals = selected.map(function (item) {
-          return item.props.value;
-        });
-        return options.asArray ? vals : vals.join(",");
-      }
-      return null;
-    }
-    _getValueText(options, value) {
-      const selected =
-        value !== undefined
-          ? this._getOptionsByValue(value)
-          : this.getSelectedOptions();
-      if (selected !== null && Array.isArray(selected) && selected.length > 0) {
-        const vals = selected.map(function (item) {
-          return item.props ? item.props.text : item.text;
-        });
-        return vals;
-      }
-      return null;
-    }
-    _setValue(value, options) {
-      const { valueOptions } = this.props;
-      if (options === false) {
-        options = { triggerChange: false };
-      } else {
-        options = extend$1({ triggerChange: true }, valueOptions, options);
-      }
-      if (value === null) {
-        this.optionList.unselectAllItems({
-          triggerSelectionChange: options.triggerChange,
-        });
-      }
-      if (options.asArray === false && isString(value)) {
-        value = value.split(",");
-      }
-      const _that = this;
-      const optionsArry = [];
-      this.props.options.forEach((ele) => {
-        optionsArry.push(ele.value);
-      });
-      Array.isArray(value) &&
-        value.forEach((ele) => {
-          if (optionsArry.includes(ele)) {
-            _that.optionList.selectItem(ele, {
-              triggerSelectionChange: options.triggerChange,
-            });
-          }
-        });
-    }
-    _disable() {
-      if (this.firstRender === false) {
-        this.optionList.disable();
-      }
-    }
-    _enable() {
-      if (this.firstRender === false) {
-        this.optionList.enable();
-      }
-    }
-    _getOptionsByValue(value) {
-      let retOptions = null;
-      const { options } = this.props;
-      if (Array.isArray(value)) {
-        retOptions = [];
-        for (let i = 0; i < options.length; i++) {
-          if (value.indexOf(options[i].value) !== -1) {
-            retOptions.push(options[i]);
-          }
-        }
-      }
-      return retOptions;
-    }
-  }
-  Component.register(CheckboxList);
-  class TreeNodeContent extends Component {
-    constructor(props, ...mixins) {
-      const defaults = { text: null };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this.node = this.parent;
-      this.node.content = this;
-      this.level = this.node.level;
-      this.tree = this.node.tree;
-    }
-    _config() {
-      const { text, icon, tools } = this.node.props;
-      const { initExpandLevel, nodeCheckable } = this.tree.props;
-      const expanded = initExpandLevel === -1 || initExpandLevel > this.level;
-      const tree = this.tree;
-      this.setProps({
-        expanded,
-        expandable: {
-          byIndicator: true,
-          target: () => {
-            return this.node.nodesRef;
-          },
-          indicator: {
-            component: Icon,
-            classes: {
-              "nom-tree-node-expandable-indicator": true,
-              "is-leaf": this.node.isLeaf,
-            },
-            expandable: {
-              expandedProps: { type: "down" },
-              collapsedProps: { type: "right" },
-            },
-          },
-        },
-        selectable: { byClick: this.tree.props.nodeSelectable.byClick },
-        selected:
-          this.tree.props.nodeSelectable.selectedNodeKey === this.node.key,
-        attrs: { style: { paddingLeft: `${this.level * 16}px` } },
-        onSelect: () => {
-          if (tree.selectedNode !== null) tree.selectedNode.unselect();
-          tree.selectedNode = this.node;
-          tree._onNodeSelect({
-            node: this.node,
-            nodeData: this.node.props.data,
-          });
-        },
-      });
-      if (
-        this.tree.props.nodeSelectable.onlyleaf === true &&
-        this.node.isLeaf === false
-      ) {
-        this.setProps({ selectable: false });
-      }
-      this.setProps({
-        children: [
-          this.getExpandableIndicatorProps(expanded),
-          nodeCheckable && this._getCheckbox(),
-          icon &&
-            Component.extendProps(
-              { classes: { "nom-tree-node-content-icon": true } },
-              Component.normalizeIconProps(icon)
-            ),
-          Component.extendProps(
-            { tag: "span", classes: { "nom-tree-node-content-text": true } },
-            Component.normalizeTemplateProps(text)
-          ),
-          tools &&
-            Component.extendProps(
-              { classes: { "nom-tree-node-content-tools": true } },
-              Component.normalizeIconProps(tools)
-            ),
-        ],
-        onClick: () => {
-          this.tree._onNodeClick({ node: this.node });
-        },
-      });
-    }
-    _getCheckbox() {
-      const { disabled: treeDisabled } = this.tree.props;
-      const { disabled: nodeDisabled } = this.node.props;
-      return {
-        component: Checkbox,
-        plain: true,
-        classes: { "nom-tree-node-checkbox": true },
-        disabled: treeDisabled || nodeDisabled,
-        _created: (inst) => {
-          this.node.checkboxRef = inst;
-        },
-        value: this.tree.checkedNodeKeysHash[this.node.key] === true,
-        onValueChange: ({ newValue }) => {
-          if (newValue === true) {
-            this.node.check({ checkCheckbox: false });
-          } else {
-            this.node.uncheck({ uncheckCheckbox: false });
-          }
-        },
-      };
-    }
-  }
-  Component.register(TreeNodeContent);
-  class TreeNode extends Component {
-    constructor(props, ...mixins) {
-      const defaults = { nodes: null };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this.level = 0;
-      this.parentNode = this.parent.parentNode;
-      if (this.parentNode !== null) {
-        this.level = this.parentNode.level + 1;
-        this.parentNode.subnodeRefs[this.key] = this;
-      }
-      this.tree = this.parent.tree;
-      this.subnodeRefs = {};
-      const { data } = this.props;
-      const { dataFields } = this.tree.props;
-      Object.keys(dataFields).forEach((dataField) => {
-        data[dataField] = data[dataFields[dataField]];
-      });
-    }
-    _config() {
-      this.props.dataToNode({ data: this.props.data, node: this });
-      if (this.props.key) {
-        this.key = this.props.key;
-      }
-      this.tree.nodeRefs[this.key] = this;
-      if (this.tree.props.nodeSelectable.selectedNodeKey === this.key) {
-        this.tree.selectedNode = this;
-      }
-      const { nodes, childrenData } = this.props;
-      const children = [{ component: TreeNodeContent }];
-      this.isLeaf = !(
-        this._isNotEmptyArray(nodes) || this._isNotEmptyArray(childrenData)
-      );
-      if (Array.isArray(nodes) || Array.isArray(childrenData)) {
-        children.push({ component: "TreeNodes", nodes, childrenData });
-      }
-      this.setProps({ children });
-      if (this.tree.props.nodeCheckable) {
-        this.setProps({
-          checked: this.tree.checkedNodeKeysHash[this.key] === true,
-        });
-      }
-    }
-    _isNotEmptyArray(arr) {
-      return Array.isArray(arr) && arr.length > 0;
-    }
-    check({ checkCheckbox = true, triggerCheckChange = true } = {}) {
-      const { checked } = this.props;
-      const { onCheckChange } = this.tree.props.nodeCheckable;
-      if (checked === true) {
-        return;
-      }
-      this.parentNode &&
-        this.parentNode.check({
-          checkCheckbox: true,
-          triggerCheckChange: false,
-        });
-      if (checkCheckbox === true) {
-        this.checkboxRef.setValue(true, { triggerChange: false });
-      }
-      this.props.checked = true;
-      if (triggerCheckChange === true) {
-        this._callHandler(onCheckChange);
-      }
-    }
-    uncheck({ uncheckCheckbox = true, triggerCheckChange = true } = {}) {
-      const { checked } = this.props;
-      const { onCheckChange } = this.tree.props.nodeCheckable;
-      if (checked === false) {
-        return;
-      }
-      uncheckCheckbox &&
-        this.checkboxRef.setValue(false, { triggerChange: false });
-      Object.keys(this.subnodeRefs).forEach((key) => {
-        this.subnodeRefs[key].uncheck({
-          uncheckCheckbox: true,
-          triggerCheckChange: false,
-        });
-      });
-      this.props.checked = false;
-      if (triggerCheckChange === true) {
-        this._callHandler(onCheckChange);
-      }
-    }
-    isChecked() {
-      return this.props.checked === true;
-    }
-    getChildNodes() {
-      return this.nodesRef ? this.nodesRef.getChildren() : [];
-    }
-    select() {
-      this.content.select();
-    }
-    unselect() {
-      this.content.unselect();
-    }
-  }
-  Component.register(TreeNode);
   /* eslint-disable */ /**!
    * Sortable 1.13.0
    * @author	RubaXa   <trash@rubaxa.org>
@@ -10412,6 +7566,2916 @@ function _defineProperty2(obj, key, value) {
     drop: drop,
   };
   _extends(Remove, { pluginName: "removeOnSpill" });
+  var ListItemContentMixin = {
+    _created: function () {
+      this.parent.content = this;
+    },
+    _config: function () {
+      const { onSelect, onUnselect, selected } = this.props;
+      const listProps = this.parent.parent.parent.props;
+      const selectedItems =
+        listProps.selectedItems !== null &&
+        listProps.selectedItems !== undefined
+          ? Array.isArray(listProps.selectedItems)
+            ? listProps.selectedItems
+            : [listProps.selectedItems]
+          : [];
+      this.setProps({
+        classes: { "nom-list-item-content": true },
+        selected: selected === true || selectedItems.indexOf(this.key) !== -1,
+        selectable: {
+          byClick: listProps.itemSelectable.byClick,
+          canRevert: listProps.itemSelectable.multiple === true,
+        },
+        _shouldHandleClick: function () {
+          if (listProps.disabled === true) {
+            return false;
+          }
+        },
+        onSelect: () => {
+          const list = this.parent.parent.parent;
+          if (listProps.itemSelectable.multiple === false) {
+            listProps.selectedItems = this.key;
+            if (list.selectedItem !== null) {
+              list.selectedItem.unselect({ triggerSelectionChange: false });
+            }
+            list.selectedItem = this;
+          }
+          this._callHandler(onSelect);
+        },
+        onUnselect: () => {
+          const list = this.parent.parent.parent;
+          if (listProps.selectedItems === this.key) {
+            listProps.selectedItems = null;
+          }
+          if (list.selectedItem === this) {
+            list.selectedItem = null;
+          }
+          this._callHandler(onUnselect);
+        },
+        onSelectionChange: () => {
+          const list = this.parent.parent.parent;
+          list._onItemSelectionChange();
+        },
+      });
+    },
+    _rendered: function () {
+      const list = this.parent.parent.parent;
+      const listProps = list.props;
+      if (listProps.itemSelectable.multiple === false) {
+        if (this.props.selected) {
+          list.selectedItem = this;
+          if (listProps.itemSelectable.multiple.scrollIntoValue) {
+            list.scrollTo(list.selectedItem);
+          }
+        }
+      }
+    },
+  };
+  class ListItem extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { tag: "li", data: null };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.list = this.parent.list;
+      const { dataFields = { key: "key" } } = this.list.props;
+      const { data } = this.props;
+      Object.keys(dataFields).forEach((dataField) => {
+        this.props[dataField] = data[dataFields[dataField]];
+      });
+      this._setKey();
+      this.list.itemRefs[this.key] = this;
+    }
+    _config() {
+      const {
+        itemRender = ({ itemData }) => {
+          return { children: itemData };
+        },
+      } = this.list.props;
+      const { data } = this.props;
+      this.setProps({
+        selectable: { byClick: false },
+        children: itemRender({ itemData: data, list: this.list, item: this }),
+        childDefaults: n$1(null, null, null, [ListItemContentMixin]),
+      });
+    }
+    _remove() {
+      delete this.list.itemRefs[this.key];
+    }
+    select() {
+      this.content.select();
+    }
+    unselect() {
+      this.content.unselect();
+    }
+  }
+  Component.register(ListItem);
+  var ListItemMixin = {
+    _created: function () {
+      this.wrapper = this.parent;
+      this.wrapper.item = this;
+      this.list = this.wrapper.list;
+      this.list.itemRefs[this.key] = this;
+    },
+    _config: function () {
+      const { onSelect, onUnselect, selected } = this.props;
+      const listProps = this.list.props;
+      const selectedItems =
+        listProps.selectedItems !== null &&
+        listProps.selectedItems !== undefined
+          ? Array.isArray(listProps.selectedItems)
+            ? listProps.selectedItems
+            : [listProps.selectedItems]
+          : [];
+      this.setProps({
+        classes: { "nom-list-item": true },
+        selected: selected === true || selectedItems.indexOf(this.key) !== -1,
+        selectable: {
+          byClick: listProps.itemSelectable.byClick,
+          canRevert: listProps.itemSelectable.multiple === true,
+        },
+        _shouldHandleClick: function () {
+          if (listProps.disabled === true) {
+            return false;
+          }
+        },
+        onSelect: () => {
+          if (listProps.itemSelectable.multiple === false) {
+            listProps.selectedItems = this.key;
+            if (this.list.selectedItem !== null) {
+              this.list.selectedItem.unselect({
+                triggerSelectionChange: false,
+              });
+            }
+            this.list.selectedItem = this;
+          }
+          this._callHandler(onSelect);
+        },
+        onUnselect: () => {
+          if (listProps.selectedItems === this.key) {
+            listProps.selectedItems = null;
+          }
+          if (this.list.selectedItem === this) {
+            this.list.selectedItem = null;
+          }
+          this._callHandler(onUnselect);
+        },
+        onSelectionChange: () => {
+          this.list._onItemSelectionChange();
+        },
+      });
+    },
+    _rendered: function () {
+      const listProps = this.list.props;
+      if (listProps.itemSelectable.multiple === false) {
+        if (this.props.selected) {
+          this.list.selectedItem = this;
+          if (listProps.itemSelectable.multiple.scrollIntoValue) {
+            this.list.scrollTo(this.list.selectedItem);
+          }
+        }
+      }
+    },
+    _remove: function () {
+      delete this.list.itemRefs[this.key];
+    },
+  };
+  class ListItemWrapper extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { tag: "li", item: {} };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.list = this.parent.list || this.parent.parent.parent.parent.list;
+    }
+    _config() {
+      this._addPropStyle("span");
+      const { item, span } = this.props;
+      const { itemDefaults } = this.list.props;
+      if (this.props.disabled) {
+        item.disabled = true;
+      }
+      if (!span && item.span) {
+        this.setProps({ span: item.span });
+      }
+      this.setProps({
+        selectable: false,
+        children: item,
+        childDefaults: n$1(null, itemDefaults, null, [ListItemMixin]),
+      });
+    }
+  }
+  Component.register(ListItemWrapper);
+  class ListContent extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { tag: "ul" };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.list = this.parent;
+      this.list.content = this;
+    }
+    _config() {
+      this._addPropStyle("gutter", "line", "align", "justify", "cols");
+      const {
+        items,
+        wrappers,
+        wrapperDefaults,
+        virtual,
+        data,
+      } = this.list.props;
+      const children = [];
+      if (Array.isArray(data) && data.length > 0) {
+        for (let i = 0; i < data.length; i++) {
+          const itemData = data[i];
+          children.push({
+            component: ListItem,
+            data: itemData,
+            classes: Object.assign({}, this._getDragClassNames(itemData)),
+          });
+        }
+      } else if (Array.isArray(wrappers) && wrappers.length > 0) {
+        for (let i = 0; i < wrappers.length; i++) {
+          let wrapper = wrappers[i];
+          wrapper = Component.extendProps(
+            {},
+            {
+              component: ListItemWrapper,
+              classes: Object.assign({}, this._getDragClassNames(wrappers[i])),
+            },
+            wrapperDefaults,
+            wrapper
+          );
+          children.push(wrapper);
+        }
+      } else if (Array.isArray(items) && items.length > 0) {
+        for (let i = 0; i < items.length; i++) {
+          if (
+            this.list.props.disabledItems.length &&
+            this.list.props.disabledItems.includes(items[i].key)
+          ) {
+            children.push({
+              component: ListItemWrapper,
+              item: items[i],
+              disabled: true,
+              classes: Object.assign({}, this._getDragClassNames(items[i])),
+            });
+          } else {
+            children.push({
+              component: ListItemWrapper,
+              item: items[i],
+              classes: Object.assign({}, this._getDragClassNames(items[i])),
+            });
+          }
+        }
+      } // 开启虚拟列表功能
+      if (
+        (virtual === true || typeof virtual === "number") &&
+        children.length !== 0
+      ) {
+        this.list.virtual.listData = children;
+        this.setProps({
+          classes: { "nom-virtual-list-content": true },
+          children: this.list.virGetList(this.list.virVisibleData()),
+          childDefaults: wrapperDefaults,
+        }); // if (this.list.virtual.selectedItems) {
+        //   clearTimeout(this.list.virtual.selectedTimer)
+        //   this.list.virtual.selectedTimer = setTimeout(() => {
+        //     const arry = this.list.virtual.selectedItems.map((item) => {
+        //       return item.value
+        //     })
+        //     console.log(arry)
+        //     this.list.selectItems(arry, {
+        //       triggerSelect: false,
+        //       triggerSelectionChange: false,
+        //     })
+        //   }, 500)
+        // }
+      } else {
+        this.setProps({ children: children, childDefaults: wrapperDefaults });
+      }
+    }
+    _rendered() {
+      const { sortable, virtual } = this.list.props;
+      const that = this; // 虚拟渲染不支持拓展排序
+      if (sortable && !virtual) {
+        const _options = {
+          group: this.key,
+          animation: 150,
+          fallbackOnBody: true,
+          swapThreshold: 0.65,
+          handle: sortable.handleClassName,
+          filter: ".s-disabled",
+          draggable: ".could-drag",
+          onEnd: function (event) {
+            // const data = { oldIndex: evt.oldIndex, newIndex: evt.newIndex }
+            that.list.handleDrag(event);
+          },
+        };
+        if (sortable.draggableClassName) {
+          _options.draggable = sortable.draggableClassName;
+        }
+        new Sortable(this.element, _options);
+      }
+    }
+    getItem(param) {
+      let retItem = null;
+      if (param instanceof Component) {
+        return param;
+      }
+      if (isFunction(param)) {
+        for (const key in this.itemRefs) {
+          if (this.itemRefs.hasOwnProperty(key)) {
+            if (param.call(this.itemRefs[key]) === true) {
+              retItem = this.itemRefs[key];
+              break;
+            }
+          }
+        }
+      } else {
+        return this.itemRefs[param];
+      }
+      return retItem;
+    }
+    selectItem(param, selectOption) {
+      const item = this.getItem(param);
+      item && item.select(selectOption);
+    }
+    selectItems(param, selectOption) {
+      selectOption = extend$1(
+        { triggerSelect: true, triggerSelectionChange: true },
+        selectOption
+      );
+      let itemSelectionChanged = false;
+      param = Array.isArray(param) ? param : [param];
+      for (let i = 0; i < param.length; i++) {
+        itemSelectionChanged =
+          this.selectItem(param[i], {
+            triggerSelect: selectOption.triggerSelect,
+            triggerSelectionChange: false,
+          }) || itemSelectionChanged;
+      }
+      if (
+        selectOption.triggerSelectionChange === true &&
+        itemSelectionChanged
+      ) {
+        this._onItemSelectionChange();
+      }
+      return itemSelectionChanged;
+    }
+    selectAllItems(selectOption) {
+      return this.selectItems(this.getChildren(), selectOption);
+    }
+    unselectItem(param, unselectOption) {
+      unselectOption = extend$1(
+        { triggerUnselect: true, triggerSelectionChange: true },
+        unselectOption
+      );
+      const item = this.getItem(param);
+      item && item.unselect(unselectOption);
+    }
+    unselectItems(param, unselectOption) {
+      unselectOption = extend$1(
+        { triggerUnselect: true, triggerSelectionChange: true },
+        unselectOption
+      );
+      let itemSelectionChanged = false;
+      if (Array.isArray(param)) {
+        for (let i = 0; i < param.length; i++) {
+          itemSelectionChanged =
+            this.unselectItem(param[i], {
+              triggerUnselect: unselectOption.triggerUnselect,
+              triggerSelectionChange: false,
+            }) || itemSelectionChanged;
+        }
+      }
+      if (unselectOption.triggerSelectionChange && itemSelectionChanged) {
+        this._onItemSelectionChange();
+      }
+      return itemSelectionChanged;
+    }
+    unselectAllItems(unselectOption) {
+      return this.unselectItems(this.getAllItems(), unselectOption);
+    }
+    getAllItems() {
+      const items = [];
+      const children = this.getChildren();
+      for (let i = 0; i < children.length; i++) {
+        const itemWrapper = children[i];
+        items.push(itemWrapper.item);
+      }
+      return items;
+    }
+    _onItemSelectionChange() {
+      this._callHandler(this.props.onItemSelectionChange);
+    }
+    getSelectedItem() {
+      return this.selectedItem;
+    }
+    getSelectedItems() {
+      const selectedItems = [];
+      const children = this.getChildren();
+      for (let i = 0; i < children.length; i++) {
+        const { item } = children[i];
+        if (item.props.selected) {
+          selectedItems.push(item);
+        }
+      }
+      return selectedItems;
+    }
+    _getDragClassNames(item) {
+      const { sortable, disDragItems } = this.list.props;
+      const dragClasses = {};
+      if (!disDragItems.includes(item.key)) {
+        dragClasses[sortable.draggableClassName || "could-drag"] = true;
+      }
+      return dragClasses;
+    }
+    appendItem(itemProps) {
+      itemProps = Component.extendProps({}, this.props.itemDefaults, itemProps);
+      const itemWrapperProps = { component: ListItemWrapper, item: itemProps };
+      this.appendChild(itemWrapperProps);
+    }
+    appendDataItem(itemData) {
+      const itemProps = { component: ListItem, data: itemData };
+      this.appendChild(itemProps);
+    }
+    prependDataItem(itemData) {
+      const itemProps = { component: ListItem, data: itemData };
+      this.prependChild(itemProps);
+    }
+    removeItem(param) {
+      const item = this.getItem(param);
+      if (item !== null) {
+        item.wrapper.remove();
+      }
+    }
+    removeItems(param) {
+      if (Array.isArray(param)) {
+        for (let i = 0; i < param.length; i++) {
+          this.removeItem(param[i]);
+        }
+      }
+    }
+  }
+  Component.register(ListContent);
+  class List extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        tag: "div",
+        items: [],
+        itemDefaults: {},
+        data: null, // 自定义渲染时使用data
+        selectedItems: null,
+        itemSelectable: {
+          multiple: false,
+          byClick: false,
+          scrollIntoView: true,
+        },
+        disabledItems: [],
+        virtual: false,
+        virtualSupport: {
+          height: typeof props.virtual === "number" ? props.virtual : 300, // 容器高度
+          size: 30, // 每个列表项高度预估值
+          bufferScale: 1, // 缓冲区比例
+        },
+        showEmpty: false, // Boolean || { onEnd: Funciton}
+        sortable: false,
+        disDragItems: [],
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const { virtual } = this.props;
+      if (
+        this.firstRender &&
+        (virtual === true || typeof virtual === "number")
+      ) {
+        this.virCreated();
+      }
+      this.itemRefs = {};
+      this.selectedItem = null;
+      this._addPropStyle("gutter", "line", "align", "justify", "cols");
+      let empty = null;
+      if (isPlainObject(this.props.showEmpty)) {
+        empty = Object.assign({ component: "Empty" }, this.props.showEmpty);
+      } else {
+        empty = { component: "Empty" };
+      }
+      const children =
+        !this.props.items.length && this.props.showEmpty
+          ? empty
+          : { component: ListContent };
+      if (virtual === true || typeof virtual === "number") {
+        this.virChildren(children);
+      } else {
+        this.setProps({ children: children });
+      }
+    }
+    getItem(param) {
+      let retItem = null;
+      if (param instanceof Component) {
+        return param;
+      }
+      if (isFunction(param)) {
+        for (const key in this.itemRefs) {
+          if (this.itemRefs.hasOwnProperty(key)) {
+            if (param.call(this.itemRefs[key]) === true) {
+              retItem = this.itemRefs[key];
+              break;
+            }
+          }
+        }
+      } else {
+        return this.itemRefs[param] || null;
+      }
+      return retItem;
+    }
+    selectItem(param, selectOption) {
+      const item = this.getItem(param);
+      console.log("🚀 ~ file: List.js ~  ~ item", item, param, this.itemRefs);
+      item && item.select(selectOption);
+      if (this.props.itemSelectable.scrollIntoView) {
+        this.scrollTo(item);
+      }
+    }
+    selectItems(param, selectOption) {
+      selectOption = extend$1(
+        { triggerSelect: true, triggerSelectionChange: true },
+        selectOption
+      );
+      let itemSelectionChanged = false;
+      param = Array.isArray(param) ? param : [param];
+      for (let i = 0; i < param.length; i++) {
+        itemSelectionChanged =
+          this.selectItem(param[i], {
+            triggerSelect: selectOption.triggerSelect,
+            triggerSelectionChange: false,
+          }) || itemSelectionChanged;
+      }
+      if (
+        selectOption.triggerSelectionChange === true &&
+        itemSelectionChanged
+      ) {
+        this._onItemSelectionChange();
+      }
+      return itemSelectionChanged;
+    }
+    selectAllItems(selectOption) {
+      return this.selectItems(this.content.getChildren(), selectOption);
+    }
+    unselectItem(param, unselectOption) {
+      unselectOption = extend$1(
+        { triggerUnselect: true, triggerSelectionChange: true },
+        unselectOption
+      );
+      const item = this.getItem(param);
+      item && item.unselect(unselectOption);
+    }
+    unselectItems(param, unselectOption) {
+      unselectOption = extend$1(
+        { triggerUnselect: true, triggerSelectionChange: true },
+        unselectOption
+      );
+      let itemSelectionChanged = false;
+      if (Array.isArray(param)) {
+        for (let i = 0; i < param.length; i++) {
+          itemSelectionChanged =
+            this.unselectItem(param[i], {
+              triggerUnselect: unselectOption.triggerUnselect,
+              triggerSelectionChange: false,
+            }) || itemSelectionChanged;
+        }
+      }
+      if (unselectOption.triggerSelectionChange && itemSelectionChanged) {
+        this._onItemSelectionChange();
+      }
+      return itemSelectionChanged;
+    }
+    unselectAllItems(unselectOption) {
+      return this.unselectItems(this.getAllItems(), unselectOption);
+    }
+    getAllItems() {
+      const items = [];
+      const children = this.content.getChildren();
+      for (let i = 0; i < children.length; i++) {
+        const itemWrapper = children[i]; // 为自定义渲染时直接返回 itemWrapper
+        items.push(itemWrapper.item || itemWrapper);
+      }
+      return items;
+    }
+    _onItemSelectionChange() {
+      this._callHandler(this.props.onItemSelectionChange);
+    }
+    getSelectedItem() {
+      return this.selectedItem;
+    }
+    getSelectedItems() {
+      const selectedItems = [];
+      const children = this.content.getChildren();
+      for (let i = 0; i < children.length; i++) {
+        const { item } = children[i];
+        if (item.props.selected) {
+          selectedItems.push(item);
+        }
+      }
+      return selectedItems;
+    }
+    getUnselectedItems() {
+      const UnselectedItems = [];
+      const children = this.content.getChildren();
+      for (let i = 0; i < children.length; i++) {
+        const { item } = children[i];
+        if (!item.props.selected) {
+          UnselectedItems.push(item);
+        }
+      }
+      return UnselectedItems;
+    }
+    appendItem(itemProps) {
+      this.content.appendItem(itemProps);
+    }
+    appendDataItem(itemData) {
+      this.content.appendDataItem(itemData);
+    }
+    prependDataItem(itemData) {
+      this.content.prependDataItem(itemData);
+    }
+    removeItem(param) {
+      const item = this.getItem(param);
+      if (item !== null) {
+        item.wrapper.remove();
+      }
+    }
+    removeItems(param) {
+      if (Array.isArray(param)) {
+        for (let i = 0; i < param.length; i++) {
+          this.removeItem(param[i]);
+        }
+      }
+    }
+    hideItem(param) {
+      const item = this.getItem(param);
+      if (item !== null) {
+        item.wrapper.hide();
+      }
+    }
+    showItem(param) {
+      const item = this.getItem(param);
+      if (item !== null) {
+        item.wrapper.show();
+      }
+    }
+    scrollTo(param) {
+      const item = this.getItem(param);
+      if (item) {
+        const itemElement = item.wrapper ? item.wrapper.element : item.element;
+        scrollIntoView(itemElement, {
+          behavior: "smooth",
+          scrollMode: "if-needed",
+        });
+      }
+    }
+    scrollToSelected() {
+      if (this.selectedItem) {
+        this.scrollTo(this.selectedItem);
+      }
+    }
+    /* 虚拟列表支持函数-start */ virCreated() {
+      const { items, virtualSupport } = this.props;
+      this.virtual = {
+        virtualTimer: null,
+        start: 0,
+        end: 0,
+        positions: [
+          // {
+          //   top:0,
+          //   bottom:100,
+          //   height:100,
+          // }
+        ],
+        selectedItems: [], // 下拉选择中选中数据
+        itemsRefs: [], // 当前列表项arry
+        listData: items, // 所有列表数据
+        ListHeight: virtualSupport.height, // 可视区域高度
+        estimatedSize: virtualSupport.size, // 预估高度
+        bufferScale: virtualSupport.bufferScale, // 缓冲区比例
+        toolDivRef: null,
+      };
+      this.virInitPositions();
+    }
+    virChildren(childObj) {
+      const { positions, ListHeight } = this.virtual;
+      const toolDivHeight = positions[positions.length - 1].bottom;
+      this.setProps({
+        classes: { "nom-virtual-list-container": true },
+        attrs: {
+          style: { height: `${ListHeight}px` },
+          onscroll: () => {
+            this.virScrollEvent();
+          },
+        },
+        children: [
+          {
+            ref: (c) => {
+              this.virtual.toolDivRef = c;
+            },
+            classes: { "nom-virtual-list-tooldiv": true },
+            attrs: { style: { height: `${toolDivHeight}px` } },
+            children: "",
+          },
+          childObj,
+        ],
+      });
+    }
+    virGetList(arry) {
+      this.virtual.itemsRefs = [];
+      const _that = this;
+      return arry.map(function (obj) {
+        return Component.extendProps(obj, {
+          ref: (c) => {
+            if (c) _that.virtual.itemsRefs.push(c);
+          },
+          classes: { "nom-virtual-list-item": true },
+          attrs: { "data-key": obj._index },
+        });
+      });
+    } // 需要在 渲染完成后，获取列表每项的位置信息并缓存
+    virUpdated() {
+      if (!this.virtual.itemsRefs || !this.virtual.itemsRefs.length) {
+        return;
+      }
+      const { positions, toolDivRef } = this.virtual;
+      this.virUpdateItemsSize();
+      const toolDivHeight = positions[positions.length - 1].bottom;
+      toolDivRef.element.style.height = `${toolDivHeight}px`;
+      this.content.update({
+        attrs: {
+          style: {
+            transform: `translate3d(0,${this.virSetStartOffset()}px,0)`,
+          },
+        },
+      });
+    } // 初始化位置信息
+    virInitPositions() {
+      const { estimatedSize, listData } = this.virtual;
+      this.virtual.positions = listData.map((d, index) => ({
+        index,
+        height: estimatedSize,
+        top: index * estimatedSize,
+        bottom: (index + 1) * estimatedSize,
+      }));
+    } // 获取列表起始索引
+    virGetStartIndex(scrollTop = 0) {
+      return this.virBinarySearch(this.virtual.positions, scrollTop);
+    } // 二分法
+    virBinarySearch(list, value) {
+      let start = 0;
+      let end = list.length - 1;
+      let tempIndex = null;
+      while (start <= end) {
+        const midIndex = parseInt((start + end) / 2, 10);
+        const midValue = list[midIndex].bottom;
+        if (midValue === value) {
+          return midIndex + 1;
+        }
+        if (midValue < value) {
+          start = midIndex + 1;
+        } else if (midValue > value) {
+          if (tempIndex === null || tempIndex > midIndex) {
+            tempIndex = midIndex;
+          }
+          end -= 1;
+        }
+      }
+      return tempIndex;
+    } // 获取列表项的当前尺寸
+    virUpdateItemsSize() {
+      const { itemsRefs, positions } = this.virtual;
+      itemsRefs.forEach((node) => {
+        if (!node.rendered) return;
+        const rect = node.element.getBoundingClientRect();
+        const height = rect.height;
+        const index = +node.element.dataset.key.slice(1);
+        const oldHeight = positions[index].height;
+        const dValue = oldHeight - height; // 存在差值
+        if (dValue) {
+          positions[index].bottom -= dValue;
+          positions[index].height = height;
+          for (let k = index + 1; k < positions.length; k++) {
+            positions[k].top = positions[k - 1].bottom;
+            positions[k].bottom -= dValue;
+          }
+        }
+      });
+    } // 设置当前的偏移量
+    virSetStartOffset() {
+      const { start, positions } = this.virtual;
+      let startOffset;
+      if (start >= 1 && positions[start]) {
+        const size =
+          positions[start].top -
+          (positions[start - this.virAboveCount()]
+            ? positions[start - this.virAboveCount()].top
+            : 0);
+        startOffset = positions[start - 1].bottom - size;
+      } else {
+        startOffset = 0;
+      }
+      return startOffset;
+    } // 滚动事件
+    virScrollEvent() {
+      // 当前滚动位置
+      const scrollTop = this.element.scrollTop; // if (!this.virGetStartIndex(scrollTop)) return
+      this.virtual.virtualTimer && clearTimeout(this.virtual.virtualTimer);
+      this.virtual.virtualTimer = setTimeout(() => {
+        // 此时的开始索引
+        this.virtual.start = this.virGetStartIndex(scrollTop); // 此时的结束索引
+        this.virtual.end = this.virtual.start + this.virVisibleCount(); // 更新列表
+        this.virUpdated();
+      }, 100);
+    }
+    virListData() {
+      return this.virtual.listData.map((obj, index) => {
+        return Object.assign({}, obj, { _index: `_${index}` });
+      });
+    } // 可显示的列表项数
+    virVisibleCount() {
+      return Math.ceil(this.virtual.ListHeight / this.virtual.estimatedSize);
+    } // 可视区上方渲染条数
+    virAboveCount() {
+      return Math.min(
+        this.virtual.start,
+        this.virtual.bufferScale * this.virVisibleCount()
+      );
+    } // 可视区下方渲染条数
+    virBelowCount() {
+      return Math.min(
+        this.virtual.listData.length - this.virtual.end,
+        this.virtual.bufferScale * this.virVisibleCount()
+      );
+    } // 获取真实显示列表数据
+    virVisibleData() {
+      const start = this.virtual.start - this.virAboveCount();
+      const end = this.virtual.end + this.virBelowCount();
+      return this.virListData().slice(start, end);
+    }
+    /* 虚拟列表支持函数-end */ handleDrag(event) {
+      const { oldIndex, newIndex } = event;
+      this._lastDragIndex = newIndex;
+      const { data, items } = this.props;
+      const _listData = data && data.length ? data : items;
+      const _dragerItem = _listData.splice(oldIndex, 1)[0];
+      _listData.splice(newIndex, 0, _dragerItem);
+      if (this.props.sortable && this.props.sortable.onEnd) {
+        this._callHandler(this.props.sortable.onEnd);
+      }
+    }
+    getLastDragItem() {
+      if (!this._lastDragIndex) return;
+      const { data, items } = this.props;
+      const _listData = data && data.length ? data : items;
+      return _listData[this._lastDragIndex];
+    }
+  }
+  Component.register(List);
+  var AutoCompleteListItemMixin = {
+    _config: function () {
+      const { onSelect, onUnselect } = this.props;
+      this.setProps({
+        selectable: {
+          byClick: true,
+          canRevert: this.list.autoCompleteControl.props.multiple === false,
+        },
+        onSelect: () => {
+          const { autoCompleteControl } = this.list; // const selectProps = selectControl.props
+          // const autoCompleteProps = autoCompleteControl.props
+          const autoCompleteOption = {
+            value: this.props.value, // text: this.props.text,
+            option: this.props,
+          };
+          autoCompleteControl.input.update(autoCompleteOption);
+          autoCompleteControl.popup.hide(); // if (selectProps.multiple === false) {
+          //   selectControl.selectedSingle.update(selectedOption)
+          //   selectControl.popup.hide()
+          // } else {
+          //   selectControl.selectedMultiple.appendItem(selectedOption)
+          // }
+          this._callHandler(onSelect);
+        },
+        onUnselect: () => {
+          // const { selectControl } = this.list
+          // const selectProps = selectControl.props
+          // if (selectProps.multiple === true) {
+          //   selectControl.selectedMultiple.removeItem(this.key)
+          // }
+          this._callHandler(onUnselect);
+        },
+      });
+    },
+  };
+  class AutoCompleteList extends List {
+    constructor(props, ...mixins) {
+      const defaults = {
+        gutter: "x-md",
+        cols: 1,
+        optionDefaults: {
+          key() {
+            return this.props.value;
+          },
+          _config: function () {
+            this.setProps({ children: this.props.value });
+          },
+        },
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      this.autoCompleteControl = this.parent.parent.parent.autoCompleteControl;
+      this.autoCompleteControl.optionList = this;
+    }
+    _config() {
+      const { optionDefaults, options } = this.props;
+      const value = this.autoCompleteControl.props.value
+        ? this.autoCompleteControl.props.value
+        : "";
+      this.setProps({
+        items: options || [],
+        itemDefaults: n$1(null, optionDefaults, null, [
+          AutoCompleteListItemMixin,
+        ]),
+        itemSelectable: { multiple: false, byClick: true },
+        selectedItems: value,
+        onItemSelectionChange: () => {
+          this.autoCompleteControl._onValueChange();
+        },
+      });
+      super._config();
+    }
+  }
+  class AutoCompletePopup extends Popup {
+    constructor(props, ...mixins) {
+      const defaults = { autoRender: false };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      this.autoCompleteControl = this.opener.field;
+    }
+    _config() {
+      const { options } = this.props;
+      const { filterOption, value } = this.autoCompleteControl.props;
+      const opts = isFunction(filterOption)
+        ? filterOption(value || "", options)
+        : options;
+      if (opts && opts.length) {
+        this.setProps({
+          attrs: {
+            style: {
+              width: `${this.autoCompleteControl.control.offsetWidth()}px`,
+            },
+          },
+          children: {
+            component: Layout,
+            body: { children: { component: AutoCompleteList, options: opts } },
+          },
+        });
+      } else {
+        this.setProps({
+          attrs: {
+            style: {
+              width: `${this.autoCompleteControl.control.offsetWidth()}px`,
+            },
+          },
+          children: {
+            component: Layout,
+            body: {
+              // styles: {
+              //   padding: 2,
+              // },
+              children: { component: Empty },
+            },
+          },
+        });
+      }
+      super._config();
+    }
+  }
+  class AutoComplete extends Textbox {
+    constructor(props, ...mixins) {
+      const defaults = {
+        options: [],
+        debounce: true,
+        interval: 300,
+        filterOption: (value, options) =>
+          options.filter((o) => o.value.includes(value)),
+        allowClear: true,
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+      this._init.bind(this);
+      this._handleSearch.bind(this);
+      this._doSearch.bind(this);
+    }
+    _created() {
+      super._created();
+      this.placeholder = this.props.placeholder;
+      this.capsLock = false;
+      this.searchMode = false;
+      this.clearContent = true;
+    }
+    _rendered() {
+      this.input && this._init();
+      const { options } = this.props;
+      this.popup = new AutoCompletePopup({ trigger: this.control, options });
+    }
+    _remove() {
+      this.timer && clearTimeout(this.timer);
+    }
+    _config() {
+      const autoCompleteRef = this;
+      const { allowClear, options } = this.props;
+      if (allowClear) {
+        this.setProps({
+          rightIcon: {
+            component: "Icon",
+            type: "close",
+            classes: { "nom-auto-complete-clear": true },
+            onClick: ({ event }) => {
+              event.stopPropagation();
+              autoCompleteRef.clear();
+              autoCompleteRef.popup && autoCompleteRef.popup.hide();
+            },
+          },
+        });
+      }
+      if (options && this.popup) {
+        this.popup.update({ options, hidden: false });
+      }
+      super._config();
+    }
+    _init() {
+      const autoComplete = this;
+      this.input.element.addEventListener("focus", function () {
+        autoComplete.currentValue = this.value;
+        if (autoComplete.clearContent) {
+          this.placeholder = this.value;
+          this.value = "";
+        } else {
+          autoComplete.clearContent = true;
+        }
+        autoComplete.popup &&
+          autoComplete.popup.update({ options: autoComplete.props.options });
+      });
+      this.input.element.addEventListener("input", function () {
+        if (!autoComplete.capsLock) {
+          autoComplete._handleSearch(this.value);
+        }
+      });
+      this.input.element.addEventListener("blur", function () {
+        // 没有输入则需重置,此动作只能在blur事件而非change事件中进行
+        if (!autoComplete.searchMode) {
+          // 重置
+          this.value = autoComplete.currentValue;
+        }
+        this.placeholder = autoComplete.placeholder || "";
+        autoComplete.searchMode = false;
+      });
+      this.input.element.addEventListener("compositionstart", function () {
+        autoComplete.capsLock = true;
+      });
+      this.input.element.addEventListener("compositionend", function () {
+        autoComplete.capsLock = false;
+        autoComplete._handleSearch(this.value);
+      });
+    }
+    _getValue() {
+      return super._getValue();
+    }
+    _setValue(value, options) {
+      super._setValue(value, options);
+    }
+    blur() {
+      super.blur();
+    }
+    focus() {
+      this.clearContent = false;
+      super.focus();
+    }
+    _isFocus() {
+      if (!this.input) return false;
+      return document.activeElement === this.input.element;
+    }
+    _handleSearch(txt) {
+      const autoComplete = this;
+      const { debounce, interval } = this.props; // 防抖
+      this.timer && clearTimeout(this.timer);
+      if (debounce) {
+        this.timer = setTimeout(function () {
+          autoComplete._doSearch(txt);
+        }, interval);
+      } else {
+        autoComplete._doSearch(txt);
+      }
+    }
+    _doSearch(txt) {
+      this.searchMode = true;
+      const { onSearch, filterOption, options } = this.props;
+      isFunction(filterOption) &&
+        this.popup.update({ options: filterOption(txt, options) });
+      isFunction(onSearch) && onSearch({ text: txt, sender: this });
+    }
+  }
+  Component.register(AutoComplete);
+  class Avatar extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        tag: "span",
+        size: "default",
+        alt: "图片",
+        gap: 4, // 字符类型距离左右两侧边界单位像素
+        text: null, // 文本
+        icon: null, // 图标
+        src: null, // 图片地址
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const { text, icon, src, alt } = this.props;
+      this._propStyleClasses = ["size"];
+      if (src) {
+        this.setProps({
+          classes: { "avatar-image": true },
+          children: [{ tag: "img", attrs: { src, alt } }],
+        });
+      } else if (icon) {
+        this.setProps({ children: [Component.normalizeIconProps(icon)] });
+      } else {
+        this.setProps({
+          children: [
+            text && {
+              tag: "span",
+              classes: { "nom-avatar-string": true },
+              children: text,
+            },
+          ],
+        });
+      }
+    }
+    _setScale() {
+      const { gap, src, icon } = this.props;
+      if (src || icon) {
+        return;
+      }
+      const childrenWidth = this.element.lastChild.offsetWidth;
+      const nodeWidth = this.element.offsetWidth;
+      if (childrenWidth !== 0 && nodeWidth !== 0) {
+        if (gap * 2 < nodeWidth) {
+          const scale =
+            nodeWidth - gap * 2 < childrenWidth
+              ? (nodeWidth - gap * 2) / childrenWidth
+              : 1;
+          const transformString = `scale(${scale}) translateX(-50%)`;
+          const child = this.children[this.children.length - 1];
+          child.update({
+            attrs: {
+              style: {
+                "-ms-transform": transformString,
+                "-webkit-transform": transformString,
+                transform: transformString,
+              },
+            },
+          });
+        }
+      }
+    }
+    _rendered() {
+      this._setScale();
+    }
+  }
+  Component.register(Avatar);
+  class AvatarGroup extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        tag: "div",
+        size: "default", // 通过设置 mode 可以改变时间轴和内容的相对位置 left | alternate | right
+        maxCount: null, // 显示的最大头像个数
+        maxPopoverPlacement: "top", // 多余头像气泡弹出位置
+        items: [], // 子元素项列表
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const {
+        size,
+        items,
+        maxCount,
+        maxPopoverPlacement,
+        itemDefaults,
+      } = this.props; // 赋size值
+      const avatars = items.map((item) => {
+        return Object.assign({ component: Avatar, size }, itemDefaults, item);
+      });
+      const numOfChildren = avatars.length;
+      if (maxCount && maxCount < numOfChildren) {
+        const childrenShow = avatars.slice(0, maxCount);
+        const childrenHidden = avatars.slice(maxCount, numOfChildren);
+        childrenShow.push(
+          Object.assign(
+            { component: Avatar, text: `+${numOfChildren - maxCount}`, size },
+            itemDefaults,
+            {
+              popup: {
+                triggerAction: "hover",
+                align: maxPopoverPlacement,
+                children: childrenHidden,
+                attrs: { style: { padding: "8px 12px" } },
+              },
+            }
+          )
+        );
+        this.setProps({ children: childrenShow });
+      } else {
+        this.setProps({ children: avatars });
+      }
+    }
+  }
+  Component.register(AvatarGroup);
+  /* eslint-disable no-return-assign */ /* eslint-disable no-restricted-properties */ /*
+   * Tween.js
+   * t: current time（当前时间）
+   * b: beginning value（初始值）
+   * c: change in value（变化量）
+   * d: duration（持续时间）
+   */ const Tween = {
+    Linear: function (t, b, c, d) {
+      return (c * t) / d + b;
+    },
+    Quad: {
+      easeIn: function (t, b, c, d) {
+        return c * (t /= d) * t + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return -c * (t /= d) * (t - 2) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if ((t /= d / 2) < 1) return (c / 2) * t * t + b;
+        return (-c / 2) * (--t * (t - 2) - 1) + b;
+      },
+    },
+    Cubic: {
+      easeIn: function (t, b, c, d) {
+        return c * (t /= d) * t * t + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t + 1) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if ((t /= d / 2) < 1) return (c / 2) * t * t * t + b;
+        return (c / 2) * ((t -= 2) * t * t + 2) + b;
+      },
+    },
+    Quart: {
+      easeIn: function (t, b, c, d) {
+        return c * (t /= d) * t * t * t + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return -c * ((t = t / d - 1) * t * t * t - 1) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if ((t /= d / 2) < 1) return (c / 2) * t * t * t * t + b;
+        return (-c / 2) * ((t -= 2) * t * t * t - 2) + b;
+      },
+    },
+    Quint: {
+      easeIn: function (t, b, c, d) {
+        return c * (t /= d) * t * t * t * t + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if ((t /= d / 2) < 1) return (c / 2) * t * t * t * t * t + b;
+        return (c / 2) * ((t -= 2) * t * t * t * t + 2) + b;
+      },
+    },
+    Sine: {
+      easeIn: function (t, b, c, d) {
+        return -c * Math.cos((t / d) * (Math.PI / 2)) + c + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return c * Math.sin((t / d) * (Math.PI / 2)) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        return (-c / 2) * (Math.cos((Math.PI * t) / d) - 1) + b;
+      },
+    },
+    Expo: {
+      easeIn: function (t, b, c, d) {
+        return t === 0 ? b : c * Math.pow(2, 10 * (t / d - 1)) + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return t === d ? b + c : c * (-Math.pow(2, (-10 * t) / d) + 1) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if (t === 0) return b;
+        if (t === d) return b + c;
+        if ((t /= d / 2) < 1) return (c / 2) * Math.pow(2, 10 * (t - 1)) + b;
+        return (c / 2) * (-Math.pow(2, -10 * --t) + 2) + b;
+      },
+    },
+    Circ: {
+      easeIn: function (t, b, c, d) {
+        return -c * (Math.sqrt(1 - (t /= d) * t) - 1) + b;
+      },
+      easeOut: function (t, b, c, d) {
+        return c * Math.sqrt(1 - (t = t / d - 1) * t) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if ((t /= d / 2) < 1) return (-c / 2) * (Math.sqrt(1 - t * t) - 1) + b;
+        return (c / 2) * (Math.sqrt(1 - (t -= 2) * t) + 1) + b;
+      },
+    },
+    Elastic: {
+      easeIn: function (t, b, c, d, a, p) {
+        let s;
+        if (t === 0) return b;
+        if ((t /= d) === 1) return b + c;
+        if (typeof p === "undefined") p = d * 0.3;
+        if (!a || a < Math.abs(c)) {
+          s = p / 4;
+          a = c;
+        } else {
+          s = (p / (2 * Math.PI)) * Math.asin(c / a);
+        }
+        return (
+          -(
+            a *
+            Math.pow(2, 10 * (t -= 1)) *
+            Math.sin(((t * d - s) * (2 * Math.PI)) / p)
+          ) + b
+        );
+      },
+      easeOut: function (t, b, c, d, a, p) {
+        let s;
+        if (t === 0) return b;
+        if ((t /= d) === 1) return b + c;
+        if (typeof p === "undefined") p = d * 0.3;
+        if (!a || a < Math.abs(c)) {
+          a = c;
+          s = p / 4;
+        } else {
+          s = (p / (2 * Math.PI)) * Math.asin(c / a);
+        }
+        return (
+          a *
+            Math.pow(2, -10 * t) *
+            Math.sin(((t * d - s) * (2 * Math.PI)) / p) +
+          c +
+          b
+        );
+      },
+      easeInOut: function (t, b, c, d, a, p) {
+        let s;
+        if (t === 0) return b;
+        if ((t /= d / 2) === 2) return b + c;
+        if (typeof p === "undefined") p = d * (0.3 * 1.5);
+        if (!a || a < Math.abs(c)) {
+          a = c;
+          s = p / 4;
+        } else {
+          s = (p / (2 * Math.PI)) * Math.asin(c / a);
+        }
+        if (t < 1)
+          return (
+            -0.5 *
+              (a *
+                Math.pow(2, 10 * (t -= 1)) *
+                Math.sin(((t * d - s) * (2 * Math.PI)) / p)) +
+            b
+          );
+        return (
+          a *
+            Math.pow(2, -10 * (t -= 1)) *
+            Math.sin(((t * d - s) * (2 * Math.PI)) / p) *
+            0.5 +
+          c +
+          b
+        );
+      },
+    },
+    Back: {
+      easeIn: function (t, b, c, d, s) {
+        if (typeof s === "undefined") s = 1.70158;
+        return c * (t /= d) * t * ((s + 1) * t - s) + b;
+      },
+      easeOut: function (t, b, c, d, s) {
+        if (typeof s === "undefined") s = 1.70158;
+        return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
+      },
+      easeInOut: function (t, b, c, d, s) {
+        if (typeof s === "undefined") s = 1.70158;
+        if ((t /= d / 2) < 1)
+          return (c / 2) * (t * t * (((s *= 1.525) + 1) * t - s)) + b;
+        return (c / 2) * ((t -= 2) * t * (((s *= 1.525) + 1) * t + s) + 2) + b;
+      },
+    },
+    Bounce: {
+      easeIn: function (t, b, c, d) {
+        return c - Tween.Bounce.easeOut(d - t, 0, c, d) + b;
+      },
+      easeOut: function (t, b, c, d) {
+        if ((t /= d) < 1 / 2.75) {
+          return c * (7.5625 * t * t) + b;
+        }
+        if (t < 2 / 2.75) {
+          return c * (7.5625 * (t -= 1.5 / 2.75) * t + 0.75) + b;
+        }
+        if (t < 2.5 / 2.75) {
+          return c * (7.5625 * (t -= 2.25 / 2.75) * t + 0.9375) + b;
+        }
+        return c * (7.5625 * (t -= 2.625 / 2.75) * t + 0.984375) + b;
+      },
+      easeInOut: function (t, b, c, d) {
+        if (t < d / 2) {
+          return Tween.Bounce.easeIn(t * 2, 0, c, d) * 0.5 + b;
+        }
+        return Tween.Bounce.easeOut(t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b;
+      },
+    },
+  };
+  class BackTop extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        duration: 100,
+        animations: "Linear",
+        target: "window",
+        height: 400,
+        right: 30,
+        bottom: 30,
+        text: "",
+        parent: "",
+        onClick: () => {},
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      const { parent, target } = this.props;
+      if (target === "window") {
+        this.parentNode = document.documentElement || document.body;
+        this.bindEle = window;
+      } else if (this.hasClass(parent.element, target)) {
+        this.parentNode = parent.element;
+        this.bindEle = this.parentNode;
+      } else {
+        this.parentNode = parent.element.getElementsByClassName(target)[0];
+        this.bindEle = this.parentNode;
+      }
+      const parentRemoveClone = parent._remove;
+      parent._remove = () => {
+        parentRemoveClone();
+        this.remove();
+      };
+      this.once = true;
+      this.onWindowScroll = () => {
+        this.backTopFun();
+      };
+      this.initRequestAnimationFrame();
+    }
+    _config() {
+      const { right, bottom } = this.props;
+      this.setProps({
+        children: {
+          ref: (c) => {
+            this.backTopRef = c;
+          },
+          classes: { "nom-back-top-container": true },
+          attrs: { style: { right: `${right}px`, bottom: `${bottom}px` } },
+          children: this.backTopButton(),
+          onClick: () => {
+            this.backTopEvent();
+          },
+        },
+      });
+    }
+    _rendered() {
+      this.bindEle.addEventListener("scroll", this.onWindowScroll);
+    }
+    _remove() {
+      this.bindEle.removeEventListener("scroll", this.onWindowScroll);
+    }
+    backTopFun() {
+      const { height } = this.props;
+      if (this.once === true) {
+        this.once = false;
+        this.iconRef.update();
+        if (this.bindEle === window) {
+          this.parentNode.appendChild(this.backTopRef.element);
+          this.backTopRef.element.style.position = "fixed";
+        } else {
+          this.parentNode.parentElement.style.position = "relative";
+          this.parentNode.parentElement.appendChild(this.backTopRef.element);
+        }
+      }
+      if (this.parentNode.scrollTop >= height) {
+        this.backTopRef.show();
+      } else {
+        this.backTopRef.hide();
+      }
+    }
+    hasClass(ele, className) {
+      const reg = new RegExp(`(^|\\s)${className}(\\s|$)`);
+      return reg.test(ele.className);
+    }
+    backTopButton() {
+      const { text } = this.props;
+      let obj;
+      if (text.length > 0) {
+        obj = {
+          ref: (c) => {
+            this.iconRef = c;
+          },
+          classes: { "nom-back-top-text": true },
+          autoRender: false,
+          children: text,
+        };
+      } else {
+        obj = {
+          ref: (c) => {
+            this.iconRef = c;
+          },
+          classes: { "nom-back-top-icons": true },
+          autoRender: false,
+          component: "Icon",
+          type: "up",
+        };
+      }
+      return obj;
+    }
+    initRequestAnimationFrame() {
+      let lastTime = 0;
+      const vendors = ["webkit", "moz"];
+      for (
+        let x = 0;
+        x < vendors.length && !window.requestAnimationFrame;
+        ++x
+      ) {
+        window.requestAnimationFrame =
+          window[`${vendors[x]}RequestAnimationFrame`];
+        window.cancelAnimationFrame =
+          window[`${vendors[x]}CancelAnimationFrame`] ||
+          window[`${vendors[x]}CancelRequestAnimationFrame`];
+      }
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = function (callback) {
+          const currTime = new Date().getTime();
+          const timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
+          const id = window.setTimeout(function () {
+            callback(currTime + timeToCall);
+          }, timeToCall);
+          lastTime = currTime + timeToCall;
+          return id;
+        };
+      }
+      if (!window.cancelAnimationFrame) {
+        window.cancelAnimationFrame = function (id) {
+          clearTimeout(id);
+        };
+      }
+    }
+    backTopEvent() {
+      const { animations, duration } = this.props;
+      const element = this.parentNode;
+      let start = 0;
+      const begin = element.scrollTop;
+      const end = -element.scrollTop;
+      const during = Math.round((duration * 10) / 167);
+      const paramArry = animations.split(".");
+      const scrollAnimation = function () {
+        if (element.scrollTop === 0) return false;
+        let top; // 当前的运动位置
+        if (paramArry[1]) {
+          top = Tween[paramArry[0]][paramArry[1]](start, begin, end, during);
+        } else {
+          top = Tween[paramArry[0]](start, begin, end, during);
+        }
+        element.scrollTop = top; // 时间递增
+        start++; // 如果还没有运动到位，继续
+        if (start <= during && element.scrollTop !== 0) {
+          requestAnimationFrame(scrollAnimation);
+        }
+      };
+      if (element) scrollAnimation();
+    }
+  }
+  Component.mixin({
+    _rendered: function () {
+      if (this.props.backtop) {
+        this.backtop = new BackTop(
+          Component.extendProps({}, this.props.backtop, { parent: this })
+        );
+      }
+    },
+  });
+  Component.register(BackTop);
+  class Badge extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        key: null,
+        tag: "span",
+        type: "round",
+        text: null,
+        icon: null,
+        number: null,
+        overflowCount: 99,
+        size: "xs",
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      this._propStyleClasses = ["size", "color"];
+      const { icon, text, type, number, overflowCount } = this.props;
+      if (icon) {
+        this.setProps({ classes: { "p-with-icon": true } });
+      }
+      if (type === "round") {
+        this.setProps({ classes: { "u-shape-round": true } });
+      } else if (type === "dot") {
+        if (number > 0) {
+          this.setProps({ classes: { "p-with-number": true } });
+        }
+      }
+      this.setProps({
+        children: [
+          Component.normalizeIconProps(icon),
+          { tag: "span", children: text },
+          number && {
+            tag: "span",
+            children: number > overflowCount ? `${overflowCount}+` : number,
+          },
+        ],
+      });
+    }
+    _disable() {
+      this.element.setAttribute("disabled", "disabled");
+    }
+  }
+  Component.mixin({
+    _config: function () {
+      if (this.props.badge) {
+        this.setProps({ classes: { "s-with-badge": true } });
+      }
+    },
+    _rendered: function () {
+      if (this.props.badge) {
+        const badgeProps = { type: "dot" };
+        badgeProps.number = this.props.badge.number
+          ? this.props.badge.number
+          : null;
+        badgeProps.overflowCount = this.props.badge.overflowCount
+          ? this.props.badge.overflowCount
+          : 99;
+        badgeProps.styles = this.props.badge.styles
+          ? this.props.badge.styles
+          : { color: "danger" };
+        this.props.badge = badgeProps;
+        this.badge = new Badge(
+          Component.extendProps({ reference: this }, this.props.badge)
+        );
+      }
+    },
+  });
+  Component.register(Badge);
+  class BreadcrumbItem extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { tag: "span", url: null };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      // const that = this
+      // const { icon, rightIcon, separator, url, text, overlay } = this.props
+      const { icon, rightIcon, separator, url, text } = this.props;
+      if (icon || rightIcon) {
+        this.setProps({ classes: { "p-with-icon": true } });
+        if (!text) {
+          this.setProps({ classes: { "p-only-icon": true } });
+        }
+      } // if (isNotEmptyArray(overlay)) {
+      //   this.setProps({
+      //     popup: {
+      //       triggerAction: 'hover',
+      //       aligin: 'left bottom',
+      //       children: {
+      //         component: BreadcrumbSub,
+      //         items: overlay,
+      //       },
+      //     },
+      //   })
+      // }
+      this.setProps({
+        children: [
+          Component.normalizeIconProps(icon),
+          {
+            tag: "span",
+            classes: { "nom-breadcrumb-link": true },
+            children: url
+              ? { tag: "a", attrs: { href: url }, children: text }
+              : text,
+          },
+          Component.normalizeIconProps(rightIcon),
+          {
+            tag: "span",
+            classes: { "nom-breadcrumb-separator": true },
+            children: separator,
+          },
+        ],
+      });
+    }
+  }
+  Component.register(BreadcrumbItem);
+  class Breadcrumb extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        separator: "/",
+        itemDefaults: { component: BreadcrumbItem },
+      };
+      super(Component.extendProps(defaults, props), mixins);
+    }
+    _config() {
+      const { separator, items, itemDefaults } = this.props;
+      const children = isNotEmptyArray(items)
+        ? items.map((item, idx) => {
+            const isLeaf = idx === items.length - 1;
+            return Object.assign(
+              {},
+              Component.extendProps({ separator, isLeaf }, itemDefaults, item)
+            );
+          })
+        : [];
+      this.setProps({ children, attrs: { style: { padding: "10px 15px" } } });
+    }
+  }
+  Component.register(Breadcrumb);
+  class Carousel extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        imgs: [],
+        height: 100,
+        arrows: false,
+        autoplay: false,
+        autoplaySpeed: 1000,
+        speed: 300,
+        dots: true,
+        defaultActiveIndex: 1,
+        easing: "linear",
+        pauseOnHover: true,
+        triggerType: "click",
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      const { imgs, defaultActiveIndex } = this.props;
+      const cloneImgs = [...imgs];
+      cloneImgs.push(imgs[0]);
+      this.loopImgs = cloneImgs;
+      this.positions = [
+        // {
+        //   left:0,
+        //   width:100
+        // }
+      ];
+      this.activeId = defaultActiveIndex;
+      this.activeIdOld = defaultActiveIndex;
+      this.sildeRefs = [];
+      this.dotsRef = [];
+      this.slideWidth = null;
+      this.autoplayInterval = null;
+    }
+    _config() {
+      this.setProps({
+        children: {
+          ref: (c) => {
+            this.containerRef = c;
+          },
+          classes: { "nom-carousel-container": true },
+          children: [
+            {
+              ref: (c) => {
+                this.wrapperRef = c;
+              },
+              classes: { "nom-carousel-wrapper": true },
+              children: this.slideList(),
+            },
+            {
+              ref: (c) => {
+                this.paginationRef = c;
+              },
+              classes: {
+                "nom-carousel-pagination": true,
+                "nom-carousel-pagination-show": this.props.dots,
+              },
+              children: this.paginationList(),
+            },
+            {
+              classes: {
+                "nom-carousel-buttons": true,
+                "nom-carousel-buttons-show": this.props.arrows,
+              },
+              children: [
+                {
+                  classes: { "nom-carousel-button-prev": true },
+                  onClick: () => {
+                    this.prevClick();
+                  },
+                  component: "Icon",
+                  type: "left",
+                },
+                {
+                  classes: { "nom-carousel-button-next": true },
+                  onClick: () => {
+                    this.nextClick();
+                  },
+                  component: "Icon",
+                  type: "right",
+                },
+              ],
+            },
+          ],
+        },
+      });
+    }
+    _rendered() {
+      const {
+        autoplay,
+        autoplaySpeed,
+        pauseOnHover,
+        defaultActiveIndex,
+        triggerType,
+      } = this.props;
+      this.initPositions(); // 是否自动播放
+      if (autoplay) {
+        this.autoplayInterval = setInterval(() => {
+          this.nextClick();
+        }, autoplaySpeed);
+      } // 在鼠标悬浮时自动停止轮播
+      if (pauseOnHover) {
+        this.containerRef.element.addEventListener("mouseover", () => {
+          clearInterval(this.autoplayInterval);
+        });
+        this.containerRef.element.addEventListener("mouseout", () => {
+          if (autoplay) {
+            this.autoplayInterval = setInterval(() => {
+              this.nextClick();
+            }, autoplaySpeed);
+          }
+        });
+      } // 初始被激活的轮播图
+      setTimeout(() => {
+        this.paginationClick(defaultActiveIndex);
+      }, 500); // 锚点导航触发方式
+      if (triggerType === "hover") {
+        this.dotsRef.forEach((item) => {
+          item.element.onmouseenter = (e) => {
+            const target = e.target;
+            if (target.nodeName === "SPAN") {
+              this.paginationClick(target.dataset.index);
+            }
+          };
+        });
+      } else {
+        this.paginationRef.element.addEventListener("click", (e) => {
+          const target = e.target;
+          if (target.nodeName === "SPAN") {
+            this.paginationClick(target.dataset.index);
+          }
+        });
+      }
+    }
+    _remove() {
+      clearInterval(this.autoplayInterval);
+    }
+    slideList() {
+      const _that = this;
+      return this.loopImgs.map(function (item) {
+        return {
+          ref: (c) => {
+            if (c) _that.sildeRefs.push(c);
+          },
+          classes: { "nom-carousel-slide": true },
+          attrs: { style: { height: `${_that.props.height}px` } },
+          children: { tag: "img", attrs: { src: item }, children: "" },
+        };
+      });
+    }
+    paginationList() {
+      const _that = this;
+      return this.props.imgs.map(function (d, index) {
+        return {
+          ref: (c) => {
+            if (c) _that.dotsRef.push(c);
+          },
+          classes: {
+            "nom-carousel-pagination-bullet": true,
+            "nom-carousel-pagination-bullet-active":
+              index === _that.defaultActiveIndex - 1,
+          },
+          tag: "span",
+          attrs: { "data-index": index + 1 },
+          children: index + 1,
+        };
+      });
+    }
+    paginationClick(index) {
+      this.activeId = index;
+      this.animate("pagination");
+    }
+    prevClick() {
+      this.activeId -= 1;
+      if (this.activeId <= 0) {
+        this.activeId = this.loopImgs.length - 1;
+      }
+      this.animate();
+    }
+    nextClick() {
+      this.activeId += 1;
+      if (this.activeId > this.loopImgs.length) {
+        this.activeId = 2;
+      }
+      this.animate();
+    }
+    animate(val) {
+      this.updateSlideSize();
+      if (
+        this.activeId === this.loopImgs.length - 1 &&
+        this.activeIdOld === 1 &&
+        val !== "pagination"
+      ) {
+        // 首去末
+        this.wrapperRef.element.setAttribute(
+          "style",
+          `transform:translate3d(${-this.positions[this.loopImgs.length - 1]
+            .left}px, 0, 0);transition: transform 0ms;`
+        );
+        setTimeout(() => {
+          this.wrapperRef.element.setAttribute(
+            "style",
+            `transform:translate3d(${-this.positions[this.loopImgs.length - 2]
+              .left}px, 0, 0);transition: transform ${this.props.speed}ms ${
+              this.props.easing
+            };`
+          );
+        }, 0);
+      } else {
+        this.wrapperRef.element.setAttribute(
+          "style",
+          `transform:translate3d(${-this.positions[this.activeId - 1]
+            .left}px, 0, 0);transition: transform ${this.props.speed}ms ${
+            this.props.easing
+          };`
+        );
+      } // 分页器
+      this.dotsRef[this.activeIdOld - 1].element.classList.remove(
+        "nom-carousel-pagination-bullet-active"
+      );
+      if (this.activeId === this.loopImgs.length) {
+        // 末去首
+        this.dotsRef[0].element.classList.add(
+          "nom-carousel-pagination-bullet-active"
+        );
+        this.activeIdOld = 1;
+        setTimeout(() => {
+          this.wrapperRef.element.setAttribute(
+            "style",
+            `transform:translate3d(0, 0, 0);transition: transform 0ms;`
+          );
+        }, 300);
+      } else {
+        this.dotsRef[this.activeId - 1].element.classList.add(
+          "nom-carousel-pagination-bullet-active"
+        );
+        this.activeIdOld = this.activeId;
+      }
+    } // 初始设置值
+    initPositions() {
+      this.positions = this.loopImgs.map(() => ({ left: 0, width: 0 }));
+    } // 更新
+    updateSlideSize() {
+      const nodes = this.sildeRefs;
+      let firstLeft = 0;
+      if (this.slideWidth === nodes[0].element.getBoundingClientRect().width)
+        return;
+      nodes.forEach((node, index) => {
+        if (!node.rendered) return;
+        const rect = node.element.getBoundingClientRect();
+        this.positions[index].width = rect.width;
+        if (index === 0) {
+          this.positions[index].left = 0;
+          firstLeft = rect.left;
+          this.slideWidth = rect.width;
+        } else {
+          this.positions[index].left = rect.left - firstLeft;
+        }
+      });
+    }
+  }
+  Component.register(Carousel);
+  class CascaderList extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {};
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this._timer = null;
+      this._clickedKey = null;
+      this._clickTime = null;
+      this.cascaderControl = this.parent.parent.parent.cascaderControl;
+      this.cascaderControl.optionList = this;
+    }
+    _remove() {
+      this._timer && clearTimeout(this._timer);
+    }
+    _config() {
+      const { popMenu } = this.props;
+      const value = this.cascaderControl.selectedOption.map((e) => e.key);
+      this.selected = [];
+      this.setProps({
+        children: popMenu
+          ? popMenu.map((menu, index) => {
+              return this.getMenuItems(menu, value[index]);
+            })
+          : null,
+      });
+      super._config();
+    } // 处理非叶子节点点击事件
+    _handleNoLeafClick(key) {
+      const cascaderList = this;
+      const changeOnSelect = this.cascaderControl.props.changeOnSelect;
+      if (changeOnSelect) {
+        const triggerTime = Date.now();
+        let interval = Number.MAX_SAFE_INTEGER;
+        if (key === this._clickedKey && isNumeric(this._clickTime)) {
+          interval = triggerTime - this._clickTime;
+        }
+        this._clickTime = triggerTime;
+        this._clickedKey = key;
+        if (interval < 300) {
+          // 双击事件
+          cascaderList.cascaderControl._itemSelected(key, true);
+          this._timer && clearTimeout(this._timer);
+        } else {
+          // 单击事件
+          this._timer = setTimeout(() => {
+            cascaderList.cascaderControl._itemSelected(key, true, false);
+          }, 300);
+        }
+      } else {
+        // 单击
+        cascaderList.cascaderControl._itemSelected(key);
+      }
+    }
+    getMenuItems(menu, currentVal) {
+      const cascaderList = this;
+      if (!menu) {
+        return null;
+      }
+      return {
+        tag: "ul",
+        classes: { "nom-cascader-menu": true },
+        children: menu.map((item) => {
+          if (item.children) {
+            return {
+              tag: "li",
+              _rendered() {
+                item.key === currentVal && cascaderList.selected.push(this);
+              },
+              classes: {
+                "nom-cascader-menu-item": true,
+                "nom-cascader-menu-item-active": item.key === currentVal,
+              },
+              onClick: () => {
+                // cascaderList.cascaderControl._itemSelected(item.key)
+                cascaderList._handleNoLeafClick(item.key);
+              },
+              children: [
+                { tag: "span", children: item.label },
+                {
+                  component: Icon,
+                  type: "right",
+                  classes: { "nom-cascader-menu-item-expand-icon": true },
+                },
+              ],
+            };
+          }
+          return {
+            tag: "li",
+            _rendered() {
+              item.key === currentVal && cascaderList.selected.push(this);
+            },
+            classes: {
+              "nom-cascader-menu-item": true,
+              "nom-cascader-menu-item-active": item.key === currentVal,
+            },
+            onClick: () => {
+              cascaderList.cascaderControl._itemSelected(item.key, true);
+            },
+            children: [{ tag: "span", children: item.label }],
+          };
+        }),
+      };
+    }
+  }
+  class CascaderPopup extends Popup {
+    constructor(props, ...mixins) {
+      const defaults = {};
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      this.cascaderControl = this.opener.field;
+    }
+    _config() {
+      const { popMenu } = this.props;
+      if (popMenu && popMenu.length) {
+        this.setProps({
+          children: {
+            classes: { "nom-cascader-pop-container": true },
+            component: Layout,
+            body: { children: { component: CascaderList, popMenu } },
+          },
+        });
+      } else {
+        this.setProps({
+          children: {
+            styles: { padding: 2 },
+            component: Layout,
+            body: { children: { component: Empty } },
+          },
+        });
+      }
+      super._config();
+    }
+  }
+  Component.register(CascaderPopup);
+  class Cascader extends Field {
+    constructor(props, ...mixins) {
+      const defaults = {
+        options: [],
+        showArrow: true,
+        separator: " / ",
+        fieldsMapping: { label: "label", value: "value", children: "children" },
+        valueType: "cascade",
+        changeOnSelect: false,
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _rendered() {
+      const cascader = this;
+      this.popup = new CascaderPopup({
+        trigger: this.control,
+        popMenu: this.getSelectedMenu(),
+        onShow: () => {
+          const { optionList } = cascader;
+          if (
+            optionList &&
+            optionList.selected &&
+            optionList.selected.length > 0
+          ) {
+            optionList.selected.forEach((item) => {
+              item.element.scrollIntoView({
+                behavior: "auto",
+                scrollMode: "if-needed",
+              });
+            });
+          }
+        },
+      });
+      this._valueChange({ newValue: this.currentValue });
+    }
+    _created() {
+      super._created();
+      this._hidePopup = true;
+    }
+    _config() {
+      const cascader = this;
+      const children = [];
+      const { showArrow, placeholder, separator, valueType } = this.props;
+      const { value, options } = this.props;
+      this.internalOption = JSON.parse(JSON.stringify(options)); // this.handleOptions(this.internalOption, fieldsMapping)
+      this._normalizeInternalOptions(options);
+      this.flatItems(this.internalOption);
+      this.initValue = isFunction(value) ? value() : value;
+      this.selectedOption = [];
+      this.handleOptionSelected(this.initValue);
+      this.currentValue = this.initValue;
+      this.checked = true;
+      children.push({
+        classes: { "nom-cascader-content": true },
+        _created() {
+          cascader.content = this;
+        },
+        _config() {
+          const selectedOpt = cascader.selectedOption;
+          let c;
+          if (selectedOpt.length === 0) {
+            c = null;
+          } else {
+            c =
+              valueType === "cascade"
+                ? selectedOpt.map((e) => e.label).join(separator)
+                : selectedOpt[selectedOpt.length - 1].label;
+          }
+          this.setProps({ children: c });
+        },
+      });
+      if (isString(placeholder)) {
+        children.push({
+          _created() {
+            cascader.placeholder = this;
+          },
+          classes: { "nom-cascader-placeholder": true },
+          children: placeholder,
+        });
+      }
+      if (showArrow) {
+        children.push({
+          component: Icon,
+          type: "down",
+          classes: { "nom-cascader-icon": true },
+          _created() {
+            cascader.down = this;
+          },
+        });
+      }
+      children.push({
+        component: Icon,
+        type: "close",
+        classes: { "nom-cascader-icon": true },
+        hidden: true,
+        _created() {
+          cascader.close = this;
+        },
+        onClick: ({ event }) => {
+          event.stopPropagation();
+          if (this.selectedOption.length === 0) return;
+          this.selectedOption = [];
+          this.checked = true;
+          this.popup.update({ popMenu: this.getSelectedMenu() });
+          this._onValueChange();
+        },
+      });
+      this.setProps({
+        control: { children },
+        attrs: {
+          onmouseover() {
+            cascader.close.show();
+            showArrow && cascader.down.hide();
+          },
+          onmouseleave() {
+            showArrow && cascader.down.show();
+            cascader.close.hide();
+          },
+        },
+      });
+      super._config();
+    }
+    _normalizeInternalOptions(options) {
+      if (!Array.isArray(options) || !options.length) return options;
+      const { fieldsMapping } = this.props;
+      const { children } = this.props.fieldsMapping;
+      this.internalOption = clone$1(options);
+      this.internalOption = this._filterEmptyChild(options, children);
+      this.handleOptions(this.internalOption, fieldsMapping);
+    }
+    _filterEmptyChild(options, childrenMapping) {
+      return options.map((option) => {
+        if (
+          Array.isArray(option[childrenMapping]) &&
+          option[childrenMapping].length
+        ) {
+          return Object.assign({}, option, {
+            childrenMapping: this._filterEmptyChild(
+              option[childrenMapping],
+              childrenMapping
+            ),
+          });
+        }
+        option[childrenMapping] = null;
+        return option;
+      });
+    }
+    _itemSelected(selectedKey, checked = false, hidePopup = true) {
+      if (!this.items) return;
+      this.selectedOption = [];
+      let recur = this.items.get(selectedKey);
+      while (recur) {
+        this.selectedOption.unshift(recur);
+        recur = this.items.get(recur.pid);
+      } // this.checked = checked
+      this.checked = checked;
+      this._hidePopup = hidePopup;
+      const selectedItem = this.items.get(selectedKey);
+      if (!selectedItem) return;
+      if (
+        (this.checked && this.triggerChange(selectedItem.value)) ||
+        this.props.changeOnSelect
+      ) {
+        this._onValueChange();
+      }
+      this.popup.update({ popMenu: this.getSelectedMenu() });
+    }
+    _valueChange(changed) {
+      if (this.placeholder) {
+        if (
+          (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
+          !changed.newValue
+        ) {
+          this.placeholder.show();
+        } else {
+          this.placeholder.hide();
+        }
+      }
+      this.content && this.content.update();
+      this.popup && this._hidePopup && this.popup.hide();
+    }
+    _getValue() {
+      if (!this.checked) {
+        return this.currentValue;
+      }
+      if (this.props.valueType === "cascade") {
+        const result = this.selectedOption.map((e) => e.value);
+        return result.length ? result : null;
+      }
+      return this.selectedOption.length
+        ? this.selectedOption[this.selectedOption.length - 1].value
+        : null;
+    }
+    _setValue(value) {
+      if (this.triggerChange(value)) {
+        this.handleOptionSelected(value);
+        this._onValueChange();
+      }
+    }
+    _onValueChange() {
+      const that = this;
+      this.oldValue = clone$1(this.currentValue);
+      this.currentValue = clone$1(this.getValue());
+      this.props.value = this.currentValue;
+      const changed = {
+        name: this.props.name,
+        oldValue: this.oldValue,
+        newValue: this.currentValue,
+        checkedOption:
+          this.props.valueType === "cascade"
+            ? this.selectedOption
+            : this.selectedOption[this.selectedOption.length - 1],
+      };
+      setTimeout(function () {
+        that._callHandler(that.props.onValueChange, changed);
+        that.group && that.group._onValueChange(changed);
+        isFunction(that._valueChange) && that._valueChange(changed);
+        if (that.validateTriggered) {
+          that._validate();
+        }
+      }, 0);
+    }
+    triggerChange(value) {
+      if (!value || !this.currentValue || !Array.isArray(value))
+        return value !== this.currentValue;
+      return this.currentValue.toString() !== value.toString();
+    }
+    handleOptions(options, fieldsMapping) {
+      const {
+        key: keyField,
+        label: labelField,
+        value: valueField,
+        children: childrenField,
+      } = fieldsMapping;
+      const key = keyField || valueField;
+      if (!Array.isArray(options)) return [];
+      const internalOption = options;
+      for (let i = 0; i < internalOption.length; i++) {
+        const item = internalOption[i];
+        item.label = item[labelField];
+        item.value = item[valueField];
+        item.key = item[key];
+        item.children = item[childrenField];
+        if (Array.isArray(item.children) && item.children.length > 0) {
+          this.handleOptions(item.children, fieldsMapping);
+        }
+      }
+    }
+    flatItems(options, level = 0, pid = null) {
+      if (!options || !Array.isArray(options)) {
+        return null;
+      }
+      if (level === 0) {
+        this.items = new Map();
+      }
+      for (let i = 0; i < options.length; i++) {
+        const { key, value, label, children } = options[i];
+        this.items.set(key, { key, label, value, pid, level, leaf: !children });
+        if (children) {
+          this.flatItems(children, level + 1, key);
+        }
+      }
+    }
+    handleOptionSelected(value) {
+      let key = null;
+      const { valueType } = this.props;
+      this.checked = false;
+      const oldCheckedOption = this.selectedOption;
+      this.selectedOption = [];
+      if (!value) this.checked = true;
+      if (!this.items || this.items.size === 0) return;
+      if (valueType === "single") {
+        for (const v of this.items.values()) {
+          if (v.leaf && v.value === value) {
+            key = v.key;
+          }
+        }
+        if (!key) return;
+        while (key) {
+          this.selectedOption.unshift(this.items.get(key));
+          key = this.items.get(key).pid;
+        }
+      } else {
+        if (!Array.isArray(value)) return;
+        let opt = null;
+        let options = this.internalOption;
+        for (let i = 0; i < value.length; i++) {
+          opt = options ? options.find((e) => e.value === value[i]) : null;
+          if (!opt) {
+            this.selectedOption = oldCheckedOption;
+            return;
+          }
+          this.selectedOption.push(this.items.get(opt.key));
+          options = opt.children;
+        }
+      }
+      this.checked = true;
+      if (this.popup) this.popup.update({ popMenu: this.getSelectedMenu() });
+      if (this.content) this.content.update();
+    }
+    getSelectedMenu() {
+      if (!this.selectedOption) {
+        return null;
+      }
+      const val = this.selectedOption.map((e) => e.value);
+      const internalOption = this.internalOption;
+      let recur = internalOption;
+      const options =
+        internalOption && internalOption.length ? [internalOption] : [];
+      for (let i = 0; i < val.length; i++) {
+        for (let j = 0; j < recur.length; j++) {
+          if (val[i] === recur[j].value) {
+            if (recur[j].children) {
+              options.push([...recur[j].children]);
+              recur = recur[j].children;
+              break;
+            }
+          }
+        }
+      }
+      return options;
+    }
+  }
+  Component.register(Cascader);
+  class Checkbox extends Field {
+    constructor(props, ...mixins) {
+      const defaults = { text: null };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const that = this;
+      this.setProps({
+        classes: {
+          "s-checked-part": !this.props.value && this.props.partChecked,
+        },
+        control: {
+          tag: "label",
+          children: [
+            {
+              tag: "input",
+              attrs: {
+                type: "checkbox",
+                checked: this.props.value,
+                onchange() {
+                  that.removeClass("s-checked-part");
+                  that._onValueChange();
+                },
+              },
+              _created() {
+                that.input = this;
+              },
+            },
+            { tag: "span" },
+            {
+              tag: "span",
+              classes: {
+                "checkbox-text": true,
+                "checkbox-text-none": !this.props.text,
+              },
+              children: this.props.text || "",
+            },
+          ],
+        },
+      });
+      super._config();
+    }
+    partCheck(triggerChange) {
+      this.setValue(false, triggerChange);
+      this.addClass("s-checked-part");
+    }
+    _getValue() {
+      return this.input.element.checked;
+    }
+    _setValue(value, options) {
+      if (options === false) {
+        options = { triggerChange: false };
+      } else {
+        options = extend$1({}, options);
+      }
+      this.removeClass("s-checked-part");
+      this.input.element.checked = value === true;
+      options.triggerChange !== false && this._onValueChange();
+    }
+    _disable() {
+      this.input.element.setAttribute("disabled", "disabled");
+    }
+    _enable() {
+      this.input.element.removeAttribute("disabled", "disabled");
+    }
+  }
+  Component.register(Checkbox);
+  var OptionListMixin = {
+    _created: function () {
+      this.checkboxList = this.parent.parent;
+      this.checkboxList.optionList = this;
+    },
+    _config: function () {
+      const { itemSelectionChange } = this.props;
+      const listProps = this.checkboxList.props;
+      const asArray = listProps.valueOptions.asArray;
+      this.setProps({
+        disabled: listProps.disabled,
+        items: listProps.options,
+        itemDefaults: listProps.optionDefaults,
+        itemSelectable: {
+          byClick: true,
+          multiple: true,
+          scrollIntoView: false,
+        },
+        selectedItems:
+          asArray === true
+            ? listProps.value
+            : isString(listProps.value)
+            ? listProps.value.split(",")
+            : null,
+        onItemSelectionChange: () => {
+          this.checkboxList._onValueChange();
+          this._callHandler(itemSelectionChange);
+        },
+      });
+    },
+  };
+  class OptionList extends List {
+    constructor(props, ...mixins) {
+      const defaults = {
+        gutter: "x-md",
+        itemDefaults: {
+          tag: "label",
+          _config: function () {
+            this.setProps({
+              selected: this.props.checked === true,
+              children: [
+                { tag: "span", classes: { checkbox: true } },
+                {
+                  tag: "span",
+                  classes: { text: true },
+                  children: this.props.text,
+                },
+              ],
+            });
+          },
+        },
+      };
+      super(Component.extendProps(defaults, props), OptionListMixin, ...mixins);
+    }
+  }
+  class CheckboxList extends Field {
+    constructor(props, ...mixins) {
+      const defaults = { options: [], valueOptions: { asArray: true } };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      this.setProps({
+        optionDefaults: {
+          key: function () {
+            return this.props.value;
+          },
+        },
+      });
+      this.setProps({
+        optionList: { component: OptionList, cols: this.props.cols },
+      });
+      this.setProps({ control: this.props.optionList });
+      super._config();
+    }
+    getSelectedOptions() {
+      return this.optionList.getSelectedItems();
+    }
+    getUnselectedOptions() {
+      return this.optionList.getUnselectedItems();
+    }
+    hideOption(value, alsoUnselect = true) {
+      this.optionList.hideItem(value);
+      if (alsoUnselect === true) {
+        this.optionList.unselectItem(value);
+      }
+    }
+    showOption(value) {
+      this.optionList.showItem(value);
+    }
+    _getValue(options) {
+      const { valueOptions } = this.props;
+      options = extend$1({ asArray: true }, valueOptions, options);
+      const selected = this.getSelectedOptions();
+      if (selected !== null && Array.isArray(selected) && selected.length > 0) {
+        const vals = selected.map(function (item) {
+          return item.props.value;
+        });
+        return options.asArray ? vals : vals.join(",");
+      }
+      return null;
+    }
+    _getValueText(options, value) {
+      const selected =
+        value !== undefined
+          ? this._getOptionsByValue(value)
+          : this.getSelectedOptions();
+      if (selected !== null && Array.isArray(selected) && selected.length > 0) {
+        const vals = selected.map(function (item) {
+          return item.props ? item.props.text : item.text;
+        });
+        return vals;
+      }
+      return null;
+    }
+    _setValue(value, options) {
+      const { valueOptions } = this.props;
+      if (options === false) {
+        options = { triggerChange: false };
+      } else {
+        options = extend$1({ triggerChange: true }, valueOptions, options);
+      }
+      if (value === null) {
+        this.optionList.unselectAllItems({
+          triggerSelectionChange: options.triggerChange,
+        });
+      }
+      if (options.asArray === false && isString(value)) {
+        value = value.split(",");
+      }
+      const _that = this;
+      const optionsArry = [];
+      this.props.options.forEach((ele) => {
+        optionsArry.push(ele.value);
+      });
+      Array.isArray(value) &&
+        value.forEach((ele) => {
+          if (optionsArry.includes(ele)) {
+            _that.optionList.selectItem(ele, {
+              triggerSelectionChange: options.triggerChange,
+            });
+          }
+        });
+    }
+    _disable() {
+      if (this.firstRender === false) {
+        this.optionList.disable();
+      }
+    }
+    _enable() {
+      if (this.firstRender === false) {
+        this.optionList.enable();
+      }
+    }
+    _getOptionsByValue(value) {
+      let retOptions = null;
+      const { options } = this.props;
+      if (Array.isArray(value)) {
+        retOptions = [];
+        for (let i = 0; i < options.length; i++) {
+          if (value.indexOf(options[i].value) !== -1) {
+            retOptions.push(options[i]);
+          }
+        }
+      }
+      return retOptions;
+    }
+  }
+  Component.register(CheckboxList);
+  class TreeNodeContent extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { text: null };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.node = this.parent;
+      this.node.content = this;
+      this.level = this.node.level;
+      this.tree = this.node.tree;
+    }
+    _config() {
+      const { text, icon, tools } = this.node.props;
+      const { initExpandLevel, nodeCheckable } = this.tree.props;
+      const expanded = initExpandLevel === -1 || initExpandLevel > this.level;
+      const tree = this.tree;
+      this.setProps({
+        expanded,
+        expandable: {
+          byIndicator: true,
+          target: () => {
+            return this.node.nodesRef;
+          },
+          indicator: {
+            component: Icon,
+            classes: {
+              "nom-tree-node-expandable-indicator": true,
+              "is-leaf": this.node.isLeaf,
+            },
+            expandable: {
+              expandedProps: { type: "down" },
+              collapsedProps: { type: "right" },
+            },
+          },
+        },
+        selectable: { byClick: this.tree.props.nodeSelectable.byClick },
+        selected:
+          this.tree.props.nodeSelectable.selectedNodeKey === this.node.key,
+        attrs: { style: { paddingLeft: `${this.level * 16}px` } },
+        onSelect: () => {
+          if (tree.selectedNode !== null) tree.selectedNode.unselect();
+          tree.selectedNode = this.node;
+          tree._onNodeSelect({
+            node: this.node,
+            nodeData: this.node.props.data,
+          });
+        },
+      });
+      if (
+        this.tree.props.nodeSelectable.onlyleaf === true &&
+        this.node.isLeaf === false
+      ) {
+        this.setProps({ selectable: false });
+      }
+      this.setProps({
+        children: [
+          this.getExpandableIndicatorProps(expanded),
+          nodeCheckable && this._getCheckbox(),
+          icon &&
+            Component.extendProps(
+              { classes: { "nom-tree-node-content-icon": true } },
+              Component.normalizeIconProps(icon)
+            ),
+          Component.extendProps(
+            { tag: "span", classes: { "nom-tree-node-content-text": true } },
+            Component.normalizeTemplateProps(text)
+          ),
+          tools &&
+            Component.extendProps(
+              { classes: { "nom-tree-node-content-tools": true } },
+              Component.normalizeIconProps(tools)
+            ),
+        ],
+        onClick: () => {
+          this.tree._onNodeClick({ node: this.node });
+        },
+      });
+    }
+    _getCheckbox() {
+      const { disabled: treeDisabled } = this.tree.props;
+      const { disabled: nodeDisabled } = this.node.props;
+      return {
+        component: Checkbox,
+        plain: true,
+        classes: { "nom-tree-node-checkbox": true },
+        disabled: treeDisabled || nodeDisabled,
+        _created: (inst) => {
+          this.node.checkboxRef = inst;
+        },
+        value: this.tree.checkedNodeKeysHash[this.node.key] === true,
+        onValueChange: ({ newValue }) => {
+          if (newValue === true) {
+            this.node.check({ checkCheckbox: false });
+          } else {
+            this.node.uncheck({ uncheckCheckbox: false });
+          }
+        },
+      };
+    }
+  }
+  Component.register(TreeNodeContent);
+  class TreeNode extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { nodes: null };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.level = 0;
+      this.parentNode = this.parent.parentNode;
+      if (this.parentNode !== null) {
+        this.level = this.parentNode.level + 1;
+        this.parentNode.subnodeRefs[this.key] = this;
+      }
+      this.tree = this.parent.tree;
+      this.subnodeRefs = {};
+      const { data } = this.props;
+      const { dataFields } = this.tree.props;
+      Object.keys(dataFields).forEach((dataField) => {
+        data[dataField] = data[dataFields[dataField]];
+      });
+    }
+    _config() {
+      this.props.dataToNode({ data: this.props.data, node: this });
+      if (this.props.key) {
+        this.key = this.props.key;
+      }
+      this.tree.nodeRefs[this.key] = this;
+      if (this.tree.props.nodeSelectable.selectedNodeKey === this.key) {
+        this.tree.selectedNode = this;
+      }
+      const { nodes, childrenData } = this.props;
+      const children = [{ component: TreeNodeContent }];
+      this.isLeaf = !(
+        this._isNotEmptyArray(nodes) || this._isNotEmptyArray(childrenData)
+      );
+      if (Array.isArray(nodes) || Array.isArray(childrenData)) {
+        children.push({ component: "TreeNodes", nodes, childrenData });
+      }
+      this.setProps({ children });
+      if (this.tree.props.nodeCheckable) {
+        this.setProps({
+          checked: this.tree.checkedNodeKeysHash[this.key] === true,
+        });
+      }
+    }
+    _isNotEmptyArray(arr) {
+      return Array.isArray(arr) && arr.length > 0;
+    }
+    check({ checkCheckbox = true, triggerCheckChange = true } = {}) {
+      const { checked } = this.props;
+      const { onCheckChange } = this.tree.props.nodeCheckable;
+      if (checked === true) {
+        return;
+      }
+      this.parentNode &&
+        this.parentNode.check({
+          checkCheckbox: true,
+          triggerCheckChange: false,
+        });
+      if (checkCheckbox === true) {
+        this.checkboxRef.setValue(true, { triggerChange: false });
+      }
+      this.props.checked = true;
+      if (triggerCheckChange === true) {
+        this._callHandler(onCheckChange);
+      }
+    }
+    uncheck({ uncheckCheckbox = true, triggerCheckChange = true } = {}) {
+      const { checked } = this.props;
+      const { onCheckChange } = this.tree.props.nodeCheckable;
+      if (checked === false) {
+        return;
+      }
+      uncheckCheckbox &&
+        this.checkboxRef.setValue(false, { triggerChange: false });
+      Object.keys(this.subnodeRefs).forEach((key) => {
+        this.subnodeRefs[key].uncheck({
+          uncheckCheckbox: true,
+          triggerCheckChange: false,
+        });
+      });
+      this.props.checked = false;
+      if (triggerCheckChange === true) {
+        this._callHandler(onCheckChange);
+      }
+    }
+    isChecked() {
+      return this.props.checked === true;
+    }
+    getChildNodes() {
+      return this.nodesRef ? this.nodesRef.getChildren() : [];
+    }
+    select() {
+      this.content.select();
+    }
+    unselect() {
+      this.content.unselect();
+    }
+  }
+  Component.register(TreeNode);
   class TreeNodes extends Component {
     constructor(props, ...mixins) {
       const defaults = { nodes: null, childrenData: null };
