@@ -426,6 +426,10 @@ class Select extends Field {
       this.updateSearchPopup(selectedOption && selectedOption.text)
       this.checked = true
     }
+    // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
+    if (changed.newValue === null && changed.oldValue === null) {
+      this.searchBox._setValue('')
+    }
   }
 
   _disable() {
