@@ -1,4 +1,10 @@
-define(['./basic.js', './elements.js', './children.js', './auto-render-false.js'], function () {
+define([
+  './basic.js',
+  './elements.js',
+  './children.js',
+  './update.js',
+  './auto-render-false.js',
+], function () {
   return {
     title: 'Structure',
     subtitle: '结构',
