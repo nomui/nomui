@@ -1,7 +1,7 @@
 import Button from '../Button/index'
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { } from '../Icon/index'
+import {} from '../Icon/index'
 import { extend, isPlainObject, isString } from '../util/index'
 import Input from './Input'
 
@@ -23,7 +23,8 @@ class Textbox extends Field {
 
   _config() {
     const that = this
-    const { leftIcon, prefix, rightIcon, suffix, placeholder, value, htmlType, button, readonly } = this.props
+    const { leftIcon, prefix, rightIcon, suffix, placeholder, value, htmlType, button, readonly } =
+      this.props
 
     let leftIconProps = Component.normalizeIconProps(leftIcon)
     if (leftIconProps != null) {
@@ -41,9 +42,9 @@ class Textbox extends Field {
 
     const buttonProps = isPlainObject(button)
       ? Component.extendProps(
-        { component: Button, classes: { 'nom-textbox-button': true } },
-        button,
-      )
+          { component: Button, classes: { 'nom-textbox-button': true } },
+          button,
+        )
       : null
 
     const inputProps = {
@@ -67,7 +68,7 @@ class Textbox extends Field {
         'nom-input-affix': true,
         [`nom-input-${type}`]: true,
       },
-      children: affix
+      children: affix,
     })
 
     // 无左icon 有prefixx || 无右icon 有suffix
@@ -85,7 +86,7 @@ class Textbox extends Field {
           inputProps,
           rightIcon && rightIconProps,
           !rightIcon && suffix && isString(suffix) && getAffixSpan(suffix, 'suffix'),
-          buttonProps
+          buttonProps,
         ],
       },
     })
