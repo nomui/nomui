@@ -1,6 +1,6 @@
 define([], function () {
   return {
-    title: 'onConfig: 生命周期-组件配置事件',
+    title: 'onConfig',
     file: 'config',
     description:
       '通过 `onConfig` 回调函数配置组件的属性（props）。组件初次渲染和后续更新都会执行该函数代码。',
