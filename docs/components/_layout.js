@@ -55,6 +55,12 @@ define([], function () {
                           id: 'component/styles/border',
                           url: '#!components!index?type=component&cat=styles/border',
                         },
+                        {
+                          text: 'Padding',
+                          subtext: '内边距',
+                          id: 'component/styles/padding',
+                          url: '#!components!index?type=component&cat=styles/padding',
+                        },
                       ],
                     },
                     {
