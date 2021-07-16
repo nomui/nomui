@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './align.js', './size.js', './color.js'], function () {
   return {
     title: 'Text',
     subtitle: '文本',
