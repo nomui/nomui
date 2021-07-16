@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '基本用法',
-    file: 'color',
+    file: 'basic',
     description: '通过 `styles.text` 来设置文本的样式。',
     demo: function () {
       return {
