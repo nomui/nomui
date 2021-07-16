@@ -229,6 +229,10 @@ class Select extends Field {
         this.currentValue = null
       }
     }
+    // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
+    if (this.searchBox && value === null) {
+      this.searchBox._setValue('')
+    }
   }
 
   selectOption(option) {
@@ -342,7 +346,6 @@ class Select extends Field {
     } else {
       options = extend({ triggerChange: true }, options)
     }
-
     if (this.props.showSearch) {
       const selectedOption = this.props.options.find((e) => e.value === value)
       if (selectedOption) {
@@ -405,8 +408,6 @@ class Select extends Field {
   }
 
   _valueChange(changed) {
-    console.log(this)
-
     if (changed.newValue) {
       this.props.allowClear && this.clearIcon.show()
     }
@@ -427,10 +428,6 @@ class Select extends Field {
       this.checkedOption = selectedOption
       this.updateSearchPopup(selectedOption && selectedOption.text)
       this.checked = true
-    }
-    // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
-    if (this.searchBox && changed.newValue === null && changed.oldValue === null) {
-      this.searchBox._setValue('')
     }
   }
 
