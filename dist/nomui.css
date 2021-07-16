@@ -4816,6 +4816,9 @@ img {
 .nom-modal.p-size-middle .nom-modal-dialog {
   width: 900px;
 }
+.nom-modal.p-size-medium .nom-modal-dialog {
+  width: 900px;
+}
 .nom-modal.p-size-large .nom-modal-dialog {
   width: 1200px;
 }
