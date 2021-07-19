@@ -58,4 +58,5 @@
 | -------- | -------------- | ------------ | ------ |
 | key      | 键             | `string`     | -      |
 | text     | 文本           | `string`     | -      |
+| disabled | 该节点是否禁用 | `boolean`    | -      |
 | children | 子节点数据数组 | `TreeData[]` | -      |
