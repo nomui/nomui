@@ -8094,7 +8094,6 @@ function _defineProperty2(obj, key, value) {
     }
     selectItem(param, selectOption) {
       const item = this.getItem(param);
-      console.log("🚀 ~ file: List.js ~  ~ item", item, param, this.itemRefs);
       item && item.select(selectOption);
       if (this.props.itemSelectable.scrollIntoView) {
         this.scrollTo(item);
@@ -10296,6 +10295,7 @@ function _defineProperty2(obj, key, value) {
         expanded,
         expandable: {
           byIndicator: true,
+          byClick: true,
           target: () => {
             return this.node.nodesRef;
           },
