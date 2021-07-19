@@ -3812,6 +3812,136 @@ img {
   width: 100%;
   height: 100%;
 }
+#nice,
+.markdown-article {
+  max-width: 1200px;
+  padding: 20px 80px;
+}
+#nice *,
+.markdown-article * {
+  color: #34495e;
+}
+#nice p,
+.markdown-article p {
+  box-sizing: border-box !important;
+  min-height: 1em !important;
+  margin: 20px 0 !important;
+  line-height: 1.7 !important;
+  letter-spacing: 1px !important;
+  text-align: justify;
+  word-wrap: break-word !important;
+}
+#nice blockquote,
+.markdown-article blockquote {
+  margin: 0;
+  padding: 0 15px !important;
+  border-left: 4px solid #4263eb;
+}
+#nice strong,
+.markdown-article strong {
+  font-weight: bold;
+}
+#nice body,
+.markdown-article body {
+  font-size: 15px;
+}
+#nice pre,
+.markdown-article pre {
+  padding: 12px 13px;
+  font-size: 13px;
+  word-wrap: break-word;
+  background: #f8f8f8;
+  border-radius: 3px;
+}
+#nice h1,
+.markdown-article h1,
+#nice h2,
+.markdown-article h2,
+#nice h3,
+.markdown-article h3,
+#nice h4,
+.markdown-article h4,
+#nice h5,
+.markdown-article h5,
+#nice h6,
+.markdown-article h6 {
+  position: relative;
+  margin: 20px 0;
+  padding-bottom: 0.3em;
+  color: #2c3e50;
+  font-weight: bold;
+  line-height: 1.2;
+  text-align: left;
+  word-break: break-all !important;
+}
+#nice h1::before,
+.markdown-article h1::before,
+#nice h2::before,
+.markdown-article h2::before {
+  position: absolute;
+  top: -2px;
+  left: -0.8em;
+  color: #4263eb;
+  font-weight: bold;
+  font-size: 1.2em;
+  content: '#';
+}
+#nice h1,
+.markdown-article h1 {
+  /* border-bottom: 8px solid #71BA51 !important; */
+  font-size: 20px !important;
+}
+#nice h2,
+.markdown-article h2 {
+  /* border-bottom: 5px solid #71BA51 !important; */
+  font-size: 18px !important;
+}
+#nice a,
+.markdown-article a {
+  color: #4263eb !important;
+  text-decoration: none !important;
+}
+#nice ul,
+.markdown-article ul,
+#nice ol,
+.markdown-article ol {
+  padding-left: 30px;
+}
+#nice li,
+.markdown-article li {
+  line-height: 24px;
+}
+#nice hr,
+.markdown-article hr {
+  box-sizing: content-box;
+  height: 4px;
+  margin: 16px 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #e7e7e7;
+  border: 0 none;
+  border-bottom: 1px solid #ddd;
+}
+#nice code,
+.markdown-article code {
+  margin: 0 2px;
+  padding: 3px 5px;
+  color: #e96900;
+  white-space: inherit;
+  background-color: #f8f8f8;
+  border-radius: 2px;
+}
+#nice table,
+.markdown-article table {
+  width: 100%;
+}
+#nice table th,
+.markdown-article table th,
+#nice table td,
+.markdown-article table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
 .nom-app {
   width: 100%;
   height: 100%;
