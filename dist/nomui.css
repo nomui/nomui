@@ -6380,6 +6380,9 @@ textarea .nom-textarea {
   background: #fff;
   cursor: pointer;
 }
+.s-disabled.nom-select > .nom-field-content .nom-control .nom-select-clear {
+  visibility: hidden;
+}
 .nom-select > .nom-field-content .nom-control .nom-select-placeholder {
   color: #bfbfbf;
 }

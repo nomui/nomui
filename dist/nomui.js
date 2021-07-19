@@ -11992,8 +11992,6 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     _show() {
-      this.selectControl.element.style.position = "relative";
-      this.selectControl.element.appendChild(this.element);
       super._show();
       this.selectControl.searchBox && this.selectControl.searchBox.focus();
     }
@@ -12033,6 +12031,7 @@ function _defineProperty2(obj, key, value) {
           options.filter((o) => o.text.indexOf(text) >= 0),
         virtual: false,
         allowClear: true,
+        popupContainer: "body",
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -12143,8 +12142,20 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     _rendered() {
-      const { value, virtual } = this.props;
+      const { value, virtual, popupContainer } = this.props;
+      let container;
+      if (popupContainer === "self") {
+        this.element.style.position = "relative";
+        container = this.element;
+      } else if (
+        Object.prototype.toString.call(popupContainer) === "[object Function]"
+      ) {
+        const ref = popupContainer();
+        ref.element.style.position = "relative";
+        container = ref.element;
+      }
       this.popup = new SelectPopup({
+        reference: container,
         trigger: this.control,
         virtual,
         onShow: () => {
@@ -12183,6 +12194,9 @@ function _defineProperty2(obj, key, value) {
           this.selectedSingle.emptyChildren();
           this.currentValue = null;
         }
+      } // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
+      if (this.searchBox && value === null) {
+        this.searchBox._setValue("");
       }
     }
     selectOption(option) {
