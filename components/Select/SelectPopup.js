@@ -74,8 +74,6 @@ class SelectPopup extends Popup {
   }
 
   _show() {
-    this.selectControl.element.style.position = 'relative'
-    this.selectControl.element.appendChild(this.element)
     super._show()
     this.selectControl.searchBox && this.selectControl.searchBox.focus()
   }

@@ -49,6 +49,18 @@ define([], function () {
                           id: 'component/styles/text',
                           url: '#!components!index?type=component&cat=styles/text',
                         },
+                        {
+                          text: 'Border',
+                          subtext: '边框',
+                          id: 'component/styles/border',
+                          url: '#!components!index?type=component&cat=styles/border',
+                        },
+                        {
+                          text: 'Padding',
+                          subtext: '内边距',
+                          id: 'component/styles/padding',
+                          url: '#!components!index?type=component&cat=styles/padding',
+                        },
                       ],
                     },
                     {

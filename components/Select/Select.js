@@ -47,6 +47,7 @@ class Select extends Field {
       filterOption: (text, options) => options.filter((o) => o.text.indexOf(text) >= 0),
       virtual: false,
       allowClear: true,
+      popupContainer: 'body',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -167,8 +168,18 @@ class Select extends Field {
   }
 
   _rendered() {
-    const { value, virtual } = this.props
+    const { value, virtual, popupContainer } = this.props
+    let container
+    if (popupContainer === 'self') {
+      this.element.style.position = 'relative'
+      container = this.element
+    } else if (Object.prototype.toString.call(popupContainer) === '[object Function]') {
+      const ref = popupContainer()
+      ref.element.style.position = 'relative'
+      container = ref.element
+    }
     this.popup = new SelectPopup({
+      reference: container,
       trigger: this.control,
       virtual,
       onShow: () => {
@@ -217,6 +228,10 @@ class Select extends Field {
         this.selectedSingle.emptyChildren()
         this.currentValue = null
       }
+    }
+    // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
+    if (this.searchBox && value === null) {
+      this.searchBox._setValue('')
     }
   }
 
@@ -331,7 +346,6 @@ class Select extends Field {
     } else {
       options = extend({ triggerChange: true }, options)
     }
-
     if (this.props.showSearch) {
       const selectedOption = this.props.options.find((e) => e.value === value)
       if (selectedOption) {

@@ -2,9 +2,9 @@ define([], function () {
   return {
     title: '颜色',
     file: 'color',
-    description: '通过 `styles.text` 设置为颜色相关的值来控制文本的颜色',
+    description: '通过 `styles.border` 设置为颜色相关的值来显示不同的边框颜色。',
     demo: function () {
-      const colors = [
+      const borderColors = [
         'red',
         'orange',
         'yellow',
@@ -17,17 +17,22 @@ define([], function () {
         'cyan',
         'brown',
         'gray',
+        'light',
+        'dark',
       ]
       return {
         component: 'List',
-        cols: 1,
-        data: colors,
+        gutter: 'lg',
+        data: borderColors,
         itemRender: ({ itemData }) => {
           return {
+            tag: 'div',
             styles: {
-              text: itemData,
+              border: [true, itemData],
+              color: 'lgray',
+              padding: '3',
             },
-            children: `这是一段 ${itemData} 颜色的文本`,
+            children: `${itemData}`,
           }
         },
       }
