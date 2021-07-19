@@ -31,6 +31,7 @@ define([], function () {
               items: [
                 { text: '教程', id: 'tutorials/index', url: '#!tutorials/index' },
                 { text: '组件', id: 'components', url: '#!components!' },
+                { text: '文档', id: 'documents/index', url: '#!documents/index' },
               ],
               direction: 'horizontal',
               itemDefaults: {

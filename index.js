@@ -6,6 +6,11 @@
 
   requirejs.config({
     baseUrl: '/',
+    map: {
+      '*': {
+        css: 'libs/require-css.min.js',
+      },
+    },
     paths: {
       text: 'libs/text',
     },
