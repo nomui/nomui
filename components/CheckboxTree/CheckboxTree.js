@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import DefaultCheckboxOptionTree from './DefaultCheckboxOptionTree'
 import { extend } from '../util/index'
+import DefaultCheckboxOptionTree from './DefaultCheckboxOptionTree'
 
 class CheckboxTree extends Field {
   constructor(props, ...mixins) {
@@ -54,7 +54,7 @@ class CheckboxTree extends Field {
         return item.value
       })
 
-      if(options.asString){
+      if (options.asString) {
         return vals.join()
       }
       return vals
