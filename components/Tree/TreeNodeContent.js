@@ -27,6 +27,7 @@ class TreeNodeContent extends Component {
       expanded,
       expandable: {
         byIndicator: true,
+        byClick: true,
         target: () => {
           return this.node.nodesRef
         },
