@@ -3,6 +3,7 @@ import Component from '../Component/index'
 import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
+import { STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
 import { isFunction, isNullish, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
@@ -20,10 +21,26 @@ class Grid extends Component {
     this.checkedRowRefs = {}
 
     this.originColumns = this.props.columns
-    if (this.props.columnsCustomizable && this.props.columnsCustomizable.selected) {
-      this.props.visibleColumns = this.props.columnsCustomizable.selected
-    }
+    this._parseColumnsCustom()
     this.filter = {}
+  }
+
+  _parseColumnsCustom() {
+    const { columnsCustomizable } = this.props
+    if (!columnsCustomizable) return
+
+    const { selected, cache: cacheKey } = columnsCustomizable
+
+    if (selected && selected.length) {
+      this.props.visibleColumns = selected
+    }
+    // 缓存中有数据则读取缓存中的cols数据
+    if (cacheKey) {
+      const storeCols = localStorage.getItem(`${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`)
+      if (storeCols) {
+        this.props.visibleColumns = JSON.parse(storeCols)
+      }
+    }
   }
 
   _config() {
@@ -253,6 +270,20 @@ class Grid extends Component {
     this.lastSortField = null
   }
 
+  resetColumnsCustom() {
+    const {
+      columnsCustomizable: { cache },
+    } = this.props
+    if (cache) {
+      localStorage.removeItem(`${STORAGE_KEY_GRID_COLUMNS}_${cache}`)
+    }
+    this.props.visibleColumns = null
+    this._parseColumnsCustom()
+    this.update({
+      columns: this.originColumns,
+    })
+  }
+
   handleFilter(isReset) {
     const that = this
     if (
@@ -391,9 +422,13 @@ class Grid extends Component {
     }
 
     addTreeInfo(tree)
+    const { columnsCustomizable } = this.props
+    const { cache: cacheKey } = columnsCustomizable
+    if (cacheKey) {
+      localStorage.setItem(`${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`, JSON.stringify(tree))
+    }
 
-    this.props.columnsCustomizable.callback &&
-      this._callHandler(this.props.columnsCustomizable.callback(tree))
+    columnsCustomizable.callback && this._callHandler(columnsCustomizable.callback(tree))
 
     this.update({ columns: tree })
     this.popup.hide()
@@ -613,6 +648,9 @@ Grid.defaults = {
     indentSize: 16,
   },
   columnsCustomizable: false,
+  // columnsCustomizable.selected: 若存在，则展示selected 的列数据
+  // columnsCustomizable.cache: 设置列的结果保存至localstorage，cache的值为对应的key
+  // columnsCustomizable.callback: 设置列保存回调
   autoMergeColumns: null,
   visibleColumns: null,
   columnResizable: false,
