@@ -35,10 +35,19 @@ define([], function () {
               {
                 text: '单页应用',
                 items: [
-                  { text: '路由对象', id: 'route', url: '#!tutorials/index?article=route' },
-                  { text: '应用组件', id: 'app', url: '#!tutorials/index?article=app' },
-                  { text: '视图', id: 'view', url: '#!tutorials/index?article=view' },
-                  { text: '事件总线', id: 'event-bus', url: '#!tutorials/index?article=event-bus' },
+                  {
+                    text: '概述',
+                    id: 'spa/overview',
+                    url: '#!tutorials/index?article=spa/overview',
+                  },
+                  { text: '路由对象', id: 'spa/route', url: '#!tutorials/index?article=spa/route' },
+                  { text: '应用组件', id: 'spa/app', url: '#!tutorials/index?article=spa/app' },
+                  {
+                    text: '路由器组件',
+                    id: 'spa/router',
+                    url: '#!tutorials/index?article=spa/router',
+                  },
+                  { text: '视图模块', id: 'spa/view', url: '#!tutorials/index?article=spa/view' },
                 ],
               },
               {

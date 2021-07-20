@@ -20,6 +20,7 @@
     win.nomapp = new nomui.App({
       viewsDir: '/docs',
     })
+
     const renderer = new marked.Renderer()
     marked.setOptions({
       renderer: renderer,
