@@ -3,7 +3,13 @@
     line-height: @line-height-base*1.6;
     > .nom-control {
       .s-disabled& {
-        opacity: 0.5;
+        cursor: not-allowed;
+        opacity: 0.7;
+        > input {
+          + span {
+            background-color: #d5def2;
+          }
+        }
       }
 
       position: relative;
