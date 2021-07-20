@@ -10512,6 +10512,7 @@ function _defineProperty2(obj, key, value) {
               node.props.key = data.key;
               node.props.text = data.text;
               node.props.icon = data.icon;
+              node.props.disabled = data.disabled;
               node.props.childrenData = data.children;
             }
           },

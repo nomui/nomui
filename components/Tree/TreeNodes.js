@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import { isPlainObject } from '../util/index'
-import TreeNode from './TreeNode'
 import Sortable from '../util/sortable.core.esm'
+import TreeNode from './TreeNode'
 
 class TreeNodes extends Component {
   constructor(props, ...mixins) {
@@ -46,6 +46,7 @@ class TreeNodes extends Component {
             node.props.key = data.key
             node.props.text = data.text
             node.props.icon = data.icon
+            node.props.disabled = data.disabled
             node.props.childrenData = data.children
           }
         },

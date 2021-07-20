@@ -6258,7 +6258,11 @@ textarea .nom-textarea {
   transition: all 0.3s;
 }
 .s-disabled.nom-checkbox > .nom-field-content > .nom-control {
-  opacity: 0.5;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.s-disabled.nom-checkbox > .nom-field-content > .nom-control > input + span {
+  background-color: #d5def2;
 }
 .nom-checkbox > .nom-field-content > .nom-control > input {
   position: absolute;
@@ -7400,9 +7404,10 @@ textarea .nom-textarea {
   color: inherit !important;
   background-color: #edf2ff !important;
 }
-.s-disabled.nom-tree .nom-tree-node-content,
-.nom-tree .nom-tree-node-content.s-disabled {
-  opacity: 0.5;
+.s-disabled.nom-tree .nom-tree-node-content .nom-checkbox,
+.nom-tree .nom-tree-node-content.s-disabled .nom-checkbox {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 .nom-tree .nom-tree-node-content > .nom-tree-node-expandable-indicator {
   width: 30px;

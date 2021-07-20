@@ -1,8 +1,8 @@
+import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import { isFunction } from '../util/index'
-import TreeNodes from './TreeNodes'
-import Checkbox from '../Checkbox/index'
 import scrollIntoView from '../util/scrollIntoView'
+import TreeNodes from './TreeNodes'
 
 class Tree extends Component {
   constructor(props, ...mixins) {
