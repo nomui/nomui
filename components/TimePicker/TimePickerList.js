@@ -50,6 +50,7 @@ class TimePickerList extends List {
       itemSelectable: {
         multiple: false,
         byClick: true,
+        scrollIntoView: true,
       },
       selectedItems: selected,
       itemDefaults: {

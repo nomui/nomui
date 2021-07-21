@@ -92,6 +92,7 @@ class PartialDatePicker extends Textbox {
                   itemSelectable: {
                     multiple: false,
                     byClick: true,
+                    scrollIntoView: true,
                   },
                   gutter: 'sm',
                   cols: 1,
@@ -123,6 +124,7 @@ class PartialDatePicker extends Textbox {
                   itemSelectable: {
                     multiple: false,
                     byClick: true,
+                    scrollIntoView: true,
                   },
                   gutter: 'sm',
                   cols: 1,
@@ -160,6 +162,7 @@ class PartialDatePicker extends Textbox {
                   itemSelectable: {
                     multiple: false,
                     byClick: true,
+                    scrollIntoView: true,
                   },
                   gutter: 'sm',
                   cols: 1,
@@ -199,6 +202,7 @@ class PartialDatePicker extends Textbox {
                   itemSelectable: {
                     multiple: false,
                     byClick: true,
+                    scrollIntoView: true,
                   },
                   gutter: 'sm',
                   cols: 1,
