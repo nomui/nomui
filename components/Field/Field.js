@@ -257,6 +257,7 @@ class Field extends Component {
 
 Object.defineProperty(Field.prototype, 'fields', {
   get: function () {
+    if(!this.control) return []
     return this.control.getChildren()
   },
 })
