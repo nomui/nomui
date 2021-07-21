@@ -450,24 +450,32 @@ class PartialDatePicker extends Textbox {
   }
 
   updateValue() {
+    const old_val = this.getValue()
+    let new_val
     switch (this.props.mode) {
-      case 'year':
-        this.year && this.setValue(this.year)
+      case 'year': {
+        new_val = this.year
+        this.year && old_val !== new_val && this.setValue(new_val)
         break
+      }
 
-      case 'quarter':
-        this.year && this.quarter && this.setValue(`${this.year} ${this.quarter}季度`)
+      case 'quarter': {
+        new_val = `${this.year} ${this.quarter}季度`
+        this.year && this.quarter && old_val !== new_val && this.setValue(new_val)
         break
+      }
 
-      case 'month':
-        this.year &&
-          this.month &&
-          this.setValue(new Date(`${this.year}-${this.month}`).format('yyyy-MM'))
+      case 'month': {
+        new_val = new Date(`${this.year}-${this.month}`).format('yyyy-MM')
+        this.year && this.month && old_val !== new_val && this.setValue(new_val)
         break
+      }
 
-      case 'week':
-        this.year && this.week && this.setValue(`${this.year} ${this.week}周`)
+      case 'week': {
+        new_val = `${this.year} ${this.week}周`
+        this.year && this.week && old_val !== new_val && this.setValue(new_val)
         break
+      }
 
       default:
         break
