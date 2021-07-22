@@ -4332,6 +4332,7 @@ function _defineProperty2(obj, key, value) {
   }
   Object.defineProperty(Field.prototype, "fields", {
     get: function () {
+      if (!this.control) return [];
       return this.control.getChildren();
     },
   });
@@ -13351,7 +13352,8 @@ function _defineProperty2(obj, key, value) {
         options
       );
       const value = {};
-      for (let i = 0; i < this.fields.length; i++) {
+      const len = this.fields.length;
+      for (let i = 0; i < len; i++) {
         const field = this.fields[i];
         if (field.getValue && this._needHandleValue(field, options)) {
           const fieldValue = field.getValue(options);
@@ -13369,7 +13371,8 @@ function _defineProperty2(obj, key, value) {
     }
     setValue(value, options) {
       options = extend$1({ ignoreDisabled: true, ignoreHidden: true }, options);
-      for (let i = 0; i < this.fields.length; i++) {
+      const len = this.fields.length;
+      for (let i = 0; i < len; i++) {
         const field = this.fields[i];
         if (field.setValue && this._needHandleValue(field, options)) {
           let fieldValue = value;
