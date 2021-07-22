@@ -102,6 +102,20 @@ class Tooltip extends Layer {
     })
     this._off('mouseleave', this._hideHandler)
     this._on('mouseleave', this._hideHandler)
+    const docTop = this.getScrollTop()
+    if (this.element.closest('.nom-modal') !== null && docTop !== 0) {
+      this.element.style.top = `${this.element.style.top.replace('px', '') - docTop}px`
+    }
+  }
+
+  getScrollTop() {
+    let scroll_top = 0
+    if (document.documentElement && document.documentElement.scrollTop) {
+      scroll_top = document.documentElement.scrollTop
+    } else if (document.body) {
+      scroll_top = document.body.scrollTop
+    }
+    return scroll_top
   }
 }
 

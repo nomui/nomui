@@ -3741,6 +3741,21 @@ function _defineProperty2(obj, key, value) {
       });
       this._off("mouseleave", this._hideHandler);
       this._on("mouseleave", this._hideHandler);
+      const docTop = this.getScrollTop();
+      if (this.element.closest(".nom-modal") !== null && docTop !== 0) {
+        this.element.style.top = `${
+          this.element.style.top.replace("px", "") - docTop
+        }px`;
+      }
+    }
+    getScrollTop() {
+      let scroll_top = 0;
+      if (document.documentElement && document.documentElement.scrollTop) {
+        scroll_top = document.documentElement.scrollTop;
+      } else if (document.body) {
+        scroll_top = document.body.scrollTop;
+      }
+      return scroll_top;
     }
   }
   Component.mixin({
@@ -8031,7 +8046,7 @@ function _defineProperty2(obj, key, value) {
         itemSelectable: {
           multiple: false,
           byClick: false,
-          scrollIntoView: true,
+          scrollIntoView: false,
         },
         disabledItems: [],
         virtual: false,
@@ -8505,7 +8520,11 @@ function _defineProperty2(obj, key, value) {
         itemDefaults: n$1(null, optionDefaults, null, [
           AutoCompleteListItemMixin,
         ]),
-        itemSelectable: { multiple: false, byClick: true },
+        itemSelectable: {
+          multiple: false,
+          byClick: true,
+          scrollIntoView: true,
+        },
         selectedItems: value,
         onItemSelectionChange: () => {
           this.autoCompleteControl._onValueChange();
@@ -11924,7 +11943,11 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         items: showSearch ? filterOptions : options,
         itemDefaults: n$1(null, optionDefaults, null, [SelectListItemMixin]),
-        itemSelectable: { multiple: multiple, byClick: true },
+        itemSelectable: {
+          multiple: multiple,
+          byClick: true,
+          scrollIntoView: true,
+        },
         selectedItems: showSearch
           ? checkedOption && checkedOption.value
           : value,
@@ -12023,6 +12046,7 @@ function _defineProperty2(obj, key, value) {
               this.setProps({ tag: "span", children: this.props.text });
             },
           },
+          itemSelectable: { scrollIntoView: true },
           gutter: "md",
         },
         multiple: false,
@@ -12447,7 +12471,11 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         styles: { padding: "3px" },
         items: items,
-        itemSelectable: { multiple: false, byClick: true },
+        itemSelectable: {
+          multiple: false,
+          byClick: true,
+          scrollIntoView: true,
+        },
         attrs: { style: { position: "relative" } },
         selectedItems: selected,
         itemDefaults: {
@@ -12964,7 +12992,11 @@ function _defineProperty2(obj, key, value) {
                         cols: 7, // selectedItems: that.props.value
                         //   ? `${that.year}-${that.month}-${that.day}`
                         //   : null,
-                        itemSelectable: { byClick: true, multiple: false },
+                        itemSelectable: {
+                          byClick: true,
+                          multiple: false,
+                          scrollIntoView: true,
+                        },
                         items: this._getDays(that.year, that.month),
                         itemDefaults: {
                           key: function () {
@@ -17524,7 +17556,7 @@ function _defineProperty2(obj, key, value) {
                   this.setProps({ children: `${this.props.text}` });
                 },
               },
-              itemSelectable: { byClick: true, scrollIntoView: false },
+              itemSelectable: { byClick: true },
               selectedItems: pager.props.pageIndex,
               onItemSelectionChange: function (e) {
                 const n = e.sender.selectedItem.props.pageNumber;
@@ -17774,7 +17806,11 @@ function _defineProperty2(obj, key, value) {
                   children: {
                     component: "List",
                     items: that._getYear(),
-                    itemSelectable: { multiple: false, byClick: true },
+                    itemSelectable: {
+                      multiple: false,
+                      byClick: true,
+                      scrollIntoView: true,
+                    },
                     gutter: "sm",
                     cols: 1,
                     ref: (c) => {
@@ -17798,7 +17834,11 @@ function _defineProperty2(obj, key, value) {
                   children: {
                     component: "List",
                     items: that._getQuarter(),
-                    itemSelectable: { multiple: false, byClick: true },
+                    itemSelectable: {
+                      multiple: false,
+                      byClick: true,
+                      scrollIntoView: true,
+                    },
                     gutter: "sm",
                     cols: 1,
                     ref: (c) => {
@@ -17828,7 +17868,11 @@ function _defineProperty2(obj, key, value) {
                   children: {
                     component: "List",
                     items: that._getMonth(),
-                    itemSelectable: { multiple: false, byClick: true },
+                    itemSelectable: {
+                      multiple: false,
+                      byClick: true,
+                      scrollIntoView: true,
+                    },
                     gutter: "sm",
                     cols: 1,
                     ref: (c) => {
@@ -17859,7 +17903,11 @@ function _defineProperty2(obj, key, value) {
                   children: {
                     component: "List",
                     items: that._getWeek("2010"),
-                    itemSelectable: { multiple: false, byClick: true },
+                    itemSelectable: {
+                      multiple: false,
+                      byClick: true,
+                      scrollIntoView: true,
+                    },
                     gutter: "sm",
                     cols: 1,
                     ref: (c) => {
@@ -18067,27 +18115,38 @@ function _defineProperty2(obj, key, value) {
       this.updateValue();
     }
     updateValue() {
+      const old_val = this.getValue();
+      let new_val;
       switch (this.props.mode) {
-        case "year":
-          this.year && this.setValue(this.year);
+        case "year": {
+          new_val = this.year;
+          this.year && old_val !== new_val && this.setValue(new_val);
           break;
-        case "quarter":
+        }
+        case "quarter": {
+          new_val = `${this.year} ${this.quarter}季度`;
           this.year &&
             this.quarter &&
-            this.setValue(`${this.year} ${this.quarter}季度`);
+            old_val !== new_val &&
+            this.setValue(new_val);
           break;
-        case "month":
+        }
+        case "month": {
+          new_val = new Date(`${this.year}-${this.month}`).format("yyyy-MM");
           this.year &&
             this.month &&
-            this.setValue(
-              new Date(`${this.year}-${this.month}`).format("yyyy-MM")
-            );
+            old_val !== new_val &&
+            this.setValue(new_val);
           break;
-        case "week":
+        }
+        case "week": {
+          new_val = `${this.year} ${this.week}周`;
           this.year &&
             this.week &&
-            this.setValue(`${this.year} ${this.week}周`);
+            old_val !== new_val &&
+            this.setValue(new_val);
           break;
+        }
       }
     }
     resolveValue() {
@@ -19104,7 +19163,7 @@ function _defineProperty2(obj, key, value) {
         disabled: listProps.disabled,
         items: listProps.options,
         itemDefaults: listProps.optionDefaults,
-        itemSelectable: { byClick: true, scrollIntoView: false },
+        itemSelectable: { byClick: true },
         selectedItems: listProps.value,
         onItemSelectionChange: () => {
           this.radioList._onValueChange();
@@ -20933,7 +20992,7 @@ function _defineProperty2(obj, key, value) {
         itemDefaults: { component: TabItem },
         tabContent: null,
         uistyle: "plain",
-        itemSelectable: { byClick: true },
+        itemSelectable: { byClick: true, scrollIntoView: true },
         onTabSelectionChange: null,
         disabledItems: [],
       };
@@ -21291,7 +21350,11 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         styles: { padding: "3px" },
         items: items,
-        itemSelectable: { multiple: false, byClick: true },
+        itemSelectable: {
+          multiple: false,
+          byClick: true,
+          scrollIntoView: true,
+        },
         selectedItems: selected,
         itemDefaults: {
           _config: function () {

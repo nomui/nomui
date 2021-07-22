@@ -49,6 +49,7 @@ class DateTimePickerList extends List {
       itemSelectable: {
         multiple: false,
         byClick: true,
+        scrollIntoView: true,
       },
       attrs: {
         style: {

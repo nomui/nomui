@@ -183,6 +183,7 @@ class DatePicker extends Textbox {
                       itemSelectable: {
                         byClick: true,
                         multiple: false,
+                        scrollIntoView: true,
                       },
                       items: this._getDays(that.year, that.month),
                       itemDefaults: {
