@@ -8370,6 +8370,10 @@ textarea .nom-textarea {
 .nom-back-top-container:hover {
   background-color: rgba(0, 0, 0, 0.85);
 }
+.nom-auto-complete-popup {
+  max-height: 300px;
+  overflow: auto;
+}
 .nom-auto-complete-list .nom-list-item-wrapper:hover {
   background-color: #eee;
   cursor: pointer;
