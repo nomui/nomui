@@ -146,6 +146,9 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
                     attrs: {
                       id: 'nice',
                     },
+                    classes: {
+                      'markdown-article': true,
+                    },
                     children: `#${this.props.docs}`,
                   },
                 ],
