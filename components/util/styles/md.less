@@ -1,7 +1,6 @@
-#nice,
 .markdown-article {
-  max-width: 1200px;
-  padding: 20px 80px;
+  max-width: 1300px;
+  padding: 20px 60px;
   * {
     color: #34495e;
   }
@@ -111,18 +110,32 @@
 
   table {
     width: 100%;
-  }
-
-  table th,
-  table td {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+    word-break: break-all;
+    table-layout: fixed;
+    th,
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      &:nth-child(1) {
+        width: 15%;
+      }
+      &:nth-child(2) {
+        min-width: 40%;
+      }
+      &:nth-child(3) {
+        width: 30%;
+      }
+      &:nth-child(4) {
+        width: 15%;
+      }
+    }
   }
 }
-
-#DemoContent {
-  height: 100%;
-  > .nom-tab-panel {
+.nom-layout-body {
+  > #DemoContent {
     height: 100%;
+    > .nom-tab-panel {
+      height: 100%;
+    }
   }
 }
