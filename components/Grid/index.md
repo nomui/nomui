@@ -168,3 +168,5 @@
 | getDataKeys        | 获取当前顺序的 keyField 数组 | -    |
 | getData            | 获取当前顺序的表格 data      | -    |
 | resetColumnsCustom | 重置自定义列的展示           | -    |
+| getCheckedRows     | 获取当前选中行数组           | -    |
+| getCheckedRowKeys  | 获取当前选中行的 key 数组    | -    |
