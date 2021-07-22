@@ -1,4 +1,5 @@
 define([], function () {
+  let gridRef
   return {
     title: '列设置',
     file: 'custom-columns',
@@ -172,20 +173,36 @@ define([], function () {
       ]
 
       return {
-        component: 'Grid',
-        onSort: (data) => {
-          console.log(data)
-        },
-        columns: c,
-        line: 'both',
-        data: source,
-        bordered: true,
-        columnsCustomizable: {
-          selected: s,
-          callback: (param) => {
-            console.log('selected:', param)
+        component: 'Rows',
+        items: [
+          {
+            component: 'Grid',
+            ref: (com) => {
+              gridRef = com
+            },
+            onSort: (data) => {
+              console.log(data)
+            },
+            columns: c,
+            line: 'both',
+            data: source,
+            bordered: true,
+            columnsCustomizable: {
+              selected: s,
+              cache: 'grid-custome-columns',
+              callback: (param) => {
+                console.log('selected:', param)
+              },
+            },
           },
-        },
+          {
+            component: 'Button',
+            text: '重置自定义列数据',
+            onClick: () => {
+              gridRef.resetColumnsCustom()
+            },
+          },
+        ],
       }
     },
   }
