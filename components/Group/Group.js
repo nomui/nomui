@@ -51,7 +51,8 @@ class Group extends Field {
     )
 
     const value = {}
-    for (let i = 0; i < this.fields.length; i++) {
+    const len = this.fields.length
+    for (let i = 0; i < len; i++) {
       const field = this.fields[i]
       if (field.getValue && this._needHandleValue(field, options)) {
         const fieldValue = field.getValue(options)
@@ -77,8 +78,8 @@ class Group extends Field {
       },
       options,
     )
-
-    for (let i = 0; i < this.fields.length; i++) {
+    const len = this.fields.length
+    for (let i = 0; i < len; i++) {
       const field = this.fields[i]
       if (field.setValue && this._needHandleValue(field, options)) {
         let fieldValue = value
