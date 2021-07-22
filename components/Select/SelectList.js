@@ -20,14 +20,8 @@ class SelectList extends List {
   }
 
   _config() {
-    const {
-      showSearch,
-      options,
-      optionDefaults,
-      value,
-      multiple,
-      filterOption,
-    } = this.selectControl.props
+    const { showSearch, options, optionDefaults, value, multiple, filterOption } =
+      this.selectControl.props
     const { text } = this.props
     const { checked, checkedOption } = this.selectControl
     let filterStr = checked ? checkedOption && checkedOption.text : text
@@ -40,6 +34,7 @@ class SelectList extends List {
       itemSelectable: {
         multiple: multiple,
         byClick: true,
+        scrollIntoView: true,
       },
       selectedItems: showSearch ? checkedOption && checkedOption.value : value,
 

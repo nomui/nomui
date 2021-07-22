@@ -31,7 +31,6 @@ class Pager extends Component {
             },
             itemSelectable: {
               byClick: true,
-              scrollIntoView: false,
             },
             selectedItems: pager.props.pageIndex,
             onItemSelectionChange: function (e) {
