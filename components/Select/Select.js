@@ -462,6 +462,7 @@ class Select extends Field {
           {
             placeholder: null,
             filter: ({ inputValue, options }) => {
+              if (!inputValue) return options
               const reg = new RegExp(inputValue, 'i')
               const filteredOptions = []
               options.forEach((option) => {
