@@ -3942,6 +3942,12 @@ img {
   padding: 10px;
   border-bottom: 1px solid #eee;
 }
+#DemoContent {
+  height: 100%;
+}
+#DemoContent > .nom-tab-panel {
+  height: 100%;
+}
 .nom-app {
   width: 100%;
   height: 100%;
