@@ -47,7 +47,7 @@
 | showTitle | 单元格显示 title | `boolean` | `false` |
 | line | 线条样式，`row` 为行线条，`col` 为列线条，`both` 为行列线条 | `row` \| `col` \| `both` | - |
 | columnResizable | 是否允许拖动列宽（此项为 true 以后，如果有某些列不想改变宽度，可单独设置 column.resizable:false） | `boolean` | `false` |
-| columnsCustomizable | 是否允许自定义列(如果是多级表头，父层级也必须有`field`)、如果有默认显示哪些列，可以传一个对象`columnsCustomizable:{selected:arr}` | `object` \| `boolean` | `false` |
+| columnsCustomizable | 是否允许自定义列(如果是多级表头，父层级也必须有`field`)、可传入对象具体项见下表 | `object` \| `boolean` | `false` |
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
 | striped | 是否显示斑马间隔 | `boolean` | `false` |
 | onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
@@ -150,10 +150,21 @@
 | indentSize | 缩进尺寸，单位 px | `number` | 16 |
 | indicator | 自定义展开折叠图标的配置，与基组件的 `expandable.indicator` 配置一致 | `props` | - |
 
+### columnsCustomizable
+
+自定义配置列
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| selected | 默认展示出的列 | `array` | - |
+| cache | 是否需要缓存到 store 中（刷新页面不会重置，需要 cache 设置为`唯一的标识`） | `string \| boolean` | - |
+| callback | 点击 modal 的保存的回调事件 | `function` | - |
+
 ## Method
 
-| 参数        | 说明                         | 参数 |
-| ----------- | ---------------------------- | ---- |
-| resetSort   | 重置表格的排序状态           | -    |
-| getDataKeys | 获取当前顺序的 keyField 数组 | -    |
-| getData     | 获取当前顺序的表格 data      | -    |
+| 参数               | 说明                         | 参数 |
+| ------------------ | ---------------------------- | ---- |
+| resetSort          | 重置表格的排序状态           | -    |
+| getDataKeys        | 获取当前顺序的 keyField 数组 | -    |
+| getData            | 获取当前顺序的表格 data      | -    |
+| resetColumnsCustom | 重置自定义列的展示           | -    |
