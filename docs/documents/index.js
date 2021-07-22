@@ -51,6 +51,9 @@ define([], function () {
             attrs: {
               id: 'nice',
             },
+            classes: {
+              'markdown-article': true,
+            },
             ref: (c) => {
               content = c
             },
