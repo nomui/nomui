@@ -39,6 +39,7 @@ class AutoCompleteList extends List {
       itemSelectable: {
         multiple: false,
         byClick: true,
+        scrollIntoView: true,
       },
       selectedItems: value,
 

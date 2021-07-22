@@ -63,9 +63,12 @@ class Td extends Component {
         expandable: {
           byClick: true,
           target: () => {
-            return rowData.children.map((subrowData) => {
-              return this.table.grid.rowsRefs[subrowData[this.table.props.keyField]]
-            })
+            return (
+              rowData.children &&
+              rowData.children.map((subrowData) => {
+                return this.table.grid.rowsRefs[subrowData[this.table.props.keyField]]
+              })
+            )
           },
           indicator: {
             component: 'Icon',

@@ -39,6 +39,9 @@ class Select extends Field {
             })
           },
         },
+        itemSelectable: {
+          scrollIntoView: true,
+        },
         gutter: 'md',
       },
       multiple: false,

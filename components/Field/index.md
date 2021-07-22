@@ -21,12 +21,12 @@
 
 ## Method
 
-| 名称     | 说明               | 类型          |
-| -------- | ------------------ | ------------- |
-| focus    | 获得焦点           |               |
-| blur     | 失焦               |               |
-| getValue | 获取 value 值      |               |
-| setValue | 设置 value 值      | `(value)=>{}` |
-| validate | 验证               | `()=>boolean` |
-| reset    | 重置字段值为初始值 |               |
-| clear    | 清除字段值         |               |
+| 名称 | 说明 | 类型 |
+| --- | --- | --- |
+| focus | 获得焦点 |  |
+| blur | 失焦 |  |
+| getValue | 获取 value 值 |  |
+| setValue | 设置 value 值, 第一个参数是要设置的值，第二个是一个可选的对象参数，其属性 `triggerChange` 指示该设值操作是否触发 onValueChange 事件 | `(value, options: { triggerChange: boolean } )=>{}` |
+| validate | 验证 | `()=>boolean` |
+| reset | 重置字段值为初始值 |  |
+| clear | 清除字段值 |  |
