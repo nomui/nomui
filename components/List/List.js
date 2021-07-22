@@ -16,7 +16,7 @@ class List extends Component {
       itemSelectable: {
         multiple: false,
         byClick: false,
-        scrollIntoView: true,
+        scrollIntoView: false,
       },
       disabledItems: [],
       virtual: false,
