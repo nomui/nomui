@@ -15807,13 +15807,20 @@ function _defineProperty2(obj, key, value) {
   Component.register(Grid);
   class GroupList extends Group {
     constructor(props, ...mixins) {
-      const defaults = { fieldDefaults: { component: Group } };
+      const defaults = {
+        fieldDefaults: { component: Group },
+        hideAction: false,
+      };
       super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      this.extGroupDefaults = null;
     }
     _config() {
       const that = this;
-      const { groupDefaults, value, addDefaultValue } = this.props;
-      const extGroupDefaults = Component.extendProps(groupDefaults, {
+      const { groupDefaults, value } = this.props;
+      this.extGroupDefaults = Component.extendProps(groupDefaults, {
         _config: function () {
           const group = this;
           this.setProps({
@@ -15833,12 +15840,14 @@ function _defineProperty2(obj, key, value) {
       const groups = [];
       if (Array.isArray(value)) {
         value.forEach(function (item) {
-          groups.push(Component.extendProps(extGroupDefaults, { value: item }));
+          groups.push(
+            Component.extendProps(that.extGroupDefaults, { value: item })
+          );
         });
       }
       this.setProps({
         fields: groups,
-        fieldDefaults: extGroupDefaults,
+        fieldDefaults: that.extGroupDefaults,
         controlAction: [
           {
             component: "Button",
@@ -15847,12 +15856,9 @@ function _defineProperty2(obj, key, value) {
             span: 12,
             block: true,
             onClick: () => {
-              extGroupDefaults.value = isFunction(addDefaultValue)
-                ? addDefaultValue.call(this)
-                : addDefaultValue;
-              that.appendField(extGroupDefaults);
-              that._onValueChange();
+              that.addGroup();
             },
+            hidden: that.props.hideAction,
           },
         ],
       });
@@ -15884,6 +15890,14 @@ function _defineProperty2(obj, key, value) {
           }
         }
       }
+    }
+    addGroup() {
+      const { addDefaultValue } = this.props;
+      this.extGroupDefaults.value = isFunction(addDefaultValue)
+        ? addDefaultValue.call(this)
+        : addDefaultValue;
+      this.appendField(this.extGroupDefaults);
+      this._onValueChange();
     }
   }
   Component.register(GroupList);
