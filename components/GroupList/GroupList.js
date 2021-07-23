@@ -6,15 +6,21 @@ class GroupList extends Group {
   constructor(props, ...mixins) {
     const defaults = {
       fieldDefaults: { component: Group },
+      hideAction: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    super._created()
+    this.extGroupDefaults = null
+  }
+
   _config() {
     const that = this
-    const { groupDefaults, value, addDefaultValue } = this.props
-    const extGroupDefaults = Component.extendProps(groupDefaults, {
+    const { groupDefaults, value } = this.props
+    this.extGroupDefaults = Component.extendProps(groupDefaults, {
       _config: function () {
         const group = this
         this.setProps({
@@ -35,13 +41,13 @@ class GroupList extends Group {
     const groups = []
     if (Array.isArray(value)) {
       value.forEach(function (item) {
-        groups.push(Component.extendProps(extGroupDefaults, { value: item }))
+        groups.push(Component.extendProps(that.extGroupDefaults, { value: item }))
       })
     }
 
     this.setProps({
       fields: groups,
-      fieldDefaults: extGroupDefaults,
+      fieldDefaults: that.extGroupDefaults,
       controlAction: [
         {
           component: 'Button',
@@ -50,12 +56,9 @@ class GroupList extends Group {
           span: 12,
           block: true,
           onClick: () => {
-            extGroupDefaults.value = isFunction(addDefaultValue)
-              ? addDefaultValue.call(this)
-              : addDefaultValue
-            that.appendField(extGroupDefaults)
-            that._onValueChange()
+            that.addGroup()
           },
+          hidden: that.props.hideAction,
         },
       ],
     })
@@ -95,6 +98,15 @@ class GroupList extends Group {
         }
       }
     }
+  }
+
+  addGroup() {
+    const { addDefaultValue } = this.props
+    this.extGroupDefaults.value = isFunction(addDefaultValue)
+      ? addDefaultValue.call(this)
+      : addDefaultValue
+    this.appendField(this.extGroupDefaults)
+    this._onValueChange()
   }
 }
 
