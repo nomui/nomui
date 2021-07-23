@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './item-render.js'], function () {
   return {
     title: 'Dropdown',
     subtitle: '下拉菜单',

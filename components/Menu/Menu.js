@@ -20,7 +20,7 @@ class Menu extends Component {
         expandSingle: true,
         initExpandLevel: -1,
       },
-
+      itemRender: null,
       indent: 1.5,
       direction: 'vertical',
     }
@@ -54,6 +54,7 @@ class Menu extends Component {
       }
       return {
         component: MenuItemWrapper,
+        itemData: item,
         item: Component.extendProps({}, that.props.itemDefaults, item),
       }
     })

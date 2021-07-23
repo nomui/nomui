@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { extend } from '../util/index'
 
 class Dropdown extends Component {
   constructor(props, ...mixins) {
@@ -10,6 +11,8 @@ class Dropdown extends Component {
       onClick: null,
       items: [],
       size: null,
+      itemDefaults: null,
+      itemRender: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -22,7 +25,18 @@ class Dropdown extends Component {
 
   _config() {
     const that = this
-    const { items, triggerAction, split, text, type, size } = this.props
+    const { items, triggerAction, split, text, type, size, itemDefaults, itemRender } = this.props
+    const _itemDefaults = extend(
+      {
+        styles: {
+          hover: {
+            color: 'primary',
+          },
+        },
+        size: size,
+      },
+      itemDefaults,
+    )
 
     const children = [
       split && {
@@ -51,14 +65,8 @@ class Dropdown extends Component {
           },
           children: {
             component: 'Menu',
-            itemDefaults: {
-              styles: {
-                hover: {
-                  color: 'primary',
-                },
-              },
-              size: size,
-            },
+            itemDefaults: _itemDefaults,
+            itemRender: itemRender,
             items: items,
           },
           onClick: (args) => {

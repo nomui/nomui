@@ -21,6 +21,7 @@ class MenuItem extends Component {
         type: 'down',
       },
       tools: null,
+      itemData: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -38,6 +39,7 @@ class MenuItem extends Component {
       this.parentItem = this.wrapper.parentWrapper.item
     }
     this.handleSelect = this.handleSelect.bind(this)
+    this.itemData = this.wrapper.props.itemData
   }
 
   _config() {
@@ -108,35 +110,43 @@ class MenuItem extends Component {
       },
     })
 
+    const children = menu.props.itemRender
+      ? [
+          menu.props.itemRender(this.itemData),
+          menu.props.direction !== 'horizontal' && tools && tools,
+          this.props.indicator && !this.isLeaf && this.props.indicator,
+        ]
+      : [
+          this.props.icon && {
+            component: 'Icon',
+            type: this.props.icon,
+            classes: { 'nom-menu-item-icon': true },
+          },
+          {
+            component: Component,
+            tag: 'span',
+            classes: { text: true },
+            attrs: {
+              style: { 'flex-grow': this.props.subtext ? null : '2' },
+              title: this.props.text,
+            },
+            children: this.props.text,
+          },
+          this.props.subtext && {
+            component: Component,
+            tag: 'span',
+            classes: { subtext: true },
+            attrs: {
+              style: { 'flex-grow': '2' },
+            },
+            children: this.props.subtext,
+          },
+          menu.props.direction !== 'horizontal' && tools && tools,
+          this.props.indicator && !this.isLeaf && this.props.indicator,
+        ]
+
     this.setProps({
-      children: [
-        this.props.icon && {
-          component: 'Icon',
-          type: this.props.icon,
-          classes: { 'nom-menu-item-icon': true },
-        },
-        {
-          component: Component,
-          tag: 'span',
-          classes: { text: true },
-          attrs: {
-            style: { 'flex-grow': this.props.subtext ? null : '2' },
-            title: this.props.text,
-          },
-          children: this.props.text,
-        },
-        this.props.subtext && {
-          component: Component,
-          tag: 'span',
-          classes: { subtext: true },
-          attrs: {
-            style: { 'flex-grow': '2' },
-          },
-          children: this.props.subtext,
-        },
-        menu.props.direction !== 'horizontal' && tools && tools,
-        this.props.indicator && !this.isLeaf && this.props.indicator,
-      ],
+      children: children,
     })
   }
 

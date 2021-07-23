@@ -17,6 +17,7 @@ class MenuSub extends Component {
     this.wrapper.submenu = this
     this.menu = this.wrapper.menu
     this.props.itemDefaults = this.menu.props.itemDefaults
+    this.props.itemRender = this.menu.props.itemRender
   }
 
   _config() {
@@ -29,6 +30,7 @@ class MenuSub extends Component {
           component: 'MenuItemWrapper',
           item: Component.extendProps({}, that.props.itemDefaults, item),
           items: item.items,
+          itemData: item,
         }
       })
 
