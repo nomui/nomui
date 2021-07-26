@@ -347,19 +347,23 @@ class Grid extends Component {
 
   // 遍历 rowTr 实例，调用其check方法
   checkAllRows(options) {
-    Object.entries(this.rowsRefs)
-      .filter(([, ref]) => !isNullish(ref?.props?.data[this.props.keyField]))
-      .forEach((item) => {
-        item[1].check(options)
-      })
+    const { rowsRefs } = this
+    Object.keys(rowsRefs).forEach((key) => {
+      const refItem = rowsRefs[key]
+      if (refItem.props && !isNullish(refItem.props.data[this.props.keyField])) {
+        refItem.check(options)
+      }
+    })
   }
 
   uncheckAllRows(options) {
-    Object.entries(this.rowsRefs)
-      .filter(([, ref]) => !isNullish(ref?.props?.data[this.props.keyField]))
-      .forEach((item) => {
-        item[1].uncheck(options)
-      })
+    const { rowsRefs } = this
+    Object.keys(rowsRefs).forEach((key) => {
+      const refItem = rowsRefs[key]
+      if (refItem.props && !isNullish(refItem.props.data[this.props.keyField])) {
+        refItem.uncheck(options)
+      }
+    })
   }
 
   checkRows(rows, options) {
