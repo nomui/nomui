@@ -45,6 +45,9 @@ class Grid extends Component {
 
   _config() {
     const that = this
+    // 切换分页 data数据更新时 此两项不重置会导致check表现出错
+    this.rowsRefs = {}
+    this.checkedRowRefs = {}
     this._propStyleClasses = ['bordered']
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
@@ -149,6 +152,10 @@ class Grid extends Component {
     if (this.loadingInst) {
       this.loadingInst.remove()
       this.loadingInst = null
+    }
+
+    if (this.props.rowCheckable) {
+      this.changeCheckAllState()
     }
 
     if (this.props.data && this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
@@ -338,16 +345,21 @@ class Grid extends Component {
       .filter((key) => !isNullish(key))
   }
 
+  // 遍历 rowTr 实例，调用其check方法
   checkAllRows(options) {
-    Object.keys(this.rowsRefs).forEach((key) => {
-      this.rowsRefs[key] && this.rowsRefs[key].check(options)
-    })
+    Object.entries(this.rowsRefs)
+      .filter(([, ref]) => !isNullish(ref?.props?.data[this.props.keyField]))
+      .forEach((item) => {
+        item[1].check(options)
+      })
   }
 
   uncheckAllRows(options) {
-    Object.keys(this.rowsRefs).forEach((key) => {
-      this.rowsRefs[key] && this.rowsRefs[key].uncheck(options)
-    })
+    Object.entries(this.rowsRefs)
+      .filter(([, ref]) => !isNullish(ref?.props?.data[this.props.keyField]))
+      .forEach((item) => {
+        item[1].uncheck(options)
+      })
   }
 
   checkRows(rows, options) {
