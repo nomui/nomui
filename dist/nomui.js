@@ -4528,7 +4528,7 @@ function _defineProperty2(obj, key, value) {
   class Empty extends Component {
     constructor(props, ...mixins) {
       const defaults = {
-        description: false,
+        description: "暂无内容",
         image: Empty.PRESENTED_IMAGE_DEFAULT,
         imageStyle: {},
         size: "xsmall",
@@ -14550,7 +14550,7 @@ function _defineProperty2(obj, key, value) {
                 colspan: this.table.colLength,
                 style: { "vertical-align": "middle" },
               },
-              children: { component: "Empty", description: false },
+              children: { component: "Empty", description: "暂无内容" },
             },
           },
         };
