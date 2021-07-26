@@ -3,7 +3,7 @@ import Component from '../Component/index'
 class Empty extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      description: false,
+      description: '暂无内容',
       image: Empty.PRESENTED_IMAGE_DEFAULT,
       imageStyle: {},
       size: 'xsmall',

@@ -56,7 +56,7 @@ class Tbody extends Component {
             children: {
               component: 'Empty',
 
-              description: false,
+              description: '暂无内容',
             },
           },
         },
