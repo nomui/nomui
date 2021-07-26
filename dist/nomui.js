@@ -569,6 +569,7 @@ function _defineProperty2(obj, key, value) {
       this._propStyleClasses = [];
       mixins && this._mixin(mixins);
       this._setKey();
+      isFunction(this._create) && this._create();
       this.referenceComponent =
         this.props.reference instanceof Component
           ? this.props.reference
@@ -583,6 +584,10 @@ function _defineProperty2(obj, key, value) {
           this.parent = this.referenceComponent.parent;
         }
       }
+      this.referenceElement =
+        this.props.reference instanceof Component
+          ? this.props.reference.element
+          : this.props.reference;
       if (this.parent === null) {
         this.root = this;
       } else {
@@ -592,10 +597,6 @@ function _defineProperty2(obj, key, value) {
         this.props.ref(this);
       }
       this.componentType = this.__proto__.constructor.name;
-      this.referenceElement =
-        this.props.reference instanceof Component
-          ? this.props.reference.element
-          : this.props.reference;
       this.create();
       if (this.props.autoRender === true) {
         this.config();
@@ -14062,12 +14063,14 @@ function _defineProperty2(obj, key, value) {
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
-    _config() {
+    _create() {
       this.setProps({
         reference: this.props.container,
         alignTo: this.getElement(this.props.container),
-        children: { component: Spinner },
       });
+    }
+    _config() {
+      this.setProps({ children: { component: Spinner } });
       if (this.props.container instanceof Component) {
         this.props.container.addClass("nom-loading-container");
       } else {

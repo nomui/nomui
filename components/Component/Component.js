@@ -60,6 +60,8 @@ class Component {
 
     this._setKey()
 
+    isFunction(this._create) && this._create()
+
     this.referenceComponent =
       this.props.reference instanceof Component
         ? this.props.reference
@@ -71,6 +73,10 @@ class Component {
         this.parent = this.referenceComponent.parent
       }
     }
+    this.referenceElement =
+      this.props.reference instanceof Component
+        ? this.props.reference.element
+        : this.props.reference
 
     if (this.parent === null) {
       this.root = this
@@ -83,10 +89,6 @@ class Component {
     }
 
     this.componentType = this.__proto__.constructor.name
-    this.referenceElement =
-      this.props.reference instanceof Component
-        ? this.props.reference.element
-        : this.props.reference
 
     this.create()
     if (this.props.autoRender === true) {
