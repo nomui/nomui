@@ -1,4 +1,4 @@
-define(['./basic.js', './add-default-value.js'], function () {
+define(['./basic.js', './add-default-value.js', './hide-action.js'], function () {
   return {
     title: 'GroupList',
     subtitle: '字段组列表',

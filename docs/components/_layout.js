@@ -35,30 +35,30 @@ define([], function () {
                     {
                       text: 'Styles',
                       subtext: '样式',
-                      id: 'component/styles',
+                      id: 'Component/styles',
                       items: [
                         {
                           text: 'Color',
                           subtext: '颜色',
-                          id: 'component/styles/color',
+                          id: 'Component/styles/color',
                           url: '#!components!index?type=Component&cat=styles/color',
                         },
                         {
                           text: 'Text',
                           subtext: '文本',
-                          id: 'component/styles/text',
+                          id: 'Component/styles/text',
                           url: '#!components!index?type=Component&cat=styles/text',
                         },
                         {
                           text: 'Border',
                           subtext: '边框',
-                          id: 'component/styles/border',
+                          id: 'Component/styles/border',
                           url: '#!components!index?type=Component&cat=styles/border',
                         },
                         {
                           text: 'Padding',
                           subtext: '内边距',
-                          id: 'component/styles/padding',
+                          id: 'Component/styles/padding',
                           url: '#!components!index?type=Component&cat=styles/padding',
                         },
                       ],
@@ -66,13 +66,13 @@ define([], function () {
                     {
                       text: 'Events',
                       subtext: '事件',
-                      id: 'component/events',
+                      id: 'Component/events',
                       url: '#!components!index?type=Component&cat=events',
                     },
                     {
                       text: 'Behavior',
                       subtext: '行为',
-                      id: 'component/behavior',
+                      id: 'Component/behavior',
                       items: [
                         {
                           text: 'Selectable',
@@ -83,7 +83,7 @@ define([], function () {
                         {
                           text: 'Expandable',
                           subtext: '可展开',
-                          id: 'component/behavior/expandable',
+                          id: 'Component/behavior/expandable',
                           url: '#!components!index?type=Component&cat=behavior/expandable',
                         },
                       ],
