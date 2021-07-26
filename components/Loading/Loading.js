@@ -14,10 +14,15 @@ class Loading extends Layer {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _config() {
+  _create() {
     this.setProps({
       reference: this.props.container,
       alignTo: this.getElement(this.props.container),
+    })
+  }
+
+  _config() {
+    this.setProps({
       children: {
         component: Spinner,
       },
