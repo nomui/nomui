@@ -2837,6 +2837,21 @@ template {
 .u-shadow-xl {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
+.u-shadow-xsmall {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+.u-shadow-small {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.u-shadow-medium {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
+}
+.u-shadow-large {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+.u-shadow-xlarge {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
 h1,
 h2,
 h3,
