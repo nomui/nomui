@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { accessProp, extend } from '../util/index'
+import { accessProp, extend, isNullish } from '../util/index'
 import Td from './Td'
 
 class Tr extends Component {
@@ -16,7 +16,9 @@ class Tr extends Component {
     this.tbody = this.parent
     this.table = this.tbody.table
 
-    if (this.table.hasGrid && this.props.data[this.table.props.keyField]) {
+    // keyField(id) 不为 undefined, null
+    const dataHaskeyField = !isNullish(this.props.data[this.table.props.keyField])
+    if (this.table.hasGrid && dataHaskeyField) {
       this.table.grid.rowsRefs[this.props.data[this.table.props.keyField]] = this
     }
   }
