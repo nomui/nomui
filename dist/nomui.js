@@ -17945,10 +17945,17 @@ function _defineProperty2(obj, key, value) {
                   },
                 },
                 that.props.mode === "week" && {
-                  hidden: !this.year,
                   children: {
                     component: "List",
-                    items: that._getWeek("2010"),
+                    items: that.year
+                      ? that._getWeek("2010")
+                      : [
+                          {
+                            component: "StaticText",
+                            value: "请先选择年份",
+                            disabled: true,
+                          },
+                        ],
                     itemSelectable: {
                       multiple: false,
                       byClick: true,
@@ -18123,7 +18130,7 @@ function _defineProperty2(obj, key, value) {
         if (this.year <= this.minYear) {
           this.minSub = this.minAfter;
           this.setValue(null);
-          this.subPicker.unselectAllItems();
+          this.subPicker && this.subPicker.unselectAllItems();
           noUpdate = true;
         } else {
           this.minSub = "00";
@@ -18131,7 +18138,7 @@ function _defineProperty2(obj, key, value) {
         if (this.year >= this.maxYear) {
           this.maxSub = this.maxAfter;
           this.setValue(null);
-          this.subPicker.unselectAllItems();
+          this.subPicker && this.subPicker.unselectAllItems();
           noUpdate = true;
         } else {
           this.maxSub = "60";
