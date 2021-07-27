@@ -20,7 +20,6 @@
 | showEmpty | 数据为空的时候是否显示空信息提示，可以是布尔值也可以是`{Empty组件的属性}` | `boolean \| object` | `false` |
 | virtual | 开启虚拟渲染，值为 number 则为可视区的高度配置（number 默认为 400） | `boolean\|number` | false |
 | sortable | ListItem 是否可拖拽排序 | `object\|boolean` | false |
-| disDragItems | 不可拖拽选项的 key 的数组 | `[key]` | false |
 
 ### itemSelectable
 
@@ -37,6 +36,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | draggableName | 允许拖拽的项目类名 | `.clasNmae` | - |
+| disabledDragKeys | 不可拖拽选项的 key 的数组 | `[key]` | false |
 | handleClassName | 为简单 css 选择器的字符串，使列表单元中符合选择器的元素成为拖动的手柄 | `.clasNmae` | `.could-drag` |
 | onEnd | ListItem 每次拖拽完成的回调 | `function` | - |
 

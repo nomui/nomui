@@ -86,7 +86,9 @@ define([], function () {
             text: '设置第《连城诀》为不可拖拽',
             onClick: () => {
               listRef.update({
-                disDragItems: [3],
+                sortable: {
+                  disabledDragKeys: [3],
+                },
               })
             },
           },

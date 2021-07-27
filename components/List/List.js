@@ -28,7 +28,6 @@ class List extends Component {
       showEmpty: false,
       // Boolean || { onEnd: Funciton}
       sortable: false,
-      disDragItems: [],
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
