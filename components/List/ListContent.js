@@ -249,12 +249,16 @@ class ListContent extends Component {
   }
 
   _getDragClassNames(item) {
-    const { sortable, disDragItems } = this.list.props
-    const dragClasses = {}
+    const { sortable } = this.list.props
+    if (!sortable) return {}
 
-    if (!disDragItems.includes(item.key)) {
+    const dragClasses = {}
+    const { disabledDragKeys } = sortable
+
+    if (!disabledDragKeys || !disabledDragKeys.includes(item.key)) {
       dragClasses[sortable.draggableClassName || 'could-drag'] = true
     }
+
     return dragClasses
   }
 
