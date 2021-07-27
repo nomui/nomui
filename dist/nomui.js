@@ -14376,8 +14376,11 @@ function _defineProperty2(obj, key, value) {
     }
     _created() {
       this.tbody = this.parent;
-      this.table = this.tbody.table;
-      if (this.table.hasGrid && this.props.data[this.table.props.keyField]) {
+      this.table = this.tbody.table; // keyField(id) 不为 undefined, null
+      const dataHaskeyField = !isNullish(
+        this.props.data[this.table.props.keyField]
+      );
+      if (this.table.hasGrid && dataHaskeyField) {
         this.table.grid.rowsRefs[
           this.props.data[this.table.props.keyField]
         ] = this;
@@ -15308,7 +15311,9 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _config() {
-      const that = this;
+      const that = this; // 切换分页 data数据更新时 此两项不重置会导致check表现出错
+      this.rowsRefs = {};
+      this.checkedRowRefs = {};
       this._propStyleClasses = ["bordered"];
       const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props;
       this._processCheckableColumn();
@@ -15372,6 +15377,9 @@ function _defineProperty2(obj, key, value) {
       if (this.loadingInst) {
         this.loadingInst.remove();
         this.loadingInst = null;
+      }
+      if (this.props.rowCheckable) {
+        this.changeCheckAllState();
       }
       if (
         this.props.data &&
@@ -15514,15 +15522,29 @@ function _defineProperty2(obj, key, value) {
           return this.checkedRowRefs[key].key;
         })
         .filter((key) => !isNullish(key));
-    }
+    } // 遍历 rowTr 实例，调用其check方法
     checkAllRows(options) {
-      Object.keys(this.rowsRefs).forEach((key) => {
-        this.rowsRefs[key] && this.rowsRefs[key].check(options);
+      const { rowsRefs } = this;
+      Object.keys(rowsRefs).forEach((key) => {
+        const refItem = rowsRefs[key];
+        if (
+          refItem.props &&
+          !isNullish(refItem.props.data[this.props.keyField])
+        ) {
+          refItem.check(options);
+        }
       });
     }
     uncheckAllRows(options) {
-      Object.keys(this.rowsRefs).forEach((key) => {
-        this.rowsRefs[key] && this.rowsRefs[key].uncheck(options);
+      const { rowsRefs } = this;
+      Object.keys(rowsRefs).forEach((key) => {
+        const refItem = rowsRefs[key];
+        if (
+          refItem.props &&
+          !isNullish(refItem.props.data[this.props.keyField])
+        ) {
+          refItem.uncheck(options);
+        }
       });
     }
     checkRows(rows, options) {
