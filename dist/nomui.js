@@ -11997,11 +11997,15 @@ function _defineProperty2(obj, key, value) {
                         options: originOptions,
                       });
                       if (result && result.then) {
-                        return result.then((value) => {
-                          this.selectControl.props.options = value;
-                          this.selectControl.optionList.update();
-                          loading && loading.remove();
-                        });
+                        return result
+                          .then((value) => {
+                            this.selectControl.props.options = value;
+                            this.selectControl.optionList.update();
+                            loading && loading.remove();
+                          })
+                          .catch(() => {
+                            loading && loading.remove();
+                          });
                       }
                       loading && loading.remove();
                       this.selectControl.props.options = result;
