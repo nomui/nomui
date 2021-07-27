@@ -8002,9 +8002,11 @@ function _defineProperty2(obj, key, value) {
       return selectedItems;
     }
     _getDragClassNames(item) {
-      const { sortable, disDragItems } = this.list.props;
+      const { sortable } = this.list.props;
+      if (!sortable) return {};
       const dragClasses = {};
-      if (!disDragItems.includes(item.key)) {
+      const { disabledDragKeys } = sortable;
+      if (!disabledDragKeys || !disabledDragKeys.includes(item.key)) {
         dragClasses[sortable.draggableClassName || "could-drag"] = true;
       }
       return dragClasses;
@@ -8059,7 +8061,6 @@ function _defineProperty2(obj, key, value) {
         },
         showEmpty: false, // Boolean || { onEnd: Funciton}
         sortable: false,
-        disDragItems: [],
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
