@@ -21050,7 +21050,7 @@ function _defineProperty2(obj, key, value) {
         itemDefaults: { component: TabItem },
         tabContent: null,
         uistyle: "plain",
-        itemSelectable: { byClick: true, scrollIntoView: true },
+        itemSelectable: { byClick: true, scrollIntoView: false },
         onTabSelectionChange: null,
         disabledItems: [],
       };
