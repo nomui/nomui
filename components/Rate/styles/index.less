@@ -1,0 +1,56 @@
+.nom-rate {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  color: #fadb14;
+  font-size: 20px;
+  line-height: unset;
+  list-style: none;
+  outline: none;
+  .nom-rate-star {
+    position: relative;
+    display: inline-block;
+    color: inherit;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+    .nom-rate-star-first,
+    .nom-rate-star-second {
+      color: @oc-gray-3;
+      transition: all 0.3s;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  }
+  .nom-rate-star-full {
+    .nom-rate-star-second {
+      color: inherit;
+    }
+  }
+  .nom-rate-star-half {
+    .nom-rate-star-first,
+    .nom-rate-star-second {
+      opacity: 1;
+    }
+    .nom-rate-star-first {
+      color: inherit;
+    }
+  }
+  // .nom-rate-star-zero {
+  // }
+  // .nom-rate-star-active {
+  // }
+
+  .nom-rate-star-first {
+    position: absolute;
+    width: 50%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    opacity: 0;
+  }
+}
