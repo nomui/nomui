@@ -12,7 +12,7 @@ class TabList extends List {
       uistyle: 'plain',
       itemSelectable: {
         byClick: true,
-        scrollIntoView: true,
+        scrollIntoView: false,
       },
       onTabSelectionChange: null,
       disabledItems: [],
