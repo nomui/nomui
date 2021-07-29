@@ -12,11 +12,13 @@ class RateStar extends Component {
   }
 
   _created() {
-    this.rate = this.parent
+    this.rate = this.parent.field
   }
 
   _config() {
+    const { disabled } = this.rate.props
     const { value, index, character } = this.props
+
     const isFull = value >= index + 1
     const isZero = value <= index
 
@@ -34,13 +36,13 @@ class RateStar extends Component {
           component: RateStarChild,
           classes: { 'nom-rate-star-first': true },
           children: character || rateIconProps,
-          onClick: this.handleClickRateStarFirst.bind(this),
+          onClick: disabled ? null : this.handleClickRateStarFirst.bind(this),
         },
         {
           component: RateStarChild,
           classes: { 'nom-rate-star-second': true },
           children: character || rateIconProps,
-          onClick: this.handleClickRateStarSecond.bind(this),
+          onClick: disabled ? null : this.handleClickRateStarSecond.bind(this),
         },
       ],
     })
@@ -62,7 +64,6 @@ class RateStar extends Component {
   }
 
   _updateValue(newValue = 0) {
-    if (this.rate.props.disabled) return
     const { allowClear } = this.rate.props
     const { value } = this.props
 

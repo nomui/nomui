@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '半星',
-    file: 'basic',
+    file: 'allowHalf',
     demo: function () {
       return {
         component: 'Rate',

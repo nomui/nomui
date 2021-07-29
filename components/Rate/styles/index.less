@@ -1,12 +1,18 @@
 .nom-rate {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  color: #fadb14;
-  font-size: 20px;
-  line-height: unset;
-  list-style: none;
-  outline: none;
+  > .nom-field-content {
+    .nom-control {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      color: #fadb14;
+      font-size: 20px;
+      line-height: unset;
+      list-style: none;
+      outline: none;
+    }
+  }
   .nom-rate-star {
     position: relative;
     display: inline-block;
@@ -18,6 +24,8 @@
     }
     .nom-rate-star-first,
     .nom-rate-star-second {
+      display: flex;
+      align-items: center;
       color: @oc-gray-3;
       transition: all 0.3s;
       -webkit-user-select: none;

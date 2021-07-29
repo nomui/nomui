@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: 'star 个数',
-    file: 'basic',
+    file: 'count',
     demo: function () {
       return {
         component: 'Rate',

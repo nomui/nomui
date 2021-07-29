@@ -86,6 +86,12 @@ define([], function () {
               ],
             },
             {
+              component: 'Rate',
+              label: '性格评分',
+              value: 3,
+              name: 'characterRate',
+            },
+            {
               component: 'Field',
               label: '',
               control: {

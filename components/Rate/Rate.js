@@ -1,9 +1,10 @@
 import Component from '../Component/index'
+import Field from '../Field/index'
 import { getValidValue } from '../Slider/helper.js'
-import { isFunction, isNumeric } from '../util/index'
+import { isFunction } from '../util/index'
 import RateStar from './RateStar'
 
-class Rate extends Component {
+class Rate extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       allowClear: true,
@@ -21,40 +22,16 @@ class Rate extends Component {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _created() {
-    // const { value, defaultValue, count } = this.props
-    // this.value = getValidValue(value || defaultValue, count)
-    // console.log('🚀 ~ file: .value', this.value)
-    super._created()
-  }
-
   _config() {
-    // const rateRef = this
     this._initValue()
 
     const children = this._getRateChildren()
 
-    console.log('🚀 ~ file: Rate.js ~  ~ children', children)
-
     this.setProps({
-      tag: 'ul',
-      children,
-      // control: {
-      // children: {
-      //   component: 'List',
-      //   items: Array(count).map(() => ({
-      //     text: count,
-      //   })),
-      //   itemDefaults: {
-      //     _config: function () {
-      //       this.setProps({
-      //         children: '123',
-      //       })
-      //     },
-      //   },
-      // },
-
-      // },
+      control: {
+        tag: 'ul',
+        children,
+      },
     })
 
     super._config()
@@ -62,13 +39,13 @@ class Rate extends Component {
 
   _initValue() {
     const { value, defaultValue, count, allowHalf } = this.props
-    // value值在 [0, count]之间
+    // value值应在 [0, count]之间
     this._value = getValidValue(value || defaultValue, count)
 
+    // 不允许半星则向下取取整
     if (!allowHalf) {
       this._value = Math.floor(this._value)
     }
-    console.log('🚀 ~ file: Rate. _initValue ~ this._value', this._value)
   }
 
   _getRateChildren() {
@@ -95,31 +72,7 @@ class Rate extends Component {
   }
 
   _setValue(value) {
-    const _value = value === null ? 0 : value
-    if (!isNumeric(_value) || _value < 0 || _value > this.props.max) return
-    if (this._handler && _value !== this.oldValue) {
-      this._offset = _value
-      this._handler.update()
-      this._track.update()
-
-      super._onValueChange()
-      this.oldValue = this.currentValue
-      this.currentValue = _value
-    }
-  }
-
-  _handleKeyDown(e) {
-    const { keyCode } = e
-    const value = this.getValue()
-    if (keyCode === 38) {
-      if (value <= this.props.max) {
-        this.setValue(value + 1)
-      }
-    } else if (keyCode === 40) {
-      if (value >= 0) {
-        this.setValue(value - 1)
-      }
-    }
+    this.update({ value })
   }
 }
 
