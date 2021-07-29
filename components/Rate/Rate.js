@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
 import { getValidValue } from '../Slider/helper.js'
-import { isFunction } from '../util/index'
+import { isFunction, isNumeric } from '../util/index'
 import RateStar from './RateStar'
 
 class Rate extends Field {
@@ -23,6 +23,7 @@ class Rate extends Field {
   }
 
   _config() {
+    this.rate = this
     this._initValue()
 
     const children = this._getRateChildren()
@@ -40,11 +41,11 @@ class Rate extends Field {
   _initValue() {
     const { value, defaultValue, count, allowHalf } = this.props
     // value值应在 [0, count]之间
-    this._value = getValidValue(value || defaultValue, count)
+    this.initValue = getValidValue(value || defaultValue, count)
 
     // 不允许半星则向下取取整
     if (!allowHalf) {
-      this._value = Math.floor(this._value)
+      this.initValue = Math.floor(this.initValue)
     }
   }
 
@@ -60,7 +61,7 @@ class Rate extends Field {
         return {
           component: RateStar,
           character: char,
-          value: this._value,
+          value: this.initValue,
           index,
           tooltip: tooltips && tooltips.length && tooltips[index],
         }
@@ -72,7 +73,15 @@ class Rate extends Field {
   }
 
   _setValue(value) {
-    this.update({ value })
+    const _value = value === null ? 0 : value
+    if (!isNumeric(_value) || _value < 0 || _value > this.props.count) return
+
+    if (value !== this.oldValue) {
+      this.update({ value })
+      super._onValueChange()
+      this.oldValue = this.currentValue
+      this.currentValue = _value
+    }
   }
 }
 
