@@ -5,6 +5,9 @@ class TreeNode extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       nodes: null,
+      data: {
+        customizable: true,
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

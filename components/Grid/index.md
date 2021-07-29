@@ -68,6 +68,7 @@
 | ellipsis | 单元格是否文字超出自动省略 | `boolean` | `false` |
 | sortable | 是否启用排序，为 true 时后端排序，也可以传自定义排序函数进行前端排序，如：`(a, b) => a.sales - b.sales` | `boolean` \| `function` | `false` |
 | filter | 是否启用列头筛选，启用的时候传入表单组件如：Textbox Select Checkbox，组件自动使用当前列的 field 作为表单 name | `component` | `false` |
+| customizable | 可配置该列是否需要加入可配置项中，配置 false 则不加入 | `boolean` | `true` |
 
 #### `cellRender` 使用示例及参数说明
 
