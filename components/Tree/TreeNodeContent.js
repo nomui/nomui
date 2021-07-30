@@ -19,14 +19,12 @@ class TreeNodeContent extends Component {
   }
 
   _config() {
-    const { customizable, isChecker } = this.node.props.data
-    const hidden = isChecker ? true : !customizable
     const { text, icon, tools } = this.node.props
     const { initExpandLevel, nodeCheckable } = this.tree.props
     const expanded = initExpandLevel === -1 || initExpandLevel > this.level
     const tree = this.tree
     this.setProps({
-      hidden,
+      hidden: this.node.props.data.hidden,
       expanded,
       expandable: {
         byIndicator: true,

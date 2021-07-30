@@ -35,7 +35,7 @@ class GridSettingPopup extends Modal {
           children: {
             component: 'Tree',
             showline: true,
-            data: that.grid.originColumns,
+            data: that.customizableColumns(that.grid.originColumns),
             nodeCheckable: {
               checkedNodeKeys: that.grid.props.visibleColumns
                 ? that.getMappedColumns(that.grid.props.visibleColumns)
@@ -95,6 +95,21 @@ class GridSettingPopup extends Modal {
     }
     mapColumns(param)
     return arr
+  }
+
+  customizableColumns(val) {
+    function mapColumns(data) {
+      data.forEach(function (item) {
+        if (item.isChecker === true || item.customizable === false) {
+          item.hidden = true
+        }
+        if (item.children) {
+          mapColumns(item.children)
+        }
+      })
+    }
+    mapColumns(val)
+    return val
   }
 }
 

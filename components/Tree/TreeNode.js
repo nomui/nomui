@@ -6,7 +6,7 @@ class TreeNode extends Component {
     const defaults = {
       nodes: null,
       data: {
-        customizable: true,
+        hidden: false,
       },
     }
 
