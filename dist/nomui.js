@@ -3600,7 +3600,7 @@ function _defineProperty2(obj, key, value) {
           within: props.within,
         };
         if (props.alignTo) {
-          props.position.of = props.alignTo;
+          props.position.of = this.getElement(props.alignTo);
         }
         if (props.alignTo && props.alignOuter === true) {
           const arr = props.align.split(" ");
@@ -3678,7 +3678,7 @@ function _defineProperty2(obj, key, value) {
       this._onOpenerFocusoutHandler = this._onOpenerFocusoutHandler.bind(this);
       this._openerFocusing = false;
       this.opener = this.props.trigger;
-      this.props.alignTo = this.opener.element;
+      this.props.alignTo = this.props.alignTo || this.opener.element;
       this.showTimer = null;
       this.hideTimer = null;
       this.delay = 100;
@@ -4120,7 +4120,7 @@ function _defineProperty2(obj, key, value) {
       const defaults = {
         label: null,
         labelAlign: "right",
-        invalidTipAlign: "top right",
+        invalidTip: {},
         value: null,
         flatValue: false,
         span: null,
@@ -4260,12 +4260,15 @@ function _defineProperty2(obj, key, value) {
     }
     _invalid(message) {
       if (!this.errorTip) {
-        this.errorTip = new Tooltip({
-          trigger: this,
-          reference: this.content,
-          styles: { color: "danger" },
-          children: message,
-        });
+        this.errorTip = new Tooltip(
+          extend$1({}, this.props.invalidTip, {
+            trigger: this,
+            reference: this.content,
+            alignTo: this.content,
+            styles: { color: "danger" },
+            children: message,
+          })
+        );
         if (this.element.contains(document.activeElement)) {
           this.errorTip.show();
         }
