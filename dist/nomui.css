@@ -5989,6 +5989,9 @@ fieldset[disabled] a.nom-button {
   color: #f03e3e !important;
   background-color: #fffbfb !important;
 }
+.nom-button.p-danger.nom-button-inline:hover {
+  background: none !important;
+}
 .nom-button.p-danger.p-type-primary {
   color: #fffbfb !important;
   background-color: #f03e3e !important;
@@ -6019,6 +6022,10 @@ fieldset[disabled] a.nom-button {
   color: #4263eb;
   background-color: transparent;
   border-color: transparent !important;
+}
+.nom-button.p-type-link:hover {
+  text-decoration: none;
+  background: none;
 }
 .nom-button.p-ghost {
   color: inherit !important;
@@ -6114,12 +6121,9 @@ fieldset[disabled] a.nom-button {
 }
 .nom-button:not(.p-type-default):not([disabled]):hover,
 .nom-button:not(.p-type-text):not([disabled]):hover,
-.nom-button:not(.p-type-dashed):not([disabled]):hover {
+.nom-button:not(.p-type-dashed):not([disabled]):hover,
+.nom-button:not(.p-type-link):not([disabled]):hover {
   filter: brightness(0.9);
-}
-a.nom-button.p-type-link:hover {
-  text-decoration: underline;
-  background: none;
 }
 .nom-button-inline {
   display: inline !important;
@@ -6128,9 +6132,9 @@ a.nom-button.p-type-link:hover {
   text-align: left;
 }
 .nom-button-inline:hover {
-  text-decoration: underline;
   background: none !important;
-  background-color: none !important;
+  background-color: transparent !important;
+  filter: brightness(0.65) !important;
   filter: none;
 }
 .nom-input {
@@ -8083,8 +8087,11 @@ textarea .nom-textarea {
 .nom-dropdown-popup .nom-menu-item-wrapper > a {
   padding-right: 1.5rem !important;
 }
-.nom-toolbar.p-type-link a {
+.nom-toolbar.p-type-link .nom-col a {
   margin-right: 0.5rem;
+}
+.nom-toolbar.p-type-link .nom-col:last-child a {
+  margin-right: 0;
 }
 .nom-scrollbar {
   position: fixed;
