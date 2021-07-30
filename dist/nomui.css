@@ -5592,7 +5592,7 @@ table.nom-table.nom-table-striped tbody tr:nth-child(even):hover {
 }
 table.nom-table td,
 table.nom-table th {
-  padding: 8px;
+  padding: 8px 10px;
   word-break: break-all;
 }
 table.nom-table td.nom-table-fixed-left,
@@ -5656,7 +5656,7 @@ table.nom-table .nom-table-fixed-right-first::after {
 table.nom-table th {
   position: relative;
   font-weight: 500;
-  line-height: 26px;
+  line-height: 24px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   background-color: #f8f8f8;
   background-image: linear-gradient(to bottom, #fcfcfc 0, #f8f8f8 100%);
@@ -5709,7 +5709,7 @@ table.nom-table.p-line-both th:last-child {
   border-right: 0;
 }
 table.nom-table.p-bordered {
-  border: 1px solid #e9ecef;
+  border: 1px solid gainsboro;
 }
 .nom-grid {
   position: relative;
@@ -5756,7 +5756,7 @@ table.nom-table.p-bordered {
   overflow-x: auto;
 }
 .nom-grid.p-bordered {
-  border: 1px solid #e9ecef;
+  border: 1px solid gainsboro;
 }
 .nom-grid.p-bordered > .nom-grid-body {
   margin-bottom: -1px;
