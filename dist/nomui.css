@@ -6009,8 +6009,6 @@ fieldset[disabled] a.nom-button {
   border-style: dashed;
 }
 .nom-button.p-type-text {
-  padding-right: 0.25rem;
-  padding-left: 0.25rem;
   background-color: transparent !important;
   border-color: transparent !important;
 }
@@ -6018,8 +6016,6 @@ fieldset[disabled] a.nom-button {
   background: rgba(0, 0, 0, 0.018);
 }
 .nom-button.p-type-link {
-  padding-right: 0.25rem;
-  padding-left: 0.25rem;
   color: #4263eb;
   background-color: transparent;
   border-color: transparent !important;
@@ -6125,11 +6121,17 @@ a.nom-button.p-type-link:hover {
   text-decoration: underline;
   background: none;
 }
-a.nom-button-inline {
-  display: inline;
+.nom-button-inline {
+  display: inline !important;
   padding: 0;
   white-space: normal;
   text-align: left;
+}
+.nom-button-inline:hover {
+  text-decoration: underline;
+  background: none !important;
+  background-color: none !important;
+  filter: none;
 }
 .nom-input {
   display: block;
@@ -8081,13 +8083,8 @@ textarea .nom-textarea {
 .nom-dropdown-popup .nom-menu-item-wrapper > a {
   padding-right: 1.5rem !important;
 }
-.nom-mask-info .nom-icon.p-type-eye {
-  position: relative;
-  top: 2px;
-  cursor: pointer;
-}
-.nom-mask-info .nom-icon.p-type-eye svg {
-  fill: #888;
+.nom-toolbar.p-type-link a {
+  margin-right: 0.5rem;
 }
 .nom-scrollbar {
   position: fixed;

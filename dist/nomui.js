@@ -2848,9 +2848,6 @@ function _defineProperty2(obj, key, value) {
           this.setProps({ classes: { "p-only-icon": true } });
         }
       }
-      if (inline) {
-        this.setProps({ classes: { "nom-button-inline": true } });
-      }
       this.setProps({
         children: [
           Component.normalizeIconProps(icon),
@@ -2858,6 +2855,9 @@ function _defineProperty2(obj, key, value) {
           Component.normalizeIconProps(rightIcon),
         ],
       });
+      if (inline) {
+        this.setProps({ tag: "a", classes: { "nom-button-inline": true } });
+      }
       if (href) {
         this.setProps({
           tag: "a",
@@ -13880,6 +13880,7 @@ function _defineProperty2(obj, key, value) {
           text: text,
           type: type,
           size: size,
+          inline: type === "link",
           onClick: (args) => {
             that._callHandler(that.onClick);
             args.event.stopPropagation();
@@ -13891,6 +13892,7 @@ function _defineProperty2(obj, key, value) {
           rightIcon: that.props.rightIcon,
           type: type,
           size: size,
+          inline: type === "link",
           popup: {
             triggerAction: triggerAction,
             classes: { "nom-dropdown-popup": true },
@@ -21978,7 +21980,12 @@ function _defineProperty2(obj, key, value) {
       const { items, type, gutter, size, visibleItems } = this.props;
       const before = items.slice(0, visibleItems).map((item) => {
         return Object.assign(
-          { component: "Button", type: type, size: size },
+          {
+            component: "Button",
+            type: type,
+            size: size,
+            inline: type === "link",
+          },
           item
         );
       });
@@ -21987,6 +21994,7 @@ function _defineProperty2(obj, key, value) {
         rightIcon: "ellipsis",
         items: items.slice(visibleItems),
         type: type,
+        inline: type === "link",
         size: size,
       };
       this.setProps({

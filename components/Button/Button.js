@@ -36,14 +36,6 @@ class Button extends Component {
       }
     }
 
-    if (inline) {
-      this.setProps({
-        classes: {
-          'nom-button-inline': true,
-        },
-      })
-    }
-
     this.setProps({
       children: [
         Component.normalizeIconProps(icon),
@@ -51,6 +43,15 @@ class Button extends Component {
         Component.normalizeIconProps(rightIcon),
       ],
     })
+
+    if (inline) {
+      this.setProps({
+        tag: 'a',
+        classes: {
+          'nom-button-inline': true,
+        },
+      })
+    }
 
     if (href) {
       this.setProps({
