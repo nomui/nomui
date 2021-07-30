@@ -2348,6 +2348,11 @@ function _defineProperty2(obj, key, value) {
     `<svg viewBox="64 64 896 896" focusable="false" data-icon="file" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494z"></path></svg>`,
     cat
   );
+  /** star */ Icon.add(
+    "star",
+    `<svg viewBox="64 64 896 896" focusable="false" data-icon="star" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"></path></svg>`,
+    cat
+  );
   class Caption extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -19329,6 +19334,184 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(RadioList);
+  function getValidMax(value) {
+    if (!isNumeric(value)) return 100;
+    if (value <= 0) return 100;
+    return value;
+  }
+  function getValidValue(val, max = 100) {
+    if (!val || !isNumeric(val) || val < 0) return 0;
+    if (val > max) return max;
+    return val;
+  }
+  function getOffset(container, offset, max = 100) {
+    let _container = container;
+    if (!_container) {
+      return null;
+    }
+    if (_container instanceof Component) {
+      _container = container.element;
+    }
+    if (!(_container instanceof HTMLElement)) {
+      return null;
+    }
+    const { left, width } = _container.getBoundingClientRect();
+    let result = ((offset - left) * max) / width;
+    result = Math.min(max, result);
+    result = Math.max(0, result);
+    return result;
+  }
+  class RateStarChild extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { rateIcon: "" };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.rate = this.parent.rate;
+    }
+  }
+  Component.register(RateStarChild);
+  class RateStar extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { character: "", index: 0 };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.rate = this.parent.parent.field;
+    }
+    _config() {
+      const { disabled } = this.rate.props;
+      const { value, index, character } = this.props;
+      const isFull = value >= index + 1;
+      const isZero = value <= index;
+      const rateIconProps = Component.normalizeIconProps("star");
+      this.setProps({
+        tag: "li",
+        classes: {
+          "nom-rate-star-full": isFull,
+          "nom-rate-star-half": !isFull && !isZero,
+          "nom-rate-star-zero": isZero,
+        },
+        children: [
+          {
+            component: RateStarChild,
+            classes: { "nom-rate-star-first": true },
+            children: character || rateIconProps,
+            onClick: disabled ? null : this.handleClickRateStarFirst.bind(this),
+          },
+          {
+            component: RateStarChild,
+            classes: { "nom-rate-star-second": true },
+            children: character || rateIconProps,
+            onClick: disabled
+              ? null
+              : this.handleClickRateStarSecond.bind(this),
+          },
+        ],
+      });
+      super._config();
+    } // 点击设置半颗星
+    handleClickRateStarFirst() {
+      const { allowHalf } = this.rate.props;
+      const _newValue = this.props.index + (allowHalf ? 0.5 : 1);
+      this._updateValue(_newValue);
+    } // 点击设置整颗星
+    handleClickRateStarSecond() {
+      const _newValue = this.props.index + 1;
+      this._updateValue(_newValue);
+    }
+    _updateValue(newValue = 0) {
+      const { allowClear } = this.rate.props;
+      const { value } = this.props; // 不能清除 && 值相等 -> 不做更新操作
+      if (!allowClear && newValue === value) return; // 允许清除 && 值相等 -> newValue = 0
+      if (allowClear && newValue === value) {
+        newValue = 0;
+      }
+      this.rate.handleValueChange(newValue);
+    }
+  }
+  Component.register(RateStar);
+  class Rate extends Field {
+    constructor(props, ...mixins) {
+      const defaults = {
+        allowClear: true,
+        allowHalf: false,
+        disable: false,
+        rateIcon: "",
+        value: null,
+        disabled: false,
+        count: 5,
+        character: null,
+        tooltips: null,
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      this.rate = this;
+      const rateRef = this;
+      this._initValue();
+      this.setProps({
+        control: {
+          children: {
+            tag: "ul",
+            classes: { "nom-rate-content": true },
+            _created() {
+              rateRef._content = this;
+            },
+            _config() {
+              const children = rateRef._getRateChildren();
+              this.setProps({ children: children });
+            }, // children: children,
+          },
+        },
+      });
+      super._config();
+    }
+    _initValue() {
+      const { value, count, allowHalf } = this.props; // value值应在 [0, count]之间
+      this.initValue = getValidValue(value, count); // 不允许半星则向下取取整
+      if (!allowHalf) {
+        this.initValue = Math.floor(this.initValue);
+      }
+      this.currentValue = this.initValue;
+    }
+    _getRateChildren() {
+      const { count, character, tooltips } = this.props;
+      return Array(count)
+        .fill()
+        .map((item, index) => {
+          let char = character;
+          if (isFunction(character)) {
+            char = character({ index });
+          }
+          return {
+            component: RateStar,
+            character: char,
+            value: this.currentValue,
+            index,
+            tooltip: tooltips && tooltips.length && tooltips[index],
+          };
+        });
+    }
+    handleValueChange(value) {
+      this._setValue(value);
+    }
+    _getValue() {
+      return this.tempValue;
+    }
+    _setValue(value) {
+      const _value = value === null ? 0 : value;
+      if (!isNumeric(_value) || _value < 0 || _value > this.props.count) return;
+      this.tempValue = _value;
+      if (_value !== this.oldValue) {
+        super._onValueChange();
+        this.oldValue = this.currentValue;
+        this.currentValue = _value;
+        this._content.update();
+      }
+    }
+  }
+  Component.register(Rate);
   const UnAuthorized = `#<svg width="251" height="294">
 <g fill="none" fillRule="evenodd">
   <path
@@ -20557,33 +20740,6 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(SlideCaptcha);
-  function getValidMax(value) {
-    if (!isNumeric(value)) return 100;
-    if (value <= 0) return 100;
-    return value;
-  }
-  function getValidValue(val, max = 100) {
-    if (!val || !isNumeric(val) || val < 0) return 0;
-    if (val > max) return max;
-    return val;
-  }
-  function getOffset(container, offset, max = 100) {
-    let _container = container;
-    if (!_container) {
-      return null;
-    }
-    if (_container instanceof Component) {
-      _container = container.element;
-    }
-    if (!(_container instanceof HTMLElement)) {
-      return null;
-    }
-    const { left, width } = _container.getBoundingClientRect();
-    let result = ((offset - left) * max) / width;
-    result = Math.min(max, result);
-    result = Math.max(0, result);
-    return result;
-  }
   class Slider extends Field {
     constructor(props, ...mixins) {
       const defaults = { disable: false, max: 100 };
@@ -22913,6 +23069,7 @@ function _defineProperty2(obj, key, value) {
   exports.Popup = Popup;
   exports.Progress = Progress;
   exports.RadioList = RadioList;
+  exports.Rate = Rate;
   exports.Result = Result;
   exports.Router = Router;
   exports.Rows = Rows;

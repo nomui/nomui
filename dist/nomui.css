@@ -8435,3 +8435,53 @@ textarea .nom-textarea {
 .nom-breadcrumb > .nom-breadcrumb-item:last-child > .nom-breadcrumb-separator {
   display: none;
 }
+.nom-rate .nom-rate-content {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  color: #f59f00;
+  font-size: 20px;
+  line-height: unset;
+  list-style: none;
+  outline: none;
+}
+.nom-rate .nom-rate-star {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  cursor: pointer;
+}
+.nom-rate .nom-rate-star:not(:last-child) {
+  margin-right: 8px;
+}
+.nom-rate .nom-rate-star .nom-rate-star-first,
+.nom-rate .nom-rate-star .nom-rate-star-second {
+  display: flex;
+  align-items: center;
+  color: #dee2e6;
+  transition: all 0.3s;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.nom-rate .nom-rate-star-full .nom-rate-star-second {
+  color: inherit;
+}
+.nom-rate .nom-rate-star-half .nom-rate-star-first,
+.nom-rate .nom-rate-star-half .nom-rate-star-second {
+  opacity: 1;
+}
+.nom-rate .nom-rate-star-half .nom-rate-star-first {
+  color: inherit;
+}
+.nom-rate .nom-rate-star-first {
+  position: absolute;
+  width: 50%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  opacity: 0;
+}
