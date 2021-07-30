@@ -22,6 +22,13 @@ define([], function () {
                 { type: 'minlength', value: 2 },
                 { type: 'maxlength', value: 12 },
               ],
+              invalidTip: {
+                attrs: {
+                  style: {
+                    margin: '20px',
+                  },
+                },
+              },
             },
             {
               component: 'Numberbox',

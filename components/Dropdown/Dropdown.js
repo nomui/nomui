@@ -30,6 +30,7 @@ class Dropdown extends Component {
         text: text,
         type: type,
         size: size,
+        inline: type === 'link',
         onClick: (args) => {
           that._callHandler(that.onClick)
           args.event.stopPropagation()
@@ -41,6 +42,7 @@ class Dropdown extends Component {
         rightIcon: that.props.rightIcon,
         type: type,
         size: size,
+        inline: type === 'link',
         popup: {
           triggerAction: triggerAction,
           classes: {

@@ -32,7 +32,7 @@ class Tooltip extends Layer {
 
     this._openerFocusing = false
     this.opener = this.props.trigger
-    this.props.alignTo = this.opener.element
+    this.props.alignTo = this.props.alignTo || this.opener.element
     this.showTimer = null
     this.hideTimer = null
     this.delay = 100
