@@ -6,6 +6,9 @@ define([], function () {
       return {
         component: 'Rate',
         value: 3.3,
+        onValueChange(args) {
+          console.log(args)
+        },
       }
     },
   }

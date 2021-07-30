@@ -11,7 +11,6 @@ class Rate extends Field {
       allowHalf: false,
       disable: false,
       rateIcon: '',
-      defaultValue: 0,
       value: null,
       disabled: false,
       count: 5,
@@ -24,14 +23,27 @@ class Rate extends Field {
 
   _config() {
     this.rate = this
+    const rateRef = this
     this._initValue()
-
-    const children = this._getRateChildren()
 
     this.setProps({
       control: {
-        tag: 'ul',
-        children,
+        children: {
+          tag: 'ul',
+          classes: {
+            'nom-rate-content': true,
+          },
+          _created() {
+            rateRef._content = this
+          },
+          _config() {
+            const children = rateRef._getRateChildren()
+            this.setProps({
+              children: children,
+            })
+          },
+          // children: children,
+        },
       },
     })
 
@@ -39,14 +51,16 @@ class Rate extends Field {
   }
 
   _initValue() {
-    const { value, defaultValue, count, allowHalf } = this.props
+    const { value, count, allowHalf } = this.props
     // value值应在 [0, count]之间
-    this.initValue = getValidValue(value || defaultValue, count)
+    this.initValue = getValidValue(value, count)
 
     // 不允许半星则向下取取整
     if (!allowHalf) {
       this.initValue = Math.floor(this.initValue)
     }
+
+    this.currentValue = this.initValue
   }
 
   _getRateChildren() {
@@ -61,7 +75,7 @@ class Rate extends Field {
         return {
           component: RateStar,
           character: char,
-          value: this.initValue,
+          value: this.currentValue,
           index,
           tooltip: tooltips && tooltips.length && tooltips[index],
         }
@@ -73,18 +87,19 @@ class Rate extends Field {
   }
 
   _getValue() {
-    return this.props.value
+    return this.tempValue
   }
 
   _setValue(value) {
     const _value = value === null ? 0 : value
     if (!isNumeric(_value) || _value < 0 || _value > this.props.count) return
 
-    if (value !== this.oldValue) {
-      this.update({ value })
+    this.tempValue = _value
+    if (_value !== this.oldValue) {
       super._onValueChange()
       this.oldValue = this.currentValue
       this.currentValue = _value
+      this._content.update()
     }
   }
 }

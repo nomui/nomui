@@ -12,7 +12,7 @@ class RateStar extends Component {
   }
 
   _created() {
-    this.rate = this.parent.field
+    this.rate = this.parent.parent.field
   }
 
   _config() {
