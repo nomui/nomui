@@ -76,6 +76,11 @@
 
   &.p-danger {
     .u-color-danger-outline();
+    &.nom-button-inline {
+      &:hover {
+        background: none !important;
+      }
+    }
 
     &.p-type-primary {
       .u-color-danger();
@@ -102,6 +107,10 @@
     color: @link-color;
     background-color: transparent;
     border-color: transparent !important;
+    &:hover {
+      text-decoration: none;
+      background: none;
+    }
   }
 
   &.p-ghost {
@@ -158,17 +167,11 @@
 
   &:not(.p-type-default),
   &:not(.p-type-text),
-  &:not(.p-type-dashed) {
+  &:not(.p-type-dashed),
+  &:not(.p-type-link) {
     &:not([disabled]):hover {
       filter: brightness(0.9);
     }
-  }
-}
-
-a.nom-button.p-type-link {
-  &:hover {
-    text-decoration: underline;
-    background: none;
   }
 }
 
@@ -178,9 +181,9 @@ a.nom-button.p-type-link {
   white-space: normal;
   text-align: left;
   &:hover {
-    text-decoration: underline;
     background: none !important;
-    background-color: none !important;
+    background-color: transparent !important;
+    filter: brightness(0.65) !important;
     filter: none;
   }
 }
