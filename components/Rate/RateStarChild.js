@@ -12,14 +12,6 @@ class RateStarChild extends Component {
   _created() {
     this.rate = this.parent.rate
   }
-
-  _config() {
-    // this.setProps({
-    //   children: 'A',
-    // })
-
-    super._config()
-  }
 }
 
 Component.register(RateStarChild)

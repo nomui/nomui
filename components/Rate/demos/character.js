@@ -8,9 +8,25 @@ define([], function () {
       return {
         component: 'Rows',
         items: [
-          { component: 'Rate', character: 'A', value: 2, allowHalf: true },
-          { component: 'Rate', character: '好', value: 3, allowHalf: true },
-          { component: 'Rate', character: ({ index }) => index + 1 },
+          { component: 'Rate', allowHalf: true, character: 'A', value: 2 },
+          { component: 'Rate', allowHalf: true, character: '好', value: 3 },
+          { component: 'Rate', allowHalf: true, character: ({ index }) => index + 1 },
+          {
+            component: 'Rate',
+            allowHalf: true,
+            value: 2.5,
+            character: () => {
+              return {
+                component: 'Icon',
+                type: 'user',
+                attrs: {
+                  style: {
+                    'font-size': '80%',
+                  },
+                },
+              }
+            },
+          },
         ],
       }
     },

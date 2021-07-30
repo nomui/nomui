@@ -68,6 +68,10 @@ class Rate extends Field {
       })
   }
 
+  handleValueChange(value) {
+    this._setValue(value)
+  }
+
   _getValue() {
     return this.props.value
   }

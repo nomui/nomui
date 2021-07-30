@@ -75,7 +75,7 @@ class RateStar extends Component {
       newValue = 0
     }
 
-    this.rate._setValue(newValue)
+    this.rate.handleValueChange(newValue)
   }
 }
 
