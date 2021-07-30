@@ -168,7 +168,7 @@ class Layer extends Component {
       }
 
       if (props.alignTo) {
-        props.position.of = props.alignTo
+        props.position.of = this.getElement(props.alignTo)
       }
 
       if (props.alignTo && props.alignOuter === true) {
