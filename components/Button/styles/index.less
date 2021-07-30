@@ -91,8 +91,6 @@
   }
 
   &.p-type-text {
-    padding-right: 0.25rem;
-    padding-left: 0.25rem;
     background-color: transparent !important;
     border-color: transparent !important;
     &:hover {
@@ -101,8 +99,6 @@
   }
 
   &.p-type-link {
-    padding-right: 0.25rem;
-    padding-left: 0.25rem;
     color: @link-color;
     background-color: transparent;
     border-color: transparent !important;
@@ -176,9 +172,15 @@ a.nom-button.p-type-link {
   }
 }
 
-a.nom-button-inline {
-  display: inline;
+.nom-button-inline {
+  display: inline !important;
   padding: 0;
   white-space: normal;
   text-align: left;
+  &:hover {
+    text-decoration: underline;
+    background: none !important;
+    background-color: none !important;
+    filter: none;
+  }
 }
