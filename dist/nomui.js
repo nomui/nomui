@@ -695,11 +695,8 @@ function _defineProperty2(obj, key, value) {
       );
     }
     emptyChildren() {
-      while (this.element.firstChild) {
-        if (this.element.firstChild.component) {
-          this.element.firstChild.component.remove();
-        }
-        return;
+      while (this.element.firstChild && this.element.firstChild.component) {
+        this.element.firstChild.component.remove();
       }
     }
     offsetWidth() {
