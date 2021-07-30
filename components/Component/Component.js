@@ -195,9 +195,8 @@ class Component {
     while (this.element.firstChild) {
       if (this.element.firstChild.component) {
         this.element.firstChild.component.remove()
-      } else {
-        this.element.removeChild(this.element.firstChild)
       }
+      return
     }
   }
 

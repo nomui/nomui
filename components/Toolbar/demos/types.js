@@ -29,6 +29,7 @@ define([], function () {
             type: 'link',
             items: [
               {
+                danger: true,
                 text: '按钮1',
               },
               {
