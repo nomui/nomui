@@ -21,6 +21,7 @@ class Toolbar extends Component {
         component: 'Button',
         type: type,
         size: size,
+        inline: type === 'link',
         ...item,
       }
     })
@@ -29,6 +30,7 @@ class Toolbar extends Component {
       rightIcon: 'ellipsis',
       items: items.slice(visibleItems),
       type: type,
+      inline: type === 'link',
       size: size,
     }
 
