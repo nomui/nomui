@@ -39,11 +39,9 @@ class Grid extends Component {
       let storeFields = localStorage.getItem(`${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`)
       if (storeFields && storeFields.length) {
         storeFields = JSON.parse(storeFields)
-        // this.props.visibleColumns = JSON.parse(storeFields)
         this.props.visibleColumns = this.originColumns.filter((item) =>
           storeFields.includes(item.field),
         )
-        console.log('🚀 ~ file: .props.visibleColumns', this.props.visibleColumns)
       }
     }
   }
