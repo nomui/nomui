@@ -6496,9 +6496,6 @@ textarea .nom-textarea {
   transform: rotate(45deg);
   content: '';
 }
-.nom-select > .nom-field-content {
-  overflow: hidden;
-}
 .nom-select > .nom-field-content .nom-control {
   position: relative;
   min-height: 34px;
@@ -6991,6 +6988,7 @@ textarea .nom-textarea {
   position: relative;
   flex: 1;
   flex-grow: 1;
+  width: 100%;
 }
 .p-control-width-xsmall.nom-field > .nom-field-content > .nom-control {
   max-width: 104px;
