@@ -192,12 +192,8 @@ class Component {
   }
 
   emptyChildren() {
-    while (this.element.firstChild) {
-      if (this.element.firstChild.component) {
-        this.element.firstChild.component.remove()
-      } else {
-        this.element.removeChild(this.element.firstChild)
-      }
+    while (this.element.firstChild && this.element.firstChild.component) {
+      this.element.firstChild.component.remove()
     }
   }
 
