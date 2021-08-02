@@ -10318,6 +10318,7 @@ function _defineProperty2(obj, key, value) {
       const expanded = initExpandLevel === -1 || initExpandLevel > this.level;
       const tree = this.tree;
       this.setProps({
+        hidden: this.node.props.data.hidden,
         expanded,
         expandable: {
           byIndicator: true,
@@ -10405,7 +10406,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(TreeNodeContent);
   class TreeNode extends Component {
     constructor(props, ...mixins) {
-      const defaults = { nodes: null };
+      const defaults = { nodes: null, data: { hidden: false } };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
@@ -15235,7 +15236,7 @@ function _defineProperty2(obj, key, value) {
             children: {
               component: "Tree",
               showline: true,
-              data: that.grid.originColumns,
+              data: that.customizableColumns(that.grid.originColumns),
               nodeCheckable: {
                 checkedNodeKeys: that.grid.props.visibleColumns
                   ? that.getMappedColumns(that.grid.props.visibleColumns)
@@ -15289,6 +15290,20 @@ function _defineProperty2(obj, key, value) {
       }
       mapColumns(param);
       return arr;
+    }
+    customizableColumns(val) {
+      function mapColumns(data) {
+        data.forEach(function (item) {
+          if (item.isChecker === true || item.customizable === false) {
+            item.hidden = true;
+          }
+          if (item.children) {
+            mapColumns(item.children);
+          }
+        });
+      }
+      mapColumns(val);
+      return val;
     }
   }
   Component.register(GridSettingPopup);

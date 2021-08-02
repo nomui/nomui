@@ -24,6 +24,7 @@ class TreeNodeContent extends Component {
     const expanded = initExpandLevel === -1 || initExpandLevel > this.level
     const tree = this.tree
     this.setProps({
+      hidden: this.node.props.data.hidden,
       expanded,
       expandable: {
         byIndicator: true,
