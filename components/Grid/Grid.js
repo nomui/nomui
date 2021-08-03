@@ -34,11 +34,14 @@ class Grid extends Component {
     if (selected && selected.length) {
       this.props.visibleColumns = selected
     }
-    // 缓存中有数据则读取缓存中的cols数据
+    // 缓存中有数据则读取缓存中的col的field数据
     if (cacheKey) {
-      const storeCols = localStorage.getItem(`${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`)
-      if (storeCols) {
-        this.props.visibleColumns = JSON.parse(storeCols)
+      let storeFields = localStorage.getItem(`${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`)
+      if (storeFields && storeFields.length) {
+        storeFields = JSON.parse(storeFields)
+        this.props.visibleColumns = this.originColumns.filter((item) =>
+          storeFields.includes(item.field),
+        )
       }
     }
   }
@@ -173,7 +176,7 @@ class Grid extends Component {
     })
   }
 
-  getMappedColumns() {
+  getMappedColumns(columns) {
     const arr = []
     function mapColumns(data) {
       data.forEach(function (item) {
@@ -183,7 +186,7 @@ class Grid extends Component {
         arr.push(item.field)
       })
     }
-    mapColumns(this.originColumns)
+    mapColumns(columns || this.originColumns)
 
     return arr
   }
@@ -441,7 +444,10 @@ class Grid extends Component {
     const { columnsCustomizable } = this.props
     const { cache: cacheKey } = columnsCustomizable
     if (cacheKey) {
-      localStorage.setItem(`${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`, JSON.stringify(tree))
+      localStorage.setItem(
+        `${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`,
+        JSON.stringify(this.getMappedColumns(tree)),
+      )
     }
 
     columnsCustomizable.callback && this._callHandler(columnsCustomizable.callback(tree))

@@ -15326,13 +15326,16 @@ function _defineProperty2(obj, key, value) {
       const { selected, cache: cacheKey } = columnsCustomizable;
       if (selected && selected.length) {
         this.props.visibleColumns = selected;
-      } // 缓存中有数据则读取缓存中的cols数据
+      } // 缓存中有数据则读取缓存中的col的field数据
       if (cacheKey) {
-        const storeCols = localStorage.getItem(
+        let storeFields = localStorage.getItem(
           `${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`
         );
-        if (storeCols) {
-          this.props.visibleColumns = JSON.parse(storeCols);
+        if (storeFields && storeFields.length) {
+          storeFields = JSON.parse(storeFields);
+          this.props.visibleColumns = this.originColumns.filter((item) =>
+            storeFields.includes(item.field)
+          );
         }
       }
     }
@@ -15421,7 +15424,7 @@ function _defineProperty2(obj, key, value) {
     loading() {
       this.loadingInst = new Loading({ container: this.parent });
     }
-    getMappedColumns() {
+    getMappedColumns(columns) {
       const arr = [];
       function mapColumns(data) {
         data.forEach(function (item) {
@@ -15431,7 +15434,7 @@ function _defineProperty2(obj, key, value) {
           arr.push(item.field);
         });
       }
-      mapColumns(this.originColumns);
+      mapColumns(columns || this.originColumns);
       return arr;
     }
     setSortDirection(sorter) {
@@ -15640,7 +15643,7 @@ function _defineProperty2(obj, key, value) {
       if (cacheKey) {
         localStorage.setItem(
           `${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`,
-          JSON.stringify(tree)
+          JSON.stringify(this.getMappedColumns(tree))
         );
       }
       columnsCustomizable.callback &&
