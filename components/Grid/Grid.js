@@ -4,7 +4,7 @@ import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
 import { STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
-import { isFunction, isNullish, isPlainObject } from '../util/index'
+import { clone, isFunction, isNullish, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 import GridSettingPopup from './GridSettingPopup'
@@ -20,19 +20,21 @@ class Grid extends Component {
     this.rowsRefs = {}
     this.checkedRowRefs = {}
 
-    this.originColumns = this.props.columns
-    this._parseColumnsCustom()
+    this.originColumns = clone(this.props.columns)
     this.filter = {}
   }
 
   _parseColumnsCustom() {
+    this.props.visibleColumns = null
     const { columnsCustomizable } = this.props
     if (!columnsCustomizable) return
 
     const { selected, cache: cacheKey } = columnsCustomizable
 
     if (selected && selected.length) {
-      this.props.visibleColumns = selected
+      this.props.visibleColumns = this.originColumns.filter((item) =>
+        selected.some((selItem) => item.field === selItem.field),
+      )
     }
     // 缓存中有数据则读取缓存中的col的field数据
     if (cacheKey) {
@@ -54,7 +56,7 @@ class Grid extends Component {
     this._propStyleClasses = ['bordered']
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
-
+    this._parseColumnsCustom()
     this._processCheckableColumn()
     this._processExpandableColumn()
 
@@ -157,7 +159,7 @@ class Grid extends Component {
       this.loadingInst = null
     }
 
-    if (this.props.rowCheckable) {
+    if (this.props.rowCheckable && this._checkboxAllRef) {
       this.changeCheckAllState()
     }
 
@@ -287,10 +289,8 @@ class Grid extends Component {
     if (cache) {
       localStorage.removeItem(`${STORAGE_KEY_GRID_COLUMNS}_${cache}`)
     }
-    this.props.visibleColumns = null
-    this._parseColumnsCustom()
     this.update({
-      columns: this.originColumns,
+      visibleColumns: this.originColumns,
     })
   }
 
@@ -407,7 +407,6 @@ class Grid extends Component {
     const tree = params
 
     const that = this
-    that.props.visibleColumns = params
 
     let treeInfo = null
     function findTreeInfo(origin, key) {
@@ -452,7 +451,7 @@ class Grid extends Component {
 
     columnsCustomizable.callback && this._callHandler(columnsCustomizable.callback(tree))
 
-    this.update({ columns: tree })
+    this.update({ visibleColumns: tree })
     this.popup.hide()
   }
 
@@ -484,7 +483,9 @@ class Grid extends Component {
 
   _processCheckableColumn() {
     const grid = this
-    const { rowCheckable, columns } = this.props
+    const { rowCheckable, visibleColumns } = this.props
+    let { columns } = this.props
+    columns = visibleColumns && visibleColumns.length ? visibleColumns : columns
     if (rowCheckable) {
       if (columns.filter((item) => item.isChecker).length > 0) {
         return
@@ -498,52 +499,53 @@ class Grid extends Component {
       checkedRowKeys.forEach((rowKey) => {
         checkedRowKeysHash[rowKey] = true
       })
-
-      columns.unshift({
-        width: 50,
-        isChecker: true,
-        header: {
-          component: Checkbox,
-          plain: true,
-          _created: (inst) => {
-            grid._checkboxAllRef = inst
-          },
-          onValueChange: (args) => {
-            if (args.newValue === true) {
-              grid.checkAllRows(false)
-            } else {
-              grid.uncheckAllRows(false)
-            }
-          },
-        },
-        cellRender: ({ row, rowData }) => {
-          if (checkedRowKeysHash[row.key] === true) {
-            grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
-          }
-          return {
-            component: Checkbox,
-            plain: true,
-            _created: (inst) => {
-              row._checkboxRef = inst
-            },
-            value: checkedRowKeysHash[row.key] === true,
-            onValueChange: (args) => {
-              if (args.newValue === true) {
-                row._check()
-                row._onCheck()
-                grid._onRowCheck(row)
-              } else {
-                row._uncheck()
-                row._onUncheck()
-                grid._onRowUncheck(row)
-              }
-              grid.changeCheckAllState()
-            },
-          }
-        },
-      })
       this.setProps({
-        columns: columns,
+        visibleColumns: [
+          {
+            width: 50,
+            isChecker: true,
+            header: {
+              component: Checkbox,
+              plain: true,
+              _created: (inst) => {
+                grid._checkboxAllRef = inst
+              },
+              onValueChange: (args) => {
+                if (args.newValue === true) {
+                  grid.checkAllRows(false)
+                } else {
+                  grid.uncheckAllRows(false)
+                }
+              },
+            },
+            cellRender: ({ row, rowData }) => {
+              if (checkedRowKeysHash[row.key] === true) {
+                grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
+              }
+              return {
+                component: Checkbox,
+                plain: true,
+                _created: (inst) => {
+                  row._checkboxRef = inst
+                },
+                value: checkedRowKeysHash[row.key] === true,
+                onValueChange: (args) => {
+                  if (args.newValue === true) {
+                    row._check()
+                    row._onCheck()
+                    grid._onRowCheck(row)
+                  } else {
+                    row._uncheck()
+                    row._onUncheck()
+                    grid._onRowUncheck(row)
+                  }
+                  grid.changeCheckAllState()
+                },
+              }
+            },
+          },
+          ...columns,
+        ],
       })
     }
   }
@@ -582,40 +584,44 @@ class Grid extends Component {
   }
 
   _processExpandableColumn() {
-    const { rowExpandable, columns } = this.props
+    const { rowExpandable, visibleColumns } = this.props
+    let { columns } = this.props
+    columns = visibleColumns && visibleColumns.length ? visibleColumns : columns
     if (rowExpandable) {
       if (columns.filter((item) => item.isTreeMark).length > 0) {
         return
       }
-      columns.unshift({
-        width: 50,
-        isTreeMark: true,
-        cellRender: ({ row, rowData }) => {
-          return {
-            component: Icon,
-            expandable: {
-              byClick: true,
-              expandedProps: {
-                type: 'minus-square',
-              },
-              collapsedProps: {
-                type: 'plus-square',
-              },
-              target: () => {
-                if (!row.expandedRow) {
-                  row.expandedRow = row.after({
-                    component: ExpandedTr,
-                    data: rowData,
-                  })
-                }
-                return row.expandedRow
-              },
-            },
-          }
-        },
-      })
       this.setProps({
-        columns: columns,
+        visibleColumns: [
+          {
+            width: 50,
+            isTreeMark: true,
+            cellRender: ({ row, rowData }) => {
+              return {
+                component: Icon,
+                expandable: {
+                  byClick: true,
+                  expandedProps: {
+                    type: 'minus-square',
+                  },
+                  collapsedProps: {
+                    type: 'plus-square',
+                  },
+                  target: () => {
+                    if (!row.expandedRow) {
+                      row.expandedRow = row.after({
+                        component: ExpandedTr,
+                        data: rowData,
+                      })
+                    }
+                    return row.expandedRow
+                  },
+                },
+              }
+            },
+          },
+          ...columns,
+        ],
       })
     }
   }
