@@ -192,8 +192,12 @@ class Component {
   }
 
   emptyChildren() {
-    while (this.element.firstChild && this.element.firstChild.component) {
-      this.element.firstChild.component.remove()
+    while (this.element.firstChild) {
+      if (this.element.firstChild.component) {
+        this.element.firstChild.component.remove()
+      } else {
+        this.element.removeChild(this.element.firstChild)
+      }
     }
   }
 
@@ -453,10 +457,8 @@ class Component {
     })
 
     if (this.parent && this.parent.props.childDefaults) {
-      const {
-        normalizedProps: childDefaultsProps,
-        mixins: childDefaultsMixins,
-      } = this._normalizeProps(this.parent.props.childDefaults)
+      const { normalizedProps: childDefaultsProps, mixins: childDefaultsMixins } =
+        this._normalizeProps(this.parent.props.childDefaults)
       normalizedProps = Component.extendProps(childDefaultsProps, normalizedProps)
       mixins = [...childDefaultsMixins, ...mixins]
     }
