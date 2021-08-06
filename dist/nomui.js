@@ -4411,6 +4411,7 @@ function _defineProperty2(obj, key, value) {
         placeholder: null,
         value: null,
         htmlType: "text",
+        onEnter: null,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -4485,6 +4486,16 @@ function _defineProperty2(obj, key, value) {
         },
       });
       super._config();
+    }
+    _rendered() {
+      const that = this;
+      if (this.props.onEnter) {
+        this.input._on("keydown", function (event) {
+          if (event.keyCode && event.keyCode === 13) {
+            that._callHandler(that.props.onEnter, { value: that.getValue() });
+          }
+        });
+      }
     }
     getText() {
       return this.input.getText();
