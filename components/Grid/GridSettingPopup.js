@@ -64,6 +64,7 @@ class GridSettingPopup extends Modal {
                 text: '确定',
                 onClick: function () {
                   const list = that.tree.getCheckedNodesData()
+                  that.grid.originColumns = that.tree.getData()
                   that.grid.handleColumnsSetting(list)
                 },
               },
