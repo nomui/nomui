@@ -25,9 +25,12 @@ class Grid extends Component {
   }
 
   _parseColumnsCustom() {
-    this.props.visibleColumns = null
-    const { columnsCustomizable } = this.props
+    const { columnsCustomizable, visibleColumns } = this.props
+    // 未设置自定义列展示
     if (!columnsCustomizable) return
+
+    // 设置过后，无需再从selected和cache中取值
+    if (visibleColumns && visibleColumns.length) return
 
     const { selected, cache: cacheKey } = columnsCustomizable
 
