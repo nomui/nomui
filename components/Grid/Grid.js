@@ -9,26 +9,6 @@ import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 import GridSettingPopup from './GridSettingPopup'
 
-const _getColsFromSelectCols = (originCols = [], selectCols = []) => {
-  return selectCols.reduce((acc, curr) => {
-    const sameCol = originCols.find((originCol) => originCol.field === curr.field)
-
-    if (sameCol) {
-      acc.push({ ...curr, children: _getColsFromSelectCols(sameCol.children, curr.children) })
-    }
-    return acc
-  }, [])
-}
-
-const _getColsFromFields = (columns = [], fields = []) => {
-  return columns.reduce((acc, curr) => {
-    if (fields.includes(curr.field)) {
-      acc.push({ ...curr, children: _getColsFromFields(curr.children, fields) })
-    }
-    return acc
-  }, [])
-}
-
 class Grid extends Component {
   constructor(props, ...mixins) {
     super(Component.extendProps(Grid.defaults, props), ...mixins)
@@ -53,7 +33,7 @@ class Grid extends Component {
 
     if (selected && selected.length) {
       // 从originColumns 过滤selected存在的列
-      this.props.visibleColumns = _getColsFromSelectCols(this.originColumns, selected)
+      this.props.visibleColumns = this._getColsFromSelectCols(this.originColumns, selected)
     }
     // 缓存中有数据则读取缓存中的col的field数据
     if (cacheKey) {
@@ -61,7 +41,7 @@ class Grid extends Component {
       if (storeFields && storeFields.length) {
         storeFields = JSON.parse(storeFields)
         // 从originColumns 过滤storeFields存在的列
-        this.props.visibleColumns = _getColsFromFields(this.originColumns, storeFields)
+        this.props.visibleColumns = this._getColsFromFields(this.originColumns, storeFields)
       }
     }
   }
@@ -599,6 +579,29 @@ class Grid extends Component {
   resizeCol(data) {
     this.header && this.header.resizeCol(data)
     this.body && this.body.resizeCol(data)
+  }
+
+  _getColsFromSelectCols(originCols = [], selectCols = []) {
+    return selectCols.reduce((acc, curr) => {
+      const sameCol = originCols.find((originCol) => originCol.field === curr.field)
+
+      if (sameCol) {
+        acc.push({
+          ...curr,
+          children: this._getColsFromSelectCols(sameCol.children, curr.children),
+        })
+      }
+      return acc
+    }, [])
+  }
+
+  _getColsFromFields(columns = [], fields = []) {
+    return columns.reduce((acc, curr) => {
+      if (fields.includes(curr.field)) {
+        acc.push({ ...curr, children: this._getColsFromFields(curr.children, fields) })
+      }
+      return acc
+    }, [])
   }
 
   _processExpandableColumn() {
