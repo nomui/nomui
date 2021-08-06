@@ -2313,6 +2313,11 @@ function _defineProperty2(obj, key, value) {
     `<svg t="1609828633664" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1558" width="1em" height="1em"><path d="M883.6 926.7H140.4c-42.1 0-76.4-35.9-76.4-80V577.8c0-22.1 17.9-40 40-40s40 17.9 40 40v268.9h736V577.8c0-22.1 17.9-40 40-40s40 17.9 40 40v268.9c0 44.1-34.3 80-76.4 80z" fill="#2C2C2C" p-id="1559"></path><path d="M512 744.2c-22.1 0-40-17.9-40-40V104.6c0-22.1 17.9-40 40-40s40 17.9 40 40v599.6c0 22.1-17.9 40-40 40z" fill="#2C2C2C" p-id="1560"></path><path d="M320 335.9c-10.2 0-20.5-3.9-28.3-11.7-15.6-15.6-15.6-40.9 0-56.6L481.6 77.8c4.5-4.5 13.9-13.9 30.4-13.9 10.6 0 20.8 4.2 28.3 11.7l192 192c15.6 15.6 15.6 40.9 0 56.6s-40.9 15.6-56.6 0L512 160.5 348.3 324.2c-7.8 7.8-18.1 11.7-28.3 11.7z" fill="#2C2C2C" p-id="1561"></path></svg>`,
     cat
   );
+  /** star */ Icon.add(
+    "star",
+    `<svg viewBox="64 64 896 896" focusable="false" data-icon="star" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"></path></svg>`,
+    cat
+  );
   /* Loading */ cat = "Loading";
   Icon.add(
     "loading",
@@ -2342,11 +2347,6 @@ function _defineProperty2(obj, key, value) {
   Icon.add(
     "file",
     `<svg viewBox="64 64 896 896" focusable="false" data-icon="file" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494z"></path></svg>`,
-    cat
-  );
-  /** star */ Icon.add(
-    "star",
-    `<svg viewBox="64 64 896 896" focusable="false" data-icon="star" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"></path></svg>`,
     cat
   );
   class Caption extends Component {
@@ -15327,25 +15327,31 @@ function _defineProperty2(obj, key, value) {
       this.lastSortField = null;
       this.rowsRefs = {};
       this.checkedRowRefs = {};
-      this.originColumns = this.props.columns;
-      this._parseColumnsCustom();
+      this.originColumns = clone$1(this.props.columns);
       this.filter = {};
     }
     _parseColumnsCustom() {
-      const { columnsCustomizable } = this.props;
-      if (!columnsCustomizable) return;
+      const { columnsCustomizable, visibleColumns } = this.props; // 未设置自定义列展示
+      if (!columnsCustomizable) return; // 设置过后，无需再从selected和cache中取值
+      if (visibleColumns && visibleColumns.length) return;
+      this.props.visibleColumns = null;
       const { selected, cache: cacheKey } = columnsCustomizable;
       if (selected && selected.length) {
-        this.props.visibleColumns = selected;
+        // 从originColumns 过滤selected存在的列
+        this.props.visibleColumns = this._getColsFromSelectCols(
+          this.originColumns,
+          selected
+        );
       } // 缓存中有数据则读取缓存中的col的field数据
       if (cacheKey) {
         let storeFields = localStorage.getItem(
           `${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`
         );
         if (storeFields && storeFields.length) {
-          storeFields = JSON.parse(storeFields);
-          this.props.visibleColumns = this.originColumns.filter((item) =>
-            storeFields.includes(item.field)
+          storeFields = JSON.parse(storeFields); // 从originColumns 过滤storeFields存在的列
+          this.props.visibleColumns = this._getColsFromFields(
+            this.originColumns,
+            storeFields
           );
         }
       }
@@ -15356,6 +15362,7 @@ function _defineProperty2(obj, key, value) {
       this.checkedRowRefs = {};
       this._propStyleClasses = ["bordered"];
       const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props;
+      this._parseColumnsCustom();
       this._processCheckableColumn();
       this._processExpandableColumn();
       if (this.props.visibleColumns) {
@@ -15418,7 +15425,7 @@ function _defineProperty2(obj, key, value) {
         this.loadingInst.remove();
         this.loadingInst = null;
       }
-      if (this.props.rowCheckable) {
+      if (this.props.rowCheckable && this._checkboxAllRef) {
         this.changeCheckAllState();
       }
       if (
@@ -15511,9 +15518,7 @@ function _defineProperty2(obj, key, value) {
       if (cache) {
         localStorage.removeItem(`${STORAGE_KEY_GRID_COLUMNS}_${cache}`);
       }
-      this.props.visibleColumns = null;
-      this._parseColumnsCustom();
-      this.update({ columns: this.originColumns });
+      this.update({ visibleColumns: this.originColumns });
     }
     handleFilter(isReset) {
       const that = this;
@@ -15620,7 +15625,6 @@ function _defineProperty2(obj, key, value) {
     handleColumnsSetting(params) {
       const tree = params;
       const that = this;
-      that.props.visibleColumns = params;
       let treeInfo = null;
       function findTreeInfo(origin, key) {
         origin.forEach(function (item) {
@@ -15659,7 +15663,7 @@ function _defineProperty2(obj, key, value) {
       }
       columnsCustomizable.callback &&
         this._callHandler(columnsCustomizable.callback(tree));
-      this.update({ columns: tree });
+      this.update({ visibleColumns: tree });
       this.popup.hide();
     }
     handleDrag() {
@@ -15687,7 +15691,10 @@ function _defineProperty2(obj, key, value) {
     }
     _processCheckableColumn() {
       const grid = this;
-      const { rowCheckable, columns } = this.props;
+      const { rowCheckable, visibleColumns } = this.props;
+      let { columns } = this.props;
+      columns =
+        visibleColumns && visibleColumns.length ? visibleColumns : columns;
       if (rowCheckable) {
         if (columns.filter((item) => item.isChecker).length > 0) {
           return;
@@ -15701,50 +15708,54 @@ function _defineProperty2(obj, key, value) {
         checkedRowKeys.forEach((rowKey) => {
           checkedRowKeysHash[rowKey] = true;
         });
-        columns.unshift({
-          width: 50,
-          isChecker: true,
-          header: {
-            component: Checkbox,
-            plain: true,
-            _created: (inst) => {
-              grid._checkboxAllRef = inst;
-            },
-            onValueChange: (args) => {
-              if (args.newValue === true) {
-                grid.checkAllRows(false);
-              } else {
-                grid.uncheckAllRows(false);
-              }
-            },
-          },
-          cellRender: ({ row, rowData }) => {
-            if (checkedRowKeysHash[row.key] === true) {
-              grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
-            }
-            return {
-              component: Checkbox,
-              plain: true,
-              _created: (inst) => {
-                row._checkboxRef = inst;
+        this.setProps({
+          visibleColumns: [
+            {
+              width: 50,
+              isChecker: true,
+              header: {
+                component: Checkbox,
+                plain: true,
+                _created: (inst) => {
+                  grid._checkboxAllRef = inst;
+                },
+                onValueChange: (args) => {
+                  if (args.newValue === true) {
+                    grid.checkAllRows(false);
+                  } else {
+                    grid.uncheckAllRows(false);
+                  }
+                },
               },
-              value: checkedRowKeysHash[row.key] === true,
-              onValueChange: (args) => {
-                if (args.newValue === true) {
-                  row._check();
-                  row._onCheck();
-                  grid._onRowCheck(row);
-                } else {
-                  row._uncheck();
-                  row._onUncheck();
-                  grid._onRowUncheck(row);
+              cellRender: ({ row, rowData }) => {
+                if (checkedRowKeysHash[row.key] === true) {
+                  grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
                 }
-                grid.changeCheckAllState();
+                return {
+                  component: Checkbox,
+                  plain: true,
+                  _created: (inst) => {
+                    row._checkboxRef = inst;
+                  },
+                  value: checkedRowKeysHash[row.key] === true,
+                  onValueChange: (args) => {
+                    if (args.newValue === true) {
+                      row._check();
+                      row._onCheck();
+                      grid._onRowCheck(row);
+                    } else {
+                      row._uncheck();
+                      row._onUncheck();
+                      grid._onRowUncheck(row);
+                    }
+                    grid.changeCheckAllState();
+                  },
+                };
               },
-            };
-          },
+            },
+            ...columns,
+          ],
         });
-        this.setProps({ columns: columns });
       }
     }
     autoMergeCols() {
@@ -15780,36 +15791,73 @@ function _defineProperty2(obj, key, value) {
       this.header && this.header.resizeCol(data);
       this.body && this.body.resizeCol(data);
     }
+    _getColsFromSelectCols(originCols = [], selectCols = []) {
+      return selectCols.reduce((acc, curr) => {
+        const sameCol = originCols.find(
+          (originCol) => originCol.field === curr.field
+        );
+        if (sameCol) {
+          acc.push(
+            Object.assign({}, curr, {
+              children: this._getColsFromSelectCols(
+                sameCol.children,
+                curr.children
+              ),
+            })
+          );
+        }
+        return acc;
+      }, []);
+    }
+    _getColsFromFields(columns = [], fields = []) {
+      return columns.reduce((acc, curr) => {
+        if (fields.includes(curr.field)) {
+          acc.push(
+            Object.assign({}, curr, {
+              children: this._getColsFromFields(curr.children, fields),
+            })
+          );
+        }
+        return acc;
+      }, []);
+    }
     _processExpandableColumn() {
-      const { rowExpandable, columns } = this.props;
+      const { rowExpandable, visibleColumns } = this.props;
+      let { columns } = this.props;
+      columns =
+        visibleColumns && visibleColumns.length ? visibleColumns : columns;
       if (rowExpandable) {
         if (columns.filter((item) => item.isTreeMark).length > 0) {
           return;
         }
-        columns.unshift({
-          width: 50,
-          isTreeMark: true,
-          cellRender: ({ row, rowData }) => {
-            return {
-              component: Icon,
-              expandable: {
-                byClick: true,
-                expandedProps: { type: "minus-square" },
-                collapsedProps: { type: "plus-square" },
-                target: () => {
-                  if (!row.expandedRow) {
-                    row.expandedRow = row.after({
-                      component: ExpandedTr,
-                      data: rowData,
-                    });
-                  }
-                  return row.expandedRow;
-                },
+        this.setProps({
+          visibleColumns: [
+            {
+              width: 50,
+              isTreeMark: true,
+              cellRender: ({ row, rowData }) => {
+                return {
+                  component: Icon,
+                  expandable: {
+                    byClick: true,
+                    expandedProps: { type: "minus-square" },
+                    collapsedProps: { type: "plus-square" },
+                    target: () => {
+                      if (!row.expandedRow) {
+                        row.expandedRow = row.after({
+                          component: ExpandedTr,
+                          data: rowData,
+                        });
+                      }
+                      return row.expandedRow;
+                    },
+                  },
+                };
               },
-            };
-          },
+            },
+            ...columns,
+          ],
         });
-        this.setProps({ columns: columns });
       }
     }
     _onRowCheck(row) {
