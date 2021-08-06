@@ -453,10 +453,8 @@ class Component {
     })
 
     if (this.parent && this.parent.props.childDefaults) {
-      const {
-        normalizedProps: childDefaultsProps,
-        mixins: childDefaultsMixins,
-      } = this._normalizeProps(this.parent.props.childDefaults)
+      const { normalizedProps: childDefaultsProps, mixins: childDefaultsMixins } =
+        this._normalizeProps(this.parent.props.childDefaults)
       normalizedProps = Component.extendProps(childDefaultsProps, normalizedProps)
       mixins = [...childDefaultsMixins, ...mixins]
     }

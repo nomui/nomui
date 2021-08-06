@@ -12239,7 +12239,7 @@ function _defineProperty2(obj, key, value) {
             this.currentValue = [selValueOption.value];
           }
         } else {
-          this.selectedSingle.emptyChildren();
+          this.selectedSingle.element.innerText = "";
           this.currentValue = null;
         }
       } // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
