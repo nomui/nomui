@@ -16,6 +16,7 @@ class Textbox extends Field {
       placeholder: null,
       value: null,
       htmlType: 'text',
+      onEnter: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -23,8 +24,17 @@ class Textbox extends Field {
 
   _config() {
     const that = this
-    const { leftIcon, prefix, rightIcon, suffix, placeholder, value, htmlType, button, readonly } =
-      this.props
+    const {
+      leftIcon,
+      prefix,
+      rightIcon,
+      suffix,
+      placeholder,
+      value,
+      htmlType,
+      button,
+      readonly,
+    } = this.props
 
     let leftIconProps = Component.normalizeIconProps(leftIcon)
     if (leftIconProps != null) {
@@ -92,6 +102,17 @@ class Textbox extends Field {
     })
 
     super._config()
+  }
+
+  _rendered() {
+    const that = this
+    if (this.props.onEnter) {
+      this.input._on('keydown', function (event) {
+        if (event.keyCode && event.keyCode === 13) {
+          that._callHandler(that.props.onEnter, { value: that.getValue() })
+        }
+      })
+    }
   }
 
   getText() {
