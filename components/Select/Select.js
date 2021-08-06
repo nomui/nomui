@@ -228,7 +228,7 @@ class Select extends Field {
           this.currentValue = [selValueOption.value]
         }
       } else {
-        this.selectedSingle.emptyChildren()
+        this.selectedSingle.element.innerText = ''
         this.currentValue = null
       }
     }
