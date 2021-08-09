@@ -64,6 +64,14 @@ class GridSettingPopup extends Modal {
                 text: '确定',
                 onClick: function () {
                   const list = that.tree.getCheckedNodesData()
+                  if (list.length === 0) {
+                    new nomui.Alert({
+                      type: 'info',
+                      title: '提示',
+                      description: '请至少保留一列数据',
+                    })
+                    return false
+                  }
                   that.grid.originColumns = that.tree.getData()
                   that.grid.handleColumnsSetting(list)
                 },
