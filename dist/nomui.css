@@ -5072,8 +5072,17 @@ img {
 .nom-loading-container {
   position: relative;
 }
-.nom-list {
+.nom-list.p-overflow-hidden {
   overflow: hidden;
+}
+.nom-list.p-overflow-auto {
+  overflow: auto;
+}
+.nom-list.p-overflow-visible {
+  overflow: visible;
+}
+.nom-list.p-overflow-scroll {
+  overflow: scroll;
 }
 .nom-list > .nom-list-content {
   display: flex;

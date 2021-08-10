@@ -1,5 +1,19 @@
 .nom-list {
-  overflow: hidden;
+  &.p-overflow-hidden {
+    overflow: hidden;
+  }
+
+  &.p-overflow-auto {
+    overflow: auto;
+  }
+
+  &.p-overflow-visible {
+    overflow: visible;
+  }
+
+  &.p-overflow-scroll {
+    overflow: scroll;
+  }
 
   > .nom-list-content {
     display: flex;

@@ -8076,6 +8076,7 @@ function _defineProperty2(obj, key, value) {
         },
         showEmpty: false, // Boolean || { onEnd: Funciton}
         sortable: false,
+        overflow: "hidden",
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -8089,7 +8090,14 @@ function _defineProperty2(obj, key, value) {
       }
       this.itemRefs = {};
       this.selectedItem = null;
-      this._addPropStyle("gutter", "line", "align", "justify", "cols");
+      this._addPropStyle(
+        "gutter",
+        "line",
+        "align",
+        "justify",
+        "cols",
+        "overflow"
+      );
       let empty = null;
       if (isPlainObject(this.props.showEmpty)) {
         empty = Object.assign({ component: "Empty" }, this.props.showEmpty);
