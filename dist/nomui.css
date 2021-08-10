@@ -5004,6 +5004,9 @@ img {
 .nom-alert-content > .nom-alert-body > .nom-alert-body-icon > .nom-alert-icon {
   font-size: 2rem;
 }
+.nom-alert-content > .nom-alert-body > .nom-alert-body-content {
+  flex-grow: 1;
+}
 .nom-alert-content > .nom-alert-body > .nom-alert-body-content > .nom-alert-title {
   padding: 0.25rem;
   font-weight: 500;
