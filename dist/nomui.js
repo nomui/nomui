@@ -14604,6 +14604,7 @@ function _defineProperty2(obj, key, value) {
     }
     _getRows(data, rows, index, level) {
       const curLevel = level;
+      const { treeConfig } = this.table.props;
       for (const item of data) {
         rows.push({
           component: Tr,
@@ -14612,7 +14613,11 @@ function _defineProperty2(obj, key, value) {
           level: curLevel,
           isLeaf: !(item.children && item.children.length > 0),
         });
-        if (item.children && item.children.length > 0) {
+        if (
+          treeConfig.treeNodeColumn &&
+          item.children &&
+          item.children.length > 0
+        ) {
           this._getRows(item.children, rows, index, curLevel + 1);
         }
       }
