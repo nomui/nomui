@@ -99,10 +99,10 @@ class Group extends Field {
   validate() {
     const invalids = []
     for (let i = 0; i < this.fields.length; i++) {
-      const field = this.fields[i]
-      if (field.validate) {
+      const field = this.fields[i],
+        { disabled, hidden } = field.props
+      if (!(disabled || hidden) && field.validate) {
         const valResult = field.validate()
-
         if (valResult !== true) {
           invalids.push(field)
         }
