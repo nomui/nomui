@@ -28,6 +28,7 @@ class List extends Component {
       showEmpty: false,
       // Boolean || { onEnd: Funciton}
       sortable: false,
+      overflow: 'hidden',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -41,7 +42,7 @@ class List extends Component {
     this.itemRefs = {}
     this.selectedItem = null
 
-    this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols')
+    this._addPropStyle('gutter', 'line', 'align', 'justify', 'cols', 'overflow')
 
     let empty = null
 
