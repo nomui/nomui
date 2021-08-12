@@ -73,8 +73,8 @@ class Group extends Field {
   setValue(value, options) {
     options = extend(
       {
-        ignoreDisabled: true,
-        ignoreHidden: true,
+        ignoreDisabled: false,
+        ignoreHidden: false,
       },
       options,
     )

@@ -13401,7 +13401,10 @@ function _defineProperty2(obj, key, value) {
       return value;
     }
     setValue(value, options) {
-      options = extend$1({ ignoreDisabled: true, ignoreHidden: true }, options);
+      options = extend$1(
+        { ignoreDisabled: false, ignoreHidden: false },
+        options
+      );
       const len = this.fields.length;
       for (let i = 0; i < len; i++) {
         const field = this.fields[i];
