@@ -10664,7 +10664,10 @@ function _defineProperty2(obj, key, value) {
       childNodes.forEach((childNode) => {
         const childNodeData = Object.assign({}, childNode.props.data);
         nodesData.push(childNodeData);
-        childNodeData.children = this.getData(getOptions, childNode);
+        const children = this.getData(getOptions, childNode);
+        if (children && children.length) {
+          childNodeData.children = children;
+        }
       });
       return nodesData;
     }
@@ -10709,10 +10712,10 @@ function _defineProperty2(obj, key, value) {
               this.getCheckedNodesData(getOptions, childNode)
             );
           } else {
-            childNodeData.children = this.getCheckedNodesData(
-              getOptions,
-              childNode
-            );
+            const children = this.getCheckedNodesData(getOptions, childNode);
+            if (children && children.length) {
+              childNodeData.children = children;
+            }
           }
         }
       });
@@ -10789,10 +10792,7 @@ function _defineProperty2(obj, key, value) {
       if (!key || key === "" || !arrayData) return [];
       if (Array.isArray(arrayData)) {
         const r = [];
-        const tmpMap = [];
-        arrayData.forEach((item) => {
-          tmpMap[item[key]] = item;
-        });
+        const tmpMap = {};
         arrayData.forEach((item) => {
           tmpMap[item[key]] = item;
           if (tmpMap[item[parentKey]] && item[key] !== item[parentKey]) {
@@ -10800,6 +10800,7 @@ function _defineProperty2(obj, key, value) {
               tmpMap[item[parentKey]][children] = [];
             tmpMap[item[parentKey]][children].push(item);
           } else {
+            // 无parent，为根节点，直接push进r
             r.push(item);
           }
         });
@@ -15264,7 +15265,7 @@ function _defineProperty2(obj, key, value) {
             children: {
               component: "Tree",
               showline: true,
-              data: that.customizableColumns(that.grid.originColumns),
+              data: that.customizableColumns(that.grid.popupTreeData),
               nodeCheckable: {
                 checkedNodeKeys: that.grid.props.visibleColumns
                   ? that.getMappedColumns(that.grid.props.visibleColumns)
@@ -15297,7 +15298,7 @@ function _defineProperty2(obj, key, value) {
                       });
                       return false;
                     }
-                    that.grid.originColumns = that.tree.getData();
+                    that.grid.popupTreeData = that.tree.getData();
                     that.grid.handleColumnsSetting(list);
                   },
                 },
@@ -15353,7 +15354,8 @@ function _defineProperty2(obj, key, value) {
       this.lastSortField = null;
       this.rowsRefs = {};
       this.checkedRowRefs = {};
-      this.originColumns = clone$1(this.props.columns);
+      this.originColumns = clone$1(this.props.columns); // 列设置弹窗 tree的数据
+      this.popupTreeData = this.originColumns;
       this.filter = {};
     }
     _parseColumnsCustom() {
