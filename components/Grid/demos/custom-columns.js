@@ -9,6 +9,7 @@ define([], function () {
           title: '姓名',
           field: 'name',
           sortable: true,
+          children: [],
         },
         {
           title: '其它',
