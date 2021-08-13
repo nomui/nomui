@@ -35,7 +35,7 @@ class GridSettingPopup extends Modal {
           children: {
             component: 'Tree',
             showline: true,
-            data: that.grid.originColumns,
+            data: that.customizableColumns(that.grid.popupTreeData),
             nodeCheckable: {
               checkedNodeKeys: that.grid.props.visibleColumns
                 ? that.getMappedColumns(that.grid.props.visibleColumns)
@@ -64,6 +64,15 @@ class GridSettingPopup extends Modal {
                 text: '确定',
                 onClick: function () {
                   const list = that.tree.getCheckedNodesData()
+                  if (list.length === 0) {
+                    new nomui.Alert({
+                      type: 'info',
+                      title: '提示',
+                      description: '请至少保留一列数据',
+                    })
+                    return false
+                  }
+                  that.grid.popupTreeData = that.tree.getData()
                   that.grid.handleColumnsSetting(list)
                 },
               },
@@ -95,6 +104,21 @@ class GridSettingPopup extends Modal {
     }
     mapColumns(param)
     return arr
+  }
+
+  customizableColumns(val) {
+    function mapColumns(data) {
+      data.forEach(function (item) {
+        if (item.isChecker === true || item.customizable === false) {
+          item.hidden = true
+        }
+        if (item.children) {
+          mapColumns(item.children)
+        }
+      })
+    }
+    mapColumns(val)
+    return val
   }
 }
 

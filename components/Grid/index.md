@@ -68,6 +68,7 @@
 | ellipsis | 单元格是否文字超出自动省略 | `boolean` | `false` |
 | sortable | 是否启用排序，为 true 时后端排序，也可以传自定义排序函数进行前端排序，如：`(a, b) => a.sales - b.sales` | `boolean` \| `function` | `false` |
 | filter | 是否启用列头筛选，启用的时候传入表单组件如：Textbox Select Checkbox，组件自动使用当前列的 field 作为表单 name | `component` | `false` |
+| customizable | 可配置该列是否需要加入可配置项中，配置 false 则不加入 | `boolean` | `true` |
 
 #### `cellRender` 使用示例及参数说明
 
@@ -119,8 +120,8 @@
 | 参数           | 说明               | 类型          | 默认值 |
 | -------------- | ------------------ | ------------- | ------ |
 | checkedRowKeys | 初始选中行主键数组 | `array`       | -      |
-| onRowCheck     | 行勾选回调         | `({row})=>{}` | -      |
-| onRowUncheck   | 行取消勾选回调     | `({row})=>{}` | -      |
+| onCheck        | 行勾选回调         | `({row})=>{}` | -      |
+| onUncheck      | 行取消勾选回调     | `({row})=>{}` | -      |
 
 ### rowExpandable
 
@@ -168,3 +169,5 @@
 | getDataKeys        | 获取当前顺序的 keyField 数组 | -    |
 | getData            | 获取当前顺序的表格 data      | -    |
 | resetColumnsCustom | 重置自定义列的展示           | -    |
+| getCheckedRows     | 获取当前选中行数组           | -    |
+| getCheckedRowKeys  | 获取当前选中行的 key 数组    | -    |

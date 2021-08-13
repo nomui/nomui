@@ -76,6 +76,11 @@
 
   &.p-danger {
     .u-color-danger-outline();
+    &.nom-button-inline {
+      &:hover {
+        background: none !important;
+      }
+    }
 
     &.p-type-primary {
       .u-color-danger();
@@ -91,8 +96,6 @@
   }
 
   &.p-type-text {
-    padding-right: 0.25rem;
-    padding-left: 0.25rem;
     background-color: transparent !important;
     border-color: transparent !important;
     &:hover {
@@ -101,11 +104,13 @@
   }
 
   &.p-type-link {
-    padding-right: 0.25rem;
-    padding-left: 0.25rem;
     color: @link-color;
     background-color: transparent;
     border-color: transparent !important;
+    &:hover {
+      text-decoration: none;
+      background: none;
+    }
   }
 
   &.p-ghost {
@@ -162,23 +167,23 @@
 
   &:not(.p-type-default),
   &:not(.p-type-text),
-  &:not(.p-type-dashed) {
+  &:not(.p-type-dashed),
+  &:not(.p-type-link) {
     &:not([disabled]):hover {
       filter: brightness(0.9);
     }
   }
 }
 
-a.nom-button.p-type-link {
-  &:hover {
-    text-decoration: underline;
-    background: none;
-  }
-}
-
-a.nom-button-inline {
-  display: inline;
+.nom-button-inline {
+  display: inline !important;
   padding: 0;
   white-space: normal;
   text-align: left;
+  &:hover {
+    background: none !important;
+    background-color: transparent !important;
+    filter: brightness(0.65) !important;
+    filter: none;
+  }
 }

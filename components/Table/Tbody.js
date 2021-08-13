@@ -56,7 +56,7 @@ class Tbody extends Component {
             children: {
               component: 'Empty',
 
-              description: false,
+              description: '暂无内容',
             },
           },
         },
@@ -85,6 +85,7 @@ class Tbody extends Component {
 
   _getRows(data, rows, index, level) {
     const curLevel = level
+    const { treeConfig } = this.table.props
     for (const item of data) {
       rows.push({
         component: Tr,
@@ -94,7 +95,7 @@ class Tbody extends Component {
         isLeaf: !(item.children && item.children.length > 0),
       })
 
-      if (item.children && item.children.length > 0) {
+      if (treeConfig.treeNodeColumn && item.children && item.children.length > 0) {
         this._getRows(item.children, rows, index, curLevel + 1)
       }
     }

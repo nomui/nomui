@@ -96,7 +96,10 @@ class Tree extends Component {
       const childNodeData = { ...childNode.props.data }
       nodesData.push(childNodeData)
 
-      childNodeData.children = this.getData(getOptions, childNode)
+      const children = this.getData(getOptions, childNode)
+      if (children && children.length) {
+        childNodeData.children = children
+      }
     })
 
     return nodesData
@@ -151,7 +154,10 @@ class Tree extends Component {
             this.getCheckedNodesData(getOptions, childNode),
           )
         } else {
-          childNodeData.children = this.getCheckedNodesData(getOptions, childNode)
+          const children = this.getCheckedNodesData(getOptions, childNode)
+          if (children && children.length) {
+            childNodeData.children = children
+          }
         }
       }
     })
@@ -249,10 +255,7 @@ class Tree extends Component {
 
     if (Array.isArray(arrayData)) {
       const r = []
-      const tmpMap = []
-      arrayData.forEach((item) => {
-        tmpMap[item[key]] = item
-      })
+      const tmpMap = {}
 
       arrayData.forEach((item) => {
         tmpMap[item[key]] = item
@@ -261,6 +264,7 @@ class Tree extends Component {
           if (!tmpMap[item[parentKey]][children]) tmpMap[item[parentKey]][children] = []
           tmpMap[item[parentKey]][children].push(item)
         } else {
+          // 无parent，为根节点，直接push进r
           r.push(item)
         }
       })

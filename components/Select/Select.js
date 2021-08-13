@@ -228,7 +228,7 @@ class Select extends Field {
           this.currentValue = [selValueOption.value]
         }
       } else {
-        this.selectedSingle.emptyChildren()
+        this.selectedSingle.element.innerText = ''
         this.currentValue = null
       }
     }
@@ -465,6 +465,7 @@ class Select extends Field {
           {
             placeholder: null,
             filter: ({ inputValue, options }) => {
+              if (!inputValue) return options
               const reg = new RegExp(inputValue, 'i')
               const filteredOptions = []
               options.forEach((option) => {

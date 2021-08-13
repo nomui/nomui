@@ -1,10 +1,14 @@
-.nom-mask-info {
-  .nom-icon.p-type-eye {
-    position: relative;
-    top: 2px;
-    cursor: pointer;
-    svg {
-      fill: #888;
+.nom-toolbar {
+  &.p-type-link {
+    .nom-col {
+      a {
+        margin-right: 0.5rem;
+      }
+      &:last-child {
+        a {
+          margin-right: 0;
+        }
+      }
     }
   }
 }
