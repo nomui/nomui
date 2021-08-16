@@ -53,8 +53,8 @@ define([], function () {
         children: {
           component: 'Uploader',
           action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-          onRemove: function (file) {
-            return createModal(file.name)
+          onRemove: {
+            action: (e, file) => createModal(file.name),
           },
           onPreview: function (file) {
             const { originFile, type } = file
