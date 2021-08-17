@@ -22,7 +22,7 @@ class Uploader extends Field {
       beforeUpload: null,
       button: null,
       defaultFileList: [],
-      multiple: true,
+      multiple: false,
       name: 'file',
       display: true,
       data: {},
@@ -142,7 +142,7 @@ class Uploader extends Field {
             that.list = c
           },
           initializing,
-          files: this.fileList,
+          files: display === 'replace' && !multiple ? this.fileList.slice(-1) : this.fileList,
           renderer,
           onRemove: onRemove &&
             isFunction(onRemove.action) && {

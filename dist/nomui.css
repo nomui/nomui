@@ -7172,9 +7172,6 @@ textarea .nom-textarea {
 .nom-uploader {
   padding: 1em;
 }
-.nom-uploader:hover {
-  background-color: #e7f5ff;
-}
 .nom-file-list {
   margin-top: 2em;
 }

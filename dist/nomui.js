@@ -22761,7 +22761,7 @@ function _defineProperty2(obj, key, value) {
         beforeUpload: null,
         button: null,
         defaultFileList: [],
-        multiple: true,
+        multiple: false,
         name: "file",
         display: true,
         data: {}, // request option
@@ -22864,7 +22864,10 @@ function _defineProperty2(obj, key, value) {
               that.list = c;
             },
             initializing,
-            files: this.fileList,
+            files:
+              display === "replace" && !multiple
+                ? this.fileList.slice(-1)
+                : this.fileList,
             renderer,
             onRemove:
               onRemove &&
