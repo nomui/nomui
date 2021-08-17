@@ -1,7 +1,7 @@
 define([
   './basic.js',
   './picture.js',
-  './callback.js',
+  // './callback.js',
   './change.js',
   './customize-action.js',
   './defaultFileList.js',
@@ -11,6 +11,7 @@ define([
   './customize.js',
   './action.js',
   './fileList.js',
+  './display.js',
 ], function () {
   return {
     title: 'Uploader',
