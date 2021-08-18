@@ -4211,6 +4211,9 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this.setProps({
+        // RadioList,CheckboxList等div组件不为 focusable 元素
+        // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+        attrs: { tabindex: 0 },
         children: [
           labelProps,
           { component: FieldContent, value: this.props.value },
@@ -4274,6 +4277,7 @@ function _defineProperty2(obj, key, value) {
             trigger: this,
             reference: this.content,
             alignTo: this.content,
+            hidden: true,
             styles: { color: "danger" },
             children: message,
           })
@@ -4287,6 +4291,7 @@ function _defineProperty2(obj, key, value) {
     }
     focus() {
       isFunction(this._focus) && this._focus();
+      this.element.focus();
     }
     blur() {
       isFunction(this._blur) && this._blur();

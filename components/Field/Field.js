@@ -100,6 +100,9 @@ class Field extends Component {
     }
 
     this.setProps({
+      // RadioList,CheckboxList等div组件不为 focusable 元素
+      // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+      attrs: { tabindex: 0 },
       children: [
         labelProps,
         { component: FieldContent, value: this.props.value },
@@ -172,6 +175,7 @@ class Field extends Component {
           trigger: this,
           reference: this.content,
           alignTo: this.content,
+          hidden: true,
           styles: {
             color: 'danger',
           },
@@ -191,6 +195,7 @@ class Field extends Component {
 
   focus() {
     isFunction(this._focus) && this._focus()
+    this.element.focus()
   }
 
   blur() {
