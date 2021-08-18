@@ -3925,6 +3925,14 @@ function _defineProperty2(obj, key, value) {
       },
       message: "请输入正确的手机号",
     },
+    telephone: {
+      validate: function (value) {
+        return !isEmpty(value)
+          ? /^((\d{3,4}\-)|)\d{7,8}(|([-\u8f6c]{1}\d{1,5}))$/.test(value)
+          : true;
+      },
+      message: "请输入正确的固话号码",
+    },
     func: {
       validate: function (value, ruleValue) {
         if (!isEmpty(value) && isFunction(ruleValue)) {
