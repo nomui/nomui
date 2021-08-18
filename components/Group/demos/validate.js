@@ -51,24 +51,11 @@ define([], function () {
               required: true,
               disabled: true,
             },
-            {
-              component: 'RadioList',
-              name: 'gender',
-              label: '性别',
-              options: [
-                { text: '射雕英雄传', value: 0 },
-                { text: '白马啸西风', value: 1 },
-                { text: '射雕英雄传', value: 0 },
-                { text: '白马啸西风', value: 1 },
-                { text: '射雕英雄传', value: 0 },
-                { text: '白马啸西风', value: 1 },
-                { text: '射雕英雄传', value: 0 },
-                { text: '白马啸西风', value: 1 },
-              ],
-            },
+
             {
               component: 'CheckboxList',
               name: 'hobbies',
+              required: true,
               label: '爱好',
               options: [
                 { text: '唱歌', value: 1 },
