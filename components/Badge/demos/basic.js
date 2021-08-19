@@ -12,12 +12,12 @@ define([], function () {
           },
           {
             component: 'Badge',
-            text: '带图标',
+            text: 0,
             icon: 'eye',
           },
           {
             component: 'Badge',
-            number: '255',
+            number: 0,
             color: 'olive',
           },
           {
@@ -30,7 +30,7 @@ define([], function () {
             text: '按钮带圆点数字',
             badge: {
               number: 1000,
-              overflowCount: 999
+              overflowCount: 999,
             },
           },
           {

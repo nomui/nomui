@@ -18,7 +18,9 @@ class Badge extends Component {
 
   _config() {
     this._propStyleClasses = ['size', 'color']
-    const { icon, text, type, number, overflowCount } = this.props
+    const { icon, text, type, overflowCount } = this.props
+
+    const number = this.props.number === 0 ? '0' : this.props.number
 
     if (icon) {
       this.setProps({
@@ -48,7 +50,10 @@ class Badge extends Component {
       children: [
         Component.normalizeIconProps(icon),
         { tag: 'span', children: text },
-        number && { tag: 'span', children: number > overflowCount ? `${overflowCount}+` : number },
+        number && {
+          tag: 'span',
+          children: number > overflowCount ? `${overflowCount}+` : number,
+        },
       ],
     })
   }

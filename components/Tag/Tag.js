@@ -20,7 +20,8 @@ class Tag extends Component {
 
   _config() {
     this._propStyleClasses = ['size', 'color']
-    const { icon, text, type, number, overflowCount, removable } = this.props
+    const { icon, text, type, overflowCount, removable } = this.props
+    const number = this.props.number === 0 ? '0' : this.props.number
 
     const that = this
     if (icon) {
