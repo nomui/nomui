@@ -7358,6 +7358,9 @@ textarea .nom-textarea {
 .nom-badge > span + .nom-icon {
   margin-left: 0.1rem;
 }
+.nom-badge.p-type-round {
+  min-width: 1.75rem;
+}
 .nom-badge.p-type-dot {
   position: absolute;
   top: 0;

@@ -9252,7 +9252,8 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       this._propStyleClasses = ["size", "color"];
-      const { icon, text, type, number, overflowCount } = this.props;
+      const { icon, text, type, overflowCount } = this.props;
+      const number = this.props.number === 0 ? "0" : this.props.number;
       if (icon) {
         this.setProps({ classes: { "p-with-icon": true } });
       }
@@ -18255,11 +18256,11 @@ function _defineProperty2(obj, key, value) {
     handleYearChange(key) {
       this.year = key;
       let noUpdate = false;
-      if (this.hasRange) {
+      if (this.hasRange && this.subPicker) {
         if (this.year <= this.minYear) {
           this.minSub = this.minAfter;
           this.setValue(null);
-          this.subPicker && this.subPicker.unselectAllItems();
+          this.subPicker.unselectAllItems();
           noUpdate = true;
         } else {
           this.minSub = "00";
@@ -18267,7 +18268,7 @@ function _defineProperty2(obj, key, value) {
         if (this.year >= this.maxYear) {
           this.maxSub = this.maxAfter;
           this.setValue(null);
-          this.subPicker && this.subPicker.unselectAllItems();
+          this.subPicker.unselectAllItems();
           noUpdate = true;
         } else {
           this.maxSub = "60";
@@ -21475,7 +21476,8 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       this._propStyleClasses = ["size", "color"];
-      const { icon, text, type, number, overflowCount, removable } = this.props;
+      const { icon, text, type, overflowCount, removable } = this.props;
+      const number = this.props.number === 0 ? "0" : this.props.number;
       const that = this;
       if (icon) {
         this.setProps({ classes: { "p-with-icon": true } });

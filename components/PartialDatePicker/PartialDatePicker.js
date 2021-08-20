@@ -405,11 +405,11 @@ class PartialDatePicker extends Textbox {
 
     let noUpdate = false
 
-    if (this.hasRange) {
+    if (this.hasRange && this.subPicker) {
       if (this.year <= this.minYear) {
         this.minSub = this.minAfter
         this.setValue(null)
-        this.subPicker && this.subPicker.unselectAllItems()
+        this.subPicker.unselectAllItems()
         noUpdate = true
       } else {
         this.minSub = '00'
@@ -417,7 +417,7 @@ class PartialDatePicker extends Textbox {
       if (this.year >= this.maxYear) {
         this.maxSub = this.maxAfter
         this.setValue(null)
-        this.subPicker && this.subPicker.unselectAllItems()
+        this.subPicker.unselectAllItems()
         noUpdate = true
       } else {
         this.maxSub = '60'
