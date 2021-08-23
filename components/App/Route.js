@@ -65,7 +65,7 @@ export class Route {
       if (!(result === false)) {
         while (hash.indexOf('!') > 0) {
           hash = hash.substring(0, hash.lastIndexOf('!'))
-          result = callback(hash)
+          result = callback(`${hash}!`)
           if (result === false) {
             hash = ''
           }
