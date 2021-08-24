@@ -83,6 +83,10 @@ class Table extends Component {
       container: this.parent,
     })
   }
+
+  appendRow(rowProps) {
+    this.tbody.appendChild(rowProps)
+  }
 }
 
 Component.register(Table)

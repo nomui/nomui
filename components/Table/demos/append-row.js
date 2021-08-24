@@ -1,12 +1,21 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '新增行',
+    file: 'append-row',
     demo: function () {
+      let tableRef = null
+
       return {
-        children: [
+        component: 'Flex',
+        gap: 'medium',
+        rows: [
           {
             component: 'Table',
+            ref: (c) => {
+              tableRef = c
+            },
+            line: 'both',
+            bordered: true,
             columns: [
               {
                 field: 'name',
@@ -57,8 +66,8 @@ define([], function () {
                 cellRender: ({ cellData: isMiddle }) => {
                   return {
                     component: 'Checkbox',
-                    value: isMiddle,
                     plain: true,
+                    value: isMiddle,
                   }
                 },
               },
@@ -89,6 +98,22 @@ define([], function () {
                 isMiddle: false,
               },
             ],
+          },
+          {
+            component: 'Button',
+            text: '新增一行',
+            onClick: () => {
+              tableRef.appendRow({
+                data: {
+                  id: 5,
+                  name: '神雕侠侣',
+                  author: '金庸',
+                  role: '杨过',
+                  tags: ['长篇', '元朝'],
+                  isMiddle: false,
+                },
+              })
+            },
           },
         ],
       }

@@ -13,6 +13,7 @@ class Tbody extends Component {
 
   _created() {
     this.table = this.parent
+    this.table.tbody = this
   }
 
   _config() {
