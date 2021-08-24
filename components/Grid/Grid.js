@@ -57,6 +57,9 @@ class Grid extends Component {
     this.rowsRefs = {}
     this.checkedRowRefs = {}
     this._propStyleClasses = ['bordered']
+    if (this.props.ellipsis === true) {
+      this.props.ellipsis = 'both'
+    }
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
     this._parseColumnsCustom()
