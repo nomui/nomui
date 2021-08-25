@@ -91,7 +91,7 @@ class Field extends Component {
 
     let actionProps = null
     if (action) {
-      actionProps = { component: 'List', classes: { 'nom-field-action': true } }
+      actionProps = { component: 'List', classes: { 'nom-field-action': true }, gutter: 'sm' }
       if (Array.isArray(action)) {
         actionProps = Component.extendProps(actionProps, { items: action })
       } else {
