@@ -7632,6 +7632,9 @@ textarea .nom-textarea {
   align-items: center;
   justify-content: center;
 }
+.nom-tag.p-type-round {
+  min-width: 1.75rem;
+}
 .nom-tag > .nom-icon {
   display: inline-flex;
 }
