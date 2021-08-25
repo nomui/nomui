@@ -21,6 +21,8 @@ class Grid extends Component {
     this.checkedRowRefs = {}
 
     this.originColumns = clone(this.props.columns)
+    // 列设置弹窗 tree的数据
+    this.popupTreeData = this.originColumns
     this.filter = {}
   }
 

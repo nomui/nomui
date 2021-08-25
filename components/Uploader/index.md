@@ -49,12 +49,13 @@
 
 ## API
 
-| 参数 | 说明 | 类型 | 默认值 | 版本 |
+| 参数 | 说明 | 类型 | 默认值 | 注释 |
 | --- | --- | --- | --- | --- |
-| accept | 接受上传的文件类型, 详见 [input accept Attribute](https://developer.mozill a.org/en-US/docs/Web/HTML/Element/input/file#accept) | string | - |  |
+| accept | 接受上传的文件类型, 详见 [input accept Attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept) | string | - |  |
 | action | 上传的地址 | string \| (file) => Promise | - |  |
 | button | 自定义上传按钮 | Button \| `false` | Button(设置为 false 则不显示上传按钮) |  |
-| display | 显示隐藏上传列表 | `boolean` | `true` |
+| multiple | 多文件上传 | `boolean` | `false` | 布尔值，如果出现，则表示用户可以选择多个文件。详见 [input multiple Attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file) |
+| display | 上传列表显示模式 | `boolean` \| `replace` | `true` | 单文件上传模式(multiple 为 false)下，设置`replace`则只显示最后上传的文件 |
 | method | 上传请求的 http method | string | `post` |  |
 | beforeUpload | 上传文件之前的钩子，参数为上传的文件，若返回 `false` 则停止上传。支持返回一个 Promise 对象，Promise 对象 reject 时则停止上传，resolve 时开始上传（ resolve 传入 `File` 或 `Blob` 对象则上传 resolve 传入对象）。**注意：IE9 不支持该方法** | (file, fileList) => boolean \| Promise | - |  |
 | data | 上传所需额外参数或返回上传额外参数的方法 | object\|(file) => object \| Promise&lt;object> | - |  |
