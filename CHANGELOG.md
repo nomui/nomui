@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.29](https://github.com/nomui/nomui/compare/v1.0.0-alpha.27...v1.0.0-alpha.29) (2021-08-25)
+
 ## [1.0.0-alpha.28](https://github.com/nomui/nomui/compare/v1.0.0-alpha.27...v1.0.0-alpha.28) (2021-08-25)
 
 ## [1.0.0-alpha.27](https://github.com/nomui/nomui/compare/v1.0.0-alpha.26...v1.0.0-alpha.27) (2021-08-25)
