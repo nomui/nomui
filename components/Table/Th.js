@@ -31,8 +31,15 @@ class Th extends Component {
       sortIcon = 'sort-down'
     }
 
+    const isEllipsis =
+      (this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'header') &&
+      this.props.column.ellipsis !== false
+
     const headerProps = {
       tag: 'span',
+      attrs: {
+        title: isEllipsis ? this.props.column.header || this.props.column.title : null,
+      },
       children: this.props.column.header || this.props.column.title,
     }
 
@@ -153,10 +160,6 @@ class Th extends Component {
           },
         },
     ]
-
-    const isEllipsis =
-      (this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'header') &&
-      this.props.column.ellipsis !== false
 
     this.setProps({
       children: children,

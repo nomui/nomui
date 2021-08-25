@@ -1,7 +1,7 @@
 node_modules
 .history
 yarn.lock
-/dist
 .eslintcache
 yarn-error.log
 /.vscode
+/dist

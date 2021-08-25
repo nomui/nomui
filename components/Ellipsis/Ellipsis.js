@@ -29,18 +29,6 @@ class Ellipsis extends Component {
   }
 }
 
-Component.mixin({
-  _config: function () {
-    if (this.props.ellipsis === true && this.parent.componentType !== 'Tr') {
-      this.setProps({
-        classes: {
-          'nom-ellipsis-block': true,
-        },
-      })
-    }
-  },
-})
-
 Component.register(Ellipsis)
 
 export default Ellipsis
