@@ -29,7 +29,7 @@
 
 ## API
 
-### Grid
+### props
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -53,6 +53,18 @@
 | onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
 | onFilter | 列头筛选触发回调 | `({params})=>{}` | - |
 | sticky | 是否开启吸附式表头以及虚拟滚动条,需要指定有滚动条的父容器，设为 true 则指定 window 为滚动容器 | `boolean` \| `component`\| `()=>{}` | false |
+
+### methods
+
+| 名称               | 说明                         | 类型             |
+| ------------------ | ---------------------------- | ---------------- |
+| appendRow          | 在后面新增一行               | `(rowProps)=>{}` |
+| resetSort          | 重置表格的排序状态           | -                |
+| getDataKeys        | 获取当前顺序的 keyField 数组 | -                |
+| getData            | 获取当前顺序的表格 data      | -                |
+| resetColumnsCustom | 重置自定义列的展示           | -                |
+| getCheckedRows     | 获取当前选中行数组           | -                |
+| getCheckedRowKeys  | 获取当前选中行的 key 数组    | -                |
 
 ### column
 
@@ -160,14 +172,3 @@
 | selected | 默认展示出的列 | `array` | - |
 | cache | 是否需要缓存到 store 中（刷新页面不会重置，需要 cache 设置为`唯一的标识`） | `string \| boolean` | - |
 | callback | 点击 modal 的保存的回调事件 | `function` | - |
-
-## Method
-
-| 参数               | 说明                         | 参数 |
-| ------------------ | ---------------------------- | ---- |
-| resetSort          | 重置表格的排序状态           | -    |
-| getDataKeys        | 获取当前顺序的 keyField 数组 | -    |
-| getData            | 获取当前顺序的表格 data      | -    |
-| resetColumnsCustom | 重置自定义列的展示           | -    |
-| getCheckedRows     | 获取当前选中行数组           | -    |
-| getCheckedRowKeys  | 获取当前选中行的 key 数组    | -    |

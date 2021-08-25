@@ -7172,6 +7172,9 @@ textarea .nom-textarea {
 .nom-group.p-uistyle-inline > .nom-field-content > .nom-control > .nom-field > .nom-field-content {
   flex-basis: auto;
 }
+.nom-group-grid .nom-control-action {
+  margin-top: 6px;
+}
 .nom-file-list {
   margin-top: 2em;
 }

@@ -111,6 +111,7 @@ define([], function () {
                   return {
                     component: 'Checkbox',
                     value: isMiddle,
+                    plain: true,
                   }
                 },
               },

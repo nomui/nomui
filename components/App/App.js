@@ -77,7 +77,12 @@ class App extends Component {
 
   handleRoute() {
     const route = new Route(this.props.defaultPath)
-    console.info(JSON.stringify(route))
+
+    /* console.info(JSON.stringify(route))
+
+    route.iterateHash((hash) => {
+      console.log(hash)
+    }) */
 
     let changedLevel = null
     let queryChanged = false

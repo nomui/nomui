@@ -484,6 +484,10 @@ class Grid extends Component {
     return order
   }
 
+  appendRow(rowProps) {
+    this.body.table.appendRow(rowProps)
+  }
+
   _processCheckableColumn() {
     const grid = this
     const { rowCheckable, visibleColumns } = this.props
@@ -674,6 +678,10 @@ class Grid extends Component {
       const { onUncheck } = normalizedRowCheckable
       this._callHandler(onUncheck, { row: row })
     }
+  }
+
+  getRows() {
+    return this.body.table.getRows()
   }
 
   // handlePinClick(data) {

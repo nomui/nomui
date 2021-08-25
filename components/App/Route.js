@@ -9,7 +9,7 @@ export class Route {
       this.hash = `#${defaultPath}`
     }
     this.path = this.hash.substring(1)
-    this.paths = [null, null, null]
+    this.paths = []
     this.query = {}
     this.queryStr = ''
     const queryIndex = this.hash.indexOf('?')
@@ -51,6 +51,26 @@ export class Route {
         strQuery = `?${strQuery}`
       }
       window.location.href = `#${pathname}${strQuery}`
+    }
+  }
+
+  iterateHash(callback) {
+    let hash = this.hash
+    let result = callback(hash)
+    if (!(result === false)) {
+      if (this.queryStr !== '') {
+        hash = `#${this.path}`
+        result = callback(hash)
+      }
+      if (!(result === false)) {
+        while (hash.indexOf('!') > 0) {
+          hash = hash.substring(0, hash.lastIndexOf('!'))
+          result = callback(`${hash}!`)
+          if (result === false) {
+            hash = ''
+          }
+        }
+      }
     }
   }
 }
