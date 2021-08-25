@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.27](https://github.com/nomui/nomui/compare/v1.0.0-alpha.26...v1.0.0-alpha.27) (2021-08-25)
+
+## [1.0.0-alpha.26](https://github.com/nomui/nomui/compare/v1.0.0-alpha.25...v1.0.0-alpha.26) (2021-08-25)
+
+
+### Features
+
+* **Grid:** 新增 appendRow 方法 ([c167b4e](https://github.com/nomui/nomui/commit/c167b4e624cce7c524bfe0c006a816a64e61e988))
+* **Grid:** 新增 getRows 方法 ([6ec6cd5](https://github.com/nomui/nomui/commit/6ec6cd50dc405472d245ef374b7b39b473f122ce))
+* **GroupGrid:** GroupGrid 初始代码 ([9a84a5f](https://github.com/nomui/nomui/commit/9a84a5fd77f18720fae1974ef409d3c499d8f462))
+* **Route:** 新增遍历处理 hash 的方法：iterateHash ([1fad45e](https://github.com/nomui/nomui/commit/1fad45e0aeb6404c8d676e9c2bfbd7265cedf728))
+* **Table:** 新增 appendRow 方法 ([1dc39f4](https://github.com/nomui/nomui/commit/1dc39f43dab3d6b4da4ddb5edf8a71bca5e72525))
+
 ## [1.0.0-alpha.25](https://github.com/nomui/nomui/compare/v1.0.0-alpha.24...v1.0.0-alpha.25) (2021-08-20)
 
 
