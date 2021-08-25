@@ -8792,12 +8792,13 @@ function _defineProperty2(obj, key, value) {
       } else if (icon) {
         this.setProps({ children: [Component.normalizeIconProps(icon)] });
       } else {
+        const innerText = text || "NA";
         this.setProps({
           children: [
-            text && {
+            {
               tag: "span",
               classes: { "nom-avatar-string": true },
-              children: text,
+              children: innerText,
             },
           ],
         });
