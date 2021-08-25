@@ -16182,6 +16182,32 @@ function _defineProperty2(obj, key, value) {
       }
       return invalids.length === 0;
     }
+    getField(fieldName) {
+      if (typeof fieldName === "string") {
+        // Handle nested keys, e.g., "foo.bar" "foo[1].bar" "foo[key].bar"
+        const parts = fieldName.split(".");
+        let curField = this;
+        if (parts.length) {
+          for (let i = 0; i < parts.length; i++) {
+            const part = parts[i];
+            curField = curField._getSubField(part);
+            if (!curField) {
+              break;
+            }
+          }
+        }
+        return curField;
+      }
+    }
+    _getSubField(fieldName) {
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i];
+        if (field.name === fieldName) {
+          return field;
+        }
+      }
+      return null;
+    }
     _onValueChange(args) {
       const that = this;
       this.oldValue = clone$1(this.currentValue);
@@ -16396,6 +16422,32 @@ function _defineProperty2(obj, key, value) {
         }
       }
       return invalids.length === 0;
+    }
+    getField(fieldName) {
+      if (typeof fieldName === "string") {
+        // Handle nested keys, e.g., "foo.bar" "foo[1].bar" "foo[key].bar"
+        const parts = fieldName.split(".");
+        let curField = this;
+        if (parts.length) {
+          for (let i = 0; i < parts.length; i++) {
+            const part = parts[i];
+            curField = curField._getSubField(part);
+            if (!curField) {
+              break;
+            }
+          }
+        }
+        return curField;
+      }
+    }
+    _getSubField(fieldName) {
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i];
+        if (field.name === fieldName) {
+          return field;
+        }
+      }
+      return null;
     }
     focus() {}
     addGroup() {
