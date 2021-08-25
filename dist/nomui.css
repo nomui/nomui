@@ -6197,6 +6197,9 @@ textarea .nom-input {
 .nom-textbox > .nom-field-content .nom-control {
   position: relative;
 }
+.nom-textbox.s-invalid.p-plain > .nom-field-content > .nom-control > .nom-input {
+  border-color: #ffa8a8;
+}
 .nom-textbox.p-with-button > .nom-field-content > .nom-control {
   display: flex;
 }
@@ -6234,10 +6237,6 @@ textarea .nom-input {
 .nom-textbox .nom-textbox-left-icon,
 .nom-textbox .nom-textbox-right-icon {
   color: #a4a2bb;
-}
-.nom-time-picker .nom-input[readonly]:not([disabled]),
-.nom-date-picker .nom-input[readonly]:not([disabled]) {
-  background-color: transparent;
 }
 .nom-time-picker .nom-input[readonly]:not([disabled]),
 .nom-date-picker .nom-input[readonly]:not([disabled]) {

@@ -3,17 +3,20 @@ define([], function () {
     title: '基础用法',
     file: 'basic',
     demo: function () {
+      let formRef = null
+
       return {
         component: 'Form',
+        ref: (c) => {
+          formRef = c
+        },
         line: 'outline',
         striped: true,
         fields: [
           {
             component: 'GroupGrid',
+            name: 'educations',
             label: '教育经历',
-            ref: (c) => {
-              window.group = c
-            },
             onValueChange: (args) => {
               console.log(args)
             },
@@ -24,6 +27,7 @@ define([], function () {
                   component: 'Textbox',
                   name: 'school',
                   label: '学校名称',
+                  required: true,
                 },
                 {
                   component: 'Numberbox',
@@ -34,9 +38,25 @@ define([], function () {
             },
 
             value: [
-              { school: '小学', age: '7' },
-              { school: '大学', age: '18' },
+              { school: '小学', startYear: '2000' },
+              { school: '大学', startYear: '2012' },
             ],
+          },
+        ],
+        action: [
+          {
+            component: 'Button',
+            text: 'getValue',
+            onClick: () => {
+              console.log(formRef.getValue())
+            },
+          },
+          {
+            component: 'Button',
+            text: 'validate',
+            onClick: () => {
+              formRef.validate()
+            },
           },
         ],
       }

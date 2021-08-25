@@ -89,7 +89,7 @@ class Tbody extends Component {
     const { treeConfig } = this.table.props
     for (const item of data) {
       rows.push({
-        component: Tr,
+        // component: Tr,
         data: item,
         index: index++,
         level: curLevel,

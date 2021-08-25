@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import Grid from '../grid/index'
+import Grid from '../Grid/index'
 import GroupGridTr from './GroupGridTr'
 import Toolbar from '../Toolbar/index'
 
@@ -17,12 +17,11 @@ class GroupGrid extends Field {
 
   _created() {
     super._created()
-    this.extGroupDefaults = null
   }
 
   _config() {
     const that = this
-    const { groupDefaults, value } = this.props
+    const { groupDefaults, value, actionColumn, gridProps } = this.props
     const columns = []
     groupDefaults.fields.forEach((f) => {
       columns.push({
@@ -34,41 +33,51 @@ class GroupGrid extends Field {
             plain: true,
             value: cellData,
             __group: row,
-            _created: ({ inst }) => {
+            onCreated: ({ inst }) => {
               row.fields.push(inst)
             },
           })
         },
       })
     })
-    columns.push({
-      cellRender: ({ row }) => {
-        return {
-          component: Toolbar,
-          items: [
-            {
-              component: 'Button',
-              text: '移除',
-              onClick: () => {
-                row.remove()
-                that._onValueChange()
-              },
-            },
-          ],
-        }
-      },
-    })
+    columns.push(
+      Component.extendProps(
+        {
+          width: 80,
+          cellRender: ({ row }) => {
+            return {
+              component: Toolbar,
+              items: [
+                {
+                  component: 'Button',
+                  text: '移除',
+                  onClick: () => {
+                    row.remove()
+                    that._onValueChange()
+                  },
+                },
+              ],
+            }
+          },
+        },
+        actionColumn,
+      ),
+    )
 
     this.setProps({
       control: {
-        children: {
+        children: Component.extendProps(gridProps, {
           component: Grid,
           columns: columns,
           data: value,
-          _created: (inst) => {
-            that.grid = inst
+          rowDefaults: {
+            component: GroupGridTr,
           },
-        },
+          onCreated: ({ inst }) => {
+            that.grid = inst
+            inst.groupGrid = that
+          },
+        }),
       },
       controlAction: [
         {
@@ -83,9 +92,6 @@ class GroupGrid extends Field {
           hidden: that.props.hideAction,
         },
       ],
-      rowDefaults: {
-        component: GroupGridTr,
-      },
     })
 
     super._config()
@@ -125,13 +131,50 @@ class GroupGrid extends Field {
     }
   }
 
+  validate() {
+    const invalids = []
+    for (let i = 0; i < this.fields.length; i++) {
+      const field = this.fields[i],
+        { disabled, hidden } = field.props
+      if (!(disabled || hidden) && field.validate) {
+        const valResult = field.validate()
+        if (valResult !== true) {
+          invalids.push(field)
+        }
+      }
+    }
+
+    if (invalids.length > 0) {
+      // invalids[0].focus()
+    }
+
+    return invalids.length === 0
+  }
+
+  focus() {}
+
   addGroup() {
     const { addDefaultValue } = this.props
     const rowData = isFunction(addDefaultValue) ? addDefaultValue.call(this) : addDefaultValue
     this.grid.appendRow({ data: rowData })
     this._onValueChange()
   }
+
+  _clear() {
+    for (let i = 0; i < this.fields.length; i++) {
+      const field = this.fields[i]
+      if (field.setValue) {
+        field.setValue(null)
+      }
+    }
+  }
 }
+
+Object.defineProperty(GroupGrid.prototype, 'fields', {
+  get: function () {
+    return this.grid.getRows()
+  },
+})
 
 Component.register(GroupGrid)
 

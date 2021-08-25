@@ -25,7 +25,7 @@ function _defineProperty2(obj, key, value) {
 }
 /**
  *
- *       nomui v1.0.0-alpha.27
+ *       nomui v1.0.0-alpha.29
  *       License: MIT
  *       Copyright (c) 2021-2021, Wetrial
  *
@@ -4145,7 +4145,7 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(FieldLabel);
-  let nameSeq = 0;
+  let nameSeq$1 = 0;
   class Field extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -4171,7 +4171,7 @@ function _defineProperty2(obj, key, value) {
         this._autoName = false;
       } else {
         this._autoName = true;
-        this.name = `__field${++nameSeq}`;
+        this.name = `__field${++nameSeq$1}`;
       }
       this.group = this.props.__group || null;
       if (this.parent && this.parent.__isControl === true) {
@@ -4225,6 +4225,7 @@ function _defineProperty2(obj, key, value) {
         actionProps = {
           component: "List",
           classes: { "nom-field-action": true },
+          gutter: "sm",
         };
         if (Array.isArray(action)) {
           actionProps = Component.extendProps(actionProps, { items: action });
@@ -14650,7 +14651,7 @@ function _defineProperty2(obj, key, value) {
       const { treeConfig } = this.table.props;
       for (const item of data) {
         rows.push({
-          component: Tr,
+          // component: Tr,
           data: item,
           index: index++,
           level: curLevel,
@@ -15080,7 +15081,7 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(Table);
-  class GridBody$1 extends Component {
+  class GridBody extends Component {
     constructor(props, ...mixins) {
       const defaults = { children: { component: Table } };
       super(Component.extendProps(defaults, props), ...mixins);
@@ -15121,7 +15122,7 @@ function _defineProperty2(obj, key, value) {
       col.update({ column: { width: result } });
     }
   }
-  Component.register(GridBody$1);
+  Component.register(GridBody);
   class Scrollbar extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -15165,975 +15166,6 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(Scrollbar);
-  class GridHeader$1 extends Component {
-    constructor(props, ...mixins) {
-      const defaults = { children: { component: Table } };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this.grid = this.parent;
-      this.grid.header = this;
-    }
-    _config() {
-      this.setProps({
-        children: {
-          columns: this.grid.props.columns,
-          data: this.grid.data,
-          attrs: { style: { minWidth: `${this.grid.minWidth}px` } },
-          onlyHead: true,
-          line: this.props.line,
-        },
-      });
-    }
-    _rendered() {
-      const that = this;
-      if (!this.grid.props.sticky) {
-        return;
-      }
-      if (!this.scrollbar) {
-        this.scrollbar = new Scrollbar({ target: this.grid });
-      }
-      this._hideScrolls();
-      this.position = null;
-      this.size = null;
-      if (this.grid.props.sticky === true) {
-        this.scrollParent = window;
-        this.scrollParent.onscroll = function () {
-          that._onPageScroll();
-        };
-      } else {
-        if (isFunction(this.grid.props.sticky)) {
-          this.scrollParent = this.grid.props.sticky();
-        } else {
-          this.scrollParent = this.grid.props.sticky;
-        }
-        this.scrollParent._on("scroll", function () {
-          that._onPageScroll();
-        });
-      }
-    }
-    _remove() {
-      this.scrollbar && this.scrollbar._remove();
-    }
-    _hideScrolls() {
-      const scrolls = document.getElementsByClassName("nom-scrollbar");
-      if (!scrolls.length) {
-        return;
-      }
-      for (let i = 0; i < scrolls.length; i++) {
-        scrolls[i].classList.add("s-hidden");
-      }
-    }
-    _onPageScroll() {
-      if (!this.props) {
-        return;
-      }
-      this.element.style.transform = `translateY(0px)`;
-      let pRect = null;
-      if (this.grid.props.sticky === true) {
-        pRect = { top: 0, height: window.innerHeight };
-      } else {
-        pRect = this.scrollParent.element.getBoundingClientRect();
-      }
-      const gRect = this.grid.element.getBoundingClientRect();
-      !this.position && this._setScrollerRect({ pRect: pRect, gRect: gRect });
-      this._setScrollerVisible({ pRect: pRect, gRect: gRect });
-    }
-    _setScrollerRect(data) {
-      const { pRect, gRect } = data;
-      const innerWidth = this.element.scrollWidth;
-      const bottom = window.innerHeight - (pRect.top + pRect.height);
-      this.position = {
-        left: `${gRect.left}px`,
-        bottom: `${bottom < 0 ? 0 : bottom}px`,
-      };
-      this.size = { width: `${gRect.width}px`, innerWidth: `${innerWidth}px` };
-      this.scrollbar.update({ position: this.position, size: this.size });
-    }
-    _setScrollerVisible(data) {
-      const { pRect, gRect } = data;
-      if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
-        this.element.style.transform = `translateY(${
-          pRect.top - gRect.top - 2
-        }px)`;
-      }
-      if (gRect.height > pRect.height) {
-        if (
-          gRect.top > pRect.height ||
-          gRect.top + gRect.height - 17 < pRect.height + pRect.top
-        ) {
-          this.scrollbar.hide();
-        } else {
-          this.scrollbar.show();
-        }
-      } else {
-        this.scrollbar.hide();
-      }
-    }
-    resizeCol(data) {
-      const col = this.table.colRefs[data.field];
-      const tdWidth = this.table.element.rows[0].cells[col.props.index]
-        .offsetWidth;
-      const colWidth = col.props.column.width || tdWidth;
-      let result = colWidth + data.distance;
-      if (result < 60) {
-        result = 60;
-      }
-      col.update({ column: { width: result } });
-    }
-  }
-  Component.register(GridHeader$1);
-  class GridSettingPopup$1 extends Modal {
-    constructor(props, ...mixins) {
-      const defaults = {};
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      super._created();
-      this.grid = this.props.grid;
-      this.tree = null;
-    }
-    _config() {
-      const that = this;
-      this.setProps({
-        classes: { "nom-grid-setting-panel": true },
-        content: {
-          component: "Panel",
-          uistyle: "card",
-          fit: true,
-          header: { caption: { title: "列设置" } },
-          body: {
-            children: {
-              component: "Tree",
-              showline: true,
-              data: that.customizableColumns(that.grid.popupTreeData),
-              nodeCheckable: {
-                checkedNodeKeys: that.grid.props.visibleColumns
-                  ? that.getMappedColumns(that.grid.props.visibleColumns)
-                  : that.grid.getMappedColumns(),
-              },
-              multiple: true,
-              leafOnly: false,
-              sortable: true,
-              ref: (c) => {
-                this.tree = c;
-              },
-              dataFields: { text: "title", key: "field" },
-            },
-          },
-          footer: {
-            children: {
-              component: "Cols",
-              gutter: "sm",
-              items: [
-                {
-                  component: "Button",
-                  text: "确定",
-                  onClick: function () {
-                    const list = that.tree.getCheckedNodesData();
-                    if (list.length === 0) {
-                      new nomui.Alert({
-                        type: "info",
-                        title: "提示",
-                        description: "请至少保留一列数据",
-                      });
-                      return false;
-                    }
-                    that.grid.popupTreeData = that.tree.getData();
-                    that.grid.handleColumnsSetting(list);
-                  },
-                },
-                {
-                  component: "Button",
-                  text: "取消",
-                  onClick: () => {
-                    this.hide();
-                  },
-                },
-              ],
-            },
-          },
-        },
-      });
-      super._config();
-    }
-    getMappedColumns(param) {
-      const arr = [];
-      function mapColumns(data) {
-        data.forEach(function (item) {
-          if (item.children) {
-            mapColumns(item.children);
-          }
-          arr.push(item.field);
-        });
-      }
-      mapColumns(param);
-      return arr;
-    }
-    customizableColumns(val) {
-      function mapColumns(data) {
-        data.forEach(function (item) {
-          if (item.isChecker === true || item.customizable === false) {
-            item.hidden = true;
-          }
-          if (item.children) {
-            mapColumns(item.children);
-          }
-        });
-      }
-      mapColumns(val);
-      return val;
-    }
-  }
-  Component.register(GridSettingPopup$1);
-  class Grid$1 extends Component {
-    constructor(props, ...mixins) {
-      super(Component.extendProps(Grid$1.defaults, props), ...mixins);
-    }
-    _created() {
-      this.minWidth = 0;
-      this.lastSortField = null;
-      this.rowsRefs = {};
-      this.checkedRowRefs = {};
-      this.originColumns = clone$1(this.props.columns); // 列设置弹窗 tree的数据
-      this.popupTreeData = this.originColumns;
-      this.filter = {};
-    }
-    _parseColumnsCustom() {
-      const { columnsCustomizable, visibleColumns } = this.props; // 未设置自定义列展示
-      if (!columnsCustomizable) return; // 设置过后，无需再从selected和cache中取值
-      if (visibleColumns && visibleColumns.length) return;
-      this.props.visibleColumns = null;
-      const { selected, cache: cacheKey } = columnsCustomizable;
-      if (selected && selected.length) {
-        // 从originColumns 过滤selected存在的列
-        this.props.visibleColumns = this._getColsFromSelectCols(
-          this.originColumns,
-          selected
-        );
-      } // 缓存中有数据则读取缓存中的col的field数据
-      if (cacheKey) {
-        let storeFields = localStorage.getItem(
-          `${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`
-        );
-        if (storeFields && storeFields.length) {
-          storeFields = JSON.parse(storeFields); // 从originColumns 过滤storeFields存在的列
-          this.props.visibleColumns = this._getColsFromFields(
-            this.originColumns,
-            storeFields
-          );
-        }
-      }
-    }
-    _config() {
-      const that = this; // 切换分页 data数据更新时 此两项不重置会导致check表现出错
-      this.rowsRefs = {};
-      this.checkedRowRefs = {};
-      this._propStyleClasses = ["bordered"];
-      if (this.props.ellipsis === true) {
-        this.props.ellipsis = "both";
-      }
-      const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props;
-      this._parseColumnsCustom();
-      this._processCheckableColumn();
-      this._processExpandableColumn();
-      if (this.props.visibleColumns) {
-        this.props.columns = this.props.visibleColumns;
-      }
-      if (frozenLeftCols || frozenRightCols) {
-        const rev = this.props.columns.length - frozenRightCols;
-        const c = this.props.columns.map(function (n, i) {
-          if (i + 1 < frozenLeftCols) {
-            return Object.assign({}, { fixed: "left" }, n);
-          }
-          if (i + 1 === frozenLeftCols) {
-            return Object.assign({}, { fixed: "left", lastLeft: true }, n);
-          }
-          if (i === rev) {
-            return Object.assign({}, { fixed: "right", firstRight: true }, n);
-          }
-          if (i > rev) {
-            return Object.assign({}, { fixed: "right" }, n);
-          }
-          return n;
-        });
-        this.props.columns = c;
-      }
-      this._calcMinWidth();
-      this.setProps({
-        classes: { "m-frozen-header": this.props.frozenHeader },
-        children: [
-          this.props.columnsCustomizable && {
-            children: {
-              component: "Button",
-              icon: "setting",
-              size: "small", // type: 'text',
-              classes: { "nom-grid-setting": true },
-              tooltip: "列设置",
-              onClick: () => {
-                that.showSetting();
-              },
-            },
-          },
-          { component: GridHeader$1, line: line },
-          { component: GridBody$1, line: line, rowDefaults: rowDefaults },
-        ],
-      });
-    }
-    _calcMinWidth() {
-      this.minWidth = 0;
-      const { props } = this;
-      for (let i = 0; i < props.columns.length; i++) {
-        const column = props.columns[i];
-        if (column.width) {
-          this.minWidth += column.width;
-        } else {
-          this.minWidth += 120;
-        }
-      }
-    }
-    _rendered() {
-      if (this.loadingInst) {
-        this.loadingInst.remove();
-        this.loadingInst = null;
-      }
-      if (this.props.rowCheckable && this._checkboxAllRef) {
-        this.changeCheckAllState();
-      }
-      if (
-        this.props.data &&
-        this.props.autoMergeColumns &&
-        this.props.autoMergeColumns.length > 0
-      ) {
-        this.autoMergeCols();
-      }
-    }
-    getColumns() {
-      return this.props.columns;
-    }
-    loading() {
-      this.loadingInst = new Loading({ container: this.parent });
-    }
-    getMappedColumns(columns) {
-      const arr = [];
-      function mapColumns(data) {
-        data.forEach(function (item) {
-          if (item.children) {
-            mapColumns(item.children);
-          }
-          arr.push(item.field);
-        });
-      }
-      mapColumns(columns || this.originColumns);
-      return arr;
-    }
-    setSortDirection(sorter) {
-      const c = this.getColumns().map(function (item) {
-        if (!sorter) {
-          return Object.assign({}, item, { sortDirection: null });
-        }
-        if (item.field === sorter.field) {
-          return Object.assign({}, item, {
-            sortDirection: sorter.sortDirection,
-          });
-        }
-        return Object.assign({}, item, { sortDirection: null });
-      });
-      if (this.props.visibleColumns) {
-        const vc = this.props.visibleColumns.map(function (item) {
-          if (!sorter) {
-            return Object.assign({}, item, { sortDirection: null });
-          }
-          if (item.field === sorter.field) {
-            return Object.assign({}, item, {
-              sortDirection: sorter.sortDirection,
-            });
-          }
-          return Object.assign({}, item, { sortDirection: null });
-        });
-        this.props.visibleColumns = vc;
-      }
-      this.update({ columns: c });
-    }
-    handleSort(sorter) {
-      const key = sorter.field;
-      if (!sorter.sortDirection) return;
-      if (isFunction(sorter.sortable)) {
-        let arr = [];
-        if (this.lastSortField === key) {
-          arr = this.props.data.reverse();
-        } else {
-          arr = this.props.data.sort(sorter.sortable);
-        }
-        this.setSortDirection(sorter);
-        this.update({ data: arr });
-        this.lastSortField = key;
-        return;
-      }
-      this._callHandler(this.props.onSort, {
-        field: sorter.field,
-        sortDirection: sorter.sortDirection,
-      });
-      this.setSortDirection(sorter);
-      this.lastSortField = key;
-    }
-    resetSort() {
-      if (this.lastSortField) {
-        this.header.table.thRefs[this.lastSortField].resetSort();
-      }
-      this.lastSortField = null;
-    }
-    resetColumnsCustom() {
-      const {
-        columnsCustomizable: { cache },
-      } = this.props;
-      if (cache) {
-        localStorage.removeItem(`${STORAGE_KEY_GRID_COLUMNS}_${cache}`);
-      }
-      this.update({ visibleColumns: this.originColumns });
-    }
-    handleFilter(isReset) {
-      const that = this;
-      if (
-        !isReset &&
-        Object.keys(this.filter).filter(function (key) {
-          return key !== "sender" && that.filter[key] !== null;
-        }) < 1
-      ) {
-        return;
-      }
-      this.props.onFilter &&
-        this._callHandler(this.props.onFilter, this.filter);
-    }
-    getRow(param) {
-      let result = null;
-      if (param instanceof Component) {
-        return param;
-      }
-      if (isFunction(param)) {
-        for (const key in this.rowsRefs) {
-          if (this.rowsRefs.hasOwnProperty(key)) {
-            if (param.call(this.rowsRefs[key]) === true) {
-              result = this.rowsRefs[key];
-              break;
-            }
-          }
-        }
-      } else if (isPlainObject(param)) {
-        return this.rowsRefs[param[this.props.keyField]];
-      } else {
-        return this.rowsRefs[param];
-      }
-      return result;
-    }
-    getCheckedRows() {
-      return Object.keys(this.checkedRowRefs)
-        .map((key) => {
-          return this.checkedRowRefs[key];
-        })
-        .filter((rowRef) => !isNullish(rowRef.key));
-    }
-    getCheckedRowKeys() {
-      return Object.keys(this.checkedRowRefs)
-        .map((key) => {
-          return this.checkedRowRefs[key].key;
-        })
-        .filter((key) => !isNullish(key));
-    } // 遍历 rowTr 实例，调用其check方法
-    checkAllRows(options) {
-      const { rowsRefs } = this;
-      Object.keys(rowsRefs).forEach((key) => {
-        const refItem = rowsRefs[key];
-        if (
-          refItem.props &&
-          !isNullish(refItem.props.data[this.props.keyField])
-        ) {
-          refItem.check(options);
-        }
-      });
-    }
-    uncheckAllRows(options) {
-      const { rowsRefs } = this;
-      Object.keys(rowsRefs).forEach((key) => {
-        const refItem = rowsRefs[key];
-        if (
-          refItem.props &&
-          !isNullish(refItem.props.data[this.props.keyField])
-        ) {
-          refItem.uncheck(options);
-        }
-      });
-    }
-    checkRows(rows, options) {
-      rows = Array.isArray(rows) ? rows : [rows];
-      rows.forEach((row) => {
-        const rowRef = this.getRow(row);
-        rowRef && rowRef.check(options);
-      });
-    }
-    changeCheckAllState() {
-      const checkedRowsLength = Object.keys(this.checkedRowRefs).length;
-      if (checkedRowsLength === 0) {
-        this._checkboxAllRef.setValue(false, false);
-      } else {
-        const allRowsLength = Object.keys(this.rowsRefs).length;
-        if (allRowsLength === checkedRowsLength) {
-          this._checkboxAllRef.setValue(true, false);
-        } else {
-          this._checkboxAllRef.partCheck(false);
-        }
-      }
-    }
-    getKeyValue(rowData) {
-      return rowData[this.props.keyField];
-    }
-    showSetting() {
-      this.popup = new GridSettingPopup$1({
-        align: "center",
-        alignTo: window,
-        grid: this,
-      });
-    }
-    handleColumnsSetting(params) {
-      const tree = params;
-      const that = this;
-      let treeInfo = null;
-      function findTreeInfo(origin, key) {
-        origin.forEach(function (item) {
-          if (item.children) {
-            findTreeInfo(item.children, key);
-          }
-          if (item.field === key) {
-            treeInfo = item;
-          }
-        });
-        if (treeInfo !== null) return treeInfo;
-      }
-      function addTreeInfo(data) {
-        data.forEach(function (item) {
-          if (item.children) {
-            addTreeInfo(item.children);
-          }
-          const myinfo = findTreeInfo(that.originColumns, item.key);
-          if (myinfo) {
-            Object.keys(myinfo).forEach(function (key) {
-              if (key !== "children") {
-                item[key] = myinfo[key];
-              }
-            });
-          }
-        });
-      }
-      addTreeInfo(tree);
-      const { columnsCustomizable } = this.props;
-      const { cache: cacheKey } = columnsCustomizable;
-      if (cacheKey) {
-        localStorage.setItem(
-          `${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`,
-          JSON.stringify(this.getMappedColumns(tree))
-        );
-      }
-      columnsCustomizable.callback &&
-        this._callHandler(columnsCustomizable.callback(tree));
-      this.update({ visibleColumns: tree });
-      this.popup.hide();
-    }
-    handleDrag() {
-      if (this.props.rowSortable && this.props.rowSortable.onEnd) {
-        this._callHandler(this.props.rowSortable.onEnd);
-      }
-    }
-    getData() {
-      const that = this;
-      const keys = this.getDataKeys();
-      const data = keys.map(function (key) {
-        return that.props.data.filter(function (item) {
-          return parseInt(item[that.props.keyField], 10) === parseInt(key, 10);
-        });
-      });
-      return data;
-    }
-    getDataKeys() {
-      const order = [];
-      const trs = this.body.table.element.rows;
-      for (let i = 0; i < trs.length; i++) {
-        order.push(trs[i].dataset.key);
-      }
-      return order;
-    }
-    appendRow(rowProps) {
-      this.body.table.appendRow(rowProps);
-    }
-    _processCheckableColumn() {
-      const grid = this;
-      const { rowCheckable, visibleColumns } = this.props;
-      let { columns } = this.props;
-      columns =
-        visibleColumns && visibleColumns.length ? visibleColumns : columns;
-      if (rowCheckable) {
-        if (columns.filter((item) => item.isChecker).length > 0) {
-          return;
-        }
-        let normalizedRowCheckable = rowCheckable;
-        if (!isPlainObject(rowCheckable)) {
-          normalizedRowCheckable = {};
-        }
-        const { checkedRowKeys = [] } = normalizedRowCheckable;
-        const checkedRowKeysHash = {};
-        checkedRowKeys.forEach((rowKey) => {
-          checkedRowKeysHash[rowKey] = true;
-        });
-        this.setProps({
-          visibleColumns: [
-            {
-              width: 50,
-              isChecker: true,
-              header: {
-                component: Checkbox,
-                plain: true,
-                _created: (inst) => {
-                  grid._checkboxAllRef = inst;
-                },
-                onValueChange: (args) => {
-                  if (args.newValue === true) {
-                    grid.checkAllRows(false);
-                  } else {
-                    grid.uncheckAllRows(false);
-                  }
-                },
-              },
-              cellRender: ({ row, rowData }) => {
-                if (checkedRowKeysHash[row.key] === true) {
-                  grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
-                }
-                return {
-                  component: Checkbox,
-                  plain: true,
-                  _created: (inst) => {
-                    row._checkboxRef = inst;
-                  },
-                  value: checkedRowKeysHash[row.key] === true,
-                  onValueChange: (args) => {
-                    if (args.newValue === true) {
-                      row._check();
-                      row._onCheck();
-                      grid._onRowCheck(row);
-                    } else {
-                      row._uncheck();
-                      row._onUncheck();
-                      grid._onRowUncheck(row);
-                    }
-                    grid.changeCheckAllState();
-                  },
-                };
-              },
-            },
-            ...columns,
-          ],
-        });
-      }
-    }
-    autoMergeCols() {
-      const that = this;
-      this.props.autoMergeColumns.forEach(function (key) {
-        that._mergeColumn(key);
-      });
-    }
-    _mergeColumn(key) {
-      const el = this.body.element.getElementsByTagName("table")[0];
-      function getIndex(data) {
-        for (let i = 0; i < el.rows[0].cells.length; i++) {
-          if (el.rows[0].cells[i].getAttribute("data-field") === data) {
-            return i;
-          }
-        }
-      }
-      const index = getIndex(key);
-      for (let i = el.rows.length - 1; i > 0; i--) {
-        el.rows[i].cells[index].rowSpan = el.rows[i].cells[index].rowSpan || 1;
-        if (
-          el.rows[i].cells[index].innerHTML ===
-          el.rows[i - 1].cells[index].innerHTML
-        ) {
-          el.rows[i - 1].cells[index].rowSpan =
-            el.rows[i].cells[index].rowSpan + 1;
-          el.rows[i].cells[index].rowSpan = 0;
-          el.rows[i].cells[index].style.display = "none";
-        }
-      }
-    }
-    resizeCol(data) {
-      this.header && this.header.resizeCol(data);
-      this.body && this.body.resizeCol(data);
-    }
-    _getColsFromSelectCols(originCols = [], selectCols = []) {
-      return selectCols.reduce((acc, curr) => {
-        const sameCol = originCols.find(
-          (originCol) => originCol.field === curr.field
-        );
-        if (sameCol) {
-          acc.push(
-            Object.assign({}, curr, {
-              children: this._getColsFromSelectCols(
-                sameCol.children,
-                curr.children
-              ),
-            })
-          );
-        }
-        return acc;
-      }, []);
-    }
-    _getColsFromFields(columns = [], fields = []) {
-      return columns.reduce((acc, curr) => {
-        if (fields.includes(curr.field)) {
-          acc.push(
-            Object.assign({}, curr, {
-              children: this._getColsFromFields(curr.children, fields),
-            })
-          );
-        }
-        return acc;
-      }, []);
-    }
-    _processExpandableColumn() {
-      const { rowExpandable, visibleColumns } = this.props;
-      let { columns } = this.props;
-      columns =
-        visibleColumns && visibleColumns.length ? visibleColumns : columns;
-      if (rowExpandable) {
-        if (columns.filter((item) => item.isTreeMark).length > 0) {
-          return;
-        }
-        this.setProps({
-          visibleColumns: [
-            {
-              width: 50,
-              isTreeMark: true,
-              cellRender: ({ row, rowData }) => {
-                return {
-                  component: Icon,
-                  expandable: {
-                    byClick: true,
-                    expandedProps: { type: "minus-square" },
-                    collapsedProps: { type: "plus-square" },
-                    target: () => {
-                      if (!row.expandedRow) {
-                        row.expandedRow = row.after({
-                          component: ExpandedTr,
-                          data: rowData,
-                        });
-                      }
-                      return row.expandedRow;
-                    },
-                  },
-                };
-              },
-            },
-            ...columns,
-          ],
-        });
-      }
-    }
-    _onRowCheck(row) {
-      const { rowCheckable } = this.props;
-      if (rowCheckable) {
-        let normalizedRowCheckable = rowCheckable;
-        if (!isPlainObject(rowCheckable)) {
-          normalizedRowCheckable = {};
-        }
-        const { onCheck } = normalizedRowCheckable;
-        this._callHandler(onCheck, { row: row });
-      }
-    }
-    _onRowUncheck(row) {
-      const { rowCheckable } = this.props;
-      if (rowCheckable) {
-        let normalizedRowCheckable = rowCheckable;
-        if (!isPlainObject(rowCheckable)) {
-          normalizedRowCheckable = {};
-        }
-        const { onUncheck } = normalizedRowCheckable;
-        this._callHandler(onUncheck, { row: row });
-      }
-    }
-    getRows() {
-      return this.body.table.getRows();
-    } // handlePinClick(data) {
-    //   const { columns } = this.props
-    //   const arr = columns.filter(function (item) {
-    //     return item.field === data.field
-    //   })
-    // }
-  }
-  Grid$1.defaults = {
-    columns: [],
-    data: null,
-    frozenHeader: false,
-    frozenLeftCols: null,
-    frozenRightCols: null,
-    allowFrozenCols: false,
-    onSort: null,
-    onFilter: null,
-    keyField: "id",
-    treeConfig: {
-      childrenField: "children",
-      treeNodeColumn: null,
-      initExpandLevel: -1,
-      indentSize: 16,
-    },
-    columnsCustomizable: false, // columnsCustomizable.selected: 若存在，则展示selected 的列数据
-    // columnsCustomizable.cache: 设置列的结果保存至localstorage，cache的值为对应的key
-    // columnsCustomizable.callback: 设置列保存回调
-    autoMergeColumns: null,
-    visibleColumns: null,
-    columnResizable: false,
-    striped: false,
-    showTitle: false,
-    ellipsis: false,
-    sticky: false,
-    line: "row",
-    bordered: true,
-  };
-  Component.register(Grid$1);
-  class GroupList extends Group {
-    constructor(props, ...mixins) {
-      const defaults = {
-        fieldDefaults: { component: Group },
-        hideAction: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      super._created();
-      this.extGroupDefaults = null;
-    }
-    _config() {
-      const that = this;
-      const { groupDefaults, value } = this.props;
-      this.extGroupDefaults = Component.extendProps(groupDefaults, {
-        _config: function () {
-          const group = this;
-          this.setProps({
-            action: [
-              {
-                component: "Button",
-                text: "移除",
-                onClick: () => {
-                  group.remove();
-                  that._onValueChange();
-                },
-              },
-            ],
-          });
-        },
-      });
-      const groups = [];
-      if (Array.isArray(value)) {
-        value.forEach(function (item) {
-          groups.push(
-            Component.extendProps(that.extGroupDefaults, { value: item })
-          );
-        });
-      }
-      this.setProps({
-        fields: groups,
-        fieldDefaults: that.extGroupDefaults,
-        controlAction: [
-          {
-            component: "Button",
-            type: "dashed",
-            text: "添加",
-            span: 12,
-            block: true,
-            onClick: () => {
-              that.addGroup();
-            },
-            hidden: that.props.hideAction,
-          },
-        ],
-      });
-      super._config();
-    }
-    getValue(options) {
-      const { valueOptions } = this.props;
-      const opts = extend$1(
-        { ignoreDisabled: true, ignoreHidden: true, merge: false },
-        valueOptions,
-        options
-      );
-      const value = [];
-      for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i];
-        if (field.getValue) {
-          const fieldValue = field.getValue(opts);
-          value.push(fieldValue);
-        }
-      }
-      return value;
-    }
-    setValue(value) {
-      if (Array.isArray(value)) {
-        for (let i = 0; i < this.fields.length; i++) {
-          const field = this.fields[i];
-          if (field.setValue) {
-            field.setValue(value[i]);
-          }
-        }
-      }
-    }
-    addGroup() {
-      const { addDefaultValue } = this.props;
-      this.extGroupDefaults.value = isFunction(addDefaultValue)
-        ? addDefaultValue.call(this)
-        : addDefaultValue;
-      this.appendField(this.extGroupDefaults);
-      this._onValueChange();
-    }
-  }
-  Component.register(GroupList);
-  class GridBody extends Component {
-    constructor(props, ...mixins) {
-      const defaults = { children: { component: Table } };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      this.grid = this.parent;
-      this.grid.body = this;
-    }
-    _config() {
-      this.setProps({
-        children: {
-          columns: this.grid.props.columns,
-          data: this.grid.props.data,
-          attrs: { style: { minWidth: `${this.grid.minWidth}px` } },
-          onlyBody: true,
-          line: this.props.line,
-          rowDefaults: this.props.rowDefaults,
-          treeConfig: this.grid.props.treeConfig,
-          keyField: this.grid.props.keyField,
-        },
-        attrs: {
-          onscroll: () => {
-            const { scrollLeft } = this.element;
-            this.grid.header.element.scrollLeft = scrollLeft;
-          },
-        },
-      });
-    }
-    resizeCol(data) {
-      const col = this.table.colRefs[data.field];
-      const tdWidth = this.table.element.rows[0].cells[col.props.index]
-        .offsetWidth;
-      const colWidth = col.props.column.width || tdWidth;
-      let result = colWidth + data.distance;
-      if (result < 60) {
-        result = 60;
-      }
-      col.update({ column: { width: result } });
-    }
-  }
-  Component.register(GridBody);
   class GridHeader extends Component {
     constructor(props, ...mixins) {
       const defaults = { children: { component: Table } };
@@ -16965,6 +15997,103 @@ function _defineProperty2(obj, key, value) {
     bordered: true,
   };
   Component.register(Grid);
+  class GroupList extends Group {
+    constructor(props, ...mixins) {
+      const defaults = {
+        fieldDefaults: { component: Group },
+        hideAction: false,
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      this.extGroupDefaults = null;
+    }
+    _config() {
+      const that = this;
+      const { groupDefaults, value } = this.props;
+      this.extGroupDefaults = Component.extendProps(groupDefaults, {
+        _config: function () {
+          const group = this;
+          this.setProps({
+            action: [
+              {
+                component: "Button",
+                text: "移除",
+                onClick: () => {
+                  group.remove();
+                  that._onValueChange();
+                },
+              },
+            ],
+          });
+        },
+      });
+      const groups = [];
+      if (Array.isArray(value)) {
+        value.forEach(function (item) {
+          groups.push(
+            Component.extendProps(that.extGroupDefaults, { value: item })
+          );
+        });
+      }
+      this.setProps({
+        fields: groups,
+        fieldDefaults: that.extGroupDefaults,
+        controlAction: [
+          {
+            component: "Button",
+            type: "dashed",
+            text: "添加",
+            span: 12,
+            block: true,
+            onClick: () => {
+              that.addGroup();
+            },
+            hidden: that.props.hideAction,
+          },
+        ],
+      });
+      super._config();
+    }
+    getValue(options) {
+      const { valueOptions } = this.props;
+      const opts = extend$1(
+        { ignoreDisabled: true, ignoreHidden: true, merge: false },
+        valueOptions,
+        options
+      );
+      const value = [];
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i];
+        if (field.getValue) {
+          const fieldValue = field.getValue(opts);
+          value.push(fieldValue);
+        }
+      }
+      return value;
+    }
+    setValue(value) {
+      if (Array.isArray(value)) {
+        for (let i = 0; i < this.fields.length; i++) {
+          const field = this.fields[i];
+          if (field.setValue) {
+            field.setValue(value[i]);
+          }
+        }
+      }
+    }
+    addGroup() {
+      const { addDefaultValue } = this.props;
+      this.extGroupDefaults.value = isFunction(addDefaultValue)
+        ? addDefaultValue.call(this)
+        : addDefaultValue;
+      this.appendField(this.extGroupDefaults);
+      this._onValueChange();
+    }
+  }
+  Component.register(GroupList);
+  let nameSeq = 0;
   class GroupGridTr extends Tr {
     constructor(props, ...mixins) {
       const defaults = { hideAction: false };
@@ -16973,6 +16102,133 @@ function _defineProperty2(obj, key, value) {
     _created() {
       super._created();
       this.fields = [];
+      const { name, value } = this.props;
+      this.initValue = value !== undefined ? clone$1(this.props.value) : null;
+      this.oldValue = null;
+      this.currentValue = this.initValue;
+      if (name) {
+        this.name = name;
+        this._autoName = false;
+      } else {
+        this._autoName = true;
+        this.name = `__field_grid${++nameSeq}`;
+      }
+      this.group = this.table.grid.groupGrid;
+      this.rootField = this.group === null ? this : this.group.rootField;
+      this.rules = [];
+    }
+    getValue(options) {
+      const { valueOptions } = this.props;
+      options = extend$1(
+        { ignoreDisabled: true, ignoreHidden: true, merge: false },
+        valueOptions,
+        options
+      );
+      const value = {};
+      const len = this.fields.length;
+      for (let i = 0; i < len; i++) {
+        const field = this.fields[i];
+        if (field.getValue && this._needHandleValue(field, options)) {
+          const fieldValue = field.getValue(options);
+          if (field.props.flatValue === true) {
+            extend$1(value, fieldValue);
+          } else {
+            value[field.name] = fieldValue;
+          }
+        }
+      }
+      if (options.merge === true) {
+        return extend$1(this.currentValue, value);
+      }
+      return value;
+    }
+    setValue(value, options) {
+      options = extend$1(
+        { ignoreDisabled: false, ignoreHidden: false },
+        options
+      );
+      const len = this.fields.length;
+      for (let i = 0; i < len; i++) {
+        const field = this.fields[i];
+        if (field.setValue && this._needHandleValue(field, options)) {
+          let fieldValue = value;
+          if (field.props.flatValue === false) {
+            if (isPlainObject(value)) {
+              fieldValue = value[field.name];
+            }
+          }
+          if (fieldValue === undefined) {
+            fieldValue = null;
+          }
+          field.setValue(fieldValue);
+        }
+      }
+    }
+    validate() {
+      const invalids = [];
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i],
+          { disabled, hidden } = field.props;
+        if (!(disabled || hidden) && field.validate) {
+          const valResult = field.validate();
+          if (valResult !== true) {
+            invalids.push(field);
+          }
+        }
+      }
+      if (invalids.length > 0) {
+        invalids[0].focus();
+      }
+      return invalids.length === 0;
+    }
+    _onValueChange(args) {
+      const that = this;
+      this.oldValue = clone$1(this.currentValue);
+      this.currentValue = clone$1(this.getValue());
+      this.props.value = this.currentValue;
+      args = extend$1(true, args, {
+        name: this.props.name,
+        oldValue: this.oldValue,
+        newValue: this.currentValue,
+      });
+      setTimeout(function () {
+        that._callHandler(that.props.onValueChange, args);
+        that.group &&
+          that.group._onValueChange({
+            changedField: args.changedField || that,
+          });
+        isFunction(that._valueChange) && that._valueChange(args);
+        if (that.validateTriggered) {
+          that._validate();
+        }
+      }, 0);
+    }
+    focus() {
+      this.element.focus();
+    }
+    reset() {
+      this.setValue(this.initValue);
+    }
+    _clear() {
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i];
+        if (field.setValue) {
+          field.setValue(null);
+        }
+      }
+    }
+    _needHandleValue(field, options) {
+      const { disabled, hidden } = field.props;
+      if (field._autoName) {
+        return false;
+      }
+      if (options.ignoreDisabled && disabled === true) {
+        return false;
+      }
+      if (options.ignoreHidden && hidden === true) {
+        return false;
+      }
+      return true;
     }
   }
   class Toolbar extends Component {
@@ -17024,11 +16280,10 @@ function _defineProperty2(obj, key, value) {
     }
     _created() {
       super._created();
-      this.extGroupDefaults = null;
     }
     _config() {
       const that = this;
-      const { groupDefaults, value } = this.props;
+      const { groupDefaults, value, actionColumn, gridProps } = this.props;
       const columns = [];
       groupDefaults.fields.forEach((f) => {
         columns.push({
@@ -17040,40 +16295,48 @@ function _defineProperty2(obj, key, value) {
               plain: true,
               value: cellData,
               __group: row,
-              _created: ({ inst }) => {
+              onCreated: ({ inst }) => {
                 row.fields.push(inst);
               },
             });
           },
         });
       });
-      columns.push({
-        cellRender: ({ row }) => {
-          return {
-            component: Toolbar,
-            items: [
-              {
-                component: "Button",
-                text: "移除",
-                onClick: () => {
-                  row.remove();
-                  that._onValueChange();
-                },
-              },
-            ],
-          };
-        },
-      });
+      columns.push(
+        Component.extendProps(
+          {
+            width: 80,
+            cellRender: ({ row }) => {
+              return {
+                component: Toolbar,
+                items: [
+                  {
+                    component: "Button",
+                    text: "移除",
+                    onClick: () => {
+                      row.remove();
+                      that._onValueChange();
+                    },
+                  },
+                ],
+              };
+            },
+          },
+          actionColumn
+        )
+      );
       this.setProps({
         control: {
-          children: {
+          children: Component.extendProps(gridProps, {
             component: Grid,
             columns: columns,
             data: value,
-            _created: (inst) => {
+            rowDefaults: { component: GroupGridTr },
+            onCreated: ({ inst }) => {
               that.grid = inst;
+              inst.groupGrid = that;
             },
-          },
+          }),
         },
         controlAction: [
           {
@@ -17088,7 +16351,6 @@ function _defineProperty2(obj, key, value) {
             hidden: that.props.hideAction,
           },
         ],
-        rowDefaults: { component: GroupGridTr },
       });
       super._config();
     }
@@ -17119,6 +16381,21 @@ function _defineProperty2(obj, key, value) {
         }
       }
     }
+    validate() {
+      const invalids = [];
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i],
+          { disabled, hidden } = field.props;
+        if (!(disabled || hidden) && field.validate) {
+          const valResult = field.validate();
+          if (valResult !== true) {
+            invalids.push(field);
+          }
+        }
+      }
+      return invalids.length === 0;
+    }
+    focus() {}
     addGroup() {
       const { addDefaultValue } = this.props;
       const rowData = isFunction(addDefaultValue)
@@ -17127,7 +16404,20 @@ function _defineProperty2(obj, key, value) {
       this.grid.appendRow({ data: rowData });
       this._onValueChange();
     }
+    _clear() {
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i];
+        if (field.setValue) {
+          field.setValue(null);
+        }
+      }
+    }
   }
+  Object.defineProperty(GroupGrid.prototype, "fields", {
+    get: function () {
+      return this.grid.getRows();
+    },
+  });
   Component.register(GroupGrid);
   class MaskInfo extends Component {
     constructor(props, ...mixins) {
@@ -24192,7 +23482,7 @@ function _defineProperty2(obj, key, value) {
   exports.Field = Field;
   exports.Flex = Flex;
   exports.Form = Form;
-  exports.Grid = Grid$1;
+  exports.Grid = Grid;
   exports.Group = Group;
   exports.GroupGrid = GroupGrid;
   exports.GroupList = GroupList;
