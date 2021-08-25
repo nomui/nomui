@@ -38,8 +38,9 @@ class Avatar extends Component {
         children: [Component.normalizeIconProps(icon)],
       })
     } else {
+      const innerText = text || 'NA'
       this.setProps({
-        children: [text && { tag: 'span', classes: { 'nom-avatar-string': true }, children: text }],
+        children: [{ tag: 'span', classes: { 'nom-avatar-string': true }, children: innerText }],
       })
     }
   }
