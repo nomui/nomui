@@ -678,6 +678,10 @@ class Grid extends Component {
     }
   }
 
+  getRows() {
+    return this.body.table.getRows()
+  }
+
   // handlePinClick(data) {
   //   const { columns } = this.props
 

@@ -87,6 +87,10 @@ class Table extends Component {
   appendRow(rowProps) {
     this.tbody.appendChild(rowProps)
   }
+
+  getRows() {
+    return this.tbody.getChildren()
+  }
 }
 
 Component.register(Table)

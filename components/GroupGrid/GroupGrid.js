@@ -34,6 +34,9 @@ class GroupGrid extends Field {
             plain: true,
             value: cellData,
             __group: row,
+            _created: ({ inst }) => {
+              row.fields.push(inst)
+            },
           })
         },
       })
@@ -55,23 +58,6 @@ class GroupGrid extends Field {
         }
       },
     })
-    this.extGroupDefaults = Component.extendProps(groupDefaults, {
-      _config: function () {
-        const group = this
-        this.setProps({
-          action: [
-            {
-              component: 'Button',
-              text: '移除',
-              onClick: () => {
-                group.remove()
-                that._onValueChange()
-              },
-            },
-          ],
-        })
-      },
-    })
 
     this.setProps({
       control: {
@@ -79,6 +65,9 @@ class GroupGrid extends Field {
           component: Grid,
           columns: columns,
           data: value,
+          _created: (inst) => {
+            that.grid = inst
+          },
         },
       },
       controlAction: [
@@ -138,10 +127,8 @@ class GroupGrid extends Field {
 
   addGroup() {
     const { addDefaultValue } = this.props
-    this.extGroupDefaults.value = isFunction(addDefaultValue)
-      ? addDefaultValue.call(this)
-      : addDefaultValue
-    this.appendField(this.extGroupDefaults)
+    const rowData = isFunction(addDefaultValue) ? addDefaultValue.call(this) : addDefaultValue
+    this.grid.appendRow({ data: rowData })
     this._onValueChange()
   }
 }

@@ -9,6 +9,12 @@ class GroupGridTr extends Tr {
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
+
+  _created() {
+    super._created()
+
+    this.fields = []
+  }
 }
 
 export default GroupGridTr
