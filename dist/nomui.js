@@ -16331,6 +16331,7 @@ function _defineProperty2(obj, key, value) {
             component: Grid,
             columns: columns,
             data: value,
+            line: "both",
             rowDefaults: { component: GroupGridTr },
             onCreated: ({ inst }) => {
               that.grid = inst;

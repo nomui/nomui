@@ -70,6 +70,7 @@ class GroupGrid extends Field {
           component: Grid,
           columns: columns,
           data: value,
+          line: 'both',
           rowDefaults: {
             component: GroupGridTr,
           },
