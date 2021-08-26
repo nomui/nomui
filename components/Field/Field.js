@@ -91,7 +91,7 @@ class Field extends Component {
 
     let actionProps = null
     if (action) {
-      actionProps = { component: 'List', classes: { 'nom-field-action': true } }
+      actionProps = { component: 'List', classes: { 'nom-field-action': true }, gutter: 'sm' }
       if (Array.isArray(action)) {
         actionProps = Component.extendProps(actionProps, { items: action })
       } else {
@@ -171,16 +171,20 @@ class Field extends Component {
   _invalid(message) {
     if (!this.errorTip) {
       this.errorTip = new Tooltip(
-        extend({}, this.props.invalidTip, {
-          trigger: this,
-          reference: this.content,
-          alignTo: this.content,
-          hidden: true,
-          styles: {
-            color: 'danger',
+        extend(
+          {},
+          {
+            trigger: this,
+            reference: this.content,
+            alignTo: this.content,
+            hidden: true,
+            styles: {
+              color: 'danger',
+            },
+            children: message,
           },
-          children: message,
-        }),
+          this.props.invalidTip,
+        ),
       )
 
       if (this.element.contains(document.activeElement)) {

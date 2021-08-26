@@ -509,6 +509,12 @@ define([], function () {
                       url: '#!components!index?type=GroupList',
                     },
                     {
+                      text: 'GroupGrid',
+                      subtext: '字段组表格',
+                      id: 'GroupGrid',
+                      url: '#!components!index?type=GroupGrid',
+                    },
+                    {
                       text: 'Form',
                       subtext: '表单',
                       id: 'form',

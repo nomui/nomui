@@ -57,6 +57,9 @@ class Grid extends Component {
     this.rowsRefs = {}
     this.checkedRowRefs = {}
     this._propStyleClasses = ['bordered']
+    if (this.props.ellipsis === true) {
+      this.props.ellipsis = 'both'
+    }
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
     this._parseColumnsCustom()
@@ -484,6 +487,10 @@ class Grid extends Component {
     return order
   }
 
+  appendRow(rowProps) {
+    this.body.table.appendRow(rowProps)
+  }
+
   _processCheckableColumn() {
     const grid = this
     const { rowCheckable, visibleColumns } = this.props
@@ -674,6 +681,10 @@ class Grid extends Component {
       const { onUncheck } = normalizedRowCheckable
       this._callHandler(onUncheck, { row: row })
     }
+  }
+
+  getRows() {
+    return this.body.table.getRows()
   }
 
   // handlePinClick(data) {

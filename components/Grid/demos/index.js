@@ -19,6 +19,7 @@ define([
   './tree-grid-indicator.js',
   './row-expandable.js',
   './nest-grid.js',
+  './append-row.js',
 ], function () {
   return {
     title: 'Grid',

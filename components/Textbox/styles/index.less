@@ -64,6 +64,14 @@
     }
   }
 
+  &.s-invalid.p-plain {
+    > .nom-field-content {
+      > .nom-control > .nom-input {
+        border-color: #ffa8a8;
+      }
+    }
+  }
+
   &.p-with-button {
     > .nom-field-content {
       > .nom-control {
@@ -113,13 +121,6 @@
   .nom-textbox-left-icon,
   .nom-textbox-right-icon {
     color: #a4a2bb;
-  }
-}
-
-.nom-time-picker,
-.nom-date-picker {
-  .nom-input[readonly]:not([disabled]) {
-    background-color: transparent;
   }
 }
 

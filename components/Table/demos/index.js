@@ -1,4 +1,10 @@
-define(['./basic.js', './empty.js', './styles.js', './with-pager.js'], function () {
+define([
+  './basic.js',
+  './empty.js',
+  './styles.js',
+  './with-pager.js',
+  './append-row.js',
+], function () {
   return {
     title: 'Table',
     subtitle: '表格',

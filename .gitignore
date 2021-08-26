@@ -4,4 +4,3 @@ yarn.lock
 /dist
 .eslintcache
 yarn-error.log
-/.vscode

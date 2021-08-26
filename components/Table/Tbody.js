@@ -13,6 +13,7 @@ class Tbody extends Component {
 
   _created() {
     this.table = this.parent
+    this.table.tbody = this
   }
 
   _config() {
@@ -95,7 +96,7 @@ class Tbody extends Component {
     data.forEach(item => {
       let currRowRef = {childTrs: []}
       rows.push({
-        component: Tr,
+        // component: Tr,
         data: item,
         index: index++,
         level: curLevel,
