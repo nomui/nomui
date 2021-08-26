@@ -4296,14 +4296,18 @@ function _defineProperty2(obj, key, value) {
     _invalid(message) {
       if (!this.errorTip) {
         this.errorTip = new Tooltip(
-          extend$1({}, this.props.invalidTip, {
-            trigger: this,
-            reference: this.content,
-            alignTo: this.content,
-            hidden: true,
-            styles: { color: "danger" },
-            children: message,
-          })
+          extend$1(
+            {},
+            {
+              trigger: this,
+              reference: this.content,
+              alignTo: this.content,
+              hidden: true,
+              styles: { color: "danger" },
+              children: message,
+            },
+            this.props.invalidTip
+          )
         );
         if (this.element.contains(document.activeElement)) {
           this.errorTip.show();
