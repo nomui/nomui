@@ -19,7 +19,7 @@ class Tbody extends Component {
     const { data = [], rowDefaults, keyField } = this.table.props
     const rows = []
 
-    Array.isArray(data) && this._getRows(data, rows, 0, 0)
+    Array.isArray(data) && this._getRows(data, rows, 0, 0, {})
 
     let props = {
       children: rows,
@@ -83,22 +83,35 @@ class Tbody extends Component {
     }
   }
 
-  _getRows(data, rows, index, level) {
+  _getRows(data, rows, index, level, lastRowRef = {}) {
     const curLevel = level
     const { treeConfig } = this.table.props
-    for (const item of data) {
+
+    // currRowRef: 当前的tr实例
+    // lastRowRef: 自身的上一个level的tr
+    // 将自身 data.children 产生的tr实例，使用childTrs存下来
+    // 在expand, collapse时即可更灵活
+    // 免除了 key相同时导致的 tr实例被覆盖的问题
+    data.forEach(item => {
+      let currRowRef = {childTrs: []}
       rows.push({
         component: Tr,
         data: item,
         index: index++,
         level: curLevel,
         isLeaf: !(item.children && item.children.length > 0),
+        childTrs: currRowRef.childTrs,
+        ref: (c) => {
+          currRowRef = c
+          if(!lastRowRef.childTrs) lastRowRef.childTrs = []
+          lastRowRef.childTrs.push(c)
+        }
       })
 
       if (treeConfig.treeNodeColumn && item.children && item.children.length > 0) {
-        this._getRows(item.children, rows, index, curLevel + 1)
+        this._getRows(item.children, rows, index, curLevel + 1, currRowRef)
       }
-    }
+    });
   }
 }
 
