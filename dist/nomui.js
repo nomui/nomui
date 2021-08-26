@@ -16330,21 +16330,24 @@ function _defineProperty2(obj, key, value) {
       const { groupDefaults, value, actionColumn, gridProps } = this.props;
       const columns = [];
       groupDefaults.fields.forEach((f) => {
-        columns.push({
-          field: f.name,
-          title: f.label,
-          cellRender: ({ cellData, row }) => {
-            return Component.extendProps(f, {
-              notShowLabel: true,
-              plain: true,
-              value: cellData,
-              __group: row,
-              onCreated: ({ inst }) => {
-                row.fields.push(inst);
-              },
-            });
-          },
-        });
+        if (f.hidden !== true) {
+          columns.push({
+            field: f.name,
+            title: f.label,
+            width: f.width,
+            cellRender: ({ cellData, row }) => {
+              return Component.extendProps(f, {
+                notShowLabel: true,
+                plain: true,
+                value: cellData,
+                __group: row,
+                onCreated: ({ inst }) => {
+                  row.fields.push(inst);
+                },
+              });
+            },
+          });
+        }
       });
       columns.push(
         Component.extendProps(

@@ -1,4 +1,10 @@
-define(['./basic.js', './add-default-value.js', './events.js'], function () {
+define([
+  './basic.js',
+  './add-default-value.js',
+  './events.js',
+  './field-hidden.js',
+  './field-width.js',
+], function () {
   return {
     title: 'GroupGrid',
     subtitle: '字段组表格',
