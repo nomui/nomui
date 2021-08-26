@@ -89,6 +89,7 @@ class TimePicker extends Textbox {
         type: 'times',
         hidden: !this.props.allowClear,
         onClick: (args) => {
+          if (this.props.disabled) return false
           this.clearTime()
           args.event && args.event.stopPropagation()
         },
