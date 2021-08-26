@@ -4051,7 +4051,20 @@ function _defineProperty2(obj, key, value) {
         controlAfter,
         controlAction,
         extra,
+        controlWidth,
       } = this.field.props;
+      let controlProps = control;
+      if (isNumeric(controlWidth)) {
+        controlProps = Component.extendProps(controlProps, {
+          attrs: {
+            style: {
+              width: `${controlWidth}px`,
+              maxWidth: `${controlWidth}px`,
+              flexBasis: `${controlWidth}px`,
+            },
+          },
+        });
+      }
       let controlAfterProps = null;
       if (controlAfter) {
         controlAfterProps = {
@@ -4109,7 +4122,7 @@ function _defineProperty2(obj, key, value) {
           controlBeforeProps && n$1(controlBeforeProps, [ControlBeforeMixin]),
           n$1(
             null,
-            Component.extendProps(control, {
+            Component.extendProps(controlProps, {
               classes: { "nom-control": true },
             }),
             null,
