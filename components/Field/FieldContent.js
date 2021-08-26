@@ -3,6 +3,7 @@ import ControlActionMixin from './ControlActionMixin'
 import ControlAfterMixin from './ControlAfterMixin'
 import ControlBeforeMixin from './ControlBeforeMixin'
 import ControlMixin from './ControlMixin'
+import { isNumeric } from '../util/index'
 
 class FieldContent extends Component {
   // eslint-disable-next-line no-useless-constructor
@@ -16,7 +17,28 @@ class FieldContent extends Component {
   }
 
   _config() {
-    const { control, controlBefore, controlAfter, controlAction, extra } = this.field.props
+    const {
+      control,
+      controlBefore,
+      controlAfter,
+      controlAction,
+      extra,
+      controlWidth,
+    } = this.field.props
+
+    let controlProps = control
+
+    if (isNumeric(controlWidth)) {
+      controlProps = Component.extendProps(controlProps, {
+        attrs: {
+          style: {
+            width: `${controlWidth}px`,
+            maxWidth: `${controlWidth}px`,
+            flexBasis: `${controlWidth}px`,
+          },
+        },
+      })
+    }
 
     let controlAfterProps = null
     if (controlAfter) {
@@ -55,7 +77,7 @@ class FieldContent extends Component {
     this.setProps({
       children: [
         controlBeforeProps && n(controlBeforeProps, [ControlBeforeMixin]),
-        n(null, Component.extendProps(control, { classes: { 'nom-control': true } }), null, [
+        n(null, Component.extendProps(controlProps, { classes: { 'nom-control': true } }), null, [
           ControlMixin,
         ]),
         extra && {

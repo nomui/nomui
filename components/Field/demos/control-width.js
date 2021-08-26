@@ -32,6 +32,21 @@ define([], function () {
             label: 'xlarge',
             controlWidth: 'xlarge',
           },
+          {
+            component: 'Textbox',
+            label: '100',
+            controlWidth: 100,
+          },
+          {
+            component: 'Textbox',
+            label: '150',
+            controlWidth: 150,
+          },
+          {
+            component: 'Textbox',
+            label: '200',
+            controlWidth: 200,
+          },
         ],
       }
     },
