@@ -1,6 +1,6 @@
 define([], function () {
-  return () => {
-    let info = null
+  return ({ data = null }) => {
+    let info = data
 
     const asyncGetInfo = () => {
       const p = new Promise(function (resolve) {
