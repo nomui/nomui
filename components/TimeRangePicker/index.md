@@ -11,6 +11,7 @@
 | minuteStep | 分步长 | `number` | - |
 | secondStep | 秒步长 | `number` | - |
 | readonly | 是否只读 | `boolean` | `true` |
+| disabled | 是否禁用 | `boolean` | `false` |
 | placeholder | placeholder | `string` | - |
 | showNow | 是否显示此刻按钮 | `boolean` | `true` |
 | minTime | 最小可选时间 | `string` | - |

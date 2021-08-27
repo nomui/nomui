@@ -4480,6 +4480,7 @@ function _defineProperty2(obj, key, value) {
         htmlType,
         button,
         readonly,
+        disabled,
       } = this.props;
       let leftIconProps = Component.normalizeIconProps(leftIcon);
       if (leftIconProps != null) {
@@ -4525,6 +4526,7 @@ function _defineProperty2(obj, key, value) {
           "p-with-button": buttonProps !== null,
         },
         control: {
+          disabled: disabled,
           children: [
             leftIcon && leftIconProps,
             !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),
@@ -22356,6 +22358,7 @@ function _defineProperty2(obj, key, value) {
           type: "times",
           hidden: !this.props.allowClear,
           onClick: (args) => {
+            if (this.props.disabled) return false;
             this.clearTime();
             args.event && args.event.stopPropagation();
           },
@@ -22585,6 +22588,7 @@ function _defineProperty2(obj, key, value) {
         rules,
         startPickerProps,
         endPickerProps,
+        disabled,
       } = this.props;
       this.setProps({
         inline: true,
@@ -22604,6 +22608,7 @@ function _defineProperty2(obj, key, value) {
               minuteStep,
               secondStep,
               allowClear,
+              disabled,
               minTime,
               maxTime,
               required,
@@ -22629,6 +22634,7 @@ function _defineProperty2(obj, key, value) {
               minuteStep,
               secondStep,
               allowClear,
+              disabled,
               minTime,
               maxTime,
               required,
