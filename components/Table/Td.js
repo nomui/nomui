@@ -18,7 +18,7 @@ class Td extends Component {
   }
 
   _config() {
-    const { level, isLeaf, data: rowData } = this.tr.props
+    const { level, isLeaf } = this.tr.props
     const { column } = this.props
     const { treeConfig } = this.table.props
 
@@ -63,12 +63,7 @@ class Td extends Component {
         expandable: {
           byClick: true,
           target: () => {
-            return (
-              rowData.children &&
-              rowData.children.map((subrowData) => {
-                return this.table.grid.rowsRefs[subrowData[this.table.props.keyField]]
-              })
-            )
+            return this.tr.props.childTrs
           },
           indicator: {
             component: 'Icon',

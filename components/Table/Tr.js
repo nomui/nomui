@@ -19,7 +19,13 @@ class Tr extends Component {
     // keyField(id) 不为 undefined, null
     const dataHaskeyField = !isNullish(this.props.data[this.table.props.keyField])
     if (this.table.hasGrid && dataHaskeyField) {
-      this.table.grid.rowsRefs[this.props.data[this.table.props.keyField]] = this
+      // 重复key报错
+      const _rowRefKey = this.props.data[this.table.props.keyField]
+      const _rowRef = this.table.grid.rowsRefs[_rowRefKey]
+      if(_rowRef) {
+        console.error(`Duplicate keys detected: '${_rowRefKey}'.This may cause an update error.`)
+      }
+      this.table.grid.rowsRefs[_rowRefKey] = this
     }
   }
 
@@ -167,32 +173,30 @@ class Tr extends Component {
     this._expanded = false
   }
 
+  // 遍历childTrs 调用show 展示
   _show() {
     if (this.firstRender) {
       return
     }
-    const { data: rowData } = this.props
+    const { childTrs, classes } = this.props
 
-    if (Array.isArray(rowData.children)) {
-      rowData.children.forEach((subrowData) => {
-        if (this._expanded) {
-          const row = this.table.grid.getRow(subrowData)
-          row && row.show && row.show()
-        }
+    // 注: 当前 tr 状态为expanded: false 时，无需展开childTr
+    if(Array.isArray(childTrs) && classes['s-expanded']) {
+      childTrs.forEach(_childTr => {
+        _childTr.show && _childTr.show()
       })
     }
   }
 
+  // 遍历 childTrs 调用hide
   _hide() {
     if (this.firstRender) {
       return
     }
-    const { data: rowData } = this.props
-
-    if (Array.isArray(rowData.children)) {
-      rowData.children.forEach((subrowData) => {
-        const row = this.table.grid.getRow(subrowData)
-        row && row.hide && row.hide()
+    const { childTrs } = this.props
+    if(Array.isArray(childTrs)) {
+      childTrs.forEach(_childTr => {
+        _childTr.hide && _childTr.hide()
       })
     }
   }
