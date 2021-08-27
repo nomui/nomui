@@ -34,6 +34,7 @@ class Textbox extends Field {
       htmlType,
       button,
       readonly,
+      disabled,
     } = this.props
 
     let leftIconProps = Component.normalizeIconProps(leftIcon)
@@ -90,6 +91,7 @@ class Textbox extends Field {
         'p-with-button': buttonProps !== null,
       },
       control: {
+        disabled: disabled,
         children: [
           leftIcon && leftIconProps,
           !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),

@@ -49,6 +49,7 @@ class TimeRangePicker extends Group {
       rules,
       startPickerProps,
       endPickerProps,
+      disabled,
     } = this.props
 
     this.setProps({
@@ -68,7 +69,7 @@ class TimeRangePicker extends Group {
           minuteStep,
           secondStep,
           allowClear,
-
+          disabled,
           minTime,
           maxTime,
           required,
@@ -96,7 +97,7 @@ class TimeRangePicker extends Group {
           minuteStep,
           secondStep,
           allowClear,
-
+          disabled,
           minTime,
           maxTime,
           required,
