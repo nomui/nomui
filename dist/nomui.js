@@ -25,7 +25,7 @@ function _defineProperty2(obj, key, value) {
 }
 /**
  *
- *       nomui v1.0.0-alpha.26
+ *       nomui v1.0.0-alpha.27
  *       License: MIT
  *       Copyright (c) 2021-2021, Wetrial
  *
