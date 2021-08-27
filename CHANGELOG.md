@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.27](https://github.com/nomui/nomui/compare/v1.0.0-alpha.29...v1.0.0-alpha.27) (2021-08-27)
+
+
+### Features
+
+* **Field:** controlWidth 属性支持设置数字，代表像素宽度 ([67603c8](https://github.com/nomui/nomui/commit/67603c8a8f847223c6c492e64e03d4a2d3947278))
+* **GridGroup:** 新增 getField 方法 ([4337a25](https://github.com/nomui/nomui/commit/4337a25ad8c329222f0a5df25d47a8d90d99a45f))
+* **GridGroup:** Grid 的 line 属性默认设为 both ([d9c9abe](https://github.com/nomui/nomui/commit/d9c9abe097212323b38c88056048f5814ddbcead))
+* **GroupGrid:** 初始版本功能完成 ([fecea06](https://github.com/nomui/nomui/commit/fecea0668ea7c4bf2d59c3121c2fbeb0246a7824))
+* **GroupGrid:** 字段的隐藏与列宽度设置 ([6a7c9d6](https://github.com/nomui/nomui/commit/6a7c9d6ab9d9fe572d0ebb25cc01005c96ccce56))
+
+
+### Bug Fixes
+
+* **Avatar:** 没有图片也没有文字的时候js报错 ([798f0e4](https://github.com/nomui/nomui/commit/798f0e4cb0043e01067b6ee4c6eae6199c9a65ff))
+* **TimePicker:** 修复TimePicker不可编辑bug ([45d1339](https://github.com/nomui/nomui/commit/45d1339f338a0b3109ac4974db82c484f2ab6328))
+* **TimePicker:** 修复TimePicker不可编辑bug ([bb6030a](https://github.com/nomui/nomui/commit/bb6030a3642b6451a628e39fa30f9128a18785cf))
+
 ## [1.0.0-alpha.29](https://github.com/nomui/nomui/compare/v1.0.0-alpha.27...v1.0.0-alpha.29) (2021-08-25)
 
 ## [1.0.0-alpha.28](https://github.com/nomui/nomui/compare/v1.0.0-alpha.27...v1.0.0-alpha.28) (2021-08-25)
