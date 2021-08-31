@@ -1,6 +1,7 @@
 define([
   './basic.js',
   './disabled.js',
+  './readonly.js',
   './auto-height.js',
   './limit-rows.js',
   './events.js',

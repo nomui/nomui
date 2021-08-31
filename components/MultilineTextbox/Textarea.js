@@ -24,6 +24,7 @@ class Textarea extends Component {
   _config() {
     this.setProps({
       attrs: {
+        readonly: this.props.readonly,
         oninput: () => {
           if (!this.capsLock) {
             this.multilineTextbox._onValueChange()
