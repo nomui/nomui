@@ -42,6 +42,13 @@ class Textarea extends Component {
         },
       },
     })
+    if (this.props.readonly) {
+      this.setProps({
+        attrs: {
+          readonly: true,
+        },
+      })
+    }
   }
 
   _rendered() {

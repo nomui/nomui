@@ -12,6 +12,7 @@ class MultilineTextbox extends Field {
       value: null,
       maxLength: null,
       rows: null,
+      readonly: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -19,13 +20,14 @@ class MultilineTextbox extends Field {
 
   _config() {
     const that = this
-    const { autoSize, value, placeholder, autofocus, rows, maxLength } = this.props
+    const { autoSize, value, placeholder, autofocus, readonly, rows, maxLength } = this.props
 
     this.setProps({
       control: {
         children: {
           component: Textarea,
-          autoSize,
+          autoSize: readonly || autoSize,
+          readonly,
           attrs: {
             value,
             placeholder,

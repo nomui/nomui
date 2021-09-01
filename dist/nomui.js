@@ -17195,6 +17195,9 @@ function _defineProperty2(obj, key, value) {
           },
         },
       });
+      if (this.props.readonly) {
+        this.setProps({ attrs: { readonly: true } });
+      }
     }
     _rendered() {
       if (this.multilineTextbox.props.autofocus === true) {
@@ -17266,6 +17269,7 @@ function _defineProperty2(obj, key, value) {
         value: null,
         maxLength: null,
         rows: null,
+        readonly: false,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -17276,6 +17280,7 @@ function _defineProperty2(obj, key, value) {
         value,
         placeholder,
         autofocus,
+        readonly,
         rows,
         maxLength,
       } = this.props;
@@ -17283,7 +17288,8 @@ function _defineProperty2(obj, key, value) {
         control: {
           children: {
             component: Textarea,
-            autoSize,
+            autoSize: readonly || autoSize,
+            readonly,
             attrs: { value, placeholder, autofocus, rows, maxLength },
             _created: function () {
               this.multilineTextbox = that;
