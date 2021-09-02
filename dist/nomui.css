@@ -6552,6 +6552,9 @@ textarea .nom-textarea {
   visibility: hidden;
 }
 .nom-select > .nom-field-content .nom-control .nom-select-placeholder {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   color: #bfbfbf;
 }
 .s-disabled.nom-select > .nom-field-content .nom-control {
