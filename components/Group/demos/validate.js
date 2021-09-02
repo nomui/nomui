@@ -46,6 +46,13 @@ define([], function () {
             },
             {
               component: 'Textbox',
+              name: 'IDCard',
+              label: '身份证号码',
+              required: true,
+              rules: [{ type: 'IDCard' }],
+            },
+            {
+              component: 'Textbox',
               name: 'address',
               label: '住址',
               required: true,
