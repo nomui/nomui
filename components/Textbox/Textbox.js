@@ -1,7 +1,7 @@
 import Button from '../Button/index'
 import Component from '../Component/index'
 import Field from '../Field/index'
-import {} from '../Icon/index'
+import { } from '../Icon/index'
 import { extend, isPlainObject, isString } from '../util/index'
 import Input from './Input'
 
@@ -115,8 +115,8 @@ class Textbox extends Field {
         'nom-textbox-affix-wrapper': !!affixWrapper,
         'p-with-button': buttonProps !== null,
       },
-      disabled: disabled,
       control: {
+        disabled: disabled,
         children: [
           leftIcon && leftIconProps,
           !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),
@@ -141,12 +141,6 @@ class Textbox extends Field {
           that._callHandler(that.props.onEnter, { value: that.getValue() })
         }
       })
-    }
-  }
-
-  _onValueChange() {
-    if (this.hasWordLimit) {
-      this._updateWodLimit()
     }
   }
 
@@ -193,6 +187,12 @@ class Textbox extends Field {
 
   blur() {
     this.input.blur()
+  }
+
+  _onInput() {
+    if (this.hasWordLimit) {
+      this._updateWodLimit()
+    }
   }
 
   _onBlur() {
