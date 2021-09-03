@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.28](https://github.com/nomui/nomui/compare/v1.0.0-alpha.27...v1.0.0-alpha.28) (2021-09-03)
+
+
+### Features
+
+* **Field:** Field校验规则添加身份证 ([461f32c](https://github.com/nomui/nomui/commit/461f32c9058827d1c5b43a9461b3ac81776b6659))
+* **MultilineTextBox:** 新增readonly属性 ([c8faae6](https://github.com/nomui/nomui/commit/c8faae6db145eb64aaef793dcd0570ae772ad9f0))
+
+
+### Bug Fixes
+
+* **Select:**  修复select的placeholder过长时导致的换行问题 ([ca732a3](https://github.com/nomui/nomui/commit/ca732a38c202a816e7627ca00b56022c557fcc2b))
+
 ## [1.0.0-alpha.27](https://github.com/nomui/nomui/compare/v1.0.0-alpha.29...v1.0.0-alpha.27) (2021-08-27)
 
 
