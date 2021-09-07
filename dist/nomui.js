@@ -16190,6 +16190,48 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(GroupList);
+  class Toolbar extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        type: "default",
+        visibleItems: 2,
+        gutter: "sm",
+        size: null,
+        items: [],
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const { items, type, gutter, size, visibleItems } = this.props;
+      const before = items.slice(0, visibleItems).map((item) => {
+        return Object.assign(
+          {
+            component: "Button",
+            type: type,
+            size: size,
+            inline: type === "link",
+          },
+          item
+        );
+      });
+      const dropdowns = {
+        component: "Dropdown",
+        rightIcon: "ellipsis",
+        items: items.slice(visibleItems),
+        type: type,
+        inline: type === "link",
+        size: size,
+      };
+      this.setProps({
+        children: {
+          component: "Cols",
+          gutter: gutter,
+          items: [...before, items.length > visibleItems && dropdowns],
+        },
+      });
+    }
+  }
+  Component.register(Toolbar);
   let nameSeq = 0;
   class GroupGridTr extends Tr {
     constructor(props, ...mixins) {
@@ -16354,48 +16396,6 @@ function _defineProperty2(obj, key, value) {
       return true;
     }
   }
-  class Toolbar extends Component {
-    constructor(props, ...mixins) {
-      const defaults = {
-        type: "default",
-        visibleItems: 2,
-        gutter: "sm",
-        size: null,
-        items: [],
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _config() {
-      const { items, type, gutter, size, visibleItems } = this.props;
-      const before = items.slice(0, visibleItems).map((item) => {
-        return Object.assign(
-          {
-            component: "Button",
-            type: type,
-            size: size,
-            inline: type === "link",
-          },
-          item
-        );
-      });
-      const dropdowns = {
-        component: "Dropdown",
-        rightIcon: "ellipsis",
-        items: items.slice(visibleItems),
-        type: type,
-        inline: type === "link",
-        size: size,
-      };
-      this.setProps({
-        children: {
-          component: "Cols",
-          gutter: gutter,
-          items: [...before, items.length > visibleItems && dropdowns],
-        },
-      });
-    }
-  }
-  Component.register(Toolbar);
   class GroupGrid extends Field {
     constructor(props, ...mixins) {
       const defaults = { hideAction: false };
@@ -16554,7 +16554,16 @@ function _defineProperty2(obj, key, value) {
       const rowData = isFunction(addDefaultValue)
         ? addDefaultValue.call(this)
         : addDefaultValue;
-      this.grid.appendRow({ data: rowData });
+      if (this.grid.props.data.length > 0) {
+        this.grid.appendRow({ data: rowData });
+      } else {
+        const tr = this.props.groupDefaults.fields.map((n) => {
+          const item = {};
+          item[n.name] = null;
+          return item;
+        });
+        this.grid.update({ data: [tr] });
+      }
       this._onValueChange();
     }
     _clear() {
