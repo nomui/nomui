@@ -5,6 +5,7 @@ define([
   './autofocus.js',
   './with-icon.js',
   './with-button.js',
+  './word-limit.js',
   './on-enter.js',
   './events.js',
 ], function () {

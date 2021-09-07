@@ -23,7 +23,8 @@ class Tr extends Component {
       const _rowRefKey = this.props.data[this.table.props.keyField]
       const _rowRef = this.table.grid.rowsRefs[_rowRefKey]
       if(_rowRef) {
-        console.error(`Duplicate keys detected: '${_rowRefKey}'.This may cause an update error.`)
+        // eslint-disable-next-line no-console
+        console.warn(`Duplicate keys detected: '${_rowRefKey}'.This may cause an update error.`)
       }
       this.table.grid.rowsRefs[_rowRefKey] = this
     }

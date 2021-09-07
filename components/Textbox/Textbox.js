@@ -1,7 +1,7 @@
 import Button from '../Button/index'
 import Component from '../Component/index'
 import Field from '../Field/index'
-import {} from '../Icon/index'
+import { } from '../Icon/index'
 import { extend, isPlainObject, isString } from '../util/index'
 import Input from './Input'
 
@@ -12,6 +12,9 @@ class Textbox extends Field {
       prefix: null, // 前缀
       rightIcon: null,
       suffix: null, // 后缀
+      maxlength: null,
+      minlength: null,
+      showWordLimit: false,
       autofocus: false,
       placeholder: null,
       value: null,
@@ -29,6 +32,9 @@ class Textbox extends Field {
       prefix,
       rightIcon,
       suffix,
+      minlength,
+      maxlength,
+      showWordLimit,
       placeholder,
       value,
       htmlType,
@@ -37,6 +43,7 @@ class Textbox extends Field {
       disabled,
     } = this.props
 
+    // 左侧icon
     let leftIconProps = Component.normalizeIconProps(leftIcon)
     if (leftIconProps != null) {
       leftIconProps = Component.extendProps(leftIconProps, {
@@ -44,6 +51,7 @@ class Textbox extends Field {
       })
     }
 
+    // 右侧icon
     let rightIconProps = Component.normalizeIconProps(rightIcon)
     if (rightIconProps != null) {
       rightIconProps = Component.extendProps(rightIconProps, {
@@ -64,6 +72,8 @@ class Textbox extends Field {
       attrs: {
         value: value,
         placeholder: placeholder,
+        maxlength,
+        minlength,
         type: htmlType,
         readonly: readonly ? 'readonly' : null,
       },
@@ -73,6 +83,7 @@ class Textbox extends Field {
       },
     }
 
+    // 前缀或后缀文案
     const getAffixSpan = (affix, type = 'prefix') => ({
       tag: 'span',
       classes: {
@@ -82,8 +93,22 @@ class Textbox extends Field {
       children: affix,
     })
 
+    // 输入长度限制
+    const getWordLimitSpan = () => ({
+      tag: 'span',
+      classes: {
+        'nom-input-affix': true,
+        [`nom-input-count`]: true,
+      },
+      ref: (c) => {
+        this.wordLimitRef = c
+      },
+      children: `${(value || '').length}/${maxlength}`,
+    })
+    this.hasWordLimit = htmlType === 'text' && showWordLimit && maxlength && !readonly && !disabled
+
     // 无左icon 有prefixx || 无右icon 有suffix
-    const affixWrapper = leftIcon || prefix || rightIcon || suffix
+    const affixWrapper = leftIcon || prefix || rightIcon || suffix || this.hasWordLimit
 
     this.setProps({
       classes: {
@@ -98,6 +123,7 @@ class Textbox extends Field {
           inputProps,
           rightIcon && rightIconProps,
           !rightIcon && suffix && isString(suffix) && getAffixSpan(suffix, 'suffix'),
+          this.hasWordLimit && getWordLimitSpan(),
           buttonProps,
         ],
       },
@@ -108,6 +134,7 @@ class Textbox extends Field {
 
   _rendered() {
     const that = this
+
     if (this.props.onEnter) {
       this.input._on('keydown', function (event) {
         if (event.keyCode && event.keyCode === 13) {
@@ -115,6 +142,12 @@ class Textbox extends Field {
         }
       })
     }
+  }
+
+  _updateWodLimit() {
+    this.wordLimitRef.update({
+      children: `${this.getText().length}/${this.props.maxlength}`,
+    })
   }
 
   getText() {
@@ -154,6 +187,12 @@ class Textbox extends Field {
 
   blur() {
     this.input.blur()
+  }
+
+  _onInput() {
+    if (this.hasWordLimit) {
+      this._updateWodLimit()
+    }
   }
 
   _onBlur() {
