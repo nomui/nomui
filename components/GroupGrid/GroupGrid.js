@@ -1,10 +1,9 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
 import Grid from '../Grid/index'
-import GroupGridTr from './GroupGridTr'
 import Toolbar from '../Toolbar/index'
-
 import { extend, isFunction } from '../util/index'
+import GroupGridTr from './GroupGridTr'
 
 class GroupGrid extends Field {
   constructor(props, ...mixins) {
@@ -190,7 +189,17 @@ class GroupGrid extends Field {
   addGroup() {
     const { addDefaultValue } = this.props
     const rowData = isFunction(addDefaultValue) ? addDefaultValue.call(this) : addDefaultValue
-    this.grid.appendRow({ data: rowData })
+    if (this.grid.props.data.length > 0) {
+      this.grid.appendRow({ data: rowData })
+    } else {
+      const tr = this.props.groupDefaults.fields.map((n) => {
+        const item = {}
+        item[n.name] = null
+        return item
+      })
+      this.grid.update({ data: [tr] })
+    }
+
     this._onValueChange()
   }
 
