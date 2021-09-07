@@ -4446,6 +4446,7 @@ function _defineProperty2(obj, key, value) {
           oninput: () => {
             if (!this.capsLock) {
               this.textbox._onValueChange();
+              this.textbox._onInput();
             }
           },
           onblur: () => {
@@ -4493,6 +4494,9 @@ function _defineProperty2(obj, key, value) {
         prefix: null, // 前缀
         rightIcon: null,
         suffix: null, // 后缀
+        maxlength: null,
+        minlength: null,
+        showWordLimit: false,
         autofocus: false,
         placeholder: null,
         value: null,
@@ -4508,19 +4512,22 @@ function _defineProperty2(obj, key, value) {
         prefix,
         rightIcon,
         suffix,
+        minlength,
+        maxlength,
+        showWordLimit,
         placeholder,
         value,
         htmlType,
         button,
         readonly,
         disabled,
-      } = this.props;
+      } = this.props; // 左侧icon
       let leftIconProps = Component.normalizeIconProps(leftIcon);
       if (leftIconProps != null) {
         leftIconProps = Component.extendProps(leftIconProps, {
           classes: { "nom-textbox-left-icon": true },
         });
-      }
+      } // 右侧icon
       let rightIconProps = Component.normalizeIconProps(rightIcon);
       if (rightIconProps != null) {
         rightIconProps = Component.extendProps(rightIconProps, {
@@ -4539,6 +4546,8 @@ function _defineProperty2(obj, key, value) {
         attrs: {
           value: value,
           placeholder: placeholder,
+          maxlength,
+          minlength,
           type: htmlType,
           readonly: readonly ? "readonly" : null,
         },
@@ -4546,13 +4555,28 @@ function _defineProperty2(obj, key, value) {
           this.textbox = that;
           this.textbox.input = this;
         },
-      };
+      }; // 前缀或后缀文案
       const getAffixSpan = (affix, type = "prefix") => ({
         tag: "span",
         classes: { "nom-input-affix": true, [`nom-input-${type}`]: true },
         children: affix,
-      }); // 无左icon 有prefixx || 无右icon 有suffix
-      const affixWrapper = leftIcon || prefix || rightIcon || suffix;
+      }); // 输入长度限制
+      const getWordLimitSpan = () => ({
+        tag: "span",
+        classes: { "nom-input-affix": true, [`nom-input-count`]: true },
+        ref: (c) => {
+          this.wordLimitRef = c;
+        },
+        children: `${(value || "").length}/${maxlength}`,
+      });
+      this.hasWordLimit =
+        htmlType === "text" &&
+        showWordLimit &&
+        maxlength &&
+        !readonly &&
+        !disabled; // 无左icon 有prefixx || 无右icon 有suffix
+      const affixWrapper =
+        leftIcon || prefix || rightIcon || suffix || this.hasWordLimit;
       this.setProps({
         classes: {
           "nom-textbox-affix-wrapper": !!affixWrapper,
@@ -4569,6 +4593,7 @@ function _defineProperty2(obj, key, value) {
               suffix &&
               isString(suffix) &&
               getAffixSpan(suffix, "suffix"),
+            this.hasWordLimit && getWordLimitSpan(),
             buttonProps,
           ],
         },
@@ -4584,6 +4609,11 @@ function _defineProperty2(obj, key, value) {
           }
         });
       }
+    }
+    _updateWodLimit() {
+      this.wordLimitRef.update({
+        children: `${this.getText().length}/${this.props.maxlength}`,
+      });
     }
     getText() {
       return this.input.getText();
@@ -4617,6 +4647,11 @@ function _defineProperty2(obj, key, value) {
     }
     blur() {
       this.input.blur();
+    }
+    _onInput() {
+      if (this.hasWordLimit) {
+        this._updateWodLimit();
+      }
     }
     _onBlur() {
       this._callHandler(this.props.onBlur);
@@ -14497,7 +14532,8 @@ function _defineProperty2(obj, key, value) {
         const _rowRefKey = this.props.data[this.table.props.keyField];
         const _rowRef = this.table.grid.rowsRefs[_rowRefKey];
         if (_rowRef) {
-          console.error(
+          // eslint-disable-next-line no-console
+          console.warn(
             `Duplicate keys detected: '${_rowRefKey}'.This may cause an update error.`
           );
         }

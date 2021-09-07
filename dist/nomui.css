@@ -6220,7 +6220,8 @@ textarea .nom-input {
   margin-right: 4px;
 }
 .nom-textbox.nom-textbox-affix-wrapper .nom-input-suffix,
-.nom-textbox.nom-textbox-affix-wrapper .nom-textbox-right-icon {
+.nom-textbox.nom-textbox-affix-wrapper .nom-textbox-right-icon,
+.nom-textbox.nom-textbox-affix-wrapper .nom-input-count {
   margin-left: 4px;
 }
 .nom-textbox.nom-textbox-affix-wrapper > .nom-field-content .nom-control {
