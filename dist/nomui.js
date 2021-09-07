@@ -9989,6 +9989,8 @@ function _defineProperty2(obj, key, value) {
           if (this.selectedOption.length === 0) return;
           this.selectedOption = [];
           this.checked = true;
+          if (this.content && this.content.element)
+            this.content.element.innerText = "";
           this.popup.update({ popMenu: this.getSelectedMenu() });
           this._onValueChange();
         },
