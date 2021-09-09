@@ -50,6 +50,12 @@ class MenuItemWrapper extends Component {
       submenu: {
         component: MenuSub,
         name: 'submenu',
+        attrs: {
+          style: {
+            maxHeight: '100vh',
+            'overflow-y': 'auto',
+          },
+        },
         items: this.props.item.items,
         hidden: !expanded,
       },
