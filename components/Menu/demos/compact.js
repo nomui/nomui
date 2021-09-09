@@ -4,9 +4,10 @@ define([], function () {
     file: 'compact',
     demo: function () {
       const items = [
-        { text: '起步', id: 'css' },
+        { icon: 'clock', text: '基本信息', id: 'css' },
         {
-          text: '样式',
+          icon: 'calendar',
+          text: '项目管理',
           id: 'css',
           items: [
             { text: '起步', id: 'css' },
@@ -21,8 +22,8 @@ define([], function () {
           ],
         },
 
-        { text: '组件', id: 'components' },
-        { text: '单页应用', id: 'javascript' },
+        { icon: 'table', text: '组织管理', id: 'components' },
+        { icon: 'profile', text: '系统设置', id: 'javascript' },
       ]
 
       return {

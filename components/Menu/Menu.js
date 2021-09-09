@@ -65,6 +65,9 @@ class Menu extends Component {
     })
 
     this.setProps({
+      classes: {
+        'nom-menu-compact': this.props.compact,
+      },
       children: children,
     })
   }

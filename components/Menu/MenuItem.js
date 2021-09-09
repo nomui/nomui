@@ -120,8 +120,8 @@ class MenuItem extends Component {
         },
         {
           component: Component,
-          tag: 'span',
-          classes: { text: true },
+          tag: menuProps.compact ? 'div' : 'span',
+          classes: { text: true, 'nom-menu-item-title': true },
           attrs: {
             style: { 'flex-grow': this.props.subtext ? null : '2' },
             title: this.props.text,
