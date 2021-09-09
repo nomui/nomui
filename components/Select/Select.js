@@ -2,13 +2,14 @@ import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
 import List from '../List/index'
-import { extend, isFunction, isString } from '../util/index'
+import { clone, extend, isFunction, isString } from '../util/index'
 import SelectPopup from './SelectPopup'
 
 class Select extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
+      fieldsMapping: { text: 'text', value: 'value' },
       optionDefaults: {
         key() {
           return this.props.value
@@ -58,9 +59,11 @@ class Select extends Field {
 
   _config() {
     const that = this
-    const { multiple, showArrow, placeholder, disabled, showSearch, allowClear } = this.props
+    const { multiple, showArrow, placeholder, disabled, showSearch, allowClear, options } =
+      this.props
     const children = []
 
+    this._normalizeInternalOptions(options)
     this._normalizeSearchable()
 
     this.setProps({
@@ -480,6 +483,26 @@ class Select extends Field {
           searchable,
         ),
       })
+    }
+  }
+
+  _normalizeInternalOptions(options) {
+    if (!Array.isArray(options) || !options.length) return options
+
+    const { fieldsMapping } = this.props
+    this.internalOption = clone(options)
+    this.handleOptions(this.internalOption, fieldsMapping)
+  }
+
+  handleOptions(options, fieldsMapping) {
+    const { text: textField, value: valueField } = fieldsMapping
+
+    if (!Array.isArray(options)) return []
+    const internalOption = options
+    for (let i = 0; i < internalOption.length; i++) {
+      const item = internalOption[i]
+      item.text = item[textField]
+      item.value = item[valueField]
     }
   }
 }

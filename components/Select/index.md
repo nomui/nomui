@@ -14,6 +14,7 @@
 | showArrow | 是否显示下拉箭头 | `boolean` | true |
 | searchable | 可搜索配置 | `boolean` \| `object` | - |
 | popupContainer | 下拉菜单渲染父节点。默认渲染到 body 上，如果你遇到菜单滚动定位问题，试试修改为滚动的区域，即可相对其定位。self 为当前组件，返回函数可指定其它组件 | `'self'` \| `()=>{return ref}` | `body` |
+| fieldsMapping | 自定义 options 中 text value 的字段 | `object` | `{ text: text, value: value, }` |
 
 ### searchable
 
