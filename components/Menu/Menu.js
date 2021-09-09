@@ -20,7 +20,7 @@ class Menu extends Component {
         expandSingle: true,
         initExpandLevel: -1,
       },
-
+      compact: false,
       indent: 1.5,
       direction: 'vertical',
     }
@@ -35,6 +35,12 @@ class Menu extends Component {
 
   _config() {
     this._addPropStyle('direction')
+
+    if (this.props.direction !== 'vertical') {
+      this.setProps({
+        compact: false,
+      })
+    }
 
     const that = this
     const children = this.props.items.map(function (item) {

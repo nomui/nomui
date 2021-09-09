@@ -55,12 +55,13 @@ class MenuItem extends Component {
       }
     }
 
-    let indicatorIconType = 'down'
+    let indicatorIconType = menuProps.compact ? 'right' : 'down'
+
     if (menuProps.direction === 'horizontal' && this.level > 0) {
       indicatorIconType = 'right'
     }
 
-    if (menuProps.direction === 'horizontal') {
+    if (menuProps.direction === 'horizontal' || menuProps.compact) {
       this.setProps({
         indicator: {
           expandable: false,
@@ -94,7 +95,9 @@ class MenuItem extends Component {
         href: this.getItemUrl(this.props.url),
         style: {
           paddingLeft:
-            menuProps.direction === 'vertical' ? `${(this.level + 1) * menuProps.indent}rem` : null,
+            menuProps.direction === 'vertical' && !menuProps.compact
+              ? `${(this.level + 1) * menuProps.indent}rem`
+              : null,
         },
       },
       onSelect: () => {
