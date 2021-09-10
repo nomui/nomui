@@ -1,6 +1,7 @@
 import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import Icon from '../Icon/index'
+import { extend } from '../util/index'
 
 class TreeNodeContent extends Component {
   constructor(props, ...mixins) {
@@ -20,14 +21,14 @@ class TreeNodeContent extends Component {
 
   _config() {
     const { text, icon, tools } = this.node.props
-    const { initExpandLevel, nodeCheckable } = this.tree.props
+    const { initExpandLevel, nodeCheckable, expandable } = this.tree.props
     const expanded = initExpandLevel === -1 || initExpandLevel > this.level
     const tree = this.tree
     this.setProps({
       hidden: this.node.props.data.hidden,
       expanded,
-      expandable: {
-        byIndicator: true,
+      // byIndicator 属性通过外部传入
+      expandable: extend(expandable, {
         byClick: true,
         target: () => {
           return this.node.nodesRef
@@ -44,7 +45,7 @@ class TreeNodeContent extends Component {
             },
           },
         },
-      },
+      }),
       selectable: {
         byClick: this.tree.props.nodeSelectable.byClick,
       },

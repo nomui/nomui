@@ -6,7 +6,7 @@ import {
   isNumeric,
   isPlainObject,
   isString,
-  normalizeKey,
+  normalizeKey
 } from '../util/index'
 import ComponentDescriptor from './ComponentDescriptor'
 
@@ -546,9 +546,10 @@ class Component {
         this.update(selectedProps)
       }
       isFunction(this._select) && this._select()
-      selectOption.triggerSelect === true &&
+       selectOption.triggerSelect === true &&
         this._callHandler(this.props.onSelect, null, selectOption.event)
-      selectOption.triggerSelectionChange === true &&
+      
+        selectOption.triggerSelectionChange === true &&
         this._callHandler(this.props.onSelectionChange)
 
       return true
@@ -578,11 +579,11 @@ class Component {
       }
       isFunction(this._unselect) && this._unselect()
 
-      if (unselectOption.triggerUnselect === true) {
+      if (unselectOption.triggerUnselect === true && this.props) {
         this._callHandler(this.props.onUnselect, null, unselectOption.event)
       }
 
-      if (unselectOption.triggerSelectionChange === true) {
+      if (unselectOption.triggerSelectionChange === true && this.props) {
         this._callHandler(this.props.onSelectionChange)
       }
 
@@ -925,7 +926,7 @@ class Component {
     if (selectable && selectable.byClick === true) {
       this.toggleSelect(event)
     }
-    if (expandable && expandable.byClick === true) {
+    if (expandable && expandable.byClick === true && !expandable.byIndicator) {
       this.toggleExpand()
     }
   }
