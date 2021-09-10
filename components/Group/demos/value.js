@@ -99,7 +99,7 @@ define([], function () {
               value: '0-0',
               allowClear: true,
               multiple: true,
-              treeData: [
+              options: [
                 {
                   text: '总经办',
                   key: '0-0',

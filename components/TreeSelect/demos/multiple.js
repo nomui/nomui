@@ -7,7 +7,7 @@ define([], function () {
       return {
         children: {
           component: 'TreeSelect',
-          treeData: [
+          options: [
             {
               text: '总经办',
               key: '0-0',

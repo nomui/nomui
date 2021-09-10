@@ -11,7 +11,7 @@ define([], function () {
             key: 'value',
             text: 'title',
           },
-          treeData: [
+          options: [
             {
               title: 'Node1',
               value: '0-0',

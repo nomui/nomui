@@ -31,7 +31,7 @@ class TreeSelectPopup extends Popup {
             expandable: {
               byIndicator: true,
             },
-            data: that.selectControl.props.treeData,
+            data: that.selectControl.props.options,
             dataFields: that.selectControl.props.treeDataFields,
             multiple: that.selectControl.props.multiple,
             leafOnly: that.selectControl.props.leafOnly,

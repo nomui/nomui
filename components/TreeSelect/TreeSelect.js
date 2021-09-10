@@ -7,7 +7,7 @@ import TreeSelectPopup from './TreeSelectPopup'
 class TreeSelect extends Field {
   constructor(props, ...mixins) {
     const defaults = {
-      treeData: null,
+      options: [],
       allowClear: false,
       placeholder: '请选择',
       multiple: false,
@@ -79,7 +79,7 @@ class TreeSelect extends Field {
       })
     }
 
-    mapTree(this.props.treeData)
+    mapTree(this.props.options)
     return list
   }
 
