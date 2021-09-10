@@ -14,7 +14,7 @@ class TreeSelect extends Field {
       // 复选框模式，即为多选
       treeCheckable: false,
       treeDataFields: {
-        key: 'key',
+        key: 'value',
         text: 'text',
         children: 'children',
         parentKey: 'parentKey',
