@@ -1047,10 +1047,10 @@ function _defineProperty2(obj, key, value) {
           this.update(unselectedProps);
         }
         isFunction(this._unselect) && this._unselect();
-        if (unselectOption.triggerUnselect === true) {
+        if (unselectOption.triggerUnselect === true && this.props) {
           this._callHandler(this.props.onUnselect, null, unselectOption.event);
         }
-        if (unselectOption.triggerSelectionChange === true) {
+        if (unselectOption.triggerSelectionChange === true && this.props) {
           this._callHandler(this.props.onSelectionChange);
         }
         return true;
@@ -1374,7 +1374,11 @@ function _defineProperty2(obj, key, value) {
       if (selectable && selectable.byClick === true) {
         this.toggleSelect(event);
       }
-      if (expandable && expandable.byClick === true) {
+      if (
+        expandable &&
+        expandable.byClick === true &&
+        !expandable.byIndicator
+      ) {
         this.toggleExpand();
       }
     }
@@ -10460,14 +10464,13 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const { text, icon, tools } = this.node.props;
-      const { initExpandLevel, nodeCheckable } = this.tree.props;
+      const { initExpandLevel, nodeCheckable, expandable } = this.tree.props;
       const expanded = initExpandLevel === -1 || initExpandLevel > this.level;
       const tree = this.tree;
       this.setProps({
         hidden: this.node.props.data.hidden,
-        expanded,
-        expandable: {
-          byIndicator: true,
+        expanded, // byIndicator 属性通过外部传入
+        expandable: extend$1(expandable, {
           byClick: true,
           target: () => {
             return this.node.nodesRef;
@@ -10483,7 +10486,7 @@ function _defineProperty2(obj, key, value) {
               collapsedProps: { type: "right" },
             },
           },
-        },
+        }),
         selectable: { byClick: this.tree.props.nodeSelectable.byClick },
         selected:
           this.tree.props.nodeSelectable.selectedNodeKey === this.node.key,
