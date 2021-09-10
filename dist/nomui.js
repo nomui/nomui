@@ -12187,6 +12187,7 @@ function _defineProperty2(obj, key, value) {
     constructor(props, ...mixins) {
       const defaults = {
         options: [],
+        optionFields: { text: "text", value: "value" },
         optionDefaults: {
           key() {
             return this.props.value;
@@ -12231,8 +12232,10 @@ function _defineProperty2(obj, key, value) {
         disabled,
         showSearch,
         allowClear,
+        options,
       } = this.props;
       const children = [];
+      this._normalizeInternalOptions(options);
       this._normalizeSearchable();
       this.setProps({
         selectedSingle: {
@@ -12590,6 +12593,22 @@ function _defineProperty2(obj, key, value) {
             searchable
           ),
         });
+      }
+    }
+    _normalizeInternalOptions(options) {
+      if (!Array.isArray(options) || !options.length) return options;
+      const { optionFields } = this.props;
+      this.internalOption = clone$1(options);
+      this.handleOptions(this.internalOption, optionFields);
+    }
+    handleOptions(options, optionFields) {
+      const { text: textField, value: valueField } = optionFields;
+      if (!Array.isArray(options)) return [];
+      const internalOption = options;
+      for (let i = 0; i < internalOption.length; i++) {
+        const item = internalOption[i];
+        item.text = item[textField];
+        item.value = item[valueField];
       }
     }
   }
