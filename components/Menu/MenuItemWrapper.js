@@ -52,7 +52,7 @@ class MenuItemWrapper extends Component {
         name: 'submenu',
         attrs: {
           style: {
-            maxHeight: '100vh',
+            maxHeight: 'calc( 100vh - 5px )',
             'overflow-y': 'auto',
           },
         },
