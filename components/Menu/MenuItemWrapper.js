@@ -38,7 +38,9 @@ class MenuItemWrapper extends Component {
     const { menu } = this
     const menuProps = menu.props
     const expanded =
-      menuProps.direction === 'horizontal' || menuProps.itemExpandable.initExpandLevel >= this.level
+      menuProps.direction === 'horizontal' ||
+      menuProps.compact ||
+      menuProps.itemExpandable.initExpandLevel >= this.level
 
     this.setProps({
       submenu: menuProps.submenu,
@@ -48,17 +50,27 @@ class MenuItemWrapper extends Component {
       submenu: {
         component: MenuSub,
         name: 'submenu',
+        attrs: {
+          style: {
+            maxHeight: 'calc( 100vh - 5px )',
+            'overflow-y': 'auto',
+          },
+        },
         items: this.props.item.items,
         hidden: !expanded,
       },
     })
 
-    if (menuProps.direction === 'horizontal' && !this.isLeaf) {
+    if ((menuProps.direction === 'horizontal' || menuProps.compact) && !this.isLeaf) {
       let reference = document.body
       if (this.level > 0) {
         reference = this
       }
       let align = 'bottom left'
+      if (menuProps.compact) {
+        align = 'right top'
+      }
+
       if (this.level > 0) {
         align = 'right top'
       }
@@ -84,7 +96,10 @@ class MenuItemWrapper extends Component {
     this.setProps({
       children: [
         this.props.item,
-        !this.isLeaf && menuProps.direction === 'vertical' && this.props.submenu,
+        !this.isLeaf &&
+          menuProps.direction === 'vertical' &&
+          !menuProps.compact &&
+          this.props.submenu,
       ],
     })
   }
