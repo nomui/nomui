@@ -9,7 +9,7 @@ class Select extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       options: [],
-      fieldsMapping: { text: 'text', value: 'value' },
+      optionFields: { text: 'text', value: 'value' },
       optionDefaults: {
         key() {
           return this.props.value
@@ -489,13 +489,13 @@ class Select extends Field {
   _normalizeInternalOptions(options) {
     if (!Array.isArray(options) || !options.length) return options
 
-    const { fieldsMapping } = this.props
+    const { optionFields } = this.props
     this.internalOption = clone(options)
-    this.handleOptions(this.internalOption, fieldsMapping)
+    this.handleOptions(this.internalOption, optionFields)
   }
 
-  handleOptions(options, fieldsMapping) {
-    const { text: textField, value: valueField } = fieldsMapping
+  handleOptions(options, optionFields) {
+    const { text: textField, value: valueField } = optionFields
 
     if (!Array.isArray(options)) return []
     const internalOption = options
