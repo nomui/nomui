@@ -2210,7 +2210,7 @@ function _defineProperty2(obj, key, value) {
   );
   Icon.add(
     "setting",
-    `<svg t="1615863726011" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3943" width="1em" height="1em"><path d="M785.183686 139.674311c-14.716642-25.494575-50.839308-46.344043-80.272592-46.344044H326.227815c-29.433284 0-65.55595 20.849468-80.272592 46.344044L56.618935 467.614608c-14.716642 25.494575-14.716642 67.193511 0 92.688087l189.336288 327.951c14.716642 25.494575 50.839308 46.344043 80.272592 46.344043h378.683279c29.433284 0 65.55595-20.849468 80.272592-46.344043L974.530677 560.302695c14.716642-25.494575 14.716642-67.193511 0-92.688087L785.183686 139.674311zM741.932814 813.332609c-14.716642 25.494575-50.839308 46.344043-80.272593 46.344043H369.478688c-29.433284 0-65.55595-20.849468-80.272592-46.344043l-146.074712-253.019211c-14.716642-25.494575-14.716642-67.193511 0-92.688087L289.206096 214.595397c14.716642-25.494575 50.839308-46.344043 80.272592-46.344043H661.660221c29.433284 0 65.55595 20.849468 80.272593 46.344043l146.096118 253.019211c14.716642 25.494575 14.716642 67.193511 0 92.688087L741.932814 813.332609z" fill="#3E3A39" p-id="3944"></path><path d="M515.574806 358.743567c-85.731129 0-155.225788 69.494659-155.225787 155.225787s69.494659 155.225788 155.225787 155.225788 155.225788-69.494659 155.225788-155.225788-69.494659-155.225788-155.225788-155.225787z m0 235.519786c-44.278362 0-80.304701-36.026339-80.304701-80.304702s36.026339-80.304701 80.304701-80.304701 80.304701 36.026339 80.304701 80.304701-36.026339 80.304701-80.304701 80.304702z" fill="currentColor" p-id="3945"></path></svg>`,
+    `<svg t="1615863726011" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3943" width="1em" height="1em"><path d="M785.183686 139.674311c-14.716642-25.494575-50.839308-46.344043-80.272592-46.344044H326.227815c-29.433284 0-65.55595 20.849468-80.272592 46.344044L56.618935 467.614608c-14.716642 25.494575-14.716642 67.193511 0 92.688087l189.336288 327.951c14.716642 25.494575 50.839308 46.344043 80.272592 46.344043h378.683279c29.433284 0 65.55595-20.849468 80.272592-46.344043L974.530677 560.302695c14.716642-25.494575 14.716642-67.193511 0-92.688087L785.183686 139.674311zM741.932814 813.332609c-14.716642 25.494575-50.839308 46.344043-80.272593 46.344043H369.478688c-29.433284 0-65.55595-20.849468-80.272592-46.344043l-146.074712-253.019211c-14.716642-25.494575-14.716642-67.193511 0-92.688087L289.206096 214.595397c14.716642-25.494575 50.839308-46.344043 80.272592-46.344043H661.660221c29.433284 0 65.55595 20.849468 80.272593 46.344043l146.096118 253.019211c14.716642 25.494575 14.716642 67.193511 0 92.688087L741.932814 813.332609z" fill="currentColor" p-id="3944"></path><path d="M515.574806 358.743567c-85.731129 0-155.225788 69.494659-155.225787 155.225787s69.494659 155.225788 155.225787 155.225788 155.225788-69.494659 155.225788-155.225788-69.494659-155.225788-155.225788-155.225787z m0 235.519786c-44.278362 0-80.304701-36.026339-80.304701-80.304702s36.026339-80.304701 80.304701-80.304701 80.304701 36.026339 80.304701 80.304701-36.026339 80.304701-80.304701 80.304702z" fill="currentColor" p-id="3945"></path></svg>`,
     cat
   );
   Icon.add(
@@ -16768,11 +16768,11 @@ function _defineProperty2(obj, key, value) {
           args.event.stopPropagation();
         };
       }
-      let indicatorIconType = "down";
+      let indicatorIconType = menuProps.compact ? "right" : "down";
       if (menuProps.direction === "horizontal" && this.level > 0) {
         indicatorIconType = "right";
       }
-      if (menuProps.direction === "horizontal") {
+      if (menuProps.direction === "horizontal" || menuProps.compact) {
         this.setProps({ indicator: { expandable: false } });
       }
       this.setProps({
@@ -16795,7 +16795,7 @@ function _defineProperty2(obj, key, value) {
           href: this.getItemUrl(this.props.url),
           style: {
             paddingLeft:
-              menuProps.direction === "vertical"
+              menuProps.direction === "vertical" && !menuProps.compact
                 ? `${(this.level + 1) * menuProps.indent}rem`
                 : null,
           },
@@ -16819,8 +16819,8 @@ function _defineProperty2(obj, key, value) {
           },
           {
             component: Component,
-            tag: "span",
-            classes: { text: true },
+            tag: menuProps.compact ? "div" : "span",
+            classes: { text: true, "nom-menu-item-title": true },
             attrs: {
               style: { "flex-grow": this.props.subtext ? null : "2" },
               title: this.props.text,
@@ -16925,22 +16925,32 @@ function _defineProperty2(obj, key, value) {
       const menuProps = menu.props;
       const expanded =
         menuProps.direction === "horizontal" ||
+        menuProps.compact ||
         menuProps.itemExpandable.initExpandLevel >= this.level;
       this.setProps({ submenu: menuProps.submenu });
       this.setProps({
         submenu: {
           component: MenuSub,
           name: "submenu",
+          attrs: {
+            style: { maxHeight: "calc( 100vh - 5px )", "overflow-y": "auto" },
+          },
           items: this.props.item.items,
           hidden: !expanded,
         },
       });
-      if (menuProps.direction === "horizontal" && !this.isLeaf) {
+      if (
+        (menuProps.direction === "horizontal" || menuProps.compact) &&
+        !this.isLeaf
+      ) {
         let reference = document.body;
         if (this.level > 0) {
           reference = this;
         }
         let align = "bottom left";
+        if (menuProps.compact) {
+          align = "right top";
+        }
         if (this.level > 0) {
           align = "right top";
         }
@@ -16961,6 +16971,7 @@ function _defineProperty2(obj, key, value) {
           this.props.item,
           !this.isLeaf &&
             menuProps.direction === "vertical" &&
+            !menuProps.compact &&
             this.props.submenu,
         ],
       });
@@ -16975,6 +16986,7 @@ function _defineProperty2(obj, key, value) {
         itemDefaults: { component: MenuItem },
         itemSelectable: { onlyleaf: false, byClick: false },
         itemExpandable: { expandSingle: true, initExpandLevel: -1 },
+        compact: false,
         indent: 1.5,
         direction: "vertical",
       };
@@ -16986,6 +16998,9 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       this._addPropStyle("direction");
+      if (this.props.direction !== "vertical") {
+        this.setProps({ compact: false });
+      }
       const that = this;
       const children = this.props.items.map(function (item) {
         if (!item) {
@@ -17002,7 +17017,10 @@ function _defineProperty2(obj, key, value) {
           item: Component.extendProps({}, that.props.itemDefaults, item),
         };
       });
-      this.setProps({ children: children });
+      this.setProps({
+        classes: { "nom-menu-compact": this.props.compact },
+        children: children,
+      });
     }
     getItem(param) {
       let retItem = null;
