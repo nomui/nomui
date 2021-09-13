@@ -7491,15 +7491,33 @@ textarea .nom-textarea {
   height: 100%;
   overflow: auto;
 }
-.nom-tree-select {
+.nom-tree-select > .nom-field-content {
+  padding: 0.5rem 0.5rem;
+}
+.nom-tree-select > .nom-field-content .nom-control {
   position: relative;
   min-height: 34px;
+  height: 100%;
   padding: 6px 24px 6px 12px;
   color: #000 !important;
   line-height: 1.42857;
   background: white;
   border: 1px solid gainsboro;
   border-radius: 2px;
+  cursor: pointer;
+}
+.nom-tree-select > .nom-field-content .nom-control .nom-tree-select-placeholder {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #bfbfbf;
+}
+.nom-tree-select > .nom-field-content .nom-control .nom-tree-select-clear {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  bottom: 0;
+  background: #fff;
   cursor: pointer;
 }
 .nom-tree-select .nom-tree-select-single {
@@ -7511,7 +7529,6 @@ textarea .nom-textarea {
   position: absolute;
   top: 50%;
   right: 0;
-  bottom: 0;
   margin-top: -7px;
   padding: 0 8px;
   line-height: 1;
