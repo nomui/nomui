@@ -52,8 +52,9 @@ class Tag extends Component {
               'nom-tag-remove': true,
               'nom-tag-remove-basic': !that.props.styles,
             },
-            onClick: function () {
+            onClick: function ({event}) {
               that.props.removable(that.props.key)
+              event.stopPropagation()
             },
           }),
       ],
