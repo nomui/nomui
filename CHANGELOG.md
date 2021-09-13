@@ -2,31 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [1.0.0-alpha.29](https://github.com/nomui/nomui/compare/v1.0.0-alpha.28...v1.0.0-alpha.29) (2021-09-13)
-
-
-### Features
-
-* **Menu:** 新增compact模式 ([66636d6](https://github.com/nomui/nomui/commit/66636d627a94b391381e66400c2e75b3f9629f4d))
-* **Select:** Select组件增加配置项fieldsMapping ([d126408](https://github.com/nomui/nomui/commit/d1264082cb100890cfc7710cea332720b65b63e8))
-* **TextBox:** 添加最大字符长度 maxlength和showWordLimit ([36d7835](https://github.com/nomui/nomui/commit/36d7835d7f4b60dcaba3806a7bd4c77e99ae4fb1))
-* **TreeSelect:**  添加TreeSelect组件。 ps:待完善搜索功能 ([39adcff](https://github.com/nomui/nomui/commit/39adcffff3f02c6b9773d7c11a518a1dfde5ec96))
-
-
-### Bug Fixes
-
-* 修复Cascader组件清除按钮无效的bug ([c6dbec8](https://github.com/nomui/nomui/commit/c6dbec8f93d64cce87719d8c60970783d18e3e11))
-* **GroupGrid:** 默认值为空时新增按钮不起作用 ([c68ac8c](https://github.com/nomui/nomui/commit/c68ac8c0446505edc5c0d0eca7259729feb08e83))
-* **Textbox:** 修改wordLimit的触发事件为_onInput,导致搜索框bug ([e0a20fc](https://github.com/nomui/nomui/commit/e0a20fccbe9d3a5fb6fd19c8297b93bd44b7b07a))
-* **Tree:** 修复Tree组件展开byIndicator属性无效的bug ([ff5bd80](https://github.com/nomui/nomui/commit/ff5bd801da188f14dd61e11fe017b16917a8ee1b))
-* **TreeSelect:** 修改treeData 属性为 options ([0c1db5e](https://github.com/nomui/nomui/commit/0c1db5ee522a35e3077dd92cfe84b5624c732fc3))
-* **TreeSelect:** options的值key字段改为value字段 ([5f71c66](https://github.com/nomui/nomui/commit/5f71c668bb9a17554b0c4c5e9bf1823b8767cb16))
-
-
-### Docs
-
-* 添加Flex布局的文档 ([dbaf517](https://github.com/nomui/nomui/commit/dbaf5177a17d4219539a3f330cffd78c679d5b9c))
-
 ## [1.0.0-alpha.28](https://github.com/nomui/nomui/compare/v1.0.0-alpha.27...v1.0.0-alpha.28) (2021-09-03)
 
 ### Features
