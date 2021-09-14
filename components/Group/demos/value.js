@@ -1,4 +1,4 @@
-define([], function () {
+define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
   return {
     title: '字段组值',
     file: 'value',
@@ -62,6 +62,20 @@ define([], function () {
               component: 'DatePicker',
               name: 'birthDate',
               label: '出生日期',
+            },
+            {
+              component: 'Cascader',
+              placeholder: '请选择',
+              name: 'cascader',
+              label: '病症',
+              required: true,
+              fieldsMapping: {
+                key: 'Id',
+                label: 'Name',
+                value: 'Name',
+                children: 'Childs',
+              },
+              options: cascaderOptions,
             },
             {
               component: 'CheckboxList',

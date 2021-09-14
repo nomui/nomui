@@ -9945,7 +9945,7 @@ function _defineProperty2(obj, key, value) {
       children.push({
         classes: { "nom-cascader-content": true },
         _created() {
-          cascader.content = this;
+          cascader._content = this;
         },
         _config() {
           const selectedOpt = cascader.selectedOption;
@@ -9993,8 +9993,8 @@ function _defineProperty2(obj, key, value) {
           if (this.selectedOption.length === 0) return;
           this.selectedOption = [];
           this.checked = true;
-          if (this.content && this.content.element)
-            this.content.element.innerText = "";
+          if (this._content && this._content.element)
+            this._content.element.innerText = "";
           this.popup.update({ popMenu: this.getSelectedMenu() });
           this._onValueChange();
         },
@@ -10070,7 +10070,7 @@ function _defineProperty2(obj, key, value) {
           this.placeholder.hide();
         }
       }
-      this.content && this.content.update();
+      this._content && this._content.update();
       this.popup && this._hidePopup && this.popup.hide();
     }
     _getValue() {
@@ -10190,7 +10190,7 @@ function _defineProperty2(obj, key, value) {
       }
       this.checked = true;
       if (this.popup) this.popup.update({ popMenu: this.getSelectedMenu() });
-      if (this.content) this.content.update();
+      if (this._content) this._content.update();
     }
     getSelectedMenu() {
       if (!this.selectedOption) {
@@ -22920,11 +22920,11 @@ function _defineProperty2(obj, key, value) {
       const children = [];
       if (typeof currentValue === "string") {
         that.currentValue = [currentValue];
-      } // content: 所选择的数据的展示
+      } // _content: 所选择的数据的展示
       children.push({
         classes: { "nom-tree-select-content": true },
         _created() {
-          that.content = this;
+          that._content = this;
         },
         children: this._getContentBadges(),
       }); // placeholder
@@ -22954,7 +22954,7 @@ function _defineProperty2(obj, key, value) {
             this.clearIcon = c;
           },
           onClick: (args) => {
-            this.setValue(null);
+            this._setValue(null);
             this.props.allowClear && this.clearIcon.hide();
             args.event && args.event.stopPropagation();
           },
@@ -22977,7 +22977,7 @@ function _defineProperty2(obj, key, value) {
                 text: item[treeDataFields.text],
                 key: item[treeDataFields.key],
                 removable: function (param) {
-                  that.setValue(
+                  that._setValue(
                     currentValue.filter(function (k) {
                       return k !== param;
                     })
@@ -22998,7 +22998,7 @@ function _defineProperty2(obj, key, value) {
           selectedNodeKey: currentValue && currentValue[0],
           onNodeSelect: ({ nodeData }) => {
             setTimeout(() => {
-              this.setValue([nodeData.key]);
+              this._setValue([nodeData.key]);
             }, 0);
           },
         }
@@ -23013,15 +23013,15 @@ function _defineProperty2(obj, key, value) {
           checkedNodeKeys: currentValue,
           onCheckChange: () => {
             const checkedKeys = this.tree.getCheckedNodeKeys();
-            this.setValue(checkedKeys);
+            this._setValue(checkedKeys);
           },
         },
         treeCheckable
       );
     }
-    setValue(data) {
+    _setValue(data) {
       this.currentValue = data;
-      this.content.update({ children: this._getContentBadges() }); // 单选则点击后即关闭popup
+      this._content.update({ children: this._getContentBadges() }); // 单选则点击后即关闭popup
       if (!this.props.multiple) {
         this.popup.hide();
       }
