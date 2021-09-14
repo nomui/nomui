@@ -92,11 +92,11 @@ class TreeSelect extends Field {
       that.currentValue = [currentValue]
     }
 
-    // content: 所选择的数据的展示
+    // _content: 所选择的数据的展示
     children.push({
       classes: { 'nom-tree-select-content': true },
       _created() {
-        that.content = this
+        that._content = this
       },
       children: this._getContentBadges(),
     })
@@ -135,7 +135,7 @@ class TreeSelect extends Field {
           this.clearIcon = c
         },
         onClick: (args) => {
-          this.setValue(null)
+          this._setValue(null)
           this.props.allowClear && this.clearIcon.hide()
           args.event && args.event.stopPropagation()
         },
@@ -160,7 +160,7 @@ class TreeSelect extends Field {
               text: item[treeDataFields.text],
               key: item[treeDataFields.key],
               removable: function (param) {
-                that.setValue(
+                that._setValue(
                   currentValue.filter(function (k) {
                     return k !== param
                   }),
@@ -183,7 +183,7 @@ class TreeSelect extends Field {
         selectedNodeKey: currentValue && currentValue[0],
         onNodeSelect: ({ nodeData }) => {
           setTimeout(() => {
-            this.setValue([nodeData.key])
+            this._setValue([nodeData.key])
           }, 0)
         },
       }
@@ -202,16 +202,16 @@ class TreeSelect extends Field {
         checkedNodeKeys: currentValue,
         onCheckChange: () => {
           const checkedKeys = this.tree.getCheckedNodeKeys()
-          this.setValue(checkedKeys)
+          this._setValue(checkedKeys)
         },
       },
       treeCheckable,
     )
   }
 
-  setValue(data) {
+  _setValue(data) {
     this.currentValue = data
-    this.content.update({ children: this._getContentBadges() })
+    this._content.update({ children: this._getContentBadges() })
     // 单选则点击后即关闭popup
     if (!this.props.multiple) {
       this.popup.hide()

@@ -63,7 +63,7 @@ class Cascader extends Field {
     children.push({
       classes: { 'nom-cascader-content': true },
       _created() {
-        cascader.content = this
+        cascader._content = this
       },
       _config() {
         const selectedOpt = cascader.selectedOption
@@ -122,7 +122,7 @@ class Cascader extends Field {
         if (this.selectedOption.length === 0) return
         this.selectedOption = []
         this.checked = true
-        if (this.content && this.content.element) this.content.element.innerText = ''
+        if (this._content && this._content.element) this._content.element.innerText = ''
         this.popup.update({
           popMenu: this.getSelectedMenu(),
         })
@@ -205,7 +205,7 @@ class Cascader extends Field {
       }
     }
 
-    this.content && this.content.update()
+    this._content && this._content.update()
     this.popup && this._hidePopup && this.popup.hide()
   }
 
@@ -347,7 +347,7 @@ class Cascader extends Field {
 
     this.checked = true
     if (this.popup) this.popup.update({ popMenu: this.getSelectedMenu() })
-    if (this.content) this.content.update()
+    if (this._content) this._content.update()
   }
 
   getSelectedMenu() {
