@@ -6172,6 +6172,9 @@ fieldset[disabled] a.nom-button {
   filter: brightness(0.65) !important;
   filter: none;
 }
+.nom-table-ellipsis .nom-button-inline {
+  white-space: nowrap;
+}
 .nom-input {
   display: block;
   width: 100%;

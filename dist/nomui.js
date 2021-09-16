@@ -14756,7 +14756,8 @@ function _defineProperty2(obj, key, value) {
     }
     _getRows(data, rows, index, level, lastRowRef = {}) {
       const curLevel = level;
-      const { treeConfig } = this.table.props; // currRowRef: 当前的tr实例
+      const { treeConfig } = this.table.props;
+      const { childrenField } = treeConfig; // currRowRef: 当前的tr实例
       // lastRowRef: 自身的上一个level的tr
       // 将自身 data.children 产生的tr实例，使用childTrs存下来
       // 在expand, collapse时即可更灵活
@@ -14768,7 +14769,7 @@ function _defineProperty2(obj, key, value) {
           data: item,
           index: index++,
           level: curLevel,
-          isLeaf: !(item.children && item.children.length > 0),
+          isLeaf: !(item[childrenField] && item[childrenField].length > 0),
           childTrs: currRowRef.childTrs,
           ref: (c) => {
             currRowRef = c;
@@ -14778,10 +14779,16 @@ function _defineProperty2(obj, key, value) {
         });
         if (
           treeConfig.treeNodeColumn &&
-          item.children &&
-          item.children.length > 0
+          item[childrenField] &&
+          item[childrenField].length > 0
         ) {
-          this._getRows(item.children, rows, index, curLevel + 1, currRowRef);
+          this._getRows(
+            item[childrenField],
+            rows,
+            index,
+            curLevel + 1,
+            currRowRef
+          );
         }
       });
     }
