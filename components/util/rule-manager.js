@@ -163,7 +163,7 @@ RuleManager.ruleTypes = {
   },
   func: {
     validate: function (value, ruleValue) {
-      if (!isEmpty(value) && isFunction(ruleValue)) {
+      if (isFunction(ruleValue)) {
         return ruleValue(value)
       }
       return true
@@ -233,8 +233,7 @@ function checkIDCard(idcode) {
   十五，十六，十七都是数字0-9
   十八位可能是数字0-9，也可能是X
   */
-  const idcard_patter =
-    /^[1-9][0-9]{5}([1][9][0-9]{2}|[2][0][0|1][0-9])([0][1-9]|[1][0|1|2])([0][1-9]|[1|2][0-9]|[3][0|1])[0-9]{3}([0-9]|[X])$/
+  const idcard_patter = /^[1-9][0-9]{5}([1][9][0-9]{2}|[2][0][0|1][0-9])([0][1-9]|[1][0|1|2])([0][1-9]|[1|2][0-9]|[3][0|1])[0-9]{3}([0-9]|[X])$/
   const format = idcard_patter.test(idcode)
   // 返回验证结果，校验码和格式同时正确才算是合法的身份证号码
   return !!(last === last_no && format)

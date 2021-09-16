@@ -3967,7 +3967,7 @@ function _defineProperty2(obj, key, value) {
     },
     func: {
       validate: function (value, ruleValue) {
-        if (!isEmpty(value) && isFunction(ruleValue)) {
+        if (isFunction(ruleValue)) {
           return ruleValue(value);
         }
         return true;
