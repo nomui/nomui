@@ -1,5 +1,39 @@
-import Component from '../Component/index'
-import List from '../List/index'
+import Component from '../Component/index';
+import List from '../List/index';
+
+const LANG_MAP = {
+  en: {
+    texts: {
+      prev: 'Previous',
+      next: 'Next',
+      ellipse: '...',
+    }
+  },
+  zh: {
+    texts: {
+      prev: '上一页',
+      next: '下一页',
+      ellipse: '...',
+    }
+  }
+}
+
+function getCookie(cname){
+  const name = `${cname}=`;
+  const ca = document.cookie.split('; ');
+  for(let i=0; i<ca.length; i++) {
+      const c = ca[i].trim();
+      if (c.indexOf(name) === 0) { return c.substring(name.length,c.length); }
+  }
+  return "";
+}
+
+// 根据cookie获取到当前的语言类型
+const CUTTENT_LANG = _getLanguage()
+function _getLanguage() {
+  const langType = getCookie('CultureTag') || 'zh'
+  return LANG_MAP[langType]
+}
 
 class Pager extends Component {
   constructor(props, ...mixins) {
@@ -239,11 +273,7 @@ Pager.defaults = {
   prevShowAlways: true,
   nextShowAlways: true,
 
-  texts: {
-    prev: '上一页',
-    next: '下一页',
-    ellipse: '...',
-  },
+  texts: CUTTENT_LANG.texts,
 
   getPageParams: function () {
     const { pageIndex, pageSize } = this.props
