@@ -4350,10 +4350,7 @@ function _defineProperty2(obj, key, value) {
             {},
             {
               trigger: this,
-              reference:
-                this.group && this.group.componentType === "GroupGridTr"
-                  ? this.group.group
-                  : this.content,
+              reference: this.content,
               alignTo: this.content,
               hidden: true,
               styles: { color: "danger" },
@@ -16452,6 +16449,7 @@ function _defineProperty2(obj, key, value) {
                 plain: true,
                 value: cellData,
                 __group: row,
+                invalidTip: { reference: this },
                 onCreated: ({ inst }) => {
                   row.fields.push(inst);
                 },
