@@ -175,7 +175,10 @@ class Field extends Component {
           {},
           {
             trigger: this,
-            reference: this.content,
+            reference:
+              this.group && this.group.componentType === 'GroupGridTr'
+                ? this.group.group
+                : this.content,
             alignTo: this.content,
             hidden: true,
             styles: {

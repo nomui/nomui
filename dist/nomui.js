@@ -4350,7 +4350,10 @@ function _defineProperty2(obj, key, value) {
             {},
             {
               trigger: this,
-              reference: this.content,
+              reference:
+                this.group && this.group.componentType === "GroupGridTr"
+                  ? this.group.group
+                  : this.content,
               alignTo: this.content,
               hidden: true,
               styles: { color: "danger" },
@@ -16798,7 +16801,7 @@ function _defineProperty2(obj, key, value) {
       if (menuProps.direction === "horizontal" && this.level > 0) {
         indicatorIconType = "right";
       }
-      if (menuProps.direction === "horizontal" || menuProps.compact) {
+      if (menuProps.direction === "horizontal") {
         this.setProps({ indicator: { expandable: false } });
       }
       this.setProps({
@@ -16829,6 +16832,9 @@ function _defineProperty2(obj, key, value) {
         onSelect: () => {
           if (menu.selectedItem !== null) menu.selectedItem.unselect();
           menu.selectedItem = this;
+          menu.expandedRoot = this.wrapper.rootWrapper;
+          menu.selectedItemKey = this.key;
+          menuProps.compact && this.wrapper.rootWrapper.item.expand();
           this._callHandler(onSelect);
         },
         onUnselect: () => {
@@ -16904,6 +16910,9 @@ function _defineProperty2(obj, key, value) {
       this.wrapper.submenu = this;
       this.menu = this.wrapper.menu;
       this.props.itemDefaults = this.menu.props.itemDefaults;
+      if (this.props.isPopup) {
+        this.parent.popMenu = this;
+      }
     }
     _config() {
       const that = this;
@@ -16934,9 +16943,11 @@ function _defineProperty2(obj, key, value) {
       this.parentWrapper = null;
       if (this.parent instanceof Component.components.Menu) {
         this.menu = this.parent;
+        this.rootWrapper = this;
       } else if (this.parent instanceof Component.components.MenuSub) {
         this.menu = this.parent.menu;
         this.parentWrapper = this.parent.wrapper;
+        this.rootWrapper = this.parentWrapper.rootWrapper;
       }
       if (this.parentWrapper) {
         this.level = this.parentWrapper.level + 1;
@@ -16992,7 +17003,13 @@ function _defineProperty2(obj, key, value) {
               triggerAction: "hover",
               align: align,
               reference: reference,
-              children: this.props.submenu,
+              children: Object.assign({}, this.props.submenu, {
+                isPopup: true,
+                classes: { "nom-menu-popup-sub": true },
+              }),
+              onShow: () => {
+                this.onPopupMenuShow();
+              },
             },
           },
         });
@@ -17007,6 +17024,14 @@ function _defineProperty2(obj, key, value) {
         ],
       });
     }
+    onPopupMenuShow() {
+      if (
+        this.menu.selectedItemKey &&
+        this.menu.expandedRoot === this.rootWrapper
+      ) {
+        this.submenu && this.menu.getItem(this.menu.selectedItemKey).select();
+      }
+    }
   }
   Component.register(MenuItemWrapper);
   class Menu extends Component {
@@ -17020,12 +17045,15 @@ function _defineProperty2(obj, key, value) {
         compact: false,
         indent: 1.5,
         direction: "vertical",
+        keyField: "key",
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
       this.itemRefs = [];
       this.selectedItem = null;
+      this.selectedItemKey = null;
+      this.expandedRoot = null;
     }
     _config() {
       this._addPropStyle("direction");
@@ -17082,9 +17110,23 @@ function _defineProperty2(obj, key, value) {
       return item;
     }
     selectToItem(param) {
-      this.expandToItem(param);
-      this.selectItem(param);
-      this.scrollTo(param);
+      if (this.props.compact) {
+        const target = this.getRootItem(param);
+        this.getItem(target).expand();
+        this.scrollTo(target);
+        this.expandedRoot = this.getItem(target).wrapper;
+        this.selectedItemKey = param;
+      } else {
+        this.expandToItem(param);
+        this.selectItem(param);
+        this.scrollTo(param);
+      }
+    }
+    getRootItem(param) {
+      const rootItem = this.props.items.filter((n) => {
+        return JSON.stringify(n).includes(`"${param}"`);
+      })[0][this.props.keyField];
+      return this.itemRefs[rootItem];
     }
     unselectItem(param, unselectOption) {
       unselectOption = extend$1(

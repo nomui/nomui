@@ -5594,6 +5594,9 @@ img {
 .nom-menu-sub.p-direction-horizontal > .nom-menu-item-wrapper > .nom-menu-item {
   min-width: 160px;
 }
+.nom-menu-sub.nom-menu-popup-sub > .nom-menu-item-wrapper > .nom-menu-item.s-selected {
+  color: #4263eb;
+}
 .nom-menu-stretch {
   height: 100%;
 }

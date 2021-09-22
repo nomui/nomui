@@ -21,9 +21,12 @@ class MenuItemWrapper extends Component {
 
     if (this.parent instanceof Component.components.Menu) {
       this.menu = this.parent
+      this.rootWrapper = this
     } else if (this.parent instanceof Component.components.MenuSub) {
       this.menu = this.parent.menu
+
       this.parentWrapper = this.parent.wrapper
+      this.rootWrapper = this.parentWrapper.rootWrapper
     }
 
     if (this.parentWrapper) {
@@ -89,7 +92,14 @@ class MenuItemWrapper extends Component {
             triggerAction: 'hover',
             align: align,
             reference: reference,
-            children: this.props.submenu,
+            children: {
+              ...this.props.submenu,
+              isPopup: true,
+              classes: { 'nom-menu-popup-sub': true },
+            },
+            onShow: () => {
+              this.onPopupMenuShow()
+            },
           },
         },
       })
@@ -104,6 +114,12 @@ class MenuItemWrapper extends Component {
           this.props.submenu,
       ],
     })
+  }
+
+  onPopupMenuShow() {
+    if (this.menu.selectedItemKey && this.menu.expandedRoot === this.rootWrapper) {
+      this.submenu && this.menu.getItem(this.menu.selectedItemKey).select()
+    }
   }
 }
 
