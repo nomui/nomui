@@ -61,7 +61,7 @@ class MenuItem extends Component {
       indicatorIconType = 'right'
     }
 
-    if (menuProps.direction === 'horizontal' || menuProps.compact) {
+    if (menuProps.direction === 'horizontal') {
       this.setProps({
         indicator: {
           expandable: false,
@@ -103,6 +103,9 @@ class MenuItem extends Component {
       onSelect: () => {
         if (menu.selectedItem !== null) menu.selectedItem.unselect()
         menu.selectedItem = this
+        menu.expandedRoot = this.wrapper.rootWrapper
+        menu.selectedItemKey = this.key
+        menuProps.compact && this.wrapper.rootWrapper.item.expand()
         this._callHandler(onSelect)
       },
       onUnselect: () => {
