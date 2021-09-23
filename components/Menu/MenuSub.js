@@ -17,6 +17,9 @@ class MenuSub extends Component {
     this.wrapper.submenu = this
     this.menu = this.wrapper.menu
     this.props.itemDefaults = this.menu.props.itemDefaults
+    if (this.props.isPopup) {
+      this.parent.popMenu = this
+    }
   }
 
   _config() {

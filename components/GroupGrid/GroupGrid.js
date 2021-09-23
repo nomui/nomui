@@ -34,6 +34,9 @@ class GroupGrid extends Field {
               plain: true,
               value: cellData,
               __group: row,
+              invalidTip:{
+                reference:this
+              },
               onCreated: ({ inst }) => {
                 row.fields.push(inst)
               },
