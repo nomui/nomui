@@ -16138,21 +16138,27 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const that = this;
       const { groupDefaults, value } = this.props;
+      const actionRender = groupDefaults.actionRender || null;
       this.extGroupDefaults = Component.extendProps(groupDefaults, {
         _config: function () {
           const group = this;
-          this.setProps({
-            action: [
-              {
-                component: "Button",
-                text: "移除",
-                onClick: () => {
-                  group.remove();
-                  that._onValueChange();
+          if (isFunction(actionRender)) {
+            this.setProps({
+              action: actionRender({ group: group, groupList: that }),
+            });
+          } else {
+            this.setProps({
+              action: [
+                {
+                  component: "Button",
+                  text: "移除",
+                  onClick: () => {
+                    that.removeGroup(group);
+                  },
                 },
-              },
-            ],
-          });
+              ],
+            });
+          }
         },
       });
       const groups = [];
@@ -16215,6 +16221,10 @@ function _defineProperty2(obj, key, value) {
         ? addDefaultValue.call(this)
         : addDefaultValue;
       this.appendField(this.extGroupDefaults);
+      this._onValueChange();
+    }
+    removeGroup(group) {
+      group.remove();
       this._onValueChange();
     }
   }
