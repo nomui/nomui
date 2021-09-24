@@ -23018,6 +23018,7 @@ function _defineProperty2(obj, key, value) {
           onClick: (args) => {
             this._setValue(null);
             this.props.allowClear && this.clearIcon.hide();
+            this.popup && this.popup.hide();
             args.event && args.event.stopPropagation();
           },
         });
@@ -23055,16 +23056,13 @@ function _defineProperty2(obj, key, value) {
     _getPopupNodeSelectable() {
       const { multiple } = this.props;
       const { currentValue } = this;
-      return (
-        !multiple && {
-          selectedNodeKey: currentValue && currentValue[0],
-          onNodeSelect: ({ nodeData }) => {
-            setTimeout(() => {
-              this._setValue([nodeData.key]);
-            }, 0);
-          },
-        }
-      );
+      if (multiple) return false;
+      return {
+        selectedNodeKey: currentValue && currentValue[0],
+        onNodeSelect: ({ nodeData }) => {
+          this._setValue([nodeData.key]);
+        },
+      };
     } // 弹窗的nodeCheckable的配置
     _getPopupNodeCheckable() {
       const { multiple, treeCheckable } = this.props;
@@ -23081,30 +23079,40 @@ function _defineProperty2(obj, key, value) {
         treeCheckable
       );
     }
-    _setValue(data) {
-      this.currentValue = data;
-      this._content.update({ children: this._getContentBadges() }); // 单选则点击后即关闭popup
+    _setValue(value, options) {
+      this.tempValue = value;
+      if (options === false) {
+        options = { triggerChange: false };
+      } else {
+        options = extend$1({ triggerChange: true }, options);
+      } // 单选则点击后即关闭popup
       if (!this.props.multiple) {
         this.popup.hide();
       }
-      this._valueChange({ newValue: this.currentValue });
-    }
-    _getValue() {
-      if (!this.currentValue) return null;
-      if (this.props.multiple) {
-        return this.currentValue;
+      if (options.triggerChange) {
+        this._onValueChange();
       }
-      return this.currentValue[0];
+      this._content.update({ children: this._getContentBadges() });
+    } // getValue时根据选中的节点返回
+    _getValue() {
+      if (isNullish(this.tempValue)) return null;
+      const { multiple, treeDataFields } = this.props;
+      if (multiple) {
+        const checkedKeys = this.tree.getCheckedNodeKeys();
+        return checkedKeys;
+      }
+      const selectNode = this.tree.getSelectedNode();
+      return selectNode && selectNode[treeDataFields.key];
     }
     _valueChange(changed) {
-      if (changed.newValue) {
+      const { newValue } = changed;
+      if (newValue) {
         this.props.allowClear && this.clearIcon.show();
       }
       if (this.placeholder) {
         if (
-          (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
-          changed.newValue === null ||
-          changed.newValue === undefined
+          (Array.isArray(newValue) && newValue.length === 0) ||
+          isNullish(newValue)
         ) {
           this.placeholder.show();
         } else {
