@@ -165,6 +165,12 @@ class Td extends Component {
   }
 
   _rendered() {
+    setTimeout(() => {
+      this.setStickyPosition()
+    }, 0);
+  }
+
+  setStickyPosition() {
     if (this.props.column.fixed === 'left') {
       this._setStyle({ left: `${this.element.offsetLeft}px` })
     } else if (this.props.column.fixed === 'right') {
