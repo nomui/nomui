@@ -181,6 +181,21 @@ class Th extends Component {
   }
 
   _rendered() {
+    // 未设置冻结列则无需定时器
+    const {grid = {}} = this.table
+    const {frozenLeftCols, frozenRightCols} = grid.props || {}
+    if(frozenLeftCols || frozenRightCols) {
+      setTimeout(() => {
+        this.setStickyPosition()
+      }, 0);
+    }
+
+    this.resizer && this.handleResize()
+  }
+
+  setStickyPosition() {
+    // 设置排序时会出发两次_render，则此时设置的第一个定时器中的this.props已被销毁
+    if(!this.props) return
     if (this.props.column.fixed === 'left') {
       this._setStyle({ left: `${this.element.offsetLeft}px` })
     } else if (this.props.column.fixed === 'right') {
