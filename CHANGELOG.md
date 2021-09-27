@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.31](https://github.com/nomui/nomui/compare/v1.0.0-alpha.30...v1.0.0-alpha.31) (2021-09-24)
+
+
+### Features
+
+* **GroupList:** 右边操作区支持自定义渲染 ([aeacaa5](https://github.com/nomui/nomui/commit/aeacaa5b0f8f7822fa602dbe3408cd5ff793aafb))
+* **Menu:** compact模式新增自动选中以及展开功能 ([ee19237](https://github.com/nomui/nomui/commit/ee192376cd4e30d73ccc2115ae3cf50af2c5e889))
+
+
+### Bug Fixes
+
+* **Button:** 修复超链接在表格省略模式下显示异常 ([5c710c8](https://github.com/nomui/nomui/commit/5c710c8bace20177c836a3ba2a562cf7590260c0))
+* **Field校验:** Cascader和TreeSelect的content字段修改名称，content用于Field的 tooptip的校验，不能重名 ([642542c](https://github.com/nomui/nomui/commit/642542cc0ac89f801f3f53807913b10acc0a3ffa))
+* **Grid:** 修复treeConfig.childrenField无效的问题 ([55c11f8](https://github.com/nomui/nomui/commit/55c11f887f5e38f5baa9a4d8c76035bd1af45a32))
+* **GroupGrid:** 修复首行tr校验信息被遮挡的问题 ([303bac2](https://github.com/nomui/nomui/commit/303bac2622b31a16a19894f19741a291be6793d5))
+* **rule-manager:** 校验rules时，func类型的不顾虑empty的值 ([bf8bd87](https://github.com/nomui/nomui/commit/bf8bd877a10387ab5405825520ecb45d8b7267d0))
+* **Table:** 去掉设置 border-spacing的部分 ([b7bb5e0](https://github.com/nomui/nomui/commit/b7bb5e085b548af2b3b11fa4060a2139a68b5dae))
+* **Table:** 设置frozenCols冻结列时，展示bug ([c8890b6](https://github.com/nomui/nomui/commit/c8890b62c7271e85a17050b53e85005abc8216bd))
+* **TreeSelect:** 修改getValue的取值方式，在选择时触发onValueChange ([3477554](https://github.com/nomui/nomui/commit/3477554da20dac392a02cc7975e024882351e0d4))
+
 ## [1.0.0-alpha.30](https://github.com/nomui/nomui/compare/v1.0.0-alpha.29...v1.0.0-alpha.30) (2021-09-13)
 
 ## [1.0.0-alpha.29](https://github.com/nomui/nomui/compare/v1.0.0-alpha.28...v1.0.0-alpha.29) (2021-09-13)

@@ -205,8 +205,6 @@ class Th extends Component {
         }px`,
       })
     }
-
-    this.resizer && this.handleResize()
   }
 
   handleResize() {
