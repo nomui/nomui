@@ -135,6 +135,15 @@ class Td extends Component {
         this.props.column.ellipsis !== false) ||
       this.props.column.ellipsis === true
 
+    // 用span包一层，为了伪元素的展示
+    if(isEllipsis) {
+      children = {
+        tag: 'span',
+        classes: {'nom-table-cell-content': true},
+        children,
+      }
+    }
+
     const showTitle =
       (((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
         this.props.column.showTitle !== false) ||
