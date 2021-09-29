@@ -234,6 +234,7 @@ class Th extends Component {
 
   onSortChange() {
     const that = this
+    that.table.grid._setScrollPlace()
     if (that.props.column.sortDirection === 'desc') {
       that.update({
         column: { ...that.props.column, ...{ sortDirection: 'asc' } },

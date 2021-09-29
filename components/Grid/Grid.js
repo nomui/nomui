@@ -279,6 +279,8 @@ class Grid extends Component {
 
     this.setSortDirection(sorter)
     this.lastSortField = key
+    // 排序后自动滚动到之前的位置
+    this.autoScrollGrid()
   }
 
   resetSort() {
@@ -286,6 +288,18 @@ class Grid extends Component {
       this.header.table.thRefs[this.lastSortField].resetSort()
     }
     this.lastSortField = null
+  }
+
+  // 记录上一次滚动到的位置
+  _setScrollPlace() {
+    this._headerScrollInfo = {
+      left: this.header.element.scrollLeft,
+      top: this.header.element.scrollTop,
+    }
+    this._bodyScrollInfo = {
+      left: this.body.element.scrollLeft,
+      top: this.body.element.scrollTop,
+    }
   }
 
   resetColumnsCustom() {
@@ -586,6 +600,19 @@ class Grid extends Component {
         el.rows[i].cells[index].style.display = 'none'
       }
     }
+  }
+
+  autoScrollGrid() {
+    const { _headerScrollInfo, _bodyScrollInfo } = this
+    if(!_headerScrollInfo && !_bodyScrollInfo) return
+
+    this.header.element.scrollLeft = _headerScrollInfo.left
+    this.header.element.scrollTop = _headerScrollInfo.top
+    this.body.element.scrollLeft = _bodyScrollInfo.left
+    this.body.element.scrollTop = _bodyScrollInfo.left
+
+    this._headerScrollInfo = null
+    this._bodyScrollInfo = null
   }
 
   resizeCol(data) {
