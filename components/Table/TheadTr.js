@@ -36,15 +36,6 @@ class TheadTr extends Component {
       })
 
     thArr.push(...children)
-    
-    if (this.table.grid && this.table.grid.props.frozenHeader) {
-      thArr.push({
-        component: Th,
-        classes: {
-          'nom-th-scrollbar': true,
-        },
-      })
-    }
 
     this.setProps({
       children: thArr,
