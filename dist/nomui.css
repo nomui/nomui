@@ -5651,6 +5651,14 @@ table.nom-table th.nom-table-ellipsis {
   text-overflow: ellipsis;
   word-break: keep-all;
 }
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content .nom-table-cell-title,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-table-cell-title {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+}
 table.nom-table td .nom-table-resize-handler,
 table.nom-table th .nom-table-resize-handler {
   position: absolute !important;
@@ -5663,6 +5671,16 @@ table.nom-table th .nom-table-resize-handler {
 table.nom-table td:hover .nom-table-resize-handler,
 table.nom-table th:hover .nom-table-resize-handler {
   visibility: visible;
+}
+table.nom-table .nom-table-ellipsis.nom-table-fixed-left .nom-table-cell-content,
+table.nom-table .nom-table-ellipsis.nom-table-fixed-right .nom-table-cell-content {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+table.nom-table .nom-table-ellipsis.nom-table-fixed-left-last,
+table.nom-table .nom-table-ellipsis.nom-table-fixed-right-first {
+  overflow: visible;
 }
 table.nom-table .nom-table-fixed-left-last::after {
   position: absolute;
@@ -5686,10 +5704,10 @@ table.nom-table .nom-table-fixed-right-first::after {
   left: 0;
   width: 30px;
   box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.15);
+  transform: translate(-100%);
   transition: -webkit-box-shadow 0.3s;
   transition: box-shadow 0.3s;
   transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
-  transform: translate(-100%);
   content: '';
 }
 table.nom-table th {
@@ -5719,6 +5737,9 @@ table.nom-table th > .nom-table-filter {
   width: 2rem;
   height: 100%;
   color: #bfbfbf;
+}
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content {
+  display: flex !important;
 }
 table.nom-table .nom-tr-expand-indicator {
   margin-right: 6px;

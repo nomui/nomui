@@ -40,6 +40,7 @@ class Th extends Component {
       attrs: {
         title: isEllipsis ? this.props.column.header || this.props.column.title : null,
       },
+      classes: {'nom-table-cell-title': true},
       children: this.props.column.header || this.props.column.title,
     }
 
@@ -49,7 +50,7 @@ class Th extends Component {
       }
     }
 
-    const children = [
+    let children = [
       headerProps,
       this.props.column.sortable &&
         this.props.column.colSpan > 0 && {
@@ -160,6 +161,15 @@ class Th extends Component {
           },
         },
     ]
+    // 用span包一层，为了伪元素的展示
+    if(isEllipsis) {
+      children = {
+        tag: 'span',
+        classes: {'nom-table-cell-content': true},
+        children: children
+      }
+    }
+
 
     this.setProps({
       children: children,
@@ -171,6 +181,7 @@ class Th extends Component {
         'nom-table-parent-th': this.props.column.colSpan > 1,
         'nom-table-leaf-th': this.props.column.colSpan === 1,
         'nom-table-sortable': !!(this.props.column.sortable && this.props.column.colSpan > 0),
+        'nom-table-filter': !!(this.props.column.filter && this.props.column.colSpan > 0),
         'nom-table-ellipsis': isEllipsis,
       },
       attrs: {

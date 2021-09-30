@@ -14370,7 +14370,14 @@ function _defineProperty2(obj, key, value) {
         ((this.table.props.ellipsis === "both" ||
           this.table.props.ellipsis === "body") &&
           this.props.column.ellipsis !== false) ||
-        this.props.column.ellipsis === true;
+        this.props.column.ellipsis === true; // 用span包一层，为了伪元素的展示
+      if (isEllipsis) {
+        children = {
+          tag: "span",
+          classes: { "nom-table-cell-content": true },
+          children,
+        };
+      }
       const showTitle =
         (((this.table.hasGrid && this.table.grid.props.showTitle) ||
           this.table.props.showTitle) &&
@@ -14838,6 +14845,7 @@ function _defineProperty2(obj, key, value) {
             ? this.props.column.header || this.props.column.title
             : null,
         },
+        classes: { "nom-table-cell-title": true },
         children: this.props.column.header || this.props.column.title,
       };
       if (that.props.column.sortable && that.props.column.colSpan > 0) {
@@ -14845,7 +14853,7 @@ function _defineProperty2(obj, key, value) {
           that.onSortChange();
         };
       }
-      const children = [
+      let children = [
         headerProps,
         this.props.column.sortable &&
           this.props.column.colSpan > 0 && {
@@ -14949,7 +14957,14 @@ function _defineProperty2(obj, key, value) {
               // that.table.grid.handlePinClick(that.props.column)
             },
           },
-      ];
+      ]; // 用span包一层，为了伪元素的展示
+      if (isEllipsis) {
+        children = {
+          tag: "span",
+          classes: { "nom-table-cell-content": true },
+          children: children,
+        };
+      }
       this.setProps({
         children: children,
         classes: {
@@ -14961,6 +14976,9 @@ function _defineProperty2(obj, key, value) {
           "nom-table-leaf-th": this.props.column.colSpan === 1,
           "nom-table-sortable": !!(
             this.props.column.sortable && this.props.column.colSpan > 0
+          ),
+          "nom-table-filter": !!(
+            this.props.column.filter && this.props.column.colSpan > 0
           ),
           "nom-table-ellipsis": isEllipsis,
         },
