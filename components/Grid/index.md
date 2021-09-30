@@ -54,6 +54,8 @@
 | onFilter | 列头筛选触发回调 | `({params})=>{}` | - |
 | sticky | 是否开启吸附式表头以及虚拟滚动条,需要指定有滚动条的父容器，设为 true 则指定 window 为滚动容器 | `boolean` \| `component`\| `()=>{}` | false |
 
+> `frozenLeftCols`和`frozenRightCols`: 若列头与内容不对齐或出现列重复，请指定固定列的宽度 width。
+
 ### methods
 
 | 名称               | 说明                         | 类型             |
