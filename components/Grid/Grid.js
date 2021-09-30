@@ -19,6 +19,7 @@ class Grid extends Component {
     this.lastSortField = null
     this.rowsRefs = {}
     this.checkedRowRefs = {}
+    this._doNotAutoScroll = true
 
     this.originColumns = clone(this.props.columns)
     // 列设置弹窗 tree的数据
@@ -173,8 +174,8 @@ class Grid extends Component {
       this.autoMergeCols()
     }
     // 排序后自动滚动到之前的位置
-    this._autoScrollFlag && this.autoScrollGrid()
-    this._autoScrollFlag = true
+    !this._doNotAutoScroll && this.autoScrollGrid()
+    this._doNotAutoScroll = false
   }
 
   getColumns() {
@@ -256,7 +257,7 @@ class Grid extends Component {
       this.props.visibleColumns = vc
     }
     // update 列时，无需出发autoScroll
-    this._autoScrollFlag = false
+    this._doNotAutoScroll = true
     this.update({ columns: c })
   }
 
