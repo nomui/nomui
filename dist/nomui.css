@@ -5811,6 +5811,7 @@ table.nom-table.p-bordered {
   flex-direction: column;
 }
 .nom-grid.m-frozen-header > .nom-grid-header {
+  flex-shrink: 0;
   background-color: #fafafa;
 }
 .nom-grid.m-frozen-header > .nom-grid-header > .nom-table {
