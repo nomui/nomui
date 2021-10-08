@@ -15037,6 +15037,7 @@ function _defineProperty2(obj, key, value) {
     }
     onSortChange() {
       const that = this;
+      that.table.grid._setScrollPlace();
       if (that.props.column.sortDirection === "desc") {
         that.update({
           column: Object.assign({}, that.props.column, {
@@ -15564,6 +15565,7 @@ function _defineProperty2(obj, key, value) {
       this.lastSortField = null;
       this.rowsRefs = {};
       this.checkedRowRefs = {};
+      this._doNotAutoScroll = true;
       this.originColumns = clone$1(this.props.columns); // 列设置弹窗 tree的数据
       this.popupTreeData = this.originColumns;
       this.filter = {};
@@ -15675,7 +15677,9 @@ function _defineProperty2(obj, key, value) {
         this.props.autoMergeColumns.length > 0
       ) {
         this.autoMergeCols();
-      }
+      } // 排序后自动滚动到之前的位置
+      !this._doNotAutoScroll && this.autoScrollGrid();
+      this._doNotAutoScroll = false;
     }
     getColumns() {
       return this.props.columns;
@@ -15721,7 +15725,8 @@ function _defineProperty2(obj, key, value) {
           return Object.assign({}, item, { sortDirection: null });
         });
         this.props.visibleColumns = vc;
-      }
+      } // update 列时，无需出发autoScroll
+      this._doNotAutoScroll = true;
       this.update({ columns: c });
     }
     handleSort(sorter) {
@@ -15751,6 +15756,10 @@ function _defineProperty2(obj, key, value) {
         this.header.table.thRefs[this.lastSortField].resetSort();
       }
       this.lastSortField = null;
+    } // 记录上一次滚动到的位置
+    _setScrollPlace() {
+      this._headerScrollInfo = { left: this.header.element.scrollLeft };
+      this._bodyScrollInfo = { left: this.body.element.scrollLeft };
     }
     resetColumnsCustom() {
       const {
@@ -16030,6 +16039,20 @@ function _defineProperty2(obj, key, value) {
           el.rows[i].cells[index].style.display = "none";
         }
       }
+    }
+    autoScrollGrid() {
+      const { _headerScrollInfo, _bodyScrollInfo } = this;
+      if (
+        !_headerScrollInfo &&
+        !_headerScrollInfo.left &&
+        !_bodyScrollInfo &&
+        !_bodyScrollInfo.left
+      )
+        return;
+      this.header.element.scrollLeft = _headerScrollInfo.left;
+      this.body.element.scrollLeft = _bodyScrollInfo.left;
+      this._headerScrollInfo = null;
+      this._bodyScrollInfo = null;
     }
     resizeCol(data) {
       this.header && this.header.resizeCol(data);
