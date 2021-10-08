@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.32](https://github.com/nomui/nomui/compare/v1.0.0-alpha.31...v1.0.0-alpha.32) (2021-09-30)
+
+
+### Bug Fixes
+
+* **Gird:**  在点击列排序后，Tr重新渲染两次导致定时器中的this为空的处理 ([18d83f5](https://github.com/nomui/nomui/commit/18d83f55f6eb23e2b7eb8f2fa41628c564c5bbc1))
+* **Grid:** 修复设置了ellipsis时，冻结列的伪元素未展示的bug ([feaa1ab](https://github.com/nomui/nomui/commit/feaa1ab3b2e880562458b4e1b26f1cff55a77f4e))
+* **TheadTr:** 去掉滚动条占位 tr的代码 ([ece50e2](https://github.com/nomui/nomui/commit/ece50e24e15dc37d4f1838d722e47b7d64d986d0))
+
 ## [1.0.0-alpha.31](https://github.com/nomui/nomui/compare/v1.0.0-alpha.30...v1.0.0-alpha.31) (2021-09-24)
 
 
