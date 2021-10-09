@@ -623,11 +623,10 @@ class Grid extends Component {
 
   autoScrollGrid() {
     const { _headerScrollInfo, _bodyScrollInfo } = this
-    if (!_headerScrollInfo && !_headerScrollInfo.left && !_bodyScrollInfo && !_bodyScrollInfo.left)
-      return
+    if(!_headerScrollInfo || !_bodyScrollInfo) return
     
-    this.header.element.scrollLeft = _headerScrollInfo.left
-    this.body.element.scrollLeft = _bodyScrollInfo.left
+    this.header.element.scrollLeft = _headerScrollInfo.left || 0
+    this.body.element.scrollLeft = _bodyScrollInfo.left || 0
 
     this._headerScrollInfo = null
     this._bodyScrollInfo = null
