@@ -175,7 +175,8 @@ class Td extends Component {
     if(isEllipsis || showTitle) {
       const _title = isEllipsis ? children.children : children
       if(isString(_title) || isNumeric(_title)) {
-        return _title
+        // 字符#开头 children将以 html格式输出
+        return _title[0] === '#' ? null : _title
       }
     }
     return null
