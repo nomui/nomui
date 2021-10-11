@@ -155,10 +155,7 @@ class Td extends Component {
         colspan: colSpan,
         rowspan: rowSpan,
         'data-field': this.props.column.field,
-        title:
-          (isString(children) || isNumeric(children)) && (isEllipsis || showTitle)
-            ? children
-            : null,
+        title: this._getAttrTitle(children, isEllipsis, showTitle)
       },
       hidden: colSpan === 0 || rowSpan === 0,
       classes: {
@@ -171,6 +168,18 @@ class Td extends Component {
         'nom-table-ellipsis': isEllipsis,
       },
     })
+  }
+
+  _getAttrTitle(children, isEllipsis, showTitle) {
+    // 因为isEllipsis = true时，已经使用span包了一层，所以具体的title为children.children
+    if(isEllipsis || showTitle) {
+      const _title = isEllipsis ? children.children : children
+      if(isString(_title) || isNumeric(_title)) {
+        // 字符#开头 children将以 html格式输出
+        return _title[0] === '#' ? null : _title
+      }
+    }
+    return null
   }
 
   _rendered() {
