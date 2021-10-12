@@ -51,19 +51,19 @@ RuleManager.ruleTypes = {
   },
   min: {
     validate: function (value, ruleValue) {
-      return !isEmpty(value) ? Number(value.replaceAll(',', '')) >= ruleValue : true
+      return !isEmpty(value) ? Number(value.replace(/,/g, '')) >= ruleValue : true
     },
     message: '输入值不能小于 {0}',
   },
   max: {
     validate: function (value, ruleValue) {
-      return !isEmpty(value) ? Number(value.replaceAll(',', '')) <= ruleValue : true
+      return !isEmpty(value) ? Number(value.replace(/,/g, '')) <= ruleValue : true
     },
     message: '输入值不能大于 {0}',
   },
   range: {
     validate: function (value, ruleValue) {
-      return !isEmpty(value) ? Number(value.replaceAll(',', '')) >= ruleValue[0] && Number(value.replaceAll(',', '')) <= ruleValue[1] : true
+      return !isEmpty(value) ? Number(value.replace(/,/g, '')) >= ruleValue[0] && Number(value.replace(/,/g, '')) <= ruleValue[1] : true
     },
     message: '输入值必须介于 {0} 和 {1} 之间',
   },

@@ -63,7 +63,7 @@ class Numberbox extends Textbox {
     const { precision = -1 } = this.props
 
     let numberValue = null
-    const textValue = this.input.getText().replaceAll(',', '')
+    const textValue = this.input.getText().replace(/,/g, '')
 
     if (precision) {
       const dotCount = this._dotCount(textValue)
