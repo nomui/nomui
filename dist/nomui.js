@@ -259,6 +259,9 @@ function _defineProperty2(obj, key, value) {
    * @returns Object
    */ function parseToQuery(url) {
     // 提取url中？后面的字符串
+    if (url.indexOf("?") < 0 || url.indexOf("?") === url.length - 1) {
+      return {};
+    }
     const queryStr = /.+\?(.+)$/.exec(url)[1];
     const queryArr = queryStr.split("&");
     const paramsObj = {};

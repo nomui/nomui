@@ -5460,6 +5460,7 @@ img {
 .nom-tabs.p-fit > .nom-tab-content {
   flex: 1;
   height: 100%;
+  padding-top: 2.5rem;
   overflow: auto;
 }
 .nom-menu {
@@ -7054,11 +7055,11 @@ textarea .nom-textarea {
   display: block;
 }
 .nom-field > .nom-field-content {
-  padding: 0.5rem 0.5rem;
   position: relative;
   flex: 1;
   flex-grow: 1;
   width: 100%;
+  padding: 0.5rem 0.5rem;
 }
 .p-control-width-xsmall.nom-field > .nom-field-content > .nom-control {
   max-width: 104px;
@@ -7106,6 +7107,9 @@ textarea .nom-textarea {
   background-color: #fff3f3;
 }
 .nom-field.s-invalid > .nom-field-content > .nom-control {
+  border-color: #ffa8a8;
+}
+.nom-field.s-invalid > .nom-field-content > .nom-control > input {
   border-color: #ffa8a8;
 }
 @media (min-width: 576px) {
