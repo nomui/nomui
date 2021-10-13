@@ -161,6 +161,7 @@ class Grid extends Component {
   }
 
   _rendered() {
+    const { data } = this.props
     if (this.loadingInst) {
       this.loadingInst.remove()
       this.loadingInst = null
@@ -172,6 +173,11 @@ class Grid extends Component {
 
     if (this.props.data && this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
       this.autoMergeCols()
+    }
+
+    if(!data || !data.length) {
+      this._doNotAutoScroll = false
+      this._setScrollPlace(true)
     }
     // 排序后自动滚动到之前的位置
     !this._doNotAutoScroll && this.autoScrollGrid()
@@ -295,12 +301,23 @@ class Grid extends Component {
   }
 
   // 记录上一次滚动到的位置
-  _setScrollPlace() {
+  _setScrollPlace(isEmpty) {
+    const headerEl = this.header.element
+    const bodyEl = this.body.element
+
+    let headerLeft = headerEl.scrollLeft
+    let bodyLeft = bodyEl.scrollLeft
+
+    // 表格的宽度 / 2 - svg图标的一半
+    if (isEmpty) {
+      headerLeft = headerEl.offsetWidth / 2 - 92
+      bodyLeft = bodyEl.offsetWidth / 2 - 92
+    }
     this._headerScrollInfo = {
-      left: this.header.element.scrollLeft,
+      left: headerLeft,
     }
     this._bodyScrollInfo = {
-      left: this.body.element.scrollLeft,
+      left: bodyLeft,
     }
   }
 
@@ -606,11 +623,10 @@ class Grid extends Component {
 
   autoScrollGrid() {
     const { _headerScrollInfo, _bodyScrollInfo } = this
-    if (!_headerScrollInfo && !_headerScrollInfo.left && !_bodyScrollInfo && !_bodyScrollInfo.left)
-      return
+    if(!_headerScrollInfo || !_bodyScrollInfo) return
     
-    this.header.element.scrollLeft = _headerScrollInfo.left
-    this.body.element.scrollLeft = _bodyScrollInfo.left
+    this.header.element.scrollLeft = _headerScrollInfo.left || 0
+    this.body.element.scrollLeft = _bodyScrollInfo.left || 0
 
     this._headerScrollInfo = null
     this._bodyScrollInfo = null

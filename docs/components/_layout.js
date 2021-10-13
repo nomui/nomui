@@ -182,6 +182,12 @@ define([], function () {
                       url: '#!components!index?type=Pager',
                     },
                     {
+                      text: 'Collapse',
+                      subtext: '选项卡',
+                      id: 'Collapse',
+                      url: '#!components!index?type=Collapse',
+                    },
+                    {
                       text: 'Breadcrumb',
                       subtext: '面包屑',
                       id: 'Breadcrumb',
