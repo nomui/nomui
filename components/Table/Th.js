@@ -40,6 +40,7 @@ class Th extends Component {
       attrs: {
         title: isEllipsis ? this.props.column.header || this.props.column.title : null,
       },
+      classes: {'nom-table-cell-title': true},
       children: this.props.column.header || this.props.column.title,
     }
 
@@ -49,7 +50,7 @@ class Th extends Component {
       }
     }
 
-    const children = [
+    let children = [
       headerProps,
       this.props.column.sortable &&
         this.props.column.colSpan > 0 && {
@@ -160,6 +161,15 @@ class Th extends Component {
           },
         },
     ]
+    // 用span包一层，为了伪元素的展示
+    if(isEllipsis) {
+      children = {
+        tag: 'span',
+        classes: {'nom-table-cell-content': true},
+        children: children
+      }
+    }
+
 
     this.setProps({
       children: children,
@@ -171,6 +181,7 @@ class Th extends Component {
         'nom-table-parent-th': this.props.column.colSpan > 1,
         'nom-table-leaf-th': this.props.column.colSpan === 1,
         'nom-table-sortable': !!(this.props.column.sortable && this.props.column.colSpan > 0),
+        'nom-table-filter': !!(this.props.column.filter && this.props.column.colSpan > 0),
         'nom-table-ellipsis': isEllipsis,
       },
       attrs: {
@@ -181,6 +192,21 @@ class Th extends Component {
   }
 
   _rendered() {
+    // 未设置冻结列则无需定时器
+    const {grid = {}} = this.table
+    const {frozenLeftCols, frozenRightCols} = grid.props || {}
+    if(frozenLeftCols || frozenRightCols) {
+      setTimeout(() => {
+        this.setStickyPosition()
+      }, 0);
+    }
+
+    this.resizer && this.handleResize()
+  }
+
+  setStickyPosition() {
+    // 设置排序时会出发两次_render，则此时设置的第一个定时器中的this.props已被销毁
+    if(!this.props) return
     if (this.props.column.fixed === 'left') {
       this._setStyle({ left: `${this.element.offsetLeft}px` })
     } else if (this.props.column.fixed === 'right') {
@@ -190,8 +216,6 @@ class Th extends Component {
         }px`,
       })
     }
-
-    this.resizer && this.handleResize()
   }
 
   handleResize() {
@@ -221,6 +245,7 @@ class Th extends Component {
 
   onSortChange() {
     const that = this
+    that.table.grid._setScrollPlace()
     if (that.props.column.sortDirection === 'desc') {
       that.update({
         column: { ...that.props.column, ...{ sortDirection: 'asc' } },

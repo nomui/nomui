@@ -20,9 +20,10 @@ class Menu extends Component {
         expandSingle: true,
         initExpandLevel: -1,
       },
-
+      compact: false,
       indent: 1.5,
       direction: 'vertical',
+      keyField: 'key',
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -31,10 +32,18 @@ class Menu extends Component {
   _created() {
     this.itemRefs = []
     this.selectedItem = null
+    this.selectedItemKey = null
+    this.expandedRoot = null
   }
 
   _config() {
     this._addPropStyle('direction')
+
+    if (this.props.direction !== 'vertical') {
+      this.setProps({
+        compact: false,
+      })
+    }
 
     const that = this
     const children = this.props.items.map(function (item) {
@@ -59,6 +68,9 @@ class Menu extends Component {
     })
 
     this.setProps({
+      classes: {
+        'nom-menu-compact': this.props.compact,
+      },
       children: children,
     })
   }
@@ -97,9 +109,24 @@ class Menu extends Component {
   }
 
   selectToItem(param) {
-    this.expandToItem(param)
-    this.selectItem(param)
-    this.scrollTo(param)
+    if (this.props.compact) {
+      const target = this.getRootItem(param)
+      this.getItem(target).expand()
+      this.scrollTo(target)
+      this.expandedRoot = this.getItem(target).wrapper
+      this.selectedItemKey = param
+    } else {
+      this.expandToItem(param)
+      this.selectItem(param)
+      this.scrollTo(param)
+    }
+  }
+
+  getRootItem(param) {
+    const rootItem = this.props.items.filter((n) => {
+      return JSON.stringify(n).includes(`"${param}"`)
+    })[0][this.props.keyField]
+    return this.itemRefs[rootItem]
   }
 
   unselectItem(param, unselectOption) {

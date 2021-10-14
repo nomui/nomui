@@ -1,4 +1,4 @@
-define([], function () {
+define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
   return {
     title: '字段组值',
     file: 'value',
@@ -64,6 +64,20 @@ define([], function () {
               label: '出生日期',
             },
             {
+              component: 'Cascader',
+              placeholder: '请选择',
+              name: 'cascader',
+              label: '病症',
+              required: true,
+              fieldsMapping: {
+                key: 'Id',
+                label: 'Name',
+                value: 'Name',
+                children: 'Childs',
+              },
+              options: cascaderOptions,
+            },
+            {
               component: 'CheckboxList',
               name: 'hobbies',
               label: '爱好',
@@ -92,6 +106,55 @@ define([], function () {
               name: 'characterRate',
             },
             {
+              component: 'TreeSelect',
+              name: 'dept',
+              required: true,
+              label: '部门权限',
+              value: '0-0',
+              allowClear: true,
+              multiple: true,
+              options: [
+                {
+                  text: '总经办',
+                  value: '0-0',
+                  children: [
+                    {
+                      text: '人事部',
+                      value: '0-0-1',
+                    },
+                    {
+                      text: '行政部',
+                      value: '0-0-2',
+                    },
+                  ],
+                },
+                {
+                  text: '技术中心',
+                  value: '0-1',
+                  children: [
+                    {
+                      text: '后端组',
+                      value: '0-1-1',
+                      children: [
+                        {
+                          text: '开发一组',
+                          value: '0-1-1-1',
+                        },
+                        {
+                          text: '开发二组',
+                          value: '0-1-1-2',
+                        },
+                      ],
+                    },
+                    {
+                      text: '前端组',
+                      value: '0-1-2',
+                    },
+                  ],
+                },
+              ],
+            },
+            {
               component: 'Field',
               label: '',
               control: {
@@ -102,6 +165,7 @@ define([], function () {
                     type: 'primary',
                     text: '提 交',
                     onClick: () => {
+                      group.validate()
                       console.log(group.getValue())
                     },
                   },

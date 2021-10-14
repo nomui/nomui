@@ -8,15 +8,8 @@ define([], function () {
         children: {
           component: 'Tree',
           initExpandLevel: 1,
-          indicator: {
-            expandable: {
-              expandedProps: {
-                type: 'minus-square',
-              },
-              collapsedProps: {
-                type: 'plus-square',
-              },
-            },
+          expandable: {
+            byIndicator: true,
           },
           data: [
             {

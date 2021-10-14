@@ -55,7 +55,8 @@ class MenuItem extends Component {
       }
     }
 
-    let indicatorIconType = 'down'
+    let indicatorIconType = menuProps.compact ? 'right' : 'down'
+
     if (menuProps.direction === 'horizontal' && this.level > 0) {
       indicatorIconType = 'right'
     }
@@ -94,12 +95,17 @@ class MenuItem extends Component {
         href: this.getItemUrl(this.props.url),
         style: {
           paddingLeft:
-            menuProps.direction === 'vertical' ? `${(this.level + 1) * menuProps.indent}rem` : null,
+            menuProps.direction === 'vertical' && !menuProps.compact
+              ? `${(this.level + 1) * menuProps.indent}rem`
+              : null,
         },
       },
       onSelect: () => {
         if (menu.selectedItem !== null) menu.selectedItem.unselect()
         menu.selectedItem = this
+        menu.expandedRoot = this.wrapper.rootWrapper
+        menu.selectedItemKey = this.key
+        menuProps.compact && this.wrapper.rootWrapper.item.expand()
         this._callHandler(onSelect)
       },
       onUnselect: () => {
@@ -117,8 +123,8 @@ class MenuItem extends Component {
         },
         {
           component: Component,
-          tag: 'span',
-          classes: { text: true },
+          tag: menuProps.compact ? 'div' : 'span',
+          classes: { text: true, 'nom-menu-item-title': true },
           attrs: {
             style: { 'flex-grow': this.props.subtext ? null : '2' },
             title: this.props.text,

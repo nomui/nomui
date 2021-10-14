@@ -40,11 +40,20 @@ table.nom-table {
         cursor: pointer;
       }
     }
-    &.nom-table-ellipsis {
+    &.nom-table-ellipsis  {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       word-break: keep-all;
+      .nom-table-cell-content {
+        .nom-table-cell-title {
+          display: block;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          word-break: keep-all;
+        }
+      }
     }
     .nom-table-resize-handler {
       position: absolute !important;
@@ -58,6 +67,21 @@ table.nom-table {
       .nom-table-resize-handler {
         visibility: visible;
       }
+    }
+  }
+
+  .nom-table-ellipsis {
+    // 内容使用content包了一层，在content中设置overflow: hidden
+    &.nom-table-fixed-left, &.nom-table-fixed-right {
+      .nom-table-cell-content {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    &.nom-table-fixed-left-last, &.nom-table-fixed-right-first {
+      overflow: visible;
     }
   }
 
@@ -85,6 +109,7 @@ table.nom-table {
     left: 0;
     width: 30px;
     box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.15);
+    transform: translate(-100%);
     transition: -webkit-box-shadow 0.3s;
     transition: box-shadow 0.3s;
     transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
@@ -118,6 +143,11 @@ table.nom-table {
       width: 2rem;
       height: 100%;
       color: #bfbfbf;
+    }
+    &.nom-table-ellipsis {
+      .nom-table-cell-content {
+        display: flex !important;
+      }
     }
   }
 

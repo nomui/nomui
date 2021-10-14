@@ -11,16 +11,16 @@ class TreeSelectPopup extends Popup {
 
   _created() {
     super._created()
-    this.selectControl = this.opener.parent.parent.parent
+    this.selectControl = this.opener.parent.parent
   }
 
   _config() {
     const that = this
-
+    const { nodeSelectable, nodeCheckable } = that.props
     this.setProps({
       attrs: {
         style: {
-          width: `${this.selectControl.offsetWidth()}px`,
+          width: `${this.selectControl.content.offsetWidth()}px`,
         },
       },
       children: {
@@ -28,13 +28,15 @@ class TreeSelectPopup extends Popup {
         body: {
           children: {
             component: 'Tree',
-            treeData: that.selectControl.props.treeData,
-            selectedNodes: that.props.selectedNodes,
+            expandable: {
+              byIndicator: true,
+            },
+            data: that.selectControl.props.options,
+            dataFields: that.selectControl.props.treeDataFields,
             multiple: that.selectControl.props.multiple,
             leafOnly: that.selectControl.props.leafOnly,
-            onCheck: function (data) {
-              that.selectControl.setValue(data)
-            },
+            nodeSelectable,
+            nodeCheckable,
             _created: function () {
               that.selectControl.tree = this
             },

@@ -6,7 +6,12 @@ define([], function () {
       return {
         children: {
           component: 'TreeSelect',
-          treeData: [
+          allowClear: true,
+          treeDataFields: {
+            key: 'value',
+            text: 'title',
+          },
+          options: [
             {
               title: 'Node1',
               value: '0-0',
@@ -32,7 +37,7 @@ define([], function () {
               value: '0-1',
             },
           ],
-          selectedNodes: ['0-0-1', '0-1'],
+          value: '0-1',
         },
       }
     },
