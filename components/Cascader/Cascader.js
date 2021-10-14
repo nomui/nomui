@@ -225,6 +225,9 @@ class Cascader extends Field {
   }
 
   _setValue(value) {
+    if (!value && this.content) {
+      this.content.element.innerText = ''
+    }
     if (this.triggerChange(value)) {
       this.handleOptionSelected(value)
       this._onValueChange()
