@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.33](https://github.com/nomui/nomui/compare/v1.0.0-alpha.32...v1.0.0-alpha.33) (2021-10-15)
+
+
+### Features
+
+* **Grid:** 表格数据为空时，默认scroll滚动至中间位置 ([ceeff96](https://github.com/nomui/nomui/commit/ceeff9601b45b85ce56c3d6736d37ef7be6d0c19))
+* **Numberbox:** 添加校验规则，支持逗号分隔符的小数形式 ([d253a2c](https://github.com/nomui/nomui/commit/d253a2cbc381270510a6239ba479dca12a8ccbd4))
+
+
+### Bug Fixes
+
+* 解决Cascader代码冲突 ([7174677](https://github.com/nomui/nomui/commit/71746778a44ae1e4efc1c673ddab6933b3244ae0))
+* 修复bug[#444](https://github.com/nomui/nomui/issues/444) ([161fc1e](https://github.com/nomui/nomui/commit/161fc1e3dff38fe4f0a259c5b308ff1edb83daac))
+* 修复Cascader组件Clear功能未能清除的问题 ([b97057d](https://github.com/nomui/nomui/commit/b97057d6bbfdecc23226a415a57b1ae85957cc79))
+* 修复Cascader组件clear时内容未被清除的bug ([a4a2a8a](https://github.com/nomui/nomui/commit/a4a2a8a22233d88f6c594135e6bac600e56a1bf1))
+* **Gird-Td:** 自定义渲染时，以#开头不将children处理为title ([890dd5b](https://github.com/nomui/nomui/commit/890dd5bf4d49b0b238b6f5f02e24d24df920e473))
+* **Gird:** 后端排序后，表格自动回到之前的滚动位置 ([e2880ee](https://github.com/nomui/nomui/commit/e2880ee085fb89a108db4b70819f1516c85d47b1))
+* **Gird:** 修改表格自动scroll的变量名，更加语义化 ([26916f9](https://github.com/nomui/nomui/commit/26916f950e256a51736de2990bfcadaf41af53c8))
+* **Gird:** 自动滚动的判断 ([6de8e4d](https://github.com/nomui/nomui/commit/6de8e4d15507f8cfc09888fbb273ea2e14beb6a3))
+* **Grid-Scrollbar:** Gridbody和sticky的滚动条的对其不一致的问题 ([392ea94](https://github.com/nomui/nomui/commit/392ea94ae5dd5bff2ea6206232f79eb938a8604b))
+* **Grid-sort:** 点击排序后滚动至上次位置，兼容异步请求回的更新 ([9c0ed99](https://github.com/nomui/nomui/commit/9c0ed99604f11be0b3a1d5049f750c7c54e28e47))
+* **Grid-Td:** 修改了Td的层级结构，导致设置ellipsis时的title无效了 ([42fb145](https://github.com/nomui/nomui/commit/42fb14547504bf5faaf390f455cfebd874d8e633))
+* **Numberbox:** 使用replace 替换replaceAll 来保证兼容性 ([0adb883](https://github.com/nomui/nomui/commit/0adb883d9eb14e168ca14bba9ff16cac50916bc9))
+* **Utils:** 解决utils.parseToQuery方法报错的问题 ([d5e2250](https://github.com/nomui/nomui/commit/d5e225044c8cb13f1f9c3e7fa3c324755b2e2a9c))
+
+
+### Docs
+
+* **Collapse:** 新增文档 ([da66ea8](https://github.com/nomui/nomui/commit/da66ea8a9652a8b804a8bc7d9879c3af186c4674))
+
 ## [1.0.0-alpha.32](https://github.com/nomui/nomui/compare/v1.0.0-alpha.31...v1.0.0-alpha.32) (2021-09-30)
 
 
