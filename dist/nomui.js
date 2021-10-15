@@ -3857,20 +3857,25 @@ function _defineProperty2(obj, key, value) {
     },
     min: {
       validate: function (value, ruleValue) {
-        return !isEmpty(value) ? Number(value) >= ruleValue : true;
+        return !isEmpty(value)
+          ? Number(value.replace(/,/g, "")) >= ruleValue
+          : true;
       },
       message: "输入值不能小于 {0}",
     },
     max: {
       validate: function (value, ruleValue) {
-        return !isEmpty(value) ? Number(value) <= ruleValue : true;
+        return !isEmpty(value)
+          ? Number(value.replace(/,/g, "")) <= ruleValue
+          : true;
       },
       message: "输入值不能大于 {0}",
     },
     range: {
       validate: function (value, ruleValue) {
         return !isEmpty(value)
-          ? Number(value) >= ruleValue[0] && Number(value) <= ruleValue[1]
+          ? Number(value.replace(/,/g, "")) >= ruleValue[0] &&
+              Number(value.replace(/,/g, "")) <= ruleValue[1]
           : true;
       },
       message: "输入值必须介于 {0} 和 {1} 之间",
@@ -17985,21 +17990,22 @@ function _defineProperty2(obj, key, value) {
       const { precision = -1 } = this.props;
       if (precision === -1) {
         this.rules.push({ type: "number" });
-      }
+      } // 允许输入千分位加 , 的格式的数字
       if (this.props.precision === 0) {
         this.rules.push({
           type: "regex",
-          value: { pattern: "^(\\-|\\+)?(0|[1-9][0-9]*)$" },
-          message: "请输入整数",
+          value: { pattern: /^-?(\d+|\d{1,3}(,\d{3})+)$/ },
+          message: "请输入有效整数",
         });
       }
       if (this.props.precision > 0) {
         this.rules.push({
           type: "regex",
           value: {
-            pattern: `^(\\-|\\+)?(0|[1-9][0-9]*)(\\.\\d{${this.props.precision}})$`,
+            // 在上面的规则的基础上添加了小数部分
+            pattern: `^\\-?(\\d+|\\d{1,3}(,\\d{3})+)(\\.\\d{${this.props.precision}})$`,
           },
-          message: `请输入 ${this.props.precision} 位小数`,
+          message: `请输入有效 ${this.props.precision} 位小数`,
         });
       }
       if (this.props.min) {
@@ -18013,7 +18019,7 @@ function _defineProperty2(obj, key, value) {
     _getValue() {
       const { precision = -1 } = this.props;
       let numberValue = null;
-      const textValue = this.input.getText();
+      const textValue = this.input.getText().replace(/,/g, "");
       if (precision) {
         const dotCount = this._dotCount(textValue);
         if (precision >= 0 && dotCount > precision) {
