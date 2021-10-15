@@ -4071,6 +4071,7 @@ img {
 }
 .nom-cols .nom-col.nom-col-strech {
   flex-grow: 2 !important;
+  width: 0;
 }
 .nom-cols.p-inline {
   display: inline-flex;
@@ -4107,6 +4108,7 @@ img {
 }
 .nom-cols.p-fills > .nom-col.nom-col-strech {
   flex-grow: 2 !important;
+  width: 0;
 }
 .nom-cols.p-gutter-sm > .nom-col {
   margin-right: 0.5rem;
