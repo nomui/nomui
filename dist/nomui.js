@@ -9993,13 +9993,14 @@ function _defineProperty2(obj, key, value) {
         },
         onClick: ({ event }) => {
           event.stopPropagation();
-          if (this.selectedOption.length === 0) return;
-          this.selectedOption = [];
-          this.checked = true;
-          if (this._content && this._content.element)
-            this._content.element.innerText = "";
-          this.popup.update({ popMenu: this.getSelectedMenu() });
-          this._onValueChange();
+          cascader.setValue(null); // if (this.selectedOption.length === 0) return
+          // this.selectedOption = []
+          // this.checked = true
+          // this.content.element.innerText = ''
+          // this.popup.update({
+          //   popMenu: this.getSelectedMenu(),
+          // })
+          // this._onValueChange()
         },
       });
       this.setProps({
@@ -10089,6 +10090,9 @@ function _defineProperty2(obj, key, value) {
         : null;
     }
     _setValue(value) {
+      if (!value && this._content) {
+        this._content.element.innerText = "";
+      }
       if (this.triggerChange(value)) {
         this.handleOptionSelected(value);
         this._onValueChange();
