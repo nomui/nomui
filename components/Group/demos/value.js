@@ -38,8 +38,9 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
               name: 'age',
               label: '年龄',
               required: true,
-              min: 0,
-              max: 100,
+              precision: 2,
+              min: 999,
+              max: 10000,
             },
             {
               component: 'Textbox',
