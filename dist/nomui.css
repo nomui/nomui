@@ -4140,6 +4140,9 @@ img {
 .nom-flex.p-inline {
   display: inline-flex;
 }
+.nom-flex.p-wrap {
+  flex-wrap: wrap;
+}
 .nom-flex.p-fit {
   height: 100%;
 }
