@@ -2,6 +2,7 @@ define([
   './rows.js',
   './cols.js',
   './rows-cols.js',
+  './cols-wrap.js',
   './shorthand.js',
   './align-justify-fills.js',
   './gap.js',
