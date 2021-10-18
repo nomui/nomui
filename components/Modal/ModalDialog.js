@@ -58,7 +58,7 @@ class ModalDialog extends Component {
       okButton: contentProps.okButton,
     })
 
-    const { okText, cancelText, fit, okButton = {}, cancelButton = {} } = modal.props
+    const { okText, cancelText, fit, footerRender, okButton = {}, cancelButton = {} } = modal.props
     return {
       component: Panel,
       fit: fit,
@@ -77,38 +77,40 @@ class ModalDialog extends Component {
           },
         ],
       },
-      footer: {
-        children: {
-          component: 'Cols',
-          items: [
-            okButton !== false &&
-              Component.extendProps(
-                {
-                  component: 'Button',
-                  styles: {
-                    color: 'primary',
-                  },
-                  text: okText,
-                  onClick: () => {
-                    modal._handleOk()
-                  },
-                },
-                okButton,
-              ),
-            cancelButton !== false &&
-              Component.extendProps(
-                {
-                  component: 'Button',
-                  text: cancelText,
-                  onClick: () => {
-                    modal._handleCancel()
-                  },
-                },
-                cancelButton,
-              ),
-          ],
-        },
-      },
+      footer: footerRender
+        ? footerRender(modal)
+        : {
+            children: {
+              component: 'Cols',
+              items: [
+                okButton !== false &&
+                  Component.extendProps(
+                    {
+                      component: 'Button',
+                      styles: {
+                        color: 'primary',
+                      },
+                      text: okText,
+                      onClick: () => {
+                        modal._handleOk()
+                      },
+                    },
+                    okButton,
+                  ),
+                cancelButton !== false &&
+                  Component.extendProps(
+                    {
+                      component: 'Button',
+                      text: cancelText,
+                      onClick: () => {
+                        modal._handleCancel()
+                      },
+                    },
+                    cancelButton,
+                  ),
+              ],
+            },
+          },
     }
   }
 

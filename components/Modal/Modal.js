@@ -19,6 +19,7 @@ class Modal extends Component {
       },
       size: 'small',
       centered: true,
+      footerRender: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
