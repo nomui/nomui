@@ -23011,6 +23011,7 @@ function _defineProperty2(obj, key, value) {
               expandable: { byIndicator: true },
               data: that.selectControl.props.options,
               dataFields: that.selectControl.props.treeDataFields,
+              flatData: that.selectControl.props.flatOptions,
               multiple: that.selectControl.props.multiple,
               leafOnly: that.selectControl.props.leafOnly,
               nodeSelectable,
