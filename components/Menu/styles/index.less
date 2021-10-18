@@ -48,6 +48,28 @@
     }
   }
 
+  &.p-uistyle-short-line {
+    &.p-direction-horizontal {
+      > .nom-menu-item-wrapper {
+        margin-right: 0.3rem;
+        > .nom-menu-item {
+          padding: 10px 0;
+          border-bottom: 2px solid transparent;
+
+          &.s-selected {
+            color: @primary;
+            font-weight: 500;
+            border-bottom-color: @primary;
+          }
+        }
+
+        & + .nom-menu-item-wrapper {
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+
   &.p-uistyle-pill {
     &.p-direction-vertical {
       > .nom-menu-item-wrapper {
