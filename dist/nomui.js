@@ -13101,7 +13101,7 @@ function _defineProperty2(obj, key, value) {
         rightIcon: {
           component: "Icon",
           type: "times",
-          hidden: !this.props.allowClear,
+          hidden: !this.props.allowClear || this.props.disabled,
           onClick: (args) => {
             this.clearTime();
             args.event && args.event.stopPropagation();
@@ -18687,7 +18687,7 @@ function _defineProperty2(obj, key, value) {
         rightIcon: {
           component: "Icon",
           type: "times",
-          hidden: !this.props.allowClear,
+          hidden: !this.props.allowClear || this.props.disabled,
           onClick: (args) => {
             this.clearTime();
             args.event && args.event.stopPropagation();
@@ -22663,7 +22663,7 @@ function _defineProperty2(obj, key, value) {
         leftIcon: "clock",
         rightIcon: {
           type: "times",
-          hidden: !this.props.allowClear,
+          hidden: !this.props.allowClear || this.props.disabled,
           onClick: (args) => {
             if (this.props.disabled) return false;
             this.clearTime();
