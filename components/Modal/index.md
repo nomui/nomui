@@ -16,6 +16,7 @@
 | onOk | 确定回调 | `(e)=>{}` | `(e)=>{ e.sender.close()}` |
 | onClose | 关闭的回调，不管是确定还是取消 | `({result,sender})=>{}` | - |
 | onCancel | 取消回调 | `(e)=>{}` | `(e)=>{ e.sender.close()}` |
+| footerRender | 自定义底部 | `(modal)=>{}` | - |
 | size | 模态框尺寸，支持预定义以及自定义宽度 | `SizeProps` \|`xsmall \| small \| middle \| large \| xlarge` | 'small' |
 
 ### SizeProps
