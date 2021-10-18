@@ -160,7 +160,7 @@ function _defineProperty2(obj, key, value) {
     return target;
   }
   function clone$1(from) {
-    if (isPlainObject(from)) {
+    if (isPlainObject(from) || Array.isArray(from)) {
       return JSON.parse(JSON.stringify(from));
     }
     return from;
@@ -22999,6 +22999,13 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const that = this;
       const { nodeSelectable, nodeCheckable } = that.props;
+      const {
+        options,
+        treeDataFields,
+        flatOptions,
+        multiple,
+        leafOnly,
+      } = this.selectControl.props;
       this.setProps({
         attrs: {
           style: { width: `${this.selectControl.content.offsetWidth()}px` },
@@ -23009,11 +23016,11 @@ function _defineProperty2(obj, key, value) {
             children: {
               component: "Tree",
               expandable: { byIndicator: true },
-              data: that.selectControl.props.options,
-              dataFields: that.selectControl.props.treeDataFields,
-              flatData: that.selectControl.props.flatOptions,
-              multiple: that.selectControl.props.multiple,
-              leafOnly: that.selectControl.props.leafOnly,
+              data: clone$1(options),
+              dataFields: treeDataFields,
+              flatData: flatOptions,
+              multiple,
+              leafOnly,
               nodeSelectable,
               nodeCheckable,
               _created: function () {
@@ -23090,12 +23097,8 @@ function _defineProperty2(obj, key, value) {
     }
     _getContentChildren() {
       const { showArrow, placeholder, allowClear } = this.props;
-      const { currentValue = [] } = this;
       const that = this;
-      const children = [];
-      if (typeof currentValue === "string") {
-        that.currentValue = [currentValue];
-      } // _content: 所选择的数据的展示
+      const children = []; // _content: 所选择的数据的展示
       children.push({
         classes: { "nom-tree-select-content": true },
         _created() {
@@ -23140,6 +23143,9 @@ function _defineProperty2(obj, key, value) {
     }
     _getContentBadges() {
       const { treeDataFields } = this.props;
+      if (typeof this.currentValue === "string") {
+        this.currentValue = [this.currentValue];
+      }
       const { currentValue } = this;
       const items = [];
       const that = this;
@@ -23152,13 +23158,15 @@ function _defineProperty2(obj, key, value) {
                 type: "round", // size: 'xs',
                 text: item[treeDataFields.text],
                 key: item[treeDataFields.key],
-                removable: function (param) {
-                  that._setValue(
-                    currentValue.filter(function (k) {
-                      return k !== param;
-                    })
-                  );
-                },
+                removable:
+                  that.props.multiple &&
+                  function (param) {
+                    that._setValue(
+                      currentValue.filter(function (k) {
+                        return k !== param;
+                      })
+                    );
+                  },
               });
             }
           });
@@ -23208,19 +23216,15 @@ function _defineProperty2(obj, key, value) {
       this._content.update({ children: this._getContentBadges() });
     } // getValue时根据选中的节点返回
     _getValue() {
-      if (isNullish(this.tempValue)) return null;
-      const { multiple, treeDataFields } = this.props;
-      if (multiple) {
-        const checkedKeys = this.tree.getCheckedNodeKeys();
-        return checkedKeys;
-      }
-      const selectNode = this.tree.getSelectedNode();
-      return selectNode && selectNode[treeDataFields.key];
+      return this.tempValue;
     }
     _valueChange(changed) {
       const { newValue } = changed;
-      if (newValue) {
-        this.props.allowClear && this.clearIcon.show();
+      if (this.props.allowClear) {
+        // newValue有值 ? 展示清空icon : icon隐藏
+        newValue && newValue.length
+          ? this.clearIcon.show()
+          : this.clearIcon.hide();
       }
       if (this.placeholder) {
         if (

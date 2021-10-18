@@ -146,7 +146,7 @@ export function extend() {
 }
 
 export function clone(from) {
-  if (isPlainObject(from)) {
+  if (isPlainObject(from) || Array.isArray(from)) {
     return JSON.parse(JSON.stringify(from))
   }
 
