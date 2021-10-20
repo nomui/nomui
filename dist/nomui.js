@@ -12215,12 +12215,9 @@ function _defineProperty2(obj, key, value) {
           },
         },
         selectedMultiple: {
+          classes: { "nom-select-multiple": true },
           component: List,
-          itemDefaults: {
-            _config: function () {
-              this.setProps({ tag: "span", children: this.props.text });
-            },
-          },
+          itemDefaults: {},
           itemSelectable: { scrollIntoView: true },
           gutter: "md",
         },
@@ -12259,6 +12256,29 @@ function _defineProperty2(obj, key, value) {
           itemDefaults: {
             key() {
               return this.props.value;
+            },
+            _config: function () {
+              this.setProps({
+                tag: "span",
+                children: [
+                  {
+                    tag: "span",
+                    classes: { "nom-select-item-content": true },
+                    children: this.props.text,
+                  },
+                  {
+                    component: Icon,
+                    type: "close",
+                    classes: { "nom-select-item-remove": true },
+                    onClick: (args) => {
+                      const key = args.sender.parent.key;
+                      that.selectedMultiple.removeItem(key);
+                      that.optionList.unselectItem(key);
+                      args.event && args.event.stopPropagation();
+                    },
+                  },
+                ],
+              });
             },
           },
           _created() {
@@ -15294,7 +15314,8 @@ function _defineProperty2(obj, key, value) {
           onscroll: () => {
             const { scrollLeft } = this.element;
             this.grid.header.element.scrollLeft = scrollLeft;
-            this.grid.header.scrollbar.setScrollLeft(scrollLeft);
+            this.grid.header.scrollbar &&
+              this.grid.header.scrollbar.setScrollLeft(scrollLeft);
           },
         },
       });

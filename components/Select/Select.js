@@ -31,14 +31,9 @@ class Select extends Field {
         },
       },
       selectedMultiple: {
+        classes: { 'nom-select-multiple': true },
         component: List,
         itemDefaults: {
-          _config: function () {
-            this.setProps({
-              tag: 'span',
-              children: this.props.text,
-            })
-          },
         },
         itemSelectable: {
           scrollIntoView: true,
@@ -59,8 +54,15 @@ class Select extends Field {
 
   _config() {
     const that = this
-    const { multiple, showArrow, placeholder, disabled, showSearch, allowClear, options } =
-      this.props
+    const {
+      multiple,
+      showArrow,
+      placeholder,
+      disabled,
+      showSearch,
+      allowClear,
+      options,
+    } = this.props
     const children = []
 
     this._normalizeInternalOptions(options)
@@ -76,6 +78,29 @@ class Select extends Field {
         itemDefaults: {
           key() {
             return this.props.value
+          },
+          _config: function () {
+            this.setProps({
+              tag: 'span',
+              children: [
+                {
+                  tag: 'span',
+                  classes: {'nom-select-item-content': true},
+                  children: this.props.text,
+                },
+                {
+                  component: Icon,
+                  type: 'close',
+                  classes: {'nom-select-item-remove': true},
+                  onClick: (args) => {
+                    const key = args.sender.parent.key
+                    that.selectedMultiple.removeItem(key)
+                    that.optionList.unselectItem(key)
+                    args.event && args.event.stopPropagation()
+                  }
+                }
+              ],
+            })
           },
         },
         _created() {

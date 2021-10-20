@@ -6600,6 +6600,19 @@ textarea .nom-textarea {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item {
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+  background: #f5f5f5;
+  border: 1px solid #f0f0f0;
+}
+.nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item .nom-select-item-content {
+  margin-right: 4px;
+}
+.nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item .nom-icon {
+  font-size: 8px;
+}
 .nom-select > .nom-field-content .nom-control .nom-select-search-input {
   width: 100%;
   border: none;
