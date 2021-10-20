@@ -15294,8 +15294,7 @@ function _defineProperty2(obj, key, value) {
           onscroll: () => {
             const { scrollLeft } = this.element;
             this.grid.header.element.scrollLeft = scrollLeft;
-            this.grid.header.scrollbar &&
-              this.grid.header.scrollbar.setScrollLeft(scrollLeft);
+            this.grid.header.scrollbar.setScrollLeft(scrollLeft);
           },
         },
       });
