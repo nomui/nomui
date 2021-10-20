@@ -35,7 +35,7 @@ class TreeSelect extends Field {
   }
 
   _config() {
-    this.getListData()
+    this.getOptionsMap()
     const children = this._getContentChildren()
     this.setProps({
       control: {
@@ -56,22 +56,25 @@ class TreeSelect extends Field {
     this._valueChange({ newValue: this.currentValue })
   }
 
-  // tree 转换为list
-  getListData() {
-    this.listData = this.getList()
+  // 存一份 {key: optionItem} 的数据
+  getOptionsMap() {
+    this.optionMap = this.getList()
   }
 
   // 树结构扁平化为数组数据
   getList() {
     const { treeDataFields } = this.props
-    const list = []
+    const optionMap = []
     function mapTree(data) {
       return data.forEach(function (item) {
-        list.push({
-          key: item[treeDataFields.key],
-          [treeDataFields.text]: item[treeDataFields.text],
-          [treeDataFields.key]: item[treeDataFields.key],
-        })
+        const _fieldKey = treeDataFields.key
+        const _fieldText = treeDataFields.text
+        
+        optionMap[item[_fieldKey]] = {
+          key: item[_fieldKey],
+          [_fieldKey]: item[_fieldKey],
+          [_fieldText]: item[_fieldText],
+        }
         if (item.children && item.children.length > 0) {
           mapTree(item.children)
         }
@@ -79,7 +82,7 @@ class TreeSelect extends Field {
     }
 
     mapTree(this.props.options)
-    return list
+    return optionMap
   }
 
   _getContentChildren() {
@@ -149,25 +152,24 @@ class TreeSelect extends Field {
     const items = []
     const that = this
     if (currentValue && currentValue.length) {
-      currentValue.forEach((key) => {
-        this.listData.forEach((item) => {
-          if (key === item.key) {
-            items.push({
-              component: 'Tag',
-              type: 'round',
-              // size: 'xs',
-              text: item[treeDataFields.text],
-              key: item[treeDataFields.key],
-              removable: that.props.multiple && function (param) {
-                that._setValue(
-                  currentValue.filter(function (k) {
-                    return k !== param
-                  }),
-                )
-              },
-            })
-          }
-        })
+      currentValue.forEach((curValue) => {
+        const curOption = this.optionMap[curValue]
+        if(curOption) {
+          items.push({
+            component: 'Tag',
+            type: 'round',
+            // size: 'xs',
+            text: curOption[treeDataFields.text],
+            key: curOption[treeDataFields.key],
+            removable: that.props.multiple && function (param) {
+              that._setValue(
+                currentValue.filter(function (k) {
+                  return k !== param
+                }),
+              )
+            },
+          })
+        }
       })
     }
     return items
