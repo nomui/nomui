@@ -19,7 +19,7 @@ class TreeSelectPopup extends Popup {
     const that = this
     const { nodeSelectable, nodeCheckable } = that.props
     const { options, treeDataFields, flatOptions, multiple, leafOnly } = this.selectControl.props
-    
+
     this.setProps({
       attrs: {
         style: {

@@ -32,11 +32,10 @@ class TreeSelect extends Field {
     if (this.props.treeCheckable) {
       this.props.multiple = true
     }
-
-    this.getListData()
   }
 
   _config() {
+    this.getListData()
     const children = this._getContentChildren()
     this.setProps({
       control: {
