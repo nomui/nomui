@@ -21,7 +21,8 @@ class ModalDialog extends Component {
         if (isFunction(props)) {
           const pNames = this.getParameterNames(props)
           if (pNames.length && pNames[0] === '{') {
-            props = contentConfig({ modal: modal, args: modal.props.args })
+            const args = modal.props.args || {}
+            props = contentConfig({ modal: modal, args: args })
             if (props.then) {
               props.then((result) => {
                 props = result
