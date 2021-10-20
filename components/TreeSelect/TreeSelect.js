@@ -85,12 +85,8 @@ class TreeSelect extends Field {
 
   _getContentChildren() {
     const { showArrow, placeholder, allowClear } = this.props
-    const { currentValue = [] } = this
     const that = this
     const children = []
-    if (typeof currentValue === 'string') {
-      that.currentValue = [currentValue]
-    }
 
     // _content: 所选择的数据的展示
     children.push({
@@ -147,6 +143,9 @@ class TreeSelect extends Field {
 
   _getContentBadges() {
     const { treeDataFields } = this.props
+    if (typeof this.currentValue === 'string') {
+      this.currentValue = [this.currentValue]
+    }
     const { currentValue } = this
     const items = []
     const that = this
@@ -160,7 +159,7 @@ class TreeSelect extends Field {
               // size: 'xs',
               text: item[treeDataFields.text],
               key: item[treeDataFields.key],
-              removable: function (param) {
+              removable: that.props.multiple && function (param) {
                 that._setValue(
                   currentValue.filter(function (k) {
                     return k !== param
@@ -229,21 +228,14 @@ class TreeSelect extends Field {
 
   // getValue时根据选中的节点返回
   _getValue() {
-    if (isNullish(this.tempValue)) return null
-
-    const { multiple, treeDataFields } = this.props
-    if (multiple) {
-      const checkedKeys = this.tree.getCheckedNodeKeys()
-      return checkedKeys
-    }
-    const selectNode = this.tree.getSelectedNode()
-    return selectNode && selectNode[treeDataFields.key]
+    return this.tempValue
   }
 
   _valueChange(changed) {
     const { newValue } = changed
-    if (newValue) {
-      this.props.allowClear && this.clearIcon.show()
+    if(this.props.allowClear) {
+      // newValue有值 ? 展示清空icon : icon隐藏
+      newValue && newValue.length ? this.clearIcon.show() : this.clearIcon.hide()
     }
     if (this.placeholder) {
       if ((Array.isArray(newValue) && newValue.length === 0) || isNullish(newValue)) {

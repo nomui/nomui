@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
+import { clone } from '../util/index'
 
 class TreeSelectPopup extends Popup {
   constructor(props, ...mixins) {
@@ -17,6 +18,8 @@ class TreeSelectPopup extends Popup {
   _config() {
     const that = this
     const { nodeSelectable, nodeCheckable } = that.props
+    const { options, treeDataFields, flatOptions, multiple, leafOnly } = this.selectControl.props
+    
     this.setProps({
       attrs: {
         style: {
@@ -31,10 +34,11 @@ class TreeSelectPopup extends Popup {
             expandable: {
               byIndicator: true,
             },
-            data: that.selectControl.props.options,
-            dataFields: that.selectControl.props.treeDataFields,
-            multiple: that.selectControl.props.multiple,
-            leafOnly: that.selectControl.props.leafOnly,
+            data: clone(options),
+            dataFields: treeDataFields,
+            flatData: flatOptions,
+            multiple,
+            leafOnly,
             nodeSelectable,
             nodeCheckable,
             _created: function () {

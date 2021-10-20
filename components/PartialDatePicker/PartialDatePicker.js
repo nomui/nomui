@@ -39,7 +39,7 @@ class PartialDatePicker extends Textbox {
       rightIcon: {
         component: 'Icon',
         type: 'times',
-        hidden: !this.props.allowClear,
+        hidden: !this.props.allowClear || this.props.disabled,
         onClick: (args) => {
           this.clearTime()
           args.event && args.event.stopPropagation()
