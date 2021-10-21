@@ -159,6 +159,7 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| flatData | 是否根据传入的扁平结构数据转成 tree 结构 | `boolean` | id |
 | parentField | 指定树形结构的`parentKey` | `string` | id |
 | childrenField | 指定树形结构的字段名 | `string` | children |
 | treeNodeColumn | 树节点列，被指定列会显示展开及折叠图标，可点击切换展开与否 | `string` | - |
