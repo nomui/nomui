@@ -210,14 +210,11 @@ class Tree extends Component {
   // 展开指定节点
   expandTo(param) {
     let node = this.getNode(param)
-    const { byIndicator }  = this.props.expandable
-
     // 遍历展开 parentNode
     while(node) {
-      // 节点的展开状态为 expanded = false
+      // 节点存在 && 为展开-->expanded: false
       if (node && node.content && !node.content.props.expanded) {
-        const comp = byIndicator ? node.content._expandIndicator  : node.content
-        comp._trigger('click')
+        node.content.expand()
       }
 
       node = node.parentNode
