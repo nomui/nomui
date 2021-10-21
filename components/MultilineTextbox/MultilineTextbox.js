@@ -10,7 +10,7 @@ class MultilineTextbox extends Field {
       autoSize: false, // boolean|{minRows:number,maxRows:number}
       placeholder: null,
       value: null,
-      maxLength: null,
+      maxlength: null,
       rows: null,
       readonly: false,
     }
@@ -20,7 +20,8 @@ class MultilineTextbox extends Field {
 
   _config() {
     const that = this
-    const { autoSize, value, placeholder, autofocus, readonly, rows, maxLength } = this.props
+    const { autoSize, value, placeholder, autofocus, readonly, rows } = this.props
+    const maxlength = this.props.maxlength || this.props.maxLength
 
     this.setProps({
       control: {
@@ -33,7 +34,7 @@ class MultilineTextbox extends Field {
             placeholder,
             autofocus,
             rows,
-            maxLength,
+            maxlength,
           },
           _created: function () {
             this.multilineTextbox = that
