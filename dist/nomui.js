@@ -15675,6 +15675,10 @@ function _defineProperty2(obj, key, value) {
       if (this.props.ellipsis === true) {
         this.props.ellipsis = "both";
       }
+      const { treeConfig } = this.props;
+      if (treeConfig && treeConfig.flatData) {
+        this.setProps({ data: this._toTreeGridData(that.props.data) });
+      }
       const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props;
       this._parseColumnsCustom();
       this._processCheckableColumn();
@@ -15721,6 +15725,31 @@ function _defineProperty2(obj, key, value) {
           { component: GridBody, line: line, rowDefaults: rowDefaults },
         ],
       });
+    }
+    _toTreeGridData(arrayData) {
+      const { keyField } = this.props;
+      const { parentField, childrenField } = this.props.treeConfig;
+      if (!keyField || keyField === "" || !arrayData) return [];
+      if (Array.isArray(arrayData)) {
+        const r = [];
+        const tmpMap = {};
+        arrayData.forEach((item) => {
+          tmpMap[item[keyField]] = item;
+          if (
+            tmpMap[item[parentField]] &&
+            item[keyField] !== item[parentField]
+          ) {
+            if (!tmpMap[item[parentField]][childrenField])
+              tmpMap[item[parentField]][childrenField] = [];
+            tmpMap[item[parentField]][childrenField].push(item);
+          } else {
+            // 无parent，为根节点，直接push进r
+            r.push(item);
+          }
+        });
+        return r;
+      }
+      return [arrayData];
     }
     _calcMinWidth() {
       this.minWidth = 0;
@@ -16247,6 +16276,8 @@ function _defineProperty2(obj, key, value) {
     onFilter: null,
     keyField: "id",
     treeConfig: {
+      flatData: false, // 数据源是否为一维数组
+      parentField: "parentKey",
       childrenField: "children",
       treeNodeColumn: null,
       initExpandLevel: -1,
