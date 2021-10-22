@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.34](https://github.com/nomui/nomui/compare/v1.0.0-alpha.33...v1.0.0-alpha.34) (2021-10-22)
+
+
+### Features
+
+* **Flex:** 实现行布局换行 ([fb3637d](https://github.com/nomui/nomui/commit/fb3637dd0d04bb92f0eef8ecfe97605c5ab7455d))
+* **Grid:** 支持配置 flatData 来实现treeGrid 的扁平数据传入 ([37ff25c](https://github.com/nomui/nomui/commit/37ff25c6d03a9c5763c02f33a98e5d55fcb8c9f3))
+* **Menu:** 新增 uistyle：short-menu，当前只在 direction 为 horizontal 时有效 ([143432a](https://github.com/nomui/nomui/commit/143432a9ff96fb7fd02f714fa4423d59d7617178))
+* **Select:** 多选时支持点击 icon删除已选中的选项，无需打开列表 ([5bb1cb2](https://github.com/nomui/nomui/commit/5bb1cb2e63cf591bd86c0fe2494b663e559331a6))
+* **Tree:** 添加expandTo, 展开特定节点的方法，完善tree组建的文档 ([860cbbd](https://github.com/nomui/nomui/commit/860cbbdc26ab8b31cf02c73367cfe3c001e14d93))
+
+
+### Bug Fixes
+
+* **DatePicker:** 禁用状态下不再显示清空按钮 ([31c3fdd](https://github.com/nomui/nomui/commit/31c3fdd332340bd0bb17e60941a1555619e469d9))
+* **Gird-scrollbar:** Gird未设置 sticky时，则无 scrollbar ([b2f7bfc](https://github.com/nomui/nomui/commit/b2f7bfc3b30365faa126fae74a88f235ff3ee82c))
+* **Tree:** 展开特定节点，修改实现方式，通过调用expand方法，而不是 trigger('click') 实现 ([0505836](https://github.com/nomui/nomui/commit/050583625e80c431f33578214cd968f628f6b0b4))
+* **TreeSelect:** 将options的数据存成map，优化选取之后的遍历算法 ([5f8ca3c](https://github.com/nomui/nomui/commit/5f8ca3cf763628bdb79aa1216330cfe07666b890))
+* **TreeSelect:** 设置flatOption: true时，popup的更新会导致重复执行flagData操作 ([e108867](https://github.com/nomui/nomui/commit/e1088670fd34eae3e15167238367ba01034659ef))
+* **TreeSelect:** 修复异步获取option的bug, 数据转换放至config中 ([230aebd](https://github.com/nomui/nomui/commit/230aebdbabd6e65816677db2c31e47fb38dc7afc))
+* **TreeSelect:** 修改TreeSelect无法被选中的bug ([9d69b4d](https://github.com/nomui/nomui/commit/9d69b4d9924912c50ddc27bea9fc3f57a631a7a2))
+
+
+### Docs
+
+* **Grid, Tree:** flatData的字段文档补充 ([e3eed32](https://github.com/nomui/nomui/commit/e3eed3243f314f2469d4fedbb0a19daa17710fb0))
+
 ## [1.0.0-alpha.33](https://github.com/nomui/nomui/compare/v1.0.0-alpha.32...v1.0.0-alpha.33) (2021-10-15)
 
 
