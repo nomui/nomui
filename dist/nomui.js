@@ -23280,6 +23280,11 @@ function _defineProperty2(obj, key, value) {
       this._content.update({ children: this._getContentBadges() });
     } // getValue时根据选中的节点返回
     _getValue() {
+      if (this.props.multiple === false) {
+        if (Array.isArray(this.tempValue)) {
+          return this.tempValue[0];
+        }
+      }
       return this.tempValue;
     }
     _valueChange(changed) {

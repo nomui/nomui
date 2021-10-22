@@ -69,7 +69,7 @@ class TreeSelect extends Field {
       return data.forEach(function (item) {
         const _fieldKey = treeDataFields.key
         const _fieldText = treeDataFields.text
-        
+
         optionMap[item[_fieldKey]] = {
           key: item[_fieldKey],
           [_fieldKey]: item[_fieldKey],
@@ -154,20 +154,22 @@ class TreeSelect extends Field {
     if (currentValue && currentValue.length) {
       currentValue.forEach((curValue) => {
         const curOption = this.optionMap[curValue]
-        if(curOption) {
+        if (curOption) {
           items.push({
             component: 'Tag',
             type: 'round',
             // size: 'xs',
             text: curOption[treeDataFields.text],
             key: curOption[treeDataFields.key],
-            removable: that.props.multiple && function (param) {
-              that._setValue(
-                currentValue.filter(function (k) {
-                  return k !== param
-                }),
-              )
-            },
+            removable:
+              that.props.multiple &&
+              function (param) {
+                that._setValue(
+                  currentValue.filter(function (k) {
+                    return k !== param
+                  }),
+                )
+              },
           })
         }
       })
@@ -179,13 +181,13 @@ class TreeSelect extends Field {
   _getPopupNodeSelectable() {
     const { multiple } = this.props
     const { currentValue } = this
-    if(multiple) return false
-    
+    if (multiple) return false
+
     return {
       selectedNodeKey: currentValue && currentValue[0],
       onNodeSelect: ({ nodeData }) => {
         this._setValue([nodeData.key])
-      }
+      },
     }
   }
 
@@ -229,12 +231,17 @@ class TreeSelect extends Field {
 
   // getValue时根据选中的节点返回
   _getValue() {
+    if (this.props.multiple === false) {
+      if (Array.isArray(this.tempValue)) {
+        return this.tempValue[0]
+      }
+    }
     return this.tempValue
   }
 
   _valueChange(changed) {
     const { newValue } = changed
-    if(this.props.allowClear) {
+    if (this.props.allowClear) {
       // newValue有值 ? 展示清空icon : icon隐藏
       newValue && newValue.length ? this.clearIcon.show() : this.clearIcon.hide()
     }
