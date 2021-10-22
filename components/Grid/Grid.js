@@ -56,6 +56,7 @@ class Grid extends Component {
     const that = this
     // 切换分页 data数据更新时 此两项不重置会导致check表现出错
     this.rowsRefs = {}
+    this.disableCheckedRowMap = {}
     this.checkedRowRefs = {}
     this._propStyleClasses = ['bordered']
     if (this.props.ellipsis === true) {
@@ -389,20 +390,21 @@ class Grid extends Component {
 
   // 遍历 rowTr 实例，调用其check方法
   checkAllRows(options) {
-    const { rowsRefs } = this
+    const { rowsRefs, disableCheckedRowMap } = this
     Object.keys(rowsRefs).forEach((key) => {
       const refItem = rowsRefs[key]
-      if (refItem.props && !isNullish(refItem.props.data[this.props.keyField])) {
+      // 对应rowData 的key存在数据 && 有checkbox
+      if (refItem.props && !isNullish(refItem.props.data[this.props.keyField]) && !disableCheckedRowMap[key]) {
         refItem.check(options)
       }
     })
   }
 
   uncheckAllRows(options) {
-    const { rowsRefs } = this
+    const { rowsRefs, disableCheckedRowMap } = this
     Object.keys(rowsRefs).forEach((key) => {
       const refItem = rowsRefs[key]
-      if (refItem.props && !isNullish(refItem.props.data[this.props.keyField])) {
+      if (refItem.props && !isNullish(refItem.props.data[this.props.keyField]) && !disableCheckedRowMap[key]) {
         refItem.uncheck(options)
       }
     })
@@ -421,7 +423,8 @@ class Grid extends Component {
     if (checkedRowsLength === 0) {
       this._checkboxAllRef.setValue(false, false)
     } else {
-      const allRowsLength = Object.keys(this.rowsRefs).length
+      const { disableCheckedRowKeys } = this.props.rowCheckable
+      const allRowsLength = Object.keys(this.rowsRefs).length - disableCheckedRowKeys.length
       if (allRowsLength === checkedRowsLength) {
         this._checkboxAllRef.setValue(true, false)
       } else {
@@ -537,7 +540,13 @@ class Grid extends Component {
       if (!isPlainObject(rowCheckable)) {
         normalizedRowCheckable = {}
       }
-      const { checkedRowKeys = [] } = normalizedRowCheckable
+      const { checkedRowKeys = [], disableCheckedRowKeys = [] } = normalizedRowCheckable
+
+      // 不展示checkbox 这一列的数据
+      disableCheckedRowKeys.forEach(key => {
+        this.disableCheckedRowMap[key] = true
+      })
+      
       const checkedRowKeysHash = {}
       checkedRowKeys.forEach((rowKey) => {
         checkedRowKeysHash[rowKey] = true
@@ -562,6 +571,10 @@ class Grid extends Component {
               },
             },
             cellRender: ({ row, rowData }) => {
+              // 无需渲染 checkbox
+              if(grid.disableCheckedRowMap[row.key]) {
+                return {}
+              }
               if (checkedRowKeysHash[row.key] === true) {
                 grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
               }

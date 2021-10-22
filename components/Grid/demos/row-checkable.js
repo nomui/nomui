@@ -76,7 +76,7 @@ define([], function () {
             ref: (c) => {
               gridRef = c
             },
-            rowCheckable: { checkedRowKeys: [0, 5] },
+            rowCheckable: { checkedRowKeys: [0, 4, 5], disableCheckedRowKeys: [4] },
             columnsCustomizable: true,
             columns: [
               {
