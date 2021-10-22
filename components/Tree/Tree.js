@@ -207,6 +207,20 @@ class Tree extends Component {
     }
   }
 
+  // 展开指定节点
+  expandTo(param) {
+    let node = this.getNode(param)
+    // 遍历展开 parentNode
+    while(node) {
+      // 节点存在 && 为展开-->expanded: false
+      if (node && node.content && !node.content.props.expanded) {
+        node.content.expand()
+      }
+
+      node = node.parentNode
+    }
+  }
+
   scrollTo(param) {
     const node = this.getNode(param)
     if (node) {
