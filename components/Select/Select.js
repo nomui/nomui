@@ -33,8 +33,7 @@ class Select extends Field {
       selectedMultiple: {
         classes: { 'nom-select-multiple': true },
         component: List,
-        itemDefaults: {
-        },
+        itemDefaults: {},
         itemSelectable: {
           scrollIntoView: true,
         },
@@ -85,20 +84,20 @@ class Select extends Field {
               children: [
                 {
                   tag: 'span',
-                  classes: {'nom-select-item-content': true},
+                  classes: { 'nom-select-item-content': true },
                   children: this.props.text,
                 },
                 {
                   component: Icon,
                   type: 'close',
-                  classes: {'nom-select-item-remove': true},
+                  classes: { 'nom-select-item-remove': true },
                   onClick: (args) => {
                     const key = args.sender.parent.key
                     that.selectedMultiple.removeItem(key)
                     that.optionList.unselectItem(key)
                     args.event && args.event.stopPropagation()
-                  }
-                }
+                  },
+                },
               ],
             })
           },

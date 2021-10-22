@@ -7092,6 +7092,7 @@ textarea .nom-textarea {
   flex-grow: 1;
   width: 100%;
   padding: 0.5rem 0.5rem;
+  overflow-x: hidden;
 }
 .p-control-width-xsmall.nom-field > .nom-field-content > .nom-control {
   max-width: 104px;
