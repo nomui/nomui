@@ -16,6 +16,7 @@ export default {
           value: this.props.value,
           option: this.props,
         }
+        selectControl.placeholder.hide()
         if (selectProps.multiple === false) {
           selectControl.selectedSingle.update(selectedOption)
           selectControl.popup.hide()
