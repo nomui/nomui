@@ -16,6 +16,7 @@ define([
   './row-checkable-events.js',
   './custom-columns.js',
   './tree-grid.js',
+  './tree-grid-flat-data.js',
   './tree-grid-indicator.js',
   './row-expandable.js',
   './nest-grid.js',

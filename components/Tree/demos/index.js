@@ -7,6 +7,7 @@ define([
   './icon.js',
   './node-defaults.js',
   './fit.js',
+  './expand-to.js',
   './scroll-to.js',
 ], function () {
   return {
