@@ -17582,7 +17582,7 @@ function _defineProperty2(obj, key, value) {
         autoSize: false, // boolean|{minRows:number,maxRows:number}
         placeholder: null,
         value: null,
-        maxLength: null,
+        maxlength: null,
         rows: null,
         readonly: false,
       };
@@ -17597,15 +17597,15 @@ function _defineProperty2(obj, key, value) {
         autofocus,
         readonly,
         rows,
-        maxLength,
       } = this.props;
+      const maxlength = this.props.maxlength || this.props.maxLength;
       this.setProps({
         control: {
           children: {
             component: Textarea,
             autoSize: readonly || autoSize,
             readonly,
-            attrs: { value, placeholder, autofocus, rows, maxLength },
+            attrs: { value, placeholder, autofocus, rows, maxlength },
             _created: function () {
               this.multilineTextbox = that;
               this.multilineTextbox.textarea = this;

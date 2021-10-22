@@ -5391,7 +5391,6 @@ img {
 }
 .nom-tab-list.p-uistyle-line > .nom-list-content > .nom-list-item-wrapper > .nom-list-item.s-selected {
   color: #4263eb;
-  font-weight: 500;
   border-bottom-color: #4263eb;
 }
 .nom-tab-list.p-uistyle-card > .nom-list-content {
