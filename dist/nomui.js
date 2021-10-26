@@ -12066,7 +12066,7 @@ function _defineProperty2(obj, key, value) {
             value: this.props.value,
             option: this.props,
           };
-          selectControl.placeholder.hide();
+          selectControl.placeholder && selectControl.placeholder.hide();
           if (selectProps.multiple === false) {
             selectControl.selectedSingle.update(selectedOption);
             selectControl.popup.hide();
