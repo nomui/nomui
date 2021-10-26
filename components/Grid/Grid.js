@@ -430,6 +430,10 @@ class Grid extends Component {
     const { rowsRefs } = this
     Object.keys(rowsRefs).forEach((key) => {
       const refItem = rowsRefs[key]
+      const {props} = refItem._checkboxRef
+      // _checkboxRef disabled || hidden, 则跳出循环
+      if(!props || props.disabled || props.hidden) return
+
       if (refItem.props && !isNullish(refItem.props.data[this.props.keyField])) {
         refItem.check(options)
       }
@@ -440,6 +444,11 @@ class Grid extends Component {
     const { rowsRefs } = this
     Object.keys(rowsRefs).forEach((key) => {
       const refItem = rowsRefs[key]
+      const {props} = refItem._checkboxRef
+      
+      // _checkboxRef disabled || hidden, 则跳出循环
+      if(!props || props.disabled || props.hidden) return
+      
       if (refItem.props && !isNullish(refItem.props.data[this.props.keyField])) {
         refItem.uncheck(options)
       }
@@ -459,8 +468,15 @@ class Grid extends Component {
     if (checkedRowsLength === 0) {
       this._checkboxAllRef.setValue(false, false)
     } else {
-      const allRowsLength = Object.keys(this.rowsRefs).length
-      if (allRowsLength === checkedRowsLength) {
+      const allRowsLength = Object.keys(this.rowsRefs).filter(key => {
+        const refItem = this.rowsRefs[key]
+        const { props } = refItem._checkboxRef
+        
+        // 过滤 _checkboxRef 存在 && disabled 和 hidden为false
+        return props && !props.disabled && !props.hidden
+      }).length
+      
+      if (allRowsLength <= checkedRowsLength) {
         this._checkboxAllRef.setValue(true, false)
       } else {
         this._checkboxAllRef.partCheck(false)
@@ -575,7 +591,7 @@ class Grid extends Component {
       if (!isPlainObject(rowCheckable)) {
         normalizedRowCheckable = {}
       }
-      const { checkedRowKeys = [] } = normalizedRowCheckable
+      const { checkedRowKeys = [], checkboxRender } = normalizedRowCheckable
       const checkedRowKeysHash = {}
       checkedRowKeys.forEach((rowKey) => {
         checkedRowKeysHash[rowKey] = true
@@ -600,16 +616,29 @@ class Grid extends Component {
               },
             },
             cellRender: ({ row, rowData }) => {
-              if (checkedRowKeysHash[row.key] === true) {
+              let _checkboxProps = {}
+              // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
+              if(checkboxRender && isFunction(checkboxRender)) {
+                _checkboxProps = checkboxRender({row, rowData})
+              }
+
+              // 计算得到当前的 checkbox的状态
+              _checkboxProps.value = _checkboxProps.value || checkedRowKeysHash[row.key] === true
+
+              if (checkedRowKeysHash[row.key] === true || _checkboxProps.value) {
                 grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
               }
+
+              
               return {
                 component: Checkbox,
                 plain: true,
                 _created: (inst) => {
                   row._checkboxRef = inst
                 },
-                value: checkedRowKeysHash[row.key] === true,
+                _config() {
+                  this.setProps(_checkboxProps)
+                },
                 onValueChange: (args) => {
                   if (args.newValue === true) {
                     row._check()
