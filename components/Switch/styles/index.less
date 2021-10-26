@@ -21,7 +21,7 @@
 }
 
 .nom-switch {
-  >.nom-field-content {
+  > .nom-field-content {
     .nom-switch-control {
       display: flex;
       align-items: center;
@@ -59,7 +59,7 @@
   }
 
   &.p-size-small {
-    >.nom-field-content {
+    > .nom-field-content {
       .nom-switch-control {
         .switch-size(@height-sm; @font-size-sm);
       }
@@ -67,7 +67,7 @@
   }
 
   &.p-size-xsmall {
-    >.nom-field-content {
+    > .nom-field-content {
       .nom-switch-control {
         .switch-size(@height-xs; @font-size-xs);
       }
@@ -75,7 +75,7 @@
   }
 
   &.p-size-large {
-    >.nom-field-content {
+    > .nom-field-content {
       .nom-switch-control {
         .switch-size(@height-lg; @font-size-lg);
       }
@@ -83,9 +83,16 @@
   }
 
   &.p-size-xlarge {
-    >.nom-field-content {
+    > .nom-field-content {
       .nom-switch-control {
         .switch-size(@height-xl; @font-size-xl);
+      }
+    }
+  }
+  &.s-disabled {
+    > .nom-field-content {
+      .nom-switch-control.nom-switch-active {
+        background-color: #888;
       }
     }
   }
