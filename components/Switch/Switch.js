@@ -4,7 +4,6 @@ import Field from '../Field/index'
 class Switch extends Field {
   constructor(props, ...mixins) {
     const defaults = {
-
       unselectedText: '关',
       selectedText: '开',
       value: false,
@@ -23,6 +22,9 @@ class Switch extends Field {
         classes: { 'nom-switch-control': true, 'nom-switch-active': !!value },
         attrs: {
           onclick: () => {
+            if (that.props.disabled) {
+              return false
+            }
             that._handleClick()
           },
         },
@@ -61,7 +63,7 @@ class Switch extends Field {
             },
           },
         ],
-      }
+      },
     })
 
     super._config()

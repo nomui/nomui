@@ -4,7 +4,7 @@ import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
 import { STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
-import { clone, isFunction, isNullish, isPlainObject } from '../util/index'
+import { isFunction, isNullish, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
 import GridSettingPopup from './GridSettingPopup'
@@ -21,7 +21,8 @@ class Grid extends Component {
     this.checkedRowRefs = {}
     this._doNotAutoScroll = true
 
-    this.originColumns = clone(this.props.columns)
+    this.originColumns = [...this.props.columns]
+
     // 列设置弹窗 tree的数据
     this.popupTreeData = this.originColumns
     this.filter = {}
@@ -63,9 +64,9 @@ class Grid extends Component {
     }
 
     const { treeConfig } = this.props
-    if(treeConfig && treeConfig.flatData) {
+    if (treeConfig && treeConfig.flatData) {
       this.setProps({
-        data: this._toTreeGridData(that.props.data)
+        data: this._toTreeGridData(that.props.data),
       })
     }
 
@@ -157,18 +158,19 @@ class Grid extends Component {
   _toTreeGridData(arrayData) {
     const { keyField } = this.props
     const { parentField, childrenField } = this.props.treeConfig
-    
+
     if (!keyField || keyField === '' || !arrayData) return []
-    
+
     if (Array.isArray(arrayData)) {
       const r = []
       const tmpMap = {}
-      
+
       arrayData.forEach((item) => {
         tmpMap[item[keyField]] = item
 
         if (tmpMap[item[parentField]] && item[keyField] !== item[parentField]) {
-          if (!tmpMap[item[parentField]][childrenField]) tmpMap[item[parentField]][childrenField] = []
+          if (!tmpMap[item[parentField]][childrenField])
+            tmpMap[item[parentField]][childrenField] = []
           tmpMap[item[parentField]][childrenField].push(item)
         } else {
           // 无parent，为根节点，直接push进r
@@ -210,7 +212,7 @@ class Grid extends Component {
       this.autoMergeCols()
     }
 
-    if(!data || !data.length) {
+    if (!data || !data.length) {
       this._doNotAutoScroll = false
       this._setScrollPlace(true)
     }
@@ -295,6 +297,7 @@ class Grid extends Component {
           },
         }
       })
+
       this.props.visibleColumns = vc
     }
     // update 列时，无需出发autoScroll
@@ -658,8 +661,8 @@ class Grid extends Component {
 
   autoScrollGrid() {
     const { _headerScrollInfo, _bodyScrollInfo } = this
-    if(!_headerScrollInfo || !_bodyScrollInfo) return
-    
+    if (!_headerScrollInfo || !_bodyScrollInfo) return
+
     this.header.element.scrollLeft = _headerScrollInfo.left || 0
     this.body.element.scrollLeft = _bodyScrollInfo.left || 0
 
