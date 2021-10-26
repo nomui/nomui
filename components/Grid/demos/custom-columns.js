@@ -9,7 +9,12 @@ define([], function () {
           title: '姓名',
           field: 'name',
           sortable: true,
-          children: [],
+          cellRender: (args) => {
+            return {
+              component: 'Button',
+              text: `${args.cellData}`,
+            }
+          },
         },
         {
           title: '其它',
@@ -75,11 +80,6 @@ define([], function () {
       ]
 
       const s = [
-        {
-          title: '姓名',
-          field: 'name',
-          sortable: true,
-        },
         {
           title: '其它',
           field: 'other',

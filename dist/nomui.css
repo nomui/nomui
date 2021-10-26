@@ -7678,6 +7678,9 @@ textarea .nom-textarea {
   width: calc(48px - 4px);
   height: calc(48px - 4px);
 }
+.nom-switch.s-disabled > .nom-field-content .nom-switch-control.nom-switch-active {
+  background-color: #888;
+}
 .nom-mask-info .nom-icon.p-type-eye {
   position: relative;
   top: 2px;

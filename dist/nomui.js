@@ -15638,7 +15638,7 @@ function _defineProperty2(obj, key, value) {
       this.rowsRefs = {};
       this.checkedRowRefs = {};
       this._doNotAutoScroll = true;
-      this.originColumns = clone$1(this.props.columns); // 列设置弹窗 tree的数据
+      this.originColumns = [...this.props.columns]; // 列设置弹窗 tree的数据
       this.popupTreeData = this.originColumns;
       this.filter = {};
     }
@@ -16312,7 +16312,7 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const that = this;
-      const { groupDefaults, value } = this.props;
+      const { groupDefaults, value, disabled } = this.props;
       const actionRender = groupDefaults.actionRender || null;
       this.extGroupDefaults = Component.extendProps(groupDefaults, {
         _config: function () {
@@ -16327,6 +16327,7 @@ function _defineProperty2(obj, key, value) {
                 {
                   component: "Button",
                   text: "移除",
+                  disabled: disabled,
                   onClick: () => {
                     that.removeGroup(group);
                   },
@@ -16354,6 +16355,7 @@ function _defineProperty2(obj, key, value) {
             text: "添加",
             span: 12,
             block: true,
+            disabled: disabled,
             onClick: () => {
               that.addGroup();
             },
@@ -21961,6 +21963,9 @@ function _defineProperty2(obj, key, value) {
           classes: { "nom-switch-control": true, "nom-switch-active": !!value },
           attrs: {
             onclick: () => {
+              if (that.props.disabled) {
+                return false;
+              }
               that._handleClick();
             },
           },
