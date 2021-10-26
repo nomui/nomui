@@ -19,7 +19,7 @@ class GroupList extends Group {
 
   _config() {
     const that = this
-    const { groupDefaults, value } = this.props
+    const { groupDefaults, value, disabled } = this.props
     const actionRender = groupDefaults.actionRender || null
 
     this.extGroupDefaults = Component.extendProps(groupDefaults, {
@@ -38,6 +38,7 @@ class GroupList extends Group {
               {
                 component: 'Button',
                 text: '移除',
+                disabled: disabled,
                 onClick: () => {
                   that.removeGroup(group)
                 },
@@ -65,6 +66,7 @@ class GroupList extends Group {
           text: '添加',
           span: 12,
           block: true,
+          disabled: disabled,
           onClick: () => {
             that.addGroup()
           },
