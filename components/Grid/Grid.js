@@ -430,9 +430,9 @@ class Grid extends Component {
     const { rowsRefs } = this
     Object.keys(rowsRefs).forEach((key) => {
       const refItem = rowsRefs[key]
-      const {props} = refItem._checkboxRef
+      const { props } = refItem._checkboxRef
       // _checkboxRef disabled || hidden, 则跳出循环
-      if(!props || props.disabled || props.hidden) return
+      if (!props || props.disabled || props.hidden) return
 
       if (refItem.props && !isNullish(refItem.props.data[this.props.keyField])) {
         refItem.check(options)
@@ -444,11 +444,11 @@ class Grid extends Component {
     const { rowsRefs } = this
     Object.keys(rowsRefs).forEach((key) => {
       const refItem = rowsRefs[key]
-      const {props} = refItem._checkboxRef
-      
+      const { props } = refItem._checkboxRef
+
       // _checkboxRef disabled || hidden, 则跳出循环
-      if(!props || props.disabled || props.hidden) return
-      
+      if (!props || props.disabled || props.hidden) return
+
       if (refItem.props && !isNullish(refItem.props.data[this.props.keyField])) {
         refItem.uncheck(options)
       }
@@ -468,14 +468,14 @@ class Grid extends Component {
     if (checkedRowsLength === 0) {
       this._checkboxAllRef.setValue(false, false)
     } else {
-      const allRowsLength = Object.keys(this.rowsRefs).filter(key => {
+      const allRowsLength = Object.keys(this.rowsRefs).filter((key) => {
         const refItem = this.rowsRefs[key]
         const { props } = refItem._checkboxRef
-        
+
         // 过滤 _checkboxRef 存在 && disabled 和 hidden为false
         return props && !props.disabled && !props.hidden
       }).length
-      
+
       if (allRowsLength <= checkedRowsLength) {
         this._checkboxAllRef.setValue(true, false)
       } else {
@@ -584,9 +584,9 @@ class Grid extends Component {
     let { columns } = this.props
     columns = visibleColumns && visibleColumns.length ? visibleColumns : columns
     if (rowCheckable) {
-      if (columns.filter((item) => item.isChecker).length > 0) {
-        return
-      }
+      // 每次都重新渲染 checkbox列
+      columns = columns.filter((item) => !item.isChecker)
+
       let normalizedRowCheckable = rowCheckable
       if (!isPlainObject(rowCheckable)) {
         normalizedRowCheckable = {}
@@ -615,11 +615,11 @@ class Grid extends Component {
                 }
               },
             },
-            cellRender: ({ row, rowData }) => {
+            cellRender: ({ row, rowData, index }) => {
               let _checkboxProps = {}
               // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
-              if(checkboxRender && isFunction(checkboxRender)) {
-                _checkboxProps = checkboxRender({row, rowData})
+              if (checkboxRender && isFunction(checkboxRender)) {
+                _checkboxProps = checkboxRender({ row, rowData, index })
               }
 
               // 计算得到当前的 checkbox的状态
@@ -629,7 +629,6 @@ class Grid extends Component {
                 grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
               }
 
-              
               return {
                 component: Checkbox,
                 plain: true,

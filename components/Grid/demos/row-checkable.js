@@ -76,12 +76,12 @@ define([], function () {
             ref: (c) => {
               gridRef = c
             },
-            rowCheckable: { 
+            rowCheckable: {
               checkedRowKeys: [5],
-              checkboxRender: ({row, rowData}) => {
-                console.log("🚀 ~ file: row-checkable.js ~ line 82 ~ row", row)
-                return { disabled: rowData.id === 4, value: rowData.id === 4}
-              }
+              checkboxRender: ({ row, rowData }) => {
+                console.log('🚀 ~ file: row-checkable.js ~ line 82 ~ row', row)
+                return { disabled: rowData.id === 4, value: rowData.id === 4 }
+              },
             },
             columnsCustomizable: true,
             columns: [
