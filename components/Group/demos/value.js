@@ -50,6 +50,13 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
               rules: [{ type: 'email', message: 'Email 格式不正确' }],
             },
             {
+              component: 'MaskInfoField',
+              name: 'mobile',
+              type: 'mobile',
+              label: '联系方式',
+              value: '13548612345',
+            },
+            {
               component: 'RadioList',
               name: 'gender',
               label: '性别',
@@ -116,7 +123,7 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
               multiple: true,
               treeCheckable: {
                 cascadeCheckParent: true,
-                cascadeUncheckChildren: false
+                cascadeUncheckChildren: false,
               },
               options: [
                 {

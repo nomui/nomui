@@ -497,6 +497,12 @@ define([], function () {
                       url: '#!components!index?type=StaticText',
                     },
                     {
+                      text: 'MaskInfoField',
+                      subtext: '敏感信息打码字段',
+                      id: 'MaskInfoField',
+                      url: '#!components!index?type=MaskInfoField',
+                    },
+                    {
                       text: 'Field',
                       subtext: '字段',
                       id: 'field',
