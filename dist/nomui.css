@@ -6583,6 +6583,9 @@ textarea .nom-textarea {
   transform: rotate(45deg);
   content: '';
 }
+.nom-select > .nom-field-label + .nom-field-content {
+  width: 0;
+}
 .nom-select > .nom-field-content .nom-control {
   position: relative;
   min-height: 34px;
@@ -6635,10 +6638,10 @@ textarea .nom-textarea {
   visibility: hidden;
 }
 .nom-select > .nom-field-content .nom-control .nom-select-placeholder {
-  text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap;
   color: #bfbfbf;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .s-disabled.nom-select > .nom-field-content .nom-control {
   background-color: #e9ecef;
@@ -6934,6 +6937,9 @@ textarea .nom-textarea {
 .nom-time-range-picker > .nom-field-content > .nom-control > .nom-field.nom-time-picker {
   flex-grow: 1;
 }
+.nom-static-text > .nom-field-label + .nom-field-content {
+  width: 0;
+}
 .nom-static-text > .nom-field-content > .nom-control {
   min-height: calc(1.42857143rem + (0.375rem * 2) + 2px);
   padding: 0.375rem 0;
@@ -7092,7 +7098,6 @@ textarea .nom-textarea {
   flex-grow: 1;
   width: 100%;
   padding: 0.5rem 0.5rem;
-  overflow-x: hidden;
 }
 .p-control-width-xsmall.nom-field > .nom-field-content > .nom-control {
   max-width: 104px;
@@ -7558,13 +7563,16 @@ textarea .nom-textarea {
   height: 100%;
   overflow: auto;
 }
+.nom-tree-select > .nom-field-label + .nom-field-content {
+  width: 0;
+}
 .nom-tree-select > .nom-field-content {
   padding: 0.5rem 0.5rem;
 }
 .nom-tree-select > .nom-field-content .nom-control {
   position: relative;
-  min-height: 34px;
   height: 100%;
+  min-height: 34px;
   padding: 6px 24px 6px 12px;
   color: #000 !important;
   line-height: 1.42857;
@@ -7574,10 +7582,10 @@ textarea .nom-textarea {
   cursor: pointer;
 }
 .nom-tree-select > .nom-field-content .nom-control .nom-tree-select-placeholder {
-  text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap;
   color: #bfbfbf;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .nom-tree-select > .nom-field-content .nom-control .nom-tree-select-clear {
   position: absolute;
@@ -7897,6 +7905,9 @@ textarea .nom-textarea {
 .nom-empty.p-size-xlarge {
   padding-top: 150px;
   padding-bottom: 150px;
+}
+.nom-cascader > .nom-field-label + .nom-field-content {
+  width: 0;
 }
 .nom-cascader > .nom-field-content .nom-control {
   position: relative;

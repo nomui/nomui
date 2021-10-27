@@ -1,4 +1,7 @@
 .nom-select {
+  > .nom-field-label + .nom-field-content {
+    width: 0;
+  }
   > .nom-field-content {
     .nom-control {
       position: relative;
@@ -60,10 +63,10 @@
       }
 
       .nom-select-placeholder {
-        text-overflow: ellipsis;
         overflow: hidden;
-        white-space: nowrap;
         color: #bfbfbf;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
 
       .s-disabled& {
