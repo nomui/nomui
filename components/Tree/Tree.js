@@ -131,9 +131,8 @@ class Tree extends Component {
     childNodes.forEach((childNode) => {
       if (childNode.isChecked() === true) {
         checkedNodeKeys.push(childNode.key)
-
-        this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode)
       }
+      this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode)
     })
 
     return checkedNodeKeys

@@ -114,6 +114,10 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
               value: '0-0',
               allowClear: true,
               multiple: true,
+              treeCheckable: {
+                cascadeCheckParent: true,
+                cascadeUncheckChildren: false
+              },
               options: [
                 {
                   text: '总经办',

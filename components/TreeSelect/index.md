@@ -11,6 +11,6 @@
 | value | 默认选中的节点 | `array \| string ` | - |
 | options | 源数据,至少应该包含 `text` 与 `key`，并且 `key` 唯一 | `array ` | [] |
 | treeDataFields | `Tree`组件的`dataFields`字段 | `object ` | `{key:'key',text:'text',children:'children',parentKey:'parentKey'}` |
-| treeCheckable | 节点可勾选配置 | `boolean` \| `object` | - |
+| treeCheckable | 树节点的可勾选配置(同 Tree 组件`nodeCheckable`) | `boolean` \| `object` | - |
 | multiple | 支持多选（当设置 `treeCheckable` 时自动变为 true） | `boolean ` | `true` |
 | allowClear | 显示清除按钮 | `boolean` | - |
