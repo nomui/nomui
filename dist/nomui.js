@@ -10615,11 +10615,15 @@ function _defineProperty2(obj, key, value) {
     }
     check({ checkCheckbox = true, triggerCheckChange = true } = {}) {
       const { checked } = this.props;
-      const { onCheckChange } = this.tree.props.nodeCheckable;
+      const {
+        onCheckChange,
+        cascadeCheckParent,
+      } = this.tree.props.nodeCheckable;
       if (checked === true) {
         return;
       }
-      this.parentNode &&
+      cascadeCheckParent === true &&
+        this.parentNode &&
         this.parentNode.check({
           checkCheckbox: true,
           triggerCheckChange: false,
@@ -10634,18 +10638,22 @@ function _defineProperty2(obj, key, value) {
     }
     uncheck({ uncheckCheckbox = true, triggerCheckChange = true } = {}) {
       const { checked } = this.props;
-      const { onCheckChange } = this.tree.props.nodeCheckable;
+      const {
+        onCheckChange,
+        cascadeUncheckChildren,
+      } = this.tree.props.nodeCheckable;
       if (checked === false) {
         return;
       }
       uncheckCheckbox &&
         this.checkboxRef.setValue(false, { triggerChange: false });
-      Object.keys(this.subnodeRefs).forEach((key) => {
-        this.subnodeRefs[key].uncheck({
-          uncheckCheckbox: true,
-          triggerCheckChange: false,
+      cascadeUncheckChildren === true &&
+        Object.keys(this.subnodeRefs).forEach((key) => {
+          this.subnodeRefs[key].uncheck({
+            uncheckCheckbox: true,
+            triggerCheckChange: false,
+          });
         });
-      });
       this.props.checked = false;
       if (triggerCheckChange === true) {
         this._callHandler(onCheckChange);
