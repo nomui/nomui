@@ -18,7 +18,9 @@
 
 .nom-field {
   display: flex;
-
+  > .nom-field-label + .nom-field-content {
+    width: 0;
+  }
   &.p-plain {
     > .nom-field-label {
       padding: 0;
@@ -43,7 +45,7 @@
     flex-grow: 1;
     width: 100%;
     padding: 0.5rem 0.5rem;
-    overflow-x: clip;
+    // overflow-x: clip;
     > .nom-control {
       .p-control-width-xsmall& {
         max-width: 104px;
