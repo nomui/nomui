@@ -10,6 +10,9 @@ define([], function () {
         onValueChange: (e) => {
           console.log(e.newValue)
         },
+        onBlur: (args) => {
+          console.log(args.value)
+        },
       }
     },
   }
