@@ -119,10 +119,10 @@
                 }
             }
         },
-        data:[
-            { tags: ['武侠','长篇','古代'] },
-            { tags: ['散文','短篇','现代'] }
-        ]
+    ]
+    data:[
+        { tags: ['武侠','长篇','古代'] },
+        { tags: ['散文','短篇','现代'] }
     ]
 }
 ```
@@ -131,11 +131,41 @@
 
 表格行可勾选配置
 
-| 参数           | 说明               | 类型          | 默认值 |
-| -------------- | ------------------ | ------------- | ------ |
-| checkedRowKeys | 初始选中行主键数组 | `array`       | -      |
-| onCheck        | 行勾选回调         | `({row})=>{}` | -      |
-| onUncheck      | 行取消勾选回调     | `({row})=>{}` | -      |
+| 参数           | 说明                 | 类型                                         | 默认值 |
+| -------------- | -------------------- | -------------------------------------------- | ------ |
+| checkedRowKeys | 初始选中行主键数组   | `array`                                      | -      |
+| checkboxRender | 函数返回 Checkbox 的 | `({row, rowData, index})=>{ checkboxProps }` | -      |
+| onCheck        | 行勾选回调           | `({row})=>{}`                                | -      |
+| onUncheck      | 行取消勾选回调       | `({row})=>{}`                                | -      |
+
+#### `checkboxRender` 使用示例及参数说明
+
+```javascript
+// 隐藏id为 0的行的 checkbox展示
+{
+  component:'Grid',
+  rowCheckable: {
+    checkboxRender: ({ row, rowData, index}) => {
+      return { hidden: rowData.id === 0 }
+    }
+  }
+  columns:[
+    {
+      field: 'id',
+      title: 'ID',
+      width: 60,
+    },
+    {
+      field: 'name',
+      title: '标题',
+    },
+  ],
+  data:[
+    { id: 0, name: '笑傲江湖' },
+    { id: 4, name: '天龙八部' },
+  ]
+}
+```
 
 ### rowExpandable
 
