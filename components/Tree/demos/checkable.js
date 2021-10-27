@@ -20,6 +20,22 @@ define([], function () {
                 },
               },
               {
+                component: 'Checkbox',
+                text: '级联选中父节点',
+                value: true,
+                onValueChange: ({ newValue }) => {
+                  treeRef.update({ nodeCheckable: { cascadeCheckParent: newValue } })
+                },
+              },
+              {
+                component: 'Checkbox',
+                text: '级联取消选中子节点',
+                value: true,
+                onValueChange: ({ newValue }) => {
+                  treeRef.update({ nodeCheckable: { cascadeUncheckChildren: newValue } })
+                },
+              },
+              {
                 component: 'Button',
                 text: '获取选中节点键值数组',
                 onClick: () => {
