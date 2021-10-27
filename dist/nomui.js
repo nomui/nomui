@@ -10844,8 +10844,8 @@ function _defineProperty2(obj, key, value) {
       childNodes.forEach((childNode) => {
         if (childNode.isChecked() === true) {
           checkedNodeKeys.push(childNode.key);
-          this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode);
         }
+        this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode);
       });
       return checkedNodeKeys;
     }
@@ -23319,10 +23319,6 @@ function _defineProperty2(obj, key, value) {
           this.placeholder.hide();
         }
       }
-      this.popup.update({
-        nodeSelectable: this._getPopupNodeSelectable(),
-        nodeCheckable: this._getPopupNodeCheckable(),
-      });
     }
   }
   Component.register(TreeSelect);

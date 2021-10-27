@@ -252,10 +252,6 @@ class TreeSelect extends Field {
         this.placeholder.hide()
       }
     }
-    this.popup.update({
-      nodeSelectable: this._getPopupNodeSelectable(),
-      nodeCheckable: this._getPopupNodeCheckable(),
-    })
   }
 }
 

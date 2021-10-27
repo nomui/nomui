@@ -48,7 +48,10 @@ define([], function () {
             },
           ],
           value: ['0-0', '0-0-1'],
-          treeCheckable: {},
+          treeCheckable: {
+            cascadeCheckParent: true,
+            cascadeUncheckChildren: false
+          },
         },
       }
     },
