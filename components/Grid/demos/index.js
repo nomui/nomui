@@ -14,6 +14,7 @@ define([
   './sticky-window.js',
   './row-checkable.js',
   './row-checkable-events.js',
+  './row-checkable-render.js',
   './custom-columns.js',
   './tree-grid.js',
   './tree-grid-flat-data.js',
