@@ -17551,7 +17551,7 @@ function _defineProperty2(obj, key, value) {
             this.resizeTextarea();
           },
           onblur: () => {
-            this.multilineTextbox.trigger("blur");
+            this.multilineTextbox.onblur();
           },
           oncompositionstart: () => {
             this.capsLock = true;
@@ -17692,6 +17692,9 @@ function _defineProperty2(obj, key, value) {
       }
       this.oldValue = this.currentValue;
       this.currentValue = newValue;
+    }
+    onblur() {
+      this._callHandler(this.props.onBlur, { value: this.getValue() });
     }
     focus() {
       this.textarea.focus();
