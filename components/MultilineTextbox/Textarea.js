@@ -31,7 +31,7 @@ class Textarea extends Component {
           this.resizeTextarea()
         },
         onblur: () => {
-          this.multilineTextbox.trigger('blur')
+          this.multilineTextbox.onblur()
         },
         oncompositionstart: () => {
           this.capsLock = true
