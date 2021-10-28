@@ -216,14 +216,6 @@ class Uploader extends Field {
       })
     } else {
       fileList = fileList.map((e) => {
-        if (!this.checkType(e)) {
-          new nomui.Alert({
-            title: '不支持此格式，请重新上传。',
-          })
-          return {
-            invalidType: true,
-          }
-        }
         if (!e.uuid) {
           e.uuid = getUUID()
         }
@@ -233,15 +225,18 @@ class Uploader extends Field {
     }
 
     fileList.forEach((file) => {
-      if (file.invalidType) {
-        return
-      }
       this.upload(file, [...uploadedFileList, ...fileList])
     })
   }
 
   upload(file, fileList) {
     const beforeUpload = this.props.beforeUpload
+    if (!this.checkType(file)) {
+      new nomui.Alert({
+        title: '不支持此格式，请重新上传。',
+      })
+      return
+    }
     if (!beforeUpload) {
       Promise.resolve().then(() => this.post(file))
       return
