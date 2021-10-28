@@ -23,7 +23,7 @@ class TreeSelectPopup extends Popup {
     this.setProps({
       attrs: {
         style: {
-          width: `${this.selectControl.content.offsetWidth()}px`,
+          width: `${this.selectControl.control.offsetWidth()}px`,
         },
       },
       children: {
