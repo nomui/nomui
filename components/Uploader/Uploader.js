@@ -67,6 +67,8 @@ class Uploader extends Field {
 
     this.fileList = this.props.fileList || this.props.defaultFileList
 
+    this.acceptList = accept ? this.getAcceptList() : ''
+
     let initializing = true
     if (isPromiseLike(that.fileList)) {
       that.fileList.then((fs) => {
@@ -165,6 +167,27 @@ class Uploader extends Field {
     super._config()
   }
 
+  getAcceptList() {
+    if (this.props.accept) {
+      return this.props.accept.replace('image/*', '.jpg,.png,.gif,.jpeg')
+    }
+  }
+
+  checkType(file) {
+    if (!this.props.accept) {
+      return true
+    }
+    if (!file || !file.name) {
+      return false
+    }
+    const { name } = file
+    const type = name.substring(name.lastIndexOf('.'))
+    if (this.acceptList.includes(type)) {
+      return true
+    }
+    return false
+  }
+
   _onChange(e) {
     const { files } = e.target
     const uploadedFiles = this.fileList
@@ -193,6 +216,14 @@ class Uploader extends Field {
       })
     } else {
       fileList = fileList.map((e) => {
+        if (!this.checkType(e)) {
+          new nomui.Alert({
+            title: '不支持此格式，请重新上传。',
+          })
+          return {
+            invalidType: true,
+          }
+        }
         if (!e.uuid) {
           e.uuid = getUUID()
         }
@@ -202,6 +233,9 @@ class Uploader extends Field {
     }
 
     fileList.forEach((file) => {
+      if (file.invalidType) {
+        return
+      }
       this.upload(file, [...uploadedFileList, ...fileList])
     })
   }
