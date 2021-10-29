@@ -169,7 +169,10 @@ class Uploader extends Field {
 
   getAcceptList() {
     if (this.props.accept) {
-      return this.props.accept.replace('image/*', '.jpg,.png,.gif,.jpeg')
+      return this.props.accept
+        .replace('image/*', '.jpg,.png,.gif,.jpeg,.jp2,.jpe,.bmp,.tif,.tiff')
+        .replace('video/*', '.3gpp,.mp2,.mp3,.mp4,.mpeg,.mpg')
+        .replace('audio/*', '.3gpp,.ac3,.asf,.au,.mp2,.mp3,.mp4,.ogg')
     }
   }
 
