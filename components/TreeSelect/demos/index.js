@@ -1,4 +1,10 @@
-define(['./basic.js', './multiple.js', './allow-clear.js', './flat-options.js'], function () {
+define([
+  './basic.js',
+  './onlyleaf.js',
+  './multiple.js',
+  './allow-clear.js',
+  './flat-options.js',
+], function () {
   return {
     title: 'TreeSelect',
     subtitle: '下拉树选择',
