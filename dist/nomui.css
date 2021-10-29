@@ -7612,7 +7612,7 @@ textarea .nom-textarea {
   display: block;
 }
 .nom-tree-select-popup {
-  padding: 15px;
+  padding: 5px 5px;
 }
 .nom-switch > .nom-field-content .nom-switch-control {
   display: flex;

@@ -23137,7 +23137,7 @@ function _defineProperty2(obj, key, value) {
       } = this.selectControl.props;
       this.setProps({
         attrs: {
-          style: { width: `${this.selectControl.content.offsetWidth()}px` },
+          style: { width: `${this.selectControl.control.offsetWidth()}px` },
         },
         children: {
           component: Layout,
