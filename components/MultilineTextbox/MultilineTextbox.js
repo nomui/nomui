@@ -76,6 +76,10 @@ class MultilineTextbox extends Field {
     this.currentValue = newValue
   }
 
+  onblur() {
+    this._callHandler(this.props.onBlur, { value: this.getValue() })
+  }
+
   focus() {
     this.textarea.focus()
   }

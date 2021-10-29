@@ -38,6 +38,13 @@ define([], function () {
               max: 100,
             },
             {
+              component: 'Select',
+              name: 'school',
+              label: '学校',
+              options: [{ text: '清华' }, { text: '清华' }, { text: '清华' }],
+              require: true,
+            },
+            {
               component: 'Textbox',
               name: 'email',
               label: 'Email',
