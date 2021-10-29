@@ -67,6 +67,8 @@ class Uploader extends Field {
 
     this.fileList = this.props.fileList || this.props.defaultFileList
 
+    this.acceptList = accept ? this.getAcceptList() : ''
+
     let initializing = true
     if (isPromiseLike(that.fileList)) {
       that.fileList.then((fs) => {
@@ -165,6 +167,30 @@ class Uploader extends Field {
     super._config()
   }
 
+  getAcceptList() {
+    if (this.props.accept) {
+      return this.props.accept
+        .replace('image/*', '.jpg,.png,.gif,.jpeg,.jp2,.jpe,.bmp,.tif,.tiff')
+        .replace('video/*', '.3gpp,.mp2,.mp3,.mp4,.mpeg,.mpg')
+        .replace('audio/*', '.3gpp,.ac3,.asf,.au,.mp2,.mp3,.mp4,.ogg')
+    }
+  }
+
+  checkType(file) {
+    if (!this.props.accept) {
+      return true
+    }
+    if (!file || !file.name) {
+      return false
+    }
+    const { name } = file
+    const type = name.substring(name.lastIndexOf('.'))
+    if (this.acceptList.includes(type)) {
+      return true
+    }
+    return false
+  }
+
   _onChange(e) {
     const { files } = e.target
     const uploadedFiles = this.fileList
@@ -208,6 +234,12 @@ class Uploader extends Field {
 
   upload(file, fileList) {
     const beforeUpload = this.props.beforeUpload
+    if (!this.checkType(file)) {
+      new nomui.Alert({
+        title: '不支持此格式，请重新上传。',
+      })
+      return
+    }
     if (!beforeUpload) {
       Promise.resolve().then(() => this.post(file))
       return

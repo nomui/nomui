@@ -32,6 +32,7 @@ define([], function () {
             component: 'Select',
             multiple: true,
             placeholder: '请选择你喜欢的作者们',
+            value: [0, 1],
             options: [
               {
                 text: '金庸',

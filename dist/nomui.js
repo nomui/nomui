@@ -12280,6 +12280,9 @@ function _defineProperty2(obj, key, value) {
             _config: function () {
               this.setProps({
                 tag: "span",
+                onClick: (args) => {
+                  args.event.stopPropagation();
+                },
                 children: [
                   {
                     tag: "span",
@@ -12290,10 +12293,17 @@ function _defineProperty2(obj, key, value) {
                     component: Icon,
                     type: "close",
                     classes: { "nom-select-item-remove": true },
+                    attrs: { style: { cursor: "pointer" } },
                     onClick: (args) => {
                       const key = args.sender.parent.key;
                       that.selectedMultiple.removeItem(key);
-                      that.optionList.unselectItem(key);
+                      const oldValue = that.getValue();
+                      that.setValue(
+                        oldValue.filter((n) => {
+                          return n !== key;
+                        })
+                      );
+                      that.optionList && that.optionList.unselectItem(key);
                       args.event && args.event.stopPropagation();
                     },
                   },
@@ -12401,6 +12411,7 @@ function _defineProperty2(obj, key, value) {
         trigger: this.control,
         virtual,
         onShow: () => {
+          this.optionList.update({ selectedItems: this.getValue() });
           this.optionList.scrollToSelected();
         },
       });
@@ -12419,7 +12430,8 @@ function _defineProperty2(obj, key, value) {
             return item.value;
           });
         } else {
-          this.selectedMultiple.unselectAllItems();
+          this.selectedMultiple.update({ items: [] });
+          this.currentValue = null;
         }
       } else {
         if (options.asArray === true) {
@@ -23779,6 +23791,7 @@ function _defineProperty2(obj, key, value) {
         customizeInfo,
       } = this.props;
       this.fileList = this.props.fileList || this.props.defaultFileList;
+      this.acceptList = accept ? this.getAcceptList() : "";
       let initializing = true;
       if (isPromiseLike(that.fileList)) {
         that.fileList.then((fs) => {
@@ -23864,6 +23877,28 @@ function _defineProperty2(obj, key, value) {
       this.setProps({ control: { children } });
       super._config();
     }
+    getAcceptList() {
+      if (this.props.accept) {
+        return this.props.accept
+          .replace("image/*", ".jpg,.png,.gif,.jpeg,.jp2,.jpe,.bmp,.tif,.tiff")
+          .replace("video/*", ".3gpp,.mp2,.mp3,.mp4,.mpeg,.mpg")
+          .replace("audio/*", ".3gpp,.ac3,.asf,.au,.mp2,.mp3,.mp4,.ogg");
+      }
+    }
+    checkType(file) {
+      if (!this.props.accept) {
+        return true;
+      }
+      if (!file || !file.name) {
+        return false;
+      }
+      const { name } = file;
+      const type = name.substring(name.lastIndexOf("."));
+      if (this.acceptList.includes(type)) {
+        return true;
+      }
+      return false;
+    }
     _onChange(e) {
       const { files } = e.target;
       const uploadedFiles = this.fileList;
@@ -23902,6 +23937,10 @@ function _defineProperty2(obj, key, value) {
     }
     upload(file, fileList) {
       const beforeUpload = this.props.beforeUpload;
+      if (!this.checkType(file)) {
+        new nomui.Alert({ title: "不支持此格式，请重新上传。" });
+        return;
+      }
       if (!beforeUpload) {
         Promise.resolve().then(() => this.post(file));
         return;
