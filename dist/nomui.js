@@ -23168,7 +23168,8 @@ function _defineProperty2(obj, key, value) {
       const defaults = {
         options: [],
         allowClear: false,
-        placeholder: "请选择",
+        placeholder: "请选择", // tree的select事件的配置
+        treeSelectable: {},
         multiple: false, // 复选框模式，即为多选
         treeCheckable: false,
         treeDataFields: {
@@ -23177,7 +23178,7 @@ function _defineProperty2(obj, key, value) {
           children: "children",
           parentKey: "parentKey",
         },
-        leafOnly: false,
+        onlyleaf: false,
         showArrow: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
@@ -23305,15 +23306,19 @@ function _defineProperty2(obj, key, value) {
       return items;
     } // 弹窗的nodeSelectable的配置
     _getPopupNodeSelectable() {
-      const { multiple } = this.props;
+      const { multiple, treeSelectable } = this.props;
       const { currentValue } = this;
       if (multiple) return false;
-      return {
-        selectedNodeKey: currentValue && currentValue[0],
-        onNodeSelect: ({ nodeData }) => {
-          this._setValue([nodeData.key]);
+      return Component.extendProps(
+        {
+          selectedNodeKey: currentValue && currentValue[0],
+          onNodeSelect: ({ nodeData }) => {
+            this._setValue([nodeData.key]);
+          },
         },
-      };
+        { onlyleaf: this.props.onlyleaf },
+        treeSelectable
+      );
     } // 弹窗的nodeCheckable的配置
     _getPopupNodeCheckable() {
       const { multiple, treeCheckable } = this.props;
