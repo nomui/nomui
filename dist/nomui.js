@@ -23189,6 +23189,7 @@ function _defineProperty2(obj, key, value) {
       if (this.props.treeCheckable) {
         this.props.multiple = true;
       }
+      this.tempValue = this.props.value;
     }
     _config() {
       this.getOptionsMap();
@@ -23275,7 +23276,7 @@ function _defineProperty2(obj, key, value) {
     }
     _getContentBadges() {
       const { treeDataFields } = this.props;
-      if (typeof this.currentValue === "string") {
+      if (!isNullish(this.currentValue) && !Array.isArray(this.currentValue)) {
         this.currentValue = [this.currentValue];
       }
       const { currentValue } = this;
@@ -23359,22 +23360,15 @@ function _defineProperty2(obj, key, value) {
       return this.tempValue;
     }
     _valueChange(changed) {
-      const { newValue } = changed;
+      const { newValue } = changed; // 空数组 || null || undefined
+      const isNewValueClear =
+        (Array.isArray(newValue) && !newValue.length) || isNullish(newValue);
       if (this.props.allowClear) {
-        // newValue有值 ? 展示清空icon : icon隐藏
-        newValue && newValue.length
-          ? this.clearIcon.show()
-          : this.clearIcon.hide();
+        // newValue为空 ? icon隐藏 : 展示清空icon
+        isNewValueClear ? this.clearIcon.hide() : this.clearIcon.show();
       }
       if (this.placeholder) {
-        if (
-          (Array.isArray(newValue) && newValue.length === 0) ||
-          isNullish(newValue)
-        ) {
-          this.placeholder.show();
-        } else {
-          this.placeholder.hide();
-        }
+        isNewValueClear ? this.placeholder.show() : this.placeholder.hide();
       }
     }
   }
