@@ -1,5 +1,6 @@
 define([
   './basic.js',
+  './type.js',
   './picture.js',
   // './callback.js',
   './change.js',

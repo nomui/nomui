@@ -81,6 +81,9 @@ class Select extends Field {
           _config: function () {
             this.setProps({
               tag: 'span',
+              onClick: (args) => {
+                args.event.stopPropagation()
+              },
               children: [
                 {
                   tag: 'span',
@@ -91,10 +94,21 @@ class Select extends Field {
                   component: Icon,
                   type: 'close',
                   classes: { 'nom-select-item-remove': true },
+                  attrs: {
+                    style: {
+                      cursor: 'pointer',
+                    },
+                  },
                   onClick: (args) => {
                     const key = args.sender.parent.key
                     that.selectedMultiple.removeItem(key)
-                    that.optionList.unselectItem(key)
+                    const oldValue = that.getValue()
+                    that.setValue(
+                      oldValue.filter((n) => {
+                        return n !== key
+                      }),
+                    )
+                    that.optionList && that.optionList.unselectItem(key)
                     args.event && args.event.stopPropagation()
                   },
                 },
@@ -213,6 +227,9 @@ class Select extends Field {
       trigger: this.control,
       virtual,
       onShow: () => {
+        this.optionList.update({
+          selectedItems: this.getValue(),
+        })
         this.optionList.scrollToSelected()
       },
     })
@@ -241,7 +258,8 @@ class Select extends Field {
           return item.value
         })
       } else {
-        this.selectedMultiple.unselectAllItems()
+        this.selectedMultiple.update({ items: [] })
+        this.currentValue = null
       }
     } else {
       if (options.asArray === true) {
