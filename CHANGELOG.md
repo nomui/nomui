@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.35](https://github.com/nomui/nomui/compare/v1.0.0-alpha.34...v1.0.0-alpha.35) (2021-10-29)
+
+
+### Features
+
+* **Grid-checkbox:** rowCheckable添加checkboxRender配置，函数返回该复选框的props属性 ([53076f4](https://github.com/nomui/nomui/commit/53076f49e80fb8b92a8158d78779add5e8116b1c))
+* **Grid-row-checkable-render:** 示例和优化 ([e6844ed](https://github.com/nomui/nomui/commit/e6844edf54272da5a50c40fb0e54f158a45ad691))
+* **GroupList:** 支持禁用 ([4fad812](https://github.com/nomui/nomui/commit/4fad8127e6b6bfb5b0376f4f1503b5803a11dc4e))
+* **MaskInfoField:** 添加信息打码组件继承至Field，获得Field对应的方法 ([583cb0b](https://github.com/nomui/nomui/commit/583cb0b61f1d75ed40c90177810a9cc6989c9a95))
+* **MultilineTextbox:** 支持onBlur事件 ([3aff1b6](https://github.com/nomui/nomui/commit/3aff1b65c89ebc5af2f5ba7e0633569515feaf9f))
+* **Swtich:** 支持禁用 ([a64a6c1](https://github.com/nomui/nomui/commit/a64a6c17d1ee1308157abed8bfdf40cf6763b2af))
+* **Tree:** nodeCheckable 的 cascadeCheckParent 和 cascadeUncheckChildren 生效 ([7ea7072](https://github.com/nomui/nomui/commit/7ea7072fdc86a0a9c50ba5bbe62a55e6dae9ea3e))
+* **TreeSelect:** 添加只能选择叶子节点 onlyleaf的配置 ([f9164ff](https://github.com/nomui/nomui/commit/f9164ff0a4bb64a0c06bf665d60ba0682dbc3e7a))
+* **Uploader:** 完善文件类型限制 ([8a77f3c](https://github.com/nomui/nomui/commit/8a77f3cf1ac3df521f330e686d82799b72cf4730))
+* **Uploader:** 优化文件上传类型限制功能 ([674df61](https://github.com/nomui/nomui/commit/674df61e757b14278b73367c8df82a94e747b68c))
+
+
+### Bug Fixes
+
+* **Field:** 某些Field组件内部文字太长溢出的问题 ([d2d4344](https://github.com/nomui/nomui/commit/d2d4344e82df8ee1cee55828666fc1c56a27eb76))
+* **Field:** 内容过长的时候content被撑开的问题 ([9a5341d](https://github.com/nomui/nomui/commit/9a5341d7c31b227eb209d8335c186bcf1411d824))
+* **Field:** 校验提示不显示的问题 ([a035881](https://github.com/nomui/nomui/commit/a035881a172848ed743e20124d84018bec5fa29c))
+* **Field:** flex内容过长撑开的问题 ([bef7686](https://github.com/nomui/nomui/commit/bef768630674d7c4aae42800fc73019d775e63f3))
+* **Grid:** originColumns不能正确保存cellRender ([74dacd4](https://github.com/nomui/nomui/commit/74dacd4146811c813a1c69add528dfd7be00d8e0))
+* **Select:** 选中时因为placeholder未即时清除造成的抖动 ([f008db2](https://github.com/nomui/nomui/commit/f008db226bcce09e833011308904da4c320b5a35))
+* **Select:** 隐藏placeholder前添加判断 ([b8b95ea](https://github.com/nomui/nomui/commit/b8b95ea39c84d6b9e4cfece20d7bf1b962723eb5))
+* **Select:** 有默认值的时候不能点X清空以及赋值问题 ([4f175ce](https://github.com/nomui/nomui/commit/4f175ce6656057999ea1ea0d3e136d609aa0bff4))
+* **TreeSelect:** 编辑表单时，获取其value时为undefined的bug ([fe50472](https://github.com/nomui/nomui/commit/fe504729c5271e21262643dfc218204039bd2c88))
+* **TreeSelect:** 弹窗框的宽度和padding ([97cf5c3](https://github.com/nomui/nomui/commit/97cf5c345dfe580163412feed4ac8adc1b84abcb))
+* **TreeSelect:** 级联取消子节点关闭时，导致获取勾选节点有误 ([9c80c3a](https://github.com/nomui/nomui/commit/9c80c3aae8d6601abab248da25dc9284fe1a7a2f))
+
+
+### Docs
+
+* **Grid-row-checkable-render:** 文档内容补充 ([bc0b5aa](https://github.com/nomui/nomui/commit/bc0b5aaf0ee7690558e9a6629059fdf6427097ea))
+* **TreeSelect:** 文档补充onlyleaf ([f434c68](https://github.com/nomui/nomui/commit/f434c688159ef12b513240859a7ef6615ae24fca))
+* **Uploader:** 添加案例 ([786d8a3](https://github.com/nomui/nomui/commit/786d8a320878a07df4abe9323e5c999811dc7f13))
+
 ## [1.0.0-alpha.34](https://github.com/nomui/nomui/compare/v1.0.0-alpha.33...v1.0.0-alpha.34) (2021-10-22)
 
 
