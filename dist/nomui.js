@@ -14313,19 +14313,11 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       this.setProps({ children: { component: Spinner } });
-      if (this.props.container instanceof Component) {
-        this.props.container.addClass("nom-loading-container");
-      } else {
-        this.props.container.component.addClass("nom-loading-container");
-      }
+      this.referenceElement.classList.add("nom-loading-container");
       super._config();
     }
     _remove() {
-      if (this.props.container instanceof Component) {
-        this.props.container.removeClass("nom-loading-container");
-      } else {
-        this.props.container.component.removeClass("nom-loading-container");
-      }
+      this.referenceElement.classList.remove("nom-loading-container");
       super._remove();
     }
   }
