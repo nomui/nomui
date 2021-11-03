@@ -3,7 +3,7 @@ define([], function () {
     {
       Id: '678290340539573561',
       ParentId: null,
-      Name: '内分泌aaaaaaaaaaaaaaaaaaaaa',
+      Name: '内分泌',
       Level: 1,
       IsDeleted: false,
       disabled: false,
@@ -475,7 +475,7 @@ define([], function () {
     {
       Id: '678290341017407191',
       ParentId: null,
-      Name: '影像学',
+      Name: '影像学aaaaaaaaaaaaaaaaaaaaa',
       Level: 1,
       IsDeleted: false,
       disabled: false,
