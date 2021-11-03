@@ -7959,18 +7959,17 @@ textarea .nom-textarea {
   border-right: 1px solid #f0f0f0;
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item {
-  position: relative;
   display: flex;
   align-items: center;
-  padding: 5px 12px;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item:hover {
   background-color: #f5f5f5;
   cursor: pointer;
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item > .nom-cascader-menu-item-expand-icon {
-  position: absolute;
-  right: 12px;
+  padding-left: 1rem;
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item-active {
   background-color: #e6f7ff;
@@ -8552,6 +8551,7 @@ textarea .nom-textarea {
   cursor: pointer;
 }
 .nom-breadcrumb {
+  padding: 10px 15px;
   color: rgba(0, 0, 0, 0.45);
 }
 .nom-breadcrumb > .nom-breadcrumb-item.p-with-icon {

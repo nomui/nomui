@@ -26,9 +26,6 @@ class Breadcrumb extends Component {
 
     this.setProps({
       children,
-      attrs: {
-        style: { padding: '10px 15px' },
-      },
     })
   }
 }

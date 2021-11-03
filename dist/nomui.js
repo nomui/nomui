@@ -9500,7 +9500,7 @@ function _defineProperty2(obj, key, value) {
             );
           })
         : [];
-      this.setProps({ children, attrs: { style: { padding: "10px 15px" } } });
+      this.setProps({ children });
     }
   }
   Component.register(Breadcrumb);
