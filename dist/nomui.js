@@ -12390,6 +12390,7 @@ function _defineProperty2(obj, key, value) {
           onClick: (args) => {
             this.setValue(null);
             this.props.allowClear && this.clearIcon.hide();
+            this.placeholder && this.placeholder.show();
             args.event && args.event.stopPropagation();
           },
         });
@@ -12458,8 +12459,8 @@ function _defineProperty2(obj, key, value) {
             this.currentValue = [selValueOption.value];
           }
         } else {
-          this.selectedSingle.element.innerText = "";
-          this.currentValue = null;
+          this.selectedSingle.element.innerText = value;
+          this.currentValue = value;
         }
       } // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
       if (this.searchBox && value === null) {
@@ -12516,7 +12517,7 @@ function _defineProperty2(obj, key, value) {
     _getValue(options) {
       const { valueOptions, showSearch } = this.props;
       options = extend$1({ asArray: false }, valueOptions, options);
-      if (!this.optionList) {
+      if (!this.optionList || !this.optionList.props) {
         return this.currentValue;
       }
       if (showSearch) {
@@ -12559,7 +12560,9 @@ function _defineProperty2(obj, key, value) {
           this._directSetValue(value);
         }
       } else {
-        if (this.optionList) {
+        // 每次都会更新popup弹窗里面的 list的数据
+        // 但如果当前实例 update过了, optionList会被销毁
+        if (this.optionList && this.optionList.props) {
           this.optionList.unselectAllItems({ triggerSelectionChange: false });
           this.selectOptions(value, {
             triggerSelectionChange: options.triggerChange,
@@ -12607,9 +12610,10 @@ function _defineProperty2(obj, key, value) {
       return retOptions;
     }
     _valueChange(changed) {
-      if (changed.newValue) {
-        this.props.allowClear && this.clearIcon.show();
-      }
+      // 有值则展示 clearIcon, 无值隐藏
+      changed.newValue
+        ? this.props.allowClear && this.clearIcon.show()
+        : this.props.allowClear && this.clearIcon.hide();
       if (this.placeholder) {
         if (
           (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
