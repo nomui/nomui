@@ -190,6 +190,7 @@ class Select extends Field {
         onClick: (args) => {
           this.setValue(null)
           this.props.allowClear && this.clearIcon.hide()
+          this.placeholder && this.placeholder.show()
           args.event && args.event.stopPropagation()
         },
       })
@@ -273,8 +274,8 @@ class Select extends Field {
           this.currentValue = [selValueOption.value]
         }
       } else {
-        this.selectedSingle.element.innerText = ''
-        this.currentValue = null
+        this.selectedSingle.element.innerText = value
+        this.currentValue = value
       }
     }
     // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
@@ -356,7 +357,7 @@ class Select extends Field {
       options,
     )
 
-    if (!this.optionList) {
+    if (!this.optionList || !this.optionList.props) {
       return this.currentValue
     }
 
@@ -403,7 +404,9 @@ class Select extends Field {
         this._directSetValue(value)
       }
     } else {
-      if (this.optionList) {
+      // 每次都会更新popup弹窗里面的 list的数据
+      // 但如果当前实例 update过了, optionList会被销毁
+      if (this.optionList && this.optionList.props) {
         this.optionList.unselectAllItems({ triggerSelectionChange: false })
         this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
       }
@@ -456,9 +459,11 @@ class Select extends Field {
   }
 
   _valueChange(changed) {
-    if (changed.newValue) {
-      this.props.allowClear && this.clearIcon.show()
-    }
+    // 有值则展示 clearIcon, 无值隐藏
+    changed.newValue
+      ? this.props.allowClear && this.clearIcon.show()
+      : this.props.allowClear && this.clearIcon.hide()
+
     if (this.placeholder) {
       if (
         (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||

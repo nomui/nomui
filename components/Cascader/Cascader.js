@@ -26,10 +26,13 @@ class Cascader extends Field {
         const { optionList } = cascader
         if (optionList && optionList.selected && optionList.selected.length > 0) {
           optionList.selected.forEach((item) => {
-            item.element.scrollIntoView({
-              behavior: 'auto',
-              scrollMode: 'if-needed',
-            })
+            // 解决非SPA页面，滚动条自动滚动至底部问题
+            if (!(document.querySelector('body').scrollHeight > window.innerHeight + 20)) {
+              item.element.scrollIntoView({
+                behavior: 'auto',
+                scrollMode: 'if-needed',
+              })
+            }
           })
         }
       },
