@@ -2,48 +2,24 @@
 // colors
 // --------------------------------------------------
 
-@gray: #868e96;
-@brown: #a57868;
-@red: #f03e3e;
-@orange: #f76707;
-@yellow: #f59f00;
-@green: #37b24d;
-@teal: #0ca678;
-@blue: #1c7ed6;
-@indigo: #4263eb;
-@purple: #ae3ec9;
-@pink: #d6336c;
-@cyan: #1098ad;
-
-@lgray: #f8f9fa;
-@lbrown: #e8dcd8;
-@lred: #fff5f5;
-@lorange: #fff4e6;
-@lyellow: #fff9db;
-@lgreen: #ebfbee;
-@lteal: #e6fcf5;
-@lblue: #e7f5ff;
-@lindigo: #edf2ff;
-@lpurple: #f8f0fc;
-@lpink: #fff0f6;
-@lcyan: #e3fafc;
+@gray: var(--nom-color-gray);
+@red: var(--nom-color-red);
+@yellow: var(--nom-color-yellow);
 
 @black: #000000;
 @white: #ffffff;
 @transparent: rgba(0, 0, 0, 0);
 
-@primary: @indigo;
-@lprimary: @lindigo;
+// primary
+@primary: var(--nom-color-primary);
+@lprimary: var(--nom-color-lprimary);
+@primary-darken:  var(~'--nom-color-primary-darken');
 
-@success: @green;
-@info: @cyan;
-@warning: @yellow;
-@danger: @red;
+@success: var(--nom-color-success);
+@info: var(--nom-color-info);
+@warning: var(--nom-color-warning);
+@danger: var(--nom-color-danger);
 
-@lsuccess: @lgreen;
-@linfo: @lcyan;
-@lwarning: @lyellow;
-@ldanger: @lred;
 
 @color-list: gray, brown, red, orange, yellow, green, teal, blue, indigo, purple, pink, cyan,primary,success,info,warning,danger;
 @color-list-length: length(@color-list);
@@ -132,7 +108,7 @@
 
 @link-color: @primary;
 @link-decoration: none;
-@link-hover-color: darken(@link-color, 15%);
+@link-hover-color: @primary-darken;
 @link-hover-decoration: underline;
 
 // Paragraphs
@@ -247,16 +223,16 @@
 
 // Small screen / tablet
 @container-tablet: (720px + @grid-gutter-width);
-//** For `@screen-sm-min` and up.
+// For `@screen-sm-min` and up.
 @container-sm: @container-tablet;
 
 // Medium screen / desktop
 @container-desktop: (940px + @grid-gutter-width);
-//** For `@screen-md-min` and up.
+// For `@screen-md-min` and up.
 @container-md: @container-desktop;
 
 // Large screen / wide desktop
 @container-large-desktop: (1140px + @grid-gutter-width);
-//** For `@screen-lg-min` and up.
+// For `@screen-lg-min` and up.
 @container-lg: @container-large-desktop;
 
