@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.36](https://github.com/nomui/nomui/compare/v1.0.0-alpha.35...v1.0.0-alpha.36) (2021-11-05)
+
+
+### Features
+
+* **Cascader:** 文本溢出省略 ([f78c930](https://github.com/nomui/nomui/commit/f78c9305d2b7bc29722ad3536c47b739d527ee3b))
+* **Cascader:** 新增高宽配置，并自动处理文字溢出省略 ([06aac2d](https://github.com/nomui/nomui/commit/06aac2db408c037f837dc8360d38f0a3fa27a42d))
+* **color:** 修改颜色部分使用 css3的 var变量引用，方便扩展和修改 ([2cabf38](https://github.com/nomui/nomui/commit/2cabf38c5bfccac942133c8ce4a029c10a4b8259))
+
+
+### Bug Fixes
+
+* 修复Breadcrumb面包屑样式bug ([b582188](https://github.com/nomui/nomui/commit/b5821880cdc87bc3fd64b46dab33be591f29f6c0))
+* 修复Cascader弹框选项右边箭头图标样式bug ([3c3a793](https://github.com/nomui/nomui/commit/3c3a793f9971608b51dc8717c1b2b0a24151c3cf))
+* 修复Cascader示例的小bug ([df02c2b](https://github.com/nomui/nomui/commit/df02c2b4c2884845549a2aeaf295bcd83db719a2))
+* **Cascader:** 修复Cascader在非单页应用中页面滑动bug ([a49c5be](https://github.com/nomui/nomui/commit/a49c5bee471c1a6fb14d4ea44a6c6f51c3ba3d7b))
+* **Loading:** 修复当 container 为非 nomui 组件时添加移除 nom-loading-container 样式类的 bug。 ([fa1f432](https://github.com/nomui/nomui/commit/fa1f43248c1c308cc733387a3a342c9f5a7ee9bb))
+* **position:** 修复position在非单页应用中定位计算问题 ([d8aba4f](https://github.com/nomui/nomui/commit/d8aba4f92ab47952d896f24676241c3a1f079a94))
+* **Select:** 实例被更新后，导致optionList被销毁，无法正确赋值 ([763fd71](https://github.com/nomui/nomui/commit/763fd71770be7c941db1d13fd6985f9c0b96ad4c))
+
+
+### Docs
+
+* **Select:** 完善示例 ([246a7bf](https://github.com/nomui/nomui/commit/246a7bfab48241e50693e21ba1a07bf17843e4bc))
+
 ## [1.0.0-alpha.35](https://github.com/nomui/nomui/compare/v1.0.0-alpha.34...v1.0.0-alpha.35) (2021-10-29)
 
 
