@@ -33,7 +33,10 @@ define(['./data.js'], function (options) {
                 unselectedText: '单值取值',
                 onValueChange({ newValue }) {
                   if (newValue) {
-                    cascade.update({ valueType: 'cascade', value: ['内分泌', '肥胖症', 'aaa'] })
+                    cascade.update({
+                      valueType: 'cascade',
+                      value: ['内分泌', '肥胖症', 'aaa'],
+                    })
                   } else {
                     cascade.update({ valueType: 'single', value: 'aaa' })
                   }
