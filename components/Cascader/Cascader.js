@@ -13,6 +13,8 @@ class Cascader extends Field {
       fieldsMapping: { label: 'label', value: 'value', children: 'children' },
       valueType: 'cascade',
       changeOnSelect: false,
+      width: 200,
+      height: 250,
     }
     super(Component.extendProps(defaults, props), ...mixins)
   }

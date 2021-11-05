@@ -2,7 +2,7 @@ define(['./data.js'], function (options) {
   let cascader = null
   return {
     title: '选择即改变',
-    file: 'field',
+    file: 'partial',
     demo: function () {
       return {
         component: 'Rows',
