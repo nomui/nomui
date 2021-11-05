@@ -1647,13 +1647,8 @@ function _defineProperty2(obj, key, value) {
       props = { top: coordinates.top, left: coordinates.left };
     }
     if (getComputedStyle(elem).position === "static")
-      props.position = "relative"; // 解决非SPA页面，在滚动条情况下定位计算问题
-    const st = document.documentElement.scrollTop || document.body.scrollTop;
-    if (st > 0) {
-      elem.style.top = `${props.top - st}px`;
-    } else {
-      elem.style.top = `${props.top}px`;
-    }
+      props.position = "relative";
+    elem.style.top = `${props.top}px`;
     elem.style.left = `${props.left}px`;
     elem.style.position = props.position;
   }
