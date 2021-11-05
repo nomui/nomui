@@ -10792,7 +10792,7 @@ function _defineProperty2(obj, key, value) {
       this.selectedNode = null;
       const { nodes, data, flatData, nodeCheckable } = this.props;
       if (flatData === true) {
-        this.setProps({ data: this._toTreeData(data) });
+        this.setProps({ data: this._setTreeData(data) });
       }
       this._addPropStyle("fit");
       if (nodeCheckable) {
@@ -10992,6 +10992,28 @@ function _defineProperty2(obj, key, value) {
         return r;
       }
       return [arrayData];
+    }
+    _setTreeData(arr) {
+      const { key, parentKey, children } = this.props.dataFields;
+      if (!key || key === "" || !arr) return []; //  删除所有 children,以防止多次调用
+      arr.forEach(function (item) {
+        delete item[children];
+      });
+      const map = {}; // 构建map
+      arr.forEach((i) => {
+        map[i[key]] = i; // 构建以key为键 当前数据为值
+      });
+      const treeData = [];
+      arr.forEach((child) => {
+        const mapItem = map[child[parentKey]]; // 判断当前数据的parentKey是否存在map中
+        if (mapItem) {
+          (mapItem[children] || (mapItem[children] = [])).push(child); // 这里判断mapItem中是否存在children, 存在则插入当前数据, 不存在则赋值children为[]然后再插入当前数据
+        } else {
+          // 不存在则是组顶层数据
+          treeData.push(child);
+        }
+      });
+      return treeData;
     }
     _getCheckAllCheckbox() {
       const { disabled } = this.props;
