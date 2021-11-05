@@ -7949,10 +7949,10 @@ textarea .nom-textarea {
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu {
   display: inline-block;
   min-width: 111px;
-  height: 180px;
   margin: 0;
   padding: 4px 0;
   overflow: auto;
+  overflow-x: hidden;
   white-space: nowrap;
   vertical-align: top;
   list-style: none;

@@ -9824,6 +9824,12 @@ function _defineProperty2(obj, key, value) {
       return {
         tag: "ul",
         classes: { "nom-cascader-menu": true },
+        attrs: {
+          style: {
+            width: `${this.cascaderControl.props.width}px`,
+            height: `${this.cascaderControl.props.height}px`,
+          },
+        },
         children: menu.map((item) => {
           if (item.children) {
             return {
@@ -9840,7 +9846,10 @@ function _defineProperty2(obj, key, value) {
                 cascaderList._handleNoLeafClick(item.key);
               },
               children: [
-                { tag: "span", children: item.label },
+                {
+                  tag: "span",
+                  children: { component: "Ellipsis", text: item.label },
+                },
                 {
                   component: Icon,
                   type: "right",
@@ -9861,7 +9870,12 @@ function _defineProperty2(obj, key, value) {
             onClick: () => {
               cascaderList.cascaderControl._itemSelected(item.key, true);
             },
-            children: [{ tag: "span", children: item.label }],
+            children: [
+              {
+                tag: "span",
+                children: { component: "Ellipsis", text: item.label },
+              },
+            ],
           };
         }),
       };
@@ -9908,6 +9922,8 @@ function _defineProperty2(obj, key, value) {
         fieldsMapping: { label: "label", value: "value", children: "children" },
         valueType: "cascade",
         changeOnSelect: false,
+        width: 200,
+        height: 250,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
