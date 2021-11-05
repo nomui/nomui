@@ -137,7 +137,10 @@ class CascaderList extends Component {
           children: [
             {
               tag: 'span',
-              children: item.label,
+              children: {
+                component: 'Ellipsis',
+                text: item.label,
+              },
             },
           ],
         }
