@@ -2,7 +2,7 @@ define(['./data.js'], function (options) {
   let cascade = null
   return {
     title: 'value类型',
-    file: 'basic',
+    file: 'value',
     demo: function () {
       return {
         component: 'Rows',
