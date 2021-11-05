@@ -41,7 +41,7 @@ class Tree extends Component {
     const { nodes, data, flatData, nodeCheckable } = this.props
     if (flatData === true) {
       this.setProps({
-        data: this._toTreeData(data),
+        data: this._setTreeData(data),
       })
     }
 
@@ -210,7 +210,7 @@ class Tree extends Component {
   expandTo(param) {
     let node = this.getNode(param)
     // 遍历展开 parentNode
-    while(node) {
+    while (node) {
       // 节点存在 && 为展开-->expanded: false
       if (node && node.content && !node.content.props.expanded) {
         node.content.expand()
@@ -269,7 +269,6 @@ class Tree extends Component {
     if (Array.isArray(arrayData)) {
       const r = []
       const tmpMap = {}
-
       arrayData.forEach((item) => {
         tmpMap[item[key]] = item
 
@@ -286,6 +285,37 @@ class Tree extends Component {
     }
 
     return [arrayData]
+  }
+
+  _setTreeData(arr) {
+    const { key, parentKey, children } = this.props.dataFields
+
+    if (!key || key === '' || !arr) return []
+    //  删除所有 children,以防止多次调用
+    arr.forEach(function (item) {
+      delete item[children]
+    })
+    const map = {} // 构建map
+    arr.forEach((i) => {
+      map[i[key]] = i // 构建以key为键 当前数据为值
+    })
+
+    const treeData = []
+    arr.forEach((child) => {
+      const mapItem = map[child[parentKey]] // 判断当前数据的parentKey是否存在map中
+
+      if (mapItem) {
+        // 存在则表示当前数据不是最顶层数据
+
+        // 这里的map中的数据是引用了arr的它的指向还是arr，当mapItem改变时arr也会改变
+        ;(mapItem[children] || (mapItem[children] = [])).push(child) // 这里判断mapItem中是否存在children, 存在则插入当前数据, 不存在则赋值children为[]然后再插入当前数据
+      } else {
+        // 不存在则是组顶层数据
+        treeData.push(child)
+      }
+    })
+
+    return treeData
   }
 
   _getCheckAllCheckbox() {
