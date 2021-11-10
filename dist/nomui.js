@@ -12176,8 +12176,10 @@ function _defineProperty2(obj, key, value) {
       let filterStr = checked ? checkedOption && checkedOption.text : text; // null或undefined处理
       filterStr = filterStr || "";
       const filterOptions = showSearch && filterOption(filterStr, options);
+      const items = showSearch ? filterOptions : options; // value唯一值校验提示
+      this._wranOptionsValue(items);
       this.setProps({
-        items: showSearch ? filterOptions : options,
+        items,
         itemDefaults: n$1(null, optionDefaults, null, [SelectListItemMixin]),
         itemSelectable: {
           multiple: multiple,
@@ -12192,6 +12194,19 @@ function _defineProperty2(obj, key, value) {
         },
       });
       super._config();
+    }
+    _wranOptionsValue(options) {
+      const map = new Map();
+      for (let index = 0; index < options.length; index++) {
+        const opt = options[index];
+        if (map.get(opt.value)) {
+          console.warn(
+            `Warning: Encountered two children with the same key, \`${opt.value}\`.`
+          );
+          return false;
+        }
+        map.set(opt.value, true);
+      }
     }
   }
   class SelectPopup extends Popup {
@@ -12648,10 +12663,10 @@ function _defineProperty2(obj, key, value) {
         ? this.props.allowClear && this.clearIcon.show()
         : this.props.allowClear && this.clearIcon.hide();
       if (this.placeholder) {
+        // 多选时为空数组 || 单选时在options中无数据
         if (
           (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
-          changed.newValue === null ||
-          changed.newValue === undefined
+          !this._getOption(changed.newValue)
         ) {
           this.placeholder.show();
         } else {
