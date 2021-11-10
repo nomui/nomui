@@ -465,10 +465,10 @@ class Select extends Field {
       : this.props.allowClear && this.clearIcon.hide()
 
     if (this.placeholder) {
+      // 多选时为空数组 || 单选时在options中无数据
       if (
         (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
-        changed.newValue === null ||
-        changed.newValue === undefined
+        !this._getOption(changed.newValue)
       ) {
         this.placeholder.show()
       } else {
