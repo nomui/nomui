@@ -31,9 +31,9 @@ function _defineProperty2(obj, key, value) {
  *
  */ (function (global, factory) {
   typeof exports === "object" && typeof module !== "undefined"
-    ? factory(exports)
+    ? factory(exports, require(""))
     : typeof define === "function" && define.amd
-    ? define(["exports"], factory)
+    ? define(["exports", ""], factory)
     : ((global =
         typeof globalThis !== "undefined" ? globalThis : global || self),
       factory((global.nomui = {})));
@@ -24164,6 +24164,12 @@ function _defineProperty2(obj, key, value) {
       if (e.eky === "Enter") {
         this._handleClick();
       }
+    }
+    _getValue() {
+      const _val = isNotEmptyArray(this.fileList)
+        ? this.fileList.filter(({ status }) => status === "done")
+        : null;
+      return isNotEmptyArray(_val) ? _val : null;
     }
   }
   Component.register(Uploader);

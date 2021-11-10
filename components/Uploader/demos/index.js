@@ -13,6 +13,7 @@ define([
   './action.js',
   './fileList.js',
   './display.js',
+  './validate.js',
 ], function () {
   return {
     title: 'Uploader',
