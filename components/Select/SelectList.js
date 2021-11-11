@@ -20,16 +20,25 @@ class SelectList extends List {
   }
 
   _config() {
-    const { showSearch, options, optionDefaults, value, multiple, filterOption } =
-      this.selectControl.props
+    const {
+      showSearch,
+      options,
+      optionDefaults,
+      value,
+      multiple,
+      filterOption,
+    } = this.selectControl.props
     const { text } = this.props
     const { checked, checkedOption } = this.selectControl
     let filterStr = checked ? checkedOption && checkedOption.text : text
     // null或undefined处理
     filterStr = filterStr || ''
     const filterOptions = showSearch && filterOption(filterStr, options)
+    const items = showSearch ? filterOptions : options
+    // value唯一值校验提示
+    this._wranOptionsValue(items)
     this.setProps({
-      items: showSearch ? filterOptions : options,
+      items,
       itemDefaults: n(null, optionDefaults, null, [SelectListItemMixin]),
       itemSelectable: {
         multiple: multiple,
@@ -44,6 +53,18 @@ class SelectList extends List {
     })
 
     super._config()
+  }
+
+  _wranOptionsValue(options) {
+    const map = new Map()
+    for (let index = 0; index < options.length; index++) {
+      const opt = options[index]
+      if (map.get(opt.value)) {
+        console.warn(`Warning: Encountered two children with the same key, \`${opt.value}\`.`)
+        return false
+      }
+      map.set(opt.value, true)
+    }
   }
 }
 
