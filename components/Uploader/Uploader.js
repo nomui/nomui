@@ -1,6 +1,7 @@
+import {} from ''
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { isFunction } from '../util/index'
+import { isFunction, isNotEmptyArray } from '../util/index'
 import FileList from './FileList'
 import {
   cloneFileWithInfo,
@@ -463,6 +464,13 @@ class Uploader extends Field {
     if (e.eky === 'Enter') {
       this._handleClick()
     }
+  }
+
+  _getValue() {
+    const _val = isNotEmptyArray(this.fileList)
+      ? this.fileList.filter(({ status }) => status === 'done')
+      : null
+    return isNotEmptyArray(_val) ? _val : null
   }
 }
 
