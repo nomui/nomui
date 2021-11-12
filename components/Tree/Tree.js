@@ -261,32 +261,6 @@ class Tree extends Component {
     this._callHandler(onNodeSelect, args)
   }
 
-  _toTreeData(arrayData) {
-    const { key, parentKey, children } = this.props.dataFields
-
-    if (!key || key === '' || !arrayData) return []
-
-    if (Array.isArray(arrayData)) {
-      const r = []
-      const tmpMap = {}
-      arrayData.forEach((item) => {
-        tmpMap[item[key]] = item
-
-        if (tmpMap[item[parentKey]] && item[key] !== item[parentKey]) {
-          if (!tmpMap[item[parentKey]][children]) tmpMap[item[parentKey]][children] = []
-          tmpMap[item[parentKey]][children].push(item)
-        } else {
-          // 无parent，为根节点，直接push进r
-          r.push(item)
-        }
-      })
-
-      return r
-    }
-
-    return [arrayData]
-  }
-
   _setTreeData(arr) {
     const { key, parentKey, children } = this.props.dataFields
 
