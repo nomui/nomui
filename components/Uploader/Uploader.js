@@ -1,4 +1,3 @@
-import {} from ''
 import Component from '../Component/index'
 import Field from '../Field/index'
 import { isFunction, isNotEmptyArray } from '../util/index'
