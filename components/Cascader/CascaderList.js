@@ -81,6 +81,12 @@ class CascaderList extends Component {
       classes: {
         'nom-cascader-menu': true,
       },
+      attrs: {
+        style: {
+          width: `${this.cascaderControl.props.width}px`,
+          height: `${this.cascaderControl.props.height}px`,
+        },
+      },
       children: menu.map((item) => {
         if (item.children) {
           return {
@@ -96,10 +102,14 @@ class CascaderList extends Component {
               // cascaderList.cascaderControl._itemSelected(item.key)
               cascaderList._handleNoLeafClick(item.key)
             },
+
             children: [
               {
                 tag: 'span',
-                children: item.label,
+                children: {
+                  component: 'Ellipsis',
+                  text: item.label,
+                },
               },
               {
                 component: Icon,
@@ -127,7 +137,10 @@ class CascaderList extends Component {
           children: [
             {
               tag: 'span',
-              children: item.label,
+              children: {
+                component: 'Ellipsis',
+                text: item.label,
+              },
             },
           ],
         }
