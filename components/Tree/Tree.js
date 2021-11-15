@@ -48,10 +48,16 @@ class Tree extends Component {
     this._addPropStyle('fit')
 
     if (nodeCheckable) {
+      this._loopSetValue(nodeCheckable, [
+        'cascadeCheckParent',
+        'cascadeCheckChildren',
+        'cascadeUncheckChildren',
+      ])
       this.setProps({
         nodeCheckable: Component.extendProps(
           {
             cascadeCheckParent: true,
+            cascadeCheckChildren: true,
             cascadeUncheckChildren: true,
             cascade: false,
             showCheckAll: false,
@@ -82,6 +88,15 @@ class Tree extends Component {
 
     this.setProps({
       children: children,
+    })
+  }
+
+  _loopSetValue(key, arry) {
+    if (key.cascade === undefined) return false
+    arry.forEach(function (currentValue) {
+      if (key[currentValue] === undefined) {
+        key[currentValue] = key.cascade
+      }
     })
   }
 

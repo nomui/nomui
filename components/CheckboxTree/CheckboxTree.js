@@ -16,7 +16,16 @@ class CheckboxTree extends Field {
   }
 
   _config() {
-    const { options, showCheckAll, checkAllText, treeDataFields } = this.props
+    const {
+      options,
+      showCheckAll,
+      checkAllText,
+      treeDataFields,
+      cascadeUncheckChildren,
+      cascadeCheckChildren,
+      cascadeCheckParent,
+      cascade,
+    } = this.props
 
     this.setProps({
       control: {
@@ -27,6 +36,10 @@ class CheckboxTree extends Field {
         nodeCheckable: {
           showCheckAll,
           checkAllText,
+          cascade,
+          cascadeCheckParent,
+          cascadeCheckChildren,
+          cascadeUncheckChildren,
         },
       },
     })
