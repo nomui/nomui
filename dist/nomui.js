@@ -15697,6 +15697,7 @@ function _defineProperty2(obj, key, value) {
               items: [
                 {
                   component: "Button",
+                  type: "primary",
                   text: "确定",
                   onClick: function () {
                     const list = that.tree.getCheckedNodesData();
