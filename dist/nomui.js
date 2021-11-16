@@ -10638,15 +10638,47 @@ function _defineProperty2(obj, key, value) {
     _isNotEmptyArray(arr) {
       return Array.isArray(arr) && arr.length > 0;
     }
+    checkChildren({ checkCheckbox = true, triggerCheckChange = true } = {}) {
+      const { checked } = this.props;
+      const {
+        onCheckChange,
+        cascadeCheckChildren,
+      } = this.tree.props.nodeCheckable;
+      cascadeCheckChildren === true &&
+        Object.keys(this.subnodeRefs).forEach((key) => {
+          this.subnodeRefs[key].checkChildren({
+            checkCheckbox: true,
+            triggerCheckChange: false,
+          });
+        });
+      if (checked === true) {
+        return;
+      }
+      if (checkCheckbox === true) {
+        this.checkboxRef.setValue(true, { triggerChange: false });
+      }
+      this.props.checked = true;
+      if (triggerCheckChange === true) {
+        this._callHandler(onCheckChange);
+      }
+    }
     check({ checkCheckbox = true, triggerCheckChange = true } = {}) {
       const { checked } = this.props;
       const {
         onCheckChange,
         cascadeCheckParent,
+        cascadeCheckChildren,
       } = this.tree.props.nodeCheckable;
       if (checked === true) {
         return;
       }
+      cascadeCheckChildren === true &&
+        Object.keys(this.subnodeRefs).forEach((key) => {
+          this.subnodeRefs[key].checkChildren({
+            checkCheckbox: true,
+            triggerCheckChange: false,
+          });
+        });
       cascadeCheckParent === true &&
         this.parentNode &&
         this.parentNode.check({
@@ -10660,6 +10692,7 @@ function _defineProperty2(obj, key, value) {
       if (triggerCheckChange === true) {
         this._callHandler(onCheckChange);
       }
+      this.autoCheckAll();
     }
     uncheck({ uncheckCheckbox = true, triggerCheckChange = true } = {}) {
       const { checked } = this.props;
@@ -10683,9 +10716,17 @@ function _defineProperty2(obj, key, value) {
       if (triggerCheckChange === true) {
         this._callHandler(onCheckChange);
       }
+      this.autoCheckAll();
     }
     isChecked() {
       return this.props.checked === true;
+    }
+    autoCheckAll() {
+      if (!this.tree.checkAllRef) return false;
+      const check = Object.keys(this.tree.nodeRefs).some((nodeKey) => {
+        return this.tree.nodeRefs[nodeKey].props.checked === false;
+      });
+      this.tree.checkAllRef.setValue(!check, { triggerChange: false });
     }
     getChildNodes() {
       return this.nodesRef ? this.nodesRef.getChildren() : [];
@@ -10797,10 +10838,16 @@ function _defineProperty2(obj, key, value) {
       }
       this._addPropStyle("fit");
       if (nodeCheckable) {
+        this._loopSetValue(nodeCheckable, [
+          "cascadeCheckParent",
+          "cascadeCheckChildren",
+          "cascadeUncheckChildren",
+        ]);
         this.setProps({
           nodeCheckable: Component.extendProps(
             {
               cascadeCheckParent: true,
+              cascadeCheckChildren: true,
               cascadeUncheckChildren: true,
               cascade: false,
               showCheckAll: false,
@@ -10830,6 +10877,14 @@ function _defineProperty2(obj, key, value) {
         childrenData: this.props.data,
       });
       this.setProps({ children: children });
+    }
+    _loopSetValue(key, arry) {
+      if (key.cascade === undefined) return false;
+      arry.forEach(function (currentValue) {
+        if (key[currentValue] === undefined) {
+          key[currentValue] = key.cascade;
+        }
+      });
     }
     _dataToNodes() {}
     getData(getOptions, node) {
@@ -10973,27 +11028,6 @@ function _defineProperty2(obj, key, value) {
       const { onNodeSelect } = this.props.nodeSelectable;
       this._callHandler(onNodeSelect, args);
     }
-    _toTreeData(arrayData) {
-      const { key, parentKey, children } = this.props.dataFields;
-      if (!key || key === "" || !arrayData) return [];
-      if (Array.isArray(arrayData)) {
-        const r = [];
-        const tmpMap = {};
-        arrayData.forEach((item) => {
-          tmpMap[item[key]] = item;
-          if (tmpMap[item[parentKey]] && item[key] !== item[parentKey]) {
-            if (!tmpMap[item[parentKey]][children])
-              tmpMap[item[parentKey]][children] = [];
-            tmpMap[item[parentKey]][children].push(item);
-          } else {
-            // 无parent，为根节点，直接push进r
-            r.push(item);
-          }
-        });
-        return r;
-      }
-      return [arrayData];
-    }
     _setTreeData(arr) {
       const { key, parentKey, children } = this.props.dataFields;
       if (!key || key === "" || !arr) return []; //  删除所有 children,以防止多次调用
@@ -11077,6 +11111,10 @@ function _defineProperty2(obj, key, value) {
         showCheckAll,
         checkAllText,
         treeDataFields,
+        cascadeUncheckChildren,
+        cascadeCheckChildren,
+        cascadeCheckParent,
+        cascade,
       } = this.props;
       this.setProps({
         control: {
@@ -11084,7 +11122,14 @@ function _defineProperty2(obj, key, value) {
           data: options,
           fit: true,
           dataFields: treeDataFields,
-          nodeCheckable: { showCheckAll, checkAllText },
+          nodeCheckable: {
+            showCheckAll,
+            checkAllText,
+            cascade,
+            cascadeCheckParent,
+            cascadeCheckChildren,
+            cascadeUncheckChildren,
+          },
         },
       });
       super._config();
@@ -15760,7 +15805,7 @@ function _defineProperty2(obj, key, value) {
       }
       const { treeConfig } = this.props;
       if (treeConfig && treeConfig.flatData) {
-        this.setProps({ data: this._toTreeGridData(that.props.data) });
+        this.setProps({ data: this._setTreeGridData(that.props.data) });
       }
       const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props;
       this._parseColumnsCustom();
@@ -15809,30 +15854,28 @@ function _defineProperty2(obj, key, value) {
         ],
       });
     }
-    _toTreeGridData(arrayData) {
+    _setTreeGridData(arr) {
       const { keyField } = this.props;
       const { parentField, childrenField } = this.props.treeConfig;
-      if (!keyField || keyField === "" || !arrayData) return [];
-      if (Array.isArray(arrayData)) {
-        const r = [];
-        const tmpMap = {};
-        arrayData.forEach((item) => {
-          tmpMap[item[keyField]] = item;
-          if (
-            tmpMap[item[parentField]] &&
-            item[keyField] !== item[parentField]
-          ) {
-            if (!tmpMap[item[parentField]][childrenField])
-              tmpMap[item[parentField]][childrenField] = [];
-            tmpMap[item[parentField]][childrenField].push(item);
-          } else {
-            // 无parent，为根节点，直接push进r
-            r.push(item);
-          }
-        });
-        return r;
-      }
-      return [arrayData];
+      if (!keyField || keyField === "" || !arr) return []; //  删除所有 childrenField,以防止多次调用
+      arr.forEach(function (item) {
+        delete item[childrenField];
+      });
+      const map = {}; // 构建map
+      arr.forEach((i) => {
+        map[i[keyField]] = i; // 构建以keyField为键 当前数据为值
+      });
+      const treeData = [];
+      arr.forEach((child) => {
+        const mapItem = map[child[parentField]]; // 判断当前数据的parentField是否存在map中
+        if (mapItem) {
+          (mapItem[childrenField] || (mapItem[childrenField] = [])).push(child); // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
+        } else {
+          // 不存在则是组顶层数据
+          treeData.push(child);
+        }
+      });
+      return treeData;
     }
     _calcMinWidth() {
       this.minWidth = 0;

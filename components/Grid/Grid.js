@@ -66,7 +66,7 @@ class Grid extends Component {
     const { treeConfig } = this.props
     if (treeConfig && treeConfig.flatData) {
       this.setProps({
-        data: this._toTreeGridData(that.props.data),
+        data: this._setTreeGridData(that.props.data),
       })
     }
 
@@ -155,33 +155,36 @@ class Grid extends Component {
     })
   }
 
-  _toTreeGridData(arrayData) {
+  _setTreeGridData(arr) {
     const { keyField } = this.props
     const { parentField, childrenField } = this.props.treeConfig
 
-    if (!keyField || keyField === '' || !arrayData) return []
+    if (!keyField || keyField === '' || !arr) return []
+    //  删除所有 childrenField,以防止多次调用
+    arr.forEach(function (item) {
+      delete item[childrenField]
+    })
+    const map = {} // 构建map
+    arr.forEach((i) => {
+      map[i[keyField]] = i // 构建以keyField为键 当前数据为值
+    })
 
-    if (Array.isArray(arrayData)) {
-      const r = []
-      const tmpMap = {}
+    const treeData = []
+    arr.forEach((child) => {
+      const mapItem = map[child[parentField]] // 判断当前数据的parentField是否存在map中
 
-      arrayData.forEach((item) => {
-        tmpMap[item[keyField]] = item
+      if (mapItem) {
+        // 存在则表示当前数据不是最顶层数据
 
-        if (tmpMap[item[parentField]] && item[keyField] !== item[parentField]) {
-          if (!tmpMap[item[parentField]][childrenField])
-            tmpMap[item[parentField]][childrenField] = []
-          tmpMap[item[parentField]][childrenField].push(item)
-        } else {
-          // 无parent，为根节点，直接push进r
-          r.push(item)
-        }
-      })
+        // 这里的map中的数据是引用了arr的它的指向还是arr，当mapItem改变时arr也会改变
+        ;(mapItem[childrenField] || (mapItem[childrenField] = [])).push(child) // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
+      } else {
+        // 不存在则是组顶层数据
+        treeData.push(child)
+      }
+    })
 
-      return r
-    }
-
-    return [arrayData]
+    return treeData
   }
 
   _calcMinWidth() {
