@@ -55,15 +55,17 @@
 
 节点可勾选配置
 
-| 参数                   | 说明                   | 类型             | 默认值 |
-| ---------------------- | ---------------------- | ---------------- | ------ |
-| cascadeCheckParent     | 级联勾选父节点         | `boolean`        | true   |
-| cascadeUncheckChildren | 级联取消勾选子节点     | `boolean`        | true   |
-| checkedNodeKeys        | 初始选中节点数据键数组 | `array`          | -      |
-| showCheckAll           | 显示全选复选框         | `boolean`        | false  |
-| checkAllText           | 全选复选框文本         | `boolean`        | `全选` |
-| onNodeCheck            | 节点勾选回调           | `({node}) => {}` | -      |
-| onNodeUncheck          | 节点取消勾选回调       | `({node}) => {}` | -      |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| cascade | 级联勾选父节点（cascadeCheckParent）,级联勾选子节点（cascadeCheckChildren）,级联取消勾选子节点（cascadeUncheckChildren）的统一配置，优先级低于单项配置 | `boolean` | false |
+| cascadeCheckParent | 级联勾选父节点 | `boolean` | true |
+| cascadeCheckChildren | 级联勾选子节点 | `boolean` | true |
+| cascadeUncheckChildren | 级联取消勾选子节点 | `boolean` | true |
+| checkedNodeKeys | 初始选中节点数据键数组 | `array` | - |
+| showCheckAll | 显示全选复选框 | `boolean` | false |
+| checkAllText | 全选复选框文本 | `boolean` | `全选` |
+| onNodeCheck | 节点勾选回调 | `({node}) => {}` | - |
+| onNodeUncheck | 节点取消勾选回调 | `({node}) => {}` | - |
 
 ### TreeData
 

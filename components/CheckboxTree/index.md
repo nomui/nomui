@@ -16,3 +16,7 @@
 | treeDataFields | `Tree`组件的`dataFields`字段 | `object` | `{key:'key',text:'text',children:'children',parentKey:'parentKey'}` |
 | showCheckAll | 展示全选的按钮 | `boolean` | false |
 | checkAllText | 全选按钮的文案 | `string` | 全选 |
+| cascade | 级联勾选父节点（cascadeCheckParent）,级联勾选子节点（cascadeCheckChildren）,级联取消勾选子节点（cascadeUncheckChildren）的统一配置，优先级低于单项配置 | `boolean` | false |
+| cascadeCheckParent | 级联勾选父节点 | `boolean` | true |
+| cascadeCheckChildren | 级联勾选子节点 | `boolean` | true |
+| cascadeUncheckChildren | 级联取消勾选子节点 | `boolean` | true |
