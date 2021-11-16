@@ -31,9 +31,9 @@ function _defineProperty2(obj, key, value) {
  *
  */ (function (global, factory) {
   typeof exports === "object" && typeof module !== "undefined"
-    ? factory(exports, require(""))
+    ? factory(exports)
     : typeof define === "function" && define.amd
-    ? define(["exports", ""], factory)
+    ? define(["exports"], factory)
     : ((global =
         typeof globalThis !== "undefined" ? globalThis : global || self),
       factory((global.nomui = {})));
@@ -13762,6 +13762,7 @@ function _defineProperty2(obj, key, value) {
     }
     _needHandleValue(field, options) {
       const { disabled, hidden } = field.props;
+      const { ignoreFields = [] } = options;
       if (field._autoName) {
         return false;
       }
@@ -13769,6 +13770,9 @@ function _defineProperty2(obj, key, value) {
         return false;
       }
       if (options.ignoreHidden && hidden === true) {
+        return false;
+      }
+      if (ignoreFields.includes(field.name)) {
         return false;
       }
       return true;
@@ -16588,6 +16592,7 @@ function _defineProperty2(obj, key, value) {
     }
     _needHandleValue(field, options) {
       const { disabled, hidden } = field.props;
+      const { ignoreFields = [] } = options;
       if (field._autoName) {
         return false;
       }
@@ -16595,6 +16600,9 @@ function _defineProperty2(obj, key, value) {
         return false;
       }
       if (options.ignoreHidden && hidden === true) {
+        return false;
+      }
+      if (ignoreFields.includes(field.name)) {
         return false;
       }
       return true;
@@ -16703,12 +16711,12 @@ function _defineProperty2(obj, key, value) {
       }
       return value;
     }
-    setValue(value) {
+    setValue(value, options) {
       if (Array.isArray(value)) {
         for (let i = 0; i < this.fields.length; i++) {
           const field = this.fields[i];
           if (field.setValue) {
-            field.setValue(value[i]);
+            field.setValue(value[i], options);
           }
         }
       }
@@ -16870,12 +16878,12 @@ function _defineProperty2(obj, key, value) {
       }
       return value;
     }
-    setValue(value) {
+    setValue(value, options) {
       if (Array.isArray(value)) {
         for (let i = 0; i < this.fields.length; i++) {
           const field = this.fields[i];
           if (field.setValue) {
-            field.setValue(value[i]);
+            field.setValue(value[i], options);
           }
         }
       }

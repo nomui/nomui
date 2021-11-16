@@ -34,8 +34,8 @@ class GroupGrid extends Field {
               plain: true,
               value: cellData,
               __group: row,
-              invalidTip:{
-                reference:this
+              invalidTip: {
+                reference: this,
               },
               onCreated: ({ inst }) => {
                 row.fields.push(inst)
@@ -126,12 +126,12 @@ class GroupGrid extends Field {
     return value
   }
 
-  setValue(value) {
+  setValue(value, options) {
     if (Array.isArray(value)) {
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i]
         if (field.setValue) {
-          field.setValue(value[i])
+          field.setValue(value[i], options)
         }
       }
     }
