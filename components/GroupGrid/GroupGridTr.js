@@ -184,6 +184,7 @@ class GroupGridTr extends Tr {
 
   _needHandleValue(field, options) {
     const { disabled, hidden } = field.props
+    const { ignoreFields = [] } = options
     if (field._autoName) {
       return false
     }
@@ -191,6 +192,9 @@ class GroupGridTr extends Tr {
       return false
     }
     if (options.ignoreHidden && hidden === true) {
+      return false
+    }
+    if (ignoreFields.includes(field.name)) {
       return false
     }
 
