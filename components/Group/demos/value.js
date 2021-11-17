@@ -26,7 +26,8 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
               name: 'name',
               label: '姓名',
               required: true,
-              disabled: true,
+              trimValue: false,
+              // disabled: true,
               rules: [
                 { type: 'identifier' },
                 { type: 'minlength', value: 2 },

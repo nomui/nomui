@@ -4516,6 +4516,7 @@ function _defineProperty2(obj, key, value) {
         value: null,
         htmlType: "text",
         onEnter: null,
+        trimValue: true, // getValue时 默认去除首位的空格
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -4633,8 +4634,9 @@ function _defineProperty2(obj, key, value) {
       return this.input.getText();
     }
     _getValue() {
+      const { trimValue } = this.props;
       let inputText = this.getText();
-      inputText = inputText.trim(" ");
+      inputText = trimValue ? inputText.trim(" ") : inputText;
       if (inputText === "") {
         return null;
       }
