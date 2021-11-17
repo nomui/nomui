@@ -61,6 +61,7 @@ class GridSettingPopup extends Modal {
             items: [
               {
                 component: 'Button',
+                type: 'primary',
                 text: '确定',
                 onClick: function () {
                   const list = that.tree.getCheckedNodesData()
