@@ -13,6 +13,7 @@
 | --- | --- | --- | --- |
 | autofocus | 是否自动获得焦点 | `boolean` | - |
 | htmlType | 设置原生的类型 | `text \| tel \| password \| email \| url` | `text` |
+| trimValue | 是否去除首尾空格 | `boolean` | `true` |
 | leftIcon | 左侧的图标 | `string\|Props` |  |
 | rightIcon | 右侧的图标 | `string\|Props` |  |
 | prefix | 前缀字符(优先展示 leftIcon) | `string` |
