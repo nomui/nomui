@@ -4217,7 +4217,6 @@ function _defineProperty2(obj, key, value) {
         notShowLabel: false,
         rules: [],
         extra: null,
-        labelWidth: 180,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }

@@ -7366,8 +7366,8 @@ textarea .nom-textarea {
   }
   .nom-field.p-label-align-right > .nom-field-label,
   .nom-field.p-label-align-left > .nom-field-label {
-    flex: 0 0 10rem;
-    max-width: 10rem;
+    flex: 0 0 13rem;
+    max-width: 13rem;
     margin-bottom: 0;
   }
   .nom-field.p-label-align-right > .nom-field-label > .nom-label,
