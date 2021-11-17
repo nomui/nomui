@@ -10878,6 +10878,16 @@ function _defineProperty2(obj, key, value) {
       });
       this.setProps({ children: children });
     }
+    _rendered() {
+      this.autoCheckAll();
+    }
+    autoCheckAll() {
+      if (!this.checkAllRef) return false;
+      const check = Object.keys(this.nodeRefs).some((nodeKey) => {
+        return this.nodeRefs[nodeKey].props.checked === false;
+      });
+      this.checkAllRef.setValue(!check, { triggerChange: false });
+    }
     _loopSetValue(key, arry) {
       if (key.cascade === undefined) return false;
       arry.forEach(function (currentValue) {
@@ -23265,20 +23275,17 @@ function _defineProperty2(obj, key, value) {
           component: Layout,
           body: {
             children: {
-              attrs: { style: { "max-height": "300px" } },
-              children: {
-                component: "Tree",
-                expandable: { byIndicator: true },
-                data: clone$1(options),
-                dataFields: treeDataFields,
-                flatData: flatOptions,
-                multiple,
-                leafOnly,
-                nodeSelectable,
-                nodeCheckable,
-                _created: function () {
-                  that.selectControl.tree = this;
-                },
+              component: "Tree",
+              expandable: { byIndicator: true },
+              data: clone$1(options),
+              dataFields: treeDataFields,
+              flatData: flatOptions,
+              multiple,
+              leafOnly,
+              nodeSelectable,
+              nodeCheckable,
+              _created: function () {
+                that.selectControl.tree = this;
               },
             },
           },
