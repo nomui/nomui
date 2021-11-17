@@ -4375,6 +4375,9 @@ img {
 .nom-flex.p-align-center {
   align-items: center !important;
 }
+.nom-flex.p-align-center > .nom-flex-item {
+  display: flex;
+}
 .nom-flex.p-align-stretch {
   align-items: stretch !important;
 }
