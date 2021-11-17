@@ -10,12 +10,14 @@ export default {
       onSelect: () => {
         const { selectControl } = this.list
         const selectProps = selectControl.props
-
         const selectedOption = {
-          text: this.props.text,
-          value: this.props.value,
           option: this.props,
         }
+
+        Object.keys(this.wrapper.props.children).forEach((item) => {
+          selectedOption[item] = this.props[item]
+        })
+
         selectControl.placeholder && selectControl.placeholder.hide()
         if (selectProps.multiple === false) {
           selectControl.selectedSingle.update(selectedOption)

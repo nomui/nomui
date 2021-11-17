@@ -53,15 +53,8 @@ class Select extends Field {
 
   _config() {
     const that = this
-    const {
-      multiple,
-      showArrow,
-      placeholder,
-      disabled,
-      showSearch,
-      allowClear,
-      options,
-    } = this.props
+    const { multiple, showArrow, placeholder, disabled, showSearch, allowClear, options } =
+      this.props
     const children = []
 
     this._normalizeInternalOptions(options)
@@ -292,6 +285,10 @@ class Select extends Field {
     this.optionList.selectItems(options)
   }
 
+  getMultipleValue(obj) {
+    return Object.values(obj.itemRefs)
+  }
+
   getSelectedOption() {
     if (!this.optionList || !this.optionList.props) {
       return null
@@ -300,7 +297,12 @@ class Select extends Field {
       return this.optionList.getSelectedItem()
     }
 
-    return this.optionList.getSelectedItems()
+    // console.log('旧---', this.optionList.getSelectedItems())
+    // console.log('新---', this.getMultipleValue(this.optionList.selectControl.selectedMultiple))
+
+    return this.getMultipleValue(this.optionList.selectControl.selectedMultiple)
+
+    // return this.optionList.getSelectedItems()
   }
 
   _getOptionsByValue(value) {
