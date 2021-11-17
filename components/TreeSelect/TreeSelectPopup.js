@@ -18,6 +18,7 @@ class TreeSelectPopup extends Popup {
   _config() {
     const that = this
     const { nodeSelectable, nodeCheckable } = that.props
+
     const { options, treeDataFields, flatOptions, multiple, leafOnly } = this.selectControl.props
 
     this.setProps({
@@ -30,19 +31,26 @@ class TreeSelectPopup extends Popup {
         component: Layout,
         body: {
           children: {
-            component: 'Tree',
-            expandable: {
-              byIndicator: true,
+            attrs: {
+              style: {
+                'max-height': '300px',
+              },
             },
-            data: clone(options),
-            dataFields: treeDataFields,
-            flatData: flatOptions,
-            multiple,
-            leafOnly,
-            nodeSelectable,
-            nodeCheckable,
-            _created: function () {
-              that.selectControl.tree = this
+            children: {
+              component: 'Tree',
+              expandable: {
+                byIndicator: true,
+              },
+              data: clone(options),
+              dataFields: treeDataFields,
+              flatData: flatOptions,
+              multiple,
+              leafOnly,
+              nodeSelectable,
+              nodeCheckable,
+              _created: function () {
+                that.selectControl.tree = this
+              },
             },
           },
         },

@@ -23265,17 +23265,20 @@ function _defineProperty2(obj, key, value) {
           component: Layout,
           body: {
             children: {
-              component: "Tree",
-              expandable: { byIndicator: true },
-              data: clone$1(options),
-              dataFields: treeDataFields,
-              flatData: flatOptions,
-              multiple,
-              leafOnly,
-              nodeSelectable,
-              nodeCheckable,
-              _created: function () {
-                that.selectControl.tree = this;
+              attrs: { style: { "max-height": "300px" } },
+              children: {
+                component: "Tree",
+                expandable: { byIndicator: true },
+                data: clone$1(options),
+                dataFields: treeDataFields,
+                flatData: flatOptions,
+                multiple,
+                leafOnly,
+                nodeSelectable,
+                nodeCheckable,
+                _created: function () {
+                  that.selectControl.tree = this;
+                },
               },
             },
           },
