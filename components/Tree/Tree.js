@@ -91,6 +91,19 @@ class Tree extends Component {
     })
   }
 
+  _rendered() {
+    this.autoCheckAll()
+  }
+
+  autoCheckAll() {
+    if (!this.checkAllRef) return false
+    const check = Object.keys(this.nodeRefs).some((nodeKey) => {
+      return this.nodeRefs[nodeKey].props.checked === false
+    })
+
+    this.checkAllRef.setValue(!check, { triggerChange: false })
+  }
+
   _loopSetValue(key, arry) {
     if (key.cascade === undefined) return false
     arry.forEach(function (currentValue) {
