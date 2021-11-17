@@ -237,12 +237,20 @@ export function formatDate(date, format) {
   }
   let mydate = null
   if (typeof date === 'string') {
-    const arr = date
-      .replace(/\d+(?=-[^-]+$)/, function (a) {
-        return parseInt(a, 10) - 1
-      })
-      .match(/\d+/g)
-
+    let arr = ''
+    if (date.indexOf('/') !== -1) {
+      arr = date
+        .replace(/\d+(?=\/[^/]+$)/, function (a) {
+          return parseInt(a, 10) - 1
+        })
+        .match(/\d+/g)
+    } else {
+      arr = date
+        .replace(/\d+(?=-[^-]+$)/, function (a) {
+          return parseInt(a, 10) - 1
+        })
+        .match(/\d+/g)
+    }
     mydate = new Date(...arr)
   } else if (typeof date === 'number') {
     mydate = new Date(date)
