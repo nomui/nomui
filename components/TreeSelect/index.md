@@ -16,7 +16,6 @@
 | treeCheckable | 树节点的可勾选配置(同 Tree 组件`nodeCheckable`) | `boolean` \| `object` | - |
 | multiple | 支持多选（当设置 `treeCheckable` 时自动变为 true） | `boolean ` | `true` |
 | allowClear | 显示清除按钮 | `boolean` | - |
-| fit | 当下拉框超出高度时出现滚动条，支持自定义高度范围或者默认 200 | `boolean \| { height:200 } ` | `false` |
 
 ### TreeSelect methods
 

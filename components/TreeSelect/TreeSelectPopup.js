@@ -19,8 +19,7 @@ class TreeSelectPopup extends Popup {
     const that = this
     const { nodeSelectable, nodeCheckable } = that.props
 
-    const { options, treeDataFields, flatOptions, multiple, leafOnly, fit } =
-      this.selectControl.props
+    const { options, treeDataFields, flatOptions, multiple, leafOnly } = this.selectControl.props
 
     this.setProps({
       attrs: {
@@ -34,9 +33,7 @@ class TreeSelectPopup extends Popup {
           children: {
             attrs: {
               style: {
-                height: `${
-                  Boolean(fit) && fit.height ? `${fit.height}px` : fit ? '200px' : 'auto'
-                }`,
+                'max-height': '300px',
               },
             },
             children: {
