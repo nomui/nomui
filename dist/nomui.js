@@ -12172,11 +12172,10 @@ function _defineProperty2(obj, key, value) {
         onSelect: () => {
           const { selectControl } = this.list;
           const selectProps = selectControl.props;
-          const selectedOption = {
-            text: this.props.text,
-            value: this.props.value,
-            option: this.props,
-          };
+          const selectedOption = { option: this.props };
+          Object.keys(this.wrapper.props.children).forEach((item) => {
+            selectedOption[item] = this.props[item];
+          });
           selectControl.placeholder && selectControl.placeholder.hide();
           if (selectProps.multiple === false) {
             selectControl.selectedSingle.update(selectedOption);
@@ -12578,14 +12577,20 @@ function _defineProperty2(obj, key, value) {
     selectOptions(options) {
       this.optionList.selectItems(options);
     }
+    getMultipleValue(obj) {
+      return Object.values(obj.itemRefs);
+    }
     getSelectedOption() {
       if (!this.optionList || !this.optionList.props) {
         return null;
       }
       if (this.props.multiple === false) {
         return this.optionList.getSelectedItem();
-      }
-      return this.optionList.getSelectedItems();
+      } // console.log('旧---', this.optionList.getSelectedItems())
+      // console.log('新---', this.getMultipleValue(this.optionList.selectControl.selectedMultiple))
+      return this.getMultipleValue(
+        this.optionList.selectControl.selectedMultiple
+      ); // return this.optionList.getSelectedItems()
     }
     _getOptionsByValue(value) {
       if (this.props.multiple === false) {
