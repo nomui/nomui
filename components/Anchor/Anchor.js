@@ -12,6 +12,7 @@ class Anchor extends Component {
       sticky: false,
       itemDefaults: null,
       offset: 0,
+      activeKey: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -66,6 +67,12 @@ class Anchor extends Component {
         },
       },
     })
+
+    if (this.props.activeKey) {
+      setTimeout(() => {
+        this.scrollToKey(this.props.activeKey)
+      }, 500)
+    }
   }
 
   _rendered() {
@@ -114,8 +121,13 @@ class Anchor extends Component {
     }
   }
 
+  scrollToKey(key) {
+    this._scrollToKey(key)
+  }
+
   _scrollToKey(target) {
     const container = this.containerElem.getElementsByClassName(`nom-anchor-target-${target}`)
+
     if (container.length) {
       container[0].scrollIntoView({ behavior: 'smooth' })
     }
