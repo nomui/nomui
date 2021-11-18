@@ -13,10 +13,6 @@ class Tooltip extends Layer {
 
       autoRender: false,
       hidden: false,
-
-      styles: {
-        color: 'black',
-      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
