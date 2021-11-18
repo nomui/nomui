@@ -69,13 +69,9 @@ class Anchor extends Component {
     })
 
     if (this.props.activeKey) {
-      this.container.setProps({
-        onRendered: () => {
-          setTimeout(() => {
-            this.scrollToKey(this.props.activeKey)
-          }, 500)
-        },
-      })
+      setTimeout(() => {
+        this.scrollToKey(this.props.activeKey)
+      }, 500)
     }
   }
 
