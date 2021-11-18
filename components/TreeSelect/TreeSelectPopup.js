@@ -31,26 +31,19 @@ class TreeSelectPopup extends Popup {
         component: Layout,
         body: {
           children: {
-            attrs: {
-              style: {
-                'max-height': '300px',
-              },
+            component: 'Tree',
+            expandable: {
+              byIndicator: true,
             },
-            children: {
-              component: 'Tree',
-              expandable: {
-                byIndicator: true,
-              },
-              data: clone(options),
-              dataFields: treeDataFields,
-              flatData: flatOptions,
-              multiple,
-              leafOnly,
-              nodeSelectable,
-              nodeCheckable,
-              _created: function () {
-                that.selectControl.tree = this
-              },
+            data: clone(options),
+            dataFields: treeDataFields,
+            flatData: flatOptions,
+            multiple,
+            leafOnly,
+            nodeSelectable,
+            nodeCheckable,
+            _created: function () {
+              that.selectControl.tree = this
             },
           },
         },
