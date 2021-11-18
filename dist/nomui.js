@@ -3001,6 +3001,7 @@ function _defineProperty2(obj, key, value) {
         sticky: false,
         itemDefaults: null,
         offset: 0,
+        activeKey: null,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -3041,6 +3042,11 @@ function _defineProperty2(obj, key, value) {
           }),
         },
       });
+      if (this.props.activeKey) {
+        setTimeout(() => {
+          this.scrollToKey(this.props.activeKey);
+        }, 500);
+      }
     }
     _rendered() {
       const that = this;
@@ -3081,6 +3087,9 @@ function _defineProperty2(obj, key, value) {
           }
         }, 500);
       }
+    }
+    scrollToKey(key) {
+      this._scrollToKey(key);
     }
     _scrollToKey(target) {
       const container = this.containerElem.getElementsByClassName(
