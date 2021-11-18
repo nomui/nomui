@@ -15568,11 +15568,15 @@ function _defineProperty2(obj, key, value) {
       this.grid.header = this;
     }
     _config() {
+      const { frozenHeader } = this.grid.props;
+      const minWidth = frozenHeader
+        ? this.grid.minWidth + 17
+        : this.grid.minWidth;
       this.setProps({
         children: {
           columns: this.grid.props.columns,
           data: this.grid.data,
-          attrs: { style: { minWidth: `${this.grid.minWidth}px` } },
+          attrs: { style: { minWidth: `${minWidth}px` } },
           onlyHead: true,
           line: this.props.line,
         },
@@ -16014,13 +16018,15 @@ function _defineProperty2(obj, key, value) {
       this.lastSortField = null;
     } // 记录上一次滚动到的位置
     _setScrollPlace(isEmpty) {
+      // grid自身的 header和body的宽度
       const headerEl = this.header.element;
-      const bodyEl = this.body.element;
+      const bodyEl = this.body.element; // body的body的宽度
+      const tableBodyEl = this.body.table.element;
       let headerLeft = headerEl.scrollLeft;
       let bodyLeft = bodyEl.scrollLeft; // 表格的宽度 / 2 - svg图标的一半
       if (isEmpty) {
-        headerLeft = headerEl.offsetWidth / 2 - 92;
-        bodyLeft = bodyEl.offsetWidth / 2 - 92;
+        headerLeft = (tableBodyEl.offsetWidth - headerEl.offsetWidth) / 2;
+        bodyLeft = (tableBodyEl.offsetWidth - bodyEl.offsetWidth) / 2;
       }
       this._headerScrollInfo = { left: headerLeft };
       this._bodyScrollInfo = { left: bodyLeft };
