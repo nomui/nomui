@@ -18,13 +18,16 @@ class GridHeader extends Component {
   }
 
   _config() {
+    const { frozenHeader } = this.grid.props
+    const minWidth = frozenHeader ? this.grid.minWidth + 17 : this.grid.minWidth
+
     this.setProps({
       children: {
         columns: this.grid.props.columns,
         data: this.grid.data,
         attrs: {
           style: {
-            minWidth: `${this.grid.minWidth}px`,
+            minWidth: `${minWidth}px`,
           },
         },
         onlyHead: true,
