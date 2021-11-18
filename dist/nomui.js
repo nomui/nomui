@@ -240,7 +240,7 @@ function _defineProperty2(obj, key, value) {
     let mydate = null;
     if (typeof date === "string") {
       const arr = date
-        .replace(/\d+(?=-[^-]+$)/, function (a) {
+        .replace(/\d+(?=\/[^/]+$)|\d+(?=-[^-]+$)/, function (a) {
           return parseInt(a, 10) - 1;
         })
         .match(/\d+/g);
