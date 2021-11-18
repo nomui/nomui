@@ -11,6 +11,7 @@ define([], function () {
             component: 'Anchor',
             sticky: this.parent.parent.parent,
             container: this.parent.parent.parent,
+            activeKey: 'div3', // 默认高亮的key
             items: [
               { text: '锚点1', key: 'div1' },
               {
