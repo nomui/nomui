@@ -3706,7 +3706,6 @@ function _defineProperty2(obj, key, value) {
         closeOnClickOutside: true,
         autoRender: false,
         hidden: false,
-        styles: { color: "black" },
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
