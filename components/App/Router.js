@@ -70,6 +70,7 @@ class Router extends Component {
   }
 
   routeView() {
+    this.emptyChildren()
     this.$app.lastLevel = this.level + 1
     const level = this.level
     const defaultPath = this.props.defaultPath

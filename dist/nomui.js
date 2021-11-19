@@ -3286,6 +3286,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
     routeView() {
+      this.emptyChildren();
       this.$app.lastLevel = this.level + 1;
       const level = this.level;
       const defaultPath = this.props.defaultPath;
