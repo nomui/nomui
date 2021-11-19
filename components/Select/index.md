@@ -10,6 +10,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | options | 选项配置 | `[{text:string,value:number\|string}]` | - |
+| extraOptions | 额外的选项，不会显示在下拉列表当中，用于默认有值却不属于数据源列表的特殊情况 | `[{text:string,value:number\|string}]` | - |
 | multiple | 是否允许多选 | `boolean` | false |
 | showArrow | 是否显示下拉箭头 | `boolean` | true |
 | searchable | 可搜索配置 | `boolean` \| `object` | - |

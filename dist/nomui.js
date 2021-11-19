@@ -12177,6 +12177,7 @@ function _defineProperty2(obj, key, value) {
           byClick: true,
           canRevert: this.list.selectControl.props.multiple === true,
         },
+        hidden: !!this.props.isExtra,
         onSelect: () => {
           const { selectControl } = this.list;
           const selectProps = selectControl.props;
@@ -12366,6 +12367,7 @@ function _defineProperty2(obj, key, value) {
           itemSelectable: { scrollIntoView: true },
           gutter: "md",
         },
+        extraOptions: [],
         multiple: false,
         showArrow: true,
         minItemsForSearch: 20,
@@ -12376,6 +12378,15 @@ function _defineProperty2(obj, key, value) {
         popupContainer: "body",
       };
       super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      if (this.props.extraOptions) {
+        const extraOptions = this.props.extraOptions.map((n) => {
+          return Object.assign({}, n, { isExtra: true });
+        });
+        this.props.options = [...this.props.options, ...extraOptions];
+      }
     }
     _config() {
       const that = this;
@@ -12795,7 +12806,12 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _normalizeInternalOptions(options) {
-      if (!Array.isArray(options) || !options.length) return options;
+      if (!Array.isArray(options) || !options.length) return options; // if (this.props.extraOptions) {
+      //   this.initHiddenOptions = this.props.extraOptions.map((n) => {
+      //     return n[this.props.optionFields.value]
+      //   })
+      //   options = [...options, ...this.props.extraOptions]
+      // }
       const { optionFields } = this.props;
       this.internalOption = clone$1(options);
       this.handleOptions(this.internalOption, optionFields);
