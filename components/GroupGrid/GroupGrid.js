@@ -143,7 +143,7 @@ class GroupGrid extends Field {
       const field = this.fields[i],
         { disabled, hidden } = field.props
       if (!(disabled || hidden) && field.validate) {
-        const valResult = field.validate()
+        const valResult = field.validate(true)
         if (valResult !== true) {
           invalids.push(field)
         }
@@ -151,7 +151,7 @@ class GroupGrid extends Field {
     }
 
     if (invalids.length > 0) {
-      // invalids[0].focus()
+      invalids[0]._focusInvalid()
     }
 
     return invalids.length === 0
