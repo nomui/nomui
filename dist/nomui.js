@@ -3247,7 +3247,6 @@ function _defineProperty2(obj, key, value) {
     render() {
       this._mountElement();
       this.routeView();
-      this.$app.lastLevel++;
     }
     handleHashChange(changed) {
       this._callHandler(this.props.onHashChange, changed); // 可以在这里做路由变更前处理
@@ -3264,7 +3263,6 @@ function _defineProperty2(obj, key, value) {
         this.remove();
       } else if (this.level === changed.changedLevel) {
         this.routeView();
-        this.$app.lastLevel = this.level + 1;
       } else if (this.level === changed.changedLevel - 1) {
         this._callHandler(this.props.onSubpathChange, changed);
       }
@@ -3288,6 +3286,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
     routeView() {
+      this.$app.lastLevel = this.level + 1;
       const level = this.level;
       const defaultPath = this.props.defaultPath;
       const { paths } = this.$app.currentRoute;

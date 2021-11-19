@@ -22,7 +22,6 @@ class Router extends Component {
   render() {
     this._mountElement()
     this.routeView()
-    this.$app.lastLevel++
   }
 
   handleHashChange(changed) {
@@ -43,7 +42,6 @@ class Router extends Component {
       this.remove()
     } else if (this.level === changed.changedLevel) {
       this.routeView()
-      this.$app.lastLevel = this.level + 1
     } else if (this.level === changed.changedLevel - 1) {
       this._callHandler(this.props.onSubpathChange, changed)
     }
@@ -72,6 +70,7 @@ class Router extends Component {
   }
 
   routeView() {
+    this.$app.lastLevel = this.level + 1
     const level = this.level
     const defaultPath = this.props.defaultPath
     const { paths } = this.$app.currentRoute
