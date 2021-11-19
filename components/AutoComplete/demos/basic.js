@@ -5,6 +5,7 @@ define([], function () {
     demo: function () {
       return {
         component: 'AutoComplete',
+        value: 'a',
         options: [
           { value: 'a' },
           { value: 'aa' },
