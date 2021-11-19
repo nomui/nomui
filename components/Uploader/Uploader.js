@@ -114,7 +114,7 @@ class Uploader extends Field {
     if (!button && button !== false) button = defaultButtonProps
 
     if (button !== false) {
-      const _attrs = cButton.attrs || {}
+      const _attrs = button.attrs || {}
       button = {
         ...button,
         disabled: disabled || initializing,
