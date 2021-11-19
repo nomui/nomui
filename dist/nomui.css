@@ -6796,7 +6796,7 @@ textarea .nom-textarea {
   transform: rotate(45deg);
   content: '';
 }
-.nom-select > .nom-field-label + .nom-field-content {
+.nom-select.p-label-align-right > .nom-field-label + .nom-field-content {
   width: 0;
 }
 .nom-select > .nom-field-content .nom-control {
@@ -7150,7 +7150,7 @@ textarea .nom-textarea {
 .nom-time-range-picker > .nom-field-content > .nom-control > .nom-field.nom-time-picker {
   flex-grow: 1;
 }
-.nom-static-text > .nom-field-label + .nom-field-content {
+.nom-static-text.p-label-align-right > .nom-field-label + .nom-field-content {
   width: 0;
 }
 .nom-static-text > .nom-field-content > .nom-control {
@@ -7776,7 +7776,7 @@ textarea .nom-textarea {
   height: 100%;
   overflow: auto;
 }
-.nom-tree-select > .nom-field-label + .nom-field-content {
+.nom-tree-select.p-label-align-right > .nom-field-label + .nom-field-content {
   width: 0;
 }
 .nom-tree-select > .nom-field-content {
@@ -8122,7 +8122,7 @@ textarea .nom-textarea {
   padding-top: 150px;
   padding-bottom: 150px;
 }
-.nom-cascader > .nom-field-label + .nom-field-content {
+.nom-cascader.p-label-align-right > .nom-field-label + .nom-field-content {
   width: 0;
 }
 .nom-cascader > .nom-field-content .nom-control {
