@@ -16610,22 +16610,27 @@ function _defineProperty2(obj, key, value) {
         }
       }
     }
-    validate() {
-      const invalids = [];
+    validate(fromParent = false) {
+      this.invalids = [];
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i],
           { disabled, hidden } = field.props;
         if (!(disabled || hidden) && field.validate) {
           const valResult = field.validate();
           if (valResult !== true) {
-            invalids.push(field);
+            this.invalids.push(field);
           }
         }
+      } // 如果是GroupGrid触发的校验，则不主动 focus
+      if (!fromParent && this.invalids.length > 0) {
+        this.invalids[0].focus();
       }
-      if (invalids.length > 0) {
-        invalids[0].focus();
+      return this.invalids.length === 0;
+    }
+    _focusInvalid() {
+      if (this.invalids.length) {
+        this.invalids[0].focus();
       }
-      return invalids.length === 0;
     }
     getField(fieldName) {
       if (typeof fieldName === "string") {
@@ -16826,11 +16831,14 @@ function _defineProperty2(obj, key, value) {
         const field = this.fields[i],
           { disabled, hidden } = field.props;
         if (!(disabled || hidden) && field.validate) {
-          const valResult = field.validate();
+          const valResult = field.validate(true);
           if (valResult !== true) {
             invalids.push(field);
           }
         }
+      }
+      if (invalids.length > 0) {
+        invalids[0]._focusInvalid();
       }
       return invalids.length === 0;
     }
