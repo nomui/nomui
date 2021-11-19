@@ -6,7 +6,7 @@ import {
   isNumeric,
   isPlainObject,
   isString,
-  normalizeKey
+  normalizeKey,
 } from '../util/index'
 import ComponentDescriptor from './ComponentDescriptor'
 
@@ -279,8 +279,10 @@ class Component {
     } else {
       el = this._placeHolderElement
     }
-    isFunction(this.props._remove) && this.props._remove.call(this, this)
-    isFunction(this.props.onRemove) && this.props.onRemove({ inst: this, props: this.props })
+    this.props && isFunction(this.props._remove) && this.props._remove.call(this, this)
+    this.props &&
+      isFunction(this.props.onRemove) &&
+      this.props.onRemove({ inst: this, props: this.props })
     this._callMixin('_remove')
     isFunction(this._remove) && this._remove()
     this.trigger('remove')
@@ -453,8 +455,10 @@ class Component {
     })
 
     if (this.parent && this.parent.props.childDefaults) {
-      const { normalizedProps: childDefaultsProps, mixins: childDefaultsMixins } =
-        this._normalizeProps(this.parent.props.childDefaults)
+      const {
+        normalizedProps: childDefaultsProps,
+        mixins: childDefaultsMixins,
+      } = this._normalizeProps(this.parent.props.childDefaults)
       normalizedProps = Component.extendProps(childDefaultsProps, normalizedProps)
       mixins = [...childDefaultsMixins, ...mixins]
     }
@@ -546,10 +550,10 @@ class Component {
         this.update(selectedProps)
       }
       isFunction(this._select) && this._select()
-       selectOption.triggerSelect === true &&
+      selectOption.triggerSelect === true &&
         this._callHandler(this.props.onSelect, null, selectOption.event)
-      
-        selectOption.triggerSelectionChange === true &&
+
+      selectOption.triggerSelectionChange === true &&
         this._callHandler(this.props.onSelectionChange)
 
       return true

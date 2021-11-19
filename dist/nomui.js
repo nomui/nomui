@@ -796,8 +796,11 @@ function _defineProperty2(obj, key, value) {
       } else {
         el = this._placeHolderElement;
       }
-      isFunction(this.props._remove) && this.props._remove.call(this, this);
-      isFunction(this.props.onRemove) &&
+      this.props &&
+        isFunction(this.props._remove) &&
+        this.props._remove.call(this, this);
+      this.props &&
+        isFunction(this.props.onRemove) &&
         this.props.onRemove({ inst: this, props: this.props });
       this._callMixin("_remove");
       isFunction(this._remove) && this._remove();
