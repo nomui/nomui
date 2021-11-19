@@ -114,16 +114,13 @@ class Uploader extends Field {
     if (!button && button !== false) button = defaultButtonProps
 
     if (button !== false) {
-      const _attrs = button.attrs || {}
-      button = {
-        ...button,
+      const defaults = {
         disabled: disabled || initializing,
         // disabled,
         ref: (c) => {
           that.button = c
         },
         attrs: {
-          ..._attrs,
           onclick() {
             that._handleClick()
           },
@@ -132,6 +129,7 @@ class Uploader extends Field {
           },
         },
       }
+      button = Component.extendProps(defaults, button)
       children.push(button)
     }
 
