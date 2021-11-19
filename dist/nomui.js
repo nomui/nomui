@@ -24008,7 +24008,7 @@ function _defineProperty2(obj, key, value) {
       let button = cButton;
       if (!button && button !== false) button = defaultButtonProps;
       if (button !== false) {
-        button = Object.assign({}, button, {
+        const defaults = {
           disabled: disabled || initializing, // disabled,
           ref: (c) => {
             that.button = c;
@@ -24021,7 +24021,8 @@ function _defineProperty2(obj, key, value) {
               that._onKeyDowne(e);
             },
           },
-        });
+        };
+        button = Component.extendProps(defaults, button);
         children.push(button);
       }
       if (display) {
