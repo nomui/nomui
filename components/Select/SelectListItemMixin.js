@@ -7,6 +7,7 @@ export default {
         byClick: true,
         canRevert: this.list.selectControl.props.multiple === true,
       },
+      hidden: !!this.props.isExtra,
       onSelect: () => {
         const { selectControl } = this.list
         const selectProps = selectControl.props

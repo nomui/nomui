@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.37](https://github.com/nomui/nomui/compare/v1.0.0-alpha.36...v1.0.0-alpha.37) (2021-11-19)
+
+
+### Features
+
+* **Anchor:** 添加默认高亮某个锚点的功能 ([cc3d7ee](https://github.com/nomui/nomui/commit/cc3d7ee8a4ccb30a7769b5be16d8d6552f199d53))
+* **Anchor:** 新增默认滚动到某个锚点位置 ([68b60a7](https://github.com/nomui/nomui/commit/68b60a7aa056d76dbe4a9abf5d62ea17421774c5))
+* **Group:** setValue添加 ignoreFiels配置, 支持特定属性的不更新 ([8d6a825](https://github.com/nomui/nomui/commit/8d6a82510e836c3fccf0dc8253267aa485082ec6))
+* **Select:** 支持额外options列表 ([97af3a1](https://github.com/nomui/nomui/commit/97af3a17b526ba142753287957feb3bc677d2275))
+* **TextBox:** 添加trimValue配置，支持去除首尾空格 ([6794a86](https://github.com/nomui/nomui/commit/6794a863eb9b1a4bcaa9eb41952d43545b25e404))
+* Tree树组件初始化也能自动感应全选状态 ([a6bc62d](https://github.com/nomui/nomui/commit/a6bc62de1b13dfae386ebaa459685d960aece6e4))
+* Tree组件以及CheckboxTree组件支持勾选所有子节点和自动感应全选 ([c9bfcce](https://github.com/nomui/nomui/commit/c9bfcce205de9606452b6a2dd4c8d38c88f29c26))
+* TreeSelect下拉树选择组件扩展fit滚动条功能 ([219316b](https://github.com/nomui/nomui/commit/219316b6bb52af730ee84e0401c36e823cea9f76))
+
+
+### Bug Fixes
+
+* 修复Uploader表单验证 ([d89b1f3](https://github.com/nomui/nomui/commit/d89b1f35b771e160060cf1835a8cb501489cf519))
+* 修复Uploader组件编译报错的bug ([f3c0b2b](https://github.com/nomui/nomui/commit/f3c0b2bd5f85ae555143cc9607a4045135134e08))
+* **AutoComplete:** 无值时则不展示删除图标 ([ad2c355](https://github.com/nomui/nomui/commit/ad2c355994ad0df23e43681303458be97c6a3bf0))
+* **Component:** 解决某些情况_remove报错问题 ([0f6c3b0](https://github.com/nomui/nomui/commit/0f6c3b0393f016e283c87529d89b0127feeefe37))
+* **Field:** 修复上下模式的Field内容宽度问题 ([c6acf37](https://github.com/nomui/nomui/commit/c6acf370979670ee7a2cd2ef94456b7b19b6edeb))
+* **Gird-frozenHeader:** 配置固定表头时，列的不对齐问题 ([19aaee5](https://github.com/nomui/nomui/commit/19aaee55bbdd1196e9e4c261f6f22750f05ac12c))
+* **Grid-empty-scroll:** 无数据时自动滚动到中间位置，计算方式改变 ([1e7de26](https://github.com/nomui/nomui/commit/1e7de262ebbf18d6a8c8908dcfa49d608be3488a))
+* **Grid:** 表格列设置的保存按钮，设置为primary类型 ([d3d215d](https://github.com/nomui/nomui/commit/d3d215d469d4a92db26c06c815d1e4fba635c590))
+* **Grid:** 修复Grid组件，在平面数据下父子数据排序打乱情况下，父子节点显示不正常的bug ([38120d5](https://github.com/nomui/nomui/commit/38120d52e17126acddb8828f84d5d9f6bb5db417))
+* **GroupGrid:** 解决父组件校验时重复触发 Tr的validate的问题 ([ccf110e](https://github.com/nomui/nomui/commit/ccf110e4b52450b9629f1b960a8bcdc851c6e18e))
+* **Select:** options有重复key时，添加wran提示，占位文案的展示根据getOption方法判断 ([d524a63](https://github.com/nomui/nomui/commit/d524a635a1f101bd84c7d0b55cb17065dede112b))
+* **Textbox-trimvalue:** 单纯使用 trim 方法无法去除 \t 制表符 ([823e9fd](https://github.com/nomui/nomui/commit/823e9fdab64af6c26d99a8b1870fbd6cdb7af4ce))
+* **Tree:** 修复Tree树组件，在平面数据下父子数据排序打乱情况下，父子节点显示不正常的bug ([5811737](https://github.com/nomui/nomui/commit/58117374088a54c97fe86aa0914e04d613e362e5))
+* **Uploader:** 修复Uploader中按钮attrs不生效的bug ([ae6f23b](https://github.com/nomui/nomui/commit/ae6f23bd0a4d27986e04438e20a8e14cd7c27e6f))
+* **Uploader:** 修复Uploader中按钮attrs不生效的bug ([7de5bff](https://github.com/nomui/nomui/commit/7de5bff7259f5d4765241314671fd0d080f5bc9c))
+* **Uploader:** 修复Uploader中按钮attrs不生效的bug ([476856e](https://github.com/nomui/nomui/commit/476856e37c9acc333967be76511529e1136e7930))
+* **Utils:** formatDate方法不支持yyyy/MM/dd格式问题 ([701b6af](https://github.com/nomui/nomui/commit/701b6af92b78c940c29a9fa4583ecdf2672a0049))
+
+
+### Performance Improvements
+
+* TreeSelect下拉树选择组件显示框固定高度范围 ([2c4d35f](https://github.com/nomui/nomui/commit/2c4d35f4e05c9583b1b476776e8cced54a925d93))
+* TreeSelect下拉树选择组件显示框固定高度范围 ([d2219a7](https://github.com/nomui/nomui/commit/d2219a7817dd885c8f79351063e53be7265f1cf4))
+
+
+### Docs
+
+* **Tooltip:** 提供自定义配置的案例 ([99b671c](https://github.com/nomui/nomui/commit/99b671cc28f3c1cbc465c1956eeab899f30d4acb))
+
 ## [1.0.0-alpha.36](https://github.com/nomui/nomui/compare/v1.0.0-alpha.35...v1.0.0-alpha.36) (2021-11-05)
 
 

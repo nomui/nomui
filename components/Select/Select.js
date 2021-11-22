@@ -39,6 +39,7 @@ class Select extends Field {
         },
         gutter: 'md',
       },
+      extraOptions: [],
       multiple: false,
       showArrow: true,
       minItemsForSearch: 20,
@@ -51,10 +52,28 @@ class Select extends Field {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
+  _created() {
+    super._created()
+
+    if (this.props.extraOptions) {
+      const extraOptions = this.props.extraOptions.map((n) => {
+        return { ...n, isExtra: true }
+      })
+      this.props.options = [...this.props.options, ...extraOptions]
+    }
+  }
+
   _config() {
     const that = this
-    const { multiple, showArrow, placeholder, disabled, showSearch, allowClear, options } =
-      this.props
+    const {
+      multiple,
+      showArrow,
+      placeholder,
+      disabled,
+      showSearch,
+      allowClear,
+      options,
+    } = this.props
     const children = []
 
     this._normalizeInternalOptions(options)
@@ -96,11 +115,13 @@ class Select extends Field {
                     const key = args.sender.parent.key
                     that.selectedMultiple.removeItem(key)
                     const oldValue = that.getValue()
-                    that.setValue(
-                      oldValue.filter((n) => {
-                        return n !== key
-                      }),
-                    )
+                    oldValue &&
+                      oldValue.length &&
+                      that.setValue(
+                        oldValue.filter((n) => {
+                          return n !== key
+                        }),
+                      )
                     that.optionList && that.optionList.unselectItem(key)
                     args.event && args.event.stopPropagation()
                   },
@@ -246,6 +267,7 @@ class Select extends Field {
     const { multiple } = this.props
     if (multiple === true) {
       const selValueOptions = this._getOptions(value)
+
       if (Array.isArray(selValueOptions) && selValueOptions.length) {
         this.selectedMultiple.update({ items: selValueOptions })
         this.currentValue = selValueOptions.map(function (item) {
@@ -537,6 +559,14 @@ class Select extends Field {
 
   _normalizeInternalOptions(options) {
     if (!Array.isArray(options) || !options.length) return options
+
+    // if (this.props.extraOptions) {
+    //   this.initHiddenOptions = this.props.extraOptions.map((n) => {
+    //     return n[this.props.optionFields.value]
+    //   })
+
+    //   options = [...options, ...this.props.extraOptions]
+    // }
 
     const { optionFields } = this.props
     this.internalOption = clone(options)
