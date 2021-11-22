@@ -12446,11 +12446,13 @@ function _defineProperty2(obj, key, value) {
                       const key = args.sender.parent.key;
                       that.selectedMultiple.removeItem(key);
                       const oldValue = that.getValue();
-                      that.setValue(
-                        oldValue.filter((n) => {
-                          return n !== key;
-                        })
-                      );
+                      oldValue &&
+                        oldValue.length &&
+                        that.setValue(
+                          oldValue.filter((n) => {
+                            return n !== key;
+                          })
+                        );
                       that.optionList && that.optionList.unselectItem(key);
                       args.event && args.event.stopPropagation();
                     },
