@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Textbox from '../Textbox/index'
+import { isNullish } from '../util/index'
 
 class Numberbox extends Textbox {
   constructor(props, ...mixins) {
@@ -105,6 +106,8 @@ class Numberbox extends Textbox {
   }
 
   _toDecimal(val, precision, notRound) {
+    if (isNullish(val)) return null
+
     if (notRound === undefined) {
       notRound = false
     }
