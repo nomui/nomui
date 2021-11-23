@@ -131,10 +131,6 @@ class Numberbox extends Textbox {
     return len
   }
 
-  _onBlur() {
-    this._callHandler(this.props.onBlur)
-  }
-
   _getRawValue() {
     return this.input.getText()
   }
