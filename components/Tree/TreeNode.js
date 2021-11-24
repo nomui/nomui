@@ -54,6 +54,7 @@ class TreeNode extends Component {
     }
 
     this.setProps({
+      classes: { 'filter-node': this.props.data.__filterNode },
       children,
     })
 
@@ -93,8 +94,11 @@ class TreeNode extends Component {
 
   check({ checkCheckbox = true, triggerCheckChange = true } = {}) {
     const { checked } = this.props
-    const { onCheckChange, cascadeCheckParent, cascadeCheckChildren } =
-      this.tree.props.nodeCheckable
+    const {
+      onCheckChange,
+      cascadeCheckParent,
+      cascadeCheckChildren,
+    } = this.tree.props.nodeCheckable
 
     if (checked === true) {
       return

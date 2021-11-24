@@ -12,20 +12,37 @@ define([], function () {
           {
             component: 'TreeSelect',
             searchable: {
-              placeholder: '输入 a 或 b 或 c ...',
+              placeholder: '默认根据数据的text值搜索',
             },
             // value: 6,
             ref: (c) => {
               treeSelectRef = c
             },
             options: [
-              { text: 'aaaaa', value: 1 },
-              { text: 'bbbbb', value: 2 },
-              { text: 'ccccc', value: 3 },
-              { text: 'ddddd', value: 4 },
-              { text: 'eeeee', value: 5 },
-              { text: 'fffff', value: 6 },
-              { text: 'ggggg', value: 7 },
+              {
+                text: 'Node1',
+                value: '0-0',
+                children: [
+                  {
+                    text: 'Child Node1-1',
+                    value: '0-0-1',
+                  },
+                  {
+                    text: 'Child Node1-2',
+                    value: '0-0-2',
+                    children: [
+                      {
+                        text: 'Child Child Node1',
+                        value: '0-0-0-1',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                text: 'Node2',
+                value: '0-1',
+              },
             ],
             onValueChange(changed) {
               // eslint-disable-next-line

@@ -20,6 +20,7 @@ define([], function () {
             },
             options: [
               { text: 'aaaaa', value: 1 },
+              { text: 'aaaaaaaa', value: 1 },
               { text: 'bbbbb', value: 2 },
               { text: 'ccccc', value: 3 },
               { text: 'ddddd', value: 4 },

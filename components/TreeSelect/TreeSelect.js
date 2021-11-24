@@ -67,19 +67,21 @@ class TreeSelect extends Field {
   // 树结构扁平化为数组数据
   getList() {
     const { treeDataFields } = this.props
-    const optionMap = []
-    function mapTree(data) {
+    const optionMap = {}
+    function mapTree(data, parentKey) {
       return data.forEach(function (item) {
         const _fieldKey = treeDataFields.key
         const _fieldText = treeDataFields.text
+        const _parentKey = treeDataFields.parentKey
 
         optionMap[item[_fieldKey]] = {
           key: item[_fieldKey],
           [_fieldKey]: item[_fieldKey],
           [_fieldText]: item[_fieldText],
+          [_parentKey]: parentKey,
         }
         if (item.children && item.children.length > 0) {
-          mapTree(item.children)
+          mapTree(item.children, item[_fieldKey])
         }
       })
     }
@@ -92,6 +94,8 @@ class TreeSelect extends Field {
     const { showArrow, placeholder, allowClear } = this.props
     const that = this
     const children = []
+
+    this._normalizeSearchable()
 
     // _content: 所选择的数据的展示
     children.push({
@@ -144,6 +148,61 @@ class TreeSelect extends Field {
       })
     }
     return children
+  }
+
+  _normalizeSearchable() {
+    const { searchable } = this.props
+    if (searchable) {
+      this.setProps({
+        searchable: Component.extendProps(
+          {
+            placeholder: null,
+            filter: ({ inputValue, options }) => {
+              if (!inputValue) return options
+              const { key, text, parentKey } = this.props.treeDataFields
+
+              // 1.先遍历一次 将结果符合搜索条件的结果(包含其祖先)放至 filteredMap中
+              const reg = new RegExp(inputValue, 'i')
+              const filteredMap = new Map()
+              Object.entries(this.optionMap).forEach(([optKey, optValue]) => {
+                // 判断输入关键字 和 option的text
+                if (reg.test(optValue[text])) {
+                  filteredMap.set(optKey, { ...optValue, __filterNode: true })
+                  // 将搜索结果的祖先节点都加入 filteredMap 中
+                  let optParentKey = optValue[parentKey]
+                  while (optParentKey) {
+                    const parent = this.optionMap[optParentKey]
+                    // parent 符合搜索条件则不重新 set
+                    if (!filteredMap.get(optParentKey)) {
+                      filteredMap.set(optParentKey, parent)
+                    }
+                    optParentKey = parent && parent[parentKey]
+                  }
+                }
+              })
+
+              // 从 filteredMap 中取出满足的options(包含祖先和孩子节点)的值
+              function getFileterOptions(list) {
+                const res = []
+                list.forEach((opt) => {
+                  const filterOpt = filteredMap.get(opt[key])
+                  if (filterOpt) {
+                    const obj = { ...opt }
+                    if (filterOpt.__filterNode) obj.__filterNode = filterOpt.__filterNode
+                    if (opt.children) obj.children = getFileterOptions(opt.children)
+                    res.push(obj)
+                  }
+                })
+                return res
+              }
+
+              return getFileterOptions(options)
+            },
+          },
+          searchable,
+        ),
+      })
+    }
   }
 
   _getContentBadges() {
