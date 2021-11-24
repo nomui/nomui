@@ -22,6 +22,7 @@ define([
   './row-expandable.js',
   './nest-grid.js',
   './append-row.js',
+  './cascade.js',
 ], function () {
   return {
     title: 'Grid',

@@ -11,6 +11,11 @@ import GridSettingPopup from './GridSettingPopup'
 
 class Grid extends Component {
   constructor(props, ...mixins) {
+    Grid._loopSetValue(props.treeConfig, [
+      'cascadeCheckParent',
+      'cascadeCheckChildren',
+      'cascadeUncheckChildren',
+    ])
     super(Component.extendProps(Grid.defaults, props), ...mixins)
   }
 
@@ -54,6 +59,7 @@ class Grid extends Component {
   }
 
   _config() {
+    this.nodeList = {}
     const that = this
     // 切换分页 data数据更新时 此两项不重置会导致check表现出错
     this.rowsRefs = {}
@@ -585,6 +591,56 @@ class Grid extends Component {
     this.body.table.appendRow(rowProps)
   }
 
+  checkChildren(row) {
+    const { checked } = row.props
+    const { cascadeCheckChildren } = this.props.treeConfig
+
+    cascadeCheckChildren === true &&
+      Object.keys(row.childrenNodes).forEach((key) => {
+        this.checkChildren(row.childrenNodes[key])
+      })
+
+    if (checked === true) {
+      return
+    }
+
+    row.check()
+  }
+
+  check(row) {
+    const { checked } = row.props
+    const { cascadeCheckParent, cascadeCheckChildren } = this.props.treeConfig
+
+    cascadeCheckChildren === true &&
+      Object.keys(row.childrenNodes).forEach((key) => {
+        this.checkChildren(row.childrenNodes[key])
+      })
+
+    cascadeCheckParent === true && row.parentNode && this.check(row.parentNode)
+
+    if (checked === true) {
+      return false
+    }
+
+    row.check()
+  }
+
+  uncheck(row) {
+    const { checked } = row.props
+    const { cascadeUncheckChildren } = this.props.treeConfig
+
+    cascadeUncheckChildren === true &&
+      Object.keys(row.childrenNodes).forEach((key) => {
+        this.uncheck(row.childrenNodes[key])
+      })
+
+    if (checked === false) {
+      return false
+    }
+
+    row.uncheck()
+  }
+
   _processCheckableColumn() {
     const grid = this
     const { rowCheckable, visibleColumns } = this.props
@@ -636,6 +692,15 @@ class Grid extends Component {
                 grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
               }
 
+              const { keyField } = this.props
+              const { parentField } = this.props.treeConfig
+              this.nodeList[`__key${rowData[keyField]}`] = row
+              row.childrenNodes = {}
+              row.parentNode = this.nodeList[`__key${rowData[parentField]}`]
+              if (row.parentNode) {
+                row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
+              }
+
               return {
                 component: Checkbox,
                 plain: true,
@@ -647,13 +712,9 @@ class Grid extends Component {
                 },
                 onValueChange: (args) => {
                   if (args.newValue === true) {
-                    row._check()
-                    row._onCheck()
-                    grid._onRowCheck(row)
+                    grid.check(row)
                   } else {
-                    row._uncheck()
-                    row._onUncheck()
-                    grid._onRowUncheck(row)
+                    grid.uncheck(row)
                   }
                   grid.changeCheckAllState()
                 },
@@ -830,6 +891,10 @@ Grid.defaults = {
     treeNodeColumn: null,
     initExpandLevel: -1,
     indentSize: 16,
+    cascadeCheckParent: true,
+    cascadeCheckChildren: true,
+    cascadeUncheckChildren: true,
+    cascade: false,
   },
   columnsCustomizable: false,
   // columnsCustomizable.selected: 若存在，则展示selected 的列数据
@@ -845,7 +910,14 @@ Grid.defaults = {
   line: 'row',
   bordered: true,
 }
-
+Grid._loopSetValue = function (key, arry) {
+  if (key === undefined || key.cascade === undefined) return false
+  arry.forEach(function (currentValue) {
+    if (key[currentValue] === undefined) {
+      key[currentValue] = key.cascade
+    }
+  })
+}
 Component.register(Grid)
 
 export default Grid
