@@ -6,12 +6,13 @@
 
 ## API
 
-| 参数      | 说明       | 类型     | 默认值                  |
-| --------- | ---------- | -------- | ----------------------- |
-| value     | 输入框内容 | `number` | -                       |
-| min       | 最小值     | `number` | Number.MIN_SAFE_INTEGER |
-| max       | 最大值     | `number` | Number.MAX_SAFE_INTEGER |
-| precision | 数值精度   | `number` | 0                       |
+| 参数      | 说明         | 类型       | 默认值                  |
+| --------- | ------------ | ---------- | ----------------------- |
+| value     | 输入框内容   | `number`   | -                       |
+| min       | 最小值       | `number`   | Number.MIN_SAFE_INTEGER |
+| max       | 最大值       | `number`   | Number.MAX_SAFE_INTEGER |
+| precision | 数值精度     | `number`   | 0                       |
+| onBlur    | 失去焦点事件 | `() => {}` | 0                       |
 
 ## 事件
 
