@@ -257,7 +257,7 @@ class Field extends Component {
     })
 
     setTimeout(function () {
-      that._callHandler(that.props.onValueChange, args)
+      that._callHandler(that.props && that.props.onValueChange, args)
       that.group && that.group._onValueChange({ changedField: args.changedField || that })
       isFunction(that._valueChange) && that._valueChange(args)
       if (that.validateTriggered) {
