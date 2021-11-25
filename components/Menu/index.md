@@ -44,12 +44,18 @@
 
 ## Methods
 
-| 名称            | 说明                          | 类型  |
-| --------------- | ----------------------------- | ----- | ----------------------- |
-| getItem         | 获取指菜单实例                | `(key | () => key) => MenuItem` |
-| selectItem      | 选中指菜单                    | -     |
-| expandToItem    | 展开指定菜单                  | -     |
-| scrollTo        | 滚动到指定菜单                | -     |
-| selectToItem    | 同时 选中,展开,滚动到指定菜单 | -     |
-| getSelectedItem | 获取当前选中菜单              | -     |
-| unselectItem    | 取消选中指定菜单              | -     |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| getItem | 获取指菜单实例 | `(params: menuItemOption) => MenuItem` | - |
+| selectItem | 选中指菜单 | - | - |
+| expandToItem | 展开指定菜单 | - | - |
+| scrollTo | 滚动到指定菜单 | - | - |
+| selectToItem | 同时 选中,展开,滚动到指定菜单 | - | - |
+| getSelectedItem | 获取当前选中菜单 | - | - |
+| unselectItem | 取消选中指定菜单 | - | - |
+
+`menuItemOption`: 获取节点的参数，可以为一下三种情况
+
+> - menuItem 的 `key`
+> - menuItem 的对应实例 `menuItemRef`
+> - 以 menuItemRef 为参数的`函数`，返回结果为`true`
