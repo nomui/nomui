@@ -18,7 +18,7 @@ class Menu extends Component {
       },
       itemExpandable: {
         expandSingle: true,
-        initExpandLevel: -1,
+        initExpandLevel: 0,
       },
       compact: false,
       indent: 1.5,
