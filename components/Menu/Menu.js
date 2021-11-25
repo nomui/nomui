@@ -14,7 +14,7 @@ class Menu extends Component {
       },
       itemSelectable: {
         onlyleaf: false,
-        byClick: true,
+        byClick: false,
       },
       itemExpandable: {
         expandSingle: true,
