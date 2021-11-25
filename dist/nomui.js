@@ -684,7 +684,7 @@ function _defineProperty2(obj, key, value) {
       el.parentNode.removeChild(el);
     }
     update(props) {
-      isFunction(this._update) && this._update();
+      isFunction(this._update) && this._update(props);
       this._propStyleClasses.length = 0;
       this.setProps(props);
       this._off();
@@ -4433,7 +4433,7 @@ function _defineProperty2(obj, key, value) {
         newValue: this.currentValue,
       });
       setTimeout(function () {
-        that._callHandler(that.props.onValueChange, args);
+        that._callHandler(that.props && that.props.onValueChange, args);
         that.group &&
           that.group._onValueChange({
             changedField: args.changedField || that,
@@ -15828,6 +15828,14 @@ function _defineProperty2(obj, key, value) {
       this.popupTreeData = this.originColumns;
       this.filter = {};
     }
+    _update(props) {
+      // update了columns, 需要重新计算得到 visibleColumns
+      if (props.columns) {
+        this.setProps({ visibleColumns: null });
+        this.originColumns = [...props.columns];
+        this.popupTreeData = this.originColumns;
+      }
+    }
     _parseColumnsCustom() {
       const { columnsCustomizable, visibleColumns } = this.props; // 未设置自定义列展示
       if (!columnsCustomizable) return; // 设置过后，无需再从selected和cache中取值
@@ -16219,10 +16227,10 @@ function _defineProperty2(obj, key, value) {
           JSON.stringify(this.getMappedColumns(tree))
         );
       }
-      columnsCustomizable.callback &&
-        this._callHandler(columnsCustomizable.callback(tree));
       this.update({ visibleColumns: tree });
       this.popup.hide();
+      columnsCustomizable.callback &&
+        this._callHandler(columnsCustomizable.callback(tree));
     }
     handleDrag() {
       if (this.props.rowSortable && this.props.rowSortable.onEnd) {

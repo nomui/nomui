@@ -28,6 +28,15 @@ class Grid extends Component {
     this.filter = {}
   }
 
+  _update(props) {
+    // update了columns, 需要重新计算得到 visibleColumns
+    if (props.columns) {
+      this.setProps({ visibleColumns: null })
+      this.originColumns = [...props.columns]
+      this.popupTreeData = this.originColumns
+    }
+  }
+
   _parseColumnsCustom() {
     const { columnsCustomizable, visibleColumns } = this.props
     // 未设置自定义列展示
@@ -549,10 +558,9 @@ class Grid extends Component {
       )
     }
 
-    columnsCustomizable.callback && this._callHandler(columnsCustomizable.callback(tree))
-
     this.update({ visibleColumns: tree })
     this.popup.hide()
+    columnsCustomizable.callback && this._callHandler(columnsCustomizable.callback(tree))
   }
 
   handleDrag() {
