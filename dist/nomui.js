@@ -18368,6 +18368,7 @@ function _defineProperty2(obj, key, value) {
       super._setValue(value, options);
     }
     _toDecimal(val, precision, notRound) {
+      if (isNullish(val)) return null;
       if (notRound === undefined) {
         notRound = false;
       }
