@@ -4646,7 +4646,7 @@ function _defineProperty2(obj, key, value) {
     _getValue() {
       const { trimValue } = this.props;
       let inputText = this.getText();
-      inputText = trimValue ? inputText.trimStart().trimEnd() : inputText;
+      inputText = trimValue ? inputText.trimLeft().trimRight() : inputText;
       if (inputText === "") {
         return null;
       }
