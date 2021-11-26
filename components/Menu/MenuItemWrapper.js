@@ -43,8 +43,8 @@ class MenuItemWrapper extends Component {
     const expanded =
       menuProps.direction === 'horizontal' ||
       menuProps.compact ||
-      menuProps.itemExpandable.initExpandLevel >= this.level
-
+      menuProps.itemExpandable.initExpandLevel === -1 ||
+      menuProps.itemExpandable.initExpandLevel > this.level
     this.setProps({
       submenu: menuProps.submenu,
     })

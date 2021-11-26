@@ -15739,7 +15739,6 @@ function _defineProperty2(obj, key, value) {
                   : that.grid.getMappedColumns(),
               },
               multiple: true,
-              leafOnly: false,
               sortable: true,
               ref: (c) => {
                 this.tree = c;
@@ -17347,6 +17346,9 @@ function _defineProperty2(obj, key, value) {
           this._callHandler(onUnselect);
         },
       });
+      if (menuProps.itemSelectable.onlyleaf === true && this.isLeaf === false) {
+        this.setProps({ selectable: false });
+      }
       this.setProps({
         children: [
           this.props.icon && {
@@ -17468,7 +17470,8 @@ function _defineProperty2(obj, key, value) {
       const expanded =
         menuProps.direction === "horizontal" ||
         menuProps.compact ||
-        menuProps.itemExpandable.initExpandLevel >= this.level;
+        menuProps.itemExpandable.initExpandLevel === -1 ||
+        menuProps.itemExpandable.initExpandLevel > this.level;
       this.setProps({ submenu: menuProps.submenu });
       this.setProps({
         submenu: {
@@ -17546,7 +17549,7 @@ function _defineProperty2(obj, key, value) {
         items: [],
         itemDefaults: { component: MenuItem },
         itemSelectable: { onlyleaf: false, byClick: false },
-        itemExpandable: { expandSingle: true, initExpandLevel: -1 },
+        itemExpandable: { expandSingle: true, initExpandLevel: 0 },
         compact: false,
         indent: 1.5,
         direction: "vertical",
@@ -23397,7 +23400,6 @@ function _defineProperty2(obj, key, value) {
         treeDataFields,
         flatOptions,
         multiple,
-        leafOnly,
       } = this.selectControl.props;
       this.setProps({
         attrs: {
@@ -23413,7 +23415,6 @@ function _defineProperty2(obj, key, value) {
               dataFields: treeDataFields,
               flatData: flatOptions,
               multiple,
-              leafOnly,
               nodeSelectable,
               nodeCheckable,
               _created: function () {

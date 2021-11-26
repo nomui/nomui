@@ -113,6 +113,9 @@ class MenuItem extends Component {
         this._callHandler(onUnselect)
       },
     })
+    if (menuProps.itemSelectable.onlyleaf === true && this.isLeaf === false) {
+      this.setProps({ selectable: false })
+    }
 
     this.setProps({
       children: [

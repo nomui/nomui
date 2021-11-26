@@ -5747,18 +5747,18 @@ img {
 .nom-menu.p-uistyle-pill.p-direction-horizontal > .nom-menu-item-wrapper {
   margin-right: 0.3rem;
 }
-.nom-menu.p-uistyle-pill > .nom-menu-item-wrapper > .nom-menu-item {
+.nom-menu.p-uistyle-pill > .nom-menu-item-wrapper .nom-menu-item {
   border-radius: 1000px !important;
 }
-.nom-menu.p-uistyle-pill > .nom-menu-item-wrapper > .nom-menu-item:hover {
+.nom-menu.p-uistyle-pill > .nom-menu-item-wrapper .nom-menu-item:hover {
   background-color: var(--nom-color-lprimary);
 }
-.nom-menu.p-uistyle-pill > .nom-menu-item-wrapper > .nom-menu-item.s-selected {
+.nom-menu.p-uistyle-pill > .nom-menu-item-wrapper .nom-menu-item.s-selected {
   color: var(--nom-color-primary-lighten) !important;
   background-color: var(--nom-color-primary) !important;
   border-color: var(--nom-color-primary-darken) !important;
 }
-.nom-menu.p-uistyle-pill > .nom-menu-item-wrapper > .nom-menu-item.s-selected a {
+.nom-menu.p-uistyle-pill > .nom-menu-item-wrapper .nom-menu-item.s-selected a {
   color: inherit !important;
 }
 .nom-menu.p-direction-vertical:not(.nom-menu-compact) > .nom-menu-item-wrapper > .nom-menu-item {
