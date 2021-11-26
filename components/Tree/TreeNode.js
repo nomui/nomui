@@ -117,7 +117,6 @@ class TreeNode extends Component {
     if (triggerCheckChange === true) {
       this._callHandler(onCheckChange)
     }
-    this.autoCheckAll()
   }
 
   uncheck({ uncheckCheckbox = true, triggerCheckChange = true } = {}) {
@@ -139,7 +138,6 @@ class TreeNode extends Component {
     if (triggerCheckChange === true) {
       this._callHandler(onCheckChange)
     }
-    this.autoCheckAll()
   }
 
   isChecked() {

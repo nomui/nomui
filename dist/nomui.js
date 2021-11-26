@@ -10607,6 +10607,7 @@ function _defineProperty2(obj, key, value) {
           } else {
             this.node.uncheck({ uncheckCheckbox: false });
           }
+          this.node.autoCheckAll();
         },
       };
     }
@@ -10713,7 +10714,6 @@ function _defineProperty2(obj, key, value) {
       if (triggerCheckChange === true) {
         this._callHandler(onCheckChange);
       }
-      this.autoCheckAll();
     }
     uncheck({ uncheckCheckbox = true, triggerCheckChange = true } = {}) {
       const { checked } = this.props;
@@ -10737,7 +10737,6 @@ function _defineProperty2(obj, key, value) {
       if (triggerCheckChange === true) {
         this._callHandler(onCheckChange);
       }
-      this.autoCheckAll();
     }
     isChecked() {
       return this.props.checked === true;
@@ -15816,6 +15815,11 @@ function _defineProperty2(obj, key, value) {
   Component.register(GridSettingPopup);
   class Grid extends Component {
     constructor(props, ...mixins) {
+      Grid._loopSetValue(props.treeConfig, [
+        "cascadeCheckParent",
+        "cascadeCheckChildren",
+        "cascadeUncheckChildren",
+      ]);
       super(Component.extendProps(Grid.defaults, props), ...mixins);
     }
     _created() {
@@ -15863,6 +15867,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _config() {
+      this.nodeList = {};
       const that = this; // 切换分页 data数据更新时 此两项不重置会导致check表现出错
       this.rowsRefs = {};
       this.checkedRowRefs = {};
@@ -16258,6 +16263,48 @@ function _defineProperty2(obj, key, value) {
     appendRow(rowProps) {
       this.body.table.appendRow(rowProps);
     }
+    checkChildren(row) {
+      const { checked } = row.props;
+      const { cascadeCheckChildren } = this.props.treeConfig;
+      cascadeCheckChildren === true &&
+        Object.keys(row.childrenNodes).forEach((key) => {
+          this.checkChildren(row.childrenNodes[key]);
+        });
+      if (checked === true) {
+        return;
+      }
+      row.check();
+    }
+    check(row) {
+      const { checked } = row.props;
+      const {
+        cascadeCheckParent,
+        cascadeCheckChildren,
+      } = this.props.treeConfig;
+      cascadeCheckChildren === true &&
+        Object.keys(row.childrenNodes).forEach((key) => {
+          this.checkChildren(row.childrenNodes[key]);
+        });
+      cascadeCheckParent === true &&
+        row.parentNode &&
+        this.check(row.parentNode);
+      if (checked === true) {
+        return false;
+      }
+      row.check();
+    }
+    uncheck(row) {
+      const { checked } = row.props;
+      const { cascadeUncheckChildren } = this.props.treeConfig;
+      cascadeUncheckChildren === true &&
+        Object.keys(row.childrenNodes).forEach((key) => {
+          this.uncheck(row.childrenNodes[key]);
+        });
+      if (checked === false) {
+        return false;
+      }
+      row.uncheck();
+    }
     _processCheckableColumn() {
       const grid = this;
       const { rowCheckable, visibleColumns } = this.props;
@@ -16308,6 +16355,16 @@ function _defineProperty2(obj, key, value) {
                 ) {
                   grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
                 }
+                const { keyField } = this.props;
+                const { parentField } = this.props.treeConfig;
+                this.nodeList[`__key${rowData[keyField]}`] = row;
+                row.childrenNodes = {};
+                row.parentNode = this.nodeList[`__key${rowData[parentField]}`];
+                if (row.parentNode) {
+                  row.parentNode.childrenNodes[
+                    `__key${rowData[keyField]}`
+                  ] = row;
+                }
                 return {
                   component: Checkbox,
                   plain: true,
@@ -16319,13 +16376,9 @@ function _defineProperty2(obj, key, value) {
                   },
                   onValueChange: (args) => {
                     if (args.newValue === true) {
-                      row._check();
-                      row._onCheck();
-                      grid._onRowCheck(row);
+                      grid.check(row);
                     } else {
-                      row._uncheck();
-                      row._onUncheck();
-                      grid._onRowUncheck(row);
+                      grid.uncheck(row);
                     }
                     grid.changeCheckAllState();
                   },
@@ -16495,6 +16548,10 @@ function _defineProperty2(obj, key, value) {
       treeNodeColumn: null,
       initExpandLevel: -1,
       indentSize: 16,
+      cascadeCheckParent: true,
+      cascadeCheckChildren: true,
+      cascadeUncheckChildren: true,
+      cascade: false,
     },
     columnsCustomizable: false, // columnsCustomizable.selected: 若存在，则展示selected 的列数据
     // columnsCustomizable.cache: 设置列的结果保存至localstorage，cache的值为对应的key
@@ -16508,6 +16565,14 @@ function _defineProperty2(obj, key, value) {
     sticky: false,
     line: "row",
     bordered: true,
+  };
+  Grid._loopSetValue = function (key, arry) {
+    if (key === undefined || key.cascade === undefined) return false;
+    arry.forEach(function (currentValue) {
+      if (key[currentValue] === undefined) {
+        key[currentValue] = key.cascade;
+      }
+    });
   };
   Component.register(Grid);
   class Toolbar extends Component {
