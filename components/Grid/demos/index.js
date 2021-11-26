@@ -23,6 +23,9 @@ define([
   './nest-grid.js',
   './append-row.js',
   './cascade.js',
+  './cascadeCheckParent.js',
+  './cascadeCheckChildren.js',
+  './cascadeUncheckChildren.js',
 ], function () {
   return {
     title: 'Grid',

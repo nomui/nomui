@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '级联统一配置',
-    file: 'cascade',
+    title: '级联取消勾选子节点',
+    file: 'cascadeUncheckChildren',
     demo: function () {
       return {
         children: [
@@ -14,6 +14,7 @@ define([], function () {
               treeNodeColumn: 'class',
               showCheckAll: true,
               cascade: false,
+              cascadeUncheckChildren: true,
             },
             columns: [
               {
