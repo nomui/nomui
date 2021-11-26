@@ -67,6 +67,7 @@ class TreeSelect extends Field {
   // 树结构扁平化为数组数据
   getList() {
     const { treeDataFields } = this.props
+    let { options } = this.props
     const optionMap = {}
     function mapTree(data, parentKey) {
       return data.forEach(function (item) {
@@ -86,7 +87,12 @@ class TreeSelect extends Field {
       })
     }
 
-    mapTree(this.props.options)
+    // popup中的tree组件，options从其中获取
+    if (this.tree) {
+      options = this.tree.getData()
+    }
+
+    mapTree(options)
     return optionMap
   }
 
@@ -172,7 +178,7 @@ class TreeSelect extends Field {
                   let optParentKey = optValue[parentKey]
                   while (optParentKey) {
                     const parent = this.optionMap[optParentKey]
-                    // parent 符合搜索条件则不重新 set
+                    // parent 符合搜索条件(已经在map中)则不重新 set
                     if (!filteredMap.get(optParentKey)) {
                       filteredMap.set(optParentKey, parent)
                     }
@@ -189,7 +195,12 @@ class TreeSelect extends Field {
                   if (filterOpt) {
                     const obj = { ...opt }
                     if (filterOpt.__filterNode) obj.__filterNode = filterOpt.__filterNode
-                    if (opt.children) obj.children = getFileterOptions(opt.children)
+                    // 递归判断children
+                    // 没有符合搜索条件的, 则直接使用原children
+                    if (opt.children) {
+                      const _children = getFileterOptions(opt.children)
+                      obj.children = _children.length ? _children : opt.children
+                    }
                     res.push(obj)
                   }
                 })

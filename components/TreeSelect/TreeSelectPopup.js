@@ -51,7 +51,9 @@ class TreeSelectPopup extends Popup {
                     if (result && result.then) {
                       return result
                         .then((value) => {
-                          result && this.selectControl.tree.update({ data: value })
+                          this.selectControl.tree.update({ data: value })
+                          // 更新 optionsMap
+                          this.selectControl.getOptionsMap()
                           loading && loading.remove()
                         })
                         .catch(() => {

@@ -18,29 +18,40 @@ define([], function () {
             ref: (c) => {
               treeSelectRef = c
             },
+            multiple: true,
             options: [
               {
-                text: 'Node1',
+                text: '一级-1',
                 value: '0-0',
                 children: [
                   {
-                    text: 'Child Node1-1',
+                    text: '二级-1',
                     value: '0-0-1',
                   },
                   {
-                    text: 'Child Node1-2',
+                    text: '二级-2',
                     value: '0-0-2',
                     children: [
                       {
-                        text: 'Child Child Node1',
+                        text: '三级-1',
                         value: '0-0-0-1',
+                        children: [
+                          {
+                            text: '四级-1',
+                            value: '0-0-0-0-1',
+                          },
+                          {
+                            text: '四级-2',
+                            value: '0-0-0-0-2',
+                          },
+                        ],
                       },
                     ],
                   },
                 ],
               },
               {
-                text: 'Node2',
+                text: '一级-2',
                 value: '0-1',
               },
             ],
