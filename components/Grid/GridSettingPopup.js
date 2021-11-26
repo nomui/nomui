@@ -42,7 +42,6 @@ class GridSettingPopup extends Modal {
                 : that.grid.getMappedColumns(),
             },
             multiple: true,
-            leafOnly: false,
             sortable: true,
 
             ref: (c) => {
