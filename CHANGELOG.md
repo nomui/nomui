@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.38](https://github.com/nomui/nomui/compare/v1.0.0-alpha.37...v1.0.0-alpha.38) (2021-11-26)
+
+
+### Features
+
+* **Component:** 基类将props作为_update的参数，通知到每个组件中 ([e485b68](https://github.com/nomui/nomui/commit/e485b68df57bc791cdaa441c54695a131427475a))
+* **Menu-selectable:** 是否选中配置，添加onlyleaf配置 ([fbb3c9d](https://github.com/nomui/nomui/commit/fbb3c9d052e5210132b671cbdfda2b8cd7b5d596))
+* **Numberbox:** 添加onBlur方法 ([14d59d4](https://github.com/nomui/nomui/commit/14d59d45c5878c5e61949fe306e80197aa656b77))
+
+
+### Bug Fixes
+
+* **Field:** 当field被销毁时, 定时器报错 ([0a62935](https://github.com/nomui/nomui/commit/0a62935839101d292a6664b8958c157485b9ccc5))
+* **Grid:** 开启列设置，外部更新 columns时，展示错误 ([b4f292b](https://github.com/nomui/nomui/commit/b4f292be520a8e34c9ff41db58e671ae25594403))
+* **Grid:** 支持级联特性 ([d3c2ea3](https://github.com/nomui/nomui/commit/d3c2ea3279ee91330a2d4ff9088020ddee15fbcc))
+* **Menu:**  Selectable.byClick 默认改为false ([f83fdbd](https://github.com/nomui/nomui/commit/f83fdbd7ee11aaf32124e89e6004e2cbd7cf61c8))
+* **Menu-uistyle:** pill模式下，子menuItem被选中无样式 ([86166e9](https://github.com/nomui/nomui/commit/86166e9a604f00d775c596fd6388e453c2e08894))
+* **Menu:** 菜单的默认展开配置 initExpandLevel ([35e821b](https://github.com/nomui/nomui/commit/35e821bedd1aa724607cbf686fefecf0091b5389))
+* **Numberbox:** 当setValue(null) 时，会展示出undefined ([d11cafb](https://github.com/nomui/nomui/commit/d11cafbc4680682686a26aa1764802af3a9201d3))
+* **Numberbox:** 去掉自身的onBlur方法，从textbox中有继承 ([36ac121](https://github.com/nomui/nomui/commit/36ac1214f624515a663583a0a7baf0f64815123e))
+* **Select:** 多选模式下删除最后一项数据报错问题 ([ffc270d](https://github.com/nomui/nomui/commit/ffc270daf930e17ceab1bf007e764e830a38df5c))
+* **TextBox:** 低版本浏览器不支持trimStart, 需使用trimLeft ([8c91e73](https://github.com/nomui/nomui/commit/8c91e7389441805ee4a5ae94a1bf352987995caa))
+* **Tree:** 删除使用 leafOnly 的代码 ([9a6e7a7](https://github.com/nomui/nomui/commit/9a6e7a7271b0ce93bebdc3600567c31dbbf2ee0c))
+
+
+### Docs
+
+* **Menu:** 菜单的文档-methods部分 ([8eea3a2](https://github.com/nomui/nomui/commit/8eea3a2733fc0501606d63c19dde3364ca5fdd52))
+* **Menu:** 菜单的文档补充 ([63ab713](https://github.com/nomui/nomui/commit/63ab71318b8cafd8674623695c5ff480a501f0ff))
+
 ## [1.0.0-alpha.37](https://github.com/nomui/nomui/compare/v1.0.0-alpha.36...v1.0.0-alpha.37) (2021-11-19)
 
 
