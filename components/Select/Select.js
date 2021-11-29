@@ -483,6 +483,7 @@ class Select extends Field {
   }
 
   _valueChange(changed) {
+    if (!this.props) return
     // 有值则展示 clearIcon, 无值隐藏
     changed.newValue
       ? this.props.allowClear && this.clearIcon.show()
