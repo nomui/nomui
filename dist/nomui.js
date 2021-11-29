@@ -12752,7 +12752,7 @@ function _defineProperty2(obj, key, value) {
       return retOptions;
     }
     _valueChange(changed) {
-      // 有值则展示 clearIcon, 无值隐藏
+      if (!this.props) return; // 有值则展示 clearIcon, 无值隐藏
       changed.newValue
         ? this.props.allowClear && this.clearIcon.show()
         : this.props.allowClear && this.clearIcon.hide();
