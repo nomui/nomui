@@ -6444,7 +6444,7 @@ fieldset[disabled] a.nom-button {
   padding: 0.375rem 0.75rem;
   color: #343a40;
   font-size: 1rem;
-  line-height: 1.42857143;
+  line-height: 1.42857143rem;
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
@@ -6516,6 +6516,7 @@ textarea .nom-input {
   padding: 0;
   border: none;
   outline: none;
+  height: calc(1.428571429rem + (0.375rem * 2));
 }
 .nom-textbox .nom-textbox-left-icon,
 .nom-textbox .nom-textbox-right-icon {
@@ -6801,10 +6802,10 @@ textarea .nom-textarea {
 }
 .nom-select > .nom-field-content .nom-control {
   position: relative;
-  min-height: 34px;
-  padding: 6px 24px 6px 12px;
+  min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
+  padding: 0.375rem 24px 0.375rem 12px;
   color: #000 !important;
-  line-height: 1.42857;
+  line-height: 1.42857143rem;
   background: white;
   border: 1px solid gainsboro;
   border-radius: 2px;
@@ -7154,10 +7155,10 @@ textarea .nom-textarea {
   width: 0;
 }
 .nom-static-text > .nom-field-content > .nom-control {
-  min-height: calc(1.42857143rem + (0.375rem * 2) + 2px);
+  min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   padding: 0.375rem 0;
   font-size: 1rem;
-  line-height: 1.42857143;
+  line-height: 1.42857143rem;
 }
 .nom-date-picker-popup .time-display {
   height: 40px;
@@ -7779,16 +7780,13 @@ textarea .nom-textarea {
 .nom-tree-select.p-label-align-right > .nom-field-label + .nom-field-content {
   width: 0;
 }
-.nom-tree-select > .nom-field-content {
-  padding: 0.5rem 0.5rem;
-}
 .nom-tree-select > .nom-field-content .nom-control {
   position: relative;
   height: 100%;
-  min-height: 34px;
-  padding: 6px 24px 6px 12px;
+  min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
+  padding: 0.375rem 24px 0.375rem 12px;
   color: #000 !important;
-  line-height: 1.42857;
+  line-height: 1.42857143rem;
   background: white;
   border: 1px solid gainsboro;
   border-radius: 2px;
@@ -7914,10 +7912,10 @@ textarea .nom-textarea {
   fill: #888;
 }
 .nom-mask-info-field > .nom-field-content > .nom-control {
-  min-height: calc(1.42857143rem + (0.375rem * 2) + 2px);
+  min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   padding: 0.375rem 0;
   font-size: 1rem;
-  line-height: 1.42857143;
+  line-height: 1.42857143rem;
 }
 .nom-tag {
   /* Structure */
@@ -8127,10 +8125,10 @@ textarea .nom-textarea {
 }
 .nom-cascader > .nom-field-content .nom-control {
   position: relative;
-  min-height: 34px;
-  padding: 6px 24px 6px 12px;
+  min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
+  padding: 0.375rem 24px 0.375rem 12px;
   color: #000 !important;
-  line-height: 1.42857;
+  line-height: 1.42857143rem;
   background: white;
   border: 1px solid gainsboro;
   border-radius: 2px;

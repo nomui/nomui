@@ -14,7 +14,7 @@
   padding: @padding-y-base @padding-x-base;
   color: @input-color;
   font-size: @font-size-base;
-  line-height: @line-height-base;
+  line-height: @line-height-computed;
   background-color: @input-bg;
   background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
   border: 1px solid @input-border;
@@ -114,6 +114,7 @@
           padding: 0;
           border: none;
           outline: none;
+          height: @input-height-base-inner; // while input as inner El, height = base line-height + padding (ignore border)
         }
       }
     }
