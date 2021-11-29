@@ -15636,6 +15636,9 @@ function _defineProperty2(obj, key, value) {
         this.scrollParent._on("scroll", function () {
           that._onPageScroll();
         });
+        setTimeout(() => {
+          this.scrollParent.element.scrollTop += 1;
+        }, 0);
       }
     }
     _remove() {
