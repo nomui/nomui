@@ -34,8 +34,8 @@ class GroupGrid extends Field {
               plain: true,
               value: cellData,
               __group: row,
-              invalidTip:{
-                reference:this
+              invalidTip: {
+                reference: this,
               },
               onCreated: ({ inst }) => {
                 row.fields.push(inst)
@@ -126,12 +126,12 @@ class GroupGrid extends Field {
     return value
   }
 
-  setValue(value) {
+  setValue(value, options) {
     if (Array.isArray(value)) {
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i]
         if (field.setValue) {
-          field.setValue(value[i])
+          field.setValue(value[i], options)
         }
       }
     }
@@ -143,7 +143,7 @@ class GroupGrid extends Field {
       const field = this.fields[i],
         { disabled, hidden } = field.props
       if (!(disabled || hidden) && field.validate) {
-        const valResult = field.validate()
+        const valResult = field.validate(true)
         if (valResult !== true) {
           invalids.push(field)
         }
@@ -151,7 +151,7 @@ class GroupGrid extends Field {
     }
 
     if (invalids.length > 0) {
-      // invalids[0].focus()
+      invalids[0]._focusInvalid()
     }
 
     return invalids.length === 0

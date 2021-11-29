@@ -1,7 +1,7 @@
 import Button from '../Button/index'
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { } from '../Icon/index'
+import {} from '../Icon/index'
 import { extend, isPlainObject, isString } from '../util/index'
 import Input from './Input'
 
@@ -20,6 +20,7 @@ class Textbox extends Field {
       value: null,
       htmlType: 'text',
       onEnter: null,
+      trimValue: true, // getValue时 默认去除首位的空格
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -155,8 +156,9 @@ class Textbox extends Field {
   }
 
   _getValue() {
+    const { trimValue } = this.props
     let inputText = this.getText()
-    inputText = inputText.trim(' ')
+    inputText = trimValue ? inputText.trimLeft().trimRight() : inputText
     if (inputText === '') {
       return null
     }

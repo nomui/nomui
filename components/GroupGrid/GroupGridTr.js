@@ -92,24 +92,31 @@ class GroupGridTr extends Tr {
     }
   }
 
-  validate() {
-    const invalids = []
+  validate(fromParent = false) {
+    this.invalids = []
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i],
         { disabled, hidden } = field.props
       if (!(disabled || hidden) && field.validate) {
         const valResult = field.validate()
         if (valResult !== true) {
-          invalids.push(field)
+          this.invalids.push(field)
         }
       }
     }
 
-    if (invalids.length > 0) {
-      invalids[0].focus()
+    // 如果是GroupGrid触发的校验，则不主动 focus
+    if (!fromParent && this.invalids.length > 0) {
+      this.invalids[0].focus()
     }
 
-    return invalids.length === 0
+    return this.invalids.length === 0
+  }
+
+  _focusInvalid() {
+    if (this.invalids.length) {
+      this.invalids[0].focus()
+    }
   }
 
   getField(fieldName) {
@@ -184,6 +191,7 @@ class GroupGridTr extends Tr {
 
   _needHandleValue(field, options) {
     const { disabled, hidden } = field.props
+    const { ignoreFields = [] } = options
     if (field._autoName) {
       return false
     }
@@ -191,6 +199,9 @@ class GroupGridTr extends Tr {
       return false
     }
     if (options.ignoreHidden && hidden === true) {
+      return false
+    }
+    if (ignoreFields.includes(field.name)) {
       return false
     }
 

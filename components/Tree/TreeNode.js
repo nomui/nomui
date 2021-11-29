@@ -68,13 +68,43 @@ class TreeNode extends Component {
     return Array.isArray(arr) && arr.length > 0
   }
 
-  check({ checkCheckbox = true, triggerCheckChange = true } = {}) {
+  checkChildren({ checkCheckbox = true, triggerCheckChange = true } = {}) {
     const { checked } = this.props
-    const { onCheckChange, cascadeCheckParent } = this.tree.props.nodeCheckable
+    const { onCheckChange, cascadeCheckChildren } = this.tree.props.nodeCheckable
+
+    cascadeCheckChildren === true &&
+      Object.keys(this.subnodeRefs).forEach((key) => {
+        this.subnodeRefs[key].checkChildren({ checkCheckbox: true, triggerCheckChange: false })
+      })
 
     if (checked === true) {
       return
     }
+
+    if (checkCheckbox === true) {
+      this.checkboxRef.setValue(true, { triggerChange: false })
+    }
+
+    this.props.checked = true
+    if (triggerCheckChange === true) {
+      this._callHandler(onCheckChange)
+    }
+  }
+
+  check({ checkCheckbox = true, triggerCheckChange = true } = {}) {
+    const { checked } = this.props
+    const { onCheckChange, cascadeCheckParent, cascadeCheckChildren } =
+      this.tree.props.nodeCheckable
+
+    if (checked === true) {
+      return
+    }
+
+    cascadeCheckChildren === true &&
+      Object.keys(this.subnodeRefs).forEach((key) => {
+        this.subnodeRefs[key].checkChildren({ checkCheckbox: true, triggerCheckChange: false })
+      })
+
     cascadeCheckParent === true &&
       this.parentNode &&
       this.parentNode.check({ checkCheckbox: true, triggerCheckChange: false })
@@ -112,6 +142,15 @@ class TreeNode extends Component {
 
   isChecked() {
     return this.props.checked === true
+  }
+
+  autoCheckAll() {
+    if (!this.tree.checkAllRef) return false
+    const check = Object.keys(this.tree.nodeRefs).some((nodeKey) => {
+      return this.tree.nodeRefs[nodeKey].props.checked === false
+    })
+
+    this.tree.checkAllRef.setValue(!check, { triggerChange: false })
   }
 
   getChildNodes() {

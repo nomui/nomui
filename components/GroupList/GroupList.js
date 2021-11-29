@@ -101,12 +101,12 @@ class GroupList extends Group {
     return value
   }
 
-  setValue(value) {
+  setValue(value, options) {
     if (Array.isArray(value)) {
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i]
         if (field.setValue) {
-          field.setValue(value[i])
+          field.setValue(value[i], options)
         }
       }
     }

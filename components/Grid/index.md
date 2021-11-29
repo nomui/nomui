@@ -35,7 +35,7 @@
 | --- | --- | --- | --- |
 | columns | 表格列的配置描述，具体项见下表 | `array` | `[]` |
 | data | 表格数据数组 | `array` | `[]` |
-| frozenHeader | 冻结表头 | `boolean` | `false` |
+| frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
 | frozenRightCols | 指定冻结右侧多少列 | `number` | - |
 | keyField | 表格行数据的主键字段 | `string` | `id` |
@@ -196,6 +196,10 @@
 | initExpandLevel | 初始展开层级，默认为 -1，代表展开所有层级 | `number` | -1 |
 | indentSize | 缩进尺寸，单位 px | `number` | 16 |
 | indicator | 自定义展开折叠图标的配置，与基组件的 `expandable.indicator` 配置一致 | `props` | - |
+| cascade | 级联勾选父节点（cascadeCheckParent）,级联勾选子节点（cascadeCheckChildren）,级联取消勾选子节点（cascadeUncheckChildren）的统一配置，优先级低于单项配置 | `boolean` | false |
+| cascadeCheckParent | 级联勾选父节点 | `boolean` | true |
+| cascadeCheckChildren | 级联勾选子节点 | `boolean` | true |
+| cascadeUncheckChildren | 级联取消勾选子节点 | `boolean` | true |
 
 ### columnsCustomizable
 
@@ -206,3 +210,26 @@
 | selected | 默认展示出的列 | `array` | - |
 | cache | 是否需要缓存到 store 中（刷新页面不会重置，需要 cache 设置为`唯一的标识`） | `string \| boolean` | - |
 | callback | 点击 modal 的保存的回调事件 | `function` | - |
+
+### 注意事项
+
+#### frozenHeader
+
+当配置了`frozenHeader: true`时, 会出现列不对齐的情况
+
+**原因**：
+
+- 配置了`frozenHeader: true`时, `body`右侧始终会出现滚动条
+- 为了使`header`和`body`的列一一对应
+- `header`的`colgroup`中加了一列`width: 17px`的占位
+- 但当表格宽度大于所有 `column.width` 之和时, 每一列的实际展示`width`就会根据比例计算出来，实际的宽度会比设置的`width`大
+- 但是, 原本用来占位的 `width: 17px` 也变大了, 就导致`header`中每列计算出的宽度比`body`中的小。就出现了不对应的情况
+- ex: `column: [{field: 'col1', width: 200}, {field: 'col2', width: 200}]`
+  - 若此时表格宽度为 `body: 800`,则 `header: 817`
+  - 展示效果: `body`的两列是 400,`header`中的只有`200 * (817 / 417) = 391.84`
+  - 因为原本`17px`的列也同比增加到`17 * (817 / 417) = 33.31`了
+
+所以解决方案需要`columns`配置满足以下一种方案:
+
+1. 至少预留一列, 不设置其`width`, 让其自适应(`width: 17px`的占位列就不会自动变化了)
+2. 总的列宽一定要足够, 越大越好(让`17px`导致的影响微乎其微,看不出差别即可)

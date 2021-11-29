@@ -44,17 +44,21 @@ class AutoComplete extends Textbox {
   _config() {
     const autoCompleteRef = this
     const { allowClear, options } = this.props
-    if (allowClear) {
+    if (allowClear && this.currentValue) {
       this.setProps({
         rightIcon: {
           component: 'Icon',
           type: 'close',
+          ref: (c) => {
+            this.clearIcon = c
+          },
           classes: {
             'nom-auto-complete-clear': true,
           },
           onClick: ({ event }) => {
             event.stopPropagation()
             autoCompleteRef.clear()
+            this.clearIcon.hide()
             autoCompleteRef.popup && autoCompleteRef.popup.hide()
           },
         },
@@ -110,6 +114,12 @@ class AutoComplete extends Textbox {
 
   _setValue(value, options) {
     super._setValue(value, options)
+  }
+
+  _valueChange(changed) {
+    changed.newValue
+      ? this.props.allowClear && this.clearIcon.show()
+      : this.props.allowClear && this.clearIcon.hide()
   }
 
   blur() {

@@ -18,7 +18,8 @@ class TreeSelectPopup extends Popup {
   _config() {
     const that = this
     const { nodeSelectable, nodeCheckable } = that.props
-    const { options, treeDataFields, flatOptions, multiple, leafOnly } = this.selectControl.props
+
+    const { options, treeDataFields, flatOptions, multiple } = this.selectControl.props
 
     this.setProps({
       attrs: {
@@ -38,7 +39,6 @@ class TreeSelectPopup extends Popup {
             dataFields: treeDataFields,
             flatData: flatOptions,
             multiple,
-            leafOnly,
             nodeSelectable,
             nodeCheckable,
             _created: function () {

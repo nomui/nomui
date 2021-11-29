@@ -11,6 +11,11 @@ import GridSettingPopup from './GridSettingPopup'
 
 class Grid extends Component {
   constructor(props, ...mixins) {
+    Grid._loopSetValue(props.treeConfig, [
+      'cascadeCheckParent',
+      'cascadeCheckChildren',
+      'cascadeUncheckChildren',
+    ])
     super(Component.extendProps(Grid.defaults, props), ...mixins)
   }
 
@@ -26,6 +31,15 @@ class Grid extends Component {
     // 列设置弹窗 tree的数据
     this.popupTreeData = this.originColumns
     this.filter = {}
+  }
+
+  _update(props) {
+    // update了columns, 需要重新计算得到 visibleColumns
+    if (props.columns) {
+      this.setProps({ visibleColumns: null })
+      this.originColumns = [...props.columns]
+      this.popupTreeData = this.originColumns
+    }
   }
 
   _parseColumnsCustom() {
@@ -54,6 +68,7 @@ class Grid extends Component {
   }
 
   _config() {
+    this.nodeList = {}
     const that = this
     // 切换分页 data数据更新时 此两项不重置会导致check表现出错
     this.rowsRefs = {}
@@ -66,7 +81,7 @@ class Grid extends Component {
     const { treeConfig } = this.props
     if (treeConfig && treeConfig.flatData) {
       this.setProps({
-        data: this._toTreeGridData(that.props.data),
+        data: this._setTreeGridData(that.props.data),
       })
     }
 
@@ -155,33 +170,36 @@ class Grid extends Component {
     })
   }
 
-  _toTreeGridData(arrayData) {
+  _setTreeGridData(arr) {
     const { keyField } = this.props
     const { parentField, childrenField } = this.props.treeConfig
 
-    if (!keyField || keyField === '' || !arrayData) return []
+    if (!keyField || keyField === '' || !arr) return []
+    //  删除所有 childrenField,以防止多次调用
+    arr.forEach(function (item) {
+      delete item[childrenField]
+    })
+    const map = {} // 构建map
+    arr.forEach((i) => {
+      map[i[keyField]] = i // 构建以keyField为键 当前数据为值
+    })
 
-    if (Array.isArray(arrayData)) {
-      const r = []
-      const tmpMap = {}
+    const treeData = []
+    arr.forEach((child) => {
+      const mapItem = map[child[parentField]] // 判断当前数据的parentField是否存在map中
 
-      arrayData.forEach((item) => {
-        tmpMap[item[keyField]] = item
+      if (mapItem) {
+        // 存在则表示当前数据不是最顶层数据
 
-        if (tmpMap[item[parentField]] && item[keyField] !== item[parentField]) {
-          if (!tmpMap[item[parentField]][childrenField])
-            tmpMap[item[parentField]][childrenField] = []
-          tmpMap[item[parentField]][childrenField].push(item)
-        } else {
-          // 无parent，为根节点，直接push进r
-          r.push(item)
-        }
-      })
+        // 这里的map中的数据是引用了arr的它的指向还是arr，当mapItem改变时arr也会改变
+        ;(mapItem[childrenField] || (mapItem[childrenField] = [])).push(child) // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
+      } else {
+        // 不存在则是组顶层数据
+        treeData.push(child)
+      }
+    })
 
-      return r
-    }
-
-    return [arrayData]
+    return treeData
   }
 
   _calcMinWidth() {
@@ -340,16 +358,20 @@ class Grid extends Component {
 
   // 记录上一次滚动到的位置
   _setScrollPlace(isEmpty) {
+    // grid自身的 header和body的宽度
     const headerEl = this.header.element
     const bodyEl = this.body.element
+
+    // body的body的宽度
+    const tableBodyEl = this.body.table.element
 
     let headerLeft = headerEl.scrollLeft
     let bodyLeft = bodyEl.scrollLeft
 
     // 表格的宽度 / 2 - svg图标的一半
     if (isEmpty) {
-      headerLeft = headerEl.offsetWidth / 2 - 92
-      bodyLeft = bodyEl.offsetWidth / 2 - 92
+      headerLeft = (tableBodyEl.offsetWidth - headerEl.offsetWidth) / 2
+      bodyLeft = (tableBodyEl.offsetWidth - bodyEl.offsetWidth) / 2
     }
     this._headerScrollInfo = {
       left: headerLeft,
@@ -542,10 +564,9 @@ class Grid extends Component {
       )
     }
 
-    columnsCustomizable.callback && this._callHandler(columnsCustomizable.callback(tree))
-
     this.update({ visibleColumns: tree })
     this.popup.hide()
+    columnsCustomizable.callback && this._callHandler(columnsCustomizable.callback(tree))
   }
 
   handleDrag() {
@@ -576,6 +597,56 @@ class Grid extends Component {
 
   appendRow(rowProps) {
     this.body.table.appendRow(rowProps)
+  }
+
+  checkChildren(row) {
+    const { checked } = row.props
+    const { cascadeCheckChildren } = this.props.treeConfig
+
+    cascadeCheckChildren === true &&
+      Object.keys(row.childrenNodes).forEach((key) => {
+        this.checkChildren(row.childrenNodes[key])
+      })
+
+    if (checked === true) {
+      return
+    }
+
+    row.check()
+  }
+
+  check(row) {
+    const { checked } = row.props
+    const { cascadeCheckParent, cascadeCheckChildren } = this.props.treeConfig
+
+    cascadeCheckChildren === true &&
+      Object.keys(row.childrenNodes).forEach((key) => {
+        this.checkChildren(row.childrenNodes[key])
+      })
+
+    cascadeCheckParent === true && row.parentNode && this.check(row.parentNode)
+
+    if (checked === true) {
+      return false
+    }
+
+    row.check()
+  }
+
+  uncheck(row) {
+    const { checked } = row.props
+    const { cascadeUncheckChildren } = this.props.treeConfig
+
+    cascadeUncheckChildren === true &&
+      Object.keys(row.childrenNodes).forEach((key) => {
+        this.uncheck(row.childrenNodes[key])
+      })
+
+    if (checked === false) {
+      return false
+    }
+
+    row.uncheck()
   }
 
   _processCheckableColumn() {
@@ -629,6 +700,15 @@ class Grid extends Component {
                 grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
               }
 
+              const { keyField } = this.props
+              const { parentField } = this.props.treeConfig
+              this.nodeList[`__key${rowData[keyField]}`] = row
+              row.childrenNodes = {}
+              row.parentNode = this.nodeList[`__key${rowData[parentField]}`]
+              if (row.parentNode) {
+                row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
+              }
+
               return {
                 component: Checkbox,
                 plain: true,
@@ -640,13 +720,9 @@ class Grid extends Component {
                 },
                 onValueChange: (args) => {
                   if (args.newValue === true) {
-                    row._check()
-                    row._onCheck()
-                    grid._onRowCheck(row)
+                    grid.check(row)
                   } else {
-                    row._uncheck()
-                    row._onUncheck()
-                    grid._onRowUncheck(row)
+                    grid.uncheck(row)
                   }
                   grid.changeCheckAllState()
                 },
@@ -823,6 +899,10 @@ Grid.defaults = {
     treeNodeColumn: null,
     initExpandLevel: -1,
     indentSize: 16,
+    cascadeCheckParent: true,
+    cascadeCheckChildren: true,
+    cascadeUncheckChildren: true,
+    cascade: false,
   },
   columnsCustomizable: false,
   // columnsCustomizable.selected: 若存在，则展示selected 的列数据
@@ -838,7 +918,14 @@ Grid.defaults = {
   line: 'row',
   bordered: true,
 }
-
+Grid._loopSetValue = function (key, arry) {
+  if (key === undefined || key.cascade === undefined) return false
+  arry.forEach(function (currentValue) {
+    if (key[currentValue] === undefined) {
+      key[currentValue] = key.cascade
+    }
+  })
+}
 Component.register(Grid)
 
 export default Grid

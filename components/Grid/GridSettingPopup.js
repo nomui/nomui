@@ -42,7 +42,6 @@ class GridSettingPopup extends Modal {
                 : that.grid.getMappedColumns(),
             },
             multiple: true,
-            leafOnly: false,
             sortable: true,
 
             ref: (c) => {
@@ -61,6 +60,7 @@ class GridSettingPopup extends Modal {
             items: [
               {
                 component: 'Button',
+                type: 'primary',
                 text: '确定',
                 onClick: function () {
                   const list = that.tree.getCheckedNodesData()
