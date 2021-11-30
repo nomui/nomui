@@ -20,7 +20,7 @@ define([], function () {
               name: 'country',
               label: '国家',
               control: {
-                component: 'TextControl',
+                component: 'StaticText',
               },
             },
             {
@@ -100,7 +100,7 @@ define([], function () {
                 text: '提交',
                 onClick: () => {
                   console.log(form.getValue())
-                }
+                },
               },
             },
           ],

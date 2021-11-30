@@ -65,6 +65,9 @@ class GridHeader extends Component {
       this.scrollParent._on('scroll', function () {
         that._onPageScroll()
       })
+      setTimeout(() => {
+        this.scrollParent.element.scrollTop += 1
+      }, 0)
     }
   }
 
