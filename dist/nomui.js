@@ -10607,7 +10607,7 @@ function _defineProperty2(obj, key, value) {
           } else {
             this.node.uncheck({ uncheckCheckbox: false });
           }
-          this.node.autoCheckAll();
+          this.node && this.node.autoCheckAll();
         },
       };
     }
@@ -23468,8 +23468,14 @@ function _defineProperty2(obj, key, value) {
     _rendered() {
       this.popup = new TreeSelectPopup({
         trigger: this.control,
-        nodeSelectable: this._getPopupNodeSelectable(),
-        nodeCheckable: this._getPopupNodeCheckable(),
+        nodeCheckable: this.props.multiple && this._getPopupNodeCheckable(),
+        onShow: () => {
+          if (!this.props.multiple) {
+            this.tree.update({
+              nodeSelectable: this._getPopupNodeSelectable(),
+            });
+          }
+        },
       });
       this._valueChange({ newValue: this.currentValue });
     } // 存一份 {key: optionItem} 的数据
@@ -23610,14 +23616,17 @@ function _defineProperty2(obj, key, value) {
         options = { triggerChange: false };
       } else {
         options = extend$1({ triggerChange: true }, options);
-      } // 单选则点击后即关闭popup
-      if (!this.props.multiple) {
-        this.popup.hide();
       }
       if (options.triggerChange) {
         this._onValueChange();
       }
-      this._content.update({ children: this._getContentBadges() });
+      this._content.update({ children: this._getContentBadges() }); // 多选: 每次setValue后更新选中状态
+      if (this.props.multiple) {
+        this.tree.update({ nodeCheckable: this._getPopupNodeCheckable() });
+      } else {
+        // 单选: 点击后即关闭popup,在onShow中更新
+        this.popup.hide();
+      }
     } // getValue时根据选中的节点返回
     _getValue() {
       if (this.props.multiple === false) {
