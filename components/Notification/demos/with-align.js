@@ -35,33 +35,16 @@ define([], function () {
                 marginLeft: '100px',
               },
             },
-            children: [getButton('top left'), getButton('top'), getButton('top right')],
+            children: [getButton('top left'), getButton('top right')],
           },
-          {
-            attrs: {
-              style: {
-                width: '100px',
-                float: 'left',
-              },
-            },
-            children: [getButton('left top'), getButton('left'), getButton('left bottom')],
-          },
-          {
-            attrs: {
-              style: {
-                width: '100px',
-                marginLeft: '400px',
-              },
-            },
-            children: [getButton('right top'), getButton('right'), getButton('right bottom')],
-          },
+
           {
             attrs: {
               style: {
                 marginLeft: '100px',
               },
             },
-            children: [getButton('bottom left'), getButton('bottom'), getButton('bottom right')],
+            children: [getButton('bottom left'), getButton('bottom right')],
           },
         ],
       }

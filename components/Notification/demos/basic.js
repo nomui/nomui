@@ -4,18 +4,33 @@ define([], function () {
     file: 'basic',
     demo: function () {
       return {
-        children: [
-          {
-            component: 'Button',
-            text: '打开通知窗',
-            onClick: () => {
-              nomui.Notification.open({
-                title: '温馨提示',
-                description: '收到用户付款100000万元',
-              })
+        children: {
+          component: 'Cols',
+          strechIndex: 0,
+          items: [
+            {
+              component: 'Button',
+              text: '打开通知窗',
+              onClick: () => {
+                nomui.Notification.open({
+                  title: '温馨提示',
+                  description: '收到用户付款100000万元',
+                })
+              },
             },
-          },
-        ],
+            {
+              component: 'Button',
+              text: '打开通知窗',
+              onClick: () => {
+                nomui.Notification.open({
+                  title: '温馨提示',
+                  description: '收到用户付款100000万元',
+                  align: 'bottom left',
+                })
+              },
+            },
+          ],
+        },
       }
     },
   }

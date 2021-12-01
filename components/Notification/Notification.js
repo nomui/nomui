@@ -5,13 +5,15 @@ import NotificationContent from './NotificationContent'
 
 class Notification extends Layer {
   static NOMUI_NOTIFICATION_DEFAULTS = {
-    align: 'right top',
+    align: 'top right',
     duration: 4500,
     bottom: 24,
     top: 24,
     left: 24,
     right: 24,
   }
+
+  static NOMUI_NOTIFICATION_CONTAINER = null
 
   // 保存Notification实例,以key为键，实例对象为值
   static NOMUI_NOTIFICATION_INSTANCES = {}
@@ -44,9 +46,26 @@ class Notification extends Layer {
   }
 
   static open(config) {
+    if (!Notification.NOMUI_NOTIFICATION_CONTAINER) {
+      Notification.NOMUI_NOTIFICATION_CONTAINER = new nomui.Layer({
+        classes: {
+          'nom-notification-container': true,
+          'nom-notification-align-top':
+            (config.align && config.align.includes('top')) || !config.align,
+          'nom-notification-align-bottom': config.align && config.align.includes('bottom'),
+          'nom-notification-align-left': config.align && config.align.includes('left'),
+          'nom-notification-align-right':
+            (config.align && config.align.includes('right')) || !config.align,
+        },
+      })
+    }
+
     const curInsance = Notification.NOMUI_NOTIFICATION_INSTANCES[config.key]
     if (!curInsance) {
-      return new nomui.Notification(config)
+      return new nomui.Notification({
+        ...config,
+        reference: document.querySelector('.nom-notification-container'),
+      })
     }
     curInsance.update({
       ...config,
@@ -169,33 +188,15 @@ class Notification extends Layer {
   _config() {
     const that = this
     this._propStyleClasses = ['type']
-    const {
-      align,
-      alignTo,
-      styles,
-      attrs = {},
-      icon,
-      type,
-      closeIcon,
-      title,
-      btn,
-      description,
-    } = this.props
-
-    const style = this._getMarginStyle()
+    const { styles, attrs = {}, icon, type, closeIcon, title, btn, description } = this.props
     this.setProps({
-      // fixed: true,
       closeToRemove: true,
-      alignOuter: true,
-      align,
-      alignTo,
       styles,
+      align: null,
+      alignTo: null,
       attrs: {
         ...attrs,
-        style: {
-          ...style,
-          ...attrs.style,
-        },
+        style: attrs.style,
       },
       children: {
         component: NotificationContent,
