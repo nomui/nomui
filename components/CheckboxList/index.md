@@ -5,6 +5,7 @@
 | 参数         | 说明               | 类型                                   | 默认值              |
 | ------------ | ------------------ | -------------------------------------- | ------------------- |
 | options      | 单选项数据列表     | `[{text:string,value:number\|string}]` | -                   |
+| cols         | 展示列数           | `number`                               | -                   |
 | valueOptions | value 值，配置详情 | `{asArray: boolean}`                   | `{ asArray: true }` |
 
 ## Method
