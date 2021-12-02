@@ -43,11 +43,24 @@ define(['./helper.js'], function (helper) {
             component: 'Divider',
           },
           {
-            component: 'Button',
-            text: '点我普通List更新为虚拟列表',
-            onClick: () => {
-              list_ref.update({ items: helper.getData1(10000), virtual: true })
-            },
+            component: 'Flex',
+            gap: 'medium',
+            cols: [
+              {
+                component: 'Button',
+                text: '点我普通List更新为虚拟列表',
+                onClick: () => {
+                  list_ref.update({ items: helper.getData1(10000), virtual: true })
+                },
+              },
+              {
+                component: 'Button',
+                text: '点我虚拟列表更新为普通List',
+                onClick: () => {
+                  list_ref.update({ items: helper.getData1(40), virtual: false })
+                },
+              },
+            ],
           },
         ],
       }
