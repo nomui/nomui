@@ -21,8 +21,6 @@ define([], function () {
                 description: '收到用户付款100000万元',
               })
             }
-
-            sender[align].show()
           },
         }
       }
@@ -35,7 +33,7 @@ define([], function () {
                 marginLeft: '100px',
               },
             },
-            children: [getButton('top left'), getButton('top right')],
+            children: [getButton('topLeft'), getButton('topRight')],
           },
 
           {
@@ -44,7 +42,7 @@ define([], function () {
                 marginLeft: '100px',
               },
             },
-            children: [getButton('bottom left'), getButton('bottom right')],
+            children: [getButton('bottomLeft'), getButton('bottomRight')],
           },
         ],
       }

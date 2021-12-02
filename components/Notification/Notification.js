@@ -7,10 +7,6 @@ class Notification extends Layer {
   static NOMUI_NOTIFICATION_DEFAULTS = {
     align: 'top right',
     duration: 4500,
-    bottom: 24,
-    top: 24,
-    left: 24,
-    right: 24,
   }
 
   static NOMUI_NOTIFICATION_CONTAINER = null
@@ -47,24 +43,41 @@ class Notification extends Layer {
 
   static open(config) {
     if (!Notification.NOMUI_NOTIFICATION_CONTAINER) {
-      Notification.NOMUI_NOTIFICATION_CONTAINER = new nomui.Layer({
-        classes: {
-          'nom-notification-container': true,
-          'nom-notification-align-top':
-            (config.align && config.align.includes('top')) || !config.align,
-          'nom-notification-align-bottom': config.align && config.align.includes('bottom'),
-          'nom-notification-align-left': config.align && config.align.includes('left'),
-          'nom-notification-align-right':
-            (config.align && config.align.includes('right')) || !config.align,
-        },
-      })
+      Notification.NOMUI_NOTIFICATION_CONTAINER = {
+        topLeft: new nomui.Layer({
+          classes: {
+            'nom-notification-container': true,
+            'nom-notification-align-topleft': true,
+          },
+        }),
+        topRight: new nomui.Layer({
+          classes: {
+            'nom-notification-container': true,
+            'nom-notification-align-topright': true,
+          },
+        }),
+        bottomLeft: new nomui.Layer({
+          classes: {
+            'nom-notification-container': true,
+            'nom-notification-align-bottomleft': true,
+          },
+        }),
+        bottomRight: new nomui.Layer({
+          classes: {
+            'nom-notification-container': true,
+            'nom-notification-align-bottomright': true,
+          },
+        }),
+      }
     }
 
     const curInsance = Notification.NOMUI_NOTIFICATION_INSTANCES[config.key]
     if (!curInsance) {
       return new nomui.Notification({
         ...config,
-        reference: document.querySelector('.nom-notification-container'),
+        reference: config.align
+          ? Notification.NOMUI_NOTIFICATION_CONTAINER[config.align]
+          : Notification.NOMUI_NOTIFICATION_CONTAINER.topRight,
       })
     }
     curInsance.update({
@@ -147,34 +160,6 @@ class Notification extends Layer {
   }
 
   _registerDuritionClose() {}
-
-  _getMarginStyle() {
-    const { top, right, bottom, left } = this.props
-    const aligns = this.props.align.split(' ')
-    const style = {
-      transform: '',
-    }
-    aligns.forEach((align) => {
-      switch (align) {
-        case 'top':
-          style.transform += `translateY(${top}px) `
-          break
-        case 'right':
-          style.transform += `translateX(-${right}px) `
-          break
-        case 'bottom':
-          style.transform += `translateY(-${bottom}px) `
-          break
-        case 'left':
-          style.transform += `translateX(${left}px) `
-          break
-        default:
-          break
-      }
-    })
-    style.transform = style.transform.trim()
-    return style
-  }
 
   close() {
     this.timer && clearTimeout(this.timer)
