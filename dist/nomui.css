@@ -7853,6 +7853,10 @@ textarea .nom-textarea {
 .nom-tree-select-popup > .nom-layout {
   max-height: 300px;
 }
+.nom-tree-select-popup .nom-tree .nom-tree-node:not(.s-disabled).filter-node > .nom-tree-node-content .nom-tree-node-content-text {
+  color: inherit;
+  font-weight: 500;
+}
 .nom-switch > .nom-field-content .nom-switch-control {
   display: flex;
   align-items: center;

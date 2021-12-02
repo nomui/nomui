@@ -54,6 +54,7 @@ class TreeNode extends Component {
     }
 
     this.setProps({
+      classes: { 'filter-node': this.props.data.__filterNode },
       children,
     })
 
