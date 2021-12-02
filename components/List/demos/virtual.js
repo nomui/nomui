@@ -3,19 +3,53 @@ define(['./helper.js'], function (helper) {
     title: '列表开启虚拟渲染',
     file: 'virtual',
     demo: function () {
+      let list_ref = null
       return {
-        component: 'List',
-        itemSelectable: {
-          byClick: true,
-        },
-        gutter: 'md',
-        line: 'split',
-        cols: 1,
-        onItemSelectionChange({ sender }) {
-          console.log(sender)
-        },
-        virtual: true,
-        items: helper.getData1(10000),
+        children: [
+          {
+            component: 'List',
+            itemSelectable: {
+              byClick: true,
+            },
+            gutter: 'md',
+            line: 'split',
+            cols: 1,
+            items: helper.getData1(10000),
+            virtual: true,
+            onItemSelectionChange({ sender }) {
+              console.log(sender)
+            },
+          },
+          {
+            component: 'Divider',
+          },
+          {
+            component: 'List',
+            ref: (c) => {
+              list_ref = c
+            },
+            itemSelectable: {
+              byClick: true,
+            },
+            gutter: 'md',
+            line: 'split',
+            cols: 1,
+            showEmpty: true,
+            onItemSelectionChange({ sender }) {
+              console.log(sender)
+            },
+          },
+          {
+            component: 'Divider',
+          },
+          {
+            component: 'Button',
+            text: '点我普通List更新为虚拟列表',
+            onClick: () => {
+              list_ref.update({ items: helper.getData1(10000), virtual: true })
+            },
+          },
+        ],
       }
     },
   }
