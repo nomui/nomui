@@ -112,7 +112,7 @@ class TreeNodeContent extends Component {
         } else {
           this.node.uncheck({ uncheckCheckbox: false })
         }
-        this.node.autoCheckAll()
+        this.node && this.node.autoCheckAll()
       },
     }
   }
