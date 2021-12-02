@@ -18242,9 +18242,58 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(defaults, props), ...mixins);
     }
     static open(config) {
+      let align = "topRight";
+      if (config.align) {
+        const alignInfo = config.align.toLowerCase();
+        if (alignInfo.includes("top")) {
+          if (alignInfo.includes("left")) {
+            align = "topLeft";
+          } else {
+            align = "topRight";
+          }
+        } else if (alignInfo.includes("bottom")) {
+          if (alignInfo.includes("left")) {
+            align = "bottomLeft";
+          } else {
+            align = "bottomRight";
+          }
+        }
+      }
+      if (!Notification.NOMUI_NOTIFICATION_CONTAINER) {
+        Notification.NOMUI_NOTIFICATION_CONTAINER = {
+          topLeft: new nomui.Layer({
+            classes: {
+              "nom-notification-container": true,
+              "nom-notification-align-topleft": true,
+            },
+          }),
+          topRight: new nomui.Layer({
+            classes: {
+              "nom-notification-container": true,
+              "nom-notification-align-topright": true,
+            },
+          }),
+          bottomLeft: new nomui.Layer({
+            classes: {
+              "nom-notification-container": true,
+              "nom-notification-align-bottomleft": true,
+            },
+          }),
+          bottomRight: new nomui.Layer({
+            classes: {
+              "nom-notification-container": true,
+              "nom-notification-align-bottomright": true,
+            },
+          }),
+        };
+      }
       const curInsance = Notification.NOMUI_NOTIFICATION_INSTANCES[config.key];
       if (!curInsance) {
-        return new nomui.Notification(config);
+        return new nomui.Notification(
+          Object.assign({}, config, {
+            reference: Notification.NOMUI_NOTIFICATION_CONTAINER[align],
+          })
+        );
       }
       curInsance.update(Object.assign({}, config));
       return curInsance;
@@ -18300,29 +18349,6 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _registerDuritionClose() {}
-    _getMarginStyle() {
-      const { top, right, bottom, left } = this.props;
-      const aligns = this.props.align.split(" ");
-      const style = { transform: "" };
-      aligns.forEach((align) => {
-        switch (align) {
-          case "top":
-            style.transform += `translateY(${top}px) `;
-            break;
-          case "right":
-            style.transform += `translateX(-${right}px) `;
-            break;
-          case "bottom":
-            style.transform += `translateY(-${bottom}px) `;
-            break;
-          case "left":
-            style.transform += `translateX(${left}px) `;
-            break;
-        }
-      });
-      style.transform = style.transform.trim();
-      return style;
-    }
     close() {
       this.timer && clearTimeout(this.timer);
       const { key } = this.props;
@@ -18334,8 +18360,6 @@ function _defineProperty2(obj, key, value) {
       const that = this;
       this._propStyleClasses = ["type"];
       const {
-        align,
-        alignTo,
         styles,
         attrs = {},
         icon,
@@ -18345,17 +18369,12 @@ function _defineProperty2(obj, key, value) {
         btn,
         description,
       } = this.props;
-      const style = this._getMarginStyle();
       this.setProps({
-        // fixed: true,
         closeToRemove: true,
-        alignOuter: true,
-        align,
-        alignTo,
         styles,
-        attrs: Object.assign({}, attrs, {
-          style: Object.assign({}, style, attrs.style),
-        }),
+        align: null,
+        alignTo: null,
+        attrs: Object.assign({}, attrs, { style: attrs.style }),
         children: {
           component: NotificationContent,
           type,
@@ -18373,13 +18392,10 @@ function _defineProperty2(obj, key, value) {
     }
   }
   _defineProperty2(Notification, "NOMUI_NOTIFICATION_DEFAULTS", {
-    align: "right top",
+    align: "topRight",
     duration: 4500,
-    bottom: 24,
-    top: 24,
-    left: 24,
-    right: 24,
   });
+  _defineProperty2(Notification, "NOMUI_NOTIFICATION_CONTAINER", null);
   _defineProperty2(Notification, "NOMUI_NOTIFICATION_INSTANCES", {});
   Component.register(Notification);
   class Numberbox extends Textbox {
