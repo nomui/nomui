@@ -5,7 +5,7 @@ import NotificationContent from './NotificationContent'
 
 class Notification extends Layer {
   static NOMUI_NOTIFICATION_DEFAULTS = {
-    align: 'top right',
+    align: 'topRight',
     duration: 4500,
   }
 
