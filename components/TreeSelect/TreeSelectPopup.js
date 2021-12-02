@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
+import Textbox from '../Textbox/index'
 import { clone } from '../util/index'
 
 class TreeSelectPopup extends Popup {
@@ -19,7 +20,7 @@ class TreeSelectPopup extends Popup {
     const that = this
     const { nodeSelectable, nodeCheckable } = that.props
 
-    const { options, treeDataFields, flatOptions, multiple } = this.selectControl.props
+    const { searchable, options, treeDataFields, flatOptions, multiple } = this.selectControl.props
 
     this.setProps({
       attrs: {
@@ -29,6 +30,44 @@ class TreeSelectPopup extends Popup {
       },
       children: {
         component: Layout,
+        header: searchable
+          ? {
+              children: {
+                component: Textbox,
+                placeholder: searchable.placeholder,
+                _created: (inst) => {
+                  this.selectControl.searchBox = inst
+                },
+                onValueChange: ({ newValue }) => {
+                  this.timer && clearTimeout(this.timer)
+                  this.timer = setTimeout(() => {
+                    const loading = new nomui.Loading({
+                      container: this.selectControl.tree.parent,
+                    })
+                    const result = searchable.filter({
+                      inputValue: newValue,
+                      options: options,
+                    })
+                    if (result && result.then) {
+                      return result
+                        .then((value) => {
+                          this.selectControl.tree.update({ data: value })
+                          // 更新 optionsMap
+                          this.selectControl.getOptionsMap()
+                          loading && loading.remove()
+                        })
+                        .catch(() => {
+                          loading && loading.remove()
+                        })
+                    }
+                    loading && loading.remove()
+
+                    result && this.selectControl.tree.update({ data: result })
+                  }, 300)
+                },
+              },
+            }
+          : null,
         body: {
           children: {
             component: 'Tree',
@@ -50,6 +89,11 @@ class TreeSelectPopup extends Popup {
     })
 
     super._config()
+  }
+
+  _show() {
+    super._show()
+    this.selectControl.searchBox && this.selectControl.searchBox.focus()
   }
 }
 

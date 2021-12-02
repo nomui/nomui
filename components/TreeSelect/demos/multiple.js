@@ -2,7 +2,8 @@ define([], function () {
   return {
     title: '多选',
     file: 'multiple',
-    description: '配置了 `multiple`或`nodeCheckable` 则开启多选。`nodeCheckable`配置同`Tree`组件',
+    description:
+      '配置了 `multiple`或`treeCheckable` 则开启多选。`treeCheckable`配置同`Tree`组件的`nodeCheckable`',
     demo: function () {
       return {
         children: {
@@ -50,7 +51,8 @@ define([], function () {
           value: ['0-0', '0-0-1'],
           treeCheckable: {
             cascadeCheckParent: true,
-            cascadeUncheckChildren: false
+            showCheckAll: true,
+            // cascadeUncheckChildren: false
           },
         },
       }
