@@ -42,6 +42,24 @@ class Notification extends Layer {
   }
 
   static open(config) {
+    let align = 'topRight'
+
+    if (config.align) {
+      const alignInfo = config.align.toLowerCase()
+      if (alignInfo.includes('top')) {
+        if (alignInfo.includes('left')) {
+          align = 'topLeft'
+        } else {
+          align = 'topRight'
+        }
+      } else if (alignInfo.includes('bottom')) {
+        if (alignInfo.includes('left')) {
+          align = 'bottomLeft'
+        } else {
+          align = 'bottomRight'
+        }
+      }
+    }
     if (!Notification.NOMUI_NOTIFICATION_CONTAINER) {
       Notification.NOMUI_NOTIFICATION_CONTAINER = {
         topLeft: new nomui.Layer({
@@ -75,9 +93,7 @@ class Notification extends Layer {
     if (!curInsance) {
       return new nomui.Notification({
         ...config,
-        reference: config.align
-          ? Notification.NOMUI_NOTIFICATION_CONTAINER[config.align]
-          : Notification.NOMUI_NOTIFICATION_CONTAINER.topRight,
+        reference: Notification.NOMUI_NOTIFICATION_CONTAINER[align],
       })
     }
     curInsance.update({
