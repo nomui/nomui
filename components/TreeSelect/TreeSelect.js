@@ -262,16 +262,12 @@ class TreeSelect extends Field {
     const { currentValue } = this
     if (multiple) return false
 
-    return Component.extendProps(
-      {
-        selectedNodeKey: currentValue && currentValue[0],
-        onNodeSelect: ({ nodeData }) => {
-          this._setValue([nodeData.key])
-        },
+    return Component.extendProps({ onlyleaf: this.props.onlyleaf }, treeSelectable, {
+      selectedNodeKey: currentValue && currentValue[0],
+      onNodeSelect: ({ nodeData }) => {
+        this._setValue([nodeData.key])
       },
-      { onlyleaf: this.props.onlyleaf },
-      treeSelectable,
-    )
+    })
   }
 
   // 弹窗的nodeCheckable的配置
@@ -281,16 +277,13 @@ class TreeSelect extends Field {
 
     if (!multiple && !treeCheckable) return false
     // 多选则展示复选框
-    return Component.extendProps(
-      {
-        checkedNodeKeys: currentValue,
-        onCheckChange: () => {
-          const checkedKeys = this.tree.getCheckedNodeKeys()
-          this._setValue(checkedKeys)
-        },
+    return Component.extendProps(treeCheckable, {
+      checkedNodeKeys: currentValue,
+      onCheckChange: () => {
+        const checkedKeys = this.tree.getCheckedNodeKeys()
+        this._setValue(checkedKeys)
       },
-      treeCheckable,
-    )
+    })
   }
 
   _setValue(value, options) {
