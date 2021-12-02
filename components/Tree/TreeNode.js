@@ -91,23 +91,29 @@ class TreeNode extends Component {
     }
   }
 
-  check({ checkCheckbox = true, triggerCheckChange = true } = {}) {
+  check({ checkCheckbox = true, triggerCheckChange = true, fromChildren = false } = {}) {
     const { checked } = this.props
-    const { onCheckChange, cascadeCheckParent, cascadeCheckChildren } =
-      this.tree.props.nodeCheckable
+    const {
+      onCheckChange,
+      cascadeCheckParent,
+      cascadeCheckChildren,
+    } = this.tree.props.nodeCheckable
 
     if (checked === true) {
       return
     }
 
+    // 级联选中子节点 && 当前节点的选中不是因为 children 级联上来的
     cascadeCheckChildren === true &&
+      !fromChildren &&
       Object.keys(this.subnodeRefs).forEach((key) => {
         this.subnodeRefs[key].checkChildren({ checkCheckbox: true, triggerCheckChange: false })
       })
 
+    // 级联选中父节点: fromChildren传值true
     cascadeCheckParent === true &&
       this.parentNode &&
-      this.parentNode.check({ checkCheckbox: true, triggerCheckChange: false })
+      this.parentNode.check({ checkCheckbox: true, triggerCheckChange: false, fromChildren: true })
 
     if (checkCheckbox === true) {
       this.checkboxRef.setValue(true, { triggerChange: false })
