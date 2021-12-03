@@ -483,6 +483,12 @@ class DatePicker extends Textbox {
     this.month = currentDate.getMonth() + 1
     this.day = currentDate.getDate()
 
+    this.dateInfo = {
+      year: this.year,
+      month: this.month - 1,
+      day: this.day,
+    }
+
     if (this.props.value && this.props.showTime && this.timePicker) {
       this.timePicker.setValue(new Date(this.props.value).format(this.props.showTime.format))
     } else if (!this.props.value && this.props.showTime && this.timePicker) {

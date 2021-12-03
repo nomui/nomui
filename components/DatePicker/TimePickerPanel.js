@@ -245,7 +245,6 @@ class TimePickerPanel extends Component {
 
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].resetTime()
-      that.timeList[key].scrollToKey()
     })
   }
 
@@ -264,7 +263,6 @@ class TimePickerPanel extends Component {
     })
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].resetTime()
-      that.timeList[key].scrollToKey()
     })
   }
 
@@ -274,7 +272,6 @@ class TimePickerPanel extends Component {
       this.timeText.update({
         children: this.defaultValue,
       })
-    this.resetList()
   }
 
   setNow() {
@@ -305,7 +302,8 @@ class TimePickerPanel extends Component {
 
   checkTimeRange() {
     const that = this
-
+    const { hour, minute, second } = this.timeRange
+    const beforeTimeRangeStr = `${hour}-${minute}-${second}`
     if (that.time.hour <= that.minTime.hour) {
       that.timeRange.hour = [that.minTime.hour, that.maxTime.hour]
       that.timeRange.minute = [that.minTime.minute, '59']
@@ -324,11 +322,17 @@ class TimePickerPanel extends Component {
     } else {
       that.timeRange.minute = that.timeRange.second = ['00', '59']
     }
-
     this.empty = false
-    Object.keys(this.timeList).forEach(function (key) {
-      that.timeList[key].refresh()
-    })
+
+    // 比较 timeRange 是否发生变化
+    const { hour: aHour, minute: aMinute, second: aSecond } = this.timeRange
+    const afterTimeRangeStr = `${aHour}-${aMinute}-${aSecond}`
+    // 更新timeList的数据
+    if (afterTimeRangeStr !== beforeTimeRangeStr) {
+      Object.keys(this.timeList).forEach(function (key) {
+        that.timeList[key].refresh()
+      })
+    }
   }
 }
 

@@ -78,7 +78,6 @@ class DateTimePickerList extends List {
   }
 
   onChange() {
-    this.scrollToKey()
     this.setTime()
   }
 
@@ -95,14 +94,11 @@ class DateTimePickerList extends List {
       const t = this.pickerControl.defaultValue.split(':')
 
       if (this.props.type === 'hour') {
-        // this.selectItem(t[0])
-        this.update({ selectedItems: t[0] })
+        this.selectItem(t[0], { triggerSelectionChange: false })
       } else if (this.props.type === 'minute') {
-        // this.selectItem(t[1])
-        this.update({ selectedItems: t[1] })
+        this.selectItem(t[1], { triggerSelectionChange: false })
       } else {
-        // this.selectItem(t[2])
-        this.update({ selectedItems: t[2] })
+        this.selectItem(t[2], { triggerSelectionChange: false })
       }
     } else {
       this.unselectAllItems()
@@ -110,19 +106,7 @@ class DateTimePickerList extends List {
   }
 
   refresh() {
-    const selected = []
-    this.getSelectedItem() && selected.push(this.getSelectedItem().props.key)
-    this.props.selectedItems = selected
-
     this.update()
-
-    this.scrollToKey()
-  }
-
-  scrollToKey() {
-    const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
-    this.scroller.element.scrollTop = top
-    // this.scrollToSelected()
   }
 }
 
