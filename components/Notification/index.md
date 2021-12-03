@@ -26,7 +26,7 @@ config 参数如下：
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| align | 弹出的位置 | `'top'\|'bottom'\|'left'\|'right'\|'left top'\|'right top'\|'left bottom'\|'right bottom'\|'center' ` | `right top` |
+| align | 弹出的位置 | `'topLeft'\|'topRight'\|'bottomLeft'\|'bottomRight'\|'` | `topRight` |
 | title | 通知提醒标题 | `string` | - |
 | description | 通知提醒内容 | `string` | - |
 | type | 通知类型 | `'success'\|'info'\|'warning'\|'error'` | - |
@@ -35,7 +35,3 @@ config 参数如下：
 | duration | 默认 4.5 秒后自动关闭，配置为 null 则不自动关闭 | `number` | `4500` |
 | btn | 自定义关闭按钮 | `boolean \| {text:'不在显示'}` | `false` |
 | onClose | 当通知关闭时触发 | `()=>{}` | - |
-| left | 消息位置在左侧弹出时，距离左侧的位置，单位像素 | `number` | `24` |
-| top | 消息位置在上方弹出时，距离顶部的位置，单位像素 | `number` | `24` |
-| right | 消息位置在右侧弹出时，距离右侧的位置，单位像素 | `number` | `24` |
-| bottom | 消息位置在下方弹出时，距离底部的位置，单位像素 | `number` | `24` |
