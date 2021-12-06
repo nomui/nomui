@@ -8231,12 +8231,6 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const { virtual } = this.props;
-      if (
-        this.firstRender &&
-        (virtual === true || typeof virtual === "number")
-      ) {
-        this.virCreated();
-      }
       this.itemRefs = {};
       this.selectedItem = null;
       this._addPropStyle(
@@ -8257,7 +8251,13 @@ function _defineProperty2(obj, key, value) {
         !this.props.items.length && this.props.showEmpty
           ? empty
           : { component: ListContent };
-      if (virtual === true || typeof virtual === "number") {
+      if (
+        this.props.items.length > 20 &&
+        (virtual === true || typeof virtual === "number")
+      ) {
+        if (!this.virtual || this.firstRender) {
+          this.virCreated();
+        }
         this.virChildren(children);
       } else {
         this.setProps({ children: children });
