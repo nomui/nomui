@@ -27,6 +27,7 @@ class DateTimePickerList extends List {
     let items = []
     const selected = []
     const that = this
+    const { currentDateBeforeMin, currentDateAfterMax } = this.pickerControl.datePicker
     this.props.min = this.pickerControl.timeRange[this.props.type][0]
     this.props.max = this.pickerControl.timeRange[this.props.type][1]
 
@@ -61,11 +62,14 @@ class DateTimePickerList extends List {
         _config: function () {
           const key = this.props.key
 
-          if (key < that.props.min || key > that.props.max) {
-            this.setProps({
-              disabled: true,
-            })
-          }
+          // 日期部分已经超出 min 或 max
+          this.setProps({
+            disabled:
+              key < that.props.min ||
+              key > that.props.max ||
+              currentDateBeforeMin ||
+              currentDateAfterMax,
+          })
         },
       },
 
