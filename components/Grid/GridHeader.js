@@ -147,6 +147,11 @@ class GridHeader extends Component {
       } else {
         this.scrollbar.show()
       }
+    } else if (
+      gRect.top < pRect.height + pRect.top &&
+      gRect.top + gRect.height - 17 > pRect.top + pRect.height
+    ) {
+      this.scrollbar.show()
     } else {
       this.scrollbar.hide()
     }
