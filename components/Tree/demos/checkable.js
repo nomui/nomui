@@ -29,6 +29,14 @@ define([], function () {
               },
               {
                 component: 'Checkbox',
+                text: '级联选中子节点',
+                value: true,
+                onValueChange: ({ newValue }) => {
+                  treeRef.update({ nodeCheckable: { cascadeCheckChildren: newValue } })
+                },
+              },
+              {
+                component: 'Checkbox',
                 text: '级联取消选中子节点',
                 value: true,
                 onValueChange: ({ newValue }) => {
@@ -67,6 +75,7 @@ define([], function () {
                 text: '节点 1',
                 children: [
                   { text: '节点 1.1', children: [{ text: '节点 1.1.1' }, { text: '节点 1.2' }] },
+                  { text: '节点 1.2' },
                 ],
               },
               {

@@ -2,6 +2,32 @@
   width: 384px;
 }
 
+.nom-notification-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: flex-start;
+  max-height: 100vh;
+  overflow-y: hidden;
+  &.nom-notification-align-topleft {
+    top: 0;
+    left: 0;
+  }
+  &.nom-notification-align-topright {
+    top: 0;
+    right: 0;
+  }
+  &.nom-notification-align-bottomleft {
+    bottom: 0;
+    left: 0;
+  }
+  &.nom-notification-align-bottomright {
+    right: 0;
+    bottom: 0;
+  }
+}
+
 .nom-notification-content {
   width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
   padding: 0.8rem;

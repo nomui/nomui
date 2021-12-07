@@ -9,17 +9,6 @@ define([], function () {
           items: [
             {
               component: 'Button',
-              text: '设置距离顶部100px',
-              onClick: () => {
-                nomui.Notification.open({
-                  title: '温馨提示',
-                  description: '收到用户付款100000万元',
-                  top: 100,
-                })
-              },
-            },
-            {
-              component: 'Button',
               text: '自定义宽度200px',
               onClick: () => {
                 nomui.Notification.open({
