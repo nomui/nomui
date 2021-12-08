@@ -14,8 +14,6 @@ class TimePickerPanel extends Component {
       readOnly: true,
       placeholder: null,
       showNow: true,
-      minValue: '10:10:10',
-      maxValue: '20:20:20',
       onValueChange: null,
     }
 
@@ -61,42 +59,19 @@ class TimePickerPanel extends Component {
 
   _config() {
     const that = this
-    this.defaultValue = this.props.value
+    this.defaultValue = this.props.value || this.defaultValue
     if (this.datePicker.props.showTime && this.datePicker.props.showTime !== true) {
       this.props = { ...this.props, ...this.datePicker.props.showTime }
     }
 
-    if (this.props.startTime) {
-      const time = new Date(`2000 ${this.props.startTime}`)
-
-      this.minTime = {
-        hour: this.getDoubleDigit(time.getHours()),
-        minute: this.getDoubleDigit(time.getMinutes()),
-        second: this.getDoubleDigit(time.getSeconds()),
-      }
-    } else if (this.props.minTime) {
-      const time = new Date(`2000 ${this.props.minTime}`)
-
-      this.minTime = {
-        hour: this.getDoubleDigit(time.getHours()),
-        minute: this.getDoubleDigit(time.getMinutes()),
-        second: this.getDoubleDigit(time.getSeconds()),
-      }
-    }
-    if (this.props.maxTime) {
-      const time = new Date(`2000 ${this.props.maxTime}`)
-      this.maxTime = {
-        hour: this.getDoubleDigit(time.getHours()),
-        minute: this.getDoubleDigit(time.getMinutes()),
-        second: this.getDoubleDigit(time.getSeconds()),
-      }
-    }
-
+    this._getMinTime()
+    this._getMaxTime()
     this.timeRange = {
       hour: [this.minTime.hour, this.maxTime.hour],
       minute: ['00', '59'],
       second: ['00', '59'],
     }
+    this._calcTimeRangeByTime()
 
     this.setProps({
       children: {
@@ -119,8 +94,43 @@ class TimePickerPanel extends Component {
       },
     })
 
-    this.onShow()
     super._config()
+  }
+
+  // 计算timeRange的min值
+  _getMinTime() {
+    const { startTime, minTime = '00:00:00' } = this.props
+    // 比较 datePicker.minDate的time 和 showTime.minTime
+    const _tempStartTime = new Date(`2020 ${startTime}`)
+    const _tempMinTime = new Date(`2020 ${minTime}`)
+
+    // startTime 不为默认 && startTime 比 minTime后面
+    // 取后者
+    const isStartTimeAfterMinTime = startTime !== '00:00:00' && _tempStartTime.isAfter(_tempMinTime)
+    const time = isStartTimeAfterMinTime ? _tempStartTime : _tempMinTime
+    this.minTime = {
+      hour: this.getDoubleDigit(time.getHours()),
+      minute: this.getDoubleDigit(time.getMinutes()),
+      second: this.getDoubleDigit(time.getSeconds()),
+    }
+  }
+
+  // 计算timeRange的max值
+  _getMaxTime() {
+    const { endTime, maxTime = '23:59:59' } = this.props
+    // 比较 datePicker.minDate的time 和 showTime.maxTime
+    const _tempEndTime = new Date(`2020 ${endTime}`)
+    const _tempMaxTime = new Date(`2020 ${maxTime}`)
+
+    // endTime 不为默认 && endTime 比 maxTime后面
+    // 取更前面的时间节点
+    const isEndTimeBeforeMaxTime = endTime !== '23:59:59' && _tempEndTime.isBefore(_tempMaxTime)
+    const time = isEndTimeBeforeMaxTime ? _tempEndTime : _tempMaxTime
+    this.maxTime = {
+      hour: this.getDoubleDigit(time.getHours()),
+      minute: this.getDoubleDigit(time.getMinutes()),
+      second: this.getDoubleDigit(time.getSeconds()),
+    }
   }
 
   getHour() {
@@ -242,10 +252,8 @@ class TimePickerPanel extends Component {
 
   resetList() {
     const that = this
-
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].resetTime()
-      that.timeList[key].scrollToKey()
     })
   }
 
@@ -264,7 +272,6 @@ class TimePickerPanel extends Component {
     })
     Object.keys(this.timeList).forEach(function (key) {
       that.timeList[key].resetTime()
-      that.timeList[key].scrollToKey()
     })
   }
 
@@ -305,7 +312,27 @@ class TimePickerPanel extends Component {
 
   checkTimeRange() {
     const that = this
+    const { hour, minute, second } = this.timeRange
+    const beforeTimeRangeStr = `${hour}-${minute}-${second}`
+    this._calcTimeRangeByTime()
 
+    this.empty = false
+
+    // 比较 timeRange 是否发生变化
+    const { hour: aHour, minute: aMinute, second: aSecond } = this.timeRange
+    const afterTimeRangeStr = `${aHour}-${aMinute}-${aSecond}`
+    // 更新timeList的数据
+    if (afterTimeRangeStr !== beforeTimeRangeStr) {
+      Object.keys(this.timeList).forEach(function (key) {
+        that.timeList[key].refresh()
+      })
+    }
+  }
+
+  // 根据当前选择 time 更新计算得到真正的 timeRange
+  // hour值在 min~max之间时, minute和second的range = ['00', '59']
+  _calcTimeRangeByTime() {
+    const that = this
     if (that.time.hour <= that.minTime.hour) {
       that.timeRange.hour = [that.minTime.hour, that.maxTime.hour]
       that.timeRange.minute = [that.minTime.minute, '59']
@@ -324,11 +351,6 @@ class TimePickerPanel extends Component {
     } else {
       that.timeRange.minute = that.timeRange.second = ['00', '59']
     }
-
-    this.empty = false
-    Object.keys(this.timeList).forEach(function (key) {
-      that.timeList[key].refresh()
-    })
   }
 }
 

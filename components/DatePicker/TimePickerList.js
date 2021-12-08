@@ -27,6 +27,7 @@ class DateTimePickerList extends List {
     let items = []
     const selected = []
     const that = this
+    const { currentDateBeforeMin, currentDateAfterMax } = this.pickerControl.datePicker
     this.props.min = this.pickerControl.timeRange[this.props.type][0]
     this.props.max = this.pickerControl.timeRange[this.props.type][1]
 
@@ -61,11 +62,14 @@ class DateTimePickerList extends List {
         _config: function () {
           const key = this.props.key
 
-          if (key < that.props.min || key > that.props.max) {
-            this.setProps({
-              disabled: true,
-            })
-          }
+          // 日期部分已经超出 min 或 max
+          this.setProps({
+            disabled:
+              key < that.props.min ||
+              key > that.props.max ||
+              currentDateBeforeMin ||
+              currentDateAfterMax,
+          })
         },
       },
 
@@ -78,7 +82,6 @@ class DateTimePickerList extends List {
   }
 
   onChange() {
-    this.scrollToKey()
     this.setTime()
   }
 
@@ -95,14 +98,11 @@ class DateTimePickerList extends List {
       const t = this.pickerControl.defaultValue.split(':')
 
       if (this.props.type === 'hour') {
-        // this.selectItem(t[0])
-        this.update({ selectedItems: t[0] })
+        this.selectItem(t[0], { triggerSelectionChange: false })
       } else if (this.props.type === 'minute') {
-        // this.selectItem(t[1])
-        this.update({ selectedItems: t[1] })
+        this.selectItem(t[1], { triggerSelectionChange: false })
       } else {
-        // this.selectItem(t[2])
-        this.update({ selectedItems: t[2] })
+        this.selectItem(t[2], { triggerSelectionChange: false })
       }
     } else {
       this.unselectAllItems()
@@ -110,19 +110,7 @@ class DateTimePickerList extends List {
   }
 
   refresh() {
-    const selected = []
-    this.getSelectedItem() && selected.push(this.getSelectedItem().props.key)
-    this.props.selectedItems = selected
-
     this.update()
-
-    this.scrollToKey()
-  }
-
-  scrollToKey() {
-    const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
-    this.scroller.element.scrollTop = top
-    // this.scrollToSelected()
   }
 }
 

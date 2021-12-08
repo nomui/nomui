@@ -4,6 +4,7 @@ define([
   './disabledTime.js',
   './with-format.js',
   './with-time.js',
+  './mindate-mintime.js',
 ], function () {
   return {
     title: 'DatePicker',

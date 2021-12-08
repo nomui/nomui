@@ -7844,8 +7844,8 @@ function _defineProperty2(obj, key, value) {
     _remove() {
       delete this.list.itemRefs[this.key];
     }
-    select() {
-      this.content.select();
+    select(selectOption) {
+      this.content.select(selectOption);
     }
     unselect() {
       this.content.unselect();
@@ -12872,6 +12872,10 @@ function _defineProperty2(obj, key, value) {
       let items = [];
       const selected = [];
       const that = this;
+      const {
+        currentDateBeforeMin,
+        currentDateAfterMax,
+      } = this.pickerControl.datePicker;
       this.props.min = this.pickerControl.timeRange[this.props.type][0];
       this.props.max = this.pickerControl.timeRange[this.props.type][1];
       if (this.props.type === "hour") {
@@ -12899,10 +12903,14 @@ function _defineProperty2(obj, key, value) {
         selectedItems: selected,
         itemDefaults: {
           _config: function () {
-            const key = this.props.key;
-            if (key < that.props.min || key > that.props.max) {
-              this.setProps({ disabled: true });
-            }
+            const key = this.props.key; // 日期部分已经超出 min 或 max
+            this.setProps({
+              disabled:
+                key < that.props.min ||
+                key > that.props.max ||
+                currentDateBeforeMin ||
+                currentDateAfterMax,
+            });
           },
         },
         onItemSelectionChange: () => {
@@ -12912,7 +12920,6 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     onChange() {
-      this.scrollToKey();
       this.setTime();
     }
     setTime() {
@@ -12923,31 +12930,18 @@ function _defineProperty2(obj, key, value) {
       if (this.pickerControl.defaultValue) {
         const t = this.pickerControl.defaultValue.split(":");
         if (this.props.type === "hour") {
-          // this.selectItem(t[0])
-          this.update({ selectedItems: t[0] });
+          this.selectItem(t[0], { triggerSelectionChange: false });
         } else if (this.props.type === "minute") {
-          // this.selectItem(t[1])
-          this.update({ selectedItems: t[1] });
+          this.selectItem(t[1], { triggerSelectionChange: false });
         } else {
-          // this.selectItem(t[2])
-          this.update({ selectedItems: t[2] });
+          this.selectItem(t[2], { triggerSelectionChange: false });
         }
       } else {
         this.unselectAllItems();
       }
     }
     refresh() {
-      const selected = [];
-      this.getSelectedItem() && selected.push(this.getSelectedItem().props.key);
-      this.props.selectedItems = selected;
       this.update();
-      this.scrollToKey();
-    }
-    scrollToKey() {
-      const top = this.getSelectedItem()
-        ? this.getSelectedItem().element.offsetTop - 3
-        : 0;
-      this.scroller.element.scrollTop = top; // this.scrollToSelected()
     }
   }
   class DateTimePickerWrapper extends Component {
@@ -13003,8 +12997,6 @@ function _defineProperty2(obj, key, value) {
         readOnly: true,
         placeholder: null,
         showNow: true,
-        minValue: "10:10:10",
-        maxValue: "20:20:20",
         onValueChange: null,
       };
       super(Component.extendProps(defaults, props), ...mixins);
@@ -13028,7 +13020,7 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const that = this;
-      this.defaultValue = this.props.value;
+      this.defaultValue = this.props.value || this.defaultValue;
       if (
         this.datePicker.props.showTime &&
         this.datePicker.props.showTime !== true
@@ -13039,34 +13031,14 @@ function _defineProperty2(obj, key, value) {
           this.datePicker.props.showTime
         );
       }
-      if (this.props.startTime) {
-        const time = new Date(`2000 ${this.props.startTime}`);
-        this.minTime = {
-          hour: this.getDoubleDigit(time.getHours()),
-          minute: this.getDoubleDigit(time.getMinutes()),
-          second: this.getDoubleDigit(time.getSeconds()),
-        };
-      } else if (this.props.minTime) {
-        const time = new Date(`2000 ${this.props.minTime}`);
-        this.minTime = {
-          hour: this.getDoubleDigit(time.getHours()),
-          minute: this.getDoubleDigit(time.getMinutes()),
-          second: this.getDoubleDigit(time.getSeconds()),
-        };
-      }
-      if (this.props.maxTime) {
-        const time = new Date(`2000 ${this.props.maxTime}`);
-        this.maxTime = {
-          hour: this.getDoubleDigit(time.getHours()),
-          minute: this.getDoubleDigit(time.getMinutes()),
-          second: this.getDoubleDigit(time.getSeconds()),
-        };
-      }
+      this._getMinTime();
+      this._getMaxTime();
       this.timeRange = {
         hour: [this.minTime.hour, this.maxTime.hour],
         minute: ["00", "59"],
         second: ["00", "59"],
       };
+      this._calcTimeRangeByTime();
       this.setProps({
         children: {
           component: "Rows",
@@ -13082,8 +13054,35 @@ function _defineProperty2(obj, key, value) {
           ],
         },
       });
-      this.onShow();
       super._config();
+    } // 计算timeRange的min值
+    _getMinTime() {
+      const { startTime, minTime = "00:00:00" } = this.props; // 比较 datePicker.minDate的time 和 showTime.minTime
+      const _tempStartTime = new Date(`2020 ${startTime}`);
+      const _tempMinTime = new Date(`2020 ${minTime}`); // startTime 不为默认 && startTime 比 minTime后面
+      // 取后者
+      const isStartTimeAfterMinTime =
+        startTime !== "00:00:00" && _tempStartTime.isAfter(_tempMinTime);
+      const time = isStartTimeAfterMinTime ? _tempStartTime : _tempMinTime;
+      this.minTime = {
+        hour: this.getDoubleDigit(time.getHours()),
+        minute: this.getDoubleDigit(time.getMinutes()),
+        second: this.getDoubleDigit(time.getSeconds()),
+      };
+    } // 计算timeRange的max值
+    _getMaxTime() {
+      const { endTime, maxTime = "23:59:59" } = this.props; // 比较 datePicker.minDate的time 和 showTime.maxTime
+      const _tempEndTime = new Date(`2020 ${endTime}`);
+      const _tempMaxTime = new Date(`2020 ${maxTime}`); // endTime 不为默认 && endTime 比 maxTime后面
+      // 取更前面的时间节点
+      const isEndTimeBeforeMaxTime =
+        endTime !== "23:59:59" && _tempEndTime.isBefore(_tempMaxTime);
+      const time = isEndTimeBeforeMaxTime ? _tempEndTime : _tempMaxTime;
+      this.maxTime = {
+        hour: this.getDoubleDigit(time.getHours()),
+        minute: this.getDoubleDigit(time.getMinutes()),
+        second: this.getDoubleDigit(time.getSeconds()),
+      };
     }
     getHour() {
       const hour = [];
@@ -13193,7 +13192,6 @@ function _defineProperty2(obj, key, value) {
       const that = this;
       Object.keys(this.timeList).forEach(function (key) {
         that.timeList[key].resetTime();
-        that.timeList[key].scrollToKey();
       });
     }
     clearTime() {
@@ -13204,7 +13202,6 @@ function _defineProperty2(obj, key, value) {
       this.timeText.update({ children: "" });
       Object.keys(this.timeList).forEach(function (key) {
         that.timeList[key].resetTime();
-        that.timeList[key].scrollToKey();
       });
     }
     onShow() {
@@ -13236,6 +13233,21 @@ function _defineProperty2(obj, key, value) {
     }
     checkTimeRange() {
       const that = this;
+      const { hour, minute, second } = this.timeRange;
+      const beforeTimeRangeStr = `${hour}-${minute}-${second}`;
+      this._calcTimeRangeByTime();
+      this.empty = false; // 比较 timeRange 是否发生变化
+      const { hour: aHour, minute: aMinute, second: aSecond } = this.timeRange;
+      const afterTimeRangeStr = `${aHour}-${aMinute}-${aSecond}`; // 更新timeList的数据
+      if (afterTimeRangeStr !== beforeTimeRangeStr) {
+        Object.keys(this.timeList).forEach(function (key) {
+          that.timeList[key].refresh();
+        });
+      }
+    } // 根据当前选择 time 更新计算得到真正的 timeRange
+    // hour值在 min~max之间时, minute和second的range = ['00', '59']
+    _calcTimeRangeByTime() {
+      const that = this;
       if (that.time.hour <= that.minTime.hour) {
         that.timeRange.hour = [that.minTime.hour, that.maxTime.hour];
         that.timeRange.minute = [that.minTime.minute, "59"];
@@ -13254,10 +13266,6 @@ function _defineProperty2(obj, key, value) {
       } else {
         that.timeRange.minute = that.timeRange.second = ["00", "59"];
       }
-      this.empty = false;
-      Object.keys(this.timeList).forEach(function (key) {
-        that.timeList[key].refresh();
-      });
     }
   }
   Component.register(TimePickerPanel);
@@ -13341,8 +13349,7 @@ function _defineProperty2(obj, key, value) {
             styles: { padding: "1" },
             onShow: () => {
               this.getCurrentDate();
-              this.reActiveList();
-              that.props.showTime && that.timePicker.onShow();
+              this.reActiveList(); // that.props.showTime && that.timePicker.onShow()
             },
             onHide: () => {
               that.onPopupHide();
@@ -13367,6 +13374,7 @@ function _defineProperty2(obj, key, value) {
                         items: [
                           {
                             component: Select,
+                            allowClear: false,
                             value: that.year,
                             _created: function () {
                               that.years = this;
@@ -13381,6 +13389,7 @@ function _defineProperty2(obj, key, value) {
                           },
                           {
                             component: Select,
+                            allowClear: false,
                             value: that.month,
                             _created: function () {
                               that.months = this;
@@ -13490,20 +13499,10 @@ function _defineProperty2(obj, key, value) {
                               month: selMonth - 1,
                               day: selDay,
                             });
-                            if (that.props.minDate && that.props.showTime) {
-                              const myday = parseInt(
-                                new Date(that.props.minDate).format("d"),
-                                10
+                            if (that.props.showTime) {
+                              that._updateTimePickerStartEndTime(
+                                args.sender.props.day
                               );
-                              if (myday === args.sender.props.day) {
-                                that.timePicker.update({
-                                  startTime: that.startTime,
-                                });
-                              } else if (myday < args.sender.props.day) {
-                                that.timePicker.update({
-                                  startTime: "00:00:00",
-                                });
-                              }
                             }
                             that.updateValue();
                             that.timePicker && that.timePicker.onShow();
@@ -13523,8 +13522,14 @@ function _defineProperty2(obj, key, value) {
                     },
                     onValueChange: (data) => {
                       this.handleTimeChange(data);
-                    },
-                    startTime: minTime, // value: new Date(this.props.value).format(this.props.showTime.format),
+                    }, // 初始化传入 startTime, endTime
+                    startTime: this.currentDateBeforeMin ? minTime : "00:00:00",
+                    endTime: this.currentDateAfterMax ? maxTime : "23:59:59",
+                    value:
+                      this.props.value &&
+                      new Date(this.props.value).format(
+                        this.props.showTime.format || "HH:mm:ss"
+                      ),
                   },
                 ],
               },
@@ -13538,6 +13543,11 @@ function _defineProperty2(obj, key, value) {
                     text: "此刻",
                     disabled: !this.showNow,
                     onClick: () => {
+                      if (that.props.showTime) {
+                        that._updateTimePickerStartEndTime(
+                          new Date().getDate()
+                        );
+                      }
                       this.setNow();
                     },
                   },
@@ -13548,6 +13558,20 @@ function _defineProperty2(obj, key, value) {
         },
       });
       super._config();
+    } // 更新 timePicker的禁用情况(内部个根据 startTime endTime计算)
+    _updateTimePickerStartEndTime(day) {
+      this.currentDateBeforeMin = false;
+      this.currentDateAfterMax = false;
+      const minDay = parseInt(new Date(this.props.minDate).format("d"), 10);
+      const maxDay = parseInt(new Date(this.props.maxDate).format("d"), 10);
+      const timeProps = { startTime: "00:00:00", endTime: "23:59:59" };
+      if (minDay === day) {
+        timeProps.startTime = this.startTime;
+      }
+      if (maxDay === day) {
+        timeProps.endTime = this.endTime;
+      }
+      this.timePicker.update(timeProps);
     }
     _getYears() {
       const years = [];
@@ -13668,7 +13692,14 @@ function _defineProperty2(obj, key, value) {
       }
       this.year = currentDate.getFullYear();
       this.month = currentDate.getMonth() + 1;
-      this.day = currentDate.getDate();
+      this.day = currentDate.getDate(); // 注: 此处的比较 如果传入的时间格式不一致, 会有比较错误的情况
+      //     因为 new Date(dateString) 并不可靠, `yyyy-MM-dd`得到的时间会是格林威治时间
+      this.currentDateBeforeMin =
+        this.props.minDate &&
+        currentDate.isBefore(new Date(this.props.minDate));
+      this.currentDateAfterMax =
+        this.props.maxDate && currentDate.isAfter(new Date(this.props.maxDate));
+      this.dateInfo = { year: this.year, month: this.month - 1, day: this.day };
       if (this.props.value && this.props.showTime && this.timePicker) {
         this.timePicker.setValue(
           new Date(this.props.value).format(this.props.showTime.format)

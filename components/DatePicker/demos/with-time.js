@@ -13,7 +13,7 @@ define([], function () {
             // maxTime: '20:20:20',
           },
           format: 'yyyy-MM-dd HH:mm:ss',
-          // value: '2021-05-05 11:15:00',
+          value: '2021-05-05 11:15:00',
         },
       }
     },
