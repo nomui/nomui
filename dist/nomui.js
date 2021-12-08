@@ -15695,15 +15695,11 @@ function _defineProperty2(obj, key, value) {
           pRect.top - gRect.top - 2
         }px)`;
       }
-      if (gRect.height > pRect.height) {
-        if (
-          gRect.top > pRect.height ||
-          gRect.top + gRect.height - 17 < pRect.height + pRect.top
-        ) {
-          this.scrollbar.hide();
-        } else {
-          this.scrollbar.show();
-        }
+      if (
+        gRect.top < pRect.height + pRect.top &&
+        gRect.top + gRect.height - 17 > pRect.top + pRect.height
+      ) {
+        this.scrollbar.show();
       } else {
         this.scrollbar.hide();
       }
