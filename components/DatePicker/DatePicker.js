@@ -130,6 +130,7 @@ class DatePicker extends Textbox {
                       items: [
                         {
                           component: Select,
+                          allowClear: false,
                           value: that.year,
                           _created: function () {
                             that.years = this
@@ -144,6 +145,7 @@ class DatePicker extends Textbox {
                         },
                         {
                           component: Select,
+                          allowClear: false,
                           value: that.month,
                           _created: function () {
                             that.months = this
@@ -296,7 +298,9 @@ class DatePicker extends Textbox {
                   // 初始化传入 startTime, endTime
                   startTime: this.currentDateBeforeMin ? minTime : '00:00:00',
                   endTime: this.currentDateAfterMax ? maxTime : '23:59:59',
-                  // value: new Date(this.props.value).format(this.props.showTime.format),
+                  value:
+                    this.props.value &&
+                    new Date(this.props.value).format(this.props.showTime.format || 'HH:mm:ss'),
                 },
               ],
             },
