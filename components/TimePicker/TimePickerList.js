@@ -25,20 +25,18 @@ class TimePickerList extends List {
 
   _config() {
     let items = []
-    const selected = []
     const that = this
+    const { _isHourOverRange, _isMinuteOverRange } = this.pickerControl
+    const { type } = this.props
     this.props.min = this.pickerControl.timeRange[this.props.type][0]
     this.props.max = this.pickerControl.timeRange[this.props.type][1]
 
-    if (this.props.type === 'hour') {
+    if (type === 'hour') {
       items = this.pickerControl.getHour()
-      !this.pickerControl.empty && selected.push(this.pickerControl.time.hour)
-    } else if (this.props.type === 'minute') {
+    } else if (type === 'minute') {
       items = this.pickerControl.getMinute()
-      !this.pickerControl.empty && selected.push(this.pickerControl.time.minute)
-    } else if (this.props.type === 'second') {
+    } else if (type === 'second') {
       items = this.pickerControl.getSecond()
-      !this.pickerControl.empty && selected.push(this.pickerControl.time.second)
     }
 
     this.setProps({
@@ -52,16 +50,15 @@ class TimePickerList extends List {
         byClick: true,
         scrollIntoView: true,
       },
-      selectedItems: selected,
       itemDefaults: {
         _config: function () {
           const key = this.props.key
-
-          if (key < that.props.min || key > that.props.max) {
-            this.setProps({
-              disabled: true,
-            })
-          }
+          // hour超出: 禁用 minute和second || minute超出: 禁用 second
+          const disabledOverRange =
+            (type !== 'hour' && _isHourOverRange) || (type === 'second' && _isMinuteOverRange)
+          this.setProps({
+            disabled: key < that.props.min || key > that.props.max || disabledOverRange,
+          })
         },
       },
 
@@ -74,7 +71,6 @@ class TimePickerList extends List {
   }
 
   onChange() {
-    this.scrollToKey()
     this.setTime()
   }
 
@@ -87,20 +83,16 @@ class TimePickerList extends List {
   }
 
   resetTime() {
-    if (this.pickerControl.getValue() || this.pickerControl.defaultValue) {
-      const t = this.pickerControl.getValue()
-        ? this.pickerControl.getValue().split(':')
-        : this.pickerControl.defaultValue.split(':')
+    const _val = this.pickerControl.getValue()
+    if (_val) {
+      const t = _val.split(':')
 
       if (this.props.type === 'hour') {
-        // this.selectItem(t[0])
-        this.update({ selectedItems: t[0] })
+        this.selectItem(t[0], { triggerSelectionChange: false })
       } else if (this.props.type === 'minute') {
-        // this.selectItem(t[1])
-        this.update({ selectedItems: t[1] })
+        this.selectItem(t[1], { triggerSelectionChange: false })
       } else {
-        // this.selectItem(t[2])
-        this.update({ selectedItems: t[2] })
+        this.selectItem(t[2], { triggerSelectionChange: false })
       }
     } else {
       this.unselectAllItems()
@@ -108,19 +100,7 @@ class TimePickerList extends List {
   }
 
   refresh() {
-    const selected = []
-    this.getSelectedItem() && selected.push(this.getSelectedItem().props.key)
-    this.props.selectedItems = selected
-
     this.update()
-
-    this.scrollToKey()
-  }
-
-  scrollToKey() {
-    const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
-    this.scroller.element.scrollTop = top
-    // this.scrollToSelected()
   }
 }
 

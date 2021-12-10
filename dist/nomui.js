@@ -12880,26 +12880,21 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       let items = [];
-      const selected = [];
       const that = this;
       const {
         currentDateBeforeMin,
         currentDateAfterMax,
       } = this.pickerControl.datePicker;
-      this.props.min = this.pickerControl.timeRange[this.props.type][0];
-      this.props.max = this.pickerControl.timeRange[this.props.type][1];
-      if (this.props.type === "hour") {
+      const { _isHourOverRange, _isMinuteOverRange } = this.pickerControl;
+      const { type } = this.props;
+      this.props.min = this.pickerControl.timeRange[type][0];
+      this.props.max = this.pickerControl.timeRange[type][1];
+      if (type === "hour") {
         items = this.pickerControl.getHour();
-        !this.pickerControl.empty &&
-          selected.push(this.pickerControl.time.hour);
-      } else if (this.props.type === "minute") {
+      } else if (type === "minute") {
         items = this.pickerControl.getMinute();
-        !this.pickerControl.empty &&
-          selected.push(this.pickerControl.time.minute);
-      } else if (this.props.type === "second") {
+      } else if (type === "second") {
         items = this.pickerControl.getSecond();
-        !this.pickerControl.empty &&
-          selected.push(this.pickerControl.time.second);
       }
       this.setProps({
         styles: { padding: "3px" },
@@ -12910,16 +12905,19 @@ function _defineProperty2(obj, key, value) {
           scrollIntoView: true,
         },
         attrs: { style: { position: "relative" } },
-        selectedItems: selected,
         itemDefaults: {
           _config: function () {
-            const key = this.props.key; // 日期部分已经超出 min 或 max
+            const key = this.props.key;
+            const disabledOverRange =
+              (type !== "hour" && _isHourOverRange) ||
+              (type === "second" && _isMinuteOverRange); // 日期部分已经超出 min 或 max
             this.setProps({
               disabled:
                 key < that.props.min ||
                 key > that.props.max ||
                 currentDateBeforeMin ||
-                currentDateAfterMax,
+                currentDateAfterMax ||
+                disabledOverRange,
             });
           },
         },
@@ -13030,7 +13028,7 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const that = this;
-      this.defaultValue = this.props.value || this.defaultValue;
+      this.defaultValue = this.defaultValue || this.props.value;
       if (
         this.datePicker.props.showTime &&
         this.datePicker.props.showTime !== true
@@ -13186,6 +13184,17 @@ function _defineProperty2(obj, key, value) {
           }
         }
       }
+      if (this.time.hour >= this.maxTime.hour) {
+        this.time.hour = this.maxTime.hour;
+        if (this.time.minute >= this.maxTime.minute) {
+          this.time.minute = this.maxTime.minute;
+        }
+        if (this.time.minute >= this.maxTime.minute) {
+          if (this.time.second >= this.maxTime.second) {
+            this.time.second = this.maxTime.second;
+          }
+        }
+      }
       this.checkTimeRange();
       const result = new Date(
         "2000",
@@ -13243,38 +13252,51 @@ function _defineProperty2(obj, key, value) {
     }
     checkTimeRange() {
       const that = this;
+      const beforeHourFlag = this._isHourOverRange;
+      const beforeMinuteFlag = this._isMinuteOverRange;
       const { hour, minute, second } = this.timeRange;
       const beforeTimeRangeStr = `${hour}-${minute}-${second}`;
       this._calcTimeRangeByTime();
       this.empty = false; // 比较 timeRange 是否发生变化
       const { hour: aHour, minute: aMinute, second: aSecond } = this.timeRange;
-      const afterTimeRangeStr = `${aHour}-${aMinute}-${aSecond}`; // 更新timeList的数据
+      const afterTimeRangeStr = `${aHour}-${aMinute}-${aSecond}`;
+      let needRefreshList = [];
       if (afterTimeRangeStr !== beforeTimeRangeStr) {
-        Object.keys(this.timeList).forEach(function (key) {
-          that.timeList[key].refresh();
-        });
-      }
+        needRefreshList = ["hour", "minute", "second"];
+      } else if (beforeHourFlag !== this._isHourOverRange) {
+        needRefreshList = ["minute", "second"];
+      } else if (beforeMinuteFlag !== this._isMinuteOverRange) {
+        needRefreshList = ["second"];
+      } // 更新timeList的数据
+      needRefreshList.forEach(function (key) {
+        that.timeList[key].refresh();
+      });
     } // 根据当前选择 time 更新计算得到真正的 timeRange
     // hour值在 min~max之间时, minute和second的range = ['00', '59']
     _calcTimeRangeByTime() {
-      const that = this;
-      if (that.time.hour <= that.minTime.hour) {
-        that.timeRange.hour = [that.minTime.hour, that.maxTime.hour];
-        that.timeRange.minute = [that.minTime.minute, "59"];
-        if (that.time.minute <= that.minTime.minute) {
-          that.timeRange.second = [that.minTime.second, "59"];
+      const { time, timeRange, minTime, maxTime } = this;
+      this._isHourOverRange =
+        time.hour < minTime.hour || time.hour > maxTime.hour;
+      this._isMinuteOverRange =
+        (time.hour === minTime.hour && time.minute < minTime.minute) ||
+        (time.hour === maxTime.hour && time.minute > maxTime.minute);
+      if (time.hour <= minTime.hour) {
+        timeRange.hour = [minTime.hour, maxTime.hour];
+        timeRange.minute = [minTime.minute, "59"];
+        if (time.minute <= minTime.minute) {
+          timeRange.second = [minTime.second, "59"];
         } else {
-          that.timeRange.second = ["00", "59"];
+          timeRange.second = ["00", "59"];
         }
-      } else if (that.time.hour >= that.maxTime.hour) {
-        that.timeRange.minute = ["00", that.maxTime.minute];
-        if (that.time.minute >= that.maxTime.minute) {
-          that.timeRange.second = ["00", that.maxTime.second];
+      } else if (time.hour >= maxTime.hour) {
+        timeRange.minute = ["00", maxTime.minute];
+        if (time.minute >= maxTime.minute) {
+          timeRange.second = ["00", maxTime.second];
         } else {
-          that.timeRange.second = ["00", "59"];
+          timeRange.second = ["00", "59"];
         }
       } else {
-        that.timeRange.minute = that.timeRange.second = ["00", "59"];
+        timeRange.minute = timeRange.second = ["00", "59"];
       }
     }
   }
@@ -13712,7 +13734,9 @@ function _defineProperty2(obj, key, value) {
       this.dateInfo = { year: this.year, month: this.month - 1, day: this.day };
       if (this.props.value && this.props.showTime && this.timePicker) {
         this.timePicker.setValue(
-          new Date(this.props.value).format(this.props.showTime.format)
+          new Date(this.props.value).format(
+            this.props.showTime.format || "HH:mm:ss"
+          )
         );
       } else if (!this.props.value && this.props.showTime && this.timePicker) {
         this.timePicker.clearTime();
@@ -22875,22 +22899,17 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       let items = [];
-      const selected = [];
       const that = this;
+      const { _isHourOverRange, _isMinuteOverRange } = this.pickerControl;
+      const { type } = this.props;
       this.props.min = this.pickerControl.timeRange[this.props.type][0];
       this.props.max = this.pickerControl.timeRange[this.props.type][1];
-      if (this.props.type === "hour") {
+      if (type === "hour") {
         items = this.pickerControl.getHour();
-        !this.pickerControl.empty &&
-          selected.push(this.pickerControl.time.hour);
-      } else if (this.props.type === "minute") {
+      } else if (type === "minute") {
         items = this.pickerControl.getMinute();
-        !this.pickerControl.empty &&
-          selected.push(this.pickerControl.time.minute);
-      } else if (this.props.type === "second") {
+      } else if (type === "second") {
         items = this.pickerControl.getSecond();
-        !this.pickerControl.empty &&
-          selected.push(this.pickerControl.time.second);
       }
       this.setProps({
         styles: { padding: "3px" },
@@ -22900,13 +22919,18 @@ function _defineProperty2(obj, key, value) {
           byClick: true,
           scrollIntoView: true,
         },
-        selectedItems: selected,
         itemDefaults: {
           _config: function () {
-            const key = this.props.key;
-            if (key < that.props.min || key > that.props.max) {
-              this.setProps({ disabled: true });
-            }
+            const key = this.props.key; // hour超出: 禁用 minute和second || minute超出: 禁用 second
+            const disabledOverRange =
+              (type !== "hour" && _isHourOverRange) ||
+              (type === "second" && _isMinuteOverRange);
+            this.setProps({
+              disabled:
+                key < that.props.min ||
+                key > that.props.max ||
+                disabledOverRange,
+            });
           },
         },
         onItemSelectionChange: () => {
@@ -22916,7 +22940,6 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     onChange() {
-      this.scrollToKey();
       this.setTime();
     }
     setTime() {
@@ -22924,36 +22947,22 @@ function _defineProperty2(obj, key, value) {
       this.pickerControl.setTime({ type: this.props.type, value: key });
     }
     resetTime() {
-      if (this.pickerControl.getValue() || this.pickerControl.defaultValue) {
-        const t = this.pickerControl.getValue()
-          ? this.pickerControl.getValue().split(":")
-          : this.pickerControl.defaultValue.split(":");
+      const _val = this.pickerControl.getValue();
+      if (_val) {
+        const t = _val.split(":");
         if (this.props.type === "hour") {
-          // this.selectItem(t[0])
-          this.update({ selectedItems: t[0] });
+          this.selectItem(t[0], { triggerSelectionChange: false });
         } else if (this.props.type === "minute") {
-          // this.selectItem(t[1])
-          this.update({ selectedItems: t[1] });
+          this.selectItem(t[1], { triggerSelectionChange: false });
         } else {
-          // this.selectItem(t[2])
-          this.update({ selectedItems: t[2] });
+          this.selectItem(t[2], { triggerSelectionChange: false });
         }
       } else {
         this.unselectAllItems();
       }
     }
     refresh() {
-      const selected = [];
-      this.getSelectedItem() && selected.push(this.getSelectedItem().props.key);
-      this.props.selectedItems = selected;
       this.update();
-      this.scrollToKey();
-    }
-    scrollToKey() {
-      const top = this.getSelectedItem()
-        ? this.getSelectedItem().element.offsetTop - 3
-        : 0;
-      this.scroller.element.scrollTop = top; // this.scrollToSelected()
     }
   }
   class TimePickerWrapper extends Component {
@@ -23123,6 +23132,7 @@ function _defineProperty2(obj, key, value) {
         minute: ["00", "59"],
         second: ["00", "59"],
       };
+      this._calcTimeRangeByTime();
       this.setProps({
         leftIcon: "clock",
         rightIcon: {
@@ -23145,27 +23155,10 @@ function _defineProperty2(obj, key, value) {
           that.getValue() !== that.defaultValue && that.handleChange();
         },
         onShow: () => {
-          Object.keys(this.timeList).forEach(function (key) {
-            that.timeList[key].scrollToKey();
-          });
+          this.defaultValue = this.props.value;
+          this.resetList();
         },
-      }); // if (!this.hasPopup) {
-      //   this.popup = new TimePickerPopup({
-      //     trigger: this.control,
-      //     onHide: () => {
-      //       !this.hidden && that.getValue() !== that.defaultValue && that.handleChange()
-      //       this.hidden = true
-      //     },
-      //     onShow: () => {
-      //       this.hidden = false
-      //       // this.confirm = false
-      //       Object.keys(this.timeList).forEach(function (key) {
-      //         that.timeList[key].scrollToKey()
-      //       })
-      //     },
-      //   })
-      // }
-      // this.hasPopup = true
+      });
     }
     getHour() {
       const hour = [];
@@ -23246,6 +23239,17 @@ function _defineProperty2(obj, key, value) {
           }
         }
       }
+      if (this.time.hour >= this.maxTime.hour) {
+        this.time.hour = this.maxTime.hour;
+        if (this.time.minute >= this.maxTime.minute) {
+          this.time.minute = this.maxTime.minute;
+        }
+        if (this.time.minute >= this.maxTime.minute) {
+          if (this.time.second >= this.maxTime.second) {
+            this.time.second = this.maxTime.second;
+          }
+        }
+      }
       this.checkTimeRange();
       const result = new Date(
         "2000",
@@ -23256,6 +23260,7 @@ function _defineProperty2(obj, key, value) {
         this.time.second
       ).format(this.props.format);
       this.setValue(result);
+      this.resetList();
     }
     clearTime() {
       this.setValue(null);
@@ -23296,28 +23301,53 @@ function _defineProperty2(obj, key, value) {
     }
     checkTimeRange() {
       const that = this;
-      if (that.time.hour <= that.minTime.hour) {
-        that.timeRange.hour = [that.minTime.hour, that.maxTime.hour];
-        that.timeRange.minute = [that.minTime.minute, "59"];
-        if (that.time.minute <= that.minTime.minute) {
-          that.timeRange.second = [that.minTime.second, "59"];
-        } else {
-          that.timeRange.second = ["00", "59"];
-        }
-      } else if (that.time.hour >= that.maxTime.hour) {
-        that.timeRange.minute = ["00", that.maxTime.minute];
-        if (that.time.minute >= that.maxTime.minute) {
-          that.timeRange.second = ["00", that.maxTime.second];
-        } else {
-          that.timeRange.second = ["00", "59"];
-        }
-      } else {
-        that.timeRange.minute = that.timeRange.second = ["00", "59"];
-      }
+      const beforeHourFlag = this._isHourOverRange;
+      const beforeMinuteFlag = this._isMinuteOverRange;
+      const { hour, minute, second } = this.timeRange;
+      const beforeTimeRangeStr = `${hour}-${minute}-${second}`;
+      this._calcTimeRangeByTime();
       this.empty = false;
-      Object.keys(this.timeList).forEach(function (key) {
+      const { hour: aHour, minute: aMinute, second: aSecond } = this.timeRange;
+      const afterTimeRangeStr = `${aHour}-${aMinute}-${aSecond}`;
+      let needRefreshList = []; // timeRange 发生变化, 所有list更新
+      if (afterTimeRangeStr !== beforeTimeRangeStr) {
+        needRefreshList = ["hour", "minute", "second"];
+      } else if (beforeHourFlag !== this._isHourOverRange) {
+        // hourOverRange变化，分和秒更新
+        needRefreshList = ["minute", "second"];
+      } else if (beforeMinuteFlag !== this._isMinuteOverRange) {
+        // minuteOverRange变化, 秒更新
+        needRefreshList = ["second"];
+      }
+      needRefreshList.forEach(function (key) {
         that.timeList[key].refresh();
       });
+    } // 重新计算timeRange 和 overRange
+    _calcTimeRangeByTime() {
+      const { time, timeRange, minTime, maxTime } = this;
+      this._isHourOverRange =
+        time.hour < minTime.hour || time.hour > maxTime.hour;
+      this._isMinuteOverRange =
+        (time.hour === minTime.hour && time.minute < minTime.minute) ||
+        (time.hour === maxTime.hour && time.minute > maxTime.minute);
+      if (time.hour <= minTime.hour) {
+        timeRange.hour = [minTime.hour, maxTime.hour];
+        timeRange.minute = [minTime.minute, "59"];
+        if (time.minute <= minTime.minute) {
+          timeRange.second = [minTime.second, "59"];
+        } else {
+          timeRange.second = ["00", "59"];
+        }
+      } else if (time.hour >= maxTime.hour) {
+        timeRange.minute = ["00", maxTime.minute];
+        if (time.minute >= maxTime.minute) {
+          timeRange.second = ["00", maxTime.second];
+        } else {
+          timeRange.second = ["00", "59"];
+        }
+      } else {
+        timeRange.minute = timeRange.second = ["00", "59"];
+      }
     }
   }
   Component.register(TimePicker);
