@@ -18695,6 +18695,9 @@ function _defineProperty2(obj, key, value) {
     _enable() {
       this.input.enable();
     }
+    _onBlur() {
+      this._callHandler(this.props.onBlur);
+    }
     _handleRules() {
       const { precision } = this.props;
       const rules = [];
