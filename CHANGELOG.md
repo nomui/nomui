@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.40](https://github.com/nomui/nomui/compare/v1.0.0-alpha.39...v1.0.0-alpha.40) (2021-12-10)
+
+
+### Features
+
+* **DatePicker:** 添加minDate和minTime的联动示例 ([cfcaa8b](https://github.com/nomui/nomui/commit/cfcaa8b6b2fc0756e4e0e129f136dfee6cd1bc77))
+* **Icon:** 添加 hospital 和 company的图标 ([27d719d](https://github.com/nomui/nomui/commit/27d719ddaedf4dadc03239383f67205d6bb891ae))
+
+
+### Bug Fixes
+
+* **DatePicker-TimePicker:** 添加日期选择器中时间部分的禁用的场景 ([643668b](https://github.com/nomui/nomui/commit/643668b58ca4d0258aa761e9ea6e57dab7fa7054))
+* **DatePicker:** 当设置了 showTime且有默认值时，点开时输入框数据不对 ([bb2cd7e](https://github.com/nomui/nomui/commit/bb2cd7ef3eb8acf91d8f38575996c3481f92de0b))
+* **DatePicker:** 日期选择器中对 minDate和showTime.minTime 之前的联动处理 ([0584c2a](https://github.com/nomui/nomui/commit/0584c2a8aa8c368b1082307be6ec78b949691b62))
+* **Grid:** 优化sticky滚动条显示隐藏的逻辑 ([90134b2](https://github.com/nomui/nomui/commit/90134b2e58141323e9d2b0b4ea3853816e5c3515))
+* **NumberSpiner:** input内部触发 blur的回调, 组件中添加对应的方法 ([8a9c41d](https://github.com/nomui/nomui/commit/8a9c41d305358174ba430cee549bbf57045e6f98))
+* **TimePicker:** 补全timePicker的禁用场景 ([739c936](https://github.com/nomui/nomui/commit/739c93620fa8d98eb424fbd0074b93100f062806))
+
+
+### Performance Improvements
+
+* **Grid:** 优化滚动条显示隐藏逻辑 ([e62e4ab](https://github.com/nomui/nomui/commit/e62e4ab559213808ddbcd56a79946d2f8e558eea))
+* **List:** 优化List虚拟列表与普通列表之间的转化支持 ([6afad20](https://github.com/nomui/nomui/commit/6afad209e5cb9fe531512e8779215dbb23c76101))
+* **List:** 增加示例 ([2793e58](https://github.com/nomui/nomui/commit/2793e58a128dd7ace5d97136a5da64a9e6e58c74))
+
+## [1.0.0-alpha.39](https://github.com/nomui/nomui/compare/v1.0.0-alpha.38...v1.0.0-alpha.39) (2021-12-03)
+
+
+### Features
+
+* **TreeSelect:** 树选择 搜索 ([ed964d7](https://github.com/nomui/nomui/commit/ed964d7d8adb2c484ca6fb1ab48cc0df5b29290d))
+* **TreeSelect:** 支持搜索功能 ([d912069](https://github.com/nomui/nomui/commit/d912069525a7190c6695417161e517a9650ff0b2))
+* **TreeSelect:** 支持搜索功能 ([77c2b60](https://github.com/nomui/nomui/commit/77c2b60b832642d646480356a45df577a80b9042))
+
+
+### Bug Fixes
+
+* **Grid:** 调整横向滚动条出现时机 ([878122c](https://github.com/nomui/nomui/commit/878122cc252cd7f35cbbbfc135090e958229944f))
+* **Grid:** 调整Grid横向滚动条出现时机 ([a83d4b3](https://github.com/nomui/nomui/commit/a83d4b3d4a8289434ec2bf469c3b121023c26882))
+* **line-height:** 行高统一设置为 [@line-height-base](https://github.com/line-height-base) ([64e0f31](https://github.com/nomui/nomui/commit/64e0f31da404575268fa7c55663fd9f5576d995a))
+* **Notification:** align兼容旧配置 ([8c186a0](https://github.com/nomui/nomui/commit/8c186a0cb824ad9e2f7740e6185a6c8c807ca729))
+* **Select:** Pager修改分页大小时，又主动调用了page的update，导致 select实例被更新，报错 ([7514456](https://github.com/nomui/nomui/commit/7514456e52bda93b4af718072a4ddcc611b597e8))
+* **style:** 统一各个field的高度计算展示 ([f460846](https://github.com/nomui/nomui/commit/f4608465ed70b2e86fb7e7fff87fe4ca2d306107))
+* **Tree:** 多选 cascadeCheckChildren 和 cascadeCheckParent冲突的问题 ([2892aca](https://github.com/nomui/nomui/commit/2892aca1eb55f81b133288428c0f361509a256f0))
+* **TreeSelect:** 修改 nodeCheckable和selectable的优先级 ([9dcc062](https://github.com/nomui/nomui/commit/9dcc062c498777bede323c68428c512908eab458))
+* **TreeSelect:** setValue后, 多选popup的内容不更新 ([b6045ba](https://github.com/nomui/nomui/commit/b6045ba0992a178f1febc983a7118e4c3bcb1925))
+
+
+### Docs
+
+* **TreeSelect, Tree:** 补充文档 ([f714fb6](https://github.com/nomui/nomui/commit/f714fb6c29cf431346c4c5bc6c4d4acd4de9178a))
+* **TreeSelect:** 多选的demo修改 ([d017cb8](https://github.com/nomui/nomui/commit/d017cb802f499bea6f56f8209dc5f8da9166a8b0))
+* **TreeSelect:** 添加searchable 的文档 ([4870c39](https://github.com/nomui/nomui/commit/4870c3959c96126cb5d0d16dbc6867177438169c))
+
 ## [1.0.0-alpha.38](https://github.com/nomui/nomui/compare/v1.0.0-alpha.37...v1.0.0-alpha.38) (2021-11-26)
 
 

@@ -25,20 +25,19 @@ class DateTimePickerList extends List {
 
   _config() {
     let items = []
-    const selected = []
     const that = this
-    this.props.min = this.pickerControl.timeRange[this.props.type][0]
-    this.props.max = this.pickerControl.timeRange[this.props.type][1]
+    const { currentDateBeforeMin, currentDateAfterMax } = this.pickerControl.datePicker
+    const { _isHourOverRange, _isMinuteOverRange } = this.pickerControl
+    const { type } = this.props
+    this.props.min = this.pickerControl.timeRange[type][0]
+    this.props.max = this.pickerControl.timeRange[type][1]
 
-    if (this.props.type === 'hour') {
+    if (type === 'hour') {
       items = this.pickerControl.getHour()
-      !this.pickerControl.empty && selected.push(this.pickerControl.time.hour)
-    } else if (this.props.type === 'minute') {
+    } else if (type === 'minute') {
       items = this.pickerControl.getMinute()
-      !this.pickerControl.empty && selected.push(this.pickerControl.time.minute)
-    } else if (this.props.type === 'second') {
+    } else if (type === 'second') {
       items = this.pickerControl.getSecond()
-      !this.pickerControl.empty && selected.push(this.pickerControl.time.second)
     }
 
     this.setProps({
@@ -56,16 +55,21 @@ class DateTimePickerList extends List {
           position: 'relative',
         },
       },
-      selectedItems: selected,
       itemDefaults: {
         _config: function () {
           const key = this.props.key
+          const disabledOverRange =
+            (type !== 'hour' && _isHourOverRange) || (type === 'second' && _isMinuteOverRange)
 
-          if (key < that.props.min || key > that.props.max) {
-            this.setProps({
-              disabled: true,
-            })
-          }
+          // 日期部分已经超出 min 或 max
+          this.setProps({
+            disabled:
+              key < that.props.min ||
+              key > that.props.max ||
+              currentDateBeforeMin ||
+              currentDateAfterMax ||
+              disabledOverRange,
+          })
         },
       },
 
@@ -78,7 +82,6 @@ class DateTimePickerList extends List {
   }
 
   onChange() {
-    this.scrollToKey()
     this.setTime()
   }
 
@@ -95,14 +98,11 @@ class DateTimePickerList extends List {
       const t = this.pickerControl.defaultValue.split(':')
 
       if (this.props.type === 'hour') {
-        // this.selectItem(t[0])
-        this.update({ selectedItems: t[0] })
+        this.selectItem(t[0], { triggerSelectionChange: false })
       } else if (this.props.type === 'minute') {
-        // this.selectItem(t[1])
-        this.update({ selectedItems: t[1] })
+        this.selectItem(t[1], { triggerSelectionChange: false })
       } else {
-        // this.selectItem(t[2])
-        this.update({ selectedItems: t[2] })
+        this.selectItem(t[2], { triggerSelectionChange: false })
       }
     } else {
       this.unselectAllItems()
@@ -110,19 +110,7 @@ class DateTimePickerList extends List {
   }
 
   refresh() {
-    const selected = []
-    this.getSelectedItem() && selected.push(this.getSelectedItem().props.key)
-    this.props.selectedItems = selected
-
     this.update()
-
-    this.scrollToKey()
-  }
-
-  scrollToKey() {
-    const top = this.getSelectedItem() ? this.getSelectedItem().element.offsetTop - 3 : 0
-    this.scroller.element.scrollTop = top
-    // this.scrollToSelected()
   }
 }
 

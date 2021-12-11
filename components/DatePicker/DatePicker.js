@@ -52,7 +52,6 @@ class DatePicker extends Textbox {
       this.props.showTime && this.props.minDate
         ? new Date(this.props.minDate).format(this.props.showTime.format || 'HH:mm:ss')
         : '00:00:00'
-
     const maxTime =
       this.props.showTime && this.props.maxDate
         ? new Date(this.props.maxDate).format(this.props.showTime.format || 'HH:mm:ss')
@@ -101,7 +100,7 @@ class DatePicker extends Textbox {
           onShow: () => {
             this.getCurrentDate()
             this.reActiveList()
-            that.props.showTime && that.timePicker.onShow()
+            // that.props.showTime && that.timePicker.onShow()
           },
           onHide: () => {
             that.onPopupHide()
@@ -131,6 +130,7 @@ class DatePicker extends Textbox {
                       items: [
                         {
                           component: Select,
+                          allowClear: false,
                           value: that.year,
                           _created: function () {
                             that.years = this
@@ -145,6 +145,7 @@ class DatePicker extends Textbox {
                         },
                         {
                           component: Select,
+                          allowClear: false,
                           value: that.month,
                           _created: function () {
                             that.months = this
@@ -270,17 +271,8 @@ class DatePicker extends Textbox {
                             },
                           }
 
-                          if (that.props.minDate && that.props.showTime) {
-                            const myday = parseInt(new Date(that.props.minDate).format('d'), 10)
-                            if (myday === args.sender.props.day) {
-                              that.timePicker.update({
-                                startTime: that.startTime,
-                              })
-                            } else if (myday < args.sender.props.day) {
-                              that.timePicker.update({
-                                startTime: '00:00:00',
-                              })
-                            }
+                          if (that.props.showTime) {
+                            that._updateTimePickerStartEndTime(args.sender.props.day)
                           }
 
                           that.updateValue()
@@ -303,8 +295,12 @@ class DatePicker extends Textbox {
                   onValueChange: (data) => {
                     this.handleTimeChange(data)
                   },
-                  startTime: minTime,
-                  // value: new Date(this.props.value).format(this.props.showTime.format),
+                  // 初始化传入 startTime, endTime
+                  startTime: this.currentDateBeforeMin ? minTime : '00:00:00',
+                  endTime: this.currentDateAfterMax ? maxTime : '23:59:59',
+                  value:
+                    this.props.value &&
+                    new Date(this.props.value).format(this.props.showTime.format || 'HH:mm:ss'),
                 },
               ],
             },
@@ -322,6 +318,9 @@ class DatePicker extends Textbox {
                   text: '此刻',
                   disabled: !this.showNow,
                   onClick: () => {
+                    if (that.props.showTime) {
+                      that._updateTimePickerStartEndTime(new Date().getDate())
+                    }
                     this.setNow()
                   },
                 },
@@ -333,6 +332,28 @@ class DatePicker extends Textbox {
     })
 
     super._config()
+  }
+
+  // 更新 timePicker的禁用情况(内部个根据 startTime endTime计算)
+  _updateTimePickerStartEndTime(day) {
+    this.currentDateBeforeMin = false
+    this.currentDateAfterMax = false
+
+    const minDay = parseInt(new Date(this.props.minDate).format('d'), 10)
+    const maxDay = parseInt(new Date(this.props.maxDate).format('d'), 10)
+    const timeProps = {
+      startTime: '00:00:00',
+      endTime: '23:59:59',
+    }
+
+    if (minDay === day) {
+      timeProps.startTime = this.startTime
+    }
+    if (maxDay === day) {
+      timeProps.endTime = this.endTime
+    }
+
+    this.timePicker.update(timeProps)
   }
 
   _getYears() {
@@ -483,8 +504,23 @@ class DatePicker extends Textbox {
     this.month = currentDate.getMonth() + 1
     this.day = currentDate.getDate()
 
+    // 注: 此处的比较 如果传入的时间格式不一致, 会有比较错误的情况
+    //     因为 new Date(dateString) 并不可靠, `yyyy-MM-dd`得到的时间会是格林威治时间
+    this.currentDateBeforeMin =
+      this.props.minDate && currentDate.isBefore(new Date(this.props.minDate))
+    this.currentDateAfterMax =
+      this.props.maxDate && currentDate.isAfter(new Date(this.props.maxDate))
+
+    this.dateInfo = {
+      year: this.year,
+      month: this.month - 1,
+      day: this.day,
+    }
+
     if (this.props.value && this.props.showTime && this.timePicker) {
-      this.timePicker.setValue(new Date(this.props.value).format(this.props.showTime.format))
+      this.timePicker.setValue(
+        new Date(this.props.value).format(this.props.showTime.format || 'HH:mm:ss'),
+      )
     } else if (!this.props.value && this.props.showTime && this.timePicker) {
       this.timePicker.clearTime()
     }

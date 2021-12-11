@@ -17,7 +17,7 @@
 | fit | 自适应父容器高度，当树超出高度时出现滚动条，如果有全选框，该全选框会固定 | `boolean` | false |
 | onNodeClick | 点击节点的回调 | `({node}) => {}` | - |
 
-### Tree methods
+## Tree methods
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -49,7 +49,6 @@
 | byClick         | 点击节点时选中   | `boolean`        | true   |
 | selectedNodeKey | 选中的节点键     | `string`         | true   |
 | onNodeSelect    | 节点选中回调     | `({node}) => {}` | -      |
-| onNodeUnselect  | 节点取消选中回调 | `({node}) => {}` | -      |
 
 ### nodeCheckable
 
@@ -63,9 +62,8 @@
 | cascadeUncheckChildren | 级联取消勾选子节点 | `boolean` | true |
 | checkedNodeKeys | 初始选中节点数据键数组 | `array` | - |
 | showCheckAll | 显示全选复选框 | `boolean` | false |
-| checkAllText | 全选复选框文本 | `boolean` | `全选` |
-| onNodeCheck | 节点勾选回调 | `({node}) => {}` | - |
-| onNodeUncheck | 节点取消勾选回调 | `({node}) => {}` | - |
+| checkAllText | 全选复选框文本 | `boolean` | `'全选'` |
+| onCheckChange | 节点勾选回调 | `({node}) => {}` | - |
 
 ### TreeData
 

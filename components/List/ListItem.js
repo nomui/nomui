@@ -43,8 +43,8 @@ class ListItem extends Component {
     delete this.list.itemRefs[this.key]
   }
 
-  select() {
-    this.content.select()
+  select(selectOption) {
+    this.content.select(selectOption)
   }
 
   unselect() {

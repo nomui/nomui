@@ -4,6 +4,8 @@ define([
   './multiple.js',
   './allow-clear.js',
   './flat-options.js',
+  './searchable-local.js',
+  './searchable-remote.js',
 ], function () {
   return {
     title: 'TreeSelect',

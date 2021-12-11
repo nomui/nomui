@@ -52,8 +52,14 @@ class TreeSelect extends Field {
   _rendered() {
     this.popup = new TreeSelectPopup({
       trigger: this.control,
-      nodeSelectable: this._getPopupNodeSelectable(),
-      nodeCheckable: this._getPopupNodeCheckable(),
+      nodeCheckable: this.props.multiple && this._getPopupNodeCheckable(),
+      onShow: () => {
+        if (!this.props.multiple) {
+          this.tree.update({
+            nodeSelectable: this._getPopupNodeSelectable(),
+          })
+        }
+      },
     })
 
     this._valueChange({ newValue: this.currentValue })
@@ -67,24 +73,32 @@ class TreeSelect extends Field {
   // 树结构扁平化为数组数据
   getList() {
     const { treeDataFields } = this.props
-    const optionMap = []
-    function mapTree(data) {
+    let { options } = this.props
+    const optionMap = {}
+    function mapTree(data, parentKey) {
       return data.forEach(function (item) {
         const _fieldKey = treeDataFields.key
         const _fieldText = treeDataFields.text
+        const _parentKey = treeDataFields.parentKey
 
         optionMap[item[_fieldKey]] = {
           key: item[_fieldKey],
           [_fieldKey]: item[_fieldKey],
           [_fieldText]: item[_fieldText],
+          [_parentKey]: parentKey,
         }
         if (item.children && item.children.length > 0) {
-          mapTree(item.children)
+          mapTree(item.children, item[_fieldKey])
         }
       })
     }
 
-    mapTree(this.props.options)
+    // popup中的tree组件，options从其中获取
+    if (this.tree) {
+      options = this.tree.getData()
+    }
+
+    mapTree(options)
     return optionMap
   }
 
@@ -92,6 +106,8 @@ class TreeSelect extends Field {
     const { showArrow, placeholder, allowClear } = this.props
     const that = this
     const children = []
+
+    this._normalizeSearchable()
 
     // _content: 所选择的数据的展示
     children.push({
@@ -146,6 +162,66 @@ class TreeSelect extends Field {
     return children
   }
 
+  _normalizeSearchable() {
+    const { searchable } = this.props
+    if (searchable) {
+      this.setProps({
+        searchable: Component.extendProps(
+          {
+            placeholder: null,
+            filter: ({ inputValue, options }) => {
+              if (!inputValue) return options
+              const { key, text, parentKey } = this.props.treeDataFields
+
+              // 1.先遍历一次 将结果符合搜索条件的结果(包含其祖先)放至 filteredMap中
+              const reg = new RegExp(inputValue, 'i')
+              const filteredMap = new Map()
+              Object.entries(this.optionMap).forEach(([optKey, optValue]) => {
+                // 判断输入关键字 和 option的text
+                if (reg.test(optValue[text])) {
+                  filteredMap.set(optKey, { ...optValue, __filterNode: true })
+                  // 将搜索结果的祖先节点都加入 filteredMap 中
+                  let optParentKey = optValue[parentKey]
+                  while (optParentKey) {
+                    const parent = this.optionMap[optParentKey]
+                    // parent 符合搜索条件(已经在map中)则不重新 set
+                    if (!filteredMap.get(optParentKey)) {
+                      filteredMap.set(optParentKey, parent)
+                    }
+                    optParentKey = parent && parent[parentKey]
+                  }
+                }
+              })
+
+              // 从 filteredMap 中取出满足的options(包含祖先和孩子节点)的值
+              function getFileterOptions(list) {
+                const res = []
+                list.forEach((opt) => {
+                  const filterOpt = filteredMap.get(opt[key])
+                  if (filterOpt) {
+                    const obj = { ...opt }
+                    if (filterOpt.__filterNode) obj.__filterNode = filterOpt.__filterNode
+                    // 递归判断children
+                    // 没有符合搜索条件的, 则直接使用原children
+                    if (opt.children) {
+                      const _children = getFileterOptions(opt.children)
+                      obj.children = _children.length ? _children : opt.children
+                    }
+                    res.push(obj)
+                  }
+                })
+                return res
+              }
+
+              return getFileterOptions(options)
+            },
+          },
+          searchable,
+        ),
+      })
+    }
+  }
+
   _getContentBadges() {
     const { treeDataFields } = this.props
     if (!isNullish(this.currentValue) && !Array.isArray(this.currentValue)) {
@@ -186,16 +262,12 @@ class TreeSelect extends Field {
     const { currentValue } = this
     if (multiple) return false
 
-    return Component.extendProps(
-      {
-        selectedNodeKey: currentValue && currentValue[0],
-        onNodeSelect: ({ nodeData }) => {
-          this._setValue([nodeData.key])
-        },
+    return Component.extendProps({ onlyleaf: this.props.onlyleaf }, treeSelectable, {
+      selectedNodeKey: currentValue && currentValue[0],
+      onNodeSelect: ({ nodeData }) => {
+        this._setValue([nodeData.key])
       },
-      { onlyleaf: this.props.onlyleaf },
-      treeSelectable,
-    )
+    })
   }
 
   // 弹窗的nodeCheckable的配置
@@ -205,16 +277,13 @@ class TreeSelect extends Field {
 
     if (!multiple && !treeCheckable) return false
     // 多选则展示复选框
-    return Component.extendProps(
-      {
-        checkedNodeKeys: currentValue,
-        onCheckChange: () => {
-          const checkedKeys = this.tree.getCheckedNodeKeys()
-          this._setValue(checkedKeys)
-        },
+    return Component.extendProps(treeCheckable, {
+      checkedNodeKeys: currentValue,
+      onCheckChange: () => {
+        const checkedKeys = this.tree.getCheckedNodeKeys()
+        this._setValue(checkedKeys)
       },
-      treeCheckable,
-    )
+    })
   }
 
   _setValue(value, options) {
@@ -225,15 +294,20 @@ class TreeSelect extends Field {
       options = extend({ triggerChange: true }, options)
     }
 
-    // 单选则点击后即关闭popup
-    if (!this.props.multiple) {
-      this.popup.hide()
-    }
-
     if (options.triggerChange) {
       this._onValueChange()
     }
     this._content.update({ children: this._getContentBadges() })
+
+    // 多选: 每次setValue后更新选中状态
+    if (this.props.multiple) {
+      this.tree.update({
+        nodeCheckable: this._getPopupNodeCheckable(),
+      })
+    } else {
+      // 单选: 点击后即关闭popup,在onShow中更新
+      this.popup.hide()
+    }
   }
 
   // getValue时根据选中的节点返回
