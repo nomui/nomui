@@ -22,6 +22,7 @@ class Grid extends Component {
   _created() {
     this.minWidth = 0
     this.lastSortField = null
+    this._alreadyProcessedFlat = false
     this.rowsRefs = {}
     this.checkedRowRefs = {}
     this._doNotAutoScroll = true
@@ -39,6 +40,14 @@ class Grid extends Component {
       this.setProps({ visibleColumns: null })
       this.originColumns = [...props.columns]
       this.popupTreeData = this.originColumns
+    }
+    // 更新了data
+    if (props.data) {
+      const { treeConfig } = this.props
+      // data更新, flatData需要重新组装成Tree结构
+      if (treeConfig && treeConfig.flatData) {
+        this._alreadyProcessedFlat = false
+      }
     }
   }
 
@@ -79,10 +88,12 @@ class Grid extends Component {
     }
 
     const { treeConfig } = this.props
-    if (treeConfig && treeConfig.flatData) {
+    // 还未处理过 flatData
+    if (treeConfig && treeConfig.flatData && !this._alreadyProcessedFlat) {
       this.setProps({
         data: this._setTreeGridData(that.props.data),
       })
+      this._alreadyProcessedFlat = true
     }
 
     const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props
@@ -334,8 +345,10 @@ class Grid extends Component {
       } else {
         arr = this.props.data.sort(sorter.sortable)
       }
+
+      this.setProps({ data: arr })
       this.setSortDirection(sorter)
-      this.update({ data: arr })
+
       this.lastSortField = key
       return
     }
