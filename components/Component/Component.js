@@ -307,15 +307,18 @@ class Component {
 
   _callMixin(hookType) {
     const mixinsList = [...MIXINS, ...this.mixins]
-    let hookContinue = true
+    let abort = false
 
-    // mixin钩子当中如果return false则不执行之后的代码
+    // 钩子函数执行完如果return false则判定跳过后续代码
     for (let i = 0; i < mixinsList.length; i++) {
       const mixin = mixinsList[i]
-      hookContinue = mixin[hookType] && mixin[hookType].call(this, this)
+      const hookContinue = mixin[hookType] && mixin[hookType].call(this, this)
+      if (hookContinue === false) {
+        abort = true
+      }
     }
 
-    if (hookContinue === false) {
+    if (abort) {
       return false
     }
   }
