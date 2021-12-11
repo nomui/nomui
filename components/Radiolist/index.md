@@ -12,7 +12,7 @@
 | uistyle | 展示形式   | `'button'\|'radio'`                    | `'radio'` |
 | cols    | 展示列数   | `number`                               | -         |
 
-## Event
+## Events
 
 | 事件名称 | 说明 | 回调参数 |
 | --- | --- | --- |
