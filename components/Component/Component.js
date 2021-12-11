@@ -128,17 +128,10 @@ class Component {
     this._setExpandableProps()
     this._setSelectableProps()
 
-    if (this.showSkeleton && this.firstRender) {
-      this.setProps({
-        children: {
-          component: 'Skeleton',
-          ...this.props.skeleton,
-        },
-      })
-    } else {
-      this.props._config && this.props._config.call(this, this)
-      isFunction(this.props.onConfig) && this.props.onConfig({ inst: this, props: this.props })
-      this._callMixin('_config')
+    this.props._config && this.props._config.call(this, this)
+    isFunction(this.props.onConfig) && this.props.onConfig({ inst: this, props: this.props })
+
+    if (this._callMixin('_config') !== false) {
       isFunction(this._config) && this._config()
     }
 
@@ -313,13 +306,17 @@ class Component {
   _remove() {}
 
   _callMixin(hookType) {
-    for (let i = 0; i < MIXINS.length; i++) {
-      const mixin = MIXINS[i]
-      mixin[hookType] && mixin[hookType].call(this, this)
+    const mixinsList = [...MIXINS, ...this.mixins]
+    let hookContinue = true
+
+    // mixin钩子当中如果return false则不执行之后的代码
+    for (let i = 0; i < mixinsList.length; i++) {
+      const mixin = mixinsList[i]
+      hookContinue = mixin[hookType] && mixin[hookType].call(this, this)
     }
-    for (let i = 0; i < this.mixins.length; i++) {
-      const mixin = this.mixins[i]
-      mixin[hookType] && mixin[hookType].call(this, this)
+
+    if (hookContinue === false) {
+      return false
     }
   }
 

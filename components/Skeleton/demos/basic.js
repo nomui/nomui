@@ -15,7 +15,7 @@ define([], function () {
           {
             component: 'List',
             skeleton: {
-              avatar: true, // 是否显示头像
+              avatar: false, // 是否显示头像
               title: true, // 是否显示标题
               paragraph: true, // 是否显示段正文
               rows: 3, // 显示几组

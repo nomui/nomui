@@ -83,6 +83,17 @@ Component.mixin({
       this.showSkeleton = true
     }
   },
+  _config: function () {
+    if (this.showSkeleton && this.firstRender) {
+      this.setProps({
+        children: {
+          component: 'Skeleton',
+          ...this.props.skeleton,
+        },
+      })
+      return false
+    }
+  },
 })
 
 Component.register(Skeleton)
