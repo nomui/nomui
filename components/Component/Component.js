@@ -127,10 +127,21 @@ class Component {
   config() {
     this._setExpandableProps()
     this._setSelectableProps()
-    this.props._config && this.props._config.call(this, this)
-    isFunction(this.props.onConfig) && this.props.onConfig({ inst: this, props: this.props })
-    this._callMixin('_config')
-    isFunction(this._config) && this._config()
+
+    if (this.showSkeleton && this.firstRender) {
+      this.setProps({
+        children: {
+          component: 'Skeleton',
+          ...this.props.skeleton,
+        },
+      })
+    } else {
+      this.props._config && this.props._config.call(this, this)
+      isFunction(this.props.onConfig) && this.props.onConfig({ inst: this, props: this.props })
+      this._callMixin('_config')
+      isFunction(this._config) && this._config()
+    }
+
     this._setExpandableProps()
     this._setSelectableProps()
     this._setStatusProps()

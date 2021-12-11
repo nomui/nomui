@@ -1,0 +1,42 @@
+.nom-skeleton {
+  .nom-skeleton-avatar {
+    background: #f0f0f0;
+    animation: skeleton 3s infinite;
+  }
+  .nom-skeleton-title {
+    width: 300px;
+    max-width: 60%;
+    height: 1.5rem;
+    margin-bottom: 0.5rem;
+    background: #f0f0f0;
+    border-radius: 4px;
+    animation: skeleton 3s infinite;
+  }
+  .nom-skeleton-paragraph {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    > li {
+      width: 100%;
+      height: 1rem;
+      margin-bottom: 0.5rem;
+      background: #f0f0f0;
+      border-radius: 4px;
+      animation: skeleton 3s infinite;
+      &:last-child {
+        width: 70%;
+      }
+    }
+  }
+  @keyframes skeleton {
+    0% {
+      background: #f0f0f0;
+    }
+    50% {
+      background: #e5e5e5;
+    }
+    100% {
+      background: #f0f0f0;
+    }
+  }
+}
