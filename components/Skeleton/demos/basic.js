@@ -15,10 +15,11 @@ define([], function () {
           {
             component: 'List',
             skeleton: {
-              avatar: false, // 是否显示头像
+              avatar: true, // 是否显示头像
               title: true, // 是否显示标题
-              paragraph: true, // 是否显示段正文
-              rows: 3, // 显示几组
+              paragraph: 5, // boolean:是否显示段落，number:表示段落有几行
+              rows: 2, // 显示几行
+              cols: 3, // 显示几列
             },
             items: [
               { text: '飞狐外传' },

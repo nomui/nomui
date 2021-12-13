@@ -15,15 +15,49 @@ class Skeleton extends Component {
 
   _config() {
     const that = this
-    const { rows } = this.props
+    const { cols, rows } = this.props
 
-    this.setProps({
-      children: {
-        component: 'Flex',
+    if (rows && cols) {
+      this.setProps({
+        children: {
+          component: 'Flex',
+          gutter: 'large',
+          fills: true,
+          rows: that.getCols(that.props.rows),
+        },
+      })
+    } else if (rows || cols) {
+      this.setProps({
+        children: {
+          component: 'Flex',
+          gutter: 'large',
+          fills: true,
+          rows: that.props.rows ? that.getSkeleton(rows) : null,
+          cols: that.props.cols ? that.getSkeleton(cols) : null,
+        },
+      })
+    } else {
+      this.setProps({
+        children: that.getSkeleton(),
+      })
+    }
+  }
+
+  getCols(num) {
+    if (!num) {
+      num = 1
+    }
+    const that = this
+    const arr = []
+    for (let i = 0; i < num; i++) {
+      arr.push({
+        fills: true,
         gutter: 'large',
-        rows: that.getSkeleton(rows),
-      },
-    })
+        cols: that.getSkeleton(that.props.cols),
+      })
+    }
+
+    return arr
   }
 
   getSkeleton(num) {
@@ -41,7 +75,6 @@ class Skeleton extends Component {
           avatar && {
             component: 'Avatar',
             text: '#&nbsp;',
-
             classes: { 'nom-skeleton-avatar': true },
           },
           {
