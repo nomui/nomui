@@ -4874,7 +4874,6 @@ img {
   border-color: var(--nom-color-primary);
 }
 .nom-popup.p-uistyle-default {
-  font-size: 1rem;
   text-align: left;
   background-color: white;
   background-clip: padding-box;
