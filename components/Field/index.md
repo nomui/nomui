@@ -15,9 +15,61 @@
 | labelWidth | 表单元素项提示文字宽度 | `number` | `126` |
 | controlWidth | 表单元素项的宽度 | `xsmall\|small\|mediu\|large\|xlarge` | `false` |
 | rules | 配置的验证规则 | `Array` | `[]` |
+| required | 是否必填 | `boolean` | - |
 | control | 关联的表单元素项 | `Props` | - |
 | actions | 关联的表单元素项的操作按钮 | `Props[]` | - |
 | onValueChange | 值变化的时候触发 | `(changed:{name:string,newValue:boolean,oldValue:boolean,sender:obj})=>void` | - |
+
+## Rules item
+
+| 名称 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| type | 内置的检验规则类型 | 下面的可选值中选取 | - |
+| message | 错误提示信息 | `string` | 对应内置`type`所属的 message |
+| value | rule 校验的具体规则配置值 | `object`\|`string`\|`number`\|`array` | - |
+
+**type 可选值**:
+
+> `number`,`digits`,`regex`,`email`,`url`,`min`,`max`,`range`,`minlength`,`maxlength`,`rangelength`,`remote`,`date`,`identifier`,`phoneNumber`,`telephone`,`IDCard`,`func`
+
+```js
+// 使用示例 value 为具体配置， message 为默认错误提示
+{
+  components: 'Textbox',
+  rules: [
+    // fieldValue 值类型 (无需配置 value )
+    { type: 'number', value: -, message: '请输入有效的数字'  },
+    { type: 'digits', value: -, message: '只能输入数字'  },
+    { type: 'email', value: -, message: '请输入有效的 Email 地址'  },
+    { type: 'url', value: -, message: '请输入有效的 URL'  },
+    { type: 'date', value: -, message: '请输入有效的日期格式'  },
+    { type: 'identifier', value: -, message: '只能输入字母、数字、下划线且必须以字母开头'  },
+    { type: 'phoneNumber', value: -, message: '请输入正确的手机号'  },
+    { type: 'telephone', value: -, message: '请输入正确的固话号码'  },
+    { type: 'IDCard', value: -, message: '请输入正确的身份证号码'  },
+
+    // 正则表达式
+    { type: 'regex', value: { pattern, attributes }, message: '' },
+
+    // fieldValue 值大小
+    { type: 'min', value: min, message: '输入值不能小于${min}'  },
+    { type: 'max', value: max, message: '输入值不能大于${max}'  },
+    { type: 'range', value: [min, max],  message: '输入值必须介于 ${min} 和 ${max} 之间'},
+
+    // fieldValue 长度
+    { type: 'minlength', value: minlength, message: '${minlength} 个字'  },
+    { type: 'maxlength', value: maxlength, message: '${maxlength} 个字'  },
+    { type: 'rangelength', value: max, message: '输入值不能大于${max}'  },
+
+
+    /**
+     * 复杂 value 配置项
+     */
+    { type: 'remote', value: [url, postDataKey], message: 'Please fix this field' }, // url为接口地址, post请求 data: {postDataKey: fieldValue} 的格式去校验
+    { type: 'func', value: fn, message: '自定义错误信息' }, // fn(fieldValue) 的返回结果. true: 校验通过, false: 不通过
+  ]
+}
+```
 
 ## Method
 
