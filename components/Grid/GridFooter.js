@@ -19,7 +19,7 @@ class GridFooter extends Component {
   _config() {
     this.setProps({
       children: {
-        columns: this.grid.props.columns,
+        columns: this._getSummaryColumns(),
         data: this._getSummaryData(),
         attrs: {
           style: {
@@ -43,19 +43,29 @@ class GridFooter extends Component {
     })
   }
 
-  _getSummaryData() {
-    const { data, summary, columns } = this.grid.props
+  _getSummaryColumns() {
+    const { columns, rowCheckable } = this.grid.props
+    if (rowCheckable) {
+      columns[0].cellRender = () => {}
+    }
+    return columns
+  }
 
+  _getSummaryData() {
+    const { data, summary, columns, rowCheckable } = this.grid.props
     const { method, text = '总计' } = summary
+    // let { columns } = this.grid.props
 
     let res = {}
+    // rowCheckable: false, 处理第一列的文字
+    // rowCheckable: true, 处理第二列的文字
     if (method && isFunction(method)) {
       res = method({ columns, data })
 
-      res[columns[0].field] = text
+      res[columns[rowCheckable ? 1 : 0].field] = text
     } else {
       columns.forEach((col, index) => {
-        if (index === 0) {
+        if ((index === 0 && !rowCheckable) || (rowCheckable && index === 1)) {
           res[col.field] = text
           return
         }
