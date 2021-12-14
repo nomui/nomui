@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './custom.js', './repeat.js', './replace.js'], function () {
   return {
     title: 'Skeleton',
     subtitle: '骨架屏',

@@ -1,13 +1,19 @@
 import Component from '../Component/index'
+import SkeletonAvatar from './Avatar'
+import SkeletonImage from './Image'
+import SkeletonParagraph from './Paragraph'
+import SkeletonTitle from './Title'
 
 class Skeleton extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      cols: null,
-      rows: null,
+      type: null,
       avatar: false,
       title: true,
       paragraph: 3,
+      image: false,
+      cols: null,
+      rows: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -15,9 +21,34 @@ class Skeleton extends Component {
 
   _config() {
     const that = this
-    const { cols, rows } = this.props
-
-    if (rows && cols) {
+    const { type, cols, rows } = this.props
+    if (type) {
+      const typeMap = {
+        avatar: {
+          component: SkeletonAvatar,
+          size: this.props.size,
+        },
+        title: {
+          component: SkeletonTitle,
+          width: this.props.width,
+        },
+        paragraph: {
+          component: SkeletonParagraph,
+          paragraph: this.props.paragraph,
+        },
+        image: {
+          component: SkeletonImage,
+          width: this.props.width,
+          height: this.props.height,
+        },
+      }
+      this.setProps({
+        children: typeMap[this.props.type],
+        classes: {
+          'nom-skeleton-single': true,
+        },
+      })
+    } else if (rows && cols) {
       this.setProps({
         children: {
           component: 'Flex',
@@ -64,8 +95,7 @@ class Skeleton extends Component {
     if (!num) {
       num = 1
     }
-    const that = this
-    const { avatar, title, paragraph } = this.props
+    const { avatar, title, paragraph, image } = this.props
     const arr = []
     for (let i = 0; i < num; i++) {
       arr.push({
@@ -73,21 +103,22 @@ class Skeleton extends Component {
         gutter: 'medium',
         cols: [
           avatar && {
-            component: 'Avatar',
-            text: '#&nbsp;',
-            classes: { 'nom-skeleton-avatar': true },
+            component: SkeletonAvatar,
+            ...this.props.avatar,
+          },
+          image && {
+            component: SkeletonImage,
+            ...this.props.image,
           },
           {
             grow: true,
-
             children: [
               title && {
-                classes: { 'nom-skeleton-title': true },
+                component: SkeletonTitle,
               },
               paragraph && {
-                classes: { 'nom-skeleton-paragraph': true },
-                tag: 'ul',
-                children: that.getParagraph(),
+                component: SkeletonParagraph,
+                paragraph: this.props.paragraph,
               },
             ],
           },
@@ -96,17 +127,6 @@ class Skeleton extends Component {
     }
 
     return arr
-  }
-
-  getParagraph() {
-    const rows = this.props.paragraph > 1 ? this.props.paragraph : 3
-    const list = []
-    for (let i = 0; i < rows; i++) {
-      list.push({
-        tag: 'li',
-      })
-    }
-    return list
   }
 }
 

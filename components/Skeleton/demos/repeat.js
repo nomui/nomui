@@ -1,20 +1,21 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '重复布局',
+    file: 'repeat',
     demo: function () {
       return {
         children: [
           {
-            tag: 'p',
-            styles: {
-              text: 'orange',
-            },
-            children: '先显示骨架屏，update组件(在本案例是延时三秒)以后会显示原本的内容',
-          },
-          {
             component: 'List',
-            skeleton: true,
+            skeleton: {
+              image: {
+                width: 200,
+                height: 100,
+              },
+              title: true,
+              rows: 2, // 显示几行
+              cols: 3, // 显示几列
+            },
             items: [
               { text: '飞狐外传' },
               { text: '雪山飞狐' },
@@ -31,11 +32,11 @@ define([], function () {
                 })
               },
             },
-            onCreated: ({ inst }) => {
-              setTimeout(function () {
-                inst.update()
-              }, 3000)
-            },
+            // onCreated: ({ inst }) => {
+            //   setTimeout(function () {
+            //     inst.update()
+            //   }, 3000)
+            // },
           },
         ],
       }

@@ -1,20 +1,20 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '自定义显示',
+    file: 'custom',
     demo: function () {
       return {
         children: [
           {
-            tag: 'p',
-            styles: {
-              text: 'orange',
-            },
-            children: '先显示骨架屏，update组件(在本案例是延时三秒)以后会显示原本的内容',
-          },
-          {
             component: 'List',
-            skeleton: true,
+            skeleton: {
+              avatar: {
+                size: 'xlarge',
+              }, // boolean:是否显示头像, object: AvatarProps
+              title: true, // 是否显示标题
+              image: false, // 是否显示图像
+              paragraph: 5, // boolean:是否显示段落，number:表示段落有几行
+            },
             items: [
               { text: '飞狐外传' },
               { text: '雪山飞狐' },
@@ -31,11 +31,11 @@ define([], function () {
                 })
               },
             },
-            onCreated: ({ inst }) => {
-              setTimeout(function () {
-                inst.update()
-              }, 3000)
-            },
+            // onCreated: ({ inst }) => {
+            //   setTimeout(function () {
+            //     inst.update()
+            //   }, 3000)
+            // },
           },
         ],
       }
