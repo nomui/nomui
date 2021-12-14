@@ -518,7 +518,9 @@ class DatePicker extends Textbox {
     }
 
     if (this.props.value && this.props.showTime && this.timePicker) {
-      this.timePicker.setValue(new Date(this.props.value).format(this.props.showTime.format))
+      this.timePicker.setValue(
+        new Date(this.props.value).format(this.props.showTime.format || 'HH:mm:ss'),
+      )
     } else if (!this.props.value && this.props.showTime && this.timePicker) {
       this.timePicker.clearTime()
     }

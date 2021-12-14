@@ -82,6 +82,7 @@ class TimePicker extends Textbox {
       minute: ['00', '59'],
       second: ['00', '59'],
     }
+    this._calcTimeRangeByTime()
 
     this.setProps({
       leftIcon: 'clock',
@@ -108,29 +109,10 @@ class TimePicker extends Textbox {
         that.getValue() !== that.defaultValue && that.handleChange()
       },
       onShow: () => {
-        Object.keys(this.timeList).forEach(function (key) {
-          that.timeList[key].scrollToKey()
-        })
+        this.defaultValue = this.props.value
+        this.resetList()
       },
     })
-
-    // if (!this.hasPopup) {
-    //   this.popup = new TimePickerPopup({
-    //     trigger: this.control,
-    //     onHide: () => {
-    //       !this.hidden && that.getValue() !== that.defaultValue && that.handleChange()
-    //       this.hidden = true
-    //     },
-    //     onShow: () => {
-    //       this.hidden = false
-    //       // this.confirm = false
-    //       Object.keys(this.timeList).forEach(function (key) {
-    //         that.timeList[key].scrollToKey()
-    //       })
-    //     },
-    //   })
-    // }
-    // this.hasPopup = true
   }
 
   getHour() {
@@ -225,6 +207,17 @@ class TimePicker extends Textbox {
         }
       }
     }
+    if (this.time.hour >= this.maxTime.hour) {
+      this.time.hour = this.maxTime.hour
+      if (this.time.minute >= this.maxTime.minute) {
+        this.time.minute = this.maxTime.minute
+      }
+      if (this.time.minute >= this.maxTime.minute) {
+        if (this.time.second >= this.maxTime.second) {
+          this.time.second = this.maxTime.second
+        }
+      }
+    }
     this.checkTimeRange()
     const result = new Date(
       '2000',
@@ -236,6 +229,7 @@ class TimePicker extends Textbox {
     ).format(this.props.format)
 
     this.setValue(result)
+    this.resetList()
   }
 
   clearTime() {
@@ -289,30 +283,60 @@ class TimePicker extends Textbox {
 
   checkTimeRange() {
     const that = this
+    const beforeHourFlag = this._isHourOverRange
+    const beforeMinuteFlag = this._isMinuteOverRange
 
-    if (that.time.hour <= that.minTime.hour) {
-      that.timeRange.hour = [that.minTime.hour, that.maxTime.hour]
-      that.timeRange.minute = [that.minTime.minute, '59']
-      if (that.time.minute <= that.minTime.minute) {
-        that.timeRange.second = [that.minTime.second, '59']
-      } else {
-        that.timeRange.second = ['00', '59']
-      }
-    } else if (that.time.hour >= that.maxTime.hour) {
-      that.timeRange.minute = ['00', that.maxTime.minute]
-      if (that.time.minute >= that.maxTime.minute) {
-        that.timeRange.second = ['00', that.maxTime.second]
-      } else {
-        that.timeRange.second = ['00', '59']
-      }
-    } else {
-      that.timeRange.minute = that.timeRange.second = ['00', '59']
+    const { hour, minute, second } = this.timeRange
+    const beforeTimeRangeStr = `${hour}-${minute}-${second}`
+    this._calcTimeRangeByTime()
+    this.empty = false
+
+    const { hour: aHour, minute: aMinute, second: aSecond } = this.timeRange
+    const afterTimeRangeStr = `${aHour}-${aMinute}-${aSecond}`
+
+    let needRefreshList = []
+    // timeRange 发生变化, 所有list更新
+    if (afterTimeRangeStr !== beforeTimeRangeStr) {
+      needRefreshList = ['hour', 'minute', 'second']
+    } else if (beforeHourFlag !== this._isHourOverRange) {
+      // hourOverRange变化，分和秒更新
+      needRefreshList = ['minute', 'second']
+    } else if (beforeMinuteFlag !== this._isMinuteOverRange) {
+      // minuteOverRange变化, 秒更新
+      needRefreshList = ['second']
     }
 
-    this.empty = false
-    Object.keys(this.timeList).forEach(function (key) {
+    needRefreshList.forEach(function (key) {
       that.timeList[key].refresh()
     })
+  }
+
+  // 重新计算timeRange 和 overRange
+  _calcTimeRangeByTime() {
+    const { time, timeRange, minTime, maxTime } = this
+    this._isHourOverRange = time.hour < minTime.hour || time.hour > maxTime.hour
+    this._isMinuteOverRange =
+      (time.hour === minTime.hour && time.minute < minTime.minute) ||
+      (time.hour === maxTime.hour && time.minute > maxTime.minute)
+
+    if (time.hour <= minTime.hour) {
+      timeRange.hour = [minTime.hour, maxTime.hour]
+      timeRange.minute = [minTime.minute, '59']
+      if (time.minute <= minTime.minute) {
+        timeRange.second = [minTime.second, '59']
+      } else {
+        timeRange.second = ['00', '59']
+      }
+    } else if (time.hour >= maxTime.hour) {
+      timeRange.minute = ['00', maxTime.minute]
+      if (time.minute >= maxTime.minute) {
+        timeRange.second = ['00', maxTime.second]
+      } else {
+        timeRange.second = ['00', '59']
+      }
+    } else {
+      timeRange.minute = timeRange.second = ['00', '59']
+    }
   }
 }
 

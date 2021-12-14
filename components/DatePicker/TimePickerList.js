@@ -25,21 +25,19 @@ class DateTimePickerList extends List {
 
   _config() {
     let items = []
-    const selected = []
     const that = this
     const { currentDateBeforeMin, currentDateAfterMax } = this.pickerControl.datePicker
-    this.props.min = this.pickerControl.timeRange[this.props.type][0]
-    this.props.max = this.pickerControl.timeRange[this.props.type][1]
+    const { _isHourOverRange, _isMinuteOverRange } = this.pickerControl
+    const { type } = this.props
+    this.props.min = this.pickerControl.timeRange[type][0]
+    this.props.max = this.pickerControl.timeRange[type][1]
 
-    if (this.props.type === 'hour') {
+    if (type === 'hour') {
       items = this.pickerControl.getHour()
-      !this.pickerControl.empty && selected.push(this.pickerControl.time.hour)
-    } else if (this.props.type === 'minute') {
+    } else if (type === 'minute') {
       items = this.pickerControl.getMinute()
-      !this.pickerControl.empty && selected.push(this.pickerControl.time.minute)
-    } else if (this.props.type === 'second') {
+    } else if (type === 'second') {
       items = this.pickerControl.getSecond()
-      !this.pickerControl.empty && selected.push(this.pickerControl.time.second)
     }
 
     this.setProps({
@@ -57,10 +55,11 @@ class DateTimePickerList extends List {
           position: 'relative',
         },
       },
-      selectedItems: selected,
       itemDefaults: {
         _config: function () {
           const key = this.props.key
+          const disabledOverRange =
+            (type !== 'hour' && _isHourOverRange) || (type === 'second' && _isMinuteOverRange)
 
           // 日期部分已经超出 min 或 max
           this.setProps({
@@ -68,7 +67,8 @@ class DateTimePickerList extends List {
               key < that.props.min ||
               key > that.props.max ||
               currentDateBeforeMin ||
-              currentDateAfterMax,
+              currentDateAfterMax ||
+              disabledOverRange,
           })
         },
       },

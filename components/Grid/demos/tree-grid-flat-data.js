@@ -12,75 +12,77 @@ define([], function () {
               flatData: true,
               parentField: 'parentKey',
               treeNodeColumn: 'class',
-              initExpandLevel: 1,
+              initExpandLevel: -1,
             },
             columns: [
               {
                 field: 'class',
                 title: '班级',
+                sortable: true,
               },
               {
                 field: 'count',
                 title: '人数',
                 width: 200,
+                sortable: (a, b) => b.count - a.count,
               },
             ],
             data: [
               {
                 id: '1',
                 class: '小学',
-                count: '-',
+                count: 100,
               },
               {
                 id: '1.1',
                 class: '一年级',
                 count: '-',
-                parentKey: '1'
+                parentKey: '1',
               },
               {
                 id: '1.1.1',
                 class: '1班',
-                count: 30,
-                parentKey: '1.1'
+                count: '-',
+                parentKey: '1.1',
               },
               {
                 id: '1.1.2',
                 class: '2班',
-                count: 31,
-                parentKey: '1.1'
+                count: '-',
+                parentKey: '1.1',
               },
               {
                 id: '2',
                 class: '二年级',
-                count: '-',
+                count: 150,
               },
               {
                 id: '2.1',
                 class: '1班',
                 count: '-',
-                parentKey: '2'
+                parentKey: '2',
               },
               {
                 id: '3',
                 class: '中学',
-                count: '-',
+                count: 200,
               },
               {
                 id: '3.1',
                 class: '七年级',
                 count: '-',
-                parentKey: '3'
+                parentKey: '3',
               },
               {
                 id: '3.1.1',
                 class: '1班',
                 count: '-',
-                parentKey: '3'
+                parentKey: '3',
               },
               {
                 id: '4',
                 class: '大学',
-                count: '-',
+                count: 300,
               },
             ],
           },

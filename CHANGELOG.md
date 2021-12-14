@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.40](https://github.com/nomui/nomui/compare/v1.0.0-alpha.39...v1.0.0-alpha.40) (2021-12-10)
+
+
+### Features
+
+* **DatePicker:** 添加minDate和minTime的联动示例 ([cfcaa8b](https://github.com/nomui/nomui/commit/cfcaa8b6b2fc0756e4e0e129f136dfee6cd1bc77))
+* **Icon:** 添加 hospital 和 company的图标 ([27d719d](https://github.com/nomui/nomui/commit/27d719ddaedf4dadc03239383f67205d6bb891ae))
+
+
+### Bug Fixes
+
+* **DatePicker-TimePicker:** 添加日期选择器中时间部分的禁用的场景 ([643668b](https://github.com/nomui/nomui/commit/643668b58ca4d0258aa761e9ea6e57dab7fa7054))
+* **DatePicker:** 当设置了 showTime且有默认值时，点开时输入框数据不对 ([bb2cd7e](https://github.com/nomui/nomui/commit/bb2cd7ef3eb8acf91d8f38575996c3481f92de0b))
+* **DatePicker:** 日期选择器中对 minDate和showTime.minTime 之前的联动处理 ([0584c2a](https://github.com/nomui/nomui/commit/0584c2a8aa8c368b1082307be6ec78b949691b62))
+* **Grid:** 优化sticky滚动条显示隐藏的逻辑 ([90134b2](https://github.com/nomui/nomui/commit/90134b2e58141323e9d2b0b4ea3853816e5c3515))
+* **NumberSpiner:** input内部触发 blur的回调, 组件中添加对应的方法 ([8a9c41d](https://github.com/nomui/nomui/commit/8a9c41d305358174ba430cee549bbf57045e6f98))
+* **TimePicker:** 补全timePicker的禁用场景 ([739c936](https://github.com/nomui/nomui/commit/739c93620fa8d98eb424fbd0074b93100f062806))
+
+
+### Performance Improvements
+
+* **Grid:** 优化滚动条显示隐藏逻辑 ([e62e4ab](https://github.com/nomui/nomui/commit/e62e4ab559213808ddbcd56a79946d2f8e558eea))
+* **List:** 优化List虚拟列表与普通列表之间的转化支持 ([6afad20](https://github.com/nomui/nomui/commit/6afad209e5cb9fe531512e8779215dbb23c76101))
+* **List:** 增加示例 ([2793e58](https://github.com/nomui/nomui/commit/2793e58a128dd7ace5d97136a5da64a9e6e58c74))
+
 ## [1.0.0-alpha.39](https://github.com/nomui/nomui/compare/v1.0.0-alpha.38...v1.0.0-alpha.39) (2021-12-03)
 
 
