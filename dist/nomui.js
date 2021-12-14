@@ -636,8 +636,9 @@ function _defineProperty2(obj, key, value) {
       this.props._config && this.props._config.call(this, this);
       isFunction(this.props.onConfig) &&
         this.props.onConfig({ inst: this, props: this.props });
-      this._callMixin("_config");
-      isFunction(this._config) && this._config();
+      if (this._callMixin("_config") !== false) {
+        isFunction(this._config) && this._config();
+      }
       this._setExpandableProps();
       this._setSelectableProps();
       this._setStatusProps();
@@ -817,13 +818,18 @@ function _defineProperty2(obj, key, value) {
     }
     _remove() {}
     _callMixin(hookType) {
-      for (let i = 0; i < MIXINS.length; i++) {
-        const mixin = MIXINS[i];
-        mixin[hookType] && mixin[hookType].call(this, this);
+      const mixinsList = [...MIXINS, ...this.mixins];
+      let abort = false; // 钩子函数执行完如果return false则判定跳过后续代码
+      for (let i = 0; i < mixinsList.length; i++) {
+        const mixin = mixinsList[i];
+        const hookContinue =
+          mixin[hookType] && mixin[hookType].call(this, this);
+        if (hookContinue === false) {
+          abort = true;
+        }
       }
-      for (let i = 0; i < this.mixins.length; i++) {
-        const mixin = this.mixins[i];
-        mixin[hookType] && mixin[hookType].call(this, this);
+      if (abort) {
+        return false;
       }
     }
     setProps(newProps) {
@@ -2300,6 +2306,11 @@ function _defineProperty2(obj, key, value) {
   Icon.add(
     "calendar",
     `<svg viewBox="64 64 896 896" focusable="false" data-icon="calendar" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "image",
+    `<svg viewBox="64 64 896 896" focusable="false" data-icon="file-image" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M553.1 509.1l-77.8 99.2-41.1-52.4a8 8 0 00-12.6 0l-99.8 127.2a7.98 7.98 0 006.3 12.9H696c6.7 0 10.4-7.7 6.3-12.9l-136.5-174a8.1 8.1 0 00-12.7 0zM360 442a40 40 0 1080 0 40 40 0 10-80 0zm494.6-153.4L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494z"></path></svg>`,
     cat
   );
   Icon.add(
@@ -21808,6 +21819,195 @@ function _defineProperty2(obj, key, value) {
   };
   Result.ExceptionMap = { 404: NotFound, 500: ServerError, 403: UnAuthorized };
   Component.register(Result);
+  class SkeletonAvatar extends Avatar {
+    constructor(props, ...mixins) {
+      const defaults = { text: "#&nbsp;" };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+  }
+  Component.register(SkeletonAvatar);
+  class SkeletonImage extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { width: null, height: null };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const width = isNumeric(this.props.width)
+        ? `${this.props.width}px`
+        : this.props.width;
+      const height = isNumeric(this.props.height)
+        ? `${this.props.height}px`
+        : this.props.height;
+      let fontSize = "2.5rem";
+      if (width || height) {
+        const num = Math.max(parseInt(width, 10), parseInt(height, 10));
+        if (num > 200) {
+          fontSize = "4rem";
+        }
+        if (num > 400) {
+          fontSize = "5rem";
+        }
+      }
+      this.setProps({
+        attrs: { style: { width: width, height: height, fontSize: fontSize } },
+        children: { component: "Icon", type: "image" },
+      });
+    }
+  }
+  Component.register(SkeletonImage);
+  class SkeletonParagraph extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {};
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      this.setProps({ tag: "ul", children: this.getParagraph() });
+    }
+    getParagraph() {
+      const rows = this.props.paragraph > 1 ? this.props.paragraph : 3;
+      const list = [];
+      for (let i = 0; i < rows; i++) {
+        list.push({ tag: "li" });
+      }
+      return list;
+    }
+  }
+  Component.register(SkeletonParagraph);
+  class SkeletonTitle extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {};
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const width = isNumeric(this.props.width)
+        ? `${this.props.width}px`
+        : this.props.width;
+      this.setProps({ attrs: { style: { width: width, maxWidth: width } } });
+    }
+  }
+  Component.register(SkeletonTitle);
+  class Skeleton extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        type: null,
+        avatar: false,
+        title: true,
+        paragraph: 3,
+        image: false,
+        cols: null,
+        rows: null,
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      const that = this;
+      const { type, cols, rows } = this.props;
+      if (type) {
+        const typeMap = {
+          avatar: { component: SkeletonAvatar, size: this.props.size },
+          title: { component: SkeletonTitle, width: this.props.width },
+          paragraph: {
+            component: SkeletonParagraph,
+            paragraph: this.props.paragraph,
+          },
+          image: {
+            component: SkeletonImage,
+            width: this.props.width,
+            height: this.props.height,
+          },
+        };
+        this.setProps({
+          children: typeMap[this.props.type],
+          classes: { "nom-skeleton-single": true },
+        });
+      } else if (rows && cols) {
+        this.setProps({
+          children: {
+            component: "Flex",
+            gutter: "large",
+            fills: true,
+            rows: that.getCols(that.props.rows),
+          },
+        });
+      } else if (rows || cols) {
+        this.setProps({
+          children: {
+            component: "Flex",
+            gutter: "large",
+            fills: true,
+            rows: that.props.rows ? that.getSkeleton(rows) : null,
+            cols: that.props.cols ? that.getSkeleton(cols) : null,
+          },
+        });
+      } else {
+        this.setProps({ children: that.getSkeleton() });
+      }
+    }
+    getCols(num) {
+      if (!num) {
+        num = 1;
+      }
+      const that = this;
+      const arr = [];
+      for (let i = 0; i < num; i++) {
+        arr.push({
+          fills: true,
+          gutter: "large",
+          cols: that.getSkeleton(that.props.cols),
+        });
+      }
+      return arr;
+    }
+    getSkeleton(num) {
+      if (!num) {
+        num = 1;
+      }
+      const { avatar, title, paragraph, image } = this.props;
+      const arr = [];
+      for (let i = 0; i < num; i++) {
+        arr.push({
+          component: "Flex",
+          gutter: "medium",
+          cols: [
+            avatar &&
+              Object.assign({ component: SkeletonAvatar }, this.props.avatar),
+            image &&
+              Object.assign({ component: SkeletonImage }, this.props.image),
+            {
+              grow: true,
+              children: [
+                title && { component: SkeletonTitle },
+                paragraph && {
+                  component: SkeletonParagraph,
+                  paragraph: this.props.paragraph,
+                },
+              ],
+            },
+          ],
+        });
+      }
+      return arr;
+    }
+  }
+  Component.mixin({
+    _created: function () {
+      if (this.props.skeleton && this.props.autoRender) {
+        this.showSkeleton = true;
+      }
+    },
+    _config: function () {
+      if (this.showSkeleton && this.firstRender) {
+        this.setProps({
+          children: Object.assign(
+            { component: "Skeleton" },
+            this.props.skeleton
+          ),
+        });
+        return false;
+      }
+    },
+  });
+  Component.register(Skeleton);
   class SlideCaptcha extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -24678,6 +24878,7 @@ function _defineProperty2(obj, key, value) {
   exports.Rows = Rows;
   exports.Scrollbar = Scrollbar;
   exports.Select = Select;
+  exports.Skeleton = Skeleton;
   exports.SlideCaptcha = SlideCaptcha;
   exports.Slider = Slider;
   exports.Spinner = Spinner;

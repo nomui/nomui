@@ -8877,3 +8877,57 @@ textarea .nom-textarea {
   overflow: hidden;
   opacity: 0;
 }
+.nom-skeleton.nom-skeleton-single:not(.p-type-paragraph) {
+  display: inline-block;
+}
+.nom-skeleton-avatar {
+  background: #f0f0f0;
+  animation: skeleton 2s infinite;
+}
+.nom-skeleton-title {
+  max-width: 45%;
+  height: 1.75rem;
+  margin-bottom: 1rem;
+  background: #f0f0f0;
+  border-radius: 2px;
+  animation: skeleton 2s infinite;
+}
+.nom-skeleton-paragraph {
+  display: block !important;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  opacity: 0.75;
+}
+.nom-skeleton-paragraph > li {
+  width: 100%;
+  height: 1rem;
+  margin-bottom: 0.5rem;
+  background: #f0f0f0;
+  border-radius: 2px;
+  animation: skeleton 2s infinite;
+}
+.nom-skeleton-paragraph > li:last-child {
+  width: 75%;
+  margin-bottom: 1.5rem;
+}
+.nom-skeleton-image {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+  color: #ccc;
+  background: #f0f0f0;
+  border-radius: 2px;
+  animation: skeleton 2s infinite;
+}
+@keyframes skeleton {
+  0% {
+    background: #f0f0f0;
+  }
+  50% {
+    background: #e0e0e0;
+  }
+  100% {
+    background: #f0f0f0;
+  }
+}
