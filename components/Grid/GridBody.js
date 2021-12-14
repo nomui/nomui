@@ -36,7 +36,9 @@ class GridBody extends Component {
           const { scrollLeft } = this.element
 
           this.grid.header.element.scrollLeft = scrollLeft
-          this.grid.footer.element.scrollLeft = scrollLeft
+          if (this.grid.footer) {
+            this.grid.footer.element.scrollLeft = scrollLeft
+          }
           this.grid.header.scrollbar && this.grid.header.scrollbar.setScrollLeft(scrollLeft)
         },
       },

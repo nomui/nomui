@@ -4,10 +4,6 @@ define([], function () {
     { id: 4, name: '虚竹', power: 100, speed: 80, agile: 90 },
     { id: 5, name: '段誉', power: 80, speed: 100, agile: 95 },
     { id: 6, name: '扫地僧', power: 100, speed: 100, agile: 'xxx' },
-    { id: 1, name: '萧峰', power: 90, speed: 90, agile: 85 },
-    { id: 4, name: '虚竹', power: 100, speed: 80, agile: 90 },
-    { id: 5, name: '段誉', power: 80, speed: 100, agile: 95 },
-    { id: 6, name: '扫地僧', power: 100, speed: 100, agile: 'xxx' },
   ]
 
   const girdColumns = [
@@ -28,16 +24,15 @@ define([], function () {
             component: 'Grid',
             summary: true,
             rowCheckable: true,
+            line: 'both',
             columns: girdColumns,
             data: options,
-            frozenHeader: true,
             frozenLeftCols: 2,
           },
           { component: 'Divider' },
           { component: 'StaticText', value: '自定义summary' },
           {
             component: 'Grid',
-            rowCheckable: true,
             summary: {
               text: '最小值',
               // method 返回 { field: 需要展示的总结的数据 } 格式的对象

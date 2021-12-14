@@ -48,7 +48,6 @@
   }
   > .nom-grid-footer {
     position: relative;
-    height: calc(100% - 8px);
     overflow: hidden;
     .nom-table {
       overflow: auto;
@@ -59,6 +58,10 @@
     border: 1px solid gainsboro;
 
     > .nom-grid-body {
+      margin-bottom: -1px;
+    }
+    > .nom-grid-body + .nom-grid-footer {
+      margin-top: 1px;
       margin-bottom: -1px;
     }
   }

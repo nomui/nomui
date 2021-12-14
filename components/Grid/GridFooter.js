@@ -44,33 +44,36 @@ class GridFooter extends Component {
   }
 
   _getSummaryColumns() {
-    const { columns, rowCheckable } = this.grid.props
-    if (rowCheckable) {
-      columns[0].cellRender = () => {}
-    }
-    return columns
+    const { columns } = this.grid.props
+    return columns.map((col) => {
+      return {
+        ...col,
+        cellRender: col.cellRender ? null : col.cellRender,
+      }
+    })
   }
 
   _getSummaryData() {
-    const { data, summary, columns, rowCheckable } = this.grid.props
+    const { data = [], summary, columns, rowCheckable, rowExpandable } = this.grid.props
     const { method, text = '总计' } = summary
-    // let { columns } = this.grid.props
 
     let res = {}
-    // rowCheckable: false, 处理第一列的文字
-    // rowCheckable: true, 处理第二列的文字
+    let textColumnIndex = 0
+    rowCheckable && textColumnIndex++
+    rowExpandable && textColumnIndex++
+
     if (method && isFunction(method)) {
       res = method({ columns, data })
 
-      res[columns[rowCheckable ? 1 : 0].field] = text
+      res[columns[textColumnIndex].field] = text
     } else {
       columns.forEach((col, index) => {
-        if ((index === 0 && !rowCheckable) || (rowCheckable && index === 1)) {
+        if (index === textColumnIndex) {
           res[col.field] = text
           return
         }
 
-        const values = data.map((item) => Number(item[col.field]))
+        const values = (data || []).map((item) => Number(item[col.field]))
         let sum = 0
 
         for (let i = 0; i < values.length; i++) {
