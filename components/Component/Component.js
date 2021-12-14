@@ -127,10 +127,14 @@ class Component {
   config() {
     this._setExpandableProps()
     this._setSelectableProps()
+
     this.props._config && this.props._config.call(this, this)
     isFunction(this.props.onConfig) && this.props.onConfig({ inst: this, props: this.props })
-    this._callMixin('_config')
-    isFunction(this._config) && this._config()
+
+    if (this._callMixin('_config') !== false) {
+      isFunction(this._config) && this._config()
+    }
+
     this._setExpandableProps()
     this._setSelectableProps()
     this._setStatusProps()
@@ -302,13 +306,20 @@ class Component {
   _remove() {}
 
   _callMixin(hookType) {
-    for (let i = 0; i < MIXINS.length; i++) {
-      const mixin = MIXINS[i]
-      mixin[hookType] && mixin[hookType].call(this, this)
+    const mixinsList = [...MIXINS, ...this.mixins]
+    let abort = false
+
+    // 钩子函数执行完如果return false则判定跳过后续代码
+    for (let i = 0; i < mixinsList.length; i++) {
+      const mixin = mixinsList[i]
+      const hookContinue = mixin[hookType] && mixin[hookType].call(this, this)
+      if (hookContinue === false) {
+        abort = true
+      }
     }
-    for (let i = 0; i < this.mixins.length; i++) {
-      const mixin = this.mixins[i]
-      mixin[hookType] && mixin[hookType].call(this, this)
+
+    if (abort) {
+      return false
     }
   }
 
