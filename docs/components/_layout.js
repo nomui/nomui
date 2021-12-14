@@ -573,6 +573,12 @@ define([], function () {
                   text: '其他',
                   items: [
                     {
+                      text: 'Skeleton',
+                      subtext: '骨架屏',
+                      id: 'Skeleton',
+                      url: '#!components!index?type=Skeleton',
+                    },
+                    {
                       text: 'Caption',
                       subtext: '标题',
                       id: 'Caption',
