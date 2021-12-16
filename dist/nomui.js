@@ -15515,9 +15515,9 @@ function _defineProperty2(obj, key, value) {
       super._created();
       this.colRefs = [];
       this.thRefs = [];
-      this.hasGrid =
-        this.parent.componentType === "GridHeader" ||
-        this.parent.componentType === "GridBody";
+      this.hasGrid = ["GridHeader", "GridBody", "GridFooter"].some(
+        (item) => this.parent.componentType === item
+      );
       if (this.hasGrid) {
         this.grid = this.parent.parent;
         this.parent.table = this;
@@ -15591,6 +15591,9 @@ function _defineProperty2(obj, key, value) {
           onscroll: () => {
             const { scrollLeft } = this.element;
             this.grid.header.element.scrollLeft = scrollLeft;
+            if (this.grid.footer) {
+              this.grid.footer.element.scrollLeft = scrollLeft;
+            }
             this.grid.header.scrollbar &&
               this.grid.header.scrollbar.setScrollLeft(scrollLeft);
           },
@@ -15610,6 +15613,94 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(GridBody);
+  class GridFooter extends Component {
+    constructor(props, ...mixins) {
+      const defaults = { children: { component: Table } };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.grid = this.parent;
+      this.grid.footer = this;
+    }
+    _config() {
+      this.setProps({
+        children: {
+          columns: this._getSummaryColumns(),
+          data: this._getSummaryData(),
+          attrs: { style: { minWidth: `${this.grid.minWidth}px` } },
+          onlyBody: true,
+          line: this.props.line,
+          rowDefaults: this.props.rowDefaults,
+          treeConfig: this.grid.props.treeConfig,
+          keyField: this.grid.props.keyField,
+        },
+        attrs: {
+          onscroll: () => {
+            const { scrollLeft } = this.element;
+            this.grid.header.element.scrollLeft = scrollLeft;
+            this.grid.header.scrollbar &&
+              this.grid.header.scrollbar.setScrollLeft(scrollLeft);
+          },
+        },
+      });
+    }
+    _getSummaryColumns() {
+      const { columns } = this.grid.props;
+      return columns.map((col) => {
+        return Object.assign({}, col, {
+          cellRender: col.cellRender ? null : col.cellRender,
+        });
+      });
+    }
+    _getSummaryData() {
+      const {
+        data = [],
+        summary,
+        columns,
+        rowCheckable,
+        rowExpandable,
+      } = this.grid.props;
+      const { method, text = "总计" } = summary;
+      let res = {};
+      let textColumnIndex = 0;
+      rowCheckable && textColumnIndex++;
+      rowExpandable && textColumnIndex++;
+      if (method && isFunction(method)) {
+        res = method({ columns, data });
+        res[columns[textColumnIndex].field] = text;
+      } else {
+        columns.forEach((col, index) => {
+          if (index === textColumnIndex) {
+            res[col.field] = text;
+            return;
+          }
+          const values = (data || []).map((item) => Number(item[col.field]));
+          let sum = 0;
+          for (let i = 0; i < values.length; i++) {
+            if (Number.isNaN(values[i])) {
+              res[col.field] = "-";
+              return;
+            }
+            sum += values[i];
+          }
+          res[col.field] = sum;
+        });
+      }
+      return [res];
+    }
+    resizeCol(data) {
+      const col = this.table.colRefs[data.field];
+      const tdWidth = this.table.element.rows[0].cells[col.props.index]
+        .offsetWidth;
+      const colWidth = col.props.column.width || tdWidth;
+      let result = colWidth + data.distance;
+      if (result < 60) {
+        result = 60;
+      }
+      col.update({ column: { width: result } });
+    }
+  }
+  Component.register(GridFooter);
   class Scrollbar extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -15682,10 +15773,11 @@ function _defineProperty2(obj, key, value) {
       this.grid.header = this;
     }
     _config() {
-      const { frozenHeader } = this.grid.props;
+      const { frozenHeader, summary } = this.grid.props;
       const minWidth = frozenHeader
         ? this.grid.minWidth + 17
         : this.grid.minWidth;
+      this._summaryHeight = summary ? 36 : 0;
       this.setProps({
         children: {
           columns: this.grid.props.columns,
@@ -15773,7 +15865,8 @@ function _defineProperty2(obj, key, value) {
       }
       if (
         gRect.top < pRect.height + pRect.top &&
-        gRect.top + gRect.height - 17 > pRect.top + pRect.height
+        gRect.top + gRect.height - 17 - this._summaryHeight >
+          pRect.top + pRect.height
       ) {
         this.scrollbar.show();
       } else {
@@ -16014,6 +16107,7 @@ function _defineProperty2(obj, key, value) {
           },
           { component: GridHeader, line: line },
           { component: GridBody, line: line, rowDefaults: rowDefaults },
+          this.props.summary && { component: GridFooter, line: line },
         ],
       });
     }

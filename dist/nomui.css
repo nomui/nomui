@@ -6072,10 +6072,21 @@ table.nom-table.p-bordered {
 .nom-grid > .nom-grid-body > .nom-grid-body-content {
   overflow-x: auto;
 }
+.nom-grid > .nom-grid-footer {
+  position: relative;
+  overflow: hidden;
+}
+.nom-grid > .nom-grid-footer .nom-table {
+  overflow: auto;
+}
 .nom-grid.p-bordered {
   border: 1px solid gainsboro;
 }
 .nom-grid.p-bordered > .nom-grid-body {
+  margin-bottom: -1px;
+}
+.nom-grid.p-bordered > .nom-grid-body + .nom-grid-footer {
+  margin-top: 1px;
   margin-bottom: -1px;
 }
 .nom-grid.nom-table-has-row-group tbody tr,

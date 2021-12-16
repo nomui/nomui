@@ -31,8 +31,9 @@ class Table extends Component {
     super._created()
     this.colRefs = []
     this.thRefs = []
-    this.hasGrid =
-      this.parent.componentType === 'GridHeader' || this.parent.componentType === 'GridBody'
+    this.hasGrid = ['GridHeader', 'GridBody', 'GridFooter'].some(
+      (item) => this.parent.componentType === item,
+    )
 
     if (this.hasGrid) {
       this.grid = this.parent.parent

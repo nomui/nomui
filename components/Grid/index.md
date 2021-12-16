@@ -42,6 +42,7 @@
 | rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
 | rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |
 | rowSortable | 表格行是否可拖动顺序 | `object` \| `boolean` | `false` |
+| summary | 表尾总计行配置 | `object` \| `boolean` | `false` |
 | treeConfig | 树形表格配置 | `object` | - |
 | bordered | 是否显示边框 | `boolean` | `false` |
 | showTitle | 单元格显示 title | `boolean` | `false` |
@@ -182,6 +183,15 @@
 | 参数  | 说明                     | 类型     | 默认值 |
 | ----- | ------------------------ | -------- | ------ |
 | onEnd | 表格行每次拖拽完成的回调 | `()=>{}` | -      |
+
+### summary
+
+表尾总计行配置
+
+| 参数   | 说明                 | 类型                                    | 默认值 |
+| ------ | -------------------- | --------------------------------------- | ------ |
+| text   | 第一列的展示文字     | `string`                                | `总计` |
+| method | 自定义的合计计算方法 | `({columns, data}) => {[filed]: value}` | -      |
 
 ### treeConfig
 
