@@ -914,6 +914,7 @@ class Grid extends Component {
     for (let i = 0; i < columns.length; i++) {
       if (data.field === columns[i].field) {
         idx = i
+        break
       }
     }
     const c = this.props.columns
