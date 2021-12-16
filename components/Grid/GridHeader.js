@@ -21,7 +21,7 @@ class GridHeader extends Component {
     const { frozenHeader, summary } = this.grid.props
     const minWidth = frozenHeader ? this.grid.minWidth + 17 : this.grid.minWidth
 
-    this._sammaryHeight = summary ? 36 : 0
+    this._summaryHeight = summary ? 36 : 0
 
     this.setProps({
       children: {
@@ -145,7 +145,7 @@ class GridHeader extends Component {
 
     if (
       gRect.top < pRect.height + pRect.top &&
-      gRect.top + gRect.height - 17 - this._sammaryHeight > pRect.top + pRect.height
+      gRect.top + gRect.height - 17 - this._summaryHeight > pRect.top + pRect.height
     ) {
       this.scrollbar.show()
     } else {
