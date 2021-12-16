@@ -520,6 +520,7 @@ class Grid extends Component {
       align: 'center',
       alignTo: window,
       grid: this,
+      fit: true,
     })
   }
 
