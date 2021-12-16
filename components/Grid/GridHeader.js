@@ -151,7 +151,7 @@ class GridHeader extends Component {
     }
   }
 
-  resizeCol(data) {
+  calcResizeCol(data) {
     const col = this.table.colRefs[data.field]
     const tdWidth = this.table.element.rows[0].cells[col.props.index].offsetWidth
     const colWidth = col.props.column.width || tdWidth
@@ -162,6 +162,11 @@ class GridHeader extends Component {
       result = 60
     }
     col.update({ column: { width: result } })
+  }
+
+  resizeCol({ field, width = 0 }) {
+    const col = this.table.colRefs[field]
+    col.update({ column: { width } })
   }
 }
 

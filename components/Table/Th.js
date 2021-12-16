@@ -40,7 +40,7 @@ class Th extends Component {
       attrs: {
         title: isEllipsis ? this.props.column.header || this.props.column.title : null,
       },
-      classes: {'nom-table-cell-title': true},
+      classes: { 'nom-table-cell-title': true },
       children: this.props.column.header || this.props.column.title,
     }
 
@@ -49,6 +49,12 @@ class Th extends Component {
         that.onSortChange()
       }
     }
+
+    this.resizable =
+      this.table.hasGrid &&
+      this.table.grid.props.columnResizable &&
+      this.props.column.resizable !== false &&
+      this.props.column.colSpan === 1
 
     let children = [
       headerProps,
@@ -146,30 +152,26 @@ class Th extends Component {
             // that.table.grid.handlePinClick(that.props.column)
           },
         },
-      that.table.hasGrid &&
-        that.table.grid.props.columnResizable &&
-        this.props.column.resizable !== false &&
-        this.props.column.colSpan === 1 && {
-          component: 'Icon',
-          ref: (c) => {
-            that.resizer = c
-          },
-          type: 'resize-handler',
-          classes: { 'nom-table-resize-handler': true },
-          onClick: function () {
-            // that.table.grid.handlePinClick(that.props.column)
-          },
+      that.resizable && {
+        component: 'Icon',
+        ref: (c) => {
+          that.resizer = c
         },
+        type: 'resize-handler',
+        classes: { 'nom-table-resize-handler': true },
+        onClick: function () {
+          // that.table.grid.handlePinClick(that.props.column)
+        },
+      },
     ]
     // 用span包一层，为了伪元素的展示
-    if(isEllipsis) {
+    if (isEllipsis) {
       children = {
         tag: 'span',
-        classes: {'nom-table-cell-content': true},
-        children: children
+        classes: { 'nom-table-cell-content': true },
+        children: children,
       }
     }
-
 
     this.setProps({
       children: children,
@@ -193,12 +195,12 @@ class Th extends Component {
 
   _rendered() {
     // 未设置冻结列则无需定时器
-    const {grid = {}} = this.table
-    const {frozenLeftCols, frozenRightCols} = grid.props || {}
-    if(frozenLeftCols || frozenRightCols) {
+    const { grid = {} } = this.table
+    const { frozenLeftCols, frozenRightCols } = grid.props || {}
+    if (frozenLeftCols || frozenRightCols) {
       setTimeout(() => {
         this.setStickyPosition()
-      }, 0);
+      }, 0)
     }
 
     this.resizer && this.handleResize()
@@ -206,7 +208,7 @@ class Th extends Component {
 
   setStickyPosition() {
     // 设置排序时会出发两次_render，则此时设置的第一个定时器中的this.props已被销毁
-    if(!this.props) return
+    if (!this.props) return
     if (this.props.column.fixed === 'left') {
       this._setStyle({ left: `${this.element.offsetLeft}px` })
     } else if (this.props.column.fixed === 'right') {
@@ -225,21 +227,23 @@ class Th extends Component {
     resizer.onmousedown = function (evt) {
       const startX = evt.clientX
       that.lastDistance = 0
-
       document.onmousemove = function (e) {
         const endX = e.clientX
         const moveLen = endX - startX
 
         const distance = moveLen - that.lastDistance
-        that.table.grid.resizeCol({
+        that.table.grid.calcResizeCol({
           field: that.props.column.field,
           distance: distance,
         })
         that.lastDistance = moveLen
       }
-    }
-    document.onmouseup = function () {
-      document.onmousemove = null
+      document.onmouseup = function () {
+        if (that.resizable && that.table.grid.props.columnResizable.cache) {
+          that.table.grid.storeColsWidth(that.props.column.field)
+        }
+        document.onmousemove = null
+      }
     }
   }
 

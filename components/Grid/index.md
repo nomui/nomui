@@ -46,7 +46,7 @@
 | bordered | 是否显示边框 | `boolean` | `false` |
 | showTitle | 单元格显示 title | `boolean` | `false` |
 | line | 线条样式，`row` 为行线条，`col` 为列线条，`both` 为行列线条 | `row` \| `col` \| `both` | - |
-| columnResizable | 是否允许拖动列宽（此项为 true 以后，如果有某些列不想改变宽度，可单独设置 column.resizable:false） | `boolean` | `false` |
+| columnResizable | 是否允许拖动列宽（此项为 true 以后，如果有某些列不想改变宽度，可单独设置 column.resizable:false） | `object` \| `boolean` | `false` |
 | columnsCustomizable | 是否允许自定义列(如果是多级表头，父层级也必须有`field`)、可传入对象具体项见下表 | `object` \| `boolean` | `false` |
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
 | striped | 是否显示斑马间隔 | `boolean` | `false` |
@@ -58,15 +58,16 @@
 
 ### methods
 
-| 名称               | 说明                         | 类型             |
-| ------------------ | ---------------------------- | ---------------- |
-| appendRow          | 在后面新增一行               | `(rowProps)=>{}` |
-| resetSort          | 重置表格的排序状态           | -                |
-| getDataKeys        | 获取当前顺序的 keyField 数组 | -                |
-| getData            | 获取当前顺序的表格 data      | -                |
-| resetColumnsCustom | 重置自定义列的展示           | -                |
-| getCheckedRows     | 获取当前选中行数组           | -                |
-| getCheckedRowKeys  | 获取当前选中行的 key 数组    | -                |
+| 名称               | 说明                                 | 类型             |
+| ------------------ | ------------------------------------ | ---------------- | ------ |
+| appendRow          | 在后面新增一行                       | `(rowProps)=>{}` |
+| resetSort          | 重置表格的排序状态                   | -                |
+| getDataKeys        | 获取当前顺序的 keyField 数组         | -                |
+| getData            | 获取当前顺序的表格 data              | -                |
+| resetColumnsCustom | 重置自定义列的展示                   | -                |
+| resetColsWidth     | 重置列的宽度(不传参数则重置所有列宽) | `Funciton(field  | null)` |
+| getCheckedRows     | 获取当前选中行数组                   | -                |
+| getCheckedRowKeys  | 获取当前选中行的 key 数组            | -                |
 
 ### column
 
@@ -201,6 +202,14 @@
 | cascadeCheckChildren | 级联勾选子节点 | `boolean` | true |
 | cascadeUncheckChildren | 级联取消勾选子节点 | `boolean` | true |
 
+### columnResizable
+
+自定义设置列宽
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| cache | 是否需要缓存到 store 中(为`string`类型时作为缓存的 key,否则取`grid.props.key`) | `string`\|`boolean` | - |
+
 ### columnsCustomizable
 
 自定义配置列
@@ -208,7 +217,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | selected | 默认展示出的列 | `array` | - |
-| cache | 是否需要缓存到 store 中（刷新页面不会重置，需要 cache 设置为`唯一的标识`） | `string \| boolean` | - |
+| cache | 是否需要缓存到 store 中(为`string`类型时作为缓存的 key,否则取`grid.props.key`) | `string \| boolean` | - |
 | callback | 点击 modal 的保存的回调事件 | `function` | - |
 
 ### 注意事项

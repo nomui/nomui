@@ -3,7 +3,7 @@ import Component from '../Component/index'
 import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
-import { STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
+import { STORAGE_KEY_GRID_COLS_WIDTH, STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
 import { isFunction, isNullish, isPlainObject } from '../util/index'
 import GridBody from './GridBody'
 import GridHeader from './GridHeader'
@@ -104,7 +104,6 @@ class Grid extends Component {
     if (this.props.visibleColumns) {
       this.props.columns = this.props.visibleColumns
     }
-
     if (frozenLeftCols || frozenRightCols) {
       const rev = this.props.columns.length - frozenRightCols
 
@@ -240,6 +239,8 @@ class Grid extends Component {
     if (this.props.data && this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
       this.autoMergeCols()
     }
+
+    this._parseColumnsWidth()
 
     if (!data || !data.length) {
       this._doNotAutoScroll = false
@@ -748,6 +749,20 @@ class Grid extends Component {
     }
   }
 
+  // 从缓存中读取上一次设置的宽度
+  _parseColumnsWidth() {
+    const { cache } = this.props.columnResizable
+    const colWithString = localStorage.getItem(`${STORAGE_KEY_GRID_COLS_WIDTH}_${cache}`)
+    if (!colWithString) return
+
+    const _widthInfo = JSON.parse(colWithString)
+    Object.keys(_widthInfo).forEach((key) => {
+      const data = { field: key, width: _widthInfo[key] }
+      this.header && this.header.resizeCol(data)
+      this.body && this.body.resizeCol(data)
+    })
+  }
+
   autoMergeCols() {
     const that = this
     this.props.autoMergeColumns.forEach(function (key) {
@@ -787,9 +802,54 @@ class Grid extends Component {
     this._bodyScrollInfo = null
   }
 
-  resizeCol(data) {
-    this.header && this.header.resizeCol(data)
-    this.body && this.body.resizeCol(data)
+  calcResizeCol(data) {
+    this.header && this.header.calcResizeCol(data)
+    this.body && this.body.calcResizeCol(data)
+  }
+
+  // 存储设置的列的宽度
+  storeColsWidth(field) {
+    const { cache } = this.props.columnResizable
+    const colWithString = localStorage.getItem(`${STORAGE_KEY_GRID_COLS_WIDTH}_${cache}`)
+    const _widthInfo = colWithString ? JSON.parse(colWithString) : {}
+    const col = this.header.table.colRefs[field]
+
+    _widthInfo[field] = col.props.column.width
+    localStorage.setItem(`${STORAGE_KEY_GRID_COLS_WIDTH}_${cache}`, JSON.stringify(_widthInfo))
+  }
+
+  /**
+   *  重置col的width本地缓存
+   * @param {string} field 需要重置的对应col 为空则清除所有数据
+   */
+  resetColsWidth(field = null) {
+    const {
+      columnResizable: { cache },
+    } = this.props
+    if (!cache) return
+
+    // originColumns中拥有最原始的width数据
+    let resetCols = this.originColumns.filter((item) => item.resizable || isNullish(item.resizable))
+
+    if (!field) {
+      localStorage.removeItem(`${STORAGE_KEY_GRID_COLS_WIDTH}_${cache}`)
+    } else {
+      resetCols = [this.originColumns.find((col) => col.field === field)]
+      const colWithString = localStorage.getItem(`${STORAGE_KEY_GRID_COLS_WIDTH}_${cache}`)
+      const _widthInfo = colWithString ? JSON.parse(colWithString) : {}
+      delete _widthInfo[field]
+      if (Object.keys(_widthInfo).length) {
+        localStorage.setItem(`${STORAGE_KEY_GRID_COLS_WIDTH}_${cache}`, JSON.stringify(_widthInfo))
+      } else {
+        localStorage.removeItem(`${STORAGE_KEY_GRID_COLS_WIDTH}_${cache}`)
+      }
+    }
+
+    resetCols.forEach((col) => {
+      const data = { field: col.field, width: col.width }
+      this.header && this.header.resizeCol(data)
+      this.body && this.body.resizeCol(data)
+    })
   }
 
   _getColsFromSelectCols(originCols = [], selectCols = []) {
