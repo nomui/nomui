@@ -26,7 +26,7 @@ class Grid extends Component {
     this.rowsRefs = {}
     this.checkedRowRefs = {}
     this._doNotAutoScroll = true
-
+    this.pinColumns = []
     this.originColumns = [...this.props.columns]
 
     // 列设置弹窗 tree的数据
@@ -105,49 +105,41 @@ class Grid extends Component {
       this.props.columns = this.props.visibleColumns
     }
 
-    if (frozenLeftCols || frozenRightCols) {
+    if (frozenLeftCols !== null || frozenRightCols !== null) {
       const rev = this.props.columns.length - frozenRightCols
 
       const c = this.props.columns.map(function (n, i) {
         if (i + 1 < frozenLeftCols) {
           return {
-            ...{
-              fixed: 'left',
-            },
             ...n,
+            fixed: 'left',
           }
         }
 
         if (i + 1 === frozenLeftCols) {
           return {
-            ...{
-              fixed: 'left',
-              lastLeft: true,
-            },
             ...n,
+            fixed: 'left',
+            lastLeft: true,
           }
         }
 
         if (i === rev) {
           return {
-            ...{
-              fixed: 'right',
-              firstRight: true,
-            },
             ...n,
+            fixed: 'right',
+            firstRight: true,
           }
         }
 
         if (i > rev) {
           return {
-            ...{
-              fixed: 'right',
-            },
             ...n,
+            fixed: 'right',
           }
         }
 
-        return n
+        return { ...n, fixed: null, lastLeft: null, firstRight: null }
       })
 
       this.props.columns = c
@@ -886,13 +878,75 @@ class Grid extends Component {
     return this.body.table.getRows()
   }
 
-  // handlePinClick(data) {
-  //   const { columns } = this.props
+  handlePinClick(data) {
+    if (data.fixed && this.pinColumns.length < 1) {
+      const num = this.props.frozenLeftCols
+      num > 1 && this.fixPinOrder(data)
+      this.update({
+        frozenLeftCols: num - 1,
+      })
+      return
+    }
+    if (
+      this.pinColumns.filter((n) => {
+        return n.field === data.field
+      }).length > 0
+    ) {
+      this.pinColumns = this.removeColumn(this.pinColumns, data)
+    } else {
+      this.pinColumns.unshift(data)
+    }
 
-  //   const arr = columns.filter(function (item) {
-  //     return item.field === data.field
-  //   })
-  // }
+    this.update({
+      columns: this.getPinOrderColumns(),
+      frozenLeftCols: this.pinColumns.length,
+    })
+  }
+
+  fixPinOrder(data) {
+    const { columns } = this.props
+    const num = this.props.frozenLeftCols
+    if (columns[num - 1].field === data.field) {
+      return
+    }
+    let idx
+    for (let i = 0; i < columns.length; i++) {
+      if (data.field === columns[i].field) {
+        idx = i
+      }
+    }
+    const c = this.props.columns
+    const item = c.splice(idx, 1)
+    c.splice(num - 1, 0, item[0])
+
+    this.update({
+      columns: c,
+    })
+  }
+
+  removeColumn(array, data) {
+    if (array.length < 1) {
+      return []
+    }
+    return array.filter((n) => {
+      return n.field !== data.field
+    })
+  }
+
+  getPinOrderColumns() {
+    if (!this.pinColumns.length) {
+      return this.props.columns
+    }
+
+    let arr = []
+
+    this.pinColumns.forEach((n) => {
+      const arr2 = arr.length > 0 ? arr : this.props.columns
+      arr = this.removeColumn(arr2, n)
+      arr.unshift(n)
+    })
+    return arr
+  }
 }
 
 Grid.defaults = {

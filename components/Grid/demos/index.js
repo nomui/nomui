@@ -7,6 +7,7 @@ define([
   './row-sortable.js',
   './resizable.js',
   './frozen-header.js',
+  './pin.js',
   './colspan.js',
   './auto-merge.js',
   './multiple-header.js',
