@@ -46,11 +46,22 @@
       overflow-x: auto;
     }
   }
+  > .nom-grid-footer {
+    position: relative;
+    overflow: hidden;
+    .nom-table {
+      overflow: auto;
+    }
+  }
 
   &.p-bordered {
     border: 1px solid gainsboro;
 
     > .nom-grid-body {
+      margin-bottom: -1px;
+    }
+    > .nom-grid-body + .nom-grid-footer {
+      margin-top: 1px;
       margin-bottom: -1px;
     }
   }

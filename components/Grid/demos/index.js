@@ -9,6 +9,7 @@ define([
   './frozen-header.js',
   './colspan.js',
   './auto-merge.js',
+  './summary.js',
   './multiple-header.js',
   './sticky.js',
   './sticky-window.js',
