@@ -3,6 +3,7 @@ define([
   './styles.js',
   './ellipsis.js',
   './sort.js',
+  './sort-cacheable.js',
   './filter.js',
   './row-sortable.js',
   './resizable.js',
