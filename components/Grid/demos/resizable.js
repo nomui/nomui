@@ -47,11 +47,12 @@ define([], function () {
         items: [
           {
             component: 'Grid',
+            key: 'resizable',
             ref: (c) => {
               gridRef = c
             },
             columnResizable: {
-              cache: 'resizable',
+              cache: true,
             },
             line: 'both',
             columns,
