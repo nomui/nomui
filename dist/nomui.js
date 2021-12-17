@@ -14806,7 +14806,8 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(ExpandedTr); // storage 表格自定义列的key
-  const STORAGE_KEY_GRID_COLUMNS = "NOM_STORAGE_KEY_GRID_COLS";
+  const STORAGE_KEY_GRID_COLUMNS = "NOM_STORAGE_KEY_GRID_COLS"; // 表格自定义列宽度的 key
+  const STORAGE_KEY_GRID_COLS_WIDTH = "NOM_STORAGE_KEY_GRID_COLS_WIDTH";
   class ColGroupCol extends Component {
     constructor(props, ...mixins) {
       const defaults = { tag: "col", column: {} };
@@ -14824,7 +14825,7 @@ function _defineProperty2(obj, key, value) {
       }
       this.setProps({
         attrs: {
-          style: { width: widthPx },
+          style: { width: widthPx, minWidth: !widthPx ? "60px" : null },
           "data-field": this.props.column.field || null,
         },
       });
@@ -15174,6 +15175,11 @@ function _defineProperty2(obj, key, value) {
           that.onSortChange();
         };
       }
+      this.resizable =
+        this.table.hasGrid &&
+        this.table.grid.props.columnResizable &&
+        this.props.column.resizable !== false &&
+        this.props.column.colSpan === 1;
       let children = [
         headerProps,
         this.props.column.sortable &&
@@ -15269,20 +15275,17 @@ function _defineProperty2(obj, key, value) {
               that.table.grid.handlePinClick(that.props.column);
             },
           },
-        that.table.hasGrid &&
-          that.table.grid.props.columnResizable &&
-          this.props.column.resizable !== false &&
-          this.props.column.colSpan === 1 && {
-            component: "Icon",
-            ref: (c) => {
-              that.resizer = c;
-            },
-            type: "resize-handler",
-            classes: { "nom-table-resize-handler": true },
-            onClick: function () {
-              // that.table.grid.handlePinClick(that.props.column)
-            },
+        that.resizable && {
+          component: "Icon",
+          ref: (c) => {
+            that.resizer = c;
           },
+          type: "resize-handler",
+          classes: { "nom-table-resize-handler": true },
+          onClick: function () {
+            // that.table.grid.handlePinClick(that.props.column)
+          },
+        },
       ]; // 用span包一层，为了伪元素的展示
       if (isEllipsis) {
         children = {
@@ -15350,15 +15353,18 @@ function _defineProperty2(obj, key, value) {
           const endX = e.clientX;
           const moveLen = endX - startX;
           const distance = moveLen - that.lastDistance;
-          that.table.grid.resizeCol({
+          that.table.grid.calcResizeCol({
             field: that.props.column.field,
             distance: distance,
           });
           that.lastDistance = moveLen;
         };
-      };
-      document.onmouseup = function () {
-        document.onmousemove = null;
+        document.onmouseup = function () {
+          if (that.resizable && that.table.grid.props.columnResizable.cache) {
+            that.table.grid.storeColsWidth(that.props.column.field);
+          }
+          document.onmousemove = null;
+        };
       };
     }
     onSortChange() {
@@ -15616,7 +15622,7 @@ function _defineProperty2(obj, key, value) {
         },
       });
     }
-    resizeCol(data) {
+    calcResizeCol(data) {
       const col = this.table.colRefs[data.field];
       const tdWidth = this.table.element.rows[0].cells[col.props.index]
         .offsetWidth;
@@ -15626,6 +15632,10 @@ function _defineProperty2(obj, key, value) {
         result = 60;
       }
       col.update({ column: { width: result } });
+    }
+    resizeCol({ field, width = 0 }) {
+      const col = this.table.colRefs[field];
+      col.update({ column: { width } });
     }
   }
   Component.register(GridBody);
@@ -15649,14 +15659,6 @@ function _defineProperty2(obj, key, value) {
           rowDefaults: this.props.rowDefaults,
           treeConfig: this.grid.props.treeConfig,
           keyField: this.grid.props.keyField,
-        },
-        attrs: {
-          onscroll: () => {
-            const { scrollLeft } = this.element;
-            this.grid.header.element.scrollLeft = scrollLeft;
-            this.grid.header.scrollbar &&
-              this.grid.header.scrollbar.setScrollLeft(scrollLeft);
-          },
         },
       });
     }
@@ -15704,7 +15706,7 @@ function _defineProperty2(obj, key, value) {
       }
       return [res];
     }
-    resizeCol(data) {
+    calcResizeCol(data) {
       const col = this.table.colRefs[data.field];
       const tdWidth = this.table.element.rows[0].cells[col.props.index]
         .offsetWidth;
@@ -15714,6 +15716,10 @@ function _defineProperty2(obj, key, value) {
         result = 60;
       }
       col.update({ column: { width: result } });
+    }
+    resizeCol({ field, width = 0 }) {
+      const col = this.table.colRefs[field];
+      col.update({ column: { width } });
     }
   }
   Component.register(GridFooter);
@@ -15889,7 +15895,7 @@ function _defineProperty2(obj, key, value) {
         this.scrollbar.hide();
       }
     }
-    resizeCol(data) {
+    calcResizeCol(data) {
       const col = this.table.colRefs[data.field];
       const tdWidth = this.table.element.rows[0].cells[col.props.index]
         .offsetWidth;
@@ -15899,6 +15905,10 @@ function _defineProperty2(obj, key, value) {
         result = 60;
       }
       col.update({ column: { width: result } });
+    }
+    resizeCol({ field, width = 0 }) {
+      const col = this.table.colRefs[field];
+      col.update({ column: { width } });
     }
   }
   Component.register(GridHeader);
@@ -16040,32 +16050,6 @@ function _defineProperty2(obj, key, value) {
         }
       }
     }
-    _parseColumnsCustom() {
-      const { columnsCustomizable, visibleColumns } = this.props; // 未设置自定义列展示
-      if (!columnsCustomizable) return; // 设置过后，无需再从selected和cache中取值
-      if (visibleColumns && visibleColumns.length) return;
-      this.props.visibleColumns = null;
-      const { selected, cache: cacheKey } = columnsCustomizable;
-      if (selected && selected.length) {
-        // 从originColumns 过滤selected存在的列
-        this.props.visibleColumns = this._getColsFromSelectCols(
-          this.originColumns,
-          selected
-        );
-      } // 缓存中有数据则读取缓存中的col的field数据
-      if (cacheKey) {
-        let storeFields = localStorage.getItem(
-          `${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`
-        );
-        if (storeFields && storeFields.length) {
-          storeFields = JSON.parse(storeFields); // 从originColumns 过滤storeFields存在的列
-          this.props.visibleColumns = this._getColsFromFields(
-            this.originColumns,
-            storeFields
-          );
-        }
-      }
-    }
     _config() {
       this.nodeList = {};
       const that = this; // 切换分页 data数据更新时 此两项不重置会导致check表现出错
@@ -16161,6 +16145,44 @@ function _defineProperty2(obj, key, value) {
       });
       return treeData;
     }
+    _parseColumnsCustom() {
+      const { columnsCustomizable, visibleColumns } = this.props; // 未设置自定义列展示
+      if (!columnsCustomizable) return; // 设置过后，无需再从selected和cache中取值
+      if (visibleColumns && visibleColumns.length) return;
+      const { selected, cache } = columnsCustomizable;
+      this.props.visibleColumns = null;
+      if (selected && selected.length) {
+        // 从originColumns 过滤selected存在的列
+        this.props.visibleColumns = this._getColsFromSelectCols(
+          this.originColumns,
+          selected
+        );
+      } // 自定义列设置缓存的 key
+      this._gridColumsStoreKey = this._getStoreKey(
+        cache,
+        STORAGE_KEY_GRID_COLUMNS
+      );
+      if (!this._gridColumsStoreKey) return; // 缓存中有数据则读取缓存中的col的field数据
+      let storeFields = localStorage.getItem(this._gridColumsStoreKey);
+      if (storeFields && storeFields.length) {
+        storeFields = JSON.parse(storeFields); // 从originColumns 过滤storeFields存在的列
+        this.props.visibleColumns = this._getColsFromFields(
+          this.originColumns,
+          storeFields
+        );
+      }
+    }
+    _getStoreKey(cache, prefix) {
+      if (!cache) return null;
+      const _isAutoKey = this.key.startWith("__key");
+      if (_isAutoKey && !isString(cache)) {
+        console.warn(
+          `Please set a key for Grid or set the cache to a unique value of string type.`
+        );
+        return null;
+      }
+      return `${prefix}_${_isAutoKey ? cache : this.key}`;
+    }
     _calcMinWidth() {
       this.minWidth = 0;
       const { props } = this;
@@ -16189,6 +16211,7 @@ function _defineProperty2(obj, key, value) {
       ) {
         this.autoMergeCols();
       }
+      this._parseColumnsWidth();
       if (!data || !data.length) {
         this._doNotAutoScroll = false;
         this._setScrollPlace(true);
@@ -16311,11 +16334,8 @@ function _defineProperty2(obj, key, value) {
       this._bodyScrollInfo = { left: bodyLeft };
     }
     resetColumnsCustom() {
-      const {
-        columnsCustomizable: { cache },
-      } = this.props;
-      if (cache) {
-        localStorage.removeItem(`${STORAGE_KEY_GRID_COLUMNS}_${cache}`);
+      if (this._gridColumsStoreKey) {
+        localStorage.removeItem(this._gridColumsStoreKey);
       }
       this.update({ visibleColumns: this.originColumns });
     }
@@ -16462,10 +16482,9 @@ function _defineProperty2(obj, key, value) {
       }
       addTreeInfo(tree);
       const { columnsCustomizable } = this.props;
-      const { cache: cacheKey } = columnsCustomizable;
-      if (cacheKey) {
+      if (this._gridColumsStoreKey) {
         localStorage.setItem(
-          `${STORAGE_KEY_GRID_COLUMNS}_${cacheKey}`,
+          this._gridColumsStoreKey,
           JSON.stringify(this.getMappedColumns(tree))
         );
       }
@@ -16626,6 +16645,22 @@ function _defineProperty2(obj, key, value) {
           ],
         });
       }
+    } // 从缓存中读取上一次设置的宽度
+    _parseColumnsWidth() {
+      const { columnResizable } = this.props;
+      const { cache } = columnResizable;
+      this._gridColumsWidthStoreKey = this._getStoreKey(
+        cache,
+        STORAGE_KEY_GRID_COLS_WIDTH
+      );
+      if (!this._gridColumsWidthStoreKey) return;
+      const colWithString = localStorage.getItem(this._gridColumsWidthStoreKey);
+      if (!colWithString) return;
+      const _widthInfo = JSON.parse(colWithString);
+      Object.keys(_widthInfo).forEach((key) => {
+        const data = { field: key, width: _widthInfo[key] };
+        this.resizeCol(data);
+      });
     }
     autoMergeCols() {
       const that = this;
@@ -16664,9 +16699,57 @@ function _defineProperty2(obj, key, value) {
       this._headerScrollInfo = null;
       this._bodyScrollInfo = null;
     }
-    resizeCol(data) {
+    /**
+     * 根据偏移量计算出width后再赋值
+     * @param {*} data {field, distance}
+     */ calcResizeCol(data) {
+      this.header && this.header.calcResizeCol(data);
+      this.body && this.body.calcResizeCol(data);
+      this.footer && this.footer.calcResizeCol(data);
+    }
+    /**
+     * 直接传入width设置宽度
+     * @param {*} data {field, width}
+     */ resizeCol(data) {
       this.header && this.header.resizeCol(data);
       this.body && this.body.resizeCol(data);
+      this.footer && this.footer.resizeCol(data);
+    } // 存储设置的列的宽度
+    storeColsWidth(field) {
+      const { _gridColumsWidthStoreKey: _storeKey } = this;
+      if (!_storeKey) return; // storeKey优先 _gridKey, cache 次之
+      const colWithString = localStorage.getItem(_storeKey);
+      const _widthInfo = colWithString ? JSON.parse(colWithString) : {};
+      const col = this.header.table.colRefs[field];
+      _widthInfo[field] = col.props.column.width;
+      localStorage.setItem(_storeKey, JSON.stringify(_widthInfo));
+    }
+    /**
+     *  重置col的width本地缓存
+     * @param {string} field 需要重置的对应col 为空则清除所有数据
+     */ resetColsWidth(field = null) {
+      const { _gridColumsWidthStoreKey: _storeKey } = this;
+      if (!_storeKey) return; // originColumns中拥有最原始的width数据
+      let resetCols = this.originColumns.filter(
+        (item) => item.resizable || isNullish(item.resizable)
+      );
+      if (!field) {
+        localStorage.removeItem(_storeKey);
+      } else {
+        resetCols = [this.originColumns.find((col) => col.field === field)];
+        const colWithString = localStorage.getItem(_storeKey);
+        const _widthInfo = colWithString ? JSON.parse(colWithString) : {};
+        delete _widthInfo[field];
+        if (Object.keys(_widthInfo).length) {
+          localStorage.setItem(_storeKey, JSON.stringify(_widthInfo));
+        } else {
+          localStorage.removeItem(_storeKey);
+        }
+      }
+      resetCols.forEach((col) => {
+        const data = { field: col.field, width: col.width };
+        this.resizeCol(data);
+      });
     }
     _getColsFromSelectCols(originCols = [], selectCols = []) {
       return selectCols.reduce((acc, curr) => {
@@ -16850,7 +16933,7 @@ function _defineProperty2(obj, key, value) {
     // columnsCustomizable.callback: 设置列保存回调
     autoMergeColumns: null,
     visibleColumns: null,
-    columnResizable: false,
+    columnResizable: false, // columnResizable.cache: 设置的列宽保存至localstorage，cache的值为对应的key
     striped: false,
     showTitle: false,
     ellipsis: false,

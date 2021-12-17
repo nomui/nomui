@@ -50,6 +50,12 @@ class Th extends Component {
       }
     }
 
+    this.resizable =
+      this.table.hasGrid &&
+      this.table.grid.props.columnResizable &&
+      this.props.column.resizable !== false &&
+      this.props.column.colSpan === 1
+
     let children = [
       headerProps,
       this.props.column.sortable &&
@@ -155,20 +161,17 @@ class Th extends Component {
             that.table.grid.handlePinClick(that.props.column)
           },
         },
-      that.table.hasGrid &&
-        that.table.grid.props.columnResizable &&
-        this.props.column.resizable !== false &&
-        this.props.column.colSpan === 1 && {
-          component: 'Icon',
-          ref: (c) => {
-            that.resizer = c
-          },
-          type: 'resize-handler',
-          classes: { 'nom-table-resize-handler': true },
-          onClick: function () {
-            // that.table.grid.handlePinClick(that.props.column)
-          },
+      that.resizable && {
+        component: 'Icon',
+        ref: (c) => {
+          that.resizer = c
         },
+        type: 'resize-handler',
+        classes: { 'nom-table-resize-handler': true },
+        onClick: function () {
+          // that.table.grid.handlePinClick(that.props.column)
+        },
+      },
     ]
     // 用span包一层，为了伪元素的展示
     if (isEllipsis) {
@@ -233,21 +236,23 @@ class Th extends Component {
     resizer.onmousedown = function (evt) {
       const startX = evt.clientX
       that.lastDistance = 0
-
       document.onmousemove = function (e) {
         const endX = e.clientX
         const moveLen = endX - startX
 
         const distance = moveLen - that.lastDistance
-        that.table.grid.resizeCol({
+        that.table.grid.calcResizeCol({
           field: that.props.column.field,
           distance: distance,
         })
         that.lastDistance = moveLen
       }
-    }
-    document.onmouseup = function () {
-      document.onmousemove = null
+      document.onmouseup = function () {
+        if (that.resizable && that.table.grid.props.columnResizable.cache) {
+          that.table.grid.storeColsWidth(that.props.column.field)
+        }
+        document.onmousemove = null
+      }
     }
   }
 

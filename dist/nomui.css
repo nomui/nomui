@@ -6026,8 +6026,7 @@ table.nom-table.p-line-col td,
 table.nom-table.p-line-col th {
   border-right: 1px solid #e9ecef;
 }
-table.nom-table.p-line-col td:last-child,
-table.nom-table.p-line-col th:last-child {
+table.nom-table.p-line-col > th:last-child {
   border-right: 0;
 }
 table.nom-table.p-line-both td,
@@ -6035,8 +6034,7 @@ table.nom-table.p-line-both th {
   border-right: 1px solid #e9ecef;
   border-bottom: 1px solid #e9ecef;
 }
-table.nom-table.p-line-both td:last-child,
-table.nom-table.p-line-both th:last-child {
+table.nom-table.p-line-both thead > tr:first-child th:last-child {
   border-right: 0;
 }
 table.nom-table.p-bordered {

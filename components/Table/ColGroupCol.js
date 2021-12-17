@@ -25,6 +25,7 @@ class ColGroupCol extends Component {
       attrs: {
         style: {
           width: widthPx,
+          minWidth: !widthPx ? '60px' : null,
         },
         'data-field': this.props.column.field || null,
       },
