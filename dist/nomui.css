@@ -5925,8 +5925,22 @@ table.nom-table th .nom-table-resize-handler {
   visibility: hidden;
   cursor: col-resize;
 }
+table.nom-table td .nom--table-pin-handler,
+table.nom-table th .nom--table-pin-handler {
+  color: #666 !important;
+  visibility: hidden;
+  cursor: pointer;
+}
+table.nom-table td .nom--table-pin-handler.p-type-pin-fill,
+table.nom-table th .nom--table-pin-handler.p-type-pin-fill {
+  visibility: visible;
+}
 table.nom-table td:hover .nom-table-resize-handler,
 table.nom-table th:hover .nom-table-resize-handler {
+  visibility: visible;
+}
+table.nom-table td:hover .nom--table-pin-handler,
+table.nom-table th:hover .nom--table-pin-handler {
   visibility: visible;
 }
 table.nom-table .nom-table-ellipsis.nom-table-fixed-left .nom-table-cell-content,

@@ -40,6 +40,7 @@ class Table extends Component {
       this.parent.table = this
     }
     this.hasRowGroup = false
+    this.hasMultipleThead = false
   }
 
   _config() {

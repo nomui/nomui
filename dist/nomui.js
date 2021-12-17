@@ -2187,7 +2187,12 @@ function _defineProperty2(obj, key, value) {
   );
   Icon.add(
     "pin",
-    `<svg t="1615376474037" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3895" width="1em" height="1em"><path d="M631.637333 178.432a64 64 0 0 1 19.84 13.504l167.616 167.786667a64 64 0 0 1-19.370666 103.744l-59.392 26.304-111.424 111.552-8.832 122.709333a64 64 0 0 1-109.098667 40.64l-108.202667-108.309333-184.384 185.237333-45.354666-45.162667 184.490666-185.344-111.936-112.021333a64 64 0 0 1 40.512-109.056l126.208-9.429333 109.44-109.568 25.706667-59.306667a64 64 0 0 1 84.181333-33.28z m-25.450666 58.730667l-30.549334 70.464-134.826666 135.04-149.973334 11.157333 265.408 265.6 10.538667-146.474667 136.704-136.874666 70.336-31.146667-167.637333-167.765333z" p-id="3896"></path></svg>`,
+    `<svg t="1639617300925" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6674"  fill="currentColor" width="1em" height="1em"><path d="M631.637333 178.432a64 64 0 0 1 19.84 13.504l167.616 167.786667a64 64 0 0 1-19.370666 103.744l-59.392 26.304-111.424 111.552-8.832 122.709333a64 64 0 0 1-109.098667 40.64l-108.202667-108.309333-184.384 185.237333-45.354666-45.162667 184.490666-185.344-111.936-112.021333a64 64 0 0 1 40.512-109.056l126.208-9.429333 109.44-109.568 25.706667-59.306667a64 64 0 0 1 84.181333-33.28z m-25.450666 58.730667l-30.549334 70.464-134.826666 135.04-149.973334 11.157333 265.408 265.6 10.538667-146.474667 136.704-136.874666 70.336-31.146667-167.637333-167.765333z" p-id="6675"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "pin-fill",
+    `<svg t="1639617366341" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6806"  fill="currentColor" width="1em" height="1em"><path d="M631.637333 178.432a64 64 0 0 1 19.84 13.504l167.616 167.786667a64 64 0 0 1-19.370666 103.744l-59.392 26.304-111.424 111.552-8.832 122.709333a64 64 0 0 1-109.098667 40.64l-108.202667-108.309333-184.384 185.237333-45.354666-45.162667 184.490666-185.344-111.936-112.021333a64 64 0 0 1 40.512-109.056l126.208-9.429333 109.44-109.568 25.706667-59.306667a64 64 0 0 1 84.181333-33.28z" p-id="6807"></path></svg>`,
     cat
   );
   Icon.add(
@@ -15254,9 +15259,14 @@ function _defineProperty2(obj, key, value) {
         that.table.hasGrid &&
           that.table.grid.props.allowFrozenCols && {
             component: "Icon",
-            type: "pin",
+            type: this.props.column.fixed ? "pin-fill" : "pin",
+            attrs: { title: this.props.column.fixed ? "取消固定" : "固定列" },
+            classes: { "nom--table-pin-handler": true },
+            hidden:
+              this.table.hasMultipleThead ||
+              (this.props.column.width && this.props.column.width > 600),
             onClick: function () {
-              // that.table.grid.handlePinClick(that.props.column)
+              that.table.grid.handlePinClick(that.props.column);
             },
           },
         that.table.hasGrid &&
@@ -15438,9 +15448,14 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const columns = this.getColumns();
       const arr = this.mapHeadData(columns);
+      this.table.hasMultipleThead = arr.length > 1;
       const children = [];
       for (let i = 0; i < arr.length; i++) {
-        children.push({ component: TheadTr, columns: arr[i] });
+        children.push({
+          component: TheadTr,
+          columns: arr[i],
+          isRootTr: i === 0,
+        });
       }
       this.setProps({ children: children });
     }
@@ -15523,6 +15538,7 @@ function _defineProperty2(obj, key, value) {
         this.parent.table = this;
       }
       this.hasRowGroup = false;
+      this.hasMultipleThead = false;
     }
     _config() {
       this._propStyleClasses = ["line", "bordered"];
@@ -15903,7 +15919,6 @@ function _defineProperty2(obj, key, value) {
         content: {
           component: "Panel",
           uistyle: "card",
-          fit: true,
           header: { caption: { title: "列设置" } },
           body: {
             children: {
@@ -16005,6 +16020,7 @@ function _defineProperty2(obj, key, value) {
       this.rowsRefs = {};
       this.checkedRowRefs = {};
       this._doNotAutoScroll = true;
+      this.pinColumns = [];
       this.originColumns = [...this.props.columns]; // 列设置弹窗 tree的数据
       this.popupTreeData = this.originColumns;
       this.filter = {};
@@ -16070,22 +16086,26 @@ function _defineProperty2(obj, key, value) {
       if (this.props.visibleColumns) {
         this.props.columns = this.props.visibleColumns;
       }
-      if (frozenLeftCols || frozenRightCols) {
+      if (frozenLeftCols !== null || frozenRightCols !== null) {
         const rev = this.props.columns.length - frozenRightCols;
         const c = this.props.columns.map(function (n, i) {
           if (i + 1 < frozenLeftCols) {
-            return Object.assign({}, { fixed: "left" }, n);
+            return Object.assign({}, n, { fixed: "left" });
           }
           if (i + 1 === frozenLeftCols) {
-            return Object.assign({}, { fixed: "left", lastLeft: true }, n);
+            return Object.assign({}, n, { fixed: "left", lastLeft: true });
           }
           if (i === rev) {
-            return Object.assign({}, { fixed: "right", firstRight: true }, n);
+            return Object.assign({}, n, { fixed: "right", firstRight: true });
           }
           if (i > rev) {
-            return Object.assign({}, { fixed: "right" }, n);
+            return Object.assign({}, n, { fixed: "right" });
           }
-          return n;
+          return Object.assign({}, n, {
+            fixed: null,
+            lastLeft: null,
+            firstRight: null,
+          });
         });
         this.props.columns = c;
       }
@@ -16376,6 +16396,7 @@ function _defineProperty2(obj, key, value) {
         align: "center",
         alignTo: window,
         grid: this,
+        fit: true,
       });
     }
     handleColumnsSetting(params) {
@@ -16709,12 +16730,66 @@ function _defineProperty2(obj, key, value) {
     }
     getRows() {
       return this.body.table.getRows();
-    } // handlePinClick(data) {
-    //   const { columns } = this.props
-    //   const arr = columns.filter(function (item) {
-    //     return item.field === data.field
-    //   })
-    // }
+    }
+    handlePinClick(data) {
+      if (data.fixed && this.pinColumns.length < 1) {
+        const num = this.props.frozenLeftCols;
+        num > 1 && this.fixPinOrder(data);
+        this.update({ frozenLeftCols: num - 1 });
+        return;
+      }
+      if (
+        this.pinColumns.filter((n) => {
+          return n.field === data.field;
+        }).length > 0
+      ) {
+        this.pinColumns = this.removeColumn(this.pinColumns, data);
+      } else {
+        this.pinColumns.unshift(data);
+      }
+      this.update({
+        columns: this.getPinOrderColumns(),
+        frozenLeftCols: this.pinColumns.length,
+      });
+    }
+    fixPinOrder(data) {
+      const { columns } = this.props;
+      const num = this.props.frozenLeftCols;
+      if (columns[num - 1].field === data.field) {
+        return;
+      }
+      let idx;
+      for (let i = 0; i < columns.length; i++) {
+        if (data.field === columns[i].field) {
+          idx = i;
+          break;
+        }
+      }
+      const c = this.props.columns;
+      const item = c.splice(idx, 1);
+      c.splice(num - 1, 0, item[0]);
+      this.update({ columns: c });
+    }
+    removeColumn(array, data) {
+      if (array.length < 1) {
+        return [];
+      }
+      return array.filter((n) => {
+        return n.field !== data.field;
+      });
+    }
+    getPinOrderColumns() {
+      if (!this.pinColumns.length) {
+        return this.props.columns;
+      }
+      let arr = [];
+      this.pinColumns.forEach((n) => {
+        const arr2 = arr.length > 0 ? arr : this.props.columns;
+        arr = this.removeColumn(arr2, n);
+        arr.unshift(n);
+      });
+      return arr;
+    }
   }
   Grid.defaults = {
     columns: [],
