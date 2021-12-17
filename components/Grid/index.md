@@ -216,9 +216,9 @@
 
 自定义设置列宽
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| cache | 是否需要缓存到 store 中(为`string`类型时作为缓存的 key,否则取`grid.props.key`) | `string`\|`boolean` | - |
+| 参数  | 说明                                                              | 类型      | 默认值 |
+| ----- | ----------------------------------------------------------------- | --------- | ------ |
+| cache | 是否缓存自定义列宽设置，为`true`时需配置 Grid 的`key`属性为唯一值 | `boolean` | -      |
 
 ### columnsCustomizable
 
@@ -227,7 +227,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | selected | 默认展示出的列 | `array` | - |
-| cache | 是否需要缓存到 store 中(为`string`类型时作为缓存的 key,否则取`grid.props.key`) | `string \| boolean` | - |
+| cache | 是否缓存自定义列展示设置，为`true`时需配置 Grid 的`key`属性为唯一值 | `boolean` | - |
 | callback | 点击 modal 的保存的回调事件 | `function` | - |
 
 ### 注意事项
