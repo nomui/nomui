@@ -39,8 +39,8 @@ define([], function () {
   return {
     title: '改变列宽',
     file: 'resizable',
-    description: '设置 `columnResizable.cache` 为唯一值，则可实现对应表格列宽的本地缓存',
-
+    description:
+      '设置 `columnResizable.cache` 为唯一值，则可实现对应表格列宽的本地缓存。调用`resetColsWidth(field)来重置某一列宽度`',
     demo: function () {
       return {
         component: 'Rows',

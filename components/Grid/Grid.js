@@ -765,6 +765,7 @@ class Grid extends Component {
       const data = { field: key, width: _widthInfo[key] }
       this.header && this.header.resizeCol(data)
       this.body && this.body.resizeCol(data)
+      this.footer && this.footer.resizeCol(data)
     })
   }
 
@@ -810,6 +811,7 @@ class Grid extends Component {
   calcResizeCol(data) {
     this.header && this.header.calcResizeCol(data)
     this.body && this.body.calcResizeCol(data)
+    this.footer && this.footer.calcResizeCol(data)
   }
 
   // 存储设置的列的宽度
@@ -860,6 +862,7 @@ class Grid extends Component {
       const data = { field: col.field, width: col.width }
       this.header && this.header.resizeCol(data)
       this.body && this.body.resizeCol(data)
+      this.footer && this.footer.resizeCol(data)
     })
   }
 
