@@ -204,11 +204,11 @@ class Grid extends Component {
       this.props.visibleColumns = this._getColsFromSelectCols(this.originColumns, selected)
     }
     // 自定义列设置缓存的 key
-    this._girdColumsStoreKey = this._getStoreKey(cache, STORAGE_KEY_GRID_COLUMNS)
-    if (!this._girdColumsStoreKey) return
+    this._gridColumsStoreKey = this._getStoreKey(cache, STORAGE_KEY_GRID_COLUMNS)
+    if (!this._gridColumsStoreKey) return
 
     // 缓存中有数据则读取缓存中的col的field数据
-    let storeFields = localStorage.getItem(this._girdColumsStoreKey)
+    let storeFields = localStorage.getItem(this._gridColumsStoreKey)
     if (storeFields && storeFields.length) {
       storeFields = JSON.parse(storeFields)
       // 从originColumns 过滤storeFields存在的列
@@ -411,8 +411,8 @@ class Grid extends Component {
   }
 
   resetColumnsCustom() {
-    if (this._girdColumsStoreKey) {
-      localStorage.removeItem(this._girdColumsStoreKey)
+    if (this._gridColumsStoreKey) {
+      localStorage.removeItem(this._gridColumsStoreKey)
     }
     this.update({
       visibleColumns: this.originColumns,
@@ -582,8 +582,8 @@ class Grid extends Component {
 
     addTreeInfo(tree)
     const { columnsCustomizable } = this.props
-    if (this._girdColumsStoreKey) {
-      localStorage.setItem(this._girdColumsStoreKey, JSON.stringify(this.getMappedColumns(tree)))
+    if (this._gridColumsStoreKey) {
+      localStorage.setItem(this._gridColumsStoreKey, JSON.stringify(this.getMappedColumns(tree)))
     }
 
     this.update({ visibleColumns: tree })
@@ -761,16 +761,16 @@ class Grid extends Component {
   _parseColumnsWidth() {
     const { columnResizable } = this.props
     const { cache } = columnResizable
-    this._girdColumsWidthStoreKey = this._getStoreKey(cache, STORAGE_KEY_GRID_COLS_WIDTH)
-    if (!this._girdColumsWidthStoreKey) return
+    this._gridColumsWidthStoreKey = this._getStoreKey(cache, STORAGE_KEY_GRID_COLS_WIDTH)
+    if (!this._gridColumsWidthStoreKey) return
 
-    const colWithString = localStorage.getItem(this._girdColumsWidthStoreKey)
+    const colWithString = localStorage.getItem(this._gridColumsWidthStoreKey)
     if (!colWithString) return
 
     const _widthInfo = JSON.parse(colWithString)
     Object.keys(_widthInfo).forEach((key) => {
       const data = { field: key, width: _widthInfo[key] }
-      this.gird.resizeCol(data)
+      this.resizeCol(data)
     })
   }
 
@@ -835,7 +835,7 @@ class Grid extends Component {
 
   // 存储设置的列的宽度
   storeColsWidth(field) {
-    const { _girdColumsWidthStoreKey: _storeKey } = this
+    const { _gridColumsWidthStoreKey: _storeKey } = this
     if (!_storeKey) return
     // storeKey优先 _gridKey, cache 次之
     const colWithString = localStorage.getItem(_storeKey)
@@ -851,7 +851,7 @@ class Grid extends Component {
    * @param {string} field 需要重置的对应col 为空则清除所有数据
    */
   resetColsWidth(field = null) {
-    const { _girdColumsWidthStoreKey: _storeKey } = this
+    const { _gridColumsWidthStoreKey: _storeKey } = this
     if (!_storeKey) return
 
     // originColumns中拥有最原始的width数据
@@ -873,7 +873,7 @@ class Grid extends Component {
 
     resetCols.forEach((col) => {
       const data = { field: col.field, width: col.width }
-      this.gird.resizeCol(data)
+      this.resizeCol(data)
     })
   }
 
