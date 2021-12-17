@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.41](https://github.com/nomui/nomui/compare/v1.0.0-alpha.40...v1.0.0-alpha.41) (2021-12-17)
+
+
+### Features
+
+* **Gird-colwidth:** 实现列宽设置的本地存储 ([10e840c](https://github.com/nomui/nomui/commit/10e840c93c9af913ec1013be45da74b28a5c218e))
+* **Gird-resizable:** 设置列宽缓存和总计行列宽兼容 ([786d46c](https://github.com/nomui/nomui/commit/786d46cd610affbc514d0437e75d8515567549cf))
+* **Gird:** 添加尾部合计行 ([42c3529](https://github.com/nomui/nomui/commit/42c35292e61c6cef2d5374332ff83dec24be7150))
+* **Grid-resizable:** 列设置和列宽设置的key都默认优先使用Grid的key ([9f1668e](https://github.com/nomui/nomui/commit/9f1668eff9c1b3d47bbc8ef16b2daa96015131c0))
+* **Grid-summary:** 总计行和滚动的协同 ([5e47932](https://github.com/nomui/nomui/commit/5e4793217e3f771e0209e292f6c40e68ba31b93e))
+* **Grid-summary:** 总计行和滚动等其他表格特性兼容 ([5c36d39](https://github.com/nomui/nomui/commit/5c36d3938b4dd9fc868627c1b62d2d06ac6a393c))
+* **Grid:** 新增手动固定列功能 ([4a4c804](https://github.com/nomui/nomui/commit/4a4c8041cb6c3b18ab59d5cf627d2942a3f91589))
+* **Grid:** 新增sortCacheable配置，缓存排序状态 ([1874ea0](https://github.com/nomui/nomui/commit/1874ea051eeddfea9b3594363183403555aa2efc))
+* **Skeleton:** 新增骨架屏功能 ([26d397e](https://github.com/nomui/nomui/commit/26d397e6c594068bb1d042f7ed0a85e19d14d210))
+
+
+### Bug Fixes
+
+* **Gird-resizable:** 缓存的key不直接使用 Grid.porps.key ([e6f744e](https://github.com/nomui/nomui/commit/e6f744eb8e7975a02b88f22ccb0d75e859797009))
+* **Gird-summary:** 变量名修改 ([24a2118](https://github.com/nomui/nomui/commit/24a211838f52c1143b808624641d91022921ffc5))
+* **Grid-treeconfig:** 树表格 外部iupdate后导致数据错误 ([045313e](https://github.com/nomui/nomui/commit/045313ef7d55f3a4fcfc45598459fd7029f47fbb))
+* **Grid:** 单词拼写错误 ([cac74e9](https://github.com/nomui/nomui/commit/cac74e922a3fd8cf2f6e729161009c4774579044))
+* **Grid:** 将resizeCol函数抽离 ([b8e412d](https://github.com/nomui/nomui/commit/b8e412d9d82064416b822374d11748e88a6b21d1))
+* **Grid:** 列设置面板高度自适应无效的问题 ([d677676](https://github.com/nomui/nomui/commit/d677676e0d1f15dbc770a6238b8fe6e8196f8f14))
+* **style:** body设置了字体大小，导致Popup弹窗框内的文字换行 ([0b3d02f](https://github.com/nomui/nomui/commit/0b3d02f841f6cebe9e821d680502f02f4506e2b9))
+
+
+### Docs
+
+* 更新Skeleton文档 ([b2eb4eb](https://github.com/nomui/nomui/commit/b2eb4eb4c0aa00b1fe9c2d462cb82e71ca4e0eb5))
+* **CheckboxList:** CheckboxList的文档补充 ([771ad45](https://github.com/nomui/nomui/commit/771ad4530beb0b3dadaa94e5f126447dd0d12811))
+* **Field-rules:** 校验规则的文档补充 ([2666a40](https://github.com/nomui/nomui/commit/2666a40f1c73044912670ee989c7acd5f24d4698))
+* **Grid:** cache属性的文档修改 ([2b40217](https://github.com/nomui/nomui/commit/2b40217c16e60a1c5f17546b2bb455c306965074))
+* **RadioList:** RadioList 和 Switch 的文档补充 ([33930e6](https://github.com/nomui/nomui/commit/33930e6708ad949d6ab41e3c427bf7601d217b45))
+* **Skeleton:** 完善示例以及文档 ([36d0443](https://github.com/nomui/nomui/commit/36d0443aa0832a9f919f6718a35cd7927dfc4dea))
+
 ## [1.0.0-alpha.40](https://github.com/nomui/nomui/compare/v1.0.0-alpha.39...v1.0.0-alpha.40) (2021-12-10)
 
 
