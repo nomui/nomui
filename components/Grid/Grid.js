@@ -27,9 +27,9 @@ class Grid extends Component {
     this.rowsRefs = {}
     this.checkedRowRefs = {}
     this._doNotAutoScroll = true
-
+    this.pinColumns = []
     this.originColumns = [...this.props.columns]
-
+    this.sortUpdated = false
     // 列设置弹窗 tree的数据
     this.popupTreeData = this.originColumns
     this.filter = {}
@@ -64,6 +64,16 @@ class Grid extends Component {
     }
 
     const { treeConfig } = this.props
+
+    // 如果通过checkSortInfo触发回调，则同步更新排序图标状态
+    if (this.startSort) {
+      this.startSort = false
+      this.setSortDirection(this.getSortInfo())
+      return
+    }
+    // 如果sortCacheable则检查本地排序缓存，如果有缓存直接触发onSort回调
+    this.checkSortInfo()
+
     // 还未处理过 flatData
     if (treeConfig && treeConfig.flatData && !this._alreadyProcessedFlat) {
       this.setProps({
@@ -80,49 +90,42 @@ class Grid extends Component {
     if (this.props.visibleColumns) {
       this.props.columns = this.props.visibleColumns
     }
-    if (frozenLeftCols || frozenRightCols) {
+
+    if (frozenLeftCols !== null || frozenRightCols !== null) {
       const rev = this.props.columns.length - frozenRightCols
 
       const c = this.props.columns.map(function (n, i) {
         if (i + 1 < frozenLeftCols) {
           return {
-            ...{
-              fixed: 'left',
-            },
             ...n,
+            fixed: 'left',
           }
         }
 
         if (i + 1 === frozenLeftCols) {
           return {
-            ...{
-              fixed: 'left',
-              lastLeft: true,
-            },
             ...n,
+            fixed: 'left',
+            lastLeft: true,
           }
         }
 
         if (i === rev) {
           return {
-            ...{
-              fixed: 'right',
-              firstRight: true,
-            },
             ...n,
+            fixed: 'right',
+            firstRight: true,
           }
         }
 
         if (i > rev) {
           return {
-            ...{
-              fixed: 'right',
-            },
             ...n,
+            fixed: 'right',
           }
         }
 
-        return n
+        return { ...n, fixed: null, lastLeft: null, firstRight: null }
       })
 
       this.props.columns = c
@@ -351,6 +354,7 @@ class Grid extends Component {
   }
 
   handleSort(sorter) {
+    this.props.sortCacheable && this.saveSortInfo(sorter)
     const key = sorter.field
     if (!sorter.sortDirection) return
 
@@ -383,6 +387,27 @@ class Grid extends Component {
       this.header.table.thRefs[this.lastSortField].resetSort()
     }
     this.lastSortField = null
+    this.saveSortInfo(null)
+  }
+
+  saveSortInfo(sorter) {
+    localStorage.setItem(`${this.key}-sort-info`, JSON.stringify(sorter))
+    this.sortInfo = sorter
+  }
+
+  getSortInfo() {
+    return JSON.parse(localStorage.getItem(`${this.key}-sort-info`))
+  }
+
+  checkSortInfo() {
+    if (this.props.sortCacheable && this.getSortInfo() && this.firstRender && !this.sortUpdated) {
+      this.sortUpdated = true
+      this.startSort = true
+      this._callHandler(this.props.onSort, {
+        field: this.getSortInfo().field,
+        sortDirection: this.getSortInfo().sortDirection,
+      })
+    }
   }
 
   // 记录上一次滚动到的位置
@@ -541,6 +566,7 @@ class Grid extends Component {
       align: 'center',
       alignTo: window,
       grid: this,
+      fit: true,
     })
   }
 
@@ -971,13 +997,76 @@ class Grid extends Component {
     return this.body.table.getRows()
   }
 
-  // handlePinClick(data) {
-  //   const { columns } = this.props
+  handlePinClick(data) {
+    if (data.fixed && this.pinColumns.length < 1) {
+      const num = this.props.frozenLeftCols
+      num > 1 && this.fixPinOrder(data)
+      this.update({
+        frozenLeftCols: num - 1,
+      })
+      return
+    }
+    if (
+      this.pinColumns.filter((n) => {
+        return n.field === data.field
+      }).length > 0
+    ) {
+      this.pinColumns = this.removeColumn(this.pinColumns, data)
+    } else {
+      this.pinColumns.unshift(data)
+    }
 
-  //   const arr = columns.filter(function (item) {
-  //     return item.field === data.field
-  //   })
-  // }
+    this.update({
+      columns: this.getPinOrderColumns(),
+      frozenLeftCols: this.pinColumns.length,
+    })
+  }
+
+  fixPinOrder(data) {
+    const { columns } = this.props
+    const num = this.props.frozenLeftCols
+    if (columns[num - 1].field === data.field) {
+      return
+    }
+    let idx
+    for (let i = 0; i < columns.length; i++) {
+      if (data.field === columns[i].field) {
+        idx = i
+        break
+      }
+    }
+    const c = this.props.columns
+    const item = c.splice(idx, 1)
+    c.splice(num - 1, 0, item[0])
+
+    this.update({
+      columns: c,
+    })
+  }
+
+  removeColumn(array, data) {
+    if (array.length < 1) {
+      return []
+    }
+    return array.filter((n) => {
+      return n.field !== data.field
+    })
+  }
+
+  getPinOrderColumns() {
+    if (!this.pinColumns.length) {
+      return this.props.columns
+    }
+
+    let arr = []
+
+    this.pinColumns.forEach((n) => {
+      const arr2 = arr.length > 0 ? arr : this.props.columns
+      arr = this.removeColumn(arr2, n)
+      arr.unshift(n)
+    })
+    return arr
+  }
 }
 
 Grid.defaults = {
@@ -988,6 +1077,7 @@ Grid.defaults = {
   frozenRightCols: null,
   allowFrozenCols: false,
   onSort: null,
+  sortCacheable: false,
   onFilter: null,
   keyField: 'id',
   treeConfig: {
