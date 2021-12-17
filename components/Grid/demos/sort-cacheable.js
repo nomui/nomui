@@ -6,8 +6,8 @@ define([], function () {
     { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
   ]
   return {
-    title: '列排序',
-    file: 'sort',
+    title: '缓存上次列排序',
+    file: 'sort-cacheable',
     demo: function () {
       return {
         component: 'Flex',
@@ -26,12 +26,13 @@ define([], function () {
                   data: data.data,
                 })
               })
-              console.log(args, '更新了data顺序')
+              console.log(args, '直接触发onSort,更新了data顺序')
             },
             ref: (c) => {
               window.grid1 = grid1 = c
             },
-
+            key: 'grid-demo-sort',
+            sortCacheable: true,
             columns: [
               {
                 field: 'name',
@@ -60,10 +61,29 @@ define([], function () {
                 width: 500,
               },
             ],
-
+            // onCreated: ({ inst }) => {
+            //   new Promise((resolve) => {
+            //     setTimeout(() => {
+            //       resolve({ data: mydata })
+            //     }, 3000)
+            //   }).then((data) => {
+            //     inst.update({
+            //       data: data.data,
+            //     })
+            //   })
+            // },
             data: mydata,
           },
-
+          {
+            children:
+              '如果配置了sortCacheable，则会检查排序缓存，如果有排序缓存会直接进入onSort回调',
+          },
+          {
+            styles: {
+              text: 'danger',
+            },
+            children: '注意：所有涉及到本地缓存的功能，代码当中Grid组件必须配置唯一标识key！',
+          },
           {
             component: 'Button',
             text: '重置排序状态',

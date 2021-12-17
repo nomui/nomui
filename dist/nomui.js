@@ -16021,7 +16021,8 @@ function _defineProperty2(obj, key, value) {
       this.checkedRowRefs = {};
       this._doNotAutoScroll = true;
       this.pinColumns = [];
-      this.originColumns = [...this.props.columns]; // 列设置弹窗 tree的数据
+      this.originColumns = [...this.props.columns];
+      this.sortUpdated = false; // 列设置弹窗 tree的数据
       this.popupTreeData = this.originColumns;
       this.filter = {};
     }
@@ -16074,7 +16075,13 @@ function _defineProperty2(obj, key, value) {
       if (this.props.ellipsis === true) {
         this.props.ellipsis = "both";
       }
-      const { treeConfig } = this.props; // 还未处理过 flatData
+      const { treeConfig } = this.props; // 如果通过checkSortInfo触发回调，则同步更新排序图标状态
+      if (this.startSort) {
+        this.startSort = false;
+        this.setSortDirection(this.getSortInfo());
+        return;
+      } // 如果sortCacheable则检查本地排序缓存，如果有缓存直接触发onSort回调
+      this.checkSortInfo(); // 还未处理过 flatData
       if (treeConfig && treeConfig.flatData && !this._alreadyProcessedFlat) {
         this.setProps({ data: this._setTreeGridData(that.props.data) });
         this._alreadyProcessedFlat = true;
@@ -16238,6 +16245,7 @@ function _defineProperty2(obj, key, value) {
       this.update({ columns: c });
     }
     handleSort(sorter) {
+      this.props.sortCacheable && this.saveSortInfo(sorter);
       const key = sorter.field;
       if (!sorter.sortDirection) return;
       if (isFunction(sorter.sortable)) {
@@ -16264,6 +16272,29 @@ function _defineProperty2(obj, key, value) {
         this.header.table.thRefs[this.lastSortField].resetSort();
       }
       this.lastSortField = null;
+      this.saveSortInfo(null);
+    }
+    saveSortInfo(sorter) {
+      localStorage.setItem(`${this.key}-sort-info`, JSON.stringify(sorter));
+      this.sortInfo = sorter;
+    }
+    getSortInfo() {
+      return JSON.parse(localStorage.getItem(`${this.key}-sort-info`));
+    }
+    checkSortInfo() {
+      if (
+        this.props.sortCacheable &&
+        this.getSortInfo() &&
+        this.firstRender &&
+        !this.sortUpdated
+      ) {
+        this.sortUpdated = true;
+        this.startSort = true;
+        this._callHandler(this.props.onSort, {
+          field: this.getSortInfo().field,
+          sortDirection: this.getSortInfo().sortDirection,
+        });
+      }
     } // 记录上一次滚动到的位置
     _setScrollPlace(isEmpty) {
       // grid自身的 header和body的宽度
@@ -16799,6 +16830,7 @@ function _defineProperty2(obj, key, value) {
     frozenRightCols: null,
     allowFrozenCols: false,
     onSort: null,
+    sortCacheable: false,
     onFilter: null,
     keyField: "id",
     treeConfig: {
