@@ -37,7 +37,8 @@
 | data | 表格数据数组 | `array` | `[]` |
 | frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
-| frozenRightCols | 指定冻结右侧多少列 | `number` | - |
+| frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
+| allowFrozenCols | 是否允许用户手动固定列(有多级表头时无效) | `boolean` | `false` |
 | keyField | 表格行数据的主键字段 | `string` | `id` |
 | rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
 | rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |

@@ -8,8 +8,8 @@
 | --- | --- | --- | --- |
 | rows | 骨架屏数据重复行数 | `number` | - |
 | cols | 骨架屏数据重复列数 | `number` | - |
-| avatar | 是否显示头像，以及头像的尺寸 | `booean` \| `{size:'large'}` | `false` |
-| title | 是否显示标题，以及标题的宽度 | `booean` \| `{width:200}` | `true` |
-| paragraph | 是否显示段落，以及的行数 | `booean` \| `number` | `3` |
-| image | 是否显示占位图，以及图片的尺寸 | `booean` \| `{width,height}` | `false` |
+| avatar | 是否显示头像，以及头像的尺寸 | `boolean` \| `{size:'large'}` | `false` |
+| title | 是否显示标题，以及标题的宽度 | `boolean` \| `{width:200}` | `true` |
+| paragraph | 是否显示段落，以及的行数 | `boolean` \| `number` | `3` |
+| image | 是否显示占位图，以及图片的尺寸 | `boolean` \| `{width,height}` | `false` |
 | type | 骨架屏单独使用的时候可以配置类型 | `'avatar'` \| `'paragraph'`\| `'title'`\| `'image'` | - |

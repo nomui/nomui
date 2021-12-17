@@ -1,6 +1,6 @@
 define([], function () {
   return {
-    title: '冻结表头',
+    title: '固定表头与列',
     file: 'frozen-header',
     demo: function () {
       return {
@@ -22,12 +22,12 @@ define([], function () {
               {
                 field: 'author',
                 title: '作者',
-                width: 2000,
+                width: 100,
               },
               {
                 field: 'role',
                 title: '主角',
-                width: 300,
+                width: 1200,
               },
             ],
             data: [
@@ -39,7 +39,7 @@ define([], function () {
               { id: 6, name: '白马啸西风' },
             ],
             frozenHeader: true,
-            frozenLeftCols: 0,
+            frozenLeftCols: 1,
             frozenRightCols: 0,
             // allowFrozenCols: true,
             attrs: {

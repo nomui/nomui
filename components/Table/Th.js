@@ -40,7 +40,7 @@ class Th extends Component {
       attrs: {
         title: isEllipsis ? this.props.column.header || this.props.column.title : null,
       },
-      classes: {'nom-table-cell-title': true},
+      classes: { 'nom-table-cell-title': true },
       children: this.props.column.header || this.props.column.title,
     }
 
@@ -141,9 +141,18 @@ class Th extends Component {
       that.table.hasGrid &&
         that.table.grid.props.allowFrozenCols && {
           component: 'Icon',
-          type: 'pin',
+          type: this.props.column.fixed ? 'pin-fill' : 'pin',
+          attrs: {
+            title: this.props.column.fixed ? '取消固定' : '固定列',
+          },
+          classes: {
+            'nom--table-pin-handler': true,
+          },
+          hidden:
+            this.table.hasMultipleThead ||
+            (this.props.column.width && this.props.column.width > 600),
           onClick: function () {
-            // that.table.grid.handlePinClick(that.props.column)
+            that.table.grid.handlePinClick(that.props.column)
           },
         },
       that.table.hasGrid &&
@@ -162,14 +171,13 @@ class Th extends Component {
         },
     ]
     // 用span包一层，为了伪元素的展示
-    if(isEllipsis) {
+    if (isEllipsis) {
       children = {
         tag: 'span',
-        classes: {'nom-table-cell-content': true},
-        children: children
+        classes: { 'nom-table-cell-content': true },
+        children: children,
       }
     }
-
 
     this.setProps({
       children: children,
@@ -193,12 +201,12 @@ class Th extends Component {
 
   _rendered() {
     // 未设置冻结列则无需定时器
-    const {grid = {}} = this.table
-    const {frozenLeftCols, frozenRightCols} = grid.props || {}
-    if(frozenLeftCols || frozenRightCols) {
+    const { grid = {} } = this.table
+    const { frozenLeftCols, frozenRightCols } = grid.props || {}
+    if (frozenLeftCols || frozenRightCols) {
       setTimeout(() => {
         this.setStickyPosition()
-      }, 0);
+      }, 0)
     }
 
     this.resizer && this.handleResize()
@@ -206,7 +214,7 @@ class Th extends Component {
 
   setStickyPosition() {
     // 设置排序时会出发两次_render，则此时设置的第一个定时器中的this.props已被销毁
-    if(!this.props) return
+    if (!this.props) return
     if (this.props.column.fixed === 'left') {
       this._setStyle({ left: `${this.element.offsetLeft}px` })
     } else if (this.props.column.fixed === 'right') {
