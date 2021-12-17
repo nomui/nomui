@@ -6,6 +6,7 @@ import ExpandedTr from '../Table/ExpandedTr'
 import { STORAGE_KEY_GRID_COLS_WIDTH, STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
 import { isFunction, isNullish, isPlainObject, isString } from '../util/index'
 import GridBody from './GridBody'
+import GridFooter from './GridFooter'
 import GridHeader from './GridHeader'
 import GridSettingPopup from './GridSettingPopup'
 
@@ -183,6 +184,7 @@ class Grid extends Component {
         },
         { component: GridHeader, line: line },
         { component: GridBody, line: line, rowDefaults: rowDefaults },
+        this.props.summary && { component: GridFooter, line: line },
       ],
     })
   }
