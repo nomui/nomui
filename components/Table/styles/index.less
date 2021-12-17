@@ -183,7 +183,8 @@ table.nom-table {
     td,
     th {
       border-right: 1px solid @oc-gray-2;
-
+    }
+    > th {
       &:last-child {
         border-right: 0;
       }
@@ -195,9 +196,12 @@ table.nom-table {
     th {
       border-right: 1px solid @oc-gray-2;
       border-bottom: 1px solid @oc-gray-2;
-
-      &:last-child {
-        border-right: 0;
+    }
+    thead > tr {
+      &:first-child {
+        th:last-child {
+          border-right: 0;
+        }
       }
     }
   }

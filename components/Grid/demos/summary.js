@@ -6,7 +6,7 @@ define([], function () {
     { id: 6, name: '扫地僧', power: 100, speed: 100, agile: 'xxx' },
   ]
 
-  const girdColumns = [
+  const gridColumns = [
     { field: 'name', key: 'name', title: '姓名', width: 200, sortable: true },
     { field: 'power', key: 'power', title: '力量' },
     { field: 'speed', key: 'speed', title: '速度', sortable: (a, b) => b.speed - a.speed },
@@ -25,7 +25,7 @@ define([], function () {
             summary: true,
             rowCheckable: true,
             line: 'both',
-            columns: girdColumns,
+            columns: gridColumns,
             data: options,
             frozenLeftCols: 2,
           },
@@ -46,7 +46,7 @@ define([], function () {
                 return res
               },
             },
-            columns: girdColumns,
+            columns: gridColumns,
             data: options,
           },
         ],
