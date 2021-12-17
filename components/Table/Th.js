@@ -147,9 +147,18 @@ class Th extends Component {
       that.table.hasGrid &&
         that.table.grid.props.allowFrozenCols && {
           component: 'Icon',
-          type: 'pin',
+          type: this.props.column.fixed ? 'pin-fill' : 'pin',
+          attrs: {
+            title: this.props.column.fixed ? '取消固定' : '固定列',
+          },
+          classes: {
+            'nom--table-pin-handler': true,
+          },
+          hidden:
+            this.table.hasMultipleThead ||
+            (this.props.column.width && this.props.column.width > 600),
           onClick: function () {
-            // that.table.grid.handlePinClick(that.props.column)
+            that.table.grid.handlePinClick(that.props.column)
           },
         },
       that.resizable && {

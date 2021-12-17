@@ -37,7 +37,8 @@
 | data | 表格数据数组 | `array` | `[]` |
 | frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
-| frozenRightCols | 指定冻结右侧多少列 | `number` | - |
+| frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
+| allowFrozenCols | 是否允许用户手动固定列(有多级表头时无效) | `boolean` | `false` |
 | keyField | 表格行数据的主键字段 | `string` | `id` |
 | rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
 | rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |
@@ -52,6 +53,7 @@
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
 | striped | 是否显示斑马间隔 | `boolean` | `false` |
 | onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
+| sortCacheable | 是否允许缓存排序条件，使用本功能，Grid 必须指定唯一标识`key` | `boolean` | `false` |
 | onFilter | 列头筛选触发回调 | `({params})=>{}` | - |
 | sticky | 是否开启吸附式表头以及虚拟滚动条,需要指定有滚动条的父容器，设为 true 则指定 window 为滚动容器 | `boolean` \| `component`\| `()=>{}` | false |
 
@@ -216,9 +218,9 @@
 
 自定义设置列宽
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| cache | 是否需要缓存到 store 中(为`string`类型时作为缓存的 key,否则取`grid.props.key`) | `string`\|`boolean` | - |
+| 参数  | 说明                                                              | 类型      | 默认值 |
+| ----- | ----------------------------------------------------------------- | --------- | ------ |
+| cache | 是否缓存自定义列宽设置，为`true`时需配置 Grid 的`key`属性为唯一值 | `boolean` | -      |
 
 ### columnsCustomizable
 
@@ -227,7 +229,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | selected | 默认展示出的列 | `array` | - |
-| cache | 是否需要缓存到 store 中(为`string`类型时作为缓存的 key,否则取`grid.props.key`) | `string \| boolean` | - |
+| cache | 是否缓存自定义列展示设置，为`true`时需配置 Grid 的`key`属性为唯一值 | `boolean` | - |
 | callback | 点击 modal 的保存的回调事件 | `function` | - |
 
 ### 注意事项

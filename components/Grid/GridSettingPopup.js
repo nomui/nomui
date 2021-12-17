@@ -25,7 +25,6 @@ class GridSettingPopup extends Modal {
       content: {
         component: 'Panel',
         uistyle: 'card',
-        fit: true,
         header: {
           caption: {
             title: '列设置',
