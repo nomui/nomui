@@ -168,7 +168,7 @@ class GridHeader extends Component {
 
   resizeCol({ field, width = 0 }) {
     const col = this.table.colRefs[field]
-    col.update({ column: { width } })
+    col && col.update({ column: { width } })
   }
 }
 

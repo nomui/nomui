@@ -257,6 +257,8 @@ class Grid extends Component {
 
     this._parseColumnsWidth()
 
+    this.resizeCol({ field: 'oper' })
+
     if (!data || !data.length) {
       this._doNotAutoScroll = false
       this._setScrollPlace(true)

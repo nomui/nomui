@@ -13,6 +13,7 @@ class ColGroupCol extends Component {
   _created() {
     this.table = this.parent.table
     this.table.colRefs[this.props.column.field] = this
+    this.maxTdWidth = 0
   }
 
   _config() {
@@ -20,6 +21,9 @@ class ColGroupCol extends Component {
     let widthPx = null
     if (width) {
       widthPx = `${width}px`
+    }
+    if (this.maxTdWidth) {
+      widthPx = `${this.maxTdWidth}px`
     }
     this.setProps({
       attrs: {
@@ -30,6 +34,14 @@ class ColGroupCol extends Component {
         'data-field': this.props.column.field || null,
       },
     })
+  }
+
+  updateMaxTdWidth(width) {
+    if (this.maxTdWidth < 60 && width < 60) {
+      this.maxTdWidth = 0
+    } else {
+      this.maxTdWidth = Math.max(this.maxTdWidth, width)
+    }
   }
 }
 
