@@ -40,14 +40,14 @@ define([], function () {
     title: '改变列宽',
     file: 'resizable',
     description:
-      '设置 `columnResizable.cache` 为唯一值，则可实现对应表格列宽的本地缓存。调用`resetColsWidth(field)来重置某一列宽度`',
+      '设置 `columnResizable.cache` 为`true`或`string`类型唯一值，则可实现对应表格列宽的本地缓存(优先取`Grid.key`为缓存的key)。调用`resetColsWidth(field)来重置某一列宽度`',
     demo: function () {
       return {
         component: 'Rows',
         items: [
           {
             component: 'Grid',
-            key: 'resizable',
+            key: () => 'resizable',
             ref: (c) => {
               gridRef = c
             },

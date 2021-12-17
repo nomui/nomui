@@ -3,6 +3,8 @@ define([], function () {
   return {
     title: '列设置',
     file: 'custom-columns',
+    description:
+      '设置 `columnsCustomizable.cache` 为`true`或`string`类型唯一值，实现列展示的本地缓存(优先取`Grid.key`为缓存的key)',
     demo: function () {
       const c = [
         {

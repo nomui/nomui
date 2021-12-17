@@ -52,38 +52,6 @@ class Grid extends Component {
     }
   }
 
-  _parseColumnsCustom() {
-    const { columnsCustomizable, visibleColumns, key: _gridKey } = this.props
-    // 未设置自定义列展示
-    if (!columnsCustomizable) return
-    // 设置过后，无需再从selected和cache中取值
-    if (visibleColumns && visibleColumns.length) return
-
-    const { selected, cache } = columnsCustomizable
-    this.props.visibleColumns = null
-    this._girdColumsStoreKey = null
-    if (!_gridKey && !isString(cache)) {
-      console.warn(`Please set a key for Grid or set the cache to a unique value of string type.`)
-      return
-    }
-    // 自定义列设置缓存的 key
-    this._girdColumsStoreKey = `${STORAGE_KEY_GRID_COLUMNS}_${_gridKey || cache}`
-
-    if (selected && selected.length) {
-      // 从originColumns 过滤selected存在的列
-      this.props.visibleColumns = this._getColsFromSelectCols(this.originColumns, selected)
-    }
-    // 缓存中有数据则读取缓存中的col的field数据
-    if (cache) {
-      let storeFields = localStorage.getItem(this._girdColumsStoreKey)
-      if (storeFields && storeFields.length) {
-        storeFields = JSON.parse(storeFields)
-        // 从originColumns 过滤storeFields存在的列
-        this.props.visibleColumns = this._getColsFromFields(this.originColumns, storeFields)
-      }
-    }
-  }
-
   _config() {
     this.nodeList = {}
     const that = this
@@ -219,6 +187,44 @@ class Grid extends Component {
     })
 
     return treeData
+  }
+
+  _parseColumnsCustom() {
+    const { columnsCustomizable, visibleColumns } = this.props
+    // 未设置自定义列展示
+    if (!columnsCustomizable) return
+    // 设置过后，无需再从selected和cache中取值
+    if (visibleColumns && visibleColumns.length) return
+
+    const { selected, cache } = columnsCustomizable
+    this.props.visibleColumns = null
+
+    if (selected && selected.length) {
+      // 从originColumns 过滤selected存在的列
+      this.props.visibleColumns = this._getColsFromSelectCols(this.originColumns, selected)
+    }
+    // 自定义列设置缓存的 key
+    this._girdColumsStoreKey = this._getStoreKey(cache, STORAGE_KEY_GRID_COLUMNS)
+    if (!this._girdColumsStoreKey) return
+
+    // 缓存中有数据则读取缓存中的col的field数据
+    let storeFields = localStorage.getItem(this._girdColumsStoreKey)
+    if (storeFields && storeFields.length) {
+      storeFields = JSON.parse(storeFields)
+      // 从originColumns 过滤storeFields存在的列
+      this.props.visibleColumns = this._getColsFromFields(this.originColumns, storeFields)
+    }
+  }
+
+  _getStoreKey(cache, prefix) {
+    if (!cache) return null
+
+    const _isAutoKey = this.key.startWith('__key')
+    if (_isAutoKey && !isString(cache)) {
+      console.warn(`Please set a key for Grid or set the cache to a unique value of string type.`)
+      return null
+    }
+    return `${prefix}_${_isAutoKey ? cache : this.key}`
   }
 
   _calcMinWidth() {
@@ -753,10 +759,11 @@ class Grid extends Component {
 
   // 从缓存中读取上一次设置的宽度
   _parseColumnsWidth() {
-    const { columnResizable, key: _gridKey } = this.props
+    const { columnResizable } = this.props
     const { cache } = columnResizable
-    // _gridKey优先, cache 次之
-    this._girdColumsWidthStoreKey = `${STORAGE_KEY_GRID_COLS_WIDTH}_${_gridKey || cache}`
+    this._girdColumsWidthStoreKey = this._getStoreKey(cache, STORAGE_KEY_GRID_COLS_WIDTH)
+    if (!this._girdColumsWidthStoreKey) return
+
     const colWithString = localStorage.getItem(this._girdColumsWidthStoreKey)
     if (!colWithString) return
 
@@ -817,10 +824,7 @@ class Grid extends Component {
   // 存储设置的列的宽度
   storeColsWidth(field) {
     const { _girdColumsWidthStoreKey: _storeKey } = this
-    if (!_storeKey) {
-      console.warn(`Please set a key for Grid or set the cache to a unique value of string type.`)
-      return
-    }
+    if (!_storeKey) return
     // storeKey优先 _gridKey, cache 次之
     const colWithString = localStorage.getItem(_storeKey)
     const _widthInfo = colWithString ? JSON.parse(colWithString) : {}
@@ -836,10 +840,7 @@ class Grid extends Component {
    */
   resetColsWidth(field = null) {
     const { _girdColumsWidthStoreKey: _storeKey } = this
-    if (!_storeKey) {
-      console.warn(`You have to set the key of the Grid first or set the cache as a unique value.`)
-      return
-    }
+    if (!_storeKey) return
 
     // originColumns中拥有最原始的width数据
     let resetCols = this.originColumns.filter((item) => item.resizable || isNullish(item.resizable))
