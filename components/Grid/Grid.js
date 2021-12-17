@@ -770,9 +770,7 @@ class Grid extends Component {
     const _widthInfo = JSON.parse(colWithString)
     Object.keys(_widthInfo).forEach((key) => {
       const data = { field: key, width: _widthInfo[key] }
-      this.header && this.header.resizeCol(data)
-      this.body && this.body.resizeCol(data)
-      this.footer && this.footer.resizeCol(data)
+      this.gird.resizeCol(data)
     })
   }
 
@@ -815,10 +813,24 @@ class Grid extends Component {
     this._bodyScrollInfo = null
   }
 
+  /**
+   * 根据偏移量计算出width后再赋值
+   * @param {*} data {field, distance}
+   */
   calcResizeCol(data) {
     this.header && this.header.calcResizeCol(data)
     this.body && this.body.calcResizeCol(data)
     this.footer && this.footer.calcResizeCol(data)
+  }
+
+  /**
+   * 直接传入width设置宽度
+   * @param {*} data {field, width}
+   */
+  resizeCol(data) {
+    this.header && this.header.resizeCol(data)
+    this.body && this.body.resizeCol(data)
+    this.footer && this.footer.resizeCol(data)
   }
 
   // 存储设置的列的宽度
@@ -861,9 +873,7 @@ class Grid extends Component {
 
     resetCols.forEach((col) => {
       const data = { field: col.field, width: col.width }
-      this.header && this.header.resizeCol(data)
-      this.body && this.body.resizeCol(data)
-      this.footer && this.footer.resizeCol(data)
+      this.gird.resizeCol(data)
     })
   }
 
