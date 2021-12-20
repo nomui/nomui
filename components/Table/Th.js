@@ -145,7 +145,10 @@ class Th extends Component {
           },
         },
       that.table.hasGrid &&
-        that.table.grid.props.allowFrozenCols && {
+        that.table.grid.props.allowFrozenCols &&
+        !this.table.hasMultipleThead &&
+        !(this.props.column.width && this.props.column.width > 600) &&
+        this.props.column.fixed !== 'right' && {
           component: 'Icon',
           type: this.props.column.fixed ? 'pin-fill' : 'pin',
           attrs: {
@@ -154,9 +157,6 @@ class Th extends Component {
           classes: {
             'nom--table-pin-handler': true,
           },
-          hidden:
-            this.table.hasMultipleThead ||
-            (this.props.column.width && this.props.column.width > 600),
           onClick: function () {
             that.table.grid.handlePinClick(that.props.column)
           },
