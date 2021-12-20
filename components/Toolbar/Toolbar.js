@@ -14,14 +14,14 @@ class Toolbar extends Component {
   }
 
   _config() {
-    const { items, type, gutter, size, visibleItems } = this.props
+    const { items, type, gutter, size, visibleItems, inline } = this.props
 
     const before = items.slice(0, visibleItems).map((item) => {
       return {
         component: 'Button',
         type: type,
         size: size,
-        inline: type === 'link',
+        inline,
         ...item,
       }
     })
@@ -30,7 +30,7 @@ class Toolbar extends Component {
       rightIcon: 'ellipsis',
       items: items.slice(visibleItems),
       type: type,
-      inline: type === 'link',
+      inline,
       size: size,
     }
 

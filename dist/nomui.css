@@ -5966,7 +5966,7 @@ table.nom-table .nom-table-fixed-left-last::after {
   content: '';
 }
 table.nom-table .nom-table-fixed-right-first {
-  padding-left: 38px;
+  padding-left: 15px;
 }
 table.nom-table .nom-table-fixed-right-first::after {
   position: absolute;

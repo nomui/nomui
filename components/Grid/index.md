@@ -82,7 +82,7 @@
 | title | 列头显示标题 | `string` | - |
 | width | 列宽度，单位 px | `boolean` | 120 |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
-| autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出） | `boolean` | `false` |
+| autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
 | resizable | 是否允许拖动列宽 | `boolean` | `false` |
 | ellipsis | 单元格是否文字超出自动省略 | `boolean` | `false` |
 | sortable | 是否启用排序，为 true 时后端排序，也可以传自定义排序函数进行前端排序，如：`(a, b) => a.sales - b.sales` | `boolean` \| `function` | `false` |

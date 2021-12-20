@@ -14699,7 +14699,7 @@ function _defineProperty2(obj, key, value) {
           this.table.props.ellipsis === "body") &&
           this.props.column.ellipsis !== false) ||
         this.props.column.ellipsis === true; // 用span包一层，为了伪元素的展示
-      if (isEllipsis) {
+      if (isEllipsis && !column.autoWidth) {
         children = {
           tag: "span",
           classes: { "nom-table-cell-content": true },
@@ -14769,8 +14769,8 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _parseTdWidth() {
-      let tdWidth = 0; // Td的左右padding 20, 右侧固定列的为48，预留1px的buffer
-      const tdPaddingWidth = this.props.column.firstRight ? 49 : 21;
+      let tdWidth = 0; // Td的左右padding 20, 右侧固定列的为25，预留1px的buffer
+      const tdPaddingWidth = this.props.column.firstRight ? 26 : 21;
       Array.from(this.element.children).forEach((child) => {
         const { marginLeft, marginRight } = getStyle(child);
         tdWidth +=
@@ -17006,15 +17006,10 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
-      const { items, type, gutter, size, visibleItems } = this.props;
+      const { items, type, gutter, size, visibleItems, inline } = this.props;
       const before = items.slice(0, visibleItems).map((item) => {
         return Object.assign(
-          {
-            component: "Button",
-            type: type,
-            size: size,
-            inline: type === "link",
-          },
+          { component: "Button", type: type, size: size, inline },
           item
         );
       });
@@ -17023,7 +17018,7 @@ function _defineProperty2(obj, key, value) {
         rightIcon: "ellipsis",
         items: items.slice(visibleItems),
         type: type,
-        inline: type === "link",
+        inline,
         size: size,
       };
       this.setProps({

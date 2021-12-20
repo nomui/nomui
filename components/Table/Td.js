@@ -137,7 +137,7 @@ class Td extends Component {
       this.props.column.ellipsis === true
 
     // 用span包一层，为了伪元素的展示
-    if (isEllipsis) {
+    if (isEllipsis && !column.autoWidth) {
       children = {
         tag: 'span',
         classes: { 'nom-table-cell-content': true },
@@ -213,8 +213,8 @@ class Td extends Component {
 
   _parseTdWidth() {
     let tdWidth = 0
-    // Td的左右padding 20, 右侧固定列的为48，预留1px的buffer
-    const tdPaddingWidth = this.props.column.firstRight ? 49 : 21
+    // Td的左右padding 20, 右侧固定列的为25，预留1px的buffer
+    const tdPaddingWidth = this.props.column.firstRight ? 26 : 21
     Array.from(this.element.children).forEach((child) => {
       const { marginLeft, marginRight } = getStyle(child)
       tdWidth +=

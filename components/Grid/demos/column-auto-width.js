@@ -17,12 +17,12 @@ define([], function () {
         component: 'Grid',
         showTitle: true,
         line: 'both',
+        ellipsis: 'both',
         frozenRightCols: 1,
         columns: [
           {
             field: 'name',
             key: 'name',
-            autoWidth: true,
             title: '标题',
             width: 200,
           },
@@ -47,7 +47,7 @@ define([], function () {
           {
             field: 'oper',
             title: '操作',
-            width: 500,
+            // width: 50,
             autoWidth: true,
             cellRender: ({ rowData }) => {
               const children = []
