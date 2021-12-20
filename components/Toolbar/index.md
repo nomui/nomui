@@ -8,4 +8,5 @@
 | visibleItems | 默认显示前几个按钮，超出的会被折叠起来 | `number`               | `2`       |
 | gutter       | 按钮之间的间隔                         | `xs`\|`sm`\|`md`\|'lg' | `sm`      |
 | size         | 按钮尺寸，参考 Button 组件             | `string`               | -         |
+| inline       | 是否为行内元素，参考 Button 组件       | `boolean`              | `false`   |
 | items        | 按钮列表数组                           | `array`                | []        |
