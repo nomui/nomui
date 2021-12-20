@@ -785,17 +785,22 @@ class Grid extends Component {
     }
   }
 
-  // 从缓存中读取上一次设置的宽度
+  // 处理列宽
   _parseColumnsWidth() {
     const { columnResizable } = this.props
     const { cache } = columnResizable
     this._gridColumsWidthStoreKey = this._getStoreKey(cache, STORAGE_KEY_GRID_COLS_WIDTH)
-    if (!this._gridColumsWidthStoreKey) return
-
     const colWithString = localStorage.getItem(this._gridColumsWidthStoreKey)
-    if (!colWithString) return
 
-    const _widthInfo = JSON.parse(colWithString)
+    const _widthInfo = JSON.parse(colWithString) || {}
+
+    // 配置了 autoWidth的列，主动触发其col.update
+    this.originColumns.forEach((col) => {
+      if (col.autoWidth) {
+        _widthInfo[col.field] = 0
+      }
+    })
+
     Object.keys(_widthInfo).forEach((key) => {
       const data = { field: key, width: _widthInfo[key] }
       this.resizeCol(data)
@@ -859,6 +864,16 @@ class Grid extends Component {
     this.header && this.header.resizeCol(data)
     this.body && this.body.resizeCol(data)
     this.footer && this.footer.resizeCol(data)
+  }
+
+  /**
+   * 由设置了 autoWidth的Td触发，刷新对应的col的maxTdWidth变量
+   * @param {*} data {field, maxTdWidth}
+   */
+  setAllTableColMaxTdWidth(data) {
+    this.header && this.header.setColMaxTdWidth(data)
+    this.body && this.body.setColMaxTdWidth(data)
+    this.footer && this.footer.setColMaxTdWidth(data)
   }
 
   // 存储设置的列的宽度

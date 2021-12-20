@@ -36,7 +36,7 @@ class ColGroupCol extends Component {
     })
   }
 
-  updateMaxTdWidth(width) {
+  setMaxTdWidth(width) {
     if (this.maxTdWidth < 60 && width < 60) {
       this.maxTdWidth = 0
     } else {

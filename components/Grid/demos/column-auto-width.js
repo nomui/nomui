@@ -11,26 +11,32 @@ define([], function () {
   return {
     title: '基础用法',
     file: 'basic',
+    description: '设置 `column.autoWidth`后，这一列的宽度会设置为子元素之和最宽的那个Td的宽度',
     demo: function () {
       return {
         component: 'Grid',
         showTitle: true,
         line: 'both',
+        frozenRightCols: 1,
         columns: [
           {
             field: 'name',
             key: 'name',
+            autoWidth: true,
             title: '标题',
+            width: 200,
           },
           {
             field: 'author',
             key: 'author',
             title: '作者',
+            width: 200,
           },
           {
             field: 'sales',
             key: 'sales',
             title: '销量',
+            width: 500,
           },
           {
             field: 'role',
@@ -41,11 +47,15 @@ define([], function () {
           {
             field: 'oper',
             title: '操作',
+            width: 500,
             autoWidth: true,
-            cellRender: ({ rowData, index }) => {
+            cellRender: ({ rowData }) => {
               const children = []
+              // 随机按钮个数
+              // 无论多少个按钮，操作列都会一行排下
+              const count = Math.ceil(Math.random() * 5)
 
-              for (let i = 0; i <= index; i++) {
+              for (let i = 0; i < count; i++) {
                 children.push(genBtn(rowData.name))
               }
               return children

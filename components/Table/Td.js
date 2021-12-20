@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction, isNumeric, isPlainObject, isString } from '../util/index'
+import { getStyle, isFunction, isNumeric, isPlainObject, isString } from '../util/index'
 
 class Td extends Component {
   constructor(props, ...mixins) {
@@ -212,8 +212,33 @@ class Td extends Component {
   }
 
   _parseTdWidth() {
-    // Td的左右padding 20
-    this.col.updateMaxTdWidth(this.element.offsetWidth + 20)
+    let tdWidth = 0
+    // Td的左右padding 20, 右侧固定列的为48，预留1px的buffer
+    const tdPaddingWidth = this.props.column.firstRight ? 49 : 21
+    Array.from(this.element.children).forEach((child) => {
+      const { marginLeft, marginRight } = getStyle(child)
+      tdWidth +=
+        child.offsetWidth + this._parseCssNumber(marginLeft) + this._parseCssNumber(marginRight)
+    })
+
+    if (this.table.hasGrid) {
+      // 需要同时更新header,body,footer
+      this.table.grid.setAllTableColMaxTdWidth({
+        field: this.props.column.field,
+        maxTdWidth: tdWidth + tdPaddingWidth,
+      })
+    } else {
+      this.col.setMaxTdWidth(this.element.offsetWidth + tdPaddingWidth)
+    }
+  }
+
+  /**
+   * 解析css宽度字符，取出其中的数字部分
+   * @param {*} str 12px
+   * @returns 12
+   */
+  _parseCssNumber(str) {
+    return +str.match(/\d+/g)
   }
 
   _expand() {
