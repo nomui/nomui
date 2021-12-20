@@ -6,6 +6,7 @@ define([], function () {
       return {
         component: 'Grid',
         allowFrozenCols: true,
+        frozenRightCols: 1,
         columns: [
           {
             field: 'name',
