@@ -15319,7 +15319,8 @@ function _defineProperty2(obj, key, value) {
           that.table.grid.props.allowFrozenCols &&
           !this.table.hasMultipleThead &&
           !(this.props.column.width && this.props.column.width > 600) &&
-          this.props.column.fixed !== "right" && {
+          this.props.column.fixed !== "right" &&
+          this.props.column.customizable !== false && {
             component: "Icon",
             type: this.props.column.fixed ? "pin-fill" : "pin",
             attrs: { title: this.props.column.fixed ? "取消固定" : "固定列" },
