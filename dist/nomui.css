@@ -6037,6 +6037,9 @@ table.nom-table.p-line-both th {
 table.nom-table.p-line-both thead > tr:first-child th:last-child {
   border-right: 0;
 }
+table.nom-table.p-line-both td:last-child {
+  border-right: 0;
+}
 table.nom-table.p-bordered {
   border: 1px solid gainsboro;
 }

@@ -316,6 +316,18 @@ function _defineProperty2(obj, key, value) {
   function isNotEmptyArray(array) {
     return Array.isArray(array) && array.length > 0;
   }
+  /**
+   *
+   * @param {HTMLElement} el dom元素
+   * @param {string} pseudo 伪类名称
+   * @returns
+   */ function getStyle(el, pseudo = null) {
+    // 兼容IE和火狐谷歌等的写法
+    if (window.getComputedStyle) {
+      return getComputedStyle(el, pseudo);
+    }
+    return el.currentStyle; // 兼容IE的写法
+  }
   var index$1 = /*#__PURE__*/ Object.freeze({
     __proto__: null,
     isPlainObject: isPlainObject,
@@ -339,6 +351,7 @@ function _defineProperty2(obj, key, value) {
     isFalsy: isFalsy,
     debounce: debounce,
     isNotEmptyArray: isNotEmptyArray,
+    getStyle: getStyle,
   }); // Events
   // -----------------
   // Thanks to:
@@ -14588,6 +14601,7 @@ function _defineProperty2(obj, key, value) {
     _created() {
       this.tr = this.parent;
       this.table = this.tr.table;
+      this.col = this.table.colRefs[this.props.column.field];
     }
     _config() {
       const { level, isLeaf } = this.tr.props;
@@ -14737,6 +14751,7 @@ function _defineProperty2(obj, key, value) {
           this.setStickyPosition();
         }, 0);
       }
+      this.props.column.autoWidth && this._parseTdWidth();
     }
     setStickyPosition() {
       // 设置排序时会出发两次_render，则此时设置的第一个定时器中的this.props已被销毁
@@ -14752,6 +14767,33 @@ function _defineProperty2(obj, key, value) {
           }px`,
         });
       }
+    }
+    _parseTdWidth() {
+      let tdWidth = 0; // Td的左右padding 20, 右侧固定列的为48，预留1px的buffer
+      const tdPaddingWidth = this.props.column.firstRight ? 49 : 21;
+      Array.from(this.element.children).forEach((child) => {
+        const { marginLeft, marginRight } = getStyle(child);
+        tdWidth +=
+          child.offsetWidth +
+          this._parseCssNumber(marginLeft) +
+          this._parseCssNumber(marginRight);
+      });
+      if (this.table.hasGrid) {
+        // 需要同时更新header,body,footer
+        this.table.grid.setAllTableColMaxTdWidth({
+          field: this.props.column.field,
+          maxTdWidth: tdWidth + tdPaddingWidth,
+        });
+      } else {
+        this.col.setMaxTdWidth(this.element.offsetWidth + tdPaddingWidth);
+      }
+    }
+    /**
+     * 解析css宽度字符，取出其中的数字部分
+     * @param {*} str 12px
+     * @returns 12
+     */ _parseCssNumber(str) {
+      return +str.match(/\d+/g);
     }
     _expand() {
       this.tr._onExpand();
@@ -14816,6 +14858,7 @@ function _defineProperty2(obj, key, value) {
     _created() {
       this.table = this.parent.table;
       this.table.colRefs[this.props.column.field] = this;
+      this.maxTdWidth = 0;
     }
     _config() {
       const { width } = this.props.column;
@@ -14823,12 +14866,22 @@ function _defineProperty2(obj, key, value) {
       if (width) {
         widthPx = `${width}px`;
       }
+      if (this.maxTdWidth) {
+        widthPx = `${this.maxTdWidth}px`;
+      }
       this.setProps({
         attrs: {
           style: { width: widthPx, minWidth: !widthPx ? "60px" : null },
           "data-field": this.props.column.field || null,
         },
       });
+    }
+    setMaxTdWidth(width) {
+      if (this.maxTdWidth < 60 && width < 60) {
+        this.maxTdWidth = 0;
+      } else {
+        this.maxTdWidth = Math.max(this.maxTdWidth, width);
+      }
     }
   }
   Component.register(ColGroupCol);
@@ -15588,10 +15641,33 @@ function _defineProperty2(obj, key, value) {
     }
   }
   Component.register(Table);
+  var GridTableMixin = {
+    methods: {
+      calcResizeCol: function (data) {
+        const col = this.table.colRefs[data.field];
+        const tdWidth = this.table.element.rows[0].cells[col.props.index]
+          .offsetWidth;
+        const colWidth = col.props.column.width || tdWidth;
+        let result = colWidth + data.distance;
+        if (result < 60) {
+          result = 60;
+        }
+        col.update({ column: { width: result } });
+      },
+      resizeCol: function ({ field, width = 0 }) {
+        const col = this.table.colRefs[field];
+        col && col.update({ column: { width } });
+      },
+      setColMaxTdWidth: function ({ field, maxTdWidth }) {
+        const col = this.table.colRefs[field];
+        col && col.setMaxTdWidth(maxTdWidth);
+      },
+    },
+  };
   class GridBody extends Component {
     constructor(props, ...mixins) {
       const defaults = { children: { component: Table } };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(defaults, props), GridTableMixin, ...mixins);
     }
     _created() {
       this.grid = this.parent;
@@ -15622,27 +15698,12 @@ function _defineProperty2(obj, key, value) {
         },
       });
     }
-    calcResizeCol(data) {
-      const col = this.table.colRefs[data.field];
-      const tdWidth = this.table.element.rows[0].cells[col.props.index]
-        .offsetWidth;
-      const colWidth = col.props.column.width || tdWidth;
-      let result = colWidth + data.distance;
-      if (result < 60) {
-        result = 60;
-      }
-      col.update({ column: { width: result } });
-    }
-    resizeCol({ field, width = 0 }) {
-      const col = this.table.colRefs[field];
-      col.update({ column: { width } });
-    }
   }
   Component.register(GridBody);
   class GridFooter extends Component {
     constructor(props, ...mixins) {
       const defaults = { children: { component: Table } };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(defaults, props), GridTableMixin, ...mixins);
     }
     _created() {
       this.grid = this.parent;
@@ -15705,21 +15766,6 @@ function _defineProperty2(obj, key, value) {
         });
       }
       return [res];
-    }
-    calcResizeCol(data) {
-      const col = this.table.colRefs[data.field];
-      const tdWidth = this.table.element.rows[0].cells[col.props.index]
-        .offsetWidth;
-      const colWidth = col.props.column.width || tdWidth;
-      let result = colWidth + data.distance;
-      if (result < 60) {
-        result = 60;
-      }
-      col.update({ column: { width: result } });
-    }
-    resizeCol({ field, width = 0 }) {
-      const col = this.table.colRefs[field];
-      col.update({ column: { width } });
     }
   }
   Component.register(GridFooter);
@@ -15788,7 +15834,7 @@ function _defineProperty2(obj, key, value) {
   class GridHeader extends Component {
     constructor(props, ...mixins) {
       const defaults = { children: { component: Table } };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(defaults, props), GridTableMixin, ...mixins);
     }
     _created() {
       this.grid = this.parent;
@@ -15894,21 +15940,6 @@ function _defineProperty2(obj, key, value) {
       } else {
         this.scrollbar.hide();
       }
-    }
-    calcResizeCol(data) {
-      const col = this.table.colRefs[data.field];
-      const tdWidth = this.table.element.rows[0].cells[col.props.index]
-        .offsetWidth;
-      const colWidth = col.props.column.width || tdWidth;
-      let result = colWidth + data.distance;
-      if (result < 60) {
-        result = 60;
-      }
-      col.update({ column: { width: result } });
-    }
-    resizeCol({ field, width = 0 }) {
-      const col = this.table.colRefs[field];
-      col.update({ column: { width } });
     }
   }
   Component.register(GridHeader);
@@ -16212,6 +16243,7 @@ function _defineProperty2(obj, key, value) {
         this.autoMergeCols();
       }
       this._parseColumnsWidth();
+      this.resizeCol({ field: "oper" });
       if (!data || !data.length) {
         this._doNotAutoScroll = false;
         this._setScrollPlace(true);
@@ -16645,7 +16677,7 @@ function _defineProperty2(obj, key, value) {
           ],
         });
       }
-    } // 从缓存中读取上一次设置的宽度
+    } // 处理列宽
     _parseColumnsWidth() {
       const { columnResizable } = this.props;
       const { cache } = columnResizable;
@@ -16653,10 +16685,13 @@ function _defineProperty2(obj, key, value) {
         cache,
         STORAGE_KEY_GRID_COLS_WIDTH
       );
-      if (!this._gridColumsWidthStoreKey) return;
       const colWithString = localStorage.getItem(this._gridColumsWidthStoreKey);
-      if (!colWithString) return;
-      const _widthInfo = JSON.parse(colWithString);
+      const _widthInfo = JSON.parse(colWithString) || {}; // 配置了 autoWidth的列，主动触发其col.update
+      this.originColumns.forEach((col) => {
+        if (col.autoWidth) {
+          _widthInfo[col.field] = 0;
+        }
+      });
       Object.keys(_widthInfo).forEach((key) => {
         const data = { field: key, width: _widthInfo[key] };
         this.resizeCol(data);
@@ -16714,6 +16749,14 @@ function _defineProperty2(obj, key, value) {
       this.header && this.header.resizeCol(data);
       this.body && this.body.resizeCol(data);
       this.footer && this.footer.resizeCol(data);
+    }
+    /**
+     * 由设置了 autoWidth的Td触发，刷新对应的col的maxTdWidth变量
+     * @param {*} data {field, maxTdWidth}
+     */ setAllTableColMaxTdWidth(data) {
+      this.header && this.header.setColMaxTdWidth(data);
+      this.body && this.body.setColMaxTdWidth(data);
+      this.footer && this.footer.setColMaxTdWidth(data);
     } // 存储设置的列的宽度
     storeColsWidth(field) {
       const { _gridColumsWidthStoreKey: _storeKey } = this;

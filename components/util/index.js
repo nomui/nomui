@@ -330,3 +330,17 @@ export function debounce(func, wait) {
 export function isNotEmptyArray(array) {
   return Array.isArray(array) && array.length > 0
 }
+
+/**
+ *
+ * @param {HTMLElement} el dom元素
+ * @param {string} pseudo 伪类名称
+ * @returns
+ */
+export function getStyle(el, pseudo = null) {
+  // 兼容IE和火狐谷歌等的写法
+  if (window.getComputedStyle) {
+    return getComputedStyle(el, pseudo)
+  }
+  return el.currentStyle // 兼容IE的写法
+}
