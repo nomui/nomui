@@ -9,8 +9,8 @@ define([], function () {
     },
   })
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '自动计算列宽',
+    file: 'column-auto-width',
     description: '设置 `column.autoWidth`后，这一列的宽度会设置为子元素之和最宽的那个Td的宽度',
     demo: function () {
       return {
