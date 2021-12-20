@@ -137,7 +137,7 @@ class Td extends Component {
       this.props.column.ellipsis === true
 
     // 用span包一层，为了伪元素的展示
-    if (isEllipsis) {
+    if (isEllipsis && !this.props.column.autoWidth) {
       children = {
         tag: 'span',
         classes: { 'nom-table-cell-content': true },

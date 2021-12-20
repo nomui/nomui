@@ -17,6 +17,7 @@ define([], function () {
         component: 'Grid',
         showTitle: true,
         line: 'both',
+        ellipsis: 'both',
         frozenRightCols: 1,
         columns: [
           {
