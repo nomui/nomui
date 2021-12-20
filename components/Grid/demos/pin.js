@@ -5,8 +5,12 @@ define([], function () {
     demo: function () {
       return {
         component: 'Grid',
-        allowFrozenCols: true,
+        key: 'grid-pin-demo',
+        // allowFrozenCols: true,
         frozenRightCols: 1,
+        columnsCustomizable: {
+          cache: true,
+        },
         columns: [
           {
             field: 'name',
@@ -17,12 +21,32 @@ define([], function () {
           {
             field: 'author',
             key: 'author',
+            width: 100,
             title: '作者',
           },
           {
             field: 'sales',
             key: 'sales',
             title: '销量',
+            width: 100,
+          },
+          {
+            field: 'sales1',
+            key: 'sales1',
+            title: '销量1',
+            width: 200,
+          },
+          {
+            field: 'sales2',
+            key: 'sales2',
+            title: '销量2',
+            width: 300,
+          },
+          {
+            field: 'sales3',
+            key: 'sales3',
+            title: '销量3',
+            width: 400,
           },
 
           {
@@ -34,9 +58,36 @@ define([], function () {
           },
         ],
         data: [
-          { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
-          { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
-          { id: 5, name: '射雕英雄传', author: '金庸', sales: 0, role: '郭靖' },
+          {
+            id: 1,
+            name: '笑傲江湖',
+            author: '金庸',
+            sales: 100000,
+            sales1: 200000,
+            sales2: 300000,
+            sales3: 400000,
+            role: '令狐冲',
+          },
+          {
+            id: 4,
+            name: '天龙八部',
+            author: '金庸',
+            sales: 300000,
+            sales1: 400000,
+            sales2: 500000,
+            sales3: 600000,
+            role: '乔峰',
+          },
+          {
+            id: 5,
+            name: '射雕英雄传',
+            author: '金庸',
+            sales: 0,
+            sales1: 5000,
+            sales2: 10000,
+            sales3: 20000,
+            role: '郭靖',
+          },
         ],
       }
     },
