@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import Scrollbar from '../Scrollbar/index'
 import Table from '../Table/index'
 import { isFunction } from '../util/index'
+import GridTableMixin from './GridTableMixin'
 
 class GridHeader extends Component {
   constructor(props, ...mixins) {
@@ -9,7 +10,7 @@ class GridHeader extends Component {
       children: { component: Table },
     }
 
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(defaults, props), GridTableMixin, ...mixins)
   }
 
   _created() {
@@ -151,24 +152,6 @@ class GridHeader extends Component {
     } else {
       this.scrollbar.hide()
     }
-  }
-
-  calcResizeCol(data) {
-    const col = this.table.colRefs[data.field]
-    const tdWidth = this.table.element.rows[0].cells[col.props.index].offsetWidth
-    const colWidth = col.props.column.width || tdWidth
-
-    let result = colWidth + data.distance
-
-    if (result < 60) {
-      result = 60
-    }
-    col.update({ column: { width: result } })
-  }
-
-  resizeCol({ field, width = 0 }) {
-    const col = this.table.colRefs[field]
-    col.update({ column: { width } })
   }
 }
 

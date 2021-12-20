@@ -10,6 +10,7 @@ define([
   './frozen-header.js',
   './pin.js',
   './colspan.js',
+  './column-auto-width.js',
   './auto-merge.js',
   './summary.js',
   './multiple-header.js',
