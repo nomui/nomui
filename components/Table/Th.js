@@ -54,7 +54,9 @@ class Th extends Component {
       this.table.hasGrid &&
       this.table.grid.props.columnResizable &&
       this.props.column.resizable !== false &&
-      this.props.column.colSpan === 1
+      this.props.column.colSpan === 1 &&
+      this.props.column.width &&
+      this.props.column.width > 60
 
     let children = [
       headerProps,
