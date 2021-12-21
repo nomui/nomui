@@ -16062,6 +16062,9 @@ function _defineProperty2(obj, key, value) {
       this.rowsRefs = {};
       this.checkedRowRefs = {};
       this._doNotAutoScroll = true;
+      this.props.columns = this.props.columns.filter((n) => {
+        return Object.keys(n).length;
+      });
       this.pinColumns = [];
       this.originColumns = [...this.props.columns];
       this.sortUpdated = false; // 列设置弹窗 tree的数据
@@ -16071,8 +16074,11 @@ function _defineProperty2(obj, key, value) {
     _update(props) {
       // update了columns, 需要重新计算得到 visibleColumns
       if (props.columns) {
+        const c = props.columns.filter((n) => {
+          return Object.keys(n);
+        });
         this.setProps({ visibleColumns: null });
-        this.originColumns = [...props.columns];
+        this.originColumns = [...c];
         this.popupTreeData = this.originColumns;
       } // 更新了data
       if (props.data) {
