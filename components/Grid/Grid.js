@@ -27,8 +27,13 @@ class Grid extends Component {
     this.rowsRefs = {}
     this.checkedRowRefs = {}
     this._doNotAutoScroll = true
+
+    this.props.columns = this.props.columns.filter((n) => {
+      return Object.keys(n).length
+    })
     this.pinColumns = []
     this.originColumns = [...this.props.columns]
+
     this.sortUpdated = false
     // 列设置弹窗 tree的数据
     this.popupTreeData = this.originColumns
@@ -38,8 +43,11 @@ class Grid extends Component {
   _update(props) {
     // update了columns, 需要重新计算得到 visibleColumns
     if (props.columns) {
+      const c = props.columns.filter((n) => {
+        return Object.keys(n)
+      })
       this.setProps({ visibleColumns: null })
-      this.originColumns = [...props.columns]
+      this.originColumns = [...c]
       this.popupTreeData = this.originColumns
     }
     // 更新了data
