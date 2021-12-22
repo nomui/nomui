@@ -6,8 +6,20 @@
 
 ## API
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| options | 单选项配置 | `[{text:string,value:number\|string}]` | - |
-| uistyle | 展示形式 | `'button'\|'radio'` | radio |
-| onValueChange | 值变化的时候触发 | `(changed:{name:string,newValue:boolean,oldValue:boolean,sender:obj})=>void` | - |
+| 参数    | 说明       | 类型                                   | 默认值    |
+| ------- | ---------- | -------------------------------------- | --------- |
+| options | 单选项配置 | `[{text:string,value:number\|string}]` | -         |
+| uistyle | 展示形式   | `'button'\|'radio'`                    | `'radio'` |
+| cols    | 展示列数   | `number`                               | -         |
+
+## Events
+
+| 事件名称 | 说明 | 回调参数 |
+| --- | --- | --- |
+| onValueChange | 值变化的时候触发 | `changed:{name:string,newValue:boolean,oldValue:boolean,sender:obj}` |
+
+## Methods
+
+| 参数              | 说明               | 类型                    |
+| ----------------- | ------------------ | ----------------------- |
+| getSelectedOption | 获取选中的实例列表 | `() => radioOptionItem` |

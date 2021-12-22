@@ -19,9 +19,11 @@ class Thead extends Component {
 
     const arr = this.mapHeadData(columns)
 
+    this.table.hasMultipleThead = arr.length > 1
+
     const children = []
     for (let i = 0; i < arr.length; i++) {
-      children.push({ component: TheadTr, columns: arr[i] })
+      children.push({ component: TheadTr, columns: arr[i], isRootTr: i === 0 })
     }
 
     this.setProps({

@@ -35,7 +35,7 @@ class Scrollbar extends Component {
           this._scrollLeft = scrollLeft
 
           if (!this._setScrollFlag) {
-            this.props.target.body.element.scrollLeft = scrollLeft;
+            this.props.target.body.element.scrollLeft = scrollLeft
           }
           this._setScrollFlag = false
         },
@@ -57,18 +57,18 @@ class Scrollbar extends Component {
   setScrollLeft(scrollLeft) {
     // 当前scrollbar 隐藏，无法直接设置scrollLeft 的值
     // 所以先记录下来 在_rendered中再赋值
-    if(this.props.hidden) {
+    if (this.props.hidden) {
       this._scrollLeft = scrollLeft
     } else {
       // _setScrollFlag: true 时：表示此次滚动条的变化为外部触发
       // 则无需再正向设置 gridbody scrollLeft, 导致触发其 onscroll事件
-      this._setScrollFlag = true;
-      this.element.scrollLeft = scrollLeft;
+      this._setScrollFlag = true
+      this.element.scrollLeft = scrollLeft
     }
   }
 
   _rendered() {
-    this.element.scrollLeft = this._scrollLeft || 0;
+    this.element.scrollLeft = this._scrollLeft || 0
   }
 
   show() {

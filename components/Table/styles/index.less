@@ -40,7 +40,7 @@ table.nom-table {
         cursor: pointer;
       }
     }
-    &.nom-table-ellipsis  {
+    &.nom-table-ellipsis {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -63,8 +63,19 @@ table.nom-table {
       visibility: hidden;
       cursor: col-resize;
     }
+    .nom--table-pin-handler {
+      color: #666 !important;
+      visibility: hidden;
+      cursor: pointer;
+      &.p-type-pin-fill {
+        visibility: visible;
+      }
+    }
     &:hover {
       .nom-table-resize-handler {
+        visibility: visible;
+      }
+      .nom--table-pin-handler {
         visibility: visible;
       }
     }
@@ -72,7 +83,8 @@ table.nom-table {
 
   .nom-table-ellipsis {
     // 内容使用content包了一层，在content中设置overflow: hidden
-    &.nom-table-fixed-left, &.nom-table-fixed-right {
+    &.nom-table-fixed-left,
+    &.nom-table-fixed-right {
       .nom-table-cell-content {
         display: block;
         overflow: hidden;
@@ -80,7 +92,8 @@ table.nom-table {
       }
     }
 
-    &.nom-table-fixed-left-last, &.nom-table-fixed-right-first {
+    &.nom-table-fixed-left-last,
+    &.nom-table-fixed-right-first {
       overflow: visible;
     }
   }
@@ -99,7 +112,7 @@ table.nom-table {
   }
 
   .nom-table-fixed-right-first {
-    padding-left: 38px;
+    padding-left: 15px;
   }
 
   .nom-table-fixed-right-first::after {
@@ -170,7 +183,8 @@ table.nom-table {
     td,
     th {
       border-right: 1px solid @oc-gray-2;
-
+    }
+    > th {
       &:last-child {
         border-right: 0;
       }
@@ -182,7 +196,15 @@ table.nom-table {
     th {
       border-right: 1px solid @oc-gray-2;
       border-bottom: 1px solid @oc-gray-2;
-
+    }
+    thead > tr {
+      &:first-child {
+        th:last-child {
+          border-right: 0;
+        }
+      }
+    }
+    td {
       &:last-child {
         border-right: 0;
       }

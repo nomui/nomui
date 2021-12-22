@@ -59,7 +59,7 @@ class TimePickerPanel extends Component {
 
   _config() {
     const that = this
-    this.defaultValue = this.props.value || this.defaultValue
+    this.defaultValue = this.defaultValue || this.props.value
     if (this.datePicker.props.showTime && this.datePicker.props.showTime !== true) {
       this.props = { ...this.props, ...this.datePicker.props.showTime }
     }
@@ -236,6 +236,17 @@ class TimePickerPanel extends Component {
         }
       }
     }
+    if (this.time.hour >= this.maxTime.hour) {
+      this.time.hour = this.maxTime.hour
+      if (this.time.minute >= this.maxTime.minute) {
+        this.time.minute = this.maxTime.minute
+      }
+      if (this.time.minute >= this.maxTime.minute) {
+        if (this.time.second >= this.maxTime.second) {
+          this.time.second = this.maxTime.second
+        }
+      }
+    }
     this.checkTimeRange()
     const result = new Date(
       '2000',
@@ -312,6 +323,9 @@ class TimePickerPanel extends Component {
 
   checkTimeRange() {
     const that = this
+    const beforeHourFlag = this._isHourOverRange
+    const beforeMinuteFlag = this._isMinuteOverRange
+
     const { hour, minute, second } = this.timeRange
     const beforeTimeRangeStr = `${hour}-${minute}-${second}`
     this._calcTimeRangeByTime()
@@ -321,35 +335,47 @@ class TimePickerPanel extends Component {
     // 比较 timeRange 是否发生变化
     const { hour: aHour, minute: aMinute, second: aSecond } = this.timeRange
     const afterTimeRangeStr = `${aHour}-${aMinute}-${aSecond}`
-    // 更新timeList的数据
+
+    let needRefreshList = []
     if (afterTimeRangeStr !== beforeTimeRangeStr) {
-      Object.keys(this.timeList).forEach(function (key) {
-        that.timeList[key].refresh()
-      })
+      needRefreshList = ['hour', 'minute', 'second']
+    } else if (beforeHourFlag !== this._isHourOverRange) {
+      needRefreshList = ['minute', 'second']
+    } else if (beforeMinuteFlag !== this._isMinuteOverRange) {
+      needRefreshList = ['second']
     }
+    // 更新timeList的数据
+    needRefreshList.forEach(function (key) {
+      that.timeList[key].refresh()
+    })
   }
 
   // 根据当前选择 time 更新计算得到真正的 timeRange
   // hour值在 min~max之间时, minute和second的range = ['00', '59']
   _calcTimeRangeByTime() {
-    const that = this
-    if (that.time.hour <= that.minTime.hour) {
-      that.timeRange.hour = [that.minTime.hour, that.maxTime.hour]
-      that.timeRange.minute = [that.minTime.minute, '59']
-      if (that.time.minute <= that.minTime.minute) {
-        that.timeRange.second = [that.minTime.second, '59']
+    const { time, timeRange, minTime, maxTime } = this
+    this._isHourOverRange = time.hour < minTime.hour || time.hour > maxTime.hour
+    this._isMinuteOverRange =
+      (time.hour === minTime.hour && time.minute < minTime.minute) ||
+      (time.hour === maxTime.hour && time.minute > maxTime.minute)
+
+    if (time.hour <= minTime.hour) {
+      timeRange.hour = [minTime.hour, maxTime.hour]
+      timeRange.minute = [minTime.minute, '59']
+      if (time.minute <= minTime.minute) {
+        timeRange.second = [minTime.second, '59']
       } else {
-        that.timeRange.second = ['00', '59']
+        timeRange.second = ['00', '59']
       }
-    } else if (that.time.hour >= that.maxTime.hour) {
-      that.timeRange.minute = ['00', that.maxTime.minute]
-      if (that.time.minute >= that.maxTime.minute) {
-        that.timeRange.second = ['00', that.maxTime.second]
+    } else if (time.hour >= maxTime.hour) {
+      timeRange.minute = ['00', maxTime.minute]
+      if (time.minute >= maxTime.minute) {
+        timeRange.second = ['00', maxTime.second]
       } else {
-        that.timeRange.second = ['00', '59']
+        timeRange.second = ['00', '59']
       }
     } else {
-      that.timeRange.minute = that.timeRange.second = ['00', '59']
+      timeRange.minute = timeRange.second = ['00', '59']
     }
   }
 }
