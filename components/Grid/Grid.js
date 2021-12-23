@@ -102,7 +102,7 @@ class Grid extends Component {
     if (frozenLeftCols !== null || frozenRightCols !== null) {
       const rev = this.props.columns.length - frozenRightCols
 
-      const c = this.props.columns.map(function (n, i) {
+      const c = this.props.columns.map(function (n, i, arr) {
         if (i + 1 < frozenLeftCols) {
           return {
             ...n,
@@ -130,10 +130,11 @@ class Grid extends Component {
           return {
             ...n,
             fixed: 'right',
+            lastRight: i === arr.length - 1 ? true : null,
           }
         }
 
-        return { ...n, fixed: null, lastLeft: null, firstRight: null }
+        return { ...n, fixed: null, lastLeft: null, firstRight: null, lastRight: null }
       })
 
       this.props.columns = c
@@ -144,21 +145,20 @@ class Grid extends Component {
     this.setProps({
       classes: {
         'm-frozen-header': this.props.frozenHeader,
+        'm-with-setting': !!this.props.columnsCustomizable,
       },
       children: [
         this.props.columnsCustomizable && {
-          children: {
-            component: 'Button',
-            icon: 'setting',
-            size: 'small',
-            // type: 'text',
-            classes: {
-              'nom-grid-setting': true,
-            },
-            tooltip: '列设置',
-            onClick: () => {
-              that.showSetting()
-            },
+          component: 'Button',
+          icon: 'setting',
+          size: 'small',
+          // type: 'text',
+          classes: {
+            'nom-grid-setting': true,
+          },
+          tooltip: '列设置',
+          onClick: () => {
+            that.showSetting()
           },
         },
         { component: GridHeader, line: line },

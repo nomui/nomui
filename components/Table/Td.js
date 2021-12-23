@@ -213,8 +213,11 @@ class Td extends Component {
 
   _parseTdWidth() {
     let tdWidth = 0
-    // Td的左右padding 20, 右侧固定列的为25，预留1px的buffer
-    const tdPaddingWidth = this.props.column.firstRight ? 26 : 21
+    // Td的左右padding 10+10, 预留1px的buffer
+    let tdPaddingWidth = 21
+    // 右侧固定第一列, padding-left: 15
+    if (this.props.column.firstRight) tdPaddingWidth += 5
+
     Array.from(this.element.children).forEach((child) => {
       const { marginLeft, marginRight } = getStyle(child)
       tdWidth +=
@@ -222,6 +225,9 @@ class Td extends Component {
     })
 
     if (this.table.hasGrid) {
+      // 自定义列设置 && 右侧固定最後一列的th的 padding-right: 40
+      if (!!this.table.grid.props.columnsCustomizable && this.props.column.lastRight)
+        tdPaddingWidth += 30
       // 需要同时更新header,body,footer
       this.table.grid.setAllTableColMaxTdWidth({
         field: this.props.column.field,
