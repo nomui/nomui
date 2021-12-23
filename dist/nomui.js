@@ -14769,8 +14769,9 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _parseTdWidth() {
-      let tdWidth = 0; // Td的左右padding 20, 右侧固定列的为25，预留1px的buffer
-      const tdPaddingWidth = this.props.column.firstRight ? 26 : 21;
+      let tdWidth = 0; // Td的左右padding 10+10, 预留1px的buffer
+      let tdPaddingWidth = 21; // 右侧固定第一列, padding-left: 15
+      if (this.props.column.firstRight) tdPaddingWidth += 5;
       Array.from(this.element.children).forEach((child) => {
         const { marginLeft, marginRight } = getStyle(child);
         tdWidth +=
@@ -14779,7 +14780,12 @@ function _defineProperty2(obj, key, value) {
           this._parseCssNumber(marginRight);
       });
       if (this.table.hasGrid) {
-        // 需要同时更新header,body,footer
+        // 自定义列设置 && 右侧固定最後一列的th的 padding-right: 40
+        if (
+          !!this.table.grid.props.columnsCustomizable &&
+          this.props.column.lastRight
+        )
+          tdPaddingWidth += 30; // 需要同时更新header,body,footer
         this.table.grid.setAllTableColMaxTdWidth({
           field: this.props.column.field,
           maxTdWidth: tdWidth + tdPaddingWidth,
@@ -16117,7 +16123,7 @@ function _defineProperty2(obj, key, value) {
       }
       if (frozenLeftCols !== null || frozenRightCols !== null) {
         const rev = this.props.columns.length - frozenRightCols;
-        const c = this.props.columns.map(function (n, i) {
+        const c = this.props.columns.map(function (n, i, arr) {
           if (i + 1 < frozenLeftCols) {
             return Object.assign({}, n, { fixed: "left" });
           }
@@ -16128,30 +16134,35 @@ function _defineProperty2(obj, key, value) {
             return Object.assign({}, n, { fixed: "right", firstRight: true });
           }
           if (i > rev) {
-            return Object.assign({}, n, { fixed: "right" });
+            return Object.assign({}, n, {
+              fixed: "right",
+              lastRight: i === arr.length - 1 ? true : null,
+            });
           }
           return Object.assign({}, n, {
             fixed: null,
             lastLeft: null,
             firstRight: null,
+            lastRight: null,
           });
         });
         this.props.columns = c;
       }
       this._calcMinWidth();
       this.setProps({
-        classes: { "m-frozen-header": this.props.frozenHeader },
+        classes: {
+          "m-frozen-header": this.props.frozenHeader,
+          "m-with-setting": !!this.props.columnsCustomizable,
+        },
         children: [
           this.props.columnsCustomizable && {
-            children: {
-              component: "Button",
-              icon: "setting",
-              size: "small", // type: 'text',
-              classes: { "nom-grid-setting": true },
-              tooltip: "列设置",
-              onClick: () => {
-                that.showSetting();
-              },
+            component: "Button",
+            icon: "setting",
+            size: "small", // type: 'text',
+            classes: { "nom-grid-setting": true },
+            tooltip: "列设置",
+            onClick: () => {
+              that.showSetting();
             },
           },
           { component: GridHeader, line: line },
