@@ -227,12 +227,11 @@ class Td extends Component {
     if (this.table.hasGrid) {
       // 自定义列设置 && 右侧固定最後一列的th的 padding-right: 40
       if (!!this.table.grid.props.columnsCustomizable && this.props.column.lastRight)
-        tdPaddingWidth += 30
-      // 需要同时更新header,body,footer
-      this.table.grid.setAllTableColMaxTdWidth({
-        field: this.props.column.field,
-        maxTdWidth: tdWidth + tdPaddingWidth,
-      })
+        // 需要同时更新header,body,footer
+        this.table.grid.setAllTableColMaxTdWidth({
+          field: this.props.column.field,
+          maxTdWidth: tdWidth + tdPaddingWidth + 30,
+        })
     } else {
       this.col.setMaxTdWidth(this.element.offsetWidth + tdPaddingWidth)
     }
