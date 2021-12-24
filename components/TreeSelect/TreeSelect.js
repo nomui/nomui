@@ -301,7 +301,7 @@ class TreeSelect extends Field {
 
     // 多选: 每次setValue后更新选中状态
     if (this.props.multiple) {
-      this.tree.update({
+      this.popup.update({
         nodeCheckable: this._getPopupNodeCheckable(),
       })
     } else {
