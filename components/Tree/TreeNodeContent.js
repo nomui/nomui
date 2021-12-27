@@ -79,11 +79,7 @@ class TreeNodeContent extends Component {
           { tag: 'span', classes: { 'nom-tree-node-content-text': true } },
           Component.normalizeTemplateProps(text),
         ),
-        tools &&
-          Component.extendProps(
-            { classes: { 'nom-tree-node-content-tools': true } },
-            Component.normalizeIconProps(tools),
-          ),
+        tools && Component.extendProps({ classes: { 'nom-tree-node-content-tools': true } }, tools),
       ],
       onClick: () => {
         this.tree._onNodeClick({ node: this.node })
