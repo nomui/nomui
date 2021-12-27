@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.42](https://github.com/nomui/nomui/compare/v1.0.0-alpha.41...v1.0.0-alpha.42) (2021-12-24)
+
+
+### Features
+
+* **Grid-autowidth:** 列根据子元素自动得出宽度 ([b276bb1](https://github.com/nomui/nomui/commit/b276bb1fa6d6484d1d9d143ea9ebc4e6a2588ef6))
+* **Grid:** 添加列宽根据子元素自动计算得出功能 ([05fb483](https://github.com/nomui/nomui/commit/05fb483151bbb6a33f093f004be5bb68f2646b33))
+
+
+### Bug Fixes
+
+* **Gird-autoWidth:** 有自定义列按钮时，导致操作列宽度不够文字换行 ([6c02c12](https://github.com/nomui/nomui/commit/6c02c1275bae5bcd191365db764c22ec5f95537e))
+* **Grid:** 固定列时的border展示问题 ([3770633](https://github.com/nomui/nomui/commit/3770633b1efc5e8fff169f8e645f903018d2292f))
+* **Grid:** 兼容autoWidth和ellipsis ([14cf314](https://github.com/nomui/nomui/commit/14cf314b413b71a3681c4b94e73cacc127820629))
+* **Grid:** 手动固定列应该忽略右侧已经固定的列 ([d5da1de](https://github.com/nomui/nomui/commit/d5da1de0837e7f71f5def3bb33beb4bbdcd8b3c0))
+* **Grid:** 原始columns中的空对象没有正确被忽略掉 ([d312bad](https://github.com/nomui/nomui/commit/d312bad9b7b82ec4f7713dc726b4810c2e422342))
+* **Grid:** autoWidth操作列文字按钮太少导致表头换行 ([d5660a8](https://github.com/nomui/nomui/commit/d5660a8de81def39ed3d3b254b384785804f59d1))
+* **Toolbar:** 添加inline 配置 ([c4bb7d1](https://github.com/nomui/nomui/commit/c4bb7d1bf5363e3657bf3ee875e1db6943f1cd85))
+* **TreeSelect:** 修复TreeSelect多选bug ([7e2fb04](https://github.com/nomui/nomui/commit/7e2fb04f5ac2dcc27ca1156e45da37d16fd52fe9))
+
+
+### Docs
+
+* **Grid-autoWidth:** autoWidth和width配置的优先级 ([10226e2](https://github.com/nomui/nomui/commit/10226e2527d274b7d284680dab592f6a379d89b7))
+* **Grid:** 自动计算列宽title ([68b8281](https://github.com/nomui/nomui/commit/68b82818f18b91f47edaf995e150f9e928d94d54))
+
 ## [1.0.0-alpha.41](https://github.com/nomui/nomui/compare/v1.0.0-alpha.40...v1.0.0-alpha.41) (2021-12-17)
 
 
