@@ -31,8 +31,12 @@ define([], function () {
             },
             items: [
               { text: '版本更新日志', id: 'CHANGELOG', url: '#!documents/index?article=CHANGELOG' },
-              { text: 'Git提交规范', id: 'commitmsg', url: '#!documents/index?article=commitlint' },
-              { text: '版本发布流程', id: 'commitmsg', url: '#!documents/index?article=release' },
+              {
+                text: 'Git提交规范',
+                id: 'commitlint',
+                url: '#!documents/index?article=commitlint',
+              },
+              { text: '版本发布流程', id: 'release', url: '#!documents/index?article=release' },
             ],
             itemDefaults: {
               key: function () {
@@ -75,6 +79,7 @@ define([], function () {
       },
       onQueryChange: () => {
         renderArticle()
+        highLight()
       },
     }
   }
