@@ -14,6 +14,12 @@ define([], function () {
       })
     }
 
+    const highLight = () => {
+      const { article = 'CHANGELOG' } = this.$route.query
+
+      articleMenu && articleMenu.selectToItem(article)
+    }
+
     return {
       view: {
         component: 'Layout',
@@ -24,7 +30,7 @@ define([], function () {
               articleMenu = c
             },
             items: [
-              { text: '版本更新日志', id: 'changelog', url: '#!documents/index?article=CHANGELOG' },
+              { text: '版本更新日志', id: 'CHANGELOG', url: '#!documents/index?article=CHANGELOG' },
               { text: 'Git提交规范', id: 'commitmsg', url: '#!documents/index?article=commitlint' },
               { text: '版本发布流程', id: 'commitmsg', url: '#!documents/index?article=release' },
             ],
@@ -65,6 +71,7 @@ define([], function () {
       },
       _rendered: function () {
         renderArticle()
+        highLight()
       },
       onQueryChange: () => {
         renderArticle()
