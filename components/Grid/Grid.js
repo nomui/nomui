@@ -123,6 +123,7 @@ class Grid extends Component {
             ...n,
             fixed: 'right',
             firstRight: true,
+            lastRight: i === arr.length - 1 ? true : null,
           }
         }
 
