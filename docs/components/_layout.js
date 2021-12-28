@@ -3,7 +3,7 @@ define([], function () {
     let javascriptMenuRef = null
 
     const highLight = () => {
-      let { type = 'component' } = this.$route.query
+      let { type = 'Component' } = this.$route.query
       const { cat } = this.$route.query
       if (cat) {
         type += `/${cat}`
