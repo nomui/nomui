@@ -218,8 +218,8 @@ class Td extends Component {
     // 右侧固定第一列, padding-left: 15
     if (this.props.column.firstRight) tdPaddingWidth += 5
     // 自定义列设置 && 右侧固定最後一列的th的 padding-right: 40
-    if (!!this.table.grid.props.columnsCustomizable && this.props.column.lastRight)
-      tdPaddingWidth += 30
+    const needRightPadding =
+      !!this.table.grid.props.columnsCustomizable && this.props.column.lastRight
 
     Array.from(this.element.children).forEach((child) => {
       const { marginLeft, marginRight } = getStyle(child)
@@ -228,10 +228,13 @@ class Td extends Component {
     })
 
     if (this.table.hasGrid) {
+      let maxTdWidth = tdWidth + tdPaddingWidth
+      // fix: td宽度不够导致 操作 二字换行
+      maxTdWidth = maxTdWidth < 80 && needRightPadding ? maxTdWidth + 30 : maxTdWidth
       // 需要同时更新header,body,footer
       this.table.grid.setAllTableColMaxTdWidth({
         field: this.props.column.field,
-        maxTdWidth: tdWidth + tdPaddingWidth,
+        maxTdWidth,
       })
     } else {
       this.col.setMaxTdWidth(this.element.offsetWidth + tdPaddingWidth)
