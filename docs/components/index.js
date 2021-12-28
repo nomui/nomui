@@ -4,7 +4,7 @@ define(['/docs/DemoPanel.js'], function (demoPanel) {
     let bodyRef = null
 
     const renderDemoIndex = () => {
-      const { type = 'component', cat, tab = 'demo' } = this.$route.query
+      const { type = 'Component', cat, tab = 'demo' } = this.$route.query
       let url = `/components/${type}/demos/index.js`
       if (cat) {
         url = `/components/${type}/demos/${cat}/index.js`
