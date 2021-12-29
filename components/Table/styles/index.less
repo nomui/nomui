@@ -3,15 +3,41 @@ table.nom-table {
   table-layout: fixed;
   background-color: #fff;
   border-spacing: 0;
-  tbody tr:hover {
-    background-color: #f5f5f5;
-    transition: all ease-in 0.25s;
-  }
+
   &.nom-table-striped {
     tbody tr:nth-child(even) {
       background-color: #fbfbfb;
       &:hover {
         background-color: #f2f2f2;
+        .nom-table-fixed-left,
+        .nom-table-fixed-right {
+          background-color: #f2f2f2;
+        }
+      }
+      &.nom-tr-selected {
+        background-color: #fffaef;
+        .nom-table-fixed-left,
+        .nom-table-fixed-right {
+          background-color: #fffaef;
+        }
+      }
+    }
+  }
+
+  tbody tr {
+    &:hover {
+      background-color: #f5f5f5;
+      .nom-table-fixed-left,
+      .nom-table-fixed-right {
+        background-color: #f5f5f5;
+      }
+    }
+    &.nom-tr-selected,
+    &.nom-tr-selected:hover {
+      background-color: #fffaef;
+      .nom-table-fixed-left,
+      .nom-table-fixed-right {
+        background-color: #fffaef;
       }
     }
   }

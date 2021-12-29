@@ -93,6 +93,22 @@ class Table extends Component {
   getRows() {
     return this.tbody.getChildren()
   }
+
+  selectTr(tr) {
+    if (this.activeTr) {
+      this.activeTr.update({
+        classes: {
+          'nom-tr-selected': false,
+        },
+      })
+    }
+    this.activeTr = tr
+    this.activeTr.update({
+      classes: {
+        'nom-tr-selected': true,
+      },
+    })
+  }
 }
 
 Component.register(Table)

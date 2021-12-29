@@ -1126,7 +1126,7 @@ Grid.defaults = {
   visibleColumns: null,
   columnResizable: false,
   // columnResizable.cache: 设置的列宽保存至localstorage，cache的值为对应的key
-  striped: false,
+  striped: true,
   showTitle: false,
   ellipsis: false,
   sticky: false,
