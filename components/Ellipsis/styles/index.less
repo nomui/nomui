@@ -4,10 +4,11 @@
   table-layout: fixed;
   .nom-ellipsis-inner {
     display: -webkit-box;
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 }
 
