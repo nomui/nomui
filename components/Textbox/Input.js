@@ -24,7 +24,7 @@ class Input extends Component {
         oninput: () => {
           if (!this.capsLock) {
             this.textbox._onValueChange()
-            this.textbox._onInput()
+            this.textbox._onInput && this.textbox._onInput()
           }
         },
         onblur: () => {
