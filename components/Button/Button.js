@@ -57,6 +57,7 @@ class Button extends Component {
       this.setProps({
         tag: 'a',
         attrs: {
+          ...this.props.attrs,
           href: href,
           target: target || '_self',
         },
