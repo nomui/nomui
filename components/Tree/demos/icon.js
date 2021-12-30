@@ -16,9 +16,25 @@ define([], function () {
                   text: '节点 1.1',
                   icon: 'folder',
                   tools: {
-                    component: 'Icon',
-                    type: 'info-circle',
-                    tooltip: 'tools 中可以配置任意组件',
+                    component: 'Flex',
+                    cols: [
+                      {
+                        component: 'Icon',
+                        type: 'question-circle',
+                        tooltip: '子组件的点击事件不会带上node, tree的返回值',
+                        onClick({ node, tree }) {
+                          console.log('🚀 ~ tools子组件的点击事件', node, tree)
+                        },
+                      },
+                      {
+                        component: 'Icon',
+                        type: 'info-circle',
+                        tooltip: 'tools 中可以配置任意组件',
+                      },
+                    ],
+                    onClick({ node, tree }) {
+                      console.log('配置在Tools上的click事件 ', node, tree)
+                    },
                   },
                   children: [
                     { text: '节点 1.1.1', icon: 'file' },

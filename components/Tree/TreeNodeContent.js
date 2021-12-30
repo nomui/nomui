@@ -20,6 +20,7 @@ class TreeNodeContent extends Component {
   }
 
   _config() {
+    const that = this
     const { text, icon, tools } = this.node.props
     const { initExpandLevel, nodeCheckable, expandable } = this.tree.props
     const expanded = initExpandLevel === -1 || initExpandLevel > this.level
@@ -79,7 +80,14 @@ class TreeNodeContent extends Component {
           { tag: 'span', classes: { 'nom-tree-node-content-text': true } },
           Component.normalizeTemplateProps(text),
         ),
-        tools && Component.extendProps({ classes: { 'nom-tree-node-content-tools': true } }, tools),
+        tools &&
+          Component.extendProps({ classes: { 'nom-tree-node-content-tools': true } }, tools, {
+            onClick({ event }) {
+              tools.onClick &&
+                that._callHandler(tools.onClick, { node: that.node, tree: that.tree, event })
+              event.stopPropagation()
+            },
+          }),
       ],
       onClick: () => {
         this.tree._onNodeClick({ node: this.node })
