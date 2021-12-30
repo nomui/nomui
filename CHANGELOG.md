@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.43](https://github.com/nomui/nomui/compare/v1.0.0-alpha.42...v1.0.0-alpha.43) (2021-12-28)
+
+
+### Bug Fixes
+
+* **Gird-autoWidth:** td宽度不够时，操作文案换行 ([ec7bb99](https://github.com/nomui/nomui/commit/ec7bb9965da2fa5bdc06fd07b926bfe65fb8cdb7))
+* **Grid-autoWidth:** 自动计算列宽的padding部分 ([db4f414](https://github.com/nomui/nomui/commit/db4f41416ca5b926befc270e135ec47d17e463f1))
+
 ## [1.0.0-alpha.42](https://github.com/nomui/nomui/compare/v1.0.0-alpha.41...v1.0.0-alpha.42) (2021-12-24)
 
 
