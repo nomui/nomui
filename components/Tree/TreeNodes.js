@@ -68,6 +68,10 @@ class TreeNodes extends Component {
         animation: 150,
         fallbackOnBody: true,
         swapThreshold: 0.65,
+        handle:
+          this.tree.props.sortable && this.tree.props.sortable.showHandler
+            ? '.nom-tree-drag-handler'
+            : null,
       })
     }
   }
