@@ -3,10 +3,13 @@
   width: 100%;
   table-layout: fixed;
   .nom-ellipsis-inner {
-    display: table-cell;
+    display: -webkit-box;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: normal;
     text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
   }
 }
 

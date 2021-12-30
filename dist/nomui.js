@@ -2912,7 +2912,10 @@ function _defineProperty2(obj, key, value) {
       if (href) {
         this.setProps({
           tag: "a",
-          attrs: { href: href, target: target || "_self" },
+          attrs: Object.assign({}, this.props.attrs, {
+            href: href,
+            target: target || "_self",
+          }),
         });
       }
     }
@@ -4509,7 +4512,7 @@ function _defineProperty2(obj, key, value) {
           oninput: () => {
             if (!this.capsLock) {
               this.textbox._onValueChange();
-              this.textbox._onInput();
+              this.textbox._onInput && this.textbox._onInput();
             }
           },
           onblur: () => {
@@ -14435,7 +14438,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Dropdown);
   class Ellipsis extends Component {
     constructor(props, ...mixins) {
-      const defaults = { text: null, showTitle: true };
+      const defaults = { text: null, showTitle: true, line: null };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
@@ -14448,6 +14451,7 @@ function _defineProperty2(obj, key, value) {
               (isString(this.props.text) || isNumeric(this.props.text))
                 ? this.props.text
                 : null,
+            style: { "-webkit-line-clamp": this.props.line },
           },
           children: this.props.text ? this.props.text : this.props.children,
         },

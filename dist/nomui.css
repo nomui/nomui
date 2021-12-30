@@ -5913,6 +5913,10 @@ table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-table-cell-ti
   text-overflow: ellipsis;
   word-break: keep-all;
 }
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content .nom-ellipsis .nom-ellipsis-inner,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-ellipsis .nom-ellipsis-inner {
+  display: table-cell;
+}
 table.nom-table td .nom-table-resize-handler,
 table.nom-table th .nom-table-resize-handler {
   position: absolute !important;
@@ -8118,10 +8122,13 @@ textarea .nom-textarea {
   table-layout: fixed;
 }
 .nom-ellipsis .nom-ellipsis-inner {
-  display: table-cell;
+  display: -webkit-box;
   overflow: hidden;
-  white-space: nowrap;
+  white-space: normal;
   text-overflow: ellipsis;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 .nom-ellipsis-block {
   overflow: hidden;
