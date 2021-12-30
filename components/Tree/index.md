@@ -67,11 +67,11 @@
 
 ### TreeData
 
-| 参数     | 说明                   | 类型             | 默认值 |
-| -------- | ---------------------- | ---------------- | ------ |
-| key      | 键                     | `string`         | -      |
-| text     | 文本                   | `string`         | -      |
-| icon     | 配置节点图标           | `string`         | -      |
-| tools    | 节点文本右侧工具栏配置 | `ComponentProps` | -      |
-| disabled | 该节点是否禁用         | `boolean`        | -      |
-| children | 子节点数据数组         | `TreeData[]`     | -      |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| key | 键 | `string` | - |
+| text | 文本 | `string` | - |
+| icon | 配置节点图标 | `string` | - |
+| tools | 节点文本右侧工具栏配置 | `ComponentProps \| ({node, tree}) => ComponentProps` | - |
+| disabled | 该节点是否禁用 | `boolean` | - |
+| children | 子节点数据数组 | `TreeData[]` | - |

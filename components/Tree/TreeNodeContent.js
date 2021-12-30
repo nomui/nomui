@@ -1,7 +1,7 @@
 import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import Icon from '../Icon/index'
-import { extend } from '../util/index'
+import { extend, isFunction } from '../util/index'
 
 class TreeNodeContent extends Component {
   constructor(props, ...mixins) {
@@ -20,7 +20,6 @@ class TreeNodeContent extends Component {
   }
 
   _config() {
-    const that = this
     const { text, icon, tools } = this.node.props
     const { initExpandLevel, nodeCheckable, expandable } = this.tree.props
     const expanded = initExpandLevel === -1 || initExpandLevel > this.level
@@ -81,13 +80,10 @@ class TreeNodeContent extends Component {
           Component.normalizeTemplateProps(text),
         ),
         tools &&
-          Component.extendProps({ classes: { 'nom-tree-node-content-tools': true } }, tools, {
-            onClick({ event }) {
-              tools.onClick &&
-                that._callHandler(tools.onClick, { node: that.node, tree: that.tree, event })
-              event.stopPropagation()
-            },
-          }),
+          Component.extendProps(
+            { classes: { 'nom-tree-node-content-tools': true } },
+            isFunction(tools) ? tools({ node: this.node, tree: this.tree }) : tools,
+          ),
       ],
       onClick: () => {
         this.tree._onNodeClick({ node: this.node })
