@@ -82,6 +82,12 @@ table.nom-table {
       visibility: hidden;
       cursor: col-resize;
     }
+    .nom-table-sort-handler.p-type-sort {
+      visibility: hidden;
+    }
+    .nom-table-filter-handler {
+      visibility: hidden;
+    }
     .nom--table-pin-handler {
       color: #666 !important;
       visibility: hidden;
@@ -94,7 +100,13 @@ table.nom-table {
       .nom-table-resize-handler {
         visibility: visible;
       }
-      .nom--table-pin-handler {
+      .nom-table-pin-handler {
+        visibility: visible;
+      }
+      .nom-table-sort-handler {
+        visibility: visible;
+      }
+      .nom-table-filter-handler {
         visibility: visible;
       }
     }
