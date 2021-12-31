@@ -96,18 +96,10 @@ class Table extends Component {
 
   selectTr(tr) {
     if (this.activeTr) {
-      this.activeTr.update({
-        classes: {
-          'nom-tr-selected': false,
-        },
-      })
+      this.activeTr.element.classList.remove('nom-tr-selected')
     }
     this.activeTr = tr
-    this.activeTr.update({
-      classes: {
-        'nom-tr-selected': true,
-      },
-    })
+    this.activeTr.element.classList.add('nom-tr-selected')
   }
 }
 
