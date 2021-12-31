@@ -7815,6 +7815,9 @@ textarea .nom-textarea {
 .nom-tree .nom-tree-node-content > .nom-tree-node-content-icon {
   margin-right: 6px;
 }
+.nom-tree .nom-tree-node-content > .nom-tree-node-content-tools {
+  margin-left: 5px;
+}
 .nom-tree .nom-tree-node-content > .nom-tree-node-checkbox {
   margin-right: 6px;
 }
