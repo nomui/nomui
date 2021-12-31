@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.44](https://github.com/nomui/nomui/compare/v1.0.0-alpha.43...v1.0.0-alpha.44) (2021-12-31)
+
+
+### Features
+
+* **Ellipsis:** 添加多行文本的...省略功能 ([d79224f](https://github.com/nomui/nomui/commit/d79224f60ec30e9a3063354bfca12a9f7cc14bf9))
+* **Ellipsis:** Ellipsis的多行文本展示功能 ([e97b2ea](https://github.com/nomui/nomui/commit/e97b2ea6efc62e9c6938f866f4cebd7990d09294))
+* **Tree-tools:** tools可通过函数配置 ([5fac650](https://github.com/nomui/nomui/commit/5fac650978cd51730f6cc755770e2f069cf17a4e))
+* **Tree:** node节点添加tools配置 ([bd991c7](https://github.com/nomui/nomui/commit/bd991c707b27b82602afef02d43eec83c2a5ef49))
+* **Tree:** tools工具支持onClick事件返回 node和trees实例 ([2f2e884](https://github.com/nomui/nomui/commit/2f2e8845731dc19fd232f7f1bc5005a7339a8a34))
+
+
+### Bug Fixes
+
+* **Button:** 按钮外部设置的attrs被覆盖 ([dd007c2](https://github.com/nomui/nomui/commit/dd007c271a66fc624e039f097749471776665ec0))
+* **Ellipsis:** 单词换行导致的省略展示失效 ([1a15187](https://github.com/nomui/nomui/commit/1a15187af07b6ee77b9724937304ce67b8f52077))
+* **Ellipsis:** 将单词也换行 ([6e3c82b](https://github.com/nomui/nomui/commit/6e3c82b1195c9cb2a1b05610b728d892708c30ea))
+* **Field:** 修复Field文档描述错误 ([168d753](https://github.com/nomui/nomui/commit/168d75385ed977b81c25c9236b7d9a0b3efb0065))
+* NomUI文档页没有正确高亮的问题 ([ffa440a](https://github.com/nomui/nomui/commit/ffa440a79afad3493956cceddadb7b039b24525b))
+* **Tree:** tools的样式展示 ([8643afd](https://github.com/nomui/nomui/commit/8643afd4fd21ad1f3a0696efa1a865a1dc128ee8))
+
 ## [1.0.0-alpha.43](https://github.com/nomui/nomui/compare/v1.0.0-alpha.42...v1.0.0-alpha.43) (2021-12-28)
 
 
