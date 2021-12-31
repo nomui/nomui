@@ -169,11 +169,11 @@ class Th extends Component {
           },
         },
       that.resizable && {
-        component: 'Icon',
+        // component: 'Icon',
         ref: (c) => {
           that.resizer = c
         },
-        type: 'resize-handler',
+        // type: 'resize-handler',
         classes: { 'nom-table-resize-handler': true },
         onClick: function () {
           // that.table.grid.handlePinClick(that.props.column)

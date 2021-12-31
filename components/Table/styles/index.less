@@ -76,9 +76,11 @@ table.nom-table {
     }
     .nom-table-resize-handler {
       position: absolute !important;
-      right: 0;
+      right: -1px;
       bottom: 0;
-      color: #666 !important;
+      width: 4px;
+      height: 100%;
+      border-right: 1px dashed #888;
       visibility: hidden;
       cursor: col-resize;
     }
