@@ -72,6 +72,10 @@ table.nom-table {
           text-overflow: ellipsis;
           word-break: keep-all;
         }
+        // table配置了ellipsis, 则td中的Ellipsis组件的多行省略则不生效
+        .nom-ellipsis .nom-ellipsis-inner {
+          display: table-cell;
+        }
       }
     }
     .nom-table-resize-handler {
