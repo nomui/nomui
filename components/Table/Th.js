@@ -61,6 +61,9 @@ class Th extends Component {
       this.props.column.sortable &&
         this.props.column.colSpan > 0 && {
           component: 'Icon',
+          classes: {
+            'nom-table-sort-handler': true,
+          },
           type: sortIcon,
           onClick: function () {
             that.onSortChange()
@@ -72,6 +75,9 @@ class Th extends Component {
           type: 'filter',
           ref: (c) => {
             this.filterBtn = c
+          },
+          classes: {
+            'nom-table-filter-handler': true,
           },
           attrs: {
             style: {
@@ -156,18 +162,18 @@ class Th extends Component {
             title: this.props.column.fixed ? '取消固定' : '固定列',
           },
           classes: {
-            'nom--table-pin-handler': true,
+            'nom-table-pin-handler': true,
           },
           onClick: function () {
             that.table.grid.handlePinClick(that.props.column)
           },
         },
       that.resizable && {
-        component: 'Icon',
+        // component: 'Icon',
         ref: (c) => {
           that.resizer = c
         },
-        type: 'resize-handler',
+        // type: 'resize-handler',
         classes: { 'nom-table-resize-handler': true },
         onClick: function () {
           // that.table.grid.handlePinClick(that.props.column)

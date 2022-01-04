@@ -41,7 +41,9 @@ class GridSettingPopup extends Modal {
                 : that.grid.getMappedColumns(),
             },
             multiple: true,
-            sortable: true,
+            sortable: {
+              showHandler: true,
+            },
 
             ref: (c) => {
               this.tree = c

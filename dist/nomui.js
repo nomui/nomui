@@ -2209,6 +2209,11 @@ function _defineProperty2(obj, key, value) {
     cat
   );
   Icon.add(
+    "drag",
+    `<svg t="1640832231565" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4362" fill="currentColor" width="1em" height="1em"><path d="M362.666667 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="4363"></path><path d="M661.333333 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="4364"></path><path d="M362.666667 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="4365"></path><path d="M661.333333 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="4366"></path><path d="M362.666667 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="4367"></path><path d="M661.333333 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="4368"></path></svg>`,
+    cat
+  );
+  Icon.add(
     "sort",
     `<svg t="1616635066835" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9750" width="1em" height="1em"><path d="M804.57143 621.714286q0 14.848-10.825143 25.746286l-256 256q-10.825143 10.825143-25.746286 10.825143t-25.746286-10.825143l-256-256q-10.825143-10.825143-10.825143-25.746286t10.825143-25.746286 25.746286-10.825143l512 0q14.848 0 25.746286 10.825143t10.825143 25.746286zM804.57143 402.285714q0 14.848-10.825143 25.746286t-25.746286 10.825143l-512 0q-14.848 0-25.746286-10.825143t-10.825143-25.746286 10.825143-25.746286l256-256q10.825143-10.825143 25.746286-10.825143t25.746286 10.825143l256 256q10.825143 10.825143 10.825143 25.746286z"  fill="currentColor" p-id="9751"></path></svg>`,
     cat
@@ -10609,6 +10614,12 @@ function _defineProperty2(obj, key, value) {
       }
       this.setProps({
         children: [
+          this.tree.props.sortable &&
+            this.tree.props.sortable.showHandler && {
+              component: "Icon",
+              type: "drag",
+              classes: { "nom-tree-drag-handler": true },
+            },
           this.getExpandableIndicatorProps(expanded),
           nodeCheckable && this._getCheckbox(),
           icon &&
@@ -10870,6 +10881,12 @@ function _defineProperty2(obj, key, value) {
           animation: 150,
           fallbackOnBody: true,
           swapThreshold: 0.65,
+          handle:
+            this.tree.props.sortable &&
+            this.tree.props.sortable.showHandler &&
+            this.tree.props.sortable.byHandler
+              ? ".nom-tree-drag-handler"
+              : null,
         });
       }
     }
@@ -15124,6 +15141,9 @@ function _defineProperty2(obj, key, value) {
                 attrs: { "data-key": this.props.data[keyField] },
               });
             },
+            onClick: (args) => {
+              this.table.selectTr(args.sender);
+            },
           },
           rowDefaults
         ),
@@ -15251,6 +15271,7 @@ function _defineProperty2(obj, key, value) {
         this.props.column.sortable &&
           this.props.column.colSpan > 0 && {
             component: "Icon",
+            classes: { "nom-table-sort-handler": true },
             type: sortIcon,
             onClick: function () {
               that.onSortChange();
@@ -15263,6 +15284,7 @@ function _defineProperty2(obj, key, value) {
             ref: (c) => {
               this.filterBtn = c;
             },
+            classes: { "nom-table-filter-handler": true },
             attrs: { style: { cursor: "pointer" } },
             popup: {
               align: "bottom right",
@@ -15337,17 +15359,16 @@ function _defineProperty2(obj, key, value) {
             component: "Icon",
             type: this.props.column.fixed ? "pin-fill" : "pin",
             attrs: { title: this.props.column.fixed ? "取消固定" : "固定列" },
-            classes: { "nom--table-pin-handler": true },
+            classes: { "nom-table-pin-handler": true },
             onClick: function () {
               that.table.grid.handlePinClick(that.props.column);
             },
           },
         that.resizable && {
-          component: "Icon",
+          // component: 'Icon',
           ref: (c) => {
             that.resizer = c;
-          },
-          type: "resize-handler",
+          }, // type: 'resize-handler',
           classes: { "nom-table-resize-handler": true },
           onClick: function () {
             // that.table.grid.handlePinClick(that.props.column)
@@ -15652,6 +15673,13 @@ function _defineProperty2(obj, key, value) {
     }
     getRows() {
       return this.tbody.getChildren();
+    }
+    selectTr(tr) {
+      if (this.activeTr) {
+        this.activeTr.element.classList.remove("nom-tr-selected");
+      }
+      this.activeTr = tr;
+      this.activeTr.element.classList.add("nom-tr-selected");
     }
   }
   Component.register(Table);
@@ -15986,7 +16014,7 @@ function _defineProperty2(obj, key, value) {
                   : that.grid.getMappedColumns(),
               },
               multiple: true,
-              sortable: true,
+              sortable: { showHandler: true },
               ref: (c) => {
                 this.tree = c;
               },

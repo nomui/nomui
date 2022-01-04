@@ -63,6 +63,7 @@ class Grid extends Component {
   _config() {
     this.nodeList = {}
     const that = this
+
     // 切换分页 data数据更新时 此两项不重置会导致check表现出错
     this.rowsRefs = {}
     this.checkedRowRefs = {}

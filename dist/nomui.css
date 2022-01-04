@@ -5869,15 +5869,39 @@ table.nom-table {
   background-color: #fff;
   border-spacing: 0;
 }
-table.nom-table tbody tr:hover {
-  background-color: #f5f5f5;
-  transition: all ease-in 0.25s;
-}
 table.nom-table.nom-table-striped tbody tr:nth-child(even) {
   background-color: #fbfbfb;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even):hover {
   background-color: #f2f2f2;
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):hover .nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):hover .nom-table-fixed-right {
+  background-color: #f2f2f2;
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even).nom-tr-selected {
+  background-color: #fffaef;
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even).nom-tr-selected .nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even).nom-tr-selected .nom-table-fixed-right {
+  background-color: #fffaef;
+}
+table.nom-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+table.nom-table tbody tr:hover .nom-table-fixed-left,
+table.nom-table tbody tr:hover .nom-table-fixed-right {
+  background-color: #f5f5f5;
+}
+table.nom-table tbody tr.nom-tr-selected,
+table.nom-table tbody tr.nom-tr-selected:hover {
+  background-color: #fffaef;
+}
+table.nom-table tbody tr.nom-tr-selected .nom-table-fixed-left,
+table.nom-table tbody tr.nom-tr-selected:hover .nom-table-fixed-left,
+table.nom-table tbody tr.nom-tr-selected .nom-table-fixed-right,
+table.nom-table tbody tr.nom-tr-selected:hover .nom-table-fixed-right {
+  background-color: #fffaef;
 }
 table.nom-table td,
 table.nom-table th {
@@ -5920,11 +5944,21 @@ table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-ellipsis .nom
 table.nom-table td .nom-table-resize-handler,
 table.nom-table th .nom-table-resize-handler {
   position: absolute !important;
-  right: 0;
+  right: -1px;
   bottom: 0;
-  color: #666 !important;
+  width: 6px;
+  height: 100%;
+  border-right: 1px dotted #888;
   visibility: hidden;
   cursor: col-resize;
+}
+table.nom-table td .nom-table-sort-handler.p-type-sort,
+table.nom-table th .nom-table-sort-handler.p-type-sort {
+  visibility: hidden;
+}
+table.nom-table td .nom-table-filter-handler,
+table.nom-table th .nom-table-filter-handler {
+  visibility: hidden;
 }
 table.nom-table td .nom--table-pin-handler,
 table.nom-table th .nom--table-pin-handler {
@@ -5940,8 +5974,16 @@ table.nom-table td:hover .nom-table-resize-handler,
 table.nom-table th:hover .nom-table-resize-handler {
   visibility: visible;
 }
-table.nom-table td:hover .nom--table-pin-handler,
-table.nom-table th:hover .nom--table-pin-handler {
+table.nom-table td:hover .nom-table-pin-handler,
+table.nom-table th:hover .nom-table-pin-handler {
+  visibility: visible;
+}
+table.nom-table td:hover .nom-table-sort-handler,
+table.nom-table th:hover .nom-table-sort-handler {
+  visibility: visible;
+}
+table.nom-table td:hover .nom-table-filter-handler,
+table.nom-table th:hover .nom-table-filter-handler {
   visibility: visible;
 }
 table.nom-table .nom-table-ellipsis.nom-table-fixed-left .nom-table-cell-content,
@@ -6139,6 +6181,9 @@ table.nom-table.p-bordered {
 }
 .nom-grid-setting-panel {
   min-width: 300px;
+}
+.nom-grid-setting-drag {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .nom-icon {
   display: inline-flex;
@@ -7833,6 +7878,9 @@ textarea .nom-textarea {
   flex: 1;
   height: 100%;
   overflow: auto;
+}
+.nom-tree .nom-tree-drag-handler {
+  cursor: pointer;
 }
 .nom-tree-select.p-label-align-right > .nom-field-label + .nom-field-content {
   width: 0;
