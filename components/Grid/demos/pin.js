@@ -6,7 +6,7 @@ define([], function () {
       return {
         component: 'Grid',
         key: 'grid-pin-demo',
-        // allowFrozenCols: true,
+        allowFrozenCols: true,
         frozenRightCols: 1,
         columnsCustomizable: {
           cache: true,
