@@ -68,6 +68,12 @@ class TreeNodeContent extends Component {
 
     this.setProps({
       children: [
+        this.tree.props.sortable &&
+          this.tree.props.sortable.showHandler && {
+            component: 'Icon',
+            type: 'drag',
+            classes: { 'nom-tree-drag-handler': true },
+          },
         this.getExpandableIndicatorProps(expanded),
         nodeCheckable && this._getCheckbox(),
         icon &&
