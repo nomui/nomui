@@ -15,4 +15,5 @@
 | texts.prev | 替代图标显示的上一页文字 | `string` | 上一页 |
 | texts.next | 替代图标显示的下一页文字 | `string` | 下一页 |
 | texts.ellipse | 缩略字符 | `string` | ... |
+| cacheable | 是否缓存分页大小设置(需对实例设置唯一值`key`) | `boolean` | false |
 | onPageChange | 页码改变的回调，返回改变后的对象 | `function (e)=>{e.sender.update(e);console.log(e)}` | - |
