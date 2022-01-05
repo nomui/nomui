@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import List from '../List/index'
+import { STORAGE_KEY_PAGER_CACHEABLE } from '../util/constant'
 
 class Pager extends Component {
   constructor(props, ...mixins) {
@@ -8,6 +9,7 @@ class Pager extends Component {
 
   _config() {
     const pager = this
+    this._parseCacheable()
 
     this.setProps({
       children: {
@@ -59,6 +61,7 @@ class Pager extends Component {
                 showSearch: false,
                 value: pager.props.pageSize || 10,
                 onValueChange: (data) => {
+                  pager._handleCache({ pageSize: data.newValue })
                   pager.props.pageSize = data.newValue
                   pager.props.pageIndex = 1
                   pager._onPageChange(true)
@@ -92,6 +95,29 @@ class Pager extends Component {
         ],
       },
     })
+  }
+
+  // 缓存的处理
+  _parseCacheable() {
+    const _isAutoKey = this.key.startWith('__key')
+
+    if (this.props.cacheable && this.firstRender) {
+      if (_isAutoKey) {
+        return console.warn('Please set a unique value key of string type first')
+      }
+      let cacheInfo = localStorage.getItem(`${STORAGE_KEY_PAGER_CACHEABLE}_${this.key}`)
+      if (cacheInfo) {
+        cacheInfo = JSON.parse(cacheInfo)
+        this.setProps({ pageSize: cacheInfo.pageSize })
+      }
+    }
+  }
+
+  _handleCache(params) {
+    const _isAutoKey = this.key.startWith('__key')
+    if (!this.props.cacheable || _isAutoKey) return
+
+    localStorage.setItem(`${STORAGE_KEY_PAGER_CACHEABLE}_${this.key}`, JSON.stringify(params))
   }
 
   _onPageChange(pageSizeChanged) {

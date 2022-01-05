@@ -14879,7 +14879,8 @@ function _defineProperty2(obj, key, value) {
   }
   Component.register(ExpandedTr); // storage 表格自定义列的key
   const STORAGE_KEY_GRID_COLUMNS = "NOM_STORAGE_KEY_GRID_COLS"; // 表格自定义列宽度的 key
-  const STORAGE_KEY_GRID_COLS_WIDTH = "NOM_STORAGE_KEY_GRID_COLS_WIDTH";
+  const STORAGE_KEY_GRID_COLS_WIDTH = "NOM_STORAGE_KEY_GRID_COLS_WIDTH"; // 分页器缓存分大小的 key
+  const STORAGE_KEY_PAGER_CACHEABLE = "NOM_STORAGE_KEY_PAGER_CACHE";
   class ColGroupCol extends Component {
     constructor(props, ...mixins) {
       const defaults = { tag: "col", column: {} };
@@ -19342,6 +19343,7 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const pager = this;
+      this._parseCacheable();
       this.setProps({
         children: {
           component: "Cols",
@@ -19384,6 +19386,7 @@ function _defineProperty2(obj, key, value) {
                   showSearch: false,
                   value: pager.props.pageSize || 10,
                   onValueChange: (data) => {
+                    pager._handleCache({ pageSize: data.newValue });
                     pager.props.pageSize = data.newValue;
                     pager.props.pageIndex = 1;
                     pager._onPageChange(true);
@@ -19402,6 +19405,31 @@ function _defineProperty2(obj, key, value) {
           ],
         },
       });
+    } // 缓存的处理
+    _parseCacheable() {
+      const _isAutoKey = this.key.startWith("__key");
+      if (this.props.cacheable && this.firstRender) {
+        if (_isAutoKey) {
+          return console.warn(
+            "Please set a unique value key of string type first"
+          );
+        }
+        let cacheInfo = localStorage.getItem(
+          `${STORAGE_KEY_PAGER_CACHEABLE}_${this.key}`
+        );
+        if (cacheInfo) {
+          cacheInfo = JSON.parse(cacheInfo);
+          this.setProps({ pageSize: cacheInfo.pageSize });
+        }
+      }
+    }
+    _handleCache(params) {
+      const _isAutoKey = this.key.startWith("__key");
+      if (!this.props.cacheable || _isAutoKey) return;
+      localStorage.setItem(
+        `${STORAGE_KEY_PAGER_CACHEABLE}_${this.key}`,
+        JSON.stringify(params)
+      );
     }
     _onPageChange(pageSizeChanged) {
       const params = this.getPageParams();
