@@ -5870,14 +5870,14 @@ table.nom-table {
   border-spacing: 0;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even) {
-  background-color: #fbfbfb;
+  background-color: #f5f5f5;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even):hover {
-  background-color: #f2f2f2;
+  background-color: #f0f0f0;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even):hover .nom-table-fixed-left,
 table.nom-table.nom-table-striped tbody tr:nth-child(even):hover .nom-table-fixed-right {
-  background-color: #f2f2f2;
+  background-color: #f0f0f0;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even).nom-tr-selected {
   background-color: #fffaef;
@@ -5887,11 +5887,11 @@ table.nom-table.nom-table-striped tbody tr:nth-child(even).nom-tr-selected .nom-
   background-color: #fffaef;
 }
 table.nom-table tbody tr:hover {
-  background-color: #f5f5f5;
+  background-color: #f0f0f0;
 }
 table.nom-table tbody tr:hover .nom-table-fixed-left,
 table.nom-table tbody tr:hover .nom-table-fixed-right {
-  background-color: #f5f5f5;
+  background-color: #f0f0f0;
 }
 table.nom-table tbody tr.nom-tr-selected,
 table.nom-table tbody tr.nom-tr-selected:hover {
@@ -5944,7 +5944,7 @@ table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-ellipsis .nom
 table.nom-table td .nom-table-resize-handler,
 table.nom-table th .nom-table-resize-handler {
   position: absolute !important;
-  right: -1px;
+  right: 0;
   bottom: 0;
   width: 6px;
   height: 100%;
