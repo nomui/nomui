@@ -51,7 +51,7 @@ class Grid extends Component {
       this.popupTreeData = this.originColumns
     }
     // 更新了data
-    if (props.data) {
+    if (props.data && this.props) {
       const { treeConfig } = this.props
       // data更新, flatData需要重新组装成Tree结构
       if (treeConfig && treeConfig.flatData) {
