@@ -1,4 +1,12 @@
 .nom-pager {
+  // between和around时将第一项占据更多位置
+  .p-justify-around, .p-justify-between {
+    .nom-col {
+      &:first-child {
+        flex-grow: 2;
+      }
+    }
+  }
   .nom-col {
     > .nom-list {
       > .nom-list-content {

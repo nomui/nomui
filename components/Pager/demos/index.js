@@ -3,6 +3,8 @@ define([
   './prev-show.js',
   './icon-text.js',
   './simple.js',
+  './justify.js',
+  './items-sort.js',
   './cacheable.js',
   './more.js',
 ], function (...demos) {

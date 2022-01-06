@@ -10,7 +10,7 @@
 | cols | 不为空表示列布局 `flex-direction: row` | `string` | - |
 | direction | 优先根据`rows`或`cols`自动计算出 | `row\|column` | column |
 | wrap | 是否换行 | `boolean` | false |
-| justify | 排列方式 | `start\|end\|canter\|between\|around` | - |
+| justify | 排列方式 | `start\|end\|center\|between\|around` | - |
 | align | 对齐方式 | `start\|end\|stretch` | - |
 | fills | 是否按内容占满空间 | `boolean` | false |
 | gap | 子项之间的间距大小 | `small\|medium\|large` | - |
