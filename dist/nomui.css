@@ -4860,6 +4860,10 @@ img {
 .nom-notification-content.p-type-warning > .nom-notification-body > .nom-notification-body-icon > .nom-notification-icon {
   color: var(--nom-color-warning);
 }
+.nom-pager .p-justify-around .nom-col:first-child,
+.nom-pager .p-justify-between .nom-col:first-child {
+  flex-grow: 2;
+}
 .nom-pager .nom-col > .nom-list > .nom-list-content > .nom-list-item-wrapper > a {
   display: block;
   padding: 0.5rem 1rem;

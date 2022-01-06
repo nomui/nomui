@@ -19372,64 +19372,71 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         children: {
           component: "Cols",
-          justify: "between",
-          items: [
-            {
-              component: List,
-              gutter: "md",
-              items: pager.getPageItems(),
-              itemDefaults: {
-                tag: "a",
-                key() {
-                  return this.props.pageNumber;
-                },
-                _config: function () {
-                  this.setProps({ children: `${this.props.text}` });
-                },
-              },
-              itemSelectable: { byClick: true },
-              selectedItems: pager.props.pageIndex,
-              onItemSelectionChange: function (e) {
-                const n = e.sender.selectedItem.props.pageNumber;
-                if (n < 1) {
-                  pager.props.pageIndex = 1;
-                } else if (n > pager._getPageCount()) {
-                  pager.props.pageIndex = pager._getPageCount();
-                } else {
-                  pager.props.pageIndex = n;
-                }
-                pager._onPageChange();
-              },
-            },
-            {
-              component: "Cols",
-              gutter: "xs",
-              items: [
-                { children: `共有数据${this.props.totalCount}条` },
-                !pager.props.simple && {
-                  component: "Select",
-                  showSearch: false,
-                  value: pager.props.pageSize || 10,
-                  onValueChange: (data) => {
-                    pager._handleCache({ pageSize: data.newValue });
-                    pager.props.pageSize = data.newValue;
-                    pager.props.pageIndex = 1;
-                    pager._onPageChange(true);
-                  },
-                  allowClear: false,
-                  options: [
-                    { text: "10条/页", value: 10 },
-                    { text: "20条/页", value: 20 },
-                    { text: "30条/页", value: 30 },
-                    { text: "40条/页", value: 40 },
-                    { text: "50条/页", value: 50 },
-                  ],
-                },
-              ],
-            },
-          ],
+          justify: pager.props.justify,
+          items: pager._getItems(pager),
         },
       });
+    }
+    _getItems(pager) {
+      const { itemsSort } = pager.props;
+      return itemsSort.map((item) => {
+        return pager[`_render${item}`](pager);
+      });
+    }
+    _rendercount() {
+      return { children: `共有数据${this.props.totalCount}条` };
+    }
+    _renderpages(pager) {
+      return {
+        component: List,
+        gutter: "md",
+        items: pager.getPageItems(),
+        itemDefaults: {
+          tag: "a",
+          key() {
+            return this.props.pageNumber;
+          },
+          _config: function () {
+            this.setProps({ children: `${this.props.text}` });
+          },
+        },
+        itemSelectable: { byClick: true },
+        selectedItems: pager.props.pageIndex,
+        onItemSelectionChange: function (e) {
+          const n = e.sender.selectedItem.props.pageNumber;
+          if (n < 1) {
+            pager.props.pageIndex = 1;
+          } else if (n > pager._getPageCount()) {
+            pager.props.pageIndex = pager._getPageCount();
+          } else {
+            pager.props.pageIndex = n;
+          }
+          pager._onPageChange();
+        },
+      };
+    }
+    _rendersizes(pager) {
+      return (
+        !pager.props.simple && {
+          component: "Select",
+          showSearch: false,
+          value: pager.props.pageSize || 10,
+          onValueChange: (data) => {
+            pager._handleCache({ pageSize: data.newValue });
+            pager.props.pageSize = data.newValue;
+            pager.props.pageIndex = 1;
+            pager._onPageChange(true);
+          },
+          allowClear: false,
+          options: [
+            { text: "10条/页", value: 10 },
+            { text: "20条/页", value: 20 },
+            { text: "30条/页", value: 30 },
+            { text: "40条/页", value: 40 },
+            { text: "50条/页", value: 50 },
+          ],
+        }
+      );
     } // 缓存的处理
     _parseCacheable() {
       const _isAutoKey = this.key.startWith("__key");
@@ -19575,6 +19582,8 @@ function _defineProperty2(obj, key, value) {
     simple: false, // 简洁模式，只展示总数和上一页，下一页按钮
     prevShowAlways: true,
     nextShowAlways: true,
+    justify: "end",
+    itemsSort: ["count", "pages", "sizes"], // 排列顺序 1.count 共xx条数据 2.分页数List 3.分页大小Select
     texts: { prev: "上一页", next: "下一页", ellipse: "..." },
     getPageParams: function () {
       const { pageIndex, pageSize } = this.props;
