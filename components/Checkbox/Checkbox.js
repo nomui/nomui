@@ -7,8 +7,8 @@ class Checkbox extends Field {
     const defaults = {
       text: null,
       valueText: {
-        on: '是',
-        off: '否',
+        checked: '是',
+        unchecked: '否',
       },
     }
 
@@ -62,9 +62,9 @@ class Checkbox extends Field {
 
   _getValueText() {
     if (this.getValue === true) {
-      return this.props.valueText.on
+      return this.props.valueText.checked
     }
-    return this.props.valueText.off
+    return this.props.valueText.unchecked
   }
 
   _setValue(value, options) {
