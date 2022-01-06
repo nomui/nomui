@@ -15925,7 +15925,9 @@ function _defineProperty2(obj, key, value) {
           that._onPageScroll();
         });
         setTimeout(() => {
-          this.scrollParent.element.scrollTop += 1;
+          if (this.scrollParent) {
+            this.scrollParent.element.scrollTop += 1;
+          }
         }, 0);
       }
     }
@@ -16123,7 +16125,7 @@ function _defineProperty2(obj, key, value) {
         this.originColumns = [...c];
         this.popupTreeData = this.originColumns;
       } // 更新了data
-      if (props.data) {
+      if (props.data && this.props) {
         const { treeConfig } = this.props; // data更新, flatData需要重新组装成Tree结构
         if (treeConfig && treeConfig.flatData) {
           this._alreadyProcessedFlat = false;
