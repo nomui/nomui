@@ -56,6 +56,13 @@ class Checkbox extends Field {
     return this.input.element.checked
   }
 
+  _getValueText() {
+    if (this.getValue === true) {
+      return '是'
+    }
+    return '否'
+  }
+
   _setValue(value, options) {
     if (options === false) {
       options = { triggerChange: false }
