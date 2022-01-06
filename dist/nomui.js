@@ -4379,7 +4379,7 @@ function _defineProperty2(obj, key, value) {
     getValueText(options, value) {
       return isFunction(this._getValueText)
         ? this._getValueText(options, value)
-        : null;
+        : this.getValue();
     }
     validate() {
       this.validateTriggered = true;
@@ -10188,6 +10188,14 @@ function _defineProperty2(obj, key, value) {
         ? this.selectedOption[this.selectedOption.length - 1].value
         : null;
     }
+    _getValueText() {
+      let str = "";
+      this.selectedOption.forEach(function (n) {
+        str += `${n.label}/`;
+      });
+      const result = str.substring(0, str.length - 1);
+      return result;
+    }
     _setValue(value) {
       if (!value && this._content) {
         this._content.element.innerText = "";
@@ -10324,7 +10332,10 @@ function _defineProperty2(obj, key, value) {
   Component.register(Cascader);
   class Checkbox extends Field {
     constructor(props, ...mixins) {
-      const defaults = { text: null };
+      const defaults = {
+        text: null,
+        valueText: { checked: "是", unchecked: "否" },
+      };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
@@ -10370,6 +10381,12 @@ function _defineProperty2(obj, key, value) {
     }
     _getValue() {
       return this.input.element.checked;
+    }
+    _getValueText() {
+      if (this.getValue === true) {
+        return this.props.valueText.checked;
+      }
+      return this.props.valueText.unchecked;
     }
     _setValue(value, options) {
       if (options === false) {
@@ -14095,6 +14112,12 @@ function _defineProperty2(obj, key, value) {
     }
     handleChange() {
       this.props.onChange && this._callHandler(this.props.onChange);
+    }
+    _getValueText() {
+      const val = this.getValue();
+      return `${
+        val[this.props.fieldName.start]
+      } - ${val[this.props.fieldName.end]}`;
     }
     checkRange(type) {
       const that = this;
@@ -19904,6 +19927,12 @@ function _defineProperty2(obj, key, value) {
     showPopup() {
       this.popup.show();
     }
+    _getValueText() {
+      const val = this.getValue();
+      return `${
+        val[this.props.fieldName.start]
+      } - ${val[this.props.fieldName.end]}`;
+    }
     clearTime() {
       this.year = null;
       this.quarter = null;
@@ -24064,6 +24093,12 @@ function _defineProperty2(obj, key, value) {
         ],
       });
       super._config();
+    }
+    _getValueText() {
+      const val = this.getValue();
+      return `${
+        val[this.props.fieldName.start]
+      } - ${val[this.props.fieldName.end]}`;
     }
     handleChange() {
       this.props.onChange && this._callHandler(this.props.onChange);
