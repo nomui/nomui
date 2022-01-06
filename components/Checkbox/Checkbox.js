@@ -6,6 +6,10 @@ class Checkbox extends Field {
   constructor(props, ...mixins) {
     const defaults = {
       text: null,
+      valueText: {
+        on: '是',
+        off: '否',
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -58,9 +62,9 @@ class Checkbox extends Field {
 
   _getValueText() {
     if (this.getValue === true) {
-      return '是'
+      return this.props.valueText.on
     }
-    return '否'
+    return this.props.valueText.off
   }
 
   _setValue(value, options) {
