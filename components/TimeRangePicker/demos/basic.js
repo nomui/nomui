@@ -16,6 +16,7 @@ define([], function () {
             label: '时间范围选择',
             component: 'TimeRangePicker',
             flatValue: true,
+
             fieldName: {
               start: 'start',
               end: 'end',
