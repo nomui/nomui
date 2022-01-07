@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.45](https://github.com/nomui/nomui/compare/v1.0.0-alpha.44...v1.0.0-alpha.45) (2022-01-07)
+
+
+### Features
+
+* 表单类型组件都支持getValueText获取字面值 ([e602389](https://github.com/nomui/nomui/commit/e602389dcefa2cd50ddf0527b8c034a8eeb6faa6))
+* **Checkbox:** 字面值支持自定义配置 ([a6a6fff](https://github.com/nomui/nomui/commit/a6a6fff07d86458cc11298d929f841700c5cbd9d))
+* **Grid:** 默认显示条纹间隔，选中行支持背景高亮 ([bc8c1a0](https://github.com/nomui/nomui/commit/bc8c1a0d51496c5bc0a0e0f6238216f00818f9cd))
+* **Pager:** 分页器添加缓存设置分页大小的功能 ([5325ee6](https://github.com/nomui/nomui/commit/5325ee67fa5f16ad754b17ae464935397fa67530))
+* **Pager:** 添加分页器的排列方式和排列顺序 ([c32fdff](https://github.com/nomui/nomui/commit/c32fdffdd9285e395d39a882b04f303427dbd51c))
+* **Tree:** 拖拽功能添加showHandler，开启后仅允许拖拽图标功能 ([6cff088](https://github.com/nomui/nomui/commit/6cff08817db16764dafc93fe63c4b07ce99d376a))
+
+
+### Bug Fixes
+
+* **Grid-scrollbar:** 表格滚动条的非空判断 ([d0e5a9f](https://github.com/nomui/nomui/commit/d0e5a9f5f3faba3d160a9959e0758d4d553c28c0))
+* **Grid:** 切换页面,Grid被销毁，导致props为undefined 报错 ([f429727](https://github.com/nomui/nomui/commit/f429727f0a81ac99652eb2c2327d8ddce9074a58))
+
+
+### Docs
+
+* **Tree:** 补充排序功能文档 ([443c69e](https://github.com/nomui/nomui/commit/443c69edd3e600d5ce2b51014bf95ea89cd6f85d))
+* **Tree:** 修复文档 ([e19b394](https://github.com/nomui/nomui/commit/e19b394d01f592c956726c818dfdda5bcc825ba6))
+
 ## [1.0.0-alpha.44](https://github.com/nomui/nomui/compare/v1.0.0-alpha.43...v1.0.0-alpha.44) (2021-12-31)
 
 
