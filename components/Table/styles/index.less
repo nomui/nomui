@@ -6,6 +6,13 @@ table.nom-table {
 
   &.nom-table-striped {
     tbody tr:nth-child(even) {
+      td {
+        &.nom-table-fixed-left,
+        &.nom-table-fixed-right {
+          background: #f5f5f5;
+        }
+      }
+
       background-color: #f5f5f5;
       &:hover {
         background-color: #f0f0f0;

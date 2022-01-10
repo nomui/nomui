@@ -5876,6 +5876,10 @@ table.nom-table {
 table.nom-table.nom-table-striped tbody tr:nth-child(even) {
   background-color: #f5f5f5;
 }
+table.nom-table.nom-table-striped tbody tr:nth-child(even) td.nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even) td.nom-table-fixed-right {
+  background: #f5f5f5;
+}
 table.nom-table.nom-table-striped tbody tr:nth-child(even):hover {
   background-color: #f0f0f0;
 }
