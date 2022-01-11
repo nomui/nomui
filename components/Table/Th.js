@@ -205,6 +205,26 @@ class Th extends Component {
       attrs: {
         colspan: this.props.column.colSpan,
         rowspan: this.props.column.rowSpan,
+        onmouseenter:
+          this.table.grid &&
+          function () {
+            const mask = that.table.grid.highlightMask
+            mask &&
+              mask.update({
+                attrs: {
+                  style: {
+                    left: `${this.offsetLeft}px`,
+                    width: `${this.offsetWidth}px`,
+                  },
+                },
+              })
+          },
+        onmouseleave:
+          this.table.grid &&
+          function () {
+            const mask = that.table.grid.highlightMask
+            mask && mask.update({ attrs: { style: { width: 0 } } })
+          },
       },
     })
   }

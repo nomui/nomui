@@ -44,12 +44,15 @@ class Table extends Component {
   }
 
   _config() {
+    const that = this
     this._propStyleClasses = ['line', 'bordered']
     const isStriped =
       (this.hasGrid && this.grid.props.striped === true) || this.props.striped === true || false
 
+    let hasMask = false
     if (this.hasGrid) {
       this.props.ellipsis = this.grid.props.ellipsis
+      hasMask = this.grid.props.highlightCol
     }
 
     this.setProps({
@@ -61,6 +64,14 @@ class Table extends Component {
         { component: ColGroup },
         this.props.onlyBody !== true && { component: Thead },
         this.props.onlyHead !== true && { component: Tbody },
+        hasMask &&
+          this.props.onlyBody && {
+            tag: 'div',
+            classes: { 'nom-table-th-hover-mask': true },
+            _created() {
+              that.grid.highlightMask = this
+            },
+          },
       ],
     })
   }

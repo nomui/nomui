@@ -1,4 +1,5 @@
 table.nom-table {
+  position: relative;
   width: 100%;
   table-layout: fixed;
   background-color: #fff;
@@ -47,6 +48,14 @@ table.nom-table {
         background-color: #fffaef;
       }
     }
+  }
+
+  .nom-table-th-hover-mask {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    opacity: .1;
+    background-color: rgb(221, 205, 79);
   }
 
   td,
