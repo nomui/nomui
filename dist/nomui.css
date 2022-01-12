@@ -5874,18 +5874,18 @@ table.nom-table {
   border-spacing: 0;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even) {
-  background-color: #f5f5f5;
+  background-color: #e6e7e9;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even) td.nom-table-fixed-left,
 table.nom-table.nom-table-striped tbody tr:nth-child(even) td.nom-table-fixed-right {
-  background: #f5f5f5;
+  background: #e6e7e9;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even):hover {
-  background-color: #f0f0f0;
+  background-color: #c0c1c2;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even):hover .nom-table-fixed-left,
 table.nom-table.nom-table-striped tbody tr:nth-child(even):hover .nom-table-fixed-right {
-  background-color: #f0f0f0;
+  background-color: #c0c1c2;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even).nom-tr-selected {
   background-color: #fffaef;
@@ -5895,11 +5895,11 @@ table.nom-table.nom-table-striped tbody tr:nth-child(even).nom-tr-selected .nom-
   background-color: #fffaef;
 }
 table.nom-table tbody tr:hover {
-  background-color: #f0f0f0;
+  background-color: #c0c1c2;
 }
 table.nom-table tbody tr:hover .nom-table-fixed-left,
 table.nom-table tbody tr:hover .nom-table-fixed-right {
-  background-color: #f0f0f0;
+  background-color: #c0c1c2;
 }
 table.nom-table tbody tr.nom-tr-selected,
 table.nom-table tbody tr.nom-tr-selected:hover {
