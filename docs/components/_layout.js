@@ -3,7 +3,7 @@ define([], function () {
     let javascriptMenuRef = null
 
     const highLight = () => {
-      let { type = 'component' } = this.$route.query
+      let { type = 'Component' } = this.$route.query
       const { cat } = this.$route.query
       if (cat) {
         type += `/${cat}`
@@ -572,6 +572,12 @@ define([], function () {
                 {
                   text: '其他',
                   items: [
+                    {
+                      text: 'Skeleton',
+                      subtext: '骨架屏',
+                      id: 'Skeleton',
+                      url: '#!components!index?type=Skeleton',
+                    },
                     {
                       text: 'Caption',
                       subtext: '标题',

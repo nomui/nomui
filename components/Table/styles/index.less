@@ -2,23 +2,49 @@ table.nom-table {
   width: 100%;
   table-layout: fixed;
   background-color: #fff;
-  border-collapse: collapse;
-  tbody tr:hover {
-    background-color: #f5f5f5;
-    transition: all ease-in 0.25s;
-  }
+  border-spacing: 0;
+
   &.nom-table-striped {
     tbody tr:nth-child(even) {
-      background-color: #fbfbfb;
+      td {
+        &.nom-table-fixed-left,
+        &.nom-table-fixed-right {
+          background: #e6e7e9;
+        }
+      }
+
+      background-color: #e6e7e9;
       &:hover {
-        background-color: #f2f2f2;
+        background-color: #c0c1c2;
+        .nom-table-fixed-left,
+        .nom-table-fixed-right {
+          background-color: #c0c1c2;
+        }
+      }
+      &.nom-tr-selected {
+        background-color: #fffaef;
+        .nom-table-fixed-left,
+        .nom-table-fixed-right {
+          background-color: #fffaef;
+        }
       }
     }
   }
-  .nom-thead-tr {
-    &:first-child {
-      th:last-child {
-        padding-right: 40px;
+
+  tbody tr {
+    &:hover {
+      background-color: #c0c1c2;
+      .nom-table-fixed-left,
+      .nom-table-fixed-right {
+        background-color: #c0c1c2;
+      }
+    }
+    &.nom-tr-selected,
+    &.nom-tr-selected:hover {
+      background-color: #fffaef;
+      .nom-table-fixed-left,
+      .nom-table-fixed-right {
+        background-color: #fffaef;
       }
     }
   }
@@ -40,7 +66,7 @@ table.nom-table {
         cursor: pointer;
       }
     }
-    &.nom-table-ellipsis  {
+    &.nom-table-ellipsis {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -53,18 +79,47 @@ table.nom-table {
           text-overflow: ellipsis;
           word-break: keep-all;
         }
+        // table配置了ellipsis, 则td中的Ellipsis组件的多行省略则不生效
+        .nom-ellipsis .nom-ellipsis-inner {
+          display: table-cell;
+        }
       }
     }
     .nom-table-resize-handler {
       position: absolute !important;
       right: 0;
       bottom: 0;
-      color: #666 !important;
+      width: 6px;
+      height: 100%;
+      border-right: 1px dotted #888;
       visibility: hidden;
       cursor: col-resize;
     }
+    .nom-table-sort-handler.p-type-sort {
+      visibility: hidden;
+    }
+    .nom-table-filter-handler {
+      visibility: hidden;
+    }
+    .nom-table-pin-handler {
+      color: #666 !important;
+      visibility: hidden;
+      cursor: pointer;
+      &.p-type-pin-fill {
+        visibility: visible;
+      }
+    }
     &:hover {
       .nom-table-resize-handler {
+        visibility: visible;
+      }
+      .nom-table-pin-handler {
+        visibility: visible;
+      }
+      .nom-table-sort-handler {
+        visibility: visible;
+      }
+      .nom-table-filter-handler {
         visibility: visible;
       }
     }
@@ -72,7 +127,8 @@ table.nom-table {
 
   .nom-table-ellipsis {
     // 内容使用content包了一层，在content中设置overflow: hidden
-    &.nom-table-fixed-left, &.nom-table-fixed-right {
+    &.nom-table-fixed-left,
+    &.nom-table-fixed-right {
       .nom-table-cell-content {
         display: block;
         overflow: hidden;
@@ -80,7 +136,8 @@ table.nom-table {
       }
     }
 
-    &.nom-table-fixed-left-last, &.nom-table-fixed-right-first {
+    &.nom-table-fixed-left-last,
+    &.nom-table-fixed-right-first {
       overflow: visible;
     }
   }
@@ -99,7 +156,7 @@ table.nom-table {
   }
 
   .nom-table-fixed-right-first {
-    padding-left: 38px;
+    padding-left: 15px;
   }
 
   .nom-table-fixed-right-first::after {
@@ -170,7 +227,8 @@ table.nom-table {
     td,
     th {
       border-right: 1px solid @oc-gray-2;
-
+    }
+    > th {
       &:last-child {
         border-right: 0;
       }
@@ -182,7 +240,15 @@ table.nom-table {
     th {
       border-right: 1px solid @oc-gray-2;
       border-bottom: 1px solid @oc-gray-2;
-
+    }
+    thead > tr {
+      &:first-child {
+        th:last-child {
+          border-right: 0;
+        }
+      }
+    }
+    td {
       &:last-child {
         border-right: 0;
       }

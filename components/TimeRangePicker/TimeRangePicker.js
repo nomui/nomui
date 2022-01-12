@@ -111,6 +111,11 @@ class TimeRangePicker extends Group {
     super._config()
   }
 
+  _getValueText() {
+    const val = this.getValue()
+    return `${val[this.props.fieldName.start]} - ${val[this.props.fieldName.end]}`
+  }
+
   handleChange() {
     this.props.onChange && this._callHandler(this.props.onChange)
   }

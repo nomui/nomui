@@ -1,19 +1,37 @@
 define([], function () {
   let grid1
+  const mydata = [
+    { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
+    { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
+    { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
+  ]
   return {
     title: '列排序',
     file: 'sort',
     demo: function () {
       return {
-        children: [
+        component: 'Flex',
+        gutter: 'large',
+        rows: [
           {
             component: 'Grid',
-            onSort: (data) => {
-              console.log(data)
+
+            onSort: (args) => {
+              new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve({ data: mydata.reverse() })
+                }, 3000)
+              }).then((data) => {
+                grid1.update({
+                  data: data.data,
+                })
+              })
+              console.log(args, '更新了data顺序')
             },
             ref: (c) => {
-              grid1 = c
+              window.grid1 = grid1 = c
             },
+
             columns: [
               {
                 field: 'name',
@@ -42,12 +60,10 @@ define([], function () {
                 width: 500,
               },
             ],
-            data: [
-              { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
-              { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
-              { id: 5, name: '射雕英雄传', author: '金庸', sales: 80000, role: '郭靖' },
-            ],
+
+            data: mydata,
           },
+
           {
             component: 'Button',
             text: '重置排序状态',

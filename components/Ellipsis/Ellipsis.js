@@ -6,6 +6,7 @@ class Ellipsis extends Component {
     const defaults = {
       text: null,
       showTitle: true,
+      line: null,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -22,6 +23,9 @@ class Ellipsis extends Component {
             this.props.showTitle && (isString(this.props.text) || isNumeric(this.props.text))
               ? this.props.text
               : null,
+          style: {
+            '-webkit-line-clamp': this.props.line,
+          },
         },
         children: this.props.text ? this.props.text : this.props.children,
       },

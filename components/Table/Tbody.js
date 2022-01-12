@@ -37,6 +37,9 @@ class Tbody extends Component {
               },
             })
           },
+          onClick: (args) => {
+            this.table.selectTr(args.sender)
+          },
         },
         rowDefaults,
       ),

@@ -31,14 +31,16 @@ class Table extends Component {
     super._created()
     this.colRefs = []
     this.thRefs = []
-    this.hasGrid =
-      this.parent.componentType === 'GridHeader' || this.parent.componentType === 'GridBody'
+    this.hasGrid = ['GridHeader', 'GridBody', 'GridFooter'].some(
+      (item) => this.parent.componentType === item,
+    )
 
     if (this.hasGrid) {
       this.grid = this.parent.parent
       this.parent.table = this
     }
     this.hasRowGroup = false
+    this.hasMultipleThead = false
   }
 
   _config() {
@@ -90,6 +92,14 @@ class Table extends Component {
 
   getRows() {
     return this.tbody.getChildren()
+  }
+
+  selectTr(tr) {
+    if (this.activeTr) {
+      this.activeTr.element.classList.remove('nom-tr-selected')
+    }
+    this.activeTr = tr
+    this.activeTr.element.classList.add('nom-tr-selected')
   }
 }
 

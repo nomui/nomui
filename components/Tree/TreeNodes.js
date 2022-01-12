@@ -46,6 +46,7 @@ class TreeNodes extends Component {
             node.props.key = data.key
             node.props.text = data.text
             node.props.icon = data.icon
+            node.props.tools = data.tools
             node.props.disabled = data.disabled
             node.props.childrenData = data.children
           }
@@ -68,6 +69,12 @@ class TreeNodes extends Component {
         animation: 150,
         fallbackOnBody: true,
         swapThreshold: 0.65,
+        handle:
+          this.tree.props.sortable &&
+          this.tree.props.sortable.showHandler &&
+          this.tree.props.sortable.byHandler
+            ? '.nom-tree-drag-handler'
+            : null,
       })
     }
   }

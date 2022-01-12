@@ -67,9 +67,18 @@
 
 ### TreeData
 
-| 参数     | 说明           | 类型         | 默认值 |
-| -------- | -------------- | ------------ | ------ |
-| key      | 键             | `string`     | -      |
-| text     | 文本           | `string`     | -      |
-| disabled | 该节点是否禁用 | `boolean`    | -      |
-| children | 子节点数据数组 | `TreeData[]` | -      |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| key | 键 | `string` | - |
+| text | 文本 | `string` | - |
+| icon | 配置节点图标 | `string` | - |
+| tools | 节点文本右侧工具栏配置 | `ComponentProps \| ({node, tree}) => ComponentProps` | - |
+| disabled | 该节点是否禁用 | `boolean` | - |
+| children | 子节点数据数组 | `TreeData[]` | - |
+
+### sortable
+
+| 参数        | 说明                           | 类型      | 默认值 |
+| ----------- | ------------------------------ | --------- | ------ |
+| showHandler | 是否显示拖拽图标               | `boolean` | -      |
+| byHandler   | 是否仅允许通过拖拽图标进行排序 | `boolean` | -      |

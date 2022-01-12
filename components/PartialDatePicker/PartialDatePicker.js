@@ -392,6 +392,11 @@ class PartialDatePicker extends Textbox {
     this.popup.show()
   }
 
+  _getValueText() {
+    const val = this.getValue()
+    return `${val[this.props.fieldName.start]} - ${val[this.props.fieldName.end]}`
+  }
+
   clearTime() {
     this.year = null
     this.quarter = null

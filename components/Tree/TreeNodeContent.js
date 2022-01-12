@@ -1,7 +1,7 @@
 import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import Icon from '../Icon/index'
-import { extend } from '../util/index'
+import { extend, isFunction } from '../util/index'
 
 class TreeNodeContent extends Component {
   constructor(props, ...mixins) {
@@ -68,6 +68,12 @@ class TreeNodeContent extends Component {
 
     this.setProps({
       children: [
+        this.tree.props.sortable &&
+          this.tree.props.sortable.showHandler && {
+            component: 'Icon',
+            type: 'drag',
+            classes: { 'nom-tree-drag-handler': true },
+          },
         this.getExpandableIndicatorProps(expanded),
         nodeCheckable && this._getCheckbox(),
         icon &&
@@ -82,7 +88,7 @@ class TreeNodeContent extends Component {
         tools &&
           Component.extendProps(
             { classes: { 'nom-tree-node-content-tools': true } },
-            Component.normalizeIconProps(tools),
+            isFunction(tools) ? tools({ node: this.node, tree: this.tree }) : tools,
           ),
       ],
       onClick: () => {

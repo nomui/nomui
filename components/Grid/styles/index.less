@@ -46,11 +46,22 @@
       overflow-x: auto;
     }
   }
+  > .nom-grid-footer {
+    position: relative;
+    overflow: hidden;
+    .nom-table {
+      overflow: auto;
+    }
+  }
 
   &.p-bordered {
     border: 1px solid gainsboro;
 
     > .nom-grid-body {
+      margin-bottom: -1px;
+    }
+    > .nom-grid-body + .nom-grid-footer {
+      margin-top: 1px;
       margin-bottom: -1px;
     }
   }
@@ -91,7 +102,23 @@
       }
     }
   }
+
+  &.m-with-setting {
+    .nom-table {
+      .nom-thead-tr {
+        &:first-child {
+          th:last-child {
+            padding-right: 40px;
+          }
+        }
+      }
+    }
+  }
 }
 .nom-grid-setting-panel {
   min-width: 300px;
+}
+
+.nom-grid-setting-drag {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }

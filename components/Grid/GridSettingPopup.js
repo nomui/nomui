@@ -25,7 +25,6 @@ class GridSettingPopup extends Modal {
       content: {
         component: 'Panel',
         uistyle: 'card',
-        fit: true,
         header: {
           caption: {
             title: '列设置',
@@ -42,7 +41,9 @@ class GridSettingPopup extends Modal {
                 : that.grid.getMappedColumns(),
             },
             multiple: true,
-            sortable: true,
+            sortable: {
+              showHandler: true,
+            },
 
             ref: (c) => {
               this.tree = c

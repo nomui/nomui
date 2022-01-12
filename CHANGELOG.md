@@ -2,6 +2,121 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.45](https://github.com/nomui/nomui/compare/v1.0.0-alpha.44...v1.0.0-alpha.45) (2022-01-07)
+
+
+### Features
+
+* 表单类型组件都支持getValueText获取字面值 ([e602389](https://github.com/nomui/nomui/commit/e602389dcefa2cd50ddf0527b8c034a8eeb6faa6))
+* **Checkbox:** 字面值支持自定义配置 ([a6a6fff](https://github.com/nomui/nomui/commit/a6a6fff07d86458cc11298d929f841700c5cbd9d))
+* **Grid:** 默认显示条纹间隔，选中行支持背景高亮 ([bc8c1a0](https://github.com/nomui/nomui/commit/bc8c1a0d51496c5bc0a0e0f6238216f00818f9cd))
+* **Pager:** 分页器添加缓存设置分页大小的功能 ([5325ee6](https://github.com/nomui/nomui/commit/5325ee67fa5f16ad754b17ae464935397fa67530))
+* **Pager:** 添加分页器的排列方式和排列顺序 ([c32fdff](https://github.com/nomui/nomui/commit/c32fdffdd9285e395d39a882b04f303427dbd51c))
+* **Tree:** 拖拽功能添加showHandler，开启后仅允许拖拽图标功能 ([6cff088](https://github.com/nomui/nomui/commit/6cff08817db16764dafc93fe63c4b07ce99d376a))
+
+
+### Bug Fixes
+
+* **Grid-scrollbar:** 表格滚动条的非空判断 ([d0e5a9f](https://github.com/nomui/nomui/commit/d0e5a9f5f3faba3d160a9959e0758d4d553c28c0))
+* **Grid:** 切换页面,Grid被销毁，导致props为undefined 报错 ([f429727](https://github.com/nomui/nomui/commit/f429727f0a81ac99652eb2c2327d8ddce9074a58))
+
+
+### Docs
+
+* **Tree:** 补充排序功能文档 ([443c69e](https://github.com/nomui/nomui/commit/443c69edd3e600d5ce2b51014bf95ea89cd6f85d))
+* **Tree:** 修复文档 ([e19b394](https://github.com/nomui/nomui/commit/e19b394d01f592c956726c818dfdda5bcc825ba6))
+
+## [1.0.0-alpha.44](https://github.com/nomui/nomui/compare/v1.0.0-alpha.43...v1.0.0-alpha.44) (2021-12-31)
+
+
+### Features
+
+* **Ellipsis:** 添加多行文本的...省略功能 ([d79224f](https://github.com/nomui/nomui/commit/d79224f60ec30e9a3063354bfca12a9f7cc14bf9))
+* **Ellipsis:** Ellipsis的多行文本展示功能 ([e97b2ea](https://github.com/nomui/nomui/commit/e97b2ea6efc62e9c6938f866f4cebd7990d09294))
+* **Tree-tools:** tools可通过函数配置 ([5fac650](https://github.com/nomui/nomui/commit/5fac650978cd51730f6cc755770e2f069cf17a4e))
+* **Tree:** node节点添加tools配置 ([bd991c7](https://github.com/nomui/nomui/commit/bd991c707b27b82602afef02d43eec83c2a5ef49))
+* **Tree:** tools工具支持onClick事件返回 node和trees实例 ([2f2e884](https://github.com/nomui/nomui/commit/2f2e8845731dc19fd232f7f1bc5005a7339a8a34))
+
+
+### Bug Fixes
+
+* **Button:** 按钮外部设置的attrs被覆盖 ([dd007c2](https://github.com/nomui/nomui/commit/dd007c271a66fc624e039f097749471776665ec0))
+* **Ellipsis:** 单词换行导致的省略展示失效 ([1a15187](https://github.com/nomui/nomui/commit/1a15187af07b6ee77b9724937304ce67b8f52077))
+* **Ellipsis:** 将单词也换行 ([6e3c82b](https://github.com/nomui/nomui/commit/6e3c82b1195c9cb2a1b05610b728d892708c30ea))
+* **Field:** 修复Field文档描述错误 ([168d753](https://github.com/nomui/nomui/commit/168d75385ed977b81c25c9236b7d9a0b3efb0065))
+* NomUI文档页没有正确高亮的问题 ([ffa440a](https://github.com/nomui/nomui/commit/ffa440a79afad3493956cceddadb7b039b24525b))
+* **Tree:** tools的样式展示 ([8643afd](https://github.com/nomui/nomui/commit/8643afd4fd21ad1f3a0696efa1a865a1dc128ee8))
+
+## [1.0.0-alpha.43](https://github.com/nomui/nomui/compare/v1.0.0-alpha.42...v1.0.0-alpha.43) (2021-12-28)
+
+
+### Bug Fixes
+
+* **Gird-autoWidth:** td宽度不够时，操作文案换行 ([ec7bb99](https://github.com/nomui/nomui/commit/ec7bb9965da2fa5bdc06fd07b926bfe65fb8cdb7))
+* **Grid-autoWidth:** 自动计算列宽的padding部分 ([db4f414](https://github.com/nomui/nomui/commit/db4f41416ca5b926befc270e135ec47d17e463f1))
+
+## [1.0.0-alpha.42](https://github.com/nomui/nomui/compare/v1.0.0-alpha.41...v1.0.0-alpha.42) (2021-12-24)
+
+
+### Features
+
+* **Grid-autowidth:** 列根据子元素自动得出宽度 ([b276bb1](https://github.com/nomui/nomui/commit/b276bb1fa6d6484d1d9d143ea9ebc4e6a2588ef6))
+* **Grid:** 添加列宽根据子元素自动计算得出功能 ([05fb483](https://github.com/nomui/nomui/commit/05fb483151bbb6a33f093f004be5bb68f2646b33))
+
+
+### Bug Fixes
+
+* **Gird-autoWidth:** 有自定义列按钮时，导致操作列宽度不够文字换行 ([6c02c12](https://github.com/nomui/nomui/commit/6c02c1275bae5bcd191365db764c22ec5f95537e))
+* **Grid:** 固定列时的border展示问题 ([3770633](https://github.com/nomui/nomui/commit/3770633b1efc5e8fff169f8e645f903018d2292f))
+* **Grid:** 兼容autoWidth和ellipsis ([14cf314](https://github.com/nomui/nomui/commit/14cf314b413b71a3681c4b94e73cacc127820629))
+* **Grid:** 手动固定列应该忽略右侧已经固定的列 ([d5da1de](https://github.com/nomui/nomui/commit/d5da1de0837e7f71f5def3bb33beb4bbdcd8b3c0))
+* **Grid:** 原始columns中的空对象没有正确被忽略掉 ([d312bad](https://github.com/nomui/nomui/commit/d312bad9b7b82ec4f7713dc726b4810c2e422342))
+* **Grid:** autoWidth操作列文字按钮太少导致表头换行 ([d5660a8](https://github.com/nomui/nomui/commit/d5660a8de81def39ed3d3b254b384785804f59d1))
+* **Toolbar:** 添加inline 配置 ([c4bb7d1](https://github.com/nomui/nomui/commit/c4bb7d1bf5363e3657bf3ee875e1db6943f1cd85))
+* **TreeSelect:** 修复TreeSelect多选bug ([7e2fb04](https://github.com/nomui/nomui/commit/7e2fb04f5ac2dcc27ca1156e45da37d16fd52fe9))
+
+
+### Docs
+
+* **Grid-autoWidth:** autoWidth和width配置的优先级 ([10226e2](https://github.com/nomui/nomui/commit/10226e2527d274b7d284680dab592f6a379d89b7))
+* **Grid:** 自动计算列宽title ([68b8281](https://github.com/nomui/nomui/commit/68b82818f18b91f47edaf995e150f9e928d94d54))
+
+## [1.0.0-alpha.41](https://github.com/nomui/nomui/compare/v1.0.0-alpha.40...v1.0.0-alpha.41) (2021-12-17)
+
+
+### Features
+
+* **Gird-colwidth:** 实现列宽设置的本地存储 ([10e840c](https://github.com/nomui/nomui/commit/10e840c93c9af913ec1013be45da74b28a5c218e))
+* **Gird-resizable:** 设置列宽缓存和总计行列宽兼容 ([786d46c](https://github.com/nomui/nomui/commit/786d46cd610affbc514d0437e75d8515567549cf))
+* **Gird:** 添加尾部合计行 ([42c3529](https://github.com/nomui/nomui/commit/42c35292e61c6cef2d5374332ff83dec24be7150))
+* **Grid-resizable:** 列设置和列宽设置的key都默认优先使用Grid的key ([9f1668e](https://github.com/nomui/nomui/commit/9f1668eff9c1b3d47bbc8ef16b2daa96015131c0))
+* **Grid-summary:** 总计行和滚动的协同 ([5e47932](https://github.com/nomui/nomui/commit/5e4793217e3f771e0209e292f6c40e68ba31b93e))
+* **Grid-summary:** 总计行和滚动等其他表格特性兼容 ([5c36d39](https://github.com/nomui/nomui/commit/5c36d3938b4dd9fc868627c1b62d2d06ac6a393c))
+* **Grid:** 新增手动固定列功能 ([4a4c804](https://github.com/nomui/nomui/commit/4a4c8041cb6c3b18ab59d5cf627d2942a3f91589))
+* **Grid:** 新增sortCacheable配置，缓存排序状态 ([1874ea0](https://github.com/nomui/nomui/commit/1874ea051eeddfea9b3594363183403555aa2efc))
+* **Skeleton:** 新增骨架屏功能 ([26d397e](https://github.com/nomui/nomui/commit/26d397e6c594068bb1d042f7ed0a85e19d14d210))
+
+
+### Bug Fixes
+
+* **Gird-resizable:** 缓存的key不直接使用 Grid.porps.key ([e6f744e](https://github.com/nomui/nomui/commit/e6f744eb8e7975a02b88f22ccb0d75e859797009))
+* **Gird-summary:** 变量名修改 ([24a2118](https://github.com/nomui/nomui/commit/24a211838f52c1143b808624641d91022921ffc5))
+* **Grid-treeconfig:** 树表格 外部iupdate后导致数据错误 ([045313e](https://github.com/nomui/nomui/commit/045313ef7d55f3a4fcfc45598459fd7029f47fbb))
+* **Grid:** 单词拼写错误 ([cac74e9](https://github.com/nomui/nomui/commit/cac74e922a3fd8cf2f6e729161009c4774579044))
+* **Grid:** 将resizeCol函数抽离 ([b8e412d](https://github.com/nomui/nomui/commit/b8e412d9d82064416b822374d11748e88a6b21d1))
+* **Grid:** 列设置面板高度自适应无效的问题 ([d677676](https://github.com/nomui/nomui/commit/d677676e0d1f15dbc770a6238b8fe6e8196f8f14))
+* **style:** body设置了字体大小，导致Popup弹窗框内的文字换行 ([0b3d02f](https://github.com/nomui/nomui/commit/0b3d02f841f6cebe9e821d680502f02f4506e2b9))
+
+
+### Docs
+
+* 更新Skeleton文档 ([b2eb4eb](https://github.com/nomui/nomui/commit/b2eb4eb4c0aa00b1fe9c2d462cb82e71ca4e0eb5))
+* **CheckboxList:** CheckboxList的文档补充 ([771ad45](https://github.com/nomui/nomui/commit/771ad4530beb0b3dadaa94e5f126447dd0d12811))
+* **Field-rules:** 校验规则的文档补充 ([2666a40](https://github.com/nomui/nomui/commit/2666a40f1c73044912670ee989c7acd5f24d4698))
+* **Grid:** cache属性的文档修改 ([2b40217](https://github.com/nomui/nomui/commit/2b40217c16e60a1c5f17546b2bb455c306965074))
+* **RadioList:** RadioList 和 Switch 的文档补充 ([33930e6](https://github.com/nomui/nomui/commit/33930e6708ad949d6ab41e3c427bf7601d217b45))
+* **Skeleton:** 完善示例以及文档 ([36d0443](https://github.com/nomui/nomui/commit/36d0443aa0832a9f919f6718a35cd7927dfc4dea))
+
 ## [1.0.0-alpha.40](https://github.com/nomui/nomui/compare/v1.0.0-alpha.39...v1.0.0-alpha.40) (2021-12-10)
 
 

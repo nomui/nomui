@@ -130,7 +130,7 @@ class Field extends Component {
   }
 
   getValueText(options, value) {
-    return isFunction(this._getValueText) ? this._getValueText(options, value) : null
+    return isFunction(this._getValueText) ? this._getValueText(options, value) : this.getValue()
   }
 
   validate() {

@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Table from '../Table/index'
+import GridTableMixin from './GridTableMixin'
 
 class GridBody extends Component {
   constructor(props, ...mixins) {
@@ -7,7 +8,7 @@ class GridBody extends Component {
       children: { component: Table },
     }
 
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(defaults, props), GridTableMixin, ...mixins)
   }
 
   _created() {
@@ -36,23 +37,13 @@ class GridBody extends Component {
           const { scrollLeft } = this.element
 
           this.grid.header.element.scrollLeft = scrollLeft
+          if (this.grid.footer) {
+            this.grid.footer.element.scrollLeft = scrollLeft
+          }
           this.grid.header.scrollbar && this.grid.header.scrollbar.setScrollLeft(scrollLeft)
         },
       },
     })
-  }
-
-  resizeCol(data) {
-    const col = this.table.colRefs[data.field]
-    const tdWidth = this.table.element.rows[0].cells[col.props.index].offsetWidth
-    const colWidth = col.props.column.width || tdWidth
-
-    let result = colWidth + data.distance
-
-    if (result < 60) {
-      result = 60
-    }
-    col.update({ column: { width: result } })
   }
 }
 

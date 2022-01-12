@@ -37,20 +37,23 @@
 | data | 表格数据数组 | `array` | `[]` |
 | frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
-| frozenRightCols | 指定冻结右侧多少列 | `number` | - |
+| frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
+| allowFrozenCols | 是否允许用户手动固定列(有多级表头时无效) | `boolean` | `false` |
 | keyField | 表格行数据的主键字段 | `string` | `id` |
 | rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
 | rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |
 | rowSortable | 表格行是否可拖动顺序 | `object` \| `boolean` | `false` |
+| summary | 表尾总计行配置 | `object` \| `boolean` | `false` |
 | treeConfig | 树形表格配置 | `object` | - |
 | bordered | 是否显示边框 | `boolean` | `false` |
 | showTitle | 单元格显示 title | `boolean` | `false` |
 | line | 线条样式，`row` 为行线条，`col` 为列线条，`both` 为行列线条 | `row` \| `col` \| `both` | - |
-| columnResizable | 是否允许拖动列宽（此项为 true 以后，如果有某些列不想改变宽度，可单独设置 column.resizable:false） | `boolean` | `false` |
+| columnResizable | 是否允许拖动列宽（此项为 true 以后，如果有某些列不想改变宽度，可单独设置 column.resizable:false） | `object` \| `boolean` | `false` |
 | columnsCustomizable | 是否允许自定义列(如果是多级表头，父层级也必须有`field`)、可传入对象具体项见下表 | `object` \| `boolean` | `false` |
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
 | striped | 是否显示斑马间隔 | `boolean` | `false` |
 | onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
+| sortCacheable | 是否允许缓存排序条件，使用本功能，Grid 必须指定唯一标识`key` | `boolean` | `false` |
 | onFilter | 列头筛选触发回调 | `({params})=>{}` | - |
 | sticky | 是否开启吸附式表头以及虚拟滚动条,需要指定有滚动条的父容器，设为 true 则指定 window 为滚动容器 | `boolean` \| `component`\| `()=>{}` | false |
 
@@ -58,15 +61,16 @@
 
 ### methods
 
-| 名称               | 说明                         | 类型             |
-| ------------------ | ---------------------------- | ---------------- |
-| appendRow          | 在后面新增一行               | `(rowProps)=>{}` |
-| resetSort          | 重置表格的排序状态           | -                |
-| getDataKeys        | 获取当前顺序的 keyField 数组 | -                |
-| getData            | 获取当前顺序的表格 data      | -                |
-| resetColumnsCustom | 重置自定义列的展示           | -                |
-| getCheckedRows     | 获取当前选中行数组           | -                |
-| getCheckedRowKeys  | 获取当前选中行的 key 数组    | -                |
+| 名称               | 说明                                 | 类型                      |
+| ------------------ | ------------------------------------ | ------------------------- |
+| appendRow          | 在后面新增一行                       | `(rowProps)=>{}`          |
+| resetSort          | 重置表格的排序状态                   | -                         |
+| getDataKeys        | 获取当前顺序的 keyField 数组         | -                         |
+| getData            | 获取当前顺序的表格 data              | -                         |
+| resetColumnsCustom | 重置自定义列的展示                   | -                         |
+| resetColsWidth     | 重置列的宽度(不传参数则重置所有列宽) | `Funciton(field \| null)` |
+| getCheckedRows     | 获取当前选中行数组                   | -                         |
+| getCheckedRowKeys  | 获取当前选中行的 key 数组            | -                         |
 
 ### column
 
@@ -78,6 +82,7 @@
 | title | 列头显示标题 | `string` | - |
 | width | 列宽度，单位 px | `boolean` | 120 |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
+| autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
 | resizable | 是否允许拖动列宽 | `boolean` | `false` |
 | ellipsis | 单元格是否文字超出自动省略 | `boolean` | `false` |
 | sortable | 是否启用排序，为 true 时后端排序，也可以传自定义排序函数进行前端排序，如：`(a, b) => a.sales - b.sales` | `boolean` \| `function` | `false` |
@@ -183,6 +188,15 @@
 | ----- | ------------------------ | -------- | ------ |
 | onEnd | 表格行每次拖拽完成的回调 | `()=>{}` | -      |
 
+### summary
+
+表尾总计行配置
+
+| 参数   | 说明                 | 类型                                    | 默认值 |
+| ------ | -------------------- | --------------------------------------- | ------ |
+| text   | 第一列的展示文字     | `string`                                | `总计` |
+| method | 自定义的合计计算方法 | `({columns, data}) => {[filed]: value}` | -      |
+
 ### treeConfig
 
 树形表格配置
@@ -201,6 +215,14 @@
 | cascadeCheckChildren | 级联勾选子节点 | `boolean` | true |
 | cascadeUncheckChildren | 级联取消勾选子节点 | `boolean` | true |
 
+### columnResizable
+
+自定义设置列宽
+
+| 参数  | 说明                                                              | 类型      | 默认值 |
+| ----- | ----------------------------------------------------------------- | --------- | ------ |
+| cache | 是否缓存自定义列宽设置，为`true`时需配置 Grid 的`key`属性为唯一值 | `boolean` | -      |
+
 ### columnsCustomizable
 
 自定义配置列
@@ -208,7 +230,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | selected | 默认展示出的列 | `array` | - |
-| cache | 是否需要缓存到 store 中（刷新页面不会重置，需要 cache 设置为`唯一的标识`） | `string \| boolean` | - |
+| cache | 是否缓存自定义列展示设置，为`true`时需配置 Grid 的`key`属性为唯一值 | `boolean` | - |
 | callback | 点击 modal 的保存的回调事件 | `function` | - |
 
 ### 注意事项

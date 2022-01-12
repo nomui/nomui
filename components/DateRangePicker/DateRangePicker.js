@@ -107,6 +107,11 @@ class DateRangePicker extends Group {
     this.props.onChange && this._callHandler(this.props.onChange)
   }
 
+  _getValueText() {
+    const val = this.getValue()
+    return `${val[this.props.fieldName.start]} - ${val[this.props.fieldName.end]}`
+  }
+
   checkRange(type) {
     const that = this
     const active = type === this.props.fieldName.start ? this.startPicker : this.endPicker

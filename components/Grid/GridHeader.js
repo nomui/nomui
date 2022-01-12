@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import Scrollbar from '../Scrollbar/index'
 import Table from '../Table/index'
 import { isFunction } from '../util/index'
+import GridTableMixin from './GridTableMixin'
 
 class GridHeader extends Component {
   constructor(props, ...mixins) {
@@ -9,7 +10,7 @@ class GridHeader extends Component {
       children: { component: Table },
     }
 
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(defaults, props), GridTableMixin, ...mixins)
   }
 
   _created() {
@@ -18,8 +19,10 @@ class GridHeader extends Component {
   }
 
   _config() {
-    const { frozenHeader } = this.grid.props
+    const { frozenHeader, summary } = this.grid.props
     const minWidth = frozenHeader ? this.grid.minWidth + 17 : this.grid.minWidth
+
+    this._summaryHeight = summary ? 36 : 0
 
     this.setProps({
       children: {
@@ -66,7 +69,9 @@ class GridHeader extends Component {
         that._onPageScroll()
       })
       setTimeout(() => {
-        this.scrollParent.element.scrollTop += 1
+        if (this.scrollParent) {
+          this.scrollParent.element.scrollTop += 1
+        }
       }, 0)
     }
   }
@@ -143,25 +148,12 @@ class GridHeader extends Component {
 
     if (
       gRect.top < pRect.height + pRect.top &&
-      gRect.top + gRect.height - 17 > pRect.top + pRect.height
+      gRect.top + gRect.height - 17 - this._summaryHeight > pRect.top + pRect.height
     ) {
       this.scrollbar.show()
     } else {
       this.scrollbar.hide()
     }
-  }
-
-  resizeCol(data) {
-    const col = this.table.colRefs[data.field]
-    const tdWidth = this.table.element.rows[0].cells[col.props.index].offsetWidth
-    const colWidth = col.props.column.width || tdWidth
-
-    let result = colWidth + data.distance
-
-    if (result < 60) {
-      result = 60
-    }
-    col.update({ column: { width: result } })
   }
 }
 

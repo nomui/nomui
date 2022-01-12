@@ -230,6 +230,15 @@ class Cascader extends Field {
       : null
   }
 
+  _getValueText() {
+    let str = ''
+    this.selectedOption.forEach(function (n) {
+      str += `${n.label}/`
+    })
+    const result = str.substring(0, str.length - 1)
+    return result
+  }
+
   _setValue(value) {
     if (!value && this._content) {
       this._content.element.innerText = ''
