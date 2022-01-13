@@ -61,7 +61,7 @@ class Checkbox extends Field {
   }
 
   _getValueText() {
-    if (this.getValue === true) {
+    if (this.getValue() === true) {
       return this.props.valueText.checked
     }
     return this.props.valueText.unchecked

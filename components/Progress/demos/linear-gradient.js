@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '自定义进度条渐变色',
-    subtitle: 'linear-gradient 的封装。推荐只传两种颜色',
+    description: 'linear-gradient 的封装。推荐只传两种颜色',
     file: 'linear-gradient',
     demo: function () {
       return {
