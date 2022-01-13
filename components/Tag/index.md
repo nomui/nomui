@@ -7,17 +7,13 @@
 
 ## API
 
-| 参数      | 说明               | 类型             | 默认值  |
-| --------- | ------------------ | ---------------- | ------- |
-| text      | 文本值      | `'string'`      | -      |
-| icon      | 设置图标      | `'string'`      | -      |
-| color      | 标签色      | `'string'`      | -      |
-| number      | 设置数字      | `'number'`      | -      |
-| size      | 设置尺寸      | `'xs'\|'sm'\|'lg'\|'xl'`      | -      |
-| type      | 设置标签类型      | `'round'\|'pill'`      | -      |
-| removable      | 可删除标签      | `'(key) => {console.log(key)}'`      | -      |
-
-
-
-
-
+| 参数          | 说明             | 类型                          | 默认值 |
+| ------------- | ---------------- | ----------------------------- | ------ |
+| icon          | 设置图标         | `string`                      | -      |
+| text          | 文本值           | `string`                      | -      |
+| number        | 设置数字         | `number`                      | -      |
+| overflowCount | 展示封顶的数字值 | `number`                      | 99     |
+| color         | 标签色           | `string`                      | -      |
+| size          | 设置尺寸         | `xs\|sm\|lg\|xl`              | -      |
+| type          | 设置标签类型     | `round\|square`               | square |
+| removable     | 删除的回调       | `(key) => {console.log(key)}` | -      |

@@ -9,11 +9,11 @@ Statistic 统计数值:展示统计数值
 
 | 参数             | 说明             | 类型                        | 默认值 |
 | ---------------- | ---------------- | --------------------------- | ------ |
+| title            | 数值的标题       | `string`                    | -      |
+| value            | 数值内容         | `string\|number`            | -      |
 | decimalSeparator | 设置小数点       | `string`                    | `.`    |
-| formatter        | 自定义数值展示   | `(value)=>string \| number` | `-`    |
+| formatter        | 自定义数值展示   | `(value)=>string \| number` | -      |
 | groupSeparator   | 设置千分位标识符 | `string`                    | `,`    |
 | precision        | 数值精度         | `number`                    | `0`    |
-| prefix           | 设置数值的前缀   | `Component \| string`       | `-`    |
-| suffix           | 设置数值的后缀   | `Component \| string`       | `-`    |
-| title            | 数值的标题       | `string`                    | `-`    |
-| value            | 数值内容         | `string\|number`            | `-`    |
+| prefix           | 设置数值的前缀   | `Component \| string`       | -      |
+| suffix           | 设置数值的后缀   | `Component \| string`       | -      |
