@@ -49,6 +49,9 @@ class Tbody extends Component {
       props = {
         children: {
           tag: 'tr',
+          classes: {
+            'nom-tr-empty': true,
+          },
           children: {
             tag: 'Td',
             attrs: {
