@@ -4,8 +4,6 @@
 
 ## API
 
-### Layer
-
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | align | 层对齐位置 | `'top'\|'bottom'\|'left'\|'right'\|'left top'\|'right top'\|'left bottom'\|'right bottom'\|'center' ` | - |

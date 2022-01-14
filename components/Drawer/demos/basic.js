@@ -14,7 +14,6 @@ define([], function () {
               new nomui.Drawer({
                 width: '80%',
                 title: '标题',
-                visible: true,
                 closeIcon: 'close-circle',
                 getContainer: () => document.body,
                 content: {

@@ -12,8 +12,8 @@
 | --------- | ---------------- | --------------- | ------ |
 | autofocus | 是否自动获得焦点 | `boolean`       | -      |
 | value     | 输入框内容       | `string`        | -      |
-| leftIcon  | 左侧的图标       | `string\|Props` |        |
-| rightIcon | 右侧的图标       | `string\|Props` |        |
+| leftIcon  | 左侧的图标       | `string\|Props` | -      |
+| rightIcon | 右侧的图标       | `string\|Props` | -      |
 
 ## 事件
 

@@ -11,6 +11,7 @@ define([], function () {
             type: 'mail',
             text: 'snoopdog@dogs.com',
             showTitle: true,
+            icon: 'times',
           },
           {
             component: 'MaskInfo',

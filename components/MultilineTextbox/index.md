@@ -2,12 +2,13 @@
 
 ## API
 
-| 参数      | 说明             | 类型                                       | 默认值 |
-| --------- | ---------------- | ------------------------------------------ | ------ |
-| autofocus | 是否自动获得焦点 | `boolean`                                  | -      |
-| autoSize  | 自适应内容高度   | `boolean\|{minRows:number,maxRows:number}` | false  |
-| maxLength | 内容最大长度     | `number`                                   | -      |
-| value     | 输入框内容       | `string`                                   | -      |
+| 参数      | 说明              | 类型                                       | 默认值 |
+| --------- | ----------------- | ------------------------------------------ | ------ |
+| autofocus | 是否自动获得焦点  | `boolean`                                  | -      |
+| autoSize  | 自适应内容高度    | `boolean\|{minRows:number,maxRows:number}` | false  |
+| maxLength | 内容最大长度      | `number`                                   | -      |
+| value     | 输入框内容        | `string`                                   | -      |
+| rows      | textarea 原生属性 | `number`                                   | -      |
 
 ## 事件
 
