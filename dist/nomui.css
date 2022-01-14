@@ -5880,11 +5880,11 @@ table.nom-table {
   border-spacing: 0;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) {
-  background-color: #e6e7e9;
+  background-color: #fafafa;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) td.nom-table-fixed-left,
 table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) td.nom-table-fixed-right {
-  background: #e6e7e9;
+  background: #fafafa;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty):hover {
   background-color: #dcdee0;
@@ -5921,8 +5921,8 @@ table.nom-table .nom-table-th-hover-mask {
   position: absolute;
   top: 0;
   height: 100%;
-  opacity: 0.1;
   background-color: #ddcd4f;
+  opacity: 0.1;
 }
 table.nom-table td,
 table.nom-table th {
