@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '防抖',
-    file: 'basic',
+    file: 'debounce',
     demo: function () {
       const options = Array.from({ length: 20 }, (_, k) => ({ value: 'a'.repeat(k) }))
       return {
