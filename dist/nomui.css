@@ -5873,42 +5873,42 @@ table.nom-table {
   background-color: #fff;
   border-spacing: 0;
 }
-table.nom-table.nom-table-striped tbody tr:nth-child(even) {
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) {
   background-color: #e6e7e9;
 }
-table.nom-table.nom-table-striped tbody tr:nth-child(even) td.nom-table-fixed-left,
-table.nom-table.nom-table-striped tbody tr:nth-child(even) td.nom-table-fixed-right {
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) td.nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) td.nom-table-fixed-right {
   background: #e6e7e9;
 }
-table.nom-table.nom-table-striped tbody tr:nth-child(even):hover {
-  background-color: #c0c1c2;
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty):hover {
+  background-color: #dcdee0;
 }
-table.nom-table.nom-table-striped tbody tr:nth-child(even):hover .nom-table-fixed-left,
-table.nom-table.nom-table-striped tbody tr:nth-child(even):hover .nom-table-fixed-right {
-  background-color: #c0c1c2;
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty):hover .nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty):hover .nom-table-fixed-right {
+  background-color: #dcdee0;
 }
-table.nom-table.nom-table-striped tbody tr:nth-child(even).nom-tr-selected {
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).nom-tr-selected {
   background-color: #fffaef;
 }
-table.nom-table.nom-table-striped tbody tr:nth-child(even).nom-tr-selected .nom-table-fixed-left,
-table.nom-table.nom-table-striped tbody tr:nth-child(even).nom-tr-selected .nom-table-fixed-right {
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).nom-tr-selected .nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).nom-tr-selected .nom-table-fixed-right {
   background-color: #fffaef;
 }
-table.nom-table tbody tr:hover {
-  background-color: #c0c1c2;
+table.nom-table tbody tr:not(.nom-tr-empty):hover {
+  background-color: #dcdee0;
 }
-table.nom-table tbody tr:hover .nom-table-fixed-left,
-table.nom-table tbody tr:hover .nom-table-fixed-right {
-  background-color: #c0c1c2;
+table.nom-table tbody tr:not(.nom-tr-empty):hover .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty):hover .nom-table-fixed-right {
+  background-color: #dcdee0;
 }
-table.nom-table tbody tr.nom-tr-selected,
-table.nom-table tbody tr.nom-tr-selected:hover {
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected,
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected:hover {
   background-color: #fffaef;
 }
-table.nom-table tbody tr.nom-tr-selected .nom-table-fixed-left,
-table.nom-table tbody tr.nom-tr-selected:hover .nom-table-fixed-left,
-table.nom-table tbody tr.nom-tr-selected .nom-table-fixed-right,
-table.nom-table tbody tr.nom-tr-selected:hover .nom-table-fixed-right {
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected:hover .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected .nom-table-fixed-right,
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected:hover .nom-table-fixed-right {
   background-color: #fffaef;
 }
 table.nom-table td,

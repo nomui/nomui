@@ -15176,6 +15176,7 @@ function _defineProperty2(obj, key, value) {
         props = {
           children: {
             tag: "tr",
+            classes: { "nom-tr-empty": true },
             children: {
               tag: "Td",
               attrs: {
@@ -15378,6 +15379,7 @@ function _defineProperty2(obj, key, value) {
           that.table.grid.props.allowFrozenCols &&
           !this.table.hasMultipleThead &&
           !(this.props.column.width && this.props.column.width > 600) &&
+          !this.props.column.isChecker &&
           this.props.column.fixed !== "right" &&
           this.props.column.customizable !== false && {
             component: "Icon",
@@ -15394,9 +15396,6 @@ function _defineProperty2(obj, key, value) {
             that.resizer = c;
           }, // type: 'resize-handler',
           classes: { "nom-table-resize-handler": true },
-          onClick: function () {
-            // that.table.grid.handlePinClick(that.props.column)
-          },
         },
       ]; // 用span包一层，为了伪元素的展示
       if (isEllipsis) {
@@ -16031,6 +16030,7 @@ function _defineProperty2(obj, key, value) {
           header: { caption: { title: "列设置" } },
           body: {
             children: {
+              attrs: { style: { maxHeight: "50vh", overflow: "auto" } },
               component: "Tree",
               showline: true,
               data: that.customizableColumns(that.grid.popupTreeData),
@@ -16561,8 +16561,7 @@ function _defineProperty2(obj, key, value) {
       this.popup = new GridSettingPopup({
         align: "center",
         alignTo: window,
-        grid: this,
-        fit: true,
+        grid: this, // fit: true,
       });
     }
     handleColumnsSetting(params) {

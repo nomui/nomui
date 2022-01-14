@@ -154,6 +154,7 @@ class Th extends Component {
         that.table.grid.props.allowFrozenCols &&
         !this.table.hasMultipleThead &&
         !(this.props.column.width && this.props.column.width > 600) &&
+        !this.props.column.isChecker &&
         this.props.column.fixed !== 'right' &&
         this.props.column.customizable !== false && {
           component: 'Icon',
@@ -175,9 +176,6 @@ class Th extends Component {
         },
         // type: 'resize-handler',
         classes: { 'nom-table-resize-handler': true },
-        onClick: function () {
-          // that.table.grid.handlePinClick(that.props.column)
-        },
       },
     ]
     // 用span包一层，为了伪元素的展示

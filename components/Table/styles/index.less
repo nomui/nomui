@@ -5,7 +5,7 @@ table.nom-table {
   border-spacing: 0;
 
   &.nom-table-striped {
-    tbody tr:nth-child(even) {
+    tbody tr:nth-child(even):not(.nom-tr-empty) {
       td {
         &.nom-table-fixed-left,
         &.nom-table-fixed-right {
@@ -15,10 +15,10 @@ table.nom-table {
 
       background-color: #e6e7e9;
       &:hover {
-        background-color: #c0c1c2;
+        background-color: #dcdee0;
         .nom-table-fixed-left,
         .nom-table-fixed-right {
-          background-color: #c0c1c2;
+          background-color: #dcdee0;
         }
       }
       &.nom-tr-selected {
@@ -31,12 +31,12 @@ table.nom-table {
     }
   }
 
-  tbody tr {
+  tbody tr:not(.nom-tr-empty) {
     &:hover {
-      background-color: #c0c1c2;
+      background-color: #dcdee0;
       .nom-table-fixed-left,
       .nom-table-fixed-right {
-        background-color: #c0c1c2;
+        background-color: #dcdee0;
       }
     }
     &.nom-tr-selected,
