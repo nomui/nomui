@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.46](https://github.com/nomui/nomui/compare/v1.0.0-alpha.45...v1.0.0-alpha.46) (2022-01-14)
+
+
+### Features
+
+* **Grid:** 悬浮表头，对应列高亮 ([f509210](https://github.com/nomui/nomui/commit/f509210f89128c7ddd0ea6f0b15c8c5e1d79105a))
+
+
+### Bug Fixes
+
+* **chrome兼容:** 低版本浏览器的el.classList.value 的值不存在 ([9300078](https://github.com/nomui/nomui/commit/9300078a5d2014b90520cc2a938f240caf87fbe8))
+* **Grid-scrollbar:** 改变列宽宽后, 悬浮的 scroller宽度未更新，导致列展示不全 ([b7238c4](https://github.com/nomui/nomui/commit/b7238c4a58eb5a91244749adc003ac1dfbdb1367))
+
+
+### Docs
+
+* **反馈和其他:** 补充反馈和其他部分的组件文档 ([e344b59](https://github.com/nomui/nomui/commit/e344b59d1767a5c51f171f12c45442e31553bd8b))
+* **浮层相关:** 浮层类的组件文档补充 ([06b3224](https://github.com/nomui/nomui/commit/06b32246b89d3523d459c9459519c3a3bac15929))
+* **数据展示:** 数据展示相关组件文档补充 ([3c7e70b](https://github.com/nomui/nomui/commit/3c7e70bbf0f55f697e6bbcc98f20b3ae4555081f))
+* **文档:** 面包屑，折叠面板，Layer的文档补充 ([c645c8b](https://github.com/nomui/nomui/commit/c645c8bd19f2e98f1bea35673bf7e98136dedff4))
+* **Gird:** highlightCol的文档补充 ([16bfc1d](https://github.com/nomui/nomui/commit/16bfc1d9a54b82a2f0ae733834282976ec5984cc))
+
 ## [1.0.0-alpha.45](https://github.com/nomui/nomui/compare/v1.0.0-alpha.44...v1.0.0-alpha.45) (2022-01-07)
 
 
