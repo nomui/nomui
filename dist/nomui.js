@@ -3190,7 +3190,9 @@ function _defineProperty2(obj, key, value) {
           current = i;
         }
       }
-      const classes = list[current].classList.value;
+      const classes =
+        list[current].classList.value ||
+        Array.from(list[current].classList).join(" ");
       const idx = classes.indexOf("target-");
       const result = classes.slice(idx + 7);
       this._activeAnchor(result);
