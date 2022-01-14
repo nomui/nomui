@@ -15425,6 +15425,26 @@ function _defineProperty2(obj, key, value) {
         attrs: {
           colspan: this.props.column.colSpan,
           rowspan: this.props.column.rowSpan,
+          onmouseenter:
+            this.table.grid &&
+            function () {
+              const mask = that.table.grid.highlightMask;
+              mask &&
+                mask.update({
+                  attrs: {
+                    style: {
+                      left: `${this.offsetLeft}px`,
+                      width: `${this.offsetWidth}px`,
+                    },
+                  },
+                });
+            },
+          onmouseleave:
+            this.table.grid &&
+            function () {
+              const mask = that.table.grid.highlightMask;
+              mask && mask.update({ attrs: { style: { width: 0 } } });
+            },
         },
       });
     }
@@ -15658,13 +15678,16 @@ function _defineProperty2(obj, key, value) {
       this.hasMultipleThead = false;
     }
     _config() {
+      const that = this;
       this._propStyleClasses = ["line", "bordered"];
       const isStriped =
         (this.hasGrid && this.grid.props.striped === true) ||
         this.props.striped === true ||
         false;
+      let hasMask = false;
       if (this.hasGrid) {
         this.props.ellipsis = this.grid.props.ellipsis;
+        hasMask = this.grid.props.highlightCol;
       }
       this.setProps({
         tag: "table",
@@ -15673,6 +15696,14 @@ function _defineProperty2(obj, key, value) {
           { component: ColGroup },
           this.props.onlyBody !== true && { component: Thead },
           this.props.onlyHead !== true && { component: Tbody },
+          hasMask &&
+            this.props.onlyBody && {
+              tag: "div",
+              classes: { "nom-table-th-hover-mask": true },
+              _created() {
+                that.grid.highlightMask = this;
+              },
+            },
         ],
       });
     }
@@ -15912,6 +15943,7 @@ function _defineProperty2(obj, key, value) {
         : this.grid.minWidth;
       this._summaryHeight = summary ? 36 : 0;
       this.setProps({
+        classes: { "nom-grid-highlight-col": this.grid.props.highlightCol },
         children: {
           columns: this.grid.props.columns,
           data: this.grid.data,

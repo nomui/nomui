@@ -51,6 +51,7 @@
 | columnResizable | 是否允许拖动列宽（此项为 true 以后，如果有某些列不想改变宽度，可单独设置 column.resizable:false） | `object` \| `boolean` | `false` |
 | columnsCustomizable | 是否允许自定义列(如果是多级表头，父层级也必须有`field`)、可传入对象具体项见下表 | `object` \| `boolean` | `false` |
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
+| highlightCol | 表头 hover 时将对应列高亮 | `boolean` | `false` |
 | striped | 是否显示斑马间隔 | `boolean` | `false` |
 | onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
 | sortCacheable | 是否允许缓存排序条件，使用本功能，Grid 必须指定唯一标识`key` | `boolean` | `false` |

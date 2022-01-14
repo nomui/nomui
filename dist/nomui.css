@@ -5873,6 +5873,7 @@ img {
   margin-left: auto;
 }
 table.nom-table {
+  position: relative;
   width: 100%;
   table-layout: fixed;
   background-color: #fff;
@@ -5915,6 +5916,13 @@ table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected:hover .nom-table-fix
 table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected .nom-table-fixed-right,
 table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected:hover .nom-table-fixed-right {
   background-color: #fffaef;
+}
+table.nom-table .nom-table-th-hover-mask {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  opacity: 0.1;
+  background-color: #ddcd4f;
 }
 table.nom-table td,
 table.nom-table th {
@@ -6133,6 +6141,10 @@ table.nom-table.p-bordered {
 .nom-grid > .nom-grid-header .nom-th .nom-icon.p-type-sort-down,
 .nom-grid > .nom-grid-header .nom-th .nom-icon.nom-filter-active {
   color: var(--nom-color-primary);
+}
+.nom-grid > .nom-grid-header.nom-grid-highlight-col th:hover {
+  background-color: rgba(221, 205, 79, 0.1);
+  background-image: none;
 }
 .nom-grid > .nom-grid-body {
   position: relative;

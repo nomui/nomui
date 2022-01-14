@@ -25,6 +25,7 @@ class GridHeader extends Component {
     this._summaryHeight = summary ? 36 : 0
 
     this.setProps({
+      classes: { 'nom-grid-highlight-col': this.grid.props.highlightCol },
       children: {
         columns: this.grid.props.columns,
         data: this.grid.data,
