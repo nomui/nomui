@@ -273,10 +273,22 @@ class Th extends Component {
         that.lastDistance = moveLen
       }
       document.onmouseup = function () {
-        if (that.resizable && that.table.grid.props.columnResizable.cache) {
-          that.table.grid.storeColsWidth(that.props.column.field)
+        const grid = that.table.grid
+        if (that.resizable && grid.props.columnResizable.cache) {
+          grid.storeColsWidth(that.props.column.field)
+        }
+        // 移动列宽，需重新计算渲染 scroller 的宽度
+        const header = grid.header
+        if (header.scrollbar) {
+          const gRect = grid.element.getBoundingClientRect()
+          const size = {
+            width: `${gRect.width}px`,
+            innerWidth: `${header.element.scrollWidth}px`,
+          }
+          header.scrollbar.update({ size })
         }
         document.onmousemove = null
+        document.onmouseup = null
       }
     }
   }
