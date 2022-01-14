@@ -9009,7 +9009,7 @@ function _defineProperty2(obj, key, value) {
     constructor(props, ...mixins) {
       const defaults = {
         tag: "div",
-        size: "default", // 通过设置 mode 可以改变时间轴和内容的相对位置 left | alternate | right
+        size: "default",
         maxCount: null, // 显示的最大头像个数
         maxPopoverPlacement: "top", // 多余头像气泡弹出位置
         items: [], // 子元素项列表
@@ -10383,7 +10383,7 @@ function _defineProperty2(obj, key, value) {
       return this.input.element.checked;
     }
     _getValueText() {
-      if (this.getValue === true) {
+      if (this.getValue() === true) {
         return this.props.valueText.checked;
       }
       return this.props.valueText.unchecked;

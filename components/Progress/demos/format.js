@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '自定义文字格式',
-    subtitle: '通过format属性指定格式',
+    description: '通过format属性指定格式',
     file: 'format',
     demo: function () {
       return {

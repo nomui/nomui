@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '分段进度条',
-    subtitle: '通过success配置分段颜色',
+    description: '通过`success`配置分段颜色',
     file: 'success',
     demo: function () {
       return {

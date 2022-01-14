@@ -10,4 +10,4 @@
 
 | 参数     | 说明              | 类型      | 默认值 |
 | -------- | ----------------- | --------- | ------ |
-| spinning | 是否 loading 状态 | `boolean` | `true` |
+| spinning | 是否 loading 状态 | `boolean` | true   |

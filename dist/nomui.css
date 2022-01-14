@@ -4084,7 +4084,8 @@ img {
   word-break: break-all !important;
 }
 .markdown-article h1::before,
-.markdown-article h2::before {
+.markdown-article h2::before,
+.markdown-article h3::before {
   position: absolute;
   top: -2px;
   left: -0.8em;
@@ -4100,6 +4101,10 @@ img {
 .markdown-article h2 {
   /* border-bottom: 5px solid #71BA51 !important; */
   font-size: 18px !important;
+}
+.markdown-article h3 {
+  /* border-bottom: 5px solid #71BA51 !important; */
+  font-size: 16px !important;
 }
 .markdown-article a {
   color: var(--nom-color-primary) !important;

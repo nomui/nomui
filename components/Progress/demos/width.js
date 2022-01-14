@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '小型进度圈',
-    subtitle: '小一号的圈形进度',
+    description: '小一号的圈形进度',
     file: 'width',
     demo: function () {
       return {
