@@ -62,7 +62,7 @@
 | cascadeUncheckChildren | 级联取消勾选子节点 | `boolean` | true |
 | checkedNodeKeys | 初始选中节点数据键数组 | `array` | - |
 | showCheckAll | 显示全选复选框 | `boolean` | false |
-| checkAllText | 全选复选框文本 | `boolean` | `'全选'` |
+| checkAllText | 全选复选框文本 | `boolean` | 全选 |
 | onCheckChange | 节点勾选回调 | `({node}) => {}` | - |
 
 ### TreeData

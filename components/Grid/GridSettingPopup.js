@@ -32,6 +32,12 @@ class GridSettingPopup extends Modal {
         },
         body: {
           children: {
+            attrs: {
+              style: {
+                maxHeight: '50vh',
+                overflow: 'auto',
+              },
+            },
             component: 'Tree',
             showline: true,
             data: that.customizableColumns(that.grid.popupTreeData),

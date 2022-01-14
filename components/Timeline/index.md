@@ -14,7 +14,7 @@
 | mode | 通过设置 mode 可以改变时间轴和内容的相对位置 | `left \| alternate \| right ` | left |
 | pending | 指定最后一个幽灵节点是否存在或内容 | `boolean \| Component ` | false |
 | pendingDot | 当最后一个幽灵节点存在時，指定其时间图点 | `Component ` | `{component:'Icon',type:'loading'}` |
-| reverse | 节点排序 | `boolean` | false |
+| reverse | 是否反转排序 | `boolean` | false |
 | items | 要显示的子 TimeLineItem 列表 | `TimeLineItem[] ` | [] |
 
 ### TimeLineItem

@@ -2,7 +2,7 @@ define([], function () {
   let circleProgressRef, lineProgressRef
   return {
     title: '会动的进度条',
-    subtitle: '会动的进度条才是好进度条度',
+    description: '会动的进度条才是好进度条度',
     file: 'dynamic',
     demo: function () {
       return {

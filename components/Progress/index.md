@@ -14,15 +14,15 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| format | 内容的模板函数 | `function(percent, successPercent)` | `(percent) => percent + %` |
+| type | 类型 | `'line'\|'circle'\|'dashboard'` | `line` |
 | percent | 百分比 | `number` | `0` |
 | showInfo | 是否显示进度数值或状态图标 | `boolean` | `true` |
 | status | 状态 | `'success'\|'exception'\|'normal'\|'active'(仅限line)` | - |
+| format | 内容的模板函数 | `function(percent, successPercent)` | `(percent) => percent + %` |
 | strokeColor | 进度条的色彩 | `string` | - |
 | strokeLinecap | 进度条的样式 | `'round'\|'square'` | `round` |
 | success | 成功进度条相关配置 | `{ percent: number, strokeColor: string }` | - |
 | trailColor | 未完成的分段的颜色 | `string` | - |
-| type | 类型 | `'line'\|'circle'\|'dashboard'` | `line` |
 
 ### type="line"
 
