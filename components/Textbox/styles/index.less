@@ -91,9 +91,17 @@
     }
   }
 
-  &.nom-textbox-affix-wrapper {
+  .nom-textbox-affix-wrapper {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    border: 1px solid @input-border;
+    padding: 0 @padding-x-base;
+
     .nom-input-affix {
       flex: none;
+      display: flex;
+      align-items: center;
     }
     .nom-input-prefix,
     .nom-textbox-left-icon {
@@ -104,19 +112,18 @@
     .nom-input-count {
       margin-left: 4px;
     }
-    > .nom-field-content {
-      .nom-control {
-        display: flex;
-        align-items: center;
-        border: 1px solid @input-border;
-        padding: 0 @padding-x-base;
-        .nom-input {
-          padding: 0;
-          border: none;
-          outline: none;
-          height: @input-height-base-inner; // while input as inner El, height = base line-height + padding (ignore border)
-        }
-      }
+
+    .nom-input {
+      padding: 0;
+      border: none;
+      outline: none;
+      height: @input-height-base-inner; // while input as inner El, height = base line-height + padding (ignore border)
+    }
+  }
+
+  &.s-disabled, &[readonly] {
+    .nom-textbox-affix-wrapper {
+      background: @input-bg-disabled;
     }
   }
 

@@ -13,6 +13,7 @@ define([], function () {
           },
           {
             component: 'Textbox',
+            rightIcon: 'right',
             button: {
               rightIcon: 'search',
             },

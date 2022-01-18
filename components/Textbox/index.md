@@ -12,6 +12,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | autofocus | 是否自动获得焦点 | `boolean` | - |
+| allowClear | 可以点击清除图标删除内容 | `boolean` | true |
 | htmlType | 设置原生的类型 | `text \| tel \| password \| email \| url` | `text` |
 | trimValue | 是否去除首尾空格 | `boolean` | `true` |
 | leftIcon | 左侧的图标 | `string\|Props` |  |
