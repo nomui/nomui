@@ -116,9 +116,9 @@ class Numberbox extends Textbox {
       return
     }
     if (notRound === true) {
-      f = Math.floor(val * 10 ** precision) / 10 ** precision
+      f = Math.floor(val * Math.pow(10, 2)) / Math.pow(10, 2)
     } else {
-      f = Math.round(val * 10 ** precision) / 10 ** precision
+      f = Math.round(val * Math.pow(10, 2)) / Math.pow(10, 2)
     }
     return f
   }
