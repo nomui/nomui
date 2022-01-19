@@ -8,13 +8,25 @@ class Numberbox extends Textbox {
       min: null,
       max: null,
       precision: -1,
+      maxPrecision: null,
+      limitInput: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { precision = -1 } = this.props
+    let precision = this.props.precision
+    if (this.props.maxPrecision) {
+      precision = -1
+      this.rules.push({
+        type: 'regex',
+        value: {
+          pattern: `^\\d+(\\.\\d{1,${this.props.maxPrecision}})?$`,
+        },
+        message: `请输入不多于${this.props.maxPrecision}位小数`,
+      })
+    }
 
     if (precision === -1) {
       this.rules.push({

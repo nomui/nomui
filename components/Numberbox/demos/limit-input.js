@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '带小数位数',
-    file: 'precision',
+    title: '自动处理精度',
+    file: 'limit-input',
     demo: function () {
       let group
       return {
@@ -12,16 +12,11 @@ define([], function () {
           },
           fields: [
             {
-              label: '必须输入两位小数',
+              label: '自动处理精度(四舍五入)',
               name: 'precision',
               component: 'Numberbox',
               precision: 2,
-            },
-            {
-              label: '最多输入三位小数',
-              name: 'maxprecision',
-              component: 'Numberbox',
-              maxPrecision: 3,
+              limitInput: true,
             },
             {
               component: 'Field',
