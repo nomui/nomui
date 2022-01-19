@@ -8,6 +8,7 @@ define([], function () {
           {
             component: 'Grid',
             rowCheckable: true,
+            allowFrozenCols: true,
             treeConfig: {
               flatData: true,
               parentField: 'parentKey',

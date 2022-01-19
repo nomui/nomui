@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '步骤进度条',
-    subtitle: '带步骤的进度条',
+    description: '带步骤的进度条',
     file: 'steps',
     demo: function () {
       return {

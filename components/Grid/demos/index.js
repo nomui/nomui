@@ -14,6 +14,7 @@ define([
   './auto-merge.js',
   './summary.js',
   './multiple-header.js',
+  './highlight-col.js',
   './sticky.js',
   './sticky-window.js',
   './row-checkable.js',

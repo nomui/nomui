@@ -154,6 +154,7 @@ class Th extends Component {
         that.table.grid.props.allowFrozenCols &&
         !this.table.hasMultipleThead &&
         !(this.props.column.width && this.props.column.width > 600) &&
+        !this.props.column.isChecker &&
         this.props.column.fixed !== 'right' &&
         this.props.column.customizable !== false && {
           component: 'Icon',
@@ -175,9 +176,6 @@ class Th extends Component {
         },
         // type: 'resize-handler',
         classes: { 'nom-table-resize-handler': true },
-        onClick: function () {
-          // that.table.grid.handlePinClick(that.props.column)
-        },
       },
     ]
     // 用span包一层，为了伪元素的展示
@@ -205,6 +203,26 @@ class Th extends Component {
       attrs: {
         colspan: this.props.column.colSpan,
         rowspan: this.props.column.rowSpan,
+        onmouseenter:
+          this.table.grid &&
+          function () {
+            const mask = that.table.grid.highlightMask
+            mask &&
+              mask.update({
+                attrs: {
+                  style: {
+                    left: `${this.offsetLeft}px`,
+                    width: `${this.offsetWidth}px`,
+                  },
+                },
+              })
+          },
+        onmouseleave:
+          this.table.grid &&
+          function () {
+            const mask = that.table.grid.highlightMask
+            mask && mask.update({ attrs: { style: { width: 0 } } })
+          },
       },
     })
   }
@@ -255,10 +273,22 @@ class Th extends Component {
         that.lastDistance = moveLen
       }
       document.onmouseup = function () {
-        if (that.resizable && that.table.grid.props.columnResizable.cache) {
-          that.table.grid.storeColsWidth(that.props.column.field)
+        const grid = that.table.grid
+        if (that.resizable && grid.props.columnResizable.cache) {
+          grid.storeColsWidth(that.props.column.field)
+        }
+        // 移动列宽，需重新计算渲染 scroller 的宽度
+        const header = grid.header
+        if (header.scrollbar) {
+          const gRect = grid.element.getBoundingClientRect()
+          const size = {
+            width: `${gRect.width}px`,
+            innerWidth: `${header.element.scrollWidth}px`,
+          }
+          header.scrollbar.update({ size })
         }
         document.onmousemove = null
+        document.onmouseup = null
       }
     }
   }

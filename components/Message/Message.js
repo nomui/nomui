@@ -19,7 +19,7 @@ class Message extends Layer {
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
-  _config() {   
+  _config() {
     this._addPropStyle('type')
     const iconMap = {
       info: 'info-circle',
@@ -42,10 +42,7 @@ class Message extends Layer {
       },
     })
     this.setProps({
-      children: [
-        iconProps,
-        this.props.content,
-      ],
+      children: [iconProps, this.props.content],
     })
 
     super._config()

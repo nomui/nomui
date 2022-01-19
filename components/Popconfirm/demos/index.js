@@ -1,7 +1,7 @@
 define(['./basic.js'], function () {
   return {
-    title: 'Dropdown',
-    subtitle: '下拉菜单',
+    title: 'Popconfirm',
+    subtitle: '弹出确认框',
     demos: Array.prototype.slice.call(arguments),
   }
 })
