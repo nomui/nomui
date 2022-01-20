@@ -42,13 +42,15 @@ class Grid extends Component {
 
   _update(props) {
     // 外部 update了columns, 需要重新计算得到 visibleColumns
-    if (props.columns && !this._isSelfUpdateColumn) {
+    if (props.columns) {
       const c = props.columns.filter((n) => {
         return Object.keys(n)
       })
       this.setProps({ visibleColumns: null })
-      this.originColumns = [...c]
-      this._isSelfUpdateColumn = false
+      if (!this._isSelfUpdateColumn) {
+        this.originColumns = [...c]
+        this._isSelfUpdateColumn = false
+      }
       this.popupTreeData = this.originColumns
     }
     // 更新了data
@@ -1028,13 +1030,16 @@ class Grid extends Component {
   }
 
   handlePinClick(data) {
-    if (data.fixed && this.pinColumns.length < 1) {
-      const num = this.props.frozenLeftCols
-      num > 1 && this.fixPinOrder(data)
-      this.update({
-        frozenLeftCols: num - 1,
-      })
-      return
+    if (data.fixed) {
+      if (this.pinColumns.length < 1) {
+        const num = this.props.frozenLeftCols
+        num > 1 && this.fixPinOrder(data)
+
+        this.update({
+          frozenLeftCols: num - 1,
+        })
+        return
+      }
     }
     if (
       this.pinColumns.filter((n) => {
@@ -1047,9 +1052,10 @@ class Grid extends Component {
     }
 
     this._isSelfUpdateColumn = true
+    const checkCount = this.props.rowCheckable && this.pinColumns.length > 0 ? 1 : 0
     this.update({
       columns: this.getPinOrderColumns(),
-      frozenLeftCols: this.pinColumns.length,
+      frozenLeftCols: this.pinColumns.length + checkCount,
     })
   }
 
