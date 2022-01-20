@@ -41,16 +41,14 @@ class Grid extends Component {
   }
 
   _update(props) {
-    // update了columns, 需要重新计算得到 visibleColumns
-    if (props.columns) {
+    // 外部 update了columns, 需要重新计算得到 visibleColumns
+    if (props.columns && !this._isSelfUpdateColumn) {
       const c = props.columns.filter((n) => {
         return Object.keys(n)
       })
       this.setProps({ visibleColumns: null })
-      if (!this._isSelfUpdateColumn) {
-        this.originColumns = [...c]
-        this._isSelfUpdateColumn = false
-      }
+      this.originColumns = [...c]
+      this._isSelfUpdateColumn = false
       this.popupTreeData = this.originColumns
     }
     // 更新了data
