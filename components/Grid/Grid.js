@@ -310,7 +310,24 @@ class Grid extends Component {
   }
 
   setSortDirection(sorter) {
-    const c = this.getColumns().map(function (item) {
+    const c = this.getColumns().map(this._setColumnItemDire(sorter))
+
+    if (this.props.visibleColumns) {
+      const vc = this.props.visibleColumns.map(this._setColumnItemDire(sorter))
+      this.props.visibleColumns = vc
+    }
+    this.originColumns = this.originColumns.map(this._setColumnItemDire(sorter))
+
+    // update 列时，无需出发autoScroll
+    this._doNotAutoScroll =
+      // 自身更新 columns 无需修改 originColumns
+      this._isSelfUpdateColumn = true
+    this.update({ columns: c })
+  }
+
+  // 设置每一列的排序状态
+  _setColumnItemDire(sorter) {
+    return (item) => {
       if (!sorter) {
         return {
           ...item,
@@ -333,41 +350,7 @@ class Grid extends Component {
           sortDirection: null,
         },
       }
-    })
-
-    if (this.props.visibleColumns) {
-      const vc = this.props.visibleColumns.map(function (item) {
-        if (!sorter) {
-          return {
-            ...item,
-            ...{
-              sortDirection: null,
-            },
-          }
-        }
-        if (item.field === sorter.field) {
-          return {
-            ...item,
-            ...{
-              sortDirection: sorter.sortDirection,
-            },
-          }
-        }
-        return {
-          ...item,
-          ...{
-            sortDirection: null,
-          },
-        }
-      })
-
-      this.props.visibleColumns = vc
     }
-    // update 列时，无需出发autoScroll
-    this._doNotAutoScroll =
-      // 自身更新 columns 无需修改 originColumns
-      this._isSelfUpdateColumn = true
-    this.update({ columns: c })
   }
 
   handleSort(sorter) {
