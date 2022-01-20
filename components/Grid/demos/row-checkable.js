@@ -83,6 +83,7 @@ define([], function () {
                 return { disabled: rowData.id === 4, value: rowData.id === 4 }
               },
             },
+            allowFrozenCols: true,
             columnsCustomizable: true,
             columns: [
               {
