@@ -16184,13 +16184,14 @@ function _defineProperty2(obj, key, value) {
       this.filter = {};
     }
     _update(props) {
-      // update了columns, 需要重新计算得到 visibleColumns
-      if (props.columns) {
+      // 外部 update了columns, 需要重新计算得到 visibleColumns
+      if (props.columns && !this._isSelfUpdateColumn) {
         const c = props.columns.filter((n) => {
           return Object.keys(n);
         });
         this.setProps({ visibleColumns: null });
         this.originColumns = [...c];
+        this._isSelfUpdateColumn = false;
         this.popupTreeData = this.originColumns;
       } // 更新了data
       if (props.data && this.props) {
@@ -16424,7 +16425,7 @@ function _defineProperty2(obj, key, value) {
         });
         this.props.visibleColumns = vc;
       } // update 列时，无需出发autoScroll
-      this._doNotAutoScroll = true;
+      this._doNotAutoScroll = this._isSelfUpdateColumn = true; // 自身更新 columns 无需修改 originColumns
       this.update({ columns: c });
     }
     handleSort(sorter) {
@@ -17031,6 +17032,7 @@ function _defineProperty2(obj, key, value) {
       } else {
         this.pinColumns.unshift(data);
       }
+      this._isSelfUpdateColumn = true;
       this.update({
         columns: this.getPinOrderColumns(),
         frozenLeftCols: this.pinColumns.length,
