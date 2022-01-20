@@ -16,8 +16,13 @@ class Numberbox extends Textbox {
   }
 
   _config() {
-    let precision = this.props.precision
-    if (this.props.maxPrecision) {
+    let { precision, maxPrecision } = this.props.precision
+    const { limitInput } = this.props
+
+    if (limitInput) {
+      maxPrecision = null
+    }
+    if (maxPrecision) {
       precision = -1
       this.rules.push({
         type: 'regex',
@@ -70,6 +75,26 @@ class Numberbox extends Textbox {
     }
 
     super._config()
+  }
+
+  _onBlur() {
+    if (!this.props.limitInput || this.props.precision < 0) {
+      return
+    }
+    this._toFixedValue()
+  }
+
+  _toFixedValue() {
+    const { precision } = this.props
+    let r = ''
+    const c = this.input.getText()
+    const i = c.indexOf('.')
+    r = c.substring(0, i)
+    if (precision > 0) {
+      const dec = parseFloat(c.substring(i)).toFixed(precision)
+      r += dec.substring(1)
+    }
+    this.input.setText(r)
   }
 
   _getValue() {

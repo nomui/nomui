@@ -23,10 +23,11 @@ define([], function () {
               label: '',
               control: {
                 component: 'Button',
-                text: '校验',
+                text: '提交',
                 type: 'Primary',
                 onClick: function () {
                   group.validate()
+                  console.log(group.getValue())
                 },
               },
             },
