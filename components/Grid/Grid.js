@@ -47,7 +47,10 @@ class Grid extends Component {
         return Object.keys(n)
       })
       this.setProps({ visibleColumns: null })
-      this.originColumns = [...c]
+      if (!this._isSelfUpdateColumn) {
+        this.originColumns = [...c]
+        this._isSelfUpdateColumn = false
+      }
       this.popupTreeData = this.originColumns
     }
     // 更新了data
@@ -361,7 +364,9 @@ class Grid extends Component {
       this.props.visibleColumns = vc
     }
     // update 列时，无需出发autoScroll
-    this._doNotAutoScroll = true
+    this._doNotAutoScroll =
+      // 自身更新 columns 无需修改 originColumns
+      this._isSelfUpdateColumn = true
     this.update({ columns: c })
   }
 
@@ -1043,6 +1048,7 @@ class Grid extends Component {
       this.pinColumns.unshift(data)
     }
 
+    this._isSelfUpdateColumn = true
     this.update({
       columns: this.getPinOrderColumns(),
       frozenLeftCols: this.pinColumns.length,
