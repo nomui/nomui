@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Textbox from '../Textbox/index'
-import { isNullish } from '../util/index'
+import { isNullish, isNumeric } from '../util/index'
 
 class Numberbox extends Textbox {
   constructor(props, ...mixins) {
@@ -29,7 +29,7 @@ class Numberbox extends Textbox {
         value: {
           pattern: `^\\d+(\\.\\d{1,${this.props.maxPrecision}})?$`,
         },
-        message: `请输入不多于${this.props.maxPrecision}位小数`,
+        message: `请输入有效数字，且最多包含${this.props.maxPrecision}位小数`,
       })
     }
 
@@ -57,7 +57,7 @@ class Numberbox extends Textbox {
           // 在上面的规则的基础上添加了小数部分
           pattern: `^\\-?(\\d+|\\d{1,3}(,\\d{3})+)(\\.\\d{${this.props.precision}})$`,
         },
-        message: `请输入有效 ${this.props.precision} 位小数`,
+        message: `请输入有效数字，且包含 ${this.props.precision} 位小数`,
       })
     }
 
@@ -87,11 +87,15 @@ class Numberbox extends Textbox {
   _toFixedValue() {
     const { precision } = this.props
     let r = ''
-    const c = this.input.getText()
+    const c = this.input.getText().replace(/[^0-9,.]/gi, '')
     const i = c.indexOf('.')
     r = c.substring(0, i)
     if (precision > 0) {
-      const dec = parseFloat(c.substring(i)).toFixed(precision)
+      let dec = parseFloat(c.substring(i))
+      if (!isNumeric(dec)) {
+        return
+      }
+      dec = dec.toFixed(precision)
       r += dec.substring(1)
     }
     this.input.setText(r)
