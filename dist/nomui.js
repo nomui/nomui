@@ -12336,6 +12336,7 @@ function _defineProperty2(obj, key, value) {
         value,
         multiple,
         filterOption,
+        optionFields,
       } = this.selectControl.props;
       const { text } = this.props;
       const { checked, checkedOption } = this.selectControl;
@@ -12343,7 +12344,7 @@ function _defineProperty2(obj, key, value) {
       filterStr = filterStr || "";
       const filterOptions = showSearch && filterOption(filterStr, options);
       const items = showSearch ? filterOptions : options; // value唯一值校验提示
-      this._wranOptionsValue(items);
+      this._wranOptionsValue(items, optionFields.value);
       this.setProps({
         items,
         itemDefaults: n$1(null, optionDefaults, null, [SelectListItemMixin]),
@@ -12361,17 +12362,17 @@ function _defineProperty2(obj, key, value) {
       });
       super._config();
     }
-    _wranOptionsValue(options) {
+    _wranOptionsValue(options, value) {
       const map = new Map();
       for (let index = 0; index < options.length; index++) {
         const opt = options[index];
-        if (map.get(opt.value)) {
+        if (map.get(opt[value])) {
           console.warn(
             `Warning: Encountered two children with the same key, \`${opt.value}\`.`
           );
           return false;
         }
-        map.set(opt.value, true);
+        map.set(opt[value], true);
       }
     }
   }
