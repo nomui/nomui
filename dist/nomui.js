@@ -12368,7 +12368,7 @@ function _defineProperty2(obj, key, value) {
         const opt = options[index];
         if (map.get(opt[value])) {
           console.warn(
-            `Warning: Encountered two children with the same key, \`${opt.value}\`.`
+            `Warning: Encountered two children with the same key, \`${opt[value]}\`.`
           );
           return false;
         }
