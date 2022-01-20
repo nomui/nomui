@@ -31,6 +31,7 @@ class Textbox extends Field {
     const that = this
     const {
       allowClear,
+      clearProps,
       leftIcon,
       prefix,
       rightIcon,
@@ -86,7 +87,7 @@ class Textbox extends Field {
       },
     }
 
-    const clearProps = {
+    const selfClearProps = {
       component: Icon,
       type: 'times',
       classes: {
@@ -115,8 +116,9 @@ class Textbox extends Field {
 
     const getSuffix = () => {
       const child = []
+      // 优先取外部传入的
       if (allowClear && !disabled && !readonly) {
-        child.push(clearProps)
+        child.push(clearProps || selfClearProps)
       }
       if (rightIcon) {
         child.push(rightIconProps)
@@ -216,7 +218,7 @@ class Textbox extends Field {
   }
 
   _valueChange(changed) {
-    if (!this.props) return
+    if (!this.props || !this.clearIcon) return
     changed.newValue
       ? this.props.allowClear && this.clearIcon.show()
       : this.props.allowClear && this.clearIcon.hide()

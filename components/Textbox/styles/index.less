@@ -135,6 +135,12 @@
 
 .nom-time-picker,
 .nom-date-picker {
+  &[readonly]:not([disabled]) {
+    .nom-textbox-affix-wrapper {
+      background-color: transparent;
+    }
+  }
+
   .nom-input[readonly]:not([disabled]) {
     background-color: transparent;
   }
