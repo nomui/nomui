@@ -89,7 +89,7 @@ class Numberbox extends Textbox {
     let r = ''
     const c = this.input.getText().replace(/[^0-9,.]/gi, '')
     const i = c.indexOf('.')
-    r = i > -1 ? c.substring(0, i) : this.input.getText()
+    r = i > -1 ? c.substring(0, i) : c
 
     if (precision > 0) {
       let dec = i > -1 ? parseFloat(c.substring(i)) : parseFloat(0)
