@@ -45,6 +45,7 @@
     "@babel/core": "^7.13.14",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.13.8",
+    "babel-plugin-object-entries-and-values-to-object-keys": "v1.0.1",
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@umijs/fabric": "^2.4.4",

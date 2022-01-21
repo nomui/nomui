@@ -10,6 +10,7 @@ class Numberbox extends Textbox {
       precision: -1,
       maxPrecision: null,
       limitInput: false,
+      allowClear: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

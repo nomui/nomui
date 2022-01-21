@@ -1,5 +1,6 @@
 define([
   './basic.js',
+  './allowClear.js',
   './disabled.js',
   './readonly.js',
   './autofocus.js',

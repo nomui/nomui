@@ -1,7 +1,7 @@
 import Button from '../Button/index'
 import Component from '../Component/index'
 import Field from '../Field/index'
-import {} from '../Icon/index'
+import Icon from '../Icon/index'
 import { extend, isPlainObject, isString } from '../util/index'
 import Input from './Input'
 
@@ -20,6 +20,7 @@ class Textbox extends Field {
       value: null,
       htmlType: 'text',
       onEnter: null,
+      allowClear: true,
       trimValue: true, // getValue时 默认去除首位的空格
     }
 
@@ -29,6 +30,8 @@ class Textbox extends Field {
   _config() {
     const that = this
     const {
+      allowClear,
+      clearProps,
       leftIcon,
       prefix,
       rightIcon,
@@ -84,6 +87,23 @@ class Textbox extends Field {
       },
     }
 
+    const selfClearProps = {
+      component: Icon,
+      type: 'times',
+      classes: {
+        'nom-textbox-clear': true,
+      },
+      hidden: !this.props.value,
+      ref: (c) => {
+        this.clearIcon = c
+      },
+      onClick: (args) => {
+        this.setValue(null)
+        this.props.allowClear && this.clearIcon.hide()
+        args.event && args.event.stopPropagation()
+      },
+    }
+
     // 前缀或后缀文案
     const getAffixSpan = (affix, type = 'prefix') => ({
       tag: 'span',
@@ -93,6 +113,28 @@ class Textbox extends Field {
       },
       children: affix,
     })
+
+    const getSuffix = () => {
+      const child = []
+      // 优先取外部传入的
+      if (allowClear && !disabled && !readonly) {
+        child.push(clearProps || selfClearProps)
+      }
+      if (rightIcon) {
+        child.push(rightIconProps)
+      } else if (suffix && isString(suffix)) {
+        child.push(suffix)
+      }
+
+      return {
+        tag: 'div',
+        classes: {
+          'nom-input-affix': true,
+          'nom-input-suffix': true,
+        },
+        children: child,
+      }
+    }
 
     // 输入长度限制
     const getWordLimitSpan = () => ({
@@ -109,24 +151,34 @@ class Textbox extends Field {
     this.hasWordLimit = htmlType === 'text' && showWordLimit && maxlength && !readonly && !disabled
 
     // 无左icon 有prefixx || 无右icon 有suffix
-    const affixWrapper = leftIcon || prefix || rightIcon || suffix || this.hasWordLimit
+    const affixWrapper =
+      allowClear || leftIcon || prefix || rightIcon || suffix || this.hasWordLimit
+
+    const baseTextProps = [
+      leftIcon && leftIconProps,
+      !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),
+      inputProps,
+      getSuffix(),
+      this.hasWordLimit && getWordLimitSpan(),
+    ]
 
     this.setProps({
+      attrs: { readonly },
       classes: {
-        'nom-textbox-affix-wrapper': !!affixWrapper,
         'p-with-button': buttonProps !== null,
       },
       control: {
         disabled: disabled,
-        children: [
-          leftIcon && leftIconProps,
-          !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),
-          inputProps,
-          rightIcon && rightIconProps,
-          !rightIcon && suffix && isString(suffix) && getAffixSpan(suffix, 'suffix'),
-          this.hasWordLimit && getWordLimitSpan(),
-          buttonProps,
-        ],
+        children: affixWrapper
+          ? [
+              {
+                // 有左右图标，则再用 wrapper包一层，为了展示
+                classes: { 'nom-textbox-affix-wrapper': true },
+                children: baseTextProps,
+              },
+              buttonProps,
+            ]
+          : [...baseTextProps, buttonProps],
       },
     })
 
@@ -163,6 +215,13 @@ class Textbox extends Field {
       return null
     }
     return inputText
+  }
+
+  _valueChange(changed) {
+    if (!this.props || !this.clearIcon) return
+    changed.newValue
+      ? this.props.allowClear && this.clearIcon.show()
+      : this.props.allowClear && this.clearIcon.hide()
   }
 
   _setValue(value, options) {

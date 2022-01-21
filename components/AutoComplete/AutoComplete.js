@@ -46,7 +46,7 @@ class AutoComplete extends Textbox {
     const { allowClear, options } = this.props
     if (allowClear && this.currentValue) {
       this.setProps({
-        rightIcon: {
+        clearProps: {
           component: 'Icon',
           type: 'close',
           ref: (c) => {
