@@ -16,12 +16,13 @@ class Numberbox extends Textbox {
   }
 
   _config() {
-    let { precision, maxPrecision } = this.props.precision
+    let { precision, maxPrecision } = this.props
     const { limitInput } = this.props
 
     if (limitInput) {
       maxPrecision = null
     }
+
     if (maxPrecision) {
       precision = -1
       this.rules.push({
