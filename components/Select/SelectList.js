@@ -27,14 +27,19 @@ class SelectList extends List {
       multiple,
       filterOption,
       optionFields,
+      options,
     } = this.selectControl.props
     const { text } = this.props
-    const { checked, checkedOption, internalOptions } = this.selectControl
+    const { checked, checkedOption } = this.selectControl
     let filterStr = checked ? checkedOption && checkedOption.text : text
     // null或undefined处理
     filterStr = filterStr || ''
-    const filterOptions = showSearch && filterOption(filterStr, internalOptions)
-    const items = showSearch ? filterOptions : internalOptions
+
+    this.selectControl._normalizeInternalOptions(options)
+
+    const filterOptions = showSearch && filterOption(filterStr, this.selectControl.internalOptions)
+    const items = showSearch ? filterOptions : this.selectControl.internalOptions
+
     // value唯一值校验提示
     this._wranOptionsValue(items, optionFields.value)
     this.setProps({
