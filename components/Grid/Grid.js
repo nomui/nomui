@@ -50,6 +50,7 @@ class Grid extends Component {
         return Object.keys(n)
       })
       this.setProps({ visibleColumns: null })
+
       if (!props.dontUpdateOrigin) {
         this.originColumns = [...c]
       }
@@ -1047,6 +1048,8 @@ class Grid extends Component {
     this.update({
       columns: this.getPinOrderColumns(),
       frozenLeftCols: this.pinColumns.length + checkCount,
+      dontUpdateOrigin: true,
+      visibleColumns: this.getPinOrderColumns(),
     })
   }
 
@@ -1069,6 +1072,8 @@ class Grid extends Component {
 
     this.update({
       columns: c,
+      dontUpdateOrigin: true,
+      visibleColumns: c,
     })
   }
 
