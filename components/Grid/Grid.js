@@ -1013,13 +1013,16 @@ class Grid extends Component {
   }
 
   handlePinClick(data) {
-    if (data.fixed && this.pinColumns.length < 1) {
-      const num = this.props.frozenLeftCols
-      num > 1 && this.fixPinOrder(data)
-      this.update({
-        frozenLeftCols: num - 1,
-      })
-      return
+    if (data.fixed) {
+      if (this.pinColumns.length < 1) {
+        const num = this.props.frozenLeftCols
+        num > 1 && this.fixPinOrder(data)
+
+        this.update({
+          frozenLeftCols: num - 1,
+        })
+        return
+      }
     }
     if (
       this.pinColumns.filter((n) => {
@@ -1032,9 +1035,10 @@ class Grid extends Component {
     }
 
     this._isSelfUpdateColumn = true
+    const checkCount = this.props.rowCheckable && this.pinColumns.length > 0 ? 1 : 0
     this.update({
       columns: this.getPinOrderColumns(),
-      frozenLeftCols: this.pinColumns.length,
+      frozenLeftCols: this.pinColumns.length + checkCount,
     })
   }
 
