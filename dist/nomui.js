@@ -16191,11 +16191,11 @@ function _defineProperty2(obj, key, value) {
           return Object.keys(n);
         });
         this.setProps({ visibleColumns: null });
+        this.originColumns = [...c];
         if (!this._isSelfUpdateColumn) {
-          this.originColumns = [...c];
+          this.popupTreeData = this.originColumns;
           this._isSelfUpdateColumn = false;
         }
-        this.popupTreeData = this.originColumns;
       } // 更新了data
       if (props.data && this.props) {
         const { treeConfig } = this.props; // data更新, flatData需要重新组装成Tree结构
