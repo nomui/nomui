@@ -28,9 +28,9 @@ class Numberbox extends Textbox {
       this.rules.push({
         type: 'regex',
         value: {
-          pattern: `^\\d+(\\.\\d{1,${this.props.maxPrecision}})?$`,
+          pattern: `^\\d+(\\.\\d{1,${maxPrecision}})?$`,
         },
-        message: `请输入有效数字，且最多包含${this.props.maxPrecision}位小数`,
+        message: `请输入有效数字，且最多包含${maxPrecision}位小数`,
       })
     }
 
@@ -41,7 +41,7 @@ class Numberbox extends Textbox {
     }
 
     // 允许输入千分位加 , 的格式的数字
-    if (this.props.precision === 0) {
+    if (precision === 0) {
       this.rules.push({
         type: 'regex',
         value: {
@@ -51,14 +51,14 @@ class Numberbox extends Textbox {
       })
     }
 
-    if (this.props.precision > 0) {
+    if (precision > 0) {
       this.rules.push({
         type: 'regex',
         value: {
           // 在上面的规则的基础上添加了小数部分
-          pattern: `^\\-?(\\d+|\\d{1,3}(,\\d{3})+)(\\.\\d{${this.props.precision}})$`,
+          pattern: `^\\-?(\\d+|\\d{1,3}(,\\d{3})+)(\\.\\d{${precision}})$`,
         },
-        message: `请输入有效数字，且包含 ${this.props.precision} 位小数`,
+        message: `请输入有效数字，且包含 ${precision} 位小数`,
       })
     }
 
