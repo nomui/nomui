@@ -16,6 +16,10 @@ define([], function () {
           {
             component: 'Grid',
 
+            key: 'grid-sort',
+            columnsCustomizable: {
+              cache: true,
+            },
             onSort: (args) => {
               new Promise((resolve) => {
                 setTimeout(() => {

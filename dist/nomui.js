@@ -16243,7 +16243,9 @@ function _defineProperty2(obj, key, value) {
           return Object.keys(n);
         });
         this.setProps({ visibleColumns: null });
-        this.originColumns = [...c];
+        if (!props.dontUpdateOrigin) {
+          this.originColumns = [...c];
+        }
         if (!this._isSelfUpdateColumn) {
           this.popupTreeData = this.originColumns;
           this._isSelfUpdateColumn = false;
@@ -16466,7 +16468,7 @@ function _defineProperty2(obj, key, value) {
         this._setColumnItemDire(sorter)
       ); // update 列时，无需出发autoScroll
       this._doNotAutoScroll = this._isSelfUpdateColumn = true; // 自身更新 columns 无需修改 originColumns
-      this.update({ columns: c });
+      this.update({ columns: c, dontUpdateOrigin: true });
     } // 设置每一列的排序状态
     _setColumnItemDire(sorter) {
       return (item) => {

@@ -50,7 +50,10 @@ class Grid extends Component {
         return Object.keys(n)
       })
       this.setProps({ visibleColumns: null })
-      this.originColumns = [...c]
+      if (!props.dontUpdateOrigin) {
+        this.originColumns = [...c]
+      }
+
       if (!this._isSelfUpdateColumn) {
         this.popupTreeData = this.originColumns
         this._isSelfUpdateColumn = false
@@ -325,7 +328,7 @@ class Grid extends Component {
     this._doNotAutoScroll =
       // 自身更新 columns 无需修改 originColumns
       this._isSelfUpdateColumn = true
-    this.update({ columns: c })
+    this.update({ columns: c, dontUpdateOrigin: true })
   }
 
   // 设置每一列的排序状态
