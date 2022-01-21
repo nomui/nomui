@@ -38,6 +38,9 @@ class Grid extends Component {
     // 列设置弹窗 tree的数据
     this.popupTreeData = this.originColumns
     this.filter = {}
+    if (this.props.frozenLeftCols > 0 && this.props.rowCheckable) {
+      this.props.frozenLeftCols += 1
+    }
   }
 
   _update(props) {
@@ -1015,11 +1018,13 @@ class Grid extends Component {
   handlePinClick(data) {
     if (data.fixed) {
       if (this.pinColumns.length < 1) {
+        const checkCount = this.props.rowCheckable ? 1 : 0
+
         const num = this.props.frozenLeftCols
-        num > 1 && this.fixPinOrder(data)
+        num > 1 + checkCount && this.fixPinOrder(data)
 
         this.update({
-          frozenLeftCols: num - 1,
+          frozenLeftCols: num - (1 + checkCount),
         })
         return
       }
