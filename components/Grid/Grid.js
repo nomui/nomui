@@ -41,14 +41,17 @@ class Grid extends Component {
   }
 
   _update(props) {
-    // update了columns, 需要重新计算得到 visibleColumns
+    // 外部 update了columns, 需要重新计算得到 visibleColumns
     if (props.columns) {
       const c = props.columns.filter((n) => {
         return Object.keys(n)
       })
       this.setProps({ visibleColumns: null })
       this.originColumns = [...c]
-      this.popupTreeData = this.originColumns
+      if (!this._isSelfUpdateColumn) {
+        this.popupTreeData = this.originColumns
+        this._isSelfUpdateColumn = false
+      }
     }
     // 更新了data
     if (props.data && this.props) {
@@ -307,7 +310,24 @@ class Grid extends Component {
   }
 
   setSortDirection(sorter) {
-    const c = this.getColumns().map(function (item) {
+    const c = this.getColumns().map(this._setColumnItemDire(sorter))
+
+    if (this.props.visibleColumns) {
+      const vc = this.props.visibleColumns.map(this._setColumnItemDire(sorter))
+      this.props.visibleColumns = vc
+    }
+    this.originColumns = this.originColumns.map(this._setColumnItemDire(sorter))
+
+    // update 列时，无需出发autoScroll
+    this._doNotAutoScroll =
+      // 自身更新 columns 无需修改 originColumns
+      this._isSelfUpdateColumn = true
+    this.update({ columns: c })
+  }
+
+  // 设置每一列的排序状态
+  _setColumnItemDire(sorter) {
+    return (item) => {
       if (!sorter) {
         return {
           ...item,
@@ -330,39 +350,7 @@ class Grid extends Component {
           sortDirection: null,
         },
       }
-    })
-
-    if (this.props.visibleColumns) {
-      const vc = this.props.visibleColumns.map(function (item) {
-        if (!sorter) {
-          return {
-            ...item,
-            ...{
-              sortDirection: null,
-            },
-          }
-        }
-        if (item.field === sorter.field) {
-          return {
-            ...item,
-            ...{
-              sortDirection: sorter.sortDirection,
-            },
-          }
-        }
-        return {
-          ...item,
-          ...{
-            sortDirection: null,
-          },
-        }
-      })
-
-      this.props.visibleColumns = vc
     }
-    // update 列时，无需出发autoScroll
-    this._doNotAutoScroll = true
-    this.update({ columns: c })
   }
 
   handleSort(sorter) {
@@ -1025,13 +1013,16 @@ class Grid extends Component {
   }
 
   handlePinClick(data) {
-    if (data.fixed && this.pinColumns.length < 1) {
-      const num = this.props.frozenLeftCols
-      num > 1 && this.fixPinOrder(data)
-      this.update({
-        frozenLeftCols: num - 1,
-      })
-      return
+    if (data.fixed) {
+      if (this.pinColumns.length < 1) {
+        const num = this.props.frozenLeftCols
+        num > 1 && this.fixPinOrder(data)
+
+        this.update({
+          frozenLeftCols: num - 1,
+        })
+        return
+      }
     }
     if (
       this.pinColumns.filter((n) => {
@@ -1043,9 +1034,11 @@ class Grid extends Component {
       this.pinColumns.unshift(data)
     }
 
+    this._isSelfUpdateColumn = true
+    const checkCount = this.props.rowCheckable && this.pinColumns.length > 0 ? 1 : 0
     this.update({
       columns: this.getPinOrderColumns(),
-      frozenLeftCols: this.pinColumns.length,
+      frozenLeftCols: this.pinColumns.length + checkCount,
     })
   }
 
