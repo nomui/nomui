@@ -79,7 +79,7 @@ class DatePicker extends Textbox {
 
     this.setProps({
       leftIcon: 'calendar',
-      rightIcon: {
+      clearProps: {
         component: 'Icon',
         type: 'times',
         hidden: !this.props.allowClear || this.props.disabled,
