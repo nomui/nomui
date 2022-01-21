@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Textbox from '../Textbox/index'
-import { isNullish } from '../util/index'
+import { isNullish, isNumeric } from '../util/index'
 
 class Numberbox extends Textbox {
   constructor(props, ...mixins) {
@@ -8,13 +8,32 @@ class Numberbox extends Textbox {
       min: null,
       max: null,
       precision: -1,
+      maxPrecision: null,
+      limitInput: false,
+      allowClear: false,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _config() {
-    const { precision = -1 } = this.props
+    let { precision, maxPrecision } = this.props
+    const { limitInput } = this.props
+
+    if (limitInput) {
+      maxPrecision = null
+    }
+
+    if (maxPrecision) {
+      precision = -1
+      this.rules.push({
+        type: 'regex',
+        value: {
+          pattern: `^\\d+(\\.\\d{1,${maxPrecision}})?$`,
+        },
+        message: `请输入有效数字，且最多包含${maxPrecision}位小数`,
+      })
+    }
 
     if (precision === -1) {
       this.rules.push({
@@ -23,7 +42,7 @@ class Numberbox extends Textbox {
     }
 
     // 允许输入千分位加 , 的格式的数字
-    if (this.props.precision === 0) {
+    if (precision === 0) {
       this.rules.push({
         type: 'regex',
         value: {
@@ -33,14 +52,14 @@ class Numberbox extends Textbox {
       })
     }
 
-    if (this.props.precision > 0) {
+    if (precision > 0) {
       this.rules.push({
         type: 'regex',
         value: {
           // 在上面的规则的基础上添加了小数部分
-          pattern: `^\\-?(\\d+|\\d{1,3}(,\\d{3})+)(\\.\\d{${this.props.precision}})$`,
+          pattern: `^\\-?(\\d+|\\d{1,3}(,\\d{3})+)(\\.\\d{${precision}})$`,
         },
-        message: `请输入有效 ${this.props.precision} 位小数`,
+        message: `请输入有效数字，且包含 ${precision} 位小数`,
       })
     }
 
@@ -58,6 +77,31 @@ class Numberbox extends Textbox {
     }
 
     super._config()
+  }
+
+  _onBlur() {
+    if (!this.props.limitInput || this.props.precision < 0) {
+      return
+    }
+    this._toFixedValue()
+  }
+
+  _toFixedValue() {
+    const { precision } = this.props
+    let r = ''
+    const c = this.input.getText().replace(/[^0-9,.]/gi, '')
+    const i = c.indexOf('.')
+    r = i > -1 ? c.substring(0, i) : c
+
+    if (precision > 0) {
+      let dec = i > -1 ? parseFloat(c.substring(i)) : parseFloat(0)
+      if (!isNumeric(dec)) {
+        return
+      }
+      dec = dec.toFixed(precision)
+      r += dec.substring(1)
+    }
+    this.input.setText(r)
   }
 
   _getValue() {

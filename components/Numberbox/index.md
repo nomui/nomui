@@ -6,12 +6,14 @@
 
 ## API
 
-| 参数      | 说明       | 类型     | 默认值                  |
-| --------- | ---------- | -------- | ----------------------- |
-| value     | 输入框内容 | `number` | -                       |
-| min       | 最小值     | `number` | Number.MIN_SAFE_INTEGER |
-| max       | 最大值     | `number` | Number.MAX_SAFE_INTEGER |
-| precision | 数值精度   | `number` | 0                       |
+| 参数         | 说明                                    | 类型      | 默认值                  |
+| ------------ | --------------------------------------- | --------- | ----------------------- |
+| value        | 输入框内容                              | `number`  | -                       |
+| min          | 最小值                                  | `number`  | Number.MIN_SAFE_INTEGER |
+| max          | 最大值                                  | `number`  | Number.MAX_SAFE_INTEGER |
+| precision    | 数值精度                                | `number`  | -1                      |
+| limitInput   | 自动处理数值精度，须配合 precision 使用 | `boolean` | false                   |
+| maxPrecision | 最大数值精度                            | `number`  | 0                       |
 
 ## 事件
 
