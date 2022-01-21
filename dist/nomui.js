@@ -12378,7 +12378,6 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const {
         showSearch,
-        options,
         optionDefaults,
         value,
         multiple,
@@ -12386,11 +12385,12 @@ function _defineProperty2(obj, key, value) {
         optionFields,
       } = this.selectControl.props;
       const { text } = this.props;
-      const { checked, checkedOption } = this.selectControl;
+      const { checked, checkedOption, internalOptions } = this.selectControl;
       let filterStr = checked ? checkedOption && checkedOption.text : text; // null或undefined处理
       filterStr = filterStr || "";
-      const filterOptions = showSearch && filterOption(filterStr, options);
-      const items = showSearch ? filterOptions : options; // value唯一值校验提示
+      const filterOptions =
+        showSearch && filterOption(filterStr, internalOptions);
+      const items = showSearch ? filterOptions : internalOptions; // value唯一值校验提示
       this._wranOptionsValue(items, optionFields.value);
       this.setProps({
         items,
@@ -12530,6 +12530,7 @@ function _defineProperty2(obj, key, value) {
     }
     _created() {
       super._created();
+      this.internalOptions = [];
       if (this.props.extraOptions) {
         const extraOptions = this.props.extraOptions.map((n) => {
           return Object.assign({}, n, { isExtra: true });
@@ -12831,7 +12832,7 @@ function _defineProperty2(obj, key, value) {
         options = extend$1({ triggerChange: true }, options);
       }
       if (this.props.showSearch) {
-        const selectedOption = this.props.options.find(
+        const selectedOption = this.internalOptions.find(
           (e) => e.value === value
         );
         if (selectedOption) {
@@ -12865,7 +12866,7 @@ function _defineProperty2(obj, key, value) {
     }
     _getOption(value) {
       let option = null;
-      const { options } = this.props;
+      const options = this.internalOptions;
       if (Array.isArray(value)) {
         value = value[0];
       }
@@ -12879,7 +12880,7 @@ function _defineProperty2(obj, key, value) {
     }
     _getOptions(value) {
       let retOptions = null;
-      const { options } = this.props;
+      const options = this.internalOptions;
       if (Array.isArray(value)) {
         retOptions = [];
         for (let i = 0; i < options.length; i++) {
@@ -12907,7 +12908,7 @@ function _defineProperty2(obj, key, value) {
         }
       } // 此处有问题，暂时添加判断屏蔽报错，问题原因是调用了已销毁组件的方法导致this是个空对象
       if (this.props && this.props.showSearch) {
-        const selectedOption = this.props.options.find(
+        const selectedOption = this.internalOptions.find(
           (e) => e.value === changed.newValue
         );
         this.checkedOption = selectedOption;
@@ -12965,15 +12966,15 @@ function _defineProperty2(obj, key, value) {
       //   options = [...options, ...this.props.extraOptions]
       // }
       const { optionFields } = this.props;
-      this.internalOption = clone$1(options);
-      this.handleOptions(this.internalOption, optionFields);
+      this.internalOptions = clone$1(options);
+      this.handleOptions(this.internalOptions, optionFields);
     }
     handleOptions(options, optionFields) {
       const { text: textField, value: valueField } = optionFields;
       if (!Array.isArray(options)) return [];
-      const internalOption = options;
-      for (let i = 0; i < internalOption.length; i++) {
-        const item = internalOption[i];
+      const internalOptions = options;
+      for (let i = 0; i < internalOptions.length; i++) {
+        const item = internalOptions[i];
         item.text = item[textField];
         item.value = item[valueField];
       }
