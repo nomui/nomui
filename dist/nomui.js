@@ -2185,7 +2185,7 @@ function _defineProperty2(obj, key, value) {
   );
   Icon.add(
     "close",
-    `<svg viewBox="64 64 896 896" focusable="false" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path></svg>`,
+    `<svg t="1610503666305" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2041" width="1em" height="1em"><path d="M572.16 512l183.466667-183.04a42.666667 42.666667 0 1 0-60.586667-60.586667L512 451.84l-183.04-183.466667a42.666667 42.666667 0 0 0-60.586667 60.586667l183.466667 183.04-183.466667 183.04a42.666667 42.666667 0 0 0 0 60.586667 42.666667 42.666667 0 0 0 60.586667 0l183.04-183.466667 183.04 183.466667a42.666667 42.666667 0 0 0 60.586667 0 42.666667 42.666667 0 0 0 0-60.586667z" p-id="2042"></path></svg>`,
     cat
   );
   Icon.add(
@@ -4575,6 +4575,7 @@ function _defineProperty2(obj, key, value) {
         value: null,
         htmlType: "text",
         onEnter: null,
+        allowClear: true,
         trimValue: true, // getValue时 默认去除首位的空格
       };
       super(Component.extendProps(defaults, props), ...mixins);
@@ -4582,6 +4583,8 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const that = this;
       const {
+        allowClear,
+        clearProps,
         leftIcon,
         prefix,
         rightIcon,
@@ -4629,12 +4632,42 @@ function _defineProperty2(obj, key, value) {
           this.textbox = that;
           this.textbox.input = this;
         },
+      };
+      const selfClearProps = {
+        component: Icon,
+        type: "times",
+        classes: { "nom-textbox-clear": true },
+        hidden: !this.props.value,
+        ref: (c) => {
+          this.clearIcon = c;
+        },
+        onClick: (args) => {
+          this.setValue(null);
+          this.props.allowClear && this.clearIcon.hide();
+          args.event && args.event.stopPropagation();
+        },
       }; // 前缀或后缀文案
       const getAffixSpan = (affix, type = "prefix") => ({
         tag: "span",
         classes: { "nom-input-affix": true, [`nom-input-${type}`]: true },
         children: affix,
-      }); // 输入长度限制
+      });
+      const getSuffix = () => {
+        const child = []; // 优先取外部传入的
+        if (allowClear && !disabled && !readonly) {
+          child.push(clearProps || selfClearProps);
+        }
+        if (rightIcon) {
+          child.push(rightIconProps);
+        } else if (suffix && isString(suffix)) {
+          child.push(suffix);
+        }
+        return {
+          tag: "div",
+          classes: { "nom-input-affix": true, "nom-input-suffix": true },
+          children: child,
+        };
+      }; // 输入长度限制
       const getWordLimitSpan = () => ({
         tag: "span",
         classes: { "nom-input-affix": true, [`nom-input-count`]: true },
@@ -4650,26 +4683,34 @@ function _defineProperty2(obj, key, value) {
         !readonly &&
         !disabled; // 无左icon 有prefixx || 无右icon 有suffix
       const affixWrapper =
-        leftIcon || prefix || rightIcon || suffix || this.hasWordLimit;
+        allowClear ||
+        leftIcon ||
+        prefix ||
+        rightIcon ||
+        suffix ||
+        this.hasWordLimit;
+      const baseTextProps = [
+        leftIcon && leftIconProps,
+        !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),
+        inputProps,
+        getSuffix(),
+        this.hasWordLimit && getWordLimitSpan(),
+      ];
       this.setProps({
-        classes: {
-          "nom-textbox-affix-wrapper": !!affixWrapper,
-          "p-with-button": buttonProps !== null,
-        },
+        attrs: { readonly },
+        classes: { "p-with-button": buttonProps !== null },
         control: {
           disabled: disabled,
-          children: [
-            leftIcon && leftIconProps,
-            !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),
-            inputProps,
-            rightIcon && rightIconProps,
-            !rightIcon &&
-              suffix &&
-              isString(suffix) &&
-              getAffixSpan(suffix, "suffix"),
-            this.hasWordLimit && getWordLimitSpan(),
-            buttonProps,
-          ],
+          children: affixWrapper
+            ? [
+                {
+                  // 有左右图标，则再用 wrapper包一层，为了展示
+                  classes: { "nom-textbox-affix-wrapper": true },
+                  children: baseTextProps,
+                },
+                buttonProps,
+              ]
+            : [...baseTextProps, buttonProps],
         },
       });
       super._config();
@@ -4700,6 +4741,12 @@ function _defineProperty2(obj, key, value) {
         return null;
       }
       return inputText;
+    }
+    _valueChange(changed) {
+      if (!this.props || !this.clearIcon) return;
+      changed.newValue
+        ? this.props.allowClear && this.clearIcon.show()
+        : this.props.allowClear && this.clearIcon.hide();
     }
     _setValue(value, options) {
       if (options === false) {
@@ -8840,7 +8887,7 @@ function _defineProperty2(obj, key, value) {
       const { allowClear, options } = this.props;
       if (allowClear && this.currentValue) {
         this.setProps({
-          rightIcon: {
+          clearProps: {
             component: "Icon",
             type: "close",
             ref: (c) => {
@@ -13435,7 +13482,7 @@ function _defineProperty2(obj, key, value) {
       }
       this.setProps({
         leftIcon: "calendar",
-        rightIcon: {
+        clearProps: {
           component: "Icon",
           type: "times",
           hidden: !this.props.allowClear || this.props.disabled,
@@ -18939,7 +18986,12 @@ function _defineProperty2(obj, key, value) {
   Component.register(Notification);
   class Numberbox extends Textbox {
     constructor(props, ...mixins) {
-      const defaults = { min: null, max: null, precision: -1 };
+      const defaults = {
+        min: null,
+        max: null,
+        precision: -1,
+        allowClear: false,
+      };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
@@ -19680,7 +19732,7 @@ function _defineProperty2(obj, key, value) {
       const that = this;
       this.setProps({
         leftIcon: "calendar",
-        rightIcon: {
+        clearProps: {
           component: "Icon",
           type: "times",
           hidden: !this.props.allowClear || this.props.disabled,
@@ -20301,7 +20353,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(PartialDateRangePicker);
   class Password extends Textbox {
     constructor(props, ...mixins) {
-      const defaults = {};
+      const defaults = { allowClear: false };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
@@ -23841,7 +23893,7 @@ function _defineProperty2(obj, key, value) {
       this._calcTimeRangeByTime();
       this.setProps({
         leftIcon: "clock",
-        rightIcon: {
+        clearProps: {
           type: "times",
           hidden: !this.props.allowClear || this.props.disabled,
           onClick: (args) => {

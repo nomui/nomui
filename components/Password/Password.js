@@ -3,8 +3,9 @@ import Textbox from '../Textbox/index'
 
 class Password extends Textbox {
   constructor(props, ...mixins) {
-    const defaults = {}
-
+    const defaults = {
+      allowClear: false,
+    }
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
