@@ -12748,7 +12748,8 @@ function _defineProperty2(obj, key, value) {
       this.optionList.selectItems(options);
     }
     getMultipleValue(obj) {
-      return Object.values(obj.itemRefs);
+      return ((target) =>
+        Object.keys(target).map((key) => target[key]))(obj.itemRefs);
     }
     getSelectedOption() {
       if (!this.optionList || !this.optionList.props) {
@@ -24468,7 +24469,10 @@ function _defineProperty2(obj, key, value) {
                 const { key, text, parentKey } = this.props.treeDataFields; // 1.先遍历一次 将结果符合搜索条件的结果(包含其祖先)放至 filteredMap中
                 const reg = new RegExp(inputValue, "i");
                 const filteredMap = new Map();
-                Object.entries(this.optionMap).forEach(([optKey, optValue]) => {
+                ((target) =>
+                  Object.keys(target).map((key) => [key, target[key]]))(
+                  this.optionMap
+                ).forEach(([optKey, optValue]) => {
                   // 判断输入关键字 和 option的text
                   if (reg.test(optValue[text])) {
                     filteredMap.set(
