@@ -10,6 +10,7 @@ function compileClassStaticProps() {
         compact: true,
         plugins: [
           '@babel/plugin-proposal-class-properties',
+          'babel-plugin-object-entries-and-values-to-object-keys',
           ['@babel/plugin-proposal-object-rest-spread', { loose: true, useBuiltIns: true }],
         ],
       })
