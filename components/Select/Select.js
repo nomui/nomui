@@ -54,6 +54,7 @@ class Select extends Field {
 
   _created() {
     super._created()
+    this.internalOption = []
 
     if (this.props.extraOptions) {
       const extraOptions = this.props.extraOptions.map((n) => {
@@ -77,6 +78,7 @@ class Select extends Field {
     const children = []
 
     this._normalizeInternalOptions(options)
+
     this._normalizeSearchable()
 
     this.setProps({
@@ -420,7 +422,7 @@ class Select extends Field {
       options = extend({ triggerChange: true }, options)
     }
     if (this.props.showSearch) {
-      const selectedOption = this.props.options.find((e) => e.value === value)
+      const selectedOption = this.internalOption.find((e) => e.value === value)
       if (selectedOption) {
         this.checked = true
         this.checkedOption = selectedOption
@@ -455,7 +457,7 @@ class Select extends Field {
 
   _getOption(value) {
     let option = null
-    const { options } = this.props
+    const options = this.internalOption
     if (Array.isArray(value)) {
       value = value[0]
     }
@@ -470,7 +472,7 @@ class Select extends Field {
 
   _getOptions(value) {
     let retOptions = null
-    const { options } = this.props
+    const options = this.internalOption
     if (Array.isArray(value)) {
       retOptions = []
       for (let i = 0; i < options.length; i++) {
@@ -502,7 +504,7 @@ class Select extends Field {
     }
     // 此处有问题，暂时添加判断屏蔽报错，问题原因是调用了已销毁组件的方法导致this是个空对象
     if (this.props && this.props.showSearch) {
-      const selectedOption = this.props.options.find((e) => e.value === changed.newValue)
+      const selectedOption = this.internalOption.find((e) => e.value === changed.newValue)
       this.checkedOption = selectedOption
       this.updateSearchPopup(selectedOption && selectedOption.text)
       this.checked = true
@@ -576,7 +578,6 @@ class Select extends Field {
 
   handleOptions(options, optionFields) {
     const { text: textField, value: valueField } = optionFields
-
     if (!Array.isArray(options)) return []
     const internalOption = options
     for (let i = 0; i < internalOption.length; i++) {
