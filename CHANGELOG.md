@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.47](https://github.com/nomui/nomui/compare/v1.0.0-alpha.46...v1.0.0-alpha.47) (2022-01-21)
+
+
+### Features
+
+* **NumberBox:** 新增maxPrecision规则 ([da21ade](https://github.com/nomui/nomui/commit/da21adeed4f198abb6cb3eda28bb4b5fcf9ad17c))
+* **Textbox:** 添加allowClear可清除 ([80b2274](https://github.com/nomui/nomui/commit/80b227495e08dac2e69f160d0565cac533557482))
+
+
+### Bug Fixes
+
+* 修复Select有重复key的判断逻辑bug ([f7fc204](https://github.com/nomui/nomui/commit/f7fc204de1753dc3ce0271c39e93e4c060b4ced6))
+* 修复Select有重复key的判断逻辑bug ([975ef53](https://github.com/nomui/nomui/commit/975ef536ec9b10b38cb903390df677806f7d08b5))
+* **Grid:** 开启勾选列功能时，固定列功能未按预期工作 ([fbd68d1](https://github.com/nomui/nomui/commit/fbd68d18b7011fb887e423a267e4b4ece12659df))
+* **Grid:** 列设置与列排序意外的冲突 ([fa26268](https://github.com/nomui/nomui/commit/fa26268c73843186d029cd11f6ef8217f84ad909))
+* **Grid:** 内部更新columns时，不更新自定义列弹窗中的数据 ([0ea1652](https://github.com/nomui/nomui/commit/0ea165257670324296724a433ef2bb928e91c207))
+* **Grid:** 内部更新Grid时，跳过columns的处理 ([f667655](https://github.com/nomui/nomui/commit/f667655abc8f192742a6555ff7c0fe081551cfef))
+* **Grid:** 设置排序后，同时修改originColumns里的排序状态 ([66d5ec3](https://github.com/nomui/nomui/commit/66d5ec31ce29ef68c8b759e6a1210c41a2b2857d))
+* **Grid:** 由Grid内部更新 columns时，不触发originColumns的改变 ([6200b41](https://github.com/nomui/nomui/commit/6200b41ed71a779c8b08cd0dbc0b0ea8bea017d6))
+* **Grid:** frozenLeftCols在有列勾选功能时表现异常 ([92cce78](https://github.com/nomui/nomui/commit/92cce789031c0e632963262dd8ee98bb9ddfb95d))
+* **Numberbox:** 低版本浏览器不支持幂操作符, 改为Math.pow ([7f7a37b](https://github.com/nomui/nomui/commit/7f7a37b334dc80b28062b47b1253911f88ef7dda))
+* **Select:** select中直接使用的options, 导致需要处理value字段的数据传入时，会显示错误 ([904b42b](https://github.com/nomui/nomui/commit/904b42b6b6212931015e7f3c93a463ed48b5bcc6))
+* **Textbox:** 继承至Textbox的组件出现两个清除按钮 ([d02d4ea](https://github.com/nomui/nomui/commit/d02d4ea7be80c9c120f69ab33c6ec14e864f76ba))
+
+
+### Docs
+
+* 完善文档 ([14ce220](https://github.com/nomui/nomui/commit/14ce220d354f132c1acb984d1902dcbd880fe718))
+
 ## [1.0.0-alpha.46](https://github.com/nomui/nomui/compare/v1.0.0-alpha.45...v1.0.0-alpha.46) (2022-01-14)
 
 
