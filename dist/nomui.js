@@ -17101,6 +17101,8 @@ function _defineProperty2(obj, key, value) {
       this.update({
         columns: this.getPinOrderColumns(),
         frozenLeftCols: this.pinColumns.length + checkCount,
+        dontUpdateOrigin: true,
+        visibleColumns: this.getPinOrderColumns(),
       });
     }
     fixPinOrder(data) {
@@ -17119,7 +17121,7 @@ function _defineProperty2(obj, key, value) {
       const c = this.props.columns;
       const item = c.splice(idx, 1);
       c.splice(num - 1, 0, item[0]);
-      this.update({ columns: c });
+      this.update({ columns: c, dontUpdateOrigin: true, visibleColumns: c });
     }
     removeColumn(array, data) {
       if (array.length < 1) {

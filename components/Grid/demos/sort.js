@@ -20,6 +20,7 @@ define([], function () {
             columnsCustomizable: {
               cache: true,
             },
+            allowFrozenCols: true,
             onSort: (args) => {
               new Promise((resolve) => {
                 setTimeout(() => {
