@@ -4,7 +4,13 @@ import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
 import { STORAGE_KEY_GRID_COLS_WIDTH, STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
-import { isFunction, isNullish, isPlainObject, isString } from '../util/index'
+import {
+  isBrowerSupportSticky,
+  isFunction,
+  isNullish,
+  isPlainObject,
+  isString
+} from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
 import GridHeader from './GridHeader'
@@ -73,6 +79,8 @@ class Grid extends Component {
   _config() {
     this.nodeList = {}
     const that = this
+
+    this._parseBrowerVersion()
 
     // 切换分页 data数据更新时 此两项不重置会导致check表现出错
     this.rowsRefs = {}
@@ -210,6 +218,15 @@ class Grid extends Component {
     })
 
     return treeData
+  }
+
+  _parseBrowerVersion() {
+    // 不支持sticky，需要将frozen 置为null
+    if (!isBrowerSupportSticky()) {
+      this.props.frozenLeftCols = null
+      this.props.frozenRightCols = null
+      this.props.allowFrozenCols = false
+    }
   }
 
   _parseColumnsCustom() {
