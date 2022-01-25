@@ -66,3 +66,7 @@ export function isBrowerSupportSticky() {
   // 未知的浏览器版本都默认支持
   return true
 }
+
+export function isChrome49() {
+  return BROWSER_INFO.type === 'Chrome' && BROWSER_INFO.version === 49
+}

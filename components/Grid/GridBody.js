@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Table from '../Table/index'
+import { isChrome49 } from '../util/index'
 import GridTableMixin from './GridTableMixin'
 
 class GridBody extends Component {
@@ -44,6 +45,14 @@ class GridBody extends Component {
         },
       },
     })
+  }
+
+  _rendered() {
+    // fix: chrome下,最下面的横向滚动条会挡住部分内容,读取过一次dom的属性后,又恢复正常
+    // TODO: 打包加上 no-console 后，此处需要修改
+    if (isChrome49()) {
+      console.log(this.element.offsetWidth)
+    }
   }
 }
 
