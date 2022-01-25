@@ -9,7 +9,7 @@ class AutoComplete extends Textbox {
       options: [],
       debounce: true,
       interval: 300,
-      filterOption: (value, options) => options.filter((o) => o.value.includes(value)),
+      filterOption: (value, options) => options.filter((o) => o.value.toString().includes(value)),
       allowClear: true,
     }
 
@@ -28,12 +28,21 @@ class AutoComplete extends Textbox {
   }
 
   _rendered() {
-    this.input && this._init()
+    const { searchable } = this.props
+    !searchable && this.input && this._init()
     const { options } = this.props
 
     this.popup = new AutoCompletePopup({
       trigger: this.control,
       options,
+      onShow: () => {
+        if (this.optionList) {
+          this.optionList.update({
+            selectedItems: this.getValue(),
+          })
+          this.optionList.scrollToSelected()
+        }
+      },
     })
   }
 
@@ -44,6 +53,7 @@ class AutoComplete extends Textbox {
   _config() {
     const autoCompleteRef = this
     const { allowClear, options } = this.props
+    this._normalizeSearchable()
     if (allowClear && this.currentValue) {
       this.setProps({
         clearProps: {
@@ -156,6 +166,21 @@ class AutoComplete extends Textbox {
 
     isFunction(filterOption) && this.popup.update({ options: filterOption(txt, options) })
     isFunction(onSearch) && onSearch({ text: txt, sender: this })
+  }
+
+  _normalizeSearchable() {
+    const { searchable, onSearch } = this.props
+    if (searchable) {
+      this.setProps({
+        searchable: Component.extendProps(
+          {
+            placeholder: null,
+            onSearch,
+          },
+          searchable,
+        ),
+      })
+    }
   }
 }
 

@@ -30,8 +30,13 @@ class AutoCompleteList extends List {
   }
 
   _config() {
-    const { optionDefaults, options } = this.props
+    // const { options } = this.autoCompleteControl.props
+    // const { optionDefaults, options } = this.props
+    const { searchable, options: aops } = this.autoCompleteControl.props
+    const { optionDefaults, options: sops } = this.props
     const value = this.autoCompleteControl.props.value ? this.autoCompleteControl.props.value : ''
+
+    const options = searchable ? aops : sops
 
     this.setProps({
       items: options || [],
