@@ -5926,6 +5926,7 @@ table.nom-table .nom-table-th-hover-mask {
 }
 table.nom-table td,
 table.nom-table th {
+  position: relative;
   padding: 8px 10px;
   word-break: break-all;
 }
@@ -6053,6 +6054,7 @@ table.nom-table th {
   background-color: #f8f8f8;
   background-image: linear-gradient(to bottom, #fcfcfc 0, #f8f8f8 100%);
   user-select: none;
+  -webkit-user-select: none;
 }
 table.nom-table th.nom-table-fixed-left,
 table.nom-table th.nom-table-fixed-right {
