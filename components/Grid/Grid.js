@@ -4,7 +4,13 @@ import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
 import { STORAGE_KEY_GRID_COLS_WIDTH, STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
-import { isFunction, isNullish, isPlainObject, isString } from '../util/index'
+import {
+  isBrowerSupportSticky,
+  isFunction,
+  isNullish,
+  isPlainObject,
+  isString
+} from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
 import GridHeader from './GridHeader'
@@ -38,17 +44,27 @@ class Grid extends Component {
     // 列设置弹窗 tree的数据
     this.popupTreeData = this.originColumns
     this.filter = {}
+    if (this.props.frozenLeftCols > 0 && this.props.rowCheckable) {
+      this.props.frozenLeftCols += 1
+    }
   }
 
   _update(props) {
-    // update了columns, 需要重新计算得到 visibleColumns
+    // 外部 update了columns, 需要重新计算得到 visibleColumns
     if (props.columns) {
       const c = props.columns.filter((n) => {
         return Object.keys(n)
       })
       this.setProps({ visibleColumns: null })
-      this.originColumns = [...c]
-      this.popupTreeData = this.originColumns
+
+      if (!props.dontUpdateOrigin) {
+        this.originColumns = [...c]
+      }
+
+      if (!this._isSelfUpdateColumn) {
+        this.popupTreeData = this.originColumns
+        this._isSelfUpdateColumn = false
+      }
     }
     // 更新了data
     if (props.data && this.props) {
@@ -63,6 +79,8 @@ class Grid extends Component {
   _config() {
     this.nodeList = {}
     const that = this
+
+    this._parseBrowerVersion()
 
     // 切换分页 data数据更新时 此两项不重置会导致check表现出错
     this.rowsRefs = {}
@@ -202,6 +220,15 @@ class Grid extends Component {
     return treeData
   }
 
+  _parseBrowerVersion() {
+    // 不支持sticky，需要将frozen 置为null
+    if (!isBrowerSupportSticky()) {
+      this.props.frozenLeftCols = null
+      this.props.frozenRightCols = null
+      this.props.allowFrozenCols = false
+    }
+  }
+
   _parseColumnsCustom() {
     const { columnsCustomizable, visibleColumns } = this.props
     // 未设置自定义列展示
@@ -307,7 +334,24 @@ class Grid extends Component {
   }
 
   setSortDirection(sorter) {
-    const c = this.getColumns().map(function (item) {
+    const c = this.getColumns().map(this._setColumnItemDire(sorter))
+
+    if (this.props.visibleColumns) {
+      const vc = this.props.visibleColumns.map(this._setColumnItemDire(sorter))
+      this.props.visibleColumns = vc
+    }
+    this.originColumns = this.originColumns.map(this._setColumnItemDire(sorter))
+
+    // update 列时，无需出发autoScroll
+    this._doNotAutoScroll =
+      // 自身更新 columns 无需修改 originColumns
+      this._isSelfUpdateColumn = true
+    this.update({ columns: c, dontUpdateOrigin: true })
+  }
+
+  // 设置每一列的排序状态
+  _setColumnItemDire(sorter) {
+    return (item) => {
       if (!sorter) {
         return {
           ...item,
@@ -330,39 +374,7 @@ class Grid extends Component {
           sortDirection: null,
         },
       }
-    })
-
-    if (this.props.visibleColumns) {
-      const vc = this.props.visibleColumns.map(function (item) {
-        if (!sorter) {
-          return {
-            ...item,
-            ...{
-              sortDirection: null,
-            },
-          }
-        }
-        if (item.field === sorter.field) {
-          return {
-            ...item,
-            ...{
-              sortDirection: sorter.sortDirection,
-            },
-          }
-        }
-        return {
-          ...item,
-          ...{
-            sortDirection: null,
-          },
-        }
-      })
-
-      this.props.visibleColumns = vc
     }
-    // update 列时，无需出发autoScroll
-    this._doNotAutoScroll = true
-    this.update({ columns: c })
   }
 
   handleSort(sorter) {
@@ -1025,13 +1037,18 @@ class Grid extends Component {
   }
 
   handlePinClick(data) {
-    if (data.fixed && this.pinColumns.length < 1) {
-      const num = this.props.frozenLeftCols
-      num > 1 && this.fixPinOrder(data)
-      this.update({
-        frozenLeftCols: num - 1,
-      })
-      return
+    if (data.fixed) {
+      if (this.pinColumns.length < 1) {
+        const checkCount = this.props.rowCheckable ? 1 : 0
+
+        const num = this.props.frozenLeftCols
+        num > 1 + checkCount && this.fixPinOrder(data)
+
+        this.update({
+          frozenLeftCols: num - (1 + checkCount),
+        })
+        return
+      }
     }
     if (
       this.pinColumns.filter((n) => {
@@ -1043,9 +1060,13 @@ class Grid extends Component {
       this.pinColumns.unshift(data)
     }
 
+    this._isSelfUpdateColumn = true
+    const checkCount = this.props.rowCheckable && this.pinColumns.length > 0 ? 1 : 0
     this.update({
       columns: this.getPinOrderColumns(),
-      frozenLeftCols: this.pinColumns.length,
+      frozenLeftCols: this.pinColumns.length + checkCount,
+      dontUpdateOrigin: true,
+      visibleColumns: this.getPinOrderColumns(),
     })
   }
 
@@ -1068,6 +1089,8 @@ class Grid extends Component {
 
     this.update({
       columns: c,
+      dontUpdateOrigin: true,
+      visibleColumns: c,
     })
   }
 

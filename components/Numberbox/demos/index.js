@@ -1,4 +1,10 @@
-define(['./basic.js','./disabled.js', './min-max.js', './precision.js'], function () {
+define([
+  './basic.js',
+  './disabled.js',
+  './min-max.js',
+  './precision.js',
+  './limit-input.js',
+], function () {
   return {
     title: 'Numberbox',
     subtitle: '数字框',
