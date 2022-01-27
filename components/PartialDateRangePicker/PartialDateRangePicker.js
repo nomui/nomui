@@ -14,6 +14,7 @@ class PartialDateRangePicker extends Group {
         start: 'start',
         end: 'end',
       },
+      autoPopupEnd: true,
       flatValue: true,
       startPickerProps: {
         placeholder: '开始日期',
@@ -116,7 +117,7 @@ class PartialDateRangePicker extends Group {
         } else if (!opposite.getValue()) {
           opposite.focus()
 
-          opposite.showPopup()
+          that.props.autoPopupEnd && opposite.showPopup()
         }
       } else if (opposite.getValue() && opposite.getValue() > active.getValue()) {
         opposite.clearTime()

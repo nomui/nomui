@@ -14,6 +14,7 @@
 | yearRange | 前后年显示范围 | `array` | `[50,20]` |
 | showTime | 是否显示时间，需要显示的时候建议传一个对象，内部包含 TimePicker 的 props | `object` | false |
 | allowClear | 是否显示清空按钮 | `boolean` | `true` |
+| autoPopupEnd | 选择完起始日期后是否自动弹出结束日期面板 | `boolean` | `true` |
 | onChange | 面板关闭且值发生改变时触发回调 | `function` | - |
 | fieldName | 起止输入框的 name | `object` | `{start:'start',end:'end'}` |
 | flatValue | 取值是否扁平化 | `boolean` | `true` |
