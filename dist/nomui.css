@@ -6604,6 +6604,7 @@ textarea .nom-input {
 }
 .nom-textbox > .nom-field-content .nom-control {
   position: relative;
+  background-color: #fff;
 }
 .nom-textbox.s-invalid.p-plain > .nom-field-content > .nom-control > .nom-input {
   border-color: #ffa8a8;
