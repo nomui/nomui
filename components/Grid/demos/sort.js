@@ -8,6 +8,8 @@ define([], function () {
   return {
     title: '列排序',
     file: 'sort',
+    description:
+      '配置 `defaultSort: {field, sortDirection}` (sortDirection: "asc" | "desc") 实现表格的默认排序`',
     demo: function () {
       return {
         component: 'Flex',
@@ -21,6 +23,7 @@ define([], function () {
               cache: true,
             },
             allowFrozenCols: true,
+            defaultSort: { field: 'name', sortDirection: 'asc' },
             onSort: (args) => {
               new Promise((resolve) => {
                 setTimeout(() => {

@@ -16347,12 +16347,7 @@ function _defineProperty2(obj, key, value) {
       if (this.props.ellipsis === true) {
         this.props.ellipsis = "both";
       }
-      const { treeConfig } = this.props; // 如果通过checkSortInfo触发回调，则同步更新排序图标状态
-      if (this.startSort) {
-        this.startSort = false;
-        this.setSortDirection(this.getSortInfo());
-        return;
-      } // 如果sortCacheable则检查本地排序缓存，如果有缓存直接触发onSort回调
+      const { treeConfig } = this.props; // 更新列的排序部分内容
       this.checkSortInfo(); // 还未处理过 flatData
       if (treeConfig && treeConfig.flatData && !this._alreadyProcessedFlat) {
         this.setProps({ data: this._setTreeGridData(that.props.data) });
@@ -16609,19 +16604,22 @@ function _defineProperty2(obj, key, value) {
       return JSON.parse(localStorage.getItem(`${this.key}-sort-info`));
     }
     checkSortInfo() {
-      if (
-        this.props.sortCacheable &&
-        this.getSortInfo() &&
-        this.firstRender &&
-        !this.sortUpdated
-      ) {
-        this.sortUpdated = true;
+      // 已经处理过 || 正在处理 直接返回
+      if (!this.firstRender || this.sortUpdated || this.startSort) return; // 排序缓存
+      const _sortInfo = this.getSortInfo();
+      if (this.props.sortCacheable && _sortInfo) {
         this.startSort = true;
+        this.setSortDirection(_sortInfo);
         this._callHandler(this.props.onSort, {
-          field: this.getSortInfo().field,
-          sortDirection: this.getSortInfo().sortDirection,
+          field: _sortInfo.field,
+          sortDirection: _sortInfo.sortDirection,
         });
+      } else if (this.props.defaultSort && this.firstRender) {
+        // 默认排序
+        this.startSort = true;
+        this.setSortDirection(this.props.defaultSort);
       }
+      this.sortUpdated = true;
     } // 记录上一次滚动到的位置
     _setScrollPlace(isEmpty) {
       // grid自身的 header和body的宽度

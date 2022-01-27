@@ -16,6 +16,7 @@ define([], function () {
           {
             component: 'Grid',
 
+            defaultSort: { field: 'name', sortDirection: 'asc' },
             onSort: (args) => {
               new Promise((resolve) => {
                 setTimeout(() => {
