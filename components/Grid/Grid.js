@@ -4,7 +4,13 @@ import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
 import { STORAGE_KEY_GRID_COLS_WIDTH, STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
-import { isFunction, isNullish, isPlainObject, isString } from '../util/index'
+import {
+  isBrowerSupportSticky,
+  isFunction,
+  isNullish,
+  isPlainObject,
+  isString
+} from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
 import GridHeader from './GridHeader'
@@ -74,6 +80,8 @@ class Grid extends Component {
     this.nodeList = {}
     const that = this
 
+    this._parseBrowerVersion()
+
     // 切换分页 data数据更新时 此两项不重置会导致check表现出错
     this.rowsRefs = {}
     this.checkedRowRefs = {}
@@ -84,13 +92,7 @@ class Grid extends Component {
 
     const { treeConfig } = this.props
 
-    // 如果通过checkSortInfo触发回调，则同步更新排序图标状态
-    if (this.startSort) {
-      this.startSort = false
-      this.setSortDirection(this.getSortInfo())
-      return
-    }
-    // 如果sortCacheable则检查本地排序缓存，如果有缓存直接触发onSort回调
+    // 更新列的排序部分内容
     this.checkSortInfo()
 
     // 还未处理过 flatData
@@ -210,6 +212,15 @@ class Grid extends Component {
     })
 
     return treeData
+  }
+
+  _parseBrowerVersion() {
+    // 不支持sticky，需要将frozen 置为null
+    if (!isBrowerSupportSticky()) {
+      this.props.frozenLeftCols = null
+      this.props.frozenRightCols = null
+      this.props.allowFrozenCols = false
+    }
   }
 
   _parseColumnsCustom() {
@@ -407,14 +418,24 @@ class Grid extends Component {
   }
 
   checkSortInfo() {
-    if (this.props.sortCacheable && this.getSortInfo() && this.firstRender && !this.sortUpdated) {
-      this.sortUpdated = true
+    // 已经处理过 || 正在处理 直接返回
+    if (!this.firstRender || this.sortUpdated || this.startSort) return
+
+    // 排序缓存
+    const _sortInfo = this.getSortInfo()
+    if (this.props.sortCacheable && _sortInfo) {
       this.startSort = true
+      this.setSortDirection(_sortInfo)
       this._callHandler(this.props.onSort, {
-        field: this.getSortInfo().field,
-        sortDirection: this.getSortInfo().sortDirection,
+        field: _sortInfo.field,
+        sortDirection: _sortInfo.sortDirection,
       })
+    } else if (this.props.defaultSort && this.firstRender) {
+      // 默认排序
+      this.startSort = true
+      this.setSortDirection(this.props.defaultSort)
     }
+    this.sortUpdated = true
   }
 
   // 记录上一次滚动到的位置

@@ -1,3 +1,5 @@
+export * from './browser-version.js'
+
 String.prototype.trim = function (characters) {
   return this.replace(new RegExp(`^${characters}+|${characters}+$`, 'g'), '')
 }

@@ -53,6 +53,7 @@
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
 | highlightCol | 表头 hover 时将对应列高亮 | `boolean` | `false` |
 | striped | 是否显示斑马间隔 | `boolean` | `false` |
+| defaultSort | 默认排序的配置 | `object` | - |
 | onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
 | sortCacheable | 是否允许缓存排序条件，使用本功能，Grid 必须指定唯一标识`key` | `boolean` | `false` |
 | onFilter | 列头筛选触发回调 | `({params})=>{}` | - |
@@ -256,3 +257,10 @@
 
 1. 至少预留一列, 不设置其`width`, 让其自适应(`width: 17px`的占位列就不会自动变化了)
 2. 总的列宽一定要足够, 越大越好(让`17px`导致的影响微乎其微,看不出差别即可)
+
+### defaultSort
+
+| 参数          | 说明         | 类型              | 默认值 |
+| ------------- | ------------ | ----------------- | ------ |
+| field         | 字段名       | `string`          | -      |
+| sortDirection | 升序还是降序 | `'asc' \| 'desc'` | -      |
