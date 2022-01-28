@@ -14157,6 +14157,7 @@ function _defineProperty2(obj, key, value) {
         allowClear: true,
         onChange: null,
         fieldName: { start: "start", end: "end" },
+        autoPopupEnd: true,
         flatValue: true,
         required: false,
         requiredMessage: null,
@@ -14259,7 +14260,7 @@ function _defineProperty2(obj, key, value) {
             opposite.showPopup();
           } else if (!opposite.getValue()) {
             opposite.focus();
-            opposite.showPopup();
+            that.props.autoPopupEnd && opposite.showPopup();
           }
         } else if (
           opposite.getValue() &&
@@ -20377,6 +20378,7 @@ function _defineProperty2(obj, key, value) {
         allowClear: true,
         onChange: null,
         fieldName: { start: "start", end: "end" },
+        autoPopupEnd: true,
         flatValue: true,
         startPickerProps: { placeholder: "开始日期" },
         endPickerProps: { placeholder: "结束日期" },
@@ -20468,7 +20470,7 @@ function _defineProperty2(obj, key, value) {
             opposite.showPopup();
           } else if (!opposite.getValue()) {
             opposite.focus();
-            opposite.showPopup();
+            that.props.autoPopupEnd && opposite.showPopup();
           }
         } else if (
           opposite.getValue() &&
@@ -24252,6 +24254,7 @@ function _defineProperty2(obj, key, value) {
         secondStep: 0,
         readonly: true,
         placeholder: null,
+        autoPopupEnd: true,
         showNow: true,
         onChange: null,
         fieldName: { start: "start", end: "end" },
@@ -24362,7 +24365,7 @@ function _defineProperty2(obj, key, value) {
             opposite.showPopup();
           } else if (!opposite.getValue()) {
             opposite.focus();
-            opposite.showPopup();
+            that.props.autoPopupEnd && opposite.showPopup();
           }
         } else if (
           opposite.getValue() &&

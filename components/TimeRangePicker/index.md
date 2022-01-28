@@ -13,6 +13,7 @@
 | readonly | 是否只读 | `boolean` | `true` |
 | disabled | 是否禁用 | `boolean` | `false` |
 | placeholder | placeholder | `string` | - |
+| autoPopupEnd | 选择完起始日期后是否自动弹出结束日期面板 | `boolean` | `true` |
 | showNow | 是否显示此刻按钮 | `boolean` | `true` |
 | minTime | 最小可选时间 | `string` | - |
 | maxTime | 最大可选时间 | `string` | - |
