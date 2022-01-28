@@ -2,7 +2,8 @@ define([], function () {
   return {
     title: '设定高度',
     file: 'fit',
-    description: '组合的 Tree 组件的 `fit` 配置默认为 `true`，所以通过 attrs 设定字段的高度时，树部分会表现出自适应父容器的效果',
+    description:
+      '组合的 Tree 组件的 `fit` 配置默认为 `true`，所以通过 attrs 设定字段的高度时，树部分会表现出自适应父容器的效果，为了兼容低版本浏览器，设置了高度的时候会自动加上overflow',
     demo: function () {
       return {
         children: [

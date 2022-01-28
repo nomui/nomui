@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { extend } from '../util/index'
+import { extend, isChrome49 } from '../util/index'
 import DefaultCheckboxOptionTree from './DefaultCheckboxOptionTree'
 
 class CheckboxTree extends Field {
@@ -25,8 +25,11 @@ class CheckboxTree extends Field {
       cascadeCheckChildren,
       cascadeCheckParent,
       cascade,
+      attrs,
     } = this.props
-
+    if (attrs && attrs.style && attrs.style.height && isChrome49()) {
+      attrs.style.overflow = 'auto'
+    }
     this.setProps({
       control: {
         component: DefaultCheckboxOptionTree,
