@@ -12,6 +12,7 @@ class TimeRangePicker extends Group {
       secondStep: 0,
       readonly: true,
       placeholder: null,
+      autoPopupEnd: true,
       showNow: true,
       onChange: null,
       fieldName: {
@@ -135,8 +136,7 @@ class TimeRangePicker extends Group {
           opposite.showPopup()
         } else if (!opposite.getValue()) {
           opposite.focus()
-
-          opposite.showPopup()
+          that.props.autoPopupEnd && opposite.showPopup()
         }
       } else if (opposite.getValue() && opposite.getValue() > active.getValue()) {
         opposite.clearTime()

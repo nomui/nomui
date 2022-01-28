@@ -16,6 +16,7 @@ class DateRangePicker extends Group {
         start: 'start',
         end: 'end',
       },
+      autoPopupEnd: true,
       flatValue: true,
       required: false,
       requiredMessage: null,
@@ -128,7 +129,7 @@ class DateRangePicker extends Group {
         } else if (!opposite.getValue()) {
           opposite.focus()
 
-          opposite.showPopup()
+          that.props.autoPopupEnd && opposite.showPopup()
         }
       } else if (opposite.getValue() && opposite.getValue() > active.getValue()) {
         opposite.clearTime()
