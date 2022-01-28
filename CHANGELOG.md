@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.48](https://github.com/nomui/nomui/compare/v1.0.0-alpha.47...v1.0.0-alpha.48) (2022-01-28)
+
+
+### Features
+
+* AutoComplete 给AutoComplete添加远程搜索功能 ([b4e4470](https://github.com/nomui/nomui/commit/b4e4470197ccda7142c087f0725b405770c5eef9))
+* **Grid:** 根据浏览器的版本信息判断是否有固定列功能 ([ed02d6f](https://github.com/nomui/nomui/commit/ed02d6f53b35593dd88b21812fabfb93c702d83d))
+* **Grid:** 添加默认排序功能 ([4440afd](https://github.com/nomui/nomui/commit/4440afd449ce1c6faf441de98d2a714878aaf15f))
+* **RangePicker:** 范围选择器提供选完初始时间是否自动弹出结束时间面板的配置 ([cbb45e5](https://github.com/nomui/nomui/commit/cbb45e547ab2d2fbbbff2e133d32006c8fa857da))
+
+
+### Bug Fixes
+
+* 优化CheckboxTree低版本兼容性 ([a12d563](https://github.com/nomui/nomui/commit/a12d5630bb8eeeea1dc5fffd82d3bd5f51091517))
+* **Grid:** 列设置问题 ([cdf3eeb](https://github.com/nomui/nomui/commit/cdf3eebd7320b4f7573c82e63363999ee7b077f6))
+* **Grid:** chrome49版本下，表格的滚动条展示 ([a4668b2](https://github.com/nomui/nomui/commit/a4668b257e5b16786add2aa5193574da20ec27b6))
+* **Layout:** flex: 1和 height: 100%在低版本浏览器上会显示多个滚动条的bug ([ee91c82](https://github.com/nomui/nomui/commit/ee91c82147313fb2f2bcfb408652481dbafbe6a8))
+* **Select:** 使用internalOptions以后搜索无效 ([d5a41cd](https://github.com/nomui/nomui/commit/d5a41cdb9653e632ffb696f2b5b0a0fbc963e6db))
+* **Textbox:** 使用 affix-wrapper包裹之后，导致背景色bug ([9a5e5d5](https://github.com/nomui/nomui/commit/9a5e5d58cb918c725fb3fa35d981ac719c5891e3))
+
+
+### Performance Improvements
+
+* 加强Chrome49版本下的css兼容性 ([14df0b4](https://github.com/nomui/nomui/commit/14df0b4412ab2d0e389162801213724bf4dc65c6))
+
+
+### Docs
+
+* **Grid:** 表格添加默认排序 ([d25679d](https://github.com/nomui/nomui/commit/d25679dfd886998dea6242e671a960b68d6fbe29))
+
 ## [1.0.0-alpha.47](https://github.com/nomui/nomui/compare/v1.0.0-alpha.46...v1.0.0-alpha.47) (2022-01-21)
 
 
