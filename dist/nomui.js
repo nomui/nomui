@@ -11466,7 +11466,11 @@ function _defineProperty2(obj, key, value) {
         cascadeCheckChildren,
         cascadeCheckParent,
         cascade,
+        attrs,
       } = this.props;
+      if (attrs && attrs.style && attrs.style.height && isChrome49()) {
+        attrs.style.overflow = "auto";
+      }
       this.setProps({
         control: {
           component: DefaultCheckboxOptionTree,

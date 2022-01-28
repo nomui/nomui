@@ -5340,6 +5340,7 @@ img {
   flex-wrap: wrap;
   margin: 0;
   padding: 0;
+  padding-bottom: 1px;
   padding-left: 0;
   list-style: none;
 }
@@ -7431,6 +7432,7 @@ textarea .nom-textarea {
 }
 .nom-field {
   display: flex;
+  outline: none;
 }
 .nom-field.p-plain > .nom-field-label {
   padding: 0;
