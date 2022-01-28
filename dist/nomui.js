@@ -8850,10 +8850,14 @@ function _defineProperty2(obj, key, value) {
       this.autoCompleteControl.optionList = this;
     }
     _config() {
-      const { optionDefaults, options } = this.props;
+      // const { options } = this.autoCompleteControl.props
+      // const { optionDefaults, options } = this.props
+      const { searchable, options: aops } = this.autoCompleteControl.props;
+      const { optionDefaults, options: sops } = this.props;
       const value = this.autoCompleteControl.props.value
         ? this.autoCompleteControl.props.value
         : "";
+      const options = searchable ? aops : sops;
       this.setProps({
         items: options || [],
         itemDefaults: n$1(null, optionDefaults, null, [
@@ -8882,42 +8886,132 @@ function _defineProperty2(obj, key, value) {
       this.autoCompleteControl = this.opener.field;
     }
     _config() {
+      const autoCompletePopupRef = this;
       const { options } = this.props;
-      const { filterOption, value } = this.autoCompleteControl.props;
+      const { searchable, debounce, interval } = this.autoCompleteControl.props;
+      this.setProps({
+        attrs: {
+          style: {
+            width: `${this.autoCompleteControl.control.offsetWidth()}px`,
+          },
+        },
+        children: {
+          component: Layout,
+          header: searchable
+            ? {
+                children: {
+                  component: Textbox,
+                  placeholder: searchable.placeholder,
+                  _created: (inst) => {
+                    autoCompletePopupRef.autoCompleteControl.searchRef = inst;
+                  },
+                  onValueChange({ newValue }) {
+                    if (debounce) {
+                      autoCompletePopupRef.timer &&
+                        clearTimeout(autoCompletePopupRef.timer);
+                      autoCompletePopupRef.timer = setTimeout(() => {
+                        const loading = new nomui.Loading({
+                          container:
+                            autoCompletePopupRef.autoCompleteControl.optionList
+                              .parent,
+                        });
+                        const searchPromise = searchable.onSearch({
+                          inputValue: newValue,
+                          options,
+                        });
+                        if (autoCompletePopupRef._isPromise(searchPromise)) {
+                          return searchPromise
+                            .then((val) => {
+                              autoCompletePopupRef.autoCompleteControl.props.options = val;
+                              autoCompletePopupRef.autoCompleteControl.optionList.update();
+                              loading && loading.remove();
+                            })
+                            .catch(() => {
+                              loading && loading.remove();
+                            });
+                        }
+                        loading && loading.remove();
+                        autoCompletePopupRef.autoCompleteControl.props.options = searchPromise;
+                        searchPromise &&
+                          autoCompletePopupRef.autoCompleteControl.optionList.update();
+                      }, interval);
+                    }
+                  },
+                },
+              }
+            : null,
+          body: { children: autoCompletePopupRef._getOptionList() },
+        },
+      });
+      super._config(); // if (opts && opts.length) {
+      //   this.setProps({
+      //     attrs: {
+      //       style: {
+      //         width: `${this.autoCompleteControl.control.offsetWidth()}px`,
+      //       },
+      //     },
+      //     children: {
+      //       component: Layout,
+      //       body: {
+      //         children: {
+      //           component: AutoCompleteList,
+      //           options: opts,
+      //         },
+      //       },
+      //     },
+      //   })
+      // } else {
+      //   this.setProps({
+      //     attrs: {
+      //       style: {
+      //         width: `${this.autoCompleteControl.control.offsetWidth()}px`,
+      //       },
+      //     },
+      //     children: {
+      //       component: Layout,
+      //       body: {
+      //         styles: {
+      //           padding: 1,
+      //         },
+      //         children: {
+      //           component: Empty,
+      //         },
+      //       },
+      //     },
+      //   })
+      // }
+      // super._config()
+    }
+    _show() {
+      super._show();
+      this.autoCompleteControl.searchRef &&
+        this.autoCompleteControl.searchRef.focus();
+    }
+    _getOptionList() {
+      const { options } = this.props;
+      const {
+        searchable,
+        value,
+        filterOption,
+      } = this.autoCompleteControl.props;
       const opts = isFunction(filterOption)
         ? filterOption(value || "", options)
         : options;
-      if (opts && opts.length) {
-        this.setProps({
-          attrs: {
-            style: {
-              width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-            },
-          },
-          children: {
-            component: Layout,
-            body: { children: { component: AutoCompleteList, options: opts } },
-          },
-        });
-      } else {
-        this.setProps({
-          attrs: {
-            style: {
-              width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-            },
-          },
-          children: {
-            component: Layout,
-            body: {
-              // styles: {
-              //   padding: 2,
-              // },
-              children: { component: Empty },
-            },
-          },
-        });
+      if (searchable) {
+        return { component: AutoCompleteList, options: opts };
       }
-      super._config();
+      if (opts && opts.length) {
+        return { component: AutoCompleteList, options: opts };
+      }
+      this.autoCompleteControl.optionList = null;
+      return {
+        component: Layout,
+        body: { styles: { padding: 1 }, children: { component: Empty } },
+      };
+    }
+    _isPromise(p) {
+      if (!p) return false;
+      return p instanceof Promise;
     }
   }
   class AutoComplete extends Textbox {
@@ -8927,7 +9021,7 @@ function _defineProperty2(obj, key, value) {
         debounce: true,
         interval: 300,
         filterOption: (value, options) =>
-          options.filter((o) => o.value.includes(value)),
+          options.filter((o) => o.value.toString().includes(value)),
         allowClear: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
@@ -8943,9 +9037,19 @@ function _defineProperty2(obj, key, value) {
       this.clearContent = true;
     }
     _rendered() {
-      this.input && this._init();
+      const { searchable } = this.props;
+      !searchable && this.input && this._init();
       const { options } = this.props;
-      this.popup = new AutoCompletePopup({ trigger: this.control, options });
+      this.popup = new AutoCompletePopup({
+        trigger: this.control,
+        options,
+        onShow: () => {
+          if (this.optionList) {
+            this.optionList.update({ selectedItems: this.getValue() });
+            this.optionList.scrollToSelected();
+          }
+        },
+      });
     }
     _remove() {
       this.timer && clearTimeout(this.timer);
@@ -8953,6 +9057,7 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const autoCompleteRef = this;
       const { allowClear, options } = this.props;
+      this._normalizeSearchable();
       if (allowClear && this.currentValue) {
         this.setProps({
           clearProps: {
@@ -9051,6 +9156,17 @@ function _defineProperty2(obj, key, value) {
       isFunction(filterOption) &&
         this.popup.update({ options: filterOption(txt, options) });
       isFunction(onSearch) && onSearch({ text: txt, sender: this });
+    }
+    _normalizeSearchable() {
+      const { searchable, onSearch } = this.props;
+      if (searchable) {
+        this.setProps({
+          searchable: Component.extendProps(
+            { placeholder: null, onSearch },
+            searchable
+          ),
+        });
+      }
     }
   }
   Component.register(AutoComplete);

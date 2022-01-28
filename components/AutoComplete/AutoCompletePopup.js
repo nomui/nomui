@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import Empty from '../Empty/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
+import Textbox from '../Textbox/index'
 import { isFunction } from '../util/index'
 import AutoCompleteList from './AutoCompleteList'
 
@@ -20,49 +21,146 @@ class AutoCompletePopup extends Popup {
   }
 
   _config() {
+    const autoCompletePopupRef = this
     const { options } = this.props
-    const { filterOption, value } = this.autoCompleteControl.props
-    const opts = isFunction(filterOption) ? filterOption(value || '', options) : options
+    const { searchable, debounce, interval } = this.autoCompleteControl.props
 
-    if (opts && opts.length) {
-      this.setProps({
-        attrs: {
-          style: {
-            width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-          },
+    this.setProps({
+      attrs: {
+        style: {
+          width: `${this.autoCompleteControl.control.offsetWidth()}px`,
         },
-        children: {
-          component: Layout,
-          body: {
-            children: {
-              component: AutoCompleteList,
-              options: opts,
-            },
-          },
+      },
+      children: {
+        component: Layout,
+        header: searchable
+          ? {
+              children: {
+                component: Textbox,
+                placeholder: searchable.placeholder,
+                _created: (inst) => {
+                  autoCompletePopupRef.autoCompleteControl.searchRef = inst
+                },
+                onValueChange({ newValue }) {
+                  if (debounce) {
+                    autoCompletePopupRef.timer && clearTimeout(autoCompletePopupRef.timer)
+                    autoCompletePopupRef.timer = setTimeout(() => {
+                      const loading = new nomui.Loading({
+                        container: autoCompletePopupRef.autoCompleteControl.optionList.parent,
+                      })
+                      const searchPromise = searchable.onSearch({
+                        inputValue: newValue,
+                        options,
+                      })
+                      if (autoCompletePopupRef._isPromise(searchPromise)) {
+                        return searchPromise
+                          .then((val) => {
+                            autoCompletePopupRef.autoCompleteControl.props.options = val
+                            autoCompletePopupRef.autoCompleteControl.optionList.update()
+                            loading && loading.remove()
+                          })
+                          .catch(() => {
+                            loading && loading.remove()
+                          })
+                      }
+
+                      loading && loading.remove()
+                      autoCompletePopupRef.autoCompleteControl.props.options = searchPromise
+                      searchPromise && autoCompletePopupRef.autoCompleteControl.optionList.update()
+                    }, interval)
+                  }
+                },
+              },
+            }
+          : null,
+        body: {
+          children: autoCompletePopupRef._getOptionList(),
         },
-      })
-    } else {
-      this.setProps({
-        attrs: {
-          style: {
-            width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-          },
-        },
-        children: {
-          component: Layout,
-          body: {
-            // styles: {
-            //   padding: 2,
-            // },
-            children: {
-              component: Empty,
-            },
-          },
-        },
-      })
-    }
+      },
+    })
 
     super._config()
+
+    // if (opts && opts.length) {
+    //   this.setProps({
+    //     attrs: {
+    //       style: {
+    //         width: `${this.autoCompleteControl.control.offsetWidth()}px`,
+    //       },
+    //     },
+    //     children: {
+    //       component: Layout,
+    //       body: {
+    //         children: {
+    //           component: AutoCompleteList,
+    //           options: opts,
+    //         },
+    //       },
+    //     },
+    //   })
+    // } else {
+    //   this.setProps({
+    //     attrs: {
+    //       style: {
+    //         width: `${this.autoCompleteControl.control.offsetWidth()}px`,
+    //       },
+    //     },
+    //     children: {
+    //       component: Layout,
+    //       body: {
+    //         styles: {
+    //           padding: 1,
+    //         },
+    //         children: {
+    //           component: Empty,
+    //         },
+    //       },
+    //     },
+    //   })
+    // }
+
+    // super._config()
+  }
+
+  _show() {
+    super._show()
+    this.autoCompleteControl.searchRef && this.autoCompleteControl.searchRef.focus()
+  }
+
+  _getOptionList() {
+    const { options } = this.props
+    const { searchable, value, filterOption } = this.autoCompleteControl.props
+    const opts = isFunction(filterOption) ? filterOption(value || '', options) : options
+
+    if (searchable) {
+      return {
+        component: AutoCompleteList,
+        options: opts,
+      }
+    }
+
+    if (opts && opts.length) {
+      return {
+        component: AutoCompleteList,
+        options: opts,
+      }
+    }
+
+    this.autoCompleteControl.optionList = null
+    return {
+      component: Layout,
+      body: {
+        styles: { padding: 1 },
+        children: {
+          component: Empty,
+        },
+      },
+    }
+  }
+
+  _isPromise(p) {
+    if (!p) return false
+    return p instanceof Promise
   }
 }
 
