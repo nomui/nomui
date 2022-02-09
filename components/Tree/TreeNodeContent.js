@@ -71,7 +71,7 @@ class TreeNodeContent extends Component {
         this.tree.props.sortable &&
           this.tree.props.sortable.showHandler && {
             component: 'Icon',
-            type: 'drag',
+            type: 'swap',
             classes: { 'nom-tree-drag-handler': true },
           },
         this.getExpandableIndicatorProps(expanded),
