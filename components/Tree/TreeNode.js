@@ -126,9 +126,13 @@ class TreeNode extends Component {
     }
   }
 
-  uncheck({ uncheckCheckbox = true, triggerCheckChange = true } = {}) {
+  uncheck({ uncheckCheckbox = true, triggerCheckChange = true, skipChildren = false } = {}) {
     const { checked } = this.props
-    const { onCheckChange, cascadeUncheckChildren } = this.tree.props.nodeCheckable
+    const {
+      onCheckChange,
+      cascadeUncheckChildren,
+      cascadeUncheckParent,
+    } = this.tree.props.nodeCheckable
 
     if (checked === false) {
       return
@@ -137,9 +141,14 @@ class TreeNode extends Component {
     uncheckCheckbox && this.checkboxRef.setValue(false, { triggerChange: false })
 
     cascadeUncheckChildren === true &&
+      skipChildren === false &&
       Object.keys(this.subnodeRefs).forEach((key) => {
         this.subnodeRefs[key].uncheck({ uncheckCheckbox: true, triggerCheckChange: false })
       })
+
+    cascadeUncheckParent === true &&
+      this.parentNode &&
+      this.parentNode.checkNodes({ childKey: this.key })
 
     this.props.checked = false
     if (triggerCheckChange === true) {
@@ -149,6 +158,15 @@ class TreeNode extends Component {
 
   isChecked() {
     return this.props.checked === true
+  }
+
+  checkNodes({ childKey }) {
+    const c = Object.keys(this.subnodeRefs).filter((n) => {
+      return this.subnodeRefs[n].props.checked === true && this.subnodeRefs[n].key !== childKey
+    })
+    if (!c.length) {
+      this.uncheck({ uncheckCheckbox: true, triggerCheckChange: false, skipChildren: true })
+    }
   }
 
   autoCheckAll() {
