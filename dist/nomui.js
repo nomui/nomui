@@ -11032,11 +11032,16 @@ function _defineProperty2(obj, key, value) {
         this._callHandler(onCheckChange);
       }
     }
-    uncheck({ uncheckCheckbox = true, triggerCheckChange = true } = {}) {
+    uncheck({
+      uncheckCheckbox = true,
+      triggerCheckChange = true,
+      skipChildren = false,
+    } = {}) {
       const { checked } = this.props;
       const {
         onCheckChange,
         cascadeUncheckChildren,
+        cascadeUncheckParent,
       } = this.tree.props.nodeCheckable;
       if (checked === false) {
         return;
@@ -11044,12 +11049,16 @@ function _defineProperty2(obj, key, value) {
       uncheckCheckbox &&
         this.checkboxRef.setValue(false, { triggerChange: false });
       cascadeUncheckChildren === true &&
+        skipChildren === false &&
         Object.keys(this.subnodeRefs).forEach((key) => {
           this.subnodeRefs[key].uncheck({
             uncheckCheckbox: true,
             triggerCheckChange: false,
           });
         });
+      cascadeUncheckParent === true &&
+        this.parentNode &&
+        this.parentNode.checkNodes({ childKey: this.key });
       this.props.checked = false;
       if (triggerCheckChange === true) {
         this._callHandler(onCheckChange);
@@ -11057,6 +11066,21 @@ function _defineProperty2(obj, key, value) {
     }
     isChecked() {
       return this.props.checked === true;
+    }
+    checkNodes({ childKey }) {
+      const c = Object.keys(this.subnodeRefs).filter((n) => {
+        return (
+          this.subnodeRefs[n].props.checked === true &&
+          this.subnodeRefs[n].key !== childKey
+        );
+      });
+      if (!c.length) {
+        this.uncheck({
+          uncheckCheckbox: true,
+          triggerCheckChange: false,
+          skipChildren: true,
+        });
+      }
     }
     autoCheckAll() {
       if (!this.tree.checkAllRef) return false;
@@ -11186,6 +11210,7 @@ function _defineProperty2(obj, key, value) {
           "cascadeCheckParent",
           "cascadeCheckChildren",
           "cascadeUncheckChildren",
+          "cascadeUncheckParent",
         ]);
         this.setProps({
           nodeCheckable: Component.extendProps(
@@ -11193,6 +11218,7 @@ function _defineProperty2(obj, key, value) {
               cascadeCheckParent: true,
               cascadeCheckChildren: true,
               cascadeUncheckChildren: true,
+              cascadeUncheckParent: true,
               cascade: false,
               showCheckAll: false,
               checkAllText: "全选",
