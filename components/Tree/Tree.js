@@ -52,7 +52,6 @@ class Tree extends Component {
         'cascadeCheckParent',
         'cascadeCheckChildren',
         'cascadeUncheckChildren',
-        'cascadeUncheckParent',
       ])
       this.setProps({
         nodeCheckable: Component.extendProps(
@@ -60,7 +59,6 @@ class Tree extends Component {
             cascadeCheckParent: true,
             cascadeCheckChildren: true,
             cascadeUncheckChildren: true,
-            cascadeUncheckParent: true,
             cascade: false,
             showCheckAll: false,
             checkAllText: '全选',
