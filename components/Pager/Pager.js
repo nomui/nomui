@@ -12,6 +12,9 @@ class Pager extends Component {
     this._parseCacheable()
 
     this.setProps({
+      classes: {
+        'nom-pager-compact': this.props.compact,
+      },
       children: {
         component: 'Cols',
         justify: pager.props.justify,
@@ -34,7 +37,7 @@ class Pager extends Component {
   _renderpages(pager) {
     return {
       component: List,
-      gutter: 'md',
+      gutter: this.props.compact ? 'sm' : 'md',
       items: pager.getPageItems(),
       itemDefaults: {
         tag: 'a',
@@ -72,6 +75,9 @@ class Pager extends Component {
       !pager.props.simple && {
         component: 'Select',
         showSearch: false,
+        classes: {
+          'nom-pager-select': true,
+        },
         value: pager.props.pageSize || 10,
         onValueChange: (data) => {
           pager._handleCache({ pageSize: data.newValue })
@@ -270,6 +276,7 @@ Pager.defaults = {
   displayItemCount: 5,
   edgeItemCount: 1,
 
+  compact: false,
   simple: false, // 简洁模式，只展示总数和上一页，下一页按钮
   prevShowAlways: true,
   nextShowAlways: true,

@@ -1,6 +1,7 @@
 .nom-pager {
   // between和around时将第一项占据更多位置
-  .p-justify-around, .p-justify-between {
+  .p-justify-around,
+  .p-justify-between {
     .nom-col {
       &:first-child {
         flex-grow: 2;
@@ -25,6 +26,47 @@
               border-color: @primary;
             }
           }
+        }
+      }
+    }
+    .nom-pager-select {
+      > .nom-field-content {
+        > .nom-control {
+          padding-top: 0.5rem;
+          padding-bottom: 0.5rem;
+        }
+      }
+    }
+  }
+  &.nom-pager-compact {
+    .nom-col {
+      > .nom-list {
+        > .nom-list-content {
+          > .nom-list-item-wrapper {
+            > a {
+              display: block;
+              padding: 0.35rem 0.8rem;
+              color: @text-color;
+              background-color: #fff;
+              border: 1px solid #d9d9d9;
+              border-radius: 2px;
+
+              &.s-selected {
+                color: @primary;
+                font-weight: 500;
+                border-color: @primary;
+              }
+            }
+          }
+        }
+      }
+    }
+    .nom-pager-select {
+      > .nom-field-content {
+        > .nom-control {
+          padding-top: 0.2rem;
+          padding-bottom: 0.2rem;
+          line-height: 1.5rem;
         }
       }
     }

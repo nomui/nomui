@@ -10866,9 +10866,12 @@ function _defineProperty2(obj, key, value) {
         children: [
           this.tree.props.sortable &&
             this.tree.props.sortable.showHandler && {
-              component: "Icon",
-              type: "drag",
-              classes: { "nom-tree-drag-handler": true },
+              attrs: { style: { paddingLeft: "1rem" } },
+              children: {
+                component: "Icon",
+                type: "swap",
+                classes: { "nom-tree-drag-handler": true },
+              },
             },
           this.getExpandableIndicatorProps(expanded),
           nodeCheckable && this._getCheckbox(),
@@ -19726,6 +19729,7 @@ function _defineProperty2(obj, key, value) {
       const pager = this;
       this._parseCacheable();
       this.setProps({
+        classes: { "nom-pager-compact": this.props.compact },
         children: {
           component: "Cols",
           justify: pager.props.justify,
@@ -19745,7 +19749,7 @@ function _defineProperty2(obj, key, value) {
     _renderpages(pager) {
       return {
         component: List,
-        gutter: "md",
+        gutter: this.props.compact ? "sm" : "md",
         items: pager.getPageItems(),
         itemDefaults: {
           tag: "a",
@@ -19776,6 +19780,7 @@ function _defineProperty2(obj, key, value) {
         !pager.props.simple && {
           component: "Select",
           showSearch: false,
+          classes: { "nom-pager-select": true },
           value: pager.props.pageSize || 10,
           onValueChange: (data) => {
             pager._handleCache({ pageSize: data.newValue });
@@ -19935,6 +19940,7 @@ function _defineProperty2(obj, key, value) {
     totalCount: 0,
     displayItemCount: 5,
     edgeItemCount: 1,
+    compact: false,
     simple: false, // 简洁模式，只展示总数和上一页，下一页按钮
     prevShowAlways: true,
     nextShowAlways: true,

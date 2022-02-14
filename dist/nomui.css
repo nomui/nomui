@@ -4882,6 +4882,28 @@ img {
   font-weight: 500;
   border-color: var(--nom-color-primary);
 }
+.nom-pager .nom-col .nom-pager-select > .nom-field-content > .nom-control {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.nom-pager.nom-pager-compact .nom-col > .nom-list > .nom-list-content > .nom-list-item-wrapper > a {
+  display: block;
+  padding: 0.35rem 0.8rem;
+  color: #343a40;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+}
+.nom-pager.nom-pager-compact .nom-col > .nom-list > .nom-list-content > .nom-list-item-wrapper > a.s-selected {
+  color: var(--nom-color-primary);
+  font-weight: 500;
+  border-color: var(--nom-color-primary);
+}
+.nom-pager.nom-pager-compact .nom-pager-select > .nom-field-content > .nom-control {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  line-height: 1.5rem;
+}
 .nom-popup.p-uistyle-default {
   text-align: left;
   background-color: white;
@@ -6209,6 +6231,15 @@ table.nom-table.p-bordered {
 }
 .nom-grid-setting-panel {
   min-width: 300px;
+}
+.nom-grid-setting-panel .nom-tree .nom-tree-node-content {
+  position: relative;
+  top: 0;
+  transition: all 0.25s;
+}
+.nom-grid-setting-panel .nom-tree .nom-tree-node-content:hover {
+  top: -2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 .nom-grid-setting-drag {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -7882,6 +7913,9 @@ textarea .nom-textarea {
   color: inherit !important;
   background-color: var(--nom-color-lgray) !important;
 }
+.nom-tree .nom-tree-node-content:hover .nom-tree-drag-handler {
+  visibility: visible;
+}
 .nom-tree .nom-tree-node-content.s-selected {
   color: inherit !important;
   background-color: var(--nom-color-lprimary) !important;
@@ -7907,6 +7941,10 @@ textarea .nom-textarea {
 .nom-tree .nom-tree-node-content > .nom-tree-node-checkbox {
   margin-right: 6px;
 }
+.nom-tree .nom-tree-node-content .nom-tree-drag-handler {
+  visibility: hidden;
+  cursor: pointer;
+}
 .nom-tree > .nom-tree-check-all {
   border-bottom: 1px solid #ced4da;
 }
@@ -7919,9 +7957,6 @@ textarea .nom-textarea {
   flex: 1;
   height: 100%;
   overflow: auto;
-}
-.nom-tree .nom-tree-drag-handler {
-  cursor: pointer;
 }
 .nom-tree-select.p-label-align-right > .nom-field-label + .nom-field-content {
   width: 0;
