@@ -36,7 +36,7 @@
     }
     &.nom-grid-highlight-col {
       th:hover {
-        background-color: rgba(221, 205, 79, .1);
+        background-color: rgba(221, 205, 79, 0.1);
         background-image: none;
       }
     }
@@ -123,6 +123,17 @@
 }
 .nom-grid-setting-panel {
   min-width: 300px;
+  .nom-tree {
+    .nom-tree-node-content {
+      position: relative;
+      top: 0;
+      transition: all 0.25s;
+      &:hover {
+        top: -2px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
 }
 
 .nom-grid-setting-drag {

@@ -70,9 +70,16 @@ class TreeNodeContent extends Component {
       children: [
         this.tree.props.sortable &&
           this.tree.props.sortable.showHandler && {
-            component: 'Icon',
-            type: 'drag',
-            classes: { 'nom-tree-drag-handler': true },
+            attrs: {
+              style: {
+                paddingLeft: '1rem',
+              },
+            },
+            children: {
+              component: 'Icon',
+              type: 'swap',
+              classes: { 'nom-tree-drag-handler': true },
+            },
           },
         this.getExpandableIndicatorProps(expanded),
         nodeCheckable && this._getCheckbox(),

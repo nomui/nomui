@@ -7,6 +7,9 @@
     cursor: pointer;
     &:hover {
       .u-color-lgray();
+      .nom-tree-drag-handler {
+        visibility: visible;
+      }
     }
     &.s-selected {
       .u-color-lprimary();
@@ -31,13 +34,17 @@
     > .nom-tree-node-content-icon {
       margin-right: 6px;
     }
-    
+
     > .nom-tree-node-content-tools {
       margin-left: 5px;
     }
 
     > .nom-tree-node-checkbox {
       margin-right: 6px;
+    }
+    .nom-tree-drag-handler {
+      visibility: hidden;
+      cursor: pointer;
     }
   }
 
@@ -55,8 +62,5 @@
       height: 100%;
       overflow: auto;
     }
-  }
-  .nom-tree-drag-handler {
-    cursor: pointer;
   }
 }

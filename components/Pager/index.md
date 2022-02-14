@@ -12,6 +12,7 @@
 | prevShowAlways | 切换到首页时是否隐藏上一页标识 | `boolean` | true |
 | nextShowAlways | 切换到页尾时是否隐藏下一页标识 | `boolean` | true |
 | simple | 简单模式，只展示数据总数，上一页和下一页 | `boolean` | false |
+| compact | 紧凑模式，按钮尺寸与间距会更小 | `boolean` | false |
 | justify | 排列方式(同`Flex`的配置) | `start\|end\|center\|between\|around` | end |
 | itemsSort | 内部子组件的顺序 | `array` | `['count', 'pages', 'sizes']` |
 | texts.prev | 替代图标显示的上一页文字 | `string` | 上一页 |
