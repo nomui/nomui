@@ -22,7 +22,7 @@ class Tr extends Component {
       // 重复key报错
       const _rowRefKey = this.props.data[this.table.props.keyField]
       const _rowRef = this.table.grid.rowsRefs[_rowRefKey]
-      if(_rowRef) {
+      if (_rowRef) {
         // eslint-disable-next-line no-console
         console.warn(`Duplicate keys detected: '${_rowRefKey}'.This may cause an update error.`)
       }
@@ -182,8 +182,8 @@ class Tr extends Component {
     const { childTrs, classes } = this.props
 
     // 注: 当前 tr 状态为expanded: false 时，无需展开childTr
-    if(Array.isArray(childTrs) && classes['s-expanded']) {
-      childTrs.forEach(_childTr => {
+    if (Array.isArray(childTrs) && classes['s-expanded']) {
+      childTrs.forEach((_childTr) => {
         _childTr.show && _childTr.show()
       })
     }
@@ -195,10 +195,20 @@ class Tr extends Component {
       return
     }
     const { childTrs } = this.props
-    if(Array.isArray(childTrs)) {
-      childTrs.forEach(_childTr => {
+    if (Array.isArray(childTrs)) {
+      childTrs.forEach((_childTr) => {
         _childTr.hide && _childTr.hide()
       })
+    }
+  }
+
+  _remove() {
+    const dataHaskeyField = !isNullish(this.props.data[this.table.props.keyField])
+    if (this.table.hasGrid && dataHaskeyField) {
+      // 重复key报错
+      const _rowRefKey = this.props.data[this.table.props.keyField]
+
+      delete this.table.grid.rowsRefs[_rowRefKey]
     }
   }
 }

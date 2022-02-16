@@ -155,6 +155,7 @@ class Th extends Component {
         !this.table.hasMultipleThead &&
         !(this.props.column.width && this.props.column.width > 600) &&
         !this.props.column.isChecker &&
+        !this.props.column.isTreeMark &&
         this.props.column.fixed !== 'right' &&
         this.props.column.customizable !== false && {
           component: 'Icon',
