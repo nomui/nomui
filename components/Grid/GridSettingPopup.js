@@ -42,9 +42,7 @@ class GridSettingPopup extends Modal {
             showline: true,
             data: that.customizableColumns(that.grid.popupTreeData),
             nodeCheckable: {
-              checkedNodeKeys: that.grid.props.visibleColumns
-                ? that.getMappedColumns(that.grid.props.visibleColumns)
-                : that.grid.getMappedColumns(),
+              checkedNodeKeys: that.grid.getMappedColumns(that.grid.props.columns),
             },
             multiple: true,
             sortable: {

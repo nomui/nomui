@@ -15412,6 +15412,16 @@ function _defineProperty2(obj, key, value) {
         });
       }
     }
+    _remove() {
+      const dataHaskeyField = !isNullish(
+        this.props.data[this.table.props.keyField]
+      );
+      if (this.table.hasGrid && dataHaskeyField) {
+        // 重复key报错
+        const _rowRefKey = this.props.data[this.table.props.keyField];
+        delete this.table.grid.rowsRefs[_rowRefKey];
+      }
+    }
   }
   Component.register(Tr);
   class Tbody extends Component {
@@ -15655,6 +15665,7 @@ function _defineProperty2(obj, key, value) {
           !this.table.hasMultipleThead &&
           !(this.props.column.width && this.props.column.width > 600) &&
           !this.props.column.isChecker &&
+          !this.props.column.isTreeMark &&
           this.props.column.fixed !== "right" &&
           this.props.column.customizable !== false && {
             component: "Icon",
@@ -16359,9 +16370,9 @@ function _defineProperty2(obj, key, value) {
               showline: true,
               data: that.customizableColumns(that.grid.popupTreeData),
               nodeCheckable: {
-                checkedNodeKeys: that.grid.props.visibleColumns
-                  ? that.getMappedColumns(that.grid.props.visibleColumns)
-                  : that.grid.getMappedColumns(),
+                checkedNodeKeys: that.grid.getMappedColumns(
+                  that.grid.props.columns
+                ),
               },
               multiple: true,
               sortable: { showHandler: true },
@@ -16453,6 +16464,7 @@ function _defineProperty2(obj, key, value) {
       this.rowsRefs = {};
       this.checkedRowRefs = {};
       this._doNotAutoScroll = true;
+      this._customColumnFlag = false; // 是否已经自定义处理过列
       this.props.columns = this.props.columns.filter((n) => {
         return Object.keys(n).length;
       });
@@ -16461,24 +16473,19 @@ function _defineProperty2(obj, key, value) {
       this.sortUpdated = false; // 列设置弹窗 tree的数据
       this.popupTreeData = this.originColumns;
       this.filter = {};
-      if (this.props.frozenLeftCols > 0 && this.props.rowCheckable) {
-        this.props.frozenLeftCols += 1;
+      if (this.props.frozenLeftCols > 0) {
+        this.props.rowCheckable && this.props.frozenLeftCols++;
+        this.props.rowExpandable && this.props.frozenLeftCols++;
       }
     }
     _update(props) {
-      // 外部 update了columns, 需要重新计算得到 visibleColumns
+      // 外部 update了columns, 需要重新计算得到
       if (props.columns) {
         const c = props.columns.filter((n) => {
           return Object.keys(n);
         });
-        this.setProps({ visibleColumns: null });
-        if (!props.dontUpdateOrigin) {
-          this.originColumns = [...c];
-        }
-        if (!this._isSelfUpdateColumn) {
-          this.popupTreeData = this.originColumns;
-          this._isSelfUpdateColumn = false;
-        }
+        this.originColumns = [...c];
+        this.popupTreeData = this.originColumns;
       } // 更新了data
       if (props.data && this.props) {
         const { treeConfig } = this.props; // data更新, flatData需要重新组装成Tree结构
@@ -16489,59 +16496,18 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       this.nodeList = {};
-      const that = this;
-      this._parseBrowerVersion(); // 切换分页 data数据更新时 此两项不重置会导致check表现出错
+      const that = this; // 切换分页 data数据更新时 此两项不重置会导致check表现出错
       this.rowsRefs = {};
       this.checkedRowRefs = {};
       this._propStyleClasses = ["bordered"];
       if (this.props.ellipsis === true) {
         this.props.ellipsis = "both";
       }
-      const { treeConfig } = this.props; // 更新列的排序部分内容
-      this.checkSortInfo(); // 还未处理过 flatData
-      if (treeConfig && treeConfig.flatData && !this._alreadyProcessedFlat) {
-        this.setProps({ data: this._setTreeGridData(that.props.data) });
-        this._alreadyProcessedFlat = true;
-      }
-      const { line, rowDefaults, frozenLeftCols, frozenRightCols } = this.props;
-      this._parseColumnsCustom();
-      this._processCheckableColumn();
-      this._processExpandableColumn();
-      if (this.props.visibleColumns) {
-        this.props.columns = this.props.visibleColumns;
-      }
-      if (frozenLeftCols !== null || frozenRightCols !== null) {
-        const rev = this.props.columns.length - frozenRightCols;
-        const c = this.props.columns.map(function (n, i, arr) {
-          if (i + 1 < frozenLeftCols) {
-            return Object.assign({}, n, { fixed: "left" });
-          }
-          if (i + 1 === frozenLeftCols) {
-            return Object.assign({}, n, { fixed: "left", lastLeft: true });
-          }
-          if (i === rev) {
-            return Object.assign({}, n, {
-              fixed: "right",
-              firstRight: true,
-              lastRight: i === arr.length - 1 ? true : null,
-            });
-          }
-          if (i > rev) {
-            return Object.assign({}, n, {
-              fixed: "right",
-              lastRight: i === arr.length - 1 ? true : null,
-            });
-          }
-          return Object.assign({}, n, {
-            fixed: null,
-            lastLeft: null,
-            firstRight: null,
-            lastRight: null,
-          });
-        });
-        this.props.columns = c;
-      }
+      this._processData(); // 更新列的排序部分内容
+      this.checkSortInfo();
+      this._processColumns();
       this._calcMinWidth();
+      const { line, rowDefaults } = this.props;
       this.setProps({
         classes: {
           "m-frozen-header": this.props.frozenHeader,
@@ -16563,6 +16529,51 @@ function _defineProperty2(obj, key, value) {
           this.props.summary && { component: GridFooter, line: line },
         ],
       });
+    }
+    _processData() {
+      const { treeConfig } = this.props; // 还未处理过 flatData
+      if (treeConfig && treeConfig.flatData && !this._alreadyProcessedFlat) {
+        this.setProps({ data: this._setTreeGridData(this.props.data) });
+        this._alreadyProcessedFlat = true;
+      }
+    } // 列部分的各种处理
+    _processColumns() {
+      this._processColumnsCustom();
+      this._processCheckableColumn();
+      this._processExpandableColumn();
+      this._processFrozenColumn();
+    }
+    _processFrozenColumn() {
+      this._parseBrowerVersion();
+      this._fixedCount = 0;
+      this.props.rowCheckable && this._fixedCount++;
+      this.props.rowExpandable && this._fixedCount++;
+      const { frozenLeftCols, frozenRightCols } = this.props;
+      if (frozenLeftCols !== null || frozenRightCols !== null) {
+        const rev = this.props.columns.length - frozenRightCols;
+        const c = this.props.columns.map(function (n, i, arr) {
+          if (i + 1 <= frozenLeftCols) {
+            return Object.assign({}, n, {
+              fixed: "left",
+              lastLeft: i + 1 === frozenLeftCols ? true : null,
+            });
+          }
+          if (i >= rev) {
+            return Object.assign({}, n, {
+              fixed: "right",
+              firstRight: i === rev ? true : null,
+              lastRight: i === arr.length - 1 ? true : null,
+            });
+          }
+          return Object.assign({}, n, {
+            fixed: null,
+            lastLeft: null,
+            firstRight: null,
+            lastRight: null,
+          });
+        });
+        this.setProps({ columns: c });
+      }
     }
     _setTreeGridData(arr) {
       const { keyField } = this.props;
@@ -16595,18 +16606,17 @@ function _defineProperty2(obj, key, value) {
         this.props.allowFrozenCols = false;
       }
     }
-    _parseColumnsCustom() {
-      const { columnsCustomizable, visibleColumns } = this.props; // 未设置自定义列展示
+    _processColumnsCustom() {
+      const { columnsCustomizable } = this.props; // 未设置自定义列展示
       if (!columnsCustomizable) return; // 设置过后，无需再从selected和cache中取值
-      if (visibleColumns && visibleColumns.length) return;
+      if (this._customColumnFlag) return;
       const { selected, cache } = columnsCustomizable;
-      this.props.visibleColumns = null;
       if (selected && selected.length) {
         // 从originColumns 过滤selected存在的列
-        this.props.visibleColumns = this._getColsFromSelectCols(
-          this.originColumns,
-          selected
-        );
+        this.setProps({
+          columns: this._getColsFromSelectCols(this.originColumns, selected),
+        });
+        this._customColumnFlag = true;
       } // 自定义列设置缓存的 key
       this._gridColumsStoreKey = this._getStoreKey(
         cache,
@@ -16616,10 +16626,10 @@ function _defineProperty2(obj, key, value) {
       let storeFields = localStorage.getItem(this._gridColumsStoreKey);
       if (storeFields && storeFields.length) {
         storeFields = JSON.parse(storeFields); // 从originColumns 过滤storeFields存在的列
-        this.props.visibleColumns = this._getColsFromFields(
-          this.originColumns,
-          storeFields
-        );
+        this.setProps({
+          columns: this._getColsFromFields(this.originColumns, storeFields),
+        });
+        this._customColumnFlag = true;
       }
     }
     _getStoreKey(cache, prefix) {
@@ -16646,7 +16656,6 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _rendered() {
-      const { data } = this.props;
       if (this.loadingInst) {
         this.loadingInst.remove();
         this.loadingInst = null;
@@ -16661,14 +16670,8 @@ function _defineProperty2(obj, key, value) {
       ) {
         this.autoMergeCols();
       }
-      this._parseColumnsWidth();
-      this.resizeCol({ field: "oper" });
-      if (!data || !data.length) {
-        this._doNotAutoScroll = false;
-        this._setScrollPlace(true);
-      } // 排序后自动滚动到之前的位置
-      !this._doNotAutoScroll && this.autoScrollGrid();
-      this._doNotAutoScroll = false;
+      this._processColumnsWidth();
+      this._processAutoScroll();
     }
     getColumns() {
       return this.props.columns;
@@ -16691,17 +16694,12 @@ function _defineProperty2(obj, key, value) {
     }
     setSortDirection(sorter) {
       const c = this.getColumns().map(this._setColumnItemDire(sorter));
-      if (this.props.visibleColumns) {
-        const vc = this.props.visibleColumns.map(
-          this._setColumnItemDire(sorter)
-        );
-        this.props.visibleColumns = vc;
-      }
       this.originColumns = this.originColumns.map(
         this._setColumnItemDire(sorter)
-      ); // update 列时，无需出发autoScroll
-      this._doNotAutoScroll = this._isSelfUpdateColumn = true; // 自身更新 columns 无需修改 originColumns
-      this.update({ columns: c, dontUpdateOrigin: true });
+      );
+      this._doNotAutoScroll = true;
+      this.setProps({ columns: c });
+      !this.firstRender && this.render();
     } // 设置每一列的排序状态
     _setColumnItemDire(sorter) {
       return (item) => {
@@ -16789,7 +16787,10 @@ function _defineProperty2(obj, key, value) {
       if (this._gridColumsStoreKey) {
         localStorage.removeItem(this._gridColumsStoreKey);
       }
-      this.update({ visibleColumns: this.originColumns });
+      this.setProps({ columns: this.originColumns });
+      this._processColumns();
+      this._calcMinWidth();
+      this.render();
     }
     handleFilter(isReset) {
       const that = this;
@@ -16939,10 +16940,28 @@ function _defineProperty2(obj, key, value) {
           JSON.stringify(this.getMappedColumns(tree))
         );
       }
-      this.update({ visibleColumns: tree });
+      this._customColumnFlag = false;
+      this._processPinColumns(tree);
+      this.setProps({ columns: tree });
+      this._processColumns();
+      this._calcMinWidth();
+      this.render();
       this.popup.hide();
       columnsCustomizable.callback &&
         this._callHandler(columnsCustomizable.callback(tree));
+    } // 自定义列设置后。去掉将 pinColumns 中已隐藏的列
+    _processPinColumns(columns) {
+      const arr = [];
+      let { frozenLeftCols } = this.props;
+      this.pinColumns.forEach((item) => {
+        if (columns.find((col) => item.field === col.field)) {
+          arr.push(item);
+        } else {
+          frozenLeftCols--;
+        }
+      });
+      this.pinColumns = arr;
+      this.setProps({ frozenLeftCols });
     }
     handleDrag() {
       if (this.props.rowSortable && this.props.rowSortable.onEnd) {
@@ -17014,10 +17033,8 @@ function _defineProperty2(obj, key, value) {
     }
     _processCheckableColumn() {
       const grid = this;
-      const { rowCheckable, visibleColumns } = this.props;
+      const { rowCheckable } = this.props;
       let { columns } = this.props;
-      columns =
-        visibleColumns && visibleColumns.length ? visibleColumns : columns;
       if (rowCheckable) {
         // 每次都重新渲染 checkbox列
         columns = columns.filter((item) => !item.isChecker);
@@ -17031,7 +17048,7 @@ function _defineProperty2(obj, key, value) {
           checkedRowKeysHash[rowKey] = true;
         });
         this.setProps({
-          visibleColumns: [
+          columns: [
             {
               width: 50,
               isChecker: true,
@@ -17097,7 +17114,7 @@ function _defineProperty2(obj, key, value) {
         });
       }
     } // 处理列宽
-    _parseColumnsWidth() {
+    _processColumnsWidth() {
       const { columnResizable } = this.props;
       const { cache } = columnResizable;
       this._gridColumsWidthStoreKey = this._getStoreKey(
@@ -17115,6 +17132,15 @@ function _defineProperty2(obj, key, value) {
         const data = { field: key, width: _widthInfo[key] };
         this.resizeCol(data);
       });
+    } // 自动滚动到上次的位置
+    _processAutoScroll() {
+      const { data } = this.props; // debugger
+      if (!data || !data.length) {
+        this._doNotAutoScroll = false;
+        this._setScrollPlace(true);
+      } // 排序后自动滚动到之前的位置
+      !this._doNotAutoScroll && this.autoScrollGrid();
+      this._doNotAutoScroll = false;
     }
     autoMergeCols() {
       const that = this;
@@ -17244,16 +17270,12 @@ function _defineProperty2(obj, key, value) {
       }, []);
     }
     _processExpandableColumn() {
-      const { rowExpandable, visibleColumns } = this.props;
+      const { rowExpandable } = this.props;
       let { columns } = this.props;
-      columns =
-        visibleColumns && visibleColumns.length ? visibleColumns : columns;
       if (rowExpandable) {
-        if (columns.filter((item) => item.isTreeMark).length > 0) {
-          return;
-        }
+        columns = columns.filter((item) => !item.isTreeMark);
         this.setProps({
-          visibleColumns: [
+          columns: [
             {
               width: 50,
               isTreeMark: true,
@@ -17310,31 +17332,27 @@ function _defineProperty2(obj, key, value) {
     handlePinClick(data) {
       if (data.fixed) {
         if (this.pinColumns.length < 1) {
-          const checkCount = this.props.rowCheckable ? 1 : 0;
           const num = this.props.frozenLeftCols;
-          num > 1 + checkCount && this.fixPinOrder(data);
-          this.update({ frozenLeftCols: num - (1 + checkCount) });
+          this.setProps({ frozenLeftCols: num - (1 + this._fixedCount) });
+          num > 1 + this._fixedCount && this.fixPinOrder(data); // 未对columns进行增删或排序，无需触发 config
+          this._processFrozenColumn();
+          this.render();
           return;
         }
       }
-      if (
-        this.pinColumns.filter((n) => {
-          return n.field === data.field;
-        }).length > 0
-      ) {
+      if (this.pinColumns.find((n) => n.field === data.field)) {
         this.pinColumns = this.removeColumn(this.pinColumns, data);
       } else {
         this.pinColumns.unshift(data);
       }
-      this._isSelfUpdateColumn = true;
-      const checkCount =
-        this.props.rowCheckable && this.pinColumns.length > 0 ? 1 : 0;
-      this.update({
+      this.setProps({
         columns: this.getPinOrderColumns(),
-        frozenLeftCols: this.pinColumns.length + checkCount,
-        dontUpdateOrigin: true,
-        visibleColumns: this.getPinOrderColumns(),
+        frozenLeftCols: this.pinColumns.length
+          ? this.pinColumns.length + this._fixedCount
+          : 0,
       });
+      this._processColumns();
+      this.render();
     }
     fixPinOrder(data) {
       const { columns } = this.props;
@@ -17352,7 +17370,7 @@ function _defineProperty2(obj, key, value) {
       const c = this.props.columns;
       const item = c.splice(idx, 1);
       c.splice(num - 1, 0, item[0]);
-      this.update({ columns: c, dontUpdateOrigin: true, visibleColumns: c });
+      this.setProps({ columns: c });
     }
     removeColumn(array, data) {
       if (array.length < 1) {
@@ -17402,7 +17420,6 @@ function _defineProperty2(obj, key, value) {
     // columnsCustomizable.cache: 设置列的结果保存至localstorage，cache的值为对应的key
     // columnsCustomizable.callback: 设置列保存回调
     autoMergeColumns: null,
-    visibleColumns: null,
     columnResizable: false, // columnResizable.cache: 设置的列宽保存至localstorage，cache的值为对应的key
     striped: false,
     showTitle: false,
