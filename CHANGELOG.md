@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.49](https://github.com/nomui/nomui/compare/v1.0.0-alpha.48...v1.0.0-alpha.49) (2022-02-18)
+
+
+### Features
+
+* **Pager:** 新增compact紧凑模式 ([d5f9407](https://github.com/nomui/nomui/commit/d5f94077e716e5bb1f9c584cc9d5c800257e51ea))
+* **theme:** 颜色使用css变量+button组件的示例 ([5ce716e](https://github.com/nomui/nomui/commit/5ce716ee547d90027e544cad747b791efccbeb3f))
+* **Tree:** 新增级联取消上级节点 ([3cddaf2](https://github.com/nomui/nomui/commit/3cddaf234f8582e6abd3a63b6cd14aa433b9c4d8))
+* **Tree:** 新增级联取消上级节点 ([fe6b9e9](https://github.com/nomui/nomui/commit/fe6b9e95e9dacd4db4549d0c7b76e961e1b127c1))
+
+
+### Bug Fixes
+
+* **global css:** 类名修改 ([e053980](https://github.com/nomui/nomui/commit/e0539808599804e9b0392c166226864d21c303e6))
+* **PartialDateRangePicker:** getValueText无效的问题 ([a595822](https://github.com/nomui/nomui/commit/a59582283e1faf0fa31dd2f00d24dfef9f4349d6))
+
+
+### Docs
+
+* **Pager:** 补充文档 ([438e038](https://github.com/nomui/nomui/commit/438e038dcbfa98897adfb200446d40afe5ffe768))
+* **Tree:** 新增文档 ([f9f9757](https://github.com/nomui/nomui/commit/f9f97571f0eafd5cac4a603794ee6cde0b53636e))
+
 ## [1.0.0-alpha.48](https://github.com/nomui/nomui/compare/v1.0.0-alpha.47...v1.0.0-alpha.48) (2022-01-28)
 
 
