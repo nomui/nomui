@@ -4034,6 +4034,345 @@ img {
   width: 100%;
   height: 100%;
 }
+/* stylelint-disable custom-property-empty-line-before */
+body {
+  --nom-white: 255,255,255;
+  --nom-black: 0,0,0;
+  --nom-grey-0: 248,249,250;
+  --nom-grey-1: 241,243,245;
+  --nom-grey-2: 233,236,239;
+  --nom-grey-3: 222,226,230;
+  --nom-grey-4: 206,212,218;
+  --nom-grey-5: 173,181,189;
+  --nom-grey-6: 134,142,150;
+  --nom-grey-7: 73,80,87;
+  --nom-grey-8: 52,58,64;
+  --nom-grey-9: 33,37,41;
+  --nom-red-0: 255,245,245;
+  --nom-red-1: 255,227,227;
+  --nom-red-2: 255,201,201;
+  --nom-red-3: 255,168,168;
+  --nom-red-4: 255,135,135;
+  --nom-red-5: 255,107,107;
+  --nom-red-6: 250,82,82;
+  --nom-red-7: 240,62,62;
+  --nom-red-8: 224,49,49;
+  --nom-red-9: 201,42,42;
+  --nom-pink-0: 255,240,246;
+  --nom-pink-1: 255,222,235;
+  --nom-pink-2: 252,194,215;
+  --nom-pink-3: 250,162,193;
+  --nom-pink-4: 247,131,172;
+  --nom-pink-5: 240,101,149;
+  --nom-pink-6: 230,73,128;
+  --nom-pink-7: 214,51,108;
+  --nom-pink-8: 194,37,92;
+  --nom-pink-9: 166,30,77;
+  --nom-grape-0: 248,240,252;
+  --nom-grape-1: 243,217,250;
+  --nom-grape-2: 238,190,250;
+  --nom-grape-3: 229,153,247;
+  --nom-grape-4: 218,119,242;
+  --nom-grape-5: 204,93,232;
+  --nom-grape-6: 190,75,219;
+  --nom-grape-7: 174,62,201;
+  --nom-grape-8: 156,54,181;
+  --nom-grape-9: 134,46,156;
+  --nom-violet-0: 243,240,255;
+  --nom-violet-1: 229,219,255;
+  --nom-violet-2: 208,191,255;
+  --nom-violet-3: 177,151,252;
+  --nom-violet-4: 151,117,250;
+  --nom-violet-5: 132,94,247;
+  --nom-violet-6: 121,80,242;
+  --nom-violet-7: 112,72,232;
+  --nom-violet-8: 103,65,217;
+  --nom-violet-9: 95,61,196;
+  --nom-indigo-0: 237,242,255;
+  --nom-indigo-1: 219,228,255;
+  --nom-indigo-2: 186,200,255;
+  --nom-indigo-3: 145,167,255;
+  --nom-indigo-4: 116,143,252;
+  --nom-indigo-5: 92,124,250;
+  --nom-indigo-6: 76,110,245;
+  --nom-indigo-7: 66,99,235;
+  --nom-indigo-8: 59,91,219;
+  --nom-indigo-9: 54,79,199;
+  --nom-blue-0: 231,245,255;
+  --nom-blue-1: 208,235,255;
+  --nom-blue-2: 165,216,255;
+  --nom-blue-3: 116,192,252;
+  --nom-blue-4: 77,171,247;
+  --nom-blue-5: 51,154,240;
+  --nom-blue-6: 34,139,230;
+  --nom-blue-7: 28,126,214;
+  --nom-blue-8: 25,113,194;
+  --nom-blue-9: 24,100,171;
+  --nom-cyan-0: 227,250,252;
+  --nom-cyan-1: 197,246,250;
+  --nom-cyan-2: 153,233,242;
+  --nom-cyan-3: 102,217,232;
+  --nom-cyan-4: 59,201,219;
+  --nom-cyan-5: 34,184,207;
+  --nom-cyan-6: 21,170,191;
+  --nom-cyan-7: 16,152,173;
+  --nom-cyan-8: 12,133,153;
+  --nom-cyan-9: 11,114,133;
+  --nom-teal-0: 230,252,245;
+  --nom-teal-1: 195,250,232;
+  --nom-teal-2: 150,242,215;
+  --nom-teal-3: 99,230,190;
+  --nom-teal-4: 56,217,169;
+  --nom-teal-5: 32,201,151;
+  --nom-teal-6: 18,184,134;
+  --nom-teal-7: 12,166,120;
+  --nom-teal-8: 9,146,104;
+  --nom-teal-9: 8,127,91;
+  --nom-green-0: 235,251,238;
+  --nom-green-1: 211,249,216;
+  --nom-green-2: 178,242,187;
+  --nom-green-3: 140,233,154;
+  --nom-green-4: 105,219,124;
+  --nom-green-5: 81,207,102;
+  --nom-green-6: 64,192,87;
+  --nom-green-7: 55,178,77;
+  --nom-green-8: 47,158,68;
+  --nom-green-9: 43,138,62;
+  --nom-lime-0: 244,252,227;
+  --nom-lime-1: 233,250,200;
+  --nom-lime-2: 216,245,162;
+  --nom-lime-3: 192,235,117;
+  --nom-lime-4: 169,227,75;
+  --nom-lime-5: 148,216,45;
+  --nom-lime-6: 130,201,30;
+  --nom-lime-7: 116,184,22;
+  --nom-lime-8: 102,168,15;
+  --nom-lime-9: 92,148,13;
+  --nom-yellow-0: 255,249,219;
+  --nom-yellow-1: 255,243,191;
+  --nom-yellow-2: 255,236,153;
+  --nom-yellow-3: 255,224,102;
+  --nom-yellow-4: 255,212,59;
+  --nom-yellow-5: 252,196,25;
+  --nom-yellow-6: 250,176,5;
+  --nom-yellow-7: 245,159,0;
+  --nom-yellow-8: 240,140,0;
+  --nom-yellow-9: 230,119,0;
+  --nom-orange-0: 255,244,230;
+  --nom-orange-1: 255,232,204;
+  --nom-orange-2: 255,216,168;
+  --nom-orange-3: 255,192,120;
+  --nom-orange-4: 255,169,77;
+  --nom-orange-5: 255,146,43;
+  --nom-orange-6: 253,126,20;
+  --nom-orange-7: 247,103,7;
+  --nom-orange-8: 232,89,12;
+  --nom-orange-9: 217,72,15;
+}
+body[theme-mode="dark"],
+body .nom-always-dark {
+  --nom-grey-9: 248,249,250;
+  --nom-grey-8: 241,243,245;
+  --nom-grey-7: 233,236,239;
+  --nom-grey-6: 222,226,230;
+  --nom-grey-5: 206,212,218;
+  --nom-grey-4: 173,181,189;
+  --nom-grey-3: 134,142,150;
+  --nom-grey-2: 73,80,87;
+  --nom-grey-1: 52,58,64;
+  --nom-grey-0: 33,37,41;
+  --nom-red-9: 255,245,245;
+  --nom-red-8: 255,227,227;
+  --nom-red-7: 255,201,201;
+  --nom-red-6: 255,168,168;
+  --nom-red-5: 255,135,135;
+  --nom-red-4: 255,107,107;
+  --nom-red-3: 250,82,82;
+  --nom-red-2: 240,62,62;
+  --nom-red-1: 224,49,49;
+  --nom-red-0: 201,42,42;
+  --nom-pink-9: 255,240,246;
+  --nom-pink-8: 255,222,235;
+  --nom-pink-7: 252,194,215;
+  --nom-pink-6: 250,162,193;
+  --nom-pink-5: 247,131,172;
+  --nom-pink-4: 240,101,149;
+  --nom-pink-3: 230,73,128;
+  --nom-pink-2: 214,51,108;
+  --nom-pink-1: 194,37,92;
+  --nom-pink-0: 166,30,77;
+  --nom-grape-9: 248,240,252;
+  --nom-grape-8: 243,217,250;
+  --nom-grape-7: 238,190,250;
+  --nom-grape-6: 229,153,247;
+  --nom-grape-5: 218,119,242;
+  --nom-grape-4: 204,93,232;
+  --nom-grape-3: 190,75,219;
+  --nom-grape-2: 174,62,201;
+  --nom-grape-1: 156,54,181;
+  --nom-grape-0: 134,46,156;
+  --nom-violet-9: 243,240,255;
+  --nom-violet-8: 229,219,255;
+  --nom-violet-7: 208,191,255;
+  --nom-violet-6: 177,151,252;
+  --nom-violet-5: 151,117,250;
+  --nom-violet-4: 132,94,247;
+  --nom-violet-3: 121,80,242;
+  --nom-violet-2: 112,72,232;
+  --nom-violet-1: 103,65,217;
+  --nom-violet-0: 95,61,196;
+  --nom-indigo-9: 237,242,255;
+  --nom-indigo-8: 219,228,255;
+  --nom-indigo-7: 186,200,255;
+  --nom-indigo-6: 145,167,255;
+  --nom-indigo-5: 116,143,252;
+  --nom-indigo-4: 92,124,250;
+  --nom-indigo-3: 76,110,245;
+  --nom-indigo-2: 66,99,235;
+  --nom-indigo-1: 59,91,219;
+  --nom-indigo-0: 54,79,199;
+  --nom-blue-9: 231,245,255;
+  --nom-blue-8: 208,235,255;
+  --nom-blue-7: 165,216,255;
+  --nom-blue-6: 116,192,252;
+  --nom-blue-5: 77,171,247;
+  --nom-blue-4: 51,154,240;
+  --nom-blue-3: 34,139,230;
+  --nom-blue-2: 28,126,214;
+  --nom-blue-1: 25,113,194;
+  --nom-blue-0: 24,100,171;
+  --nom-cyan-9: 227,250,252;
+  --nom-cyan-8: 197,246,250;
+  --nom-cyan-7: 153,233,242;
+  --nom-cyan-6: 102,217,232;
+  --nom-cyan-5: 59,201,219;
+  --nom-cyan-4: 34,184,207;
+  --nom-cyan-3: 21,170,191;
+  --nom-cyan-2: 16,152,173;
+  --nom-cyan-1: 12,133,153;
+  --nom-cyan-0: 11,114,133;
+  --nom-teal-9: 230,252,245;
+  --nom-teal-8: 195,250,232;
+  --nom-teal-7: 150,242,215;
+  --nom-teal-6: 99,230,190;
+  --nom-teal-5: 56,217,169;
+  --nom-teal-4: 32,201,151;
+  --nom-teal-3: 18,184,134;
+  --nom-teal-2: 12,166,120;
+  --nom-teal-1: 9,146,104;
+  --nom-teal-0: 8,127,91;
+  --nom-green-9: 235,251,238;
+  --nom-green-8: 211,249,216;
+  --nom-green-7: 178,242,187;
+  --nom-green-6: 140,233,154;
+  --nom-green-5: 105,219,124;
+  --nom-green-4: 81,207,102;
+  --nom-green-3: 64,192,87;
+  --nom-green-2: 55,178,77;
+  --nom-green-1: 47,158,68;
+  --nom-green-0: 43,138,62;
+  --nom-lime-9: 244,252,227;
+  --nom-lime-8: 233,250,200;
+  --nom-lime-7: 216,245,162;
+  --nom-lime-6: 192,235,117;
+  --nom-lime-5: 169,227,75;
+  --nom-lime-4: 148,216,45;
+  --nom-lime-3: 130,201,30;
+  --nom-lime-2: 116,184,22;
+  --nom-lime-1: 102,168,15;
+  --nom-lime-0: 92,148,13;
+  --nom-yellow-9: 255,249,219;
+  --nom-yellow-8: 255,243,191;
+  --nom-yellow-7: 255,236,153;
+  --nom-yellow-6: 255,224,102;
+  --nom-yellow-5: 255,212,59;
+  --nom-yellow-4: 252,196,25;
+  --nom-yellow-3: 250,176,5;
+  --nom-yellow-2: 245,159,0;
+  --nom-yellow-1: 240,140,0;
+  --nom-yellow-0: 230,119,0;
+  --nom-orange-9: 255,244,230;
+  --nom-orange-8: 255,232,204;
+  --nom-orange-7: 255,216,168;
+  --nom-orange-6: 255,192,120;
+  --nom-orange-5: 255,169,77;
+  --nom-orange-4: 255,146,43;
+  --nom-orange-3: 253,126,20;
+  --nom-orange-2: 247,103,7;
+  --nom-orange-1: 232,89,12;
+  --nom-orange-0: 217,72,15;
+}
+/* stylelint-disable custom-property-empty-line-before */
+body,
+body[theme-mode="dark"] .nom-always-light {
+  --nom-color-white: rgba(var(--nom-white), 1);
+  --nom-color-black: rgba(var(--nom-black), 1);
+  --nom-color-primary: rgba(var(--nom-blue-5), 1);
+  --nom-color-primary-hover: rgba(var(--nom-blue-6), 1);
+  --nom-color-primary-active: rgba(var(--nom-blue-7), 1);
+  --nom-color-primary-disabled: rgba(var(--nom-blue-2), 1);
+  --nom-color-primary-light-default: rgba(var(--nom-blue-0), 1);
+  --nom-color-primary-light-hover: rgba(var(--nom-blue-1), 1);
+  --nom-color-primary-light-active: rgba(var(--nom-blue-2), 1);
+  --nom-color-success: rgba(var(--nom-green-5), 1);
+  --nom-color-success-hover: rgba(var(--nom-green-6), 1);
+  --nom-color-success-active: rgba(var(--nom-green-7), 1);
+  --nom-color-success-disabled: rgba(var(--nom-green-2), 1);
+  --nom-color-success-light-default: rgba(var(--nom-green-0), 1);
+  --nom-color-success-light-hover: rgba(var(--nom-green-1), 1);
+  --nom-color-success-light-active: rgba(var(--nom-green-2), 1);
+  --nom-color-info: rgba(var(--nom-blue-5), 1);
+  --nom-color-info-hover: rgba(var(--nom-blue-6), 1);
+  --nom-color-info-active: rgba(var(--nom-blue-7), 1);
+  --nom-color-info-disabled: rgba(var(--nom-blue-2), 1);
+  --nom-color-info-light-default: rgba(var(--nom-blue-0), 1);
+  --nom-color-info-light-hover: rgba(var(--nom-blue-1), 1);
+  --nom-color-info-light-active: rgba(var(--nom-blue-2), 1);
+  --nom-color-warning: rgba(var(--nom-orange-5), 1);
+  --nom-color-warning-hover: rgba(var(--nom-orange-6), 1);
+  --nom-color-warning-active: rgba(var(--nom-orange-7), 1);
+  --nom-color-warning-light-default: rgba(var(--nom-orange-0), 1);
+  --nom-color-warning-light-hover: rgba(var(--nom-orange-1), 1);
+  --nom-color-warning-light-active: rgba(var(--nom-orange-2), 1);
+  --nom-color-danger: rgba(var(--nom-red-5), 1);
+  --nom-color-danger-hover: rgba(var(--nom-red-6), 1);
+  --nom-color-danger-active: rgba(var(--nom-red-7), 1);
+  --nom-color-danger-light-default: rgba(var(--nom-red-0), 1);
+  --nom-color-danger-light-hover: rgba(var(--nom-red-1), 1);
+  --nom-color-danger-light-active: rgba(var(--nom-red-2), 1);
+  --nom-color-disabled-text: rgba(var(--nom-grey-9), 0.35);
+  --nom-color-disabled-border: rgba(var(--nom-grey-1), 1);
+  --nom-color-disabled-bg: rgba(var(--nom-grey-1), 1);
+  --nom-color-disabled-fill: rgba(var(--nom-grey-8), 0.04);
+  --nom-color-text-0: rgba(var(--nom-grey-9), 1);
+  --nom-color-text-1: rgba(var(--nom-grey-9), 0.8);
+  --nom-color-text-2: rgba(var(--nom-grey-9), 0.6);
+  --nom-color-text-3: rgba(var(--nom-grey-9), 0.35);
+  --nom-color-shadow: rgba(var(--nom-black), 0.04);
+  --nom-color-border: rgba(var(--nom-grey-9), 0.1);
+  --nom-color-nav-bg: rgba(var(--nom-white), 1);
+  --nom-color-fill-0: rgba(var(--nom-grey-8), 0.05);
+  --nom-color-fill-1: rgba(var(--nom-grey-8), 0.09);
+  --nom-color-fill-2: rgba(var(--nom-grey-8), 0.13);
+  --nom-color-bg-0: rgba(var(--nom-white), 1);
+  --nom-color-bg-1: rgba(var(--nom-white), 1);
+  --nom-color-bg-2: rgba(var(--nom-white), 1);
+  --nom-color-bg-3: rgba(var(--nom-white), 1);
+  --nom-color-bg-4: rgba(var(--nom-white), 1);
+}
+body[theme-mode="dark"],
+body .nom-always-dark {
+  --nom-color-fill-0: rgba(var(--nom-white), 0.05);
+  --nom-color-fill-1: rgba(var(--nom-white), 0.09);
+  --nom-color-fill-2: rgba(var(--nom-white), 0.13);
+  --nom-color-border: rgba(var(--nom-white), 0.08);
+  --nom-color-nav-bg: #232429;
+  --nom-color-bg-0: #16161a;
+  --nom-color-bg-1: #232429;
+  --nom-color-bg-2: #35363c;
+  --nom-color-bg-3: #43444a;
+  --nom-color-bg-4: #4f5159;
+}
 .markdown-article {
   max-width: 1300px;
   padding: 20px 60px;
@@ -6379,13 +6718,13 @@ table.nom-table.p-bordered {
 .nom-button {
   /* Structure */
   display: inline-block;
-  color: #495057;
+  color: var(--nom-color-text-0);
   line-height: normal;
   white-space: nowrap;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
-  background-color: #fff;
+  background-color: var(--nom-color-fill-0);
   border: 1px solid transparent;
   border-color: #ced4da;
   border-radius: 2px;
@@ -6408,8 +6747,7 @@ table.nom-table.p-bordered {
   width: 1.42857143em;
 }
 .nom-button:not(.s-disabled):hover {
-  background-color: #e6e6e6;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--nom-color-fill-1);
   outline: none;
 }
 .nom-button:focus,
@@ -6432,33 +6770,25 @@ fieldset[disabled] a.nom-button {
   width: 100%;
 }
 .nom-button.p-danger {
-  color: var(--nom-color-danger) !important;
-  background-color: transparent !important;
-  border-color: var(--nom-color-danger) !important;
-}
-.nom-button.p-danger.s-hover,
-.nom-button.p-danger:hover {
-  color: var(--nom-color-danger) !important;
-  background-color: var(--nom-color-danger-lighten) !important;
+  color: var(--nom-color-danger);
+  border-color: var(--nom-color-danger);
 }
 .nom-button.p-danger.nom-button-inline:hover {
   background: none !important;
 }
 .nom-button.p-danger.p-type-primary {
-  color: var(--nom-color-danger-lighten) !important;
-  background-color: var(--nom-color-danger) !important;
-  border-color: var(--nom-color-danger-darken) !important;
+  color: var(--nom-color-danger);
+  border-color: var(--nom-color-danger);
 }
-.nom-button.p-danger.p-type-primary a {
-  color: inherit !important;
+.nom-button.p-danger.p-type-primary:hover {
+  background-color: var(--nom-color-danger-hover);
 }
 .nom-button.p-type-primary {
-  color: var(--nom-color-primary-lighten) !important;
-  background-color: var(--nom-color-primary) !important;
-  border-color: var(--nom-color-primary-darken) !important;
+  color: var(--nom-color-white);
+  background-color: var(--nom-color-primary);
 }
-.nom-button.p-type-primary a {
-  color: inherit !important;
+.nom-button.p-type-primary:hover {
+  background-color: var(--nom-color-primary-hover);
 }
 .nom-button.p-type-dashed {
   border-style: dashed;
@@ -6484,7 +6814,7 @@ fieldset[disabled] a.nom-button {
   background-color: transparent !important;
 }
 .nom-button.p-ghost:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: var(--nom-color-fill-1) !important;
 }
 .nom-button.p-ghost.p-type-primary {
   color: var(--nom-color-primary) !important;

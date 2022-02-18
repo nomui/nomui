@@ -27,13 +27,13 @@
 .nom-button {
   /* Structure */
   display: inline-block;
-  color: @text-color-lt;
+  color: var(--nom-color-text-0);
   line-height: normal;
   white-space: nowrap;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
-  background-color: #fff;
+  background-color: var(--nom-color-fill-0);
   border: 1px solid transparent;
   border-color: @border-color;
   border-radius: 2px;
@@ -44,8 +44,7 @@
   .button-size(@padding-y-base; @padding-x-base; @font-size-base; @line-height-base; @border-radius);
 
   &:not(.s-disabled):hover {
-    background-color: #e6e6e6;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--nom-color-fill-1);
     outline: none;
   }
 
@@ -75,7 +74,9 @@
   }
 
   &.p-danger {
-    .u-color-danger-outline();
+    // .u-color-danger-outline();
+    color: var(--nom-color-danger);
+    border-color: var(--nom-color-danger);
     &.nom-button-inline {
       &:hover {
         background: none !important;
@@ -83,12 +84,23 @@
     }
 
     &.p-type-primary {
-      .u-color-danger();
+      // .u-color-danger();
+      color: var(--nom-color-danger);
+      border-color: var(--nom-color-danger);
+      &:hover {
+        background-color: var(--nom-color-danger-hover);
+      }
     }
   }
 
   &.p-type-primary {
-    .u-color-primary();
+    // .u-color-primary();
+
+    color: var(--nom-color-white);
+    background-color: var(--nom-color-primary);
+    &:hover {
+      background-color: var(--nom-color-primary-hover);
+    }
   }
 
   &.p-type-dashed {
@@ -104,7 +116,7 @@
   }
 
   &.p-type-link {
-    color: @link-color;
+    color: var(--nom-color-primary);
     background-color: transparent;
     border-color: transparent !important;
     &:hover {
@@ -118,7 +130,7 @@
     background-color: transparent !important;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1) !important;
+      background-color: var(--nom-color-fill-1) !important;
     }
 
     &.p-type-primary {
