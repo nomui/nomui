@@ -32,7 +32,7 @@ class Grid extends Component {
     this._alreadyProcessedFlat = false
     this.rowsRefs = {}
     this.checkedRowRefs = {}
-    this._doNotAutoScroll = true
+    this._shouldAutoScroll = true
     this._customColumnFlag = false // 是否已经自定义处理过列
 
     this.props.columns = this.props.columns.filter((n) => {
@@ -314,7 +314,10 @@ class Grid extends Component {
 
     this.originColumns = this.originColumns.map(this._setColumnItemDire(sorter))
 
-    this._doNotAutoScroll = true
+    // onSort外部会触发 update, 此时无需autoScroll
+    if (!isFunction(sorter.sortable)) {
+      this._shouldAutoScroll = false
+    }
     this.setProps({ columns: c })
     !this.firstRender && this.render()
   }
@@ -397,6 +400,12 @@ class Grid extends Component {
       this.setSortDirection(this.props.defaultSort)
     }
     this.sortUpdated = true
+  }
+
+  // 外部主动记录下当前滚动（下次update时会回到当前位置）
+  setScrollPlace() {
+    this._shouldAutoScroll = true
+    this._setScrollPlace()
   }
 
   // 记录上一次滚动到的位置
@@ -817,14 +826,13 @@ class Grid extends Component {
   // 自动滚动到上次的位置
   _processAutoScroll() {
     const { data } = this.props
-    // debugger
     if (!data || !data.length) {
-      this._doNotAutoScroll = false
+      this._shouldAutoScroll = true
       this._setScrollPlace(true)
     }
     // 排序后自动滚动到之前的位置
-    !this._doNotAutoScroll && this.autoScrollGrid()
-    this._doNotAutoScroll = false
+    this._shouldAutoScroll && this.autoScrollGrid()
+    this._shouldAutoScroll = true
   }
 
   autoMergeCols() {
