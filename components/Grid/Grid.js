@@ -419,6 +419,7 @@ class Grid extends Component {
 
     let headerLeft = headerEl.scrollLeft
     let bodyLeft = bodyEl.scrollLeft
+    const bodyTop = bodyEl.scrollTop
 
     // 表格的宽度 / 2 - svg图标的一半
     if (isEmpty) {
@@ -429,6 +430,7 @@ class Grid extends Component {
       left: headerLeft,
     }
     this._bodyScrollInfo = {
+      top: bodyTop,
       left: bodyLeft,
     }
   }
@@ -869,6 +871,7 @@ class Grid extends Component {
 
     this.header.element.scrollLeft = _headerScrollInfo.left || 0
     this.body.element.scrollLeft = _bodyScrollInfo.left || 0
+    this.body.element.scrollTop = _bodyScrollInfo.top || 0
 
     this._headerScrollInfo = null
     this._bodyScrollInfo = null
