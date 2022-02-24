@@ -417,7 +417,11 @@ class Grid extends Component {
     // body的body的宽度
     const tableBodyEl = this.body.table.element
 
+    // 表格的竖向滚动分为两种
+    // 1.设置了sticky, 此时的scrollTop 需从 header.scrollParent中获取
+    // 2.Grid自身设置了height, scrollTop从 body中取
     let headerLeft = headerEl.scrollLeft
+    const headerTop = this.header.scrollParent ? this.header.scrollParent.element.scrollTop : 0
     let bodyLeft = bodyEl.scrollLeft
     const bodyTop = bodyEl.scrollTop
 
@@ -427,6 +431,7 @@ class Grid extends Component {
       bodyLeft = (tableBodyEl.offsetWidth - bodyEl.offsetWidth) / 2
     }
     this._headerScrollInfo = {
+      top: headerTop,
       left: headerLeft,
     }
     this._bodyScrollInfo = {
@@ -868,7 +873,9 @@ class Grid extends Component {
   autoScrollGrid() {
     const { _headerScrollInfo, _bodyScrollInfo } = this
     if (!_headerScrollInfo || !_bodyScrollInfo) return
-
+    if (_headerScrollInfo.top) {
+      this.header.scrollParent.element.scrollTop = _headerScrollInfo.top || 0
+    }
     this.header.element.scrollLeft = _headerScrollInfo.left || 0
     this.body.element.scrollLeft = _bodyScrollInfo.left || 0
     this.body.element.scrollTop = _bodyScrollInfo.top || 0
