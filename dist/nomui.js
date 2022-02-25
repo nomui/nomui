@@ -17259,7 +17259,10 @@ function _defineProperty2(obj, key, value) {
     }
     _getColsFromFields(columns = [], fields = []) {
       return columns.reduce((acc, curr) => {
-        if (fields.includes(curr.field)) {
+        // 无field的列，列设置后会消失
+        if (isNullish(curr.field)) {
+          acc.push(curr);
+        } else if (fields.includes(curr.field)) {
           acc.push(
             Object.assign({}, curr, {
               children: this._getColsFromFields(curr.children, fields),
