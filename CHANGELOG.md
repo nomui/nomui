@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.50](https://github.com/nomui/nomui/compare/v1.0.0-alpha.49...v1.0.0-alpha.50) (2022-02-25)
+
+
+### Features
+
+* **Grid auto scroll:** 添加sticky模式的竖向滚动 ([a2cab78](https://github.com/nomui/nomui/commit/a2cab788f3f2f868ce567a20b1345624148e61d0))
+* **Grid:** 表格自动滚动，支持竖向的滚动记录 ([d8d461a](https://github.com/nomui/nomui/commit/d8d461aa72cfe5f54e7642520b8d192321441a85))
+* **Grid:** 提供外部主动记录滚动位置的方法 ([1531db5](https://github.com/nomui/nomui/commit/1531db57c56d2cd2f1d24923580401169a30ddcb))
+
+
+### Bug Fixes
+
+* **Button:** danger按钮的样式问题 ([7e6dec7](https://github.com/nomui/nomui/commit/7e6dec7af4438b8ad0b9eaf9dfc12cccb9ea03d0))
+* **Grid:** 列设置后，导致表格的操作列(未设置field)消失 ([7d52cc7](https://github.com/nomui/nomui/commit/7d52cc78619ae593761562f1643575de373c9121))
+
 ## [1.0.0-alpha.49](https://github.com/nomui/nomui/compare/v1.0.0-alpha.48...v1.0.0-alpha.49) (2022-02-18)
 
 
