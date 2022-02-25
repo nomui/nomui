@@ -32,7 +32,7 @@ class Grid extends Component {
     this._alreadyProcessedFlat = false
     this.rowsRefs = {}
     this.checkedRowRefs = {}
-    this._doNotAutoScroll = true
+    this._shouldAutoScroll = true
     this._customColumnFlag = false // 是否已经自定义处理过列
 
     this.props.columns = this.props.columns.filter((n) => {
@@ -314,7 +314,10 @@ class Grid extends Component {
 
     this.originColumns = this.originColumns.map(this._setColumnItemDire(sorter))
 
-    this._doNotAutoScroll = true
+    // onSort外部会触发 update, 此时无需autoScroll
+    if (!isFunction(sorter.sortable)) {
+      this._shouldAutoScroll = false
+    }
     this.setProps({ columns: c })
     !this.firstRender && this.render()
   }
@@ -399,6 +402,12 @@ class Grid extends Component {
     this.sortUpdated = true
   }
 
+  // 外部主动记录下当前滚动（下次update时会回到当前位置）
+  setScrollPlace() {
+    this._shouldAutoScroll = true
+    this._setScrollPlace()
+  }
+
   // 记录上一次滚动到的位置
   _setScrollPlace(isEmpty) {
     // grid自身的 header和body的宽度
@@ -408,8 +417,13 @@ class Grid extends Component {
     // body的body的宽度
     const tableBodyEl = this.body.table.element
 
+    // 表格的竖向滚动分为两种
+    // 1.设置了sticky, 此时的scrollTop 需从 header.scrollParent中获取
+    // 2.Grid自身设置了height, scrollTop从 body中取
     let headerLeft = headerEl.scrollLeft
+    const headerTop = this.header.scrollParent ? this.header.scrollParent.element.scrollTop : 0
     let bodyLeft = bodyEl.scrollLeft
+    const bodyTop = bodyEl.scrollTop
 
     // 表格的宽度 / 2 - svg图标的一半
     if (isEmpty) {
@@ -417,9 +431,11 @@ class Grid extends Component {
       bodyLeft = (tableBodyEl.offsetWidth - bodyEl.offsetWidth) / 2
     }
     this._headerScrollInfo = {
+      top: headerTop,
       left: headerLeft,
     }
     this._bodyScrollInfo = {
+      top: bodyTop,
       left: bodyLeft,
     }
   }
@@ -817,14 +833,13 @@ class Grid extends Component {
   // 自动滚动到上次的位置
   _processAutoScroll() {
     const { data } = this.props
-    // debugger
     if (!data || !data.length) {
-      this._doNotAutoScroll = false
+      this._shouldAutoScroll = true
       this._setScrollPlace(true)
     }
     // 排序后自动滚动到之前的位置
-    !this._doNotAutoScroll && this.autoScrollGrid()
-    this._doNotAutoScroll = false
+    this._shouldAutoScroll && this.autoScrollGrid()
+    this._shouldAutoScroll = true
   }
 
   autoMergeCols() {
@@ -858,9 +873,12 @@ class Grid extends Component {
   autoScrollGrid() {
     const { _headerScrollInfo, _bodyScrollInfo } = this
     if (!_headerScrollInfo || !_bodyScrollInfo) return
-
+    if (_headerScrollInfo.top) {
+      this.header.scrollParent.element.scrollTop = _headerScrollInfo.top || 0
+    }
     this.header.element.scrollLeft = _headerScrollInfo.left || 0
     this.body.element.scrollLeft = _bodyScrollInfo.left || 0
+    this.body.element.scrollTop = _bodyScrollInfo.top || 0
 
     this._headerScrollInfo = null
     this._bodyScrollInfo = null

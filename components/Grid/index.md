@@ -63,16 +63,17 @@
 
 ### methods
 
-| 名称               | 说明                                 | 类型                      |
-| ------------------ | ------------------------------------ | ------------------------- |
-| appendRow          | 在后面新增一行                       | `(rowProps)=>{}`          |
-| resetSort          | 重置表格的排序状态                   | -                         |
-| getDataKeys        | 获取当前顺序的 keyField 数组         | -                         |
-| getData            | 获取当前顺序的表格 data              | -                         |
-| resetColumnsCustom | 重置自定义列的展示                   | -                         |
-| resetColsWidth     | 重置列的宽度(不传参数则重置所有列宽) | `Funciton(field \| null)` |
-| getCheckedRows     | 获取当前选中行数组                   | -                         |
-| getCheckedRowKeys  | 获取当前选中行的 key 数组            | -                         |
+| 名称               | 说明                                           | 类型                      |
+| ------------------ | ---------------------------------------------- | ------------------------- |
+| appendRow          | 在后面新增一行                                 | `(rowProps)=>{}`          |
+| resetSort          | 重置表格的排序状态                             | -                         |
+| getDataKeys        | 获取当前顺序的 keyField 数组                   | -                         |
+| getData            | 获取当前顺序的表格 data                        | -                         |
+| resetColumnsCustom | 重置自定义列的展示                             | -                         |
+| resetColsWidth     | 重置列的宽度(不传参数则重置所有列宽)           | `Funciton(field \| null)` |
+| getCheckedRows     | 获取当前选中行数组                             | -                         |
+| getCheckedRowKeys  | 获取当前选中行的 key 数组                      | -                         |
+| setScrollPlace     | 记录当前表格滚动位置(下次 update 时会自动滚动) | -                         |
 
 ### column
 
