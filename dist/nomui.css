@@ -6777,8 +6777,9 @@ fieldset[disabled] a.nom-button {
   background: none !important;
 }
 .nom-button.p-danger.p-type-primary {
-  color: var(--nom-color-danger);
+  color: var(--nom-color-white);
   border-color: var(--nom-color-danger);
+  background-color: var(--nom-color-danger);
 }
 .nom-button.p-danger.p-type-primary:hover {
   background-color: var(--nom-color-danger-hover);
