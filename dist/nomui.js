@@ -16778,14 +16778,16 @@ function _defineProperty2(obj, key, value) {
     _setScrollPlace(isEmpty) {
       // grid自身的 header和body的宽度
       const headerEl = this.header.element;
-      const bodyEl = this.body.element; // body的body的宽度
+      const bodyEl = this.body.element; // grid设置了 sticky相对父元素
+      const { scrollParent } = this.header; // body的body的宽度
       const tableBodyEl = this.body.table.element; // 表格的竖向滚动分为两种
       // 1.设置了sticky, 此时的scrollTop 需从 header.scrollParent中获取
       // 2.Grid自身设置了height, scrollTop从 body中取
       let headerLeft = headerEl.scrollLeft;
-      const headerTop = this.header.scrollParent
-        ? this.header.scrollParent.element.scrollTop
-        : 0;
+      const headerTop =
+        scrollParent && scrollParent.element
+          ? scrollParent.element.scrollTop
+          : 0;
       let bodyLeft = bodyEl.scrollLeft;
       const bodyTop = bodyEl.scrollTop; // 表格的宽度 / 2 - svg图标的一半
       if (isEmpty) {
