@@ -4,21 +4,7 @@ import TimePickerPopup from './TimePickerPopup'
 
 class TimePicker extends Textbox {
   constructor(props, ...mixins) {
-    const defaults = {
-      allowClear: true,
-      value: null,
-      format: 'HH:mm:ss',
-      hourStep: null,
-      minuteStep: null,
-      secondStep: null,
-      readonly: true,
-      placeholder: null,
-      showNow: true,
-      minTime: null,
-      maxTime: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(TimePicker.defaults, props), ...mixins)
   }
 
   _created() {
@@ -338,6 +324,20 @@ class TimePicker extends Textbox {
       timeRange.minute = timeRange.second = ['00', '59']
     }
   }
+}
+
+TimePicker.defaults = {
+  allowClear: true,
+  value: null,
+  format: 'HH:mm:ss',
+  hourStep: null,
+  minuteStep: null,
+  secondStep: null,
+  readonly: true,
+  placeholder: null,
+  showNow: true,
+  minTime: null,
+  maxTime: null,
 }
 
 Component.register(TimePicker)
