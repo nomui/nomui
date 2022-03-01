@@ -13656,6 +13656,7 @@ function _defineProperty2(obj, key, value) {
         allowClear: true,
         onChange: null,
         showNow: true,
+        readonly: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -20037,6 +20038,7 @@ function _defineProperty2(obj, key, value) {
         value: null,
         minDate: null,
         maxDate: null,
+        readonly: true,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
