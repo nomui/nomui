@@ -1,0 +1,37 @@
+// 预设默认样式
+
+// 浮层对象
+.nom-preset-layer {
+  background-color: var(--nom-color-white);
+  background-clip: padding-box;
+  border-radius: 4px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+// primary对象
+.nom-preset-primary {
+  color: var(--nom-color-white);
+  background-color: var(--nom-color-primary);
+  &:hover {
+    background-color: var(--nom-color-primary-hover);
+  }
+  &.active {
+    background-color: var(--nom-color-primary-active);
+  }
+  &.disabled,
+  &[disabled] {
+    background-color: var(--nom-color-primary-disabled);
+  }
+}
+
+// 默认对象的hover状态
+.nom-preset-hover {
+  &:hover {
+    background-color: var(--nom-color-hover);
+  }
+}
+
+// 指针pointer
+.nom-preset-pointer {
+  cursor: pointer;
+}
