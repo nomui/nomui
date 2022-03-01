@@ -20,6 +20,7 @@ class DatePicker extends Textbox {
       allowClear: true,
       onChange: null,
       showNow: true,
+      readonly: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

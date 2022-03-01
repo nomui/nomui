@@ -13,6 +13,7 @@ class PartialDatePicker extends Textbox {
       value: null,
       minDate: null,
       maxDate: null,
+      readonly: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
