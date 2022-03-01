@@ -7019,10 +7019,15 @@ textarea .nom-input {
 .nom-textbox .nom-textbox-right-icon {
   color: #a4a2bb;
 }
-.nom-time-picker[readonly]:not([disabled]) .nom-textbox-affix-wrapper,
-.nom-date-picker[readonly]:not([disabled]) .nom-textbox-affix-wrapper,
-.nom-partial-date-picker[readonly]:not([disabled]) .nom-textbox-affix-wrapper {
-  background-color: transparent;
+.nom-time-picker[readonly] .nom-textbox-affix-wrapper,
+.nom-date-picker[readonly] .nom-textbox-affix-wrapper,
+.nom-partial-date-picker[readonly] .nom-textbox-affix-wrapper {
+  background: transparent;
+}
+.nom-time-picker.s-disabled .nom-textbox-affix-wrapper,
+.nom-date-picker.s-disabled .nom-textbox-affix-wrapper,
+.nom-partial-date-picker.s-disabled .nom-textbox-affix-wrapper {
+  background: #e9ecef;
 }
 .nom-time-picker .nom-input[readonly]:not([disabled]),
 .nom-date-picker .nom-input[readonly]:not([disabled]),

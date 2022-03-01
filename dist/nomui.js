@@ -4722,8 +4722,12 @@ function _defineProperty2(obj, key, value) {
       });
       const getSuffix = () => {
         const child = []; // 优先取外部传入的
-        if (allowClear && !disabled && !readonly) {
-          child.push(clearProps || selfClearProps);
+        if (allowClear && !disabled) {
+          if (this._ignoreReadonlyClear()) {
+            child.push(clearProps || selfClearProps);
+          } else if (!readonly) {
+            child.push(clearProps || selfClearProps);
+          }
         }
         if (rightIcon) {
           child.push(rightIconProps);
@@ -4782,6 +4786,11 @@ function _defineProperty2(obj, key, value) {
         },
       });
       super._config();
+    } // 以下组件在 readonly时，还是需要展示 清除按钮
+    _ignoreReadonlyClear() {
+      return ["DatePicker", "TimePicker", "PartialDatePicker"].includes(
+        this.componentType
+      );
     }
     _rendered() {
       const that = this;
