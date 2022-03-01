@@ -138,12 +138,17 @@
 .nom-time-picker,
 .nom-date-picker,
 .nom-partial-date-picker {
-  &[readonly]:not([disabled]) {
+  &[readonly] {
     .nom-textbox-affix-wrapper {
-      background-color: transparent;
+      background: transparent;
     }
   }
-
+  &.s-disabled{
+    .nom-textbox-affix-wrapper {
+      background: @input-bg-disabled;
+    }
+  }
+  
   .nom-input[readonly]:not([disabled]) {
     background-color: transparent;
   }
