@@ -15,7 +15,8 @@ commit-msg 格式为`type(scope?): subject` 其中 scope 为可选项
 | perf     | 优化相关，比如提升性能、体验                           |
 | refactor | 代码重构                                               |
 | revert   | 回滚到上一个版本                                       |
-| style    | 代码格式修改, 注意不是 css 修改                        |
+| style    | 代码格式修改, 以及样式修改                             |
 | test     | 测试用例修改                                           |
+| wip      | 提交尚未完成的工作、建议少用                           |
 
 > 参考文档： https://github.com/conventional-changelog/commitlint
