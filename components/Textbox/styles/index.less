@@ -94,14 +94,14 @@
 
   .nom-textbox-affix-wrapper {
     display: flex;
-    align-items: center;
     flex: 1;
-    border: 1px solid @input-border;
+    align-items: center;
     padding: 0 @padding-x-base;
+    border: 1px solid @input-border;
 
     .nom-input-affix {
-      flex: none;
       display: flex;
+      flex: none;
       align-items: center;
     }
     .nom-input-prefix,
@@ -115,14 +115,15 @@
     }
 
     .nom-input {
+      height: @input-height-base-inner; // while input as inner El, height = base line-height + padding (ignore border)
       padding: 0;
       border: none;
       outline: none;
-      height: @input-height-base-inner; // while input as inner El, height = base line-height + padding (ignore border)
     }
   }
 
-  &.s-disabled, &[readonly] {
+  &.s-disabled,
+  &[readonly] {
     .nom-textbox-affix-wrapper {
       background: @input-bg-disabled;
     }
@@ -135,13 +136,19 @@
 }
 
 .nom-time-picker,
-.nom-date-picker {
-  &[readonly]:not([disabled]) {
+.nom-date-picker,
+.nom-partial-date-picker {
+  &[readonly] {
     .nom-textbox-affix-wrapper {
-      background-color: transparent;
+      background: transparent;
     }
   }
-
+  &.s-disabled{
+    .nom-textbox-affix-wrapper {
+      background: @input-bg-disabled;
+    }
+  }
+  
   .nom-input[readonly]:not([disabled]) {
     background-color: transparent;
   }
