@@ -17212,8 +17212,10 @@ function _defineProperty2(obj, key, value) {
      * @param {*} data {field, distance}
      */ calcResizeCol(data) {
       this.header && this.header.calcResizeCol(data);
-      this.body && this.body.calcResizeCol(data);
-      this.footer && this.footer.calcResizeCol(data);
+      if (this.props.data && this.props.data.length) {
+        this.body && this.body.calcResizeCol(data);
+        this.footer && this.footer.calcResizeCol(data);
+      }
     }
     /**
      * 直接传入width设置宽度
