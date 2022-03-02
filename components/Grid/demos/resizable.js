@@ -1,40 +1,4 @@
 define([], function () {
-  const columns = [
-    {
-      field: 'name',
-      key: 'name',
-      title: '标题',
-      width: 200,
-      resizable: false,
-    },
-    {
-      field: 'author',
-      key: 'author',
-      title: '作者',
-    },
-    {
-      field: 'sales',
-      key: 'sales',
-      title: '销量',
-    },
-
-    {
-      field: 'role',
-      key: 'role',
-      title: '主角',
-      width: 500,
-    },
-  ]
-
-  const getOptions = () => {
-    return columns
-      .filter((item) => item.resizable === undefined)
-      .map((item) => ({
-        text: item.title,
-        value: item.field,
-      }))
-  }
-
   let selectRef, gridRef
   return {
     title: '改变列宽',
@@ -42,6 +6,40 @@ define([], function () {
     description:
       '设置 `columnResizable.cache` 为`true`或`string`类型唯一值，则可实现对应表格列宽的本地缓存(优先取`Grid.key`为缓存的key)。调用`resetColsWidth(field)来重置某一列宽度`',
     demo: function () {
+      const columns = [
+        {
+          field: 'name',
+          key: 'name',
+          title: '标题',
+          width: 200,
+          resizable: false,
+        },
+        {
+          field: 'author',
+          key: 'author',
+          title: '作者',
+        },
+        {
+          field: 'sales',
+          key: 'sales',
+          title: '销量',
+        },
+
+        {
+          field: 'role',
+          key: 'role',
+          title: '主角',
+          width: 500,
+        },
+      ]
+      const getOptions = () => {
+        return columns
+          .filter((item) => item.resizable === undefined)
+          .map((item) => ({
+            text: item.title,
+            value: item.field,
+          }))
+      }
       return {
         component: 'Rows',
         items: [
@@ -52,7 +50,7 @@ define([], function () {
               gridRef = c
             },
             columnResizable: {
-              cache: true,
+              // cache: true,
             },
             line: 'both',
             columns,
