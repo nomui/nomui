@@ -892,8 +892,10 @@ class Grid extends Component {
    */
   calcResizeCol(data) {
     this.header && this.header.calcResizeCol(data)
-    this.body && this.body.calcResizeCol(data)
-    this.footer && this.footer.calcResizeCol(data)
+    if (this.props.data && this.props.data.length) {
+      this.body && this.body.calcResizeCol(data)
+      this.footer && this.footer.calcResizeCol(data)
+    }
   }
 
   /**
