@@ -26,17 +26,33 @@ class GridHeader extends Component {
 
     this.setProps({
       classes: { 'nom-grid-highlight-col': this.grid.props.highlightCol },
-      children: {
-        columns: this.grid.props.columns,
-        data: this.grid.data,
-        attrs: {
-          style: {
-            minWidth: `${minWidth}px`,
+      children: [
+        this.grid.props.columnsCustomizable && {
+          component: 'Button',
+          icon: 'setting',
+          size: 'small',
+          // type: 'text',
+          classes: {
+            'nom-grid-setting': true,
+          },
+          tooltip: '列设置',
+          onClick: () => {
+            this.grid.showSetting()
           },
         },
-        onlyHead: true,
-        line: this.props.line,
-      },
+        {
+          component: Table,
+          columns: this.grid.props.columns,
+          data: this.grid.data,
+          attrs: {
+            style: {
+              minWidth: `${minWidth}px`,
+            },
+          },
+          onlyHead: true,
+          line: this.props.line,
+        },
+      ],
     })
   }
 
