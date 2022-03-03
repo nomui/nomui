@@ -10,15 +10,20 @@
 .nom-input {
   display: block;
   width: 100%;
-  height: @input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
-  padding: @padding-y-base @padding-x-base;
-  color: @input-color;
-  font-size: @font-size-base;
-  line-height: @line-height-computed;
-  background-color: @input-bg;
+  height: var(
+    --nom-input-height
+  ); // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+  padding: var(--nom-input-padding);
+  color: var(--nom-input-color);
+  font-size: var(--nom-font-size-base);
+  line-height: var(--nom-line-height);
+  background-color: var(--nom-input-bg);
   background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
-  border: 1px solid @input-border;
-  border-radius: @input-border-radius; // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+  border: 1px solid var(--nom-color-border);
+  border-radius: var(
+    --nom-border-radius
+  ); // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+  outline: none;
   // Customize the `:focus` state to imitate native WebKit styles.
   .nom-input-focus();
 
@@ -36,7 +41,7 @@
   &[disabled],
   &[readonly],
   fieldset[disabled] & {
-    background-color: @input-bg-disabled;
+    background-color: var(--nom-input-bg-disabled);
     opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
   }
 
@@ -51,9 +56,9 @@
   }
 
   .s-invalid > & {
-    color: #000;
-    background-color: #fff3f3;
-    border-color: #ffa8a8;
+    color: var(--nom-color-text-0);
+    background-color: rgba(var(nom-color-danger), 0.1);
+    border-color: var(--nom-color-danger);
   }
 }
 
@@ -61,14 +66,14 @@
   > .nom-field-content {
     .nom-control {
       position: relative;
-      background-color: @input-bg;
+      background-color: var(--nom-input-bg);
     }
   }
 
   &.s-invalid.p-plain {
     > .nom-field-content {
       > .nom-control > .nom-input {
-        border-color: #ffa8a8;
+        border-color: var(--nom-color-danger);
       }
     }
   }
@@ -96,13 +101,15 @@
     display: flex;
     flex: 1;
     align-items: center;
-    padding: 0 @padding-x-base;
-    border: 1px solid @input-border;
+    padding: var(--nom-textbox-affix-padding);
+    border: 1px solid var(--nom-color-border);
+    border-radius: var(--nom-border-radius);
 
     .nom-input-affix {
       display: flex;
       flex: none;
       align-items: center;
+      color: var(--nom-control-icon-color);
     }
     .nom-input-prefix,
     .nom-textbox-left-icon {
@@ -112,10 +119,13 @@
     .nom-textbox-right-icon,
     .nom-input-count {
       margin-left: 4px;
+      color: var(--nom-control-icon-color);
     }
 
     .nom-input {
-      height: @input-height-base-inner; // while input as inner El, height = base line-height + padding (ignore border)
+      height: var(
+        --nom-input-height-base-inner
+      ); // while input as inner El, height = base line-height + padding (ignore border)
       padding: 0;
       border: none;
       outline: none;
@@ -125,13 +135,13 @@
   &.s-disabled,
   &[readonly] {
     .nom-textbox-affix-wrapper {
-      background: @input-bg-disabled;
+      background: var(--nom-color-disabled-bg);
     }
   }
 
   .nom-textbox-left-icon,
   .nom-textbox-right-icon {
-    color: #a4a2bb;
+    color: var(--nom-control-icon-color);
   }
 }
 
@@ -143,12 +153,12 @@
       background: transparent;
     }
   }
-  &.s-disabled{
+  &.s-disabled {
     .nom-textbox-affix-wrapper {
-      background: @input-bg-disabled;
+      background: var(--nom-input-bg-disabled);
     }
   }
-  
+
   .nom-input[readonly]:not([disabled]) {
     background-color: transparent;
   }

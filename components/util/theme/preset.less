@@ -4,8 +4,16 @@
 .nom-preset-layer {
   background-color: var(--nom-color-white);
   background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.025);
   border-radius: 4px;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+// 默认对象的hover状态
+.nom-preset-hover {
+  &:hover {
+    background-color: var(--nom-color-hover);
+  }
 }
 
 // primary对象
@@ -24,14 +32,17 @@
   }
 }
 
-// 默认对象的hover状态
-.nom-preset-hover {
-  &:hover {
-    background-color: var(--nom-color-hover);
-  }
-}
-
 // 指针pointer
 .nom-preset-pointer {
   cursor: pointer;
+}
+
+// 默认灰色字体
+.nom-preset-muted {
+  color: var(--nom-color-text-1);
+}
+
+// 默认英文字体
+.nom-preset-font-family-en {
+  font-family: Tahoma, Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }

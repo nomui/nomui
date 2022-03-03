@@ -11,7 +11,7 @@
       overflow-y: hidden;
       text-align: left;
       scroll-behavior: smooth;
-      border-left: 1px solid #ddd;
+      border-left: 1px solid @border-color;
       &:first-child {
         border-left: none;
       }
@@ -21,13 +21,9 @@
       .nom-list-item {
         padding-left: 5px;
         cursor: pointer;
-
-        &:hover {
-          background: #f2f2f2;
-        }
+        .nom-preset-hover; // 基础对象想要hover时有背景色变化，使用这个预设类
         &.s-selected {
-          color: #333;
-          background-color: #e6f7ff;
+          .nom-preset-primary; // primary对象预设类，包括了它的hover、active、disabled样式
         }
       }
     }
