@@ -10,6 +10,7 @@ define([], function () {
         bordered: true,
         frozenHeader: true,
         frozenLeftCols: 1,
+        columnsCustomizable: true,
         sticky: this.parent.parent.parent, // 指定有滚动条的父容器，自动开启吸附表头跟吸附滚动条，设为true则指定window为滚动容器
         columns: [
           {

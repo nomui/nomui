@@ -4084,7 +4084,7 @@ function _defineProperty2(obj, key, value) {
     },
     phoneNumber: {
       validate: function (value) {
-        return !isEmpty(value) ? /^1[3|4|5|7|8][0-9]{9}$/.test(value) : true;
+        return !isEmpty(value) ? /^1[1-9][0-9]{9}$/.test(value) : true;
       },
       message: "请输入正确的手机号",
     },
@@ -16258,6 +16258,7 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         classes: { "nom-grid-highlight-col": this.grid.props.highlightCol },
         children: {
+          component: Table,
           columns: this.grid.props.columns,
           data: this.grid.data,
           attrs: { style: { minWidth: `${minWidth}px` } },
@@ -16340,6 +16341,9 @@ function _defineProperty2(obj, key, value) {
       const { pRect, gRect } = data;
       if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
         this.element.style.transform = `translateY(${
+          pRect.top - gRect.top - 2
+        }px)`;
+        this.grid.settingBtn.element.style.transform = `translateY(${
           pRect.top - gRect.top - 2
         }px)`;
       }
@@ -16505,8 +16509,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _config() {
-      this.nodeList = {};
-      const that = this; // 切换分页 data数据更新时 此两项不重置会导致check表现出错
+      this.nodeList = {}; // 切换分页 data数据更新时 此两项不重置会导致check表现出错
       this.rowsRefs = {};
       this.checkedRowRefs = {};
       this._propStyleClasses = ["bordered"];
@@ -16526,12 +16529,15 @@ function _defineProperty2(obj, key, value) {
         children: [
           this.props.columnsCustomizable && {
             component: "Button",
+            ref: (c) => {
+              this.settingBtn = c;
+            },
             icon: "setting",
             size: "small", // type: 'text',
             classes: { "nom-grid-setting": true },
             tooltip: "列设置",
             onClick: () => {
-              that.showSetting();
+              this.showSetting();
             },
           },
           { component: GridHeader, line: line },

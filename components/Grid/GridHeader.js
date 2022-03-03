@@ -27,6 +27,7 @@ class GridHeader extends Component {
     this.setProps({
       classes: { 'nom-grid-highlight-col': this.grid.props.highlightCol },
       children: {
+        component: Table,
         columns: this.grid.props.columns,
         data: this.grid.data,
         attrs: {
@@ -145,6 +146,7 @@ class GridHeader extends Component {
 
     if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
       this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
+      this.grid.settingBtn.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
     }
 
     if (

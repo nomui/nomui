@@ -42,6 +42,7 @@ define([], function () {
             frozenLeftCols: 1,
             frozenRightCols: 0,
             // allowFrozenCols: true,
+            columnsCustomizable: true,
             attrs: {
               style: {
                 height: '170px',

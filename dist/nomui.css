@@ -6391,6 +6391,7 @@ table.nom-table .nom-table-fixed-left-last::after {
   transition: box-shadow 0.3s;
   transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
   content: '';
+  pointer-events: none;
 }
 table.nom-table .nom-table-fixed-right-first {
   padding-left: 15px;
@@ -6407,6 +6408,7 @@ table.nom-table .nom-table-fixed-right-first::after {
   transition: box-shadow 0.3s;
   transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
   content: '';
+  pointer-events: none;
 }
 table.nom-table th {
   position: relative;
@@ -6415,8 +6417,8 @@ table.nom-table th {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   background-color: #f8f8f8;
   background-image: linear-gradient(to bottom, #fcfcfc 0, #f8f8f8 100%);
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
 }
 table.nom-table th.nom-table-fixed-left,
 table.nom-table th.nom-table-fixed-right {
@@ -6488,6 +6490,10 @@ table.nom-table.p-bordered {
   top: 7px;
   right: 5px;
   z-index: 11;
+  background: #fff;
+}
+.nom-grid .nom-grid-setting:hover {
+  background: #f2f2f2;
 }
 .nom-grid > .nom-grid-header {
   overflow: hidden;
