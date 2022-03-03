@@ -102,7 +102,9 @@
     padding: 0 @padding-x-base;
     border: 1px solid var(--nom-color-border);
     border-radius: var(--nom-border-radius);
-
+    &:focus-within {
+      border-color: var(--nom-color-primary);
+    }
     .nom-input-affix {
       display: flex;
       flex: none;

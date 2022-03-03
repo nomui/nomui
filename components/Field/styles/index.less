@@ -28,6 +28,9 @@
     padding: 0.5rem 0.5rem;
     // overflow-x: clip;
     > .nom-control {
+      &:focus-within {
+        border-color: var(--nom-color-primary);
+      }
       .p-control-width-xsmall& {
         max-width: 104px;
       }

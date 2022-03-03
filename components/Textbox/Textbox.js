@@ -7,24 +7,7 @@ import Input from './Input'
 
 class Textbox extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      leftIcon: null,
-      prefix: null, // 前缀
-      rightIcon: null,
-      suffix: null, // 后缀
-      maxlength: null,
-      minlength: null,
-      showWordLimit: false,
-      autofocus: false,
-      placeholder: null,
-      value: null,
-      htmlType: 'text',
-      onEnter: null,
-      allowClear: true,
-      trimValue: true, // getValue时 默认去除首位的空格
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Textbox.defaults, props), ...mixins)
   }
 
   _config() {
@@ -275,6 +258,23 @@ class Textbox extends Field {
   _enable() {
     this.input.enable()
   }
+}
+
+Textbox.defaults = {
+  leftIcon: null,
+  prefix: null, // 前缀
+  rightIcon: null,
+  suffix: null, // 后缀
+  maxlength: null,
+  minlength: null,
+  showWordLimit: false,
+  autofocus: false,
+  placeholder: null,
+  value: null,
+  htmlType: 'text',
+  onEnter: null,
+  allowClear: true,
+  trimValue: true, // getValue时 默认去除首位的空格
 }
 
 Component.register(Textbox)

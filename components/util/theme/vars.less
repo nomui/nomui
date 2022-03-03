@@ -4,9 +4,11 @@ body {
 
   // Box Element
   --nom-border-radius: 4px;
+  --nom-border-color: var(--nom-color-border);
 
   // Field && Textbox
   --nom-input-color: var(--nom-color-text-0);
+  --nom-input-bg: var(--nom-color-bg-0);
   --nom-input-bg-disabled: var(--nom-color-disabled-bg);
   --nom-control-icon-color: var(--nom-color-text-1);
   --nom-field-gutter-base: @gutter-base;
@@ -15,8 +17,13 @@ body {
   --nom-button-bg: var(--nom-color-white);
 
   // layer
-  --nom-layer-background-color: var(--nom-color-white);
+  --nom-layer-background-color: var(--nom-color-bg-0);
   --nom-layer-border: 1px solid rgba(0, 0, 0, 0.025);
   --nom-layer-border-radius: var(--nom-border-radius);
   --nom-layer-box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+
+  // Select
+  --nom-select-selected-item-bg: var(--nom-color-bg-0);
+  --nom-select-selected-item-border-color: var(--nom-border-color);
+  --nom-select-selected-item-padding: 0 5px;
 }
