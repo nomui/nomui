@@ -1,13 +1,20 @@
 body {
-  --nom-border-radius: 4px;
-  --nom-line-height: @line-height-computed;
+  // Font
   --nom-font-size-base: @font-size-base;
+  --nom-font-family-en: tahoma, arial, 'Helvetica Neue', helvetica, sans-serif;
+  --nom-line-height: @line-height-computed;
+
+  // Input
+  --nom-border-radius: 4px;
   --nom-input-color: var(--nom-color-text-0);
+  --nom-input-bg-disabled: var(--nom-color-disabled-bg);
   --nom-input-padding: @padding-y-base @padding-x-base;
   --nom-input-height: @input-height-base;
-  --nom-textbox-affix-padding: 0 @padding-x-base;
   --nom-input-height-base-inner: @input-height-base-inner;
+  --nom-textbox-affix-padding: 0 @padding-x-base;
   --nom-control-icon-color: var(--nom-color-text-1);
   --nom-field-gutter-base: @gutter-base;
-  --nom-input-bg-disabled: var(--nom-color-disabled-bg);
+
+  // Button
+  --nom-button-bg: var(--nom-color-white);
 }
