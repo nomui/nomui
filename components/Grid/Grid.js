@@ -96,6 +96,22 @@ class Grid extends Component {
         'm-with-setting': !!this.props.columnsCustomizable,
       },
       children: [
+        this.props.columnsCustomizable && {
+          component: 'Button',
+          ref: (c) => {
+            this.settingBtn = c
+          },
+          icon: 'setting',
+          size: 'small',
+          // type: 'text',
+          classes: {
+            'nom-grid-setting': true,
+          },
+          tooltip: '列设置',
+          onClick: () => {
+            this.showSetting()
+          },
+        },
         { component: GridHeader, line: line },
         { component: GridBody, line: line, rowDefaults: rowDefaults },
         this.props.summary && { component: GridFooter, line: line },
