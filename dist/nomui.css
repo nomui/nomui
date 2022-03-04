@@ -3059,6 +3059,9 @@ template {
 .u-shadow-xlarge {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
+.u-shadow-default {
+  box-shadow: 0 5px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
 h1,
 h2,
 h3,
@@ -3998,7 +4001,7 @@ body {
   color: #343a40;
   font-weight: 400;
   font-size: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   line-height: 1.42857143;
   text-align: left;
   background-color: #ffffff;
@@ -4302,9 +4305,72 @@ body .nom-always-dark {
   --nom-orange-1: 232,89,12;
   --nom-orange-0: 217,72,15;
 }
+.nom-preset-layer {
+  background-color: var(--nom-layer-background-color);
+  background-clip: padding-box;
+  border: var(--nom-layer-border);
+  border-radius: var(--nom-layer-border-radius);
+  box-shadow: var(--nom-layer-box-shadow);
+}
+.nom-preset-hover:hover {
+  background-color: var(--nom-color-hover);
+}
+.nom-preset-primary {
+  color: var(--nom-color-white);
+  background-color: var(--nom-color-primary);
+}
+.nom-preset-primary:hover {
+  background-color: var(--nom-color-primary-hover);
+}
+.nom-preset-primary.active {
+  background-color: var(--nom-color-primary-active);
+}
+.nom-preset-primary.disabled,
+.nom-preset-primary[disabled] {
+  background-color: var(--nom-color-primary-disabled);
+}
+.nom-preset-pointer {
+  cursor: pointer;
+}
+.nom-preset-muted {
+  color: var(--nom-color-text-1);
+}
+.nom-preset-font-family-en {
+  font-family: var(--nom-font-family-en);
+}
+body {
+  --nom-font-family-en: tahoma, arial, 'Helvetica Neue', helvetica, sans-serif;
+  --nom-border-radius: 4px;
+  --nom-border-color: var(--nom-color-border);
+  --nom-input-color: var(--nom-color-text-0);
+  --nom-input-bg: var(--nom-color-bg-0);
+  --nom-input-bg-disabled: var(--nom-color-disabled-bg);
+  --nom-control-icon-color: var(--nom-color-text-1);
+  --nom-field-gutter-base: 0.5rem;
+  --nom-checkbox-bg: transparent;
+  --nom-checkbox-border-color: var(--nom-border-color);
+  --nom-checkbox-border-radius: 1px;
+  --nom-checkbox-checker-color: var(--nom-color-white);
+  --nom-checkbox-part-checker-color: var(--nom-color-text-2);
+  --nom-checkbox-part-checker-border-radius: 0;
+  --nom-checkbox-checked-bg: var(--nom-color-primary);
+  --nom-checkbox-checked-border-color: var(--nom-checkbox-checked-bg);
+  --nom-checkbox-bg-hover: var(--nom-color-hover);
+  --nom-checkbox-checked-bg-hover: var(--nom-color-primary-hover);
+  --nom-checkbox-box-shadow: none;
+  --nom-checkbox-checker-box-shadow: none;
+  --nom-button-bg: var(--nom-color-white);
+  --nom-layer-background-color: var(--nom-color-bg-0);
+  --nom-layer-border: 1px solid rgba(0, 0, 0, 0.0375);
+  --nom-layer-border-radius: 6px;
+  --nom-layer-box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.15);
+  --nom-select-selected-item-bg: var(--nom-color-bg-0);
+  --nom-select-selected-item-border-color: var(--nom-border-color);
+  --nom-select-selected-item-padding: 0 5px;
+}
 /* stylelint-disable custom-property-empty-line-before */
 body,
-body[theme-mode="dark"] .nom-always-light {
+body[theme-mode='dark'] .nom-always-light {
   --nom-color-white: rgba(var(--nom-white), 1);
   --nom-color-black: rgba(var(--nom-black), 1);
   --nom-color-primary: rgba(var(--nom-blue-5), 1);
@@ -4349,8 +4415,9 @@ body[theme-mode="dark"] .nom-always-light {
   --nom-color-text-2: rgba(var(--nom-grey-9), 0.6);
   --nom-color-text-3: rgba(var(--nom-grey-9), 0.35);
   --nom-color-shadow: rgba(var(--nom-black), 0.04);
-  --nom-color-border: rgba(var(--nom-grey-9), 0.1);
+  --nom-color-border: rgba(var(--nom-grey-9), 0.15);
   --nom-color-nav-bg: rgba(var(--nom-white), 1);
+  --nom-color-hover: rgba(var(--nom-grey-1), 1);
   --nom-color-fill-0: rgba(var(--nom-grey-8), 0.05);
   --nom-color-fill-1: rgba(var(--nom-grey-8), 0.09);
   --nom-color-fill-2: rgba(var(--nom-grey-8), 0.13);
@@ -4359,8 +4426,9 @@ body[theme-mode="dark"] .nom-always-light {
   --nom-color-bg-2: rgba(var(--nom-white), 1);
   --nom-color-bg-3: rgba(var(--nom-white), 1);
   --nom-color-bg-4: rgba(var(--nom-white), 1);
+  --nom-input-bg: rgba(var(--nom-white), 1);
 }
-body[theme-mode="dark"],
+body[theme-mode='dark'],
 body .nom-always-dark {
   --nom-color-fill-0: rgba(var(--nom-white), 0.05);
   --nom-color-fill-1: rgba(var(--nom-white), 0.09);
@@ -5245,11 +5313,11 @@ body .nom-always-dark {
 }
 .nom-popup.p-uistyle-default {
   text-align: left;
-  background-color: white;
+  background-color: var(--nom-layer-background-color);
   background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 2px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  border: var(--nom-layer-border);
+  border-radius: var(--nom-layer-border-radius);
+  box-shadow: var(--nom-layer-box-shadow);
 }
 .modal-scrollbar-measure {
   position: absolute;
@@ -6730,9 +6798,9 @@ table.nom-table.p-bordered {
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
-  background-color: var(--nom-color-fill-0);
+  background-color: var(--nom-button-bg);
   border: 1px solid transparent;
-  border-color: #ced4da;
+  border-color: var(--nom-color-border);
   border-radius: 2px;
   cursor: pointer;
   user-select: none;
@@ -6777,6 +6845,7 @@ fieldset[disabled] a.nom-button {
 }
 .nom-button.p-danger {
   color: var(--nom-color-danger);
+  background-color: transparent;
   border-color: var(--nom-color-danger);
 }
 .nom-button.p-danger.nom-button-inline:hover {
@@ -6784,8 +6853,8 @@ fieldset[disabled] a.nom-button {
 }
 .nom-button.p-danger.p-type-primary {
   color: var(--nom-color-white);
-  border-color: var(--nom-color-danger);
   background-color: var(--nom-color-danger);
+  border-color: var(--nom-color-danger);
 }
 .nom-button.p-danger.p-type-primary:hover {
   background-color: var(--nom-color-danger-hover);
@@ -6793,6 +6862,7 @@ fieldset[disabled] a.nom-button {
 .nom-button.p-type-primary {
   color: var(--nom-color-white);
   background-color: var(--nom-color-primary);
+  border-color: var(--nom-color-primary);
 }
 .nom-button.p-type-primary:hover {
   background-color: var(--nom-color-primary-hover);
@@ -6937,13 +7007,14 @@ fieldset[disabled] a.nom-button {
   width: 100%;
   height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   padding: 0.375rem 0.75rem;
-  color: #343a40;
+  color: var(--nom-input-color);
   font-size: 1rem;
   line-height: 1.42857143rem;
-  background-color: #fff;
+  background-color: var(--nom-input-bg);
   background-image: none;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
+  border: 1px solid var(--nom-color-border);
+  border-radius: var(--nom-border-radius);
+  outline: none;
 }
 .nom-input:focus {
   border-color: #66afe9;
@@ -6956,7 +7027,7 @@ fieldset[disabled] a.nom-button {
 .nom-input[disabled],
 .nom-input[readonly],
 fieldset[disabled] .nom-input {
-  background-color: #e9ecef;
+  background-color: var(--nom-input-bg-disabled);
   opacity: 1;
 }
 .nom-input[disabled],
@@ -6967,16 +7038,16 @@ textarea .nom-input {
   height: auto;
 }
 .s-invalid > .nom-input {
-  color: #000;
-  background-color: #fff3f3;
-  border-color: #ffa8a8;
+  color: var(--nom-color-text-0);
+  background-color: rgba(var(nom-color-danger), 0.1);
+  border-color: var(--nom-color-danger);
 }
 .nom-textbox > .nom-field-content .nom-control {
   position: relative;
-  background-color: #fff;
+  background-color: var(--nom-input-bg);
 }
 .nom-textbox.s-invalid.p-plain > .nom-field-content > .nom-control > .nom-input {
-  border-color: #ffa8a8;
+  border-color: var(--nom-color-danger);
 }
 .nom-textbox.p-with-button > .nom-field-content > .nom-control {
   display: flex;
@@ -6995,12 +7066,17 @@ textarea .nom-input {
   flex: 1;
   align-items: center;
   padding: 0 0.75rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--nom-color-border);
+  border-radius: var(--nom-border-radius);
+}
+.nom-textbox .nom-textbox-affix-wrapper:focus-within {
+  border-color: var(--nom-color-primary);
 }
 .nom-textbox .nom-textbox-affix-wrapper .nom-input-affix {
   display: flex;
   flex: none;
   align-items: center;
+  color: var(--nom-control-icon-color);
 }
 .nom-textbox .nom-textbox-affix-wrapper .nom-input-prefix,
 .nom-textbox .nom-textbox-affix-wrapper .nom-textbox-left-icon {
@@ -7010,20 +7086,21 @@ textarea .nom-input {
 .nom-textbox .nom-textbox-affix-wrapper .nom-textbox-right-icon,
 .nom-textbox .nom-textbox-affix-wrapper .nom-input-count {
   margin-left: 4px;
+  color: var(--nom-control-icon-color);
 }
 .nom-textbox .nom-textbox-affix-wrapper .nom-input {
-  height: calc(1.428571429rem + (0.375rem * 2));
+  height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   padding: 0;
   border: none;
   outline: none;
 }
 .nom-textbox.s-disabled .nom-textbox-affix-wrapper,
 .nom-textbox[readonly] .nom-textbox-affix-wrapper {
-  background: #e9ecef;
+  background: var(--nom-color-disabled-bg);
 }
 .nom-textbox .nom-textbox-left-icon,
 .nom-textbox .nom-textbox-right-icon {
-  color: #a4a2bb;
+  color: var(--nom-control-icon-color);
 }
 .nom-time-picker[readonly] .nom-textbox-affix-wrapper,
 .nom-date-picker[readonly] .nom-textbox-affix-wrapper,
@@ -7033,7 +7110,7 @@ textarea .nom-input {
 .nom-time-picker.s-disabled .nom-textbox-affix-wrapper,
 .nom-date-picker.s-disabled .nom-textbox-affix-wrapper,
 .nom-partial-date-picker.s-disabled .nom-textbox-affix-wrapper {
-  background: #e9ecef;
+  background: var(--nom-input-bg-disabled);
 }
 .nom-time-picker .nom-input[readonly]:not([disabled]),
 .nom-date-picker .nom-input[readonly]:not([disabled]),
@@ -7106,12 +7183,17 @@ textarea .nom-textarea {
 }
 .nom-checkbox > .nom-field-content > .nom-control > input + span {
   position: absolute;
-  top: 1px;
+  top: 2px;
   left: 0;
-  width: 18px;
-  height: 18px;
-  background: none;
-  border: 1px solid #bdc3d4;
+  width: calc(1rem + 2px);
+  height: calc(1rem + 2px);
+  background-color: var(--nom-checkbox-bg);
+  border: 1px solid var(--nom-checkbox-border-color);
+  border-radius: var(--nom-checkbox-border-radius);
+  box-shadow: var(--nom-checkbox-checker-box-shadow);
+}
+.nom-checkbox > .nom-field-content > .nom-control > input + span:hover {
+  background-color: var(--nom-checkbox-bg-hover);
 }
 .s-checked-part.nom-checkbox > .nom-field-content > .nom-control > input + span::after {
   position: absolute;
@@ -7119,11 +7201,20 @@ textarea .nom-textarea {
   left: 50%;
   width: 8px;
   height: 8px;
-  background-color: #7281a4;
+  background-color: var(--nom-checkbox-part-checker-color);
   border: 0;
+  border-radius: var(--nom-checkbox-part-checker-border-radius);
+  box-shadow: var(--nom-checkbox-checker-box-shadow);
   -webkit-transform: translate(-50%, -50%) scale(1);
   transform: translate(-50%, -50%) scale(1);
   content: ' ';
+}
+.nom-checkbox > .nom-field-content > .nom-control > input:checked + span {
+  background-color: var(--nom-checkbox-checked-bg);
+  border-color: var(--nom-checkbox-checked-border-color);
+}
+.nom-checkbox > .nom-field-content > .nom-control > input:checked + span:hover {
+  background-color: var(--nom-checkbox-checked-bg-hover);
 }
 .nom-checkbox > .nom-field-content > .nom-control > input:checked + span::after {
   position: absolute;
@@ -7134,8 +7225,9 @@ textarea .nom-textarea {
   height: 10px;
   margin-top: -6px;
   margin-left: -2px;
-  border: solid #7281a4;
+  border: solid var(--nom-checkbox-checker-color);
   border-width: 0 2px 2px 0 /*rtl:ignore*/ !important;
+  box-shadow: var(--nom-checkbox-checker-box-shadow);
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg) /*rtl:ignore*/;
   content: '';
@@ -7144,7 +7236,7 @@ textarea .nom-textarea {
   display: inline-block;
 }
 .nom-checkbox > .nom-field-content > .nom-control > .checkbox-text:not(.checkbox-text-none) {
-  padding-left: 30px;
+  padding-left: 25px;
 }
 .nom-checkbox > .nom-field-content > .nom-control > .checkbox-text.checkbox-text-none {
   width: 20px;
@@ -7167,14 +7259,23 @@ textarea .nom-textarea {
 }
 .nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label > span.radio {
   position: relative;
-  width: calc(1em + 2px);
-  height: calc(1em + 2px);
+  width: calc(1rem + 2px);
+  min-width: calc(1rem + 2px);
+  height: calc(1rem + 2px);
+  min-height: inherit;
   margin-top: calc((1em * 1.428571429 - 1em - 2px)/2);
   margin-right: 0.5rem;
-  background: none;
-  border: 1px solid #bdc3d4;
+  background-color: var(--nom-checkbox-bg);
+  border: 1px solid var(--nom-checkbox-border-color);
   border-radius: 50% !important;
-  min-height: inherit;
+  box-shadow: var(--nom-checkbox-box-shadow);
+}
+.nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label > span.radio:hover {
+  background-color: var(--nom-checkbox-bg-hover);
+}
+.nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected > span.radio {
+  background-color: var(--nom-checkbox-checked-bg);
+  border-color: var(--nom-checkbox-checked-border-color);
 }
 .nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected > span.radio::after {
   position: absolute;
@@ -7185,9 +7286,10 @@ textarea .nom-textarea {
   height: 6px;
   margin-top: -3px;
   margin-left: -3px;
-  background: #7281a4;
-  border: solid #7281a4;
+  background: var(--nom-checkbox-checker-color);
+  border: solid var(--nom-checkbox-checker-color);
   border-radius: 100% !important;
+  box-shadow: var(--nom-checkbox-checker-box-shadow);
   content: '';
 }
 .nom-radio-list.p-uistyle-button > .nom-field-content > .nom-list > .nom-list-content {
@@ -7200,13 +7302,13 @@ textarea .nom-textarea {
   position: relative;
   display: inline-flex;
   margin-left: -1px;
-  background-color: #ffffff;
   padding-top: 0.375rem;
   padding-right: 0.75rem;
   padding-bottom: 0.375rem;
   padding-left: 0.75rem;
   font-size: 1rem;
   line-height: 1.42857143;
+  background-color: #ffffff;
   border: 1px solid #d9d9d9;
   cursor: pointer;
   transition: all 0.3s;
@@ -7287,13 +7389,25 @@ textarea .nom-textarea {
 }
 .nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label > span.checkbox {
   position: relative;
-  width: 1rem;
-  min-width: 1rem;
-  height: 1rem;
+  width: calc(1rem + 2px);
+  min-width: calc(1rem + 2px);
+  height: calc(1rem + 2px);
   margin-top: calc((1em * 1.428571429 - 1em)/2 + 0px);
   margin-right: 0.5em;
-  background: none;
-  border: 1px solid #bdc3d4;
+  background-color: var(--nom-checkbox-bg);
+  border: 1px solid var(--nom-checkbox-border-color);
+  border-radius: var(--nom-checkbox-border-radius);
+  box-shadow: var(--nom-checkbox-box-shadow);
+}
+.nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label > span.checkbox:hover {
+  background-color: var(--nom-checkbox-bg-hover);
+}
+.nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected > span.checkbox {
+  background-color: var(--nom-checkbox-checked-bg);
+  border-color: var(--nom-checkbox-checked-border-color);
+}
+.nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected > span.checkbox:hover {
+  background-color: var(--nom-checkbox-checked-bg-hover);
 }
 .nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected > span.checkbox::after {
   position: absolute;
@@ -7305,8 +7419,9 @@ textarea .nom-textarea {
   margin-top: -6px;
   margin-left: -2px;
   line-height: 1.42857143;
-  border: solid #7281a4;
+  border: solid var(--nom-checkbox-checker-color);
   border-width: 0 2px 2px 0 !important;
+  box-shadow: var(--nom-checkbox-checker-box-shadow);
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
   content: '';
@@ -7318,12 +7433,15 @@ textarea .nom-textarea {
   position: relative;
   min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   padding: 0.375rem 24px 0.375rem 12px;
-  color: #000 !important;
+  color: var(--nom-input-color);
   line-height: 1.42857143rem;
-  background: white;
-  border: 1px solid gainsboro;
-  border-radius: 2px;
+  background: var(--nom-input-bg);
+  border: 1px solid var(--nom-border-color);
+  border-radius: var(--nom-border-radius);
   cursor: pointer;
+}
+.nom-select > .nom-field-content .nom-control:not(.s-disabled):hover {
+  border-color: var(--nom-color-primary);
 }
 .nom-select > .nom-field-content .nom-control .nom-select-single {
   overflow: hidden;
@@ -7333,9 +7451,11 @@ textarea .nom-textarea {
 .nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item {
   display: flex;
   align-items: center;
-  padding: 0 2px;
-  background: #f5f5f5;
-  border: 1px solid #f0f0f0;
+  padding: var(--nom-select-selected-item-padding);
+  background: var(--nom-select-selected-item-bg);
+  border: 1px solid var(--nom-select-selected-item-border-color);
+  border-radius: var(--nom-border-radius);
+  cursor: default;
 }
 .nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item .nom-select-item-content {
   margin-right: 4px;
@@ -7359,7 +7479,7 @@ textarea .nom-textarea {
   top: 0;
   right: 8px;
   bottom: 0;
-  background: #fff;
+  background: var(--nom-input-bg);
   cursor: pointer;
 }
 .s-disabled.nom-select > .nom-field-content .nom-control .nom-select-clear {
@@ -7367,12 +7487,12 @@ textarea .nom-textarea {
 }
 .nom-select > .nom-field-content .nom-control .nom-select-placeholder {
   overflow: hidden;
-  color: #bfbfbf;
+  color: var(--nom-color-text-2);
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 .s-disabled.nom-select > .nom-field-content .nom-control {
-  background-color: #e9ecef;
+  background-color: var(--nom-input-bg-disabled);
   cursor: not-allowed;
   opacity: 1;
 }
@@ -7386,19 +7506,29 @@ textarea .nom-textarea {
   padding: 5px 16px;
   user-select: none;
 }
-.nom-select-list .nom-list-item:hover {
-  background-color: #eee;
+.nom-select-list .nom-list-item:hover:hover {
+  background-color: var(--nom-color-hover);
 }
 .nom-select-list .nom-list-item.s-selected {
-  color: #ffffff;
+  color: var(--nom-color-white);
   background-color: var(--nom-color-primary);
+}
+.nom-select-list .nom-list-item.s-selected:hover {
+  background-color: var(--nom-color-primary-hover);
+}
+.nom-select-list .nom-list-item.s-selected.active {
+  background-color: var(--nom-color-primary-active);
+}
+.nom-select-list .nom-list-item.s-selected.disabled,
+.nom-select-list .nom-list-item.s-selected[disabled] {
+  background-color: var(--nom-color-primary-disabled);
 }
 .nom-select-checker .nom-list-item {
   position: relative;
   padding: 5px 30px;
 }
-.nom-select-checker .nom-list-item:hover {
-  background-color: #eee;
+.nom-select-checker .nom-list-item:hover:hover {
+  background-color: var(--nom-color-hover);
 }
 .nom-select-checker .nom-list-item.nom-selected::before {
   position: absolute;
@@ -7637,7 +7767,7 @@ textarea .nom-textarea {
   overflow-y: hidden;
   text-align: left;
   scroll-behavior: smooth;
-  border-left: 1px solid #ddd;
+  border-left: 1px solid #ced4da;
 }
 .timepicker-group > .nom-col:first-child {
   border-left: none;
@@ -7646,15 +7776,25 @@ textarea .nom-textarea {
   overflow-y: auto;
 }
 .timepicker-group > .nom-col .nom-list-item {
-  padding-left: 5px;
+  padding-left: 0.25rem;
   cursor: pointer;
 }
 .timepicker-group > .nom-col .nom-list-item:hover {
-  background: #f2f2f2;
+  background-color: var(--nom-color-hover);
 }
 .timepicker-group > .nom-col .nom-list-item.s-selected {
-  color: #333;
-  background-color: #e6f7ff;
+  color: var(--nom-color-white);
+  background-color: var(--nom-color-primary);
+}
+.timepicker-group > .nom-col .nom-list-item.s-selected:hover {
+  background-color: var(--nom-color-primary-hover);
+}
+.timepicker-group > .nom-col .nom-list-item.s-selected.active {
+  background-color: var(--nom-color-primary-active);
+}
+.timepicker-group > .nom-col .nom-list-item.s-selected.disabled,
+.timepicker-group > .nom-col .nom-list-item.s-selected[disabled] {
+  background-color: var(--nom-color-primary-disabled);
 }
 .nom-time-range-picker {
   text-decoration: inherit;
@@ -7685,7 +7825,7 @@ textarea .nom-textarea {
   overflow-y: hidden;
   text-align: left;
   scroll-behavior: smooth;
-  border-left: 1px solid #ddd;
+  border-left: 1px solid #ced4da;
 }
 .nom-date-picker-popup .timepicker-group > .nom-col:first-child {
   border-left: none;
@@ -7698,11 +7838,21 @@ textarea .nom-textarea {
   cursor: pointer;
 }
 .nom-date-picker-popup .timepicker-group > .nom-col .nom-list-item:hover {
-  background: #f2f2f2;
+  background-color: var(--nom-color-hover);
 }
 .nom-date-picker-popup .timepicker-group > .nom-col .nom-list-item.s-selected {
-  color: #333;
-  background-color: #e6f7ff;
+  color: var(--nom-color-white);
+  background-color: var(--nom-color-primary);
+}
+.nom-date-picker-popup .timepicker-group > .nom-col .nom-list-item.s-selected:hover {
+  background-color: var(--nom-color-primary-hover);
+}
+.nom-date-picker-popup .timepicker-group > .nom-col .nom-list-item.s-selected.active {
+  background-color: var(--nom-color-primary-active);
+}
+.nom-date-picker-popup .timepicker-group > .nom-col .nom-list-item.s-selected.disabled,
+.nom-date-picker-popup .timepicker-group > .nom-col .nom-list-item.s-selected[disabled] {
+  background-color: var(--nom-color-primary-disabled);
 }
 .nom-date-range-picker {
   text-decoration: inherit;
@@ -7828,6 +7978,9 @@ textarea .nom-textarea {
   width: 100%;
   padding: 0.5rem 0.5rem;
 }
+.nom-field > .nom-field-content > .nom-control:focus-within {
+  border-color: var(--nom-color-primary);
+}
 .p-control-width-xsmall.nom-field > .nom-field-content > .nom-control {
   max-width: 104px;
 }
@@ -7850,8 +8003,8 @@ textarea .nom-textarea {
   padding: 0.5rem 0.5rem;
 }
 .nom-field > .nom-field-content .nom-control-extra {
-  margin-top: 0.5rem;
-  color: var(--nom-color-gray);
+  margin-top: var(--nom-field-gutter-base);
+  color: var(--nom-color-text-2);
   word-break: break-all;
 }
 .nom-field > .nom-field-action.nom-list {
@@ -7863,21 +8016,21 @@ textarea .nom-textarea {
 .nom-field.p-required:not(.p-required-mark-optional) > .nom-field-label > .nom-label::before {
   display: inline-block;
   margin-right: 4px;
-  color: #ff4d4f;
+  color: var(--nom-color-danger);
   font-size: 14px;
   font-family: SimSun, sans-serif;
   line-height: 1;
   content: '*';
 }
 .nom-field.s-invalid > .nom-field-content {
-  color: #000;
-  background-color: #fff3f3;
+  color: var(--nom-color-text-0);
+  background-color: rgba(var(nom-color-danger), 0.1);
 }
 .nom-field.s-invalid > .nom-field-content > .nom-control {
-  border-color: #ffa8a8;
+  border-color: var(--nom-color-danger);
 }
 .nom-field.s-invalid > .nom-field-content > .nom-control > input {
-  border-color: #ffa8a8;
+  border-color: var(--nom-color-danger);
 }
 @media (min-width: 576px) {
   .nom-field.p-label-align-top {
@@ -8775,7 +8928,7 @@ textarea .nom-textarea {
   overflow-y: hidden;
   text-align: left;
   scroll-behavior: smooth;
-  border-left: 1px solid #ddd;
+  border-left: 1px solid #ced4da;
 }
 .nom-partial-date-picker-popup .nom-col:first-child {
   width: 80px;
@@ -8785,22 +8938,32 @@ textarea .nom-textarea {
   width: 250px;
 }
 .nom-partial-date-picker-popup .nom-col.nom-week-list .nom-week-subtitle {
-  color: #aaa;
+  color: var(--nom-color-text-1);
   font-family: Tahoma, Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
 .nom-partial-date-picker-popup .nom-col:hover {
   overflow-y: auto;
 }
-.nom-partial-date-picker-popup .nom-col .nom-list-item {
+.nom-partial-date-picker-popup .nom-col .nom-list-item:not(.nom-week-subtitle) {
   padding-left: 5px;
   cursor: pointer;
 }
-.nom-partial-date-picker-popup .nom-col .nom-list-item:hover {
-  background: #f2f2f2;
+.nom-partial-date-picker-popup .nom-col .nom-list-item:not(.nom-week-subtitle):hover {
+  background-color: var(--nom-color-hover);
 }
-.nom-partial-date-picker-popup .nom-col .nom-list-item.s-selected {
-  color: #333;
-  background-color: #e6f7ff;
+.nom-partial-date-picker-popup .nom-col .nom-list-item:not(.nom-week-subtitle).s-selected {
+  color: var(--nom-color-white);
+  background-color: var(--nom-color-primary);
+}
+.nom-partial-date-picker-popup .nom-col .nom-list-item:not(.nom-week-subtitle).s-selected:hover {
+  background-color: var(--nom-color-primary-hover);
+}
+.nom-partial-date-picker-popup .nom-col .nom-list-item:not(.nom-week-subtitle).s-selected.active {
+  background-color: var(--nom-color-primary-active);
+}
+.nom-partial-date-picker-popup .nom-col .nom-list-item:not(.nom-week-subtitle).s-selected.disabled,
+.nom-partial-date-picker-popup .nom-col .nom-list-item:not(.nom-week-subtitle).s-selected[disabled] {
+  background-color: var(--nom-color-primary-disabled);
 }
 .nom-steps {
   position: relative;

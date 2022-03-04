@@ -10,19 +10,7 @@ let nameSeq = 0
 
 class Field extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      label: null,
-      labelAlign: 'right',
-      invalidTip: {},
-      value: null,
-      flatValue: false,
-      span: null,
-      notShowLabel: false,
-      rules: [],
-      extra: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Field.defaults, props), ...mixins)
   }
 
   _created() {
@@ -265,6 +253,18 @@ class Field extends Component {
       }
     }, 0)
   }
+}
+
+Field.defaults = {
+  label: null,
+  labelAlign: 'right',
+  invalidTip: {},
+  value: null,
+  flatValue: false,
+  span: null,
+  notShowLabel: false,
+  rules: [],
+  extra: null,
 }
 
 Object.defineProperty(Field.prototype, 'fields', {

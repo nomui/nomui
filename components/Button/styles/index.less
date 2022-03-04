@@ -33,9 +33,9 @@
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
-  background-color: var(--nom-color-fill-0);
+  background-color: var(--nom-button-bg);
   border: 1px solid transparent;
-  border-color: @border-color;
+  border-color: var(--nom-color-border);
   border-radius: 2px;
   cursor: pointer;
   user-select: none;
@@ -76,6 +76,7 @@
   &.p-danger {
     // .u-color-danger-outline();
     color: var(--nom-color-danger);
+    background-color: transparent;
     border-color: var(--nom-color-danger);
     &.nom-button-inline {
       &:hover {
@@ -86,8 +87,8 @@
     &.p-type-primary {
       // .u-color-danger();
       color: var(--nom-color-white);
-      border-color: var(--nom-color-danger);
       background-color: var(--nom-color-danger);
+      border-color: var(--nom-color-danger);
       &:hover {
         background-color: var(--nom-color-danger-hover);
       }
@@ -95,10 +96,10 @@
   }
 
   &.p-type-primary {
-    // .u-color-primary();
-
     color: var(--nom-color-white);
     background-color: var(--nom-color-primary);
+    // .u-color-primary();
+    border-color: var(--nom-color-primary);
     &:hover {
       background-color: var(--nom-color-primary-hover);
     }

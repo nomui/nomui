@@ -7,49 +7,7 @@ import SelectPopup from './SelectPopup'
 
 class Select extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      options: [],
-      optionFields: { text: 'text', value: 'value' },
-      optionDefaults: {
-        key() {
-          return this.props.value
-        },
-        _config: function () {
-          this.setProps({
-            children: this.props.text,
-          })
-        },
-      },
-      selectedSingle: {
-        classes: {
-          'nom-select-single': true,
-        },
-        _config: function () {
-          this.setProps({
-            children: this.props.text,
-          })
-        },
-      },
-      selectedMultiple: {
-        classes: { 'nom-select-multiple': true },
-        component: List,
-        itemDefaults: {},
-        itemSelectable: {
-          scrollIntoView: true,
-        },
-        gutter: 'md',
-      },
-      extraOptions: [],
-      multiple: false,
-      showArrow: true,
-      minItemsForSearch: 20,
-      filterOption: (text, options) => options.filter((o) => o.text.indexOf(text) >= 0),
-      virtual: false,
-      allowClear: true,
-      popupContainer: 'body',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Select.defaults, props), ...mixins)
   }
 
   _created() {
@@ -586,6 +544,48 @@ class Select extends Field {
       item.value = item[valueField]
     }
   }
+}
+
+Select.defaults = {
+  options: [],
+  optionFields: { text: 'text', value: 'value' },
+  optionDefaults: {
+    key() {
+      return this.props.value
+    },
+    _config: function () {
+      this.setProps({
+        children: this.props.text,
+      })
+    },
+  },
+  selectedSingle: {
+    classes: {
+      'nom-select-single': true,
+    },
+    _config: function () {
+      this.setProps({
+        children: this.props.text,
+      })
+    },
+  },
+  selectedMultiple: {
+    classes: { 'nom-select-multiple': true },
+    component: List,
+    itemDefaults: {},
+    itemSelectable: {
+      scrollIntoView: true,
+    },
+    gutter: 'sm',
+  },
+  extraOptions: [],
+  multiple: false,
+  showArrow: true,
+  minItemsForSearch: 20,
+  filterOption: (text, options) => options.filter((o) => o.text.indexOf(text) >= 0),
+  virtual: false,
+  allowClear: true,
+  popupContainer: 'body',
 }
 
 Component.register(Select)

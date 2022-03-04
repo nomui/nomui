@@ -3,32 +3,7 @@ import Group from '../Group/index'
 
 class TimeRangePicker extends Group {
   constructor(props, ...mixins) {
-    const defaults = {
-      allowClear: true,
-      value: null,
-      format: 'HH:mm:ss',
-      hourStep: 0,
-      minuteStep: 0,
-      secondStep: 0,
-      readonly: true,
-      placeholder: null,
-      autoPopupEnd: true,
-      showNow: true,
-      onChange: null,
-      fieldName: {
-        start: 'start',
-        end: 'end',
-      },
-      flatValue: true,
-      startPickerProps: {
-        placeholder: '开始时间',
-      },
-      endPickerProps: {
-        placeholder: '结束时间',
-      },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(TimeRangePicker.defaults, props), ...mixins)
   }
 
   _created() {
@@ -149,5 +124,29 @@ class TimeRangePicker extends Group {
   }
 }
 
+TimeRangePicker.defaults = {
+  allowClear: true,
+  value: null,
+  format: 'HH:mm:ss',
+  hourStep: 0,
+  minuteStep: 0,
+  secondStep: 0,
+  readonly: true,
+  placeholder: null,
+  autoPopupEnd: true,
+  showNow: true,
+  onChange: null,
+  fieldName: {
+    start: 'start',
+    end: 'end',
+  },
+  flatValue: true,
+  startPickerProps: {
+    placeholder: '开始时间',
+  },
+  endPickerProps: {
+    placeholder: '结束时间',
+  },
+}
 Component.register(TimeRangePicker)
 export default TimeRangePicker

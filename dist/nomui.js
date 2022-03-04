@@ -2374,7 +2374,7 @@ function _defineProperty2(obj, key, value) {
   );
   Icon.add(
     "times",
-    `<svg t="1610503666305" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2041" width="1em" height="1em"><path d="M572.16 512l183.466667-183.04a42.666667 42.666667 0 1 0-60.586667-60.586667L512 451.84l-183.04-183.466667a42.666667 42.666667 0 0 0-60.586667 60.586667l183.466667 183.04-183.466667 183.04a42.666667 42.666667 0 0 0 0 60.586667 42.666667 42.666667 0 0 0 60.586667 0l183.04-183.466667 183.04 183.466667a42.666667 42.666667 0 0 0 60.586667 0 42.666667 42.666667 0 0 0 0-60.586667z" p-id="2042"></path></svg>`,
+    `<svg t="1610503666305" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2041" width="1em" height="1em" fill="currentColor"><path d="M572.16 512l183.466667-183.04a42.666667 42.666667 0 1 0-60.586667-60.586667L512 451.84l-183.04-183.466667a42.666667 42.666667 0 0 0-60.586667 60.586667l183.466667 183.04-183.466667 183.04a42.666667 42.666667 0 0 0 0 60.586667 42.666667 42.666667 0 0 0 60.586667 0l183.04-183.466667 183.04 183.466667a42.666667 42.666667 0 0 0 60.586667 0 42.666667 42.666667 0 0 0 0-60.586667z" p-id="2042"></path></svg>`,
     cat
   );
   Icon.add(
@@ -4335,18 +4335,7 @@ function _defineProperty2(obj, key, value) {
   let nameSeq$1 = 0;
   class Field extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        label: null,
-        labelAlign: "right",
-        invalidTip: {},
-        value: null,
-        flatValue: false,
-        span: null,
-        notShowLabel: false,
-        rules: [],
-        extra: null,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Field.defaults, props), ...mixins);
     }
     _created() {
       const { name, value } = this.props;
@@ -4562,6 +4551,17 @@ function _defineProperty2(obj, key, value) {
       }, 0);
     }
   }
+  Field.defaults = {
+    label: null,
+    labelAlign: "right",
+    invalidTip: {},
+    value: null,
+    flatValue: false,
+    span: null,
+    notShowLabel: false,
+    rules: [],
+    extra: null,
+  };
   Object.defineProperty(Field.prototype, "fields", {
     get: function () {
       if (!this.control) return [];
@@ -4630,23 +4630,7 @@ function _defineProperty2(obj, key, value) {
   }
   class Textbox extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        leftIcon: null,
-        prefix: null, // 前缀
-        rightIcon: null,
-        suffix: null, // 后缀
-        maxlength: null,
-        minlength: null,
-        showWordLimit: false,
-        autofocus: false,
-        placeholder: null,
-        value: null,
-        htmlType: "text",
-        onEnter: null,
-        allowClear: true,
-        trimValue: true, // getValue时 默认去除首位的空格
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Textbox.defaults, props), ...mixins);
     }
     _config() {
       const that = this;
@@ -4862,6 +4846,22 @@ function _defineProperty2(obj, key, value) {
       this.input.enable();
     }
   }
+  Textbox.defaults = {
+    leftIcon: null,
+    prefix: null, // 前缀
+    rightIcon: null,
+    suffix: null, // 后缀
+    maxlength: null,
+    minlength: null,
+    showWordLimit: false,
+    autofocus: false,
+    placeholder: null,
+    value: null,
+    htmlType: "text",
+    onEnter: null,
+    allowClear: true,
+    trimValue: true, // getValue时 默认去除首位的空格
+  };
   Component.register(Textbox);
   class Empty extends Component {
     constructor(props, ...mixins) {
@@ -10574,11 +10574,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Cascader);
   class Checkbox extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        text: null,
-        valueText: { checked: "是", unchecked: "否" },
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Checkbox.defaults, props), ...mixins);
     }
     _config() {
       const that = this;
@@ -10647,6 +10643,10 @@ function _defineProperty2(obj, key, value) {
       this.input.element.removeAttribute("disabled", "disabled");
     }
   }
+  Checkbox.defaults = {
+    text: null,
+    valueText: { checked: "是", unchecked: "否" },
+  };
   Component.register(Checkbox);
   var OptionListMixin = {
     _created: function () {
@@ -10705,8 +10705,7 @@ function _defineProperty2(obj, key, value) {
   }
   class CheckboxList extends Field {
     constructor(props, ...mixins) {
-      const defaults = { options: [], valueOptions: { asArray: true } };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(CheckboxList.defaults, props), ...mixins);
     }
     _config() {
       this.setProps({
@@ -10815,6 +10814,7 @@ function _defineProperty2(obj, key, value) {
       return retOptions;
     }
   }
+  CheckboxList.defaults = { options: [], valueOptions: { asArray: true } };
   Component.register(CheckboxList);
   class TreeNodeContent extends Component {
     constructor(props, ...mixins) {
@@ -12723,41 +12723,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(SelectPopup);
   class Select extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        options: [],
-        optionFields: { text: "text", value: "value" },
-        optionDefaults: {
-          key() {
-            return this.props.value;
-          },
-          _config: function () {
-            this.setProps({ children: this.props.text });
-          },
-        },
-        selectedSingle: {
-          classes: { "nom-select-single": true },
-          _config: function () {
-            this.setProps({ children: this.props.text });
-          },
-        },
-        selectedMultiple: {
-          classes: { "nom-select-multiple": true },
-          component: List,
-          itemDefaults: {},
-          itemSelectable: { scrollIntoView: true },
-          gutter: "md",
-        },
-        extraOptions: [],
-        multiple: false,
-        showArrow: true,
-        minItemsForSearch: 20,
-        filterOption: (text, options) =>
-          options.filter((o) => o.text.indexOf(text) >= 0),
-        virtual: false,
-        allowClear: true,
-        popupContainer: "body",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Select.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -13211,6 +13177,40 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  Select.defaults = {
+    options: [],
+    optionFields: { text: "text", value: "value" },
+    optionDefaults: {
+      key() {
+        return this.props.value;
+      },
+      _config: function () {
+        this.setProps({ children: this.props.text });
+      },
+    },
+    selectedSingle: {
+      classes: { "nom-select-single": true },
+      _config: function () {
+        this.setProps({ children: this.props.text });
+      },
+    },
+    selectedMultiple: {
+      classes: { "nom-select-multiple": true },
+      component: List,
+      itemDefaults: {},
+      itemSelectable: { scrollIntoView: true },
+      gutter: "sm",
+    },
+    extraOptions: [],
+    multiple: false,
+    showArrow: true,
+    minItemsForSearch: 20,
+    filterOption: (text, options) =>
+      options.filter((o) => o.text.indexOf(text) >= 0),
+    virtual: false,
+    allowClear: true,
+    popupContainer: "body",
+  };
   Component.register(Select);
   class DateTimePickerList extends List {
     constructor(props, ...mixins) {
@@ -21505,8 +21505,7 @@ function _defineProperty2(obj, key, value) {
   }
   class RadioList extends Field {
     constructor(props, ...mixins) {
-      const defaults = { options: [], uistyle: "radio" };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(RadioList.defaults, props), ...mixins);
     }
     _config() {
       this.setProps({
@@ -21596,6 +21595,7 @@ function _defineProperty2(obj, key, value) {
       return option;
     }
   }
+  RadioList.defaults = { options: [], uistyle: "radio" };
   Component.register(RadioList);
   function getValidMax(value) {
     if (!isNumeric(value)) return 100;
@@ -24185,20 +24185,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(TimePickerPopup);
   class TimePicker extends Textbox {
     constructor(props, ...mixins) {
-      const defaults = {
-        allowClear: true,
-        value: null,
-        format: "HH:mm:ss",
-        hourStep: null,
-        minuteStep: null,
-        secondStep: null,
-        readonly: true,
-        placeholder: null,
-        showNow: true,
-        minTime: null,
-        maxTime: null,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(TimePicker.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -24457,27 +24444,23 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  TimePicker.defaults = {
+    allowClear: true,
+    value: null,
+    format: "HH:mm:ss",
+    hourStep: null,
+    minuteStep: null,
+    secondStep: null,
+    readonly: true,
+    placeholder: null,
+    showNow: true,
+    minTime: null,
+    maxTime: null,
+  };
   Component.register(TimePicker);
   class TimeRangePicker extends Group {
     constructor(props, ...mixins) {
-      const defaults = {
-        allowClear: true,
-        value: null,
-        format: "HH:mm:ss",
-        hourStep: 0,
-        minuteStep: 0,
-        secondStep: 0,
-        readonly: true,
-        placeholder: null,
-        autoPopupEnd: true,
-        showNow: true,
-        onChange: null,
-        fieldName: { start: "start", end: "end" },
-        flatValue: true,
-        startPickerProps: { placeholder: "开始时间" },
-        endPickerProps: { placeholder: "结束时间" },
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(TimeRangePicker.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -24594,6 +24577,23 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  TimeRangePicker.defaults = {
+    allowClear: true,
+    value: null,
+    format: "HH:mm:ss",
+    hourStep: 0,
+    minuteStep: 0,
+    secondStep: 0,
+    readonly: true,
+    placeholder: null,
+    autoPopupEnd: true,
+    showNow: true,
+    onChange: null,
+    fieldName: { start: "start", end: "end" },
+    flatValue: true,
+    startPickerProps: { placeholder: "开始时间" },
+    endPickerProps: { placeholder: "结束时间" },
+  };
   Component.register(TimeRangePicker);
   class TreeSelectPopup extends Popup {
     constructor(props, ...mixins) {

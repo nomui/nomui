@@ -5,14 +5,7 @@ import List from './DefaultOptionList'
 
 class CheckboxList extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      options: [],
-      valueOptions: {
-        asArray: true,
-      },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(CheckboxList.defaults, props), ...mixins)
   }
 
   _config() {
@@ -147,6 +140,13 @@ class CheckboxList extends Field {
     }
     return retOptions
   }
+}
+
+CheckboxList.defaults = {
+  options: [],
+  valueOptions: {
+    asArray: true,
+  },
 }
 
 Component.register(CheckboxList)
