@@ -1,6 +1,6 @@
 import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
-import { isFunction } from '../util/index'
+import { defaultSortableOndrop, isFunction } from '../util/index'
 import scrollIntoView from '../util/scrollIntoView'
 import TreeNodes from './TreeNodes'
 
@@ -95,6 +95,7 @@ class Tree extends Component {
 
   _rendered() {
     this.autoCheckAll()
+    this.props.sortable && defaultSortableOndrop()
   }
 
   autoCheckAll() {

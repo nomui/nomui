@@ -5,6 +5,7 @@ import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
 import { STORAGE_KEY_GRID_COLS_WIDTH, STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
 import {
+  defaultSortableOndrop,
   isBrowerSupportSticky,
   isFunction,
   isNullish,
@@ -288,6 +289,8 @@ class Grid extends Component {
 
     this._processColumnsWidth()
     this._processAutoScroll()
+
+    this.props.rowSortable && defaultSortableOndrop()
   }
 
   getColumns() {
