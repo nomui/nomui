@@ -63,7 +63,10 @@ RuleManager.ruleTypes = {
   },
   range: {
     validate: function (value, ruleValue) {
-      return !isEmpty(value) ? Number(value.replace(/,/g, '')) >= ruleValue[0] && Number(value.replace(/,/g, '')) <= ruleValue[1] : true
+      return !isEmpty(value)
+        ? Number(value.replace(/,/g, '')) >= ruleValue[0] &&
+            Number(value.replace(/,/g, '')) <= ruleValue[1]
+        : true
     },
     message: '输入值必须介于 {0} 和 {1} 之间',
   },
@@ -145,7 +148,7 @@ RuleManager.ruleTypes = {
   },
   phoneNumber: {
     validate: function (value) {
-      return !isEmpty(value) ? /^1[3|4|5|7|8][0-9]{9}$/.test(value) : true
+      return !isEmpty(value) ? /^1[1-9][0-9]{9}$/.test(value) : true
     },
     message: '请输入正确的手机号',
   },

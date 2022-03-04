@@ -72,7 +72,6 @@ class Grid extends Component {
 
   _config() {
     this.nodeList = {}
-    const that = this
 
     // 切换分页 data数据更新时 此两项不重置会导致check表现出错
     this.rowsRefs = {}
@@ -99,6 +98,9 @@ class Grid extends Component {
       children: [
         this.props.columnsCustomizable && {
           component: 'Button',
+          ref: (c) => {
+            this.settingBtn = c
+          },
           icon: 'setting',
           size: 'small',
           // type: 'text',
@@ -107,7 +109,7 @@ class Grid extends Component {
           },
           tooltip: '列设置',
           onClick: () => {
-            that.showSetting()
+            this.showSetting()
           },
         },
         { component: GridHeader, line: line },
@@ -892,8 +894,10 @@ class Grid extends Component {
    */
   calcResizeCol(data) {
     this.header && this.header.calcResizeCol(data)
-    this.body && this.body.calcResizeCol(data)
-    this.footer && this.footer.calcResizeCol(data)
+    if (this.props.data && this.props.data.length) {
+      this.body && this.body.calcResizeCol(data)
+      this.footer && this.footer.calcResizeCol(data)
+    }
   }
 
   /**
