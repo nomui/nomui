@@ -8,6 +8,7 @@ define([], function () {
           {
             component: 'Checkbox',
             text: '同意',
+            value: true,
           },
         ],
       }

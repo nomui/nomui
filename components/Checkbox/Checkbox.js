@@ -4,15 +4,7 @@ import { extend } from '../util/index'
 
 class Checkbox extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      text: null,
-      valueText: {
-        checked: '是',
-        unchecked: '否',
-      },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Checkbox.defaults, props), ...mixins)
   }
 
   _config() {
@@ -86,7 +78,13 @@ class Checkbox extends Field {
     this.input.element.removeAttribute('disabled', 'disabled')
   }
 }
-
+Checkbox.defaults = {
+  text: null,
+  valueText: {
+    checked: '是',
+    unchecked: '否',
+  },
+}
 Component.register(Checkbox)
 
 export default Checkbox

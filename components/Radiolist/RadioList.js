@@ -5,12 +5,7 @@ import RadioOptionList from './RadioOptionList'
 
 class RadioList extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      options: [],
-      uistyle: 'radio',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(RadioList.defaults, props), ...mixins)
   }
 
   _config() {
@@ -128,7 +123,10 @@ class RadioList extends Field {
     return option
   }
 }
-
+RadioList.defaults = {
+  options: [],
+  uistyle: 'radio',
+}
 Component.register(RadioList)
 
 export default RadioList

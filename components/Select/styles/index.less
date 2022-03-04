@@ -7,12 +7,15 @@
       position: relative;
       min-height: @input-height-base;
       padding: @padding-y-base 24px @padding-y-base 12px;
-      color: #000 !important;
+      color: var(--nom-input-color);
       line-height: @line-height-computed;
-      background: white;
-      border: 1px solid gainsboro;
-      border-radius: 2px;
+      background: var(--nom-input-bg);
+      border: 1px solid var(--nom-border-color);
+      border-radius: var(--nom-border-radius);
       cursor: pointer;
+      &:not(.s-disabled):hover {
+        border-color: var(--nom-color-primary);
+      }
 
       .nom-select-single {
         overflow: hidden;
@@ -24,9 +27,11 @@
         .nom-list-item {
           display: flex;
           align-items: center;
-          padding: 0 2px;
-          background: #f5f5f5;
-          border: 1px solid #f0f0f0;
+          padding: var(--nom-select-selected-item-padding);
+          background: var(--nom-select-selected-item-bg);
+          border: 1px solid var(--nom-select-selected-item-border-color);
+          border-radius: var(--nom-border-radius);
+          cursor: default;
           .nom-select-item-content {
             margin-right: 4px;
           }
@@ -54,7 +59,7 @@
         top: 0;
         right: 8px;
         bottom: 0;
-        background: #fff;
+        background: var(--nom-input-bg);
         cursor: pointer;
       }
 
@@ -64,13 +69,13 @@
 
       .nom-select-placeholder {
         overflow: hidden;
-        color: #bfbfbf;
+        color: var(--nom-color-text-2);
         white-space: nowrap;
         text-overflow: ellipsis;
       }
 
       .s-disabled& {
-        background-color: #e9ecef;
+        background-color: var(--nom-input-bg-disabled);
         cursor: not-allowed;
         opacity: 1;
       }
@@ -92,12 +97,11 @@
     user-select: none;
 
     &:hover {
-      background-color: #eee;
+      .nom-preset-hover;
     }
 
     &.s-selected {
-      color: @white;
-      background-color: @primary;
+      .nom-preset-primary;
     }
   }
 }
@@ -108,7 +112,7 @@
     padding: 5px 30px;
 
     &:hover {
-      background-color: #eee;
+      .nom-preset-hover;
     }
 
     &.nom-selected::before {
@@ -116,7 +120,7 @@
       top: 50%;
       left: 16px;
       z-index: 2;
-      color: @primary;
+      color: var(--nom-color-primary);
       font-weight: bold;
       font-size: 16px;
       font-family: nom-icon;
