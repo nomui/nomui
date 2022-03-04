@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.51](https://github.com/nomui/nomui/compare/v1.0.0-alpha.50...v1.0.0-alpha.51) (2022-03-04)
+
+
+### Features
+
+* 校验规则支持更多的手机号段 ([1e11f3d](https://github.com/nomui/nomui/commit/1e11f3d2882e726dfce5b35588f3aa6f46123510))
+
+
+### Bug Fixes
+
+* **DatePicker:** 修复日期框可以手动输值的问题 ([bfc7bda](https://github.com/nomui/nomui/commit/bfc7bda122b38aea6de3c7e2653e3024728aeb8d))
+* **Grid:** 当data为[]时，拖动列宽导致报错 ([7781bda](https://github.com/nomui/nomui/commit/7781bdaf00c5bdbe70b609cee15468deee8c6da5))
+* **Grid:** 固定列的阴影会触发td点击事件 ([fbacfd1](https://github.com/nomui/nomui/commit/fbacfd116011d3267c069750876744e95c7537ca))
+* **Grid:** 列设置按钮在滚动式消失 ([a3a09ae](https://github.com/nomui/nomui/commit/a3a09aec484d91f4f84fc91a6b00ddd1aadf98e6))
+* **Grid:** 判断 sicky = window 时的情况 ([90e3b20](https://github.com/nomui/nomui/commit/90e3b2078012f3906698382142eb339c04a184ba))
+* **Textbox:** 日期控件readonly时，支持清除按钮 ([23ad1ab](https://github.com/nomui/nomui/commit/23ad1ab2606b04de658c03143313c4dcdf02654d))
+
 ## [1.0.0-alpha.50](https://github.com/nomui/nomui/compare/v1.0.0-alpha.49...v1.0.0-alpha.50) (2022-02-25)
 
 
