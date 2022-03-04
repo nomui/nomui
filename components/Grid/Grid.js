@@ -43,8 +43,7 @@ class Grid extends Component {
     this.sortOriginColumns = true
 
     this.sortUpdated = false
-    // 列设置弹窗 tree的数据
-    this.popupTreeData = this.originColumns
+
     this.filter = {}
     if (this.props.frozenLeftCols > 0) {
       this.props.rowCheckable && this.props.frozenLeftCols++
@@ -60,7 +59,6 @@ class Grid extends Component {
       })
       this.sortOriginColumns = true
       this.originColumns = [...c]
-      this.popupTreeData = this.originColumns
     }
     // 更新了data
     if (props.data && this.props) {
@@ -576,6 +574,8 @@ class Grid extends Component {
   }
 
   showSetting() {
+    // 列设置弹窗 tree的数据
+    this.popupTreeData = this.originColumns
     this.popup = new GridSettingPopup({
       align: 'center',
       alignTo: window,
