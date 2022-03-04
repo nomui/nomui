@@ -17301,9 +17301,10 @@ function _defineProperty2(obj, key, value) {
       this.originColumns.sort((curr, next) => {
         // 未设置field的列放在最后
         if (isNullish(curr.field)) return 1;
-        const currIdx = fields.indexOf(curr.field); // 此列被隐藏，往后排
-        if (currIdx === -1) return 1;
-        const nextIdx = fields.indexOf(next.field);
+        const currIdx = fields.indexOf(curr.field);
+        const nextIdx = fields.indexOf(next.field); // 此列被隐藏，往后排
+        if (currIdx === -1) return 1; // 下一列被隐藏，此列往前排
+        if (nextIdx === -1) return -1;
         return currIdx - nextIdx;
       });
       this.sortOriginColumns = false;
