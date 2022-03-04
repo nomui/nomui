@@ -11,31 +11,44 @@
 
       > span.checkbox {
         position: relative;
-        width: 1rem;
-        min-width: 1rem;
-        height: 1rem;
+        width: 16px;
+        min-width: 16px;
+        height: 16px;
         margin-top: calc(~'(1em * @{line-height-base} - 1em)/2 + 0px');
         margin-right: 0.5em;
-        background: none;
-        border: 1px solid #bdc3d4;
+        background-color: var(--nom-checkbox-bg);
+        border: 1px solid var(--nom-checkbox-border-color);
+        border-radius: var(--nom-checkbox-border-radius);
+        box-shadow: var(--nom-checkbox-box-shadow);
+        &:hover {
+          background-color: var(--nom-checkbox-bg-hover);
+        }
       }
 
       &.s-selected {
-        > span.checkbox::after {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          display: block;
-          width: 5px;
-          height: 10px;
-          margin-top: -6px;
-          margin-left: -2px;
-          line-height: @line-height-base;
-          border: solid #7281a4;
-          border-width: 0 2px 2px 0 !important;
-          -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
-          content: '';
+        > span.checkbox {
+          background-color: var(--nom-checkbox-checked-bg);
+          border-color: var(--nom-checkbox-checked-border-color);
+          &:hover {
+            background-color: var(--nom-checkbox-checked-bg-hover);
+          }
+          &::after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: block;
+            width: 5px;
+            height: 10px;
+            margin-top: -6px;
+            margin-left: -2px;
+            line-height: @line-height-base;
+            border: solid var(--nom-checkbox-checker-color);
+            border-width: 0 2px 2px 0 !important;
+            box-shadow: var(--nom-checkbox-checker-box-shadow);
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+            content: '';
+          }
         }
       }
     }

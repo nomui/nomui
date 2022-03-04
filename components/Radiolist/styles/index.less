@@ -19,30 +19,39 @@
 
             > span.radio {
               position: relative;
-              width: ~'calc(1em + 2px)';
-              height: ~'calc(1em + 2px)';
+              width: 16px;
+              min-width: 16px;
+              height: 16px;
+              min-height: inherit;
               margin-top: ~'calc((1em * @{line-height-base} - 1em - 2px)/2)';
               margin-right: 0.5rem;
-              background: none;
-              border: 1px solid #bdc3d4;
+              background-color: var(--nom-checkbox-bg);
+              border: 1px solid var(--nom-checkbox-border-color);
               border-radius: 50% !important;
-              min-height: inherit;
+              box-shadow: var(--nom-checkbox-box-shadow);
+              &:hover {
+                background-color: var(--nom-checkbox-bg-hover);
+              }
             }
-
             &.s-selected {
-              > span.radio::after {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                display: block;
-                width: 6px;
-                height: 6px;
-                margin-top: -3px;
-                margin-left: -3px;
-                background: #7281a4;
-                border: solid #7281a4;
-                border-radius: 100% !important;
-                content: '';
+              > span.radio {
+                background-color: var(--nom-checkbox-checked-bg);
+                border-color: var(--nom-checkbox-checked-border-color);
+                &::after {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  display: block;
+                  width: 6px;
+                  height: 6px;
+                  margin-top: -3px;
+                  margin-left: -3px;
+                  background: var(--nom-checkbox-checker-color);
+                  border: solid var(--nom-checkbox-checker-color);
+                  border-radius: 100% !important;
+                  box-shadow: var(--nom-checkbox-checker-box-shadow);
+                  content: '';
+                }
               }
             }
           }
@@ -67,13 +76,13 @@
             position: relative;
             display: inline-flex;
             margin-left: -1px;
-            background-color: @white;
             padding-top: @padding-y-base;
             padding-right: @padding-x-base;
             padding-bottom: @padding-y-base;
             padding-left: @padding-x-base;
             font-size: 1rem;
             line-height: @line-height-base;
+            background-color: @white;
             border: 1px solid #d9d9d9;
             cursor: pointer;
             transition: all 0.3s;
