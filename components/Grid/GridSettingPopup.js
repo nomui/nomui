@@ -77,7 +77,7 @@ class GridSettingPopup extends Modal {
                     })
                     return false
                   }
-                  that.grid.popupTreeData = that.tree.getData()
+                  that.grid.popupTreeData = that.grid.originColumns = that.tree.getData()
                   that.grid.handleColumnsSetting(list)
                 },
               },

@@ -40,6 +40,7 @@ class Grid extends Component {
     })
     this.pinColumns = []
     this.originColumns = [...this.props.columns]
+    this.sortOriginColumns = true
 
     this.sortUpdated = false
     // 列设置弹窗 tree的数据
@@ -57,6 +58,7 @@ class Grid extends Component {
       const c = props.columns.filter((n) => {
         return Object.keys(n)
       })
+      this.sortOriginColumns = true
       this.originColumns = [...c]
       this.popupTreeData = this.originColumns
     }
@@ -238,6 +240,8 @@ class Grid extends Component {
     let storeFields = localStorage.getItem(this._gridColumsStoreKey)
     if (storeFields && storeFields.length) {
       storeFields = JSON.parse(storeFields)
+      this.sortOriginColumns && this._sortOriginColumnsFromFields(storeFields)
+
       // 从originColumns 过滤storeFields存在的列
       this.setProps({ columns: this._getColsFromFields(this.originColumns, storeFields) })
       this._customColumnFlag = true
@@ -976,6 +980,22 @@ class Grid extends Component {
       }
       return acc
     }, [])
+  }
+
+  // 对originColumns排序
+  _sortOriginColumnsFromFields(fields = []) {
+    this.originColumns.sort((curr, next) => {
+      // 未设置field的列放在最后
+      if (isNullish(curr.field)) return 1
+
+      const currIdx = fields.indexOf(curr.field)
+      // 此列被隐藏，往后排
+      if (currIdx === -1) return 1
+
+      const nextIdx = fields.indexOf(next.field)
+      return currIdx - nextIdx
+    })
+    this.sortOriginColumns = false
   }
 
   _getColsFromFields(columns = [], fields = []) {
