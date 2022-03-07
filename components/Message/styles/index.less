@@ -1,58 +1,59 @@
 .nom-message {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 2px;
+  display: flex;
+  align-items: center;
+  background-color: var(--nom-layer-background-color);
+  border: var(--nom-layer-border);
+  border-radius: var(--nom-layer-border-radius);
+  box-shadow: var(--nom-layer-box-shadow);
 
-    .nom-message-icon {
-        padding: 6px;
-        font-size: 16px;
-        text-align: center;
+  .nom-message-icon {
+    padding-left: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  > .nom-message-content {
+    padding: 0.75rem;
+  }
+
+  &.p-type-info {
+    // background-color: var(--nom-color-info-light-default);
+    // border-color: var(--nom-color-info);
+
+    > .nom-message-icon {
+      color: var(--nom-color-info);
     }
+  }
 
-    >.nom-message-content {
-        padding: 6px;
+  &.p-type-success {
+    // background-color: var(--nom-color-success-light-default);
+    // border-color: var(--nom-color-success);
+
+    > .nom-message-icon {
+      color: var(--nom-color-success);
     }
+  }
 
-    &.p-type-info {
-        background-color: #f5fbfe;
-        border-color: #30b2f2;
+  &.p-type-warning {
+    // background-color: var(--nom-color-warning-light-default);
+    // border-color: var(--nom-color-warning);
 
-        >.nom-message-icon {
-            color: @info;
-        }
+    > .nom-message-icon {
+      color: var(--nom-color-warning);
     }
+  }
 
-    &.p-type-success {
-        background-color: #f4fcf5;
-        border-color: #1dbf38;
+  &.p-type-error {
+    // background-color: var(--nom-color-danger-light-default);
+    // border-color: var(--nom-color-danger);
 
-        >.nom-message-icon {
-            color: @success;
-        }
+    > .nom-message-icon {
+      color: var(--nom-color-danger);
     }
-
-    &.p-type-warning {
-        background-color: #fff9f2;
-        border-color: #ff9000;
-
-        >.nom-message-icon {
-            color: @warning;
-        }
-    }
-
-    &.p-type-error {
-        background-color: #fff7f7;
-        border-color: #ff5959;
-
-        >.nom-message-icon {
-            color: @danger;
-        }
-    }
+  }
 }
 
 .nom-message-nobg {
-    background-color: transparent;
-    border-color: transparent;
+  background-color: transparent;
+  border-color: transparent;
 }

@@ -3,20 +3,7 @@ import Layer from '../Layer/index'
 
 class Message extends Layer {
   constructor(props, ...mixins) {
-    const defaults = {
-      type: null,
-      icon: null,
-      content: null,
-      duration: 2,
-      closeToRemove: true,
-      position: {
-        my: 'center center',
-        at: 'center center',
-        of: window,
-      },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Message.defaults, props), ...mixins)
   }
 
   _config() {
@@ -63,7 +50,18 @@ class Message extends Layer {
     }
   }
 }
-
+Message.defaults = {
+  type: null,
+  icon: null,
+  content: null,
+  duration: 2,
+  closeToRemove: true,
+  position: {
+    my: 'center center',
+    at: 'center center',
+    of: window,
+  },
+}
 Component.register(Message)
 
 export default Message
