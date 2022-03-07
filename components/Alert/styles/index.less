@@ -7,12 +7,13 @@
 .nom-alert-content {
   width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
   padding: 1.5rem;
-  background-color: #fff;
+  background-color: var(--nom-layer-background-color);
   background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
+  border: var(--nom-layer-border);
+  border-radius: var(--nom-layer-border-radius);
   // Remove focus outline from opened modal
   outline: 0;
+  box-shadow: var(--nom-layer-box-shadow);
   // counteract the pointer-events: none; in the .modal-dialog
   pointer-events: auto;
 
@@ -55,7 +56,7 @@
     > .nom-alert-body {
       > .nom-alert-body-icon {
         > .nom-alert-icon {
-          color: @info;
+          color: var(--nom-color-info);
         }
       }
     }
@@ -65,7 +66,7 @@
     > .nom-alert-body {
       > .nom-alert-body-icon {
         > .nom-alert-icon {
-          color: @success;
+          color: var(--nom-color-success);
         }
       }
     }
@@ -75,7 +76,7 @@
     > .nom-alert-body {
       > .nom-alert-body-icon {
         > .nom-alert-icon {
-          color: @danger;
+          color: var(--nom-color-danger);
         }
       }
     }
@@ -85,7 +86,7 @@
     > .nom-alert-body {
       > .nom-alert-body-icon {
         > .nom-alert-icon {
-          color: @warning;
+          color: var(--nom-color-warning);
         }
       }
     }
