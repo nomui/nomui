@@ -22,6 +22,9 @@ class Message extends Layer {
     }
     this.props.content = Component.normalizeTemplateProps(this.props.content)
     this.setProps({
+      classes: {
+        'nom-message-static': !this.props.position,
+      },
       content: {
         classes: {
           'nom-message-content': true,
