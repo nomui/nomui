@@ -2,15 +2,9 @@
   display: flex;
   align-items: center;
   background-color: var(--nom-layer-background-color);
-  border: var(--nom-layer-border);
+  border: 1px solid var(--nom-border-color);
   border-radius: var(--nom-layer-border-radius);
-  box-shadow: var(--nom-layer-box-shadow);
 
-  &.nom-message-static {
-    // 非浮层时不渲染阴影,改为显示边框
-    border: 1px solid var(--nom-border-color);
-    box-shadow: none;
-  }
   .nom-message-icon {
     padding-left: 1rem;
     font-size: 1.5rem;
@@ -22,27 +16,42 @@
   }
 
   &.p-type-info {
+    background-color: var(--nom-color-info-light-default);
+    border: 1px solid var(--nom-color-info);
     > .nom-message-icon {
       color: var(--nom-color-info);
     }
   }
 
   &.p-type-success {
+    background-color: var(--nom-color-success-light-default);
+    border: 1px solid var(--nom-color-success);
     > .nom-message-icon {
       color: var(--nom-color-success);
     }
   }
 
   &.p-type-warning {
+    background-color: var(--nom-color-warning-light-default);
+    border: 1px solid var(--nom-color-warning);
     > .nom-message-icon {
       color: var(--nom-color-warning);
     }
   }
 
   &.p-type-error {
+    background-color: var(--nom-color-danger-light-default);
+    border: 1px solid var(--nom-color-danger);
     > .nom-message-icon {
       color: var(--nom-color-danger);
     }
+  }
+
+  // 非浮层时不渲染阴影,改为显示边框
+  &.nom-message-popup {
+    background-color: var(--nom-layer-background-color);
+    border: var(--nom-layer-border);
+    box-shadow: var(--nom-layer-box-shadow);
   }
 }
 

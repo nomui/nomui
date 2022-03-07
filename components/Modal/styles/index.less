@@ -25,7 +25,7 @@
   // gnarly iOS Safari bug: https://bugs.webkit.org/show_bug.cgi?id=158342
   // See also https://github.com/twbs/bootstrap/issues/17695
   overflow-y: auto;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: var(--nom-layer-drop-shadow-color);
   // Prevent Chrome on Windows from adding a focus outline. For details, see
   // https://github.com/twbs/bootstrap/pull/10951.
   outline: 0;
@@ -104,9 +104,10 @@
   pointer-events: auto;
 
   > .nom-panel-header {
+    padding: 0.5rem 1rem;
     border-bottom: 1px solid var(--nom-border-color);
-    border-top-left-radius: 0.3rem;
-    border-top-right-radius: 0.3rem;
+    border-top-left-radius: var(--nom-layer-border-radius);
+    border-top-right-radius: var(--nom-layer-border-radius);
   }
 
   > .nom-panel-body {
@@ -117,9 +118,10 @@
 
   > .nom-panel-footer {
     justify-content: flex-end;
+    padding: 0.5rem 1rem;
     border-top: 1px solid var(--nom-border-color);
-    border-bottom-right-radius: 0.3rem;
-    border-bottom-left-radius: 0.3rem;
+    border-bottom-right-radius: var(--nom-layer-border-radius);
+    border-bottom-left-radius: var(--nom-layer-border-radius);
   }
 }
 

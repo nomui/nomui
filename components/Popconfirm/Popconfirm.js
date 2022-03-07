@@ -45,9 +45,7 @@ class Popconfirm extends Popup {
               items: [
                 {
                   component: 'Button',
-                  styles: {
-                    color: 'primary',
-                  },
+                  type: 'primary',
 
                   text: okText,
                   onClick: () => {

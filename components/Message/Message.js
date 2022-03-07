@@ -23,7 +23,7 @@ class Message extends Layer {
     this.props.content = Component.normalizeTemplateProps(this.props.content)
     this.setProps({
       classes: {
-        'nom-message-static': !this.props.position,
+        'nom-message-popup': !!this.props.position,
       },
       content: {
         classes: {

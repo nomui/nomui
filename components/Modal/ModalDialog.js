@@ -6,7 +6,7 @@ import ModalContentMixin from './ModalContentMixin'
 class ModalDialog extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      children: { component: Panel },
+      children: { component: Panel, uistyle: 'plain' },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -63,6 +63,7 @@ class ModalDialog extends Component {
     return {
       component: Panel,
       fit: fit,
+      uistyle: 'plain',
       header: {
         nav: {},
         tools: [
@@ -86,9 +87,7 @@ class ModalDialog extends Component {
               Component.extendProps(
                 {
                   component: 'Button',
-                  styles: {
-                    color: 'primary',
-                  },
+                  type: 'primary',
                   text: okText,
                   onClick: () => {
                     modal._handleOk()
