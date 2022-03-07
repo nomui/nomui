@@ -4,18 +4,7 @@ import { isString } from '../util/index'
 
 class Tooltip extends Layer {
   constructor(props, ...mixins) {
-    const defaults = {
-      trigger: null,
-      align: 'top',
-      alignOuter: true,
-
-      closeOnClickOutside: true,
-
-      autoRender: false,
-      hidden: false,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Tooltip.defaults, props), ...mixins)
   }
 
   _created() {
@@ -114,7 +103,16 @@ class Tooltip extends Layer {
     return scroll_top
   }
 }
+Tooltip.defaults = {
+  trigger: null,
+  align: 'top',
+  alignOuter: true,
 
+  closeOnClickOutside: true,
+
+  autoRender: false,
+  hidden: false,
+}
 Component.mixin({
   _rendered: function () {
     if (this.props.tooltip) {

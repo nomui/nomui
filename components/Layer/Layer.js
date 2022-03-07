@@ -5,7 +5,10 @@ import LayerBackdrop from './LayerBackdrop'
 
 class Layer extends Component {
   constructor(props, ...mixins) {
-    super(Component.extendProps(Layer.defaults, props), ...mixins)
+    const defaults = {
+      within: window,
+    }
+    super(Component.extendProps(defaults, Layer.defaults, props), ...mixins)
   }
 
   _created() {
@@ -209,6 +212,7 @@ class Layer extends Component {
     }
   }
 }
+
 Layer.defaults = {
   align: null,
   alignTo: null,

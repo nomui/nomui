@@ -9,6 +9,7 @@
   align-items: start;
   justify-content: flex-start;
   max-height: 100vh;
+  padding: 1rem;
   overflow-y: hidden;
   &.nom-notification-align-topleft {
     top: 0;
@@ -30,15 +31,13 @@
 
 .nom-notification-content {
   width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
+  margin: 0.5rem;
   padding: 0.8rem;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
   // Remove focus outline from opened modal
   outline: 0;
   // counteract the pointer-events: none; in the .modal-dialog
   pointer-events: auto;
+  .nom-preset-layer;
 
   > .nom-notification-body {
     display: flex;
