@@ -753,6 +753,7 @@ class Grid extends Component {
           {
             width: 50,
             isChecker: true,
+            resizable: false,
             header: {
               component: Checkbox,
               plain: true,
@@ -896,11 +897,11 @@ class Grid extends Component {
    * 根据偏移量计算出width后再赋值
    * @param {*} data {field, distance}
    */
-  calcResizeCol(data) {
-    this.header && this.header.calcResizeCol(data)
+  calcResizeCol(data, thRef) {
+    this.header && this.header.calcResizeCol(data, thRef)
     if (this.props.data && this.props.data.length) {
-      this.body && this.body.calcResizeCol(data)
-      this.footer && this.footer.calcResizeCol(data)
+      this.body && this.body.calcResizeCol(data, thRef)
+      this.footer && this.footer.calcResizeCol(data, thRef)
     }
   }
 
@@ -1022,6 +1023,7 @@ class Grid extends Component {
           {
             width: 50,
             isTreeMark: true,
+            resizable: false,
             cellRender: ({ row, rowData }) => {
               return {
                 component: Icon,

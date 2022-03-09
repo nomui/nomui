@@ -158,6 +158,38 @@ class GridHeader extends Component {
       this.scrollbar.hide()
     }
   }
+
+  /**
+   * 存在多列固定，设置固定列的列宽时，对其余列的 style.left style.right 的重新计算处理
+   * @param {number} triggerTh 触发的 th 实例
+   */
+  _processFixedColumnSticky(triggerTh) {
+    const { table } = triggerTh
+    const { thRefs, grid } = table
+    const { colList } = table.colGroup
+    const { rowsRefs, footerTrRef } = grid
+
+    colList.forEach((col) => {
+      if (col.column.fixed) {
+        this._setItemCol(thRefs, rowsRefs, footerTrRef)(col)
+      }
+    })
+  }
+
+  //
+  _setItemCol(thRefs, rowsRefs, footerTrRef) {
+    return (col) => {
+      // header th的设置
+      thRefs[col.name] && thRefs[col.name].setStickyPosition(true)
+      // body td的设置
+      Object.keys(rowsRefs).forEach((key) => {
+        const { tdRefs } = rowsRefs[key]
+        tdRefs[col.name] && tdRefs[col.name].setStickyPosition(true)
+      })
+      // footer td的设置
+      footerTrRef.tdRefs[col.name] && footerTrRef.tdRefs[col.name].setStickyPosition(true)
+    }
+  }
 }
 
 Component.register(GridHeader)
