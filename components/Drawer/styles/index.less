@@ -60,139 +60,53 @@
 
   > .nom-drawer-content-wrapper{
     > .nom-drawer-body {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: @white;
+
+      > .nom-drawer-header {
         position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        width: 100%;
-        height: 100%;
+        padding: 16px 24px;
+        // font-weight: 500;
+        font-weight: font-weight-bold;
+        // font-size: 1.2rem;
+        font-size: @font-size-lg;
+        // border-bottom: 1px solid #f0f0f0;
+        border-bottom: @border-width solid #f0f0f0;
+        border-radius: 2px 2px 0 0;
+
+        > .nom-drawer-close-icon {
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index: 100;
+          // padding: 20px;
+          padding: @padding-xl;
+          // font-size: 16px;
+          font-size: @font-size-lg;
+          cursor: pointer;
+        }
+      }
+
+      > .nom-drawer-content {
+        flex-grow: 1;
+        padding: 24px;
         overflow: auto;
-        background-color: @white;
+        overflow-wrap: break-word;
+      }
 
-        > .nom-drawer-header {
-          position: relative;
-          padding: 16px 24px;
-          font-weight: 500;
-          font-size: 1.2rem;
-          border-bottom: 1px solid #f0f0f0;
-          border-radius: 2px 2px 0 0;
-
-          > .nom-drawer-close-icon {
-            position: absolute;
-            top: 0;
-            right: 0;
-            z-index: 100;
-            padding: 20px;
-            font-size: 16px;
-            cursor: pointer;
-          }
-        }
-
-        > .nom-drawer-content {
-          flex-grow: 1;
-          padding: 24px;
-          overflow: auto;
-          overflow-wrap: break-word;
-        }
-
-        > .nom-drawer-footer {
-          flex-shrink: 0;
-          padding: 10px 16px;
-          border-top: 1px solid rgb(240, 240, 240);
-        }
-     }
+      > .nom-drawer-footer {
+        flex-shrink: 0;
+        padding: 10px 16px;
+        border-top: 1px solid rgb(240, 240, 240);
+      }
+    }
   }
 
-  // &.nom-drawer-open {
-  //   width: 100%;
-  //   height: 100%;
-
-  //   &.nom-drawer-left {
-  //     > .nom-drawer-content-wrapper {
-  //       left: 0;
-  //       width: 256px;
-  //       height: 100%;
-  //     }
-  //   }
-
-  //   &.nom-drawer-right {
-  //     > .nom-drawer-content-wrapper {
-  //       right: 0;
-  //       width: 256px;
-  //       height: 100%;
-  //     }
-  //   }
-
-  //   &.nom-drawer-top {
-  //     > .nom-drawer-content-wrapper {
-  //       top: 0;
-  //       width: 100%;
-  //       height: 256px;
-  //     }
-  //   }
-
-  //   &.nom-drawer-bottom {
-  //     > .nom-drawer-content-wrapper {
-  //       bottom: 0;
-  //       width: 100%;
-  //       height: 256px;
-  //     }
-  //   }
-
-  //   .nom-drawer-mask {
-  //     position: absolute;
-  //     width: 100%;
-  //     height: 100%;
-  //     background-color: rgba(0, 0, 0, 0.45);
-  //     opacity: 1;
-  //   }
-
-  //   .nom-drawer-content-wrapper {
-  //     position: absolute;
-  //     .nom-drawer-body {
-  //       position: relative;
-  //       z-index: 1;
-  //       display: flex;
-  //       flex-direction: column;
-  //       flex-wrap: nowrap;
-  //       width: 100%;
-  //       height: 100%;
-  //       overflow: auto;
-  //       background-color: @white;
-
-  //       .nom-drawer-close-icon {
-  //         position: absolute;
-  //         top: 0;
-  //         right: 0;
-  //         z-index: 100;
-  //         padding: 20px;
-  //         font-size: 16px;
-  //         cursor: pointer;
-  //       }
-
-  //       .nom-drawer-header {
-  //         position: relative;
-  //         padding: 16px 24px;
-  //         font-weight: 500;
-  //         font-size: 1.2rem;
-  //         border-bottom: 1px solid #f0f0f0;
-  //         border-radius: 2px 2px 0 0;
-  //       }
-
-  //       .nom-drawer-content {
-  //         flex-grow: 1;
-  //         padding: 24px;
-  //         overflow: auto;
-  //         overflow-wrap: break-word;
-  //       }
-
-  //       .nom-drawer-footer {
-  //         flex-shrink: 0;
-  //         padding: 10px 16px;
-  //         border-top: 1px solid rgb(240, 240, 240);
-  //       }
-  //     }
-  //   }
-  // }
 }

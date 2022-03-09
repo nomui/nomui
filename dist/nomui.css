@@ -9224,8 +9224,8 @@ textarea .nom-textarea {
 .nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body > .nom-drawer-header {
   position: relative;
   padding: 16px 24px;
-  font-weight: 500;
-  font-size: 1.2rem;
+  font-weight: font-weight-bold;
+  font-size: 1.25rem;
   border-bottom: 1px solid #f0f0f0;
   border-radius: 2px 2px 0 0;
 }
@@ -9234,8 +9234,8 @@ textarea .nom-textarea {
   top: 0;
   right: 0;
   z-index: 100;
-  padding: 20px;
-  font-size: 16px;
+  padding: 1.5rem;
+  font-size: 1.25rem;
   cursor: pointer;
 }
 .nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body > .nom-drawer-content {
