@@ -246,6 +246,7 @@ class Uploader extends Field {
     }
 
     const before = beforeUpload(file, fileList)
+    if (this.inputFile && this.inputFile.element) this.inputFile.element.value = ''
     if (isPromiseLike(before)) {
       before.then((pFile) => {
         if (isBlobFile(pFile)) {
