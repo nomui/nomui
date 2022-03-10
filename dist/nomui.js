@@ -393,6 +393,12 @@ function _defineProperty2(obj, key, value) {
       return getComputedStyle(el, pseudo);
     }
     return el.currentStyle; // 兼容IE的写法
+  } // 处理火狐浏览器下的 sortable 拖拽打开新标签页的bug
+  function defaultSortableOndrop() {
+    document.body.ondrop = function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    };
   }
   var index$1 = /*#__PURE__*/ Object.freeze({
     __proto__: null,
@@ -418,6 +424,7 @@ function _defineProperty2(obj, key, value) {
     debounce: debounce,
     isNotEmptyArray: isNotEmptyArray,
     getStyle: getStyle,
+    defaultSortableOndrop: defaultSortableOndrop,
     isBrowerSupportSticky: isBrowerSupportSticky,
     isChrome49: isChrome49,
   }); // Events
@@ -8604,6 +8611,9 @@ function _defineProperty2(obj, key, value) {
         this.scrollTo(this.selectedItem);
       }
     }
+    _rendered() {
+      this.props.sortable && defaultSortableOndrop();
+    }
     /* 虚拟列表支持函数-start */ virCreated() {
       const { items, virtualSupport } = this.props;
       this.virtual = {
@@ -11259,6 +11269,7 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {
       this.autoCheckAll();
+      this.props.sortable && defaultSortableOndrop();
     }
     autoCheckAll() {
       if (!this.checkAllRef) return false;
@@ -16695,6 +16706,7 @@ function _defineProperty2(obj, key, value) {
       }
       this._processColumnsWidth();
       this._processAutoScroll();
+      this.props.rowSortable && defaultSortableOndrop();
     }
     getColumns() {
       return this.props.columns;
