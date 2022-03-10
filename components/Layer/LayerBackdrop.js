@@ -4,6 +4,9 @@ class LayerBackdrop extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       zIndex: 2,
+      classes: {
+        'nom-layer-backdrop': true,
+      },
       attrs: {
         style: {
           position: 'absolute',
@@ -13,8 +16,6 @@ class LayerBackdrop extends Component {
           height: '100%',
           overflow: 'hidden',
           userSelect: 'none',
-          opacity: 0.1,
-          background: '#000',
         },
       },
     }

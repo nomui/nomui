@@ -4,12 +4,7 @@ import { extend, isPlainObject } from '../util/index'
 
 class Group extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      fields: [],
-      fieldDefaults: { component: Field },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Group.defaults, props), ...mixins)
   }
 
   _config() {
@@ -181,6 +176,10 @@ class Group extends Field {
 
     return true
   }
+}
+Group.defaults = {
+  fields: [],
+  fieldDefaults: { component: Field },
 }
 
 Component.register(Group)

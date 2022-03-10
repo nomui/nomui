@@ -8,6 +8,7 @@ body {
 
   // Field & Textbox
   --nom-input-color: var(--nom-color-text-0);
+  --nom-input-placeholder-color: var(--nom-color-text-2);
   --nom-input-bg: var(--nom-color-bg-0);
   --nom-input-bg-disabled: var(--nom-color-disabled-bg);
   --nom-control-icon-color: var(--nom-color-text-1);
@@ -32,12 +33,22 @@ body {
 
   // layer
   --nom-layer-background-color: var(--nom-color-bg-0);
-  --nom-layer-border: 1px solid rgba(0, 0, 0, 0.0375);
+  --nom-layer-border: transparent;
   --nom-layer-border-radius: 6px;
-  --nom-layer-box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.15);
+  --nom-layer-box-shadow: 0 0 2px -1px rgba(0, 0, 0, 0.75), 0 10px 15px -5px rgba(0, 0, 0, 0.15);
+  --nom-layer-backdrop-color: rgba(0, 0, 0, 0.55);
 
   // Select
   --nom-select-selected-item-bg: var(--nom-color-bg-0);
   --nom-select-selected-item-border-color: var(--nom-border-color);
   --nom-select-selected-item-padding: 0 5px;
+
+  // Rate
+  --nom-rate-color: rgba(var(--nom-yellow-5), 1);
+  --nom-rate-color-muted: rgba(var(--nom-grey-2), 1);
+
+  // Tooltip
+  --nom-tooltip-background-color: rgba(var(--nom-grey-8), 1);
+  --nom-tooltip-color: var(--nom-color-bg-0);
+  --nom-tooltip-border-radius: 6px;
 }

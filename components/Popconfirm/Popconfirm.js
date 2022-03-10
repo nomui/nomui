@@ -4,18 +4,7 @@ import { isString } from '../util/index'
 
 class Popconfirm extends Popup {
   constructor(props, ...mixins) {
-    const defaults = {
-      triggerAction: 'click',
-      closeOnClickOutside: false,
-      content: null,
-      onConfirm: null,
-      okText: '是',
-      cancelText: '否',
-      icon: 'info-circle',
-      align: 'top left',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Popconfirm.defaults, props), ...mixins)
   }
 
   _config() {
@@ -56,9 +45,7 @@ class Popconfirm extends Popup {
               items: [
                 {
                   component: 'Button',
-                  styles: {
-                    color: 'primary',
-                  },
+                  type: 'primary',
 
                   text: okText,
                   onClick: () => {
@@ -91,7 +78,16 @@ class Popconfirm extends Popup {
     this.hide()
   }
 }
-
+Popconfirm.defaults = {
+  triggerAction: 'click',
+  closeOnClickOutside: false,
+  content: null,
+  onConfirm: null,
+  okText: '是',
+  cancelText: '否',
+  icon: 'info-circle',
+  align: 'top left',
+}
 Component.mixin({
   _rendered: function () {
     if (this.props.popconfirm) {
