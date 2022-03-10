@@ -4,14 +4,7 @@ import ConfirmContent from './ConfirmContent'
 
 class Confirm extends Modal {
   constructor(props, ...mixins) {
-    const defaults = {
-      icon: 'question-circle',
-      title: null,
-      description: null,
-      action: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Confirm.defaults, props), ...mixins)
   }
 
   _config() {
@@ -29,6 +22,12 @@ class Confirm extends Modal {
 
     super._config()
   }
+}
+Confirm.defaults = {
+  icon: 'question-circle',
+  title: null,
+  description: null,
+  action: null,
 }
 
 Component.register(Confirm)

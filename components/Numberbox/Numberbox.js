@@ -4,16 +4,7 @@ import { isNullish, isNumeric } from '../util/index'
 
 class Numberbox extends Textbox {
   constructor(props, ...mixins) {
-    const defaults = {
-      min: null,
-      max: null,
-      precision: -1,
-      maxPrecision: null,
-      limitInput: false,
-      allowClear: false,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Numberbox.defaults, props), ...mixins)
   }
 
   _config() {
@@ -179,7 +170,14 @@ class Numberbox extends Textbox {
     return this.input.getText()
   }
 }
-
+Numberbox.defaults = {
+  min: null,
+  max: null,
+  precision: -1,
+  maxPrecision: null,
+  limitInput: false,
+  allowClear: false,
+}
 Component.register(Numberbox)
 
 export default Numberbox

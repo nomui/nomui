@@ -6,19 +6,7 @@ import RateStar from './RateStar'
 
 class Rate extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      allowClear: true,
-      allowHalf: false,
-      disable: false,
-      rateIcon: '',
-      value: null,
-      disabled: false,
-      count: 5,
-      character: null,
-      tooltips: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Rate.defaults, props), ...mixins)
   }
 
   _config() {
@@ -103,7 +91,17 @@ class Rate extends Field {
     }
   }
 }
-
+Rate.defaults = {
+  allowClear: true,
+  allowHalf: false,
+  disable: false,
+  rateIcon: '',
+  value: null,
+  disabled: false,
+  count: 5,
+  character: null,
+  tooltips: null,
+}
 Component.register(Rate)
 
 export default Rate

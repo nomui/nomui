@@ -6,22 +6,7 @@ import ModalDialog from './ModalDialog'
 
 class Modal extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      content: {},
-      closeOnClickOutside: false,
-      okText: '确 定',
-      cancelText: '取 消',
-      onOk: (e) => {
-        e.sender.close()
-      },
-      onCancel: (e) => {
-        e.sender.close()
-      },
-      size: 'small',
-      centered: true,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Modal.defaults, props), ...mixins)
   }
 
   _created() {
@@ -131,7 +116,20 @@ class Modal extends Component {
     this._callHandler(this.props.onCancel)
   }
 }
-
+Modal.defaults = {
+  content: {},
+  closeOnClickOutside: false,
+  okText: '确 定',
+  cancelText: '取 消',
+  onOk: (e) => {
+    e.sender.close()
+  },
+  onCancel: (e) => {
+    e.sender.close()
+  },
+  size: 'small',
+  centered: true,
+}
 Component.register(Modal)
 
 export default Modal

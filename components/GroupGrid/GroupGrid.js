@@ -7,11 +7,7 @@ import GroupGridTr from './GroupGridTr'
 
 class GroupGrid extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      hideAction: false,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(GroupGrid.defaults, props), ...mixins)
   }
 
   _created() {
@@ -215,7 +211,9 @@ class GroupGrid extends Field {
     }
   }
 }
-
+GroupGrid.defaults = {
+  hideAction: false,
+}
 Object.defineProperty(GroupGrid.prototype, 'fields', {
   get: function () {
     return this.grid.getRows()

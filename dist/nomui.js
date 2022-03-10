@@ -2270,7 +2270,7 @@ function _defineProperty2(obj, key, value) {
   );
   Icon.add(
     "eye",
-    `<svg t="1610611013413" class="icon" viewBox="0 0 1603 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6374" width="1em" height="1em"><path d="M1439.175 502.814c-115.521-233.355-352.825-384.097-616.997-384.097-259.691-0.005-493.642 145.659-611.326 372.903-2.359 4.465-3.744 9.761-3.744 15.379 0 5.406 1.282 10.511 3.557 15.029 115.433 233.162 352.737 383.907 616.905 383.907 259.697 0 493.646-145.659 611.331-372.907 2.359-4.465 3.744-9.761 3.744-15.379 0-5.406-1.282-10.511-3.557-15.029zM827.575 839.278c-232.958 0-442.764-129.694-549.788-331.936 108.743-196.761 315.477-321.972 544.393-321.972 232.958 0 442.764 129.699 549.788 331.94-108.743 196.761-315.483 321.972-544.393 321.972zM952.959 642.373c33.654-34.619 52.858-81.01 52.858-130.373 0-103.084-83.211-186.644-185.849-186.644-102.641 0-185.849 83.561-185.849 186.644s83.206 186.644 185.849 186.644c14.662 0 26.548-11.937 26.548-26.663 0-14.722-11.885-26.661-26.548-26.661-73.319 0-132.749-59.689-132.749-133.319s59.431-133.319 132.749-133.319c73.314 0 132.745 59.689 132.745 133.319 0 35.301-13.68 68.366-37.751 93.123-4.671 4.809-7.55 11.38-7.55 18.623 0 7.469 3.061 14.223 7.998 19.075 4.777 4.693 11.327 7.588 18.553 7.588 7.449 0 14.181-3.078 18.991-8.031z" p-id="6375"></path></svg>`,
+    `<svg t="1610611013413" class="icon" viewBox="0 0 1603 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6374" width="1em" height="1em"  fill="currentColor"><path d="M1439.175 502.814c-115.521-233.355-352.825-384.097-616.997-384.097-259.691-0.005-493.642 145.659-611.326 372.903-2.359 4.465-3.744 9.761-3.744 15.379 0 5.406 1.282 10.511 3.557 15.029 115.433 233.162 352.737 383.907 616.905 383.907 259.697 0 493.646-145.659 611.331-372.907 2.359-4.465 3.744-9.761 3.744-15.379 0-5.406-1.282-10.511-3.557-15.029zM827.575 839.278c-232.958 0-442.764-129.694-549.788-331.936 108.743-196.761 315.477-321.972 544.393-321.972 232.958 0 442.764 129.699 549.788 331.94-108.743 196.761-315.483 321.972-544.393 321.972zM952.959 642.373c33.654-34.619 52.858-81.01 52.858-130.373 0-103.084-83.211-186.644-185.849-186.644-102.641 0-185.849 83.561-185.849 186.644s83.206 186.644 185.849 186.644c14.662 0 26.548-11.937 26.548-26.663 0-14.722-11.885-26.661-26.548-26.661-73.319 0-132.749-59.689-132.749-133.319s59.431-133.319 132.749-133.319c73.314 0 132.745 59.689 132.745 133.319 0 35.301-13.68 68.366-37.751 93.123-4.671 4.809-7.55 11.38-7.55 18.623 0 7.469 3.061 14.223 7.998 19.075 4.777 4.693 11.327 7.588 18.553 7.588 7.449 0 14.181-3.078 18.991-8.031z" p-id="6375"></path></svg>`,
     cat
   );
   Icon.add(
@@ -2703,7 +2703,7 @@ function _defineProperty2(obj, key, value) {
   };
   class ModalDialog extends Component {
     constructor(props, ...mixins) {
-      const defaults = { children: { component: Panel } };
+      const defaults = { children: { component: Panel, uistyle: "plain" } };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
@@ -2770,6 +2770,7 @@ function _defineProperty2(obj, key, value) {
       return {
         component: Panel,
         fit: fit,
+        uistyle: "plain",
         header: {
           nav: {},
           tools: [
@@ -2791,7 +2792,7 @@ function _defineProperty2(obj, key, value) {
                 Component.extendProps(
                   {
                     component: "Button",
-                    styles: { color: "primary" },
+                    type: "primary",
                     text: okText,
                     onClick: () => {
                       modal._handleOk();
@@ -2846,21 +2847,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(ModalDialog);
   class Modal extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        content: {},
-        closeOnClickOutside: false,
-        okText: "确 定",
-        cancelText: "取 消",
-        onOk: (e) => {
-          e.sender.close();
-        },
-        onCancel: (e) => {
-          e.sender.close();
-        },
-        size: "small",
-        centered: true,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Modal.defaults, props), ...mixins);
     }
     _created() {
       this._scoped = true;
@@ -2948,6 +2935,20 @@ function _defineProperty2(obj, key, value) {
       this._callHandler(this.props.onCancel);
     }
   }
+  Modal.defaults = {
+    content: {},
+    closeOnClickOutside: false,
+    okText: "确 定",
+    cancelText: "取 消",
+    onOk: (e) => {
+      e.sender.close();
+    },
+    onCancel: (e) => {
+      e.sender.close();
+    },
+    size: "small",
+    centered: true,
+  };
   Component.register(Modal);
   class Button extends Component {
     constructor(props, ...mixins) {
@@ -3046,7 +3047,7 @@ function _defineProperty2(obj, key, value) {
         : null;
       const okButtonProps = {
         component: Button,
-        styles: { color: "primary" },
+        type: "primary",
         text: okText,
         onClick: () => {
           alertInst._handleOk();
@@ -3085,18 +3086,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(AlertContent);
   class Alert extends Modal {
     constructor(props, ...mixins) {
-      const defaults = {
-        type: "default",
-        icon: null,
-        title: null,
-        description: null,
-        okText: "知道了",
-        onOk: (e) => {
-          e.sender.close();
-        },
-        action: null,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Alert.defaults, props), ...mixins);
     }
     _config() {
       const { type, icon, title, description, okText, action } = this.props;
@@ -3114,6 +3104,17 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
   }
+  Alert.defaults = {
+    type: "default",
+    icon: null,
+    title: null,
+    description: null,
+    okText: "知道了",
+    onOk: (e) => {
+      e.sender.close();
+    },
+    action: null,
+  };
   Component.register(Alert);
   class Anchor extends Component {
     constructor(props, ...mixins) {
@@ -3599,6 +3600,7 @@ function _defineProperty2(obj, key, value) {
     constructor(props, ...mixins) {
       const defaults = {
         zIndex: 2,
+        classes: { "nom-layer-backdrop": true },
         attrs: {
           style: {
             position: "absolute",
@@ -3608,8 +3610,6 @@ function _defineProperty2(obj, key, value) {
             height: "100%",
             overflow: "hidden",
             userSelect: "none",
-            opacity: 0.1,
-            background: "#000",
           },
         },
       };
@@ -3625,23 +3625,8 @@ function _defineProperty2(obj, key, value) {
   Component.register(LayerBackdrop);
   class Layer extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        align: null,
-        alignTo: null,
-        alignOuter: false,
-        within: window,
-        collision: "flipfit",
-        onClose: null,
-        onHide: null,
-        onShow: null,
-        closeOnClickOutside: false,
-        closeToRemove: false,
-        position: null,
-        hidden: false,
-        backdrop: false,
-        closeOnClickBackdrop: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      const defaults = { within: window };
+      super(Component.extendProps(defaults, Layer.defaults, props), ...mixins);
     }
     _created() {
       this.relativeElements = [];
@@ -3823,18 +3808,26 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  Layer.defaults = {
+    align: null,
+    alignTo: null,
+    alignOuter: false,
+    within: window,
+    collision: "flipfit",
+    onClose: null,
+    onHide: null,
+    onShow: null,
+    closeOnClickOutside: false,
+    closeToRemove: false,
+    position: null,
+    hidden: false,
+    backdrop: false,
+    closeOnClickBackdrop: false,
+  };
   Component.register(Layer);
   class Tooltip extends Layer {
     constructor(props, ...mixins) {
-      const defaults = {
-        trigger: null,
-        align: "top",
-        alignOuter: true,
-        closeOnClickOutside: true,
-        autoRender: false,
-        hidden: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Tooltip.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -3925,6 +3918,14 @@ function _defineProperty2(obj, key, value) {
       return scroll_top;
     }
   }
+  Tooltip.defaults = {
+    trigger: null,
+    align: "top",
+    alignOuter: true,
+    closeOnClickOutside: true,
+    autoRender: false,
+    hidden: false,
+  };
   Component.mixin({
     _rendered: function () {
       if (this.props.tooltip) {
@@ -11497,13 +11498,7 @@ function _defineProperty2(obj, key, value) {
   }
   class CheckboxTree extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        options: [],
-        showCheckAll: false,
-        checkAllText: "全选",
-        treeDataFields: {},
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(CheckboxTree.defaults, props), ...mixins);
     }
     _config() {
       const {
@@ -11611,6 +11606,12 @@ function _defineProperty2(obj, key, value) {
       return retOptions;
     }
   }
+  CheckboxTree.defaults = {
+    options: [],
+    showCheckAll: false,
+    checkAllText: "全选",
+    treeDataFields: {},
+  };
   Component.register(CheckboxTree);
   class CollapseItem extends Component {
     constructor(props, ...mixins) {
@@ -11772,7 +11773,7 @@ function _defineProperty2(obj, key, value) {
         : null;
       const okButtonProps = {
         component: Button,
-        styles: { color: "primary" },
+        type: "primary",
         text: okText,
         onClick: () => {
           confirmInst._handleOk();
@@ -11813,13 +11814,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(ConfirmContent);
   class Confirm extends Modal {
     constructor(props, ...mixins) {
-      const defaults = {
-        icon: "question-circle",
-        title: null,
-        description: null,
-        action: null,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Confirm.defaults, props), ...mixins);
     }
     _config() {
       const { onOk } = this.props;
@@ -11834,6 +11829,12 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
   }
+  Confirm.defaults = {
+    icon: "question-circle",
+    title: null,
+    description: null,
+    action: null,
+  };
   Component.register(Confirm);
   class Container extends Component {
     constructor(props, ...mixins) {
@@ -14168,8 +14169,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(DatePicker);
   class Group extends Field {
     constructor(props, ...mixins) {
-      const defaults = { fields: [], fieldDefaults: { component: Field } };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Group.defaults, props), ...mixins);
     }
     _config() {
       this._addPropStyle("inline", "striped", "line", "nowrap");
@@ -14317,6 +14317,7 @@ function _defineProperty2(obj, key, value) {
       return true;
     }
   }
+  Group.defaults = { fields: [], fieldDefaults: { component: Field } };
   Component.register(Group);
   class DateRangePicker extends Group {
     constructor(props, ...mixins) {
@@ -14896,10 +14897,10 @@ function _defineProperty2(obj, key, value) {
   Component.register(Flex);
   class Form extends Group {
     constructor(props, ...mixins) {
-      const defaults = { labelAlign: "top" };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Form.defaults, props), ...mixins);
     }
   }
+  Form.defaults = { labelAlign: "top" };
   Component.register(Form);
   class Spinner extends Component {
     constructor(props, ...mixins) {
@@ -14914,13 +14915,11 @@ function _defineProperty2(obj, key, value) {
   Component.register(Spinner);
   class Loading extends Layer {
     constructor(props, ...mixins) {
-      const defaults = {
-        align: "center",
-        container: document.body,
-        backdrop: true,
-        collision: "none",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      const defaults = { container: document.body };
+      super(
+        Component.extendProps(defaults, Loading.defaults, props),
+        ...mixins
+      );
     }
     _create() {
       this.setProps({
@@ -14938,6 +14937,7 @@ function _defineProperty2(obj, key, value) {
       super._remove();
     }
   }
+  Loading.defaults = { align: "center", backdrop: true, collision: "none" };
   Component.register(Loading);
   class Td extends Component {
     constructor(props, ...mixins) {
@@ -17719,8 +17719,7 @@ function _defineProperty2(obj, key, value) {
   }
   class GroupGrid extends Field {
     constructor(props, ...mixins) {
-      const defaults = { hideAction: false };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(GroupGrid.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -17900,6 +17899,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  GroupGrid.defaults = { hideAction: false };
   Object.defineProperty(GroupGrid.prototype, "fields", {
     get: function () {
       return this.grid.getRows();
@@ -17908,11 +17908,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(GroupGrid);
   class GroupList extends Group {
     constructor(props, ...mixins) {
-      const defaults = {
-        fieldDefaults: { component: Group },
-        hideAction: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(GroupList.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -18013,19 +18009,14 @@ function _defineProperty2(obj, key, value) {
       this._onValueChange();
     }
   }
+  GroupList.defaults = {
+    fieldDefaults: { component: Group },
+    hideAction: false,
+  };
   Component.register(GroupList);
   class MaskInfo extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        tag: "span",
-        type: null,
-        text: null,
-        mask: true,
-        icon: true,
-        empty: null,
-        showTitle: true,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(MaskInfo.defaults, props), ...mixins);
     }
     _created() {
       this.originText = this.props.text;
@@ -18153,11 +18144,19 @@ function _defineProperty2(obj, key, value) {
       return newText;
     }
   }
+  MaskInfo.defaults = {
+    tag: "span",
+    type: null,
+    text: null,
+    mask: true,
+    icon: true,
+    empty: null,
+    showTitle: true,
+  };
   Component.register(MaskInfo);
   class MaskInfoField extends Field {
     constructor(props, ...mixins) {
-      const defaults = { value: null };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(MaskInfoField.defaults, props), ...mixins);
     }
     _config() {
       const { tag, type, text, mask, icon, empty, showTitle } = this.props;
@@ -18184,6 +18183,7 @@ function _defineProperty2(obj, key, value) {
       return this.props.value;
     }
   }
+  MaskInfoField.defaults = { value: null };
   Component.register(MaskInfoField);
   class MenuItem extends Component {
     constructor(props, ...mixins) {
@@ -18610,15 +18610,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Menu);
   class Message extends Layer {
     constructor(props, ...mixins) {
-      const defaults = {
-        type: null,
-        icon: null,
-        content: null,
-        duration: 2,
-        closeToRemove: true,
-        position: { my: "center center", at: "center center", of: window },
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Message.defaults, props), ...mixins);
     }
     _config() {
       this._addPropStyle("type");
@@ -18636,7 +18628,10 @@ function _defineProperty2(obj, key, value) {
         });
       }
       this.props.content = Component.normalizeTemplateProps(this.props.content);
-      this.setProps({ content: { classes: { "nom-message-content": true } } });
+      this.setProps({
+        classes: { "nom-message-popup": !!this.props.position },
+        content: { classes: { "nom-message-content": true } },
+      });
       this.setProps({ children: [iconProps, this.props.content] });
       super._config();
     }
@@ -18653,6 +18648,14 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  Message.defaults = {
+    type: null,
+    icon: null,
+    content: null,
+    duration: 2,
+    closeToRemove: true,
+    position: { my: "center center", at: "center center", of: window },
+  };
   Component.register(Message); // Thanks to https://github.com/andreypopp/react-textarea-autosize/
   /**
    * calculateNodeHeight(uiTextNode)
@@ -18872,16 +18875,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Textarea);
   class MultilineTextbox extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        autofocus: false,
-        autoSize: false, // boolean|{minRows:number,maxRows:number}
-        placeholder: null,
-        value: null,
-        maxlength: null,
-        rows: null,
-        readonly: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(MultilineTextbox.defaults, props), ...mixins);
     }
     _config() {
       const that = this;
@@ -18952,6 +18946,15 @@ function _defineProperty2(obj, key, value) {
       this.textarea.enable();
     }
   }
+  MultilineTextbox.defaults = {
+    autofocus: false,
+    autoSize: false, // boolean|{minRows:number,maxRows:number}
+    placeholder: null,
+    value: null,
+    maxlength: null,
+    rows: null,
+    readonly: false,
+  };
   Component.register(MultilineTextbox);
   class NavbarCaption extends Component {
     // constructor(props, ...mixins) {
@@ -19146,19 +19149,7 @@ function _defineProperty2(obj, key, value) {
     //   }
     // }
     constructor(props, ...mixins) {
-      const defaults = Object.assign(
-        {},
-        Notification.NOMUI_NOTIFICATION_DEFAULTS,
-        {
-          // type:'',
-          closeIcon: "close", // alignTo: document.body,
-          title: "",
-          description: "", // btn:boolean||{text:''},
-          // closeIcon:{},
-          key: newGuid(), // onClose:()=>{},
-        }
-      );
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Notification.defaults, props), ...mixins);
     }
     static open(config) {
       let align = "topRight";
@@ -19316,18 +19307,22 @@ function _defineProperty2(obj, key, value) {
   });
   _defineProperty2(Notification, "NOMUI_NOTIFICATION_CONTAINER", null);
   _defineProperty2(Notification, "NOMUI_NOTIFICATION_INSTANCES", {});
+  Notification.defaults = Object.assign(
+    {},
+    Notification.NOMUI_NOTIFICATION_DEFAULTS,
+    {
+      // type:'',
+      closeIcon: "close", // alignTo: document.body,
+      title: "",
+      description: "", // btn:boolean||{text:''},
+      // closeIcon:{},
+      key: newGuid(), // onClose:()=>{},
+    }
+  );
   Component.register(Notification);
   class Numberbox extends Textbox {
     constructor(props, ...mixins) {
-      const defaults = {
-        min: null,
-        max: null,
-        precision: -1,
-        maxPrecision: null,
-        limitInput: false,
-        allowClear: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Numberbox.defaults, props), ...mixins);
     }
     _config() {
       let { precision, maxPrecision } = this.props;
@@ -19454,6 +19449,14 @@ function _defineProperty2(obj, key, value) {
       return this.input.getText();
     }
   }
+  Numberbox.defaults = {
+    min: null,
+    max: null,
+    precision: -1,
+    maxPrecision: null,
+    limitInput: false,
+    allowClear: false,
+  };
   Component.register(Numberbox);
   const SPINNER_POSITION = {
     left: "left",
@@ -20733,8 +20736,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(PartialDateRangePicker);
   class Password extends Textbox {
     constructor(props, ...mixins) {
-      const defaults = { allowClear: false };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Password.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -20807,20 +20809,11 @@ function _defineProperty2(obj, key, value) {
       return val;
     }
   }
+  Password.defaults = { allowClear: false };
   Component.register(Password);
   class Popconfirm extends Popup {
     constructor(props, ...mixins) {
-      const defaults = {
-        triggerAction: "click",
-        closeOnClickOutside: false,
-        content: null,
-        onConfirm: null,
-        okText: "是",
-        cancelText: "否",
-        icon: "info-circle",
-        align: "top left",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Popconfirm.defaults, props), ...mixins);
     }
     _config() {
       const that = this;
@@ -20849,7 +20842,7 @@ function _defineProperty2(obj, key, value) {
                 items: [
                   {
                     component: "Button",
-                    styles: { color: "primary" },
+                    type: "primary",
                     text: okText,
                     onClick: () => {
                       that._handleOk();
@@ -20878,6 +20871,16 @@ function _defineProperty2(obj, key, value) {
       this.hide();
     }
   }
+  Popconfirm.defaults = {
+    triggerAction: "click",
+    closeOnClickOutside: false,
+    content: null,
+    onConfirm: null,
+    okText: "是",
+    cancelText: "否",
+    icon: "info-circle",
+    align: "top left",
+  };
   Component.mixin({
     _rendered: function () {
       if (this.props.popconfirm) {
@@ -21727,18 +21730,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(RateStar);
   class Rate extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        allowClear: true,
-        allowHalf: false,
-        disable: false,
-        rateIcon: "",
-        value: null,
-        disabled: false,
-        count: 5,
-        character: null,
-        tooltips: null,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Rate.defaults, props), ...mixins);
     }
     _config() {
       this.rate = this;
@@ -21805,6 +21797,17 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  Rate.defaults = {
+    allowClear: true,
+    allowHalf: false,
+    disable: false,
+    rateIcon: "",
+    value: null,
+    disabled: false,
+    count: 5,
+    character: null,
+    tooltips: null,
+  };
   Component.register(Rate);
   const UnAuthorized = `#<svg width="251" height="294">
 <g fill="none" fillRule="evenodd">
@@ -23341,8 +23344,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Slider);
   class StaticText extends Field {
     constructor(props, ...mixins) {
-      const defaults = { value: null };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(StaticText.defaults, props), ...mixins);
     }
     _config() {
       this.setProps({ control: { children: this.props.value } });
@@ -23355,6 +23357,7 @@ function _defineProperty2(obj, key, value) {
       return this.props.value;
     }
   }
+  StaticText.defaults = { value: null };
   Component.register(StaticText);
   const STATUS = {
     WAIT: "wait",
@@ -24715,23 +24718,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(TreeSelectPopup);
   class TreeSelect extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        options: [],
-        allowClear: false,
-        placeholder: "请选择", // tree的select事件的配置
-        treeSelectable: {},
-        multiple: false, // 复选框模式，即为多选
-        treeCheckable: false,
-        treeDataFields: {
-          key: "value",
-          text: "text",
-          children: "children",
-          parentKey: "parentKey",
-        },
-        onlyleaf: false,
-        showArrow: true,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(TreeSelect.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -24911,7 +24898,8 @@ function _defineProperty2(obj, key, value) {
           if (curOption) {
             items.push({
               component: "Tag",
-              type: "round", // size: 'xs',
+              type: "square",
+              size: "xs",
               text: curOption[treeDataFields.text],
               key: curOption[treeDataFields.key],
               removable:
@@ -24995,6 +24983,22 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  TreeSelect.defaults = {
+    options: [],
+    allowClear: false,
+    placeholder: "请选择", // tree的select事件的配置
+    treeSelectable: {},
+    multiple: false, // 复选框模式，即为多选
+    treeCheckable: false,
+    treeDataFields: {
+      key: "value",
+      text: "text",
+      children: "children",
+      parentKey: "parentKey",
+    },
+    onlyleaf: false,
+    showArrow: true,
+  };
   Component.register(TreeSelect);
   const DEFAULT_ACCEPT =
     "image/*,application/msword,application/pdf,application/x-rar-compressed,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.ms-works,application/zip,audio/*,video/*,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/vnd.ms-word.document.macroEnabled.12,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.template.macroEnabled.12,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.ms-powerpoint.addin.macroEnabled.12,application/vnd.ms-powerpoint.presentation.macroEnabled.12,application/vnd.ms-powerpoint.slideshow.macroEnabled.12,application/csv";

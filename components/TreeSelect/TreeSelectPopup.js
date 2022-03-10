@@ -93,6 +93,7 @@ class TreeSelectPopup extends Popup {
 
   _show() {
     super._show()
+
     this.selectControl.searchBox && this.selectControl.searchBox.focus()
   }
 }

@@ -3,11 +3,7 @@ import Field from '../Field/index'
 
 class MaskInfoField extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      value: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(MaskInfoField.defaults, props), ...mixins)
   }
 
   _config() {
@@ -39,7 +35,9 @@ class MaskInfoField extends Field {
     return this.props.value
   }
 }
-
+MaskInfoField.defaults = {
+  value: null,
+}
 Component.register(MaskInfoField)
 
 export default MaskInfoField

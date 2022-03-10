@@ -6,26 +6,7 @@ import TreeSelectPopup from './TreeSelectPopup'
 
 class TreeSelect extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      options: [],
-      allowClear: false,
-      placeholder: '请选择',
-      // tree的select事件的配置
-      treeSelectable: {},
-      multiple: false,
-      // 复选框模式，即为多选
-      treeCheckable: false,
-      treeDataFields: {
-        key: 'value',
-        text: 'text',
-        children: 'children',
-        parentKey: 'parentKey',
-      },
-      onlyleaf: false,
-      showArrow: true,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(TreeSelect.defaults, props), ...mixins)
   }
 
   _created() {
@@ -236,8 +217,8 @@ class TreeSelect extends Field {
         if (curOption) {
           items.push({
             component: 'Tag',
-            type: 'round',
-            // size: 'xs',
+            type: 'square',
+            size: 'xs',
             text: curOption[treeDataFields.text],
             key: curOption[treeDataFields.key],
             removable:
@@ -333,6 +314,25 @@ class TreeSelect extends Field {
       isNewValueClear ? this.placeholder.show() : this.placeholder.hide()
     }
   }
+}
+
+TreeSelect.defaults = {
+  options: [],
+  allowClear: false,
+  placeholder: '请选择',
+  // tree的select事件的配置
+  treeSelectable: {},
+  multiple: false,
+  // 复选框模式，即为多选
+  treeCheckable: false,
+  treeDataFields: {
+    key: 'value',
+    text: 'text',
+    children: 'children',
+    parentKey: 'parentKey',
+  },
+  onlyleaf: false,
+  showArrow: true,
 }
 
 Component.register(TreeSelect)

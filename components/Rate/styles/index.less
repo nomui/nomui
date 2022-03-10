@@ -2,11 +2,11 @@
   .nom-rate-content {
     display: flex;
     align-items: center;
+    height: 100%;
     margin: 0;
     padding: 0;
-    height: 100%;
-    color: @yellow;
-    font-size: 20px;
+    color: var(--nom-rate-color);
+    font-size: calc(1rem + 6px);
     line-height: unset;
     list-style: none;
     outline: none;
@@ -24,7 +24,7 @@
     .nom-rate-star-second {
       display: flex;
       align-items: center;
-      color: @oc-gray-3;
+      color: var(--nom-rate-color-muted);
       transition: all 0.3s;
       -webkit-user-select: none;
       -moz-user-select: none;
@@ -53,9 +53,9 @@
 
   .nom-rate-star-first {
     position: absolute;
-    width: 50%;
     top: 0;
     left: 0;
+    width: 50%;
     overflow: hidden;
     opacity: 0;
   }
