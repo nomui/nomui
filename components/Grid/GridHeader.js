@@ -168,13 +168,11 @@ class GridHeader extends Component {
     const { thRefs } = table
     const { colList } = table.colGroup
 
-    console.time('col')
     colList.forEach((col) => {
       if (col.column.fixed) {
         thRefs[col.name] && thRefs[col.name].setStickyPosition(true)
       }
     })
-    console.timeEnd('col')
   }
 }
 
