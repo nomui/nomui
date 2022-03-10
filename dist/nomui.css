@@ -8768,6 +8768,9 @@ textarea .nom-textarea {
   height: 100px;
   margin-bottom: 8px;
 }
+.nom-empty-image .nom-empty-img-normal {
+  transform: translateX(8px);
+}
 .nom-empty-image img {
   height: 100%;
 }
