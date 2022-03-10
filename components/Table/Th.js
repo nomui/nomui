@@ -209,21 +209,18 @@ class Th extends Component {
           function () {
             const mask = that.table.grid.highlightMask
             mask &&
+              !that.mouseDowning &&
               mask.update({
                 attrs: {
                   style: {
+                    zIndex: that.props.column.fixed ? 99 : null,
                     left: `${this.offsetLeft}px`,
                     width: `${this.offsetWidth}px`,
                   },
                 },
               })
           },
-        onmouseleave:
-          this.table.grid &&
-          function () {
-            const mask = that.table.grid.highlightMask
-            mask && mask.update({ attrs: { style: { width: 0 } } })
-          },
+        onmouseleave: this._hideHighLightMask.bind(this),
       },
     })
   }
@@ -262,6 +259,9 @@ class Th extends Component {
     resizer.onmousedown = function (evt) {
       const startX = evt.clientX
       that.lastDistance = 0
+      that._hideHighLightMask()
+      that.mouseDowning = true
+
       document.onmousemove = function (e) {
         const endX = e.clientX
         const moveLen = endX - startX
@@ -274,6 +274,7 @@ class Th extends Component {
         that.lastDistance = moveLen
       }
       document.onmouseup = function () {
+        that.mouseDowning = false
         const grid = that.table.grid
         if (that.resizable && grid.props.columnResizable.cache) {
           grid.storeColsWidth(that.props.column.field)
@@ -292,6 +293,12 @@ class Th extends Component {
         document.onmouseup = null
       }
     }
+  }
+
+  _hideHighLightMask() {
+    if (!this.table.grid) return
+    const mask = this.table.grid.highlightMask
+    mask && mask.update({ attrs: { style: { width: 0 } } })
   }
 
   onSortChange() {
