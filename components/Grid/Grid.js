@@ -1183,6 +1183,7 @@ Grid.defaults = {
   autoMergeColumns: null,
   columnResizable: false,
   // columnResizable.cache: 设置的列宽保存至localstorage，cache的值为对应的key
+  // columnResizable.allowFixedCol: 固定列是否允许被拖动(当 data太多时拖动，会造成渲染卡顿, 此时可设置false关闭)
   striped: false,
   showTitle: false,
   ellipsis: false,

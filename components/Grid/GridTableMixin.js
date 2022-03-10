@@ -11,7 +11,7 @@ export default {
         result = 60
       }
       col.update({ column: { width: result } })
-      if (this.componentType === 'GridHeader') {
+      if (this.componentType === 'GridHeader' && col.props.column.fixed) {
         // 只在Header 调用 无需放在 mixin 中
         this._processFixedColumnSticky(thRef)
       }
