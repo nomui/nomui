@@ -15,7 +15,6 @@ class Tr extends Component {
   _created() {
     this.tbody = this.parent
     this.table = this.tbody.table
-    this.tdRefs = {}
 
     // keyField(id) 不为 undefined, null
     const dataHaskeyField = !isNullish(this.props.data[this.table.props.keyField])

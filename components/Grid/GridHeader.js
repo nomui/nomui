@@ -165,32 +165,16 @@ class GridHeader extends Component {
    */
   _processFixedColumnSticky(triggerTh) {
     const { table } = triggerTh
-    const { thRefs, grid } = table
+    const { thRefs } = table
     const { colList } = table.colGroup
-    const { rowsRefs, footerTrRef } = grid
 
+    console.time('col')
     colList.forEach((col) => {
       if (col.column.fixed) {
-        this._setItemCol(thRefs, rowsRefs, footerTrRef)(col)
+        thRefs[col.name] && thRefs[col.name].setStickyPosition(true)
       }
     })
-  }
-
-  //
-  _setItemCol(thRefs, rowsRefs, footerTrRef) {
-    return (col) => {
-      // header th的设置
-      thRefs[col.name] && thRefs[col.name].setStickyPosition(true)
-      // body td的设置
-      Object.keys(rowsRefs).forEach((key) => {
-        const { tdRefs } = rowsRefs[key]
-        tdRefs[col.name] && tdRefs[col.name].setStickyPosition(true)
-      })
-      // footer td的设置
-      footerTrRef &&
-        footerTrRef.tdRefs[col.name] &&
-        footerTrRef.tdRefs[col.name].setStickyPosition(true)
-    }
+    console.timeEnd('col')
   }
 }
 

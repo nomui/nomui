@@ -255,6 +255,7 @@ class Th extends Component {
     } else {
       this._setPositionByIndide()
     }
+    this._setAllTdsPosition()
   }
 
   // 内部更新，通过 自身的 offsetLeft和offsetWidth计算得出
@@ -285,6 +286,27 @@ class Th extends Component {
     this._setStyle({ [fixed]: `${this._stickyPos}px` })
   }
 
+  _setAllTdsPosition() {
+    const { table, props } = this
+    const { body, footer } = table.grid
+    const { field } = props.column
+    if (body) {
+      this._setTdsPosition(body.table.colRefs[field].tdRefs)
+    }
+    if (footer) {
+      this._setTdsPosition(footer.table.colRefs[field].tdRefs)
+    }
+  }
+
+  _setTdsPosition(tdRefs) {
+    const { props, _stickyPos } = this
+    const { fixed } = props.column
+
+    Object.keys(tdRefs).forEach((key) => {
+      tdRefs[key]._setStyle({ [fixed]: `${_stickyPos}px` })
+    })
+  }
+
   handleResize() {
     const resizer = this.resizer.element
     const that = this
@@ -297,13 +319,7 @@ class Th extends Component {
         const moveLen = endX - startX
 
         const distance = moveLen - that.lastDistance
-        that.table.grid.calcResizeCol(
-          {
-            field: that.props.column.field,
-            distance: distance,
-          },
-          that,
-        )
+        that._triggerGridResize(distance)
         that.lastDistance = moveLen
       }
       document.onmouseup = function () {
@@ -321,10 +337,25 @@ class Th extends Component {
           }
           header.scrollbar.update({ size })
         }
+        that._triggerGridResize(0)
+
         document.onmousemove = null
         document.onmouseup = null
       }
     }
+  }
+
+  /**
+   * @param {number} distance 偏移量
+   */
+  _triggerGridResize(distance) {
+    this.table.grid.calcResizeCol(
+      {
+        field: this.props.column.field,
+        distance: distance,
+      },
+      this,
+    )
   }
 
   onSortChange() {

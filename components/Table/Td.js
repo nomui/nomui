@@ -15,9 +15,8 @@ class Td extends Component {
   _created() {
     this.tr = this.parent
     this.table = this.tr.table
-    this._stickyPos = 0 // 记录当前 td的sticy.style.left(right) 的值
-    this.tr.tdRefs[this.props.column.field] = this
     this.col = this.table.colRefs[this.props.column.field]
+    this.col.tdRefs[this.key] = this
   }
 
   _config() {
@@ -186,59 +185,7 @@ class Td extends Component {
   }
 
   _rendered() {
-    // 未设置冻结列则无需定时器
-    const fixed = this.props.column.fixed
-
-    if (fixed) {
-      setTimeout(() => {
-        this.setStickyPosition()
-      }, 0)
-    }
-
     this.props.column.autoWidth && this._parseTdWidth()
-  }
-
-  /**
-   * 当拖拽固定列后，往后的th width都需要更新 style.left
-   * @param {boolean} externalTrigger 是外部触发，
-   * @returns
-   */
-  setStickyPosition(externalTrigger = false) {
-    // 设置排序时会出发两次_render，则此时设置的第一个定时器中的this.props已被销毁
-    if (!this.props) return
-    if (externalTrigger) {
-      this._setPositionByExter()
-    } else {
-      this._setPositionByIndide()
-    }
-  }
-
-  // 内部更新，通过 自身的 offsetLeft和offsetWidth计算得出
-  _setPositionByIndide() {
-    const fixed = this.props.column.fixed
-    const el = this.element
-    const parentEl = this.parent.element
-
-    if (fixed === 'left') {
-      this._stickyPos = el.offsetLeft
-    } else if (fixed === 'right') {
-      this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth
-    }
-    this._setStyle({ [fixed]: `${this._stickyPos}px` })
-  }
-
-  // 外部更新，通过 preEl 或 nextEl 的offsetWidth 计算得出
-  _setPositionByExter() {
-    const fixed = this.props.column.fixed
-    const el = this.element
-    if (fixed === 'left') {
-      const preEl = el.previousElementSibling
-      this._stickyPos = preEl ? preEl.component._stickyPos + preEl.offsetWidth : 0
-    } else if (fixed === 'right') {
-      const nextEl = el.nextElementSibling
-      this._stickyPos = nextEl ? nextEl.component._stickyPos + nextEl.offsetWidth : 0
-    }
-    this._setStyle({ [fixed]: `${this._stickyPos}px` })
   }
 
   _parseTdWidth() {

@@ -901,8 +901,8 @@ class Grid extends Component {
     this.header && this.header.calcResizeCol(data, thRef)
     if (this.props.data && this.props.data.length) {
       this.body && this.body.calcResizeCol(data, thRef)
-      this.footer && this.footer.calcResizeCol(data, thRef)
     }
+    this.footer && this.footer.calcResizeCol(data, thRef)
   }
 
   /**
