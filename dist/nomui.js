@@ -13156,7 +13156,10 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _normalizeInternalOptions(options) {
-      if (!Array.isArray(options) || !options.length) return options; // if (this.props.extraOptions) {
+      if (!Array.isArray(options) || !options.length) {
+        this.internalOptions = [];
+        return;
+      } // if (this.props.extraOptions) {
       //   this.initHiddenOptions = this.props.extraOptions.map((n) => {
       //     return n[this.props.optionFields.value]
       //   })
