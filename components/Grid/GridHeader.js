@@ -187,7 +187,9 @@ class GridHeader extends Component {
         tdRefs[col.name] && tdRefs[col.name].setStickyPosition(true)
       })
       // footer td的设置
-      footerTrRef.tdRefs[col.name] && footerTrRef.tdRefs[col.name].setStickyPosition(true)
+      footerTrRef &&
+        footerTrRef.tdRefs[col.name] &&
+        footerTrRef.tdRefs[col.name].setStickyPosition(true)
     }
   }
 }
