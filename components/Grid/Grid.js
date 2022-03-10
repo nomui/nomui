@@ -5,6 +5,7 @@ import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
 import { STORAGE_KEY_GRID_COLS_WIDTH, STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
 import {
+  defaultSortableOndrop,
   isBrowerSupportSticky,
   isFunction,
   isNullish,
@@ -288,6 +289,8 @@ class Grid extends Component {
 
     this._processColumnsWidth()
     this._processAutoScroll()
+
+    this.props.rowSortable && defaultSortableOndrop()
   }
 
   getColumns() {
@@ -989,10 +992,12 @@ class Grid extends Component {
       if (isNullish(curr.field)) return 1
 
       const currIdx = fields.indexOf(curr.field)
+      const nextIdx = fields.indexOf(next.field)
       // 此列被隐藏，往后排
       if (currIdx === -1) return 1
+      // 下一列被隐藏，此列往前排
+      if (nextIdx === -1) return -1
 
-      const nextIdx = fields.indexOf(next.field)
       return currIdx - nextIdx
     })
     this.sortOriginColumns = false

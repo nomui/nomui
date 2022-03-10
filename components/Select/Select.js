@@ -519,7 +519,10 @@ class Select extends Field {
   }
 
   _normalizeInternalOptions(options) {
-    if (!Array.isArray(options) || !options.length) return options
+    if (!Array.isArray(options) || !options.length) {
+      this.internalOptions = []
+      return
+    }
 
     // if (this.props.extraOptions) {
     //   this.initHiddenOptions = this.props.extraOptions.map((n) => {
