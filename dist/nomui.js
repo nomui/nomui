@@ -15730,21 +15730,18 @@ function _defineProperty2(obj, key, value) {
             function () {
               const mask = that.table.grid.highlightMask;
               mask &&
+                !that.mouseDowning &&
                 mask.update({
                   attrs: {
                     style: {
+                      zIndex: that.props.column.fixed ? 99 : null,
                       left: `${this.offsetLeft}px`,
                       width: `${this.offsetWidth}px`,
                     },
                   },
                 });
             },
-          onmouseleave:
-            this.table.grid &&
-            function () {
-              const mask = that.table.grid.highlightMask;
-              mask && mask.update({ attrs: { style: { width: 0 } } });
-            },
+          onmouseleave: this._hideHighLightMask.bind(this),
         },
       });
     }
@@ -15823,6 +15820,8 @@ function _defineProperty2(obj, key, value) {
       resizer.onmousedown = function (evt) {
         const startX = evt.clientX;
         that.lastDistance = 0;
+        that._hideHighLightMask();
+        that.mouseDowning = true;
         document.onmousemove = function (e) {
           const endX = e.clientX;
           const moveLen = endX - startX;
@@ -15831,6 +15830,7 @@ function _defineProperty2(obj, key, value) {
           that.lastDistance = moveLen;
         };
         document.onmouseup = function () {
+          that.mouseDowning = false;
           const grid = that.table.grid;
           if (that.resizable && grid.props.columnResizable.cache) {
             grid.storeColsWidth(that.props.column.field);
@@ -15849,6 +15849,11 @@ function _defineProperty2(obj, key, value) {
           document.onmouseup = null;
         };
       };
+    }
+    _hideHighLightMask() {
+      if (!this.table.grid) return;
+      const mask = this.table.grid.highlightMask;
+      mask && mask.update({ attrs: { style: { width: 0 } } });
     }
     /**
      * @param {number} distance 偏移量
@@ -16057,7 +16062,7 @@ function _defineProperty2(obj, key, value) {
           this.props.onlyBody !== true && { component: Thead },
           this.props.onlyHead !== true && { component: Tbody },
           hasMask &&
-            this.props.onlyBody && {
+            this.parent.componentType === "GridBody" && {
               tag: "div",
               classes: { "nom-table-th-hover-mask": true },
               _created() {
