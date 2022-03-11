@@ -4,12 +4,7 @@ import { extend, isFunction } from '../util/index'
 
 class GroupList extends Group {
   constructor(props, ...mixins) {
-    const defaults = {
-      fieldDefaults: { component: Group },
-      hideAction: false,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(GroupList.defaults, props), ...mixins)
   }
 
   _created() {
@@ -125,6 +120,10 @@ class GroupList extends Group {
     group.remove()
     this._onValueChange()
   }
+}
+GroupList.defaults = {
+  fieldDefaults: { component: Group },
+  hideAction: false,
 }
 
 Component.register(GroupList)

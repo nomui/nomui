@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { extend, isFunction, isPlainObject } from '../util/index'
+import { defaultSortableOndrop, extend, isFunction, isPlainObject } from '../util/index'
 import scrollIntoView from '../util/scrollIntoView'
 import ListContent from './ListContent'
 
@@ -265,6 +265,10 @@ class List extends Component {
     if (this.selectedItem) {
       this.scrollTo(this.selectedItem)
     }
+  }
+
+  _rendered() {
+    this.props.sortable && defaultSortableOndrop()
   }
 
   /* 虚拟列表支持函数-start */

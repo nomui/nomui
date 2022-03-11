@@ -2,17 +2,7 @@ import Component from '../Component/index'
 
 class MaskInfo extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'span',
-      type: null,
-      text: null,
-      mask: true,
-      icon: true,
-      empty: null,
-      showTitle: true,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(MaskInfo.defaults, props), ...mixins)
   }
 
   _created() {
@@ -175,7 +165,15 @@ class MaskInfo extends Component {
     return newText
   }
 }
-
+MaskInfo.defaults = {
+  tag: 'span',
+  type: null,
+  text: null,
+  mask: true,
+  icon: true,
+  empty: null,
+  showTitle: true,
+}
 Component.register(MaskInfo)
 
 export default MaskInfo

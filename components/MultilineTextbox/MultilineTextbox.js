@@ -5,17 +5,7 @@ import Textarea from './Textarea'
 
 class MultilineTextbox extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      autofocus: false,
-      autoSize: false, // boolean|{minRows:number,maxRows:number}
-      placeholder: null,
-      value: null,
-      maxlength: null,
-      rows: null,
-      readonly: false,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(MultilineTextbox.defaults, props), ...mixins)
   }
 
   _config() {
@@ -95,6 +85,16 @@ class MultilineTextbox extends Field {
   _enable() {
     this.textarea.enable()
   }
+}
+
+MultilineTextbox.defaults = {
+  autofocus: false,
+  autoSize: false, // boolean|{minRows:number,maxRows:number}
+  placeholder: null,
+  value: null,
+  maxlength: null,
+  rows: null,
+  readonly: false,
 }
 
 Component.register(MultilineTextbox)

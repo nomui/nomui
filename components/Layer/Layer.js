@@ -6,27 +6,9 @@ import LayerBackdrop from './LayerBackdrop'
 class Layer extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      align: null,
-      alignTo: null,
-      alignOuter: false,
       within: window,
-      collision: 'flipfit',
-      onClose: null,
-      onHide: null,
-      onShow: null,
-
-      closeOnClickOutside: false,
-      closeToRemove: false,
-
-      position: null,
-
-      hidden: false,
-
-      backdrop: false,
-      closeOnClickBackdrop: false,
     }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(defaults, Layer.defaults, props), ...mixins)
   }
 
   _created() {
@@ -231,6 +213,26 @@ class Layer extends Component {
   }
 }
 
+Layer.defaults = {
+  align: null,
+  alignTo: null,
+  alignOuter: false,
+  within: window,
+  collision: 'flipfit',
+  onClose: null,
+  onHide: null,
+  onShow: null,
+
+  closeOnClickOutside: false,
+  closeToRemove: false,
+
+  position: null,
+
+  hidden: false,
+
+  backdrop: false,
+  closeOnClickBackdrop: false,
+}
 Component.register(Layer)
 
 export default Layer

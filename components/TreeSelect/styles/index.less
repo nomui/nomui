@@ -9,16 +9,20 @@
       height: 100%;
       min-height: @input-height-base;
       padding: @padding-y-base 24px @padding-y-base 12px;
-      color: #000 !important;
+      color: var(--nom-input-color);
       line-height: @line-height-computed;
-      background: white;
-      border: 1px solid gainsboro;
-      border-radius: 2px;
+      background: var(--nom-input-bg);
+      border: 1px solid var(--nom-border-color);
+      border-radius: var(--nom-border-radius);
       cursor: pointer;
+
+      &:focus-within {
+        border-color: var(--nom-color-primary);
+      }
 
       .nom-tree-select-placeholder {
         overflow: hidden;
-        color: #bfbfbf;
+        color: var(--nom-input-placeholder-color);
         white-space: nowrap;
         text-overflow: ellipsis;
       }
@@ -28,7 +32,7 @@
         top: 0;
         right: 8px;
         bottom: 0;
-        background: #fff;
+        background: var(--nom-layer-background-color);
         cursor: pointer;
       }
     }
@@ -62,9 +66,17 @@
   }
 
   .nom-tree {
-    .nom-tree-node:not(.s-disabled).filter-node >.nom-tree-node-content .nom-tree-node-content-text {
+    .nom-tree-node:not(.s-disabled).filter-node
+      > .nom-tree-node-content
+      .nom-tree-node-content-text {
       color: inherit;
-      font-weight: 500;
+      .nom-preset-bold;
     }
+  }
+}
+
+.nom-tree-select-content {
+  .nom-tag {
+    margin-right: 0.5rem;
   }
 }

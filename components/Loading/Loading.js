@@ -5,13 +5,9 @@ import Spinner from '../Spinner/index'
 class Loading extends Layer {
   constructor(props, ...mixins) {
     const defaults = {
-      align: 'center',
       container: document.body,
-      backdrop: true,
-      collision: 'none',
     }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(defaults, Loading.defaults, props), ...mixins)
   }
 
   _create() {
@@ -39,7 +35,11 @@ class Loading extends Layer {
     super._remove()
   }
 }
-
+Loading.defaults = {
+  align: 'center',
+  backdrop: true,
+  collision: 'none',
+}
 Component.register(Loading)
 
 export default Loading
