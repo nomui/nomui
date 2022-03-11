@@ -214,6 +214,7 @@ class Grid extends Component {
       this.props.frozenLeftCols = null
       this.props.frozenRightCols = null
       this.props.allowFrozenCols = false
+      this.props.columnFrozenable = false
     }
   }
 
@@ -1084,16 +1085,21 @@ class Grid extends Component {
   }
 
   handlePinClick(data) {
-    if (data.fixed) {
-      if (this.pinColumns.length < 1) {
-        const num = this.props.frozenLeftCols
-        this.setProps({ frozenLeftCols: num - (1 + this._fixedCount) })
-        num > 1 + this._fixedCount && this.fixPinOrder(data)
-        // 未对columns进行增删或排序，无需触发 config
-        this._processFrozenColumn()
-        this.render()
-        return
+    // 取消初始化固定列时
+    if (data.fixed && this.pinColumns.length < 1) {
+      let num = this.props.frozenLeftCols
+      if (num - 1 > this._fixedCount) {
+        this.fixPinOrder(data)
+        num--
+      } else {
+        num = 0
       }
+
+      this.setProps({ frozenLeftCols: num })
+      // 未对columns进行增删或排序，无需触发 config
+      this._processFrozenColumn()
+      this.render()
+      return
     }
     if (this.pinColumns.find((n) => n.field === data.field)) {
       this.pinColumns = this.removeColumn(this.pinColumns, data)
@@ -1183,7 +1189,10 @@ Grid.defaults = {
   // columnsCustomizable.callback: 设置列保存回调
   autoMergeColumns: null,
   columnResizable: false,
-  // columnResizable.cache: 设置的列宽保存至localstorage，cache的值为对应的key
+  // columnResizable.cache: boolean 设置的列宽保存至localstorage
+
+  columnFrozenable: false, // 允许固定列
+  // columnResizable.cache: boolean 固定列的结果保存至localstorage
   striped: false,
   showTitle: false,
   ellipsis: false,
