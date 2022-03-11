@@ -756,6 +756,7 @@ class Grid extends Component {
           {
             width: 50,
             isChecker: true,
+            resizable: false,
             header: {
               component: Checkbox,
               plain: true,
@@ -899,12 +900,12 @@ class Grid extends Component {
    * 根据偏移量计算出width后再赋值
    * @param {*} data {field, distance}
    */
-  calcResizeCol(data) {
-    this.header && this.header.calcResizeCol(data)
+  calcResizeCol(data, thRef) {
+    this.header && this.header.calcResizeCol(data, thRef)
     if (this.props.data && this.props.data.length) {
-      this.body && this.body.calcResizeCol(data)
-      this.footer && this.footer.calcResizeCol(data)
+      this.body && this.body.calcResizeCol(data, thRef)
     }
+    this.footer && this.footer.calcResizeCol(data, thRef)
   }
 
   /**
@@ -1025,6 +1026,7 @@ class Grid extends Component {
           {
             width: 50,
             isTreeMark: true,
+            resizable: false,
             cellRender: ({ row, rowData }) => {
               return {
                 component: Icon,
@@ -1184,6 +1186,7 @@ Grid.defaults = {
   autoMergeColumns: null,
   columnResizable: false,
   // columnResizable.cache: 设置的列宽保存至localstorage，cache的值为对应的key
+  // columnResizable.allowFixedCol: 固定列是否允许被拖动(当 data太多时拖动，会造成渲染卡顿, 此时可设置false关闭)
   striped: false,
   showTitle: false,
   ellipsis: false,

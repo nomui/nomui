@@ -17,6 +17,7 @@ class Th extends Component {
     this.table = this.tr.table
     this.resizer = null
     this.lastDistance = 0
+    this._stickyPos = 0 // 记录当前 th的sticy.style.left(right) 的值
     this.table.thRefs[this.props.column.field] = this
   }
 
@@ -55,6 +56,11 @@ class Th extends Component {
       this.table.grid.props.columnResizable &&
       this.props.column.resizable !== false &&
       this.props.column.colSpan === 1
+
+    // 外部设置不允许拖拽固定列
+    if (this.table.grid.props.columnResizable.allowFixedCol === false && this.props.column.fixed) {
+      this.resizable = false
+    }
 
     let children = [
       headerProps,
@@ -227,9 +233,9 @@ class Th extends Component {
 
   _rendered() {
     // 未设置冻结列则无需定时器
-    const { grid = {} } = this.table
-    const { frozenLeftCols, frozenRightCols } = grid.props || {}
-    if (frozenLeftCols || frozenRightCols) {
+    const fixed = this.props.column.fixed
+
+    if (fixed) {
       setTimeout(() => {
         this.setStickyPosition()
       }, 0)
@@ -238,18 +244,69 @@ class Th extends Component {
     this.resizer && this.handleResize()
   }
 
-  setStickyPosition() {
+  /**
+   * 当拖拽固定列后，往后的th width都需要更新 style.left
+   * @param {boolean} externalTrigger 是外部触发，
+   * @returns
+   */
+  setStickyPosition(externalTrigger = false) {
     // 设置排序时会出发两次_render，则此时设置的第一个定时器中的this.props已被销毁
     if (!this.props) return
-    if (this.props.column.fixed === 'left') {
-      this._setStyle({ left: `${this.element.offsetLeft}px` })
-    } else if (this.props.column.fixed === 'right') {
-      this._setStyle({
-        right: `${
-          this.parent.element.offsetWidth - this.element.offsetLeft - this.element.offsetWidth
-        }px`,
-      })
+    if (externalTrigger) {
+      this._setPositionByExter()
+    } else {
+      this._setPositionByIndide()
     }
+    this._setAllTdsPosition()
+  }
+
+  // 内部更新，通过 自身的 offsetLeft和offsetWidth计算得出
+  _setPositionByIndide() {
+    const fixed = this.props.column.fixed
+    const el = this.element
+    const parentEl = this.parent.element
+
+    if (fixed === 'left') {
+      this._stickyPos = el.offsetLeft
+    } else if (fixed === 'right') {
+      this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth
+    }
+    this._setStyle({ [fixed]: `${this._stickyPos}px` })
+  }
+
+  // 外部更新，通过 preEl 或 nextEl 的offsetWidth 计算得出
+  _setPositionByExter() {
+    const fixed = this.props.column.fixed
+    const el = this.element
+    if (fixed === 'left') {
+      const preEl = el.previousElementSibling
+      this._stickyPos = preEl ? preEl.component._stickyPos + preEl.offsetWidth : 0
+    } else if (fixed === 'right') {
+      const nextEl = el.nextElementSibling
+      this._stickyPos = nextEl ? nextEl.component._stickyPos + nextEl.offsetWidth : 0
+    }
+    this._setStyle({ [fixed]: `${this._stickyPos}px` })
+  }
+
+  _setAllTdsPosition() {
+    const { table, props } = this
+    const { body, footer } = table.grid
+    const { field } = props.column
+    if (body) {
+      this._setTdsPosition(body.table.colRefs[field].tdRefs)
+    }
+    if (footer) {
+      this._setTdsPosition(footer.table.colRefs[field].tdRefs)
+    }
+  }
+
+  _setTdsPosition(tdRefs) {
+    const { props, _stickyPos } = this
+    const { fixed } = props.column
+
+    Object.keys(tdRefs).forEach((key) => {
+      tdRefs[key]._setStyle({ [fixed]: `${_stickyPos}px` })
+    })
   }
 
   handleResize() {
@@ -267,10 +324,7 @@ class Th extends Component {
         const moveLen = endX - startX
 
         const distance = moveLen - that.lastDistance
-        that.table.grid.calcResizeCol({
-          field: that.props.column.field,
-          distance: distance,
-        })
+        that._triggerGridResize(distance)
         that.lastDistance = moveLen
       }
       document.onmouseup = function () {
@@ -289,6 +343,8 @@ class Th extends Component {
           }
           header.scrollbar.update({ size })
         }
+        that._triggerGridResize(0)
+
         document.onmousemove = null
         document.onmouseup = null
       }
@@ -299,6 +355,19 @@ class Th extends Component {
     if (!this.table.grid) return
     const mask = this.table.grid.highlightMask
     mask && mask.update({ attrs: { style: { width: 0 } } })
+  }
+
+  /**
+   * @param {number} distance 偏移量
+   */
+  _triggerGridResize(distance) {
+    this.table.grid.calcResizeCol(
+      {
+        field: this.props.column.field,
+        distance: distance,
+      },
+      this,
+    )
   }
 
   onSortChange() {
