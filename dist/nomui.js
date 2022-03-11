@@ -14948,6 +14948,7 @@ function _defineProperty2(obj, key, value) {
       this.tr = this.parent;
       this.table = this.tr.table;
       this.col = this.table.colRefs[this.props.column.field];
+      this.col.tdRefs[this.key] = this;
     }
     _config() {
       const { level, isLeaf } = this.tr.props;
@@ -15089,30 +15090,7 @@ function _defineProperty2(obj, key, value) {
       return null;
     }
     _rendered() {
-      // 未设置冻结列则无需定时器
-      const { grid = {} } = this.table;
-      const { frozenLeftCols, frozenRightCols } = grid.props || {};
-      if (frozenLeftCols || frozenRightCols) {
-        setTimeout(() => {
-          this.setStickyPosition();
-        }, 0);
-      }
       this.props.column.autoWidth && this._parseTdWidth();
-    }
-    setStickyPosition() {
-      // 设置排序时会出发两次_render，则此时设置的第一个定时器中的this.props已被销毁
-      if (!this.props) return;
-      if (this.props.column.fixed === "left") {
-        this._setStyle({ left: `${this.element.offsetLeft}px` });
-      } else if (this.props.column.fixed === "right") {
-        this._setStyle({
-          right: `${
-            this.parent.element.offsetWidth -
-            this.element.offsetLeft -
-            this.element.offsetWidth
-          }px`,
-        });
-      }
     }
     _parseTdWidth() {
       let tdWidth = 0; // Td的左右padding 10+10, 预留1px的buffer
@@ -15212,6 +15190,7 @@ function _defineProperty2(obj, key, value) {
       this.table = this.parent.table;
       this.table.colRefs[this.props.column.field] = this;
       this.maxTdWidth = 0;
+      this.tdRefs = {}; // 这一列所有的 td
     }
     _config() {
       const { width } = this.props.column;
@@ -15245,6 +15224,7 @@ function _defineProperty2(obj, key, value) {
     }
     _created() {
       this.table = this.parent;
+      this.table.colGroup = this;
       this.columns = this.table.props.columns;
       this.colList = [];
       this.hasColumnGroup = false;
@@ -15310,6 +15290,9 @@ function _defineProperty2(obj, key, value) {
         }
         this.table.grid.rowsRefs[_rowRefKey] = this;
       }
+      if (this.table.parent.componentType === "GridFooter") {
+        this.table.grid.footerTrRef = this;
+      }
     }
     _config() {
       const columns = this.table.props.columns;
@@ -15336,7 +15319,7 @@ function _defineProperty2(obj, key, value) {
         });
       }
       if (Array.isArray(columns)) {
-        this.TdList = [];
+        this.tdList = [];
         children.push(...this.createTds(columns));
       }
       this.setProps({
@@ -15565,6 +15548,7 @@ function _defineProperty2(obj, key, value) {
       this.table = this.tr.table;
       this.resizer = null;
       this.lastDistance = 0;
+      this._stickyPos = 0; // 记录当前 th的sticy.style.left(right) 的值
       this.table.thRefs[this.props.column.field] = this;
     }
     _config() {
@@ -15599,7 +15583,13 @@ function _defineProperty2(obj, key, value) {
         this.table.hasGrid &&
         this.table.grid.props.columnResizable &&
         this.props.column.resizable !== false &&
-        this.props.column.colSpan === 1;
+        this.props.column.colSpan === 1; // 外部设置不允许拖拽固定列
+      if (
+        this.table.grid.props.columnResizable.allowFixedCol === false &&
+        this.props.column.fixed
+      ) {
+        this.resizable = false;
+      }
       let children = [
         headerProps,
         this.props.column.sortable &&
@@ -15760,29 +15750,72 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {
       // 未设置冻结列则无需定时器
-      const { grid = {} } = this.table;
-      const { frozenLeftCols, frozenRightCols } = grid.props || {};
-      if (frozenLeftCols || frozenRightCols) {
+      const fixed = this.props.column.fixed;
+      if (fixed) {
         setTimeout(() => {
           this.setStickyPosition();
         }, 0);
       }
       this.resizer && this.handleResize();
     }
-    setStickyPosition() {
+    /**
+     * 当拖拽固定列后，往后的th width都需要更新 style.left
+     * @param {boolean} externalTrigger 是外部触发，
+     * @returns
+     */ setStickyPosition(externalTrigger = false) {
       // 设置排序时会出发两次_render，则此时设置的第一个定时器中的this.props已被销毁
       if (!this.props) return;
-      if (this.props.column.fixed === "left") {
-        this._setStyle({ left: `${this.element.offsetLeft}px` });
-      } else if (this.props.column.fixed === "right") {
-        this._setStyle({
-          right: `${
-            this.parent.element.offsetWidth -
-            this.element.offsetLeft -
-            this.element.offsetWidth
-          }px`,
-        });
+      if (externalTrigger) {
+        this._setPositionByExter();
+      } else {
+        this._setPositionByIndide();
       }
+      this._setAllTdsPosition();
+    } // 内部更新，通过 自身的 offsetLeft和offsetWidth计算得出
+    _setPositionByIndide() {
+      const fixed = this.props.column.fixed;
+      const el = this.element;
+      const parentEl = this.parent.element;
+      if (fixed === "left") {
+        this._stickyPos = el.offsetLeft;
+      } else if (fixed === "right") {
+        this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth;
+      }
+      this._setStyle({ [fixed]: `${this._stickyPos}px` });
+    } // 外部更新，通过 preEl 或 nextEl 的offsetWidth 计算得出
+    _setPositionByExter() {
+      const fixed = this.props.column.fixed;
+      const el = this.element;
+      if (fixed === "left") {
+        const preEl = el.previousElementSibling;
+        this._stickyPos = preEl
+          ? preEl.component._stickyPos + preEl.offsetWidth
+          : 0;
+      } else if (fixed === "right") {
+        const nextEl = el.nextElementSibling;
+        this._stickyPos = nextEl
+          ? nextEl.component._stickyPos + nextEl.offsetWidth
+          : 0;
+      }
+      this._setStyle({ [fixed]: `${this._stickyPos}px` });
+    }
+    _setAllTdsPosition() {
+      const { table, props } = this;
+      const { body, footer } = table.grid;
+      const { field } = props.column;
+      if (body) {
+        this._setTdsPosition(body.table.colRefs[field].tdRefs);
+      }
+      if (footer) {
+        this._setTdsPosition(footer.table.colRefs[field].tdRefs);
+      }
+    }
+    _setTdsPosition(tdRefs) {
+      const { props, _stickyPos } = this;
+      const { fixed } = props.column;
+      Object.keys(tdRefs).forEach((key) => {
+        tdRefs[key]._setStyle({ [fixed]: `${_stickyPos}px` });
+      });
     }
     handleResize() {
       const resizer = this.resizer.element;
@@ -15794,10 +15827,7 @@ function _defineProperty2(obj, key, value) {
           const endX = e.clientX;
           const moveLen = endX - startX;
           const distance = moveLen - that.lastDistance;
-          that.table.grid.calcResizeCol({
-            field: that.props.column.field,
-            distance: distance,
-          });
+          that._triggerGridResize(distance);
           that.lastDistance = moveLen;
         };
         document.onmouseup = function () {
@@ -15814,10 +15844,19 @@ function _defineProperty2(obj, key, value) {
             };
             header.scrollbar.update({ size });
           }
+          that._triggerGridResize(0);
           document.onmousemove = null;
           document.onmouseup = null;
         };
       };
+    }
+    /**
+     * @param {number} distance 偏移量
+     */ _triggerGridResize(distance) {
+      this.table.grid.calcResizeCol(
+        { field: this.props.column.field, distance: distance },
+        this
+      );
     }
     onSortChange() {
       const that = this;
@@ -16060,7 +16099,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Table);
   var GridTableMixin = {
     methods: {
-      calcResizeCol: function (data) {
+      calcResizeCol: function (data, thRef) {
         const col = this.table.colRefs[data.field];
         const tdWidth = this.table.element.rows[0].cells[col.props.index]
           .offsetWidth;
@@ -16070,6 +16109,10 @@ function _defineProperty2(obj, key, value) {
           result = 60;
         }
         col.update({ column: { width: result } });
+        if (this.componentType === "GridHeader" && col.props.column.fixed) {
+          // 只在Header 调用 无需放在 mixin 中
+          this._processFixedColumnSticky(thRef);
+        }
       },
       resizeCol: function ({ field, width = 0 }) {
         const col = this.table.colRefs[field];
@@ -16370,6 +16413,19 @@ function _defineProperty2(obj, key, value) {
       } else {
         this.scrollbar.hide();
       }
+    }
+    /**
+     * 存在多列固定，设置固定列的列宽时，对其余列的 style.left style.right 的重新计算处理
+     * @param {number} triggerTh 触发的 th 实例
+     */ _processFixedColumnSticky(triggerTh) {
+      const { table } = triggerTh;
+      const { thRefs } = table;
+      const { colList } = table.colGroup;
+      colList.forEach((col) => {
+        if (col.column.fixed) {
+          thRefs[col.name] && thRefs[col.name].setStickyPosition(true);
+        }
+      });
     }
   }
   Component.register(GridHeader);
@@ -17101,6 +17157,7 @@ function _defineProperty2(obj, key, value) {
             {
               width: 50,
               isChecker: true,
+              resizable: false,
               header: {
                 component: Checkbox,
                 plain: true,
@@ -17235,12 +17292,12 @@ function _defineProperty2(obj, key, value) {
     /**
      * 根据偏移量计算出width后再赋值
      * @param {*} data {field, distance}
-     */ calcResizeCol(data) {
-      this.header && this.header.calcResizeCol(data);
+     */ calcResizeCol(data, thRef) {
+      this.header && this.header.calcResizeCol(data, thRef);
       if (this.props.data && this.props.data.length) {
-        this.body && this.body.calcResizeCol(data);
-        this.footer && this.footer.calcResizeCol(data);
+        this.body && this.body.calcResizeCol(data, thRef);
       }
+      this.footer && this.footer.calcResizeCol(data, thRef);
     }
     /**
      * 直接传入width设置宽度
@@ -17349,6 +17406,7 @@ function _defineProperty2(obj, key, value) {
             {
               width: 50,
               isTreeMark: true,
+              resizable: false,
               cellRender: ({ row, rowData }) => {
                 return {
                   component: Icon,
@@ -17491,6 +17549,7 @@ function _defineProperty2(obj, key, value) {
     // columnsCustomizable.callback: 设置列保存回调
     autoMergeColumns: null,
     columnResizable: false, // columnResizable.cache: 设置的列宽保存至localstorage，cache的值为对应的key
+    // columnResizable.allowFixedCol: 固定列是否允许被拖动(当 data太多时拖动，会造成渲染卡顿, 此时可设置false关闭)
     striped: false,
     showTitle: false,
     ellipsis: false,

@@ -14,6 +14,7 @@ class ColGroupCol extends Component {
     this.table = this.parent.table
     this.table.colRefs[this.props.column.field] = this
     this.maxTdWidth = 0
+    this.tdRefs = {} // 这一列所有的 td
   }
 
   _config() {
