@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.52](https://github.com/nomui/nomui/compare/v1.0.0-alpha.51...v1.0.0-alpha.52) (2022-03-11)
+
+
+### Features
+
+* **Grid-拖拽自定义列:** 增加allowFixedCol配置 ([a232b48](https://github.com/nomui/nomui/commit/a232b480ecd4f1b0b3bd9a8a59bf389a28b95feb))
+
+
+### Bug Fixes
+
+* (Uploader)文件上传beforeUpload方法优化 ([2e9efcc](https://github.com/nomui/nomui/commit/2e9efcccb74fa1be7582169b67eb2e369a3d943a))
+* **Empty:** 修复Empty图标与文字不对齐的bug ([83abbf9](https://github.com/nomui/nomui/commit/83abbf9a52d89bec29943e9bb0c62b000c4db5d5))
+* **Grid-固定列拖拽:** footer不存在时 ([40829f0](https://github.com/nomui/nomui/commit/40829f0c7619d95c08307b92058f7c31ac01b185))
+* **Grid-highlightMask:** 悬浮表头时高亮列的展示bug ([f17b7c2](https://github.com/nomui/nomui/commit/f17b7c20fc2c655d6e4bd24b89cc106d416cfc4c))
+* **Grid:** 解决拖拽列宽，导致固定列的展示bug ([e990f45](https://github.com/nomui/nomui/commit/e990f4535aa0b21fe51456e00fc49f68152539c6))
+* **Grid:** 列设置排序功能 ([71ca986](https://github.com/nomui/nomui/commit/71ca98603f8dbe8336f5017870ada6ff358eb468))
+* **Grid:** 去掉console ([c9570f2](https://github.com/nomui/nomui/commit/c9570f26db9d9151548c40576306e7a85c537692))
+* **Grid:** 自定义列设置，originColumns的排序逻辑 ([e647ea5](https://github.com/nomui/nomui/commit/e647ea5b36dad4ea417897a00e98733095dfee94))
+* **Select:** 搜索的filter返回为空时，未对optionList的数据进行更新 ([49b8dfc](https://github.com/nomui/nomui/commit/49b8dfc1fc2fe2208c7b7b7f55722852853f99a8))
+* **sortable 兼容性:** 火狐浏览器下，拖拽会打开新的标签页 ([809c801](https://github.com/nomui/nomui/commit/809c8010f4926113a9a6299f3d01216cba15ab49))
+* **Tooltip:** 修复 Tooltip 在有body滚动条时验证提示错位问题 ([20e01c1](https://github.com/nomui/nomui/commit/20e01c1afd1ecd7278821a2626803b5ccb26a2e6))
+
+
+### Docs
+
+* 调整组件的顺序 ([ce467db](https://github.com/nomui/nomui/commit/ce467db672327c8d73a9d7aa2e5cf95d8ae2260f))
+
 ## [1.0.0-alpha.51](https://github.com/nomui/nomui/compare/v1.0.0-alpha.50...v1.0.0-alpha.51) (2022-03-04)
 
 
