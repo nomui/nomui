@@ -65,7 +65,7 @@ class Table extends Component {
         this.props.onlyBody !== true && { component: Thead },
         this.props.onlyHead !== true && { component: Tbody },
         hasMask &&
-          this.props.onlyBody && {
+          this.parent.componentType === 'GridBody' && {
             tag: 'div',
             classes: { 'nom-table-th-hover-mask': true },
             _created() {
