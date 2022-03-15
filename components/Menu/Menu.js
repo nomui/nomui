@@ -111,6 +111,10 @@ class Menu extends Component {
   selectToItem(param) {
     if (this.props.compact) {
       const target = this.getRootItem(param)
+      if (target === null) {
+        console.warn(`Could not find the item with specific key.`)
+        return
+      }
       this.getItem(target).expand()
       this.scrollTo(target)
       this.expandedRoot = this.getItem(target).wrapper
@@ -123,10 +127,15 @@ class Menu extends Component {
   }
 
   getRootItem(param) {
-    const rootItem = this.props.items.filter((n) => {
+    const arr = this.props.items.filter((n) => {
       return JSON.stringify(n).includes(`"${param}"`)
-    })[0][this.props.keyField]
-    return this.itemRefs[rootItem]
+    })
+
+    if (arr.length) {
+      const rootItem = arr[0][this.props.keyField]
+      return this.itemRefs[rootItem]
+    }
+    return null
   }
 
   unselectItem(param, unselectOption) {
