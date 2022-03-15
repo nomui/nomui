@@ -58,7 +58,11 @@ class Th extends Component {
       this.props.column.colSpan === 1
 
     // 外部设置不允许拖拽固定列
-    if (this.table.grid.props.columnResizable.allowFixedCol === false && this.props.column.fixed) {
+    if (
+      this.table.hasGrid &&
+      this.table.grid.props.columnResizable.allowFixedCol === false &&
+      this.props.column.fixed
+    ) {
       this.resizable = false
     }
 
