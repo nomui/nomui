@@ -22,6 +22,7 @@ class Grid extends Component {
     Grid._loopSetValue(props.treeConfig, [
       'cascadeCheckParent',
       'cascadeCheckChildren',
+      'cascadeUncheckParent',
       'cascadeUncheckChildren',
     ])
     super(Component.extendProps(Grid.defaults, props), ...mixins)
@@ -1192,7 +1193,7 @@ Grid.defaults = {
   ellipsis: false,
   sticky: false,
   line: 'row',
-  bordered: true,
+  bordered: false,
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false
