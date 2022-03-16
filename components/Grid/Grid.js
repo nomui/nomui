@@ -46,7 +46,7 @@ class Grid extends Component {
     })
     this.pinColumns = []
     this.originColumns = [...this.props.columns]
-    this._sortColumnsFlag = true // 是否需要对列进行排序
+    this._needSortColumnsFlag = true // 是否需要对列进行排序
 
     this.sortUpdated = false
 
@@ -65,7 +65,8 @@ class Grid extends Component {
       const c = props.columns.filter((n) => {
         return Object.keys(n)
       })
-      this._sortColumnsFlag = true
+      this._needSortColumnsFlag = true
+      this._pinColumnFlag = false
       this.originColumns = [...c]
     }
     // 更新了data
@@ -161,7 +162,7 @@ class Grid extends Component {
 
   _processPinColumn() {
     const { columnFrozenable } = this.props
-    if (!this.firstRender || !columnFrozenable || !columnFrozenable.cache) return
+    if (this._pinColumnFlag || !columnFrozenable || !columnFrozenable.cache) return
     this._gridColumsFixedStoreKey = this._getStoreKey(true, STORAGE_KEY_GRID_COLS_FIXED)
     if (!this._gridColumsFixedStoreKey) return
 
@@ -176,12 +177,13 @@ class Grid extends Component {
       this.setProps({
         frozenLeftCols: this.pinColumns.length ? this._fixedCount + this.pinColumns.length : 0,
       })
+      this._pinColumnFlag = true
     }
   }
 
   // 根据缓存，对originColumns和 columns排序
   _processColumnSort() {
-    if (this._sortColumnsFlag) {
+    if (this._needSortColumnsFlag) {
       let customFields = localStorage.getItem(this._gridColumsStoreKey)
       let fixedFields = localStorage.getItem(this._gridColumsFixedStoreKey)
       customFields = JSON.parse(customFields)
@@ -193,7 +195,7 @@ class Grid extends Component {
       this._sortColumnsFromFields(this.props.columns, customFields)
       this._sortColumnsFromFields(this.props.columns, fixedFields)
 
-      this._sortColumnsFlag = false
+      this._needSortColumnsFlag = false
     }
   }
 
@@ -1170,7 +1172,7 @@ class Grid extends Component {
       columns: this.getPinOrderColumns(),
       frozenLeftCols: this.pinColumns.length ? this.pinColumns.length + this._fixedCount : 0,
     })
-    this._sortColumnsFlag = !data.lastLeft
+    this._needSortColumnsFlag = !data.lastLeft
     this._processColumns()
     this.render()
   }
