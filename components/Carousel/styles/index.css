@@ -42,16 +42,16 @@
 }
 .nom-carousel .nom-carousel-pagination .nom-carousel-pagination-bullet {
   display: inline-block;
-  width: var(--nom-carousel-bullet-size);
-  height: var(--nom-carousel-bullet-size);
+  width: var(--nom-carousel-bullet-width);
+  height: var(--nom-carousel-bullet-height);
   margin: 0 4px;
   text-indent: -99999px;
-  background-color: rgba(var(--nom-grey-9), 0.3);
-  border-radius: 50%;
+  background-color: rgba(var(--nom-carousel-background-color), 0.3);
+  border-radius: var(--nom-carousel-bullet-radius);
   cursor: pointer;
 }
 .nom-carousel .nom-carousel-pagination .nom-carousel-pagination-bullet-active {
-  background-color: rgba(var(--nom-white), 1);
+  background-color: var(--nom-carousel-bullet-theme);
 }
 .nom-carousel .nom-carousel-pagination-show {
   display: block;
@@ -63,7 +63,7 @@
   display: none;
   justify-content: space-between;
   width: 100%;
-  color: rgb(var(--nom-white));
+  color: var(--nom-carousel-bullet-theme);
   text-align: center;
   transform: translateY(-50%);
 }
@@ -74,7 +74,7 @@
   justify-content: center;
   width: 4rem;
   height: 4rem;
-  background-color: rgba(var(--nom-grey-9), 0.3);
+  background-color: rgba(var(--nom-carousel-background-color), 0.3);
   cursor: pointer;
 }
 .nom-carousel .nom-carousel-buttons .nom-carousel-button-prev {
@@ -85,7 +85,7 @@
 }
 .nom-carousel .nom-carousel-buttons .nom-carousel-button-prev:hover,
 .nom-carousel .nom-carousel-buttons .nom-carousel-button-next:hover {
-  background-color: rgba(var(--nom-grey-9), 0.5);
+  background-color: rgba(var(--nom-carousel-background-color), 0.5);
 }
 .nom-carousel .nom-carousel-buttons-show {
   display: flex;

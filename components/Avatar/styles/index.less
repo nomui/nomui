@@ -1,12 +1,14 @@
 .@{avatar-prefix-cls} {
   position: relative;
   display: inline-block;
+  box-sizing: content-box;
   overflow: hidden;
   color: var(--nom-avatar-color);
   white-space: nowrap;
   text-align: center;
   vertical-align: middle;
   background: var(--nom-avatar-background-color);
+  border: 1px solid var(--nom-avatar-border-color);
 
   &.avatar-image {
     background: transparent;
