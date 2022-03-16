@@ -2,18 +2,7 @@ import Component from '../Component/index'
 
 class Badge extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      key: null,
-      tag: 'span',
-      type: 'round',
-      text: null,
-      icon: null,
-      number: null,
-      overflowCount: 99,
-      size: 'xs',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Badge.defaults, props), ...mixins)
   }
 
   _config() {
@@ -88,7 +77,16 @@ Component.mixin({
     }
   },
 })
-
+Badge.defaults = {
+  key: null,
+  tag: 'span',
+  type: 'round',
+  text: null,
+  icon: null,
+  number: null,
+  overflowCount: 99,
+  size: 'xs',
+}
 Component.register(Badge)
 
 export default Badge

@@ -15,14 +15,14 @@
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
-  background-color: #fff;
+  background-color: var(--nom-badge-background-color);
   border: 1px solid transparent;
   border-color: @border-color;
   border-radius: 2px;
   cursor: pointer;
   user-select: none;
   zoom: 0.95;
-  .badge-size(@padding-y-base; @padding-x-base;@font-size-base; @line-height-base; @border-radius);
+  .badge-size(@padding-y-base; @padding-x-base; @font-size-base; @line-height-base; @border-radius);
 
   &.p-size-sm {
     // line-height: ensure proper height of button next to small input
@@ -55,87 +55,87 @@
   }
 
   &.p-color-red {
-    color: #fff;
-    background-color: #f44336;
-    border-color: #f44336;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-red-8));
+    border-color: rgb(var(--nom-red-8));
   }
 
   &.p-color-orange {
-    color: #fff;
-    background-color: #f79954;
-    border-color: #f79954;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-orange-4));
+    border-color: rgb(var(--nom-orange-4));
   }
 
   &.p-color-yellow {
-    color: #fff;
-    background-color: #eeb328;
-    border-color: #eeb328;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-yellow-4));
+    border-color: rgb(var(--nom-yellow-4));
   }
 
   &.p-color-olive {
-    color: #fff;
-    background-color: #afd442;
-    border-color: #afd442;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-lime-4));
+    border-color: rgb(var(--nom-lime-4));
   }
 
   &.p-color-green {
-    color: #fff;
-    background-color: #62ba61;
-    border-color: #62ba61;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-green-4));
+    border-color: rgb(var(--nom-green-4));
   }
 
   &.p-color-teal {
-    color: #fff;
-    background-color: #00a294;
-    border-color: #00a294;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-cyan-4));
+    border-color: rgb(var(--nom-cyan-4));
   }
 
   &.p-color-blue {
-    color: #fff;
-    background-color: #5b83ff;
-    border-color: #5b83ff;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-indigo-4));
+    border-color: rgb(var(--nom-indigo-4));
   }
 
   &.p-color-violet {
-    color: #fff;
-    background-color: #9763d5;
-    border-color: #9763d5;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-grape-4));
+    border-color: rgb(var(--nom-grape-4));
   }
 
   &.p-color-purple {
-    color: #fff;
-    background-color: #c79bfa;
-    border-color: #c79bfa;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-grape-2));
+    border-color: rgb(var(--nom-grape-2));
   }
 
   &.p-color-pink {
-    color: #fff;
-    background-color: #d266a3;
-    border-color: #d266a3;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-pink-4));
+    border-color: rgb(var(--nom-pink-4));
   }
 
   &.p-color-brown {
-    color: #fff;
-    background-color: #fcb474;
-    border-color: #fcb474;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-orange-3));
+    border-color: rgb(var(--nom-orange-3));
   }
 
   &.p-color-crimson {
-    color: #fff;
-    background-color: #e6645f;
-    border-color: #e6645f;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-red-6));
+    border-color: rgb(var(--nom-red-6));
   }
 
   &.p-color-skyblue {
-    color: #fff;
-    background-color: #68b9f2;
-    border-color: #68b9f2;
+    color: var(--nom-badge-color);
+    background-color: rgb(var(--nom-blue-4));
+    border-color: rgb(var(--nom-blue-4));
   }
 
   &.p-color-silver {
-    color: #333;
-    background-color: #f2f2f2;
-    border-color: #f2f2f2;
+    color: rgb(var(--nom-grey-9));
+    background-color: rgb(var(--nom-grey-0));
+    border-color: rgb(var(--nom-grey-0));
   }
 
   &.p-with-icon {
@@ -144,11 +144,12 @@
     justify-content: center;
   }
 
-  > .nom-icon {
+  >.nom-icon {
     display: inline-flex;
   }
-  > .nom-icon + span,
-  > span + .nom-icon {
+
+  >.nom-icon+span,
+  >span+.nom-icon {
     margin-left: 0.1rem;
   }
 
@@ -167,6 +168,7 @@
     transform: translate(50%, -50%);
     zoom: 1;
   }
+
   &.p-type-dot.p-with-number {
     position: absolute;
     top: 0;
@@ -185,12 +187,14 @@
     border-radius: 200px;
     transform: translate(50%, -50%);
   }
+
   .nom-badge-remove {
     position: relative;
     top: 2px;
     margin-left: 1px !important;
+
     svg {
-      fill: #fff;
+      fill: var(--nom-badge-color);
     }
   }
 }
