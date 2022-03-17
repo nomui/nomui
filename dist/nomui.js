@@ -11542,7 +11542,7 @@ function _defineProperty2(obj, key, value) {
       const selected = this.getSelectedOptions();
       if (selected !== null && Array.isArray(selected) && selected.length > 0) {
         const vals = selected.map(function (item) {
-          return item.value;
+          return item.key;
         });
         if (options.asString) {
           return vals.join();
