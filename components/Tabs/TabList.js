@@ -4,21 +4,7 @@ import TabItem from './TabItem'
 
 class TabList extends List {
   constructor(props, ...mixins) {
-    const defaults = {
-      itemDefaults: {
-        component: TabItem,
-      },
-      tabContent: null,
-      uistyle: 'plain',
-      itemSelectable: {
-        byClick: true,
-        scrollIntoView: false,
-      },
-      onTabSelectionChange: null,
-      disabledItems: [],
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(TabList.defaults, props), ...mixins)
   }
 
   _created() {
@@ -59,7 +45,19 @@ class TabList extends List {
     }
   }
 }
-
+TabList.defaults = {
+  itemDefaults: {
+    component: TabItem,
+  },
+  tabContent: null,
+  uistyle: 'plain',
+  itemSelectable: {
+    byClick: true,
+    scrollIntoView: false,
+  },
+  onTabSelectionChange: null,
+  disabledItems: [],
+}
 Component.register(TabList)
 
 export default TabList

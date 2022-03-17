@@ -8,7 +8,7 @@
       margin-right: 5px;
     }
     &:hover {
-      color: @link-hover-color;
+      color: var(--nom-color-primary-hover);
     }
   }
 
@@ -40,7 +40,7 @@
           border-color 0.15s ease-in-out;
 
         &.s-selected {
-          color: @primary;
+          color: var(--nom-color-primary);
         }
       }
     }
@@ -48,7 +48,7 @@
 
   &.p-uistyle-hat {
     > .nom-list-content {
-      border-bottom: 1px solid #dee2e6;
+      border-bottom: 1px solid var(--nom-border-color);
 
       > .nom-list-item-wrapper > .nom-list-item {
         display: block;
@@ -62,9 +62,9 @@
           border-color 0.15s ease-in-out;
 
         &.s-selected {
-          color: @primary;
-          background-color: #fff;
-          border-color: #dee2e6 #dee2e6 #fff;
+          color: var(--nom-color-primary);
+          background-color: var(--nom-bg-color);
+          border-color: var(--nom-border-color) var(--nom-border-color) var(--nom-bg-color);
         }
       }
     }
@@ -81,8 +81,8 @@
           border-color 0.15s ease-in-out;
 
         &.s-selected {
-          color: @primary;
-          border-bottom-color: @primary;
+          color: var(--nom-color-primary);
+          border-bottom-color: var(--nom-color-primary);
         }
       }
     }
@@ -90,8 +90,8 @@
 
   &.p-uistyle-card {
     > .nom-list-content {
-      background-color: #f5f7fa;
-      border-bottom: 1px solid #dee2e6;
+      background-color: var(--nom-tabs-card-bg-color);
+      border-bottom: 1px solid var(--nom-border-color);
 
       > .nom-list-item-wrapper {
         &:first-child {
@@ -104,16 +104,16 @@
           display: block;
           margin-bottom: -1px;
           padding: 1rem 1rem;
-          color: #909399;
+          color: var(--nom-input-placeholder-color);
           text-decoration: none;
           border: 1px solid transparent;
           transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
             border-color 0.15s ease-in-out;
 
           &.s-selected {
-            color: #495057;
-            background-color: #fff;
-            border-color: #fff #dee2e6;
+            color: var(--nom-input-color);
+            background-color: var(--nom-tabs-card-selected-bg-color);
+            border-color: var(--nom-color-white) var(--nom-border-color);
           }
         }
       }
@@ -137,11 +137,11 @@
           .u-shape-round();
 
           &:hover {
-            background-color: @lprimary;
+            background-color: var(--nom-color-primary-hover);
           }
 
           &.s-selected {
-            .u-color-primary();
+            .nom-preset-primary;
           }
         }
       }
@@ -160,14 +160,14 @@
   }
 
   &.p-uistyle-card {
-    background: #fff;
-    border: 1px solid #dcdfe6;
+    background: var(--nom-bg-color);
+    border: 1px solid var(--nom-border-color);
     .nom-tabs-tools {
       height: 50px;
       padding: 0 1rem;
       line-height: 45px;
-      background-color: rgb(245, 247, 250);
-      border-bottom: 1px solid rgb(222, 226, 230);
+      background-color: var(--nom-tabs-card-bg-color);
+      border-bottom: 1px solid var(--nom-border-color);
     }
     > .nom-tab-content {
       padding: 1rem;
