@@ -30,7 +30,7 @@ define([], function () {
           attrs: {
             style: {
               color: '#fff',
-              backgroundColor: '#ff6b6b',
+              backgroundColor: '#ff8787',
             },
           },
         },

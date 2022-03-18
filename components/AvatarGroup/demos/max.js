@@ -18,7 +18,7 @@ define([], function () {
             attrs: {
               style: {
                 color: '#fff',
-                backgroundColor: '#fcc419',
+                backgroundColor: '#748ffc',
               },
             },
           },
@@ -27,7 +27,7 @@ define([], function () {
             attrs: {
               style: {
                 color: '#fff',
-                backgroundColor: '#51cf66',
+                backgroundColor: '#4dabf7',
               },
             },
           },
@@ -37,7 +37,7 @@ define([], function () {
             attrs: {
               style: {
                 color: '#fff',
-                backgroundColor: '#339af0',
+                backgroundColor: '#66d9e8',
               },
             },
           },
@@ -46,7 +46,7 @@ define([], function () {
             attrs: {
               style: {
                 color: '#fff',
-                backgroundColor: '#e03131',
+                backgroundColor: '#63e6be',
               },
             },
           },
@@ -55,7 +55,7 @@ define([], function () {
             attrs: {
               style: {
                 color: '#fff',
-                backgroundColor: '#7048e8',
+                backgroundColor: '#c0eb75',
               },
             },
           },
