@@ -2,17 +2,7 @@ import Component from '../Component/index'
 
 class Dropdown extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'span',
-      triggerAction: 'click',
-      rightIcon: 'down',
-      split: false,
-      onClick: null,
-      items: [],
-      size: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Dropdown.defaults, props), ...mixins)
   }
 
   _created() {
@@ -54,11 +44,6 @@ class Dropdown extends Component {
           children: {
             component: 'Menu',
             itemDefaults: {
-              styles: {
-                hover: {
-                  color: 'primary',
-                },
-              },
               size: size,
             },
             items: items,
@@ -83,7 +68,15 @@ class Dropdown extends Component {
 
   _rendered() {}
 }
-
+Dropdown.defaults = {
+  tag: 'span',
+  triggerAction: 'click',
+  rightIcon: 'down',
+  split: false,
+  onClick: null,
+  items: [],
+  size: null,
+}
 Component.register(Dropdown)
 
 export default Dropdown
