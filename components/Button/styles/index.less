@@ -117,10 +117,13 @@
   }
 
   &.p-type-text {
-    background-color: transparent !important;
-    border-color: transparent !important;
+    background-color: transparent;
+    border-color: transparent;
     &:hover {
-      color: var(--nom-color-danger-hover);
+      .nom-preset-hover;
+      &.p-danger {
+        color: var(--nom-color-danger-hover);
+      }
     }
   }
 
@@ -132,7 +135,10 @@
       color: var(--nom-color-danger);
     }
     &:hover {
-      color: var(--nom-color-danger-hover);
+      &.p-danger {
+        color: var(--nom-color-danger-hover);
+      }
+
       text-decoration: none;
       background: none;
     }
