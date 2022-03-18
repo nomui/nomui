@@ -4397,9 +4397,9 @@ body {
   --nom-grid-icon-color: var(--nom-control-icon-color);
   --nom-grid-icon-color-active: var(--nom-color-primary);
   --nom-grid-highlight-bg: #fcfaee;
-  --nom-grid-tr-bg-hover: var(--nom-color-hover);
-  --nom-grid-tr-striped-bg: rgba(var(--nom-grey-4), 0.05);
-  --nom-grid-tr-striped-bg-hover: var(--nom-color-hover);
+  --nom-grid-tr-bg-hover: #f9f9fa;
+  --nom-grid-tr-striped-bg: #fdfdfd;
+  --nom-grid-tr-striped-bg-hover: var(--nom-grid-tr-bg-hover);
   --nom-grid-tr-bg-selected: #fffaef;
   --nom-grid-col-highlight-bg: rgba(221, 205, 79, 0.1);
   --nom-grid-td-padding: 8px 10px;
@@ -4464,7 +4464,7 @@ body[theme-mode='dark'] .nom-always-light {
   --nom-color-text-2: rgba(var(--nom-grey-9), 0.6);
   --nom-color-text-3: rgba(var(--nom-grey-9), 0.35);
   --nom-color-shadow: rgba(var(--nom-black), 0.04);
-  --nom-color-border: rgba(var(--nom-grey-9), 0.1);
+  --nom-color-border: rgba(var(--nom-grey-9), 0.15);
   --nom-color-nav-bg: rgba(var(--nom-white), 1);
   --nom-color-hover: rgba(var(--nom-grey-6), 0.05);
   --nom-color-fill-0: rgba(var(--nom-grey-6), 0.05);
@@ -6952,6 +6952,11 @@ fieldset[disabled] a.nom-button {
 .nom-button.p-danger.p-type-primary:hover {
   background-color: var(--nom-color-danger-hover);
 }
+.nom-button.p-danger:not(.p-type-text, .p-type-link):hover {
+  color: var(--nom-color-white);
+  background-color: var(--nom-color-danger-hover);
+  border-color: var(--nom-color-danger-hover);
+}
 .nom-button.p-type-primary {
   color: var(--nom-color-white);
   background-color: var(--nom-color-primary);
@@ -6964,20 +6969,29 @@ fieldset[disabled] a.nom-button {
   border-style: dashed;
 }
 .nom-button.p-type-text {
-  background-color: transparent !important;
-  border-color: transparent !important;
+  background-color: transparent;
+  border-color: transparent;
 }
-.nom-button.p-type-text:hover {
-  background: rgba(0, 0, 0, 0.018);
+.nom-button.p-type-text:hover:hover {
+  background-color: var(--nom-color-hover);
+}
+.nom-button.p-type-text:hover.p-danger {
+  color: var(--nom-color-danger-hover);
 }
 .nom-button.p-type-link {
   color: var(--nom-color-primary);
   background-color: transparent;
   border-color: transparent !important;
 }
+.nom-button.p-type-link.p-danger {
+  color: var(--nom-color-danger);
+}
 .nom-button.p-type-link:hover {
   text-decoration: none;
   background: none;
+}
+.nom-button.p-type-link:hover.p-danger {
+  color: var(--nom-color-danger-hover);
 }
 .nom-button.p-ghost {
   color: inherit !important;
@@ -7071,12 +7085,6 @@ fieldset[disabled] a.nom-button {
 .nom-button > span + .nom-icon {
   margin-left: 0.5rem;
 }
-.nom-button:not(.p-type-default):not([disabled]):hover,
-.nom-button:not(.p-type-text):not([disabled]):hover,
-.nom-button:not(.p-type-dashed):not([disabled]):hover,
-.nom-button:not(.p-type-link):not([disabled]):hover {
-  filter: brightness(0.9);
-}
 .nom-button-inline {
   display: inline !important;
   padding: 0;
@@ -7086,8 +7094,6 @@ fieldset[disabled] a.nom-button {
 .nom-button-inline:hover {
   background: none !important;
   background-color: transparent !important;
-  filter: brightness(0.65) !important;
-  filter: none;
 }
 .nom-button-inline.s-hidden {
   display: none !important;
