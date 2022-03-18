@@ -289,11 +289,11 @@ Pager.defaults = {
     // next: '下一页',
     prev: {
       component: 'Icon',
-      type: 'left',
+      type: 'prev',
     },
     next: {
       component: 'Icon',
-      type: 'right',
+      type: 'next',
     },
     ellipse: '...',
   },

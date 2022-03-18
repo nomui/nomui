@@ -10,6 +10,9 @@ body[theme-mode='dark'] .nom-always-light {
 
   // 在所有组件中都使用css变量来设置颜色
   // 切换主题时，js重置primary相关的变量即可
+  --nom-color-primary-base: var(
+    --nom-blue-5
+  ); // Primary色的原始rgb色值，适用于某些情况需要自行设置主题色透明度
   --nom-color-primary: rgba(var(--nom-blue-5), 1); // 主要颜色。仅在需要非常强调的情况下使用。
   --nom-color-primary-hover: rgba(var(--nom-blue-6), 1); // 主要颜色悬浮态
   --nom-color-primary-active: rgba(var(--nom-blue-7), 1); // 主要颜色激活态
