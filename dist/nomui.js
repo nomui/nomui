@@ -16599,8 +16599,9 @@ function _defineProperty2(obj, key, value) {
         const c = props.columns.filter((n) => {
           return Object.keys(n);
         });
-        this._needSortColumnsFlag = true;
+        this._customColumnFlag = false;
         this._pinColumnFlag = false;
+        this._needSortColumnsFlag = true;
         this.originColumns = [...c];
       } // 更新了data
       if (props.data && this.props) {
