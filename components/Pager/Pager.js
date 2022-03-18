@@ -37,7 +37,7 @@ class Pager extends Component {
   _renderpages(pager) {
     return {
       component: List,
-      gutter: this.props.compact ? 'sm' : 'md',
+      gutter: this.props.compact ? 'sm' : 'sm',
       items: pager.getPageItems(),
       itemDefaults: {
         tag: 'a',
@@ -46,7 +46,7 @@ class Pager extends Component {
         },
         _config: function () {
           this.setProps({
-            children: `${this.props.text}`,
+            children: this.props.text,
           })
         },
       },
@@ -285,8 +285,16 @@ Pager.defaults = {
   itemsSort: ['count', 'pages', 'sizes'], // 排列顺序 1.count 共xx条数据 2.分页数List 3.分页大小Select
 
   texts: {
-    prev: '上一页',
-    next: '下一页',
+    // prev: '上一页',
+    // next: '下一页',
+    prev: {
+      component: 'Icon',
+      type: 'left',
+    },
+    next: {
+      component: 'Icon',
+      type: 'right',
+    },
     ellipse: '...',
   },
 
