@@ -93,6 +93,13 @@
         background-color: var(--nom-color-danger-hover);
       }
     }
+    &:not(.p-type-text, .p-type-link) {
+      &:hover {
+        color: var(--nom-color-white);
+        background-color: var(--nom-color-danger-hover);
+        border-color: var(--nom-color-danger-hover);
+      }
+    }
   }
 
   &.p-type-primary {
@@ -110,10 +117,13 @@
   }
 
   &.p-type-text {
-    background-color: transparent !important;
-    border-color: transparent !important;
+    background-color: transparent;
+    border-color: transparent;
     &:hover {
-      background: rgba(0, 0, 0, 0.018);
+      .nom-preset-hover;
+      &.p-danger {
+        color: var(--nom-color-danger-hover);
+      }
     }
   }
 
@@ -121,7 +131,14 @@
     color: var(--nom-color-primary);
     background-color: transparent;
     border-color: transparent !important;
+    &.p-danger {
+      color: var(--nom-color-danger);
+    }
     &:hover {
+      &.p-danger {
+        color: var(--nom-color-danger-hover);
+      }
+
       text-decoration: none;
       background: none;
     }
@@ -184,7 +201,7 @@
   &:not(.p-type-dashed),
   &:not(.p-type-link) {
     &:not([disabled]):hover {
-      filter: brightness(0.9);
+      // filter: brightness(0.9);
     }
   }
 }
@@ -197,8 +214,8 @@
   &:hover {
     background: none !important;
     background-color: transparent !important;
-    filter: brightness(0.65) !important;
-    filter: none;
+    // filter: brightness(0.65) !important;
+    // filter: none;
   }
   &.s-hidden {
     display: none !important;
