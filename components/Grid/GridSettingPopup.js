@@ -77,8 +77,10 @@ class GridSettingPopup extends Modal {
                     })
                     return false
                   }
-                  that.grid.popupTreeData = that.grid.originColumns = that.tree.getData()
-                  that.grid.handleColumnsSetting(list)
+                  that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
+                    that.tree.getData(),
+                  )
+                  that.grid.handleColumnsSetting(that._sortCustomizableColumns(list))
                 },
               },
               {
@@ -124,6 +126,15 @@ class GridSettingPopup extends Modal {
     }
     mapColumns(val)
     return val
+  }
+
+  // 将customizable: false的列排至后面
+  _sortCustomizableColumns(arr) {
+    arr.sort((curr, next) => {
+      if (next.customizable === false) return -1
+      return 0
+    })
+    return arr
   }
 }
 
