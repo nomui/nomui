@@ -10,6 +10,9 @@ body[theme-mode='dark'] .nom-always-light {
 
   // 在所有组件中都使用css变量来设置颜色
   // 切换主题时，js重置primary相关的变量即可
+  --nom-color-primary-base: var(
+    --nom-blue-5
+  ); // Primary色的原始rgb色值，适用于某些情况需要自行设置主题色透明度
   --nom-color-primary: rgba(var(--nom-blue-5), 1); // 主要颜色。仅在需要非常强调的情况下使用。
   --nom-color-primary-hover: rgba(var(--nom-blue-6), 1); // 主要颜色悬浮态
   --nom-color-primary-active: rgba(var(--nom-blue-7), 1); // 主要颜色激活态
@@ -75,12 +78,12 @@ body[theme-mode='dark'] .nom-always-light {
 
   --nom-color-shadow: rgba(var(--nom-black), 0.04); // 用于模拟描边的阴影颜色
 
-  --nom-color-border: rgba(var(--nom-grey-9), 0.15); // 默认描边颜色
+  --nom-color-border: rgba(var(--nom-grey-9), 0.1); // 默认描边颜色
   --nom-color-nav-bg: rgba(var(--nom-white), 1); // 导航背景色
-  --nom-color-hover: rgba(var(--nom-grey-1), 1); // 基础对象的hover色
+  --nom-color-hover: rgba(var(--nom-grey-6), 0.05); // 基础对象的hover色
 
   // 和 dark模式有区别的变量
-  --nom-color-fill-0: rgba(var(--nom-grey-8), 0.05); // 填充色 - 默认态
+  --nom-color-fill-0: rgba(var(--nom-grey-6), 0.05); // 填充色 - 默认态
   --nom-color-fill-1: rgba(var(--nom-grey-8), 0.09); // 填充色 - 悬浮态
   --nom-color-fill-2: rgba(var(--nom-grey-8), 0.13); // 填充色 - 激活态
   --nom-color-bg-0: rgba(var(--nom-white), 1); // 背景色 - 最下层（底部页面）

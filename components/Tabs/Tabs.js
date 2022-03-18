@@ -5,16 +5,7 @@ import TabList from './TabList'
 
 class Tabs extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tabs: [],
-      // selectedTab: 'tab0',
-      uistyle: 'plain', // hat,card,line,pill
-      onTabSelectionChange: null,
-      disabledItems: [],
-      tools: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Tabs.defaults, props), ...mixins)
   }
 
   _config() {
@@ -105,6 +96,14 @@ class Tabs extends Component {
     const panel = this.tabContent.getPanel(key)
     panel.update(newPanelProps)
   }
+}
+Tabs.defaults = {
+  tabs: [],
+  // selectedTab: 'tab0',
+  uistyle: 'plain', // hat,card,line,pill
+  onTabSelectionChange: null,
+  disabledItems: [],
+  tools: null,
 }
 
 Component.register(Tabs)

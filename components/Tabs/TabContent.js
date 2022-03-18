@@ -4,12 +4,7 @@ import TabPanel from './TabPanel'
 
 class TabContent extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      panels: [],
-      panelDefaults: { component: TabPanel },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(TabContent.defaults, props), ...mixins)
   }
 
   _created() {
@@ -61,7 +56,10 @@ class TabContent extends Component {
     panel.show()
   }
 }
-
+TabContent.defaults = {
+  panels: [],
+  panelDefaults: { component: TabPanel },
+}
 Component.register(TabContent)
 
 export default TabContent
