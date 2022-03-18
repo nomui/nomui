@@ -27,6 +27,7 @@ define([], function () {
           {
             component: 'Toolbar',
             type: 'link',
+            inline: true,
             items: [
               {
                 danger: true,

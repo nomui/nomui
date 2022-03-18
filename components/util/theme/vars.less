@@ -1,13 +1,15 @@
 body {
   // Font
   --nom-font-family-en: tahoma, arial, 'Helvetica Neue', helvetica, sans-serif;
+  --nom-text-color: var(--nom-color-text-0);
 
   // Box Element
   --nom-border-radius: 4px;
   --nom-border-color: var(--nom-color-border);
+  --nom-bg-color: var(--nom-color-bg-0);
 
   // Field & Textbox
-  --nom-input-color: var(--nom-color-text-0);
+  --nom-input-color: var(--nom-text-color);
   --nom-input-placeholder-color: var(--nom-color-text-2);
   --nom-input-bg: var(--nom-color-bg-0);
   --nom-input-bg-disabled: var(--nom-color-disabled-bg);
@@ -35,7 +37,7 @@ body {
   --nom-layer-background-color: var(--nom-color-bg-0);
   --nom-layer-border: transparent;
   --nom-layer-border-radius: 6px;
-  --nom-layer-box-shadow: 0 0 2px -1px rgba(0, 0, 0, 0.75), 0 10px 15px -5px rgba(0, 0, 0, 0.15);
+  --nom-layer-box-shadow: 0 0 2px -1px rgba(0, 0, 0, 0.5), 0 10px 15px -5px rgba(0, 0, 0, 0.15);
   --nom-layer-backdrop-color: rgba(0, 0, 0, 0.55);
 
   // Select
@@ -51,4 +53,42 @@ body {
   --nom-tooltip-background-color: rgba(var(--nom-grey-8), 1);
   --nom-tooltip-color: var(--nom-color-bg-0);
   --nom-tooltip-border-radius: 6px;
+
+  // Grid
+  --nom-grid-background-color: var(--nom-color-white);
+  --nom-grid-header-background-color: var(--nom-color-white);
+  --nom-grid-header-border: 1px solid var(--nom-border-color);
+  --nom-grid-th-bg: var(--nom-color-white);
+  --nom-grid-th-bg-image: none;
+  --nom-grid-th-color: var(--nom-color-text-2);
+  --nom-grid-th-font-weight: 600;
+  --nom-grid-icon-color: var(--nom-control-icon-color);
+  --nom-grid-icon-color-active: var(--nom-color-primary);
+  --nom-grid-highlight-bg: #fcfaee;
+  --nom-grid-tr-bg-hover: var(--nom-color-hover);
+  --nom-grid-tr-striped-bg: rgba(var(--nom-grey-4), 0.05);
+  --nom-grid-tr-striped-bg-hover: var(--nom-color-hover);
+  --nom-grid-tr-bg-selected: #fffaef;
+  --nom-grid-col-highlight-bg: rgba(221, 205, 79, 0.1);
+  --nom-grid-td-padding: 8px 10px;
+
+  // Menu
+  --nom-menu-divider-border: 1px solid var(--nom-border-color);
+
+  // Panel
+  --nom-panel-header-bg-color: var(--nom-color-fill-0);
+  --nom-panel-border-radius: var(--nom-border-radius);
+
+  // Tabs
+  --nom-tabs-card-bg-color: var(--nom-panel-header-bg-color);
+  --nom-tabs-card-selected-bg-color: var(--nom-color-white);
+  --nom-tabs-card-border-radius: var(--nom-border-radius);
+
+  // Pager
+  --nom-pager-color: var(--nom-text-color);
+  --nom-pager-border-radius: 4px;
+  --nom-pager-item-bg-color: transparent;
+  --nom-pager-item-border-color: transparent;
+  --nom-pager-item-bg-color-selected: rgba(var(--nom-color-primary-base), 0.075);
+  --nom-pager-item-border-color-selected: transparent;
 }

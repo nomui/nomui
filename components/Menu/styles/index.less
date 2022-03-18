@@ -16,9 +16,9 @@
     }
     > .subtext {
       margin-left: 6px;
+      color: var(--nom-color-text-2);
       font-weight: 400;
       font-size: 12px;
-      opacity: 0.67;
     }
   }
 
@@ -42,7 +42,7 @@
         right: 10px;
         bottom: 5px;
         display: block;
-        border-right: 1px solid #ddd;
+        border-right: var(--nom-menu-divider-border);
         content: '';
       }
     }
@@ -57,9 +57,9 @@
           border-bottom: 2px solid transparent;
 
           &.s-selected {
-            color: @primary;
+            color: var(--nom-color-primary);
             font-weight: 500;
-            border-bottom-color: @primary;
+            border-bottom-color: var(--nom-color-primary);
           }
         }
 
@@ -86,7 +86,8 @@
         .u-shape-round();
 
         &:hover {
-          background-color: @lprimary;
+          color: var(--nom-color-white);
+          background-color: var(--nom-color-primary-hover);
         }
 
         &.s-selected {
@@ -120,7 +121,7 @@
         bottom: 10px;
         left: 20px;
         display: block;
-        border-top: 1px solid #ddd;
+        border-top: var(--nom-menu-divider-border);
         content: '';
       }
     }
@@ -141,8 +142,8 @@
       display: none;
     }
     &:hover {
-      color: #fff;
-      background: @primary;
+      color: var(--nom-color-white);
+      background: var(--nom-color-primary);
     }
   }
 }
@@ -157,6 +158,7 @@
 
     &:hover {
       color: inherit;
+      .nom-preset-hover;
     }
   }
 
@@ -180,7 +182,7 @@
   &.nom-menu-popup-sub {
     > .nom-menu-item-wrapper > .nom-menu-item {
       &.s-selected {
-        color: @primary;
+        color: var(--nom-color-primary);
       }
     }
   }

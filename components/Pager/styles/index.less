@@ -12,18 +12,34 @@
     > .nom-list {
       > .nom-list-content {
         > .nom-list-item-wrapper {
+          .prev,
+          .next,
+          .space {
+            .nom-icon {
+              position: relative;
+              top: 2px;
+            }
+          }
           > a {
             display: block;
-            padding: 0.5rem 1rem;
-            color: @text-color;
-            background-color: #fff;
-            border: 1px solid #d9d9d9;
-            border-radius: 2px;
+            padding: 0.35rem 0.85rem;
+            color: var(--nom-pager-color);
+            text-decoration: none;
+            background-color: var(--nom-pager-item-bg-color);
+            border: 1px solid var(--nom-pager-item-border-color);
+            border-radius: var(--nom-pager-border-radius);
 
+            &:not(&.s-selected) {
+              .nom-preset-hover;
+            }
+            &.s-disabled {
+              color: var(--nom-color-text-2);
+            }
             &.s-selected {
-              color: @primary;
+              color: var(--nom-color-primary);
               font-weight: 500;
-              border-color: @primary;
+              background-color: var(--nom-pager-item-bg-color-selected);
+              border-color: var(--nom-pager-item-border-color-selected);
             }
           }
         }
@@ -32,8 +48,8 @@
     .nom-pager-select {
       > .nom-field-content {
         > .nom-control {
-          padding-top: 0.5rem;
-          padding-bottom: 0.5rem;
+          padding-top: 0.35rem;
+          padding-bottom: 0.35rem;
         }
       }
     }
@@ -46,15 +62,15 @@
             > a {
               display: block;
               padding: 0.35rem 0.8rem;
-              color: @text-color;
-              background-color: #fff;
-              border: 1px solid #d9d9d9;
-              border-radius: 2px;
+              color: var(--nom-pager-color);
+              background-color: var(--nom-bg-color);
+              border: 1px solid var(--nom-border-color);
+              border-radius: var(--nom-pager-border-radius);
 
               &.s-selected {
-                color: @primary;
+                color: var(--nom-color-primary);
                 font-weight: 500;
-                border-color: @primary;
+                border-color: var(--nom-color-primary);
               }
             }
           }

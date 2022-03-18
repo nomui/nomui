@@ -6,27 +6,7 @@ import MenuItemWrapper from './MenuItemWrapper'
 
 class Menu extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'ul',
-      items: [],
-      itemDefaults: {
-        component: MenuItem,
-      },
-      itemSelectable: {
-        onlyleaf: false,
-        byClick: false,
-      },
-      itemExpandable: {
-        expandSingle: true,
-        initExpandLevel: 0,
-      },
-      compact: false,
-      indent: 1.5,
-      direction: 'vertical',
-      keyField: 'key',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Menu.defaults, props), ...mixins)
   }
 
   _created() {
@@ -192,7 +172,25 @@ class Menu extends Component {
     this.scrollToSelected()
   }
 }
-
+Menu.defaults = {
+  tag: 'ul',
+  items: [],
+  itemDefaults: {
+    component: MenuItem,
+  },
+  itemSelectable: {
+    onlyleaf: false,
+    byClick: false,
+  },
+  itemExpandable: {
+    expandSingle: true,
+    initExpandLevel: 0,
+  },
+  compact: false,
+  indent: 1.5,
+  direction: 'vertical',
+  keyField: 'key',
+}
 Component.register(Menu)
 
 export default Menu

@@ -2193,6 +2193,16 @@ function _defineProperty2(obj, key, value) {
   Component.register(Icon);
   /* Direction */ let cat = "Direction";
   Icon.add(
+    "prev",
+    `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" focusable="false" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.2782 4.23933C16.864 4.82511 16.864 5.77486 16.2782 6.36065L10.6213 12.0175L16.2782 17.6744C16.864 18.2601 16.864 19.2099 16.2782 19.7957C15.6924 20.3815 14.7426 20.3815 14.1569 19.7957L7.43934 13.0782C6.85355 12.4924 6.85355 11.5426 7.43934 10.9568L14.1569 4.23933C14.7426 3.65354 15.6924 3.65354 16.2782 4.23933Z" fill="currentColor"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "next",
+    `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" focusable="false" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.43934 19.7957C6.85355 19.2099 6.85355 18.2601 7.43934 17.6744L13.0962 12.0175L7.43934 6.36065C6.85355 5.77486 6.85355 4.82511 7.43934 4.23933C8.02513 3.65354 8.97487 3.65354 9.56066 4.23933L16.2782 10.9568C16.864 11.5426 16.864 12.4924 16.2782 13.0782L9.56066 19.7957C8.97487 20.3815 8.02513 20.3815 7.43934 19.7957Z" fill="currentColor"></path></svg>`,
+    cat
+  );
+  Icon.add(
     "up",
     `<svg focusable="false" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/></svg>`,
     cat
@@ -2646,16 +2656,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(PanelHeader);
   class Panel extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        header: null,
-        body: null,
-        footer: null,
-        uistyle: "default", // splitline,outline,card,bordered,plain
-        startAddons: [],
-        endAddons: [],
-        fit: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Panel.defaults, props), ...mixins);
     }
     _config() {
       this._addPropStyle("fit");
@@ -2679,6 +2680,15 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
+  Panel.defaults = {
+    header: null,
+    body: null,
+    footer: null,
+    uistyle: "default", // splitline,outline,card,bordered,plain
+    startAddons: [],
+    endAddons: [],
+    fit: false,
+  };
   Component.register(Panel);
   Object.defineProperty(Component.prototype, "$modal", {
     get: function () {
@@ -14712,16 +14722,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Drawer);
   class Dropdown extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        tag: "span",
-        triggerAction: "click",
-        rightIcon: "down",
-        split: false,
-        onClick: null,
-        items: [],
-        size: null,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Dropdown.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -14757,10 +14758,7 @@ function _defineProperty2(obj, key, value) {
             },
             children: {
               component: "Menu",
-              itemDefaults: {
-                styles: { hover: { color: "primary" } },
-                size: size,
-              },
+              itemDefaults: { size: size },
               items: items,
             },
             onClick: (args) => {
@@ -14778,6 +14776,15 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {}
   }
+  Dropdown.defaults = {
+    tag: "span",
+    triggerAction: "click",
+    rightIcon: "down",
+    split: false,
+    onClick: null,
+    items: [],
+    size: null,
+  };
   Component.register(Dropdown);
   class Ellipsis extends Component {
     constructor(props, ...mixins) {
@@ -16014,24 +16021,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Thead);
   class Table extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        tag: "table",
-        columns: [],
-        rowDefaults: {},
-        onlyHead: false,
-        onlyBody: false,
-        keyField: "id",
-        striped: false,
-        treeConfig: {
-          childrenField: "children",
-          treeNodeColumn: null,
-          initExpandLevel: -1,
-          indentSize: 6,
-        },
-        showTitle: false,
-        ellipsis: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Table.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -16106,6 +16096,23 @@ function _defineProperty2(obj, key, value) {
       this.activeTr.element.classList.add("nom-tr-selected");
     }
   }
+  Table.defaults = {
+    tag: "table",
+    columns: [],
+    rowDefaults: {},
+    onlyHead: false,
+    onlyBody: false,
+    keyField: "id",
+    striped: false,
+    treeConfig: {
+      childrenField: "children",
+      treeNodeColumn: null,
+      initExpandLevel: -1,
+      indentSize: 6,
+    },
+    showTitle: false,
+    ellipsis: false,
+  };
   Component.register(Table);
   var GridTableMixin = {
     methods: {
@@ -16558,6 +16565,7 @@ function _defineProperty2(obj, key, value) {
       Grid._loopSetValue(props.treeConfig, [
         "cascadeCheckParent",
         "cascadeCheckChildren",
+        "cascadeUncheckParent",
         "cascadeUncheckChildren",
       ]);
       super(Component.extendProps(Grid.defaults, props), ...mixins);
@@ -17640,7 +17648,7 @@ function _defineProperty2(obj, key, value) {
     ellipsis: false,
     sticky: false,
     line: "row",
-    bordered: true,
+    bordered: false,
   };
   Grid._loopSetValue = function (key, arry) {
     if (key === undefined || key.cascade === undefined) return false;
@@ -17653,14 +17661,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Grid);
   class Toolbar extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        type: "default",
-        visibleItems: 2,
-        gutter: "sm",
-        size: null,
-        items: [],
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Toolbar.defaults, props), ...mixins);
     }
     _config() {
       const { items, type, gutter, size, visibleItems, inline } = this.props;
@@ -17687,6 +17688,13 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
+  Toolbar.defaults = {
+    type: "default",
+    visibleItems: 2,
+    gutter: "sm",
+    size: null,
+    items: [],
+  };
   Component.register(Toolbar);
   let nameSeq = 0;
   class GroupGridTr extends Tr {
@@ -18616,18 +18624,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(MenuItemWrapper);
   class Menu extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        tag: "ul",
-        items: [],
-        itemDefaults: { component: MenuItem },
-        itemSelectable: { onlyleaf: false, byClick: false },
-        itemExpandable: { expandSingle: true, initExpandLevel: 0 },
-        compact: false,
-        indent: 1.5,
-        direction: "vertical",
-        keyField: "key",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Menu.defaults, props), ...mixins);
     }
     _created() {
       this.itemRefs = [];
@@ -18759,6 +18756,17 @@ function _defineProperty2(obj, key, value) {
       this.scrollToSelected();
     }
   }
+  Menu.defaults = {
+    tag: "ul",
+    items: [],
+    itemDefaults: { component: MenuItem },
+    itemSelectable: { onlyleaf: false, byClick: false },
+    itemExpandable: { expandSingle: true, initExpandLevel: 0 },
+    compact: false,
+    indent: 1.5,
+    direction: "vertical",
+    keyField: "key",
+  };
   Component.register(Menu);
   class Message extends Layer {
     constructor(props, ...mixins) {
@@ -19114,18 +19122,18 @@ function _defineProperty2(obj, key, value) {
     // }
   }
   Component.register(NavbarCaption);
-  class NavbarCaptionBefore extends Component {
-    // constructor(props, ...mixins) {
-    //   super(props, ...mixins)
-    // }
-  }
-  Component.register(NavbarCaptionBefore);
   class NavbarCaptionAfter extends Component {
     // constructor(props, ...mixins) {
     //   super(props, ...mixins)
     // }
   }
   Component.register(NavbarCaptionAfter);
+  class NavbarCaptionBefore extends Component {
+    // constructor(props, ...mixins) {
+    //   super(props, ...mixins)
+    // }
+  }
+  Component.register(NavbarCaptionBefore);
   class NavbarNav extends Component {
     // constructor(props, ...mixins) {
     //   super(props, ...mixins)
@@ -19140,8 +19148,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(NavbarTools);
   class Navbar extends Component {
     constructor(props, ...mixins) {
-      const defaults = { caption: null, nav: null, tools: null };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Navbar.defaults, props), ...mixins);
     }
     config() {
       this._addPropStyle("fit");
@@ -19191,6 +19198,7 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
+  Navbar.defaults = { caption: null, nav: null, tools: null };
   Component.register(Navbar);
   class NotificationContent extends Component {
     constructor(props, ...mixins) {
@@ -20017,7 +20025,7 @@ function _defineProperty2(obj, key, value) {
     _renderpages(pager) {
       return {
         component: List,
-        gutter: this.props.compact ? "sm" : "md",
+        gutter: this.props.compact ? "sm" : "sm",
         items: pager.getPageItems(),
         itemDefaults: {
           tag: "a",
@@ -20025,7 +20033,7 @@ function _defineProperty2(obj, key, value) {
             return this.props.pageNumber;
           },
           _config: function () {
-            this.setProps({ children: `${this.props.text}` });
+            this.setProps({ children: this.props.text });
           },
         },
         itemSelectable: { byClick: true },
@@ -20214,7 +20222,13 @@ function _defineProperty2(obj, key, value) {
     nextShowAlways: true,
     justify: "end",
     itemsSort: ["count", "pages", "sizes"], // 排列顺序 1.count 共xx条数据 2.分页数List 3.分页大小Select
-    texts: { prev: "上一页", next: "下一页", ellipse: "..." },
+    texts: {
+      // prev: '上一页',
+      // next: '下一页',
+      prev: { component: "Icon", type: "prev" },
+      next: { component: "Icon", type: "next" },
+      ellipse: "...",
+    },
     getPageParams: function () {
       const { pageIndex, pageSize } = this.props;
       let params = {};
@@ -23759,8 +23773,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(TabPanel);
   class TabContent extends Component {
     constructor(props, ...mixins) {
-      const defaults = { panels: [], panelDefaults: { component: TabPanel } };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(TabContent.defaults, props), ...mixins);
     }
     _created() {
       this.panels = {};
@@ -23803,6 +23816,7 @@ function _defineProperty2(obj, key, value) {
       panel.show();
     }
   }
+  TabContent.defaults = { panels: [], panelDefaults: { component: TabPanel } };
   Component.register(TabContent);
   class TabItem extends Component {
     constructor(props, ...mixins) {
@@ -23848,15 +23862,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(TabItem);
   class TabList extends List {
     constructor(props, ...mixins) {
-      const defaults = {
-        itemDefaults: { component: TabItem },
-        tabContent: null,
-        uistyle: "plain",
-        itemSelectable: { byClick: true, scrollIntoView: false },
-        onTabSelectionChange: null,
-        disabledItems: [],
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(TabList.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -23888,17 +23894,18 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  TabList.defaults = {
+    itemDefaults: { component: TabItem },
+    tabContent: null,
+    uistyle: "plain",
+    itemSelectable: { byClick: true, scrollIntoView: false },
+    onTabSelectionChange: null,
+    disabledItems: [],
+  };
   Component.register(TabList);
   class Tabs extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        tabs: [], // selectedTab: 'tab0',
-        uistyle: "plain", // hat,card,line,pill
-        onTabSelectionChange: null,
-        disabledItems: [],
-        tools: null,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Tabs.defaults, props), ...mixins);
     }
     _config() {
       this._addPropStyle("fit");
@@ -23983,6 +23990,13 @@ function _defineProperty2(obj, key, value) {
       panel.update(newPanelProps);
     }
   }
+  Tabs.defaults = {
+    tabs: [], // selectedTab: 'tab0',
+    uistyle: "plain", // hat,card,line,pill
+    onTabSelectionChange: null,
+    disabledItems: [],
+    tools: null,
+  };
   Component.register(Tabs);
   class Tag extends Component {
     constructor(props, ...mixins) {
