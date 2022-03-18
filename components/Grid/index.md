@@ -49,6 +49,7 @@
 | showTitle | 单元格显示 title | `boolean` | `false` |
 | line | 线条样式，`row` 为行线条，`col` 为列线条，`both` 为行列线条 | `row` \| `col` \| `both` | - |
 | columnResizable | 是否允许拖动列宽（此项为 true 以后，如果有某些列不想改变宽度，可单独设置 column.resizable:false） | `object` \| `boolean` | `false` |
+| columnFrozenable | 是否允许手动固定列(比`allowFrozenCols`多了 cache 的选项) | `object` \| `boolean` | `false` |
 | columnsCustomizable | 是否允许自定义列(如果是多级表头，父层级也必须有`field`)、可传入对象具体项见下表 | `object` \| `boolean` | `false` |
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
 | highlightCol | 表头 hover 时将对应列高亮 | `boolean` | `false` |
@@ -226,6 +227,14 @@
 | --- | --- | --- | --- |
 | cache | 是否缓存自定义列宽设置，为`true`时需配置 Grid 的`key`属性为唯一值 | `boolean` | - |
 | allowFixedCol | 固定列是否允许被拖动(当 data 太多时拖动，会造成渲染卡顿, 此时可设置 false 关闭) | `boolean` | - |
+
+### columnFrozenable
+
+自定义设置列宽
+
+| 参数  | 说明                                                          | 类型      | 默认值 |
+| ----- | ------------------------------------------------------------- | --------- | ------ |
+| cache | 是否缓存固定列设置，为`true`时需配置 Grid 的`key`属性为唯一值 | `boolean` | -      |
 
 ### columnsCustomizable
 

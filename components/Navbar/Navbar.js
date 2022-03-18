@@ -3,20 +3,14 @@ import Cols from '../Cols/index'
 import Component from '../Component/index'
 import { isPlainObject } from '../util/index'
 import NavbarCaption from './NavbarCaption'
-import NavbarCaptionBefore from './NavbarCaptionBefore'
 import NavbarCaptionAfter from './NavbarCaptionAfter'
+import NavbarCaptionBefore from './NavbarCaptionBefore'
 import NavbarNav from './NavbarNav'
 import NavbarTools from './NavbarTools'
 
 class Navbar extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      caption: null,
-      nav: null,
-      tools: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Navbar.defaults, props), ...mixins)
   }
 
   config() {
@@ -54,7 +48,11 @@ class Navbar extends Component {
     })
   }
 }
-
+Navbar.defaults = {
+  caption: null,
+  nav: null,
+  tools: null,
+}
 Component.register(Navbar)
 
 export default Navbar
