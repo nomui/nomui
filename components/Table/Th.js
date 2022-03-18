@@ -270,6 +270,9 @@ class Th extends Component {
       this._stickyPos = el.offsetLeft
     } else if (fixed === 'right') {
       this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth
+      if (this.table.hasGrid && this.table.grid.props.frozenHeader) {
+        this._stickyPos -= 17
+      }
     }
     this._setStyle({ [fixed]: `${this._stickyPos}px` })
   }

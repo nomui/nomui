@@ -15777,6 +15777,9 @@ function _defineProperty2(obj, key, value) {
         this._stickyPos = el.offsetLeft;
       } else if (fixed === "right") {
         this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth;
+        if (this.table.hasGrid && this.table.grid.props.frozenHeader) {
+          this._stickyPos -= 17;
+        }
       }
       this._setStyle({ [fixed]: `${this._stickyPos}px` });
     } // 外部更新，通过 preEl 或 nextEl 的offsetWidth 计算得出
