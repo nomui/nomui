@@ -2,24 +2,8 @@ import Component from '../Component/index'
 
 class SlideCaptcha extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      token: null,
-      bgSrc: '',
-      captchSrc: '',
-      width: 300,
-      height: 300,
-      top: 0,
-      // onRefresh:()=>{},
-      // validate:()=>{},
-      // onFinish:()=>{},
-      // onFinishFailed:()=>{},
-      refreshTitle: '换一张',
-      tip: '向右滑动完成拼图',
-      autoRefreshOnFail: true, // 失败后是否自动刷新图片
-    }
-
     super(
-      Component.extendProps(defaults, props, {
+      Component.extendProps(SlideCaptcha.defaults, props, {
         state: {
           // 记录开始滑动的时间
           startTime: new Date(),
@@ -347,6 +331,22 @@ class SlideCaptcha extends Component {
     this.referenceElement.removeEventListener('mousemove', this.handleMouseMove, true)
     this.referenceElement.removeEventListener('mouseup', this.handleMouseUp)
   }
+}
+
+SlideCaptcha.defaults = {
+  token: null,
+  bgSrc: '',
+  captchSrc: '',
+  width: 300,
+  height: 300,
+  top: 0,
+  // onRefresh:()=>{},
+  // validate:()=>{},
+  // onFinish:()=>{},
+  // onFinishFailed:()=>{},
+  refreshTitle: '换一张',
+  tip: '向右滑动完成拼图',
+  autoRefreshOnFail: true, // 失败后是否自动刷新图片
 }
 
 Component.register(SlideCaptcha)
