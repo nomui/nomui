@@ -35,6 +35,28 @@
   }
 }
 
+// primary-light对象
+.nom-preset-primary-light {
+  color: var(--nom-color-black);
+  background-color: rgba(var(--nom-blue-0), 1);
+
+  &:hover {
+    color: var(--nom-color-white);
+    background-color: rgba(var(--nom-blue-4), 1);
+  }
+
+  &.active {
+    color: var(--nom-color-white);
+    background-color: var(--nom-color-primary-active);
+  }
+
+  &.disabled,
+  &[disabled] {
+    color: var(--nom-color-white);
+    background-color: var(--nom-color-primary-disabled);
+  }
+}
+
 // 指针pointer
 .nom-preset-pointer {
   cursor: pointer;
