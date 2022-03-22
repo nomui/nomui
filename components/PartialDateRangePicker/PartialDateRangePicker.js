@@ -44,6 +44,7 @@ class PartialDateRangePicker extends Group {
       rules,
       startPickerProps,
       endPickerProps,
+      disabled,
     } = this.props
 
     this.setProps({
@@ -66,6 +67,7 @@ class PartialDateRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          disabled,
           ...startPickerProps,
         },
         {
@@ -89,6 +91,7 @@ class PartialDateRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          disabled,
           ...endPickerProps,
         },
       ],

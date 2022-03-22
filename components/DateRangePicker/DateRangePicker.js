@@ -49,6 +49,7 @@ class DateRangePicker extends Group {
       rules,
       startPickerProps,
       endPickerProps,
+      disabled,
     } = this.props
 
     this.setProps({
@@ -72,6 +73,7 @@ class DateRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          disabled,
           ...startPickerProps,
         },
         {
@@ -96,6 +98,7 @@ class DateRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          disabled,
           ...endPickerProps,
         },
       ],
