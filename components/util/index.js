@@ -346,3 +346,11 @@ export function getStyle(el, pseudo = null) {
   }
   return el.currentStyle // 兼容IE的写法
 }
+
+// 处理火狐浏览器下的 sortable 拖拽打开新标签页的bug
+export function defaultSortableOndrop() {
+  document.body.ondrop = function (event) {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+}

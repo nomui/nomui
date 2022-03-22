@@ -3,8 +3,13 @@ import Component from '../Component/index'
 import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
-import { STORAGE_KEY_GRID_COLS_WIDTH, STORAGE_KEY_GRID_COLUMNS } from '../util/constant'
 import {
+  STORAGE_KEY_GRID_COLS_FIXED,
+  STORAGE_KEY_GRID_COLS_WIDTH,
+  STORAGE_KEY_GRID_COLUMNS,
+} from '../util/constant'
+import {
+  defaultSortableOndrop,
   isBrowerSupportSticky,
   isFunction,
   isNullish,
@@ -21,6 +26,7 @@ class Grid extends Component {
     Grid._loopSetValue(props.treeConfig, [
       'cascadeCheckParent',
       'cascadeCheckChildren',
+      'cascadeUncheckParent',
       'cascadeUncheckChildren',
     ])
     super(Component.extendProps(Grid.defaults, props), ...mixins)
@@ -34,18 +40,20 @@ class Grid extends Component {
     this.checkedRowRefs = {}
     this._shouldAutoScroll = true
     this._customColumnFlag = false // 是否已经自定义处理过列
+    this._pinColumnFlag = false // 是否已经处理过列缓存
 
     this.props.columns = this.props.columns.filter((n) => {
       return Object.keys(n).length
     })
     this.pinColumns = []
     this.originColumns = [...this.props.columns]
-    this.sortOriginColumns = true
+    this._needSortColumnsFlag = true // 是否需要对列进行排序
 
     this.sortUpdated = false
-    // 列设置弹窗 tree的数据
-    this.popupTreeData = this.originColumns
+
     this.filter = {}
+    this._resetFixCount()
+
     if (this.props.frozenLeftCols > 0) {
       this.props.rowCheckable && this.props.frozenLeftCols++
       this.props.rowExpandable && this.props.frozenLeftCols++
@@ -58,9 +66,10 @@ class Grid extends Component {
       const c = props.columns.filter((n) => {
         return Object.keys(n)
       })
-      this.sortOriginColumns = true
+      this._customColumnFlag = false
+      this._pinColumnFlag = false
+      this._needSortColumnsFlag = true
       this.originColumns = [...c]
-      this.popupTreeData = this.originColumns
     }
     // 更新了data
     if (props.data && this.props) {
@@ -70,6 +79,15 @@ class Grid extends Component {
         this._alreadyProcessedFlat = false
       }
     }
+    if (props.hasOwnProperty('rowCheckable') || props.hasOwnProperty('rowExpandable')) {
+      this._resetFixCount()
+    }
+  }
+
+  _resetFixCount() {
+    this._fixedCount = 0
+    this.props.rowCheckable && this._fixedCount++
+    this.props.rowExpandable && this._fixedCount++
   }
 
   _config() {
@@ -136,16 +154,55 @@ class Grid extends Component {
   // 列部分的各种处理
   _processColumns() {
     this._processColumnsCustom()
+    this._processPinColumn()
+    this._processColumnSort()
+
     this._processCheckableColumn()
     this._processExpandableColumn()
     this._processFrozenColumn()
   }
 
+  _processPinColumn() {
+    const { columnFrozenable } = this.props
+    if (this._pinColumnFlag || !columnFrozenable || !columnFrozenable.cache) return
+    this._gridColumsFixedStoreKey = this._getStoreKey(true, STORAGE_KEY_GRID_COLS_FIXED)
+    if (!this._gridColumsFixedStoreKey) return
+
+    // 读取缓存中的上一次固定列的配置
+    let storeFields = localStorage.getItem(this._gridColumsFixedStoreKey)
+    if (storeFields && storeFields.length) {
+      storeFields = JSON.parse(storeFields)
+
+      // 从columns 二次过滤storeFields存在的列
+      this.pinColumns = this._getColsFromFields(this.props.columns, storeFields, false)
+
+      this.setProps({
+        frozenLeftCols: this.pinColumns.length ? this._fixedCount + this.pinColumns.length : 0,
+      })
+      this._pinColumnFlag = true
+    }
+  }
+
+  // 根据缓存，对originColumns和 columns排序
+  _processColumnSort() {
+    if (this._needSortColumnsFlag) {
+      let customFields = localStorage.getItem(this._gridColumsStoreKey)
+      let fixedFields = localStorage.getItem(this._gridColumsFixedStoreKey)
+      customFields = JSON.parse(customFields)
+      // 无缓存则读取内存中 pinColumns的值做排序
+      fixedFields = JSON.parse(fixedFields) || this.pinColumns.map((item) => item.field)
+
+      this._sortColumnsFromFields(this.originColumns, customFields)
+      this._sortColumnsFromFields(this.originColumns, fixedFields)
+      this._sortColumnsFromFields(this.props.columns, customFields)
+      this._sortColumnsFromFields(this.props.columns, fixedFields)
+
+      this._needSortColumnsFlag = false
+    }
+  }
+
   _processFrozenColumn() {
     this._parseBrowerVersion()
-    this._fixedCount = 0
-    this.props.rowCheckable && this._fixedCount++
-    this.props.rowExpandable && this._fixedCount++
 
     const { frozenLeftCols, frozenRightCols } = this.props
 
@@ -215,6 +272,7 @@ class Grid extends Component {
       this.props.frozenLeftCols = null
       this.props.frozenRightCols = null
       this.props.allowFrozenCols = false
+      this.props.columnFrozenable = false
     }
   }
 
@@ -240,9 +298,7 @@ class Grid extends Component {
     let storeFields = localStorage.getItem(this._gridColumsStoreKey)
     if (storeFields && storeFields.length) {
       storeFields = JSON.parse(storeFields)
-      this.sortOriginColumns && this._sortOriginColumnsFromFields(storeFields)
 
-      // 从originColumns 过滤storeFields存在的列
       this.setProps({ columns: this._getColsFromFields(this.originColumns, storeFields) })
       this._customColumnFlag = true
     }
@@ -288,6 +344,8 @@ class Grid extends Component {
 
     this._processColumnsWidth()
     this._processAutoScroll()
+
+    this.props.rowSortable && defaultSortableOndrop()
   }
 
   getColumns() {
@@ -576,6 +634,8 @@ class Grid extends Component {
   }
 
   showSetting() {
+    // 列设置弹窗 tree的数据
+    this.popupTreeData = this.originColumns
     this.popup = new GridSettingPopup({
       align: 'center',
       alignTo: window,
@@ -627,7 +687,7 @@ class Grid extends Component {
     }
 
     this._customColumnFlag = false
-    this._processPinColumns(tree)
+    this._processPinColumnFromSetting(tree)
     this.setProps({ columns: tree })
     this._processColumns()
     this._calcMinWidth()
@@ -636,19 +696,18 @@ class Grid extends Component {
     columnsCustomizable.callback && this._callHandler(columnsCustomizable.callback(tree))
   }
 
-  // 自定义列设置后。去掉将 pinColumns 中已隐藏的列
-  _processPinColumns(columns) {
-    const arr = []
-    let { frozenLeftCols } = this.props
-    this.pinColumns.forEach((item) => {
-      if (columns.find((col) => item.field === col.field)) {
-        arr.push(item)
-      } else {
-        frozenLeftCols--
-      }
-    })
-    this.pinColumns = arr
-    this.setProps({ frozenLeftCols })
+  // 自定义列设置后。更新 pinColumns
+  _processPinColumnFromSetting(columns) {
+    if (!this._gridColumsFixedStoreKey) return
+    const { frozenLeftCols } = this.props
+
+    if (frozenLeftCols) {
+      this.pinColumns = columns.slice(0, frozenLeftCols - this._fixedCount)
+      localStorage.setItem(
+        this._gridColumsFixedStoreKey,
+        JSON.stringify(this.pinColumns.map((col) => col.field)),
+      )
+    }
   }
 
   handleDrag() {
@@ -753,6 +812,7 @@ class Grid extends Component {
           {
             width: 50,
             isChecker: true,
+            resizable: false,
             header: {
               component: Checkbox,
               plain: true,
@@ -896,12 +956,12 @@ class Grid extends Component {
    * 根据偏移量计算出width后再赋值
    * @param {*} data {field, distance}
    */
-  calcResizeCol(data) {
-    this.header && this.header.calcResizeCol(data)
+  calcResizeCol(data, thRef) {
+    this.header && this.header.calcResizeCol(data, thRef)
     if (this.props.data && this.props.data.length) {
-      this.body && this.body.calcResizeCol(data)
-      this.footer && this.footer.calcResizeCol(data)
+      this.body && this.body.calcResizeCol(data, thRef)
     }
+    this.footer && this.footer.calcResizeCol(data, thRef)
   }
 
   /**
@@ -982,9 +1042,10 @@ class Grid extends Component {
     }, [])
   }
 
-  // 对originColumns排序
-  _sortOriginColumnsFromFields(fields = []) {
-    this.originColumns.sort((curr, next) => {
+  // 引用传递，实现对对应 columns的排序
+  _sortColumnsFromFields(columns, fields = []) {
+    if (!fields || !fields.length) return
+    columns.sort((curr, next) => {
       // 未设置field的列放在最后
       if (isNullish(curr.field)) return 1
 
@@ -997,13 +1058,12 @@ class Grid extends Component {
 
       return currIdx - nextIdx
     })
-    this.sortOriginColumns = false
   }
 
-  _getColsFromFields(columns = [], fields = []) {
+  _getColsFromFields(columns = [], fields = [], includeNullish = true) {
     return columns.reduce((acc, curr) => {
       // 无field的列，列设置后会消失
-      if (isNullish(curr.field)) {
+      if (isNullish(curr.field) && includeNullish) {
         acc.push(curr)
       } else if (fields.includes(curr.field)) {
         acc.push({ ...curr, children: this._getColsFromFields(curr.children, fields) })
@@ -1022,6 +1082,7 @@ class Grid extends Component {
           {
             width: 50,
             isTreeMark: true,
+            resizable: false,
             cellRender: ({ row, rowData }) => {
               return {
                 component: Icon,
@@ -1081,27 +1142,39 @@ class Grid extends Component {
   }
 
   handlePinClick(data) {
-    if (data.fixed) {
-      if (this.pinColumns.length < 1) {
-        const num = this.props.frozenLeftCols
-        this.setProps({ frozenLeftCols: num - (1 + this._fixedCount) })
-        num > 1 + this._fixedCount && this.fixPinOrder(data)
-        // 未对columns进行增删或排序，无需触发 config
-        this._processFrozenColumn()
-        this.render()
-        return
+    // 取消初始化固定列时(无缓存配置时)
+    if (data.fixed && this.pinColumns.length < 1) {
+      let num = this.props.frozenLeftCols
+      if (num - 1 > this._fixedCount) {
+        this.fixPinOrder(data)
+        num--
+      } else {
+        num = 0
       }
+
+      this.setProps({ frozenLeftCols: num })
+      // 未对columns进行增删或排序，无需触发 config
+      this._processFrozenColumn()
+      this.render()
+      return
     }
+
     if (this.pinColumns.find((n) => n.field === data.field)) {
       this.pinColumns = this.removeColumn(this.pinColumns, data)
     } else {
-      this.pinColumns.unshift(data)
+      this.pinColumns.push(data)
     }
 
+    this._gridColumsFixedStoreKey &&
+      localStorage.setItem(
+        this._gridColumsFixedStoreKey,
+        JSON.stringify(this.pinColumns.map((col) => col.field)),
+      )
     this.setProps({
       columns: this.getPinOrderColumns(),
       frozenLeftCols: this.pinColumns.length ? this.pinColumns.length + this._fixedCount : 0,
     })
+    this._needSortColumnsFlag = !data.lastLeft
     this._processColumns()
     this.render()
   }
@@ -1142,11 +1215,14 @@ class Grid extends Component {
 
     let arr = []
 
-    this.pinColumns.forEach((n) => {
-      const arr2 = arr.length > 0 ? arr : this.props.columns
-      arr = this.removeColumn(arr2, n)
-      arr.unshift(n)
-    })
+    this.pinColumns
+      .slice()
+      .reverse()
+      .forEach((n) => {
+        const arr2 = arr.length > 0 ? arr : this.props.columns
+        arr = this.removeColumn(arr2, n)
+        arr.unshift(n)
+      })
     return arr
   }
 }
@@ -1180,13 +1256,18 @@ Grid.defaults = {
   // columnsCustomizable.callback: 设置列保存回调
   autoMergeColumns: null,
   columnResizable: false,
-  // columnResizable.cache: 设置的列宽保存至localstorage，cache的值为对应的key
+  // columnResizable.cache: boolean 设置的列宽保存至localstorage
+  // columnResizable.allowFixedCol: 固定列是否允许被拖动(当 data太多时拖动，会造成渲染卡顿, 此时可设置false关闭)
+
+  columnFrozenable: false, // 允许固定列
+  // columnFrozenable.cache: boolean 固定列的结果保存至localstorage
+
   striped: false,
   showTitle: false,
   ellipsis: false,
   sticky: false,
   line: 'row',
-  bordered: true,
+  bordered: false,
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false

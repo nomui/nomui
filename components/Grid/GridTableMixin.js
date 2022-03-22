@@ -1,6 +1,6 @@
 export default {
   methods: {
-    calcResizeCol: function (data) {
+    calcResizeCol: function (data, thRef) {
       const col = this.table.colRefs[data.field]
       const tdWidth = this.table.element.rows[0].cells[col.props.index].offsetWidth
       const colWidth = col.props.column.width || tdWidth
@@ -11,6 +11,10 @@ export default {
         result = 60
       }
       col.update({ column: { width: result } })
+      if (this.componentType === 'GridHeader' && col.props.column.fixed) {
+        // 只在Header 调用 无需放在 mixin 中
+        this._processFixedColumnSticky(thRef)
+      }
     },
 
     resizeCol: function ({ field, width = 0 }) {

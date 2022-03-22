@@ -50,9 +50,7 @@ class AlertContent extends Component {
 
     const okButtonProps = {
       component: Button,
-      styles: {
-        color: 'primary',
-      },
+      type: 'primary',
       text: okText,
       onClick: () => {
         alertInst._handleOk()

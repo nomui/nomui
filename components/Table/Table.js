@@ -6,25 +6,7 @@ import Thead from './Thead'
 
 class Table extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'table',
-      columns: [],
-      rowDefaults: {},
-      onlyHead: false,
-      onlyBody: false,
-      keyField: 'id',
-      striped: false,
-      treeConfig: {
-        childrenField: 'children',
-        treeNodeColumn: null,
-        initExpandLevel: -1,
-        indentSize: 6,
-      },
-      showTitle: false,
-      ellipsis: false,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Table.defaults, props), ...mixins)
   }
 
   _created() {
@@ -65,7 +47,7 @@ class Table extends Component {
         this.props.onlyBody !== true && { component: Thead },
         this.props.onlyHead !== true && { component: Tbody },
         hasMask &&
-          this.props.onlyBody && {
+          this.parent.componentType === 'GridBody' && {
             tag: 'div',
             classes: { 'nom-table-th-hover-mask': true },
             _created() {
@@ -112,6 +94,24 @@ class Table extends Component {
     this.activeTr = tr
     this.activeTr.element.classList.add('nom-tr-selected')
   }
+}
+
+Table.defaults = {
+  tag: 'table',
+  columns: [],
+  rowDefaults: {},
+  onlyHead: false,
+  onlyBody: false,
+  keyField: 'id',
+  striped: false,
+  treeConfig: {
+    childrenField: 'children',
+    treeNodeColumn: null,
+    initExpandLevel: -1,
+    indentSize: 6,
+  },
+  showTitle: false,
+  ellipsis: false,
 }
 
 Component.register(Table)

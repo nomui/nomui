@@ -26,19 +26,7 @@ class Notification extends Layer {
   // }
 
   constructor(props, ...mixins) {
-    const defaults = {
-      ...Notification.NOMUI_NOTIFICATION_DEFAULTS,
-      // type:'',
-      closeIcon: 'close',
-      // alignTo: document.body,
-      title: '',
-      description: '',
-      // btn:boolean||{text:''},
-      // closeIcon:{},
-      key: newGuid(),
-      // onClose:()=>{},
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Notification.defaults, props), ...mixins)
   }
 
   static open(config) {
@@ -216,7 +204,18 @@ class Notification extends Layer {
     super._config()
   }
 }
-
+Notification.defaults = {
+  ...Notification.NOMUI_NOTIFICATION_DEFAULTS,
+  // type:'',
+  closeIcon: 'close',
+  // alignTo: document.body,
+  title: '',
+  description: '',
+  // btn:boolean||{text:''},
+  // closeIcon:{},
+  key: newGuid(),
+  // onClose:()=>{},
+}
 Component.register(Notification)
 
 export default Notification

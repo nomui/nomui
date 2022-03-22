@@ -5,14 +5,7 @@ import DefaultCheckboxOptionTree from './DefaultCheckboxOptionTree'
 
 class CheckboxTree extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      options: [],
-      showCheckAll: false,
-      checkAllText: '全选',
-      treeDataFields: {},
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(CheckboxTree.defaults, props), ...mixins)
   }
 
   _config() {
@@ -67,7 +60,7 @@ class CheckboxTree extends Field {
     const selected = this.getSelectedOptions()
     if (selected !== null && Array.isArray(selected) && selected.length > 0) {
       const vals = selected.map(function (item) {
-        return item.value
+        return item.key
       })
 
       if (options.asString) {
@@ -136,6 +129,13 @@ class CheckboxTree extends Field {
     }
     return retOptions
   }
+}
+
+CheckboxTree.defaults = {
+  options: [],
+  showCheckAll: false,
+  checkAllText: '全选',
+  treeDataFields: {},
 }
 
 Component.register(CheckboxTree)

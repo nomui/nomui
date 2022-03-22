@@ -14,14 +14,15 @@
     top: 7px;
     right: 5px;
     z-index: 11;
-    background: #fff;
+    background: var(--nom-grid-header-background-color);
     &:hover {
-      background: #f2f2f2;
+      .nom-preset-hover;
     }
   }
 
   > .nom-grid-header {
     overflow: hidden;
+    border-bottom: var(--nom-grid-header-border);
     .nom-th {
       &.nom-table-parent-th {
         text-align: center;
@@ -30,17 +31,17 @@
         position: relative;
         top: 2px;
         margin-left: 5px;
-        color: #aaa;
+        color: var(--nom-grid-icon-color);
         &.p-type-sort-up,
         &.p-type-sort-down,
         &.nom-filter-active {
-          color: @primary;
+          color: var(--nom-grid-icon-color-active);
         }
       }
     }
     &.nom-grid-highlight-col {
       th:hover {
-        background-color: rgba(221, 205, 79, 0.1);
+        background-color: var(--nom-grid-highlight-bg);
         background-image: none;
       }
     }
@@ -65,7 +66,7 @@
   }
 
   &.p-bordered {
-    border: 1px solid gainsboro;
+    border: 1px solid var(--nom-border-color);
 
     > .nom-grid-body {
       margin-bottom: -1px;
@@ -91,9 +92,9 @@
 
     > .nom-grid-header {
       flex-shrink: 0;
-      background-color: #fafafa;
+      background-color: var(--nom-grid-header-background-color);
       > .nom-table {
-        background-color: #fafafa;
+        background-color: var(--nom-grid-header-background-color);
       }
 
       > .nom-grid-header-content {

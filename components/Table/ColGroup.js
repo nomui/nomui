@@ -12,6 +12,7 @@ class ColGroup extends Component {
 
   _created() {
     this.table = this.parent
+    this.table.colGroup = this
     this.columns = this.table.props.columns
     this.colList = []
     this.hasColumnGroup = false

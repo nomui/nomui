@@ -2,7 +2,7 @@ table.nom-table {
   position: relative;
   width: 100%;
   table-layout: fixed;
-  background-color: #fff;
+  background-color: var(--nom-grid-background-color);
   border-spacing: 0;
 
   &.nom-table-striped {
@@ -10,23 +10,23 @@ table.nom-table {
       td {
         &.nom-table-fixed-left,
         &.nom-table-fixed-right {
-          background: #fafafa;
+          background: var(--nom-grid-tr-striped-bg);
         }
       }
 
-      background-color: #fafafa;
+      background-color: var(--nom-grid-tr-striped-bg);
       &:hover {
-        background-color: #dcdee0;
+        background-color: var(--nom-grid-tr-striped-bg-hover);
         .nom-table-fixed-left,
         .nom-table-fixed-right {
-          background-color: #dcdee0;
+          background-color: var(--nom-grid-tr-striped-bg-hover);
         }
       }
       &.nom-tr-selected {
-        background-color: #fffaef;
+        background-color: var(--nom-grid-tr-bg-selected);
         .nom-table-fixed-left,
         .nom-table-fixed-right {
-          background-color: #fffaef;
+          background-color: var(--nom-grid-tr-bg-selected);
         }
       }
     }
@@ -34,18 +34,18 @@ table.nom-table {
 
   tbody tr:not(.nom-tr-empty) {
     &:hover {
-      background-color: #dcdee0;
+      background-color: var(--nom-grid-tr-bg-hover);
       .nom-table-fixed-left,
       .nom-table-fixed-right {
-        background-color: #dcdee0;
+        background-color: var(--nom-grid-tr-bg-hover);
       }
     }
     &.nom-tr-selected,
     &.nom-tr-selected:hover {
-      background-color: #fffaef;
+      background-color: var(--nom-grid-tr-bg-selected);
       .nom-table-fixed-left,
       .nom-table-fixed-right {
-        background-color: #fffaef;
+        background-color: var(--nom-grid-tr-bg-selected);
       }
     }
   }
@@ -54,21 +54,20 @@ table.nom-table {
     position: absolute;
     top: 0;
     height: 100%;
-    background-color: rgb(221, 205, 79);
-    opacity: 0.1;
+    background-color: var(--nom-grid-col-highlight-bg);
   }
 
   td,
   th {
     position: relative;
-    padding: 8px 10px;
+    padding: var(--nom-grid-td-padding);
     word-break: break-all;
 
     &.nom-table-fixed-left,
     &.nom-table-fixed-right {
       position: sticky;
       z-index: 2;
-      background: #fff;
+      background: var(--nom-grid-background-color);
     }
     &.nom-table-sortable {
       > span,
@@ -101,7 +100,7 @@ table.nom-table {
       bottom: 0;
       width: 6px;
       height: 100%;
-      border-right: 1px dotted #888;
+      border-right: 1px dotted var(--nom-grid-icon-color);
       visibility: hidden;
       cursor: col-resize;
     }
@@ -112,7 +111,7 @@ table.nom-table {
       visibility: hidden;
     }
     .nom-table-pin-handler {
-      color: #666 !important;
+      color: var(--nom-grid-icon-color);
       visibility: hidden;
       cursor: pointer;
       &.p-type-pin-fill {
@@ -187,11 +186,12 @@ table.nom-table {
 
   th {
     position: relative;
-    font-weight: 500;
+    color: var(--nom-grid-th-color);
+    font-weight: var(--nom-grid-th-font-weight);
     line-height: 24px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-    background-color: #f8f8f8;
-    background-image: linear-gradient(to bottom, #fcfcfc 0, #f8f8f8 100%);
+    background-color: var(--nom-grid-th-bg);
+    background-image: var(--nom-grid-th-bg-image);
     // padding-right: 2rem;
     -webkit-user-select: none;
     user-select: none;
@@ -199,8 +199,8 @@ table.nom-table {
     &.nom-table-fixed-right {
       position: sticky;
       z-index: 2;
-      background-color: #f8f8f8;
-      background-image: linear-gradient(to bottom, #fcfcfc 0, #f8f8f8 100%);
+      background-color: var(--nom-grid-th-bg);
+      background-image: var(--nom-grid-th-bg-image);
     }
     > .nom-table-filter {
       position: absolute;
@@ -212,7 +212,7 @@ table.nom-table {
       justify-content: center;
       width: 2rem;
       height: 100%;
-      color: #bfbfbf;
+      color: var(--nom-grid-icon-color);
     }
     &.nom-table-ellipsis {
       .nom-table-cell-content {
@@ -232,14 +232,14 @@ table.nom-table {
   &.p-line-row {
     td,
     th {
-      border-bottom: 1px solid @oc-gray-2;
+      border-bottom: 1px solid var(--nom-border-color);
     }
   }
 
   &.p-line-col {
     td,
     th {
-      border-right: 1px solid @oc-gray-2;
+      border-right: 1px solid var(--nom-border-color);
     }
     > th {
       &:last-child {
@@ -251,8 +251,8 @@ table.nom-table {
   &.p-line-both {
     td,
     th {
-      border-right: 1px solid @oc-gray-2;
-      border-bottom: 1px solid @oc-gray-2;
+      border-right: 1px solid var(--nom-border-color);
+      border-bottom: 1px solid var(--nom-border-color);
     }
     thead > tr {
       &:first-child {
@@ -269,6 +269,6 @@ table.nom-table {
   }
 
   &.p-bordered {
-    border: 1px solid gainsboro;
+    border: 1px solid var(--nom-border-color);
   }
 }

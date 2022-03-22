@@ -28,6 +28,10 @@ class Tr extends Component {
       }
       this.table.grid.rowsRefs[_rowRefKey] = this
     }
+
+    if (this.table.parent.componentType === 'GridFooter') {
+      this.table.grid.footerTrRef = this
+    }
   }
 
   _config() {
@@ -62,7 +66,7 @@ class Tr extends Component {
     }
 
     if (Array.isArray(columns)) {
-      this.TdList = []
+      this.tdList = []
       children.push(...this.createTds(columns))
     }
 

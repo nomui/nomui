@@ -5,17 +5,7 @@ import PanelHeader from './PanelHeader'
 
 class Panel extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      header: null,
-      body: null,
-      footer: null,
-      uistyle: 'default', // splitline,outline,card,bordered,plain
-      startAddons: [],
-      endAddons: [],
-      fit: false
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Panel.defaults, props), ...mixins)
   }
 
   _config() {
@@ -35,7 +25,15 @@ class Panel extends Component {
     })
   }
 }
-
+Panel.defaults = {
+  header: null,
+  body: null,
+  footer: null,
+  uistyle: 'default', // splitline,outline,card,bordered,plain
+  startAddons: [],
+  endAddons: [],
+  fit: false,
+}
 Component.register(Panel)
 
 export default Panel

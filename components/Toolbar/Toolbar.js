@@ -2,15 +2,7 @@ import Component from '../Component/index'
 
 class Toolbar extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      type: 'default',
-      visibleItems: 2,
-      gutter: 'sm',
-      size: null,
-      items: [],
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Toolbar.defaults, props), ...mixins)
   }
 
   _config() {
@@ -43,7 +35,13 @@ class Toolbar extends Component {
     })
   }
 }
-
+Toolbar.defaults = {
+  type: 'default',
+  visibleItems: 2,
+  gutter: 'sm',
+  size: null,
+  items: [],
+}
 Component.register(Toolbar)
 
 export default Toolbar
