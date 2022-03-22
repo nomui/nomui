@@ -3,20 +3,7 @@ import CollapseItem from './CollapseItem'
 
 class Collapse extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      activeKey: 1,
-      items: null,
-      bordered: false,
-      icon: {
-        default: 'right',
-        open: 'up',
-        align: 'left',
-      },
-      iconOnly: false,
-      accordion: false,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Collapse.defaults, props), ...mixins)
   }
 
   _created() {
@@ -66,7 +53,18 @@ class Collapse extends Component {
       })
   }
 }
-
+Collapse.defaults = {
+  activeKey: 1,
+  items: null,
+  bordered: false,
+  icon: {
+    default: 'right',
+    open: 'up',
+    align: 'left',
+  },
+  iconOnly: false,
+  accordion: false,
+}
 Component.register(Collapse)
 
 export default Collapse

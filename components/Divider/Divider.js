@@ -2,15 +2,7 @@ import Component from '../Component/index'
 
 class Divider extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      type: 'horizontal',
-      orientation: 'center',
-      // dashed:true,
-      // plan:true,
-      // children:
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Divider.defaults, props), ...mixins)
   }
 
   _config() {
@@ -43,7 +35,13 @@ class Divider extends Component {
     })
   }
 }
-
+Divider.defaults = {
+  type: 'horizontal',
+  orientation: 'center',
+  // dashed:true,
+  // plan:true,
+  // children:
+}
 Component.register(Divider)
 
 export default Divider
