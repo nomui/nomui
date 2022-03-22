@@ -169,11 +169,10 @@
       >.nom-list-item-wrapper,
       >.nom-list-item,
       .nom-virtual-list-item {
-        .u-border-left();
-
         margin-left: -1px;
         padding-top: 0;
         padding-bottom: 0;
+        border-left: 1px solid var(--nom-border-color);
       }
     }
 
@@ -222,20 +221,18 @@
       >.nom-list-item-wrapper,
       >.nom-list-item,
       .nom-virtual-list-item {
-        .u-border-left();
-
         margin-bottom: -1px;
         margin-left: -1px;
         border-bottom: 1px solid var(--nom-border-color);
+        border-left: 1px solid var(--nom-border-color);
       }
     }
   }
 
   &.p-line-grid {
     >.nom-list-content {
-      .u-border-top();
-      .u-border-right();
-
+      border-top: 1px solid var(--nom-border-color);
+      border-right: 1px solid var(--nom-border-color);
       border-bottom: 1px solid var(--nom-border-color);
 
       >.nom-list-item-wrapper,
