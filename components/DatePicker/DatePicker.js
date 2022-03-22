@@ -274,11 +274,8 @@ class DatePicker extends Textbox {
                 },
                 this.props.showTime && {
                   component: TimePickerPanel,
-                  attrs: {
-                    style: {
-                      'border-left': '1px solid #ddd',
-                      'padding-left': '5px',
-                    },
+                  classes: {
+                    'nom-datepicker-time-panel': true,
                   },
                   onValueChange: (data) => {
                     this.handleTimeChange(data)
