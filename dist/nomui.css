@@ -4382,6 +4382,7 @@ body {
   --nom-select-selected-item-bg: var(--nom-color-bg-0);
   --nom-select-selected-item-border-color: var(--nom-border-color);
   --nom-select-selected-item-padding: 0 5px;
+  --nom-date-picker-divider: 1px solid var(--nom-border-color);
   --nom-rate-color: rgba(var(--nom-yellow-5), 1);
   --nom-rate-color-muted: rgba(var(--nom-grey-2), 1);
   --nom-tooltip-background-color: rgba(var(--nom-grey-8), 1);
@@ -4415,6 +4416,10 @@ body {
   --nom-pager-item-border-color: transparent;
   --nom-pager-item-bg-color-selected: rgba(var(--nom-color-primary-base), 0.075);
   --nom-pager-item-border-color-selected: transparent;
+  --nom-layout-border-color: var(--nom-border-color);
+  --nom-divider-border-color: var(--nom-border-color);
+  --nom-divider-header-color: var(--nom-text-color);
+  --nom-icon-bg-color: var(--nom-color-fill-2);
 }
 /* stylelint-disable custom-property-empty-line-before */
 body,
@@ -5003,11 +5008,11 @@ body .nom-always-dark {
 }
 .nom-layout > .nom-layout-header {
   height: 4rem;
-  border-bottom: 1px solid #ced4da;
+  border-bottom: 1px solid var(--nom-layout-border-color);
 }
 .nom-layout > .nom-layout-footer {
   min-height: 4rem;
-  border-top: 1px solid #ced4da;
+  border-top: 1px solid var(--nom-layout-border-color);
 }
 .nom-layout.p-fit {
   display: flex;
@@ -6769,7 +6774,7 @@ table.nom-table.p-bordered {
 .nom-icon.p-bg {
   width: 1.5em;
   height: 1.5em;
-  background-color: #e9ecef;
+  background-color: var(--nom-icon-bg-color);
 }
 .nom-avatar {
   position: relative;
@@ -7272,7 +7277,7 @@ textarea .nom-textarea {
   opacity: 0.7;
 }
 .s-disabled.nom-checkbox > .nom-field-content > .nom-control > input + span {
-  background-color: #d5def2;
+  background-color: var(--nom-input-bg-disabled);
 }
 .nom-checkbox > .nom-field-content > .nom-control > input {
   position: absolute;
@@ -7866,7 +7871,7 @@ textarea .nom-textarea {
   overflow-y: hidden;
   text-align: left;
   scroll-behavior: smooth;
-  border-left: 1px solid #ced4da;
+  border-left: 1px solid var(--nom-border-color);
 }
 .timepicker-group > .nom-col:first-child {
   border-left: none;
@@ -7918,13 +7923,17 @@ textarea .nom-textarea {
   font-size: 18px;
   text-align: center;
 }
+.nom-date-picker-popup .nom-datepicker-time-panel {
+  padding-left: 5px;
+  border-left: var(--nom-date-picker-divider);
+}
 .nom-date-picker-popup .timepicker-group > .nom-col {
   width: 60px;
   max-height: 220px;
   overflow-y: hidden;
   text-align: left;
   scroll-behavior: smooth;
-  border-left: 1px solid #ced4da;
+  border-left: 1px solid var(--nom-border-color);
 }
 .nom-date-picker-popup .timepicker-group > .nom-col:first-child {
   border-left: none;
@@ -7972,7 +7981,7 @@ textarea .nom-textarea {
   line-height: 1.42857143;
   list-style: none;
   font-feature-settings: 'tnum';
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid var(--nom-divider-border-color);
 }
 .nom-divider.p-type-vertical {
   position: relative;
@@ -7982,7 +7991,7 @@ textarea .nom-textarea {
   margin: 0 8px;
   vertical-align: middle;
   border-top: 0;
-  border-left: 1px solid rgba(0, 0, 0, 0.06);
+  border-left: 1px solid var(--nom-divider-border-color);
 }
 .nom-divider.p-type-horizontal {
   display: flex;
@@ -7994,13 +8003,13 @@ textarea .nom-textarea {
 .nom-divider.p-type-horizontal.nom-divider-with-text {
   display: flex;
   margin: 16px 0;
-  color: rgba(0, 0, 0, 0.85);
+  color: var(--nom-divider-header-color);
   font-weight: 500;
   font-size: 1.25rem;
   white-space: nowrap;
   text-align: center;
   border-top: 0;
-  border-top-color: rgba(0, 0, 0, 0.06);
+  border-top-color: var(--nom-divider-border-color);
 }
 .nom-divider.p-type-horizontal.nom-divider-with-text::before,
 .nom-divider.p-type-horizontal.nom-divider-with-text::after {
@@ -8035,7 +8044,7 @@ textarea .nom-textarea {
 }
 .nom-divider-dashed {
   background: none;
-  border-color: rgba(0, 0, 0, 0.06);
+  border-color: var(--nom-divider-border-color);
   border-style: dashed;
   border-width: 1px 0 0;
 }
@@ -8050,7 +8059,7 @@ textarea .nom-textarea {
   border-width: 0 0 0 1px;
 }
 .nom-divider-plain.nom-divider-with-text {
-  color: #343a40 !important;
+  color: var(--nom-text-color) !important;
   font-weight: normal !important;
   font-size: 1rem !important;
 }
@@ -8481,13 +8490,13 @@ textarea .nom-textarea {
   font-size: inherit;
 }
 .nom-collapse-item.nom-collapse-bordered .nom-collapse-item-title {
-  border: 1px solid #ddd;
+  border: 1px solid var(--nom-border-color);
 }
 .nom-collapse-item.nom-collapse-bordered .nom-collapse-item-title .nom-icon {
   cursor: pointer;
 }
 .nom-collapse-item.nom-collapse-bordered .nom-collapse-item-content {
-  border: 1px solid #ddd;
+  border: 1px solid var(--nom-border-color);
   border-top: none;
 }
 .nom-collapse-item > .nom-collapse-item-title {
@@ -9034,7 +9043,7 @@ textarea .nom-textarea {
   overflow-y: hidden;
   text-align: left;
   scroll-behavior: smooth;
-  border-left: 1px solid #ced4da;
+  border-left: 1px solid var(--nom-border-color);
 }
 .nom-partial-date-picker-popup .nom-col:first-child {
   width: 80px;

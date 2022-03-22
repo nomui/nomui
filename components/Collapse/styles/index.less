@@ -5,25 +5,22 @@
 .nom-collapse-item {
   &.nom-collapse-bordered {
     .nom-collapse-item-title {
-      border: 1px solid #ddd;
+      border: 1px solid var(--nom-border-color);
       .nom-icon {
         cursor: pointer;
       }
     }
     .nom-collapse-item-content {
-      border: 1px solid #ddd;
+      border: 1px solid var(--nom-border-color);
       border-top: none;
     }
   }
-  >.nom-collapse-item-title {
+  > .nom-collapse-item-title {
     position: relative;
-    >.nom-collapse-right-icon {
+    > .nom-collapse-right-icon {
       position: absolute;
-      right:0;
+      right: 0;
       transform: translateX(-50%);
     }
   }
-  // & ~ .nom-collapse-item {
-  //   margin-top: 15px;
-  // }
 }
