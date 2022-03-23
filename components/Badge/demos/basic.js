@@ -21,6 +21,22 @@ define([], function () {
             badge: true,
           },
           {
+            component: 'Avatar',
+            text: 'HH',
+            styles: {
+              shape: 'square',
+            },
+            attrs: {
+              style: {
+                color: '#fff',
+                backgroundColor: '#ff922b',
+              },
+            },
+            badge: {
+              text: 'VIP',
+            },
+          },
+          {
             component: 'Badge',
             text: 'badge',
           },

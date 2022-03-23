@@ -14,11 +14,12 @@
 | overflowCount | 展示封顶的数字值 | `number` | 99 |
 | size | 设置小圆点的大小 | `xs\|sm\|lg\|xl` | xs |
 | color | 自定义小圆点的颜色 | `string` | danger |
-| type | 徽标类型 | `round \| dot` | round |
+| type | 徽标类型 | `round \| dot \| tag` | round |
 | badge | 按钮带圆点 | `boolean\|BadgeProps` | - |
 
-> - type: `round` 占据独立空间，相对于自身定位; `dot` 右上角小圆点，定位于第一个 relative
+> - type: `round` 占据独立空间，相对于自身定位; `dot` 右上角小圆点，定位于第一个 relative `tag` 右上角文字标签，定位于第一个 relative
 > - 以 `icon`, `text`, `number`|`overflowCount` 的顺序横向展示
+> - 徽标类型'tag':请在 BadgeProps 中配置，不要直接在 badge 上配置使用
 
 ### 直接配置
 
