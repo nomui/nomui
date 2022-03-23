@@ -8006,8 +8006,7 @@ function _defineProperty2(obj, key, value) {
   };
   class ListItem extends Component {
     constructor(props, ...mixins) {
-      const defaults = { tag: "li", data: null };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(ListItem.defaults, props), ...mixins);
     }
     _created() {
       this.list = this.parent.list;
@@ -8042,6 +8041,7 @@ function _defineProperty2(obj, key, value) {
       this.content.unselect();
     }
   }
+  ListItem.defaults = { tag: "li", data: null };
   Component.register(ListItem);
   var ListItemMixin = {
     _created: function () {
@@ -8115,8 +8115,7 @@ function _defineProperty2(obj, key, value) {
   };
   class ListItemWrapper extends Component {
     constructor(props, ...mixins) {
-      const defaults = { tag: "li", item: {} };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(ListItemWrapper.defaults, props), ...mixins);
     }
     _created() {
       this.list = this.parent.list || this.parent.parent.parent.parent.list;
@@ -8138,11 +8137,11 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
+  ListItemWrapper.defaults = { tag: "li", item: {} };
   Component.register(ListItemWrapper);
   class ListContent extends Component {
     constructor(props, ...mixins) {
-      const defaults = { tag: "ul" };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(ListContent.defaults, props), ...mixins);
     }
     _created() {
       this.list = this.parent;
@@ -8393,32 +8392,18 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  ListContent.defaults = { tag: "ul" };
   Component.register(ListContent);
   class List extends Component {
     constructor(props, ...mixins) {
       const defaults = {
-        tag: "div",
-        items: [],
-        itemDefaults: {},
-        data: null, // 自定义渲染时使用data
-        selectedItems: null,
-        itemSelectable: {
-          multiple: false,
-          byClick: false,
-          scrollIntoView: false,
-        },
-        disabledItems: [],
-        virtual: false,
         virtualSupport: {
           height: typeof props.virtual === "number" ? props.virtual : 300, // 容器高度
           size: 30, // 每个列表项高度预估值
           bufferScale: 1, // 缓冲区比例
         },
-        showEmpty: false, // Boolean || { onEnd: Funciton}
-        sortable: false,
-        overflow: "hidden",
       };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(List.defaults, defaults, props), ...mixins);
     }
     _config() {
       const { virtual } = this.props;
@@ -8822,6 +8807,19 @@ function _defineProperty2(obj, key, value) {
       return _listData[this._lastDragIndex];
     }
   }
+  List.defaults = {
+    tag: "div",
+    items: [],
+    itemDefaults: {},
+    data: null, // 自定义渲染时使用data
+    selectedItems: null,
+    itemSelectable: { multiple: false, byClick: false, scrollIntoView: false },
+    disabledItems: [],
+    virtual: false,
+    showEmpty: false, // Boolean || { onEnd: Funciton}
+    sortable: false,
+    overflow: "hidden",
+  };
   Component.register(List);
   var AutoCompleteListItemMixin = {
     _config: function () {
@@ -9202,16 +9200,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(AutoComplete);
   class Avatar extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        tag: "span",
-        size: "default",
-        alt: "图片",
-        gap: 4, // 字符类型距离左右两侧边界单位像素
-        text: null, // 文本
-        icon: null, // 图标
-        src: null, // 图片地址
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Avatar.defaults, props), ...mixins);
     }
     _config() {
       const { text, icon, src, alt } = this.props;
@@ -9267,17 +9256,19 @@ function _defineProperty2(obj, key, value) {
       this._setScale();
     }
   }
+  Avatar.defaults = {
+    tag: "span",
+    size: "default",
+    alt: "图片",
+    gap: 4, // 字符类型距离左右两侧边界单位像素
+    text: null, // 文本
+    icon: null, // 图标
+    src: null, // 图片地址
+  };
   Component.register(Avatar);
   class AvatarGroup extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        tag: "div",
-        size: "default",
-        maxCount: null, // 显示的最大头像个数
-        maxPopoverPlacement: "top", // 多余头像气泡弹出位置
-        items: [], // 子元素项列表
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(AvatarGroup.defaults, props), ...mixins);
     }
     _config() {
       const {
@@ -9314,6 +9305,13 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  AvatarGroup.defaults = {
+    tag: "div",
+    size: "default",
+    maxCount: null, // 显示的最大头像个数
+    maxPopoverPlacement: "top", // 多余头像气泡弹出位置
+    items: [], // 子元素项列表
+  };
   Component.register(AvatarGroup);
   /* eslint-disable no-return-assign */ /* eslint-disable no-restricted-properties */ /*
    * Tween.js
@@ -9694,17 +9692,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(BackTop);
   class Badge extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        key: null,
-        tag: "span",
-        type: "round",
-        text: null,
-        icon: null,
-        number: null,
-        overflowCount: 99,
-        size: "xs",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Badge.defaults, props), ...mixins);
     }
     _config() {
       this._propStyleClasses = ["size", "color"];
@@ -9760,6 +9748,16 @@ function _defineProperty2(obj, key, value) {
       }
     },
   });
+  Badge.defaults = {
+    key: null,
+    tag: "span",
+    type: "round",
+    text: null,
+    icon: null,
+    number: null,
+    overflowCount: 99,
+    size: "xs",
+  };
   Component.register(Badge);
   class BreadcrumbItem extends Component {
     constructor(props, ...mixins) {
@@ -9833,20 +9831,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Breadcrumb);
   class Carousel extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        imgs: [],
-        height: 100,
-        arrows: false,
-        autoplay: false,
-        autoplaySpeed: 1000,
-        speed: 300,
-        dots: true,
-        defaultActiveIndex: 1,
-        easing: "linear",
-        pauseOnHover: true,
-        triggerType: "click",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Carousel.defaults, props), ...mixins);
     }
     _created() {
       const { imgs, defaultActiveIndex } = this.props;
@@ -10093,6 +10078,19 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
+  Carousel.defaults = {
+    imgs: [],
+    height: 100,
+    arrows: false,
+    autoplay: false,
+    autoplaySpeed: 1000,
+    speed: 300,
+    dots: true,
+    defaultActiveIndex: 1,
+    easing: "linear",
+    pauseOnHover: true,
+    triggerType: "click",
+  };
   Component.register(Carousel);
   class CascaderList extends Component {
     constructor(props, ...mixins) {
@@ -10839,8 +10837,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(CheckboxList);
   class TreeNodeContent extends Component {
     constructor(props, ...mixins) {
-      const defaults = { text: null };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(TreeNodeContent.defaults, props), ...mixins);
     }
     _created() {
       this.node = this.parent;
@@ -10950,11 +10947,11 @@ function _defineProperty2(obj, key, value) {
       };
     }
   }
+  TreeNodeContent.defaults = { text: null };
   Component.register(TreeNodeContent);
   class TreeNode extends Component {
     constructor(props, ...mixins) {
-      const defaults = { nodes: null, data: { hidden: false } };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(TreeNode.defaults, props), ...mixins);
     }
     _created() {
       this.level = 0;
@@ -11129,11 +11126,11 @@ function _defineProperty2(obj, key, value) {
       this.content.unselect();
     }
   }
+  TreeNode.defaults = { nodes: null, data: { hidden: false } };
   Component.register(TreeNode);
   class TreeNodes extends Component {
     constructor(props, ...mixins) {
-      const defaults = { nodes: null, childrenData: null };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(TreeNodes.defaults, props), ...mixins);
     }
     _created() {
       if (this.parent instanceof Component.components.Tree) {
@@ -11199,29 +11196,11 @@ function _defineProperty2(obj, key, value) {
     }
     iterateNodes() {}
   }
+  TreeNodes.defaults = { nodes: null, childrenData: null };
   Component.register(TreeNodes);
   class Tree extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        nodes: null,
-        nodeDefaults: {},
-        nodeSelectable: {
-          onlyleaf: false,
-          byClick: true,
-          selectedNodeKey: null,
-          scrollIntoView: true,
-        },
-        dataFields: {
-          key: "key",
-          text: "text",
-          children: "children",
-          parentKey: "parentKey",
-        },
-        flatData: false,
-        sortable: false,
-        initExpandLevel: -1,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Tree.defaults, props), ...mixins);
     }
     _created() {
       this.nodeRefs = {};
@@ -11481,6 +11460,25 @@ function _defineProperty2(obj, key, value) {
       };
     }
   }
+  Tree.defaults = {
+    nodes: null,
+    nodeDefaults: {},
+    nodeSelectable: {
+      onlyleaf: false,
+      byClick: true,
+      selectedNodeKey: null,
+      scrollIntoView: true,
+    },
+    dataFields: {
+      key: "key",
+      text: "text",
+      children: "children",
+      parentKey: "parentKey",
+    },
+    flatData: false,
+    sortable: false,
+    initExpandLevel: -1,
+  };
   Component.register(Tree);
   var OptionTreeMixin = {
     _created: function () {
@@ -11894,12 +11892,7 @@ function _defineProperty2(obj, key, value) {
   }
   class Statistic extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        groupSeparator: ",",
-        decimalSeparator: ".",
-        precision: 0,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Statistic.defaults, props), ...mixins);
     }
     _config() {
       const statisticRef = this;
@@ -11968,6 +11961,11 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
+  Statistic.defaults = {
+    groupSeparator: ",",
+    decimalSeparator: ".",
+    precision: 0,
+  };
   Component.register(Statistic);
   /**
    * Copyright (c)2005-2009 Matt Kruse (javascripttoolbox.com)
@@ -12469,8 +12467,7 @@ function _defineProperty2(obj, key, value) {
   }
   class Countdown extends Statistic {
     constructor(props, ...mixins) {
-      const defaults = { format: "HH:mm:ss", interval: 3000 };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Countdown.defaults, props), ...mixins);
     }
     _created() {
       this._interval = null;
@@ -12525,6 +12522,7 @@ function _defineProperty2(obj, key, value) {
       return formatTimeStr(diff, format);
     }
   }
+  Countdown.defaults = { format: "HH:mm:ss", interval: 3000 };
   Component.register(Countdown);
   class Row extends Component {
     // constructor(props, ...mixins) {
@@ -23407,8 +23405,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(SlideCaptcha);
   class Slider extends Field {
     constructor(props, ...mixins) {
-      const defaults = { disable: false, max: 100 };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Slider.defaults, props), ...mixins);
     }
     _created() {
       const { value } = this.props; // 最大值不能小于或等于0，否则重置为默认值100
@@ -23520,6 +23517,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  Slider.defaults = { disable: false, max: 100 };
   Component.register(Slider);
   class StaticText extends Field {
     constructor(props, ...mixins) {
@@ -24013,19 +24011,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(Tabs);
   class Tag extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        key: null,
-        tag: "span",
-        type: "square",
-        color: null,
-        text: null,
-        icon: null,
-        number: null,
-        overflowCount: 99,
-        removable: false,
-        size: "sm",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Tag.defaults, props), ...mixins);
     }
     _config() {
       this._propStyleClasses = ["size", "color"];
@@ -24065,18 +24051,22 @@ function _defineProperty2(obj, key, value) {
       this.element.setAttribute("disabled", "disabled");
     }
   }
+  Tag.defaults = {
+    key: null,
+    tag: "span",
+    type: "square",
+    color: null,
+    text: null,
+    icon: null,
+    number: null,
+    overflowCount: 99,
+    removable: false,
+    size: "sm",
+  };
   Component.register(Tag);
   class TimelineItem extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        tag: "li",
-        color: "blue", // 指定圆圈颜色 blue, red, green, gray，或自定义的色值
-        dot: null, // 自定义时间轴点
-        label: null, // 设置标签
-        pending: false, // 是否是幽灵节点
-        children: null, // 内容
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(TimelineItem.defaults, props), ...mixins);
     }
     _config() {
       const { dot, color, label, pending, children } = this.props;
@@ -24117,19 +24107,18 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
+  TimelineItem.defaults = {
+    tag: "li",
+    color: "blue", // 指定圆圈颜色 blue, red, green, gray，或自定义的色值
+    dot: null, // 自定义时间轴点
+    label: null, // 设置标签
+    pending: false, // 是否是幽灵节点
+    children: null, // 内容
+  };
   Component.register(TimelineItem);
   class Timeline extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        tag: "ul",
-        mode: "left", // 通过设置 mode 可以改变时间轴和内容的相对位置 left | alternate | right
-        pending: false, // 指定最后一个幽灵节点是否存在或内容,也可以是一个自定义的子元素
-        // 当最后一个幽灵节点存在時，指定其时间图点
-        pendingDot: { component: "Icon", type: "loading" },
-        reverse: false, // 节点排序
-        items: null, // 子元素项列表
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Timeline.defaults, props), ...mixins);
     }
     _getPositionClass(ele, index) {
       const { mode } = this.props;
@@ -24198,6 +24187,15 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
+  Timeline.defaults = {
+    tag: "ul",
+    mode: "left", // 通过设置 mode 可以改变时间轴和内容的相对位置 left | alternate | right
+    pending: false, // 指定最后一个幽灵节点是否存在或内容,也可以是一个自定义的子元素
+    // 当最后一个幽灵节点存在時，指定其时间图点
+    pendingDot: { component: "Icon", type: "loading" },
+    reverse: false, // 节点排序
+    items: null, // 子元素项列表
+  };
   Component.register(Timeline);
   class TimePickerList extends List {
     constructor(props, ...mixins) {

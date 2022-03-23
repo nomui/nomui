@@ -6,32 +6,13 @@ import ListContent from './ListContent'
 class List extends Component {
   constructor(props, ...mixins) {
     const defaults = {
-      tag: 'div',
-      items: [],
-      itemDefaults: {},
-      data: null, // 自定义渲染时使用data
-
-      selectedItems: null,
-
-      itemSelectable: {
-        multiple: false,
-        byClick: false,
-        scrollIntoView: false,
-      },
-      disabledItems: [],
-      virtual: false,
       virtualSupport: {
         height: typeof props.virtual === 'number' ? props.virtual : 300, // 容器高度
         size: 30, // 每个列表项高度预估值
         bufferScale: 1, // 缓冲区比例
       },
-      showEmpty: false,
-      // Boolean || { onEnd: Funciton}
-      sortable: false,
-      overflow: 'hidden',
     }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(List.defaults, defaults, props), ...mixins)
   }
 
   _config() {
@@ -517,6 +498,27 @@ class List extends Component {
     const _listData = data && data.length ? data : items
     return _listData[this._lastDragIndex]
   }
+}
+
+List.defaults = {
+  tag: 'div',
+  items: [],
+  itemDefaults: {},
+  data: null, // 自定义渲染时使用data
+
+  selectedItems: null,
+
+  itemSelectable: {
+    multiple: false,
+    byClick: false,
+    scrollIntoView: false,
+  },
+  disabledItems: [],
+  virtual: false,
+  showEmpty: false,
+  // Boolean || { onEnd: Funciton}
+  sortable: false,
+  overflow: 'hidden',
 }
 
 Component.register(List)

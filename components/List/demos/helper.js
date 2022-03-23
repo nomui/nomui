@@ -16,13 +16,14 @@ define([], function (_, exports) {
     for (let index = 0; index < len; index++) {
       const data = {
         component: 'Caption',
-        title: `${index}`,
-        subtitle: '老铁们双击666，✈️🚀走一波~',
+        title: `NomUI Title ${index}`,
+        subtitle:
+          '实现滚动加载无限长列表，带有虚拟化（virtualization）功能，能够提高数据量大时候长列表的性能',
         subtitleWrap: true,
         icon: {
-          type: 'github',
+          type: 'star',
           styles: {
-            text: '3',
+            text: '2',
           },
         },
       }
@@ -36,13 +37,14 @@ define([], function (_, exports) {
     for (let index = 0; index < len; index++) {
       const data1 = {
         component: 'Caption',
-        title: `${index}`,
-        subtitle: '老铁们双击666，✈️🚀走一波~',
+        title: `NomUI Title ${index}`,
+        subtitle:
+          '实现滚动加载无限长列表，带有虚拟化（virtualization）功能，能够提高数据量大时候长列表的性能',
         subtitleWrap: true,
         icon: {
-          type: 'github',
+          type: 'star',
           styles: {
-            text: '3',
+            text: '2',
           },
         },
       }

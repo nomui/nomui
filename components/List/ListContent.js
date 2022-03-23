@@ -6,11 +6,7 @@ import ListItemWrapper from './ListItemWrapper'
 
 class ListContent extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'ul',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(ListContent.defaults, props), ...mixins)
   }
 
   _created() {
@@ -293,7 +289,9 @@ class ListContent extends Component {
     }
   }
 }
-
+ListContent.defaults = {
+  tag: 'ul',
+}
 Component.register(ListContent)
 
 export default ListContent

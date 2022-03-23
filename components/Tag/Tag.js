@@ -2,20 +2,7 @@ import Component from '../Component/index'
 
 class Tag extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      key: null,
-      tag: 'span',
-      type: 'square',
-      color: null,
-      text: null,
-      icon: null,
-      number: null,
-      overflowCount: 99,
-      removable: false,
-      size: 'sm',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Tag.defaults, props), ...mixins)
   }
 
   _config() {
@@ -52,7 +39,7 @@ class Tag extends Component {
               'nom-tag-remove': true,
               'nom-tag-remove-basic': !that.props.styles,
             },
-            onClick: function ({event}) {
+            onClick: function ({ event }) {
               that.props.removable(that.props.key)
               event.stopPropagation()
             },
@@ -64,6 +51,19 @@ class Tag extends Component {
   _disable() {
     this.element.setAttribute('disabled', 'disabled')
   }
+}
+
+Tag.defaults = {
+  key: null,
+  tag: 'span',
+  type: 'square',
+  color: null,
+  text: null,
+  icon: null,
+  number: null,
+  overflowCount: 99,
+  removable: false,
+  size: 'sm',
 }
 
 Component.register(Tag)

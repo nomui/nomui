@@ -2,16 +2,7 @@ import Component from '../Component/index'
 
 class TimelineItem extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'li',
-      color: 'blue', // 指定圆圈颜色 blue, red, green, gray，或自定义的色值
-      dot: null, // 自定义时间轴点
-      label: null, // 设置标签
-      pending: false, // 是否是幽灵节点
-      children: null, // 内容
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(TimelineItem.defaults, props), ...mixins)
   }
 
   _config() {
@@ -60,6 +51,15 @@ class TimelineItem extends Component {
       ],
     })
   }
+}
+
+TimelineItem.defaults = {
+  tag: 'li',
+  color: 'blue', // 指定圆圈颜色 blue, red, green, gray，或自定义的色值
+  dot: null, // 自定义时间轴点
+  label: null, // 设置标签
+  pending: false, // 是否是幽灵节点
+  children: null, // 内容
 }
 
 Component.register(TimelineItem)
