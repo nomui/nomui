@@ -29,8 +29,8 @@ define([], function () {
         itemDefaults: {
           attrs: {
             style: {
-              color: '#f56a00',
-              backgroundColor: '#fde3cf',
+              color: '#fff',
+              backgroundColor: '#ff8787',
             },
           },
         },

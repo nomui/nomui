@@ -3,12 +3,7 @@ import ListItemMixin from './ListItemMixin'
 
 class ListItemWrapper extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'li',
-      item: {},
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(ListItemWrapper.defaults, props), ...mixins)
   }
 
   _created() {
@@ -36,7 +31,10 @@ class ListItemWrapper extends Component {
     })
   }
 }
-
+ListItemWrapper.defaults = {
+  tag: 'li',
+  item: {},
+}
 Component.register(ListItemWrapper)
 
 export default ListItemWrapper

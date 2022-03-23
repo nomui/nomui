@@ -5,12 +5,7 @@ import { getOffset, getValidMax, getValidValue } from './helper'
 
 class Slider extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      disable: false,
-      max: 100,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Slider.defaults, props), ...mixins)
   }
 
   _created() {
@@ -141,7 +136,10 @@ class Slider extends Field {
     }
   }
 }
-
+Slider.defaults = {
+  disable: false,
+  max: 100,
+}
 Component.register(Slider)
 
 export default Slider

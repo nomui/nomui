@@ -3,28 +3,7 @@ import Group from '../Group/index'
 
 class PartialDateRangePicker extends Group {
   constructor(props, ...mixins) {
-    const defaults = {
-      mode: 'year',
-      minDate: null,
-      maxDate: null,
-      yearRange: [50, 20],
-      allowClear: true,
-      onChange: null,
-      fieldName: {
-        start: 'start',
-        end: 'end',
-      },
-      autoPopupEnd: true,
-      flatValue: true,
-      startPickerProps: {
-        placeholder: '开始日期',
-      },
-      endPickerProps: {
-        placeholder: '结束日期',
-      },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(PartialDateRangePicker.defaults, props), ...mixins)
   }
 
   _created() {
@@ -44,6 +23,7 @@ class PartialDateRangePicker extends Group {
       rules,
       startPickerProps,
       endPickerProps,
+      disabled,
     } = this.props
 
     this.setProps({
@@ -66,6 +46,7 @@ class PartialDateRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          disabled,
           ...startPickerProps,
         },
         {
@@ -89,6 +70,7 @@ class PartialDateRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          disabled,
           ...endPickerProps,
         },
       ],
@@ -134,6 +116,25 @@ class PartialDateRangePicker extends Group {
     }
   }
 }
-
+PartialDateRangePicker.defaults = {
+  mode: 'year',
+  minDate: null,
+  maxDate: null,
+  yearRange: [50, 20],
+  allowClear: true,
+  onChange: null,
+  fieldName: {
+    start: 'start',
+    end: 'end',
+  },
+  autoPopupEnd: true,
+  flatValue: true,
+  startPickerProps: {
+    placeholder: '开始日期',
+  },
+  endPickerProps: {
+    placeholder: '结束日期',
+  },
+}
 Component.register(PartialDateRangePicker)
 export default PartialDateRangePicker

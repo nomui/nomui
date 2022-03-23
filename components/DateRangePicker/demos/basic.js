@@ -18,6 +18,7 @@ define([], function () {
             flatValue: true,
             format: 'yyyy-MM-dd HH:mm',
             required: true,
+
             showTime: {
               format: 'HH:mm',
             },

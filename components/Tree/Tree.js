@@ -6,27 +6,7 @@ import TreeNodes from './TreeNodes'
 
 class Tree extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      nodes: null,
-      nodeDefaults: {},
-      nodeSelectable: {
-        onlyleaf: false,
-        byClick: true,
-        selectedNodeKey: null,
-        scrollIntoView: true,
-      },
-      dataFields: {
-        key: 'key',
-        text: 'text',
-        children: 'children',
-        parentKey: 'parentKey',
-      },
-      flatData: false,
-      sortable: false,
-      initExpandLevel: -1,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Tree.defaults, props), ...mixins)
   }
 
   _created() {
@@ -347,7 +327,25 @@ class Tree extends Component {
     }
   }
 }
-
+Tree.defaults = {
+  nodes: null,
+  nodeDefaults: {},
+  nodeSelectable: {
+    onlyleaf: false,
+    byClick: true,
+    selectedNodeKey: null,
+    scrollIntoView: true,
+  },
+  dataFields: {
+    key: 'key',
+    text: 'text',
+    children: 'children',
+    parentKey: 'parentKey',
+  },
+  flatData: false,
+  sortable: false,
+  initExpandLevel: -1,
+}
 Component.register(Tree)
 
 export default Tree

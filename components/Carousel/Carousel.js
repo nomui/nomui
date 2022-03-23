@@ -2,20 +2,7 @@ import Component from '../Component/index'
 
 class Carousel extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      imgs: [],
-      height: 100,
-      arrows: false,
-      autoplay: false,
-      autoplaySpeed: 1000,
-      speed: 300,
-      dots: true,
-      defaultActiveIndex: 1,
-      easing: 'linear',
-      pauseOnHover: true,
-      triggerType: 'click',
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Carousel.defaults, props), ...mixins)
   }
 
   _created() {
@@ -296,7 +283,19 @@ class Carousel extends Component {
     })
   }
 }
-
+Carousel.defaults = {
+  imgs: [],
+  height: 100,
+  arrows: false,
+  autoplay: false,
+  autoplaySpeed: 1000,
+  speed: 300,
+  dots: true,
+  defaultActiveIndex: 1,
+  easing: 'linear',
+  pauseOnHover: true,
+  triggerType: 'click',
+}
 Component.register(Carousel)
 
 export default Carousel

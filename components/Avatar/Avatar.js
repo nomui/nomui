@@ -2,17 +2,7 @@ import Component from '../Component/index'
 
 class Avatar extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'span',
-      size: 'default',
-      alt: '图片',
-      gap: 4, // 字符类型距离左右两侧边界单位像素
-      text: null, // 文本
-      icon: null, // 图标
-      src: null, // 图片地址
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Avatar.defaults, props), ...mixins)
   }
 
   _config() {
@@ -75,6 +65,15 @@ class Avatar extends Component {
   _rendered() {
     this._setScale()
   }
+}
+Avatar.defaults = {
+  tag: 'span',
+  size: 'default',
+  alt: '图片',
+  gap: 4, // 字符类型距离左右两侧边界单位像素
+  text: null, // 文本
+  icon: null, // 图标
+  src: null, // 图片地址
 }
 
 Component.register(Avatar)

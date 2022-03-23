@@ -3,27 +3,39 @@
 }
 
 .nom-collapse-item {
-  &.nom-collapse-bordered {
-    .nom-collapse-item-title {
-      border: 1px solid #ddd;
-      .nom-icon {
-        cursor: pointer;
-      }
-    }
-    .nom-collapse-item-content {
-      border: 1px solid #ddd;
-      border-top: none;
-    }
-  }
-  >.nom-collapse-item-title {
+  > .nom-collapse-item-title {
     position: relative;
-    >.nom-collapse-right-icon {
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
+    border-radius: var(--nom-border-radius);
+    user-select: none;
+    .nom-icon {
+      color: var(--nom-collapse-icon-color);
+      cursor: pointer;
+    }
+    > .nom-collapse-right-icon {
       position: absolute;
-      right:0;
+      right: 0;
       transform: translateX(-50%);
     }
   }
-  // & ~ .nom-collapse-item {
-  //   margin-top: 15px;
-  // }
+  > .nom-collapse-item-content {
+    border-radius: 0 0 var(--nom-border-radius) var(--nom-border-radius);
+    transition: max-height 0.5s;
+  }
+  &.nom-collapse-bordered {
+    .nom-collapse-item-title {
+      padding: 0.5rem;
+      border: 1px solid var(--nom-border-color);
+    }
+    .nom-collapse-item-content {
+      padding: 0.5rem;
+      border: 1px solid var(--nom-border-color);
+    }
+  }
+  .nom-collapse-item-open {
+    border-bottom: none !important;
+    border-radius: var(--nom-border-radius) var(--nom-border-radius) 0 0;
+  }
 }

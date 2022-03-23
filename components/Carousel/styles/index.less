@@ -7,6 +7,7 @@
     overflow: hidden;
     touch-action: pan-y pinch-zoom;
   }
+
   .nom-carousel-wrapper {
     position: relative;
     z-index: 1;
@@ -22,7 +23,8 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background-color: rgba(var(--nom-grey-9), .5);
+
       img {
         display: block;
         width: 100%;
@@ -31,6 +33,7 @@
       }
     }
   }
+
   .nom-carousel-pagination {
     position: absolute;
     bottom: 10px;
@@ -41,26 +44,27 @@
     line-height: 8px;
     text-align: center;
     transition: opacity 0.3s;
+
     .nom-carousel-pagination-bullet {
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: var(--nom-carousel-bullet-width);
+      height: var(--nom-carousel-bullet-height);
       margin: 0 4px;
       text-indent: -99999px;
-      background: #000;
-      border-radius: 50%;
+      background-color: var(--nom-carousel-bullet-color);
+      border-radius: var(--nom-carousel-bullet-radius);
       cursor: pointer;
-      opacity: 0.2;
     }
 
     .nom-carousel-pagination-bullet-active {
-      background: #fff;
-      opacity: 1;
+      background-color: var(--nom-carousel-bullet-theme);
     }
   }
+
   .nom-carousel-pagination-show {
     display: block;
   }
+
   .nom-carousel-buttons {
     position: absolute;
     top: 50%;
@@ -68,9 +72,10 @@
     display: none;
     justify-content: space-between;
     width: 100%;
-    color: #fff;
+    color: var(--nom-carousel-bullet-theme);
     text-align: center;
     transform: translateY(-50%);
+
     .nom-carousel-button-prev,
     .nom-carousel-button-next {
       display: flex;
@@ -78,20 +83,24 @@
       justify-content: center;
       width: 4rem;
       height: 4rem;
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: var(--nom-carousel-button-color);
       cursor: pointer;
     }
+
     .nom-carousel-button-prev {
       left: 0;
     }
+
     .nom-carousel-button-next {
       right: 0;
     }
+
     .nom-carousel-button-prev:hover,
     .nom-carousel-button-next:hover {
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: var(--nom-carousel-button-hover-color);
     }
   }
+
   .nom-carousel-buttons-show {
     display: flex;
   }
