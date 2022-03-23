@@ -8573,8 +8573,8 @@ textarea .nom-textarea {
   transform: translateX(-50%);
 }
 .nom-collapse-item > .nom-collapse-item-content {
+  padding: 0 1rem 0 1.5rem;
   border-radius: 0 0 var(--nom-border-radius) var(--nom-border-radius);
-  transition: max-height 0.5s;
 }
 .nom-collapse-item.nom-collapse-bordered .nom-collapse-item-title {
   padding: 0.5rem;
