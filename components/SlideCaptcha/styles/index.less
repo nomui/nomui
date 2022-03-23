@@ -7,7 +7,7 @@
     height: 30px;
     line-height: 30px;
     text-align: center;
-    background-color: var(--nom-color-fill-1);
+    background-color: var(--nom-slide-captcha-drag-bg);
 
     .handler {
       position: absolute;
@@ -30,8 +30,8 @@
     .drag-text {
       position: absolute;
       top: 0;
-      color: var(--nom-color-text-0);
-      font-size: 13px;
+      color: var(--nom-slide-captcha-color);
+      font-size: var(--nom-slide-captcha-font-size);
       user-select: none;
     }
   }
@@ -66,8 +66,8 @@
     display: block;
     width: 40px;
     height: 40px;
-    border: 1px solid var(--nom-color-white);
-    box-shadow: 0 0 15px var(--nom-color-info);
+    border: 1px solid var(--nom-slide-captcha-small-drag-border-color);
+    box-shadow: var(--nom-slide-captcha-small-drag-box-shadow);
   }
 
   /* 刷新按钮 */
@@ -77,6 +77,6 @@
     right: 0;
     width: 28px;
     height: 28px;
-    background-color: var(--nom-color-white);;
+    background-color: var(--nom-slide-captcha-refresh-bg);;
   }
 }

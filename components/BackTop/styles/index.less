@@ -4,12 +4,12 @@
   display: inline-block;
   background-color: var(--nom-backtop-bg-default);
   border-radius: var(--nom-backtop-border-radius);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--nom-backtop-box-shadow); 
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   .nom-back-top-icons {
     padding: 8px;
-    color: var(--nom-backtop-icon-color);
+    color: var(--nom-backtop-color);
     font-size: 20px;
     line-height: 1;
   }
@@ -22,4 +22,7 @@
 }
 .nom-back-top-container:hover {
   background-color: var(--nom-backtop-bg-hover);
+  .nom-back-top-icons, .nom-back-top-text {
+    color: var(--nom-backtop-color-hover);
+  }
 }
