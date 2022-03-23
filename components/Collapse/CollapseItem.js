@@ -52,6 +52,7 @@ class CollapseItem extends Component {
         },
         {
           tag: 'div',
+
           classes: { 'nom-collapse-item-content': true },
           hidden: collapsed,
           children: content,
