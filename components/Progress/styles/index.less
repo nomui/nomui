@@ -1,7 +1,4 @@
 @iconfont-css-prefix: anticon;
-@component-background: #fff;
-@progress-steps-item-bg: #f3f3f3;
-@progress-remaining-color: hsv(0, 0, 96%);
 @progress-radius: 100px;
 @ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
 @ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
@@ -28,11 +25,11 @@
       flex-shrink: 0;
       min-width: 2px;
       margin-right: 2px;
-      background: @progress-steps-item-bg;
+      background: var(--nom-process-steps-item-bg);
       transition: all 0.3s;
 
       &-active {
-        background: @primary;
+        background: var(--nom-color-primary);
       }
     }
   }
@@ -59,12 +56,12 @@
     width: 100%;
     overflow: hidden;
     vertical-align: middle;
-    background-color: @progress-remaining-color;
+    background-color: var(--nom-process-remaining-color);
     border-radius: @progress-radius;
   }
 
   &-circle-trail {
-    stroke: @progress-remaining-color;
+    stroke: var(--nom-process-remaining-color);
   }
 
   &-circle-path {
@@ -73,14 +70,14 @@
 
   &-inner:not(.nom-progress-circle-gradient) {
     .nom-progress-circle-path {
-      stroke: @primary;
+      stroke: var(--nom-color-primary);
     }
   }
 
   &-success-bg,
   &-bg {
     position: relative;
-    background-color: @primary;
+    background-color: var(--nom-color-primary);
     border-radius: @progress-radius;
     transition: all 0.4s @ease-out-circ 0s;
   }
@@ -89,14 +86,14 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: @success;
+    background-color: var(--nom-color-success);
   }
 
   &-text {
     display: inline-block;
     width: 2em;
     margin-left: 8px;
-    color: @black;
+    color: var(--nom-color-black);
     font-size: 1em;
     line-height: 1;
     white-space: nowrap;
@@ -115,7 +112,7 @@
       right: 0;
       bottom: 0;
       left: 0;
-      background: @component-background;
+      background: var(--nom-color-bg-0);
       border-radius: 10px;
       opacity: 0;
       animation: nom-progress-active 2.4s @ease-out-quint infinite;
@@ -125,31 +122,31 @@
 
   &-status-exception {
     .nom-progress-bg {
-      background-color: @danger;
+      background-color: var(--nom-color-danger);
     }
     .nom-progress-text {
-      color: @danger;
+      color: var(--nom-color-danger);
     }
   }
 
   &-status-exception &-inner:not(.nom-progress-circle-gradient) {
     .nom-progress-circle-path {
-      stroke: @danger;
+      stroke: var(--nom-color-danger);
     }
   }
 
   &-status-success {
     .nom-progress-bg {
-      background-color: @success;
+      background-color: var(--nom-color-success);
     }
     .nom-progress-text {
-      color: @success;
+      color: var(--nom-color-success);
     }
   }
 
   &-status-success &-inner:not(.nom-progress-circle-gradient) {
     .nom-progress-circle-path {
-      stroke: @success;
+      stroke: var(--nom-color-success);
     }
   }
 
@@ -166,7 +163,7 @@
     width: 100%;
     margin: 0;
     padding: 0;
-    color: @text-color;
+    color: var(--nom-color-text-0);
     font-size: 1em;
     line-height: 1;
     white-space: normal;
@@ -180,12 +177,12 @@
 
   &-circle&-status-exception {
     .nom-progress-text {
-      color: @danger;
+      color: var(--nom-color-danger);
     }
   }
   &-circle&-status-success {
     .nom-progress-text {
-      color: @success;
+      color: var(--nom-color-success);
     }
   }
 }

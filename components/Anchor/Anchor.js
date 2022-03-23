@@ -3,19 +3,7 @@ import { isFunction, isNumeric } from '../util/index'
 
 class Anchor extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      container: null,
-      items: [],
-      border: 'left',
-      onItemClick: null,
-      width: 180,
-      sticky: false,
-      itemDefaults: null,
-      offset: 0,
-      activeKey: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Anchor.defaults, props), ...mixins)
   }
 
   _created() {
@@ -194,6 +182,18 @@ class Anchor extends Component {
   _remove() {
     window.removeEventListener('scroll', this.onWindowScroll)
   }
+}
+
+Anchor.defaults = {
+  container: null,
+  items: [],
+  border: 'left',
+  onItemClick: null,
+  width: 180,
+  sticky: false,
+  itemDefaults: null,
+  offset: 0,
+  activeKey: null,
 }
 
 Component.register(Anchor)
