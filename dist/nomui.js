@@ -9707,6 +9707,8 @@ function _defineProperty2(obj, key, value) {
         if (number > 0) {
           this.setProps({ classes: { "p-with-number": true } });
         }
+      } else if (type === "tag") {
+        this.setProps({ classes: { "u-shape-tag": true } });
       }
       this.setProps({
         children: [
@@ -9732,6 +9734,10 @@ function _defineProperty2(obj, key, value) {
     _rendered: function () {
       if (this.props.badge) {
         const badgeProps = { type: "dot" };
+        if (this.props.badge.text) {
+          badgeProps.text = this.props.badge.text;
+          badgeProps.type = "tag";
+        }
         badgeProps.number = this.props.badge.number
           ? this.props.badge.number
           : null;

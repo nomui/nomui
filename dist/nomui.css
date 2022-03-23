@@ -8523,6 +8523,24 @@ textarea .nom-textarea {
   border-radius: 200px;
   transform: translate(50%, -50%);
 }
+.nom-badge.p-type-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: auto;
+  min-width: 16px;
+  max-width: 60px;
+  height: 16px;
+  padding: 1px 3px;
+  overflow: hidden;
+  font-size: 10px;
+  line-height: 13px;
+  white-space: nowrap;
+  text-align: center;
+  text-overflow: ellipsis;
+  border-radius: 200px;
+  transform: translate(50%, -50%);
+}
 .nom-badge .nom-badge-remove {
   position: relative;
   top: 2px;
