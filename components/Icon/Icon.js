@@ -3,12 +3,7 @@ import { isPlainObject, isString } from '../util/index'
 
 class Icon extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      type: '',
-      tag: 'i',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Icon.defaults, props), ...mixins)
   }
 
   _config() {
@@ -18,7 +13,10 @@ class Icon extends Component {
     })
   }
 }
-
+Icon.defaults = {
+  type: '',
+  tag: 'i',
+}
 Icon.svgs = {}
 
 Icon.add = function (type, svg, cat) {

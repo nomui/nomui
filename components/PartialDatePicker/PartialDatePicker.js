@@ -4,19 +4,7 @@ import {} from '../util/date'
 
 class PartialDatePicker extends Textbox {
   constructor(props, ...mixins) {
-    const defaults = {
-      yearRange: [50, 20],
-      mode: 'year',
-      allowClear: true,
-      onChange: null,
-      placeholder: '选择年份',
-      value: null,
-      minDate: null,
-      maxDate: null,
-      readonly: true,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(PartialDatePicker.defaults, props), ...mixins)
   }
 
   _created() {
@@ -604,7 +592,17 @@ class PartialDatePicker extends Textbox {
     return date.format(format || 'yyyy-MM-dd')
   }
 }
-
+PartialDatePicker.defaults = {
+  yearRange: [50, 20],
+  mode: 'year',
+  allowClear: true,
+  onChange: null,
+  placeholder: '选择年份',
+  value: null,
+  minDate: null,
+  maxDate: null,
+  readonly: true,
+}
 Component.register(PartialDatePicker)
 
 export default PartialDatePicker

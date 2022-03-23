@@ -10,20 +10,7 @@ import TimePickerPanel from './TimePickerPanel'
 
 class DatePicker extends Textbox {
   constructor(props, ...mixins) {
-    const defaults = {
-      format: 'yyyy-MM-dd',
-      disabledTime: null,
-      minDate: null,
-      maxDate: null,
-      yearRange: [50, 20],
-      showTime: false,
-      allowClear: true,
-      onChange: null,
-      showNow: true,
-      readonly: true,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(DatePicker.defaults, props), ...mixins)
   }
 
   _created() {
@@ -287,11 +274,8 @@ class DatePicker extends Textbox {
                 },
                 this.props.showTime && {
                   component: TimePickerPanel,
-                  attrs: {
-                    style: {
-                      'border-left': '1px solid #ddd',
-                      'padding-left': '5px',
-                    },
+                  classes: {
+                    'nom-datepicker-time-panel': true,
                   },
                   onValueChange: (data) => {
                     this.handleTimeChange(data)
@@ -586,7 +570,18 @@ class DatePicker extends Textbox {
     super._onBlur()
   }
 }
-
+DatePicker.defaults = {
+  format: 'yyyy-MM-dd',
+  disabledTime: null,
+  minDate: null,
+  maxDate: null,
+  yearRange: [50, 20],
+  showTime: false,
+  allowClear: true,
+  onChange: null,
+  showNow: true,
+  readonly: true,
+}
 Component.register(DatePicker)
 
 export default DatePicker
