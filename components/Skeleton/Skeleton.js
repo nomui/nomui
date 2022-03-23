@@ -6,17 +6,7 @@ import SkeletonTitle from './Title'
 
 class Skeleton extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      type: null,
-      avatar: false,
-      title: true,
-      paragraph: 3,
-      image: false,
-      cols: null,
-      rows: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Skeleton.defaults, props), ...mixins)
   }
 
   _config() {
@@ -148,6 +138,16 @@ Component.mixin({
     }
   },
 })
+
+Skeleton.defaults = {
+  type: null,
+  avatar: false,
+  title: true,
+  paragraph: 3,
+  image: false,
+  cols: null,
+  rows: null,
+}
 
 Component.register(Skeleton)
 
