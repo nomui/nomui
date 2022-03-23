@@ -575,7 +575,7 @@ DatePicker.defaults = {
   disabledTime: null,
   minDate: null,
   maxDate: null,
-  yearRange: [50, 20],
+  yearRange: [90, 20],
   showTime: false,
   allowClear: true,
   onChange: null,
