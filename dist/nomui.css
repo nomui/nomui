@@ -4442,6 +4442,7 @@ body {
   --nom-divider-border-color: var(--nom-border-color);
   --nom-divider-header-color: var(--nom-text-color);
   --nom-icon-bg-color: var(--nom-color-fill-2);
+  --nom-collapse-icon-color: var(--nom-text-color);
 }
 /* stylelint-disable custom-property-empty-line-before */
 body,
@@ -8514,28 +8515,17 @@ textarea .nom-textarea {
 .nom-collapse-wrapper {
   font-size: inherit;
 }
-.nom-collapse-item.nom-collapse-bordered .nom-collapse-item-title {
-  padding: 0.5rem;
-  border: 1px solid var(--nom-border-color);
-  border-radius: var(--nom-border-radius);
-}
-.nom-collapse-item.nom-collapse-bordered .nom-collapse-item-title.nom-collapse-item-open {
-  border-radius: var(--nom-border-radius) var(--nom-border-radius) 0 0;
-}
-.nom-collapse-item.nom-collapse-bordered .nom-collapse-item-title .nom-icon {
-  cursor: pointer;
-}
-.nom-collapse-item.nom-collapse-bordered .nom-collapse-item-content {
-  padding: 0.5rem;
-  border: 1px solid var(--nom-border-color);
-  border-top: none;
-  border-radius: 0 0 var(--nom-border-radius) var(--nom-border-radius);
-}
 .nom-collapse-item > .nom-collapse-item-title {
   position: relative;
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
+  border-radius: var(--nom-border-radius);
+  user-select: none;
+}
+.nom-collapse-item > .nom-collapse-item-title .nom-icon {
+  color: var(--nom-collapse-icon-color);
+  cursor: pointer;
 }
 .nom-collapse-item > .nom-collapse-item-title > .nom-collapse-right-icon {
   position: absolute;
@@ -8543,7 +8533,20 @@ textarea .nom-textarea {
   transform: translateX(-50%);
 }
 .nom-collapse-item > .nom-collapse-item-content {
-  padding: 0 0.5rem;
+  border-radius: 0 0 var(--nom-border-radius) var(--nom-border-radius);
+  transition: max-height 0.5s;
+}
+.nom-collapse-item.nom-collapse-bordered .nom-collapse-item-title {
+  padding: 0.5rem;
+  border: 1px solid var(--nom-border-color);
+}
+.nom-collapse-item.nom-collapse-bordered .nom-collapse-item-content {
+  padding: 0.5rem;
+  border: 1px solid var(--nom-border-color);
+}
+.nom-collapse-item .nom-collapse-item-open {
+  border-bottom: none !important;
+  border-radius: var(--nom-border-radius) var(--nom-border-radius) 0 0;
 }
 .nom-tree .nom-tree-node-content {
   display: flex;

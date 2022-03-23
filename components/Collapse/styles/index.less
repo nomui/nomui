@@ -3,30 +3,17 @@
 }
 
 .nom-collapse-item {
-  &.nom-collapse-bordered {
-    .nom-collapse-item-title {
-      padding: 0.5rem;
-      border: 1px solid var(--nom-border-color);
-      border-radius: var(--nom-border-radius);
-      &.nom-collapse-item-open {
-        border-radius: var(--nom-border-radius) var(--nom-border-radius) 0 0;
-      }
-      .nom-icon {
-        cursor: pointer;
-      }
-    }
-    .nom-collapse-item-content {
-      padding: 0.5rem;
-      border: 1px solid var(--nom-border-color);
-      border-top: none;
-      border-radius: 0 0 var(--nom-border-radius) var(--nom-border-radius);
-    }
-  }
   > .nom-collapse-item-title {
     position: relative;
     display: flex;
     align-items: center;
     padding: 0 0.5rem;
+    border-radius: var(--nom-border-radius);
+    user-select: none;
+    .nom-icon {
+      color: var(--nom-collapse-icon-color);
+      cursor: pointer;
+    }
     > .nom-collapse-right-icon {
       position: absolute;
       right: 0;
@@ -34,6 +21,21 @@
     }
   }
   > .nom-collapse-item-content {
-    padding: 0 0.5rem;
+    border-radius: 0 0 var(--nom-border-radius) var(--nom-border-radius);
+    transition: max-height 0.5s;
+  }
+  &.nom-collapse-bordered {
+    .nom-collapse-item-title {
+      padding: 0.5rem;
+      border: 1px solid var(--nom-border-color);
+    }
+    .nom-collapse-item-content {
+      padding: 0.5rem;
+      border: 1px solid var(--nom-border-color);
+    }
+  }
+  .nom-collapse-item-open {
+    border-bottom: none !important;
+    border-radius: var(--nom-border-radius) var(--nom-border-radius) 0 0;
   }
 }
