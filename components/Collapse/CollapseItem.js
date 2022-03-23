@@ -14,7 +14,8 @@ class CollapseItem extends Component {
   }
 
   _created() {
-    this.parent.itemRef[this.props.key] = this
+    this.menu = this.parent.parent.parent
+    this.menu.itemRef[this.props.key] = this
   }
 
   _config() {
@@ -24,37 +25,34 @@ class CollapseItem extends Component {
       children: [
         {
           tag: 'div',
-          classes: { 'nom-collapse-item-title': true },
-          styles: {
-            padding: '3px',
+          classes: {
+            'nom-collapse-item-title': true,
+            'nom-collapse-item-open': !this.props.collapsed,
           },
           key: key,
           children: [
             {
               ...Component.normalizeIconProps(
-                collapsed ? that.parent.props.icon.default : that.parent.props.icon.open,
+                collapsed ? that.menu.props.icon.default : that.menu.props.icon.open,
               ),
               classes: {
-                'nom-collapse-right-icon': that.parent.props.icon.align === 'right',
+                'nom-collapse-right-icon': that.menu.props.icon.align === 'right',
               },
               onClick: function () {
-                if (!that.parent.props.iconOnly) return
+                if (!that.menu.props.iconOnly) return
                 that._handleCollapse()
               },
             },
             { tag: 'span', children: title },
           ],
           onClick: function () {
-            if (that.parent.props.iconOnly) return
+            if (that.menu.props.iconOnly) return
             that._handleCollapse()
           },
         },
         {
           tag: 'div',
           classes: { 'nom-collapse-item-content': true },
-          styles: {
-            padding: '3px',
-          },
           hidden: collapsed,
           children: content,
         },
@@ -74,7 +72,7 @@ class CollapseItem extends Component {
     })
 
     this.update(this.props.collapsed)
-    this.parent._onCollapse(this.props.key, !this.props.collapsed)
+    this.menu._onCollapse(this.props.key, !this.props.collapsed)
   }
 
   _disable() {

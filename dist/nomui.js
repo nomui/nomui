@@ -11635,7 +11635,8 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
-      this.parent.itemRef[this.props.key] = this;
+      this.menu = this.parent.parent.parent;
+      this.menu.itemRef[this.props.key] = this;
     }
     _config() {
       const { key, title, content, collapsed } = this.props;
@@ -11644,24 +11645,26 @@ function _defineProperty2(obj, key, value) {
         children: [
           {
             tag: "div",
-            classes: { "nom-collapse-item-title": true },
-            styles: { padding: "3px" },
+            classes: {
+              "nom-collapse-item-title": true,
+              "nom-collapse-item-open": !this.props.collapsed,
+            },
             key: key,
             children: [
               Object.assign(
                 {},
                 Component.normalizeIconProps(
                   collapsed
-                    ? that.parent.props.icon.default
-                    : that.parent.props.icon.open
+                    ? that.menu.props.icon.default
+                    : that.menu.props.icon.open
                 ),
                 {
                   classes: {
                     "nom-collapse-right-icon":
-                      that.parent.props.icon.align === "right",
+                      that.menu.props.icon.align === "right",
                   },
                   onClick: function () {
-                    if (!that.parent.props.iconOnly) return;
+                    if (!that.menu.props.iconOnly) return;
                     that._handleCollapse();
                   },
                 }
@@ -11669,14 +11672,13 @@ function _defineProperty2(obj, key, value) {
               { tag: "span", children: title },
             ],
             onClick: function () {
-              if (that.parent.props.iconOnly) return;
+              if (that.menu.props.iconOnly) return;
               that._handleCollapse();
             },
           },
           {
             tag: "div",
             classes: { "nom-collapse-item-content": true },
-            styles: { padding: "3px" },
             hidden: collapsed,
             children: content,
           },
@@ -11689,7 +11691,7 @@ function _defineProperty2(obj, key, value) {
     _handleCollapse() {
       this.setProps({ collapsed: this.props.collapsed !== true });
       this.update(this.props.collapsed);
-      this.parent._onCollapse(this.props.key, !this.props.collapsed);
+      this.menu._onCollapse(this.props.key, !this.props.collapsed);
     }
     _disable() {
       this.element.setAttribute("disabled", "disabled");
@@ -11715,7 +11717,9 @@ function _defineProperty2(obj, key, value) {
           classes: { "nom-collapse-bordered": !!bordered },
         };
       });
-      this.setProps({ children: items });
+      this.setProps({
+        children: { component: "Flex", gutter: this.props.gutter, rows: items },
+      });
     }
     _disable() {
       this.element.setAttribute("disabled", "disabled");
@@ -11742,6 +11746,7 @@ function _defineProperty2(obj, key, value) {
     items: null,
     bordered: false,
     icon: { default: "right", open: "up", align: "left" },
+    gutter: "small",
     iconOnly: false,
     accordion: false,
   };
