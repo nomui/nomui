@@ -3,15 +3,7 @@ import Component from '../Component/index'
 
 class AvatarGroup extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'div',
-      size: 'default',
-      maxCount: null, // 显示的最大头像个数
-      maxPopoverPlacement: 'top', // 多余头像气泡弹出位置
-      items: [], // 子元素项列表
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(AvatarGroup.defaults, props), ...mixins)
   }
 
   _config() {
@@ -56,7 +48,13 @@ class AvatarGroup extends Component {
     }
   }
 }
-
+AvatarGroup.defaults = {
+  tag: 'div',
+  size: 'default',
+  maxCount: null, // 显示的最大头像个数
+  maxPopoverPlacement: 'top', // 多余头像气泡弹出位置
+  items: [], // 子元素项列表
+}
 Component.register(AvatarGroup)
 
 export default AvatarGroup

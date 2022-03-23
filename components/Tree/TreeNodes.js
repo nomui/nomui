@@ -5,12 +5,7 @@ import TreeNode from './TreeNode'
 
 class TreeNodes extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      nodes: null,
-      childrenData: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(TreeNodes.defaults, props), ...mixins)
   }
 
   _created() {
@@ -81,7 +76,10 @@ class TreeNodes extends Component {
 
   iterateNodes() {}
 }
-
+TreeNodes.defaults = {
+  nodes: null,
+  childrenData: null,
+}
 Component.register(TreeNodes)
 
 export default TreeNodes

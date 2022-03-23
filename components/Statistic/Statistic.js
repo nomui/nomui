@@ -4,27 +4,13 @@ import { CSS_PREFIX, formatDecimal } from './helper'
 
 class Statistic extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      groupSeparator: ',',
-      decimalSeparator: '.',
-      precision: 0,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Statistic.defaults, props), ...mixins)
   }
 
   _config() {
     const statisticRef = this
-    const {
-      title,
-      value,
-      precision,
-      groupSeparator,
-      decimalSeparator,
-      formatter,
-      prefix,
-      suffix,
-    } = this.props
+    const { title, value, precision, groupSeparator, decimalSeparator, formatter, prefix, suffix } =
+      this.props
 
     const valueStr = value ? value.toString() : ''
     // 非数字则不格式化了
@@ -85,7 +71,11 @@ class Statistic extends Component {
     })
   }
 }
-
+Statistic.defaults = {
+  groupSeparator: ',',
+  decimalSeparator: '.',
+  precision: 0,
+}
 Component.register(Statistic)
 
 export default Statistic

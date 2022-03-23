@@ -3,20 +3,7 @@ import TimelineItem from './TimelineItem'
 
 class Timeline extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'ul',
-      mode: 'left', // 通过设置 mode 可以改变时间轴和内容的相对位置 left | alternate | right
-      pending: false, // 指定最后一个幽灵节点是否存在或内容,也可以是一个自定义的子元素
-      // 当最后一个幽灵节点存在時，指定其时间图点
-      pendingDot: {
-        component: 'Icon',
-        type: 'loading',
-      },
-      reverse: false, // 节点排序
-      items: null, // 子元素项列表
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Timeline.defaults, props), ...mixins)
   }
 
   _getPositionClass(ele, index) {
@@ -92,6 +79,19 @@ class Timeline extends Component {
       children,
     })
   }
+}
+
+Timeline.defaults = {
+  tag: 'ul',
+  mode: 'left', // 通过设置 mode 可以改变时间轴和内容的相对位置 left | alternate | right
+  pending: false, // 指定最后一个幽灵节点是否存在或内容,也可以是一个自定义的子元素
+  // 当最后一个幽灵节点存在時，指定其时间图点
+  pendingDot: {
+    component: 'Icon',
+    type: 'loading',
+  },
+  reverse: false, // 节点排序
+  items: null, // 子元素项列表
 }
 
 Component.register(Timeline)

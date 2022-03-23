@@ -5,11 +5,7 @@ import { extend, isFunction } from '../util/index'
 
 class TreeNodeContent extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      text: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(TreeNodeContent.defaults, props), ...mixins)
   }
 
   _created() {
@@ -130,7 +126,9 @@ class TreeNodeContent extends Component {
     }
   }
 }
-
+TreeNodeContent.defaults = {
+  text: null,
+}
 Component.register(TreeNodeContent)
 
 export default TreeNodeContent
