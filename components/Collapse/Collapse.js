@@ -25,8 +25,14 @@ class Collapse extends Component {
         },
       }
     })
+
     this.setProps({
-      children: items,
+      children: {
+        component: 'Flex',
+
+        gutter: this.props.gutter,
+        rows: items,
+      },
     })
   }
 
@@ -62,6 +68,7 @@ Collapse.defaults = {
     open: 'up',
     align: 'left',
   },
+  gutter: 'small',
   iconOnly: false,
   accordion: false,
 }
