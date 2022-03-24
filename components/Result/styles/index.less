@@ -1,19 +1,19 @@
 .nom-result {
   padding: 48px 32px;
   &-success &-icon > .anticon {
-    color: @success;
+    color: var(--nom-color-success);
   }
 
   &-error &-icon > .anticon {
-    color: @red;
+    color: var(--nom-color-danger);
   }
 
   &-info &-icon > .anticon {
-    color: @info;
+    color: var(--nom-color-info);
   }
 
   &-warning &-icon > .anticon {
-    color: @warning;
+    color: var(--nom-color-warning);
   }
 
   // Exception Status image
@@ -28,20 +28,20 @@
     text-align: center;
 
     > .anticon {
-      font-size: 72px;
+      font-size: var(--nom-result-icon-action-font-size);
     }
   }
 
   &-title {
-    color: fade(@black, 85%);
-    font-size: 24px;
+    color: var(--nom-result-title-color);
+    font-size: var(--nom-result-title-font-size);
     line-height: 1.8;
     text-align: center;
   }
 
   &-subtitle {
-    color: fade(@black, 45%);
-    font-size: @font-size-base;
+    color: var(--nom-result-subtitle-color);
+    font-size: var(--nom-result-subtitle-font-size);
     line-height: 1.6;
     text-align: center;
   }
@@ -61,6 +61,6 @@
   &-content {
     margin-top: 24px;
     padding: 24px 40px;
-    background-color: fade(@white, 4%);
+    background-color: var(--nom-result-content-bg);
   }
 }

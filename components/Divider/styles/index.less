@@ -1,12 +1,7 @@
-@heading-color: fade(@black, 85%);
-@divider-orientation-margin: 5%;
-@divider-text-padding: 1em;
-@divider-color: rgba(0, 0, 0, 6%);
-
 .nom-divider {
   .reset-component();
 
-  border-top: @border-width solid @divider-color;
+  border-top: 1px solid var(--nom-divider-border-color);
 
   &.p-type-vertical {
     position: relative;
@@ -16,7 +11,7 @@
     margin: 0 8px;
     vertical-align: middle;
     border-top: 0;
-    border-left: @border-width solid @divider-color;
+    border-left: 1px solid var(--nom-divider-border-color);
   }
 
   &.p-type-horizontal {
@@ -30,20 +25,20 @@
   &.p-type-horizontal&-with-text {
     display: flex;
     margin: 16px 0;
-    color: @heading-color;
+    color: var(--nom-divider-header-color);
     font-weight: 500;
     font-size: @font-size-lg;
     white-space: nowrap;
     text-align: center;
     border-top: 0;
-    border-top-color: @divider-color;
+    border-top-color: var(--nom-divider-border-color);
 
     &::before,
     &::after {
       position: relative;
       top: 50%;
       width: 50%;
-      border-top: @border-width solid transparent;
+      border-top: 1px solid transparent;
       // Chrome not accept `inherit` in `border-top`
       border-top-color: inherit;
       border-bottom: 0;
@@ -55,35 +50,35 @@
   &.p-type-horizontal&-with-text-left {
     &::before {
       top: 50%;
-      width: @divider-orientation-margin;
+      width: 5%;
     }
     &::after {
       top: 50%;
-      width: 100% - @divider-orientation-margin;
+      width: 100% - 5%;
     }
   }
 
   &.p-type-horizontal&-with-text-right {
     &::before {
       top: 50%;
-      width: 100% - @divider-orientation-margin;
+      width: 100% - 5%;
     }
     &::after {
       top: 50%;
-      width: @divider-orientation-margin;
+      width: 5%;
     }
   }
 
   &-inner-text {
     display: inline-block;
-    padding: 0 @divider-text-padding;
+    padding: 0 1em;
   }
 
   &-dashed {
     background: none;
-    border-color: @divider-color;
+    border-color: var(--nom-divider-border-color);
     border-style: dashed;
-    border-width: @border-width 0 0;
+    border-width: 1px 0 0;
   }
 
   &.p-type-horizontal&-with-text&-dashed {
@@ -95,11 +90,11 @@
   }
 
   &.p-type-vertical&-dashed {
-    border-width: 0 0 0 @border-width;
+    border-width: 0 0 0 1px;
   }
 
   &-plain&-with-text {
-    color: @text-color !important;
+    color: var(--nom-text-color) !important;
     font-weight: normal !important;
     font-size: @font-size-base !important;
   }

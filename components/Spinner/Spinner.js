@@ -2,11 +2,7 @@ import Component from '../Component/index'
 
 class Spinner extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      spinning: true,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Spinner.defaults, props), ...mixins)
   }
 
   _config() {
@@ -18,6 +14,10 @@ class Spinner extends Component {
       },
     })
   }
+}
+
+Spinner.defaults = {
+  spinning: true,
 }
 
 Component.register(Spinner)

@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.53](https://github.com/nomui/nomui/compare/v1.0.0-alpha.52...v1.0.0-alpha.53) (2022-03-18)
+
+
+### Features
+
+* **Grid:** 缓存列固定列功能 ([a645825](https://github.com/nomui/nomui/commit/a645825b477d94618799565202d2c48abd8e68e1))
+
+
+### Bug Fixes
+
+* **CheckboxTree:** 修复获取不到值的问题 ([a3c72f6](https://github.com/nomui/nomui/commit/a3c72f6b49d56dc335d1323a47c9d27faeefab14))
+* **Gird:**  保存列设置时，将customizable: false的列排至最后 ([36c188a](https://github.com/nomui/nomui/commit/36c188a84d9896cce418d882f8a9bb4913c71d04))
+* **Grid-fixed:** 取消初始化固定列时的bug ([9d66302](https://github.com/nomui/nomui/commit/9d663027d6c6cae22196f578f2810b3b6c205445))
+* **Grid:** 单独使用table时, th列宽判断导致的报错 ([22b9c52](https://github.com/nomui/nomui/commit/22b9c52694a136df8eaaacc9223764c4f9719ed8))
+* **Grid:** 计算右侧固定位置时，考虑固定表头的情况 ([ab29f1c](https://github.com/nomui/nomui/commit/ab29f1cd39fba0d6e8bfea93a5b6101a0d0692cb))
+* **Grid:** 每次展开自定义列弹窗时都重新获取 popupTreeData ([24342de](https://github.com/nomui/nomui/commit/24342de6c5734a530b4057b002d12c7f8d574cd6))
+* **Grid:** 外部更新columns后，需要更新 pinColumns的数据 ([4ab6a67](https://github.com/nomui/nomui/commit/4ab6a67fbdd1a6f6c780e63fc024c0bb1804b512))
+* **Grid:** 外部更新columns后，需要重新读取处理缓存中的列设置 ([61ccc07](https://github.com/nomui/nomui/commit/61ccc078df2fe9535fb50697bb6f91b4c589e43a))
+* **Menu:** 紧凑模式下如果选中不存在的key会js报错 ([dc25724](https://github.com/nomui/nomui/commit/dc25724ee0791b332330bd835d48832ced95458b))
+
+
+### Docs
+
+* **Grid:** 添加固定列设置的缓存的文档 ([9f694f6](https://github.com/nomui/nomui/commit/9f694f649fb6b5351d454d7c8581302746672a14))
+
 ## [1.0.0-alpha.52](https://github.com/nomui/nomui/compare/v1.0.0-alpha.51...v1.0.0-alpha.52) (2022-03-11)
 
 

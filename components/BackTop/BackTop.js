@@ -3,19 +3,7 @@ import Tween from './Tween.js'
 
 class BackTop extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      duration: 100,
-      animations: 'Linear',
-      target: 'window',
-      height: 400,
-      right: 30,
-      bottom: 30,
-      text: '',
-      parent: '',
-      onClick: () => {},
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(BackTop.defaults, props), ...mixins)
   }
 
   _created() {
@@ -203,6 +191,18 @@ Component.mixin({
     }
   },
 })
+
+BackTop.defaults = {
+  duration: 100,
+  animations: 'Linear',
+  target: 'window',
+  height: 400,
+  right: 30,
+  bottom: 30,
+  text: '',
+  parent: '',
+  onClick: () => {},
+}
 
 Component.register(BackTop)
 

@@ -3,13 +3,7 @@ import { isNumeric, isString } from '../util/index'
 
 class Ellipsis extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      text: null,
-      showTitle: true,
-      line: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Ellipsis.defaults, props), ...mixins)
   }
 
   _config() {
@@ -31,6 +25,12 @@ class Ellipsis extends Component {
       },
     })
   }
+}
+
+Ellipsis.defaults = {
+  text: null,
+  showTitle: true,
+  line: null,
 }
 
 Component.register(Ellipsis)

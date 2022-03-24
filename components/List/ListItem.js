@@ -3,12 +3,7 @@ import ListItemContentMixin from './ListItemContentMixin'
 
 class ListItem extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      tag: 'li',
-      data: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(ListItem.defaults, props), ...mixins)
   }
 
   _created() {
@@ -51,7 +46,10 @@ class ListItem extends Component {
     this.content.unselect()
   }
 }
-
+ListItem.defaults = {
+  tag: 'li',
+  data: null,
+}
 Component.register(ListItem)
 
 export default ListItem

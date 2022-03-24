@@ -3,32 +3,7 @@ import Group from '../Group/index'
 
 class DateRangePicker extends Group {
   constructor(props, ...mixins) {
-    const defaults = {
-      format: 'yyyy-MM-dd',
-      disabledTime: null,
-      minDate: null,
-      maxDate: null,
-      yearRange: [50, 20],
-      showTime: false,
-      allowClear: true,
-      onChange: null,
-      fieldName: {
-        start: 'start',
-        end: 'end',
-      },
-      autoPopupEnd: true,
-      flatValue: true,
-      required: false,
-      requiredMessage: null,
-      startPickerProps: {
-        placeholder: '开始日期',
-      },
-      endPickerProps: {
-        placeholder: '结束日期',
-      },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(DateRangePicker.defaults, props), ...mixins)
   }
 
   _created() {
@@ -49,6 +24,7 @@ class DateRangePicker extends Group {
       rules,
       startPickerProps,
       endPickerProps,
+      disabled,
     } = this.props
 
     this.setProps({
@@ -72,6 +48,7 @@ class DateRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          disabled,
           ...startPickerProps,
         },
         {
@@ -96,6 +73,7 @@ class DateRangePicker extends Group {
           required,
           requiredMessage,
           rules,
+          disabled,
           ...endPickerProps,
         },
       ],
@@ -141,6 +119,29 @@ class DateRangePicker extends Group {
     }
   }
 }
-
+DateRangePicker.defaults = {
+  format: 'yyyy-MM-dd',
+  disabledTime: null,
+  minDate: null,
+  maxDate: null,
+  yearRange: [50, 20],
+  showTime: false,
+  allowClear: true,
+  onChange: null,
+  fieldName: {
+    start: 'start',
+    end: 'end',
+  },
+  autoPopupEnd: true,
+  flatValue: true,
+  required: false,
+  requiredMessage: null,
+  startPickerProps: {
+    placeholder: '开始日期',
+  },
+  endPickerProps: {
+    placeholder: '结束日期',
+  },
+}
 Component.register(DateRangePicker)
 export default DateRangePicker

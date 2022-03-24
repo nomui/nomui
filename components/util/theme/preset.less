@@ -20,12 +20,15 @@
 .nom-preset-primary {
   color: var(--nom-color-white);
   background-color: var(--nom-color-primary);
+
   &:hover {
     background-color: var(--nom-color-primary-hover);
   }
+
   &.active {
     background-color: var(--nom-color-primary-active);
   }
+
   &.disabled,
   &[disabled] {
     background-color: var(--nom-color-primary-disabled);
@@ -50,7 +53,7 @@
 //Invalid
 .nom-preset-invalid {
   color: var(--nom-color-text-0);
-  background-color: rgba(var(nom-color-danger), 0.1);
+  background-color: rgba(var(--nom-color-danger), 0.1);
   border-color: var(--nom-color-danger);
 }
 
@@ -58,6 +61,7 @@
 .nom-preset-bold {
   font-weight: 500;
 }
+
 // 极限粗体
 .nom-preset-bolder {
   font-weight: 800;

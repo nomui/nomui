@@ -4,21 +4,7 @@ import FlexItem from './FlexItem'
 
 class Flex extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      rows: null,
-      cols: null,
-      direction: 'column',
-      wrap: false,
-      align: null,
-      justify: null,
-      gap: null,
-      gutter: null,
-      fills: false,
-      inline: false,
-      fit: false,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Flex.defaults, props), ...mixins)
   }
 
   _config() {
@@ -87,7 +73,19 @@ class Flex extends Component {
     return itemProps
   }
 }
-
+Flex.defaults = {
+  rows: null,
+  cols: null,
+  direction: 'column',
+  wrap: false,
+  align: null,
+  justify: null,
+  gap: null,
+  gutter: null,
+  fills: false,
+  inline: false,
+  fit: false,
+}
 Component.register(Flex)
 
 export default Flex

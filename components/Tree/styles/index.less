@@ -5,15 +5,20 @@
     align-items: center;
     padding: 5px 12px;
     cursor: pointer;
+
     &:hover {
-      .u-color-lgray();
+      .nom-preset-hover;
+
+
       .nom-tree-drag-handler {
         visibility: visible;
       }
     }
+
     &.s-selected {
-      .u-color-lprimary();
+      background-color: var(--nom-tree-selected-color);
     }
+
     .s-disabled&,
     &.s-disabled {
       .nom-checkbox {
@@ -22,7 +27,7 @@
       }
     }
 
-    > .nom-tree-node-expandable-indicator {
+    >.nom-tree-node-expandable-indicator {
       width: 30px;
       height: 24px;
 
@@ -31,25 +36,26 @@
       }
     }
 
-    > .nom-tree-node-content-icon {
+    >.nom-tree-node-content-icon {
       margin-right: 6px;
     }
 
-    > .nom-tree-node-content-tools {
+    >.nom-tree-node-content-tools {
       margin-left: 5px;
     }
 
-    > .nom-tree-node-checkbox {
+    >.nom-tree-node-checkbox {
       margin-right: 6px;
     }
+
     .nom-tree-drag-handler {
       visibility: hidden;
       cursor: pointer;
     }
   }
 
-  > .nom-tree-check-all {
-    .u-border-bottom();
+  >.nom-tree-check-all {
+    border-bottom: 1px solid var(--nom-border-color);
   }
 
   &.p-fit {
@@ -57,7 +63,7 @@
     flex-direction: column;
     height: 100%;
 
-    > .nom-tree-nodes {
+    >.nom-tree-nodes {
       flex: 1;
       height: 100%;
       overflow: auto;

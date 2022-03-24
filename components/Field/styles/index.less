@@ -3,34 +3,36 @@
   outline: none;
 
   &.p-plain {
-    > .nom-field-label {
+    >.nom-field-label {
       padding: 0;
     }
 
-    > .nom-field-content {
+    >.nom-field-content {
       padding: 0;
     }
   }
 
-  > .nom-field-label {
+  >.nom-field-label {
     padding: 0.5rem 0.5rem;
 
-    > .nom-label {
+    >.nom-label {
       display: block;
     }
   }
 
-  > .nom-field-content {
+  >.nom-field-content {
     position: relative;
     flex: 1;
     flex-grow: 1;
     width: 100%;
     padding: 0.5rem 0.5rem;
+
     // overflow-x: clip;
-    > .nom-control {
+    >.nom-control {
       &:focus-within {
         border-color: var(--nom-color-primary);
       }
+
       .p-control-width-xsmall& {
         max-width: 104px;
       }
@@ -52,11 +54,11 @@
       }
     }
 
-    > .nom-control-before.nom-list {
+    >.nom-control-before.nom-list {
       padding: 0.5rem 0.5rem;
     }
 
-    > .nom-control-after.nom-list {
+    >.nom-control-after.nom-list {
       padding: 0.5rem 0.5rem;
     }
 
@@ -67,7 +69,9 @@
     }
   }
 
-  > .nom-field-action.nom-list {
+  >.nom-field-action.nom-list {
+    display: flex;
+    align-items: end;
     padding: 0.5rem 0.5rem;
   }
 
@@ -76,8 +80,8 @@
   }
 
   &.p-required:not(.p-required-mark-optional) {
-    > .nom-field-label {
-      > .nom-label::before {
+    >.nom-field-label {
+      >.nom-label::before {
         display: inline-block;
         margin-right: 4px;
         color: var(--nom-color-danger);
@@ -90,12 +94,13 @@
   }
 
   &.s-invalid {
-    > .nom-field-content {
+    >.nom-field-content {
       color: var(--nom-color-text-0);
-      background-color: rgba(var(nom-color-danger), 0.1);
       > .nom-control {
+        background-color: rgba(var(--nom-color-danger), 0.1);
         border-color: var(--nom-color-danger);
-        > input {
+
+        >input {
           border-color: var(--nom-color-danger);
         }
       }
@@ -109,25 +114,25 @@
 
     &.p-label-align-right,
     &.p-label-align-left {
-      > .nom-field-label {
+      >.nom-field-label {
         flex: 0 0 13rem;
         max-width: 13rem;
         margin-bottom: 0;
 
-        > .nom-label {
+        >.nom-label {
           padding: (@padding-y-base);
         }
       }
     }
 
     &.p-label-align-right {
-      > .nom-field-label {
+      >.nom-field-label {
         text-align: right;
       }
     }
 
     &.p-label-align-left {
-      > .nom-field-label {
+      >.nom-field-label {
         text-align: left;
       }
     }
