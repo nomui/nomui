@@ -6,7 +6,7 @@
 .nom-auto-complete-list {
   .nom-list-item-wrapper {
     &:hover {
-      background-color: #eee;
+      background-color: var(--nom-auto-complete-list-item-bg-hover);
       cursor: pointer;
     }
 
@@ -15,8 +15,8 @@
     }
 
     > .s-selected {
-      color: @white;
-      background-color: @primary;
+      color: var(--nom-auto-complete-list-item-color-select);
+      background-color: var(--nom-auto-complete-list-item-bg-select);
     }
   }
 }

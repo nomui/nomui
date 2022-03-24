@@ -13,24 +13,7 @@ import {
 
 class NumberSpinner extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      // min: Number.MIN_SAFE_INTEGER,
-      // max: Number.MAX_SAFE_INTEGER,
-      min: null,
-      max: null,
-      precision: 0,
-      formatter: null,
-      parser: null,
-      step: 1,
-      showSpinner: true,
-      align: 'right',
-
-      // decimal,currency,percent
-      style: STYLE.DECIMAL,
-      currency: 'CNY',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(NumberSpinner.defaults, props), ...mixins)
     this._handleSpinnerIcon = this._handleSpinnerIcon.bind(this)
   }
 
@@ -437,6 +420,23 @@ class NumberSpinner extends Field {
       this._format = this._formatter.format
     }
   }
+}
+
+NumberSpinner.defaults = {
+  // min: Number.MIN_SAFE_INTEGER,
+  // max: Number.MAX_SAFE_INTEGER,
+  min: null,
+  max: null,
+  precision: 0,
+  formatter: null,
+  parser: null,
+  step: 1,
+  showSpinner: true,
+  align: 'right',
+
+  // decimal,currency,percent
+  style: STYLE.DECIMAL,
+  currency: 'CNY',
 }
 
 Component.register(NumberSpinner)
