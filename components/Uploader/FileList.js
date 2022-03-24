@@ -3,11 +3,7 @@ import FileItem from './FileItem'
 
 class FileList extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      disabled: false,
-      files: null,
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(FileList.defaults, props), ...mixins)
   }
 
   _created() {
@@ -60,6 +56,11 @@ class FileList extends Component {
       })
     }
   }
+}
+
+FileList.defaults = {
+  disabled: false,
+  files: null,
 }
 
 export default FileList

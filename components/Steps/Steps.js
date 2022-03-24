@@ -6,13 +6,7 @@ import Step from './Step'
 class Steps extends Component {
   constructor(props, ...mixins) {
     // active current
-    const defaults = {
-      direction: 'horizontal',
-      current: 0,
-      options: [],
-      onChange: null,
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Steps.defaults, props), ...mixins)
   }
 
   _config() {
@@ -62,5 +56,11 @@ class Steps extends Component {
   }
 }
 
+Steps.defaults = {
+  direction: 'horizontal',
+  current: 0,
+  options: [],
+  onChange: null,
+}
 Component.register(Steps)
 export default Steps

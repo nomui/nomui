@@ -142,7 +142,11 @@ body {
 
   // Switch
   --nom-switch-bg-color:#bfbfbf;
+  --nom-switch-active-color: @primary;
+  --nom-switch-indicator-bg-color: @white;
+  --nom-switch-disable-color: rgb(8, 8, 8);
   --nom-switch-font-size-xs: @font-size-base * 0.75;
+
   // Process
   --nom-process-steps-item-bg: var(--nom-color-fill-0);
   --nom-process-remaining-color: var(--nom-color-fill-0); // 填充色
@@ -195,4 +199,18 @@ body {
 
   // Collapse
   --nom-collapse-icon-color: var(--nom-text-color);
+
+  // Steps
+  --nom-step-item-icon-size: 2rem;
+  --nom-step-item-title-fontsize: 16px;
+  --nom-step-item-fontsize: 1rem;
+  --nom-step-item-icon-bg-color: @white;
+  --nom-step-line-color:#f0f0f0;
+  --nom-step-finish-line-color: @primary;
+  --nom-step-error-color: @danger;
+
+  // Uploader
+  --nom-uploader-file-img-size: 48px;
+  --nom-uploader-btn-opt-color: @gray;
+  --nom-uploader-btn-opt-hover-color: @primary;
 }
