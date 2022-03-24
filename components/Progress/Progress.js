@@ -11,36 +11,7 @@ class Progress extends Component {
   static _progressStatuses = ['normal', 'exception', 'active', 'success']
 
   constructor(props, ...mixins) {
-    const defaults = {
-      type: 'line', // 'line', 'circle', 'dashboard' // 类型，可选 line circle dashboard
-      percent: 0, // 百分比
-      // format?:undefined, // (percentNumber,successPercent) => `${percentNumber}%` 内容的模板函数
-      // status:undefined, // 'normal', 'exception', 'active', 'success' // 状态，可选：success exception normal active(仅限 line)
-      showInfo: true, // 是否显示进度数值或状态图标
-      // null for different theme definition
-      trailColor: null,
-      size: 'default', // 'default' ,'small'
-      /**
-       * type="line"
-       *  进度条线的宽度，默认为10px，
-       * type="circle"
-       *  圆形进度条线的宽度，单位是进度条画布宽度的百分比 默认 6
-       */
-      // strokeWidth:10,
-      strokeLinecap: 'round', //  'butt' | 'square' | 'round', // 进度条的样式
-      // strokeColor: string |  { from: string; to: string; direction: string }, // 进度条的色彩，传入 object 时为渐变
-      // trailColor: string, // 未完成的分段的颜色
-      /**
-       * type="circle" 圆形进度条画布宽度，单位 px 默认 132px
-       * type="dashboard" 仪表盘进度条画布宽度，单位 px 默认 132px
-       */
-      // width: number,
-      success: {}, //  { percent: number, strokeColor: string }, // 成功进度条相关配置
-      // gapDegree: number,【type="dashboard"】 仪表盘进度条缺口角度，可取值 0 ~ 295默认75
-      // gapPosition: 'top' | 'bottom' | 'left' | 'right', // 仪表盘进度条缺口位置 默认值 bottom
-      // steps: number, // 【type="line"】进度条总共步数
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Progress.defaults, props), ...mixins)
   }
 
   getPercentNumber() {
@@ -165,6 +136,36 @@ class Progress extends Component {
       children,
     })
   }
+}
+
+Progress.defaults = {
+  type: 'line', // 'line', 'circle', 'dashboard' // 类型，可选 line circle dashboard
+  percent: 0, // 百分比
+  // format?:undefined, // (percentNumber,successPercent) => `${percentNumber}%` 内容的模板函数
+  // status:undefined, // 'normal', 'exception', 'active', 'success' // 状态，可选：success exception normal active(仅限 line)
+  showInfo: true, // 是否显示进度数值或状态图标
+  // null for different theme definition
+  trailColor: null,
+  size: 'default', // 'default' ,'small'
+  /**
+   * type="line"
+   *  进度条线的宽度，默认为10px，
+   * type="circle"
+   *  圆形进度条线的宽度，单位是进度条画布宽度的百分比 默认 6
+   */
+  // strokeWidth:10,
+  strokeLinecap: 'round', //  'butt' | 'square' | 'round', // 进度条的样式
+  // strokeColor: string |  { from: string; to: string; direction: string }, // 进度条的色彩，传入 object 时为渐变
+  // trailColor: string, // 未完成的分段的颜色
+  /**
+   * type="circle" 圆形进度条画布宽度，单位 px 默认 132px
+   * type="dashboard" 仪表盘进度条画布宽度，单位 px 默认 132px
+   */
+  // width: number,
+  success: {}, //  { percent: number, strokeColor: string }, // 成功进度条相关配置
+  // gapDegree: number,【type="dashboard"】 仪表盘进度条缺口角度，可取值 0 ~ 295默认75
+  // gapPosition: 'top' | 'bottom' | 'left' | 'right', // 仪表盘进度条缺口位置 默认值 bottom
+  // steps: number, // 【type="line"】进度条总共步数
 }
 
 Component.register(Progress)

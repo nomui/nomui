@@ -3,14 +3,7 @@ import TreeNodeContent from './TreeNodeContent'
 
 class TreeNode extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      nodes: null,
-      data: {
-        hidden: false,
-      },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(TreeNode.defaults, props), ...mixins)
   }
 
   _created() {
@@ -94,11 +87,8 @@ class TreeNode extends Component {
 
   check({ checkCheckbox = true, triggerCheckChange = true, fromChildren = false } = {}) {
     const { checked } = this.props
-    const {
-      onCheckChange,
-      cascadeCheckParent,
-      cascadeCheckChildren,
-    } = this.tree.props.nodeCheckable
+    const { onCheckChange, cascadeCheckParent, cascadeCheckChildren } =
+      this.tree.props.nodeCheckable
 
     if (checked === true) {
       return
@@ -128,11 +118,8 @@ class TreeNode extends Component {
 
   uncheck({ uncheckCheckbox = true, triggerCheckChange = true, skipChildren = false } = {}) {
     const { checked } = this.props
-    const {
-      onCheckChange,
-      cascadeUncheckChildren,
-      cascadeUncheckParent,
-    } = this.tree.props.nodeCheckable
+    const { onCheckChange, cascadeUncheckChildren, cascadeUncheckParent } =
+      this.tree.props.nodeCheckable
 
     if (checked === false) {
       return
@@ -190,7 +177,12 @@ class TreeNode extends Component {
     this.content.unselect()
   }
 }
-
+TreeNode.defaults = {
+  nodes: null,
+  data: {
+    hidden: false,
+  },
+}
 Component.register(TreeNode)
 
 export default TreeNode

@@ -7,6 +7,36 @@ define([], function () {
         component: 'Cols',
         items: [
           {
+            component: 'Avatar',
+            text: '小马',
+            styles: {
+              shape: 'square',
+            },
+            attrs: {
+              style: {
+                color: '#fff',
+                backgroundColor: '#4dabf7',
+              },
+            },
+            badge: true,
+          },
+          {
+            component: 'Avatar',
+            text: 'HH',
+            styles: {
+              shape: 'square',
+            },
+            attrs: {
+              style: {
+                color: '#fff',
+                backgroundColor: '#ff922b',
+              },
+            },
+            badge: {
+              text: 'VIP',
+            },
+          },
+          {
             component: 'Badge',
             text: 'badge',
           },
@@ -43,7 +73,6 @@ define([], function () {
             },
           },
         ],
-        badge: true,
       }
     },
   }

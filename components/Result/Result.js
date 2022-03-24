@@ -4,16 +4,7 @@ import { NotFound, ServerError, UnAuthorized } from './Exceptions'
 
 class Result extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      // icon: 'info',
-      status: 'info', //  '403' | '404' | '500'|'success'|'error'|'info'|'warning',
-      // title: '',
-      // subTitle:'',
-      // extra:null,
-      // children:null
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Result.defaults, props), ...mixins)
   }
 
   renderIcon({ status, icon }) {
@@ -118,6 +109,15 @@ Result.ExceptionMap = {
   404: NotFound,
   500: ServerError,
   403: UnAuthorized,
+}
+
+Result.defaults = {
+  // icon: 'info',
+  status: 'info', //  '403' | '404' | '500'|'success'|'error'|'info'|'warning',
+  // title: '',
+  // subTitle:'',
+  // extra:null,
+  // children:null
 }
 
 Component.register(Result)

@@ -70,12 +70,10 @@ class Countdown extends Statistic {
     return formatTimeStr(diff, format)
   }
 }
-
 Countdown.defaults = {
   format: 'HH:mm:ss',
   interval: 3000,
 }
-
 Component.register(Countdown)
 
 export default Countdown

@@ -18,6 +18,12 @@ define([], function () {
             styles: {
               shape: 'square',
             },
+            attrs: {
+              style: {
+                color: '#fff',
+                backgroundColor: '#4dabf7',
+              },
+            },
           },
         ],
         itemDefaults: {

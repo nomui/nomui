@@ -153,7 +153,7 @@ define([], function () {
                     },
                     {
                       text: 'Collapse',
-                      subtext: '选项卡',
+                      subtext: '折叠',
                       id: 'Collapse',
                       url: '#!components!index?type=Collapse',
                     },

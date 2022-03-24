@@ -2,18 +2,7 @@ import Component from '../Component/index'
 
 class Badge extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      key: null,
-      tag: 'span',
-      type: 'round',
-      text: null,
-      icon: null,
-      number: null,
-      overflowCount: 99,
-      size: 'xs',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Badge.defaults, props), ...mixins)
   }
 
   _config() {
@@ -44,6 +33,12 @@ class Badge extends Component {
           },
         })
       }
+    } else if (type === 'tag') {
+      this.setProps({
+        classes: {
+          'u-shape-tag': true,
+        },
+      })
     }
 
     this.setProps({
@@ -78,6 +73,10 @@ Component.mixin({
       const badgeProps = {
         type: 'dot',
       }
+      if (this.props.badge.text) {
+        badgeProps.text = this.props.badge.text
+        badgeProps.type = 'tag'
+      }
       badgeProps.number = this.props.badge.number ? this.props.badge.number : null
       badgeProps.overflowCount = this.props.badge.overflowCount
         ? this.props.badge.overflowCount
@@ -88,7 +87,16 @@ Component.mixin({
     }
   },
 })
-
+Badge.defaults = {
+  key: null,
+  tag: 'span',
+  type: 'round',
+  text: null,
+  icon: null,
+  number: null,
+  overflowCount: 99,
+  size: 'xs',
+}
 Component.register(Badge)
 
 export default Badge

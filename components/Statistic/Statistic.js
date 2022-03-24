@@ -79,13 +79,11 @@ class Statistic extends Component {
     })
   }
 }
-
 Statistic.defaults = {
   groupSeparator: ',',
   decimalSeparator: '.',
   precision: 0,
 }
-
 Component.register(Statistic)
 
 export default Statistic
