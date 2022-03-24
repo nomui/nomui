@@ -6,12 +6,7 @@ import { formatTimeStr } from './helper'
 
 class Countdown extends Statistic {
   constructor(props, ...mixins) {
-    const defaults = {
-      format: 'HH:mm:ss',
-      interval: 3000,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Countdown.defaults, props), ...mixins)
   }
 
   _created() {
@@ -74,6 +69,11 @@ class Countdown extends Statistic {
     const diff = Math.max(this._deadline - Date.now(), 0)
     return formatTimeStr(diff, format)
   }
+}
+
+Countdown.defaults = {
+  format: 'HH:mm:ss',
+  interval: 3000,
 }
 
 Component.register(Countdown)

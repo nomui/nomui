@@ -4,13 +4,7 @@ import { CSS_PREFIX, formatDecimal } from './helper'
 
 class Statistic extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      groupSeparator: ',',
-      decimalSeparator: '.',
-      precision: 0,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Statistic.defaults, props), ...mixins)
   }
 
   _config() {
@@ -84,6 +78,12 @@ class Statistic extends Component {
       ],
     })
   }
+}
+
+Statistic.defaults = {
+  groupSeparator: ',',
+  decimalSeparator: '.',
+  precision: 0,
 }
 
 Component.register(Statistic)

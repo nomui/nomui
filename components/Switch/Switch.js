@@ -3,12 +3,7 @@ import Field from '../Field/index'
 
 class Switch extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      unselectedText: '关',
-      selectedText: '开',
-      value: false,
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Switch.defaults, props), ...mixins)
   }
 
   _config() {
@@ -82,6 +77,12 @@ class Switch extends Field {
   _setValue(value) {
     this.ck.element.checked = value === true
   }
+}
+
+Switch.defaults = {
+  unselectedText: '关',
+  selectedText: '开',
+  value: false,
 }
 
 Component.register(Switch)
