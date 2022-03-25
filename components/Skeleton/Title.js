@@ -3,9 +3,7 @@ import { isNumeric } from '../util/index'
 
 class SkeletonTitle extends Component {
   constructor(props, ...mixins) {
-    const defaults = {}
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(SkeletonTitle.defaults, props), ...mixins)
   }
 
   _config() {
@@ -20,6 +18,8 @@ class SkeletonTitle extends Component {
     })
   }
 }
+
+SkeletonTitle.defaults = {}
 
 Component.register(SkeletonTitle)
 
