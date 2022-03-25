@@ -6,8 +6,8 @@
 .nom-auto-complete-list {
   .nom-list-item-wrapper {
     &:hover {
-      background-color: var(--nom-auto-complete-list-item-bg-hover);
       cursor: pointer;
+      .nom-preset-hover;
     }
 
     > .nom-list-item {
@@ -15,8 +15,7 @@
     }
 
     > .s-selected {
-      color: var(--nom-auto-complete-list-item-color-select);
-      background-color: var(--nom-auto-complete-list-item-bg-select);
+      .nom-preset-primary;
     }
   }
 }
