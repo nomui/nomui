@@ -16,6 +16,9 @@ define([], function () {
           {
             component: 'Avatar',
             text: '小马',
+            styles: {
+              shape: 'square',
+            },
             src: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
           },
           {
