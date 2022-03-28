@@ -4776,7 +4776,7 @@ function _defineProperty2(obj, key, value) {
         this.hasWordLimit && getWordLimitSpan(),
       ];
       this.setProps({
-        attrs: { readonly },
+        attrs: { readonly: readonly || null },
         classes: { "p-with-button": buttonProps !== null },
         control: {
           disabled: disabled,

@@ -149,7 +149,7 @@ class Textbox extends Field {
     ]
 
     this.setProps({
-      attrs: { readonly },
+      attrs: { readonly: readonly || null },
       classes: {
         'p-with-button': buttonProps !== null,
       },
