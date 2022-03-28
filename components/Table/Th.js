@@ -167,7 +167,7 @@ class Th extends Component {
         !this.props.column.isChecker &&
         !this.props.column.isTreeMark &&
         this.props.column.fixed !== 'right' &&
-        this.props.column.customizable !== false && {
+        this.props.column.frozenable !== false && {
           component: 'Icon',
           type: this.props.column.fixed ? 'pin-fill' : 'pin',
           attrs: {
