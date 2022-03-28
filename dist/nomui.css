@@ -6824,20 +6824,22 @@ table.nom-table.p-bordered {
   position: relative;
   display: inline-block;
   box-sizing: content-box;
-  overflow: hidden;
   color: var(--nom-avatar-color);
   white-space: nowrap;
   text-align: center;
   vertical-align: middle;
   background: var(--nom-avatar-background-color);
   border: 1px solid var(--nom-avatar-border-color);
+  border-radius: var(--nom-avatar-border-radius);
   width: 2.29rem;
   height: 2.29rem;
   line-height: 2.29rem;
-  border-radius: var(--nom-avatar-border-radius);
 }
 .nom-avatar.avatar-image {
   background: transparent;
+}
+.nom-avatar.avatar-image > img {
+  border-radius: var(--nom-avatar-border-radius);
 }
 .nom-avatar > .nom-avatar-string {
   position: absolute;
@@ -6860,7 +6862,6 @@ table.nom-table.p-bordered {
   width: 3.43rem;
   height: 3.43rem;
   line-height: 3.43rem;
-  border-radius: var(--nom-avatar-border-radius);
 }
 .nom-avatar.p-size-xlarge-string {
   position: absolute;
@@ -6874,7 +6875,6 @@ table.nom-table.p-bordered {
   width: 2.86rem;
   height: 2.86rem;
   line-height: 2.86rem;
-  border-radius: var(--nom-avatar-border-radius);
 }
 .nom-avatar.p-size-large-string {
   position: absolute;
@@ -6888,7 +6888,6 @@ table.nom-table.p-bordered {
   width: 1.86rem;
   height: 1.86rem;
   line-height: 1.86rem;
-  border-radius: var(--nom-avatar-border-radius);
 }
 .nom-avatar.p-size-small-string {
   position: absolute;
@@ -6902,7 +6901,6 @@ table.nom-table.p-bordered {
   width: 1.15rem;
   height: 1.15rem;
   line-height: 1.15rem;
-  border-radius: var(--nom-avatar-border-radius);
 }
 .nom-avatar.p-size-xsmall-string {
   position: absolute;
@@ -6913,6 +6911,9 @@ table.nom-table.p-bordered {
   font-size: 0.875rem;
 }
 .nom-avatar.u-shape-square {
+  border-radius: 0.25rem;
+}
+.nom-avatar.u-shape-square > img {
   border-radius: 0.25rem;
 }
 .nom-avatar > img {
