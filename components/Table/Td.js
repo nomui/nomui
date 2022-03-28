@@ -72,10 +72,10 @@ class Td extends Component {
             classes: { 'nom-tr-expand-indicator': true },
             expandable: {
               expandedProps: {
-                type: 'down',
+                type: 'sort-down',
               },
               collapsedProps: {
-                type: 'right',
+                type: 'sort-right',
               },
             },
           },
