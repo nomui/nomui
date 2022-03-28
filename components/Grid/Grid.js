@@ -1045,19 +1045,21 @@ class Grid extends Component {
   // 引用传递，实现对对应 columns的排序
   _sortColumnsFromFields(columns, fields = []) {
     if (!fields || !fields.length) return
-    columns.sort((curr, next) => {
-      // 未设置field的列放在最后
-      if (isNullish(curr.field)) return 1
 
-      const currIdx = fields.indexOf(curr.field)
-      const nextIdx = fields.indexOf(next.field)
-      // 此列被隐藏，往后排
-      if (currIdx === -1) return 1
-      // 下一列被隐藏，此列往前排
-      if (nextIdx === -1) return -1
-
-      return currIdx - nextIdx
-    })
+    // 因Array.prototype.sort 在Firefox在的表现不同，改为使用for循环
+    for (let i = 0; i < fields.length; i++) {
+      for (let j = i; j < columns.length; j++) {
+        // 未设置 field的列都排在最后面
+        if (isNullish(columns[j].field)) {
+          const nullCol = columns.splice(j, 1)
+          columns.push(nullCol[0])
+        } else if (columns[j].field === fields[i]) {
+          // 将fields 中存在的列全部排在最前面
+          const sameCol = columns.splice(j, 1)
+          columns.splice(i, 0, sameCol[0])
+        }
+      }
+    }
   }
 
   _getColsFromFields(columns = [], fields = [], includeNullish = true) {
