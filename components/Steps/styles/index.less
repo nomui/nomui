@@ -18,7 +18,7 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  color: rgba(0, 0, 0, 0.85);
+  color: var(--nom-step-line-primary-color);
   text-align: initial;
   list-style: none;
 
@@ -42,7 +42,7 @@
         line-height: var(--nom-step-item-icon-size);
         text-align: center;
         background-color: var(--nom-step-item-icon-bg-color);
-        border: 1px solid rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--nom-step-border-color);
         border-radius: var(--nom-step-item-icon-size);
         &.nom-step-item-icon-customer {
           font-size: 2rem;
@@ -57,19 +57,19 @@
 
         .nom-step-item-title {
           display: inline-block;
-          color: rgba(0, 0, 0, 0.85);
+          color: var(--nom-step-line-primary-color);
           font-size: var(--nom-step-item-title-fontsize);
           line-height: var(--nom-step-item-icon-size);
         }
         .nom-step-item-subtitle {
           display: inline;
           margin-left: 0.5rem;
-          color: rgba(0, 0, 0, 0.45);
+          color: var(--nom-step-line-secondary-color);
           font-weight: 400;
           font-size: var(--nom-step-item-fontsize);
         }
         .nom-step-item-description {
-          color: rgba(0, 0, 0, 0.85);
+          color: var(--nom-step-line-primary-color);
           font-size: var(--nom-step-item-fontsize);
         }
       }
@@ -77,9 +77,9 @@
 
     &.nom-step-item-wait {
       .nom-step-item-icon {
-        color: rgba(0, 0, 0, 0.25);
+        color: var(--nom-step-border-color);
         background-color: var(--nom-step-item-icon-bg-color);
-        border-color: rgba(0, 0, 0, 0.25);
+        border-color: var(--nom-step-border-color);
       }
     }
 

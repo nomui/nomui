@@ -1,6 +1,6 @@
 .nom-breadcrumb {
   padding:var(--nom-breadcrumb-padding);
-  color: rgba(var(--nom-black),0.45);
+  color: var(--nom-breadcrumb-font-color);
   > .nom-breadcrumb-item {
     &.p-with-icon {
       display: inline-flex;
@@ -25,18 +25,18 @@
         text-decoration: none;
         outline: none;
         &:hover {
-          color: @primary
+          color: var(--nom-breadcrumb-link-hover-color);
         }
       }
     }
 
     &:last-child {
-      color: rgba(0, 0, 0, 0.85);
+      color: var(--nom-breadcrumb-link-color);
       > .nom-breadcrumb-link {
         > a {
-          color: rgba(0, 0, 0, 0.85);
+          color: var(--nom-breadcrumb-link-color);
           &:hover{
-            color:@primary;
+            color: var(--nom-breadcrumb-link-hover-color);
           }
         }
       }
