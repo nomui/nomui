@@ -25,19 +25,21 @@
 
     .nom-textbox-right-icon-container {
       position: absolute;
+      cursor: pointer;
       top: 0;
       right: 0;
       display: flex;
       flex-direction: column;
       width: 2.5rem;
       height: @input-height-base;
-      color: #a4a2bb;
+      color: var(--nom-input-color);
       font-size: 16px;
       line-height: @input-height-base;
-      border: 1px solid #ccc;
+      border: 1px solid var(--nom-border-color);
     }
 
     .nom-textbox-left-icon-container {
+      cursor: pointer;
       position: absolute;
       top: 0;
       left: 0;
@@ -45,10 +47,17 @@
       flex-direction: column;
       width: 2.5rem;
       height: @input-height-base;
-      color: #a4a2bb;
+      color: var(--nom-input-color);
       font-size: 16px;
       line-height: @input-height-base;
-      border: 1px solid #ccc;
+      border: 1px solid var(--nom-border-color);
+    }
+  }
+  &.s-disabled {
+    .nom-textbox-right-icon-container,
+    .nom-textbox-left-icon-container {
+      cursor: @cursor-disabled;
+      background-color: var(--nom-input-bg-disabled);
     }
   }
 }

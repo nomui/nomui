@@ -30,6 +30,9 @@
     background-color: transparent;
     border: 0;
   }
+  &::placeholder {
+    color: var(--nom-color-text-2);
+  }
 
   // Disabled and read-only inputs
   //
@@ -41,6 +44,9 @@
   fieldset[disabled] & {
     background-color: var(--nom-input-bg-disabled);
     opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
+  }
+  &:not([disabled]) & {
+    .nom-preset-hover;
   }
 
   &[disabled],
@@ -64,7 +70,9 @@
   > .nom-field-content {
     .nom-control {
       position: relative;
+      border-radius: var(--nom-border-radius);
       background-color: var(--nom-input-bg);
+      .nom-preset-hover;
     }
   }
 
@@ -101,7 +109,6 @@
     align-items: center;
     padding: 0 @padding-x-base;
     border: 1px solid var(--nom-color-border);
-    border-radius: var(--nom-border-radius);
     &:focus-within {
       border-color: var(--nom-color-primary);
     }
@@ -127,13 +134,14 @@
       padding: 0;
       border: none;
       outline: none;
+      background: transparent;
     }
   }
 
   &.s-disabled,
   &[readonly] {
     .nom-textbox-affix-wrapper {
-      background: var(--nom-color-disabled-bg);
+      background: var(--nom-input-bg-disabled);
     }
   }
 

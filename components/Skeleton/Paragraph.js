@@ -2,9 +2,7 @@ import Component from '../Component/index'
 
 class SkeletonParagraph extends Component {
   constructor(props, ...mixins) {
-    const defaults = {}
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(SkeletonParagraph.defaults, props), ...mixins)
   }
 
   _config() {
@@ -22,6 +20,8 @@ class SkeletonParagraph extends Component {
     return list
   }
 }
+
+SkeletonParagraph.defaults = {}
 
 Component.register(SkeletonParagraph)
 

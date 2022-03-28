@@ -5,15 +5,7 @@ import AutoCompletePopup from './AutoCompletePopup'
 
 class AutoComplete extends Textbox {
   constructor(props, ...mixins) {
-    const defaults = {
-      options: [],
-      debounce: true,
-      interval: 300,
-      filterOption: (value, options) => options.filter((o) => o.value.toString().includes(value)),
-      allowClear: true,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(AutoComplete.defaults, props), ...mixins)
     this._init.bind(this)
     this._handleSearch.bind(this)
     this._doSearch.bind(this)
@@ -182,6 +174,14 @@ class AutoComplete extends Textbox {
       })
     }
   }
+}
+
+AutoComplete.defaults = {
+  options: [],
+  debounce: true,
+  interval: 300,
+  filterOption: (value, options) => options.filter((o) => o.value.toString().includes(value)),
+  allowClear: true,
 }
 
 Component.register(AutoComplete)

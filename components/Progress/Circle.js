@@ -6,11 +6,7 @@ class ProgressCircle extends Component {
   static _prefixClass = 'nom-progress'
 
   constructor(props, ...mixins) {
-    const defaults = {
-      width: 120,
-      // strokeWidth:6
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(ProgressCircle.defaults, props), ...mixins)
   }
 
   _getGapDegree() {
@@ -97,6 +93,11 @@ class ProgressCircle extends Component {
       ],
     })
   }
+}
+
+ProgressCircle.defaults = {
+  width: 120,
+  // strokeWidth:6
 }
 
 export default ProgressCircle

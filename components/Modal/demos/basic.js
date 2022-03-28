@@ -15,50 +15,49 @@ define([], function () {
               content: {
                 header: {
                   caption: {
-                    title: 'hello',
+                    title: '提交成功!',
                   },
                 },
                 body: {
-                  children: [
+                  component: 'Flex',
+                  styles: { padding: 1 },
+                  gap: 'small',
+                  align: 'center',
+                  rows: [
+                    // {
+                    //   component: 'Caption',
+                    //   title: '提交成功',
+                    // },
+                    { tag: 'span', children: '你现在还可以' },
                     {
-                      component: 'Select',
-                      options: [
-                        {
-                          text: '金庸',
-                          value: 0,
-                        },
-                        {
-                          text: '古龙',
-                          value: 1,
-                        },
-                        {
-                          text: '梁羽生',
-                          value: 2,
-                        },
-                        {
-                          text: '温瑞安',
-                          value: 3,
-                        },
-                        {
-                          text: '金庸',
-                          value: 4,
-                        },
-                        {
-                          text: '古龙',
-                          value: 5,
-                        },
-                        {
-                          text: '梁羽生',
-                          value: 6,
-                        },
-                        {
-                          text: '温瑞安',
-                          value: 7,
-                        },
+                      component: 'List',
+                      gutter: 'sm',
+                      items: [
+                        { text: '立项申请表' },
+                        { text: '伦理申请表' },
+                        { text: '试验研究方案' },
+                        { text: '豁免知情同意表' },
                       ],
+                      itemDefaults: {
+                        _config: function () {
+                          return this.setProps({
+                            attrs: { style: { color: '#eee', backgroundColor: 'red' } },
+                            styles: { border: true, color: 'lgray', padding: 1 },
+                            children: {
+                              component: 'Flex',
+                              align: 'center',
+                              rows: [
+                                { component: 'Icon', type: 'upload' },
+                                { tag: 'div', children: this.props.text },
+                              ],
+                            },
+                          })
+                        },
+                      },
                     },
                   ],
                 },
+                footer: false,
               },
               onOk: ({ sender }) => {
                 new nomui.Message({ type: 'info', content: '点击了确定按钮' })
