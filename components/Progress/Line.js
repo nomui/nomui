@@ -5,12 +5,7 @@ class ProgressLine extends Component {
   static _prefixClass = 'nom-progress'
 
   constructor(props, ...mixins) {
-    const defaults = {
-      // steps:100,
-      // strokeColor:'',
-      strokeWidth: 10,
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(ProgressLine.defaults, props), ...mixins)
   }
 
   _config() {
@@ -94,6 +89,12 @@ class ProgressLine extends Component {
       ],
     })
   }
+}
+
+ProgressLine.defaults = {
+  // steps:100,
+  // strokeColor:'',
+  strokeWidth: 10,
 }
 
 export default ProgressLine

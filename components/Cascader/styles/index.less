@@ -5,16 +5,16 @@
   > .nom-field-content {
     .nom-control {
       &:hover {
-        border: 1px solid @primary;
+        border: 1px solid var(--nom-color-primary);
       }
 
       position: relative;
       min-height: @input-height-base;
       padding: @padding-y-base 24px @padding-y-base 12px;
-      color: #000 !important;
+      color: var(--nom-text-color) !important;
       line-height: @line-height-computed;
-      background: white;
-      border: 1px solid gainsboro;
+      background: var(--nom-bg-color);
+      border: 1px solid var(--nom-border-color);
       border-radius: 2px;
       cursor: pointer;
 
@@ -32,7 +32,7 @@
       }
 
       .nom-cascader-placeholder {
-        color: #bfbfbf;
+        color: var(--nom-input-placeholder-color);
       }
     }
   }
@@ -55,14 +55,21 @@
       padding: 4px 0;
       overflow: auto;
       overflow-x: hidden;
+      overflow-y: hidden;
       white-space: nowrap;
       vertical-align: top;
       list-style: none;
-      border-right: 1px solid #f0f0f0;
+      border-right: 1px solid var(--nom-border-color);
+      &:hover {
+        overflow-y: auto;
+      }
       > .nom-cascader-menu-item {
         &:hover {
-          background-color: #f5f5f5;
           cursor: pointer;
+          .nom-preset-hover;
+        }
+        &.nom-cascader-menu-item-active {
+          .nom-preset-primary;
         }
 
         display: flex;
@@ -72,10 +79,6 @@
         > .nom-cascader-menu-item-expand-icon {
           padding-left: 1rem;
         }
-      }
-
-      > .nom-cascader-menu-item-active {
-        background-color: #e6f7ff;
       }
     }
   }

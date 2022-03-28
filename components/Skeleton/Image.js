@@ -3,12 +3,7 @@ import { isNumeric } from '../util/index'
 
 class SkeletonImage extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      width: null,
-      height: null,
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(SkeletonImage.defaults, props), ...mixins)
   }
 
   _config() {
@@ -40,6 +35,11 @@ class SkeletonImage extends Component {
       },
     })
   }
+}
+
+SkeletonImage.defaults = {
+  width: null,
+  height: null,
 }
 
 Component.register(SkeletonImage)

@@ -3,13 +3,11 @@ import Component from '../Component/index'
 
 class SkeletonAvatar extends Avatar {
   constructor(props, ...mixins) {
-    const defaults = {
-      text: '#&nbsp;',
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(SkeletonAvatar.defaults, props), ...mixins)
   }
 }
+
+SkeletonAvatar.defaults = {}
 
 Component.register(SkeletonAvatar)
 

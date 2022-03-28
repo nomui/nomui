@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.54](https://github.com/nomui/nomui/compare/v1.0.0-alpha.53...v1.0.0-alpha.54) (2022-03-25)
+
+
+### Bug Fixes
+
+* **DatePicker:** 年份默认可选范围太小的问题 ([73c08ac](https://github.com/nomui/nomui/commit/73c08acafde3f9e727a05587e188b8ddc0cb7f16))
+* **GroupList:** 修复GroupList按钮不对称问题 ([6d80932](https://github.com/nomui/nomui/commit/6d809320b5a7cd585c216bfe499bd924b7b1a2bc))
+
 ## [1.0.0-alpha.53](https://github.com/nomui/nomui/compare/v1.0.0-alpha.52...v1.0.0-alpha.53) (2022-03-18)
 
 

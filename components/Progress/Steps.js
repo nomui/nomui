@@ -4,11 +4,7 @@ class ProgressSteps extends Component {
   static _prefixClass = 'nom-progress'
 
   constructor(props, ...mixins) {
-    const defaults = {
-      strokeWidth: 8,
-      percent: 0,
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(ProgressSteps.defaults, props), ...mixins)
   }
 
   _config() {
@@ -39,6 +35,11 @@ class ProgressSteps extends Component {
       children: [...styledSteps, children],
     })
   }
+}
+
+ProgressSteps.defaults = {
+  strokeWidth: 8,
+  percent: 0,
 }
 
 export default ProgressSteps
