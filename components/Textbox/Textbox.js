@@ -224,12 +224,13 @@ class Textbox extends Field {
 
     this.input.setText(value)
     const newValue = this.getValue()
+    this.oldValue = this.currentValue
+
     if (options.triggerChange) {
       if (newValue !== this.oldValue) {
         super._onValueChange()
       }
     }
-    this.oldValue = this.currentValue
     this.currentValue = newValue
   }
 
