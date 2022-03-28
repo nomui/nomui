@@ -70,8 +70,6 @@
   }
 
   >.nom-field-action.nom-list {
-    display: flex;
-    align-items: end;
     padding: 0.5rem 0.5rem;
   }
 
@@ -96,7 +94,8 @@
   &.s-invalid {
     >.nom-field-content {
       color: var(--nom-color-text-0);
-      > .nom-control {
+
+      >.nom-control {
         background-color: rgba(var(--nom-color-danger), 0.1);
         border-color: var(--nom-color-danger);
 
