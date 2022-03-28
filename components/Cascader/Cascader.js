@@ -6,17 +6,7 @@ import CascaderPopup from './CascaderPopup'
 
 class Cascader extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      options: [],
-      showArrow: true,
-      separator: ' / ',
-      fieldsMapping: { label: 'label', value: 'value', children: 'children' },
-      valueType: 'cascade',
-      changeOnSelect: false,
-      width: 200,
-      height: 250,
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Cascader.defaults, props), ...mixins)
   }
 
   _rendered() {
@@ -393,6 +383,17 @@ class Cascader extends Field {
 
     return options
   }
+}
+
+Cascader.defaults = {
+  options: [],
+  showArrow: true,
+  separator: ' / ',
+  fieldsMapping: { label: 'label', value: 'value', children: 'children' },
+  valueType: 'cascade',
+  changeOnSelect: false,
+  width: 200,
+  height: 250,
 }
 
 Component.register(Cascader)

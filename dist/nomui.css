@@ -3998,13 +3998,13 @@ html {
   font-size: 14px;
 }
 body {
-  color: #343a40;
+  color: var(--nom-text-color);
   font-weight: 400;
   font-size: 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   line-height: 1.42857143;
   text-align: left;
-  background-color: #ffffff;
+  background-color: var(--nom-color-bg-0);
 }
 a {
   color: var(--nom-color-primary);
@@ -4373,13 +4373,13 @@ body {
   --nom-checkbox-checked-bg-hover: var(--nom-color-primary-hover);
   --nom-checkbox-box-shadow: none;
   --nom-checkbox-checker-box-shadow: none;
-  --nom-button-bg: var(--nom-color-white);
-  --nom-layer-background-color: var(--nom-color-bg-0);
+  --nom-button-bg: var(--nom-color-fill-0);
+  --nom-layer-background-color: var(--nom-color-bg-3);
   --nom-layer-border: transparent;
   --nom-layer-border-radius: 6px;
   --nom-layer-box-shadow: 0 0 2px -1px rgba(0, 0, 0, 0.5), 0 10px 15px -5px rgba(0, 0, 0, 0.15);
   --nom-layer-backdrop-color: rgba(0, 0, 0, 0.55);
-  --nom-select-selected-item-bg: var(--nom-color-bg-0);
+  --nom-select-selected-item-bg: var(--nom-color-fill-0);
   --nom-select-selected-item-border-color: var(--nom-border-color);
   --nom-select-selected-item-padding: 0 5px;
   --nom-date-picker-divider: 1px solid var(--nom-border-color);
@@ -4515,7 +4515,7 @@ body[theme-mode='dark'] .nom-always-light {
   --nom-color-text-3: rgba(var(--nom-grey-9), 0.35);
   --nom-color-shadow: rgba(var(--nom-black), 0.04);
   --nom-color-border: rgba(var(--nom-grey-9), 0.15);
-  --nom-color-nav-bg: rgba(var(--nom-white), 1);
+  --nom-color-menu-bg: rgba(var(--nom-white), 1);
   --nom-color-hover: rgba(var(--nom-grey-6), 0.05);
   --nom-color-fill-0: rgba(var(--nom-grey-6), 0.05);
   --nom-color-fill-1: rgba(var(--nom-grey-8), 0.09);
@@ -4525,7 +4525,6 @@ body[theme-mode='dark'] .nom-always-light {
   --nom-color-bg-2: rgba(var(--nom-white), 1);
   --nom-color-bg-3: rgba(var(--nom-white), 1);
   --nom-color-bg-4: rgba(var(--nom-white), 1);
-  --nom-input-bg: rgba(var(--nom-white), 1);
 }
 body[theme-mode='dark'],
 body .nom-always-dark {
@@ -4533,7 +4532,7 @@ body .nom-always-dark {
   --nom-color-fill-1: rgba(var(--nom-white), 0.16);
   --nom-color-fill-2: rgba(var(--nom-white), 0.2);
   --nom-color-border: rgba(var(--nom-white), 0.08);
-  --nom-color-nav-bg: #232429;
+  --nom-color-menu-bg: #232429;
   --nom-color-bg-0: #16161a;
   --nom-color-bg-1: #232429;
   --nom-color-bg-2: #35363c;
@@ -7132,6 +7131,12 @@ fieldset[disabled] a.nom-button {
   align-items: center;
   justify-content: center;
 }
+.nom-button.p-with-icon.p-danger {
+  color: var(--nom-color-danger);
+}
+.nom-button.p-with-icon.p-danger:hover {
+  color: var(--nom-color-white);
+}
 .nom-button > .nom-icon + span,
 .nom-button > span + .nom-icon {
   margin-left: 0.5rem;
@@ -7174,11 +7179,17 @@ fieldset[disabled] a.nom-button {
   background-color: transparent;
   border: 0;
 }
+.nom-input::placeholder {
+  color: var(--nom-color-text-2);
+}
 .nom-input[disabled],
 .nom-input[readonly],
 fieldset[disabled] .nom-input {
   background-color: var(--nom-input-bg-disabled);
   opacity: 1;
+}
+.nom-input:not([disabled]) .nom-input:hover {
+  background-color: var(--nom-color-hover);
 }
 .nom-input[disabled],
 fieldset[disabled] .nom-input {
@@ -7194,7 +7205,11 @@ textarea .nom-input {
 }
 .nom-textbox > .nom-field-content .nom-control {
   position: relative;
+  border-radius: var(--nom-border-radius);
   background-color: var(--nom-input-bg);
+}
+.nom-textbox > .nom-field-content .nom-control:hover {
+  background-color: var(--nom-color-hover);
 }
 .nom-textbox.s-invalid.p-plain > .nom-field-content > .nom-control > .nom-input {
   border-color: var(--nom-color-danger);
@@ -7217,7 +7232,6 @@ textarea .nom-input {
   align-items: center;
   padding: 0 0.75rem;
   border: 1px solid var(--nom-color-border);
-  border-radius: var(--nom-border-radius);
 }
 .nom-textbox .nom-textbox-affix-wrapper:focus-within {
   border-color: var(--nom-color-primary);
@@ -7243,10 +7257,11 @@ textarea .nom-input {
   padding: 0;
   border: none;
   outline: none;
+  background: transparent;
 }
 .nom-textbox.s-disabled .nom-textbox-affix-wrapper,
 .nom-textbox[readonly] .nom-textbox-affix-wrapper {
-  background: var(--nom-color-disabled-bg);
+  background: var(--nom-input-bg-disabled);
 }
 .nom-textbox .nom-textbox-left-icon,
 .nom-textbox .nom-textbox-right-icon {
@@ -8671,7 +8686,7 @@ textarea .nom-textarea {
   top: 0;
   right: 8px;
   bottom: 0;
-  background: var(--nom-layer-background-color);
+  background: var(--nom-input-bg);
   cursor: pointer;
 }
 .nom-tree-select .nom-tree-select-single {
@@ -9005,10 +9020,10 @@ textarea .nom-textarea {
   position: relative;
   min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   padding: 0.375rem 24px 0.375rem 12px;
-  color: #000 !important;
+  color: var(--nom-text-color) !important;
   line-height: 1.42857143rem;
-  background: white;
-  border: 1px solid gainsboro;
+  background: var(--nom-bg-color);
+  border: 1px solid var(--nom-border-color);
   border-radius: 2px;
   cursor: pointer;
 }
@@ -9027,7 +9042,7 @@ textarea .nom-textarea {
   bottom: 0;
 }
 .nom-cascader > .nom-field-content .nom-control .nom-cascader-placeholder {
-  color: #bfbfbf;
+  color: var(--nom-input-placeholder-color);
 }
 .nom-cascader-popup > .nom-layout {
   max-height: 300px;
@@ -9045,10 +9060,14 @@ textarea .nom-textarea {
   padding: 4px 0;
   overflow: auto;
   overflow-x: hidden;
+  overflow-y: hidden;
   white-space: nowrap;
   vertical-align: top;
   list-style: none;
-  border-right: 1px solid #f0f0f0;
+  border-right: 1px solid var(--nom-border-color);
+}
+.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu:hover {
+  overflow-y: auto;
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item {
   display: flex;
@@ -9057,14 +9076,27 @@ textarea .nom-textarea {
   padding: 0.5rem 1rem;
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item:hover {
-  background-color: #f5f5f5;
   cursor: pointer;
+}
+.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item:hover:hover {
+  background-color: var(--nom-color-hover);
+}
+.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item.nom-cascader-menu-item-active {
+  color: var(--nom-color-white);
+  background-color: var(--nom-color-primary);
+}
+.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item.nom-cascader-menu-item-active:hover {
+  background-color: var(--nom-color-primary-hover);
+}
+.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item.nom-cascader-menu-item-active.active {
+  background-color: var(--nom-color-primary-active);
+}
+.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item.nom-cascader-menu-item-active.disabled,
+.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item.nom-cascader-menu-item-active[disabled] {
+  background-color: var(--nom-color-primary-disabled);
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item > .nom-cascader-menu-item-expand-icon {
   padding-left: 1rem;
-}
-.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item-active {
-  background-color: #e6f7ff;
 }
 .nom-number-spinner-icon-opt {
   cursor: pointer;
@@ -9089,18 +9121,20 @@ textarea .nom-textarea {
 }
 .nom-number-spinner .nom-control .nom-textbox-right-icon-container {
   position: absolute;
+  cursor: pointer;
   top: 0;
   right: 0;
   display: flex;
   flex-direction: column;
   width: 2.5rem;
   height: calc(1.428571429rem + (0.375rem * 2) + 2px);
-  color: #a4a2bb;
+  color: var(--nom-input-color);
   font-size: 16px;
   line-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
-  border: 1px solid #ccc;
+  border: 1px solid var(--nom-border-color);
 }
 .nom-number-spinner .nom-control .nom-textbox-left-icon-container {
+  cursor: pointer;
   position: absolute;
   top: 0;
   left: 0;
@@ -9108,10 +9142,15 @@ textarea .nom-textarea {
   flex-direction: column;
   width: 2.5rem;
   height: calc(1.428571429rem + (0.375rem * 2) + 2px);
-  color: #a4a2bb;
+  color: var(--nom-input-color);
   font-size: 16px;
   line-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
-  border: 1px solid #ccc;
+  border: 1px solid var(--nom-border-color);
+}
+.nom-number-spinner.s-disabled .nom-textbox-right-icon-container,
+.nom-number-spinner.s-disabled .nom-textbox-left-icon-container {
+  cursor: not-allowed;
+  background-color: var(--nom-input-bg-disabled);
 }
 .nom-partial-date-picker {
   width: 200px;
@@ -9647,15 +9686,27 @@ textarea .nom-textarea {
   overflow: auto;
 }
 .nom-auto-complete-list .nom-list-item-wrapper:hover {
-  background-color: #eee;
   cursor: pointer;
+}
+.nom-auto-complete-list .nom-list-item-wrapper:hover:hover {
+  background-color: var(--nom-color-hover);
 }
 .nom-auto-complete-list .nom-list-item-wrapper > .nom-list-item {
   padding: 5px 16px;
 }
 .nom-auto-complete-list .nom-list-item-wrapper > .s-selected {
-  color: #ffffff;
+  color: var(--nom-color-white);
   background-color: var(--nom-color-primary);
+}
+.nom-auto-complete-list .nom-list-item-wrapper > .s-selected:hover {
+  background-color: var(--nom-color-primary-hover);
+}
+.nom-auto-complete-list .nom-list-item-wrapper > .s-selected.active {
+  background-color: var(--nom-color-primary-active);
+}
+.nom-auto-complete-list .nom-list-item-wrapper > .s-selected.disabled,
+.nom-auto-complete-list .nom-list-item-wrapper > .s-selected[disabled] {
+  background-color: var(--nom-color-primary-disabled);
 }
 .nom-auto-complete .nom-auto-complete-clear {
   cursor: pointer;

@@ -2270,7 +2270,7 @@ function _defineProperty2(obj, key, value) {
   );
   Icon.add(
     "close",
-    `<svg t="1610503666305" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2041" width="1em" height="1em"><path d="M572.16 512l183.466667-183.04a42.666667 42.666667 0 1 0-60.586667-60.586667L512 451.84l-183.04-183.466667a42.666667 42.666667 0 0 0-60.586667 60.586667l183.466667 183.04-183.466667 183.04a42.666667 42.666667 0 0 0 0 60.586667 42.666667 42.666667 0 0 0 60.586667 0l183.04-183.466667 183.04 183.466667a42.666667 42.666667 0 0 0 60.586667 0 42.666667 42.666667 0 0 0 0-60.586667z" p-id="2042"></path></svg>`,
+    `<svg t="1610503666305" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" p-id="2041" width="1em" height="1em"><path d="M572.16 512l183.466667-183.04a42.666667 42.666667 0 1 0-60.586667-60.586667L512 451.84l-183.04-183.466667a42.666667 42.666667 0 0 0-60.586667 60.586667l183.466667 183.04-183.466667 183.04a42.666667 42.666667 0 0 0 0 60.586667 42.666667 42.666667 0 0 0 60.586667 0l183.04-183.466667 183.04 183.466667a42.666667 42.666667 0 0 0 60.586667 0 42.666667 42.666667 0 0 0 0-60.586667z" p-id="2042"></path></svg>`,
     cat
   );
   Icon.add(
@@ -3298,14 +3298,14 @@ function _defineProperty2(obj, key, value) {
   Component.register(Anchor);
   class AnchorContent extends Component {
     constructor(props, ...mixins) {
-      const defaults = { key: null };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(AnchorContent.defaults, props), ...mixins);
     }
     _rendered() {
       const { key } = this.props;
       this.element.classList.add(`nom-anchor-target-${key}`);
     }
   }
+  AnchorContent.defaults = { key: null };
   Component.register(AnchorContent);
   class Route {
     constructor(defaultPath) {
@@ -9049,15 +9049,7 @@ function _defineProperty2(obj, key, value) {
   }
   class AutoComplete extends Textbox {
     constructor(props, ...mixins) {
-      const defaults = {
-        options: [],
-        debounce: true,
-        interval: 300,
-        filterOption: (value, options) =>
-          options.filter((o) => o.value.toString().includes(value)),
-        allowClear: true,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(AutoComplete.defaults, props), ...mixins);
       this._init.bind(this);
       this._handleSearch.bind(this);
       this._doSearch.bind(this);
@@ -9202,6 +9194,14 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  AutoComplete.defaults = {
+    options: [],
+    debounce: true,
+    interval: 300,
+    filterOption: (value, options) =>
+      options.filter((o) => o.value.toString().includes(value)),
+    allowClear: true,
+  };
   Component.register(AutoComplete);
   class Avatar extends Component {
     constructor(props, ...mixins) {
@@ -10256,17 +10256,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(CascaderPopup);
   class Cascader extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        options: [],
-        showArrow: true,
-        separator: " / ",
-        fieldsMapping: { label: "label", value: "value", children: "children" },
-        valueType: "cascade",
-        changeOnSelect: false,
-        width: 200,
-        height: 250,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Cascader.defaults, props), ...mixins);
     }
     _rendered() {
       const cascader = this;
@@ -10601,6 +10591,16 @@ function _defineProperty2(obj, key, value) {
       return options;
     }
   }
+  Cascader.defaults = {
+    options: [],
+    showArrow: true,
+    separator: " / ",
+    fieldsMapping: { label: "label", value: "value", children: "children" },
+    valueType: "cascade",
+    changeOnSelect: false,
+    width: 200,
+    height: 250,
+  };
   Component.register(Cascader);
   class Checkbox extends Field {
     constructor(props, ...mixins) {
@@ -19666,21 +19666,7 @@ function _defineProperty2(obj, key, value) {
   }
   class NumberSpinner extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        // min: Number.MIN_SAFE_INTEGER,
-        // max: Number.MAX_SAFE_INTEGER,
-        min: null,
-        max: null,
-        precision: 0,
-        formatter: null,
-        parser: null,
-        step: 1,
-        showSpinner: true,
-        align: "right", // decimal,currency,percent
-        style: STYLE.DECIMAL,
-        currency: "CNY",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(NumberSpinner.defaults, props), ...mixins);
       this._handleSpinnerIcon = this._handleSpinnerIcon.bind(this);
     }
     _config() {
@@ -20009,6 +19995,20 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  NumberSpinner.defaults = {
+    // min: Number.MIN_SAFE_INTEGER,
+    // max: Number.MAX_SAFE_INTEGER,
+    min: null,
+    max: null,
+    precision: 0,
+    formatter: null,
+    parser: null,
+    step: 1,
+    showSpinner: true,
+    align: "right", // decimal,currency,percent
+    style: STYLE.DECIMAL,
+    currency: "CNY",
+  };
   Component.register(NumberSpinner);
   class Pager extends Component {
     constructor(props, ...mixins) {
@@ -21328,10 +21328,7 @@ function _defineProperty2(obj, key, value) {
   };
   class ProgressCircle extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        width: 120, // strokeWidth:6
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(ProgressCircle.defaults, props), ...mixins);
     }
     _getGapDegree() {
       const { gapDegree, type } = this.props; // Support gapDeg = 0 when type = 'dashboard'
@@ -21413,14 +21410,12 @@ function _defineProperty2(obj, key, value) {
     }
   }
   _defineProperty2(ProgressCircle, "_prefixClass", "nom-progress");
+  ProgressCircle.defaults = {
+    width: 120, // strokeWidth:6
+  };
   class ProgressLine extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        // steps:100,
-        // strokeColor:'',
-        strokeWidth: 10,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(ProgressLine.defaults, props), ...mixins);
     }
     _config() {
       const {
@@ -21486,10 +21481,14 @@ function _defineProperty2(obj, key, value) {
     }
   }
   _defineProperty2(ProgressLine, "_prefixClass", "nom-progress");
+  ProgressLine.defaults = {
+    // steps:100,
+    // strokeColor:'',
+    strokeWidth: 10,
+  };
   class ProgressSteps extends Component {
     constructor(props, ...mixins) {
-      const defaults = { strokeWidth: 8, percent: 0 };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(ProgressSteps.defaults, props), ...mixins);
     }
     _config() {
       const {
@@ -21527,6 +21526,7 @@ function _defineProperty2(obj, key, value) {
     }
   }
   _defineProperty2(ProgressSteps, "_prefixClass", "nom-progress");
+  ProgressSteps.defaults = { strokeWidth: 8, percent: 0 };
   class Progress extends Component {
     constructor(props, ...mixins) {
       super(Component.extendProps(Progress.defaults, props), ...mixins);
@@ -22942,15 +22942,14 @@ function _defineProperty2(obj, key, value) {
   Component.register(Result);
   class SkeletonAvatar extends Avatar {
     constructor(props, ...mixins) {
-      const defaults = { text: "#&nbsp;" };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(SkeletonAvatar.defaults, props), ...mixins);
     }
   }
+  SkeletonAvatar.defaults = {};
   Component.register(SkeletonAvatar);
   class SkeletonImage extends Component {
     constructor(props, ...mixins) {
-      const defaults = { width: null, height: null };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(SkeletonImage.defaults, props), ...mixins);
     }
     _config() {
       const width = isNumeric(this.props.width)
@@ -22975,11 +22974,14 @@ function _defineProperty2(obj, key, value) {
       });
     }
   }
+  SkeletonImage.defaults = { width: null, height: null };
   Component.register(SkeletonImage);
   class SkeletonParagraph extends Component {
     constructor(props, ...mixins) {
-      const defaults = {};
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(
+        Component.extendProps(SkeletonParagraph.defaults, props),
+        ...mixins
+      );
     }
     _config() {
       this.setProps({ tag: "ul", children: this.getParagraph() });
@@ -22993,11 +22995,11 @@ function _defineProperty2(obj, key, value) {
       return list;
     }
   }
+  SkeletonParagraph.defaults = {};
   Component.register(SkeletonParagraph);
   class SkeletonTitle extends Component {
     constructor(props, ...mixins) {
-      const defaults = {};
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(SkeletonTitle.defaults, props), ...mixins);
     }
     _config() {
       const width = isNumeric(this.props.width)
@@ -23006,6 +23008,7 @@ function _defineProperty2(obj, key, value) {
       this.setProps({ attrs: { style: { width: width, maxWidth: width } } });
     }
   }
+  SkeletonTitle.defaults = {};
   Component.register(SkeletonTitle);
   class Skeleton extends Component {
     constructor(props, ...mixins) {
