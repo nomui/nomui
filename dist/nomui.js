@@ -9819,11 +9819,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(BreadcrumbItem);
   class Breadcrumb extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        separator: "/",
-        itemDefaults: { component: BreadcrumbItem },
-      };
-      super(Component.extendProps(defaults, props), mixins);
+      super(Component.extendProps(Breadcrumb.defaults, props), mixins);
     }
     _config() {
       const { separator, items, itemDefaults } = this.props;
@@ -9839,6 +9835,10 @@ function _defineProperty2(obj, key, value) {
       this.setProps({ children });
     }
   }
+  Breadcrumb.defaults = {
+    separator: "/",
+    itemDefaults: { component: BreadcrumbItem },
+  };
   Component.register(Breadcrumb);
   class Carousel extends Component {
     constructor(props, ...mixins) {
@@ -14529,22 +14529,7 @@ function _defineProperty2(obj, key, value) {
   // }
   class Drawer extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        closable: true,
-        closeIcon: "close",
-        maskClosable: true,
-        showMasker: true,
-        settle: "right",
-        okText: "确 定",
-        cancelText: "取 消",
-        onOk: (e) => {
-          e.sender.close();
-        },
-        onCancel: (e) => {
-          e.sender.close();
-        },
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Drawer.defaults, props), ...mixins);
     }
     _config() {
       const drawerRef = this;
@@ -14555,9 +14540,7 @@ function _defineProperty2(obj, key, value) {
         showMasker,
         width,
         height,
-      } = this.props; // if (!placeGlobal && this.parent && this.parent.element) {
-      //   this.parent.element.style.position = 'relative'
-      // }
+      } = this.props;
       const _settle = settles.includes(settle) ? settle : "right";
       let _style = {};
       if (isValidZIndex(zIndex)) {
@@ -14731,6 +14714,21 @@ function _defineProperty2(obj, key, value) {
         : { transform: "translateY(100%)" };
     }
   }
+  Drawer.defaults = {
+    closable: true,
+    closeIcon: "close",
+    maskClosable: true,
+    showMasker: true,
+    settle: "right",
+    okText: "确 定",
+    cancelText: "取 消",
+    onOk: (e) => {
+      e.sender.close();
+    },
+    onCancel: (e) => {
+      e.sender.close();
+    },
+  };
   Component.register(Drawer);
   class Dropdown extends Component {
     constructor(props, ...mixins) {
@@ -23562,12 +23560,7 @@ function _defineProperty2(obj, key, value) {
   };
   class Step extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        disabled: false,
-        current: 0, // wait process finish error
-        status: "wait",
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Step.defaults, props), ...mixins);
     }
     _config() {
       // status wait process finish error
@@ -23650,16 +23643,15 @@ function _defineProperty2(obj, key, value) {
       };
     }
   }
+  Step.defaults = {
+    disabled: false,
+    current: 0, // wait process finish error
+    status: "wait",
+  };
   class Steps extends Component {
     constructor(props, ...mixins) {
       // active current
-      const defaults = {
-        direction: "horizontal",
-        current: 0,
-        options: [],
-        onChange: null,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Steps.defaults, props), ...mixins);
     }
     _config() {
       // const steps = this
@@ -23698,15 +23690,16 @@ function _defineProperty2(obj, key, value) {
       this.current = current;
     }
   }
+  Steps.defaults = {
+    direction: "horizontal",
+    current: 0,
+    options: [],
+    onChange: null,
+  };
   Component.register(Steps);
   class Switch extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        unselectedText: "关",
-        selectedText: "开",
-        value: false,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Switch.defaults, props), ...mixins);
     }
     _config() {
       const that = this;
@@ -23775,6 +23768,7 @@ function _defineProperty2(obj, key, value) {
       this.ck.element.checked = value === true;
     }
   }
+  Switch.defaults = { unselectedText: "关", selectedText: "开", value: false };
   Component.register(Switch);
   class TabPanel extends Component {
     constructor(props, ...mixins) {
@@ -25270,8 +25264,7 @@ function _defineProperty2(obj, key, value) {
   }
   class FileItem extends Component {
     constructor(props, ...mixins) {
-      const defaults = { disabled: false, file: null };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(FileItem.defaults, props), ...mixins);
     }
     _created() {
       this._uploader = this.parent.parent.parent.parent;
@@ -25429,10 +25422,10 @@ function _defineProperty2(obj, key, value) {
       ];
     }
   }
+  FileItem.defaults = { disabled: false, file: null };
   class FileList extends Component {
     constructor(props, ...mixins) {
-      const defaults = { disabled: false, files: null };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(FileList.defaults, props), ...mixins);
     }
     _created() {
       super._created();
@@ -25477,6 +25470,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
   }
+  FileList.defaults = { disabled: false, files: null };
   function getError(option, xhr) {
     const msg = `Can't ${option.method} ${option.action} ${xhr.status}`;
     const err = new Error(msg);
@@ -25556,27 +25550,7 @@ function _defineProperty2(obj, key, value) {
   }
   class Uploader extends Field {
     constructor(props, ...mixins) {
-      const defaults = {
-        // 测试地址
-        action: "",
-        disabled: false,
-        beforeUpload: null,
-        button: null,
-        defaultFileList: [],
-        multiple: false,
-        name: "file",
-        display: true,
-        data: {}, // request option
-        method: "post",
-        headers: {},
-        withCredentials: false,
-        allowUpdate: false,
-        onRemove: null,
-        renderer: null,
-        extraAction: [],
-        customizeInfo: null,
-      };
-      super(Component.extendProps(defaults, props), ...mixins);
+      super(Component.extendProps(Uploader.defaults, props), ...mixins);
       this.reqs = {};
       this.onChange.bind(this);
       this._changeUploadMode.bind(this);
@@ -25943,6 +25917,26 @@ function _defineProperty2(obj, key, value) {
       return isNotEmptyArray(_val) ? _val : null;
     }
   }
+  Uploader.defaults = {
+    // 测试地址
+    action: "",
+    disabled: false,
+    beforeUpload: null,
+    button: null,
+    defaultFileList: [],
+    multiple: false,
+    name: "file",
+    display: true,
+    data: {}, // request option
+    method: "post",
+    headers: {},
+    withCredentials: false,
+    allowUpdate: false,
+    onRemove: null,
+    renderer: null,
+    extraAction: [],
+    customizeInfo: null,
+  };
   Component.register(Uploader);
   /**
    * nomui的插件机制

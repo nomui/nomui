@@ -11,8 +11,8 @@
 }
 
 .upload-img-container {
-  width: 48px;
-  height: 48px;
+  width: var(--nom-uploader-file-img-size);
+  height: var(--nom-uploader-file-img-size);
   margin-right: 10px;
   img {
     width: 100%;
@@ -29,7 +29,7 @@
 
 .upload-file-name {
   margin-right: 10px;
-  color: @primary;
+  color: var(--nom-uploader-file-title-color);
   &:hover {
     text-decoration: none;
   }
@@ -41,9 +41,9 @@
 }
 
 .upload-opt-btn > a {
-  color: @gray;
+  color: var(--nom-uploader-btn-opt-color);
   &:hover {
-    color: @primary;
+    color: var(--nom-uploader-btn-opt-hover-color);
     text-decoration: none;
   }
 }
@@ -57,5 +57,5 @@
 }
 
 .file-img {
-  font-size: 48px;
+  font-size: var(--nom-uploader-file-img-size);
 }
