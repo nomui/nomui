@@ -45,9 +45,6 @@
     background-color: var(--nom-input-bg-disabled);
     opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
   }
-  &:not([disabled]) & {
-    .nom-preset-hover;
-  }
 
   &[disabled],
   fieldset[disabled] & {
@@ -60,9 +57,7 @@
   }
 
   .s-invalid > & {
-    color: var(--nom-text-color);
-    background-color: rgba(var(--nom-color-danger), 0.1);
-    border-color: var(--nom-color-danger);
+    .nom-preset-invalid;
   }
 }
 
@@ -72,7 +67,6 @@
       position: relative;
       border-radius: var(--nom-border-radius);
       background-color: var(--nom-input-bg);
-      .nom-preset-hover;
     }
   }
 
@@ -81,6 +75,11 @@
       > .nom-control > .nom-input {
         border-color: var(--nom-color-danger);
       }
+    }
+  }
+  &.s-invalid {
+    .nom-textbox-affix-wrapper {
+      .nom-preset-invalid;
     }
   }
 
@@ -131,7 +130,7 @@
     }
 
     .nom-input {
-      height: @input-height-base; // while input as inner El, height = base line-height + padding (ignore border)
+      height: @input-height-base-inner; // while input as inner El, height = base line-height + padding (ignore border)
       padding: 0;
       border: none;
       outline: none;
