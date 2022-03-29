@@ -89,8 +89,14 @@
   }
   &.s-disabled {
     > .nom-field-content {
-      .nom-switch-control.nom-switch-active {
+      .nom-switch-control{
         background-color: var(--nom-switch-disable-color);
+        .nom-switch-text{
+          color:var(--nom-switch-disable-text);
+        }
+      }
+      .nom-switch-active{
+        background-color: var(--nom-switch-disable-active-color)!important;
       }
     }
   }
