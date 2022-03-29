@@ -2,15 +2,18 @@
   position: relative;
   display: inline-block;
   box-sizing: content-box;
-  overflow: hidden;
   color: var(--nom-avatar-color);
   white-space: nowrap;
   text-align: center;
   vertical-align: middle;
   background: var(--nom-avatar-background-color);
   border: 1px solid var(--nom-avatar-border-color);
+  border-radius: var(--nom-avatar-border-radius);
   &.avatar-image {
     background: transparent;
+    > img {
+      border-radius: var(--nom-avatar-border-radius);
+    }
   }
 
   > .nom-avatar-string {
@@ -44,6 +47,9 @@
 
   &.u-shape-square {
     border-radius: @avatar-border-radius;
+    > img {
+      border-radius: @avatar-border-radius;
+    }
   }
 
   & > img {
@@ -58,7 +64,6 @@
   width: @size;
   height: @size;
   line-height: @size;
-  border-radius: var(--nom-avatar-border-radius);
 
   &-string {
     position: absolute;
