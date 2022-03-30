@@ -4443,19 +4443,17 @@ body {
   --nom-drawer-header-padding: 16px 24px;
   --nom-drawer-content-padding: 24px;
   --nom-drawer-footer-padding: 10px 16px;
-  --nom-drawer-body-color: rgba(var(--nom-white), 1);
+  --nom-drawer-body-color: var(--nom-bg-color);
   --nom-drawer-mask-bg-color: rgba(var(--nom-black), 0.45);
   --nom-drawer-line-color: var(--nom-border-color);
   --nom-statistic-title-bottom: 4px;
   --nom-statistic-title-opacity: 0.45;
-  --nom-statistic-content-color: rgba(var(--nom-black), 0.85);
+  --nom-statistic-content-color: var(--nom-text-color);
   --nom-statistic-content-fontsize: 24px;
   --nom-statistic-content-affixes-margin: 4px;
   --nom-switch-bg-color: rgba(var(--nom-grey-6), 1);
   --nom-switch-btn-bg-color: rgba(var(--nom-white), 1);
-  --nom-switch-active-color: var(--nom-color-primary);
   --nom-switch-indicator-bg-color: rgba(var(--nom-white), 1);
-  --nom-switch-disable-active-color: var(--nom-color-primary-disabled);
   --nom-switch-disable-color: var(--nom-color-disabled-bg);
   --nom-switch-disable-text: var(--nom-color-disabled-text);
   --nom-switch-font-size-xs: 1rem * 0.75;
@@ -4499,13 +4497,7 @@ body {
   --nom-step-line-primary-color: var(--nom-color-text-1);
   --nom-step-line-subtitle-color: var(--nom-color-text-2);
   --nom-step-border-color: var(--nom-border-color);
-  --nom-step-finish-line-color: var(--nom-color-primary);
-  --nom-step-primary-color: var(--nom-color-primary);
-  --nom-step-error-color: var(--nom-color-danger);
   --nom-uploader-file-img-size: 48px;
-  --nom-uploader-btn-opt-color: rgb(var(--nom-grey-4));
-  --nom-uploader-file-title-color: var(--nom-color-primary);
-  --nom-uploader-btn-opt-hover-color: var(--nom-color-primary);
 }
 /* stylelint-disable custom-property-empty-line-before */
 body,
@@ -8391,7 +8383,7 @@ textarea .nom-textarea {
 }
 .upload-file-name {
   margin-right: 10px;
-  color: var(--nom-uploader-file-title-color);
+  color: var(--nom-color-primary);
 }
 .upload-file-name:hover {
   text-decoration: none;
@@ -8401,10 +8393,10 @@ textarea .nom-textarea {
   padding-left: 10px;
 }
 .upload-opt-btn > a {
-  color: var(--nom-uploader-btn-opt-color);
+  color: var(--nom-text-color);
 }
 .upload-opt-btn > a:hover {
-  color: var(--nom-uploader-btn-opt-hover-color);
+  color: var(--nom-color-primary);
   text-decoration: none;
 }
 .upload-opt-btn > :not(:last-child) {
@@ -8779,7 +8771,7 @@ textarea .nom-textarea {
   font-size: 1rem;
 }
 .nom-switch > .nom-field-content .nom-switch-control.nom-switch-active {
-  background-color: var(--nom-switch-active-color);
+  background-color: var(--nom-color-primary);
 }
 .nom-switch > .nom-field-content .nom-switch-control .nom-switch-text {
   display: flex;
@@ -8842,7 +8834,7 @@ textarea .nom-textarea {
   color: var(--nom-switch-disable-text);
 }
 .nom-switch.s-disabled > .nom-field-content .nom-switch-active {
-  background-color: var(--nom-switch-disable-active-color) !important;
+  background-color: var(--nom-color-primary-disabled) !important;
 }
 .nom-mask-info .nom-icon.p-type-eye {
   position: relative;
@@ -9324,38 +9316,38 @@ textarea .nom-textarea {
   font-size: var(--nom-step-item-fontsize);
 }
 .nom-steps .nom-step.nom-step-item-wait .nom-step-item-icon {
-  color: var(--nom-step-border-color);
+  color: var(--nom-color-text-2);
   background-color: var(--nom-step-item-icon-bg-color);
   border-color: var(--nom-step-border-color);
 }
 .nom-steps .nom-step.nom-step-item-process .nom-step-item-icon {
   color: var(--nom-step-item-icon-bg-color);
-  background-color: var(--nom-step-primary-color);
-  border-color: var(--nom-step-primary-color);
+  background-color: var(--nom-color-primary);
+  border-color: var(--nom-color-primary);
 }
 .nom-steps .nom-step.nom-step-item-process .nom-step-item-container > .nom-step-item-icon-customer {
-  color: var(--nom-step-primary-color);
+  color: var(--nom-color-primary);
   background-color: var(--nom-step-item-icon-bg-color);
 }
 .nom-steps .nom-step.nom-step-item-finish .nom-step-item-icon {
-  color: var(--nom-step-primary-color);
-  border-color: var(--nom-step-primary-color);
+  color: var(--nom-color-primary);
+  border-color: var(--nom-color-primary);
 }
 .nom-steps .nom-step.nom-step-item-error .nom-step-item-icon {
-  color: var(--nom-step-error-color);
+  color: var(--nom-color-danger);
   background-color: var(--nom-step-item-icon-bg-color);
-  border-color: var(--nom-step-error-color);
+  border-color: var(--nom-color-danger);
 }
 .nom-steps .nom-step.nom-step-item-error .nom-step-item-content .nom-step-item-title {
-  color: var(--nom-step-error-color);
+  color: var(--nom-color-danger);
   opacity: 0.85;
 }
 .nom-steps .nom-step.nom-step-item-error .nom-step-item-content .nom-step-item-subtitle {
-  color: var(--nom-step-error-color);
+  color: var(--nom-color-danger);
   opacity: 0.45;
 }
 .nom-steps .nom-step.nom-step-item-error .nom-step-item-content .nom-step-item-description {
-  color: var(--nom-step-error-color);
+  color: var(--nom-color-danger);
   opacity: 0.85;
 }
 .nom-steps .nom-step:not(:last-child) .nom-step-item-title::after {
@@ -9369,7 +9361,7 @@ textarea .nom-textarea {
   content: '';
 }
 .nom-steps .nom-step:not(:last-child).nom-step-item-finish .nom-step-item-title::after {
-  background-color: var(--nom-step-finish-line-color);
+  background-color: var(--nom-color-primary);
 }
 .nom-steps.nom-steps-vertical {
   flex-direction: column;
@@ -9403,7 +9395,7 @@ textarea .nom-textarea {
   content: '';
 }
 .nom-steps.nom-steps-vertical > .nom-step:not(:last-child).nom-step-item-finish > .nom-step-item-container > .nom-step-item-tail::after {
-  background-color: var(--nom-step-finish-line-color);
+  background-color: var(--nom-color-primary);
 }
 .Date-range-picker {
   text-decoration: inherit;

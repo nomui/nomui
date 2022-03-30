@@ -23768,7 +23768,12 @@ function _defineProperty2(obj, key, value) {
       this.ck.element.checked = value === true;
     }
   }
-  Switch.defaults = { unselectedText: "关", selectedText: "开", value: false };
+  Switch.defaults = {
+    unselectedText: "关",
+    selectedText: "开",
+    value: false,
+    size: "small",
+  };
   Component.register(Switch);
   class TabPanel extends Component {
     constructor(props, ...mixins) {
