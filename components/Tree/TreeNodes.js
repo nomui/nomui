@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isPlainObject } from '../util/index'
+import { isNullish, isPlainObject } from '../util/index'
 import Sortable from '../util/sortable.core.esm'
 import TreeNode from './TreeNode'
 
@@ -22,10 +22,15 @@ class TreeNodes extends Component {
 
   _config() {
     const { nodes, childrenData } = this.props
-    const { initExpandLevel } = this.tree.props
+    const { initExpandLevel, dataFields } = this.tree.props
     const expanded =
       initExpandLevel === -1 || initExpandLevel > (this.parentNode ? this.parentNode.level : -1)
     let nodesProps = nodes
+
+    const childFields = dataFields.children.indexOf('.')
+      ? dataFields.children.split('.')
+      : [dataFields.children]
+
     if (Array.isArray(childrenData)) {
       nodesProps = childrenData.map((item) => {
         return {
@@ -43,7 +48,11 @@ class TreeNodes extends Component {
             node.props.icon = data.icon
             node.props.tools = data.tools
             node.props.disabled = data.disabled
-            node.props.childrenData = data.children
+
+            node.props.childrenData = childFields.reduce((acc, field) => {
+              if (isNullish(acc)) return acc
+              return acc[field]
+            }, data || {})
           }
         },
       },
