@@ -83,6 +83,7 @@ Switch.defaults = {
   unselectedText: '关',
   selectedText: '开',
   value: false,
+  size: 'small',
 }
 
 Component.register(Switch)
