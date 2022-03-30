@@ -4,12 +4,7 @@ import BreadcrumbItem from './breadcrumbItem'
 
 class Breadcrumb extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      separator: '/',
-      itemDefaults: { component: BreadcrumbItem },
-    }
-
-    super(Component.extendProps(defaults, props), mixins)
+    super(Component.extendProps(Breadcrumb.defaults, props), mixins)
   }
 
   _config() {
@@ -28,6 +23,11 @@ class Breadcrumb extends Component {
       children,
     })
   }
+}
+
+Breadcrumb.defaults = {
+  separator: '/',
+  itemDefaults: { component: BreadcrumbItem },
 }
 
 Component.register(Breadcrumb)

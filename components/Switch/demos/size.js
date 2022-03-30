@@ -16,6 +16,7 @@ define([], function () {
           },
           {
             text: 'default',
+            size: 'medium',
           },
           {
             text: 'large',

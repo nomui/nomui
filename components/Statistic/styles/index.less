@@ -1,19 +1,18 @@
 .nom-statistic {
   .nom-statistic-title {
-    margin-bottom: 4px;
-    color: var(--nom-statistic-title-color);
+    margin-bottom:var(--nom-statistic-title-bottom);
+    opacity:var(--nom-statistic-title-opacity)
   }
 
   .nom-statistic-content {
     color: var(--nom-statistic-content-color);
-    font-size: 24px;
-
+    font-size: var(--nom-statistic-content-fontsize);
     .nom-statistic-content-prefix {
-      margin-right: 4px;
+      margin-right: var(--nom-statistic-content-affixes-margin);
     }
 
     .nom-statistic-content-suffix {
-      margin-left: 4px;
+      margin-left: var(--nom-statistic-content-affixes-margin);
     }
   }
 }

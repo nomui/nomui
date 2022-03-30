@@ -4,11 +4,7 @@ import { getDate, getFileSize } from './helper'
 
 class FileItem extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      disabled: false,
-      file: null,
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(FileItem.defaults, props), ...mixins)
   }
 
   _created() {
@@ -205,6 +201,11 @@ class FileItem extends Component {
       },
     ]
   }
+}
+
+FileItem.defaults = {
+  disabled: false,
+  file: null,
 }
 
 export default FileItem
