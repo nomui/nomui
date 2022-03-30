@@ -30,7 +30,7 @@
       cursor: pointer;
 
       &.nom-switch-active {
-        background-color: var(--nom-switch-active-color);
+        background-color: var(--nom-color-primary);
       }
 
       .nom-switch-text {
@@ -86,14 +86,14 @@
   }
   &.s-disabled {
     > .nom-field-content {
-      .nom-switch-control{
+      .nom-switch-control {
         background-color: var(--nom-switch-disable-color);
-        .nom-switch-text{
-          color:var(--nom-switch-disable-text);
+        .nom-switch-text {
+          color: var(--nom-switch-disable-text);
         }
       }
-      .nom-switch-active{
-        background-color: var(--nom-switch-disable-active-color)!important;
+      .nom-switch-active {
+        background-color: var(--nom-color-primary-disabled) !important;
       }
     }
   }
