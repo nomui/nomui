@@ -9,8 +9,16 @@ class Statistic extends Component {
 
   _config() {
     const statisticRef = this
-    const { title, value, precision, groupSeparator, decimalSeparator, formatter, prefix, suffix } =
-      this.props
+    const {
+      title,
+      value,
+      precision,
+      groupSeparator,
+      decimalSeparator,
+      formatter,
+      prefix,
+      suffix,
+    } = this.props
 
     const valueStr = value ? value.toString() : ''
     // 非数字则不格式化了

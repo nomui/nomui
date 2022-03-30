@@ -15,28 +15,7 @@ import Request from './request'
 
 class Uploader extends Field {
   constructor(props, ...mixins) {
-    const defaults = {
-      // 测试地址
-      action: '',
-      disabled: false,
-      beforeUpload: null,
-      button: null,
-      defaultFileList: [],
-      multiple: false,
-      name: 'file',
-      display: true,
-      data: {},
-      // request option
-      method: 'post',
-      headers: {},
-      withCredentials: false,
-      allowUpdate: false,
-      onRemove: null,
-      renderer: null,
-      extraAction: [],
-      customizeInfo: null,
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Uploader.defaults, props), ...mixins)
     this.reqs = {}
     this.onChange.bind(this)
     this._changeUploadMode.bind(this)
@@ -472,6 +451,28 @@ class Uploader extends Field {
       : null
     return isNotEmptyArray(_val) ? _val : null
   }
+}
+
+Uploader.defaults = {
+  // 测试地址
+  action: '',
+  disabled: false,
+  beforeUpload: null,
+  button: null,
+  defaultFileList: [],
+  multiple: false,
+  name: 'file',
+  display: true,
+  data: {},
+  // request option
+  method: 'post',
+  headers: {},
+  withCredentials: false,
+  allowUpdate: false,
+  onRemove: null,
+  renderer: null,
+  extraAction: [],
+  customizeInfo: null,
 }
 
 Component.register(Uploader)

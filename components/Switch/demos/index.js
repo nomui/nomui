@@ -1,4 +1,4 @@
-define(['./basic.js', './size.js', './with-text.js'], function () {
+define(['./basic.js', './disabled.js', './size.js', './with-text.js'], function () {
   return {
     title: 'Switch',
     subtitle: '开关',

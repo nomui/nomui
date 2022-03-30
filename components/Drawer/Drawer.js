@@ -5,32 +5,12 @@ import { isValidZIndex, settles } from './helper'
 
 class Drawer extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      closable: true,
-      closeIcon: 'close',
-      maskClosable: true,
-      showMasker: true,
-      settle: 'right',
-      okText: '确 定',
-      cancelText: '取 消',
-      onOk: (e) => {
-        e.sender.close()
-      },
-      onCancel: (e) => {
-        e.sender.close()
-      },
-    }
-
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Drawer.defaults, props), ...mixins)
   }
 
   _config() {
     const drawerRef = this
     const { zIndex, settle, maskClosable, showMasker, width, height } = this.props
-
-    // if (!placeGlobal && this.parent && this.parent.element) {
-    //   this.parent.element.style.position = 'relative'
-    // }
 
     const _settle = settles.includes(settle) ? settle : 'right'
 
@@ -248,6 +228,22 @@ class Drawer extends Component {
 
     return x ? { transform: 'translateX(100%)' } : { transform: 'translateY(100%)' }
   }
+}
+
+Drawer.defaults = {
+  closable: true,
+  closeIcon: 'close',
+  maskClosable: true,
+  showMasker: true,
+  settle: 'right',
+  okText: '确 定',
+  cancelText: '取 消',
+  onOk: (e) => {
+    e.sender.close()
+  },
+  onCancel: (e) => {
+    e.sender.close()
+  },
 }
 
 Component.register(Drawer)

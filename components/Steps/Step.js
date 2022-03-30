@@ -3,13 +3,7 @@ import { STATUS } from './helper'
 
 class Step extends Component {
   constructor(props, ...mixins) {
-    const defaults = {
-      disabled: false,
-      current: 0,
-      // wait process finish error
-      status: 'wait',
-    }
-    super(Component.extendProps(defaults, props), ...mixins)
+    super(Component.extendProps(Step.defaults, props), ...mixins)
   }
 
   _config() {
@@ -115,6 +109,13 @@ class Step extends Component {
       },
     }
   }
+}
+
+Step.defaults = {
+  disabled: false,
+  current: 0,
+  // wait process finish error
+  status: 'wait',
 }
 
 export default Step
