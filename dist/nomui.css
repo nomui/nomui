@@ -4494,7 +4494,7 @@ body {
   --nom-step-item-fontsize: 1rem;
   --nom-step-item-icon-bg-color: rgb(var(--nom-white));
   --nom-step-line-color: rgb(var(--nom-grey-4));
-  --nom-step-line-primary-color: var(--nom-color-text-1);
+  --nom-step-line-primary-color: var(--nom-color-text-0);
   --nom-step-line-subtitle-color: var(--nom-color-text-2);
   --nom-step-border-color: var(--nom-border-color);
   --nom-uploader-file-img-size: 48px;
@@ -9315,7 +9315,7 @@ textarea .nom-textarea {
 .nom-steps .nom-step > .nom-step-item-container .nom-step-item-content .nom-step-item-subtitle {
   display: inline;
   margin-left: 0.5rem;
-  color: var(--nom-step-line-secondary-color);
+  color: var(--nom-step-line-subtitle-color);
   font-weight: 400;
   font-size: var(--nom-step-item-fontsize);
 }
@@ -9383,6 +9383,7 @@ textarea .nom-textarea {
   display: none;
 }
 .nom-steps.nom-steps-vertical > .nom-step > .nom-step-item-container > .nom-step-item-content > .nom-step-item-description {
+  min-height: 3rem;
   padding-bottom: 1rem;
 }
 .nom-steps.nom-steps-vertical > .nom-step:not(:last-child) > .nom-step-item-container > .nom-step-item-tail {
