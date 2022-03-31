@@ -15,7 +15,7 @@
       line-height: @line-height-computed;
       background: var(--nom-bg-color);
       border: 1px solid var(--nom-border-color);
-      border-radius: 2px;
+      border-radius: var(--nom-border-radius);
       cursor: pointer;
 
       .nom-cascader-content {
@@ -38,6 +38,9 @@
   }
 }
 
+.nom-cascader-popup {
+  overflow: hidden;
+}
 .nom-cascader-popup > .nom-layout {
   max-height: 300px;
 
@@ -52,7 +55,7 @@
       min-width: 111px;
       // height: 250px;
       margin: 0;
-      padding: 4px 0;
+      padding: 0;
       overflow: auto;
       overflow-x: hidden;
       overflow-y: hidden;
@@ -60,6 +63,9 @@
       vertical-align: top;
       list-style: none;
       border-right: 1px solid var(--nom-border-color);
+      &:last-child {
+        border-right: none;
+      }
       &:hover {
         overflow-y: auto;
       }
