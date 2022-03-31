@@ -145,31 +145,31 @@ Icon.add(
 
 Icon.add(
   'sort',
-  `<svg t="1648457114574" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3969" width="1em" height="1em"><path d="M64 448l448-448 448 448H64z m896 128l-448 448-448-448h896z" fill="currentColor" p-id="3970"></path></svg>`,
+  `<svg t="1648697046294" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2976" width="1em" height="1em"><path d="M788.8384 580.2496c31.6416 0 39.5776 32.768 18.944 53.9648l-267.776 275.968a40.2432 40.2432 0 0 1-56.1152 0l-267.7248-275.968c-20.5824-21.1968-12.5952-53.9648 18.944-53.9648z m-248.832-466.432l267.776 275.968c20.6336 21.1968 12.6976 53.9648-18.944 53.9648H235.1104c-31.5392 0-39.5264-32.768-18.944-53.9648l267.7248-275.968a40.2432 40.2432 0 0 1 56.1664 0z" fill="currentColor" p-id="2977"></path></svg>`,
   cat,
 )
 
 Icon.add(
   'sort-down',
-  `<svg t="1648457340941" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4111" width="1em" height="1em"><path d="M64 320l448 448 448-448z" fill="currentColor" p-id="4112"></path></svg>`,
+  `<svg t="1648697089872" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3122" width="1em" height="1em"><path d="M906.4448 336.896l-356.9664 414.0032a49.5104 49.5104 0 0 1-74.9056 0L117.5552 336.896C90.112 305.152 100.7104 256 142.8992 256h738.304c42.0352 0 52.6848 49.152 25.2416 80.896z" fill="currentColor" p-id="3123"></path></svg>`,
   cat,
 )
 
 Icon.add(
   'sort-up',
-  `<svg t="1648457379159" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4253" width="1em" height="1em"><path d="M960 704L512 256l-448 448z" fill="currentColor" p-id="4254"></path></svg>`,
+  `<svg t="1648697108373" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3418" width="1em" height="1em"><path d="M906.4448 687.104l-356.9664-414.0032a49.5104 49.5104 0 0 0-74.9056 0L117.5552 687.104c-27.4432 31.744-16.8448 80.896 25.344 80.896h738.304c42.0352 0 52.6848-49.152 25.2416-80.896z" fill="currentColor" p-id="3419"></path></svg>`,
   cat,
 )
 
 Icon.add(
   'sort-right',
-  `<svg t="1648457408829" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4395" width="1em" height="1em"><path d="M256 64l448 448-448 448z" fill="currentColor" p-id="4396"></path></svg>`,
+  `<svg t="1648697122767" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3566" width="1em" height="1em"><path d="M336.896 906.4448l414.0032-356.9664a49.5104 49.5104 0 0 0 0-74.9056L336.896 117.5552C305.152 90.112 256 100.7104 256 142.8992v738.304c0 42.0352 49.152 52.6848 80.896 25.2416z" fill="currentColor" p-id="3567"></path></svg>`,
   cat,
 )
 
 Icon.add(
   'sort-left',
-  `<svg t="1648457433337" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4537" width="1em" height="1em"><path d="M704 64L256 512l448 448z" fill="currentColor" p-id="4538"></path></svg>`,
+  `<svg t="1648697098071" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3270" width="1em" height="1em"><path d="M687.104 906.4448l-414.0032-356.9664a49.5104 49.5104 0 0 1 0-74.9056l414.0032-357.0176c31.744-27.4432 80.896-16.8448 80.896 25.344v738.304c0 42.0352-49.152 52.6848-80.896 25.2416z" fill="currentColor" p-id="3271"></path></svg>`,
   cat,
 )
 
