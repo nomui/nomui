@@ -5,13 +5,25 @@ let cat = 'Direction'
 
 Icon.add(
   'prev',
-  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" focusable="false" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.2782 4.23933C16.864 4.82511 16.864 5.77486 16.2782 6.36065L10.6213 12.0175L16.2782 17.6744C16.864 18.2601 16.864 19.2099 16.2782 19.7957C15.6924 20.3815 14.7426 20.3815 14.1569 19.7957L7.43934 13.0782C6.85355 12.4924 6.85355 11.5426 7.43934 10.9568L14.1569 4.23933C14.7426 3.65354 15.6924 3.65354 16.2782 4.23933Z" fill="currentColor"></path></svg>`,
+  `<svg t="1648458859637" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3969" width="1em" height="1em"><path d="M378.24 512l418.88 418.88L704 1024 192 512l512-512 93.12 93.12z" fill="currentColor" p-id="3970"></path></svg>`,
   cat,
 )
 
 Icon.add(
   'next',
-  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" focusable="false" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.43934 19.7957C6.85355 19.2099 6.85355 18.2601 7.43934 17.6744L13.0962 12.0175L7.43934 6.36065C6.85355 5.77486 6.85355 4.82511 7.43934 4.23933C8.02513 3.65354 8.97487 3.65354 9.56066 4.23933L16.2782 10.9568C16.864 11.5426 16.864 12.4924 16.2782 13.0782L9.56066 19.7957C8.97487 20.3815 8.02513 20.3815 7.43934 19.7957Z" fill="currentColor"></path></svg>`,
+  `<svg t="1648458872022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4111" width="1em" height="1em"><path d="M610.88 512L192 93.12 285.12 0l512 512-512 512L192 930.88z" fill="currentColor" p-id="4112"></path></svg>`,
+  cat,
+)
+
+Icon.add(
+  'angle-up',
+  `<svg t="1648459016487" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4253" width="1em" height="1em"><path d="M512 378.24l-418.88 418.88L0 704l512-512 512 512-93.12 93.12z" fill="currentColor" p-id="4254"></path></svg>`,
+  cat,
+)
+
+Icon.add(
+  'angle-down',
+  `<svg t="1648459032734" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4395" width="1em" height="1em"><path d="M512 610.88L930.88 192 1024 285.12l-512 512-512-512L93.12 192z" fill="currentColor" p-id="4396"></path></svg>`,
   cat,
 )
 
@@ -133,25 +145,31 @@ Icon.add(
 
 Icon.add(
   'sort',
-  `<svg t="1616635066835" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9750" width="1em" height="1em"><path d="M804.57143 621.714286q0 14.848-10.825143 25.746286l-256 256q-10.825143 10.825143-25.746286 10.825143t-25.746286-10.825143l-256-256q-10.825143-10.825143-10.825143-25.746286t10.825143-25.746286 25.746286-10.825143l512 0q14.848 0 25.746286 10.825143t10.825143 25.746286zM804.57143 402.285714q0 14.848-10.825143 25.746286t-25.746286 10.825143l-512 0q-14.848 0-25.746286-10.825143t-10.825143-25.746286 10.825143-25.746286l256-256q10.825143-10.825143 25.746286-10.825143t25.746286 10.825143l256 256q10.825143 10.825143 10.825143 25.746286z"  fill="currentColor" p-id="9751"></path></svg>`,
+  `<svg t="1648457114574" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3969" width="1em" height="1em"><path d="M64 448l448-448 448 448H64z m896 128l-448 448-448-448h896z" fill="currentColor" p-id="3970"></path></svg>`,
   cat,
 )
 
 Icon.add(
   'sort-down',
-  `<svg t="1616635159124" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10028" width="1em" height="1em"><path d="M804.571184 621.714286q0 14.848-10.825143 25.746286l-256 256q-10.825143 10.825143-25.746286 10.825143t-25.746286-10.825143l-256-256q-10.825143-10.825143-10.825143-25.746286t10.825143-25.746286 25.746286-10.825143l512 0q14.848 0 25.746286 10.825143t10.825143 25.746286z" fill="currentColor" p-id="10029"></path></svg>`,
+  `<svg t="1648457340941" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4111" width="1em" height="1em"><path d="M64 320l448 448 448-448z" fill="currentColor" p-id="4112"></path></svg>`,
   cat,
 )
 
 Icon.add(
   'sort-up',
-  `<svg t="1616635124506" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9889" width="1em" height="1em"><path d="M804.571671 402.285714q0 14.848-10.825143 25.746286t-25.746286 10.825143l-512 0q-14.848 0-25.746286-10.825143t-10.825143-25.746286 10.825143-25.746286l256-256q10.825143-10.825143 25.746286-10.825143t25.746286 10.825143l256 256q10.825143 10.825143 10.825143 25.746286z" fill="currentColor" p-id="9890"></path></svg>`,
+  `<svg t="1648457379159" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4253" width="1em" height="1em"><path d="M960 704L512 256l-448 448z" fill="currentColor" p-id="4254"></path></svg>`,
   cat,
 )
 
 Icon.add(
   'sort-right',
-  `<svg t="1618369427378" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4408" width="1em" height="1em" fill="currentColor"><path d="M718.848 512L307.2 926.72V96.768l411.648 415.232z" p-id="4409"></path></svg>`,
+  `<svg t="1648457408829" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4395" width="1em" height="1em"><path d="M256 64l448 448-448 448z" fill="currentColor" p-id="4396"></path></svg>`,
+  cat,
+)
+
+Icon.add(
+  'sort-left',
+  `<svg t="1648457433337" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4537" width="1em" height="1em"><path d="M704 64L256 512l448 448z" fill="currentColor" p-id="4538"></path></svg>`,
   cat,
 )
 
