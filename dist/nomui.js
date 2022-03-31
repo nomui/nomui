@@ -16651,17 +16651,21 @@ function _defineProperty2(obj, key, value) {
           "m-with-setting": !!this.props.columnsCustomizable,
         },
         children: [
-          this.props.columnsCustomizable && {
-            component: "Button",
-            ref: (c) => {
-              this.settingBtn = c;
-            },
-            icon: "setting",
-            size: "small", // type: 'text',
+          {
             classes: { "nom-grid-setting": true },
-            tooltip: "列设置",
-            onClick: () => {
-              this.showSetting();
+            children: {
+              component: "Button",
+              ref: (c) => {
+                this.settingBtn = c;
+              },
+              icon: "setting",
+              size: "small",
+              renderIf: this.props.columnsCustomizable, // type: 'text',
+              classes: { "nom-grid-setting-btn": true },
+              tooltip: "列设置",
+              onClick: () => {
+                this.showSetting();
+              },
             },
           },
           { component: GridHeader, line: line },

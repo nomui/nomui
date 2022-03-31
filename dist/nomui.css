@@ -6730,13 +6730,13 @@ table.nom-table.p-bordered {
 }
 .nom-grid .nom-grid-setting {
   position: absolute;
-  top: 7px;
-  right: 5px;
+  top: 0;
+  right: 0;
   z-index: 11;
   background: var(--nom-grid-header-background-color);
 }
-.nom-grid .nom-grid-setting:hover:hover {
-  background-color: var(--nom-color-hover);
+.nom-grid .nom-grid-setting .nom-grid-setting-btn {
+  margin: 8px 2px 0 0;
 }
 .nom-grid > .nom-grid-header {
   overflow: hidden;
