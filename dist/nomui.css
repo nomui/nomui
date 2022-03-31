@@ -9067,7 +9067,7 @@ textarea .nom-textarea {
   line-height: 1.42857143rem;
   background: var(--nom-bg-color);
   border: 1px solid var(--nom-border-color);
-  border-radius: 2px;
+  border-radius: var(--nom-border-radius);
   cursor: pointer;
 }
 .nom-cascader > .nom-field-content .nom-control:hover {
@@ -9087,6 +9087,9 @@ textarea .nom-textarea {
 .nom-cascader > .nom-field-content .nom-control .nom-cascader-placeholder {
   color: var(--nom-input-placeholder-color);
 }
+.nom-cascader-popup {
+  overflow: hidden;
+}
 .nom-cascader-popup > .nom-layout {
   max-height: 300px;
 }
@@ -9100,7 +9103,7 @@ textarea .nom-textarea {
   display: inline-block;
   min-width: 111px;
   margin: 0;
-  padding: 4px 0;
+  padding: 0;
   overflow: auto;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -9108,6 +9111,9 @@ textarea .nom-textarea {
   vertical-align: top;
   list-style: none;
   border-right: 1px solid var(--nom-border-color);
+}
+.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu:last-child {
+  border-right: none;
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu:hover {
   overflow-y: auto;
