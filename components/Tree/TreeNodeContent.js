@@ -34,10 +34,10 @@ class TreeNodeContent extends Component {
           classes: { 'nom-tree-node-expandable-indicator': true, 'is-leaf': this.node.isLeaf },
           expandable: {
             expandedProps: {
-              type: 'down',
+              type: 'sort-down',
             },
             collapsedProps: {
-              type: 'right',
+              type: 'sort-right',
             },
           },
         },

@@ -8213,8 +8213,6 @@ textarea .nom-textarea {
   word-break: break-all;
 }
 .nom-field > .nom-field-action.nom-list {
-  display: flex;
-  align-items: end;
   padding: 0.5rem 0.5rem;
 }
 .nom-field.p-inline:not(.nom-group) {
@@ -8356,6 +8354,10 @@ textarea .nom-textarea {
 }
 .nom-group-grid .nom-control-action {
   margin-top: 6px;
+}
+.nom-group-list .nom-field-action.nom-list {
+  display: flex;
+  align-items: end;
 }
 .nom-file-list {
   margin-top: 2em;
