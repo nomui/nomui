@@ -146,7 +146,11 @@ class GridHeader extends Component {
 
     if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
       this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
-      this.grid.settingBtn.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
+      if (this.grid.settingBtn) {
+        this.grid.settingBtn.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
+      }
+    } else if (this.grid.settingBtn) {
+      this.grid.settingBtn.element.style.transform = `translateY(0px)`
     }
 
     if (
