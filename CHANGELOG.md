@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.55](https://github.com/nomui/nomui/compare/v1.0.0-alpha.54...v1.0.0-alpha.55) (2022-04-01)
+
+
+### Features
+
+* **Icon:** 添加 download图标 ([c903c3a](https://github.com/nomui/nomui/commit/c903c3ac1b89af7142a506bd9b6fde560989d1df))
+
+
+### Bug Fixes
+
+* 合并主分支版本，解决冲突 ([9351e1b](https://github.com/nomui/nomui/commit/9351e1b5418fe42425fcb9135b8df4725d9544ae))
+* 解决冲突 ([e47d2ff](https://github.com/nomui/nomui/commit/e47d2ff6efc9ae805392528fa3a3bbcbd23e8cff))
+* **Avatar:** 头像内容是图片时圆角可能不正常 ([2707e83](https://github.com/nomui/nomui/commit/2707e83feb6d8b462217852577bd477cbe49761e))
+* **Grid:** 横向滚动时表头边缘区域显示效果不佳 ([22c296a](https://github.com/nomui/nomui/commit/22c296adad86b88c544bde62cb5372677300173b))
+* **Grid:** 吸附表头下列设置按钮位置错误 ([e6d47e2](https://github.com/nomui/nomui/commit/e6d47e20044493ffb60d2a3f99c5079ac64f85ad))
+* **Grid:** firefox浏览器下，Array.sort的表现不同，导致的列顺序出错 ([3fd4dfe](https://github.com/nomui/nomui/commit/3fd4dfe04c6be2a8f3196ef3cce355ea35b07fd6))
+* **GroupList:** 修复GroupList造成的全局样式影响 ([04699e0](https://github.com/nomui/nomui/commit/04699e0d307aebe80f0ea2942aef4fe15bbc290e))
+* **Steps:** 修复Steps垂直状态无连接线的bug以及优化案例与样式 ([8cae2ab](https://github.com/nomui/nomui/commit/8cae2ab08779799228117a6130b01a3e4df2481e))
+* **Textbox:** 第一次点清空按钮未触发onValueChange，因为null === null ([3d25d2c](https://github.com/nomui/nomui/commit/3d25d2ca813e344c250c286f8d683b573654437c))
+* **Textbox:** readonly为fale时，导致textbox样式变化 ([3057f0a](https://github.com/nomui/nomui/commit/3057f0a448aad4fae2bfdb36a8a5c4700ab3d133))
+
 ## [1.0.0-alpha.54](https://github.com/nomui/nomui/compare/v1.0.0-alpha.53...v1.0.0-alpha.54) (2022-03-25)
 
 
