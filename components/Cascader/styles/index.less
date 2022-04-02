@@ -58,17 +58,16 @@
       padding: 0;
       overflow: auto;
       overflow-x: hidden;
-      overflow-y: hidden;
+      overflow-y: auto;
       white-space: nowrap;
       vertical-align: top;
       list-style: none;
       border-right: 1px solid var(--nom-border-color);
+
       &:last-child {
         border-right: none;
       }
-      &:hover {
-        overflow-y: auto;
-      }
+
       > .nom-cascader-menu-item {
         &:hover {
           cursor: pointer;
