@@ -81,8 +81,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
     return browserInfo;
-  }
-  console.log(getBrowser()); // 支持 position: sticky 属性的最小版本
+  } // 支持 position: sticky 属性的最小版本
   // 参考 https://caniuse.com/?search=sticky
   const SUPPORT_STICKY_MIN_BROWSER_VERSION_MAP = {
     Chrome: 56,
@@ -15276,7 +15275,10 @@ function _defineProperty2(obj, key, value) {
         this.table.parent.componentType === "GridHeader" &&
         this.table.parent.parent.props.frozenHeader
       ) {
-        children.push({ component: ColGroupCol, column: { width: 17 } });
+        children.push({
+          component: ColGroupCol,
+          column: { width: this.table.grid.props.scrollbarWidth },
+        });
       }
       this.setProps({ children: children });
     }
@@ -15812,7 +15814,7 @@ function _defineProperty2(obj, key, value) {
       } else if (fixed === "right") {
         this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth;
         if (this.table.hasGrid && this.table.grid.props.frozenHeader) {
-          this._stickyPos -= 17;
+          this._stickyPos -= this.table.grid.props.scrollbarWidth;
         }
       }
       this._setStyle({ [fixed]: `${this._stickyPos}px` });
@@ -16349,9 +16351,9 @@ function _defineProperty2(obj, key, value) {
       this.grid.header = this;
     }
     _config() {
-      const { frozenHeader, summary } = this.grid.props;
+      const { frozenHeader, summary, scrollbarWidth } = this.grid.props;
       const minWidth = frozenHeader
-        ? this.grid.minWidth + 17
+        ? this.grid.minWidth + scrollbarWidth
         : this.grid.minWidth;
       this._summaryHeight = summary ? 36 : 0;
       this.setProps({
@@ -16438,6 +16440,7 @@ function _defineProperty2(obj, key, value) {
     }
     _setScrollerVisible(data) {
       const { pRect, gRect } = data;
+      const { scrollbarWidth } = this.grid.props;
       if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
         this.element.style.transform = `translateY(${
           pRect.top - gRect.top - 2
@@ -16452,7 +16455,7 @@ function _defineProperty2(obj, key, value) {
       }
       if (
         gRect.top < pRect.height + pRect.top &&
-        gRect.top + gRect.height - 17 - this._summaryHeight >
+        gRect.top + gRect.height - scrollbarWidth - this._summaryHeight >
           pRect.top + pRect.height
       ) {
         this.scrollbar.show();
@@ -17687,6 +17690,7 @@ function _defineProperty2(obj, key, value) {
     sticky: false,
     line: "row",
     bordered: false,
+    scrollbarWidth: 8,
   };
   Grid._loopSetValue = function (key, arry) {
     if (key === undefined || key.cascade === undefined) return false;

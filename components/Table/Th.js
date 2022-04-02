@@ -275,7 +275,7 @@ class Th extends Component {
     } else if (fixed === 'right') {
       this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth
       if (this.table.hasGrid && this.table.grid.props.frozenHeader) {
-        this._stickyPos -= 17
+        this._stickyPos -= this.table.grid.props.scrollbarWidth
       }
     }
     this._setStyle({ [fixed]: `${this._stickyPos}px` })

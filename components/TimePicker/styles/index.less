@@ -2,15 +2,12 @@
   > .nom-col {
     width: 60px;
     max-height: 220px;
-    overflow-y: hidden;
+    overflow-y: auto;
     text-align: left;
     scroll-behavior: smooth;
     border-left: 1px solid var(--nom-border-color);
     &:first-child {
       border-left: none;
-    }
-    &:hover {
-      overflow-y: auto;
     }
     .nom-list-item {
       padding-left: 0.25rem;

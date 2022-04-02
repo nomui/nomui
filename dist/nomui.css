@@ -4006,6 +4006,33 @@ body {
   text-align: left;
   background-color: var(--nom-color-bg-0);
 }
+html,
+body,
+* {
+  scrollbar-width: thin;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: var(--nom-scrollbar-width);
+  height: var(--nom-scrollbar-width);
+}
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  border-radius: var(--nom-scrollbar-thumb-border-radius);
+  background: var(--nom-scrollbar-thumb-bg);
+}
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background-color: var(--nom-scrollbar-track-bg);
+}
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-corner {
+  background-color: var(--nom-scrollbar-corner-bg);
+}
 a {
   color: var(--nom-color-primary);
   text-decoration: none;
@@ -4350,6 +4377,11 @@ body .nom-always-dark {
   font-weight: 800;
 }
 body {
+  --nom-scrollbar-width: 8px;
+  --nom-scrollbar-thumb-bg: var(--nom-color-fill-2);
+  --nom-scrollbar-thumb-border-radius: 6px;
+  --nom-scrollbar-track-bg: transparent;
+  --nom-scrollbar-corner-bg: transparent;
   --nom-font-family-en: tahoma, arial, 'Helvetica Neue', helvetica, sans-serif;
   --nom-text-color: var(--nom-color-text-0);
   --nom-border-radius: 4px;
@@ -6739,7 +6771,20 @@ table.nom-table.p-bordered {
   margin: 8px 2px 0 0;
 }
 .nom-grid > .nom-grid-header {
+  position: relative;
   overflow: hidden;
+}
+.nom-grid > .nom-grid-header .nom-table {
+  position: relative;
+  z-index: inherit;
+}
+.nom-grid > .nom-grid-header .nom-table::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: inherit;
   border-bottom: var(--nom-grid-header-border);
 }
 .nom-grid > .nom-grid-header .nom-th.nom-table-parent-th {
@@ -6802,6 +6847,10 @@ table.nom-table.p-bordered {
 }
 .nom-grid.m-frozen-header > .nom-grid-header > .nom-table {
   background-color: var(--nom-grid-header-background-color);
+}
+.nom-grid.m-frozen-header > .nom-grid-header > .nom-table::after {
+  right: var(--nom-scrollbar-width);
+  width: calc(100% - var(--nom-scrollbar-width));
 }
 .nom-grid.m-frozen-header > .nom-grid-header > .nom-grid-header-content {
   overflow: hidden;
@@ -7965,16 +8014,13 @@ textarea .nom-textarea {
 .timepicker-group > .nom-col {
   width: 60px;
   max-height: 220px;
-  overflow-y: hidden;
+  overflow-y: auto;
   text-align: left;
   scroll-behavior: smooth;
   border-left: 1px solid var(--nom-border-color);
 }
 .timepicker-group > .nom-col:first-child {
   border-left: none;
-}
-.timepicker-group > .nom-col:hover {
-  overflow-y: auto;
 }
 .timepicker-group > .nom-col .nom-list-item {
   padding-left: 0.25rem;
@@ -9108,7 +9154,7 @@ textarea .nom-textarea {
   padding: 0;
   overflow: auto;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: auto;
   white-space: nowrap;
   vertical-align: top;
   list-style: none;
@@ -9116,9 +9162,6 @@ textarea .nom-textarea {
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu:last-child {
   border-right: none;
-}
-.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu:hover {
-  overflow-y: auto;
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item {
   display: flex;
@@ -9433,12 +9476,10 @@ textarea .nom-textarea {
 .nom-scrollbar {
   position: fixed;
   z-index: 2050;
-  height: 17px;
-  background: rgba(0, 0, 0, 0);
+  height: var(--nom-scrollbar-width);
 }
 .nom-scrollbar .nom-scrollbar-inner {
-  height: 17px;
-  background: rgba(0, 0, 0, 0);
+  height: var(--nom-scrollbar-width);
 }
 .nom-statistic .nom-statistic-title {
   margin-bottom: var(--nom-statistic-title-bottom);

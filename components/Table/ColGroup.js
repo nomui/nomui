@@ -44,7 +44,7 @@ class ColGroup extends Component {
       children.push({
         component: ColGroupCol,
         column: {
-          width: 17,
+          width: this.table.grid.props.scrollbarWidth,
         },
       })
     }
