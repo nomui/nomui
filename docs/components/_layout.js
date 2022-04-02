@@ -391,14 +391,14 @@ define([], function () {
                     {
                       text: 'Field',
                       subtext: '字段',
-                      id: 'field',
-                      url: '#!components!index?type=field',
+                      id: 'Field',
+                      url: '#!components!index?type=Field',
                     },
                     {
                       text: 'Form',
                       subtext: '表单',
-                      id: 'form',
-                      url: '#!components!index?type=form',
+                      id: 'Form',
+                      url: '#!components!index?type=Form',
                     },
                     {
                       text: 'Group',
