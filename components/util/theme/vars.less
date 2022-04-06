@@ -1,4 +1,11 @@
 body {
+  // scrollbar
+  --nom-scrollbar-width: 8px;
+  --nom-scrollbar-thumb-bg: var(--nom-color-fill-2);
+  --nom-scrollbar-thumb-border-radius: 6px;
+  --nom-scrollbar-track-bg: transparent;
+  --nom-scrollbar-corner-bg: transparent;
+
   // Font
   --nom-font-family-en: tahoma, arial, 'Helvetica Neue', helvetica, sans-serif;
   --nom-text-color: var(--nom-color-text-0);
@@ -124,6 +131,36 @@ body {
   --nom-pager-item-bg-color-selected: rgba(var(--nom-color-primary-base), 0.075);
   --nom-pager-item-border-color-selected: transparent;
 
+  // Breadcrumb
+  --nom-breadcrumb-padding: 10px 14px;
+  --nom-breadcrumb-font-color: rgba(var(--nom-black), 0.45);
+  --nom-breadcrumb-link-color: rgba(var(--nom-black), 0.85);
+  --nom-breadcrumb-link-hover-color: var(--nom-color-primary-hover);
+
+  // Drawer
+  --nom-drawer-default-size: 256px;
+  --nom-drawer-header-padding: 16px 24px;
+  --nom-drawer-content-padding: 24px;
+  --nom-drawer-footer-padding: 10px 16px;
+  --nom-drawer-body-color: var(--nom-bg-color);
+  --nom-drawer-mask-bg-color: rgba(var(--nom-black), 0.45);
+  --nom-drawer-line-color: var(--nom-border-color);
+
+  // Statistic
+  --nom-statistic-title-bottom: 4px;
+  --nom-statistic-title-opacity: 0.45;
+  --nom-statistic-content-color: var(--nom-text-color);
+  --nom-statistic-content-fontsize: 24px;
+  --nom-statistic-content-affixes-margin: 4px;
+
+  // Switch
+  --nom-switch-bg-color: rgba(var(--nom-grey-6), 1);
+  --nom-switch-btn-bg-color: rgba(var(--nom-white), 1);
+  --nom-switch-indicator-bg-color: rgba(var(--nom-white), 1);
+  --nom-switch-disable-color: var(--nom-color-disabled-bg);
+  --nom-switch-disable-text: var(--nom-color-disabled-text);
+  --nom-switch-font-size-xs: @font-size-base * 0.75;
+
   // Process
   --nom-process-steps-item-bg: var(--nom-color-fill-0);
   --nom-process-remaining-color: var(--nom-color-fill-0); // 填充色
@@ -176,4 +213,17 @@ body {
 
   // Collapse
   --nom-collapse-icon-color: var(--nom-text-color);
+
+  // Steps
+  --nom-step-item-icon-size: 2rem;
+  --nom-step-item-title-fontsize: 16px;
+  --nom-step-item-fontsize: 1rem;
+  --nom-step-item-icon-bg-color: rgb(var(--nom-white));
+  --nom-step-line-color: rgb(var(--nom-grey-4));
+  --nom-step-line-primary-color: var(--nom-color-text-0);
+  --nom-step-line-subtitle-color: var(--nom-color-text-2);
+  --nom-step-border-color: var(--nom-border-color);
+
+  // Uploader
+  --nom-uploader-file-img-size: 48px;
 }

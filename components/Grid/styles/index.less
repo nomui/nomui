@@ -11,18 +11,32 @@
   }
   .nom-grid-setting {
     position: absolute;
-    top: 7px;
-    right: 5px;
+    top: 0;
+    right: 0;
     z-index: 11;
     background: var(--nom-grid-header-background-color);
-    &:hover {
-      .nom-preset-hover;
+    .nom-grid-setting-btn {
+      margin: 8px 2px 0 0;
     }
   }
 
   > .nom-grid-header {
+    position: relative;
     overflow: hidden;
-    border-bottom: var(--nom-grid-header-border);
+    .nom-table {
+      position: relative;
+      z-index: inherit;
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        // width: 100%;
+        z-index: inherit;
+        border-bottom: var(--nom-grid-header-border);
+      }
+    }
     .nom-th {
       &.nom-table-parent-th {
         text-align: center;
@@ -95,6 +109,10 @@
       background-color: var(--nom-grid-header-background-color);
       > .nom-table {
         background-color: var(--nom-grid-header-background-color);
+        &::after {
+          right: var(--nom-scrollbar-width);
+          width: calc(100% - var(--nom-scrollbar-width));
+        }
       }
 
       > .nom-grid-header-content {

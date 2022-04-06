@@ -19,8 +19,8 @@ class GridHeader extends Component {
   }
 
   _config() {
-    const { frozenHeader, summary } = this.grid.props
-    const minWidth = frozenHeader ? this.grid.minWidth + 17 : this.grid.minWidth
+    const { frozenHeader, summary, scrollbarWidth } = this.grid.props
+    const minWidth = frozenHeader ? this.grid.minWidth + scrollbarWidth : this.grid.minWidth
 
     this._summaryHeight = summary ? 36 : 0
 
@@ -143,15 +143,20 @@ class GridHeader extends Component {
 
   _setScrollerVisible(data) {
     const { pRect, gRect } = data
+    const { scrollbarWidth } = this.grid.props
 
     if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
       this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
-      this.grid.settingBtn.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
+      if (this.grid.settingBtn) {
+        this.grid.settingBtn.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
+      }
+    } else if (this.grid.settingBtn) {
+      this.grid.settingBtn.element.style.transform = `translateY(0px)`
     }
 
     if (
       gRect.top < pRect.height + pRect.top &&
-      gRect.top + gRect.height - 17 - this._summaryHeight > pRect.top + pRect.height
+      gRect.top + gRect.height - scrollbarWidth - this._summaryHeight > pRect.top + pRect.height
     ) {
       this.scrollbar.show()
     } else {

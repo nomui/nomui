@@ -6,7 +6,7 @@ import ExpandedTr from '../Table/ExpandedTr'
 import {
   STORAGE_KEY_GRID_COLS_FIXED,
   STORAGE_KEY_GRID_COLS_WIDTH,
-  STORAGE_KEY_GRID_COLUMNS,
+  STORAGE_KEY_GRID_COLUMNS
 } from '../util/constant'
 import {
   defaultSortableOndrop,
@@ -14,7 +14,7 @@ import {
   isFunction,
   isNullish,
   isPlainObject,
-  isString,
+  isString
 } from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
@@ -116,20 +116,26 @@ class Grid extends Component {
         'm-with-setting': !!this.props.columnsCustomizable,
       },
       children: [
-        this.props.columnsCustomizable && {
-          component: 'Button',
-          ref: (c) => {
-            this.settingBtn = c
-          },
-          icon: 'setting',
-          size: 'small',
-          // type: 'text',
+        {
           classes: {
             'nom-grid-setting': true,
           },
-          tooltip: '列设置',
-          onClick: () => {
-            this.showSetting()
+          children: {
+            component: 'Button',
+            ref: (c) => {
+              this.settingBtn = c
+            },
+            icon: 'setting',
+            size: 'small',
+            renderIf: this.props.columnsCustomizable,
+            // type: 'text',
+            classes: {
+              'nom-grid-setting-btn': true,
+            },
+            tooltip: '列设置',
+            onClick: () => {
+              this.showSetting()
+            },
           },
         },
         { component: GridHeader, line: line },
@@ -1270,6 +1276,7 @@ Grid.defaults = {
   sticky: false,
   line: 'row',
   bordered: false,
+  scrollbarWidth: 8
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false

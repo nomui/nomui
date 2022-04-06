@@ -1,6 +1,6 @@
 .nom-breadcrumb {
-  padding:10px 15px;
-  color: rgba(0, 0, 0, 0.45);
+  padding:var(--nom-breadcrumb-padding);
+  color: var(--nom-breadcrumb-font-color);
   > .nom-breadcrumb-item {
     &.p-with-icon {
       display: inline-flex;
@@ -9,7 +9,6 @@
     }
 
     > .nom-breadcrumb-link + .nom-icon {
-      // padding-left: 0.25rem;
       padding-left: @padding-x-xs;
     }
 
@@ -18,26 +17,27 @@
     }
 
     > .nom-breadcrumb-separator {
-      // padding: 0 0.5rem;
       padding: 0 @padding-x-sm;
     }
 
     > .nom-breadcrumb-link {
       a {
-        color: #00000073;
         text-decoration: none;
         outline: none;
         &:hover {
-          color: #40a9ff;
+          color: var(--nom-breadcrumb-link-hover-color);
         }
       }
     }
 
     &:last-child {
-      color: rgba(0, 0, 0, 0.85);
+      color: var(--nom-breadcrumb-link-color);
       > .nom-breadcrumb-link {
         > a {
-          color: rgba(0, 0, 0, 0.85);
+          color: var(--nom-breadcrumb-link-color);
+          &:hover{
+            color: var(--nom-breadcrumb-link-hover-color);
+          }
         }
       }
       > .nom-breadcrumb-separator {
