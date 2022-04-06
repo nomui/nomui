@@ -8386,15 +8386,27 @@ function _defineProperty2(obj, key, value) {
     }
     appendItem(itemProps) {
       itemProps = Component.extendProps({}, this.props.itemDefaults, itemProps);
-      const itemWrapperProps = { component: ListItemWrapper, item: itemProps };
+      const itemWrapperProps = {
+        component: ListItemWrapper,
+        item: itemProps,
+        classes: Object.assign({}, this._getDragClassNames(itemProps)),
+      };
       this.appendChild(itemWrapperProps);
     }
     appendDataItem(itemData) {
-      const itemProps = { component: ListItem, data: itemData };
+      const itemProps = {
+        component: ListItem,
+        data: itemData,
+        classes: Object.assign({}, this._getDragClassNames(itemData)),
+      };
       this.appendChild(itemProps);
     }
     prependDataItem(itemData) {
-      const itemProps = { component: ListItem, data: itemData };
+      const itemProps = {
+        component: ListItem,
+        data: itemData,
+        classes: Object.assign({}, this._getDragClassNames(itemData)),
+      };
       this.prependChild(itemProps);
     }
     removeItem(param) {
@@ -8589,7 +8601,7 @@ function _defineProperty2(obj, key, value) {
     removeItem(param) {
       const item = this.getItem(param);
       if (item !== null) {
-        item.wrapper.remove();
+        item.wrapper ? item.wrapper.remove() : item.remove();
       }
     }
     removeItems(param) {

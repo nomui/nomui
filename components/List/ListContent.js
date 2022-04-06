@@ -260,17 +260,29 @@ class ListContent extends Component {
 
   appendItem(itemProps) {
     itemProps = Component.extendProps({}, this.props.itemDefaults, itemProps)
-    const itemWrapperProps = { component: ListItemWrapper, item: itemProps }
+    const itemWrapperProps = {
+      component: ListItemWrapper,
+      item: itemProps,
+      classes: { ...this._getDragClassNames(itemProps) },
+    }
     this.appendChild(itemWrapperProps)
   }
 
   appendDataItem(itemData) {
-    const itemProps = { component: ListItem, data: itemData }
+    const itemProps = {
+      component: ListItem,
+      data: itemData,
+      classes: { ...this._getDragClassNames(itemData) },
+    }
     this.appendChild(itemProps)
   }
 
   prependDataItem(itemData) {
-    const itemProps = { component: ListItem, data: itemData }
+    const itemProps = {
+      component: ListItem,
+      data: itemData,
+      classes: { ...this._getDragClassNames(itemData) },
+    }
     this.prependChild(itemProps)
   }
 

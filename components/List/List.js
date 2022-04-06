@@ -205,7 +205,7 @@ class List extends Component {
   removeItem(param) {
     const item = this.getItem(param)
     if (item !== null) {
-      item.wrapper.remove()
+      item.wrapper ? item.wrapper.remove() : item.remove()
     }
   }
 
