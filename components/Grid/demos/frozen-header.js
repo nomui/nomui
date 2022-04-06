@@ -7,7 +7,8 @@ define([], function () {
         children: [
           {
             component: 'Grid',
-            line: 'row',
+            bordered: true,
+            line: 'both',
             columns: [
               {
                 field: 'name',
@@ -22,12 +23,12 @@ define([], function () {
               {
                 field: 'author',
                 title: '作者',
-                width: 100,
+                // width: 1000,
               },
               {
                 field: 'role',
                 title: '主角',
-                width: 1200,
+                width: 100,
               },
             ],
             data: [

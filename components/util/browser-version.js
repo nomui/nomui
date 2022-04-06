@@ -43,8 +43,6 @@ function getBrowser() {
   return browserInfo
 }
 
-console.log(getBrowser())
-
 // 支持 position: sticky 属性的最小版本
 // 参考 https://caniuse.com/?search=sticky
 const SUPPORT_STICKY_MIN_BROWSER_VERSION_MAP = {
