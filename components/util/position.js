@@ -264,6 +264,7 @@ const positionFns = {
         if (newOverRight < 0 || newOverRight < abs(overLeft)) {
           position.left += myOffset + atOffset + offset
         }
+        position.offsetX = myOffset + atOffset + offset
       } else if (overRight > 0) {
         newOverLeft =
           position.left -
@@ -275,6 +276,7 @@ const positionFns = {
         if (newOverLeft > 0 || abs(newOverLeft) < overRight) {
           position.left += myOffset + atOffset + offset
         }
+        position.offsetX = myOffset + atOffset + offset
       }
     },
     top: function (position, data) {
@@ -304,12 +306,14 @@ const positionFns = {
         if (newOverBottom < 0 || newOverBottom < abs(overTop)) {
           position.top += myOffset + atOffset + offset
         }
+        position.offsetY = myOffset + atOffset + offset
       } else if (overBottom > 0) {
         newOverTop =
           position.top - data.collisionPosition.marginTop + myOffset + atOffset + offset - offsetTop
         if (newOverTop > 0 || abs(newOverTop) < overBottom) {
           position.top += myOffset + atOffset + offset
         }
+        position.offsetY = myOffset + atOffset + offset
       }
     },
   },
@@ -446,7 +450,12 @@ function position(elem, options) {
       })
     }
   })
-
+  if (position.offsetX) {
+    elem.setAttribute('offset-x', position.offsetX)
+  }
+  if (position.offsetY) {
+    elem.setAttribute('offset-y', position.offsetY)
+  }
   setOffset(elem, position)
 }
 
