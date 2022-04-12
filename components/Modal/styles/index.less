@@ -103,20 +103,20 @@
   // counteract the pointer-events: none; in the .modal-dialog
   pointer-events: auto;
 
-  > .nom-panel-header {
+  >.nom-panel-header {
     padding: 0.5rem 1rem;
     border-bottom: 1px solid var(--nom-border-color);
     border-top-left-radius: var(--nom-layer-border-radius);
     border-top-right-radius: var(--nom-layer-border-radius);
   }
 
-  > .nom-panel-body {
+  >.nom-panel-body {
     position: relative;
     flex: 1 1 auto;
     padding: 1rem;
   }
 
-  > .nom-panel-footer {
+  >.nom-panel-footer {
     justify-content: flex-end;
     padding: 0.5rem 1rem;
     border-top: 1px solid var(--nom-border-color);
@@ -166,6 +166,7 @@
 
 // Scale up the modal
 @media (min-width: @screen-sm-min) {
+
   // Automatically set modal's width for larger viewports
   .nom-modal-dialog {
     width: 560px;
@@ -181,5 +182,121 @@
     .nom-modal-dialog {
       width: 300px;
     }
+  }
+}
+
+.nom-modal-content-animate-hide {
+  -webkit-animation: nom-modal-content-keyframe-hide 90ms ease forwards;
+  animation: nom-modal-content-keyframe-hide 90ms ease forwards;
+}
+
+.nom-modal-content-animate-show {
+  -webkit-animation: nom-modal-content-keyframe-show .12s cubic-bezier(0, 0, .26, 1.38) forwards;
+  animation: nom-modal-content-keyframe-show .12s cubic-bezier(0, 0, .26, 1.38) forwards;
+}
+
+.nom-modal-mask-animate-hide {
+  -webkit-animation: nom-modal-mask-keyframe-hide 90ms ease forwards;
+  animation: nom-modal-mask-keyframe-hide 90ms ease forwards;
+}
+
+.nom-modal-mask-animate-show {
+  -webkit-animation: nom-modal-mask-keyframe-show 90ms ease forwards;
+  animation: nom-modal-mask-keyframe-show 90ms ease forwards;
+}
+
+@-webkit-keyframes nom-modal-content-keyframe-show {
+  0% {
+    -webkit-transform: scale(.7);
+    transform: scale(.7);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes nom-modal-content-keyframe-show {
+  0% {
+    -webkit-transform: scale(.7);
+    transform: scale(.7);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-modal-content-keyframe-hide {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(.7);
+    transform: scale(.7);
+    opacity: 0;
+  }
+}
+
+@keyframes nom-modal-content-keyframe-hide {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(.7);
+    transform: scale(.7);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes nom-modal-mask-keyframe-show {
+  0% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nom-modal-mask-keyframe-show {
+  0% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-modal-mask-keyframe-hide {
+  0% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes nom-modal-mask-keyframe-hide {
+  0% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
   }
 }

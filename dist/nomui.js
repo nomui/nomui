@@ -2731,9 +2731,15 @@ function _defineProperty2(obj, key, value) {
     _created: function () {
       this.modal = this.parent.modal;
       this.__isModalContent = true;
+      this.parent.parent.modalContent = this;
     },
     _config: function () {
-      this.setProps({ classes: { "nom-modal-content": true } });
+      this.setProps({
+        classes: {
+          "nom-modal-content": true,
+          "nom-modal-content-animate-show": true,
+        },
+      });
     },
   };
   class ModalDialog extends Component {
@@ -2900,6 +2906,7 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this.setProps({
+        classes: { "nom-modal-mask-animate-show": true },
         children: {
           component: ModalDialog,
           attrs: { style: { width: myWidth || null } },
@@ -2931,7 +2938,15 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this._callHandler(this.props.onClose, { result: result });
-      this.remove();
+      this.modalContent.removeClass("nom-modal-content-animate-show");
+      this.modalContent.addClass("nom-modal-content-animate-hide");
+      setTimeout(() => {
+        this.removeClass("nom-modal-mask-animate-show");
+        this.addClass("nom-modal-mask-animate-hide");
+        setTimeout(() => {
+          this.remove();
+        }, 90);
+      }, 90);
     }
     setzIndex() {
       this.element.style.zIndex = getzIndex();
