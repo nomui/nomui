@@ -79,7 +79,14 @@ class SelectPopup extends Popup {
 
   _show() {
     super._show()
-    this.selectControl.searchBox && this.selectControl.searchBox.focus()
+    const { searchBox, props } = this.selectControl
+    if (searchBox) {
+      searchBox.focus()
+      // 上一次搜索无数据，则清除搜索条件
+      if (!props.options || !props.options.length) {
+        searchBox.clear()
+      }
+    }
   }
 }
 
