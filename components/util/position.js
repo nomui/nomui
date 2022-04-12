@@ -453,6 +453,7 @@ function position(elem, options) {
   // 如果元素定位过程中发生了翻转，则将偏移数据记录在其dom属性中
   elem.setAttribute('offset-x', position.offsetX || '0')
   elem.setAttribute('offset-y', position.offsetY || '0')
+  console.log(position.offsetY)
   setOffset(elem, position)
 }
 

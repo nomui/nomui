@@ -37,7 +37,7 @@ class Tooltip extends Layer {
             this.arrow = c
           },
           classes: { 'nom-tooltip-arrow': true },
-          children: `#<svg aria-hidden="true" width="24" height="7" viewBox="0 0 24 7" fill="currentColor" xmlns="http://www.w3.org/2000/svg" ><path d="M24 0V1C20 1 18.5 2 16.5 4C14.5 6 14 7 12 7C10 7 9.5 6 7.5 4C5.5 2 4 1 0 1V0H24Z"></path></svg>`,
+          children: `#<svg aria-hidden="true" width="24" height="6" viewBox="0 0 24 7" fill="currentColor" xmlns="http://www.w3.org/2000/svg" ><path d="M24 0V1C20 1 18.5 2 16.5 4C14.5 6 14 7 12 7C10 7 9.5 6 7.5 4C5.5 2 4 1 0 1V0H24Z"></path></svg>`,
         },
       ],
     })
@@ -48,6 +48,12 @@ class Tooltip extends Layer {
     if (this.props.align === 'top' || this.props.align === 'bottom') {
       if (this.element.getAttribute('offset-y') !== '0') {
         this.element.setAttribute('tooltip-align', this.props.align === 'top' ? 'bottom' : 'top')
+      } else {
+        this.element.setAttribute('tooltip-align', this.props.align)
+      }
+    } else if (this.props.align === 'left' || this.props.align === 'right') {
+      if (this.element.getAttribute('offset-x') !== '0') {
+        this.element.setAttribute('tooltip-align', this.props.align === 'left' ? 'right' : 'left')
       } else {
         this.element.setAttribute('tooltip-align', this.props.align)
       }
