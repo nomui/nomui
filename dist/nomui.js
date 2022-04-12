@@ -12779,7 +12779,13 @@ function _defineProperty2(obj, key, value) {
     }
     _show() {
       super._show();
-      this.selectControl.searchBox && this.selectControl.searchBox.focus();
+      const { searchBox, props } = this.selectControl;
+      if (searchBox) {
+        searchBox.focus(); // 上一次搜索无数据，则清除搜索条件
+        if (!props.options || !props.options.length) {
+          searchBox.clear();
+        }
+      }
     }
   }
   Component.register(SelectPopup);
@@ -12997,7 +13003,7 @@ function _defineProperty2(obj, key, value) {
           this.currentValue = value;
         }
       } // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
-      if (this.searchBox && value === null) {
+      if (this.searchBox && this.searchBox.props && value === null) {
         this.searchBox._setValue("");
       }
     }

@@ -6783,7 +6783,7 @@ table.nom-table.p-bordered {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 1px;
   z-index: inherit;
   border-bottom: var(--nom-grid-header-border);
 }
