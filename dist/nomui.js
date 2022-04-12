@@ -3910,6 +3910,10 @@ function _defineProperty2(obj, key, value) {
       });
       super._config();
     }
+    _rendered() {
+      const bg = getComputedStyle(this.element)["background-color"];
+      this.arrow.element.style.color = bg;
+    }
     _fixDirection() {
       if (this.props.align === "top" || this.props.align === "bottom") {
         if (this.element.getAttribute("offset-y") !== "0") {
