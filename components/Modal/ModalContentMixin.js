@@ -18,12 +18,14 @@ export default {
   _created: function () {
     this.modal = this.parent.modal
     this.__isModalContent = true
+    this.parent.parent.modalContent = this
   },
 
   _config: function () {
     this.setProps({
       classes: {
         'nom-modal-content': true,
+        'nom-modal-content-animate-show': true,
       },
     })
   },
