@@ -1963,6 +1963,7 @@ function _defineProperty2(obj, key, value) {
           if (newOverRight < 0 || newOverRight < abs(overLeft)) {
             position.left += myOffset + atOffset + offset;
           }
+          position.offsetX = myOffset + atOffset + offset;
         } else if (overRight > 0) {
           newOverLeft =
             position.left -
@@ -1974,6 +1975,7 @@ function _defineProperty2(obj, key, value) {
           if (newOverLeft > 0 || abs(newOverLeft) < overRight) {
             position.left += myOffset + atOffset + offset;
           }
+          position.offsetX = myOffset + atOffset + offset;
         }
       },
       top: function (position, data) {
@@ -2014,6 +2016,7 @@ function _defineProperty2(obj, key, value) {
           if (newOverBottom < 0 || newOverBottom < abs(overTop)) {
             position.top += myOffset + atOffset + offset;
           }
+          position.offsetY = myOffset + atOffset + offset;
         } else if (overBottom > 0) {
           newOverTop =
             position.top -
@@ -2025,6 +2028,7 @@ function _defineProperty2(obj, key, value) {
           if (newOverTop > 0 || abs(newOverTop) < overBottom) {
             position.top += myOffset + atOffset + offset;
           }
+          position.offsetY = myOffset + atOffset + offset;
         }
       },
     },
@@ -2141,7 +2145,9 @@ function _defineProperty2(obj, key, value) {
           elem: elem,
         });
       }
-    });
+    }); // 如果元素定位过程中发生了翻转，则将偏移数据记录在其dom属性中
+    elem.setAttribute("offset-x", position.offsetX || "0");
+    elem.setAttribute("offset-y", position.offsetY || "0");
     setOffset(elem, position);
   }
   class PanelBody extends Component {
@@ -3873,6 +3879,43 @@ function _defineProperty2(obj, key, value) {
       this.addRel(this.opener.element);
       this._bindHover();
     }
+    _config() {
+      this.setProps({
+        attrs: { "tooltip-align": this.props.align },
+        children: [
+          this.props.children,
+          {
+            ref: (c) => {
+              this.arrow = c;
+            },
+            classes: { "nom-tooltip-arrow": true },
+            children: `#<svg aria-hidden="true" width="24" height="6" viewBox="0 0 24 7" fill="currentColor" xmlns="http://www.w3.org/2000/svg" ><path d="M24 0V1C20 1 18.5 2 16.5 4C14.5 6 14 7 12 7C10 7 9.5 6 7.5 4C5.5 2 4 1 0 1V0H24Z"></path></svg>`,
+          },
+        ],
+      });
+      super._config();
+    }
+    _fixDirection() {
+      if (this.props.align === "top" || this.props.align === "bottom") {
+        if (this.element.getAttribute("offset-y") !== "0") {
+          this.element.setAttribute(
+            "tooltip-align",
+            this.props.align === "top" ? "bottom" : "top"
+          );
+        } else {
+          this.element.setAttribute("tooltip-align", this.props.align);
+        }
+      } else if (this.props.align === "left" || this.props.align === "right") {
+        if (this.element.getAttribute("offset-x") !== "0") {
+          this.element.setAttribute(
+            "tooltip-align",
+            this.props.align === "left" ? "right" : "left"
+          );
+        } else {
+          this.element.setAttribute("tooltip-align", this.props.align);
+        }
+      }
+    }
     _remove() {
       this.opener._off("mouseenter", this._showHandler);
       this.opener._off("mouseleave", this._hideHandler);
@@ -3936,6 +3979,7 @@ function _defineProperty2(obj, key, value) {
           this.element.style.top.replace("px", "") - docTop
         }px`;
       }
+      this._fixDirection();
     }
     getScrollTop() {
       let scroll_top = 0;

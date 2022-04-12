@@ -5676,11 +5676,54 @@ body .nom-always-dark {
   }
 }
 .nom-tooltip {
+  position: relative;
   max-width: 600px;
   padding: 0.5rem 1rem;
   color: var(--nom-tooltip-color);
   background-color: var(--nom-tooltip-background-color);
   border-radius: var(--nom-tooltip-border-radius);
+}
+.nom-tooltip .nom-tooltip-arrow {
+  position: absolute;
+  top: auto;
+  right: auto;
+  bottom: 0;
+  left: 50%;
+  color: var(--nom-tooltip-background-color);
+  transform: translate(-50%, 10px);
+}
+.nom-tooltip[tooltip-align='top'] {
+  transform: translateY(-8px);
+}
+.nom-tooltip[tooltip-align='bottom'] {
+  transform: translateY(8px);
+}
+.nom-tooltip[tooltip-align='bottom'] .nom-tooltip-arrow {
+  top: 0;
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  transform: translate(-50%, -10px) rotate(180deg);
+}
+.nom-tooltip[tooltip-align='left'] {
+  transform: translateX(-8px);
+}
+.nom-tooltip[tooltip-align='left'] .nom-tooltip-arrow {
+  top: 50%;
+  right: 0;
+  bottom: auto;
+  left: auto;
+  transform: translate(12px, -50%) rotate(270deg);
+}
+.nom-tooltip[tooltip-align='right'] {
+  transform: translateX(8px);
+}
+.nom-tooltip[tooltip-align='right'] .nom-tooltip-arrow {
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 0;
+  transform: translate(-12px, -50%) rotate(90deg);
 }
 .nom-message {
   display: flex;
