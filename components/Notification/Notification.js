@@ -175,10 +175,8 @@ class Notification extends Layer {
     this.props.onClose && this.props.onClose()
 
     if (alignInfo.includes('left')) {
-      this.removeClass('nom-notification-animate-left-show')
       this.addClass('nom-notification-animate-left-hide')
     } else if (alignInfo.includes('right')) {
-      this.removeClass('nom-notification-animate-right-show')
       this.addClass('nom-notification-animate-right-hide')
     }
 
