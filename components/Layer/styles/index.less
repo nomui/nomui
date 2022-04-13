@@ -12,6 +12,16 @@
   animation: nom-layer-keyframe-zoom-out 90ms linear forwards;
 }
 
+.nom-layer-mask-animate-show {
+  -webkit-animation: nom-layer-mask-keyframe-show 90ms ease forwards;
+  animation: nom-layer-mask-keyframe-show 90ms ease forwards;
+}
+
+.nom-layer-mask-animate-hide {
+  -webkit-animation: nom-layer-mask-keyframe-hide 90ms ease forwards;
+  animation: nom-layer-mask-keyframe-hide 90ms ease forwards;
+}
+
 @-webkit-keyframes nom-layer-keyframe-bounce-in {
   0% {
     -webkit-transform: scale(.6);
@@ -77,6 +87,46 @@
     -webkit-transform: scale(.8);
     transform: scale(.8);
     opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes nom-layer-mask-keyframe-show {
+  0% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nom-layer-mask-keyframe-show {
+  0% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-layer-mask-keyframe-hide {
+  0% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes nom-layer-mask-keyframe-hide {
+  0% {
+    opacity: 1;
   }
 
   to {
