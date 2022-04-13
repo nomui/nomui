@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.57](https://github.com/nomui/nomui/compare/v1.0.0-alpha.56...v1.0.0-alpha.57) (2022-04-08)
+
+
+### Bug Fixes
+
+* **List:** appendItem的数据，未加上拖拽类名，无法被拖拽 ([810e5a6](https://github.com/nomui/nomui/commit/810e5a640305c7facc0c441655e158c0b408f73a))
+* **List:** data格式传入时无wrapper，removeItem时会报错 ([ad15f37](https://github.com/nomui/nomui/commit/ad15f372344c9ae80f025878eb0320af41fbf153))
+
 ## [1.0.0-alpha.56](https://github.com/nomui/nomui/compare/v1.0.0-alpha.55...v1.0.0-alpha.56) (2022-04-02)
 
 

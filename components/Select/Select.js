@@ -254,7 +254,7 @@ class Select extends Field {
       }
     }
     // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
-    if (this.searchBox && value === null) {
+    if (this.searchBox && this.searchBox.props && value === null) {
       this.searchBox._setValue('')
     }
   }

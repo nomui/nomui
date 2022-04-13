@@ -19,7 +19,7 @@ define([], function () {
               selectRef = c
             },
             options: [
-              { text: 'aaaaa', value: 1 },
+              { text: 'aaaaa', value: 0 },
               { text: 'aaaaaaaa', value: 1 },
               { text: 'bbbbb', value: 2 },
               { text: 'ccccc', value: 3 },
