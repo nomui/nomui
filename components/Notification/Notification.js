@@ -50,25 +50,25 @@ class Notification extends Layer {
     }
     if (!Notification.NOMUI_NOTIFICATION_CONTAINER) {
       Notification.NOMUI_NOTIFICATION_CONTAINER = {
-        topLeft: new nomui.Layer({
+        topLeft: new nomui.Component({
           classes: {
             'nom-notification-container': true,
             'nom-notification-align-topleft': true,
           },
         }),
-        topRight: new nomui.Layer({
+        topRight: new nomui.Component({
           classes: {
             'nom-notification-container': true,
             'nom-notification-align-topright': true,
           },
         }),
-        bottomLeft: new nomui.Layer({
+        bottomLeft: new nomui.Component({
           classes: {
             'nom-notification-container': true,
             'nom-notification-align-bottomleft': true,
           },
         }),
-        bottomRight: new nomui.Layer({
+        bottomRight: new nomui.Component({
           classes: {
             'nom-notification-container': true,
             'nom-notification-align-bottomright': true,
@@ -78,6 +78,7 @@ class Notification extends Layer {
     }
 
     const curInsance = Notification.NOMUI_NOTIFICATION_INSTANCES[config.key]
+
     if (!curInsance) {
       return new nomui.Notification({
         ...config,
@@ -87,6 +88,7 @@ class Notification extends Layer {
     curInsance.update({
       ...config,
     })
+
     return curInsance
   }
 
@@ -167,22 +169,45 @@ class Notification extends Layer {
 
   close() {
     this.timer && clearTimeout(this.timer)
-    const { key } = this.props
-    delete Notification.NOMUI_NOTIFICATION_INSTANCES[key]
+    const { key, alignInfo } = this.props
 
+    delete Notification.NOMUI_NOTIFICATION_INSTANCES[key]
     this.props.onClose && this.props.onClose()
-    this.remove()
+
+    if (alignInfo.includes('left')) {
+      this.removeClass('nom-notification-animate-left-show')
+      this.addClass('nom-notification-animate-left-hide')
+    } else if (alignInfo.includes('right')) {
+      this.removeClass('nom-notification-animate-right-show')
+      this.addClass('nom-notification-animate-right-hide')
+    }
+
+    setTimeout(() => {
+      this.remove()
+    }, 240)
   }
 
   _config() {
     const that = this
     this._propStyleClasses = ['type']
-    const { styles, attrs = {}, icon, type, closeIcon, title, btn, description } = this.props
+    const { styles, attrs = {}, icon, type, closeIcon, title, btn, description, align } = this.props
+
+    const alignInfo = align.toLowerCase()
+    const classes = {}
+
+    if (alignInfo.includes('left')) {
+      classes['nom-notification-animate-left-show'] = true
+    } else if (alignInfo.includes('right')) {
+      classes['nom-notification-animate-right-show'] = true
+    }
+
     this.setProps({
       closeToRemove: true,
       styles,
+      alignInfo,
       align: null,
       alignTo: null,
+      classes,
       attrs: {
         ...attrs,
         style: attrs.style,

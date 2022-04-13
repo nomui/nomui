@@ -31,6 +31,7 @@ class Layer extends Component {
         },
       },
     })
+
     if (this.props.align || this.props.position) {
       this.setProps({
         attrs: {
@@ -42,6 +43,12 @@ class Layer extends Component {
         },
       })
     }
+    this.nomappOverflow()
+    this.setProps({
+      classes: {
+        'nom-layer-animate-show': true,
+      },
+    })
   }
 
   _rendered() {
@@ -59,7 +66,11 @@ class Layer extends Component {
           if (e.target !== e.currentTarget) {
             return
           }
-          that.remove()
+          that.removeClass('nom-layer-animate-show')
+          that.addClass('nom-layer-animate-hide')
+          setTimeout(() => {
+            that.remove()
+          }, 90)
         })
       }
     }
@@ -115,10 +126,20 @@ class Layer extends Component {
     if (closestLayer !== null) {
       const idx = closestLayer.component._zIndex
       if (idx < this._zIndex) {
-        this.hide()
+        this.removeClass('nom-layer-animate-show')
+        this.addClass('nom-layer-animate-hide')
+        setTimeout(() => {
+          this.removeClass('nom-layer-animate-hide')
+          this.hide()
+        }, 90)
       }
     } else {
-      this.hide()
+      this.removeClass('nom-layer-animate-show')
+      this.addClass('nom-layer-animate-hide')
+      setTimeout(() => {
+        this.removeClass('nom-layer-animate-hide')
+        this.hide()
+      }, 90)
     }
   }
 

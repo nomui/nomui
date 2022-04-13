@@ -1,3 +1,85 @@
 .nom-layer-backdrop {
   background-color: rgba(0, 0, 0, 0.05);
 }
+
+.nom-layer-animate-show {
+  -webkit-animation: nom-layer-keyframe-bounce-in .1s cubic-bezier(.215, .61, .355, 1) forwards;
+  animation: nom-layer-keyframe-bounce-in .1s cubic-bezier(.215, .61, .355, 1) forwards;
+}
+
+.nom-layer-animate-hide {
+  -webkit-animation: nom-layer-keyframe-zoom-out 90ms linear forwards;
+  animation: nom-layer-keyframe-zoom-out 90ms linear forwards;
+}
+
+@-webkit-keyframes nom-layer-keyframe-bounce-in {
+  0% {
+    -webkit-transform: scale(.6);
+    transform: scale(.6);
+    opacity: 0;
+  }
+
+  70% {
+    -webkit-transform: scale(1.01);
+    transform: scale(1.01);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes nom-layer-keyframe-bounce-in {
+  0% {
+    -webkit-transform: scale(.6);
+    transform: scale(.6);
+    opacity: 0;
+  }
+
+  70% {
+    -webkit-transform: scale(1.01);
+    transform: scale(1.01);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-layer-keyframe-zoom-out {
+  0% {
+    opacity: 1;
+  }
+
+  60% {
+    -webkit-transform: scale(.8);
+    transform: scale(.8);
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes nom-layer-keyframe-zoom-out {
+  0% {
+    opacity: 1;
+  }
+
+  60% {
+    -webkit-transform: scale(.8);
+    transform: scale(.8);
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
