@@ -1,13 +1,13 @@
 .nom-tree-select {
-  &.p-label-align-right > .nom-field-label + .nom-field-content {
+  &.p-label-align-right>.nom-field-label+.nom-field-content {
     width: 0;
   }
 
-  > .nom-field-content {
+  >.nom-field-content {
     .nom-control {
       position: relative;
       height: 100%;
-      min-height: @input-height-base;
+      min-height: @input-height-base-treeSelect;
       padding: @padding-y-base 24px @padding-y-base 12px;
       color: var(--nom-input-color);
       line-height: @line-height-computed;
@@ -21,6 +21,7 @@
       }
 
       .nom-tree-select-placeholder {
+        margin-top: 1.44px;
         overflow: hidden;
         color: var(--nom-input-placeholder-color);
         white-space: nowrap;
@@ -61,14 +62,12 @@
 .nom-tree-select-popup {
   padding: 5px 5px;
 
-  > .nom-layout {
+  >.nom-layout {
     max-height: 300px;
   }
 
   .nom-tree {
-    .nom-tree-node:not(.s-disabled).filter-node
-      > .nom-tree-node-content
-      .nom-tree-node-content-text {
+    .nom-tree-node:not(.s-disabled).filter-node>.nom-tree-node-content .nom-tree-node-content-text {
       color: inherit;
       .nom-preset-bold;
     }
