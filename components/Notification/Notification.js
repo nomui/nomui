@@ -189,13 +189,16 @@ class Notification extends Layer {
     const that = this
     this._propStyleClasses = ['type']
     const { styles, attrs = {}, icon, type, closeIcon, title, btn, description, align } = this.props
-
-    const alignInfo = align.toLowerCase()
     const classes = {}
-
-    if (alignInfo.includes('left')) {
-      classes['nom-notification-animate-left-show'] = true
-    } else if (alignInfo.includes('right')) {
+    let alignInfo = 'topright'
+    if (align) {
+      alignInfo = align.toLowerCase()
+      if (alignInfo.includes('left')) {
+        classes['nom-notification-animate-left-show'] = true
+      } else if (alignInfo.includes('right')) {
+        classes['nom-notification-animate-right-show'] = true
+      }
+    } else {
       classes['nom-notification-animate-right-show'] = true
     }
 
