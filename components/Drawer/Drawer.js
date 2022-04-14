@@ -25,7 +25,9 @@ class Drawer extends Component {
     // mask
     if (showMasker) {
       children.push({
-        classes: { 'nom-drawer-mask': true },
+        classes: {
+          'nom-drawer-mask': true,
+        },
       })
     }
 
@@ -58,6 +60,8 @@ class Drawer extends Component {
         'nom-drawer-right': _settle === 'right',
         'nom-drawer-bottom': _settle === 'bottom',
         'nom-drawer-left': _settle === 'left',
+        [`nom-drawer-animate-${_settle}-show`]: true,
+        'nom-drawer-mask-animate-show': true,
       },
       onClick: () => {
         maskClosable && drawerRef.close(drawerRef)
@@ -71,17 +75,8 @@ class Drawer extends Component {
 
   _handleContent() {
     const drawerRef = this
-    const {
-      closable,
-      closeIcon,
-      title,
-      content,
-      footer,
-      okText,
-      cancelText,
-      onOk,
-      onCancel,
-    } = this.props
+    const { closable, closeIcon, title, content, footer, okText, cancelText, onOk, onCancel } =
+      this.props
 
     const children = []
 
@@ -214,7 +209,13 @@ class Drawer extends Component {
   }
 
   close() {
-    this.remove()
+    this.addClass(`nom-drawer-animate-${this.props.settle}-hide`)
+    setTimeout(() => {
+      this.addClass('nom-drawer-mask-animate-hide')
+      setTimeout(() => {
+        this.remove()
+      }, 90)
+    }, 90)
   }
 
   _handleSize(size, unit) {
