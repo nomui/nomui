@@ -31,6 +31,7 @@ class Layer extends Component {
         },
       },
     })
+
     if (this.props.align || this.props.position) {
       this.setProps({
         attrs: {
@@ -42,6 +43,12 @@ class Layer extends Component {
         },
       })
     }
+    this.nomappOverflow()
+    this.setProps({
+      classes: {
+        'nom-layer-animate-show': true,
+      },
+    })
   }
 
   _rendered() {
@@ -59,7 +66,10 @@ class Layer extends Component {
           if (e.target !== e.currentTarget) {
             return
           }
-          that.remove()
+          that.addClass('nom-layer-animate-hide')
+          setTimeout(() => {
+            that.remove()
+          }, 90)
         })
       }
     }
@@ -71,6 +81,8 @@ class Layer extends Component {
     this.setPosition()
     this._docClickHandler()
 
+    this.addClass('nom-layer-animate-show')
+
     if (props.align) {
       window.removeEventListener('resize', this._onWindowResize, false)
       window.addEventListener('resize', this._onWindowResize, false)
@@ -81,6 +93,9 @@ class Layer extends Component {
   _hide(forceRemove) {
     window.removeEventListener('resize', this._onWindowResize, false)
     document.removeEventListener('mousedown', this._onDocumentMousedown, false)
+
+    this.removeClass('nom-layer-animate-show')
+    this.removeClass('nom-layer-animate-hide')
 
     if (forceRemove === true || this.props.closeToRemove) {
       this.props.onClose && this._callHandler(this.props.onClose)
@@ -115,10 +130,16 @@ class Layer extends Component {
     if (closestLayer !== null) {
       const idx = closestLayer.component._zIndex
       if (idx < this._zIndex) {
-        this.hide()
+        this.addClass('nom-layer-animate-hide')
+        setTimeout(() => {
+          this.hide()
+        }, 90)
       }
     } else {
-      this.hide()
+      this.addClass('nom-layer-animate-hide')
+      setTimeout(() => {
+        this.hide()
+      }, 90)
     }
   }
 

@@ -39,7 +39,10 @@ class Message extends Layer {
   }
 
   close() {
-    this.remove()
+    this.addClass('nom-layer-animate-hide')
+    setTimeout(() => {
+      this.remove()
+    }, 90)
   }
 
   _rendered() {
