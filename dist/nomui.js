@@ -1222,6 +1222,12 @@ function _defineProperty2(obj, key, value) {
     removeClass(className) {
       this.element.classList.remove(className);
     }
+    nomappOverflow() {
+      window.nomapp.element.style.overflow = "hidden";
+      setTimeout(() => {
+        window.nomapp.element.style.overflow = "inherit";
+      }, 300);
+    }
     _setExpandableProps() {
       const that = this;
       const { expandable, expanded } = this.props;
@@ -2938,10 +2944,8 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this._callHandler(this.props.onClose, { result: result });
-      this.modalContent.removeClass("nom-modal-content-animate-show");
       this.modalContent.addClass("nom-modal-content-animate-hide");
       setTimeout(() => {
-        this.removeClass("nom-modal-mask-animate-show");
         this.addClass("nom-modal-mask-animate-hide");
         setTimeout(() => {
           this.remove();
@@ -3650,7 +3654,10 @@ function _defineProperty2(obj, key, value) {
     constructor(props, ...mixins) {
       const defaults = {
         zIndex: 2,
-        classes: { "nom-layer-backdrop": true },
+        classes: {
+          "nom-layer-backdrop": true,
+          "nom-layer-mask-animate-show": true,
+        },
         attrs: {
           style: {
             position: "absolute",
@@ -3701,6 +3708,8 @@ function _defineProperty2(obj, key, value) {
           },
         });
       }
+      this.nomappOverflow();
+      this.setProps({ classes: { "nom-layer-animate-show": true } });
     }
     _rendered() {
       const that = this;
@@ -3715,7 +3724,10 @@ function _defineProperty2(obj, key, value) {
             if (e.target !== e.currentTarget) {
               return;
             }
-            that.remove();
+            that.addClass("nom-layer-animate-hide");
+            setTimeout(() => {
+              that.remove();
+            }, 90);
           });
         }
       }
@@ -3724,6 +3736,7 @@ function _defineProperty2(obj, key, value) {
       const { props } = this;
       this.setPosition();
       this._docClickHandler();
+      this.addClass("nom-layer-animate-show");
       if (props.align) {
         window.removeEventListener("resize", this._onWindowResize, false);
         window.addEventListener("resize", this._onWindowResize, false);
@@ -3737,6 +3750,8 @@ function _defineProperty2(obj, key, value) {
         this._onDocumentMousedown,
         false
       );
+      this.removeClass("nom-layer-animate-show");
+      this.removeClass("nom-layer-animate-hide");
       if (forceRemove === true || this.props.closeToRemove) {
         this.props.onClose && this._callHandler(this.props.onClose);
         this.remove();
@@ -3769,10 +3784,16 @@ function _defineProperty2(obj, key, value) {
       if (closestLayer !== null) {
         const idx = closestLayer.component._zIndex;
         if (idx < this._zIndex) {
-          this.hide();
+          this.addClass("nom-layer-animate-hide");
+          setTimeout(() => {
+            this.hide();
+          }, 90);
         }
       } else {
-        this.hide();
+        this.addClass("nom-layer-animate-hide");
+        setTimeout(() => {
+          this.hide();
+        }, 90);
       }
     }
     setPosition() {
@@ -3980,7 +4001,10 @@ function _defineProperty2(obj, key, value) {
       this.showTimer = null;
       if (this.props.hidden === false) {
         this.hideTimer = setTimeout(() => {
-          this.hide();
+          this.addClass("nom-layer-animate-hide");
+          setTimeout(() => {
+            this.hide();
+          }, 90);
         }, this.delay);
       }
     }
@@ -14668,6 +14692,8 @@ function _defineProperty2(obj, key, value) {
           "nom-drawer-right": _settle === "right",
           "nom-drawer-bottom": _settle === "bottom",
           "nom-drawer-left": _settle === "left",
+          [`nom-drawer-animate-${_settle}-show`]: true,
+          "nom-drawer-mask-animate-show": true,
         },
         onClick: () => {
           maskClosable && drawerRef.close(drawerRef);
@@ -14796,7 +14822,13 @@ function _defineProperty2(obj, key, value) {
       return null;
     }
     close() {
-      this.remove();
+      this.addClass(`nom-drawer-animate-${this.props.settle}-hide`);
+      setTimeout(() => {
+        this.addClass("nom-drawer-mask-animate-hide");
+        setTimeout(() => {
+          this.remove();
+        }, 90);
+      }, 90);
     }
     _handleSize(size, unit) {
       if (!CSS_UNIT.test(size)) return {};
@@ -18919,7 +18951,10 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     close() {
-      this.remove();
+      this.addClass("nom-layer-animate-hide");
+      setTimeout(() => {
+        this.remove();
+      }, 90);
     }
     _rendered() {
       const that = this;
@@ -19454,25 +19489,25 @@ function _defineProperty2(obj, key, value) {
       }
       if (!Notification.NOMUI_NOTIFICATION_CONTAINER) {
         Notification.NOMUI_NOTIFICATION_CONTAINER = {
-          topLeft: new nomui.Layer({
+          topLeft: new nomui.Component({
             classes: {
               "nom-notification-container": true,
               "nom-notification-align-topleft": true,
             },
           }),
-          topRight: new nomui.Layer({
+          topRight: new nomui.Component({
             classes: {
               "nom-notification-container": true,
               "nom-notification-align-topright": true,
             },
           }),
-          bottomLeft: new nomui.Layer({
+          bottomLeft: new nomui.Component({
             classes: {
               "nom-notification-container": true,
               "nom-notification-align-bottomleft": true,
             },
           }),
-          bottomRight: new nomui.Layer({
+          bottomRight: new nomui.Component({
             classes: {
               "nom-notification-container": true,
               "nom-notification-align-bottomright": true,
@@ -19544,10 +19579,17 @@ function _defineProperty2(obj, key, value) {
     _registerDuritionClose() {}
     close() {
       this.timer && clearTimeout(this.timer);
-      const { key } = this.props;
+      const { key, alignInfo } = this.props;
       delete Notification.NOMUI_NOTIFICATION_INSTANCES[key];
       this.props.onClose && this.props.onClose();
-      this.remove();
+      if (alignInfo.includes("left")) {
+        this.addClass("nom-notification-animate-left-hide");
+      } else if (alignInfo.includes("right")) {
+        this.addClass("nom-notification-animate-right-hide");
+      }
+      setTimeout(() => {
+        this.remove();
+      }, 240);
     }
     _config() {
       const that = this;
@@ -19561,12 +19603,27 @@ function _defineProperty2(obj, key, value) {
         title,
         btn,
         description,
+        align,
       } = this.props;
+      const classes = {};
+      let alignInfo = "topright";
+      if (align) {
+        alignInfo = align.toLowerCase();
+        if (alignInfo.includes("left")) {
+          classes["nom-notification-animate-left-show"] = true;
+        } else if (alignInfo.includes("right")) {
+          classes["nom-notification-animate-right-show"] = true;
+        }
+      } else {
+        classes["nom-notification-animate-right-show"] = true;
+      }
       this.setProps({
         closeToRemove: true,
         styles,
+        alignInfo,
         align: null,
         alignTo: null,
+        classes,
         attrs: Object.assign({}, attrs, { style: attrs.style }),
         children: {
           component: NotificationContent,
@@ -21163,10 +21220,16 @@ function _defineProperty2(obj, key, value) {
     }
     _handleOk() {
       this._callHandler(this.props.onConfirm);
-      this.hide();
+      this.addClass("nom-layer-animate-hide");
+      setTimeout(() => {
+        this.hide();
+      }, 90);
     }
     _handleCancel() {
-      this.hide();
+      this.addClass("nom-layer-animate-hide");
+      setTimeout(() => {
+        this.hide();
+      }, 90);
     }
   }
   Popconfirm.defaults = {

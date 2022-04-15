@@ -466,10 +466,8 @@ class Component {
     })
 
     if (this.parent && this.parent.props.childDefaults) {
-      const {
-        normalizedProps: childDefaultsProps,
-        mixins: childDefaultsMixins,
-      } = this._normalizeProps(this.parent.props.childDefaults)
+      const { normalizedProps: childDefaultsProps, mixins: childDefaultsMixins } =
+        this._normalizeProps(this.parent.props.childDefaults)
       normalizedProps = Component.extendProps(childDefaultsProps, normalizedProps)
       mixins = [...childDefaultsMixins, ...mixins]
     }
@@ -678,6 +676,13 @@ class Component {
 
   removeClass(className) {
     this.element.classList.remove(className)
+  }
+
+  nomappOverflow() {
+    window.nomapp.element.style.overflow = 'hidden'
+    setTimeout(() => {
+      window.nomapp.element.style.overflow = 'inherit'
+    }, 300)
   }
 
   _setExpandableProps() {

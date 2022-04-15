@@ -26,9 +26,11 @@ define([], function () {
                   })
                   if (progress >= 100) {
                     clearInterval(interval)
-                    nomui.Notification.close(key)
+                    setTimeout(() => {
+                      nomui.Notification.close(key)
+                    }, 900)
                   }
-                }, 500)
+                }, 30)
               },
             },
           ],

@@ -5334,6 +5334,114 @@ body .nom-always-dark {
 .nom-layer-backdrop {
   background-color: rgba(0, 0, 0, 0.05);
 }
+.nom-layer-animate-show {
+  -webkit-animation: nom-layer-keyframe-bounce-in 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+  animation: nom-layer-keyframe-bounce-in 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+}
+.nom-layer-animate-hide {
+  -webkit-animation: nom-layer-keyframe-zoom-out 90ms linear forwards;
+  animation: nom-layer-keyframe-zoom-out 90ms linear forwards;
+}
+.nom-layer-mask-animate-show {
+  -webkit-animation: nom-layer-mask-keyframe-show 90ms ease forwards;
+  animation: nom-layer-mask-keyframe-show 90ms ease forwards;
+}
+.nom-layer-mask-animate-hide {
+  -webkit-animation: nom-layer-mask-keyframe-hide 90ms ease forwards;
+  animation: nom-layer-mask-keyframe-hide 90ms ease forwards;
+}
+@-webkit-keyframes nom-layer-keyframe-bounce-in {
+  0% {
+    -webkit-transform: scale(0.6);
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    -webkit-transform: scale(1.01);
+    transform: scale(1.01);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes nom-layer-keyframe-bounce-in {
+  0% {
+    -webkit-transform: scale(0.6);
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    -webkit-transform: scale(1.01);
+    transform: scale(1.01);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-layer-keyframe-zoom-out {
+  0% {
+    opacity: 1;
+  }
+  60% {
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes nom-layer-keyframe-zoom-out {
+  0% {
+    opacity: 1;
+  }
+  60% {
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-layer-mask-keyframe-show {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes nom-layer-mask-keyframe-show {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-layer-mask-keyframe-hide {
+  0% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes nom-layer-mask-keyframe-hide {
+  0% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 .nom-navbar {
   display: flex;
   align-items: center;
@@ -5370,7 +5478,7 @@ body .nom-always-dark {
   justify-content: flex-start;
   max-height: 100vh;
   padding: 1rem;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 .nom-notification-container.nom-notification-align-topleft {
   top: 0;
@@ -5390,7 +5498,8 @@ body .nom-always-dark {
 }
 .nom-notification-content {
   width: 100%;
-  margin: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   padding: 0.8rem;
   outline: 0;
   pointer-events: auto;
@@ -5439,6 +5548,118 @@ body .nom-always-dark {
 }
 .nom-notification-content.p-type-warning > .nom-notification-body > .nom-notification-body-icon > .nom-notification-icon {
   color: var(--nom-color-warning);
+}
+.nom-notification-animate-left-show {
+  -webkit-animation: nom-notification-keyframe-left-show 0.12s cubic-bezier(0, 0, 0.26, 1.38) forwards;
+  animation: nom-notification-keyframe-left-show 0.12s cubic-bezier(0, 0, 0.26, 1.38) forwards;
+}
+.nom-notification-animate-right-show {
+  -webkit-animation: nom-notification-keyframe-right-show 0.12s cubic-bezier(0, 0, 0.26, 1.38) forwards;
+  animation: nom-notification-keyframe-right-show 0.12s cubic-bezier(0, 0, 0.26, 1.38) forwards;
+}
+.nom-notification-animate-left-hide {
+  -webkit-animation: nom-notification-keyframe-left-hide 0.24s ease forwards;
+  animation: nom-notification-keyframe-left-hide 0.24s ease forwards;
+}
+.nom-notification-animate-right-hide {
+  -webkit-animation: nom-notification-keyframe-right-hide 0.24s ease forwards;
+  animation: nom-notification-keyframe-right-hide 0.24s ease forwards;
+}
+@-webkit-keyframes nom-notification-keyframe-left-show {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-notification-keyframe-left-show {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-notification-keyframe-right-show {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-notification-keyframe-right-show {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-notification-keyframe-left-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@keyframes nom-notification-keyframe-left-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-notification-keyframe-right-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@keyframes nom-notification-keyframe-right-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }
 .nom-pager .p-justify-around .nom-col:first-child,
 .nom-pager .p-justify-between .nom-col:first-child {
@@ -5893,21 +6114,21 @@ body .nom-always-dark {
     width: 300px;
   }
 }
-.nom-modal-content-animate-hide {
-  -webkit-animation: nom-modal-content-keyframe-hide 90ms ease forwards;
-  animation: nom-modal-content-keyframe-hide 90ms ease forwards;
-}
 .nom-modal-content-animate-show {
   -webkit-animation: nom-modal-content-keyframe-show 0.12s cubic-bezier(0, 0, 0.26, 1.38) forwards;
   animation: nom-modal-content-keyframe-show 0.12s cubic-bezier(0, 0, 0.26, 1.38) forwards;
 }
-.nom-modal-mask-animate-hide {
-  -webkit-animation: nom-modal-mask-keyframe-hide 90ms ease forwards;
-  animation: nom-modal-mask-keyframe-hide 90ms ease forwards;
+.nom-modal-content-animate-hide {
+  -webkit-animation: nom-modal-content-keyframe-hide 90ms ease forwards;
+  animation: nom-modal-content-keyframe-hide 90ms ease forwards;
 }
 .nom-modal-mask-animate-show {
   -webkit-animation: nom-modal-mask-keyframe-show 90ms ease forwards;
   animation: nom-modal-mask-keyframe-show 90ms ease forwards;
+}
+.nom-modal-mask-animate-hide {
+  -webkit-animation: nom-modal-mask-keyframe-hide 90ms ease forwards;
+  animation: nom-modal-mask-keyframe-hide 90ms ease forwards;
 }
 @-webkit-keyframes nom-modal-content-keyframe-show {
   0% {
@@ -7820,7 +8041,7 @@ textarea .nom-textarea {
 }
 .nom-select > .nom-field-content .nom-control {
   position: relative;
-  min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
+  min-height: calc(1.428571429rem + (0.375rem * 2) + 4.88px);
   padding: 0.375rem 24px 0.375rem 12px;
   color: var(--nom-input-color);
   line-height: 1.42857143rem;
@@ -8887,7 +9108,7 @@ textarea .nom-textarea {
 .nom-tree-select > .nom-field-content .nom-control {
   position: relative;
   height: 100%;
-  min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
+  min-height: calc(1.428571429rem + (0.375rem * 2) + 4.88px);
   padding: 0.375rem 24px 0.375rem 12px;
   color: var(--nom-input-color);
   line-height: 1.42857143rem;
@@ -8900,6 +9121,7 @@ textarea .nom-textarea {
   border-color: var(--nom-color-primary);
 }
 .nom-tree-select > .nom-field-content .nom-control .nom-tree-select-placeholder {
+  margin-top: 1.44px;
   overflow: hidden;
   color: var(--nom-input-placeholder-color);
   white-space: nowrap;
@@ -9714,6 +9936,270 @@ textarea .nom-textarea {
   flex-shrink: 0;
   padding: var(--nom-drawer-footer-padding);
   border-top: 1px solid var(--nom-drawer-line-color);
+}
+.nom-drawer-animate-top-show .nom-drawer-content-wrapper {
+  -webkit-animation: nom-drawer-keyframe-top-show 0.12s ease forwards;
+  animation: nom-drawer-keyframe-top-show 0.12s ease forwards;
+}
+.nom-drawer-animate-bottom-show .nom-drawer-content-wrapper {
+  -webkit-animation: nom-drawer-keyframe-bottom-show 0.12s ease forwards;
+  animation: nom-drawer-keyframe-bottom-show 0.12s ease forwards;
+}
+.nom-drawer-animate-left-show .nom-drawer-content-wrapper {
+  -webkit-animation: nom-drawer-keyframe-left-show 0.12s ease forwards;
+  animation: nom-drawer-keyframe-left-show 0.12s ease forwards;
+}
+.nom-drawer-animate-right-show .nom-drawer-content-wrapper {
+  -webkit-animation: nom-drawer-keyframe-right-show 0.12s ease forwards;
+  animation: nom-drawer-keyframe-right-show 0.12s ease forwards;
+}
+.nom-drawer-animate-top-hide .nom-drawer-content-wrapper {
+  -webkit-animation: nom-drawer-keyframe-top-hide 0.24s ease forwards;
+  animation: nom-drawer-keyframe-top-hide 0.24s ease forwards;
+}
+.nom-drawer-animate-bottom-hide .nom-drawer-content-wrapper {
+  -webkit-animation: nom-drawer-keyframe-bottom-hide 0.24s ease forwards;
+  animation: nom-drawer-keyframe-bottom-hide 0.24s ease forwards;
+}
+.nom-drawer-animate-left-hide .nom-drawer-content-wrapper {
+  -webkit-animation: nom-drawer-keyframe-left-hide 0.24s ease forwards;
+  animation: nom-drawer-keyframe-left-hide 0.24s ease forwards;
+}
+.nom-drawer-animate-right-hide .nom-drawer-content-wrapper {
+  -webkit-animation: nom-drawer-keyframe-right-hide 0.24s ease forwards;
+  animation: nom-drawer-keyframe-right-hide 0.24s ease forwards;
+}
+.nom-drawer-mask-animate-show .nom-drawer-mask {
+  -webkit-animation: nom-drawer-mask-keyframe-show 90ms ease forwards;
+  animation: nom-drawer-mask-keyframe-show 90ms ease forwards;
+}
+.nom-drawer-mask-animate-hide .nom-drawer-mask {
+  -webkit-animation: nom-drawer-mask-keyframe-hide 90ms ease forwards;
+  animation: nom-drawer-mask-keyframe-hide 90ms ease forwards;
+}
+@-webkit-keyframes nom-drawer-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-drawer-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-drawer-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-drawer-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-drawer-keyframe-left-show {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-drawer-keyframe-left-show {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-drawer-keyframe-right-show {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-drawer-keyframe-right-show {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-drawer-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+@keyframes nom-drawer-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-drawer-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+@keyframes nom-drawer-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-drawer-keyframe-left-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@keyframes nom-drawer-keyframe-left-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-drawer-keyframe-right-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@keyframes nom-drawer-keyframe-right-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-drawer-mask-keyframe-show {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes nom-drawer-mask-keyframe-show {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-drawer-mask-keyframe-hide {
+  0% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes nom-drawer-mask-keyframe-hide {
+  0% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 .nom-dropdown.nom-split-button > button:first-child {
   border-top-right-radius: 0;
