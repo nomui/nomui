@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.58](https://github.com/nomui/nomui/compare/v1.0.0-alpha.57...v1.0.0-alpha.58) (2022-04-15)
+
+
+### Features
+
+* Drawer显示隐藏增加动画效果以及优化Modal动画 ([54336ed](https://github.com/nomui/nomui/commit/54336ed5a276770a52f5d268f200e7a069817633))
+* Layer Notification显示隐藏增加动画效果 ([edf4e6d](https://github.com/nomui/nomui/commit/edf4e6d9755202246c2e77d8b40b95f63756b8fb))
+* **Modal:** 动画显隐优化 ([8531c3d](https://github.com/nomui/nomui/commit/8531c3df5c433c45d6bf1b0b7cbf0ce31a92689d))
+* **Modal:** 增加动画显隐 ([e9844fe](https://github.com/nomui/nomui/commit/e9844fed413faae6bd9e5c9fc36805319bab7322))
+
+
+### Bug Fixes
+
+* **Select:** 搜索无数据后，下次展示需情况输入框 ([98d1f6c](https://github.com/nomui/nomui/commit/98d1f6c18ea83f7ca5760b0c8b9e538ce0ce2823))
+* **Select:** select 弹出框隐藏后，其searchBox已被销毁导致的报错 ([2eea31c](https://github.com/nomui/nomui/commit/2eea31c2ac09e3bcd80e8a4fa02693886d4e9e7e))
+* **Tooltip:** 自定义背景色时箭头颜色未自适应 ([f1429fd](https://github.com/nomui/nomui/commit/f1429fd4ae9e0f358a54e0933e45612216c816b5))
+
 ## [1.0.0-alpha.57](https://github.com/nomui/nomui/compare/v1.0.0-alpha.56...v1.0.0-alpha.57) (2022-04-08)
 
 
