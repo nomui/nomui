@@ -3,39 +3,112 @@
 }
 
 .nom-collapse-item {
-  > .nom-collapse-item-title {
+  >.nom-collapse-item-title {
     position: relative;
     display: flex;
     align-items: center;
     padding: 0 0.5rem;
     border-radius: var(--nom-border-radius);
     user-select: none;
+
     .nom-icon {
       color: var(--nom-collapse-icon-color);
       cursor: pointer;
     }
-    > .nom-collapse-right-icon {
+
+    >.nom-collapse-right-icon {
       position: absolute;
       right: 0;
       transform: translateX(-50%);
     }
   }
-  > .nom-collapse-item-content {
+
+  >.nom-collapse-item-content {
     padding: 0 1rem 0 1.5rem;
+    overflow: hidden;
     border-radius: 0 0 var(--nom-border-radius) var(--nom-border-radius);
   }
+
   &.nom-collapse-bordered {
     .nom-collapse-item-title {
       padding: 0.5rem;
       border: 1px solid var(--nom-border-color);
     }
+
     .nom-collapse-item-content {
       padding: 0.5rem;
       border: 1px solid var(--nom-border-color);
     }
   }
+
   .nom-collapse-item-open {
     border-bottom: none !important;
     border-radius: var(--nom-border-radius) var(--nom-border-radius) 0 0;
+  }
+}
+
+.nom-collapse-animate-show {
+  -webkit-animation: nom-collapse-keyframe-show .12s linear forwards;
+  animation: nom-collapse-keyframe-show .12s linear forwards;
+}
+
+.nom-collapse-animate-hide {
+  -webkit-animation: nom-collapse-keyframe-hide .12s ease forwards;
+  animation: nom-collapse-keyframe-hide .12s ease forwards;
+}
+
+@-webkit-keyframes nom-collapse-keyframe-show {
+  0% {
+    max-height: 0;
+  }
+
+  90% {
+    max-height: 50px;
+  }
+
+  to {
+    max-height: none;
+  }
+}
+
+@keyframes nom-collapse-keyframe-show {
+  0% {
+    max-height: 0;
+  }
+
+  90% {
+    max-height: 50px;
+  }
+
+  to {
+    max-height: none;
+  }
+}
+
+@-webkit-keyframes nom-collapse-keyframe-hide {
+  0% {
+    max-height: 50px;
+  }
+
+  90% {
+    max-height: 0;
+  }
+
+  to {
+    max-height: none;
+  }
+}
+
+@keyframes nom-collapse-keyframe-hide {
+  0% {
+    max-height: 50px;
+  }
+
+  90% {
+    max-height: 0;
+  }
+
+  to {
+    max-height: none;
   }
 }
