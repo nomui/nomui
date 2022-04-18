@@ -564,7 +564,7 @@ class DatePicker extends Textbox {
   }
 
   _onBlur() {
-    if (!Date.isValid(this.getValue(), this.props.format)) {
+    if (this.getValue() && !Date.isValid(this.getValue(), this.props.format)) {
       this.clearTime()
     }
     super._onBlur()
