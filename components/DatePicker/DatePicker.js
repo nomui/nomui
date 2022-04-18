@@ -565,7 +565,7 @@ class DatePicker extends Textbox {
 
   _onBlur() {
     if (!Date.isValid(this.getValue(), this.props.format)) {
-      this.input.setText(null)
+      this.clearTime()
     }
     super._onBlur()
   }
@@ -580,7 +580,7 @@ DatePicker.defaults = {
   allowClear: true,
   onChange: null,
   showNow: true,
-  readonly: true,
+  readonly: false,
 }
 Component.register(DatePicker)
 
