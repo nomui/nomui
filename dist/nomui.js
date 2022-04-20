@@ -11641,6 +11641,7 @@ function _defineProperty2(obj, key, value) {
         cascadeUncheckChildren,
         cascadeCheckChildren,
         cascadeCheckParent,
+        cascadeUncheckParent,
         cascade,
         attrs,
       } = this.props;
@@ -11660,6 +11661,7 @@ function _defineProperty2(obj, key, value) {
             cascadeCheckParent,
             cascadeCheckChildren,
             cascadeUncheckChildren,
+            cascadeUncheckParent,
           },
         },
       });
