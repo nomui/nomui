@@ -256,6 +256,13 @@ class TimePicker extends Textbox {
     this.props.onChange && this._callHandler(this.props.onChange)
   }
 
+  _onBlur() {
+    if (this.getValue() && !Date.isValid(this.getValue(), this.props.format)) {
+      this.clearTime()
+    }
+    super._onBlur()
+  }
+
   showPopup() {
     this.popup.show()
   }
@@ -333,7 +340,7 @@ TimePicker.defaults = {
   hourStep: null,
   minuteStep: null,
   secondStep: null,
-  readonly: true,
+  readonly: false,
   placeholder: null,
   showNow: true,
   minTime: null,

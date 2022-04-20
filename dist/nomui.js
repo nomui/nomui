@@ -14286,8 +14286,11 @@ function _defineProperty2(obj, key, value) {
         this._callHandler(this.props.onChange);
     }
     _onBlur() {
-      if (!Date.isValid(this.getValue(), this.props.format)) {
-        this.input.setText(null);
+      if (
+        this.getValue() &&
+        !Date.isValid(this.getValue(), this.props.format)
+      ) {
+        this.clearTime();
       }
       super._onBlur();
     }
@@ -14302,7 +14305,7 @@ function _defineProperty2(obj, key, value) {
     allowClear: true,
     onChange: null,
     showNow: true,
-    readonly: true,
+    readonly: false,
   };
   Component.register(DatePicker);
   class Group extends Field {
@@ -24783,6 +24786,15 @@ function _defineProperty2(obj, key, value) {
     handleChange() {
       this.props.onChange && this._callHandler(this.props.onChange);
     }
+    _onBlur() {
+      if (
+        this.getValue() &&
+        !Date.isValid(this.getValue(), this.props.format)
+      ) {
+        this.clearTime();
+      }
+      super._onBlur();
+    }
     showPopup() {
       this.popup.show();
     }
@@ -24850,7 +24862,7 @@ function _defineProperty2(obj, key, value) {
     hourStep: null,
     minuteStep: null,
     secondStep: null,
-    readonly: true,
+    readonly: false,
     placeholder: null,
     showNow: true,
     minTime: null,
