@@ -185,14 +185,19 @@
   }
 }
 
+.nom-modal-content-animate-show {
+  -webkit-animation: nom-modal-content-keyframe-show .12s cubic-bezier(0, 0, .26, 1.38) forwards;
+  animation: nom-modal-content-keyframe-show .12s cubic-bezier(0, 0, .26, 1.38) forwards;
+}
+
 .nom-modal-content-animate-hide {
   -webkit-animation: nom-modal-content-keyframe-hide 90ms ease forwards;
   animation: nom-modal-content-keyframe-hide 90ms ease forwards;
 }
 
-.nom-modal-content-animate-show {
-  -webkit-animation: nom-modal-content-keyframe-show .12s cubic-bezier(0, 0, .26, 1.38) forwards;
-  animation: nom-modal-content-keyframe-show .12s cubic-bezier(0, 0, .26, 1.38) forwards;
+.nom-modal-mask-animate-show {
+  -webkit-animation: nom-modal-mask-keyframe-show 90ms ease forwards;
+  animation: nom-modal-mask-keyframe-show 90ms ease forwards;
 }
 
 .nom-modal-mask-animate-hide {
@@ -200,10 +205,7 @@
   animation: nom-modal-mask-keyframe-hide 90ms ease forwards;
 }
 
-.nom-modal-mask-animate-show {
-  -webkit-animation: nom-modal-mask-keyframe-show 90ms ease forwards;
-  animation: nom-modal-mask-keyframe-show 90ms ease forwards;
-}
+
 
 @-webkit-keyframes nom-modal-content-keyframe-show {
   0% {

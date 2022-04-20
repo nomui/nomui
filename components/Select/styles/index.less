@@ -1,11 +1,12 @@
 .nom-select {
-  &.p-label-align-right > .nom-field-label + .nom-field-content {
+  &.p-label-align-right>.nom-field-label+.nom-field-content {
     width: 0;
   }
-  > .nom-field-content {
+
+  >.nom-field-content {
     .nom-control {
       position: relative;
-      min-height: @input-height-base;
+      min-height: @input-height-base-treeSelect;
       padding: @padding-y-base 24px @padding-y-base 12px;
       color: var(--nom-input-color);
       line-height: @line-height-computed;
@@ -13,6 +14,7 @@
       border: 1px solid var(--nom-border-color);
       border-radius: var(--nom-border-radius);
       cursor: pointer;
+
       &:not(.s-disabled):hover {
         border-color: var(--nom-color-primary);
       }
@@ -32,9 +34,11 @@
           border: 1px solid var(--nom-select-selected-item-border-color);
           border-radius: var(--nom-border-radius);
           cursor: default;
+
           .nom-select-item-content {
             margin-right: 4px;
           }
+
           .nom-icon {
             font-size: 8px;
           }
@@ -83,10 +87,10 @@
   }
 }
 
-.nom-select-popup > .nom-layout {
+.nom-select-popup>.nom-layout {
   max-height: 300px;
 
-  > .nom-layout-body {
+  >.nom-layout-body {
     overflow-x: hidden;
   }
 }

@@ -6,6 +6,7 @@ class LayerBackdrop extends Component {
       zIndex: 2,
       classes: {
         'nom-layer-backdrop': true,
+        'nom-layer-mask-animate-show': true,
       },
       attrs: {
         style: {

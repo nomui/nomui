@@ -10,19 +10,23 @@
   justify-content: flex-start;
   max-height: 100vh;
   padding: 1rem;
-  overflow-y: hidden;
+  overflow: hidden;
+
   &.nom-notification-align-topleft {
     top: 0;
     left: 0;
   }
+
   &.nom-notification-align-topright {
     top: 0;
     right: 0;
   }
+
   &.nom-notification-align-bottomleft {
     bottom: 0;
     left: 0;
   }
+
   &.nom-notification-align-bottomright {
     right: 0;
     bottom: 0;
@@ -31,7 +35,8 @@
 
 .nom-notification-content {
   width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
-  margin: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   padding: 0.8rem;
   // Remove focus outline from opened modal
   outline: 0;
@@ -39,21 +44,22 @@
   pointer-events: auto;
   .nom-preset-layer;
 
-  > .nom-notification-body {
+  >.nom-notification-body {
     display: flex;
     flex-direction: row;
 
-    > .nom-notification-body-icon {
+    >.nom-notification-body-icon {
       padding-top: 0.3rem;
       padding-right: 1rem;
 
-      > .nom-notification-icon {
+      >.nom-notification-icon {
         font-size: 2rem;
       }
     }
 
-    > .nom-notification-body-content {
+    >.nom-notification-body-content {
       flex: 1;
+
       .nom-notification-title {
         padding: 0.25rem;
         font-weight: 500;
@@ -67,16 +73,16 @@
     }
   }
 
-  > .nom-notification-actions {
+  >.nom-notification-actions {
     margin-top: 0.5rem;
     padding-right: 1rem;
     text-align: right;
   }
 
   &.p-type-info {
-    > .nom-notification-body {
-      > .nom-notification-body-icon {
-        > .nom-notification-icon {
+    >.nom-notification-body {
+      >.nom-notification-body-icon {
+        >.nom-notification-icon {
           color: var(--nom-color-info);
         }
       }
@@ -84,9 +90,9 @@
   }
 
   &.p-type-success {
-    > .nom-notification-body {
-      > .nom-notification-body-icon {
-        > .nom-notification-icon {
+    >.nom-notification-body {
+      >.nom-notification-body-icon {
+        >.nom-notification-icon {
           color: var(--nom-color-success);
         }
       }
@@ -94,9 +100,9 @@
   }
 
   &.p-type-error {
-    > .nom-notification-body {
-      > .nom-notification-body-icon {
-        > .nom-notification-icon {
+    >.nom-notification-body {
+      >.nom-notification-body-icon {
+        >.nom-notification-icon {
           color: var(--nom-color-danger);
         }
       }
@@ -104,12 +110,144 @@
   }
 
   &.p-type-warning {
-    > .nom-notification-body {
-      > .nom-notification-body-icon {
-        > .nom-notification-icon {
+    >.nom-notification-body {
+      >.nom-notification-body-icon {
+        >.nom-notification-icon {
           color: var(--nom-color-warning);
         }
       }
     }
+  }
+}
+
+.nom-notification-animate-left-show {
+  -webkit-animation: nom-notification-keyframe-left-show .12s cubic-bezier(0, 0, .26, 1.38) forwards;
+  animation: nom-notification-keyframe-left-show .12s cubic-bezier(0, 0, .26, 1.38) forwards;
+}
+
+.nom-notification-animate-right-show {
+  -webkit-animation: nom-notification-keyframe-right-show .12s cubic-bezier(0, 0, .26, 1.38) forwards;
+  animation: nom-notification-keyframe-right-show .12s cubic-bezier(0, 0, .26, 1.38) forwards;
+}
+
+.nom-notification-animate-left-hide {
+  -webkit-animation: nom-notification-keyframe-left-hide .24s ease forwards;
+  animation: nom-notification-keyframe-left-hide .24s ease forwards;
+}
+
+.nom-notification-animate-right-hide {
+  -webkit-animation: nom-notification-keyframe-right-hide .24s ease forwards;
+  animation: nom-notification-keyframe-right-hide .24s ease forwards;
+}
+
+@-webkit-keyframes nom-notification-keyframe-left-show {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes nom-notification-keyframe-left-show {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-notification-keyframe-right-show {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes nom-notification-keyframe-right-show {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-notification-keyframe-left-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes nom-notification-keyframe-left-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes nom-notification-keyframe-right-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes nom-notification-keyframe-right-hide {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
   }
 }
