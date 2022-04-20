@@ -48,7 +48,10 @@ class TimePickerList extends List {
       itemSelectable: {
         multiple: false,
         byClick: true,
-        scrollIntoView: true,
+        scrollIntoView: {
+          block: 'start',
+          scrollMode: 'always',
+        },
       },
       itemDefaults: {
         _config: function () {

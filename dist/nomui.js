@@ -8714,10 +8714,19 @@ function _defineProperty2(obj, key, value) {
       const item = this.getItem(param);
       if (item) {
         const itemElement = item.wrapper ? item.wrapper.element : item.element;
-        scrollIntoView(itemElement, {
-          behavior: "smooth",
-          scrollMode: "if-needed",
-        });
+        const scrollOptions =
+          this.props.itemSelectable &&
+          this.props.itemSelectable.scrollIntoView &&
+          isPlainObject(this.props.itemSelectable.scrollIntoView)
+            ? this.props.itemSelectable.scrollIntoView
+            : {};
+        scrollIntoView(
+          itemElement,
+          Component.extendProps(
+            { behavior: "smooth", scrollMode: "if-needed" },
+            scrollOptions
+          )
+        );
       }
     }
     scrollToSelected() {
@@ -13414,7 +13423,7 @@ function _defineProperty2(obj, key, value) {
         itemSelectable: {
           multiple: false,
           byClick: true,
-          scrollIntoView: true,
+          scrollIntoView: { block: "start", scrollMode: "always" },
         },
         attrs: { style: { position: "relative" } },
         itemDefaults: {
@@ -24428,7 +24437,7 @@ function _defineProperty2(obj, key, value) {
         itemSelectable: {
           multiple: false,
           byClick: true,
-          scrollIntoView: true,
+          scrollIntoView: { block: "start", scrollMode: "always" },
         },
         itemDefaults: {
           _config: function () {

@@ -24,11 +24,18 @@
 
 ### itemSelectable
 
-| 参数           | 说明             | 类型      | 默认值 |
-| -------------- | ---------------- | --------- | ------ |
-| multiple       | 是否允许多选     | `boolean` | false  |
-| byClick        | 点击项目时选中   | `boolean` | false  |
-| scrollIntoView | 项目显示到视图中 | `boolean` | false  |
+| 参数           | 说明                         | 类型              | 默认值 |
+| -------------- | ---------------------------- | ----------------- | ------ |
+| multiple       | 是否允许多选                 | `boolean`         | false  |
+| byClick        | 点击项目时选中               | `boolean`         | false  |
+| scrollIntoView | 选中项是否自动滚动到可视区域 | `object\|boolean` | false  |
+
+#### scrollIntoView
+
+| 参数       | 说明             | 类型                 | 默认值      |
+| ---------- | ---------------- | -------------------- | ----------- |
+| block      | 自动滚动对齐位置 | `start\|center\|end` | `center`    |
+| scrollMode | 滚动选项         | `always\|if-needed`  | `if-needed` |
 
 ### sortable
 
