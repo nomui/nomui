@@ -31,6 +31,9 @@ class LayerBackdrop extends Component {
           zIndex: this.props.zIndex,
         },
       },
+      onClick({ event }) {
+        event.stopPropagation()
+      },
     })
 
     if (this.referenceElement === document.body) {
