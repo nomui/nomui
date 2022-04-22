@@ -130,18 +130,19 @@ class Layer extends Component {
     if (closestLayer !== null) {
       const idx = closestLayer.component._zIndex
       if (idx < this._zIndex) {
-        this.addClass('nom-layer-animate-hide')
-        setTimeout(() => {
-          this.hide()
-        }, 90)
+        this.hide()
       }
     } else {
-      this.addClass('nom-layer-animate-hide')
-      setTimeout(() => {
-        this.hide()
-      }, 90)
+      this.hide()
     }
   }
+
+  // animateHide() {
+  //   this.addClass('nom-layer-animate-hide')
+  //   setTimeout(() => {
+  //     this.hide()
+  //   }, 90)
+  // }
 
   setPosition() {
     if (this.props.position) {

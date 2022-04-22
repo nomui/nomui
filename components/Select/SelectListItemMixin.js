@@ -20,9 +20,10 @@ export default {
         })
 
         selectControl.placeholder && selectControl.placeholder.hide()
+
         if (selectProps.multiple === false) {
           selectControl.selectedSingle.update(selectedOption)
-          selectControl.popup.hide()
+          selectControl.popup.animateHide()
         } else {
           selectControl.selectedMultiple.appendItem(selectedOption)
         }
