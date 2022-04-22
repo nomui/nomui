@@ -5743,6 +5743,8 @@ body .nom-always-dark {
 }
 .nom-progress-line {
   position: relative;
+  display: flex;
+  align-items: center;
   width: 100%;
   font-size: 1rem;
 }
@@ -8155,6 +8157,118 @@ textarea .nom-textarea {
   transform: translate(-50%, -50%);
   content: '\E632';
 }
+.nom-select-animate-top-show {
+  -webkit-animation: nom-select-keyframe-top-show 0.12s ease forwards;
+  animation: nom-select-keyframe-top-show 0.12s ease forwards;
+}
+.nom-select-animate-bottom-show {
+  -webkit-animation: nom-select-keyframe-bottom-show 0.12s ease forwards;
+  animation: nom-select-keyframe-bottom-show 0.12s ease forwards;
+}
+.nom-select-animate-top-hide {
+  -webkit-animation: nom-select-keyframe-top-hide 0.12s ease forwards;
+  animation: nom-select-keyframe-top-hide 0.12s ease forwards;
+}
+.nom-select-animate-bottom-hide {
+  -webkit-animation: nom-select-keyframe-bottom-hide 0.12s ease forwards;
+  animation: nom-select-keyframe-bottom-hide 0.12s ease forwards;
+}
+@-webkit-keyframes nom-select-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-select-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-select-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(50%);
+    transform: translateY(50%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-select-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(50%);
+    transform: translateY(50%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-select-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-25%);
+    transform: translateY(-25%);
+    opacity: 0;
+  }
+}
+@keyframes nom-select-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-25%);
+    transform: translateY(-25%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-select-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(25%);
+    transform: translateY(25%);
+    opacity: 0;
+  }
+}
+@keyframes nom-select-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(25%);
+    transform: translateY(25%);
+    opacity: 0;
+  }
+}
 .nom-slide-captcha {
   position: relative;
   display: inline-block;
@@ -9034,6 +9148,7 @@ textarea .nom-textarea {
 }
 .nom-collapse-item > .nom-collapse-item-content {
   padding: 0 1rem 0 1.5rem;
+  overflow: hidden;
   border-radius: 0 0 var(--nom-border-radius) var(--nom-border-radius);
 }
 .nom-collapse-item.nom-collapse-bordered .nom-collapse-item-title {
@@ -9047,6 +9162,58 @@ textarea .nom-textarea {
 .nom-collapse-item .nom-collapse-item-open {
   border-bottom: none !important;
   border-radius: var(--nom-border-radius) var(--nom-border-radius) 0 0;
+}
+.nom-collapse-animate-show {
+  -webkit-animation: nom-collapse-keyframe-show 0.12s linear forwards;
+  animation: nom-collapse-keyframe-show 0.12s linear forwards;
+}
+.nom-collapse-animate-hide {
+  -webkit-animation: nom-collapse-keyframe-hide 0.12s ease forwards;
+  animation: nom-collapse-keyframe-hide 0.12s ease forwards;
+}
+@-webkit-keyframes nom-collapse-keyframe-show {
+  0% {
+    max-height: 0;
+  }
+  90% {
+    max-height: 50px;
+  }
+  to {
+    max-height: none;
+  }
+}
+@keyframes nom-collapse-keyframe-show {
+  0% {
+    max-height: 0;
+  }
+  90% {
+    max-height: 50px;
+  }
+  to {
+    max-height: none;
+  }
+}
+@-webkit-keyframes nom-collapse-keyframe-hide {
+  0% {
+    max-height: 50px;
+  }
+  90% {
+    max-height: 0;
+  }
+  to {
+    max-height: none;
+  }
+}
+@keyframes nom-collapse-keyframe-hide {
+  0% {
+    max-height: 50px;
+  }
+  90% {
+    max-height: 0;
+  }
+  to {
+    max-height: none;
+  }
 }
 .nom-tree .nom-tree-node-content {
   display: flex;

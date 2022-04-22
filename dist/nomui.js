@@ -3789,18 +3789,17 @@ function _defineProperty2(obj, key, value) {
       if (closestLayer !== null) {
         const idx = closestLayer.component._zIndex;
         if (idx < this._zIndex) {
-          this.addClass("nom-layer-animate-hide");
-          setTimeout(() => {
-            this.hide();
-          }, 90);
+          this.hide();
         }
       } else {
-        this.addClass("nom-layer-animate-hide");
-        setTimeout(() => {
-          this.hide();
-        }, 90);
+        this.hide();
       }
-    }
+    } // animateHide() {
+    //   this.addClass('nom-layer-animate-hide')
+    //   setTimeout(() => {
+    //     this.hide()
+    //   }, 90)
+    // }
     setPosition() {
       if (this.props.position) {
         position(this.element, this.props.position);
@@ -11825,7 +11824,7 @@ function _defineProperty2(obj, key, value) {
             tag: "div",
             classes: {
               "nom-collapse-item-title": true,
-              "nom-collapse-item-open": !this.props.collapsed,
+              "nom-collapse-item-open": !collapsed,
             },
             key: key,
             children: [
@@ -11856,7 +11855,10 @@ function _defineProperty2(obj, key, value) {
           },
           {
             tag: "div",
-            classes: { "nom-collapse-item-content": true },
+            classes: {
+              "nom-collapse-item-content": true, // 'nom-collapse-animate-show': !collapsed,
+              // 'nom-collapse-animate-hide': collapsed,
+            },
             hidden: collapsed,
             children: content,
           },
@@ -12767,7 +12769,7 @@ function _defineProperty2(obj, key, value) {
           selectControl.placeholder && selectControl.placeholder.hide();
           if (selectProps.multiple === false) {
             selectControl.selectedSingle.update(selectedOption);
-            selectControl.popup.hide();
+            selectControl.popup.animateHide();
           } else {
             selectControl.selectedMultiple.appendItem(selectedOption);
           }
@@ -12873,7 +12875,9 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         attrs: {
           style: { width: `${this.selectControl.control.offsetWidth()}px` },
-        },
+        }, // classes: {
+        //   'nom-select-animate-bottom-show': true,
+        // },
         children: {
           component: Layout,
           header: searchable
@@ -12920,6 +12924,13 @@ function _defineProperty2(obj, key, value) {
       });
       super._config();
     }
+    _rendered() {
+      if (this.element.getAttribute("offset-y") !== "0") {
+        this.element.classList.add("nom-select-animate-bottom-show");
+      } else {
+        this.element.classList.add("nom-select-animate-top-show");
+      }
+    }
     _show() {
       super._show();
       const { searchBox, props } = this.selectControl;
@@ -12929,6 +12940,19 @@ function _defineProperty2(obj, key, value) {
           searchBox.clear();
         }
       }
+    }
+    animateHide() {
+      let animateName;
+      if (this.element.getAttribute("offset-y") !== "0") {
+        animateName = "nom-select-animate-bottom-hide";
+      } else {
+        animateName = "nom-select-animate-top-hide";
+      }
+      this.addClass(animateName);
+      setTimeout(() => {
+        this.hide();
+        this.removeClass(animateName);
+      }, 120);
     }
   }
   Component.register(SelectPopup);
@@ -21792,7 +21816,7 @@ function _defineProperty2(obj, key, value) {
       return status || "normal";
     }
     renderProcessInfo(progressStatus) {
-      const { showInfo, format, type, percent } = this.props;
+      const { showInfo, format, type, percent, infoWidth } = this.props;
       const successPercent = this.getPercentNumber();
       if (!showInfo) return null;
       let text;
@@ -21818,7 +21842,13 @@ function _defineProperty2(obj, key, value) {
       return {
         tag: "span",
         classes: { [`${Progress._prefixClass}-text`]: true },
-        attrs: { title: typeof text === "string" ? text : undefined },
+        attrs: {
+          title: typeof text === "string" ? text : undefined,
+          style: {
+            width: infoWidth ? `${infoWidth}px` : "",
+            flex: infoWidth ? `0 0 ${infoWidth}px` : "",
+          },
+        },
         children: text,
       };
     }
@@ -21896,7 +21926,7 @@ function _defineProperty2(obj, key, value) {
   Progress.defaults = {
     type: "line", // 'line', 'circle', 'dashboard' // 类型，可选 line circle dashboard
     percent: 0, // 百分比
-    // format?:undefined, // (percentNumber,successPercent) => `${percentNumber}%` 内容的模板函数
+    infoWidth: null, // format?:undefined, // (percentNumber,successPercent) => `${percentNumber}%` 内容的模板函数
     // status:undefined, // 'normal', 'exception', 'active', 'success' // 状态，可选：success exception normal active(仅限 line)
     showInfo: true, // 是否显示进度数值或状态图标
     // null for different theme definition

@@ -10,17 +10,21 @@
 
   &-line {
     position: relative;
+    display: flex;
+    align-items: center;
     width: 100%;
     font-size: @font-size-base;
   }
 
   &-steps {
     display: inline-block;
+
     &-outer {
       display: flex;
       flex-direction: row;
       align-items: center;
     }
+
     &-item {
       flex-shrink: 0;
       min-width: 2px;
@@ -44,6 +48,7 @@
     width: 100%;
     margin-right: 0;
     padding-right: 0;
+
     .nom-progress-show-info & {
       margin-right: ~'calc(-2em - 8px)';
       padding-right: ~'calc(2em + 8px)';
@@ -100,6 +105,7 @@
     text-align: left;
     vertical-align: middle;
     word-break: normal;
+
     .@{iconfont-css-prefix} {
       font-size: @font-size-base;
     }
@@ -124,6 +130,7 @@
     .nom-progress-bg {
       background-color: var(--nom-color-danger);
     }
+
     .nom-progress-text {
       color: var(--nom-color-danger);
     }
@@ -139,6 +146,7 @@
     .nom-progress-bg {
       background-color: var(--nom-color-success);
     }
+
     .nom-progress-text {
       color: var(--nom-color-success);
     }
@@ -180,6 +188,7 @@
       color: var(--nom-color-danger);
     }
   }
+
   &-circle&-status-success {
     .nom-progress-text {
       color: var(--nom-color-success);
@@ -192,10 +201,12 @@
     width: 0;
     opacity: 0.1;
   }
+
   20% {
     width: 0;
     opacity: 0.5;
   }
+
   100% {
     width: 100%;
     opacity: 0;
