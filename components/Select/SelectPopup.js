@@ -25,9 +25,6 @@ class SelectPopup extends Popup {
           width: `${this.selectControl.control.offsetWidth()}px`,
         },
       },
-      // classes: {
-      //   'nom-select-animate-bottom-show': true,
-      // },
       children: {
         component: Layout,
         header: searchable
