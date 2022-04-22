@@ -27,7 +27,7 @@ class CollapseItem extends Component {
           tag: 'div',
           classes: {
             'nom-collapse-item-title': true,
-            'nom-collapse-item-open': !this.props.collapsed,
+            'nom-collapse-item-open': !collapsed,
           },
           key: key,
           children: [
@@ -52,8 +52,11 @@ class CollapseItem extends Component {
         },
         {
           tag: 'div',
-
-          classes: { 'nom-collapse-item-content': true },
+          classes: {
+            'nom-collapse-item-content': true,
+            // 'nom-collapse-animate-show': !collapsed,
+            // 'nom-collapse-animate-hide': collapsed,
+          },
           hidden: collapsed,
           children: content,
         },
