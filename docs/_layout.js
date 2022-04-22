@@ -46,6 +46,9 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY, GLOBAL_SEARCH_INTERVAL, deb
                   },
                 },
                 children: text,
+                onClick: () => {
+                  globalSearchRef.setValue(key, false)
+                },
               },
             ],
           })),
@@ -150,11 +153,17 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY, GLOBAL_SEARCH_INTERVAL, deb
                           searchListRef.hide()
                         }, 300)
                     },
+                    onClick: ({ sender }) => {
+                      sender.getValue() && sender.setValue(null, false)
+                    },
                   },
                   {
                     component: 'Flex',
                     onCreated: ({ inst }) => {
                       searchListRef = inst
+                    },
+                    classes: {
+                      'nom-preset-layer': true,
                     },
                     attrs: {
                       style: {
@@ -162,7 +171,7 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY, GLOBAL_SEARCH_INTERVAL, deb
                         color: 'black',
                         position: 'absolute',
                         marginLeft: '0.5rem',
-                        backgroundColor: '#DBE8F2',
+                        // backgroundColor: '#DBE8F2',
                         padding: '1rem',
                         borderRadius: '1rem',
                         boxShadow:
