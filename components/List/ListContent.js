@@ -71,25 +71,62 @@ class ListContent extends Component {
         children: this.list.virGetList(this.list.virVisibleData()),
         childDefaults: wrapperDefaults,
       })
-      // if (this.list.virtual.selectedItems) {
-      //   clearTimeout(this.list.virtual.selectedTimer)
-      //   this.list.virtual.selectedTimer = setTimeout(() => {
-      //     const arry = this.list.virtual.selectedItems.map((item) => {
-      //       return item.value
-      //     })
-      //     console.log(arry)
-      //     this.list.selectItems(arry, {
-      //       triggerSelect: false,
-      //       triggerSelectionChange: false,
-      //     })
-      //   }, 500)
-      // }
     } else {
+      this._processLoadMore(children)
+
       this.setProps({
         children: children,
         childDefaults: wrapperDefaults,
       })
     }
+  }
+
+  // 加载更多
+  _processLoadMore(children) {
+    const { loadMoreRef } = this.list
+    if (loadMoreRef && loadMoreRef.hidden === true) return
+
+    const { loadMore } = this.list.props
+    if (loadMore && loadMore.resolve) {
+      children.push({
+        component: 'Button',
+        type: 'link',
+        text: loadMore.text || '加载更多~',
+        _created: (inst) => {
+          this.list.loadMoreRef = inst
+        },
+        onClick: ({ sender }) => {
+          const loading = new nomui.Loading({ container: sender })
+          const result = loadMore.resolve()
+
+          if (result && result.then) {
+            return result
+              .then((value) => {
+                loading && loading.remove()
+                this._processLoadResult(value)
+              })
+              .catch(() => {
+                loading && loading.remove()
+              })
+          }
+          loading && loading.remove()
+          this._processLoadResult(result)
+        },
+      })
+    }
+  }
+
+  _processLoadResult(result) {
+    if (!result || !result.length) return this.list.loadMoreRef.hide()
+    const { data, items } = this.list.props
+    const isDataType = data && data.length
+    // 将result 拼接到数据后面
+    if (isDataType) {
+      this.list.setProps({ data: data.concat(result) })
+    } else {
+      this.list.setProps({ items: items.concat(result) })
+    }
+    this.update()
   }
 
   _rendered() {
@@ -171,7 +208,10 @@ class ListContent extends Component {
   }
 
   selectAllItems(selectOption) {
-    return this.selectItems(this.getChildren(), selectOption)
+    const children = this.getChildren()
+    if (this.list.loadMoreRef) children.pop()
+
+    return this.selectItems(children, selectOption)
   }
 
   unselectItem(param, unselectOption) {
@@ -217,6 +257,8 @@ class ListContent extends Component {
   getAllItems() {
     const items = []
     const children = this.getChildren()
+    if (this.list.loadMoreRef) children.pop()
+
     for (let i = 0; i < children.length; i++) {
       const itemWrapper = children[i]
       items.push(itemWrapper.item)

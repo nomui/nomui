@@ -15,6 +15,12 @@ class List extends Component {
     super(Component.extendProps(List.defaults, defaults, props), ...mixins)
   }
 
+  _update(props) {
+    if (props.data || this.props.items) {
+      this.loadMoreRef = null
+    }
+  }
+
   _config() {
     const { virtual } = this.props
     this.itemRefs = {}
@@ -532,6 +538,7 @@ List.defaults = {
   // Boolean || { onEnd: Funciton}
   sortable: false,
   overflow: 'hidden',
+  loadMore: false,
 }
 
 Component.register(List)
