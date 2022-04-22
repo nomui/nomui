@@ -22,6 +22,9 @@ class Loading extends Layer {
       children: {
         component: Spinner,
       },
+      onClick({ event }) {
+        event.stopPropagation()
+      },
     })
 
     this.referenceElement.classList.add('nom-loading-container')
@@ -30,7 +33,7 @@ class Loading extends Layer {
   }
 
   _remove() {
-    this.referenceElement.classList.remove('nom-loading-container')
+    this.referenceElement && this.referenceElement.classList.remove('nom-loading-container')
 
     super._remove()
   }
