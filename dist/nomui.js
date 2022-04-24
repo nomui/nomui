@@ -1222,12 +1222,6 @@ function _defineProperty2(obj, key, value) {
     removeClass(className) {
       this.element.classList.remove(className);
     }
-    nomappOverflow() {
-      window.nomapp.element.style.overflow = "hidden";
-      setTimeout(() => {
-        window.nomapp.element.style.overflow = "inherit";
-      }, 300);
-    }
     _setExpandableProps() {
       const that = this;
       const { expandable, expanded } = this.props;
@@ -3800,6 +3794,13 @@ function _defineProperty2(obj, key, value) {
     //     this.hide()
     //   }, 90)
     // }
+    nomappOverflow() {
+      if (!window.nomapp) return;
+      window.nomapp.element.style.overflow = "hidden";
+      setTimeout(() => {
+        window.nomapp.element.style.overflow = "inherit";
+      }, 300);
+    }
     setPosition() {
       if (this.props.position) {
         position(this.element, this.props.position);
@@ -11381,14 +11382,24 @@ function _defineProperty2(obj, key, value) {
     }
     _created() {
       this.nodeRefs = {};
+      this._alreadyProcessedFlat = false;
       this.selectedNode = null;
+    }
+    _update(props) {
+      if (props.data && this.props) {
+        // data更新, flatData需要重新组装成Tree结构
+        if (this.props.flatData) {
+          this._alreadyProcessedFlat = false;
+        }
+      }
     }
     _config() {
       this.nodeRefs = {};
       this.selectedNode = null;
       const { nodes, data, flatData, nodeCheckable } = this.props;
-      if (flatData === true) {
+      if (flatData === true && !this._alreadyProcessedFlat) {
         this.setProps({ data: this._setTreeData(data) });
+        this._alreadyProcessedFlat = true;
       }
       this._addPropStyle("fit");
       if (nodeCheckable) {
@@ -12875,9 +12886,7 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         attrs: {
           style: { width: `${this.selectControl.control.offsetWidth()}px` },
-        }, // classes: {
-        //   'nom-select-animate-bottom-show': true,
-        // },
+        },
         children: {
           component: Layout,
           header: searchable

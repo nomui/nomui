@@ -11,7 +11,17 @@ class Tree extends Component {
 
   _created() {
     this.nodeRefs = {}
+    this._alreadyProcessedFlat = false
     this.selectedNode = null
+  }
+
+  _update(props) {
+    if (props.data && this.props) {
+      // data更新, flatData需要重新组装成Tree结构
+      if (this.props.flatData) {
+        this._alreadyProcessedFlat = false
+      }
+    }
   }
 
   _config() {
@@ -19,10 +29,11 @@ class Tree extends Component {
     this.selectedNode = null
 
     const { nodes, data, flatData, nodeCheckable } = this.props
-    if (flatData === true) {
+    if (flatData === true && !this._alreadyProcessedFlat) {
       this.setProps({
         data: this._setTreeData(data),
       })
+      this._alreadyProcessedFlat = true
     }
 
     this._addPropStyle('fit')
