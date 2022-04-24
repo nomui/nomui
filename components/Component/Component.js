@@ -679,6 +679,7 @@ class Component {
   }
 
   nomappOverflow() {
+    if (!window.nomapp) return
     window.nomapp.element.style.overflow = 'hidden'
     setTimeout(() => {
       window.nomapp.element.style.overflow = 'inherit'
