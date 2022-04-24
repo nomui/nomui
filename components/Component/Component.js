@@ -678,13 +678,6 @@ class Component {
     this.element.classList.remove(className)
   }
 
-  nomappOverflow() {
-    window.nomapp.element.style.overflow = 'hidden'
-    setTimeout(() => {
-      window.nomapp.element.style.overflow = 'inherit'
-    }, 300)
-  }
-
   _setExpandableProps() {
     const that = this
     const { expandable, expanded } = this.props
