@@ -19,5 +19,8 @@ define([], function () {
         }, time)
       })()
     },
+    formatSearchText(match) {
+      return `<font color="red">${match}</font>`
+    },
   }
 })

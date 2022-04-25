@@ -1,4 +1,10 @@
-define(['/docs/helper.js'], function ({ DOC_URL_KEY, GLOBAL_SEARCH_INTERVAL, debounce, polling }) {
+define(['/docs/helper.js'], function ({
+  DOC_URL_KEY,
+  GLOBAL_SEARCH_INTERVAL,
+  debounce,
+  polling,
+  formatSearchText,
+}) {
   return function () {
     let topMenu = null
     let globalSearchRef = null
@@ -14,9 +20,9 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY, GLOBAL_SEARCH_INTERVAL, deb
 
     const handleValueChange = (value) => {
       // 搜索逻辑
+      const regex = new RegExp(value, 'ig')
       const ret = searchData.filter(({ search }) => {
-        const regex = new RegExp(value, 'i')
-        return search.match(regex)
+        return regex.test(search)
       })
 
       if (ret && ret.length !== 0) {
@@ -24,33 +30,43 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY, GLOBAL_SEARCH_INTERVAL, deb
           hidden: false,
           rows: ret.map(({ key, text, url }) => ({
             component: 'Flex',
+            classes: {
+              'nom-preset-hover': true,
+              'nom-preset-pointer': true,
+            },
             styles: {
               align: 'center',
+              'padding-y': 1,
             },
             cols: [
               {
-                children: key,
-                span: 5,
-                attrs: {
-                  style: { width: '40px', borderRight: '1px solid #CFDCE5', paddingRight: '5px' },
+                // children: key,
+                children: key ? `#${key.replace(regex, formatSearchText)}` : '',
+                span: 6,
+                styles: {
+                  'padding-x': 1,
+                  border: 'right',
                 },
               },
               {
                 tag: 'a',
-                span: 7,
+                span: 6,
+                styles: {
+                  'padding-l': 1,
+                },
                 attrs: {
                   href: url,
                   style: {
-                    paddingLeft: '0.5rem',
                     textDecoration: 'none',
                   },
                 },
-                children: text,
-                onClick: () => {
-                  globalSearchRef.setValue(key, false)
-                },
+                // children: text,
+                children: text ? `#${text.replace(regex, formatSearchText)}` : '',
               },
             ],
+            onClick: () => {
+              globalSearchRef.setValue(key, false)
+            },
           })),
         })
       } else {
@@ -124,8 +140,11 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY, GLOBAL_SEARCH_INTERVAL, deb
             tools: [
               {
                 component: 'Flex',
+                styles: {
+                  'width-block': 'sm',
+                },
                 attrs: {
-                  style: { width: '400px', position: 'relative' },
+                  style: { position: 'relative' },
                 },
                 rows: [
                   {
@@ -165,17 +184,15 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY, GLOBAL_SEARCH_INTERVAL, deb
                     classes: {
                       'nom-preset-layer': true,
                     },
+                    styles: {
+                      width: 'full',
+                      text: 'gray',
+                      padding: 1,
+                    },
                     attrs: {
                       style: {
-                        width: '100%',
-                        color: 'black',
+                        zIndex: 1000,
                         position: 'absolute',
-                        marginLeft: '0.5rem',
-                        // backgroundColor: '#DBE8F2',
-                        padding: '1rem',
-                        borderRadius: '1rem',
-                        boxShadow:
-                          '0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d',
                       },
                     },
                     hidden: true,
