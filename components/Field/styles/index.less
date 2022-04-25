@@ -27,17 +27,15 @@
     width: 100%;
     padding: 0.5rem 0.5rem;
 
-    .nom-field-clear-handler {
+    &:not(:hover) .nom-field-clear-handler {
       visibility: hidden;
       opacity: 0;
       transition: opacity ease-in 0.1s;
     }
-
-    &:hover {
-      .nom-field-clear-handler {
-        visibility: visible;
-        opacity: 1;
-      }
+    .nom-field-clear-handler {
+      visibility: visible;
+      opacity: 1;
+      cursor: pointer;
     }
     // overflow-x: clip;
     > .nom-control {
