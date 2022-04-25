@@ -73,7 +73,11 @@ class TimePicker extends Textbox {
     this.setProps({
       leftIcon: 'clock',
       clearProps: {
+        component: 'Icon',
         type: 'times',
+        classes: {
+          'nom-field-clear-handler': true,
+        },
         hidden: !this.props.allowClear || this.props.disabled,
         onClick: (args) => {
           if (this.props.disabled) return false

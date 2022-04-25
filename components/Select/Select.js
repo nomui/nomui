@@ -65,7 +65,10 @@ class Select extends Field {
                 {
                   component: Icon,
                   type: 'close',
-                  classes: { 'nom-select-item-remove': true },
+                  classes: {
+                    'nom-select-item-remove': true,
+                  },
+
                   attrs: {
                     style: {
                       cursor: 'pointer',
@@ -156,6 +159,7 @@ class Select extends Field {
         type: 'times',
         classes: {
           'nom-select-clear': true,
+          'nom-field-clear-handler': true,
         },
         hidden: true,
         ref: (c) => {

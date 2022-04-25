@@ -75,6 +75,7 @@ class Textbox extends Field {
       type: 'times',
       classes: {
         'nom-textbox-clear': true,
+        'nom-field-clear-handler': true,
       },
       hidden: !this.props.value,
       ref: (c) => {
