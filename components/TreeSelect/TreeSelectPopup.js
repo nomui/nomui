@@ -91,9 +91,30 @@ class TreeSelectPopup extends Popup {
     super._config()
   }
 
+  animateHide() {
+    let animateName
+    if (this.element.getAttribute('offset-y') !== '0') {
+      animateName = 'nom-tree-select-animate-bottom-hide'
+    } else {
+      animateName = 'nom-tree-select-animate-top-hide'
+    }
+    this.addClass(animateName)
+    setTimeout(() => {
+      this.hide()
+      this.removeClass(animateName)
+    }, 120)
+  }
+
+  _rendered() {
+    if (this.element.getAttribute('offset-y') !== '0') {
+      this.element.classList.add('nom-tree-select-animate-bottom-show')
+    } else {
+      this.element.classList.add('nom-tree-select-animate-top-show')
+    }
+  }
+
   _show() {
     super._show()
-
     this.selectControl.searchBox && this.selectControl.searchBox.focus()
   }
 }

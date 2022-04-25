@@ -135,7 +135,7 @@ class TreeSelect extends Field {
         onClick: (args) => {
           this._setValue(null)
           this.props.allowClear && this.clearIcon.hide()
-          this.popup && this.popup.hide()
+          this.popup && this.popup.animateHide()
           args.event && args.event.stopPropagation()
         },
       })
@@ -287,7 +287,7 @@ class TreeSelect extends Field {
       })
     } else {
       // 单选: 点击后即关闭popup,在onShow中更新
-      this.popup.hide()
+      this.popup.animateHide()
     }
   }
 

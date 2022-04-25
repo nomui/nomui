@@ -18,11 +18,10 @@
   background-color: var(--nom-input-bg);
   background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
   border: 1px solid var(--nom-color-border);
-  border-radius: var(
-    --nom-border-radius
-  ); // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+  border-radius: var(--nom-border-radius); // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
   outline: none;
   // Customize the `:focus` state to imitate native WebKit styles.
+  transition: all .3s;
   .nom-input-focus();
 
   // Unstyle the caret on `<select>`s in IE10+.
@@ -30,6 +29,7 @@
     background-color: transparent;
     border: 0;
   }
+
   &::placeholder {
     color: var(--nom-color-text-2);
   }
@@ -56,27 +56,32 @@
     height: auto;
   }
 
-  .s-invalid > & {
+  .s-invalid>& {
     .nom-preset-invalid;
+  }
+
+  &:hover {
+    border-color: var(--nom-color-primary);
   }
 }
 
 .nom-textbox {
-  > .nom-field-content {
+  >.nom-field-content {
     .nom-control {
       position: relative;
-      border-radius: var(--nom-border-radius);
       background-color: var(--nom-input-bg);
+      border-radius: var(--nom-border-radius);
     }
   }
 
   &.s-invalid.p-plain {
-    > .nom-field-content {
-      > .nom-control > .nom-input {
+    >.nom-field-content {
+      >.nom-control>.nom-input {
         border-color: var(--nom-color-danger);
       }
     }
   }
+
   &.s-invalid {
     .nom-textbox-affix-wrapper {
       .nom-preset-invalid;
@@ -84,16 +89,16 @@
   }
 
   &.p-with-button {
-    > .nom-field-content {
-      > .nom-control {
+    >.nom-field-content {
+      >.nom-control {
         display: flex;
 
-        > .nom-input {
+        >.nom-input {
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
         }
 
-        > .nom-textbox-button {
+        >.nom-textbox-button {
           border-left: transparent;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
@@ -109,19 +114,28 @@
     padding: 0 @padding-x-base;
     border: 1px solid var(--nom-color-border);
     border-radius: var(--nom-border-radius);
+    transition: all .3s;
+
     &:focus-within {
       border-color: var(--nom-color-primary);
     }
+
+    &:hover {
+      border-color: var(--nom-color-primary);
+    }
+
     .nom-input-affix {
       display: flex;
       flex: none;
       align-items: center;
       color: var(--nom-control-icon-color);
     }
+
     .nom-input-prefix,
     .nom-textbox-left-icon {
       margin-right: 4px;
     }
+
     .nom-input-suffix,
     .nom-textbox-right-icon,
     .nom-input-count {
@@ -132,9 +146,9 @@
     .nom-input {
       height: @input-height-base-inner; // while input as inner El, height = base line-height + padding (ignore border)
       padding: 0;
+      background: transparent;
       border: none;
       outline: none;
-      background: transparent;
     }
   }
 
@@ -142,6 +156,7 @@
   &[readonly] {
     .nom-textbox-affix-wrapper {
       background: var(--nom-input-bg-disabled);
+      border-color: var(--nom-color-border);
     }
   }
 
@@ -157,11 +172,14 @@
   &[readonly] {
     .nom-textbox-affix-wrapper {
       background: transparent;
+      border-color: var(--nom-color-border);
     }
   }
+
   &.s-disabled {
     .nom-textbox-affix-wrapper {
       background: var(--nom-input-bg-disabled);
+      border-color: var(--nom-color-border);
     }
   }
 

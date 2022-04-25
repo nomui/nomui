@@ -21,6 +21,9 @@ class CascaderPopup extends Popup {
     const { popMenu } = this.props
     if (popMenu && popMenu.length) {
       this.setProps({
+        classes: {
+          'nom-cascader-animate-top-show': true,
+        },
         children: {
           classes: {
             'nom-cascader-pop-container': true,
@@ -51,6 +54,31 @@ class CascaderPopup extends Popup {
     }
 
     super._config()
+  }
+
+  animateHide() {
+    if (this.element) {
+      console.log('hide', this.element.getAttribute('offset-y'))
+      let animateName
+      if (this.element.getAttribute('offset-y') !== '0') {
+        animateName = 'nom-cascader-animate-bottom-hide'
+      } else {
+        animateName = 'nom-cascader-animate-top-hide'
+      }
+      this.addClass(animateName)
+      setTimeout(() => {
+        this.hide()
+        this.removeClass(animateName)
+      }, 120)
+    }
+  }
+
+  _rendered() {
+    if (this.element.getAttribute('offset-y') !== '0') {
+      this.element.classList.add('nom-cascader-animate-bottom-show')
+    } else {
+      this.element.classList.add('nom-cascader-animate-top-show')
+    }
   }
 }
 

@@ -202,7 +202,7 @@ class Cascader extends Field {
     }
 
     this._content && this._content.update()
-    this.popup && this._hidePopup && this.popup.hide()
+    this.popup && this._hidePopup && this.popup.animateHide()
   }
 
   _getValue() {
