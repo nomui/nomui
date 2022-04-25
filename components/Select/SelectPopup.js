@@ -19,7 +19,6 @@ class SelectPopup extends Popup {
 
   _config() {
     const { searchable, options: originOptions } = this.selectControl.props
-
     this.setProps({
       attrs: {
         style: {
@@ -77,6 +76,14 @@ class SelectPopup extends Popup {
     super._config()
   }
 
+  _rendered() {
+    if (this.element.getAttribute('offset-y') !== '0') {
+      this.element.classList.add('nom-select-animate-bottom-show')
+    } else {
+      this.element.classList.add('nom-select-animate-top-show')
+    }
+  }
+
   _show() {
     super._show()
     const { searchBox, props } = this.selectControl
@@ -87,6 +94,20 @@ class SelectPopup extends Popup {
         searchBox.clear()
       }
     }
+  }
+
+  animateHide() {
+    let animateName
+    if (this.element.getAttribute('offset-y') !== '0') {
+      animateName = 'nom-select-animate-bottom-hide'
+    } else {
+      animateName = 'nom-select-animate-top-hide'
+    }
+    this.addClass(animateName)
+    setTimeout(() => {
+      this.hide()
+      this.removeClass(animateName)
+    }, 120)
   }
 }
 

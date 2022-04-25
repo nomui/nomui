@@ -36,7 +36,7 @@ class Progress extends Component {
   }
 
   renderProcessInfo(progressStatus) {
-    const { showInfo, format, type, percent } = this.props
+    const { showInfo, format, type, percent, infoWidth } = this.props
 
     const successPercent = this.getPercentNumber()
     if (!showInfo) return null
@@ -62,6 +62,10 @@ class Progress extends Component {
       },
       attrs: {
         title: typeof text === 'string' ? text : undefined,
+        style: {
+          width: infoWidth ? `${infoWidth}px` : '',
+          flex: infoWidth ? `0 0 ${infoWidth}px` : '',
+        },
       },
       children: text,
     }
@@ -141,6 +145,7 @@ class Progress extends Component {
 Progress.defaults = {
   type: 'line', // 'line', 'circle', 'dashboard' // 类型，可选 line circle dashboard
   percent: 0, // 百分比
+  infoWidth: null,
   // format?:undefined, // (percentNumber,successPercent) => `${percentNumber}%` 内容的模板函数
   // status:undefined, // 'normal', 'exception', 'active', 'success' // 状态，可选：success exception normal active(仅限 line)
   showInfo: true, // 是否显示进度数值或状态图标

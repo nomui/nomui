@@ -15,6 +15,12 @@ class List extends Component {
     super(Component.extendProps(List.defaults, defaults, props), ...mixins)
   }
 
+  _update(props) {
+    if (props.data || this.props.items) {
+      this.loadMoreRef = null
+    }
+  }
+
   _config() {
     const { virtual } = this.props
     this.itemRefs = {}
@@ -235,10 +241,23 @@ class List extends Component {
     const item = this.getItem(param)
     if (item) {
       const itemElement = item.wrapper ? item.wrapper.element : item.element
-      scrollIntoView(itemElement, {
-        behavior: 'smooth',
-        scrollMode: 'if-needed',
-      })
+      const scrollOptions =
+        this.props.itemSelectable &&
+        this.props.itemSelectable.scrollIntoView &&
+        isPlainObject(this.props.itemSelectable.scrollIntoView)
+          ? this.props.itemSelectable.scrollIntoView
+          : {}
+
+      scrollIntoView(
+        itemElement,
+        Component.extendProps(
+          {
+            behavior: 'smooth',
+            scrollMode: 'if-needed',
+          },
+          scrollOptions,
+        ),
+      )
     }
   }
 
@@ -519,6 +538,7 @@ List.defaults = {
   // Boolean || { onEnd: Funciton}
   sortable: false,
   overflow: 'hidden',
+  loadMore: false,
 }
 
 Component.register(List)

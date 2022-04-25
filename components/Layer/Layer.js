@@ -130,17 +130,25 @@ class Layer extends Component {
     if (closestLayer !== null) {
       const idx = closestLayer.component._zIndex
       if (idx < this._zIndex) {
-        this.addClass('nom-layer-animate-hide')
-        setTimeout(() => {
-          this.hide()
-        }, 90)
+        this.hide()
       }
     } else {
-      this.addClass('nom-layer-animate-hide')
-      setTimeout(() => {
-        this.hide()
-      }, 90)
+      this.hide()
     }
+  }
+
+  // animateHide() {
+  //   this.addClass('nom-layer-animate-hide')
+  //   setTimeout(() => {
+  //     this.hide()
+  //   }, 90)
+  // }
+  nomappOverflow() {
+    if (!window.nomapp) return
+    window.nomapp.element.style.overflow = 'hidden'
+    setTimeout(() => {
+      window.nomapp.element.style.overflow = 'inherit'
+    }, 300)
   }
 
   setPosition() {

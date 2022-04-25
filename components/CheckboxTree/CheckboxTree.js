@@ -17,6 +17,7 @@ class CheckboxTree extends Field {
       cascadeUncheckChildren,
       cascadeCheckChildren,
       cascadeCheckParent,
+      cascadeUncheckParent,
       cascade,
       attrs,
     } = this.props
@@ -36,6 +37,7 @@ class CheckboxTree extends Field {
           cascadeCheckParent,
           cascadeCheckChildren,
           cascadeUncheckChildren,
+          cascadeUncheckParent,
         },
       },
     })
