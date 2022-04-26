@@ -24,6 +24,10 @@
   transition: all .3s;
   .nom-input-focus();
 
+  &:hover {
+    border-color: var(--nom-color-primary);
+  }
+
   // Unstyle the caret on `<select>`s in IE10+.
   &::-ms-expand {
     background-color: transparent;
@@ -48,6 +52,7 @@
 
   &[disabled],
   fieldset[disabled] & {
+    border-color: var(--nom-color-border);
     cursor: @cursor-disabled;
   }
 
@@ -60,9 +65,6 @@
     .nom-preset-invalid;
   }
 
-  &:hover {
-    border-color: var(--nom-color-primary);
-  }
 }
 
 .nom-textbox {
