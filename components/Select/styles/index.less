@@ -81,9 +81,10 @@
 
       .s-disabled& {
         background-color: var(--nom-input-bg-disabled);
-        cursor: not-allowed;
+        cursor: not-allowed !important;
         opacity: 1;
       }
+
     }
   }
 }
@@ -107,6 +108,10 @@
 
     &.s-selected {
       .nom-preset-primary;
+    }
+
+    &.s-disabled:hover {
+      cursor: not-allowed;
     }
   }
 }

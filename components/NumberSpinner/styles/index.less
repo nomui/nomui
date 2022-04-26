@@ -5,6 +5,7 @@
 .nom-number-spinner {
   .nom-control {
     position: relative;
+
     .spinner-input-with-double-icon {
       position: absolute;
       left: 2.5rem;
@@ -25,7 +26,6 @@
 
     .nom-textbox-right-icon-container {
       position: absolute;
-      cursor: pointer;
       top: 0;
       right: 0;
       display: flex;
@@ -37,10 +37,26 @@
       line-height: @input-height-base;
       border: 1px solid var(--nom-border-color);
       border-radius: var(--nom-border-radius);
+      cursor: pointer;
+
+      &.nom-icon:hover {
+        background-color: var(--nom-color-hover);
+      }
+
+      &.nom-icon:active {
+        background-color: var(--nom-color-fill-2);
+      }
+
+      .nom-icon:hover {
+        background-color: var(--nom-color-hover);
+      }
+
+      .nom-icon:active {
+        background-color: var(--nom-color-fill-2);
+      }
     }
 
     .nom-textbox-left-icon-container {
-      cursor: pointer;
       position: absolute;
       top: 0;
       left: 0;
@@ -53,13 +69,36 @@
       line-height: @input-height-base;
       border: 1px solid var(--nom-border-color);
       border-radius: var(--nom-border-radius);
+      cursor: pointer;
+
+      &.nom-icon:hover {
+        background-color: var(--nom-color-hover);
+      }
+
+      &.nom-icon:active {
+        background-color: var(--nom-color-fill-2);
+      }
+
+      .nom-icon:hover {
+        background-color: var(--nom-color-hover);
+      }
+
+      .nom-icon:active {
+        background-color: var(--nom-color-fill-2);
+      }
     }
   }
+
   &.s-disabled {
+
     .nom-textbox-right-icon-container,
     .nom-textbox-left-icon-container {
-      cursor: @cursor-disabled;
       background-color: var(--nom-input-bg-disabled);
+      cursor: @cursor-disabled;
+    }
+
+    .nom-icon:hover {
+      background-color: unset !important;
     }
   }
 }

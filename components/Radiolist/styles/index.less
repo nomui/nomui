@@ -87,6 +87,7 @@
         }
       }
 
+
       label.s-disabled {
         cursor: not-allowed !important;
         opacity: 0.7;
@@ -97,6 +98,17 @@
         }
 
       }
+
+      &.s-disabled label {
+        cursor: not-allowed !important;
+        opacity: 0.7;
+
+        span.radio {
+          background-color: var(--nom-input-bg-disabled);
+          border-color: var(--nom-checkbox-border-color) !important;
+        }
+      }
+
     }
   }
 }
@@ -140,6 +152,16 @@
           >label.s-selected {
             color: var(--nom-color-primary);
             border-color: var(--nom-color-primary);
+          }
+
+          label:hover {
+            color: var(--nom-color-primary);
+          }
+
+          label.s-disabled {
+            color: initial;
+            cursor: not-allowed !important;
+            opacity: 0.7;
           }
         }
       }

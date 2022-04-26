@@ -16,8 +16,9 @@
 }
 
 .nom-switch {
-  > .nom-field-content {
+  >.nom-field-content {
     .nom-switch-control {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -28,6 +29,22 @@
       border-radius: 100px;
       outline: none;
       cursor: pointer;
+      transition: background-color .2s ease-in-out;
+
+      i {
+        position: absolute;
+        display: block;
+        border-radius: inherit;
+        box-shadow: 0 0 0 0 var(--nom-color-primary);
+        opacity: .2;
+        -webkit-animation: fadeeffect 2s cubic-bezier(.08, .82, .17, 1), waveeffect .4s cubic-bezier(.08, .82, .17, 1);
+        animation: fadeEffect 2s cubic-bezier(.08, .82, .17, 1), waveEffect .4s cubic-bezier(.08, .82, .17, 1);
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+        content: "";
+        pointer-events: none;
+        inset: 0
+      }
 
       &.nom-switch-active {
         background-color: var(--nom-color-primary);
@@ -49,12 +66,32 @@
         border-radius: 50%;
       }
 
+      .nom-switch-indicator-left {
+        -webkit-animation: nom-switch-keyframe-right-show .24s ease forwards;
+        animation: nom-switch-keyframe-right-show .24s ease forwards;
+      }
+
+      .nom-switch-indicator-right {
+        -webkit-animation: nom-switch-keyframe-left-show .24s ease forwards;
+        animation: nom-switch-keyframe-left-show .24s ease forwards;
+      }
+
+      .nom-switch-text-left {
+        -webkit-animation: nom-switch-keyframe-right-show .24s ease forwards;
+        animation: nom-switch-keyframe-right-show .24s ease forwards;
+      }
+
+      .nom-switch-text-right {
+        -webkit-animation: nom-switch-keyframe-left-show .24s ease forwards;
+        animation: nom-switch-keyframe-left-show .24s ease forwards;
+      }
+
       .switch-size(@height-base; @font-size-base);
     }
   }
 
   &.p-size-small {
-    > .nom-field-content {
+    >.nom-field-content {
       .nom-switch-control {
         .switch-size(@height-sm; @font-size-sm);
       }
@@ -62,7 +99,7 @@
   }
 
   &.p-size-xsmall {
-    > .nom-field-content {
+    >.nom-field-content {
       .nom-switch-control {
         .switch-size(@height-xs; var(--nom-switch-font-size-xs));
       }
@@ -70,7 +107,7 @@
   }
 
   &.p-size-large {
-    > .nom-field-content {
+    >.nom-field-content {
       .nom-switch-control {
         .switch-size(@height-lg; @font-size-lg);
       }
@@ -78,23 +115,108 @@
   }
 
   &.p-size-xlarge {
-    > .nom-field-content {
+    >.nom-field-content {
       .nom-switch-control {
         .switch-size(@height-xl; @font-size-xl);
       }
     }
   }
+
   &.s-disabled {
-    > .nom-field-content {
+    >.nom-field-content {
       .nom-switch-control {
         background-color: var(--nom-switch-disable-color);
+
         .nom-switch-text {
           color: var(--nom-switch-disable-text);
         }
       }
+
       .nom-switch-active {
         background-color: var(--nom-color-primary-disabled) !important;
       }
     }
+  }
+}
+
+
+
+@-webkit-keyframes waveEffect {
+  to {
+    box-shadow: 0 0 0 6px var(--nom-color-primary)
+  }
+}
+
+@keyframes waveEffect {
+  to {
+    box-shadow: 0 0 0 6px var(--nom-color-primary)
+  }
+}
+
+@-webkit-keyframes fadeEffect {
+  to {
+    opacity: 0
+  }
+}
+
+@keyframes fadeEffect {
+  to {
+    opacity: 0
+  }
+}
+
+@-webkit-keyframes nom-switch-keyframe-left-show {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes nom-switch-keyframe-left-show {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-switch-keyframe-right-show {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes nom-switch-keyframe-right-show {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
   }
 }

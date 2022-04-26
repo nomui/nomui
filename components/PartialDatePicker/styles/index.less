@@ -1,5 +1,9 @@
 .nom-partial-date-picker {
   width: 200px;
+
+  .nom-textbox-affix-wrapper:hover {
+    border-color: var(--nom-color-primary);
+  }
 }
 
 // 不允许空less文件，添加一个无用的样式保留此文件。
@@ -11,25 +15,31 @@
     text-align: left;
     scroll-behavior: smooth;
     border-left: 1px solid var(--nom-border-color);
+
     &:first-child {
       width: 80px;
       border-left: none;
     }
+
     &.nom-week-list {
       width: 250px;
+
       .nom-week-subtitle {
         .nom-preset-muted;
 
         font-family: Tahoma, Arial, 'Helvetica Neue', Helvetica, sans-serif;
       }
     }
+
     &:hover {
       overflow-y: auto;
     }
+
     .nom-list-item:not(.nom-week-subtitle) {
       padding-left: 5px;
       cursor: pointer;
       .nom-preset-hover; // 基础对象想要hover时有背景色变化，使用这个预设类
+
       &.s-selected {
         .nom-preset-primary; // primary对象预设类，包括了它的hover、active、disabled样式
       }
