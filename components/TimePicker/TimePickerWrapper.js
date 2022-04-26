@@ -71,6 +71,7 @@ class TimePickerWrapper extends Component {
           {
             component: 'Cols',
             justify: 'between',
+            hidden: !that.pickerControl.defaultValue && !noStep,
             attrs: {
               style: {
                 padding: '5px',

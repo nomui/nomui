@@ -8703,6 +8703,16 @@ textarea .nom-textarea {
   width: 100%;
   padding: 0.5rem 0.5rem;
 }
+.nom-field > .nom-field-content:not(:hover) .nom-field-clear-handler {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity ease-in 0.1s;
+}
+.nom-field > .nom-field-content .nom-field-clear-handler {
+  visibility: visible;
+  opacity: 1;
+  cursor: pointer;
+}
 .nom-field > .nom-field-content > .nom-control:focus-within {
   border-color: var(--nom-color-primary);
 }

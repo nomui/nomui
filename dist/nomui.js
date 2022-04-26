@@ -4817,7 +4817,7 @@ function _defineProperty2(obj, key, value) {
       const selfClearProps = {
         component: Icon,
         type: "times",
-        classes: { "nom-textbox-clear": true },
+        classes: { "nom-textbox-clear": true, "nom-field-clear-handler": true },
         hidden: !this.props.value,
         ref: (c) => {
           this.clearIcon = c;
@@ -9258,7 +9258,10 @@ function _defineProperty2(obj, key, value) {
             ref: (c) => {
               this.clearIcon = c;
             },
-            classes: { "nom-auto-complete-clear": true },
+            classes: {
+              "nom-auto-complete-clear": true,
+              "nom-field-clear-handler": true,
+            },
             onClick: ({ event }) => {
               event.stopPropagation();
               autoCompleteRef.clear();
@@ -13098,7 +13101,10 @@ function _defineProperty2(obj, key, value) {
         children.push({
           component: Icon,
           type: "times",
-          classes: { "nom-select-clear": true },
+          classes: {
+            "nom-select-clear": true,
+            "nom-field-clear-handler": true,
+          },
           hidden: true,
           ref: (c) => {
             this.clearIcon = c;
@@ -13954,6 +13960,7 @@ function _defineProperty2(obj, key, value) {
         clearProps: {
           component: "Icon",
           type: "times",
+          classes: { "nom-field-clear-handler": true },
           hidden: !this.props.allowClear || this.props.disabled,
           onClick: (args) => {
             this.clearTime();
@@ -20547,6 +20554,7 @@ function _defineProperty2(obj, key, value) {
         clearProps: {
           component: "Icon",
           type: "times",
+          classes: { "nom-field-clear-handler": true },
           hidden: !this.props.allowClear || this.props.disabled,
           onClick: (args) => {
             this.clearTime();
@@ -24632,6 +24640,7 @@ function _defineProperty2(obj, key, value) {
             {
               component: "Cols",
               justify: "between",
+              hidden: !that.pickerControl.defaultValue && !noStep,
               attrs: {
                 style: { padding: "5px", "border-top": "1px solid #ddd" },
               },
@@ -24733,7 +24742,9 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         leftIcon: "clock",
         clearProps: {
+          component: "Icon",
           type: "times",
+          classes: { "nom-field-clear-handler": true },
           hidden: !this.props.allowClear || this.props.disabled,
           onClick: (args) => {
             if (this.props.disabled) return false;
@@ -25287,7 +25298,10 @@ function _defineProperty2(obj, key, value) {
         children.push({
           component: Icon,
           type: "times",
-          classes: { "nom-tree-select-clear": true },
+          classes: {
+            "nom-tree-select-clear": true,
+            "nom-field-clear-handler": true,
+          },
           hidden: true,
           ref: (c) => {
             this.clearIcon = c;
