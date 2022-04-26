@@ -70,6 +70,9 @@ class DatePicker extends Textbox {
       clearProps: {
         component: 'Icon',
         type: 'times',
+        classes: {
+          'nom-field-clear-handler': true,
+        },
         hidden: !this.props.allowClear || this.props.disabled,
         onClick: (args) => {
           this.clearTime()
