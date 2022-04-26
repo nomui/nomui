@@ -29,43 +29,44 @@ define(['/docs/helper.js'], function ({
         searchListRef.update({
           hidden: false,
           rows: ret.map(({ key, text, url }) => ({
-            component: 'Flex',
-            classes: {
-              'nom-preset-hover': true,
-              'nom-preset-pointer': true,
-            },
-            styles: {
-              align: 'center',
-              'padding-y': 1,
-            },
-            cols: [
-              {
-                // children: key,
-                children: key ? `#${key.replace(regex, formatSearchText)}` : '',
-                span: 6,
-                styles: {
-                  'padding-x': 1,
-                  border: 'right',
-                },
+            tag: 'a',
+            attrs: {
+              href: url,
+              style: {
+                textDecoration: 'none',
               },
-              {
-                tag: 'a',
-                span: 6,
-                styles: {
-                  'padding-l': 1,
-                },
-                attrs: {
-                  href: url,
-                  style: {
-                    textDecoration: 'none',
+            },
+            children: {
+              component: 'Flex',
+              classes: {
+                'nom-preset-hover': true,
+                'nom-preset-pointer': true,
+              },
+              styles: {
+                align: 'center',
+                'padding-y': 1,
+              },
+              cols: [
+                {
+                  children: key ? `#${key.replace(regex, formatSearchText)}` : '',
+                  span: 6,
+                  styles: {
+                    'padding-x': 1,
+                    border: 'right',
                   },
                 },
-                // children: text,
-                children: text ? `#${text.replace(regex, formatSearchText)}` : '',
+                {
+                  tag: 'span',
+                  span: 6,
+                  styles: {
+                    'padding-l': 1,
+                  },
+                  children: text ? `#${text.replace(regex, formatSearchText)}` : '',
+                },
+              ],
+              onClick: () => {
+                globalSearchRef.setValue(key, false)
               },
-            ],
-            onClick: () => {
-              globalSearchRef.setValue(key, false)
             },
           })),
         })
