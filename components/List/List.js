@@ -16,7 +16,7 @@ class List extends Component {
   }
 
   _update(props) {
-    if (props.data || this.props.items) {
+    if ((props && props.data) || this.props.items) {
       this.loadMoreRef = null
     }
   }
