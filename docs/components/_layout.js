@@ -1,4 +1,4 @@
-define([], function () {
+define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
   return function () {
     let javascriptMenuRef = null
 
@@ -9,6 +9,31 @@ define([], function () {
         type += `/${cat}`
       }
       javascriptMenuRef && javascriptMenuRef.selectToItem(type)
+    }
+
+    const getAllDocs = (cmps) => {
+      const doc_suffix = '&tab=docs'
+      return Array.isArray(cmps)
+        ? cmps.reduce((prevs, { text, subtext, url, items }) => {
+            if (url) {
+              return [
+                ...prevs,
+                {
+                  key: text,
+                  text: subtext,
+                  search: `${text}${subtext}`,
+                  url: `${url}${doc_suffix}`,
+                },
+              ]
+            }
+
+            if (items) {
+              return [...prevs, ...getAllDocs(items)]
+            }
+
+            return [...prevs]
+          }, [])
+        : []
     }
 
     return {
@@ -617,6 +642,12 @@ define([], function () {
                   ],
                 },
               ],
+              onRendered: ({ props: { items } }) => {
+                const doc_urls_str = localStorage.getItem(DOC_URL_KEY)
+                if (!doc_urls_str) {
+                  localStorage.setItem(DOC_URL_KEY, JSON.stringify(getAllDocs(items)))
+                }
+              },
               itemDefaults: {
                 key: function () {
                   return this.props.id

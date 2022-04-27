@@ -127,6 +127,7 @@ class TreeSelect extends Field {
         type: 'times',
         classes: {
           'nom-tree-select-clear': true,
+          'nom-field-clear-handler': true,
         },
         hidden: true,
         ref: (c) => {

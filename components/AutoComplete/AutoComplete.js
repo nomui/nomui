@@ -56,6 +56,7 @@ class AutoComplete extends Textbox {
           },
           classes: {
             'nom-auto-complete-clear': true,
+            'nom-field-clear-handler':true
           },
           onClick: ({ event }) => {
             event.stopPropagation()
