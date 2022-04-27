@@ -6,7 +6,9 @@ import CascaderList from './CascaderList'
 
 class CascaderPopup extends Popup {
   constructor(props, ...mixins) {
-    const defaults = {}
+    const defaults = {
+      Animate: true,
+    }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
@@ -21,9 +23,6 @@ class CascaderPopup extends Popup {
     const { popMenu } = this.props
     if (popMenu && popMenu.length) {
       this.setProps({
-        classes: {
-          'nom-cascader-animate-top-show': true,
-        },
         children: {
           classes: {
             'nom-cascader-pop-container': true,
@@ -58,26 +57,32 @@ class CascaderPopup extends Popup {
 
   animateHide() {
     if (this.element) {
-      console.log('hide', this.element.getAttribute('offset-y'))
       let animateName
       if (this.element.getAttribute('offset-y') !== '0') {
-        animateName = 'nom-cascader-animate-bottom-hide'
+        animateName = 'nom-cascader-animate-bottom'
       } else {
-        animateName = 'nom-cascader-animate-top-hide'
+        animateName = 'nom-cascader-animate-top'
       }
-      this.addClass(animateName)
+      this.addClass(`${animateName}-hide`)
       setTimeout(() => {
-        this.hide()
-        this.removeClass(animateName)
+        if (this.element) {
+          this.hide()
+          this.removeClass(`${animateName}-hide`)
+          this.addClass(`${animateName}-show`)
+        }
       }, 120)
+    } else {
+      this.hide()
     }
   }
 
   _rendered() {
+    this.removeClass('nom-layer-animate-show')
+    if (!this.props.Animate) return false
     if (this.element.getAttribute('offset-y') !== '0') {
-      this.element.classList.add('nom-cascader-animate-bottom-show')
+      this.addClass('nom-cascader-animate-bottom-show')
     } else {
-      this.element.classList.add('nom-cascader-animate-top-show')
+      this.addClass('nom-cascader-animate-top-show')
     }
   }
 }

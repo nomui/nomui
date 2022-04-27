@@ -189,7 +189,7 @@ class Cascader extends Field {
       this._onValueChange()
     }
 
-    this.popup.update({ popMenu: this.getSelectedMenu() })
+    this.popup.update({ popMenu: this.getSelectedMenu(), Animate: false })
   }
 
   _valueChange(changed) {
@@ -202,6 +202,7 @@ class Cascader extends Field {
     }
 
     this._content && this._content.update()
+
     this.popup && this._hidePopup && this.popup.animateHide()
   }
 
