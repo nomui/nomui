@@ -8563,7 +8563,7 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(List.defaults, defaults, props), ...mixins);
     }
     _update(props) {
-      if (props.data || this.props.items) {
+      if ((props && props.data) || this.props.items) {
         this.loadMoreRef = null;
       }
     }
