@@ -12,7 +12,7 @@ class Dropdown extends Component {
 
   _config() {
     const that = this
-    const { items, triggerAction, split, text, type, size } = this.props
+    const { items, triggerAction, split, text, type, size, animateName } = this.props
 
     const children = [
       split && {
@@ -37,10 +37,18 @@ class Dropdown extends Component {
           triggerAction: triggerAction,
           classes: {
             'nom-dropdown-popup': true,
-            'nom-dropdown-animate-top-show': true,
           },
           ref: (c) => {
             that.popup = c
+          },
+          _rendered() {
+            if (this.element.getAttribute('offset-y') !== '0') {
+              that.props.animateName = 'bottom'
+              this.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
+            } else {
+              that.props.animateName = 'top'
+              this.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
+            }
           },
           children: {
             component: 'Menu',
@@ -50,11 +58,18 @@ class Dropdown extends Component {
             items: items,
           },
           onClick: (args) => {
-            that.popup.addClass('nom-dropdown-animate-top-hide')
+            if (that.popup.element.getAttribute('offset-y') !== '0') {
+              that.props.animateName = 'bottom'
+            } else {
+              that.props.animateName = 'top'
+            }
+
+            that.popup.addClass([`nom-dropdown-animate-${that.props.animateName}-hide`])
             setTimeout(() => {
               args.sender.hide()
-              that.popup.removeClass('nom-dropdown-animate-top-hide')
-            }, 120)
+              that.popup.removeClass([`nom-dropdown-animate-${that.props.animateName}-hide`])
+              that.popup.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
+            }, 160)
           },
         },
       },
@@ -70,12 +85,9 @@ class Dropdown extends Component {
 
     super._config()
   }
-
-  _rendered() {}
-
-  _show() {}
 }
 Dropdown.defaults = {
+  animateName: 'top',
   tag: 'span',
   triggerAction: 'click',
   rightIcon: 'down',
