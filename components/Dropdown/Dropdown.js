@@ -12,7 +12,7 @@ class Dropdown extends Component {
 
   _config() {
     const that = this
-    const { items, triggerAction, split, text, type, size, animateName } = this.props
+    const { items, triggerAction, split, text, type, size } = this.props
 
     const children = [
       split && {
