@@ -114,10 +114,9 @@ class Anchor extends Component {
   }
 
   _scrollToKey(target) {
-    const container = this.containerElem.getElementsByClassName(`nom-anchor-target-${target}`)
-
-    if (container.length) {
-      container[0].scrollIntoView({ behavior: 'smooth' })
+    const ele = this.containerElem.querySelector(`[anchor-key=${target}]`)
+    if (ele) {
+      ele.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
