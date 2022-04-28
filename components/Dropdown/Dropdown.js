@@ -58,6 +58,7 @@ class Dropdown extends Component {
             items: items,
           },
           onClick: (args) => {
+            that.popup.removeClass([`nom-dropdown-animate-${that.props.animateName}-show`])
             if (that.popup.element.getAttribute('offset-y') !== '0') {
               that.props.animateName = 'bottom'
             } else {
