@@ -12,6 +12,10 @@ define([], function () {
             sticky: this.parent.parent.parent,
             container: this.parent.parent.parent,
             activeKey: 'div3', // 默认高亮的key
+            onChange: (args) => {
+              // 高亮内容发生变化时
+              console.log(args)
+            },
             items: [
               { text: '锚点1', key: 'div1' },
               {

@@ -17,6 +17,7 @@ class Anchor extends Component {
       this._fixPosition()
       this._onContainerScroll()
     }
+    this.oldKey = null
   }
 
   _config() {
@@ -165,9 +166,8 @@ class Anchor extends Component {
         current = i
       }
     }
-    const classes = list[current].classList.value || Array.from(list[current].classList).join(' ')
-    const idx = classes.indexOf('target-')
-    const result = classes.slice(idx + 7)
+
+    const result = list[current].getAttribute('anchor-key')
 
     this._activeAnchor(result)
   }
@@ -176,6 +176,11 @@ class Anchor extends Component {
     this.menu.selectItem(key, {
       scrollIntoView: false,
     })
+
+    if (this.oldKey && key !== this.oldKey && this.props.onChange) {
+      this._callHandler(this.props.onChange, { key: key })
+    }
+    this.oldKey = key
   }
 
   _remove() {
@@ -193,6 +198,7 @@ Anchor.defaults = {
   itemDefaults: null,
   offset: 0,
   activeKey: null,
+  onChange: null,
 }
 
 Component.register(Anchor)
