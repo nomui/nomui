@@ -15,7 +15,7 @@ class RadioOptionList extends List {
                   radio: true,
                 },
               },
-              { tag: 'i' },
+              // { tag: 'i' },
               {
                 tag: 'span',
                 classes: {

@@ -61,7 +61,7 @@ class Switch extends Field {
               'nom-switch-indicator-right': value,
             },
           },
-          { tag: 'i' },
+          // { tag: 'i' },
         ],
       },
     })

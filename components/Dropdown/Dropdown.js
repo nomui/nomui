@@ -37,6 +37,7 @@ class Dropdown extends Component {
           triggerAction: triggerAction,
           classes: {
             'nom-dropdown-popup': true,
+            'nom-dropdown-animate-top-show': true,
           },
           ref: (c) => {
             that.popup = c
@@ -49,7 +50,11 @@ class Dropdown extends Component {
             items: items,
           },
           onClick: (args) => {
-            args.sender.hide()
+            that.popup.addClass('nom-dropdown-animate-top-hide')
+            setTimeout(() => {
+              args.sender.hide()
+              that.popup.removeClass('nom-dropdown-animate-top-hide')
+            }, 120)
           },
         },
       },
@@ -67,6 +72,8 @@ class Dropdown extends Component {
   }
 
   _rendered() {}
+
+  _show() {}
 }
 Dropdown.defaults = {
   tag: 'span',

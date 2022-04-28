@@ -70,7 +70,7 @@ class CascaderPopup extends Popup {
           this.removeClass(`${animateName}-hide`)
           this.addClass(`${animateName}-show`)
         }
-      }, 120)
+      }, 160)
     } else {
       this.hide()
     }

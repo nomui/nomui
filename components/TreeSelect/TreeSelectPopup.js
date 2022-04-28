@@ -104,7 +104,7 @@ class TreeSelectPopup extends Popup {
     setTimeout(() => {
       this.hide()
       this.removeClass(animateName)
-    }, 120)
+    }, 160)
   }
 
   _rendered() {
