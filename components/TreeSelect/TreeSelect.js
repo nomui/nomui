@@ -285,6 +285,7 @@ class TreeSelect extends Field {
     if (this.props.multiple) {
       this.popup.update({
         nodeCheckable: this._getPopupNodeCheckable(),
+        animate: false,
       })
     } else {
       // 单选: 点击后即关闭popup,在onShow中更新

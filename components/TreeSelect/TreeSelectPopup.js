@@ -6,7 +6,9 @@ import { clone } from '../util/index'
 
 class TreeSelectPopup extends Popup {
   constructor(props, ...mixins) {
-    const defaults = {}
+    const defaults = {
+      animate: true,
+    }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
@@ -106,16 +108,31 @@ class TreeSelectPopup extends Popup {
   }
 
   _rendered() {
+    this.removeClass('nom-layer-animate-show')
+    if (!this.props.animate) {
+      this.props.animate = true
+      return false
+    }
     if (this.element.getAttribute('offset-y') !== '0') {
-      this.element.classList.add('nom-tree-select-animate-bottom-show')
+      this.addClass('nom-tree-select-animate-bottom-show')
     } else {
-      this.element.classList.add('nom-tree-select-animate-top-show')
+      this.addClass('nom-tree-select-animate-top-show')
     }
   }
 
   _show() {
     super._show()
     this.selectControl.searchBox && this.selectControl.searchBox.focus()
+
+    this.removeClass('nom-layer-animate-show')
+    if (!this.props.animate) {
+      return false
+    }
+    if (this.element.getAttribute('offset-y') !== '0') {
+      this.addClass('nom-tree-select-animate-bottom-show')
+    } else {
+      this.addClass('nom-tree-select-animate-top-show')
+    }
   }
 }
 

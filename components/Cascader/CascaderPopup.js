@@ -7,7 +7,7 @@ import CascaderList from './CascaderList'
 class CascaderPopup extends Popup {
   constructor(props, ...mixins) {
     const defaults = {
-      Animate: true,
+      animate: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -78,7 +78,7 @@ class CascaderPopup extends Popup {
 
   _rendered() {
     this.removeClass('nom-layer-animate-show')
-    if (!this.props.Animate) return false
+    if (!this.props.animate) return false
     if (this.element.getAttribute('offset-y') !== '0') {
       this.addClass('nom-cascader-animate-bottom-show')
     } else {

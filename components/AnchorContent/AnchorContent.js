@@ -8,7 +8,7 @@ class AnchorContent extends Component {
   _rendered() {
     const { key } = this.props
 
-    this.element.classList.add(`nom-anchor-target-${key}`)
+    this.addClass(`nom-anchor-target-${key}`)
   }
 }
 
