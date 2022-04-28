@@ -17,13 +17,15 @@ class Anchor extends Component {
       this._fixPosition()
       this._onContainerScroll()
     }
-    this.oldKey = null
+    this.currentKey = null
+    this.itemsKeyList = []
   }
 
   _config() {
     const that = this
     const { items, border, width, itemDefaults } = this.props
     const myWidth = isNumeric(width) ? `${width}px` : width
+    this.itemKeyList = this._getItemKeyList()
 
     this.setProps({
       classes: {
@@ -110,6 +112,32 @@ class Anchor extends Component {
     }
   }
 
+  scrollToItem(key) {
+    this._scrollToKey(key)
+  }
+
+  getCurrentItem() {
+    if (!this.currentKey) {
+      return this.props.items.length ? this.props.items[0].key : null
+    }
+    return this.currentKey
+  }
+
+  _getItemKeyList() {
+    const arr = []
+    function mapList(data) {
+      data.forEach(function (item) {
+        if (item.items) {
+          mapList(item.items)
+        }
+        arr.push(item.key)
+      })
+    }
+    mapList(this.props.items)
+
+    return arr
+  }
+
   scrollToKey(key) {
     this._scrollToKey(key)
   }
@@ -149,7 +177,10 @@ class Anchor extends Component {
     if (!domlist.length) return
     const list = []
     for (let i = 0; i < domlist.length; i++) {
-      if (domlist[i].offsetParent !== null) {
+      if (
+        domlist[i].offsetParent !== null &&
+        this.itemKeyList.includes(domlist[i].getAttribute('anchor-key'))
+      ) {
         list.push(domlist[i])
       }
     }
@@ -167,9 +198,9 @@ class Anchor extends Component {
       }
     }
 
-    const result = list[current].getAttribute('anchor-key')
+    const result = list[current] ? list[current].getAttribute('anchor-key') : null
 
-    this._activeAnchor(result)
+    result && this._activeAnchor(result)
   }
 
   _activeAnchor(key) {
@@ -177,10 +208,10 @@ class Anchor extends Component {
       scrollIntoView: false,
     })
 
-    if (this.oldKey && key !== this.oldKey && this.props.onChange) {
+    if (this.currentKey && key !== this.currentKey && this.props.onChange) {
       this._callHandler(this.props.onChange, { key: key })
     }
-    this.oldKey = key
+    this.currentKey = key
   }
 
   _remove() {
