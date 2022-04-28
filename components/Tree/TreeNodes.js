@@ -51,9 +51,6 @@ class TreeNodes extends Component {
     )
 
     this.setProps({
-      classes: {
-        'nom-tree-animate-show': true,
-      },
       children: nodesProps,
       childDefaults,
       hidden: expanded === false,
@@ -76,10 +73,6 @@ class TreeNodes extends Component {
             : null,
       })
     }
-  }
-
-  _hide() {
-    console.log('123')
   }
 
   iterateNodes() {}

@@ -1,0 +1,81 @@
+.nom-expandable-animate-show {
+  -webkit-animation: nom-expandable-keyframe-show .12s linear forwards;
+  animation: nom-expandable-keyframe-show .12s linear forwards;
+}
+
+.nom-expandable-animate-hide {
+  -webkit-animation: nom-expandable-keyframe-hide .12s linear forwards;
+  animation: nom-expandable-keyframe-hide .12s linear forwards;
+}
+
+@-webkit-keyframes nom-expandable-keyframe-show {
+  0% {
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  90% {
+    max-height: 100px;
+    overflow: hidden;
+  }
+
+  to {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@keyframes nom-expandable-keyframe-show {
+  0% {
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  90% {
+    max-height: 100px;
+    overflow: hidden;
+  }
+
+  to {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@-webkit-keyframes nom-expandable-keyframe-hide {
+  0% {
+    max-height: 100px;
+    overflow: hidden;
+  }
+
+  90% {
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  to {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@keyframes nom-expandable-keyframe-hide {
+
+
+  0% {
+    max-height: 100px;
+    overflow: hidden;
+  }
+
+  90% {
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  to {
+    max-height: none;
+    overflow: visible;
+  }
+
+
+}
