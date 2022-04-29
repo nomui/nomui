@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.59](https://github.com/nomui/nomui/compare/v1.0.0-alpha.58...v1.0.0-alpha.59) (2022-04-29)
+
+
+### Features
+
+* 给List组件提供scrollIntoView配置并优化TimePicker自动滚动效果 ([90edf69](https://github.com/nomui/nomui/commit/90edf69550388d71f3d93128c761817e4d35a90c))
+* 日期时间组件在手动键入非法值时会自动清空 ([1270f5b](https://github.com/nomui/nomui/commit/1270f5b2490a3854f268bb5bb8078fdc36b0ecfe))
+* 添加组件全局搜索功能 ([712f70d](https://github.com/nomui/nomui/commit/712f70d8796c0c2f1db969289eb3527d6ebd75e1))
+* **List:** 添加点击加载更多功能 ([5f408fa](https://github.com/nomui/nomui/commit/5f408fac85f8277e79b4d09c7b84e0814472cf04))
+* Select显示隐藏增加动画效果以及Progress增加进度数值宽度配置项，Layer组件隐藏动画有bug暂时下线 ([a82d11f](https://github.com/nomui/nomui/commit/a82d11f1fb51288b46bfb7a6ef969f17da8bb996))
+
+
+### Bug Fixes
+
+* 全局搜索:修复点击组件名称没有跳转的问题 ([b2373a8](https://github.com/nomui/nomui/commit/b2373a8fe9fe49c87f296c72f3255da75ca901df))
+* 优化nomappOverflow的位置 ([eddc490](https://github.com/nomui/nomui/commit/eddc490d98c49782e5bad72a3f9b401ae5e10c30))
+* 组件全局搜索，修复弹层样式。修复bug ([2ed28a9](https://github.com/nomui/nomui/commit/2ed28a9111fb880ecacd943d7eb5e6b791e8d799))
+* **CheckboxTree:** 级联取消选中父节点 ([04a657c](https://github.com/nomui/nomui/commit/04a657c2700278997b0d1c7046c2ccf54da1f502))
+* **List:** 部分场景js报错 ([d05b2c1](https://github.com/nomui/nomui/commit/d05b2c1b5a7ab928a82e4551994ef9fac6070016))
+* **Loading:** loading点击事件阻止冒泡 ([8a15e92](https://github.com/nomui/nomui/commit/8a15e9222485af6323e8a74e3349bca27bbb99a0))
+* **Select:** 去掉多余注释代码 ([c4f041a](https://github.com/nomui/nomui/commit/c4f041ae60edceedb99bc327f8f3942fb8e96a80))
+* **Tree:** TreeSelect组件，弹窗打开扁平化数据不生效 ([5b3e671](https://github.com/nomui/nomui/commit/5b3e6717669842407f2c5a402d9077e5830a6697))
+
+
+### Docs
+
+* 案例更新 ([8cf41c8](https://github.com/nomui/nomui/commit/8cf41c8500d81ad4bc9535d97cff8b92d1bcff32))
+
 ## [1.0.0-alpha.58](https://github.com/nomui/nomui/compare/v1.0.0-alpha.57...v1.0.0-alpha.58) (2022-04-15)
 
 
