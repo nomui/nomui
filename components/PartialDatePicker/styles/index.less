@@ -6,7 +6,6 @@
   }
 }
 
-// 不允许空less文件，添加一个无用的样式保留此文件。
 .nom-partial-date-picker-popup {
   .nom-col {
     width: 60px;
@@ -24,10 +23,22 @@
     &.nom-week-list {
       width: 250px;
 
-      .nom-week-subtitle {
-        .nom-preset-muted;
+      .nom-list-item {
+        .nom-list {
+          .nom-list-content {
+            align-items: center;
 
+            .nom-list-item {
+              padding-top: 0;
+              padding-bottom: 0;
+            }
+          }
+        }
+      }
+
+      .nom-week-subtitle {
         font-family: Tahoma, Arial, 'Helvetica Neue', Helvetica, sans-serif;
+        opacity: 0.5;
       }
     }
 
@@ -36,7 +47,7 @@
     }
 
     .nom-list-item:not(.nom-week-subtitle) {
-      padding-left: 5px;
+      padding: 0.25rem;
       cursor: pointer;
       .nom-preset-hover; // 基础对象想要hover时有背景色变化，使用这个预设类
 

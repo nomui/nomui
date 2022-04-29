@@ -12,20 +12,20 @@ define([], function () {
             sticky: true,
             container: window,
             items: [
-              { text: '锚点1', key: 'div1' },
+              { text: '锚点1', key: 'div5' },
               {
                 text: '锚点2',
-                key: 'div2',
+                key: 'div6',
                 items: [
-                  { text: '锚点2-1', key: 'div2-1' },
+                  { text: '锚点2-1', key: 'div6-1' },
                   {
                     text: '锚点2-2',
-                    key: 'div2-2',
+                    key: 'div6-2',
                   },
                 ],
               },
-              { text: '锚点3', key: 'div3' },
-              { text: '锚点4', key: 'div4' },
+              { text: '锚点3', key: 'div7' },
+              { text: '锚点4', key: 'div8' },
             ],
           },
           {
@@ -33,43 +33,43 @@ define([], function () {
             items: [
               {
                 component: 'AnchorContent',
-                key: 'div1',
+                key: 'div5',
                 attrs: {
                   style: {
                     height: '500px',
                   },
                 },
-                children: 'div1',
+                children: 'div5',
               },
               {
                 component: 'AnchorContent',
-                key: 'div2',
+                key: 'div6',
                 attrs: {
                   style: {
                     height: '500px',
                   },
                 },
-                children: 'div2',
+                children: 'div6',
               },
               {
                 component: 'AnchorContent',
-                key: 'div3',
+                key: 'div7',
                 attrs: {
                   style: {
                     height: '500px',
                   },
                 },
-                children: 'div3',
+                children: 'div7',
               },
               {
                 component: 'AnchorContent',
-                key: 'div4',
+                key: 'div8',
                 attrs: {
                   style: {
                     height: '500px',
                   },
                 },
-                children: 'div4',
+                children: 'div8',
               },
             ],
           },

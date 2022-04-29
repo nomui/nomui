@@ -86,7 +86,7 @@ class PartialDatePicker extends Textbox {
                     byClick: true,
                     scrollIntoView: true,
                   },
-                  gutter: 'sm',
+                  gutter: 'xs',
                   cols: 1,
                   ref: (c) => {
                     that.yearPicker = c
@@ -118,7 +118,7 @@ class PartialDatePicker extends Textbox {
                     byClick: true,
                     scrollIntoView: true,
                   },
-                  gutter: 'sm',
+                  gutter: 'xs',
                   cols: 1,
                   ref: (c) => {
                     that.quarterPicker = c
@@ -156,7 +156,7 @@ class PartialDatePicker extends Textbox {
                     byClick: true,
                     scrollIntoView: true,
                   },
-                  gutter: 'sm',
+                  gutter: 'xs',
                   cols: 1,
                   ref: (c) => {
                     that.monthPicker = c
@@ -203,7 +203,7 @@ class PartialDatePicker extends Textbox {
                     byClick: true,
                     scrollIntoView: true,
                   },
-                  gutter: 'sm',
+                  gutter: 'xs',
                   cols: 1,
                   ref: (c) => {
                     that.weekPicker = c
@@ -357,6 +357,7 @@ class PartialDatePicker extends Textbox {
         firstDay: `${item.year}-${item.month}-${item.day}`,
         children: {
           component: 'List',
+
           items: [
             { children: `${index + 1}周` },
             {
