@@ -3177,11 +3177,14 @@ function _defineProperty2(obj, key, value) {
         this._fixPosition();
         this._onContainerScroll();
       };
+      this.currentKey = null;
+      this.itemsKeyList = [];
     }
     _config() {
       const that = this;
       const { items, border, width, itemDefaults } = this.props;
       const myWidth = isNumeric(width) ? `${width}px` : width;
+      this.itemKeyList = this._getItemKeyList();
       this.setProps({
         classes: {
           "nom-anchor-border-left": border === "left",
@@ -3251,15 +3254,35 @@ function _defineProperty2(obj, key, value) {
         }, 500);
       }
     }
+    scrollToItem(key) {
+      this._scrollToKey(key);
+    }
+    getCurrentItem() {
+      if (!this.currentKey) {
+        return this.props.items.length ? this.props.items[0].key : null;
+      }
+      return this.currentKey;
+    }
+    _getItemKeyList() {
+      const arr = [];
+      function mapList(data) {
+        data.forEach(function (item) {
+          if (item.items) {
+            mapList(item.items);
+          }
+          arr.push(item.key);
+        });
+      }
+      mapList(this.props.items);
+      return arr;
+    }
     scrollToKey(key) {
       this._scrollToKey(key);
     }
     _scrollToKey(target) {
-      const container = this.containerElem.getElementsByClassName(
-        `nom-anchor-target-${target}`
-      );
-      if (container.length) {
-        container[0].scrollIntoView({ behavior: "smooth" });
+      const ele = this.containerElem.querySelector(`[anchor-key=${target}]`);
+      if (ele) {
+        ele.scrollIntoView({ behavior: "smooth" });
       }
     }
     _fixPosition() {
@@ -3287,7 +3310,10 @@ function _defineProperty2(obj, key, value) {
       if (!domlist.length) return;
       const list = [];
       for (let i = 0; i < domlist.length; i++) {
-        if (domlist[i].offsetParent !== null) {
+        if (
+          domlist[i].offsetParent !== null &&
+          this.itemKeyList.includes(domlist[i].getAttribute("anchor-key"))
+        ) {
           list.push(domlist[i]);
         }
       }
@@ -3303,15 +3329,17 @@ function _defineProperty2(obj, key, value) {
           current = i;
         }
       }
-      const classes =
-        list[current].classList.value ||
-        Array.from(list[current].classList).join(" ");
-      const idx = classes.indexOf("target-");
-      const result = classes.slice(idx + 7);
-      this._activeAnchor(result);
+      const result = list[current]
+        ? list[current].getAttribute("anchor-key")
+        : null;
+      result && this._activeAnchor(result);
     }
     _activeAnchor(key) {
       this.menu.selectItem(key, { scrollIntoView: false });
+      if (this.currentKey && key !== this.currentKey && this.props.onChange) {
+        this._callHandler(this.props.onChange, { key: key });
+      }
+      this.currentKey = key;
     }
     _remove() {
       window.removeEventListener("scroll", this.onWindowScroll);
@@ -3327,6 +3355,7 @@ function _defineProperty2(obj, key, value) {
     itemDefaults: null,
     offset: 0,
     activeKey: null,
+    onChange: null,
   };
   Component.register(Anchor);
   class AnchorContent extends Component {
@@ -3335,7 +3364,7 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {
       const { key } = this.props;
-      this.element.classList.add(`nom-anchor-target-${key}`);
+      this.element.setAttribute("anchor-key", key);
     }
   }
   AnchorContent.defaults = { key: null };
