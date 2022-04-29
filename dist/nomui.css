@@ -8497,7 +8497,7 @@ textarea .nom-textarea {
   border-left: none;
 }
 .timepicker-group > .nom-col .nom-list-item {
-  padding-left: 0.25rem;
+  padding: 0.25rem;
   cursor: pointer;
 }
 .timepicker-group > .nom-col .nom-list-item:hover {
@@ -8559,7 +8559,7 @@ textarea .nom-textarea {
   overflow-y: auto;
 }
 .nom-date-picker-popup .timepicker-group > .nom-col .nom-list-item {
-  padding-left: 5px;
+  padding: 0.25rem;
   cursor: pointer;
 }
 .nom-date-picker-popup .timepicker-group > .nom-col .nom-list-item:hover {
@@ -9804,15 +9804,22 @@ textarea .nom-textarea {
 .nom-partial-date-picker-popup .nom-col.nom-week-list {
   width: 250px;
 }
+.nom-partial-date-picker-popup .nom-col.nom-week-list .nom-list-item .nom-list .nom-list-content {
+  align-items: center;
+}
+.nom-partial-date-picker-popup .nom-col.nom-week-list .nom-list-item .nom-list .nom-list-content .nom-list-item {
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .nom-partial-date-picker-popup .nom-col.nom-week-list .nom-week-subtitle {
-  color: var(--nom-color-text-1);
   font-family: Tahoma, Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  opacity: 0.5;
 }
 .nom-partial-date-picker-popup .nom-col:hover {
   overflow-y: auto;
 }
 .nom-partial-date-picker-popup .nom-col .nom-list-item:not(.nom-week-subtitle) {
-  padding-left: 5px;
+  padding: 0.25rem;
   cursor: pointer;
 }
 .nom-partial-date-picker-popup .nom-col .nom-list-item:not(.nom-week-subtitle):hover {

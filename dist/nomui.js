@@ -13468,7 +13468,7 @@ function _defineProperty2(obj, key, value) {
   class DateTimePickerList extends List {
     constructor(props, ...mixins) {
       const defaults = {
-        gutter: "sm",
+        gutter: "xs",
         cols: 1,
         min: "00",
         max: "59",
@@ -20600,7 +20600,7 @@ function _defineProperty2(obj, key, value) {
                       byClick: true,
                       scrollIntoView: true,
                     },
-                    gutter: "sm",
+                    gutter: "xs",
                     cols: 1,
                     ref: (c) => {
                       that.yearPicker = c;
@@ -20628,7 +20628,7 @@ function _defineProperty2(obj, key, value) {
                       byClick: true,
                       scrollIntoView: true,
                     },
-                    gutter: "sm",
+                    gutter: "xs",
                     cols: 1,
                     ref: (c) => {
                       that.quarterPicker = c;
@@ -20662,7 +20662,7 @@ function _defineProperty2(obj, key, value) {
                       byClick: true,
                       scrollIntoView: true,
                     },
-                    gutter: "sm",
+                    gutter: "xs",
                     cols: 1,
                     ref: (c) => {
                       that.monthPicker = c;
@@ -20704,7 +20704,7 @@ function _defineProperty2(obj, key, value) {
                       byClick: true,
                       scrollIntoView: true,
                     },
-                    gutter: "sm",
+                    gutter: "xs",
                     cols: 1,
                     ref: (c) => {
                       that.weekPicker = c;
@@ -24500,7 +24500,7 @@ function _defineProperty2(obj, key, value) {
   class TimePickerList extends List {
     constructor(props, ...mixins) {
       const defaults = {
-        gutter: "sm",
+        gutter: "xs",
         cols: 1,
         min: "00",
         max: "59",
