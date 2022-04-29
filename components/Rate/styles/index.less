@@ -11,15 +11,18 @@
     list-style: none;
     outline: none;
   }
+
   .nom-rate-star {
     position: relative;
     display: inline-block;
     color: inherit;
     cursor: pointer;
+    transition: all .5s;
 
     &:not(:last-child) {
       margin-right: 8px;
     }
+
     .nom-rate-star-first,
     .nom-rate-star-second {
       display: flex;
@@ -32,20 +35,31 @@
       user-select: none;
     }
   }
+
+  &.s-disabled {
+    .nom-rate-star {
+      cursor: not-allowed;
+    }
+  }
+
   .nom-rate-star-full {
     .nom-rate-star-second {
       color: inherit;
     }
   }
+
   .nom-rate-star-half {
+
     .nom-rate-star-first,
     .nom-rate-star-second {
       opacity: 1;
     }
+
     .nom-rate-star-first {
       color: inherit;
     }
   }
+
   // .nom-rate-star-zero {
   // }
   // .nom-rate-star-active {

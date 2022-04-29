@@ -143,6 +143,7 @@ class Layer extends Component {
   //     this.hide()
   //   }, 90)
   // }
+
   nomappOverflow() {
     if (!window.nomapp) return
     window.nomapp.element.style.overflow = 'hidden'

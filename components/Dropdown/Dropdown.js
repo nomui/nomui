@@ -41,6 +41,15 @@ class Dropdown extends Component {
           ref: (c) => {
             that.popup = c
           },
+          _rendered() {
+            if (this.element.getAttribute('offset-y') !== '0') {
+              that.props.animateName = 'bottom'
+              this.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
+            } else {
+              that.props.animateName = 'top'
+              this.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
+            }
+          },
           children: {
             component: 'Menu',
             itemDefaults: {
@@ -49,7 +58,19 @@ class Dropdown extends Component {
             items: items,
           },
           onClick: (args) => {
-            args.sender.hide()
+            that.popup.removeClass([`nom-dropdown-animate-${that.props.animateName}-show`])
+            if (that.popup.element.getAttribute('offset-y') !== '0') {
+              that.props.animateName = 'bottom'
+            } else {
+              that.props.animateName = 'top'
+            }
+
+            that.popup.addClass([`nom-dropdown-animate-${that.props.animateName}-hide`])
+            setTimeout(() => {
+              args.sender.hide()
+              that.popup.removeClass([`nom-dropdown-animate-${that.props.animateName}-hide`])
+              that.popup.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
+            }, 160)
           },
         },
       },
@@ -65,10 +86,9 @@ class Dropdown extends Component {
 
     super._config()
   }
-
-  _rendered() {}
 }
 Dropdown.defaults = {
+  animateName: 'top',
   tag: 'span',
   triggerAction: 'click',
   rightIcon: 'down',

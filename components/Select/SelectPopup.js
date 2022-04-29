@@ -78,9 +78,9 @@ class SelectPopup extends Popup {
 
   _rendered() {
     if (this.element.getAttribute('offset-y') !== '0') {
-      this.element.classList.add('nom-select-animate-bottom-show')
+      this.addClass('nom-select-animate-bottom-show')
     } else {
-      this.element.classList.add('nom-select-animate-top-show')
+      this.addClass('nom-select-animate-top-show')
     }
   }
 
@@ -107,7 +107,7 @@ class SelectPopup extends Popup {
     setTimeout(() => {
       this.hide()
       this.removeClass(animateName)
-    }, 120)
+    }, 160)
   }
 }
 

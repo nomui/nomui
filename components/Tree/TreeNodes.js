@@ -49,6 +49,7 @@ class TreeNodes extends Component {
       },
       this.tree.props.nodeDefaults,
     )
+
     this.setProps({
       children: nodesProps,
       childDefaults,

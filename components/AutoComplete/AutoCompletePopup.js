@@ -122,9 +122,28 @@ class AutoCompletePopup extends Popup {
     // super._config()
   }
 
+  animateHide() {
+    let animateName
+    if (this.element.getAttribute('offset-y') !== '0') {
+      animateName = 'nom-auto-complete-animate-bottom-hide'
+    } else {
+      animateName = 'nom-auto-complete-animate-top-hide'
+    }
+    this.addClass(animateName)
+    setTimeout(() => {
+      this.hide()
+      this.removeClass(animateName)
+    }, 160)
+  }
+
   _show() {
     super._show()
     this.autoCompleteControl.searchRef && this.autoCompleteControl.searchRef.focus()
+    if (this.element.getAttribute('offset-y') !== '0') {
+      this.addClass('nom-auto-complete-animate-bottom-show')
+    } else {
+      this.addClass('nom-auto-complete-animate-top-show')
+    }
   }
 
   _getOptionList() {

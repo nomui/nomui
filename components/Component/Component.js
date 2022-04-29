@@ -466,8 +466,10 @@ class Component {
     })
 
     if (this.parent && this.parent.props.childDefaults) {
-      const { normalizedProps: childDefaultsProps, mixins: childDefaultsMixins } =
-        this._normalizeProps(this.parent.props.childDefaults)
+      const {
+        normalizedProps: childDefaultsProps,
+        mixins: childDefaultsMixins,
+      } = this._normalizeProps(this.parent.props.childDefaults)
       normalizedProps = Component.extendProps(childDefaultsProps, normalizedProps)
       mixins = [...childDefaultsMixins, ...mixins]
     }
@@ -625,9 +627,11 @@ class Component {
     if (expandTarget !== null && expandTarget !== undefined) {
       if (Array.isArray(expandTarget)) {
         expandTarget.forEach((t) => {
+          // t.addClass('nom-expandable-animate-show')
           t.show && t.show()
         })
       } else {
+        // expandTarget.addClass('nom-expandable-animate-show')
         expandTarget.show && expandTarget.show()
       }
     }
@@ -649,9 +653,21 @@ class Component {
       if (Array.isArray(expandTarget)) {
         expandTarget.forEach((t) => {
           t.hide && t.hide()
+          // t.addClass('nom-expandable-animate-hide')
+          // setTimeout(() => {
+          //   t.hide && t.hide()
+          //   t.removeClass('nom-expandable-animate-show')
+          //   t.removeClass('nom-expandable-animate-hide')
+          // }, 120)
         })
       } else {
         expandTarget.hide && expandTarget.hide()
+        // expandTarget.addClass('nom-expandable-animate-hide')
+        // setTimeout(() => {
+        //   expandTarget.hide && expandTarget.hide()
+        //   expandTarget.removeClass('nom-expandable-animate-show')
+        //   expandTarget.removeClass('nom-expandable-animate-hide')
+        // }, 120)
       }
     }
     this._expandIndicator && this._expandIndicator.collapse()
