@@ -1,10 +1,19 @@
 .nom-mask-info-field {
-  > .nom-field-content {
-    > .nom-control {
+  >.nom-field-content {
+    >.nom-control {
       min-height: @input-height-base;
       padding: @padding-y-base 0;
       font-size: 1rem;
       line-height: @line-height-computed;
+
+      .nom-icon.p-type-eye {
+        transition: all .3s;
+
+        &:hover {
+          color: var(--nom-color-primary);
+          transform: scale(1.5);
+        }
+      }
     }
   }
 }

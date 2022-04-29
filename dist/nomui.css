@@ -4399,7 +4399,7 @@ body {
   --nom-checkbox-border-color: var(--nom-border-color);
   --nom-checkbox-border-radius: 1px;
   --nom-checkbox-checker-color: var(--nom-color-white);
-  --nom-checkbox-part-checker-color: var(--nom-color-text-2);
+  --nom-checkbox-part-checker-color: var(--nom-color-primary);
   --nom-checkbox-part-checker-border-radius: 0;
   --nom-checkbox-checked-bg: var(--nom-color-primary);
   --nom-checkbox-checked-border-color: var(--nom-checkbox-checked-bg);
@@ -4603,6 +4603,70 @@ body .nom-always-dark {
   --nom-color-bg-2: #35363c;
   --nom-color-bg-3: #43444a;
   --nom-color-bg-4: #4f5159;
+}
+.nom-expandable-animate-show {
+  -webkit-animation: nom-expandable-keyframe-show 0.12s linear forwards;
+  animation: nom-expandable-keyframe-show 0.12s linear forwards;
+}
+.nom-expandable-animate-hide {
+  -webkit-animation: nom-expandable-keyframe-hide 0.12s linear forwards;
+  animation: nom-expandable-keyframe-hide 0.12s linear forwards;
+}
+@-webkit-keyframes nom-expandable-keyframe-show {
+  0% {
+    max-height: 0;
+    overflow: hidden;
+  }
+  90% {
+    max-height: 100px;
+    overflow: hidden;
+  }
+  to {
+    max-height: none;
+    overflow: auto;
+  }
+}
+@keyframes nom-expandable-keyframe-show {
+  0% {
+    max-height: 0;
+    overflow: hidden;
+  }
+  90% {
+    max-height: 100px;
+    overflow: hidden;
+  }
+  to {
+    max-height: none;
+    overflow: auto;
+  }
+}
+@-webkit-keyframes nom-expandable-keyframe-hide {
+  0% {
+    max-height: 100px;
+    overflow: hidden;
+  }
+  90% {
+    max-height: 0;
+    overflow: hidden;
+  }
+  to {
+    max-height: none;
+    overflow: auto;
+  }
+}
+@keyframes nom-expandable-keyframe-hide {
+  0% {
+    max-height: 100px;
+    overflow: hidden;
+  }
+  90% {
+    max-height: 0;
+    overflow: hidden;
+  }
+  to {
+    max-height: none;
+    overflow: auto;
+  }
 }
 .markdown-article {
   max-width: 1300px;
@@ -7393,6 +7457,7 @@ table.nom-table.p-bordered {
   border-color: var(--nom-color-border);
   border-radius: 2px;
   cursor: pointer;
+  transition: all 0.3s;
   user-select: none;
   zoom: 1;
   -webkit-user-drag: none;
@@ -7617,10 +7682,14 @@ fieldset[disabled] a.nom-button {
   border: 1px solid var(--nom-color-border);
   border-radius: var(--nom-border-radius);
   outline: none;
+  transition: all 0.3s;
 }
 .nom-input:focus {
   border-color: #66afe9;
   outline: 0;
+}
+.nom-input:hover {
+  border-color: var(--nom-color-primary);
 }
 .nom-input::-ms-expand {
   background-color: transparent;
@@ -7637,6 +7706,7 @@ fieldset[disabled] .nom-input {
 }
 .nom-input[disabled],
 fieldset[disabled] .nom-input {
+  border-color: var(--nom-color-border);
   cursor: not-allowed;
 }
 textarea .nom-input {
@@ -7649,8 +7719,8 @@ textarea .nom-input {
 }
 .nom-textbox > .nom-field-content .nom-control {
   position: relative;
-  border-radius: var(--nom-border-radius);
   background-color: var(--nom-input-bg);
+  border-radius: var(--nom-border-radius);
 }
 .nom-textbox.s-invalid.p-plain > .nom-field-content > .nom-control > .nom-input {
   border-color: var(--nom-color-danger);
@@ -7679,8 +7749,12 @@ textarea .nom-input {
   padding: 0 0.75rem;
   border: 1px solid var(--nom-color-border);
   border-radius: var(--nom-border-radius);
+  transition: all 0.3s;
 }
 .nom-textbox .nom-textbox-affix-wrapper:focus-within {
+  border-color: var(--nom-color-primary);
+}
+.nom-textbox .nom-textbox-affix-wrapper:hover {
   border-color: var(--nom-color-primary);
 }
 .nom-textbox .nom-textbox-affix-wrapper .nom-input-affix {
@@ -7702,13 +7776,14 @@ textarea .nom-input {
 .nom-textbox .nom-textbox-affix-wrapper .nom-input {
   height: calc(1.428571429rem + (0.375rem * 2));
   padding: 0;
+  background: transparent;
   border: none;
   outline: none;
-  background: transparent;
 }
 .nom-textbox.s-disabled .nom-textbox-affix-wrapper,
 .nom-textbox[readonly] .nom-textbox-affix-wrapper {
   background: var(--nom-input-bg-disabled);
+  border-color: var(--nom-color-border);
 }
 .nom-textbox .nom-textbox-left-icon,
 .nom-textbox .nom-textbox-right-icon {
@@ -7718,11 +7793,13 @@ textarea .nom-input {
 .nom-date-picker[readonly] .nom-textbox-affix-wrapper,
 .nom-partial-date-picker[readonly] .nom-textbox-affix-wrapper {
   background: transparent;
+  border-color: var(--nom-color-border);
 }
 .nom-time-picker.s-disabled .nom-textbox-affix-wrapper,
 .nom-date-picker.s-disabled .nom-textbox-affix-wrapper,
 .nom-partial-date-picker.s-disabled .nom-textbox-affix-wrapper {
   background: var(--nom-input-bg-disabled);
+  border-color: var(--nom-color-border);
 }
 .nom-time-picker .nom-input[readonly]:not([disabled]),
 .nom-date-picker .nom-input[readonly]:not([disabled]),
@@ -7741,10 +7818,14 @@ textarea .nom-input {
   background-image: none;
   border: 1px solid var(--nom-border-color);
   border-radius: var(--nom-border-radius);
+  transition: all 0.3s;
 }
 .nom-textarea:focus {
   border-color: #66afe9;
   outline: 0;
+}
+.nom-textarea:hover {
+  border-color: var(--nom-color-primary-hover);
 }
 .nom-textarea::-ms-expand {
   background-color: transparent;
@@ -7754,10 +7835,12 @@ textarea .nom-input {
 .nom-textarea[readonly],
 fieldset[disabled] .nom-textarea {
   background-color: var(--nom-input-bg-disabled);
+  border-color: var(--nom-border-color);
   opacity: 1;
 }
 .nom-textarea[disabled],
 fieldset[disabled] .nom-textarea {
+  border-color: var(--nom-border-color);
   cursor: not-allowed;
 }
 textarea .nom-textarea {
@@ -7786,6 +7869,21 @@ textarea .nom-textarea {
 }
 .s-disabled.nom-checkbox > .nom-field-content > .nom-control > input + span {
   background-color: var(--nom-input-bg-disabled);
+  border-color: var(--nom-checkbox-border-color) !important;
+}
+.nom-checkbox > .nom-field-content > .nom-control i {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  display: none;
+  width: calc(1rem + 2px);
+  height: calc(1rem + 2px);
+  background-color: var(--nom-checkbox-checked-bg);
+  border: 1px solid var(--nom-checkbox-checked-border-color);
+  border-radius: var(--nom-checkbox-border-radius);
+  -webkit-animation: nom-checkbox-keyframe-show 0.36s ease-in-out backwards;
+  animation: nom-checkbox-keyframe-show 0.36s ease-in-out backwards;
+  content: "";
 }
 .nom-checkbox > .nom-field-content > .nom-control > input {
   position: absolute;
@@ -7797,15 +7895,18 @@ textarea .nom-textarea {
   position: absolute;
   top: 2px;
   left: 0;
+  z-index: 9;
   width: calc(1rem + 2px);
   height: calc(1rem + 2px);
   background-color: var(--nom-checkbox-bg);
   border: 1px solid var(--nom-checkbox-border-color);
   border-radius: var(--nom-checkbox-border-radius);
   box-shadow: var(--nom-checkbox-checker-box-shadow);
+  transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
 }
 .nom-checkbox > .nom-field-content > .nom-control > input + span:hover {
   background-color: var(--nom-checkbox-bg-hover);
+  border-color: var(--nom-checkbox-checked-border-color);
 }
 .s-checked-part.nom-checkbox > .nom-field-content > .nom-control > input + span::after {
   position: absolute;
@@ -7819,6 +7920,7 @@ textarea .nom-textarea {
   box-shadow: var(--nom-checkbox-checker-box-shadow);
   -webkit-transform: translate(-50%, -50%) scale(1);
   transform: translate(-50%, -50%) scale(1);
+  transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
   content: ' ';
 }
 .nom-checkbox > .nom-field-content > .nom-control > input:checked + span {
@@ -7838,11 +7940,14 @@ textarea .nom-textarea {
   margin-top: -6px;
   margin-left: -2px;
   border: solid var(--nom-checkbox-checker-color);
-  border-width: 0 2px 2px 0 /*rtl:ignore*/ !important;
+  border-width: 0 2px 2px 0 !important;
   box-shadow: var(--nom-checkbox-checker-box-shadow);
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg) /*rtl:ignore*/;
+  -webkit-animation: nom-checkbox-keyframe-bounce-in 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
+  animation: nom-checkbox-keyframe-bounce-in 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
   content: '';
+}
+.nom-checkbox > .nom-field-content > .nom-control > input:checked ~ i {
+  display: block;
 }
 .nom-checkbox > .nom-field-content > .nom-control > .checkbox-text {
   display: inline-block;
@@ -7853,6 +7958,60 @@ textarea .nom-textarea {
 .nom-checkbox > .nom-field-content > .nom-control > .checkbox-text.checkbox-text-none {
   width: 20px;
 }
+@-webkit-keyframes nom-checkbox-keyframe-bounce-in {
+  0% {
+    -webkit-transform: scale(0.6) rotate(45deg);
+    transform: scale(0.6) rotate(45deg);
+    opacity: 0;
+  }
+  70% {
+    -webkit-transform: scale(1.03) rotate(45deg);
+    transform: scale(1.03) rotate(45deg);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1) rotate(45deg);
+    transform: scale(1) rotate(45deg);
+    opacity: 1;
+  }
+}
+@keyframes nom-checkbox-keyframe-bounce-in {
+  0% {
+    -webkit-transform: scale(0.6) rotate(45deg);
+    transform: scale(0.6) rotate(45deg);
+    opacity: 0;
+  }
+  70% {
+    -webkit-transform: scale(1.03) rotate(45deg);
+    transform: scale(1.03) rotate(45deg);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1) rotate(45deg);
+    transform: scale(1) rotate(45deg);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-checkbox-keyframe-show {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+@keyframes nom-checkbox-keyframe-show {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
 .nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content {
   margin: -0.5rem -0.5rem;
 }
@@ -7860,6 +8019,7 @@ textarea .nom-textarea {
   padding: 0.5rem 0.5rem;
 }
 .nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label {
+  position: relative;
   display: inline-flex;
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
@@ -7869,8 +8029,23 @@ textarea .nom-textarea {
   cursor: pointer;
   transition: all 0.3s;
 }
+.nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label i {
+  position: absolute;
+  display: none;
+  width: calc(1rem + 2px);
+  height: calc(1rem + 2px);
+  margin-top: calc((1em * 1.428571429 - 1em - 2px)/2);
+  background-color: var(--nom-checkbox-checked-bg);
+  border: 1px solid var(--nom-checkbox-checked-border-color);
+  border-radius: var(--nom-checkbox-border-radius);
+  border-radius: 50%;
+  -webkit-animation: nom-radio-list-keyframe-show 0.36s ease-in-out backwards;
+  animation: nom-radio-list-keyframe-show 0.36s ease-in-out backwards;
+  content: "";
+}
 .nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label > span.radio {
   position: relative;
+  z-index: 9;
   width: calc(1rem + 2px);
   min-width: calc(1rem + 2px);
   height: calc(1rem + 2px);
@@ -7881,9 +8056,11 @@ textarea .nom-textarea {
   border: 1px solid var(--nom-checkbox-border-color);
   border-radius: 50% !important;
   box-shadow: var(--nom-checkbox-box-shadow);
+  transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
 }
 .nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label > span.radio:hover {
   background-color: var(--nom-checkbox-bg-hover);
+  border-color: var(--nom-checkbox-checked-border-color);
 }
 .nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected > span.radio {
   background-color: var(--nom-checkbox-checked-bg);
@@ -7902,7 +8079,28 @@ textarea .nom-textarea {
   border: solid var(--nom-checkbox-checker-color);
   border-radius: 100% !important;
   box-shadow: var(--nom-checkbox-checker-box-shadow);
+  -webkit-animation: nom-radio-list-keyframe-bounce-in 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
+  animation: nom-radio-list-keyframe-bounce-in 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
   content: '';
+}
+.nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected i {
+  display: block;
+}
+.nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list label.s-disabled {
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+.nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list label.s-disabled span.radio {
+  background-color: var(--nom-input-bg-disabled);
+  border-color: var(--nom-checkbox-border-color) !important;
+}
+.nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list.s-disabled label {
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+.nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list.s-disabled label span.radio {
+  background-color: var(--nom-input-bg-disabled);
+  border-color: var(--nom-checkbox-border-color) !important;
 }
 .nom-radio-list.p-uistyle-button > .nom-field-content > .nom-list > .nom-list-content {
   display: inline-flex;
@@ -7935,6 +8133,68 @@ textarea .nom-textarea {
 .nom-radio-list.p-uistyle-button > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected {
   color: var(--nom-color-primary);
   border-color: var(--nom-color-primary);
+}
+.nom-radio-list.p-uistyle-button > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper label:hover {
+  color: var(--nom-color-primary);
+}
+.nom-radio-list.p-uistyle-button > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper label.s-disabled {
+  color: initial;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+@-webkit-keyframes nom-radio-list-keyframe-bounce-in {
+  0% {
+    -webkit-transform: scale(0.6);
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    -webkit-transform: scale(1.03);
+    transform: scale(1.03);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes nom-radio-list-keyframe-bounce-in {
+  0% {
+    -webkit-transform: scale(0.6);
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    -webkit-transform: scale(1.03);
+    transform: scale(1.03);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-radio-list-keyframe-show {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+@keyframes nom-radio-list-keyframe-show {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
 }
 .nom-result {
   padding: 48px 32px;
@@ -7990,7 +8250,24 @@ textarea .nom-textarea {
   padding: 24px 40px;
   background-color: var(--nom-result-content-bg);
 }
-.nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label {
+.nom-checkbox-list .s-disabled .nom-list-item {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.nom-checkbox-list .s-disabled .nom-list-item span.checkbox {
+  background-color: var(--nom-input-bg-disabled);
+  border-color: var(--nom-checkbox-border-color) !important;
+}
+.nom-checkbox-list .s-disabled.nom-list-item {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.nom-checkbox-list .s-disabled.nom-list-item span.checkbox {
+  background-color: var(--nom-input-bg-disabled);
+  border-color: var(--nom-checkbox-border-color) !important;
+}
+.nom-checkbox-list .nom-list-item-wrapper label {
+  position: relative;
   display: inline-flex;
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
@@ -7999,8 +8276,22 @@ textarea .nom-textarea {
   cursor: pointer;
   transition: all 0.3s;
 }
-.nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label > span.checkbox {
+.nom-checkbox-list .nom-list-item-wrapper label i {
+  position: absolute;
+  display: none;
+  width: calc(1rem + 2px);
+  height: calc(1rem + 2px);
+  margin-top: calc((1em * 1.428571429 - 1em)/2 + 0px);
+  background-color: var(--nom-checkbox-checked-bg);
+  border: 1px solid var(--nom-checkbox-checked-border-color);
+  border-radius: var(--nom-checkbox-border-radius);
+  -webkit-animation: nom-checkbox-keyframe-show 0.36s ease-in-out backwards;
+  animation: nom-checkbox-keyframe-show 0.36s ease-in-out backwards;
+  content: "";
+}
+.nom-checkbox-list .nom-list-item-wrapper label span.checkbox {
   position: relative;
+  z-index: 9;
   width: calc(1rem + 2px);
   min-width: calc(1rem + 2px);
   height: calc(1rem + 2px);
@@ -8010,18 +8301,20 @@ textarea .nom-textarea {
   border: 1px solid var(--nom-checkbox-border-color);
   border-radius: var(--nom-checkbox-border-radius);
   box-shadow: var(--nom-checkbox-box-shadow);
+  transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
 }
-.nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label > span.checkbox:hover {
+.nom-checkbox-list .nom-list-item-wrapper label span.checkbox:hover {
   background-color: var(--nom-checkbox-bg-hover);
+  border-color: var(--nom-checkbox-checked-border-color);
 }
-.nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected > span.checkbox {
+.nom-checkbox-list .nom-list-item-wrapper label.s-selected span.checkbox {
   background-color: var(--nom-checkbox-checked-bg);
   border-color: var(--nom-checkbox-checked-border-color);
 }
-.nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected > span.checkbox:hover {
+.nom-checkbox-list .nom-list-item-wrapper label.s-selected span.checkbox:hover {
   background-color: var(--nom-checkbox-checked-bg-hover);
 }
-.nom-checkbox-list > .nom-field-content > .nom-list > .nom-list-content > .nom-list-item-wrapper > label.s-selected > span.checkbox::after {
+.nom-checkbox-list .nom-list-item-wrapper label.s-selected span.checkbox::after {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -8034,9 +8327,66 @@ textarea .nom-textarea {
   border: solid var(--nom-checkbox-checker-color);
   border-width: 0 2px 2px 0 !important;
   box-shadow: var(--nom-checkbox-checker-box-shadow);
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
+  -webkit-animation: nom-checkbox-list-keyframe-bounce-in 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
+  animation: nom-checkbox-list-keyframe-bounce-in 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
   content: '';
+}
+.nom-checkbox-list .nom-list-item-wrapper label.s-selected i {
+  display: block;
+}
+@-webkit-keyframes nom-checkbox-list-keyframe-bounce-in {
+  0% {
+    -webkit-transform: scale(0.6) rotate(45deg);
+    transform: scale(0.6) rotate(45deg);
+    opacity: 0;
+  }
+  70% {
+    -webkit-transform: scale(1.03) rotate(45deg);
+    transform: scale(1.03) rotate(45deg);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1) rotate(45deg);
+    transform: scale(1) rotate(45deg);
+    opacity: 1;
+  }
+}
+@keyframes nom-checkbox-list-keyframe-bounce-in {
+  0% {
+    -webkit-transform: scale(0.6) rotate(45deg);
+    transform: scale(0.6) rotate(45deg);
+    opacity: 0;
+  }
+  70% {
+    -webkit-transform: scale(1.03) rotate(45deg);
+    transform: scale(1.03) rotate(45deg);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1) rotate(45deg);
+    transform: scale(1) rotate(45deg);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-checkbox-list-keyframe-show {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+@keyframes nom-checkbox-list-keyframe-show {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
 }
 .nom-select.p-label-align-right > .nom-field-label + .nom-field-content {
   width: 0;
@@ -8051,6 +8401,7 @@ textarea .nom-textarea {
   border: 1px solid var(--nom-border-color);
   border-radius: var(--nom-border-radius);
   cursor: pointer;
+  transition: all 0.3s;
 }
 .nom-select > .nom-field-content .nom-control:not(.s-disabled):hover {
   border-color: var(--nom-color-primary);
@@ -8105,7 +8456,7 @@ textarea .nom-textarea {
 }
 .s-disabled.nom-select > .nom-field-content .nom-control {
   background-color: var(--nom-input-bg-disabled);
-  cursor: not-allowed;
+  cursor: not-allowed !important;
   opacity: 1;
 }
 .nom-select-popup > .nom-layout {
@@ -8135,6 +8486,9 @@ textarea .nom-textarea {
 .nom-select-list .nom-list-item.s-selected[disabled] {
   background-color: var(--nom-color-primary-disabled);
 }
+.nom-select-list .nom-list-item.s-disabled:hover {
+  cursor: not-allowed;
+}
 .nom-select-checker .nom-list-item {
   position: relative;
   padding: 5px 30px;
@@ -8158,25 +8512,25 @@ textarea .nom-textarea {
   content: '\E632';
 }
 .nom-select-animate-top-show {
-  -webkit-animation: nom-select-keyframe-top-show 0.12s ease forwards;
-  animation: nom-select-keyframe-top-show 0.12s ease forwards;
+  -webkit-animation: nom-select-keyframe-top-show 0.16s linear forwards;
+  animation: nom-select-keyframe-top-show 0.16s linear forwards;
 }
 .nom-select-animate-bottom-show {
-  -webkit-animation: nom-select-keyframe-bottom-show 0.12s ease forwards;
-  animation: nom-select-keyframe-bottom-show 0.12s ease forwards;
+  -webkit-animation: nom-select-keyframe-bottom-show 0.16s linear forwards;
+  animation: nom-select-keyframe-bottom-show 0.16s linear forwards;
 }
 .nom-select-animate-top-hide {
-  -webkit-animation: nom-select-keyframe-top-hide 0.12s ease forwards;
-  animation: nom-select-keyframe-top-hide 0.12s ease forwards;
+  -webkit-animation: nom-select-keyframe-top-hide 0.16s linear forwards;
+  animation: nom-select-keyframe-top-hide 0.16s linear forwards;
 }
 .nom-select-animate-bottom-hide {
-  -webkit-animation: nom-select-keyframe-bottom-hide 0.12s ease forwards;
-  animation: nom-select-keyframe-bottom-hide 0.12s ease forwards;
+  -webkit-animation: nom-select-keyframe-bottom-hide 0.16s linear forwards;
+  animation: nom-select-keyframe-bottom-hide 0.16s linear forwards;
 }
 @-webkit-keyframes nom-select-keyframe-top-show {
   0% {
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
     opacity: 0;
   }
   to {
@@ -8187,8 +8541,8 @@ textarea .nom-textarea {
 }
 @keyframes nom-select-keyframe-top-show {
   0% {
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
     opacity: 0;
   }
   to {
@@ -8199,8 +8553,8 @@ textarea .nom-textarea {
 }
 @-webkit-keyframes nom-select-keyframe-bottom-show {
   0% {
-    -webkit-transform: translateY(50%);
-    transform: translateY(50%);
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
     opacity: 0;
   }
   to {
@@ -8211,8 +8565,8 @@ textarea .nom-textarea {
 }
 @keyframes nom-select-keyframe-bottom-show {
   0% {
-    -webkit-transform: translateY(50%);
-    transform: translateY(50%);
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
     opacity: 0;
   }
   to {
@@ -8228,8 +8582,8 @@ textarea .nom-textarea {
     opacity: 1;
   }
   to {
-    -webkit-transform: translateY(-25%);
-    transform: translateY(-25%);
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
     opacity: 0;
   }
 }
@@ -8240,8 +8594,8 @@ textarea .nom-textarea {
     opacity: 1;
   }
   to {
-    -webkit-transform: translateY(-25%);
-    transform: translateY(-25%);
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
     opacity: 0;
   }
 }
@@ -8252,8 +8606,8 @@ textarea .nom-textarea {
     opacity: 1;
   }
   to {
-    -webkit-transform: translateY(25%);
-    transform: translateY(25%);
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
     opacity: 0;
   }
 }
@@ -8264,8 +8618,8 @@ textarea .nom-textarea {
     opacity: 1;
   }
   to {
-    -webkit-transform: translateY(25%);
-    transform: translateY(25%);
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
     opacity: 0;
   }
 }
@@ -8710,8 +9064,8 @@ textarea .nom-textarea {
 }
 .nom-field > .nom-field-content .nom-field-clear-handler {
   visibility: visible;
-  opacity: 1;
   cursor: pointer;
+  opacity: 1;
 }
 .nom-field > .nom-field-content > .nom-control:focus-within {
   border-color: var(--nom-color-primary);
@@ -9294,6 +9648,9 @@ textarea .nom-textarea {
   border-radius: var(--nom-border-radius);
   cursor: pointer;
 }
+.nom-tree-select > .nom-field-content .nom-control:hover {
+  border-color: var(--nom-color-primary);
+}
 .nom-tree-select > .nom-field-content .nom-control:focus-within {
   border-color: var(--nom-color-primary);
 }
@@ -9341,7 +9698,120 @@ textarea .nom-textarea {
 .nom-tree-select-content .nom-tag {
   margin-right: 0.5rem;
 }
+.nom-tree-select-animate-top-show {
+  -webkit-animation: nom-tree-select-keyframe-top-show 0.16s linear forwards;
+  animation: nom-tree-select-keyframe-top-show 0.16s linear forwards;
+}
+.nom-tree-select-animate-bottom-show {
+  -webkit-animation: nom-tree-select-keyframe-bottom-show 0.16s linear forwards;
+  animation: nom-tree-select-keyframe-bottom-show 0.16s linear forwards;
+}
+.nom-tree-select-animate-top-hide {
+  -webkit-animation: nom-tree-select-keyframe-top-hide 0.16s linear forwards;
+  animation: nom-tree-select-keyframe-top-hide 0.16s linear forwards;
+}
+.nom-tree-select-animate-bottom-hide {
+  -webkit-animation: nom-tree-select-keyframe-bottom-hide 0.16s linear forwards;
+  animation: nom-tree-select-keyframe-bottom-hide 0.16s linear forwards;
+}
+@-webkit-keyframes nom-tree-select-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-tree-select-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-tree-select-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-tree-select-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-tree-select-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+}
+@keyframes nom-tree-select-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-tree-select-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
+    opacity: 0;
+  }
+}
+@keyframes nom-tree-select-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
+    opacity: 0;
+  }
+}
 .nom-switch > .nom-field-content .nom-switch-control {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9352,9 +9822,24 @@ textarea .nom-textarea {
   border-radius: 100px;
   outline: none;
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
   min-width: 64px;
   height: 32px;
   font-size: 1rem;
+}
+.nom-switch > .nom-field-content .nom-switch-control i {
+  position: absolute;
+  display: block;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 var(--nom-color-primary);
+  opacity: 0.2;
+  -webkit-animation: fadeeffect 2s cubic-bezier(0.08, 0.82, 0.17, 1), waveeffect 0.4s cubic-bezier(0.08, 0.82, 0.17, 1);
+  animation: fadeEffect 2s cubic-bezier(0.08, 0.82, 0.17, 1), waveEffect 0.4s cubic-bezier(0.08, 0.82, 0.17, 1);
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  content: "";
+  pointer-events: none;
+  inset: 0;
 }
 .nom-switch > .nom-field-content .nom-switch-control.nom-switch-active {
   background-color: var(--nom-color-primary);
@@ -9372,6 +9857,22 @@ textarea .nom-textarea {
   height: calc(var(--nom-switch-height-base) - 4px);
   background-color: var(--nom-switch-indicator-bg-color);
   border-radius: 50%;
+}
+.nom-switch > .nom-field-content .nom-switch-control .nom-switch-indicator-left {
+  -webkit-animation: nom-switch-keyframe-right-show 0.24s linear forwards;
+  animation: nom-switch-keyframe-right-show 0.24s linear forwards;
+}
+.nom-switch > .nom-field-content .nom-switch-control .nom-switch-indicator-right {
+  -webkit-animation: nom-switch-keyframe-left-show 0.24s linear forwards;
+  animation: nom-switch-keyframe-left-show 0.24s linear forwards;
+}
+.nom-switch > .nom-field-content .nom-switch-control .nom-switch-text-left {
+  -webkit-animation: nom-switch-keyframe-right-show 0.24s linear forwards;
+  animation: nom-switch-keyframe-right-show 0.24s linear forwards;
+}
+.nom-switch > .nom-field-content .nom-switch-control .nom-switch-text-right {
+  -webkit-animation: nom-switch-keyframe-left-show 0.24s linear forwards;
+  animation: nom-switch-keyframe-left-show 0.24s linear forwards;
 }
 .nom-switch > .nom-field-content .nom-switch-control .nom-switch-indicator {
   width: calc(32px - 4px);
@@ -9422,17 +9923,99 @@ textarea .nom-textarea {
 .nom-switch.s-disabled > .nom-field-content .nom-switch-active {
   background-color: var(--nom-color-primary-disabled) !important;
 }
+@-webkit-keyframes waveEffect {
+  to {
+    box-shadow: 0 0 0 6px var(--nom-color-primary);
+  }
+}
+@keyframes waveEffect {
+  to {
+    box-shadow: 0 0 0 6px var(--nom-color-primary);
+  }
+}
+@-webkit-keyframes fadeEffect {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fadeEffect {
+  to {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-switch-keyframe-left-show {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-switch-keyframe-left-show {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-switch-keyframe-right-show {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-switch-keyframe-right-show {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
 .nom-mask-info .nom-icon.p-type-eye {
   position: relative;
   top: 2px;
   color: var(--nom-control-icon-color);
   cursor: pointer;
 }
+.nom-mask-info .p-type-eye {
+  transition: all 0.3s;
+}
+.nom-mask-info .p-type-eye:hover {
+  color: var(--nom-color-primary);
+  transform: scale(1.5);
+}
 .nom-mask-info-field > .nom-field-content > .nom-control {
   min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   padding: 0.375rem 0;
   font-size: 1rem;
   line-height: 1.42857143rem;
+}
+.nom-mask-info-field > .nom-field-content > .nom-control .nom-icon.p-type-eye {
+  transition: all 0.3s;
+}
+.nom-mask-info-field > .nom-field-content > .nom-control .nom-icon.p-type-eye:hover {
+  color: var(--nom-color-primary);
+  transform: scale(1.5);
 }
 .nom-tag {
   /* Structure */
@@ -9697,6 +10280,7 @@ textarea .nom-textarea {
   vertical-align: top;
   list-style: none;
   border-right: 1px solid var(--nom-border-color);
+  transition: all 0.3s;
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu:last-child {
   border-right: none;
@@ -9730,6 +10314,118 @@ textarea .nom-textarea {
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item > .nom-cascader-menu-item-expand-icon {
   padding-left: 1rem;
 }
+.nom-cascader-animate-top-show {
+  -webkit-animation: nom-cascader-keyframe-top-show 0.16s linear forwards;
+  animation: nom-cascader-keyframe-top-show 0.16s linear forwards;
+}
+.nom-cascader-animate-bottom-show {
+  -webkit-animation: nom-cascader-keyframe-bottom-show 0.16s linear forwards;
+  animation: nom-cascader-keyframe-bottom-show 0.16s linear forwards;
+}
+.nom-cascader-animate-top-hide {
+  -webkit-animation: nom-cascader-keyframe-top-hide 0.16s linear forwards;
+  animation: nom-cascader-keyframe-top-hide 0.16s linear forwards;
+}
+.nom-cascader-animate-bottom-hide {
+  -webkit-animation: nom-cascader-keyframe-bottom-hide 0.16s linear forwards;
+  animation: nom-cascader-keyframe-bottom-hide 0.16s linear forwards;
+}
+@-webkit-keyframes nom-cascader-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-5%);
+    transform: translateY(-5%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-cascader-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-5%);
+    transform: translateY(-5%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-cascader-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(5%);
+    transform: translateY(5%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-cascader-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(5%);
+    transform: translateY(5%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-cascader-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-5%);
+    transform: translateY(-5%);
+    opacity: 0;
+  }
+}
+@keyframes nom-cascader-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-5%);
+    transform: translateY(-5%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-cascader-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(5%);
+    transform: translateY(5%);
+    opacity: 0;
+  }
+}
+@keyframes nom-cascader-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(5%);
+    transform: translateY(5%);
+    opacity: 0;
+  }
+}
 .nom-number-spinner-icon-opt {
   cursor: pointer;
 }
@@ -9753,7 +10449,6 @@ textarea .nom-textarea {
 }
 .nom-number-spinner .nom-control .nom-textbox-right-icon-container {
   position: absolute;
-  cursor: pointer;
   top: 0;
   right: 0;
   display: flex;
@@ -9765,9 +10460,21 @@ textarea .nom-textarea {
   line-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   border: 1px solid var(--nom-border-color);
   border-radius: var(--nom-border-radius);
+  cursor: pointer;
+}
+.nom-number-spinner .nom-control .nom-textbox-right-icon-container.nom-icon:hover {
+  background-color: var(--nom-color-hover);
+}
+.nom-number-spinner .nom-control .nom-textbox-right-icon-container.nom-icon:active {
+  background-color: var(--nom-color-fill-2);
+}
+.nom-number-spinner .nom-control .nom-textbox-right-icon-container .nom-icon:hover {
+  background-color: var(--nom-color-hover);
+}
+.nom-number-spinner .nom-control .nom-textbox-right-icon-container .nom-icon:active {
+  background-color: var(--nom-color-fill-2);
 }
 .nom-number-spinner .nom-control .nom-textbox-left-icon-container {
-  cursor: pointer;
   position: absolute;
   top: 0;
   left: 0;
@@ -9780,11 +10487,27 @@ textarea .nom-textarea {
   line-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   border: 1px solid var(--nom-border-color);
   border-radius: var(--nom-border-radius);
+  cursor: pointer;
+}
+.nom-number-spinner .nom-control .nom-textbox-left-icon-container.nom-icon:hover {
+  background-color: var(--nom-color-hover);
+}
+.nom-number-spinner .nom-control .nom-textbox-left-icon-container.nom-icon:active {
+  background-color: var(--nom-color-fill-2);
+}
+.nom-number-spinner .nom-control .nom-textbox-left-icon-container .nom-icon:hover {
+  background-color: var(--nom-color-hover);
+}
+.nom-number-spinner .nom-control .nom-textbox-left-icon-container .nom-icon:active {
+  background-color: var(--nom-color-fill-2);
 }
 .nom-number-spinner.s-disabled .nom-textbox-right-icon-container,
 .nom-number-spinner.s-disabled .nom-textbox-left-icon-container {
-  cursor: not-allowed;
   background-color: var(--nom-input-bg-disabled);
+  cursor: not-allowed;
+}
+.nom-number-spinner.s-disabled .nom-icon:hover {
+  background-color: unset !important;
 }
 .nom-partial-date-picker {
   width: 200px;
@@ -9954,6 +10677,7 @@ textarea .nom-textarea {
   width: 9999px;
   height: 1px;
   background-color: var(--nom-step-line-color);
+  transition: all 0.3s;
   content: '';
 }
 .nom-steps .nom-step:not(:last-child).nom-step-item-finish .nom-step-item-title::after {
@@ -10014,6 +10738,118 @@ textarea .nom-textarea {
 }
 .nom-dropdown-popup .nom-menu-item-wrapper > a:hover {
   background-color: var(--nom-color-hover);
+}
+.nom-dropdown-animate-top-show {
+  -webkit-animation: nom-dropdown-keyframe-top-show 0.16s linear forwards;
+  animation: nom-dropdown-keyframe-top-show 0.16s linear forwards;
+}
+.nom-dropdown-animate-bottom-show {
+  -webkit-animation: nom-dropdown-keyframe-bottom-show 0.16s linear forwards;
+  animation: nom-dropdown-keyframe-bottom-show 0.16s linear forwards;
+}
+.nom-dropdown-animate-top-hide {
+  -webkit-animation: nom-dropdown-keyframe-top-hide 0.16s linear forwards;
+  animation: nom-dropdown-keyframe-top-hide 0.16s linear forwards;
+}
+.nom-dropdown-animate-bottom-hide {
+  -webkit-animation: nom-dropdown-keyframe-bottom-hide 0.16s linear forwards;
+  animation: nom-dropdown-keyframe-bottom-hide 0.16s linear forwards;
+}
+@-webkit-keyframes nom-dropdown-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-dropdown-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-dropdown-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-dropdown-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-dropdown-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-20%);
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+}
+@keyframes nom-dropdown-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-20%);
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-dropdown-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(20%);
+    transform: translateY(20%);
+    opacity: 0;
+  }
+}
+@keyframes nom-dropdown-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(20%);
+    transform: translateY(20%);
+    opacity: 0;
+  }
 }
 .nom-toolbar {
   color: inherit;
@@ -10614,6 +11450,118 @@ textarea .nom-textarea {
 .nom-auto-complete .nom-auto-complete-clear {
   cursor: pointer;
 }
+.nom-auto-complete-animate-top-show {
+  -webkit-animation: nom-auto-complete-keyframe-top-show 0.16s linear forwards;
+  animation: nom-auto-complete-keyframe-top-show 0.16s linear forwards;
+}
+.nom-auto-complete-animate-bottom-show {
+  -webkit-animation: nom-auto-complete-keyframe-bottom-show 0.16s linear forwards;
+  animation: nom-auto-complete-keyframe-bottom-show 0.16s linear forwards;
+}
+.nom-auto-complete-animate-top-hide {
+  -webkit-animation: nom-auto-complete-keyframe-top-hide 0.16s linear forwards;
+  animation: nom-auto-complete-keyframe-top-hide 0.16s linear forwards;
+}
+.nom-auto-complete-animate-bottom-hide {
+  -webkit-animation: nom-auto-complete-keyframe-bottom-hide 0.16s linear forwards;
+  animation: nom-auto-complete-keyframe-bottom-hide 0.16s linear forwards;
+}
+@-webkit-keyframes nom-auto-complete-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-auto-complete-keyframe-top-show {
+  0% {
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-auto-complete-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes nom-auto-complete-keyframe-bottom-show {
+  0% {
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes nom-auto-complete-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+}
+@keyframes nom-auto-complete-keyframe-top-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(-10%);
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes nom-auto-complete-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
+    opacity: 0;
+  }
+}
+@keyframes nom-auto-complete-keyframe-bottom-hide {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
+    opacity: 0;
+  }
+}
 .nom-breadcrumb {
   padding: var(--nom-breadcrumb-padding);
   color: var(--nom-breadcrumb-font-color);
@@ -10668,6 +11616,7 @@ textarea .nom-textarea {
   display: inline-block;
   color: inherit;
   cursor: pointer;
+  transition: all 0.5s;
 }
 .nom-rate .nom-rate-star:not(:last-child) {
   margin-right: 8px;
@@ -10682,6 +11631,9 @@ textarea .nom-textarea {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+.nom-rate.s-disabled .nom-rate-star {
+  cursor: not-allowed;
 }
 .nom-rate .nom-rate-star-full .nom-rate-star-second {
   color: inherit;

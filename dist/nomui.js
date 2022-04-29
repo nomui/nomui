@@ -1175,9 +1175,11 @@ function _defineProperty2(obj, key, value) {
       if (expandTarget !== null && expandTarget !== undefined) {
         if (Array.isArray(expandTarget)) {
           expandTarget.forEach((t) => {
+            // t.addClass('nom-expandable-animate-show')
             t.show && t.show();
           });
         } else {
+          // expandTarget.addClass('nom-expandable-animate-show')
           expandTarget.show && expandTarget.show();
         }
       }
@@ -1197,10 +1199,20 @@ function _defineProperty2(obj, key, value) {
       if (expandTarget !== null && expandTarget !== undefined) {
         if (Array.isArray(expandTarget)) {
           expandTarget.forEach((t) => {
-            t.hide && t.hide();
+            t.hide && t.hide(); // t.addClass('nom-expandable-animate-hide')
+            // setTimeout(() => {
+            //   t.hide && t.hide()
+            //   t.removeClass('nom-expandable-animate-show')
+            //   t.removeClass('nom-expandable-animate-hide')
+            // }, 120)
           });
         } else {
-          expandTarget.hide && expandTarget.hide();
+          expandTarget.hide && expandTarget.hide(); // expandTarget.addClass('nom-expandable-animate-hide')
+          // setTimeout(() => {
+          //   expandTarget.hide && expandTarget.hide()
+          //   expandTarget.removeClass('nom-expandable-animate-show')
+          //   expandTarget.removeClass('nom-expandable-animate-hide')
+          // }, 120)
         }
       }
       this._expandIndicator && this._expandIndicator.collapse();
@@ -9038,7 +9050,7 @@ function _defineProperty2(obj, key, value) {
             option: this.props,
           };
           autoCompleteControl.input.update(autoCompleteOption);
-          autoCompleteControl.popup.hide(); // if (selectProps.multiple === false) {
+          autoCompleteControl.popup.animateHide(); // if (selectProps.multiple === false) {
           //   selectControl.selectedSingle.update(selectedOption)
           //   selectControl.popup.hide()
           // } else {
@@ -9211,10 +9223,28 @@ function _defineProperty2(obj, key, value) {
       // }
       // super._config()
     }
+    animateHide() {
+      let animateName;
+      if (this.element.getAttribute("offset-y") !== "0") {
+        animateName = "nom-auto-complete-animate-bottom-hide";
+      } else {
+        animateName = "nom-auto-complete-animate-top-hide";
+      }
+      this.addClass(animateName);
+      setTimeout(() => {
+        this.hide();
+        this.removeClass(animateName);
+      }, 160);
+    }
     _show() {
       super._show();
       this.autoCompleteControl.searchRef &&
         this.autoCompleteControl.searchRef.focus();
+      if (this.element.getAttribute("offset-y") !== "0") {
+        this.addClass("nom-auto-complete-animate-bottom-show");
+      } else {
+        this.addClass("nom-auto-complete-animate-top-show");
+      }
     }
     _getOptionList() {
       const { options } = this.props;
@@ -10423,7 +10453,7 @@ function _defineProperty2(obj, key, value) {
   }
   class CascaderPopup extends Popup {
     constructor(props, ...mixins) {
-      const defaults = {};
+      const defaults = { animate: true };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
@@ -10450,6 +10480,35 @@ function _defineProperty2(obj, key, value) {
         });
       }
       super._config();
+    }
+    animateHide() {
+      if (this.element) {
+        let animateName;
+        if (this.element.getAttribute("offset-y") !== "0") {
+          animateName = "nom-cascader-animate-bottom";
+        } else {
+          animateName = "nom-cascader-animate-top";
+        }
+        this.addClass(`${animateName}-hide`);
+        setTimeout(() => {
+          if (this.element) {
+            this.hide();
+            this.removeClass(`${animateName}-hide`);
+            this.addClass(`${animateName}-show`);
+          }
+        }, 160);
+      } else {
+        this.hide();
+      }
+    }
+    _rendered() {
+      this.removeClass("nom-layer-animate-show");
+      if (!this.props.animate) return false;
+      if (this.element.getAttribute("offset-y") !== "0") {
+        this.addClass("nom-cascader-animate-bottom-show");
+      } else {
+        this.addClass("nom-cascader-animate-top-show");
+      }
     }
   }
   Component.register(CascaderPopup);
@@ -10621,7 +10680,7 @@ function _defineProperty2(obj, key, value) {
       ) {
         this._onValueChange();
       }
-      this.popup.update({ popMenu: this.getSelectedMenu() });
+      this.popup.update({ popMenu: this.getSelectedMenu(), animate: false });
     }
     _valueChange(changed) {
       if (this.placeholder) {
@@ -10635,7 +10694,7 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this._content && this._content.update();
-      this.popup && this._hidePopup && this.popup.hide();
+      this.popup && this._hidePopup && this.popup.animateHide();
     }
     _getValue() {
       if (!this.checked) {
@@ -10828,7 +10887,7 @@ function _defineProperty2(obj, key, value) {
                 that.input = this;
               },
             },
-            { tag: "span" },
+            { tag: "span" }, // { tag: 'i' },
             {
               tag: "span",
               classes: {
@@ -10918,7 +10977,7 @@ function _defineProperty2(obj, key, value) {
             this.setProps({
               selected: this.props.checked === true,
               children: [
-                { tag: "span", classes: { checkbox: true } },
+                { tag: "span", classes: { checkbox: true } }, // { tag: 'i' },
                 {
                   tag: "span",
                   classes: { text: true },
@@ -12967,9 +13026,9 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {
       if (this.element.getAttribute("offset-y") !== "0") {
-        this.element.classList.add("nom-select-animate-bottom-show");
+        this.addClass("nom-select-animate-bottom-show");
       } else {
-        this.element.classList.add("nom-select-animate-top-show");
+        this.addClass("nom-select-animate-top-show");
       }
     }
     _show() {
@@ -12993,7 +13052,7 @@ function _defineProperty2(obj, key, value) {
       setTimeout(() => {
         this.hide();
         this.removeClass(animateName);
-      }, 120);
+      }, 160);
     }
   }
   Component.register(SelectPopup);
@@ -15021,13 +15080,45 @@ function _defineProperty2(obj, key, value) {
             ref: (c) => {
               that.popup = c;
             },
+            _rendered() {
+              if (this.element.getAttribute("offset-y") !== "0") {
+                that.props.animateName = "bottom";
+                this.addClass([
+                  `nom-dropdown-animate-${that.props.animateName}-show`,
+                ]);
+              } else {
+                that.props.animateName = "top";
+                this.addClass([
+                  `nom-dropdown-animate-${that.props.animateName}-show`,
+                ]);
+              }
+            },
             children: {
               component: "Menu",
               itemDefaults: { size: size },
               items: items,
             },
             onClick: (args) => {
-              args.sender.hide();
+              that.popup.removeClass([
+                `nom-dropdown-animate-${that.props.animateName}-show`,
+              ]);
+              if (that.popup.element.getAttribute("offset-y") !== "0") {
+                that.props.animateName = "bottom";
+              } else {
+                that.props.animateName = "top";
+              }
+              that.popup.addClass([
+                `nom-dropdown-animate-${that.props.animateName}-hide`,
+              ]);
+              setTimeout(() => {
+                args.sender.hide();
+                that.popup.removeClass([
+                  `nom-dropdown-animate-${that.props.animateName}-hide`,
+                ]);
+                that.popup.addClass([
+                  `nom-dropdown-animate-${that.props.animateName}-show`,
+                ]);
+              }, 160);
             },
           },
         },
@@ -15039,9 +15130,9 @@ function _defineProperty2(obj, key, value) {
       });
       super._config();
     }
-    _rendered() {}
   }
   Dropdown.defaults = {
+    animateName: "top",
     tag: "span",
     triggerAction: "click",
     rightIcon: "down",
@@ -22003,7 +22094,7 @@ function _defineProperty2(obj, key, value) {
           _config: function () {
             this.setProps({
               children: [
-                { tag: "span", classes: { radio: true } },
+                { tag: "span", classes: { radio: true } }, // { tag: 'i' },
                 {
                   tag: "span",
                   classes: { text: true },
@@ -24051,6 +24142,8 @@ function _defineProperty2(obj, key, value) {
                 "nom-switch-el": true,
                 "nom-switch-text": value,
                 "nom-switch-indicator": !value,
+                "nom-switch-text-left": value,
+                "nom-switch-indicator-left": !value,
               },
               children: value ? selectedText : null,
             },
@@ -24061,8 +24154,10 @@ function _defineProperty2(obj, key, value) {
                 "nom-switch-el": true,
                 "nom-switch-text": !value,
                 "nom-switch-indicator": value,
+                "nom-switch-text-right": !value,
+                "nom-switch-indicator-right": value,
               },
-            },
+            }, // { tag: 'i' },
           ],
         },
       });
@@ -25149,7 +25244,7 @@ function _defineProperty2(obj, key, value) {
   Component.register(TimeRangePicker);
   class TreeSelectPopup extends Popup {
     constructor(props, ...mixins) {
-      const defaults = {};
+      const defaults = { animate: true };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
@@ -25228,9 +25323,43 @@ function _defineProperty2(obj, key, value) {
       });
       super._config();
     }
+    animateHide() {
+      let animateName;
+      if (this.element.getAttribute("offset-y") !== "0") {
+        animateName = "nom-tree-select-animate-bottom-hide";
+      } else {
+        animateName = "nom-tree-select-animate-top-hide";
+      }
+      this.addClass(animateName);
+      setTimeout(() => {
+        this.hide();
+        this.removeClass(animateName);
+      }, 160);
+    }
+    _rendered() {
+      this.removeClass("nom-layer-animate-show");
+      if (!this.props.animate) {
+        this.props.animate = true;
+        return false;
+      }
+      if (this.element.getAttribute("offset-y") !== "0") {
+        this.addClass("nom-tree-select-animate-bottom-show");
+      } else {
+        this.addClass("nom-tree-select-animate-top-show");
+      }
+    }
     _show() {
       super._show();
       this.selectControl.searchBox && this.selectControl.searchBox.focus();
+      this.removeClass("nom-layer-animate-show");
+      if (!this.props.animate) {
+        return false;
+      }
+      if (this.element.getAttribute("offset-y") !== "0") {
+        this.addClass("nom-tree-select-animate-bottom-show");
+      } else {
+        this.addClass("nom-tree-select-animate-top-show");
+      }
     }
   }
   Component.register(TreeSelectPopup);
@@ -25338,7 +25467,7 @@ function _defineProperty2(obj, key, value) {
           onClick: (args) => {
             this._setValue(null);
             this.props.allowClear && this.clearIcon.hide();
-            this.popup && this.popup.hide();
+            this.popup && this.popup.animateHide();
             args.event && args.event.stopPropagation();
           },
         });
@@ -25477,10 +25606,13 @@ function _defineProperty2(obj, key, value) {
       }
       this._content.update({ children: this._getContentBadges() }); // 多选: 每次setValue后更新选中状态
       if (this.props.multiple) {
-        this.popup.update({ nodeCheckable: this._getPopupNodeCheckable() });
+        this.popup.update({
+          nodeCheckable: this._getPopupNodeCheckable(),
+          animate: false,
+        });
       } else {
         // 单选: 点击后即关闭popup,在onShow中更新
-        this.popup.hide();
+        this.popup.animateHide();
       }
     } // getValue时根据选中的节点返回
     _getValue() {
