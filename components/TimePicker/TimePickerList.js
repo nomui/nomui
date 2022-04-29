@@ -4,7 +4,7 @@ import List from '../List/index'
 class TimePickerList extends List {
   constructor(props, ...mixins) {
     const defaults = {
-      gutter: 'sm',
+      gutter: 'xs',
       cols: 1,
       min: '00',
       max: '59',
