@@ -65,11 +65,10 @@ class CascaderPopup extends Popup {
       }
       this.addClass(`${animateName}-hide`)
       setTimeout(() => {
-        if (this.element) {
-          this.hide()
-          this.removeClass(`${animateName}-hide`)
-          this.addClass(`${animateName}-show`)
-        }
+        if (!this.element) return false
+        this.hide()
+        this.removeClass(`${animateName}-hide`)
+        this.addClass(`${animateName}-show`)
       }, 160)
     } else {
       this.hide()
