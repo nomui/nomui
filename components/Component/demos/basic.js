@@ -11,7 +11,7 @@ define([], function () {
           id: 'AnPara',
           style: {
             padding: '5px',
-            border: '1px solid blue',
+            border: '1px solid var(--nom-color-primary)',
           },
           onclick: () => {
             // eslint-disable-next-line no-alert

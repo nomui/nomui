@@ -89,14 +89,22 @@ define(['/docs/helper.js'], function ({
       view: {
         component: 'Layout',
         header: {
-          styles: {
-            color: 'primary',
+          attrs: {
+            style: {
+              background: 'var(--nom-color-primary)',
+              color: 'var(--nom-color-white)',
+            },
           },
           children: {
             component: 'Navbar',
             caption: {
               title: 'NomUI',
               href: '/',
+              attrs: {
+                style: {
+                  color: 'var(--nom-color-white)',
+                },
+              },
             },
             nav: {
               component: 'Menu',
