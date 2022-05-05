@@ -68,6 +68,7 @@ class Dropdown extends Component {
             that.popup.addClass([`nom-dropdown-animate-${that.props.animateName}-hide`])
             setTimeout(() => {
               args.sender.hide()
+              if (!that.popup.element) return false
               that.popup.removeClass([`nom-dropdown-animate-${that.props.animateName}-hide`])
               that.popup.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
             }, 160)

@@ -114,6 +114,7 @@ class Tooltip extends Layer {
 
     if (this.props.hidden === false) {
       this.hideTimer = setTimeout(() => {
+        if (!this.element) return false
         this.addClass('nom-layer-animate-hide')
         setTimeout(() => {
           this.hide()

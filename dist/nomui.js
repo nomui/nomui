@@ -2952,6 +2952,7 @@ function _defineProperty2(obj, key, value) {
       this._callHandler(this.props.onClose, { result: result });
       this.modalContent.addClass("nom-modal-content-animate-hide");
       setTimeout(() => {
+        if (!this.element) return false;
         this.addClass("nom-modal-mask-animate-hide");
         setTimeout(() => {
           this.remove();
@@ -4047,6 +4048,7 @@ function _defineProperty2(obj, key, value) {
       this.showTimer = null;
       if (this.props.hidden === false) {
         this.hideTimer = setTimeout(() => {
+          if (!this.element) return false;
           this.addClass("nom-layer-animate-hide");
           setTimeout(() => {
             this.hide();
@@ -9232,6 +9234,7 @@ function _defineProperty2(obj, key, value) {
       }
       this.addClass(animateName);
       setTimeout(() => {
+        if (!this.element) return false;
         this.hide();
         this.removeClass(animateName);
       }, 160);
@@ -10491,11 +10494,10 @@ function _defineProperty2(obj, key, value) {
         }
         this.addClass(`${animateName}-hide`);
         setTimeout(() => {
-          if (this.element) {
-            this.hide();
-            this.removeClass(`${animateName}-hide`);
-            this.addClass(`${animateName}-show`);
-          }
+          if (!this.element) return false;
+          this.hide();
+          this.removeClass(`${animateName}-hide`);
+          this.addClass(`${animateName}-show`);
         }, 160);
       } else {
         this.hide();
@@ -13050,6 +13052,7 @@ function _defineProperty2(obj, key, value) {
       }
       this.addClass(animateName);
       setTimeout(() => {
+        if (!this.element) return false;
         this.hide();
         this.removeClass(animateName);
       }, 160);
@@ -15112,6 +15115,7 @@ function _defineProperty2(obj, key, value) {
               ]);
               setTimeout(() => {
                 args.sender.hide();
+                if (!that.popup.element) return false;
                 that.popup.removeClass([
                   `nom-dropdown-animate-${that.props.animateName}-hide`,
                 ]);
@@ -25332,6 +25336,7 @@ function _defineProperty2(obj, key, value) {
       }
       this.addClass(animateName);
       setTimeout(() => {
+        if (!this.element) return false;
         this.hide();
         this.removeClass(animateName);
       }, 160);
