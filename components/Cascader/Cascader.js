@@ -392,7 +392,7 @@ Cascader.defaults = {
   separator: ' / ',
   fieldsMapping: { label: 'label', value: 'value', children: 'children' },
   valueType: 'cascade',
-  changeOnSelect: false,
+  changeOnSelect: true,
   width: 200,
   height: 250,
 }
