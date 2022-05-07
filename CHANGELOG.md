@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.60](https://github.com/nomui/nomui/compare/v1.0.0-alpha.59...v1.0.0-alpha.60) (2022-05-07)
+
+
+### Features
+
+* **Grid:** 列筛选模式支持保存搜索条件并高亮显示条件内容 ([6f8e28d](https://github.com/nomui/nomui/commit/6f8e28de511a2583fdff83ea33fbee587f362f57))
+
+
+### Bug Fixes
+
+* 修复元素不存在时延时报错的问题 ([9cfc9eb](https://github.com/nomui/nomui/commit/9cfc9eb62fe05c0476a6b128fe7f7efdc55a8404))
+* 修复元素不存在时延时报错的问题 ([5d405b3](https://github.com/nomui/nomui/commit/5d405b39f30aa09f1b59d29e0489e5d4f62101c7))
+* 修复Tooltip延时报错 ([8816b0d](https://github.com/nomui/nomui/commit/8816b0d763959a9514bd76a0880794f65da267bb))
+* NumberSpinner数字微调器:修复数字微调器禁用后还能点击操作的bug ([8d68d5d](https://github.com/nomui/nomui/commit/8d68d5d731332e36895eae459a69d488b12a3e4b))
+
 ## [1.0.0-alpha.59](https://github.com/nomui/nomui/compare/v1.0.0-alpha.58...v1.0.0-alpha.59) (2022-04-29)
 
 
