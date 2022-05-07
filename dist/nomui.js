@@ -10861,7 +10861,7 @@ function _defineProperty2(obj, key, value) {
     separator: " / ",
     fieldsMapping: { label: "label", value: "value", children: "children" },
     valueType: "cascade",
-    changeOnSelect: false,
+    changeOnSelect: true,
     width: 200,
     height: 250,
   };
@@ -20238,7 +20238,7 @@ function _defineProperty2(obj, key, value) {
       if ([left, right].includes(align)) {
         return [
           {
-            tag: "span",
+            // tag: 'span',
             _created(c) {
               numberSpinner.iconContainer = c;
             },
@@ -20247,6 +20247,7 @@ function _defineProperty2(obj, key, value) {
               {
                 component: "Icon",
                 type: "up",
+                styles: { flex: "grow" },
                 onClick(args) {
                   numberSpinner._handlePlus(args);
                 },
@@ -20254,6 +20255,7 @@ function _defineProperty2(obj, key, value) {
               {
                 component: "Icon",
                 type: "down",
+                styles: { flex: "grow" },
                 onClick(args) {
                   numberSpinner._handleMinus(args);
                 },
@@ -20289,6 +20291,7 @@ function _defineProperty2(obj, key, value) {
       return document.activeElement === this.input.element;
     }
     _handlePlus(args) {
+      if (this.props.disabled) return;
       if (args) {
         const { event } = args;
         if (event) {
@@ -20330,6 +20333,7 @@ function _defineProperty2(obj, key, value) {
       !this._isFocus() && this.focus();
     }
     _handleMinus(args) {
+      if (this.props.disabled) return;
       if (args) {
         const { event } = args;
         if (event) {

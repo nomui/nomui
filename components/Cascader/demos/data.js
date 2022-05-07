@@ -3,7 +3,7 @@ define([], function () {
     {
       Id: '678290340539573561',
       ParentId: null,
-      Name: '内分泌内分泌内分泌内分泌内分泌内分泌内分泌',
+      Name: '内分泌',
       Level: 1,
       IsDeleted: false,
       disabled: false,
