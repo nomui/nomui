@@ -6,7 +6,9 @@ import CascaderList from './CascaderList'
 
 class CascaderPopup extends Popup {
   constructor(props, ...mixins) {
-    const defaults = {}
+    const defaults = {
+      animate: true,
+    }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
@@ -51,6 +53,37 @@ class CascaderPopup extends Popup {
     }
 
     super._config()
+  }
+
+  animateHide() {
+    if (this.element) {
+      let animateName
+      if (this.element.getAttribute('offset-y') !== '0') {
+        animateName = 'nom-cascader-animate-bottom'
+      } else {
+        animateName = 'nom-cascader-animate-top'
+      }
+      this.addClass(`${animateName}-hide`)
+      setTimeout(() => {
+        if (this.element) {
+          this.hide()
+          this.removeClass(`${animateName}-hide`)
+          this.addClass(`${animateName}-show`)
+        }
+      }, 160)
+    } else {
+      this.hide()
+    }
+  }
+
+  _rendered() {
+    this.removeClass('nom-layer-animate-show')
+    if (!this.props.animate) return false
+    if (this.element.getAttribute('offset-y') !== '0') {
+      this.addClass('nom-cascader-animate-bottom-show')
+    } else {
+      this.addClass('nom-cascader-animate-top-show')
+    }
   }
 }
 

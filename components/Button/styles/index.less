@@ -11,14 +11,14 @@
   line-height: @line-height;
   border-radius: @border-radius;
 
-  > .nom-icon {
+  >.nom-icon {
     height: @iconsize;
   }
 
   &.p-only-icon.p-shape-circle {
     padding: @padding-y;
 
-    > .nom-icon {
+    >.nom-icon {
       width: @iconsize;
     }
   }
@@ -38,6 +38,7 @@
   border-color: var(--nom-color-border);
   border-radius: 2px;
   cursor: pointer;
+  transition: all .3s;
   user-select: none;
   zoom: 1;
   -webkit-user-drag: none;
@@ -63,6 +64,7 @@
   }
 
   a& {
+
     &.disabled,
     fieldset[disabled] & {
       pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
@@ -78,6 +80,7 @@
     color: var(--nom-color-danger);
     background-color: transparent;
     border-color: var(--nom-color-danger);
+
     &.nom-button-inline {
       &:hover {
         background: none !important;
@@ -89,10 +92,12 @@
       color: var(--nom-color-white);
       background-color: var(--nom-color-danger);
       border-color: var(--nom-color-danger);
+
       &:hover {
         background-color: var(--nom-color-danger-hover);
       }
     }
+
     &:not(.p-type-text, .p-type-link) {
       &:hover {
         color: var(--nom-color-white);
@@ -107,6 +112,7 @@
     background-color: var(--nom-color-primary);
     // .u-color-primary();
     border-color: var(--nom-color-primary);
+
     &:hover {
       background-color: var(--nom-color-primary-hover);
     }
@@ -119,8 +125,10 @@
   &.p-type-text {
     background-color: transparent;
     border-color: transparent;
+
     &:hover {
       .nom-preset-hover;
+
       &.p-danger {
         color: var(--nom-color-danger-hover);
       }
@@ -131,9 +139,11 @@
     color: var(--nom-color-primary);
     background-color: transparent;
     border-color: transparent !important;
+
     &.p-danger {
       color: var(--nom-color-danger);
     }
+
     &:hover {
       &.p-danger {
         color: var(--nom-color-danger-hover);
@@ -189,16 +199,18 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     &.p-danger {
       color: var(--nom-color-danger);
+
       &:hover {
         color: var(--nom-color-white);
       }
     }
   }
 
-  > .nom-icon + span,
-  > span + .nom-icon {
+  >.nom-icon+span,
+  >span+.nom-icon {
     margin-left: 0.5rem;
   }
 
@@ -217,12 +229,14 @@
   padding: 0;
   white-space: normal;
   text-align: left;
+
   &:hover {
     background: none !important;
     background-color: transparent !important;
     // filter: brightness(0.65) !important;
     // filter: none;
   }
+
   &.s-hidden {
     display: none !important;
   }
