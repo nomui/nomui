@@ -215,7 +215,7 @@ class NumberSpinner extends Field {
     if ([left, right].includes(align)) {
       return [
         {
-          tag: 'span',
+          // tag: 'span',
           _created(c) {
             numberSpinner.iconContainer = c
           },
@@ -226,6 +226,9 @@ class NumberSpinner extends Field {
             {
               component: 'Icon',
               type: 'up',
+              styles: {
+                flex: 'grow',
+              },
               onClick(args) {
                 numberSpinner._handlePlus(args)
               },
@@ -233,6 +236,9 @@ class NumberSpinner extends Field {
             {
               component: 'Icon',
               type: 'down',
+              styles: {
+                flex: 'grow',
+              },
               onClick(args) {
                 numberSpinner._handleMinus(args)
               },
@@ -276,6 +282,7 @@ class NumberSpinner extends Field {
   }
 
   _handlePlus(args) {
+    if (this.props.disabled) return
     if (args) {
       const { event } = args
       if (event) {
@@ -326,6 +333,7 @@ class NumberSpinner extends Field {
   }
 
   _handleMinus(args) {
+    if (this.props.disabled) return
     if (args) {
       const { event } = args
       if (event) {
