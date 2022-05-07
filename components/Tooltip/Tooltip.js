@@ -63,6 +63,7 @@ class Tooltip extends Layer {
         this.element.setAttribute('tooltip-align', this.props.align)
       }
     }
+    this.addClass(`nom-tooltip-animate-${this.element.getAttribute('tooltip-align')}-show`)
   }
 
   _remove() {
@@ -114,9 +115,11 @@ class Tooltip extends Layer {
 
     if (this.props.hidden === false) {
       this.hideTimer = setTimeout(() => {
-        this.addClass('nom-layer-animate-hide')
+        if (!this.element) return false
+        this.addClass('nom-tooltip-animate-hide')
         setTimeout(() => {
           this.hide()
+          this.removeClass('nom-tooltip-animate-hide')
         }, 90)
       }, this.delay)
     }
