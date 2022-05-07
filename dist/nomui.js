@@ -16294,7 +16294,10 @@ function _defineProperty2(obj, key, value) {
       );
       this.table.grid.filterValueText[
         this.props.column.field
-      ] = this.filterGroup.getField(this.props.column.field).getValueText();
+      ] = this.filterGroup
+        .getField(this.props.column.field)
+        .getValueText()
+        .toString();
       this.filterPopup.hide();
       this.table.grid.handleFilter(isReset);
     }
