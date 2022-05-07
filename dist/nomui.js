@@ -4002,6 +4002,9 @@ function _defineProperty2(obj, key, value) {
           this.element.setAttribute("tooltip-align", this.props.align);
         }
       }
+      this.addClass(
+        `nom-tooltip-animate-${this.element.getAttribute("tooltip-align")}-show`
+      );
     }
     _remove() {
       this.opener._off("mouseenter", this._showHandler);
@@ -4049,9 +4052,10 @@ function _defineProperty2(obj, key, value) {
       if (this.props.hidden === false) {
         this.hideTimer = setTimeout(() => {
           if (!this.element) return false;
-          this.addClass("nom-layer-animate-hide");
+          this.addClass("nom-tooltip-animate-hide");
           setTimeout(() => {
             this.hide();
+            this.removeClass("nom-tooltip-animate-hide");
           }, 90);
         }, this.delay);
       }

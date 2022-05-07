@@ -5,6 +5,7 @@
   color: var(--nom-tooltip-color);
   background-color: var(--nom-tooltip-background-color);
   border-radius: var(--nom-tooltip-border-radius);
+
   .nom-tooltip-arrow {
     position: absolute;
     top: auto;
@@ -14,11 +15,14 @@
     color: var(--nom-tooltip-background-color);
     transform: translate(-50%, 10px);
   }
+
   &[tooltip-align='top'] {
     transform: translateY(-8px);
   }
+
   &[tooltip-align='bottom'] {
     transform: translateY(8px);
+
     .nom-tooltip-arrow {
       top: 0;
       right: auto;
@@ -27,8 +31,10 @@
       transform: translate(-50%, -10px) rotate(180deg);
     }
   }
+
   &[tooltip-align='left'] {
     transform: translateX(-8px);
+
     .nom-tooltip-arrow {
       top: 50%;
       right: 0;
@@ -37,8 +43,10 @@
       transform: translate(12px, -50%) rotate(270deg);
     }
   }
+
   &[tooltip-align='right'] {
     transform: translateX(8px);
+
     .nom-tooltip-arrow {
       top: 50%;
       right: auto;
@@ -46,5 +54,223 @@
       left: 0;
       transform: translate(-12px, -50%) rotate(90deg);
     }
+  }
+}
+
+.nom-tooltip-animate-top-show {
+  -webkit-animation: nom-tooltip-keyframe-bounce-in-top .1s cubic-bezier(.215, .61, .355, 1) forwards;
+  animation: nom-tooltip-keyframe-bounce-in-top .1s cubic-bezier(.215, .61, .355, 1) forwards;
+}
+
+.nom-tooltip-animate-bottom-show {
+  -webkit-animation: nom-tooltip-keyframe-bounce-in-bottom .1s cubic-bezier(.215, .61, .355, 1) forwards;
+  animation: nom-tooltip-keyframe-bounce-in-bottom .1s cubic-bezier(.215, .61, .355, 1) forwards;
+}
+
+.nom-tooltip-animate-left-show {
+  -webkit-animation: nom-tooltip-keyframe-bounce-in-left .1s cubic-bezier(.215, .61, .355, 1) forwards;
+  animation: nom-tooltip-keyframe-bounce-in-left .1s cubic-bezier(.215, .61, .355, 1) forwards;
+}
+
+.nom-tooltip-animate-right-show {
+  -webkit-animation: nom-tooltip-keyframe-bounce-in-right .1s cubic-bezier(.215, .61, .355, 1) forwards;
+  animation: nom-tooltip-keyframe-bounce-in-right .1s cubic-bezier(.215, .61, .355, 1) forwards;
+}
+
+.nom-tooltip-animate-hide {
+  -webkit-animation: nom-tooltip-keyframe-zoom-out 90ms linear forwards;
+  animation: nom-tooltip-keyframe-zoom-out 90ms linear forwards;
+}
+
+
+@-webkit-keyframes nom-tooltip-keyframe-bounce-in-top {
+  0% {
+    -webkit-transform: scale(.6) translateY(-8px);
+    transform: scale(.6) translateY(-8px);
+    opacity: 0;
+  }
+
+  70% {
+    -webkit-transform: scale(1.01) translateY(-8px);
+    transform: scale(1.01) translateY(-8px);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(1) translateY(-8px);
+    transform: scale(1) translateY(-8px);
+    opacity: 1;
+  }
+}
+
+@keyframes nom-tooltip-keyframe-bounce-in-top {
+  0% {
+    -webkit-transform: scale(.6) translateY(-8px);
+    transform: scale(.6) translateY(-8px);
+    opacity: 0;
+  }
+
+  70% {
+    -webkit-transform: scale(1.01) translateY(-8px);
+    transform: scale(1.01) translateY(-8px);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(1) translateY(-8px);
+    transform: scale(1) translateY(-8px);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-tooltip-keyframe-bounce-in-bottom {
+  0% {
+    -webkit-transform: scale(.6) translateY(8px);
+    transform: scale(.6) translateY(8px);
+    opacity: 0;
+  }
+
+  70% {
+    -webkit-transform: scale(1.01) translateY(8px);
+    transform: scale(1.01) translateY(8px);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(1) translateY(8px);
+    transform: scale(1) translateY(8px);
+    opacity: 1;
+  }
+}
+
+@keyframes nom-tooltip-keyframe-bounce-in-bottom {
+  0% {
+    -webkit-transform: scale(.6) translateY(8px);
+    transform: scale(.6) translateY(8px);
+    opacity: 0;
+  }
+
+  70% {
+    -webkit-transform: scale(1.01) translateY(8px);
+    transform: scale(1.01) translateY(8px);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(1) translateY(8px);
+    transform: scale(1) translateY(8px);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-tooltip-keyframe-bounce-in-left {
+  0% {
+    -webkit-transform: scale(.6) translateX(-8px);
+    transform: scale(.6) translateX(-8px);
+    opacity: 0;
+  }
+
+  70% {
+    -webkit-transform: scale(1.01) translateX(-8px);
+    transform: scale(1.01) translateX(-8px);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(1) translateX(-8px);
+    transform: scale(1) translateX(-8px);
+    opacity: 1;
+  }
+}
+
+@keyframes nom-tooltip-keyframe-bounce-in-left {
+  0% {
+    -webkit-transform: scale(.6) translateX(-8px);
+    transform: scale(.6) translateX(-8px);
+    opacity: 0;
+  }
+
+  70% {
+    -webkit-transform: scale(1.01) translateX(-8px);
+    transform: scale(1.01) translateX(-8px);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(1) translateX(-8px);
+    transform: scale(1) translateX(-8px);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-tooltip-keyframe-bounce-in-right {
+  0% {
+    -webkit-transform: scale(.6) translateX(8px);
+    transform: scale(.6) translateX(8px);
+    opacity: 0;
+  }
+
+  70% {
+    -webkit-transform: scale(1.01) translateX(8px);
+    transform: scale(1.01) translateX(8px);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(1) translateX(8px);
+    transform: scale(1) translateX(8px);
+    opacity: 1;
+  }
+}
+
+@keyframes nom-tooltip-keyframe-bounce-in-right {
+  0% {
+    -webkit-transform: scale(.6) translateX(8px);
+    transform: scale(.6) translateX(8px);
+    opacity: 0;
+  }
+
+  70% {
+    -webkit-transform: scale(1.01) translateX(8px);
+    transform: scale(1.01) translateX(8px);
+    opacity: 1;
+  }
+
+  to {
+    -webkit-transform: scale(1) translateX(8px);
+    transform: scale(1) translateX(8px);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes nom-tooltip-keyframe-zoom-out {
+  0% {
+    opacity: 1;
+  }
+
+  60% {
+    -webkit-transform: scale(.8);
+    transform: scale(.8);
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes nom-tooltip-keyframe-zoom-out {
+  0% {
+    opacity: 1;
+  }
+
+  60% {
+    -webkit-transform: scale(.8);
+    transform: scale(.8);
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
   }
 }
