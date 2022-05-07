@@ -672,8 +672,10 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
               },
             },
           ],
-          styles: {
-            color: 'lprimary',
+          attrs: {
+            style: {
+              background: 'var(--nom-color-white)',
+            },
           },
         },
         body: {

@@ -15931,9 +15931,13 @@ function _defineProperty2(obj, key, value) {
       this.lastDistance = 0;
       this._stickyPos = 0; // 记录当前 th的sticy.style.left(right) 的值
       this.table.thRefs[this.props.column.field] = this;
+      this.filterValue = null;
     }
     _config() {
       const that = this;
+      this.filterValue = this.table.hasGrid
+        ? this.table.grid.filter[this.props.column.field]
+        : null;
       let sortIcon = "sort";
       if (this.props.column.sortDirection === "asc") {
         sortIcon = "sort-up";
@@ -15992,6 +15996,9 @@ function _defineProperty2(obj, key, value) {
             },
             classes: { "nom-table-filter-handler": true },
             attrs: { style: { cursor: "pointer" } },
+            tooltip: this.filterValue
+              ? this.table.grid.filterValueText[this.props.column.field]
+              : null,
             popup: {
               align: "bottom right",
               ref: (c) => {
@@ -16128,7 +16135,9 @@ function _defineProperty2(obj, key, value) {
       });
     }
     _rendered() {
-      // 未设置冻结列则无需定时器
+      this.props.column.filter &&
+        this.props.column.colSpan > 0 &&
+        this.resetFilterStatus(); // 未设置冻结列则无需定时器
       const fixed = this.props.column.fixed;
       if (fixed) {
         setTimeout(() => {
@@ -16276,16 +16285,18 @@ function _defineProperty2(obj, key, value) {
     }
     onFilterChange(isReset) {
       if (this.filterGroup.getValue()[this.props.column.field]) {
-        this.filterValue = this.filterGroup.getValue();
+        this.filterValue = Object.assign({}, this.filterGroup.getValue());
       }
       this.table.grid.filter = Object.assign(
         {},
         this.table.grid.filter,
         this.filterGroup.getValue()
       );
+      this.table.grid.filterValueText[
+        this.props.column.field
+      ] = this.filterGroup.getField(this.props.column.field).getValueText();
       this.filterPopup.hide();
       this.table.grid.handleFilter(isReset);
-      this.resetFilterStatus();
     }
     onFilterReset() {
       this.filterGroup.reset();
@@ -16965,6 +16976,7 @@ function _defineProperty2(obj, key, value) {
       this._needSortColumnsFlag = true; // 是否需要对列进行排序
       this.sortUpdated = false;
       this.filter = {};
+      this.filterValueText = {};
       this._resetFixCount();
       if (this.props.frozenLeftCols > 0) {
         this.props.rowCheckable && this.props.frozenLeftCols++;

@@ -77,8 +77,10 @@ define([], function () {
               },
             },
           },
-          styles: {
-            color: 'lprimary',
+          attrs: {
+            style: {
+              background: 'var(--nom-color-white)',
+            },
           },
         },
         body: {
