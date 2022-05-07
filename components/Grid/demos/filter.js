@@ -46,16 +46,16 @@ define([], function () {
                 component: 'Select',
                 options: [
                   {
-                    text: 'aaa',
-                    value: 'aaa',
+                    text: '张三',
+                    value: '1',
                   },
                   {
-                    text: 'bbb',
-                    value: 'bbb',
+                    text: '李四',
+                    value: 'b2bb',
                   },
                   {
-                    text: 'ccc',
-                    value: 'ccc',
+                    text: '王五',
+                    value: '3',
                   },
                 ],
               }

@@ -97,7 +97,9 @@ class Th extends Component {
               cursor: 'pointer',
             },
           },
-          tooltip: this.filterValue,
+          tooltip: this.filterValue
+            ? this.table.grid.filterValueText[this.props.column.field]
+            : null,
           popup: {
             align: 'bottom right',
             ref: (c) => {
@@ -409,10 +411,15 @@ class Th extends Component {
 
   onFilterChange(isReset) {
     if (this.filterGroup.getValue()[this.props.column.field]) {
-      this.filterValue = this.filterGroup.getValue()
+      this.filterValue = {
+        ...this.filterGroup.getValue(),
+      }
     }
 
     this.table.grid.filter = { ...this.table.grid.filter, ...this.filterGroup.getValue() }
+    this.table.grid.filterValueText[this.props.column.field] = this.filterGroup
+      .getField(this.props.column.field)
+      .getValueText()
     this.filterPopup.hide()
     this.table.grid.handleFilter(isReset)
   }
