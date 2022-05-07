@@ -19,10 +19,13 @@ class Th extends Component {
     this.lastDistance = 0
     this._stickyPos = 0 // 记录当前 th的sticy.style.left(right) 的值
     this.table.thRefs[this.props.column.field] = this
+    this.filterValue = null
   }
 
   _config() {
     const that = this
+    this.filterValue = this.table.hasGrid ? this.table.grid.filter[this.props.column.field] : null
+
     let sortIcon = 'sort'
     if (this.props.column.sortDirection === 'asc') {
       sortIcon = 'sort-up'
@@ -94,6 +97,9 @@ class Th extends Component {
               cursor: 'pointer',
             },
           },
+          tooltip: this.filterValue
+            ? this.table.grid.filterValueText[this.props.column.field]
+            : null,
           popup: {
             align: 'bottom right',
             ref: (c) => {
@@ -116,6 +122,7 @@ class Th extends Component {
                   ref: (c) => {
                     this.filterGroup = c
                   },
+
                   fields: [
                     {
                       ...(isFunction(that.props.column.filter)
@@ -236,6 +243,7 @@ class Th extends Component {
   }
 
   _rendered() {
+    this.props.column.filter && this.props.column.colSpan > 0 && this.resetFilterStatus()
     // 未设置冻结列则无需定时器
     const fixed = this.props.column.fixed
 
@@ -403,12 +411,17 @@ class Th extends Component {
 
   onFilterChange(isReset) {
     if (this.filterGroup.getValue()[this.props.column.field]) {
-      this.filterValue = this.filterGroup.getValue()
+      this.filterValue = {
+        ...this.filterGroup.getValue(),
+      }
     }
+
     this.table.grid.filter = { ...this.table.grid.filter, ...this.filterGroup.getValue() }
+    this.table.grid.filterValueText[this.props.column.field] = this.filterGroup
+      .getField(this.props.column.field)
+      .getValueText()
     this.filterPopup.hide()
     this.table.grid.handleFilter(isReset)
-    this.resetFilterStatus()
   }
 
   onFilterReset() {

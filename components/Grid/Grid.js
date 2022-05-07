@@ -6,7 +6,7 @@ import ExpandedTr from '../Table/ExpandedTr'
 import {
   STORAGE_KEY_GRID_COLS_FIXED,
   STORAGE_KEY_GRID_COLS_WIDTH,
-  STORAGE_KEY_GRID_COLUMNS
+  STORAGE_KEY_GRID_COLUMNS,
 } from '../util/constant'
 import {
   defaultSortableOndrop,
@@ -14,7 +14,7 @@ import {
   isFunction,
   isNullish,
   isPlainObject,
-  isString
+  isString,
 } from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
@@ -52,6 +52,7 @@ class Grid extends Component {
     this.sortUpdated = false
 
     this.filter = {}
+    this.filterValueText = {}
     this._resetFixCount()
 
     if (this.props.frozenLeftCols > 0) {
@@ -1276,7 +1277,7 @@ Grid.defaults = {
   sticky: false,
   line: 'row',
   bordered: false,
-  scrollbarWidth: 8
+  scrollbarWidth: 8,
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false
