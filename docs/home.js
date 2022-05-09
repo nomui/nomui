@@ -2,44 +2,75 @@ define([], function () {
   return {
     children: [
       {
-        component: 'Container',
-        styles: {
-          margin: ['x-auto', 'b-1'],
-          padding: 'y-4',
-          text: 'center',
-          color: 'lprimary',
+        classes: {
+          'docs-main-bg': true,
         },
         children: [
           {
-            tag: 'h1',
-            styles: {
-              margin: 'b-2',
+            classes: {
+              'docs-main-bg-image': true,
             },
-            children: 'Nom UI',
           },
           {
-            styles: {
-              margin: 'b-3',
+            component: 'Flex',
+            classes: {
+              'docs-main-bg-inner': true,
             },
-            children: 'No magic ui，没有魔法，简单易用的 web 界面框架',
-          },
-          {
-            component: 'Button',
-            text: '快速开始',
-            href: '#!tutorials/index',
-            styles: {
-              size: 'lg',
-              color: 'primary',
-              shape: 'round',
-            },
-            attrs: {
-              style: {
-                width: '150px',
+            rows: [
+              {
+                tag: 'h1',
+                styles: {
+                  margin: 'b-2',
+                },
+                children: {
+                  component: 'Flex',
+                  classes: {
+                    'docs-main-title': true,
+                  },
+                  gutter: 'large',
+                  cols: [
+                    {
+                      children: 'No',
+                    },
+                    {
+                      classes: {
+                        'docs-main-title-center': true,
+                      },
+                      children: 'Magic',
+                    },
+                    {
+                      children: 'UI',
+                    },
+                  ],
+                },
               },
-            },
+              {
+                styles: {
+                  margin: 'b-3',
+                },
+                children: '没有魔法，简单易用的 web 界面框架',
+              },
+              {
+                component: 'Button',
+                text: '快速开始',
+                href: '#!tutorials/index',
+                styles: {
+                  shape: 'round',
+                },
+                type: 'primary',
+                size: 'large',
+
+                attrs: {
+                  style: {
+                    width: '150px',
+                  },
+                },
+              },
+            ],
           },
         ],
       },
+
       {
         component: 'Container',
         fluid: true,

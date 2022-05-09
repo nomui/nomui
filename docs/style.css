@@ -1,0 +1,41 @@
+.docs-main-bg {
+    position: relative
+}
+
+.docs-main-bg-inner {
+    z-index: 5;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.docs-main-bg-image {
+    height: 80vh;
+}
+
+
+.docs-main-bg-image::after {
+    content: '';
+    display: block;
+    background: rgba(0,0,0,.5);
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.docs-main-title {
+    color:var(--nom-color-primary);
+    font-size:5rem;
+}
+
+.docs-main-title .docs-main-title-center {
+    color:#fff;
+}
+
+.docs-main-title .docs-main-title-center::first-letter {
+    color:var(--nom-color-primary);
+}

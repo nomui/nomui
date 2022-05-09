@@ -1,4 +1,4 @@
-define(['/docs/helper.js'], function ({
+define(['/docs/helper.js', 'css!/docs/style.css'], function ({
   DOC_URL_KEY,
   GLOBAL_SEARCH_INTERVAL,
   debounce,
