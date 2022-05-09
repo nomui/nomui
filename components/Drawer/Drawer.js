@@ -10,7 +10,7 @@ class Drawer extends Component {
 
   _config() {
     const drawerRef = this
-    const { zIndex, settle, maskClosable, showMasker, width, height } = this.props
+    const { zIndex, settle, maskClosable, showMasker, width, height, animate } = this.props
 
     const _settle = settles.includes(settle) ? settle : 'right'
 
@@ -52,7 +52,6 @@ class Drawer extends Component {
       _container.style.position = 'relative'
       _style = { ..._style, position: 'absolute' }
     }
-
     this.setProps({
       classes: {
         // [`nom-drawer-${_settle}`]: true,
@@ -60,8 +59,8 @@ class Drawer extends Component {
         'nom-drawer-right': _settle === 'right',
         'nom-drawer-bottom': _settle === 'bottom',
         'nom-drawer-left': _settle === 'left',
-        [`nom-drawer-animate-${_settle}-show`]: true,
-        'nom-drawer-mask-animate-show': true,
+        [`nom-drawer-animate-${_settle}-show`]: animate,
+        'nom-drawer-mask-animate-show': animate,
       },
       onClick: () => {
         maskClosable && drawerRef.close(drawerRef)
@@ -75,8 +74,17 @@ class Drawer extends Component {
 
   _handleContent() {
     const drawerRef = this
-    const { closable, closeIcon, title, content, footer, okText, cancelText, onOk, onCancel } =
-      this.props
+    const {
+      closable,
+      closeIcon,
+      title,
+      content,
+      footer,
+      okText,
+      cancelText,
+      onOk,
+      onCancel,
+    } = this.props
 
     const children = []
 
@@ -209,6 +217,10 @@ class Drawer extends Component {
   }
 
   close() {
+    if (!this.props.animate) {
+      this.remove()
+      return false
+    }
     this.addClass(`nom-drawer-animate-${this.props.settle}-hide`)
     setTimeout(() => {
       this.addClass('nom-drawer-mask-animate-hide')

@@ -16,7 +16,7 @@ class Modal extends Component {
 
   _config() {
     this._propStyleClasses = ['size', 'fit']
-    const { size } = this.props
+    const { size, animate } = this.props
 
     let myWidth = null
 
@@ -30,7 +30,7 @@ class Modal extends Component {
 
     this.setProps({
       classes: {
-        'nom-modal-mask-animate-show': true,
+        'nom-modal-mask-animate-show': animate,
       },
       children: {
         component: ModalDialog,
@@ -74,6 +74,10 @@ class Modal extends Component {
     }
 
     this._callHandler(this.props.onClose, { result: result })
+    if (!this.props.animate) {
+      this.remove()
+      return false
+    }
     this.modalContent.addClass('nom-modal-content-animate-hide')
     setTimeout(() => {
       if (!this.element) return false
