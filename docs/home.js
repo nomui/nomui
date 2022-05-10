@@ -73,7 +73,7 @@ define([], function () {
                   {
                     component: 'Button',
                     text: 'Github',
-                    href: 'https://github.com/nomui',
+                    href: 'https://github.com/nomui/nomui',
                     styles: {
                       shape: 'round',
                     },
@@ -82,6 +82,7 @@ define([], function () {
                       'btn-bordered': true,
                     },
                     size: 'medium',
+                    target: '_blank',
 
                     attrs: {
                       style: {
