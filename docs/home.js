@@ -30,17 +30,17 @@ define([], function () {
                   gutter: 'large',
                   cols: [
                     {
-                      children: 'No',
+                      children: 'No Magic UI',
                     },
-                    {
-                      classes: {
-                        'docs-main-title-center': true,
-                      },
-                      children: 'Magic',
-                    },
-                    {
-                      children: 'UI',
-                    },
+                    // {
+                    //   classes: {
+                    //     'docs-main-title-center': true,
+                    //   },
+                    //   children: 'Magic',
+                    // },
+                    // {
+                    //   children: 'UI',
+                    // },
                   ],
                 },
               },
@@ -51,20 +51,45 @@ define([], function () {
                 children: '没有魔法，简单易用的 web 界面框架',
               },
               {
-                component: 'Button',
-                text: '快速开始',
-                href: '#!tutorials/index',
-                styles: {
-                  shape: 'round',
-                },
-                type: 'primary',
-                size: 'large',
+                justify: 'center',
+                gutter: 'medium',
+                cols: [
+                  {
+                    component: 'Button',
+                    text: '开始使用',
+                    href: '#!tutorials/index',
+                    styles: {
+                      shape: 'round',
+                    },
+                    type: 'primary',
+                    size: 'medium',
 
-                attrs: {
-                  style: {
-                    width: '150px',
+                    attrs: {
+                      style: {
+                        width: '150px',
+                      },
+                    },
                   },
-                },
+                  {
+                    component: 'Button',
+                    text: 'Github',
+                    href: 'https://github.com/nomui',
+                    styles: {
+                      shape: 'round',
+                    },
+
+                    classes: {
+                      'btn-bordered': true,
+                    },
+                    size: 'medium',
+
+                    attrs: {
+                      style: {
+                        width: '150px',
+                      },
+                    },
+                  },
+                ],
               },
             ],
           },
@@ -133,5 +158,8 @@ define([], function () {
         },
       },
     ],
+    onRendered: () => {
+      document.querySelector('.main-nav').classList.add('float')
+    },
   }
 })

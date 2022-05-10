@@ -9,7 +9,8 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
     let topMenu = null
     let globalSearchRef = null
     let searchListRef = null
-
+    let mainHeader = null
+    let searchbar = null
     let searchData = []
     let searchLoading = null
 
@@ -85,6 +86,14 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
       return false
     }
 
+    const setSearchbar = () => {
+      if (window.nomapp.currentRoute.path.includes('!components')) {
+        searchbar.show()
+      } else {
+        searchbar.hide()
+      }
+    }
+
     return {
       view: {
         component: 'Layout',
@@ -95,8 +104,17 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
               color: 'var(--nom-color-white)',
             },
           },
+          classes: {
+            'main-nav': true,
+          },
+
+          ref: (c) => {
+            mainHeader = c
+          },
+
           children: {
             component: 'Navbar',
+
             caption: {
               title: 'NomUI',
               href: '/',
@@ -154,6 +172,13 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
                 },
                 attrs: {
                   style: { position: 'relative' },
+                },
+                ref: (c) => {
+                  searchbar = c
+                },
+                hidden: true,
+                classes: {
+                  'docs-searchbar': true,
                 },
                 rows: [
                   {
@@ -214,6 +239,11 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
                 href: 'https://github.com/nomui/nomui',
                 target: '_blank',
                 type: 'text',
+                attrs: {
+                  style: {
+                    color: '#fff',
+                  },
+                },
               },
             ],
           },
@@ -226,10 +256,19 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
         },
       },
       _rendered: function () {
+        setSearchbar()
         highLight()
       },
       onSubpathChange: () => {
+        setSearchbar()
         highLight()
+      },
+      onHashChange: () => {
+        mainHeader.update({
+          classes: {
+            float: false,
+          },
+        })
       },
     }
   }

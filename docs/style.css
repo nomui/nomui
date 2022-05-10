@@ -8,17 +8,22 @@
     top:50%;
     left:50%;
     transform: translate(-50%,-50%);
+    color:#fff;
+    text-align: center;
+ 
 }
 
 .docs-main-bg-image {
     height: 80vh;
+    background: url('./images/banner.jpg');
+    background-size: cover;
 }
 
 
 .docs-main-bg-image::after {
     content: '';
     display: block;
-    background: rgba(0,0,0,.5);
+    background: rgba(0,0,0,.75);
     position: absolute;
     top:0;
     bottom: 0;
@@ -28,8 +33,11 @@
 }
 
 .docs-main-title {
-    color:var(--nom-color-primary);
+    color:var(--nom-color-white);
     font-size:5rem;
+   
+    font-weight: 800;
+
 }
 
 .docs-main-title .docs-main-title-center {
@@ -38,4 +46,34 @@
 
 .docs-main-title .docs-main-title-center::first-letter {
     color:var(--nom-color-primary);
+}
+
+.docs-main-bg-inner .nom-button {
+    text-decoration: none;
+}
+
+.btn-bordered {
+    border:1px solid var(--nom-color-white);
+    background: transparent;
+    transition: all .5s;
+    color:#fff;
+}
+
+.btn-bordered:hover {
+    border:1px solid var(--nom-color-white);
+    background:  var(--nom-color-white) !important;
+    color:#333
+}
+
+.main-nav.float {
+    position: fixed;
+    top:0;
+    left:0;
+    right: 0;
+    z-index: 10;
+    background: transparent !important;
+}
+
+.docs-searchbar .nom-textbox-affix-wrapper {
+    border:none
 }
