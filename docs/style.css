@@ -72,8 +72,13 @@
     right: 0;
     z-index: 10;
     background: transparent !important;
+    border:none;
 }
 
 .docs-searchbar .nom-textbox-affix-wrapper {
     border:none
+}
+
+.docs-title {
+    text-align: center;
 }
