@@ -255,6 +255,7 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
           },
         },
       },
+
       _rendered: function () {
         setSearchbar()
         highLight()

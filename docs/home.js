@@ -96,6 +96,11 @@ define([], function () {
           },
         ],
       },
+      {
+        classes: {
+          'docs-nav-bg': true,
+        },
+      },
 
       {
         children: {

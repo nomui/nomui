@@ -1,5 +1,8 @@
+
+
 .docs-main-bg {
-    position: relative
+    position: relative;
+    z-index: 3;
 }
 
 .docs-main-bg-inner {
@@ -81,4 +84,14 @@
 
 .docs-title {
     text-align: center;
+}
+
+.docs-nav-bg {
+    background: rgba(0,0,0,.75);
+    position: fixed;
+    top:0;
+    left:0;
+    right:8px;
+    height:60px;
+    z-index: 2;
 }
