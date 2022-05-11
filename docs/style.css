@@ -78,6 +78,10 @@
     border:none;
 }
 
+.main-nav.float .p-type-nomui {
+    color:var(--nom-color-primary)
+}
+
 .docs-searchbar .nom-textbox-affix-wrapper {
     border:none
 }

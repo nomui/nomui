@@ -280,6 +280,12 @@ Icon.add(
   cat,
 )
 
+Icon.add(
+  'nomui',
+  `<svg width="1em" height="1em" version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve"><rect y="0" fill="none" width="64" height="64"/><g><polygon fill="currentColor" points="12.78,5.61 0,58.39 13.78,58.39 20.17,30.17 26.56,58.39 39.51,58.39 52.21,5.61 39.01,5.61 33.12,30.92 26.89,5.61"/><polygon fill="currentColor" points="56.85,32.83 50.88,58.39 64,58.39 	"/></g></svg>`,
+  cat,
+)
+
 /* Uncategorized */
 cat = 'Uncategorized'
 

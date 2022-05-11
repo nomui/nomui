@@ -118,59 +118,89 @@ define([], function () {
                 fluid: true,
                 children: {
                   component: 'Flex',
-                  rows: [
+                  gap: 'large',
+                  cols: [
                     {
-                      tag: 'h2',
-                      classes: {
-                        'docs-title': true,
+                      attrs: {
+                        style: {
+                          flex: '1 1 50%',
+                        },
                       },
-                      children: 'NomUI没有什么',
+                      children: '123123',
                     },
                     {
-                      component: 'List',
-                      cols: 3,
-                      items: [
-                        {
-                          title: '没有新概念',
-                          content: '没有创建新概念，html，css，javascript 三驾马车足矣。',
-                        },
-                        {
-                          title: '没有构建',
-                          content:
-                            '不需要构建，不需要 node js，更不需要 webpack，直接引入即可使用。',
-                        },
-                        {
-                          title: '没有魔法',
-                          content: '没有看不懂的魔法，一切都是那么自然，即学即用。',
-                        },
-                      ],
-                      itemDefaults: {
-                        _config: function () {
-                          const { icon, title, content } = this.props
-                          this.setProps({
-                            children: [
-                              {
-                                component: 'Icon',
-                                type: icon,
-                              },
-                              {
-                                tag: 'h4',
-                                styles: {
-                                  margin: 'b-d5',
-                                },
-                                children: title,
-                              },
-                              {
-                                children: content,
-                              },
-                            ],
-                          })
-                        },
-                        styles: {
-                          padding: '1',
-                          text: 'center',
+                      attrs: {
+                        style: {
+                          flex: '1 1 50%',
                         },
                       },
+                      rows: [
+                        {
+                          tag: 'h2',
+
+                          attrs: {
+                            style: {
+                              textAlign: 'left',
+                              fontSize: '2rem',
+                              marginBottom: '1rem',
+                            },
+                          },
+                          children: '化繁为简',
+                        },
+                        {
+                          tag: 'p',
+                          attrs: {
+                            style: {
+                              color: 'var(--nom-color-text-2)',
+                              marginBottom: '2rem',
+                            },
+                          },
+                          children:
+                            '你是否厌倦了创建一个项目首先需要安装各种模块，阅读复杂的配置说明，通过node.js才可以运行起来？NomUI舍弃了这些繁杂的操作，让你专注于内容的创作。',
+                        },
+                        {
+                          gutter: 'medium',
+                          rows: [
+                            {
+                              title: '没有新概念',
+                              content: '没有创建新概念，html，css，javascript 三驾马车足矣。',
+                            },
+                            {
+                              title: '没有构建',
+                              content:
+                                '不需要构建，不需要 node js，更不需要 webpack，直接引入即可使用。',
+                            },
+                            {
+                              title: '没有魔法',
+                              content: '没有看不懂的魔法，一切都是那么自然，即学即用。',
+                            },
+                          ],
+                          itemDefaults: {
+                            _config: function () {
+                              const { icon, content } = this.props
+                              this.setProps({
+                                children: {
+                                  component: 'List',
+                                  items: [
+                                    {
+                                      component: 'Icon',
+                                      type: icon,
+                                    },
+                                    // {
+                                    //   tag: 'strong',
+
+                                    //   children: title,
+                                    // },
+                                    {
+                                      children: content,
+                                    },
+                                  ],
+                                },
+                              })
+                            },
+                          },
+                        },
+                      ],
                     },
                   ],
                 },
@@ -194,7 +224,7 @@ define([], function () {
                       classes: {
                         'docs-title': true,
                       },
-                      children: 'NomUI有什么',
+                      children: 'NomUI有什么?',
                     },
                     {
                       gap: 'large',

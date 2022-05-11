@@ -116,7 +116,18 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
             component: 'Navbar',
 
             caption: {
-              title: 'NomUI',
+              title: {
+                attrs: {
+                  style: {
+                    padding: '0.5rem 0 0 0.5rem',
+                    fontSize: '2rem',
+                  },
+                },
+                children: {
+                  component: 'Icon',
+                  type: 'nomui',
+                },
+              },
               href: '/',
               attrs: {
                 style: {
