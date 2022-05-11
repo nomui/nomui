@@ -143,11 +143,16 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
               styles: {
                 padding: 'l-2',
               },
+              attrs: {
+                style: {
+                  flexDirection: 'row-reverse',
+                },
+              },
               items: [
                 {
-                  text: '教程',
-                  id: 'tutorials/index',
-                  url: '#!tutorials/index',
+                  text: '文档',
+                  id: 'documents/index',
+                  url: '#!documents/index',
                 },
                 {
                   text: '组件',
@@ -155,9 +160,82 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
                   url: '#!components!',
                 },
                 {
-                  text: '文档',
-                  id: 'documents/index',
-                  url: '#!documents/index',
+                  text: '教程',
+                  id: 'tutorials/index',
+                  url: '#!tutorials/index',
+                },
+                {
+                  component: 'Flex',
+                  styles: {
+                    'width-block': 'sm',
+                  },
+                  attrs: {
+                    style: { position: 'relative' },
+                  },
+                  ref: (c) => {
+                    searchbar = c
+                  },
+
+                  classes: {
+                    'docs-searchbar': true,
+                  },
+                  rows: [
+                    {
+                      component: 'Textbox',
+                      attrs: {
+                        style: {
+                          height: '2rem',
+                        },
+                      },
+                      onCreated: ({ inst }) => {
+                        globalSearchRef = inst
+                      },
+                      onRendered() {
+                        searchLoading = new nomui.Loading({
+                          container: globalSearchRef,
+                        })
+                        polling(getSearchData, 300)
+                      },
+                      id: 'globalSearchBar',
+                      name: 'globalSearchBar',
+                      placeholder: '搜索组件',
+                      leftIcon: 'search',
+                      onValueChange: debounce(
+                        ({ newValue }) => handleValueChange(newValue),
+                        GLOBAL_SEARCH_INTERVAL,
+                      ),
+                      onBlur: () => {
+                        searchListRef &&
+                          setTimeout(() => {
+                            searchListRef.hide()
+                          }, 300)
+                      },
+                      onClick: ({ sender }) => {
+                        sender.getValue() && sender.setValue(null, false)
+                      },
+                    },
+                    {
+                      component: 'Flex',
+                      onCreated: ({ inst }) => {
+                        searchListRef = inst
+                      },
+                      classes: {
+                        'nom-preset-layer': true,
+                      },
+                      styles: {
+                        width: 'full',
+                        text: 'gray',
+                        padding: 1,
+                      },
+                      attrs: {
+                        style: {
+                          zIndex: 1000,
+                          position: 'absolute',
+                        },
+                      },
+                      hidden: true,
+                    },
+                  ],
                 },
               ],
               direction: 'horizontal',
@@ -176,74 +254,6 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
               },
             },
             tools: [
-              {
-                component: 'Flex',
-                styles: {
-                  'width-block': 'sm',
-                },
-                attrs: {
-                  style: { position: 'relative' },
-                },
-                ref: (c) => {
-                  searchbar = c
-                },
-                hidden: true,
-                classes: {
-                  'docs-searchbar': true,
-                },
-                rows: [
-                  {
-                    component: 'Textbox',
-                    onCreated: ({ inst }) => {
-                      globalSearchRef = inst
-                    },
-                    onRendered() {
-                      searchLoading = new nomui.Loading({
-                        container: globalSearchRef,
-                      })
-                      polling(getSearchData, 300)
-                    },
-                    id: 'globalSearchBar',
-                    name: 'globalSearchBar',
-                    placeholder: '搜索组件',
-                    leftIcon: 'search',
-                    onValueChange: debounce(
-                      ({ newValue }) => handleValueChange(newValue),
-                      GLOBAL_SEARCH_INTERVAL,
-                    ),
-                    onBlur: () => {
-                      searchListRef &&
-                        setTimeout(() => {
-                          searchListRef.hide()
-                        }, 300)
-                    },
-                    onClick: ({ sender }) => {
-                      sender.getValue() && sender.setValue(null, false)
-                    },
-                  },
-                  {
-                    component: 'Flex',
-                    onCreated: ({ inst }) => {
-                      searchListRef = inst
-                    },
-                    classes: {
-                      'nom-preset-layer': true,
-                    },
-                    styles: {
-                      width: 'full',
-                      text: 'gray',
-                      padding: 1,
-                    },
-                    attrs: {
-                      style: {
-                        zIndex: 1000,
-                        position: 'absolute',
-                      },
-                    },
-                    hidden: true,
-                  },
-                ],
-              },
               {
                 component: 'Button',
                 icon: 'github',
