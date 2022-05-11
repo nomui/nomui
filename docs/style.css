@@ -84,6 +84,7 @@
 
 .docs-title {
     text-align: center;
+    padding-bottom: 4rem;
 }
 
 .docs-nav-bg {
@@ -94,4 +95,35 @@
     right:8px;
     height:60px;
     z-index: 2;
+}
+
+.docs-card {
+    padding:4rem 2.5rem 2.5rem;
+    border:1px solid var(--nom-border-color);
+    border-radius:4px;
+    background: white;
+    flex: 1 1 33.33%;
+    position: relative;
+}
+
+.docs-card-icon {
+    position: absolute;
+    top:-2rem;
+    left:2.5rem;
+    background: white;
+    border:1px solid var(--nom-border-color);
+    width:4rem;
+    height:4rem;
+    color:var(--nom-color-text);
+    font-size: 2rem;
+    display: inline-block;
+    margin-bottom: 2rem;
+    transform: rotate(45deg);
+}
+
+.docs-card-icon .nom-icon {
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 1rem;
+    left:1rem;
 }

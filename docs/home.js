@@ -124,7 +124,7 @@ define([], function () {
                       classes: {
                         'docs-title': true,
                       },
-                      children: '我们没有什么',
+                      children: 'NomUI没有什么',
                     },
                     {
                       component: 'List',
@@ -194,22 +194,25 @@ define([], function () {
                       classes: {
                         'docs-title': true,
                       },
-                      children: '我们有什么',
+                      children: 'NomUI有什么',
                     },
                     {
-                      component: 'List',
-                      cols: 3,
-                      items: [
+                      gap: 'large',
+                      fit: true,
+                      cols: [
                         {
+                          icon: 'edit',
                           title: '有组件体系',
                           content: '一切都是组件，整个页面或者页面的某个部分可由一颗组件树组成。',
                         },
                         {
+                          icon: 'edit',
                           title: '有样式体系',
                           content:
                             '内置大量常用样式原子类，并以简单的组件配置方式使用，快速构造出漂亮的页面。',
                         },
                         {
+                          icon: 'edit',
                           title: '有单页应用',
                           content: '有基于文件夹结构的约定式路由，无需特别配置即可实现单页应用。',
                         },
@@ -218,27 +221,38 @@ define([], function () {
                         _config: function () {
                           const { icon, title, content } = this.props
                           this.setProps({
+                            classes: {
+                              'docs-card': true,
+                            },
                             children: [
                               {
-                                component: 'Icon',
-                                type: icon,
+                                classes: {
+                                  'docs-card-icon': true,
+                                },
+                                children: {
+                                  component: 'Icon',
+                                  type: icon,
+                                },
                               },
                               {
                                 tag: 'h4',
-                                styles: {
-                                  margin: 'b-d5',
+                                attrs: {
+                                  style: {
+                                    marginBottom: '1rem',
+                                  },
                                 },
                                 children: title,
                               },
                               {
+                                attrs: {
+                                  style: {
+                                    color: 'var(--nom-color-text-2)',
+                                  },
+                                },
                                 children: content,
                               },
                             ],
                           })
-                        },
-                        styles: {
-                          padding: '1',
-                          text: 'center',
                         },
                       },
                     },
