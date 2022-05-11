@@ -30,6 +30,7 @@ class MenuSub extends Component {
       this.props.items.map(function (item) {
         return {
           component: 'MenuItemWrapper',
+          animate: that.menu.props.animate,
           item: Component.extendProps({}, that.props.itemDefaults, item),
           items: item.items,
         }

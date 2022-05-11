@@ -42,6 +42,7 @@ class Dropdown extends Component {
             that.popup = c
           },
           _rendered() {
+            if (!that.props.animate) return false
             if (this.element.getAttribute('offset-y') !== '0') {
               that.props.animateName = 'bottom'
               this.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
@@ -58,6 +59,10 @@ class Dropdown extends Component {
             items: items,
           },
           onClick: (args) => {
+            if (!that.props.animate) {
+              args.sender.hide()
+              return false
+            }
             that.popup.removeClass([`nom-dropdown-animate-${that.props.animateName}-show`])
             if (that.popup.element.getAttribute('offset-y') !== '0') {
               that.props.animateName = 'bottom'
