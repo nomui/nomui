@@ -1,0 +1,134 @@
+
+
+.docs-main-bg {
+    position: relative;
+    z-index: 3;
+}
+
+.docs-main-bg-inner {
+    z-index: 5;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    color:#fff;
+    text-align: center;
+ 
+}
+
+.docs-main-bg-image {
+    height: 80vh;
+    background: url('./images/banner.jpg');
+    background-size: cover;
+}
+
+
+.docs-main-bg-image::after {
+    content: '';
+    display: block;
+    background: rgba(0,0,0,.75);
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.docs-main-title {
+    color:var(--nom-color-white);
+    font-size:5rem;
+   
+    font-weight: 800;
+
+}
+
+.docs-main-title .docs-main-title-center {
+    color:#fff;
+}
+
+.docs-main-title .docs-main-title-center::first-letter {
+    color:var(--nom-color-primary);
+}
+
+.docs-main-bg-inner .nom-button {
+    text-decoration: none;
+}
+
+.btn-bordered {
+    border:1px solid var(--nom-color-white);
+    background: transparent;
+    transition: all .5s;
+    color:#fff;
+}
+
+.btn-bordered:hover {
+    border:1px solid var(--nom-color-white);
+    background:  var(--nom-color-white) !important;
+    color:#333
+}
+
+.main-nav.float {
+    position: fixed;
+    top:0;
+    left:0;
+    right: 0;
+    z-index: 10;
+    background: transparent !important;
+    border:none;
+}
+
+.main-nav.float .p-type-nomui {
+    color:var(--nom-color-primary)
+}
+
+.docs-searchbar .nom-textbox-affix-wrapper {
+    border:none
+}
+
+.docs-title {
+    text-align: center;
+    padding-bottom: 2rem;
+}
+
+.docs-nav-bg {
+    background: rgba(0,0,0,.75);
+    position: fixed;
+    top:0;
+    left:0;
+    right:8px;
+    height:60px;
+    z-index: 2;
+}
+
+.docs-card {
+    padding:4rem 2.5rem 2.5rem;
+    border:1px solid var(--nom-border-color);
+    border-radius:4px;
+    background: white;
+    flex: 1 1 33.33%;
+    position: relative;
+}
+
+.docs-card-icon {
+    position: absolute;
+    top:-2rem;
+    left:2.5rem;
+    background: white;
+    border:1px solid var(--nom-border-color);
+    width:4rem;
+    height:4rem;
+    color:var(--nom-color-text);
+    font-size: 2rem;
+    display: inline-block;
+    margin-bottom: 2rem;
+    transform: rotate(45deg);
+}
+
+.docs-card-icon .nom-icon {
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 1rem;
+    left:1rem;
+}
+
