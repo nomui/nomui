@@ -4536,15 +4536,15 @@ body,
 body[theme-mode='dark'] .nom-always-light {
   --nom-color-white: rgba(var(--nom-white), 1);
   --nom-color-black: rgba(var(--nom-black), 1);
-  --nom-color-primary-base: var(--nom-cyan-5);
-  --nom-color-primary-darken: rgba(var(--nom-cyan-6), 1);
-  --nom-color-primary: rgba(var(--nom-cyan-5), 1);
-  --nom-color-primary-hover: rgba(var(--nom-cyan-6), 1);
-  --nom-color-primary-active: rgba(var(--nom-cyan-7), 1);
-  --nom-color-primary-disabled: rgba(var(--nom-cyan-2), 1);
-  --nom-color-primary-light-default: rgba(var(--nom-cyan-0), 1);
-  --nom-color-primary-light-hover: rgba(var(--nom-cyan-1), 1);
-  --nom-color-primary-light-active: rgba(var(--nom-cyan-2), 1);
+  --nom-color-primary-base: var(--nom-indigo-5);
+  --nom-color-primary-darken: rgba(var(--nom-indigo-6), 1);
+  --nom-color-primary: rgba(var(--nom-indigo-5), 1);
+  --nom-color-primary-hover: rgba(var(--nom-indigo-6), 1);
+  --nom-color-primary-active: rgba(var(--nom-indigo-7), 1);
+  --nom-color-primary-disabled: rgba(var(--nom-indigo-2), 1);
+  --nom-color-primary-light-default: rgba(var(--nom-indigo-0), 1);
+  --nom-color-primary-light-hover: rgba(var(--nom-indigo-1), 1);
+  --nom-color-primary-light-active: rgba(var(--nom-indigo-2), 1);
   --nom-color-success: rgba(var(--nom-green-5), 1);
   --nom-color-success-hover: rgba(var(--nom-green-6), 1);
   --nom-color-success-active: rgba(var(--nom-green-7), 1);
