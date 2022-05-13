@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.61](https://github.com/nomui/nomui/compare/v1.0.0-alpha.60...v1.0.0-alpha.61) (2022-05-13)
+
+
+### Bug Fixes
+
+* **Grid:** 列筛选部分类型组件字面值显示错误 ([82b3ee6](https://github.com/nomui/nomui/commit/82b3ee6d7ab66ebe22785a45fb7330d363d34094))
+
+
+### Docs
+
+* 修改主题色，文档界面更新 ([fa97c5c](https://github.com/nomui/nomui/commit/fa97c5c1b7a8096cedcc618876a074209244d57d))
+
 ## [1.0.0-alpha.60](https://github.com/nomui/nomui/compare/v1.0.0-alpha.59...v1.0.0-alpha.60) (2022-05-07)
 
 
