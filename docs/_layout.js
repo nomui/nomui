@@ -1,4 +1,4 @@
-define(['/docs/helper.js'], function ({
+define(['/docs/helper.js', 'css!/docs/style.css'], function ({
   DOC_URL_KEY,
   GLOBAL_SEARCH_INTERVAL,
   debounce,
@@ -9,7 +9,8 @@ define(['/docs/helper.js'], function ({
     let topMenu = null
     let globalSearchRef = null
     let searchListRef = null
-
+    let mainHeader = null
+    let searchbar = null
     let searchData = []
     let searchLoading = null
 
@@ -85,6 +86,14 @@ define(['/docs/helper.js'], function ({
       return false
     }
 
+    const setSearchbar = () => {
+      if (window.nomapp.currentRoute.path.includes('!components')) {
+        searchbar.show()
+      } else {
+        searchbar.hide()
+      }
+    }
+
     return {
       view: {
         component: 'Layout',
@@ -95,10 +104,30 @@ define(['/docs/helper.js'], function ({
               color: 'var(--nom-color-white)',
             },
           },
+          classes: {
+            'main-nav': true,
+          },
+
+          ref: (c) => {
+            mainHeader = c
+          },
+
           children: {
             component: 'Navbar',
+
             caption: {
-              title: 'NomUI',
+              title: {
+                attrs: {
+                  style: {
+                    padding: '0.5rem 0 0 0.5rem',
+                    fontSize: '2rem',
+                  },
+                },
+                children: {
+                  component: 'Icon',
+                  type: 'nomui',
+                },
+              },
               href: '/',
               attrs: {
                 style: {
@@ -114,11 +143,16 @@ define(['/docs/helper.js'], function ({
               styles: {
                 padding: 'l-2',
               },
+              attrs: {
+                style: {
+                  flexDirection: 'row-reverse',
+                },
+              },
               items: [
                 {
-                  text: '教程',
-                  id: 'tutorials/index',
-                  url: '#!tutorials/index',
+                  text: '文档',
+                  id: 'documents/index',
+                  url: '#!documents/index',
                 },
                 {
                   text: '组件',
@@ -126,9 +160,82 @@ define(['/docs/helper.js'], function ({
                   url: '#!components!',
                 },
                 {
-                  text: '文档',
-                  id: 'documents/index',
-                  url: '#!documents/index',
+                  text: '教程',
+                  id: 'tutorials/index',
+                  url: '#!tutorials/index',
+                },
+                {
+                  component: 'Flex',
+                  styles: {
+                    'width-block': 'sm',
+                  },
+                  attrs: {
+                    style: { position: 'relative' },
+                  },
+                  ref: (c) => {
+                    searchbar = c
+                  },
+
+                  classes: {
+                    'docs-searchbar': true,
+                  },
+                  rows: [
+                    {
+                      component: 'Textbox',
+                      attrs: {
+                        style: {
+                          height: '2rem',
+                        },
+                      },
+                      onCreated: ({ inst }) => {
+                        globalSearchRef = inst
+                      },
+                      onRendered() {
+                        searchLoading = new nomui.Loading({
+                          container: globalSearchRef,
+                        })
+                        polling(getSearchData, 300)
+                      },
+                      id: 'globalSearchBar',
+                      name: 'globalSearchBar',
+                      placeholder: '搜索组件',
+                      leftIcon: 'search',
+                      onValueChange: debounce(
+                        ({ newValue }) => handleValueChange(newValue),
+                        GLOBAL_SEARCH_INTERVAL,
+                      ),
+                      onBlur: () => {
+                        searchListRef &&
+                          setTimeout(() => {
+                            searchListRef.hide()
+                          }, 300)
+                      },
+                      onClick: ({ sender }) => {
+                        sender.getValue() && sender.setValue(null, false)
+                      },
+                    },
+                    {
+                      component: 'Flex',
+                      onCreated: ({ inst }) => {
+                        searchListRef = inst
+                      },
+                      classes: {
+                        'nom-preset-layer': true,
+                      },
+                      styles: {
+                        width: 'full',
+                        text: 'gray',
+                        padding: 1,
+                      },
+                      attrs: {
+                        style: {
+                          zIndex: 1000,
+                          position: 'absolute',
+                        },
+                      },
+                      hidden: true,
+                    },
+                  ],
                 },
               ],
               direction: 'horizontal',
@@ -148,72 +255,16 @@ define(['/docs/helper.js'], function ({
             },
             tools: [
               {
-                component: 'Flex',
-                styles: {
-                  'width-block': 'sm',
-                },
-                attrs: {
-                  style: { position: 'relative' },
-                },
-                rows: [
-                  {
-                    component: 'Textbox',
-                    onCreated: ({ inst }) => {
-                      globalSearchRef = inst
-                    },
-                    onRendered() {
-                      searchLoading = new nomui.Loading({
-                        container: globalSearchRef,
-                      })
-                      polling(getSearchData, 300)
-                    },
-                    id: 'globalSearchBar',
-                    name: 'globalSearchBar',
-                    placeholder: '搜索组件',
-                    leftIcon: 'search',
-                    onValueChange: debounce(
-                      ({ newValue }) => handleValueChange(newValue),
-                      GLOBAL_SEARCH_INTERVAL,
-                    ),
-                    onBlur: () => {
-                      searchListRef &&
-                        setTimeout(() => {
-                          searchListRef.hide()
-                        }, 300)
-                    },
-                    onClick: ({ sender }) => {
-                      sender.getValue() && sender.setValue(null, false)
-                    },
-                  },
-                  {
-                    component: 'Flex',
-                    onCreated: ({ inst }) => {
-                      searchListRef = inst
-                    },
-                    classes: {
-                      'nom-preset-layer': true,
-                    },
-                    styles: {
-                      width: 'full',
-                      text: 'gray',
-                      padding: 1,
-                    },
-                    attrs: {
-                      style: {
-                        zIndex: 1000,
-                        position: 'absolute',
-                      },
-                    },
-                    hidden: true,
-                  },
-                ],
-              },
-              {
                 component: 'Button',
                 icon: 'github',
                 href: 'https://github.com/nomui/nomui',
                 target: '_blank',
                 type: 'text',
+                attrs: {
+                  style: {
+                    color: '#fff',
+                  },
+                },
               },
             ],
           },
@@ -225,11 +276,21 @@ define(['/docs/helper.js'], function ({
           },
         },
       },
+
       _rendered: function () {
+        setSearchbar()
         highLight()
       },
       onSubpathChange: () => {
+        setSearchbar()
         highLight()
+      },
+      onHashChange: () => {
+        mainHeader.update({
+          classes: {
+            float: false,
+          },
+        })
       },
     }
   }
