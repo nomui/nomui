@@ -1,5 +1,5 @@
 // 初始化时存下浏览器的版本信息
-const BROWSER_INFO = getBrowser()
+window.BROWSER_INFO = getBrowser()
 
 /**
  * 获取浏览器的版本信息
@@ -55,10 +55,10 @@ const SUPPORT_STICKY_MIN_BROWSER_VERSION_MAP = {
 }
 // 浏览器是否支持sticky
 export function isBrowerSupportSticky() {
-  if (BROWSER_INFO.type === 'IE') return false //
+  if (window.BROWSER_INFO.type === 'IE') return false //
   // 低于 minVersion 版本的浏览器，都不支持
-  const minVersion = SUPPORT_STICKY_MIN_BROWSER_VERSION_MAP[BROWSER_INFO.type]
-  if (minVersion && minVersion > BROWSER_INFO.version) {
+  const minVersion = SUPPORT_STICKY_MIN_BROWSER_VERSION_MAP[window.BROWSER_INFO.type]
+  if (minVersion && minVersion > window.BROWSER_INFO.version) {
     return false
   }
   // 未知的浏览器版本都默认支持
@@ -66,5 +66,5 @@ export function isBrowerSupportSticky() {
 }
 
 export function isChrome49() {
-  return BROWSER_INFO.type === 'Chrome' && BROWSER_INFO.version === 49
+  return window.BROWSER_INFO.type === 'Chrome' && window.BROWSER_INFO.version === 49
 }
