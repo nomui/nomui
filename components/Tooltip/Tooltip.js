@@ -117,18 +117,19 @@ class Tooltip extends Layer {
 
     if (this.props.hidden === false) {
       this.hideTimer = setTimeout(() => {
-        if (!this.props.animate) {
-          this.hide()
-          return false
-        }
-        if (!this.element) return false
-        this.addClass('nom-tooltip-animate-hide')
-        setTimeout(() => {
-          this.hide()
-          this.removeClass('nom-tooltip-animate-hide')
-        }, 90)
+        this.props.animate && this.hideAnimation()
+        !this.props.animate && this.hide()
       }, this.delay)
     }
+  }
+
+  hideAnimation() {
+    if (!this.element) return false
+    this.addClass('nom-tooltip-animate-hide')
+    setTimeout(() => {
+      this.hide()
+      this.removeClass('nom-tooltip-animate-hide')
+    }, 90)
   }
 
   _show() {

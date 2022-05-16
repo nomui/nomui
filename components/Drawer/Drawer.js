@@ -217,10 +217,11 @@ class Drawer extends Component {
   }
 
   close() {
-    if (!this.props.animate) {
-      this.remove()
-      return false
-    }
+    this.props.animate && this.hideAnimation()
+    !this.props.animate && this.remove()
+  }
+
+  hideAnimation() {
     this.addClass(`nom-drawer-animate-${this.props.settle}-hide`)
     setTimeout(() => {
       this.addClass('nom-drawer-mask-animate-hide')

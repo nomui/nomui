@@ -96,6 +96,7 @@ class DatePicker extends Textbox {
           onHide: () => {
             that.onPopupHide()
           },
+          animate: this.props.animate,
           classes: {
             'nom-date-picker-popup': true,
             'nom-date-picker-with-time': this.props.showTime,

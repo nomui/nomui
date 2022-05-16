@@ -39,10 +39,11 @@ class Message extends Layer {
   }
 
   close() {
-    if (!this.props.animate) {
-      this.remove()
-      return false
-    }
+    this.props.animate && this.hideAnimation()
+    !this.props.animate && this.remove()
+  }
+
+  hideAnimation() {
     this.addClass('nom-layer-animate-hide')
     setTimeout(() => {
       this.remove()

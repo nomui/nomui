@@ -77,6 +77,12 @@ class SelectPopup extends Popup {
   }
 
   _rendered() {
+    this.removeClass('nom-layer-animate-show')
+    this.selectControl.props.animate && this.initAnimation()
+  }
+
+  initAnimation() {
+    if (!this.element) return false
     if (this.element.getAttribute('offset-y') !== '0') {
       this.addClass('nom-select-animate-bottom-show')
     } else {
@@ -86,6 +92,7 @@ class SelectPopup extends Popup {
 
   _show() {
     super._show()
+    this.removeClass('nom-layer-animate-show')
     const { searchBox, props } = this.selectControl
     if (searchBox) {
       searchBox.focus()

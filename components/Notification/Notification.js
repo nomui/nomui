@@ -169,23 +169,12 @@ class Notification extends Layer {
 
   close() {
     this.timer && clearTimeout(this.timer)
-    const { key, alignInfo } = this.props
+    const { key } = this.props
 
     delete Notification.NOMUI_NOTIFICATION_INSTANCES[key]
     this.props.onClose && this.props.onClose()
-
-    if (!this.props.animate) {
-      this.remove()
-      return false
-    }
-    if (alignInfo.includes('left')) {
-      this.addClass('nom-notification-animate-left-hide')
-    } else if (alignInfo.includes('right')) {
-      this.addClass('nom-notification-animate-right-hide')
-    }
-    setTimeout(() => {
-      this.remove()
-    }, 240)
+    this.props.animate && this.hideAnimation()
+    !this.props.animate && this.remove()
   }
 
   _config() {
@@ -242,6 +231,17 @@ class Notification extends Layer {
     })
 
     super._config()
+  }
+
+  hideAnimation() {
+    if (this.props.alignInfo.includes('left')) {
+      this.addClass('nom-notification-animate-left-hide')
+    } else if (this.props.alignInfo.includes('right')) {
+      this.addClass('nom-notification-animate-right-hide')
+    }
+    setTimeout(() => {
+      this.remove()
+    }, 240)
   }
 }
 Notification.defaults = {

@@ -43,13 +43,8 @@ class Layer extends Component {
         },
       })
     }
-    if (!this.props.animate) return false
-    this.nomappOverflow()
-    this.setProps({
-      classes: {
-        'nom-layer-animate-show': true,
-      },
-    })
+
+    this.props.animate && this.initAnimation()
   }
 
   _rendered() {
@@ -68,17 +63,27 @@ class Layer extends Component {
           if (e.target !== e.currentTarget) {
             return
           }
-          if (!that.props.animate) {
-            that.remove()
-            return false
-          }
-          that.addClass('nom-layer-animate-hide')
-          setTimeout(() => {
-            that.remove()
-          }, 90)
+          that.props.animate && that.hideAnimation()
+          !that.props.animate && that.remove()
         })
       }
     }
+  }
+
+  initAnimation() {
+    this.nomappOverflow()
+    this.setProps({
+      classes: {
+        'nom-layer-animate-show': true,
+      },
+    })
+  }
+
+  hideAnimation() {
+    this.addClass('nom-layer-animate-hide')
+    setTimeout(() => {
+      this.remove()
+    }, 90)
   }
 
   _show() {
