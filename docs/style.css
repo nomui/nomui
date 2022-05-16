@@ -79,7 +79,7 @@
 }
 
 .main-nav.float .p-type-nomui {
-    color:var(--nom-color-primary)
+    color:var(--nom-color-white)
 }
 
 .docs-searchbar .nom-textbox-affix-wrapper {
