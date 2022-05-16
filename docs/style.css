@@ -132,3 +132,8 @@
     left:1rem;
 }
 
+.docs-logo-text {
+    display: block;
+    font-size: 20px;
+    font-weight: 200;
+}

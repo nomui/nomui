@@ -124,8 +124,23 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
                   },
                 },
                 children: {
-                  component: 'Icon',
-                  type: 'nomui',
+                  component: 'Flex',
+                  align: 'center',
+                  gutter: 'small',
+                  cols: [
+                    {
+                      component: 'Icon',
+                      type: 'nomui',
+                    },
+                    {
+                      children: {
+                        classes: {
+                          'docs-logo-text': true,
+                        },
+                        children: 'NomUI',
+                      },
+                    },
+                  ],
                 },
               },
               href: '/',
