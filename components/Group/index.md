@@ -23,3 +23,10 @@
 | ignoreDisabled | 是否忽略禁用的字段                            | `boolean` | `true`  |
 | ignoreHidden   | 是否忽略隐藏的字段                            | `boolean` | `true`  |
 | merge          | 是否合并返回 group 初始值当中未使用的部分字段 | `boolean` | `false` |
+
+
+### validate方法的参数
+
+| 方法名称       | 说明                                          | 类型      | 默认值  |
+| -------------- | --------------------------------------------- | --------- | ------- |
+| ignoreRequired | 校验过程是否忽略必填规则                            | `boolean` | `false`  |
