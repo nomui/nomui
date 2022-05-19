@@ -1278,6 +1278,7 @@ Grid.defaults = {
   line: 'row',
   bordered: false,
   scrollbarWidth: 8,
+  summary: null,
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false

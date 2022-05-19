@@ -81,12 +81,25 @@ define([], function () {
               component: 'Field',
               label: '',
               control: {
-                component: 'Button',
-                text: '提 交',
-                type: 'Primary',
-                onClick: function () {
-                  group.validate()
-                },
+                component: 'Cols',
+                items: [
+                  {
+                    component: 'Button',
+                    text: '校验',
+                    type: 'Primary',
+                    onClick: function () {
+                      group.validate()
+                    },
+                  },
+                  {
+                    component: 'Button',
+                    text: '校验但忽略必填',
+                    tooltip: '用于某些特殊场景，需要忽略必填验证时使用',
+                    onClick: function () {
+                      group.validate({ ignoreRequired: true })
+                    },
+                  },
+                ],
               },
             },
           ],

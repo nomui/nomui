@@ -4621,18 +4621,23 @@ function _defineProperty2(obj, key, value) {
         ? this._getValueText(options, value)
         : this.getValue();
     }
-    validate() {
+    validate(options) {
       this.validateTriggered = true;
-      return this._validate();
+      return this._validate(options);
     }
-    _validate() {
+    _validate(options) {
       const { disabled, hidden } = this.props;
       if (disabled || hidden) {
         return true;
       }
-      const rules = this.rules;
+      let rules = this.rules;
       const value = this._getRawValue ? this._getRawValue() : this.getValue();
       if (Array.isArray(rules) && rules.length > 0) {
+        if (options && options.ignoreRequired) {
+          rules = rules.filter((item) => {
+            return item.type !== "required";
+          });
+        }
         const validationResult = RuleManager.validate(rules, value);
         if (validationResult === true) {
           this.removeClass("s-invalid");
@@ -14578,13 +14583,13 @@ function _defineProperty2(obj, key, value) {
         }
       }
     }
-    validate() {
+    validate(options) {
       const invalids = [];
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i],
           { disabled, hidden } = field.props;
         if (!(disabled || hidden) && field.validate) {
-          const valResult = field.validate();
+          const valResult = field.validate(options);
           if (valResult !== true) {
             invalids.push(field);
           }
@@ -16588,7 +16593,7 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         children: {
           columns: this._getSummaryColumns(),
-          data: this._getSummaryData(),
+          data: this._getSummaryDataList(),
           attrs: { style: { minWidth: `${this.grid.minWidth}px` } },
           onlyBody: true,
           line: this.props.line,
@@ -16606,15 +16611,26 @@ function _defineProperty2(obj, key, value) {
         });
       });
     }
-    _getSummaryData() {
+    _getSummaryDataList() {
+      const { summary } = this.grid.props;
+      let list = [];
+      if (Array.isArray(summary)) {
+        list = summary.map((i) => {
+          return this._getSummaryData(i);
+        });
+      } else {
+        list.push(this._getSummaryData(summary));
+      }
+      return list;
+    }
+    _getSummaryData(param) {
       const {
         data = [],
-        summary,
         columns,
         rowCheckable,
         rowExpandable,
       } = this.grid.props;
-      const { method, text = "总计" } = summary;
+      const { method, text = "总计" } = param;
       let res = {};
       let textColumnIndex = 0;
       rowCheckable && textColumnIndex++;
@@ -16640,7 +16656,7 @@ function _defineProperty2(obj, key, value) {
           res[col.field] = sum;
         });
       }
-      return [res];
+      return res;
     }
   }
   Component.register(GridFooter);
@@ -18057,6 +18073,7 @@ function _defineProperty2(obj, key, value) {
     line: "row",
     bordered: false,
     scrollbarWidth: 8,
+    summary: null,
   };
   Grid._loopSetValue = function (key, arry) {
     if (key === undefined || key.cascade === undefined) return false;

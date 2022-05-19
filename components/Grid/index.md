@@ -43,7 +43,7 @@
 | rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
 | rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |
 | rowSortable | 表格行是否可拖动顺序 | `object` \| `boolean` | `false` |
-| summary | 表尾总计行配置 | `object` \| `boolean` | `false` |
+| summary | 表尾总计行配置,多行统计则传入summary配置项数组 | `array` \|`object` \| `boolean` | `false` |
 | treeConfig | 树形表格配置 | `object` | - |
 | bordered | 是否显示边框 | `boolean` | `false` |
 | showTitle | 单元格显示 title | `boolean` | `false` |
@@ -195,7 +195,7 @@
 
 ### summary
 
-表尾总计行配置
+表尾总计行配置，多行统计则以数组形式传入，例如：`[{text,method},{text,method}]`
 
 | 参数   | 说明                 | 类型                                    | 默认值 |
 | ------ | -------------------- | --------------------------------------- | ------ |

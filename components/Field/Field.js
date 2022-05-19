@@ -121,20 +121,25 @@ class Field extends Component {
     return isFunction(this._getValueText) ? this._getValueText(options, value) : this.getValue()
   }
 
-  validate() {
+  validate(options) {
     this.validateTriggered = true
-    return this._validate()
+    return this._validate(options)
   }
 
-  _validate() {
+  _validate(options) {
     const { disabled, hidden } = this.props
     if (disabled || hidden) {
       return true
     }
-    const rules = this.rules
+    let rules = this.rules
     const value = this._getRawValue ? this._getRawValue() : this.getValue()
 
     if (Array.isArray(rules) && rules.length > 0) {
+      if (options && options.ignoreRequired) {
+        rules = rules.filter((item) => {
+          return item.type !== 'required'
+        })
+      }
       const validationResult = RuleManager.validate(rules, value)
 
       if (validationResult === true) {
