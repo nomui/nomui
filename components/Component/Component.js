@@ -22,6 +22,7 @@ class Component {
       placement: 'append',
       autoRender: true,
       renderIf: true,
+      animate: true,
 
       hidden: false,
       disabled: false,

@@ -6574,6 +6574,10 @@ body .nom-always-dark {
   padding-left: 0;
   list-style: none;
 }
+.nom-list > .nom-list-content > .nom-list-item-wrapper,
+.nom-list > .nom-list-content .nom-virtual-list-item {
+  transition: background 0.3s ease;
+}
 .nom-list > .nom-list-content > .nom-list-item-wrapper.p-span-1,
 .nom-list > .nom-list-content .nom-virtual-list-item.p-span-1 {
   width: 8.33%;
@@ -6975,7 +6979,6 @@ body .nom-always-dark {
   margin-left: 6px;
   color: var(--nom-color-text-2);
   font-weight: 400;
-  font-size: 12px;
 }
 .nom-menu.p-direction-horizontal {
   display: flex;
@@ -7124,6 +7127,9 @@ table.nom-table {
   table-layout: fixed;
   background-color: var(--nom-grid-background-color);
   border-spacing: 0;
+}
+table.nom-table.agent-firefox {
+  table-layout: inherit;
 }
 table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) {
   background-color: var(--nom-grid-tr-striped-bg);
@@ -10926,19 +10932,22 @@ textarea .nom-textarea {
 .nom-dropdown-popup .nom-menu-item-wrapper > a:hover {
   background-color: var(--nom-color-hover);
 }
-.nom-dropdown-animate-top-show {
+.nom-dropdown-popup.nom-layer-animate-show {
+  animation: none;
+}
+.nom-dropdown-popup.nom-dropdown-animate-top-show {
   -webkit-animation: nom-dropdown-keyframe-top-show 0.16s linear forwards;
   animation: nom-dropdown-keyframe-top-show 0.16s linear forwards;
 }
-.nom-dropdown-animate-bottom-show {
+.nom-dropdown-popup.nom-dropdown-animate-bottom-show {
   -webkit-animation: nom-dropdown-keyframe-bottom-show 0.16s linear forwards;
   animation: nom-dropdown-keyframe-bottom-show 0.16s linear forwards;
 }
-.nom-dropdown-animate-top-hide {
+.nom-dropdown-popup.nom-dropdown-animate-top-hide {
   -webkit-animation: nom-dropdown-keyframe-top-hide 0.16s linear forwards;
   animation: nom-dropdown-keyframe-top-hide 0.16s linear forwards;
 }
-.nom-dropdown-animate-bottom-hide {
+.nom-dropdown-popup.nom-dropdown-animate-bottom-hide {
   -webkit-animation: nom-dropdown-keyframe-bottom-hide 0.16s linear forwards;
   animation: nom-dropdown-keyframe-bottom-hide 0.16s linear forwards;
 }
@@ -11892,5 +11901,35 @@ textarea .nom-textarea {
   }
   100% {
     background: var(--nom-skeleton-default-bg);
+  }
+}
+@media all and (-moz-min-device-pixel-ratio: 1.09) and (-moz-max-device-pixel-ratio: 1.18), (-webkit-min-device-pixel-ratio: 1.09) and (-webkit-max-device-pixel-ratio: 1.18), (min-resolution: 1.09dppx) and (max-resolution: 1.18dppx) {
+  :root {
+    font-size: 14px;
+  }
+}
+@media all and (-moz-min-device-pixel-ratio: 1.19) and (-moz-max-device-pixel-ratio: 1.28), (-webkit-min-device-pixel-ratio: 1.19) and (-webkit-max-device-pixel-ratio: 1.28), (min-resolution: 1.19dppx) and (max-resolution: 1.28dppx) {
+  :root {
+    font-size: 13px;
+  }
+}
+@media all and (-moz-min-device-pixel-ratio: 1.29) and (-moz-max-device-pixel-ratio: 1.4), (-webkit-min-device-pixel-ratio: 1.29) and (-webkit-max-device-pixel-ratio: 1.4), (min-resolution: 1.29dppx) and (max-resolution: 1.4dppx) {
+  :root {
+    font-size: 12px;
+  }
+}
+@media all and (-moz-min-device-pixel-ratio: 1.41) and (-moz-max-device-pixel-ratio: 1.6), (-webkit-min-device-pixel-ratio: 1.41) and (-webkit-max-device-pixel-ratio: 1.6), (min-resolution: 1.41dppx) and (max-resolution: 1.6dppx) {
+  :root {
+    font-size: 10px;
+  }
+}
+@media all and (-moz-min-device-pixel-ratio: 1.61) and (-moz-max-device-pixel-ratio: 1.8), (-webkit-min-device-pixel-ratio: 1.61) and (-webkit-max-device-pixel-ratio: 1.8), (min-resolution: 1.61dppx) and (max-resolution: 1.8dppx) {
+  :root {
+    font-size: 9px;
+  }
+}
+@media all and (-moz-min-device-pixel-ratio: 1.81) and (-moz-max-device-pixel-ratio: 2.1), (-webkit-min-device-pixel-ratio: 1.81) and (-webkit-max-device-pixel-ratio: 2.1), (min-resolution: 1.81dppx) and (max-resolution: 2.1dppx) {
+  :root {
+    font-size: 8px;
   }
 }

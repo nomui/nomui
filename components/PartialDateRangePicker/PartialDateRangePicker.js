@@ -24,6 +24,7 @@ class PartialDateRangePicker extends Group {
       startPickerProps,
       endPickerProps,
       disabled,
+      animate,
     } = this.props
 
     this.setProps({
@@ -38,6 +39,7 @@ class PartialDateRangePicker extends Group {
           onChange: function (args) {
             that.checkRange(args.sender.name)
           },
+          animate,
           allowClear,
           minDate,
           maxDate,
@@ -62,6 +64,7 @@ class PartialDateRangePicker extends Group {
           onChange: function (args) {
             that.checkRange(args.sender.name)
           },
+          animate,
           allowClear,
           minDate,
           maxDate,

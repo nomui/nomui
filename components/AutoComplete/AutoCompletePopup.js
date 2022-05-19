@@ -140,6 +140,12 @@ class AutoCompletePopup extends Popup {
   _show() {
     super._show()
     this.autoCompleteControl.searchRef && this.autoCompleteControl.searchRef.focus()
+    this.removeClass('nom-layer-animate-show')
+    this.autoCompleteControl.props.animate && this.initAnimation()
+  }
+
+  initAnimation() {
+    if (!this.element) return false
     if (this.element.getAttribute('offset-y') !== '0') {
       this.addClass('nom-auto-complete-animate-bottom-show')
     } else {

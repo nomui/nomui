@@ -110,10 +110,15 @@ class TreeSelectPopup extends Popup {
 
   _rendered() {
     this.removeClass('nom-layer-animate-show')
-    if (!this.props.animate) {
+    this.selectControl.props.animate && this.props.animate && this.initAnimation()
+
+    if (this.selectControl.props.animate && !this.props.animate) {
       this.props.animate = true
-      return false
     }
+  }
+
+  initAnimation() {
+    if (!this.element) return false
     if (this.element.getAttribute('offset-y') !== '0') {
       this.addClass('nom-tree-select-animate-bottom-show')
     } else {
@@ -126,14 +131,7 @@ class TreeSelectPopup extends Popup {
     this.selectControl.searchBox && this.selectControl.searchBox.focus()
 
     this.removeClass('nom-layer-animate-show')
-    if (!this.props.animate) {
-      return false
-    }
-    if (this.element.getAttribute('offset-y') !== '0') {
-      this.addClass('nom-tree-select-animate-bottom-show')
-    } else {
-      this.addClass('nom-tree-select-animate-top-show')
-    }
+    this.selectControl.props.animate && this.props.animate && this.initAnimation()
   }
 }
 

@@ -25,7 +25,7 @@ export default {
     this.setProps({
       classes: {
         'nom-modal-content': true,
-        'nom-modal-content-animate-show': true,
+        'nom-modal-content-animate-show': this.modal.props.animate,
       },
     })
   },

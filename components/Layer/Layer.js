@@ -43,12 +43,8 @@ class Layer extends Component {
         },
       })
     }
-    this.nomappOverflow()
-    this.setProps({
-      classes: {
-        'nom-layer-animate-show': true,
-      },
-    })
+
+    this.props.animate && this.initAnimation()
   }
 
   _rendered() {
@@ -59,6 +55,7 @@ class Layer extends Component {
       this.backdrop = new LayerBackdrop({
         zIndex: this._zIndex - 1,
         reference: this.props.reference,
+        animate: this.props.animate,
       })
 
       if (this.props.closeOnClickBackdrop) {
@@ -66,13 +63,27 @@ class Layer extends Component {
           if (e.target !== e.currentTarget) {
             return
           }
-          that.addClass('nom-layer-animate-hide')
-          setTimeout(() => {
-            that.remove()
-          }, 90)
+          that.props.animate && that.hideAnimation()
+          !that.props.animate && that.remove()
         })
       }
     }
+  }
+
+  initAnimation() {
+    this.nomappOverflow()
+    this.setProps({
+      classes: {
+        'nom-layer-animate-show': true,
+      },
+    })
+  }
+
+  hideAnimation() {
+    this.addClass('nom-layer-animate-hide')
+    setTimeout(() => {
+      this.remove()
+    }, 90)
   }
 
   _show() {
@@ -81,7 +92,9 @@ class Layer extends Component {
     this.setPosition()
     this._docClickHandler()
 
-    this.addClass('nom-layer-animate-show')
+    if (props.animate) {
+      this.addClass('nom-layer-animate-show')
+    }
 
     if (props.align) {
       window.removeEventListener('resize', this._onWindowResize, false)
@@ -94,8 +107,10 @@ class Layer extends Component {
     window.removeEventListener('resize', this._onWindowResize, false)
     document.removeEventListener('mousedown', this._onDocumentMousedown, false)
 
-    this.removeClass('nom-layer-animate-show')
-    this.removeClass('nom-layer-animate-hide')
+    if (this.props.animate) {
+      this.removeClass('nom-layer-animate-show')
+      this.removeClass('nom-layer-animate-hide')
+    }
 
     if (forceRemove === true || this.props.closeToRemove) {
       this.props.onClose && this._callHandler(this.props.onClose)

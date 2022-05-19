@@ -39,7 +39,7 @@ function _defineProperty2(obj, key, value) {
       factory((global.nomui = {})));
 })(this, function (exports) {
   "use strict"; // 初始化时存下浏览器的版本信息
-  const BROWSER_INFO = getBrowser();
+  window.BROWSER_INFO = getBrowser();
   /**
    * 获取浏览器的版本信息
    * @returns {type: string, version: number}
@@ -92,17 +92,20 @@ function _defineProperty2(obj, key, value) {
     QQBrowser: 10,
   }; // 浏览器是否支持sticky
   function isBrowerSupportSticky() {
-    if (BROWSER_INFO.type === "IE") return false; //
+    if (window.BROWSER_INFO.type === "IE") return false; //
     // 低于 minVersion 版本的浏览器，都不支持
     const minVersion =
-      SUPPORT_STICKY_MIN_BROWSER_VERSION_MAP[BROWSER_INFO.type];
-    if (minVersion && minVersion > BROWSER_INFO.version) {
+      SUPPORT_STICKY_MIN_BROWSER_VERSION_MAP[window.BROWSER_INFO.type];
+    if (minVersion && minVersion > window.BROWSER_INFO.version) {
       return false;
     } // 未知的浏览器版本都默认支持
     return true;
   }
   function isChrome49() {
-    return BROWSER_INFO.type === "Chrome" && BROWSER_INFO.version === 49;
+    return (
+      window.BROWSER_INFO.type === "Chrome" &&
+      window.BROWSER_INFO.version === 49
+    );
   }
   String.prototype.trim = function (characters) {
     return this.replace(new RegExp(`^${characters}+|${characters}+$`, "g"), "");
@@ -628,6 +631,7 @@ function _defineProperty2(obj, key, value) {
         placement: "append",
         autoRender: true,
         renderIf: true,
+        animate: true,
         hidden: false,
         disabled: false,
         selected: false,
@@ -2754,7 +2758,7 @@ function _defineProperty2(obj, key, value) {
       this.setProps({
         classes: {
           "nom-modal-content": true,
-          "nom-modal-content-animate-show": true,
+          "nom-modal-content-animate-show": this.modal.props.animate,
         },
       });
     },
@@ -2913,7 +2917,7 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       this._propStyleClasses = ["size", "fit"];
-      const { size } = this.props;
+      const { size, animate } = this.props;
       let myWidth = null;
       if (size) {
         if (isPlainObject(size)) {
@@ -2923,7 +2927,7 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this.setProps({
-        classes: { "nom-modal-mask-animate-show": true },
+        classes: { "nom-modal-mask-animate-show": animate },
         children: {
           component: ModalDialog,
           attrs: { style: { width: myWidth || null } },
@@ -2955,6 +2959,10 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this._callHandler(this.props.onClose, { result: result });
+      this.props.animate && this.hideAnimation();
+      !this.props.animate && this.remove();
+    }
+    hideAnimation() {
       this.modalContent.addClass("nom-modal-content-animate-hide");
       setTimeout(() => {
         if (!this.element) return false;
@@ -3695,10 +3703,7 @@ function _defineProperty2(obj, key, value) {
     constructor(props, ...mixins) {
       const defaults = {
         zIndex: 2,
-        classes: {
-          "nom-layer-backdrop": true,
-          "nom-layer-mask-animate-show": true,
-        },
+        classes: { "nom-layer-backdrop": true },
         attrs: {
           style: {
             position: "absolute",
@@ -3716,6 +3721,7 @@ function _defineProperty2(obj, key, value) {
     _config() {
       this.setProps({
         attrs: { style: { zIndex: this.props.zIndex } },
+        classes: { "nom-layer-mask-animate-show": this.props.animate },
         onClick({ event }) {
           event.stopPropagation();
         },
@@ -3754,8 +3760,7 @@ function _defineProperty2(obj, key, value) {
           },
         });
       }
-      this.nomappOverflow();
-      this.setProps({ classes: { "nom-layer-animate-show": true } });
+      this.props.animate && this.initAnimation();
     }
     _rendered() {
       const that = this;
@@ -3764,25 +3769,36 @@ function _defineProperty2(obj, key, value) {
         this.backdrop = new LayerBackdrop({
           zIndex: this._zIndex - 1,
           reference: this.props.reference,
+          animate: this.props.animate,
         });
         if (this.props.closeOnClickBackdrop) {
           this.backdrop._on("click", function (e) {
             if (e.target !== e.currentTarget) {
               return;
             }
-            that.addClass("nom-layer-animate-hide");
-            setTimeout(() => {
-              that.remove();
-            }, 90);
+            that.props.animate && that.hideAnimation();
+            !that.props.animate && that.remove();
           });
         }
       }
+    }
+    initAnimation() {
+      this.nomappOverflow();
+      this.setProps({ classes: { "nom-layer-animate-show": true } });
+    }
+    hideAnimation() {
+      this.addClass("nom-layer-animate-hide");
+      setTimeout(() => {
+        this.remove();
+      }, 90);
     }
     _show() {
       const { props } = this;
       this.setPosition();
       this._docClickHandler();
-      this.addClass("nom-layer-animate-show");
+      if (props.animate) {
+        this.addClass("nom-layer-animate-show");
+      }
       if (props.align) {
         window.removeEventListener("resize", this._onWindowResize, false);
         window.addEventListener("resize", this._onWindowResize, false);
@@ -3796,8 +3812,10 @@ function _defineProperty2(obj, key, value) {
         this._onDocumentMousedown,
         false
       );
-      this.removeClass("nom-layer-animate-show");
-      this.removeClass("nom-layer-animate-hide");
+      if (this.props.animate) {
+        this.removeClass("nom-layer-animate-show");
+        this.removeClass("nom-layer-animate-hide");
+      }
       if (forceRemove === true || this.props.closeToRemove) {
         this.props.onClose && this._callHandler(this.props.onClose);
         this.remove();
@@ -4007,9 +4025,13 @@ function _defineProperty2(obj, key, value) {
           this.element.setAttribute("tooltip-align", this.props.align);
         }
       }
-      this.addClass(
-        `nom-tooltip-animate-${this.element.getAttribute("tooltip-align")}-show`
-      );
+      if (this.props.animate) {
+        this.addClass(
+          `nom-tooltip-animate-${this.element.getAttribute(
+            "tooltip-align"
+          )}-show`
+        );
+      }
     }
     _remove() {
       this.opener._off("mouseenter", this._showHandler);
@@ -4056,14 +4078,18 @@ function _defineProperty2(obj, key, value) {
       this.showTimer = null;
       if (this.props.hidden === false) {
         this.hideTimer = setTimeout(() => {
-          if (!this.element) return false;
-          this.addClass("nom-tooltip-animate-hide");
-          setTimeout(() => {
-            this.hide();
-            this.removeClass("nom-tooltip-animate-hide");
-          }, 90);
+          this.props.animate && this.hideAnimation();
+          !this.props.animate && this.hide();
         }, this.delay);
       }
+    }
+    hideAnimation() {
+      if (!this.element) return false;
+      this.addClass("nom-tooltip-animate-hide");
+      setTimeout(() => {
+        this.hide();
+        this.removeClass("nom-tooltip-animate-hide");
+      }, 90);
     }
     _show() {
       super._show();
@@ -9066,7 +9092,10 @@ function _defineProperty2(obj, key, value) {
             option: this.props,
           };
           autoCompleteControl.input.update(autoCompleteOption);
-          autoCompleteControl.popup.animateHide(); // if (selectProps.multiple === false) {
+          autoCompleteControl.props.animate &&
+            autoCompleteControl.popup.animateHide();
+          !autoCompleteControl.props.animate &&
+            autoCompleteControl.popup.hide(); // if (selectProps.multiple === false) {
           //   selectControl.selectedSingle.update(selectedOption)
           //   selectControl.popup.hide()
           // } else {
@@ -9257,6 +9286,11 @@ function _defineProperty2(obj, key, value) {
       super._show();
       this.autoCompleteControl.searchRef &&
         this.autoCompleteControl.searchRef.focus();
+      this.removeClass("nom-layer-animate-show");
+      this.autoCompleteControl.props.animate && this.initAnimation();
+    }
+    initAnimation() {
+      if (!this.element) return false;
       if (this.element.getAttribute("offset-y") !== "0") {
         this.addClass("nom-auto-complete-animate-bottom-show");
       } else {
@@ -10498,6 +10532,20 @@ function _defineProperty2(obj, key, value) {
       }
       super._config();
     }
+    _rendered() {
+      this.removeClass("nom-layer-animate-show");
+      this.cascaderControl.props.animate &&
+        this.props.animate &&
+        this.initAnimation();
+    }
+    initAnimation() {
+      if (!this.element) return false;
+      if (this.element.getAttribute("offset-y") !== "0") {
+        this.addClass("nom-cascader-animate-bottom-show");
+      } else {
+        this.addClass("nom-cascader-animate-top-show");
+      }
+    }
     animateHide() {
       if (this.element) {
         let animateName;
@@ -10515,15 +10563,6 @@ function _defineProperty2(obj, key, value) {
         }, 160);
       } else {
         this.hide();
-      }
-    }
-    _rendered() {
-      this.removeClass("nom-layer-animate-show");
-      if (!this.props.animate) return false;
-      if (this.element.getAttribute("offset-y") !== "0") {
-        this.addClass("nom-cascader-animate-bottom-show");
-      } else {
-        this.addClass("nom-cascader-animate-top-show");
       }
     }
   }
@@ -10710,7 +10749,11 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this._content && this._content.update();
-      this.popup && this._hidePopup && this.popup.animateHide();
+      this.popup &&
+        this._hidePopup &&
+        this.props.animate &&
+        this.popup.animateHide();
+      this.popup && this._hidePopup && !this.props.animate && this.popup.hide();
     }
     _getValue() {
       if (!this.checked) {
@@ -12887,7 +12930,8 @@ function _defineProperty2(obj, key, value) {
           selectControl.placeholder && selectControl.placeholder.hide();
           if (selectProps.multiple === false) {
             selectControl.selectedSingle.update(selectedOption);
-            selectControl.popup.animateHide();
+            selectControl.props.animate && selectControl.popup.animateHide();
+            !selectControl.props.animate && selectControl.popup.hide();
           } else {
             selectControl.selectedMultiple.appendItem(selectedOption);
           }
@@ -13041,6 +13085,11 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     _rendered() {
+      this.removeClass("nom-layer-animate-show");
+      this.selectControl.props.animate && this.initAnimation();
+    }
+    initAnimation() {
+      if (!this.element) return false;
       if (this.element.getAttribute("offset-y") !== "0") {
         this.addClass("nom-select-animate-bottom-show");
       } else {
@@ -13049,6 +13098,7 @@ function _defineProperty2(obj, key, value) {
     }
     _show() {
       super._show();
+      this.removeClass("nom-layer-animate-show");
       const { searchBox, props } = this.selectControl;
       if (searchBox) {
         searchBox.focus(); // 上一次搜索无数据，则清除搜索条件
@@ -14086,6 +14136,7 @@ function _defineProperty2(obj, key, value) {
             onHide: () => {
               that.onPopupHide();
             },
+            animate: this.props.animate,
             classes: {
               "nom-date-picker-popup": true,
               "nom-date-picker-with-time": this.props.showTime,
@@ -14683,6 +14734,7 @@ function _defineProperty2(obj, key, value) {
         startPickerProps,
         endPickerProps,
         disabled,
+        animate,
       } = this.props;
       this.setProps({
         inline: true,
@@ -14697,6 +14749,7 @@ function _defineProperty2(obj, key, value) {
               onChange: function (args) {
                 that.checkRange(args.sender.name);
               },
+              animate,
               format,
               allowClear,
               minDate,
@@ -14721,6 +14774,7 @@ function _defineProperty2(obj, key, value) {
               onChange: function (args) {
                 that.checkRange(args.sender.name);
               },
+              animate,
               format,
               allowClear,
               minDate,
@@ -14863,6 +14917,7 @@ function _defineProperty2(obj, key, value) {
         showMasker,
         width,
         height,
+        animate,
       } = this.props;
       const _settle = settles.includes(settle) ? settle : "right";
       let _style = {};
@@ -14896,8 +14951,8 @@ function _defineProperty2(obj, key, value) {
           "nom-drawer-right": _settle === "right",
           "nom-drawer-bottom": _settle === "bottom",
           "nom-drawer-left": _settle === "left",
-          [`nom-drawer-animate-${_settle}-show`]: true,
-          "nom-drawer-mask-animate-show": true,
+          [`nom-drawer-animate-${_settle}-show`]: animate,
+          "nom-drawer-mask-animate-show": animate,
         },
         onClick: () => {
           maskClosable && drawerRef.close(drawerRef);
@@ -15026,6 +15081,10 @@ function _defineProperty2(obj, key, value) {
       return null;
     }
     close() {
+      this.props.animate && this.hideAnimation();
+      !this.props.animate && this.remove();
+    }
+    hideAnimation() {
       this.addClass(`nom-drawer-animate-${this.props.settle}-hide`);
       setTimeout(() => {
         this.addClass("nom-drawer-mask-animate-hide");
@@ -15098,17 +15157,7 @@ function _defineProperty2(obj, key, value) {
               that.popup = c;
             },
             _rendered() {
-              if (this.element.getAttribute("offset-y") !== "0") {
-                that.props.animateName = "bottom";
-                this.addClass([
-                  `nom-dropdown-animate-${that.props.animateName}-show`,
-                ]);
-              } else {
-                that.props.animateName = "top";
-                this.addClass([
-                  `nom-dropdown-animate-${that.props.animateName}-show`,
-                ]);
-              }
+              that.props.animate && that.initAnimation(this);
             },
             children: {
               component: "Menu",
@@ -15116,27 +15165,11 @@ function _defineProperty2(obj, key, value) {
               items: items,
             },
             onClick: (args) => {
-              that.popup.removeClass([
-                `nom-dropdown-animate-${that.props.animateName}-show`,
-              ]);
-              if (that.popup.element.getAttribute("offset-y") !== "0") {
-                that.props.animateName = "bottom";
+              if (that.props.animate) {
+                that.hideAnimation(args);
               } else {
-                that.props.animateName = "top";
-              }
-              that.popup.addClass([
-                `nom-dropdown-animate-${that.props.animateName}-hide`,
-              ]);
-              setTimeout(() => {
                 args.sender.hide();
-                if (!that.popup.element) return false;
-                that.popup.removeClass([
-                  `nom-dropdown-animate-${that.props.animateName}-hide`,
-                ]);
-                that.popup.addClass([
-                  `nom-dropdown-animate-${that.props.animateName}-show`,
-                ]);
-              }, 160);
+              }
             },
           },
         },
@@ -15147,6 +15180,37 @@ function _defineProperty2(obj, key, value) {
         classes: { "nom-split-button": this.props.split },
       });
       super._config();
+    }
+    initAnimation(that) {
+      if (that.element.getAttribute("offset-y") !== "0") {
+        this.props.animateName = "bottom";
+      } else {
+        this.props.animateName = "top";
+      }
+      that.addClass([`nom-dropdown-animate-${this.props.animateName}-show`]);
+    }
+    hideAnimation(that) {
+      this.popup.removeClass([
+        `nom-dropdown-animate-${this.props.animateName}-show`,
+      ]);
+      if (this.popup.element.getAttribute("offset-y") !== "0") {
+        this.props.animateName = "bottom";
+      } else {
+        this.props.animateName = "top";
+      }
+      this.popup.addClass([
+        `nom-dropdown-animate-${this.props.animateName}-hide`,
+      ]);
+      setTimeout(() => {
+        that.sender.hide();
+        if (!this.popup.element) return false;
+        this.popup.removeClass([
+          `nom-dropdown-animate-${this.props.animateName}-hide`,
+        ]);
+        this.popup.addClass([
+          `nom-dropdown-animate-${this.props.animateName}-show`,
+        ]);
+      }, 160);
     }
   }
   Dropdown.defaults = {
@@ -16448,7 +16512,10 @@ function _defineProperty2(obj, key, value) {
       }
       this.setProps({
         tag: "table",
-        classes: { "nom-table-striped": isStriped },
+        classes: {
+          "nom-table-striped": isStriped,
+          "agent-firefox": window.BROWSER_INFO.type === "Firefox",
+        },
         children: [
           { component: ColGroup },
           this.props.onlyBody !== true && { component: Thead },
@@ -18933,6 +19000,7 @@ function _defineProperty2(obj, key, value) {
         this.props.items.map(function (item) {
           return {
             component: "MenuItemWrapper",
+            animate: that.menu.props.animate,
             item: Component.extendProps({}, that.props.itemDefaults, item),
             items: item.items,
           };
@@ -19013,6 +19081,7 @@ function _defineProperty2(obj, key, value) {
         this.setProps({
           item: {
             popup: {
+              animate: this.props.animate,
               triggerAction: "hover",
               align: align,
               reference: reference,
@@ -19075,6 +19144,7 @@ function _defineProperty2(obj, key, value) {
         }
         return {
           component: MenuItemWrapper,
+          animate: that.props.animate,
           item: Component.extendProps({}, that.props.itemDefaults, item),
         };
       });
@@ -19221,6 +19291,10 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     close() {
+      this.props.animate && this.hideAnimation();
+      !this.props.animate && this.remove();
+    }
+    hideAnimation() {
       this.addClass("nom-layer-animate-hide");
       setTimeout(() => {
         this.remove();
@@ -19849,17 +19923,11 @@ function _defineProperty2(obj, key, value) {
     _registerDuritionClose() {}
     close() {
       this.timer && clearTimeout(this.timer);
-      const { key, alignInfo } = this.props;
+      const { key } = this.props;
       delete Notification.NOMUI_NOTIFICATION_INSTANCES[key];
       this.props.onClose && this.props.onClose();
-      if (alignInfo.includes("left")) {
-        this.addClass("nom-notification-animate-left-hide");
-      } else if (alignInfo.includes("right")) {
-        this.addClass("nom-notification-animate-right-hide");
-      }
-      setTimeout(() => {
-        this.remove();
-      }, 240);
+      this.props.animate && this.hideAnimation();
+      !this.props.animate && this.remove();
     }
     _config() {
       const that = this;
@@ -19874,18 +19942,19 @@ function _defineProperty2(obj, key, value) {
         btn,
         description,
         align,
+        animate,
       } = this.props;
       const classes = {};
       let alignInfo = "topright";
       if (align) {
         alignInfo = align.toLowerCase();
         if (alignInfo.includes("left")) {
-          classes["nom-notification-animate-left-show"] = true;
+          classes["nom-notification-animate-left-show"] = animate;
         } else if (alignInfo.includes("right")) {
-          classes["nom-notification-animate-right-show"] = true;
+          classes["nom-notification-animate-right-show"] = animate;
         }
       } else {
-        classes["nom-notification-animate-right-show"] = true;
+        classes["nom-notification-animate-right-show"] = animate;
       }
       this.setProps({
         closeToRemove: true,
@@ -19909,6 +19978,16 @@ function _defineProperty2(obj, key, value) {
         },
       });
       super._config();
+    }
+    hideAnimation() {
+      if (this.props.alignInfo.includes("left")) {
+        this.addClass("nom-notification-animate-left-hide");
+      } else if (this.props.alignInfo.includes("right")) {
+        this.addClass("nom-notification-animate-right-hide");
+      }
+      setTimeout(() => {
+        this.remove();
+      }, 240);
     }
   }
   _defineProperty2(Notification, "NOMUI_NOTIFICATION_DEFAULTS", {
@@ -20716,7 +20795,7 @@ function _defineProperty2(obj, key, value) {
       this.maxSub = "60";
     }
     _config() {
-      const { disabled, placeholder } = this.props;
+      const { disabled, placeholder, animate } = this.props;
       const that = this;
       this.setProps({
         leftIcon: "calendar",
@@ -20737,6 +20816,7 @@ function _defineProperty2(obj, key, value) {
             _created: function () {
               that.popup = this;
             },
+            animate,
             classes: { "nom-partial-date-picker-popup": true },
             styles: { padding: "1" },
             attrs: { style: { width: "auto", height: "240px" } },
@@ -21259,6 +21339,7 @@ function _defineProperty2(obj, key, value) {
         startPickerProps,
         endPickerProps,
         disabled,
+        animate,
       } = this.props;
       this.setProps({
         inline: true,
@@ -21273,6 +21354,7 @@ function _defineProperty2(obj, key, value) {
               onChange: function (args) {
                 that.checkRange(args.sender.name);
               },
+              animate,
               allowClear,
               minDate,
               maxDate,
@@ -21296,6 +21378,7 @@ function _defineProperty2(obj, key, value) {
               onChange: function (args) {
                 that.checkRange(args.sender.name);
               },
+              animate,
               allowClear,
               minDate,
               maxDate,
@@ -21495,12 +21578,14 @@ function _defineProperty2(obj, key, value) {
     }
     _handleOk() {
       this._callHandler(this.props.onConfirm);
-      this.addClass("nom-layer-animate-hide");
-      setTimeout(() => {
-        this.hide();
-      }, 90);
+      this.props.animate && this.hideAnimation();
+      !this.props.animate && this.hide();
     }
     _handleCancel() {
+      this.props.animate && this.hideAnimation();
+      !this.props.animate && this.hide();
+    }
+    hideAnimation() {
       this.addClass("nom-layer-animate-hide");
       setTimeout(() => {
         this.hide();
@@ -24155,7 +24240,7 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const that = this;
-      const { value, unselectedText, selectedText } = this.props;
+      const { value, unselectedText, selectedText, animate } = this.props;
       this._propStyleClasses = ["size"];
       this.setProps({
         control: {
@@ -24191,8 +24276,8 @@ function _defineProperty2(obj, key, value) {
                 "nom-switch-el": true,
                 "nom-switch-text": value,
                 "nom-switch-indicator": !value,
-                "nom-switch-text-left": value,
-                "nom-switch-indicator-left": !value,
+                "nom-switch-text-left": value && animate,
+                "nom-switch-indicator-left": !value && animate,
               },
               children: value ? selectedText : null,
             },
@@ -24203,8 +24288,8 @@ function _defineProperty2(obj, key, value) {
                 "nom-switch-el": true,
                 "nom-switch-text": !value,
                 "nom-switch-indicator": value,
-                "nom-switch-text-right": !value,
-                "nom-switch-indicator-right": value,
+                "nom-switch-text-right": !value && animate,
+                "nom-switch-indicator-right": value && animate,
               },
             }, // { tag: 'i' },
           ],
@@ -25388,10 +25473,15 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {
       this.removeClass("nom-layer-animate-show");
-      if (!this.props.animate) {
+      this.selectControl.props.animate &&
+        this.props.animate &&
+        this.initAnimation();
+      if (this.selectControl.props.animate && !this.props.animate) {
         this.props.animate = true;
-        return false;
       }
+    }
+    initAnimation() {
+      if (!this.element) return false;
       if (this.element.getAttribute("offset-y") !== "0") {
         this.addClass("nom-tree-select-animate-bottom-show");
       } else {
@@ -25402,14 +25492,9 @@ function _defineProperty2(obj, key, value) {
       super._show();
       this.selectControl.searchBox && this.selectControl.searchBox.focus();
       this.removeClass("nom-layer-animate-show");
-      if (!this.props.animate) {
-        return false;
-      }
-      if (this.element.getAttribute("offset-y") !== "0") {
-        this.addClass("nom-tree-select-animate-bottom-show");
-      } else {
-        this.addClass("nom-tree-select-animate-top-show");
-      }
+      this.selectControl.props.animate &&
+        this.props.animate &&
+        this.initAnimation();
     }
   }
   Component.register(TreeSelectPopup);
@@ -25475,7 +25560,7 @@ function _defineProperty2(obj, key, value) {
       return optionMap;
     }
     _getContentChildren() {
-      const { showArrow, placeholder, allowClear } = this.props;
+      const { showArrow, placeholder, allowClear, animate } = this.props;
       const that = this;
       const children = [];
       this._normalizeSearchable(); // _content: 所选择的数据的展示
@@ -25517,7 +25602,8 @@ function _defineProperty2(obj, key, value) {
           onClick: (args) => {
             this._setValue(null);
             this.props.allowClear && this.clearIcon.hide();
-            this.popup && this.popup.animateHide();
+            animate && this.popup && this.popup.animateHide();
+            !animate && this.popup && this.popup.hide();
             args.event && args.event.stopPropagation();
           },
         });
@@ -25662,7 +25748,8 @@ function _defineProperty2(obj, key, value) {
         });
       } else {
         // 单选: 点击后即关闭popup,在onShow中更新
-        this.popup.animateHide();
+        this.props.animate && this.popup.animateHide();
+        !this.props.animate && this.popup.hide();
       }
     } // getValue时根据选中的节点返回
     _getValue() {

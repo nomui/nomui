@@ -43,6 +43,7 @@ class Menu extends Component {
       }
       return {
         component: MenuItemWrapper,
+        animate: that.props.animate,
         item: Component.extendProps({}, that.props.itemDefaults, item),
       }
     })

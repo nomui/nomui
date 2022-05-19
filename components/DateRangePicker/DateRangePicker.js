@@ -25,6 +25,7 @@ class DateRangePicker extends Group {
       startPickerProps,
       endPickerProps,
       disabled,
+      animate,
     } = this.props
 
     this.setProps({
@@ -39,6 +40,7 @@ class DateRangePicker extends Group {
           onChange: function (args) {
             that.checkRange(args.sender.name)
           },
+          animate,
           format,
           allowClear,
           minDate,
@@ -64,6 +66,7 @@ class DateRangePicker extends Group {
           onChange: function (args) {
             that.checkRange(args.sender.name)
           },
+          animate,
           format,
           allowClear,
           minDate,

@@ -41,6 +41,7 @@ class Table extends Component {
       tag: 'table',
       classes: {
         'nom-table-striped': isStriped,
+        'agent-firefox': window.BROWSER_INFO.type === 'Firefox',
       },
       children: [
         { component: ColGroup },
