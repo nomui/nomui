@@ -6,7 +6,6 @@ class LayerBackdrop extends Component {
       zIndex: 2,
       classes: {
         'nom-layer-backdrop': true,
-        'nom-layer-mask-animate-show': true,
       },
       attrs: {
         style: {
@@ -30,6 +29,9 @@ class LayerBackdrop extends Component {
         style: {
           zIndex: this.props.zIndex,
         },
+      },
+      classes: {
+        'nom-layer-mask-animate-show': this.props.animate,
       },
       onClick({ event }) {
         event.stopPropagation()

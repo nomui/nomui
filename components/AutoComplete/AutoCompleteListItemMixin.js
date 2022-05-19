@@ -19,7 +19,8 @@ export default {
         }
 
         autoCompleteControl.input.update(autoCompleteOption)
-        autoCompleteControl.popup.animateHide()
+        autoCompleteControl.props.animate && autoCompleteControl.popup.animateHide()
+        !autoCompleteControl.props.animate && autoCompleteControl.popup.hide()
         // if (selectProps.multiple === false) {
         //   selectControl.selectedSingle.update(selectedOption)
         //   selectControl.popup.hide()

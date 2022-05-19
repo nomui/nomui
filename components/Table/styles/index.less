@@ -5,9 +5,14 @@ table.nom-table {
   background-color: var(--nom-grid-background-color);
   border-spacing: 0;
 
+  &.agent-firefox {
+    table-layout: inherit;
+  }
+
   &.nom-table-striped {
     tbody tr:nth-child(even):not(.nom-tr-empty) {
       td {
+
         &.nom-table-fixed-left,
         &.nom-table-fixed-right {
           background: var(--nom-grid-tr-striped-bg);
@@ -15,15 +20,19 @@ table.nom-table {
       }
 
       background-color: var(--nom-grid-tr-striped-bg);
+
       &:hover {
         background-color: var(--nom-grid-tr-striped-bg-hover);
+
         .nom-table-fixed-left,
         .nom-table-fixed-right {
           background-color: var(--nom-grid-tr-striped-bg-hover);
         }
       }
+
       &.nom-tr-selected {
         background-color: var(--nom-grid-tr-bg-selected);
+
         .nom-table-fixed-left,
         .nom-table-fixed-right {
           background-color: var(--nom-grid-tr-bg-selected);
@@ -35,14 +44,17 @@ table.nom-table {
   tbody tr:not(.nom-tr-empty) {
     &:hover {
       background-color: var(--nom-grid-tr-bg-hover);
+
       .nom-table-fixed-left,
       .nom-table-fixed-right {
         background-color: var(--nom-grid-tr-bg-hover);
       }
     }
+
     &.nom-tr-selected,
     &.nom-tr-selected:hover {
       background-color: var(--nom-grid-tr-bg-selected);
+
       .nom-table-fixed-left,
       .nom-table-fixed-right {
         background-color: var(--nom-grid-tr-bg-selected);
@@ -69,17 +81,21 @@ table.nom-table {
       z-index: 2;
       background: var(--nom-grid-background-color);
     }
+
     &.nom-table-sortable {
-      > span,
-      > .nom-icon {
+
+      >span,
+      >.nom-icon {
         cursor: pointer;
       }
     }
+
     &.nom-table-ellipsis {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       word-break: keep-all;
+
       .nom-table-cell-content {
         .nom-table-cell-title {
           display: block;
@@ -88,12 +104,14 @@ table.nom-table {
           text-overflow: ellipsis;
           word-break: keep-all;
         }
+
         // table配置了ellipsis, 则td中的Ellipsis组件的多行省略则不生效
         .nom-ellipsis .nom-ellipsis-inner {
           display: table-cell;
         }
       }
     }
+
     .nom-table-resize-handler {
       position: absolute !important;
       right: 0;
@@ -104,9 +122,11 @@ table.nom-table {
       visibility: hidden;
       cursor: col-resize;
     }
+
     .nom-table-sort-handler.p-type-sort {
       visibility: hidden;
     }
+
     .nom-table-filter-handler {
       visibility: hidden;
 
@@ -114,24 +134,30 @@ table.nom-table {
         visibility: visible;
       }
     }
+
     .nom-table-pin-handler {
       color: var(--nom-grid-icon-color);
       visibility: hidden;
       cursor: pointer;
+
       &.p-type-pin-fill {
         visibility: visible;
       }
     }
+
     &:hover {
       .nom-table-resize-handler {
         visibility: visible;
       }
+
       .nom-table-pin-handler {
         visibility: visible;
       }
+
       .nom-table-sort-handler {
         visibility: visible;
       }
+
       .nom-table-filter-handler {
         visibility: visible;
       }
@@ -139,6 +165,7 @@ table.nom-table {
   }
 
   .nom-table-ellipsis {
+
     // 内容使用content包了一层，在content中设置overflow: hidden
     &.nom-table-fixed-left,
     &.nom-table-fixed-right {
@@ -199,6 +226,7 @@ table.nom-table {
     // padding-right: 2rem;
     -webkit-user-select: none;
     user-select: none;
+
     &.nom-table-fixed-left,
     &.nom-table-fixed-right {
       position: sticky;
@@ -206,7 +234,8 @@ table.nom-table {
       background-color: var(--nom-grid-th-bg);
       background-image: var(--nom-grid-th-bg-image);
     }
-    > .nom-table-filter {
+
+    >.nom-table-filter {
       position: absolute;
       top: 0;
       right: 0;
@@ -218,6 +247,7 @@ table.nom-table {
       height: 100%;
       color: var(--nom-grid-icon-color);
     }
+
     &.nom-table-ellipsis {
       .nom-table-cell-content {
         display: flex !important;
@@ -234,6 +264,7 @@ table.nom-table {
   }
 
   &.p-line-row {
+
     td,
     th {
       border-bottom: 1px solid var(--nom-border-color);
@@ -241,11 +272,13 @@ table.nom-table {
   }
 
   &.p-line-col {
+
     td,
     th {
       border-right: 1px solid var(--nom-border-color);
     }
-    > th {
+
+    >th {
       &:last-child {
         border-right: 0;
       }
@@ -253,18 +286,21 @@ table.nom-table {
   }
 
   &.p-line-both {
+
     td,
     th {
       border-right: 1px solid var(--nom-border-color);
       border-bottom: 1px solid var(--nom-border-color);
     }
-    thead > tr {
+
+    thead>tr {
       &:first-child {
         th:last-child {
           border-right: 0;
         }
       }
     }
+
     td {
       &:last-child {
         border-right: 0;

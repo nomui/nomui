@@ -9,6 +9,7 @@ Component 组件是所有组件的基类组件，它定义了描述 html 元素�
 | placement | 渲染位置 | `prepend`\|`append`\|`replace`\|`before`\|`after` | `append` |
 | autoRender | 是否自动渲染 | `boolean` | `true` |
 | renderIf | 是否渲染该组件 | `boolean` | `true` |
+| animate | 组件动效开关，可单独在每个组件中配置 | `boolean` | `true` |
 | hidden | 已隐藏 | `boolean` | `false` |
 | disabled | 已禁用 | `boolean` | `false` |
 | selected | 已选中 | `boolean` | `false` |

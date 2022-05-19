@@ -203,7 +203,8 @@ class Cascader extends Field {
 
     this._content && this._content.update()
 
-    this.popup && this._hidePopup && this.popup.animateHide()
+    this.popup && this._hidePopup && this.props.animate && this.popup.animateHide()
+    this.popup && this._hidePopup && !this.props.animate && this.popup.hide()
   }
 
   _getValue() {

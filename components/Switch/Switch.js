@@ -8,7 +8,7 @@ class Switch extends Field {
 
   _config() {
     const that = this
-    const { value, unselectedText, selectedText } = this.props
+    const { value, unselectedText, selectedText, animate } = this.props
 
     this._propStyleClasses = ['size']
     this.setProps({
@@ -45,8 +45,8 @@ class Switch extends Field {
               'nom-switch-el': true,
               'nom-switch-text': value,
               'nom-switch-indicator': !value,
-              'nom-switch-text-left': value,
-              'nom-switch-indicator-left': !value,
+              'nom-switch-text-left': value && animate,
+              'nom-switch-indicator-left': !value && animate,
             },
             children: value ? selectedText : null,
           },
@@ -57,8 +57,8 @@ class Switch extends Field {
               'nom-switch-el': true,
               'nom-switch-text': !value,
               'nom-switch-indicator': value,
-              'nom-switch-text-right': !value,
-              'nom-switch-indicator-right': value,
+              'nom-switch-text-right': !value && animate,
+              'nom-switch-indicator-right': value && animate,
             },
           },
           // { tag: 'i' },

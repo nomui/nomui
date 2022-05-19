@@ -169,37 +169,40 @@ class Notification extends Layer {
 
   close() {
     this.timer && clearTimeout(this.timer)
-    const { key, alignInfo } = this.props
+    const { key } = this.props
 
     delete Notification.NOMUI_NOTIFICATION_INSTANCES[key]
     this.props.onClose && this.props.onClose()
-
-    if (alignInfo.includes('left')) {
-      this.addClass('nom-notification-animate-left-hide')
-    } else if (alignInfo.includes('right')) {
-      this.addClass('nom-notification-animate-right-hide')
-    }
-
-    setTimeout(() => {
-      this.remove()
-    }, 240)
+    this.props.animate && this.hideAnimation()
+    !this.props.animate && this.remove()
   }
 
   _config() {
     const that = this
     this._propStyleClasses = ['type']
-    const { styles, attrs = {}, icon, type, closeIcon, title, btn, description, align } = this.props
+    const {
+      styles,
+      attrs = {},
+      icon,
+      type,
+      closeIcon,
+      title,
+      btn,
+      description,
+      align,
+      animate,
+    } = this.props
     const classes = {}
     let alignInfo = 'topright'
     if (align) {
       alignInfo = align.toLowerCase()
       if (alignInfo.includes('left')) {
-        classes['nom-notification-animate-left-show'] = true
+        classes['nom-notification-animate-left-show'] = animate
       } else if (alignInfo.includes('right')) {
-        classes['nom-notification-animate-right-show'] = true
+        classes['nom-notification-animate-right-show'] = animate
       }
     } else {
-      classes['nom-notification-animate-right-show'] = true
+      classes['nom-notification-animate-right-show'] = animate
     }
 
     this.setProps({
@@ -228,6 +231,17 @@ class Notification extends Layer {
     })
 
     super._config()
+  }
+
+  hideAnimation() {
+    if (this.props.alignInfo.includes('left')) {
+      this.addClass('nom-notification-animate-left-hide')
+    } else if (this.props.alignInfo.includes('right')) {
+      this.addClass('nom-notification-animate-right-hide')
+    }
+    setTimeout(() => {
+      this.remove()
+    }, 240)
   }
 }
 Notification.defaults = {

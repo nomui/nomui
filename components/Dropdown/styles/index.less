@@ -24,27 +24,32 @@
       .nom-preset-hover;
     }
   }
+
+  &.nom-layer-animate-show {
+    animation: none;
+  }
+
+  &.nom-dropdown-animate-top-show {
+    -webkit-animation: nom-dropdown-keyframe-top-show .16s linear forwards;
+    animation: nom-dropdown-keyframe-top-show .16s linear forwards;
+  }
+
+  &.nom-dropdown-animate-bottom-show {
+    -webkit-animation: nom-dropdown-keyframe-bottom-show .16s linear forwards;
+    animation: nom-dropdown-keyframe-bottom-show .16s linear forwards;
+  }
+
+  &.nom-dropdown-animate-top-hide {
+    -webkit-animation: nom-dropdown-keyframe-top-hide .16s linear forwards;
+    animation: nom-dropdown-keyframe-top-hide .16s linear forwards;
+  }
+
+  &.nom-dropdown-animate-bottom-hide {
+    -webkit-animation: nom-dropdown-keyframe-bottom-hide .16s linear forwards;
+    animation: nom-dropdown-keyframe-bottom-hide .16s linear forwards;
+  }
 }
 
-.nom-dropdown-animate-top-show {
-  -webkit-animation: nom-dropdown-keyframe-top-show .16s linear forwards;
-  animation: nom-dropdown-keyframe-top-show .16s linear forwards;
-}
-
-.nom-dropdown-animate-bottom-show {
-  -webkit-animation: nom-dropdown-keyframe-bottom-show .16s linear forwards;
-  animation: nom-dropdown-keyframe-bottom-show .16s linear forwards;
-}
-
-.nom-dropdown-animate-top-hide {
-  -webkit-animation: nom-dropdown-keyframe-top-hide .16s linear forwards;
-  animation: nom-dropdown-keyframe-top-hide .16s linear forwards;
-}
-
-.nom-dropdown-animate-bottom-hide {
-  -webkit-animation: nom-dropdown-keyframe-bottom-hide .16s linear forwards;
-  animation: nom-dropdown-keyframe-bottom-hide .16s linear forwards;
-}
 
 @-webkit-keyframes nom-dropdown-keyframe-top-show {
   0% {

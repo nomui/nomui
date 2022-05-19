@@ -89,6 +89,7 @@ class MenuItemWrapper extends Component {
       this.setProps({
         item: {
           popup: {
+            animate: this.props.animate,
             triggerAction: 'hover',
             align: align,
             reference: reference,

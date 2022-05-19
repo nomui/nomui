@@ -23,7 +23,8 @@ export default {
 
         if (selectProps.multiple === false) {
           selectControl.selectedSingle.update(selectedOption)
-          selectControl.popup.animateHide()
+          selectControl.props.animate && selectControl.popup.animateHide()
+          !selectControl.props.animate && selectControl.popup.hide()
         } else {
           selectControl.selectedMultiple.appendItem(selectedOption)
         }

@@ -19,7 +19,7 @@ class PartialDatePicker extends Textbox {
   }
 
   _config() {
-    const { disabled, placeholder } = this.props
+    const { disabled, placeholder, animate } = this.props
 
     const that = this
 
@@ -44,6 +44,7 @@ class PartialDatePicker extends Textbox {
           _created: function () {
             that.popup = this
           },
+          animate,
           classes: {
             'nom-partial-date-picker-popup': true,
           },

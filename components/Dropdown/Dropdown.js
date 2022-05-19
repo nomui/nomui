@@ -42,13 +42,7 @@ class Dropdown extends Component {
             that.popup = c
           },
           _rendered() {
-            if (this.element.getAttribute('offset-y') !== '0') {
-              that.props.animateName = 'bottom'
-              this.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
-            } else {
-              that.props.animateName = 'top'
-              this.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
-            }
+            that.props.animate && that.initAnimation(this)
           },
           children: {
             component: 'Menu',
@@ -58,20 +52,11 @@ class Dropdown extends Component {
             items: items,
           },
           onClick: (args) => {
-            that.popup.removeClass([`nom-dropdown-animate-${that.props.animateName}-show`])
-            if (that.popup.element.getAttribute('offset-y') !== '0') {
-              that.props.animateName = 'bottom'
+            if (that.props.animate) {
+              that.hideAnimation(args)
             } else {
-              that.props.animateName = 'top'
-            }
-
-            that.popup.addClass([`nom-dropdown-animate-${that.props.animateName}-hide`])
-            setTimeout(() => {
               args.sender.hide()
-              if (!that.popup.element) return false
-              that.popup.removeClass([`nom-dropdown-animate-${that.props.animateName}-hide`])
-              that.popup.addClass([`nom-dropdown-animate-${that.props.animateName}-show`])
-            }, 160)
+            }
           },
         },
       },
@@ -86,6 +71,31 @@ class Dropdown extends Component {
     })
 
     super._config()
+  }
+
+  initAnimation(that) {
+    if (that.element.getAttribute('offset-y') !== '0') {
+      this.props.animateName = 'bottom'
+    } else {
+      this.props.animateName = 'top'
+    }
+    that.addClass([`nom-dropdown-animate-${this.props.animateName}-show`])
+  }
+
+  hideAnimation(that) {
+    this.popup.removeClass([`nom-dropdown-animate-${this.props.animateName}-show`])
+    if (this.popup.element.getAttribute('offset-y') !== '0') {
+      this.props.animateName = 'bottom'
+    } else {
+      this.props.animateName = 'top'
+    }
+    this.popup.addClass([`nom-dropdown-animate-${this.props.animateName}-hide`])
+    setTimeout(() => {
+      that.sender.hide()
+      if (!this.popup.element) return false
+      this.popup.removeClass([`nom-dropdown-animate-${this.props.animateName}-hide`])
+      this.popup.addClass([`nom-dropdown-animate-${this.props.animateName}-show`])
+    }, 160)
   }
 }
 Dropdown.defaults = {
