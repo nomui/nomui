@@ -74,8 +74,8 @@ class Modal extends Component {
     }
 
     this._callHandler(this.props.onClose, { result: result })
-    this.props.animate && this.hideAnimation()
-    !this.props.animate && this.remove()
+    this.props && this.props.animate && this.hideAnimation()
+    this.props && !this.props.animate && this.remove()
   }
 
   hideAnimation() {
