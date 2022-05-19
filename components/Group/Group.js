@@ -91,13 +91,13 @@ class Group extends Field {
     }
   }
 
-  validate() {
+  validate(options) {
     const invalids = []
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i],
         { disabled, hidden } = field.props
       if (!(disabled || hidden) && field.validate) {
-        const valResult = field.validate()
+        const valResult = field.validate(options)
         if (valResult !== true) {
           invalids.push(field)
         }
