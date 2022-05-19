@@ -21,7 +21,7 @@ class GridFooter extends Component {
     this.setProps({
       children: {
         columns: this._getSummaryColumns(),
-        data: this._getSummaryData(),
+        data: this._getSummaryDataList(),
         attrs: {
           style: {
             minWidth: `${this.grid.minWidth}px`,
@@ -46,9 +46,25 @@ class GridFooter extends Component {
     })
   }
 
-  _getSummaryData() {
-    const { data = [], summary, columns, rowCheckable, rowExpandable } = this.grid.props
-    const { method, text = '总计' } = summary
+  _getSummaryDataList() {
+    const { summary } = this.grid.props
+    let list = []
+
+    if (Array.isArray(summary)) {
+      list = summary.map((i) => {
+        return this._getSummaryData(i)
+      })
+    } else {
+      list.push(this._getSummaryData(summary))
+    }
+
+    return list
+  }
+
+  _getSummaryData(param) {
+    const { data = [], columns, rowCheckable, rowExpandable } = this.grid.props
+
+    const { method, text = '总计' } = param
 
     let res = {}
     let textColumnIndex = 0
@@ -79,7 +95,7 @@ class GridFooter extends Component {
         res[col.field] = sum
       })
     }
-    return [res]
+    return res
   }
 }
 
