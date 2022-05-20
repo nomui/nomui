@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/nomui/nomui/compare/v1.0.0-alpha.61...v1.0.1) (2022-05-20)
+
+
+### Features
+
+* **Grid:** 表尾合计功能支持统计多行数据 ([6ebfaea](https://github.com/nomui/nomui/commit/6ebfaea5e39014ef11800078d085d2232cdb2148))
+* Group校验新增忽略必填规则的配置项 ([c8d5c8e](https://github.com/nomui/nomui/commit/c8d5c8eeb498c3c243a4af798f6d16d0eda3f3b8))
+
+
+### Docs
+
+* 文档界面更新 ([660c8ea](https://github.com/nomui/nomui/commit/660c8ea0b18bbdb4d41497844908c20817123e3e))
+
 ## [1.0.0-alpha.61](https://github.com/nomui/nomui/compare/v1.0.0-alpha.60...v1.0.0-alpha.61) (2022-05-13)
 
 
