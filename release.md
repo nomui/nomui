@@ -1,7 +1,7 @@
 # 自动发布流程
 
 1. 切换到 main 分支，拉取最新代码
-2. 执行 `npm run release -- --prerelease alpha`，会自动更新版号，生成对应的 changelog
+2. 执行 `npm run release`，会自动更新版号，生成对应的 changelog
 3. 在 main 分支手动提交一个 tag，触发 publish 工作流`git push origin v+版本号`
 4. workflow 实时工作情况可以在 https://github.com/nomui/nomui/actions 查看
 
