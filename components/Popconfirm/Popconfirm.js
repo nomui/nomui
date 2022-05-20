@@ -71,13 +71,13 @@ class Popconfirm extends Popup {
 
   _handleOk() {
     this._callHandler(this.props.onConfirm)
-    this.props.animate && this.hideAnimation()
-    !this.props.animate && this.hide()
+    this.props && this.props.animate && this.hideAnimation()
+    this.props && !this.props.animate && this.hide()
   }
 
   _handleCancel() {
-    this.props.animate && this.hideAnimation()
-    !this.props.animate && this.hide()
+    this.props && this.props.animate && this.hideAnimation()
+    this.props && !this.props.animate && this.hide()
   }
 
   hideAnimation() {

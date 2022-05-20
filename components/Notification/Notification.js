@@ -173,8 +173,8 @@ class Notification extends Layer {
 
     delete Notification.NOMUI_NOTIFICATION_INSTANCES[key]
     this.props.onClose && this.props.onClose()
-    this.props.animate && this.hideAnimation()
-    !this.props.animate && this.remove()
+    this.props && this.props.animate && this.hideAnimation()
+    this.props && !this.props.animate && this.remove()
   }
 
   _config() {
