@@ -39,8 +39,8 @@ class Message extends Layer {
   }
 
   close() {
-    this.props.animate && this.hideAnimation()
-    !this.props.animate && this.remove()
+    this.props && this.props.animate && this.hideAnimation()
+    this.props && !this.props.animate && this.remove()
   }
 
   hideAnimation() {

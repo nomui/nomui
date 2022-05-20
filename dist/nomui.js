@@ -2959,8 +2959,8 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this._callHandler(this.props.onClose, { result: result });
-      this.props.animate && this.hideAnimation();
-      !this.props.animate && this.remove();
+      this.props && this.props.animate && this.hideAnimation();
+      this.props && !this.props.animate && this.remove();
     }
     hideAnimation() {
       this.modalContent.addClass("nom-modal-content-animate-hide");
@@ -4078,8 +4078,8 @@ function _defineProperty2(obj, key, value) {
       this.showTimer = null;
       if (this.props.hidden === false) {
         this.hideTimer = setTimeout(() => {
-          this.props.animate && this.hideAnimation();
-          !this.props.animate && this.hide();
+          this.props && this.props.animate && this.hideAnimation();
+          this.props && !this.props.animate && this.hide();
         }, this.delay);
       }
     }
@@ -15081,8 +15081,8 @@ function _defineProperty2(obj, key, value) {
       return null;
     }
     close() {
-      this.props.animate && this.hideAnimation();
-      !this.props.animate && this.remove();
+      this.props && this.props.animate && this.hideAnimation();
+      this.props && !this.props.animate && this.remove();
     }
     hideAnimation() {
       this.addClass(`nom-drawer-animate-${this.props.settle}-hide`);
@@ -19291,8 +19291,8 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     close() {
-      this.props.animate && this.hideAnimation();
-      !this.props.animate && this.remove();
+      this.props && this.props.animate && this.hideAnimation();
+      this.props && !this.props.animate && this.remove();
     }
     hideAnimation() {
       this.addClass("nom-layer-animate-hide");
@@ -19926,8 +19926,8 @@ function _defineProperty2(obj, key, value) {
       const { key } = this.props;
       delete Notification.NOMUI_NOTIFICATION_INSTANCES[key];
       this.props.onClose && this.props.onClose();
-      this.props.animate && this.hideAnimation();
-      !this.props.animate && this.remove();
+      this.props && this.props.animate && this.hideAnimation();
+      this.props && !this.props.animate && this.remove();
     }
     _config() {
       const that = this;
@@ -21578,12 +21578,12 @@ function _defineProperty2(obj, key, value) {
     }
     _handleOk() {
       this._callHandler(this.props.onConfirm);
-      this.props.animate && this.hideAnimation();
-      !this.props.animate && this.hide();
+      this.props && this.props.animate && this.hideAnimation();
+      this.props && !this.props.animate && this.hide();
     }
     _handleCancel() {
-      this.props.animate && this.hideAnimation();
-      !this.props.animate && this.hide();
+      this.props && this.props.animate && this.hideAnimation();
+      this.props && !this.props.animate && this.hide();
     }
     hideAnimation() {
       this.addClass("nom-layer-animate-hide");

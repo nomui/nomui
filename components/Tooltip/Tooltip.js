@@ -117,8 +117,8 @@ class Tooltip extends Layer {
 
     if (this.props.hidden === false) {
       this.hideTimer = setTimeout(() => {
-        this.props.animate && this.hideAnimation()
-        !this.props.animate && this.hide()
+        this.props && this.props.animate && this.hideAnimation()
+        this.props && !this.props.animate && this.hide()
       }, this.delay)
     }
   }
