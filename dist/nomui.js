@@ -21110,9 +21110,8 @@ function _defineProperty2(obj, key, value) {
     }
     _getValueText() {
       const val = this.getValue();
-      return `${
-        val[this.props.fieldName.start]
-      } - ${val[this.props.fieldName.end]}`;
+      if (!val) return "NA";
+      return val;
     }
     clearTime() {
       this.year = null;
@@ -21400,9 +21399,17 @@ function _defineProperty2(obj, key, value) {
     }
     _getValueText() {
       const val = this.getValue();
-      return `${
-        val[this.props.fieldName.start]
-      } - ${val[this.props.fieldName.end]}`;
+      const valText = {
+        start:
+          val[this.props.fieldName.start] === null
+            ? "NA"
+            : val[this.props.fieldName.start],
+        end:
+          val[this.props.fieldName.end] === null
+            ? "NA"
+            : val[this.props.fieldName.end],
+      };
+      return `${valText.start} - ${valText.end}`;
     }
     checkRange(type) {
       const that = this;

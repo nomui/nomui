@@ -388,7 +388,8 @@ class PartialDatePicker extends Textbox {
 
   _getValueText() {
     const val = this.getValue()
-    return `${val[this.props.fieldName.start]} - ${val[this.props.fieldName.end]}`
+    if (!val) return 'NA'
+    return val
   }
 
   clearTime() {
