@@ -17423,9 +17423,12 @@ function _defineProperty2(obj, key, value) {
       }
       this.sortUpdated = true;
     } // 外部主动记录下当前滚动（下次update时会回到当前位置）
-    setScrollPlace() {
+    setScrollPlace(callback) {
       this._shouldAutoScroll = true;
-      this._setScrollPlace();
+      const info = this._setScrollPlace();
+      if (callback) {
+        callback(info);
+      }
     } // 记录上一次滚动到的位置
     _setScrollPlace(isEmpty) {
       // grid自身的 header和body的宽度
@@ -17448,6 +17451,7 @@ function _defineProperty2(obj, key, value) {
       }
       this._headerScrollInfo = { top: headerTop, left: headerLeft };
       this._bodyScrollInfo = { top: bodyTop, left: bodyLeft };
+      return { header: this._headerScrollInfo, body: this._bodyScrollInfo };
     }
     resetColumnsCustom() {
       if (this._gridColumsStoreKey) {
@@ -17838,8 +17842,12 @@ function _defineProperty2(obj, key, value) {
         }
       }
     }
-    autoScrollGrid() {
-      const { _headerScrollInfo, _bodyScrollInfo } = this;
+    autoScrollGrid(param) {
+      let { _headerScrollInfo, _bodyScrollInfo } = this;
+      if (param) {
+        _headerScrollInfo = param.header;
+        _bodyScrollInfo = param.body;
+      }
       if (!_headerScrollInfo || !_bodyScrollInfo) return;
       if (_headerScrollInfo.top) {
         this.header.scrollParent.element.scrollTop = _headerScrollInfo.top || 0;
