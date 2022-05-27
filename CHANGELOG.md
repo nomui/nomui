@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/nomui/nomui/compare/v1.0.1...v1.0.2) (2022-05-27)
+
+
+### Bug Fixes
+
+* 修复Table放大的样式兼容bug ([98a1f32](https://github.com/nomui/nomui/commit/98a1f32f2b8a2fa9080a7aa93eca6c8fdd8eafa5))
+* **PartialDatePicker:** 获取字面值方法报错 ([556834d](https://github.com/nomui/nomui/commit/556834d72361db2490869a356e6359b8a850e6ad))
+
+
+### Docs
+
+* Grid开放autoScrollGrid方法 ([911f4cb](https://github.com/nomui/nomui/commit/911f4cbe9955025f461a672cf5655c8c1fb55748))
+
 ### [1.0.1](https://github.com/nomui/nomui/compare/v1.0.0-alpha.61...v1.0.1) (2022-05-20)
 
 
