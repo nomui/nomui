@@ -16512,10 +16512,7 @@ function _defineProperty2(obj, key, value) {
       }
       this.setProps({
         tag: "table",
-        classes: {
-          "nom-table-striped": isStriped,
-          "agent-firefox": window.BROWSER_INFO.type === "Firefox",
-        },
+        classes: { "nom-table-striped": isStriped },
         children: [
           { component: ColGroup },
           this.props.onlyBody !== true && { component: Thead },

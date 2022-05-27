@@ -7128,9 +7128,6 @@ table.nom-table {
   background-color: var(--nom-grid-background-color);
   border-spacing: 0;
 }
-table.nom-table.agent-firefox {
-  table-layout: inherit;
-}
 table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) {
   background-color: var(--nom-grid-tr-striped-bg);
 }
