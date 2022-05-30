@@ -14,7 +14,7 @@ define([], function () {
               mygroup = c
             },
             methods: {
-              getValueTextA: (args) => {
+              getMyValueText: (args) => {
                 const result = args.sender.getValue()
                 return `${result.start} - ${result.end}`
               },
@@ -38,7 +38,7 @@ define([], function () {
             component: 'Button',
             text: '获取字面值',
             onClick: () => {
-              console.log(mygroup.getValueTextA())
+              console.log(mygroup.getMyValueText())
             },
           },
         ],
