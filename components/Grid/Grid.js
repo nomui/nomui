@@ -474,9 +474,12 @@ class Grid extends Component {
   }
 
   // 外部主动记录下当前滚动（下次update时会回到当前位置）
-  setScrollPlace() {
+  setScrollPlace(callback) {
     this._shouldAutoScroll = true
-    this._setScrollPlace()
+    const info = this._setScrollPlace()
+    if (callback) {
+      callback(info)
+    }
   }
 
   // 记录上一次滚动到的位置
@@ -510,6 +513,11 @@ class Grid extends Component {
     this._bodyScrollInfo = {
       top: bodyTop,
       left: bodyLeft,
+    }
+
+    return {
+      header: this._headerScrollInfo,
+      body: this._bodyScrollInfo,
     }
   }
 
@@ -945,8 +953,12 @@ class Grid extends Component {
     }
   }
 
-  autoScrollGrid() {
-    const { _headerScrollInfo, _bodyScrollInfo } = this
+  autoScrollGrid(param) {
+    let { _headerScrollInfo, _bodyScrollInfo } = this
+    if (param) {
+      _headerScrollInfo = param.header
+      _bodyScrollInfo = param.body
+    }
     if (!_headerScrollInfo || !_bodyScrollInfo) return
     if (_headerScrollInfo.top) {
       this.header.scrollParent.element.scrollTop = _headerScrollInfo.top || 0
