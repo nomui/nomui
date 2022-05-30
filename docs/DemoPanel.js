@@ -1,4 +1,4 @@
-define(['./precode.js'], function (Precode) {
+define(['./precode.js', './sandbox.js'], function (Precode, Sandbox) {
   class DemoPanel extends nomui.Panel {
     constructor(props, ...mixins) {
       const defaults = {
@@ -86,13 +86,72 @@ define(['./precode.js'], function (Precode) {
                   collapsed: true,
                 },
                 {
-                  tag: 'a',
-                  attrs: {
-                    href: url,
-                    target: '_blank',
-                  },
-                  children: '单独打开',
+                  component: 'Flex',
+                  gap: 'small',
+                  cols: [
+                    {
+                      tag: 'a',
+                      attrs: {
+                        href: url,
+                        target: '_blank',
+                      },
+                      children: '单独打开',
+                    },
+                    {
+                      component: 'Icon',
+                      type: 'sandbox',
+                      tooltip: '在线编辑',
+                      attrs: {
+                        style: { cursor: 'pointer' },
+                      },
+                      onClick: () => {
+                        new nomui.Drawer({
+                          width: '100%',
+                          height: '100%',
+                          title: {
+                            component: 'Flex',
+                            attrs: {
+                              style: {
+                                margin: '0 100px',
+                              },
+                            },
+                            justify: 'between',
+                            cols: [
+                              {
+                                tag: 'h3',
+                                children: title,
+                              },
+                              {
+                                component: 'Button',
+                                text: '重置',
+                                type: 'primary',
+                                onClick: () => {
+                                  that.sandboxRef.reset()
+                                },
+                              },
+                            ],
+                          },
+                          footer: null,
+                          content: {
+                            component: Sandbox,
+                            onCreated: ({ inst }) => {
+                              that.sandboxRef = inst
+                            },
+                            demo: that.props.demo,
+                          },
+                        })
+                      },
+                    },
+                  ],
                 },
+                // {
+                //   tag: 'a',
+                //   attrs: {
+                //     href: url,
+                //     target: '_blank',
+                //   },
+                //   children: '单独打开',
+                // },
               ],
             },
           ],
