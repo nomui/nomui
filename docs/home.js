@@ -59,9 +59,7 @@ define([], function () {
                           color: 'transparent',
                           'background-clip': 'text',
                           '-webkit-background-clip': 'text',
-                          'background-image': `linear-gradient(${Math.round(
-                            Math.random() * 1000,
-                          )}deg, ${getColor()}, ${getColor()})`,
+                          'background-image': `linear-gradient(135deg, ${getColor()}, ${getColor()},${getColor()})`,
                         },
                       },
                     })
