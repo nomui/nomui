@@ -16,6 +16,25 @@ define([], function () {
     `<svg t="1652254426782" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5690" width="1em" height="1em" fill="currentColor"><path d="M932.571429 54.857143H91.428571c-20.228571 0-36.571429 16.342857-36.571428 36.571428v841.142858c0 20.228571 16.342857 36.571429 36.571428 36.571428h841.142858c20.228571 0 36.571429-16.342857 36.571428-36.571428V91.428571c0-20.228571-16.342857-36.571429-36.571428-36.571428z m-795.428572 82.285714h155.428572v749.714286H137.142857V137.142857z m749.714286 749.714286H365.714286V365.714286h521.142857v521.142857zM365.714286 292.571429V137.142857h521.142857v155.428572H365.714286z" p-id="5691"></path></svg>`,
     'docs',
   )
+  const animation = {
+    ref_box: null,
+    ref_N: null,
+    ref_o: null,
+    ref_M: null,
+    ref_a: null,
+    ref_g: null,
+    ref_i: null,
+    ref_c: null,
+    ref_U: null,
+    ref_I: null,
+  }
+  const getColor = function () {
+    const red = Math.round(Math.random() * 255),
+      green = Math.round(Math.random() * 255),
+      blue = Math.round(Math.random() * 255),
+      alpha = 1
+    return `rgba(${red}, ${green}, ${blue}, ${alpha})`
+  }
   return {
     children: [
       {
@@ -23,6 +42,104 @@ define([], function () {
           'docs-main-bg': true,
         },
         children: [
+          {
+            classes: {
+              'docs-main-bg-bubble-bgwall': true,
+            },
+            tag: 'ul',
+            onClick: ({ event }) => {
+              const target = event.target,
+                n = target.innerText
+              if (target.nodeName === 'LI') {
+                if (n === 'No Magic UI') {
+                  if (Math.round(Math.random() * 10) % 2 === 0) {
+                    animation.ref_box.update({
+                      attrs: {
+                        style: {
+                          color: 'transparent',
+                          'background-clip': 'text',
+                          '-webkit-background-clip': 'text',
+                          'background-image': `linear-gradient(${Math.round(
+                            Math.random() * 1000,
+                          )}deg, ${getColor()}, ${getColor()})`,
+                        },
+                      },
+                    })
+                  } else {
+                    animation.ref_box.update({
+                      attrs: {
+                        style: {
+                          color: getColor(),
+                        },
+                      },
+                    })
+                  }
+                } else {
+                  animation[`ref_${n}`].update({
+                    attrs: {
+                      style: {
+                        color: getColor(),
+                      },
+                    },
+                  })
+                }
+              }
+            },
+            children: [
+              {
+                tag: 'li',
+                children: 'N',
+              },
+              {
+                tag: 'li',
+                children: 'No Magic UI',
+              },
+              {
+                tag: 'li',
+                children: 'o',
+              },
+              {
+                tag: 'li',
+                children: 'M',
+              },
+              {
+                tag: 'li',
+                children: 'a',
+              },
+              {
+                tag: 'li',
+                children: 'No Magic UI',
+              },
+              {
+                tag: 'li',
+                children: 'No Magic UI',
+              },
+              {
+                tag: 'li',
+                children: 'g',
+              },
+              {
+                tag: 'li',
+                children: 'i',
+              },
+              {
+                tag: 'li',
+                children: 'No Magic UI',
+              },
+              {
+                tag: 'li',
+                children: 'c',
+              },
+              {
+                tag: 'li',
+                children: 'U',
+              },
+              {
+                tag: 'li',
+                children: 'I',
+              },
+            ],
+          },
           {
             classes: {
               'docs-main-bg-image': true,
@@ -33,6 +150,11 @@ define([], function () {
             classes: {
               'docs-main-bg-inner': true,
             },
+            attrs: {
+              style: {
+                'pointer-events': 'none',
+              },
+            },
             rows: [
               {
                 tag: 'h1',
@@ -41,23 +163,89 @@ define([], function () {
                 },
                 children: {
                   component: 'Flex',
+                  ref: (c) => {
+                    animation.ref_box = c
+                  },
                   classes: {
                     'docs-main-title': true,
                   },
                   gutter: 'large',
                   cols: [
                     {
-                      children: 'No Magic UI',
+                      children: [
+                        {
+                          tag: 'span',
+                          children: 'N',
+                          ref: (c) => {
+                            animation.ref_N = c
+                          },
+                        },
+                        {
+                          tag: 'span',
+                          children: 'o',
+                          ref: (c) => {
+                            animation.ref_o = c
+                          },
+                        },
+                      ],
                     },
-                    // {
-                    //   classes: {
-                    //     'docs-main-title-center': true,
-                    //   },
-                    //   children: 'Magic',
-                    // },
-                    // {
-                    //   children: 'UI',
-                    // },
+                    {
+                      children: [
+                        {
+                          tag: 'span',
+                          children: 'M',
+                          ref: (c) => {
+                            animation.ref_M = c
+                          },
+                        },
+                        {
+                          tag: 'span',
+                          children: 'a',
+                          ref: (c) => {
+                            animation.ref_a = c
+                          },
+                        },
+                        {
+                          tag: 'span',
+                          children: 'g',
+                          ref: (c) => {
+                            animation.ref_g = c
+                          },
+                        },
+                        {
+                          tag: 'span',
+                          children: 'i',
+                          ref: (c) => {
+                            animation.ref_i = c
+                          },
+                        },
+                        {
+                          tag: 'span',
+                          children: 'c',
+                          ref: (c) => {
+                            animation.ref_c = c
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      children: [
+                        {
+                          tag: 'span',
+                          children: 'U',
+                          ref: (c) => {
+                            animation.ref_U = c
+                          },
+                        },
+                        {
+                          tag: 'span',
+                          children: 'I',
+                          ref: (c) => {
+                            animation.ref_I = c
+                          },
+                        },
+                      ],
+                    },
                   ],
                 },
               },
@@ -68,6 +256,11 @@ define([], function () {
                 children: '没有魔法，简单易用的 web 界面框架',
               },
               {
+                attrs: {
+                  style: {
+                    'pointer-events': 'auto',
+                  },
+                },
                 justify: 'center',
                 gutter: 'medium',
                 cols: [
