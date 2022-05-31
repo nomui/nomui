@@ -38,6 +38,11 @@
   color: var(--nom-color-white);
   font-weight: 800;
   font-size: 5rem;
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -ms-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
   user-select: none;
 }
 
