@@ -56,7 +56,10 @@
     const m = detectZoom()
     // 处理笔记本系统默认系统比例为150%带来的布局影响
     if (m > 100) {
-      document.body.style.zoom = 120 / Number(m)
+      const isMac = /macintosh|mac os x/i.test(navigator.userAgent)
+      if (!isMac) {
+        document.body.style.zoom = 120 / Number(m)
+      }
     }
   })
 })(window)
