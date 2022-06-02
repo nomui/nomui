@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import List from '../List/index'
+import { isChrome49 } from '../util/index'
 
 class RadioOptionList extends List {
   constructor(props, ...mixins) {
@@ -47,6 +48,11 @@ class RadioOptionList extends List {
       })
     }
     this.setProps({
+      attrs: {
+        style: {
+          overflow: isChrome49() ? 'visible' : '',
+        },
+      },
       disabled: listProps.disabled,
       items: listProps.options,
       itemDefaults: listProps.optionDefaults,

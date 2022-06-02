@@ -22268,6 +22268,7 @@ function _defineProperty2(obj, key, value) {
         this.setProps({ gutter: "x-md" });
       }
       this.setProps({
+        attrs: { style: { overflow: isChrome49() ? "visible" : "" } },
         disabled: listProps.disabled,
         items: listProps.options,
         itemDefaults: listProps.optionDefaults,
