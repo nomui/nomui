@@ -74,8 +74,8 @@
 | resetColsWidth     | 重置列的宽度(不传参数则重置所有列宽)           | `Funciton(field \| null)` |
 | getCheckedRows     | 获取当前选中行数组                             | -                         |
 | getCheckedRowKeys  | 获取当前选中行的 key 数组                      | -                         |
-| setScrollPlace     | 记录当前表格滚动位置(下次 update 时会自动滚动) | -                         |
-
+| setScrollPlace     | 记录当前表格滚动位置(下次 update 时会自动滚动), 若传入回调函数，则参数是当前滚动位置信息`{header,body}`| -                         |
+| autoScrollGrid     | 主动触发滚动条自动滚动到上次的位置 | `({header,body})=>{} `                       |
 ### column
 
 列描述数据对象，是 columns 中的一项，column 使用相同的 API。
