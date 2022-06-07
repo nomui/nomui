@@ -19,6 +19,10 @@ define([], function () {
           { value: 'bo' },
           { value: 'ffc' },
         ],
+        onSelect: (a, b) => {
+          // eslint-disable-next-line no-console
+          console.log(a, b)
+        },
       }
     },
   }

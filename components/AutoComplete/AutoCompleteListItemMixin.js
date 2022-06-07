@@ -1,3 +1,5 @@
+import { isFunction } from '../util/index.js'
+
 export default {
   _config: function () {
     const { onSelect, onUnselect } = this.props
@@ -8,16 +10,18 @@ export default {
         canRevert: this.list.autoCompleteControl.props.multiple === false,
       },
       onSelect: () => {
+        const value = this.props.value
         const { autoCompleteControl } = this.list
-        // const selectProps = selectControl.props
-        // const autoCompleteProps = autoCompleteControl.props
+        const { onSelect: _onSelect, options } = autoCompleteControl.props
+        const item = options.find(({ value: v }) => v === value)
 
         const autoCompleteOption = {
-          value: this.props.value,
+          value: value,
           // text: this.props.text,
           option: this.props,
         }
 
+        isFunction(_onSelect) && _onSelect(value, item)
         autoCompleteControl.input.update(autoCompleteOption)
         autoCompleteControl.props.animate && autoCompleteControl.popup.animateHide()
         !autoCompleteControl.props.animate && autoCompleteControl.popup.hide()

@@ -56,7 +56,7 @@ class AutoComplete extends Textbox {
           },
           classes: {
             'nom-auto-complete-clear': true,
-            'nom-field-clear-handler':true
+            'nom-field-clear-handler': true,
           },
           onClick: ({ event }) => {
             event.stopPropagation()
@@ -109,14 +109,26 @@ class AutoComplete extends Textbox {
       autoComplete.capsLock = false
       autoComplete._handleSearch(this.value)
     })
+    this.setValue(this.props.value)
   }
 
   _getValue() {
-    return super._getValue()
+    const text = super._getValue()
+    if (this.props.mode !== 'select') return text
+    const { valueField, options } = this.props
+    const selectedItem = options.find(({ value }) => value === text)
+    return selectedItem ? selectedItem[valueField] : null
   }
 
   _setValue(value, options) {
-    super._setValue(value, options)
+    if (this.props.mode !== 'select') {
+      super._setValue(value, options)
+    } else {
+      const { options: opts, valueField } = this.props
+      const selectedItem = (Array.isArray(opts) ? opts : []).find((e) => e[valueField] === value)
+      const val = selectedItem ? selectedItem.value : null
+      super._setValue(val, options)
+    }
   }
 
   _valueChange(changed) {
@@ -183,6 +195,8 @@ AutoComplete.defaults = {
   interval: 300,
   filterOption: (value, options) => options.filter((o) => o.value.toString().includes(value)),
   allowClear: true,
+  valueField: 'value',
+  mode: 'auto',
 }
 
 Component.register(AutoComplete)

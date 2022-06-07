@@ -3,7 +3,6 @@ import Empty from '../Empty/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
 import Textbox from '../Textbox/index'
-import { isFunction } from '../util/index'
 import AutoCompleteList from './AutoCompleteList'
 
 class AutoCompletePopup extends Popup {
@@ -155,20 +154,22 @@ class AutoCompletePopup extends Popup {
 
   _getOptionList() {
     const { options } = this.props
-    const { searchable, value, filterOption } = this.autoCompleteControl.props
-    const opts = isFunction(filterOption) ? filterOption(value || '', options) : options
+    // const { searchable, value, filterOption } = this.autoCompleteControl.props
+    const { searchable } = this.autoCompleteControl.props
+    // const opts = isFunction(filterOption) ? filterOption(value || '', options) : options
+    // console.log(opts, options, value)
 
     if (searchable) {
       return {
         component: AutoCompleteList,
-        options: opts,
+        options,
       }
     }
 
-    if (opts && opts.length) {
+    if (options && options.length) {
       return {
         component: AutoCompleteList,
-        options: opts,
+        options,
       }
     }
 

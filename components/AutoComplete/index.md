@@ -16,3 +16,6 @@
 | interval | 节流事件调用的间隔(单位毫秒) | `number` | `300` |
 | filterOption | 是否根据输入项进行筛选。其为一个函数时，会接收 inputValue option 两个参数，当 option 符合筛选条件时，应返回 true，反之则返回 false | `function(input,option)` | true |
 | onSearch | 搜索文本值变化时的回调 | `function(inputValue)` | - |
+| mode | 模式(select 或 auto) | `'auto' \| 'select'` | `'auto'` |
+| valueField | value 字段 | `strint` | `'value'` |
+| onSelect | 下拉菜单选择回调 | `function(value,option)` | - |
