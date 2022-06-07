@@ -44,7 +44,7 @@ class Layer extends Component {
       })
     }
 
-    this.props.animate && this.initAnimation()
+    this.props.animate && this.animateInit()
   }
 
   _rendered() {
@@ -63,14 +63,14 @@ class Layer extends Component {
           if (e.target !== e.currentTarget) {
             return
           }
-          that.props.animate && that.hideAnimation()
+          that.props.animate && that.animateHide()
           !that.props.animate && that.remove()
         })
       }
     }
   }
 
-  initAnimation() {
+  animateInit() {
     this.nomappOverflow()
     this.setProps({
       classes: {
@@ -79,9 +79,11 @@ class Layer extends Component {
     })
   }
 
-  hideAnimation() {
+  animateHide() {
+    if (!this.element) return false
     this.addClass('nom-layer-animate-hide')
     setTimeout(() => {
+      if (!this.element) return false
       this.remove()
     }, 90)
   }
@@ -151,13 +153,6 @@ class Layer extends Component {
       this.hide()
     }
   }
-
-  // animateHide() {
-  //   this.addClass('nom-layer-animate-hide')
-  //   setTimeout(() => {
-  //     this.hide()
-  //   }, 90)
-  // }
 
   nomappOverflow() {
     if (!window.nomapp) return

@@ -71,18 +71,20 @@ class Popconfirm extends Popup {
 
   _handleOk() {
     this._callHandler(this.props.onConfirm)
-    this.props && this.props.animate && this.hideAnimation()
+    this.props && this.props.animate && this.animateHide()
     this.props && !this.props.animate && this.hide()
   }
 
   _handleCancel() {
-    this.props && this.props.animate && this.hideAnimation()
+    this.props && this.props.animate && this.animateHide()
     this.props && !this.props.animate && this.hide()
   }
 
-  hideAnimation() {
+  animateHide() {
+    if (!this.element) return false
     this.addClass('nom-layer-animate-hide')
     setTimeout(() => {
+      if (!this.element) return false
       this.hide()
     }, 90)
   }

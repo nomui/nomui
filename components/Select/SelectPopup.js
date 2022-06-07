@@ -78,10 +78,10 @@ class SelectPopup extends Popup {
 
   _rendered() {
     this.removeClass('nom-layer-animate-show')
-    this.selectControl.props.animate && this.initAnimation()
+    this.selectControl.props.animate && this.animateInit()
   }
 
-  initAnimation() {
+  animateInit() {
     if (!this.element) return false
     if (this.element.getAttribute('offset-y') !== '0') {
       this.addClass('nom-select-animate-bottom-show')
@@ -104,6 +104,7 @@ class SelectPopup extends Popup {
   }
 
   animateHide() {
+    if (!this.element) return false
     let animateName
     if (this.element.getAttribute('offset-y') !== '0') {
       animateName = 'nom-select-animate-bottom-hide'
