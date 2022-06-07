@@ -10,12 +10,11 @@ class Image extends Component {
     this.setProps({
       children: [
         {
-          classes: { 'nom-image-pending': true },
           component: 'Icon',
           ref: (c) => {
             this.pendingRef = c
           },
-          type: 'image',
+          type: 'image-pending',
           attrs: {
             style: {
               width: typeof width === 'number' ? `${width}px` : width,
@@ -60,7 +59,7 @@ Image.defaults = {
   src: null,
   width: '',
   height: '',
-  size: 2,
+  size: 10,
 }
 
 Component.register(Image)

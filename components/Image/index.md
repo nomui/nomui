@@ -7,4 +7,4 @@
 | src    | 图片的资源地址                             | `string ` | `null` |
 | width  | 自定义图片的宽度                           | `number ` | -      |
 | height | 自定义图片的高度                           | `number`  | -      |
-| size   | 自定义图片加载中时的缩略图标大小，单位 rem | `number`  | 2      |
+| size   | 自定义图片加载中时的缩略图标大小，单位 rem | `number`  | 10     |
