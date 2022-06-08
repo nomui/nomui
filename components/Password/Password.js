@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Textbox from '../Textbox/index'
+import PasswordPopup from './PasswordPopup'
 
 class Password extends Textbox {
   constructor(props, ...mixins) {
@@ -10,6 +11,8 @@ class Password extends Textbox {
     super._created()
     this.realValue = ''
     this.hasDefaultValue = false
+    this.capsLock = false
+    this.firstWrite = false
     if (this.props.value) {
       this.realValue = this.props.value
 
@@ -20,11 +23,14 @@ class Password extends Textbox {
   _config() {
     const that = this
     const { onValueChange } = this.props
-
+    if (that.tooltip) {
+      that.tooltip.remove()
+      delete that.tooltip
+    }
     this.setProps({
+      type: 'password',
       onValueChange: () => {
         const pass = that.getText()
-
         const start = that.input.element.selectionStart // 光标位置
 
         const fake = pass ? pass.split('') : []
@@ -66,9 +72,11 @@ class Password extends Textbox {
     })
 
     super._config()
+
   }
 
   _rendered() {
+    const that = this
     if (this.hasDefaultValue && this.firstRender) {
       let stars = ''
       for (let i = 0; i < this.realValue.length; i++) {
@@ -76,7 +84,59 @@ class Password extends Textbox {
       }
       this.setValue(stars)
     }
+    this.popup = new PasswordPopup({
+      trigger: this.control,
+      animate: false,
+      triggerAction: 'click',
+      PasswordPopupHidden: true,
+    })
+
+    this.input.element.addEventListener('keyup', (event) => {
+      // 判断是否按键为caps Lock
+      if (event.keyCode === 20) {
+        that.capsLock = !that.capsLock
+        this.firstWrite && this.popupSetProps()
+        return
+      }
+      // 按键不是caps Lock，判断每次最后输入的字母的大小写
+      const e = event || window.event
+      const keyvalue = e.keyCode ? e.keyCode : e.which
+      const shifKey = that.shifKey
+      if (typeof (that.realValue) === 'undefined') return
+      const userPassword = that.realValue || ''
+      const strlen = userPassword.length
+
+      if (strlen) {
+        const uniCode = userPassword.charCodeAt(strlen - 1)
+        // 65到90字母键
+        if (keyvalue >= 65 && keyvalue <= 90) {
+          this.firstWrite = true
+          // 是否同时按住shift键
+          if (((uniCode >= 65 && uniCode <= 90) && !shifKey) || ((uniCode >= 97 && uniCode <= 122) && shifKey)) {
+            that.capsLock = true
+          } else {
+            that.capsLock = false
+          }
+        }
+      }
+      this.popupSetProps()
+    })
+
+
+    this.input.element.addEventListener('keydown', (event) => {
+      const e = event || window.event
+      const keyvalue = e.keyCode ? e.keyCode : e.which
+      const shifKey = e.shiftKey ? e.shiftKey : ((keyvalue === 16))
+      this.shifKey = shifKey
+    })
+
   }
+
+  popupSetProps() {
+    this.capsLock ? this.popup.show() : this.popup.hide()
+    this.popup.setProps({ PasswordPopupHidden: !this.capsLock })
+  }
+
 
   _getValue() {
     const val = this.realValue ? this.realValue.trim(' ') : this.realValue
