@@ -7,7 +7,11 @@ class Image extends Component {
   }
 
   _config() {
-    const { src, width, height, size } = this.props
+    const { src } = this.props
+    let { width, height } = this.props
+    const size = this.sizeComputing(width, height)
+    width = isNumeric(width) ? `${width}px` : width
+    height = isNumeric(height) ? `${height}px` : height
     this.setProps({
       children: [
         {
@@ -15,11 +19,14 @@ class Image extends Component {
           ref: (c) => {
             this.pendingRef = c
           },
+          classes: {
+            'nom-image-pending': true,
+          },
           type: 'image-pending',
           attrs: {
             style: {
-              width: isNumeric(width) ? `${width}px` : width,
-              height: isNumeric(height) ? `${height}px` : height,
+              width,
+              height,
               'font-size': `${size}rem`,
             },
           },
@@ -33,8 +40,8 @@ class Image extends Component {
           attrs: {
             src,
             style: {
-              width: isNumeric(width) ? `${width}px` : width,
-              height: isNumeric(height) ? `${height}px` : height,
+              width,
+              height,
             },
           },
         },
@@ -42,10 +49,16 @@ class Image extends Component {
     })
   }
 
+  sizeComputing(val1, val2) {
+    val1 = val1 || 200
+    val2 = val2 || 160
+    if (val1 > val2) {
+      return parseInt(val2 / 15, 10)
+    }
+    return parseInt(val1 / 15, 10)
+  }
+
   _rendered() {
-    new nomui.Loading({
-      container: this.pendingRef,
-    })
     const img = this.imgRef.element
     const that = this
     img.onload = img.onreadystatechange = function () {
@@ -60,7 +73,6 @@ Image.defaults = {
   src: null,
   width: null,
   height: null,
-  size: 10,
 }
 
 Component.register(Image)
