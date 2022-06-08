@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isNumeric } from '../util/index'
 
 class Image extends Component {
   constructor(props, ...mixins) {
@@ -17,8 +18,8 @@ class Image extends Component {
           type: 'image-pending',
           attrs: {
             style: {
-              width: typeof width === 'number' ? `${width}px` : width,
-              height: typeof height === 'number' ? `${height}px` : height,
+              width: isNumeric(width) ? `${width}px` : width,
+              height: isNumeric(height) ? `${height}px` : height,
               'font-size': `${size}rem`,
             },
           },
@@ -32,8 +33,8 @@ class Image extends Component {
           attrs: {
             src,
             style: {
-              width: typeof width === 'number' ? `${width}px` : width,
-              height: typeof height === 'number' ? `${height}px` : height,
+              width: isNumeric(width) ? `${width}px` : width,
+              height: isNumeric(height) ? `${height}px` : height,
             },
           },
         },
@@ -57,8 +58,8 @@ class Image extends Component {
 }
 Image.defaults = {
   src: null,
-  width: '',
-  height: '',
+  width: null,
+  height: null,
   size: 10,
 }
 
