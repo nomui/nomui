@@ -29,6 +29,23 @@ class Password extends Textbox {
     }
     this.setProps({
       type: 'password',
+      rightIcon: {
+        type: this.props.rightIconType,
+        hidden: !this.props.value || this.props.disabled,
+        ref: (c) => {
+          this.rightIconRef = c
+        },
+        onClick: function () {
+          if (!that.props.value) {
+            return
+          }
+          const pass = that.props.rightIconType === 'eye-invisible' ? that.props.value.replace(/./g, '*') : that.props.value
+          that.update({
+            rightIconType: that.props.rightIconType === 'eye-invisible' ? 'eye' : 'eye-invisible',
+          })
+          that.setValue(pass)
+        }
+      },
       onValueChange: () => {
         const pass = that.getText()
         const start = that.input.element.selectionStart // 光标位置
@@ -57,8 +74,7 @@ class Password extends Textbox {
           })
           that.realValue = real.join('')
         }
-
-        that.setValue(pass ? pass.replace(/./g, '*') : null)
+        that.setValue(pass ? (that.props.rightIconType === 'eye' ? pass.replace(/./g, '*') : pass) : null)
 
         // 让光标回到正确位置
 
@@ -67,6 +83,8 @@ class Password extends Textbox {
           that.input.element.selectionEnd = start
         }
 
+
+        pass ? that.rightIconRef.show() : that.rightIconRef.hide()
         that._callHandler(onValueChange)
       },
     })
@@ -149,6 +167,7 @@ class Password extends Textbox {
 
 Password.defaults = {
   allowClear: false,
+  rightIconType: 'eye'
 }
 Component.register(Password)
 
