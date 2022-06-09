@@ -33,12 +33,12 @@ class AutoCompleteList extends List {
     // const { options } = this.autoCompleteControl.props
     // const { optionDefaults, options } = this.props
     // const { searchable, options: aops, onSelect, valueField } = this.autoCompleteControl.props
-    const { searchable, options: aops, valueField } = this.autoCompleteControl.props
+    const { searchable, options: aops } = this.autoCompleteControl.props
     const { optionDefaults, options: sops } = this.props
     const value = this.autoCompleteControl.props.value ? this.autoCompleteControl.props.value : ''
 
     const options = searchable ? aops : sops
-    const selectedItem = options.find((e) => e[valueField] === value)
+    // const selectedItem = options.find((e) => e[valueField] === value)
 
     this.setProps({
       items: options || [],
@@ -48,7 +48,8 @@ class AutoCompleteList extends List {
         byClick: true,
         scrollIntoView: true,
       },
-      selectedItems: selectedItem ? selectedItem.value : '',
+      // selectedItems: selectedItem ? selectedItem.value : '',
+      selectedItems: value,
 
       onItemSelectionChange: () => {
         this.autoCompleteControl._onValueChange()

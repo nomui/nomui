@@ -109,26 +109,20 @@ class AutoComplete extends Textbox {
       autoComplete.capsLock = false
       autoComplete._handleSearch(this.value)
     })
-    this.setValue(this.props.value)
   }
 
   _getValue() {
-    const text = super._getValue()
-    if (this.props.mode !== 'select') return text
-    const { valueField, options } = this.props
-    const selectedItem = options.find(({ value }) => value === text)
-    return selectedItem ? selectedItem[valueField] : null
+    return super._getValue()
   }
 
   _setValue(value, options) {
-    if (this.props.mode !== 'select') {
-      super._setValue(value, options)
-    } else {
-      const { options: opts, valueField } = this.props
-      const selectedItem = (Array.isArray(opts) ? opts : []).find((e) => e[valueField] === value)
-      const val = selectedItem ? selectedItem.value : null
-      super._setValue(val, options)
-    }
+    super._setValue(value, options)
+  }
+
+  getSelectedOption() {
+    const { value, options } = this.props
+    const selected = options.find(({ value: v }) => value === v)
+    return selected || null
   }
 
   _valueChange(changed) {
@@ -195,7 +189,10 @@ AutoComplete.defaults = {
   interval: 300,
   filterOption: (value, options) => options.filter((o) => o.value.toString().includes(value)),
   allowClear: true,
-  valueField: 'value',
+  fieldName: {
+    text: '',
+    value: '',
+  },
   mode: 'auto',
 }
 

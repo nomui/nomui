@@ -12,13 +12,13 @@ define([], function () {
             component: 'AutoComplete',
             mode: 'select',
             valueField: 'code',
-            value: 4,
+            value: 'aba',
             onCreated: ({ inst }) => {
               autoCompleteRef = inst
             },
-            onSelect: (v, o) => {
+            onSelect: (v) => {
               // eslint-disable-next-line no-console
-              console.log(v, o)
+              console.log(v)
             },
             options: [
               { value: 'a', code: 1 },
@@ -53,7 +53,17 @@ define([], function () {
                 component: 'Button',
                 text: '设置值',
                 onClick: () => {
-                  autoCompleteRef.setValue(6)
+                  autoCompleteRef.setValue('ffc')
+                },
+              },
+              {
+                component: 'Button',
+                text: '获取选中项',
+                onClick: () => {
+                  new nomui.Message({
+                    content: `选中项: ${JSON.stringify(autoCompleteRef.getSelectedOption())}`,
+                    type: 'info',
+                  })
                 },
               },
             ],

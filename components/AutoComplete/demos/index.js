@@ -1,5 +1,4 @@
-define(['./basic.js', './debounce.js', './filter.js', './remote.js', './field.js'], function () {
-  // define(['./field.js'], function () {
+define(['./basic.js', './debounce.js', './filter.js', './remote.js', './select.js'], function () {
   return {
     title: 'AutoComplete',
     subtitle: '自动完成',
