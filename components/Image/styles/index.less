@@ -1,39 +1,11 @@
 .nom-image {
   display: inline-block;
-  color: rgb(255, 255, 255);
-  background: #eee;
 
   .nom-image-pending {
-    -webkit-animation: nom-image-keyframe-down 1.02s linear infinite forwards;
-    animation: nom-image-keyframe-down 1.02s linear infinite forwards;
-
-    @-webkit-keyframes nom-image-keyframe-down {
-      0% {
-        color: rgb(250, 250, 250);
-      }
-
-      50% {
-        color: rgb(255, 255, 255);
-      }
-
-      100% {
-        color: rgb(250, 250, 250);
-      }
-    }
-
-    @keyframes nom-image-keyframe-down {
-      0% {
-        color: rgb(250, 250, 250);
-      }
-
-      50% {
-        color: rgb(255, 255, 255);
-      }
-
-      100% {
-        color: rgb(250, 250, 250);
-      }
-    }
+    width: 100px;
+    height: 100px;
+    color: rgba(255, 255, 255, .85);
+    background: #eee;
   }
 
   img {

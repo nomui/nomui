@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './img.js'], function () {
   return {
     title: 'Image',
     subtitle: '图片',

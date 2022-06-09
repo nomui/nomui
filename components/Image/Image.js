@@ -16,11 +16,11 @@ class Image extends Component {
       children: [
         {
           component: 'Icon',
-          ref: (c) => {
-            this.pendingRef = c
-          },
           classes: {
             'nom-image-pending': true,
+          },
+          ref: (c) => {
+            this.pendingRef = c
           },
           type: 'image-pending',
           attrs: {
@@ -51,11 +51,11 @@ class Image extends Component {
 
   sizeComputing(val1, val2) {
     val1 = val1 || 200
-    val2 = val2 || 160
+    val2 = val2 || 100
     if (val1 > val2) {
-      return parseInt(val2 / 15, 10)
+      return parseInt(val2 / 22, 10)
     }
-    return parseInt(val1 / 15, 10)
+    return parseInt(val1 / 22, 10)
   }
 
   _rendered() {
