@@ -120,9 +120,17 @@ class AutoComplete extends Textbox {
   }
 
   getSelectedOption() {
-    const { value, options } = this.props
-    const selected = options.find(({ value: v }) => value === v)
-    return selected || null
+    const { value, options, fieldName } = this.props
+    let selected = options.find(({ value: v }) => value === v)
+    if (selected) return selected
+
+    selected = { value }
+    if (Array.isArray(fieldName)) {
+      fieldName.forEach((field) => {
+        if (field !== 'value') selected[field] = null
+      })
+    }
+    return selected
   }
 
   _valueChange(changed) {
@@ -189,11 +197,7 @@ AutoComplete.defaults = {
   interval: 300,
   filterOption: (value, options) => options.filter((o) => o.value.toString().includes(value)),
   allowClear: true,
-  fieldName: {
-    text: '',
-    value: '',
-  },
-  mode: 'auto',
+  fieldName: null,
 }
 
 Component.register(AutoComplete)

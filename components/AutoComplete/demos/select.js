@@ -20,6 +20,7 @@ define([], function () {
               // eslint-disable-next-line no-console
               console.log(v)
             },
+            fieldName: ['code', 'codeText'],
             options: [
               { value: 'a', code: 1 },
               { value: 'aa', code: 2 },
