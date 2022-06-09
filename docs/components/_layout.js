@@ -366,6 +366,12 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
                       id: 'Tree',
                       url: '#!components!index?type=Tree',
                     },
+                    {
+                      text: 'Image',
+                      subtext: '图片',
+                      id: 'Image',
+                      url: '#!components!index?type=Image',
+                    },
                   ],
                 },
                 {
