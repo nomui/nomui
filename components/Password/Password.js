@@ -36,7 +36,8 @@ class Password extends Textbox {
           that.realValue = null
         } else {
           if (clen > 0) {
-            const middle = fake.join('').replace(/\*/g, '').split('')
+            // const middle = fake.join('').replace(/\*/g, '').split('')
+            const middle = fake.slice(start - clen, start)
             const right = fake.length - start > 0 ? real.slice(-(fake.length - start)) : []
             real = [].concat(real.slice(0, start - middle.length), middle, right)
           }
