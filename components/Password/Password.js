@@ -31,7 +31,7 @@ class Password extends Textbox {
       type: 'password',
       rightIcon: {
         type: this.props.rightIconType,
-        hidden: !this.props.value || this.props.disabled,
+        hidden: !this.props.value || this.props.disabled || !this.props.visibilityToggle,
         ref: (c) => {
           this.rightIconRef = c
         },
@@ -49,17 +49,16 @@ class Password extends Textbox {
       onValueChange: () => {
         const pass = that.getText()
         const start = that.input.element.selectionStart // 光标位置
-
         const fake = pass ? pass.split('') : []
         let real = that.realValue ? that.realValue.split('') : []
         const clen = fake.length - real.length
-
         // 处理Value
         if (!pass) {
           that.realValue = null
         } else {
           if (clen > 0) {
-            const middle = fake.join('').replace(/\*/g, '').split('')
+            // const middle = fake.join('').replace(/\*/g, '').split('')
+            const middle = fake.slice(start - clen, start)
             const right = fake.length - start > 0 ? real.slice(-(fake.length - start)) : []
             real = [].concat(real.slice(0, start - middle.length), middle, right)
           }
@@ -82,7 +81,6 @@ class Password extends Textbox {
           that.input.element.selectionStart = start
           that.input.element.selectionEnd = start
         }
-
 
         pass ? that.rightIconRef.show() : that.rightIconRef.hide()
         that._callHandler(onValueChange)
@@ -167,6 +165,7 @@ class Password extends Textbox {
 
 Password.defaults = {
   allowClear: false,
+  visibilityToggle: true,
   rightIconType: 'eye'
 }
 Component.register(Password)
