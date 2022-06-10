@@ -2311,7 +2311,12 @@ function _defineProperty2(obj, key, value) {
   );
   Icon.add(
     "eye",
-    `<svg t="1610611013413" class="icon" viewBox="0 0 1603 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6374" width="1em" height="1em"  fill="currentColor"><path d="M1439.175 502.814c-115.521-233.355-352.825-384.097-616.997-384.097-259.691-0.005-493.642 145.659-611.326 372.903-2.359 4.465-3.744 9.761-3.744 15.379 0 5.406 1.282 10.511 3.557 15.029 115.433 233.162 352.737 383.907 616.905 383.907 259.697 0 493.646-145.659 611.331-372.907 2.359-4.465 3.744-9.761 3.744-15.379 0-5.406-1.282-10.511-3.557-15.029zM827.575 839.278c-232.958 0-442.764-129.694-549.788-331.936 108.743-196.761 315.477-321.972 544.393-321.972 232.958 0 442.764 129.699 549.788 331.94-108.743 196.761-315.483 321.972-544.393 321.972zM952.959 642.373c33.654-34.619 52.858-81.01 52.858-130.373 0-103.084-83.211-186.644-185.849-186.644-102.641 0-185.849 83.561-185.849 186.644s83.206 186.644 185.849 186.644c14.662 0 26.548-11.937 26.548-26.663 0-14.722-11.885-26.661-26.548-26.661-73.319 0-132.749-59.689-132.749-133.319s59.431-133.319 132.749-133.319c73.314 0 132.745 59.689 132.745 133.319 0 35.301-13.68 68.366-37.751 93.123-4.671 4.809-7.55 11.38-7.55 18.623 0 7.469 3.061 14.223 7.998 19.075 4.777 4.693 11.327 7.588 18.553 7.588 7.449 0 14.181-3.078 18.991-8.031z" p-id="6375"></path></svg>`,
+    `<svg focusable="false" class="" data-icon="eye" width="1em" height="1em" fill="currentColor" aria-hidden="true" viewBox="64 64 896 896"><path d="M942.2 486.2C847.4 286.5 704.1 186 512 186c-192.2 0-335.4 100.5-430.2 300.3a60.3 60.3 0 000 51.5C176.6 737.5 319.9 838 512 838c192.2 0 335.4-100.5 430.2-300.3 7.7-16.2 7.7-35 0-51.5zM512 766c-161.3 0-279.4-81.8-362.7-254C232.6 339.8 350.7 258 512 258c161.3 0 279.4 81.8 362.7 254C791.5 684.2 673.4 766 512 766zm-4-430c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "eye-invisible",
+    `<svg focusable="false" class="" data-icon="eye-invisible" width="1em" height="1em" fill="currentColor" aria-hidden="true" viewBox="64 64 896 896"><path d="M942.2 486.2Q889.47 375.11 816.7 305l-50.88 50.88C807.31 395.53 843.45 447.4 874.7 512 791.5 684.2 673.4 766 512 766q-72.67 0-133.87-22.38L323 798.75Q408 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 000-51.5zm-63.57-320.64L836 122.88a8 8 0 00-11.32 0L715.31 232.2Q624.86 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 000 51.5q56.69 119.4 136.5 191.41L112.48 835a8 8 0 000 11.31L155.17 889a8 8 0 0011.31 0l712.15-712.12a8 8 0 000-11.32zM149.3 512C232.6 339.8 350.7 258 512 258c54.54 0 104.13 9.36 149.12 28.39l-70.3 70.3a176 176 0 00-238.13 238.13l-83.42 83.42C223.1 637.49 183.3 582.28 149.3 512zm246.7 0a112.11 112.11 0 01146.2-106.69L401.31 546.2A112 112 0 01396 512z"></path><path d="M508 624c-3.46 0-6.87-.16-10.25-.47l-52.82 52.82a176.09 176.09 0 00227.42-227.42l-52.82 52.82c.31 3.38.47 6.79.47 10.25a111.94 111.94 0 01-112 112z"></path></svg>`,
     cat
   );
   Icon.add(
@@ -21463,6 +21468,48 @@ function _defineProperty2(obj, key, value) {
     endPickerProps: { placeholder: "结束日期" },
   };
   Component.register(PartialDateRangePicker);
+  class PasswordPopup extends Popup {
+    constructor(props, ...mixins) {
+      const defaults = {
+        trigger: null,
+        triggerAction: "click",
+        align: "bottom left",
+        alignOuter: true,
+        closeOnClickOutside: true,
+        placement: "append",
+        autoRender: false,
+        uistyle: "default",
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+    }
+    _config() {
+      this.setProps({
+        children: [
+          "大写已开启",
+          {
+            ref: (c) => {
+              this.arrow = c;
+            },
+            classes: { "nom-password-arrow": true },
+            children: `#<svg aria-hidden="true" width="24" height="6" viewBox="0 0 24 7" fill="currentColor" xmlns="http://www.w3.org/2000/svg" ><path d="M24 0V1C20 1 18.5 2 16.5 4C14.5 6 14 7 12 7C10 7 9.5 6 7.5 4C5.5 2 4 1 0 1V0H24Z"></path></svg>`,
+          },
+        ],
+      });
+      super._config();
+    }
+    _onOpenerClickHandler() {
+      if (
+        this.opener.props.disabled !== true &&
+        !this.props.PasswordPopupHidden
+      ) {
+        this.props.PasswordPopupHidden !== true ? this.show() : this.hide();
+      }
+    }
+  }
+  Component.register(PasswordPopup);
   class Password extends Textbox {
     constructor(props, ...mixins) {
       super(Component.extendProps(Password.defaults, props), ...mixins);
@@ -21471,6 +21518,8 @@ function _defineProperty2(obj, key, value) {
       super._created();
       this.realValue = "";
       this.hasDefaultValue = false;
+      this.capsLock = false;
+      this.firstWrite = false;
       if (this.props.value) {
         this.realValue = this.props.value;
         this.hasDefaultValue = true;
@@ -21479,7 +21528,38 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const that = this;
       const { onValueChange } = this.props;
+      if (that.tooltip) {
+        that.tooltip.remove();
+        delete that.tooltip;
+      }
       this.setProps({
+        type: "password",
+        rightIcon: {
+          type: this.props.rightIconType,
+          hidden:
+            !this.props.value ||
+            this.props.disabled ||
+            !this.props.visibilityToggle,
+          ref: (c) => {
+            this.rightIconRef = c;
+          },
+          onClick: function () {
+            if (!that.props.value) {
+              return;
+            }
+            const pass =
+              that.props.rightIconType === "eye-invisible"
+                ? that.props.value.replace(/./g, "*")
+                : that.props.value;
+            that.update({
+              rightIconType:
+                that.props.rightIconType === "eye-invisible"
+                  ? "eye"
+                  : "eye-invisible",
+            });
+            that.setValue(pass);
+          },
+        },
         onValueChange: () => {
           const pass = that.getText();
           const start = that.input.element.selectionStart; // 光标位置
@@ -21511,17 +21591,25 @@ function _defineProperty2(obj, key, value) {
             });
             that.realValue = real.join("");
           }
-          that.setValue(pass ? pass.replace(/./g, "*") : null); // 让光标回到正确位置
+          that.setValue(
+            pass
+              ? that.props.rightIconType === "eye"
+                ? pass.replace(/./g, "*")
+                : pass
+              : null
+          ); // 让光标回到正确位置
           if (pass && start < pass.length) {
             that.input.element.selectionStart = start;
             that.input.element.selectionEnd = start;
           }
+          pass ? that.rightIconRef.show() : that.rightIconRef.hide();
           that._callHandler(onValueChange);
         },
       });
       super._config();
     }
     _rendered() {
+      const that = this;
       if (this.hasDefaultValue && this.firstRender) {
         let stars = "";
         for (let i = 0; i < this.realValue.length; i++) {
@@ -21529,6 +21617,51 @@ function _defineProperty2(obj, key, value) {
         }
         this.setValue(stars);
       }
+      this.popup = new PasswordPopup({
+        trigger: this.control,
+        animate: false,
+        triggerAction: "click",
+        PasswordPopupHidden: true,
+      });
+      this.input.element.addEventListener("keyup", (event) => {
+        // 判断是否按键为caps Lock
+        if (event.keyCode === 20) {
+          that.capsLock = !that.capsLock;
+          this.firstWrite && this.popupSetProps();
+          return;
+        } // 按键不是caps Lock，判断每次最后输入的字母的大小写
+        const e = event || window.event;
+        const keyvalue = e.keyCode ? e.keyCode : e.which;
+        const shifKey = that.shifKey;
+        if (typeof that.realValue === "undefined") return;
+        const userPassword = that.realValue || "";
+        const strStart = that.input.element.selectionStart; // 光标位置
+        if (strStart) {
+          const uniCode = userPassword.charCodeAt(strStart - 1); // 65到90字母键
+          if (keyvalue >= 65 && keyvalue <= 90) {
+            this.firstWrite = true; // 是否同时按住shift键
+            if (
+              (uniCode >= 65 && uniCode <= 90 && !shifKey) ||
+              (uniCode >= 97 && uniCode <= 122 && shifKey)
+            ) {
+              that.capsLock = true;
+            } else {
+              that.capsLock = false;
+            }
+          }
+        }
+        this.popupSetProps();
+      });
+      this.input.element.addEventListener("keydown", (event) => {
+        const e = event || window.event;
+        const keyvalue = e.keyCode ? e.keyCode : e.which;
+        const shifKey = e.shiftKey ? e.shiftKey : keyvalue === 16;
+        this.shifKey = shifKey;
+      });
+    }
+    popupSetProps() {
+      this.capsLock ? this.popup.show() : this.popup.hide();
+      this.popup.setProps({ PasswordPopupHidden: !this.capsLock });
     }
     _getValue() {
       const val = this.realValue ? this.realValue.trim(" ") : this.realValue;
@@ -21538,7 +21671,11 @@ function _defineProperty2(obj, key, value) {
       return val;
     }
   }
-  Password.defaults = { allowClear: false };
+  Password.defaults = {
+    allowClear: false,
+    visibilityToggle: true,
+    rightIconType: "eye",
+  };
   Component.register(Password);
   class Popconfirm extends Popup {
     constructor(props, ...mixins) {

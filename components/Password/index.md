@@ -11,6 +11,7 @@
 | 参数      | 说明             | 类型            | 默认值 |
 | --------- | ---------------- | --------------- | ------ |
 | autofocus | 是否自动获得焦点 | `boolean`       | -      |
+| visibilityToggle | 是否显示切换密码图标 | `boolean` | `true` |
 | value     | 输入框内容       | `string`        | -      |
 | leftIcon  | 左侧的图标       | `string\|Props` | -      |
 | rightIcon | 右侧的图标       | `string\|Props` | -      |
