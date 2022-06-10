@@ -11915,6 +11915,18 @@ textarea .nom-textarea {
     background: var(--nom-skeleton-default-bg);
   }
 }
+.nom-image {
+  display: inline-block;
+}
+.nom-image .nom-image-pending {
+  width: 100px;
+  height: 100px;
+  color: rgba(255, 255, 255, 0.85);
+  background: #eee;
+}
+.nom-image img {
+  vertical-align: top;
+}
 @media all and (-moz-min-device-pixel-ratio: 1.09) and (-moz-max-device-pixel-ratio: 1.18), (-webkit-min-device-pixel-ratio: 1.09) and (-webkit-max-device-pixel-ratio: 1.18), (min-resolution: 1.09dppx) and (max-resolution: 1.18dppx) {
   :root {
     font-size: 14px;
