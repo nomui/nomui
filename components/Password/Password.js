@@ -57,8 +57,7 @@ class Password extends Textbox {
           that.realValue = null
         } else {
           if (clen > 0) {
-            // const middle = fake.join('').replace(/\*/g, '').split('')
-            const middle = fake.slice(start - clen, start)
+            const middle = fake.join('').replace(/\*/g, '').split('')
             const right = fake.length - start > 0 ? real.slice(-(fake.length - start)) : []
             real = [].concat(real.slice(0, start - middle.length), middle, right)
           }
@@ -120,10 +119,9 @@ class Password extends Textbox {
       const shifKey = that.shifKey
       if (typeof (that.realValue) === 'undefined') return
       const userPassword = that.realValue || ''
-      const strlen = userPassword.length
-
-      if (strlen) {
-        const uniCode = userPassword.charCodeAt(strlen - 1)
+      const strStart = that.input.element.selectionStart // 光标位置
+      if (strStart) {
+        const uniCode = userPassword.charCodeAt(strStart - 1)
         // 65到90字母键
         if (keyvalue >= 65 && keyvalue <= 90) {
           this.firstWrite = true
