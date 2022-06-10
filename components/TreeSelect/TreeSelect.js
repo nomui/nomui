@@ -305,6 +305,21 @@ class TreeSelect extends Field {
     return this.tempValue
   }
 
+  getValueText() {
+    const { treeDataFields } = this.props
+    const arr = []
+    const v = this.getValue()
+    if (isString(v)) {
+      arr.push(this.optionMap[v][treeDataFields.text])
+    } else if (Array.isArray(v)) {
+      v.forEach((n) => {
+        arr.push(this.optionMap[n][treeDataFields.text])
+      })
+    }
+
+    return arr.toString()
+  }
+
   _valueChange(changed) {
     const { newValue } = changed
     // 空数组 || null || undefined
