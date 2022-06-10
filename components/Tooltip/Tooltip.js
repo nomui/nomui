@@ -50,6 +50,7 @@ class Tooltip extends Layer {
   }
 
   _fixDirection() {
+    if (!this.element) return false
     if (this.props.align === 'top' || this.props.align === 'bottom') {
       if (this.element.getAttribute('offset-y') !== '0') {
         this.element.setAttribute('tooltip-align', this.props.align === 'top' ? 'bottom' : 'top')
@@ -117,16 +118,17 @@ class Tooltip extends Layer {
 
     if (this.props.hidden === false) {
       this.hideTimer = setTimeout(() => {
-        this.props && this.props.animate && this.hideAnimation()
+        this.props && this.props.animate && this.animateHide()
         this.props && !this.props.animate && this.hide()
       }, this.delay)
     }
   }
 
-  hideAnimation() {
+  animateHide() {
     if (!this.element) return false
     this.addClass('nom-tooltip-animate-hide')
     setTimeout(() => {
+      if (!this.element) return false
       this.hide()
       this.removeClass('nom-tooltip-animate-hide')
     }, 90)
