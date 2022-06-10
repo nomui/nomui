@@ -2968,15 +2968,17 @@ function _defineProperty2(obj, key, value) {
         }
       }
       this._callHandler(this.props.onClose, { result: result });
-      this.props && this.props.animate && this.hideAnimation();
+      this.props && this.props.animate && this.animateHide();
       this.props && !this.props.animate && this.remove();
     }
-    hideAnimation() {
+    animateHide() {
+      if (!this.element) return false;
       this.modalContent.addClass("nom-modal-content-animate-hide");
       setTimeout(() => {
         if (!this.element) return false;
         this.addClass("nom-modal-mask-animate-hide");
         setTimeout(() => {
+          if (!this.element) return false;
           this.remove();
         }, 90);
       }, 90);
@@ -3769,7 +3771,7 @@ function _defineProperty2(obj, key, value) {
           },
         });
       }
-      this.props.animate && this.initAnimation();
+      this.props.animate && this.animateInit();
     }
     _rendered() {
       const that = this;
@@ -3785,19 +3787,21 @@ function _defineProperty2(obj, key, value) {
             if (e.target !== e.currentTarget) {
               return;
             }
-            that.props.animate && that.hideAnimation();
+            that.props.animate && that.animateHide();
             !that.props.animate && that.remove();
           });
         }
       }
     }
-    initAnimation() {
+    animateInit() {
       this.nomappOverflow();
       this.setProps({ classes: { "nom-layer-animate-show": true } });
     }
-    hideAnimation() {
+    animateHide() {
+      if (!this.element) return false;
       this.addClass("nom-layer-animate-hide");
       setTimeout(() => {
+        if (!this.element) return false;
         this.remove();
       }, 90);
     }
@@ -3862,12 +3866,7 @@ function _defineProperty2(obj, key, value) {
       } else {
         this.hide();
       }
-    } // animateHide() {
-    //   this.addClass('nom-layer-animate-hide')
-    //   setTimeout(() => {
-    //     this.hide()
-    //   }, 90)
-    // }
+    }
     nomappOverflow() {
       if (!window.nomapp) return;
       window.nomapp.element.style.overflow = "hidden";
@@ -4015,6 +4014,7 @@ function _defineProperty2(obj, key, value) {
       this.arrow.element.style.color = bg;
     }
     _fixDirection() {
+      if (!this.element) return false;
       if (this.props.align === "top" || this.props.align === "bottom") {
         if (this.element.getAttribute("offset-y") !== "0") {
           this.element.setAttribute(
@@ -4087,15 +4087,16 @@ function _defineProperty2(obj, key, value) {
       this.showTimer = null;
       if (this.props.hidden === false) {
         this.hideTimer = setTimeout(() => {
-          this.props && this.props.animate && this.hideAnimation();
+          this.props && this.props.animate && this.animateHide();
           this.props && !this.props.animate && this.hide();
         }, this.delay);
       }
     }
-    hideAnimation() {
+    animateHide() {
       if (!this.element) return false;
       this.addClass("nom-tooltip-animate-hide");
       setTimeout(() => {
+        if (!this.element) return false;
         this.hide();
         this.removeClass("nom-tooltip-animate-hide");
       }, 90);
@@ -9278,6 +9279,7 @@ function _defineProperty2(obj, key, value) {
       // super._config()
     }
     animateHide() {
+      if (!this.element) return false;
       let animateName;
       if (this.element.getAttribute("offset-y") !== "0") {
         animateName = "nom-auto-complete-animate-bottom-hide";
@@ -9296,9 +9298,9 @@ function _defineProperty2(obj, key, value) {
       this.autoCompleteControl.searchRef &&
         this.autoCompleteControl.searchRef.focus();
       this.removeClass("nom-layer-animate-show");
-      this.autoCompleteControl.props.animate && this.initAnimation();
+      this.autoCompleteControl.props.animate && this.animateInit();
     }
-    initAnimation() {
+    animateInit() {
       if (!this.element) return false;
       if (this.element.getAttribute("offset-y") !== "0") {
         this.addClass("nom-auto-complete-animate-bottom-show");
@@ -10545,9 +10547,9 @@ function _defineProperty2(obj, key, value) {
       this.removeClass("nom-layer-animate-show");
       this.cascaderControl.props.animate &&
         this.props.animate &&
-        this.initAnimation();
+        this.animateInit();
     }
-    initAnimation() {
+    animateInit() {
       if (!this.element) return false;
       if (this.element.getAttribute("offset-y") !== "0") {
         this.addClass("nom-cascader-animate-bottom-show");
@@ -10556,23 +10558,20 @@ function _defineProperty2(obj, key, value) {
       }
     }
     animateHide() {
-      if (this.element) {
-        let animateName;
-        if (this.element.getAttribute("offset-y") !== "0") {
-          animateName = "nom-cascader-animate-bottom";
-        } else {
-          animateName = "nom-cascader-animate-top";
-        }
-        this.addClass(`${animateName}-hide`);
-        setTimeout(() => {
-          if (!this.element) return false;
-          this.hide();
-          this.removeClass(`${animateName}-hide`);
-          this.addClass(`${animateName}-show`);
-        }, 160);
+      if (!this.element) return false;
+      let animateName;
+      if (this.element.getAttribute("offset-y") !== "0") {
+        animateName = "nom-cascader-animate-bottom";
       } else {
-        this.hide();
+        animateName = "nom-cascader-animate-top";
       }
+      this.addClass(`${animateName}-hide`);
+      setTimeout(() => {
+        if (!this.element) return false;
+        this.hide();
+        this.removeClass(`${animateName}-hide`);
+        this.addClass(`${animateName}-show`);
+      }, 160);
     }
   }
   Component.register(CascaderPopup);
@@ -13095,9 +13094,9 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {
       this.removeClass("nom-layer-animate-show");
-      this.selectControl.props.animate && this.initAnimation();
+      this.selectControl.props.animate && this.animateInit();
     }
-    initAnimation() {
+    animateInit() {
       if (!this.element) return false;
       if (this.element.getAttribute("offset-y") !== "0") {
         this.addClass("nom-select-animate-bottom-show");
@@ -13117,6 +13116,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
     animateHide() {
+      if (!this.element) return false;
       let animateName;
       if (this.element.getAttribute("offset-y") !== "0") {
         animateName = "nom-select-animate-bottom-hide";
@@ -15090,14 +15090,17 @@ function _defineProperty2(obj, key, value) {
       return null;
     }
     close() {
-      this.props && this.props.animate && this.hideAnimation();
+      this.props && this.props.animate && this.animateHide();
       this.props && !this.props.animate && this.remove();
     }
-    hideAnimation() {
+    animateHide() {
+      if (!this.element) return false;
       this.addClass(`nom-drawer-animate-${this.props.settle}-hide`);
       setTimeout(() => {
+        if (!this.element) return false;
         this.addClass("nom-drawer-mask-animate-hide");
         setTimeout(() => {
+          if (!this.element) return false;
           this.remove();
         }, 90);
       }, 90);
@@ -15166,7 +15169,7 @@ function _defineProperty2(obj, key, value) {
               that.popup = c;
             },
             _rendered() {
-              that.props.animate && that.initAnimation(this);
+              that.props.animate && that.animateInit(this);
             },
             children: {
               component: "Menu",
@@ -15175,7 +15178,7 @@ function _defineProperty2(obj, key, value) {
             },
             onClick: (args) => {
               if (that.props.animate) {
-                that.hideAnimation(args);
+                that.animateHide(args);
               } else {
                 args.sender.hide();
               }
@@ -15190,7 +15193,8 @@ function _defineProperty2(obj, key, value) {
       });
       super._config();
     }
-    initAnimation(that) {
+    animateInit(that) {
+      if (!that.element) return false;
       if (that.element.getAttribute("offset-y") !== "0") {
         this.props.animateName = "bottom";
       } else {
@@ -15198,7 +15202,8 @@ function _defineProperty2(obj, key, value) {
       }
       that.addClass([`nom-dropdown-animate-${this.props.animateName}-show`]);
     }
-    hideAnimation(that) {
+    animateHide(that) {
+      if (!this.popup.element) return false;
       this.popup.removeClass([
         `nom-dropdown-animate-${this.props.animateName}-show`,
       ]);
@@ -19305,12 +19310,14 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     close() {
-      this.props && this.props.animate && this.hideAnimation();
+      this.props && this.props.animate && this.animateHide();
       this.props && !this.props.animate && this.remove();
     }
-    hideAnimation() {
+    animateHide() {
+      if (!this.element) return false;
       this.addClass("nom-layer-animate-hide");
       setTimeout(() => {
+        if (!this.element) return false;
         this.remove();
       }, 90);
     }
@@ -19940,7 +19947,7 @@ function _defineProperty2(obj, key, value) {
       const { key } = this.props;
       delete Notification.NOMUI_NOTIFICATION_INSTANCES[key];
       this.props.onClose && this.props.onClose();
-      this.props && this.props.animate && this.hideAnimation();
+      this.props && this.props.animate && this.animateHide();
       this.props && !this.props.animate && this.remove();
     }
     _config() {
@@ -19993,13 +20000,15 @@ function _defineProperty2(obj, key, value) {
       });
       super._config();
     }
-    hideAnimation() {
+    animateHide() {
+      if (!this.element) return false;
       if (this.props.alignInfo.includes("left")) {
         this.addClass("nom-notification-animate-left-hide");
       } else if (this.props.alignInfo.includes("right")) {
         this.addClass("nom-notification-animate-right-hide");
       }
       setTimeout(() => {
+        if (!this.element) return false;
         this.remove();
       }, 240);
     }
@@ -21731,16 +21740,18 @@ function _defineProperty2(obj, key, value) {
     }
     _handleOk() {
       this._callHandler(this.props.onConfirm);
-      this.props && this.props.animate && this.hideAnimation();
+      this.props && this.props.animate && this.animateHide();
       this.props && !this.props.animate && this.hide();
     }
     _handleCancel() {
-      this.props && this.props.animate && this.hideAnimation();
+      this.props && this.props.animate && this.animateHide();
       this.props && !this.props.animate && this.hide();
     }
-    hideAnimation() {
+    animateHide() {
+      if (!this.element) return false;
       this.addClass("nom-layer-animate-hide");
       setTimeout(() => {
+        if (!this.element) return false;
         this.hide();
       }, 90);
     }
@@ -25612,6 +25623,7 @@ function _defineProperty2(obj, key, value) {
       super._config();
     }
     animateHide() {
+      if (!this.element) return false;
       let animateName;
       if (this.element.getAttribute("offset-y") !== "0") {
         animateName = "nom-tree-select-animate-bottom-hide";
@@ -25629,12 +25641,12 @@ function _defineProperty2(obj, key, value) {
       this.removeClass("nom-layer-animate-show");
       this.selectControl.props.animate &&
         this.props.animate &&
-        this.initAnimation();
+        this.animateInit();
       if (this.selectControl.props.animate && !this.props.animate) {
         this.props.animate = true;
       }
     }
-    initAnimation() {
+    animateInit() {
       if (!this.element) return false;
       if (this.element.getAttribute("offset-y") !== "0") {
         this.addClass("nom-tree-select-animate-bottom-show");
@@ -25648,7 +25660,7 @@ function _defineProperty2(obj, key, value) {
       this.removeClass("nom-layer-animate-show");
       this.selectControl.props.animate &&
         this.props.animate &&
-        this.initAnimation();
+        this.animateInit();
     }
   }
   Component.register(TreeSelectPopup);

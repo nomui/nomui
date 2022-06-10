@@ -57,10 +57,10 @@ class CascaderPopup extends Popup {
 
   _rendered() {
     this.removeClass('nom-layer-animate-show')
-    this.cascaderControl.props.animate && this.props.animate && this.initAnimation()
+    this.cascaderControl.props.animate && this.props.animate && this.animateInit()
   }
 
-  initAnimation() {
+  animateInit() {
     if (!this.element) return false
     if (this.element.getAttribute('offset-y') !== '0') {
       this.addClass('nom-cascader-animate-bottom-show')
@@ -70,23 +70,20 @@ class CascaderPopup extends Popup {
   }
 
   animateHide() {
-    if (this.element) {
-      let animateName
-      if (this.element.getAttribute('offset-y') !== '0') {
-        animateName = 'nom-cascader-animate-bottom'
-      } else {
-        animateName = 'nom-cascader-animate-top'
-      }
-      this.addClass(`${animateName}-hide`)
-      setTimeout(() => {
-        if (!this.element) return false
-        this.hide()
-        this.removeClass(`${animateName}-hide`)
-        this.addClass(`${animateName}-show`)
-      }, 160)
+    if (!this.element) return false
+    let animateName
+    if (this.element.getAttribute('offset-y') !== '0') {
+      animateName = 'nom-cascader-animate-bottom'
     } else {
-      this.hide()
+      animateName = 'nom-cascader-animate-top'
     }
+    this.addClass(`${animateName}-hide`)
+    setTimeout(() => {
+      if (!this.element) return false
+      this.hide()
+      this.removeClass(`${animateName}-hide`)
+      this.addClass(`${animateName}-show`)
+    }, 160)
   }
 }
 

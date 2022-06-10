@@ -123,6 +123,7 @@ class AutoCompletePopup extends Popup {
   }
 
   animateHide() {
+    if (!this.element) return false
     let animateName
     if (this.element.getAttribute('offset-y') !== '0') {
       animateName = 'nom-auto-complete-animate-bottom-hide'
@@ -141,10 +142,10 @@ class AutoCompletePopup extends Popup {
     super._show()
     this.autoCompleteControl.searchRef && this.autoCompleteControl.searchRef.focus()
     this.removeClass('nom-layer-animate-show')
-    this.autoCompleteControl.props.animate && this.initAnimation()
+    this.autoCompleteControl.props.animate && this.animateInit()
   }
 
-  initAnimation() {
+  animateInit() {
     if (!this.element) return false
     if (this.element.getAttribute('offset-y') !== '0') {
       this.addClass('nom-auto-complete-animate-bottom-show')

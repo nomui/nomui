@@ -42,7 +42,7 @@ class Dropdown extends Component {
             that.popup = c
           },
           _rendered() {
-            that.props.animate && that.initAnimation(this)
+            that.props.animate && that.animateInit(this)
           },
           children: {
             component: 'Menu',
@@ -53,7 +53,7 @@ class Dropdown extends Component {
           },
           onClick: (args) => {
             if (that.props.animate) {
-              that.hideAnimation(args)
+              that.animateHide(args)
             } else {
               args.sender.hide()
             }
@@ -73,7 +73,8 @@ class Dropdown extends Component {
     super._config()
   }
 
-  initAnimation(that) {
+  animateInit(that) {
+    if (!that.element) return false
     if (that.element.getAttribute('offset-y') !== '0') {
       this.props.animateName = 'bottom'
     } else {
@@ -82,7 +83,8 @@ class Dropdown extends Component {
     that.addClass([`nom-dropdown-animate-${this.props.animateName}-show`])
   }
 
-  hideAnimation(that) {
+  animateHide(that) {
+    if (!this.popup.element) return false
     this.popup.removeClass([`nom-dropdown-animate-${this.props.animateName}-show`])
     if (this.popup.element.getAttribute('offset-y') !== '0') {
       this.props.animateName = 'bottom'

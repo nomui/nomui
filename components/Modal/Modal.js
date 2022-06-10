@@ -74,16 +74,18 @@ class Modal extends Component {
     }
 
     this._callHandler(this.props.onClose, { result: result })
-    this.props && this.props.animate && this.hideAnimation()
+    this.props && this.props.animate && this.animateHide()
     this.props && !this.props.animate && this.remove()
   }
 
-  hideAnimation() {
+  animateHide() {
+    if (!this.element) return false
     this.modalContent.addClass('nom-modal-content-animate-hide')
     setTimeout(() => {
       if (!this.element) return false
       this.addClass('nom-modal-mask-animate-hide')
       setTimeout(() => {
+        if (!this.element) return false
         this.remove()
       }, 90)
     }, 90)
