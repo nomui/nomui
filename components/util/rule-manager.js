@@ -164,6 +164,12 @@ RuleManager.ruleTypes = {
     },
     message: '请输入正确的身份证号码',
   },
+  illegalChar: {
+    validate: function (value) {
+      return !isEmpty(value) ? !hasIllegalChar(value) : true
+    },
+    message: '禁止输入"<script>""</script>"危险标签',
+  },
   func: {
     validate: function (value, ruleValue) {
       if (isFunction(ruleValue)) {
@@ -240,6 +246,10 @@ function checkIDCard(idcode) {
   const format = idcard_patter.test(idcode)
   // 返回验证结果，校验码和格式同时正确才算是合法的身份证号码
   return !!(last === last_no && format)
+}
+
+function hasIllegalChar(str) {
+  return new RegExp('.*?script[^>]*?.*?(</.*?script.*?>)*', 'ig').test(str)
 }
 
 export default RuleManager
