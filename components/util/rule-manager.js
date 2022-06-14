@@ -168,7 +168,7 @@ RuleManager.ruleTypes = {
     validate: function (value) {
       return !isEmpty(value) ? !hasIllegalChar(value) : true
     },
-    message: '禁止输入"<script>""</script>"危险标签',
+    message: '禁止输入"<script>"或"</script>"危险标签',
   },
   func: {
     validate: function (value, ruleValue) {

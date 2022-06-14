@@ -61,7 +61,7 @@ define([], function () {
             {
               component: 'Textbox',
               name: 'illegalChar',
-              label: '禁止输入"<script>""</script>"危险标签',
+              label: '禁止输入危险脚本标签',
               required: true,
               rules: [{ type: 'illegalChar' }],
             },
