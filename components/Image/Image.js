@@ -105,17 +105,17 @@ class Image extends Component {
       }
     }
 
-    this.imgPromise(src)
-      .then(() => {
-        // 加载成功
-        setLoading(false)
-        setValue(src)
-      })
-      .catch((error) => {
-        // 加载失败
-        setLoading(false)
-        setError(error)
-      })
+    // this.imgPromise(src)
+    //   .then(() => {
+    //     // 加载成功
+    //     setLoading(false)
+    //     setValue(src)
+    //   })
+    //   .catch((error) => {
+    //     // 加载失败
+    //     setLoading(false)
+    //     setError(error)
+    //   })
   }
 }
 Image.defaults = {
