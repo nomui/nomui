@@ -14,6 +14,7 @@ define([
   './fileList.js',
   './display.js',
   './validate.js',
+  './custom-style.js',
 ], function () {
   return {
     title: 'Uploader',
