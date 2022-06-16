@@ -49,6 +49,43 @@ class Image extends Component {
     })
   }
 
+  imgPromise(src) {
+    return new Promise((resolve, reject) => {
+      const i = new Image()
+      i.onload = () => resolve()
+      i.onerror = reject
+      i.src = src
+    })
+  }
+
+  promiseFind(sourceList, imgPromise) {
+    let done = false
+    // 重新使用Promise包一层
+    return new Promise((resolve, reject) => {
+      const queueNext = (src) => {
+        return imgPromise(src).then(() => {
+          done = true
+          // 加载成功 resolve
+          resolve(src)
+        })
+      }
+
+      const firstPromise = queueNext(sourceList.shift() || '')
+
+      // 生成一条promise链[队列]，每一个promise都跟着catch方法处理当前promise的失败
+      // 从而继续下一个promise的处理
+      sourceList
+        .reduce((p, src) => {
+          // 如果加载失败 继续加载
+          return p.catch(() => {
+            if (!done) return queueNext(src)
+          })
+        }, firstPromise)
+        // 全都挂了 reject
+        .catch(reject)
+    })
+  }
+
   sizeComputing(val1, val2) {
     val1 = val1 || 200
     val2 = val2 || 100
@@ -67,12 +104,27 @@ class Image extends Component {
         that.imgRef.show()
       }
     }
+
+    this.imgPromise(src)
+      .then(() => {
+        // 加载成功
+        setLoading(false)
+        setValue(src)
+      })
+      .catch((error) => {
+        // 加载失败
+        setLoading(false)
+        setError(error)
+      })
   }
 }
 Image.defaults = {
   src: null,
+  alt: null,
   width: null,
   height: null,
+  'icon-width': null,
+  'icon-height': null,
 }
 
 Component.register(Image)
