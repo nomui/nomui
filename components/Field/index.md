@@ -30,7 +30,7 @@
 
 **type 可选值**:
 
-> `number`,`digits`,`regex`,`email`,`url`,`min`,`max`,`range`,`minlength`,`maxlength`,`rangelength`,`remote`,`date`,`identifier`,`phoneNumber`,`telephone`,`IDCard`,`illegalChar`,`func`
+> `number`,`digits`,`regex`,`email`,`url`,`min`,`max`,`range`,`minlength`,`maxlength`,`rangelength`,`remote`,`date`,`identifier`,`phoneNumber`,`telephone`,`IDCard`,`scriptLabel`,`func`
 
 ```js
 // 使用示例 value 为具体配置， message 为默认错误提示
@@ -47,7 +47,7 @@
     { type: 'phoneNumber', value: -, message: '请输入正确的手机号'  },
     { type: 'telephone', value: -, message: '请输入正确的固话号码'  },
     { type: 'IDCard', value: -, message: '请输入正确的身份证号码'  },
-    { type: 'illegalChar', value: -, message: '禁止输入"<script>"或"</script>"危险标签'  },
+    { type: 'scriptLabel', value: -, message: '禁止输入"<script>"或"</script>"危险标签'  },
 
     // 正则表达式
     { type: 'regex', value: { pattern, attributes }, message: '' },

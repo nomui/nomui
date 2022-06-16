@@ -164,9 +164,9 @@ RuleManager.ruleTypes = {
     },
     message: '请输入正确的身份证号码',
   },
-  illegalChar: {
+  scriptLabel: {
     validate: function (value) {
-      return !isEmpty(value) ? !hasIllegalChar(value) : true
+      return !isEmpty(value) ? !hasScriptLabel(value) : true
     },
     message: '禁止输入"<script>"或"</script>"危险标签',
   },
@@ -248,7 +248,7 @@ function checkIDCard(idcode) {
   return !!(last === last_no && format)
 }
 
-function hasIllegalChar(str) {
+function hasScriptLabel(str) {
   return new RegExp('.*?script[^>]*?.*?(</.*?script.*?>)*', 'ig').test(str)
 }
 
