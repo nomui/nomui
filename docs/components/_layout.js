@@ -15,24 +15,24 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
       const doc_suffix = '&tab=docs'
       return Array.isArray(cmps)
         ? cmps.reduce((prevs, { text, subtext, url, items }) => {
-            if (url) {
-              return [
-                ...prevs,
-                {
-                  key: text,
-                  text: subtext,
-                  search: `${text}${subtext}`,
-                  url: `${url}${doc_suffix}`,
-                },
-              ]
-            }
+          if (url) {
+            return [
+              ...prevs,
+              {
+                key: text,
+                text: subtext,
+                search: `${text}${subtext}`,
+                url: `${url}${doc_suffix}`,
+              },
+            ]
+          }
 
-            if (items) {
-              return [...prevs, ...getAllDocs(items)]
-            }
+          if (items) {
+            return [...prevs, ...getAllDocs(items)]
+          }
 
-            return [...prevs]
-          }, [])
+          return [...prevs]
+        }, [])
         : []
     }
 
@@ -381,7 +381,7 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
                       text: 'AutoComplete',
                       subtext: '自动完成',
                       id: 'AutoComplete',
-                      url: '#!components!index?type=AutoComplete',
+                      url: '#!components!index?type=AutoCompleteRefactor',
                     },
                     {
                       text: 'Cascader',
