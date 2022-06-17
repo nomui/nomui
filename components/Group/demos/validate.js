@@ -60,10 +60,10 @@ define([], function () {
             },
             {
               component: 'Textbox',
-              name: 'scriptLabel',
+              name: 'noScript',
               label: '禁止输入危险脚本标签',
               required: true,
-              rules: [{ type: 'scriptLabel' }],
+              rules: [{ type: 'noScript' }],
             },
             {
               component: 'Textbox',

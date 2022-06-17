@@ -164,7 +164,7 @@ RuleManager.ruleTypes = {
     },
     message: '请输入正确的身份证号码',
   },
-  scriptLabel: {
+  noScript: {
     validate: function (value) {
       return !isEmpty(value) ? !hasScriptLabel(value) : true
     },
