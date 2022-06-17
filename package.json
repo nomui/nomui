@@ -1,6 +1,6 @@
 {
   "name": "nomui",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "no magic ui for web",
   "module": "nomui.js",
   "main": "nomui.js",
