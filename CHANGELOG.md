@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://github.com/nomui/nomui/compare/v1.0.3...v1.0.4) (2022-06-17)
+
+
+### Performance Improvements
+
+* 优化password不能输入*的情况 ([6c9e676](https://github.com/nomui/nomui/commit/6c9e676a7ea6c862645a16655f4dbf49517b5dfa))
+* 优化password不能输入*的情况 ([57da1fc](https://github.com/nomui/nomui/commit/57da1fc98352160c9c24a814861cbbab76e1de11))
+
 ### [1.0.3](https://github.com/nomui/nomui/compare/v1.0.2...v1.0.3) (2022-06-10)
 
 
