@@ -60,6 +60,13 @@ define([], function () {
             },
             {
               component: 'Textbox',
+              name: 'noScript',
+              label: '禁止输入危险脚本标签',
+              required: true,
+              rules: [{ type: 'noScript' }],
+            },
+            {
+              component: 'Textbox',
               name: 'address',
               label: '住址',
               required: true,
