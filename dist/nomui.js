@@ -21655,7 +21655,8 @@ function _defineProperty2(obj, key, value) {
             that.realValue = null;
           } else {
             if (clen > 0) {
-              const middle = fake.join("").replace(/\*/g, "").split("");
+              // const middle = fake.join('').replace(/\*/g, '').split('')
+              const middle = fake.slice(start - clen, start);
               const right =
                 fake.length - start > 0
                   ? real.slice(-(fake.length - start))
