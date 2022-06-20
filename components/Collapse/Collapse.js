@@ -12,14 +12,16 @@ class Collapse extends Component {
 
   _config() {
     const { activeKey, bordered } = this.props
-    // const that = this
-    const items = this.props.items.map(function (item) {
+    const items = this.props.items.map((item) => {
       return {
         component: CollapseItem,
         key: item.key,
         title: item.title,
         content: item.content,
-        collapsed: activeKey !== item.key,
+        collapsed:
+          Object.prototype.toString.call(activeKey) === '[object Array]'
+            ? !this.onActiveKeyArray(item.key)
+            : activeKey !== item.key,
         classes: {
           'nom-collapse-bordered': !!bordered,
         },
@@ -57,6 +59,12 @@ class Collapse extends Component {
         currentKey: key,
         collapsed: !isShown,
       })
+  }
+
+  onActiveKeyArray(key) {
+    return this.props.activeKey.some(function (currentValue) {
+      return currentValue === key
+    })
   }
 }
 Collapse.defaults = {
