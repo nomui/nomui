@@ -18560,16 +18560,9 @@ function _defineProperty2(obj, key, value) {
       const rowData = isFunction(addDefaultValue)
         ? addDefaultValue.call(this)
         : addDefaultValue;
-      if (this.grid.props.data.length > 0) {
-        this.grid.appendRow({ data: rowData });
-      } else {
-        const tr = this.props.groupDefaults.fields.map((n) => {
-          const item = {};
-          item[n.name] = null;
-          return item;
-        });
-        this.grid.update({ data: [tr] });
-      }
+      this.grid.props.data.length === 0
+        ? this.grid.update({ data: [rowData] })
+        : this.grid.appendRow({ data: rowData });
       this._onValueChange();
     }
     _clear() {
