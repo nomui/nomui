@@ -14,7 +14,7 @@ define([], function () {
               autoCompleteRef = inst
             },
             label: '搜索筛选',
-            propsMode: 'select',
+            filterName: 'select',
             options: [
               { text: 'a', value: 1 },
               { text: 'A', value: 2 },
@@ -26,6 +26,16 @@ define([], function () {
               { text: 'AAAA', value: 15 },
               { text: 'aaaaa', value: 61 },
               { text: 'AAAAA', value: 134 },
+              // { value: 'a' },
+              // { value: 'A' },
+              // { value: 'aa' },
+              // { value: 'AA' },
+              // { value: 'aaa' },
+              // { value: 'AAA' },
+              // { value: 'aaaa' },
+              // { value: 'AAAA' },
+              // { value: 'aaaaa' },
+              // { value: 'AAAAA' },
             ],
             filterOption: (txt, options) => options.filter((o) => o.text.toLowerCase().includes(txt.toLowerCase()))
           },
@@ -46,6 +56,9 @@ define([], function () {
               {
                 component: 'Button',
                 text: 'Set Value',
+                onClick: () => {
+                  autoCompleteRef.setValue(611, { triggerChange: true })
+                },
               },
             ],
           },

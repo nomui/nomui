@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Textbox from '../Textbox/index'
-import { isFunction } from '../util/index'
+import { extend, isFunction } from '../util/index'
 import AutoCompletePopup from './AutoCompletePopup'
 
 class AutoComplete extends Textbox {
@@ -100,14 +100,13 @@ class AutoComplete extends Textbox {
       }
       this.placeholder = autoComplete.placeholder || ''
       autoComplete.searchMode = false
-      const { propsMode } = autoComplete.props
-      if (propsMode === 'select' && !autoComplete._getValue()) {
+      const { filterName } = autoComplete.props
+      if (filterName === 'select' && !autoComplete._getValue()) {
         autoComplete.setProps({ text: '' });
         autoComplete.clear()
       }
-      console.log(autoComplete.props)
     })
-    // 中文介入 
+    // 中文介入   
     this.input.element.addEventListener('compositionstart', function () {
       autoComplete.capsLock = true
     })
@@ -118,12 +117,11 @@ class AutoComplete extends Textbox {
   }
 
   _getValue() {
-    const { trimValue, options, propsMode } = this.props
-    let inputText = this.getText()
-    inputText = trimValue ? inputText.trimLeft().trimRight() : inputText
-    if (propsMode === 'select') {
+    const { options, filterName } = this.props
+    const inputText = this._getInputText()
+    if (filterName === 'select') {
       const currOption = options.find(item => item.text === inputText)
-      return currOption?.value || null
+      return currOption || null
     }
     if (inputText === '') {
       return null
@@ -131,22 +129,59 @@ class AutoComplete extends Textbox {
     return inputText
   }
 
-  _getText() {
+  _getInputText() {
     const { trimValue } = this.props
     let inputText = this.getText()
-    console.log(this.getText())
     inputText = trimValue ? inputText.trimLeft().trimRight() : inputText
     return inputText
   }
 
   _setValue(value, options) {
-    super._setValue(value, options)
+    if (options === false) {
+      options = { triggerChange: false }
+    } else {
+      options = extend({ triggerChange: true }, options)
+    }
+    const { filterName, options: opt } = this.props
+
+    let _value = value
+    if (filterName === 'select') {
+      const selectedOption = opt.find((e) => e.value === value)
+      if (selectedOption) {
+        _value = selectedOption.text
+      } else {
+        this.input.setText('')
+        this.currentValue = null
+        super._onValueChange()
+        return
+      }
+    }
+
+    this.input.setText(_value)
+    const newValue = this.getValue()
+    this.oldValue = this.currentValue
+
+    if (options.triggerChange) {
+      if (newValue !== this.oldValue) {
+        super._onValueChange()
+      }
+    }
+    this.currentValue = newValue
+  }
+
+  getSelectedOption() {
+    if (!this.optionList || !this.optionList.props) {
+      return null
+    }
+    return this.optionList.getSelectedItem()
   }
 
   _valueChange(changed) {
     changed.newValue
       ? this.props.allowClear && this.clearIcon.show()
       : this.props.allowClear && this.clearIcon.hide()
+    const { filterName } = this.props
+    filterName === 'select' && this.setProps({ text: this._getInputText() })
   }
 
   blur() {
@@ -179,9 +214,9 @@ class AutoComplete extends Textbox {
 
   _doSearch(txt) {
     this.searchMode = true
-    const { onSearch, filterOption, options, propsMode } = this.props
+    const { onSearch, filterOption, options, filterName } = this.props
     this.setProps({ text: txt })
-    isFunction(filterOption) && this.popup.update({ options: filterOption(txt, options, propsMode) })
+    isFunction(filterOption) && this.popup.update({ options: filterOption(txt, options, filterName) })
     isFunction(onSearch) && onSearch({ text: txt, sender: this })
   }
 
@@ -206,9 +241,9 @@ AutoComplete.defaults = {
   options: [],
   debounce: true,
   interval: 300,
-  filterOption: (value, options, propsMode = 'text') => options.filter((o) => (propsMode === 'text' ? o.value.toString().includes(value) : o.text.toString().includes(value))),
+  filterOption: (value, options, filterName = 'text') => options.filter((o) => (filterName === 'text' ? o.value.toString().includes(value) : o.text.toString().includes(value))),
   allowClear: true,
-  propsMode: 'text' // text,select
+  filterName: 'text' // text,select
 }
 
 Component.register(AutoComplete)

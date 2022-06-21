@@ -115,10 +115,9 @@ class AutoCompletePopup extends Popup {
 
   _getOptionList() {
     const { options } = this.props
-    const { searchable, value, filterOption, propsMode, text = '' } = this.autoCompleteControl.props
-    const _value = propsMode === 'text' ? value : text
-    const opts = isFunction(filterOption) ? filterOption(_value || '', options, propsMode) : options
-    console.log(this.autoCompleteControl._getText())
+    const { searchable, value, filterOption, filterName, text = '' } = this.autoCompleteControl.props
+    const _value = filterName === 'text' ? value : text
+    const opts = isFunction(filterOption) ? filterOption(_value || '', options, filterName) : options
     if (searchable) {
       return {
         component: AutoCompleteList,
