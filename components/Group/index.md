@@ -2,13 +2,14 @@
 
 ## API
 
-| 参数         | 说明                      | 类型                   | 默认值 |
-| ------------ | ------------------------- | ---------------------- | ------ |
-| fields       | 子字段数组                | `Array`                | -      |
-| inline       | 内联布局                  | `Boolean`              | -      |
-| striped      | 条纹样式，标签栏有背景色  | `Boolean`              | -      |
-| line         | 线条样式                  | `splitline`\|`outline` | -      |
-| valueOptions | getValue 取值时的默认参数 | `{}`                   | -      |
+| 参数          | 说明                                           | 类型                   | 默认值 |
+| ------------- | ---------------------------------------------- | ---------------------- | ------ |
+| fields        | 子字段数组                                     | `Array`                | -      |
+| fieldDefaults | 每个子 field 的默认配置，api 参考 field 的 api | `{}`                   | -      |
+| inline        | 内联布局                                       | `Boolean`              | -      |
+| striped       | 条纹样式，标签栏有背景色                       | `Boolean`              | -      |
+| line          | 线条样式                                       | `splitline`\|`outline` | -      |
+| valueOptions  | getValue 取值时的默认参数                      | `{}`                   | -      |
 
 ## Method
 
@@ -24,9 +25,8 @@
 | ignoreHidden   | 是否忽略隐藏的字段                            | `boolean` | `true`  |
 | merge          | 是否合并返回 group 初始值当中未使用的部分字段 | `boolean` | `false` |
 
+### validate 方法的参数
 
-### validate方法的参数
-
-| 方法名称       | 说明                                          | 类型      | 默认值  |
-| -------------- | --------------------------------------------- | --------- | ------- |
-| ignoreRequired | 校验过程是否忽略必填规则                            | `boolean` | `false`  |
+| 方法名称       | 说明                     | 类型      | 默认值  |
+| -------------- | ------------------------ | --------- | ------- |
+| ignoreRequired | 校验过程是否忽略必填规则 | `boolean` | `false` |
