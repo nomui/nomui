@@ -35,7 +35,7 @@ class Image extends Component {
           ref: (c) => {
             this.imgRef = c
           },
-          autoRender: false,
+          hidden: true,
           attrs: {
             alt,
             style: {
@@ -57,37 +57,42 @@ class Image extends Component {
     return parseInt(val1 / 22, 10)
   }
 
-  imgPromise(src) {
+  loadImageAsync(url) {
     return new Promise((resolve, reject) => {
-      const i = new Image()
-      i.onload = () => resolve()
-      i.onerror = reject
-      i.src = src
+      const image = this.imgRef.element
+
+      image.onload = function () {
+        resolve(url)
+      }
+
+      image.onerror = function () {
+        reject()
+      }
+      this.imgRef.element.src = url
     })
   }
 
-  promiseFind(sourceList, imgPromise) {
-    let done = false
+  dealImageList(urlList) {
+    let success = false
     // 重新使用Promise包一层
     return new Promise((resolve, reject) => {
-      const queueNext = (src) => {
-        return imgPromise(src).then(() => {
-          done = true
+      const queueNext = (url) => {
+        return this.loadImageAsync(url).then(() => {
+          success = true
           // 加载成功 resolve
-          resolve(src)
+          resolve(url)
         })
       }
 
-      const firstPromise = queueNext(sourceList.shift() || '')
+      const firstPromise = queueNext(urlList.shift() || '')
 
       // 生成一条promise链[队列]，每一个promise都跟着catch方法处理当前promise的失败
       // 从而继续下一个promise的处理
-      sourceList
-        .reduce((p, src) => {
+      urlList
+        .reduce((p, url) => {
           // 如果加载失败 继续加载
           return p.catch(() => {
-            if (!done) return queueNext(src)
-            return false
+            if (!success) return queueNext(url)
           })
         }, firstPromise)
         // 全都挂了 reject
@@ -96,23 +101,24 @@ class Image extends Component {
   }
 
   _rendered() {
-    if (this.props.src) {
-      this.promiseFind(this.props.src, this.imgPromise)
-        .then((src) => {
-          console.log('加载成功', src)
-          // 加载成功
-          // this.pendingRef.remove()
-          // this.imgRef.update({
-          //   attrs: {
-          //     src,
-          //   },
-          // })
-        })
-        .catch((error) => {
-          // 加载失败
-          console.log('失败了', error)
-        })
+    let urlList = []
+    if (!Array.isArray(this.props.src)) {
+      urlList = [this.props.src]
+    } else {
+      urlList = this.props.src
     }
+    this.dealImageList(urlList)
+      .then((url) => {
+        console.log('加载成功', url)
+        // 加载成功
+        this.pendingRef.remove()
+        this.imgRef.show()
+        // this.imgRef.element.src = url
+      })
+      .catch(() => {
+        // 加载失败
+        console.log('加载失败')
+      })
   }
 }
 Image.defaults = {
