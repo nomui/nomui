@@ -9,21 +9,22 @@ define([], function () {
           {
             component: 'Select',
             value: 1,
+            optionFields: { text: 'name', value: 'value' },
             options: [
               {
-                text: '金庸',
+                name: '金庸',
                 value: 0,
               },
               {
-                text: '古龙',
+                name: '古龙',
                 value: 1,
               },
               {
-                text: '梁羽生',
+                name: '梁羽生',
                 value: 2,
               },
               {
-                text: '温瑞安',
+                name: '温瑞安',
                 value: 3,
               },
             ],

@@ -8,6 +8,7 @@ import AutoCompleteList from './AutoCompleteList'
 
 class AutoCompletePopup extends Popup {
   constructor(props, ...mixins) {
+
     const defaults = {
       autoRender: false,
     }
@@ -24,7 +25,6 @@ class AutoCompletePopup extends Popup {
     const autoCompletePopupRef = this
     const { options } = this.props
     const { searchable, debounce, interval } = this.autoCompleteControl.props
-
     this.setProps({
       attrs: {
         style: {
@@ -35,43 +35,43 @@ class AutoCompletePopup extends Popup {
         component: Layout,
         header: searchable
           ? {
-              children: {
-                component: Textbox,
-                placeholder: searchable.placeholder,
-                _created: (inst) => {
-                  autoCompletePopupRef.autoCompleteControl.searchRef = inst
-                },
-                onValueChange({ newValue }) {
-                  if (debounce) {
-                    autoCompletePopupRef.timer && clearTimeout(autoCompletePopupRef.timer)
-                    autoCompletePopupRef.timer = setTimeout(() => {
-                      const loading = new nomui.Loading({
-                        container: autoCompletePopupRef.autoCompleteControl.optionList.parent,
-                      })
-                      const searchPromise = searchable.onSearch({
-                        inputValue: newValue,
-                        options,
-                      })
-                      if (autoCompletePopupRef._isPromise(searchPromise)) {
-                        return searchPromise
-                          .then((val) => {
-                            autoCompletePopupRef.autoCompleteControl.props.options = val
-                            autoCompletePopupRef.autoCompleteControl.optionList.update()
-                            loading && loading.remove()
-                          })
-                          .catch(() => {
-                            loading && loading.remove()
-                          })
-                      }
-
-                      loading && loading.remove()
-                      autoCompletePopupRef.autoCompleteControl.props.options = searchPromise
-                      searchPromise && autoCompletePopupRef.autoCompleteControl.optionList.update()
-                    }, interval)
-                  }
-                },
+            children: {
+              component: Textbox,
+              placeholder: searchable.placeholder,
+              _created: (inst) => {
+                autoCompletePopupRef.autoCompleteControl.searchRef = inst
               },
-            }
+              onValueChange({ newValue }) {
+                if (debounce) {
+                  autoCompletePopupRef.timer && clearTimeout(autoCompletePopupRef.timer)
+                  autoCompletePopupRef.timer = setTimeout(() => {
+                    const loading = new nomui.Loading({
+                      container: autoCompletePopupRef.autoCompleteControl.optionList.parent,
+                    })
+                    const searchPromise = searchable.onSearch({
+                      inputValue: newValue,
+                      options,
+                    })
+                    if (autoCompletePopupRef._isPromise(searchPromise)) {
+                      return searchPromise
+                        .then((val) => {
+                          autoCompletePopupRef.autoCompleteControl.props.options = val
+                          autoCompletePopupRef.autoCompleteControl.optionList.update()
+                          loading && loading.remove()
+                        })
+                        .catch(() => {
+                          loading && loading.remove()
+                        })
+                    }
+
+                    loading && loading.remove()
+                    autoCompletePopupRef.autoCompleteControl.props.options = searchPromise
+                    searchPromise && autoCompletePopupRef.autoCompleteControl.optionList.update()
+                  }, interval)
+                }
+              },
+            },
+          }
           : null,
         body: {
           children: autoCompletePopupRef._getOptionList(),
@@ -80,46 +80,6 @@ class AutoCompletePopup extends Popup {
     })
 
     super._config()
-
-    // if (opts && opts.length) {
-    //   this.setProps({
-    //     attrs: {
-    //       style: {
-    //         width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-    //       },
-    //     },
-    //     children: {
-    //       component: Layout,
-    //       body: {
-    //         children: {
-    //           component: AutoCompleteList,
-    //           options: opts,
-    //         },
-    //       },
-    //     },
-    //   })
-    // } else {
-    //   this.setProps({
-    //     attrs: {
-    //       style: {
-    //         width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-    //       },
-    //     },
-    //     children: {
-    //       component: Layout,
-    //       body: {
-    //         styles: {
-    //           padding: 1,
-    //         },
-    //         children: {
-    //           component: Empty,
-    //         },
-    //       },
-    //     },
-    //   })
-    // }
-
-    // super._config()
   }
 
   animateHide() {
@@ -155,10 +115,10 @@ class AutoCompletePopup extends Popup {
   }
 
   _getOptionList() {
-    const { options } = this.props
-    const { searchable, value, filterOption } = this.autoCompleteControl.props
-    const opts = isFunction(filterOption) ? filterOption(value || '', options) : options
-
+    const options = this.autoCompleteControl.internalOptions
+    const { searchable, value, filterOption, filterName, text = '' } = this.autoCompleteControl.props
+    const _value = filterName === 'text' ? value : text
+    const opts = isFunction(filterOption) ? filterOption(_value || '', options, filterName) : options
     if (searchable) {
       return {
         component: AutoCompleteList,
@@ -172,7 +132,6 @@ class AutoCompletePopup extends Popup {
         options: opts,
       }
     }
-
     this.autoCompleteControl.optionList = null
     return {
       component: Layout,

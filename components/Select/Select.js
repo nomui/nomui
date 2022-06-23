@@ -356,7 +356,7 @@ class Select extends Field {
     }
 
     const selected = this.getSelectedOption()
-
+    console.log(selected)
     if (selected !== null) {
       if (Array.isArray(selected) && selected.length > 0) {
         const vals = selected.map(function (item) {

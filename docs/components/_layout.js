@@ -381,7 +381,7 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
                       text: 'AutoComplete',
                       subtext: '自动完成',
                       id: 'AutoComplete',
-                      url: '#!components!index?type=AutoCompleteRefactor',
+                      url: '#!components!index?type=AutoComplete',
                     },
                     {
                       text: 'Cascader',
