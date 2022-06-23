@@ -15,11 +15,11 @@ class Image extends Component {
       children: [
         {
           component: 'Icon',
-          classes: {
-            'nom-image-pending': true,
-          },
           ref: (c) => {
             this.pendingRef = c
+          },
+          classes: {
+            'nom-image-pending': true,
           },
           type: 'image-pending',
           attrs: {
@@ -60,26 +60,18 @@ class Image extends Component {
   loadImageAsync(url) {
     return new Promise((resolve, reject) => {
       const image = this.imgRef.element
-
-      image.onload = function () {
-        resolve(url)
-      }
-
-      image.onerror = function () {
-        reject()
-      }
+      image.onload = () => resolve(url)
+      image.onerror = () => reject()
       this.imgRef.element.src = url
     })
   }
 
   dealImageList(urlList) {
     let success = false
-    // 重新使用Promise包一层
     return new Promise((resolve, reject) => {
       const queueNext = (url) => {
         return this.loadImageAsync(url).then(() => {
           success = true
-          // 加载成功 resolve
           resolve(url)
         })
       }
@@ -90,7 +82,6 @@ class Image extends Component {
       // 从而继续下一个promise的处理
       urlList
         .reduce((p, url) => {
-          // 如果加载失败 继续加载
           return p.catch(() => {
             if (!success) return queueNext(url)
           })
@@ -108,16 +99,18 @@ class Image extends Component {
       urlList = this.props.src
     }
     this.dealImageList(urlList)
-      .then((url) => {
-        console.log('加载成功', url)
-        // 加载成功
+      .then(() => {
         this.pendingRef.remove()
         this.imgRef.show()
-        // this.imgRef.element.src = url
       })
       .catch(() => {
-        // 加载失败
-        console.log('加载失败')
+        this.pendingRef.update({
+          classes: {
+            'nom-image-fail': true,
+          },
+          type: 'image-fail',
+        })
+        this.imgRef.remove()
       })
   }
 }
