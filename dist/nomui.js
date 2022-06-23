@@ -12074,14 +12074,17 @@ function _defineProperty2(obj, key, value) {
       this.itemRef = [];
     }
     _config() {
-      const { activeKey, bordered } = this.props; // const that = this
-      const items = this.props.items.map(function (item) {
+      const { activeKey, bordered } = this.props;
+      const items = this.props.items.map((item) => {
         return {
           component: CollapseItem,
           key: item.key,
           title: item.title,
           content: item.content,
-          collapsed: activeKey !== item.key,
+          collapsed:
+            Object.prototype.toString.call(activeKey) === "[object Array]"
+              ? !this.onActiveKeyArray(item.key)
+              : activeKey !== item.key,
           classes: { "nom-collapse-bordered": !!bordered },
         };
       });
@@ -12107,6 +12110,11 @@ function _defineProperty2(obj, key, value) {
           currentKey: key,
           collapsed: !isShown,
         });
+    }
+    onActiveKeyArray(key) {
+      return this.props.activeKey.some(function (currentValue) {
+        return currentValue === key;
+      });
     }
   }
   Collapse.defaults = {

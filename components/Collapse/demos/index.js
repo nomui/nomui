@@ -5,6 +5,7 @@ define([
   './iconOnly.js',
   './customIcon.js',
   './active-key.js',
+  './active-key-array.js',
 ], function () {
   return {
     title: 'Collapse',
