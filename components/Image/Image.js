@@ -6,12 +6,11 @@ class Image extends Component {
     super(Component.extendProps(Image.defaults, props), ...mixins)
   }
 
+  _created() {}
+
   _config() {
-    const { src } = this.props
-    let { width, height } = this.props
-    const size = this.sizeComputing(width, height)
-    width = isNumeric(width) ? `${width}px` : width
-    height = isNumeric(height) ? `${height}px` : height
+    const { alt, width, height, iconWidth, iconHeight } = this.props
+    const size = this.sizeComputing(iconWidth, iconHeight)
     this.setProps({
       children: [
         {
@@ -25,8 +24,8 @@ class Image extends Component {
           type: 'image-pending',
           attrs: {
             style: {
-              width,
-              height,
+              width: isNumeric(iconWidth) ? `${iconWidth}px` : '200px',
+              height: isNumeric(iconHeight) ? `${iconHeight}px` : '100px',
               'font-size': `${size}rem`,
             },
           },
@@ -36,17 +35,26 @@ class Image extends Component {
           ref: (c) => {
             this.imgRef = c
           },
-          hidden: true,
+          autoRender: false,
           attrs: {
-            src,
+            alt,
             style: {
-              width,
-              height,
+              width: isNumeric(width) ? `${width}px` : width,
+              height: isNumeric(height) ? `${height}px` : height,
             },
           },
         },
       ],
     })
+  }
+
+  sizeComputing(val1, val2) {
+    val1 = val1 || 200
+    val2 = val2 || 100
+    if (val1 > val2) {
+      return parseInt(val2 / 22, 10)
+    }
+    return parseInt(val1 / 22, 10)
   }
 
   imgPromise(src) {
@@ -79,6 +87,7 @@ class Image extends Component {
           // 如果加载失败 继续加载
           return p.catch(() => {
             if (!done) return queueNext(src)
+            return false
           })
         }, firstPromise)
         // 全都挂了 reject
@@ -86,36 +95,24 @@ class Image extends Component {
     })
   }
 
-  sizeComputing(val1, val2) {
-    val1 = val1 || 200
-    val2 = val2 || 100
-    if (val1 > val2) {
-      return parseInt(val2 / 22, 10)
-    }
-    return parseInt(val1 / 22, 10)
-  }
-
   _rendered() {
-    const img = this.imgRef.element
-    const that = this
-    img.onload = img.onreadystatechange = function () {
-      if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
-        that.pendingRef.remove()
-        that.imgRef.show()
-      }
+    if (this.props.src) {
+      this.promiseFind(this.props.src, this.imgPromise)
+        .then((src) => {
+          console.log('加载成功', src)
+          // 加载成功
+          // this.pendingRef.remove()
+          // this.imgRef.update({
+          //   attrs: {
+          //     src,
+          //   },
+          // })
+        })
+        .catch((error) => {
+          // 加载失败
+          console.log('失败了', error)
+        })
     }
-
-    // this.imgPromise(src)
-    //   .then(() => {
-    //     // 加载成功
-    //     setLoading(false)
-    //     setValue(src)
-    //   })
-    //   .catch((error) => {
-    //     // 加载失败
-    //     setLoading(false)
-    //     setError(error)
-    //   })
   }
 }
 Image.defaults = {
@@ -123,8 +120,8 @@ Image.defaults = {
   alt: null,
   width: null,
   height: null,
-  'icon-width': null,
-  'icon-height': null,
+  iconWidth: null,
+  iconHeight: null,
 }
 
 Component.register(Image)
