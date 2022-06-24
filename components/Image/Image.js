@@ -10,7 +10,7 @@ class Image extends Component {
 
   _config() {
     const { alt, width, height, iconWidth, iconHeight } = this.props
-    const size = this.sizeComputing([iconWidth, iconHeight])
+    const size = this._sizeComputing([iconWidth, iconHeight])
     this.setProps({
       children: [
         {
@@ -48,11 +48,11 @@ class Image extends Component {
     })
   }
 
-  sizeComputing(arry) {
+  _sizeComputing(arry) {
     return parseInt(Math.min(...arry) / 22, 10)
   }
 
-  loadImageAsync(url) {
+  _loadImageAsync(url) {
     return new Promise((resolve, reject) => {
       const image = this.imgRef.element
       image.onload = () => resolve(url)
@@ -61,11 +61,11 @@ class Image extends Component {
     })
   }
 
-  dealImageList(urlList) {
+  _dealImageList(urlList) {
     let success = false
     return new Promise((resolve, reject) => {
       const queueNext = (url) => {
-        return this.loadImageAsync(url).then(() => {
+        return this._loadImageAsync(url).then(() => {
           success = true
           resolve(url)
         })
@@ -93,7 +93,7 @@ class Image extends Component {
     } else {
       urlList = this.props.src
     }
-    this.dealImageList(urlList)
+    this._dealImageList(urlList)
       .then(() => {
         this.pendingRef.remove()
         this.imgRef.show()

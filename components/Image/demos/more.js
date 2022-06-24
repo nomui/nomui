@@ -1,7 +1,7 @@
 define([], function () {
-  let allfail = null,
-    pending = null,
-    someFail = null
+  let allfailRef = null,
+    pendingRef = null,
+    someFailRef = null
 
   return {
     title: '更多例子（设置了备用图片时）',
@@ -15,7 +15,7 @@ define([], function () {
             component: 'Button',
             text: '全部加载失败',
             onClick: () => {
-              allfail.update({
+              allfailRef.update({
                 autoRender: true,
               })
             },
@@ -23,7 +23,7 @@ define([], function () {
           {
             component: 'Image',
             ref: (c) => {
-              allfail = c
+              allfailRef = c
             },
             autoRender: false,
             src: [
@@ -38,7 +38,7 @@ define([], function () {
             component: 'Button',
             text: '部分图片加载失败',
             onClick: () => {
-              pending.update({
+              pendingRef.update({
                 autoRender: true,
               })
             },
@@ -46,7 +46,7 @@ define([], function () {
           {
             component: 'Image',
             ref: (c) => {
-              pending = c
+              pendingRef = c
             },
             autoRender: false,
             width: 400,
@@ -62,7 +62,7 @@ define([], function () {
             component: 'Button',
             text: '加载中（需要切慢网速看）',
             onClick: () => {
-              someFail.update({
+              someFailRef.update({
                 autoRender: true,
               })
             },
@@ -70,7 +70,7 @@ define([], function () {
           {
             component: 'Image',
             ref: (c) => {
-              someFail = c
+              someFailRef = c
             },
             autoRender: false,
             width: 400,
