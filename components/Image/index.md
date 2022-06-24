@@ -8,5 +8,5 @@
 | alt | 图片 alt 信息 | `string` | - |
 | width | 自定义图片的宽度 | `number ` | - |
 | height | 自定义图片的高度 | `number` | - |
-| iconWidth | 自定义占位图的宽度 | `number ` | - |
-| iconHeight | 自定义占位图的高度 | `number` | - |
+| iconWidth | 自定义占位图的宽度 | `number ` | 200 |
+| iconHeight | 自定义占位图的高度 | `number` | 100 |

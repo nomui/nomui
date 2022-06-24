@@ -10,7 +10,7 @@ class Image extends Component {
 
   _config() {
     const { alt, width, height, iconWidth, iconHeight } = this.props
-    const size = this.sizeComputing(iconWidth, iconHeight)
+    const size = this.sizeComputing([iconWidth, iconHeight])
     this.setProps({
       children: [
         {
@@ -24,8 +24,8 @@ class Image extends Component {
           type: 'image-pending',
           attrs: {
             style: {
-              width: isNumeric(iconWidth) ? `${iconWidth}px` : '200px',
-              height: isNumeric(iconHeight) ? `${iconHeight}px` : '100px',
+              width: `${iconWidth}px`,
+              height: `${iconHeight}px`,
               'font-size': `${size}rem`,
             },
           },
@@ -48,13 +48,8 @@ class Image extends Component {
     })
   }
 
-  sizeComputing(val1, val2) {
-    val1 = val1 || 200
-    val2 = val2 || 100
-    if (val1 > val2) {
-      return parseInt(val2 / 22, 10)
-    }
-    return parseInt(val1 / 22, 10)
+  sizeComputing(arry) {
+    return parseInt(Math.min(...arry) / 22, 10)
   }
 
   loadImageAsync(url) {
@@ -119,8 +114,8 @@ Image.defaults = {
   alt: null,
   width: null,
   height: null,
-  iconWidth: null,
-  iconHeight: null,
+  iconWidth: 200,
+  iconHeight: 100,
 }
 
 Component.register(Image)
