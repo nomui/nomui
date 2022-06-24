@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/nomui/nomui/compare/v1.0.4...v1.1.0) (2022-06-24)
+
+
+### Features
+
+* **Collapse:** Collapse的激活面板可以支持多个 ([f0a984b](https://github.com/nomui/nomui/commit/f0a984b99a9eade12467cc1487b52b25c7b6bb72))
+* Image组件扩展优化 ([faa8d95](https://github.com/nomui/nomui/commit/faa8d958652a4b4f43145f66279fd1155bab4dd4))
+
+
+### Bug Fixes
+
+* 调整Image图片组件的排列顺序 ([c9e9f72](https://github.com/nomui/nomui/commit/c9e9f72350d8a34112b0bc6f68e75a9023d4b32a))
+* 修复GroupGrid 新增默认值，第一行的时候无效 ([a2534a5](https://github.com/nomui/nomui/commit/a2534a57c78f1cc38a2f69c821b8e244e9a2134e))
+* Image图片组件 ([2a677b9](https://github.com/nomui/nomui/commit/2a677b94fd63c81d83121e96e6c5fe172dd80953))
+* Image图片组件 ([bc5f0b4](https://github.com/nomui/nomui/commit/bc5f0b4c6e991a784133030897c97a0791e94e12))
+* Image图片组件的重构暂存 ([8237af4](https://github.com/nomui/nomui/commit/8237af4096286f3ba5fa58fbe4c1895045274141))
+* Image图片组件的重构暂存 ([be46e9f](https://github.com/nomui/nomui/commit/be46e9f58f768773744751f757059ca1478a2249))
+* Image图片组件的重构暂存 ([2e22714](https://github.com/nomui/nomui/commit/2e227143d7bd35a015be1e4f4e8d97cc8ea75287))
+* Image图片组件的重构暂存 ([0e45b69](https://github.com/nomui/nomui/commit/0e45b694fbee0cd8bd4f2fa113ee59104ff01af7))
+* Image图片组件的重构暂存 ([fe1a5c2](https://github.com/nomui/nomui/commit/fe1a5c208962ea3a57fda01da837c31041b38a00))
+* Image图片组件的重构暂存 ([349ed44](https://github.com/nomui/nomui/commit/349ed44bcd02319fd5da8217bc3b3fced9483cde))
+* Password SetValue方法重写 ([24fe57e](https://github.com/nomui/nomui/commit/24fe57ea39429a035add050a3ed2c3a7a016460f))
+
+
+### Docs
+
+* 完善 fieldDefaults 这个文档api ([a8ba884](https://github.com/nomui/nomui/commit/a8ba884e5df13815032d9abf10b86c5977338b78))
+* release文档更新 ([21334cd](https://github.com/nomui/nomui/commit/21334cd215a71373964516514b1281fd437ddfd9))
+
 ### [1.0.4](https://github.com/nomui/nomui/compare/v1.0.3...v1.0.4) (2022-06-17)
 
 
