@@ -16,14 +16,6 @@ All notable changes to this project will be documented in this file. See [standa
 * 调整Image图片组件的排列顺序 ([c9e9f72](https://github.com/nomui/nomui/commit/c9e9f72350d8a34112b0bc6f68e75a9023d4b32a))
 * 修复GroupGrid 新增默认值，第一行的时候无效 ([a2534a5](https://github.com/nomui/nomui/commit/a2534a57c78f1cc38a2f69c821b8e244e9a2134e))
 * Image图片组件 ([2a677b9](https://github.com/nomui/nomui/commit/2a677b94fd63c81d83121e96e6c5fe172dd80953))
-* Image图片组件 ([bc5f0b4](https://github.com/nomui/nomui/commit/bc5f0b4c6e991a784133030897c97a0791e94e12))
-* Image图片组件的重构暂存 ([8237af4](https://github.com/nomui/nomui/commit/8237af4096286f3ba5fa58fbe4c1895045274141))
-* Image图片组件的重构暂存 ([be46e9f](https://github.com/nomui/nomui/commit/be46e9f58f768773744751f757059ca1478a2249))
-* Image图片组件的重构暂存 ([2e22714](https://github.com/nomui/nomui/commit/2e227143d7bd35a015be1e4f4e8d97cc8ea75287))
-* Image图片组件的重构暂存 ([0e45b69](https://github.com/nomui/nomui/commit/0e45b694fbee0cd8bd4f2fa113ee59104ff01af7))
-* Image图片组件的重构暂存 ([fe1a5c2](https://github.com/nomui/nomui/commit/fe1a5c208962ea3a57fda01da837c31041b38a00))
-* Image图片组件的重构暂存 ([349ed44](https://github.com/nomui/nomui/commit/349ed44bcd02319fd5da8217bc3b3fced9483cde))
-* Password SetValue方法重写 ([24fe57e](https://github.com/nomui/nomui/commit/24fe57ea39429a035add050a3ed2c3a7a016460f))
 
 
 ### Docs
@@ -37,7 +29,6 @@ All notable changes to this project will be documented in this file. See [standa
 ### Performance Improvements
 
 * 优化password不能输入*的情况 ([6c9e676](https://github.com/nomui/nomui/commit/6c9e676a7ea6c862645a16655f4dbf49517b5dfa))
-* 优化password不能输入*的情况 ([57da1fc](https://github.com/nomui/nomui/commit/57da1fc98352160c9c24a814861cbbab76e1de11))
 
 ### [1.0.3](https://github.com/nomui/nomui/compare/v1.0.2...v1.0.3) (2022-06-10)
 
@@ -61,10 +52,6 @@ All notable changes to this project will be documented in this file. See [standa
 * 动效的代码优化 ([54e3e88](https://github.com/nomui/nomui/commit/54e3e8846d1613b7de395d2265272643c30bc3be))
 * 修复RadioList在谷歌49版本的样式bug ([214b7ad](https://github.com/nomui/nomui/commit/214b7ad218f43cf3c2105372f88fb04cb2478309))
 * 优化Image组件 ([3133249](https://github.com/nomui/nomui/commit/3133249a1d2931868ae7cbf9c53fad59fb4979d5))
-* 优化Image组件 ([52e2648](https://github.com/nomui/nomui/commit/52e26480a22268d77d66eb7cef9292e678cfee28))
-* 优化Image组件 ([d794052](https://github.com/nomui/nomui/commit/d794052f070e1e5cbe64bee8cf77d5140125f7e4))
-* 优化Image组件 ([ca21e61](https://github.com/nomui/nomui/commit/ca21e6182447dc8ac63000f40df558def8d979e6))
-
 
 ### Performance Improvements
 
