@@ -7,9 +7,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
+* **Image:** 新增Image图片组件 ([49effee](https://github.com/nomui/nomui/commit/49effee80c40a84c8853a2b016cc30630c087417))
 * **Collapse:** Collapse的激活面板可以支持多个 ([f0a984b](https://github.com/nomui/nomui/commit/f0a984b99a9eade12467cc1487b52b25c7b6bb72))
-* Image组件扩展优化 ([faa8d95](https://github.com/nomui/nomui/commit/faa8d958652a4b4f43145f66279fd1155bab4dd4))
-
 
 ### Bug Fixes
 
@@ -39,8 +38,6 @@ All notable changes to this project will be documented in this file. See [standa
 * 首页彩蛋设计以及页面放大缩小适配优化 ([686920e](https://github.com/nomui/nomui/commit/686920ef1d13584aa2ba755a87e06d6522d19317))
 * 首页彩蛋设计优化 ([12fda6f](https://github.com/nomui/nomui/commit/12fda6fa90a6f2f11b5b50f898dcce282b547e9b))
 * 添加沙箱功能 ([82bb93d](https://github.com/nomui/nomui/commit/82bb93d712564ef91b7e473fcf1968d35dcfd4c9))
-* 新增Image图片组件 ([6495f04](https://github.com/nomui/nomui/commit/6495f0433cb6f03e20cb4fbd81a8e04ac211bf3e))
-* **Image:** 新增Image图片组件 ([49effee](https://github.com/nomui/nomui/commit/49effee80c40a84c8853a2b016cc30630c087417))
 * password给eye按钮添加开关功能 ([26a9583](https://github.com/nomui/nomui/commit/26a95832ade7a0a97fef6a3f786706eafacb47dc))
 * Password新增切换明文查看密码的开关 ([cd5b3ec](https://github.com/nomui/nomui/commit/cd5b3ec3f209b2f2485c3f0f0cd1c1d442d159a8))
 * **TreeSelect:** 新增获取字面值方法 ([18269bc](https://github.com/nomui/nomui/commit/18269bc4a11bc8d370ea114a75f3d194443d91f2))
