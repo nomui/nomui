@@ -39,11 +39,10 @@ class Password extends Textbox {
           if (!that.props.value) {
             return
           }
-          const pass = that.props.rightIconType === 'eye-invisible' ? that.props.value.replace(/./g, '*') : that.props.value
           that.update({
             rightIconType: that.props.rightIconType === 'eye-invisible' ? 'eye' : 'eye-invisible',
           })
-          that.setValue(pass)
+          that.setValue(that.props.value)
         }
       },
       onValueChange: () => {
@@ -74,7 +73,7 @@ class Password extends Textbox {
           })
           that.realValue = real.join('')
         }
-        that.setValue(pass ? (that.props.rightIconType === 'eye' ? pass.replace(/./g, '*') : pass) : null)
+        that.setValue(that.realValue)
 
         // 让光标回到正确位置
 
@@ -95,11 +94,7 @@ class Password extends Textbox {
   _rendered() {
     const that = this
     if (this.hasDefaultValue && this.firstRender) {
-      let stars = ''
-      for (let i = 0; i < this.realValue.length; i++) {
-        stars = `*${stars}`
-      }
-      this.setValue(stars)
+      this.setValue(this.realValue)
     }
     this.popup = new PasswordPopup({
       trigger: this.control,
@@ -155,12 +150,21 @@ class Password extends Textbox {
 
 
   _getValue() {
-    const val = this.realValue ? this.realValue.trim(' ') : this.realValue
-    if (!val || val === '') {
-      return null
-    }
-    return val
+    return this.realValue?.trim(' ') || null
   }
+
+  _setValue(value) {
+    const { rightIconType, value: oldValue } = this.props
+    const pass = value ? (rightIconType === 'eye' ? value.replace(/./g, '*') : value) : null
+    this.input.setText(pass)
+    if (oldValue !== value) {
+      this.setProps({
+        value,
+      })
+      this.realValue = value
+    }
+  }
+
 }
 
 Password.defaults = {
