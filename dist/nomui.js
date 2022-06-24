@@ -21633,17 +21633,13 @@ function _defineProperty2(obj, key, value) {
             if (!that.props.value) {
               return;
             }
-            const pass =
-              that.props.rightIconType === "eye-invisible"
-                ? that.props.value.replace(/./g, "*")
-                : that.props.value;
             that.update({
               rightIconType:
                 that.props.rightIconType === "eye-invisible"
                   ? "eye"
                   : "eye-invisible",
             });
-            that.setValue(pass);
+            that.setValue(that.props.value);
           },
         },
         onValueChange: () => {
@@ -21678,13 +21674,7 @@ function _defineProperty2(obj, key, value) {
             });
             that.realValue = real.join("");
           }
-          that.setValue(
-            pass
-              ? that.props.rightIconType === "eye"
-                ? pass.replace(/./g, "*")
-                : pass
-              : null
-          ); // 让光标回到正确位置
+          that.setValue(that.realValue); // 让光标回到正确位置
           if (pass && start < pass.length) {
             that.input.element.selectionStart = start;
             that.input.element.selectionEnd = start;
@@ -21698,11 +21688,7 @@ function _defineProperty2(obj, key, value) {
     _rendered() {
       const that = this;
       if (this.hasDefaultValue && this.firstRender) {
-        let stars = "";
-        for (let i = 0; i < this.realValue.length; i++) {
-          stars = `*${stars}`;
-        }
-        this.setValue(stars);
+        this.setValue(this.realValue);
       }
       this.popup = new PasswordPopup({
         trigger: this.control,
@@ -21751,11 +21737,20 @@ function _defineProperty2(obj, key, value) {
       this.popup.setProps({ PasswordPopupHidden: !this.capsLock });
     }
     _getValue() {
-      const val = this.realValue ? this.realValue.trim(" ") : this.realValue;
-      if (!val || val === "") {
-        return null;
+      return this.realValue?.trim(" ") || null;
+    }
+    _setValue(value) {
+      const { rightIconType, value: oldValue } = this.props;
+      const pass = value
+        ? rightIconType === "eye"
+          ? value.replace(/./g, "*")
+          : value
+        : null;
+      this.input.setText(pass);
+      if (oldValue !== value) {
+        this.setProps({ value });
+        this.realValue = value;
       }
-      return val;
     }
   }
   Password.defaults = {
