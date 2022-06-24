@@ -6,27 +6,26 @@ class Image extends Component {
     super(Component.extendProps(Image.defaults, props), ...mixins)
   }
 
+  _created() {}
+
   _config() {
-    const { src } = this.props
-    let { width, height } = this.props
-    const size = this.sizeComputing(width, height)
-    width = isNumeric(width) ? `${width}px` : width
-    height = isNumeric(height) ? `${height}px` : height
+    const { alt, width, height, iconWidth, iconHeight } = this.props
+    const size = this._sizeComputing([iconWidth, iconHeight])
     this.setProps({
       children: [
         {
           component: 'Icon',
-          classes: {
-            'nom-image-pending': true,
-          },
           ref: (c) => {
             this.pendingRef = c
+          },
+          classes: {
+            'nom-image-pending': true,
           },
           type: 'image-pending',
           attrs: {
             style: {
-              width,
-              height,
+              width: `${iconWidth}px`,
+              height: `${iconHeight}px`,
               'font-size': `${size}rem`,
             },
           },
@@ -38,10 +37,10 @@ class Image extends Component {
           },
           hidden: true,
           attrs: {
-            src,
+            alt,
             style: {
-              width,
-              height,
+              width: isNumeric(width) ? `${width}px` : width,
+              height: isNumeric(height) ? `${height}px` : height,
             },
           },
         },
@@ -49,30 +48,74 @@ class Image extends Component {
     })
   }
 
-  sizeComputing(val1, val2) {
-    val1 = val1 || 200
-    val2 = val2 || 100
-    if (val1 > val2) {
-      return parseInt(val2 / 22, 10)
-    }
-    return parseInt(val1 / 22, 10)
+  _sizeComputing(arry) {
+    return parseInt(Math.min(...arry) / 22, 10)
+  }
+
+  _loadImageAsync(url) {
+    return new Promise((resolve, reject) => {
+      const image = this.imgRef.element
+      image.onload = () => resolve(url)
+      image.onerror = () => reject()
+      this.imgRef.element.src = url
+    })
+  }
+
+  _dealImageList(urlList) {
+    let success = false
+    return new Promise((resolve, reject) => {
+      const queueNext = (url) => {
+        return this._loadImageAsync(url).then(() => {
+          success = true
+          resolve(url)
+        })
+      }
+
+      const firstPromise = queueNext(urlList.shift() || '')
+
+      // 生成一条promise链[队列]，每一个promise都跟着catch方法处理当前promise的失败
+      // 从而继续下一个promise的处理
+      urlList
+        .reduce((p, url) => {
+          return p.catch(() => {
+            if (!success) return queueNext(url)
+          })
+        }, firstPromise)
+        // 全都挂了 reject
+        .catch(reject)
+    })
   }
 
   _rendered() {
-    const img = this.imgRef.element
-    const that = this
-    img.onload = img.onreadystatechange = function () {
-      if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
-        that.pendingRef.remove()
-        that.imgRef.show()
-      }
+    let urlList = []
+    if (!Array.isArray(this.props.src)) {
+      urlList = [this.props.src]
+    } else {
+      urlList = this.props.src
     }
+    this._dealImageList(urlList)
+      .then(() => {
+        this.pendingRef.remove()
+        this.imgRef.show()
+      })
+      .catch(() => {
+        this.pendingRef.update({
+          classes: {
+            'nom-image-fail': true,
+          },
+          type: 'image-fail',
+        })
+        this.imgRef.remove()
+      })
   }
 }
 Image.defaults = {
   src: null,
+  alt: null,
   width: null,
   height: null,
+  iconWidth: 200,
+  iconHeight: 100,
 }
 
 Component.register(Image)

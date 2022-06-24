@@ -2,10 +2,28 @@
   display: inline-block;
 
   .nom-image-pending {
-    width: 100px;
-    height: 100px;
+    position: relative;
     color: rgba(255, 255, 255, .85);
     background: #eee;
+
+    &::after {
+      position: absolute;
+      top: 75%;
+      left: 50%;
+      display: block;
+      color: #868e96;
+      font-size: 14px;
+      letter-spacing: 2px;
+      transform: translateX(-42%);
+      content: '图片加载中...';
+    }
+  }
+
+  .nom-image-fail {
+
+    &::after {
+      content: '';
+    }
   }
 
   img {

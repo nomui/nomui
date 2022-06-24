@@ -331,6 +331,12 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
                       url: '#!components!index?type=Grid',
                     },
                     {
+                      text: 'Image',
+                      subtext: '图片',
+                      id: 'Image',
+                      url: '#!components!index?type=Image',
+                    },
+                    {
                       text: 'List',
                       subtext: '列表',
                       id: 'List',
@@ -365,12 +371,6 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
                       subtext: '树',
                       id: 'Tree',
                       url: '#!components!index?type=Tree',
-                    },
-                    {
-                      text: 'Image',
-                      subtext: '图片',
-                      id: 'Image',
-                      url: '#!components!index?type=Image',
                     },
                   ],
                 },
