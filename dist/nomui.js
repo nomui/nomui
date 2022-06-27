@@ -21788,7 +21788,7 @@ function _defineProperty2(obj, key, value) {
       this.popup.setProps({ PasswordPopupHidden: !this.capsLock });
     }
     _getValue() {
-      return this.realValue?.trim(" ") || null;
+      return this.realValue ? this.realValue.trim(" ") : null;
     }
     _setValue(value) {
       const { rightIconType, value: oldValue } = this.props;
