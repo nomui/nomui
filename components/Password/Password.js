@@ -43,7 +43,7 @@ class Password extends Textbox {
             rightIconType: that.props.rightIconType === 'eye-invisible' ? 'eye' : 'eye-invisible',
           })
           that.setValue(that.props.value)
-        }
+        },
       },
       onValueChange: () => {
         const pass = that.getText()
@@ -88,7 +88,6 @@ class Password extends Textbox {
     })
 
     super._config()
-
   }
 
   _rendered() {
@@ -114,7 +113,7 @@ class Password extends Textbox {
       const e = event || window.event
       const keyvalue = e.keyCode ? e.keyCode : e.which
       const shifKey = that.shifKey
-      if (typeof (that.realValue) === 'undefined') return
+      if (typeof that.realValue === 'undefined') return
       const userPassword = that.realValue || ''
       const strStart = that.input.element.selectionStart // 光标位置
       if (strStart) {
@@ -123,7 +122,10 @@ class Password extends Textbox {
         if (keyvalue >= 65 && keyvalue <= 90) {
           this.firstWrite = true
           // 是否同时按住shift键
-          if (((uniCode >= 65 && uniCode <= 90) && !shifKey) || ((uniCode >= 97 && uniCode <= 122) && shifKey)) {
+          if (
+            (uniCode >= 65 && uniCode <= 90 && !shifKey) ||
+            (uniCode >= 97 && uniCode <= 122 && shifKey)
+          ) {
             that.capsLock = true
           } else {
             that.capsLock = false
@@ -133,14 +135,12 @@ class Password extends Textbox {
       this.popupSetProps()
     })
 
-
     this.input.element.addEventListener('keydown', (event) => {
       const e = event || window.event
       const keyvalue = e.keyCode ? e.keyCode : e.which
-      const shifKey = e.shiftKey ? e.shiftKey : ((keyvalue === 16))
+      const shifKey = e.shiftKey ? e.shiftKey : keyvalue === 16
       this.shifKey = shifKey
     })
-
   }
 
   popupSetProps() {
@@ -148,9 +148,8 @@ class Password extends Textbox {
     this.popup.setProps({ PasswordPopupHidden: !this.capsLock })
   }
 
-
   _getValue() {
-    return this.realValue?.trim(' ') || null
+    return this.realValue ? this.realValue.trim(' ') : null
   }
 
   _setValue(value) {
@@ -164,13 +163,12 @@ class Password extends Textbox {
       this.realValue = value
     }
   }
-
 }
 
 Password.defaults = {
   allowClear: false,
   visibilityToggle: true,
-  rightIconType: 'eye'
+  rightIconType: 'eye',
 }
 Component.register(Password)
 
