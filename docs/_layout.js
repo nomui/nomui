@@ -165,6 +165,12 @@ define(['/docs/helper.js', 'css!/docs/style.css'], function ({
               },
               items: [
                 {
+                  text: '国内镜像',
+                  url: 'http://nomui.gitee.io/',
+                  id: 'gitee',
+                  renderIf: window.location.hostname !== 'nomui.gitee.io',
+                },
+                {
                   text: '文档',
                   id: 'documents/index',
                   url: '#!documents/index',
