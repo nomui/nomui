@@ -1,5 +1,4 @@
 import Component from '../Component/index'
-import { isPlainObject } from '../util/index'
 import { STATUS } from './helper'
 
 class Step extends Component {
@@ -20,7 +19,12 @@ class Step extends Component {
       iconCustomized,
     } = this.props
 
-    const icon = this._handleIcon()
+    let icon
+    if (iconCustomized) {
+      icon = i
+    } else {
+      icon = this._handleIcon()
+    }
 
     this.setProps({
       classes: {
@@ -87,16 +91,14 @@ class Step extends Component {
   }
 
   _handleIcon() {
-    const { status, icon: i, index, iconCustomized } = this.props
+    const { status, icon: i, index } = this.props
     // const { WAIT, PROCESS, FINISH, ERROR } = STATUS
     const { FINISH, ERROR } = STATUS
 
     if (i) {
-      if (isPlainObject(i)) {
-        i.iconCustomized = iconCustomized
-      }
       return Component.normalizeIconProps(i)
     }
+
     if (status === FINISH) {
       return {
         component: 'Icon',
