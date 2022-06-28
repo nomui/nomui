@@ -18569,11 +18569,19 @@ function _defineProperty2(obj, key, value) {
     }
     focus() {}
     addGroup() {
+      const gridData = this.grid.props.data || [];
       const { addDefaultValue } = this.props;
-      const rowData = isFunction(addDefaultValue)
+      let rowData = isFunction(addDefaultValue)
         ? addDefaultValue.call(this)
         : addDefaultValue;
-      this.grid.props.data.length === 0
+      if (!rowData) {
+        rowData = this.props.groupDefaults.fields.map((n) => {
+          const item = {};
+          item[n.name] = null;
+          return item;
+        });
+      }
+      gridData.length === 0
         ? this.grid.update({ data: [rowData] })
         : this.grid.appendRow({ data: rowData });
       this._onValueChange();
