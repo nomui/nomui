@@ -3,6 +3,7 @@ define([
   './align.js',
   './status.js',
   './icon.js',
+  './iconCustomized.js',
   './event.js',
   './object.js',
 ], function () {

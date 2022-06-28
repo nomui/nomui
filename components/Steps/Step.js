@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isPlainObject } from '../util/index'
 import { STATUS } from './helper'
 
 class Step extends Component {
@@ -8,7 +9,16 @@ class Step extends Component {
 
   _config() {
     // status wait process finish error
-    const { status, title, subTitle, description, onChange, index, icon: i } = this.props
+    const {
+      status,
+      title,
+      subTitle,
+      description,
+      onChange,
+      index,
+      icon: i,
+      iconCustomized,
+    } = this.props
 
     const icon = this._handleIcon()
 
@@ -40,6 +50,7 @@ class Step extends Component {
             classes: {
               'nom-step-item-icon': true,
               'nom-step-item-icon-customer': !!i,
+              'nom-step-item-icon-whole-customer': iconCustomized,
             },
             children: icon,
           },
@@ -76,11 +87,14 @@ class Step extends Component {
   }
 
   _handleIcon() {
-    const { status, icon: i, index } = this.props
+    const { status, icon: i, index, iconCustomized } = this.props
     // const { WAIT, PROCESS, FINISH, ERROR } = STATUS
     const { FINISH, ERROR } = STATUS
 
     if (i) {
+      if (isPlainObject(i)) {
+        i.iconCustomized = iconCustomized
+      }
       return Component.normalizeIconProps(i)
     }
     if (status === FINISH) {
@@ -116,6 +130,7 @@ Step.defaults = {
   current: 0,
   // wait process finish error
   status: 'wait',
+  iconCustomized: false,
 }
 
 export default Step
