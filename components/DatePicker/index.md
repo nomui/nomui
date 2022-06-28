@@ -15,4 +15,13 @@
 | yearRange | 前后年显示范围 | `array` | `[50,20]` |
 | showTime | 是否显示时间，需要显示的时候建议传一个对象，内部包含 TimePicker 的 props | `object` | false |
 | allowClear | 是否显示清空按钮 | `boolean` | `true` |
+| extraTools | 额外的工具栏 | `array` | - |
 | onChange | 面板关闭且值发生改变时触发回调 | `function` | - |
+
+
+## Methods
+
+| 名称               | 说明                                           | 类型                      |
+| ------------------ | ---------------------------------------------- | ------------------------- |
+| setNow          | 设置为今天                                 | `function`          |
+| close          | 关闭日期面板                                 | `function`          |

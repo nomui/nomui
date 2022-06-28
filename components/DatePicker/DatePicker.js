@@ -293,7 +293,7 @@ class DatePicker extends Textbox {
                 },
               ],
             },
-            this.props.showNow && {
+            (this.props.showNow || this.props.extraTools) && {
               component: 'Cols',
               attrs: {
                 style: {
@@ -301,11 +301,13 @@ class DatePicker extends Textbox {
                 },
               },
               items: [
+                ...this.props.extraTools,
                 {
                   component: 'Button',
                   size: 'small',
                   text: '此刻',
                   disabled: !this.showNow,
+                  renderIf: this.props.showNow,
                   onClick: () => {
                     if (that.props.showTime) {
                       that._updateTimePickerStartEndTime(new Date().getDate())
@@ -543,6 +545,10 @@ class DatePicker extends Textbox {
 
   setNow() {
     this.setValue(new Date().format(this.props.format))
+    this.popup.hide()
+  }
+
+  close() {
     this.popup.hide()
   }
 
