@@ -1,7 +1,6 @@
-import Cols from '../Cols/index'
 import Component from '../Component/index'
+import Flex from '../Flex/index'
 import List from '../List/index'
-import Rows from '../Rows/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
 import {} from '../util/date'
@@ -113,21 +112,19 @@ class DatePicker extends Textbox {
 
           children: [
             {
-              component: 'Cols',
-              items: [
+              component: Flex,
+              cols: [
                 {
-                  component: Rows,
                   attrs: {
                     style: {
                       width: '260px',
                     },
                   },
-                  items: [
+                  rows: [
                     {
-                      component: Cols,
                       justify: 'between',
                       fills: true,
-                      items: [
+                      cols: [
                         {
                           component: Select,
                           allowClear: false,
@@ -161,14 +158,11 @@ class DatePicker extends Textbox {
                       ],
                     },
                     {
-                      component: Cols,
-                      items: ['日', '一', '二', '三', '四', '五', '六'],
+                      cols: ['日', '一', '二', '三', '四', '五', '六'],
                       fills: true,
                       gutter: null,
-                      itemDefaults: {
-                        styles: {
-                          text: 'center',
-                        },
+                      classes: {
+                        'nom-datepicker-panel-header': true,
                       },
                     },
                     {
@@ -302,13 +296,13 @@ class DatePicker extends Textbox {
               ],
             },
             (this.props.showNow || extra.length) && {
-              component: 'Cols',
+              component: Flex,
               attrs: {
                 style: {
                   padding: '5px 0',
                 },
               },
-              items: [
+              cols: [
                 ...extra,
                 {
                   component: 'Button',
