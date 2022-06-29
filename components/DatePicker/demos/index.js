@@ -1,5 +1,6 @@
 define([
   './basic.js',
+  './extra.js',
   './disabled.js',
   './disabledTime.js',
   './with-format.js',

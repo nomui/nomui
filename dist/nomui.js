@@ -12907,50 +12907,99 @@ function _defineProperty2(obj, key, value) {
   }
   Countdown.defaults = { format: "HH:mm:ss", interval: 3000 };
   Component.register(Countdown);
-  class Row extends Component {
-    // constructor(props, ...mixins) {
-    //   super(props, ...mixins)
-    // }
-  }
-  Component.register(Row);
-  class Rows extends Component {
+  class FlexItem extends Component {
     constructor(props, ...mixins) {
-      const defaults = {
-        wrap: false,
-        items: [],
-        itemDefaults: null,
-        gutter: "md",
-        childDefaults: { component: Row },
-        showEmpty: false,
-      };
+      const defaults = { grow: false, shrink: false, isBody: false };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
-      this._propStyleClasses = ["gutter", "align", "justify"];
-      const { items } = this.props;
-      const children = [];
-      if (Array.isArray(items) && items.length > 0) {
-        for (let i = 0; i < items.length; i++) {
-          let item = items[i];
-          item = Component.extendProps({}, this.props.itemDefaults, item);
-          children.push({ component: Row, children: item });
-        }
-        this.setProps({ children: children });
-      } else if (this.props.showEmpty) {
-        if (isPlainObject(this.props.showEmpty)) {
-          this.setProps({
-            children: Object.assign(
-              { component: "Empty" },
-              this.props.showEmpty
-            ),
-          });
-        } else {
-          this.setProps({ children: { component: "Empty" } });
-        }
+      this._propStyleClasses = ["grow", "shrink", "isBody"];
+      const { span } = this.props;
+      if (span) {
+        this.setProps({ styles: { col: span } });
       }
     }
   }
-  Component.register(Rows);
+  Component.register(FlexItem);
+  class Flex extends Component {
+    constructor(props, ...mixins) {
+      super(Component.extendProps(Flex.defaults, props), ...mixins);
+    }
+    _config() {
+      this._propStyleClasses = [
+        "direction",
+        "wrap",
+        "align",
+        "justify",
+        "gap",
+        "gutter",
+        "fills",
+        "fit",
+      ];
+      const { rows, cols, itemDefaults } = this.props;
+      let { direction } = this.props;
+      let children = [];
+      if (Array.isArray(rows) && rows.length) {
+        direction = "column";
+        children = rows;
+      } else if (Array.isArray(cols) && cols.length) {
+        direction = "row";
+        children = cols;
+      }
+      children = children.map((item) => {
+        if (isPlainObject(item)) {
+          return Component.extendProps(
+            itemDefaults,
+            this._normalizeItem(item),
+            { component: FlexItem }
+          );
+        }
+        return item;
+      });
+      this.setProps({
+        direction: direction,
+        children: children,
+        childDefaults: { component: FlexItem },
+      });
+    } // todo:  maybe move some logic to FlexItem
+    _normalizeItem(item) {
+      let itemProps = {};
+      const { component, tag, rows, cols, children: subChildren } = item;
+      if (
+        (component && component !== FlexItem && component !== "FlexItem") ||
+        (component !== FlexItem && component !== "FlexItem" && isString(tag))
+      ) {
+        itemProps.children = item;
+      } else if (Array.isArray(rows) || Array.isArray(cols)) {
+        item.component = Flex;
+        itemProps.children = item;
+      } else if (isPlainObject(subChildren)) {
+        const { rows: subRows, cols: subCols } = subChildren;
+        if (Array.isArray(subRows) || Array.isArray(subCols)) {
+          subChildren.component = Flex;
+        }
+        itemProps = item;
+        itemProps.children = subChildren;
+      } else {
+        itemProps = item;
+      }
+      return itemProps;
+    }
+  }
+  Flex.defaults = {
+    rows: null,
+    cols: null,
+    direction: "column",
+    wrap: false,
+    align: null,
+    justify: null,
+    gap: null,
+    gutter: null,
+    fills: false,
+    inline: false,
+    fit: false,
+  };
+  Component.register(Flex);
   var SelectListItemMixin = {
     _config: function () {
       const { onSelect, onUnselect } = this.props;
@@ -14115,7 +14164,15 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const that = this;
       this.props.value = formatDate(this.props.value, this.props.format);
-      const { disabled } = this.props; // let currentDate = value !== null ? Date.parseString(value, format) : new Date()
+      const { disabled, extraTools } = this.props;
+      let extra = [];
+      if (isFunction(extraTools)) {
+        extra = Array.isArray(extraTools(this))
+          ? extraTools(this)
+          : [extraTools(this)];
+      } else if (Array.isArray(extraTools)) {
+        extra = extraTools;
+      } // let currentDate = value !== null ? Date.parseString(value, format) : new Date()
       // if (!currentDate) {
       //   currentDate = new Date()
       // }
@@ -14185,17 +14242,15 @@ function _defineProperty2(obj, key, value) {
             triggerAction: "click",
             children: [
               {
-                component: "Cols",
-                items: [
+                component: Flex,
+                cols: [
                   {
-                    component: Rows,
                     attrs: { style: { width: "260px" } },
-                    items: [
+                    rows: [
                       {
-                        component: Cols,
                         justify: "between",
                         fills: true,
-                        items: [
+                        cols: [
                           {
                             component: Select,
                             allowClear: false,
@@ -14229,11 +14284,10 @@ function _defineProperty2(obj, key, value) {
                         ],
                       },
                       {
-                        component: Cols,
-                        items: ["日", "一", "二", "三", "四", "五", "六"],
+                        cols: ["日", "一", "二", "三", "四", "五", "六"],
                         fills: true,
                         gutter: null,
-                        itemDefaults: { styles: { text: "center" } },
+                        classes: { "nom-datepicker-panel-header": true },
                       },
                       {
                         component: List,
@@ -14352,15 +14406,17 @@ function _defineProperty2(obj, key, value) {
                   },
                 ],
               },
-              this.props.showNow && {
-                component: "Cols",
+              (this.props.showNow || extra.length) && {
+                component: Flex,
                 attrs: { style: { padding: "5px 0" } },
-                items: [
+                cols: [
+                  ...extra,
                   {
                     component: "Button",
                     size: "small",
                     text: "此刻",
                     disabled: !this.showNow,
+                    renderIf: this.props.showNow,
                     onClick: () => {
                       if (that.props.showTime) {
                         that._updateTimePickerStartEndTime(
@@ -14557,6 +14613,9 @@ function _defineProperty2(obj, key, value) {
       this.setValue(new Date().format(this.props.format));
       this.popup.hide();
     }
+    close() {
+      this.popup.hide();
+    }
     updateValue() {
       const date = new Date(
         this.dateInfo.year || new Date().format("yyyy"),
@@ -14599,6 +14658,7 @@ function _defineProperty2(obj, key, value) {
     onChange: null,
     showNow: true,
     readonly: false,
+    extraTools: null,
   };
   Component.register(DatePicker);
   class Group extends Field {
@@ -15293,99 +15353,6 @@ function _defineProperty2(obj, key, value) {
   }
   Ellipsis.defaults = { text: null, showTitle: true, line: null };
   Component.register(Ellipsis);
-  class FlexItem extends Component {
-    constructor(props, ...mixins) {
-      const defaults = { grow: false, shrink: false, isBody: false };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _config() {
-      this._propStyleClasses = ["grow", "shrink", "isBody"];
-      const { span } = this.props;
-      if (span) {
-        this.setProps({ styles: { col: span } });
-      }
-    }
-  }
-  Component.register(FlexItem);
-  class Flex extends Component {
-    constructor(props, ...mixins) {
-      super(Component.extendProps(Flex.defaults, props), ...mixins);
-    }
-    _config() {
-      this._propStyleClasses = [
-        "direction",
-        "wrap",
-        "align",
-        "justify",
-        "gap",
-        "gutter",
-        "fills",
-        "fit",
-      ];
-      const { rows, cols, itemDefaults } = this.props;
-      let { direction } = this.props;
-      let children = [];
-      if (Array.isArray(rows) && rows.length) {
-        direction = "column";
-        children = rows;
-      } else if (Array.isArray(cols) && cols.length) {
-        direction = "row";
-        children = cols;
-      }
-      children = children.map((item) => {
-        if (isPlainObject(item)) {
-          return Component.extendProps(
-            itemDefaults,
-            this._normalizeItem(item),
-            { component: FlexItem }
-          );
-        }
-        return item;
-      });
-      this.setProps({
-        direction: direction,
-        children: children,
-        childDefaults: { component: FlexItem },
-      });
-    } // todo:  maybe move some logic to FlexItem
-    _normalizeItem(item) {
-      let itemProps = {};
-      const { component, tag, rows, cols, children: subChildren } = item;
-      if (
-        (component && component !== FlexItem && component !== "FlexItem") ||
-        (component !== FlexItem && component !== "FlexItem" && isString(tag))
-      ) {
-        itemProps.children = item;
-      } else if (Array.isArray(rows) || Array.isArray(cols)) {
-        item.component = Flex;
-        itemProps.children = item;
-      } else if (isPlainObject(subChildren)) {
-        const { rows: subRows, cols: subCols } = subChildren;
-        if (Array.isArray(subRows) || Array.isArray(subCols)) {
-          subChildren.component = Flex;
-        }
-        itemProps = item;
-        itemProps.children = subChildren;
-      } else {
-        itemProps = item;
-      }
-      return itemProps;
-    }
-  }
-  Flex.defaults = {
-    rows: null,
-    cols: null,
-    direction: "column",
-    wrap: false,
-    align: null,
-    justify: null,
-    gap: null,
-    gutter: null,
-    fills: false,
-    inline: false,
-    fit: false,
-  };
-  Component.register(Flex);
   class Form extends Group {
     constructor(props, ...mixins) {
       super(Component.extendProps(Form.defaults, props), ...mixins);
@@ -23776,6 +23743,50 @@ function _defineProperty2(obj, key, value) {
     // children:null
   };
   Component.register(Result);
+  class Row extends Component {
+    // constructor(props, ...mixins) {
+    //   super(props, ...mixins)
+    // }
+  }
+  Component.register(Row);
+  class Rows extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        wrap: false,
+        items: [],
+        itemDefaults: null,
+        gutter: "md",
+        childDefaults: { component: Row },
+        showEmpty: false,
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _config() {
+      this._propStyleClasses = ["gutter", "align", "justify"];
+      const { items } = this.props;
+      const children = [];
+      if (Array.isArray(items) && items.length > 0) {
+        for (let i = 0; i < items.length; i++) {
+          let item = items[i];
+          item = Component.extendProps({}, this.props.itemDefaults, item);
+          children.push({ component: Row, children: item });
+        }
+        this.setProps({ children: children });
+      } else if (this.props.showEmpty) {
+        if (isPlainObject(this.props.showEmpty)) {
+          this.setProps({
+            children: Object.assign(
+              { component: "Empty" },
+              this.props.showEmpty
+            ),
+          });
+        } else {
+          this.setProps({ children: { component: "Empty" } });
+        }
+      }
+    }
+  }
+  Component.register(Rows);
   class SkeletonAvatar extends Avatar {
     constructor(props, ...mixins) {
       super(Component.extendProps(SkeletonAvatar.defaults, props), ...mixins);
