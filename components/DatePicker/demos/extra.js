@@ -18,7 +18,8 @@ define([], function () {
               size: 'small',
               text: '至今',
               onClick: () => {
-                dpref.setNow()
+                dpref.setValue('至今')
+                dpref.close()
               },
             },
             {
