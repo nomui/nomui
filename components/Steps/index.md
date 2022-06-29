@@ -21,5 +21,5 @@ Steps 步骤条:引导用户按照流程完成任务的导航条。
 | subTitle | 副标题，可选 | `string` \| `object` | - |
 | description | 步骤的详情描述，可选 | `string` \| `object` | - |
 | icon | 自定义步骤图标，可选 | `string` \| ` {}` | - |
-| iconCustomized | 是否完全自定义步骤图标，Steps 组件将不会对 icon 对象做任何修改 | `boolean` | false |
+| iconRender | 可以完全自定义步骤图标，可以渲染出任何组件样式 | `() => {return {}}` | null |
 | status | 指定状态。当不配置该属性时，会使用 Steps 的 current 来自动指定状态。可选：wait process finish error | `string` | wait |

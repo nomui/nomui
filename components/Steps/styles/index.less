@@ -180,6 +180,30 @@
       padding-left: 0;
       overflow: visible;
 
+      &.nom-step-item-icon-render-mode {
+        &.nom-step-item-finish {
+          &::after {
+            background-color: var(--nom-color-primary) !important;
+          }
+        }
+
+        .nom-step-item-tail {
+          display: none !important;
+        }
+
+        &:not(:last-child)::after {
+          display: block;
+          width: 1px;
+          height: 50px;
+          margin-left: 1rem;
+          background-color: var(--nom-step-line-color);
+          border-radius: 1px;
+          content: '';
+        }
+      }
+
+
+
       >.nom-step-item-container {
         >.nom-step-item-content {
           >.nom-step-item-title {
@@ -229,4 +253,6 @@
       }
     }
   }
+
+
 }
