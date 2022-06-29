@@ -5,7 +5,7 @@ import Rows from '../Rows/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
 import {} from '../util/date'
-import { formatDate, isNumeric } from '../util/index'
+import { formatDate, isFunction, isNumeric } from '../util/index'
 import TimePickerPanel from './TimePickerPanel'
 
 class DatePicker extends Textbox {
@@ -24,7 +24,15 @@ class DatePicker extends Textbox {
     const that = this
     this.props.value = formatDate(this.props.value, this.props.format)
 
-    const { disabled } = this.props
+    const { disabled, extraTools } = this.props
+
+    let extra = []
+    if (isFunction(extraTools)) {
+      extra = Array.isArray(extraTools(this)) ? extraTools(this) : [extraTools(this)]
+    } else if (Array.isArray(extraTools)) {
+      extra = extraTools
+    }
+
     // let currentDate = value !== null ? Date.parseString(value, format) : new Date()
     // if (!currentDate) {
     //   currentDate = new Date()
@@ -293,7 +301,7 @@ class DatePicker extends Textbox {
                 },
               ],
             },
-            (this.props.showNow || this.props.extraTools.length) && {
+            (this.props.showNow || extra.length) && {
               component: 'Cols',
               attrs: {
                 style: {
@@ -301,7 +309,7 @@ class DatePicker extends Textbox {
                 },
               },
               items: [
-                ...this.props.extraTools,
+                ...extra,
                 {
                   component: 'Button',
                   size: 'small',
@@ -591,7 +599,7 @@ DatePicker.defaults = {
   onChange: null,
   showNow: true,
   readonly: false,
-  extraTools: [],
+  extraTools: null,
 }
 Component.register(DatePicker)
 
