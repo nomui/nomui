@@ -1,11 +1,10 @@
-import Cols from '../Cols/index'
 import Component from '../Component/index'
+import Flex from '../Flex/index'
 import List from '../List/index'
-import Rows from '../Rows/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
 import {} from '../util/date'
-import { formatDate, isNumeric } from '../util/index'
+import { formatDate, isFunction, isNumeric } from '../util/index'
 import TimePickerPanel from './TimePickerPanel'
 
 class DatePicker extends Textbox {
@@ -24,7 +23,15 @@ class DatePicker extends Textbox {
     const that = this
     this.props.value = formatDate(this.props.value, this.props.format)
 
-    const { disabled } = this.props
+    const { disabled, extraTools } = this.props
+
+    let extra = []
+    if (isFunction(extraTools)) {
+      extra = Array.isArray(extraTools(this)) ? extraTools(this) : [extraTools(this)]
+    } else if (Array.isArray(extraTools)) {
+      extra = extraTools
+    }
+
     // let currentDate = value !== null ? Date.parseString(value, format) : new Date()
     // if (!currentDate) {
     //   currentDate = new Date()
@@ -105,21 +112,19 @@ class DatePicker extends Textbox {
 
           children: [
             {
-              component: 'Cols',
-              items: [
+              component: Flex,
+              cols: [
                 {
-                  component: Rows,
                   attrs: {
                     style: {
                       width: '260px',
                     },
                   },
-                  items: [
+                  rows: [
                     {
-                      component: Cols,
                       justify: 'between',
                       fills: true,
-                      items: [
+                      cols: [
                         {
                           component: Select,
                           allowClear: false,
@@ -153,14 +158,11 @@ class DatePicker extends Textbox {
                       ],
                     },
                     {
-                      component: Cols,
-                      items: ['日', '一', '二', '三', '四', '五', '六'],
+                      cols: ['日', '一', '二', '三', '四', '五', '六'],
                       fills: true,
                       gutter: null,
-                      itemDefaults: {
-                        styles: {
-                          text: 'center',
-                        },
+                      classes: {
+                        'nom-datepicker-panel-header': true,
                       },
                     },
                     {
@@ -293,19 +295,21 @@ class DatePicker extends Textbox {
                 },
               ],
             },
-            this.props.showNow && {
-              component: 'Cols',
+            (this.props.showNow || extra.length) && {
+              component: Flex,
               attrs: {
                 style: {
                   padding: '5px 0',
                 },
               },
-              items: [
+              cols: [
+                ...extra,
                 {
                   component: 'Button',
                   size: 'small',
                   text: '此刻',
                   disabled: !this.showNow,
+                  renderIf: this.props.showNow,
                   onClick: () => {
                     if (that.props.showTime) {
                       that._updateTimePickerStartEndTime(new Date().getDate())
@@ -546,6 +550,10 @@ class DatePicker extends Textbox {
     this.popup.hide()
   }
 
+  close() {
+    this.popup.hide()
+  }
+
   updateValue() {
     const date = new Date(
       this.dateInfo.year || new Date().format('yyyy'),
@@ -585,6 +593,7 @@ DatePicker.defaults = {
   onChange: null,
   showNow: true,
   readonly: false,
+  extraTools: null,
 }
 Component.register(DatePicker)
 
