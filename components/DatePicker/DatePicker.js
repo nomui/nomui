@@ -293,7 +293,7 @@ class DatePicker extends Textbox {
                 },
               ],
             },
-            (this.props.showNow || this.props.extraTools) && {
+            (this.props.showNow || this.props.extraTools.length) && {
               component: 'Cols',
               attrs: {
                 style: {
@@ -591,6 +591,7 @@ DatePicker.defaults = {
   onChange: null,
   showNow: true,
   readonly: false,
+  extraTools: [],
 }
 Component.register(DatePicker)
 
