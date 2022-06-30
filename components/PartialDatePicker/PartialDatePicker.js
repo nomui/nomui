@@ -1,6 +1,7 @@
 import Component from '../Component/index'
 import Textbox from '../Textbox/index'
 import {} from '../util/date'
+import { isFunction } from '../util/index'
 
 class PartialDatePicker extends Textbox {
   constructor(props, ...mixins) {
@@ -19,7 +20,14 @@ class PartialDatePicker extends Textbox {
   }
 
   _config() {
-    const { disabled, placeholder, animate } = this.props
+    const { disabled, placeholder, animate, extraTools } = this.props
+
+    let extra = []
+    if (isFunction(extraTools)) {
+      extra = Array.isArray(extraTools(this)) ? extraTools(this) : [extraTools(this)]
+    } else if (Array.isArray(extraTools)) {
+      extra = extraTools
+    }
 
     const that = this
 
@@ -47,14 +55,13 @@ class PartialDatePicker extends Textbox {
           animate,
           classes: {
             'nom-partial-date-picker-popup': true,
+            'nom-partial-date-picker-popup-hasfooter': extraTools !== null,
           },
-          styles: {
-            padding: '1',
-          },
+
           attrs: {
             style: {
               width: 'auto',
-              height: '240px',
+              minHeight: '240px',
             },
           },
           triggerAction: 'click',
@@ -73,171 +80,184 @@ class PartialDatePicker extends Textbox {
           },
 
           children: {
-            component: 'Cols',
-            gutter: null,
-            fills: true,
-            align: 'stretch',
-            children: [
+            component: 'Flex',
+            rows: [
               {
-                children: {
-                  component: 'List',
-                  items: that._getYear(),
-                  itemSelectable: {
-                    multiple: false,
-                    byClick: true,
-                    scrollIntoView: true,
-                  },
-                  gutter: 'xs',
-                  cols: 1,
-                  ref: (c) => {
-                    that.yearPicker = c
-                  },
-
-                  onItemSelectionChange: (args) => {
-                    const key = args.sender.props.selectedItems
-                    that.handleYearChange(key)
-                  },
-                  itemDefaults: {
-                    _config: function () {
-                      const key = this.props.key
-
-                      if (key < that.minYear || key > that.maxYear) {
-                        this.setProps({
-                          disabled: true,
-                        })
-                      }
-                    },
-                  },
-                },
-              },
-              that.props.mode === 'quarter' && {
-                children: {
-                  component: 'List',
-                  items: that._getQuarter(),
-                  itemSelectable: {
-                    multiple: false,
-                    byClick: true,
-                    scrollIntoView: true,
-                  },
-                  gutter: 'xs',
-                  cols: 1,
-                  ref: (c) => {
-                    that.quarterPicker = c
-                    if (that.props.mode === 'quarter') {
-                      that.subPicker = c
-                    }
-                  },
-
-                  onItemSelectionChange: (args) => {
-                    const key = args.sender.props.selectedItems
-                    that.handleQuarterChange(key)
-                  },
-                  itemDefaults: {
-                    _config: function () {
-                      const key = this.props.key
-
-                      if (
-                        parseInt(key, 10) < parseInt(that.minSub, 10) ||
-                        parseInt(key, 10) > parseInt(that.maxSub, 10)
-                      ) {
-                        this.setProps({
-                          disabled: true,
-                        })
-                      }
-                    },
-                  },
-                },
-              },
-              that.props.mode === 'month' && {
-                children: {
-                  component: 'List',
-                  items: that._getMonth(),
-                  itemSelectable: {
-                    multiple: false,
-                    byClick: true,
-                    scrollIntoView: true,
-                  },
-                  gutter: 'xs',
-                  cols: 1,
-                  ref: (c) => {
-                    that.monthPicker = c
-                    if (that.props.mode === 'month') {
-                      that.subPicker = c
-                    }
-                  },
-
-                  onItemSelectionChange: (args) => {
-                    const key = args.sender.props.selectedItems
-                    that.handleMonthChange(key)
-                  },
-                  itemDefaults: {
-                    _config: function () {
-                      const key = this.props.key
-
-                      if (
-                        parseInt(key, 10) < parseInt(that.minSub, 10) ||
-                        parseInt(key, 10) > parseInt(that.maxSub, 10)
-                      ) {
-                        this.setProps({
-                          disabled: true,
-                        })
-                      }
-                    },
-                  },
-                },
-              },
-              that.props.mode === 'week' && {
-                children: {
-                  component: 'List',
-
-                  items: that.year
-                    ? that._getWeek('2010')
-                    : [
-                        {
-                          component: 'StaticText',
-                          value: '请先选择年份',
-                          disabled: true,
-                        },
-                      ],
-                  itemSelectable: {
-                    multiple: false,
-                    byClick: true,
-                    scrollIntoView: true,
-                  },
-                  gutter: 'xs',
-                  cols: 1,
-                  ref: (c) => {
-                    that.weekPicker = c
-                    if (that.props.mode === 'week') {
-                      that.subPicker = c
-                    }
-                  },
-                  _created: (me) => {
-                    me.parent.setProps({
-                      classes: {
-                        'nom-week-list': true,
+                component: 'Cols',
+                gutter: null,
+                fills: true,
+                align: 'stretch',
+                children: [
+                  {
+                    children: {
+                      component: 'List',
+                      items: that._getYear(),
+                      itemSelectable: {
+                        multiple: false,
+                        byClick: true,
+                        scrollIntoView: true,
                       },
-                    })
-                  },
-                  onItemSelectionChange: (args) => {
-                    const key = args.sender.props.selectedItems
-                    that.handleWeekChange(key)
-                  },
-                  itemDefaults: {
-                    _config: function () {
-                      const key = this.props.key
+                      gutter: 'xs',
+                      cols: 1,
+                      ref: (c) => {
+                        that.yearPicker = c
+                      },
 
-                      if (
-                        parseInt(key, 10) < parseInt(that.minSub, 10) ||
-                        parseInt(key, 10) > parseInt(that.maxSub, 10)
-                      ) {
-                        this.setProps({
-                          disabled: true,
-                        })
-                      }
+                      onItemSelectionChange: (args) => {
+                        const key = args.sender.props.selectedItems
+                        that.handleYearChange(key)
+                      },
+                      itemDefaults: {
+                        _config: function () {
+                          const key = this.props.key
+
+                          if (key < that.minYear || key > that.maxYear) {
+                            this.setProps({
+                              disabled: true,
+                            })
+                          }
+                        },
+                      },
                     },
                   },
+                  that.props.mode === 'quarter' && {
+                    children: {
+                      component: 'List',
+                      items: that._getQuarter(),
+                      itemSelectable: {
+                        multiple: false,
+                        byClick: true,
+                        scrollIntoView: true,
+                      },
+                      gutter: 'xs',
+                      cols: 1,
+                      ref: (c) => {
+                        that.quarterPicker = c
+                        if (that.props.mode === 'quarter') {
+                          that.subPicker = c
+                        }
+                      },
+
+                      onItemSelectionChange: (args) => {
+                        const key = args.sender.props.selectedItems
+                        that.handleQuarterChange(key)
+                      },
+                      itemDefaults: {
+                        _config: function () {
+                          const key = this.props.key
+
+                          if (
+                            parseInt(key, 10) < parseInt(that.minSub, 10) ||
+                            parseInt(key, 10) > parseInt(that.maxSub, 10)
+                          ) {
+                            this.setProps({
+                              disabled: true,
+                            })
+                          }
+                        },
+                      },
+                    },
+                  },
+                  that.props.mode === 'month' && {
+                    children: {
+                      component: 'List',
+                      items: that._getMonth(),
+                      itemSelectable: {
+                        multiple: false,
+                        byClick: true,
+                        scrollIntoView: true,
+                      },
+                      gutter: 'xs',
+                      cols: 1,
+                      ref: (c) => {
+                        that.monthPicker = c
+                        if (that.props.mode === 'month') {
+                          that.subPicker = c
+                        }
+                      },
+
+                      onItemSelectionChange: (args) => {
+                        const key = args.sender.props.selectedItems
+                        that.handleMonthChange(key)
+                      },
+                      itemDefaults: {
+                        _config: function () {
+                          const key = this.props.key
+
+                          if (
+                            parseInt(key, 10) < parseInt(that.minSub, 10) ||
+                            parseInt(key, 10) > parseInt(that.maxSub, 10)
+                          ) {
+                            this.setProps({
+                              disabled: true,
+                            })
+                          }
+                        },
+                      },
+                    },
+                  },
+                  that.props.mode === 'week' && {
+                    children: {
+                      component: 'List',
+
+                      items: that.year
+                        ? that._getWeek('2010')
+                        : [
+                            {
+                              component: 'StaticText',
+                              value: '请先选择年份',
+                              disabled: true,
+                            },
+                          ],
+                      itemSelectable: {
+                        multiple: false,
+                        byClick: true,
+                        scrollIntoView: true,
+                      },
+                      gutter: 'xs',
+                      cols: 1,
+                      ref: (c) => {
+                        that.weekPicker = c
+                        if (that.props.mode === 'week') {
+                          that.subPicker = c
+                        }
+                      },
+                      _created: (me) => {
+                        me.parent.setProps({
+                          classes: {
+                            'nom-week-list': true,
+                          },
+                        })
+                      },
+                      onItemSelectionChange: (args) => {
+                        const key = args.sender.props.selectedItems
+                        that.handleWeekChange(key)
+                      },
+                      itemDefaults: {
+                        _config: function () {
+                          const key = this.props.key
+
+                          if (
+                            parseInt(key, 10) < parseInt(that.minSub, 10) ||
+                            parseInt(key, 10) > parseInt(that.maxSub, 10)
+                          ) {
+                            this.setProps({
+                              disabled: true,
+                            })
+                          }
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+              extra.length && {
+                component: 'Flex',
+                classes: {
+                  'nom-partial-date-picker-footer': true,
                 },
+                gutter: 'small',
+                cols: extra,
               },
             ],
           },
@@ -512,6 +532,10 @@ class PartialDatePicker extends Textbox {
     }
   }
 
+  close() {
+    this.popup.hide()
+  }
+
   resolveRange() {
     const min = this.props.minDate
     const max = this.props.maxDate
@@ -608,6 +632,7 @@ PartialDatePicker.defaults = {
   minDate: null,
   maxDate: null,
   readonly: true,
+  extraTools: null,
 }
 Component.register(PartialDatePicker)
 
