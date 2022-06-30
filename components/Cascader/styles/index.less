@@ -5,7 +5,7 @@
 
   >.nom-field-content {
     .nom-control {
-      &:hover {
+      &:not(.s-disabled):hover {
         border: 1px solid var(--nom-color-primary);
       }
 
@@ -35,9 +35,16 @@
       .nom-cascader-placeholder {
         color: var(--nom-input-placeholder-color);
       }
+
+      .s-disabled& {
+        background-color: var(--nom-input-bg-disabled);
+        cursor: not-allowed !important;
+        opacity: 1;
+      }
     }
   }
 }
+
 
 .nom-cascader-popup {
   overflow: hidden;
