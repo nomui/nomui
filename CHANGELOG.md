@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/nomui/nomui/compare/v1.1.0...v1.1.1) (2022-07-01)
+
+
+### Features
+
+* **DatePicker:** 支持额外的工具按钮 ([f2e8e8f](https://github.com/nomui/nomui/commit/f2e8e8fe00caaff97578d3a0523d9dea87c1837c))
+* **PartialDatePicker:** 新增自定义底部工具按钮 ([1530573](https://github.com/nomui/nomui/commit/15305730ac196f78e55bf2d1f0599d3c71aa2db4))
+* Step新增配置iconCustomized，使步骤图标可完全自由定制 ([9e97a8d](https://github.com/nomui/nomui/commit/9e97a8d65b5b5cfdea8d1fb9c9e5b1f211669e8d))
+
+
+### Bug Fixes
+
+* 修复一个低版本浏览器兼容性bug ([040c06d](https://github.com/nomui/nomui/commit/040c06d5d70c02f834b2687863ab55b23173624d))
+* 修改Cascader组件disabled方法和属性无效 ([412133c](https://github.com/nomui/nomui/commit/412133c5874868743dbe56bbc626d8d3b09aaca3))
+* 修改groupGrid组件没有默认值报错问题 ([9a4eeb4](https://github.com/nomui/nomui/commit/9a4eeb466ec9cc7059cd4f851aab2f7e28a990fc))
+
+
+### Performance Improvements
+
+* 优化iconCustomized思路 ([6ad31b3](https://github.com/nomui/nomui/commit/6ad31b39289f5e56f64f629b34daf48104bdb8cd))
+* 优化iconRender思路 ([e14dee0](https://github.com/nomui/nomui/commit/e14dee0358e40017b9593724c83073b22a27ed8f))
+
+
+### Docs
+
+* 文档重复条目修复 ([c5a7c65](https://github.com/nomui/nomui/commit/c5a7c652b5fe88b38867cdb2d1284cbb03546a20))
+* 新增国内镜像文档 ([a6cd7ed](https://github.com/nomui/nomui/commit/a6cd7ed92a80a815f2e11de1beec4f1dfff30d6f))
+
 ## [1.1.0](https://github.com/nomui/nomui/compare/v1.0.4...v1.1.0) (2022-06-24)
 
 
