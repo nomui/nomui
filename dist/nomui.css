@@ -10450,7 +10450,7 @@ textarea .nom-textarea {
   border-radius: var(--nom-border-radius);
   cursor: pointer;
 }
-.nom-cascader > .nom-field-content .nom-control:hover {
+.nom-cascader > .nom-field-content .nom-control:not(.s-disabled):hover {
   border: 1px solid var(--nom-color-primary);
 }
 .nom-cascader > .nom-field-content .nom-control .nom-cascader-content {
@@ -10466,6 +10466,11 @@ textarea .nom-textarea {
 }
 .nom-cascader > .nom-field-content .nom-control .nom-cascader-placeholder {
   color: var(--nom-input-placeholder-color);
+}
+.s-disabled.nom-cascader > .nom-field-content .nom-control {
+  background-color: var(--nom-input-bg-disabled);
+  cursor: not-allowed !important;
+  opacity: 1;
 }
 .nom-cascader-popup {
   overflow: hidden;

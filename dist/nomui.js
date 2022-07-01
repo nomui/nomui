@@ -10642,7 +10642,7 @@ function _defineProperty2(obj, key, value) {
       const cascader = this;
       const children = [];
       const { showArrow, placeholder, separator, valueType } = this.props;
-      const { value, options } = this.props;
+      const { value, options, disabled } = this.props;
       this.internalOption = JSON.parse(JSON.stringify(options)); // this.handleOptions(this.internalOption, fieldsMapping)
       this._normalizeInternalOptions(options);
       this.flatItems(this.internalOption);
@@ -10710,13 +10710,15 @@ function _defineProperty2(obj, key, value) {
         },
       });
       this.setProps({
-        control: { children },
+        control: { children, disabled },
         attrs: {
           onmouseover() {
+            if (disabled) return;
             cascader.close.show();
             showArrow && cascader.down.hide();
           },
           onmouseleave() {
+            if (disabled) return;
             showArrow && cascader.down.show();
             cascader.close.hide();
           },
@@ -10917,6 +10919,16 @@ function _defineProperty2(obj, key, value) {
       if (this.popup) this.popup.update({ popMenu: this.getSelectedMenu() });
       if (this._content) this._content.update();
     }
+    _disable() {
+      if (this.firstRender === false) {
+        this.control.disable();
+      }
+    }
+    _enable() {
+      if (this.firstRender === false) {
+        this.control.enable();
+      }
+    }
     getSelectedMenu() {
       if (!this.selectedOption) {
         return null;
@@ -10949,6 +10961,7 @@ function _defineProperty2(obj, key, value) {
     changeOnSelect: true,
     width: 200,
     height: 250,
+    disabled: false,
   };
   Component.register(Cascader);
   class Checkbox extends Field {
