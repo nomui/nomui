@@ -43,7 +43,7 @@ class Cascader extends Field {
     const children = []
     const { showArrow, placeholder, separator, valueType } = this.props
 
-    const { value, options } = this.props
+    const { value, options, disabled } = this.props
     this.internalOption = JSON.parse(JSON.stringify(options))
     // this.handleOptions(this.internalOption, fieldsMapping)
     this._normalizeInternalOptions(options)
@@ -129,13 +129,16 @@ class Cascader extends Field {
     this.setProps({
       control: {
         children,
+        disabled,
       },
       attrs: {
         onmouseover() {
+          if (disabled) return
           cascader.close.show()
           showArrow && cascader.down.hide()
         },
         onmouseleave() {
+          if (disabled) return
           showArrow && cascader.down.show()
           cascader.close.hide()
         },
@@ -360,6 +363,18 @@ class Cascader extends Field {
     if (this._content) this._content.update()
   }
 
+  _disable() {
+    if (this.firstRender === false) {
+      this.control.disable()
+    }
+  }
+
+  _enable() {
+    if (this.firstRender === false) {
+      this.control.enable()
+    }
+  }
+
   getSelectedMenu() {
     if (!this.selectedOption) {
       return null
@@ -396,6 +411,7 @@ Cascader.defaults = {
   changeOnSelect: true,
   width: 200,
   height: 250,
+  disabled: false
 }
 
 Component.register(Cascader)
