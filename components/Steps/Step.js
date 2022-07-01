@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isFunction } from '../util/index'
 import { STATUS } from './helper'
 
 class Step extends Component {
@@ -8,13 +9,28 @@ class Step extends Component {
 
   _config() {
     // status wait process finish error
-    const { status, title, subTitle, description, onChange, index, icon: i } = this.props
+    const {
+      status,
+      title,
+      subTitle,
+      description,
+      onChange,
+      index,
+      icon: i,
+      iconRender,
+    } = this.props
 
-    const icon = this._handleIcon()
+    let icon
+    if (isFunction(iconRender)) {
+      icon = iconRender()
+    } else {
+      icon = this._handleIcon()
+    }
 
     this.setProps({
       classes: {
         [`nom-step-item-${status}`]: true,
+        'nom-step-item-icon-render-mode': isFunction(iconRender),
       },
       children: {
         classes: {
@@ -39,7 +55,8 @@ class Step extends Component {
           {
             classes: {
               'nom-step-item-icon': true,
-              'nom-step-item-icon-customer': !!i,
+              'nom-step-item-icon-customer': !!i || isFunction(iconRender),
+              'nom-step-item-icon-whole-customer': isFunction(iconRender),
             },
             children: icon,
           },
@@ -83,6 +100,7 @@ class Step extends Component {
     if (i) {
       return Component.normalizeIconProps(i)
     }
+
     if (status === FINISH) {
       return {
         component: 'Icon',
@@ -116,6 +134,7 @@ Step.defaults = {
   current: 0,
   // wait process finish error
   status: 'wait',
+  iconRender: null,
 }
 
 export default Step

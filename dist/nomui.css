@@ -10832,6 +10832,14 @@ textarea .nom-textarea {
   font-size: 2rem;
   border: none;
 }
+.nom-steps .nom-step > .nom-step-item-container > .nom-step-item-icon.nom-step-item-icon-whole-customer {
+  width: auto;
+  height: auto;
+  line-height: inherit;
+}
+.nom-steps .nom-step > .nom-step-item-container > .nom-step-item-icon.nom-step-item-icon-whole-customer .nom-progress-line {
+  min-width: 140px;
+}
 .nom-steps .nom-step > .nom-step-item-container .nom-step-item-content {
   position: relative;
   display: inline-block;
@@ -10911,6 +10919,21 @@ textarea .nom-textarea {
   flex: 1 0 auto;
   padding-left: 0;
   overflow: visible;
+}
+.nom-steps.nom-steps-vertical > .nom-step.nom-step-item-icon-render-mode.nom-step-item-finish::after {
+  background-color: var(--nom-color-primary) !important;
+}
+.nom-steps.nom-steps-vertical > .nom-step.nom-step-item-icon-render-mode .nom-step-item-tail {
+  display: none !important;
+}
+.nom-steps.nom-steps-vertical > .nom-step.nom-step-item-icon-render-mode:not(:last-child)::after {
+  display: block;
+  width: 1px;
+  height: 50px;
+  margin-left: 1rem;
+  background-color: var(--nom-step-line-color);
+  border-radius: 1px;
+  content: '';
 }
 .nom-steps.nom-steps-vertical > .nom-step > .nom-step-item-container > .nom-step-item-content > .nom-step-item-title::after {
   display: none;

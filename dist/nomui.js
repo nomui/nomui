@@ -24442,10 +24442,19 @@ function _defineProperty2(obj, key, value) {
         onChange,
         index,
         icon: i,
+        iconRender,
       } = this.props;
-      const icon = this._handleIcon();
+      let icon;
+      if (isFunction(iconRender)) {
+        icon = iconRender();
+      } else {
+        icon = this._handleIcon();
+      }
       this.setProps({
-        classes: { [`nom-step-item-${status}`]: true },
+        classes: {
+          [`nom-step-item-${status}`]: true,
+          "nom-step-item-icon-render-mode": isFunction(iconRender),
+        },
         children: {
           classes: { "nom-step-item-container": true },
           _config() {
@@ -24463,7 +24472,8 @@ function _defineProperty2(obj, key, value) {
             {
               classes: {
                 "nom-step-item-icon": true,
-                "nom-step-item-icon-customer": !!i,
+                "nom-step-item-icon-customer": !!i || isFunction(iconRender),
+                "nom-step-item-icon-whole-customer": isFunction(iconRender),
               },
               children: icon,
             },
@@ -24517,6 +24527,7 @@ function _defineProperty2(obj, key, value) {
     disabled: false,
     current: 0, // wait process finish error
     status: "wait",
+    iconRender: null,
   };
   class Steps extends Component {
     constructor(props, ...mixins) {
