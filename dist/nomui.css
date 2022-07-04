@@ -8041,6 +8041,11 @@ textarea .nom-textarea {
   background-color: rgba(var(--nom-red-5), 0.1);
   border-color: var(--nom-color-danger) !important;
 }
+.s-invalid > .nom-field-content > .nom-control > textarea {
+  color: var(--nom-color-text-0);
+  background-color: rgba(var(--nom-red-5), 0.1);
+  border-color: var(--nom-color-danger) !important;
+}
 .nom-checkbox > .nom-field-content {
   line-height: 2.28571429;
 }
