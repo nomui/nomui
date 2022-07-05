@@ -219,10 +219,10 @@ class AutoComplete extends Textbox {
 
   _doSearch(txt) {
     this.searchMode = true
-    const { onSearch, filterOption, filterName } = this.props
+    const { onSearch, filterOption } = this.props
     const options = this.internalOptions
     this.setProps({ text: txt })
-    isFunction(filterOption) && this.popup.update({ options: filterOption(txt, options, filterName) })
+    isFunction(filterOption) && this.popup.update({ options: filterOption(txt, options) })
     isFunction(onSearch) && onSearch({ text: txt, sender: this })
   }
 
@@ -262,7 +262,6 @@ class AutoComplete extends Textbox {
       if (filterName === 'select') item.text = item[textField]
     }
   }
-
 }
 
 AutoComplete.defaults = {
@@ -270,7 +269,7 @@ AutoComplete.defaults = {
   debounce: true,
   interval: 300,
   optionFields: { value: 'value' },
-  filterOption: (value, options, filterName = 'text') => options.filter((o) => (filterName === 'text' ? o.value.toString().includes(value) : o.text.toString().includes(value))),
+  filterOption: (txt, options) => { return options },
   allowClear: true,
   filterName: 'text' // text,select
 }
