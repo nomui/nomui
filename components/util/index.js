@@ -256,6 +256,18 @@ export function isDate(date) {
   return toString.call(date) === '[object Date]'
 }
 
+export function isValidDate(date) {
+  // date是纯数字的话在1000-3000区间是合法年份值
+  if (isNumeric(date) && date < 3000 && date > 999) {
+    return true
+  }
+  // date非纯数字则判断是否能转换成毫秒
+  if (!isNumeric(date) && isNumeric(Date.parse(date))) {
+    return true
+  }
+  return false
+}
+
 /**
  * 解析url中的query转换成对象
  * @param {string} url 要解析的url

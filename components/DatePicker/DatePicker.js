@@ -4,7 +4,7 @@ import List from '../List/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
 import {} from '../util/date'
-import { formatDate, isFunction, isNumeric } from '../util/index'
+import { formatDate, isFunction, isNumeric, isValidDate } from '../util/index'
 import TimePickerPanel from './TimePickerPanel'
 
 class DatePicker extends Textbox {
@@ -17,11 +17,15 @@ class DatePicker extends Textbox {
     this.dateInfo = null
     this.todayItem = null
     this.startTime = null
+    this.originValue = null
   }
 
   _config() {
     const that = this
-    this.props.value = formatDate(this.props.value, this.props.format)
+
+    if (isValidDate(this.props.value)) {
+      this.props.value = formatDate(this.props.value, this.props.format)
+    }
 
     const { disabled, extraTools } = this.props
 
@@ -31,15 +35,6 @@ class DatePicker extends Textbox {
     } else if (Array.isArray(extraTools)) {
       extra = extraTools
     }
-
-    // let currentDate = value !== null ? Date.parseString(value, format) : new Date()
-    // if (!currentDate) {
-    //   currentDate = new Date()
-    // }
-
-    // let year = currentDate.getFullYear()
-    // let month = currentDate.getMonth() + 1
-    // const day = currentDate.getDate()
 
     this.getCurrentDate()
 
@@ -132,6 +127,7 @@ class DatePicker extends Textbox {
                           _created: function () {
                             that.years = this
                           },
+                          animate: false,
                           options: this._getYears(),
                           onValueChange: (changed) => {
                             that.year = changed.newValue
