@@ -303,7 +303,7 @@ class DatePicker extends Textbox {
                 {
                   component: 'Button',
                   size: 'small',
-                  text: '今天',
+                  text: this.props.showTime ? '至今' : '今天',
                   disabled: !this.showNow,
                   renderIf: this.props.showNow,
                   onClick: () => {
