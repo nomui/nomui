@@ -321,6 +321,16 @@ function _defineProperty2(obj, key, value) {
   function isDate(date) {
     return toString.call(date) === "[object Date]";
   }
+  function isValidDate$1(date) {
+    // date是纯数字的话在1000-3000区间是合法年份值
+    if (isNumeric(date) && date < 3000 && date > 999) {
+      return true;
+    } // date非纯数字则判断是否能转换成毫秒
+    if (!isNumeric(date) && isNumeric(Date.parse(date))) {
+      return true;
+    }
+    return false;
+  }
   /**
    * 解析url中的query转换成对象
    * @param {string} url 要解析的url
@@ -420,6 +430,7 @@ function _defineProperty2(obj, key, value) {
     isPromiseLike: isPromiseLike$1,
     formatDate: formatDate,
     isDate: isDate,
+    isValidDate: isValidDate$1,
     parseToQuery: parseToQuery,
     parseToQueryString: parseToQueryString,
     isFalsy: isFalsy,
@@ -14173,10 +14184,13 @@ function _defineProperty2(obj, key, value) {
       this.dateInfo = null;
       this.todayItem = null;
       this.startTime = null;
+      this.originValue = null;
     }
     _config() {
       const that = this;
-      this.props.value = formatDate(this.props.value, this.props.format);
+      if (isValidDate$1(this.props.value)) {
+        this.props.value = formatDate(this.props.value, this.props.format);
+      }
       const { disabled, extraTools } = this.props;
       let extra = [];
       if (isFunction(extraTools)) {
@@ -14185,13 +14199,7 @@ function _defineProperty2(obj, key, value) {
           : [extraTools(this)];
       } else if (Array.isArray(extraTools)) {
         extra = extraTools;
-      } // let currentDate = value !== null ? Date.parseString(value, format) : new Date()
-      // if (!currentDate) {
-      //   currentDate = new Date()
-      // }
-      // let year = currentDate.getFullYear()
-      // let month = currentDate.getMonth() + 1
-      // const day = currentDate.getDate()
+      }
       this.getCurrentDate();
       const minTime =
         this.props.showTime && this.props.minDate
@@ -14271,6 +14279,7 @@ function _defineProperty2(obj, key, value) {
                             _created: function () {
                               that.years = this;
                             },
+                            animate: false,
                             options: this._getYears(),
                             onValueChange: (changed) => {
                               that.year = changed.newValue;
@@ -14427,7 +14436,7 @@ function _defineProperty2(obj, key, value) {
                   {
                     component: "Button",
                     size: "small",
-                    text: "此刻",
+                    text: this.props.showTime ? "至今" : "今天",
                     disabled: !this.showNow,
                     renderIf: this.props.showNow,
                     onClick: () => {
