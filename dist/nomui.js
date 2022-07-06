@@ -9124,36 +9124,28 @@ function _defineProperty2(obj, key, value) {
   var AutoCompleteListItemMixin = {
     _config: function () {
       const { onSelect, onUnselect } = this.props;
+      const {
+        filterName,
+      } = this.parent.parent.parent.autoCompleteControl.props;
       this.setProps({
         selectable: {
           byClick: true,
           canRevert: this.list.autoCompleteControl.props.multiple === false,
         },
         onSelect: () => {
-          const { autoCompleteControl } = this.list; // const selectProps = selectControl.props
-          // const autoCompleteProps = autoCompleteControl.props
+          const { autoCompleteControl } = this.list;
           const autoCompleteOption = {
-            value: this.props.value, // text: this.props.text,
+            value: filterName === "select" ? this.props.text : this.props.value,
             option: this.props,
           };
           autoCompleteControl.input.update(autoCompleteOption);
           autoCompleteControl.props.animate &&
             autoCompleteControl.popup.animateHide();
           !autoCompleteControl.props.animate &&
-            autoCompleteControl.popup.hide(); // if (selectProps.multiple === false) {
-          //   selectControl.selectedSingle.update(selectedOption)
-          //   selectControl.popup.hide()
-          // } else {
-          //   selectControl.selectedMultiple.appendItem(selectedOption)
-          // }
+            autoCompleteControl.popup.hide();
           this._callHandler(onSelect);
         },
         onUnselect: () => {
-          // const { selectControl } = this.list
-          // const selectProps = selectControl.props
-          // if (selectProps.multiple === true) {
-          //   selectControl.selectedMultiple.removeItem(this.key)
-          // }
           this._callHandler(onUnselect);
         },
       });
@@ -9169,7 +9161,13 @@ function _defineProperty2(obj, key, value) {
             return this.props.value;
           },
           _config: function () {
-            this.setProps({ children: this.props.value });
+            const {
+              filterName,
+            } = this.parent.parent.parent.autoCompleteControl.props;
+            this.setProps({
+              children:
+                filterName === "text" ? this.props.value : this.props.text,
+            });
           },
         },
       };
@@ -9181,13 +9179,9 @@ function _defineProperty2(obj, key, value) {
       this.autoCompleteControl.optionList = this;
     }
     _config() {
-      // const { options } = this.autoCompleteControl.props
-      // const { optionDefaults, options } = this.props
       const { searchable, options: aops } = this.autoCompleteControl.props;
       const { optionDefaults, options: sops } = this.props;
-      const value = this.autoCompleteControl.props.value
-        ? this.autoCompleteControl.props.value
-        : "";
+      const value = this.autoCompleteControl.props.value || "";
       const options = searchable ? aops : sops;
       this.setProps({
         items: options || [],
@@ -9274,44 +9268,7 @@ function _defineProperty2(obj, key, value) {
           body: { children: autoCompletePopupRef._getOptionList() },
         },
       });
-      super._config(); // if (opts && opts.length) {
-      //   this.setProps({
-      //     attrs: {
-      //       style: {
-      //         width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-      //       },
-      //     },
-      //     children: {
-      //       component: Layout,
-      //       body: {
-      //         children: {
-      //           component: AutoCompleteList,
-      //           options: opts,
-      //         },
-      //       },
-      //     },
-      //   })
-      // } else {
-      //   this.setProps({
-      //     attrs: {
-      //       style: {
-      //         width: `${this.autoCompleteControl.control.offsetWidth()}px`,
-      //       },
-      //     },
-      //     children: {
-      //       component: Layout,
-      //       body: {
-      //         styles: {
-      //           padding: 1,
-      //         },
-      //         children: {
-      //           component: Empty,
-      //         },
-      //       },
-      //     },
-      //   })
-      // }
-      // super._config()
+      super._config();
     }
     animateHide() {
       if (!this.element) return false;
@@ -9344,14 +9301,17 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _getOptionList() {
-      const { options } = this.props;
+      const options = this.autoCompleteControl.internalOptions;
       const {
         searchable,
         value,
         filterOption,
+        filterName,
+        text = "",
       } = this.autoCompleteControl.props;
+      const _value = filterName === "text" ? value : text;
       const opts = isFunction(filterOption)
-        ? filterOption(value || "", options)
+        ? filterOption(_value || "", options)
         : options;
       if (searchable) {
         return { component: AutoCompleteList, options: opts };
@@ -9383,6 +9343,7 @@ function _defineProperty2(obj, key, value) {
       this.capsLock = false;
       this.searchMode = false;
       this.clearContent = true;
+      this.internalOptions = {};
     }
     _rendered() {
       const { searchable } = this.props;
@@ -9406,6 +9367,7 @@ function _defineProperty2(obj, key, value) {
       const autoCompleteRef = this;
       const { allowClear, options } = this.props;
       this._normalizeSearchable();
+      this._normalizeInternalOptions(options);
       if (allowClear && this.currentValue) {
         this.setProps({
           clearProps: {
@@ -9458,7 +9420,12 @@ function _defineProperty2(obj, key, value) {
         }
         this.placeholder = autoComplete.placeholder || "";
         autoComplete.searchMode = false;
-      });
+        const { filterName } = autoComplete.props;
+        if (filterName === "select" && !autoComplete._getValue()) {
+          autoComplete.setProps({ text: "" });
+          autoComplete.clear();
+        }
+      }); // 中文介入
       this.input.element.addEventListener("compositionstart", function () {
         autoComplete.capsLock = true;
       });
@@ -9468,15 +9435,70 @@ function _defineProperty2(obj, key, value) {
       });
     }
     _getValue() {
-      return super._getValue();
+      const { options, filterName, optionFields } = this.props;
+      const inputText = this._getInputText();
+      if (filterName === "select") {
+        const currOption = options.find(
+          (item) => item[optionFields.text] === inputText
+        );
+        return currOption ? currOption[optionFields.value] : null;
+      }
+      if (inputText === "") {
+        return null;
+      }
+      return inputText;
+    }
+    _getInputText() {
+      const { trimValue } = this.props;
+      let inputText = this.getText();
+      inputText = trimValue ? inputText.trimLeft().trimRight() : inputText;
+      return inputText;
     }
     _setValue(value, options) {
-      super._setValue(value, options);
+      if (options === false) {
+        options = { triggerChange: false };
+      } else {
+        options = extend$1({ triggerChange: true }, options);
+      }
+      const { filterName, options: opt, optionFields } = this.props;
+      let _value = value;
+      if (filterName === "select") {
+        const selectedOption = opt.find((e) => e[optionFields.value] === value);
+        if (selectedOption) {
+          _value = selectedOption[optionFields.text];
+        } else {
+          this.input.setText("");
+          this.currentValue = null;
+          super._onValueChange();
+          return;
+        }
+      }
+      this.input.setText(_value);
+      const newValue = this.getValue();
+      this.oldValue = this.currentValue;
+      if (options.triggerChange) {
+        if (newValue !== this.oldValue) {
+          super._onValueChange();
+        }
+      }
+      this.currentValue = newValue;
+    }
+    getSelectedOption() {
+      const { options, value, optionFields } = this.props;
+      if (value) {
+        const currOption = options.find(
+          (item) => item[optionFields.value] === value
+        );
+        return currOption;
+      }
+      return null;
     }
     _valueChange(changed) {
       changed.newValue
         ? this.props.allowClear && this.clearIcon.show()
         : this.props.allowClear && this.clearIcon.hide();
+      const { filterName } = this.props;
+      filterName === "select" && this.setProps({ text: this._getInputText() });
     }
     blur() {
       super.blur();
@@ -9503,7 +9525,9 @@ function _defineProperty2(obj, key, value) {
     }
     _doSearch(txt) {
       this.searchMode = true;
-      const { onSearch, filterOption, options } = this.props;
+      const { onSearch, filterOption } = this.props;
+      const options = this.internalOptions;
+      this.setProps({ text: txt });
       isFunction(filterOption) &&
         this.popup.update({ options: filterOption(txt, options) });
       isFunction(onSearch) && onSearch({ text: txt, sender: this });
@@ -9519,14 +9543,36 @@ function _defineProperty2(obj, key, value) {
         });
       }
     }
+    _normalizeInternalOptions(options) {
+      if (!Array.isArray(options) || !options.length) {
+        this.internalOptions = [];
+        return;
+      }
+      const { optionFields, filterName } = this.props;
+      this.internalOptions = clone$1(options);
+      this.handleOptions(this.internalOptions, optionFields, filterName);
+    }
+    handleOptions(options, optionFields, filterName) {
+      const { text: textField, value: valueField } = optionFields;
+      if (!Array.isArray(options)) return [];
+      const internalOptions = options;
+      for (let i = 0; i < internalOptions.length; i++) {
+        const item = internalOptions[i];
+        item.value = item[valueField];
+        if (filterName === "select") item.text = item[textField];
+      }
+    }
   }
   AutoComplete.defaults = {
     options: [],
     debounce: true,
     interval: 300,
-    filterOption: (value, options) =>
-      options.filter((o) => o.value.toString().includes(value)),
+    optionFields: { value: "value" },
+    filterOption: (txt, options) => {
+      return options;
+    },
     allowClear: true,
+    filterName: "text", // text,select
   };
   Component.register(AutoComplete);
   class Avatar extends Component {
@@ -13265,6 +13311,7 @@ function _defineProperty2(obj, key, value) {
       const children = [];
       this._normalizeInternalOptions(options);
       this._normalizeSearchable();
+      console.log(this.props);
       this.setProps({
         selectedSingle: {
           _created() {
@@ -13525,6 +13572,7 @@ function _defineProperty2(obj, key, value) {
         return this.currentValue;
       }
       const selected = this.getSelectedOption();
+      console.log(selected);
       if (selected !== null) {
         if (Array.isArray(selected) && selected.length > 0) {
           const vals = selected.map(function (item) {

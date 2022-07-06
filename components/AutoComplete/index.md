@@ -16,3 +16,7 @@
 | interval | 节流事件调用的间隔(单位毫秒) | `number` | `300` |
 | filterOption | 是否根据输入项进行筛选。其为一个函数时，会接收 inputValue option 两个参数，当 option 符合筛选条件时，应返回 true，反之则返回 false | `function(input,option)` | true |
 | onSearch | 搜索文本值变化时的回调 | `function(inputValue)` | - |
+| filterName | 规定AutoComplete是按照text模式还是select模式 | `string` | `text` |
+| getSelectedOption | 获取选中的对象 | `function()` | - |
+| optionFields | 自定义 options 中 text value 的字段 | `object` | `{ value: value, }` |
+

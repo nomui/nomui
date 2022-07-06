@@ -27,7 +27,6 @@ class RadioList extends Field {
     this.setProps({
       control: this.props.optionList,
     })
-
     super._config()
   }
 

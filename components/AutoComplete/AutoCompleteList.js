@@ -12,8 +12,9 @@ class AutoCompleteList extends List {
           return this.props.value
         },
         _config: function () {
+          const { filterName } = this.parent.parent.parent.autoCompleteControl.props
           this.setProps({
-            children: this.props.value,
+            children: filterName === 'text' ? this.props.value : this.props.text,
           })
         },
       },
@@ -24,20 +25,15 @@ class AutoCompleteList extends List {
 
   _created() {
     super._created()
-
     this.autoCompleteControl = this.parent.parent.parent.autoCompleteControl
     this.autoCompleteControl.optionList = this
   }
 
   _config() {
-    // const { options } = this.autoCompleteControl.props
-    // const { optionDefaults, options } = this.props
     const { searchable, options: aops } = this.autoCompleteControl.props
     const { optionDefaults, options: sops } = this.props
-    const value = this.autoCompleteControl.props.value ? this.autoCompleteControl.props.value : ''
-
+    const value = this.autoCompleteControl.props.value || ''
     const options = searchable ? aops : sops
-
     this.setProps({
       items: options || [],
       itemDefaults: n(null, optionDefaults, null, [AutoCompleteListItemMixin]),
