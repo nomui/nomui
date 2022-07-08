@@ -4,9 +4,9 @@ define([], function () {
     file: 'window',
     demo: function () {
       return {
-        component: 'Cols',
-        align: 'start',
-        items: [
+        component: 'Flex',
+        // align: 'start',
+        cols: [
           {
             component: 'Anchor',
             sticky: true,

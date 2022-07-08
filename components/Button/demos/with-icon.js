@@ -4,23 +4,24 @@ define([], function () {
     file: 'with-icon',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
+            component: 'Button',
             text: 'Add',
             icon: 'down',
           },
           {
+            component: 'Button',
             icon: 'up',
           },
           {
+            component: 'Button',
             text: 'Right icon',
             rightIcon: 'info-circle',
           },
         ],
-        itemDefaults: {
-          component: 'Button',
-        },
       }
     },
   }

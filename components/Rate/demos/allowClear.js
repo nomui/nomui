@@ -5,11 +5,14 @@ define([], function () {
     description: '支持允许或者禁用清除。',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            align: 'center',
+            gap: 'small',
+            cols: [
               {
                 component: 'Rate',
                 value: 3,
@@ -18,8 +21,10 @@ define([], function () {
             ],
           },
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            align: 'center',
+            cols: [
               {
                 component: 'Rate',
                 allowClear: false,

@@ -14,6 +14,7 @@ define([], function () {
             totalCount: 100,
             onPageChange: function (e) {
               e.sender.update(e)
+              // eslint-disable-next-line
               console.log(e)
             },
           },

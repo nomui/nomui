@@ -5,8 +5,8 @@ define([], function () {
     file: 'justify',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        rows: [
           {
             component: 'RadioList',
             uistyle: 'button',
@@ -31,6 +31,7 @@ define([], function () {
             totalCount: 100,
             onPageChange: function (e) {
               e.sender.update(e)
+              // eslint-disable-next-line
               console.log(e)
             },
           },

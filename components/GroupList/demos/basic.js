@@ -16,6 +16,7 @@ define([], function () {
               window.group = c
             },
             onValueChange: (args) => {
+              // eslint-disable-next-line
               console.log(args)
             },
             groupDefaults: {

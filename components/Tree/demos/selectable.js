@@ -14,11 +14,14 @@ define([], function () {
       }
 
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            align: 'center',
+            cols: [
               {
                 component: 'Checkbox',
                 text: '点击节点选中',

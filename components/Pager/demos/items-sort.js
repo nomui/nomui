@@ -12,8 +12,8 @@ define([], function () {
       '可通过配置`itemsSort`来实现分页内部组件的的顺序,`count: 数据总条数`,`pages: 分页数List`, `sizes: 分页大小Select`',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        rows: [
           {
             component: 'RadioList',
             uistyle: 'button',
@@ -37,6 +37,7 @@ define([], function () {
             totalCount: 100,
             onPageChange: function (e) {
               e.sender.update(e)
+              // eslint-disable-next-line
               console.log(e)
             },
           },

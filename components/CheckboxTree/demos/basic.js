@@ -41,6 +41,7 @@ define([], function () {
               },
             ],
             onValueChange: ({ oldValue, newValue }) => {
+              // eslint-disable-next-line
               console.log(oldValue, newValue)
             },
           },

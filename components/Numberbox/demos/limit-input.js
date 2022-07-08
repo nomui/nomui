@@ -27,6 +27,7 @@ define([], function () {
                 type: 'Primary',
                 onClick: function () {
                   group.validate()
+                  // eslint-disable-next-line
                   console.log(group.getValue())
                 },
               },

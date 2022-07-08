@@ -21,6 +21,7 @@ define([], function () {
           action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
           onChange: function ({ file, fileList }) {
             if (file.status !== 'uploading') {
+              // eslint-disable-next-line
               console.log(getMsg(file.status, file.name))
             }
 

@@ -17,12 +17,12 @@ define([], function () {
       ]
 
       return {
-        component: 'Rows',
-        gutter: 'md',
-        items: [
+        component: 'Flex',
+        gap: 'medium',
+        rows: [
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            cols: [
               {
                 component: 'RadioList',
                 options: [
@@ -100,10 +100,13 @@ define([], function () {
             ],
           },
           {
-            component: 'Cols',
-            align: 'stretch',
+            // component: 'Cols',
+            // align: 'stretch',
+            // fills: true,
+            component: 'Flex',
+            gap: 'medium',
             fills: true,
-            items: [
+            cols: [
               {
                 component: 'Panel',
                 styles: {

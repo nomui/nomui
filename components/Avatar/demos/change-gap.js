@@ -10,8 +10,10 @@ define([], function () {
       let userAvatar = null
 
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        align: 'center',
+        cols: [
           {
             component: 'Avatar',
             ref: (c) => {

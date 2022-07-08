@@ -7,11 +7,14 @@ define([], function () {
       let treeRef = null
 
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            align: 'center',
+            cols: [
               {
                 component: 'Checkbox',
                 text: '显示全选',
@@ -62,6 +65,7 @@ define([], function () {
                 component: 'Button',
                 text: '获取选中节点数据（树形）',
                 onClick: () => {
+                  // eslint-disable-next-line
                   console.log(treeRef.getCheckedNodesData())
                 },
               },

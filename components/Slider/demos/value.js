@@ -7,8 +7,9 @@ define([], function () {
       let sliderRef = null
       const VALID_NUMBER = /^([0-9]{1,2}|100)$/
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Form',
             ref: (c) => {
@@ -45,8 +46,9 @@ define([], function () {
             ],
           },
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            cols: [
               {
                 component: 'Button',
                 text: 'RESET',

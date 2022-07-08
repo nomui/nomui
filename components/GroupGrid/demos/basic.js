@@ -18,6 +18,7 @@ define([], function () {
             name: 'educations',
             label: '教育经历',
             onValueChange: (args) => {
+              // eslint-disable-next-line
               console.log(args)
             },
             groupDefaults: {
@@ -48,6 +49,7 @@ define([], function () {
             component: 'Button',
             text: 'getValue',
             onClick: () => {
+              // eslint-disable-next-line
               console.log(formRef.getValue())
             },
           },

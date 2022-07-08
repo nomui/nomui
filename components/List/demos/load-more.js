@@ -22,8 +22,9 @@ define([], function () {
     file: 'load-more',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'List',
             gutter: 'md',

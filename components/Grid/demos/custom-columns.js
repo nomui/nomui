@@ -176,14 +176,16 @@ define([], function () {
       ]
 
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Grid',
             ref: (com) => {
               gridRef = com
             },
             onSort: (data) => {
+              // eslint-disable-next-line
               console.log(data)
             },
             columns: c,
@@ -194,6 +196,7 @@ define([], function () {
               selected: s,
               cache: 'grid-custome-columns',
               callback: (param) => {
+                // eslint-disable-next-line
                 console.log('selected:', param)
               },
             },

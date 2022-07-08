@@ -5,8 +5,9 @@ define([], function () {
     description: '可以自定义图标颜色及背景色',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
             component: 'Avatar',
             text: '小马',

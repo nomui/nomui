@@ -5,8 +5,8 @@ define([], function () {
     file: 'newPopup',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        rows: [
           {
             component: 'Button',
             text: '点击弹出',

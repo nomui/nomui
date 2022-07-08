@@ -5,6 +5,7 @@ define([], function () {
     attrs: { style: { marginRight: '5px' } },
     type,
     onClick: () => {
+      // eslint-disable-next-line
       console.log(text)
     },
   })

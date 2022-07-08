@@ -8,9 +8,11 @@ define([], function () {
         component: 'MultilineTextbox',
         value: '多行文本',
         onValueChange: (e) => {
+          // eslint-disable-next-line
           console.log(e.newValue)
         },
         onBlur: (args) => {
+          // eslint-disable-next-line
           console.log(args.value)
         },
       }

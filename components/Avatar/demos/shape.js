@@ -5,15 +5,18 @@ define([], function () {
     file: 'shape',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
+            component: 'Avatar',
             text: '小马',
             styles: {
               shape: 'round',
             },
           },
           {
+            component: 'Avatar',
             text: '小马',
             styles: {
               shape: 'square',
@@ -26,9 +29,6 @@ define([], function () {
             },
           },
         ],
-        itemDefaults: {
-          component: 'Avatar',
-        },
       }
     },
   }

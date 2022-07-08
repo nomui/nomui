@@ -67,11 +67,13 @@ define([], function () {
       ]
 
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            cols: [
               {
                 component: 'Button',
                 text: '获取选中行',
@@ -96,6 +98,7 @@ define([], function () {
                   gridRef.update({
                     rowCheckable: {
                       checkboxRender: ({ row, rowData, index }) => {
+                        // eslint-disable-next-line
                         console.log('🚀 ~ file: row- 99 ~ row', row)
                         const hidden = index % 2 === 0
                         const value = index % 2 === 1 && rowData.id !== 0

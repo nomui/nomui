@@ -5,8 +5,9 @@ define([], function () {
     description: '通过 action prop 来配置自定义的操作',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
             component: 'Button',
             text: '自定义操作',
@@ -14,7 +15,8 @@ define([], function () {
               onclick: function () {
                 new nomui.Alert({
                   title: 'hello',
-                  _config: function () {  // 在 _config 里 setProps，这样好拿到组件自身的引用，供后续事件回调函数使用
+                  _config: function () {
+                    // 在 _config 里 setProps，这样好拿到组件自身的引用，供后续事件回调函数使用
                     const alertInst = this
 
                     this.setProps({
@@ -27,13 +29,14 @@ define([], function () {
                           component: 'Button',
                           text: '确定',
                           onClick: () => {
+                            // eslint-disable-next-line
                             alert('好的')
                             alertInst.close()
-                          }
-                        }
-                      ]
+                          },
+                        },
+                      ],
                     })
-                  }
+                  },
                 })
               },
             },
@@ -45,7 +48,8 @@ define([], function () {
               onclick: function () {
                 new nomui.Alert({
                   title: 'hello',
-                  _config: function () {  // 在 _config 里 setProps，这样好拿到组件自身的引用，供后续事件回调函数使用
+                  _config: function () {
+                    // 在 _config 里 setProps，这样好拿到组件自身的引用，供后续事件回调函数使用
                     const alertInst = this
 
                     this.setProps({
@@ -62,12 +66,12 @@ define([], function () {
                             onClick: () => {
                               alert('好的')
                               alertInst.close()
-                            }
-                          }
-                        ]
-                      }
+                            },
+                          },
+                        ],
+                      },
                     })
-                  }
+                  },
                 })
               },
             },

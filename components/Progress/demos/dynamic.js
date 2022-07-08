@@ -8,8 +8,9 @@ define([], function () {
       return {
         children: [
           {
-            component: 'Rows',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            rows: [
               {
                 children: [
                   {
@@ -53,8 +54,9 @@ define([], function () {
                 ],
               },
               {
-                component: 'Rows',
-                items: [
+                component: 'Flex',
+                gap: 'small',
+                rows: [
                   {
                     component: 'Progress',
                     ref: (c) => {
