@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/nomui/nomui/compare/v1.1.1...v1.1.2) (2022-07-08)
+
+
+### Bug Fixes
+
+* autocomplete下拉信息从选中信息改为全部信息 ([e8ea65e](https://github.com/nomui/nomui/commit/e8ea65e49f46e98044aa04900c9df4b2d902539a))
+
+
+### Performance Improvements
+
+* **DatePicker:** 优化对非日期值的支持 ([daac7c7](https://github.com/nomui/nomui/commit/daac7c7f1899557353528c8fa58c2c9b0736bd9f))
+
 ### [1.1.1](https://github.com/nomui/nomui/compare/v1.1.0...v1.1.1) (2022-07-01)
 
 
