@@ -1,12 +1,13 @@
 define(['./data.js'], function (options) {
   let cascader = null
   return {
-    title: '选择即改变',
+    title: '选择及改变',
     file: 'partial',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Cascader',
             name: 'treatment',
@@ -31,8 +32,9 @@ define(['./data.js'], function (options) {
             options,
           },
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            cols: [
               {
                 component: 'Button',
                 text: 'Set value to aaa',

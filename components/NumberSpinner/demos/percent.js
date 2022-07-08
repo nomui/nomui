@@ -4,8 +4,9 @@ define([], function () {
     file: 'percent',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'NumberSpinner',
             label: '百分比微调器',

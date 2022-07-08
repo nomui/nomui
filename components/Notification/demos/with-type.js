@@ -5,8 +5,9 @@ define([], function () {
     demo: function () {
       return {
         children: {
-          component: 'Cols',
-          items: [
+          component: 'Flex',
+          gap: 'small',
+          cols: [
             {
               component: 'Button',
               text: 'success',

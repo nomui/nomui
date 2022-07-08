@@ -5,8 +5,9 @@ define([], function () {
     demo: function () {
       let select = null
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Select',
             searchable: {
@@ -30,8 +31,9 @@ define([], function () {
             },
           },
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            cols: [
               {
                 component: 'Button',
                 text: 'Get Value',

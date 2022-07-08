@@ -6,8 +6,9 @@ define([], function () {
       '通过prefix, suffix配置前后缀文案; leftIcon, rightIcon配置左右图标。`Icon优先级更高`',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Textbox',
             leftIcon: 'user',

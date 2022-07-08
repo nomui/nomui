@@ -4,8 +4,9 @@ define([], function () {
     file: 'inline',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Message',
             content: '三秒以后自动消失',

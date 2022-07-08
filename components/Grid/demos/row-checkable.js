@@ -5,11 +5,13 @@ define([], function () {
     demo: function () {
       let gridRef = null
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            cols: [
               {
                 component: 'Button',
                 text: '获取选中行',

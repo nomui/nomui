@@ -48,6 +48,7 @@ define([], function () {
                   type: 'link',
                   text: '点击按钮查看详情',
                   onClick({ event }) {
+                    // eslint-disable-next-line
                     console.log('tools作为函数传入', node, tree)
                     event.stopPropagation()
                   },

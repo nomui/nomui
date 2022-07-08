@@ -5,9 +5,9 @@ define([], function () {
     demo: function () {
       return {
         children: {
-          component: 'Cols',
-          strechIndex: 0,
-          items: [
+          component: 'Flex',
+          // strechIndex: 0,
+          rows: [
             {
               component: 'Button',
               text: '打开通知窗',

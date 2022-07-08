@@ -5,11 +5,11 @@ define([], function () {
     demo: function () {
       let rowsRef = null
       return {
-        component: 'Rows',
+        component: 'Flex',
         ref: (c) => {
           rowsRef = c
         },
-        items: [
+        rows: [
           {
             component: 'Select',
             popupContainer: () => {

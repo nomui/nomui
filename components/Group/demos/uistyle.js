@@ -6,8 +6,9 @@ define([], function () {
       let group = null
 
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Cols',
             items: [

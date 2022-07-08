@@ -6,11 +6,13 @@ define([], function () {
       let maskInfoFieldRef
 
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            cols: [
               {
                 component: 'Button',
                 text: `setValue('17788889999')`,

@@ -4,8 +4,8 @@ define([], function () {
     file: 'link',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        rows: [
           {
             component: 'Button',
             text: '链接到图标示例',

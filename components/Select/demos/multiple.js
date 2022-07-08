@@ -4,8 +4,9 @@ define([], function () {
     file: 'multiple',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Select',
             options: [

@@ -6,12 +6,14 @@ define([], function () {
       let table = null
 
       return {
-        component: 'Rows',
+        component: 'Flex',
+        gap: 'medium',
         gutter: 'md',
-        items: [
+        rows: [
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            cols: [
               {
                 component: 'RadioList',
                 options: [

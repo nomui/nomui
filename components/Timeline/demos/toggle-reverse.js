@@ -8,8 +8,9 @@ define([], function () {
       let reverseTimeLine = null
 
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Timeline',
             pending: 'Recording...',

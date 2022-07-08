@@ -5,8 +5,8 @@ define([], function () {
     demo: function () {
       return {
         children: {
-          component: 'Cols',
-          items: [
+          component: 'Flex',
+          rows: [
             {
               component: 'Button',
               text: '自定义宽度200px',

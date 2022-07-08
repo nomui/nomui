@@ -12,7 +12,9 @@ define([], function () {
         },
         rowSortable: {
           onEnd: () => {
+            // eslint-disable-next-line
             console.log(grid.getDataKeys()) // 获取keyField对应新排序的数组
+            // eslint-disable-next-line
             console.log(grid.getData()) // 获取整个data对应新排序的数组
           },
         },

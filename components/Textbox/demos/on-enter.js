@@ -8,6 +8,7 @@ define([], function () {
           component: 'Textbox',
           placeholder: '回车触发回调',
           onEnter: (args) => {
+            // eslint-disable-next-line
             console.log(args)
           },
         },

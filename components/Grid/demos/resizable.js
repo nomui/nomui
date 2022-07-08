@@ -41,8 +41,9 @@ define([], function () {
           }))
       }
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Grid',
             key: () => 'resizable',
@@ -77,6 +78,7 @@ define([], function () {
                 component: 'Button',
                 text: '重置列宽',
                 onClick: () => {
+                  // eslint-disable-next-line
                   console.log('🚀 ~ file: resizable.js ~ line 70 ~ args', selectRef.getValue())
                   gridRef.resetColsWidth(selectRef.getValue())
                 },

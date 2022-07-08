@@ -4,8 +4,9 @@ define([], function () {
     file: 'extra-options',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             children: '某些特殊需求，数据不在options列表内，但是要可以显示跟取值，可以这样配置。',
           },

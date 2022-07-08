@@ -12,8 +12,8 @@ define(['./data.js'], function (options) {
         component: 'Field',
         label: '',
         control: {
-          component: 'Cols',
-          items: [
+          component: 'Flex',
+          cols: [
             {
               component: 'Button',
               type: 'primary',

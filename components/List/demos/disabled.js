@@ -5,8 +5,9 @@ define([], function () {
     file: 'disabled',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'List',
             ref: (c) => {
@@ -34,6 +35,7 @@ define([], function () {
             },
             disabledItems: [1, 3],
             onItemSelectionChange({ sender }) {
+              // eslint-disable-next-line
               console.log(sender)
             },
           },

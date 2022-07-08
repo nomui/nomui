@@ -20,11 +20,12 @@ define([], function () {
             },
           },
           {
-            component: 'Cols',
+            component: 'Flex',
             styles: {
               padding: '1',
             },
-            items: [
+            gap: 'small',
+            cols: [
               {
                 component: 'Button',
                 text: '获得焦点',

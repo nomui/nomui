@@ -4,8 +4,9 @@ define([], function () {
     file: 'default-value',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
             component: 'PartialDatePicker',
             value: '2010',

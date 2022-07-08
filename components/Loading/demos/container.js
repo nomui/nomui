@@ -6,8 +6,9 @@ define([], function () {
       let container = null
 
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             ref: (c) => {
               container = c

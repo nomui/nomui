@@ -4,8 +4,9 @@ define([], function () {
     file: 'basic',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
             component: 'Button',
             text: '普通按钮',
