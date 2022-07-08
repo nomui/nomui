@@ -26,7 +26,7 @@ class Image extends Component {
             style: {
               width: `${iconWidth}px`,
               height: `${iconHeight}px`,
-              'font-size': `${size}rem`,
+              'font-size': `${size < 3 ? 3 : size}rem`,
             },
           },
         },
