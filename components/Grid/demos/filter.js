@@ -16,6 +16,7 @@ define([], function () {
           mygrid = c
         },
         onFilter: (data) => {
+          // eslint-disable-next-line
           console.log(data)
           mygrid.update({ data: mygrid.props.data.reverse() })
         },

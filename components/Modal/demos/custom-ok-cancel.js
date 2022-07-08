@@ -5,8 +5,9 @@ define([], function () {
     demo: function () {
       let okButtonRef = null
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
             component: 'Button',
             text: '自定义确定，取消按钮的文本',

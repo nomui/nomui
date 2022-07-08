@@ -5,8 +5,9 @@ define([], function () {
     demo: function () {
       let picker = null
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
             component: 'PartialDatePicker',
             placeholder: '选择周',
@@ -20,6 +21,7 @@ define([], function () {
             component: 'Button',
             text: '获取日期',
             onClick: () => {
+              // eslint-disable-next-line
               console.log(picker.getDateString('yyyy-MM-dd'))
             },
           },

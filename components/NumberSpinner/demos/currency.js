@@ -4,8 +4,9 @@ define([], function () {
     file: 'currency',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'NumberSpinner',
             label: '人民币',

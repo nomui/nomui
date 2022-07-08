@@ -4,8 +4,8 @@ define([], function () {
     file: 'tooltip',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        cols: [
           {
             component: 'MaskInfo',
             type: 'mail',

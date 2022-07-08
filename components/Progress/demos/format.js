@@ -7,8 +7,8 @@ define([], function () {
       return {
         children: [
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            cols: [
               {
                 component: 'Progress',
                 type: 'circle',

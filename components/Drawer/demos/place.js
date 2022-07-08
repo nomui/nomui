@@ -53,37 +53,6 @@ define([], function () {
               })
             },
           },
-          // {
-          //   component: 'Drawer',
-          //   ref: (c) => {
-          //     drawerRef = c
-          //   },
-          //   placeGlobal: false,
-          //   maskClosable: false,
-          //   zIndex: 100,
-          //   width: '80%',
-          //   title: '这是一个不允许点击遮罩关闭的抽屉',
-          //   content: {
-          //     component: 'Form',
-          //     fields: [
-          //       {
-          //         component: 'Textbox',
-          //         name: 'name',
-          //         label: '姓名',
-          //       },
-          //       {
-          //         component: 'Numberbox',
-          //         name: 'age',
-          //         label: '年龄',
-          //       },
-          //       {
-          //         component: 'Textbox',
-          //         name: 'email',
-          //         label: 'Email',
-          //       },
-          //     ],
-          //   },
-          // },
         ],
       }
     },

@@ -4,8 +4,9 @@ define([], function () {
     file: 'min-date',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
             component: 'PartialDatePicker',
             minDate: '2010',

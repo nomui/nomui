@@ -4,31 +4,34 @@ define([], function () {
     file: 'shape',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
+            component: 'Button',
             text: 'normal',
           },
           {
+            component: 'Button',
             text: 'round',
             shape: 'round',
           },
           {
+            component: 'Button',
             text: 'circle',
             shape: 'circle',
           },
           {
+            component: 'Button',
             icon: 'plus',
             shape: 'round',
           },
           {
+            component: 'Button',
             icon: 'edit',
             shape: 'circle',
           },
         ],
-        itemDefaults: {
-          component: 'Button',
-        },
       }
     },
   }

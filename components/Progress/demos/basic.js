@@ -6,8 +6,9 @@ define([], function () {
       return {
         children: [
           {
-            component: 'Rows',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            rows: [
               {
                 component: 'Progress',
                 percent: 30,

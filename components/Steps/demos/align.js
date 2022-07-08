@@ -4,8 +4,9 @@ define([], function () {
     file: 'align',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'StaticText',
             value: '水平布局',

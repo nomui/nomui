@@ -4,8 +4,8 @@ define([], function () {
     file: 'basic',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        rows: [
           {
             component: 'Group',
             fields: [

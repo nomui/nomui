@@ -6,8 +6,9 @@ define([], function () {
       '可以将星星替换为其他字符，比如字母，数字，字体图标甚至中文。可以传递函数，参数为({index})',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           { component: 'Rate', allowHalf: true, character: 'A', value: 2 },
           { component: 'Rate', allowHalf: true, character: '好', value: 3 },
           { component: 'Rate', allowHalf: true, character: ({ index }) => index + 1 },

@@ -5,8 +5,8 @@ define([], function () {
     file: 'with-icon',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        rows: [
           {
             component: 'Avatar',
             icon: 'user',

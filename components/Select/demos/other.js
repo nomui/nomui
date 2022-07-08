@@ -5,8 +5,9 @@ define([], function () {
     demo: function () {
       let formRef = null
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Form',
             ref: (c) => {

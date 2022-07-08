@@ -5,8 +5,9 @@ define([], function () {
     demo: function () {
       let selectRef = null
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'RadioList',
             uistyle: 'button',

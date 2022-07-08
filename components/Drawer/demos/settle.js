@@ -3,7 +3,6 @@ define([], function () {
     title: '抽屉方向',
     file: 'settle',
     demo: function () {
-      // let drawerRef = null
       const buttons = [
         { text: '上', settle: 'top' },
         { text: '右', settle: 'right' },
@@ -11,8 +10,10 @@ define([], function () {
         { text: '左', settle: 'left' },
       ]
       return {
-        component: 'Container',
-        children: [
+        // component: 'Container',
+        component: 'Flex',
+        justify: 'center',
+        cols: [
           {
             component: 'Cols',
             justify: 'center',
@@ -21,7 +22,6 @@ define([], function () {
               type: 'primary',
               text,
               onClick: () => {
-                // drawerRef.update({ visible: true, settle, title: `${text}边弹出` })
                 new nomui.Drawer({ settle, title: `${text}边弹出` })
               },
             })),

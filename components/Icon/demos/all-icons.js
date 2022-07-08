@@ -22,8 +22,8 @@ define([], function () {
 
       return {
         children: {
-          component: 'Rows',
-          items: catArray,
+          component: 'Flex',
+          rows: catArray,
           itemDefaults: {
             _config: (catInst) => {
               catInst.setProps({

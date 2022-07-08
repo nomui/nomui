@@ -27,8 +27,8 @@ define([], function () {
       ]
 
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        rows: [
           {
             component: 'Menu',
             attrs: {

@@ -34,6 +34,7 @@ define([], function () {
                   data: data.data,
                 })
               })
+              // eslint-disable-next-line
               console.log(args, '更新了data顺序')
             },
             ref: (c) => {

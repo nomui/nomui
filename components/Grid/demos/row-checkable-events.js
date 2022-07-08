@@ -5,8 +5,9 @@ define([], function () {
     demo: function () {
       let gridRef = null
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Button',
             text: '获取选中行',
@@ -14,8 +15,8 @@ define([], function () {
               new nomui.Alert({
                 type: 'info',
                 description: {
-                  component: 'Rows',
-                  items: [
+                  component: 'Flex',
+                  rows: [
                     {
                       children: gridRef.getCheckedRowKeys().toString(),
                     },

@@ -7,16 +7,17 @@ define([], function () {
       let radioList = null
 
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
-            component: 'Cols',
+            component: 'Flex',
             attrs: {
               style: {
                 minHeight: '40px',
               },
             },
-            items: [
+            cols: [
               {
                 component: 'Checkbox',
                 text: '不显示标签',

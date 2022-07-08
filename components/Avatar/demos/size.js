@@ -5,31 +5,34 @@ define([], function () {
     file: 'size',
     demo: function () {
       return {
-        component: 'Cols',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        cols: [
           {
+            component: 'Avatar',
             text: '小马',
             size: 'xsmall',
           },
           {
+            component: 'Avatar',
             text: '小马',
             size: 'small',
           },
           {
+            component: 'Avatar',
             text: '小马',
           },
           {
+            component: 'Avatar',
             text: '小马',
             size: 'large',
           },
           {
+            component: 'Avatar',
             text: '小马',
             size: 'xlarge',
           },
         ],
-        itemDefaults: {
-          component: 'Avatar',
-        },
       }
     },
   }

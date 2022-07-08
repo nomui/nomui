@@ -5,8 +5,9 @@ define(['./data.js'], function (options) {
     file: 'field',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'Cascader',
             name: 'treatment',
@@ -30,8 +31,9 @@ define(['./data.js'], function (options) {
             options,
           },
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            cols: [
               {
                 component: 'Button',
                 text: 'Set value to aaa',

@@ -5,8 +5,9 @@ define([], function () {
     demo: function () {
       let treeSelectRef = null
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'TreeSelect',
             ref: (c) => {
@@ -65,8 +66,9 @@ define([], function () {
             },
           },
           {
-            component: 'Cols',
-            items: [
+            component: 'Flex',
+            gap: 'small',
+            cols: [
               {
                 component: 'Button',
                 text: 'Get Value',

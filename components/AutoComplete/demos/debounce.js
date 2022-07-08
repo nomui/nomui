@@ -5,8 +5,9 @@ define([], function () {
     demo: function () {
       const options = Array.from({ length: 20 }, (_, k) => ({ value: 'a'.repeat(k) }))
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        rows: [
           {
             component: 'AutoComplete',
             label: '关闭防抖',

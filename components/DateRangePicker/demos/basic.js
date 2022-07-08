@@ -39,6 +39,7 @@ define([], function () {
               text: '提交',
               onClick: () => {
                 form.validate()
+                // eslint-disable-next-line
                 console.log(form.getValue())
               },
             },

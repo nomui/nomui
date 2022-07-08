@@ -5,8 +5,8 @@ define([], function () {
     demo: function () {
       return {
         children: {
-          component: 'Rows',
-          items: [
+          component: 'Flex',
+          rows: [
             {
               component: 'Menu',
               itemSelectable: {

@@ -7,6 +7,7 @@ define([], function () {
         component: 'Rate',
         value: 3.3,
         onValueChange(args) {
+          // eslint-disable-next-line
           console.log(args)
         },
       }

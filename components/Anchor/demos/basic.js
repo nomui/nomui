@@ -4,9 +4,10 @@ define([], function () {
     file: 'basic',
     demo: function () {
       return {
-        component: 'Cols',
-        align: 'start',
-        items: [
+        component: 'Flex',
+        gap: 'small',
+        // align: 'start',
+        cols: [
           {
             component: 'Anchor',
             sticky: this.parent.parent.parent,
@@ -14,6 +15,7 @@ define([], function () {
             activeKey: 'div3', // 默认高亮的key
             onChange: (args) => {
               // 高亮内容发生变化时回调
+              // eslint-disable-next-line
               console.log(`当前高亮的是${args.key}`) // 获取当前高亮的项目
             },
             items: [

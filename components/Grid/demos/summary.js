@@ -18,8 +18,8 @@ define([], function () {
     file: 'summary',
     demo: function () {
       return {
-        component: 'Rows',
-        items: [
+        component: 'Flex',
+        rows: [
           {
             component: 'Grid',
             summary: true,
