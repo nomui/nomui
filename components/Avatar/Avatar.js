@@ -63,7 +63,9 @@ class Avatar extends Component {
   }
 
   _rendered() {
-    this._setScale()
+    setTimeout(() => {
+      this._setScale()
+    }, 0)
   }
 }
 Avatar.defaults = {

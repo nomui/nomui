@@ -9630,7 +9630,9 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _rendered() {
-      this._setScale();
+      setTimeout(() => {
+        this._setScale();
+      }, 0);
     }
   }
   Avatar.defaults = {
