@@ -228,6 +228,11 @@ class Tree extends Component {
     }
   }
 
+  setCheckedNodeKeys(array) {
+    this.props.nodeCheckable.checkedNodeKeys = array
+    this.update({})
+  }
+
   // 展开指定节点
   expandTo(param) {
     let node = this.getNode(param)
