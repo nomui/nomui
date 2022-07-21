@@ -21,6 +21,7 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| setCheckedNodeKeys | 设置选中节点数据键数组 | `(options:array) => void` | - |
 | getData | 获取所有节点数据 | `(options:getDataOptions) => TreeData[]` | - |
 | getCheckedNodeKeys | 获取勾选的节点键值数组 | `(options, checkedNodeKeys, node ) => string[]` | - |
 | getCheckedNodesData | 获取`node`节点下的勾选的节点数据，`flatData: false`则返回树形结构 | `(options, node) => TreeData[]` | `({flatData: false}, this) => []` |
@@ -56,7 +57,7 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| cascade | 级联勾选父节点（cascadeCheckParent）,级联勾选子节点（cascadeCheckChildren）,级联取消勾选子节点（cascadeUncheckChildren）的统一配置，优先级低于单项配置 | `boolean` | false |
+| cascade | 级联勾选父节点（cascadeCheckParent）,级联勾选子节点（cascadeCheckChildren）,级联取消勾选父节点（cascadeUncheckParent）和级联取消勾选子节点（cascadeUncheckChildren）的统一配置，优先级低于单项配置 | `boolean` | false |
 | cascadeCheckParent | 级联勾选父节点 | `boolean` | true |
 | cascadeCheckChildren | 级联勾选子节点 | `boolean` | true |
 | cascadeUncheckParent | 级联取消勾选父节点 | `boolean` | true |
