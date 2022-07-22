@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.3](https://github.com/nomui/nomui/compare/v1.1.2...v1.1.3) (2022-07-22)
+
+
+### Features
+
+* 优化Tree，提供新的setCheckedNodeKeys 支持设置选中值 ([d5de48f](https://github.com/nomui/nomui/commit/d5de48fc2e1749a327a95ef3f4aa1ac01a98902e))
+
+
+### Bug Fixes
+
+* **Avatar:** 某些场景下Avatar计算文字位置尺寸失效 ([26b16e6](https://github.com/nomui/nomui/commit/26b16e60f21888f6cc121cf725fff2c9fa6aabbb))
+
 ### [1.1.2](https://github.com/nomui/nomui/compare/v1.1.1...v1.1.2) (2022-07-08)
 
 
