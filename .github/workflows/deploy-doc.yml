@@ -29,8 +29,8 @@ jobs:
         env:
           CI: true
           PROGRESS: none
-          GIT_CONFIG_NAME: xiexingen
-          GIT_CONFIG_EMAIL: 1002275364@qq.com
+          GIT_CONFIG_NAME: Jerry
+          GIT_CONFIG_EMAIL: jerry.zhou@wetrial.com
           NODE_OPTIONS: --max_old_space_size=4096
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE_BRANCH: main
