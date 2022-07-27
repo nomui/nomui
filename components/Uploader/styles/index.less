@@ -2,7 +2,7 @@
   margin-top: 2em;
 }
 
-.nom-file-list > :not(:last-child) {
+.nom-file-list> :not(:last-child) {
   margin-bottom: 1em;
 }
 
@@ -14,6 +14,7 @@
   width: var(--nom-uploader-file-img-size);
   height: var(--nom-uploader-file-img-size);
   margin-right: 10px;
+
   img {
     width: 100%;
     height: 100%;
@@ -30,6 +31,7 @@
 .upload-file-name {
   margin-right: 10px;
   color: var(--nom-color-primary);
+
   &:hover {
     text-decoration: none;
   }
@@ -40,22 +42,50 @@
   padding-left: 10px;
 }
 
-.upload-opt-btn > a {
+.upload-opt-btn>a {
   color: var(--nom-text-color);
+
   &:hover {
     color: var(--nom-color-primary);
     text-decoration: none;
   }
 }
 
-.upload-opt-btn > :not(:last-child) {
+.upload-opt-btn> :not(:last-child) {
   margin-right: 20px;
 }
 
-.upload-opt-removing > a {
+.upload-opt-removing>a {
   cursor: not-allowed;
 }
 
 .file-img {
   font-size: var(--nom-uploader-file-img-size);
+}
+
+.close-circle-btn {
+  position: absolute;
+  top: 0;
+  font-size: 18px;
+  background-color: #fff;
+  color: #f00;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+.file-loading-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: var(--nom-uploader-file-img-size);
+  transform: translate(-50%, -50%);
+}
+
+.upload-img-button {
+  position: relative;
+  display: inline-block;
+}
+
+.nom-field {
+  align-items: center;
 }
