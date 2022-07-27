@@ -3,7 +3,7 @@ import Flex from '../Flex/index'
 import List from '../List/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
-import {} from '../util/date'
+import { } from '../util/date'
 import { formatDate, isFunction, isNumeric, isValidDate } from '../util/index'
 import TimePickerPanel from './TimePickerPanel'
 
@@ -26,7 +26,6 @@ class DatePicker extends Textbox {
     if (isValidDate(this.props.value)) {
       this.props.value = formatDate(this.props.value, this.props.format)
     }
-
     const { disabled, extraTools } = this.props
 
     let extra = []
@@ -287,7 +286,7 @@ class DatePicker extends Textbox {
                   endTime: this.currentDateAfterMax ? maxTime : '23:59:59',
                   value:
                     this.props.value &&
-                    new Date(this.props.value).format(this.props.showTime.format || 'HH:mm:ss'),
+                    new Date(this.props.value.replace(/-/g, "/")).format(this.props.showTime.format || 'HH:mm:ss'),
                 },
               ],
             },
@@ -508,7 +507,7 @@ class DatePicker extends Textbox {
 
     if (this.props.value && this.props.showTime && this.timePicker) {
       this.timePicker.setValue(
-        new Date(this.props.value).format(this.props.showTime.format || 'HH:mm:ss'),
+        new Date(this.props.value.replace(/-/g, "/")).format(this.props.showTime.format || 'HH:mm:ss'),
       )
     } else if (!this.props.value && this.props.showTime && this.timePicker) {
       this.timePicker.clearTime()
