@@ -13994,8 +13994,8 @@ function _defineProperty2(obj, key, value) {
     } // 计算timeRange的min值
     _getMinTime() {
       const { startTime, minTime = "00:00:00" } = this.props; // 比较 datePicker.minDate的time 和 showTime.minTime
-      const _tempStartTime = new Date(`2020 ${startTime}`);
-      const _tempMinTime = new Date(`2020 ${minTime}`); // startTime 不为默认 && startTime 比 minTime后面
+      const _tempStartTime = new Date(`2020/01/01 ${startTime}`);
+      const _tempMinTime = new Date(`2020/01/01 ${minTime}`); // startTime 不为默认 && startTime 比 minTime后面
       // 取后者
       const isStartTimeAfterMinTime =
         startTime !== "00:00:00" && _tempStartTime.isAfter(_tempMinTime);
@@ -14008,8 +14008,8 @@ function _defineProperty2(obj, key, value) {
     } // 计算timeRange的max值
     _getMaxTime() {
       const { endTime, maxTime = "23:59:59" } = this.props; // 比较 datePicker.minDate的time 和 showTime.maxTime
-      const _tempEndTime = new Date(`2020 ${endTime}`);
-      const _tempMaxTime = new Date(`2020 ${maxTime}`); // endTime 不为默认 && endTime 比 maxTime后面
+      const _tempEndTime = new Date(`2020/01/01 ${endTime}`);
+      const _tempMaxTime = new Date(`2020/01/01 ${maxTime}`); // endTime 不为默认 && endTime 比 maxTime后面
       // 取更前面的时间节点
       const isEndTimeBeforeMaxTime =
         endTime !== "23:59:59" && _tempEndTime.isBefore(_tempMaxTime);
@@ -14476,7 +14476,7 @@ function _defineProperty2(obj, key, value) {
                     endTime: this.currentDateAfterMax ? maxTime : "23:59:59",
                     value:
                       this.props.value &&
-                      new Date(this.props.value).format(
+                      new Date(this.props.value.replace(/-/g, "/")).format(
                         this.props.showTime.format || "HH:mm:ss"
                       ),
                   },
@@ -14653,7 +14653,7 @@ function _defineProperty2(obj, key, value) {
       this.dateInfo = { year: this.year, month: this.month - 1, day: this.day };
       if (this.props.value && this.props.showTime && this.timePicker) {
         this.timePicker.setValue(
-          new Date(this.props.value).format(
+          new Date(this.props.value.replace(/-/g, "/")).format(
             this.props.showTime.format || "HH:mm:ss"
           )
         );
