@@ -46,14 +46,12 @@ class TimePickerPanel extends Component {
       minute: '00',
       second: '00',
     }
-
     if (this.props.value) {
       const t = this.props.value.split(':')
       this.time.hour = t[0] || '00'
       this.time.minute = t[1] || '00'
       this.time.second = t[2] || '00'
     }
-
     this.defaultTime = this.time
   }
 
@@ -63,7 +61,6 @@ class TimePickerPanel extends Component {
     if (this.datePicker.props.showTime && this.datePicker.props.showTime !== true) {
       this.props = { ...this.props, ...this.datePicker.props.showTime }
     }
-
     this._getMinTime()
     this._getMaxTime()
     this.timeRange = {
@@ -93,7 +90,6 @@ class TimePickerPanel extends Component {
         ],
       },
     })
-
     super._config()
   }
 
@@ -101,8 +97,8 @@ class TimePickerPanel extends Component {
   _getMinTime() {
     const { startTime, minTime = '00:00:00' } = this.props
     // 比较 datePicker.minDate的time 和 showTime.minTime
-    const _tempStartTime = new Date(`2020 ${startTime}`)
-    const _tempMinTime = new Date(`2020 ${minTime}`)
+    const _tempStartTime = new Date(`2020/01/01 ${startTime}`)
+    const _tempMinTime = new Date(`2020/01/01 ${minTime}`)
 
     // startTime 不为默认 && startTime 比 minTime后面
     // 取后者
@@ -119,9 +115,8 @@ class TimePickerPanel extends Component {
   _getMaxTime() {
     const { endTime, maxTime = '23:59:59' } = this.props
     // 比较 datePicker.minDate的time 和 showTime.maxTime
-    const _tempEndTime = new Date(`2020 ${endTime}`)
-    const _tempMaxTime = new Date(`2020 ${maxTime}`)
-
+    const _tempEndTime = new Date(`2020/01/01 ${endTime}`)
+    const _tempMaxTime = new Date(`2020/01/01 ${maxTime}`)
     // endTime 不为默认 && endTime 比 maxTime后面
     // 取更前面的时间节点
     const isEndTimeBeforeMaxTime = endTime !== '23:59:59' && _tempEndTime.isBefore(_tempMaxTime)
