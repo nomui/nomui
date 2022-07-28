@@ -60,34 +60,56 @@ class GridSettingPopup extends Modal {
         },
         footer: {
           children: {
-            component: 'Cols',
-            gutter: 'sm',
-            items: [
+            component: 'Flex',
+            gutter: 'small',
+            attrs: {
+              style: {
+                width: '100%',
+              },
+            },
+            cols: [
               {
-                component: 'Button',
-                type: 'primary',
-                text: '确定',
-                onClick: function () {
-                  const list = that.tree.getCheckedNodesData()
-                  if (list.length === 0) {
-                    new nomui.Alert({
-                      type: 'info',
-                      title: '提示',
-                      description: '请至少保留一列数据',
-                    })
-                    return false
-                  }
-                  that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
-                    that.tree.getData(),
-                  )
-                  that.grid.handleColumnsSetting(that._sortCustomizableColumns(list))
+                grow: true,
+                children: {
+                  component: 'Button',
+                  text: '全选',
+                  ref: (c) => {
+                    this.checkallBtn = c
+                  },
+                  onClick: () => {
+                    this._toogleCheckall()
+                  },
                 },
               },
               {
-                component: 'Button',
-                text: '取消',
-                onClick: () => {
-                  this.hide()
+                children: {
+                  component: 'Button',
+                  type: 'primary',
+                  text: '确定',
+                  onClick: function () {
+                    const list = that.tree.getCheckedNodesData()
+                    if (list.length === 0) {
+                      new nomui.Alert({
+                        type: 'info',
+                        title: '提示',
+                        description: '请至少保留一列数据',
+                      })
+                      return false
+                    }
+                    that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
+                      that.tree.getData(),
+                    )
+                    that.grid.handleColumnsSetting(that._sortCustomizableColumns(list))
+                  },
+                },
+              },
+              {
+                children: {
+                  component: 'Button',
+                  text: '取消',
+                  onClick: () => {
+                    this.hide()
+                  },
                 },
               },
             ],
@@ -135,6 +157,16 @@ class GridSettingPopup extends Modal {
       return 0
     })
     return arr
+  }
+
+  _toogleCheckall() {
+    if (this.checkallBtn.props.text === '全选') {
+      this.tree.checkAllNodes()
+      this.checkallBtn.update({ text: '取消全选' })
+    } else {
+      this.tree.uncheckAllNodes()
+      this.checkallBtn.update({ text: '全选' })
+    }
   }
 }
 
