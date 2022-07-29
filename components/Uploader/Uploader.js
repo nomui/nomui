@@ -150,7 +150,7 @@ class Uploader extends Field {
           },
         })
         this._updateFileIcon.push('loading')
-      } else if (this.fileList[0].status === 'error' && !this._updateFileIcon.includes('close-circle')) {
+      } else if (this.fileList[0].status === 'done' && !this._updateFileIcon.includes('close-circle')) {
         customTrigger.children.push({
           component: 'Icon',
           type: 'close-circle',

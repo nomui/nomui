@@ -41,7 +41,7 @@ define([], function () {
                     onChange: function ({ file, fileList }) {
                         const { originFile } = file
                         if (fileList && fileList.length > 0) {
-                            if (fileList[0].status === 'error' && originFile && originFile instanceof File) {
+                            if (fileList[0].status === 'done' && originFile && originFile instanceof File) {
                                 const src = URL.createObjectURL(originFile)
                                 avatarRef.update({ src, icon: null })
                             }
