@@ -9603,6 +9603,9 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _setScale() {
+      if (!this.props) {
+        return;
+      }
       const { gap, src, icon } = this.props;
       if (src || icon) {
         return;
@@ -9630,9 +9633,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _rendered() {
-      setTimeout(() => {
-        this._setScale();
-      }, 0);
+      this._setScale();
     }
   }
   Avatar.defaults = {
