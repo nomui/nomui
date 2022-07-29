@@ -36,6 +36,9 @@ class Avatar extends Component {
   }
 
   _setScale() {
+    if (!this.props) {
+      return
+    }
     const { gap, src, icon } = this.props
     if (src || icon) {
       return
@@ -63,9 +66,7 @@ class Avatar extends Component {
   }
 
   _rendered() {
-    setTimeout(() => {
-      this._setScale()
-    }, 0)
+    this._setScale()
   }
 }
 Avatar.defaults = {
