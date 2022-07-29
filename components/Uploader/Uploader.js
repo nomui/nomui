@@ -93,27 +93,30 @@ class Uploader extends Field {
     }
 
     children.push(inputUploader)
-    let customTriggerCom = customTrigger
-    if (!customTriggerCom && customTriggerCom !== false) customTriggerCom = defaultButtonProps
+    let triggerButton = customTrigger
+    if (!triggerButton && triggerButton !== false) triggerButton = defaultButtonProps
 
-    if (customTriggerCom !== false) {
-      const defaults = {
-        disabled: disabled || initializing,
-        // disabled,
-        ref: (c) => {
-          that.customTrigger = c
+    const defaults = {
+      disabled: disabled || initializing,
+      // disabled,
+      ref: (c) => {
+        that.customTrigger = c
+      },
+      attrs: {
+        onclick() {
+          that._handleClick()
         },
-        attrs: {
-          onclick() {
-            that._handleClick()
-          },
-          onKeyDown(e) {
-            that._onKeyDowne(e)
-          },
+        onKeyDown(e) {
+          that._onKeyDowne(e)
         },
+      },
+    }
+    if (triggerButton !== false) {
+      if (isFunction(customTrigger)) {
+        triggerButton = customTrigger()
       }
-      customTriggerCom = Component.extendProps(defaults, customTriggerCom)
-      children.push(customTriggerCom)
+      const triggerButtonCom = Component.extendProps(defaults, triggerButton)
+      children.push(triggerButtonCom)
     }
     if (showList) {
       if (display) {
@@ -121,7 +124,7 @@ class Uploader extends Field {
           children.push({
             component: FileList,
             classes: {
-              'nom-file-list-only': customTrigger === false,
+              'nom-file-list-only': triggerButton === false,
             },
             ref: (c) => {
               that.list = c
@@ -142,7 +145,7 @@ class Uploader extends Field {
       }
     } else if (this.fileList && this.fileList.length) {
       if (this.fileList[0].status === 'uploading' && !this._updateFileIcon.includes('loading')) {
-        customTrigger.children.push({
+        triggerButton.children.push({
           component: 'Icon',
           type: 'loading',
           classes: {
@@ -151,7 +154,7 @@ class Uploader extends Field {
         })
         this._updateFileIcon.push('loading')
       } else if (this.fileList[0].status === 'done' && !this._updateFileIcon.includes('close-circle')) {
-        customTrigger.children.push({
+        triggerButton.children.push({
           component: 'Icon',
           type: 'close-circle',
           classes: {
@@ -165,9 +168,9 @@ class Uploader extends Field {
         })
         this._updateFileIcon.push('close-circle')
         this._updateFileIcon.splice(this._updateFileIcon.indexOf("error"), 1);
-        this.deleteIcon('loading', customTrigger)
+        this.deleteIcon('loading', triggerButton)
       } else if (this.fileList[0].status === 'error' && !this._updateFileIcon.includes('error')) {
-        this.deleteIcon('loading', customTrigger)
+        this.deleteIcon('loading', triggerButton)
         new nomui.Message({
           content: '上传失败！',
           type: 'error',
@@ -177,7 +180,7 @@ class Uploader extends Field {
         this._updateFileIcon.splice(this._updateFileIcon.indexOf("loading"), 1);
       }
     } else {
-      this.deleteIcon('close-circle', customTrigger)
+      this.deleteIcon('close-circle', triggerButton)
     }
     this.setProps({
       control: {
@@ -431,9 +434,7 @@ class Uploader extends Field {
     } = this.props
     // removing
     file.status = 'removing'
-    this.fileList = this.fileList.map((f) =>
-      f.uuid === file.uuid ? { ...f, status: 'removing' } : f
-    )
+    this.fileList = this.fileList.map((f) => f.uuid === file.uuid ? { ...f, status: 'removing' } : f)
     this.onChange({
       file,
       fileList: this.fileList,

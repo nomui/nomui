@@ -10,24 +10,26 @@ define([], function () {
                     accept: 'image/*',
                     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
                     label: 'LOGO',
-                    actionRender: {
-                        classes: {
-                            'upload-img-button': true,
-                        },
-                        children: [{
-                            ref: (c) => {
-                                avatarRef = c
+                    actionRender: () => {
+                        return {
+                            classes: {
+                                'upload-img-button': true,
                             },
-                            styles: {
-                                border: [true, 'primary'],
-                                padding: '1',
-                                shape: 'square',
-                            },
-                            component: 'Avatar',
-                            text: '头像',
-                            icon: 'plus',
-                            size: 'xlarge',
-                        },]
+                            children: [{
+                                ref: (c) => {
+                                    avatarRef = c
+                                },
+                                styles: {
+                                    border: [true, 'primary'],
+                                    padding: '1',
+                                    shape: 'square',
+                                },
+                                component: 'Avatar',
+                                text: '头像',
+                                icon: 'plus',
+                                size: 'xlarge',
+                            },]
+                        }
                     },
                     showList: false,
                     onRemove: {
