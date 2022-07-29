@@ -34,7 +34,7 @@ class Uploader extends Field {
     const {
       disabled,
       accept,
-      button: cButton,
+      button,
       multiple,
       extraAction,
       display,
@@ -42,12 +42,14 @@ class Uploader extends Field {
       onRemove,
       renderer,
       customizeInfo,
-      actionRender: cActionRender
+      actionRender,
+      showList,
     } = this.props
-
+    const customTrigger = actionRender || button
     this.fileList = this.props.fileList || this.props.defaultFileList
+
     if (this.fileList && this.fileList.length > 0) {
-      this.fileList = cActionRender !== null ? this.fileList : this.fileList.slice(-1)
+      this.fileList = showList ? this.fileList : this.fileList.slice(-1)
     }
     this.acceptList = accept ? this.getAcceptList() : ''
 
@@ -57,11 +59,8 @@ class Uploader extends Field {
         initializing = false
         that.fileList = fs
 
-        if (!disabled && this.button) {
-          that.button.enable()
-        }
-        if (!disabled && that.actionRender) {
-          that.actionRender.enable()
+        if (!disabled && this.customTrigger) {
+          that.customTrigger.enable()
         }
         that.list && that.list.update({ initializing: false, files: this.fileList })
       })
@@ -94,16 +93,15 @@ class Uploader extends Field {
     }
 
     children.push(inputUploader)
+    let customTriggerCom = customTrigger
+    if (!customTriggerCom && customTriggerCom !== false) customTriggerCom = defaultButtonProps
 
-    let button = cButton
-    if (!button && button !== false) button = defaultButtonProps
-
-    if (button !== false && cActionRender === null) {
+    if (customTriggerCom !== false) {
       const defaults = {
         disabled: disabled || initializing,
         // disabled,
         ref: (c) => {
-          that.button = c
+          that.customTrigger = c
         },
         attrs: {
           onclick() {
@@ -114,36 +112,16 @@ class Uploader extends Field {
           },
         },
       }
-      button = Component.extendProps(defaults, button)
-      children.push(button)
+      customTriggerCom = Component.extendProps(defaults, customTriggerCom)
+      children.push(customTriggerCom)
     }
-
-    let actionRender = cActionRender
-    if (actionRender !== null) {
-      const defaults = {
-        disabled: disabled || initializing,
-        ref: (c) => {
-          that.actionRender = c
-        },
-        attrs: {
-          onclick() {
-            that._handleClick()
-          },
-          onKeyDown(e) {
-            that._onKeyDowne(e)
-          },
-        },
-      }
-      actionRender = Component.extendProps(defaults, actionRender)
-      children.push(actionRender)
-    }
-    if (actionRender === null) {
+    if (showList) {
       if (display) {
         if (initializing || (this.fileList && this.fileList.length > 0)) {
           children.push({
             component: FileList,
             classes: {
-              'nom-file-list-only': button === false,
+              'nom-file-list-only': customTrigger === false,
             },
             ref: (c) => {
               that.list = c
@@ -164,7 +142,7 @@ class Uploader extends Field {
       }
     } else if (this.fileList && this.fileList.length) {
       if (this.fileList[0].status === 'uploading' && !this._updateFileIcon.includes('loading')) {
-        actionRender.children.push({
+        customTrigger.children.push({
           component: 'Icon',
           type: 'loading',
           classes: {
@@ -172,8 +150,8 @@ class Uploader extends Field {
           },
         })
         this._updateFileIcon.push('loading')
-      } else if (this.fileList[0].status === 'done' && !this._updateFileIcon.includes('close-circle')) {
-        actionRender.children.push({
+      } else if (this.fileList[0].status === 'error' && !this._updateFileIcon.includes('close-circle')) {
+        customTrigger.children.push({
           component: 'Icon',
           type: 'close-circle',
           classes: {
@@ -187,9 +165,9 @@ class Uploader extends Field {
         })
         this._updateFileIcon.push('close-circle')
         this._updateFileIcon.splice(this._updateFileIcon.indexOf("error"), 1);
-        this.deleteIcon('loading', actionRender)
+        this.deleteIcon('loading', customTrigger)
       } else if (this.fileList[0].status === 'error' && !this._updateFileIcon.includes('error')) {
-        this.deleteIcon('loading', actionRender)
+        this.deleteIcon('loading', customTrigger)
         new nomui.Message({
           content: '上传失败！',
           type: 'error',
@@ -199,7 +177,7 @@ class Uploader extends Field {
         this._updateFileIcon.splice(this._updateFileIcon.indexOf("loading"), 1);
       }
     } else {
-      this.deleteIcon('close-circle', actionRender)
+      this.deleteIcon('close-circle', customTrigger)
     }
     this.setProps({
       control: {
@@ -354,22 +332,13 @@ class Uploader extends Field {
     const { onChange: onChangeProp } = this.props
     this.update({ fileList: [...info.fileList] })
 
-    if (this.button) {
+    if (this.customTrigger) {
       const disableBtn = this.fileList.some((file) =>
         ['removing', 'uploading', 'updating'].includes(file.status),
       )
 
       if (!this.props.disabled) {
-        disableBtn ? this.button.disable() : this.button.enable()
-      }
-    }
-    if (this.actionRender) {
-      const disableBtn = this.fileList.some((file) =>
-        ['removing', 'uploading', 'updating'].includes(file.status),
-      )
-
-      if (!this.props.disabled) {
-        disableBtn ? this.actionRender.disable() : this.actionRender.enable()
+        disableBtn ? this.customTrigger.disable() : this.customTrigger.enable()
       }
     }
 
@@ -551,6 +520,7 @@ Uploader.defaults = {
   extraAction: [],
   customizeInfo: null,
   actionRender: null,
+  showList: true
 }
 
 Component.register(Uploader)

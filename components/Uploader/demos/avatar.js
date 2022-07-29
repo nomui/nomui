@@ -25,25 +25,25 @@ define([], function () {
                             },
                             component: 'Avatar',
                             text: '头像',
-                            src: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                            icon: 'plus',
                             size: 'xlarge',
                         },]
                     },
+                    showList: false,
                     onRemove: {
                         action: () => {
                             return new Promise((resolve) => {
-                                avatarRef.update({ src: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png' })
+                                avatarRef.update({ src: null, icon: 'plus' })
                                 resolve(true)
                             })
                         },
                     },
                     onChange: function ({ file, fileList }) {
-                        // console.log(file, fileList)
                         const { originFile } = file
                         if (fileList && fileList.length > 0) {
-                            if (fileList[0].status === 'done' && originFile && originFile instanceof File) {
+                            if (fileList[0].status === 'error' && originFile && originFile instanceof File) {
                                 const src = URL.createObjectURL(originFile)
-                                avatarRef.update({ src })
+                                avatarRef.update({ src, icon: null })
                             }
                         }
 
