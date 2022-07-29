@@ -42,12 +42,12 @@ class Uploader extends Field {
       onRemove,
       renderer,
       customizeInfo,
-      type
+      actionRender: cActionRender
     } = this.props
 
     this.fileList = this.props.fileList || this.props.defaultFileList
     if (this.fileList && this.fileList.length > 0) {
-      this.fileList = type === 'normal' ? this.fileList : this.fileList.slice(-1)
+      this.fileList = cActionRender !== null ? this.fileList : this.fileList.slice(-1)
     }
     this.acceptList = accept ? this.getAcceptList() : ''
 
@@ -59,6 +59,9 @@ class Uploader extends Field {
 
         if (!disabled && this.button) {
           that.button.enable()
+        }
+        if (!disabled && that.actionRender) {
+          that.actionRender.enable()
         }
         that.list && that.list.update({ initializing: false, files: this.fileList })
       })
@@ -95,7 +98,7 @@ class Uploader extends Field {
     let button = cButton
     if (!button && button !== false) button = defaultButtonProps
 
-    if (button !== false) {
+    if (button !== false && cActionRender === null) {
       const defaults = {
         disabled: disabled || initializing,
         // disabled,
@@ -114,7 +117,27 @@ class Uploader extends Field {
       button = Component.extendProps(defaults, button)
       children.push(button)
     }
-    if (type === 'normal') {
+
+    let actionRender = cActionRender
+    if (actionRender !== null) {
+      const defaults = {
+        disabled: disabled || initializing,
+        ref: (c) => {
+          that.actionRender = c
+        },
+        attrs: {
+          onclick() {
+            that._handleClick()
+          },
+          onKeyDown(e) {
+            that._onKeyDowne(e)
+          },
+        },
+      }
+      actionRender = Component.extendProps(defaults, actionRender)
+      children.push(actionRender)
+    }
+    if (actionRender === null) {
       if (display) {
         if (initializing || (this.fileList && this.fileList.length > 0)) {
           children.push({
@@ -141,7 +164,7 @@ class Uploader extends Field {
       }
     } else if (this.fileList && this.fileList.length) {
       if (this.fileList[0].status === 'uploading' && !this._updateFileIcon.includes('loading')) {
-        button.children.push({
+        actionRender.children.push({
           component: 'Icon',
           type: 'loading',
           classes: {
@@ -150,7 +173,7 @@ class Uploader extends Field {
         })
         this._updateFileIcon.push('loading')
       } else if (this.fileList[0].status === 'done' && !this._updateFileIcon.includes('close-circle')) {
-        button.children.push({
+        actionRender.children.push({
           component: 'Icon',
           type: 'close-circle',
           classes: {
@@ -164,9 +187,9 @@ class Uploader extends Field {
         })
         this._updateFileIcon.push('close-circle')
         this._updateFileIcon.splice(this._updateFileIcon.indexOf("error"), 1);
-        this.deleteIcon('loading', button)
+        this.deleteIcon('loading', actionRender)
       } else if (this.fileList[0].status === 'error' && !this._updateFileIcon.includes('error')) {
-        this.deleteIcon('loading', button)
+        this.deleteIcon('loading', actionRender)
         new nomui.Message({
           content: '上传失败！',
           type: 'error',
@@ -176,7 +199,7 @@ class Uploader extends Field {
         this._updateFileIcon.splice(this._updateFileIcon.indexOf("loading"), 1);
       }
     } else {
-      this.deleteIcon('close-circle', button)
+      this.deleteIcon('close-circle', actionRender)
     }
     this.setProps({
       control: {
@@ -338,6 +361,15 @@ class Uploader extends Field {
 
       if (!this.props.disabled) {
         disableBtn ? this.button.disable() : this.button.enable()
+      }
+    }
+    if (this.actionRender) {
+      const disableBtn = this.fileList.some((file) =>
+        ['removing', 'uploading', 'updating'].includes(file.status),
+      )
+
+      if (!this.props.disabled) {
+        disableBtn ? this.actionRender.disable() : this.actionRender.enable()
       }
     }
 
@@ -518,7 +550,7 @@ Uploader.defaults = {
   renderer: null,
   extraAction: [],
   customizeInfo: null,
-  type: 'normal',
+  actionRender: null,
 }
 
 Component.register(Uploader)

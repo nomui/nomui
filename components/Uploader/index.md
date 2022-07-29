@@ -71,4 +71,4 @@
 | extraAction | 自定义 | `Array<{text:string,action:Function}>` | [] |  |
 | renderer | 自定义文件显示的回调 | function(file): component | null |  |
 | customizeInfo | 自定义文件详情展示 | `(file)=>Component\|[]Component\|string` |  |  |
-| type | 自定义出发按钮是否为头像类型 |  `string` | `avatar`  \|`normal` | type(设置为 avatar 则显示头像按钮) |  |
+| actionRender | 自定义上传渲染|  `object` | null | |  |

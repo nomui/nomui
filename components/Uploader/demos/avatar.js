@@ -10,9 +10,7 @@ define([], function () {
                     accept: 'image/*',
                     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
                     label: 'LOGO',
-                    type: 'avatar',
-                    display: 'replace',
-                    button: {
+                    actionRender: {
                         classes: {
                             'upload-img-button': true,
                         },
