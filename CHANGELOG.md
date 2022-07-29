@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.4](https://github.com/nomui/nomui/compare/v1.1.3...v1.1.4) (2022-07-29)
+
+
+### Features
+
+* 新增uploader组件api( actionRender ) ([9c49f22](https://github.com/nomui/nomui/commit/9c49f2201f827502276086ccdc82aa89abe8bbfb))
+* 优化Uploader组件的api (actionRender) ([c5453c6](https://github.com/nomui/nomui/commit/c5453c6f9dfc88789a26d7ca1e6c36dd580a9a51))
+* **Grid:** 列设置面板新增全选功能 ([0dac27f](https://github.com/nomui/nomui/commit/0dac27f9852e1a2b7e63b35956c93fbd51729c99))
+* Uploader支持自定义t头像上传按钮 ([1cf8ce7](https://github.com/nomui/nomui/commit/1cf8ce7d52b99d72df0d51d34e9995c48524ccab))
+
+
+### Bug Fixes
+
+* 修改uploading案例bug ([520a66c](https://github.com/nomui/nomui/commit/520a66ce5906b3c91a01132f24749bb5991afca6))
+* **Avatar:** 解决某些场景js报错问题 ([b58dfee](https://github.com/nomui/nomui/commit/b58dfeef9d8fdf6f45ae76a93e16fc103746d8b3))
+* DatePicker组件Safari兼容性bug修复 ([52cbf44](https://github.com/nomui/nomui/commit/52cbf448930ee1797e62e0b1161b76b57c6f940c))
+
+
+### Performance Improvements
+
+* 将unloader组件中的button和actionRander api合并 ([c652dd9](https://github.com/nomui/nomui/commit/c652dd94a0d82d630c45e38be02c9e46265629cc))
+
 ### [1.1.3](https://github.com/nomui/nomui/compare/v1.1.2...v1.1.3) (2022-07-22)
 
 
