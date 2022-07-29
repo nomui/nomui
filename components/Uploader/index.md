@@ -71,3 +71,6 @@
 | extraAction | 自定义 | `Array<{text:string,action:Function}>` | [] |  |
 | renderer | 自定义文件显示的回调 | function(file): component | null |  |
 | customizeInfo | 自定义文件详情展示 | `(file)=>Component\|[]Component\|string` |  |  |
+| actionRender | 自定义上传渲染|  `object` | null | 优先级顺序actionRender > button，和button类似|  |
+| showList | 是否展示文件列表 |  `boolean ` | true | |  |
+

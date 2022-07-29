@@ -15,6 +15,7 @@ define([
   './display.js',
   './validate.js',
   './custom-style.js',
+  './avatar.js',
 ], function () {
   return {
     title: 'Uploader',

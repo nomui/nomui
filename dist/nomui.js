@@ -26621,6 +26621,7 @@ function _defineProperty2(obj, key, value) {
     _created() {
       // this.fileList = this.props.fileList || this.props.defaultFileList
       this._updateFile = null;
+      this._updateFileIcon = [];
       super._created();
     }
     _config() {
@@ -26628,7 +26629,7 @@ function _defineProperty2(obj, key, value) {
       const {
         disabled,
         accept,
-        button: cButton,
+        button,
         multiple,
         extraAction,
         display,
@@ -26636,16 +26637,22 @@ function _defineProperty2(obj, key, value) {
         onRemove,
         renderer,
         customizeInfo,
+        actionRender,
+        showList,
       } = this.props;
+      const customTrigger = actionRender || button;
       this.fileList = this.props.fileList || this.props.defaultFileList;
+      if (this.fileList && this.fileList.length > 0) {
+        this.fileList = showList ? this.fileList : this.fileList.slice(-1);
+      }
       this.acceptList = accept ? this.getAcceptList() : "";
       let initializing = true;
       if (isPromiseLike(that.fileList)) {
         that.fileList.then((fs) => {
           initializing = false;
           that.fileList = fs;
-          if (!disabled && this.button) {
-            that.button.enable();
+          if (!disabled && this.customTrigger) {
+            that.customTrigger.enable();
           }
           that.list &&
             that.list.update({ initializing: false, files: this.fileList });
@@ -26676,54 +26683,108 @@ function _defineProperty2(obj, key, value) {
         },
       };
       children.push(inputUploader);
-      let button = cButton;
-      if (!button && button !== false) button = defaultButtonProps;
-      if (button !== false) {
-        const defaults = {
-          disabled: disabled || initializing, // disabled,
-          ref: (c) => {
-            that.button = c;
+      let triggerButton = customTrigger;
+      if (!triggerButton && triggerButton !== false)
+        triggerButton = defaultButtonProps;
+      const defaults = {
+        disabled: disabled || initializing, // disabled,
+        ref: (c) => {
+          that.customTrigger = c;
+        },
+        attrs: {
+          onclick() {
+            that._handleClick();
           },
-          attrs: {
-            onclick() {
-              that._handleClick();
-            },
-            onKeyDown(e) {
-              that._onKeyDowne(e);
-            },
+          onKeyDown(e) {
+            that._onKeyDowne(e);
           },
-        };
-        button = Component.extendProps(defaults, button);
-        children.push(button);
-      }
-      if (display) {
-        if (initializing || (this.fileList && this.fileList.length > 0)) {
-          children.push({
-            component: FileList,
-            classes: { "nom-file-list-only": button === false },
-            ref: (c) => {
-              that.list = c;
-            },
-            initializing,
-            files:
-              display === "replace" && !multiple
-                ? this.fileList.slice(-1)
-                : this.fileList,
-            renderer,
-            onRemove:
-              onRemove &&
-              isFunction(onRemove.action) &&
-              Object.assign({}, onRemove, {
-                action: that.handleRemove.bind(that),
-              }),
-            allowUpdate,
-            extraAction,
-            customizeInfo,
-          });
+        },
+      };
+      if (triggerButton !== false) {
+        if (isFunction(customTrigger)) {
+          triggerButton = customTrigger();
         }
+        const triggerButtonCom = Component.extendProps(defaults, triggerButton);
+        children.push(triggerButtonCom);
+      }
+      if (showList) {
+        if (display) {
+          if (initializing || (this.fileList && this.fileList.length > 0)) {
+            children.push({
+              component: FileList,
+              classes: { "nom-file-list-only": triggerButton === false },
+              ref: (c) => {
+                that.list = c;
+              },
+              initializing,
+              files:
+                display === "replace" && !multiple
+                  ? this.fileList.slice(-1)
+                  : this.fileList,
+              renderer,
+              onRemove:
+                onRemove &&
+                isFunction(onRemove.action) &&
+                Object.assign({}, onRemove, {
+                  action: that.handleRemove.bind(that),
+                }),
+              allowUpdate,
+              extraAction,
+              customizeInfo,
+            });
+          }
+        }
+      } else if (this.fileList && this.fileList.length) {
+        if (
+          this.fileList[0].status === "uploading" &&
+          !this._updateFileIcon.includes("loading")
+        ) {
+          triggerButton.children.push({
+            component: "Icon",
+            type: "loading",
+            classes: { "file-loading-img": true },
+          });
+          this._updateFileIcon.push("loading");
+        } else if (
+          this.fileList[0].status === "done" &&
+          !this._updateFileIcon.includes("close-circle")
+        ) {
+          triggerButton.children.push({
+            component: "Icon",
+            type: "close-circle",
+            classes: { "close-circle-btn": true },
+            onClick: ({ event }) => {
+              event.stopPropagation();
+              this.handleRemove({ sender: that, file: this.fileList[0] });
+              onRemove.action({ sender: that, file: this.fileList[0] });
+            },
+          });
+          this._updateFileIcon.push("close-circle");
+          this._updateFileIcon.splice(this._updateFileIcon.indexOf("error"), 1);
+          this.deleteIcon("loading", triggerButton);
+        } else if (
+          this.fileList[0].status === "error" &&
+          !this._updateFileIcon.includes("error")
+        ) {
+          this.deleteIcon("loading", triggerButton);
+          new nomui.Message({ content: "上传失败！", type: "error" });
+        }
+        if (this.fileList[0].status !== "uploading") {
+          this._updateFileIcon.splice(
+            this._updateFileIcon.indexOf("loading"),
+            1
+          );
+        }
+      } else {
+        this.deleteIcon("close-circle", triggerButton);
       }
       this.setProps({ control: { children } });
       super._config();
+    }
+    deleteIcon(name, file) {
+      this._updateFileIcon.splice(this._updateFileIcon.indexOf(name), 1);
+      const index = file.children.findIndex((element) => element.type === name);
+      if (index > 0) file.children.splice(index, 1);
     }
     getAcceptList() {
       if (this.props.accept) {
@@ -26850,12 +26911,14 @@ function _defineProperty2(obj, key, value) {
       this.fileList = info.fileList;
       const { onChange: onChangeProp } = this.props;
       this.update({ fileList: [...info.fileList] });
-      if (this.button) {
+      if (this.customTrigger) {
         const disableBtn = this.fileList.some((file) =>
           ["removing", "uploading", "updating"].includes(file.status)
         );
         if (!this.props.disabled) {
-          disableBtn ? this.button.disable() : this.button.enable();
+          disableBtn
+            ? this.customTrigger.disable()
+            : this.customTrigger.enable();
         }
       }
       if (onChangeProp) {
@@ -26999,6 +27062,8 @@ function _defineProperty2(obj, key, value) {
     renderer: null,
     extraAction: [],
     customizeInfo: null,
+    actionRender: null,
+    showList: true,
   };
   Component.register(Uploader);
   /**
