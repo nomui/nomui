@@ -14491,7 +14491,7 @@ function _defineProperty2(obj, key, value) {
                   {
                     component: "Button",
                     size: "small",
-                    text: this.props.showTime ? "至今" : "今天",
+                    text: this.props.showTime ? "此刻" : "今天",
                     disabled: !this.showNow,
                     renderIf: this.props.showNow,
                     onClick: () => {
