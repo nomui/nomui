@@ -10,14 +10,29 @@ define([], function () {
                     accept: 'image/*',
                     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
                     label: 'LOGO',
+                    attrs: {
+                        style: {
+                            alignItems: 'center'
+                        },
+                    },
                     actionRender: () => {
                         return {
-                            classes: {
-                                'upload-img-button': true,
+                            attrs: {
+                                style: {
+                                    position: 'relative',
+                                    display: 'inline-block'
+                                },
                             },
                             children: [{
                                 ref: (c) => {
                                     avatarRef = c
+                                },
+                                attrs: {
+                                    style: {
+                                        width: '4rem',
+                                        height: '4rem',
+                                        lineHeight: '4rem',
+                                    },
                                 },
                                 styles: {
                                     border: [true, 'primary'],
@@ -27,19 +42,10 @@ define([], function () {
                                 component: 'Avatar',
                                 text: '头像',
                                 icon: 'plus',
-                                size: 'xlarge',
                             },]
                         }
                     },
                     showList: false,
-                    onRemove: {
-                        action: () => {
-                            return new Promise((resolve) => {
-                                avatarRef.update({ src: null, icon: 'plus' })
-                                resolve(true)
-                            })
-                        },
-                    },
                     onChange: function ({ file, fileList }) {
                         const { originFile } = file
                         if (fileList && fileList.length > 0) {

@@ -26704,8 +26704,8 @@ function _defineProperty2(obj, key, value) {
         if (isFunction(customTrigger)) {
           triggerButton = customTrigger();
         }
-        const triggerButtonCom = Component.extendProps(defaults, triggerButton);
-        children.push(triggerButtonCom);
+        triggerButton = Component.extendProps(defaults, triggerButton);
+        children.push(triggerButton);
       }
       if (showList) {
         if (display) {
@@ -26749,16 +26749,7 @@ function _defineProperty2(obj, key, value) {
           this.fileList[0].status === "done" &&
           !this._updateFileIcon.includes("close-circle")
         ) {
-          triggerButton.children.push({
-            component: "Icon",
-            type: "close-circle",
-            classes: { "close-circle-btn": true },
-            onClick: ({ event }) => {
-              event.stopPropagation();
-              this.handleRemove({ sender: that, file: this.fileList[0] });
-              onRemove.action({ sender: that, file: this.fileList[0] });
-            },
-          });
+          triggerButton.tooltip = "重新上传可完成覆盖。";
           this._updateFileIcon.push("close-circle");
           this._updateFileIcon.splice(this._updateFileIcon.indexOf("error"), 1);
           this.deleteIcon("loading", triggerButton);
