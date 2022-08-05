@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.5](https://github.com/nomui/nomui/compare/v1.1.4...v1.1.5) (2022-08-05)
+
+
+### Bug Fixes
+
+* **DatePicker:** 修正一个词汇bug ([57eea1d](https://github.com/nomui/nomui/commit/57eea1df6a52bf22c7c19f2f3530ee6143e8091e))
+* Uploader组件针对上传头像功能的部分修改 ([943b591](https://github.com/nomui/nomui/commit/943b59101ef1c2b55ef5e56d6fb4da5dc6534801))
+
 ### [1.1.4](https://github.com/nomui/nomui/compare/v1.1.3...v1.1.4) (2022-07-29)
 
 
