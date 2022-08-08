@@ -10,15 +10,21 @@
   border: 1px solid var(--nom-avatar-border-color);
   border-radius: var(--nom-avatar-border-radius);
   &.avatar-image {
-    background: transparent;
+    // background: transparent;
     > img {
       border-radius: var(--nom-avatar-border-radius);
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 5;
     }
   }
 
   > .nom-avatar-string {
     position: absolute;
+    top: 50%;
     left: 50%;
+    margin-top: -50%;
     -webkit-transform-origin: 0 center;
     transform-origin: 0 center;
   }

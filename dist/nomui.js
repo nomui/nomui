@@ -9582,32 +9582,40 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const { text, icon, src, alt } = this.props;
       this._propStyleClasses = ["size"];
-      if (src) {
-        this.setProps({
-          classes: { "avatar-image": true },
-          children: [{ tag: "img", attrs: { src, alt } }],
-        });
-      } else if (icon) {
-        this.setProps({ children: [Component.normalizeIconProps(icon)] });
-      } else {
-        const innerText = text || "NA";
-        this.setProps({
-          children: [
-            {
-              tag: "span",
-              classes: { "nom-avatar-string": true },
-              children: innerText,
+      this.setProps({
+        classes: { "avatar-image": !!src },
+        children: [
+          src && {
+            tag: "img",
+            ref: (c) => {
+              this.imgRef = c;
             },
-          ],
-        });
-      }
+            attrs: { alt },
+          },
+          icon && {
+            component: "Icon",
+            type: icon,
+            ref: (c) => {
+              this.iconRef = c;
+            },
+          },
+          !icon && {
+            ref: (c) => {
+              this.textRef = c;
+            },
+            tag: "span",
+            classes: { "nom-avatar-string": true },
+            children: text || "NA",
+          },
+        ],
+      });
     }
     _setScale() {
       if (!this.props) {
         return;
       }
-      const { gap, src, icon } = this.props;
-      if (src || icon) {
+      const { gap, icon } = this.props;
+      if (icon) {
         return;
       }
       const childrenWidth = this.element.lastChild.offsetWidth;
@@ -9632,7 +9640,24 @@ function _defineProperty2(obj, key, value) {
         }
       }
     }
+    _loadImageAsync() {
+      const { src } = this.props;
+      return new Promise((resolve, reject) => {
+        const image = this.imgRef.element;
+        this.imgRef.element.src = src;
+        image.onload = () => {
+          this.textRef && this.textRef.hide();
+          this.iconRef && this.iconRef.hide();
+          resolve();
+        };
+        image.onerror = () => {
+          this.imgRef.hide();
+          reject();
+        };
+      });
+    }
     _rendered() {
+      this.props.src && this._loadImageAsync();
       this._setScale();
     }
   }
