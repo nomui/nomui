@@ -23,7 +23,13 @@ class Avatar extends Component {
             alt,
           },
         },
-        icon && Component.normalizeIconProps(icon),
+        icon && {
+          component: 'Icon',
+          type: 'icon',
+          ref: (c) => {
+            this.iconRef = c
+          },
+        },
         !icon && {
           ref: (c) => {
             this.textRef = c
@@ -71,15 +77,16 @@ class Avatar extends Component {
     const { src } = this.props
     return new Promise((resolve, reject) => {
       const image = this.imgRef.element
+      this.imgRef.element.src = src
       image.onload = () => {
         this.textRef && this.textRef.hide()
+        this.iconRef && this.iconRef.hide()
         resolve()
       }
       image.onerror = () => {
         this.imgRef.hide()
         reject()
       }
-      this.imgRef.element.src = src
     })
   }
 
