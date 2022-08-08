@@ -25,7 +25,7 @@ class Avatar extends Component {
         },
         icon && {
           component: 'Icon',
-          type: 'icon',
+          type: icon,
           ref: (c) => {
             this.iconRef = c
           },
