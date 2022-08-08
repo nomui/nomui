@@ -61,6 +61,7 @@ class TreeSelect extends Field {
         const _fieldKey = treeDataFields.key
         const _fieldText = treeDataFields.text
         const _parentKey = treeDataFields.parentKey
+        const _children = treeDataFields.children
 
         optionMap[item[_fieldKey]] = {
           key: item[_fieldKey],
@@ -68,8 +69,8 @@ class TreeSelect extends Field {
           [_fieldText]: item[_fieldText],
           [_parentKey]: parentKey,
         }
-        if (item.children && item.children.length > 0) {
-          mapTree(item.children, item[_fieldKey])
+        if (item[_children] && item[_children].length > 0) {
+          mapTree(item[_children], item[_fieldKey])
         }
       })
     }
@@ -154,7 +155,7 @@ class TreeSelect extends Field {
             placeholder: null,
             filter: ({ inputValue, options }) => {
               if (!inputValue) return options
-              const { key, text, parentKey } = this.props.treeDataFields
+              const { key, text, parentKey, children } = this.props.treeDataFields
 
               // 1.先遍历一次 将结果符合搜索条件的结果(包含其祖先)放至 filteredMap中
               const reg = new RegExp(inputValue, 'i')
@@ -186,9 +187,9 @@ class TreeSelect extends Field {
                     if (filterOpt.__filterNode) obj.__filterNode = filterOpt.__filterNode
                     // 递归判断children
                     // 没有符合搜索条件的, 则直接使用原children
-                    if (opt.children) {
-                      const _children = getFileterOptions(opt.children)
-                      obj.children = _children.length ? _children : opt.children
+                    if (opt[children]) {
+                      const _children = getFileterOptions(opt[children])
+                      obj[children] = _children.length ? _children : opt[children]
                     }
                     res.push(obj)
                   }
