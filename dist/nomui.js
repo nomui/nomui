@@ -25987,14 +25987,23 @@ function _defineProperty2(obj, key, value) {
     _config() {
       this.getOptionsMap();
       const children = this._getContentChildren();
-      this.setProps({ control: { children } });
+      this.setProps({ control: { disabled: this.props.disabled, children } });
       super._config();
+    }
+    _enable() {
+      this.control.props.disabled = false;
+    }
+    _disable() {
+      this.control.props.disabled = true;
     }
     _rendered() {
       this.popup = new TreeSelectPopup({
         trigger: this.control,
         nodeCheckable: this.props.multiple && this._getPopupNodeCheckable(),
         onShow: () => {
+          if (this.props.disabled) {
+            this.popup.hide();
+          }
           if (!this.props.multiple) {
             this.tree.update({
               nodeSelectable: this._getPopupNodeSelectable(),
@@ -26016,14 +26025,15 @@ function _defineProperty2(obj, key, value) {
           const _fieldKey = treeDataFields.key;
           const _fieldText = treeDataFields.text;
           const _parentKey = treeDataFields.parentKey;
+          const _children = treeDataFields.children;
           optionMap[item[_fieldKey]] = {
             key: item[_fieldKey],
             [_fieldKey]: item[_fieldKey],
             [_fieldText]: item[_fieldText],
             [_parentKey]: parentKey,
           };
-          if (item.children && item.children.length > 0) {
-            mapTree(item.children, item[_fieldKey]);
+          if (item[_children] && item[_children].length > 0) {
+            mapTree(item[_children], item[_fieldKey]);
           }
         });
       } // popup中的tree组件，options从其中获取
@@ -26074,6 +26084,9 @@ function _defineProperty2(obj, key, value) {
             this.clearIcon = c;
           },
           onClick: (args) => {
+            if (this.props.disabled) {
+              return;
+            }
             this._setValue(null);
             this.props.allowClear && this.clearIcon.hide();
             animate && this.popup && this.popup.animateHide();
@@ -26093,7 +26106,12 @@ function _defineProperty2(obj, key, value) {
               placeholder: null,
               filter: ({ inputValue, options }) => {
                 if (!inputValue) return options;
-                const { key, text, parentKey } = this.props.treeDataFields; // 1.先遍历一次 将结果符合搜索条件的结果(包含其祖先)放至 filteredMap中
+                const {
+                  key,
+                  text,
+                  parentKey,
+                  children,
+                } = this.props.treeDataFields; // 1.先遍历一次 将结果符合搜索条件的结果(包含其祖先)放至 filteredMap中
                 const reg = new RegExp(inputValue, "i");
                 const filteredMap = new Map();
                 ((target) =>
@@ -26125,11 +26143,11 @@ function _defineProperty2(obj, key, value) {
                       if (filterOpt.__filterNode)
                         obj.__filterNode = filterOpt.__filterNode; // 递归判断children
                       // 没有符合搜索条件的, 则直接使用原children
-                      if (opt.children) {
-                        const _children = getFileterOptions(opt.children);
-                        obj.children = _children.length
+                      if (opt[children]) {
+                        const _children = getFileterOptions(opt[children]);
+                        obj[children] = _children.length
                           ? _children
-                          : opt.children;
+                          : opt[children];
                       }
                       res.push(obj);
                     }

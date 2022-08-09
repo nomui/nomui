@@ -23,6 +23,7 @@ class TreeSelect extends Field {
     const children = this._getContentChildren()
     this.setProps({
       control: {
+        disabled: this.props.disabled,
         children,
       },
     })
@@ -30,11 +31,22 @@ class TreeSelect extends Field {
     super._config()
   }
 
+  _enable() {
+    this.control.props.disabled = false
+  }
+
+  _disable() {
+    this.control.props.disabled = true
+  }
+
   _rendered() {
     this.popup = new TreeSelectPopup({
       trigger: this.control,
       nodeCheckable: this.props.multiple && this._getPopupNodeCheckable(),
       onShow: () => {
+        if (this.props.disabled) {
+          this.popup.hide()
+        }
         if (!this.props.multiple) {
           this.tree.update({
             nodeSelectable: this._getPopupNodeSelectable(),
@@ -42,7 +54,6 @@ class TreeSelect extends Field {
         }
       },
     })
-
     this._valueChange({ newValue: this.currentValue })
   }
 
@@ -61,6 +72,7 @@ class TreeSelect extends Field {
         const _fieldKey = treeDataFields.key
         const _fieldText = treeDataFields.text
         const _parentKey = treeDataFields.parentKey
+        const _children = treeDataFields.children
 
         optionMap[item[_fieldKey]] = {
           key: item[_fieldKey],
@@ -68,8 +80,8 @@ class TreeSelect extends Field {
           [_fieldText]: item[_fieldText],
           [_parentKey]: parentKey,
         }
-        if (item.children && item.children.length > 0) {
-          mapTree(item.children, item[_fieldKey])
+        if (item[_children] && item[_children].length > 0) {
+          mapTree(item[_children], item[_fieldKey])
         }
       })
     }
@@ -134,6 +146,9 @@ class TreeSelect extends Field {
           this.clearIcon = c
         },
         onClick: (args) => {
+          if (this.props.disabled) {
+            return
+          }
           this._setValue(null)
           this.props.allowClear && this.clearIcon.hide()
           animate && this.popup && this.popup.animateHide()
@@ -154,7 +169,7 @@ class TreeSelect extends Field {
             placeholder: null,
             filter: ({ inputValue, options }) => {
               if (!inputValue) return options
-              const { key, text, parentKey } = this.props.treeDataFields
+              const { key, text, parentKey, children } = this.props.treeDataFields
 
               // 1.先遍历一次 将结果符合搜索条件的结果(包含其祖先)放至 filteredMap中
               const reg = new RegExp(inputValue, 'i')
@@ -186,9 +201,9 @@ class TreeSelect extends Field {
                     if (filterOpt.__filterNode) obj.__filterNode = filterOpt.__filterNode
                     // 递归判断children
                     // 没有符合搜索条件的, 则直接使用原children
-                    if (opt.children) {
-                      const _children = getFileterOptions(opt.children)
-                      obj.children = _children.length ? _children : opt.children
+                    if (opt[children]) {
+                      const _children = getFileterOptions(opt[children])
+                      obj[children] = _children.length ? _children : opt[children]
                     }
                     res.push(obj)
                   }

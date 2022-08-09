@@ -6,7 +6,11 @@ define([], function () {
       return {
         children: {
           component: 'TreeSelect',
+          ref: (c) => {
+            window.ts = c
+          },
           allowClear: true,
+          disabled: true,
           treeDataFields: {
             key: 'value',
             text: 'title',
