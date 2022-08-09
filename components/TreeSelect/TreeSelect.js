@@ -23,6 +23,7 @@ class TreeSelect extends Field {
     const children = this._getContentChildren()
     this.setProps({
       control: {
+        disabled: this.props.disabled,
         children,
       },
     })
@@ -30,11 +31,22 @@ class TreeSelect extends Field {
     super._config()
   }
 
+  _enable() {
+    this.control.props.disabled = false
+  }
+
+  _disable() {
+    this.control.props.disabled = true
+  }
+
   _rendered() {
     this.popup = new TreeSelectPopup({
       trigger: this.control,
       nodeCheckable: this.props.multiple && this._getPopupNodeCheckable(),
       onShow: () => {
+        if (this.props.disabled) {
+          this.popup.hide()
+        }
         if (!this.props.multiple) {
           this.tree.update({
             nodeSelectable: this._getPopupNodeSelectable(),
@@ -42,7 +54,6 @@ class TreeSelect extends Field {
         }
       },
     })
-
     this._valueChange({ newValue: this.currentValue })
   }
 
@@ -135,6 +146,9 @@ class TreeSelect extends Field {
           this.clearIcon = c
         },
         onClick: (args) => {
+          if (this.props.disabled) {
+            return
+          }
           this._setValue(null)
           this.props.allowClear && this.clearIcon.hide()
           animate && this.popup && this.popup.animateHide()
