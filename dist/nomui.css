@@ -9879,6 +9879,19 @@ textarea .nom-textarea {
   background: var(--nom-input-bg);
   cursor: pointer;
 }
+.nom-tree-select.s-disabled .nom-control,
+.nom-tree-select.s-disabled:hover .nom-control,
+.nom-tree-select[readonly] .nom-control,
+.nom-tree-select[readonly]:hover .nom-control {
+  background: var(--nom-input-bg-disabled);
+  border-color: var(--nom-color-border);
+}
+.nom-tree-select.s-disabled .nom-tree-select-clear,
+.nom-tree-select.s-disabled:hover .nom-tree-select-clear,
+.nom-tree-select[readonly] .nom-tree-select-clear,
+.nom-tree-select[readonly]:hover .nom-tree-select-clear {
+  visibility: hidden;
+}
 .nom-tree-select .nom-tree-select-single {
   overflow: hidden;
   white-space: nowrap;

@@ -1,9 +1,9 @@
 .nom-tree-select {
-  &.p-label-align-right>.nom-field-label+.nom-field-content {
+  &.p-label-align-right > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
-  >.nom-field-content {
+  > .nom-field-content {
     .nom-control {
       position: relative;
       height: 100%;
@@ -43,6 +43,19 @@
     }
   }
 
+  &.s-disabled,
+  &.s-disabled:hover,
+  &[readonly],
+  &[readonly]:hover {
+    .nom-control {
+      background: var(--nom-input-bg-disabled);
+      border-color: var(--nom-color-border);
+    }
+    .nom-tree-select-clear {
+      visibility: hidden;
+    }
+  }
+
   .nom-tree-select-single {
     overflow: hidden;
     white-space: nowrap;
@@ -66,12 +79,14 @@
 .nom-tree-select-popup {
   padding: 5px 5px;
 
-  >.nom-layout {
+  > .nom-layout {
     max-height: 300px;
   }
 
   .nom-tree {
-    .nom-tree-node:not(.s-disabled).filter-node>.nom-tree-node-content .nom-tree-node-content-text {
+    .nom-tree-node:not(.s-disabled).filter-node
+      > .nom-tree-node-content
+      .nom-tree-node-content-text {
       color: inherit;
       .nom-preset-bold;
     }
@@ -85,23 +100,23 @@
 }
 
 .nom-tree-select-animate-top-show {
-  -webkit-animation: nom-tree-select-keyframe-top-show .16s linear forwards;
-  animation: nom-tree-select-keyframe-top-show .16s linear forwards;
+  -webkit-animation: nom-tree-select-keyframe-top-show 0.16s linear forwards;
+  animation: nom-tree-select-keyframe-top-show 0.16s linear forwards;
 }
 
 .nom-tree-select-animate-bottom-show {
-  -webkit-animation: nom-tree-select-keyframe-bottom-show .16s linear forwards;
-  animation: nom-tree-select-keyframe-bottom-show .16s linear forwards;
+  -webkit-animation: nom-tree-select-keyframe-bottom-show 0.16s linear forwards;
+  animation: nom-tree-select-keyframe-bottom-show 0.16s linear forwards;
 }
 
 .nom-tree-select-animate-top-hide {
-  -webkit-animation: nom-tree-select-keyframe-top-hide .16s linear forwards;
-  animation: nom-tree-select-keyframe-top-hide .16s linear forwards;
+  -webkit-animation: nom-tree-select-keyframe-top-hide 0.16s linear forwards;
+  animation: nom-tree-select-keyframe-top-hide 0.16s linear forwards;
 }
 
 .nom-tree-select-animate-bottom-hide {
-  -webkit-animation: nom-tree-select-keyframe-bottom-hide .16s linear forwards;
-  animation: nom-tree-select-keyframe-bottom-hide .16s linear forwards;
+  -webkit-animation: nom-tree-select-keyframe-bottom-hide 0.16s linear forwards;
+  animation: nom-tree-select-keyframe-bottom-hide 0.16s linear forwards;
 }
 
 @-webkit-keyframes nom-tree-select-keyframe-top-show {
@@ -116,7 +131,6 @@
     transform: translateY(0%);
     opacity: 1;
   }
-
 }
 
 @keyframes nom-tree-select-keyframe-top-show {
@@ -145,7 +159,6 @@
     transform: translateY(0%);
     opacity: 1;
   }
-
 }
 
 @keyframes nom-tree-select-keyframe-bottom-show {
