@@ -18,6 +18,10 @@
 
   &[tooltip-align='top'] {
     transform: translateY(-8px);
+
+    .nom-tooltip-arrow--safari {
+      transform: translate(-50%, 8px);
+    }
   }
 
   &[tooltip-align='bottom'] {
@@ -29,6 +33,10 @@
       bottom: auto;
       left: 50%;
       transform: translate(-50%, -10px) rotate(180deg);
+    }
+
+    .nom-tooltip-arrow--safari {
+      transform: translate(-50%, -8px) rotate(180deg);
     }
   }
 

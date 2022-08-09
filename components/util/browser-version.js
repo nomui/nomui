@@ -68,3 +68,7 @@ export function isBrowerSupportSticky() {
 export function isChrome49() {
   return window.BROWSER_INFO.type === 'Chrome' && window.BROWSER_INFO.version === 49
 }
+
+export function isSafari() {
+  return window.BROWSER_INFO.type === 'Safari'
+}
