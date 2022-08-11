@@ -14295,17 +14295,18 @@ function _defineProperty2(obj, key, value) {
           : "23:59:59";
       this.startTime = minTime;
       this.endTime = maxTime;
-      this.props.minDate = this.props.minDate
+      this.minDateDay = this.props.minDate
         ? new Date(this.props.minDate).format("yyyy-MM-dd")
         : null;
-      this.props.maxDate = this.props.maxDate
+      this.maxDateDay = this.props.maxDate
         ? new Date(this.props.maxDate).format("yyyy-MM-dd")
         : null;
       this.showNow = true;
       if (
         (this.props.minDate &&
-          new Date().isBefore(new Date(this.props.minDate))) ||
-        (this.props.maxDate && new Date().isAfter(new Date(this.props.maxDate)))
+          new Date().isBefore(new Date(`${this.props.minDate} ${minTime}`))) ||
+        (this.props.maxDate &&
+          new Date().isAfter(new Date(`${this.props.maxDate} ${maxTime}`)))
       ) {
         this.showNow = false;
       }
@@ -14436,17 +14437,13 @@ function _defineProperty2(obj, key, value) {
                             }
                             if (
                               that.props.minDate &&
-                              new Date(date).isBefore(
-                                new Date(that.props.minDate)
-                              )
+                              new Date(date).isBefore(new Date(that.minDateDay))
                             ) {
                               isDisabled = true;
                             }
                             if (
                               that.props.maxDate &&
-                              new Date(date).isAfter(
-                                new Date(that.props.maxDate)
-                              )
+                              new Date(date).isAfter(new Date(that.maxDateDay))
                             ) {
                               isDisabled = true;
                             }
@@ -14539,8 +14536,8 @@ function _defineProperty2(obj, key, value) {
     _updateTimePickerStartEndTime(day) {
       this.currentDateBeforeMin = false;
       this.currentDateAfterMax = false;
-      const minDay = parseInt(new Date(this.props.minDate).format("d"), 10);
-      const maxDay = parseInt(new Date(this.props.maxDate).format("d"), 10);
+      const minDay = parseInt(new Date(this.minDateDay).format("d"), 10);
+      const maxDay = parseInt(new Date(this.maxDateDay).format("d"), 10);
       const timeProps = { startTime: "00:00:00", endTime: "23:59:59" };
       if (minDay === day) {
         timeProps.startTime = this.startTime;
@@ -14660,8 +14657,8 @@ function _defineProperty2(obj, key, value) {
       let currentDate = new Date();
       if (this.props.value !== null) {
         currentDate = Date.parseString(this.props.value, this.props.format);
-      } else if (this.props.minDate) {
-        currentDate = new Date(this.props.minDate);
+      } else if (this.minDateDay) {
+        currentDate = new Date(this.minDateDay);
       } // let currentDate =
       //   this.props.value !== null ? Date.parseString(this.props.value, this.props.format) : new Date()
       if (!currentDate) {
@@ -14672,10 +14669,9 @@ function _defineProperty2(obj, key, value) {
       this.day = currentDate.getDate(); // 注: 此处的比较 如果传入的时间格式不一致, 会有比较错误的情况
       //     因为 new Date(dateString) 并不可靠, `yyyy-MM-dd`得到的时间会是格林威治时间
       this.currentDateBeforeMin =
-        this.props.minDate &&
-        currentDate.isBefore(new Date(this.props.minDate));
+        this.minDateDay && currentDate.isBefore(new Date(this.minDateDay));
       this.currentDateAfterMax =
-        this.props.maxDate && currentDate.isAfter(new Date(this.props.maxDate));
+        this.maxDateDay && currentDate.isAfter(new Date(this.maxDateDay));
       this.dateInfo = { year: this.year, month: this.month - 1, day: this.day };
       if (this.props.value && this.props.showTime && this.timePicker) {
         this.timePicker.setValue(

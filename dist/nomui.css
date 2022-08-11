@@ -9101,6 +9101,9 @@ textarea .nom-textarea {
   margin: 2px -4px;
   color: var(--nom-date-picker-header-text-color);
 }
+.nom-date-picker-popup .nom-list .nom-list-content .nom-list-item-wrapper .nom-list-item.s-disabled {
+  opacity: 0.5;
+}
 .nom-date-picker-popup .timepicker-group > .nom-col {
   width: 60px;
   max-height: 220px;
