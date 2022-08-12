@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.6](https://github.com/nomui/nomui/compare/v1.1.5...v1.1.6) (2022-08-12)
+
+
+### Features
+
+* **Avatar:** 图像加载失败时会改为显示icon或者text ([49575e2](https://github.com/nomui/nomui/commit/49575e27f576d5ab1a06af99c1494274369b839a))
+
+
+### Bug Fixes
+
+* **DatePicker:** minDate maxDate不支持时分秒的问题 ([aa84e34](https://github.com/nomui/nomui/commit/aa84e34f8784a0e06fd673a3b710ca3ed7e582b7))
+* **TreeSelect:** 子数组字段名不为'children'时选中异常 ([897c15b](https://github.com/nomui/nomui/commit/897c15bd00d02c3d8471d66e232bd32eae53b38f))
+
 ### [1.1.5](https://github.com/nomui/nomui/compare/v1.1.4...v1.1.5) (2022-08-05)
 
 
