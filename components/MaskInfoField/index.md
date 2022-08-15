@@ -13,6 +13,7 @@
 | type | 加密文字类型 | `mobile \| phone \| fax \| mail \| identity \| card \| name \| middle \| other` | - |
 | empty | 内容为空时显示的占位文字 | `string` | - |
 | showTitle | 鼠标放上去是否显示全文 | `boolean` | `true` |
+| toggle | 是否显示全文切换按钮 | `boolean` | `true` |
 
 ## Method
 

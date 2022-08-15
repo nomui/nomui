@@ -7,7 +7,7 @@ class MaskInfoField extends Field {
   }
 
   _config() {
-    const { tag, type, text, mask, icon, empty, showTitle } = this.props
+    const { tag, type, text, mask, icon, empty, showTitle, toggle } = this.props
     this.setProps({
       control: {
         children: {
@@ -19,6 +19,7 @@ class MaskInfoField extends Field {
           icon,
           empty,
           showTitle,
+          toggle,
         },
       },
     })
@@ -37,6 +38,7 @@ class MaskInfoField extends Field {
 }
 MaskInfoField.defaults = {
   value: null,
+  toggle: true,
 }
 Component.register(MaskInfoField)
 

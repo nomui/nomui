@@ -53,6 +53,7 @@ class MaskInfo extends Component {
       this.props.mask &&
         !!icon &&
         this.props.text &&
+        this.props.toggle &&
         Component.normalizeIconProps({
           type: 'eye',
           onClick: function () {
@@ -68,7 +69,7 @@ class MaskInfo extends Component {
   }
 
   _rendered() {
-    if (this.props.mask && !this.props.icon) {
+    if (this.props.mask && !this.props.icon && this.props.toggle) {
       this.tooltip = new nomui.Tooltip({ trigger: this, children: '点击显示完整信息' })
     }
   }
@@ -173,6 +174,7 @@ MaskInfo.defaults = {
   icon: true,
   empty: null,
   showTitle: true,
+  toggle: true,
 }
 Component.register(MaskInfo)
 
