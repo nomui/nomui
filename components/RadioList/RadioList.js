@@ -9,10 +9,11 @@ class RadioList extends Field {
   }
 
   _config() {
+    const { fieldName } = this.props
     this.setProps({
       optionDefaults: {
         key() {
-          return this.props.value
+          return this.props[fieldName.value]
         },
       },
     })
@@ -35,7 +36,7 @@ class RadioList extends Field {
   }
 
   _getValueText(options, value) {
-    const { valueOptions } = this.props
+    const { valueOptions, fieldName } = this.props
     options = extend(
       {
         asArray: false,
@@ -47,16 +48,16 @@ class RadioList extends Field {
     const selected = value !== undefined ? this._getOptionByValue(value) : this.getSelectedOption()
     if (selected !== null) {
       if (options.asArray === true) {
-        return selected.props ? [selected.props.text] : [selected.text]
+        return selected.props ? [selected.props[fieldName.text]] : [selected[fieldName.text]]
       }
-      return selected.props ? selected.props.text : selected.text
+      return selected.props ? selected.props[fieldName.text] : selected[fieldName.text]
     }
 
     return null
   }
 
   _getValue(options) {
-    const { valueOptions } = this.props
+    const { valueOptions, fieldName } = this.props
     options = extend(
       {
         asArray: false,
@@ -68,15 +69,16 @@ class RadioList extends Field {
     const selected = this.getSelectedOption()
     if (selected !== null) {
       if (options.asArray === true) {
-        return [selected.props.value]
+        return [selected.props[fieldName.value]]
       }
-      return selected.props.value
+      return selected.props[fieldName.value]
     }
 
     return null
   }
 
   _setValue(value, options) {
+    const { fieldName } = this.props
     if (options === false) {
       options = { triggerChange: false }
     } else {
@@ -90,7 +92,7 @@ class RadioList extends Field {
         value = value[0]
       }
       this.optionList.selectItem(function () {
-        return this.props.value === value
+        return this.props[fieldName.value] === value
       })
     }
   }
@@ -108,13 +110,14 @@ class RadioList extends Field {
   }
 
   _getOptionByValue(value) {
+    const { fieldName } = this.props
     let option = null
     const { options } = this.props
     if (Array.isArray(value)) {
       value = value[0]
     }
     for (let i = 0; i < options.length; i++) {
-      if (options[i].value === value) {
+      if (options[i][fieldName.value] === value) {
         option = options[i]
         break
       }
@@ -125,6 +128,10 @@ class RadioList extends Field {
 RadioList.defaults = {
   options: [],
   uistyle: 'radio',
+  fieldName: {
+    text: 'text',
+    value: 'value',
+  },
 }
 Component.register(RadioList)
 
