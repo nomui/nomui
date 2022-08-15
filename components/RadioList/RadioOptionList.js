@@ -22,7 +22,7 @@ class RadioOptionList extends List {
                 classes: {
                   text: true,
                 },
-                children: this.props.text,
+                children: this.props[this.parent.parent.parent.parent.parent.props.fieldName.text],
               },
             ],
           })

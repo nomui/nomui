@@ -22645,7 +22645,9 @@ function _defineProperty2(obj, key, value) {
                 {
                   tag: "span",
                   classes: { text: true },
-                  children: this.props.text,
+                  children: this.props[
+                    this.parent.parent.parent.parent.parent.props.fieldName.text
+                  ],
                 },
               ],
             });
@@ -22683,10 +22685,11 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(RadioList.defaults, props), ...mixins);
     }
     _config() {
+      const { fieldName } = this.props;
       this.setProps({
         optionDefaults: {
           key() {
-            return this.props.value;
+            return this.props[fieldName.value];
           },
         },
       });
@@ -22700,7 +22703,7 @@ function _defineProperty2(obj, key, value) {
       return this.optionList.getSelectedItem();
     }
     _getValueText(options, value) {
-      const { valueOptions } = this.props;
+      const { valueOptions, fieldName } = this.props;
       options = extend$1({ asArray: false }, valueOptions, options);
       const selected =
         value !== undefined
@@ -22708,25 +22711,30 @@ function _defineProperty2(obj, key, value) {
           : this.getSelectedOption();
       if (selected !== null) {
         if (options.asArray === true) {
-          return selected.props ? [selected.props.text] : [selected.text];
+          return selected.props
+            ? [selected.props[fieldName.text]]
+            : [selected[fieldName.text]];
         }
-        return selected.props ? selected.props.text : selected.text;
+        return selected.props
+          ? selected.props[fieldName.text]
+          : selected[fieldName.text];
       }
       return null;
     }
     _getValue(options) {
-      const { valueOptions } = this.props;
+      const { valueOptions, fieldName } = this.props;
       options = extend$1({ asArray: false }, valueOptions, options);
       const selected = this.getSelectedOption();
       if (selected !== null) {
         if (options.asArray === true) {
-          return [selected.props.value];
+          return [selected.props[fieldName.value]];
         }
-        return selected.props.value;
+        return selected.props[fieldName.value];
       }
       return null;
     }
     _setValue(value, options) {
+      const { fieldName } = this.props;
       if (options === false) {
         options = { triggerChange: false };
       } else {
@@ -22741,7 +22749,7 @@ function _defineProperty2(obj, key, value) {
           value = value[0];
         }
         this.optionList.selectItem(function () {
-          return this.props.value === value;
+          return this.props[fieldName.value] === value;
         });
       }
     }
@@ -22756,13 +22764,14 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _getOptionByValue(value) {
+      const { fieldName } = this.props;
       let option = null;
       const { options } = this.props;
       if (Array.isArray(value)) {
         value = value[0];
       }
       for (let i = 0; i < options.length; i++) {
-        if (options[i].value === value) {
+        if (options[i][fieldName.value] === value) {
           option = options[i];
           break;
         }
@@ -22770,7 +22779,11 @@ function _defineProperty2(obj, key, value) {
       return option;
     }
   }
-  RadioList.defaults = { options: [], uistyle: "radio" };
+  RadioList.defaults = {
+    options: [],
+    uistyle: "radio",
+    fieldName: { text: "text", value: "value" },
+  };
   Component.register(RadioList);
   function getValidMax(value) {
     if (!isNumeric(value)) return 100;

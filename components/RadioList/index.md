@@ -9,6 +9,7 @@
 | 参数    | 说明       | 类型                                   | 默认值    |
 | ------- | ---------- | -------------------------------------- | --------- |
 | options | 单选项配置 | `[{text:string,value:number\|string}]` | -         |
+| fieldName | 数据源字段名 | `object` | `{text:'text',value:'value'}`         |
 | uistyle | 展示形式   | `'button'\|'radio'`                    | `'radio'` |
 | cols    | 展示列数   | `number`                               | -         |
 
