@@ -18943,6 +18943,7 @@ function _defineProperty2(obj, key, value) {
         this.props.mask &&
           !!icon &&
           this.props.text &&
+          this.props.toggle &&
           Component.normalizeIconProps({
             type: "eye",
             onClick: function () {
@@ -18956,7 +18957,7 @@ function _defineProperty2(obj, key, value) {
       });
     }
     _rendered() {
-      if (this.props.mask && !this.props.icon) {
+      if (this.props.mask && !this.props.icon && this.props.toggle) {
         this.tooltip = new nomui.Tooltip({
           trigger: this,
           children: "点击显示完整信息",
@@ -19043,6 +19044,7 @@ function _defineProperty2(obj, key, value) {
     icon: true,
     empty: null,
     showTitle: true,
+    toggle: true,
   };
   Component.register(MaskInfo);
   class MaskInfoField extends Field {
@@ -19050,7 +19052,16 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(MaskInfoField.defaults, props), ...mixins);
     }
     _config() {
-      const { tag, type, text, mask, icon, empty, showTitle } = this.props;
+      const {
+        tag,
+        type,
+        text,
+        mask,
+        icon,
+        empty,
+        showTitle,
+        toggle,
+      } = this.props;
       this.setProps({
         control: {
           children: {
@@ -19062,6 +19073,7 @@ function _defineProperty2(obj, key, value) {
             icon,
             empty,
             showTitle,
+            toggle,
           },
         },
       });
@@ -19074,7 +19086,7 @@ function _defineProperty2(obj, key, value) {
       return this.props.value;
     }
   }
-  MaskInfoField.defaults = { value: null };
+  MaskInfoField.defaults = { value: null, toggle: true };
   Component.register(MaskInfoField);
   class MenuItem extends Component {
     constructor(props, ...mixins) {
@@ -26845,8 +26857,8 @@ function _defineProperty2(obj, key, value) {
         return false;
       }
       const { name } = file;
-      const type = name.substring(name.lastIndexOf("."));
-      if (this.acceptList.includes(type)) {
+      const type = name.substring(name.lastIndexOf(".")).toLowerCase();
+      if (this.acceptList.toLowerCase().includes(type)) {
         return true;
       }
       return false;
