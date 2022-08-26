@@ -7458,6 +7458,7 @@ table.nom-table.p-bordered {
   flex-direction: column;
 }
 .nom-grid.m-frozen-header > .nom-grid-header {
+  overflow-y: scroll;
   flex-shrink: 0;
   background-color: var(--nom-grid-header-background-color);
 }
