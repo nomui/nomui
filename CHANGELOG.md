@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.7](https://github.com/nomui/nomui/compare/v1.1.6...v1.1.7) (2022-08-26)
+
+
+### Features
+
+* **Field:** 支持自定义tabindex属性 ([226305e](https://github.com/nomui/nomui/commit/226305e593aa7b9086605a30ab132c82e98d6a67))
+* **MaskInfo:** 新增配置是否显示切换全文按钮 ([e422fb9](https://github.com/nomui/nomui/commit/e422fb9b23e8715a48b47c44df130f7c9b1806f4))
+* **RadioList:** 新增自定义fieldName ([e19cce3](https://github.com/nomui/nomui/commit/e19cce3992db3dde91eb3bcd07cd86d0fb00ecde))
+
+
+### Bug Fixes
+
+* **Grid:** 同时固定表头与右侧列会导致无法对齐 ([ff8c9ad](https://github.com/nomui/nomui/commit/ff8c9ad5956ca907fc3acabb0272a017e382a6c5))
+
 ### [1.1.6](https://github.com/nomui/nomui/compare/v1.1.5...v1.1.6) (2022-08-12)
 
 
