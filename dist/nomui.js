@@ -16927,6 +16927,7 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {
       const that = this;
+      this._fixRightPadding();
       if (!this.grid.props.sticky) {
         return;
       }
@@ -16959,6 +16960,14 @@ function _defineProperty2(obj, key, value) {
     }
     _remove() {
       this.scrollbar && this.scrollbar._remove();
+    }
+    _fixRightPadding() {
+      setTimeout(() => {
+        const offset = this.element.offsetWidth - this.element.scrollWidth;
+        if (offset > 1) {
+          this.element.style.overflowY = "auto";
+        }
+      }, 200);
     }
     _hideScrolls() {
       const scrolls = document.getElementsByClassName("nom-scrollbar");

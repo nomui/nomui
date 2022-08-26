@@ -43,6 +43,8 @@ class GridHeader extends Component {
 
   _rendered() {
     const that = this
+
+    this._fixRightPadding()
     if (!this.grid.props.sticky) {
       return
     }
@@ -80,6 +82,15 @@ class GridHeader extends Component {
 
   _remove() {
     this.scrollbar && this.scrollbar._remove()
+  }
+
+  _fixRightPadding() {
+    setTimeout(() => {
+      const offset = this.element.offsetWidth - this.element.scrollWidth
+      if (offset > 1) {
+        this.element.style.overflowY = 'auto'
+      }
+    }, 200)
   }
 
   _hideScrolls() {
