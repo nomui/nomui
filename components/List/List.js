@@ -507,7 +507,7 @@ class List extends Component {
     _listData.splice(newIndex, 0, _dragerItem)
 
     if (this.props.sortable && this.props.sortable.onEnd) {
-      this._callHandler(this.props.sortable.onEnd)
+      this._callHandler(this.props.sortable.onEnd, { event: event })
     }
   }
 

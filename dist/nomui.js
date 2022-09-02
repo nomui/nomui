@@ -9097,7 +9097,7 @@ function _defineProperty2(obj, key, value) {
       const _dragerItem = _listData.splice(oldIndex, 1)[0];
       _listData.splice(newIndex, 0, _dragerItem);
       if (this.props.sortable && this.props.sortable.onEnd) {
-        this._callHandler(this.props.sortable.onEnd);
+        this._callHandler(this.props.sortable.onEnd, { event: event });
       }
     }
     getLastDragItem() {
