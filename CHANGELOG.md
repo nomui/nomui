@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.8](https://github.com/nomui/nomui/compare/v1.1.7...v1.1.8) (2022-09-02)
+
+
+### Bug Fixes
+
+* 开放List组件的sortable更多功能 ([4814dbf](https://github.com/nomui/nomui/commit/4814dbfc7b307b65ae315a1178202ff1cf6f056c))
+
 ### [1.1.7](https://github.com/nomui/nomui/compare/v1.1.6...v1.1.7) (2022-08-26)
 
 
