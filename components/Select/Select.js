@@ -38,7 +38,7 @@ class Select extends Field {
     this._normalizeInternalOptions(options)
 
     this._normalizeSearchable()
-    console.log(this.props)
+
     this.setProps({
       selectedSingle: {
         _created() {
@@ -356,7 +356,7 @@ class Select extends Field {
     }
 
     const selected = this.getSelectedOption()
-    console.log(selected)
+
     if (selected !== null) {
       if (Array.isArray(selected) && selected.length > 0) {
         const vals = selected.map(function (item) {
@@ -485,7 +485,7 @@ class Select extends Field {
     }
   }
 
-  appendOption() { }
+  appendOption() {}
 
   updateSearchPopup(text) {
     if (this.optionList) this.optionList.update({ text })
