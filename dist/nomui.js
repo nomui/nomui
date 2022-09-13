@@ -13344,7 +13344,6 @@ function _defineProperty2(obj, key, value) {
       const children = [];
       this._normalizeInternalOptions(options);
       this._normalizeSearchable();
-      console.log(this.props);
       this.setProps({
         selectedSingle: {
           _created() {
@@ -13605,7 +13604,6 @@ function _defineProperty2(obj, key, value) {
         return this.currentValue;
       }
       const selected = this.getSelectedOption();
-      console.log(selected);
       if (selected !== null) {
         if (Array.isArray(selected) && selected.length > 0) {
           const vals = selected.map(function (item) {
