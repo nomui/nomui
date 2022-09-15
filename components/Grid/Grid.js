@@ -737,7 +737,7 @@ class Grid extends Component {
     const data = keys.map(function (key) {
       return that.props.data.filter(function (item) {
         return parseInt(item[that.props.keyField], 10) === parseInt(key, 10)
-      })
+      })[0]
     })
     return data
   }
@@ -1291,6 +1291,7 @@ Grid.defaults = {
   bordered: false,
   scrollbarWidth: 8,
   summary: null,
+  showEmpty: true,
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false
