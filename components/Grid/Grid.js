@@ -736,7 +736,7 @@ class Grid extends Component {
     const keys = this.getDataKeys()
     const data = keys.map(function (key) {
       return that.props.data.filter(function (item) {
-        return parseInt(item[that.props.keyField], 10) === parseInt(key, 10)
+        return `${item[that.props.keyField]}` === `${key}`
       })[0]
     })
     return data
