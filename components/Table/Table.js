@@ -88,7 +88,7 @@ class Table extends Component {
         showEmpty: false,
       })
     }
-    const row = this.tbody.appendChild(rowProps)
+    const row = this.tbody.appendChild({ ...rowProps, ...{ index: this.props.data.length } })
     this.props.data.push(rowProps.data)
     if (this.hasGrid) {
       this.grid.rowsRefs[row.key] = row
