@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.9](https://github.com/nomui/nomui/compare/v1.1.8...v1.1.9) (2022-09-16)
+
+
+### Bug Fixes
+
+* **Grid:** appendRow与getData方法问题 ([4526d25](https://github.com/nomui/nomui/commit/4526d25797f706c555ee607a47aad7da7b3d7f7c))
+* **Grid:** getData方法可能返回undefined ([fcbbee9](https://github.com/nomui/nomui/commit/fcbbee9d4da446692a8434136692f175a7457155))
+
 ### [1.1.8](https://github.com/nomui/nomui/compare/v1.1.7...v1.1.8) (2022-09-02)
 
 
