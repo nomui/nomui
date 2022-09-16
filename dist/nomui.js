@@ -16004,6 +16004,7 @@ function _defineProperty2(obj, key, value) {
     _created() {
       this.table = this.parent;
       this.table.tbody = this;
+      this.props.showEmpty = this.table.props.showEmpty;
     }
     _config() {
       const { data = [], rowDefaults, keyField } = this.table.props;
@@ -16029,7 +16030,11 @@ function _defineProperty2(obj, key, value) {
           rowDefaults
         ),
       };
-      if (this.table.props.data && !this.table.props.data.length) {
+      if (
+        this.props.showEmpty &&
+        this.table.props.data &&
+        !this.table.props.data.length
+      ) {
         props = {
           children: {
             tag: "tr",
@@ -16654,7 +16659,19 @@ function _defineProperty2(obj, key, value) {
       this.loadingInst = new Loading({ container: this.parent });
     }
     appendRow(rowProps) {
-      this.tbody.appendChild(rowProps);
+      if (!this.props.data) {
+        this.props.data = [];
+      }
+      if (!this.props.data.length) {
+        this.tbody.update({ showEmpty: false });
+      }
+      const row = this.tbody.appendChild(
+        Object.assign({}, rowProps, { index: this.props.data.length })
+      );
+      this.props.data.push(rowProps.data);
+      if (this.hasGrid) {
+        this.grid.rowsRefs[row.key] = row;
+      }
     }
     getRows() {
       return this.tbody.getChildren();
@@ -16683,6 +16700,7 @@ function _defineProperty2(obj, key, value) {
     },
     showTitle: false,
     ellipsis: false,
+    showEmpty: true,
   };
   Component.register(Table);
   var GridTableMixin = {
@@ -16732,6 +16750,7 @@ function _defineProperty2(obj, key, value) {
           rowDefaults: this.props.rowDefaults,
           treeConfig: this.grid.props.treeConfig,
           keyField: this.grid.props.keyField,
+          showEmpty: this.grid.props.showEmpty,
         },
         attrs: {
           onscroll: () => {
@@ -17789,8 +17808,8 @@ function _defineProperty2(obj, key, value) {
       const keys = this.getDataKeys();
       const data = keys.map(function (key) {
         return that.props.data.filter(function (item) {
-          return parseInt(item[that.props.keyField], 10) === parseInt(key, 10);
-        });
+          return `${item[that.props.keyField]}` === `${key}`;
+        })[0];
       });
       return data;
     }
@@ -18292,6 +18311,7 @@ function _defineProperty2(obj, key, value) {
     bordered: false,
     scrollbarWidth: 8,
     summary: null,
+    showEmpty: true,
   };
   Grid._loopSetValue = function (key, arry) {
     if (key === undefined || key.cascade === undefined) return false;
