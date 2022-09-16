@@ -80,7 +80,19 @@ class Table extends Component {
   }
 
   appendRow(rowProps) {
-    this.tbody.appendChild(rowProps)
+    if (!this.props.data) {
+      this.props.data = []
+    }
+    if (!this.props.data.length) {
+      this.tbody.update({
+        showEmpty: false,
+      })
+    }
+    const row = this.tbody.appendChild({ ...rowProps, ...{ index: this.props.data.length } })
+    this.props.data.push(rowProps.data)
+    if (this.hasGrid) {
+      this.grid.rowsRefs[row.key] = row
+    }
   }
 
   getRows() {
@@ -112,6 +124,7 @@ Table.defaults = {
   },
   showTitle: false,
   ellipsis: false,
+  showEmpty: true,
 }
 
 Component.register(Table)

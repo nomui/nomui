@@ -14,6 +14,7 @@ class Tbody extends Component {
   _created() {
     this.table = this.parent
     this.table.tbody = this
+    this.props.showEmpty = this.table.props.showEmpty
   }
 
   _config() {
@@ -45,7 +46,7 @@ class Tbody extends Component {
       ),
     }
 
-    if (this.table.props.data && !this.table.props.data.length) {
+    if (this.props.showEmpty && this.table.props.data && !this.table.props.data.length) {
       props = {
         children: {
           tag: 'tr',
