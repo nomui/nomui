@@ -21,6 +21,7 @@ class PartialDatePicker extends Textbox {
 
   _config() {
     const { disabled, placeholder, animate, extraTools } = this.props
+    this.year = this.props.mode === 'year' ? this.props.value : this.props.value.substring(0, 4)
 
     let extra = []
     if (isFunction(extraTools)) {
@@ -201,7 +202,7 @@ class PartialDatePicker extends Textbox {
                       component: 'List',
 
                       items: that.year
-                        ? that._getWeek('2010')
+                        ? that._getWeek(that.year)
                         : [
                             {
                               component: 'StaticText',
