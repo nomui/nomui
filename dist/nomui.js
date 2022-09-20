@@ -21087,6 +21087,12 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const { disabled, placeholder, animate, extraTools } = this.props;
+      if (this.props.value) {
+        this.year =
+          this.props.mode === "year"
+            ? this.props.value
+            : this.props.value.substring(0, 4);
+      }
       let extra = [];
       if (isFunction(extraTools)) {
         extra = Array.isArray(extraTools(this))
@@ -21244,7 +21250,7 @@ function _defineProperty2(obj, key, value) {
                       children: {
                         component: "List",
                         items: that.year
-                          ? that._getWeek("2010")
+                          ? that._getWeek(that.year)
                           : [
                               {
                                 component: "StaticText",
@@ -21511,8 +21517,8 @@ function _defineProperty2(obj, key, value) {
         }
       }
     }
-    resolveValue() {
-      const v = this.getValue();
+    resolveValue(value) {
+      const v = value || this.getValue();
       const year = this.props.mode === "year" ? v : v.substring(0, 4);
       const after =
         this.props.mode === "year"
@@ -21571,6 +21577,10 @@ function _defineProperty2(obj, key, value) {
           this.subPicker.selectItem(this.week);
           break;
       }
+    }
+    _setValue(value) {
+      this.resolveValue(value);
+      super._setValue(value);
     }
     updateList(noyear) {
       if (!noyear) {
