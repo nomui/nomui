@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.10](https://github.com/nomui/nomui/compare/v1.1.9...v1.1.10) (2022-09-23)
+
+
+### Bug Fixes
+
+* **PartialDatePicker:** 部分情形getDateString方法报错 ([2940caa](https://github.com/nomui/nomui/commit/2940caa80d168e4261888fd6a9b8ce1721662b65))
+
 ### [1.1.9](https://github.com/nomui/nomui/compare/v1.1.8...v1.1.9) (2022-09-16)
 
 
