@@ -21905,7 +21905,9 @@ function _defineProperty2(obj, key, value) {
             that.input.element.selectionStart = start;
             that.input.element.selectionEnd = start;
           }
-          pass ? that.rightIconRef.show() : that.rightIconRef.hide();
+          if (that.props.visibilityToggle) {
+            pass ? that.rightIconRef.show() : that.rightIconRef.hide();
+          }
           that._callHandler(onValueChange);
         },
       });
