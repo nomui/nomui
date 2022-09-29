@@ -10144,6 +10144,12 @@ function _defineProperty2(obj, key, value) {
           badgeProps.text = this.props.badge.text;
           badgeProps.type = "tag";
         }
+        if (
+          this.props.badge.number !== undefined &&
+          (this.props.badge.number === 0 || this.props.badge.number === "0")
+        ) {
+          badgeProps.hidden = true;
+        }
         badgeProps.number = this.props.badge.number
           ? this.props.badge.number
           : null;
