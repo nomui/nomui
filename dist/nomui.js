@@ -16986,6 +16986,9 @@ function _defineProperty2(obj, key, value) {
     }
     _fixRightPadding() {
       setTimeout(() => {
+        if (!this.element) {
+          return;
+        }
         const offset = this.element.offsetWidth - this.element.scrollWidth;
         if (offset > 1) {
           this.element.style.overflowY = "auto";

@@ -86,6 +86,9 @@ class GridHeader extends Component {
 
   _fixRightPadding() {
     setTimeout(() => {
+      if (!this.element) {
+        return
+      }
       const offset = this.element.offsetWidth - this.element.scrollWidth
       if (offset > 1) {
         this.element.style.overflowY = 'auto'
