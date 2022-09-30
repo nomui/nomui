@@ -732,6 +732,9 @@ class Grid extends Component {
   }
 
   getData() {
+    if (!this.props.data || !this.props.data.length) {
+      return []
+    }
     const that = this
     const keys = this.getDataKeys()
     const data = keys.map(function (key) {
