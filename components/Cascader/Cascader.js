@@ -293,7 +293,7 @@ class Cascader extends Field {
       item.value = item[valueField]
       item.key = item[key]
       item.children = item[childrenField]
-      item.disabled = !!item[disabledField]
+      item.disabled = item[disabledField] === true
       if (Array.isArray(item.children) && item.children.length > 0) {
         this.handleOptions(item.children, fieldsMapping)
       }
