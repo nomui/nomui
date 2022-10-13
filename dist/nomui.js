@@ -10588,10 +10588,11 @@ function _defineProperty2(obj, key, value) {
               classes: {
                 "nom-cascader-menu-item": true,
                 "nom-cascader-menu-item-active": item.key === currentVal,
+                "nom-cascader-menu-item-disabled": item.disabled === true,
               },
               onClick: () => {
-                // cascaderList.cascaderControl._itemSelected(item.key)
-                cascaderList._handleNoLeafClick(item.key);
+                item.disabled !== true &&
+                  cascaderList._handleNoLeafClick(item.key);
               },
               children: [
                 {
@@ -10735,7 +10736,7 @@ function _defineProperty2(obj, key, value) {
       const children = [];
       const { showArrow, placeholder, separator, valueType } = this.props;
       const { value, options, disabled } = this.props;
-      this.internalOption = JSON.parse(JSON.stringify(options)); // this.handleOptions(this.internalOption, fieldsMapping)
+      this.internalOption = JSON.parse(JSON.stringify(options));
       this._normalizeInternalOptions(options);
       this.flatItems(this.internalOption);
       this.initValue = isFunction(value) ? value() : value;
@@ -10850,7 +10851,7 @@ function _defineProperty2(obj, key, value) {
       while (recur) {
         this.selectedOption.unshift(recur);
         recur = this.items.get(recur.pid);
-      } // this.checked = checked
+      }
       this.checked = checked;
       this._hidePopup = hidePopup;
       const selectedItem = this.items.get(selectedKey);
@@ -10937,13 +10938,14 @@ function _defineProperty2(obj, key, value) {
       if (!value || !this.currentValue || !Array.isArray(value))
         return value !== this.currentValue;
       return this.currentValue.toString() !== value.toString();
-    }
+    } // handleOptions(options, fieldsMapping) {
     handleOptions(options, fieldsMapping) {
       const {
         key: keyField,
         label: labelField,
         value: valueField,
         children: childrenField,
+        disabled: disabledField,
       } = fieldsMapping;
       const key = keyField || valueField;
       if (!Array.isArray(options)) return [];
@@ -10954,6 +10956,7 @@ function _defineProperty2(obj, key, value) {
         item.value = item[valueField];
         item.key = item[key];
         item.children = item[childrenField];
+        item.disabled = item[disabledField] === true;
         if (Array.isArray(item.children) && item.children.length > 0) {
           this.handleOptions(item.children, fieldsMapping);
         }
@@ -11048,7 +11051,12 @@ function _defineProperty2(obj, key, value) {
     options: [],
     showArrow: true,
     separator: " / ",
-    fieldsMapping: { label: "label", value: "value", children: "children" },
+    fieldsMapping: {
+      label: "label",
+      value: "value",
+      children: "children",
+      disabled: "disabled",
+    },
     valueType: "cascade",
     changeOnSelect: true,
     width: 200,

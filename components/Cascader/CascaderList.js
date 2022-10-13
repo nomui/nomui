@@ -97,12 +97,11 @@ class CascaderList extends Component {
             classes: {
               'nom-cascader-menu-item': true,
               'nom-cascader-menu-item-active': item.key === currentVal,
+              'nom-cascader-menu-item-disabled': item.disabled === true,
             },
             onClick: () => {
-              // cascaderList.cascaderControl._itemSelected(item.key)
-              cascaderList._handleNoLeafClick(item.key)
+              item.disabled !== true && cascaderList._handleNoLeafClick(item.key)
             },
-
             children: [
               {
                 tag: 'span',

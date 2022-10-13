@@ -10559,6 +10559,11 @@ textarea .nom-textarea {
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item.nom-cascader-menu-item-active[disabled] {
   background-color: var(--nom-color-primary-disabled);
 }
+.nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item.nom-cascader-menu-item-disabled {
+  color: rgba(0, 0, 0, 0.25);
+  cursor: not-allowed;
+  user-select: none;
+}
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item > .nom-cascader-menu-item-expand-icon {
   padding-left: 1rem;
 }
