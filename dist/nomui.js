@@ -21481,7 +21481,7 @@ function _defineProperty2(obj, key, value) {
         this.updateList(true);
       }
       if (this.props.mode === "week") {
-        this.setValue(null);
+        this.setValue(null, { triggerChange: false });
         this.weekPicker.parent.props.hidden &&
           this.weekPicker.parent.update({ hidden: false });
         this.weekPicker.update({ items: this._getWeek(this.year) });
@@ -21538,7 +21538,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
     resolveValue(value) {
-      const v = value || this.getValue();
+      const v = value || this.year || this.getValue();
       const year = this.props.mode === "year" ? v : v.substring(0, 4);
       const after =
         this.props.mode === "year"
