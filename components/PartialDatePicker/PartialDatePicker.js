@@ -449,7 +449,7 @@ class PartialDatePicker extends Textbox {
     }
 
     if (this.props.mode === 'week') {
-      this.setValue(null)
+      this.setValue(`${this.year} ${this.week}周`)
       this.weekPicker.parent.props.hidden &&
         this.weekPicker.parent.update({
           hidden: false,
@@ -514,6 +514,7 @@ class PartialDatePicker extends Textbox {
 
   resolveValue(value) {
     const v = value || this.getValue()
+    if (!v) return false
     const year = this.props.mode === 'year' ? v : v.substring(0, 4)
     const after = this.props.mode === 'year' ? null : Math.abs(parseInt(v.substring(4), 10))
 
