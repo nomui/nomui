@@ -17547,6 +17547,9 @@ function _defineProperty2(obj, key, value) {
             sortDirection: sorter.sortDirection,
           });
         }
+        if (item.children) {
+          item.children = item.children.map(this._setColumnItemDire(sorter));
+        }
         return Object.assign({}, item, { sortDirection: null });
       };
     }

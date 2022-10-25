@@ -402,6 +402,9 @@ class Grid extends Component {
       if (item.field === sorter.field) {
         return { ...item, sortDirection: sorter.sortDirection }
       }
+      if (item.children) {
+        item.children = item.children.map(this._setColumnItemDire(sorter))
+      }
       return { ...item, sortDirection: null }
     }
   }
@@ -420,6 +423,7 @@ class Grid extends Component {
       }
 
       this.setProps({ data: arr })
+
       this.setSortDirection(sorter)
 
       this.lastSortField = key
