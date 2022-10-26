@@ -87,22 +87,28 @@ class TreeNode extends Component {
 
   check({ checkCheckbox = true, triggerCheckChange = true, fromChildren = false } = {}) {
     const { checked } = this.props
-    const { onCheckChange, cascadeCheckParent, cascadeCheckChildren } =
-      this.tree.props.nodeCheckable
+    const {
+      onCheckChange,
+      cascadeCheckParent,
+      cascadeCheckChildren,
+      onlyleaf,
+    } = this.tree.props.nodeCheckable
 
     if (checked === true) {
       return
     }
 
     // 级联选中子节点 && 当前节点的选中不是因为 children 级联上来的
-    cascadeCheckChildren === true &&
+    !onlyleaf &&
+      cascadeCheckChildren === true &&
       !fromChildren &&
       Object.keys(this.subnodeRefs).forEach((key) => {
         this.subnodeRefs[key].checkChildren({ checkCheckbox: true, triggerCheckChange: false })
       })
 
     // 级联选中父节点: fromChildren传值true
-    cascadeCheckParent === true &&
+    !onlyleaf &&
+      cascadeCheckParent === true &&
       this.parentNode &&
       this.parentNode.check({ checkCheckbox: true, triggerCheckChange: false, fromChildren: true })
 
@@ -118,8 +124,12 @@ class TreeNode extends Component {
 
   uncheck({ uncheckCheckbox = true, triggerCheckChange = true, skipChildren = false } = {}) {
     const { checked } = this.props
-    const { onCheckChange, cascadeUncheckChildren, cascadeUncheckParent } =
-      this.tree.props.nodeCheckable
+    const {
+      onCheckChange,
+      cascadeUncheckChildren,
+      cascadeUncheckParent,
+      onlyleaf,
+    } = this.tree.props.nodeCheckable
 
     if (checked === false) {
       return
@@ -127,13 +137,15 @@ class TreeNode extends Component {
 
     uncheckCheckbox && this.checkboxRef.setValue(false, { triggerChange: false })
 
-    cascadeUncheckChildren === true &&
+    !onlyleaf &&
+      cascadeUncheckChildren === true &&
       skipChildren === false &&
       Object.keys(this.subnodeRefs).forEach((key) => {
         this.subnodeRefs[key].uncheck({ uncheckCheckbox: true, triggerCheckChange: false })
       })
 
-    cascadeUncheckParent === true &&
+    !onlyleaf &&
+      cascadeUncheckParent === true &&
       this.parentNode &&
       this.parentNode.checkNodes({ childKey: this.key })
 

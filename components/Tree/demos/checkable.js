@@ -24,6 +24,13 @@ define([], function () {
               },
               {
                 component: 'Checkbox',
+                text: '只允许勾选叶子节点',
+                onValueChange: ({ newValue }) => {
+                  treeRef.update({ nodeCheckable: { onlyleaf: newValue } })
+                },
+              },
+              {
+                component: 'Checkbox',
                 text: '级联选中父节点',
                 value: true,
                 onValueChange: ({ newValue }) => {
@@ -77,7 +84,7 @@ define([], function () {
               treeRef = c
             },
             nodeCheckable: {
-              checkedNodeKeys: ['节点 1', '节点 1.1', '节点 2.1'],
+              // checkedNodeKeys: ['节点 1', '节点 1.1', '节点 2.1'],
             },
             dataFields: {
               key: 'text',
