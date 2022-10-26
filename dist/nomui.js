@@ -16811,10 +16811,16 @@ function _defineProperty2(obj, key, value) {
       });
     }
     _getSummaryColumns() {
-      const { columns } = this.grid.props;
+      const { summary } = this.grid.props;
+      const columns =
+        this.grid.props.summary && this.grid.props.summary.columns
+          ? this.grid.props.summary.columns
+          : this.grid.props.columns;
+      const ignoreCellRender = !!(summary && summary.ignoreCellRender);
       return columns.map((col) => {
         return Object.assign({}, col, {
-          cellRender: col.cellRender ? null : col.cellRender,
+          cellRender:
+            col.cellRender && !ignoreCellRender ? col.cellRender : null,
         });
       });
     }
@@ -16825,28 +16831,45 @@ function _defineProperty2(obj, key, value) {
         list = summary.map((i) => {
           return this._getSummaryData(i);
         });
+      } else if (summary.rows) {
+        list = summary.rows.map((i) => {
+          return this._getSummaryData(i);
+        });
       } else {
         list.push(this._getSummaryData(summary));
       }
       return list;
     }
+    _getMappedColumns(columns) {
+      const arr = [];
+      function mapColumns(data) {
+        data.forEach(function (item) {
+          if (item.children) {
+            mapColumns(item.children);
+          }
+          arr.push(item);
+        });
+      }
+      mapColumns(columns);
+      return arr;
+    }
     _getSummaryData(param) {
-      const {
-        data = [],
-        columns,
-        rowCheckable,
-        rowExpandable,
-      } = this.grid.props;
+      const { data = [], rowCheckable, rowExpandable } = this.grid.props;
+      const columns =
+        this.grid.props.summary && this.grid.props.summary.columns
+          ? this.grid.props.summary.columns
+          : this.grid.props.columns;
       const { method, text = "总计" } = param;
+      const flatColumns = this._getMappedColumns(columns);
       let res = {};
       let textColumnIndex = 0;
       rowCheckable && textColumnIndex++;
       rowExpandable && textColumnIndex++;
       if (method && isFunction(method)) {
-        res = method({ columns, data });
-        res[columns[textColumnIndex].field] = text;
+        res = method({ columns: flatColumns, data, text: text });
+        res[flatColumns[textColumnIndex].field] = text;
       } else {
-        columns.forEach((col, index) => {
+        flatColumns.forEach((col, index) => {
           if (index === textColumnIndex) {
             res[col.field] = text;
             return;
