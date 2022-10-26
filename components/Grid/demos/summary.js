@@ -49,40 +49,6 @@ define([], function () {
             columns: gridColumns,
             data: options,
           },
-          { component: 'StaticText', value: '自定义多行summary' },
-          {
-            component: 'Grid',
-            summary: [
-              {
-                text: '最小值',
-                // method 返回 { field: 需要展示的总结的数据 } 格式的对象
-                method: ({ columns, data }) => {
-                  const res = {}
-                  columns.forEach((col) => {
-                    const values = data.map((item) => Number(item[col.field]))
-                    const min = Math.min(...values)
-                    res[col.field] = Number.isNaN(min) ? '-' : min
-                  })
-                  return res
-                },
-              },
-              {
-                text: '最大值',
-                // method 返回 { field: 需要展示的总结的数据 } 格式的对象
-                method: ({ columns, data }) => {
-                  const res = {}
-                  columns.forEach((col) => {
-                    const values = data.map((item) => Number(item[col.field]))
-                    const max = Math.max(...values)
-                    res[col.field] = Number.isNaN(max) ? '-' : max
-                  })
-                  return res
-                },
-              },
-            ],
-            columns: gridColumns,
-            data: options,
-          },
         ],
       }
     },
