@@ -11398,12 +11398,13 @@ function _defineProperty2(obj, key, value) {
       });
     }
     _getCheckbox() {
-      const { disabled: treeDisabled } = this.tree.props;
+      const { disabled: treeDisabled, nodeCheckable } = this.tree.props;
       const { disabled: nodeDisabled } = this.node.props;
       return {
         component: Checkbox,
         plain: true,
         classes: { "nom-tree-node-checkbox": true },
+        hidden: nodeCheckable && nodeCheckable.onlyleaf && !this.node.isLeaf,
         disabled: treeDisabled || nodeDisabled,
         _created: (inst) => {
           this.node.checkboxRef = inst;
@@ -11505,11 +11506,13 @@ function _defineProperty2(obj, key, value) {
         onCheckChange,
         cascadeCheckParent,
         cascadeCheckChildren,
+        onlyleaf,
       } = this.tree.props.nodeCheckable;
       if (checked === true) {
         return;
       } // 级联选中子节点 && 当前节点的选中不是因为 children 级联上来的
-      cascadeCheckChildren === true &&
+      !onlyleaf &&
+        cascadeCheckChildren === true &&
         !fromChildren &&
         Object.keys(this.subnodeRefs).forEach((key) => {
           this.subnodeRefs[key].checkChildren({
@@ -11517,7 +11520,8 @@ function _defineProperty2(obj, key, value) {
             triggerCheckChange: false,
           });
         }); // 级联选中父节点: fromChildren传值true
-      cascadeCheckParent === true &&
+      !onlyleaf &&
+        cascadeCheckParent === true &&
         this.parentNode &&
         this.parentNode.check({
           checkCheckbox: true,
@@ -11542,13 +11546,15 @@ function _defineProperty2(obj, key, value) {
         onCheckChange,
         cascadeUncheckChildren,
         cascadeUncheckParent,
+        onlyleaf,
       } = this.tree.props.nodeCheckable;
       if (checked === false) {
         return;
       }
       uncheckCheckbox &&
         this.checkboxRef.setValue(false, { triggerChange: false });
-      cascadeUncheckChildren === true &&
+      !onlyleaf &&
+        cascadeUncheckChildren === true &&
         skipChildren === false &&
         Object.keys(this.subnodeRefs).forEach((key) => {
           this.subnodeRefs[key].uncheck({
@@ -11556,7 +11562,8 @@ function _defineProperty2(obj, key, value) {
             triggerCheckChange: false,
           });
         });
-      cascadeUncheckParent === true &&
+      !onlyleaf &&
+        cascadeUncheckParent === true &&
         this.parentNode &&
         this.parentNode.checkNodes({ childKey: this.key });
       this.props.checked = false;
@@ -11719,6 +11726,15 @@ function _defineProperty2(obj, key, value) {
             nodeCheckable
           ),
         });
+        if (this.props.nodeCheckable && this.props.nodeCheckable.onlyleaf) {
+          this.setProps({
+            nodeCheckable: {
+              cascadeCheckParent: false,
+              cascadeUncheckParent: false,
+              cascade: false,
+            },
+          });
+        }
         this.checkedNodeKeysHash = {};
         if (Array.isArray(this.props.nodeCheckable.checkedNodeKeys)) {
           this.props.nodeCheckable.checkedNodeKeys.forEach((key) => {
@@ -25974,6 +25990,7 @@ function _defineProperty2(obj, key, value) {
         treeDataFields,
         flatOptions,
         multiple,
+        initExpandLevel,
       } = this.selectControl.props;
       this.setProps({
         attrs: {
@@ -26028,6 +26045,7 @@ function _defineProperty2(obj, key, value) {
               multiple,
               nodeSelectable,
               nodeCheckable,
+              initExpandLevel,
               _created: function () {
                 that.selectControl.tree = this;
               },
@@ -26321,13 +26339,17 @@ function _defineProperty2(obj, key, value) {
       const { multiple, treeCheckable } = this.props;
       const { currentValue } = this;
       if (!multiple && !treeCheckable) return false; // 多选则展示复选框
-      return Component.extendProps(treeCheckable, {
-        checkedNodeKeys: currentValue,
-        onCheckChange: () => {
-          const checkedKeys = this.tree.getCheckedNodeKeys();
-          this._setValue(checkedKeys);
-        },
-      });
+      return Component.extendProps(
+        { onlyleaf: this.props.onlyleaf },
+        treeCheckable,
+        {
+          checkedNodeKeys: currentValue,
+          onCheckChange: () => {
+            const checkedKeys = this.tree.getCheckedNodeKeys();
+            this._setValue(checkedKeys);
+          },
+        }
+      );
     }
     _setValue(value, options) {
       this.tempValue = value;
@@ -26400,6 +26422,7 @@ function _defineProperty2(obj, key, value) {
     },
     onlyleaf: false,
     showArrow: true,
+    initExpandLevel: -1,
   };
   Component.register(TreeSelect);
   const DEFAULT_ACCEPT =

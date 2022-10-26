@@ -61,6 +61,16 @@ class Tree extends Component {
         ),
       })
 
+      if (this.props.nodeCheckable && this.props.nodeCheckable.onlyleaf) {
+        this.setProps({
+          nodeCheckable: {
+            cascadeCheckParent: false,
+            cascadeUncheckParent: false,
+            cascade: false,
+          },
+        })
+      }
+
       this.checkedNodeKeysHash = {}
       if (Array.isArray(this.props.nodeCheckable.checkedNodeKeys)) {
         this.props.nodeCheckable.checkedNodeKeys.forEach((key) => {

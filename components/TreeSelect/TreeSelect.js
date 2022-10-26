@@ -275,7 +275,7 @@ class TreeSelect extends Field {
 
     if (!multiple && !treeCheckable) return false
     // 多选则展示复选框
-    return Component.extendProps(treeCheckable, {
+    return Component.extendProps({ onlyleaf: this.props.onlyleaf }, treeCheckable, {
       checkedNodeKeys: currentValue,
       onCheckChange: () => {
         const checkedKeys = this.tree.getCheckedNodeKeys()
@@ -367,6 +367,7 @@ TreeSelect.defaults = {
   },
   onlyleaf: false,
   showArrow: true,
+  initExpandLevel: -1,
 }
 
 Component.register(TreeSelect)
