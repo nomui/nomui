@@ -13,6 +13,7 @@ define([
   './column-auto-width.js',
   './auto-merge.js',
   './summary.js',
+  './multi-summary.js',
   './multiple-header.js',
   './highlight-col.js',
   './sticky.js',

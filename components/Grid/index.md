@@ -43,7 +43,7 @@
 | rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
 | rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |
 | rowSortable | 表格行是否可拖动顺序 | `object` \| `boolean` | `false` |
-| summary | 表尾总计行配置,多行统计则传入summary配置项数组 | `array` \|`object` \| `boolean` | `false` |
+| summary | 表尾总计行配置,多行统计则传入 summary 配置项数组 | `{ columns:[],rows:[],ignoreCellRender:boolean }` \| `boolean` | `false` |
 | treeConfig | 树形表格配置 | `object` | - |
 | bordered | 是否显示边框 | `boolean` | `false` |
 | showTitle | 单元格显示 title | `boolean` | `false` |
@@ -64,18 +64,19 @@
 
 ### methods
 
-| 名称               | 说明                                           | 类型                      |
-| ------------------ | ---------------------------------------------- | ------------------------- |
-| appendRow          | 在后面新增一行                                 | `(rowProps)=>{}`          |
-| resetSort          | 重置表格的排序状态                             | -                         |
-| getDataKeys        | 获取当前顺序的 keyField 数组                   | -                         |
-| getData            | 获取当前顺序的表格 data                        | -                         |
-| resetColumnsCustom | 重置自定义列的展示                             | -                         |
-| resetColsWidth     | 重置列的宽度(不传参数则重置所有列宽)           | `Funciton(field \| null)` |
-| getCheckedRows     | 获取当前选中行数组                             | -                         |
-| getCheckedRowKeys  | 获取当前选中行的 key 数组                      | -                         |
-| setScrollPlace     | 记录当前表格滚动位置(下次 update 时会自动滚动), 若传入回调函数，则参数是当前滚动位置信息`{header,body}`| -                         |
-| autoScrollGrid     | 主动触发滚动条自动滚动到上次的位置 | `({header,body})=>{} `                       |
+| 名称 | 说明 | 类型 |
+| --- | --- | --- |
+| appendRow | 在后面新增一行 | `(rowProps)=>{}` |
+| resetSort | 重置表格的排序状态 | - |
+| getDataKeys | 获取当前顺序的 keyField 数组 | - |
+| getData | 获取当前顺序的表格 data | - |
+| resetColumnsCustom | 重置自定义列的展示 | - |
+| resetColsWidth | 重置列的宽度(不传参数则重置所有列宽) | `Funciton(field \| null)` |
+| getCheckedRows | 获取当前选中行数组 | - |
+| getCheckedRowKeys | 获取当前选中行的 key 数组 | - |
+| setScrollPlace | 记录当前表格滚动位置(下次 update 时会自动滚动), 若传入回调函数，则参数是当前滚动位置信息`{header,body}` | - |
+| autoScrollGrid | 主动触发滚动条自动滚动到上次的位置 | `({header,body})=>{} ` |
+
 ### column
 
 列描述数据对象，是 columns 中的一项，column 使用相同的 API。
@@ -195,12 +196,20 @@
 
 ### summary
 
-表尾总计行配置，多行统计则以数组形式传入，例如：`[{text,method},{text,method}]`
+表尾总计行配置
 
-| 参数   | 说明                 | 类型                                    | 默认值 |
-| ------ | -------------------- | --------------------------------------- | ------ |
-| text   | 第一列的展示文字     | `string`                                | `总计` |
-| method | 自定义的合计计算方法 | `({columns, data}) => {[filed]: value}` | -      |
+| 参数             | 说明                                           | 类型              | 默认值  |
+| ---------------- | ---------------------------------------------- | ----------------- | ------- |
+| columns          | 统计行的列数组，如果不传则默认用 Grid 的列数组 | `array`           | ``      |
+| ignoreCellRender | 统计行数据渲染是否忽略 cellRender              | `boolean`         | `false` |
+| rows             | 统计行                                         | `[{text,method}]` | ``      |
+
+rows 子对象配置
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| text | 该行显示的统计名称 | `string` | `总计` |
+| method | 字段统计方法，返回 field 与对应的值 | `({ columns, data }) => { {field:value}}` | `` |
 
 ### treeConfig
 
