@@ -1,4 +1,11 @@
-// 不允许空less文件，添加一个无用的样式保留此文件。
-.Date-range-picker {
+.nom-partial-date-range-picker {
   text-decoration: inherit;
+  > .nom-field-content {
+    > .nom-control {
+      flex-wrap: nowrap !important;
+      > .nom-field.nom-partial-date-picker {
+        flex-grow: 1;
+      }
+    }
+  }
 }

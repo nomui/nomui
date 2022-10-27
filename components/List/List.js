@@ -82,7 +82,9 @@ class List extends Component {
     const item = this.getItem(param)
     item && item.select(selectOption)
     if (this.props.itemSelectable.scrollIntoView) {
-      this.scrollTo(item)
+      setTimeout(() => {
+        this.scrollTo(item)
+      }, 200)
     }
   }
 
