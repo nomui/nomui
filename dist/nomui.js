@@ -21562,7 +21562,11 @@ function _defineProperty2(obj, key, value) {
           break;
         }
         case "month": {
-          new_val = new Date(`${this.year}-${this.month}`).format("yyyy-MM");
+          new_val = new Date(
+            `${this.year}-${
+              nomui.utils.isNumeric(this.month) ? this.month : "01"
+            }`
+          ).format("yyyy-MM");
           this.year &&
             this.month &&
             old_val !== new_val &&
@@ -21641,7 +21645,7 @@ function _defineProperty2(obj, key, value) {
       }
     }
     _setValue(value) {
-      this.resolveValue(value);
+      value && this.resolveValue(value);
       super._setValue(value);
     }
     updateList(noyear) {
