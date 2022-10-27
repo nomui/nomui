@@ -7,6 +7,7 @@ define([], function () {
         children: [
           {
             component: 'CheckboxTree',
+            initExpandLevel: 1,
             options: [
               {
                 text: '节点 1',
