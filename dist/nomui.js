@@ -4061,11 +4061,12 @@ function _defineProperty2(obj, key, value) {
         }
       }
       if (this.props.animate) {
-        this.addClass(
-          `nom-tooltip-animate-${this.element.getAttribute(
-            "tooltip-align"
-          )}-show`
-        );
+        let align = this.element.getAttribute("tooltip-align");
+        const s = align.indexOf(" ");
+        if (s !== -1) {
+          align = align.substring(0, s);
+        }
+        this.addClass(`nom-tooltip-animate-${align}-show`);
       }
     }
     _remove() {
@@ -8753,7 +8754,9 @@ function _defineProperty2(obj, key, value) {
       const item = this.getItem(param);
       item && item.select(selectOption);
       if (this.props.itemSelectable.scrollIntoView) {
-        this.scrollTo(item);
+        setTimeout(() => {
+          this.scrollTo(item);
+        }, 200);
       }
     }
     selectItems(param, selectOption) {

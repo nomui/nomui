@@ -65,7 +65,12 @@ class Tooltip extends Layer {
       }
     }
     if (this.props.animate) {
-      this.addClass(`nom-tooltip-animate-${this.element.getAttribute('tooltip-align')}-show`)
+      let align = this.element.getAttribute('tooltip-align')
+      const s = align.indexOf(' ')
+      if (s !== -1) {
+        align = align.substring(0, s)
+      }
+      this.addClass(`nom-tooltip-animate-${align}-show`)
     }
   }
 

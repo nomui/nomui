@@ -10762,9 +10762,6 @@ textarea .nom-textarea {
 .nom-number-spinner.s-disabled .nom-icon:hover {
   background-color: unset !important;
 }
-.nom-partial-date-picker {
-  width: 200px;
-}
 .nom-partial-date-picker-popup {
   padding: 1rem;
 }
@@ -11004,8 +11001,14 @@ textarea .nom-textarea {
 .nom-steps.nom-steps-vertical > .nom-step:not(:last-child).nom-step-item-finish > .nom-step-item-container > .nom-step-item-tail::after {
   background-color: var(--nom-color-primary);
 }
-.Date-range-picker {
+.nom-partial-date-range-picker {
   text-decoration: inherit;
+}
+.nom-partial-date-range-picker > .nom-field-content > .nom-control {
+  flex-wrap: nowrap !important;
+}
+.nom-partial-date-range-picker > .nom-field-content > .nom-control > .nom-field.nom-partial-date-picker {
+  flex-grow: 1;
 }
 .nom-dropdown {
   white-space: nowrap;
