@@ -68,7 +68,7 @@ class Tooltip extends Layer {
       let align = this.element.getAttribute('tooltip-align')
       const s = align.indexOf(' ')
       if (s !== -1) {
-        align = align.subString(0, s)
+        align = align.substring(0, s)
       }
       this.addClass(`nom-tooltip-animate-${align}-show`)
     }
