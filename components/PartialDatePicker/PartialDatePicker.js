@@ -496,7 +496,9 @@ class PartialDatePicker extends Textbox {
       }
 
       case 'month': {
-        new_val = new Date(`${this.year}-${this.month}`).format('yyyy-MM')
+        new_val = new Date(
+          `${this.year}-${nomui.utils.isNumeric(this.month) ? this.month : '01'}`,
+        ).format('yyyy-MM')
         this.year && this.month && old_val !== new_val && this.setValue(new_val)
         break
       }
@@ -575,7 +577,7 @@ class PartialDatePicker extends Textbox {
   }
 
   _setValue(value) {
-    this.resolveValue(value)
+    value && this.resolveValue(value)
     super._setValue(value)
   }
 
