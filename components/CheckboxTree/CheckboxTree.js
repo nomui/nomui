@@ -20,6 +20,7 @@ class CheckboxTree extends Field {
       cascadeUncheckParent,
       cascade,
       attrs,
+      initExpandLevel,
     } = this.props
     if (attrs && attrs.style && attrs.style.height && isChrome49()) {
       attrs.style.overflow = 'auto'
@@ -30,6 +31,7 @@ class CheckboxTree extends Field {
         data: options,
         fit: true,
         dataFields: treeDataFields,
+        initExpandLevel,
         nodeCheckable: {
           showCheckAll,
           checkAllText,

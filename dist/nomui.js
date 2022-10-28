@@ -12026,6 +12026,7 @@ function _defineProperty2(obj, key, value) {
         cascadeUncheckParent,
         cascade,
         attrs,
+        initExpandLevel,
       } = this.props;
       if (attrs && attrs.style && attrs.style.height && isChrome49()) {
         attrs.style.overflow = "auto";
@@ -12036,6 +12037,7 @@ function _defineProperty2(obj, key, value) {
           data: options,
           fit: true,
           dataFields: treeDataFields,
+          initExpandLevel,
           nodeCheckable: {
             showCheckAll,
             checkAllText,
