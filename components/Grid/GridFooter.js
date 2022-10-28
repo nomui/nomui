@@ -43,6 +43,13 @@ class GridFooter extends Component {
         ? this.grid.props.summary.columns
         : this.grid.props.columns
 
+    if (this.grid.props.rowCheckable) {
+      columns.splice(0, 1, {
+        width: 50,
+        resizable: false,
+      })
+    }
+
     const ignoreCellRender = !!(summary && summary.ignoreCellRender)
 
     return columns.map((col) => {
