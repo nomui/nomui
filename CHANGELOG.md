@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.11](https://github.com/nomui/nomui/compare/v1.1.10...v1.1.11) (2022-10-28)
+
+
+### Features
+
+* Cascader 添加新功能，配置子项的disable属性 ([993915f](https://github.com/nomui/nomui/commit/993915f1b0e8a99842a362935e75b3cc6f965bc9))
+* Cascader 添加新功能，配置子项的disable属性 ([e567797](https://github.com/nomui/nomui/commit/e567797f1af40dfe2e9a14cdd1e248932591bcaf))
+* **Grid:** 支持多级表头的排序 ([e7f66e3](https://github.com/nomui/nomui/commit/e7f66e3710c33d88e71b9a8800974b3f0758a06f))
+* **TreeSelect:** 支持配置展开层级，以及多选支持仅勾选叶子节点 ([97feb8f](https://github.com/nomui/nomui/commit/97feb8f8580ad6bc5602403296023591cdfcf999))
+
+
+### Bug Fixes
+
+* 修复PartialDatePicker选中年份失效的bug ([ce7a01e](https://github.com/nomui/nomui/commit/ce7a01e23445f7bc812ba57b5e49b2dd82f70a34))
+* 修复PartialDatePicker选中年份失效的bug ([1c15701](https://github.com/nomui/nomui/commit/1c157014069d99a29deaaa634573a024494364af))
+* **Badge:** 优化角标计数为0时显示逻辑 ([ce421a0](https://github.com/nomui/nomui/commit/ce421a074eb2b7295f678ceb0817bad832e6176c))
+* **Grid:** 数据为空时getData()异常以及部分场景js报错的问题 ([37fb886](https://github.com/nomui/nomui/commit/37fb8867d0abbdb23d2244de3d2c3a1409e8a062))
+* **Grid:** 数据为空是getData()异常 ([f67b9d2](https://github.com/nomui/nomui/commit/f67b9d21d3f0026c599bee4b27199f6dac2143b2))
+* **Grid:** 行勾选与合计功能冲突导致报错 ([3b0cf4c](https://github.com/nomui/nomui/commit/3b0cf4cb021e7504aefcd168f3b8e4c679a8ecfb))
+* **Grid:** 修复多级表头下统计行异常，以及新增自定义列渲染功能 ([997aadf](https://github.com/nomui/nomui/commit/997aadf3ad6ada26f8b5d856bcdc3d9f6cc16038))
+* **PartialDatePicker:** 取值异常时报错的问题 ([54eb4d3](https://github.com/nomui/nomui/commit/54eb4d390f03eb55bc58d87c9bd1d5af3bad39d0))
+* **Password:** 控制明文按钮显隐的问题 ([b3fc222](https://github.com/nomui/nomui/commit/b3fc2229b7d9963884a498038a73635d3558806c))
+* **Tooltip:** addClass报错 ([0696340](https://github.com/nomui/nomui/commit/06963405911aa9e75b54f1b9e764aac7bf5d5ec2))
+
+
+### Performance Improvements
+
+* **List:** 优化scrollIntoView效果 ([071ff97](https://github.com/nomui/nomui/commit/071ff9713062299b1302046cb0d2d1d4555fcd79))
+
 ### [1.1.10](https://github.com/nomui/nomui/compare/v1.1.9...v1.1.10) (2022-09-23)
 
 
