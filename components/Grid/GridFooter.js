@@ -43,10 +43,17 @@ class GridFooter extends Component {
         ? this.grid.props.summary.columns
         : this.grid.props.columns
 
-    if (this.grid.props.rowCheckable) {
+    if (
+      this.grid.props.rowCheckable &&
+      columns.length &&
+      columns.findIndex((n) => {
+        return n.isCheckerSpace
+      }) === -1
+    ) {
       columns.splice(0, 1, {
         width: 50,
         resizable: false,
+        isCheckerSpace: true,
       })
     }
 

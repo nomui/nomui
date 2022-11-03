@@ -16837,8 +16837,18 @@ function _defineProperty2(obj, key, value) {
         this.grid.props.summary && this.grid.props.summary.columns
           ? this.grid.props.summary.columns
           : this.grid.props.columns;
-      if (this.grid.props.rowCheckable) {
-        columns.splice(0, 1, { width: 50, resizable: false });
+      if (
+        this.grid.props.rowCheckable &&
+        columns.length &&
+        columns.findIndex((n) => {
+          return n.isCheckerSpace;
+        }) === -1
+      ) {
+        columns.splice(0, 1, {
+          width: 50,
+          resizable: false,
+          isCheckerSpace: true,
+        });
       }
       const ignoreCellRender = !!(summary && summary.ignoreCellRender);
       return columns.map((col) => {
@@ -17603,7 +17613,7 @@ function _defineProperty2(obj, key, value) {
     handleSort(sorter) {
       this.props.sortCacheable && this.saveSortInfo(sorter);
       const key = sorter.field;
-      if (!sorter.sortDirection) return;
+      if (!sorter.sortDirection && !this.props.forceSort) return;
       if (isFunction(sorter.sortable)) {
         let arr = [];
         if (this.lastSortField === key) {
@@ -18350,6 +18360,7 @@ function _defineProperty2(obj, key, value) {
     frozenRightCols: null,
     allowFrozenCols: false,
     onSort: null,
+    forceSort: false,
     sortCacheable: false,
     onFilter: null,
     keyField: "id",
