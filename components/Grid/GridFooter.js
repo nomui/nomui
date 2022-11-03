@@ -43,14 +43,16 @@ class GridFooter extends Component {
         ? this.grid.props.summary.columns
         : this.grid.props.columns
 
+    const footColumns = [...columns]
+
     if (
       this.grid.props.rowCheckable &&
-      columns.length &&
-      columns.findIndex((n) => {
+      footColumns.length &&
+      footColumns.findIndex((n) => {
         return n.isCheckerSpace
       }) === -1
     ) {
-      columns.splice(0, 1, {
+      footColumns.splice(0, 1, {
         width: 50,
         resizable: false,
         isCheckerSpace: true,
@@ -59,7 +61,7 @@ class GridFooter extends Component {
 
     const ignoreCellRender = !!(summary && summary.ignoreCellRender)
 
-    return columns.map((col) => {
+    return footColumns.map((col) => {
       return {
         ...col,
         cellRender: col.cellRender && !ignoreCellRender ? col.cellRender : null,
