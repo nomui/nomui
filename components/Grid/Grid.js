@@ -412,7 +412,7 @@ class Grid extends Component {
   handleSort(sorter) {
     this.props.sortCacheable && this.saveSortInfo(sorter)
     const key = sorter.field
-    if (!sorter.sortDirection) return
+    if (!sorter.sortDirection && !this.props.forceSort) return
 
     if (isFunction(sorter.sortable)) {
       let arr = []
@@ -1263,6 +1263,7 @@ Grid.defaults = {
   frozenRightCols: null,
   allowFrozenCols: false,
   onSort: null,
+  forceSort: false,
   sortCacheable: false,
   onFilter: null,
   keyField: 'id',

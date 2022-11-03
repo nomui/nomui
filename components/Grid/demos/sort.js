@@ -22,6 +22,7 @@ define([], function () {
             columnsCustomizable: {
               cache: true,
             },
+            // forceSort: true,
             allowFrozenCols: true,
             defaultSort: { field: 'name', sortDirection: 'asc' },
             onSort: (args) => {
@@ -38,7 +39,7 @@ define([], function () {
               console.log(args, '更新了data顺序')
             },
             ref: (c) => {
-              window.grid1 = grid1 = c
+              grid1 = c
             },
 
             columns: [
