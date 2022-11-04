@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.12](https://github.com/nomui/nomui/compare/v1.1.11...v1.1.12) (2022-11-04)
+
+
+### Features
+
+* **Grid:** 新增在清空排序时仍然触发onSort回调的配置 ([285e260](https://github.com/nomui/nomui/commit/285e260254c8c3a3a6c079abe5f361809f6304ef))
+
+
+### Bug Fixes
+
+* **Grid:** 行勾选与统计行兼容问题 ([ff6079e](https://github.com/nomui/nomui/commit/ff6079e81f83ee98345b8622c5556863ea3a434b))
+
 ### [1.1.11](https://github.com/nomui/nomui/compare/v1.1.10...v1.1.11) (2022-10-28)
 
 
