@@ -332,7 +332,8 @@ class Cascader extends Field {
 
     if (valueType === 'single') {
       for (const v of this.items.values()) {
-        if (v.leaf && v.value === value) {
+        // if (v.leaf && v.value === value) {
+        if (v.value === value) {
           key = v.key
         }
       }
