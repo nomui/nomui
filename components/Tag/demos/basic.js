@@ -108,8 +108,9 @@ define([], function () {
             text: '可删除',
             type: 'round',
             key: '001',
-            removable: (key) => {
-              console.log(key)
+            removable: true,
+            onRemove: (args) => {
+              console.log(args)
             },
           },
         ],
