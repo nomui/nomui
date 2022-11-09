@@ -21173,7 +21173,15 @@ function _defineProperty2(obj, key, value) {
       this.maxSub = "60";
     }
     _config() {
-      const { disabled, placeholder, animate, extraTools } = this.props;
+      const { disabled, placeholder, animate, extraTools, mode } = this.props;
+      const formatMap = {
+        quarter: "$year年 $quarter季度",
+        month: "yyyy-MM",
+        week: "$year年 $week周",
+      };
+      if (!this.props.format) {
+        this.props.format = formatMap[mode];
+      }
       if (this.props.value) {
         this.year =
           this.props.mode === "year"
@@ -21579,7 +21587,9 @@ function _defineProperty2(obj, key, value) {
           break;
         }
         case "quarter": {
-          new_val = `${this.year} ${this.quarter}季度`;
+          new_val = this.props.format
+            .replace("$year", this.year)
+            .replace("$quarter", this.quarter);
           this.year &&
             this.quarter &&
             old_val !== new_val &&
@@ -21591,7 +21601,7 @@ function _defineProperty2(obj, key, value) {
             `${this.year}-${
               nomui.utils.isNumeric(this.month) ? this.month : "01"
             }`
-          ).format("yyyy-MM");
+          ).format(this.props.format);
           this.year &&
             this.month &&
             old_val !== new_val &&
@@ -21599,7 +21609,9 @@ function _defineProperty2(obj, key, value) {
           break;
         }
         case "week": {
-          new_val = `${this.year} ${this.week}周`;
+          new_val = this.props.format
+            .replace("$year", this.year)
+            .replace("$week", this.week);
           this.year &&
             this.week &&
             old_val !== new_val &&
@@ -21609,12 +21621,10 @@ function _defineProperty2(obj, key, value) {
       }
     }
     resolveValue(value) {
-      const v = value || this.year || this.getValue();
-      const year = this.props.mode === "year" ? v : v.substring(0, 4);
-      const after =
-        this.props.mode === "year"
-          ? null
-          : Math.abs(parseInt(v.substring(4), 10));
+      const v = value || this.getValue() || this.year;
+      const strArr = v.match(/\d+/g);
+      const year = this.props.mode === "year" ? v : strArr[0];
+      const after = this.props.mode === "year" ? null : Math.abs(strArr[1]);
       this.year = year;
       switch (this.props.mode) {
         case "year":
