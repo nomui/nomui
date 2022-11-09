@@ -56,10 +56,19 @@ class TreeSelectPopup extends Popup {
                       inputValue: newValue,
                       options: options,
                     })
+                    // 搜索时展开节点层级
+                    let searchableInitExpandLevel = this.selectControl.props.initExpandLevel
+                    if (newValue) {
+                      searchableInitExpandLevel = -1
+                    }
+
                     if (result && result.then) {
                       return result
                         .then((value) => {
-                          this.selectControl.tree.update({ data: value })
+                          this.selectControl.tree.update({
+                            initExpandLevel: searchableInitExpandLevel,
+                            data: value,
+                          })
                           // 更新 optionsMap
                           this.selectControl.getOptionsMap()
                           loading && loading.remove()
@@ -70,7 +79,11 @@ class TreeSelectPopup extends Popup {
                     }
                     loading && loading.remove()
 
-                    result && this.selectControl.tree.update({ data: result })
+                    result &&
+                      this.selectControl.tree.update({
+                        initExpandLevel: searchableInitExpandLevel,
+                        data: result,
+                      })
                   }, 300)
                 },
               },
