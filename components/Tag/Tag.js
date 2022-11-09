@@ -40,7 +40,9 @@ class Tag extends Component {
               'nom-tag-remove-basic': !that.props.styles,
             },
             onClick: function ({ event }) {
-              that.props.removable(that.props.key)
+              nomui.utils.isFunction(that.props.removable) && that.props.removable(that.props.key)
+              that.props.onRemove && that._callHandler(that.props.onRemove, { key: that.props.key })
+
               event.stopPropagation()
             },
           }),
