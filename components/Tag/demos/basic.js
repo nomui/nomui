@@ -18,6 +18,11 @@ define([], function () {
           },
           {
             component: 'Tag',
+            text: '带右侧图标',
+            rightIcon: 'edit',
+          },
+          {
+            component: 'Tag',
             text: '带数字',
             number: '5',
           },
