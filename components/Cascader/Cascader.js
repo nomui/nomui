@@ -320,7 +320,7 @@ class Cascader extends Field {
 
   handleOptionSelected(value) {
     let key = null
-    const { valueType } = this.props
+    const { valueType, onlyleaf } = this.props
 
     this.checked = false
     const oldCheckedOption = this.selectedOption
@@ -333,7 +333,14 @@ class Cascader extends Field {
     if (valueType === 'single') {
       for (const v of this.items.values()) {
         // if (v.leaf && v.value === value) {
-        if (v.value === value) {
+        // if (v.value === value) {
+        //   key = v.key
+        // }
+        if (onlyleaf) {
+          if (v.leaf && v.value === value) {
+            key = v.key
+          }
+        } else if (v.value === value) {
           key = v.key
         }
       }
@@ -414,6 +421,7 @@ Cascader.defaults = {
   width: 200,
   height: 250,
   disabled: false,
+  onlyleaf: true,
 }
 
 Component.register(Cascader)
