@@ -25198,10 +25198,17 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       this._propStyleClasses = ["size", "color"];
-      const { icon, text, type, overflowCount, removable } = this.props;
+      const {
+        icon,
+        rightIcon,
+        text,
+        type,
+        overflowCount,
+        removable,
+      } = this.props;
       const number = this.props.number === 0 ? "0" : this.props.number;
       const that = this;
-      if (icon) {
+      if (icon || rightIcon) {
         this.setProps({ classes: { "p-with-icon": true } });
       }
       if (type === "round") {
@@ -25215,6 +25222,7 @@ function _defineProperty2(obj, key, value) {
             tag: "span",
             children: number > overflowCount ? `${overflowCount}+` : number,
           },
+          Component.normalizeIconProps(rightIcon),
           removable &&
             Component.normalizeIconProps({
               type: "times",
