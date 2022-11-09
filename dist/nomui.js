@@ -10982,7 +10982,7 @@ function _defineProperty2(obj, key, value) {
     }
     handleOptionSelected(value) {
       let key = null;
-      const { valueType } = this.props;
+      const { valueType, onlyleaf } = this.props;
       this.checked = false;
       const oldCheckedOption = this.selectedOption;
       this.selectedOption = [];
@@ -10990,7 +10990,11 @@ function _defineProperty2(obj, key, value) {
       if (!this.items || this.items.size === 0) return;
       if (valueType === "single") {
         for (const v of this.items.values()) {
-          if (v.leaf && v.value === value) {
+          if (onlyleaf) {
+            if (v.leaf && v.value === value) {
+              key = v.key;
+            }
+          } else if (v.value === value) {
             key = v.key;
           }
         }
@@ -11065,6 +11069,7 @@ function _defineProperty2(obj, key, value) {
     width: 200,
     height: 250,
     disabled: false,
+    onlyleaf: true,
   };
   Component.register(Cascader);
   class Checkbox extends Field {
