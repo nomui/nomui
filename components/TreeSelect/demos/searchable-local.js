@@ -15,6 +15,7 @@ define([], function () {
             searchable: {
               placeholder: '默认根据数据的text值搜索',
             },
+            initExpandLevel: 0,
             // value: 6,
             ref: (c) => {
               treeSelectRef = c
