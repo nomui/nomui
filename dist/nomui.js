@@ -26071,7 +26071,10 @@ function _defineProperty2(obj, key, value) {
                       if (result && result.then) {
                         return result
                           .then((value) => {
-                            this.selectControl.tree.update({ data: value }); // 更新 optionsMap
+                            this.selectControl.tree.update({
+                              initExpandLevel: newValue ? -1 : initExpandLevel, // 搜索时展开节点层级
+                              data: value,
+                            }); // 更新 optionsMap
                             this.selectControl.getOptionsMap();
                             loading && loading.remove();
                           })
@@ -26081,7 +26084,10 @@ function _defineProperty2(obj, key, value) {
                       }
                       loading && loading.remove();
                       result &&
-                        this.selectControl.tree.update({ data: result });
+                        this.selectControl.tree.update({
+                          initExpandLevel: newValue ? -1 : initExpandLevel, // 搜索时展开节点层级
+                          data: result,
+                        });
                     }, 300);
                   },
                 },
