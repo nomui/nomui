@@ -15,7 +15,7 @@ import {
   isNullish,
   isPlainObject,
   isString,
-  localCompareString,
+  localeCompareString,
 } from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
@@ -435,7 +435,18 @@ class Grid extends Component {
       if (this.lastSortField === key) {
         arr = this.props.data.reverse()
       } else {
-        arr = this.props.data.sort((a, b) => b[sorter.field] - a[sorter.field])
+        arr = this.props.data.sort((a, b) => {
+          if (!a[sorter.field] && !b[sorter.field]) {
+            return 0
+          }
+          if (!!a[sorter.field] && !b[sorter.field]) {
+            return 1
+          }
+          if (!a[sorter.field] && !!b[sorter.field]) {
+            return -1
+          }
+          return b[sorter.field] - a[sorter.field]
+        })
       }
 
       this.setProps({ data: arr })
@@ -451,7 +462,7 @@ class Grid extends Component {
       if (this.lastSortField === key) {
         arr = this.props.data.reverse()
       } else {
-        arr = this.props.data.sort((a, b) => localCompareString(b, a, sorter.field))
+        arr = this.props.data.sort((a, b) => localeCompareString(b, a, sorter.field))
       }
 
       this.setProps({ data: arr })

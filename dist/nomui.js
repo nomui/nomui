@@ -169,7 +169,7 @@ function _defineProperty2(obj, key, value) {
   function isNullish(val) {
     return val === null || val === undefined;
   }
-  function localCompareString(prev, next, field) {
+  function localeCompareString(prev, next, field) {
     if (!prev[field] && !next[field]) {
       return 0;
     }
@@ -430,7 +430,7 @@ function _defineProperty2(obj, key, value) {
     isString: isString,
     isFunction: isFunction,
     isNullish: isNullish,
-    localCompareString: localCompareString,
+    localeCompareString: localeCompareString,
     hyphenate: hyphenate,
     htmlEncode: htmlEncode,
     extend: extend$1,
@@ -17651,9 +17651,18 @@ function _defineProperty2(obj, key, value) {
         if (this.lastSortField === key) {
           arr = this.props.data.reverse();
         } else {
-          arr = this.props.data.sort(
-            (a, b) => b[sorter.field] - a[sorter.field]
-          );
+          arr = this.props.data.sort((a, b) => {
+            if (!a[sorter.field] && !b[sorter.field]) {
+              return 0;
+            }
+            if (!!a[sorter.field] && !b[sorter.field]) {
+              return 1;
+            }
+            if (!a[sorter.field] && !!b[sorter.field]) {
+              return -1;
+            }
+            return b[sorter.field] - a[sorter.field];
+          });
         }
         this.setProps({ data: arr });
         this.setSortDirection(sorter);
@@ -17666,7 +17675,7 @@ function _defineProperty2(obj, key, value) {
           arr = this.props.data.reverse();
         } else {
           arr = this.props.data.sort((a, b) =>
-            localCompareString(b, a, sorter.field)
+            localeCompareString(b, a, sorter.field)
           );
         }
         this.setProps({ data: arr });
