@@ -85,6 +85,9 @@ class NumberSpinner extends Field {
           if (!isNumeric(v)) return
 
           const formatterStr = isFunction(formatter) ? formatter(v) : numberSpinner._format(v)
+
+          numberSpinner.isChange = true
+
           numberSpinner.setValue(formatterStr)
         },
       },
@@ -127,6 +130,11 @@ class NumberSpinner extends Field {
   }
 
   _setValue(value) {
+    if (this.isChange) {
+      this.input && this.input.setText(value)
+      this.isChange = false
+      return
+    }
     const { max, min } = this._getLimit()
 
     if (value > max) {
@@ -425,6 +433,7 @@ class NumberSpinner extends Field {
         currency,
         minimumFractionDigits: precision,
       })
+
       this._format = this._formatter.format
     }
   }
