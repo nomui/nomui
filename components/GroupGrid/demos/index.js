@@ -4,6 +4,7 @@ define([
   './events.js',
   './field-hidden.js',
   './field-width.js',
+  './action-render.js',
 ], function () {
   return {
     title: 'GroupGrid',
