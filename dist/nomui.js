@@ -20629,6 +20629,7 @@ function _defineProperty2(obj, key, value) {
               const formatterStr = isFunction(formatter)
                 ? formatter(v)
                 : numberSpinner._format(v);
+              numberSpinner.isChange = true;
               numberSpinner.setValue(formatterStr);
             },
           },
@@ -20657,6 +20658,11 @@ function _defineProperty2(obj, key, value) {
       return value;
     }
     _setValue(value) {
+      if (this.isChange) {
+        this.input && this.input.setText(value);
+        this.isChange = false;
+        return;
+      }
       const { max, min } = this._getLimit();
       if (value > max) {
         value = max;
