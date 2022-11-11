@@ -42,6 +42,9 @@ class Badge extends Component {
     }
 
     this.setProps({
+      classes: {
+        'nom-badge-pointer': !!this.props.onClick,
+      },
       children: [
         Component.normalizeIconProps(icon),
         { tag: 'span', children: text },

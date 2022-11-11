@@ -10120,6 +10120,7 @@ function _defineProperty2(obj, key, value) {
         this.setProps({ classes: { "u-shape-tag": true } });
       }
       this.setProps({
+        classes: { "nom-badge-pointer": !!this.props.onClick },
         children: [
           Component.normalizeIconProps(icon),
           { tag: "span", children: text },
@@ -25231,6 +25232,9 @@ function _defineProperty2(obj, key, value) {
         this.setProps({ classes: { "u-shape-round": true } });
       }
       this.setProps({
+        classes: {
+          "nom-tag-pointer": !!this.props.onClick || this.props.removable,
+        },
         children: [
           Component.normalizeIconProps(icon),
           { tag: "span", children: text },

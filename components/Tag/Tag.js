@@ -28,8 +28,12 @@ class Tag extends Component {
     }
 
     this.setProps({
+      classes: {
+        'nom-tag-pointer': !!this.props.onClick || this.props.removable,
+      },
       children: [
         Component.normalizeIconProps(icon),
+
         { tag: 'span', children: text },
         number && { tag: 'span', children: number > overflowCount ? `${overflowCount}+` : number },
 

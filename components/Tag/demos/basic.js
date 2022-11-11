@@ -10,6 +10,7 @@ define([], function () {
           {
             component: 'Tag',
             text: 0,
+            onClick: () => {},
           },
           {
             component: 'Tag',
