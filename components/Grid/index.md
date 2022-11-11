@@ -91,7 +91,7 @@
 | autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
 | resizable | 是否允许拖动列宽 | `boolean` | `false` |
 | ellipsis | 单元格是否文字超出自动省略 | `boolean` | `false` |
-| sortable | 是否启用排序，为 true 时后端排序，也可以传自定义排序函数进行前端排序，如：`(a, b) => a.sales - b.sales` | `boolean` \| `function` | `false` |
+| sortable | 是否启用排序，为`true`时后端排序，为`string`时自动对字符串进行中文前端排序，为`number`对数字进行前端排序，也可以传自定义排序函数进行前端排序，如：`(a, b) => a.sales - b.sales` | `boolean` \| `function`\| `'string'`\| `'number'` | `false` |
 | filter | 是否启用列头筛选，启用的时候传入表单组件如：Textbox Select Checkbox，组件自动使用当前列的 field 作为表单 name | `component` | `false` |
 | customizable | 可配置该列是否需要加入可配置项中，配置 false 则不加入 | `boolean` | `true` |
 | frozenable | 可配置该列是否能被固定，配置 false 则不展示固定图标 | `boolean` | `true` |

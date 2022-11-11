@@ -169,6 +169,18 @@ function _defineProperty2(obj, key, value) {
   function isNullish(val) {
     return val === null || val === undefined;
   }
+  function localCompareString(prev, next, field) {
+    if (!prev[field] && !next[field]) {
+      return 0;
+    }
+    if (!!prev[field] && !next[field]) {
+      return 1;
+    }
+    if (!prev[field] && !!next[field]) {
+      return -1;
+    }
+    return prev[field].localeCompare(next[field], "zh");
+  }
   /**
    * Hyphenate a camelCase string.
    *
@@ -418,6 +430,7 @@ function _defineProperty2(obj, key, value) {
     isString: isString,
     isFunction: isFunction,
     isNullish: isNullish,
+    localCompareString: localCompareString,
     hyphenate: hyphenate,
     htmlEncode: htmlEncode,
     extend: extend$1,
@@ -17627,6 +17640,34 @@ function _defineProperty2(obj, key, value) {
           arr = this.props.data.reverse();
         } else {
           arr = this.props.data.sort(sorter.sortable);
+        }
+        this.setProps({ data: arr });
+        this.setSortDirection(sorter);
+        this.lastSortField = key;
+        return;
+      }
+      if (sorter.sortable === "number") {
+        let arr = [];
+        if (this.lastSortField === key) {
+          arr = this.props.data.reverse();
+        } else {
+          arr = this.props.data.sort(
+            (a, b) => b[sorter.field] - a[sorter.field]
+          );
+        }
+        this.setProps({ data: arr });
+        this.setSortDirection(sorter);
+        this.lastSortField = key;
+        return;
+      }
+      if (sorter.sortable === "string") {
+        let arr = [];
+        if (this.lastSortField === key) {
+          arr = this.props.data.reverse();
+        } else {
+          arr = this.props.data.sort((a, b) =>
+            localCompareString(b, a, sorter.field)
+          );
         }
         this.setProps({ data: arr });
         this.setSortDirection(sorter);

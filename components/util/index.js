@@ -76,6 +76,19 @@ export function isNullish(val) {
   return val === null || val === undefined
 }
 
+export function localCompareString(prev, next, field) {
+  if (!prev[field] && !next[field]) {
+    return 0
+  }
+  if (!!prev[field] && !next[field]) {
+    return 1
+  }
+  if (!prev[field] && !!next[field]) {
+    return -1
+  }
+  return prev[field].localeCompare(next[field], 'zh')
+}
+
 /**
  * Hyphenate a camelCase string.
  *
