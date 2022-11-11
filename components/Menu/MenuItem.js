@@ -86,7 +86,7 @@ class MenuItem extends Component {
         byClick: menuProps.itemSelectable.byClick,
       },
       expandable: {
-        byClick: !this.isLeaf,
+        byClick: !this.isLeaf && !menuProps.compact,
         target: function () {
           return this.wrapper.submenu
         },
