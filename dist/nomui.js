@@ -18670,8 +18670,10 @@ function _defineProperty2(obj, key, value) {
     }
     _config() {
       const that = this;
-      const { groupDefaults, value, actionColumn, gridProps } = this.props;
-      const columns = [];
+      const { groupDefaults, value, gridProps } = this.props;
+      const actionRender = groupDefaults.actionRender || null;
+      const actionWidth = groupDefaults.actionWidth || 80;
+      let columns = [];
       groupDefaults.fields.forEach((f) => {
         if (f.hidden !== true) {
           columns.push({
@@ -18693,8 +18695,22 @@ function _defineProperty2(obj, key, value) {
           });
         }
       });
-      columns.push(
-        Component.extendProps(
+      if (isFunction(actionRender)) {
+        columns = [
+          ...columns,
+          {
+            width: actionWidth,
+            cellRender: ({ row }) => {
+              return {
+                component: Toolbar,
+                items: actionRender({ row: row, grid: that }),
+              };
+            },
+          },
+        ];
+      } else if (actionRender !== null) {
+        columns = [
+          ...columns,
           {
             width: 80,
             cellRender: ({ row }) => {
@@ -18713,9 +18729,8 @@ function _defineProperty2(obj, key, value) {
               };
             },
           },
-          actionColumn
-        )
-      );
+        ];
+      }
       this.setProps({
         control: {
           children: Component.extendProps(gridProps, {
