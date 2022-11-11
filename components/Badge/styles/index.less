@@ -19,9 +19,11 @@
   border: 1px solid transparent;
   border-color: var(--nom-border-color);
   border-radius: 2px;
-  cursor: pointer;
   user-select: none;
   zoom: 0.95;
+  &.nom-badge-pointer {
+    cursor: pointer;
+  }
   .badge-size(@padding-y-base; @padding-x-base; @font-size-base; @line-height-base; @border-radius);
 
   &.p-size-sm {
@@ -144,12 +146,12 @@
     justify-content: center;
   }
 
-  >.nom-icon {
+  > .nom-icon {
     display: inline-flex;
   }
 
-  >.nom-icon+span,
-  >span+.nom-icon {
+  > .nom-icon + span,
+  > span + .nom-icon {
     margin-left: 0.1rem;
   }
 
