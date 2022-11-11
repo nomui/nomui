@@ -76,7 +76,7 @@ export function isNullish(val) {
   return val === null || val === undefined
 }
 
-export function localCompareString(prev, next, field) {
+export function localeCompareString(prev, next, field) {
   if (!prev[field] && !next[field]) {
     return 0
   }
