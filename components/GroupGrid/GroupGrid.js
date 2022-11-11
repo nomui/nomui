@@ -45,40 +45,45 @@ class GroupGrid extends Field {
       }
     })
 
-    columns = [
-      ...columns,
-      isFunction(actionRender)
-        ? {
-            width: actionWidth,
-            cellRender: ({ row }) => {
-              return {
-                component: Toolbar,
-                items: actionRender({
-                  row: row,
-                  grid: that,
-                }),
-              }
-            },
-          }
-        : {
-            width: 80,
-            cellRender: ({ row }) => {
-              return {
-                component: Toolbar,
-                items: [
-                  {
-                    component: 'Button',
-                    text: '移除',
-                    onClick: () => {
-                      row.remove()
-                      that._onValueChange()
-                    },
-                  },
-                ],
-              }
-            },
+    if (isFunction(actionRender)) {
+      columns = [
+        ...columns,
+        {
+          width: actionWidth,
+          cellRender: ({ row }) => {
+            return {
+              component: Toolbar,
+              items: actionRender({
+                row: row,
+                grid: that,
+              }),
+            }
           },
-    ]
+        },
+      ]
+    } else if (actionRender !== null) {
+      columns = [
+        ...columns,
+        {
+          width: 80,
+          cellRender: ({ row }) => {
+            return {
+              component: Toolbar,
+              items: [
+                {
+                  component: 'Button',
+                  text: '移除',
+                  onClick: () => {
+                    row.remove()
+                    that._onValueChange()
+                  },
+                },
+              ],
+            }
+          },
+        },
+      ]
+    }
 
     this.setProps({
       control: {

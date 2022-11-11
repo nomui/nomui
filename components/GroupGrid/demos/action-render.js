@@ -23,18 +23,19 @@ define([], function () {
             },
             groupDefaults: {
               nowrap: true,
-              actionRender: ({ row, grid }) => {
-                return [
-                  {
-                    component: 'Button',
-                    text: '移除',
-                    onClick: () => {
-                      row.remove()
-                      grid._onValueChange()
-                    },
-                  },
-                ]
-              },
+              actionRender: false,
+              // actionRender: ({ row, grid }) => {
+              //   return [
+              //     {
+              //       component: 'Button',
+              //       text: '移除',
+              //       onClick: () => {
+              //         row.remove()
+              //         grid._onValueChange()
+              //       },
+              //     },
+              //   ]
+              // },
               fields: [
                 {
                   component: 'Textbox',
