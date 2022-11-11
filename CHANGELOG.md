@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.13](https://github.com/nomui/nomui/compare/v1.1.12...v1.1.13) (2022-11-11)
+
+
+### Features
+
+* Cascader 添加非叶子节点选择的功能 ([5d938eb](https://github.com/nomui/nomui/commit/5d938eb3b4f35e0557624cbc15b817d6256c2a71))
+* Cascader组件，添加非叶子节点可选的属性配置 ([6f5825d](https://github.com/nomui/nomui/commit/6f5825d87db75219af1a8e909906e1cdc4cbf8ef))
+* **PartialDatePicker:** 支持自定义值格式 ([155012c](https://github.com/nomui/nomui/commit/155012c6cb91b3b1a9a9496f2d2846f00b02094a))
+* TreeSelect组件，默认展开节点层级优化为搜索到结果时默认展开层级，不受initExpandLevel影响 ([95dd6e3](https://github.com/nomui/nomui/commit/95dd6e33c37c0e9d489ead76bb8891e6f1c8858a))
+
+
+### Bug Fixes
+
+* Cascader: 添加选取非叶子节点的需求 ([3699020](https://github.com/nomui/nomui/commit/3699020a4ad0c698fefd9ab4aff7e4216eb91811))
+* **NumberSpinner:** 重复格式值造成NaN的问题 ([d79852b](https://github.com/nomui/nomui/commit/d79852bb0fa72424af6810245736065d7d432117))
+
+
+### Performance Improvements
+
+* 优化TreeSelect搜索显示 ([94d047a](https://github.com/nomui/nomui/commit/94d047abc1a3f5ce081778c45c957a69fd716453))
+* **Menu:** 优化紧凑模式下交互逻辑 ([5058b80](https://github.com/nomui/nomui/commit/5058b80d2410f89cd39082db8b16e726f3d51fa0))
+
 ### [1.1.12](https://github.com/nomui/nomui/compare/v1.1.11...v1.1.12) (2022-11-04)
 
 
