@@ -436,15 +436,6 @@ class Grid extends Component {
         arr = this.props.data.reverse()
       } else {
         arr = this.props.data.sort((a, b) => {
-          if (!a[sorter.field] && !b[sorter.field]) {
-            return 0
-          }
-          if (!!a[sorter.field] && !b[sorter.field]) {
-            return 1
-          }
-          if (!a[sorter.field] && !!b[sorter.field]) {
-            return -1
-          }
           return b[sorter.field] - a[sorter.field]
         })
       }
