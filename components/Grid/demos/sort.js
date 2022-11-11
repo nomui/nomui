@@ -68,6 +68,7 @@ define([], function () {
                 key: 'role',
                 title: '主角',
                 width: 500,
+                sortable: 'string',
               },
             ],
 
