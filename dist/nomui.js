@@ -17608,7 +17608,7 @@ function _defineProperty2(obj, key, value) {
       this.originColumns = this.originColumns.map(
         this._setColumnItemDire(sorter)
       ); // onSort外部会触发 update, 此时无需autoScroll
-      if (!isFunction(sorter.sortable)) {
+      if (!isFunction(sorter.sortable) && !isString(sorter.sortable)) {
         this._shouldAutoScroll = false;
       }
       this.setProps({ columns: c });
