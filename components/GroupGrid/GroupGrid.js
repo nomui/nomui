@@ -65,7 +65,7 @@ class GroupGrid extends Field {
       columns = [
         ...columns,
         {
-          width: 80,
+          width: actionWidth,
           cellRender: ({ row }) => {
             return {
               component: Toolbar,
