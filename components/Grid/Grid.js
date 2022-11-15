@@ -15,6 +15,7 @@ import {
   isNullish,
   isPlainObject,
   isString,
+  localeCompareString,
 } from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
@@ -386,7 +387,7 @@ class Grid extends Component {
     this.originColumns = this.originColumns.map(this._setColumnItemDire(sorter))
 
     // onSort外部会触发 update, 此时无需autoScroll
-    if (!isFunction(sorter.sortable)) {
+    if (!isFunction(sorter.sortable) && !isString(sorter.sortable)) {
       this._shouldAutoScroll = false
     }
     this.setProps({ columns: c })
@@ -420,6 +421,39 @@ class Grid extends Component {
         arr = this.props.data.reverse()
       } else {
         arr = this.props.data.sort(sorter.sortable)
+      }
+
+      this.setProps({ data: arr })
+
+      this.setSortDirection(sorter)
+
+      this.lastSortField = key
+      return
+    }
+    if (sorter.sortable === 'number') {
+      let arr = []
+      if (this.lastSortField === key) {
+        arr = this.props.data.reverse()
+      } else {
+        arr = this.props.data.sort((a, b) => {
+          return b[sorter.field] - a[sorter.field]
+        })
+      }
+
+      this.setProps({ data: arr })
+
+      this.setSortDirection(sorter)
+
+      this.lastSortField = key
+      return
+    }
+
+    if (sorter.sortable === 'string') {
+      let arr = []
+      if (this.lastSortField === key) {
+        arr = this.props.data.reverse()
+      } else {
+        arr = this.props.data.sort((a, b) => localeCompareString(b, a, sorter.field))
       }
 
       this.setProps({ data: arr })
