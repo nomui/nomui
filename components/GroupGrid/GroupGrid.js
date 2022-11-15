@@ -17,7 +17,7 @@ class GroupGrid extends Field {
   _config() {
     const that = this
     const { groupDefaults, value, gridProps } = this.props
-    const actionRender = groupDefaults.actionRender || null
+    const actionRender = groupDefaults.actionRender
     const actionWidth = groupDefaults.actionWidth || 80
 
     let columns = []
@@ -61,7 +61,7 @@ class GroupGrid extends Field {
           },
         },
       ]
-    } else if (actionRender !== null) {
+    } else if (actionRender === true || actionRender === undefined) {
       columns = [
         ...columns,
         {
