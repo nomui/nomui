@@ -528,6 +528,9 @@ class PartialDatePicker extends Textbox {
   resolveValue(value) {
     const v = value || this.getValue() || this.year
     const strArr = v.match(/\d+/g)
+    if (!strArr) {
+      return
+    }
     const year = this.props.mode === 'year' ? v : strArr[0]
     const after = this.props.mode === 'year' ? null : Math.abs(strArr[1])
 
