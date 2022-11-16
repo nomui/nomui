@@ -12,6 +12,7 @@ define([], function () {
               component: 'PartialDatePicker',
               placeholder: '额外工具栏',
 
+              mode: 'month',
               showNow: false,
               extraTools: (inst) => {
                 return {
