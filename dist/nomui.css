@@ -8619,7 +8619,15 @@ textarea .nom-textarea {
   border-radius: var(--nom-border-radius);
   cursor: default;
 }
+.nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item.nom-select-overtag-trigger {
+  border: none;
+  background: transparent;
+}
 .nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item .nom-select-item-content {
+  max-width: 20rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   margin-right: 4px;
 }
 .nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item .nom-icon {
@@ -8657,6 +8665,28 @@ textarea .nom-textarea {
   background-color: var(--nom-input-bg-disabled);
   cursor: not-allowed !important;
   opacity: 1;
+}
+.nom-select-extra-tags {
+  padding: 0.5rem;
+}
+.nom-select-extra-tags .nom-list-item {
+  display: flex;
+  align-items: center;
+  padding: var(--nom-select-selected-item-padding);
+  background: var(--nom-select-selected-item-bg);
+  border: 1px solid var(--nom-select-selected-item-border-color);
+  border-radius: var(--nom-border-radius);
+  cursor: default;
+}
+.nom-select-extra-tags .nom-list-item .nom-select-item-content {
+  max-width: 20rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 4px;
+}
+.nom-select-extra-tags .nom-list-item .nom-icon {
+  font-size: 8px;
 }
 .nom-select-popup > .nom-layout {
   max-height: 300px;

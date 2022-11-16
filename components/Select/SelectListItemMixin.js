@@ -26,7 +26,15 @@ export default {
           selectControl.props.animate && selectControl.popup.animateHide()
           !selectControl.props.animate && selectControl.popup.hide()
         } else {
-          selectControl.selectedMultiple.appendItem(selectedOption)
+          selectControl.selectedMultiple.update({
+            items: [
+              ...selectControl.selectedMultiple.props.items,
+              {
+                [selectControl.props.optionFields.text]: selectedOption.text,
+                [selectControl.props.optionFields.value]: selectedOption.value,
+              },
+            ],
+          })
         }
 
         if (selectProps.virtual === true) {
@@ -40,7 +48,11 @@ export default {
         const selectProps = selectControl.props
 
         if (selectProps.multiple === true) {
-          selectControl.selectedMultiple.removeItem(this.key)
+          selectControl.selectedMultiple.update({
+            items: selectControl.selectedMultiple.props.items.filter((n) => {
+              return n[selectControl.props.optionFields.value] !== this.key
+            }),
+          })
         }
 
         if (selectProps.virtual === true) {

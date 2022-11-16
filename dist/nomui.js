@@ -13179,7 +13179,16 @@ function _defineProperty2(obj, key, value) {
             selectControl.props.animate && selectControl.popup.animateHide();
             !selectControl.props.animate && selectControl.popup.hide();
           } else {
-            selectControl.selectedMultiple.appendItem(selectedOption);
+            selectControl.selectedMultiple.update({
+              items: [
+                ...selectControl.selectedMultiple.props.items,
+                {
+                  [selectControl.props.optionFields.text]: selectedOption.text,
+                  [selectControl.props.optionFields.value]:
+                    selectedOption.value,
+                },
+              ],
+            });
           }
           if (selectProps.virtual === true) {
             this.list.virtual.selectedItems.push(selectedOption);
@@ -13190,7 +13199,11 @@ function _defineProperty2(obj, key, value) {
           const { selectControl } = this.list;
           const selectProps = selectControl.props;
           if (selectProps.multiple === true) {
-            selectControl.selectedMultiple.removeItem(this.key);
+            selectControl.selectedMultiple.update({
+              items: selectControl.selectedMultiple.props.items.filter((n) => {
+                return n[selectControl.props.optionFields.value] !== this.key;
+              }),
+            });
           }
           if (selectProps.virtual === true) {
             const { selectedItems } = this.list.virtual;
@@ -13377,6 +13390,7 @@ function _defineProperty2(obj, key, value) {
     _created() {
       super._created();
       this.internalOptions = [];
+      this.multipleItems = [];
       if (this.props.extraOptions) {
         const extraOptions = this.props.extraOptions.map((n) => {
           return Object.assign({}, n, { isExtra: true });
@@ -13415,13 +13429,60 @@ function _defineProperty2(obj, key, value) {
                 onClick: (args) => {
                   args.event.stopPropagation();
                 },
+                hidden: this.props.isOverTag,
+                classes: {
+                  "nom-select-overtag-trigger": !!this.props.overList,
+                },
+                attrs: { title: this.props.text },
+                popup: this.props.overList
+                  ? {
+                      triggerAction: "hover",
+                      classes: { "nom-select-extra-tags": true },
+                      children: {
+                        component: "List",
+                        gutter: "sm",
+                        itemDefaults: {
+                          key() {
+                            return this.props.value;
+                          },
+                          _config: function () {
+                            this.setProps({
+                              tag: "span",
+                              onClick: (args) => {
+                                args.event.stopPropagation();
+                              },
+                              attrs: { title: this.props.text },
+                              children: [
+                                {
+                                  tag: "span",
+                                  classes: { "nom-select-item-content": true },
+                                  attrs: {
+                                    style: {
+                                      maxWidth: `${that.props.maxTagWidth}px`,
+                                    },
+                                  },
+                                  children: this.props.text,
+                                },
+                              ],
+                            });
+                          },
+                        },
+                        items: this.props.overList,
+                      },
+                    }
+                  : null,
                 children: [
                   {
                     tag: "span",
                     classes: { "nom-select-item-content": true },
-                    children: this.props.text,
+                    attrs: {
+                      style: { maxWidth: `${that.props.maxTagWidth}px` },
+                    },
+                    children: this.props.overList
+                      ? `+${this.props.overNum}`
+                      : this.props.text,
                   },
-                  {
+                  !this.props.overList && {
                     component: Icon,
                     type: "close",
                     classes: { "nom-select-item-remove": true },
@@ -13444,6 +13505,51 @@ function _defineProperty2(obj, key, value) {
                 ],
               });
             },
+          },
+          _config() {
+            this.setProps({
+              items: this.props.items.map((n) => {
+                n.overList = null;
+                n.overNum = null;
+                return n;
+              }),
+            });
+            if (
+              that.props.maxTagCount > 0 &&
+              this.props.items.length > that.props.maxTagCount
+            ) {
+              const before = this.props.items.slice(
+                0,
+                that.props.maxTagCount + 1
+              );
+              const after = this.props.items.slice(
+                that.props.maxTagCount + 1,
+                this.props.items.length
+              );
+              const overTags = this.props.items.slice(
+                that.props.maxTagCount,
+                this.props.items.length
+              );
+              const num = this.props.items.length - that.props.maxTagCount;
+              const newItems = [
+                ...before.map((n, i) => {
+                  n.isOverTag = false;
+                  if (i === before.length - 1) {
+                    n.overList = overTags;
+                    n.overNum = num;
+                  } else {
+                    n.overList = null;
+                    n.overNum = null;
+                  }
+                  return n;
+                }),
+                ...after.map((n) => {
+                  n.isOverTag = true;
+                  return n;
+                }),
+              ];
+              this.setProps({ items: newItems });
+            }
           },
           _created() {
             that.selectedMultiple = this;
@@ -13563,7 +13669,8 @@ function _defineProperty2(obj, key, value) {
       if (multiple === true) {
         const selValueOptions = this._getOptions(value);
         if (Array.isArray(selValueOptions) && selValueOptions.length) {
-          this.selectedMultiple.update({ items: selValueOptions });
+          this.multipleItems = selValueOptions;
+          this.selectedMultiple.update({ items: this.multipleItems });
           this.currentValue = selValueOptions.map(function (item) {
             return item.value;
           });
@@ -13859,6 +13966,8 @@ function _defineProperty2(obj, key, value) {
     extraOptions: [],
     multiple: false,
     showArrow: true,
+    maxTagWidth: 120,
+    maxTagCount: -1,
     minItemsForSearch: 20,
     filterOption: (text, options) =>
       options.filter((o) => o.text.indexOf(text) >= 0),
@@ -18671,7 +18780,7 @@ function _defineProperty2(obj, key, value) {
     _config() {
       const that = this;
       const { groupDefaults, value, gridProps } = this.props;
-      const actionRender = groupDefaults.actionRender || null;
+      const actionRender = groupDefaults.actionRender;
       const actionWidth = groupDefaults.actionWidth || 80;
       let columns = [];
       groupDefaults.fields.forEach((f) => {
@@ -18708,11 +18817,11 @@ function _defineProperty2(obj, key, value) {
             },
           },
         ];
-      } else if (actionRender !== null) {
+      } else if (actionRender === true || actionRender === undefined) {
         columns = [
           ...columns,
           {
-            width: 80,
+            width: actionWidth,
             cellRender: ({ row }) => {
               return {
                 component: Toolbar,
