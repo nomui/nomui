@@ -4,6 +4,7 @@ define([
   './disabled-option.js',
   './disabled.js',
   './multiple.js',
+  './max-tags.js',
   './value.js',
   './show-array.js',
   './custom.js',
