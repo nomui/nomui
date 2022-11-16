@@ -1,9 +1,9 @@
 .nom-select {
-  &.p-label-align-right>.nom-field-label+.nom-field-content {
+  &.p-label-align-right > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
-  >.nom-field-content {
+  > .nom-field-content {
     .nom-control {
       position: relative;
       min-height: @input-height-base-treeSelect;
@@ -14,7 +14,7 @@
       border: 1px solid var(--nom-border-color);
       border-radius: var(--nom-border-radius);
       cursor: pointer;
-      transition: all .3s;
+      transition: all 0.3s;
 
       &:not(.s-disabled):hover {
         border-color: var(--nom-color-primary);
@@ -37,6 +37,10 @@
           cursor: default;
 
           .nom-select-item-content {
+            max-width: 20rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             margin-right: 4px;
           }
 
@@ -84,15 +88,39 @@
         cursor: not-allowed !important;
         opacity: 1;
       }
-
     }
   }
 }
 
-.nom-select-popup>.nom-layout {
+.nom-select-extra-tags {
+  padding: 0.5rem;
+  .nom-list-item {
+    display: flex;
+    align-items: center;
+    padding: var(--nom-select-selected-item-padding);
+    background: var(--nom-select-selected-item-bg);
+    border: 1px solid var(--nom-select-selected-item-border-color);
+    border-radius: var(--nom-border-radius);
+    cursor: default;
+
+    .nom-select-item-content {
+      max-width: 20rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-right: 4px;
+    }
+
+    .nom-icon {
+      font-size: 8px;
+    }
+  }
+}
+
+.nom-select-popup > .nom-layout {
   max-height: 300px;
 
-  >.nom-layout-body {
+  > .nom-layout-body {
     overflow-x: hidden;
   }
 }
@@ -144,23 +172,23 @@
 }
 
 .nom-select-animate-top-show {
-  -webkit-animation: nom-select-keyframe-top-show .16s linear forwards;
-  animation: nom-select-keyframe-top-show .16s linear forwards;
+  -webkit-animation: nom-select-keyframe-top-show 0.16s linear forwards;
+  animation: nom-select-keyframe-top-show 0.16s linear forwards;
 }
 
 .nom-select-animate-bottom-show {
-  -webkit-animation: nom-select-keyframe-bottom-show .16s linear forwards;
-  animation: nom-select-keyframe-bottom-show .16s linear forwards;
+  -webkit-animation: nom-select-keyframe-bottom-show 0.16s linear forwards;
+  animation: nom-select-keyframe-bottom-show 0.16s linear forwards;
 }
 
 .nom-select-animate-top-hide {
-  -webkit-animation: nom-select-keyframe-top-hide .16s linear forwards;
-  animation: nom-select-keyframe-top-hide .16s linear forwards;
+  -webkit-animation: nom-select-keyframe-top-hide 0.16s linear forwards;
+  animation: nom-select-keyframe-top-hide 0.16s linear forwards;
 }
 
 .nom-select-animate-bottom-hide {
-  -webkit-animation: nom-select-keyframe-bottom-hide .16s linear forwards;
-  animation: nom-select-keyframe-bottom-hide .16s linear forwards;
+  -webkit-animation: nom-select-keyframe-bottom-hide 0.16s linear forwards;
+  animation: nom-select-keyframe-bottom-hide 0.16s linear forwards;
 }
 
 @-webkit-keyframes nom-select-keyframe-top-show {
@@ -175,7 +203,6 @@
     transform: translateY(0%);
     opacity: 1;
   }
-
 }
 
 @keyframes nom-select-keyframe-top-show {
@@ -204,7 +231,6 @@
     transform: translateY(0%);
     opacity: 1;
   }
-
 }
 
 @keyframes nom-select-keyframe-bottom-show {
