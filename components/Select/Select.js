@@ -57,11 +57,9 @@ class Select extends Field {
               onClick: (args) => {
                 args.event.stopPropagation()
               },
-
               hidden: this.props.isOverTag,
-
               classes: {
-                'nom-select-overtag-trigger': true,
+                'nom-select-overtag-trigger': !!this.props.overList,
               },
               attrs: { title: this.props.text },
               popup: this.props.overList
@@ -70,10 +68,9 @@ class Select extends Field {
                     classes: {
                       'nom-select-extra-tags': true,
                     },
-
                     children: {
                       component: 'List',
-
+                      gutter: 'sm',
                       itemDefaults: {
                         key() {
                           return this.props.value
@@ -99,45 +96,11 @@ class Select extends Field {
 
                                 children: this.props.text,
                               },
-                              {
-                                component: Icon,
-                                type: 'close',
-                                classes: {
-                                  'nom-select-item-remove': true,
-                                },
-
-                                attrs: {
-                                  style: {
-                                    cursor: 'pointer',
-                                  },
-                                },
-                                onClick: (args) => {
-                                  const key = args.sender.parent.key
-                                  that.extraTags.removeItem(key)
-
-                                  const oldValue = that.getValue()
-                                  oldValue &&
-                                    oldValue.length &&
-                                    that.setValue(
-                                      oldValue.filter((n) => {
-                                        return n !== key
-                                      }),
-                                    )
-                                  that.optionList && that.optionList.unselectItem(key)
-                                  if (!that.extraTags.props.items.length) {
-                                    that.selectControl.selectedMultiple.update({})
-                                  }
-                                  args.event && args.event.stopPropagation()
-                                },
-                              },
                             ],
                           })
                         },
                       },
                       items: this.props.overList,
-                      _created() {
-                        that.extraTags = this
-                      },
                     },
                   }
                 : null,
@@ -185,13 +148,20 @@ class Select extends Field {
           },
         },
         _config() {
+          this.setProps({
+            items: this.props.items.map((n) => {
+              n.overList = null
+              n.overNum = null
+              return n
+            }),
+          })
           if (that.props.maxTagCount > 0 && this.props.items.length > that.props.maxTagCount) {
-            const before = this.props.items.slice(0, that.props.maxTagCount)
-            const after = this.props.items.slice(that.props.maxTagCount, this.props.items.length)
-            const overTags = this.props.items.slice(
-              that.props.maxTagCount - 1,
+            const before = this.props.items.slice(0, that.props.maxTagCount + 1)
+            const after = this.props.items.slice(
+              that.props.maxTagCount + 1,
               this.props.items.length,
             )
+            const overTags = this.props.items.slice(that.props.maxTagCount, this.props.items.length)
             const num = this.props.items.length - that.props.maxTagCount
 
             const newItems = [
@@ -213,14 +183,6 @@ class Select extends Field {
             ]
             this.setProps({
               items: newItems,
-            })
-          } else {
-            this.setProps({
-              items: this.props.items.map((n) => {
-                n.overList = null
-                n.overNum = null
-                return n
-              }),
             })
           }
         },

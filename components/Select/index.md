@@ -12,6 +12,8 @@
 | options | 选项配置 | `[{text:string,value:number\|string}]` | - |
 | extraOptions | 额外的选项，不会显示在下拉列表当中，用于默认有值却不属于数据源列表的特殊情况 | `[{text:string,value:number\|string}]` | - |
 | multiple | 是否允许多选 | `boolean` | false |
+| maxTagWidth | 最大已选中标签宽度 | `number` | 120 |
+| maxTagCount | 最大显示已选中标签数,默认全部显示 | `number` | -1 |
 | showArrow | 是否显示下拉箭头 | `boolean` | true |
 | searchable | 可搜索配置 | `boolean` \| `object` | - |
 | popupContainer | 下拉菜单渲染父节点。默认渲染到 body 上，如果你遇到菜单滚动定位问题，试试修改为滚动的区域，即可相对其定位。self 为当前组件，返回函数可指定其它组件 | `'self'` \| `()=>{return ref}` | `body` |
