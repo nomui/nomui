@@ -13209,7 +13209,9 @@ function _defineProperty2(obj, key, value) {
             const { selectedItems } = this.list.virtual;
             selectedItems.splice(
               selectedItems.findIndex(
-                (item) => item.value === this.props.value
+                (item) =>
+                  item[selectControl.props.optionFields.value] ===
+                  this.props[selectControl.props.optionFields.value]
               ),
               1
             );
@@ -13421,7 +13423,7 @@ function _defineProperty2(obj, key, value) {
         selectedMultiple: {
           itemDefaults: {
             key() {
-              return this.props.value;
+              return this.props[that.props.optionFields.value];
             },
             _config: function () {
               this.setProps({
@@ -13433,7 +13435,7 @@ function _defineProperty2(obj, key, value) {
                 classes: {
                   "nom-select-overtag-trigger": !!this.props.overList,
                 },
-                attrs: { title: this.props.text },
+                attrs: { title: this.props[that.props.optionFields.text] },
                 popup: this.props.overList
                   ? {
                       triggerAction: "hover",
@@ -13443,7 +13445,7 @@ function _defineProperty2(obj, key, value) {
                         gutter: "sm",
                         itemDefaults: {
                           key() {
-                            return this.props.value;
+                            return this.props[that.props.optionFields.value];
                           },
                           _config: function () {
                             this.setProps({
@@ -13451,7 +13453,9 @@ function _defineProperty2(obj, key, value) {
                               onClick: (args) => {
                                 args.event.stopPropagation();
                               },
-                              attrs: { title: this.props.text },
+                              attrs: {
+                                title: this.props[that.props.optionFields.text],
+                              },
                               children: [
                                 {
                                   tag: "span",
@@ -13461,7 +13465,9 @@ function _defineProperty2(obj, key, value) {
                                       maxWidth: `${that.props.maxTagWidth}px`,
                                     },
                                   },
-                                  children: this.props.text,
+                                  children: this.props[
+                                    that.props.optionFields.text
+                                  ],
                                 },
                               ],
                             });
@@ -13480,7 +13486,7 @@ function _defineProperty2(obj, key, value) {
                     },
                     children: this.props.overList
                       ? `+${this.props.overNum}`
-                      : this.props.text,
+                      : this.props[that.props.optionFields.text],
                   },
                   !this.props.overList && {
                     component: Icon,
@@ -13728,6 +13734,7 @@ function _defineProperty2(obj, key, value) {
     }
     _getValueText(options, value) {
       const { valueOptions } = this.props;
+      const that = this;
       options = extend$1({ asArray: false }, valueOptions, options);
       if (!this.optionList) {
         value = this.currentValue;
@@ -13739,21 +13746,28 @@ function _defineProperty2(obj, key, value) {
       if (selected !== null) {
         if (Array.isArray(selected) && selected.length > 0) {
           const vals = selected.map(function (item) {
-            return item.props ? item.props.text : item.text;
+            return item.props
+              ? item.props[that.props.optionFields.text]
+              : item.text;
           });
           return vals;
         }
         if (options.asArray === true && !Array.isArray(selected)) {
-          return selected.props ? [selected.props.text] : [selected.text];
+          return selected.props
+            ? [selected.props[that.props.optionFields.text]]
+            : [selected.text];
         }
         if (!Array.isArray(selected)) {
-          return selected.props ? selected.props.text : selected.text;
+          return selected.props
+            ? selected.props[that.props.optionFields.text]
+            : selected.text;
         }
       }
       return null;
     }
     _getValue(options) {
       const { valueOptions, showSearch } = this.props;
+      const that = this;
       options = extend$1({ asArray: false }, valueOptions, options);
       if (!this.optionList || !this.optionList.props) {
         return this.currentValue;
@@ -13768,15 +13782,15 @@ function _defineProperty2(obj, key, value) {
       if (selected !== null) {
         if (Array.isArray(selected) && selected.length > 0) {
           const vals = selected.map(function (item) {
-            return item.props.value;
+            return item.props[that.props.optionFields.value];
           });
           return vals;
         }
         if (options.asArray === true && !Array.isArray(selected)) {
-          return [selected.props.value];
+          return [selected.props[that.props.optionFields.value]];
         }
         if (!Array.isArray(selected)) {
-          return selected.props.value;
+          return selected.props[that.props.optionFields.value];
         }
       }
       return null;
