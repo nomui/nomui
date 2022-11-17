@@ -17497,7 +17497,10 @@ function _defineProperty2(obj, key, value) {
       this.props.rowExpandable && this._fixedCount++;
     }
     _config() {
-      this.nodeList = {}; // 切换分页 data数据更新时 此两项不重置会导致check表现出错
+      this.nodeList = {};
+      if (this.props.frozenLeftCols || this.props.frozenRightCols) {
+        this.props.forceSort = true;
+      } // 切换分页 data数据更新时 此两项不重置会导致check表现出错
       this.rowsRefs = {};
       this.checkedRowRefs = {};
       this._propStyleClasses = ["bordered"];
