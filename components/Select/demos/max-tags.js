@@ -10,9 +10,6 @@ define([], function () {
           {
             component: 'Select',
             multiple: true,
-            ref: (c) => {
-              window.sss = c
-            },
             placeholder: '请选择你喜欢的作者们',
             value: [0, 1],
             maxTagCount: 4,
