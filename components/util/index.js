@@ -89,6 +89,20 @@ export function localeCompareString(prev, next, field) {
   return prev[field].localeCompare(next[field], 'zh')
 }
 
+export function ascCompare(prev, next, field) {
+  if (!prev[field] && !next[field]) {
+    return 0
+  }
+  if (!!prev[field] && !next[field]) {
+    return 1
+  }
+  if (!prev[field] && !!next[field]) {
+    return -1
+  }
+
+  return `${prev[field]}`.charCodeAt() - `${next[field]}`.charCodeAt()
+}
+
 /**
  * Hyphenate a camelCase string.
  *

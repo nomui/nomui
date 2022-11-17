@@ -9,6 +9,7 @@ import {
   STORAGE_KEY_GRID_COLUMNS,
 } from '../util/constant'
 import {
+  ascCompare,
   defaultSortableOndrop,
   isBrowerSupportSticky,
   isFunction,
@@ -430,32 +431,20 @@ class Grid extends Component {
       this.lastSortField = key
       return
     }
-    if (sorter.sortable === 'number') {
+
+    if (nomui.utils.isString(sorter.sortable)) {
       let arr = []
       if (this.lastSortField === key) {
         arr = this.props.data.reverse()
-      } else {
+      } else if (sorter.sortable === 'string') {
+        arr = this.props.data.sort((a, b) => localeCompareString(b, a, sorter.field))
+      } else if (sorter.sortable === 'number') {
         arr = this.props.data.sort((a, b) => {
           return b[sorter.field] - a[sorter.field]
         })
-      }
-
-      this.setProps({ data: arr })
-
-      this.setSortDirection(sorter)
-
-      this.lastSortField = key
-      return
-    }
-
-    if (sorter.sortable === 'string') {
-      let arr = []
-      if (this.lastSortField === key) {
-        arr = this.props.data.reverse()
       } else {
-        arr = this.props.data.sort((a, b) => localeCompareString(b, a, sorter.field))
+        arr = this.props.data.sort((a, b) => ascCompare(b, a, sorter.field))
       }
-
       this.setProps({ data: arr })
 
       this.setSortDirection(sorter)
