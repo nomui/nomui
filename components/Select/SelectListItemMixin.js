@@ -58,7 +58,11 @@ export default {
         if (selectProps.virtual === true) {
           const { selectedItems } = this.list.virtual
           selectedItems.splice(
-            selectedItems.findIndex((item) => item.value === this.props.value),
+            selectedItems.findIndex(
+              (item) =>
+                item[selectControl.props.optionFields.value] ===
+                this.props[selectControl.props.optionFields.value],
+            ),
             1,
           )
         }

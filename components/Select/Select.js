@@ -49,7 +49,7 @@ class Select extends Field {
       selectedMultiple: {
         itemDefaults: {
           key() {
-            return this.props.value
+            return this.props[that.props.optionFields.value]
           },
           _config: function () {
             this.setProps({
@@ -61,7 +61,7 @@ class Select extends Field {
               classes: {
                 'nom-select-overtag-trigger': !!this.props.overList,
               },
-              attrs: { title: this.props.text },
+              attrs: { title: this.props[that.props.optionFields.text] },
               popup: this.props.overList
                 ? {
                     triggerAction: 'hover',
@@ -73,7 +73,7 @@ class Select extends Field {
                       gutter: 'sm',
                       itemDefaults: {
                         key() {
-                          return this.props.value
+                          return this.props[that.props.optionFields.value]
                         },
                         _config: function () {
                           this.setProps({
@@ -82,7 +82,7 @@ class Select extends Field {
                               args.event.stopPropagation()
                             },
 
-                            attrs: { title: this.props.text },
+                            attrs: { title: this.props[that.props.optionFields.text] },
 
                             children: [
                               {
@@ -94,7 +94,7 @@ class Select extends Field {
                                   },
                                 },
 
-                                children: this.props.text,
+                                children: this.props[that.props.optionFields.text],
                               },
                             ],
                           })
@@ -114,7 +114,9 @@ class Select extends Field {
                     },
                   },
 
-                  children: this.props.overList ? `+${this.props.overNum}` : this.props.text,
+                  children: this.props.overList
+                    ? `+${this.props.overNum}`
+                    : this.props[that.props.optionFields.text],
                 },
                 !this.props.overList && {
                   component: Icon,
@@ -395,6 +397,7 @@ class Select extends Field {
 
   _getValueText(options, value) {
     const { valueOptions } = this.props
+    const that = this
     options = extend(
       {
         asArray: false,
@@ -412,17 +415,17 @@ class Select extends Field {
     if (selected !== null) {
       if (Array.isArray(selected) && selected.length > 0) {
         const vals = selected.map(function (item) {
-          return item.props ? item.props.text : item.text
+          return item.props ? item.props[that.props.optionFields.text] : item.text
         })
 
         return vals
       }
       if (options.asArray === true && !Array.isArray(selected)) {
-        return selected.props ? [selected.props.text] : [selected.text]
+        return selected.props ? [selected.props[that.props.optionFields.text]] : [selected.text]
       }
 
       if (!Array.isArray(selected)) {
-        return selected.props ? selected.props.text : selected.text
+        return selected.props ? selected.props[that.props.optionFields.text] : selected.text
       }
     }
 
@@ -431,6 +434,7 @@ class Select extends Field {
 
   _getValue(options) {
     const { valueOptions, showSearch } = this.props
+    const that = this
     options = extend(
       {
         asArray: false,
@@ -454,17 +458,17 @@ class Select extends Field {
     if (selected !== null) {
       if (Array.isArray(selected) && selected.length > 0) {
         const vals = selected.map(function (item) {
-          return item.props.value
+          return item.props[that.props.optionFields.value]
         })
 
         return vals
       }
       if (options.asArray === true && !Array.isArray(selected)) {
-        return [selected.props.value]
+        return [selected.props[that.props.optionFields.value]]
       }
 
       if (!Array.isArray(selected)) {
-        return selected.props.value
+        return selected.props[that.props.optionFields.value]
       }
     }
 
