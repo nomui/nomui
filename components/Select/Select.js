@@ -65,6 +65,7 @@ class Select extends Field {
               popup: this.props.overList
                 ? {
                     triggerAction: 'hover',
+                    align: 'top center',
                     classes: {
                       'nom-select-extra-tags': true,
                     },
