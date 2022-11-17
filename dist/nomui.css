@@ -8667,6 +8667,7 @@ textarea .nom-textarea {
   opacity: 1;
 }
 .nom-select-extra-tags {
+  max-width: 50vw;
   padding: 0.5rem;
 }
 .nom-select-extra-tags .nom-list-item {

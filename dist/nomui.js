@@ -13439,6 +13439,7 @@ function _defineProperty2(obj, key, value) {
                 popup: this.props.overList
                   ? {
                       triggerAction: "hover",
+                      align: "top center",
                       classes: { "nom-select-extra-tags": true },
                       children: {
                         component: "List",
