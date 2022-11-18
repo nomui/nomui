@@ -56,6 +56,13 @@
     min-width: 1.75rem;
   }
 
+  .nom-tag-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block !important;
+  }
+
   > .nom-icon {
     display: inline-flex;
   }
@@ -66,10 +73,6 @@
   }
 
   .nom-tag-remove {
-    position: relative;
-    top: 2px;
-    margin-left: 1px !important;
-
     svg {
       fill: var(--nom-tag-remove-color);
     }

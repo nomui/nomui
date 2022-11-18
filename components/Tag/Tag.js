@@ -31,28 +31,46 @@ class Tag extends Component {
       classes: {
         'nom-tag-pointer': !!this.props.onClick || this.props.removable,
       },
-      children: [
-        Component.normalizeIconProps(icon),
+      children: {
+        component: 'Flex',
+        align: 'center',
+        cols: [
+          Component.normalizeIconProps(icon),
 
-        { tag: 'span', children: text },
-        number && { tag: 'span', children: number > overflowCount ? `${overflowCount}+` : number },
-
-        Component.normalizeIconProps(rightIcon),
-        removable &&
-          Component.normalizeIconProps({
-            type: 'times',
-            classes: {
-              'nom-tag-remove': true,
-              'nom-tag-remove-basic': !that.props.styles,
+          {
+            children: {
+              classes: {
+                'nom-tag-content': true,
+              },
+              children: text,
+              attrs: {
+                style: { maxWidth: this.props.maxWidth ? `${this.props.maxWidth}px` : null },
+              },
             },
-            onClick: function ({ event }) {
-              nomui.utils.isFunction(that.props.removable) && that.props.removable(that.props.key)
-              that.props.onRemove && that._callHandler(that.props.onRemove, { key: that.props.key })
+          },
+          number && {
+            tag: 'span',
+            children: number > overflowCount ? `${overflowCount}+` : number,
+          },
 
-              event.stopPropagation()
-            },
-          }),
-      ],
+          Component.normalizeIconProps(rightIcon),
+          removable &&
+            Component.normalizeIconProps({
+              type: 'times',
+              classes: {
+                'nom-tag-remove': true,
+                'nom-tag-remove-basic': !that.props.styles,
+              },
+              onClick: function ({ event }) {
+                nomui.utils.isFunction(that.props.removable) && that.props.removable(that.props.key)
+                that.props.onRemove &&
+                  that._callHandler(that.props.onRemove, { key: that.props.key })
+
+                event.stopPropagation()
+              },
+            }),
+        ],
+      },
     })
   }
 
@@ -72,6 +90,7 @@ Tag.defaults = {
   overflowCount: 99,
   removable: false,
   size: 'sm',
+  maxWidth: null,
 }
 
 Component.register(Tag)

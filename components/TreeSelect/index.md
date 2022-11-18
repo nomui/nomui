@@ -11,6 +11,8 @@
 | value | 默认选中的节点 | `array \| string ` | - |
 | options | 源数据,至少应该包含 `text` 与 `key`，并且 `key` 唯一 | `array ` | [] |
 | treeDataFields | `Tree`组件的`dataFields`字段 | `object ` | `{key:'key',text:'text',children:'children',parentKey:'parentKey'}` |
+| maxTagWidth | 最大已选中标签宽度 | `number` | 120 |
+| maxTagCount | 最大显示已选中标签数,默认全部显示 | `number` | -1 |
 | onlyleaf | 是否仅允许选中或者勾选叶子节点 | `boolean` | false |
 | treeSelectable | 树节点的选择事件(同 Tree 组件`nodeSelectable`) | `boolean` \| `object` | - |
 | treeCheckable | 树节点的可勾选配置(同 Tree 组件`nodeCheckable`) | `boolean` \| `object` | - |

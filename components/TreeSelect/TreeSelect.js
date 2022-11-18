@@ -221,25 +221,40 @@ class TreeSelect extends Field {
   }
 
   _getContentBadges() {
-    const { treeDataFields } = this.props
+    const { treeDataFields, maxTagCount, maxTagWidth } = this.props
     if (!isNullish(this.currentValue) && !Array.isArray(this.currentValue)) {
       this.currentValue = [this.currentValue]
     }
     const { currentValue } = this
     const items = []
     const that = this
+    let num = 0
+
     if (currentValue && currentValue.length) {
-      currentValue.forEach((curValue) => {
+      num = currentValue.length - maxTagCount
+      currentValue.forEach((curValue, idx) => {
         const curOption = this.optionMap[curValue]
+
         if (curOption) {
           items.push({
             component: 'Tag',
             type: 'square',
             size: 'xs',
+            classes: {
+              'nom-tree-select-tag-hidden': maxTagCount > 0 && idx > maxTagCount,
+            },
+            attrs: {
+              style: {
+                cursor: 'default',
+              },
+            },
+            maxWidth: maxTagWidth,
             text: curOption[treeDataFields.text],
             key: curOption[treeDataFields.key],
             removable:
               that.props.multiple &&
+              maxTagCount > 0 &&
+              idx < maxTagCount &&
               function (param) {
                 that._setValue(
                   currentValue.filter(function (k) {
@@ -250,6 +265,60 @@ class TreeSelect extends Field {
           })
         }
       })
+    }
+
+    if (maxTagCount > 0 && items.length > maxTagCount) {
+      const overList = items.slice(maxTagCount, items.length)
+
+      items[maxTagCount] = {
+        ...items[maxTagCount - 1],
+        ...{
+          classes: { 'nom-tree-select-overtag-trigger': true },
+          text: `+${num}`,
+          removable: false,
+          popup: {
+            triggerAction: 'hover',
+            align: 'top center',
+            classes: {
+              'nom-tree-select-extra-tags': true,
+            },
+            children: {
+              component: 'List',
+              gutter: 'sm',
+              itemDefaults: {
+                key() {
+                  return this.props[that.props.treeDataFields.value]
+                },
+                _config: function () {
+                  this.setProps({
+                    tag: 'span',
+                    onClick: (args) => {
+                      args.event.stopPropagation()
+                    },
+
+                    attrs: { title: this.props[that.props.treeDataFields.text] },
+
+                    children: [
+                      {
+                        tag: 'span',
+                        classes: { 'nom-tree-select-item-content': true },
+                        attrs: {
+                          style: {
+                            maxWidth: `${that.props.maxTagWidth}px`,
+                          },
+                        },
+
+                        children: this.props[that.props.treeDataFields.text],
+                      },
+                    ],
+                  })
+                },
+              },
+              items: overList,
+            },
+          },
+        },
+      }
     }
     return items
   }
@@ -359,6 +428,8 @@ TreeSelect.defaults = {
   multiple: false,
   // 复选框模式，即为多选
   treeCheckable: false,
+  maxTagWidth: 120,
+  maxTagCount: -1,
   treeDataFields: {
     key: 'value',
     text: 'text',
