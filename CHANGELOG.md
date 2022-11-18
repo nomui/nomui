@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.14](https://github.com/nomui/nomui/compare/v1.1.13...v1.1.14) (2022-11-18)
+
+
+### Features
+
+* **Cascader:** 兼容显示不存在于数据源的默认值 ([1868733](https://github.com/nomui/nomui/commit/18687337024e67e0bdb52981a378ae8b5e0ea6f6))
+* **Grid:** 前端排序支持对数字、字符串进行自动排序 ([9eb467c](https://github.com/nomui/nomui/commit/9eb467c820c419cb80706332764b293ca04c8ef5))
+* GroupGrid新增操作栏自定义 ([075420d](https://github.com/nomui/nomui/commit/075420d6e61988f3c16a781b2d0b92d554f6c805))
+* **Select:** 支持配置最大显示标签数 ([f36360b](https://github.com/nomui/nomui/commit/f36360bff268e16e4752872a001e6481aab854a8))
+* **TabList:** 支持不传入tabContent，单独使用 ([8995e88](https://github.com/nomui/nomui/commit/8995e88364165d6e9f541ad824f7c1e32ee6032f))
+
+
+### Bug Fixes
+
+* 优化GroupGrid操作栏自定义 ([456009b](https://github.com/nomui/nomui/commit/456009b2cde9cf2a40f6c9ad76ae1764e43899ce))
+* 优化GroupGrid操作栏自定义 ([23bd55b](https://github.com/nomui/nomui/commit/23bd55b18cc34c733d5a1d5b87c6d8691f64e4cd))
+* 优化GroupGrid操作栏自定义 ([3dd62aa](https://github.com/nomui/nomui/commit/3dd62aa3bedc8dcf9fc76df0fa677032ab55e317))
+* 优化GroupGrid操作栏自定义 ([f480d28](https://github.com/nomui/nomui/commit/f480d2881aee6947a0f52a4af79f37c5ab8ced38))
+* **Grid:** 排序与固定列冲突问题 ([aefecac](https://github.com/nomui/nomui/commit/aefecacd59e24ec36434f6eda2794fbebd33d6d7))
+* **Meun:** Meun三级导航页面问题 ([899c46d](https://github.com/nomui/nomui/commit/899c46d818e980ead4e571a12f29d1aa5df94b23))
+* **NumberSpinner:** 无法赋值为null的问题 ([4bc8a40](https://github.com/nomui/nomui/commit/4bc8a4083c61ab0f65657071299cce418eab9089))
+* **NumberSpinner:** 修复取值与校验问题 ([0cab296](https://github.com/nomui/nomui/commit/0cab2964144abadf33ddd509bc46bf826652d4b0))
+* **ParitalDatePicker:** 修复手动赋值非法值时js报错 ([68b4fce](https://github.com/nomui/nomui/commit/68b4fce44a674264121adf0b3c755d108f25b8b7))
+* **Select:** 优化对自定义字段名的兼容性 ([959b309](https://github.com/nomui/nomui/commit/959b309d250a59c4b3ee3eae8e65a7bb7edce31c))
+
+
+### Performance Improvements
+
+* **Grid:** 优化前端排序逻辑 ([aaf0cd7](https://github.com/nomui/nomui/commit/aaf0cd72994feb71d454f153d21f4633584d7ca8))
+
 ### [1.1.13](https://github.com/nomui/nomui/compare/v1.1.12...v1.1.13) (2022-11-11)
 
 
