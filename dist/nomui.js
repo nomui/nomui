@@ -19677,7 +19677,12 @@ function _defineProperty2(obj, key, value) {
         this.menu.selectedItemKey &&
         this.menu.expandedRoot === this.rootWrapper
       ) {
-        this.submenu && this.menu.getItem(this.menu.selectedItemKey).select();
+        this.submenu &&
+          this.menu.getItem(this.menu.selectedItemKey) &&
+          this.menu.getItem(this.menu.selectedItemKey).select();
+        if (this.menu.getItem(this.menu.selectedItemKey) === null) {
+          console.warn(`Could not find the item with specific key.`);
+        }
       }
     }
   }

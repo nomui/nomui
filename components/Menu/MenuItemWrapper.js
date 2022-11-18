@@ -55,11 +55,11 @@ class MenuItemWrapper extends Component {
         name: 'submenu',
         attrs: menuProps.compact
           ? {
-              style: {
-                maxHeight: 'calc( 100vh - 5px )',
-                'overflow-y': 'auto',
-              },
-            }
+            style: {
+              maxHeight: 'calc( 100vh - 5px )',
+              'overflow-y': 'auto',
+            },
+          }
           : {},
         items: this.props.item.items,
         hidden: !expanded,
@@ -110,16 +110,19 @@ class MenuItemWrapper extends Component {
       children: [
         this.props.item,
         !this.isLeaf &&
-          menuProps.direction === 'vertical' &&
-          !menuProps.compact &&
-          this.props.submenu,
+        menuProps.direction === 'vertical' &&
+        !menuProps.compact &&
+        this.props.submenu,
       ],
     })
   }
 
   onPopupMenuShow() {
     if (this.menu.selectedItemKey && this.menu.expandedRoot === this.rootWrapper) {
-      this.submenu && this.menu.getItem(this.menu.selectedItemKey).select()
+      this.submenu && this.menu.getItem(this.menu.selectedItemKey) && this.menu.getItem(this.menu.selectedItemKey).select()
+      if (this.menu.getItem(this.menu.selectedItemKey) === null) {
+        console.warn(`Could not find the item with specific key.`)
+      }
     }
   }
 }
