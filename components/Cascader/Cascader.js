@@ -72,6 +72,10 @@ class Cascader extends Field {
               : selectedOpt[selectedOpt.length - 1].label
         }
 
+        if (!c && cascader.props.value) {
+          c = cascader.props.value.join(separator)
+        }
+
         this.setProps({
           children: c,
         })
@@ -320,6 +324,7 @@ class Cascader extends Field {
 
   handleOptionSelected(value) {
     let key = null
+
     const { valueType, onlyleaf } = this.props
 
     this.checked = false

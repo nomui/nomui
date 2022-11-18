@@ -10790,6 +10790,9 @@ function _defineProperty2(obj, key, value) {
                 ? selectedOpt.map((e) => e.label).join(separator)
                 : selectedOpt[selectedOpt.length - 1].label;
           }
+          if (!c && cascader.props.value) {
+            c = cascader.props.value.join(separator);
+          }
           this.setProps({ children: c });
         },
       });
@@ -25248,8 +25251,10 @@ function _defineProperty2(obj, key, value) {
     }
     _select() {
       setTimeout(() => {
-        const tabContent = this.list.getTabContent();
-        tabContent.showPanel(this.key);
+        if (this.list.props.tabContent !== false) {
+          const tabContent = this.list.getTabContent();
+          tabContent.showPanel(this.key);
+        }
         !this.list.firstSelect && this.list.triggerChange();
         this.list.firstSelect = false;
       }, 0);
