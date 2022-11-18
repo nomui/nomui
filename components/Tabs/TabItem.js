@@ -36,8 +36,10 @@ class TabItem extends Component {
 
   _select() {
     setTimeout(() => {
-      const tabContent = this.list.getTabContent()
-      tabContent.showPanel(this.key)
+      if (this.list.props.tabContent !== false) {
+        const tabContent = this.list.getTabContent()
+        tabContent.showPanel(this.key)
+      }
       !this.list.firstSelect && this.list.triggerChange()
       this.list.firstSelect = false
     }, 0)
