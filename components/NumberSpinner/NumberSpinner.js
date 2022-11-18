@@ -104,7 +104,7 @@ class NumberSpinner extends Field {
     super._config()
   }
 
-  _getValue() {
+  _getFormatValue() {
     const text = this.getText()
     if (text === '') return null
 
@@ -129,6 +129,14 @@ class NumberSpinner extends Field {
     return value
   }
 
+  _getValue() {
+    const t = this.getText()
+    if (t === '') {
+      return null
+    }
+    return t
+  }
+
   _setValue(value) {
     if (this.isChange) {
       this.input && this.input.setText(value)
@@ -148,6 +156,10 @@ class NumberSpinner extends Field {
   }
 
   getText() {
+    return this.input.getText()
+  }
+
+  getValueText() {
     return this.input.getText()
   }
 
@@ -309,7 +321,7 @@ class NumberSpinner extends Field {
       step = Number(step)
     }
 
-    let value = this._getValue()
+    let value = this._getFormatValue()
     if (isNil(value)) {
       value = 0
     }
@@ -363,7 +375,7 @@ class NumberSpinner extends Field {
       step = Number(step)
     }
 
-    let value = this._getValue()
+    let value = this._getFormatValue()
     if (isNil(value)) {
       value = 0
     }
@@ -372,7 +384,7 @@ class NumberSpinner extends Field {
     if (!this._formatter) this._initNumberFormat()
     // currency 格式化之后不是数字了
     let result = value - step
-    if (result < 0) {
+    if (result < 0 && style !== 'decimal') {
       result = 0
     }
     const displayValue = this._format(result)
