@@ -26,6 +26,9 @@ class CheckboxTree extends Field {
       attrs.style.overflow = 'auto'
     }
     this.setProps({
+      classes: {
+        'nom-checkbox-tree-with-label': !!this.props.label,
+      },
       control: {
         component: DefaultCheckboxOptionTree,
         data: options,
