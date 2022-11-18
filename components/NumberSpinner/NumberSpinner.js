@@ -50,7 +50,7 @@ class NumberSpinner extends Field {
       name: 'input',
       ...otherProps,
       // value: isFunction(formatter) ? formatter(value) : numberSpinner._formatter.format(value),
-      value: numberSpinner._format(value),
+      value: value === null ? null : numberSpinner._format(value),
       _created() {
         this.textbox = numberSpinner
         this.textbox.input = this
@@ -143,7 +143,7 @@ class NumberSpinner extends Field {
       value = min
     }
 
-    const formatValue = this._format(value)
+    const formatValue = value === null ? value : this._format(value)
     this.input && this.input.setText(formatValue)
   }
 
@@ -310,11 +310,14 @@ class NumberSpinner extends Field {
     }
 
     let value = this._getValue()
-    if (isNil(value)) return
+    if (isNil(value)) {
+      value = 0
+    }
     value = Number(value)
 
     if (!this._formatter) this._initNumberFormat()
-    const displayValue = this._format(value + step)
+    const result = value + step
+    const displayValue = this._format(result)
 
     let newValue = ''
 
@@ -361,12 +364,18 @@ class NumberSpinner extends Field {
     }
 
     let value = this._getValue()
-    if (isNil(value)) return
+    if (isNil(value)) {
+      value = 0
+    }
     value = Number(value)
 
     if (!this._formatter) this._initNumberFormat()
     // currency 格式化之后不是数字了
-    const displayValue = this._format(value - step)
+    let result = value - step
+    if (result < 0) {
+      result = 0
+    }
+    const displayValue = this._format(result)
 
     let newValue = ''
 
