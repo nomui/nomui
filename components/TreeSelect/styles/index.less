@@ -41,6 +41,9 @@
         cursor: pointer;
       }
     }
+    .nom-tree-select-tag-hidden {
+      display: none;
+    }
   }
 
   &.s-disabled,
@@ -89,6 +92,38 @@
       .nom-tree-node-content-text {
       color: inherit;
       .nom-preset-bold;
+    }
+  }
+}
+
+.nom-tree-select-overtag-trigger {
+  border: none !important;
+  background: transparent;
+  cursor: default;
+}
+
+.nom-tree-select-extra-tags {
+  max-width: 50vw;
+  padding: 0.5rem;
+  .nom-list-item {
+    display: flex;
+    align-items: center;
+    padding: var(--nom-select-selected-item-padding);
+    background: var(--nom-select-selected-item-bg);
+    border: 1px solid var(--nom-select-selected-item-border-color);
+    border-radius: var(--nom-border-radius);
+    cursor: default;
+
+    .nom-select-item-content {
+      max-width: 20rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-right: 4px;
+    }
+
+    .nom-icon {
+      font-size: 8px;
     }
   }
 }

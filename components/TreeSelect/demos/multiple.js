@@ -8,6 +8,7 @@ define([], function () {
       return {
         children: {
           component: 'TreeSelect',
+          maxTagCount: 3,
           options: [
             {
               text: '总经办',

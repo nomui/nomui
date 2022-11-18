@@ -8211,6 +8211,10 @@ textarea .nom-textarea {
     opacity: 0;
   }
 }
+.nom-checkbox-tree-with-label:not(.p-label-align-top) .nom-default-checkbox-option-tree {
+  position: relative;
+  top: -0.4rem;
+}
 .nom-radio-list.p-uistyle-radio > .nom-field-content > .nom-list > .nom-list-content {
   margin: -0.5rem -0.5rem;
 }
@@ -9916,6 +9920,9 @@ textarea .nom-textarea {
   background: var(--nom-input-bg);
   cursor: pointer;
 }
+.nom-tree-select > .nom-field-content .nom-tree-select-tag-hidden {
+  display: none;
+}
 .nom-tree-select.s-disabled .nom-control,
 .nom-tree-select.s-disabled:hover .nom-control,
 .nom-tree-select[readonly] .nom-control,
@@ -9954,6 +9961,34 @@ textarea .nom-textarea {
 .nom-tree-select-popup .nom-tree .nom-tree-node:not(.s-disabled).filter-node > .nom-tree-node-content .nom-tree-node-content-text {
   color: inherit;
   font-weight: 500;
+}
+.nom-tree-select-overtag-trigger {
+  border: none !important;
+  background: transparent;
+  cursor: default;
+}
+.nom-tree-select-extra-tags {
+  max-width: 50vw;
+  padding: 0.5rem;
+}
+.nom-tree-select-extra-tags .nom-list-item {
+  display: flex;
+  align-items: center;
+  padding: var(--nom-select-selected-item-padding);
+  background: var(--nom-select-selected-item-bg);
+  border: 1px solid var(--nom-select-selected-item-border-color);
+  border-radius: var(--nom-border-radius);
+  cursor: default;
+}
+.nom-tree-select-extra-tags .nom-list-item .nom-select-item-content {
+  max-width: 20rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 4px;
+}
+.nom-tree-select-extra-tags .nom-list-item .nom-icon {
+  font-size: 8px;
 }
 .nom-tree-select-content .nom-tag {
   margin-right: 0.5rem;
@@ -10333,17 +10368,18 @@ textarea .nom-textarea {
 .nom-tag.p-type-round {
   min-width: 1.75rem;
 }
+.nom-tag .nom-tag-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block !important;
+}
 .nom-tag > .nom-icon {
   display: inline-flex;
 }
 .nom-tag > .nom-icon + span,
 .nom-tag > span + .nom-icon {
   margin-left: 0.1rem;
-}
-.nom-tag .nom-tag-remove {
-  position: relative;
-  top: 2px;
-  margin-left: 1px !important;
 }
 .nom-tag .nom-tag-remove svg {
   fill: var(--nom-tag-remove-color);
