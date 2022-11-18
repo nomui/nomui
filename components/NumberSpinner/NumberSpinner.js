@@ -50,7 +50,7 @@ class NumberSpinner extends Field {
       name: 'input',
       ...otherProps,
       // value: isFunction(formatter) ? formatter(value) : numberSpinner._formatter.format(value),
-      value: numberSpinner._format(value),
+      value: value === null ? null : numberSpinner._format(value),
       _created() {
         this.textbox = numberSpinner
         this.textbox.input = this
@@ -104,7 +104,7 @@ class NumberSpinner extends Field {
     super._config()
   }
 
-  _getValue() {
+  _getFormatValue() {
     const text = this.getText()
     if (text === '') return null
 
@@ -129,6 +129,14 @@ class NumberSpinner extends Field {
     return value
   }
 
+  _getValue() {
+    const t = this.getText()
+    if (t === '') {
+      return null
+    }
+    return t
+  }
+
   _setValue(value) {
     if (this.isChange) {
       this.input && this.input.setText(value)
@@ -143,11 +151,15 @@ class NumberSpinner extends Field {
       value = min
     }
 
-    const formatValue = this._format(value)
+    const formatValue = value === null ? value : this._format(value)
     this.input && this.input.setText(formatValue)
   }
 
   getText() {
+    return this.input.getText()
+  }
+
+  getValueText() {
     return this.input.getText()
   }
 
@@ -309,12 +321,15 @@ class NumberSpinner extends Field {
       step = Number(step)
     }
 
-    let value = this._getValue()
-    if (isNil(value)) return
+    let value = this._getFormatValue()
+    if (isNil(value)) {
+      value = 0
+    }
     value = Number(value)
 
     if (!this._formatter) this._initNumberFormat()
-    const displayValue = this._format(value + step)
+    const result = value + step
+    const displayValue = this._format(result)
 
     let newValue = ''
 
@@ -360,13 +375,19 @@ class NumberSpinner extends Field {
       step = Number(step)
     }
 
-    let value = this._getValue()
-    if (isNil(value)) return
+    let value = this._getFormatValue()
+    if (isNil(value)) {
+      value = 0
+    }
     value = Number(value)
 
     if (!this._formatter) this._initNumberFormat()
     // currency 格式化之后不是数字了
-    const displayValue = this._format(value - step)
+    let result = value - step
+    if (result < 0 && style !== 'decimal') {
+      result = 0
+    }
+    const displayValue = this._format(result)
 
     let newValue = ''
 
