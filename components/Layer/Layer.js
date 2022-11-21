@@ -146,7 +146,10 @@ class Layer extends Component {
     const closestLayer = e.target.closest('.nom-layer')
     if (closestLayer !== null) {
       const idx = closestLayer.component._zIndex
-      if (idx < this._zIndex) {
+      if (
+        (this.props.closeOnClickOutside && this.props.closeOnClickOutside.forceClose === true) ||
+        idx < this._zIndex
+      ) {
         this.hide()
       }
     } else {
