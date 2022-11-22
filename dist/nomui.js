@@ -16047,8 +16047,9 @@ function _defineProperty2(obj, key, value) {
           console.warn(
             `Duplicate keys detected: '${_rowRefKey}'.This may cause an update error.`
           );
+        } else {
+          this.table.grid.rowsRefs[_rowRefKey] = this;
         }
-        this.table.grid.rowsRefs[_rowRefKey] = this;
       }
       if (this.table.parent.componentType === "GridFooter") {
         this.table.grid.footerTrRef = this;
@@ -17203,6 +17204,7 @@ function _defineProperty2(obj, key, value) {
         setTimeout(() => {
           if (this.scrollParent) {
             this.scrollParent.element.scrollTop += 1;
+            this.scrollParent.element.scrollTop -= 1;
           }
         }, 0);
       }
@@ -18152,6 +18154,7 @@ function _defineProperty2(obj, key, value) {
               width: 50,
               isChecker: true,
               resizable: false,
+              field: "nom-grid-row-checker",
               header: {
                 component: Checkbox,
                 plain: true,
@@ -18198,6 +18201,7 @@ function _defineProperty2(obj, key, value) {
                   _config() {
                     this.setProps(_checkboxProps);
                   },
+                  attrs: { "data-key": row.key },
                   onValueChange: (args) => {
                     if (args.newValue === true) {
                       grid.check(row);

@@ -25,8 +25,9 @@ class Tr extends Component {
       if (_rowRef) {
         // eslint-disable-next-line no-console
         console.warn(`Duplicate keys detected: '${_rowRefKey}'.This may cause an update error.`)
+      } else {
+        this.table.grid.rowsRefs[_rowRefKey] = this
       }
-      this.table.grid.rowsRefs[_rowRefKey] = this
     }
 
     if (this.table.parent.componentType === 'GridFooter') {
