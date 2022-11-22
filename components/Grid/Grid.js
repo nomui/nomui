@@ -619,6 +619,7 @@ class Grid extends Component {
   // 遍历 rowTr 实例，调用其check方法
   checkAllRows(options) {
     const { rowsRefs } = this
+
     Object.keys(rowsRefs).forEach((key) => {
       const refItem = rowsRefs[key]
       const { props } = refItem._checkboxRef
@@ -862,6 +863,7 @@ class Grid extends Component {
             width: 50,
             isChecker: true,
             resizable: false,
+            field: 'nom-grid-row-checker',
             header: {
               component: Checkbox,
               plain: true,
@@ -907,6 +909,9 @@ class Grid extends Component {
                 },
                 _config() {
                   this.setProps(_checkboxProps)
+                },
+                attrs: {
+                  'data-key': row.key,
                 },
                 onValueChange: (args) => {
                   if (args.newValue === true) {
