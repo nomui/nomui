@@ -75,6 +75,7 @@ class GridHeader extends Component {
       setTimeout(() => {
         if (this.scrollParent) {
           this.scrollParent.element.scrollTop += 1
+          this.scrollParent.element.scrollTop -= 1
         }
       }, 0)
     }
