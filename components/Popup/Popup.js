@@ -32,9 +32,7 @@ class Popup extends Layer {
     this.opener.on('remove', () => {
       this.remove()
     })
-    if (!this.props.alignTo) {
-      this.props.alignTo = this.opener.element
-    }
+    this.props.alignTo = this.opener.element
     this.showTimer = null
     this.hideTimer = null
     this.addRel(this.opener.element)
