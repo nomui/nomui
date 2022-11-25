@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.15](https://github.com/nomui/nomui/compare/v1.1.14...v1.1.15) (2022-11-25)
+
+
+### Features
+
+* **TreeSelect:** 新增限制显示标签个数 ([ed99126](https://github.com/nomui/nomui/commit/ed99126e2e8f765896e92bcdab1d41f9ad52c474))
+
+
+### Bug Fixes
+
+* 优化Popup ([54fcf39](https://github.com/nomui/nomui/commit/54fcf39153535c348c085726571a5723e0c013e9))
+* **Grid:** 滚动到底部以后进行排序表头没浮动的问题 ([3e5cf9b](https://github.com/nomui/nomui/commit/3e5cf9bd6e1dbbcd5d5f6a1ee19d702a80a8e124))
+
 ### [1.1.14](https://github.com/nomui/nomui/compare/v1.1.13...v1.1.14) (2022-11-18)
 
 
