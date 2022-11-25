@@ -10791,7 +10791,9 @@ function _defineProperty2(obj, key, value) {
                 : selectedOpt[selectedOpt.length - 1].label;
           }
           if (!c && cascader.props.value) {
-            c = cascader.props.value.join(separator);
+            c = nomui.utils.isString(cascader.props.value)
+              ? cascader.props.value
+              : cascader.props.value.join(separator);
           }
           this.setProps({ children: c });
         },
