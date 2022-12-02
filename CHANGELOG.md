@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.16](https://github.com/nomui/nomui/compare/v1.1.15...v1.1.16) (2022-12-02)
+
+
+### Bug Fixes
+
+* **Grid:** 列设置取消全选时操作列消失 ([72feb73](https://github.com/nomui/nomui/commit/72feb7390c8b4fd0f4ba0313cc9bf920e45be313))
+
 ### [1.1.15](https://github.com/nomui/nomui/compare/v1.1.14...v1.1.15) (2022-11-25)
 
 
