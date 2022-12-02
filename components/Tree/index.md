@@ -29,8 +29,8 @@
 | getSelectedNode | 获取当前选中节点 | `(options:getDataOptions) => node` | - |
 | expandTo | 展开指定节点 | `(options:getDataOptions) => void` | - |
 | scrollTo | 滚动到指定节点 | `(options:getDataOptions) => void` | - |
-| checkAllNodes | 全部勾选中 | `() => void` | - |
-| uncheckAllNodes | 全部取消勾选 | `() => void` | - |
+| checkAllNodes | 全部勾选中，若`ignoreDisabled:true`时忽略被禁用的节点 | `({ignoreDisabled}) => void` | - |
+| uncheckAllNodes | 全部取消勾选，若`ignoreDisabled:true`时忽略被禁用的节点 | `({ignoreDisabled}) => void` | - |
 
 `getDataOptions`: 获取节点的参数，可以为一下三种情况
 
