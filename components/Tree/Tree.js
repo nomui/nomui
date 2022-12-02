@@ -267,17 +267,29 @@ class Tree extends Component {
     }
   }
 
-  checkAllNodes() {
+  checkAllNodes(options) {
     Object.keys(this.nodeRefs).forEach((nodeKey) => {
-      this.nodeRefs[nodeKey].check({ triggerCheckChange: false })
+      if (options && options.ignoreDisabled === true) {
+        if (this.nodeRefs[nodeKey].props.disabled !== true) {
+          this.nodeRefs[nodeKey].check({ triggerCheckChange: false })
+        }
+      } else {
+        this.nodeRefs[nodeKey].check({ triggerCheckChange: false })
+      }
     })
 
     this._onCheckChange()
   }
 
-  uncheckAllNodes() {
+  uncheckAllNodes(options) {
     Object.keys(this.nodeRefs).forEach((nodeKey) => {
-      this.nodeRefs[nodeKey].uncheck({ triggerCheckChange: false })
+      if (options && options.ignoreDisabled === true) {
+        if (this.nodeRefs[nodeKey].props.disabled !== true) {
+          this.nodeRefs[nodeKey].uncheck({ triggerCheckChange: false })
+        }
+      } else {
+        this.nodeRefs[nodeKey].uncheck({ triggerCheckChange: false })
+      }
     })
 
     this._onCheckChange()

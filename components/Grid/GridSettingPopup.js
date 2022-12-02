@@ -88,7 +88,14 @@ class GridSettingPopup extends Modal {
                   text: '确定',
                   onClick: function () {
                     const list = that.tree.getCheckedNodesData()
-                    if (list.length === 0) {
+                    const lockedList = list.filter((n) => {
+                      return n.disabled === true
+                    })
+
+                    if (
+                      list.length === 0 ||
+                      (list.length === lockedList.length && list.length === 1)
+                    ) {
                       new nomui.Alert({
                         type: 'info',
                         title: '提示',
@@ -140,6 +147,7 @@ class GridSettingPopup extends Modal {
       data.forEach(function (item) {
         if (item.isChecker === true || item.customizable === false) {
           item.hidden = true
+          item.disabled = true
         }
         if (item.children) {
           mapColumns(item.children)
@@ -147,6 +155,7 @@ class GridSettingPopup extends Modal {
       })
     }
     mapColumns(val)
+
     return val
   }
 
@@ -161,10 +170,10 @@ class GridSettingPopup extends Modal {
 
   _toogleCheckall() {
     if (this.checkallBtn.props.text === '全选') {
-      this.tree.checkAllNodes()
+      this.tree.checkAllNodes({ ignoreDisabled: true })
       this.checkallBtn.update({ text: '取消全选' })
     } else {
-      this.tree.uncheckAllNodes()
+      this.tree.uncheckAllNodes({ ignoreDisabled: true })
       this.checkallBtn.update({ text: '全选' })
     }
   }
