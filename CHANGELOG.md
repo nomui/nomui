@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.17](https://github.com/nomui/nomui/compare/v1.1.16...v1.1.17) (2022-12-09)
+
+
+### Features
+
+* **Grid:** 新增列对齐方式配置 ([10a0dd0](https://github.com/nomui/nomui/commit/10a0dd058f226e4d92f5709edd9fe3f8dc5b7ccb))
+
+
+### Bug Fixes
+
+* 修复Grid选择框不居中的问题 ([fa2ecdf](https://github.com/nomui/nomui/commit/fa2ecdfcf53c147658bee637d91b9556e69a153b))
+* 修复Menu紧凑模式下箭头方向不合理的问题 ([e0ecde3](https://github.com/nomui/nomui/commit/e0ecde36f6ba157d0a73ade6f4ed30099994fd3c))
+* 优化修复Grid选择框不居中的问题 ([e25a9b2](https://github.com/nomui/nomui/commit/e25a9b26e2320b07283b92eca9757ddc6988a9ca))
+* **Grid:** 列标题非字符串时不再显示title ([f952738](https://github.com/nomui/nomui/commit/f952738033329af75319cab5abd177e29d390c20))
+
 ### [1.1.16](https://github.com/nomui/nomui/compare/v1.1.15...v1.1.16) (2022-12-02)
 
 
