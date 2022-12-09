@@ -25514,7 +25514,8 @@ function _defineProperty2(obj, key, value) {
                 onClick: function ({ event }) {
                   nomui.utils.isFunction(that.props.removable) &&
                     that.props.removable(that.props.key);
-                  that.props.onRemove &&
+                  that.hasOwnProperty("props") &&
+                    that.props.onRemove &&
                     that._callHandler(that.props.onRemove, {
                       key: that.props.key,
                     });
