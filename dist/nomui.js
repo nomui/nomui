@@ -16355,13 +16355,13 @@ function _defineProperty2(obj, key, value) {
         (this.table.props.ellipsis === "both" ||
           this.table.props.ellipsis === "header") &&
         this.props.column.ellipsis !== false;
+      let titleStr = this.props.column.header || this.props.column.title;
+      if (!isString(titleStr)) {
+        titleStr = null;
+      }
       const headerProps = {
         tag: "span",
-        attrs: {
-          title: isEllipsis
-            ? this.props.column.header || this.props.column.title
-            : null,
-        },
+        attrs: { title: isEllipsis ? titleStr : null },
         classes: { "nom-table-cell-title": true },
         children: this.props.column.header || this.props.column.title,
       };

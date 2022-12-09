@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction } from '../util/index'
+import { isFunction, isString } from '../util/index'
 
 class Th extends Component {
   constructor(props, ...mixins) {
@@ -41,10 +41,15 @@ class Th extends Component {
       (this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'header') &&
       this.props.column.ellipsis !== false
 
+    let titleStr = this.props.column.header || this.props.column.title
+    if (!isString(titleStr)) {
+      titleStr = null
+    }
+
     const headerProps = {
       tag: 'span',
       attrs: {
-        title: isEllipsis ? this.props.column.header || this.props.column.title : null,
+        title: isEllipsis ? titleStr : null,
       },
       classes: { 'nom-table-cell-title': true },
       children: this.props.column.header || this.props.column.title,
