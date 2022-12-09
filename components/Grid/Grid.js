@@ -864,6 +864,9 @@ class Grid extends Component {
             isChecker: true,
             resizable: false,
             field: 'nom-grid-row-checker',
+            classes: {
+              'nom-grid-checkbox': true,
+            },
             header: {
               component: Checkbox,
               plain: true,
@@ -903,6 +906,9 @@ class Grid extends Component {
 
               return {
                 component: Checkbox,
+                classes: {
+                  'nom-grid-checkbox': true,
+                },
                 plain: true,
                 _created: (inst) => {
                   row._checkboxRef = inst
