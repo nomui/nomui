@@ -3,50 +3,58 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
   .nom-grid-header {
     z-index: 10;
   }
+
   .hidden {
     display: none;
   }
+
   .nom-grid-setting {
     position: absolute;
     top: 0;
     right: 0;
     z-index: 11;
     background: var(--nom-grid-header-background-color);
+
     .nom-grid-setting-btn {
       margin: 8px 2px 0 0;
     }
   }
 
-  > .nom-grid-header {
+  >.nom-grid-header {
     position: relative;
     overflow: hidden;
 
     .nom-table {
       position: relative;
       z-index: inherit;
+
       &::after {
-        content: '';
         position: absolute;
-        left: 0;
         right: 0;
         bottom: 1px;
+        left: 0;
         // width: 100%;
         z-index: inherit;
         border-bottom: var(--nom-grid-header-border);
+        content: '';
       }
     }
+
     .nom-th {
       &.nom-table-parent-th {
         text-align: center;
       }
+
       .nom-icon {
         position: relative;
         top: 2px;
         margin-left: 5px;
         color: var(--nom-grid-icon-color);
+
         &.p-type-sort-up,
         &.p-type-sort-down,
         &.nom-filter-active {
@@ -54,6 +62,7 @@
         }
       }
     }
+
     &.nom-grid-highlight-col {
       th:hover {
         background-color: var(--nom-grid-highlight-bg);
@@ -62,19 +71,21 @@
     }
   }
 
-  > .nom-grid-body {
+  >.nom-grid-body {
     position: relative;
     flex: 1;
     height: 100%;
     overflow: auto;
 
-    > .nom-grid-body-content {
+    >.nom-grid-body-content {
       overflow-x: auto;
     }
   }
-  > .nom-grid-footer {
+
+  >.nom-grid-footer {
     position: relative;
     overflow: hidden;
+
     .nom-table {
       overflow: auto;
     }
@@ -83,16 +94,18 @@
   &.p-bordered {
     border: 1px solid var(--nom-border-color);
 
-    > .nom-grid-body {
+    >.nom-grid-body {
       margin-bottom: -1px;
     }
-    > .nom-grid-body + .nom-grid-footer {
+
+    >.nom-grid-body+.nom-grid-footer {
       margin-top: 1px;
       margin-bottom: -1px;
     }
   }
 
   &.nom-table-has-row-group {
+
     tbody tr,
     tbody tr:hover {
       background-color: inherit;
@@ -105,29 +118,31 @@
     display: flex;
     flex-direction: column;
 
-    > .nom-grid-header {
-      overflow-y: scroll;
+    >.nom-grid-header {
       flex-shrink: 0;
+      overflow-y: scroll;
       background-color: var(--nom-grid-header-background-color);
-      > .nom-table {
+
+      >.nom-table {
         background-color: var(--nom-grid-header-background-color);
+
         &::after {
           right: var(--nom-scrollbar-width);
           width: calc(100% - var(--nom-scrollbar-width));
         }
       }
 
-      > .nom-grid-header-content {
+      >.nom-grid-header-content {
         overflow: hidden;
       }
     }
 
-    > .nom-grid-body {
+    >.nom-grid-body {
       flex: 1;
       height: 100%;
       overflow-y: scroll;
 
-      > .nom-grid-body-content {
+      >.nom-grid-body-content {
         overflow-x: auto;
         overflow-y: scroll;
       }
@@ -145,14 +160,28 @@
       }
     }
   }
+
+  .nom-grid-checkbox {
+    .nom-field-content {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .nom-table-cell-title {
+    .nom-grid-checkbox()
+  }
 }
+
 .nom-grid-setting-panel {
   min-width: 300px;
+
   .nom-tree {
     .nom-tree-node-content {
       position: relative;
       top: 0;
       transition: all 0.25s;
+
       &:hover {
         top: -2px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
