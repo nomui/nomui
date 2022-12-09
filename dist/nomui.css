@@ -7178,6 +7178,18 @@ table.nom-table th {
   padding: var(--nom-grid-td-padding);
   word-break: break-all;
 }
+table.nom-table td[align='left'],
+table.nom-table th[align='left'] {
+  text-align: left;
+}
+table.nom-table td[align='center'],
+table.nom-table th[align='center'] {
+  text-align: center;
+}
+table.nom-table td[align='right'],
+table.nom-table th[align='right'] {
+  text-align: right;
+}
 table.nom-table td.nom-table-fixed-left,
 table.nom-table th.nom-table-fixed-left,
 table.nom-table td.nom-table-fixed-right,

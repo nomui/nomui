@@ -15828,11 +15828,15 @@ function _defineProperty2(obj, key, value) {
           this.table.props.showTitle) &&
           this.props.column.showTitle !== false) ||
         this.props.column.showTitle === true;
+      const columnAlign = this.table.hasGrid
+        ? this.table.grid.props.columnAlign
+        : "left";
       this.setProps({
         children: children,
         attrs: {
           colspan: colSpan,
           rowspan: rowSpan,
+          align: this.props.column.align || columnAlign,
           "data-field": this.props.column.field,
           title: this._getAttrTitle(children, isEllipsis, showTitle),
         },
@@ -16337,6 +16341,9 @@ function _defineProperty2(obj, key, value) {
       this.filterValue = this.table.hasGrid
         ? this.table.grid.filter[this.props.column.field]
         : null;
+      const columnAlign = this.table.hasGrid
+        ? this.table.grid.props.columnAlign
+        : "left";
       let sortIcon = "sort";
       if (this.props.column.sortDirection === "asc") {
         sortIcon = "sort-up";
@@ -16513,6 +16520,7 @@ function _defineProperty2(obj, key, value) {
         attrs: {
           colspan: this.props.column.colSpan,
           rowspan: this.props.column.rowSpan,
+          align: this.props.column.align || columnAlign,
           onmouseenter:
             this.table.grid &&
             function () {
@@ -18602,6 +18610,7 @@ function _defineProperty2(obj, key, value) {
     scrollbarWidth: 8,
     summary: null,
     showEmpty: true,
+    columnAlign: "left",
   };
   Grid._loopSetValue = function (key, arry) {
     if (key === undefined || key.cascade === undefined) return false;
