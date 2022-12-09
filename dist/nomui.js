@@ -19480,6 +19480,8 @@ function _defineProperty2(obj, key, value) {
       }
       if (menuProps.direction === "horizontal") {
         this.setProps({ indicator: { expandable: false } });
+      } else {
+        this.props.indicator.expandable.collapsedProps = indicatorIconType;
       }
       this.setProps({
         indicator: {
