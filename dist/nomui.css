@@ -7407,13 +7407,13 @@ table.nom-table.p-bordered {
   z-index: inherit;
 }
 .nom-grid > .nom-grid-header .nom-table::after {
-  content: '';
   position: absolute;
-  left: 0;
   right: 0;
   bottom: 1px;
+  left: 0;
   z-index: inherit;
   border-bottom: var(--nom-grid-header-border);
+  content: '';
 }
 .nom-grid > .nom-grid-header .nom-th.nom-table-parent-th {
   text-align: center;
@@ -7470,8 +7470,8 @@ table.nom-table.p-bordered {
   flex-direction: column;
 }
 .nom-grid.m-frozen-header > .nom-grid-header {
-  overflow-y: scroll;
   flex-shrink: 0;
+  overflow-y: scroll;
   background-color: var(--nom-grid-header-background-color);
 }
 .nom-grid.m-frozen-header > .nom-grid-header > .nom-table {
@@ -7495,6 +7495,14 @@ table.nom-table.p-bordered {
 }
 .nom-grid.m-with-setting .nom-table .nom-thead-tr:first-child th:last-child {
   padding-right: 40px;
+}
+.nom-grid .nom-grid-checkbox .nom-field-content {
+  display: flex;
+  justify-content: center;
+}
+.nom-grid .nom-table-cell-title .nom-field-content {
+  display: flex;
+  justify-content: center;
 }
 .nom-grid-setting-panel {
   min-width: 300px;

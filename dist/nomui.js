@@ -18184,6 +18184,7 @@ function _defineProperty2(obj, key, value) {
               isChecker: true,
               resizable: false,
               field: "nom-grid-row-checker",
+              classes: { "nom-grid-checkbox": true },
               header: {
                 component: Checkbox,
                 plain: true,
@@ -18223,6 +18224,7 @@ function _defineProperty2(obj, key, value) {
                 }
                 return {
                   component: Checkbox,
+                  classes: { "nom-grid-checkbox": true },
                   plain: true,
                   _created: (inst) => {
                     row._checkboxRef = inst;
