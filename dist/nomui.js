@@ -16516,6 +16516,7 @@ function _defineProperty2(obj, key, value) {
             this.props.column.filter && this.props.column.colSpan > 0
           ),
           "nom-table-ellipsis": isEllipsis,
+          "nom-table-checker-column": !!this.props.column.isChecker,
         },
         attrs: {
           colspan: this.props.column.colSpan,
