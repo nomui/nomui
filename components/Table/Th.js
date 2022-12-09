@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction } from '../util/index'
+import { isFunction, isString } from '../util/index'
 
 class Th extends Component {
   constructor(props, ...mixins) {
@@ -26,6 +26,8 @@ class Th extends Component {
     const that = this
     this.filterValue = this.table.hasGrid ? this.table.grid.filter[this.props.column.field] : null
 
+    const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
+
     let sortIcon = 'sort'
     if (this.props.column.sortDirection === 'asc') {
       sortIcon = 'sort-up'
@@ -39,10 +41,15 @@ class Th extends Component {
       (this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'header') &&
       this.props.column.ellipsis !== false
 
+    let titleStr = this.props.column.header || this.props.column.title
+    if (!isString(titleStr)) {
+      titleStr = null
+    }
+
     const headerProps = {
       tag: 'span',
       attrs: {
-        title: isEllipsis ? this.props.column.header || this.props.column.title : null,
+        title: isEllipsis ? titleStr : null,
       },
       classes: { 'nom-table-cell-title': true },
       children: this.props.column.header || this.props.column.title,
@@ -221,6 +228,7 @@ class Th extends Component {
       attrs: {
         colspan: this.props.column.colSpan,
         rowspan: this.props.column.rowSpan,
+        align: this.props.column.align || columnAlign,
         onmouseenter:
           this.table.grid &&
           function () {

@@ -67,6 +67,8 @@ class MenuItem extends Component {
           expandable: false,
         },
       })
+    } else {
+      this.props.indicator.expandable.collapsedProps = indicatorIconType
     }
 
     this.setProps({

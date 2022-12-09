@@ -8,7 +8,6 @@ table.nom-table {
   &.nom-table-striped {
     tbody tr:nth-child(even):not(.nom-tr-empty) {
       td {
-
         &.nom-table-fixed-left,
         &.nom-table-fixed-right {
           background: var(--nom-grid-tr-striped-bg);
@@ -70,6 +69,15 @@ table.nom-table {
     position: relative;
     padding: var(--nom-grid-td-padding);
     word-break: break-all;
+    &[align='left'] {
+      text-align: left;
+    }
+    &[align='center'] {
+      text-align: center;
+    }
+    &[align='right'] {
+      text-align: right;
+    }
 
     &.nom-table-fixed-left,
     &.nom-table-fixed-right {
@@ -79,9 +87,8 @@ table.nom-table {
     }
 
     &.nom-table-sortable {
-
-      >span,
-      >.nom-icon {
+      > span,
+      > .nom-icon {
         cursor: pointer;
       }
     }
@@ -161,7 +168,6 @@ table.nom-table {
   }
 
   .nom-table-ellipsis {
-
     // 内容使用content包了一层，在content中设置overflow: hidden
     &.nom-table-fixed-left,
     &.nom-table-fixed-right {
@@ -231,7 +237,7 @@ table.nom-table {
       background-image: var(--nom-grid-th-bg-image);
     }
 
-    >.nom-table-filter {
+    > .nom-table-filter {
       position: absolute;
       top: 0;
       right: 0;
@@ -260,7 +266,6 @@ table.nom-table {
   }
 
   &.p-line-row {
-
     td,
     th {
       border-bottom: 1px solid var(--nom-border-color);
@@ -268,13 +273,12 @@ table.nom-table {
   }
 
   &.p-line-col {
-
     td,
     th {
       border-right: 1px solid var(--nom-border-color);
     }
 
-    >th {
+    > th {
       &:last-child {
         border-right: 0;
       }
@@ -282,14 +286,13 @@ table.nom-table {
   }
 
   &.p-line-both {
-
     td,
     th {
       border-right: 1px solid var(--nom-border-color);
       border-bottom: 1px solid var(--nom-border-color);
     }
 
-    thead>tr {
+    thead > tr {
       &:first-child {
         th:last-child {
           border-right: 0;

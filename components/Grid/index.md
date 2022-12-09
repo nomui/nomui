@@ -34,6 +34,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | columns | 表格列的配置描述，具体项见下表 | `array` | `[]` |
+| columnAlign | 所有列的默认文本对齐方式 | `left`\|`center`\|`right` | `left` |
 | data | 表格数据数组 | `array` | `[]` |
 | frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
@@ -87,6 +88,7 @@
 | field | 行数据（对象）的字段名 | `string` | - |
 | title | 列头显示标题 | `string` | - |
 | width | 列宽度，单位 px | `boolean` | 120 |
+| align | 文本对齐方式 | `left`\|`center`\|`right` | `left` |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
 | resizable | 是否允许拖动列宽 | `boolean` | `false` |

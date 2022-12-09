@@ -55,20 +55,20 @@ class Tag extends Component {
 
           Component.normalizeIconProps(rightIcon),
           removable &&
-            Component.normalizeIconProps({
-              type: 'times',
-              classes: {
-                'nom-tag-remove': true,
-                'nom-tag-remove-basic': !that.props.styles,
-              },
-              onClick: function ({ event }) {
-                nomui.utils.isFunction(that.props.removable) && that.props.removable(that.props.key)
-                that.props.onRemove &&
-                  that._callHandler(that.props.onRemove, { key: that.props.key })
+          Component.normalizeIconProps({
+            type: 'times',
+            classes: {
+              'nom-tag-remove': true,
+              'nom-tag-remove-basic': !that.props.styles,
+            },
+            onClick: function ({ event }) {
+              nomui.utils.isFunction(that.props.removable) && that.props.removable(that.props.key)
+              that.hasOwnProperty('props') && that.props.onRemove &&
+                that._callHandler(that.props.onRemove, { key: that.props.key })
 
-                event.stopPropagation()
-              },
-            }),
+              event.stopPropagation()
+            },
+          }),
         ],
       },
     })

@@ -151,11 +151,14 @@ class Td extends Component {
         this.props.column.showTitle !== false) ||
       this.props.column.showTitle === true
 
+    const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
+
     this.setProps({
       children: children,
       attrs: {
         colspan: colSpan,
         rowspan: rowSpan,
+        align: this.props.column.align || columnAlign,
         'data-field': this.props.column.field,
         title: this._getAttrTitle(children, isEllipsis, showTitle),
       },
