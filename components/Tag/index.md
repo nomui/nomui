@@ -17,3 +17,4 @@
 | size          | 设置尺寸         | `xs\|sm\|lg\|xl`              | -      |
 | type          | 设置标签类型     | `round\|square`               | square |
 | removable     | 删除的回调       | `(key) => {console.log(key)}` | -      |
+| onRemove     | 删除的回调(新) 建议使用 removable:true , onRemove:func 这种用法      | `(args) => {console.log(args)},` | -      |

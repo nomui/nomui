@@ -2,6 +2,8 @@ define([], function () {
   return {
     title: '基础用法',
     file: 'basic',
+    description:
+      '当使用Tag组件删除回调时，建议使用 removable:true , onRemove: (args) => { }, 这种用法',
     demo: function () {
       return {
         component: 'Flex',
@@ -10,7 +12,7 @@ define([], function () {
           {
             component: 'Tag',
             text: 0,
-            onClick: () => {},
+            onClick: () => { },
           },
           {
             component: 'Tag',
