@@ -26,6 +26,8 @@ class Th extends Component {
     const that = this
     this.filterValue = this.table.hasGrid ? this.table.grid.filter[this.props.column.field] : null
 
+    const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
+
     let sortIcon = 'sort'
     if (this.props.column.sortDirection === 'asc') {
       sortIcon = 'sort-up'
@@ -221,6 +223,7 @@ class Th extends Component {
       attrs: {
         colspan: this.props.column.colSpan,
         rowspan: this.props.column.rowSpan,
+        align: this.props.column.align || columnAlign,
         onmouseenter:
           this.table.grid &&
           function () {

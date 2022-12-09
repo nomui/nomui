@@ -1,6 +1,7 @@
 define([
   './basic.js',
   './styles.js',
+  './align.js',
   './ellipsis.js',
   './sort.js',
   './sort-cacheable.js',
