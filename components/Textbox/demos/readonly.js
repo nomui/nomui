@@ -12,5 +12,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '当readonly为true时,文本框为只读状态',
   }
 })

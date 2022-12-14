@@ -13,5 +13,8 @@ define([], function () {
         },
       }
     },
+
+    description:
+      '自定义文本文字。',
   }
 })

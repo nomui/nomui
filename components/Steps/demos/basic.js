@@ -25,5 +25,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '简单的步骤条',
   }
 })

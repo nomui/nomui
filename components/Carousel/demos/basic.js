@@ -24,5 +24,8 @@ define([], function () {
         triggerType: 'click',
       }
     },
+    description:
+      '当内容空间不足时，可以用走马灯的形式进行收纳，进行轮播展现',
+
   }
 })

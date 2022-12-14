@@ -29,5 +29,8 @@ define([], function () {
         ],
       }
     },
+
+    description:
+      '最基础的用法，在浮层中可以选择日期。',
   }
 })

@@ -33,5 +33,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '可以通过activeKey指定展开多个面板，通过onChange回调函数',
   }
 })

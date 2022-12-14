@@ -31,5 +31,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      'timePicker的基础用法，在浮层中选择某一时间 ',
   }
 })

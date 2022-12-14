@@ -58,5 +58,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '提供四个方位进行提示',
   }
 })

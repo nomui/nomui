@@ -21,5 +21,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '自带按钮和图标',
   }
 })

@@ -34,5 +34,9 @@ define([], function () {
         },
       }
     },
+
+    description:
+      '使用 defaultFileList 设置已上传的内容。',
+
   }
 })

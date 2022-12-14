@@ -33,5 +33,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '设置最小日期限制',
   }
 })

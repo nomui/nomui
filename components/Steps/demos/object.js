@@ -164,5 +164,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '添加description对象属性，对Steps组件增加自定义展示',
   }
 })

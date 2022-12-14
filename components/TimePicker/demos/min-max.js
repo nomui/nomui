@@ -33,5 +33,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '可限制浮层时间的选择范围',
   }
 })

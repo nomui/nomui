@@ -10,5 +10,8 @@ define([], function () {
         showTip: false,
       }
     },
+    description:
+      '当 disabled 为 true 时，滑块处于不可用状态。',
+
   }
 })

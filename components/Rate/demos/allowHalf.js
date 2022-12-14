@@ -9,5 +9,7 @@ define([], function () {
         value: 2.5,
       }
     },
+    description:
+      '支持半星展示',
   }
 })

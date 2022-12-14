@@ -30,5 +30,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '可自定义设置为无箭头状态',
   }
 })

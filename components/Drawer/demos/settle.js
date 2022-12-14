@@ -29,5 +29,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '利用settle的属性来改变抽屉展开的方向',
   }
 })

@@ -22,5 +22,8 @@ define([], function () {
           options.filter((o) => o.value.toLowerCase().includes(txt.toLowerCase())),
       }
     },
+
+    description:
+      '不区分大小写的 AutoComplete，可以自定义筛选条件',
   }
 })

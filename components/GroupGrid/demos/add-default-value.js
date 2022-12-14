@@ -32,5 +32,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '通过addDefaultValue属性，动态添加默认值',
   }
 })

@@ -16,5 +16,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '限制上传格式，会对上传内容格式进行处理',
   }
 })

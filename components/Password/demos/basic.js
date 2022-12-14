@@ -33,5 +33,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '密码框的基础用法，右侧图标可展示密码的真实值',
   }
 })

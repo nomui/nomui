@@ -9,5 +9,7 @@ define([], function () {
         value: 4.5,
       }
     },
+    description:
+      '自定义星星个数',
   }
 })

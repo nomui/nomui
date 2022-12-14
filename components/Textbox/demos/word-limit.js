@@ -15,5 +15,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '限制输入框长度限制',
   }
 })

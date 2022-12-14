@@ -22,5 +22,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '给每一个tab加上边框',
   }
 })

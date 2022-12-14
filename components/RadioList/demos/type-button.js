@@ -30,5 +30,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '通过 uistyle 参数来设置 Radio 类型。',
   }
 })

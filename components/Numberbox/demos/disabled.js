@@ -12,5 +12,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '设置 disabled 为 true',
   }
 })

@@ -56,5 +56,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '利用getContainer属性来指定挂载的节点',
   }
 })

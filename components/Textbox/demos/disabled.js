@@ -11,5 +11,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '当disabled为true时,文本框为禁用状态',
   }
 })

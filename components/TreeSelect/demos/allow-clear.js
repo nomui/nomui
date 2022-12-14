@@ -2,6 +2,8 @@ define([], function () {
   return {
     title: '可删除',
     file: 'allow-clear',
+    description:
+      '配置了 allowClear 属性为true，则会开启删除全部选项',
     demo: function () {
       return {
         children: {

@@ -34,5 +34,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '自定义浮层数字根据配置的倍速展示',
   }
 })

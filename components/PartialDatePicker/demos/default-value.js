@@ -32,5 +32,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '设置默认初始日期',
   }
 })

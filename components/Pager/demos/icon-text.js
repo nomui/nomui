@@ -15,12 +15,14 @@ define([], function () {
             },
             onPageChange: function (e) {
               e.sender.update(e)
-              // eslint-disable-next-line
               console.log(e)
             },
           },
         ],
       }
     },
+    description:
+      '修改上一步和下一步为文字链接。',
+
   }
 })

@@ -19,5 +19,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '当 disabled 为 true 时，Switch处于不可用状态。',
   }
 })

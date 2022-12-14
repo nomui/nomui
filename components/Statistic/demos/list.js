@@ -22,5 +22,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '在List组件中使用统计数值',
   }
 })

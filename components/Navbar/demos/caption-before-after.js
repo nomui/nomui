@@ -30,5 +30,7 @@ define([], function () {
                 ]
             }
         },
+        description:
+            '用captionBefore和captionAfter属性在标题前后添加自定义',
     }
 })

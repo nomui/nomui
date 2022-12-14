@@ -11,5 +11,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '上传列表显示模式，display为false，则不展示上传列表',
   }
 })

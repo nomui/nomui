@@ -23,5 +23,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '可以同时展开多个面板，默认展开了第一个。',
   }
 })

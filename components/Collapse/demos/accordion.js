@@ -24,5 +24,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '手风琴，每次只打开一个 tab。',
   }
 })

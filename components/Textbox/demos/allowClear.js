@@ -12,5 +12,8 @@ define([], function () {
         },
       }
     },
+    description:
+      '当allowClear为false时,文本框不能被清除',
+
   }
 })

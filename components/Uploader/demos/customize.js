@@ -49,5 +49,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '自定义上传列表的展示部分',
   }
 })

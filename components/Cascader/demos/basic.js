@@ -23,5 +23,8 @@ define(['./data.js'], function (options) {
         options: [],
       }
     },
+    description:
+      '默认值通过数组的方式指定。',
+
   }
 })

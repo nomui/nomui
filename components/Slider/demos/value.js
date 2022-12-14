@@ -68,5 +68,8 @@ define([], function () {
         ],
       }
     },
+    description:
+      '在form表单中使用， 和 数字输入框 组件保持同步。',
+
   }
 })

@@ -16,5 +16,8 @@ define([], function () {
         },
       }
     },
+    description:
+      '上传列表显示模式，display为replace时，则列表展示最后一次上传文件',
+
   }
 })

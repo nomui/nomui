@@ -8,5 +8,7 @@ define([], function () {
         max: '30',
       }
     },
+    description:
+      '自定义最大值',
   }
 })

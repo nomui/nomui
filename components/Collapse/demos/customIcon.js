@@ -35,5 +35,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '可以自定义图标',
   }
 })

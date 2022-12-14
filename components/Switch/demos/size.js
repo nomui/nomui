@@ -35,5 +35,8 @@ define([], function () {
         ],
       }
     },
+
+    description:
+      'size 表示小号开关的属性。',
   }
 })

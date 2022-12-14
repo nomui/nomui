@@ -39,5 +39,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '对输入内容自定义校验',
   }
 })

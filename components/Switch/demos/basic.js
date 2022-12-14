@@ -17,5 +17,8 @@ define([], function () {
         },
       }
     },
+    description:
+      '基本的用法。',
+
   }
 })

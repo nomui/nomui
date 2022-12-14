@@ -14,5 +14,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '在data和headers自定义其他参数',
   }
 })

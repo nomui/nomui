@@ -11,5 +11,7 @@ define([], function () {
         ],
       }
     },
+    description:
+      '数字框的基础用法',
   }
 })

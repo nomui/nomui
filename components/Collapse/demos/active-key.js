@@ -27,5 +27,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '可以指定展开一个面板，通过onChange回调函数',
   }
 })

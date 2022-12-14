@@ -18,11 +18,11 @@ define([], function () {
             items: [
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => { },
               },
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => { },
               },
             ],
           },
@@ -67,20 +67,21 @@ define([], function () {
             items: [
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => { },
               },
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => { },
               },
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => { },
               },
             ],
           },
         ],
       }
     },
+    description: '左边是按钮，右边是额外的相关功能菜单。可设置 rightIcon 属性来自定义修改右边的图标。',
   }
 })

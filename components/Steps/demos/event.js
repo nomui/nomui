@@ -32,5 +32,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '设置 onChange 后，Steps 变为可点击状态。',
   }
 })

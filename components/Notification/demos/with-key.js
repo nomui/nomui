@@ -31,5 +31,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '可以通过唯一的 key 来对指定内容进行操作。',
   }
 })

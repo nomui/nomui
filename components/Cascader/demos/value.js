@@ -58,5 +58,7 @@ define(['./data.js'], function (options) {
         ],
       }
     },
+    description:
+      '提供单值取值和级联取值两种模式',
   }
 })

@@ -15,5 +15,7 @@ define([], function () {
         },
       }
     },
+    description:
+      '上传列表最大为3个，超过则删除最上面一次记录',
   }
 })
