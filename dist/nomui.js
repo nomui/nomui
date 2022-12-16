@@ -21793,7 +21793,14 @@ function _defineProperty2(obj, key, value) {
       this.quarter = null;
       this.month = null;
       this.week = null;
+      this._resetLists();
       this.setValue(null);
+    }
+    _resetLists() {
+      this.yearPicker && this.yearPicker.unselectAllItems();
+      this.monthPicker && this.monthPicker.unselectAllItems();
+      this.quarterPicker && this.quarterPicker.unselectAllItems();
+      this.weekPicker && this.weekPicker.unselectAllItems();
     }
     handleYearChange(key) {
       this.year = key;
