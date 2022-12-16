@@ -6634,7 +6634,8 @@ body .nom-always-dark {
 .s-disabled.nom-list > .nom-list-content .nom-virtual-list-item .nom-list-item,
 .nom-list > .nom-list-content > .nom-list-item-wrapper > .nom-list-item.s-disabled,
 .nom-list > .nom-list-content .nom-virtual-list-item .nom-list-item.s-disabled {
-  opacity: 0.7;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .nom-list > .nom-list-content > .nom-list-item-wrapper > .nom-list-item > a,
 .nom-list > .nom-list-content .nom-virtual-list-item .nom-list-item > a {
