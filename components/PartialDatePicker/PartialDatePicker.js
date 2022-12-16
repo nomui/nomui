@@ -81,7 +81,9 @@ class PartialDatePicker extends Textbox {
           triggerAction: 'click',
           onShow: () => {
             if (!that.getValue()) {
-              that.yearPicker.scrollTo(new Date().format('yyyy'))
+              setTimeout(() => {
+                that.yearPicker.scrollTo(new Date().format('yyyy'))
+              }, 200)
             } else {
               that.activeItem()
             }
