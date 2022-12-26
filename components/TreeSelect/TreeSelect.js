@@ -16,6 +16,7 @@ class TreeSelect extends Field {
       this.props.multiple = true
     }
     this.tempValue = this.props.value
+    this.parentNode = null
   }
 
   _config() {
@@ -346,10 +347,49 @@ class TreeSelect extends Field {
     // 多选则展示复选框
     return Component.extendProps({ onlyleaf: this.props.onlyleaf }, treeCheckable, {
       checkedNodeKeys: currentValue,
-      onCheckChange: () => {
-        const checkedKeys = this.tree.getCheckedNodeKeys()
+      onCheckChange: ({ sender }) => {
+        // console.log(sender.key)
+        let allValue = this._getValue() || []
+        const checkedNodeKeys = []
+        this.getparentNode(sender)
+        const getChildNodes = this.parentNode.getChildNodes()
+
+        if (!sender.isChecked()) {
+          this.checkedNodeKeys(getChildNodes, checkedNodeKeys)
+          !this.parentNode.isChecked() && checkedNodeKeys.push(this.parentNode.key)
+          allValue = allValue.filter(item => checkedNodeKeys.indexOf(item) === -1)
+        }
+        const checkedKeys = this.noRepeat([...allValue, ...this.tree.getCheckedNodeKeys()])
         this._setValue(checkedKeys)
       },
+    })
+  }
+
+  noRepeat(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr.indexOf(arr[i]) !== i) {
+        arr.splice(i, 1);
+        i--;
+      }
+    }
+    return arr;
+  }
+
+  getparentNode(node) {
+    if (node.parentNode) {
+      this.getparentNode(node.parentNode)
+    } else {
+      this.parentNode = node
+    }
+  }
+
+  checkedNodeKeys(getChildNodes, checkedNodeKeys) {
+    getChildNodes.forEach((childNode) => {
+      if (!childNode.isChecked()) {
+        checkedNodeKeys.push(childNode.key)
+      }
+
+      if (childNode.getChildNodes().length) this.checkedNodeKeys(childNode.getChildNodes(), checkedNodeKeys)
     })
   }
 
