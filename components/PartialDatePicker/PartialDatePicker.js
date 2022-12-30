@@ -360,7 +360,7 @@ class PartialDatePicker extends Textbox {
       const longnum = d.setDate(d.getDate())
 
       if (longnum > +new Date(parseInt(year, 10), 0, 1)) {
-        const obj = yearDay(longnum / 1000 - 86400 * 6)
+        const obj = yearDay(longnum / 1000 - 86400 * 7)
         obj.last = yearDay(longnum / 1000 - 86400)
         arr.push(obj)
       }
