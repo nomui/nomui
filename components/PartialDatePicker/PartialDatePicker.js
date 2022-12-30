@@ -358,14 +358,16 @@ class PartialDatePicker extends Textbox {
       }
       const arr = []
       const longnum = d.setDate(d.getDate())
+
       if (longnum > +new Date(parseInt(year, 10), 0, 1)) {
-        const obj = yearDay(+new Date(year, 0, 1) / 1000)
+        const obj = yearDay(longnum / 1000 - 86400 * 6)
         obj.last = yearDay(longnum / 1000 - 86400)
         arr.push(obj)
       }
       const oneitem = yearDay(longnum / 1000)
       oneitem.last = yearDay(longnum / 1000 + 86400 * 6)
       arr.push(oneitem)
+
       let lastStr
       for (let i = 0; i < 51; i++) {
         const long = d.setDate(d.getDate() + 7)
@@ -374,12 +376,15 @@ class PartialDatePicker extends Textbox {
         lastStr = long + 86400000 * 6
         arr.push(obj)
       }
+
       if (lastStr < +new Date(parseInt(year, 10) + 1, 0, 1)) {
-        const obj = yearDay(lastStr / 1000 + 86400)
-        obj.last = yearDay(+new Date(parseInt(year, 10) + 1, 0, 1) / 1000 - 86400)
-        arr.push(obj)
+        // const obj = yearDay(lastStr / 1000 + 86400)
+        // obj.last = yearDay(+new Date(parseInt(year, 10) + 1, 0, 1) / 1000 - 86400)
+        // arr.push(obj)
       } else {
-        arr[arr.length - 1].last = yearDay(+new Date(parseInt(year, 10) + 1, 0, 1) / 1000 - 86400)
+        arr.pop()
+
+        // arr[arr.length - 1].last = yearDay(+new Date(parseInt(year, 10) + 1, 0, 1) / 1000 - 86400)
       }
       return arr
     }
