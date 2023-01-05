@@ -13664,11 +13664,7 @@ function _defineProperty2(obj, key, value) {
         });
       }
       this.setProps({
-        control: {
-          attrs: { style: { cursor: "text" } },
-          disabled: disabled,
-          children: children,
-        },
+        control: { disabled: disabled, children: children },
         onClick: () => {
           showSearch && this.selectedSingle.element.focus();
         },
