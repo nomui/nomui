@@ -1,14 +1,14 @@
 .nom-checkbox {
-  >.nom-field-content {
+  > .nom-field-content {
     line-height: @line-height-base*1.6;
 
-    >.nom-control {
+    > .nom-control {
       .s-disabled& {
         cursor: not-allowed;
         opacity: 0.7;
 
-        >input {
-          +span {
+        > input {
+          + span {
             background-color: var(--nom-input-bg-disabled);
             border-color: var(--nom-checkbox-border-color) !important;
           }
@@ -33,29 +33,29 @@
         background-color: var(--nom-checkbox-checked-bg);
         border: 1px solid var(--nom-checkbox-checked-border-color);
         border-radius: var(--nom-checkbox-border-radius);
-        -webkit-animation: nom-checkbox-keyframe-show .36s ease-in-out backwards;
-        animation: nom-checkbox-keyframe-show .36s ease-in-out backwards;
-        content: "";
+        -webkit-animation: nom-checkbox-keyframe-show 0.36s ease-in-out backwards;
+        animation: nom-checkbox-keyframe-show 0.36s ease-in-out backwards;
+        content: '';
       }
 
-      >input {
+      > input {
         position: absolute;
         z-index: -1;
         opacity: 0;
         filter: alpha(opacity=0);
 
-        +span {
+        + span {
           position: absolute;
           top: 2px;
           left: 0;
-          z-index: 9;
+          // z-index: 9;
           width: calc(1rem + 2px);
           height: calc(1rem + 2px);
           background-color: var(--nom-checkbox-bg);
           border: 1px solid var(--nom-checkbox-border-color);
           border-radius: var(--nom-checkbox-border-radius);
           box-shadow: var(--nom-checkbox-checker-box-shadow);
-          transition: all .1s cubic-bezier(.71, -.46, .88, .6);
+          transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
 
           &:hover {
             background-color: var(--nom-checkbox-bg-hover);
@@ -74,12 +74,12 @@
             box-shadow: var(--nom-checkbox-checker-box-shadow);
             -webkit-transform: translate(-50%, -50%) scale(1);
             transform: translate(-50%, -50%) scale(1);
-            transition: all .1s cubic-bezier(.71, -.46, .88, .6);
+            transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
             content: ' ';
           }
         }
 
-        &:checked+span {
+        &:checked + span {
           background-color: var(--nom-checkbox-checked-bg);
           border-color: var(--nom-checkbox-checked-border-color);
 
@@ -101,18 +101,20 @@
             box-shadow: var(--nom-checkbox-checker-box-shadow);
             // -webkit-transform: rotate(45deg);
             // transform: rotate(45deg);
-            -webkit-animation: nom-checkbox-keyframe-bounce-in .2s cubic-bezier(.12, .4, .29, 1.46) forwards;
-            animation: nom-checkbox-keyframe-bounce-in .2s cubic-bezier(.12, .4, .29, 1.46) forwards;
+            -webkit-animation: nom-checkbox-keyframe-bounce-in 0.2s
+              cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
+            animation: nom-checkbox-keyframe-bounce-in 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46)
+              forwards;
             content: '';
           }
         }
 
-        &:checked~i {
+        &:checked ~ i {
           display: block;
         }
       }
 
-      >.checkbox-text {
+      > .checkbox-text {
         display: inline-block;
 
         &:not(.checkbox-text-none) {
@@ -129,8 +131,8 @@
 
 @-webkit-keyframes nom-checkbox-keyframe-bounce-in {
   0% {
-    -webkit-transform: scale(.6) rotate(45deg);
-    transform: scale(.6) rotate(45deg);
+    -webkit-transform: scale(0.6) rotate(45deg);
+    transform: scale(0.6) rotate(45deg);
     opacity: 0;
   }
 
@@ -149,8 +151,8 @@
 
 @keyframes nom-checkbox-keyframe-bounce-in {
   0% {
-    -webkit-transform: scale(.6) rotate(45deg);
-    transform: scale(.6) rotate(45deg);
+    -webkit-transform: scale(0.6) rotate(45deg);
+    transform: scale(0.6) rotate(45deg);
     opacity: 0;
   }
 
@@ -170,23 +172,23 @@
 @-webkit-keyframes nom-checkbox-keyframe-show {
   0% {
     transform: scale(1);
-    opacity: .5
+    opacity: 0.5;
   }
 
   to {
     transform: scale(1.7);
-    opacity: 0
+    opacity: 0;
   }
 }
 
 @keyframes nom-checkbox-keyframe-show {
   0% {
     transform: scale(1);
-    opacity: .5
+    opacity: 0.5;
   }
 
   to {
     transform: scale(1.7);
-    opacity: 0
+    opacity: 0;
   }
 }
