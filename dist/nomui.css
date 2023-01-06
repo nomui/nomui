@@ -8103,7 +8103,7 @@ textarea .nom-textarea {
   border-radius: var(--nom-checkbox-border-radius);
   -webkit-animation: nom-checkbox-keyframe-show 0.36s ease-in-out backwards;
   animation: nom-checkbox-keyframe-show 0.36s ease-in-out backwards;
-  content: "";
+  content: '';
 }
 .nom-checkbox > .nom-field-content > .nom-control > input {
   position: absolute;
@@ -8115,7 +8115,6 @@ textarea .nom-textarea {
   position: absolute;
   top: 2px;
   left: 0;
-  z-index: 9;
   width: calc(1rem + 2px);
   height: calc(1rem + 2px);
   background-color: var(--nom-checkbox-bg);
