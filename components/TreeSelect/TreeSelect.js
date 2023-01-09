@@ -351,7 +351,7 @@ class TreeSelect extends Field {
         // console.log(sender.key)
         let allValue = this._getValue() || []
         const checkedNodeKeys = []
-        this.getparentNode(sender)
+        this.getParentNode(sender)
         const getChildNodes = this.parentNode.getChildNodes()
 
         if (!sender.isChecked()) {
@@ -375,9 +375,9 @@ class TreeSelect extends Field {
     return arr;
   }
 
-  getparentNode(node) {
+  getParentNode(node) {
     if (node.parentNode) {
-      this.getparentNode(node.parentNode)
+      this.getParentNode(node.parentNode)
     } else {
       this.parentNode = node
     }
