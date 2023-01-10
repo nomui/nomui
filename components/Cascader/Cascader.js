@@ -41,7 +41,7 @@ class Cascader extends Field {
   _config() {
     const cascader = this
     const children = []
-    const { showArrow, placeholder, separator, valueType } = this.props
+    const { showArrow, placeholder, separator, valueType, allowClear } = this.props
 
     const { value, options, disabled } = this.props
     this.internalOption = JSON.parse(JSON.stringify(options))
@@ -107,29 +107,31 @@ class Cascader extends Field {
       })
     }
 
-    children.push({
-      component: Icon,
-      type: 'close',
-      classes: {
-        'nom-cascader-icon': true,
-      },
-      hidden: true,
-      _created() {
-        cascader.close = this
-      },
-      onClick: ({ event }) => {
-        event.stopPropagation()
-        cascader.setValue(null)
-        // if (this.selectedOption.length === 0) return
-        // this.selectedOption = []
-        // this.checked = true
-        // this.content.element.innerText = ''
-        // this.popup.update({
-        //   popMenu: this.getSelectedMenu(),
-        // })
-        // this._onValueChange()
-      },
-    })
+    if (allowClear) {
+      children.push({
+        component: Icon,
+        type: 'close',
+        classes: {
+          'nom-cascader-icon': true,
+        },
+        hidden: true,
+        _created() {
+          cascader.close = this
+        },
+        onClick: ({ event }) => {
+          event.stopPropagation()
+          cascader.setValue(null)
+          // if (this.selectedOption.length === 0) return
+          // this.selectedOption = []
+          // this.checked = true
+          // this.content.element.innerText = ''
+          // this.popup.update({
+          //   popMenu: this.getSelectedMenu(),
+          // })
+          // this._onValueChange()
+        },
+      })
+    }
 
     this.setProps({
       control: {
@@ -425,6 +427,7 @@ Cascader.defaults = {
   height: 250,
   disabled: false,
   onlyleaf: true,
+  allowClear: true,
 }
 
 Component.register(Cascader)
