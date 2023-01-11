@@ -11,6 +11,7 @@ class Ellipsis extends Component {
       children: {
         classes: {
           'nom-ellipsis-inner': true,
+          'nom-ellipsis-nowrap': this.props.line === null || this.props.line === 1,
         },
         attrs: {
           title:
