@@ -15639,7 +15639,11 @@ function _defineProperty2(obj, key, value) {
     _config() {
       this.setProps({
         children: {
-          classes: { "nom-ellipsis-inner": true },
+          classes: {
+            "nom-ellipsis-inner": true,
+            "nom-ellipsis-nowrap":
+              this.props.line === null || this.props.line === 1,
+          },
           attrs: {
             title:
               this.props.showTitle &&

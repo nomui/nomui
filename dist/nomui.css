@@ -10490,6 +10490,10 @@ textarea .nom-textarea {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
+.nom-ellipsis .nom-ellipsis-inner.nom-ellipsis-nowrap {
+  white-space: nowrap;
+  word-break: break-all;
+}
 .nom-ellipsis-block {
   overflow: hidden;
   white-space: nowrap;
