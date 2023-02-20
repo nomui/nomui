@@ -20,7 +20,7 @@ define([], function () {
             ref: (c) => {
               treeSelectRef = c
             },
-            multiple: true,
+            // multiple: true,
             options: [
               {
                 text: '一级-1',
@@ -78,7 +78,7 @@ define([], function () {
                 component: 'Button',
                 text: 'Set value',
                 onClick() {
-                  treeSelectRef.setValue(3)
+                  treeSelectRef.setValue('0-0-0-0-1')
                 },
               },
             ],

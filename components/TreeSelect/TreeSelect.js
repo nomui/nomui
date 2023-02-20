@@ -51,6 +51,8 @@ class TreeSelect extends Field {
           this.tree.update({
             nodeSelectable: this._getPopupNodeSelectable(),
           })
+          const _value = this.getValue()
+          this.tree.expandTo(_value)
         }
       },
     })
