@@ -128,6 +128,12 @@ class TreeSelectPopup extends Popup {
     this.removeClass('nom-layer-animate-show')
     this.selectControl.props.animate && this.props.animate && this.animateInit()
 
+    const { multiple } = this.selectControl.props
+    if (!multiple && this.firstRender) {
+      const _value = this.selectControl.getValue()
+      this.selectControl.tree.expandTo(_value)
+    }
+
     if (this.selectControl.props.animate && !this.props.animate) {
       this.props.animate = true
     }
