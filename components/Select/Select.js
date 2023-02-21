@@ -29,9 +29,9 @@ class Select extends Field {
     const children = []
     let placeholder = this.props.placeholder
 
-    if (!Array.isArray(options) || !options.length) {
+    if (!placeholder && (!Array.isArray(options) || !options.length)) {
       this.props.value = ''
-      placeholder = '无数据'
+      placeholder = '暂无数据'
     }
 
     this._normalizeInternalOptions(options)
