@@ -26,7 +26,8 @@ define([], function () {
                 component: 'Button',
                 text: '选择并滚动到节点 2.1',
                 onClick: () => {
-                  treeRef.selectNode('节点 2.1')
+                  // treeRef.selectNode('节点 2.1')
+                  treeRef.checkNode(['节点 2.1', '节点 1.1', '节点 2.1'])
                 },
               },
             ],
@@ -40,6 +41,9 @@ define([], function () {
               dataFields: {
                 key: 'text',
               },
+              nodeCheckable: {
+                showCheckAll: true,
+              },
               data: [
                 {
                   text: '节点 1',
@@ -47,7 +51,7 @@ define([], function () {
                     {
                       text: '节点 1.1',
                       children: [
-                        { text: '节点 1.1.1' },
+                        { text: '节点 1.1.1', disabled: true },
                         { text: '节点 1.1.2' },
                         { text: '节点 1.1.3' },
                       ],
@@ -56,7 +60,7 @@ define([], function () {
                 },
                 {
                   text: '节点 2',
-                  children: [{ text: '节点 2.1', children: [] }, { text: '节点 2.2' }],
+                  children: [{ text: '节点 2.1', disabled: false, children: [] }, { disabled: true, text: '节点 2.2' }],
                 },
                 {
                   text: '节点 3',

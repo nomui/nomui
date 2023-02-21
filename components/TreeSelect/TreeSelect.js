@@ -3,7 +3,6 @@ import Field from '../Field/index'
 import Icon from '../Icon/index'
 import { extend, isNullish, isString } from '../util/index'
 import TreeSelectPopup from './TreeSelectPopup'
-
 class TreeSelect extends Field {
   constructor(props, ...mixins) {
     super(Component.extendProps(TreeSelect.defaults, props), ...mixins)
@@ -16,6 +15,7 @@ class TreeSelect extends Field {
       this.props.multiple = true
     }
     this.tempValue = this.props.value
+    this.oldPopupProps = null
   }
 
   _config() {
@@ -28,6 +28,7 @@ class TreeSelect extends Field {
       },
     })
 
+
     super._config()
   }
 
@@ -37,6 +38,13 @@ class TreeSelect extends Field {
 
   _disable() {
     this.control.props.disabled = true
+  }
+
+  _update(props) {
+    this.isUpdate = true
+    this.oldPopupProps = this.popup.props
+    // Object.keys(this.popup)
+    // window.a = this.copyPopup()
   }
 
   _rendered() {
@@ -55,6 +63,7 @@ class TreeSelect extends Field {
       },
     })
     this._valueChange({ newValue: this.currentValue })
+    // }
   }
 
   // 存一份 {key: optionItem} 的数据
@@ -65,6 +74,7 @@ class TreeSelect extends Field {
   // 树结构扁平化为数组数据
   getList() {
     const { treeDataFields } = this.props
+
     let { options } = this.props
     const optionMap = {}
     function mapTree(data, parentKey) {
@@ -320,6 +330,8 @@ class TreeSelect extends Field {
         },
       }
     }
+
+
     return items
   }
 
@@ -341,7 +353,6 @@ class TreeSelect extends Field {
   _getPopupNodeCheckable() {
     const { multiple, treeCheckable } = this.props
     const { currentValue } = this
-
     if (!multiple && !treeCheckable) return false
     // 多选则展示复选框
     return Component.extendProps({ onlyleaf: this.props.onlyleaf }, treeCheckable, {
@@ -365,7 +376,6 @@ class TreeSelect extends Field {
       this._onValueChange()
     }
     this._content.update({ children: this._getContentBadges() })
-
     // 多选: 每次setValue后更新选中状态
     if (this.props.multiple) {
       this.popup.update({

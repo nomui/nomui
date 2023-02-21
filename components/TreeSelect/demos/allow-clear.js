@@ -4,9 +4,13 @@ define([], function () {
     file: 'allow-clear',
     demo: function () {
       return {
-        children: {
+        component: 'Flex',
+        rows: [{
           component: 'TreeSelect',
           allowClear: true,
+          ref: (c) => {
+            window.c = c
+          },
           options: [
             {
               text: '总经办',
@@ -49,7 +53,17 @@ define([], function () {
           ],
           value: ['0-0', '0-0-1'],
           treeCheckable: {},
+          initExpandLevel: 1,
         },
+        {
+          component: 'Button',
+          text: 'update',
+          onClick: () => {
+            window.c.update({ allowClear: false })
+            // window.c.setValue(['0-0'])
+          }
+        }
+        ],
       }
     },
   }
