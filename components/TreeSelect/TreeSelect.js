@@ -370,7 +370,9 @@ class TreeSelect extends Field {
       this._onValueChange()
     } else {
       this.currentValue = this.tempValue
-      this.placeholder && this.placeholder.hide()
+      if (this.placeholder) {
+        isNullish(this.currentValue) ? this.placeholder.show() : this.placeholder.hide()
+      }
     }
     this._content.update({ children: this._getContentBadges() })
 
