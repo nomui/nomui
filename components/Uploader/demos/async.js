@@ -26,10 +26,29 @@ define([], function () {
         },
         extraAction: [
           {
-            text: '其他操作',
-            action: (e, file) => {
+            text: ({ name }) => name,
+            action: (e) => {
               // eslint-disable-next-line
-              console.log(e, file)
+              console.log(e)
+            },
+          },
+          {
+            text: ({ name }) => {
+              if (!name.includes('.')) return null
+              const suffix = name.substring(name.lastIndexOf('.') + 1)
+              switch (suffix) {
+                case 'txt':
+                  return '文本文件'
+                case 'png':
+                  return '带水印文件'
+                default:
+                  return '其他文件'
+              }
+            },
+            action: ({ file }) => {
+              if (file.name.endsWith('.png'))
+                // eslint-disable-next-line
+                console.log('下载水印文件: ', file)
             },
           },
         ],
@@ -38,14 +57,14 @@ define([], function () {
             resolve([
               {
                 uuid: '-1',
-                name: 'image.png',
+                name: 'text.txt',
                 status: 'done',
                 size: 1111,
                 url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
               },
               {
                 uuid: '-2',
-                name: 'image.png',
+                name: 'withPrintFile.png',
                 status: 'done',
                 size: 2222,
                 url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
