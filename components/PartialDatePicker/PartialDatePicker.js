@@ -81,7 +81,9 @@ class PartialDatePicker extends Textbox {
           triggerAction: 'click',
           onShow: () => {
             if (!that.getValue()) {
-              that.yearPicker.scrollTo(new Date().format('yyyy'))
+              setTimeout(() => {
+                that.yearPicker.scrollTo(new Date().format('yyyy'))
+              }, 200)
             } else {
               that.activeItem()
             }
@@ -342,12 +344,11 @@ class PartialDatePicker extends Textbox {
       const yearday = { year, month, day }
       return yearday
     }
+    // *为了适配后端现有周计算逻辑，改为如下逻辑：本年1月1日如果不是周一，则第一周从上一年12月XX号开始；同样如果本年12月31日不是周日，则这一周不算入本年，而算作来年第一周。
     // 计算一年中的每一周都是从几号到几号
-    // 第一周为1月1日到 本年的 第一个周日
+    // 第一周为本年的第一个周日往前推七天
     // 第二周为 本年的 第一个周一 往后推到周日
     // 以此类推 再往后推52周。。。
-    // 如果最后一周在12月31日之前，则本年有垮了54周，反之53周
-    // 12月31 日不论是周几，都算为本周的最后一天
     // 参数年份 ，函数返回一个数组，数组里的对象包含 这一周的开始日期和结束日期
     function whichWeek(year) {
       const d = new Date(parseInt(year, 10), 0, 1)
@@ -356,14 +357,16 @@ class PartialDatePicker extends Textbox {
       }
       const arr = []
       const longnum = d.setDate(d.getDate())
+
       if (longnum > +new Date(parseInt(year, 10), 0, 1)) {
-        const obj = yearDay(+new Date(year, 0, 1) / 1000)
+        const obj = yearDay(longnum / 1000 - 86400 * 7)
         obj.last = yearDay(longnum / 1000 - 86400)
         arr.push(obj)
       }
       const oneitem = yearDay(longnum / 1000)
       oneitem.last = yearDay(longnum / 1000 + 86400 * 6)
       arr.push(oneitem)
+
       let lastStr
       for (let i = 0; i < 51; i++) {
         const long = d.setDate(d.getDate() + 7)
@@ -372,12 +375,15 @@ class PartialDatePicker extends Textbox {
         lastStr = long + 86400000 * 6
         arr.push(obj)
       }
+
       if (lastStr < +new Date(parseInt(year, 10) + 1, 0, 1)) {
-        const obj = yearDay(lastStr / 1000 + 86400)
-        obj.last = yearDay(+new Date(parseInt(year, 10) + 1, 0, 1) / 1000 - 86400)
-        arr.push(obj)
+        // const obj = yearDay(lastStr / 1000 + 86400)
+        // obj.last = yearDay(+new Date(parseInt(year, 10) + 1, 0, 1) / 1000 - 86400)
+        // arr.push(obj)
       } else {
-        arr[arr.length - 1].last = yearDay(+new Date(parseInt(year, 10) + 1, 0, 1) / 1000 - 86400)
+        arr.pop()
+
+        // arr[arr.length - 1].last = yearDay(+new Date(parseInt(year, 10) + 1, 0, 1) / 1000 - 86400)
       }
       return arr
     }
@@ -431,7 +437,15 @@ class PartialDatePicker extends Textbox {
     this.quarter = null
     this.month = null
     this.week = null
+    this._resetLists()
     this.setValue(null)
+  }
+
+  _resetLists() {
+    this.yearPicker && this.yearPicker.unselectAllItems()
+    this.monthPicker && this.monthPicker.unselectAllItems()
+    this.quarterPicker && this.quarterPicker.unselectAllItems()
+    this.weekPicker && this.weekPicker.unselectAllItems()
   }
 
   handleYearChange(key) {

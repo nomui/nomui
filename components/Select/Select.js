@@ -270,9 +270,6 @@ class Select extends Field {
 
     this.setProps({
       control: {
-        attrs: {
-          style: { cursor: 'text' },
-        },
         disabled: disabled,
         children: children,
       },
