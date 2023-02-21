@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction } from '../util/index'
+import { isFunction, isNullish } from '../util/index'
 import { getDate, getFileSize } from './helper'
 
 class FileItem extends Component {
@@ -78,17 +78,20 @@ class FileItem extends Component {
 
       if (Array.isArray(extraAction) && extraAction.length > 0) {
         extraAction.forEach(({ text, action }) => {
-          actions.push({
-            tag: 'a',
-            children: text,
-            attrs: {
-              href: 'javascript:void(0)',
-              onclick: (e) => {
-                e.preventDefault()
-                isFunction(action) && action({ sender: that._uploader, file })
+          const children = isFunction(text) ? text(file) : text
+          if (!isNullish(children)) {
+            actions.push({
+              tag: 'a',
+              children,
+              attrs: {
+                href: 'javascript:void(0)',
+                onclick: (e) => {
+                  e.preventDefault()
+                  isFunction(action) && action({ sender: that._uploader, file })
+                },
               },
-            },
-          })
+            })
+          }
         })
       }
 

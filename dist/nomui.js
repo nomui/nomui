@@ -26990,18 +26990,21 @@ function _defineProperty2(obj, key, value) {
         }
         if (Array.isArray(extraAction) && extraAction.length > 0) {
           extraAction.forEach(({ text, action }) => {
-            actions.push({
-              tag: "a",
-              children: text,
-              attrs: {
-                href: "javascript:void(0)",
-                onclick: (e) => {
-                  e.preventDefault();
-                  isFunction(action) &&
-                    action({ sender: that._uploader, file });
+            const children = isFunction(text) ? text(file) : text;
+            if (!isNullish(children)) {
+              actions.push({
+                tag: "a",
+                children,
+                attrs: {
+                  href: "javascript:void(0)",
+                  onclick: (e) => {
+                    e.preventDefault();
+                    isFunction(action) &&
+                      action({ sender: that._uploader, file });
+                  },
                 },
-              },
-            });
+              });
+            }
           });
         }
         this.setProps({
