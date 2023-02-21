@@ -26778,6 +26778,13 @@ function _defineProperty2(obj, key, value) {
       }
       if (options.triggerChange) {
         this._onValueChange();
+      } else {
+        this.currentValue = this.tempValue;
+        if (this.placeholder) {
+          isNullish(this.currentValue)
+            ? this.placeholder.show()
+            : this.placeholder.hide();
+        }
       }
       this._content.update({ children: this._getContentBadges() }); // 多选: 每次setValue后更新选中状态
       if (this.props.multiple) {

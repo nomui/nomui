@@ -9872,6 +9872,7 @@ textarea .nom-textarea {
   opacity: 0.7;
 }
 .nom-tree .nom-tree-node-content > .nom-tree-node-expandable-indicator {
+  flex-shrink: 0;
   width: 30px;
   height: 24px;
 }
