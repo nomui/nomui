@@ -368,6 +368,11 @@ class TreeSelect extends Field {
 
     if (options.triggerChange) {
       this._onValueChange()
+    } else {
+      this.currentValue = this.tempValue
+      if (this.placeholder) {
+        isNullish(this.currentValue) ? this.placeholder.show() : this.placeholder.hide()
+      }
     }
     this._content.update({ children: this._getContentBadges() })
 
