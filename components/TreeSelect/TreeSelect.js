@@ -16,7 +16,6 @@ class TreeSelect extends Field {
       this.props.multiple = true
     }
     this.tempValue = this.props.value
-    this.parentNode = null
   }
 
   _config() {
@@ -349,11 +348,11 @@ class TreeSelect extends Field {
       checkedNodeKeys: currentValue,
       onCheckChange: ({ sender }) => {
         let allValue = this._getValue() || []
-        this.getParentNode(sender)
-        const childNodes = this.parentNode.getChildNodes()
+        const parentNode = this.getParentNode(sender)
+        const childNodes = parentNode.getChildNodes()
         if (!sender.isChecked()) {
           const checkedChildNodes = this.getCheckedChildNodes(childNodes)
-          !this.parentNode.isChecked() && checkedChildNodes.push(this.parentNode.key)
+          !parentNode.isChecked() && checkedChildNodes.push(parentNode.key)
           const newAllValue = allValue.filter(item => checkedChildNodes.indexOf(item) === -1)
           allValue = newAllValue
         }
@@ -377,7 +376,7 @@ class TreeSelect extends Field {
     if (node.parentNode) {
       this.getParentNode(node.parentNode)
     } else {
-      this.parentNode = node
+      return node
     }
   }
 
