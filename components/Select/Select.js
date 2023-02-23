@@ -28,8 +28,9 @@ class Select extends Field {
     const { multiple, showArrow, disabled, showSearch, allowClear, options } = this.props
     const children = []
     let placeholder = this.props.placeholder
+    console.log(options)
 
-    if (!placeholder && (!Array.isArray(options) || !options.length)) {
+    if (!placeholder && !options.length) {
       this.props.value = ''
       placeholder = '暂无数据'
     }
