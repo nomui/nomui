@@ -51,11 +51,6 @@ class TreeSelect extends Field {
           this.tree.update({
             nodeSelectable: this._getPopupNodeSelectable(),
           })
-
-          const _value = this.getValue()
-          if (_value !== null || _value !== undefined) {
-            this.tree.expandTo(_value)
-          }
         }
       },
     })
@@ -351,11 +346,51 @@ class TreeSelect extends Field {
     // 多选则展示复选框
     return Component.extendProps({ onlyleaf: this.props.onlyleaf }, treeCheckable, {
       checkedNodeKeys: currentValue,
-      onCheckChange: () => {
-        const checkedKeys = this.tree.getCheckedNodeKeys()
+      onCheckChange: ({ sender }) => {
+        let allValue = this._getValue() || []
+        const parentNode = this._getParentNode(sender)
+        const childNodes = parentNode.getChildNodes()
+        if (!sender.isChecked()) {
+          const checkedChildNodes = this._getCheckedChildNodes(childNodes)
+          !parentNode.isChecked() && checkedChildNodes.push(parentNode.key)
+          const newAllValue = allValue.filter(item => checkedChildNodes.indexOf(item) === -1)
+          allValue = newAllValue
+        }
+        const checkedKeys = this._removeDuplicates([...allValue, ...this.tree.getCheckedNodeKeys()])
         this._setValue(checkedKeys)
       },
     })
+  }
+
+  _removeDuplicates(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr.indexOf(arr[i]) !== i) {
+        arr.splice(i, 1);
+        i--;
+      }
+    }
+    return arr;
+  }
+
+  _getParentNode(node) {
+    if (node.parentNode) {
+      return this._getParentNode(node.parentNode)
+    } else {
+      return node
+    }
+  }
+
+  _getCheckedChildNodes(nodes) {
+    const checkedNodes = []
+    nodes.forEach((node) => {
+      if (!node.isChecked()) {
+        checkedNodes.push(node.key)
+      }
+      if (node.getChildNodes().length) {
+        Array.prototype.push.apply(checkedNodes, this._getCheckedChildNodes(node.getChildNodes()))
+      }
+    })
+    return checkedNodes
   }
 
   _setValue(value, options) {
