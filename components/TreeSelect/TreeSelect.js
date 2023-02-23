@@ -348,21 +348,21 @@ class TreeSelect extends Field {
       checkedNodeKeys: currentValue,
       onCheckChange: ({ sender }) => {
         let allValue = this._getValue() || []
-        const parentNode = this.getParentNode(sender)
+        const parentNode = this._getParentNode(sender)
         const childNodes = parentNode.getChildNodes()
         if (!sender.isChecked()) {
-          const checkedChildNodes = this.getCheckedChildNodes(childNodes)
+          const checkedChildNodes = this._getCheckedChildNodes(childNodes)
           !parentNode.isChecked() && checkedChildNodes.push(parentNode.key)
           const newAllValue = allValue.filter(item => checkedChildNodes.indexOf(item) === -1)
           allValue = newAllValue
         }
-        const checkedKeys = this.noRepeat([...allValue, ...this.tree.getCheckedNodeKeys()])
+        const checkedKeys = this._removeDuplicates([...allValue, ...this.tree.getCheckedNodeKeys()])
         this._setValue(checkedKeys)
       },
     })
   }
 
-  noRepeat(arr) {
+  _removeDuplicates(arr) {
     for (let i = 0; i < arr.length; i++) {
       if (arr.indexOf(arr[i]) !== i) {
         arr.splice(i, 1);
@@ -372,22 +372,22 @@ class TreeSelect extends Field {
     return arr;
   }
 
-  getParentNode(node) {
+  _getParentNode(node) {
     if (node.parentNode) {
-      this.getParentNode(node.parentNode)
+      return this._getParentNode(node.parentNode)
     } else {
       return node
     }
   }
 
-  getCheckedChildNodes(nodes) {
+  _getCheckedChildNodes(nodes) {
     const checkedNodes = []
     nodes.forEach((node) => {
       if (!node.isChecked()) {
         checkedNodes.push(node.key)
       }
       if (node.getChildNodes().length) {
-        Array.prototype.push.apply(checkedNodes, this.getCheckedChildNodes(node.getChildNodes()))
+        Array.prototype.push.apply(checkedNodes, this._getCheckedChildNodes(node.getChildNodes()))
       }
     })
     return checkedNodes
