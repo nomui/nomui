@@ -13451,11 +13451,10 @@ function _defineProperty2(obj, key, value) {
         options,
       } = this.props;
       const children = [];
-      let placeholder = this.props.placeholder;
-      if (!placeholder && (!Array.isArray(options) || !options.length)) {
-        this.props.value = "";
-        placeholder = "暂无数据";
-      }
+      const placeholder = this.props.placeholder; // if (!placeholder && (!Array.isArray(options) || !options.length)) {
+      //   this.props.value = ''
+      //   placeholder = '暂无数据'
+      // }
       this._normalizeInternalOptions(options);
       this._normalizeSearchable();
       this.setProps({
