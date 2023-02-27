@@ -27,12 +27,12 @@ class Select extends Field {
     const that = this
     const { multiple, showArrow, disabled, showSearch, allowClear, options } = this.props
     const children = []
-    let placeholder = this.props.placeholder
+    const placeholder = this.props.placeholder
 
-    if (!placeholder && (!Array.isArray(options) || !options.length)) {
-      this.props.value = ''
-      placeholder = '暂无数据'
-    }
+    // if (!placeholder && (!Array.isArray(options) || !options.length)) {
+    //   this.props.value = ''
+    //   placeholder = '暂无数据'
+    // }
 
     this._normalizeInternalOptions(options)
 
