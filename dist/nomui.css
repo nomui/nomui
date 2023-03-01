@@ -10484,7 +10484,6 @@ textarea .nom-textarea {
   table-layout: fixed;
 }
 .nom-ellipsis .nom-ellipsis-inner {
-  display: -webkit-box;
   overflow: hidden;
   white-space: normal;
   text-overflow: ellipsis;

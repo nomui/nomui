@@ -15671,7 +15671,10 @@ function _defineProperty2(obj, key, value) {
               (isString(this.props.text) || isNumeric(this.props.text))
                 ? this.props.text
                 : null,
-            style: { "-webkit-line-clamp": this.props.line },
+            style: {
+              "-webkit-line-clamp": this.props.line,
+              display: this.props.line > 1 ? "-webkit-box" : "",
+            },
           },
           children: this.props.text ? this.props.text : this.props.children,
         },
