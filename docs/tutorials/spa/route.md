@@ -20,6 +20,10 @@ nomui 的路由匹配规则，遵循固定的约定，不需要定义路由表�
 
 视图寻址以应用组件（App）配置的根视图目录（下图中的 viewsDir）为起点。
 
+![这是图片](/docs/images/route-path-query.png 'route')
+
+支持路径直接附带参数，格式为 `pathname--pathquery`,路径与参数之间以`--`(两个横杠)隔开，添加在路径中的参数同样会解析到路由的 query 对象当中。
+
 ![这是图片](/docs/images/app.png 'route')
 
 访问一个 url，系统会逐级渲染每个路径对应的视图。每个路径寻找视图的步骤如下：
