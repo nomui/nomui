@@ -26,7 +26,6 @@ class Router extends Component {
 
   handleHashChange(changed) {
     this._callHandler(this.props.onHashChange, changed) // 可以在这里做路由变更前处理
-
     if (
       changed.queryChanged &&
       (changed.changedLevel === null || this.level < changed.changedLevel)
