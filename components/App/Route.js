@@ -12,6 +12,7 @@ export class Route {
     this.paths = []
     this.query = {}
     this.queryStr = ''
+
     const queryIndex = this.hash.indexOf('?')
 
     if (this.hash.length > 1) {
@@ -37,7 +38,17 @@ export class Route {
     this.maxLevel = pathArr.length - 1
 
     pathArr.forEach(function (path, index) {
-      that.paths[index] = path
+      let pathName = path
+      let pathQuery = null
+      // 如果path包含--则解析为路由参数
+      if (path.includes('--')) {
+        const arr = path.split('--')
+        pathName = arr[0]
+        pathQuery = arr[1]
+        that.queryStr += `&${pathName}=${pathQuery}`
+        that.query[pathName] = pathQuery
+      }
+      that.paths[index] = pathName
     })
   }
 
