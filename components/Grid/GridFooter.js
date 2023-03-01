@@ -56,6 +56,7 @@ class GridFooter extends Component {
         width: 50,
         resizable: false,
         isCheckerSpace: true,
+        field: 'nom-grid-row-checker',
       })
     }
 
@@ -135,7 +136,7 @@ class GridFooter extends Component {
 
         for (let i = 0; i < values.length; i++) {
           if (Number.isNaN(values[i])) {
-            res[col.field] = '-'
+            res[col.field] = col.field !== 'nom-grid-row-checker' ? '-' : ''
             return
           }
           sum += values[i]
