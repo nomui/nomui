@@ -166,6 +166,16 @@ class MenuItem extends Component {
     }
   }
 
+  partSelect() {
+    const siblings = this.menu.element.querySelectorAll('.nom-menu-item-submenu-selected')
+    if (siblings.length) {
+      siblings.forEach((n) => {
+        n.classList.remove('nom-menu-item-submenu-selected')
+      })
+    }
+    this.element.classList.add('nom-menu-item-submenu-selected')
+  }
+
   _expand() {
     this.indicator && this.indicator.expand()
     if (this.menu.props.itemExpandable.expandSingle === true) {
