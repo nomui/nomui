@@ -126,7 +126,6 @@ class GroupGrid extends Field {
   }
 
   getValue(options) {
-    console.log(options)
     const { valueOptions } = this.props
     const opts = extend(
       {
@@ -134,10 +133,9 @@ class GroupGrid extends Field {
         ignoreHidden: true,
         merge: false,
       },
-      valueOptions,
       options,
+      valueOptions,
     )
-    console.log(opts, options)
     const value = []
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i]

@@ -16,10 +16,10 @@ class GroupGridTr extends Tr {
   _created() {
     super._created()
     const groupGrid = this.parent.parent.parent.parent.parent.parent.parent
-    this.valueOptions = groupGrid.props.valueOptions
     this.hiddenColumns = groupGrid.hiddenColumns
     this.fields = []
-    const { name, value } = this.props
+    const { name, value, data } = this.props
+    this.currentData = data
     this.initValue = value !== undefined ? clone(this.props.value) : null
     this.oldValue = null
     this.currentValue = this.initValue
@@ -36,16 +36,15 @@ class GroupGridTr extends Tr {
   }
 
   getValue(options) {
-    const valueOptions = this.valueOptions
-    const { data, index } = this.props
+    const { valueOptions } = this.props
     options = extend(
       {
         ignoreDisabled: true,
         ignoreHidden: true,
         merge: false,
       },
-      valueOptions,
       options,
+      valueOptions,
     )
     const value = {}
     const len = this.fields.length
@@ -60,11 +59,10 @@ class GroupGridTr extends Tr {
         }
       }
     }
-
     this.hiddenColumns.forEach(element => {
       if (!options.ignoreHidden) {
-        if (data.hasOwnProperty(element.field)) {
-          value[element.field] = data[element.field]
+        if (this.currentData.hasOwnProperty(element.field)) {
+          value[element.field] = this.currentData[element.field]
         } else if (element.value) {
           value[element.field] = element.value
         }
@@ -77,6 +75,7 @@ class GroupGridTr extends Tr {
   }
 
   setValue(value, options) {
+    this.currentData = value
     options = extend(
       {
         ignoreDisabled: false,
