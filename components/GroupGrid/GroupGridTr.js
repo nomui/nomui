@@ -15,13 +15,12 @@ class GroupGridTr extends Tr {
 
   _created() {
     super._created()
-
     this.fields = []
-    const { name, value } = this.props
+    const { name, value, data } = this.props
+    this.currentData = data
     this.initValue = value !== undefined ? clone(this.props.value) : null
     this.oldValue = null
     this.currentValue = this.initValue
-
     if (name) {
       this.name = name
       this._autoName = false
@@ -35,17 +34,16 @@ class GroupGridTr extends Tr {
   }
 
   getValue(options) {
-    const { valueOptions } = this.props
+    const { valueOptions, hiddenColumns } = this.props
     options = extend(
       {
         ignoreDisabled: true,
         ignoreHidden: true,
         merge: false,
       },
-      valueOptions,
       options,
+      valueOptions,
     )
-
     const value = {}
     const len = this.fields.length
     for (let i = 0; i < len; i++) {
@@ -59,7 +57,15 @@ class GroupGridTr extends Tr {
         }
       }
     }
-
+    hiddenColumns.forEach(element => {
+      if (!options.ignoreHidden) {
+        if (this.currentData.hasOwnProperty(element.field)) {
+          value[element.field] = this.currentData[element.field]
+        } else if (element.value) {
+          value[element.field] = element.value
+        }
+      }
+    });
     if (options.merge === true) {
       return extend(this.currentValue, value)
     }
@@ -67,6 +73,7 @@ class GroupGridTr extends Tr {
   }
 
   setValue(value, options) {
+    this.currentData = value
     options = extend(
       {
         ignoreDisabled: false,
@@ -77,6 +84,8 @@ class GroupGridTr extends Tr {
     const len = this.fields.length
     for (let i = 0; i < len; i++) {
       const field = this.fields[i]
+
+
       if (field.setValue && this._needHandleValue(field, options)) {
         let fieldValue = value
         if (field.props.flatValue === false) {
