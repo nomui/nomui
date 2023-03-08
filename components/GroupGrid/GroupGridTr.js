@@ -15,8 +15,6 @@ class GroupGridTr extends Tr {
 
   _created() {
     super._created()
-    const groupGrid = this.parent.parent.parent.parent.parent.parent.parent
-    this.hiddenColumns = groupGrid.hiddenColumns
     this.fields = []
     const { name, value, data } = this.props
     this.currentData = data
@@ -36,7 +34,7 @@ class GroupGridTr extends Tr {
   }
 
   getValue(options) {
-    const { valueOptions } = this.props
+    const { valueOptions, hiddenColumns } = this.props
     options = extend(
       {
         ignoreDisabled: true,
@@ -59,7 +57,7 @@ class GroupGridTr extends Tr {
         }
       }
     }
-    this.hiddenColumns.forEach(element => {
+    hiddenColumns.forEach(element => {
       if (!options.ignoreHidden) {
         if (this.currentData.hasOwnProperty(element.field)) {
           value[element.field] = this.currentData[element.field]

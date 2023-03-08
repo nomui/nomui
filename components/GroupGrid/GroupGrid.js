@@ -101,6 +101,7 @@ class GroupGrid extends Field {
           line: 'both',
           rowDefaults: {
             component: GroupGridTr,
+            hiddenColumns: this.hiddenColumns
           },
           onCreated: ({ inst }) => {
             that.grid = inst
