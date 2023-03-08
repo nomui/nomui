@@ -96,7 +96,8 @@ class Menu extends Component {
         console.warn(`Could not find the item with specific key.`)
         return
       }
-      this.getItem(target).expand()
+      this.getItem(target).partSelect()
+
       this.scrollTo(target)
       this.expandedRoot = this.getItem(target).wrapper
       this.selectedItemKey = param

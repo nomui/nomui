@@ -19528,6 +19528,7 @@ function _defineProperty2(obj, key, value) {
         },
         attrs: {
           href: this.getItemUrl(this.props.url),
+          target: this.props.target,
           style: {
             paddingLeft:
               menuProps.direction === "vertical" && !menuProps.compact
@@ -19540,7 +19541,7 @@ function _defineProperty2(obj, key, value) {
           menu.selectedItem = this;
           menu.expandedRoot = this.wrapper.rootWrapper;
           menu.selectedItemKey = this.key;
-          menuProps.compact && this.wrapper.rootWrapper.item.expand();
+          menuProps.compact && this.wrapper.rootWrapper.item.partSelect();
           this._callHandler(onSelect);
         },
         onUnselect: () => {
@@ -19591,6 +19592,17 @@ function _defineProperty2(obj, key, value) {
       if (this.menu.props.itemExpandable.expandSingle === true) {
         this.wrapper.parent.expandedChildItem = null;
       }
+    }
+    partSelect() {
+      const siblings = this.menu.element.querySelectorAll(
+        ".nom-menu-item-submenu-selected"
+      );
+      if (siblings.length) {
+        siblings.forEach((n) => {
+          n.classList.remove("nom-menu-item-submenu-selected");
+        });
+      }
+      this.element.classList.add("nom-menu-item-submenu-selected");
     }
     _expand() {
       this.indicator && this.indicator.expand();
@@ -19823,7 +19835,7 @@ function _defineProperty2(obj, key, value) {
           console.warn(`Could not find the item with specific key.`);
           return;
         }
-        this.getItem(target).expand();
+        this.getItem(target).partSelect();
         this.scrollTo(target);
         this.expandedRoot = this.getItem(target).wrapper;
         this.selectedItemKey = param;

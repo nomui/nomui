@@ -7041,16 +7041,16 @@ body .nom-always-dark {
 .nom-menu.p-uistyle-pill > .nom-menu-item-wrapper .nom-menu-item.s-selected a {
   color: inherit !important;
 }
-.nom-menu.p-direction-vertical:not(.nom-menu-compact) > .nom-menu-item-wrapper > .nom-menu-item {
+.nom-menu.p-direction-vertical:not(.nom-menu-compact) .nom-menu-item-wrapper > .nom-menu-item {
   display: flex;
   align-items: center;
   padding: 10px 15px;
   text-decoration: none;
 }
-.nom-menu.p-direction-vertical:not(.nom-menu-compact) > .nom-menu-item-wrapper > .nom-menu-item > .nom-menu-item-icon {
-  margin-right: 10px;
+.nom-menu.p-direction-vertical:not(.nom-menu-compact) .nom-menu-item-wrapper > .nom-menu-item > .nom-menu-item-icon {
+  margin-right: 0.5rem;
 }
-.nom-menu.p-direction-vertical:not(.nom-menu-compact) > .nom-menu-item-wrapper > .nom-menu-item > .title {
+.nom-menu.p-direction-vertical:not(.nom-menu-compact) .nom-menu-item-wrapper > .nom-menu-item > .title {
   flex-grow: 1;
 }
 .nom-menu.p-direction-vertical:not(.nom-menu-compact) > .nom-menu-divider {
@@ -7078,6 +7078,9 @@ body .nom-always-dark {
 }
 .nom-menu-compact > .nom-menu-item-wrapper > .nom-menu-item > *:not(.nom-menu-item-icon):not(.nom-menu-item-title) {
   display: none;
+}
+.nom-menu-compact > .nom-menu-item-wrapper > .nom-menu-item.nom-menu-item-submenu-selected {
+  color: var(--nom-color-primary);
 }
 .nom-menu-compact > .nom-menu-item-wrapper > .nom-menu-item:hover {
   color: var(--nom-color-white);

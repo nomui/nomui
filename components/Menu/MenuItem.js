@@ -95,6 +95,7 @@ class MenuItem extends Component {
       },
       attrs: {
         href: this.getItemUrl(this.props.url),
+        target: this.props.target,
         style: {
           paddingLeft:
             menuProps.direction === 'vertical' && !menuProps.compact
@@ -107,7 +108,7 @@ class MenuItem extends Component {
         menu.selectedItem = this
         menu.expandedRoot = this.wrapper.rootWrapper
         menu.selectedItemKey = this.key
-        menuProps.compact && this.wrapper.rootWrapper.item.expand()
+        menuProps.compact && this.wrapper.rootWrapper.item.partSelect()
         this._callHandler(onSelect)
       },
       onUnselect: () => {
@@ -164,6 +165,16 @@ class MenuItem extends Component {
     if (this.menu.props.itemExpandable.expandSingle === true) {
       this.wrapper.parent.expandedChildItem = null
     }
+  }
+
+  partSelect() {
+    const siblings = this.menu.element.querySelectorAll('.nom-menu-item-submenu-selected')
+    if (siblings.length) {
+      siblings.forEach((n) => {
+        n.classList.remove('nom-menu-item-submenu-selected')
+      })
+    }
+    this.element.classList.add('nom-menu-item-submenu-selected')
   }
 
   _expand() {
