@@ -18694,7 +18694,8 @@ function _defineProperty2(obj, key, value) {
     _created() {
       super._created();
       this.fields = [];
-      const { name, value } = this.props;
+      const { name, value, data } = this.props;
+      this.currentData = data;
       this.initValue = value !== undefined ? clone$1(this.props.value) : null;
       this.oldValue = null;
       this.currentValue = this.initValue;
@@ -18710,11 +18711,11 @@ function _defineProperty2(obj, key, value) {
       this.rules = [];
     }
     getValue(options) {
-      const { valueOptions } = this.props;
+      const { valueOptions, hiddenColumns } = this.props;
       options = extend$1(
         { ignoreDisabled: true, ignoreHidden: true, merge: false },
-        valueOptions,
-        options
+        options,
+        valueOptions
       );
       const value = {};
       const len = this.fields.length;
@@ -18729,12 +18730,22 @@ function _defineProperty2(obj, key, value) {
           }
         }
       }
+      hiddenColumns.forEach((element) => {
+        if (!options.ignoreHidden) {
+          if (this.currentData.hasOwnProperty(element.field)) {
+            value[element.field] = this.currentData[element.field];
+          } else if (element.value) {
+            value[element.field] = element.value;
+          }
+        }
+      });
       if (options.merge === true) {
         return extend$1(this.currentValue, value);
       }
       return value;
     }
     setValue(value, options) {
+      this.currentData = value;
       options = extend$1(
         { ignoreDisabled: false, ignoreHidden: false },
         options
@@ -18871,6 +18882,7 @@ function _defineProperty2(obj, key, value) {
       const actionRender = groupDefaults.actionRender;
       const actionWidth = groupDefaults.actionWidth || 80;
       let columns = [];
+      this.hiddenColumns = [];
       groupDefaults.fields.forEach((f) => {
         if (f.hidden !== true) {
           columns.push({
@@ -18889,6 +18901,13 @@ function _defineProperty2(obj, key, value) {
                 },
               });
             },
+          });
+        } else {
+          this.hiddenColumns.push({
+            field: f.name,
+            title: f.label,
+            width: f.width,
+            value: f.value,
           });
         }
       });
@@ -18935,7 +18954,10 @@ function _defineProperty2(obj, key, value) {
             columns: columns,
             data: value,
             line: "both",
-            rowDefaults: { component: GroupGridTr },
+            rowDefaults: {
+              component: GroupGridTr,
+              hiddenColumns: this.hiddenColumns,
+            },
             onCreated: ({ inst }) => {
               that.grid = inst;
               inst.groupGrid = that;
@@ -18961,9 +18983,9 @@ function _defineProperty2(obj, key, value) {
     getValue(options) {
       const { valueOptions } = this.props;
       const opts = extend$1(
-        { ignoreDisabled: true, ignoreHidden: true, merge: false },
-        valueOptions,
-        options
+        { ignoreDisabled: false, ignoreHidden: true, merge: false },
+        options,
+        valueOptions
       );
       const value = [];
       for (let i = 0; i < this.fields.length; i++) {

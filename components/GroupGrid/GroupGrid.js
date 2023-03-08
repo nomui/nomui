@@ -19,8 +19,8 @@ class GroupGrid extends Field {
     const { groupDefaults, value, gridProps } = this.props
     const actionRender = groupDefaults.actionRender
     const actionWidth = groupDefaults.actionWidth || 80
-
     let columns = []
+    this.hiddenColumns = []
     groupDefaults.fields.forEach((f) => {
       if (f.hidden !== true) {
         columns.push({
@@ -41,6 +41,13 @@ class GroupGrid extends Field {
               },
             })
           },
+        })
+      } else {
+        this.hiddenColumns.push({
+          field: f.name,
+          title: f.label,
+          width: f.width,
+          value: f.value
         })
       }
     })
@@ -94,6 +101,7 @@ class GroupGrid extends Field {
           line: 'both',
           rowDefaults: {
             component: GroupGridTr,
+            hiddenColumns: this.hiddenColumns
           },
           onCreated: ({ inst }) => {
             that.grid = inst
@@ -115,7 +123,6 @@ class GroupGrid extends Field {
         },
       ],
     })
-
     super._config()
   }
 
@@ -123,12 +130,12 @@ class GroupGrid extends Field {
     const { valueOptions } = this.props
     const opts = extend(
       {
-        ignoreDisabled: true,
+        ignoreDisabled: false,
         ignoreHidden: true,
         merge: false,
       },
-      valueOptions,
       options,
+      valueOptions,
     )
     const value = []
     for (let i = 0; i < this.fields.length; i++) {
@@ -203,7 +210,7 @@ class GroupGrid extends Field {
     return null
   }
 
-  focus() {}
+  focus() { }
 
   addGroup() {
     const gridData = this.grid.props.data || []
