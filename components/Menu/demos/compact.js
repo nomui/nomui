@@ -22,7 +22,12 @@ define([], function () {
           ],
         },
 
-        { icon: 'table', text: '组织管理', id: 'components' },
+        {
+          icon: 'table',
+          text: '组织管理',
+
+          id: 'components',
+        },
         {
           icon: 'profile',
           text: '系统设置',
@@ -46,9 +51,7 @@ define([], function () {
         rows: [
           {
             component: 'Menu',
-            ref: (c) => {
-              window.ttt = c
-            },
+
             attrs: {
               style: {
                 width: '80px',
