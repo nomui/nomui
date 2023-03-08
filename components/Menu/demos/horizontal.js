@@ -29,7 +29,12 @@ define([], function () {
               },
 
               { text: '组件', id: 'components', url: '#!components!' },
-              { text: '单页应用', id: 'javascript', url: '#!components!demo' },
+              {
+                text: '单页应用(新窗口打开)',
+                target: 'blank',
+                id: 'javascript',
+                url: '#!components!demo',
+              },
             ],
           },
         ],

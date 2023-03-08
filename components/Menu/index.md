@@ -16,13 +16,14 @@
 
 ### MenuItem Props
 
-| 参数        | 说明                 | 类型             | 默认值 |
-| ----------- | -------------------- | ---------------- | ------ |
-| text        | 菜单标题             | `string`         | -      |
-| id          | 菜单的唯一标识，必填 | `string`         | -      |
-| url         | 跳转的链接           | `string`         | -      |
-| toolsRender | 工具栏渲染           | `(item,menu)=>`  | -      |
-| items       | 子菜单的数据         | `itemSelectable` | -      |
+| 参数        | 说明                                         | 类型             | 默认值 |
+| ----------- | -------------------------------------------- | ---------------- | ------ |
+| text        | 菜单标题                                     | `string`         | -      |
+| target      | 链接打开方式（同 html 超链接的 target 属性） | `string`         | -      |
+| id          | 菜单的唯一标识，必填                         | `string`         | -      |
+| url         | 跳转的链接                                   | `string`         | -      |
+| toolsRender | 工具栏渲染                                   | `(item,menu)=>`  | -      |
+| items       | 子菜单的数据                                 | `itemSelectable` | -      |
 
 ### itemSelectable
 
