@@ -33,6 +33,10 @@ define([], function () {
                 text: 'pill',
                 value: 'pill',
               },
+              {
+                text: 'group',
+                value: 'group',
+              },
             ],
             onValueChange: function (e) {
               tabs.update({ uistyle: e.newValue })
