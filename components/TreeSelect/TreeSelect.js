@@ -54,6 +54,7 @@ class TreeSelect extends Field {
         }
       },
     })
+
     this._valueChange({ newValue: this.currentValue })
   }
 
@@ -341,7 +342,6 @@ class TreeSelect extends Field {
   _getPopupNodeCheckable() {
     const { multiple, treeCheckable } = this.props
     const { currentValue } = this
-
     if (!multiple && !treeCheckable) return false
     // 多选则展示复选框
     return Component.extendProps({ onlyleaf: this.props.onlyleaf }, treeCheckable, {
@@ -412,11 +412,8 @@ class TreeSelect extends Field {
     this._content.update({ children: this._getContentBadges() })
 
     // 多选: 每次setValue后更新选中状态
-    if (this.props.multiple) {
-      this.popup.update({
-        nodeCheckable: this._getPopupNodeCheckable(),
-        animate: false,
-      })
+    if (this.props.multiple) { 
+      this.popup.selectControl.tree.checkNode(value) 
     } else {
       // 单选: 点击后即关闭popup,在onShow中更新
       this.props.animate && this.popup.animateHide()
