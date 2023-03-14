@@ -3813,6 +3813,11 @@ function _defineProperty2(obj, key, value) {
       this.relativeElements = [];
       this._onDocumentMousedown = this._onDocumentMousedown.bind(this);
       this._onWindowResize = this._onWindowResize.bind(this);
+      this.attachTo = this.props.attachTo;
+      this.attachTo &&
+        this.attachTo.on("remove", () => {
+          this.remove();
+        });
     }
     _config() {
       if (this.props.placement === "replace") {
