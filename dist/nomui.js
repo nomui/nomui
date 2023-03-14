@@ -17477,7 +17477,7 @@ function _defineProperty2(obj, key, value) {
     } // 将customizable: false的列排至后面
     _sortCustomizableColumns(arr) {
       arr.sort((curr, next) => {
-        if (next.customizable === false) return -1;
+        if (next.customizable === false && next.field !== "checkbox") return -1;
         return 0;
       });
       return arr;
