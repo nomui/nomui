@@ -1,4 +1,11 @@
-define(['./basic.js', './size.js', './types.js', './icon.js', './custom.js'], function () {
+define([
+  './basic.js',
+  './defaults.js',
+  './size.js',
+  './types.js',
+  './icon.js',
+  './custom.js',
+], function () {
   return {
     title: 'Toolbar',
     subtitle: '工具按钮组',

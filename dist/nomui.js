@@ -18653,10 +18653,19 @@ function _defineProperty2(obj, key, value) {
       super(Component.extendProps(Toolbar.defaults, props), ...mixins);
     }
     _config() {
-      const { items, type, gutter, size, visibleItems, inline } = this.props;
+      const {
+        items,
+        type,
+        gutter,
+        size,
+        visibleItems,
+        inline,
+        itemDefaults,
+      } = this.props;
       const before = items.slice(0, visibleItems).map((item) => {
         return Object.assign(
-          { component: "Button", type: type, size: size, inline },
+          { component: "Button", type, size, inline },
+          itemDefaults,
           item
         );
       });
@@ -18664,9 +18673,9 @@ function _defineProperty2(obj, key, value) {
         component: "Dropdown",
         rightIcon: "ellipsis",
         items: items.slice(visibleItems),
-        type: type,
+        type,
         inline,
-        size: size,
+        size,
       };
       this.setProps({
         children: {
@@ -18683,6 +18692,7 @@ function _defineProperty2(obj, key, value) {
     gutter: "sm",
     size: null,
     items: [],
+    itemDefaults: {},
   };
   Component.register(Toolbar);
   let nameSeq = 0;
