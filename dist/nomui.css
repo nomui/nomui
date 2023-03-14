@@ -1725,6 +1725,9 @@ template {
   color: inherit !important;
   background-color: transparent !important;
 }
+.u-cursor-pointer {
+  cursor: pointer;
+}
 .u-padding-d125 {
   padding: 0.125rem !important;
 }
