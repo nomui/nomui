@@ -67,8 +67,6 @@ class MenuItem extends Component {
           expandable: false,
         },
       })
-    } else {
-      this.props.indicator.expandable.collapsedProps = indicatorIconType
     }
 
     this.setProps({
@@ -88,7 +86,7 @@ class MenuItem extends Component {
         byClick: menuProps.itemSelectable.byClick,
       },
       expandable: {
-        byClick: !this.isLeaf && !menuProps.compact,
+        byClick: !menuProps.compact,
         target: function () {
           return this.wrapper.submenu
         },
@@ -162,6 +160,7 @@ class MenuItem extends Component {
 
   _collapse() {
     this.indicator && this.indicator.collapse()
+    this.wrapper && this.wrapper.collapse()
     if (this.menu.props.itemExpandable.expandSingle === true) {
       this.wrapper.parent.expandedChildItem = null
     }
@@ -179,6 +178,7 @@ class MenuItem extends Component {
 
   _expand() {
     this.indicator && this.indicator.expand()
+    this.wrapper && this.wrapper.expand()
     if (this.menu.props.itemExpandable.expandSingle === true) {
       if (this.wrapper.parent.expandedChildItem) {
         this.wrapper.parent.expandedChildItem.collapse()
