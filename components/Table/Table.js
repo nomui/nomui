@@ -105,6 +105,10 @@ class Table extends Component {
     }
     this.activeTr = tr
     this.activeTr.element.classList.add('nom-tr-selected')
+
+    this.hasGrid &&
+      this.grid.props.onRowSelected &&
+      this.grid._callHandler(this.grid.props.onRowSelected, { row: tr, rowData: tr.props.data })
   }
 }
 
