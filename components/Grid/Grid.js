@@ -6,7 +6,7 @@ import ExpandedTr from '../Table/ExpandedTr'
 import {
   STORAGE_KEY_GRID_COLS_FIXED,
   STORAGE_KEY_GRID_COLS_WIDTH,
-  STORAGE_KEY_GRID_COLUMNS
+  STORAGE_KEY_GRID_COLUMNS,
 } from '../util/constant'
 import {
   ascCompare,
@@ -16,7 +16,7 @@ import {
   isNullish,
   isPlainObject,
   isString,
-  localeCompareString
+  localeCompareString,
 } from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
@@ -1304,6 +1304,7 @@ Grid.defaults = {
   forceSort: false,
   sortCacheable: false,
   onFilter: null,
+  onRowSelected: null,
   keyField: 'id',
   treeConfig: {
     flatData: false, // 数据源是否为一维数组
@@ -1338,7 +1339,7 @@ Grid.defaults = {
   scrollbarWidth: 8,
   summary: null,
   showEmpty: true,
-  columnAlign:'left'
+  columnAlign: 'left',
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false
