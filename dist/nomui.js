@@ -16930,6 +16930,12 @@ function _defineProperty2(obj, key, value) {
       }
       this.activeTr = tr;
       this.activeTr.element.classList.add("nom-tr-selected");
+      this.hasGrid &&
+        this.grid.props.onRowSelected &&
+        this.grid._callHandler(this.grid.props.onRowSelected, {
+          row: tr,
+          rowData: tr.props.data,
+        });
     }
   }
   Table.defaults = {
@@ -18612,6 +18618,7 @@ function _defineProperty2(obj, key, value) {
     forceSort: false,
     sortCacheable: false,
     onFilter: null,
+    onRowSelected: null,
     keyField: "id",
     treeConfig: {
       flatData: false, // 数据源是否为一维数组
