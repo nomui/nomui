@@ -160,6 +160,7 @@ class MenuItem extends Component {
 
   _collapse() {
     this.indicator && this.indicator.collapse()
+    this.wrapper && this.wrapper.collapse()
     if (this.menu.props.itemExpandable.expandSingle === true) {
       this.wrapper.parent.expandedChildItem = null
     }
@@ -177,6 +178,7 @@ class MenuItem extends Component {
 
   _expand() {
     this.indicator && this.indicator.expand()
+    this.wrapper && this.wrapper.expand()
     if (this.menu.props.itemExpandable.expandSingle === true) {
       if (this.wrapper.parent.expandedChildItem) {
         this.wrapper.parent.expandedChildItem.collapse()
