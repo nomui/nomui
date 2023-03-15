@@ -6,14 +6,15 @@ class Toolbar extends Component {
   }
 
   _config() {
-    const { items, type, gutter, size, visibleItems, inline } = this.props
+    const { items, type, gutter, size, visibleItems, inline, itemDefaults } = this.props
 
     const before = items.slice(0, visibleItems).map((item) => {
       return {
         component: 'Button',
-        type: type,
-        size: size,
+        type,
+        size,
         inline,
+        ...itemDefaults,
         ...item,
       }
     })
@@ -21,9 +22,9 @@ class Toolbar extends Component {
       component: 'Dropdown',
       rightIcon: 'ellipsis',
       items: items.slice(visibleItems),
-      type: type,
+      type,
       inline,
-      size: size,
+      size,
     }
 
     this.setProps({
@@ -41,6 +42,7 @@ Toolbar.defaults = {
   gutter: 'sm',
   size: null,
   items: [],
+  itemDefaults: {},
 }
 Component.register(Toolbar)
 

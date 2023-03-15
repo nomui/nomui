@@ -3,6 +3,7 @@
 @import 'mixins.less';
 @import 'normalize.less';
 @import 'color.less';
+@import 'cursor.less';
 @import 'padding.less';
 @import 'margin.less';
 @import 'border.less';
@@ -49,15 +50,18 @@ body,
     width: var(--nom-scrollbar-width);
     height: var(--nom-scrollbar-width);
   }
+
   // 滚动条里面的小方块
   &::-webkit-scrollbar-thumb {
     border-radius: var(--nom-scrollbar-thumb-border-radius);
     background: var(--nom-scrollbar-thumb-bg);
   }
+
   // 滚动条的轨道（里面装有thumb）
   &::-webkit-scrollbar-track {
     background-color: var(--nom-scrollbar-track-bg);
   }
+
   // 边角，及两个滚动条的交汇处
   &::-webkit-scrollbar-corner {
     background-color: var(--nom-scrollbar-corner-bg);
