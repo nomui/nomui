@@ -17,8 +17,12 @@
   })
 
   require([], function () {
+    let dir = '/docs'
+    if (window.location.href === 'https://nomui.github.io/nomui/') {
+      dir = '/nomui/docs'
+    }
     win.nomapp = new nomui.App({
-      viewsDir: '/docs',
+      viewsDir: dir,
     })
 
     const renderer = new marked.Renderer()
