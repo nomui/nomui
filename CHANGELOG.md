@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.20](https://github.com/nomui/nomui/compare/v1.1.19...v1.1.20) (2023-03-17)
+
+
+### Features
+
+* Cascader组件allowClear属性要求能够配置 ([a27a946](https://github.com/nomui/nomui/commit/a27a94620ef9e50bae050c977be5f7d41307e7cb))
+* **Grid:** 新增行选中事件 ([22ebc7f](https://github.com/nomui/nomui/commit/22ebc7f861445d3d8096eec85545d7730cac0441))
+* GroupGrid的valueOptions属性无法生效问题 ([eaf82ec](https://github.com/nomui/nomui/commit/eaf82ec7319b73d8cb2567af2a0cf4ecaa633475))
+* **Layer:** 新增 attachTo prop，指定一个组件，在该组件 remove 时，layer 也会跟着 remove ([72cf6b9](https://github.com/nomui/nomui/commit/72cf6b96bc52b506b25e2030532205dcd0b76069))
+* **Menu:** 支持target属性，优化紧凑模式显示效果 ([6486103](https://github.com/nomui/nomui/commit/648610361aa631ce3f3a8c22ba275e01c458a7de))
+* **Route:** 支持路径直接附带参数 ([acd1297](https://github.com/nomui/nomui/commit/acd12979a9533e756fd74950a24e57caf60c937d))
+* Select支持无数据时默认显示‘无数据’ ([dcd46d3](https://github.com/nomui/nomui/commit/dcd46d33223342ad62174112d8d28e9ba1740b0c))
+* Select支持无数据时默认显示暂无数据 ([e96d8f0](https://github.com/nomui/nomui/commit/e96d8f04652bbb2b3267454eb50275e4090a16b5))
+* **Toolbar:** 新增itemDefaults配置 ([f73ab15](https://github.com/nomui/nomui/commit/f73ab15e74ab1e288d0add2dce7cabf01bd2f762))
+* Uploader附件自定义按钮可根据特定条件判断动态显示 ([4a8c097](https://github.com/nomui/nomui/commit/4a8c09756e881ae370a8f6be259f7ba43135a2e8))
+
+
+### Bug Fixes
+
+* 修复Ellipsis单行不显示省略号 ([9ca7a2f](https://github.com/nomui/nomui/commit/9ca7a2ffcdaac64ea9ab8a3ec4559f034a3cbff5))
+* 修改grid 插件包含复选框时候，设置列显示导致复选框位置移动到末尾去 ([57a4bec](https://github.com/nomui/nomui/commit/57a4bec208e5fe69924fc88bb5b383ca6e32b404))
+* 修改TreeSelect  方法名规范问题 ([bb0ebd9](https://github.com/nomui/nomui/commit/bb0ebd98af19d2044a592b1b0120014a5de35f47))
+* 修改TreeSelect 选中后再次搜索会清空之前已选内容 ([dc4f5f4](https://github.com/nomui/nomui/commit/dc4f5f4e7c3246a9327623005d7c8dee2af65940))
+* 修改TreeSelect组件  方法名规范问题 ([d4ed9f0](https://github.com/nomui/nomui/commit/d4ed9f01a9d4a9bc62299e050015212ddba59cbe))
+* **Ellipsis:** 单行省略的情况下对特殊字符导致的换行进行兼容 ([c9b8a05](https://github.com/nomui/nomui/commit/c9b8a055d2deecaf5b69691dd507691d43cfe241))
+* Grid文档修正 ([a5d5e8f](https://github.com/nomui/nomui/commit/a5d5e8f62d00d6c9a5a5c6f53d54134fae69d4cb))
+* TreeSelect子节点过长文本换行后兄弟节点无法对齐 ([e9c3f51](https://github.com/nomui/nomui/commit/e9c3f51562851e347cd279cd3445a2fe1bd2fbde))
+* TreeSelect组件setValue时如果第二个参数为false，不触发onValueChange事件，则文本框的值无法显示 ([c930b8d](https://github.com/nomui/nomui/commit/c930b8dd0db372ddf1e78a0114940b6d1e4a4caa))
+* TreeSelect组件setValue时如果第二个参数为false，不触发onValueChange事件，则文本框的值无法显示 ([080f870](https://github.com/nomui/nomui/commit/080f870ac6a262f9375633f2a65f6d2cdfbd465a))
+* **treeSelect:** issue982SeleteTree初始化，如果是子节点，数据不会展开 ([fbd4f7d](https://github.com/nomui/nomui/commit/fbd4f7d6b011a2f10f88d08587f2517760f37c73))
+* **treeSelect:** issue982SeleteTree初始化，如果是子节点，数据不会展开 ([d7e2f36](https://github.com/nomui/nomui/commit/d7e2f36cc73b4979812da1738f09a4ea6e502b02))
+* **treeSelect:** issue982SeleteTree初始化，如果是子节点，数据不会展开(增加空值判断) ([5bddc1b](https://github.com/nomui/nomui/commit/5bddc1bedb455cfd8ab135463c410efc5d4b109b))
+
+
+### Performance Improvements
+
+* groupGrid组件，hidden取值问题修改 ([a44dafb](https://github.com/nomui/nomui/commit/a44dafbdce0794a1444cef9dd1ca788934572a69))
+
+
+### Docs
+
+* **Modal:** 添加 args 参数说明 ([603c0dd](https://github.com/nomui/nomui/commit/603c0dd203e93cd074832adb4a210da5ef046932))
+* Pager文档更新 ([2e67502](https://github.com/nomui/nomui/commit/2e6750209a83e2ad07b83be20d2b2991d1cab755))
+* TreeSelect文档补全 ([d40551c](https://github.com/nomui/nomui/commit/d40551c533111d278a21abdf28c7661828c17a4b))
+
 ### [1.1.19](https://github.com/nomui/nomui/compare/v1.1.18...v1.1.19) (2023-01-06)
 
 ### [1.1.18](https://github.com/nomui/nomui/compare/v1.1.17...v1.1.18) (2022-12-16)
