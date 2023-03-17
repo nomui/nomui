@@ -4,6 +4,7 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| paramsType | 切换页码的方式,默认是 pageSize pageIndex 分页，配置为`skiptake`则以 skip & take 进行分页 | `string` | `default` |
 | pageIndex | 默认的当前页数 | `number` | 1 |
 | pageSize | 默认的每页条数 | `number` | 10 |
 | totalCount | 数据总数 | `number` | 0 |
