@@ -4,8 +4,13 @@
     console.log(`modules: ${err.requireModules}`)
   }
 
+  let baseUrl = '/'
+  if (window.location.href === 'https://nomui.github.io/nomui/') {
+    baseUrl = '/nomui/'
+  }
+
   requirejs.config({
-    baseUrl: '/',
+    baseUrl: baseUrl,
     map: {
       '*': {
         css: 'libs/require-css.min.js',
@@ -17,12 +22,8 @@
   })
 
   require([], function () {
-    let dir = '/docs'
-    if (window.location.href === 'https://nomui.github.io/nomui/') {
-      dir = '/nomui/docs'
-    }
     win.nomapp = new nomui.App({
-      viewsDir: dir,
+      viewsDir: '/docs',
     })
 
     const renderer = new marked.Renderer()
