@@ -15,24 +15,24 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
       const doc_suffix = '&tab=docs'
       return Array.isArray(cmps)
         ? cmps.reduce((prevs, { text, subtext, url, items }) => {
-          if (url) {
-            return [
-              ...prevs,
-              {
-                key: text,
-                text: subtext,
-                search: `${text}${subtext}`,
-                url: `${url}${doc_suffix}`,
-              },
-            ]
-          }
+            if (url) {
+              return [
+                ...prevs,
+                {
+                  key: text,
+                  text: subtext,
+                  search: `${text}${subtext}`,
+                  url: `${url}${doc_suffix}`,
+                },
+              ]
+            }
 
-          if (items) {
-            return [...prevs, ...getAllDocs(items)]
-          }
+            if (items) {
+              return [...prevs, ...getAllDocs(items)]
+            }
 
-          return [...prevs]
-        }, [])
+            return [...prevs]
+          }, [])
         : []
     }
 
@@ -562,6 +562,12 @@ define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
                       subtext: '上传',
                       id: 'Uploader',
                       url: '#!components!index?type=Uploader',
+                    },
+                    {
+                      text: 'UploaderCore',
+                      subtext: '上传服务',
+                      id: 'UploaderCore',
+                      url: '#!components!index?type=UploaderCore',
                     },
                   ],
                 },
