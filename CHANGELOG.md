@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.32](https://github.com/nomui/nomui/compare/v1.1.20...v1.1.32) (2023-03-20)
+
+
+### Docs
+
+* 文档更新 ([5655896](https://github.com/nomui/nomui/commit/565589624cbcd3707ace330be7818c9ed5d8fa29))
+
 ### [1.1.17](https://github.com/nomui/nomui/compare/v1.1.16...v1.1.17) (2022-12-09)
 
 ### Features
