@@ -1,4 +1,4 @@
-define(['/docs/DemoPanel.js'], function (demoPanel) {
+define(['docs/DemoPanel.js'], function (demoPanel) {
   return function () {
     let tabContent = null
     let bodyRef = null
