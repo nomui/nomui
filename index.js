@@ -5,7 +5,6 @@
   }
 
   requirejs.config({
-    baseUrl: '/',
     map: {
       '*': {
         css: 'libs/require-css.min.js',
@@ -18,7 +17,7 @@
 
   require([], function () {
     win.nomapp = new nomui.App({
-      viewsDir: '/docs',
+      viewsDir: 'docs',
     })
 
     const renderer = new marked.Renderer()

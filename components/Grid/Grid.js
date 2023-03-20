@@ -1304,7 +1304,8 @@ Grid.defaults = {
   forceSort: false,
   sortCacheable: false,
   onFilter: null,
-  onRowSelected: null,
+  rowSelectable: false,
+  rowCheckable: false,
   keyField: 'id',
   treeConfig: {
     flatData: false, // 数据源是否为一维数组

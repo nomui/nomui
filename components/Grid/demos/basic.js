@@ -6,8 +6,10 @@ define([], function () {
       return {
         component: 'Grid',
         showTitle: true,
-        onRowSelected: (args) => {
-          console.log(args)
+        rowSelectable: {
+          onSelect: (args) => {
+            console.log(args)
+          },
         },
 
         columns: [

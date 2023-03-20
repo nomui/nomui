@@ -1,4 +1,4 @@
-define(['/docs/helper.js'], function ({ DOC_URL_KEY }) {
+define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
   return function () {
     let javascriptMenuRef = null
 
