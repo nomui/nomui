@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-define(['/docs/helper.js'], function ({ SANDBOX_LIMIT, debounce }) {
+define(['docs/helper.js'], function ({ SANDBOX_LIMIT, debounce }) {
   class Sandbox extends nomui.Component {
     constructor(props) {
       const defaults = {
