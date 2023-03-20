@@ -23,7 +23,7 @@
 
   require([], function () {
     win.nomapp = new nomui.App({
-      viewsDir: window.location.href === 'https://nomui.github.io/nomui/' ? 'nomui/docs' : '/docs',
+      viewsDir: window.location.href === 'https://nomui.github.io/nomui/' ? 'docs' : '/docs',
     })
 
     const renderer = new marked.Renderer()
