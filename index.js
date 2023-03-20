@@ -4,13 +4,13 @@
     console.log(`modules: ${err.requireModules}`)
   }
 
-  // let baseUrl = '/'
-  // if (window.location.href === 'https://nomui.github.io/nomui/') {
-  //   baseUrl = '/nomui/'
-  // }
+  let baseUrl = '/'
+  if (window.location.href === 'https://nomui.github.io/nomui/') {
+    baseUrl = 'https://nomui.github.io/nomui/'
+  }
 
   requirejs.config({
-    // baseUrl: baseUrl,
+    baseUrl: baseUrl,
     map: {
       '*': {
         css: 'libs/require-css.min.js',
