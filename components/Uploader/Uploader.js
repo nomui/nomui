@@ -426,9 +426,12 @@ class Uploader extends Field {
     } = this.props
     // removing
     file.status = 'removing'
-    this.fileList = this.fileList.map((f) =>
-      f.uuid === file.uuid ? { ...f, status: 'removing' } : f,
-    )
+    this.fileList = this.fileList.map((f) => {
+      if (f.uuid === file.uuid) {
+        return { ...f, status: 'removing' }
+      }
+      return f
+    })
     this.onChange({
       file,
       fileList: this.fileList,
