@@ -6,53 +6,27 @@ define([], function () {
       return {
         component: 'Flex',
         align: 'center',
+        gutter: 'large',
         rows: [
           {
-            component: 'Button',
+            component: 'UploaderCore',
+            action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+            button: {
+              component: 'Button',
+              text: '点我上传',
+            },
+          },
 
-            text: '鼠标放上面会出来文字提示',
-            tooltip: '我是文字提示',
-          },
           {
-            component: 'Button',
-            text: '传入配置',
-            tooltip: {
-              attrs: {
-                style: {
-                  width: '300px',
-                },
+            component: 'UploaderCore',
+            action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+            dragger: {
+              styles: {
+                padding: 5,
+                border: true,
+                color: 'lgray',
               },
-              align: 'bottom',
-              children:
-                '鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示',
-            },
-          },
-          {
-            component: 'Button',
-            text: '传入配置',
-            tooltip: {
-              attrs: {
-                style: {
-                  width: '300px',
-                },
-              },
-              align: 'left',
-              children:
-                '鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示',
-            },
-          },
-          {
-            component: 'Button',
-            text: '传入配置',
-            tooltip: {
-              attrs: {
-                style: {
-                  width: '300px',
-                },
-              },
-              align: 'right',
-              children:
-                '鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示鼠标放上面会出来文字提示',
+              children: '拖拽至此区域上传',
             },
           },
         ],
