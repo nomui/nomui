@@ -60,21 +60,9 @@ const types = [
 
 export const fileType = new Set(types)
 
-export function emptyFn() {}
-
 export function getUUID() {
   return `nom-upload-${Math.random().toString().substr(2)}`
 }
-
-// export function getDate(timestamp) {
-//   if (isNumeric(timestamp) && POSITIVE_INTEGER.test(timestamp.toString())) {
-//     const date = new Date(timestamp)
-//     const month = date.getMonth() + 1
-//     const day = date.getDate()
-//     return `${date.getFullYear()}-${month > 9 ? month : `0${month}`}-${day > 9 ? day : `0${day}`}`
-//   }
-//   return null
-// }
 
 function isValidDate(date) {
   if (date === null || date === undefined) return null
@@ -145,14 +133,6 @@ export function cloneFileWithInfo(file) {
     percent: 0,
     originFile: file,
   }
-}
-
-export function removeFile(file, fileList) {
-  const remains = fileList.filter((item) => item.uuid !== file.uuid)
-  if (remains.lenth === fileList.length) {
-    return null
-  }
-  return remains
 }
 
 export function getFileExtension(filename) {

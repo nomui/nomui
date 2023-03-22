@@ -10,7 +10,6 @@ class UploaderCore extends Component {
 
   _created() {
     this.reqs = {}
-    this.isUploading = false
   }
 
   _config() {
@@ -20,9 +19,6 @@ class UploaderCore extends Component {
 
     this.fileList = this.props.fileList || this.props.defaultFileList
 
-    // if (this.fileList && this.fileList.length > 0) {
-    //   this.fileList = showList ? this.fileList : this.fileList.slice(-1)
-    // }
     this.acceptList = accept ? this.getAcceptList() : ''
 
     let initializing = true
@@ -39,7 +35,7 @@ class UploaderCore extends Component {
       initializing = false
     }
 
-    this._watchFiles()
+    this._setInterface()
 
     let trigger = null
 
@@ -99,12 +95,16 @@ class UploaderCore extends Component {
     })
   }
 
-  _watchFiles() {
+  _setInterface(file) {
     if (this.fileList && this.fileList.length) {
-      const currentStatus = this.fileList[0].status
-      if (currentStatus === 'uploading' && this.isUploading !== true) {
+      const currentStatus = file.status
+      const allStats = this.fileList.map((n) => {
+        return n.status
+      })
+
+      if (currentStatus === 'uploading') {
         this._showLoading()
-      } else if (currentStatus === 'done') {
+      } else if (currentStatus === 'done' && !allStats.includes('uploading')) {
         this._cancleLoading()
       } else if (currentStatus === 'error') {
         this._cancleLoading()
@@ -116,21 +116,24 @@ class UploaderCore extends Component {
     }
   }
 
+  getFiles() {
+    return this.fileList
+  }
+
   _showLoading() {
-    this.isUploading = true
-    this.loading = new nomui.Loading({
-      container: this.trigger,
-    })
+    if (!this.loading) {
+      this.loading = new nomui.Loading({
+        container: this.trigger,
+      })
+    }
   }
 
   _cancleLoading() {
-    this.isUploading = false
-    this.loading && this.loading.remove()
+    if (this.loading) {
+      this.loading.remove()
+      this.loading = null
+    }
   }
-
-  _showRefresh() {}
-
-  _cancelRefresh() {}
 
   _onFileDrop = (e) => {
     const { multiple } = this.props
@@ -147,8 +150,7 @@ class UploaderCore extends Component {
       files = files.slice(0, 1)
     }
 
-    const uploadedFiles = this.fileList
-    this.uploadFiles(files, uploadedFiles)
+    this.uploadFiles(files, this.fileList)
   }
 
   getAcceptList() {
@@ -236,6 +238,7 @@ class UploaderCore extends Component {
 
     const that = this
     const { props } = this
+    const { uuid } = file
     new Promise((resolve) => {
       const actionRet = this.props.action
       resolve(isFunction(actionRet) ? actionRet(file) : actionRet)
@@ -257,24 +260,23 @@ class UploaderCore extends Component {
         },
         onError: (err, ret) => {
           that.onError(err, ret, file)
+          that.reqs[uuid] && delete that.reqs[uuid]
         },
       }
       this.onStart(file)
-      this.reqs[file.uuid] = Request(option)
+      this.reqs[uuid] = Request(option)
     })
   }
 
-  onChange(info) {
+  _watchChange({ file, fileList }) {
     // 更新列表
-    this.fileList = info.fileList
+    this.fileList = fileList
 
-    this._watchFiles()
+    this._setInterface(file)
     // this.update({ fileList: [...info.fileList] })
 
     if (this.trigger) {
-      const disableBtn = this.fileList.some((file) =>
-        ['removing', 'uploading'].includes(file.status),
-      )
+      const disableBtn = this.fileList.some((n) => ['removing', 'uploading'].includes(n.status))
 
       if (!this.props.disabled) {
         disableBtn ? this.trigger.disable() : this.trigger.enable()
@@ -283,7 +285,7 @@ class UploaderCore extends Component {
 
     if (this.props.onChange) {
       this._callHandler(this.props.onChange, {
-        ...info,
+        file,
         fileList: [...this.fileList],
       })
     }
@@ -294,18 +296,18 @@ class UploaderCore extends Component {
     uploadFile.status = 'uploading'
 
     // 这里要改
-    const nextFileList = Array.from(this.fileList)
+    const fileList = Array.from(this.fileList)
 
-    const findIndex = nextFileList.findIndex((f) => f.uuid === uploadFile.uuid)
+    const findIndex = fileList.findIndex((f) => f.uuid === uploadFile.uuid)
     if (findIndex === -1) {
-      nextFileList.push(uploadFile)
+      fileList.push(uploadFile)
     } else {
-      nextFileList[findIndex] = uploadFile
+      fileList[findIndex] = uploadFile
     }
 
-    this.onChange({
+    this._watchChange({
       file: uploadFile,
-      fileList: nextFileList,
+      fileList: fileList,
     })
   }
 
@@ -316,7 +318,7 @@ class UploaderCore extends Component {
     }
 
     uploadingFile.percent = e.percent
-    this.onChange({
+    this._watchChange({
       event: e,
       file: uploadingFile,
       fileList: [...this.fileList],
@@ -341,7 +343,7 @@ class UploaderCore extends Component {
     uploadFile.status = 'done'
     uploadFile.xhr = xhr
 
-    this.onChange({
+    this._watchChange({
       file: uploadFile,
       fileList: [...this.fileList],
     })
@@ -357,7 +359,7 @@ class UploaderCore extends Component {
     uploadFile.status = 'error'
     uploadFile.response = response
 
-    this.onChange({
+    this._watchChange({
       file: uploadFile,
       fileList: [...this.fileList],
     })

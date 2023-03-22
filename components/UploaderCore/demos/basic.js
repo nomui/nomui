@@ -20,6 +20,7 @@ define([], function () {
           {
             component: 'UploaderCore',
             action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+            multiple: true,
             dragger: {
               styles: {
                 padding: 5,
