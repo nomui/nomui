@@ -27,8 +27,10 @@ class UploaderCore extends Component {
         initializing = false
         that.fileList = res
 
-        if (!disabled && this.trigger) {
-          that.trigger.enable()
+        that.props.onChange &&
+          that._callHandler(that.props.onChange, { file: null, fileList: that.fileList })
+        if (!disabled && this.triggerRef) {
+          that.triggerRef.enable()
         }
       })
     } else {
@@ -43,14 +45,17 @@ class UploaderCore extends Component {
       disabled: disabled || initializing,
       // disabled,
       ref: (c) => {
-        that.trigger = c
+        that.triggerRef = c
+      },
+      classes: {
+        'nom-uploder-core-trigger': true,
       },
       attrs: {
         onclick() {
-          that._handleClick()
+          !disabled && that._handleClick()
         },
         ondrop(e) {
-          that.props.dragger && that._onFileDrop(e)
+          !disabled && that.props.dragger && that._onFileDrop(e)
         },
         ondragover(e) {
           e.preventDefault()
@@ -95,12 +100,20 @@ class UploaderCore extends Component {
     })
   }
 
-  getFiles() {
+  getData() {
     return this.fileList
   }
 
+  disable() {
+    this.triggerRef.disable()
+  }
+
+  enable() {
+    this.triggerRef.enable()
+  }
+
   _watchStatus(file) {
-    if (this.fileList && this.fileList.length) {
+    if (file && this.fileList && this.fileList.length) {
       const currentStatus = file.status
       const allStats = this.fileList.map((n) => {
         return n.status
@@ -124,7 +137,7 @@ class UploaderCore extends Component {
   _showLoading() {
     if (!this.loading) {
       this.loading = new nomui.Loading({
-        container: this.trigger,
+        container: this.triggerRef,
       })
     }
   }
@@ -257,11 +270,11 @@ class UploaderCore extends Component {
 
     this._watchStatus(file)
 
-    if (this.trigger) {
+    if (this.triggerRef) {
       const disableBtn = this.fileList.some((n) => ['removing', 'uploading'].includes(n.status))
 
       if (!this.props.disabled) {
-        disableBtn ? this.trigger.disable() : this.trigger.enable()
+        disableBtn ? this.triggerRef.disable() : this.triggerRef.enable()
       }
     }
 

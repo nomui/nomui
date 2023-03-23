@@ -21,4 +21,12 @@
 | headers | 设置上传的请求头部，IE10 以上有效 | object | - |  |
 | name | 发到后台的文件名字段 | string | `file` |  |
 | withCredentials | 上传请求时是否携带 cookie | boolean | false |  |
-| onChange | 上传文件改变时的状态 | function | - |  |
+| onChange | 上传文件改变时的状态 | `({file,fileList})=>{}` | - |  |
+
+### methods
+
+| 名称    | 说明               | 类型     |
+| ------- | ------------------ | -------- |
+| getData | 获取已上传文件列表 | `()=>{}` |
+| enable  | 启用               | -        |
+| disable | 禁用               | -        |
