@@ -35,7 +35,7 @@ class UploaderCore extends Component {
       initializing = false
     }
 
-    this._setInterface()
+    this._watchStatus()
 
     let trigger = null
 
@@ -95,29 +95,30 @@ class UploaderCore extends Component {
     })
   }
 
-  _setInterface(file) {
+  getFiles() {
+    return this.fileList
+  }
+
+  _watchStatus(file) {
     if (this.fileList && this.fileList.length) {
       const currentStatus = file.status
       const allStats = this.fileList.map((n) => {
         return n.status
       })
+      const noUploading = !allStats.includes('uploading')
 
       if (currentStatus === 'uploading') {
         this._showLoading()
-      } else if (currentStatus === 'done' && !allStats.includes('uploading')) {
-        this._cancleLoading()
+      } else if (currentStatus === 'done') {
+        this._cancleLoading(noUploading)
       } else if (currentStatus === 'error') {
-        this._cancleLoading()
+        this._cancleLoading(noUploading)
         new nomui.Message({
           content: '上传失败！',
           type: 'error',
         })
       }
     }
-  }
-
-  getFiles() {
-    return this.fileList
   }
 
   _showLoading() {
@@ -128,29 +129,11 @@ class UploaderCore extends Component {
     }
   }
 
-  _cancleLoading() {
-    if (this.loading) {
+  _cancleLoading(flag) {
+    if (flag && this.loading) {
       this.loading.remove()
       this.loading = null
     }
-  }
-
-  _onFileDrop = (e) => {
-    const { multiple } = this.props
-
-    e.preventDefault()
-
-    if (e.type === 'dragover') {
-      return
-    }
-
-    let files = [...e.dataTransfer.files]
-
-    if (multiple === false) {
-      files = files.slice(0, 1)
-    }
-
-    this.uploadFiles(files, this.fileList)
   }
 
   getAcceptList() {
@@ -180,10 +163,10 @@ class UploaderCore extends Component {
   _onChange(e) {
     const { files } = e.target
     const uploadedFiles = this.fileList
-    this.uploadFiles(files, uploadedFiles)
+    this._uploadFiles(files, uploadedFiles)
   }
 
-  uploadFiles(files, uploadedFiles) {
+  _uploadFiles(files, uploadedFiles) {
     // 转为数组
     let fileList = Array.from(files)
     const uploadedFileList = Array.from(uploadedFiles)
@@ -197,11 +180,11 @@ class UploaderCore extends Component {
     })
 
     fileList.forEach((file) => {
-      this.upload(file, [...uploadedFileList, ...fileList])
+      this._upload(file, [...uploadedFileList, ...fileList])
     })
   }
 
-  upload(file, fileList) {
+  _upload(file, fileList) {
     const beforeUpload = this.props.beforeUpload
     if (!this.checkType(file)) {
       new nomui.Alert({
@@ -253,17 +236,17 @@ class UploaderCore extends Component {
         headers,
         withCredentials,
         onProgress: (e) => {
-          that.onProgress(e, file)
+          that._onProgress(e, file)
         },
         onSuccess: (ret, xhr) => {
-          that.onSuccess(ret, file, xhr)
+          that._onSuccess(ret, file, xhr)
         },
         onError: (err, ret) => {
-          that.onError(err, ret, file)
+          that._onError(err, ret, file)
           that.reqs[uuid] && delete that.reqs[uuid]
         },
       }
-      this.onStart(file)
+      this._onStart(file)
       this.reqs[uuid] = Request(option)
     })
   }
@@ -272,8 +255,7 @@ class UploaderCore extends Component {
     // 更新列表
     this.fileList = fileList
 
-    this._setInterface(file)
-    // this.update({ fileList: [...info.fileList] })
+    this._watchStatus(file)
 
     if (this.trigger) {
       const disableBtn = this.fileList.some((n) => ['removing', 'uploading'].includes(n.status))
@@ -291,41 +273,41 @@ class UploaderCore extends Component {
     }
   }
 
-  onStart(file) {
-    const uploadFile = cloneFileWithInfo(file)
-    uploadFile.status = 'uploading'
+  _onStart(file) {
+    const currentFile = cloneFileWithInfo(file)
+    currentFile.status = 'uploading'
 
     // 这里要改
     const fileList = Array.from(this.fileList)
 
-    const findIndex = fileList.findIndex((f) => f.uuid === uploadFile.uuid)
+    const findIndex = fileList.findIndex((f) => f.uuid === currentFile.uuid)
     if (findIndex === -1) {
-      fileList.push(uploadFile)
+      fileList.push(currentFile)
     } else {
-      fileList[findIndex] = uploadFile
+      fileList[findIndex] = currentFile
     }
 
     this._watchChange({
-      file: uploadFile,
+      file: currentFile,
       fileList: fileList,
     })
   }
 
-  onProgress(e, file) {
-    const uploadingFile = getFileFromList(file, this.fileList)
-    if (!uploadingFile) {
+  _onProgress(e, file) {
+    const currentFile = getFileFromList(file, this.fileList)
+    if (!currentFile) {
       return
     }
 
-    uploadingFile.percent = e.percent
+    currentFile.percent = e.percent
     this._watchChange({
       event: e,
-      file: uploadingFile,
+      file: currentFile,
       fileList: [...this.fileList],
     })
   }
 
-  onSuccess(response, file, xhr) {
+  _onSuccess(response, file, xhr) {
     try {
       if (typeof response === 'string') {
         response = JSON.parse(response)
@@ -334,33 +316,33 @@ class UploaderCore extends Component {
       /* do nothing */
     }
 
-    const uploadFile = getFileFromList(file, this.fileList)
-    if (!uploadFile) {
+    const currentFile = getFileFromList(file, this.fileList)
+    if (!currentFile) {
       return
     }
 
-    uploadFile.response = response
-    uploadFile.status = 'done'
-    uploadFile.xhr = xhr
+    currentFile.response = response
+    currentFile.status = 'done'
+    currentFile.xhr = xhr
 
     this._watchChange({
-      file: uploadFile,
+      file: currentFile,
       fileList: [...this.fileList],
     })
   }
 
-  onError(error, response, file) {
-    const uploadFile = getFileFromList(file, this.fileList)
-    if (!uploadFile) {
+  _onError(error, response, file) {
+    const currentFile = getFileFromList(file, this.fileList)
+    if (!currentFile) {
       return
     }
 
-    uploadFile.error = error
-    uploadFile.status = 'error'
-    uploadFile.response = response
+    currentFile.error = error
+    currentFile.status = 'error'
+    currentFile.response = response
 
     this._watchChange({
-      file: uploadFile,
+      file: currentFile,
       fileList: [...this.fileList],
     })
   }
@@ -370,16 +352,29 @@ class UploaderCore extends Component {
       this.inputFile.element.click()
     }
   }
+
+  _onFileDrop = (e) => {
+    const { multiple } = this.props
+    e.preventDefault()
+    if (e.type === 'dragover') {
+      return
+    }
+    let files = [...e.dataTransfer.files]
+    if (multiple === false) {
+      files = files.slice(0, 1)
+    }
+    this._uploadFiles(files, this.fileList)
+  }
 }
 
 UploaderCore.defaults = {
   reference: 'body',
-  // 测试地址
   action: '',
   disabled: false,
   beforeUpload: null,
-  button: null,
-  defaultFileList: [],
+  button: null, // 按钮界面
+  dragger: null, // 拖拽界面
+  defaultFileList: [], // 默认上传文件列表
   multiple: false,
   name: 'file',
   data: {},
@@ -387,10 +382,7 @@ UploaderCore.defaults = {
   method: 'post',
   headers: {},
   withCredentials: false,
-  renderer: null,
-  extraAction: [],
-  customizeInfo: null,
-  actionRender: null,
+  onChange: null,
 }
 
 Component.register(UploaderCore)
