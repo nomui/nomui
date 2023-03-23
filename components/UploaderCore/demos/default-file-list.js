@@ -48,8 +48,10 @@ define([], function () {
                 ])
               }, 3000)
             }),
-            onChange: () => {
-              getListData()
+            onChange: ({ file }) => {
+              if (!file || (file && file.status === 'done')) {
+                getListData()
+              }
             },
             button: {
               component: 'Button',

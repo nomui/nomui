@@ -25,8 +25,10 @@ define([], function () {
               uploaderRef = c
             },
             action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-            onChange: () => {
-              getListData()
+            onChange: ({ file }) => {
+              if (file.status === 'done') {
+                getListData()
+              }
             },
             button: {
               component: 'Button',
