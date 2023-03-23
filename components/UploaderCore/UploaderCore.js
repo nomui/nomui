@@ -342,6 +342,10 @@ class UploaderCore extends Component {
       return
     }
 
+    this.fileList = this.fileList.filter((n) => {
+      return n.uuid !== file.uuid
+    })
+
     currentFile.error = error
     currentFile.status = 'error'
     currentFile.response = response
