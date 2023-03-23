@@ -19,7 +19,7 @@ class Upload extends Component {
 
     this.fileList = this.props.fileList || this.props.defaultFileList
 
-    this.acceptList = accept ? this.getAcceptList() : ''
+    this.acceptList = accept ? this._getAcceptList() : ''
 
     let initializing = true
     if (nomui.utils.isPromiseLike(that.fileList)) {
@@ -140,7 +140,7 @@ class Upload extends Component {
     }
   }
 
-  getAcceptList() {
+  _getAcceptList() {
     if (this.props.accept) {
       return this.props.accept
         .replace('image/*', '.jpg,.png,.gif,.jpeg,.jp2,.jpe,.bmp,.tif,.tiff')
@@ -149,7 +149,7 @@ class Upload extends Component {
     }
   }
 
-  checkType(file) {
+  _checkType(file) {
     if (!this.props.accept) {
       return true
     }
@@ -190,14 +190,14 @@ class Upload extends Component {
 
   _upload(file, fileList) {
     const beforeUpload = this.props.beforeUpload
-    if (!this.checkType(file)) {
+    if (!this._checkType(file)) {
       new nomui.Alert({
         title: '不支持此格式，请重新上传。',
       })
       return
     }
     if (!beforeUpload) {
-      Promise.resolve().then(() => this.post(file))
+      Promise.resolve().then(() => this._post(file))
       return
     }
 
@@ -206,19 +206,19 @@ class Upload extends Component {
     if (nomui.utils.isPromiseLike(before)) {
       before.then((pFile) => {
         if (isBlobFile(pFile)) {
-          this.post(pFile)
+          this._post(pFile)
           return
         }
-        this.post(file)
+        this._post(file)
       })
     } else if (before !== false) {
       Promise.resolve().then(() => {
-        this.post(file)
+        this._post(file)
       })
     }
   }
 
-  post(file) {
+  _post(file) {
     if (!this.rendered) {
       return
     }
