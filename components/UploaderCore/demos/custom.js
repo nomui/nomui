@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '基本用法',
-    file: 'basic',
+    title: '自定义上传界面',
+    file: 'custom',
     demo: function () {
       return {
         component: 'Flex',
