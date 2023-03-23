@@ -20,7 +20,7 @@ define([], function () {
             children: '组件本身不提供上传列表图形界面，可以通过List组件联动显示',
           },
           {
-            component: 'UploaderCore',
+            component: 'Upload',
             ref: (c) => {
               uploaderRef = c
             },
@@ -29,10 +29,6 @@ define([], function () {
               if (file.status === 'done') {
                 getListData()
               }
-            },
-            button: {
-              component: 'Button',
-              text: '点我上传',
             },
           },
           {

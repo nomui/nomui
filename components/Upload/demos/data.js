@@ -9,16 +9,12 @@ define([], function () {
         gutter: 'large',
         rows: [
           {
-            component: 'UploaderCore',
+            component: 'Upload',
             action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
             headers: {
               authorization: window.btoa('wetrial'),
             },
             data: { userType: '1' },
-            button: {
-              component: 'Button',
-              text: '点我上传',
-            },
           },
         ],
       }

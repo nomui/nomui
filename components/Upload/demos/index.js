@@ -7,8 +7,8 @@ define([
   './custom.js',
 ], function () {
   return {
-    title: 'UploaderCore',
-    subtitle: '上传服务',
+    title: 'Upload',
+    subtitle: '基础上传组件',
     demos: Array.prototype.slice.call(arguments),
   }
 })

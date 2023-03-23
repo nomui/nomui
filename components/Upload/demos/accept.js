@@ -9,13 +9,9 @@ define([], function () {
         gutter: 'large',
         rows: [
           {
-            component: 'UploaderCore',
+            component: 'Upload',
             action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
             accept: 'image/*',
-            button: {
-              component: 'Button',
-              text: '点我上传',
-            },
           },
         ],
       }

@@ -9,19 +9,16 @@ define([], function () {
         gutter: 'large',
         rows: [
           {
-            component: 'UploaderCore',
+            component: 'Upload',
             action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-            button: {
-              component: 'Button',
-              text: '点我上传',
-            },
           },
 
           {
-            component: 'UploaderCore',
+            component: 'Upload',
             action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
             multiple: true,
-            dragger: {
+            draggable: true,
+            trigger: {
               styles: {
                 padding: 5,
                 border: true,

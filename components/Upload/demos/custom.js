@@ -9,10 +9,20 @@ define([], function () {
         gutter: 'large',
         rows: [
           {
-            component: 'UploaderCore',
+            component: 'Upload',
             action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
             multiple: true,
-            dragger: {
+            trigger: {
+              component: 'Avatar',
+              icon: 'upload',
+            },
+          },
+          {
+            component: 'Upload',
+            action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+            multiple: true,
+            draggable: true,
+            trigger: {
               component: 'Flex',
               styles: {
                 border: [true, 'dashed'],

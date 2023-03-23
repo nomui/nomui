@@ -3,9 +3,9 @@ import { isFunction } from '../util/index'
 import { cloneFileWithInfo, DEFAULT_ACCEPT, getFileFromList, getUUID, isBlobFile } from './helper'
 import Request from './request'
 
-class UploaderCore extends Component {
+class Upload extends Component {
   constructor(props, ...mixins) {
-    super(Component.extendProps(UploaderCore.defaults, props), ...mixins)
+    super(Component.extendProps(Upload.defaults, props), ...mixins)
   }
 
   _created() {
@@ -15,7 +15,7 @@ class UploaderCore extends Component {
   _config() {
     const that = this
 
-    const { disabled, accept, multiple, button, dragger } = this.props
+    const { disabled, accept, multiple, trigger, draggable } = this.props
 
     this.fileList = this.props.fileList || this.props.defaultFileList
 
@@ -39,8 +39,6 @@ class UploaderCore extends Component {
 
     this._watchStatus()
 
-    let trigger = null
-
     const defaults = {
       disabled: disabled || initializing,
       // disabled,
@@ -48,14 +46,14 @@ class UploaderCore extends Component {
         that.triggerRef = c
       },
       classes: {
-        'nom-uploder-core-trigger': true,
+        'nom-upload-trigger': true,
       },
       attrs: {
         onclick() {
           !disabled && that._handleClick()
         },
         ondrop(e) {
-          !disabled && that.props.dragger && that._onFileDrop(e)
+          !disabled && draggable && that._onFileDrop(e)
         },
         ondragover(e) {
           e.preventDefault()
@@ -63,11 +61,12 @@ class UploaderCore extends Component {
       },
     }
 
-    if (button) {
-      trigger = Component.extendProps(defaults, button)
-    } else if (dragger) {
-      trigger = Component.extendProps(defaults, dragger)
+    const defaultBtn = {
+      component: 'Button',
+      text: '上传',
     }
+
+    const triggerProps = Component.extendProps(defaults, trigger || defaultBtn)
 
     this.setProps({
       children: [
@@ -87,7 +86,7 @@ class UploaderCore extends Component {
             },
           },
         },
-        trigger,
+        triggerProps,
       ],
     })
   }
@@ -234,9 +233,9 @@ class UploaderCore extends Component {
       const { data, method, headers, withCredentials } = props
       const option = {
         action,
-        data,
         file,
         filename: props.name,
+        data,
         method,
         headers,
         withCredentials,
@@ -376,13 +375,13 @@ class UploaderCore extends Component {
   }
 }
 
-UploaderCore.defaults = {
+Upload.defaults = {
   reference: 'body',
   action: '',
   disabled: false,
   beforeUpload: null,
-  button: null, // 按钮界面
-  dragger: null, // 拖拽界面
+  trigger: null, // 按钮界面
+  draggable: false, // 拖拽界面
   defaultFileList: [], // 默认上传文件列表
   multiple: false,
   name: 'file',
@@ -394,6 +393,6 @@ UploaderCore.defaults = {
   onChange: null,
 }
 
-Component.register(UploaderCore)
+Component.register(Upload)
 
-export default UploaderCore
+export default Upload

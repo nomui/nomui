@@ -4,14 +4,14 @@
 
 ## API
 
-### UploaderCore
+### Upload
 
 | 参数 | 说明 | 类型 | 默认值 | 注释 |
 | --- | --- | --- | --- | --- |
 | accept | 接受上传的文件类型, 详见 [input accept Attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept) | string | - |  |
 | action | 上传的地址 | string \| (file) => Promise | - |  |
-| button | 上传按钮的属性配置 | `{}` |  |  |
-| dragger | 拖拽上传区域的属性配置(也可点击触发上传) | `{}` |  |  |
+| trigger | 触发器的属性配置 | `{}` | 上传按钮 |  |
+| draggable | 是否允许拖拽上传 | `boolean` | false |  |
 | multiple | 是否允许多选上传 | `boolean` | `false` |  |
 | method | 上传请求的 http method | string | `post` |  |
 | beforeUpload | 上传文件之前的钩子，参数为上传的文件，若返回 `false` 则停止上传。支持返回一个 Promise 对象，Promise 对象 reject 时则停止上传，resolve 时开始上传（ resolve 传入 `File` 或 `Blob` 对象则上传 resolve 传入对象）。**注意：IE9 不支持该方法** | (file, fileList) => boolean \| Promise | - |  |

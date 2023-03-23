@@ -21,7 +21,7 @@ define([], function () {
               '已上传列表，可以是数组也可以是个promise对象，当是promise对象时，resolve会触发onChange回调',
           },
           {
-            component: 'UploaderCore',
+            component: 'Upload',
             ref: (c) => {
               uploaderRef = c
             },
@@ -52,10 +52,6 @@ define([], function () {
               if (!file || (file && file.status === 'done')) {
                 getListData()
               }
-            },
-            button: {
-              component: 'Button',
-              text: '点我上传',
             },
           },
           {

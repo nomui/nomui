@@ -564,10 +564,10 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       url: '#!components!index?type=Uploader',
                     },
                     {
-                      text: 'UploaderCore',
+                      text: 'Upload',
                       subtext: '上传服务',
-                      id: 'UploaderCore',
-                      url: '#!components!index?type=UploaderCore',
+                      id: 'Upload',
+                      url: '#!components!index?type=Upload',
                     },
                   ],
                 },
