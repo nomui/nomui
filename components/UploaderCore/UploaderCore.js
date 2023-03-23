@@ -64,17 +64,9 @@ class UploaderCore extends Component {
     }
 
     if (button) {
-      if (isFunction(button)) {
-        trigger = button()
-      } else {
-        trigger = Component.extendProps(defaults, button)
-      }
+      trigger = Component.extendProps(defaults, button)
     } else if (dragger) {
-      if (isFunction(dragger)) {
-        trigger = dragger()
-      } else {
-        trigger = Component.extendProps(defaults, dragger)
-      }
+      trigger = Component.extendProps(defaults, dragger)
     }
 
     this.setProps({
