@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/nomui/nomui/compare/v1.1.32...v1.2.0) (2023-03-24)
+
+
+### Features
+
+* 新增UploaderCore组件 ([e1093db](https://github.com/nomui/nomui/commit/e1093dbec83eb8980af44ba5974d453049752fd5))
+
+
+### Performance Improvements
+
+* 优化上传失败时的处理逻辑 ([9ddca5a](https://github.com/nomui/nomui/commit/9ddca5a98e89da8c4d4a3df9972e3ac4771648b3))
+
+
+### Docs
+
+* 文档案例完善 ([c0f9ff2](https://github.com/nomui/nomui/commit/c0f9ff23d79257b73bbd6c29f485d526a118ab9e))
+* 文档更新 ([83f941d](https://github.com/nomui/nomui/commit/83f941d9c86a01865a1b4890c538b1593241c51f))
+* 文档命名更新 ([6f90941](https://github.com/nomui/nomui/commit/6f90941190b6f522ccd8010e9f11f498ad3a56a4))
+* 文档校正 ([fef28e0](https://github.com/nomui/nomui/commit/fef28e0351986c0f40c68102da0f975861dfacc9))
+
 ### [1.1.17](https://github.com/nomui/nomui/compare/v1.1.16...v1.1.17) (2022-12-09)
 
 ### Features
