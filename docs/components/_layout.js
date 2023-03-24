@@ -563,6 +563,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       id: 'Uploader',
                       url: '#!components!index?type=Uploader',
                     },
+                    {
+                      text: 'Upload',
+                      subtext: '基础上传组件',
+                      id: 'Upload',
+                      url: '#!components!index?type=Upload',
+                    },
                   ],
                 },
                 {

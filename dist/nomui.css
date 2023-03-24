@@ -12125,6 +12125,12 @@ textarea .nom-textarea {
 .nom-image img {
   vertical-align: top;
 }
+.nom-upload .nom-upload-trigger {
+  cursor: pointer;
+}
+.nom-upload .nom-upload-trigger.s-disabled {
+  cursor: not-allowed;
+}
 @media all and (-moz-min-device-pixel-ratio: 1.09) and (-moz-max-device-pixel-ratio: 1.18), (-webkit-min-device-pixel-ratio: 1.09) and (-webkit-max-device-pixel-ratio: 1.18), (min-resolution: 1.09dppx) and (max-resolution: 1.18dppx) {
   :root {
     font-size: 14px;

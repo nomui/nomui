@@ -14,7 +14,7 @@
 | data | 为自定义渲染列表时的数据源 | `[]` | - |
 | itemRender | 自定义渲染函数 | `function` | ({itemData}) => ({children: itemData}) |
 | disabledItems | 禁用的选项，传入想要禁用选项的 key 的数组 | `[key]` | - |
-| itemDefaults | 列表数据源的统一默认配置 | `ComponentProps` | - |
+| itemDefaults | 列表数据源的统一默认配置(仅在数据源使用 items 时有效) | `ComponentProps` | - |
 | itemSelectable | 子项是否可选中的配置 | `object` | - |
 | cols | 列表展示为多少列 | `'number'` | - |
 | onItemSelectionChange | 当列表选项改变时触发 | `'function'` | - |

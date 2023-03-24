@@ -21475,6 +21475,7 @@ function _defineProperty2(obj, key, value) {
     simple: false, // 简洁模式，只展示总数和上一页，下一页按钮
     prevShowAlways: true,
     nextShowAlways: true,
+    paramsType: "default",
     justify: "end",
     itemsSort: ["count", "pages", "sizes"], // 排列顺序 1.count 共xx条数据 2.分页数List 3.分页大小Select
     texts: {
@@ -26962,6 +26963,431 @@ function _defineProperty2(obj, key, value) {
     initExpandLevel: -1,
   };
   Component.register(TreeSelect);
+  const DEFAULT_ACCEPT$1 =
+    "image/*,application/msword,application/pdf,application/x-rar-compressed,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.ms-works,application/zip,audio/*,video/*,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/vnd.ms-word.document.macroEnabled.12,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.template.macroEnabled.12,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.ms-powerpoint.addin.macroEnabled.12,application/vnd.ms-powerpoint.presentation.macroEnabled.12,application/vnd.ms-powerpoint.slideshow.macroEnabled.12,application/csv";
+  function getUUID$1() {
+    return `nom-upload-${Math.random().toString().substr(2)}`;
+  }
+  function isBlobFile$1(file) {
+    const ft = Object.prototype.toString.call(file);
+    return ft === "[object File]" || ft === "[object Blob]";
+  }
+  function getFileFromList$1(file, fileList) {
+    return fileList.find((e) => e.uuid === file.uuid);
+  }
+  function cloneFileWithInfo$1(file) {
+    return Object.assign({}, file, {
+      lastModified: file.lastModified,
+      lastModifiedDate: file.lastModifiedDate,
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      uuid: file.uuid,
+      percent: 0,
+      originFile: file,
+    });
+  }
+  function getError$1(option, xhr) {
+    const msg = `Can't ${option.method} ${option.action} ${xhr.status}`;
+    const err = new Error(msg);
+    return Object.assign({}, err, {
+      status: xhr.status,
+      method: option.method,
+      url: option.action,
+    });
+  }
+  function getBody$1(xhr) {
+    const text = xhr.responseText || xhr.response;
+    if (!text) {
+      return text;
+    }
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      return text;
+    }
+  }
+  function upload$1(option) {
+    const xhr = new XMLHttpRequest();
+    if (option.onProgress && xhr.upload) {
+      xhr.upload.onprogress = function progress(e) {
+        if (e.total > 0) {
+          e.percent = (e.loaded / e.total) * 100;
+        }
+        option.onProgress(e);
+      };
+    }
+    const formData = new FormData();
+    if (option.data) {
+      Object.keys(option.data).forEach((key) => {
+        const value = option.data[key];
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            formData.append(`${key}[]`, item);
+          });
+          return;
+        }
+        formData.append(key, option.data[key]);
+      });
+    }
+    if (option.file instanceof Blob) {
+      formData.append(option.filename, option.file, option.file.name);
+    } else {
+      formData.append(option.filename, option.file);
+    }
+    xhr.onerror = function error(e) {
+      option.onError(e);
+    };
+    xhr.onload = function onload() {
+      if (xhr.status < 200 || xhr.status >= 300) {
+        return option.onError(getError$1(option, xhr), getBody$1(xhr));
+      }
+      return option.onSuccess(getBody$1(xhr), xhr);
+    };
+    xhr.open(option.method, option.action, true);
+    if (option.withCredentials && "withCredentials" in xhr) {
+      xhr.withCredentials = true;
+    }
+    const headers = option.headers || {};
+    if (headers["X-Requested-With"] !== null) {
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    }
+    Object.keys(headers).forEach((header) => {
+      if (headers[header] !== null) {
+        xhr.setRequestHeader(header, headers[header]);
+      }
+    });
+    xhr.send(formData);
+    return {
+      abort() {
+        xhr.abort();
+      },
+    };
+  }
+  class Upload extends Component {
+    constructor(props, ...mixins) {
+      super(Component.extendProps(Upload.defaults, props), ...mixins);
+      _defineProperty2(this, "_onFileDrop", (e) => {
+        const { multiple } = this.props;
+        e.preventDefault();
+        if (e.type === "dragover") {
+          return;
+        }
+        let files = [...e.dataTransfer.files];
+        if (multiple === false) {
+          files = files.slice(0, 1);
+        }
+        this._uploadFiles(files, this.fileList);
+      });
+    }
+    _created() {
+      this.reqs = {};
+    }
+    _config() {
+      const that = this;
+      const { disabled, accept, multiple, trigger, draggable } = this.props;
+      this.fileList = this.props.fileList || this.props.defaultFileList;
+      this.acceptList = accept ? this._getAcceptList() : "";
+      let initializing = true;
+      if (nomui.utils.isPromiseLike(that.fileList)) {
+        that.fileList.then((res) => {
+          initializing = false;
+          that.fileList = res;
+          that.props.onChange &&
+            that._callHandler(that.props.onChange, {
+              file: null,
+              fileList: that.fileList,
+            });
+          if (!disabled && this.triggerRef) {
+            that.triggerRef.enable();
+          }
+        });
+      } else {
+        initializing = false;
+      }
+      this._watchStatus();
+      const defaults = {
+        disabled: disabled || initializing, // disabled,
+        ref: (c) => {
+          that.triggerRef = c;
+        },
+        classes: { "nom-upload-trigger": true },
+        attrs: {
+          onclick() {
+            !disabled && that._handleClick();
+          },
+          ondrop(e) {
+            !disabled && draggable && that._onFileDrop(e);
+          },
+          ondragover(e) {
+            e.preventDefault();
+          },
+        },
+      };
+      const defaultBtn = { component: "Button", text: "上传" };
+      const triggerProps = Component.extendProps(
+        defaults,
+        trigger || defaultBtn
+      );
+      this.setProps({
+        children: [
+          {
+            tag: "input",
+            hidden: true,
+            _created() {
+              that.inputFile = this;
+            },
+            attrs: {
+              type: "file",
+              multiple: multiple,
+              accept: accept || DEFAULT_ACCEPT$1,
+              onchange: that._onChange.bind(that),
+              onclick: (e) => {
+                e.stopPropagation();
+              },
+            },
+          },
+          triggerProps,
+        ],
+      });
+    }
+    getData() {
+      return this.fileList;
+    }
+    disable() {
+      this.triggerRef.disable();
+    }
+    enable() {
+      this.triggerRef.enable();
+    }
+    _watchStatus(file) {
+      if (file && this.fileList && this.fileList.length) {
+        const currentStatus = file.status;
+        const allStats = this.fileList.map((n) => {
+          return n.status;
+        });
+        const noUploading = !allStats.includes("uploading");
+        if (currentStatus === "uploading") {
+          this._showLoading();
+        } else if (currentStatus === "done") {
+          this._cancleLoading(noUploading);
+        } else if (currentStatus === "error") {
+          this._cancleLoading(noUploading);
+          new nomui.Message({ content: "上传失败！", type: "error" });
+        }
+      }
+    }
+    _showLoading() {
+      if (!this.loading) {
+        this.loading = new nomui.Loading({ container: this.triggerRef });
+      }
+    }
+    _cancleLoading(flag) {
+      if (flag && this.loading) {
+        this.loading.remove();
+        this.loading = null;
+      }
+    }
+    _getAcceptList() {
+      if (this.props.accept) {
+        return this.props.accept
+          .replace("image/*", ".jpg,.png,.gif,.jpeg,.jp2,.jpe,.bmp,.tif,.tiff")
+          .replace("video/*", ".3gpp,.mp2,.mp3,.mp4,.mpeg,.mpg")
+          .replace("audio/*", ".3gpp,.ac3,.asf,.au,.mp2,.mp3,.mp4,.ogg");
+      }
+    }
+    _checkType(file) {
+      if (!this.props.accept) {
+        return true;
+      }
+      if (!file || !file.name) {
+        return false;
+      }
+      const { name } = file;
+      const type = name.substring(name.lastIndexOf(".")).toLowerCase();
+      if (this.acceptList.toLowerCase().includes(type)) {
+        return true;
+      }
+      return false;
+    }
+    _onChange(e) {
+      const { files } = e.target;
+      const uploadedFiles = this.fileList;
+      this._uploadFiles(files, uploadedFiles);
+    }
+    _uploadFiles(files, uploadedFiles) {
+      // 转为数组
+      let fileList = Array.from(files);
+      const uploadedFileList = Array.from(uploadedFiles);
+      fileList = fileList.map((e) => {
+        if (!e.uuid) {
+          e.uuid = getUUID$1();
+        }
+        e.uploadTime = new Date().getTime();
+        return e;
+      });
+      fileList.forEach((file) => {
+        this._upload(file, [...uploadedFileList, ...fileList]);
+      });
+    }
+    _upload(file, fileList) {
+      const beforeUpload = this.props.beforeUpload;
+      if (!this._checkType(file)) {
+        new nomui.Alert({ title: "不支持此格式，请重新上传。" });
+        return;
+      }
+      if (!beforeUpload) {
+        Promise.resolve().then(() => this._post(file));
+        return;
+      }
+      const before = beforeUpload(file, fileList);
+      if (this.inputFile && this.inputFile.element)
+        this.inputFile.element.value = "";
+      if (nomui.utils.isPromiseLike(before)) {
+        before.then((pFile) => {
+          if (isBlobFile$1(pFile)) {
+            this._post(pFile);
+            return;
+          }
+          this._post(file);
+        });
+      } else if (before !== false) {
+        Promise.resolve().then(() => {
+          this._post(file);
+        });
+      }
+    }
+    _post(file) {
+      if (!this.rendered) {
+        return;
+      }
+      const that = this;
+      const { props } = this;
+      const { uuid } = file;
+      new Promise((resolve) => {
+        const actionRet = this.props.action;
+        resolve(isFunction(actionRet) ? actionRet(file) : actionRet);
+      }).then((action) => {
+        const { data, method, headers, withCredentials } = props;
+        const option = {
+          action,
+          file,
+          filename: props.name,
+          data,
+          method,
+          headers,
+          withCredentials,
+          onProgress: (e) => {
+            that._onProgress(e, file);
+          },
+          onSuccess: (ret, xhr) => {
+            that._onSuccess(ret, file, xhr);
+          },
+          onError: (err, ret) => {
+            that._onError(err, ret, file);
+            that.reqs[uuid] && delete that.reqs[uuid];
+          },
+        };
+        this._onStart(file);
+        this.reqs[uuid] = upload$1(option);
+      });
+    }
+    _watchChange({ file, fileList }) {
+      // 更新列表
+      this.fileList = fileList;
+      this._watchStatus(file);
+      if (this.triggerRef) {
+        const disableBtn = this.fileList.some((n) =>
+          ["removing", "uploading"].includes(n.status)
+        );
+        if (!this.props.disabled) {
+          disableBtn ? this.triggerRef.disable() : this.triggerRef.enable();
+        }
+      }
+      if (this.props.onChange) {
+        this._callHandler(this.props.onChange, {
+          file,
+          fileList: [...this.fileList],
+        });
+      }
+    }
+    _onStart(file) {
+      const currentFile = cloneFileWithInfo$1(file);
+      currentFile.status = "uploading"; // 这里要改
+      const fileList = Array.from(this.fileList);
+      const findIndex = fileList.findIndex((f) => f.uuid === currentFile.uuid);
+      if (findIndex === -1) {
+        fileList.push(currentFile);
+      } else {
+        fileList[findIndex] = currentFile;
+      }
+      this._watchChange({ file: currentFile, fileList: fileList });
+    }
+    _onProgress(e, file) {
+      const currentFile = getFileFromList$1(file, this.fileList);
+      if (!currentFile) {
+        return;
+      }
+      currentFile.percent = e.percent;
+      this._watchChange({
+        event: e,
+        file: currentFile,
+        fileList: [...this.fileList],
+      });
+    }
+    _onSuccess(response, file, xhr) {
+      try {
+        if (typeof response === "string") {
+          response = JSON.parse(response);
+        }
+      } catch (e) {
+        /* do nothing */
+      }
+      const currentFile = getFileFromList$1(file, this.fileList);
+      if (!currentFile) {
+        return;
+      }
+      currentFile.response = response;
+      currentFile.status = "done";
+      currentFile.xhr = xhr;
+      this._watchChange({ file: currentFile, fileList: [...this.fileList] });
+    }
+    _onError(error, response, file) {
+      const currentFile = getFileFromList$1(file, this.fileList);
+      if (!currentFile) {
+        return;
+      }
+      this.fileList = this.fileList.filter((n) => {
+        return n.uuid !== file.uuid;
+      });
+      currentFile.error = error;
+      currentFile.status = "error";
+      currentFile.response = response;
+      this._watchChange({ file: currentFile, fileList: [...this.fileList] });
+    }
+    _handleClick() {
+      if (this.inputFile) {
+        this.inputFile.element.click();
+      }
+    }
+  }
+  Upload.defaults = {
+    reference: "body",
+    action: "",
+    disabled: false,
+    beforeUpload: null,
+    trigger: null, // 按钮界面
+    draggable: false, // 拖拽界面
+    defaultFileList: [], // 默认上传文件列表
+    multiple: false,
+    name: "file",
+    data: {}, // request option
+    method: "post",
+    headers: {},
+    withCredentials: false,
+    onChange: null,
+  };
+  Component.register(Upload);
   const DEFAULT_ACCEPT =
     "image/*,application/msword,application/pdf,application/x-rar-compressed,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.ms-works,application/zip,audio/*,video/*,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/vnd.ms-word.document.macroEnabled.12,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.template.macroEnabled.12,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.ms-powerpoint.addin.macroEnabled.12,application/vnd.ms-powerpoint.presentation.macroEnabled.12,application/vnd.ms-powerpoint.slideshow.macroEnabled.12,application/csv";
   function getUUID() {
@@ -27865,6 +28291,7 @@ function _defineProperty2(obj, key, value) {
   exports.Tooltip = Tooltip;
   exports.Tree = Tree;
   exports.TreeSelect = TreeSelect;
+  exports.Upload = Upload;
   exports.Uploader = Uploader;
   exports.n = n$1;
   exports.use = use;
