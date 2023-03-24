@@ -565,7 +565,7 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                     },
                     {
                       text: 'Upload',
-                      subtext: '上传服务',
+                      subtext: '基础上传组件',
                       id: 'Upload',
                       url: '#!components!index?type=Upload',
                     },
