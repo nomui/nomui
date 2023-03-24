@@ -280,7 +280,7 @@ Pager.defaults = {
   simple: false, // 简洁模式，只展示总数和上一页，下一页按钮
   prevShowAlways: true,
   nextShowAlways: true,
-
+  paramsType: 'default',
   justify: 'end',
   itemsSort: ['count', 'pages', 'sizes'], // 排列顺序 1.count 共xx条数据 2.分页数List 3.分页大小Select
 
