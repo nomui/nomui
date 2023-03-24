@@ -827,8 +827,13 @@ function _defineProperty2(obj, key, value) {
       );
     }
     emptyChildren() {
-      while (this.element.firstChild && this.element.firstChild.component) {
-        this.element.firstChild.component.remove();
+      while (this.element.firstChild) {
+        const el = this.element.firstChild;
+        if (el.component) {
+          el.component.remove();
+        } else {
+          el.parentNode.removeChild(el);
+        }
       }
     }
     offsetWidth() {

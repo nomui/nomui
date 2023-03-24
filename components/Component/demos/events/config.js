@@ -7,8 +7,7 @@ define([], function () {
     demo: function () {
       let favoriteBook = null
 
-      let bookInfoRef = null,
-        bookInfo2Ref = null
+      let bookInfoRef = null
 
       const books = [
         { name: '连城诀', publisher: '三联出版社', publication_year: '1980' },
@@ -24,145 +23,62 @@ define([], function () {
 
       return {
         component: 'Flex',
-        cols: [
+        rows: [
           {
-            span: 6,
             children: {
-              component: 'Panel',
-              uistyle: 'bordered',
-              header: {
-                caption: { title: '配置数据（状态）挂在组件自身的 props 上' },
-              },
-              body: {
-                children: {
-                  component: 'Flex',
-                  rows: [
-                    {
-                      component: 'RadioList',
-                      label: '最喜欢看的小说',
-                      uistyle: 'button',
-                      options: books.map((book) => {
-                        return { text: book.name, value: book.name }
-                      }),
-                      onValueChange: ({ newValue }) => {
-                        const currentBook = books.find((book) => {
-                          return book.name === newValue
-                        })
+              component: 'Flex',
+              rows: [
+                {
+                  component: 'RadioList',
+                  label: '最喜欢看的小说',
+                  uistyle: 'button',
+                  options: books.map((book) => {
+                    return { text: book.name, value: book.name }
+                  }),
+                  onValueChange: ({ newValue }) => {
+                    favoriteBook = findBook(newValue)
 
-                        bookInfoRef.update({
-                          currentBook: currentBook,
-                        })
-                      },
-                    },
-                    {
-                      tag: 'p',
-                      ref: (c) => {
-                        bookInfoRef = c
-                      },
-                      currentBook: null, // 自定义组件 prop，注意不要与组件已有 props 重复
-                      onConfig: ({ inst, props }) => {
-                        const { currentBook } = props
-                        if (currentBook !== null) {
-                          inst.setProps({
-                            children: {
-                              component: 'Flex',
-                              gap: 'small',
-                              rows: [
-                                {
-                                  tag: 'img',
-                                  attrs: {
-                                    src: `docs/images/books/${currentBook.name}.jpg`,
-                                  },
-                                },
-                                { children: currentBook.name },
-                                {
-                                  children: {
-                                    styles: {
-                                      text: 'muted',
-                                    },
-                                    children: `${currentBook.publisher} / ${currentBook.publication_year}`,
-                                  },
-                                },
-                              ],
-                            },
-                          })
-                        } else {
-                          inst.setProps({
-                            children: '请选择你最喜欢的一本小说',
-                          })
-                        }
-                      },
-                    },
-                  ],
+                    bookInfoRef.update()
+                  },
                 },
-              },
-            },
-          },
-          {
-            span: 6,
-            children: {
-              component: 'Panel',
-              uistyle: 'bordered',
-              header: {
-                caption: { title: '配置数据（状态）定义在上下文中' },
-              },
-              body: {
-                children: {
-                  component: 'Flex',
-                  rows: [
-                    {
-                      component: 'RadioList',
-                      label: '最喜欢看的小说',
-                      uistyle: 'button',
-                      options: books.map((book) => {
-                        return { text: book.name, value: book.name }
-                      }),
-                      onValueChange: ({ newValue }) => {
-                        favoriteBook = findBook(newValue)
-
-                        bookInfo2Ref.update()
-                      },
-                    },
-                    {
-                      tag: 'p',
-                      ref: (c) => {
-                        bookInfo2Ref = c
-                      },
-                      onConfig: ({ inst }) => {
-                        if (favoriteBook !== null) {
-                          inst.setProps({
-                            children: {
-                              component: 'Flex',
-                              gap: 'small',
-                              rows: [
-                                {
-                                  tag: 'img',
-                                  attrs: {
-                                    src: `docs/images/books/${favoriteBook.name}.jpg`,
-                                  },
-                                },
-                                { children: favoriteBook.name },
-                                {
-                                  children: {
-                                    styles: {
-                                      text: 'muted',
-                                    },
-                                    children: `${favoriteBook.publisher} / ${favoriteBook.publication_year}`,
-                                  },
-                                },
-                              ],
+                {
+                  tag: 'p',
+                  ref: (c) => {
+                    bookInfoRef = c
+                  },
+                  onConfig: ({ inst }) => {
+                    if (favoriteBook !== null) {
+                      inst.setProps({
+                        children: {
+                          component: 'Flex',
+                          gap: 'small',
+                          rows: [
+                            {
+                              tag: 'img',
+                              attrs: {
+                                src: `/docs/images/books/${favoriteBook.name}.jpg`,
+                              },
                             },
-                          })
-                        } else {
-                          inst.setProps({
-                            children: '请选择你最喜欢的一本小说',
-                          })
-                        }
-                      },
-                    },
-                  ],
+                            { children: favoriteBook.name },
+                            {
+                              children: {
+                                styles: {
+                                  text: 'muted',
+                                },
+                                children: `${favoriteBook.publisher} / ${favoriteBook.publication_year}`,
+                              },
+                            },
+                          ],
+                        },
+                      })
+                    } else {
+                      inst.setProps({
+                        children: '请选择你最喜欢的一本小说',
+                      })
+                    }
+                  },
                 },
-              },
+              ],
             },
           },
         ],
