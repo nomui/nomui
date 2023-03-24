@@ -56,7 +56,7 @@ define([], function () {
                             {
                               tag: 'img',
                               attrs: {
-                                src: `/docs/images/books/${favoriteBook.name}.jpg`,
+                                src: `docs/images/books/${favoriteBook.name}.jpg`,
                               },
                             },
                             { children: favoriteBook.name },
