@@ -71,7 +71,7 @@ define([], function () {
                                 {
                                   tag: 'img',
                                   attrs: {
-                                    src: `/docs/images/books/${currentBook.name}.jpg`,
+                                    src: `docs/images/books/${currentBook.name}.jpg`,
                                   },
                                 },
                                 { children: currentBook.name },
@@ -138,7 +138,7 @@ define([], function () {
                                 {
                                   tag: 'img',
                                   attrs: {
-                                    src: `/docs/images/books/${favoriteBook.name}.jpg`,
+                                    src: `docs/images/books/${favoriteBook.name}.jpg`,
                                   },
                                 },
                                 { children: favoriteBook.name },

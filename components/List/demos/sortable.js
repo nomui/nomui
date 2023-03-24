@@ -65,7 +65,7 @@ define([], function () {
                       tag: 'img',
                       classes: { 'item-image': true },
                       attrs: {
-                        src: `/docs/images/books/${itemData.name}.jpg`,
+                        src: `docs/images/books/${itemData.name}.jpg`,
                       },
                     },
                     { children: itemData.name, classes: { 'item-name': true } },
