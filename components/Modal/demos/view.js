@@ -22,7 +22,7 @@ define([], function () {
                 attrs: {
                   onclick: function () {
                     new nomui.Modal({
-                      content: '/components/Modal/demos/view-content.js',
+                      content: 'components/Modal/demos/view-content.js',
                       args: {
                         name: '笑傲江湖',
                         description:
@@ -39,7 +39,7 @@ define([], function () {
                 attrs: {
                   onclick: function () {
                     new nomui.Modal({
-                      content: '/components/Modal/demos/view-content.js',
+                      content: 'components/Modal/demos/view-content.js',
                       args: {
                         name: '神雕侠侣',
                         description:
@@ -56,7 +56,7 @@ define([], function () {
                 attrs: {
                   onclick: function () {
                     new nomui.Modal({
-                      content: '/components/Modal/demos/view-content.js',
+                      content: 'components/Modal/demos/view-content.js',
                       args: {
                         name: '天龙八部',
                         description:

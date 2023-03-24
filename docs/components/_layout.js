@@ -5,6 +5,7 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
     const highLight = () => {
       let { type = 'Component' } = this.$route.query
       const { cat } = this.$route.query
+
       if (cat) {
         type += `/${cat}`
       }

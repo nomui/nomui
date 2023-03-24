@@ -5,11 +5,11 @@ define(['docs/DemoPanel.js'], function (demoPanel) {
 
     const renderDemoIndex = () => {
       const { type = 'Component', cat, tab = 'demo' } = this.$route.query
-      let url = `/components/${type}/demos/index.js`
+      let url = `components/${type}/demos/index.js`
       if (cat) {
-        url = `/components/${type}/demos/${cat}/index.js`
+        url = `components/${type}/demos/${cat}/index.js`
       }
-      const docUrl = `text!/components/${type}/index.md`
+      const docUrl = `text!components/${type}/index.md`
 
       require([url], (props) => {
         require([docUrl], (docContent) => {
