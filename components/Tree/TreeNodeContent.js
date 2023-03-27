@@ -65,7 +65,6 @@ class TreeNodeContent extends Component {
         }
       }
     }
-    console.log(toolProps)
 
     this.setProps({
       hidden: this.node.props.data.hidden,
