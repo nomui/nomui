@@ -76,7 +76,7 @@
 | key | 键 | `string` | - |
 | text | 文本 | `string` | - |
 | icon | 配置节点图标 | `string` | - |
-| tools | 节点文本右侧工具栏配置 | `ComponentProps \| ({node, tree}) => ComponentProps` | - |
+| tools | 节点工具栏配置，通过 justify 配置对齐方式，render 传入参数当前节点与整个 Tree 实例，返回一个 Flex 组件子项数组 | `{justify:string,render:{ node, tree }=>{}}` | - |
 | disabled | 该节点是否禁用 | `boolean` | - |
 | children | 子节点数据数组 | `TreeData[]` | - |
 

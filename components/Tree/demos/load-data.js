@@ -29,7 +29,7 @@ define([], function () {
         },
       ]
 
-      const loadMore = ({ key }) =>
+      const asyncGetTreeData = ({ key }) =>
         new Promise((resolve) => {
           setTimeout(() => {
             resolve([{ text: '节点 3.1' }, { text: '节点 3.2' }])
@@ -56,7 +56,7 @@ define([], function () {
           },
           data: initData,
           loadData: (param) => {
-            loadMore(param)
+            asyncGetTreeData(param)
           },
         },
       }

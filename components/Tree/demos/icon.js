@@ -12,24 +12,52 @@ define([], function () {
             {
               text: '节点 1',
               icon: 'folder',
+              tools: {
+                render: ({ node, tree }) => {
+                  return [
+                    {
+                      component: 'Button',
+                      type: 'link',
+                      text: '查看',
+                      onClick({ event }) {
+                        // eslint-disable-next-line
+                        console.log(node, tree)
+                        event.stopPropagation()
+                      },
+                    },
+                    {
+                      component: 'Button',
+                      type: 'link',
+                      text: '删除',
+                      onClick({ event }) {
+                        // eslint-disable-next-line
+                        console.log(node, tree)
+                        event.stopPropagation()
+                      },
+                    },
+                  ]
+                },
+              },
               children: [
                 {
                   text: '节点 1.1',
                   icon: 'folder',
                   tools: {
-                    component: 'Flex',
-                    cols: [
-                      {
-                        component: 'Icon',
-                        type: 'question-circle',
-                        tooltip: '子组件的点击事件不会带上node, tree的返回值',
-                      },
-                      {
-                        component: 'Icon',
-                        type: 'info-circle',
-                        tooltip: 'tools 中可以配置任意组件',
-                      },
-                    ],
+                    justify: 'end', // 控制x轴对齐方式
+                    render: ({ node, tree }) => {
+                      return [
+                        {
+                          component: 'Button',
+                          type: 'link',
+                          text: '更新',
+                          onClick({ event }) {
+                            // eslint-disable-next-line
+                            console.log(node, tree)
+                            event.stopPropagation()
+                          },
+                        },
+                      ]
+                    },
                   },
                   children: [
                     { text: '节点 1.1.1', icon: 'file' },
@@ -42,18 +70,7 @@ define([], function () {
             {
               text: '节点 2',
               icon: 'folder',
-              tools: ({ node, tree }) => {
-                return {
-                  component: 'Button',
-                  type: 'link',
-                  text: '点击按钮查看详情',
-                  onClick({ event }) {
-                    // eslint-disable-next-line
-                    console.log('tools作为函数传入', node, tree)
-                    event.stopPropagation()
-                  },
-                }
-              },
+
               children: [
                 { text: '节点 2.1', icon: 'file' },
                 { text: '节点 2.2', icon: 'file' },

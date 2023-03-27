@@ -1,7 +1,7 @@
 import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import Icon from '../Icon/index'
-import { extend, isFunction } from '../util/index'
+import { extend } from '../util/index'
 
 class TreeNodeContent extends Component {
   constructor(props, ...mixins) {
@@ -47,6 +47,25 @@ class TreeNodeContent extends Component {
         })
       }
     }
+
+    let toolProps = null
+    let isNewToolProp = false
+
+    if (tools) {
+      if (nomui.utils.isFunction(tools)) {
+        toolProps = tools({ node: this.node, tree: this.tree })
+      } else if (tools.component) {
+        toolProps = tools
+      } else if (tools.render) {
+        isNewToolProp = true
+        const n = tools.render({ node: this.node, tree: this.tree })
+        toolProps = {
+          justify: tools.justify || 'start',
+          items: Array.isArray(n) ? n : [n],
+        }
+      }
+    }
+    console.log(toolProps)
 
     this.setProps({
       hidden: this.node.props.data.hidden,
@@ -106,10 +125,29 @@ class TreeNodeContent extends Component {
           Component.normalizeTemplateProps(text),
         ),
         tools &&
-          Component.extendProps(
-            { classes: { 'nom-tree-node-content-tools': true } },
-            isFunction(tools) ? tools({ node: this.node, tree: this.tree }) : tools,
-          ),
+          (isNewToolProp
+            ? {
+                classes: {
+                  'nom-tree-node-content-tools': true,
+                  'nom-tree-node-content-tools-flex': true,
+                  'nom-tree-node-content-tools-hover': !!tools.hover,
+                },
+                children: {
+                  component: 'Flex',
+                  justify: toolProps.justify,
+                  fit: true,
+                  cols: toolProps.items,
+                },
+              }
+            : Component.extendProps(
+                {
+                  classes: {
+                    'nom-tree-node-content-tools': true,
+                    'nom-tree-node-content-tools-hover': !!tools.hover,
+                  },
+                },
+                toolProps,
+              )),
       ],
       onClick: () => {
         this.tree._onNodeClick({ node: this.node })
