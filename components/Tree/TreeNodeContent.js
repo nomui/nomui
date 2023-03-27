@@ -18,8 +18,36 @@ class TreeNodeContent extends Component {
   _config() {
     const { text, icon, tools } = this.node.props
     const { initExpandLevel, nodeCheckable, expandable } = this.tree.props
-    const expanded = initExpandLevel === -1 || initExpandLevel > this.level
+    const { nodes, childrenData } = this.node.props
+
+    const isNotEmptyNode =
+      this.node._isNotEmptyArray(nodes) || this.node._isNotEmptyArray(childrenData)
+    const expanded = (initExpandLevel === -1 || initExpandLevel > this.level) && isNotEmptyNode
+
     const tree = this.tree
+
+    const indicatorProps = {
+      component: Icon,
+      classes: { 'nom-tree-node-expandable-indicator': true, 'is-leaf': this.node.isLeaf },
+      expandable: {
+        expandedProps: {
+          type: 'sort-down',
+        },
+        collapsedProps: {
+          type: 'sort-right',
+        },
+      },
+    }
+
+    if (nomui.utils.isFunction(this.tree.props.loadData) && !isNotEmptyNode) {
+      indicatorProps.onClick = () => {
+        this.tree.props.loadData({
+          data: this.node.props.data,
+          key: this.node.key,
+        })
+      }
+    }
+
     this.setProps({
       hidden: this.node.props.data.hidden,
       expanded,
@@ -29,18 +57,7 @@ class TreeNodeContent extends Component {
         target: () => {
           return this.node.nodesRef
         },
-        indicator: {
-          component: Icon,
-          classes: { 'nom-tree-node-expandable-indicator': true, 'is-leaf': this.node.isLeaf },
-          expandable: {
-            expandedProps: {
-              type: 'sort-down',
-            },
-            collapsedProps: {
-              type: 'sort-right',
-            },
-          },
-        },
+        indicator: indicatorProps,
       }),
       selectable: {
         byClick: this.tree.props.nodeSelectable.byClick,

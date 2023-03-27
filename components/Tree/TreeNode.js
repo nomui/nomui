@@ -37,7 +37,9 @@ class TreeNode extends Component {
         component: TreeNodeContent,
       },
     ]
-    this.isLeaf = !(this._isNotEmptyArray(nodes) || this._isNotEmptyArray(childrenData))
+    this.isLeaf =
+      this.props.data.isLeaf !== false &&
+      !(this._isNotEmptyArray(nodes) || this._isNotEmptyArray(childrenData))
     if (Array.isArray(nodes) || Array.isArray(childrenData)) {
       children.push({
         component: 'TreeNodes',

@@ -16,6 +16,7 @@
 | nodeCheckable | 节点可勾选配置 | `boolean` \| `object` | - |
 | fit | 自适应父容器高度，当树超出高度时出现滚动条，如果有全选框，该全选框会固定 | `boolean` | false |
 | onNodeClick | 点击节点的回调 | `({node}) => {}` | - |
+| loadData | 异步加载节点事件(仅在节点无子数据且 isLeaf:false 时才能触发) | `({key,data}) => {}` | - |
 
 ## Tree methods
 
