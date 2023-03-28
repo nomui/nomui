@@ -9,6 +9,7 @@ define([
   './fit.js',
   './expand-to.js',
   './scroll-to.js',
+  './load-data.js',
 ], function () {
   return {
     title: 'Tree',

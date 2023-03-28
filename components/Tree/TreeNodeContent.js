@@ -1,7 +1,7 @@
 import Checkbox from '../Checkbox/index'
 import Component from '../Component/index'
 import Icon from '../Icon/index'
-import { extend, isFunction } from '../util/index'
+import { extend } from '../util/index'
 
 class TreeNodeContent extends Component {
   constructor(props, ...mixins) {
@@ -18,8 +18,51 @@ class TreeNodeContent extends Component {
   _config() {
     const { text, icon, tools } = this.node.props
     const { initExpandLevel, nodeCheckable, expandable } = this.tree.props
-    const expanded = initExpandLevel === -1 || initExpandLevel > this.level
+    const { nodes, childrenData } = this.node.props
+
+    const isNotEmptyNode =
+      this.node._isNotEmptyArray(nodes) || this.node._isNotEmptyArray(childrenData)
+    const expanded = (initExpandLevel === -1 || initExpandLevel > this.level) && isNotEmptyNode
+
     const tree = this.tree
+
+    const indicatorProps = {
+      component: Icon,
+      classes: { 'nom-tree-node-expandable-indicator': true, 'is-leaf': this.node.isLeaf },
+      expandable: {
+        expandedProps: {
+          type: 'sort-down',
+        },
+        collapsedProps: {
+          type: 'sort-right',
+        },
+      },
+    }
+
+    if (nomui.utils.isFunction(this.tree.props.loadData) && !isNotEmptyNode) {
+      indicatorProps.onClick = () => {
+        this._handleLoadData()
+      }
+    }
+
+    let toolProps = null
+    let isNewToolProp = false
+
+    if (tools) {
+      if (nomui.utils.isFunction(tools)) {
+        toolProps = tools({ node: this.node, tree: this.tree })
+      } else if (tools.component) {
+        toolProps = tools
+      } else if (tools.render) {
+        isNewToolProp = true
+        const n = tools.render({ node: this.node, tree: this.tree })
+        toolProps = {
+          justify: tools.justify || 'start',
+          items: Array.isArray(n) ? n : [n],
+        }
+      }
+    }
+
     this.setProps({
       hidden: this.node.props.data.hidden,
       expanded,
@@ -29,18 +72,7 @@ class TreeNodeContent extends Component {
         target: () => {
           return this.node.nodesRef
         },
-        indicator: {
-          component: Icon,
-          classes: { 'nom-tree-node-expandable-indicator': true, 'is-leaf': this.node.isLeaf },
-          expandable: {
-            expandedProps: {
-              type: 'sort-down',
-            },
-            collapsedProps: {
-              type: 'sort-right',
-            },
-          },
-        },
+        indicator: indicatorProps,
       }),
       selectable: {
         byClick: this.tree.props.nodeSelectable.byClick,
@@ -89,15 +121,49 @@ class TreeNodeContent extends Component {
           Component.normalizeTemplateProps(text),
         ),
         tools &&
-          Component.extendProps(
-            { classes: { 'nom-tree-node-content-tools': true } },
-            isFunction(tools) ? tools({ node: this.node, tree: this.tree }) : tools,
-          ),
+          (isNewToolProp
+            ? {
+                classes: {
+                  'nom-tree-node-content-tools': true,
+                  'nom-tree-node-content-tools-flex': true,
+                  'nom-tree-node-content-tools-hover': !!tools.hover,
+                },
+                children: {
+                  component: 'Flex',
+                  justify: toolProps.justify,
+                  fit: true,
+                  cols: toolProps.items,
+                },
+              }
+            : Component.extendProps(
+                {
+                  classes: {
+                    'nom-tree-node-content-tools': true,
+                    'nom-tree-node-content-tools-hover': !!tools.hover,
+                  },
+                },
+                toolProps,
+              )),
       ],
       onClick: () => {
         this.tree._onNodeClick({ node: this.node })
       },
     })
+  }
+
+  _handleLoadData() {
+    const r = this.tree.props.loadData({
+      data: this.node.props.data,
+      key: this.node.key,
+      node: this.node,
+    })
+    if (nomui.utils.isPromiseLike(r)) {
+      r.then((res) => {
+        this.node.addNodes(res)
+      })
+    } else if (Array.isArray(r)) {
+      this.node.addNodes(r)
+    }
   }
 
   _getCheckbox() {
