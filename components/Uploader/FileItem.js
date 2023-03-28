@@ -39,16 +39,16 @@ class FileItem extends Component {
           status === 'done'
             ? this.renderUploadedFile(file)
             : {
-                children: [
-                  {
-                    component: 'Icon',
-                    type: 'loading',
-                    classes: {
-                      'file-img': true,
-                    },
+              children: [
+                {
+                  component: 'Icon',
+                  type: 'loading',
+                  classes: {
+                    'file-img': true,
                   },
-                ],
-              }
+                },
+              ],
+            }
       }
 
       const actions = []
@@ -178,6 +178,7 @@ class FileItem extends Component {
 
   _handleDefaultCustomizeInfo(file) {
     if (!file) return null
+    const { onPreview } = this._uploader.props
     const { name, size, uploadTime } = file
     return [
       {
@@ -187,6 +188,9 @@ class FileItem extends Component {
             tag: 'a',
             children: name,
             classes: { 'upload-file-name': true },
+            onClick: ({ sender }) => {
+              isFunction(onPreview) && onPreview({ sender, file })
+            }
           },
         ],
       },

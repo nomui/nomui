@@ -73,4 +73,6 @@
 | customizeInfo | 自定义文件详情展示 | `(file)=>Component\|[]Component\|string` |  |  |
 | actionRender | 自定义上传渲染|  `object` | null | 优先级顺序actionRender > button，和button类似|  |
 | showList | 是否展示文件列表 |  `boolean ` | true | |  |
+| onPreview | 点击文件链接或预览图标时的回调 |  `function` | `({sender,file})=>void` | |  |
+
 
