@@ -412,8 +412,8 @@ class TreeSelect extends Field {
     this._content.update({ children: this._getContentBadges() })
 
     // 多选: 每次setValue后更新选中状态
-    if (this.props.multiple) { 
-      this.popup.selectControl.tree.checkNode(value) 
+    if (this.props.multiple) {
+      this.popup.selectControl.tree.checkedKeys(value)
     } else {
       // 单选: 点击后即关闭popup,在onShow中更新
       this.props.animate && this.popup.animateHide()

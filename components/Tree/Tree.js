@@ -238,7 +238,7 @@ class Tree extends Component {
     }
   }
 
-  checkNode(param) {
+  checkedKeys(param) {
     Object.keys(this.nodeRefs).forEach((nodeKey) => {
       if (!param.includes(nodeKey)) {
         this.nodeRefs[nodeKey].uncheck({ triggerCheckChange: false })
@@ -248,7 +248,7 @@ class Tree extends Component {
     })
   }
 
-  uncheckNode(param) {
+  uncheckedKeys(param) {
     if (Array.isArray(param) && param.length) {
       param.forEach(item => {
         const node = this.getNode(item)
