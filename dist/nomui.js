@@ -27610,12 +27610,20 @@ function _defineProperty2(obj, key, value) {
     }
     _handleDefaultCustomizeInfo(file) {
       if (!file) return null;
+      const { onPreview } = this._uploader.props;
       const { name, size, uploadTime } = file;
       return [
         {
           tag: "span",
           children: [
-            { tag: "a", children: name, classes: { "upload-file-name": true } },
+            {
+              tag: "a",
+              children: name,
+              classes: { "upload-file-name": true },
+              onClick: ({ sender }) => {
+                isFunction(onPreview) && onPreview({ sender, file });
+              },
+            },
           ],
         },
         { tag: "span", children: getFileSize(size) },
