@@ -178,7 +178,7 @@ class FileItem extends Component {
 
   _handleDefaultCustomizeInfo(file) {
     if (!file) return null
-    const { previewRender } = this._uploader.props
+    const { onPreview } = this._uploader.props
     const { name, size, uploadTime } = file
     return [
       {
@@ -189,7 +189,7 @@ class FileItem extends Component {
             children: name,
             classes: { 'upload-file-name': true },
             onClick: ({ sender }) => {
-              isFunction(previewRender) && previewRender({ sender, file })
+              isFunction(onPreview) && onPreview({ sender, file })
             }
           },
         ],
