@@ -15899,6 +15899,24 @@ function _defineProperty2(obj, key, value) {
     }
     _rendered() {
       this.props.column.autoWidth && this._parseTdWidth();
+      const fixed = this.props.column.fixed;
+      if (fixed) {
+        this._setTdsPosition();
+      }
+    }
+    _setTdsPosition() {
+      const fixed = this.props.column.fixed;
+      const el = this.element;
+      const parentEl = this.parent.element;
+      if (fixed === "left") {
+        this._stickyPos = el.offsetLeft;
+      } else if (fixed === "right") {
+        this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth;
+        if (this.table.hasGrid && this.table.grid.props.frozenHeader) {
+          this._stickyPos -= this.table.grid.props.scrollbarWidth;
+        }
+      }
+      this._setStyle({ [fixed]: `${this._stickyPos}px` });
     }
     _parseTdWidth() {
       let tdWidth = 0; // Td的左右padding 10+10, 预留1px的buffer
