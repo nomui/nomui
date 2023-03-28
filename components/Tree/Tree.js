@@ -238,21 +238,34 @@ class Tree extends Component {
     }
   }
 
-  checkedKeys(param) {
+  checkNodes(param, options) {
     Object.keys(this.nodeRefs).forEach((nodeKey) => {
       if (!param.includes(nodeKey)) {
         this.nodeRefs[nodeKey].uncheck({ triggerCheckChange: false })
-      } else if (param.includes(nodeKey) && this.nodeRefs[nodeKey].props.disabled !== true) {
-        this.nodeRefs[nodeKey].check({ triggerCheckChange: true })
+      } else {
+        if (options && options.ignoreDisabled !== true) {
+          if (this.nodeRefs[nodeKey].props.disabled !== true) {
+            this.nodeRefs[nodeKey].check({ triggerCheckChange: true })
+          }
+        } else {
+          this.nodeRefs[nodeKey].check({ triggerCheckChange: true })
+        }
+
       }
     })
   }
 
-  uncheckedKeys(param) {
+  unCheckNodes(param, options) {
     if (Array.isArray(param) && param.length) {
       param.forEach(item => {
         const node = this.getNode(item)
-        node.uncheck({ triggerCheckChange: false })
+        if (options && options.ignoreDisabled !== true) {
+          if (node.props.disabled !== true) {
+            node.uncheck({ triggerCheckChange: false })
+          }
+        } else {
+          node.uncheck({ triggerCheckChange: false })
+        }
       })
     }
   }

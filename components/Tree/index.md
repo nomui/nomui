@@ -31,7 +31,8 @@
 | scrollTo | 滚动到指定节点 | `(options:getDataOptions) => void` | - |
 | checkAllNodes | 全部勾选中，若`ignoreDisabled:true`时忽略被禁用的节点 | `({ignoreDisabled}) => void` | - |
 | uncheckAllNodes | 全部取消勾选，若`ignoreDisabled:true`时忽略被禁用的节点 | `({ignoreDisabled}) => void` | - |
-
+| checkNodes | 勾选指定内容，若`ignoreDisabled:true`时忽略被禁用的节点 | `(param,{ignoreDisabled}) => void` | - |
+| unCheckNodes | 取消指定内容，若`ignoreDisabled:true`时忽略被禁用的节点 | `(param,{ignoreDisabled}) => void` | - |
 `getDataOptions`: 获取节点的参数，可以为一下三种情况
 
 > - node 的 `key`
