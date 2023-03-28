@@ -9,7 +9,6 @@
     &:hover {
       .nom-preset-hover;
 
-
       .nom-tree-drag-handler {
         visibility: visible;
       }
@@ -27,7 +26,7 @@
       }
     }
 
-    >.nom-tree-node-expandable-indicator {
+    > .nom-tree-node-expandable-indicator {
       flex-shrink: 0;
       width: 30px;
       height: 24px;
@@ -37,15 +36,19 @@
       }
     }
 
-    >.nom-tree-node-content-icon {
+    > .nom-tree-node-content-icon {
       margin-right: 6px;
     }
 
-    >.nom-tree-node-content-tools {
+    > .nom-tree-node-content-tools {
       margin-left: 5px;
+      &.nom-tree-node-content-tools-flex {
+        flex-grow: 2;
+        justify-content: start;
+      }
     }
 
-    >.nom-tree-node-checkbox {
+    > .nom-tree-node-checkbox {
       margin-right: 6px;
     }
 
@@ -55,7 +58,7 @@
     }
   }
 
-  >.nom-tree-check-all {
+  > .nom-tree-check-all {
     border-bottom: 1px solid var(--nom-border-color);
   }
 
@@ -64,7 +67,7 @@
     flex-direction: column;
     height: 100%;
 
-    >.nom-tree-nodes {
+    > .nom-tree-nodes {
       flex: 1;
       height: 100%;
       overflow: auto;
