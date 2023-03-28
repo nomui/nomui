@@ -183,6 +183,10 @@ class TreeNode extends Component {
     return this.nodesRef ? this.nodesRef.getChildren() : []
   }
 
+  addNodes(param) {
+    this.update({ data: { children: [...this.props.data.children, ...param] } })
+  }
+
   select() {
     this.content.select()
   }

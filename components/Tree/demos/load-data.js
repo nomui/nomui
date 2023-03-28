@@ -4,7 +4,6 @@ define([], function () {
     file: 'load-data',
     description: '通过 `loadData` 异步加载数据,仅在节点无子数据且`isLeaf:false`时会触发',
     demo: function () {
-      let treeRef = null
       const initData = [
         {
           text: '节点 1',
@@ -29,34 +28,23 @@ define([], function () {
         },
       ]
 
-      const asyncGetTreeData = ({ key }) =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            resolve([{ text: '节点 3.1' }, { text: '节点 3.2' }])
-          }, 1000)
-        }).then((res) => {
-          initData.forEach((n) => {
-            if (n.key === key) {
-              n.children = [...n.children, ...res]
-            }
-          })
-
-          treeRef.update({ data: initData })
-        })
-
       return {
         children: {
           component: 'Tree',
-          ref: (c) => {
-            treeRef = c
-          },
           initExpandLevel: 1,
           expandable: {
             byIndicator: true,
           },
           data: initData,
-          loadData: (param) => {
-            asyncGetTreeData(param)
+          loadData: ({ key }) => {
+            console.log(key)
+            // 可以通过key查找对应的子集
+            return new Promise(function (resolve) {
+              this.timer && clearTimeout(this.timer)
+              this.timer = setTimeout(function () {
+                resolve([{ text: '节点 3.1' }, { text: '节点 3.2' }])
+              }, 1000)
+            })
           },
         },
       }

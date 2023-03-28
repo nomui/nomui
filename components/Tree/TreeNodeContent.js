@@ -41,10 +41,7 @@ class TreeNodeContent extends Component {
 
     if (nomui.utils.isFunction(this.tree.props.loadData) && !isNotEmptyNode) {
       indicatorProps.onClick = () => {
-        this.tree.props.loadData({
-          data: this.node.props.data,
-          key: this.node.key,
-        })
+        this._handleLoadData()
       }
     }
 
@@ -152,6 +149,21 @@ class TreeNodeContent extends Component {
         this.tree._onNodeClick({ node: this.node })
       },
     })
+  }
+
+  _handleLoadData() {
+    const r = this.tree.props.loadData({
+      data: this.node.props.data,
+      key: this.node.key,
+      node: this.node,
+    })
+    if (nomui.utils.isPromiseLike(r)) {
+      r.then((res) => {
+        this.node.addNodes(res)
+      })
+    } else if (Array.isArray(r)) {
+      this.node.addNodes(r)
+    }
   }
 
   _getCheckbox() {
