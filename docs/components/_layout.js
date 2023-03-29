@@ -445,6 +445,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       url: '#!components!index?type=GroupGrid',
                     },
                     {
+                      text: 'GroupTree',
+                      subtext: '多级字段组',
+                      id: 'GroupTree',
+                      url: '#!components!index?type=GroupTree',
+                    },
+                    {
                       text: 'GroupList',
                       subtext: '字段组列表',
                       id: 'GroupList',

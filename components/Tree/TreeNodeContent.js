@@ -55,7 +55,7 @@ class TreeNodeContent extends Component {
         toolProps = tools
       } else if (tools.render) {
         isNewToolProp = true
-        const n = tools.render({ node: this.node, tree: this.tree })
+        const n = tools.render({ node: this.node, tree: this.tree, nodeData: this.node.props.data })
         toolProps = {
           justify: tools.justify || 'start',
           items: Array.isArray(n) ? n : [n],
