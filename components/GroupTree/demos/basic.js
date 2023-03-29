@@ -38,23 +38,30 @@ define([], function () {
             columns: [
               {
                 component: 'Textbox',
+                field: '姓名',
                 name: 'name',
               },
               {
                 component: 'Select',
+                field: '年级',
                 name: 'grade',
               },
               {
                 component: 'Textbox',
+                field: '年龄',
                 name: 'age',
               },
               {
                 component: 'MultilineTextbox',
+                rows: 1,
+                field: '备注',
                 name: 'info',
                 width: 300,
               },
               {
                 name: 'custom',
+                field: '自定义',
+                width: 100,
                 render: (params) => {
                   return { component: 'Avatar', text: params.nodeData.text }
                 },

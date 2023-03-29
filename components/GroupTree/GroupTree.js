@@ -12,12 +12,49 @@ class GroupTree extends Field {
 
   _config() {
     const { value, columns, columnWidth } = this.props
+    const hd = columns.map((n) => {
+      return {
+        text: n.field || '',
+        name: n.name || '',
+        width: n.width || columnWidth,
+      }
+    })
 
     this.setProps({
       control: {
         children: {
           component: 'Flex',
           rows: [
+            {
+              component: 'List',
+              classes: {
+                'nom-group-tree-hd': true,
+              },
+              onCreated: ({ inst }) => {
+                this.headerRef = inst
+              },
+              items: [{ width: 220 }, ...hd],
+              itemDefaults: {
+                _config: function () {
+                  this.setProps({
+                    attrs: {
+                      style: {
+                        padding: '.5rem',
+                      },
+                    },
+                    children: {
+                      attrs: {
+                        style: {
+                          width: `${this.props.width}px`,
+                        },
+                        'field-name': this.props.name,
+                      },
+                      children: this.props.text,
+                    },
+                  })
+                },
+              },
+            },
             {
               component: 'Tree',
               sortable: true,
@@ -32,23 +69,44 @@ class GroupTree extends Field {
                   this.setProps({
                     data: {
                       tools: {
-                        justify: 'end',
+                        justify: 'start',
                         render: (param) => {
                           const cols = columns.map((n) => {
                             if (n.render) {
-                              return n.render(param)
+                              return Component.extendProps(n.render(param), {
+                                controlWidth: n.width || columnWidth,
+                              })
                             }
                             return Component.extendProps(n, {
                               controlWidth: n.width || columnWidth,
                             })
                           })
-                          return { component: 'Group', fields: cols, inline: true }
+                          return {
+                            component: 'Flex',
+                            classes: {
+                              'nom-group-tree-group': true,
+                            },
+                            _config: function () {
+                              const node = this.parent.parent.parent.parent.node
+
+                              this.setProps({
+                                attrs: {
+                                  style: {
+                                    marginLeft: `-${node.level * 16}px`,
+                                  },
+                                },
+                              })
+                            },
+                            cols: cols,
+                            inline: true,
+                          }
                         },
                       },
                     },
                   })
                 },
               },
+              _rendered: function () {},
             },
           ],
         },

@@ -1,6 +1,28 @@
 .nom-group-tree {
   width: 100%;
+  > .nom-field-content {
+    overflow-x: auto;
+  }
+  .nom-group-tree-hd {
+    > .nom-list-content {
+      flex-wrap: nowrap;
+      justify-content: start;
+    }
+  }
   .nom-tree-node-content {
+    width: max-content;
     cursor: default;
+    border-top: 1px solid var(--nom-border-color);
+  }
+  .nom-tree-node-content-text {
+    width: 200px;
+    flex-shrink: 0;
+  }
+  .nom-group-tree-group {
+    > .nom-field-content {
+      > .nom-control {
+        flex-wrap: nowrap;
+      }
+    }
   }
 }
