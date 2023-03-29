@@ -12007,6 +12007,35 @@ function _defineProperty2(obj, key, value) {
         }
       }
     }
+    checkNodes(param, options) {
+      Object.keys(this.nodeRefs).forEach((nodeKey) => {
+        if (!param.includes(nodeKey)) {
+          this.nodeRefs[nodeKey].uncheck({ triggerCheckChange: false });
+        } else {
+          if (options && options.ignoreDisabled !== true) {
+            if (this.nodeRefs[nodeKey].props.disabled !== true) {
+              this.nodeRefs[nodeKey].check({ triggerCheckChange: true });
+            }
+          } else {
+            this.nodeRefs[nodeKey].check({ triggerCheckChange: true });
+          }
+        }
+      });
+    }
+    unCheckNodes(param, options) {
+      if (Array.isArray(param) && param.length) {
+        param.forEach((item) => {
+          const node = this.getNode(item);
+          if (options && options.ignoreDisabled !== true) {
+            if (node.props.disabled !== true) {
+              node.uncheck({ triggerCheckChange: false });
+            }
+          } else {
+            node.uncheck({ triggerCheckChange: false });
+          }
+        });
+      }
+    }
     setCheckedNodeKeys(array) {
       this.props.nodeCheckable.checkedNodeKeys = array;
       this.update({});
@@ -26986,10 +27015,7 @@ function _defineProperty2(obj, key, value) {
       }
       this._content.update({ children: this._getContentBadges() }); // 多选: 每次setValue后更新选中状态
       if (this.props.multiple) {
-        this.popup.update({
-          nodeCheckable: this._getPopupNodeCheckable(),
-          animate: false,
-        });
+        this.popup.selectControl.tree.checkedKeys(value);
       } else {
         // 单选: 点击后即关闭popup,在onShow中更新
         this.props.animate && this.popup.animateHide();
