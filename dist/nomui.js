@@ -810,7 +810,7 @@ function _defineProperty2(obj, key, value) {
     remove() {
       const el = this._removeCore();
       this.parent && this.parent.removeChild(this);
-      el.parentNode.removeChild(el);
+      el.parentNode && el.parentNode.removeChild(el);
     }
     update(props) {
       isFunction(this._update) && this._update(props);
@@ -832,7 +832,7 @@ function _defineProperty2(obj, key, value) {
         if (el.component) {
           el.component.remove();
         } else {
-          el.parentNode.removeChild(el);
+          el.parentNode && el.parentNode.removeChild(el);
         }
       }
     }
