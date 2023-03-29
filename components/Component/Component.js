@@ -179,7 +179,7 @@ class Component {
   remove() {
     const el = this._removeCore()
     this.parent && this.parent.removeChild(this)
-    el.parentNode.removeChild(el)
+    el.parentNode && el.parentNode.removeChild(el)
   }
 
   update(props) {
@@ -203,7 +203,7 @@ class Component {
         el.component.remove()
       }
       else {
-        el.parentNode.removeChild(el)
+        el.parentNode && el.parentNode.removeChild(el)
       }
     }
   }
