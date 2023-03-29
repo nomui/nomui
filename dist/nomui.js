@@ -8489,7 +8489,7 @@ function _defineProperty2(obj, key, value) {
       } // 开启虚拟列表功能
       if (
         (virtual === true || typeof virtual === "number") &&
-        children.length !== 0
+        children.length > 20
       ) {
         this.list.virtual.listData = children;
         this.setProps({
