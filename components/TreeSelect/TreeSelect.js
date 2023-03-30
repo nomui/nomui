@@ -413,7 +413,7 @@ class TreeSelect extends Field {
 
     // 多选: 每次setValue后更新选中状态
     if (this.props.multiple) {
-      this.popup.selectControl.tree.checkedKeys(value)
+      this.popup.selectControl.tree.checkNodes(value)
     } else {
       // 单选: 点击后即关闭popup,在onShow中更新
       this.props.animate && this.popup.animateHide()
