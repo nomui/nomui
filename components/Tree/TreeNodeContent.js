@@ -117,7 +117,13 @@ class TreeNodeContent extends Component {
             Component.normalizeIconProps(icon),
           ),
         Component.extendProps(
-          { tag: 'span', classes: { 'nom-tree-node-content-text': true } },
+          {
+            tag: 'span',
+            classes: { 'nom-tree-node-content-text': true },
+            onCreated: ({ inst }) => {
+              this.node.contentText = inst
+            },
+          },
           Component.normalizeTemplateProps(text),
         ),
         tools &&

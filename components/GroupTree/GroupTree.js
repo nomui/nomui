@@ -65,7 +65,7 @@ class GroupTree extends Field {
               },
               nodeDefaults: {
                 _config: function () {
-                  // const that = this
+                  const that = this
                   this.setProps({
                     data: {
                       tools: {
@@ -82,9 +82,12 @@ class GroupTree extends Field {
                             })
                           })
                           return {
-                            component: 'Flex',
+                            component: 'Group',
                             classes: {
                               'nom-group-tree-group': true,
+                            },
+                            _created: function () {
+                              that.group = this
                             },
                             _config: function () {
                               const node = this.parent.parent.parent.parent.node
@@ -97,13 +100,16 @@ class GroupTree extends Field {
                                 },
                               })
                             },
-                            cols: cols,
+                            fields: cols,
                             inline: true,
                           }
                         },
                       },
                     },
                   })
+                },
+                _rendered: function () {
+                  this.contentText.element.style.paddingRight = `${this.level * 16}px`
                 },
               },
               _rendered: function () {},
