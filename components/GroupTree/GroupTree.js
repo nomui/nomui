@@ -33,7 +33,7 @@ class GroupTree extends Field {
               onCreated: ({ inst }) => {
                 this.headerRef = inst
               },
-              items: [{ width: 220 }, ...hd],
+              items: [{ width: 260 }, ...hd],
               itemDefaults: {
                 _config: function () {
                   this.setProps({
@@ -100,7 +100,46 @@ class GroupTree extends Field {
                                 },
                               })
                             },
-                            fields: cols,
+                            fields: [
+                              {
+                                component: 'Toolbar',
+                                classes: {
+                                  'nom-group-tree-row-options': true,
+                                },
+                                icon: 'edit',
+                                visibleItems: 0,
+                                size: 'small',
+                                type: 'text',
+                                attrs: {
+                                  style: {
+                                    width: '40px',
+                                  },
+                                },
+                                items: [
+                                  {
+                                    text: '重命名',
+                                    onClick: () => {},
+                                  },
+                                  {
+                                    text: '删除行',
+                                    onClick: () => {},
+                                  },
+                                  {
+                                    text: '在前方插入行',
+                                    onClick: () => {},
+                                  },
+                                  {
+                                    text: '在后方插入行',
+                                    onClick: () => {},
+                                  },
+                                  {
+                                    text: '新增子节点',
+                                    onClick: () => {},
+                                  },
+                                ],
+                              },
+                              ...cols,
+                            ],
                             inline: true,
                           }
                         },

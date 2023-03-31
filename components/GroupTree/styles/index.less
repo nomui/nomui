@@ -4,6 +4,8 @@
     overflow-x: auto;
   }
   .nom-group-tree-hd {
+    color: var(--nom-grid-th-color);
+    font-weight: bold;
     > .nom-list-content {
       flex-wrap: nowrap;
       justify-content: start;
@@ -22,6 +24,15 @@
     > .nom-field-content {
       > .nom-control {
         flex-wrap: nowrap;
+        align-items: center;
+      }
+      .nom-group-tree-row-options {
+        visibility: hidden;
+      }
+      &:hover {
+        .nom-group-tree-row-options {
+          visibility: visible;
+        }
       }
     }
   }
