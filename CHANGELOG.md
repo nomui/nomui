@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/nomui/nomui/compare/v1.2.0...v1.2.1) (2023-03-31)
+
+
+### Features
+
+* **Tree:** 节点工具栏支持悬停显示 ([533a6f7](https://github.com/nomui/nomui/commit/533a6f758a9f5cf25b5c07b6d3bd8a2fd8620c0c))
+* **Tree:** 新增loadData异步加载节点 ([02479a6](https://github.com/nomui/nomui/commit/02479a6feccfc3a0bebefc787dc82bedea7a2790))
+* **Tree:** 重构节点工具栏配置 ([4c4dc4d](https://github.com/nomui/nomui/commit/4c4dc4df9c18e4f36269898a5fd0d67bae7262a9))
+
+
+### Bug Fixes
+
+* 修改List组件，设置为showEmptyh virtual，使用update异常 ([b50269a](https://github.com/nomui/nomui/commit/b50269acaf454db7405e782c8aa6588e578e2168))
+* 修改treeSelect组件报错 ([ac827ab](https://github.com/nomui/nomui/commit/ac827ab963e07d551ea8c620661f8da88d1c125f))
+* 修改TreeSelect组件选中一个后滚动条不要滑动，应保持原位置不变 ([32ede31](https://github.com/nomui/nomui/commit/32ede31544c4903393595c0f8f3c6737e5131cba))
+* **Component:** 修复 emptyChildren 方法当子节点是文本节点时不会移除的 bug。 ([e2ec62f](https://github.com/nomui/nomui/commit/e2ec62f3b6ecf91601b3e608c495c87ee2d82243))
+* Grid set按钮居中展示 ([562ca18](https://github.com/nomui/nomui/commit/562ca18573a816cf2146a8cd17c1185cfc5424ea))
+* Grid单独获取某行进行更新会导致固定列失效 ([eaa0fc0](https://github.com/nomui/nomui/commit/eaa0fc009e2d55c1355ee0a3e15ef542062cc37b))
+* Grid由于margin布局导致set按钮背景色外漏 ([4a4c136](https://github.com/nomui/nomui/commit/4a4c1369d2e1ef14701011dd59e883e94f669ff3))
+
+
+### Performance Improvements
+
+* 修改Tree部分选中和部分取消的函数名和更新文档 ([1efd0cc](https://github.com/nomui/nomui/commit/1efd0ccddf5214ef02e50c2b84b8af3416b6cb97))
+* 修改tree组件的checkNode和uncheckNode属性修改为复数形式 ([80bd1ac](https://github.com/nomui/nomui/commit/80bd1ac972361def70da1b08d67f09c1cd1bb3d8))
+* 修改Uploader组件的previewRender属性修改为onPreview ([98aaa98](https://github.com/nomui/nomui/commit/98aaa98764e492054b206a35c86987e57a4027e9))
+
+
+### Docs
+
+* 文档优化 ([31b5148](https://github.com/nomui/nomui/commit/31b5148a83b52c66b5c2bef1ab22fefe7f40260c))
+* 修改 Component 组件 onConfig 事件 demo 里的图片地址为相对路径。 ([7c80ecc](https://github.com/nomui/nomui/commit/7c80ecc8fc412a2470229de8821b1c6ae351d07f))
+* **Component:** 修改事件 onConfig 的 demo。 ([8d9c50a](https://github.com/nomui/nomui/commit/8d9c50a6b82963786723470289575528036f532b))
+
 ## [1.2.0](https://github.com/nomui/nomui/compare/v1.1.32...v1.2.0) (2023-03-24)
 
 
