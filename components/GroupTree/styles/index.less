@@ -15,6 +15,16 @@
     width: max-content;
     cursor: default;
     border-top: 1px solid var(--nom-border-color);
+    .nom-group-tree-row-options {
+      visibility: hidden;
+    }
+    &:hover {
+      > .nom-tree-node-content-tools {
+        .nom-group-tree-row-options {
+          visibility: visible;
+        }
+      }
+    }
   }
   .nom-tree-node-content-text {
     width: 200px;
@@ -25,14 +35,6 @@
       > .nom-control {
         flex-wrap: nowrap;
         align-items: center;
-      }
-      .nom-group-tree-row-options {
-        visibility: hidden;
-      }
-      &:hover {
-        .nom-group-tree-row-options {
-          visibility: visible;
-        }
       }
     }
   }

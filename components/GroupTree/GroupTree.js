@@ -118,7 +118,30 @@ class GroupTree extends Field {
                                 items: [
                                   {
                                     text: '重命名',
-                                    onClick: () => {},
+                                    onClick: () => {
+                                      let rowText = that.props.data.text
+                                      new nomui.Modal({
+                                        size: 'xsmall',
+                                        content: {
+                                          header: false,
+                                          body: {
+                                            children: [
+                                              {
+                                                component: 'Textbox',
+                                                value: rowText,
+                                                onValueChange: ({ newValue }) => {
+                                                  rowText = newValue
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                        onOk: ({ sender }) => {
+                                          that.update({ data: { text: rowText } })
+                                          sender.close()
+                                        },
+                                      })
+                                    },
                                   },
                                   {
                                     text: '删除行',
