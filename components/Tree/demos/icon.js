@@ -60,7 +60,27 @@ define([], function () {
                     },
                   },
                   children: [
-                    { text: '节点 1.1.1', icon: 'file' },
+                    {
+                      text: '节点 1.1.1',
+                      icon: 'file',
+                      tools: {
+                        hover: true,
+                        render: ({ node, tree }) => {
+                          return [
+                            {
+                              component: 'Button',
+                              type: 'link',
+                              text: '我悬停才显示',
+                              onClick({ event }) {
+                                // eslint-disable-next-line
+                                console.log(node, tree)
+                                event.stopPropagation()
+                              },
+                            },
+                          ]
+                        },
+                      },
+                    },
                     { text: '节点 1.1.2', icon: 'file' },
                     { text: '节点 1.1.3', icon: 'file' },
                   ],
