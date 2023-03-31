@@ -11,7 +11,8 @@ class GroupTree extends Field {
   }
 
   _config() {
-    const { value, columns, columnWidth } = this.props
+    const { value, columns, columnWidth, dataFields } = this.props
+    const { text } = dataFields
     const hd = columns.map((n) => {
       return {
         text: n.field || '',
@@ -63,6 +64,7 @@ class GroupTree extends Field {
               expandable: {
                 byIndicator: true,
               },
+              dataFields: dataFields,
               nodeDefaults: {
                 _config: function () {
                   const that = this
@@ -108,7 +110,7 @@ class GroupTree extends Field {
                                 },
                                 icon: 'edit',
                                 visibleItems: 0,
-                                size: 'small',
+                                // size: 'small',
                                 type: 'text',
                                 attrs: {
                                   style: {
@@ -119,7 +121,7 @@ class GroupTree extends Field {
                                   {
                                     text: '重命名',
                                     onClick: () => {
-                                      let rowText = that.props.data.text
+                                      let rowText = that.props.data[text]
                                       new nomui.Modal({
                                         size: 'xsmall',
                                         content: {
@@ -148,16 +150,71 @@ class GroupTree extends Field {
                                     onClick: () => {},
                                   },
                                   {
-                                    text: '在前方插入行',
-                                    onClick: () => {},
-                                  },
-                                  {
-                                    text: '在后方插入行',
-                                    onClick: () => {},
+                                    text: '在下方插入行',
+                                    onClick: () => {
+                                      const { key, children } = dataFields
+                                      const obj = {}
+                                      obj[key] = nomui.utils.newGuid()
+                                      obj[text] = '新节点'
+                                      new nomui.Modal({
+                                        size: 'xsmall',
+                                        content: {
+                                          header: false,
+                                          body: {
+                                            children: [
+                                              {
+                                                component: 'Textbox',
+                                                value: obj[text],
+                                                onValueChange: ({ newValue }) => {
+                                                  obj[text] = newValue
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                        onOk: ({ sender }) => {
+                                          const parentNode = that.parent.parent
+                                          const c = parentNode.props.data[children] || []
+                                          const newChildren = [obj, ...c]
+                                          parentNode.props.data[children] = newChildren
+                                          parentNode.update({ data: that.props.data })
+                                          sender.close()
+                                        },
+                                      })
+                                    },
                                   },
                                   {
                                     text: '新增子节点',
-                                    onClick: () => {},
+                                    onClick: () => {
+                                      const { key, children } = dataFields
+                                      const obj = {}
+                                      obj[key] = nomui.utils.newGuid()
+                                      obj[text] = '新节点'
+                                      new nomui.Modal({
+                                        size: 'xsmall',
+                                        content: {
+                                          header: false,
+                                          body: {
+                                            children: [
+                                              {
+                                                component: 'Textbox',
+                                                value: obj[text],
+                                                onValueChange: ({ newValue }) => {
+                                                  obj[text] = newValue
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                        onOk: ({ sender }) => {
+                                          const c = that.props.data[children] || []
+                                          const newChildren = [obj, ...c]
+                                          that.props.data[children] = newChildren
+                                          that.update({ data: that.props.data })
+                                          sender.close()
+                                        },
+                                      })
+                                    },
                                   },
                                 ],
                               },
@@ -185,6 +242,12 @@ class GroupTree extends Field {
 }
 GroupTree.defaults = {
   columnWidth: 200,
+  dataFields: {
+    key: 'key',
+    text: 'text',
+    children: 'children',
+    parentKey: 'parentKey',
+  },
 }
 
 Component.register(GroupTree)
