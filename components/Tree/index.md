@@ -34,6 +34,7 @@
 | uncheckAllNodes | 全部取消勾选，若`ignoreDisabled:true`时忽略被禁用的节点 | `({ignoreDisabled}) => void` | - |
 | checkNodes | 勾选指定内容，若`ignoreDisabled:true`时忽略被禁用的节点 | `(param,{ignoreDisabled}) => void` | - |
 | unCheckNodes | 取消指定内容，若`ignoreDisabled:true`时忽略被禁用的节点 | `(param,{ignoreDisabled}) => void` | - |
+
 `getDataOptions`: 获取节点的参数，可以为一下三种情况
 
 > - node 的 `key`
@@ -77,7 +78,7 @@
 | key | 键 | `string` | - |
 | text | 文本 | `string` | - |
 | icon | 配置节点图标 | `string` | - |
-| tools | 节点工具栏配置，通过 justify 配置对齐方式，render 传入参数当前节点与整个 Tree 实例，返回一个 Flex 组件子项数组 | `{justify:string,render:{ node, tree }=>{}}` | - |
+| tools | 节点工具栏配置，通过 justify 配置对齐方式,hover 配置是否悬停显示,render 传入参数当前节点与整个 Tree 实例，返回一个 Flex 组件子项数组 | `{justify:string,hover:boolean,render:{ node, tree }=>{}}` | - |
 | disabled | 该节点是否禁用 | `boolean` | - |
 | children | 子节点数据数组 | `TreeData[]` | - |
 
