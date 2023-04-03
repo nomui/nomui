@@ -11,8 +11,10 @@ class GroupTree extends Field {
   }
 
   _config() {
+    const me = this
     const { value, columns, columnWidth, dataFields } = this.props
-    const { text } = dataFields
+    const { text, key, children } = dataFields
+
     const hd = columns.map((n) => {
       return {
         text: n.field || '',
@@ -58,6 +60,9 @@ class GroupTree extends Field {
             },
             {
               component: 'Tree',
+              _created: function () {
+                me.tree = this
+              },
               sortable: true,
               data: value,
               nodeSelectable: false,
@@ -74,14 +79,17 @@ class GroupTree extends Field {
                         justify: 'start',
                         render: (param) => {
                           const cols = columns.map((n) => {
-                            if (n.render) {
-                              return Component.extendProps(n.render(param), {
-                                controlWidth: n.width || columnWidth,
-                              })
-                            }
-                            return Component.extendProps(n, {
+                            const defaultProp = {
                               controlWidth: n.width || columnWidth,
-                            })
+                              onValueChange: ({ newValue }) => {
+                                that.props.data[n.name] = newValue
+                              },
+                              value: that.props.data[n.name],
+                            }
+                            if (n.render) {
+                              return Component.extendProps(n.render(param), defaultProp)
+                            }
+                            return Component.extendProps(n, defaultProp)
                           })
                           return {
                             component: 'Group',
@@ -93,7 +101,6 @@ class GroupTree extends Field {
                             },
                             _config: function () {
                               const node = this.parent.parent.parent.parent.node
-
                               this.setProps({
                                 attrs: {
                                   style: {
@@ -147,12 +154,21 @@ class GroupTree extends Field {
                                   },
                                   {
                                     text: '删除行',
-                                    onClick: () => {},
+                                    onClick: () => {
+                                      const parentNode = that.parent.parent
+                                      const c = parentNode.props.data[children] || []
+                                      const i = c.findIndex((n) => {
+                                        return n[key] === that.props.data[key]
+                                      })
+
+                                      const newChildren = me._removeItem(c, i)
+                                      parentNode.props.data[children] = newChildren
+                                      parentNode.update({ data: parentNode.props.data })
+                                    },
                                   },
                                   {
                                     text: '在下方插入行',
                                     onClick: () => {
-                                      const { key, children } = dataFields
                                       const obj = {}
                                       obj[key] = nomui.utils.newGuid()
                                       obj[text] = '新节点'
@@ -175,9 +191,13 @@ class GroupTree extends Field {
                                         onOk: ({ sender }) => {
                                           const parentNode = that.parent.parent
                                           const c = parentNode.props.data[children] || []
-                                          const newChildren = [obj, ...c]
+                                          const i = c.findIndex((n) => {
+                                            return n[key] === that.props.data[key]
+                                          })
+
+                                          const newChildren = me._insertItem(c, i + 1, obj)
                                           parentNode.props.data[children] = newChildren
-                                          parentNode.update({ data: that.props.data })
+                                          parentNode.update({ data: parentNode.props.data })
                                           sender.close()
                                         },
                                       })
@@ -186,7 +206,6 @@ class GroupTree extends Field {
                                   {
                                     text: '新增子节点',
                                     onClick: () => {
-                                      const { key, children } = dataFields
                                       const obj = {}
                                       obj[key] = nomui.utils.newGuid()
                                       obj[text] = '新节点'
@@ -238,6 +257,20 @@ class GroupTree extends Field {
       },
     })
     super._config()
+  }
+
+  _insertItem(arr, index, value) {
+    arr.splice(index, 0, value)
+    return arr
+  }
+
+  _removeItem(arr, index) {
+    arr.splice(index, 1)
+    return arr
+  }
+
+  _getValue() {
+    return this.tree.getData()
   }
 }
 GroupTree.defaults = {
