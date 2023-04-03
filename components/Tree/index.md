@@ -7,7 +7,7 @@
 ### Tree props
 
 | 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | data | 源数据,至少应该包含 `text` 与 `key`，并且 `key` 唯一 | `TreeData[]` | [] |
 | flatData | 是否根据传入的扁平结构数据转成 tree 结构 | `boolean` | id |
 | dataFields | 数据字段映射，将传递的数据字段映射成树组件所需的字段 | `object` | `{key:'key',text:'text',children:'children',parentKey:'parentKey'}` |
@@ -16,7 +16,7 @@
 | nodeCheckable | 节点可勾选配置 | `boolean` \| `object` | - |
 | fit | 自适应父容器高度，当树超出高度时出现滚动条，如果有全选框，该全选框会固定 | `boolean` | false |
 | onNodeClick | 点击节点的回调 | `({node}) => {}` | - |
-| loadData | 异步加载子节点数据(仅在该节点子数据为空且 isLeaf:false 时才能触发,该方法返回值为子节点数据数组或者返回该子节点数据的 promise) | `({key,node,data}) => { return array |  | promise}` | - |
+| loadData | 异步加载子节点数据(仅在该节点子数据为空且 isLeaf:false 时才能触发,该方法返回值为子节点数据数组或者返回该子节点数据的 promise) | `({key,node,data}) => { return array(promise) }` | - |
 
 ## Tree methods
 

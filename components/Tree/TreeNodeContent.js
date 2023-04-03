@@ -28,7 +28,10 @@ class TreeNodeContent extends Component {
 
     const indicatorProps = {
       component: Icon,
-      classes: { 'nom-tree-node-expandable-indicator': true, 'is-leaf': this.node.isLeaf },
+      classes: {
+        'nom-tree-node-expandable-indicator': true,
+        'is-leaf': this.node.isLeaf && !this.node.isLoadData,
+      },
       expandable: {
         expandedProps: {
           type: 'sort-down',
