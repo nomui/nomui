@@ -113,6 +113,9 @@ class GroupTree extends Field {
                             fields: [
                               {
                                 component: 'Toolbar',
+                                _created: function () {
+                                  that.rowOptions = this
+                                },
                                 classes: {
                                   'nom-group-tree-row-options': true,
                                 },
@@ -154,7 +157,7 @@ class GroupTree extends Field {
                                     },
                                   },
                                   {
-                                    text: '删除行',
+                                    text: '删除节点',
                                     onClick: () => {
                                       const parentNode = that.parent.parent
                                       const c = parentNode.props.data[children] || []
@@ -162,15 +165,23 @@ class GroupTree extends Field {
                                         return n[key] === that.props.data[key]
                                       })
 
+                                      const { tools, hidden, ...source } = that.props.data
+                                      me.props.onNodeDeleted &&
+                                        me._callHandler(me.props.onNodeDeleted, source)
+
                                       const newChildren = me._removeItem(c, i)
                                       parentNode.props.data[children] = newChildren
-                                      parentNode.update({ data: parentNode.props.data })
+                                      setTimeout(() => {
+                                        parentNode.update({ data: parentNode.props.data })
+                                      }, 200)
                                     },
                                   },
                                   {
                                     text: '在下方插入行',
                                     onClick: () => {
-                                      const obj = {}
+                                      const obj = {
+                                        __isNew: true,
+                                      }
                                       obj[key] = nomui.utils.newGuid()
                                       obj[text] = '新节点'
                                       new nomui.Modal({
@@ -212,7 +223,9 @@ class GroupTree extends Field {
                                   {
                                     text: '新增子节点',
                                     onClick: () => {
-                                      const obj = {}
+                                      const obj = {
+                                        __isNew: true,
+                                      }
                                       obj[key] = nomui.utils.newGuid()
                                       obj[text] = '新节点'
                                       new nomui.Modal({
@@ -320,6 +333,7 @@ GroupTree.defaults = {
     children: 'children',
     parentKey: 'parentKey',
   },
+  onNodeDeleted: null,
 }
 
 Component.register(GroupTree)
