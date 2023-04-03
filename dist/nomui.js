@@ -11401,7 +11401,7 @@ function _defineProperty2(obj, key, value) {
         component: Icon,
         classes: {
           "nom-tree-node-expandable-indicator": true,
-          "is-leaf": this.node.isLeaf,
+          "is-leaf": this.node.isLeaf && !this.node.isLoadData,
         },
         expandable: {
           expandedProps: { type: "sort-down" },
@@ -11580,9 +11580,11 @@ function _defineProperty2(obj, key, value) {
       }
       const { nodes, childrenData } = this.props;
       const children = [{ component: TreeNodeContent }];
-      this.isLeaf =
-        this.props.data.isLeaf !== false &&
-        !(this._isNotEmptyArray(nodes) || this._isNotEmptyArray(childrenData));
+      this.isLeaf = !(
+        this._isNotEmptyArray(nodes) || this._isNotEmptyArray(childrenData)
+      );
+      this.isLoadData =
+        this.tree.props.loadData && this.props.data.isLeaf === false;
       if (Array.isArray(nodes) || Array.isArray(childrenData)) {
         children.push({ component: "TreeNodes", nodes, childrenData });
       }
@@ -12011,14 +12013,12 @@ function _defineProperty2(obj, key, value) {
       Object.keys(this.nodeRefs).forEach((nodeKey) => {
         if (!param.includes(nodeKey)) {
           this.nodeRefs[nodeKey].uncheck({ triggerCheckChange: false });
-        } else {
-          if (options && options.ignoreDisabled !== true) {
-            if (this.nodeRefs[nodeKey].props.disabled !== true) {
-              this.nodeRefs[nodeKey].check({ triggerCheckChange: true });
-            }
-          } else {
+        } else if (options && options.ignoreDisabled !== true) {
+          if (this.nodeRefs[nodeKey].props.disabled !== true) {
             this.nodeRefs[nodeKey].check({ triggerCheckChange: true });
           }
+        } else {
+          this.nodeRefs[nodeKey].check({ triggerCheckChange: true });
         }
       });
     }
@@ -12154,6 +12154,7 @@ function _defineProperty2(obj, key, value) {
     flatData: false,
     sortable: false,
     initExpandLevel: -1,
+    loadData: false,
   };
   Component.register(Tree);
   var OptionTreeMixin = {

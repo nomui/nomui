@@ -117,7 +117,7 @@ class Tree extends Component {
     })
   }
 
-  _dataToNodes() { }
+  _dataToNodes() {}
 
   getData(getOptions, node) {
     getOptions = getOptions || {}
@@ -242,22 +242,19 @@ class Tree extends Component {
     Object.keys(this.nodeRefs).forEach((nodeKey) => {
       if (!param.includes(nodeKey)) {
         this.nodeRefs[nodeKey].uncheck({ triggerCheckChange: false })
-      } else {
-        if (options && options.ignoreDisabled !== true) {
-          if (this.nodeRefs[nodeKey].props.disabled !== true) {
-            this.nodeRefs[nodeKey].check({ triggerCheckChange: true })
-          }
-        } else {
+      } else if (options && options.ignoreDisabled !== true) {
+        if (this.nodeRefs[nodeKey].props.disabled !== true) {
           this.nodeRefs[nodeKey].check({ triggerCheckChange: true })
         }
-
+      } else {
+        this.nodeRefs[nodeKey].check({ triggerCheckChange: true })
       }
     })
   }
 
   unCheckNodes(param, options) {
     if (Array.isArray(param) && param.length) {
-      param.forEach(item => {
+      param.forEach((item) => {
         const node = this.getNode(item)
         if (options && options.ignoreDisabled !== true) {
           if (node.props.disabled !== true) {
@@ -363,7 +360,7 @@ class Tree extends Component {
         // 存在则表示当前数据不是最顶层数据
 
         // 这里的map中的数据是引用了arr的它的指向还是arr，当mapItem改变时arr也会改变
-        ; (mapItem[children] || (mapItem[children] = [])).push(child) // 这里判断mapItem中是否存在children, 存在则插入当前数据, 不存在则赋值children为[]然后再插入当前数据
+        ;(mapItem[children] || (mapItem[children] = [])).push(child) // 这里判断mapItem中是否存在children, 存在则插入当前数据, 不存在则赋值children为[]然后再插入当前数据
       } else {
         // 不存在则是组顶层数据
         treeData.push(child)
@@ -415,6 +412,7 @@ Tree.defaults = {
   flatData: false,
   sortable: false,
   initExpandLevel: -1,
+  loadData: false,
 }
 Component.register(Tree)
 
