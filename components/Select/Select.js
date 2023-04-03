@@ -62,46 +62,46 @@ class Select extends Field {
               attrs: { title: this.props[that.props.optionFields.text] },
               popup: this.props.overList
                 ? {
-                    triggerAction: 'hover',
-                    align: 'top center',
-                    classes: {
-                      'nom-select-extra-tags': true,
-                    },
-                    children: {
-                      component: 'List',
-                      gutter: 'sm',
-                      itemDefaults: {
-                        key() {
-                          return this.props[that.props.optionFields.value]
-                        },
-                        _config: function () {
-                          this.setProps({
-                            tag: 'span',
-                            onClick: (args) => {
-                              args.event.stopPropagation()
-                            },
-
-                            attrs: { title: this.props[that.props.optionFields.text] },
-
-                            children: [
-                              {
-                                tag: 'span',
-                                classes: { 'nom-select-item-content': true },
-                                attrs: {
-                                  style: {
-                                    maxWidth: `${that.props.maxTagWidth}px`,
-                                  },
-                                },
-
-                                children: this.props[that.props.optionFields.text],
-                              },
-                            ],
-                          })
-                        },
+                  triggerAction: 'hover',
+                  align: 'top center',
+                  classes: {
+                    'nom-select-extra-tags': true,
+                  },
+                  children: {
+                    component: 'List',
+                    gutter: 'sm',
+                    itemDefaults: {
+                      key() {
+                        return this.props[that.props.optionFields.value]
                       },
-                      items: this.props.overList,
+                      _config: function () {
+                        this.setProps({
+                          tag: 'span',
+                          onClick: (args) => {
+                            args.event.stopPropagation()
+                          },
+
+                          attrs: { title: this.props[that.props.optionFields.text] },
+
+                          children: [
+                            {
+                              tag: 'span',
+                              classes: { 'nom-select-item-content': true },
+                              attrs: {
+                                style: {
+                                  maxWidth: `${that.props.maxTagWidth}px`,
+                                },
+                              },
+
+                              children: this.props[that.props.optionFields.text],
+                            },
+                          ],
+                        })
+                      },
                     },
-                  }
+                    items: this.props.overList,
+                  },
+                }
                 : null,
               children: [
                 {
@@ -314,15 +314,14 @@ class Select extends Field {
     options = extend(
       {
         asArray: false,
+        nullWhenNotExists: false,
       },
       valueOptions,
       options,
     )
-
     const { multiple } = this.props
     if (multiple === true) {
       const selValueOptions = this._getOptions(value)
-
       if (Array.isArray(selValueOptions) && selValueOptions.length) {
         this.multipleItems = selValueOptions
         this.selectedMultiple.update({ items: this.multipleItems })
@@ -345,8 +344,13 @@ class Select extends Field {
           this.currentValue = [selValueOption.value]
         }
       } else {
-        this.selectedSingle.element.innerText = value
-        this.currentValue = value
+        if (options.nullWhenNotExists) {
+          this.selectedSingle.element.innerText = null
+          this.currentValue = null
+        } else {
+          this.selectedSingle.element.innerText = value
+          this.currentValue = value
+        }
       }
     }
     // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
@@ -579,7 +583,7 @@ class Select extends Field {
     }
   }
 
-  appendOption() {}
+  appendOption() { }
 
   updateSearchPopup(text) {
     if (this.optionList) this.optionList.update({ text })
