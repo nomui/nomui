@@ -8,6 +8,7 @@ class GroupTree extends Field {
 
   _created() {
     super._created()
+    this.valid = true
   }
 
   _config() {
@@ -190,7 +191,12 @@ class GroupTree extends Field {
                                         },
                                         onOk: ({ sender }) => {
                                           const parentNode = that.parent.parent
-                                          const c = parentNode.props.data[children] || []
+                                          let c = []
+                                          if (parentNode.componentType === 'Tree') {
+                                            c = parentNode.props.data
+                                          } else {
+                                            c = parentNode.props.data[children]
+                                          }
                                           const i = c.findIndex((n) => {
                                             return n[key] === that.props.data[key]
                                           })
@@ -227,7 +233,7 @@ class GroupTree extends Field {
                                         },
                                         onOk: ({ sender }) => {
                                           const c = that.props.data[children] || []
-                                          const newChildren = [obj, ...c]
+                                          const newChildren = [...c, obj]
                                           that.props.data[children] = newChildren
                                           that.update({ data: that.props.data })
                                           sender.close()
@@ -250,7 +256,9 @@ class GroupTree extends Field {
                   this.contentText.element.style.paddingRight = `${this.level * 16}px`
                 },
               },
-              _rendered: function () {},
+              _rendered: function () {
+                // 需要处理表头与列对齐问题
+              },
             },
           ],
         },
@@ -270,7 +278,38 @@ class GroupTree extends Field {
   }
 
   _getValue() {
-    return this.tree.getData()
+    const data = this.tree.getData()
+    this._getTreeValue(data)
+    return data
+  }
+
+  _getTreeValue(arr) {
+    const { children } = this.props.dataFields
+    for (let i = 0; i < arr.length; i++) {
+      delete arr[i].tools
+      delete arr[i].hidden
+      if (arr[i][children] && arr[i][children].length) {
+        this._getTreeValue(arr[i][children])
+      }
+    }
+  }
+
+  _validate(options) {
+    this.valid = true
+    return this._validateTree(options)
+  }
+
+  _validateTree(opts, node) {
+    opts = opts || {}
+    node = node || this.tree
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      if (childNode.group.validate() === false) {
+        this.valid = false
+      }
+      this._validateTree(opts, childNode)
+    })
+    return this.valid
   }
 }
 GroupTree.defaults = {

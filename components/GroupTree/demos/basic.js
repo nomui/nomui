@@ -45,13 +45,13 @@ define([], function () {
 
       return {
         component: 'Form',
-
+        ref: (c) => {
+          formRef = c
+        },
         fields: [
           {
             component: 'GroupTree',
-            ref: (c) => {
-              formRef = c
-            },
+            name: 'grouptree',
             label: '多级字段组',
             value: data,
             columns: [
@@ -69,6 +69,8 @@ define([], function () {
                 component: 'Textbox',
                 field: '年龄',
                 name: 'age',
+                // 校验规则
+                rules: [{ type: 'number', message: '请输入有效的数字' }],
               },
               {
                 component: 'MultilineTextbox',
@@ -78,6 +80,7 @@ define([], function () {
                 width: 300,
               },
               {
+                // 自定义渲染列内容
                 name: 'custom',
                 field: '自定义',
                 width: 100,
@@ -89,7 +92,7 @@ define([], function () {
             controlAction: [
               {
                 component: 'Button',
-                text: '保 存',
+                text: '取值',
                 type: 'primary',
                 onClick: () => {
                   console.log(formRef.getValue())
@@ -97,7 +100,10 @@ define([], function () {
               },
               {
                 component: 'Button',
-                text: '取 消',
+                text: '校验',
+                onClick: () => {
+                  console.log(formRef.validate())
+                },
               },
             ],
           },
