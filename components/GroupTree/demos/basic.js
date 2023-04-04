@@ -53,6 +53,7 @@ define([], function () {
             component: 'GroupTree',
             name: 'grouptree',
             label: '多级字段组',
+            columnWidth: 120,
             onNodeDeleted: (args) => {
               console.log('已删除', args)
             },

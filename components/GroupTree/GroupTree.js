@@ -60,6 +60,9 @@ class GroupTree extends Field {
             },
             {
               hidden: treeValue && treeValue.length > 0,
+              _created: function () {
+                me.addBtn = this
+              },
               classes: {
                 'nom-group-tree-add': true,
               },
@@ -179,20 +182,35 @@ class GroupTree extends Field {
                                     text: '删除节点',
                                     onClick: () => {
                                       const parentNode = that.parent.parent
-                                      const c = parentNode.props.data[children] || []
+                                      let c = []
+                                      let isRoot = false
+                                      if (parentNode.componentType === 'Tree') {
+                                        c = parentNode.getData()
+                                        isRoot = true
+                                      } else {
+                                        c = parentNode.props.data[children]
+                                      }
                                       const i = c.findIndex((n) => {
                                         return n[key] === that.props.data[key]
                                       })
 
+                                      const newChildren = me._removeItem(c, i)
+                                      if (isRoot) {
+                                        parentNode.props.data = newChildren
+                                      } else {
+                                        parentNode.props.data[children] = newChildren
+                                      }
+
+                                      setTimeout(() => {
+                                        parentNode.update({ data: parentNode.props.data })
+                                        if (isRoot && !parentNode.getData().length) {
+                                          me.addBtn.show()
+                                        }
+                                      }, 200)
+
                                       const { tools, hidden, ...source } = that.props.data
                                       me.props.onNodeDeleted &&
                                         me._callHandler(me.props.onNodeDeleted, source)
-
-                                      const newChildren = me._removeItem(c, i)
-                                      parentNode.props.data[children] = newChildren
-                                      setTimeout(() => {
-                                        parentNode.update({ data: parentNode.props.data })
-                                      }, 200)
                                     },
                                   },
                                   {
