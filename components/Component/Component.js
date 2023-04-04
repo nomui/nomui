@@ -238,7 +238,7 @@ class Component {
     this.element.component = this
 
     if (this._placeHolderElement) {
-      this._placeHolderElement.parentNode.replaceChild(this.element, this._placeHolderElement)
+      this._placeHolderElement.parentNode && this._placeHolderElement.parentNode.replaceChild(this.element, this._placeHolderElement)
       return
     }
 
