@@ -8,7 +8,7 @@
 
 | 参数 | 说明 | 类型 | 默认值 | 注释 |
 | --- | --- | --- | --- | --- |
-| value | 默认值 | `array` | - | - |
+| value | 默认值 | `array` | - | 每个节点对象必须包含`key`(唯一标识)与`text`(节点名称) |
 | dataFields | 字段名配置 | `{}` | `{key: 'key',text: 'text',children: 'children',}` | - |
 | columns | 列内容设置 | `array` | - | - |
 | columnWidth | 默认列宽 | `number` | 200 | - |
