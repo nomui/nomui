@@ -21,5 +21,5 @@
 | field | 显示的表头名称 | `string` | - | - |
 | name | 字段的 name(必填),对应 value 里面的字段名 | `string` | - | - |
 | width | 字段列宽 | `number` | - | - |
-| render | 自定义渲染内容 | `({nodeData})=>{return componentProps}` | - | - |
+| render | 自定义渲染内容 | `({tree,node,nodeData})=>{return componentProps}` | - | - |
 | rules | 字段校验规则,参考 Field 组件 | `array` | - | - |
