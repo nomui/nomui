@@ -221,9 +221,10 @@ class GroupTree extends Field {
                                         },
                                         onOk: ({ sender }) => {
                                           const parentNode = that.parent.parent
+
                                           let c = []
                                           if (parentNode.componentType === 'Tree') {
-                                            c = parentNode.props.data
+                                            c = parentNode.getData()
                                           } else {
                                             c = parentNode.props.data[children]
                                           }
@@ -232,7 +233,13 @@ class GroupTree extends Field {
                                           })
 
                                           const newChildren = me._insertItem(c, i + 1, obj)
-                                          parentNode.props.data[children] = newChildren
+
+                                          if (parentNode.componentType === 'Tree') {
+                                            parentNode.props.data = newChildren
+                                          } else {
+                                            parentNode.props.data[children] = newChildren
+                                          }
+
                                           parentNode.update({ data: parentNode.props.data })
                                           sender.close()
                                         },
