@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
+import { debounce, extend } from '../util/index'
 
 class GroupTree extends Field {
   constructor(props, ...mixins) {
@@ -15,6 +16,8 @@ class GroupTree extends Field {
     const me = this
     const { value, columns, columnWidth, dataFields } = this.props
     const { text, key, children } = dataFields
+
+    const treeValue = value
 
     const hd = columns.map((n) => {
       return {
@@ -37,19 +40,15 @@ class GroupTree extends Field {
               onCreated: ({ inst }) => {
                 this.headerRef = inst
               },
-              items: [{ width: 260 }, ...hd],
+              items: [{ width: 276 }, ...hd],
               itemDefaults: {
                 _config: function () {
                   this.setProps({
-                    attrs: {
-                      style: {
-                        padding: '.5rem',
-                      },
-                    },
                     children: {
                       attrs: {
                         style: {
                           width: `${this.props.width}px`,
+                          paddingLeft: '.5rem',
                         },
                         'field-name': this.props.name,
                       },
@@ -60,12 +59,28 @@ class GroupTree extends Field {
               },
             },
             {
+              hidden: treeValue && treeValue.length > 0,
+              classes: {
+                'nom-group-tree-add': true,
+              },
+              children: {
+                component: 'Button',
+                type: 'dashed',
+                text: '添加',
+                span: 12,
+                block: true,
+                onClick: () => {
+                  me._addNode()
+                },
+              },
+            },
+            {
               component: 'Tree',
               _created: function () {
                 me.tree = this
               },
               sortable: true,
-              data: value,
+              data: treeValue,
               nodeSelectable: false,
               expandable: {
                 byIndicator: true,
@@ -82,10 +97,14 @@ class GroupTree extends Field {
                           const cols = columns.map((n) => {
                             const defaultProp = {
                               controlWidth: n.width || columnWidth,
-                              onValueChange: ({ newValue }) => {
+                              onValueChange: debounce(({ newValue }) => {
                                 that.props.data[n.name] = newValue
-                              },
+                                me._handleChange()
+                              }, 1000),
                               value: that.props.data[n.name],
+                              attrs: {
+                                'field-name': n.name,
+                              },
                             }
                             if (n.render) {
                               return Component.extendProps(n.render(param), defaultProp)
@@ -271,6 +290,9 @@ class GroupTree extends Field {
               },
               _rendered: function () {
                 // 需要处理表头与列对齐问题
+                setTimeout(() => {
+                  me._fixColsWidth()
+                }, 100)
               },
             },
           ],
@@ -278,6 +300,14 @@ class GroupTree extends Field {
       },
     })
     super._config()
+  }
+
+  _addNode() {
+    const { text, key } = this.props.dataFields
+    const defaultObj = {}
+    defaultObj[text] = '新节点'
+    defaultObj[key] = nomui.utils.newGuid()
+    this.update({ value: [defaultObj] })
   }
 
   _insertItem(arr, index, value) {
@@ -290,19 +320,41 @@ class GroupTree extends Field {
     return arr
   }
 
+  _handleChange() {
+    if (this.props.onValueChange) {
+      this._callHandler(this.props.onValueChange, { newValue: this._getValue() })
+    }
+  }
+
   _getValue() {
     const data = this.tree.getData()
-    this._getTreeValue(data)
+    this._cleanData(data)
+    if (!data.length) {
+      return null
+    }
     return data
   }
 
-  _getTreeValue(arr) {
+  _setValue(value, options) {
+    if (options === false) {
+      options = { triggerChange: false }
+    } else {
+      options = extend({ triggerChange: true }, options)
+    }
+    if (value === null) {
+      this.tree.update({ data: [] })
+    } else {
+      this.tree.update({ data: value })
+    }
+  }
+
+  _cleanData(arr) {
     const { children } = this.props.dataFields
     for (let i = 0; i < arr.length; i++) {
       delete arr[i].tools
       delete arr[i].hidden
       if (arr[i][children] && arr[i][children].length) {
-        this._getTreeValue(arr[i][children])
+        this._cleanData(arr[i][children])
       }
     }
   }
@@ -324,14 +376,32 @@ class GroupTree extends Field {
     })
     return this.valid
   }
+
+  // 确保表头与内容列宽一致
+  _fixColsWidth() {
+    const rows = this.tree.getChildNodes()
+    if (!rows.length) {
+      return
+    }
+    const firstGroup = rows[0].group.element
+    const fields = firstGroup.querySelector('.nom-control').childNodes
+
+    fields.forEach((n) => {
+      const fieldName = n.getAttribute('field-name')
+      if (fieldName) {
+        const target = this.headerRef.element.querySelector(`[field-name=${fieldName}]`)
+        target.style.width = `${n.offsetWidth}px`
+      }
+    })
+  }
 }
 GroupTree.defaults = {
   columnWidth: 200,
+
   dataFields: {
     key: 'key',
     text: 'text',
     children: 'children',
-    parentKey: 'parentKey',
   },
   onNodeDeleted: null,
 }

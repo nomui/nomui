@@ -54,9 +54,12 @@ define([], function () {
             name: 'grouptree',
             label: '多级字段组',
             onNodeDeleted: (args) => {
-              console.log(args)
+              console.log('已删除', args)
             },
-            value: data,
+            onValueChange: ({ newValue }) => {
+              console.log('值发生变化', newValue)
+            },
+            // value: data,
             columns: [
               {
                 component: 'Textbox',
@@ -76,20 +79,26 @@ define([], function () {
                 rules: [{ type: 'number', message: '请输入有效的数字' }],
               },
               {
+                // 自定义渲染列内容
+                name: 'custom',
+                field: '头像',
+                // width: 100,
+                render: (params) => {
+                  return {
+                    component: 'Flex',
+                    cols: [
+                      { component: 'Avatar', text: params.nodeData.text },
+                      { component: 'Avatar', text: params.nodeData.name },
+                    ],
+                  }
+                },
+              },
+              {
                 component: 'MultilineTextbox',
                 rows: 1,
                 field: '备注',
                 name: 'info',
                 width: 300,
-              },
-              {
-                // 自定义渲染列内容
-                name: 'custom',
-                field: '自定义',
-                width: 100,
-                render: (params) => {
-                  return { component: 'Avatar', text: params.nodeData.text }
-                },
               },
             ],
             controlAction: [
@@ -106,6 +115,15 @@ define([], function () {
                 text: '校验',
                 onClick: () => {
                   console.log(formRef.validate())
+                },
+              },
+              {
+                component: 'Button',
+                text: '赋值',
+                onClick: () => {
+                  formRef.setValue({
+                    grouptree: data,
+                  })
                 },
               },
             ],
