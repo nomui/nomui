@@ -182,25 +182,20 @@ class GroupTree extends Field {
                                     text: '删除节点',
                                     onClick: () => {
                                       const parentNode = that.parent.parent
-                                      let c = []
-                                      let isRoot = false
-                                      if (parentNode.componentType === 'Tree') {
-                                        c = parentNode.getData()
-                                        isRoot = true
-                                      } else {
-                                        c = parentNode.props.data[children]
-                                      }
+
+                                      const isRoot = parentNode.componentType === 'Tree'
+
+                                      const c = parentNode.getData() || []
                                       const i = c.findIndex((n) => {
                                         return n[key] === that.props.data[key]
                                       })
-
                                       const newChildren = me._removeItem(c, i)
+
                                       if (isRoot) {
                                         parentNode.props.data = newChildren
                                       } else {
                                         parentNode.props.data[children] = newChildren
                                       }
-
                                       setTimeout(() => {
                                         parentNode.update({ data: parentNode.props.data })
                                         if (isRoot && !parentNode.getData().length) {
@@ -240,16 +235,10 @@ class GroupTree extends Field {
                                         onOk: ({ sender }) => {
                                           const parentNode = that.parent.parent
 
-                                          let c = []
-                                          if (parentNode.componentType === 'Tree') {
-                                            c = parentNode.getData()
-                                          } else {
-                                            c = parentNode.props.data[children]
-                                          }
+                                          const c = parentNode.getData() || []
                                           const i = c.findIndex((n) => {
                                             return n[key] === that.props.data[key]
                                           })
-
                                           const newChildren = me._insertItem(c, i + 1, obj)
 
                                           if (parentNode.componentType === 'Tree') {
