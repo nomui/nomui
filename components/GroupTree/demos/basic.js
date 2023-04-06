@@ -48,6 +48,7 @@ define([], function () {
         ref: (c) => {
           formRef = c
         },
+
         fields: [
           {
             component: 'GroupTree',
@@ -61,73 +62,75 @@ define([], function () {
               console.log('值发生变化', newValue)
             },
             // value: data,
-            columns: [
-              {
-                component: 'Textbox',
-                field: '姓名',
-                name: 'name',
-              },
-              {
-                component: 'Select',
-                field: '年级',
-                name: 'grade',
-              },
-              {
-                component: 'Textbox',
-                field: '年龄',
-                name: 'age',
-                // 校验规则
-                rules: [{ type: 'number', message: '请输入有效的数字' }],
-              },
-              {
-                // 自定义渲染列内容
-                name: 'custom',
-                field: '头像',
-                // width: 100,
-                render: (params) => {
-                  return {
-                    component: 'Flex',
-                    cols: [
-                      { component: 'Avatar', text: params.nodeData.text },
-                      { component: 'Avatar', text: params.nodeData.name },
-                    ],
-                  }
+            groupDefaults: {
+              fields: [
+                {
+                  component: 'Textbox',
+                  field: '姓名',
+                  name: 'name',
                 },
-              },
-              {
-                component: 'MultilineTextbox',
-                rows: 1,
-                field: '备注',
-                name: 'info',
-                width: 300,
-              },
-            ],
-            controlAction: [
-              {
-                component: 'Button',
-                text: '取值',
-                type: 'primary',
-                onClick: () => {
-                  console.log(formRef.getValue())
+                {
+                  component: 'Select',
+                  field: '年级',
+                  name: 'grade',
                 },
-              },
-              {
-                component: 'Button',
-                text: '校验',
-                onClick: () => {
-                  console.log(formRef.validate())
+                {
+                  component: 'Textbox',
+                  field: '年龄',
+                  name: 'age',
+                  // 校验规则
+                  rules: [{ type: 'number', message: '请输入有效的数字' }],
                 },
-              },
-              {
-                component: 'Button',
-                text: '赋值',
-                onClick: () => {
-                  formRef.setValue({
-                    grouptree: data,
-                  })
+                {
+                  // 自定义渲染列内容
+                  name: 'custom',
+                  field: '头像',
+                  // width: 100,
+                  render: (params) => {
+                    return {
+                      component: 'Flex',
+                      cols: [
+                        { component: 'Avatar', text: params.nodeData.text },
+                        { component: 'Avatar', text: params.nodeData.name },
+                      ],
+                    }
+                  },
                 },
-              },
-            ],
+                {
+                  component: 'MultilineTextbox',
+                  rows: 1,
+                  field: '备注',
+                  name: 'info',
+                  width: 300,
+                },
+              ],
+            },
+          },
+        ],
+        controlAction: [
+          {
+            component: 'Button',
+            text: '取值',
+            type: 'primary',
+            onClick: () => {
+              console.log(formRef.getValue())
+            },
+          },
+          {
+            component: 'Button',
+            text: '校验',
+            onClick: () => {
+              console.log(formRef.validate())
+            },
+          },
+          {
+            component: 'Button',
+            text: '赋值',
+            onClick: () => {
+              formRef.setValue({
+                grouptree: data,
+              })
+            },
           },
         ],
       }

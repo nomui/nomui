@@ -14,12 +14,13 @@ class GroupTree extends Field {
 
   _config() {
     const me = this
-    const { value, columns, columnWidth, dataFields } = this.props
+    const { value, columnWidth, dataFields } = this.props
+    const { fields } = this.props.groupDefaults
     const { text, key, children } = dataFields
 
     const treeValue = value
 
-    const hd = columns.map((n) => {
+    const hd = fields.map((n) => {
       return {
         text: n.field || '',
         name: n.name || '',
@@ -97,7 +98,7 @@ class GroupTree extends Field {
                       tools: {
                         justify: 'start',
                         render: (param) => {
-                          const cols = columns.map((n) => {
+                          const cols = fields.map((n) => {
                             const defaultProp = {
                               controlWidth: n.width || columnWidth,
                               onValueChange: debounce(({ newValue }) => {
@@ -196,6 +197,7 @@ class GroupTree extends Field {
                                       } else {
                                         parentNode.props.data[children] = newChildren
                                       }
+
                                       setTimeout(() => {
                                         parentNode.update({ data: parentNode.props.data })
                                         if (isRoot && !parentNode.getData().length) {
@@ -413,7 +415,9 @@ class GroupTree extends Field {
 }
 GroupTree.defaults = {
   columnWidth: 200,
-
+  groupDefaults: {
+    fields: [],
+  },
   dataFields: {
     key: 'key',
     text: 'text',
