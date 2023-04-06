@@ -66,17 +66,17 @@ define([], function () {
               fields: [
                 {
                   component: 'Textbox',
-                  field: '姓名',
+                  label: '姓名',
                   name: 'name',
                 },
                 {
                   component: 'Select',
-                  field: '年级',
+                  label: '年级',
                   name: 'grade',
                 },
                 {
                   component: 'Textbox',
-                  field: '年龄',
+                  label: '年龄',
                   name: 'age',
                   // 校验规则
                   rules: [{ type: 'number', message: '请输入有效的数字' }],
@@ -84,7 +84,7 @@ define([], function () {
                 {
                   // 自定义渲染列内容
                   name: 'custom',
-                  field: '头像',
+                  label: '头像',
                   // width: 100,
                   render: (params) => {
                     return {
@@ -99,7 +99,7 @@ define([], function () {
                 {
                   component: 'MultilineTextbox',
                   rows: 1,
-                  field: '备注',
+                  label: '备注',
                   name: 'info',
                   width: 300,
                 },

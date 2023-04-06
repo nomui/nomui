@@ -24,7 +24,7 @@
 
 | 参数 | 说明 | 类型 | 默认值 | 注释 |
 | --- | --- | --- | --- | --- |
-| field | 显示的表头名称(必填) | `string` | - | - |
+| label | 字段显示名(会显示在表头位置) | `string` | - | - |
 | name | 字段的 name(必填),对应 value 里面的字段名 | `string` | - | - |
 | width | 字段列宽 | `number` | 200 | - |
 | render | 自定义渲染内容 | `({tree,node,nodeData})=>{return componentProps}` | - | - |

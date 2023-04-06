@@ -22,7 +22,7 @@ class GroupTree extends Field {
 
     const hd = fields.map((n) => {
       return {
-        text: n.field || '',
+        text: n.label || '',
         name: n.name || '',
         width: n.width || columnWidth,
       }
@@ -101,6 +101,7 @@ class GroupTree extends Field {
                           const cols = fields.map((n) => {
                             const defaultProp = {
                               controlWidth: n.width || columnWidth,
+                              label: null,
                               onValueChange: debounce(({ newValue }) => {
                                 that.props.data[n.name] = newValue
                                 me._handleChange()
