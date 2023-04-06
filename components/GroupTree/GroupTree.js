@@ -355,10 +355,12 @@ class GroupTree extends Field {
     } else {
       options = extend({ triggerChange: true }, options)
     }
-    if (value === null) {
+    if (value === null || !value.length) {
       this.tree.update({ data: [] })
+      this.addBtn.show()
     } else {
       this.tree.update({ data: value })
+      this.addBtn.hide()
     }
   }
 
