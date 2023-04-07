@@ -13823,7 +13823,11 @@ function _defineProperty2(obj, key, value) {
     }
     _directSetValue(value, options) {
       const { valueOptions } = this.props;
-      options = extend$1({ asArray: false }, valueOptions, options);
+      options = extend$1(
+        { asArray: false, nullWhenNotExists: false },
+        valueOptions,
+        options
+      );
       const { multiple } = this.props;
       if (multiple === true) {
         const selValueOptions = this._getOptions(value);
@@ -13849,8 +13853,13 @@ function _defineProperty2(obj, key, value) {
             this.currentValue = [selValueOption.value];
           }
         } else {
-          this.selectedSingle.element.innerText = value;
-          this.currentValue = value;
+          if (options.nullWhenNotExists) {
+            this.selectedSingle.element.innerText = null;
+            this.currentValue = null;
+          } else {
+            this.selectedSingle.element.innerText = value;
+            this.currentValue = value;
+          }
         }
       } // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
       if (this.searchBox && this.searchBox.props && value === null) {
