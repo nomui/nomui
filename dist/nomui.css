@@ -12138,6 +12138,46 @@ textarea .nom-textarea {
 .nom-upload .nom-upload-trigger.s-disabled {
   cursor: not-allowed;
 }
+.nom-group-tree {
+  width: 100%;
+}
+.nom-group-tree .nom-group-tree-add {
+  padding: 0.5rem;
+}
+.nom-group-tree > .nom-field-content {
+  overflow-x: auto;
+}
+.nom-group-tree .nom-group-tree-hd {
+  color: var(--nom-grid-th-color);
+  font-weight: bold;
+}
+.nom-group-tree .nom-group-tree-hd > .nom-list-content {
+  flex-wrap: nowrap;
+  justify-content: start;
+}
+.nom-group-tree .nom-group-tree-hd > .nom-list-content .nom-list-item {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.nom-group-tree .nom-tree-node-content {
+  width: max-content;
+  cursor: default;
+  border-top: 1px solid var(--nom-border-color);
+}
+.nom-group-tree .nom-tree-node-content .nom-group-tree-row-options {
+  visibility: hidden;
+}
+.nom-group-tree .nom-tree-node-content:hover > .nom-tree-node-content-tools .nom-group-tree-row-options {
+  visibility: visible;
+}
+.nom-group-tree .nom-tree-node-content-text {
+  width: 200px;
+  flex-shrink: 0;
+}
+.nom-group-tree .nom-group-tree-group > .nom-field-content > .nom-control {
+  flex-wrap: nowrap;
+  align-items: center;
+}
 @media all and (-moz-min-device-pixel-ratio: 1.09) and (-moz-max-device-pixel-ratio: 1.18), (-webkit-min-device-pixel-ratio: 1.09) and (-webkit-max-device-pixel-ratio: 1.18), (min-resolution: 1.09dppx) and (max-resolution: 1.18dppx) {
   :root {
     font-size: 14px;

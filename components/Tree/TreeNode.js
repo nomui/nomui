@@ -189,6 +189,24 @@ class TreeNode extends Component {
     this.update({ data: { children: [...this.props.data.children, ...param] } })
   }
 
+  getData(getOptions, node) {
+    getOptions = getOptions || {}
+    node = node || this
+    const nodesData = []
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      const childNodeData = { ...childNode.props.data }
+      nodesData.push(childNodeData)
+
+      const children = this.getData(getOptions, childNode)
+      if (children && children.length) {
+        childNodeData.children = children
+      }
+    })
+
+    return nodesData
+  }
+
   select() {
     this.content.select()
   }

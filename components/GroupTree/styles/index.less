@@ -1,0 +1,50 @@
+.nom-group-tree {
+  width: 100%;
+  .nom-group-tree-add {
+    padding: 0.5rem;
+  }
+  > .nom-field-content {
+    overflow-x: auto;
+  }
+  .nom-group-tree-hd {
+    color: var(--nom-grid-th-color);
+    font-weight: bold;
+
+    > .nom-list-content {
+      flex-wrap: nowrap;
+      justify-content: start;
+
+      .nom-list-item {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+    }
+  }
+  .nom-tree-node-content {
+    width: max-content;
+    cursor: default;
+    border-top: 1px solid var(--nom-border-color);
+    .nom-group-tree-row-options {
+      visibility: hidden;
+    }
+    &:hover {
+      > .nom-tree-node-content-tools {
+        .nom-group-tree-row-options {
+          visibility: visible;
+        }
+      }
+    }
+  }
+  .nom-tree-node-content-text {
+    width: 200px;
+    flex-shrink: 0;
+  }
+  .nom-group-tree-group {
+    > .nom-field-content {
+      > .nom-control {
+        flex-wrap: nowrap;
+        align-items: center;
+      }
+    }
+  }
+}
