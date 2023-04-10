@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/nomui/nomui/compare/v1.2.1...v1.2.2) (2023-04-10)
+
+
+### Features
+
+* 新增GroupTree级联字段表组件 ([ece4c04](https://github.com/nomui/nomui/commit/ece4c04e66d6d5e28d081cd7ab49867f7325aa13))
+* Select新增配置项，当value不存在于options源时，value重置为null ([a200673](https://github.com/nomui/nomui/commit/a200673981b84be07c3d9f703528e758feb9b466))
+
+
+### Bug Fixes
+
+* 修改nomui切换echarts 报错 ([c25de8e](https://github.com/nomui/nomui/commit/c25de8e3f80601f9171ce97072ea846463bddd29))
+* 针对removeChild报错修改 ([7c20498](https://github.com/nomui/nomui/commit/7c204984e14877f8c4c6bf210f4b2b9f378cf21c))
+* **GroupTree:** 优化外部赋值时新增按钮的显示逻辑 ([9567204](https://github.com/nomui/nomui/commit/9567204d243247063d993b9f7d32e5802459de07))
+* **Tree:** 优化异步加载节点判断逻辑 ([07f65a3](https://github.com/nomui/nomui/commit/07f65a3bfb50e5ff426fcb749e1055937c624b4c))
+
+
+### Docs
+
+* GroupTree文档更新 ([52e7125](https://github.com/nomui/nomui/commit/52e7125ce3b21430d1527ed35c2699a300385809))
+* **GroupTree:** 优化组件api命名 ([a8a3c9f](https://github.com/nomui/nomui/commit/a8a3c9f75fb549c2e0d20c3240884a8d310f0fdc))
+
 ### [1.2.1](https://github.com/nomui/nomui/compare/v1.2.0...v1.2.1) (2023-03-31)
 
 
