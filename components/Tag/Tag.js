@@ -8,7 +8,7 @@ class Tag extends Component {
   _config() {
     this._propStyleClasses = ['size', 'color']
     const { icon, rightIcon, text, type, overflowCount, removable } = this.props
-    const number = this.props.number === 0 ? '0' : this.props.number
+    const number = this.props.number
 
     const that = this
     if (icon || rightIcon) {
@@ -48,27 +48,28 @@ class Tag extends Component {
               },
             },
           },
-          number && {
+          (number || number === 0) && {
             tag: 'span',
             children: number > overflowCount ? `${overflowCount}+` : number,
           },
 
           Component.normalizeIconProps(rightIcon),
           removable &&
-          Component.normalizeIconProps({
-            type: 'times',
-            classes: {
-              'nom-tag-remove': true,
-              'nom-tag-remove-basic': !that.props.styles,
-            },
-            onClick: function ({ event }) {
-              nomui.utils.isFunction(that.props.removable) && that.props.removable(that.props.key)
-              that.hasOwnProperty('props') && that.props.onRemove &&
-                that._callHandler(that.props.onRemove, { key: that.props.key })
+            Component.normalizeIconProps({
+              type: 'times',
+              classes: {
+                'nom-tag-remove': true,
+                'nom-tag-remove-basic': !that.props.styles,
+              },
+              onClick: function ({ event }) {
+                nomui.utils.isFunction(that.props.removable) && that.props.removable(that.props.key)
+                that.hasOwnProperty('props') &&
+                  that.props.onRemove &&
+                  that._callHandler(that.props.onRemove, { key: that.props.key })
 
-              event.stopPropagation()
-            },
-          }),
+                event.stopPropagation()
+              },
+            }),
         ],
       },
     })
