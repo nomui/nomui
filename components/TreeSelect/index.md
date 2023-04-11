@@ -20,6 +20,7 @@
 | allowClear | 显示清除按钮 | `boolean` | - |
 | searchable | 树节点的可勾选配置(同 Tree 组件`nodeCheckable`) | `boolean` \| `object` | - |
 | initExpandLevel | 默认展开节点层级，不传则展开所有层级 | `number` | -1 |
+| valueOptions | 取值默认参数，如果 asArray 设为 true 则任何时候都以数组形式返回值 | `{asArray:false}` | - |
 
 ### TreeSelect methods
 
