@@ -27449,9 +27449,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _getParentNode(node) {
       if (node.parentNode) {
         return this._getParentNode(node.parentNode);
-      } else {
-        return node;
       }
+      return node;
     }
     _getCheckedChildNodes(nodes) {
       const checkedNodes = [];
@@ -27494,13 +27493,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         !this.props.animate && this.popup.hide();
       }
     } // getValue时根据选中的节点返回
-    _getValue() {
-      if (this.props.multiple === false) {
-        if (Array.isArray(this.tempValue)) {
+    _getValue(options) {
+      const { valueOptions } = this.props;
+      options = extend$1({ asArray: false }, valueOptions, options);
+      if (Array.isArray(this.tempValue)) {
+        if (this.props.multiple === false && options.asArray !== true) {
           return this.tempValue[0];
         }
+        return this.tempValue;
       }
-      return this.tempValue;
+      return Array.from(this.tempValue);
     }
     getValueText() {
       const { treeDataFields } = this.props;
@@ -27543,6 +27545,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       children: "children",
       parentKey: "parentKey",
     },
+    valueOptions: { asArray: false },
     onlyleaf: false,
     showArrow: true,
     initExpandLevel: -1,

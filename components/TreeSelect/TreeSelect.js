@@ -353,7 +353,7 @@ class TreeSelect extends Field {
         if (!sender.isChecked()) {
           const checkedChildNodes = this._getCheckedChildNodes(childNodes)
           !parentNode.isChecked() && checkedChildNodes.push(parentNode.key)
-          const newAllValue = allValue.filter(item => checkedChildNodes.indexOf(item) === -1)
+          const newAllValue = allValue.filter((item) => checkedChildNodes.indexOf(item) === -1)
           allValue = newAllValue
         }
         const checkedKeys = this._removeDuplicates([...allValue, ...this.tree.getCheckedNodeKeys()])
@@ -365,19 +365,18 @@ class TreeSelect extends Field {
   _removeDuplicates(arr) {
     for (let i = 0; i < arr.length; i++) {
       if (arr.indexOf(arr[i]) !== i) {
-        arr.splice(i, 1);
-        i--;
+        arr.splice(i, 1)
+        i--
       }
     }
-    return arr;
+    return arr
   }
 
   _getParentNode(node) {
     if (node.parentNode) {
       return this._getParentNode(node.parentNode)
-    } else {
-      return node
     }
+    return node
   }
 
   _getCheckedChildNodes(nodes) {
@@ -422,13 +421,22 @@ class TreeSelect extends Field {
   }
 
   // getValue时根据选中的节点返回
-  _getValue() {
-    if (this.props.multiple === false) {
-      if (Array.isArray(this.tempValue)) {
+  _getValue(options) {
+    const { valueOptions } = this.props
+    options = extend(
+      {
+        asArray: false,
+      },
+      valueOptions,
+      options,
+    )
+    if (Array.isArray(this.tempValue)) {
+      if (this.props.multiple === false && options.asArray !== true) {
         return this.tempValue[0]
       }
+      return this.tempValue
     }
-    return this.tempValue
+    return Array.from(this.tempValue)
   }
 
   getValueText() {
@@ -477,6 +485,9 @@ TreeSelect.defaults = {
     text: 'text',
     children: 'children',
     parentKey: 'parentKey',
+  },
+  valueOptions: {
+    asArray: false,
   },
   onlyleaf: false,
   showArrow: true,
