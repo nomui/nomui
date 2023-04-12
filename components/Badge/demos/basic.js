@@ -61,7 +61,7 @@ define([], function () {
             text: '按钮带圆点数字',
             badge: {
               number: 1000,
-              overflowCount: 999,
+              overflowCount: 99,
             },
           },
           {

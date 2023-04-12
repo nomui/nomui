@@ -26,7 +26,7 @@ class Td extends Component {
 
     let spanProps = null
 
-    let children = this.props.data === 0 ? '0' : this.props.data
+    let children = this.props.data
 
     if (isFunction(column.cellRender)) {
       children = column.cellRender({

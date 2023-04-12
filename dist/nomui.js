@@ -10154,7 +10154,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _config() {
       this._propStyleClasses = ["size", "color"];
       const { icon, text, type, overflowCount } = this.props;
-      const number = this.props.number === 0 ? "0" : this.props.number;
+      const number = this.props.number;
       if (icon) {
         this.setProps({ classes: { "p-with-icon": true } });
       }
@@ -10172,7 +10172,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children: [
           Component.normalizeIconProps(icon),
           { tag: "span", children: text },
-          number && {
+          (number || number === 0) && {
             tag: "span",
             children: number > overflowCount ? `${overflowCount}+` : number,
           },
@@ -15890,7 +15890,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { column } = this.props;
       const { treeConfig } = this.table.props;
       let spanProps = null;
-      let children = this.props.data === 0 ? "0" : this.props.data;
+      let children = this.props.data;
       if (isFunction(column.cellRender)) {
         children = column.cellRender({
           cell: this,
@@ -26155,7 +26155,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         overflowCount,
         removable,
       } = this.props;
-      const number = this.props.number === 0 ? "0" : this.props.number;
+      const number = this.props.number;
       const that = this;
       if (icon || rightIcon) {
         this.setProps({ classes: { "p-with-icon": true } });
@@ -26185,7 +26185,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 },
               },
             },
-            number && {
+            (number || number === 0) && {
               tag: "span",
               children: number > overflowCount ? `${overflowCount}+` : number,
             },
