@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.3](https://github.com/nomui/nomui/compare/v1.2.2...v1.2.3) (2023-04-14)
+
+
+### Features
+
+* **TreeSelect:** 新增valueOptions，提供始终以数组形式取值的配置 ([406e317](https://github.com/nomui/nomui/commit/406e317de8fc0441b98d8c05e18b8aa9e10b9ba9))
+
+
+### Docs
+
+* 文档更新 ([fdd6c13](https://github.com/nomui/nomui/commit/fdd6c13aef18de3f6a7737b6126b92e607b9d302))
+
 ### [1.2.2](https://github.com/nomui/nomui/compare/v1.2.1...v1.2.2) (2023-04-10)
 
 
