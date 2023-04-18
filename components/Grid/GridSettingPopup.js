@@ -47,6 +47,7 @@ class GridSettingPopup extends Modal {
             multiple: true,
             sortable: {
               showHandler: true,
+              doubleGroup: true,
             },
 
             ref: (c) => {

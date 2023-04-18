@@ -49,7 +49,7 @@ class TreeNodes extends Component {
       },
       this.tree.props.nodeDefaults,
     )
-
+    debugger
     this.setProps({
       children: nodesProps,
       childDefaults,
@@ -60,18 +60,46 @@ class TreeNodes extends Component {
   _rendered() {
     const { sortable } = this.tree.props
     if (sortable !== false) {
-      new Sortable(this.element, {
-        group: this.key,
-        animation: 150,
-        fallbackOnBody: true,
-        swapThreshold: 0.65,
-        handle:
-          this.tree.props.sortable &&
-          this.tree.props.sortable.showHandler &&
-          this.tree.props.sortable.byHandler
-            ? '.nom-tree-drag-handler'
-            : null,
-      })
+      if (sortable.doubleGroup) {
+        debugger
+        new Sortable(this.element, {
+          group: this.key,
+          animation: 150,
+          fallbackOnBody: true,
+          swapThreshold: 0.65,
+          handle:
+            this.tree.props.sortable &&
+            this.tree.props.sortable.showHandler &&
+            this.tree.props.sortable.byHandler
+              ? '.nom-tree-drag-handler'
+              : null,
+        })
+        new Sortable(this.element, {
+          group: this.key,
+          animation: 150,
+          fallbackOnBody: true,
+          swapThreshold: 0.65,
+          handle:
+            this.tree.props.sortable &&
+            this.tree.props.sortable.showHandler &&
+            this.tree.props.sortable.byHandler
+              ? '.nom-tree-drag-handler'
+              : null,
+        })
+      } else {
+        new Sortable(this.element, {
+          group: this.key,
+          animation: 150,
+          fallbackOnBody: true,
+          swapThreshold: 0.65,
+          handle:
+            this.tree.props.sortable &&
+            this.tree.props.sortable.showHandler &&
+            this.tree.props.sortable.byHandler
+              ? '.nom-tree-drag-handler'
+              : null,
+        })
+      }
     }
   }
 

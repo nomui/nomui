@@ -40,8 +40,7 @@ class TreeNode extends Component {
 
     this.isLeaf = !(this._isNotEmptyArray(nodes) || this._isNotEmptyArray(childrenData))
 
-    this.isLoadData = this.tree.props.loadData && this.props.data.isLeaf === false
-
+    this.isLoadData = this.tree.props.loadData && this.props.data.isLeaf === fals
     if (Array.isArray(nodes) || Array.isArray(childrenData)) {
       children.push({
         component: 'TreeNodes',
@@ -60,6 +59,10 @@ class TreeNode extends Component {
         checked: this.tree.checkedNodeKeysHash[this.key] === true,
       })
     }
+  }
+
+  _rendered() {
+    debugger
   }
 
   _isNotEmptyArray(arr) {
