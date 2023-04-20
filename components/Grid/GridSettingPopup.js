@@ -93,10 +93,19 @@ class GridSettingPopup extends Modal {
                   type: 'primary',
                   text: '确定',
                   onClick: function () {
+                    if (doubleGroupMode) {
+                      const nodeRefs = that.tree.leftNodes.getChildren()
+                      if (nodeRefs.length > 0) {
+                        Object.keys(nodeRefs).forEach((nodeKey) => {
+                          if (nodeRefs[nodeKey].props.disabled !== true) {
+                            nodeRefs[nodeKey].props.checked = true
+                          }
+                        })
+                      }
+                    }
                     const list = that.tree.getCheckedNodesData(
                       null,
                       doubleGroupMode && that.tree.leftNodes,
-                      doubleGroupMode,
                     )
                     const lockedList = list.filter((n) => {
                       return n.disabled === true
@@ -114,8 +123,8 @@ class GridSettingPopup extends Modal {
                       return false
                     }
                     if (doubleGroupMode) {
-                      const left = that.tree.getData(null, that.tree.leftNodes, doubleGroupMode)
-                      const right = that.tree.getData(null, that.tree.rightNodes, doubleGroupMode)
+                      const left = that.tree.getData(null, that.tree.leftNodes)
+                      const right = that.tree.getData(null, that.tree.rightNodes)
                       that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
                         [...left, ...right],
                       )

@@ -49,13 +49,13 @@ class TreeNodes extends Component {
       },
       this.tree.props.nodeDefaults,
     )
-
+    debugger
     if (sortable && sortable.doubleGroupMode) {
       const checkedNodesProps = [],
         uncheckedNodesProps = []
 
       nodesProps.forEach((element) => {
-        if (this.tree.checkedNodeKeysHash[element.data.key]) {
+        if (this.tree.checkedNodeKeysHash[element.data.field]) {
           checkedNodesProps.push(element)
         } else {
           uncheckedNodesProps.push(element)

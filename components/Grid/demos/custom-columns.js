@@ -199,6 +199,7 @@ define([], function () {
                 // eslint-disable-next-line
                 console.log('selected:', param)
               },
+              // doubleGroupMode: true,
             },
           },
           {
