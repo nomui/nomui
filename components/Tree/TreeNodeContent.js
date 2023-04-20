@@ -50,6 +50,11 @@ class TreeNodeContent extends Component {
 
     let toolProps = null
     let isNewToolProp = false
+    let noCheckbox = false
+
+    if (this.tree.props.sortable && this.tree.props.sortable.doubleGroupMode) {
+      noCheckbox = true
+    }
 
     if (tools) {
       if (nomui.utils.isFunction(tools)) {
@@ -113,7 +118,7 @@ class TreeNodeContent extends Component {
             },
           },
         this.getExpandableIndicatorProps(expanded),
-        nodeCheckable && this._getCheckbox(),
+        !noCheckbox && nodeCheckable && this._getCheckbox(),
         icon &&
           Component.extendProps(
             { classes: { 'nom-tree-node-content-icon': true } },

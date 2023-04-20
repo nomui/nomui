@@ -11,6 +11,7 @@ define([], function () {
         rowCheckable: true,
         columnsCustomizable: {
           cache: true,
+          doubleGroupMode: true,
         },
         columns: [
           {

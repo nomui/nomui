@@ -267,6 +267,7 @@ rows 子对象配置
 | selected | 默认展示出的列 | `array` | - |
 | cache | 是否缓存自定义列展示设置，为`true`时需配置 Grid 的`key`属性为唯一值 | `boolean` | - |
 | callback | 点击 modal 的保存的回调事件 | `function` | - |
+| doubleGroupMode | 启用双列拖动模式 | `boolean` | `false` |
 
 ### 注意事项
 

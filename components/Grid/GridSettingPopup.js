@@ -16,12 +16,17 @@ class GridSettingPopup extends Modal {
 
   _config() {
     const that = this
-
+    let doubleGroupMode = false
+    if (
+      this.grid.props.columnsCustomizable &&
+      this.grid.props.columnsCustomizable.doubleGroupMode
+    ) {
+      doubleGroupMode = true
+    }
     this.setProps({
       classes: {
         'nom-grid-setting-panel': true,
       },
-
       content: {
         component: 'Panel',
         uistyle: 'card',
@@ -47,9 +52,8 @@ class GridSettingPopup extends Modal {
             multiple: true,
             sortable: {
               showHandler: true,
-              doubleGroup: true,
+              doubleGroupMode,
             },
-
             ref: (c) => {
               this.tree = c
             },
@@ -68,8 +72,9 @@ class GridSettingPopup extends Modal {
                 width: '100%',
               },
             },
+            justify: 'end',
             cols: [
-              {
+              !doubleGroupMode && {
                 grow: true,
                 children: {
                   component: 'Button',
@@ -88,7 +93,11 @@ class GridSettingPopup extends Modal {
                   type: 'primary',
                   text: '确定',
                   onClick: function () {
-                    const list = that.tree.getCheckedNodesData()
+                    const list = that.tree.getCheckedNodesData(
+                      null,
+                      doubleGroupMode && that.tree.leftNodes,
+                      doubleGroupMode,
+                    )
                     const lockedList = list.filter((n) => {
                       return n.disabled === true
                     })
@@ -104,9 +113,18 @@ class GridSettingPopup extends Modal {
                       })
                       return false
                     }
-                    that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
-                      that.tree.getData(),
-                    )
+                    if (doubleGroupMode) {
+                      const left = that.tree.getData(null, that.tree.leftNodes, doubleGroupMode)
+                      const right = that.tree.getData(null, that.tree.rightNodes, doubleGroupMode)
+                      that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
+                        [...left, ...right],
+                      )
+                    } else {
+                      that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
+                        that.tree.getData(),
+                      )
+                    }
+                    debugger
                     that.grid.handleColumnsSetting(that._sortCustomizableColumns(list))
                   },
                 },

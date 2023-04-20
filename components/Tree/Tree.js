@@ -119,11 +119,16 @@ class Tree extends Component {
 
   _dataToNodes() {}
 
-  getData(getOptions, node) {
+  getData(getOptions, node, doubleGroupMode) {
     getOptions = getOptions || {}
     node = node || this
     const nodesData = []
-    const childNodes = node.getChildNodes()
+    let childNodes = []
+    if (doubleGroupMode && node.componentType === 'FlexItem') {
+      childNodes = node.getChildren()
+    } else {
+      childNodes = node.getChildNodes()
+    }
     childNodes.forEach((childNode) => {
       const childNodeData = { ...childNode.props.data }
       nodesData.push(childNodeData)
@@ -170,13 +175,18 @@ class Tree extends Component {
     return checkedNodeKeys
   }
 
-  getCheckedNodesData(getOptions, node) {
+  getCheckedNodesData(getOptions, node, doubleGroupMode) {
     getOptions = getOptions || { flatData: false }
     node = node || this
     let checkedNodesData = []
-    const childNodes = node.getChildNodes()
+    let childNodes = []
+    if (doubleGroupMode && node.componentType === 'FlexItem') {
+      childNodes = node.getChildren()
+    } else {
+      childNodes = node.getChildNodes()
+    }
     childNodes.forEach((childNode) => {
-      if (childNode.isChecked() === true) {
+      if (childNode.isChecked() === true || doubleGroupMode) {
         const childNodeData = { ...childNode.props.data }
         checkedNodesData.push(childNodeData)
 
