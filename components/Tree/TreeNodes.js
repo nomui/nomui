@@ -49,110 +49,207 @@ class TreeNodes extends Component {
       },
       this.tree.props.nodeDefaults,
     )
-    debugger
+
     if (sortable && sortable.doubleGroupMode) {
       const checkedNodesProps = [],
         uncheckedNodesProps = []
 
-      nodesProps.forEach((element) => {
-        if (this.tree.checkedNodeKeysHash[element.data.field]) {
-          checkedNodesProps.push(element)
-        } else {
-          uncheckedNodesProps.push(element)
-        }
+      const treeData = nodesProps.some((element) => {
+        return element.data.children
       })
 
-      this.setProps({
-        children: {
-          component: 'Flex',
-          cols: [
-            {
-              span: 5,
-              children: {
-                gap: 'small',
-                rows: [
-                  {
-                    attrs: {
-                      style: {
-                        'margin-left': '73px',
+      if (treeData) {
+        this.setProps({
+          children: {
+            component: 'Flex',
+            cols: [
+              {
+                span: 5,
+                children: {
+                  gap: 'small',
+                  rows: [
+                    {
+                      attrs: {
+                        style: {
+                          'margin-left': '73px',
+                        },
                       },
+                      children: '显示字段',
                     },
-                    children: '显示字段',
-                  },
-                  {
-                    ref: (c) => {
-                      this.tree.leftNodes = c
-                      c.tree = this.tree
-                      c.parentNode = null
-                    },
-                    styles: {
-                      border: true,
-                      padding: '1',
-                    },
-                    attrs: {
-                      style: {
-                        height: '460px',
-                        'overflow-y': 'auto',
-                        'overflow-x': 'hidden',
+                    {
+                      ref: (c) => {
+                        this.tree.leftNodes = c
+                        c.tree = this.tree
+                        c.parentNode = null
                       },
+                      styles: {
+                        border: true,
+                        padding: '1',
+                      },
+                      attrs: {
+                        style: {
+                          height: '460px',
+                          'overflow-y': 'auto',
+                          'overflow-x': 'hidden',
+                        },
+                      },
+                      children: nodesProps,
+                      childDefaults,
+                      hidden: expanded === false,
                     },
-                    children: checkedNodesProps,
-                    childDefaults,
-                    hidden: expanded === false,
-                  },
-                ],
-              },
-            },
-            {
-              component: 'Icon',
-              type: 'swap',
-              attrs: {
-                style: {
-                  transform: 'rotate(90deg)',
-                  margin: '225px 37px',
+                  ],
                 },
               },
-            },
-            {
-              span: 5,
-              children: {
-                gap: 'small',
-                rows: [
-                  {
-                    attrs: {
-                      style: {
-                        'margin-left': '73px',
-                      },
-                    },
-                    children: '隐藏字段',
+              {
+                component: 'Icon',
+                type: 'swap',
+                attrs: {
+                  style: {
+                    transform: 'rotate(90deg)',
+                    margin: '225px 37px',
                   },
-                  {
-                    ref: (c) => {
-                      this.tree.rightNodes = c
-                      c.tree = this.tree
-                      c.parentNode = null
-                    },
-                    styles: {
-                      border: true,
-                      padding: '1',
-                    },
-                    attrs: {
-                      style: {
-                        height: '460px',
-                        'overflow-y': 'auto',
-                        'overflow-x': 'hidden',
-                      },
-                    },
-                    children: uncheckedNodesProps,
-                    childDefaults,
-                    hidden: expanded === false,
-                  },
-                ],
+                },
               },
-            },
-          ],
-        },
-      })
+              {
+                span: 5,
+                children: {
+                  gap: 'small',
+                  rows: [
+                    {
+                      attrs: {
+                        style: {
+                          'margin-left': '73px',
+                        },
+                      },
+                      children: '隐藏字段',
+                    },
+                    {
+                      ref: (c) => {
+                        this.tree.rightNodes = c
+                        c.tree = this.tree
+                        c.parentNode = null
+                      },
+                      styles: {
+                        border: true,
+                        padding: '1',
+                      },
+                      attrs: {
+                        style: {
+                          height: '460px',
+                          'overflow-y': 'auto',
+                          'overflow-x': 'hidden',
+                        },
+                      },
+                      children: nodesProps,
+                      childDefaults,
+                      hidden: expanded === false,
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        })
+      } else {
+        nodesProps.forEach((element) => {
+          if (this.tree.checkedNodeKeysHash[element.data.field]) {
+            checkedNodesProps.push(element)
+          } else {
+            uncheckedNodesProps.push(element)
+          }
+        })
+        this.setProps({
+          children: {
+            component: 'Flex',
+            cols: [
+              {
+                span: 5,
+                children: {
+                  gap: 'small',
+                  rows: [
+                    {
+                      attrs: {
+                        style: {
+                          'margin-left': '73px',
+                        },
+                      },
+                      children: '显示字段',
+                    },
+                    {
+                      ref: (c) => {
+                        this.tree.leftNodes = c
+                        c.tree = this.tree
+                        c.parentNode = null
+                      },
+                      styles: {
+                        border: true,
+                        padding: '1',
+                      },
+                      attrs: {
+                        style: {
+                          height: '460px',
+                          'overflow-y': 'auto',
+                          'overflow-x': 'hidden',
+                        },
+                      },
+                      children: checkedNodesProps,
+                      childDefaults,
+                      hidden: expanded === false,
+                    },
+                  ],
+                },
+              },
+              {
+                component: 'Icon',
+                type: 'swap',
+                attrs: {
+                  style: {
+                    transform: 'rotate(90deg)',
+                    margin: '225px 37px',
+                  },
+                },
+              },
+              {
+                span: 5,
+                children: {
+                  gap: 'small',
+                  rows: [
+                    {
+                      attrs: {
+                        style: {
+                          'margin-left': '73px',
+                        },
+                      },
+                      children: '隐藏字段',
+                    },
+                    {
+                      ref: (c) => {
+                        this.tree.rightNodes = c
+                        c.tree = this.tree
+                        c.parentNode = null
+                      },
+                      styles: {
+                        border: true,
+                        padding: '1',
+                      },
+                      attrs: {
+                        style: {
+                          height: '460px',
+                          'overflow-y': 'auto',
+                          'overflow-x': 'hidden',
+                        },
+                      },
+                      children: uncheckedNodesProps,
+                      childDefaults,
+                      hidden: expanded === false,
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        })
+      }
     } else {
       this.setProps({
         children: nodesProps,
