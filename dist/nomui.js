@@ -70,7 +70,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         } else if (i === "Opera") {
           version = UserAgent.match(/opera\/([\d.]+)/)[1];
         } else if (i === "Safari") {
-          version = UserAgent.match(/version\/([\d.]+)/)[1];
+          version =
+            UserAgent.match(/version\/([\d.]+)/) &&
+            UserAgent.match(/version\/([\d.]+)/)[1];
         } else if (i === "Edge") {
           version = UserAgent.match(/edge\/([\d.]+)/)[1];
         } else if (i === "QQBrowser") {
