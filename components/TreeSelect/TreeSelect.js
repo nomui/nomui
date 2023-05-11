@@ -436,6 +436,9 @@ class TreeSelect extends Field {
       }
       return this.tempValue
     }
+    if (isNullish(this.tempValue)) {
+      return null
+    }
     return Array.from(this.tempValue)
   }
 
