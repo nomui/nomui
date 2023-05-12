@@ -17225,6 +17225,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           width: 50,
           resizable: false,
           isCheckerSpace: true,
+          field: "nom-grid-row-checker",
         });
       }
       const ignoreCellRender = !!(summary && summary.ignoreCellRender);
@@ -27503,6 +27504,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           return this.tempValue[0];
         }
         return this.tempValue;
+      }
+      if (isNullish(this.tempValue)) {
+        return null;
       }
       return Array.from(this.tempValue);
     }
