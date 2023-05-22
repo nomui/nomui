@@ -17225,7 +17225,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           width: 50,
           resizable: false,
           isCheckerSpace: true,
-          field: "nom-grid-row-checker",
         });
       }
       const ignoreCellRender = !!(summary && summary.ignoreCellRender);
@@ -27499,16 +27498,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _getValue(options) {
       const { valueOptions } = this.props;
       options = extend$1({ asArray: false }, valueOptions, options);
+      if (isNullish(this.tempValue)) {
+        return null;
+      }
       if (Array.isArray(this.tempValue)) {
         if (this.props.multiple === false && options.asArray !== true) {
           return this.tempValue[0];
         }
         return this.tempValue;
       }
-      if (isNullish(this.tempValue)) {
-        return null;
+      if (options.asArray) {
+        return [this.tempValue];
       }
-      return Array.from(this.tempValue);
+      return this.tempValue;
     }
     getValueText() {
       const { treeDataFields } = this.props;

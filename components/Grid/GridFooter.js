@@ -56,7 +56,6 @@ class GridFooter extends Component {
         width: 50,
         resizable: false,
         isCheckerSpace: true,
-        field: 'nom-grid-row-checker',
       })
     }
 
