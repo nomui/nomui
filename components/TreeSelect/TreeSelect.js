@@ -436,7 +436,10 @@ class TreeSelect extends Field {
       }
       return this.tempValue
     }
-    return Array.from(this.tempValue)
+    if (options.asArray) {
+      return [this.tempValue]
+    }
+    return this.tempValue
   }
 
   getValueText() {
