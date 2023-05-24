@@ -430,13 +430,19 @@ class TreeSelect extends Field {
       valueOptions,
       options,
     )
+    if (isNullish(this.tempValue)) {
+      return null
+    }
     if (Array.isArray(this.tempValue)) {
       if (this.props.multiple === false && options.asArray !== true) {
         return this.tempValue[0]
       }
       return this.tempValue
     }
-    return Array.from(this.tempValue)
+    if (options.asArray) {
+      return [this.tempValue]
+    }
+    return this.tempValue
   }
 
   getValueText() {
