@@ -38,6 +38,7 @@ class Menu extends Component {
           tag: 'li',
           classes: {
             'nom-menu-divider': true,
+            'nom-menu-divider-dashed': item.dashed === true,
           },
         }
       }

@@ -28,6 +28,21 @@ class MenuSub extends Component {
     const children =
       Array.isArray(this.props.items) &&
       this.props.items.map(function (item) {
+        if (!item) {
+          return
+        }
+        if (
+          (item.type && item.type.toLowerCase() === 'divider') ||
+          (item.component && item.component === 'Divider')
+        ) {
+          return {
+            tag: 'li',
+            classes: {
+              'nom-menu-divider': true,
+              'nom-menu-divider-dashed': item.dashed === true,
+            },
+          }
+        }
         return {
           component: 'MenuItemWrapper',
           animate: that.menu.props.animate,

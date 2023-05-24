@@ -141,10 +141,9 @@
       }
     }
 
-    > .nom-menu-divider {
+     .nom-menu-divider {
       position: relative;
       padding: 10px 0;
-
       &::after {
         position: absolute;
         right: 15px;
@@ -153,6 +152,11 @@
         display: block;
         border-top: var(--nom-menu-divider-border);
         content: '';
+      }
+      &.nom-menu-divider-dashed {
+        &::after {
+          border-top-style: dashed;
+        }
       }
     }
   }
