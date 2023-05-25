@@ -4,7 +4,7 @@ define([], function () {
     file: 'item-type',
     demo: function () {
       const items = [
-        { text: 'MenuItem', id: 'menuItem', type: 'menu-item' },
+        { text: 'MenuItem', id: 'menuItem', type: 'item' },
         { text: 'Divider', id: 'divider', type: 'divider' },
         {
           text: 'SubMenu',
@@ -50,9 +50,9 @@ define([], function () {
             { text: 'GroupSub2', id: 'GroupSub2' },
           ],
         },
-        { text: 'MenuItem2', id: 'menuItem2', type: 'menu-item' },
+        { text: 'MenuItem2', id: 'menuItem2', type: 'item' },
         { text: 'Divider', id: 'divider2', type: 'divider', dashed: true },
-        { text: 'MenuItem3', id: 'menuItem3', type: 'menu-item' },
+        { text: 'MenuItem3', id: 'menuItem3', type: 'item' },
       ]
 
       return {
@@ -64,6 +64,11 @@ define([], function () {
             // direction: 'horizontal',
 
             items: items,
+          },
+          {
+            tag: 'p',
+            children:
+              '代码会根据是否有子项自动处理成item或者submenu，只有需要配置为群组或者分割线时才需要定义type',
           },
         ],
       }
