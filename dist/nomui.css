@@ -4460,6 +4460,7 @@ body {
   --nom-grid-col-highlight-bg: rgba(221, 205, 79, 0.1);
   --nom-grid-td-padding: 8px 10px;
   --nom-menu-divider-border: 1px solid var(--nom-border-color);
+  --nom-menu-group-title-color: var(--nom-color-text-2);
   --nom-panel-header-bg-color: var(--nom-color-fill-0);
   --nom-panel-border-radius: var(--nom-border-radius);
   --nom-tabs-card-bg-color: var(--nom-panel-header-bg-color);
@@ -6984,6 +6985,14 @@ body .nom-always-dark {
   color: var(--nom-color-text-2);
   font-weight: 400;
 }
+.nom-menu.p-direction-vertical a:hover:hover {
+  background-color: var(--nom-color-hover);
+}
+.nom-menu .nom-menu-group-container > .nom-menu-group-title {
+  color: var(--nom-menu-group-title-color);
+  padding: 10px 0;
+  font-size: 85%;
+}
 .nom-menu.p-direction-horizontal {
   display: flex;
   flex-wrap: wrap;
@@ -6991,9 +7000,11 @@ body .nom-always-dark {
 .nom-menu.p-direction-horizontal > .nom-menu-item-wrapper > .nom-menu-item {
   display: flex;
   align-items: center;
-  padding: 10px 15px;
   white-space: nowrap;
   text-decoration: none;
+}
+.nom-menu.p-direction-horizontal > .nom-menu-item-wrapper > .nom-menu-item:not(.nom-menu-group-title) {
+  padding: 10px 15px;
 }
 .nom-menu.p-direction-horizontal > .nom-menu-divider {
   position: relative;
@@ -7063,8 +7074,10 @@ body .nom-always-dark {
 .nom-menu.p-direction-vertical:not(.nom-menu-compact) .nom-menu-item-wrapper > .nom-menu-item {
   display: flex;
   align-items: center;
-  padding: 10px 15px;
   text-decoration: none;
+}
+.nom-menu.p-direction-vertical:not(.nom-menu-compact) .nom-menu-item-wrapper > .nom-menu-item:not(.nom-menu-group-title) {
+  padding: 10px 15px;
 }
 .nom-menu.p-direction-vertical:not(.nom-menu-compact) .nom-menu-item-wrapper > .nom-menu-item > .nom-menu-item-icon {
   margin-right: 0.5rem;
@@ -7072,11 +7085,11 @@ body .nom-always-dark {
 .nom-menu.p-direction-vertical:not(.nom-menu-compact) .nom-menu-item-wrapper > .nom-menu-item > .title {
   flex-grow: 1;
 }
-.nom-menu.p-direction-vertical:not(.nom-menu-compact) > .nom-menu-divider {
+.nom-menu.p-direction-vertical:not(.nom-menu-compact) .nom-menu-divider {
   position: relative;
   padding: 10px 0;
 }
-.nom-menu.p-direction-vertical:not(.nom-menu-compact) > .nom-menu-divider::after {
+.nom-menu.p-direction-vertical:not(.nom-menu-compact) .nom-menu-divider::after {
   position: absolute;
   right: 15px;
   bottom: 10px;
@@ -7084,6 +7097,9 @@ body .nom-always-dark {
   display: block;
   border-top: var(--nom-menu-divider-border);
   content: '';
+}
+.nom-menu.p-direction-vertical:not(.nom-menu-compact) .nom-menu-divider.nom-menu-divider-dashed::after {
+  border-top-style: dashed;
 }
 .nom-menu-compact > .nom-menu-item-wrapper > .nom-menu-item {
   display: block;
@@ -7122,9 +7138,11 @@ body .nom-always-dark {
 .nom-menu-sub > .nom-menu-item-wrapper > .nom-menu-item {
   display: flex;
   align-items: center;
-  padding: 10px 15px;
   white-space: nowrap;
   text-decoration: none;
+}
+.nom-menu-sub > .nom-menu-item-wrapper > .nom-menu-item:not(.nom-menu-group-title) {
+  padding: 10px 15px;
 }
 .nom-menu-sub > .nom-menu-item-wrapper > .nom-menu-item > .title {
   flex-grow: 1;

@@ -20145,6 +20145,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (menuProps.direction === "horizontal") {
         this.setProps({ indicator: { expandable: false } });
       }
+      const groupOffset = this.wrapper.props.isGroupItem ? 0.5 : 0;
       this.setProps({
         indicator: {
           type: indicatorIconType,
@@ -20167,7 +20168,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           style: {
             paddingLeft:
               menuProps.direction === "vertical" && !menuProps.compact
-                ? `${(this.level + 1) * menuProps.indent}rem`
+                ? `${(this.level + 1 - groupOffset) * menuProps.indent}rem`
                 : null,
           },
         },
@@ -20187,34 +20188,43 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (menuProps.itemSelectable.onlyleaf === true && this.isLeaf === false) {
         this.setProps({ selectable: false });
       }
-      this.setProps({
-        children: [
-          this.props.icon && {
-            component: "Icon",
-            type: this.props.icon,
-            classes: { "nom-menu-item-icon": true },
-          },
-          {
-            component: Component,
-            tag: menuProps.compact ? "div" : "span",
-            classes: { text: true, "nom-menu-item-title": true },
-            attrs: {
-              style: { "flex-grow": this.props.subtext ? null : "2" },
-              title: this.props.text,
+      if (this.props.type === "group") {
+        this.setProps({
+          indicator: false,
+          selectable: false,
+          expandable: false,
+          tag: "span",
+          classes: { text: true, "nom-menu-group-title": true },
+          children: this.props.text,
+        });
+      } else {
+        this.setProps({
+          children: [
+            this.props.icon && {
+              component: "Icon",
+              type: this.props.icon,
+              classes: { "nom-menu-item-icon": true },
             },
-            children: this.props.text,
-          },
-          this.props.subtext && {
-            component: Component,
-            tag: "span",
-            classes: { subtext: true },
-            attrs: { style: { "flex-grow": "2" } },
-            children: this.props.subtext,
-          },
-          menu.props.direction !== "horizontal" && tools && tools,
-          this.props.indicator && !this.isLeaf && this.props.indicator,
-        ],
-      });
+            {
+              tag: menuProps.compact ? "div" : "span",
+              classes: { text: true, "nom-menu-item-title": true },
+              attrs: {
+                style: { "flex-grow": this.props.subtext ? null : "2" },
+                title: this.props.text,
+              },
+              children: this.props.text,
+            },
+            this.props.subtext && {
+              tag: "span",
+              classes: { subtext: true },
+              attrs: { style: { "flex-grow": "2" } },
+              children: this.props.subtext,
+            },
+            menu.props.direction !== "horizontal" && tools && tools,
+            this.props.indicator && !this.isLeaf && this.props.indicator,
+          ],
+        });
+      }
     }
     _rendered() {
       if (this.props.selected) {
@@ -20277,10 +20287,27 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const children =
         Array.isArray(this.props.items) &&
         this.props.items.map(function (item) {
+          if (!item) {
+            return;
+          }
+          if (
+            (item.type && item.type.toLowerCase() === "divider") ||
+            (item.component && item.component === "Divider")
+          ) {
+            return {
+              tag: "li",
+              classes: {
+                "nom-menu-divider": true,
+                "nom-menu-divider-dashed": item.dashed === true,
+              },
+            };
+          }
           return {
             component: "MenuItemWrapper",
             animate: that.menu.props.animate,
             item: Component.extendProps({}, that.props.itemDefaults, item),
+            isGroupItem:
+              that.wrapper && that.wrapper.item.props.type === "group",
             items: item.items,
           };
         });
@@ -20320,6 +20347,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { menu } = this;
       const menuProps = menu.props;
       const expanded =
+        this.props.item.type === "group" ||
         menuProps.direction === "horizontal" ||
         menuProps.compact ||
         menuProps.itemExpandable.initExpandLevel === -1 ||
@@ -20376,6 +20404,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
       }
       this.setProps({
+        classes: {
+          "nom-menu-group-container": this.props.item.type === "group",
+        },
         children: [
           this.props.item,
           !this.isLeaf &&
@@ -20424,7 +20455,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           (item.type && item.type.toLowerCase() === "divider") ||
           (item.component && item.component === "Divider")
         ) {
-          return { tag: "li", classes: { "nom-menu-divider": true } };
+          return {
+            tag: "li",
+            classes: {
+              "nom-menu-divider": true,
+              "nom-menu-divider-dashed": item.dashed === true,
+            },
+          };
         }
         return {
           component: MenuItemWrapper,

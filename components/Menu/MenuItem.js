@@ -69,6 +69,8 @@ class MenuItem extends Component {
       })
     }
 
+    const groupOffset = this.wrapper.props.isGroupItem ? 0.5 : 0
+
     this.setProps({
       indicator: {
         type: indicatorIconType,
@@ -97,7 +99,7 @@ class MenuItem extends Component {
         style: {
           paddingLeft:
             menuProps.direction === 'vertical' && !menuProps.compact
-              ? `${(this.level + 1) * menuProps.indent}rem`
+              ? `${(this.level + 1 - groupOffset) * menuProps.indent}rem`
               : null,
         },
       },
@@ -117,37 +119,45 @@ class MenuItem extends Component {
     if (menuProps.itemSelectable.onlyleaf === true && this.isLeaf === false) {
       this.setProps({ selectable: false })
     }
-
-    this.setProps({
-      children: [
-        this.props.icon && {
-          component: 'Icon',
-          type: this.props.icon,
-          classes: { 'nom-menu-item-icon': true },
-        },
-        {
-          component: Component,
-          tag: menuProps.compact ? 'div' : 'span',
-          classes: { text: true, 'nom-menu-item-title': true },
-          attrs: {
-            style: { 'flex-grow': this.props.subtext ? null : '2' },
-            title: this.props.text,
+    if (this.props.type === 'group') {
+      this.setProps({
+        indicator: false,
+        selectable: false,
+        expandable: false,
+        tag: 'span',
+        classes: { text: true, 'nom-menu-group-title': true },
+        children: this.props.text,
+      })
+    } else {
+      this.setProps({
+        children: [
+          this.props.icon && {
+            component: 'Icon',
+            type: this.props.icon,
+            classes: { 'nom-menu-item-icon': true },
           },
-          children: this.props.text,
-        },
-        this.props.subtext && {
-          component: Component,
-          tag: 'span',
-          classes: { subtext: true },
-          attrs: {
-            style: { 'flex-grow': '2' },
+          {
+            tag: menuProps.compact ? 'div' : 'span',
+            classes: { text: true, 'nom-menu-item-title': true },
+            attrs: {
+              style: { 'flex-grow': this.props.subtext ? null : '2' },
+              title: this.props.text,
+            },
+            children: this.props.text,
           },
-          children: this.props.subtext,
-        },
-        menu.props.direction !== 'horizontal' && tools && tools,
-        this.props.indicator && !this.isLeaf && this.props.indicator,
-      ],
-    })
+          this.props.subtext && {
+            tag: 'span',
+            classes: { subtext: true },
+            attrs: {
+              style: { 'flex-grow': '2' },
+            },
+            children: this.props.subtext,
+          },
+          menu.props.direction !== 'horizontal' && tools && tools,
+          this.props.indicator && !this.isLeaf && this.props.indicator,
+        ],
+      })
+    }
   }
 
   _rendered() {
