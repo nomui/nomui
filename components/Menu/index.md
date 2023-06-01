@@ -17,13 +17,26 @@
 ### MenuItem Props
 
 | 参数        | 说明                                         | 类型             | 默认值 |
-| ----------- | -------------------------------------------- | ---------------- | ------ |
+| ----------- | -------------------------------------------- | ---------------- | ----------- |
+| type       | 子菜单类型，不填写则自动处理成item或者submenu                                 | `'item'\|'submenu'\|'group'\|'divider'` | -      |
 | text        | 菜单标题                                     | `string`         | -      |
 | target      | 链接打开方式（同 html 超链接的 target 属性） | `string`         | -      |
 | id          | 菜单的唯一标识，必填                         | `string`         | -      |
 | url         | 跳转的链接                                   | `string`         | -      |
 | toolsRender | 工具栏渲染                                   | `(item,menu)=>`  | -      |
 | items       | 子菜单的数据                                 | `itemSelectable` | -      |
+
+
+
+### MenuItem Type
+
+
+| 参数     | 说明             | 属性      | 说明 |
+| -------- | ---------------- | --------- | ------------- |
+| item | 默认菜单项 | - | 不需配置，根据是否有items自动处理 | 
+| submenu  | 带子层级的菜单项   | - | 不需配置，根据是否有items自动处理 | 
+| group | 菜单群组 | `text,items` | 水平模式中不支持在第一级菜单使用group | 
+| divider  | 分割线   | `dashed` | 配置dashed:true则显示成虚线 | 
 
 ### itemSelectable
 
