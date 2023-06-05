@@ -190,6 +190,9 @@ class TreeNodeContent extends Component {
       _created: (inst) => {
         this.node.checkboxRef = inst
       },
+      onClick: ({ event }) => {
+        event.stopPropagation()
+      },
       value: this.tree.checkedNodeKeysHash[this.node.key] === true,
       onValueChange: ({ newValue }) => {
         if (newValue === true) {

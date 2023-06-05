@@ -1,5 +1,28 @@
 .nom-transfer {
   .nom-transfer-container {
-    height: 260px;
+   
+    .nom-transfer-box {
+      border-radius: var(--nom-transfer-border-radius);
+      border:var(--nom-transfer-border);
+      min-width:170px;
+      height: 260px;
+      .nom-tree-node-expandable-indicator {
+        width: 20px;
+      }
+      >.nom-layout-header {
+        height: 40px;
+        padding:0 10px;
+        .nom-checkbox {
+          >.nom-field-content {
+            line-height: 100%;
+          }
+        }
+      }
+      >.nom-layout-footer {
+        height: 40px;
+        min-height: 40px;
+        padding:0 10px;
+      }
+    }
   }
 }

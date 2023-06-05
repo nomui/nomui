@@ -7,6 +7,7 @@ class Transfer extends Field {
   }
 
   _config() {
+    const me = this
     const { data, dataFields } = this.props
 
     this.setProps({
@@ -16,20 +17,169 @@ class Transfer extends Field {
           classes: {
             'nom-transfer-container': true,
           },
+          align: 'center',
+          gutter: 'medium',
           cols: [
             {
-              component: 'Layout',
-              body: {
-                children: {
-                  component: 'Tree',
-                  data: data,
-                  dataFields: dataFields,
-                  nodeSelectable: false,
-                  nodeCheckable: {
-                    cascade: false,
-                    // onCheckChange: (args) => {
-                    //   console.log(args)
-                    // },
+              children: {
+                component: 'Layout',
+                classes: {
+                  'nom-transfer-box': true,
+                },
+                header: {
+                  children: {
+                    component: 'Flex',
+                    align: 'center',
+                    fit: true,
+
+                    cols: [
+                      {
+                        grow: true,
+                        children: {
+                          component: 'Button',
+                          text: '全选',
+                          size: 'small',
+                          type: 'text',
+                        },
+                      },
+                      {
+                        children: '10项',
+                      },
+                    ],
+                  },
+                },
+                body: {
+                  children: {
+                    component: 'Tree',
+                    _created: function () {
+                      me.sourceTree = this
+                    },
+                    data: data,
+                    dataFields: dataFields,
+                    nodeSelectable: false,
+                    nodeDefaults: {
+                      onClick: ({ sender }) => {
+                        if (
+                          sender.props.data[dataFields.children] &&
+                          sender.props.data[dataFields.children].length
+                        ) {
+                          return
+                        }
+                        if (sender.props.checked) {
+                          sender.uncheck()
+                        } else {
+                          sender.check()
+                        }
+                      },
+                    },
+                    nodeCheckable: {
+                      cascade: false,
+                      onCheckChange: (args) => {
+                        console.log(args)
+                      },
+                    },
+                  },
+                },
+                footer:
+                  this.props.pagination || this.props.footerRender
+                    ? {
+                        children: this.props.footerRender
+                          ? this.props.footerRender()
+                          : {
+                              component: 'Flex',
+                              fit: true,
+                              align: 'center',
+                              justify: 'end',
+                              cols: [
+                                {
+                                  children: {
+                                    component: 'Pager',
+                                    itemsSort: ['pages'],
+                                    totalCount: 50,
+                                    simple: true,
+                                    pageIndex: 1,
+                                    pageSize: 20,
+                                  },
+                                },
+                              ],
+                            },
+                      }
+                    : false,
+              },
+            },
+            {
+              gutter: 'small',
+              rows: [
+                {
+                  component: 'Button',
+                  size: 'small',
+                  icon: 'right',
+                  onClick: () => {
+                    me.addNodes()
+                  },
+                },
+                {
+                  component: 'Button',
+                  size: 'small',
+                  icon: 'left',
+                  onClick: () => {
+                    me.removeNodes()
+                  },
+                },
+              ],
+            },
+            {
+              children: {
+                component: 'Layout',
+                classes: {
+                  'nom-transfer-box': true,
+                },
+                header: {
+                  children: {
+                    component: 'Flex',
+                    align: 'center',
+                    fit: true,
+                    cols: [
+                      {
+                        grow: true,
+                        children: {
+                          component: 'Button',
+                          text: '清空',
+                          size: 'small',
+                          type: 'text',
+                        },
+                      },
+                      {
+                        children: '10项',
+                      },
+                    ],
+                  },
+                },
+                body: {
+                  children: {
+                    component: 'Tree',
+                    _created: function () {
+                      me.targetTree = this
+                    },
+                    data: data,
+                    dataFields: dataFields,
+                    nodeSelectable: false,
+                    sortable: true,
+                    nodeCheckable: {
+                      cascade: false,
+                      onCheckChange: (args) => {
+                        console.log(args)
+                      },
+                    },
+                    nodeDefaults: {
+                      onClick: ({ sender }) => {
+                        if (sender.props.checked) {
+                          sender.uncheck()
+                        } else {
+                          sender.check()
+                        }
+                      },
+                    },
                   },
                 },
               },
@@ -41,6 +191,10 @@ class Transfer extends Field {
 
     super._config()
   }
+
+  addNodes() {}
+
+  removeNodes() {}
 }
 
 Transfer.defaults = {
@@ -48,7 +202,7 @@ Transfer.defaults = {
   filterOption: null,
   footerRender: null,
   operations: null,
-  pagination: false,
+  pagination: true,
   itemRender: null,
   selectedKeys: null,
   targetKeys: null,
