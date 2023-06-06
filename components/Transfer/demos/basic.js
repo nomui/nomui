@@ -61,6 +61,9 @@ define([], function () {
         fields: [
           {
             component: 'Transfer',
+            ref: (c) => {
+              window.transRef = c
+            },
             label: '穿梭框',
             data: data,
           },
