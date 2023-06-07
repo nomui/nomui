@@ -195,7 +195,7 @@ class Transfer extends Field {
                           me.targetTree = this
                         },
                         data: [],
-                        dataFields: dataFields,
+                        dataFields: { ...dataFields, ...{ children: 'noChildrenAllowed' } },
                         nodeSelectable: false,
                         sortable: true,
                         nodeCheckable: {
@@ -227,42 +227,97 @@ class Transfer extends Field {
     super._config()
   }
 
-  addNodes() {
-    const nodes = this.sourceTree.getCheckedNodes()
+  _getCheckedChildNodes(nodes) {
+    const checkedNodes = []
+    nodes.forEach((node) => {
+      if (node.isChecked()) {
+        checkedNodes.push(node.key)
+      }
+      if (node.getChildNodes().length) {
+        Array.prototype.push.apply(checkedNodes, this._getCheckedChildNodes(node.getChildNodes()))
+      }
+    })
+    return checkedNodes
+  }
+
+  _disableNode(node) {
+    node.checkboxRef.disable()
+  }
+
+  _enableNode(node) {
+    node.checkboxRef.enable()
+  }
+
+  _hideNode(node) {
+    node.element.classList.add('s-hidden')
+  }
+
+  _showNode(node) {
+    node.element.classList.remove('s-hidden')
+  }
+
+  _processChecked(nodes) {
     for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].props.data.disabled) {
+      const node = this.sourceTree.getNode(nodes[i])
+
+      if (!node.isChecked()) {
         continue
       }
+
       // 添加目标项
-      if (!this.selectedKeys.includes(nodes[i].key)) {
-        this.selectedKeys.push(nodes[i].key)
-        this.selectData.push(nodes[i].props.data)
-        this.targetTree.update({
-          data: this.selectData,
-        })
+      if (!node.props.data.disabled && !this.selectedKeys.includes(node.key)) {
+        this.selectedKeys.push(node.key)
+        this.selectData.push(node.props.data)
       }
 
       // 禁用源项
-      if (this.props.hideOnSelect) {
-        nodes[i].hide()
+
+      let hideFlag = true
+
+      if (node.props.data.children) {
+        const cNodes = node.getChildNodes()
+        for (let x = 0; x < cNodes.length; x++) {
+          if (!cNodes[x].isChecked()) {
+            hideFlag = false
+          }
+        }
       }
-      nodes[i].disable()
+
+      if (this.props.hideOnSelect && hideFlag) {
+        this._hideNode(node)
+      }
+
+      this._disableNode(node)
     }
+  }
+
+  addNodes() {
+    // const nodes = this.sourceTree.getCheckedNodes()
+    const nodes = this._getCheckedChildNodes(this.sourceTree.getChildNodes())
+
+    this._processChecked(nodes)
+    this.targetTree.update({
+      data: this.selectData,
+    })
   }
 
   removeNodes() {
     const nodes = this.targetTree.getCheckedNodes()
+    if (!nodes.length) {
+      return
+    }
     for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i]
       this.selectedKeys = this.selectedKeys.filter((n) => {
-        return n !== nodes[i].key
+        return n !== node.key
       })
-      const sourceItem = this.sourceTree.getNode(nodes[i].key)
+      const sourceItem = this.sourceTree.getNode(node.key)
       if (this.props.hideOnSelect) {
-        sourceItem.show()
+        this._showNode(sourceItem)
       }
-      sourceItem.enable()
+      this._enableNode(sourceItem)
       sourceItem.uncheck()
-      nodes[i].remove()
+      node.remove()
     }
     this.selectData = this.targetTree.getData()
   }
@@ -274,11 +329,11 @@ class Transfer extends Field {
 
 Transfer.defaults = {
   data: [],
-  hideOnSelect: true,
+  hideOnSelect: false,
   filterOption: null,
   footerRender: null,
   operations: null,
-  pagination: true,
+  // pagination: false,
   itemRender: null,
   selectedKeys: null,
   targetKeys: null,
