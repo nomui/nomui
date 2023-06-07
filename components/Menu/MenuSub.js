@@ -50,8 +50,7 @@ class MenuSub extends Component {
           item: Component.extendProps({}, that.props.itemDefaults, item),
           isGroupItem:
             that.wrapper &&
-            that.wrapper &&
-            item &&
+            that.wrapper.item &&
             that.wrapper.item.props &&
             that.wrapper.item.props.type === 'group',
           items: item.items,
