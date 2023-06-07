@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
+import { debounce } from '../util/index'
 
 class Transfer extends Field {
   constructor(props, ...mixins) {
@@ -67,6 +68,9 @@ class Transfer extends Field {
                         _created: function () {
                           me.sourceSearch = this
                         },
+                        onValueChange: debounce(({ newValue }) => {
+                          me._onSourceSearch(newValue)
+                        }, 1000),
                       },
                     },
                     body: {
@@ -186,6 +190,9 @@ class Transfer extends Field {
                         _created: function () {
                           me.targetSearch = this
                         },
+                        onValueChange: debounce(({ newValue }) => {
+                          me._onTargetSearch(newValue)
+                        }, 1000),
                       },
                     },
                     body: {
@@ -238,6 +245,26 @@ class Transfer extends Field {
       }
     })
     return checkedNodes
+  }
+
+  _onSourceSearch(val) {
+    this.sourceTree.element.querySelectorAll('.nom-tree-node').forEach((n) => {
+      if (!val || n.querySelector('.nom-tree-node-content-text').innerHTML.includes(val)) {
+        n.classList.remove('s-hidden')
+      } else {
+        n.classList.add('s-hidden')
+      }
+    })
+  }
+
+  _onTargetSearch(val) {
+    this.targetTree.element.querySelectorAll('.nom-tree-node').forEach((n) => {
+      if (!val || n.querySelector('.nom-tree-node-content-text').innerHTML.includes(val)) {
+        n.classList.remove('s-hidden')
+      } else {
+        n.classList.add('s-hidden')
+      }
+    })
   }
 
   _disableNode(node) {
