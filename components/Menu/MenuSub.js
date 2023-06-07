@@ -48,7 +48,11 @@ class MenuSub extends Component {
           component: 'MenuItemWrapper',
           animate: that.menu.props.animate,
           item: Component.extendProps({}, that.props.itemDefaults, item),
-          isGroupItem: that.wrapper && that.wrapper.item.props.type === 'group',
+          isGroupItem:
+            that.wrapper &&
+            that.wrapper.item &&
+            that.wrapper.item.props &&
+            that.wrapper.item.props.type === 'group',
           items: item.items,
         }
       })
