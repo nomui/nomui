@@ -82,6 +82,9 @@ class Transfer extends Field {
                         data: data,
                         dataFields: dataFields,
                         nodeSelectable: false,
+                        expandable: {
+                          byIndicator: true,
+                        },
 
                         nodeCheckable: {
                           cascade: false,
@@ -90,12 +93,13 @@ class Transfer extends Field {
                           // },
                         },
                         nodeDefaults: {
-                          onClick: ({ sender }) => {
+                          onClick: ({ sender, event }) => {
                             if (sender.props.checked) {
                               sender.uncheck()
                             } else {
                               sender.check()
                             }
+                            event.stopPropagation()
                           },
                         },
                       },
