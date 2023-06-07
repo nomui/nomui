@@ -57,7 +57,7 @@ class MenuSub extends Component {
         }
       })
 
-    const typeClass = `nom-menu-${this.menu.props.type}```
+    const typeClass = `nom-menu-${this.menu.props.type}`
     const classes = {}
     classes[typeClass] = true
     this.setProps({
