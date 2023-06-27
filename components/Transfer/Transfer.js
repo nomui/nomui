@@ -240,19 +240,21 @@ class Transfer extends Field {
     super._config()
   }
 
-  _getCheckedChildNodeKeys(nodes) {
+  _getCheckedChildNodeKeys(nodes, ignoreCheck) {
     const checkedNodes = []
     nodes.forEach((node) => {
-      if (node.isChecked()) {
+      if (ignoreCheck || node.isChecked()) {
         checkedNodes.push(node.key)
       }
+
       if (node.getChildNodes().length) {
         Array.prototype.push.apply(
           checkedNodes,
-          this._getCheckedChildNodeKeys(node.getChildNodes()),
+          this._getCheckedChildNodeKeys(node.getChildNodes(), ignoreCheck),
         )
       }
     })
+
     return checkedNodes
   }
 
@@ -374,7 +376,9 @@ class Transfer extends Field {
   }
 
   getValue() {
-    return this.selectedKeys
+    const keys = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true)
+
+    return keys
   }
 }
 
