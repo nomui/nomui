@@ -4,6 +4,7 @@ define([], function () {
     file: 'basic',
 
     demo: function () {
+      let formRef = null
       const data = [
         {
           key: '001',
@@ -58,6 +59,9 @@ define([], function () {
       ]
       return {
         component: 'Form',
+        ref: (c) => {
+          formRef = c
+        },
         fields: [
           {
             component: 'Transfer',
@@ -65,7 +69,15 @@ define([], function () {
               window.transRef = c
             },
             label: '穿梭框',
+            name: 'transfer',
             data: data,
+          },
+          {
+            component: 'Button',
+            text: '保存',
+            onClick: () => {
+              console.log(formRef.getValue())
+            },
           },
         ],
       }

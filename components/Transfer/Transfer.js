@@ -88,7 +88,8 @@ class Transfer extends Field {
                         },
 
                         nodeCheckable: {
-                          cascader: me.props.treeData && me.props.treeValue,
+                          cascader: false,
+                          // cascader: !!me.props.treeData && !!me.props.treeValue,
                           // onCheckChange: (args) => {
                           //   console.log(args)
                           // },
@@ -207,12 +208,13 @@ class Transfer extends Field {
                           me.targetTree = this
                         },
                         data: [],
-                        flatData: me.props.treeData && me.props.treeValue,
+                        flatData: !!me.props.treeData && !!me.props.treeValue,
                         dataFields: { ...dataFields, ...{ children: 'noChildrenAllowed' } },
                         nodeSelectable: false,
                         sortable: true,
                         nodeCheckable: {
-                          cascader: me.props.treeData && me.props.treeValue,
+                          cascader: false,
+                          // cascader: !!me.props.treeData && !!me.props.treeValue,
                           // onCheckChange: (args) => {
                           //   console.log(args)
                           // },
@@ -240,14 +242,17 @@ class Transfer extends Field {
     super._config()
   }
 
-  _getCheckedChildNodes(nodes) {
+  _getCheckedChildNodeKeys(nodes) {
     const checkedNodes = []
     nodes.forEach((node) => {
       if (node.isChecked()) {
         checkedNodes.push(node.key)
       }
       if (node.getChildNodes().length) {
-        Array.prototype.push.apply(checkedNodes, this._getCheckedChildNodes(node.getChildNodes()))
+        Array.prototype.push.apply(
+          checkedNodes,
+          this._getCheckedChildNodeKeys(node.getChildNodes()),
+        )
       }
     })
     return checkedNodes
@@ -329,7 +334,7 @@ class Transfer extends Field {
 
   addNodes() {
     // const nodes = this.sourceTree.getCheckedNodes()
-    const nodes = this._getCheckedChildNodes(this.sourceTree.getChildNodes())
+    const nodes = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes())
 
     this._processChecked(nodes)
     this.targetTree.update({
@@ -338,7 +343,8 @@ class Transfer extends Field {
   }
 
   removeNodes() {
-    const nodes = this.targetTree.getCheckedNodes()
+    // const nodes = this.targetTree.getCheckedNodes()
+    const nodes = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes())
     if (!nodes.length) {
       return
     }
@@ -350,19 +356,19 @@ class Transfer extends Field {
 
   _removeItem(nodes) {
     for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i]
+      const nodeKey = nodes[i]
       this.selectedKeys = this.selectedKeys.filter((n) => {
-        return n !== node.key
+        return n !== nodeKey
       })
 
-      const sourceItem = this.sourceTree.getNode(node.key)
+      const sourceItem = this.sourceTree.getNode(nodeKey)
 
       if (this.props.hideOnSelect) {
         this._showNode(sourceItem)
       }
       this._enableNode(sourceItem)
       sourceItem.uncheck()
-      node.remove()
+      this.targetTree.getNode(nodeKey).remove()
     }
   }
 
@@ -387,8 +393,8 @@ Transfer.defaults = {
   onSelectionChange: null,
   onSearch: null,
   onScroll: null,
-  treeData: true,
-  treeValue: true,
+  treeData: false,
+  treeValue: false,
   dataFields: { key: 'key', text: 'text', children: 'children', parentKey: 'parentKey' },
 }
 
