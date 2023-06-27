@@ -88,8 +88,7 @@ class Transfer extends Field {
                         },
 
                         nodeCheckable: {
-                          cascader: false,
-                          // cascader: !!me.props.treeData && !!me.props.treeValue,
+                          cascade: me.props.treeValue,
                           // onCheckChange: (args) => {
                           //   console.log(args)
                           // },
@@ -208,13 +207,12 @@ class Transfer extends Field {
                           me.targetTree = this
                         },
                         data: [],
-                        flatData: !!me.props.treeData && !!me.props.treeValue,
+                        flatData: me.props.treeValue,
                         dataFields: { ...dataFields, ...{ children: 'noChildrenAllowed' } },
                         nodeSelectable: false,
                         sortable: true,
                         nodeCheckable: {
-                          cascader: false,
-                          // cascader: !!me.props.treeData && !!me.props.treeValue,
+                          cascade: me.props.treeValue,
                           // onCheckChange: (args) => {
                           //   console.log(args)
                           // },
@@ -368,7 +366,10 @@ class Transfer extends Field {
       }
       this._enableNode(sourceItem)
       sourceItem.uncheck()
-      this.targetTree.getNode(nodeKey).remove()
+
+      this.targetTree.getNode(nodeKey) &&
+        this.targetTree.getNode(nodeKey).props &&
+        this.targetTree.getNode(nodeKey).remove()
     }
   }
 
@@ -393,8 +394,7 @@ Transfer.defaults = {
   onSelectionChange: null,
   onSearch: null,
   onScroll: null,
-  treeData: false,
-  treeValue: false,
+  treeValue: true,
   dataFields: { key: 'key', text: 'text', children: 'children', parentKey: 'parentKey' },
 }
 
