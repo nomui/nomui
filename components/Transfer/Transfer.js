@@ -211,6 +211,10 @@ class Transfer extends Field {
                         dataFields: { ...dataFields, ...{ children: 'noChildrenAllowed' } },
                         nodeSelectable: false,
                         sortable: true,
+                        expandable: {
+                          byIndicator: true,
+                        },
+
                         nodeCheckable: {
                           cascade: me.props.treeValue,
                           // onCheckChange: (args) => {
