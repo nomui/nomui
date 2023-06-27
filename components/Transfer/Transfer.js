@@ -82,12 +82,13 @@ class Transfer extends Field {
                         data: data,
                         dataFields: dataFields,
                         nodeSelectable: false,
+
                         expandable: {
                           byIndicator: true,
                         },
 
                         nodeCheckable: {
-                          cascade: false,
+                          cascader: me.props.treeData && me.props.treeValue,
                           // onCheckChange: (args) => {
                           //   console.log(args)
                           // },
@@ -211,7 +212,7 @@ class Transfer extends Field {
                         nodeSelectable: false,
                         sortable: true,
                         nodeCheckable: {
-                          cascade: false,
+                          cascader: me.props.treeData && me.props.treeValue,
                           // onCheckChange: (args) => {
                           //   console.log(args)
                           // },
@@ -341,12 +342,21 @@ class Transfer extends Field {
     if (!nodes.length) {
       return
     }
+
+    this._removeItem(nodes)
+
+    this.selectData = this.targetTree.getData()
+  }
+
+  _removeItem(nodes) {
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i]
       this.selectedKeys = this.selectedKeys.filter((n) => {
         return n !== node.key
       })
+
       const sourceItem = this.sourceTree.getNode(node.key)
+
       if (this.props.hideOnSelect) {
         this._showNode(sourceItem)
       }
@@ -354,7 +364,6 @@ class Transfer extends Field {
       sourceItem.uncheck()
       node.remove()
     }
-    this.selectData = this.targetTree.getData()
   }
 
   getValue() {
