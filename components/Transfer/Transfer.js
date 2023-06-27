@@ -206,6 +206,7 @@ class Transfer extends Field {
                           me.targetTree = this
                         },
                         data: [],
+                        flatData: me.props.treeData && me.props.treeValue,
                         dataFields: { ...dataFields, ...{ children: 'noChildrenAllowed' } },
                         nodeSelectable: false,
                         sortable: true,
@@ -298,6 +299,9 @@ class Transfer extends Field {
       // 添加目标项
       if (!node.props.data.disabled && !this.selectedKeys.includes(node.key)) {
         this.selectedKeys.push(node.key)
+        if (node.parentNode) {
+          node.props.data.parentKey = node.parentNode.key
+        }
         this.selectData.push(node.props.data)
       }
 
@@ -374,7 +378,9 @@ Transfer.defaults = {
   onSelectionChange: null,
   onSearch: null,
   onScroll: null,
-  dataFields: { key: 'key', text: 'text', children: 'children' },
+  treeData: true,
+  treeValue: true,
+  dataFields: { key: 'key', text: 'text', children: 'children', parentKey: 'parentKey' },
 }
 
 Component.register(Transfer)
