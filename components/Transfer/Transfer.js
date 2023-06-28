@@ -126,6 +126,9 @@ class Transfer extends Field {
                         },
                         nodeDefaults: {
                           onClick: ({ sender, event }) => {
+                            if (sender.checkboxRef.props.disabled) {
+                              return
+                            }
                             if (sender.props.checked) {
                               sender.uncheck()
                             } else {
@@ -486,7 +489,7 @@ Transfer.defaults = {
   onChange: null,
   // onSearch: null,
   // onScroll: null,
-  displayAsTree: true,
+  displayAsTree: false,
   dataFields: { key: 'key', text: 'text', children: 'children', parentKey: 'parentKey' },
 }
 
