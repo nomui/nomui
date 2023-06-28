@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { debounce } from '../util/index'
+import { debounce, isString } from '../util/index'
 
 class Transfer extends Field {
   constructor(props, ...mixins) {
@@ -15,7 +15,16 @@ class Transfer extends Field {
 
   _config() {
     const me = this
-    const { data, dataFields } = this.props
+    const { data, dataFields, value, showSearch } = this.props
+
+    let initKeys = []
+    if (this.props.value) {
+      if (isString(value)) {
+        initKeys = [value]
+      } else {
+        initKeys = value
+      }
+    }
 
     this.setProps({
       control: {
@@ -77,21 +86,23 @@ class Transfer extends Field {
                 body: {
                   children: {
                     component: 'Layout',
-                    header: {
-                      _created: function () {
-                        me.sourceSearchContainer = this
-                      },
-                      children: {
-                        component: 'Textbox',
-                        allowClear: false,
-                        _created: function () {
-                          me.sourceSearch = this
-                        },
-                        onValueChange: debounce(({ newValue }) => {
-                          me._onSourceSearch(newValue)
-                        }, 1000),
-                      },
-                    },
+                    header: showSearch
+                      ? {
+                          _created: function () {
+                            me.sourceSearchContainer = this
+                          },
+                          children: {
+                            component: 'Textbox',
+                            allowClear: false,
+                            _created: function () {
+                              me.sourceSearch = this
+                            },
+                            onValueChange: debounce(({ newValue }) => {
+                              me._onSourceSearch(newValue)
+                            }, 1000),
+                          },
+                        }
+                      : false,
                     body: {
                       children: {
                         component: 'Tree',
@@ -107,7 +118,8 @@ class Transfer extends Field {
                         },
 
                         nodeCheckable: {
-                          cascade: me.props.treeValue,
+                          cascade: me.props.displayAsTree,
+                          checkedNodeKeys: initKeys,
                           onCheckChange: () => {
                             me._onSourceCheck()
                           },
@@ -210,21 +222,23 @@ class Transfer extends Field {
                 body: {
                   children: {
                     component: 'Layout',
-                    header: {
-                      _created: function () {
-                        me.targetSearchContainer = this
-                      },
-                      children: {
-                        component: 'Textbox',
-                        allowClear: false,
-                        _created: function () {
-                          me.targetSearch = this
-                        },
-                        onValueChange: debounce(({ newValue }) => {
-                          me._onTargetSearch(newValue)
-                        }, 1000),
-                      },
-                    },
+                    header: showSearch
+                      ? {
+                          _created: function () {
+                            me.targetSearchContainer = this
+                          },
+                          children: {
+                            component: 'Textbox',
+                            allowClear: false,
+                            _created: function () {
+                              me.targetSearch = this
+                            },
+                            onValueChange: debounce(({ newValue }) => {
+                              me._onTargetSearch(newValue)
+                            }, 1000),
+                          },
+                        }
+                      : false,
                     body: {
                       children: {
                         component: 'Tree',
@@ -232,7 +246,7 @@ class Transfer extends Field {
                           me.targetTree = this
                         },
                         data: [],
-                        flatData: me.props.treeValue,
+                        flatData: me.props.displayAsTree,
                         dataFields: { ...dataFields, ...{ children: 'noChildrenAllowed' } },
                         nodeSelectable: false,
                         sortable: true,
@@ -241,7 +255,7 @@ class Transfer extends Field {
                         },
 
                         nodeCheckable: {
-                          cascade: me.props.treeValue,
+                          cascade: me.props.displayAsTree,
                           onCheckChange: () => {
                             me._onTargetCheck()
                           },
@@ -273,6 +287,7 @@ class Transfer extends Field {
     if (this.firstRender) {
       this._onSourceCheck()
       this._onTargetCheck()
+      this.addNodes()
     }
   }
 
@@ -393,6 +408,7 @@ class Transfer extends Field {
     })
     this._onSourceCheck()
     this._onTargetCheck()
+    this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
 
   removeNodes() {
@@ -402,9 +418,10 @@ class Transfer extends Field {
     }
 
     this._removeItem(nodes)
+    this.selectData = this.targetTree.getData()
     this._onSourceCheck()
     this._onTargetCheck()
-    this.selectData = this.targetTree.getData()
+    this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
 
   _removeItem(nodes) {
@@ -446,31 +463,30 @@ class Transfer extends Field {
     })
     this._onSourceCheck()
     this._onTargetCheck()
+    this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
 
   getValue() {
     const keys = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true)
+    if (!keys || !keys.length) {
+      return null
+    }
     return keys
   }
 }
 
 Transfer.defaults = {
   data: [],
-  hideOnSelect: false,
-  filterOption: null,
+  value: null,
+  hideOnSelect: false, // 隐藏已选择节点，不允许在树形数据当中使用
   footerRender: null,
-  operations: null,
   // pagination: false,
   itemRender: null,
-  selectedKeys: null,
-  targetKeys: null,
-  showSearch: false,
-  showSelectAll: false,
+  showSearch: true,
   onChange: null,
-  onSelectionChange: null,
-  onSearch: null,
-  onScroll: null,
-  treeValue: true,
+  // onSearch: null,
+  // onScroll: null,
+  displayAsTree: true,
   dataFields: { key: 'key', text: 'text', children: 'children', parentKey: 'parentKey' },
 }
 
