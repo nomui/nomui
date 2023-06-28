@@ -46,11 +46,30 @@ class Transfer extends Field {
                           component: 'Button',
                           text: '全选',
                           size: 'small',
+                          ref: (c) => {
+                            me.checkAllBtn = c
+                          },
                           type: 'text',
+                          onClick: ({ sender }) => {
+                            if (sender.props.text === '全选') {
+                              sender.update({
+                                text: '反选',
+                              })
+                              me.checkAll()
+                            } else {
+                              sender.update({
+                                text: '全选',
+                              })
+                              me.uncheckAll()
+                            }
+                          },
                         },
                       },
                       {
-                        children: '10项',
+                        ref: (c) => {
+                          me.sourceCount = c
+                        },
+                        children: '',
                       },
                     ],
                   },
@@ -89,9 +108,9 @@ class Transfer extends Field {
 
                         nodeCheckable: {
                           cascade: me.props.treeValue,
-                          // onCheckChange: (args) => {
-                          //   console.log(args)
-                          // },
+                          onCheckChange: () => {
+                            me._onSourceCheck()
+                          },
                         },
                         nodeDefaults: {
                           onClick: ({ sender, event }) => {
@@ -174,10 +193,16 @@ class Transfer extends Field {
                           text: '清空',
                           size: 'small',
                           type: 'text',
+                          onClick: () => {
+                            me.clear()
+                          },
                         },
                       },
                       {
-                        children: '10项',
+                        ref: (c) => {
+                          me.targetCount = c
+                        },
+                        children: '',
                       },
                     ],
                   },
@@ -217,9 +242,9 @@ class Transfer extends Field {
 
                         nodeCheckable: {
                           cascade: me.props.treeValue,
-                          // onCheckChange: (args) => {
-                          //   console.log(args)
-                          // },
+                          onCheckChange: () => {
+                            me._onTargetCheck()
+                          },
                         },
                         nodeDefaults: {
                           onClick: ({ sender }) => {
@@ -242,6 +267,13 @@ class Transfer extends Field {
     })
 
     super._config()
+  }
+
+  _rendered() {
+    if (this.firstRender) {
+      this._onSourceCheck()
+      this._onTargetCheck()
+    }
   }
 
   _getCheckedChildNodeKeys(nodes, ignoreCheck) {
@@ -279,6 +311,22 @@ class Transfer extends Field {
       } else {
         n.classList.add('s-hidden')
       }
+    })
+  }
+
+  _onSourceCheck() {
+    const u = this.sourceTree.getCheckedNodeKeys().length
+    const d = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes(), true).length
+    this.sourceCount.update({
+      children: `${u}/${d}项`,
+    })
+  }
+
+  _onTargetCheck() {
+    const u = this.targetTree.getCheckedNodeKeys().length
+    const d = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true).length
+    this.targetCount.update({
+      children: `${u}/${d}项`,
     })
   }
 
@@ -337,24 +385,25 @@ class Transfer extends Field {
   }
 
   addNodes() {
-    // const nodes = this.sourceTree.getCheckedNodes()
     const nodes = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes())
 
     this._processChecked(nodes)
     this.targetTree.update({
       data: this.selectData,
     })
+    this._onSourceCheck()
+    this._onTargetCheck()
   }
 
   removeNodes() {
-    // const nodes = this.targetTree.getCheckedNodes()
     const nodes = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes())
     if (!nodes.length) {
       return
     }
 
     this._removeItem(nodes)
-
+    this._onSourceCheck()
+    this._onTargetCheck()
     this.selectData = this.targetTree.getData()
   }
 
@@ -379,9 +428,28 @@ class Transfer extends Field {
     }
   }
 
+  checkAll(options) {
+    this.sourceTree.checkAllNodes(options)
+  }
+
+  uncheckAll(options) {
+    this.sourceTree.uncheckAllNodes(options)
+  }
+
+  clear() {
+    this.checkAllBtn.update({
+      text: '全选',
+    })
+    this.sourceTree.update({ data: this.props.data })
+    this.targetTree.update({
+      data: [],
+    })
+    this._onSourceCheck()
+    this._onTargetCheck()
+  }
+
   getValue() {
     const keys = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true)
-
     return keys
   }
 }
