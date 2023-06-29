@@ -10,7 +10,7 @@ class GridSettingTransfer extends Field {
   _created() {
     super._created()
     this.selectedKeys = []
-    this.selectData = []
+    this.selectedData = []
   }
 
   _config() {
@@ -258,7 +258,7 @@ class GridSettingTransfer extends Field {
                         },
 
                         nodeCheckable: {
-                          cascade: me.props.displayAsTree,
+                          cascade: !!me.props.displayAsTree,
                           onCheckChange: () => {
                             me._onTargetCheck()
                           },
@@ -365,6 +365,7 @@ class GridSettingTransfer extends Field {
   }
 
   _processChecked(nodes) {
+    const that = this
     for (let i = 0; i < nodes.length; i++) {
       const node = this.sourceTree.getNode(nodes[i])
 
@@ -378,21 +379,25 @@ class GridSettingTransfer extends Field {
         if (node.parentNode) {
           node.props.data.parentKey = node.parentNode.key
         }
-        node.props.data.tools = (args) => {
-          return {
-            classes: {
-              'nom-grid-setting-item-pin': true,
-            },
-            component: 'Button',
-            type: 'text',
-            icon: 'pin',
-            onClick({ event }) {
-              console.log(args)
-              event.stopPropagation()
-            },
+
+        if (!node.parentNode && (!node.props.data.children || !node.props.data.children.length)) {
+          node.props.data.tools = (args) => {
+            return {
+              classes: {
+                'nom-grid-setting-item-pin': true,
+              },
+              component: 'Button',
+              type: 'text',
+              icon: 'pin',
+              onClick: ({ event }) => {
+                that._pinNode(args)
+                event.stopPropagation()
+              },
+            }
           }
         }
-        this.selectData.push(node.props.data)
+
+        this.selectedData.push(node.props.data)
       }
 
       // 禁用源项
@@ -421,7 +426,7 @@ class GridSettingTransfer extends Field {
 
     this._processChecked(nodes)
     this.targetTree.update({
-      data: this.selectData,
+      data: this.selectedData,
     })
     this._onSourceCheck()
     this._onTargetCheck()
@@ -435,7 +440,7 @@ class GridSettingTransfer extends Field {
     }
 
     this._removeItem(nodes)
-    this.selectData = this.targetTree.getData()
+    this.selectedData = this.targetTree.getData()
     this._onSourceCheck()
     this._onTargetCheck()
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
@@ -460,6 +465,28 @@ class GridSettingTransfer extends Field {
         this.targetTree.getNode(nodeKey).props &&
         this.targetTree.getNode(nodeKey).remove()
     }
+  }
+
+  _pinNode({ node }) {
+    const arr = []
+    let frozenCount = 0
+    let newItem = null
+
+    this.selectedData.forEach((n) => {
+      if (n.frozen) {
+        frozenCount += 1
+      }
+      if (n.field !== node.key) {
+        arr.push(n)
+      } else {
+        newItem = { ...n, ...{ frozen: true } }
+      }
+    })
+
+    arr.splice(frozenCount, 0, newItem)
+    this.selectedData = arr
+
+    this.targetTree.update({ data: this.selectedData })
   }
 
   checkAll(options) {
@@ -496,7 +523,6 @@ GridSettingTransfer.defaults = {
   data: [],
   value: null,
   hideOnSelect: false, // 隐藏已选择节点，不允许在树形数据当中使用
-  footerRender: null,
   // pagination: false,
   itemRender: null,
   showSearch: true,
