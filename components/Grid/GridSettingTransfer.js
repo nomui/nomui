@@ -10,7 +10,10 @@ class GridSettingTransfer extends Field {
   _created() {
     super._created()
     this.selectedKeys = []
-    this.selectedData = []
+    this.selectedData = [
+      { title: '已冻结', field: 'isFrozen', isDivider: true },
+      { title: '未冻结', field: 'isFrozen', isDivider: true },
+    ]
   }
 
   _config() {
@@ -264,6 +267,16 @@ class GridSettingTransfer extends Field {
                           },
                         },
                         nodeDefaults: {
+                          onConfig: ({ inst }) => {
+                            if (inst.props.data.isDivider) {
+                              inst.setProps({
+                                disabled: true,
+                                classes: {
+                                  'nom-grid-setting-group-title': true,
+                                },
+                              })
+                            }
+                          },
                           onClick: ({ sender }) => {
                             if (sender.props.checked) {
                               sender.uncheck()
@@ -365,7 +378,6 @@ class GridSettingTransfer extends Field {
   }
 
   _processChecked(nodes) {
-    const that = this
     for (let i = 0; i < nodes.length; i++) {
       const node = this.sourceTree.getNode(nodes[i])
 
@@ -380,22 +392,22 @@ class GridSettingTransfer extends Field {
           node.props.data.parentKey = node.parentNode.key
         }
 
-        if (!node.parentNode && (!node.props.data.children || !node.props.data.children.length)) {
-          node.props.data.tools = (args) => {
-            return {
-              classes: {
-                'nom-grid-setting-item-pin': true,
-              },
-              component: 'Button',
-              type: 'text',
-              icon: 'pin',
-              onClick: ({ event }) => {
-                that._pinNode(args)
-                event.stopPropagation()
-              },
-            }
-          }
-        }
+        // if (!node.parentNode && (!node.props.data.children || !node.props.data.children.length)) {
+        //   node.props.data.tools = (args) => {
+        //     return {
+        //       classes: {
+        //         'nom-grid-setting-item-pin': true,
+        //       },
+        //       component: 'Button',
+        //       type: 'text',
+        //       icon: 'pin',
+        //       onClick: ({ event }) => {
+        //         that._pinNode(args)
+        //         event.stopPropagation()
+        //       },
+        //     }
+        //   }
+        // }
 
         this.selectedData.push(node.props.data)
       }
@@ -467,27 +479,27 @@ class GridSettingTransfer extends Field {
     }
   }
 
-  _pinNode({ node }) {
-    const arr = []
-    let frozenCount = 0
-    let newItem = null
+  // _pinNode({ node }) {
+  //   const arr = []
+  //   let frozenCount = 0
+  //   let newItem = null
 
-    this.selectedData.forEach((n) => {
-      if (n.frozen) {
-        frozenCount += 1
-      }
-      if (n.field !== node.key) {
-        arr.push(n)
-      } else {
-        newItem = { ...n, ...{ frozen: true } }
-      }
-    })
+  //   this.selectedData.forEach((n) => {
+  //     if (n.frozen) {
+  //       frozenCount += 1
+  //     }
+  //     if (n.field !== node.key) {
+  //       arr.push(n)
+  //     } else {
+  //       newItem = { ...n, ...{ frozen: true } }
+  //     }
+  //   })
 
-    arr.splice(frozenCount, 0, newItem)
-    this.selectedData = arr
+  //   arr.splice(frozenCount, 0, newItem)
+  //   this.selectedData = arr
 
-    this.targetTree.update({ data: this.selectedData })
-  }
+  //   this.targetTree.update({ data: this.selectedData })
+  // }
 
   checkAll(options) {
     this.sourceTree.checkAllNodes(options)
@@ -502,8 +514,12 @@ class GridSettingTransfer extends Field {
       text: '全选',
     })
     this.sourceTree.update({ data: this.props.data })
+    this.selectedData = [
+      { title: '已冻结', field: 'isFrozen', isDivider: true },
+      { title: '未冻结', field: 'isFrozen', isDivider: true },
+    ]
     this.targetTree.update({
-      data: [],
+      data: this.selectedData,
     })
     this._onSourceCheck()
     this._onTargetCheck()
