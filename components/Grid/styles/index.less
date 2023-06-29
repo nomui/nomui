@@ -173,20 +173,64 @@
 .nom-grid-setting-panel {
   min-width: 300px;
 
-  .nom-tree {
-    .nom-tree-node-content {
-      position: relative;
-      top: 0;
-      transition: all 0.25s;
+  // .nom-tree {
+  //   .nom-tree-node-content {
+  //     position: relative;
+  //     top: 0;
+  //     transition: all 0.25s;
 
-      &:hover {
-        top: -2px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-      }
-    }
-  }
+  //     &:hover {
+  //       top: -2px;
+  //       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  //     }
+  //   }
+  // }
 }
 
 .nom-grid-setting-drag {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nom-grid-setting-transfer {
+  .nom-grid-setting-transfer-container {
+   
+    .nom-grid-setting-transfer-box {
+      border-radius: var(--nom-transfer-border-radius);
+      border:var(--nom-transfer-border);
+      min-width:170px;
+      height: 280px;
+      .nom-tree-node-expandable-indicator {
+        width: 24px;
+      }
+      >.nom-layout-header {
+        height: 40px;
+        padding:0 10px;
+        .nom-checkbox {
+          >.nom-field-content {
+            line-height: 100%;
+          }
+        }
+      }
+      >.nom-layout-body {
+        .nom-layout-header {
+          height: 42px;
+          border-bottom: none;
+        }
+      }
+      >.nom-layout-footer {
+        height: 40px;
+        min-height: 40px;
+        padding:0 10px;
+      }
+    }
+  }
+
+  .nom-tree-node-content {
+    position: relative;
+    >.nom-grid-setting-item-pin {
+      position: absolute;
+      top:5px;
+      right:5px;
+    }
+  }
 }

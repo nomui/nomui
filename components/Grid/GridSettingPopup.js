@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Modal from '../Modal/index'
+import GridSettingTransfer from './GridSettingTransfer'
 
 class GridSettingPopup extends Modal {
   constructor(props, ...mixins) {
@@ -31,31 +32,35 @@ class GridSettingPopup extends Modal {
           },
         },
         body: {
-          children: {
-            attrs: {
-              style: {
-                maxHeight: '50vh',
-                overflow: 'auto',
-              },
-            },
-            component: 'Tree',
-            showline: true,
-            data: that.customizableColumns(that.grid.popupTreeData),
-            nodeCheckable: {
-              checkedNodeKeys: that.grid.getMappedColumns(that.grid.props.columns),
-            },
-            multiple: true,
-            sortable: {
-              showHandler: true,
-            },
+          // children: {
+          //   attrs: {
+          //     style: {
+          //       maxHeight: '50vh',
+          //       overflow: 'auto',
+          //     },
+          //   },
+          //   component: 'Tree',
+          //   showline: true,
+          //   data: that.customizableColumns(that.grid.popupTreeData),
+          //   nodeCheckable: {
+          //     checkedNodeKeys: that.grid.getMappedColumns(that.grid.props.columns),
+          //   },
+          //   multiple: true,
+          //   sortable: {
+          //     showHandler: true,
+          //   },
 
-            ref: (c) => {
-              this.tree = c
-            },
-            dataFields: {
-              text: 'title',
-              key: 'field',
-            },
+          //   ref: (c) => {
+          //     this.tree = c
+          //   },
+          //   dataFields: {
+          //     text: 'title',
+          //     key: 'field',
+          //   },
+          // },
+          children: {
+            component: GridSettingTransfer,
+            data: that.customizableColumns(that.grid.popupTreeData),
           },
         },
         footer: {
