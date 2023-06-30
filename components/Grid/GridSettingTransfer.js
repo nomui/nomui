@@ -12,7 +12,7 @@ class GridSettingTransfer extends Field {
     this.selectedKeys = []
     this.selectedData = [
       { title: '已冻结', field: 'isFrozen', isDivider: true },
-      { title: '未冻结', field: 'isFrozen', isDivider: true },
+      { title: '未冻结', field: 'isFree', isDivider: true },
     ]
   }
 
@@ -211,6 +211,7 @@ class GridSettingTransfer extends Field {
                           text: '清空',
                           size: 'small',
                           type: 'text',
+                          hidden: true,
                           onClick: () => {
                             me.clear()
                           },
@@ -255,7 +256,41 @@ class GridSettingTransfer extends Field {
                         flatData: me.props.displayAsTree,
                         dataFields: { ...dataFields, ...{ children: 'noChildrenAllowed' } },
                         nodeSelectable: false,
-                        sortable: true,
+                        sortable: {
+                          filter: '.nom-grid-setting-group-title',
+                          onMove: function (evt) {
+                            if (evt.dragged.querySelector('.nom-tree-nodes')) {
+                              const toKey = evt.related.component.key
+                              const siblings = evt.dragged.parentNode.childNodes
+                              let idx = 0
+                              let dividerIdx = 0
+                              siblings.forEach((n, i) => {
+                                if (n.component.key === toKey) {
+                                  idx = i
+                                }
+
+                                if (n.component.key === 'isFree') {
+                                  dividerIdx = i
+                                }
+                              })
+
+                              if (idx <= dividerIdx) {
+                                return false
+                              }
+                            }
+                            if (evt.related.innerHTML.includes('已冻结')) {
+                              return 1
+                            }
+                          },
+                          onEnd: function (evt) {
+                            const { oldIndex, newIndex } = evt
+
+                            // todo
+                            const before = me.selectedData[oldIndex]
+                            me.selectedData[oldIndex] = me.selectedData[newIndex]
+                            me.selectedData[newIndex] = before
+                          },
+                        },
                         expandable: {
                           byIndicator: true,
                         },
@@ -355,7 +390,7 @@ class GridSettingTransfer extends Field {
 
   _onTargetCheck() {
     const u = this.targetTree.getCheckedNodeKeys().length
-    const d = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true).length
+    const d = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true).length - 2
     this.targetCount.update({
       children: `${u}/${d}项`,
     })
@@ -392,23 +427,6 @@ class GridSettingTransfer extends Field {
           node.props.data.parentKey = node.parentNode.key
         }
 
-        // if (!node.parentNode && (!node.props.data.children || !node.props.data.children.length)) {
-        //   node.props.data.tools = (args) => {
-        //     return {
-        //       classes: {
-        //         'nom-grid-setting-item-pin': true,
-        //       },
-        //       component: 'Button',
-        //       type: 'text',
-        //       icon: 'pin',
-        //       onClick: ({ event }) => {
-        //         that._pinNode(args)
-        //         event.stopPropagation()
-        //       },
-        //     }
-        //   }
-        // }
-
         this.selectedData.push(node.props.data)
       }
 
@@ -437,6 +455,7 @@ class GridSettingTransfer extends Field {
     const nodes = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes())
 
     this._processChecked(nodes)
+
     this.targetTree.update({
       data: this.selectedData,
     })
@@ -479,28 +498,6 @@ class GridSettingTransfer extends Field {
     }
   }
 
-  // _pinNode({ node }) {
-  //   const arr = []
-  //   let frozenCount = 0
-  //   let newItem = null
-
-  //   this.selectedData.forEach((n) => {
-  //     if (n.frozen) {
-  //       frozenCount += 1
-  //     }
-  //     if (n.field !== node.key) {
-  //       arr.push(n)
-  //     } else {
-  //       newItem = { ...n, ...{ frozen: true } }
-  //     }
-  //   })
-
-  //   arr.splice(frozenCount, 0, newItem)
-  //   this.selectedData = arr
-
-  //   this.targetTree.update({ data: this.selectedData })
-  // }
-
   checkAll(options) {
     this.sourceTree.checkAllNodes(options)
   }
@@ -516,8 +513,9 @@ class GridSettingTransfer extends Field {
     this.sourceTree.update({ data: this.props.data })
     this.selectedData = [
       { title: '已冻结', field: 'isFrozen', isDivider: true },
-      { title: '未冻结', field: 'isFrozen', isDivider: true },
+      { title: '未冻结', field: 'isFree', isDivider: true },
     ]
+    this.selectedKeys = []
     this.targetTree.update({
       data: this.selectedData,
     })
