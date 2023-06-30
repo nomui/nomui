@@ -465,7 +465,11 @@ class GridSettingTransfer extends Field {
   }
 
   removeNodes() {
-    const nodes = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes())
+    const nodes = this._getCheckedChildNodeKeys(
+      this.targetTree.getChildNodes().filter((n) => {
+        return n !== 'isFrozen' || n !== 'isFree'
+      }),
+    )
     if (!nodes.length) {
       return
     }

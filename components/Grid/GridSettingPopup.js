@@ -60,6 +60,9 @@ class GridSettingPopup extends Modal {
           // },
           children: {
             component: GridSettingTransfer,
+            ref: (c) => {
+              window.trans = c
+            },
             data: that.customizableColumns(that.grid.popupTreeData),
           },
         },
@@ -75,16 +78,16 @@ class GridSettingPopup extends Modal {
             cols: [
               {
                 grow: true,
-                children: {
-                  component: 'Button',
-                  text: '全选',
-                  ref: (c) => {
-                    this.checkallBtn = c
-                  },
-                  onClick: () => {
-                    this._toogleCheckall()
-                  },
-                },
+                // children: {
+                //   component: 'Button',
+                //   text: '全选',
+                //   ref: (c) => {
+                //     this.checkallBtn = c
+                //   },
+                //   onClick: () => {
+                //     this._toogleCheckall()
+                //   },
+                // },
               },
               {
                 children: {
