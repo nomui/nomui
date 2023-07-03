@@ -61,8 +61,9 @@ class GridSettingPopup extends Modal {
           children: {
             component: GridSettingTransfer,
             ref: (c) => {
-              window.trans = c
+              that.transferRef = c
             },
+            value: that.grid.getMappedColumns(that.grid.props.columns),
             data: that.customizableColumns(that.grid.popupTreeData),
           },
         },
@@ -95,7 +96,9 @@ class GridSettingPopup extends Modal {
                   type: 'primary',
                   text: '确定',
                   onClick: function () {
-                    const list = that.tree.getCheckedNodesData()
+                    // const list = that.tree.getCheckedNodesData()
+                    const list = that.transferRef.getValueData()
+
                     const lockedList = list.filter((n) => {
                       return n.disabled === true
                     })
@@ -112,7 +115,7 @@ class GridSettingPopup extends Modal {
                       return false
                     }
                     that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
-                      that.tree.getData(),
+                      that.transferRef.getData(),
                     )
                     that.grid.handleColumnsSetting(that._sortCustomizableColumns(list))
                   },

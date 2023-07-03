@@ -261,7 +261,7 @@ class GridSettingTransfer extends Field {
                         },
                         data: [],
                         flatData: me.props.displayAsTree,
-                        dataFields: { ...dataFields, ...{ children: 'noChildrenAllowed' } },
+                        dataFields: { ...dataFields },
                         nodeSelectable: false,
                         sortable: {
                           filter: '.nom-grid-setting-group-title',
@@ -476,8 +476,9 @@ class GridSettingTransfer extends Field {
   }
 
   removeNodes() {
+    const targetNodes = this.targetTree.getChildNodes()
     const nodes = this._getCheckedChildNodeKeys(
-      this.targetTree.getChildNodes().filter((n) => {
+      targetNodes.filter((n) => {
         return n !== 'isFrozen' || n !== 'isFree'
       }),
     )
@@ -485,8 +486,14 @@ class GridSettingTransfer extends Field {
       return
     }
 
+    this.selectedKeys = this._getCheckedChildNodeKeys(targetNodes, true)
+
     this._removeItem(nodes)
-    this.selectedData = this.targetTree.getData()
+
+    this.selectedData = this.selectedData.filter((n) => {
+      return this.selectedKeys.includes(n.field)
+    })
+
     this._onSourceCheck()
     this._onTargetCheck()
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
@@ -545,6 +552,30 @@ class GridSettingTransfer extends Field {
       return null
     }
     return keys
+  }
+
+  getData() {
+    return this.sourceTree.getData()
+  }
+
+  getValueData(getOptions, node) {
+    getOptions = getOptions || { getAll: true }
+    node = node || this.targetTree
+    const nodesData = []
+    const childNodes = node.getChildNodes()
+    childNodes.forEach((childNode) => {
+      if (childNode.props.data.isDivider !== true) {
+        const childNodeData = { ...childNode.props.data }
+        nodesData.push(childNodeData)
+
+        const children = this.getValueData(getOptions, childNode)
+        if (children && children.length) {
+          childNodeData.children = children
+        }
+      }
+    })
+
+    return nodesData
   }
 }
 
