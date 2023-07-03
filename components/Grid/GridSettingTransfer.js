@@ -207,22 +207,29 @@ class GridSettingTransfer extends Field {
                       {
                         grow: true,
                         children: {
-                          component: 'Button',
-                          text: '清空',
-                          size: 'small',
-                          type: 'text',
-                          hidden: true,
-                          onClick: () => {
-                            me.clear()
-                          },
+                          component: 'List',
+                          items: [
+                            {
+                              children: '当前显示',
+                            },
+                            {
+                              ref: (c) => {
+                                me.targetCount = c
+                              },
+                              children: '',
+                            },
+                            {
+                              children: '列',
+                            },
+                          ],
                         },
                       },
-                      {
-                        ref: (c) => {
-                          me.targetCount = c
-                        },
-                        children: '',
-                      },
+                      // {
+                      //   ref: (c) => {
+                      //     me.targetCount = c
+                      //   },
+                      //   children: '',
+                      // },
                     ],
                   },
                 },
@@ -391,10 +398,10 @@ class GridSettingTransfer extends Field {
   }
 
   _onTargetCheck() {
-    const u = this.targetTree.getCheckedNodeKeys().length
+    // const u = this.targetTree.getCheckedNodeKeys().length
     const d = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true).length - 2
     this.targetCount.update({
-      children: `${u}/${d}项`,
+      children: `${d}`,
     })
   }
 
