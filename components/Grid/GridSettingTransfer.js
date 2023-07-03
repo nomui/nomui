@@ -282,13 +282,15 @@ class GridSettingTransfer extends Field {
                               return 1
                             }
                           },
-                          onEnd: function (evt) {
-                            const { oldIndex, newIndex } = evt
-
-                            // todo
-                            const before = me.selectedData[oldIndex]
-                            me.selectedData[oldIndex] = me.selectedData[newIndex]
-                            me.selectedData[newIndex] = before
+                          onEnd: function () {
+                            const keys = me._getCheckedChildNodeKeys(
+                              me.targetTree.getChildNodes(),
+                              true,
+                            )
+                            me.selectedData = keys.map((n) => {
+                              const { children, ...obj } = me.targetTree.getNode(n).props.data
+                              return obj
+                            })
                           },
                         },
                         expandable: {
@@ -398,10 +400,12 @@ class GridSettingTransfer extends Field {
 
   _disableNode(node) {
     node.checkboxRef.disable()
+    node.props.disabled = true
   }
 
   _enableNode(node) {
     node.checkboxRef.enable()
+    node.props.disabled = false
   }
 
   _hideNode(node) {
@@ -502,12 +506,12 @@ class GridSettingTransfer extends Field {
     }
   }
 
-  checkAll(options) {
-    this.sourceTree.checkAllNodes(options)
+  checkAll() {
+    this.sourceTree.checkAllNodes()
   }
 
-  uncheckAll(options) {
-    this.sourceTree.uncheckAllNodes(options)
+  uncheckAll() {
+    this.sourceTree.uncheckAllNodes({ ignoreDisabled: true })
   }
 
   clear() {
