@@ -219,7 +219,7 @@ class GridSettingTransfer extends Field {
                               children: '',
                             },
                             {
-                              children: '列',
+                              children: '项',
                             },
                           ],
                         },
