@@ -114,9 +114,12 @@ class GridSettingPopup extends Modal {
                       })
                       return false
                     }
+
+                    // todo  对象数组重新排序
                     that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
                       that.transferRef.getData(),
                     )
+
                     that.grid.handleColumnsSetting(that._sortCustomizableColumns(list))
                   },
                 },

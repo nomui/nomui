@@ -121,7 +121,7 @@ class GridSettingTransfer extends Field {
                         },
 
                         nodeCheckable: {
-                          cascade: me.props.displayAsTree,
+                          cascade: true,
                           checkedNodeKeys: initKeys,
                           onCheckChange: () => {
                             me._onSourceCheck()
@@ -305,9 +305,12 @@ class GridSettingTransfer extends Field {
                         },
 
                         nodeCheckable: {
-                          cascade: !!me.props.displayAsTree,
-                          onCheckChange: () => {
-                            me._onTargetCheck()
+                          cascadeCheckParent: false,
+                          cascadeCheckChildren: true,
+                          cascadeUncheckParent: true,
+                          cascadeUncheckChildren: true,
+                          onCheckChange: ({ sender }) => {
+                            me._onTargetCheck(sender)
                           },
                         },
                         nodeDefaults: {
@@ -397,7 +400,14 @@ class GridSettingTransfer extends Field {
     })
   }
 
-  _onTargetCheck() {
+  _onTargetCheck(node) {
+    if (node && node.parentNode.props.childrenData.length === 1) {
+      if (node.props.checked === true) {
+        node.parentNode.check()
+      } else {
+        node.parentNode.uncheck()
+      }
+    }
     // const u = this.targetTree.getCheckedNodeKeys().length
     const d = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true).length - 2
     this.targetCount.update({
