@@ -224,12 +224,6 @@ class GridSettingTransfer extends Field {
                           ],
                         },
                       },
-                      // {
-                      //   ref: (c) => {
-                      //     me.targetCount = c
-                      //   },
-                      //   children: '',
-                      // },
                     ],
                   },
                 },
@@ -401,11 +395,11 @@ class GridSettingTransfer extends Field {
   }
 
   _onTargetCheck(node) {
-    if (node && node.parentNode.props.childrenData.length === 1) {
+    if (node && node.parentNode && node.parentNode.getChildNodes().length === 1) {
       if (node.props.checked === true) {
-        node.parentNode.check()
+        node.parentNode.check({ fromChildren: true })
       } else {
-        node.parentNode.uncheck()
+        node.parentNode.uncheck({ skipChildren: true })
       }
     }
     // const u = this.targetTree.getCheckedNodeKeys().length
@@ -524,9 +518,9 @@ class GridSettingTransfer extends Field {
       this._enableNode(sourceItem)
       sourceItem.uncheck()
 
-      this.targetTree.getNode(nodeKey) &&
-        this.targetTree.getNode(nodeKey).props &&
+      if (this.targetTree.getNode(nodeKey) && this.targetTree.getNode(nodeKey).props) {
         this.targetTree.getNode(nodeKey).remove()
+      }
     }
   }
 
