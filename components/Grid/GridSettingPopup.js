@@ -13,6 +13,7 @@ class GridSettingPopup extends Modal {
     super._created()
     this.grid = this.props.grid
     this.tree = null
+    this.tempArr = []
   }
 
   _config() {
@@ -79,16 +80,6 @@ class GridSettingPopup extends Modal {
             cols: [
               {
                 grow: true,
-                // children: {
-                //   component: 'Button',
-                //   text: '全选',
-                //   ref: (c) => {
-                //     this.checkallBtn = c
-                //   },
-                //   onClick: () => {
-                //     this._toogleCheckall()
-                //   },
-                // },
               },
               {
                 children: {
@@ -115,10 +106,7 @@ class GridSettingPopup extends Modal {
                       return false
                     }
 
-                    // todo  对象数组重新排序
-                    that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
-                      that.transferRef.getData(),
-                    )
+                    that._fixDataOrder()
 
                     that.grid.handleColumnsSetting(that._sortCustomizableColumns(list))
                   },
@@ -140,6 +128,51 @@ class GridSettingPopup extends Modal {
     })
 
     super._config()
+  }
+
+  _fixDataOrder() {
+    const newData = this.transferRef.getValueData()
+    const originData = this.transferRef.getData()
+    const result = this._mapTree(newData, originData)
+
+    this.grid.popupTreeData = this.grid.originColumns = this._sortCustomizableColumns(result)
+  }
+
+  _findItem(arr, key) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].field === key) {
+        this.tempArr = arr[i].children
+        break
+      }
+      if (arr[i].children) {
+        this._findItem(arr[i].children, key)
+      }
+    }
+  }
+
+  _mapTree(data, origin) {
+    data = this._concatArr(data, origin)
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].children) {
+        this._findItem(origin, data[i].field)
+        const related = this.tempArr
+        data[i].children = this._mapTree(data[i].children, related || [])
+      }
+    }
+
+    return data
+  }
+
+  _concatArr(target, related) {
+    const restItem = related.filter((n) => {
+      return (
+        target.findIndex((x) => {
+          return x.field === n.field
+        }) === -1
+      )
+    })
+
+    return [...target, ...restItem]
   }
 
   getMappedColumns(param) {

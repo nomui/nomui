@@ -318,12 +318,13 @@ class GridSettingTransfer extends Field {
                               })
                             }
                           },
-                          onClick: ({ sender }) => {
+                          onClick: ({ sender, event }) => {
                             if (sender.props.checked) {
                               sender.uncheck()
                             } else {
                               sender.check()
                             }
+                            event.stopPropagation()
                           },
                         },
                       },
@@ -402,7 +403,7 @@ class GridSettingTransfer extends Field {
         node.parentNode.uncheck({ skipChildren: true })
       }
     }
-    // const u = this.targetTree.getCheckedNodeKeys().length
+
     const d = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true).length - 2
     this.targetCount.update({
       children: `${d}`,
