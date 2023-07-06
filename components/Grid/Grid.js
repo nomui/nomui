@@ -691,7 +691,7 @@ class Grid extends Component {
     })
   }
 
-  handleColumnsSetting(params) {
+  handleColumnsSetting(params, frozenCount) {
     const tree = params
 
     const that = this
@@ -735,7 +735,7 @@ class Grid extends Component {
 
     this._customColumnFlag = false
     this._processPinColumnFromSetting(tree)
-    this.setProps({ columns: tree })
+    this.setProps({ columns: tree, frozenLeftCols: frozenCount })
     this._processColumns()
     this._calcMinWidth()
     this.render()

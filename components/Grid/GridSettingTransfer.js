@@ -563,24 +563,28 @@ class GridSettingTransfer extends Field {
     return this.sourceTree.getData()
   }
 
-  getValueData(getOptions, node) {
+  getSelectedData(getOptions, node) {
     getOptions = getOptions || { getAll: true }
     node = node || this.targetTree
     const nodesData = []
+    const frozenCount = []
     const childNodes = node.getChildNodes()
-    childNodes.forEach((childNode) => {
+    childNodes.forEach((childNode, idx) => {
+      if (childNode.props.data.isDivider === true) {
+        frozenCount.push(idx)
+      }
       if (childNode.props.data.isDivider !== true) {
         const childNodeData = { ...childNode.props.data }
         nodesData.push(childNodeData)
 
-        const children = this.getValueData(getOptions, childNode)
+        const children = this.getSelectedData(getOptions, childNode)
         if (children && children.length) {
           childNodeData.children = children
         }
       }
     })
 
-    return nodesData
+    return { data: nodesData, frozenCount: frozenCount }
   }
 }
 

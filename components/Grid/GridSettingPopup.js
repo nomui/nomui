@@ -87,28 +87,7 @@ class GridSettingPopup extends Modal {
                   type: 'primary',
                   text: '确定',
                   onClick: function () {
-                    // const list = that.tree.getCheckedNodesData()
-                    const list = that.transferRef.getValueData()
-
-                    const lockedList = list.filter((n) => {
-                      return n.disabled === true
-                    })
-
-                    if (
-                      list.length === 0 ||
-                      (list.length === lockedList.length && list.length === 1)
-                    ) {
-                      new nomui.Alert({
-                        type: 'info',
-                        title: '提示',
-                        description: '请至少保留一列数据',
-                      })
-                      return false
-                    }
-
                     that._fixDataOrder()
-
-                    that.grid.handleColumnsSetting(that._sortCustomizableColumns(list))
                   },
                 },
               },
@@ -131,11 +110,29 @@ class GridSettingPopup extends Modal {
   }
 
   _fixDataOrder() {
-    const newData = this.transferRef.getValueData()
+    const info = this.transferRef.getSelectedData()
+    const newData = info.data
+
+    const lockedList = newData.filter((n) => {
+      return n.disabled === true
+    })
+
+    if (newData.length === 0 || (newData.length === lockedList.length && newData.length === 1)) {
+      new nomui.Alert({
+        type: 'info',
+        title: '提示',
+        description: '请至少保留一列数据',
+      })
+      return false
+    }
+
+    const frozenCount = info.frozenCount[1] - 1
+
     const originData = this.transferRef.getData()
     const result = this._mapTree(newData, originData)
 
     this.grid.popupTreeData = this.grid.originColumns = this._sortCustomizableColumns(result)
+    this.grid.handleColumnsSetting(this._sortCustomizableColumns(newData), frozenCount)
   }
 
   _findItem(arr, key) {
