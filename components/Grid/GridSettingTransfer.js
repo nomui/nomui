@@ -563,29 +563,42 @@ class GridSettingTransfer extends Field {
     return this.sourceTree.getData()
   }
 
-  getSelectedData(getOptions, node) {
-    getOptions = getOptions || { getAll: true }
+  getSelectedData(node) {
     node = node || this.targetTree
     const nodesData = []
-    const frozenCount = []
-    const childNodes = node.getChildNodes()
-    childNodes.forEach((childNode, idx) => {
-      if (childNode.props.data.isDivider === true) {
-        frozenCount.push(idx)
-      }
-      if (childNode.props.data.isDivider !== true) {
-        const childNodeData = { ...childNode.props.data }
-        nodesData.push(childNodeData)
+    const nodes = node.getChildNodes()
+    nodes.forEach((childNode) => {
+      const childNodeData = { ...childNode.props.data }
 
-        const children = this.getSelectedData(getOptions, childNode)
-        if (children && children.length) {
-          childNodeData.children = children
-        }
+      const children = this.getSelectedData(childNode)
+
+      if (children && children.length) {
+        childNodeData.children = children
       }
+
+      nodesData.push(childNodeData)
     })
 
-    return { data: nodesData, frozenCount: frozenCount }
+    return nodesData
   }
+
+  //   _getCheckedChildNodeKeys(nodes, ignoreCheck) {
+  //   const checkedNodes = []
+  //   nodes.forEach((node) => {
+  //     if (ignoreCheck || node.isChecked()) {
+  //       checkedNodes.push(node.key)
+  //     }
+
+  //     if (node.getChildNodes().length) {
+  //       Array.prototype.push.apply(
+  //         checkedNodes,
+  //         this._getCheckedChildNodeKeys(node.getChildNodes(), ignoreCheck),
+  //       )
+  //     }
+  //   })
+
+  //   return checkedNodes
+  // }
 }
 
 GridSettingTransfer.defaults = {

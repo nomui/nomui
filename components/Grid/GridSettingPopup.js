@@ -110,14 +110,14 @@ class GridSettingPopup extends Modal {
   }
 
   _fixDataOrder() {
-    const info = this.transferRef.getSelectedData()
-    const newData = info.data
+    const list = this.transferRef.getSelectedData()
+    const frozenCount = this.transferRef.getFronzonCount()
 
-    const lockedList = newData.filter((n) => {
+    const lockedList = list.filter((n) => {
       return n.disabled === true
     })
 
-    if (newData.length === 0 || (newData.length === lockedList.length && newData.length === 1)) {
+    if (list.length === 0 || (list.length === lockedList.length && list.length === 1)) {
       new nomui.Alert({
         type: 'info',
         title: '提示',
@@ -126,13 +126,11 @@ class GridSettingPopup extends Modal {
       return false
     }
 
-    const frozenCount = info.frozenCount[1] - 1
-
     const originData = this.transferRef.getData()
-    const result = this._mapTree(newData, originData)
+    const result = this._mapTree(list, originData)
 
     this.grid.popupTreeData = this.grid.originColumns = this._sortCustomizableColumns(result)
-    this.grid.handleColumnsSetting(this._sortCustomizableColumns(newData), frozenCount)
+    this.grid.handleColumnsSetting(this._sortCustomizableColumns(list), frozenCount)
   }
 
   _findItem(arr, key) {
