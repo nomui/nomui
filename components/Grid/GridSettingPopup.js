@@ -128,9 +128,12 @@ class GridSettingPopup extends Modal {
 
     const originData = this.transferRef.getData()
     const result = this._mapTree(list, originData)
-
     this.grid.popupTreeData = this.grid.originColumns = this._sortCustomizableColumns(result)
-    this.grid.handleColumnsSetting(this._sortCustomizableColumns(list), frozenCount)
+
+    this.grid.handleColumnsSetting(
+      this._sortCustomizableColumns(this.transferRef.getSelectedData()),
+      frozenCount,
+    )
   }
 
   _findItem(arr, key) {
