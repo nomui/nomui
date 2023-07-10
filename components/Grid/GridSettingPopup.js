@@ -111,7 +111,7 @@ class GridSettingPopup extends Modal {
 
   _fixDataOrder() {
     const list = this.transferRef.getSelectedData()
-    const frozenCount = this.transferRef.getFronzonCount()
+    const frozenCount = this.transferRef.getFronzenCount()
 
     const lockedList = list.filter((n) => {
       return n.disabled === true

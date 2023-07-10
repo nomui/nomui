@@ -563,42 +563,35 @@ class GridSettingTransfer extends Field {
     return this.sourceTree.getData()
   }
 
-  getSelectedData(node) {
-    node = node || this.targetTree
-    const nodesData = []
-    const nodes = node.getChildNodes()
-    nodes.forEach((childNode) => {
-      const childNodeData = { ...childNode.props.data }
-
-      const children = this.getSelectedData(childNode)
-
-      if (children && children.length) {
-        childNodeData.children = children
+  getFronzenCount() {
+    let num = 0
+    this.targetTree.getData().forEach((n, i) => {
+      if (n.field === 'isFree') {
+        num = i - 1
       }
-
-      nodesData.push(childNodeData)
     })
 
-    return nodesData
+    return num
   }
 
-  //   _getCheckedChildNodeKeys(nodes, ignoreCheck) {
-  //   const checkedNodes = []
-  //   nodes.forEach((node) => {
-  //     if (ignoreCheck || node.isChecked()) {
-  //       checkedNodes.push(node.key)
-  //     }
+  getSelectedData() {
+    function mapTree(arr) {
+      return arr.map((n) => {
+        const obj = n.props.data
+        const c = n.getChildNodes()
+        if (c.length) {
+          obj.children = mapTree(c)
+        }
+        return obj
+      })
+    }
 
-  //     if (node.getChildNodes().length) {
-  //       Array.prototype.push.apply(
-  //         checkedNodes,
-  //         this._getCheckedChildNodeKeys(node.getChildNodes(), ignoreCheck),
-  //       )
-  //     }
-  //   })
+    const data = mapTree(this.targetTree.getChildNodes()).filter((n) => {
+      return n.isDivider !== true
+    })
 
-  //   return checkedNodes
-  // }
+    return data
+  }
 }
 
 GridSettingTransfer.defaults = {
