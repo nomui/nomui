@@ -33,38 +33,13 @@ class GridSettingPopup extends Modal {
           },
         },
         body: {
-          // children: {
-          //   attrs: {
-          //     style: {
-          //       maxHeight: '50vh',
-          //       overflow: 'auto',
-          //     },
-          //   },
-          //   component: 'Tree',
-          //   showline: true,
-          //   data: that.customizableColumns(that.grid.popupTreeData),
-          //   nodeCheckable: {
-          //     checkedNodeKeys: that.grid.getMappedColumns(that.grid.props.columns),
-          //   },
-          //   multiple: true,
-          //   sortable: {
-          //     showHandler: true,
-          //   },
-
-          //   ref: (c) => {
-          //     this.tree = c
-          //   },
-          //   dataFields: {
-          //     text: 'title',
-          //     key: 'field',
-          //   },
-          // },
           children: {
             component: GridSettingTransfer,
             ref: (c) => {
               that.transferRef = c
             },
-            value: that.grid.getMappedColumns(that.grid.props.columns),
+            value: this.grid.getMappedColumns(this.grid.props.columns),
+            frozenCount: that.grid.props.frozenLeftCols,
             data: that.customizableColumns(that.grid.popupTreeData),
           },
         },
@@ -111,7 +86,7 @@ class GridSettingPopup extends Modal {
 
   _fixDataOrder() {
     const list = this.transferRef.getSelectedData()
-    const frozenCount = this.transferRef.getFronzenCount()
+    const frozenCount = this.transferRef.getFrozenCount()
 
     const lockedList = list.filter((n) => {
       return n.disabled === true

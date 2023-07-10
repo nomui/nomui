@@ -472,6 +472,16 @@ class GridSettingTransfer extends Field {
 
     this._processChecked(nodes)
 
+    if (this.props.frozenCount) {
+      this.selectedData = this.selectedData.filter((n) => {
+        return n.field !== 'isFree'
+      })
+      this.selectedData.splice(this.props.frozenCount + 1, 0, {
+        title: '未冻结',
+        field: 'isFree',
+        isDivider: true,
+      })
+    }
     this.targetTree.update({
       data: this.selectedData,
     })
@@ -563,7 +573,7 @@ class GridSettingTransfer extends Field {
     return this.sourceTree.getData()
   }
 
-  getFronzenCount() {
+  getFrozenCount() {
     let num = 0
     this.targetTree.getData().forEach((n, i) => {
       if (n.field === 'isFree') {
@@ -597,13 +607,10 @@ class GridSettingTransfer extends Field {
 GridSettingTransfer.defaults = {
   data: [],
   value: null,
-  hideOnSelect: false, // 隐藏已选择节点，不允许在树形数据当中使用
-  // pagination: false,
+  hideOnSelect: false,
   itemRender: null,
   showSearch: true,
-  onChange: null,
-  // onSearch: null,
-  // onScroll: null,
+  frozenCount: null,
   displayAsTree: true,
   dataFields: { key: 'field', text: 'title', children: 'children', parentKey: 'parentKey' },
 }
