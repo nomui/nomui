@@ -691,6 +691,10 @@ class Grid extends Component {
     })
   }
 
+  _updateOriginColumns(data) {
+    this.popupTreeData = this.originColumns = data
+  }
+
   handleColumnsSetting(params, frozenCount) {
     const tree = params
 

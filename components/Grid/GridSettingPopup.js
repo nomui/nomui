@@ -86,6 +86,7 @@ class GridSettingPopup extends Modal {
 
   _fixDataOrder() {
     const list = this.transferRef.getSelectedData()
+    const selected = JSON.parse(JSON.stringify(list))
     const frozenCount = this.transferRef.getFrozenCount()
 
     const lockedList = list.filter((n) => {
@@ -100,15 +101,12 @@ class GridSettingPopup extends Modal {
       })
       return false
     }
-
     const originData = this.transferRef.getData()
     const result = this._mapTree(list, originData)
-    this.grid.popupTreeData = this.grid.originColumns = this._sortCustomizableColumns(result)
 
-    this.grid.handleColumnsSetting(
-      this._sortCustomizableColumns(this.transferRef.getSelectedData()),
-      frozenCount,
-    )
+    this.grid._updateOriginColumns(this._sortCustomizableColumns(result))
+
+    this.grid.handleColumnsSetting(this._sortCustomizableColumns(selected), frozenCount)
   }
 
   _findItem(arr, key) {
