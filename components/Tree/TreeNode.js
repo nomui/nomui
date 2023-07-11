@@ -57,7 +57,9 @@ class TreeNode extends Component {
 
     if (this.tree.props.nodeCheckable) {
       this.setProps({
-        checked: this.tree.checkedNodeKeysHash[this.key] === true,
+        checked: this.firstRender
+          ? this.tree.checkedNodeKeysHash[this.key] === true
+          : this.props.checked === true || this.tree.checkedNodeKeysHash[this.key] === true,
       })
     }
   }
@@ -213,6 +215,38 @@ class TreeNode extends Component {
 
   unselect() {
     this.content.unselect()
+  }
+
+  disable() {
+    this.update({
+      data: {
+        disabled: true,
+      },
+    })
+  }
+
+  enable() {
+    this.update({
+      data: {
+        disabled: false,
+      },
+    })
+  }
+
+  hide() {
+    this.update({
+      data: {
+        hidden: true,
+      },
+    })
+  }
+
+  show() {
+    this.update({
+      data: {
+        hidden: false,
+      },
+    })
   }
 }
 TreeNode.defaults = {

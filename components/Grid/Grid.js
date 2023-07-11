@@ -691,7 +691,11 @@ class Grid extends Component {
     })
   }
 
-  handleColumnsSetting(params) {
+  _updateOriginColumns(data) {
+    this.popupTreeData = this.originColumns = data
+  }
+
+  handleColumnsSetting(params, frozenCount) {
     const tree = params
 
     const that = this
@@ -735,7 +739,7 @@ class Grid extends Component {
 
     this._customColumnFlag = false
     this._processPinColumnFromSetting(tree)
-    this.setProps({ columns: tree })
+    this.setProps({ columns: tree, frozenLeftCols: frozenCount })
     this._processColumns()
     this._calcMinWidth()
     this.render()

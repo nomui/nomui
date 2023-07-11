@@ -1,5 +1,6 @@
 import Component from '../Component/index'
 import Modal from '../Modal/index'
+import GridSettingTransfer from './GridSettingTransfer'
 
 class GridSettingPopup extends Modal {
   constructor(props, ...mixins) {
@@ -12,6 +13,7 @@ class GridSettingPopup extends Modal {
     super._created()
     this.grid = this.props.grid
     this.tree = null
+    this.tempArr = []
   }
 
   _config() {
@@ -32,30 +34,13 @@ class GridSettingPopup extends Modal {
         },
         body: {
           children: {
-            attrs: {
-              style: {
-                maxHeight: '50vh',
-                overflow: 'auto',
-              },
-            },
-            component: 'Tree',
-            showline: true,
-            data: that.customizableColumns(that.grid.popupTreeData),
-            nodeCheckable: {
-              checkedNodeKeys: that.grid.getMappedColumns(that.grid.props.columns),
-            },
-            multiple: true,
-            sortable: {
-              showHandler: true,
-            },
-
+            component: GridSettingTransfer,
             ref: (c) => {
-              this.tree = c
+              that.transferRef = c
             },
-            dataFields: {
-              text: 'title',
-              key: 'field',
-            },
+            value: this.grid.getMappedColumns(this.grid.props.columns),
+            frozenCount: that.grid.props.frozenLeftCols,
+            data: that.customizableColumns(that.grid.popupTreeData),
           },
         },
         footer: {
@@ -70,16 +55,6 @@ class GridSettingPopup extends Modal {
             cols: [
               {
                 grow: true,
-                children: {
-                  component: 'Button',
-                  text: '全选',
-                  ref: (c) => {
-                    this.checkallBtn = c
-                  },
-                  onClick: () => {
-                    this._toogleCheckall()
-                  },
-                },
               },
               {
                 children: {
@@ -87,26 +62,7 @@ class GridSettingPopup extends Modal {
                   type: 'primary',
                   text: '确定',
                   onClick: function () {
-                    const list = that.tree.getCheckedNodesData()
-                    const lockedList = list.filter((n) => {
-                      return n.disabled === true
-                    })
-
-                    if (
-                      list.length === 0 ||
-                      (list.length === lockedList.length && list.length === 1)
-                    ) {
-                      new nomui.Alert({
-                        type: 'info',
-                        title: '提示',
-                        description: '请至少保留一列数据',
-                      })
-                      return false
-                    }
-                    that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
-                      that.tree.getData(),
-                    )
-                    that.grid.handleColumnsSetting(that._sortCustomizableColumns(list))
+                    that._fixDataOrder()
                   },
                 },
               },
@@ -126,6 +82,68 @@ class GridSettingPopup extends Modal {
     })
 
     super._config()
+  }
+
+  _fixDataOrder() {
+    const list = this.transferRef.getSelectedData()
+    const selected = JSON.parse(JSON.stringify(list))
+    const frozenCount = this.transferRef.getFrozenCount()
+
+    const lockedList = list.filter((n) => {
+      return n.disabled === true
+    })
+
+    if (list.length === 0 || (list.length === lockedList.length && list.length === 1)) {
+      new nomui.Alert({
+        type: 'info',
+        title: '提示',
+        description: '请至少保留一列数据',
+      })
+      return false
+    }
+    const originData = this.transferRef.getData()
+    const result = this._mapTree(list, originData)
+
+    this.grid._updateOriginColumns(this._sortCustomizableColumns(result))
+
+    this.grid.handleColumnsSetting(this._sortCustomizableColumns(selected), frozenCount)
+  }
+
+  _findItem(arr, key) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].field === key) {
+        this.tempArr = arr[i].children
+        break
+      }
+      if (arr[i].children) {
+        this._findItem(arr[i].children, key)
+      }
+    }
+  }
+
+  _mapTree(data, origin) {
+    data = this._concatArr(data, origin)
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].children) {
+        this._findItem(origin, data[i].field)
+        const related = this.tempArr
+        data[i].children = this._mapTree(data[i].children, related || [])
+      }
+    }
+
+    return data
+  }
+
+  _concatArr(target, related) {
+    const restItem = related.filter((n) => {
+      return (
+        target.findIndex((x) => {
+          return x.field === n.field
+        }) === -1
+      )
+    })
+
+    return [...target, ...restItem]
   }
 
   getMappedColumns(param) {
