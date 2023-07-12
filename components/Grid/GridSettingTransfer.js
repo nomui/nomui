@@ -367,10 +367,19 @@ class GridSettingTransfer extends Field {
     return checkedNodes
   }
 
+  _showParent(node) {
+    const p = node.parentNode.parentNode
+    if (p.classList.contains('nom-tree-node')) {
+      p.classList.remove('s-hidden')
+      this._showParent(p)
+    }
+  }
+
   _onSourceSearch(val) {
     this.sourceTree.element.querySelectorAll('.nom-tree-node').forEach((n) => {
       if (!val || n.querySelector('.nom-tree-node-content-text').innerHTML.includes(val)) {
         n.classList.remove('s-hidden')
+        this._showParent(n)
       } else {
         n.classList.add('s-hidden')
       }
@@ -381,6 +390,7 @@ class GridSettingTransfer extends Field {
     this.targetTree.element.querySelectorAll('.nom-tree-node').forEach((n) => {
       if (!val || n.querySelector('.nom-tree-node-content-text').innerHTML.includes(val)) {
         n.classList.remove('s-hidden')
+        this._showParent(n)
       } else {
         n.classList.add('s-hidden')
       }
