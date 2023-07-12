@@ -96,10 +96,11 @@ class GridSettingTransfer extends Field {
                           },
                           children: {
                             component: 'Textbox',
-                            allowClear: false,
+                            allowClear: true,
                             _created: function () {
                               me.sourceSearch = this
                             },
+                            placeholder: '搜索所有列',
                             onValueChange: debounce(({ newValue }) => {
                               me._onSourceSearch(newValue)
                             }, 1000),
@@ -237,10 +238,11 @@ class GridSettingTransfer extends Field {
                           },
                           children: {
                             component: 'Textbox',
-                            allowClear: false,
+                            allowClear: true,
                             _created: function () {
                               me.targetSearch = this
                             },
+                            placeholder: '搜索已添加列',
                             onValueChange: debounce(({ newValue }) => {
                               me._onTargetSearch(newValue)
                             }, 1000),
