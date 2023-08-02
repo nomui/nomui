@@ -4,7 +4,11 @@ import GridSettingTransfer from './GridSettingTransfer'
 
 class GridSettingPopup extends Modal {
   constructor(props, ...mixins) {
-    const defaults = {}
+    const defaults = {
+      size: {
+        width: 545
+      }
+    }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }

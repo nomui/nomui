@@ -139,7 +139,9 @@ class Grid extends Component {
             classes: {
               'nom-grid-setting-btn': true,
             },
-            tooltip: '列设置',
+            attrs: {
+              title: '列设置',
+            },
             onClick: () => {
               this.showSetting()
             },
@@ -269,7 +271,7 @@ class Grid extends Component {
         // 存在则表示当前数据不是最顶层数据
 
         // 这里的map中的数据是引用了arr的它的指向还是arr，当mapItem改变时arr也会改变
-        ;(mapItem[childrenField] || (mapItem[childrenField] = [])).push(child) // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
+        ; (mapItem[childrenField] || (mapItem[childrenField] = [])).push(child) // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
       } else {
         // 不存在则是组顶层数据
         treeData.push(child)

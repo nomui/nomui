@@ -37,7 +37,7 @@ class GridSettingTransfer extends Field {
             'nom-grid-setting-transfer-container': true,
           },
           align: 'center',
-          gutter: 'medium',
+          gutter: 'large',
           cols: [
             {
               children: {
@@ -91,21 +91,21 @@ class GridSettingTransfer extends Field {
                     component: 'Layout',
                     header: showSearch
                       ? {
+                        _created: function () {
+                          me.sourceSearchContainer = this
+                        },
+                        children: {
+                          component: 'Textbox',
+                          allowClear: true,
                           _created: function () {
-                            me.sourceSearchContainer = this
+                            me.sourceSearch = this
                           },
-                          children: {
-                            component: 'Textbox',
-                            allowClear: true,
-                            _created: function () {
-                              me.sourceSearch = this
-                            },
-                            placeholder: '搜索所有列',
-                            onValueChange: debounce(({ newValue }) => {
-                              me._onSourceSearch(newValue)
-                            }, 1000),
-                          },
-                        }
+                          placeholder: '搜索所有列',
+                          onValueChange: debounce(({ newValue }) => {
+                            me._onSourceSearch(newValue)
+                          }, 1000),
+                        },
+                      }
                       : false,
                     body: {
                       children: {
@@ -124,8 +124,10 @@ class GridSettingTransfer extends Field {
                         nodeCheckable: {
                           cascade: true,
                           checkedNodeKeys: initKeys,
-                          onCheckChange: () => {
-                            me._onSourceCheck()
+                          onCheckChange: ({ sender }) => {
+
+                            me._setSourceCount()
+                            me._handleCheckNode(sender)
                           },
                         },
                         nodeDefaults: {
@@ -148,51 +150,51 @@ class GridSettingTransfer extends Field {
                 footer:
                   this.props.pagination || this.props.footerRender
                     ? {
-                        children: this.props.footerRender
-                          ? this.props.footerRender()
-                          : {
-                              component: 'Flex',
-                              fit: true,
-                              align: 'center',
-                              justify: 'end',
-                              cols: [
-                                {
-                                  children: {
-                                    component: 'Pager',
-                                    itemsSort: ['pages'],
-                                    totalCount: 50,
-                                    simple: true,
-                                    pageIndex: 1,
-                                    pageSize: 20,
-                                  },
-                                },
-                              ],
+                      children: this.props.footerRender
+                        ? this.props.footerRender()
+                        : {
+                          component: 'Flex',
+                          fit: true,
+                          align: 'center',
+                          justify: 'end',
+                          cols: [
+                            {
+                              children: {
+                                component: 'Pager',
+                                itemsSort: ['pages'],
+                                totalCount: 50,
+                                simple: true,
+                                pageIndex: 1,
+                                pageSize: 20,
+                              },
                             },
-                      }
+                          ],
+                        },
+                    }
                     : false,
               },
             },
-            {
-              gutter: 'small',
-              rows: [
-                {
-                  component: 'Button',
-                  size: 'small',
-                  icon: 'right',
-                  onClick: () => {
-                    me.addNodes()
-                  },
-                },
-                {
-                  component: 'Button',
-                  size: 'small',
-                  icon: 'left',
-                  onClick: () => {
-                    me.removeNodes()
-                  },
-                },
-              ],
-            },
+            // {
+            //   gutter: 'small',
+            //   rows: [
+            //     {
+            //       component: 'Button',
+            //       size: 'small',
+            //       icon: 'right',
+            //       onClick: () => {
+            //         me._initAddNodes()
+            //       },
+            //     },
+            //     {
+            //       component: 'Button',
+            //       size: 'small',
+            //       icon: 'left',
+            //       onClick: () => {
+            //         me.removeNodes()
+            //       },
+            //     },
+            //   ],
+            // },
             {
               children: {
                 component: 'Layout',
@@ -233,21 +235,21 @@ class GridSettingTransfer extends Field {
                     component: 'Layout',
                     header: showSearch
                       ? {
+                        _created: function () {
+                          me.targetSearchContainer = this
+                        },
+                        children: {
+                          component: 'Textbox',
+                          allowClear: true,
                           _created: function () {
-                            me.targetSearchContainer = this
+                            me.targetSearch = this
                           },
-                          children: {
-                            component: 'Textbox',
-                            allowClear: true,
-                            _created: function () {
-                              me.targetSearch = this
-                            },
-                            placeholder: '搜索已添加列',
-                            onValueChange: debounce(({ newValue }) => {
-                              me._onTargetSearch(newValue)
-                            }, 1000),
-                          },
-                        }
+                          placeholder: '搜索已添加列',
+                          onValueChange: debounce(({ newValue }) => {
+                            me._onTargetSearch(newValue)
+                          }, 1000),
+                        },
+                      }
                       : false,
                     body: {
                       children: {
@@ -299,16 +301,17 @@ class GridSettingTransfer extends Field {
                         expandable: {
                           byIndicator: true,
                         },
+                        nodeCheckable: false,
 
-                        nodeCheckable: {
-                          cascadeCheckParent: false,
-                          cascadeCheckChildren: true,
-                          cascadeUncheckParent: true,
-                          cascadeUncheckChildren: true,
-                          onCheckChange: ({ sender }) => {
-                            me._onTargetCheck(sender)
-                          },
-                        },
+                        // nodeCheckable: {
+                        //   cascadeCheckParent: false,
+                        //   cascadeCheckChildren: true,
+                        //   cascadeUncheckParent: true,
+                        //   cascadeUncheckChildren: true,
+                        //   onCheckChange: ({ sender }) => {
+                        //     me._setTargetCount(sender)
+                        //   },
+                        // },
                         nodeDefaults: {
                           onConfig: ({ inst }) => {
                             if (inst.props.data.isDivider) {
@@ -320,14 +323,14 @@ class GridSettingTransfer extends Field {
                               })
                             }
                           },
-                          onClick: ({ sender, event }) => {
-                            if (sender.props.checked) {
-                              sender.uncheck()
-                            } else {
-                              sender.check()
-                            }
-                            event.stopPropagation()
-                          },
+                          // onClick: ({ sender, event }) => {
+                          //   if (sender.props.checked) {
+                          //     sender.uncheck()
+                          //   } else {
+                          //     sender.check()
+                          //   }
+                          //   event.stopPropagation()
+                          // },
                         },
                       },
                     },
@@ -345,9 +348,9 @@ class GridSettingTransfer extends Field {
 
   _rendered() {
     if (this.firstRender) {
-      this._onSourceCheck()
-      this._onTargetCheck()
-      this.addNodes()
+      this._setSourceCount()
+      this._setTargetCount()
+      this._initAddNodes()
     }
   }
 
@@ -399,7 +402,7 @@ class GridSettingTransfer extends Field {
     })
   }
 
-  _onSourceCheck() {
+  _setSourceCount() {
     const u = this.sourceTree.getCheckedNodeKeys().length
     const d = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes(), true).length
     this.sourceCount.update({
@@ -407,7 +410,7 @@ class GridSettingTransfer extends Field {
     })
   }
 
-  _onTargetCheck(node) {
+  _setTargetCount(node) {
     if (node && node.parentNode && node.parentNode.getChildNodes().length === 1) {
       if (node.props.checked === true) {
         node.parentNode.check({ fromChildren: true })
@@ -445,6 +448,14 @@ class GridSettingTransfer extends Field {
       const node = this.sourceTree.getNode(nodes[i])
 
       if (!node.isChecked()) {
+        // if (this.selectedKeys.includes(node.key)) {
+        //   this.selectedKeys = this.selectedKeys.filter(n => {
+        //     return n !== node.key
+        //   })
+        //   this.selectedData = this.selectedData.filter(n => {
+        //     return n[this.props.dataFields.key] !== node.props.data[this.props.dataFields.key]
+        //   })
+        // }
         continue
       }
 
@@ -458,28 +469,33 @@ class GridSettingTransfer extends Field {
         this.selectedData.push(node.props.data)
       }
 
-      // 禁用源项
 
-      let hideFlag = true
 
-      if (node.props.data.children) {
-        const cNodes = node.getChildNodes()
-        for (let x = 0; x < cNodes.length; x++) {
-          if (!cNodes[x].isChecked()) {
-            hideFlag = false
-          }
-        }
-      }
+      // // 禁用源项
 
-      if (this.props.hideOnSelect && hideFlag) {
-        this._hideNode(node)
-      }
+      // let hideFlag = true
 
-      this._disableNode(node)
+      // if (node.props.data.children) {
+      //   const cNodes = node.getChildNodes()
+      //   for (let x = 0; x < cNodes.length; x++) {
+      //     if (!cNodes[x].isChecked()) {
+      //       hideFlag = false
+      //     }
+      //   }
+      // }
+
+      // if (this.props.hideOnSelect && hideFlag) {
+      //   this._hideNode(node)
+      // }
+
+      // this._disableNode(node)
     }
+
+
   }
 
-  addNodes() {
+
+  _initAddNodes() {
     const nodes = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes())
 
     this._processChecked(nodes)
@@ -497,17 +513,17 @@ class GridSettingTransfer extends Field {
     this.targetTree.update({
       data: this.selectedData,
     })
-    this._onSourceCheck()
-    this._onTargetCheck()
+    this._setSourceCount()
+    this._setTargetCount()
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
 
-  removeNodes() {
+  removeNode() {
     const targetNodes = this.targetTree.getChildNodes()
     const nodes = this._getCheckedChildNodeKeys(
       targetNodes.filter((n) => {
         return n !== 'isFrozen' || n !== 'isFree'
-      }),
+      })
     )
     if (!nodes.length) {
       return
@@ -521,10 +537,39 @@ class GridSettingTransfer extends Field {
       return this.selectedKeys.includes(n.field)
     })
 
-    this._onSourceCheck()
-    this._onTargetCheck()
+    this._setSourceCount()
+    this._setTargetCount()
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
+
+
+  _handleCheckNode(node) {
+
+    if (node.props.checked) {
+      // 添加目标项
+      if (!this.selectedKeys.includes(node.key)) {
+        this.selectedKeys.push(node.key)
+        if (node.parentNode) {
+          node.props.data.parentKey = node.parentNode.key
+        }
+        this.selectedData.push(node.props.data)
+      }
+
+    }
+    else if (this.selectedKeys.includes(node.key)) {
+      this.selectedKeys = this.selectedKeys.filter(n => { return n !== node.key })
+      this.selectedData = this.selectedData.filter(n => { return n[this.props.dataFields.key] !== node.props.data[this.props.dataFields.key] })
+    }
+
+    this.targetTree.update({
+      data: this.selectedData,
+    })
+
+    this._setSourceCount()
+    this._setTargetCount()
+    this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
+  }
+
 
   _removeItem(nodes) {
     for (let i = 0; i < nodes.length; i++) {
@@ -568,8 +613,8 @@ class GridSettingTransfer extends Field {
     this.targetTree.update({
       data: this.selectedData,
     })
-    this._onSourceCheck()
-    this._onTargetCheck()
+    this._setSourceCount()
+    this._setTargetCount()
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
 
