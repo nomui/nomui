@@ -193,12 +193,10 @@
 
 .nom-grid-setting-transfer {
   .nom-grid-setting-transfer-container {
-    
-   
     .nom-grid-setting-transfer-box {
-      border-radius: var(--nom-border-radius);
-      border:1px solid var(--nom-border-color);
       width:240px;
+      border:1px solid var(--nom-border-color);
+      border-radius: var(--nom-border-radius);
       height: calc(100vh - 300px);
       max-height: 500px;
       .nom-tree-node-expandable-indicator {
@@ -238,15 +236,27 @@
   }
 
   .nom-grid-setting-group-title {
-    
       .nom-tree-node-content {
         >.nom-icon,>.nom-tree-node-checkbox {
           display: none;
         }
         >.nom-tree-node-content-text {
-          color:var(--nom-text-color-muted);
           padding-left: 1rem;
+          color:var(--nom-text-color-muted);
         }
       }
+  }
+
+  .nom-grid-setting-target-node {
+    .nom-tree-node-content {
+      &:not(:hover) {
+        .nom-tree-node-content-tools {
+          visibility: hidden;
+        }
+      }
+      >.nom-tree-node-content-text {
+        flex-grow: 1;
+      }
+    }
   }
 }
