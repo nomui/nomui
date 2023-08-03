@@ -130,7 +130,18 @@ class GridSettingTransfer extends Field {
                             me._handleCheckNode(sender)
                           },
                         },
+
                         nodeDefaults: {
+                          onConfig: ({ inst }) => {
+                            inst.setProps({
+                              classes: {
+                                'nom-grid-setting-target-node': false
+                              },
+                              data: {
+                                tools: null
+                              },
+                            })
+                          },
                           onClick: ({ sender, event }) => {
                             if (sender.checkboxRef.props.disabled) {
                               return
@@ -288,7 +299,7 @@ class GridSettingTransfer extends Field {
                             }
                           },
                           onEnd: function () {
-                            const keys = me._getCheckedChildNodeKeys(
+                            const keys = me._getChildNodeKeys(
                               me.targetTree.getChildNodes(),
                               true,
                             )
@@ -322,6 +333,35 @@ class GridSettingTransfer extends Field {
                                 },
                               })
                             }
+
+                            else {
+
+                              inst.setProps({
+                                classes: {
+                                  'nom-grid-setting-target-node': true
+                                },
+                                data: {
+                                  tools: ({ node }) => {
+                                    return {
+                                      component: 'Button',
+                                      type: 'text',
+                                      icon: 'times',
+                                      inline: true,
+                                      onClick: ({ event }) => {
+                                        me._handleRemoveNode(node)
+                                        event.stopPropagation()
+                                      },
+                                    }
+                                  }
+                                },
+                              })
+
+
+                            }
+
+
+
+
                           },
                           // onClick: ({ sender, event }) => {
                           //   if (sender.props.checked) {
@@ -354,22 +394,40 @@ class GridSettingTransfer extends Field {
     }
   }
 
-  _getCheckedChildNodeKeys(nodes, ignoreCheck) {
-    const checkedNodes = []
+  _getChildNodeKeys(nodes, ignoreCheck) {
+    const result = []
     nodes.forEach((node) => {
       if (ignoreCheck || node.isChecked()) {
-        checkedNodes.push(node.key)
+        result.push(node.key)
       }
 
       if (node.getChildNodes().length) {
         Array.prototype.push.apply(
-          checkedNodes,
-          this._getCheckedChildNodeKeys(node.getChildNodes(), ignoreCheck),
+          result,
+          this._getChildNodeKeys(node.getChildNodes(), ignoreCheck),
         )
       }
     })
 
-    return checkedNodes
+    return result
+  }
+
+  _getChildNodes(nodes, ignoreCheck) {
+    const result = []
+    nodes.forEach((node) => {
+      if (ignoreCheck || node.isChecked()) {
+        result.push(node)
+      }
+
+      if (node.getChildNodes().length) {
+        Array.prototype.push.apply(
+          result,
+          this._getChildNodes(node.getChildNodes(), ignoreCheck),
+        )
+      }
+    })
+
+    return result
   }
 
   _showParent(node) {
@@ -404,7 +462,7 @@ class GridSettingTransfer extends Field {
 
   _setSourceCount() {
     const u = this.sourceTree.getCheckedNodeKeys().length
-    const d = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes(), true).length
+    const d = this._getChildNodeKeys(this.sourceTree.getChildNodes(), true).length
     this.sourceCount.update({
       children: `${u}/${d}项`,
     })
@@ -419,7 +477,7 @@ class GridSettingTransfer extends Field {
       }
     }
 
-    const d = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true).length - 2
+    const d = this._getChildNodeKeys(this.targetTree.getChildNodes(), true).length - 2
     this.targetCount.update({
       children: `${d}`,
     })
@@ -435,27 +493,11 @@ class GridSettingTransfer extends Field {
     node.props.disabled = false
   }
 
-  _hideNode(node) {
-    node.element.classList.add('s-hidden')
-  }
-
-  _showNode(node) {
-    node.element.classList.remove('s-hidden')
-  }
-
   _processChecked(nodes) {
     for (let i = 0; i < nodes.length; i++) {
       const node = this.sourceTree.getNode(nodes[i])
 
       if (!node.isChecked()) {
-        // if (this.selectedKeys.includes(node.key)) {
-        //   this.selectedKeys = this.selectedKeys.filter(n => {
-        //     return n !== node.key
-        //   })
-        //   this.selectedData = this.selectedData.filter(n => {
-        //     return n[this.props.dataFields.key] !== node.props.data[this.props.dataFields.key]
-        //   })
-        // }
         continue
       }
 
@@ -470,25 +512,6 @@ class GridSettingTransfer extends Field {
       }
 
 
-
-      // // 禁用源项
-
-      // let hideFlag = true
-
-      // if (node.props.data.children) {
-      //   const cNodes = node.getChildNodes()
-      //   for (let x = 0; x < cNodes.length; x++) {
-      //     if (!cNodes[x].isChecked()) {
-      //       hideFlag = false
-      //     }
-      //   }
-      // }
-
-      // if (this.props.hideOnSelect && hideFlag) {
-      //   this._hideNode(node)
-      // }
-
-      // this._disableNode(node)
     }
 
 
@@ -496,7 +519,7 @@ class GridSettingTransfer extends Field {
 
 
   _initAddNodes() {
-    const nodes = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes())
+    const nodes = this._getChildNodeKeys(this.sourceTree.getChildNodes())
 
     this._processChecked(nodes)
 
@@ -520,7 +543,7 @@ class GridSettingTransfer extends Field {
 
   removeNode() {
     const targetNodes = this.targetTree.getChildNodes()
-    const nodes = this._getCheckedChildNodeKeys(
+    const nodes = this._getChildNodeKeys(
       targetNodes.filter((n) => {
         return n !== 'isFrozen' || n !== 'isFree'
       })
@@ -529,13 +552,10 @@ class GridSettingTransfer extends Field {
       return
     }
 
-    this.selectedKeys = this._getCheckedChildNodeKeys(targetNodes, true)
+    this.selectedKeys = this._getChildNodeKeys(targetNodes, true)
 
     this._removeItem(nodes)
 
-    this.selectedData = this.selectedData.filter((n) => {
-      return this.selectedKeys.includes(n.field)
-    })
 
     this._setSourceCount()
     this._setTargetCount()
@@ -547,18 +567,11 @@ class GridSettingTransfer extends Field {
 
     if (node.props.checked) {
       // 添加目标项
-      if (!this.selectedKeys.includes(node.key)) {
-        this.selectedKeys.push(node.key)
-        if (node.parentNode) {
-          node.props.data.parentKey = node.parentNode.key
-        }
-        this.selectedData.push(node.props.data)
-      }
+      this._addChildNodes(node)
 
     }
-    else if (this.selectedKeys.includes(node.key)) {
-      this.selectedKeys = this.selectedKeys.filter(n => { return n !== node.key })
-      this.selectedData = this.selectedData.filter(n => { return n[this.props.dataFields.key] !== node.props.data[this.props.dataFields.key] })
+    else {
+      this._removeChildNodes(node)
     }
 
     this.targetTree.update({
@@ -570,6 +583,51 @@ class GridSettingTransfer extends Field {
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
 
+  _handleRemoveNode(node) {
+    const keys = this._getChildNodeKeys([node], true)
+    this._uncheckItem(keys)
+
+    this._removeItem(keys)
+
+  }
+
+  _addChildNodes(node) {
+
+    const nodes = this._getChildNodes([node])
+
+    nodes.forEach(n => {
+      if (!this.selectedKeys.includes(n.key)) {
+        this.selectedKeys.push(n.key)
+        if (n.parentNode) {
+          n.props.data.parentKey = n.parentNode.key
+        }
+        this.selectedData.push(n.props.data)
+      }
+
+    })
+
+    this.targetTree.update({ data: this.selectedData })
+
+  }
+
+  _removeChildNodes(node) {
+    if (!this.selectedKeys.includes(node.key)) {
+      return
+    }
+    const keys = this._getChildNodeKeys([node], true)
+    this._removeItem(keys)
+
+  }
+
+  _uncheckItem(nodes) {
+    for (let i = 0; i < nodes.length; i++) {
+      const nodeKey = nodes[i]
+      if (this.sourceTree.getNode(nodeKey)) {
+        this.sourceTree.getNode(nodeKey).uncheck()
+      }
+    }
+
+  }
 
   _removeItem(nodes) {
     for (let i = 0; i < nodes.length; i++) {
@@ -577,19 +635,16 @@ class GridSettingTransfer extends Field {
       this.selectedKeys = this.selectedKeys.filter((n) => {
         return n !== nodeKey
       })
-
-      const sourceItem = this.sourceTree.getNode(nodeKey)
-
-      if (this.props.hideOnSelect) {
-        this._showNode(sourceItem)
-      }
-      this._enableNode(sourceItem)
-      sourceItem.uncheck()
-
       if (this.targetTree.getNode(nodeKey) && this.targetTree.getNode(nodeKey).props) {
         this.targetTree.getNode(nodeKey).remove()
       }
     }
+
+    this.selectedData = this.selectedData.filter((n) => {
+      return this.selectedKeys.includes(n.field) || n.isDivider === true
+    })
+
+
   }
 
   checkAll() {
@@ -619,7 +674,7 @@ class GridSettingTransfer extends Field {
   }
 
   getValue() {
-    const keys = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true)
+    const keys = this._getChildNodeKeys(this.targetTree.getChildNodes(), true)
     if (!keys || !keys.length) {
       return null
     }
@@ -664,7 +719,6 @@ class GridSettingTransfer extends Field {
 GridSettingTransfer.defaults = {
   data: [],
   value: null,
-  hideOnSelect: false,
   itemRender: null,
   showSearch: true,
   frozenCount: null,
