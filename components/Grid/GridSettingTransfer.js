@@ -9,6 +9,7 @@ class GridSettingTransfer extends Field {
 
   _created() {
     super._created()
+    this.warningFunc = null
     this.selectedKeys = []
     this.selectedData = [
       { title: '已冻结', field: 'isFrozen', isDivider: true },
@@ -247,30 +248,52 @@ class GridSettingTransfer extends Field {
                         sortable: {
                           filter: '.nom-grid-setting-group-title',
                           onMove: function (evt) {
-                            if (evt.dragged.querySelector('.nom-tree-nodes')) {
-                              const toKey = evt.related.component.key
-                              const siblings = evt.dragged.parentNode.childNodes
-                              let idx = 0
-                              let dividerIdx = 0
-                              siblings.forEach((n, i) => {
-                                if (n.component.key === toKey) {
-                                  idx = i
-                                }
-
-                                if (n.component.key === 'isFree') {
-                                  dividerIdx = i
-                                }
-                              })
-
-                              if (idx <= dividerIdx) {
-                                return false
+                            me.warningFunc = null
+                            const toKey = evt.related.component.key
+                            const siblings = evt.dragged.parentNode.childNodes
+                            let idx = 0
+                            let dividerIdx = 0
+                            siblings.forEach((n, i) => {
+                              if (n.component.key === toKey) {
+                                idx = i
                               }
+
+                              if (n.component.key === 'isFree') {
+                                dividerIdx = i
+                              }
+                            })
+
+
+                            if (dividerIdx > me.props.frozenLimit) {
+                              me.warningFunc = () => {
+                                new nomui.Message({
+                                  content: `最多只能冻结${me.props.frozenLimit}项`,
+                                  type: 'warning',
+                                })
+                              }
+
+                              return false
                             }
+
+
+                            if (evt.dragged.querySelector('.nom-tree-nodes') && idx <= dividerIdx) {
+                              me.warningFunc = () => {
+                                new nomui.Message({
+                                  content: '不支持冻结群组',
+                                  type: 'warning',
+                                })
+                              }
+                              return false
+                            }
+
+
+
                             if (evt.related.innerHTML.includes('已冻结')) {
                               return 1
                             }
                           },
                           onEnd: function () {
+
                             const keys = me._getChildNodeKeys(
                               me.targetTree.getChildNodes(),
                               true,
@@ -279,6 +302,7 @@ class GridSettingTransfer extends Field {
                               const { children, ...obj } = me.targetTree.getNode(n).props.data
                               return obj
                             })
+                            me.warningFunc && me.warningFunc()
                           },
                         },
                         expandable: {
@@ -438,17 +462,6 @@ class GridSettingTransfer extends Field {
   }
 
 
-
-  _disableNode(node) {
-    node.checkboxRef.disable()
-    node.props.disabled = true
-  }
-
-  _enableNode(node) {
-    node.checkboxRef.enable()
-    node.props.disabled = false
-  }
-
   _processChecked(nodes) {
     for (let i = 0; i < nodes.length; i++) {
       const node = this.sourceTree.getNode(nodes[i])
@@ -466,11 +479,7 @@ class GridSettingTransfer extends Field {
 
         this.selectedData.push(node.props.data)
       }
-
-
     }
-
-
   }
 
 
@@ -497,38 +506,18 @@ class GridSettingTransfer extends Field {
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
 
-  removeNode() {
-    const targetNodes = this.targetTree.getChildNodes()
-    const nodes = this._getChildNodeKeys(
-      targetNodes.filter((n) => {
-        return n !== 'isFrozen' || n !== 'isFree'
-      })
-    )
-    if (!nodes.length) {
-      return
-    }
-
-    this.selectedKeys = this._getChildNodeKeys(targetNodes, true)
-
-    this._removeItem(nodes)
-
-
-    this._setSourceCount()
-
-    this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
-  }
 
 
   _handleCheckNode(node) {
 
     if (node.props.checked === true) {
-      this._addChildNodes(node)
+      this._cascadeAddNodes(node)
 
     }
     else if (node.props.checked === false) {
 
 
-      this._removeChildNodes(node)
+      this._cascadeRemoveNodes(node)
     }
 
     this.targetTree.update({
@@ -551,7 +540,7 @@ class GridSettingTransfer extends Field {
 
   }
 
-  _addChildNodes() {
+  _cascadeAddNodes() {
 
     const tmp = this.sourceTree.getCheckedNodeKeys()
     const arr = []
@@ -576,7 +565,7 @@ class GridSettingTransfer extends Field {
 
   }
 
-  _removeChildNodes() {
+  _cascadeRemoveNodes() {
 
     const tmp = this.sourceTree.getCheckedNodeKeys()
     const arr = []
@@ -622,9 +611,6 @@ class GridSettingTransfer extends Field {
     this._initAddNodes()
   }
 
-  uncheckAll() {
-    this.sourceTree.uncheckAllNodes({ ignoreDisabled: true })
-  }
 
   clear() {
     this.checkAllBtn.update({

@@ -1336,7 +1336,7 @@ Grid.defaults = {
 
   columnFrozenable: false, // 允许固定列
   // columnFrozenable.cache: boolean 固定列的结果保存至localstorage
-
+  frozenLimit: 1, // 最大允许固定左侧列数目
   striped: false,
   showTitle: false,
   ellipsis: false,
