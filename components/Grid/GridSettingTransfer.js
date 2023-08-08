@@ -319,7 +319,6 @@ class GridSettingTransfer extends Field {
                                 classes: {
                                   'nom-grid-setting-group-title': true,
                                 },
-                                tooltip: inst.props.data.field === 'isFrozen' ? '不支持冻结多级表头' : null
                               })
                             }
 
