@@ -22,7 +22,7 @@ class GridSettingPopup extends Modal {
 
   _config() {
     const that = this
-
+    const rowCheckerCount = that.grid.props.rowCheckable ? 1 : 0
     this.setProps({
       classes: {
         'nom-grid-setting-panel': true,
@@ -44,7 +44,7 @@ class GridSettingPopup extends Modal {
             },
             frozenLimit: that.grid.props.frozenLimit,
             value: this.grid.getMappedColumns(this.grid.props.columns),
-            frozenCount: that.grid.props.frozenLeftCols,
+            frozenCount: that.grid.props.frozenLeftCols - rowCheckerCount,
             data: that.customizableColumns(that.grid.popupTreeData),
           },
         },

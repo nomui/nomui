@@ -738,10 +738,10 @@ class Grid extends Component {
     if (this._gridColumsStoreKey) {
       localStorage.setItem(this._gridColumsStoreKey, JSON.stringify(this.getMappedColumns(tree)))
     }
-
+    const rowCheckerCount = this.props.rowCheckable ? 1 : 0
     this._customColumnFlag = false
     this._processPinColumnFromSetting(tree)
-    this.setProps({ columns: tree, frozenLeftCols: frozenCount })
+    this.setProps({ columns: tree, frozenLeftCols: frozenCount + rowCheckerCount })
     this._processColumns()
     this._calcMinWidth()
     this.render()
