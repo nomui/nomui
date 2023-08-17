@@ -9,12 +9,13 @@ class GridSettingTransfer extends Field {
 
   _created() {
     super._created()
+
     this.warningFunc = null
     this.selectedKeys = []
-    this.selectedData = [
+    this.selectedData = this.props.allowFrozenCols ? [
       { title: '已冻结', field: 'isFrozen', isDivider: true },
       { title: '未冻结', field: 'isFree', isDivider: true },
-    ]
+    ] : []
   }
 
   _config() {
@@ -29,6 +30,7 @@ class GridSettingTransfer extends Field {
         initKeys = value
       }
     }
+
 
     this.setProps({
       control: {
@@ -248,6 +250,9 @@ class GridSettingTransfer extends Field {
                         sortable: {
                           filter: '.nom-grid-setting-group-title',
                           onMove: function (evt) {
+                            if (!me.props.allowFrozenCols) {
+                              return
+                            }
                             me.warningFunc = null
                             const toKey = evt.related.component.key
                             const siblings = evt.dragged.parentNode.childNodes
@@ -289,6 +294,7 @@ class GridSettingTransfer extends Field {
 
 
                             if (evt.related.innerHTML.includes('已冻结')) {
+
                               return 1
                             }
                           },
@@ -483,11 +489,14 @@ class GridSettingTransfer extends Field {
 
 
   _initAddNodes() {
+
     const nodes = this._getChildNodeKeys(this.sourceTree.getChildNodes())
 
     this._processChecked(nodes)
 
-    if (this.props.frozenCount) {
+
+    if (this.props.allowFrozenCols && this.props.frozenCount > 0) {
+
       this.selectedData = this.selectedData.filter((n) => {
         return n.field !== 'isFree'
       })
@@ -616,10 +625,10 @@ class GridSettingTransfer extends Field {
       text: '全选',
     })
     this.sourceTree.update({ data: this.props.data, nodeCheckable: { checkedNodeKeys: [] } })
-    this.selectedData = [
+    this.selectedData = this.props.allowFrozenCols ? [
       { title: '已冻结', field: 'isFrozen', isDivider: true },
       { title: '未冻结', field: 'isFree', isDivider: true },
-    ]
+    ] : []
     this.selectedKeys = []
     this.targetTree.update({
       data: this.selectedData,

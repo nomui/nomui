@@ -42,6 +42,7 @@ class GridSettingPopup extends Modal {
             ref: (c) => {
               that.transferRef = c
             },
+            allowFrozenCols: that.grid.props.allowFrozenCols,
             frozenLimit: that.grid.props.frozenLimit,
             value: this.grid.getMappedColumns(this.grid.props.columns),
             frozenCount: that.grid.props.frozenLeftCols - rowCheckerCount,

@@ -741,7 +741,13 @@ class Grid extends Component {
     const rowCheckerCount = this.props.rowCheckable ? 1 : 0
     this._customColumnFlag = false
     this._processPinColumnFromSetting(tree)
-    this.setProps({ columns: tree, frozenLeftCols: frozenCount + rowCheckerCount })
+    this.setProps({ columns: tree })
+    if (this.props.allowFrozenCols) {
+      this.setProps({
+        frozenLeftCols: frozenCount < 1 ? 0 : frozenCount + rowCheckerCount
+      })
+    }
+
     this._processColumns()
     this._calcMinWidth()
     this.render()
@@ -1214,6 +1220,16 @@ class Grid extends Component {
   }
 
   handlePinClick(data) {
+
+    if (this.pinColumns.length >= this.props.frozenLimit && !data.fixed) {
+      new nomui.Message({
+        content: `最多只能冻结${this.props.frozenLimit}项`,
+        type: 'warning',
+      })
+      return
+    }
+
+
     // 取消初始化固定列时(无缓存配置时)
     if (data.fixed && this.pinColumns.length < 1) {
       let num = this.props.frozenLeftCols
@@ -1305,7 +1321,8 @@ Grid.defaults = {
   frozenHeader: false,
   frozenLeftCols: null,
   frozenRightCols: null,
-  allowFrozenCols: false,
+  allowFrozenCols: true,
+  frozenLimit: 5, // 最大允许固定左侧列数目
   onSort: null,
   forceSort: false,
   sortCacheable: false,
@@ -1336,7 +1353,7 @@ Grid.defaults = {
 
   columnFrozenable: false, // 允许固定列
   // columnFrozenable.cache: boolean 固定列的结果保存至localstorage
-  frozenLimit: 5, // 最大允许固定左侧列数目
+
   striped: false,
   showTitle: false,
   ellipsis: false,

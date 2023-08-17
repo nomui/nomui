@@ -9,6 +9,7 @@ define([], function () {
             component: 'Grid',
             bordered: true,
             line: 'both',
+            allowFrozenCols: true,
             columns: [
               {
                 field: 'name',
@@ -42,7 +43,6 @@ define([], function () {
             frozenHeader: true,
             frozenLeftCols: 1,
             frozenRightCols: 0,
-            // allowFrozenCols: true,
             columnsCustomizable: true,
             attrs: {
               style: {
