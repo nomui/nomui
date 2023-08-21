@@ -11551,7 +11551,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         _created: (inst) => {
           this.node.checkboxRef = inst;
         },
-        value: this.tree.checkedNodeKeysHash[this.node.key] === true,
+        onClick: ({ event }) => {
+          event.stopPropagation();
+        },
+        value:
+          this.node.props.checked === true ||
+          this.tree.checkedNodeKeysHash[this.node.key] === true,
         onValueChange: ({ newValue }) => {
           if (newValue === true) {
             this.node.check({ checkCheckbox: false });
@@ -11609,7 +11614,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
       if (this.tree.props.nodeCheckable) {
         this.setProps({
-          checked: this.tree.checkedNodeKeysHash[this.key] === true,
+          checked: this.firstRender
+            ? this.tree.checkedNodeKeysHash[this.key] === true
+            : this.props.checked === true ||
+              this.tree.checkedNodeKeysHash[this.key] === true,
         });
       }
     }
@@ -11769,6 +11777,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     unselect() {
       this.content.unselect();
     }
+    disable() {
+      this.update({ data: { disabled: true } });
+    }
+    enable() {
+      this.update({ data: { disabled: false } });
+    }
+    hide() {
+      this.update({ data: { hidden: true } });
+    }
+    show() {
+      this.update({ data: { hidden: false } });
+    }
   }
   TreeNode.defaults = { nodes: null, data: { hidden: false } };
   Component.register(TreeNode);
@@ -11824,18 +11844,36 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       const { sortable } = this.tree.props;
       if (sortable !== false) {
-        new Sortable(this.element, {
-          group: this.key,
-          animation: 150,
-          fallbackOnBody: true,
-          swapThreshold: 0.65,
-          handle:
-            this.tree.props.sortable &&
-            this.tree.props.sortable.showHandler &&
-            this.tree.props.sortable.byHandler
-              ? ".nom-tree-drag-handler"
-              : null,
-        });
+        const options = isPlainObject(sortable)
+          ? Object.assign(
+              {},
+              {
+                group: this.key,
+                animation: 150,
+                fallbackOnBody: true,
+                swapThreshold: 0.65,
+                handle:
+                  this.tree.props.sortable &&
+                  this.tree.props.sortable.showHandler &&
+                  this.tree.props.sortable.byHandler
+                    ? ".nom-tree-drag-handler"
+                    : null,
+              },
+              sortable
+            )
+          : {
+              group: this.key,
+              animation: 150,
+              fallbackOnBody: true,
+              swapThreshold: 0.65,
+              handle:
+                this.tree.props.sortable &&
+                this.tree.props.sortable.showHandler &&
+                this.tree.props.sortable.byHandler
+                  ? ".nom-tree-drag-handler"
+                  : null,
+            };
+        new Sortable(this.element, options);
       }
     }
     iterateNodes() {}
@@ -16656,6 +16694,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
         that.table.hasGrid &&
           that.table.grid.props.allowFrozenCols &&
+          that.table.grid.props.allowFrozenCols.showPinner &&
           !this.table.hasMultipleThead &&
           !(this.props.column.width && this.props.column.width > 600) &&
           !this.props.column.isChecker &&
@@ -17514,18 +17553,618 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
   }
   Component.register(GridHeader);
+  class GridSettingTransfer extends Field {
+    constructor(props, ...mixins) {
+      super(
+        Component.extendProps(GridSettingTransfer.defaults, props),
+        ...mixins
+      );
+    }
+    _created() {
+      super._created();
+      this.warningFunc = null;
+      this.selectedKeys = [];
+      this.selectedData = this.props.allowFrozenCols
+        ? [
+            { title: "已冻结", field: "isFrozen", isDivider: true },
+            { title: "未冻结", field: "isFree", isDivider: true },
+          ]
+        : [];
+    }
+    _config() {
+      const me = this;
+      const { data, dataFields, value, showSearch } = this.props;
+      let initKeys = [];
+      if (this.props.value) {
+        if (isString(value)) {
+          initKeys = [value];
+        } else {
+          initKeys = value;
+        }
+      }
+      this.setProps({
+        control: {
+          children: {
+            component: "Flex",
+            classes: { "nom-grid-setting-transfer-container": true },
+            align: "center",
+            gutter: "large",
+            cols: [
+              {
+                children: {
+                  component: "Layout",
+                  classes: { "nom-grid-setting-transfer-box": true },
+                  header: {
+                    children: {
+                      component: "Flex",
+                      align: "center",
+                      fit: true,
+                      cols: [
+                        {
+                          grow: true,
+                          children: {
+                            component: "Button",
+                            text: "全选",
+                            size: "small",
+                            ref: (c) => {
+                              me.checkAllBtn = c;
+                            },
+                            type: "link",
+                            onClick: ({ sender }) => {
+                              if (sender.props.text === "全选") {
+                                sender.update({ text: "清空" });
+                                me.checkAll();
+                              } else {
+                                sender.update({ text: "全选" });
+                                me.clear();
+                              }
+                            },
+                          },
+                        },
+                        {
+                          ref: (c) => {
+                            me.sourceCount = c;
+                          },
+                          children: "",
+                        },
+                      ],
+                    },
+                  },
+                  body: {
+                    children: {
+                      component: "Layout",
+                      header: showSearch
+                        ? {
+                            _created: function () {
+                              me.sourceSearchContainer = this;
+                            },
+                            children: {
+                              component: "Textbox",
+                              allowClear: true,
+                              _created: function () {
+                                me.sourceSearch = this;
+                              },
+                              placeholder: "搜索所有列",
+                              onValueChange: debounce(({ newValue }) => {
+                                me._onSourceSearch(newValue);
+                              }, 1000),
+                            },
+                          }
+                        : false,
+                      body: {
+                        children: {
+                          component: "Tree",
+                          _created: function () {
+                            me.sourceTree = this;
+                          },
+                          data: data,
+                          dataFields: dataFields,
+                          nodeSelectable: false,
+                          expandable: { byIndicator: true },
+                          nodeCheckable: {
+                            cascade: true,
+                            checkedNodeKeys: initKeys,
+                            onCheckChange: ({ sender }) => {
+                              me._setSourceCount();
+                              me._handleCheckNode(sender);
+                            },
+                          },
+                          nodeDefaults: {
+                            onConfig: ({ inst }) => {
+                              inst.setProps({
+                                classes: {
+                                  "nom-grid-setting-target-node": false,
+                                },
+                                data: { tools: null },
+                              });
+                            },
+                            onClick: ({ sender, event }) => {
+                              if (sender.checkboxRef.props.disabled) {
+                                return;
+                              }
+                              if (sender.props.checked) {
+                                sender.uncheck();
+                              } else {
+                                sender.check();
+                              }
+                              event.stopPropagation();
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  footer:
+                    this.props.pagination || this.props.footerRender
+                      ? {
+                          children: this.props.footerRender
+                            ? this.props.footerRender()
+                            : {
+                                component: "Flex",
+                                fit: true,
+                                align: "center",
+                                justify: "end",
+                                cols: [
+                                  {
+                                    children: {
+                                      component: "Pager",
+                                      itemsSort: ["pages"],
+                                      totalCount: 50,
+                                      simple: true,
+                                      pageIndex: 1,
+                                      pageSize: 20,
+                                    },
+                                  },
+                                ],
+                              },
+                        }
+                      : false,
+                },
+              },
+              {
+                children: {
+                  component: "Layout",
+                  classes: { "nom-grid-setting-transfer-box": true },
+                  header: {
+                    children: {
+                      component: "Flex",
+                      align: "center",
+                      fit: true,
+                      cols: [
+                        {
+                          grow: true,
+                          children: {
+                            component: "List",
+                            items: [{ children: "已显示列（拖动可进行排序）" }],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  body: {
+                    children: {
+                      component: "Layout",
+                      header: showSearch
+                        ? {
+                            _created: function () {
+                              me.targetSearchContainer = this;
+                            },
+                            children: {
+                              component: "Textbox",
+                              allowClear: true,
+                              _created: function () {
+                                me.targetSearch = this;
+                              },
+                              placeholder: "搜索已添加列",
+                              onValueChange: debounce(({ newValue }) => {
+                                me._onTargetSearch(newValue);
+                              }, 1000),
+                            },
+                          }
+                        : false,
+                      body: {
+                        children: {
+                          component: "Tree",
+                          _created: function () {
+                            me.targetTree = this;
+                          },
+                          data: [],
+                          flatData: me.props.displayAsTree,
+                          dataFields: Object.assign({}, dataFields),
+                          nodeSelectable: false,
+                          sortable: {
+                            filter: ".nom-grid-setting-group-title",
+                            onMove: function (evt) {
+                              if (!me.props.allowFrozenCols) {
+                                return;
+                              }
+                              me.warningFunc = null;
+                              const toKey = evt.related.component.key;
+                              const siblings =
+                                evt.dragged.parentNode.childNodes;
+                              let idx = 0;
+                              let dividerIdx = 0;
+                              siblings.forEach((n, i) => {
+                                if (n.component.key === toKey) {
+                                  idx = i;
+                                }
+                                if (n.component.key === "isFree") {
+                                  dividerIdx = i;
+                                }
+                              });
+                              if (dividerIdx > me.props.frozenLimit) {
+                                me.warningFunc = () => {
+                                  new nomui.Message({
+                                    content: `最多只能冻结${me.props.frozenLimit}项`,
+                                    type: "warning",
+                                  });
+                                };
+                                return false;
+                              }
+                              if (
+                                evt.dragged.querySelector(".nom-tree-nodes") &&
+                                idx <= dividerIdx
+                              ) {
+                                me.warningFunc = () => {
+                                  new nomui.Message({
+                                    content: "不支持冻结群组",
+                                    type: "warning",
+                                  });
+                                };
+                                return false;
+                              }
+                              if (evt.related.innerHTML.includes("已冻结")) {
+                                return 1;
+                              }
+                            },
+                            onEnd: function () {
+                              const keys = me._getChildNodeKeys(
+                                me.targetTree.getChildNodes(),
+                                true
+                              );
+                              me.selectedData = keys.map((n) => {
+                                const _me$targetTree$getNod = me.targetTree.getNode(
+                                    n
+                                  ).props.data,
+                                  obj = _objectWithoutPropertiesLoose2(
+                                    _me$targetTree$getNod,
+                                    ["children"]
+                                  );
+                                return obj;
+                              });
+                              me.warningFunc && me.warningFunc();
+                            },
+                          },
+                          expandable: { byIndicator: true },
+                          nodeCheckable: false,
+                          nodeDefaults: {
+                            onConfig: ({ inst }) => {
+                              if (inst.props.data.isDivider) {
+                                inst.setProps({
+                                  disabled: true,
+                                  classes: {
+                                    "nom-grid-setting-group-title": true,
+                                  },
+                                });
+                              } else {
+                                inst.setProps({
+                                  classes: {
+                                    "nom-grid-setting-target-node": true,
+                                  },
+                                  data: {
+                                    tools: ({ node }) => {
+                                      return {
+                                        component: "Button",
+                                        type: "text",
+                                        icon: "times",
+                                        inline: true,
+                                        onClick: ({ event }) => {
+                                          me._handleRemoveNode(node);
+                                          event.stopPropagation();
+                                        },
+                                      };
+                                    },
+                                  },
+                                });
+                              }
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+      });
+      super._config();
+    }
+    _rendered() {
+      if (this.firstRender) {
+        this._setSourceCount();
+        this._initAddNodes();
+      }
+    }
+    _getChildNodeKeys(nodes, ignoreCheck) {
+      const result = [];
+      nodes.forEach((node) => {
+        if (ignoreCheck || node.isChecked()) {
+          result.push(node.key);
+        }
+        if (node.getChildNodes().length) {
+          Array.prototype.push.apply(
+            result,
+            this._getChildNodeKeys(node.getChildNodes(), ignoreCheck)
+          );
+        }
+      });
+      return result;
+    }
+    _getChildNodes(nodes, ignoreCheck) {
+      const result = [];
+      nodes.forEach((node) => {
+        if (ignoreCheck || node.isChecked()) {
+          result.push(node);
+        }
+        if (node.getChildNodes().length) {
+          Array.prototype.push.apply(
+            result,
+            this._getChildNodes(node.getChildNodes(), ignoreCheck)
+          );
+        }
+      });
+      return result;
+    }
+    _showParent(node) {
+      const p = node.parentNode.parentNode;
+      if (p.classList.contains("nom-tree-node")) {
+        p.classList.remove("s-hidden");
+        this._showParent(p);
+      }
+    }
+    _onSourceSearch(val) {
+      this.sourceTree.element
+        .querySelectorAll(".nom-tree-node")
+        .forEach((n) => {
+          if (
+            !val ||
+            n
+              .querySelector(".nom-tree-node-content-text")
+              .innerHTML.includes(val)
+          ) {
+            n.classList.remove("s-hidden");
+            this._showParent(n);
+          } else {
+            n.classList.add("s-hidden");
+          }
+        });
+    }
+    _onTargetSearch(val) {
+      this.targetTree.element
+        .querySelectorAll(".nom-tree-node")
+        .forEach((n) => {
+          if (
+            !val ||
+            n
+              .querySelector(".nom-tree-node-content-text")
+              .innerHTML.includes(val)
+          ) {
+            n.classList.remove("s-hidden");
+            this._showParent(n);
+          } else {
+            n.classList.add("s-hidden");
+          }
+        });
+    }
+    _setSourceCount() {
+      const u = this.sourceTree.getCheckedNodeKeys().length;
+      const d = this._getChildNodeKeys(this.sourceTree.getChildNodes(), true)
+        .length;
+      this.sourceCount.update({ children: `${u}/${d}项` });
+      if (u === d) {
+        this.checkAllBtn.update({ text: "清空" });
+      } else {
+        this.checkAllBtn.update({ text: "全选" });
+      }
+    }
+    _processChecked(nodes) {
+      for (let i = 0; i < nodes.length; i++) {
+        const node = this.sourceTree.getNode(nodes[i]);
+        if (!node.isChecked()) {
+          continue;
+        } // 添加目标项
+        if (
+          !node.props.data.disabled &&
+          !this.selectedKeys.includes(node.key)
+        ) {
+          this.selectedKeys.push(node.key);
+          if (node.parentNode) {
+            node.props.data.parentKey = node.parentNode.key;
+          }
+          this.selectedData.push(node.props.data);
+        }
+      }
+    }
+    _initAddNodes() {
+      const nodes = this._getChildNodeKeys(this.sourceTree.getChildNodes());
+      this._processChecked(nodes);
+      if (this.props.allowFrozenCols && this.props.frozenCount > 0) {
+        this.selectedData = this.selectedData.filter((n) => {
+          return n.field !== "isFree";
+        });
+        this.selectedData.splice(this.props.frozenCount + 1, 0, {
+          title: "未冻结",
+          field: "isFree",
+          isDivider: true,
+        });
+      }
+      this.targetTree.update({ data: this.selectedData });
+      this._setSourceCount();
+      this.props.onChange &&
+        this._callHandler(this.props.onChange, { newValue: this.getValue() });
+    }
+    _handleCheckNode(node) {
+      if (node.props.checked === true) {
+        this._cascadeAddNodes(node);
+      } else if (node.props.checked === false) {
+        this._cascadeRemoveNodes(node);
+      }
+      this.targetTree.update({ data: this.selectedData });
+      this._setSourceCount();
+      this.props.onChange &&
+        this._callHandler(this.props.onChange, { newValue: this.getValue() });
+    }
+    _handleRemoveNode(node) {
+      const keys = this._getChildNodeKeys([node], true);
+      this.checkAllBtn.update({ text: "全选" });
+      this._uncheckItem(keys);
+      this._removeItem(keys);
+    }
+    _cascadeAddNodes() {
+      const tmp = this.sourceTree.getCheckedNodeKeys();
+      const arr = [];
+      tmp.forEach((n) => {
+        if (!this.selectedKeys.includes(n)) {
+          arr.push(n);
+        }
+      });
+      arr.forEach((n) => {
+        this.selectedKeys.push(n);
+        const node = this.sourceTree.getNode(n);
+        if (node.parentNode) {
+          node.props.data.parentKey = node.parentNode.key;
+        }
+        this.selectedData.push(node.props.data);
+      });
+      this.targetTree.update({ data: this.selectedData });
+    }
+    _cascadeRemoveNodes() {
+      const tmp = this.sourceTree.getCheckedNodeKeys();
+      const arr = [];
+      this.selectedKeys.forEach((n) => {
+        if (!tmp.includes(n)) {
+          arr.push(n);
+        }
+      });
+      this._removeItem(arr);
+    }
+    _uncheckItem(nodes) {
+      for (let i = 0; i < nodes.length; i++) {
+        const nodeKey = nodes[i];
+        if (this.sourceTree.getNode(nodeKey)) {
+          this.sourceTree.getNode(nodeKey).uncheck();
+        }
+      }
+    }
+    _removeItem(nodes) {
+      for (let i = 0; i < nodes.length; i++) {
+        const nodeKey = nodes[i];
+        this.selectedKeys = this.selectedKeys.filter((n) => {
+          return n !== nodeKey;
+        });
+        if (
+          this.targetTree.getNode(nodeKey) &&
+          this.targetTree.getNode(nodeKey).props
+        ) {
+          this.targetTree.getNode(nodeKey).remove();
+        }
+      }
+      this.selectedData = this.selectedData.filter((n) => {
+        return this.selectedKeys.includes(n.field) || n.isDivider === true;
+      });
+    }
+    checkAll() {
+      this.sourceTree.checkAllNodes();
+      this._initAddNodes();
+    }
+    clear() {
+      this.checkAllBtn.update({ text: "全选" });
+      this.sourceTree.update({
+        data: this.props.data,
+        nodeCheckable: { checkedNodeKeys: [] },
+      });
+      this.selectedData = this.props.allowFrozenCols
+        ? [
+            { title: "已冻结", field: "isFrozen", isDivider: true },
+            { title: "未冻结", field: "isFree", isDivider: true },
+          ]
+        : [];
+      this.selectedKeys = [];
+      this.targetTree.update({ data: this.selectedData });
+      this._setSourceCount();
+      this.props.onChange &&
+        this._callHandler(this.props.onChange, { newValue: this.getValue() });
+    }
+    getValue() {
+      const keys = this._getChildNodeKeys(
+        this.targetTree.getChildNodes(),
+        true
+      );
+      if (!keys || !keys.length) {
+        return null;
+      }
+      return keys;
+    }
+    getData() {
+      return this.sourceTree.getData();
+    }
+    getFrozenCount() {
+      let num = 0;
+      this.targetTree.getData().forEach((n, i) => {
+        if (n.field === "isFree") {
+          num = i - 1;
+        }
+      });
+      return num;
+    }
+    getSelectedData() {
+      function mapTree(arr) {
+        return arr.map((n) => {
+          const obj = n.props.data;
+          const c = n.getChildNodes();
+          if (c.length) {
+            obj.children = mapTree(c);
+          }
+          return obj;
+        });
+      }
+      const data = mapTree(this.targetTree.getChildNodes()).filter((n) => {
+        return n.isDivider !== true;
+      });
+      return data;
+    }
+  }
+  GridSettingTransfer.defaults = {
+    data: [],
+    value: null,
+    itemRender: null,
+    showSearch: true,
+    frozenCount: null,
+    displayAsTree: true,
+    dataFields: {
+      key: "field",
+      text: "title",
+      children: "children",
+      parentKey: "parentKey",
+    },
+  };
+  Component.register(GridSettingTransfer);
   class GridSettingPopup extends Modal {
     constructor(props, ...mixins) {
-      const defaults = {};
+      const defaults = { size: { width: 545 } };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
       super._created();
       this.grid = this.props.grid;
       this.tree = null;
+      this.tempArr = [];
     }
     _config() {
       const that = this;
+      const rowCheckerCount = that.grid.props.rowCheckable ? 1 : 0;
       this.setProps({
         classes: { "nom-grid-setting-panel": true },
         content: {
@@ -17534,21 +18173,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           header: { caption: { title: "列设置" } },
           body: {
             children: {
-              attrs: { style: { maxHeight: "50vh", overflow: "auto" } },
-              component: "Tree",
-              showline: true,
-              data: that.customizableColumns(that.grid.popupTreeData),
-              nodeCheckable: {
-                checkedNodeKeys: that.grid.getMappedColumns(
-                  that.grid.props.columns
-                ),
-              },
-              multiple: true,
-              sortable: { showHandler: true },
+              component: GridSettingTransfer,
               ref: (c) => {
-                this.tree = c;
+                that.transferRef = c;
               },
-              dataFields: { text: "title", key: "field" },
+              allowFrozenCols: that.grid.props.allowFrozenCols,
+              frozenLimit: that.grid.props.frozenLimit,
+              value: this.grid.getMappedColumns(this.grid.props.columns),
+              frozenCount: that.grid.props.frozenLeftCols - rowCheckerCount,
+              data: that.customizableColumns(that.grid.popupTreeData),
             },
           },
           footer: {
@@ -17557,46 +18190,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               gutter: "small",
               attrs: { style: { width: "100%" } },
               cols: [
-                {
-                  grow: true,
-                  children: {
-                    component: "Button",
-                    text: "全选",
-                    ref: (c) => {
-                      this.checkallBtn = c;
-                    },
-                    onClick: () => {
-                      this._toogleCheckall();
-                    },
-                  },
-                },
+                { grow: true },
                 {
                   children: {
                     component: "Button",
                     type: "primary",
                     text: "确定",
                     onClick: function () {
-                      const list = that.tree.getCheckedNodesData();
-                      const lockedList = list.filter((n) => {
-                        return n.disabled === true;
-                      });
-                      if (
-                        list.length === 0 ||
-                        (list.length === lockedList.length && list.length === 1)
-                      ) {
-                        new nomui.Alert({
-                          type: "info",
-                          title: "提示",
-                          description: "请至少保留一列数据",
-                        });
-                        return false;
-                      }
-                      that.grid.popupTreeData = that.grid.originColumns = that._sortCustomizableColumns(
-                        that.tree.getData()
-                      );
-                      that.grid.handleColumnsSetting(
-                        that._sortCustomizableColumns(list)
-                      );
+                      that._fixDataOrder();
                     },
                   },
                 },
@@ -17615,6 +18216,64 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
       });
       super._config();
+    }
+    _fixDataOrder() {
+      const list = this.transferRef.getSelectedData();
+      const selected = JSON.parse(JSON.stringify(list));
+      const frozenCount = this.transferRef.getFrozenCount();
+      const lockedList = list.filter((n) => {
+        return n.disabled === true;
+      });
+      if (
+        list.length === 0 ||
+        (list.length === lockedList.length && list.length === 1)
+      ) {
+        new nomui.Alert({
+          type: "info",
+          title: "提示",
+          description: "请至少保留一列数据",
+        });
+        return false;
+      }
+      const originData = this.transferRef.getData();
+      const result = this._mapTree(list, originData);
+      this.grid._updateOriginColumns(this._sortCustomizableColumns(result));
+      this.grid.handleColumnsSetting(
+        this._sortCustomizableColumns(selected),
+        frozenCount
+      );
+    }
+    _findItem(arr, key) {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].field === key) {
+          this.tempArr = arr[i].children;
+          break;
+        }
+        if (arr[i].children) {
+          this._findItem(arr[i].children, key);
+        }
+      }
+    }
+    _mapTree(data, origin) {
+      data = this._concatArr(data, origin);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].children) {
+          this._findItem(origin, data[i].field);
+          const related = this.tempArr;
+          data[i].children = this._mapTree(data[i].children, related || []);
+        }
+      }
+      return data;
+    }
+    _concatArr(target, related) {
+      const restItem = related.filter((n) => {
+        return (
+          target.findIndex((x) => {
+            return x.field === n.field;
+          }) === -1
+        );
+      });
+      return [...target, ...restItem];
     }
     getMappedColumns(param) {
       const arr = [];
@@ -17758,7 +18417,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               size: "small",
               renderIf: this.props.columnsCustomizable, // type: 'text',
               classes: { "nom-grid-setting-btn": true },
-              tooltip: "列设置",
+              attrs: { title: "列设置" },
               onClick: () => {
                 this.showSetting();
               },
@@ -18225,7 +18884,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         grid: this, // fit: true,
       });
     }
-    handleColumnsSetting(params) {
+    _updateOriginColumns(data) {
+      this.popupTreeData = this.originColumns = data;
+    }
+    handleColumnsSetting(params, frozenCount) {
       const tree = params;
       const that = this;
       let treeInfo = null;
@@ -18263,9 +18925,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           JSON.stringify(this.getMappedColumns(tree))
         );
       }
+      const rowCheckerCount = this.props.rowCheckable ? 1 : 0;
       this._customColumnFlag = false;
       this._processPinColumnFromSetting(tree);
       this.setProps({ columns: tree });
+      if (this.props.allowFrozenCols) {
+        this.setProps({
+          frozenLeftCols: frozenCount < 1 ? 0 : frozenCount + rowCheckerCount,
+        });
+      }
       this._processColumns();
       this._calcMinWidth();
       this.render();
@@ -18689,7 +19357,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return this.body.table.getRows();
     }
     handlePinClick(data) {
-      // 取消初始化固定列时(无缓存配置时)
+      if (this.pinColumns.length >= this.props.frozenLimit && !data.fixed) {
+        new nomui.Message({
+          content: `最多只能冻结${this.props.frozenLimit}项`,
+          type: "warning",
+        });
+        return;
+      } // 取消初始化固定列时(无缓存配置时)
       if (data.fixed && this.pinColumns.length < 1) {
         let num = this.props.frozenLeftCols;
         if (num - 1 > this._fixedCount) {
@@ -18771,7 +19445,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     frozenHeader: false,
     frozenLeftCols: null,
     frozenRightCols: null,
-    allowFrozenCols: false,
+    allowFrozenCols: true,
+    frozenLimit: 5, // 最大允许固定左侧列数目
     onSort: null,
     forceSort: false,
     sortCacheable: false,
