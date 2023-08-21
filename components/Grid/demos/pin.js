@@ -6,9 +6,12 @@ define([], function () {
       return {
         component: 'Grid',
         key: 'grid-pin-demo',
-        allowFrozenCols: true,
+        allowFrozenCols: {
+          showPinner: true,
+        },
         frozenLeftCols: 1,
         rowCheckable: true,
+        frozenLimit: 2,
         columnsCustomizable: {
           cache: true,
         },

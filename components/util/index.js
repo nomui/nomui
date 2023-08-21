@@ -225,8 +225,8 @@ export function normalizeKey(key) {
   return key[0] === '-' && key[1] === '-'
     ? key
     : key === 'cssFloat'
-    ? 'float'
-    : key.replace(uppercaseRegex, toLowerCase)
+      ? 'float'
+      : key.replace(uppercaseRegex, toLowerCase)
 }
 
 export function isNumeric(val) {

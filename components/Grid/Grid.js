@@ -139,7 +139,9 @@ class Grid extends Component {
             classes: {
               'nom-grid-setting-btn': true,
             },
-            tooltip: '列设置',
+            attrs: {
+              title: '列设置',
+            },
             onClick: () => {
               this.showSetting()
             },
@@ -269,7 +271,7 @@ class Grid extends Component {
         // 存在则表示当前数据不是最顶层数据
 
         // 这里的map中的数据是引用了arr的它的指向还是arr，当mapItem改变时arr也会改变
-        ;(mapItem[childrenField] || (mapItem[childrenField] = [])).push(child) // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
+        ; (mapItem[childrenField] || (mapItem[childrenField] = [])).push(child) // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
       } else {
         // 不存在则是组顶层数据
         treeData.push(child)
@@ -691,7 +693,11 @@ class Grid extends Component {
     })
   }
 
-  handleColumnsSetting(params) {
+  _updateOriginColumns(data) {
+    this.popupTreeData = this.originColumns = data
+  }
+
+  handleColumnsSetting(params, frozenCount) {
     const tree = params
 
     const that = this
@@ -732,10 +738,16 @@ class Grid extends Component {
     if (this._gridColumsStoreKey) {
       localStorage.setItem(this._gridColumsStoreKey, JSON.stringify(this.getMappedColumns(tree)))
     }
-
+    const rowCheckerCount = this.props.rowCheckable ? 1 : 0
     this._customColumnFlag = false
     this._processPinColumnFromSetting(tree)
     this.setProps({ columns: tree })
+    if (this.props.allowFrozenCols) {
+      this.setProps({
+        frozenLeftCols: frozenCount < 1 ? 0 : frozenCount + rowCheckerCount
+      })
+    }
+
     this._processColumns()
     this._calcMinWidth()
     this.render()
@@ -1208,6 +1220,16 @@ class Grid extends Component {
   }
 
   handlePinClick(data) {
+
+    if (this.pinColumns.length >= this.props.frozenLimit && !data.fixed) {
+      new nomui.Message({
+        content: `最多只能冻结${this.props.frozenLimit}项`,
+        type: 'warning',
+      })
+      return
+    }
+
+
     // 取消初始化固定列时(无缓存配置时)
     if (data.fixed && this.pinColumns.length < 1) {
       let num = this.props.frozenLeftCols
@@ -1299,7 +1321,8 @@ Grid.defaults = {
   frozenHeader: false,
   frozenLeftCols: null,
   frozenRightCols: null,
-  allowFrozenCols: false,
+  allowFrozenCols: true,
+  frozenLimit: 5, // 最大允许固定左侧列数目
   onSort: null,
   forceSort: false,
   sortCacheable: false,

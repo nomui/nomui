@@ -39,7 +39,8 @@
 | frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
 | frozenRightCols | 指定冻结右侧多少列 | `number` | - |
-| allowFrozenCols | 是否允许用户手动固定列(有多级表头时无效) | `boolean` | `false` |
+| allowFrozenCols | 是否允许用户手动固定列(有多级表头时无效) | `{showPinner}`\|`boolean` | `true` |
+| frozenLimit | 最大可固定在左侧的列数 | `number` | 5      |
 | keyField | 表格行数据的主键字段 | `string` | `id` |
 | rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
 | rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |
@@ -141,6 +142,14 @@
     ]
 }
 ```
+
+### allowFrozenCols
+
+手动固定列配置
+
+| 参数     | 说明       | 类型                  | 默认值 |
+| -------- | ---------- | --------------------- | ------ |
+| showPinner | 是否在表头显示固定按钮 | `boolean` | false      |
 
 ### rowSelectable
 
