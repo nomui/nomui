@@ -91,6 +91,8 @@ class GridSettingPopup extends Modal {
   }
 
   _fixDataOrder() {
+
+
     const list = this.transferRef.getSelectedData()
     const selected = JSON.parse(JSON.stringify(list))
     const frozenCount = this.transferRef.getFrozenCount()
@@ -110,7 +112,7 @@ class GridSettingPopup extends Modal {
     const originData = this.transferRef.getData()
     const result = this._mapTree(list, originData)
 
-    this.grid._updateOriginColumns(this._sortCustomizableColumns(result))
+    this.grid._updateOriginColumns(result)
 
     this.grid.handleColumnsSetting(this._sortCustomizableColumns(selected), frozenCount)
   }
@@ -185,10 +187,13 @@ class GridSettingPopup extends Modal {
 
   // 将customizable: false的列排至后面
   _sortCustomizableColumns(arr) {
-    arr.sort((curr, next) => {
-      if (next.customizable === false && next.field !== 'checkbox') return -1
-      return 0
+
+
+    arr = arr.filter(n => {
+      return n.customizable !== false
     })
+    const disableColumns = this.grid.originColumns.filter(n => { return n.customizable === false })
+    arr = [...arr, ...disableColumns]
     return arr
   }
 
