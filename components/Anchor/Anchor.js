@@ -23,7 +23,7 @@ class Anchor extends Component {
 
   _config() {
     const that = this
-    const { items, border, width, itemDefaults } = this.props
+    const { items, border, width, itemDefaults, menuProps } = this.props
     const myWidth = isNumeric(width) ? `${width}px` : width
     this.itemKeyList = this._getItemKeyList()
 
@@ -31,6 +31,7 @@ class Anchor extends Component {
       classes: {
         'nom-anchor-border-left': border === 'left',
         'nom-anchor-border-right': border === 'right',
+        'nom-anchor-border-bottom': border === 'bottom',
       },
       attrs: {
         style: {
@@ -46,6 +47,7 @@ class Anchor extends Component {
           byClick: true,
         },
         items: items,
+        ...menuProps,
         itemDefaults: {
           ...itemDefaults,
           ...{
@@ -91,10 +93,7 @@ class Anchor extends Component {
     }
 
     if (this.container !== window) {
-      this.container._on('scroll', function () {
-        that.containerElem = that.container.element
-        that._onContainerScroll()
-      })
+      this._checkContainer()
     } else {
       // 判断是否滚动完毕，再次添加滚动事件
       let temp = 0
@@ -121,6 +120,26 @@ class Anchor extends Component {
       return this.props.items.length ? this.props.items[0].key : null
     }
     return this.currentKey
+  }
+
+  _bindScroll() {
+    const that = this
+    this.container._on('scroll', function () {
+      that.containerElem = that.container.element
+      that._onContainerScroll()
+    })
+  }
+
+  _checkContainer() {
+    this.intervalFunc = setInterval(() => {
+      this.container = isFunction(this.props.container)
+        ? this.props.container()
+        : this.props.container
+      if (this.container) {
+        clearInterval(this.intervalFunc)
+        this._bindScroll()
+      }
+    }, 500)
   }
 
   _getItemKeyList() {
@@ -230,6 +249,7 @@ Anchor.defaults = {
   offset: 0,
   activeKey: null,
   onChange: null,
+  menuProps: {}
 }
 
 Component.register(Anchor)

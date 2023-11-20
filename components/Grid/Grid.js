@@ -198,6 +198,14 @@ class Grid extends Component {
     }
   }
 
+  _sortColumnsOrder(arr) {
+    arr.sort((curr, next) => {
+      if (next.customizable === false) return -1
+      return 0
+    })
+    return arr
+  }
+
   // 根据缓存，对originColumns和 columns排序
   _processColumnSort() {
     if (this._needSortColumnsFlag) {
@@ -314,7 +322,7 @@ class Grid extends Component {
     if (storeFields && storeFields.length) {
       storeFields = JSON.parse(storeFields)
 
-      this.setProps({ columns: this._getColsFromFields(this.originColumns, storeFields) })
+      this.setProps({ columns: this._sortColumnsOrder(this._getColsFromFields(this.originColumns, storeFields)) })
       this._customColumnFlag = true
     }
   }
