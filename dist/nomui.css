@@ -11773,6 +11773,12 @@ textarea .nom-textarea {
 .nom-anchor.nom-anchor-border-right > .nom-menu .nom-menu-item.s-selected {
   border-right: 1px solid var(--nom-color-primary);
 }
+.nom-anchor.nom-anchor-border-bottom > .nom-menu .nom-menu-item {
+  border-bottom: 1px solid var(--nom-border-color);
+}
+.nom-anchor.nom-anchor-border-bottom > .nom-menu .nom-menu-item.s-selected {
+  border-bottom: 1px solid var(--nom-color-primary);
+}
 .nom-anchor-content {
   text-decoration: inherit;
 }

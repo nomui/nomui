@@ -3281,31 +3281,37 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       const that = this;
-      const { items, border, width, itemDefaults } = this.props;
+      const { items, border, width, itemDefaults, menuProps } = this.props;
       const myWidth = isNumeric(width) ? `${width}px` : width;
       this.itemKeyList = this._getItemKeyList();
       this.setProps({
         classes: {
           "nom-anchor-border-left": border === "left",
           "nom-anchor-border-right": border === "right",
+          "nom-anchor-border-bottom": border === "bottom",
         },
         attrs: { style: { "min-width": myWidth } },
-        children: {
-          component: "Menu",
-          ref: (c) => {
-            that.menu = c;
-          },
-          itemSelectable: { byClick: true },
-          items: items,
-          itemDefaults: Object.assign({}, itemDefaults, {
-            onClick: function (args) {
-              const key = args.sender.key;
-              that.props.onItemClick &&
-                that._callHandler(that.props.onItemClick, key);
-              that._scrollToKey(key);
+        children: Object.assign(
+          {
+            component: "Menu",
+            ref: (c) => {
+              that.menu = c;
             },
-          }),
-        },
+            itemSelectable: { byClick: true },
+            items: items,
+          },
+          menuProps,
+          {
+            itemDefaults: Object.assign({}, itemDefaults, {
+              onClick: function (args) {
+                const key = args.sender.key;
+                that.props.onItemClick &&
+                  that._callHandler(that.props.onItemClick, key);
+                that._scrollToKey(key);
+              },
+            }),
+          }
+        ),
       });
       if (this.props.activeKey) {
         setTimeout(() => {
@@ -3333,10 +3339,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       if (this.container !== window) {
-        this.container._on("scroll", function () {
-          that.containerElem = that.container.element;
-          that._onContainerScroll();
-        });
+        this._checkContainer();
       } else {
         // 判断是否滚动完毕，再次添加滚动事件
         let temp = 0;
@@ -3361,6 +3364,24 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         return this.props.items.length ? this.props.items[0].key : null;
       }
       return this.currentKey;
+    }
+    _bindScroll() {
+      const that = this;
+      this.container._on("scroll", function () {
+        that.containerElem = that.container.element;
+        that._onContainerScroll();
+      });
+    }
+    _checkContainer() {
+      this.intervalFunc = setInterval(() => {
+        this.container = isFunction(this.props.container)
+          ? this.props.container()
+          : this.props.container;
+        if (this.container) {
+          clearInterval(this.intervalFunc);
+          this._bindScroll();
+        }
+      }, 500);
     }
     _getItemKeyList() {
       const arr = [];
@@ -3455,6 +3476,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     offset: 0,
     activeKey: null,
     onChange: null,
+    menuProps: {},
   };
   Component.register(Anchor);
   class AnchorContent extends Component {
@@ -18471,6 +18493,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
         this._pinColumnFlag = true;
       }
+    }
+    _sortColumnsOrder(arr) {
+      arr.sort((curr, next) => {
+        if (next.customizable === false) return -1;
+        return 0;
+      });
+      return arr;
     } // 根据缓存，对originColumns和 columns排序
     _processColumnSort() {
       if (this._needSortColumnsFlag) {
@@ -18568,7 +18597,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (storeFields && storeFields.length) {
         storeFields = JSON.parse(storeFields);
         this.setProps({
-          columns: this._getColsFromFields(this.originColumns, storeFields),
+          columns: this._sortColumnsOrder(
+            this._getColsFromFields(this.originColumns, storeFields)
+          ),
         });
         this._customColumnFlag = true;
       }
