@@ -1,7 +1,7 @@
 define(['./data.js'], function () {
   return {
     title: '禁用选项',
-    file: 'test',
+    file: 'disabled',
     demo: function () {
       return {
         component: 'Cascader',
@@ -14,6 +14,7 @@ define(['./data.js'], function () {
               {
                 value: 'hangzhou',
                 label: 'Hangzhou',
+
                 children: [
                   {
                     value: 'xihu',
@@ -26,14 +27,16 @@ define(['./data.js'], function () {
           {
             value: 'jiangsu',
             label: 'Jiangsu',
-            disabled: true,
+            // disabled: true,
             children: [
               {
                 value: 'nanjing',
                 label: 'Nanjing',
+
                 children: [
                   {
                     value: 'zhonghuamen',
+                    disabled: true,
                     label: 'Zhong Hua Men',
                   },
                 ],

@@ -10691,9 +10691,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             classes: {
               "nom-cascader-menu-item": true,
               "nom-cascader-menu-item-active": item.key === currentVal,
+              "nom-cascader-menu-item-disabled": item.disabled === true,
             },
             onClick: () => {
-              cascaderList.cascaderControl._itemSelected(item.key, true);
+              item.disabled !== true &&
+                cascaderList.cascaderControl._itemSelected(item.key, true);
             },
             children: [
               {
