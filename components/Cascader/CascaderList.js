@@ -30,8 +30,8 @@ class CascaderList extends Component {
     this.setProps({
       children: popMenu
         ? popMenu.map((menu, index) => {
-            return this.getMenuItems(menu, value[index])
-          })
+          return this.getMenuItems(menu, value[index])
+        })
         : null,
     })
 
@@ -129,9 +129,10 @@ class CascaderList extends Component {
           classes: {
             'nom-cascader-menu-item': true,
             'nom-cascader-menu-item-active': item.key === currentVal,
+            'nom-cascader-menu-item-disabled': item.disabled === true,
           },
           onClick: () => {
-            cascaderList.cascaderControl._itemSelected(item.key, true)
+            item.disabled !== true && cascaderList.cascaderControl._itemSelected(item.key, true)
           },
           children: [
             {
