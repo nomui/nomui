@@ -88,20 +88,20 @@ class Transfer extends Field {
                     component: 'Layout',
                     header: showSearch
                       ? {
+                        _created: function () {
+                          me.sourceSearchContainer = this
+                        },
+                        children: {
+                          component: 'Textbox',
+                          allowClear: false,
                           _created: function () {
-                            me.sourceSearchContainer = this
+                            me.sourceSearch = this
                           },
-                          children: {
-                            component: 'Textbox',
-                            allowClear: false,
-                            _created: function () {
-                              me.sourceSearch = this
-                            },
-                            onValueChange: debounce(({ newValue }) => {
-                              me._onSourceSearch(newValue)
-                            }, 1000),
-                          },
-                        }
+                          onValueChange: debounce(({ newValue }) => {
+                            me._onSourceSearch(newValue)
+                          }, 1000),
+                        },
+                      }
                       : false,
                     body: {
                       children: {
@@ -144,27 +144,27 @@ class Transfer extends Field {
                 footer:
                   this.props.pagination || this.props.footerRender
                     ? {
-                        children: this.props.footerRender
-                          ? this.props.footerRender()
-                          : {
-                              component: 'Flex',
-                              fit: true,
-                              align: 'center',
-                              justify: 'end',
-                              cols: [
-                                {
-                                  children: {
-                                    component: 'Pager',
-                                    itemsSort: ['pages'],
-                                    totalCount: 50,
-                                    simple: true,
-                                    pageIndex: 1,
-                                    pageSize: 20,
-                                  },
-                                },
-                              ],
+                      children: this.props.footerRender
+                        ? this.props.footerRender()
+                        : {
+                          component: 'Flex',
+                          fit: true,
+                          align: 'center',
+                          justify: 'end',
+                          cols: [
+                            {
+                              children: {
+                                component: 'Pager',
+                                itemsSort: ['pages'],
+                                totalCount: 50,
+                                simple: true,
+                                pageIndex: 1,
+                                pageSize: 20,
+                              },
                             },
-                      }
+                          ],
+                        },
+                    }
                     : false,
               },
             },
@@ -227,20 +227,20 @@ class Transfer extends Field {
                     component: 'Layout',
                     header: showSearch
                       ? {
+                        _created: function () {
+                          me.targetSearchContainer = this
+                        },
+                        children: {
+                          component: 'Textbox',
+                          allowClear: false,
                           _created: function () {
-                            me.targetSearchContainer = this
+                            me.targetSearch = this
                           },
-                          children: {
-                            component: 'Textbox',
-                            allowClear: false,
-                            _created: function () {
-                              me.targetSearch = this
-                            },
-                            onValueChange: debounce(({ newValue }) => {
-                              me._onTargetSearch(newValue)
-                            }, 1000),
-                          },
-                        }
+                          onValueChange: debounce(({ newValue }) => {
+                            me._onTargetSearch(newValue)
+                          }, 1000),
+                        },
+                      }
                       : false,
                     body: {
                       children: {
@@ -460,10 +460,15 @@ class Transfer extends Field {
     this.checkAllBtn.update({
       text: '全选',
     })
-    this.sourceTree.update({ data: this.props.data })
-    this.targetTree.update({
-      data: [],
-    })
+    this.props.value = null
+
+    const nodes = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true)
+    if (!nodes.length) {
+      return
+    }
+
+    this._removeItem(nodes)
+    this.selectData = []
     this._onSourceCheck()
     this._onTargetCheck()
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
