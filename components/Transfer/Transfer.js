@@ -26,6 +26,7 @@ class Transfer extends Field {
       }
     }
 
+
     this.setProps({
       control: {
         children: {
@@ -122,7 +123,7 @@ class Transfer extends Field {
                           cascade: me.props.displayAsTree,
                           checkedNodeKeys: initKeys,
                           onCheckChange: () => {
-                            me._onSourceCheck()
+                            me._updateSourceCount()
                           },
                         },
                         nodeDefaults: {
@@ -271,7 +272,7 @@ class Transfer extends Field {
                         nodeCheckable: {
                           cascade: me.props.displayAsTree,
                           onCheckChange: () => {
-                            me._onTargetCheck()
+                            me._updateTargetCount()
                           },
                         },
                         nodeDefaults: {
@@ -301,10 +302,10 @@ class Transfer extends Field {
   }
 
   _rendered() {
-    if (this.firstRender) {
-      this._onSourceCheck()
-      this._onTargetCheck()
+    if (this.firstRender || this._refreshFlag) {
+      this._updateCountNum()
       this.addNodes()
+      this._refreshFlag = false
     }
   }
 
@@ -356,7 +357,12 @@ class Transfer extends Field {
     })
   }
 
-  _onSourceCheck() {
+  _updateCountNum() {
+    this._updateSourceCount()
+    this._updateTargetCount()
+  }
+
+  _updateSourceCount() {
     const u = this.sourceTree.getCheckedNodeKeys().length
     const d = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes(), true).length
     this.sourceCount.update({
@@ -364,7 +370,7 @@ class Transfer extends Field {
     })
   }
 
-  _onTargetCheck() {
+  _updateTargetCount() {
     const u = this.targetTree.getCheckedNodeKeys().length
     const d = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true).length
     this.targetCount.update({
@@ -433,8 +439,7 @@ class Transfer extends Field {
     this.targetTree.update({
       data: this.selectData,
     })
-    this._onSourceCheck()
-    this._onTargetCheck()
+    this._updateCountNum()
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
 
@@ -446,8 +451,7 @@ class Transfer extends Field {
 
     this._removeItem(nodes)
     this.selectData = this.targetTree.getData()
-    this._onSourceCheck()
-    this._onTargetCheck()
+    this._updateCountNum()
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
 
@@ -481,21 +485,23 @@ class Transfer extends Field {
   }
 
   disable() {
-    this.props.disabled = true
-    this.sourceTree.update({
-      disabled: true
-    })
-    this.targetTree.update({
+    // this.props.disabled = true
+    // this.sourceTree.update({
+    //   disabled: true
+    // })
+    // this.targetTree.update({
+    //   disabled: true
+    // })
+
+    this._refreshFlag = true
+    this.update({
       disabled: true
     })
   }
 
   enable() {
-    this.props.disabled = false
-    this.sourceTree.update({
-      disabled: false
-    })
-    this.targetTree.update({
+    this._refreshFlag = true
+    this.update({
       disabled: false
     })
   }
@@ -514,8 +520,7 @@ class Transfer extends Field {
 
     this._removeItem(nodes)
     this.selectData = []
-    this._onSourceCheck()
-    this._onTargetCheck()
+    this._updateCountNum()
     this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
   }
 
@@ -535,7 +540,7 @@ Transfer.defaults = {
   footerRender: null,
   // pagination: false,
   itemRender: null,
-  showSearch: true,
+  showSearch: false,
   onChange: null,
   // onSearch: null,
   // onScroll: null,

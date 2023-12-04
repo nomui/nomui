@@ -1,7 +1,7 @@
 define([], function () {
     return {
-        title: '禁用',
-        file: 'disabled',
+        title: '显示搜索框',
+        file: 'search',
 
         demo: function () {
             let transRef = null
@@ -65,45 +65,21 @@ define([], function () {
                         label: '穿梭框',
                         name: 'transfer',
                         data: data,
-                        value: ['010'],
+                        showSearch: true
                     },
                     {
                         component: 'Field',
                         label: '',
                         control: {
-                            component: 'Flex',
-                            gutter: 'small',
-                            cols: [
-                                {
-                                    component: 'Button',
-                                    text: '取值',
-                                    type: 'primary',
-                                    onClick: () => {
-                                        new nomui.Alert({
-                                            description: `当前值为：${JSON.stringify(transRef.getValue())}`
-                                        })
-                                    },
-                                },
-                                {
-                                    component: 'Button',
-                                    text: '禁用',
-                                    onClick: ({ sender }) => {
-                                        if (sender.props.text === '禁用') {
-                                            transRef.disable()
-                                            sender.update({
-                                                text: '启用'
-                                            })
-                                        }
-                                        else {
-                                            transRef.enable()
-                                            sender.update({
-                                                text: '禁用'
-                                            })
-                                        }
-                                    },
-                                },
-                            ]
-                        }
+                            component: 'Button',
+                            text: '取值',
+                            type: 'primary',
+                            onClick: () => {
+                                new nomui.Alert({
+                                    description: `当前值为：${JSON.stringify(transRef.getValue())}`
+                                })
+                            },
+                        },
                     }
 
                 ],
