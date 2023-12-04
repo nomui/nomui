@@ -4,7 +4,8 @@ define([], function () {
     file: 'basic',
 
     demo: function () {
-      let formRef = null
+      let transRef = null
+
       const data = [
         {
           key: '001',
@@ -59,14 +60,12 @@ define([], function () {
       ]
       return {
         component: 'Form',
-        ref: (c) => {
-          formRef = c
-        },
+
         fields: [
           {
             component: 'Transfer',
             ref: (c) => {
-              window.transRef = c
+              transRef = c
             },
             label: '穿梭框',
             name: 'transfer',
@@ -75,9 +74,11 @@ define([], function () {
           },
           {
             component: 'Button',
-            text: '保存',
+            text: '取值',
             onClick: () => {
-              console.log(formRef.getValue())
+              new nomui.Alert({
+                description: `当前值为：${JSON.stringify(transRef.getValue())}`
+              })
             },
           },
         ],
