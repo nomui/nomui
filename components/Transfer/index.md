@@ -1,20 +1,17 @@
-进行标记和分类的小标签。
+双栏穿梭选择框。
 
 ## 何时使用
 
-- 用于标记事物的属性和维度。
-- 进行分类。
+- 需要直观的进行多选时。
+- 比起 Select 和 TreeSelect，穿梭框占据更大的空间，可以展示可选项的更多信息。
 
 ## API
 
 | 参数          | 说明             | 类型                          | 默认值 |
 | ------------- | ---------------- | ----------------------------- | ------ |
-| icon          | 设置图标         | `string`                      | -      |
-| text          | 文本值           | `string`                      | -      |
-| number        | 设置数字         | `number`                      | -      |
-| overflowCount | 展示封顶的数字值 | `number`                      | 99     |
-| color         | 标签色           | `string`                      | -      |
-| size          | 设置尺寸         | `xs\|sm\|lg\|xl`              | -      |
-| type          | 设置标签类型     | `round\|square`               | square |
-| removable     | 删除的回调       | `(key) => {console.log(key)}` | -      |
-| onRemove     | 删除的回调(新) 建议使用 removable:true , onRemove:func 这种用法      | `(args) => {console.log(args)},` | -      |
+| data          | 数据源，默认需要有`key`与`text`         | `array`                      | -      |
+| value          | 默认值           | `array`                      | -      |
+| dataFields        | 字段名配置         | `object`                      | `{ key: 'key', text: 'text', children: 'children', parentKey: 'parentKey' }`     |
+| hideOnSelect          | 是否隐藏已选择节点，不允许在树形数据当中使用           | `boolean`                      | `false`      |
+| showSearch          | 是否显示搜索框           | `boolean`                      | `false`      |
+| onChange          | 值发生变化时的回调           | `({newValue})=>{}`                      | -      |
