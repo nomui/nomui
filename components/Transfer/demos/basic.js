@@ -73,14 +73,20 @@ define([], function () {
             value: ['010'],
           },
           {
-            component: 'Button',
-            text: '取值',
-            onClick: () => {
-              new nomui.Alert({
-                description: `当前值为：${JSON.stringify(transRef.getValue())}`
-              })
+            component: 'Field',
+            label: '',
+            control: {
+              component: 'Button',
+              text: '取值',
+              type: 'primary',
+              onClick: () => {
+                new nomui.Alert({
+                  description: `当前值为：${JSON.stringify(transRef.getValue())}`
+                })
+              },
             },
-          },
+          }
+
         ],
       }
     },

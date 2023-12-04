@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './hide-on-select.js', './tree.js'], function () {
   return {
     title: 'Tag',
     subtitle: '标签',
