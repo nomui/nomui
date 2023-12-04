@@ -278,6 +278,7 @@ class Transfer extends Field {
                           byIndicator: true,
                         },
 
+
                         nodeCheckable: {
                           cascade: me.props.displayAsTree,
                           onCheckChange: () => {
@@ -506,11 +507,11 @@ class Transfer extends Field {
   }
 
   checkAll(options) {
-    this.sourceTree.checkAllNodes(options)
+    this.sourceTree.checkAllNodes({ ignoreDisabled: true, ...options })
   }
 
   uncheckAll(options) {
-    this.sourceTree.uncheckAllNodes(options)
+    this.sourceTree.uncheckAllNodes({ ignoreDisabled: true, ...options })
   }
 
   disable() {

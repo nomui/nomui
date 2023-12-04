@@ -65,7 +65,6 @@ define([], function () {
             label: '穿梭框',
             name: 'transfer',
             data: data,
-            value: ['010'],
           },
           {
             component: 'Field',
