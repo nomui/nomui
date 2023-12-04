@@ -12,6 +12,7 @@
 | data          | 数据源，默认需要有`key`与`text`         | `array`                      | -      |
 | value          | 默认值           | `array`                      | -      |
 | dataFields        | 字段名配置         | `object`                      | `{ key: 'key', text: 'text', children: 'children', parentKey: 'parentKey' }`     |
+| height          | 穿梭框高度           | `number`                      | 240      |
 | hideOnSelect          | 是否隐藏已选择节点，不允许在树形数据当中使用           | `boolean`                      | `false`      |
 | showSearch          | 是否显示搜索框           | `boolean`                      | `false`      |
 | onChange          | 值发生变化时的回调           | `({newValue})=>{}`                      | -      |

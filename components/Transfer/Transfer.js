@@ -43,6 +43,11 @@ class Transfer extends Field {
                 classes: {
                   'nom-transfer-box': true,
                 },
+                attrs: {
+                  style: {
+                    'height': isString(me.props.height) ? me.props.height : `${me.props.height}px`
+                  }
+                },
                 header: {
                   children: {
                     component: 'Flex',
@@ -212,6 +217,11 @@ class Transfer extends Field {
                 classes: {
                   'nom-transfer-box': true,
                 },
+                attrs: {
+                  style: {
+                    'height': isString(me.props.height) ? me.props.height : `${me.props.height}px`
+                  }
+                },
                 header: {
                   children: {
                     component: 'Flex',
@@ -277,8 +287,6 @@ class Transfer extends Field {
                         expandable: {
                           byIndicator: true,
                         },
-
-
                         nodeCheckable: {
                           cascade: me.props.displayAsTree,
                           onCheckChange: () => {
@@ -564,6 +572,7 @@ Transfer.defaults = {
   itemRender: null,
   showSearch: false,
   onChange: null,
+  height: 240,
   // onSearch: null,
   // onScroll: null,
   displayAsTree: false,
