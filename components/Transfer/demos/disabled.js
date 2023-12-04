@@ -1,7 +1,7 @@
 define([], function () {
     return {
-        title: '隐藏选中项',
-        file: 'hide-on-select',
+        title: '禁用',
+        file: 'disabled',
 
         demo: function () {
             let transRef = null
@@ -22,6 +22,7 @@ define([], function () {
                 {
                     key: '004',
                     text: '乔峰',
+                    disabled: true
                 },
                 {
                     key: '005',
@@ -64,21 +65,33 @@ define([], function () {
                         label: '穿梭框',
                         name: 'transfer',
                         data: data,
-                        hideOnSelect: true
+                        value: ['010'],
                     },
                     {
                         component: 'Field',
                         label: '',
                         control: {
-                            component: 'Button',
-                            text: '取值',
-                            type: 'primary',
-                            onClick: () => {
-                                new nomui.Alert({
-                                    description: `当前值为：${JSON.stringify(transRef.getValue())}`
-                                })
-                            },
-                        },
+                            component: 'Flex',
+                            cols: [
+                                {
+                                    component: 'Button',
+                                    text: '取值',
+                                    type: 'primary',
+                                    onClick: () => {
+                                        new nomui.Alert({
+                                            description: `当前值为：${JSON.stringify(transRef.getValue())}`
+                                        })
+                                    },
+                                },
+                                {
+                                    component: 'Button',
+                                    text: '禁用',
+                                    onClick: () => {
+                                        transRef.disable()
+                                    },
+                                },
+                            ]
+                        }
                     }
 
                 ],

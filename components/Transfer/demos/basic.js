@@ -18,16 +18,11 @@ define([], function () {
         {
           key: '003',
           text: '令狐冲',
-          children: [
-            {
-              key: '0031',
-              text: '任盈盈',
-            },
-          ],
         },
         {
           key: '004',
           text: '乔峰',
+          disabled: true
         },
         {
           key: '005',

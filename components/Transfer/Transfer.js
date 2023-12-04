@@ -113,6 +113,7 @@ class Transfer extends Field {
                         dataFields: dataFields,
                         nodeSelectable: false,
 
+                        disabled: me.props.disabled,
                         expandable: {
                           byIndicator: true,
                         },
@@ -126,7 +127,7 @@ class Transfer extends Field {
                         },
                         nodeDefaults: {
                           onClick: ({ sender, event }) => {
-                            if (sender.checkboxRef.props.disabled) {
+                            if (me.props.disabled || sender.checkboxRef.props.disabled) {
                               return
                             }
                             if (sender.props.checked) {
@@ -176,6 +177,9 @@ class Transfer extends Field {
                   size: 'small',
                   icon: 'right',
                   onClick: () => {
+                    if (me.props.disabled) {
+                      return
+                    }
                     me.addNodes()
                   },
                 },
@@ -184,6 +188,9 @@ class Transfer extends Field {
                   size: 'small',
                   icon: 'left',
                   onClick: () => {
+                    if (me.props.disabled) {
+                      return
+                    }
                     me.removeNodes()
                   },
                 },
@@ -209,6 +216,9 @@ class Transfer extends Field {
                           size: 'small',
                           type: 'text',
                           onClick: () => {
+                            if (me.props.disabled) {
+                              return
+                            }
                             me.clear()
                           },
                         },
@@ -249,6 +259,7 @@ class Transfer extends Field {
                           me.targetTree = this
                         },
                         data: [],
+                        disabled: me.props.disabled,
                         flatData: me.props.displayAsTree,
                         dataFields: { ...dataFields, ...{ children: 'noChildrenAllowed' } },
                         nodeSelectable: false,
@@ -265,6 +276,9 @@ class Transfer extends Field {
                         },
                         nodeDefaults: {
                           onClick: ({ sender }) => {
+                            if (me.props.disabled || sender.checkboxRef.props.disabled) {
+                              return
+                            }
                             if (sender.props.checked) {
                               sender.uncheck()
                             } else {
@@ -465,6 +479,27 @@ class Transfer extends Field {
   uncheckAll(options) {
     this.sourceTree.uncheckAllNodes(options)
   }
+
+  disable() {
+    this.props.disabled = true
+    this.sourceTree.update({
+      disabled: true
+    })
+    this.targetTree.update({
+      disabled: true
+    })
+  }
+
+  enable() {
+    this.props.disabled = false
+    this.sourceTree.update({
+      disabled: false
+    })
+    this.targetTree.update({
+      disabled: false
+    })
+  }
+
 
   clear() {
     this.checkAllBtn.update({
