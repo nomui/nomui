@@ -22,7 +22,6 @@ define([], function () {
                 {
                     key: '004',
                     text: '乔峰',
-                    disabled: true
                 },
                 {
                     key: '005',

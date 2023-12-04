@@ -61,6 +61,9 @@ class Transfer extends Field {
                           },
                           type: 'text',
                           onClick: ({ sender }) => {
+                            if (me.props.disabled) {
+                              return
+                            }
                             if (sender.props.text === '全选') {
                               sender.update({
                                 text: '反选',
@@ -177,6 +180,9 @@ class Transfer extends Field {
                   component: 'Button',
                   size: 'small',
                   icon: 'right',
+                  ref: (c) => {
+                    me.addTrigger = c
+                  },
                   onClick: () => {
                     if (me.props.disabled) {
                       return
@@ -188,6 +194,9 @@ class Transfer extends Field {
                   component: 'Button',
                   size: 'small',
                   icon: 'left',
+                  ref: (c) => {
+                    me.removeTrigger = c
+                  },
                   onClick: () => {
                     if (me.props.disabled) {
                       return
@@ -363,6 +372,16 @@ class Transfer extends Field {
   }
 
   _updateSourceCount() {
+    if (this.sourceTree.element.querySelectorAll('input:checked:enabled').length) {
+      this.addTrigger.update({
+        type: 'primary'
+      })
+    }
+    else {
+      this.addTrigger.update({
+        type: null
+      })
+    }
     const u = this.sourceTree.getCheckedNodeKeys().length
     const d = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes(), true).length
     this.sourceCount.update({
@@ -371,6 +390,16 @@ class Transfer extends Field {
   }
 
   _updateTargetCount() {
+    if (this.targetTree.element.querySelectorAll('input:checked:enabled').length) {
+      this.removeTrigger.update({
+        type: 'primary'
+      })
+    }
+    else {
+      this.removeTrigger.update({
+        type: null
+      })
+    }
     const u = this.targetTree.getCheckedNodeKeys().length
     const d = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true).length
     this.targetCount.update({
