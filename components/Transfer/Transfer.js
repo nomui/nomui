@@ -515,14 +515,6 @@ class Transfer extends Field {
   }
 
   disable() {
-    // this.props.disabled = true
-    // this.sourceTree.update({
-    //   disabled: true
-    // })
-    // this.targetTree.update({
-    //   disabled: true
-    // })
-
     this._refreshFlag = true
     this.update({
       disabled: true
