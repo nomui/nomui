@@ -27,6 +27,8 @@ class Transfer extends Field {
     }
 
 
+
+
     this.setProps({
       control: {
         children: {
@@ -478,7 +480,9 @@ class Transfer extends Field {
       data: this.selectData,
     })
     this._updateCountNum()
-    this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
+    const v = this.getValue()
+    this.props.value = v
+    this.props.onChange && this._callHandler(this.props.onChange, { newValue: v })
   }
 
   removeNodes() {
@@ -490,7 +494,9 @@ class Transfer extends Field {
     this._removeItem(nodes)
     this.selectData = this.targetTree.getData()
     this._updateCountNum()
-    this.props.onChange && this._callHandler(this.props.onChange, { newValue: this.getValue() })
+    const v = this.getValue()
+    this.props.value = v
+    this.props.onChange && this._callHandler(this.props.onChange, { newValue: v })
   }
 
   _removeItem(nodes) {
