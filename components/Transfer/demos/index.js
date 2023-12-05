@@ -1,7 +1,7 @@
 define(['./basic.js', './search.js', './hide-on-select.js', './tree.js', './disabled.js'], function () {
   return {
-    title: 'Tag',
-    subtitle: '标签',
+    title: 'Transfer',
+    subtitle: '穿梭框',
     demos: Array.prototype.slice.call(arguments),
   }
 })
