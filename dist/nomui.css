@@ -4521,6 +4521,8 @@ body {
   --nom-slider-handle-color: rgba(var(--nom-white), 1);
   --nom-slider-rail-color: rgba(var(--nom-grey-1), 1);
   --nom-slider-disabled-color: rgba(var(--nom-grey-4), 1);
+  --nom-transfer-border-radius: 4px;
+  --nom-transfer-border: 1px solid var(--nom-border-color);
   --nom-tree-selected-color: var(--nom-color-primary-light-default);
   --nom-layout-border-color: var(--nom-border-color);
   --nom-divider-border-color: var(--nom-border-color);
@@ -12220,6 +12222,30 @@ textarea .nom-textarea {
 }
 .nom-upload .nom-upload-trigger.s-disabled {
   cursor: not-allowed;
+}
+.nom-transfer .nom-transfer-container .nom-transfer-box {
+  border-radius: var(--nom-transfer-border-radius);
+  border: var(--nom-transfer-border);
+  min-width: 170px;
+}
+.nom-transfer .nom-transfer-container .nom-transfer-box .nom-tree-node-expandable-indicator {
+  width: 24px;
+}
+.nom-transfer .nom-transfer-container .nom-transfer-box > .nom-layout-header {
+  height: 40px;
+  padding: 0 10px;
+}
+.nom-transfer .nom-transfer-container .nom-transfer-box > .nom-layout-header .nom-checkbox > .nom-field-content {
+  line-height: 100%;
+}
+.nom-transfer .nom-transfer-container .nom-transfer-box > .nom-layout-body .nom-layout-header {
+  height: 42px;
+  border-bottom: none;
+}
+.nom-transfer .nom-transfer-container .nom-transfer-box > .nom-layout-footer {
+  height: 40px;
+  min-height: 40px;
+  padding: 0 10px;
 }
 .nom-group-tree {
   width: 100%;
