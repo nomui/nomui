@@ -13,7 +13,7 @@ define([], function () {
               parentField: 'parentKey',
               treeNodeColumn: 'class',
               showCheckAll: true,
-              cascade: false,
+              cascade: true,
             },
             columns: [
               {
