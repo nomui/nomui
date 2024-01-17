@@ -19029,31 +19029,48 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       row.check();
     }
-    check(row) {
+    check(row, fromChild) {
       const { checked } = row.props;
       const {
         cascadeCheckParent,
         cascadeCheckChildren,
       } = this.props.treeConfig;
       cascadeCheckChildren === true &&
+        !fromChild &&
         Object.keys(row.childrenNodes).forEach((key) => {
           this.checkChildren(row.childrenNodes[key]);
         });
       cascadeCheckParent === true &&
         row.parentNode &&
-        this.check(row.parentNode);
+        this.check(row.parentNode, true);
       if (checked === true) {
         return false;
       }
       row.check();
     }
-    uncheck(row) {
+    uncheck(row, fromChild) {
       const { checked } = row.props;
-      const { cascadeUncheckChildren } = this.props.treeConfig;
+      const {
+        cascadeUncheckParent,
+        cascadeUncheckChildren,
+      } = this.props.treeConfig;
       cascadeUncheckChildren === true &&
+        !fromChild &&
         Object.keys(row.childrenNodes).forEach((key) => {
           this.uncheck(row.childrenNodes[key]);
-        });
+        }); // 如果兄弟节点没有被选中的，则级联取消勾选父级节点
+      if (cascadeUncheckParent === true && row.parentNode) {
+        const siblings = row.parentNode.childrenNodes;
+        let n = 0;
+        for (const k in siblings) {
+          if (siblings[k].props.checked) {
+            n += 1;
+          }
+        }
+        if (n <= 1) {
+          this.uncheck(row.parentNode, true);
+        }
+      }
       if (checked === false) {
         return false;
       }
@@ -19499,6 +19516,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       indentSize: 16,
       cascadeCheckParent: true,
       cascadeCheckChildren: true,
+      cascadeUncheckParent: true,
       cascadeUncheckChildren: true,
       cascade: false,
     },
