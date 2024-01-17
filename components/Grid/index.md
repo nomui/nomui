@@ -245,8 +245,9 @@ rows 子对象配置
 | initExpandLevel | 初始展开层级，默认为 -1，代表展开所有层级 | `number` | -1 |
 | indentSize | 缩进尺寸，单位 px | `number` | 16 |
 | indicator | 自定义展开折叠图标的配置，与基组件的 `expandable.indicator` 配置一致 | `props` | - |
-| cascade | 级联勾选父节点（cascadeCheckParent）,级联勾选子节点（cascadeCheckChildren）,级联取消勾选子节点（cascadeUncheckChildren）的统一配置，优先级低于单项配置 | `boolean` | false |
+| cascade | 级联勾选的统一配置，优先级低于单项配置 | `boolean` | false |
 | cascadeCheckParent | 级联勾选父节点 | `boolean` | true |
+| cascadeUncheckParent | 级联取消勾选父节点 | `boolean` | true |
 | cascadeCheckChildren | 级联勾选子节点 | `boolean` | true |
 | cascadeUncheckChildren | 级联取消勾选子节点 | `boolean` | true |
 
