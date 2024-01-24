@@ -260,7 +260,8 @@ class Td extends Component {
         } else {
           grid.uncheck(row)
         }
-        grid.changeCheckAllState()
+
+        grid._checkboxAllRef && grid.changeCheckAllState()
       },
     }
   }

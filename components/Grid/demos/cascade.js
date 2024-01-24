@@ -10,6 +10,7 @@ define([], function () {
             rowCheckable: {
               combined: true
             },
+            // rowCheckable: true,
             treeConfig: {
               flatData: true,
               parentField: 'parentKey',
