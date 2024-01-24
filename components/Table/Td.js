@@ -114,9 +114,17 @@ class Td extends Component {
           },
         },
         this.getExpandableIndicatorProps(),
+        this.table.hasGrid && this.table.grid.props.rowCheckable && this.table.grid.props.rowCheckable.combined && this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index }),
         { tag: 'span', children: children },
       ]
+
+      // if (this.table.hasGrid && this.table.grid.props.rowCheckable && this.table.grid.props.rowCheckable.combined) {
+
+      //   children.push(this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index }))
+      // }
     }
+
+
 
     const colSpan =
       spanProps && spanProps.colSpan !== null && spanProps.colSpan !== undefined
@@ -192,6 +200,68 @@ class Td extends Component {
     const fixed = this.props.column.fixed
     if (fixed) {
       this._setTdsPosition()
+    }
+  }
+
+  _renderCombinedChecker({ row, rowData, index }) {
+
+    const grid = this.table.grid
+    const { rowCheckable } = grid.props
+
+    let normalizedRowCheckable = rowCheckable
+    if (!isPlainObject(rowCheckable)) {
+      normalizedRowCheckable = {}
+    }
+    const { checkedRowKeys = [], checkboxRender } = normalizedRowCheckable
+    const checkedRowKeysHash = {}
+    checkedRowKeys.forEach((rowKey) => {
+      checkedRowKeysHash[rowKey] = true
+    })
+    let _checkboxProps = {}
+    // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
+    if (checkboxRender && isFunction(checkboxRender)) {
+      _checkboxProps = checkboxRender({ row, rowData, index })
+    }
+
+    // 计算得到当前的 checkbox的状态
+    _checkboxProps.value = _checkboxProps.value || checkedRowKeysHash[row.key] === true
+
+    if (checkedRowKeysHash[row.key] === true || _checkboxProps.value) {
+      grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
+    }
+
+    const { keyField } = grid.props
+    const { parentField } = grid.props.treeConfig
+    grid.nodeList[`__key${rowData[keyField]}`] = row
+    row.childrenNodes = {}
+    row.parentNode = grid.nodeList[`__key${rowData[parentField]}`]
+    if (row.parentNode) {
+      row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
+    }
+
+    return {
+      component: 'Checkbox',
+      classes: {
+        'nom-grid-checkbox': true,
+      },
+      plain: true,
+      _created: (inst) => {
+        row._checkboxRef = inst
+      },
+      _config() {
+        this.setProps(_checkboxProps)
+      },
+      attrs: {
+        'data-key': row.key,
+      },
+      onValueChange: (args) => {
+        if (args.newValue === true) {
+          grid.check(row)
+        } else {
+          grid.uncheck(row)
+        }
+        grid.changeCheckAllState()
+      },
     }
   }
 

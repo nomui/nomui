@@ -7,7 +7,9 @@ define([], function () {
         children: [
           {
             component: 'Grid',
-            rowCheckable: true,
+            rowCheckable: {
+              combined: true
+            },
             treeConfig: {
               flatData: true,
               parentField: 'parentKey',
