@@ -58,7 +58,7 @@ class Grid extends Component {
     this._resetFixCount()
 
     if (this.props.frozenLeftCols > 0) {
-      this.props.rowCheckable && this.props.frozenLeftCols++
+      this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn && this.props.frozenLeftCols++
       this.props.rowExpandable && this.props.frozenLeftCols++
     }
   }
@@ -82,14 +82,14 @@ class Grid extends Component {
         this._alreadyProcessedFlat = false
       }
     }
-    if (props.hasOwnProperty('rowCheckable') || props.hasOwnProperty('rowExpandable')) {
+    if ((props.hasOwnProperty('rowCheckable') && !props.rowCheckable.checkboxOnNodeColumn) || props.hasOwnProperty('rowExpandable')) {
       this._resetFixCount()
     }
   }
 
   _resetFixCount() {
     this._fixedCount = 0
-    this.props.rowCheckable && this._fixedCount++
+    this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn && this._fixedCount++
     this.props.rowExpandable && this._fixedCount++
   }
 
@@ -746,7 +746,7 @@ class Grid extends Component {
     if (this._gridColumsStoreKey) {
       localStorage.setItem(this._gridColumsStoreKey, JSON.stringify(this.getMappedColumns(tree)))
     }
-    const rowCheckerCount = this.props.rowCheckable ? 1 : 0
+    const rowCheckerCount = this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn ? 1 : 0
     this._customColumnFlag = false
     this._processPinColumnFromSetting(tree)
     this.setProps({ columns: tree })
