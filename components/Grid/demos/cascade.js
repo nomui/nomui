@@ -108,7 +108,7 @@ define([], function () {
               children: {
                 component: 'Grid',
                 rowCheckable: {
-                  combined: true
+                  checkboxOnNodeColumn: true
                 },
                 treeConfig: {
                   flatData: true,

@@ -165,6 +165,7 @@
 
 | 参数           | 说明                 | 类型                                         | 默认值 |
 | -------------- | -------------------- | -------------------------------------------- | ------ |
+| checkboxOnNodeColumn | 勾选框是否跟随在折叠图标后方 | `boolean` | - |
 | checkedRowKeys | 初始选中行主键数组   | `array`                                      | -      |
 | checkboxRender | 函数返回 Checkbox 的 | `({row, rowData, index})=>{ checkboxProps }` | -      |
 | onCheck        | 行勾选回调           | `({row})=>{}`                                | -      |
@@ -238,7 +239,6 @@ rows 子对象配置
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| combined | 勾选框是否跟随在折叠图标后方 | `boolean` | - |
 | flatData | 是否根据传入的扁平结构数据转成 tree 结构 | `boolean` | id |
 | parentField | 指定树形结构的`parentKey` | `string` | id |
 | childrenField | 指定树形结构的字段名 | `string` | children |

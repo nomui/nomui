@@ -218,7 +218,7 @@ class Th extends Component {
       const { column } = this.props
       const { treeConfig, rowCheckable } = that.table.grid.props
 
-      if (rowCheckable && rowCheckable.combined) {
+      if (rowCheckable && rowCheckable.checkboxOnNodeColumn) {
         const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
         if (isTreeNodeColumn) {
           children.unshift({

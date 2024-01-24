@@ -894,7 +894,7 @@ class Grid extends Component {
       checkedRowKeys.forEach((rowKey) => {
         checkedRowKeysHash[rowKey] = true
       })
-      if (!rowCheckable.combined) {
+      if (!rowCheckable.checkboxOnNodeColumn) {
         columns.unshift({
           width: 50,
           isChecker: true,

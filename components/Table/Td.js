@@ -114,7 +114,7 @@ class Td extends Component {
           },
         },
         this.getExpandableIndicatorProps(),
-        this.table.hasGrid && this.table.grid.props.rowCheckable && this.table.grid.props.rowCheckable.combined && this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index }),
+        this.table.hasGrid && this.table.grid.props.rowCheckable && this.table.grid.props.rowCheckable.checkboxOnNodeColumn && this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index }),
         { tag: 'span', children: children },
       ]
 
