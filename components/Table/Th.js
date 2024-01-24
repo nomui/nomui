@@ -214,6 +214,40 @@ class Th extends Component {
       }
     }
 
+    if (that.table.hasGrid) {
+      const { column } = this.props
+      const { treeConfig, rowCheckable } = that.table.grid.props
+
+      if (rowCheckable && rowCheckable.combined) {
+        const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
+        if (isTreeNodeColumn) {
+          children.unshift({
+            component: 'Checkbox',
+            attrs: {
+              style: {
+                display: 'inline-flex',
+                paddingRight: '.25rem'
+              }
+            },
+            plain: true,
+            _created: (inst) => {
+              that.table.grid._checkboxAllRef = inst
+            },
+            onValueChange: (args) => {
+              if (args.newValue === true) {
+                that.table.grid.checkAllRows(false)
+              } else {
+                that.table.grid.uncheckAllRows(false)
+              }
+            },
+          })
+        }
+      }
+
+    }
+
+
+
     this.setProps({
       children: children,
       classes: {

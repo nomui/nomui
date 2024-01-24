@@ -118,10 +118,7 @@ class Td extends Component {
         { tag: 'span', children: children },
       ]
 
-      // if (this.table.hasGrid && this.table.grid.props.rowCheckable && this.table.grid.props.rowCheckable.combined) {
 
-      //   children.push(this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index }))
-      // }
     }
 
 
@@ -253,6 +250,9 @@ class Td extends Component {
       },
       attrs: {
         'data-key': row.key,
+        style: {
+          paddingRight: '.25rem'
+        }
       },
       onValueChange: (args) => {
         if (args.newValue === true) {
