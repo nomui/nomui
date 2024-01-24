@@ -165,6 +165,7 @@
 
 | 参数           | 说明                 | 类型                                         | 默认值 |
 | -------------- | -------------------- | -------------------------------------------- | ------ |
+| checkboxOnNodeColumn | 勾选框是否跟随在折叠图标后方 | `boolean` | - |
 | checkedRowKeys | 初始选中行主键数组   | `array`                                      | -      |
 | checkboxRender | 函数返回 Checkbox 的 | `({row, rowData, index})=>{ checkboxProps }` | -      |
 | onCheck        | 行勾选回调           | `({row})=>{}`                                | -      |

@@ -92,7 +92,7 @@ class Tr extends Component {
     )
     this._check()
     this._checkboxRef.setValue(true, false)
-    grid.changeCheckAllState()
+    grid._checkboxAllRef && grid.changeCheckAllState()
     if (checkOptions.triggerChange) {
       this._onCheck()
       grid._onRowCheck(this)
@@ -120,7 +120,7 @@ class Tr extends Component {
     )
     this._checkboxRef.setValue(false, false)
     this._uncheck()
-    grid.changeCheckAllState()
+    grid._checkboxAllRef && grid.changeCheckAllState()
     if (uncheckOptions.triggerChange) {
       this._onUncheck()
       grid._onRowUncheck(this)
