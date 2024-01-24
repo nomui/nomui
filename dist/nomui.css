@@ -7537,12 +7537,16 @@ table.nom-table.p-bordered {
 .nom-grid.m-with-setting .nom-table .nom-thead-tr:first-child th:last-child {
   padding-right: 40px;
 }
+.nom-grid .nom-grid-checkbox {
+  display: inline-flex;
+}
 .nom-grid .nom-grid-checkbox .nom-field-content {
-  display: flex;
   justify-content: center;
 }
+.nom-grid .nom-table-cell-title {
+  display: inline-flex;
+}
 .nom-grid .nom-table-cell-title .nom-field-content {
-  display: flex;
   justify-content: center;
 }
 .nom-grid-setting-panel {

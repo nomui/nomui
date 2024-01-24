@@ -16022,6 +16022,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             },
           },
           this.getExpandableIndicatorProps(),
+          this.table.hasGrid &&
+            this.table.grid.props.rowCheckable &&
+            this.table.grid.props.rowCheckable.checkboxOnNodeColumn &&
+            this._renderCombinedChecker({
+              row: this.tr,
+              rowData: this.tr.props.data,
+              index: this.tr.props.index,
+            }),
           { tag: "span", children: children },
         ];
       }
@@ -16098,6 +16106,56 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (fixed) {
         this._setTdsPosition();
       }
+    }
+    _renderCombinedChecker({ row, rowData, index }) {
+      const grid = this.table.grid;
+      const { rowCheckable } = grid.props;
+      let normalizedRowCheckable = rowCheckable;
+      if (!isPlainObject(rowCheckable)) {
+        normalizedRowCheckable = {};
+      }
+      const { checkedRowKeys = [], checkboxRender } = normalizedRowCheckable;
+      const checkedRowKeysHash = {};
+      checkedRowKeys.forEach((rowKey) => {
+        checkedRowKeysHash[rowKey] = true;
+      });
+      let _checkboxProps = {}; // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
+      if (checkboxRender && isFunction(checkboxRender)) {
+        _checkboxProps = checkboxRender({ row, rowData, index });
+      } // 计算得到当前的 checkbox的状态
+      _checkboxProps.value =
+        _checkboxProps.value || checkedRowKeysHash[row.key] === true;
+      if (checkedRowKeysHash[row.key] === true || _checkboxProps.value) {
+        grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
+      }
+      const { keyField } = grid.props;
+      const { parentField } = grid.props.treeConfig;
+      grid.nodeList[`__key${rowData[keyField]}`] = row;
+      row.childrenNodes = {};
+      row.parentNode = grid.nodeList[`__key${rowData[parentField]}`];
+      if (row.parentNode) {
+        row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
+      }
+      return {
+        component: "Checkbox",
+        classes: { "nom-grid-checkbox": true },
+        plain: true,
+        _created: (inst) => {
+          row._checkboxRef = inst;
+        },
+        _config() {
+          this.setProps(_checkboxProps);
+        },
+        attrs: { "data-key": row.key, style: { paddingRight: ".25rem" } },
+        onValueChange: (args) => {
+          if (args.newValue === true) {
+            grid.check(row);
+          } else {
+            grid.uncheck(row);
+          }
+          grid._checkboxAllRef && grid.changeCheckAllState();
+        },
+      };
     }
     _setTdsPosition() {
       const fixed = this.props.column.fixed;
@@ -16360,7 +16418,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       checkOptions = extend$1({ triggerChange: true }, checkOptions);
       this._check();
       this._checkboxRef.setValue(true, false);
-      grid.changeCheckAllState();
+      grid._checkboxAllRef && grid.changeCheckAllState();
       if (checkOptions.triggerChange) {
         this._onCheck();
         grid._onRowCheck(this);
@@ -16380,7 +16438,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       uncheckOptions = extend$1({ triggerChange: true }, uncheckOptions);
       this._checkboxRef.setValue(false, false);
       this._uncheck();
-      grid.changeCheckAllState();
+      grid._checkboxAllRef && grid.changeCheckAllState();
       if (uncheckOptions.triggerChange) {
         this._onUncheck();
         grid._onRowUncheck(this);
@@ -16747,6 +16805,34 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           classes: { "nom-table-cell-content": true },
           children: children,
         };
+      }
+      if (that.table.hasGrid) {
+        const { column } = this.props;
+        const { treeConfig, rowCheckable } = that.table.grid.props;
+        if (rowCheckable && rowCheckable.checkboxOnNodeColumn) {
+          const isTreeNodeColumn =
+            treeConfig.treeNodeColumn &&
+            column.field === treeConfig.treeNodeColumn;
+          if (isTreeNodeColumn) {
+            children.unshift({
+              component: "Checkbox",
+              attrs: {
+                style: { display: "inline-flex", paddingRight: ".25rem" },
+              },
+              plain: true,
+              _created: (inst) => {
+                that.table.grid._checkboxAllRef = inst;
+              },
+              onValueChange: (args) => {
+                if (args.newValue === true) {
+                  that.table.grid.checkAllRows(false);
+                } else {
+                  that.table.grid.uncheckAllRows(false);
+                }
+              },
+            });
+          }
+        }
       }
       this.setProps({
         children: children,
@@ -19092,76 +19178,72 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         checkedRowKeys.forEach((rowKey) => {
           checkedRowKeysHash[rowKey] = true;
         });
-        this.setProps({
-          columns: [
-            {
-              width: 50,
-              isChecker: true,
-              resizable: false,
-              field: "nom-grid-row-checker",
-              classes: { "nom-grid-checkbox": true },
-              header: {
-                component: Checkbox,
-                plain: true,
-                _created: (inst) => {
-                  grid._checkboxAllRef = inst;
-                },
-                onValueChange: (args) => {
-                  if (args.newValue === true) {
-                    grid.checkAllRows(false);
-                  } else {
-                    grid.uncheckAllRows(false);
-                  }
-                },
+        if (!rowCheckable.checkboxOnNodeColumn) {
+          columns.unshift({
+            width: 50,
+            isChecker: true,
+            resizable: false,
+            field: "nom-grid-row-checker",
+            classes: { "nom-grid-checkbox": true },
+            header: {
+              component: Checkbox,
+              plain: true,
+              _created: (inst) => {
+                grid._checkboxAllRef = inst;
               },
-              cellRender: ({ row, rowData, index }) => {
-                let _checkboxProps = {}; // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
-                if (checkboxRender && isFunction(checkboxRender)) {
-                  _checkboxProps = checkboxRender({ row, rowData, index });
-                } // 计算得到当前的 checkbox的状态
-                _checkboxProps.value =
-                  _checkboxProps.value || checkedRowKeysHash[row.key] === true;
-                if (
-                  checkedRowKeysHash[row.key] === true ||
-                  _checkboxProps.value
-                ) {
-                  grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
+              onValueChange: (args) => {
+                if (args.newValue === true) {
+                  grid.checkAllRows(false);
+                } else {
+                  grid.uncheckAllRows(false);
                 }
-                const { keyField } = this.props;
-                const { parentField } = this.props.treeConfig;
-                this.nodeList[`__key${rowData[keyField]}`] = row;
-                row.childrenNodes = {};
-                row.parentNode = this.nodeList[`__key${rowData[parentField]}`];
-                if (row.parentNode) {
-                  row.parentNode.childrenNodes[
-                    `__key${rowData[keyField]}`
-                  ] = row;
-                }
-                return {
-                  component: Checkbox,
-                  classes: { "nom-grid-checkbox": true },
-                  plain: true,
-                  _created: (inst) => {
-                    row._checkboxRef = inst;
-                  },
-                  _config() {
-                    this.setProps(_checkboxProps);
-                  },
-                  attrs: { "data-key": row.key },
-                  onValueChange: (args) => {
-                    if (args.newValue === true) {
-                      grid.check(row);
-                    } else {
-                      grid.uncheck(row);
-                    }
-                    grid.changeCheckAllState();
-                  },
-                };
               },
             },
-            ...columns,
-          ],
-        });
+            cellRender: ({ row, rowData, index }) => {
+              let _checkboxProps = {}; // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
+              if (checkboxRender && isFunction(checkboxRender)) {
+                _checkboxProps = checkboxRender({ row, rowData, index });
+              } // 计算得到当前的 checkbox的状态
+              _checkboxProps.value =
+                _checkboxProps.value || checkedRowKeysHash[row.key] === true;
+              if (
+                checkedRowKeysHash[row.key] === true ||
+                _checkboxProps.value
+              ) {
+                grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
+              }
+              const { keyField } = this.props;
+              const { parentField } = this.props.treeConfig;
+              this.nodeList[`__key${rowData[keyField]}`] = row;
+              row.childrenNodes = {};
+              row.parentNode = this.nodeList[`__key${rowData[parentField]}`];
+              if (row.parentNode) {
+                row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
+              }
+              return {
+                component: Checkbox,
+                classes: { "nom-grid-checkbox": true },
+                plain: true,
+                _created: (inst) => {
+                  row._checkboxRef = inst;
+                },
+                _config() {
+                  this.setProps(_checkboxProps);
+                },
+                attrs: { "data-key": row.key },
+                onValueChange: (args) => {
+                  if (args.newValue === true) {
+                    grid.check(row);
+                  } else {
+                    grid.uncheck(row);
+                  }
+                  grid.changeCheckAllState();
+                },
+              };
+            },
+          });
+        }
+        this.setProps({ columns: columns });
       }
     } // 处理列宽
     _processColumnsWidth() {
