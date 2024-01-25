@@ -101,7 +101,7 @@ class GridSettingPopup extends Modal {
       return n.disabled === true
     })
 
-    if (list.length === 0 || (list.length === lockedList.length && list.length === 1)) {
+    if (list.length === 0 || (list.length === lockedList.length && list.length === 1 && !(this.grid.props.rowCheckable && this.grid.props.rowCheckable.checkboxOnNodeColumn))) {
       new nomui.Alert({
         type: 'info',
         title: '提示',
@@ -169,10 +169,14 @@ class GridSettingPopup extends Modal {
   }
 
   customizableColumns(val) {
+    const that = this
     function mapColumns(data) {
       data.forEach(function (item) {
         if (item.isChecker === true || item.customizable === false) {
           item.hidden = true
+          item.disabled = true
+        }
+        if (that.grid.props.treeConfig && that.grid.props.treeConfig.treeNodeColumn === item.field) {
           item.disabled = true
         }
         if (item.children) {
