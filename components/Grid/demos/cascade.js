@@ -110,6 +110,7 @@ define([], function () {
                 rowCheckable: {
                   checkboxOnNodeColumn: true
                 },
+                columnsCustomizable: true,
                 treeConfig: {
                   flatData: true,
                   parentField: 'parentKey',
