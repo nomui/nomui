@@ -332,10 +332,13 @@ class GridSettingTransfer extends Field {
 
                               inst.setProps({
                                 classes: {
-                                  'nom-grid-setting-target-node': true
+                                  'nom-grid-setting-target-node': true,
                                 },
                                 data: {
                                   tools: ({ node }) => {
+                                    if (node.props.data.disabled) {
+                                      return
+                                    }
                                     return {
                                       component: 'Button',
                                       type: 'text',
@@ -476,7 +479,7 @@ class GridSettingTransfer extends Field {
       }
 
       // 添加目标项
-      if (!node.props.data.disabled && !this.selectedKeys.includes(node.key)) {
+      if (!this.selectedKeys.includes(node.key)) {
         this.selectedKeys.push(node.key)
         if (node.parentNode) {
           node.props.data.parentKey = node.parentNode.key
@@ -538,6 +541,7 @@ class GridSettingTransfer extends Field {
   }
 
   _handleRemoveNode(node) {
+
     const keys = this._getChildNodeKeys([node], true)
     this.checkAllBtn.update({
       text: '全选'
@@ -624,12 +628,16 @@ class GridSettingTransfer extends Field {
     this.checkAllBtn.update({
       text: '全选',
     })
-    this.sourceTree.update({ data: this.props.data, nodeCheckable: { checkedNodeKeys: [] } })
-    this.selectedData = this.props.allowFrozenCols ? [
-      { title: '已冻结', field: 'isFrozen', isDivider: true },
-      { title: '未冻结', field: 'isFree', isDivider: true },
-    ] : []
+
     this.selectedKeys = []
+    this.selectedData = this.selectedData.filter(n => {
+      if (n.disabled) {
+        this.selectedKeys.push(n.field)
+      }
+      return n.isDivider || n.disabled
+    })
+
+    this.sourceTree.update({ data: this.props.data, nodeCheckable: { checkedNodeKeys: this.selectedKeys } })
     this.targetTree.update({
       data: this.selectedData,
     })

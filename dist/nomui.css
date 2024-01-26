@@ -7597,6 +7597,9 @@ table.nom-table.p-bordered {
   padding-left: 1rem;
   color: var(--nom-text-color-muted);
 }
+.nom-grid-setting-transfer .nom-grid-setting-target-node.s-disabled {
+  opacity: 0.65;
+}
 .nom-grid-setting-transfer .nom-grid-setting-target-node .nom-tree-node-content .p-type-times {
   color: var(--nom-text-color-muted);
 }

@@ -17963,6 +17963,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   },
                                   data: {
                                     tools: ({ node }) => {
+                                      if (node.props.data.disabled) {
+                                        return;
+                                      }
                                       return {
                                         component: "Button",
                                         type: "text",
@@ -18085,10 +18088,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         if (!node.isChecked()) {
           continue;
         } // 添加目标项
-        if (
-          !node.props.data.disabled &&
-          !this.selectedKeys.includes(node.key)
-        ) {
+        if (!this.selectedKeys.includes(node.key)) {
           this.selectedKeys.push(node.key);
           if (node.parentNode) {
             node.props.data.parentKey = node.parentNode.key;
@@ -18191,17 +18191,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     clear() {
       this.checkAllBtn.update({ text: "全选" });
+      this.selectedKeys = [];
+      this.selectedData = this.selectedData.filter((n) => {
+        if (n.disabled) {
+          this.selectedKeys.push(n.field);
+        }
+        return n.isDivider || n.disabled;
+      });
       this.sourceTree.update({
         data: this.props.data,
-        nodeCheckable: { checkedNodeKeys: [] },
+        nodeCheckable: { checkedNodeKeys: this.selectedKeys },
       });
-      this.selectedData = this.props.allowFrozenCols
-        ? [
-            { title: "已冻结", field: "isFrozen", isDivider: true },
-            { title: "未冻结", field: "isFree", isDivider: true },
-          ]
-        : [];
-      this.selectedKeys = [];
       this.targetTree.update({ data: this.selectedData });
       this._setSourceCount();
       this.props.onChange &&
@@ -18274,7 +18274,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       const that = this;
-      const rowCheckerCount = that.grid.props.rowCheckable ? 1 : 0;
+      const rowCheckerCount =
+        that.grid.props.rowCheckable &&
+        !that.grid.props.rowCheckable.checkboxOnNodeColumn
+          ? 1
+          : 0;
       this.setProps({
         classes: { "nom-grid-setting-panel": true },
         content: {
@@ -18336,7 +18340,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
       if (
         list.length === 0 ||
-        (list.length === lockedList.length && list.length === 1)
+        (list.length === lockedList.length &&
+          list.length === 1 &&
+          !(
+            this.grid.props.rowCheckable &&
+            this.grid.props.rowCheckable.checkboxOnNodeColumn
+          ))
       ) {
         new nomui.Alert({
           type: "info",
@@ -18399,10 +18408,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return arr;
     }
     customizableColumns(val) {
+      const that = this;
       function mapColumns(data) {
         data.forEach(function (item) {
           if (item.isChecker === true || item.customizable === false) {
             item.hidden = true;
+            item.disabled = true;
+          }
+          if (
+            that.grid.props.treeConfig &&
+            that.grid.props.treeConfig.treeNodeColumn === item.field
+          ) {
             item.disabled = true;
           }
           if (item.children) {
@@ -18464,7 +18480,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.filterValueText = {};
       this._resetFixCount();
       if (this.props.frozenLeftCols > 0) {
-        this.props.rowCheckable && this.props.frozenLeftCols++;
+        this.props.rowCheckable &&
+          !this.props.rowCheckable.checkboxOnNodeColumn &&
+          this.props.frozenLeftCols++;
         this.props.rowExpandable && this.props.frozenLeftCols++;
       }
     }
@@ -18486,7 +18504,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       if (
-        props.hasOwnProperty("rowCheckable") ||
+        (props.hasOwnProperty("rowCheckable") &&
+          !props.rowCheckable.checkboxOnNodeColumn) ||
         props.hasOwnProperty("rowExpandable")
       ) {
         this._resetFixCount();
@@ -18494,7 +18513,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _resetFixCount() {
       this._fixedCount = 0;
-      this.props.rowCheckable && this._fixedCount++;
+      this.props.rowCheckable &&
+        !this.props.rowCheckable.checkboxOnNodeColumn &&
+        this._fixedCount++;
       this.props.rowExpandable && this._fixedCount++;
     }
     _config() {
@@ -19047,7 +19068,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           JSON.stringify(this.getMappedColumns(tree))
         );
       }
-      const rowCheckerCount = this.props.rowCheckable ? 1 : 0;
+      const rowCheckerCount =
+        this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn
+          ? 1
+          : 0;
       this._customColumnFlag = false;
       this._processPinColumnFromSetting(tree);
       this.setProps({ columns: tree });
