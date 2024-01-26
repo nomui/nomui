@@ -22,7 +22,7 @@ class GridSettingPopup extends Modal {
 
   _config() {
     const that = this
-    const rowCheckerCount = that.grid.props.rowCheckable ? 1 : 0
+    const rowCheckerCount = that.grid.props.rowCheckable && !that.grid.props.rowCheckable.checkboxOnNodeColumn ? 1 : 0
     this.setProps({
       classes: {
         'nom-grid-setting-panel': true,
