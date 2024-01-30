@@ -1,3 +1,4 @@
+export * from '../util/sortable.core.esm'
 export * from './browser-version.js'
 
 String.prototype.trim = function (characters) {
