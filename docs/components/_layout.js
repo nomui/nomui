@@ -16,24 +16,24 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
       const doc_suffix = '&tab=docs'
       return Array.isArray(cmps)
         ? cmps.reduce((prevs, { text, subtext, url, items }) => {
-            if (url) {
-              return [
-                ...prevs,
-                {
-                  key: text,
-                  text: subtext,
-                  search: `${text}${subtext}`,
-                  url: `${url}${doc_suffix}`,
-                },
-              ]
-            }
+          if (url) {
+            return [
+              ...prevs,
+              {
+                key: text,
+                text: subtext,
+                search: `${text}${subtext}`,
+                url: `${url}${doc_suffix}`,
+              },
+            ]
+          }
 
-            if (items) {
-              return [...prevs, ...getAllDocs(items)]
-            }
+          if (items) {
+            return [...prevs, ...getAllDocs(items)]
+          }
 
-            return [...prevs]
-          }, [])
+          return [...prevs]
+        }, [])
         : []
     }
 
@@ -657,6 +657,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       subtext: '拖拽验证码',
                       id: 'SlideCaptcha',
                       url: '#!components!index?type=SlideCaptcha',
+                    },
+                    {
+                      text: 'Tour',
+                      subtext: '漫游式引导',
+                      id: 'Tour',
+                      url: '#!components!index?type=Tour',
                     },
                   ],
                 },

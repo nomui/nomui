@@ -1,0 +1,89 @@
+import Component from '../Component/index'
+
+class Tour extends Component {
+  constructor(props, ...mixins) {
+    super(Component.extendProps(Tour.defaults, props), ...mixins)
+  }
+
+  _config() {
+    this._propStyleClasses = ['size', 'color']
+    const { icon, rightIcon, text, type, overflowCount, removable } = this.props
+    const number = this.props.number
+
+    const that = this
+    if (icon || rightIcon) {
+      this.setProps({
+        classes: {
+          'p-with-icon': true,
+        },
+      })
+    }
+
+    if (type === 'round') {
+      this.setProps({
+        classes: {
+          'u-shape-round': true,
+        },
+      })
+    }
+
+    this.setProps({
+      classes: {
+        'nom-tag-pointer': !!this.props.onClick || this.props.removable,
+      },
+      children: {
+        component: 'Flex',
+        align: 'center',
+        cols: [
+          Component.normalizeIconProps(icon),
+
+          {
+            children: {
+              classes: {
+                'nom-tag-content': true,
+              },
+              children: text,
+              attrs: {
+                style: { maxWidth: this.props.maxWidth ? `${this.props.maxWidth}px` : null },
+              },
+            },
+          },
+          (number || number === 0) && {
+            tag: 'span',
+            children: number > overflowCount ? `${overflowCount}+` : number,
+          },
+
+          Component.normalizeIconProps(rightIcon),
+          removable &&
+          Component.normalizeIconProps({
+            type: 'times',
+            classes: {
+              'nom-tag-remove': true,
+              'nom-tag-remove-basic': !that.props.styles,
+            },
+            onClick: function ({ event }) {
+              nomui.utils.isFunction(that.props.removable) && that.props.removable(that.props.key)
+              that.hasOwnProperty('props') &&
+                that.props.onRemove &&
+                that._callHandler(that.props.onRemove, { key: that.props.key })
+
+              event.stopPropagation()
+            },
+          }),
+        ],
+      },
+    })
+  }
+
+  _disable() {
+    this.element.setAttribute('disabled', 'disabled')
+  }
+}
+
+Tour.defaults = {
+  key: null,
+}
+
+Component.register(Tour)
+
+export default Tour
