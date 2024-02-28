@@ -9,7 +9,8 @@ define([], function () {
         {
           title: '第一步',
           description: '先点这里',
-          target: () => { return refs.step1 }
+          target: () => { return refs.step1 },
+          align: 'right'
         }
       ]
 
