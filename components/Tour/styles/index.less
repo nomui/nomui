@@ -14,6 +14,16 @@
     background-clip: padding-box;
     border: var(--nom-layer-border);
     border-radius: var(--nom-layer-border-radius);
+    .nom-tour-close {
+        cursor: pointer;
+        position: absolute;
+        top:1rem;
+        right: 1rem;
+        color:var(--nom-tour-close-color);
+        &:hover {
+            color:var(--nom-tour-close-hover-color);
+        }
+    }
     .nom-tour-arrow {
         position: absolute;
         top: auto;
@@ -78,4 +88,18 @@
     left: 50%;
     color: var(--nom-layer-background-color);
     transform: translate(-50%, 10px);
+  }
+
+  .nom-tour-mask {
+    position: fixed;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .nom-tour-navi {
+    .nom-button {
+        margin-left: .5rem;
+    }
   }

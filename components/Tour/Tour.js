@@ -6,19 +6,27 @@ class Tour extends Component {
     super(Component.extendProps(Tour.defaults, props), ...mixins)
   }
 
+  _created() {
+    this.currentStep = 0
+    this.stepTotal = 0
+  }
+
   _config() {
 
     const { steps } = this.props
-    steps.forEach(n => {
-      this._createStep(n)
-    })
+    if (steps.length) {
+      this.stepTotal = steps.length
+      this._createStep(1)
+    }
 
   }
 
-  _createStep(item) {
-    const { padding } = this.props
+  _createStep(index) {
+    const { padding, steps } = this.props
+    const item = steps[index - 1]
     const { target, align = 'top', render } = item
 
+    this.currentStep = index
     let ele = isFunction(target) ? target() : target
 
     if (ele.element) {
@@ -42,6 +50,11 @@ class Tour extends Component {
       }
     })
 
+    this.mask = new nomui.Layer({
+      classes: {
+        'nom-tour-mask': true
+      },
+    })
 
 
     this.stepLayer = new nomui.Layer({
@@ -54,12 +67,73 @@ class Tour extends Component {
       attrs: {
         'placement': align
       },
-      children: [isFunction(render) ? render() : this._renderContent(item), {
+      children: [isFunction(render) ? render() : this._renderContent(item),
+      {
+        classes: {
+          'nom-tour-close': true
+        },
+        component: 'Icon',
+        type: 'times',
+        onClick: () => {
+          this._destroyStep()
+        }
+      },
+      {
+        component: 'Flex',
+        classes: {
+          'nom-tour-navi': true
+        },
+        cols: [
+          {
+            grow: true,
+            children: {
+
+            }
+          },
+          {
+            component: 'Button',
+            size: 'small',
+            hidden: this.currentStep === 1 || this.stepTotal === 1,
+            text: '上一步',
+            onClick: () => {
+              this._destroyStep()
+              this._createStep(this.currentStep - 1)
+            }
+          },
+          {
+            component: 'Button',
+            size: 'small',
+            hidden: this.currentStep === this.stepTotal || this.stepTotal === 1,
+            text: '下一步',
+            onClick: () => {
+              this._destroyStep()
+              this._createStep(this.currentStep + 1)
+            }
+          },
+          {
+            component: 'Button',
+            size: 'small',
+            hidden: this.currentStep !== this.stepTotal && this.stepTotal !== 1,
+            text: '完成',
+            type: 'primary',
+            onClick: () => {
+              this._destroyStep()
+            }
+          }
+        ]
+      },
+      {
         classes: { 'nom-tour-arrow': true },
         children: `#<svg aria-hidden="true" width="24" height="6" viewBox="0 0 24 7" fill="currentColor" xmlns="http://www.w3.org/2000/svg" ><path d="M24 0V1C20 1 18.5 2 16.5 4C14.5 6 14 7 12 7C10 7 9.5 6 7.5 4C5.5 2 4 1 0 1V0H24Z"></path></svg>`,
       },]
     })
 
+  }
+
+  _destroyStep() {
+    this.stepLayer.remove()
+    this.mask.remove()
+    this.backdrop.remove()
   }
 
   _renderContent(item) {

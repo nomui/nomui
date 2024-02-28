@@ -7,11 +7,23 @@ define([], function () {
       const refs = {}
       const steps = [
         {
-          title: '第一步',
+          title: '第1步',
           description: '先点这里',
           target: () => { return refs.step1 },
-          align: 'right'
-        }
+          align: 'top'
+        },
+        {
+          title: '第2步',
+          description: '再点这里',
+          target: () => { return refs.step2 },
+          align: 'bottom'
+        },
+        {
+          title: '第3步',
+          description: '最后点这里',
+          target: () => { return refs.step3 },
+          align: 'bottom'
+        },
       ]
 
       return {
