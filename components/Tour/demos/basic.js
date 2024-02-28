@@ -28,9 +28,10 @@ define([], function () {
 
       return {
         component: 'Flex',
-        gap: 'small',
+        gutter: 'small',
         rows: [
           {
+            gutter: 'small',
             cols: [
               {
                 component: 'Button',
