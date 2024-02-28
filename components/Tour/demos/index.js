@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './skip.js', './align.js', './render.js'], function () {
   return {
     title: 'Tour',
     subtitle: '漫游式引导',

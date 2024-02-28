@@ -22,7 +22,7 @@ class Tour extends Component {
   }
 
   _createStep(index) {
-    const { padding, steps } = this.props
+    const { padding, steps, allowSkip } = this.props
     const item = steps[index - 1]
     const { target, align = 'top', render } = item
 
@@ -72,6 +72,7 @@ class Tour extends Component {
         classes: {
           'nom-tour-close': true
         },
+        hidden: !allowSkip,
         component: 'Icon',
         type: 'times',
         onClick: () => {
@@ -83,11 +84,15 @@ class Tour extends Component {
         classes: {
           'nom-tour-navi': true
         },
+        align: 'center',
         cols: [
           {
             grow: true,
             children: {
-
+              classes: {
+                'nom-tour-navi-text': true
+              },
+              children: `${this.currentStep} of ${this.stepTotal}`
             }
           },
           {
@@ -165,6 +170,7 @@ class Tour extends Component {
 Tour.defaults = {
   padding: 2,
   steps: [],
+  allowSkip: true
 }
 
 Component.register(Tour)
