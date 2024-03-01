@@ -7,15 +7,14 @@ class Tour extends Component {
   }
 
   _created() {
-    this.currentStep = 0
-    this.stepTotal = 0
+    this.total = 0
   }
 
   _config() {
 
     const { steps } = this.props
     if (steps.length) {
-      this.stepTotal = steps.length
+      this.total = steps.length
       this._createStep(1)
     }
 
@@ -23,10 +22,11 @@ class Tour extends Component {
 
   _createStep(index) {
     const { padding, steps, allowSkip } = this.props
+    let { current } = this.props
     const item = steps[index - 1]
     const { target, align = 'top', render } = item
 
-    this.currentStep = index
+    current = index
     let ele = isFunction(target) ? target() : target
 
     if (ele.element) {
@@ -92,33 +92,33 @@ class Tour extends Component {
               classes: {
                 'nom-tour-navi-text': true
               },
-              children: `${this.currentStep} of ${this.stepTotal}`
+              children: `${current} of ${this.total}`
             }
           },
           {
             component: 'Button',
             size: 'small',
-            hidden: this.currentStep === 1 || this.stepTotal === 1,
+            hidden: current === 1 || this.total === 1,
             text: '上一步',
             onClick: () => {
               this._destroyStep()
-              this._createStep(this.currentStep - 1)
+              this._createStep(current - 1)
             }
           },
           {
             component: 'Button',
             size: 'small',
-            hidden: this.currentStep === this.stepTotal || this.stepTotal === 1,
+            hidden: current === this.total || this.total === 1,
             text: '下一步',
             onClick: () => {
               this._destroyStep()
-              this._createStep(this.currentStep + 1)
+              this._createStep(current + 1)
             }
           },
           {
             component: 'Button',
             size: 'small',
-            hidden: this.currentStep !== this.stepTotal && this.stepTotal !== 1,
+            hidden: current !== this.total && this.total !== 1,
             text: '完成',
             type: 'primary',
             onClick: () => {
@@ -170,7 +170,12 @@ class Tour extends Component {
 Tour.defaults = {
   padding: 2,
   steps: [],
-  allowSkip: true
+  allowSkip: true,
+  onClose: null,
+  onChange: null,
+  onFinish: null,
+  current: 1,
+  scrollIntoView: true
 }
 
 Component.register(Tour)
