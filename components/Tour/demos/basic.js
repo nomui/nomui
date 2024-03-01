@@ -10,11 +10,13 @@ define([], function () {
           title: '第1步',
           description: '先点这里',
           target: () => { return refs.step1 },
+
         },
         {
           title: '第2步',
           description: '再点这里',
           target: () => { return refs.step2 },
+
         },
         {
           title: '第3步',
@@ -66,7 +68,19 @@ define([], function () {
             type: 'primary',
             onClick: () => {
               new nomui.Tour({
-                steps: steps
+                steps: steps,
+                onClose: (args) => {
+                  // 关闭引导回调
+                  console.log(args)
+                },
+                onChange: (args) => {
+                  // 步骤发生改变回调
+                  console.log(args)
+                },
+                onFinish: (args) => {
+                  // 完成引导回调
+                  console.log(args)
+                }
               })
             }
           }
