@@ -21,7 +21,7 @@ class Tour extends Component {
   }
 
   _createStep(index) {
-    const { padding, steps, allowSkip } = this.props
+    const { padding, steps, allowSkip, scrollIntoView } = this.props
     let { current } = this.props
     const item = steps[index - 1]
     const { target, align = 'top', render } = item
@@ -33,7 +33,16 @@ class Tour extends Component {
       ele = ele.element
     }
 
-    const info = ele.getBoundingClientRect()
+    let info = ele.getBoundingClientRect()
+
+    if (scrollIntoView) {
+      if (info.top < 0 || info.left < 0 || info.bottom > (window.innerHeight || document.documentElement.clientHeight) || info.right > (
+        window.innerWidth ||
+        document.documentElement.clientWidth)) {
+        ele.scrollIntoView()
+        info = ele.getBoundingClientRect()
+      }
+    }
 
 
     this.backdrop = new nomui.Layer({

@@ -11,6 +11,11 @@
 | steps          | 步骤数组         | `array`                      | -      |
 | allowSkip          | 是否允许中途跳过引导         | `boolean`                      | true      |
 | padding          | 高亮区域周边的阴影边距           | `number`                      | 2      |
+| current          | 当前显示的步骤           | `number`                      | -      |
+| scrollIntoView          | 目标元素处于屏幕外时是否将其自动滚入视图           | `boolean`                      | true      |
+| onClose          | 引导界面关闭时的回调           | `function`                      | -      |
+| onChange          | 引导步骤发生改变时的回调           | `function`                      | -      |
+| onFinish          | 点击完最后一步，完成整个引导时的回调           | `function`                      | -      |
 
 
 
