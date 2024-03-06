@@ -77,7 +77,7 @@ Watermark.defaults = {
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontFamily: 'sans-serif ',
-    textAlign: 'left'
+    textAlign: 'center'
   }
 
 
