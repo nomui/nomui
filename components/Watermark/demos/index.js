@@ -1,4 +1,4 @@
-define(['./basic.js'], function () {
+define(['./basic.js', './multiline.js', './font.js', './image.js'], function () {
   return {
     title: 'Watermark',
     subtitle: '水印',
