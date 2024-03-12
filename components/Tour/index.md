@@ -26,4 +26,5 @@
 | target          | 步骤指向的dom元素或者nomui组件实例         | `dom element \| ()=>{}`                      | -      |
 | title          | 步骤标题         | `string`                      | -      |
 | description          | 步骤描述           | `string`                      | -      |
+| align          | 步骤对齐元素的方式         | `string`                      | top      |
 | render          | 自定义步骤内容渲染           | `function`                      | -      |
