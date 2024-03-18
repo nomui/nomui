@@ -21,7 +21,7 @@ class Tour extends Component {
   }
 
   _createStep(index) {
-    const { padding, steps, allowSkip, scrollIntoView } = this.props
+    const { padding, steps, allowSkip, scrollIntoView, showPagination } = this.props
     let { current } = this.props
     const item = steps[index - 1]
     const { target, align = 'top', render } = item
@@ -102,6 +102,7 @@ class Tour extends Component {
               classes: {
                 'nom-tour-navi-text': true
               },
+              hidden: !showPagination,
               children: `${current} of ${this.total}`
             }
           },
@@ -189,7 +190,8 @@ Tour.defaults = {
   onChange: null,
   onFinish: null,
   current: 1,
-  scrollIntoView: true
+  scrollIntoView: true,
+  showPagination: true
 }
 
 Component.register(Tour)
