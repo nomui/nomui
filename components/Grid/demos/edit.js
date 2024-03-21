@@ -3,6 +3,79 @@ define([], function () {
         title: '行内编辑',
         file: 'edit',
         demo: function () {
+
+            const roleArr = [
+                {
+                    name: '前端开发工程师',
+                    value: '1',
+                },
+                {
+                    name: '后端开发工程师',
+                    value: '2',
+                },
+                {
+                    name: 'UI设计师',
+                    value: '3',
+                },
+                {
+                    name: '产品经理',
+                    value: '4',
+                },
+            ]
+
+            const deptArr = [
+                {
+                    text: '总经办',
+                    value: '0-0',
+                    children: [
+                        {
+                            text: '人事部',
+                            value: '0-0-1',
+                        },
+                        {
+                            text: '行政部',
+                            value: '0-0-2',
+                        },
+                    ],
+                },
+                {
+                    text: '技术中心',
+                    value: '0-1',
+                    children: [
+                        {
+                            text: '后端组',
+                            value: '0-1-1',
+                            children: [
+                                {
+                                    text: '开发一组',
+                                    value: '0-1-1-1',
+                                },
+                                {
+                                    text: '开发二组',
+                                    value: '0-1-1-2',
+                                },
+                            ],
+                        },
+                        {
+                            text: '前端组',
+                            value: '0-1-2',
+                        },
+                    ],
+                },
+            ]
+
+            const sexArr = [
+                {
+                    text: '男',
+                    value: '1',
+                },
+                {
+                    text: '女',
+                    value: '2',
+                },
+            ]
+
+
             return {
                 component: 'Flex',
                 gutter: 'small',
@@ -31,108 +104,88 @@ define([], function () {
                                 field: 'name',
                                 title: '姓名',
                                 width: 200,
-                                editable: true
+                                editRender: ({ cellData }) => {
+                                    return {
+                                        component: 'Textbox',
+                                        value: cellData
+                                    }
+                                },
+
                             },
                             {
                                 field: 'date',
                                 title: '入职日期',
                                 width: 500,
-                                editable: {
-                                    component: 'DatePicker',
+                                editRender: ({ cellData }) => {
+                                    return {
+                                        component: 'DatePicker',
+                                        value: cellData
+                                    }
                                 }
                             },
                             {
                                 field: 'role',
                                 title: '岗位',
-                                editable: {
-                                    component: 'Select',
-                                    optionFields: { text: 'name', value: 'value' },
-                                    options: [
-                                        {
-                                            name: '前端开发工程师',
-                                            value: '1',
-                                        },
-                                        {
-                                            name: '后端开发工程师',
-                                            value: '2',
-                                        },
-                                        {
-                                            name: 'UI设计师',
-                                            value: '3',
-                                        },
-                                        {
-                                            name: '产品经理',
-                                            value: '4',
-                                        },
-                                    ],
+                                editRender: ({ cellData }) => {
+                                    return {
+                                        component: 'Select',
+                                        optionFields: { text: 'name', value: 'value' },
+                                        value: cellData,
+                                        options: roleArr
+                                    }
+                                },
+                                cellRender: ({ cellData }) => {
+                                    return roleArr.filter(n => {
+                                        return n.value === cellData
+                                    })[0].name
                                 }
+
+
                             },
                             {
                                 field: 'dept',
                                 title: '部门',
                                 width: 500,
-                                editable: {
-                                    component: 'TreeSelect',
-                                    maxTagCount: 3,
-                                    options: [
-                                        {
-                                            text: '总经办',
-                                            value: '0-0',
-                                            children: [
-                                                {
-                                                    text: '人事部',
-                                                    value: '0-0-1',
-                                                },
-                                                {
-                                                    text: '行政部',
-                                                    value: '0-0-2',
-                                                },
-                                            ],
-                                        },
-                                        {
-                                            text: '技术中心',
-                                            value: '0-1',
-                                            children: [
-                                                {
-                                                    text: '后端组',
-                                                    value: '0-1-1',
-                                                    children: [
-                                                        {
-                                                            text: '开发一组',
-                                                            value: '0-1-1-1',
-                                                        },
-                                                        {
-                                                            text: '开发二组',
-                                                            value: '0-1-1-2',
-                                                        },
-                                                    ],
-                                                },
-                                                {
-                                                    text: '前端组',
-                                                    value: '0-1-2',
-                                                },
-                                            ],
-                                        },
-                                    ],
+                                editRender: ({ cellData }) => {
+                                    return {
+                                        component: 'TreeSelect',
+                                        value: cellData,
+                                        options: deptArr
+                                    }
+                                },
+                                cellRender: ({ cellData }) => {
+                                    let obj = {}
+                                    const mapTree = (arr) => {
+                                        arr.forEach(n => {
+                                            if (n.value === cellData) {
+                                                obj = n
 
+                                            }
+                                            else if (n.children) {
+                                                mapTree(n.children)
+                                            }
+                                        })
+                                    }
+                                    mapTree(deptArr)
+                                    return obj.text
                                 }
+
                             },
                             {
                                 field: 'sex',
                                 title: '性别',
-                                editable: {
-                                    component: 'RadioList',
-                                    options: [
-                                        {
-                                            text: '男',
-                                            value: '1',
-                                        },
-                                        {
-                                            text: '女',
-                                            value: '2',
-                                        },
-                                    ],
+                                editRender: ({ cellData }) => {
+                                    return {
+                                        component: 'RadioList',
+                                        value: cellData,
+                                        options: sexArr
+                                    }
+                                },
+                                cellRender: ({ cellData }) => {
+                                    if (cellData === '1') return '男'
+                                    if (cellData === '2') return '女'
                                 }
+
                             },
                             {
                                 field: 'actions',
