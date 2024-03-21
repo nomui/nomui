@@ -195,15 +195,21 @@ define([], function () {
                                         component: 'Toolbar',
                                         items: [
                                             {
-                                                text: '编辑',
+                                                text: row.props.editMode ? '保存' : '编辑',
                                                 onClick: () => {
-                                                    row.edit()
+                                                    if (row.props.editMode) {
+                                                        row.save()
+                                                    }
+                                                    else {
+                                                        row.edit()
+                                                    }
+
                                                 }
                                             },
                                             {
-                                                text: '保存',
+                                                text: '取消',
                                                 onClick: () => {
-                                                    row.save()
+                                                    row.save(false)
                                                 }
                                             }
                                         ]

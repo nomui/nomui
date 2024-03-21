@@ -179,6 +179,26 @@ class Tr extends Component {
     this._expanded = false
   }
 
+  _updateRowData() {
+
+  }
+
+  edit() {
+    this.update({
+      editMode: true
+    })
+  }
+
+  save(saveChange) {
+    if (saveChange !== false) {
+      this._updateRowData()
+
+    }
+    this.update({
+      editMode: false
+    })
+  }
+
   // 遍历childTrs 调用show 展示
   _show() {
     if (this.firstRender) {

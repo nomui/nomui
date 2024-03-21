@@ -28,7 +28,17 @@ class Td extends Component {
 
     let children = this.props.data
 
-    if (isFunction(column.cellRender)) {
+    if (this.tr.props.editMode && column.editRender) {
+      children = column.editRender({
+        cell: this,
+        row: this.tr,
+        talbe: this.table,
+        cellData: this.props.data,
+        rowData: this.tr.props.data,
+        index: this.tr.props.index,
+      })
+    }
+    else if (isFunction(column.cellRender)) {
       children = column.cellRender({
         cell: this,
         row: this.tr,
@@ -45,6 +55,7 @@ class Td extends Component {
         this.tr.props.index,
       )
     }
+
 
     if (isFunction(column.cellMerge)) {
       spanProps = column.cellMerge({
