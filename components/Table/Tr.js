@@ -181,16 +181,21 @@ class Tr extends Component {
   }
 
   _updateRowData() {
-    const data = {}
+    let dataChanged = false
+    const { data } = this.props
     for (const key in this.tdRefs) {
       const item = this.tdRefs[key]
       const { editor } = item
-      if (editor) {
+      if (editor && data[key] !== editor.getValue()) {
+        dataChanged = true
         data[key] = editor.getValue()
       }
 
     }
-    this.update({ data: data })
+    if (dataChanged) {
+      this.update({ data: data })
+    }
+
 
   }
 
