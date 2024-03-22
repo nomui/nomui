@@ -17,6 +17,7 @@ class Td extends Component {
     this.table = this.tr.table
     this.col = this.table.colRefs[this.props.column.field]
     this.col.tdRefs[this.key] = this
+    this.tr.tdRefs[this.props.column.field] = this
   }
 
   _config() {
@@ -29,14 +30,18 @@ class Td extends Component {
     let children = this.props.data
 
     if (this.tr.props.editMode && column.editRender) {
-      children = column.editRender({
-        cell: this,
-        row: this.tr,
-        talbe: this.table,
-        cellData: this.props.data,
-        rowData: this.tr.props.data,
-        index: this.tr.props.index,
-      })
+      children = {
+        ...column.editRender({
+          cell: this,
+          row: this.tr,
+          talbe: this.table,
+          cellData: this.props.data,
+          rowData: this.tr.props.data,
+          index: this.tr.props.index,
+        }), ref: (c) => {
+          this.editor = c
+        }
+      }
     }
     else if (isFunction(column.cellRender)) {
       children = column.cellRender({

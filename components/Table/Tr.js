@@ -15,6 +15,7 @@ class Tr extends Component {
   _created() {
     this.tbody = this.parent
     this.table = this.tbody.table
+    this.tdRefs = {}
 
     // keyField(id) 不为 undefined, null
     const dataHaskeyField = !isNullish(this.props.data[this.table.props.keyField])
@@ -180,6 +181,16 @@ class Tr extends Component {
   }
 
   _updateRowData() {
+    const data = {}
+    for (const key in this.tdRefs) {
+      const item = this.tdRefs[key]
+      const { editor } = item
+      if (editor) {
+        data[key] = editor.getValue()
+      }
+
+    }
+    this.update({ data: data })
 
   }
 
