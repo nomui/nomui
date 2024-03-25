@@ -194,6 +194,14 @@ class Tr extends Component {
     }
     if (dataChanged) {
       this.update({ data: data })
+      const grid = this.table.grid
+      if (grid.props.data.length) {
+        for (let i = 0; i < grid.props.data.length; i++) {
+          if (grid.props.data[i][grid.props.keyField] === data[grid.props.keyField]) {
+            grid.props.data[i] = data
+          }
+        }
+      }
     }
 
 
@@ -208,7 +216,6 @@ class Tr extends Component {
   save(saveChange) {
     if (saveChange !== false) {
       this._updateRowData()
-
     }
     this.update({
       editMode: false

@@ -99,6 +99,9 @@ define([], function () {
                     },
                     {
                         component: 'Grid',
+                        ref: (c) => {
+                            window.ggg = c
+                        },
                         columns: [
                             {
                                 field: 'name',
