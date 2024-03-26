@@ -133,7 +133,8 @@ define([], function () {
                                 editRender: ({ cellData }) => {
                                     return {
                                         component: 'DatePicker',
-                                        value: cellData
+                                        required: true,
+                                        value: cellData,
                                     }
                                 },
                                 cellRender: ({ cellData }) => {
@@ -195,6 +196,7 @@ define([], function () {
                                 editRender: ({ cellData }) => {
                                     return {
                                         component: 'RadioList',
+                                        required: true,
                                         value: cellData,
                                         options: sexArr
                                     }
@@ -217,7 +219,9 @@ define([], function () {
                                                 text: row.props.editMode ? '保存' : '编辑',
                                                 onClick: () => {
                                                     if (row.props.editMode) {
-                                                        row.save()
+                                                        if (row.validate()) {
+                                                            row.save()
+                                                        }
                                                     }
                                                     else {
                                                         row.edit()
@@ -226,9 +230,15 @@ define([], function () {
                                                 }
                                             },
                                             {
-                                                text: '取消',
+                                                text: row.props.editMode ? '取消' : '删除',
                                                 onClick: () => {
-                                                    row.save(false)
+                                                    if (row.props.editMode) {
+                                                        row.save(false)
+                                                    }
+                                                    else {
+                                                        row.remove()
+                                                    }
+
                                                 }
                                             }
                                         ]

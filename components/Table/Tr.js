@@ -203,8 +203,23 @@ class Tr extends Component {
         }
       }
     }
+  }
 
+  validate() {
+    let validated = true
 
+    for (const key in this.tdRefs) {
+      const item = this.tdRefs[key]
+      const { editor } = item
+      if (editor) {
+        const result = editor.validate()
+        if (result !== true) {
+          validated = result
+        }
+      }
+    }
+
+    return validated
   }
 
   edit() {
