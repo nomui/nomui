@@ -81,6 +81,14 @@
 | setScrollPlace | 记录当前表格滚动位置(下次 update 时会自动滚动), 若传入回调函数，则参数是当前滚动位置信息`{header,body}` | - |
 | autoScrollGrid | 主动触发滚动条自动滚动到上次的位置 | `({header,body})=>{} ` |
 
+### row methods
+
+| 名称 | 说明 | 类型 |
+| --- | --- | --- |
+| edit | 编辑当前行 | `function` |
+| save | 保存当前行(如果传参数false则忽略更改) | `function` |
+| validate | 校验当前行 | `()=>boolean` |
+
 ### column
 
 列描述数据对象，是 columns 中的一项，column 使用相同的 API。
@@ -91,6 +99,7 @@
 | title | 列头显示标题 | `string` | - |
 | width | 列宽度，单位 px | `boolean` | 120 |
 | align | 文本对齐方式 | `left`\|`center`\|`right` | `left` |
+| editRender | 单元格编辑模式渲染函数，返回表单类型组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
 | resizable | 是否允许拖动列宽 | `boolean` | `false` |

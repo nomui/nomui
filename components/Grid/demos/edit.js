@@ -108,7 +108,6 @@ define([], function () {
                         component: 'Grid',
                         ref: (c) => {
                             gridRef = c
-                            window.ggg = c
                         },
                         columns: [
                             {
