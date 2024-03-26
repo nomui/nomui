@@ -3,6 +3,7 @@ define([], function () {
         title: '行内编辑',
         file: 'edit',
         demo: function () {
+            let gridRef = null
 
             const roleArr = [
                 {
@@ -85,11 +86,17 @@ define([], function () {
                         cols: [
                             {
                                 component: 'Button',
-                                text: '新增行'
+                                text: '新增行',
+                                onClick: () => {
+                                    gridRef.appendRow({ data: { id: nomui.utils.newGuid() } })
+                                }
                             },
                             {
                                 component: 'Button',
-                                text: '新增行(带默认值)'
+                                text: '新增行(带默认值)',
+                                onClick: () => {
+                                    gridRef.appendRow({ data: { id: nomui.utils.newGuid(), name: '任我行', date: '2024-01-15', role: '4', dept: '0-1-1', sex: '2' } })
+                                }
                             },
                             {
                                 component: 'Button',
@@ -100,6 +107,7 @@ define([], function () {
                     {
                         component: 'Grid',
                         ref: (c) => {
+                            gridRef = c
                             window.ggg = c
                         },
                         columns: [
@@ -130,6 +138,7 @@ define([], function () {
                                 field: 'role',
                                 title: '岗位',
                                 editRender: ({ cellData }) => {
+
                                     return {
                                         component: 'Select',
                                         optionFields: { text: 'name', value: 'value' },
@@ -138,6 +147,7 @@ define([], function () {
                                     }
                                 },
                                 cellRender: ({ cellData }) => {
+                                    if (!cellData) return null
                                     return roleArr.filter(n => {
                                         return n.value === cellData
                                     })[0].name
@@ -150,6 +160,7 @@ define([], function () {
                                 title: '部门',
                                 width: 500,
                                 editRender: ({ cellData }) => {
+
                                     return {
                                         component: 'TreeSelect',
                                         value: cellData,
