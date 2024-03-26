@@ -121,7 +121,10 @@ define([], function () {
                                         value: cellData
                                     }
                                 },
-
+                                cellRender: ({ cellData }) => {
+                                    if (!cellData) return '-'
+                                    return cellData
+                                }
                             },
                             {
                                 field: 'date',
@@ -132,13 +135,16 @@ define([], function () {
                                         component: 'DatePicker',
                                         value: cellData
                                     }
+                                },
+                                cellRender: ({ cellData }) => {
+                                    if (!cellData) return '-'
+                                    return cellData
                                 }
                             },
                             {
                                 field: 'role',
                                 title: '岗位',
                                 editRender: ({ cellData }) => {
-
                                     return {
                                         component: 'Select',
                                         optionFields: { text: 'name', value: 'value' },
@@ -147,20 +153,17 @@ define([], function () {
                                     }
                                 },
                                 cellRender: ({ cellData }) => {
-                                    if (!cellData) return null
+                                    if (!cellData) return '-'
                                     return roleArr.filter(n => {
                                         return n.value === cellData
                                     })[0].name
                                 }
-
-
                             },
                             {
                                 field: 'dept',
                                 title: '部门',
                                 width: 500,
                                 editRender: ({ cellData }) => {
-
                                     return {
                                         component: 'TreeSelect',
                                         value: cellData,
@@ -168,6 +171,7 @@ define([], function () {
                                     }
                                 },
                                 cellRender: ({ cellData }) => {
+                                    if (!cellData) return '-'
                                     let obj = {}
                                     const mapTree = (arr) => {
                                         arr.forEach(n => {
@@ -196,6 +200,7 @@ define([], function () {
                                     }
                                 },
                                 cellRender: ({ cellData }) => {
+                                    if (!cellData) return '-'
                                     if (cellData === '1') return '男'
                                     if (cellData === '2') return '女'
                                 }
