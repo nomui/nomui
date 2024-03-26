@@ -100,7 +100,10 @@ define([], function () {
                             },
                             {
                                 component: 'Button',
-                                text: '获取已修改数据'
+                                text: '获取已修改数据',
+                                onClick: () => {
+                                    console.log(gridRef.getModifiedData())
+                                }
                             }
                         ]
                     },
