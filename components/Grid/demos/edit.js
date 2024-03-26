@@ -86,9 +86,9 @@ define([], function () {
                         cols: [
                             {
                                 component: 'Button',
-                                text: '新增行',
+                                text: '新增编辑行',
                                 onClick: () => {
-                                    gridRef.appendRow({ data: { id: nomui.utils.newGuid() } })
+                                    gridRef.appendRow({ editMode: true, data: { id: nomui.utils.newGuid() } })
                                 }
                             },
                             {
