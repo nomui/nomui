@@ -202,6 +202,7 @@ class Tr extends Component {
           }
         }
       }
+      grid._processModifedRows(data[grid.props.keyField])
     }
   }
 

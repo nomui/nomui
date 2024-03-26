@@ -57,6 +57,8 @@ class Grid extends Component {
     this.filterValueText = {}
     this._resetFixCount()
 
+    this.modifiedRowKeys = []
+
     if (this.props.frozenLeftCols > 0) {
       this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn && this.props.frozenLeftCols++
       this.props.rowExpandable && this.props.frozenLeftCols++
@@ -81,6 +83,8 @@ class Grid extends Component {
       if (treeConfig && treeConfig.flatData) {
         this._alreadyProcessedFlat = false
       }
+      // 重置modifiedRowKeys
+      this.modifiedRowKeys = []
     }
     if ((props.hasOwnProperty('rowCheckable') && !props.rowCheckable.checkboxOnNodeColumn) || props.hasOwnProperty('rowExpandable')) {
       this._resetFixCount()
@@ -287,6 +291,23 @@ class Grid extends Component {
     })
 
     return treeData
+  }
+
+  _processModifedRows(key) {
+    if (this.modifiedRowKeys.findIndex(n => {
+      return n === key
+    }) === -1) {
+      this.modifiedRowKeys.push(key)
+    }
+  }
+
+  getModifiedData() {
+    const data = this.getData()
+    const result = data.filter(n => {
+      return this.modifiedRowKeys.includes(n[this.props.keyField])
+    })
+    return result
+
   }
 
   _parseBrowerVersion() {
@@ -808,6 +829,9 @@ class Grid extends Component {
 
   appendRow(rowProps) {
     this.body.table.appendRow(rowProps)
+    if (rowProps.data && rowProps.data[this.props.keyField]) {
+      this._processModifedRows(rowProps.data[this.props.keyField])
+    }
   }
 
   checkChildren(row) {

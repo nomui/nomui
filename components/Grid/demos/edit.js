@@ -248,7 +248,7 @@ define([], function () {
 
                         ],
                         data: [
-                            { id: 1, name: '张小花', date: '2020-3-15', role: '2', dept: '0-1-2', sex: '1' },
+                            { id: 1, name: '张小花', date: '2020-03-15', role: '2', dept: '0-1-2', sex: '1' },
 
                         ],
                     }
