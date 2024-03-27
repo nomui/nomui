@@ -82,6 +82,12 @@ class Tr extends Component {
     })
   }
 
+  _rendered() {
+    setTimeout(() => {
+      this._processModifiedStyle()
+    }, 0)
+  }
+
   check(checkOptions) {
     const grid = this.table.grid
 
@@ -178,6 +184,18 @@ class Tr extends Component {
     })
     this.removeClass('s-expanded')
     this._expanded = false
+  }
+
+  _processModifiedStyle() {
+    const { data } = this.props
+    const { grid } = this.table
+    if (!grid) {
+      return
+    }
+
+    if (grid.modifiedRowKeys.includes(data[grid.props.keyField])) {
+      this.element.classList.add(grid.props.modifiedRowClass)
+    }
   }
 
   _updateRowData() {

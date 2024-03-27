@@ -56,6 +56,7 @@
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
 | highlightCol | 表头 hover 时将对应列高亮 | `boolean` | `false` |
 | striped | 是否显示斑马间隔 | `boolean` | `false` |
+| modifiedRowClass | 编辑模式下数据被修改（或新增）的行样式类名 | `string` | `'nom-grid-tr-modified'` |
 | defaultSort | 默认排序的配置 | `object` | - |
 | onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
 | forceSort | 是否在排序清空时仍触发 onSort 回调 | `boolean` | `false` |
@@ -73,7 +74,8 @@
 | appendRow | 在后面新增一行 | `(rowProps)=>{}` |
 | resetSort | 重置表格的排序状态 | - |
 | getDataKeys | 获取当前顺序的 keyField 数组 | - |
-| getData | 获取当前顺序的表格 data | - |
+| getData | 获取当前顺序的表格数据| - |
+| getModifiedData | 获取当前表格数据当中被编辑（或新增）的部分 | - |
 | resetColumnsCustom | 重置自定义列的展示 | - |
 | resetColsWidth | 重置列的宽度(不传参数则重置所有列宽) | `Funciton(field \| null)` |
 | getCheckedRows | 获取当前选中行数组 | - |
