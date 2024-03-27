@@ -56,7 +56,7 @@
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
 | highlightCol | 表头 hover 时将对应列高亮 | `boolean` | `false` |
 | striped | 是否显示斑马间隔 | `boolean` | `false` |
-| modifiedRowClass | 编辑模式下数据被修改（或新增）的行样式类名 | `string` | `'nom-grid-tr-modified'` |
+| highlightModifiedRows | 数据被修改（或新增）的行是否高亮显示 | `boolean` | `true` |
 | defaultSort | 默认排序的配置 | `object` | - |
 | onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
 | forceSort | 是否在排序清空时仍触发 onSort 回调 | `boolean` | `false` |

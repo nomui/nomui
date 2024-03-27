@@ -1408,7 +1408,7 @@ Grid.defaults = {
 
   columnFrozenable: false, // 允许固定列
   // columnFrozenable.cache: boolean 固定列的结果保存至localstorage
-  modifiedRowClass: 'nom-grid-tr-modified', // 编辑模式下已修改的行class
+  highlightModifiedRows: true, // 数据被编辑（或新增）的行是否高亮显示
   striped: false,
   showTitle: false,
   ellipsis: false,

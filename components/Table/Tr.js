@@ -193,8 +193,8 @@ class Tr extends Component {
       return
     }
 
-    if (grid.modifiedRowKeys.includes(data[grid.props.keyField])) {
-      this.element.classList.add(grid.props.modifiedRowClass)
+    if (grid.props && grid.props.highlightModifiedRows && grid.modifiedRowKeys.includes(data[grid.props.keyField])) {
+      this.element.classList.add('nom-grid-tr-modified')
     }
   }
 
