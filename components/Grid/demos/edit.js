@@ -100,11 +100,50 @@ define([], function () {
                             },
                             {
                                 component: 'Button',
-                                text: '获取已修改数据',
+                                text: '全局编辑模式',
+                                onClick: () => {
+                                    gridRef.edit()
+                                }
+                            },
+                            {
+                                component: 'Button',
+                                text: '全局查看模式',
+                                onClick: () => {
+                                    gridRef.save()
+                                }
+                            },
+                            {
+                                component: 'Button',
+                                text: '获取新增数据',
                                 onClick: () => {
                                     console.log(gridRef.getModifiedData())
                                 }
-                            }
+                            },
+                            {
+                                component: 'Button',
+                                text: '获取修改数据',
+                                onClick: () => {
+                                    console.log(gridRef.getAddedData())
+                                }
+                            },
+                            {
+                                component: 'Button',
+                                text: '获取删除数据id',
+                                onClick: () => {
+                                    console.log(gridRef.getRemovedRowKeys())
+                                }
+                            },
+                            {
+                                component: 'Button',
+                                text: '校验并保存修改',
+                                onClick: () => {
+                                    if (gridRef.validate()) {
+                                        gridRef.saveData()
+                                        console.log(gridRef.getData())
+                                    }
+                                }
+                            },
+
                         ]
                     },
                     {

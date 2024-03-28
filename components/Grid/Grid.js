@@ -58,6 +58,8 @@ class Grid extends Component {
     this._resetFixCount()
 
     this.modifiedRowKeys = []
+    this.addedRowKeys = []
+    this.removedRowKeys = []
 
     if (this.props.frozenLeftCols > 0) {
       this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn && this.props.frozenLeftCols++
@@ -85,6 +87,8 @@ class Grid extends Component {
       }
       // 重置modifiedRowKeys
       this.modifiedRowKeys = []
+      this.addedRowKeys = []
+      this.removedRowKeys = []
     }
     if ((props.hasOwnProperty('rowCheckable') && !props.rowCheckable.checkboxOnNodeColumn) || props.hasOwnProperty('rowExpandable')) {
       this._resetFixCount()
@@ -301,13 +305,54 @@ class Grid extends Component {
     }
   }
 
+  _processAddedRows(key) {
+    if (this.addedRowKeys.findIndex(n => {
+      return n === key
+    }) === -1) {
+      this.addedRowKeys.push(key)
+    }
+  }
+
+
   getModifiedData() {
     const data = this.getData()
     const result = data.filter(n => {
       return this.modifiedRowKeys.includes(n[this.props.keyField])
     })
     return result
+  }
 
+  getAddedData() {
+    const data = this.getData()
+    const result = data.filter(n => {
+      return this.addedRowKeys.includes(n[this.props.keyField])
+    })
+    return result
+  }
+
+  validate() {
+    const keys = Object.keys(this.rowsRefs)
+    let validated = true
+    keys.forEach(n => {
+      if (validated === true && this.rowsRefs[n].validate() === false) {
+        validated = false
+      }
+    })
+    return validated
+  }
+
+  edit() {
+    const keys = Object.keys(this.rowsRefs)
+    keys.forEach(n => {
+      this.rowsRefs[n].edit()
+    })
+  }
+
+  saveData() {
+    const keys = Object.keys(this.rowsRefs)
+    keys.forEach(n => {
+      this.rowsRefs[n]._updateRowData()
+    })
   }
 
   _parseBrowerVersion() {
@@ -830,7 +875,7 @@ class Grid extends Component {
   appendRow(rowProps) {
     this.body.table.appendRow(rowProps)
     if (rowProps.data && rowProps.data[this.props.keyField]) {
-      this._processModifedRows(rowProps.data[this.props.keyField])
+      this._processAddedRows(rowProps.data[this.props.keyField])
     }
   }
 
