@@ -348,10 +348,17 @@ class Grid extends Component {
     })
   }
 
+  view() {
+    const keys = Object.keys(this.rowsRefs)
+    keys.forEach(n => {
+      this.rowsRefs[n].view()
+    })
+  }
+
   saveData() {
     const keys = Object.keys(this.rowsRefs)
     keys.forEach(n => {
-      this.rowsRefs[n]._updateRowData()
+      this.rowsRefs[n].saveData()
     })
   }
 

@@ -258,7 +258,7 @@ define([], function () {
                                                 onClick: () => {
                                                     if (row.props.editMode) {
                                                         if (row.validate()) {
-                                                            row.save()
+                                                            row.view()
                                                         }
                                                     }
                                                     else {
@@ -271,7 +271,7 @@ define([], function () {
                                                 text: row.props.editMode ? '取消' : '删除',
                                                 onClick: () => {
                                                     if (row.props.editMode) {
-                                                        row.save(false)
+                                                        row.view(false)
                                                     }
                                                     else {
                                                         row.remove()

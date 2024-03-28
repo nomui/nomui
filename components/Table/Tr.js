@@ -208,8 +208,8 @@ class Tr extends Component {
         dataChanged = true
         data[key] = editor.getValue()
       }
-
     }
+
     if (dataChanged) {
       this.update({ data: data })
       const grid = this.table.grid
@@ -226,7 +226,6 @@ class Tr extends Component {
 
   validate() {
     let validated = true
-
     for (const key in this.tdRefs) {
       const item = this.tdRefs[key]
       const { editor } = item
@@ -247,13 +246,17 @@ class Tr extends Component {
     })
   }
 
-  save(saveChange) {
+  view(saveChange) {
     if (saveChange !== false) {
       this._updateRowData()
     }
     this.update({
       editMode: false
     })
+  }
+
+  saveData() {
+    this._updateRowData()
   }
 
   // 遍历childTrs 调用show 展示
