@@ -33,6 +33,7 @@ define([
   './cascadeCheckParent.js',
   './cascadeCheckChildren.js',
   './cascadeUncheckChildren.js',
+  './edit.js',
 ], function () {
   return {
     title: 'Grid',
