@@ -15,6 +15,7 @@ class Tr extends Component {
   _created() {
     this.tbody = this.parent
     this.table = this.tbody.table
+    this.tdRefs = {}
 
     // keyField(id) 不为 undefined, null
     const dataHaskeyField = !isNullish(this.props.data[this.table.props.keyField])
@@ -79,6 +80,12 @@ class Tr extends Component {
       hidden: hidden,
       children: children,
     })
+  }
+
+  _rendered() {
+    setTimeout(() => {
+      this._processModifiedStyle()
+    }, 0)
   }
 
   check(checkOptions) {
@@ -179,6 +186,79 @@ class Tr extends Component {
     this._expanded = false
   }
 
+  _processModifiedStyle() {
+    const { data } = this.props
+    const { grid } = this.table
+    if (!grid) {
+      return
+    }
+
+    if (grid.props && grid.props.highlightModifiedRows && grid.modifiedRowKeys.includes(data[grid.props.keyField])) {
+      this.element.classList.add('nom-grid-tr-modified')
+    }
+  }
+
+  _updateRowData() {
+    let dataChanged = false
+    const { data } = this.props
+    for (const key in this.tdRefs) {
+      const item = this.tdRefs[key]
+      const { editor } = item
+      if (editor && data[key] !== editor.getValue()) {
+        dataChanged = true
+        data[key] = editor.getValue()
+      }
+    }
+
+    if (dataChanged) {
+      this.update({ data: data })
+      const grid = this.table.grid
+      if (grid.props.data.length) {
+        for (let i = 0; i < grid.props.data.length; i++) {
+          if (grid.props.data[i][grid.props.keyField] === data[grid.props.keyField]) {
+            grid.props.data[i] = data
+          }
+        }
+      }
+      grid._processModifedRows(data[grid.props.keyField])
+    }
+  }
+
+  validate() {
+    let validated = true
+    for (const key in this.tdRefs) {
+      const item = this.tdRefs[key]
+      const { editor } = item
+      if (editor) {
+        const result = editor.validate()
+        if (result !== true) {
+          validated = result
+        }
+      }
+    }
+
+    return validated
+  }
+
+  edit() {
+    this.update({
+      editMode: true
+    })
+  }
+
+  view(saveChange) {
+    if (saveChange !== false) {
+      this._updateRowData()
+    }
+    this.update({
+      editMode: false
+    })
+  }
+
+  saveData() {
+    this._updateRowData()
+  }
+
   // 遍历childTrs 调用show 展示
   _show() {
     if (this.firstRender) {
@@ -214,6 +294,7 @@ class Tr extends Component {
       const _rowRefKey = this.props.data[this.table.props.keyField]
 
       delete this.table.grid.rowsRefs[_rowRefKey]
+      this.table.grid._processRemovedRows(this.props.data[this.table.props.keyField])
     }
   }
 }
