@@ -298,25 +298,24 @@ class Grid extends Component {
   }
 
   _processModifedRows(key) {
-    if (this.modifiedRowKeys.findIndex(n => {
-      return n === key
-    }) === -1) {
+    if (!this.addedRowKeys.includes(key) && !this.modifiedRowKeys.includes(key)) {
       this.modifiedRowKeys.push(key)
     }
   }
 
   _processAddedRows(key) {
-    if (this.addedRowKeys.findIndex(n => {
-      return n === key
-    }) === -1) {
+    if (!this.addedRowKeys.includes(key)) {
       this.addedRowKeys.push(key)
     }
   }
 
   _processRemovedRows(key) {
-    if (this.removedRowKeys.findIndex(n => {
-      return n === key
-    }) === -1) {
+    if (this.addedRowKeys.includes(key)) {
+      this.addedRowKeys = this.addedRowKeys.filter(n => {
+        return n !== key
+      })
+    }
+    else if (!this.removedRowKeys.includes(key)) {
       this.removedRowKeys.push(key)
     }
   }
