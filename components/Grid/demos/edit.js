@@ -109,21 +109,21 @@ define([], function () {
                                 component: 'Button',
                                 text: '全局查看模式',
                                 onClick: () => {
-                                    gridRef.save()
+                                    gridRef.view()
                                 }
                             },
                             {
                                 component: 'Button',
                                 text: '获取新增数据',
                                 onClick: () => {
-                                    console.log(gridRef.getModifiedData())
+                                    console.log(gridRef.getAddedData())
                                 }
                             },
                             {
                                 component: 'Button',
                                 text: '获取修改数据',
                                 onClick: () => {
-                                    console.log(gridRef.getAddedData())
+                                    console.log(gridRef.getModifiedData())
                                 }
                             },
                             {
@@ -150,6 +150,7 @@ define([], function () {
                         component: 'Grid',
                         ref: (c) => {
                             gridRef = c
+                            window.ggg = c
                         },
                         columns: [
                             {

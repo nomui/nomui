@@ -313,6 +313,14 @@ class Grid extends Component {
     }
   }
 
+  _processRemovedRows(key) {
+    if (this.removedRowKeys.findIndex(n => {
+      return n === key
+    }) === -1) {
+      this.removedRowKeys.push(key)
+    }
+  }
+
 
   getModifiedData() {
     const data = this.getData()
@@ -328,6 +336,10 @@ class Grid extends Component {
       return this.addedRowKeys.includes(n[this.props.keyField])
     })
     return result
+  }
+
+  getRemovedRowKeys() {
+    return this.removedRowKeys
   }
 
   validate() {

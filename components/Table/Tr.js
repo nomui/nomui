@@ -294,6 +294,7 @@ class Tr extends Component {
       const _rowRefKey = this.props.data[this.table.props.keyField]
 
       delete this.table.grid.rowsRefs[_rowRefKey]
+      this.table.grid._processRemovedRows(this.props.data[this.table.props.keyField])
     }
   }
 }
