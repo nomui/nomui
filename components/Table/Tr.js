@@ -246,8 +246,11 @@ class Tr extends Component {
     })
   }
 
-  view(saveChange) {
-    if (saveChange !== false) {
+  endEdit(options) {
+    if (!options) {
+      options = { acceptDataChange: true }
+    }
+    if (options.acceptDataChange !== false) {
       this._updateRowData()
     }
     this.update({
@@ -255,7 +258,7 @@ class Tr extends Component {
     })
   }
 
-  saveData() {
+  acceptDataChange() {
     this._updateRowData()
   }
 
@@ -294,7 +297,7 @@ class Tr extends Component {
       const _rowRefKey = this.props.data[this.table.props.keyField]
 
       delete this.table.grid.rowsRefs[_rowRefKey]
-      this.table.grid._processRemovedRows(this.props.data[this.table.props.keyField])
+      this.table.grid._processRemovedRows(this.props.data)
     }
   }
 }

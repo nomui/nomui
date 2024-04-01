@@ -109,28 +109,14 @@ define([], function () {
                                 component: 'Button',
                                 text: '全局查看模式',
                                 onClick: () => {
-                                    gridRef.view()
-                                }
-                            },
-                            {
-                                component: 'Button',
-                                text: '获取新增数据',
-                                onClick: () => {
-                                    console.log(gridRef.getAddedData())
+                                    gridRef.endEdit()
                                 }
                             },
                             {
                                 component: 'Button',
                                 text: '获取修改数据',
                                 onClick: () => {
-                                    console.log(gridRef.getModifiedData())
-                                }
-                            },
-                            {
-                                component: 'Button',
-                                text: '获取删除数据id',
-                                onClick: () => {
-                                    console.log(gridRef.getRemovedRowKeys())
+                                    console.log(gridRef.getDataChange())
                                 }
                             },
                             {
@@ -138,8 +124,8 @@ define([], function () {
                                 text: '校验并保存修改',
                                 onClick: () => {
                                     if (gridRef.validate()) {
-                                        gridRef.saveData()
-                                        console.log(gridRef.getData())
+                                        const data = gridRef.getDataChange({ restoreChange: true })
+                                        console.log(data)
                                     }
                                 }
                             },
@@ -258,7 +244,7 @@ define([], function () {
                                                 onClick: () => {
                                                     if (row.props.editMode) {
                                                         if (row.validate()) {
-                                                            row.view()
+                                                            row.endEdit()
                                                         }
                                                     }
                                                     else {
@@ -271,7 +257,7 @@ define([], function () {
                                                 text: row.props.editMode ? '取消' : '删除',
                                                 onClick: () => {
                                                     if (row.props.editMode) {
-                                                        row.view(false)
+                                                        row.endEdit({ acceptDataChange: false })
                                                     }
                                                     else {
                                                         row.remove()

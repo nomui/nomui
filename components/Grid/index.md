@@ -75,9 +75,6 @@
 | resetSort | 重置表格的排序状态 | - |
 | getDataKeys | 获取当前顺序的 keyField 数组 | - |
 | getData | 获取当前顺序的表格数据| - |
-| getAddedData | 获取当前表格数据属于新增的部分 | - |
-| getModifiedData | 获取当前表格数据当中被编辑的部分 | - |
-| getRemovedRowKeys | 获取当前表格中被删除行数据的key | - |
 | resetColumnsCustom | 重置自定义列的展示 | - |
 | resetColsWidth | 重置列的宽度(不传参数则重置所有列宽) | `Funciton(field \| null)` |
 | getCheckedRows | 获取当前选中行数组 | - |
@@ -85,18 +82,20 @@
 | setScrollPlace | 记录当前表格滚动位置(下次 update 时会自动滚动), 若传入回调函数，则参数是当前滚动位置信息`{header,body}` | - |
 | autoScrollGrid | 主动触发滚动条自动滚动到上次的位置 | `({header,body})=>{} ` |
 | edit | 全局编辑模式 | `function` |
-| view | 全局查看模式 | `function` |
 | validate | 编辑模式下校验表格 | `()=>boolean` |
-| saveData | 编辑模式下保存表格数据更改 | `function` |
+| endEdit | 结束编辑状态(如果传参`{acceptDataChange:false}`忽略数据更改) | `function` |
+| acceptDataChange | 将编辑模式下的数据修改更新到data | `function` |
+| getDataChange | 获取当前表格数据中被修改的部分（包括新增 编辑 删除,如果传参`{restoreChange:true}`则重置修改痕迹） | - |
+| restoreChange | 重置数据修改痕迹 | `function` |
 
 ### row methods
 
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
 | edit | 编辑当前行 | `function` |
-| view | 从编辑状态切换回查看模式(如果传参数false则忽略数据更改) | `function` |
-| saveData | 保存当前行数据更改 | `function` |
 | validate | 校验当前行 | `()=>boolean` |
+| endEdit | 结束编辑状态(如果传参`{acceptDataChange:false}`忽略数据更改) | `function` |
+| acceptDataChange | 将编辑模式下的数据修改更新到data | `function` |
 
 ### column
 

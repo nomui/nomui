@@ -60,6 +60,7 @@ class Grid extends Component {
     this.modifiedRowKeys = []
     this.addedRowKeys = []
     this.removedRowKeys = []
+    this.removedRowData = []
 
     if (this.props.frozenLeftCols > 0) {
       this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn && this.props.frozenLeftCols++
@@ -86,9 +87,7 @@ class Grid extends Component {
         this._alreadyProcessedFlat = false
       }
       // 重置modifiedRowKeys
-      this.modifiedRowKeys = []
-      this.addedRowKeys = []
-      this.removedRowKeys = []
+      this._restoreChangeCache()
     }
     if ((props.hasOwnProperty('rowCheckable') && !props.rowCheckable.checkboxOnNodeColumn) || props.hasOwnProperty('rowExpandable')) {
       this._resetFixCount()
@@ -297,6 +296,13 @@ class Grid extends Component {
     return treeData
   }
 
+  _restoreChangeCache() {
+    this.modifiedRowKeys = []
+    this.addedRowKeys = []
+    this.removedRowKeys = []
+    this.removedRowData = []
+  }
+
   _processModifedRows(key) {
     if (!this.addedRowKeys.includes(key) && !this.modifiedRowKeys.includes(key)) {
       this.modifiedRowKeys.push(key)
@@ -309,37 +315,29 @@ class Grid extends Component {
     }
   }
 
-  _processRemovedRows(key) {
+  _processRemovedRows(data) {
+    const key = data[this.props.keyField]
     if (this.addedRowKeys.includes(key)) {
       this.addedRowKeys = this.addedRowKeys.filter(n => {
         return n !== key
       })
     }
     else if (!this.removedRowKeys.includes(key)) {
+      if (this.modifiedRowKeys.includes(key)) {
+        this.modifiedRowKeys = this.modifiedRowKeys.filter(n => {
+          return n !== key
+        })
+      }
       this.removedRowKeys.push(key)
+      this.removedRowData.push(data)
     }
   }
 
 
-  getModifiedData() {
-    const data = this.getData()
-    const result = data.filter(n => {
-      return this.modifiedRowKeys.includes(n[this.props.keyField])
-    })
-    return result
-  }
-
-  getAddedData() {
-    const data = this.getData()
-    const result = data.filter(n => {
-      return this.addedRowKeys.includes(n[this.props.keyField])
-    })
-    return result
-  }
-
   getRemovedRowKeys() {
     return this.removedRowKeys
   }
+
 
   validate() {
     const keys = Object.keys(this.rowsRefs)
@@ -359,19 +357,47 @@ class Grid extends Component {
     })
   }
 
-  view() {
+  endEdit(options) {
+    if (!options) {
+      options = { acceptDataChange: true }
+    }
     const keys = Object.keys(this.rowsRefs)
     keys.forEach(n => {
-      this.rowsRefs[n].view()
+      this.rowsRefs[n].endEdit({ acceptDataChange: options.acceptDataChange })
     })
   }
 
-  saveData() {
+  acceptDataChange() {
     const keys = Object.keys(this.rowsRefs)
     keys.forEach(n => {
-      this.rowsRefs[n].saveData()
+      this.rowsRefs[n].acceptDataChange()
     })
   }
+
+  restoreChange() {
+    this._restoreChangeCache()
+  }
+
+  getDataChange(options) {
+    if (!options) {
+      options = { restoreChange: false }
+    }
+    this.acceptDataChange()
+    const data = this.getData()
+    const result = {}
+    result.addedData = data.filter(n => {
+      return this.addedRowKeys.includes(n[this.props.keyField])
+    })
+    result.modifiedData = data.filter(n => {
+      return this.modifiedRowKeys.includes(n[this.props.keyField])
+    })
+    result.removedData = this.removedRowData
+    if (options.restoreChange) {
+      this._restoreChangeCache()
+    }
+    return result
+  }
+
 
   _parseBrowerVersion() {
     // 不支持sticky，需要将frozen 置为null
