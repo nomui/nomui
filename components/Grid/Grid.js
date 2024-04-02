@@ -11,12 +11,13 @@ import {
 import {
   ascCompare,
   defaultSortableOndrop,
+  extend,
   isBrowerSupportSticky,
   isFunction,
   isNullish,
   isPlainObject,
   isString,
-  localeCompareString,
+  localeCompareString
 } from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
@@ -43,6 +44,8 @@ class Grid extends Component {
     this._shouldAutoScroll = true
     this._customColumnFlag = false // 是否已经自定义处理过列
     this._pinColumnFlag = false // 是否已经处理过列缓存
+
+    this._defaultData = extend([], this.props.data)
 
     this.props.columns = this.props.columns.filter((n) => {
       return Object.keys(n).length
@@ -88,6 +91,8 @@ class Grid extends Component {
       }
       // 重置modifiedRowKeys
       this._restoreChangeCache()
+      this._defaultData = extend([], props.data)
+
     }
     if ((props.hasOwnProperty('rowCheckable') && !props.rowCheckable.checkboxOnNodeColumn) || props.hasOwnProperty('rowExpandable')) {
       this._resetFixCount()
@@ -178,7 +183,6 @@ class Grid extends Component {
     this._processColumnsCustom()
     this._processPinColumn()
     this._processColumnSort()
-
     this._processCheckableColumn()
     this._processExpandableColumn()
     this._processFrozenColumn()
@@ -376,6 +380,14 @@ class Grid extends Component {
 
   restoreChange() {
     this._restoreChangeCache()
+  }
+
+  reset() {
+    this.update({
+      data: this._defaultData,
+      isSelfUpdate: true
+    })
+    this.restoreChange()
   }
 
   getDataChange(options) {

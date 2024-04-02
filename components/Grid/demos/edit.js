@@ -114,6 +114,13 @@ define([], function () {
                             },
                             {
                                 component: 'Button',
+                                text: '校验表格',
+                                onClick: () => {
+                                    gridRef.validate()
+                                }
+                            },
+                            {
+                                component: 'Button',
                                 text: '获取修改数据',
                                 onClick: () => {
                                     console.log(gridRef.getDataChange())
@@ -121,14 +128,12 @@ define([], function () {
                             },
                             {
                                 component: 'Button',
-                                text: '校验并保存修改',
+                                text: '重置回默认数据',
                                 onClick: () => {
-                                    if (gridRef.validate()) {
-                                        const data = gridRef.getDataChange({ restoreChange: true })
-                                        console.log(data)
-                                    }
+                                    gridRef.reset()
                                 }
                             },
+
 
                         ]
                     },
@@ -136,6 +141,7 @@ define([], function () {
                         component: 'Grid',
                         ref: (c) => {
                             gridRef = c
+                            window.ggg = c
                         },
                         columns: [
                             {
