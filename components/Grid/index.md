@@ -36,6 +36,7 @@
 | columns | 表格列的配置描述，具体项见下表 | `array` | `[]` |
 | columnAlign | 所有列的默认文本对齐方式 | `left`\|`center`\|`right` | `left` |
 | data | 表格数据数组 | `array` | `[]` |
+| editMode | 表格编辑模式 | `boolean` | `false` |
 | frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
 | frozenRightCols | 指定冻结右侧多少列 | `number` | - |
@@ -56,6 +57,7 @@
 | ellipsis | 是否开启单元格文字超出自动省略 | `boolean` | `false` |
 | highlightCol | 表头 hover 时将对应列高亮 | `boolean` | `false` |
 | striped | 是否显示斑马间隔 | `boolean` | `false` |
+| highlightModifiedRows | 数据被修改（或新增）的行是否高亮显示 | `boolean` | `true` |
 | defaultSort | 默认排序的配置 | `object` | - |
 | onSort | 后端排序触发回调 | `({field,sortDirection})=>{}` | - |
 | forceSort | 是否在排序清空时仍触发 onSort 回调 | `boolean` | `false` |
@@ -72,14 +74,29 @@
 | --- | --- | --- |
 | appendRow | 在后面新增一行 | `(rowProps)=>{}` |
 | resetSort | 重置表格的排序状态 | - |
-| getDataKeys | 获取当前顺序的 keyField 数组 | - |
-| getData | 获取当前顺序的表格 data | - |
 | resetColumnsCustom | 重置自定义列的展示 | - |
 | resetColsWidth | 重置列的宽度(不传参数则重置所有列宽) | `Funciton(field \| null)` |
 | getCheckedRows | 获取当前选中行数组 | - |
 | getCheckedRowKeys | 获取当前选中行的 key 数组 | - |
 | setScrollPlace | 记录当前表格滚动位置(下次 update 时会自动滚动), 若传入回调函数，则参数是当前滚动位置信息`{header,body}` | - |
 | autoScrollGrid | 主动触发滚动条自动滚动到上次的位置 | `({header,body})=>{} ` |
+| edit | 全局编辑模式 | `function` |
+| endEdit | 结束编辑状态(如果传参`{ignoreChange:true}`忽略数据更改) | `function` |
+| validate | 编辑模式下校验表格 | `()=>boolean` |
+| getDataKeys | 获取当前顺序的 keyField 数组 | - |
+| getData | 获取当前顺序的表格数据| - |
+| getChangedData | 获取当前表格数据中被修改的部分（包括新增 编辑 删除） | - |
+| acceptChange | 接受Grid所有数据修改 | - |
+| reset | 重置回Grid原始数据 | - |
+
+
+### row methods
+
+| 名称 | 说明 | 类型 |
+| --- | --- | --- |
+| edit | 编辑当前行 | `function` |
+| endEdit | 结束编辑状态(如果传参`{ignoreChange:true}`忽略数据更改) | `function` |
+| validate | 校验当前行 | `()=>boolean` |
 
 ### column
 
@@ -91,6 +108,7 @@
 | title | 列头显示标题 | `string` | - |
 | width | 列宽度，单位 px | `boolean` | 120 |
 | align | 文本对齐方式 | `left`\|`center`\|`right` | `left` |
+| editRender | 单元格编辑模式渲染函数，返回表单类型组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
 | resizable | 是否允许拖动列宽 | `boolean` | `false` |
