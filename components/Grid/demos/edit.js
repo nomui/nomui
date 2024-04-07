@@ -123,7 +123,7 @@ define([], function () {
                                 component: 'Button',
                                 text: '获取修改数据',
                                 onClick: () => {
-                                    console.log(gridRef.getDataChange())
+                                    console.log(gridRef.getChangedData())
                                 }
                             },
                             {

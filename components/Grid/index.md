@@ -85,7 +85,7 @@
 | validate | 编辑模式下校验表格 | `()=>boolean` |
 | getDataKeys | 获取当前顺序的 keyField 数组 | - |
 | getData | 获取当前顺序的表格数据| - |
-| getDataChange | 获取当前表格数据中被修改的部分（包括新增 编辑 删除） | - |
+| getChangedData | 获取当前表格数据中被修改的部分（包括新增 编辑 删除） | - |
 | acceptChange | 接受Grid所有数据修改 | - |
 | reset | 重置回Grid原始数据 | - |
 

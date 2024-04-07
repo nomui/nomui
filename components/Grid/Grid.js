@@ -394,7 +394,7 @@ class Grid extends Component {
     this.restoreChange()
   }
 
-  getDataChange() {
+  getChangedData() {
     this.saveEditData()
     const data = this.getData()
     const result = {}
