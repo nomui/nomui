@@ -12408,6 +12408,18 @@ textarea .nom-textarea {
 .nom-tour-navi .nom-button {
   margin-left: 0.5rem;
 }
+.nom-watermark {
+  position: relative;
+}
+.nom-watermark .nom-watermark-mask {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+}
 @media all and (-moz-min-device-pixel-ratio: 1.09) and (-moz-max-device-pixel-ratio: 1.18), (-webkit-min-device-pixel-ratio: 1.09) and (-webkit-max-device-pixel-ratio: 1.18), (min-resolution: 1.09dppx) and (max-resolution: 1.18dppx) {
   :root {
     font-size: 14px;

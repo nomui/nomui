@@ -664,6 +664,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       id: 'Tour',
                       url: '#!components!index?type=Tour',
                     },
+                    {
+                      text: 'Watermark',
+                      subtext: '水印',
+                      id: 'Watermark',
+                      url: '#!components!index?type=Watermark',
+                    },
                   ],
                 },
               ],
