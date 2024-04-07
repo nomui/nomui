@@ -8342,9 +8342,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       this.setProps({
-        // RadioList,CheckboxList等div组件不为 focusable 元素
-        // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
-        attrs: { tabindex: this.props.tabindex || 0 },
         children: [
           labelProps,
           { component: FieldContent, value: this.props.value },
@@ -12132,6 +12129,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _config() {
       const that = this;
       this.setProps({
+        // RadioList,CheckboxList等div组件不为 focusable 元素
+        // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+        attrs: { tabindex: this.props.tabindex || 0 },
         classes: {
           "s-checked-part": !this.props.value && this.props.partChecked,
         },
@@ -12271,7 +12271,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.setProps({
         optionList: { component: OptionList, cols: this.props.cols },
       });
-      this.setProps({ control: this.props.optionList });
+      this.setProps({
+        // RadioList,CheckboxList等div组件不为 focusable 元素
+        // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+        attrs: { tabindex: this.props.tabindex || 0 },
+        control: this.props.optionList,
+      });
       super._config();
     }
     getSelectedOptions() {
@@ -25827,7 +25832,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.setProps({
         optionList: { component: RadioOptionList, cols: this.props.cols },
       });
-      this.setProps({ control: this.props.optionList });
+      this.setProps({
+        // RadioList,CheckboxList等div组件不为 focusable 元素
+        // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+        attrs: { tabindex: this.props.tabindex || 0 },
+        control: this.props.optionList,
+      });
       super._config();
     }
     getSelectedOption() {
@@ -26022,6 +26032,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const rateRef = this;
       this._initValue();
       this.setProps({
+        // RadioList,CheckboxList等div组件不为 focusable 元素
+        // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+        attrs: { tabindex: this.props.tabindex || 0 },
         control: {
           children: {
             tag: "ul",
@@ -27679,7 +27692,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super(Component.extendProps(StaticText.defaults, props), ...mixins);
     }
     _config() {
-      this.setProps({ control: { children: this.props.value } });
+      this.setProps({
+        // RadioList,CheckboxList等div组件不为 focusable 元素
+        // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+        attrs: { tabindex: this.props.tabindex || 0 },
+        control: { children: this.props.value },
+      });
       super._config();
     }
     _setValue(value) {
@@ -27856,6 +27874,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { value, unselectedText, selectedText, animate } = this.props;
       this._propStyleClasses = ["size"];
       this.setProps({
+        // RadioList,CheckboxList等div组件不为 focusable 元素
+        // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+        attrs: { tabindex: this.props.tabindex || 0 },
         control: {
           tag: "button",
           classes: { "nom-switch-control": true, "nom-switch-active": !!value },
@@ -29205,6 +29226,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       this.setProps({
+        // RadioList,CheckboxList等div组件不为 focusable 元素
+        // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+        attrs: { tabindex: this.props.tabindex || 0 },
         control: {
           children: {
             component: "Flex",

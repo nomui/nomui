@@ -15,6 +15,9 @@ class Rate extends Field {
     this._initValue()
 
     this.setProps({
+      // RadioList,CheckboxList等div组件不为 focusable 元素
+      // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+      attrs: { tabindex: this.props.tabindex || 0 },
       control: {
         children: {
           tag: 'ul',
