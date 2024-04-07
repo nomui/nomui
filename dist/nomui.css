@@ -4460,6 +4460,8 @@ body {
   --nom-grid-tr-bg-selected: #fffaef;
   --nom-grid-col-highlight-bg: rgba(221, 205, 79, 0.1);
   --nom-grid-td-padding: 8px 10px;
+  --nom-grid-tr-modified-bg: #f5f2ff;
+  --nom-grid-tr-modified-bg-hover: #f2edff;
   --nom-menu-divider-border: 1px solid var(--nom-border-color);
   --nom-menu-group-title-color: var(--nom-color-text-2);
   --nom-panel-header-bg-color: var(--nom-color-fill-0);
@@ -7613,6 +7615,12 @@ table.nom-table.p-bordered {
 }
 .nom-grid-setting-transfer .nom-grid-setting-target-node .nom-tree-node-content > .nom-tree-node-content-text {
   flex-grow: 1;
+}
+.nom-grid table.nom-table tbody tr.nom-grid-tr-modified:not(.nom-tr-empty) {
+  background-color: var(--nom-grid-tr-modified-bg);
+}
+.nom-grid table.nom-table tbody tr.nom-grid-tr-modified:not(.nom-tr-empty):hover {
+  background-color: var(--nom-grid-tr-modified-bg-hover);
 }
 .nom-icon {
   display: inline-flex;

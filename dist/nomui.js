@@ -16909,6 +16909,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.table = this.tr.table;
       this.col = this.table.colRefs[this.props.column.field];
       this.col.tdRefs[this.key] = this;
+      this.tr.tdRefs[this.props.column.field] = this;
     }
     _config() {
       const { level, isLeaf } = this.tr.props;
@@ -16916,7 +16917,24 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { treeConfig } = this.table.props;
       let spanProps = null;
       let children = this.props.data;
-      if (isFunction(column.cellRender)) {
+      if (this.tr.props.editMode && column.editRender) {
+        children = Object.assign(
+          {},
+          column.editRender({
+            cell: this,
+            row: this.tr,
+            talbe: this.table,
+            cellData: this.props.data,
+            rowData: this.tr.props.data,
+            index: this.tr.props.index,
+          }),
+          {
+            ref: (c) => {
+              this.editor = c;
+            },
+          }
+        );
+      } else if (isFunction(column.cellRender)) {
         children = column.cellRender({
           cell: this,
           row: this.tr,
@@ -17318,7 +17336,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _created() {
       this.tbody = this.parent;
-      this.table = this.tbody.table; // keyField(id) 不为 undefined, null
+      this.table = this.tbody.table;
+      this.tdRefs = {}; // keyField(id) 不为 undefined, null
       const dataHaskeyField = !isNullish(
         this.props.data[this.table.props.keyField]
       );
@@ -17367,12 +17386,24 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.tdList = [];
         children.push(...this.createTds(columns));
       }
+      if (
+        this.table.hasGrid &&
+        this.table.grid.props &&
+        this.table.grid.props.editMode
+      ) {
+        this.setProps({ editMode: true });
+      }
       this.setProps({
         key: data[this.table.props.keyField],
         attrs: { level: level },
         hidden: hidden,
         children: children,
       });
+    }
+    _rendered() {
+      setTimeout(() => {
+        this._processModifiedStyle();
+      }, 0);
     }
     check(checkOptions) {
       const grid = this.table.grid;
@@ -17441,6 +17472,76 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.setProps({ classes: { "s-expanded": false } });
       this.removeClass("s-expanded");
       this._expanded = false;
+    }
+    _processModifiedStyle() {
+      const { data } = this.props;
+      const { grid } = this.table;
+      if (!grid) {
+        return;
+      }
+      if (
+        grid.props &&
+        grid.props.highlightModifiedRows &&
+        grid.modifiedRowKeys.includes(data[grid.props.keyField])
+      ) {
+        this.element.classList.add("nom-grid-tr-modified");
+      }
+    }
+    _updateRowData() {
+      let dataChanged = false;
+      const { data } = this.props;
+      for (const key in this.tdRefs) {
+        const item = this.tdRefs[key];
+        const { editor } = item;
+        if (editor && data[key] !== editor.getValue()) {
+          dataChanged = true;
+          data[key] = editor.getValue();
+        }
+      }
+      if (dataChanged) {
+        this.update({ data: data });
+        const grid = this.table.grid;
+        if (grid.props.data.length) {
+          for (let i = 0; i < grid.props.data.length; i++) {
+            if (
+              grid.props.data[i][grid.props.keyField] ===
+              data[grid.props.keyField]
+            ) {
+              grid.props.data[i] = data;
+            }
+          }
+        }
+        grid._processModifedRows(data[grid.props.keyField]);
+      }
+    }
+    validate() {
+      let validated = true;
+      for (const key in this.tdRefs) {
+        const item = this.tdRefs[key];
+        const { editor } = item;
+        if (editor) {
+          const result = editor.validate();
+          if (result !== true) {
+            validated = result;
+          }
+        }
+      }
+      return validated;
+    }
+    edit() {
+      this.update({ editMode: true });
+    }
+    endEdit(options) {
+      if (!options) {
+        options = { ignoreChange: false };
+      }
+      if (options.ignoreChange !== true) {
+        this._updateRowData();
+      }
+      this.update({ editMode: false });
+    }
+    saveEditData() {
+      this._updateRowData();
     } // 遍历childTrs 调用show 展示
     _show() {
       if (this.firstRender) {
@@ -17472,6 +17573,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         // 重复key报错
         const _rowRefKey = this.props.data[this.table.props.keyField];
         delete this.table.grid.rowsRefs[_rowRefKey];
+        this.table.grid._processRemovedRows(this.props.data);
       }
     }
   }
@@ -19430,6 +19532,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._shouldAutoScroll = true;
       this._customColumnFlag = false; // 是否已经自定义处理过列
       this._pinColumnFlag = false; // 是否已经处理过列缓存
+      this._defaultData = extend([], this.props.data);
       this.props.columns = this.props.columns.filter((n) => {
         return Object.keys(n).length;
       });
@@ -19440,6 +19543,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.filter = {};
       this.filterValueText = {};
       this._resetFixCount();
+      this.modifiedRowKeys = [];
+      this.addedRowKeys = [];
+      this.removedRowKeys = [];
+      this.removedRowData = [];
       if (this.props.frozenLeftCols > 0) {
         this.props.rowCheckable &&
           !this.props.rowCheckable.checkboxOnNodeColumn &&
@@ -19462,7 +19569,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         const { treeConfig } = this.props; // data更新, flatData需要重新组装成Tree结构
         if (treeConfig && treeConfig.flatData) {
           this._alreadyProcessedFlat = false;
-        }
+        } // 重置modifiedRowKeys
+        this._resetChangeCache();
+        this._defaultData = extend([], props.data);
       }
       if (
         (props.hasOwnProperty("rowCheckable") &&
@@ -19636,6 +19745,98 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       });
       return treeData;
+    }
+    _resetChangeCache() {
+      this.modifiedRowKeys = [];
+      this.addedRowKeys = [];
+      this.removedRowKeys = [];
+      this.removedRowData = [];
+      this.element.querySelectorAll(".nom-grid-tr-modified").forEach((n) => {
+        n.classList.remove("nom-grid-tr-modified");
+      });
+    }
+    _processModifedRows(key) {
+      if (
+        !this.addedRowKeys.includes(key) &&
+        !this.modifiedRowKeys.includes(key)
+      ) {
+        this.modifiedRowKeys.push(key);
+      }
+    }
+    _processAddedRows(key) {
+      if (!this.addedRowKeys.includes(key)) {
+        this.addedRowKeys.push(key);
+      }
+    }
+    _processRemovedRows(data) {
+      const key = data[this.props.keyField];
+      if (this.addedRowKeys.includes(key)) {
+        this.addedRowKeys = this.addedRowKeys.filter((n) => {
+          return n !== key;
+        });
+      } else if (!this.removedRowKeys.includes(key)) {
+        if (this.modifiedRowKeys.includes(key)) {
+          this.modifiedRowKeys = this.modifiedRowKeys.filter((n) => {
+            return n !== key;
+          });
+        }
+        this.removedRowKeys.push(key);
+        this.removedRowData.push(data);
+      }
+    }
+    getRemovedRowKeys() {
+      return this.removedRowKeys;
+    }
+    validate() {
+      const keys = Object.keys(this.rowsRefs);
+      let validated = true;
+      keys.forEach((n) => {
+        if (validated === true && this.rowsRefs[n].validate() === false) {
+          validated = false;
+        }
+      });
+      return validated;
+    }
+    edit() {
+      const keys = Object.keys(this.rowsRefs);
+      keys.forEach((n) => {
+        this.rowsRefs[n].edit();
+      });
+    }
+    endEdit(options) {
+      if (!options) {
+        options = { ignoreChange: false };
+      }
+      const keys = Object.keys(this.rowsRefs);
+      keys.forEach((n) => {
+        this.rowsRefs[n].endEdit({ ignoreChange: options.ignoreChange });
+      });
+    }
+    saveEditData() {
+      const keys = Object.keys(this.rowsRefs);
+      keys.forEach((n) => {
+        this.rowsRefs[n].saveEditData();
+      });
+    }
+    acceptChange() {
+      this._resetChangeCache();
+    }
+    reset() {
+      this.update({ data: this._defaultData, isSelfUpdate: true });
+      this.restoreChange();
+    }
+    getChangedData() {
+      this.saveEditData();
+      const data = this.getData();
+      const result = {};
+      result.addedData = data.filter((n) => {
+        return this.addedRowKeys.includes(n[this.props.keyField]);
+      });
+      result.modifiedData = data.filter((n) => {
+        return this.modifiedRowKeys.includes(n[this.props.keyField]);
+      });
+      result.removedData = this.removedRowData;
+      return result;
     }
     _parseBrowerVersion() {
       // 不支持sticky，需要将frozen 置为null
@@ -20087,6 +20288,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     appendRow(rowProps) {
       this.body.table.appendRow(rowProps);
+      if (rowProps.data && rowProps.data[this.props.keyField]) {
+        this._processAddedRows(rowProps.data[this.props.keyField]);
+      }
     }
     checkChildren(row) {
       const { checked } = row.props;
@@ -20595,6 +20799,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     // columnResizable.allowFixedCol: 固定列是否允许被拖动(当 data太多时拖动，会造成渲染卡顿, 此时可设置false关闭)
     columnFrozenable: false, // 允许固定列
     // columnFrozenable.cache: boolean 固定列的结果保存至localstorage
+    highlightModifiedRows: true, // 数据被编辑（或新增）的行是否高亮显示
     striped: false,
     showTitle: false,
     ellipsis: false,

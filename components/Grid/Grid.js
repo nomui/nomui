@@ -11,12 +11,13 @@ import {
 import {
   ascCompare,
   defaultSortableOndrop,
+  extend,
   isBrowerSupportSticky,
   isFunction,
   isNullish,
   isPlainObject,
   isString,
-  localeCompareString,
+  localeCompareString
 } from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
@@ -44,6 +45,8 @@ class Grid extends Component {
     this._customColumnFlag = false // 是否已经自定义处理过列
     this._pinColumnFlag = false // 是否已经处理过列缓存
 
+    this._defaultData = extend([], this.props.data)
+
     this.props.columns = this.props.columns.filter((n) => {
       return Object.keys(n).length
     })
@@ -56,6 +59,11 @@ class Grid extends Component {
     this.filter = {}
     this.filterValueText = {}
     this._resetFixCount()
+
+    this.modifiedRowKeys = []
+    this.addedRowKeys = []
+    this.removedRowKeys = []
+    this.removedRowData = []
 
     if (this.props.frozenLeftCols > 0) {
       this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn && this.props.frozenLeftCols++
@@ -81,6 +89,10 @@ class Grid extends Component {
       if (treeConfig && treeConfig.flatData) {
         this._alreadyProcessedFlat = false
       }
+      // 重置modifiedRowKeys
+      this._resetChangeCache()
+      this._defaultData = extend([], props.data)
+
     }
     if ((props.hasOwnProperty('rowCheckable') && !props.rowCheckable.checkboxOnNodeColumn) || props.hasOwnProperty('rowExpandable')) {
       this._resetFixCount()
@@ -171,7 +183,6 @@ class Grid extends Component {
     this._processColumnsCustom()
     this._processPinColumn()
     this._processColumnSort()
-
     this._processCheckableColumn()
     this._processExpandableColumn()
     this._processFrozenColumn()
@@ -288,6 +299,116 @@ class Grid extends Component {
 
     return treeData
   }
+
+  _resetChangeCache() {
+    this.modifiedRowKeys = []
+    this.addedRowKeys = []
+    this.removedRowKeys = []
+    this.removedRowData = []
+
+    this.element.querySelectorAll('.nom-grid-tr-modified').forEach(n => {
+      n.classList.remove('nom-grid-tr-modified')
+    })
+  }
+
+  _processModifedRows(key) {
+    if (!this.addedRowKeys.includes(key) && !this.modifiedRowKeys.includes(key)) {
+      this.modifiedRowKeys.push(key)
+    }
+  }
+
+  _processAddedRows(key) {
+    if (!this.addedRowKeys.includes(key)) {
+      this.addedRowKeys.push(key)
+    }
+  }
+
+  _processRemovedRows(data) {
+    const key = data[this.props.keyField]
+    if (this.addedRowKeys.includes(key)) {
+      this.addedRowKeys = this.addedRowKeys.filter(n => {
+        return n !== key
+      })
+    }
+    else if (!this.removedRowKeys.includes(key)) {
+      if (this.modifiedRowKeys.includes(key)) {
+        this.modifiedRowKeys = this.modifiedRowKeys.filter(n => {
+          return n !== key
+        })
+      }
+      this.removedRowKeys.push(key)
+      this.removedRowData.push(data)
+    }
+  }
+
+
+  getRemovedRowKeys() {
+    return this.removedRowKeys
+  }
+
+
+  validate() {
+    const keys = Object.keys(this.rowsRefs)
+    let validated = true
+    keys.forEach(n => {
+      if (validated === true && this.rowsRefs[n].validate() === false) {
+        validated = false
+      }
+    })
+    return validated
+  }
+
+  edit() {
+    const keys = Object.keys(this.rowsRefs)
+    keys.forEach(n => {
+      this.rowsRefs[n].edit()
+    })
+  }
+
+  endEdit(options) {
+    if (!options) {
+      options = { ignoreChange: false }
+    }
+    const keys = Object.keys(this.rowsRefs)
+    keys.forEach(n => {
+      this.rowsRefs[n].endEdit({ ignoreChange: options.ignoreChange })
+    })
+  }
+
+  saveEditData() {
+    const keys = Object.keys(this.rowsRefs)
+    keys.forEach(n => {
+      this.rowsRefs[n].saveEditData()
+    })
+  }
+
+  acceptChange() {
+    this._resetChangeCache()
+  }
+
+  reset() {
+    this.update({
+      data: this._defaultData,
+      isSelfUpdate: true
+    })
+    this.restoreChange()
+  }
+
+  getChangedData() {
+    this.saveEditData()
+    const data = this.getData()
+    const result = {}
+    result.addedData = data.filter(n => {
+      return this.addedRowKeys.includes(n[this.props.keyField])
+    })
+    result.modifiedData = data.filter(n => {
+      return this.modifiedRowKeys.includes(n[this.props.keyField])
+    })
+    result.removedData = this.removedRowData
+
+    return result
+  }
+
 
   _parseBrowerVersion() {
     // 不支持sticky，需要将frozen 置为null
@@ -808,6 +929,9 @@ class Grid extends Component {
 
   appendRow(rowProps) {
     this.body.table.appendRow(rowProps)
+    if (rowProps.data && rowProps.data[this.props.keyField]) {
+      this._processAddedRows(rowProps.data[this.props.keyField])
+    }
   }
 
   checkChildren(row) {
@@ -1384,7 +1508,7 @@ Grid.defaults = {
 
   columnFrozenable: false, // 允许固定列
   // columnFrozenable.cache: boolean 固定列的结果保存至localstorage
-
+  highlightModifiedRows: true, // 数据被编辑（或新增）的行是否高亮显示
   striped: false,
   showTitle: false,
   ellipsis: false,
