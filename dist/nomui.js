@@ -4387,9 +4387,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else {
         this._mountElement();
       }
-      this._renderChildren();
       this._handleAttrs();
       this._handleStyles();
+      this._renderChildren();
       this.props.disabled === true &&
         isFunction(this._disable) &&
         this._disable();
