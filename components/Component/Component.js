@@ -150,10 +150,10 @@ class Component {
       this._mountElement()
     }
 
-    this._renderChildren()
-
     this._handleAttrs()
     this._handleStyles()
+
+    this._renderChildren()
 
     this.props.disabled === true && isFunction(this._disable) && this._disable()
     this.props.selected === true && isFunction(this._select) && this._select()
