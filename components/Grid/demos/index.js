@@ -34,6 +34,7 @@ define([
   './cascadeCheckChildren.js',
   './cascadeUncheckChildren.js',
   './edit.js',
+  './excel.js',
 ], function () {
   return {
     title: 'Grid',

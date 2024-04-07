@@ -90,7 +90,7 @@ class Grid extends Component {
         this._alreadyProcessedFlat = false
       }
       // 重置modifiedRowKeys
-      this._restoreChangeCache()
+      this._resetChangeCache()
       this._defaultData = extend([], props.data)
 
     }
@@ -300,11 +300,15 @@ class Grid extends Component {
     return treeData
   }
 
-  _restoreChangeCache() {
+  _resetChangeCache() {
     this.modifiedRowKeys = []
     this.addedRowKeys = []
     this.removedRowKeys = []
     this.removedRowData = []
+
+    this.element.querySelectorAll('.nom-grid-tr-modified').forEach(n => {
+      n.classList.remove('nom-grid-tr-modified')
+    })
   }
 
   _processModifedRows(key) {
@@ -363,23 +367,23 @@ class Grid extends Component {
 
   endEdit(options) {
     if (!options) {
-      options = { acceptDataChange: true }
+      options = { ignoreChange: false }
     }
     const keys = Object.keys(this.rowsRefs)
     keys.forEach(n => {
-      this.rowsRefs[n].endEdit({ acceptDataChange: options.acceptDataChange })
+      this.rowsRefs[n].endEdit({ ignoreChange: options.ignoreChange })
     })
   }
 
-  acceptDataChange() {
+  saveEditData() {
     const keys = Object.keys(this.rowsRefs)
     keys.forEach(n => {
-      this.rowsRefs[n].acceptDataChange()
+      this.rowsRefs[n].saveEditData()
     })
   }
 
-  restoreChange() {
-    this._restoreChangeCache()
+  acceptChange() {
+    this._resetChangeCache()
   }
 
   reset() {
@@ -390,11 +394,8 @@ class Grid extends Component {
     this.restoreChange()
   }
 
-  getDataChange(options) {
-    if (!options) {
-      options = { restoreChange: false }
-    }
-    this.acceptDataChange()
+  getDataChange() {
+    this.saveEditData()
     const data = this.getData()
     const result = {}
     result.addedData = data.filter(n => {
@@ -404,9 +405,7 @@ class Grid extends Component {
       return this.modifiedRowKeys.includes(n[this.props.keyField])
     })
     result.removedData = this.removedRowData
-    if (options.restoreChange) {
-      this._restoreChangeCache()
-    }
+
     return result
   }
 

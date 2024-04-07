@@ -72,6 +72,12 @@ class Tr extends Component {
       children.push(...this.createTds(columns))
     }
 
+    if (this.table.hasGrid && this.table.grid.props && this.table.grid.props.editMode) {
+      this.setProps({
+        editMode: true
+      })
+    }
+
     this.setProps({
       key: data[this.table.props.keyField],
       attrs: {
@@ -248,9 +254,9 @@ class Tr extends Component {
 
   endEdit(options) {
     if (!options) {
-      options = { acceptDataChange: true }
+      options = { ignoreChange: false }
     }
-    if (options.acceptDataChange !== false) {
+    if (options.ignoreChange !== true) {
       this._updateRowData()
     }
     this.update({
@@ -258,7 +264,7 @@ class Tr extends Component {
     })
   }
 
-  acceptDataChange() {
+  saveEditData() {
     this._updateRowData()
   }
 

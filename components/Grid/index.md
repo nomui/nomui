@@ -81,12 +81,13 @@
 | setScrollPlace | 记录当前表格滚动位置(下次 update 时会自动滚动), 若传入回调函数，则参数是当前滚动位置信息`{header,body}` | - |
 | autoScrollGrid | 主动触发滚动条自动滚动到上次的位置 | `({header,body})=>{} ` |
 | edit | 全局编辑模式 | `function` |
-| endEdit | 结束编辑状态(如果传参`{acceptDataChange:false}`忽略数据更改) | `function` |
+| endEdit | 结束编辑状态(如果传参`{ignoreChange:true}`忽略数据更改) | `function` |
 | validate | 编辑模式下校验表格 | `()=>boolean` |
 | getDataKeys | 获取当前顺序的 keyField 数组 | - |
 | getData | 获取当前顺序的表格数据| - |
 | getDataChange | 获取当前表格数据中被修改的部分（包括新增 编辑 删除） | - |
-| reset | 重置为原始数据 | - |
+| acceptChange | 接受Grid所有数据修改 | - |
+| reset | 重置回Grid原始数据 | - |
 
 
 ### row methods
@@ -94,7 +95,7 @@
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
 | edit | 编辑当前行 | `function` |
-| endEdit | 结束编辑状态(如果传参`{acceptDataChange:false}`忽略数据更改) | `function` |
+| endEdit | 结束编辑状态(如果传参`{ignoreChange:true}`忽略数据更改) | `function` |
 | validate | 校验当前行 | `()=>boolean` |
 
 ### column

@@ -1,7 +1,7 @@
 define([], function () {
     return {
-        title: '行内编辑',
-        file: 'edit',
+        title: '全局编辑模式',
+        file: 'excel',
         demo: function () {
             let gridRef = null
 
@@ -95,21 +95,7 @@ define([], function () {
                                 component: 'Button',
                                 text: '新增行(带默认值)',
                                 onClick: () => {
-                                    gridRef.appendRow({ data: { id: nomui.utils.newGuid(), name: '任我行', date: '2024-01-15', role: '4', dept: '0-1-1', sex: '2' } })
-                                }
-                            },
-                            {
-                                component: 'Button',
-                                text: '全局编辑模式',
-                                onClick: () => {
-                                    gridRef.edit()
-                                }
-                            },
-                            {
-                                component: 'Button',
-                                text: '全局查看模式',
-                                onClick: () => {
-                                    gridRef.endEdit()
+                                    gridRef.appendRow({ editMode: true, data: { id: nomui.utils.newGuid(), name: '任我行', date: '2024-01-15', role: '4', dept: '0-1-1', sex: '2' } })
                                 }
                             },
                             {
@@ -128,6 +114,13 @@ define([], function () {
                             },
                             {
                                 component: 'Button',
+                                text: '接受Grid修改',
+                                onClick: () => {
+                                    gridRef.acceptChange()
+                                }
+                            },
+                            {
+                                component: 'Button',
                                 text: '重置回默认数据',
                                 onClick: () => {
                                     gridRef.reset()
@@ -142,6 +135,7 @@ define([], function () {
                         ref: (c) => {
                             gridRef = c
                         },
+                        editMode: true,
                         columns: [
                             {
                                 field: 'name',
@@ -245,29 +239,9 @@ define([], function () {
                                         component: 'Toolbar',
                                         items: [
                                             {
-                                                text: row.props.editMode ? '保存' : '编辑',
+                                                text: '删除',
                                                 onClick: () => {
-                                                    if (row.props.editMode) {
-                                                        if (row.validate()) {
-                                                            row.endEdit()
-                                                        }
-                                                    }
-                                                    else {
-                                                        row.edit()
-                                                    }
-
-                                                }
-                                            },
-                                            {
-                                                text: row.props.editMode ? '取消' : '删除',
-                                                onClick: () => {
-                                                    if (row.props.editMode) {
-                                                        row.endEdit({ ignoreChange: true })
-                                                    }
-                                                    else {
-                                                        row.remove()
-                                                    }
-
+                                                    row.remove()
                                                 }
                                             }
                                         ]
@@ -277,7 +251,11 @@ define([], function () {
 
                         ],
                         data: [
-                            { id: 1, name: '张小花', date: '2020-03-15', role: '2', dept: '0-1-2', sex: '1' },
+                            { id: 1, name: '张小花', date: '2020-03-15', role: '2', dept: '0-1-1', sex: '2' },
+                            { id: 2, name: '令狐冲', date: '2021-05-25', role: '4', dept: '0-1-2', sex: '1' },
+                            { id: 3, name: '任我行', date: '2023-11-12', role: '3', dept: '0-1-2', sex: '1' },
+                            { id: 4, name: '东方不败', date: '2021-01-23', role: '2', dept: '0-1-1', sex: '2' },
+                            { id: 5, name: '杨过', date: '2022-05-05', role: '1', dept: '0-1-2', sex: '1' },
 
                         ],
                     }
