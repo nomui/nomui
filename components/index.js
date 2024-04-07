@@ -90,6 +90,7 @@ export { default as Tree } from './Tree/index'
 export { default as TreeSelect } from './TreeSelect/index'
 export { default as Upload } from './Upload/index'
 export { default as Uploader } from './Uploader/index'
+export { default as Watermark } from './Watermark/index'
 export * as utils from './util/index'
 
 /**
