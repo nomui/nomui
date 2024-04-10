@@ -3,7 +3,7 @@ import Flex from '../Flex/index'
 import List from '../List/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
-import {} from '../util/date'
+import { } from '../util/date'
 import { formatDate, isFunction, isNumeric, isValidDate } from '../util/index'
 import TimePickerPanel from './TimePickerPanel'
 
@@ -61,6 +61,8 @@ class DatePicker extends Textbox {
     ) {
       this.showNow = false
     }
+
+    const { weekText, nowText, todayText } = this.props
 
     this.setProps({
       leftIcon: 'calendar',
@@ -149,7 +151,7 @@ class DatePicker extends Textbox {
                       ],
                     },
                     {
-                      cols: ['日', '一', '二', '三', '四', '五', '六'],
+                      cols: weekText.split(' '),
                       fills: true,
                       gutter: null,
                       classes: {
@@ -300,7 +302,7 @@ class DatePicker extends Textbox {
                 {
                   component: 'Button',
                   size: 'small',
-                  text: this.props.showTime ? '此刻' : '今天',
+                  text: this.props.showTime ? nowText : todayText,
                   disabled: !this.showNow,
                   renderIf: this.props.showNow,
                   onClick: () => {
@@ -587,6 +589,10 @@ DatePicker.defaults = {
   showNow: true,
   readonly: false,
   extraTools: null,
+  weekText: '日 一 二 三 四 五 六',
+  nowText: '此刻',
+  todayText: '今天'
+
 }
 Component.register(DatePicker)
 

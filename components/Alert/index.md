@@ -13,9 +13,15 @@
 | title       | 标题               | `string` \| `props`                         | -        |
 | description | 内容               | `string` \| `props`                         | -        |
 | icon        | 自定义图标类型     | `string` \| `props`                         | -        |
-| okText      | 确定按钮文本       | `string`                                    | `知道了` |
 | onOk        | 点击确定按钮回调   | `function(e)`                               | -        |
 | action      | 自定义操作         | `array` \| `props`                          | -        |
+
+## 多语言配置
+
+| 关键字        | 默认值               |
+| ----------- | ------------------ |
+| ok        | 知道了 |
+
 
 ### action 配置
 

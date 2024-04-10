@@ -22,6 +22,7 @@ class GridSettingPopup extends Modal {
 
   _config() {
     const that = this
+    const { okText, cancelText } = this.grid.props
     const rowCheckerCount = that.grid.props.rowCheckable && !that.grid.props.rowCheckable.checkboxOnNodeColumn ? 1 : 0
     this.setProps({
       classes: {
@@ -33,7 +34,7 @@ class GridSettingPopup extends Modal {
         uistyle: 'card',
         header: {
           caption: {
-            title: '列设置',
+            title: that.grid.props.columnSettingText
           },
         },
         body: {
@@ -42,6 +43,7 @@ class GridSettingPopup extends Modal {
             ref: (c) => {
               that.transferRef = c
             },
+            grid: this.grid,
             allowFrozenCols: that.grid.props.allowFrozenCols,
             frozenLimit: that.grid.props.frozenLimit,
             value: this.grid.getMappedColumns(this.grid.props.columns),
@@ -66,7 +68,7 @@ class GridSettingPopup extends Modal {
                 children: {
                   component: 'Button',
                   type: 'primary',
-                  text: '确定',
+                  text: okText,
                   onClick: function () {
                     that._fixDataOrder()
                   },
@@ -75,7 +77,7 @@ class GridSettingPopup extends Modal {
               {
                 children: {
                   component: 'Button',
-                  text: '取消',
+                  text: cancelText,
                   onClick: () => {
                     this.hide()
                   },
@@ -92,6 +94,7 @@ class GridSettingPopup extends Modal {
 
   _fixDataOrder() {
 
+    const { columnsLimitTitle, columnsLimitDescription } = this.grid.props
 
     const list = this.transferRef.getSelectedData()
     const selected = JSON.parse(JSON.stringify(list))
@@ -104,8 +107,8 @@ class GridSettingPopup extends Modal {
     if (list.length === 0 || (list.length === lockedList.length && list.length === 1 && !(this.grid.props.rowCheckable && this.grid.props.rowCheckable.checkboxOnNodeColumn))) {
       new nomui.Alert({
         type: 'info',
-        title: '提示',
-        description: '请至少保留一列数据',
+        title: columnsLimitTitle,
+        description: columnsLimitDescription,
       })
       return false
     }
@@ -202,12 +205,13 @@ class GridSettingPopup extends Modal {
   }
 
   _toogleCheckall() {
-    if (this.checkallBtn.props.text === '全选') {
+    const { selectAllText, unselectAllText } = this.grid.props
+    if (this.checkallBtn.props.text === selectAllText) {
       this.tree.checkAllNodes({ ignoreDisabled: true })
-      this.checkallBtn.update({ text: '取消全选' })
+      this.checkallBtn.update({ text: unselectAllText })
     } else {
       this.tree.uncheckAllNodes({ ignoreDisabled: true })
-      this.checkallBtn.update({ text: '全选' })
+      this.checkallBtn.update({ text: selectAllText })
     }
   }
 }

@@ -165,7 +165,7 @@ class Notification extends Layer {
     }
   }
 
-  _registerDuritionClose() {}
+  _registerDuritionClose() { }
 
   close() {
     this.timer && clearTimeout(this.timer)
@@ -191,6 +191,7 @@ class Notification extends Layer {
       description,
       align,
       animate,
+      okText
     } = this.props
     const classes = {}
     let alignInfo = 'topright'
@@ -224,6 +225,7 @@ class Notification extends Layer {
         title,
         btn,
         description,
+        okText,
         onClose: () => {
           that.close()
         },
@@ -257,6 +259,7 @@ Notification.defaults = {
   // closeIcon:{},
   key: newGuid(),
   // onClose:()=>{},
+  okText: '确定'
 }
 Component.register(Notification)
 

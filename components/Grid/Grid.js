@@ -128,7 +128,7 @@ class Grid extends Component {
 
     this._calcMinWidth()
 
-    const { line, rowDefaults } = this.props
+    const { line, rowDefaults, columnSettingText } = this.props
     this.setProps({
       classes: {
         'm-frozen-header': this.props.frozenHeader,
@@ -152,7 +152,7 @@ class Grid extends Component {
               'nom-grid-setting-btn': true,
             },
             attrs: {
-              title: '列设置',
+              title: columnSettingText,
             },
             onClick: () => {
               this.showSetting()
@@ -1519,6 +1519,23 @@ Grid.defaults = {
   summary: null,
   showEmpty: true,
   columnAlign: 'left',
+  columnSettingText: '列设置',
+  totalizeText: '总计',
+  okText: '确定',
+  cancelText: '取消',
+  columnsLimitTitle: '提示',
+  columnsLimitDescription: '请至少保留一列',
+  selectAllText: '全选',
+  clearText: '清空',
+  unselectAllText: '取消全选',
+  frozenText: '已冻结',
+  unfreezeText: '未冻结',
+  searchAllText: '搜索所有列',
+  searchAddedText: '搜索已添加列',
+  shownColumnText: '已显示列（拖动可进行排序）',
+  maxColumnText: '最多只能冻结{{limit}}项',
+  noGroupFronzeText: '不支持冻结群组',
+  columnStatsText: '{{current}}/{{total}}项'
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false

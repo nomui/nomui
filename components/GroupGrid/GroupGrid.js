@@ -79,7 +79,7 @@ class GroupGrid extends Field {
               items: [
                 {
                   component: 'Button',
-                  text: '移除',
+                  text: this.props.removeText,
                   onClick: () => {
                     row.remove()
                     that._onValueChange()
@@ -113,7 +113,7 @@ class GroupGrid extends Field {
         {
           component: 'Button',
           type: 'dashed',
-          text: '添加',
+          text: this.props.addText,
           span: 12,
           block: true,
           onClick: () => {
@@ -241,6 +241,8 @@ class GroupGrid extends Field {
 }
 GroupGrid.defaults = {
   hideAction: false,
+  addText: '添加',
+  removeText: '移除'
 }
 Object.defineProperty(GroupGrid.prototype, 'fields', {
   get: function () {

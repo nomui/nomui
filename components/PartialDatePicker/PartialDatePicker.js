@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Textbox from '../Textbox/index'
-import {} from '../util/date'
+import { } from '../util/date'
 import { isFunction } from '../util/index'
 
 class PartialDatePicker extends Textbox {
@@ -20,13 +20,9 @@ class PartialDatePicker extends Textbox {
   }
 
   _config() {
-    const { disabled, placeholder, animate, extraTools, mode } = this.props
+    const { disabled, placeholder, animate, extraTools, mode, formatMap } = this.props
 
-    const formatMap = {
-      quarter: '$year年 $quarter季度',
-      month: 'yyyy-MM',
-      week: '$year年 $week周',
-    }
+
 
     if (!this.props.format) {
       this.props.format = formatMap[mode]
@@ -137,6 +133,9 @@ class PartialDatePicker extends Textbox {
                     },
                   },
                   that.props.mode === 'quarter' && {
+                    classes: {
+                      'nom-quarter-list': true
+                    },
                     children: {
                       component: 'List',
                       items: that._getQuarter(),
@@ -213,18 +212,21 @@ class PartialDatePicker extends Textbox {
                     },
                   },
                   that.props.mode === 'week' && {
+                    classes: {
+                      'nom-week-list': true,
+                    },
                     children: {
                       component: 'List',
 
                       items: that.year
                         ? that._getWeek(that.year)
                         : [
-                            {
-                              component: 'StaticText',
-                              value: '请先选择年份',
-                              disabled: true,
-                            },
-                          ],
+                          {
+                            component: 'StaticText',
+                            value: that.props.selectYearText,
+                            disabled: true,
+                          },
+                        ],
                       itemSelectable: {
                         multiple: false,
                         byClick: true,
@@ -237,13 +239,6 @@ class PartialDatePicker extends Textbox {
                         if (that.props.mode === 'week') {
                           that.subPicker = c
                         }
-                      },
-                      _created: (me) => {
-                        me.parent.setProps({
-                          classes: {
-                            'nom-week-list': true,
-                          },
-                        })
                       },
                       onItemSelectionChange: (args) => {
                         const key = args.sender.props.selectedItems
@@ -298,9 +293,10 @@ class PartialDatePicker extends Textbox {
     const thisYear = new Date().getFullYear()
 
     for (let i = thisYear + this.props.yearRange[1]; i > thisYear - this.props.yearRange[0]; i--) {
+      const str = this.props.yearText.replace('{{year}}', i)
       years.push({
         key: `${i}`,
-        children: `${i}年`,
+        children: str,
       })
     }
 
@@ -312,9 +308,10 @@ class PartialDatePicker extends Textbox {
     const that = this
 
     for (let i = 1; i < 13; i++) {
+      const str = this.props.monthText.replace('{{month}}', i)
       month.push({
         key: that._getDoubleDigit(i),
-        children: `${i}月`,
+        children: str,
       })
     }
     return month
@@ -324,9 +321,10 @@ class PartialDatePicker extends Textbox {
     const quarter = []
 
     for (let i = 1; i < 5; i++) {
+      const str = this.props.quarterText.replace('{{quarter}}', i)
       quarter.push({
         key: `${i}`,
-        children: `${i}季度`,
+        children: str,
       })
     }
     return quarter
@@ -392,15 +390,17 @@ class PartialDatePicker extends Textbox {
   }
 
   _getWeek(param) {
+    const that = this
+
     const week = this._mapWeekData(param).map(function (item, index) {
+      const str = that.props.weekText.replace('{{week}}', index + 1)
       return {
         key: `${index + 1}`,
         firstDay: `${item.year}-${item.month}-${item.day}`,
         children: {
           component: 'List',
-
           items: [
-            { children: `${index + 1}周` },
+            { children: str },
             {
               classes: {
                 'nom-week-subtitle': true,
@@ -672,6 +672,16 @@ PartialDatePicker.defaults = {
   maxDate: null,
   readonly: true,
   extraTools: null,
+  selectYearText: '请先选择年份',
+  formatMap: {
+    quarter: '$year年 $quarter季度',
+    month: 'yyyy-MM',
+    week: '$year年 $week周',
+  },
+  yearText: '{{year}}年',
+  monthText: '{{month}}月',
+  quarterText: '第{{quarter}}季度',
+  weekText: '第{{week}}周',
 }
 Component.register(PartialDatePicker)
 

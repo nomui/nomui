@@ -105,13 +105,13 @@ class GridFooter extends Component {
   }
 
   _getSummaryData(param) {
-    const { data = [], rowCheckable, rowExpandable } = this.grid.props
+    const { data = [], rowCheckable, rowExpandable, totalizeText } = this.grid.props
     const columns =
       this.grid.props.summary && this.grid.props.summary.columns
         ? this.grid.props.summary.columns
         : this.grid.props.columns
 
-    const { method, text = '总计' } = param
+    const { method, text = totalizeText } = param
 
     const flatColumns = this._getMappedColumns(columns)
 
