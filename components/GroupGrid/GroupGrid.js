@@ -18,7 +18,7 @@ class GroupGrid extends Field {
     const that = this
     const { groupDefaults, value, gridProps } = this.props
     const actionRender = groupDefaults.actionRender
-    const actionWidth = groupDefaults.actionWidth || 80
+    const actionWidth = groupDefaults.actionWidth || 100
     let columns = []
     this.hiddenColumns = []
     groupDefaults.fields.forEach((f) => {

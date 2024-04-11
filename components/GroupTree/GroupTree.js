@@ -70,7 +70,7 @@ class GroupTree extends Field {
               children: {
                 component: 'Button',
                 type: 'dashed',
-                text: this.props.addText,
+                text: me.props.addText,
                 span: 12,
                 block: true,
                 onClick: () => {
@@ -154,7 +154,7 @@ class GroupTree extends Field {
                                 },
                                 items: [
                                   {
-                                    text: this.props.renameText,
+                                    text: me.props.renameText,
                                     onClick: () => {
                                       let rowText = that.props.data[text]
                                       new nomui.Modal({
@@ -181,7 +181,7 @@ class GroupTree extends Field {
                                     },
                                   },
                                   {
-                                    text: this.props.removeNodeText,
+                                    text: me.props.removeNodeText,
                                     onClick: () => {
                                       const parentNode = that.parent.parent
 
@@ -212,13 +212,13 @@ class GroupTree extends Field {
                                     },
                                   },
                                   {
-                                    text: this.props.addRowText,
+                                    text: me.props.addRowText,
                                     onClick: () => {
                                       const obj = {
                                         __isNew: true,
                                       }
                                       obj[key] = nomui.utils.newGuid()
-                                      obj[text] = this.props.newNodeText
+                                      obj[text] = me.props.newNodeText
                                       new nomui.Modal({
                                         size: 'xsmall',
                                         content: {
@@ -257,13 +257,13 @@ class GroupTree extends Field {
                                     },
                                   },
                                   {
-                                    text: this.props.addNodeText,
+                                    text: me.props.addNodeText,
                                     onClick: () => {
                                       const obj = {
                                         __isNew: true,
                                       }
                                       obj[key] = nomui.utils.newGuid()
-                                      obj[text] = this.props.newNodeText
+                                      obj[text] = me.props.newNodeText
                                       new nomui.Modal({
                                         size: 'xsmall',
                                         content: {
