@@ -55,7 +55,7 @@ class FileItem extends Component {
       if (onRemove) {
         actions.push({
           tag: 'a',
-          children: onRemove.text || '删除',
+          children: onRemove.text || this._uploader.props.removeText,
           attrs: {
             href: 'javascript:void(0)',
             onclick: (e) => {
@@ -69,7 +69,7 @@ class FileItem extends Component {
       if (allowUpdate) {
         actions.push({
           tag: 'a',
-          children: '更新',
+          children: this._uploader.props.updateText,
           onClick() {
             that._uploader._handleUpdate({ file })
           },
@@ -200,7 +200,7 @@ class FileItem extends Component {
       },
       {
         tag: 'span',
-        children: `更新日期 : ${getDate(uploadTime) ? getDate(uploadTime) : 'NA'}`,
+        children: `${this._uploader.props.updateTimeText} : ${getDate(uploadTime) ? getDate(uploadTime) : 'NA'}`,
         classes: {
           'upload-file-update': true,
           'u-border-left ': true,

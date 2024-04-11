@@ -47,13 +47,13 @@ class Table extends Component {
         this.props.onlyBody !== true && { component: Thead },
         this.props.onlyHead !== true && { component: Tbody },
         hasMask &&
-          this.parent.componentType === 'GridBody' && {
-            tag: 'div',
-            classes: { 'nom-table-th-hover-mask': true },
-            _created() {
-              that.grid.highlightMask = this
-            },
+        this.parent.componentType === 'GridBody' && {
+          tag: 'div',
+          classes: { 'nom-table-th-hover-mask': true },
+          _created() {
+            that.grid.highlightMask = this
           },
+        },
       ],
     })
   }
@@ -133,6 +133,11 @@ Table.defaults = {
   showTitle: false,
   ellipsis: false,
   showEmpty: true,
+  emptyText: '暂无内容',
+  okText: '确定',
+  resetText: '重置',
+  freezeText: '固定列',
+  unfreezeText: '取消固定'
 }
 
 Component.register(Table)

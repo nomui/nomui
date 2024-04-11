@@ -154,7 +154,7 @@ class Th extends Component {
                   items: [
                     {
                       component: 'Button',
-                      text: '确定',
+                      text: this.table.props.okText,
                       size: 'small',
                       onClick: () => {
                         this.onFilterChange()
@@ -162,7 +162,7 @@ class Th extends Component {
                     },
                     {
                       component: 'Button',
-                      text: '重置',
+                      text: this.table.props.resetText,
                       size: 'small',
                       onClick: () => {
                         this.onFilterReset()
@@ -187,7 +187,7 @@ class Th extends Component {
         component: 'Icon',
         type: this.props.column.fixed ? 'pin-fill' : 'pin',
         attrs: {
-          title: this.props.column.fixed ? '取消固定' : '固定列',
+          title: this.props.column.fixed ? this.table.props.unfreezeText : this.table.props.freezeText,
         },
         classes: {
           'nom-table-pin-handler': true,

@@ -27,7 +27,7 @@ class PasswordPopup extends Popup {
     _config() {
         this.setProps({
             children: [
-                '大写已开启',
+                this.props.capslockText,
                 {
                     ref: (c) => {
                         this.arrow = c

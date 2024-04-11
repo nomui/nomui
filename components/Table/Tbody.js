@@ -64,7 +64,7 @@ class Tbody extends Component {
             children: {
               component: 'Empty',
 
-              description: '暂无内容',
+              description: this.table.props.emptyText,
             },
           },
         },
