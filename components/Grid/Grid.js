@@ -1527,7 +1527,7 @@ Grid.defaults = {
   columnsLimitDescription: '请至少保留一列',
   selectAllText: '全选',
   clearText: '清空',
-  unselectAllText: '取消全选',
+  deselectAllText: '取消全选',
   frozenText: '已冻结',
   unfreezeText: '未冻结',
   searchAllText: '搜索所有列',

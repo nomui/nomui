@@ -205,10 +205,10 @@ class GridSettingPopup extends Modal {
   }
 
   _toogleCheckall() {
-    const { selectAllText, unselectAllText } = this.grid.props
+    const { selectAllText, deselectAllText } = this.grid.props
     if (this.checkallBtn.props.text === selectAllText) {
       this.tree.checkAllNodes({ ignoreDisabled: true })
-      this.checkallBtn.update({ text: unselectAllText })
+      this.checkallBtn.update({ text: deselectAllText })
     } else {
       this.tree.uncheckAllNodes({ ignoreDisabled: true })
       this.checkallBtn.update({ text: selectAllText })

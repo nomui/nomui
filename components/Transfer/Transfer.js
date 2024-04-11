@@ -76,7 +76,7 @@ class Transfer extends Field {
                             }
                             if (sender.props.text === me.props.selectAllText) {
                               sender.update({
-                                text: me.props.unSelectAllText,
+                                text: me.props.deselectAllText,
                               })
                               me.checkAll()
                             } else {
@@ -588,7 +588,7 @@ Transfer.defaults = {
   dataFields: { key: 'key', text: 'text', children: 'children', parentKey: 'parentKey' },
   selectAllText: '全选',
   clearText: '清空',
-  unSelectAllText: '反选',
+  deselectAllText: '反选',
   countText: `{{current}}/{{total}}项`
 }
 
