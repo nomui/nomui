@@ -54,7 +54,7 @@ class Tree extends Component {
             cascadeUncheckParent: true,
             cascade: false,
             showCheckAll: false,
-            checkAllText: '全选',
+            checkAllText: this.props.checkAllText,
             checkedNodeKeys: [],
           },
           nodeCheckable,
@@ -117,7 +117,7 @@ class Tree extends Component {
     })
   }
 
-  _dataToNodes() {}
+  _dataToNodes() { }
 
   getData(getOptions, node) {
     getOptions = getOptions || {}
@@ -360,7 +360,7 @@ class Tree extends Component {
         // 存在则表示当前数据不是最顶层数据
 
         // 这里的map中的数据是引用了arr的它的指向还是arr，当mapItem改变时arr也会改变
-        ;(mapItem[children] || (mapItem[children] = [])).push(child) // 这里判断mapItem中是否存在children, 存在则插入当前数据, 不存在则赋值children为[]然后再插入当前数据
+        ; (mapItem[children] || (mapItem[children] = [])).push(child) // 这里判断mapItem中是否存在children, 存在则插入当前数据, 不存在则赋值children为[]然后再插入当前数据
       } else {
         // 不存在则是组顶层数据
         treeData.push(child)
@@ -413,6 +413,7 @@ Tree.defaults = {
   sortable: false,
   initExpandLevel: -1,
   loadData: false,
+  checkAllText: '全选'
 }
 Component.register(Tree)
 

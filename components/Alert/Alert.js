@@ -8,7 +8,7 @@ class Alert extends Modal {
   }
 
   _config() {
-    const { type, icon, title, description, okText, action } = this.props
+    const { type, icon, title, description, okText, action, i18n } = this.props
     this.setProps({
       content: {
         component: AlertContent,
@@ -18,6 +18,7 @@ class Alert extends Modal {
         description,
         okText,
         action,
+        i18n
       },
     })
 

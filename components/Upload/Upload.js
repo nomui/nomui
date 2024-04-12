@@ -63,7 +63,7 @@ class Upload extends Component {
 
     const defaultBtn = {
       component: 'Button',
-      text: '上传',
+      text: this.props.uploadText,
     }
 
     const triggerProps = Component.extendProps(defaults, trigger || defaultBtn)
@@ -118,7 +118,7 @@ class Upload extends Component {
       } else if (currentStatus === 'error') {
         this._cancleLoading(noUploading)
         new nomui.Message({
-          content: '上传失败！',
+          content: this.uploadFailText,
           type: 'error',
         })
       }
@@ -192,7 +192,7 @@ class Upload extends Component {
     const beforeUpload = this.props.beforeUpload
     if (!this._checkType(file)) {
       new nomui.Alert({
-        title: '不支持此格式，请重新上传。',
+        title: this.props.unSupportedTypeText,
       })
       return
     }
@@ -391,6 +391,10 @@ Upload.defaults = {
   headers: {},
   withCredentials: false,
   onChange: null,
+  uploadText: '上传',
+  uploadFailText: '上传失败！',
+  unSupportedTypeText: '不支持此格式，请重新上传。'
+
 }
 
 Component.register(Upload)
