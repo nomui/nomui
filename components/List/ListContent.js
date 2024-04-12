@@ -90,7 +90,7 @@ class ListContent extends Component {
       children.push({
         component: 'Button',
         type: 'link',
-        text: loadMore.text || '加载更多~',
+        text: loadMore.text || this.list.props.loadmoreText,
         _created: (inst) => {
           this.list.loadMoreRef = inst
         },

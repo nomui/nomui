@@ -245,8 +245,8 @@ class List extends Component {
       const itemElement = item.wrapper ? item.wrapper.element : item.element
       const scrollOptions =
         this.props.itemSelectable &&
-        this.props.itemSelectable.scrollIntoView &&
-        isPlainObject(this.props.itemSelectable.scrollIntoView)
+          this.props.itemSelectable.scrollIntoView &&
+          isPlainObject(this.props.itemSelectable.scrollIntoView)
           ? this.props.itemSelectable.scrollIntoView
           : {}
 
@@ -541,6 +541,7 @@ List.defaults = {
   sortable: false,
   overflow: 'hidden',
   loadMore: false,
+  loadmoreText: '加载更多...'
 }
 
 Component.register(List)

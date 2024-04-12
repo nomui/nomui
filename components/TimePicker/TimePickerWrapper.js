@@ -82,7 +82,7 @@ class TimePickerWrapper extends Component {
               noStep && {
                 component: 'Button',
                 size: 'small',
-                text: '此刻',
+                text: that.pickerControl.props.nowText,
                 disabled: !nowInRange,
                 onClick: function () {
                   that.pickerControl.setNow()
@@ -94,7 +94,7 @@ class TimePickerWrapper extends Component {
               that.pickerControl.props.defaultValue && {
                 component: 'Button',
                 size: 'small',
-                text: '重置',
+                text: that.pickerControl.props.resetText,
                 onClick: function () {
                   that.pickerControl.popup.hide()
                   that.pickerControl.handleChange()

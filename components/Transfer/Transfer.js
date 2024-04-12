@@ -64,7 +64,7 @@ class Transfer extends Field {
                         grow: true,
                         children: {
                           component: 'Button',
-                          text: '全选',
+                          text: me.props.selectAllText,
                           size: 'small',
                           ref: (c) => {
                             me.checkAllBtn = c
@@ -74,14 +74,14 @@ class Transfer extends Field {
                             if (me.props.disabled) {
                               return
                             }
-                            if (sender.props.text === '全选') {
+                            if (sender.props.text === me.props.selectAllText) {
                               sender.update({
-                                text: '反选',
+                                text: me.props.deselectAllText,
                               })
                               me.checkAll()
                             } else {
                               sender.update({
-                                text: '全选',
+                                text: me.props.selectAllText,
                               })
                               me.uncheckAll()
                             }
@@ -237,7 +237,7 @@ class Transfer extends Field {
                         grow: true,
                         children: {
                           component: 'Button',
-                          text: '清空',
+                          text: me.props.clearText,
                           size: 'small',
                           type: 'text',
                           onClick: () => {
@@ -399,7 +399,7 @@ class Transfer extends Field {
     const u = this.sourceTree.getCheckedNodeKeys().length
     const d = this._getCheckedChildNodeKeys(this.sourceTree.getChildNodes(), true).length
     this.sourceCount.update({
-      children: `${u}/${d}项`,
+      children: this.props.countText.replace('{{current}}', u).replace('{{total}}', d),
     })
   }
 
@@ -417,7 +417,7 @@ class Transfer extends Field {
     const u = this.targetTree.getCheckedNodeKeys().length
     const d = this._getCheckedChildNodeKeys(this.targetTree.getChildNodes(), true).length
     this.targetCount.update({
-      children: `${u}/${d}项`,
+      children: this.props.countText.replace('{{current}}', u).replace('{{total}}', d),
     })
   }
 
@@ -548,7 +548,7 @@ class Transfer extends Field {
 
   clear() {
     this.checkAllBtn.update({
-      text: '全选',
+      text: this.props.selectAllText,
     })
     this.props.value = null
 
@@ -586,6 +586,10 @@ Transfer.defaults = {
   // onScroll: null,
   displayAsTree: false,
   dataFields: { key: 'key', text: 'text', children: 'children', parentKey: 'parentKey' },
+  selectAllText: '全选',
+  clearText: '清空',
+  deselectAllText: '反选',
+  countText: `{{current}}/{{total}}项`
 }
 
 Component.register(Transfer)

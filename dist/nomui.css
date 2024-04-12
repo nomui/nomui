@@ -10991,6 +10991,9 @@ textarea .nom-textarea {
   width: 80px;
   border-left: none;
 }
+.nom-partial-date-picker-popup .nom-col.nom-quarter-list {
+  width: 100px;
+}
 .nom-partial-date-picker-popup .nom-col.nom-week-list {
   width: 250px;
 }

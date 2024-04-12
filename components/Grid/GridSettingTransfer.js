@@ -9,12 +9,12 @@ class GridSettingTransfer extends Field {
 
   _created() {
     super._created()
-
+    this.grid = this.props.grid
     this.warningFunc = null
     this.selectedKeys = []
     this.selectedData = this.props.allowFrozenCols ? [
-      { title: '已冻结', field: 'isFrozen', isDivider: true },
-      { title: '未冻结', field: 'isFree', isDivider: true },
+      { title: this.grid.props.frozenText, field: 'isFrozen', isDivider: true },
+      { title: this.grid.props.unfreezeText, field: 'isFree', isDivider: true },
     ] : []
   }
 
@@ -59,21 +59,21 @@ class GridSettingTransfer extends Field {
                         grow: true,
                         children: {
                           component: 'Button',
-                          text: '全选',
+                          text: me.grid.props.selectAllText,
                           size: 'small',
                           ref: (c) => {
                             me.checkAllBtn = c
                           },
                           type: 'link',
                           onClick: ({ sender }) => {
-                            if (sender.props.text === '全选') {
+                            if (sender.props.text === me.grid.props.selectAllText) {
                               sender.update({
-                                text: '清空',
+                                text: me.grid.props.clearText,
                               })
                               me.checkAll()
                             } else {
                               sender.update({
-                                text: '全选',
+                                text: me.grid.props.selectAllText,
                               })
                               me.clear()
                             }
@@ -103,7 +103,7 @@ class GridSettingTransfer extends Field {
                           _created: function () {
                             me.sourceSearch = this
                           },
-                          placeholder: '搜索所有列',
+                          placeholder: me.grid.props.searchAllText,
                           onValueChange: debounce(({ newValue }) => {
                             me._onSourceSearch(newValue)
                           }, 1000),
@@ -207,7 +207,7 @@ class GridSettingTransfer extends Field {
                           component: 'List',
                           items: [
                             {
-                              children: '已显示列（拖动可进行排序）',
+                              children: me.grid.props.shownColumnText,
                             },
 
                           ],
@@ -230,7 +230,7 @@ class GridSettingTransfer extends Field {
                           _created: function () {
                             me.targetSearch = this
                           },
-                          placeholder: '搜索已添加列',
+                          placeholder: me.grid.props.searchAddedText,
                           onValueChange: debounce(({ newValue }) => {
                             me._onTargetSearch(newValue)
                           }, 1000),
@@ -268,11 +268,12 @@ class GridSettingTransfer extends Field {
                               }
                             })
 
+                            const str = me.grid.props.maxColumnText.replace('{{limit}}', me.grid.props.frozenLimit)
 
-                            if (dividerIdx > me.props.frozenLimit) {
+                            if (dividerIdx > me.grid.props.frozenLimit) {
                               me.warningFunc = () => {
                                 new nomui.Message({
-                                  content: `最多只能冻结${me.props.frozenLimit}项`,
+                                  content: str,
                                   type: 'warning',
                                 })
                               }
@@ -284,7 +285,7 @@ class GridSettingTransfer extends Field {
                             if (evt.dragged.querySelector('.nom-tree-nodes') && idx <= dividerIdx) {
                               me.warningFunc = () => {
                                 new nomui.Message({
-                                  content: '不支持冻结群组',
+                                  content: me.grid.props.noGroupFronzeText,
                                   type: 'warning',
                                 })
                               }
@@ -293,7 +294,7 @@ class GridSettingTransfer extends Field {
 
 
 
-                            if (evt.related.innerHTML.includes('已冻结')) {
+                            if (evt.related.innerHTML.includes(me.grid.props.frozenText)) {
 
                               return 1
                             }
@@ -453,18 +454,19 @@ class GridSettingTransfer extends Field {
   _setSourceCount() {
     const u = this.sourceTree.getCheckedNodeKeys().length
     const d = this._getChildNodeKeys(this.sourceTree.getChildNodes(), true).length
+    const str = this.grid.props.columnStatsText.replace('{{current}}', u).replace('{{total}}', d)
 
     this.sourceCount.update({
-      children: `${u}/${d}项`,
+      children: str,
     })
     if (u === d) {
       this.checkAllBtn.update({
-        text: '清空'
+        text: this.grid.props.clearText
       })
     }
     else {
       this.checkAllBtn.update({
-        text: '全选'
+        text: this.grid.props.selectAllText
       })
     }
   }
@@ -504,7 +506,7 @@ class GridSettingTransfer extends Field {
         return n.field !== 'isFree'
       })
       this.selectedData.splice(this.props.frozenCount + 1, 0, {
-        title: '未冻结',
+        title: this.grid.props.unfreezeText,
         field: 'isFree',
         isDivider: true,
       })
@@ -544,7 +546,7 @@ class GridSettingTransfer extends Field {
 
     const keys = this._getChildNodeKeys([node], true)
     this.checkAllBtn.update({
-      text: '全选'
+      text: this.grid.props.selectAllText
     })
     this._uncheckItem(keys)
 
@@ -626,7 +628,7 @@ class GridSettingTransfer extends Field {
 
   clear() {
     this.checkAllBtn.update({
-      text: '全选',
+      text: this.grid.props.selectAllText,
     })
 
     this.selectedKeys = []

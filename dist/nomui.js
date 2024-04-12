@@ -9498,7 +9498,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children.push({
           component: "Button",
           type: "link",
-          text: loadMore.text || "加载更多~",
+          text: loadMore.text || this.list.props.loadmoreText,
           _created: (inst) => {
             this.list.loadMoreRef = inst;
           },
@@ -10156,6 +10156,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     sortable: false,
     overflow: "hidden",
     loadMore: false,
+    loadmoreText: "加载更多...",
   };
   Component.register(List);
   var AutoCompleteListItemMixin = {
@@ -10627,7 +10628,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             ref: (c) => {
               this.imgRef = c;
             },
-            attrs: { alt },
+            attrs: { alt: alt },
           },
           icon && {
             component: "Icon",
@@ -12915,7 +12916,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               cascadeUncheckParent: true,
               cascade: false,
               showCheckAll: false,
-              checkAllText: "全选",
+              checkAllText: this.props.checkAllText,
               checkedNodeKeys: [],
             },
             nodeCheckable
@@ -13216,6 +13217,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     sortable: false,
     initExpandLevel: -1,
     loadData: false,
+    checkAllText: "全选",
   };
   Component.register(Tree);
   var OptionTreeMixin = {
@@ -14913,14 +14915,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           if (options.asArray === true) {
             this.currentValue = [selValueOption.value];
           }
+        } else if (options.nullWhenNotExists) {
+          this.selectedSingle.element.innerText = null;
+          this.currentValue = null;
         } else {
-          if (options.nullWhenNotExists) {
-            this.selectedSingle.element.innerText = null;
-            this.currentValue = null;
-          } else {
-            this.selectedSingle.element.innerText = value;
-            this.currentValue = value;
-          }
+          this.selectedSingle.element.innerText = value;
+          this.currentValue = value;
         }
       } // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
       if (this.searchBox && this.searchBox.props && value === null) {
@@ -15709,6 +15709,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this.showNow = false;
       }
+      const { weekText, nowText, todayText } = this.props;
       this.setProps({
         leftIcon: "calendar",
         clearProps: {
@@ -15786,7 +15787,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                         ],
                       },
                       {
-                        cols: ["日", "一", "二", "三", "四", "五", "六"],
+                        cols: weekText.split(" "),
                         fills: true,
                         gutter: null,
                         classes: { "nom-datepicker-panel-header": true },
@@ -15912,7 +15913,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   {
                     component: "Button",
                     size: "small",
-                    text: this.props.showTime ? "此刻" : "今天",
+                    text: this.props.showTime ? nowText : todayText,
                     disabled: !this.showNow,
                     renderIf: this.props.showNow,
                     onClick: () => {
@@ -16156,6 +16157,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     showNow: true,
     readonly: false,
     extraTools: null,
+    weekText: "日 一 二 三 四 五 六",
+    nowText: "此刻",
+    todayText: "今天",
   };
   Component.register(DatePicker);
   class Group extends Field {
@@ -17632,7 +17636,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 colspan: this.table.colLength,
                 style: { "vertical-align": "middle" },
               },
-              children: { component: "Empty", description: "暂无内容" },
+              children: {
+                component: "Empty",
+                description: this.table.props.emptyText,
+              },
             },
           },
         };
@@ -17821,7 +17828,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                       items: [
                         {
                           component: "Button",
-                          text: "确定",
+                          text: this.table.props.okText,
                           size: "small",
                           onClick: () => {
                             this.onFilterChange();
@@ -17829,7 +17836,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                         },
                         {
                           component: "Button",
-                          text: "重置",
+                          text: this.table.props.resetText,
                           size: "small",
                           onClick: () => {
                             this.onFilterReset();
@@ -17853,7 +17860,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.props.column.frozenable !== false && {
             component: "Icon",
             type: this.props.column.fixed ? "pin-fill" : "pin",
-            attrs: { title: this.props.column.fixed ? "取消固定" : "固定列" },
+            attrs: {
+              title: this.props.column.fixed
+                ? this.table.props.unfreezeText
+                : this.table.props.freezeText,
+            },
             classes: { "nom-table-pin-handler": true },
             onClick: function () {
               that.table.grid.handlePinClick(that.props.column);
@@ -18329,6 +18340,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     showTitle: false,
     ellipsis: false,
     showEmpty: true,
+    emptyText: "暂无内容",
+    okText: "确定",
+    resetText: "重置",
+    freezeText: "固定列",
+    unfreezeText: "取消固定",
   };
   Component.register(Table);
   var GridTableMixin = {
@@ -18483,12 +18499,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return arr;
     }
     _getSummaryData(param) {
-      const { data = [], rowCheckable, rowExpandable } = this.grid.props;
+      const {
+        data = [],
+        rowCheckable,
+        rowExpandable,
+        totalizeText,
+      } = this.grid.props;
       const columns =
         this.grid.props.summary && this.grid.props.summary.columns
           ? this.grid.props.summary.columns
           : this.grid.props.columns;
-      const { method, text = "总计" } = param;
+      const { method, text = totalizeText } = param;
       const flatColumns = this._getMappedColumns(columns);
       let res = {};
       let textColumnIndex = 0;
@@ -18740,12 +18761,21 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _created() {
       super._created();
+      this.grid = this.props.grid;
       this.warningFunc = null;
       this.selectedKeys = [];
       this.selectedData = this.props.allowFrozenCols
         ? [
-            { title: "已冻结", field: "isFrozen", isDivider: true },
-            { title: "未冻结", field: "isFree", isDivider: true },
+            {
+              title: this.grid.props.frozenText,
+              field: "isFrozen",
+              isDivider: true,
+            },
+            {
+              title: this.grid.props.unfreezeText,
+              field: "isFree",
+              isDivider: true,
+            },
           ]
         : [];
     }
@@ -18782,18 +18812,25 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                           grow: true,
                           children: {
                             component: "Button",
-                            text: "全选",
+                            text: me.grid.props.selectAllText,
                             size: "small",
                             ref: (c) => {
                               me.checkAllBtn = c;
                             },
                             type: "link",
                             onClick: ({ sender }) => {
-                              if (sender.props.text === "全选") {
-                                sender.update({ text: "清空" });
+                              if (
+                                sender.props.text ===
+                                me.grid.props.selectAllText
+                              ) {
+                                sender.update({
+                                  text: me.grid.props.clearText,
+                                });
                                 me.checkAll();
                               } else {
-                                sender.update({ text: "全选" });
+                                sender.update({
+                                  text: me.grid.props.selectAllText,
+                                });
                                 me.clear();
                               }
                             },
@@ -18822,7 +18859,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                               _created: function () {
                                 me.sourceSearch = this;
                               },
-                              placeholder: "搜索所有列",
+                              placeholder: me.grid.props.searchAllText,
                               onValueChange: debounce(({ newValue }) => {
                                 me._onSourceSearch(newValue);
                               }, 1000),
@@ -18913,7 +18950,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                           grow: true,
                           children: {
                             component: "List",
-                            items: [{ children: "已显示列（拖动可进行排序）" }],
+                            items: [
+                              { children: me.grid.props.shownColumnText },
+                            ],
                           },
                         },
                       ],
@@ -18933,7 +18972,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                               _created: function () {
                                 me.targetSearch = this;
                               },
-                              placeholder: "搜索已添加列",
+                              placeholder: me.grid.props.searchAddedText,
                               onValueChange: debounce(({ newValue }) => {
                                 me._onTargetSearch(newValue);
                               }, 1000),
@@ -18970,10 +19009,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   dividerIdx = i;
                                 }
                               });
-                              if (dividerIdx > me.props.frozenLimit) {
+                              const str = me.grid.props.maxColumnText.replace(
+                                "{{limit}}",
+                                me.grid.props.frozenLimit
+                              );
+                              if (dividerIdx > me.grid.props.frozenLimit) {
                                 me.warningFunc = () => {
                                   new nomui.Message({
-                                    content: `最多只能冻结${me.props.frozenLimit}项`,
+                                    content: str,
                                     type: "warning",
                                   });
                                 };
@@ -18985,13 +19028,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                               ) {
                                 me.warningFunc = () => {
                                   new nomui.Message({
-                                    content: "不支持冻结群组",
+                                    content: me.grid.props.noGroupFronzeText,
                                     type: "warning",
                                   });
                                 };
                                 return false;
                               }
-                              if (evt.related.innerHTML.includes("已冻结")) {
+                              if (
+                                evt.related.innerHTML.includes(
+                                  me.grid.props.frozenText
+                                )
+                              ) {
                                 return 1;
                               }
                             },
@@ -19143,11 +19190,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const u = this.sourceTree.getCheckedNodeKeys().length;
       const d = this._getChildNodeKeys(this.sourceTree.getChildNodes(), true)
         .length;
-      this.sourceCount.update({ children: `${u}/${d}项` });
+      const str = this.grid.props.columnStatsText
+        .replace("{{current}}", u)
+        .replace("{{total}}", d);
+      this.sourceCount.update({ children: str });
       if (u === d) {
-        this.checkAllBtn.update({ text: "清空" });
+        this.checkAllBtn.update({ text: this.grid.props.clearText });
       } else {
-        this.checkAllBtn.update({ text: "全选" });
+        this.checkAllBtn.update({ text: this.grid.props.selectAllText });
       }
     }
     _processChecked(nodes) {
@@ -19173,7 +19223,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           return n.field !== "isFree";
         });
         this.selectedData.splice(this.props.frozenCount + 1, 0, {
-          title: "未冻结",
+          title: this.grid.props.unfreezeText,
           field: "isFree",
           isDivider: true,
         });
@@ -19196,7 +19246,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _handleRemoveNode(node) {
       const keys = this._getChildNodeKeys([node], true);
-      this.checkAllBtn.update({ text: "全选" });
+      this.checkAllBtn.update({ text: this.grid.props.selectAllText });
       this._uncheckItem(keys);
       this._removeItem(keys);
     }
@@ -19258,7 +19308,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._initAddNodes();
     }
     clear() {
-      this.checkAllBtn.update({ text: "全选" });
+      this.checkAllBtn.update({ text: this.grid.props.selectAllText });
       this.selectedKeys = [];
       this.selectedData = this.selectedData.filter((n) => {
         if (n.disabled) {
@@ -19342,6 +19392,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       const that = this;
+      const { okText, cancelText } = this.grid.props;
       const rowCheckerCount =
         that.grid.props.rowCheckable &&
         !that.grid.props.rowCheckable.checkboxOnNodeColumn
@@ -19352,13 +19403,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         content: {
           component: "Panel",
           uistyle: "card",
-          header: { caption: { title: "列设置" } },
+          header: { caption: { title: that.grid.props.columnSettingText } },
           body: {
             children: {
               component: GridSettingTransfer,
               ref: (c) => {
                 that.transferRef = c;
               },
+              grid: this.grid,
               allowFrozenCols: that.grid.props.allowFrozenCols,
               frozenLimit: that.grid.props.frozenLimit,
               value: this.grid.getMappedColumns(this.grid.props.columns),
@@ -19377,7 +19429,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   children: {
                     component: "Button",
                     type: "primary",
-                    text: "确定",
+                    text: okText,
                     onClick: function () {
                       that._fixDataOrder();
                     },
@@ -19386,7 +19438,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 {
                   children: {
                     component: "Button",
-                    text: "取消",
+                    text: cancelText,
                     onClick: () => {
                       this.hide();
                     },
@@ -19400,6 +19452,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super._config();
     }
     _fixDataOrder() {
+      const { columnsLimitTitle, columnsLimitDescription } = this.grid.props;
       const list = this.transferRef.getSelectedData();
       const selected = JSON.parse(JSON.stringify(list));
       const frozenCount = this.transferRef.getFrozenCount();
@@ -19417,8 +19470,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         new nomui.Alert({
           type: "info",
-          title: "提示",
-          description: "请至少保留一列数据",
+          title: columnsLimitTitle,
+          description: columnsLimitDescription,
         });
         return false;
       }
@@ -19508,12 +19561,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return arr;
     }
     _toogleCheckall() {
-      if (this.checkallBtn.props.text === "全选") {
+      const { selectAllText, deselectAllText } = this.grid.props;
+      if (this.checkallBtn.props.text === selectAllText) {
         this.tree.checkAllNodes({ ignoreDisabled: true });
-        this.checkallBtn.update({ text: "取消全选" });
+        this.checkallBtn.update({ text: deselectAllText });
       } else {
         this.tree.uncheckAllNodes({ ignoreDisabled: true });
-        this.checkallBtn.update({ text: "全选" });
+        this.checkallBtn.update({ text: selectAllText });
       }
     }
   }
@@ -19608,7 +19662,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.checkSortInfo();
       this._processColumns();
       this._calcMinWidth();
-      const { line, rowDefaults } = this.props;
+      const { line, rowDefaults, columnSettingText } = this.props;
       this.setProps({
         classes: {
           "m-frozen-header": this.props.frozenHeader,
@@ -19626,7 +19680,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               size: "small",
               renderIf: this.props.columnsCustomizable, // type: 'text',
               classes: { "nom-grid-setting-btn": true },
-              attrs: { title: "列设置" },
+              attrs: { title: columnSettingText },
               onClick: () => {
                 this.showSetting();
               },
@@ -20815,6 +20869,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     summary: null,
     showEmpty: true,
     columnAlign: "left",
+    columnSettingText: "列设置",
+    totalizeText: "总计",
+    okText: "确定",
+    cancelText: "取消",
+    columnsLimitTitle: "提示",
+    columnsLimitDescription: "请至少保留一列",
+    selectAllText: "全选",
+    clearText: "清空",
+    deselectAllText: "取消全选",
+    frozenText: "已冻结",
+    unfreezeText: "未冻结",
+    searchAllText: "搜索所有列",
+    searchAddedText: "搜索已添加列",
+    shownColumnText: "已显示列（拖动可进行排序）",
+    maxColumnText: "最多只能冻结{{limit}}项",
+    noGroupFronzeText: "不支持冻结群组",
+    columnStatsText: "{{current}}/{{total}}项",
   };
   Grid._loopSetValue = function (key, arry) {
     if (key === undefined || key.cascade === undefined) return false;
@@ -21064,7 +21135,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const that = this;
       const { groupDefaults, value, gridProps } = this.props;
       const actionRender = groupDefaults.actionRender;
-      const actionWidth = groupDefaults.actionWidth || 80;
+      const actionWidth = groupDefaults.actionWidth || 100;
       let columns = [];
       this.hiddenColumns = [];
       groupDefaults.fields.forEach((f) => {
@@ -21119,7 +21190,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 items: [
                   {
                     component: "Button",
-                    text: "移除",
+                    text: this.props.removeText,
                     onClick: () => {
                       row.remove();
                       that._onValueChange();
@@ -21152,7 +21223,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           {
             component: "Button",
             type: "dashed",
-            text: "添加",
+            text: this.props.addText,
             span: 12,
             block: true,
             onClick: () => {
@@ -21262,7 +21333,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
   }
-  GroupGrid.defaults = { hideAction: false };
+  GroupGrid.defaults = {
+    hideAction: false,
+    addText: "添加",
+    removeText: "移除",
+  };
   Object.defineProperty(GroupGrid.prototype, "fields", {
     get: function () {
       return this.grid.getRows();
@@ -21293,7 +21368,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               action: [
                 {
                   component: "Button",
-                  text: "移除",
+                  text: this.props.removeText,
                   disabled: disabled,
                   onClick: () => {
                     that.removeGroup(group);
@@ -21319,7 +21394,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           {
             component: "Button",
             type: "dashed",
-            text: "添加",
+            text: this.props.addText,
             span: 12,
             block: true,
             disabled: disabled,
@@ -21375,6 +21450,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   GroupList.defaults = {
     fieldDefaults: { component: Group },
     hideAction: false,
+    addText: "添加",
+    removeText: "移除",
   };
   Component.register(GroupList);
   class GroupTree extends Field {
@@ -21436,7 +21513,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 children: {
                   component: "Button",
                   type: "dashed",
-                  text: "添加",
+                  text: me.props.addText,
                   span: 12,
                   block: true,
                   onClick: () => {
@@ -21513,7 +21590,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   attrs: { style: { width: "40px" } },
                                   items: [
                                     {
-                                      text: "重命名",
+                                      text: me.props.renameText,
                                       onClick: () => {
                                         let rowText = that.props.data[text];
                                         new nomui.Modal({
@@ -21544,7 +21621,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                       },
                                     },
                                     {
-                                      text: "删除节点",
+                                      text: me.props.removeNodeText,
                                       onClick: () => {
                                         const parentNode = that.parent.parent;
                                         const isRoot =
@@ -21591,11 +21668,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                       },
                                     },
                                     {
-                                      text: "在下方插入行",
+                                      text: me.props.addRowText,
                                       onClick: () => {
                                         const obj = { __isNew: true };
                                         obj[key] = nomui.utils.newGuid();
-                                        obj[text] = "新节点";
+                                        obj[text] = me.props.newNodeText;
                                         new nomui.Modal({
                                           size: "xsmall",
                                           content: {
@@ -21648,11 +21725,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                       },
                                     },
                                     {
-                                      text: "新增子节点",
+                                      text: me.props.addNodeText,
                                       onClick: () => {
                                         const obj = { __isNew: true };
                                         obj[key] = nomui.utils.newGuid();
-                                        obj[text] = "新节点";
+                                        obj[text] = me.props.newNodeText;
                                         new nomui.Modal({
                                           size: "xsmall",
                                           content: {
@@ -21719,7 +21796,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _addNode() {
       const { text, key } = this.props.dataFields;
       const defaultObj = {};
-      defaultObj[text] = "新节点";
+      defaultObj[text] = this.props.newNodeText;
       defaultObj[key] = nomui.utils.newGuid();
       this.update({ value: [defaultObj] });
     }
@@ -21809,6 +21886,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     groupDefaults: { fields: [] },
     dataFields: { key: "key", text: "text", children: "children" },
     onNodeDeleted: null,
+    addText: "添加",
+    renameText: "重命名",
+    removeNodeText: "删除节点",
+    addRowText: "在下方插入行",
+    newNodeText: "新节点",
+    addNodeText: "新增子节点",
   };
   Component.register(GroupTree);
   class Image$1 extends Component {
@@ -21969,7 +22052,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.props.mask && !this.props.icon && this.props.toggle) {
         this.tooltip = new nomui.Tooltip({
           trigger: this,
-          children: "点击显示完整信息",
+          children: this.props.showText,
         });
       }
     }
@@ -22054,6 +22137,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     empty: null,
     showTitle: true,
     toggle: true,
+    showText: "点击显示完整信息",
   };
   Component.register(MaskInfo);
   class MaskInfoField extends Field {
@@ -23043,7 +23127,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
-      const { title, description, type, btn, closeIcon, onClose } = this.props;
+      const {
+        title,
+        description,
+        type,
+        btn,
+        closeIcon,
+        onClose,
+        okText,
+      } = this.props;
       let { icon } = this.props;
       const iconMap = {
         info: "info-circle",
@@ -23089,7 +23181,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           component: Button,
           styles: { color: "primary" },
           size: "small",
-          text: btn.text || "知道了",
+          text: btn.text || okText,
           onClick: () => {
             onClose();
           },
@@ -23272,6 +23364,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         description,
         align,
         animate,
+        okText,
       } = this.props;
       const classes = {};
       let alignInfo = "topright";
@@ -23301,6 +23394,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           title,
           btn,
           description,
+          okText,
           onClose: () => {
             that.close();
           },
@@ -23337,6 +23431,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       description: "", // btn:boolean||{text:''},
       // closeIcon:{},
       key: newGuid(), // onClose:()=>{},
+      okText: "确定",
     }
   );
   Component.register(Notification);
@@ -23523,16 +23618,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         rules.push({
           type: "regex",
           value: { pattern: "^(\\-|\\+)?(0|[1-9][0-9]*)$" },
-          message: "请输入整数",
+          message: this.props.integerText,
         });
       }
       if (this.props.precision > 0) {
+        const str = this.props.precisionText.replace(
+          "{{precision}}",
+          this.props.precision
+        );
         rules.push({
           type: "regex",
           value: {
             pattern: `^(\\-|\\+)?(0|[1-9][0-9]*)(\\.\\d{${this.props.precision}})$`,
           },
-          message: `请输入 ${this.props.precision} 位小数`,
+          message: str,
         });
       }
       if (this.props.min) {
@@ -23746,6 +23845,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     align: "right", // decimal,currency,percent
     style: STYLE.DECIMAL,
     currency: "CNY",
+    integerText: "请输入有效整数",
+    precisionText: "请输入有效数字，且包含{{precision}}位小数",
   };
   Component.register(NumberSpinner);
   class Numberbox extends Textbox {
@@ -23760,10 +23861,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       if (maxPrecision) {
         precision = -1;
+        const str = this.props.maxPrecisionText.replace(
+          "{{maxPrecision}}",
+          maxPrecision
+        );
         this.rules.push({
           type: "regex",
           value: { pattern: `^\\d+(\\.\\d{1,${maxPrecision}})?$` },
-          message: `请输入有效数字，且最多包含${maxPrecision}位小数`,
+          message: str,
         });
       }
       if (precision === -1) {
@@ -23773,17 +23878,21 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.rules.push({
           type: "regex",
           value: { pattern: /^-?(\d+|\d{1,3}(,\d{3})+)$/ },
-          message: "请输入有效整数",
+          message: this.props.integerText,
         });
       }
       if (precision > 0) {
+        const str = this.props.precisionText.replace(
+          "{{precision}}",
+          precision
+        );
         this.rules.push({
           type: "regex",
           value: {
             // 在上面的规则的基础上添加了小数部分
             pattern: `^\\-?(\\d+|\\d{1,3}(,\\d{3})+)(\\.\\d{${precision}})$`,
           },
-          message: `请输入有效数字，且包含 ${precision} 位小数`,
+          message: str,
         });
       }
       if (this.props.min) {
@@ -23884,6 +23993,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     maxPrecision: null,
     limitInput: false,
     allowClear: false,
+    maxPrecisionText: "请输入有效数字，且最多包含{{maxPrecision}}位小数",
+    integerText: "请输入有效整数",
+    precisionText: "请输入有效数字，且包含{{precision}}位小数",
   };
   Component.register(Numberbox);
   class Pager extends Component {
@@ -23909,7 +24021,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
     }
     _rendercount() {
-      return { children: `共有数据${this.props.totalCount}条` };
+      const str = this.props.totalText.replace(
+        "{{totalCount}}",
+        this.props.totalCount
+      );
+      return { children: str };
     }
     _renderpages(pager) {
       return {
@@ -23955,11 +24071,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
           allowClear: false,
           options: [
-            { text: "10条/页", value: 10 },
-            { text: "20条/页", value: 20 },
-            { text: "30条/页", value: 30 },
-            { text: "40条/页", value: 40 },
-            { text: "50条/页", value: 50 },
+            { text: this.props.pageText10, value: 10 },
+            { text: this.props.pageText20, value: 20 },
+            { text: this.props.pageText30, value: 30 },
+            { text: this.props.pageText40, value: 40 },
+            { text: this.props.pageText50, value: 50 },
           ],
         }
       );
@@ -24118,6 +24234,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       prev: { component: "Icon", type: "prev" },
       next: { component: "Icon", type: "next" },
       ellipse: "...",
+      totalText: "共有数据{{totalCount}}条",
+      pageText10: "10条/页",
+      pageText20: "20条/页",
+      pageText30: "30条/页",
+      pageText40: "40条/页",
+      pageText50: "50条/页",
     },
     getPageParams: function () {
       const { pageIndex, pageSize } = this.props;
@@ -24152,12 +24274,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.maxSub = "60";
     }
     _config() {
-      const { disabled, placeholder, animate, extraTools, mode } = this.props;
-      const formatMap = {
-        quarter: "$year年 $quarter季度",
-        month: "yyyy-MM",
-        week: "$year年 $week周",
-      };
+      const {
+        disabled,
+        placeholder,
+        animate,
+        extraTools,
+        mode,
+        formatMap,
+      } = this.props;
       if (!this.props.format) {
         this.props.format = formatMap[mode];
       }
@@ -24255,6 +24379,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                       },
                     },
                     that.props.mode === "quarter" && {
+                      classes: { "nom-quarter-list": true },
                       children: {
                         component: "List",
                         items: that._getQuarter(),
@@ -24323,6 +24448,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                       },
                     },
                     that.props.mode === "week" && {
+                      classes: { "nom-week-list": true },
                       children: {
                         component: "List",
                         items: that.year
@@ -24330,7 +24456,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                           : [
                               {
                                 component: "StaticText",
-                                value: "请先选择年份",
+                                value: that.props.selectYearText,
                                 disabled: true,
                               },
                             ],
@@ -24346,11 +24472,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                           if (that.props.mode === "week") {
                             that.subPicker = c;
                           }
-                        },
-                        _created: (me) => {
-                          me.parent.setProps({
-                            classes: { "nom-week-list": true },
-                          });
                         },
                         onItemSelectionChange: (args) => {
                           const key = args.sender.props.selectedItems;
@@ -24400,7 +24521,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         i > thisYear - this.props.yearRange[0];
         i--
       ) {
-        years.push({ key: `${i}`, children: `${i}年` });
+        const str = this.props.yearText.replace("{{year}}", i);
+        years.push({ key: `${i}`, children: str });
       }
       return years;
     }
@@ -24408,14 +24530,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const month = [];
       const that = this;
       for (let i = 1; i < 13; i++) {
-        month.push({ key: that._getDoubleDigit(i), children: `${i}月` });
+        // const str = this.props.monthText.replace('{{month}}', i)
+        month.push({
+          key: that._getDoubleDigit(i),
+          children: this.props.monthMap[i],
+        });
       }
       return month;
     }
     _getQuarter() {
       const quarter = [];
       for (let i = 1; i < 5; i++) {
-        quarter.push({ key: `${i}`, children: `${i}季度` });
+        const str = this.props.quarterText.replace("{{quarter}}", i);
+        quarter.push({ key: `${i}`, children: str });
       }
       return quarter;
     }
@@ -24467,14 +24594,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return whichWeek(param);
     }
     _getWeek(param) {
+      const that = this;
       const week = this._mapWeekData(param).map(function (item, index) {
+        const str = that.props.weekText.replace("{{week}}", index + 1);
         return {
           key: `${index + 1}`,
           firstDay: `${item.year}-${item.month}-${item.day}`,
           children: {
             component: "List",
             items: [
-              { children: `${index + 1}周` },
+              { children: str },
               {
                 classes: { "nom-week-subtitle": true },
                 children: `(${item.year}/${item.month}/${item.day} - ${item.last.year}/${item.last.month}/${item.last.day})`,
@@ -24722,6 +24851,30 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     maxDate: null,
     readonly: true,
     extraTools: null,
+    selectYearText: "请先选择年份",
+    formatMap: {
+      quarter: "$year年 $quarter季度",
+      month: "yyyy-MM",
+      week: "$year年 $week周",
+    },
+    yearText: "{{year}}年",
+    monthText: "{{month}}月",
+    quarterText: "第{{quarter}}季度",
+    weekText: "第{{week}}周",
+    monthMap: {
+      1: "一月",
+      2: "二月",
+      3: "三月",
+      4: "四月",
+      5: "五月",
+      6: "六月",
+      7: "七月",
+      8: "八月",
+      9: "九月",
+      10: "十月",
+      11: "十一月",
+      12: "十二月",
+    },
   };
   Component.register(PartialDatePicker);
   class PartialDateRangePicker extends Group {
@@ -24884,7 +25037,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _config() {
       this.setProps({
         children: [
-          "大写已开启",
+          this.props.capslockText,
           {
             ref: (c) => {
               this.arrow = c;
@@ -24999,10 +25152,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       const that = this;
+      const { capslockText } = this.props;
       if (this.hasDefaultValue && this.firstRender) {
         this.setValue(this.realValue);
       }
       this.popup = new PasswordPopup({
+        capslockText,
         trigger: this.control,
         animate: false,
         triggerAction: "click",
@@ -25069,6 +25224,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     allowClear: false,
     visibilityToggle: true,
     rightIconType: "eye",
+    capslockText: "大写已开启",
   };
   Component.register(Password);
   class Popconfirm extends Popup {
@@ -25721,7 +25877,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           gapDegree,
         });
       } else {
-        throw new Error(`Progress 不受支持的类型：${type}`);
+        throw new Error(`${type} is not supported`);
       }
       this.setProps({
         classes: {
@@ -28443,7 +28599,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 noStep && {
                   component: "Button",
                   size: "small",
-                  text: "此刻",
+                  text: that.pickerControl.props.nowText,
                   disabled: !nowInRange,
                   onClick: function () {
                     that.pickerControl.setNow();
@@ -28454,7 +28610,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 that.pickerControl.props.defaultValue && {
                   component: "Button",
                   size: "small",
-                  text: "重置",
+                  text: that.pickerControl.props.resetText,
                   onClick: function () {
                     that.pickerControl.popup.hide();
                     that.pickerControl.handleChange();
@@ -28774,6 +28930,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     showNow: true,
     minTime: null,
     maxTime: null,
+    nowText: "此刻",
+    resetText: "重置",
   };
   Component.register(TimePicker);
   class TimeRangePicker extends Group {
@@ -28832,7 +28990,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             {
               component: "TimePicker",
               name: that.props.fieldName.end,
-              placeholder: "结束时间",
               ref: (c) => {
                 that.endPicker = c;
               },
@@ -29102,6 +29259,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
       });
       this.mask = new nomui.Layer({ classes: { "nom-tour-mask": true } });
+      const str = this.props.pageInfoText
+        .replace("{{current}}", current)
+        .replace("{{total}}", this.total);
       this.stepLayer = new nomui.Layer({
         alignOuter: true,
         align: align,
@@ -29131,14 +29291,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 children: {
                   classes: { "nom-tour-navi-text": true },
                   hidden: !showPagination,
-                  children: `${current} of ${this.total}`,
+                  children: str,
                 },
               },
               {
                 component: "Button",
                 size: "small",
                 hidden: current === 1 || this.total === 1,
-                text: "上一步",
+                text: this.props.prevText,
                 onClick: () => {
                   this._destroyStep();
                   this._createStep(current - 1);
@@ -29148,7 +29308,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 component: "Button",
                 size: "small",
                 hidden: current === this.total || this.total === 1,
-                text: "下一步",
+                text: this.props.nextText,
                 onClick: () => {
                   this._destroyStep();
                   this._createStep(current + 1);
@@ -29158,7 +29318,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 component: "Button",
                 size: "small",
                 hidden: current !== this.total && this.total !== 1,
-                text: "完成",
+                text: this.props.finishText,
                 type: "primary",
                 onClick: () => {
                   this._destroyStep();
@@ -29203,6 +29363,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     current: 1,
     scrollIntoView: true,
     showPagination: true,
+    prevText: "上一步",
+    nextText: "下一步",
+    finishText: "完成",
+    pageInfoText: "{{current}} / {{total}}",
   };
   Component.register(Tour);
   class Transfer extends Field {
@@ -29257,7 +29421,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                           grow: true,
                           children: {
                             component: "Button",
-                            text: "全选",
+                            text: me.props.selectAllText,
                             size: "small",
                             ref: (c) => {
                               me.checkAllBtn = c;
@@ -29267,11 +29431,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                               if (me.props.disabled) {
                                 return;
                               }
-                              if (sender.props.text === "全选") {
-                                sender.update({ text: "反选" });
+                              if (
+                                sender.props.text === me.props.selectAllText
+                              ) {
+                                sender.update({
+                                  text: me.props.deselectAllText,
+                                });
                                 me.checkAll();
                               } else {
-                                sender.update({ text: "全选" });
+                                sender.update({ text: me.props.selectAllText });
                                 me.uncheckAll();
                               }
                             },
@@ -29425,7 +29593,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                           grow: true,
                           children: {
                             component: "Button",
-                            text: "清空",
+                            text: me.props.clearText,
                             size: "small",
                             type: "text",
                             onClick: () => {
@@ -29593,7 +29761,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.sourceTree.getChildNodes(),
         true
       ).length;
-      this.sourceCount.update({ children: `${u}/${d}项` });
+      this.sourceCount.update({
+        children: this.props.countText
+          .replace("{{current}}", u)
+          .replace("{{total}}", d),
+      });
     }
     _updateTargetCount() {
       if (
@@ -29608,7 +29780,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.targetTree.getChildNodes(),
         true
       ).length;
-      this.targetCount.update({ children: `${u}/${d}项` });
+      this.targetCount.update({
+        children: this.props.countText
+          .replace("{{current}}", u)
+          .replace("{{total}}", d),
+      });
     }
     _disableNode(node) {
       node.checkboxRef.disable();
@@ -29716,7 +29892,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.update({ disabled: false });
     }
     clear() {
-      this.checkAllBtn.update({ text: "全选" });
+      this.checkAllBtn.update({ text: this.props.selectAllText });
       this.props.value = null;
       const nodes = this._getCheckedChildNodeKeys(
         this.targetTree.getChildNodes(),
@@ -29759,6 +29935,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       children: "children",
       parentKey: "parentKey",
     },
+    selectAllText: "全选",
+    clearText: "清空",
+    deselectAllText: "反选",
+    countText: `{{current}}/{{total}}项`,
   };
   Component.register(Transfer);
   class TreeSelectPopup extends Popup {
@@ -30495,7 +30675,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
         },
       };
-      const defaultBtn = { component: "Button", text: "上传" };
+      const defaultBtn = { component: "Button", text: this.props.uploadText };
       const triggerProps = Component.extendProps(
         defaults,
         trigger || defaultBtn
@@ -30544,7 +30724,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this._cancleLoading(noUploading);
         } else if (currentStatus === "error") {
           this._cancleLoading(noUploading);
-          new nomui.Message({ content: "上传失败！", type: "error" });
+          new nomui.Message({ content: this.uploadFailText, type: "error" });
         }
       }
     }
@@ -30604,7 +30784,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _upload(file, fileList) {
       const beforeUpload = this.props.beforeUpload;
       if (!this._checkType(file)) {
-        new nomui.Alert({ title: "不支持此格式，请重新上传。" });
+        new nomui.Alert({ title: this.props.unSupportedTypeText });
         return;
       }
       if (!beforeUpload) {
@@ -30757,6 +30937,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     headers: {},
     withCredentials: false,
     onChange: null,
+    uploadText: "上传",
+    uploadFailText: "上传失败！",
+    unSupportedTypeText: "不支持此格式，请重新上传。",
   };
   Component.register(Upload);
   const DEFAULT_ACCEPT =
@@ -30882,7 +31065,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         if (onRemove) {
           actions.push({
             tag: "a",
-            children: onRemove.text || "删除",
+            children: onRemove.text || this._uploader.props.removeText,
             attrs: {
               href: "javascript:void(0)",
               onclick: (e) => {
@@ -30896,7 +31079,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         if (allowUpdate) {
           actions.push({
             tag: "a",
-            children: "更新",
+            children: this._uploader.props.updateText,
             onClick() {
               that._uploader._handleUpdate({ file });
             },
@@ -30995,7 +31178,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         { tag: "span", children: getFileSize(size) },
         {
           tag: "span",
-          children: `更新日期 : ${
+          children: `${this._uploader.props.updateTimeText} : ${
             getDate(uploadTime) ? getDate(uploadTime) : "NA"
           }`,
           classes: { "upload-file-update": true, "u-border-left ": true },
@@ -31181,7 +31364,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const children = [];
       const defaultButtonProps = {
         component: "Button",
-        text: "上传",
+        text: this.props.uploadText,
         icon: "upload",
       };
       const inputUploader = {
@@ -31267,7 +31450,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.fileList[0].status === "done" &&
           !this._updateFileIcon.includes("close-circle")
         ) {
-          triggerButton.tooltip = "重新上传可完成覆盖。";
+          triggerButton.tooltip = this.props.reUploadText;
           this._updateFileIcon.push("close-circle");
           this._updateFileIcon.splice(this._updateFileIcon.indexOf("error"), 1);
           this.deleteIcon("loading", triggerButton);
@@ -31276,7 +31459,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           !this._updateFileIcon.includes("error")
         ) {
           this.deleteIcon("loading", triggerButton);
-          new nomui.Message({ content: "上传失败！", type: "error" });
+          new nomui.Message({
+            content: this.props.uploadFailText,
+            type: "error",
+          });
         }
         if (this.fileList[0].status !== "uploading") {
           this._updateFileIcon.splice(
@@ -31356,7 +31542,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     upload(file, fileList) {
       const beforeUpload = this.props.beforeUpload;
       if (!this.checkType(file)) {
-        new nomui.Alert({ title: "不支持此格式，请重新上传。" });
+        new nomui.Alert({ title: this.props.unSupportedTypeText });
         return;
       }
       if (!beforeUpload) {
@@ -31573,6 +31759,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     customizeInfo: null,
     actionRender: null,
     showList: true,
+    uploadText: "上传",
+    uploadFailText: "上传失败！",
+    reUploadText: "重新上传可完成覆盖。",
+    unSupportedTypeText: "不支持此格式，请重新上传。",
+    removeText: "删除",
+    updateText: "更新",
+    updateTimeText: "更新日期",
   };
   Component.register(Uploader);
   const FontGap = 3;

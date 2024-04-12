@@ -3,8 +3,8 @@ import Field from '../Field/index'
 import { isFunction, isNotEmptyArray } from '../util/index'
 import FileList from './FileList'
 import {
-  cloneFileWithInfo,
   DEFAULT_ACCEPT,
+  cloneFileWithInfo,
   getFileFromList,
   getUUID,
   isBlobFile,
@@ -71,7 +71,7 @@ class Uploader extends Field {
 
     const defaultButtonProps = {
       component: 'Button',
-      text: '上传',
+      text: this.props.uploadText,
       icon: 'upload',
     }
 
@@ -134,9 +134,9 @@ class Uploader extends Field {
             renderer,
             onRemove: onRemove &&
               isFunction(onRemove.action) && {
-                ...onRemove,
-                action: that.handleRemove.bind(that),
-              },
+              ...onRemove,
+              action: that.handleRemove.bind(that),
+            },
             allowUpdate,
             extraAction,
             customizeInfo,
@@ -157,14 +157,14 @@ class Uploader extends Field {
         this.fileList[0].status === 'done' &&
         !this._updateFileIcon.includes('close-circle')
       ) {
-        triggerButton.tooltip = '重新上传可完成覆盖。'
+        triggerButton.tooltip = this.props.reUploadText
         this._updateFileIcon.push('close-circle')
         this._updateFileIcon.splice(this._updateFileIcon.indexOf('error'), 1)
         this.deleteIcon('loading', triggerButton)
       } else if (this.fileList[0].status === 'error' && !this._updateFileIcon.includes('error')) {
         this.deleteIcon('loading', triggerButton)
         new nomui.Message({
-          content: '上传失败！',
+          content: this.props.uploadFailText,
           type: 'error',
         })
       }
@@ -258,7 +258,7 @@ class Uploader extends Field {
     const beforeUpload = this.props.beforeUpload
     if (!this.checkType(file)) {
       new nomui.Alert({
-        title: '不支持此格式，请重新上传。',
+        title: this.props.unSupportedTypeText
       })
       return
     }
@@ -427,7 +427,7 @@ class Uploader extends Field {
     // removing
     file.status = 'removing'
     this.fileList = this.fileList.map((f) =>
-      f.uuid === file.uuid ? { ...f, status: 'removing' } : f,
+      (f.uuid === file.uuid ? { ...f, status: 'removing' } : f),
     )
     this.onChange({
       file,
@@ -516,6 +516,13 @@ Uploader.defaults = {
   customizeInfo: null,
   actionRender: null,
   showList: true,
+  uploadText: '上传',
+  uploadFailText: '上传失败！',
+  reUploadText: '重新上传可完成覆盖。',
+  unSupportedTypeText: '不支持此格式，请重新上传。',
+  removeText: '删除',
+  updateText: '更新',
+  updateTimeText: '更新日期'
 }
 
 Component.register(Uploader)

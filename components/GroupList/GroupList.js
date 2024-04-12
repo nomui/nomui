@@ -32,7 +32,7 @@ class GroupList extends Group {
             action: [
               {
                 component: 'Button',
-                text: '移除',
+                text: this.props.removeText,
                 disabled: disabled,
                 onClick: () => {
                   that.removeGroup(group)
@@ -58,7 +58,7 @@ class GroupList extends Group {
         {
           component: 'Button',
           type: 'dashed',
-          text: '添加',
+          text: this.props.addText,
           span: 12,
           block: true,
           disabled: disabled,
@@ -124,6 +124,8 @@ class GroupList extends Group {
 GroupList.defaults = {
   fieldDefaults: { component: Group },
   hideAction: false,
+  addText: '添加',
+  removeText: '移除'
 }
 
 Component.register(GroupList)
