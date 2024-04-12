@@ -308,10 +308,10 @@ class PartialDatePicker extends Textbox {
     const that = this
 
     for (let i = 1; i < 13; i++) {
-      const str = this.props.monthText.replace('{{month}}', i)
+      // const str = this.props.monthText.replace('{{month}}', i)
       month.push({
         key: that._getDoubleDigit(i),
-        children: str,
+        children: this.props.monthMap[i],
       })
     }
     return month
@@ -682,6 +682,20 @@ PartialDatePicker.defaults = {
   monthText: '{{month}}月',
   quarterText: '第{{quarter}}季度',
   weekText: '第{{week}}周',
+  monthMap: {
+    1: '一月',
+    2: '二月',
+    3: '三月',
+    4: '四月',
+    5: '五月',
+    6: '六月',
+    7: '七月',
+    8: '八月',
+    9: '九月',
+    10: '十月',
+    11: '十一月',
+    12: '十二月'
+  }
 }
 Component.register(PartialDatePicker)
 
