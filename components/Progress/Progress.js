@@ -125,14 +125,13 @@ class Progress extends Component {
         gapDegree,
       }
     } else {
-      throw new Error(`Progress 不受支持的类型：${type}`)
+      throw new Error(`${type} is not supported`)
     }
 
     this.setProps({
       classes: {
-        [`${Progress._prefixClass}-${
-          (type === 'dashboard' && 'circle') || (steps && 'steps') || type
-        }`]: true,
+        [`${Progress._prefixClass}-${(type === 'dashboard' && 'circle') || (steps && 'steps') || type
+          }`]: true,
         [`${Progress._prefixClass}-status-${progressStatus}`]: true,
         [`${Progress._prefixClass}-show-info`]: showInfo,
         [`${Progress._prefixClass}-${size}`]: size,

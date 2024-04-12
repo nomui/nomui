@@ -95,10 +95,12 @@ class Password extends Textbox {
 
   _rendered() {
     const that = this
+    const { capslockText } = this.props
     if (this.hasDefaultValue && this.firstRender) {
       this.setValue(this.realValue)
     }
     this.popup = new PasswordPopup({
+      capslockText,
       trigger: this.control,
       animate: false,
       triggerAction: 'click',
@@ -172,6 +174,7 @@ Password.defaults = {
   allowClear: false,
   visibilityToggle: true,
   rightIconType: 'eye',
+  capslockText: '大写已开启'
 }
 Component.register(Password)
 

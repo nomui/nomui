@@ -31,7 +31,8 @@ class Pager extends Component {
   }
 
   _rendercount() {
-    return { children: `共有数据${this.props.totalCount}条` }
+    const str = this.props.totalText.replace('{{totalCount}}', this.props.totalCount)
+    return { children: str }
   }
 
   _renderpages(pager) {
@@ -88,23 +89,23 @@ class Pager extends Component {
         allowClear: false,
         options: [
           {
-            text: '10条/页',
+            text: this.props.pageText10,
             value: 10,
           },
           {
-            text: '20条/页',
+            text: this.props.pageText20,
             value: 20,
           },
           {
-            text: '30条/页',
+            text: this.props.pageText30,
             value: 30,
           },
           {
-            text: '40条/页',
+            text: this.props.pageText40,
             value: 40,
           },
           {
-            text: '50条/页',
+            text: this.props.pageText50,
             value: 50,
           },
         ],
@@ -296,6 +297,12 @@ Pager.defaults = {
       type: 'next',
     },
     ellipse: '...',
+    totalText: '共有数据{{totalCount}}条',
+    pageText10: '10条/页',
+    pageText20: '20条/页',
+    pageText30: '30条/页',
+    pageText40: '40条/页',
+    pageText50: '50条/页',
   },
 
   getPageParams: function () {

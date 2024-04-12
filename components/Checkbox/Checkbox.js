@@ -82,6 +82,7 @@ class Checkbox extends Field {
     this.input.element.removeAttribute('disabled', 'disabled')
   }
 }
+
 Checkbox.defaults = {
   text: null,
   valueText: {

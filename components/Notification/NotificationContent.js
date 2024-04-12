@@ -16,7 +16,7 @@ class NotificationContent extends Component {
   }
 
   _config() {
-    const { title, description, type, btn, closeIcon, onClose } = this.props
+    const { title, description, type, btn, closeIcon, onClose, okText } = this.props
 
     let { icon } = this.props
     const iconMap = {
@@ -29,16 +29,16 @@ class NotificationContent extends Component {
 
     const iconProps = icon
       ? Component.extendProps(Component.normalizeIconProps(icon), {
-          classes: {
-            'nom-notification-icon': true,
-          },
-        })
+        classes: {
+          'nom-notification-icon': true,
+        },
+      })
       : null
 
     const titleProps = title
       ? Component.extendProps(Component.normalizeTemplateProps(title), {
-          classes: { 'nom-notification-title': true },
-        })
+        classes: { 'nom-notification-title': true },
+      })
       : null
 
     const closeIconProps = Component.extendProps(
@@ -65,8 +65,8 @@ class NotificationContent extends Component {
 
     const descriptionProps = description
       ? Component.extendProps(Component.normalizeTemplateProps(description), {
-          classes: { 'nom-notification-description': true },
-        })
+        classes: { 'nom-notification-description': true },
+      })
       : null
     let actionProps
     if (btn) {
@@ -76,7 +76,7 @@ class NotificationContent extends Component {
           color: 'primary',
         },
         size: 'small',
-        text: btn.text || '知道了',
+        text: btn.text || okText,
         onClick: () => {
           onClose()
         },
@@ -97,11 +97,11 @@ class NotificationContent extends Component {
           children: [
             icon
               ? {
-                  classes: {
-                    'nom-notification-body-icon': true,
-                  },
-                  children: iconProps,
-                }
+                classes: {
+                  'nom-notification-body-icon': true,
+                },
+                children: iconProps,
+              }
               : undefined,
             {
               classes: {
@@ -113,11 +113,11 @@ class NotificationContent extends Component {
         },
         actionProps
           ? {
-              classes: {
-                'nom-notification-actions': true,
-              },
-              children: actionProps,
-            }
+            classes: {
+              'nom-notification-actions': true,
+            },
+            children: actionProps,
+          }
           : undefined,
       ],
     })

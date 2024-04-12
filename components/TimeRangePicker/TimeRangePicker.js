@@ -60,7 +60,6 @@ class TimeRangePicker extends Group {
         {
           component: 'TimePicker',
           name: that.props.fieldName.end,
-          placeholder: '结束时间',
           ref: (c) => {
             that.endPicker = c
           },

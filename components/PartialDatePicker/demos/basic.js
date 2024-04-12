@@ -13,7 +13,6 @@ define([], function () {
           {
             component: 'PartialDatePicker',
             placeholder: '选择季度',
-            format: '$year年 第$quarter季度',
             mode: 'quarter',
           },
           {

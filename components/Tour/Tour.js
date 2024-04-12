@@ -65,6 +65,7 @@ class Tour extends Component {
       },
     })
 
+    const str = this.props.pageInfoText.replace('{{current}}', current).replace('{{total}}', this.total)
 
     this.stepLayer = new nomui.Layer({
       alignOuter: true,
@@ -103,14 +104,14 @@ class Tour extends Component {
                 'nom-tour-navi-text': true
               },
               hidden: !showPagination,
-              children: `${current} of ${this.total}`
+              children: str
             }
           },
           {
             component: 'Button',
             size: 'small',
             hidden: current === 1 || this.total === 1,
-            text: '上一步',
+            text: this.props.prevText,
             onClick: () => {
               this._destroyStep()
               this._createStep(current - 1)
@@ -121,7 +122,7 @@ class Tour extends Component {
             component: 'Button',
             size: 'small',
             hidden: current === this.total || this.total === 1,
-            text: '下一步',
+            text: this.props.nextText,
             onClick: () => {
               this._destroyStep()
               this._createStep(current + 1)
@@ -131,7 +132,7 @@ class Tour extends Component {
             component: 'Button',
             size: 'small',
             hidden: current !== this.total && this.total !== 1,
-            text: '完成',
+            text: this.props.finishText,
             type: 'primary',
             onClick: () => {
               this._destroyStep()
@@ -191,7 +192,11 @@ Tour.defaults = {
   onFinish: null,
   current: 1,
   scrollIntoView: true,
-  showPagination: true
+  showPagination: true,
+  prevText: '上一步',
+  nextText: '下一步',
+  finishText: '完成',
+  pageInfoText: '{{current}} / {{total}}'
 }
 
 Component.register(Tour)

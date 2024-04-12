@@ -6,7 +6,7 @@ class Avatar extends Component {
   }
 
   _config() {
-    const { text, icon, src, alt } = this.props
+    const { text, icon, src, alt, } = this.props
     this._propStyleClasses = ['size']
 
     this.setProps({
@@ -20,7 +20,7 @@ class Avatar extends Component {
             this.imgRef = c
           },
           attrs: {
-            alt,
+            alt: alt,
           },
         },
         icon && {

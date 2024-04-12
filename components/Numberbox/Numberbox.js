@@ -17,12 +17,13 @@ class Numberbox extends Textbox {
 
     if (maxPrecision) {
       precision = -1
+      const str = this.props.maxPrecisionText.replace('{{maxPrecision}}', maxPrecision)
       this.rules.push({
         type: 'regex',
         value: {
           pattern: `^\\d+(\\.\\d{1,${maxPrecision}})?$`,
         },
-        message: `请输入有效数字，且最多包含${maxPrecision}位小数`,
+        message: str
       })
     }
 
@@ -39,18 +40,19 @@ class Numberbox extends Textbox {
         value: {
           pattern: /^-?(\d+|\d{1,3}(,\d{3})+)$/,
         },
-        message: '请输入有效整数',
+        message: this.props.integerText,
       })
     }
 
     if (precision > 0) {
+      const str = this.props.precisionText.replace('{{precision}}', precision)
       this.rules.push({
         type: 'regex',
         value: {
           // 在上面的规则的基础上添加了小数部分
           pattern: `^\\-?(\\d+|\\d{1,3}(,\\d{3})+)(\\.\\d{${precision}})$`,
         },
-        message: `请输入有效数字，且包含 ${precision} 位小数`,
+        message: str,
       })
     }
 
@@ -177,6 +179,9 @@ Numberbox.defaults = {
   maxPrecision: null,
   limitInput: false,
   allowClear: false,
+  maxPrecisionText: '请输入有效数字，且最多包含{{maxPrecision}}位小数',
+  integerText: '请输入有效整数',
+  precisionText: '请输入有效数字，且包含{{precision}}位小数'
 }
 Component.register(Numberbox)
 

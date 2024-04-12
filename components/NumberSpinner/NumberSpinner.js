@@ -4,11 +4,11 @@ import Input from '../Textbox/Input'
 import { isFunction, isNumeric } from '../util/index'
 import {
   COMMA_REG,
+  SPINNER_POSITION,
+  STYLE,
   currencyToValue,
   isNil,
   precentToValue,
-  SPINNER_POSITION,
-  STYLE,
 } from './helper'
 
 class NumberSpinner extends Field {
@@ -195,17 +195,18 @@ class NumberSpinner extends Field {
         value: {
           pattern: '^(\\-|\\+)?(0|[1-9][0-9]*)$',
         },
-        message: '请输入整数',
+        message: this.props.integerText,
       })
     }
 
     if (this.props.precision > 0) {
+      const str = this.props.precisionText.replace('{{precision}}', this.props.precision)
       rules.push({
         type: 'regex',
         value: {
           pattern: `^(\\-|\\+)?(0|[1-9][0-9]*)(\\.\\d{${this.props.precision}})$`,
         },
-        message: `请输入 ${this.props.precision} 位小数`,
+        message: str,
       })
     }
 
@@ -475,6 +476,8 @@ NumberSpinner.defaults = {
   // decimal,currency,percent
   style: STYLE.DECIMAL,
   currency: 'CNY',
+  integerText: '请输入有效整数',
+  precisionText: '请输入有效数字，且包含{{precision}}位小数'
 }
 
 Component.register(NumberSpinner)

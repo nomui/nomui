@@ -349,6 +349,8 @@ TimePicker.defaults = {
   showNow: true,
   minTime: null,
   maxTime: null,
+  nowText: '此刻',
+  resetText: '重置'
 }
 
 Component.register(TimePicker)
