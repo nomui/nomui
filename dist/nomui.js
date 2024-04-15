@@ -21894,9 +21894,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     addNodeText: "新增子节点",
   };
   Component.register(GroupTree);
-  class Image$1 extends Component {
+  class Image extends Component {
     constructor(props, ...mixins) {
-      super(Component.extendProps(Image$1.defaults, props), ...mixins);
+      super(Component.extendProps(Image.defaults, props), ...mixins);
     }
     _created() {}
     _config() {
@@ -21988,7 +21988,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
     }
   }
-  Image$1.defaults = {
+  Image.defaults = {
     src: null,
     alt: null,
     width: null,
@@ -21996,7 +21996,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     iconWidth: 200,
     iconHeight: 100,
   };
-  Component.register(Image$1);
+  Component.register(Image);
   class MaskInfo extends Component {
     constructor(props, ...mixins) {
       super(Component.extendProps(MaskInfo.defaults, props), ...mixins);
@@ -31919,7 +31919,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _initWatermark() {
       const { image, text } = this.props;
       if (image) {
-        const img = new Image();
+        const img = new window.Image();
         img.src = image;
         img.onload = () => {
           this._drawCanvas(img);
@@ -32038,7 +32038,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   exports.GroupList = GroupList;
   exports.GroupTree = GroupTree;
   exports.Icon = Icon;
-  exports.Image = Image$1;
+  exports.Image = Image;
   exports.Layer = Layer;
   exports.Layout = Layout;
   exports.List = List;
