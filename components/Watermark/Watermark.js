@@ -44,7 +44,7 @@ class Watermark extends Component {
     const { image, text } = this.props
 
     if (image) {
-      const img = new Image()
+      const img = new window.Image()
       img.src = image
       img.onload = () => {
         this._drawCanvas(img)
