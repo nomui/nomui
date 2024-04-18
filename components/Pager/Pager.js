@@ -31,7 +31,7 @@ class Pager extends Component {
   }
 
   _rendercount() {
-    const str = this.props.totalText.replace('{{totalCount}}', this.props.totalCount)
+    const str = this.props.texts.totalText.replace('{{totalCount}}', this.props.totalCount)
     return { children: str }
   }
 
@@ -89,23 +89,23 @@ class Pager extends Component {
         allowClear: false,
         options: [
           {
-            text: this.props.pageText10,
+            text: this.props.texts.pageText10,
             value: 10,
           },
           {
-            text: this.props.pageText20,
+            text: this.props.texts.pageText20,
             value: 20,
           },
           {
-            text: this.props.pageText30,
+            text: this.props.texts.pageText30,
             value: 30,
           },
           {
-            text: this.props.pageText40,
+            text: this.props.texts.pageText40,
             value: 40,
           },
           {
-            text: this.props.pageText50,
+            text: this.props.texts.pageText50,
             value: 50,
           },
         ],
