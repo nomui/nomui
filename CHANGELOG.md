@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/nomui/nomui/compare/v1.2.3...v1.3.0) (2024-05-08)
+
+
+### Features
+
+* 将Sortable集成到utils ([9e12b13](https://github.com/nomui/nomui/commit/9e12b13af99d9e4d69b5ca7af9c1747f6c5fecfa))
+* 新增多语言支持 ([c668a26](https://github.com/nomui/nomui/commit/c668a26c0c66b13fa89ae4386aef95ac9d4e0a0c))
+* 新增水印组件 ([bd27ef2](https://github.com/nomui/nomui/commit/bd27ef2b5801177019abbce8388b8fc7a38ba8df))
+* 新增Tour组件 ([96bb448](https://github.com/nomui/nomui/commit/96bb448e40f3ea71ddec7426378281fabeab615e))
+* 新增Transfer组件 ([7facc5e](https://github.com/nomui/nomui/commit/7facc5e3e943440b254418181950d27d0e55c984))
+* **Anchor:** 优化container使用场景，新增横向模式 ([ec58969](https://github.com/nomui/nomui/commit/ec589697fa49581b5d0376da45ce12bdc4e8a4c0))
+* **Grid:** 列设置功能重构 ([cd0e34b](https://github.com/nomui/nomui/commit/cd0e34b5b493c8358c579f3647e8b06b9bddce57))
+* **Grid:** 列设置新增配置固定列上限功能 ([3fa8cff](https://github.com/nomui/nomui/commit/3fa8cffff2475ee41e41b46014aa8a5b19403e08))
+* **Grid:** 实现表格行内编辑功能 ([1c7dbe2](https://github.com/nomui/nomui/commit/1c7dbe2e0cfc56536ede0f4f846849a5c17c8565))
+* **Grid:** 完善节点级联勾选行为 ([959f5c5](https://github.com/nomui/nomui/commit/959f5c5c7864c591aeea30256ed28bc561e49bc8))
+* **Grid:** 新增勾选框位置跟随树级配置 ([128ec32](https://github.com/nomui/nomui/commit/128ec3204cfe392e2dd325f5de69226ddb026e61))
+* **Menu:** 新增菜单项类型定义 ([4820e1b](https://github.com/nomui/nomui/commit/4820e1b7e2c937ab9b8d985c970cbcd4a370f1ff))
+
+
+### Bug Fixes
+
+* 修复pc浏览器模拟ipad模式报错 ([de6810f](https://github.com/nomui/nomui/commit/de6810f3ddbf4b5915205dda1f49bc50c1a097ef))
+* **Cascader:** 叶子节点无法禁用的问题 ([5401829](https://github.com/nomui/nomui/commit/54018292216ef70e63b942f049555f2b2def7d18))
+* **Grid:** 合计行与列宽拖动功能冲突 ([9784290](https://github.com/nomui/nomui/commit/9784290a4e2798046cfe501a9bdca7384ccb1aa4))
+* **Grid:** 解决树形勾选框与列冻结功能的冲突 ([53102b5](https://github.com/nomui/nomui/commit/53102b5662bc91ec5524c385134f96acc8614c1e))
+* **Grid:** 列设置搜索树级兼容性问题 ([8d87cc4](https://github.com/nomui/nomui/commit/8d87cc434c5df71869e630fd22a921a2eb0d0a89))
+* **Grid:** 列设置重构后操作列丢失的问题 ([98b6201](https://github.com/nomui/nomui/commit/98b62013527a30b114662a6bc39ee508616e0d27))
+* **Grid:** 新版列设置与本地列缓存冲突问题 ([c37d970](https://github.com/nomui/nomui/commit/c37d9700991789352befe4f18207ddabb88a763a))
+* **Grid:** 修复拖动列与合计行冲突问题 ([9b7c253](https://github.com/nomui/nomui/commit/9b7c253753d8b267f02b6f7ca342e5dfbae435f7))
+* **Grid:** 修复行勾选功能与列设置面板的冲突 ([87de123](https://github.com/nomui/nomui/commit/87de123d3ab88176ceac6cf7cc8522f40f6f68ae))
+* **Menu:** 特殊情况下报错问题 ([c8de4f7](https://github.com/nomui/nomui/commit/c8de4f726268f6e2249bd01b8a6dc3bfbbc75bc0))
+* **Pager:** 解决多语言bug ([32bb411](https://github.com/nomui/nomui/commit/32bb411464777714141aea6a7e6a16864912370f))
+* **TreeSelect:** 修复某些情况下取值问题 ([2fb98f8](https://github.com/nomui/nomui/commit/2fb98f885a35f5d715efd0f2c3b1c38c521e07bb))
+* **TreeSelelt:** getValue方法优化对null的处理 ([9a9b7f6](https://github.com/nomui/nomui/commit/9a9b7f6a219c1723008f74268cbf8837c28ea4b4))
+* **Watermark:** 解决水印组件与Image组件冲突 ([11961d7](https://github.com/nomui/nomui/commit/11961d7d8e3b9fe53dd355e11d5b7c81b63bba70))
+
+
+### Performance Improvements
+
+* 优化表单tab键交互 ([20f71b3](https://github.com/nomui/nomui/commit/20f71b39c5a5f3f68aa41d4c21fd55a4d2ca61e1))
+* **Grid:** 优化手动固定列逻辑 ([006068b](https://github.com/nomui/nomui/commit/006068b9dbd0b3c9fb597d903377a064726d74df))
+
+
+### Docs
+
+* 更新文档 ([1275730](https://github.com/nomui/nomui/commit/1275730aec959d4cfaca423d2b73d2e16620c03f))
+* 文档更新 ([1f6c3a8](https://github.com/nomui/nomui/commit/1f6c3a8f091dc850467d64923bfbe4fe1ac3b8d8))
+* 文档更新 ([3d742a1](https://github.com/nomui/nomui/commit/3d742a1999d2f813f2f72958f22c09f9e72eeab7))
+* demo修改 ([e2e4736](https://github.com/nomui/nomui/commit/e2e4736c24a602fca67f7a4ba1f7a217edc4777c))
+* **Grid:** 更新文档命名 ([ee91f93](https://github.com/nomui/nomui/commit/ee91f932e5b0d63fd6e5bd7f6285242788876085))
+* **Tour:** 完善文档 ([5dab7b8](https://github.com/nomui/nomui/commit/5dab7b8734c9a31f1b087704964da796eb6430f3))
+
 ### [1.2.3](https://github.com/nomui/nomui/compare/v1.2.2...v1.2.3) (2023-04-14)
 
 
