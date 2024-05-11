@@ -4433,8 +4433,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.render();
     }
     replace(props) {
+      let newProps = props;
+      let newMixins = [];
+      if (props instanceof ComponentDescriptor) {
+        newProps = props.getProps();
+        newMixins = props.mixins;
+      }
       return Component.create(
-        Component.extendProps(props, { placement: "replace", reference: this })
+        Component.extendProps(newProps, {
+          placement: "replace",
+          reference: this,
+        }),
+        ...newMixins
       );
     }
     emptyChildren() {
