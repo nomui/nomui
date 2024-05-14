@@ -109,7 +109,7 @@ class DatePicker extends Textbox {
                 {
                   attrs: {
                     style: {
-                      width: '260px',
+                      width: '300px',
                     },
                   },
                   rows: [
@@ -153,7 +153,7 @@ class DatePicker extends Textbox {
                     {
                       cols: weekText.split(' '),
                       fills: true,
-                      gutter: null,
+                      // gap: 'md',
                       classes: {
                         'nom-datepicker-panel-header': true,
                       },
@@ -163,8 +163,11 @@ class DatePicker extends Textbox {
                       _created: function () {
                         that.days = this
                       },
-                      gutter: 'sm',
+
                       cols: 7,
+                      classes: {
+                        'nom-datepicker-panel-days': true,
+                      },
                       // selectedItems: that.props.value
                       //   ? `${that.year}-${that.month}-${that.day}`
                       //   : null,
@@ -184,14 +187,17 @@ class DatePicker extends Textbox {
 
                           return this.props.date
                         },
-                        styles: {
-                          padding: 'd375',
-                          hover: {
-                            color: 'darken',
-                          },
-                          selected: {
-                            color: 'primary',
-                          },
+                        // styles: {
+                        //   padding: 'd375',
+                        //   hover: {
+                        //     color: 'darken',
+                        //   },
+                        //   selected: {
+                        //     color: 'primary',
+                        //   },
+                        // },
+                        classes: {
+                          'nom-datepicker-day-item': true
                         },
                         attrs: {
                           role: 'button',
@@ -232,9 +238,9 @@ class DatePicker extends Textbox {
                             that.todayItem = this
 
                             this.setProps({
-                              styles: {
-                                border: ['1px', 'primary'],
-                              },
+                              classes: {
+                                'nom-datepicker-today-item': true
+                              }
                             })
                           }
 

@@ -9,11 +9,73 @@
     border-left: var(--nom-date-picker-divider);
   }
 
+  .nom-select {
+    .nom-select-single {
+      padding-left: .5rem;
+    }
+  }
+
   .nom-datepicker-panel-header {
     text-align: center;
-    margin: 2px -4px;
+    padding: 5px 0 2px 0;
     color: var(--nom-date-picker-header-text-color);
+    .nom-flex-item {
+      // padding: .25rem;
+      width: 2.4rem;
+      height: 1.6rem;
+      text-align: center;
+    }
   }
+
+  .nom-datepicker-panel-days {
+    >ul {
+      >.nom-list-item-wrapper {
+        padding: .25rem;
+        .nom-datepicker-day-item {
+          width: 2.4rem;
+          height: 2.4rem;
+          text-align: center;
+          line-height: 2.4rem;
+          border-radius: 200px;
+          transition: all .5s;
+          &:hover {
+            background: var(--nom-color-fill-1);
+          }
+          &.s-selected {
+            background: var(--nom-color-primary);
+            color: white;
+          }
+          &.nom-datepicker-today-item:not(.s-selected) {
+            position: relative;
+            background: transparent;
+            color:var(--nom-color-primary);
+            &:hover {
+              background: var(--nom-color-fill-1);
+            }
+            &::after {
+              content: '';
+              display: block;
+              position: absolute;
+              bottom: 0;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 6px;
+              height: 6px;
+              border-radius: 200px;
+              background: var(--nom-color-primary);
+    
+            }
+    
+          }
+        }
+        
+      }
+  
+    }
+    
+  }
+
+
 
   .nom-list .nom-list-content .nom-list-item-wrapper .nom-list-item.s-disabled {
     opacity: 0.5;
