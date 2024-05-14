@@ -243,7 +243,7 @@ Anchor.defaults = {
   items: [],
   border: 'left',
   onItemClick: null,
-  width: 180,
+  width: 200,
   sticky: false,
   itemDefaults: null,
   offset: 0,
