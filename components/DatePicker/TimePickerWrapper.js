@@ -28,6 +28,9 @@ class DateTimePickerWrapper extends Component {
             align: 'stretch',
             children: [
               {
+                classes: {
+                  'nom-datepicker-time-overcont': true
+                },
                 hidden: !this.pickerControl.props.format.includes('HH'),
                 children: {
                   component: DateTimePickerList,
@@ -35,6 +38,9 @@ class DateTimePickerWrapper extends Component {
                 },
               },
               {
+                classes: {
+                  'nom-datepicker-time-overcont': true
+                },
                 hidden: !this.pickerControl.props.format.includes('mm'),
                 children: {
                   component: DateTimePickerList,
@@ -42,6 +48,9 @@ class DateTimePickerWrapper extends Component {
                 },
               },
               {
+                classes: {
+                  'nom-datepicker-time-overcont': true
+                },
                 hidden: !this.pickerControl.props.format.includes('ss'),
                 children: {
                   component: DateTimePickerList,

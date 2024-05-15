@@ -169,6 +169,9 @@ class DatePicker extends Textbox {
                           _created: function () {
                             that.days = this
                           },
+                          onRendered: () => {
+                            that._recountHeight()
+                          },
 
                           cols: 7,
                           classes: {
@@ -288,6 +291,9 @@ class DatePicker extends Textbox {
                 },
                 this.props.showTime && {
                   component: TimePickerPanel,
+                  ref: (c) => {
+                    this.timePickerRef = c
+                  },
                   classes: {
                     'nom-datepicker-time-panel': true,
                   },
@@ -433,6 +439,17 @@ class DatePicker extends Textbox {
       })
     }
     return daysList
+  }
+
+  _recountHeight() {
+    // 动态计算时间列表高度
+    const me = this
+    setTimeout(() => {
+      const h = me.days.element.offsetHeight
+      me.timePickerRef.element.querySelectorAll('.nom-datepicker-time-overcont').forEach(n => {
+        n.style.maxHeight = `${h + 40}px`
+      })
+    }, 0)
   }
 
   /* 求XX年XX月1号是星期几 */
