@@ -14,6 +14,7 @@ class Pager extends Component {
     this.setProps({
       classes: {
         'nom-pager-compact': this.props.compact,
+        'nom-pager-simple': this.props.simple,
       },
       children: {
         component: 'Cols',

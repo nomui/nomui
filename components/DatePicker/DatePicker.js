@@ -212,7 +212,7 @@ class DatePicker extends Textbox {
                               role: 'button',
                             },
                             _config: function () {
-                              const textStyles = ['center']
+                              let isMuted = false
                               const date = that._getDateString(
                                 this.props.year,
                                 this.props.month,
@@ -240,7 +240,7 @@ class DatePicker extends Textbox {
                               }
 
                               if (this.props.lastMonth === true || this.props.nextMonth === true) {
-                                textStyles.push('muted')
+                                isMuted = true
                               }
 
                               if (isToday) {
@@ -253,9 +253,13 @@ class DatePicker extends Textbox {
                                 })
                               }
 
+
                               this.setProps({
                                 styles: {
-                                  text: textStyles,
+                                  text: 'center',
+                                },
+                                classes: {
+                                  'nom-datepicker-item-muted': isMuted
                                 },
                                 children: this.props.day,
                                 disabled: !!isDisabled,
