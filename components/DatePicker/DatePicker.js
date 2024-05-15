@@ -169,9 +169,9 @@ class DatePicker extends Textbox {
                           _created: function () {
                             that.days = this
                           },
-                          onRendered: () => {
-                            that._recountHeight()
-                          },
+                          // onRendered: () => {
+                          //   that._recountHeight()
+                          // },
 
                           cols: 7,
                           classes: {
