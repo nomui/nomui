@@ -1,13 +1,29 @@
 .nom-date-picker-popup {
+  .nom-datepicker-popup-hd {
+    height: 4.5rem;
+    padding: .5rem 1rem;
+    // background: #f6f6f6;
+    border-bottom: 1px solid var(--nom-color-border);
+  }
+
+  .nom-datepicker-popup-bd {
+    padding: .5rem 1rem 0 1rem;
+    height: 280px;
+  }
+
+  .nom-datepicker-footer {
+    padding: .75rem 1.5rem;
+    border-top: 1px solid var(--nom-color-border);
+  }
+
   .time-display {
-    height: 40px;
-    font-size: 18px;
+    border-bottom: 1px solid var(--nom-color-border);
+    line-height: 4.5rem;
+    height: 4.5rem;
+    font-size: 2rem;
     text-align: center;
   }
-  .nom-datepicker-time-panel {
-    padding-left: 5px;
-    border-left: var(--nom-date-picker-divider);
-  }
+
 
   .nom-select {
     .nom-select-single {
@@ -19,8 +35,8 @@
     text-align: center;
     padding: 5px 0 2px 0;
     color: var(--nom-date-picker-header-text-color);
+
     .nom-flex-item {
-      // padding: .25rem;
       width: 2.4rem;
       height: 1.6rem;
       text-align: center;
@@ -30,7 +46,8 @@
   .nom-datepicker-panel-days {
     >ul {
       >.nom-list-item-wrapper {
-        padding: .25rem;
+        padding: .2rem;
+
         .nom-datepicker-day-item {
           width: 2.4rem;
           height: 2.4rem;
@@ -38,20 +55,25 @@
           line-height: 2.4rem;
           border-radius: 200px;
           transition: all .5s;
+
           &:hover {
             background: var(--nom-color-fill-1);
           }
+
           &.s-selected {
             background: var(--nom-color-primary);
             color: white;
           }
+
           &.nom-datepicker-today-item:not(.s-selected) {
             position: relative;
             background: transparent;
-            color:var(--nom-color-primary);
+            color: var(--nom-color-primary);
+
             &:hover {
               background: var(--nom-color-fill-1);
             }
+
             &::after {
               content: '';
               display: block;
@@ -63,16 +85,16 @@
               height: 6px;
               border-radius: 200px;
               background: var(--nom-color-primary);
-    
+
             }
-    
+
           }
         }
-        
+
       }
-  
+
     }
-    
+
   }
 
 
@@ -82,23 +104,25 @@
   }
 
   .timepicker-group {
-    > .nom-col {
+    >.nom-col {
       width: 60px;
-      max-height: 220px;
-      overflow-y: hidden;
-      text-align: left;
+      max-height: 280px;
+      overflow-y: auto;
+      text-align: center;
       scroll-behavior: smooth;
       border-left: 1px solid var(--nom-border-color);
-      &:first-child {
-        border-left: none;
+      scrollbar-width: none; // 隐藏滚动条
+      -ms-overflow-style: none;
+
+      ::-webkit-scrollbar {
+        display: none;
       }
-      &:hover {
-        overflow-y: auto;
-      }
+
       .nom-list-item {
         padding: 0.25rem;
         cursor: pointer;
         .nom-preset-hover; // 基础对象想要hover时有背景色变化，使用这个预设类
+
         &.s-selected {
           .nom-preset-primary; // primary对象预设类，包括了它的hover、active、disabled样式
         }
