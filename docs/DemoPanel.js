@@ -4,8 +4,8 @@ define(['./precode.js', './sandbox.js'], function (Precode, Sandbox) {
       const defaults = {
         title: 'title',
         description: null,
-        uistyle: 'card',
-        demo: function () {},
+        uistyle: 'plain',
+        demo: function () { },
       }
 
       super(nomui.Component.extendProps(defaults, props), ...mixins)
@@ -26,136 +26,174 @@ define(['./precode.js', './sandbox.js'], function (Precode, Sandbox) {
       this.setProps({
         header: {
           caption: {
-            title: title,
+            title: {
+              component: 'Flex',
+              align: 'center',
+              gap: 'small',
+              cols: [
+                {
+                  attrs: {
+                    style: {
+                      background: 'var(--nom-color-primary)',
+                      width: '5px',
+                      height: '1rem',
+                    }
+                  },
+                },
+                {
+                  styles: {
+                    text: 'h5',
+                  },
+
+                  children: title
+                }
+              ]
+            },
           },
           nav: nav,
         },
         body: {
-          children: [demo],
-        },
-        endAddons: [
-          description && {
-            styles: {
-              padding: '1',
-              border: ['top', 'lt'],
+          children: {
+            component: 'Panel',
+            header: false,
+            body: {
+              children: [demo],
             },
-            children: `#${marked(description)}`,
-          },
-          {
-            component: Precode,
-            _created: function () {
-              that.preCode = this
+            attrs: {
+              style: {
+                marginBottom: '3rem'
+              }
             },
-            lang: 'js',
-            code: code,
-            hidden: true,
-          },
-        ],
-        footer: {
-          children: [
-            {
-              component: 'Cols',
-              justify: 'between',
+            endAddons: [
+              description && {
+                styles: {
+                  padding: '1',
+                  border: ['top', 'lt'],
+                },
+                children: `#${marked(description)}`,
+              },
+              {
+                component: Precode,
+                _created: function () {
+                  that.preCode = this
+                },
+                lang: 'js',
+                code: code,
+                hidden: true,
+              },
+            ],
+            footer: {
               attrs: {
                 style: {
-                  width: '100%',
-                },
+                  background: '#f8f8f8'
+                }
               },
-              items: [
-                '',
+              children: [
                 {
-                  children: '显示代码',
-                  styles: {
-                    text: ['muted'],
-                  },
+                  component: 'Cols',
+                  justify: 'between',
                   attrs: {
-                    role: 'button',
-                  },
-                  expandable: {
-                    target: function () {
-                      return that.preCode
+                    style: {
+                      width: '100%',
                     },
-                    byClick: true,
-                    collapsedProps: {
+                  },
+                  items: [
+                    '',
+                    {
                       children: '显示代码',
-                    },
-                    expandedProps: {
-                      children: '隐藏代码',
-                    },
-                  },
-                  collapsed: true,
-                },
-                {
-                  component: 'Flex',
-                  gap: 'small',
-                  cols: [
-                    {
-                      tag: 'a',
-                      attrs: {
-                        href: url,
-                        target: '_blank',
+                      styles: {
+                        text: ['muted'],
                       },
-                      children: '单独打开',
+                      attrs: {
+                        role: 'button',
+                      },
+                      expandable: {
+                        target: function () {
+                          return that.preCode
+                        },
+                        byClick: true,
+                        collapsedProps: {
+                          children: '显示代码',
+                        },
+                        expandedProps: {
+                          children: '隐藏代码',
+                        },
+                      },
+                      collapsed: true,
                     },
                     {
-                      component: 'Icon',
-                      type: 'sandbox',
-                      tooltip: '在线编辑',
-                      attrs: {
-                        style: { cursor: 'pointer' },
-                      },
-                      onClick: () => {
-                        new nomui.Drawer({
-                          width: '100%',
-                          height: '100%',
-                          title: {
-                            component: 'Flex',
-                            attrs: {
-                              style: {
-                                margin: '0 100px',
-                              },
-                            },
-                            justify: 'between',
-                            cols: [
-                              {
-                                tag: 'h3',
-                                children: title,
-                              },
-                              {
-                                component: 'Button',
-                                text: '重置',
-                                type: 'primary',
-                                onClick: () => {
-                                  that.sandboxRef.reset()
+                      component: 'Flex',
+                      gap: 'small',
+                      cols: [
+                        {
+                          tag: 'a',
+                          attrs: {
+                            href: url,
+                            target: '_blank',
+                          },
+                          children: '单独打开',
+                        },
+                        {
+                          component: 'Icon',
+                          type: 'sandbox',
+                          tooltip: '在线编辑',
+                          attrs: {
+                            style: { cursor: 'pointer' },
+                          },
+                          onClick: () => {
+                            new nomui.Drawer({
+                              width: '100%',
+                              height: '100%',
+                              title: {
+                                component: 'Flex',
+                                attrs: {
+                                  style: {
+                                    margin: '0 100px',
+                                  },
                                 },
+                                justify: 'between',
+                                cols: [
+                                  {
+                                    tag: 'h3',
+                                    children: title,
+                                  },
+                                  {
+                                    component: 'Button',
+                                    text: '重置',
+                                    type: 'primary',
+                                    onClick: () => {
+                                      that.sandboxRef.reset()
+                                    },
+                                  },
+                                ],
                               },
-                            ],
+                              footer: null,
+                              content: {
+                                component: Sandbox,
+                                onCreated: ({ inst }) => {
+                                  that.sandboxRef = inst
+                                },
+                                demo: that.props.demo,
+                              },
+                            })
                           },
-                          footer: null,
-                          content: {
-                            component: Sandbox,
-                            onCreated: ({ inst }) => {
-                              that.sandboxRef = inst
-                            },
-                            demo: that.props.demo,
-                          },
-                        })
-                      },
+                        },
+                      ],
                     },
+                    // {
+                    //   tag: 'a',
+                    //   attrs: {
+                    //     href: url,
+                    //     target: '_blank',
+                    //   },
+                    //   children: '单独打开',
+                    // },
                   ],
                 },
-                // {
-                //   tag: 'a',
-                //   attrs: {
-                //     href: url,
-                //     target: '_blank',
-                //   },
-                //   children: '单独打开',
-                // },
               ],
             },
-          ],
-        },
+          }
+        }
       })
 
       super._config()

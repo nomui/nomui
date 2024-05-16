@@ -26,6 +26,10 @@ define([], function () {
                 value: 'line',
               },
               {
+                text: 'underline',
+                value: 'underline',
+              },
+              {
                 text: 'card',
                 value: 'card',
               },
@@ -39,31 +43,49 @@ define([], function () {
             },
           },
           {
-            component: 'Tabs',
-            ref: (c) => {
-              tabs = c
+            styles: {
+              padding: 2,
+              color: 'lgray-dark'
             },
-            tabs: [
-              {
-                item: { text: 'Home' },
-                panel: {
-                  children: 'home content',
-                },
+            children: {
+              component: 'Tabs',
+              ref: (c) => {
+                tabs = c
               },
-              {
-                item: { text: 'Profile' },
-                panel: {
-                  children: 'profile content',
-                },
+              styles: {
+                color: 'white'
               },
-              {
-                item: { text: 'Contact' },
-                panel: {
-                  children: 'contact content',
+              tabs: [
+                {
+                  item: { text: 'Home' },
+                  panel: {
+                    styles: {
+                      padding: 1
+                    },
+                    children: 'home content',
+                  },
                 },
-              },
-            ],
-          },
+                {
+                  item: { text: 'Profile' },
+                  panel: {
+                    styles: {
+                      padding: 1
+                    },
+                    children: 'profile content',
+                  },
+                },
+                {
+                  item: { text: 'Contact' },
+                  panel: {
+                    styles: {
+                      padding: 1
+                    },
+                    children: 'contact content',
+                  },
+                },
+              ],
+            },
+          }
         ],
       }
     },
