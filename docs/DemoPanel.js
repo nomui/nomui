@@ -83,15 +83,15 @@ define(['./precode.js', './sandbox.js'], function (Precode, Sandbox) {
               },
             ],
             footer: {
-              attrs: {
-                style: {
-                  background: '#f8f8f8'
-                }
-              },
+              // attrs: {
+              //   style: {
+              //     background: '#f8f8f8'
+              //   }
+              // },
               children: [
                 {
                   component: 'Cols',
-                  justify: 'between',
+                  justify: 'center',
                   attrs: {
                     style: {
                       width: '100%',
