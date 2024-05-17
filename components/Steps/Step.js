@@ -18,6 +18,8 @@ class Step extends Component {
       index,
       icon: i,
       iconRender,
+      simple,
+      direction
     } = this.props
 
     let icon
@@ -31,8 +33,9 @@ class Step extends Component {
       classes: {
         [`nom-step-item-${status}`]: true,
         'nom-step-item-icon-render-mode': isFunction(iconRender),
+        'nom-step-simple': simple
       },
-      children: {
+      children: [{
         classes: {
           'nom-step-item-container': true,
         },
@@ -60,7 +63,7 @@ class Step extends Component {
             },
             children: icon,
           },
-          {
+          !simple && {
             classes: {
               'nom-step-item-content': true,
             },
@@ -71,7 +74,7 @@ class Step extends Component {
                 },
                 children: title,
               },
-              {
+              !simple && {
                 classes: {
                   'nom-step-item-subtitle': true,
                 },
@@ -85,17 +88,68 @@ class Step extends Component {
               },
             ],
           },
+          direction === 'horizontal' && {
+            classes: {
+              'nom-step-item-line-horizontal': true,
+            },
+          },
         ],
       },
+      simple && {
+        classes: {
+          'nom-step-item-content': true,
+        },
+        children: [
+          {
+            classes: {
+              'nom-step-item-title': true,
+            },
+            children: title,
+          },
+          {
+            classes: {
+              'nom-step-item-description': true,
+            },
+            children: description,
+          },
+        ],
+      },
+      ]
     })
 
     super._config()
   }
 
   _handleIcon() {
-    const { status, icon: i, index } = this.props
+    const { status, icon: i, index, simple } = this.props
     // const { WAIT, PROCESS, FINISH, ERROR } = STATUS
     const { FINISH, ERROR } = STATUS
+
+    if (simple) {
+      if (status === FINISH) {
+        return {
+          classes: {
+            'nom-step-icon-mini': true,
+            [`nom-step-${status}-icon`]: true,
+          },
+        }
+      }
+      if (status === ERROR) {
+        return {
+          classes: {
+            'nom-step-icon-mini': true,
+            [`nom-step-${status}-icon`]: true,
+          },
+        }
+      }
+      return {
+        classes: {
+          'nom-step-icon-mini': true,
+          [`nom-step-${status}-icon`]: true,
+        },
+      }
+    }
+
 
     if (i) {
       return Component.normalizeIconProps(i)
@@ -104,7 +158,7 @@ class Step extends Component {
     if (status === FINISH) {
       return {
         component: 'Icon',
-        type: 'check',
+        type: 'check-light',
         classes: {
           [`nom-step-${status}-icon`]: true,
         },

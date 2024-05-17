@@ -19,6 +19,7 @@ class Steps extends Component {
       classes: {
         'nom-steps-horizontal': direction === 'horizontal',
         'nom-steps-vertical': direction === 'vertical',
+        'nom-steps-simple': this.props.simple
       },
     })
 
@@ -27,8 +28,21 @@ class Steps extends Component {
     super._config()
   }
 
+  _rendered() {
+    this.props.simple && this._fixPaddingLeft()
+  }
+
+  _fixPaddingLeft() {
+    const me = this
+    setTimeout(() => {
+      const w = me.element.querySelector('.nom-step > .nom-step-item-content').offsetWidth / 2
+      this.element.style.paddingLeft = `${parseInt(w, 10) + 14}px`
+    }, 0)
+
+  }
+
   _handleChild() {
-    const { options, onChange } = this.props
+    const { options, onChange, simple, direction } = this.props
 
     if (!options || !Array.isArray(options) || options.length === 0) return []
 
@@ -36,6 +50,8 @@ class Steps extends Component {
       status: this._getStatus(index, this.current),
       ...item,
       index,
+      simple,
+      direction,
       component: Step,
       onChange: isFunction(onChange) ? onChange : undefined,
     }))
@@ -61,6 +77,7 @@ Steps.defaults = {
   current: 0,
   options: [],
   onChange: null,
+  simple: false
 }
 Component.register(Steps)
 export default Steps
