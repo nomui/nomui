@@ -29,7 +29,7 @@ class Steps extends Component {
   }
 
   _rendered() {
-    this.props.simple && this._fixPaddingLeft()
+    this.props.simple && this.props.direction === 'horizontal' && this._fixPaddingLeft()
   }
 
   _fixPaddingLeft() {

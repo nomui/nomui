@@ -63,10 +63,11 @@ class Step extends Component {
             },
             children: icon,
           },
-          !simple && {
+          {
             classes: {
               'nom-step-item-content': true,
             },
+            renderIf: !simple || direction === 'vertical',
             children: [
               {
                 classes: {
@@ -95,7 +96,7 @@ class Step extends Component {
           },
         ],
       },
-      simple && {
+      simple && direction === 'horizontal' && {
         classes: {
           'nom-step-item-content': true,
         },
