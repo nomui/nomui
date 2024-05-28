@@ -1317,10 +1317,10 @@ class Grid extends Component {
                 expandable: {
                   byClick: true,
                   expandedProps: {
-                    type: 'minus-square',
+                    type: 'down-circle',
                   },
                   collapsedProps: {
-                    type: 'plus-square',
+                    type: 'up-circle',
                   },
                   target: () => {
                     if (!row.expandedRow) {

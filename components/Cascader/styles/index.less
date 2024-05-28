@@ -72,7 +72,7 @@
       white-space: nowrap;
       vertical-align: top;
       list-style: none;
-      border-right: 1px solid var(--nom-border-color);
+      border-right: 1px dashed var(--nom-border-color);
       transition: all .3s;
 
       &:last-child {
@@ -85,13 +85,15 @@
           .nom-preset-hover;
         }
 
-        &.nom-cascader-menu-item-active {
-          .nom-preset-primary;
+        &.nom-cascader-menu-item-active,
+        &.nom-cascader-menu-item-active:hover {
+          color: var(--nom-cascader-item-active-color);
+          background: var(--nom-cascader-item-active-bg);
         }
 
-        &.nom-cascader-menu-item-disabled{
-          color:rgba(0,0,0,0.25);
-          cursor:not-allowed;
+        &.nom-cascader-menu-item-disabled {
+          color: rgba(0, 0, 0, 0.25);
+          cursor: not-allowed;
           user-select: none;
         }
 
@@ -101,6 +103,7 @@
         padding: 0.5rem 1rem;
 
         >.nom-cascader-menu-item-expand-icon {
+          font-size: 85%;
           padding-left: 1rem;
         }
       }
