@@ -12438,23 +12438,26 @@ textarea .nom-textarea {
   right: 0;
   z-index: 99999;
 }
-@media all and (-moz-min-device-pixel-ratio: 1.09) and (-moz-max-device-pixel-ratio: 1.18), (-webkit-min-device-pixel-ratio: 1.09) and (-webkit-max-device-pixel-ratio: 1.18), (min-resolution: 1.09dppx) and (max-resolution: 1.18dppx) {
+:root {
+  font-size: 14px;
+}
+@media all and (-moz-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 1.5dppx) {
   :root {
-    font-size: 14px;
+    font-size: 18px;
   }
 }
-@media all and (-moz-min-device-pixel-ratio: 1.19) and (-moz-max-device-pixel-ratio: 1.28), (-webkit-min-device-pixel-ratio: 1.19) and (-webkit-max-device-pixel-ratio: 1.28), (min-resolution: 1.19dppx) and (max-resolution: 1.28dppx) {
+@media all and (-moz-min-device-pixel-ratio: 2), (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
   :root {
-    font-size: 13px;
+    font-size: 24px;
   }
 }
-@media all and (-moz-min-device-pixel-ratio: 1.29) and (-moz-max-device-pixel-ratio: 1.4), (-webkit-min-device-pixel-ratio: 1.29) and (-webkit-max-device-pixel-ratio: 1.4), (min-resolution: 1.29dppx) and (max-resolution: 1.4dppx) {
+@media all and (-moz-min-device-pixel-ratio: 2.5), (-webkit-min-device-pixel-ratio: 2.5), (min-resolution: 2.5dppx) {
   :root {
-    font-size: 12px;
+    font-size: 34px;
   }
 }
-@media all and (-moz-min-device-pixel-ratio: 1.41) and (-moz-max-device-pixel-ratio: 2.1), (-webkit-min-device-pixel-ratio: 1.41) and (-webkit-max-device-pixel-ratio: 2.1), (min-resolution: 1.41dppx) and (max-resolution: 2.1dppx) {
+@media all and (-moz-min-device-pixel-ratio: 3), (-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx) {
   :root {
-    font-size: 10px;
+    font-size: 40px;
   }
 }
