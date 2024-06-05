@@ -100,11 +100,7 @@ define(['docs/DemoPanel.js'], function (demoPanel) {
 
                           childDefaults: {
                             component: 'AnchorContent',
-                            _config: function () {
-                              this.setProps({
-                                key: this.props.file,
-                              })
-                            },
+                            keyField: 'file',
                             children: {
                               component: demoPanel,
                               _created: function () {
@@ -126,10 +122,9 @@ define(['docs/DemoPanel.js'], function (demoPanel) {
                           name: 'DemoMenu',
                           border: false,
                           items: this.props.demos,
+                          keyField: 'file',
                           itemDefaults: {
-                            key: function () {
-                              return this.props.file
-                            },
+
                             _created: function () {
                               this.props.text = this.props.title
                             },
