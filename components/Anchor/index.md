@@ -17,12 +17,14 @@
 | container | 锚点内容依附的滚动容器 | `object` | - |
 | activeKey | 默认高亮锚点的 key | `string` | - |
 | menuProps | 锚点菜单的配置，参考Menu组件 | `object` | - |
+| keyField | key字段名配置 | `string` | `'key'` |
 
 ### AnchorContent 锚点内容组件
 
 | 参数 | 说明               | 类型     | 默认值 |
 | ---- | ------------------ | -------- | ------ |
 | key  | 对应锚点菜单的 key | `string` | -      |
+| keyField | key字段名配置 | `string` | `'key'` |
 
 ## Methods
 

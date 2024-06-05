@@ -6919,14 +6919,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
           menuProps,
           {
-            itemDefaults: Object.assign({}, itemDefaults, {
-              onClick: function (args) {
-                const key = args.sender.key;
-                that.props.onItemClick &&
-                  that._callHandler(that.props.onItemClick, key);
-                that._scrollToKey(key);
+            itemDefaults: Object.assign(
+              {
+                key: function () {
+                  return this.props[that.props.keyField];
+                },
               },
-            }),
+              itemDefaults,
+              {
+                onClick: function (args) {
+                  const key = args.sender.key;
+                  that.props.onItemClick &&
+                    that._callHandler(that.props.onItemClick, key);
+                  that._scrollToKey(key);
+                },
+              }
+            ),
           }
         ),
       });
@@ -6978,7 +6986,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     getCurrentItem() {
       if (!this.currentKey) {
-        return this.props.items.length ? this.props.items[0].key : null;
+        return this.props.items.length
+          ? this.props.items[0][this.props.keyField]
+          : null;
       }
       return this.currentKey;
     }
@@ -6991,6 +7001,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _checkContainer() {
       this.intervalFunc = setInterval(() => {
+        if (!this.props) {
+          return;
+        }
         this.container = isFunction(this.props.container)
           ? this.props.container()
           : this.props.container;
@@ -7001,13 +7014,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }, 500);
     }
     _getItemKeyList() {
+      const me = this;
       const arr = [];
       function mapList(data) {
         data.forEach(function (item) {
           if (item.items) {
             mapList(item.items);
           }
-          arr.push(item.key);
+          arr.push(item[me.props.keyField]);
         });
       }
       mapList(this.props.items);
@@ -7087,13 +7101,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     items: [],
     border: "left",
     onItemClick: null,
-    width: 180,
+    width: 200,
     sticky: false,
     itemDefaults: null,
     offset: 0,
     activeKey: null,
     onChange: null,
     menuProps: {},
+    keyField: "key",
   };
   Component.register(Anchor);
   class AnchorContent extends Component {
@@ -7101,11 +7116,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super(Component.extendProps(AnchorContent.defaults, props), ...mixins);
     }
     _rendered() {
-      const { key } = this.props;
-      this.element.setAttribute("anchor-key", key);
+      this.element.setAttribute("anchor-key", this.props[this.props.keyField]);
     }
   }
-  AnchorContent.defaults = { key: null };
+  AnchorContent.defaults = { key: null, keyField: "key" };
   Component.register(AnchorContent);
   class Router extends Component {
     constructor(props, ...mixins) {

@@ -11806,6 +11806,7 @@ textarea .nom-textarea {
 }
 .nom-anchor.nom-anchor-border-left > .nom-menu .nom-menu-item.s-selected {
   border-left: 1px solid var(--nom-color-primary);
+  color: var(--nom-color-primary);
 }
 .nom-anchor.nom-anchor-border-right > .nom-menu .nom-menu-item {
   border-right: 1px solid var(--nom-border-color);

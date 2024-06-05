@@ -6,13 +6,13 @@ class AnchorContent extends Component {
   }
 
   _rendered() {
-    const { key } = this.props
-    this.element.setAttribute('anchor-key', key)
+    this.element.setAttribute('anchor-key', this.props[this.props.keyField])
   }
 }
 
 AnchorContent.defaults = {
   key: null,
+  keyField: 'key'
 }
 
 Component.register(AnchorContent)
