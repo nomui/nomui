@@ -40,10 +40,6 @@ define([], function () {
                 value: null,
               },
               {
-                text: 'highlight-text',
-                value: 'highlight-text',
-              },
-              {
                 text: 'pill',
                 value: 'pill',
               },

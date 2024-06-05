@@ -18,6 +18,11 @@ body {
   --nom-border-color: var(--nom-color-border);
   --nom-bg-color: var(--nom-color-bg-0);
 
+
+  // Cascader
+  --nom-cascader-item-active-color: var(--nom-color-primary);
+  --nom-cascader-item-active-bg: rgba(var(--nom-color-primary-base), .15);
+
   // Field & Textbox
   --nom-input-color: var(--nom-text-color);
   --nom-input-placeholder-color: var(--nom-color-text-2);
@@ -25,6 +30,7 @@ body {
   --nom-input-bg-disabled: var(--nom-color-disabled-bg);
   --nom-control-icon-color: var(--nom-color-text-1);
   --nom-field-gutter-base: @gutter-base;
+  --nom-number-spinner-border-radius: 2px;
 
   // Checkbox & Radio
   --nom-checkbox-bg: transparent;
@@ -39,9 +45,21 @@ body {
   --nom-checkbox-checked-bg-hover: var(--nom-color-primary-hover);
   --nom-checkbox-box-shadow: none;
   --nom-checkbox-checker-box-shadow: none;
+  --nom-radio-bg: transparent;
+  --nom-radio-border-color: var(--nom-border-color);
+  --nom-radio-border-radius: 1px;
+  --nom-radio-checker-color: var(--nom-color-primary);
+  --nom-radio-checked-bg: transparent;
+  --nom-radio-checked-border-color: var(--nom-checkbox-checked-bg);
+  --nom-radio-bg-hover: var(--nom-color-hover);
+  --nom-radio-checked-bg-hover: var(--nom-color-primary-hover);
+  --nom-radio-box-shadow: none;
+  --nom-radio-checker-box-shadow: none;
 
   // Button
-  --nom-button-bg: var(--nom-color-fill-0);
+  --nom-button-bg: var(--nom-color-white);
+  --nom-button-bg-borderless: var(--nom-color-fill-1);
+  --nom-button-bg-borderless-hover: var(--nom-color-fill-2);
 
   // layer
   --nom-layer-background-color: var(--nom-color-bg-3);
@@ -51,13 +69,14 @@ body {
   --nom-layer-backdrop-color: rgba(0, 0, 0, 0.55);
 
   // Select
-  --nom-select-selected-item-bg: var(--nom-color-fill-0);
-  --nom-select-selected-item-border-color: var(--nom-border-color);
-  --nom-select-selected-item-padding: 0 5px;
+  --nom-select-selected-item-bg: var(--nom-color-fill-1);
+  --nom-select-selected-item-border-color: transparent;
+  --nom-select-selected-item-padding: .3rem .3rem .3rem .5rem;
 
   // DatePicker
   --nom-date-picker-divider: 1px solid var(--nom-border-color);
   --nom-date-picker-header-text-color: var(--nom-color-text-2);
+  --nom-date-picker-day-muted-text-color: var(--nom-color-text-3);
 
   // Rate
   --nom-rate-color: rgba(var(--nom-yellow-5), 1);
@@ -98,10 +117,10 @@ body {
   // Grid
   --nom-grid-background-color: var(--nom-color-white);
   --nom-grid-header-background-color: var(--nom-color-white);
-  --nom-grid-header-border: 1px solid var(--nom-border-color);
+  --nom-grid-header-border: 0 solid var(--nom-border-color);
   --nom-grid-th-bg: var(--nom-color-white);
   --nom-grid-th-bg-image: none;
-  --nom-grid-th-color: var(--nom-color-text-2);
+  --nom-grid-th-color: rgba(0, 0, 0, .4);
   --nom-grid-th-font-weight: 600;
   --nom-grid-icon-color: var(--nom-control-icon-color);
   --nom-grid-icon-color-active: var(--nom-color-primary);
@@ -112,12 +131,12 @@ body {
   --nom-grid-tr-bg-selected: #fffaef;
   --nom-grid-col-highlight-bg: rgba(221, 205, 79, 0.1);
   --nom-grid-td-padding: 8px 10px;
-  --nom-grid-tr-modified-bg:#f5f2ff;
-  --nom-grid-tr-modified-bg-hover:#f2edff;
+  --nom-grid-tr-modified-bg: #f5f2ff;
+  --nom-grid-tr-modified-bg-hover: #f2edff;
 
   // Menu
   --nom-menu-divider-border: 1px solid var(--nom-border-color);
-  --nom-menu-group-title-color:var(--nom-color-text-2);
+  --nom-menu-group-title-color: var(--nom-color-text-2);
 
   // Panel
   --nom-panel-header-bg-color: var(--nom-color-fill-0);
@@ -205,8 +224,8 @@ body {
 
 
   // Transfer
-  --nom-transfer-border-radius:4px;
-  --nom-transfer-border:1px solid var(--nom-border-color);
+  --nom-transfer-border-radius: 4px;
+  --nom-transfer-border: 1px solid var(--nom-border-color);
 
 
   //Tree
@@ -226,22 +245,25 @@ body {
   --nom-collapse-icon-color: var(--nom-text-color);
 
   // Steps
-  --nom-step-item-icon-size: 2rem;
-  --nom-step-item-title-fontsize: 16px;
+  --nom-step-item-icon-size: 1.75rem;
+  --nom-step-item-title-fontsize: 1.25rem;
   --nom-step-item-fontsize: 1rem;
-  --nom-step-item-icon-bg-color: rgb(var(--nom-white));
+  --nom-step-item-icon-color: white;
+  --nom-step-item-icon-mini-color: var(--nom-color-text-2);
+  --nom-step-description-color: var(--nom-color-text-2);
+  --nom-step-item-icon-bg-color: rgb(var(--nom-grey-4));
   --nom-step-line-color: rgb(var(--nom-grey-4));
   --nom-step-line-primary-color: var(--nom-color-text-0);
   --nom-step-line-subtitle-color: var(--nom-color-text-2);
-  --nom-step-border-color: var(--nom-border-color);
+  --nom-step-border-color: rgb(var(--nom-grey-4));
 
   // Uploader
   --nom-uploader-file-img-size: 48px;
 
   // Tour
-  --nom-tour-backdrop-color:var(--nom-layer-backdrop-color);
-  --nom-tour-rect-radius:4px;
-  --nom-tour-close-color:rgba(var(--nom-grey-5), 1);
-  --nom-tour-close-hover-color:rgba(var(--nom-grey-9), 1);
-  --nom-tour-navi-text-color:rgba(var(--nom-grey-9), .5);
+  --nom-tour-backdrop-color: var(--nom-layer-backdrop-color);
+  --nom-tour-rect-radius: 4px;
+  --nom-tour-close-color: rgba(var(--nom-grey-5), 1);
+  --nom-tour-close-hover-color: rgba(var(--nom-grey-9), 1);
+  --nom-tour-navi-text-color: rgba(var(--nom-grey-9), .5);
 }

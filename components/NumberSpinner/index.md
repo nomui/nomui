@@ -19,3 +19,4 @@
 | style | 微调器类型 | `decimal,currency,percent` | `decimal` |
 | formatter | 指定输入框展示值的格式 | `function(value: number \| string): string` | `null` |
 | parser | 指定从 formatter 里转换回数字的方式，和 formatter 搭配使用 | `function(string): number` | `null` |
+| simple | 是否简洁模式（使用箭头代替加减号） | `boolean` | `true` |

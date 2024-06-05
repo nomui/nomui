@@ -1,5 +1,6 @@
 define([
   './basic.js',
+  './simple.js',
   './align.js',
   './status.js',
   './icon.js',

@@ -97,7 +97,7 @@ class NumberSpinner extends Field {
 
     this.setProps({
       control: {
-        children: [inputProps, ...spinner],
+        children: [...this._getLeftSpinner(), inputProps, ...spinner],
       },
     })
 
@@ -226,14 +226,14 @@ class NumberSpinner extends Field {
     return rules
   }
 
-  _handleSpinnerIcon() {
-    const { align, showSpinner } = this.props
+  _getLeftSpinner() {
+    const { align, showSpinner, simple } = this.props
     if (showSpinner === false) return []
 
     const numberSpinner = this
-    const { left, right, horizontal } = SPINNER_POSITION
 
-    if ([left, right].includes(align)) {
+
+    if (align === 'left') {
       return [
         {
           // tag: 'span',
@@ -246,7 +246,7 @@ class NumberSpinner extends Field {
           children: [
             {
               component: 'Icon',
-              type: 'up',
+              type: simple ? 'up' : 'minus',
               styles: {
                 flex: 'grow',
               },
@@ -256,7 +256,66 @@ class NumberSpinner extends Field {
             },
             {
               component: 'Icon',
-              type: 'down',
+              type: simple ? 'down' : 'plus',
+              styles: {
+                flex: 'grow',
+              },
+              onClick(args) {
+                numberSpinner._handleMinus(args)
+              },
+            },
+          ],
+        }
+      ]
+    }
+
+    if (align === 'horizontal') {
+      return [{
+        component: 'Icon',
+        type: simple ? 'down' : 'minus',
+        classes: {
+          'nom-textbox-left-icon-container': true,
+          'nom-textbox-right-icon-container-large': !simple
+        },
+        onClick(args) {
+          numberSpinner._handleMinus(args)
+        },
+      }]
+    }
+    return []
+  }
+
+  _handleSpinnerIcon() {
+    const { align, showSpinner, simple } = this.props
+    if (showSpinner === false) return []
+
+    const numberSpinner = this
+
+
+    if (align === 'right') {
+      return [
+        {
+          // tag: 'span',
+          _created(c) {
+            numberSpinner.iconContainer = c
+          },
+          classes: {
+            [`nom-textbox-${align}-icon-container`]: true,
+          },
+          children: [
+            {
+              component: 'Icon',
+              type: simple ? 'up' : 'minus',
+              styles: {
+                flex: 'grow',
+              },
+              onClick(args) {
+                numberSpinner._handlePlus(args)
+              },
+            },
+            {
+              component: 'Icon',
+              type: simple ? 'down' : 'plus',
               styles: {
                 flex: 'grow',
               },
@@ -269,29 +328,18 @@ class NumberSpinner extends Field {
       ]
     }
 
-    if (align === horizontal) {
-      return [
-        {
-          component: 'Icon',
-          type: 'down',
-          classes: {
-            'nom-textbox-left-icon-container': true,
-          },
-          onClick(args) {
-            numberSpinner._handleMinus(args)
-          },
+    if (align === 'horizontal') {
+      return [{
+        component: 'Icon',
+        type: simple ? 'up' : 'plus',
+        classes: {
+          'nom-textbox-right-icon-container': true,
+          'nom-textbox-right-icon-container-large': !simple
         },
-        {
-          component: 'Icon',
-          type: 'up',
-          classes: {
-            'nom-textbox-right-icon-container': true,
-          },
-          onClick(args) {
-            numberSpinner._handlePlus(args)
-          },
+        onClick(args) {
+          numberSpinner._handlePlus(args)
         },
-      ]
+      }]
     }
 
     return []
@@ -472,6 +520,7 @@ NumberSpinner.defaults = {
   step: 1,
   showSpinner: true,
   align: 'right',
+  simple: true,
 
   // decimal,currency,percent
   style: STYLE.DECIMAL,
