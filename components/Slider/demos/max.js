@@ -5,7 +5,7 @@ define([], function () {
     demo: function () {
       return {
         component: 'Slider',
-        max: '30',
+        max: 30,
       }
     },
   }
