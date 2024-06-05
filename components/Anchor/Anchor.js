@@ -49,6 +49,9 @@ class Anchor extends Component {
         items: items,
         ...menuProps,
         itemDefaults: {
+          key: function () {
+            return this.props[that.props.keyField]
+          },
           ...itemDefaults,
           ...{
             onClick: function (args) {
@@ -117,7 +120,8 @@ class Anchor extends Component {
 
   getCurrentItem() {
     if (!this.currentKey) {
-      return this.props.items.length ? this.props.items[0].key : null
+
+      return this.props.items.length ? this.props.items[0][this.props.keyField] : null
     }
     return this.currentKey
   }
@@ -132,6 +136,9 @@ class Anchor extends Component {
 
   _checkContainer() {
     this.intervalFunc = setInterval(() => {
+      if (!this.props) {
+        return
+      }
       this.container = isFunction(this.props.container)
         ? this.props.container()
         : this.props.container
@@ -143,13 +150,14 @@ class Anchor extends Component {
   }
 
   _getItemKeyList() {
+    const me = this
     const arr = []
     function mapList(data) {
       data.forEach(function (item) {
         if (item.items) {
           mapList(item.items)
         }
-        arr.push(item.key)
+        arr.push(item[me.props.keyField])
       })
     }
     mapList(this.props.items)
@@ -193,9 +201,11 @@ class Anchor extends Component {
     }
 
     const domlist = this.containerElem.getElementsByClassName('nom-anchor-content')
+
     if (!domlist.length) return
     const list = []
     for (let i = 0; i < domlist.length; i++) {
+
       if (
         domlist[i].offsetParent !== null &&
         this.itemKeyList.includes(domlist[i].getAttribute('anchor-key'))
@@ -217,6 +227,8 @@ class Anchor extends Component {
       }
     }
 
+
+
     const result = list[current] ? list[current].getAttribute('anchor-key') : null
 
     result && this._activeAnchor(result)
@@ -226,6 +238,7 @@ class Anchor extends Component {
     this.menu.selectItem(key, {
       scrollIntoView: false,
     })
+
 
     if (this.currentKey && key !== this.currentKey && this.props.onChange) {
       this._callHandler(this.props.onChange, { key: key })
@@ -249,7 +262,8 @@ Anchor.defaults = {
   offset: 0,
   activeKey: null,
   onChange: null,
-  menuProps: {}
+  menuProps: {},
+  keyField: 'key'
 }
 
 Component.register(Anchor)
