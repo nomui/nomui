@@ -1,5 +1,4 @@
-define(['./basic.js', './settle.js', './place.js'], function () {
-  // define(['./place.js'], function () {
+define(['./basic.js', './settle.js', './place.js', './view.js'], function () {
   return {
     title: 'Drawer',
     subtitle: '抽屉',
