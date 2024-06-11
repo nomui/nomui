@@ -4480,9 +4480,9 @@ body {
   --nom-breadcrumb-link-color: rgba(var(--nom-black), 0.85);
   --nom-breadcrumb-link-hover-color: var(--nom-color-primary-hover);
   --nom-drawer-default-size: 256px;
-  --nom-drawer-header-padding: 16px 24px;
-  --nom-drawer-content-padding: 24px;
-  --nom-drawer-footer-padding: 10px 16px;
+  --nom-drawer-header-padding: 14px 16px;
+  --nom-drawer-content-padding: 16px;
+  --nom-drawer-footer-padding: 16px;
   --nom-drawer-body-color: var(--nom-bg-color);
   --nom-drawer-mask-bg-color: rgba(var(--nom-black), 0.45);
   --nom-drawer-line-color: var(--nom-border-color);
@@ -11436,7 +11436,7 @@ textarea .nom-textarea {
   width: var(--nom-drawer-default-size);
   height: 100%;
 }
-.nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body {
+.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents {
   position: relative;
   z-index: 1;
   display: flex;
@@ -11447,32 +11447,32 @@ textarea .nom-textarea {
   overflow: auto;
   background-color: var(--nom-drawer-body-color);
 }
-.nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body > .nom-drawer-header {
+.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents .nom-drawer-header {
   position: relative;
   padding: var(--nom-drawer-header-padding);
   font-weight: 700;
   font-size: 1.25rem;
   border-bottom: 1px solid var(--nom-drawer-line-color);
 }
-.nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body > .nom-drawer-header > .nom-drawer-close-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 100;
-  padding: 1.5rem;
+.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents .nom-drawer-header .nom-drawer-close-icon {
   font-size: 1.25rem;
+  opacity: 0.5;
   cursor: pointer;
 }
-.nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body > .nom-drawer-content {
+.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents .nom-drawer-header .nom-drawer-close-icon:hover {
+  opacity: 1;
+}
+.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents .nom-drawer-body {
   flex-grow: 1;
   padding: var(--nom-drawer-content-padding);
   overflow: auto;
   overflow-wrap: break-word;
 }
-.nom-drawer > .nom-drawer-content-wrapper > .nom-drawer-body > .nom-drawer-footer {
+.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents .nom-drawer-footer {
   flex-shrink: 0;
-  padding: var(--nom-drawer-footer-padding);
-  border-top: 1px solid var(--nom-drawer-line-color);
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 .nom-drawer-animate-top-show .nom-drawer-content-wrapper {
   -webkit-animation: nom-drawer-keyframe-top-show 0.12s ease forwards;

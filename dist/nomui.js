@@ -16532,7 +16532,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super(Component.extendProps(Drawer.defaults, props), ...mixins);
     }
     _config() {
-      const drawerRef = this;
+      const drawer = this;
       const {
         zIndex,
         settle,
@@ -16555,21 +16555,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         classes: { "nom-drawer-content-wrapper": true },
         attrs: {
           style: ["left", "right"].includes(_settle)
-            ? Object.assign({}, drawerRef._handleSize(width, "width"))
-            : Object.assign({}, drawerRef._handleSize(height, "height")),
+            ? Object.assign({}, drawer._handleSize(width, "width"))
+            : Object.assign({}, drawer._handleSize(height, "height")),
         },
-        children: drawerRef._handleContent(),
+        children: drawer._handleContent(),
       });
       const _container = this._getContainerElement();
       if (_container !== document.body) {
-        // this.referenceElement = _container instanceof Component ? _container.element : _container
         this.referenceElement = _container;
         _container.style.position = "relative";
         _style = Object.assign({}, _style, { position: "absolute" });
       }
       this.setProps({
         classes: {
-          // [`nom-drawer-${_settle}`]: true,
           "nom-drawer-top": _settle === "top",
           "nom-drawer-right": _settle === "right",
           "nom-drawer-bottom": _settle === "bottom",
@@ -16578,106 +16576,159 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "nom-drawer-mask-animate-show": animate,
         },
         onClick: () => {
-          maskClosable && drawerRef.close(drawerRef);
+          maskClosable && drawer.close(drawer);
         },
         attrs: { style: _style },
         children,
       });
     }
     _handleContent() {
-      const drawerRef = this;
-      const {
-        closable,
-        closeIcon,
-        title,
-        content,
-        footer,
-        okText,
-        cancelText,
-        onOk,
-        onCancel,
-      } = this.props;
-      const children = [];
-      if (title) {
-        children.push({
-          classes: { "nom-drawer-header": true },
-          children: closable
-            ? [
-                title,
-                Component.extendProps(Component.normalizeIconProps(closeIcon), {
-                  classes: { "nom-drawer-close-icon": true },
-                  onClick: () => {
-                    drawerRef.close();
-                  },
-                }),
-              ]
-            : title,
-        });
-      } else if (closable) {
-        children.push({
-          classes: { "nom-drawer-no-header": true },
-          children: Component.extendProps(
-            Component.normalizeIconProps(closeIcon),
-            {
-              classes: { "nom-drawer-close-icon": true },
-              onClick: () => {
-                drawerRef.close();
-              },
-            }
-          ),
-        });
-      }
-      children.push({
-        classes: { "nom-drawer-content": true },
-        _config() {
-          if (content) {
-            this.setProps({ children: content });
-          }
-        },
-      });
-      if (footer !== null) {
-        children.push({
-          classes: { "nom-drawer-footer": true },
-          _config() {
-            if (footer) {
-              this.setProps({ children: footer });
-            } else {
-              this.setProps({
-                children: {
-                  component: "Cols",
-                  justify: "center",
-                  items: [
-                    {
-                      component: "Button",
-                      type: "primary",
-                      text: okText,
-                      onClick: () => {
-                        drawerRef._callHandler(onOk);
-                      },
-                    },
-                    {
-                      component: "Button",
-                      text: cancelText,
-                      onClick: () => {
-                        drawerRef._callHandler(onCancel);
-                      },
-                    },
-                  ],
-                },
-              });
-            }
+      const drawer = this;
+      const { content } = this.props;
+      let children = [];
+      if (isString(content)) {
+        children = {
+          _created() {
+            require([content], (contentConfig) => {
+              let props = contentConfig;
+              if (isFunction(props)) {
+                const pNames = drawer.getParameterNames(props);
+                if (pNames.length && pNames[0] === "{") {
+                  const args = drawer.props.args || {};
+                  props = contentConfig({ drawer: drawer, args: args });
+                  if (props.then) {
+                    props.then((result) => {
+                      props = result;
+                      props = Component.extendProps(
+                        drawer._getDefaultPanelContent(props),
+                        { body: { classes: { "nom-drawer-body": true } } },
+                        props
+                      );
+                      this.update({
+                        attrs: { style: { height: "100%" } },
+                        children: n$1(null, props, null, null),
+                      });
+                    });
+                  } else {
+                    props = Component.extendProps(
+                      drawer._getDefaultPanelContent(props),
+                      { body: { classes: { "nom-drawer-body": true } } },
+                      props
+                    );
+                    this.update({
+                      attrs: { style: { height: "100%" } },
+                      children: n$1(null, props, null, null),
+                    });
+                  }
+                } else {
+                  props = contentConfig.call(this, drawer);
+                  props = Component.extendProps(
+                    drawer._getDefaultPanelContent(props),
+                    { body: { classes: { "nom-drawer-body": true } } },
+                    props
+                  );
+                  this.update({
+                    attrs: { style: { height: "100%" } },
+                    children: n$1(null, props, null, null),
+                  });
+                }
+              }
+            });
+          },
+        };
+      } else {
+        children = Component.extendProps(drawer._getDefaultPanelContent({}), {
+          body: {
+            classes: { "nom-drawer-body": true },
+            children: isFunction(content) ? content() : content,
           },
         });
       }
       return [
         {
-          classes: { "nom-drawer-body": true },
+          classes: { "nom-drawer-contents": true },
           onClick: ({ event }) => {
             event.stopPropagation();
           },
           children,
         },
       ];
+    }
+    getParameterNames(fn) {
+      const code = fn.toString();
+      const result = code
+        .slice(code.indexOf("(") + 1, code.indexOf(")"))
+        .match(/([^\s,]+)/g);
+      return result === null ? [] : result;
+    }
+    _getDefaultPanelContent(contentProps) {
+      const drawer = this;
+      drawer.setProps({
+        okText: contentProps.okText || this.props.okText,
+        onOk: contentProps.onOk || this.props.onOk,
+        cancelText: contentProps.cancelText || this.props.cancelText,
+        onCancel: contentProps.onCancel || this.props.onCancel,
+      });
+      const {
+        okText,
+        cancelText,
+        onOk,
+        onCancel,
+        closable,
+        title,
+        closeIcon,
+        content,
+      } = drawer.props;
+      return {
+        component: "Panel",
+        fit: true,
+        uistyle: "splitline",
+        header:
+          title || closable || isString(content)
+            ? {
+                caption: { title: title },
+                classes: { "nom-drawer-header": true },
+                nav: {},
+                tools: [
+                  closable && {
+                    component: "Icon",
+                    classes: { "nom-drawer-close-icon": true },
+                    type: closeIcon || "close",
+                    onClick: function () {
+                      drawer.close();
+                    },
+                  },
+                ],
+              }
+            : false,
+        footer: {
+          classes: { "nom-drawer-footer": true },
+          children: {
+            component: "Flex",
+            fit: true,
+            align: "center",
+            justify: "center",
+            gap: "medium",
+            cols: [
+              {
+                component: "Button",
+                type: "primary",
+                text: okText,
+                onClick: () => {
+                  drawer._callHandler(onOk);
+                },
+              },
+              {
+                component: "Button",
+                text: cancelText,
+                onClick: () => {
+                  drawer._callHandler(onCancel);
+                },
+              },
+            ],
+          },
+        },
+      };
     }
     _getRelativePosition(container) {
       if (container instanceof HTMLElement) {
