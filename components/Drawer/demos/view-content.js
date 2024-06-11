@@ -1,5 +1,6 @@
 define([], function () {
-    return ({ drawer, args }) => {
+    return ({ drawer, modal, args }) => {
+        const target = modal || drawer
         const { name, description } = args
         return {
             header: {
@@ -9,7 +10,7 @@ define([], function () {
                 children: description,
             },
             onOk: () => {
-                drawer.close()
+                target.close()
             },
         }
     }
