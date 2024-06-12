@@ -122,6 +122,11 @@ define(['docs/DemoPanel.js'], function (demoPanel) {
                         },
                       },
                       asider: {
+                        attrs: {
+                          style: {
+                            background: 'white'
+                          }
+                        },
                         children: {
                           component: 'Anchor',
                           name: 'DemoMenu',
