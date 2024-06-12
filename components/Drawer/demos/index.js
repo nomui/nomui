@@ -1,4 +1,4 @@
-define(['./basic.js', './settle.js', './place.js', './view.js'], function () {
+define(['./basic.js', './size.js', './settle.js', './place.js', './view.js'], function () {
   return {
     title: 'Drawer',
     subtitle: '抽屉',
