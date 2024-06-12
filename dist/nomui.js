@@ -30771,6 +30771,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         defaults,
         trigger || defaultBtn
       );
+      const folderAttrs = this.props.folder
+        ? {
+            webkitdirectory: true,
+            mozdirectory: true,
+            msdirectory: true,
+            odirectory: true,
+            directory: true,
+          }
+        : {};
       this.setProps({
         children: [
           {
@@ -30779,15 +30788,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             _created() {
               that.inputFile = this;
             },
-            attrs: {
-              type: "file",
-              multiple: multiple,
-              accept: accept || DEFAULT_ACCEPT$1,
-              onchange: that._onChange.bind(that),
-              onclick: (e) => {
-                e.stopPropagation();
+            attrs: Object.assign(
+              {
+                type: "file",
+                multiple: multiple,
+                accept: accept || DEFAULT_ACCEPT$1,
+                onchange: that._onChange.bind(that),
+                onclick: (e) => {
+                  e.stopPropagation();
+                },
               },
-            },
+              folderAttrs
+            ),
           },
           triggerProps,
         ],
@@ -31022,6 +31034,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     draggable: false, // 拖拽界面
     defaultFileList: [], // 默认上传文件列表
     multiple: false,
+    folder: false,
     name: "file",
     data: {}, // request option
     method: "post",

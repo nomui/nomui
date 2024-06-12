@@ -68,6 +68,10 @@ class Upload extends Component {
 
     const triggerProps = Component.extendProps(defaults, trigger || defaultBtn)
 
+    const folderAttrs = this.props.folder ? {
+      webkitdirectory: true, mozdirectory: true, msdirectory: true, odirectory: true, directory: true
+    } : {}
+
     this.setProps({
       children: [
         {
@@ -84,6 +88,7 @@ class Upload extends Component {
             onclick: (e) => {
               e.stopPropagation()
             },
+            ...folderAttrs
           },
         },
         triggerProps,
@@ -384,6 +389,7 @@ Upload.defaults = {
   draggable: false, // 拖拽界面
   defaultFileList: [], // 默认上传文件列表
   multiple: false,
+  folder: false,
   name: 'file',
   data: {},
   // request option
