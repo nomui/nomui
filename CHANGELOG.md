@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/nomui/nomui/compare/v1.3.0...v1.3.1) (2024-06-12)
+
+
+### Features
+
+* **Menu:** Menu 组件新增 uistyle：hightlight-text ([adc14c4](https://github.com/nomui/nomui/commit/adc14c490bd0de99e9639d0a1c8e9b6b63ff6773))
+
+
+### Bug Fixes
+
+* **Anchor:** 修复异步方法报错以及滚动高亮不起作用的问题 ([3b8a01c](https://github.com/nomui/nomui/commit/3b8a01cfb80d96c7134231d43d31ef2361deb247))
+* **Component:** 修改 replace 方法，接受 ComponentDescriptor 类型的参数。 ([a08e54f](https://github.com/nomui/nomui/commit/a08e54f9f9efc996ba5bb973f6237ab1ac6caea0))
+
+
+### Performance Improvements
+
+* 优化在不同DPR设备下的显示效果 ([1325a0e](https://github.com/nomui/nomui/commit/1325a0e95dd8f77cef32f8772c589a907db66072))
+
+
+### Docs
+
+* 文档补充 ([957ef89](https://github.com/nomui/nomui/commit/957ef899dba4f2d0e133804758332d15ea311c71))
+* **Drawer:** 完善文档，统一api ([03dc2a8](https://github.com/nomui/nomui/commit/03dc2a89dc1f2704e9cc361be58c9eb42c5e3656))
+
 ## [1.3.0](https://github.com/nomui/nomui/compare/v1.2.3...v1.3.0) (2024-05-08)
 
 
