@@ -242,6 +242,7 @@ class NumberSpinner extends Field {
           },
           classes: {
             [`nom-textbox-${align}-icon-container`]: true,
+            'nom-number-spinner-vertical-trigger': true
           },
           children: [
             {
@@ -301,6 +302,7 @@ class NumberSpinner extends Field {
           },
           classes: {
             [`nom-textbox-${align}-icon-container`]: true,
+            'nom-number-spinner-vertical-trigger': true
           },
           children: [
             {

@@ -5,6 +5,7 @@
 .nom-number-spinner {
   .nom-control {
     display: flex;
+    position: relative;
 
     .nom-icon {
       font-size: .75rem;
@@ -16,11 +17,11 @@
     }
 
     .spinner-input-with-left-icon {
-      margin-left: .5rem;
+      padding-left: 2rem;
     }
 
     .spinner-input-with-right-icon {
-      margin-right: .5rem;
+      padding-right: 2rem;
     }
 
 
@@ -34,13 +35,20 @@
       flex-direction: column;
       justify-content: center;
       // width: 2.5rem;
-      width: 1.35rem;
+      width: 1.5rem;
       height: @input-height-base;
       color: var(--nom-input-color);
       line-height: @input-height-base;
       border: 1px solid var(--nom-border-color);
       border-radius: var(--nom-border-radius);
       cursor: pointer;
+
+      &.nom-number-spinner-vertical-trigger {
+        position: absolute;
+        right: 0;
+        border: none;
+        border-left: 1px solid var(--nom-border-color);
+      }
 
       &.nom-icon:hover {
         background-color: var(--nom-color-hover);
@@ -67,13 +75,20 @@
       justify-content: center;
       display: flex;
       flex-direction: column;
-      width: 1.35rem;
+      width: 1.5rem;
       height: @input-height-base;
       color: var(--nom-input-color);
       line-height: @input-height-base;
       border: 1px solid var(--nom-border-color);
       border-radius: var(--nom-number-spinner-border-radius);
       cursor: pointer;
+
+      &.nom-number-spinner-vertical-trigger {
+        position: absolute;
+        left: 0;
+        border: none;
+        border-right: 1px solid var(--nom-border-color);
+      }
 
       &.nom-icon:hover {
         background-color: var(--nom-color-hover);
