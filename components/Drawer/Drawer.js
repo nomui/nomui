@@ -1,5 +1,5 @@
 import Component, { n } from '../Component/index'
-import { isFunction, isNumeric, isString } from '../util/index'
+import { isFunction, isNumeric, isPlainObject, isString } from '../util/index'
 import { CSS_UNIT } from '../util/reg'
 import { isValidZIndex, settles } from './helper'
 
@@ -10,7 +10,41 @@ class Drawer extends Component {
 
   _config() {
     const drawer = this
-    const { zIndex, settle, maskClosable, showMasker, width, height, animate } = this.props
+    const { zIndex, settle, maskClosable, showMasker, animate, size } = this.props
+    let { width, height } = this.props
+
+    if (size) {
+      if (isPlainObject(size)) {
+        width = width || size.width
+        height = height || size.height
+      }
+      else {
+        const sizeMap = {
+          'xsmall': {
+            width: '256px',
+            height: '256px'
+          },
+          'small': {
+            width: '512px',
+            height: '512px'
+          },
+          'medium': {
+            width: '50vw',
+            height: '50vh'
+          },
+          'large': {
+            width: '75vw',
+            height: '75vh'
+          },
+          'xlarge': {
+            width: '100vw',
+            height: '100vh'
+          },
+        }
+        width = sizeMap[size].width
+        height = sizeMap[size].height
+      }
+    }
 
     const _settle = settles.includes(settle) ? settle : 'right'
 

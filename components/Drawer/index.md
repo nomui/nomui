@@ -17,6 +17,7 @@ Drawer 抽屉
 | getContainer | 指定 Drawer 挂载的节点（默认挂载至`body`） | `-` | `()=>Component\|HTMLElement` |
 | width | 抽屉的宽度，仅当弹出方向为左或右时生效，支持 rem,em,px,% | `-` | `256px` |
 | height | 抽屉的高度，仅当弹出方向为上或下时生效，支持 rem,em,px,% | `-` | `256px` |
+| size | 模态框预定义尺寸，传入size会覆盖width、height配置 | `string` \|`xsmall \| small \| medium \| large \| xlarge` | - |
 | title | 抽屉的标题 | `string \| Component` | `-` |
 | content | 抽屉的内容 | `string\|Component` | `-` |
 | footer | 抽屉的页脚 | `string\|Component` | `-` |
