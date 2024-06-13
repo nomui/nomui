@@ -56,7 +56,7 @@ class Router extends Component {
     return subpath
   }
 
-  _removeCore() {}
+  _removeCore() { }
 
   remove() {
     this.$app.off('hashChange', this.handleHashChange)
@@ -69,6 +69,7 @@ class Router extends Component {
   }
 
   routeView() {
+    isFunction(this.props.onViewLeave) && this.props.onViewLeave.call(this)
     this.emptyChildren()
     this.$app.lastLevel = this.level + 1
     const level = this.level
@@ -98,6 +99,14 @@ class Router extends Component {
             routerProps = result
             this.processProps(routerProps)
           })
+        }
+        else if (isFunction(routerProps.onViewEnter)) {
+          const onViewEnter = routerProps.onViewEnter.call(this)
+          if (onViewEnter && onViewEnter.then) {
+            onViewEnter.then(() => {
+              this.processProps(routerProps)
+            })
+          }
         } else {
           this.processProps(routerProps)
         }
