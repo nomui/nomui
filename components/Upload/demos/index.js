@@ -1,5 +1,6 @@
 define([
   './basic.js',
+  './folder.js',
   './accept.js',
   './data.js',
   './file-list.js',

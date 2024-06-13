@@ -59,7 +59,7 @@
   }
 
   >.nom-drawer-content-wrapper {
-    >.nom-drawer-body {
+    .nom-drawer-contents {
       position: relative;
       z-index: 1;
       display: flex;
@@ -70,7 +70,7 @@
       overflow: auto;
       background-color: var(--nom-drawer-body-color);
 
-      >.nom-drawer-header {
+      .nom-drawer-header {
         position: relative;
         padding: var(--nom-drawer-header-padding);
         font-weight: @font-weight-bold;
@@ -78,28 +78,30 @@
         border-bottom: @border-width solid var(--nom-drawer-line-color);
         // border-radius: 2px 2px 0 0;
 
-        >.nom-drawer-close-icon {
-          position: absolute;
-          top: 0;
-          right: 0;
-          z-index: 100;
-          padding: @padding-xl;
+        .nom-drawer-close-icon {
           font-size: @font-size-lg;
+          opacity: .5;
           cursor: pointer;
+
+          &:hover {
+            opacity: 1;
+          }
         }
       }
 
-      >.nom-drawer-content {
+      .nom-drawer-body {
         flex-grow: 1;
         padding: var(--nom-drawer-content-padding);
         overflow: auto;
         overflow-wrap: break-word;
       }
 
-      >.nom-drawer-footer {
+      .nom-drawer-footer {
         flex-shrink: 0;
-        padding: var(--nom-drawer-footer-padding);
-        border-top: @border-width solid var(--nom-drawer-line-color);
+        // padding: var(--nom-drawer-footer-padding);
+        width: 100%;
+        justify-content: center;
+        align-items: center;
       }
     }
   }

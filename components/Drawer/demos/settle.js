@@ -22,7 +22,10 @@ define([], function () {
               type: 'primary',
               text,
               onClick: () => {
-                new nomui.Drawer({ settle, title: `${text}边弹出` })
+                new nomui.Drawer({
+                  settle, title: `${text}边弹出`,
+                  size: 'large'
+                })
               },
             })),
           },
