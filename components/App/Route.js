@@ -44,9 +44,10 @@ export class Route {
       if (path.includes('--')) {
         const arr = path.split('--')
         pathName = arr[0]
+        const queryPathName = pathName.substring(pathName.indexOf('/') + 1)
         pathQuery = arr[1]
-        that.queryStr += `&${pathName}=${pathQuery}`
-        that.query[pathName] = pathQuery
+        that.queryStr += `&${queryPathName}=${pathQuery}`
+        that.query[queryPathName] = pathQuery
       }
       that.paths[index] = pathName
     })
