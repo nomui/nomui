@@ -31,12 +31,12 @@
 .hljs-string,
 .hljs-template-tag,
 .hljs-type {
-    color: rgb(255, 251, 0)
+    color: #f59f00;
 }
 
 .hljs-section,
 .hljs-title {
-    color: rgb(255, 251, 0);
+    color: #f59f00;
     font-weight: 700
 }
 
@@ -47,26 +47,26 @@
 .hljs-symbol,
 .hljs-template-variable,
 .hljs-variable {
-    color: #e2dc80
+    color: #f59f00;
 }
 
 .hljs-literal {
-    color: #78a960
+    color: #71ba51
 }
 
 .hljs-addition,
 .hljs-built_in,
 .hljs-bullet,
 .hljs-code {
-    color: #78a960
+    color: #71ba51
 }
 
 .hljs-meta {
-    color: #4d99bf
+    color: #1098ad
 }
 
 .hljs-meta-string {
-    color: #4d99bf
+    color: #1098ad
 }
 
 .hljs-emphasis {
