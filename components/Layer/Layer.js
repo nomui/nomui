@@ -67,8 +67,9 @@ class Layer extends Component {
           if (e.target !== e.currentTarget) {
             return
           }
+
           that.props.animate && that.animateHide()
-          !that.props.animate && that.remove()
+          !that.props.animate && that.hide()
         })
       }
     }
@@ -88,7 +89,7 @@ class Layer extends Component {
     this.addClass('nom-layer-animate-hide')
     setTimeout(() => {
       if (!this.element) return false
-      this.remove()
+      this.hide()
     }, 90)
   }
 
@@ -118,10 +119,12 @@ class Layer extends Component {
       this.removeClass('nom-layer-animate-hide')
     }
 
+
     if (forceRemove === true || this.props.closeToRemove) {
       this.props.onClose && this._callHandler(this.props.onClose)
       this.remove()
     }
+    this.backdrop && this.backdrop.remove()
   }
 
   _remove() {

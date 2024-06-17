@@ -4771,8 +4771,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this.props.hidden = true;
       this.addClass("s-hidden");
-      isFunction(this._hide) && this._hide();
       this._callHandler(this.props.onHide);
+      isFunction(this._hide) && this._hide();
     }
     select(selectOption) {
       if (!this.rendered) {
@@ -7526,7 +7526,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               return;
             }
             that.props.animate && that.animateHide();
-            !that.props.animate && that.remove();
+            !that.props.animate && that.hide();
           });
         }
       }
@@ -7540,7 +7540,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.addClass("nom-layer-animate-hide");
       setTimeout(() => {
         if (!this.element) return false;
-        this.remove();
+        this.hide();
       }, 90);
     }
     _show() {
@@ -7571,6 +7571,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.props.onClose && this._callHandler(this.props.onClose);
         this.remove();
       }
+      this.backdrop && this.backdrop.remove();
     }
     _remove() {
       window.removeEventListener("resize", this._onWindowResize, false);
