@@ -11,6 +11,10 @@ define([], function () {
             align: 'center',
             backdrop: true,
             closeOnClickBackdrop: true,
+            closeToRemove: true,
+            onHide: () => {
+              console.log('x')
+            },
             styles: {
               padding: '1',
               color: 'white',
