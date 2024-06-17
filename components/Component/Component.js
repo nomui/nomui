@@ -550,8 +550,9 @@ class Component {
 
     this.props.hidden = true
     this.addClass('s-hidden')
-    isFunction(this._hide) && this._hide()
     this._callHandler(this.props.onHide)
+    isFunction(this._hide) && this._hide()
+
   }
 
   select(selectOption) {
