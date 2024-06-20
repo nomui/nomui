@@ -160,6 +160,7 @@
 
   .nom-grid-checkbox {
     display: inline-flex;
+
     .nom-field-content {
       justify-content: center;
     }
@@ -194,72 +195,84 @@
 .nom-grid-setting-transfer {
   .nom-grid-setting-transfer-container {
     .nom-grid-setting-transfer-box {
-      width:240px;
-      border:1px solid var(--nom-border-color);
+      width: 240px;
+      border: 1px solid var(--nom-border-color);
       border-radius: var(--nom-border-radius);
       height: calc(100vh - 300px);
       max-height: 500px;
+
       .nom-tree-node-expandable-indicator {
         width: 24px;
       }
+
       >.nom-layout-header {
         height: 40px;
-        padding:0 10px;
+        padding: 0 10px;
+
         .nom-checkbox {
           >.nom-field-content {
             line-height: 100%;
           }
         }
       }
+
       >.nom-layout-body {
         .nom-layout-header {
           height: 42px;
           border-bottom: none;
         }
       }
+
       >.nom-layout-footer {
         height: 40px;
         min-height: 40px;
-        padding:0 10px;
+        padding: 0 10px;
       }
     }
   }
 
   .nom-tree-node-content {
     position: relative;
+
     >.nom-grid-setting-item-pin {
       position: absolute;
-      top:5px;
-      right:5px;
+      top: 5px;
+      right: 5px;
     }
-    
+
   }
 
   .nom-grid-setting-group-title {
-      .nom-tree-node-content {
-        >.nom-icon,>.nom-tree-node-checkbox {
-          display: none;
-        }
-        >.nom-tree-node-content-text {
-          padding-left: 1rem;
-          color:var(--nom-text-color-muted);
-        }
+    .nom-tree-node-content {
+
+      >.nom-icon,
+      >.nom-tree-node-checkbox {
+        display: none;
       }
+
+      >.nom-tree-node-content-text {
+        padding-left: 1rem;
+        color: var(--nom-text-color-muted);
+      }
+    }
   }
 
   .nom-grid-setting-target-node {
     &.s-disabled {
       opacity: .65;
     }
+
     .nom-tree-node-content {
       .p-type-times {
         color: var(--nom-text-color-muted);
       }
+
       &:not(:hover) {
         .nom-tree-node-content-tools {
           visibility: hidden;
         }
       }
+
       >.nom-tree-node-content-text {
         flex-grow: 1;
       }
@@ -267,8 +280,9 @@
   }
 }
 
-.nom-grid table.nom-table tbody tr.nom-grid-tr-modified:not(.nom-tr-empty)  {
+.nom-grid table.nom-table tbody tr.nom-grid-tr-modified:not(.nom-tr-empty) {
   background-color: var(--nom-grid-tr-modified-bg);
+
   &:hover {
     background-color: var(--nom-grid-tr-modified-bg-hover);
   }
