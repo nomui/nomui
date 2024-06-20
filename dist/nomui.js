@@ -19763,7 +19763,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.checkSortInfo();
       this._processColumns();
       this._calcMinWidth();
-      const { line, rowDefaults, columnSettingText } = this.props;
+      const {
+        line,
+        rowDefaults,
+        columnSettingText,
+        scrollbarWidth,
+      } = this.props;
+      if (!scrollbarWidth || !isNumeric(scrollbarWidth)) {
+        this.props.scrollbarWidth = this._getScrollbarWidth() || 8;
+      }
       this.setProps({
         classes: {
           "m-frozen-header": this.props.frozenHeader,
@@ -19832,6 +19840,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
         this._pinColumnFlag = true;
       }
+    }
+    _getScrollbarWidth() {
+      const outer = document.createElement("div");
+      outer.style.visibility = "hidden";
+      outer.style.overflow = "scroll";
+      document.body.appendChild(outer); // 获取滚动条的宽度
+      const scrollbarWidth = outer.offsetWidth - outer.clientWidth;
+      document.body.removeChild(outer);
+      return scrollbarWidth;
     }
     _sortColumnsOrder(arr) {
       arr.sort((curr, next) => {
@@ -20966,7 +20983,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     sticky: false,
     line: "row",
     bordered: false,
-    scrollbarWidth: 8,
+    scrollbarWidth: false,
     summary: null,
     showEmpty: true,
     columnAlign: "left",
