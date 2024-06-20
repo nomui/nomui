@@ -1,7 +1,8 @@
 export default {
   _config: function () {
     const { onSelect, onUnselect } = this.props
-    const { filterName } = this.parent.parent.parent.autoCompleteControl.props
+    const { filterName, } = this.parent.parent.parent.autoCompleteControl.props
+
     this.setProps({
       selectable: {
         byClick: true,

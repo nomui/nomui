@@ -116,12 +116,13 @@ class AutoCompletePopup extends Popup {
 
   _getOptionList() {
     const options = this.autoCompleteControl.internalOptions
-    const { searchable, value, filterOption, filterName, text = '' } = this.autoCompleteControl.props
+    const { searchable, value, filterOption, filterName, optionDefaults, text = '' } = this.autoCompleteControl.props
     const _value = filterName === 'text' ? value : text
     const opts = isFunction(filterOption) ? filterOption(_value || '', options) : options
     if (searchable) {
       return {
         component: AutoCompleteList,
+        optionDefaults,
         options: opts,
       }
     }
@@ -129,6 +130,7 @@ class AutoCompletePopup extends Popup {
     if (opts && opts.length) {
       return {
         component: AutoCompleteList,
+        optionDefaults,
         options: opts,
       }
     }

@@ -7,6 +7,28 @@ define([], function () {
         component: 'AutoComplete',
         value: 'a',
         optionFields: { value: 'name' },
+        optionDefaults: {
+          alert: true,
+          onConfig: ({ inst }) => {
+            inst.setProps({
+              children: {
+                component: 'Flex',
+                align: 'center',
+                cols: [
+                  {
+                    component: 'Avatar',
+                    size: 'small',
+                    text: inst.props.value
+                  },
+                  {
+                    component: 'StaticText',
+                    value: inst.props.value
+                  }
+                ]
+              }
+            })
+          }
+        },
         options: [
           { name: 'a' },
           { name: 'aa' },
