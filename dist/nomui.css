@@ -12442,23 +12442,3 @@ textarea .nom-textarea {
 :root {
   font-size: 14px;
 }
-@media all and (-moz-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 1.5dppx) {
-  :root {
-    font-size: 18px;
-  }
-}
-@media all and (-moz-min-device-pixel-ratio: 2), (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-  :root {
-    font-size: 24px;
-  }
-}
-@media all and (-moz-min-device-pixel-ratio: 2.5), (-webkit-min-device-pixel-ratio: 2.5), (min-resolution: 2.5dppx) {
-  :root {
-    font-size: 34px;
-  }
-}
-@media all and (-moz-min-device-pixel-ratio: 3), (-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx) {
-  :root {
-    font-size: 40px;
-  }
-}
