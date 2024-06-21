@@ -19,4 +19,4 @@
 | filterName | 规定AutoComplete是按照text模式还是select模式 | `string` | `text` |
 | getSelectedOption | 获取选中的对象 | `function()` | - |
 | optionFields | 自定义 options 中 text value 的字段 | `object` | `{ value: value, }` |
-
+| optionDefaults | 自定义options默认属性 | `object` | `{ }` |
