@@ -10230,20 +10230,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const defaults = {
         gutter: "x-md",
         cols: 1,
-        optionDefaults: {
-          key() {
-            return this.props.value;
+        optionDefaults: Object.assign(
+          {
+            key() {
+              return this.props.value;
+            },
+            _config: function () {
+              const {
+                filterName,
+              } = this.parent.parent.parent.autoCompleteControl.props;
+              this.setProps({
+                children:
+                  filterName === "text" ? this.props.value : this.props.text,
+              });
+            },
           },
-          _config: function () {
-            const {
-              filterName,
-            } = this.parent.parent.parent.autoCompleteControl.props;
-            this.setProps({
-              children:
-                filterName === "text" ? this.props.value : this.props.text,
-            });
-          },
-        },
+          props.optionDefaults
+        ),
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -10381,6 +10384,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         value,
         filterOption,
         filterName,
+        optionDefaults,
         text = "",
       } = this.autoCompleteControl.props;
       const _value = filterName === "text" ? value : text;
@@ -10388,10 +10392,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         ? filterOption(_value || "", options)
         : options;
       if (searchable) {
-        return { component: AutoCompleteList, options: opts };
+        return { component: AutoCompleteList, optionDefaults, options: opts };
       }
       if (opts && opts.length) {
-        return { component: AutoCompleteList, options: opts };
+        return { component: AutoCompleteList, optionDefaults, options: opts };
       }
       this.autoCompleteControl.optionList = null;
       return {
@@ -10647,6 +10651,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     },
     allowClear: true,
     filterName: "text", // text,select
+    optionDefaults: {},
   };
   Component.register(AutoComplete);
   class Avatar extends Component {
