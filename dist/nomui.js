@@ -30848,6 +30848,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     enable() {
       this.triggerRef.enable();
     }
+    pickFile() {
+      this._handleClick();
+    }
     _watchStatus(file) {
       if (file && this.fileList && this.fileList.length) {
         const currentStatus = file.status;

@@ -5,6 +5,7 @@ define([
   './data.js',
   './file-list.js',
   './default-file-list.js',
+  './method.js',
   './custom.js',
 ], function () {
   return {
