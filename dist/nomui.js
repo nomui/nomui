@@ -7209,6 +7209,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               onViewEnter.then(() => {
                 this.processProps(routerProps);
               });
+            } else {
+              this.processProps(routerProps);
             }
           } else {
             this.processProps(routerProps);

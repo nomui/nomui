@@ -107,6 +107,9 @@ class Router extends Component {
               this.processProps(routerProps)
             })
           }
+          else {
+            this.processProps(routerProps)
+          }
         } else {
           this.processProps(routerProps)
         }
