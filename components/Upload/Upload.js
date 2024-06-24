@@ -383,7 +383,7 @@ class Upload extends Component {
     if (this.failedFileList.findIndex(x => {
       return x.uuid === file.uuid
     }) === -1) {
-      this.failedFileList.push(file)
+      this.failedFileList.push({ ...file, response })
     }
 
     currentFile.error = error
