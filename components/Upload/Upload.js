@@ -1,6 +1,6 @@
 import Component from '../Component/index'
-import { isFunction } from '../util/index'
-import { cloneFileWithInfo, DEFAULT_ACCEPT, getFileFromList, getUUID, isBlobFile } from './helper'
+import { isFunction, isString } from '../util/index'
+import { DEFAULT_ACCEPT, cloneFileWithInfo, getFileFromList, getUUID, isBlobFile } from './helper'
 import Request from './request'
 
 class Upload extends Component {
@@ -128,10 +128,13 @@ class Upload extends Component {
         this._cancleLoading(noUploading)
       } else if (currentStatus === 'error') {
         this._cancleLoading(noUploading)
-        new nomui.Message({
-          content: this.props.uploadFailText,
-          type: 'error',
-        })
+        if (this.props.showErrorMsg) {
+          new nomui.Message({
+            content: isString(file.response) && file.response.length ? file.response : this.props.uploadFailText,
+            type: 'error',
+          })
+        }
+
       }
     }
     else {
@@ -376,9 +379,10 @@ class Upload extends Component {
       return n.uuid !== file.uuid
     })
 
-    if (!this.failedFileList.findIndex(x => {
+
+    if (this.failedFileList.findIndex(x => {
       return x.uuid === file.uuid
-    })) {
+    }) === -1) {
       this.failedFileList.push(file)
     }
 
@@ -432,6 +436,7 @@ Upload.defaults = {
   onStart: null,
   uploadText: '上传',
   uploadFailText: '上传失败！',
+  showErrorMsg: true,
   unSupportedTypeText: '不支持此格式，请重新上传。'
 
 }

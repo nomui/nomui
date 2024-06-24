@@ -14,9 +14,6 @@ define([], function () {
                         component: 'Upload',
                         action: 'https://run.mocky.io/v3/74f2f759-ff23-48e0-a3c9-44c62a57842c',
                         multiple: true,
-                        onChange: ({ status }) => {
-                            console.log(status)
-                        },
                         folder: true,
 
                     },

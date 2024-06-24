@@ -35,11 +35,9 @@ define([], function () {
               },
               children: '拖拽至此区域上传',
             },
-            onChange: ({ fileList }) => {
+            onChange: ({ status }) => {
 
-              if (fileList[0] && fileList[0].status === 'done' || fileList[0] && fileList[0].status === 'done') {
-                alert(1)
-              }
+              console.log(status)
 
             }
 
