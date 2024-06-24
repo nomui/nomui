@@ -11,7 +11,7 @@ class Upload extends Component {
   _created() {
     this.reqs = {}
     this.failedFileList = []
-    this.inQueueList = []
+    this.inQueueIds = []
   }
 
   _config() {
@@ -185,21 +185,22 @@ class Upload extends Component {
   }
 
   _uploadFiles(files, uploadedFiles) {
-    this.inQueueList = []
+    this.inQueueIds = []
     // 转为数组
     let fileList = Array.from(files)
     const uploadedFileList = Array.from(uploadedFiles)
 
     fileList = fileList.map((e) => {
+
       if (!e.uuid) {
         e.uuid = getUUID()
       }
       e.uploadTime = new Date().getTime()
+      this.inQueueIds.push(e.uuid)
       return e
     })
 
     this.failedFileList = []
-    this.inQueueList = fileList
 
     this.props.onStart && this._callHandler(this.props.onStart, { files: fileList, uploadedFiles })
 
@@ -289,12 +290,20 @@ class Upload extends Component {
       }
     }
 
+    let status = 'pending'
+
+    if (this.fileList.filter(x => {
+      return x.status === 'done' && this.inQueueIds.includes(x.uuid)
+    }).length + this.failedFileList.length === this.inQueueIds.length) {
+      status = 'done'
+    }
+
     if (this.props.onChange) {
       this._callHandler(this.props.onChange, {
         file,
         fileList: [...this.fileList],
         failedFileList: this.failedFileList,
-        status: this.fileList.length + this.failedFileList === this.inQueueList.length ? 'done' : 'pending'
+        status
       })
     }
   }
