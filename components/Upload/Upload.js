@@ -214,7 +214,7 @@ class Upload extends Component {
 
   _upload(file, fileList) {
     const beforeUpload = this.props.beforeUpload
-    if (!this._checkType(file) && this.props.showErrorMsg) {
+    if (!this._checkType(file)) {
       new nomui.Alert({
         title: this.props.unSupportedTypeText,
       })
