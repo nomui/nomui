@@ -30758,6 +30758,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _created() {
       this.reqs = {};
+      this.failedFileList = [];
+      this.inQueueIds = [];
     }
     _config() {
       const that = this;
@@ -30852,9 +30854,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._handleClick();
     }
     _watchStatus(file) {
-      if (file && this.fileList && this.fileList.length) {
+      if (file) {
         const currentStatus = file.status;
-        const allStats = this.fileList.map((n) => {
+        const allList = this.fileList || [];
+        const allStats = allList.map((n) => {
           return n.status;
         });
         const noUploading = !allStats.includes("uploading");
@@ -30864,8 +30867,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this._cancleLoading(noUploading);
         } else if (currentStatus === "error") {
           this._cancleLoading(noUploading);
-          new nomui.Message({ content: this.uploadFailText, type: "error" });
+          if (this.props.showErrorMsg) {
+            new nomui.Message({
+              content:
+                isString(file.response) && file.response.length
+                  ? file.response
+                  : this.props.uploadFailText,
+              type: "error",
+            });
+          }
         }
+      } else {
+        this._cancleLoading(true);
       }
     }
     _showLoading() {
@@ -30907,7 +30920,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._uploadFiles(files, uploadedFiles);
     }
     _uploadFiles(files, uploadedFiles) {
-      // 转为数组
+      this.inQueueIds = []; // 转为数组
       let fileList = Array.from(files);
       const uploadedFileList = Array.from(uploadedFiles);
       fileList = fileList.map((e) => {
@@ -30915,8 +30928,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           e.uuid = getUUID$1();
         }
         e.uploadTime = new Date().getTime();
+        this.inQueueIds.push(e.uuid);
         return e;
       });
+      this.failedFileList = [];
+      this.props.onStart &&
+        this._callHandler(this.props.onStart, {
+          files: fileList,
+          uploadedFiles,
+        });
       fileList.forEach((file) => {
         this._upload(file, [...uploadedFileList, ...fileList]);
       });
@@ -30995,10 +31015,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           disableBtn ? this.triggerRef.disable() : this.triggerRef.enable();
         }
       }
+      let status = "pending";
+      if (
+        this.fileList.filter((x) => {
+          return x.status === "done" && this.inQueueIds.includes(x.uuid);
+        }).length +
+          this.failedFileList.length ===
+        this.inQueueIds.length
+      ) {
+        status = "done";
+      }
       if (this.props.onChange) {
         this._callHandler(this.props.onChange, {
           file,
           fileList: [...this.fileList],
+          failedFileList: this.failedFileList,
+          status,
         });
       }
     }
@@ -31051,6 +31083,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.fileList = this.fileList.filter((n) => {
         return n.uuid !== file.uuid;
       });
+      if (
+        this.failedFileList.findIndex((x) => {
+          return x.uuid === file.uuid;
+        }) === -1
+      ) {
+        this.failedFileList.push(Object.assign({}, file, { response }));
+      }
       currentFile.error = error;
       currentFile.status = "error";
       currentFile.response = response;
@@ -31078,8 +31117,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     headers: {},
     withCredentials: false,
     onChange: null,
+    onStart: null,
     uploadText: "上传",
     uploadFailText: "上传失败！",
+    showErrorMsg: true,
     unSupportedTypeText: "不支持此格式，请重新上传。",
   };
   Component.register(Upload);
