@@ -12,7 +12,7 @@ define([], function () {
 
                     {
                         component: 'Upload',
-                        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+                        action: 'https://run.mocky.io/v3/74f2f759-ff23-48e0-a3c9-44c62a57842c',
                         multiple: true,
                         folder: true,
 
