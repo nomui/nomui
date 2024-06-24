@@ -10,6 +10,8 @@ class Upload extends Component {
 
   _created() {
     this.reqs = {}
+    this.failedFileList = []
+    this.inQueueList = []
   }
 
   _config() {
@@ -113,13 +115,13 @@ class Upload extends Component {
   }
 
   _watchStatus(file) {
-    if (file && this.fileList && this.fileList.length) {
+    if (file) {
       const currentStatus = file.status
-      const allStats = this.fileList.map((n) => {
+      const allList = this.fileList || []
+      const allStats = allList.map((n) => {
         return n.status
       })
       const noUploading = !allStats.includes('uploading')
-
       if (currentStatus === 'uploading') {
         this._showLoading()
       } else if (currentStatus === 'done') {
@@ -127,10 +129,13 @@ class Upload extends Component {
       } else if (currentStatus === 'error') {
         this._cancleLoading(noUploading)
         new nomui.Message({
-          content: this.uploadFailText,
+          content: this.props.uploadFailText,
           type: 'error',
         })
       }
+    }
+    else {
+      this._cancleLoading(true)
     }
   }
 
@@ -180,6 +185,7 @@ class Upload extends Component {
   }
 
   _uploadFiles(files, uploadedFiles) {
+    this.inQueueList = []
     // 转为数组
     let fileList = Array.from(files)
     const uploadedFileList = Array.from(uploadedFiles)
@@ -191,6 +197,11 @@ class Upload extends Component {
       e.uploadTime = new Date().getTime()
       return e
     })
+
+    this.failedFileList = []
+    this.inQueueList = fileList
+
+    this.props.onStart && this._callHandler(this.props.onStart, { files: fileList, uploadedFiles })
 
     fileList.forEach((file) => {
       this._upload(file, [...uploadedFileList, ...fileList])
@@ -282,6 +293,8 @@ class Upload extends Component {
       this._callHandler(this.props.onChange, {
         file,
         fileList: [...this.fileList],
+        failedFileList: this.failedFileList,
+        status: this.fileList.length + this.failedFileList === this.inQueueList.length ? 'done' : 'pending'
       })
     }
   }
@@ -354,6 +367,12 @@ class Upload extends Component {
       return n.uuid !== file.uuid
     })
 
+    if (!this.failedFileList.findIndex(x => {
+      return x.uuid === file.uuid
+    })) {
+      this.failedFileList.push(file)
+    }
+
     currentFile.error = error
     currentFile.status = 'error'
     currentFile.response = response
@@ -401,6 +420,7 @@ Upload.defaults = {
   headers: {},
   withCredentials: false,
   onChange: null,
+  onStart: null,
   uploadText: '上传',
   uploadFailText: '上传失败！',
   unSupportedTypeText: '不支持此格式，请重新上传。'
