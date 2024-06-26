@@ -17,6 +17,7 @@ class AutoCompleteList extends List {
             children: filterName === 'text' ? this.props.value : this.props.text,
           })
         },
+        ...props.optionDefaults
       },
     }
 

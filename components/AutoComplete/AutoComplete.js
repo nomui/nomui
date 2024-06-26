@@ -43,6 +43,7 @@ class AutoComplete extends Textbox {
   }
 
   _config() {
+
     const autoCompleteRef = this
     const { allowClear, options } = this.props
     this._normalizeSearchable()
@@ -271,7 +272,8 @@ AutoComplete.defaults = {
   optionFields: { value: 'value' },
   filterOption: (txt, options) => { return options },
   allowClear: true,
-  filterName: 'text' // text,select
+  filterName: 'text', // text,select
+  optionDefaults: {}
 }
 
 Component.register(AutoComplete)
