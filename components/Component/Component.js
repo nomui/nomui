@@ -91,8 +91,18 @@ class Component {
 
     this.componentType = this.__proto__.constructor.name
 
-    this.create()
-    if (this.props.autoRender === true) {
+    const ret = this.create()
+    if (Array.isArray(ret)) {
+      Promise.all(ret).then(() => {
+        if (this.props.autoRender === true) {
+          this.config()
+          this.render()
+        } else {
+          this._mountPlaceHolder()
+        }
+      })
+    }
+    else if (this.props.autoRender === true) {
       this.config()
       this.render()
     } else {
@@ -101,13 +111,27 @@ class Component {
   }
 
   create() {
+    const promises = []
     this.__handleClick = this.__handleClick.bind(this)
     this.__handleMouseEnter = this.__handleMouseEnter.bind(this)
     this.__handleMouseLeave = this.__handleMouseLeave.bind(this)
-    isFunction(this._created) && this._created()
+    if (isFunction(this._created)) {
+      const ret = this._created()
+      if (ret && isFunction(ret.then)) {
+        promises.push(ret)
+      }
+    }
     this._callMixin('_created')
     this.props._created && this.props._created.call(this, this)
-    isFunction(this.props.onCreated) && this.props.onCreated({ inst: this, props: this.props })
+    if (isFunction(this.props.onCreated)) {
+      const ret = this.props.onCreated({ inst: this, props: this.props })
+      if (ret && isFunction(ret.then)) {
+        promises.push(ret)
+      }
+    }
+    if (promises.length) {
+      return promises
+    }
   }
 
   _created() { }
