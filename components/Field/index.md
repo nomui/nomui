@@ -5,6 +5,7 @@
 | 名称 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | name | 字段名称，未设置时会自动设置一个自增格式 | `string` | `__field` + 自增长序号 |
+| defaultValue | 默认值，仅在初始化组件时设置 | `string` | - |
 | value | 字段值 | `string` | - |
 | label | 标签文本，当未定义或为 null 时不显示标签栏 | `string` | - |
 | labelAlign | 标签对齐方式 | `left`\|`right`\|`top` | `right` |
