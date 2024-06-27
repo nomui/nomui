@@ -15,8 +15,6 @@ class Field extends Component {
 
   _created() {
     const { name, defaultValue } = this.props
-
-
     if (isNullish(this.props.value) && !isNullish(defaultValue)) {
       this.props.value = defaultValue
     }
@@ -25,6 +23,7 @@ class Field extends Component {
     }
     this.oldValue = null
     this.currentValue = this.props.value
+    this.initValue = clone(this.currentValue) || null
 
     if (name) {
       this.name = name
@@ -219,7 +218,7 @@ class Field extends Component {
   }
 
   _reset() {
-    this.setValue(this.props.defaultValue)
+    this.setValue(this.initValue)
   }
 
   _clear() {
