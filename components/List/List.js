@@ -82,9 +82,7 @@ class List extends Component {
     const item = this.getItem(param)
     item && item.select(selectOption)
     if (this.props.itemSelectable.scrollIntoView) {
-      setTimeout(() => {
-        this.scrollTo(item)
-      }, 200)
+      this.scrollTo(item)
     }
   }
 
@@ -241,6 +239,7 @@ class List extends Component {
 
   scrollTo(param) {
     const item = this.getItem(param)
+
     if (item) {
       const itemElement = item.wrapper ? item.wrapper.element : item.element
       const scrollOptions =
@@ -250,16 +249,18 @@ class List extends Component {
           ? this.props.itemSelectable.scrollIntoView
           : {}
 
-      scrollIntoView(
-        itemElement,
-        Component.extendProps(
-          {
-            behavior: 'smooth',
-            scrollMode: 'if-needed',
-          },
-          scrollOptions,
-        ),
-      )
+      setTimeout(() => {
+        scrollIntoView(
+          itemElement,
+          Component.extendProps(
+            {
+              behavior: 'smooth',
+              scrollMode: 'if-needed',
+            },
+            scrollOptions,
+          ),
+        )
+      }, 200)
     }
   }
 

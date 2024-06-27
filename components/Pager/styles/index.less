@@ -1,4 +1,5 @@
 .nom-pager {
+
   // between和around时将第一项占据更多位置
   .p-justify-around,
   .p-justify-between {
@@ -8,10 +9,12 @@
       }
     }
   }
+
   .nom-col {
-    > .nom-list {
-      > .nom-list-content {
-        > .nom-list-item-wrapper {
+    >.nom-list {
+      >.nom-list-content {
+        >.nom-list-item-wrapper {
+
           .prev,
           .next,
           .space {
@@ -20,7 +23,8 @@
               top: 2px;
             }
           }
-          > a {
+
+          >a {
             display: block;
             padding: 0.35rem 0.85rem;
             color: var(--nom-pager-color);
@@ -28,13 +32,17 @@
             background-color: var(--nom-pager-item-bg-color);
             border: 1px solid var(--nom-pager-item-border-color);
             border-radius: var(--nom-pager-border-radius);
+            min-width: 2.4rem;
+            text-align: center;
 
             &:not(&.s-selected) {
               .nom-preset-hover;
             }
+
             &.s-disabled {
               color: var(--nom-color-text-2);
             }
+
             &.s-selected {
               color: var(--nom-color-primary);
               font-weight: 500;
@@ -45,21 +53,31 @@
         }
       }
     }
+
     .nom-pager-select {
-      > .nom-field-content {
-        > .nom-control {
+      >.nom-field-content {
+        >.nom-control {
           padding-top: 0.35rem;
           padding-bottom: 0.35rem;
         }
       }
     }
   }
+
+  &.nom-pager-simple {
+    a {
+      &.s-selected {
+        font-weight: inherit !important;
+      }
+    }
+  }
+
   &.nom-pager-compact {
     .nom-col {
-      > .nom-list {
-        > .nom-list-content {
-          > .nom-list-item-wrapper {
-            > a {
+      >.nom-list {
+        >.nom-list-content {
+          >.nom-list-item-wrapper {
+            >a {
               display: block;
               padding: 0.35rem 0.8rem;
               color: var(--nom-pager-color);
@@ -77,9 +95,10 @@
         }
       }
     }
+
     .nom-pager-select {
-      > .nom-field-content {
-        > .nom-control {
+      >.nom-field-content {
+        >.nom-control {
           padding-top: 0.2rem;
           padding-bottom: 0.2rem;
           line-height: 1.5rem;

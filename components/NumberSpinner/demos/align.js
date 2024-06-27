@@ -28,6 +28,13 @@ define([], function () {
           },
           {
             component: 'NumberSpinner',
+            label: '两端加减号',
+            simple: false,
+            align: 'horizontal',
+            value: 100,
+          },
+          {
+            component: 'NumberSpinner',
             label: '不显示图标',
             showSpinner: false,
             value: 100,

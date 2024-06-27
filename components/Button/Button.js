@@ -10,6 +10,8 @@ class Button extends Component {
       type: 'default', // null(default) primary,dashed,text,link
       ghost: false,
       danger: false,
+      borderless: false,
+      block: false,
       inline: false,
     }
 
@@ -17,7 +19,7 @@ class Button extends Component {
   }
 
   _config() {
-    this._propStyleClasses = ['type', 'ghost', 'size', 'shape', 'danger', 'block']
+    this._propStyleClasses = ['ghost', 'size', 'shape', 'danger', 'block', 'borderless']
     const { icon, text, rightIcon, href, target, inline } = this.props
 
     if (icon || rightIcon) {

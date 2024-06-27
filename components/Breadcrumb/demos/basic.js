@@ -4,28 +4,58 @@ define([], function () {
     file: 'basic',
     demo: function () {
       return {
-        component: 'Breadcrumb',
-        items: [
+        component: 'Flex',
+        gutter: 'small',
+        rows: [
           {
-            text: 'Home',
-            rightIcon: 'profile',
-            overlay: [
-              { text: '起步起步', url: '#!components!index?type=component' },
+            component: 'Breadcrumb',
+            items: [
               {
-                text: '组件',
-                items: [
-                  { text: '级联选择', id: 'cascader', url: '#!components!index?type=Cascader' },
+                text: 'Home',
+                overlay: [
+                  { text: '起步起步', url: '#!components!index?type=component' },
                   {
-                    text: '浮层',
-                    id: 'drawer',
-                    items: [{ text: 'drawer', url: '#!components!index?type=Drawer' }],
+                    text: '组件',
+                    items: [
+                      { text: '级联选择', id: 'cascader', url: '#!components!index?type=Cascader' },
+                      {
+                        text: '浮层',
+                        id: 'drawer',
+                        items: [{ text: 'drawer', url: '#!components!index?type=Drawer' }],
+                      },
+                    ],
                   },
                 ],
               },
+              { text: 'Uploader', url: '#!components!index?type=Uploader' },
             ],
           },
-          { text: 'Uploader', icon: 'upload', url: '#!components!index?type=Uploader' },
-        ],
+
+          {
+            component: 'Breadcrumb',
+            items: [
+              {
+                text: 'Home',
+                rightIcon: 'profile',
+                overlay: [
+                  { text: '起步起步', url: '#!components!index?type=component' },
+                  {
+                    text: '组件',
+                    items: [
+                      { text: '级联选择', id: 'cascader', url: '#!components!index?type=Cascader' },
+                      {
+                        text: '浮层',
+                        id: 'drawer',
+                        items: [{ text: 'drawer', url: '#!components!index?type=Drawer' }],
+                      },
+                    ],
+                  },
+                ],
+              },
+              { text: 'Uploader', icon: 'upload', url: '#!components!index?type=Uploader' },
+            ],
+          }
+        ]
       }
     },
   }

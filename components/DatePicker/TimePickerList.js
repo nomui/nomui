@@ -41,15 +41,12 @@ class DateTimePickerList extends List {
     }
 
     this.setProps({
-      styles: {
-        padding: '3px',
-      },
       items: items,
       itemSelectable: {
         multiple: false,
         byClick: true,
         scrollIntoView: {
-          block: 'start',
+          block: 'center',
           scrollMode: 'always',
         },
       },

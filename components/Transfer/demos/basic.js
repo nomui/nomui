@@ -64,6 +64,7 @@ define([], function () {
             },
             label: '穿梭框',
             name: 'transfer',
+            value: ['001', '009', '011'],
             data: data,
           },
           {

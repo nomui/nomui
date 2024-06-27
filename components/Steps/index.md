@@ -12,6 +12,7 @@ Steps 步骤条:引导用户按照流程完成任务的导航条。
 | direction | 指定步骤条方向。支持水平`horizontal`和竖直`vertical`两种方向 | `string` | horizontal |
 | onChange | 点击切换步骤时触发 | `(current) => void` | - |
 | options | 步骤对象数组 | `[]` | - |
+| simple | 简洁模式 | `boolean` | false |
 
 ## options
 

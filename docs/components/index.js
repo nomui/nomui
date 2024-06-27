@@ -77,6 +77,11 @@ define(['docs/DemoPanel.js'], function (demoPanel) {
               ],
             },
             body: {
+              attrs: {
+                style: {
+                  background: '#f8f8f8'
+                }
+              },
               children: {
                 component: 'TabContent',
                 ref: (c) => {
@@ -117,6 +122,11 @@ define(['docs/DemoPanel.js'], function (demoPanel) {
                         },
                       },
                       asider: {
+                        attrs: {
+                          style: {
+                            background: 'white'
+                          }
+                        },
                         children: {
                           component: 'Anchor',
                           name: 'DemoMenu',

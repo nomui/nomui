@@ -5,8 +5,12 @@ define([], function () {
     description:
       '`Form` 继承自 `Group`，因此用法与 `Group` 一致，当前尚未对 `Form` 增加特定的功能，只是语义上代表一个表单。',
     demo: function () {
+      let group = null
       return {
         component: 'Form',
+        ref: (c) => {
+          group = c
+        },
         fields: [
           {
             component: 'Textbox',
@@ -48,18 +52,40 @@ define([], function () {
               { text: '旅游', value: 3 },
             ],
           },
-        ],
-        controlAction: [
           {
-            component: 'Button',
-            text: '保 存',
-            type: 'primary',
-          },
-          {
-            component: 'Button',
-            text: '取 消',
+            component: 'Field',
+            label: '',
+            control: {
+              component: 'Cols',
+              items: [
+                {
+                  component: 'Button',
+                  type: 'primary',
+                  text: '提 交',
+                  onClick: () => {
+                    group.validate()
+                    console.log(group.getValue())
+                  },
+                },
+                {
+                  component: 'Button',
+                  text: '重 置',
+                  onClick: () => {
+                    group.reset()
+                  },
+                },
+                {
+                  component: 'Button',
+                  text: '清除',
+                  onClick: () => {
+                    group.clear()
+                  },
+                },
+              ],
+            },
           },
         ],
+
       }
     },
   }

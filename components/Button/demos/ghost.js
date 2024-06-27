@@ -7,7 +7,7 @@ define([], function () {
         component: 'Flex',
         gap: 'small',
         styles: {
-          color: 'primary',
+          // color: 'gray',
           padding: '1',
         },
         cols: [
@@ -29,18 +29,7 @@ define([], function () {
             type: 'dashed',
             ghost: true,
           },
-          {
-            component: 'Button',
-            text: 'text',
-            type: 'text',
-            ghost: true,
-          },
-          {
-            component: 'Button',
-            text: 'link',
-            type: 'link',
-            ghost: true,
-          },
+
         ],
       }
     },
