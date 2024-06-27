@@ -84,9 +84,7 @@ class DatePicker extends Textbox {
           _created: function () {
             that.popup = this
           },
-          styles: {
-            padding: '1',
-          },
+
           onShow: () => {
             this.getCurrentDate()
             this.reActiveList()
@@ -109,11 +107,14 @@ class DatePicker extends Textbox {
                 {
                   attrs: {
                     style: {
-                      width: '260px',
+                      width: '300px',
                     },
                   },
                   rows: [
                     {
+                      classes: {
+                        'nom-datepicker-popup-hd': true
+                      },
                       justify: 'between',
                       fills: true,
                       cols: [
@@ -151,128 +152,152 @@ class DatePicker extends Textbox {
                       ],
                     },
                     {
-                      cols: weekText.split(' '),
-                      fills: true,
-                      gutter: null,
                       classes: {
-                        'nom-datepicker-panel-header': true,
+                        'nom-datepicker-popup-bd': true
                       },
-                    },
-                    {
-                      component: List,
-                      _created: function () {
-                        that.days = this
-                      },
-                      gutter: 'sm',
-                      cols: 7,
-                      // selectedItems: that.props.value
-                      //   ? `${that.year}-${that.month}-${that.day}`
-                      //   : null,
-                      itemSelectable: {
-                        byClick: true,
-                        multiple: false,
-                        scrollIntoView: true,
-                      },
-                      items: this._getDays(that.year, that.month),
-                      itemDefaults: {
-                        key: function () {
-                          this.props.date = new Date(
-                            this.props.year,
-                            this.props.month - 1,
-                            this.props.day,
-                          ).format('yyyy-M-d')
-
-                          return this.props.date
-                        },
-                        styles: {
-                          padding: 'd375',
-                          hover: {
-                            color: 'darken',
-                          },
-                          selected: {
-                            color: 'primary',
+                      rows: [
+                        {
+                          cols: weekText.split(' '),
+                          fills: true,
+                          // gap: 'md',
+                          classes: {
+                            'nom-datepicker-panel-header': true,
                           },
                         },
-                        attrs: {
-                          role: 'button',
-                        },
-                        _config: function () {
-                          const textStyles = ['center']
-                          const date = that._getDateString(
-                            this.props.year,
-                            this.props.month,
-                            this.props.day,
-                          )
+                        {
+                          component: List,
+                          _created: function () {
+                            that.days = this
+                          },
+                          // onRendered: () => {
+                          //   that._recountHeight()
+                          // },
 
-                          const isToday = date === new Date().format('yyyy-MM-dd')
-                          let isDisabled = false
-                          if (that.props.disabledTime) {
-                            isDisabled = that.props.disabledTime(date)
-                          }
+                          cols: 7,
+                          classes: {
+                            'nom-datepicker-panel-days': true,
+                          },
+                          // selectedItems: that.props.value
+                          //   ? `${that.year}-${that.month}-${that.day}`
+                          //   : null,
+                          itemSelectable: {
+                            byClick: true,
+                            multiple: false,
+                            scrollIntoView: true,
+                          },
+                          items: this._getDays(that.year, that.month),
+                          itemDefaults: {
+                            key: function () {
+                              this.props.date = new Date(
+                                this.props.year,
+                                this.props.month - 1,
+                                this.props.day,
+                              ).format('yyyy-M-d')
 
-                          if (
-                            that.props.minDate &&
-                            new Date(date).isBefore(new Date(that.minDateDay))
-                          ) {
-                            isDisabled = true
-                          }
-
-                          if (
-                            that.props.maxDate &&
-                            new Date(date).isAfter(new Date(that.maxDateDay))
-                          ) {
-                            isDisabled = true
-                          }
-
-                          if (this.props.lastMonth === true || this.props.nextMonth === true) {
-                            textStyles.push('muted')
-                          }
-
-                          if (isToday) {
-                            that.todayItem = this
-
-                            this.setProps({
-                              styles: {
-                                border: ['1px', 'primary'],
-                              },
-                            })
-                          }
-
-                          this.setProps({
-                            styles: {
-                              text: textStyles,
+                              return this.props.date
                             },
-                            children: this.props.day,
-                            disabled: !!isDisabled,
-                          })
-                        },
-                        onClick: function (args) {
-                          const { year: selYear, month: selMonth, day: selDay } = args.sender.props
-
-                          that.dateInfo = {
-                            ...that.dateInfo,
-                            ...{
-                              year: selYear,
-                              month: selMonth - 1,
-                              day: selDay,
+                            // styles: {
+                            //   padding: 'd375',
+                            //   hover: {
+                            //     color: 'darken',
+                            //   },
+                            //   selected: {
+                            //     color: 'primary',
+                            //   },
+                            // },
+                            classes: {
+                              'nom-datepicker-day-item': true
                             },
-                          }
+                            attrs: {
+                              role: 'button',
+                            },
+                            _config: function () {
+                              let isMuted = false
+                              const date = that._getDateString(
+                                this.props.year,
+                                this.props.month,
+                                this.props.day,
+                              )
 
-                          if (that.props.showTime) {
-                            that._updateTimePickerStartEndTime(args.sender.props.day)
-                          }
+                              const isToday = date === new Date().format('yyyy-MM-dd')
+                              let isDisabled = false
+                              if (that.props.disabledTime) {
+                                isDisabled = that.props.disabledTime(date)
+                              }
 
-                          that.updateValue()
+                              if (
+                                that.props.minDate &&
+                                new Date(date).isBefore(new Date(that.minDateDay))
+                              ) {
+                                isDisabled = true
+                              }
 
-                          that.timePicker && that.timePicker.onShow()
-                          !that.props.showTime && that.popup.hide()
+                              if (
+                                that.props.maxDate &&
+                                new Date(date).isAfter(new Date(that.maxDateDay))
+                              ) {
+                                isDisabled = true
+                              }
+
+                              if (this.props.lastMonth === true || this.props.nextMonth === true) {
+                                isMuted = true
+                              }
+
+                              if (isToday) {
+                                that.todayItem = this
+
+                                this.setProps({
+                                  classes: {
+                                    'nom-datepicker-today-item': true
+                                  }
+                                })
+                              }
+
+
+                              this.setProps({
+                                styles: {
+                                  text: 'center',
+                                },
+                                classes: {
+                                  'nom-datepicker-item-muted': isMuted
+                                },
+                                children: this.props.day,
+                                disabled: !!isDisabled,
+                              })
+                            },
+                            onClick: function (args) {
+                              const { year: selYear, month: selMonth, day: selDay } = args.sender.props
+
+                              that.dateInfo = {
+                                ...that.dateInfo,
+                                ...{
+                                  year: selYear,
+                                  month: selMonth - 1,
+                                  day: selDay,
+                                },
+                              }
+
+                              if (that.props.showTime) {
+                                that._updateTimePickerStartEndTime(args.sender.props.day)
+                              }
+
+                              that.updateValue()
+
+                              that.timePicker && that.timePicker.onShow()
+                              !that.props.showTime && that.popup.hide()
+                            },
+                          },
                         },
-                      },
-                    },
+                      ]
+                    }
+
                   ],
                 },
                 this.props.showTime && {
                   component: TimePickerPanel,
+                  ref: (c) => {
+                    this.timePickerRef = c
+                  },
                   classes: {
                     'nom-datepicker-time-panel': true,
                   },
@@ -292,10 +317,8 @@ class DatePicker extends Textbox {
             },
             (this.props.showNow || extra.length) && {
               component: Flex,
-              attrs: {
-                style: {
-                  padding: '5px 0',
-                },
+              classes: {
+                'nom-datepicker-footer': true
               },
               cols: [
                 ...extra,
@@ -420,6 +443,17 @@ class DatePicker extends Textbox {
       })
     }
     return daysList
+  }
+
+  _recountHeight() {
+    // 动态计算时间列表高度
+    const me = this
+    setTimeout(() => {
+      const h = me.days.element.offsetHeight
+      me.timePickerRef.element.querySelectorAll('.nom-datepicker-time-overcont').forEach(n => {
+        n.style.maxHeight = `${h + 40}px`
+      })
+    }, 0)
   }
 
   /* 求XX年XX月1号是星期几 */

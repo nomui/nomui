@@ -72,9 +72,8 @@ class TimePickerPanel extends Component {
 
     this.setProps({
       children: {
-        component: 'Rows',
-        gutter: 'xs',
-        items: [
+        component: 'Flex',
+        rows: [
           {
             classes: {
               'time-display': true,

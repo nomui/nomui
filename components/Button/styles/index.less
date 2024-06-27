@@ -121,6 +121,13 @@
   &.p-type-dashed {
     border-style: dashed;
   }
+  &.p-borderless {
+    border:none;
+    background: var(--nom-button-bg-borderless);
+    &:hover {
+      background-color: var(--nom-button-bg-borderless-hover);
+    }
+  }
 
   &.p-type-text {
     background-color: transparent;
@@ -159,11 +166,16 @@
     background-color: transparent !important;
 
     &:hover {
-      background-color: var(--nom-color-fill-1) !important;
+      border-color: var(--nom-color-primary) !important;
+      color:var(--nom-color-primary) !important;
     }
 
     &.p-type-primary {
-      .u-color-primary-outline();
+     color: var(--nom-color-primary) !important;
+     &:hover {
+      background-color: var(--nom-color-primary) !important;
+      color: #fff !important;
+     }
     }
   }
 
@@ -235,6 +247,11 @@
     background-color: transparent !important;
     // filter: brightness(0.65) !important;
     // filter: none;
+    &.p-type-link {
+      &:not([disabled]) {
+        text-decoration: underline;
+      }
+    }
   }
 
   &.s-hidden {

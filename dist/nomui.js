@@ -5951,6 +5951,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   );
   /* Prompt */ cat = "Prompt";
   Icon.add(
+    "square",
+    `<svg t="1715850174291" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3594" width="1em" height="1em" fill="currentColor"><path d="M950.857143 237.714286v548.571428q0 68-48.285714 116.285715T786.285714 950.857143H237.714286q-68 0-116.285715-48.285714T73.142857 786.285714V237.714286q0-68 48.285714-116.285715T237.714286 73.142857h548.571428q68 0 116.285715 48.285714T950.857143 237.714286z" p-id="3595"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "check-light",
+    `<svg t="1715913686615" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2943" width="1em" height="1em" fill="currentColor"><path d="M887.904 298.208c-12.864-12.064-33.152-11.488-45.216 1.408L415.936 753.984l-233.12-229.696C170.208 511.872 149.952 512 137.536 524.608c-12.416 12.576-12.256 32.864 0.352 45.248l256.48 252.672c0.096 0.096 0.224 0.128 0.32 0.224 0.096 0.096 0.128 0.224 0.224 0.32 2.016 1.92 4.448 3.008 6.784 4.288 1.152 0.672 2.144 1.664 3.36 2.144 3.776 1.472 7.776 2.24 11.744 2.24 4.192 0 8.384-0.832 12.288-2.496 1.312-0.544 2.336-1.664 3.552-2.368 2.4-1.408 4.896-2.592 6.944-4.672 0.096-0.096 0.128-0.256 0.224-0.352 0.064-0.096 0.192-0.128 0.288-0.224l449.184-478.208C901.44 330.592 900.768 310.336 887.904 298.208z" p-id="2944"></path></svg>`,
+    cat
+  );
+  Icon.add(
     "info-circle",
     `<svg viewBox="64 64 896 896" focusable="false" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"></path></svg>`,
     cat
@@ -5973,6 +5983,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   Icon.add(
     "check-circle",
     `<svg viewBox="64 64 896 896" focusable="false" data-icon="check-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M699 353h-46.9c-10.2 0-19.9 4.9-25.9 13.3L469 584.3l-71.2-98.8c-6-8.3-15.6-13.3-25.9-13.3H325c-6.5 0-10.3 7.4-6.5 12.7l124.6 172.8a31.8 31.8 0 0051.7 0l210.6-292c3.9-5.3.1-12.7-6.4-12.7z"></path><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "up-circle",
+    `<svg t="1716282684077" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3453" width="1em" height="1em" fill="currentColor"><path d="M512 828.40625c-171.386719 0-316.40625-138.42773438-316.40625-316.40625 0-171.386719 138.42773438-316.40625 316.40625-316.40625 171.386719 0 316.40625 138.42773438 316.40625 316.40625 0 171.386719-145.019531 316.40625-316.40625 316.40625zM512 116.4921875C294.47070312 116.4921875 116.4921875 294.47070312 116.4921875 512s177.97851563 395.5078125 395.5078125 395.5078125 395.5078125-177.97851563 395.5078125-395.5078125-177.97851563-395.5078125-395.5078125-395.5078125z m32.95898463 276.85546875c-13.183594-13.183594-46.14257787-13.183594-59.32617188 0L340.613281 531.77539063c-19.77539063 13.183594-19.77539063 46.14257787 0 59.32617187 13.183594 13.183594 46.14257787 13.183594 59.32617187 0L512 485.63281275l112.06054713 112.06054637c6.59179662 6.59179662 19.77539063 13.183594 32.95898387 13.18359401s19.77539063-6.59179662 32.95898462-13.18359401c6.59179662-6.59179662 13.183594-19.77539063 13.18359401-32.95898387s-6.59179662-19.77539063-13.18359401-32.95898462L544.95898463 393.34765625z" p-id="3454"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "down-circle",
+    `<svg t="1716283207226" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3610" width="1em" height="1em" fill="currentColor"><path d="M614.39257813 446.609375L512.3515625 548.65039063 410.22265625 446.609375c-15.38085938-15.29296875-40.16601563-15.29296875-55.45898438 0-7.64648438 7.64648438-11.51367188 17.66601563-11.51367187 27.7734375s3.8671875 20.12695313 11.51367187 27.7734375l129.81445313 129.81445313c7.3828125 7.3828125 17.40234375 11.51367188 27.7734375 11.51367187s20.390625-4.13085938 27.7734375-11.51367188l129.81445313-129.81445312c15.29296875-15.38085938 15.29296875-40.16601563-1e-8-55.546875-15.46875-15.29296875-40.25390625-15.29296875-55.546875 0z" fill="#515151" p-id="3611"></path><path d="M832.09765625 282.78125c-23.11523438-32.25585938-50.9765625-60.8203125-82.6171875-84.81445313-31.9921875-24.2578125-67.5-43.33007813-105.20507813-56.86523437-42.45117188-15.20507813-87.01171875-22.8515625-132.36328124-22.8515625-53.0859375 0-104.765625 10.37109375-153.28125001 30.9375-46.84570313 19.86328125-89.03320313 48.1640625-125.15624999 84.375-36.12304688 36.12304688-64.51171875 78.31054688-84.375 125.15625C128.70898437 407.32226562 118.25 458.82617187 118.25 511.91210937c0 44.47265625 7.3828125 88.2421875 21.97265625 129.99023438 13.27148438 37.96875 32.34375 73.74023438 56.51367188 106.08398438 23.99414063 31.9921875 52.55859375 60.02929688 84.90234374 83.40820312 67.32421875 48.60351563 146.953125 74.26757813 230.18554688 74.26757813 53.0859375 0 104.765625-10.37109375 153.28125-30.93750001 46.84570313-19.86328125 89.03320313-48.1640625 125.15625-84.37499999 36.12304688-36.12304688 64.51171875-78.22265625 84.375-125.15625 20.390625-48.1640625 30.76171875-99.31640625 30.9375-151.96289063v-2.63671875c-0.17578125-82.265625-25.57617188-161.10351563-73.4765625-227.8125zM511.91210937 827.26367188c-133.9453125 0-253.56445313-84.90234375-297.77343749-211.28906251-11.6015625-33.31054688-17.49023438-68.29101563-17.49023438-104.06249999 0-173.84765625 141.50390625-315.3515625 315.3515625-315.35156251 36.47460938 0 72.0703125 6.15234375 105.99609375 18.28125001 125.15625 44.6484375 209.26757813 164.00390625 209.26757813 297.07031249 0 173.93554688-141.41601563 315.3515625-315.35156251 315.35156251z" p-id="3612"></path></svg>`,
     cat
   );
   Icon.add(
@@ -6746,18 +6766,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         type: "default", // null(default) primary,dashed,text,link
         ghost: false,
         danger: false,
+        borderless: false,
+        block: false,
         inline: false,
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _config() {
       this._propStyleClasses = [
-        "type",
         "ghost",
         "size",
         "shape",
         "danger",
         "block",
+        "borderless",
       ];
       const { icon, text, rightIcon, href, target, inline } = this.props;
       if (icon || rightIcon) {
@@ -9845,9 +9867,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const item = this.getItem(param);
       item && item.select(selectOption);
       if (this.props.itemSelectable.scrollIntoView) {
-        setTimeout(() => {
-          this.scrollTo(item);
-        }, 200);
+        this.scrollTo(item);
       }
     }
     selectItems(param, selectOption) {
@@ -9987,13 +10007,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           isPlainObject(this.props.itemSelectable.scrollIntoView)
             ? this.props.itemSelectable.scrollIntoView
             : {};
-        scrollIntoView(
-          itemElement,
-          Component.extendProps(
-            { behavior: "smooth", scrollMode: "if-needed" },
-            scrollOptions
-          )
-        );
+        setTimeout(() => {
+          scrollIntoView(
+            itemElement,
+            Component.extendProps(
+              { behavior: "smooth", scrollMode: "if-needed" },
+              scrollOptions
+            )
+          );
+        }, 200);
       }
     }
     scrollToSelected() {
@@ -15313,12 +15335,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         items = this.pickerControl.getSecond();
       }
       this.setProps({
-        styles: { padding: "3px" },
         items: items,
         itemSelectable: {
           multiple: false,
           byClick: true,
-          scrollIntoView: { block: "start", scrollMode: "always" },
+          scrollIntoView: { block: "center", scrollMode: "always" },
         },
         attrs: { style: { position: "relative" } },
         itemDefaults: {
@@ -15390,14 +15411,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               align: "stretch",
               children: [
                 {
+                  classes: { "nom-datepicker-time-overcont": true },
                   hidden: !this.pickerControl.props.format.includes("HH"),
                   children: { component: DateTimePickerList, type: "hour" },
                 },
                 {
+                  classes: { "nom-datepicker-time-overcont": true },
                   hidden: !this.pickerControl.props.format.includes("mm"),
                   children: { component: DateTimePickerList, type: "minute" },
                 },
                 {
+                  classes: { "nom-datepicker-time-overcont": true },
                   hidden: !this.pickerControl.props.format.includes("ss"),
                   children: { component: DateTimePickerList, type: "second" },
                 },
@@ -15465,9 +15489,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._calcTimeRangeByTime();
       this.setProps({
         children: {
-          component: "Rows",
-          gutter: "xs",
-          items: [
+          component: "Flex",
+          rows: [
             {
               classes: { "time-display": true },
               ref: (c) => {
@@ -15791,7 +15814,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             _created: function () {
               that.popup = this;
             },
-            styles: { padding: "1" },
             onShow: () => {
               this.getCurrentDate();
               this.reActiveList(); // that.props.showTime && that.timePicker.onShow()
@@ -15810,9 +15832,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 component: Flex,
                 cols: [
                   {
-                    attrs: { style: { width: "260px" } },
+                    attrs: { style: { width: "300px" } },
                     rows: [
                       {
+                        classes: { "nom-datepicker-popup-hd": true },
                         justify: "between",
                         fills: true,
                         cols: [
@@ -15850,110 +15873,136 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                         ],
                       },
                       {
-                        cols: weekText.split(" "),
-                        fills: true,
-                        gutter: null,
-                        classes: { "nom-datepicker-panel-header": true },
-                      },
-                      {
-                        component: List,
-                        _created: function () {
-                          that.days = this;
-                        },
-                        gutter: "sm",
-                        cols: 7, // selectedItems: that.props.value
-                        //   ? `${that.year}-${that.month}-${that.day}`
-                        //   : null,
-                        itemSelectable: {
-                          byClick: true,
-                          multiple: false,
-                          scrollIntoView: true,
-                        },
-                        items: this._getDays(that.year, that.month),
-                        itemDefaults: {
-                          key: function () {
-                            this.props.date = new Date(
-                              this.props.year,
-                              this.props.month - 1,
-                              this.props.day
-                            ).format("yyyy-M-d");
-                            return this.props.date;
+                        classes: { "nom-datepicker-popup-bd": true },
+                        rows: [
+                          {
+                            cols: weekText.split(" "),
+                            fills: true, // gap: 'md',
+                            classes: { "nom-datepicker-panel-header": true },
                           },
-                          styles: {
-                            padding: "d375",
-                            hover: { color: "darken" },
-                            selected: { color: "primary" },
+                          {
+                            component: List,
+                            _created: function () {
+                              that.days = this;
+                            }, // onRendered: () => {
+                            //   that._recountHeight()
+                            // },
+                            cols: 7,
+                            classes: { "nom-datepicker-panel-days": true }, // selectedItems: that.props.value
+                            //   ? `${that.year}-${that.month}-${that.day}`
+                            //   : null,
+                            itemSelectable: {
+                              byClick: true,
+                              multiple: false,
+                              scrollIntoView: true,
+                            },
+                            items: this._getDays(that.year, that.month),
+                            itemDefaults: {
+                              key: function () {
+                                this.props.date = new Date(
+                                  this.props.year,
+                                  this.props.month - 1,
+                                  this.props.day
+                                ).format("yyyy-M-d");
+                                return this.props.date;
+                              }, // styles: {
+                              //   padding: 'd375',
+                              //   hover: {
+                              //     color: 'darken',
+                              //   },
+                              //   selected: {
+                              //     color: 'primary',
+                              //   },
+                              // },
+                              classes: { "nom-datepicker-day-item": true },
+                              attrs: { role: "button" },
+                              _config: function () {
+                                let isMuted = false;
+                                const date = that._getDateString(
+                                  this.props.year,
+                                  this.props.month,
+                                  this.props.day
+                                );
+                                const isToday =
+                                  date === new Date().format("yyyy-MM-dd");
+                                let isDisabled = false;
+                                if (that.props.disabledTime) {
+                                  isDisabled = that.props.disabledTime(date);
+                                }
+                                if (
+                                  that.props.minDate &&
+                                  new Date(date).isBefore(
+                                    new Date(that.minDateDay)
+                                  )
+                                ) {
+                                  isDisabled = true;
+                                }
+                                if (
+                                  that.props.maxDate &&
+                                  new Date(date).isAfter(
+                                    new Date(that.maxDateDay)
+                                  )
+                                ) {
+                                  isDisabled = true;
+                                }
+                                if (
+                                  this.props.lastMonth === true ||
+                                  this.props.nextMonth === true
+                                ) {
+                                  isMuted = true;
+                                }
+                                if (isToday) {
+                                  that.todayItem = this;
+                                  this.setProps({
+                                    classes: {
+                                      "nom-datepicker-today-item": true,
+                                    },
+                                  });
+                                }
+                                this.setProps({
+                                  styles: { text: "center" },
+                                  classes: {
+                                    "nom-datepicker-item-muted": isMuted,
+                                  },
+                                  children: this.props.day,
+                                  disabled: !!isDisabled,
+                                });
+                              },
+                              onClick: function (args) {
+                                const {
+                                  year: selYear,
+                                  month: selMonth,
+                                  day: selDay,
+                                } = args.sender.props;
+                                that.dateInfo = Object.assign(
+                                  {},
+                                  that.dateInfo,
+                                  {
+                                    year: selYear,
+                                    month: selMonth - 1,
+                                    day: selDay,
+                                  }
+                                );
+                                if (that.props.showTime) {
+                                  that._updateTimePickerStartEndTime(
+                                    args.sender.props.day
+                                  );
+                                }
+                                that.updateValue();
+                                that.timePicker && that.timePicker.onShow();
+                                !that.props.showTime && that.popup.hide();
+                              },
+                            },
                           },
-                          attrs: { role: "button" },
-                          _config: function () {
-                            const textStyles = ["center"];
-                            const date = that._getDateString(
-                              this.props.year,
-                              this.props.month,
-                              this.props.day
-                            );
-                            const isToday =
-                              date === new Date().format("yyyy-MM-dd");
-                            let isDisabled = false;
-                            if (that.props.disabledTime) {
-                              isDisabled = that.props.disabledTime(date);
-                            }
-                            if (
-                              that.props.minDate &&
-                              new Date(date).isBefore(new Date(that.minDateDay))
-                            ) {
-                              isDisabled = true;
-                            }
-                            if (
-                              that.props.maxDate &&
-                              new Date(date).isAfter(new Date(that.maxDateDay))
-                            ) {
-                              isDisabled = true;
-                            }
-                            if (
-                              this.props.lastMonth === true ||
-                              this.props.nextMonth === true
-                            ) {
-                              textStyles.push("muted");
-                            }
-                            if (isToday) {
-                              that.todayItem = this;
-                              this.setProps({
-                                styles: { border: ["1px", "primary"] },
-                              });
-                            }
-                            this.setProps({
-                              styles: { text: textStyles },
-                              children: this.props.day,
-                              disabled: !!isDisabled,
-                            });
-                          },
-                          onClick: function (args) {
-                            const {
-                              year: selYear,
-                              month: selMonth,
-                              day: selDay,
-                            } = args.sender.props;
-                            that.dateInfo = Object.assign({}, that.dateInfo, {
-                              year: selYear,
-                              month: selMonth - 1,
-                              day: selDay,
-                            });
-                            if (that.props.showTime) {
-                              that._updateTimePickerStartEndTime(
-                                args.sender.props.day
-                              );
-                            }
-                            that.updateValue();
-                            that.timePicker && that.timePicker.onShow();
-                            !that.props.showTime && that.popup.hide();
-                          },
-                        },
+                        ],
                       },
                     ],
                   },
                   this.props.showTime && {
                     component: TimePickerPanel,
+                    ref: (c) => {
+                      this.timePickerRef = c;
+                    },
                     classes: { "nom-datepicker-time-panel": true },
                     onValueChange: (data) => {
                       this.handleTimeChange(data);
@@ -15970,7 +16019,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               },
               (this.props.showNow || extra.length) && {
                 component: Flex,
-                attrs: { style: { padding: "5px 0" } },
+                classes: { "nom-datepicker-footer": true },
                 cols: [
                   ...extra,
                   {
@@ -16071,6 +16120,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
       }
       return daysList;
+    }
+    _recountHeight() {
+      // 动态计算时间列表高度
+      const me = this;
+      setTimeout(() => {
+        const h = me.days.element.offsetHeight;
+        me.timePickerRef.element
+          .querySelectorAll(".nom-datepicker-time-overcont")
+          .forEach((n) => {
+            n.style.maxHeight = `${h + 40}px`;
+          });
+      }, 0);
     }
     /* 求XX年XX月1号是星期几 */ _getFirstDayOfMonth(year, month) {
       return new Date(year, month - 1, 1).getDay();
@@ -20841,8 +20902,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   component: Icon,
                   expandable: {
                     byClick: true,
-                    expandedProps: { type: "minus-square" },
-                    collapsedProps: { type: "plus-square" },
+                    expandedProps: { type: "down-circle" },
+                    collapsedProps: { type: "up-circle" },
                     target: () => {
                       if (!row.expandedRow) {
                         row.expandedRow = row.after({
@@ -23693,7 +23754,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       );
       const spinner = numberSpinner._handleSpinnerIcon();
-      this.setProps({ control: { children: [inputProps, ...spinner] } });
+      this.setProps({
+        control: {
+          children: [...this._getLeftSpinner(), inputProps, ...spinner],
+        },
+      });
       super._config();
     }
     _getFormatValue() {
@@ -23789,23 +23854,25 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return rules;
     }
-    _handleSpinnerIcon() {
-      const { align, showSpinner } = this.props;
+    _getLeftSpinner() {
+      const { align, showSpinner, simple } = this.props;
       if (showSpinner === false) return [];
       const numberSpinner = this;
-      const { left, right, horizontal } = SPINNER_POSITION;
-      if ([left, right].includes(align)) {
+      if (align === "left") {
         return [
           {
             // tag: 'span',
             _created(c) {
               numberSpinner.iconContainer = c;
             },
-            classes: { [`nom-textbox-${align}-icon-container`]: true },
+            classes: {
+              [`nom-textbox-${align}-icon-container`]: true,
+              "nom-number-spinner-vertical-trigger": true,
+            },
             children: [
               {
                 component: "Icon",
-                type: "up",
+                type: simple ? "up" : "minus",
                 styles: { flex: "grow" },
                 onClick(args) {
                   numberSpinner._handlePlus(args);
@@ -23813,7 +23880,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               },
               {
                 component: "Icon",
-                type: "down",
+                type: simple ? "down" : "plus",
                 styles: { flex: "grow" },
                 onClick(args) {
                   numberSpinner._handleMinus(args);
@@ -23823,20 +23890,68 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
         ];
       }
-      if (align === horizontal) {
+      if (align === "horizontal") {
         return [
           {
             component: "Icon",
-            type: "down",
-            classes: { "nom-textbox-left-icon-container": true },
+            type: simple ? "down" : "minus",
+            classes: {
+              "nom-textbox-left-icon-container": true,
+              "nom-textbox-right-icon-container-large": !simple,
+            },
             onClick(args) {
               numberSpinner._handleMinus(args);
             },
           },
+        ];
+      }
+      return [];
+    }
+    _handleSpinnerIcon() {
+      const { align, showSpinner, simple } = this.props;
+      if (showSpinner === false) return [];
+      const numberSpinner = this;
+      if (align === "right") {
+        return [
+          {
+            // tag: 'span',
+            _created(c) {
+              numberSpinner.iconContainer = c;
+            },
+            classes: {
+              [`nom-textbox-${align}-icon-container`]: true,
+              "nom-number-spinner-vertical-trigger": true,
+            },
+            children: [
+              {
+                component: "Icon",
+                type: simple ? "up" : "minus",
+                styles: { flex: "grow" },
+                onClick(args) {
+                  numberSpinner._handlePlus(args);
+                },
+              },
+              {
+                component: "Icon",
+                type: simple ? "down" : "plus",
+                styles: { flex: "grow" },
+                onClick(args) {
+                  numberSpinner._handleMinus(args);
+                },
+              },
+            ],
+          },
+        ];
+      }
+      if (align === "horizontal") {
+        return [
           {
             component: "Icon",
-            type: "up",
-            classes: { "nom-textbox-right-icon-container": true },
+            type: simple ? "up" : "plus",
+            classes: {
+              "nom-textbox-right-icon-container": true,
+              "nom-textbox-right-icon-container-large": !simple,
+            },
             onClick(args) {
               numberSpinner._handlePlus(args);
             },
@@ -23989,7 +24104,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     parser: null,
     step: 1,
     showSpinner: true,
-    align: "right", // decimal,currency,percent
+    align: "right",
+    simple: true, // decimal,currency,percent
     style: STYLE.DECIMAL,
     currency: "CNY",
     integerText: "请输入有效整数",
@@ -24153,7 +24269,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const pager = this;
       this._parseCacheable();
       this.setProps({
-        classes: { "nom-pager-compact": this.props.compact },
+        classes: {
+          "nom-pager-compact": this.props.compact,
+          "nom-pager-simple": this.props.simple,
+        },
         children: {
           component: "Cols",
           justify: pager.props.justify,
@@ -27877,6 +27996,34 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   class Slider extends Field {
     constructor(props, ...mixins) {
       super(Component.extendProps(Slider.defaults, props), ...mixins);
+      _defineProperty2(this, "_handleMouseMove", (event) => {
+        if (!this._isDragging) return;
+        const barWdith = this._bar.element.offsetWidth;
+        const deltaX = event.clientX - this._startX;
+        this._newOffset =
+          this._offset + Math.round((deltaX / barWdith) * this._max);
+        const left = Math.round((barWdith * this._newOffset) / this._max);
+        if (this._newOffset < 0 || this._newOffset > this._max) {
+          return;
+        }
+        this._handler.element.style.left = `${left}px`;
+      });
+      _defineProperty2(this, "_handleMouseUp", () => {
+        window.removeEventListener("mousemove", this._handleMouseMove);
+        window.removeEventListener("mouseup", this._handleMouseUp);
+        if (!this._isDragging) return;
+        this._isDragging = false;
+        if (this._newOffset) {
+          this._offset = this._newOffset;
+          if (this._offset <= 0) {
+            this._offset = 0;
+          }
+          if (this._offset >= this._max) {
+            this._offset = this._max;
+          }
+          this.setValue(Math.round(this._offset));
+        }
+      });
     }
     _created() {
       const { value } = this.props; // 最大值不能小于或等于0，否则重置为默认值100
@@ -27922,18 +28069,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   sliderRef._track = this;
                 },
                 _config() {
-                  // const { offset } = this.props
                   const offset = sliderRef.getValue();
                   const _offset = offset / sliderRef._max;
                   this.setProps({
                     attrs: { style: { left: 0, width: `${_offset * 100}%` } },
                   });
                 },
-              }, // {
-              //   classes: {
-              //     'nom-slider-step': true,
-              //   },
-              // },
+              },
               {
                 classes: { "nom-slider-handle": true },
                 _created() {
@@ -27948,8 +28090,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                     tooltip = showTip(tip);
                   }
                   this.setProps({
-                    attrs: { style: { left: `${_offset * 100}%` } },
-                    tooltip,
+                    attrs: {
+                      title: tooltip,
+                      style: { left: `${_offset * 100}%` },
+                      onmousedown: (event) => {
+                        if (sliderRef.props.disable) return; // 记录初始位置
+                        sliderRef._startX = event.clientX;
+                        sliderRef._isDragging = true;
+                        sliderRef._initEvents();
+                        event.preventDefault();
+                      },
+                    },
                   });
                 },
               },
@@ -27959,10 +28110,21 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
       super._config();
     }
+    _initEvents() {
+      window.removeEventListener("mousemove", this._handleMouseMove);
+      window.removeEventListener("mouseup", this._handleMouseUp);
+      window.addEventListener("mousemove", this._handleMouseMove);
+      window.addEventListener("mouseup", this._handleMouseUp);
+    }
+    _remove() {
+      window.removeEventListener("mousemove", this._handleMouseMove);
+      window.removeEventListener("mouseup", this._handleMouseUp);
+    }
     _getValue() {
       return getValidValue(this._offset, this._max);
     }
     _setValue(value) {
+      this._newOffset = null;
       const _value = value === null ? 0 : value;
       if (!isNumeric(_value) || _value < 0 || _value > this.props.max) return;
       if (this._handler && _value !== this.oldValue) {
@@ -28033,6 +28195,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         index,
         icon: i,
         iconRender,
+        simple,
+        direction,
       } = this.props;
       let icon;
       if (isFunction(iconRender)) {
@@ -28044,58 +28208,100 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         classes: {
           [`nom-step-item-${status}`]: true,
           "nom-step-item-icon-render-mode": isFunction(iconRender),
+          "nom-step-simple": simple,
         },
-        children: {
-          classes: { "nom-step-item-container": true },
-          _config() {
-            if (onChange) {
-              this.setProps({
-                attrs: { role: "button" },
-                onClick: () => {
-                  onChange(index);
-                },
-              });
-            }
-          },
-          children: [
-            { classes: { "nom-step-item-tail": true } },
-            {
-              classes: {
-                "nom-step-item-icon": true,
-                "nom-step-item-icon-customer": !!i || isFunction(iconRender),
-                "nom-step-item-icon-whole-customer": isFunction(iconRender),
-              },
-              children: icon,
+        children: [
+          {
+            classes: { "nom-step-item-container": true },
+            _config() {
+              if (onChange) {
+                this.setProps({
+                  attrs: { role: "button" },
+                  onClick: () => {
+                    onChange(index);
+                  },
+                });
+              }
             },
-            {
+            children: [
+              { classes: { "nom-step-item-tail": true } },
+              {
+                classes: {
+                  "nom-step-item-icon": true,
+                  "nom-step-item-icon-customer": !!i || isFunction(iconRender),
+                  "nom-step-item-icon-whole-customer": isFunction(iconRender),
+                },
+                children: icon,
+              },
+              {
+                classes: { "nom-step-item-content": true },
+                renderIf: !simple || direction === "vertical",
+                children: [
+                  { classes: { "nom-step-item-title": true }, children: title },
+                  !simple && {
+                    classes: { "nom-step-item-subtitle": true },
+                    children: subTitle,
+                  },
+                  {
+                    classes: { "nom-step-item-description": true },
+                    children: description,
+                  },
+                ],
+              },
+              direction === "horizontal" && {
+                classes: { "nom-step-item-line-horizontal": true },
+              },
+            ],
+          },
+          simple &&
+            direction === "horizontal" && {
               classes: { "nom-step-item-content": true },
               children: [
                 { classes: { "nom-step-item-title": true }, children: title },
-                {
-                  classes: { "nom-step-item-subtitle": true },
-                  children: subTitle,
-                },
                 {
                   classes: { "nom-step-item-description": true },
                   children: description,
                 },
               ],
             },
-          ],
-        },
+        ],
       });
       super._config();
     }
     _handleIcon() {
-      const { status, icon: i, index } = this.props; // const { WAIT, PROCESS, FINISH, ERROR } = STATUS
+      const { status, icon: i, index, simple } = this.props; // const { WAIT, PROCESS, FINISH, ERROR } = STATUS
       const { FINISH, ERROR } = STATUS;
+      if (simple) {
+        if (status === FINISH) {
+          return {
+            classes: {
+              "nom-step-icon-mini": true,
+              [`nom-step-${status}-icon`]: true,
+            },
+          };
+        }
+        if (status === ERROR) {
+          return {
+            classes: {
+              "nom-step-icon-mini": true,
+              [`nom-step-${status}-icon`]: true,
+            },
+          };
+        }
+        return {
+          classes: {
+            "nom-step-icon-mini": true,
+            [`nom-step-${status}-icon`]: true,
+          },
+        };
+      }
       if (i) {
         return Component.normalizeIconProps(i);
       }
       if (status === FINISH) {
         return {
           component: "Icon",
-          type: "check",
+          type: "check-light",
           classes: { [`nom-step-${status}-icon`]: true },
         };
       }
@@ -28133,18 +28339,35 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         classes: {
           "nom-steps-horizontal": direction === "horizontal",
           "nom-steps-vertical": direction === "vertical",
+          "nom-steps-simple": this.props.simple,
         },
       });
       this.setProps({ children: this._handleChild() });
       super._config();
     }
+    _rendered() {
+      this.props.simple &&
+        this.props.direction === "horizontal" &&
+        this._fixPaddingLeft();
+    }
+    _fixPaddingLeft() {
+      const me = this;
+      setTimeout(() => {
+        const w =
+          me.element.querySelector(".nom-step > .nom-step-item-content")
+            .offsetWidth / 2;
+        this.element.style.paddingLeft = `${parseInt(w, 10) + 14}px`;
+      }, 0);
+    }
     _handleChild() {
-      const { options, onChange } = this.props;
+      const { options, onChange, simple, direction } = this.props;
       if (!options || !Array.isArray(options) || options.length === 0)
         return [];
       return options.map((item, index) =>
         Object.assign({ status: this._getStatus(index, this.current) }, item, {
           index,
+          simple,
+          direction,
           component: Step,
           onChange: isFunction(onChange) ? onChange : undefined,
         })
@@ -28166,6 +28389,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     current: 0,
     options: [],
     onChange: null,
+    simple: false,
   };
   Component.register(Steps);
   class Switch extends Field {
@@ -28628,12 +28852,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         items = this.pickerControl.getSecond();
       }
       this.setProps({
-        styles: { padding: "3px" },
         items: items,
         itemSelectable: {
           multiple: false,
           byClick: true,
-          scrollIntoView: { block: "start", scrollMode: "always" },
+          scrollIntoView: { block: "center", scrollMode: "always" },
         },
         itemDefaults: {
           _config: function () {

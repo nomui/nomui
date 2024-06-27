@@ -2,11 +2,13 @@
   a {
     color: inherit;
     text-decoration: none;
-    > .nom-icon {
+
+    >.nom-icon {
       position: relative;
       top: 2px;
       margin-right: 5px;
     }
+
     &:hover {
       color: var(--nom-color-primary-hover);
     }
@@ -15,13 +17,13 @@
   &.p-fit {
     height: 100%;
 
-    > .nom-list-content {
+    >.nom-list-content {
       height: 100%;
 
-      > .nom-list-item-wrapper {
+      >.nom-list-item-wrapper {
         height: 100%;
 
-        > .nom-tab-item {
+        >.nom-tab-item {
           display: flex !important;
           align-items: center;
           height: 100%;
@@ -31,8 +33,8 @@
   }
 
   &.p-uistyle-plain {
-    > .nom-list-content {
-      > .nom-list-item-wrapper > .nom-list-item {
+    >.nom-list-content {
+      >.nom-list-item-wrapper>.nom-list-item {
         display: block;
         padding: 1rem 1rem;
         text-decoration: none;
@@ -47,10 +49,10 @@
   }
 
   &.p-uistyle-hat {
-    > .nom-list-content {
+    >.nom-list-content {
       border-bottom: 1px solid var(--nom-border-color);
 
-      > .nom-list-item-wrapper > .nom-list-item {
+      >.nom-list-item-wrapper>.nom-list-item {
         display: block;
         margin-bottom: -1px;
         padding: 1rem 1rem;
@@ -71,8 +73,8 @@
   }
 
   &.p-uistyle-line {
-    > .nom-list-content {
-      > .nom-list-item-wrapper > .nom-list-item {
+    >.nom-list-content {
+      >.nom-list-item-wrapper>.nom-list-item {
         display: block;
         padding: 1rem 1rem;
         text-decoration: none;
@@ -88,19 +90,40 @@
     }
   }
 
+  &.p-uistyle-underline {
+    border-bottom: 1px solid var(--nom-border-color);
+
+    >.nom-list-content {
+      >.nom-list-item-wrapper>.nom-list-item {
+        display: block;
+        padding: 1rem 1rem;
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+          border-color 0.15s ease-in-out;
+
+        &.s-selected {
+          color: var(--nom-color-primary);
+          border-bottom-color: var(--nom-color-primary);
+        }
+      }
+    }
+  }
+
+
   &.p-uistyle-card {
-    > .nom-list-content {
+    >.nom-list-content {
       background-color: var(--nom-tabs-card-bg-color);
       border-bottom: 1px solid var(--nom-border-color);
 
-      > .nom-list-item-wrapper {
+      >.nom-list-item-wrapper {
         &:first-child {
-          > .nom-list-item {
+          >.nom-list-item {
             margin-left: -1px;
           }
         }
 
-        > .nom-list-item {
+        >.nom-list-item {
           display: block;
           margin-bottom: -1px;
           padding: 1rem 1rem;
@@ -114,6 +137,7 @@
             color: var(--nom-input-color);
             background-color: var(--nom-tabs-card-selected-bg-color);
             border-color: var(--nom-color-white) var(--nom-border-color);
+
             &:first-child {
               border-radius: var(--nom-tabs-card-border-radius) 0 0 0;
             }
@@ -124,17 +148,17 @@
   }
 
   &.p-uistyle-pill {
-    > .nom-list-content {
-      > .nom-list-item-wrapper {
+    >.nom-list-content {
+      >.nom-list-item-wrapper {
         margin-right: 0.5rem;
 
         &:first-child {
-          > .nom-list-item {
+          >.nom-list-item {
             margin-left: -1px;
           }
         }
 
-        > .nom-list-item {
+        >.nom-list-item {
           display: block;
           padding: 0.5rem 1rem;
           .u-shape-round();
@@ -154,11 +178,12 @@
 }
 
 .nom-tabs {
+
   &.p-uistyle-plain,
   &.p-uistyle-hat,
   &.p-uistyle-line,
   &.p-uistyle-pill {
-    > .nom-tab-content {
+    >.nom-tab-content {
       margin-top: 1rem;
     }
   }
@@ -167,6 +192,7 @@
     background: var(--nom-bg-color);
     border: 1px solid var(--nom-border-color);
     border-radius: var(--nom-tabs-card-border-radius);
+
     .nom-tabs-tools {
       height: 50px;
       padding: 0 1rem;
@@ -174,7 +200,8 @@
       background-color: var(--nom-tabs-card-bg-color);
       border-bottom: 1px solid var(--nom-border-color);
     }
-    > .nom-tab-content {
+
+    >.nom-tab-content {
       padding: 1rem;
     }
   }
@@ -184,7 +211,7 @@
     flex-direction: column;
     height: 100%;
 
-    > .nom-tab-content {
+    >.nom-tab-content {
       flex: 1;
       height: 100%;
       padding-top: 2.5rem;

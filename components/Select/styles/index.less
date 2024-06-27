@@ -1,13 +1,13 @@
 .nom-select {
-  &.p-label-align-right > .nom-field-label + .nom-field-content {
+  &.p-label-align-right>.nom-field-label+.nom-field-content {
     width: 0;
   }
 
-  > .nom-field-content {
+  >.nom-field-content {
     .nom-control {
       position: relative;
       min-height: @input-height-base-treeSelect;
-      padding: @padding-y-base 24px @padding-y-base 12px;
+      padding: @padding-y-base 24px @padding-y-base 10px;
       color: var(--nom-input-color);
       line-height: @line-height-computed;
       background: var(--nom-input-bg);
@@ -27,6 +27,10 @@
       }
 
       .nom-select-multiple {
+        .nom-list-item-wrapper {
+          padding: 0 .25rem;
+        }
+
         .nom-list-item {
           display: flex;
           align-items: center;
@@ -35,6 +39,8 @@
           border: 1px solid var(--nom-select-selected-item-border-color);
           border-radius: var(--nom-border-radius);
           cursor: default;
+          font-size: 82.5%;
+
           &.nom-select-overtag-trigger {
             border: none;
             background: transparent;
@@ -45,11 +51,16 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            margin-right: 4px;
+            margin-right: 2px;
           }
 
           .nom-icon {
-            font-size: 8px;
+            // font-size: 85%;
+            opacity: .5;
+
+            &:hover {
+              opacity: 1;
+            }
           }
         }
       }
@@ -99,6 +110,7 @@
 .nom-select-extra-tags {
   max-width: 50vw;
   padding: 0.5rem;
+
   .nom-list-item {
     display: flex;
     align-items: center;
@@ -122,10 +134,10 @@
   }
 }
 
-.nom-select-popup > .nom-layout {
+.nom-select-popup>.nom-layout {
   max-height: 300px;
 
-  > .nom-layout-body {
+  >.nom-layout-body {
     overflow-x: hidden;
   }
 }

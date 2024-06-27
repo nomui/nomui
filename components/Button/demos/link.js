@@ -9,6 +9,8 @@ define([], function () {
           {
             component: 'Button',
             text: '链接到图标示例',
+            inline: true,
+            type: 'link',
             href: '#!components!index?type=Icon',
           },
         ],

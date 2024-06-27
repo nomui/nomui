@@ -3,9 +3,14 @@
     width: 60px;
     max-height: 220px;
     overflow-y: auto;
-    text-align: left;
+    text-align: center;
     scroll-behavior: smooth;
     border-left: 1px solid var(--nom-border-color);
+    scrollbar-width: none; // 隐藏滚动条
+      -ms-overflow-style: none; 
+      ::-webkit-scrollbar {
+        display: none;
+     }
     &:first-child {
       border-left: none;
     }

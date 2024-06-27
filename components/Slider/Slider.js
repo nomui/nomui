@@ -35,10 +35,10 @@ class Slider extends Field {
           onClick: disable
             ? null
             : ({ event }) => {
-                event.target.focus()
-                const _offset = getOffset(sliderRef._bar, event.clientX, sliderRef._max)
-                sliderRef.setValue(Math.round(_offset))
-              },
+              event.target.focus()
+              const _offset = getOffset(sliderRef._bar, event.clientX, sliderRef._max)
+              sliderRef.setValue(Math.round(_offset))
+            },
           attrs: {
             tabindex: '0',
             onkeydown: sliderRef._handleKeyDown.bind(sliderRef),
@@ -57,7 +57,6 @@ class Slider extends Field {
                 sliderRef._track = this
               },
               _config() {
-                // const { offset } = this.props
                 const offset = sliderRef.getValue()
                 const _offset = offset / sliderRef._max
                 this.setProps({
@@ -67,11 +66,6 @@ class Slider extends Field {
                 })
               },
             },
-            // {
-            //   classes: {
-            //     'nom-slider-step': true,
-            //   },
-            // },
             {
               classes: {
                 'nom-slider-handle': true,
@@ -90,9 +84,19 @@ class Slider extends Field {
                 }
                 this.setProps({
                   attrs: {
+                    title: tooltip,
                     style: { left: `${_offset * 100}%` },
+                    onmousedown: (event) => {
+                      if (sliderRef.props.disable) return;
+                      // 记录初始位置
+                      sliderRef._startX = event.clientX;
+                      sliderRef._isDragging = true;
+
+                      sliderRef._initEvents()
+                      event.preventDefault()
+                    },
                   },
-                  tooltip,
+
                 })
               },
             },
@@ -104,11 +108,62 @@ class Slider extends Field {
     super._config()
   }
 
+
+
+  _initEvents() {
+    window.removeEventListener('mousemove', this._handleMouseMove)
+    window.removeEventListener('mouseup', this._handleMouseUp)
+    window.addEventListener('mousemove', this._handleMouseMove);
+    window.addEventListener('mouseup', this._handleMouseUp);
+  }
+
+  _handleMouseMove = (event) => {
+    if (!this._isDragging) return;
+
+    const barWdith = this._bar.element.offsetWidth
+    const deltaX = event.clientX - this._startX
+
+    this._newOffset = this._offset + Math.round(deltaX / barWdith * this._max)
+    const left = Math.round(barWdith * this._newOffset / this._max)
+    if (this._newOffset < 0 || this._newOffset > this._max) {
+      return
+    }
+
+    this._handler.element.style.left = `${left}px`
+
+  }
+
+  _handleMouseUp = () => {
+    window.removeEventListener('mousemove', this._handleMouseMove)
+    window.removeEventListener('mouseup', this._handleMouseUp)
+    if (!this._isDragging) return
+
+    this._isDragging = false
+
+    if (this._newOffset) {
+      this._offset = this._newOffset
+      if (this._offset <= 0) {
+        this._offset = 0
+      }
+      if (this._offset >= this._max) {
+        this._offset = this._max
+      }
+
+      this.setValue(Math.round(this._offset))
+    }
+  }
+
+  _remove() {
+    window.removeEventListener('mousemove', this._handleMouseMove)
+    window.removeEventListener('mouseup', this._handleMouseUp)
+  }
+
   _getValue() {
     return getValidValue(this._offset, this._max)
   }
 
   _setValue(value) {
+    this._newOffset = null
     const _value = value === null ? 0 : value
     if (!isNumeric(_value) || _value < 0 || _value > this.props.max) return
     if (this._handler && _value !== this.oldValue) {

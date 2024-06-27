@@ -18,11 +18,11 @@ define([], function () {
             items: [
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => { },
               },
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => { },
               },
             ],
           },
@@ -57,6 +57,32 @@ define([], function () {
           },
           {
             component: 'Dropdown',
+            text: '分组',
+            split: true,
+            onClick: () => {
+              console.log('点击左边按钮')
+            },
+            items: [
+              {
+                text: '导出Word',
+                onClick: () => { },
+              },
+              {
+                text: '导出Word',
+                onClick: () => { },
+              },
+              {
+                component: 'Divider'
+              },
+              {
+                text: '导出Word',
+                onClick: () => { },
+              },
+            ],
+          },
+
+          {
+            component: 'Dropdown',
             text: '尺寸与图标',
             rightIcon: 'ellipsis',
             split: true,
@@ -67,15 +93,15 @@ define([], function () {
             items: [
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => { },
               },
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => { },
               },
               {
                 text: '导出Word',
-                onClick: () => {},
+                onClick: () => { },
               },
             ],
           },
