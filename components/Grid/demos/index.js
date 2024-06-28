@@ -35,6 +35,8 @@ define([
   './cascadeUncheckChildren.js',
   './edit.js',
   './excel.js',
+  './column-type.js',
+  './column-tools.js',
 ], function () {
   return {
     title: 'Grid',

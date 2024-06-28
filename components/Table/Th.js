@@ -47,13 +47,38 @@ class Th extends Component {
       titleStr = null
     }
 
+    let thContent = this.props.column.header || this.props.column.title
+
+    if (this.props.column.type === 'checker') {
+      thContent = {
+        component: 'Checkbox',
+        attrs: {
+          style: {
+            display: 'inline-flex',
+            paddingRight: '.25rem'
+          }
+        },
+        plain: true,
+        _created: (inst) => {
+          that.table.grid._checkboxAllRef = inst
+        },
+        onValueChange: (args) => {
+          if (args.newValue === true) {
+            that.table.grid.checkAllRows(false)
+          } else {
+            that.table.grid.uncheckAllRows(false)
+          }
+        },
+      }
+    }
+
     const headerProps = {
       tag: 'span',
       attrs: {
         title: isEllipsis ? titleStr : null,
       },
       classes: { 'nom-table-cell-title': true },
-      children: this.props.column.header || this.props.column.title,
+      children: thContent
     }
 
     if (that.props.column.sortable && that.props.column.colSpan > 0) {
