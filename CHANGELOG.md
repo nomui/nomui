@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/nomui/nomui/compare/v1.3.1...v1.3.2) (2024-06-27)
+
+
+### Features
+
+* **AutoComplete:** 新增optionDefaults自定义选项默认属性 ([4e08c25](https://github.com/nomui/nomui/commit/4e08c25c04608ebea6bfaf3e902829dfd77b09d5))
+* **Router:** 新增onViewEnter和onViewLeave事件。 ([0a90cf0](https://github.com/nomui/nomui/commit/0a90cf02d102d917fd9f060f2a47dd87cdb9a559))
+* **Upload:** 优化使用方式，丰富onChange事件提供的参数 ([44c9219](https://github.com/nomui/nomui/commit/44c921925ec70cb37d10331374503fac73ed3cdd))
+* **Upload:** 支持通过方法实现上传 ([e4df4be](https://github.com/nomui/nomui/commit/e4df4be29f9d680032e04101758599d7eee94393))
+* **Upload:** 支持文件夹上传 ([c4a6d9c](https://github.com/nomui/nomui/commit/c4a6d9cad1e5237ef2420e55d6224ccad5c49a35))
+
+
+### Bug Fixes
+
+* 修复高分辨率设备字体显示异常问题 ([b944740](https://github.com/nomui/nomui/commit/b944740a2e7d76ddf0178f48069fdab81337bc6f))
+* **Grid:** 优化某些场景表头与表身无法对齐的问题 ([47c04a9](https://github.com/nomui/nomui/commit/47c04a94b1430e4cc8aa6e243f032237c7d339b3))
+* **Layer:** 修复某些情况下移除层时js报错的问题 ([220bed2](https://github.com/nomui/nomui/commit/220bed2c06607378d905e82666e637da0c9e6406))
+* **Router:** 修复 onViewEnter 事件的处理。 ([a3c664f](https://github.com/nomui/nomui/commit/a3c664f0608d463af82d74751cbe3101258a4737))
+
+
+### Performance Improvements
+
+* **Component:** 修改 create 函数及钩子，可返回 promise。 ([d0c4102](https://github.com/nomui/nomui/commit/d0c41026763b27ba136ae44af480d42d4a81119a))
+* **Router:** 路径带参数的时候，如果路径有斜杠，则只取最后一个斜杠后面的字符串做为参数的键。 ([8c46820](https://github.com/nomui/nomui/commit/8c46820b4425084568ec4f3fa7a10a7492f4f1da))
+
+
+### Docs
+
+* 更新文档 ([f7ec76e](https://github.com/nomui/nomui/commit/f7ec76ec6f2d7d5a234f23ad2fef32bca76704d0))
+* 文档更新 ([c22adaa](https://github.com/nomui/nomui/commit/c22adaadf5c10aa894ad4f43b4ecbf15000de0d2))
+
 ### [1.3.1](https://github.com/nomui/nomui/compare/v1.3.0...v1.3.1) (2024-06-12)
 
 
