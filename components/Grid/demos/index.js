@@ -17,8 +17,8 @@ define([
   './multi-summary.js',
   './multiple-header.js',
   './highlight-col.js',
-  './sticky.js',
-  './sticky-window.js',
+  './column-type.js',
+  './column-tools.js',
   './row-checkable.js',
   './row-checkable-events.js',
   './row-checkable-render.js',
@@ -35,8 +35,8 @@ define([
   './cascadeUncheckChildren.js',
   './edit.js',
   './excel.js',
-  './column-type.js',
-  './column-tools.js',
+  './sticky.js',
+  './sticky-window.js',
 ], function () {
   return {
     title: 'Grid',
