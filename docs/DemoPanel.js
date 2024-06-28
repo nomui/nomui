@@ -58,33 +58,34 @@ define(['./precode.js', './sandbox.js'], function (Precode, Sandbox) {
           nav: nav,
         },
         body: {
-          children: {
-            component: 'Panel',
-            header: false,
-            body: {
-              children: [demo],
+          children: [
+            description && {
+              classes: {
+                'nom-precode-container': true
+              },
+              children: `#${marked(description)}`,
             },
-
-            endAddons: [
-              description && {
-                styles: {
-                  padding: '1',
-                  border: ['top', 'lt'],
-                },
-                children: `#${marked(description)}`,
+            {
+              component: 'Panel',
+              header: false,
+              body: {
+                children: [demo],
               },
-              {
-                component: Precode,
-                _created: function () {
-                  that.preCode = this
-                },
-                lang: 'js',
-                code: code,
-                hidden: true,
-              },
-            ],
 
-          }
+              endAddons: [
+
+                {
+                  component: Precode,
+                  _created: function () {
+                    that.preCode = this
+                  },
+                  lang: 'js',
+                  code: code,
+                  hidden: true,
+                },
+              ],
+
+            }]
         },
         footer: {
           attrs: {

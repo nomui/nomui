@@ -2,6 +2,7 @@ define([], function () {
     return {
         title: '列类型',
         file: 'column-type',
+        description: '配置type为checker可以将列渲染为行选择器，配置order会渲染为行序号，配置checker&order则是行选择器与序号混合显示（hover时显示选择器，否则显示序号）',
         demo: function () {
             return {
                 component: 'Flex',
