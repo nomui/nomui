@@ -291,13 +291,37 @@
 
 .nom-grid-checker-and-order {
   position: relative;
+  display: inline-flex;
+
+  >.nom-checkbox {
+    visibility: hidden;
+    transition: none;
+    opacity: 0;
+  }
 
   >.nom-grid-order-text {
+    transition: none;
     position: absolute;
     top: 6px;
     left: -4px;
     width: 24px;
     text-align: center;
     white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+.nom-tr.s-checked,
+.nom-tr:hover {
+  .nom-grid-checker-and-order {
+    >.nom-checkbox {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    >.nom-grid-order-text {
+      visibility: hidden;
+    }
   }
 }
