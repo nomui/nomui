@@ -64,11 +64,7 @@ define(['./precode.js', './sandbox.js'], function (Precode, Sandbox) {
             body: {
               children: [demo],
             },
-            attrs: {
-              style: {
-                marginBottom: '3rem'
-              }
-            },
+
             endAddons: [
               description && {
                 styles: {
@@ -87,118 +83,119 @@ define(['./precode.js', './sandbox.js'], function (Precode, Sandbox) {
                 hidden: true,
               },
             ],
-            footer: {
-              // attrs: {
-              //   style: {
-              //     background: '#f8f8f8'
-              //   }
-              // },
-              children: [
+
+          }
+        },
+        footer: {
+          attrs: {
+            style: {
+              marginBottom: '3rem'
+            }
+          },
+          children: [
+            {
+              component: 'Cols',
+              justify: 'center',
+              attrs: {
+                style: {
+                  width: '100%',
+                },
+              },
+              items: [
+                '',
                 {
-                  component: 'Cols',
-                  justify: 'center',
+                  children: '显示代码',
+                  styles: {
+                    text: ['muted'],
+                  },
                   attrs: {
-                    style: {
-                      width: '100%',
+                    role: 'button',
+                  },
+                  expandable: {
+                    target: function () {
+                      return that.preCode
+                    },
+                    byClick: true,
+                    collapsedProps: {
+                      children: '显示代码',
+                    },
+                    expandedProps: {
+                      children: '隐藏代码',
                     },
                   },
-                  items: [
-                    '',
+                  collapsed: true,
+                },
+                {
+                  component: 'Flex',
+                  gap: 'small',
+                  cols: [
                     {
-                      children: '显示代码',
-                      styles: {
-                        text: ['muted'],
-                      },
+                      tag: 'a',
                       attrs: {
-                        role: 'button',
+                        href: url,
+                        target: '_blank',
                       },
-                      expandable: {
-                        target: function () {
-                          return that.preCode
-                        },
-                        byClick: true,
-                        collapsedProps: {
-                          children: '显示代码',
-                        },
-                        expandedProps: {
-                          children: '隐藏代码',
-                        },
-                      },
-                      collapsed: true,
+                      children: '单独打开',
                     },
                     {
-                      component: 'Flex',
-                      gap: 'small',
-                      cols: [
-                        {
-                          tag: 'a',
-                          attrs: {
-                            href: url,
-                            target: '_blank',
-                          },
-                          children: '单独打开',
-                        },
-                        {
-                          component: 'Icon',
-                          type: 'sandbox',
-                          tooltip: '在线编辑',
-                          attrs: {
-                            style: { cursor: 'pointer' },
-                          },
-                          onClick: () => {
-                            new nomui.Drawer({
-                              width: '100%',
-                              height: '100%',
-                              title: {
-                                component: 'Flex',
-                                attrs: {
-                                  style: {
-                                    margin: '0 100px',
-                                  },
-                                },
-                                justify: 'between',
-                                cols: [
-                                  {
-                                    tag: 'h3',
-                                    children: title,
-                                  },
-                                  {
-                                    component: 'Button',
-                                    text: '重置',
-                                    type: 'primary',
-                                    onClick: () => {
-                                      that.sandboxRef.reset()
-                                    },
-                                  },
-                                ],
+                      component: 'Icon',
+                      type: 'sandbox',
+                      tooltip: '在线编辑',
+                      attrs: {
+                        style: { cursor: 'pointer' },
+                      },
+                      onClick: () => {
+                        new nomui.Drawer({
+                          width: '100%',
+                          height: '100%',
+                          title: {
+                            component: 'Flex',
+                            attrs: {
+                              style: {
+                                margin: '0 100px',
                               },
-                              footer: null,
-                              content: {
-                                component: Sandbox,
-                                onCreated: ({ inst }) => {
-                                  that.sandboxRef = inst
-                                },
-                                demo: that.props.demo,
+                            },
+                            justify: 'between',
+                            cols: [
+                              {
+                                tag: 'h3',
+                                children: title,
                               },
-                            })
+                              {
+                                component: 'Button',
+                                text: '重置',
+                                type: 'primary',
+                                onClick: () => {
+                                  that.sandboxRef.reset()
+                                },
+                              },
+                            ],
                           },
-                        },
-                      ],
+                          footer: null,
+                          content: {
+                            component: Sandbox,
+                            onCreated: ({ inst }) => {
+                              that.sandboxRef = inst
+                            },
+                            demo: that.props.demo,
+                          },
+                        })
+                      },
                     },
-                    // {
-                    //   tag: 'a',
-                    //   attrs: {
-                    //     href: url,
-                    //     target: '_blank',
-                    //   },
-                    //   children: '单独打开',
-                    // },
                   ],
                 },
+                // {
+                //   tag: 'a',
+                //   attrs: {
+                //     href: url,
+                //     target: '_blank',
+                //   },
+                //   children: '单独打开',
+                // },
               ],
             },
-          }
-        }
+          ],
+        },
       })
 
       super._config()
