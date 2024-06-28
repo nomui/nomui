@@ -1,9 +1,10 @@
-.markdown-article {
-  max-width: 1300px;
+.markdown-article,
+.nom-precode {
+  // max-width: 1300px;
   padding: 20px 60px;
-  * {
-    color: #34495e;
-  }
+  // * {
+  //   color: #34495e;
+  // }
 
   p {
     box-sizing: border-box !important;
@@ -33,8 +34,9 @@
     padding: 12px 13px;
     font-size: 13px;
     word-wrap: break-word;
-    background: #f8f8f8;
     border-radius: 3px;
+    background: #2a2c2d;
+    color: #e6e6e6;
   }
 
   h1,
@@ -94,53 +96,45 @@
     line-height: 24px;
   }
 
-  hr {
-    box-sizing: content-box;
-    height: 4px;
-    margin: 16px 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #e7e7e7;
-    border: 0 none;
-    border-bottom: 1px solid #ddd;
-  }
-
-  code {
-    margin: 0 2px;
-    padding: 3px 5px;
-    color: #e96900;
-    white-space: inherit;
-    background-color: #f8f8f8;
-    border-radius: 2px;
-  }
 
   table {
     width: 100%;
     word-break: break-all;
     table-layout: fixed;
+
+    code {
+      color: #fa0;
+    }
+
     th,
     td {
       padding: 10px;
       border-bottom: 1px solid #eee;
+
       &:nth-child(1) {
         width: 15%;
       }
+
       &:nth-child(2) {
         min-width: 40%;
       }
+
       &:nth-child(3) {
         width: 30%;
       }
+
       &:nth-child(4) {
         width: 15%;
       }
     }
   }
 }
+
 .nom-layout-body {
-  > #DemoContent {
+  >#DemoContent {
     height: 100%;
-    > .nom-tab-panel {
+
+    >.nom-tab-panel {
       height: 100%;
     }
   }
