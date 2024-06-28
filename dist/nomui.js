@@ -6553,13 +6553,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         okButton: contentProps.okButton,
       });
       const {
+        noHeader,
+        noFooter,
         okText,
         cancelText,
         fit,
         okButton = {},
         cancelButton = {},
       } = modal.props;
-      return {
+      const props = {
         component: Panel,
         fit: fit,
         uistyle: "plain",
@@ -6607,6 +6609,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
         },
       };
+      if (noHeader === true) {
+        props.header = false;
+      }
+      if (noFooter === true) {
+        delete props.footer;
+      }
+      return props;
     }
     _config() {
       const { content } = this.modal.props;
