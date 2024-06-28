@@ -108,6 +108,7 @@
 | title | 列头显示标题 | `string` | - |
 | width | 列宽度，单位 px | `boolean` | 120 |
 | align | 文本对齐方式 | `left`\|`center`\|`right` | `left` |
+| type | 列类型，可以配置为`checker`\|`order`\|`checker&order`(勾选框/序号/勾选混合序号) ，配置勾选框时不应再配置rowCheckable，且一个表格只应该有一列勾选框| `string` | - |
 | editRender | 单元格编辑模式渲染函数，返回表单类型组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
