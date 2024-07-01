@@ -8359,10 +8359,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super(Component.extendProps(Field.defaults, props), ...mixins);
     }
     _created() {
-      const { name, value } = this.props;
-      this.initValue = value !== undefined ? clone(this.props.value) : null;
+      const { name, defaultValue } = this.props;
+      if (isNullish(this.props.value) && !isNullish(defaultValue)) {
+        this.props.value = defaultValue;
+      } else if (
+        isPlainObject(this.props.value) &&
+        !isNullish(defaultValue) &&
+        isPlainObject(defaultValue)
+      ) {
+        this.props.value = Object.assign({}, defaultValue, this.props.value);
+      }
       this.oldValue = null;
-      this.currentValue = this.initValue;
+      this.currentValue = this.props.value;
+      this.initValue = clone(this.currentValue) || null;
       if (name) {
         this.name = name;
         this._autoName = false;
@@ -8562,7 +8571,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         newValue: this.currentValue,
       });
       setTimeout(function () {
-        that._callHandler(that.props && that.props.onValueChange, args);
+        that.props &&
+          that.props.onValueChange &&
+          that._callHandler(that.props.onValueChange, args);
         that.group &&
           that.group._onValueChange({
             changedField: args.changedField || that,
@@ -8579,6 +8590,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     labelAlign: "right",
     invalidTip: {},
     value: null,
+    defaultValue: null,
     flatValue: false,
     span: null,
     notShowLabel: false,

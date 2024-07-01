@@ -1,6 +1,6 @@
 import Component, { n } from '../Component/index'
 import Tooltip from '../Tooltip/index'
-import { clone, extend, isFunction } from '../util/index'
+import { clone, extend, isFunction, isNullish, isPlainObject } from '../util/index'
 import RuleManager from '../util/rule-manager'
 import FieldActionMixin from './FieldActionMixin'
 import FieldContent from './FieldContent'
@@ -14,10 +14,16 @@ class Field extends Component {
   }
 
   _created() {
-    const { name, value } = this.props
-    this.initValue = value !== undefined ? clone(this.props.value) : null
+    const { name, defaultValue } = this.props
+    if (isNullish(this.props.value) && !isNullish(defaultValue)) {
+      this.props.value = defaultValue
+    }
+    else if (isPlainObject(this.props.value) && !isNullish(defaultValue) && isPlainObject(defaultValue)) {
+      this.props.value = { ...defaultValue, ...this.props.value }
+    }
     this.oldValue = null
-    this.currentValue = this.initValue
+    this.currentValue = this.props.value
+    this.initValue = clone(this.currentValue) || null
 
     if (name) {
       this.name = name
@@ -247,7 +253,7 @@ class Field extends Component {
     })
 
     setTimeout(function () {
-      that._callHandler(that.props && that.props.onValueChange, args)
+      that.props && that.props.onValueChange && that._callHandler(that.props.onValueChange, args)
       that.group && that.group._onValueChange({ changedField: args.changedField || that })
       isFunction(that._valueChange) && that._valueChange(args)
       if (that.validateTriggered) {
@@ -262,6 +268,7 @@ Field.defaults = {
   labelAlign: 'right',
   invalidTip: {},
   value: null,
+  defaultValue: null,
   flatValue: false,
   span: null,
   notShowLabel: false,
