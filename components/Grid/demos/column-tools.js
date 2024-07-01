@@ -14,25 +14,114 @@ define([], function () {
 
                 columns: [
                     {
+                        field: 'check',
+                        type: 'checker&order',
+                        width: 120,
+                        tools: {
+                            align: 'left', // 工具栏靠左
+                            render: ({ row, cellData, rowData, index }) => {
+                                console.log({ row, cellData, rowData, index })
+                                return {
+                                    component: 'Toolbar',
+                                    visibleItems: 0,
+                                    size: 'small',
+                                    type: 'text',
+                                    items: [
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                    ]
+                                }
+                            }
+                        }
+
+                    },
+                    {
                         field: 'name',
                         key: 'name',
                         title: '标题',
                         width: 200,
+
+                        tools: {
+                            // 不配置align则工具栏跟随内容
+                            render: ({ row, cellData, rowData, index }) => {
+                                console.log({ row, cellData, rowData, index })
+                                return {
+                                    component: 'Toolbar',
+                                    visibleItems: 0,
+                                    size: 'small',
+                                    type: 'text',
+                                    items: [
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                    ]
+                                }
+                            }
+                        }
                     },
                     {
                         field: 'author',
-                        key: 'author',
                         title: '作者',
+                        width: 200,
+                        cellRender: ({ cellData }) => {
+                            return {
+                                component: 'Tag',
+                                color: 'olive',
+                                text: cellData
+                            }
+                        },
+                        tools: {
+                            align: 'right', // 工具栏靠右
+                            render: ({ row, cellData, rowData, index }) => {
+                                console.log({ row, cellData, rowData, index })
+                                return {
+                                    component: 'Toolbar',
+                                    visibleItems: 1,
+                                    type: 'link',
+                                    items: [
+                                        {
+                                            text: '导出',
+                                            onClick: () => { },
+                                        },
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                    ]
+                                }
+                            }
+                        }
                     },
                     {
                         field: 'sales',
-                        key: 'sales',
                         title: '销量',
                     },
 
                     {
                         field: 'role',
-                        key: 'role',
                         title: '主角',
                         width: 500,
                         showTitle: false,

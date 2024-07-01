@@ -86,6 +86,91 @@ class Td extends Component {
       })
     }
 
+    if (column.tools) {
+      if (column.tools.align === 'left') {
+        children = {
+          classes: {
+            'nom-grid-column-with-tools': true
+          },
+          align: 'center',
+          component: 'Flex',
+          cols: [
+            {
+              classes: {
+                'nom-grid-column-tools': true
+              },
+              children: this.props.column.tools.render({
+                cell: this,
+                row: this.tr,
+                cellData: this.props.data,
+                rowData: this.tr.props.data,
+                index: this.tr.props.index,
+              })
+            },
+            {
+              children: children
+            },
+
+          ]
+        }
+      }
+      else if (column.tools.align === 'right') {
+        children = {
+          classes: {
+            'nom-grid-column-with-tools': true
+          },
+          align: 'center',
+          component: 'Flex',
+          cols: [
+            {
+              grow: true,
+              children: children
+            },
+            {
+              classes: {
+                'nom-grid-column-tools': true
+              },
+              children: this.props.column.tools.render({
+                cell: this,
+                row: this.tr,
+                cellData: this.props.data,
+                rowData: this.tr.props.data,
+                index: this.tr.props.index,
+              })
+            },
+          ]
+        }
+      }
+      else {
+        children = {
+          classes: {
+            'nom-grid-column-with-tools': true
+          },
+          align: 'center',
+          component: 'Flex',
+          cols: [
+            {
+              children: children
+            },
+            {
+              classes: {
+                'nom-grid-column-tools': true
+              },
+              children: this.props.column.tools.render({
+                cell: this,
+                row: this.tr,
+                cellData: this.props.data,
+                rowData: this.tr.props.data,
+                index: this.tr.props.index,
+              })
+            },
+          ]
+        }
+      }
+
+
+    }
+
     const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
 
     if (isTreeNodeColumn) {
@@ -132,6 +217,10 @@ class Td extends Component {
           },
         })
       }
+
+
+
+
 
       children = [
         {
@@ -187,6 +276,8 @@ class Td extends Component {
 
     const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
 
+
+
     this.setProps({
       children: children,
       attrs: {
@@ -226,6 +317,9 @@ class Td extends Component {
     const fixed = this.props.column.fixed
     if (fixed) {
       this._setTdsPosition()
+    }
+    if (this.props.column.type && (this.props.column.type.includes('checker') || this.props.column.type.includes('order')) && this.props.column.tools && this.props.column.tools.align === 'left') {
+      this._fixThToolsPosition()
     }
   }
 
@@ -388,6 +482,14 @@ class Td extends Component {
     } else {
       this.col.setMaxTdWidth(this.element.offsetWidth + tdPaddingWidth)
     }
+  }
+
+  _fixThToolsPosition() {
+    const w = this.element.querySelector('.nom-grid-column-tools').offsetWidth
+    const f = this.props.column.field
+    const target = this.table.grid.header.element.querySelector(`thead [data-field="${f}"]`).querySelector('.nom-grid-column-th-tools')
+    if (target) target.style.width = `${w}px`
+
   }
 
   /**

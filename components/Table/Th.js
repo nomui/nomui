@@ -103,6 +103,11 @@ class Th extends Component {
     }
 
     let children = [
+      this.props.column.tools && this.props.column.tools.align === 'left' && {
+        classes: {
+          'nom-grid-column-th-tools': true
+        },
+      },
       headerProps,
       this.props.column.sortable &&
       this.props.column.colSpan > 0 && {
@@ -129,6 +134,7 @@ class Th extends Component {
           style: {
             cursor: 'pointer',
           },
+
         },
         tooltip: this.filterValue
           ? this.table.grid.filterValueText[this.props.column.field]
@@ -291,6 +297,7 @@ class Th extends Component {
         colspan: this.props.column.colSpan,
         rowspan: this.props.column.rowSpan,
         align: this.props.column.align || columnAlign,
+        'data-field': this.props.column.field,
         onmouseenter:
           this.table.grid &&
           function () {
