@@ -29,6 +29,19 @@ class Td extends Component {
 
     let children = this.props.data
 
+    if (column.type === 'checker') {
+      children = this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index })
+    }
+
+    if (column.type === 'order') {
+      children = this._renderRowOrder({ index: this.tr.props.index })
+    }
+
+    if (column.type === 'checker&order') {
+      children = this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index, renderOrder: true })
+    }
+
+
     if (this.tr.props.editMode && column.editRender) {
       children = {
         ...column.editRender({
@@ -71,6 +84,91 @@ class Td extends Component {
         rowData: this.tr.props.data,
         index: this.tr.props.index,
       })
+    }
+
+    if (column.tools) {
+      if (column.tools.align === 'left') {
+        children = {
+          classes: {
+            'nom-grid-column-with-tools': true
+          },
+          align: 'center',
+          component: 'Flex',
+          cols: [
+            {
+              classes: {
+                'nom-grid-column-tools': true
+              },
+              children: this.props.column.tools.render({
+                cell: this,
+                row: this.tr,
+                cellData: this.props.data,
+                rowData: this.tr.props.data,
+                index: this.tr.props.index,
+              })
+            },
+            {
+              children: children
+            },
+
+          ]
+        }
+      }
+      else if (column.tools.align === 'right') {
+        children = {
+          classes: {
+            'nom-grid-column-with-tools': true
+          },
+          align: 'center',
+          component: 'Flex',
+          cols: [
+            {
+              grow: true,
+              children: children
+            },
+            {
+              classes: {
+                'nom-grid-column-tools': true
+              },
+              children: this.props.column.tools.render({
+                cell: this,
+                row: this.tr,
+                cellData: this.props.data,
+                rowData: this.tr.props.data,
+                index: this.tr.props.index,
+              })
+            },
+          ]
+        }
+      }
+      else {
+        children = {
+          classes: {
+            'nom-grid-column-with-tools': true
+          },
+          align: 'center',
+          component: 'Flex',
+          cols: [
+            {
+              children: children
+            },
+            {
+              classes: {
+                'nom-grid-column-tools': true
+              },
+              children: this.props.column.tools.render({
+                cell: this,
+                row: this.tr,
+                cellData: this.props.data,
+                rowData: this.tr.props.data,
+                index: this.tr.props.index,
+              })
+            },
+          ]
+        }
+      }
+
+
     }
 
     const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
@@ -119,6 +217,10 @@ class Td extends Component {
           },
         })
       }
+
+
+
+
 
       children = [
         {
@@ -174,6 +276,8 @@ class Td extends Component {
 
     const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
 
+
+
     this.setProps({
       children: children,
       attrs: {
@@ -214,9 +318,16 @@ class Td extends Component {
     if (fixed) {
       this._setTdsPosition()
     }
+    if (this.props.column.type && (this.props.column.type.includes('checker') || this.props.column.type.includes('order')) && this.props.column.tools && this.props.column.tools.align === 'left') {
+      this._fixThToolsPosition()
+    }
   }
 
-  _renderCombinedChecker({ row, rowData, index }) {
+  _renderRowOrder({ index }) {
+    return index + 1
+  }
+
+  _renderCombinedChecker({ row, rowData, index, renderOrder }) {
 
     const grid = this.table.grid
     const { rowCheckable } = grid.props
@@ -252,6 +363,50 @@ class Td extends Component {
       row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
     }
 
+    if (renderOrder) {
+      return {
+        classes: {
+          'nom-grid-checker-and-order': true
+        },
+        children: [
+          {
+            component: 'Checkbox',
+            classes: {
+              'nom-grid-checkbox': true,
+            },
+            plain: true,
+            _created: (inst) => {
+              row._checkboxRef = inst
+            },
+            _config() {
+              this.setProps(_checkboxProps)
+            },
+            attrs: {
+              'data-key': row.key,
+              style: {
+                paddingRight: '.25rem'
+              }
+            },
+            onValueChange: (args) => {
+              if (args.newValue === true) {
+                grid.check(row)
+              } else {
+                grid.uncheck(row)
+              }
+
+              grid._checkboxAllRef && grid.changeCheckAllState()
+            },
+          },
+          {
+            classes: {
+              'nom-grid-order-text': true
+            },
+            children: index + 1
+          }
+        ]
+      }
+    }
+
     return {
       component: 'Checkbox',
       classes: {
@@ -280,6 +435,7 @@ class Td extends Component {
         grid._checkboxAllRef && grid.changeCheckAllState()
       },
     }
+
   }
 
   _setTdsPosition() {
@@ -326,6 +482,14 @@ class Td extends Component {
     } else {
       this.col.setMaxTdWidth(this.element.offsetWidth + tdPaddingWidth)
     }
+  }
+
+  _fixThToolsPosition() {
+    const w = this.element.querySelector('.nom-grid-column-tools').offsetWidth
+    const f = this.props.column.field
+    const target = this.table.grid.header.element.querySelector(`thead [data-field="${f}"]`).querySelector('.nom-grid-column-th-tools')
+    if (target) target.style.width = `${w}px`
+
   }
 
   /**

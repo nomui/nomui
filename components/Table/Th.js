@@ -47,13 +47,38 @@ class Th extends Component {
       titleStr = null
     }
 
+    let thContent = this.props.column.header || this.props.column.title
+
+    if (this.props.column.type === 'checker' || this.props.column.type === 'checker&order') {
+      thContent = {
+        component: 'Checkbox',
+        attrs: {
+          style: {
+            display: 'inline-flex',
+            paddingRight: '.25rem'
+          }
+        },
+        plain: true,
+        _created: (inst) => {
+          that.table.grid._checkboxAllRef = inst
+        },
+        onValueChange: (args) => {
+          if (args.newValue === true) {
+            that.table.grid.checkAllRows(false)
+          } else {
+            that.table.grid.uncheckAllRows(false)
+          }
+        },
+      }
+    }
+
     const headerProps = {
       tag: 'span',
       attrs: {
         title: isEllipsis ? titleStr : null,
       },
       classes: { 'nom-table-cell-title': true },
-      children: this.props.column.header || this.props.column.title,
+      children: thContent
     }
 
     if (that.props.column.sortable && that.props.column.colSpan > 0) {
@@ -78,6 +103,11 @@ class Th extends Component {
     }
 
     let children = [
+      this.props.column.tools && this.props.column.tools.align === 'left' && {
+        classes: {
+          'nom-grid-column-th-tools': true
+        },
+      },
       headerProps,
       this.props.column.sortable &&
       this.props.column.colSpan > 0 && {
@@ -104,6 +134,7 @@ class Th extends Component {
           style: {
             cursor: 'pointer',
           },
+
         },
         tooltip: this.filterValue
           ? this.table.grid.filterValueText[this.props.column.field]
@@ -266,6 +297,7 @@ class Th extends Component {
         colspan: this.props.column.colSpan,
         rowspan: this.props.column.rowSpan,
         align: this.props.column.align || columnAlign,
+        'data-field': this.props.column.field,
         onmouseenter:
           this.table.grid &&
           function () {

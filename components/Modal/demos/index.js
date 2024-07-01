@@ -7,7 +7,6 @@ define([
   './size.js',
   './fit.js',
   './custom-ok-cancel.js',
-  './no-header-or-no-footer.js',
 ], function () {
   return {
     title: 'Modal',
