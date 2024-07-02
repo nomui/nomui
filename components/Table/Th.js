@@ -49,7 +49,7 @@ class Th extends Component {
 
     let thContent = this.props.column.header || this.props.column.title
 
-    if (this.props.column.type === 'checker' || this.props.column.type === 'checker&order') {
+    if (this.props.column.isChecker || this.props.column.type === 'checker' || this.props.column.type === 'checker&order') {
       thContent = {
         component: 'Checkbox',
         attrs: {

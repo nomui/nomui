@@ -108,7 +108,6 @@
 | title | 列头显示标题 | `string` | - |
 | width | 列宽度，单位 px | `boolean` | 120 |
 | align | 文本对齐方式 | `left`\|`center`\|`right` | `left` |
-| type | 列类型，可以配置为`checker`\|`order`\|`checker&order`(勾选框/序号/勾选混合序号) ，配置勾选框时不应再配置rowCheckable，且一个表格只应该有一列勾选框| `string` | - |
 | tools | 列工具栏配置| `{align,render}` | - |
 | editRender | 单元格编辑模式渲染函数，返回表单类型组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
@@ -188,6 +187,8 @@
 | checkboxOnNodeColumn | 勾选框是否跟随在折叠图标后方 | `boolean` | - |
 | checkedRowKeys | 初始选中行主键数组   | `array`                                      | -      |
 | checkboxRender | 函数返回 Checkbox 的 | `({row, rowData, index})=>{ checkboxProps }` | -      |
+| tools        | 勾选列的工具栏配置，参考column.tools           | `object`                                | -      |
+| width        | 勾选列宽度           | `number`                                | 50      |
 | onCheck        | 行勾选回调           | `({row})=>{}`                                | -      |
 | onUncheck      | 行取消勾选回调       | `({row})=>{}`                                | -      |
 

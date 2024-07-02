@@ -47,6 +47,10 @@ class Td extends Component {
       children = this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index, renderOrder: true })
     }
 
+    if (column.isChecker && column.field === 'nom-grid-row-checker' && this.table.hasGrid && this.table.grid.props.rowCheckable && !this.table.grid.props.rowCheckable.checkboxOnNodeColumn) {
+      children = this._renderRowChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index })
+    }
+
 
     if (this.tr.props.editMode && column.editRender) {
       children = {
@@ -335,6 +339,119 @@ class Td extends Component {
 
   _renderRowOrder({ index }) {
     return index + 1
+  }
+
+
+  _renderRowChecker({ row, rowData, index }) {
+
+    const grid = this.table.grid
+
+    const { rowCheckable } = grid.props
+
+    let normalizedRowCheckable = rowCheckable
+    if (!isPlainObject(rowCheckable)) {
+      normalizedRowCheckable = {}
+    }
+    const { checkedRowKeys = [], checkboxRender } = normalizedRowCheckable
+    const checkedRowKeysHash = {}
+    checkedRowKeys.forEach((rowKey) => {
+      checkedRowKeysHash[rowKey] = true
+    })
+
+
+    let _checkboxProps = {}
+    // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
+    if (checkboxRender && isFunction(checkboxRender)) {
+      _checkboxProps = checkboxRender({ row, rowData, index })
+    }
+
+    // 计算得到当前的 checkbox的状态
+    _checkboxProps.value = _checkboxProps.value || checkedRowKeysHash[row.key] === true
+
+    if (_checkboxProps.value === true) {
+      row._check()
+    }
+
+    if (checkedRowKeysHash[row.key] === true || _checkboxProps.value) {
+      grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
+    }
+
+    const { keyField } = grid.props
+    const { parentField } = grid.props.treeConfig
+    grid.nodeList[`__key${rowData[keyField]}`] = row
+    row.childrenNodes = {}
+    row.parentNode = grid.nodeList[`__key${rowData[parentField]}`]
+    if (row.parentNode) {
+      row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
+    }
+
+
+    if (rowCheckable.type === 'checker&order') {
+      return {
+        classes: {
+          'nom-grid-checker-and-order': true
+        },
+        children: [
+          {
+            component: 'Checkbox',
+            classes: {
+              'nom-grid-checkbox': true,
+            },
+            plain: true,
+            _created: (inst) => {
+              row._checkboxRef = inst
+            },
+            _config() {
+              this.setProps(_checkboxProps)
+            },
+            attrs: {
+              'data-key': row.key,
+            },
+            onValueChange: (args) => {
+              if (args.newValue === true) {
+                grid.check(row)
+              } else {
+                grid.uncheck(row)
+              }
+              grid.changeCheckAllState()
+            },
+          },
+          {
+            classes: {
+              'nom-grid-order-text': true
+            },
+            children: index + 1
+          }
+        ]
+      }
+    }
+
+    return {
+      component: 'Checkbox',
+      classes: {
+        'nom-grid-checkbox': true,
+      },
+      plain: true,
+      _created: (inst) => {
+        row._checkboxRef = inst
+      },
+      _config() {
+        this.setProps(_checkboxProps)
+      },
+      attrs: {
+        'data-key': row.key,
+      },
+      onValueChange: (args) => {
+        if (args.newValue === true) {
+          grid.check(row)
+        } else {
+          grid.uncheck(row)
+        }
+        grid.changeCheckAllState()
+      },
+    }
+
+
   }
 
   _renderCombinedChecker({ row, rowData, index, renderOrder }) {

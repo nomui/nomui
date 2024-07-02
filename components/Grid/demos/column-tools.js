@@ -14,47 +14,10 @@ define([], function () {
 
                 columns: [
                     {
-                        field: 'check',
-                        type: 'checker&order',
-                        width: 120,
-                        tools: {
-                            align: 'left', // 工具栏靠左
-                            placement: 'header', // 工具栏位置 header表头 body表身 both表头+表身
-                            hover: true,
-                            render: ({ isHeader, field, row, cellData, rowData, index }) => {
-                                // isHeader表示当前渲染在表头，此时还会传出当前field
-
-                                console.log({ isHeader, field, row, cellData, rowData, index })
-                                return {
-                                    component: 'Toolbar',
-                                    visibleItems: 0,
-                                    size: 'small',
-                                    type: 'text',
-                                    items: [
-                                        {
-                                            text: '导出Word',
-                                            onClick: () => { },
-                                        },
-                                        {
-                                            text: '导出Word',
-                                            onClick: () => { },
-                                        },
-                                        {
-                                            text: '导出Word',
-                                            onClick: () => { },
-                                        },
-                                    ]
-                                }
-                            }
-                        }
-
-                    },
-                    {
                         field: 'name',
                         key: 'name',
                         title: '标题',
                         width: 100,
-
                         ellipsis: true,
                         tools: {
                             // 不配置align则工具栏跟随内容
