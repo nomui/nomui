@@ -818,6 +818,7 @@ class Grid extends Component {
         return props && !props.disabled && !props.hidden
       }).length
 
+
       if (allRowsLength <= checkedRowsLength) {
         this._checkboxAllRef.setValue(true, false)
       } else {
@@ -1052,6 +1053,7 @@ class Grid extends Component {
             _created: (inst) => {
               grid._checkboxAllRef = inst
             },
+            uncheckPart: true,
             onValueChange: (args) => {
               if (args.newValue === true) {
                 grid.checkAllRows(false)

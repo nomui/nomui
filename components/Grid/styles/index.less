@@ -46,7 +46,9 @@
         text-align: center;
       }
 
-      .nom-icon {
+      .nom-table-filter-handler,
+      .nom-table-pin-handler,
+      .nom-table-sort-handler {
         position: relative;
         top: 2px;
         margin-left: 5px;
@@ -175,9 +177,45 @@
     padding-right: .5rem;
   }
 
+  .nom-grid-column-tools-hover {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .nom-grid-column-tools-hide {
+    visibility: hidden !important;
+  }
+
+
   .nom-grid-column-th-tools {
     display: inline-flex;
     padding-right: .5rem;
+  }
+
+  .nom-grid-column-th-tools-float-right {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .nom-grid-column-th-tools-hide {
+    visibility: hidden !important;
+  }
+
+
+  tr:hover>td .nom-grid-column-tools-hover {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .nom-grid-column-th-tools-hover {
+    visibility: hidden;
+    opacity: 1;
+  }
+
+  th:hover>.nom-grid-column-th-tools-hover {
+    visibility: visible;
   }
 
 }

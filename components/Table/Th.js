@@ -58,6 +58,7 @@ class Th extends Component {
             paddingRight: '.25rem'
           }
         },
+        uncheckPart: true,
         plain: true,
         _created: (inst) => {
           that.table.grid._checkboxAllRef = inst
@@ -78,7 +79,11 @@ class Th extends Component {
         title: isEllipsis ? titleStr : null,
       },
       classes: { 'nom-table-cell-title': true },
-      children: thContent
+      children: isEllipsis ? {
+        component: 'Ellipsis',
+        fitContent: true,
+        text: thContent
+      } : thContent
     }
 
     if (that.props.column.sortable && that.props.column.colSpan > 0) {
@@ -102,11 +107,14 @@ class Th extends Component {
       this.resizable = false
     }
 
-    let children = [
+    const children = [
       this.props.column.tools && this.props.column.tools.align === 'left' && {
         classes: {
-          'nom-grid-column-th-tools': true
+          'nom-grid-column-th-tools': true,
+          'nom-grid-column-th-tools-hover': this.props.column.tools.hover,
+          'nom-grid-column-th-tools-hide': !(this.props.column.tools.placement === 'header' || this.props.column.tools.placement === 'both')
         },
+        children: this.props.column.tools.render({ isHeader: true, field: this.props.column.field }),
       },
       headerProps,
       this.props.column.sortable &&
@@ -227,6 +235,15 @@ class Th extends Component {
           that.table.grid.handlePinClick(that.props.column)
         },
       },
+      this.props.column.tools && this.props.column.tools.align !== 'left' && {
+        classes: {
+          'nom-grid-column-th-tools': true,
+          'nom-grid-column-th-tools-float-right': this.props.column.tools.align === 'right',
+          'nom-grid-column-th-tools-hover': this.props.column.tools.hover,
+          'nom-grid-column-th-tools-hide': !(this.props.column.tools.placement === 'header' || this.props.column.tools.placement === 'both')
+        },
+        children: this.props.column.tools.render({ isHeader: true, field: this.props.column.field }),
+      },
       that.resizable && {
         // component: 'Icon',
         ref: (c) => {
@@ -236,14 +253,14 @@ class Th extends Component {
         classes: { 'nom-table-resize-handler': true },
       },
     ]
-    // 用span包一层，为了伪元素的展示
-    if (isEllipsis) {
-      children = {
-        tag: 'span',
-        classes: { 'nom-table-cell-content': true },
-        children: children,
-      }
-    }
+    // // 用span包一层，为了伪元素的展示
+    // if (isEllipsis) {
+    //   children = {
+    //     tag: 'span',
+    //     classes: { 'nom-table-cell-content': true },
+    //     children: children,
+    //   }
+    // }
 
     if (that.table.hasGrid) {
       const { column } = this.props

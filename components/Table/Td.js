@@ -29,6 +29,12 @@ class Td extends Component {
 
     let children = this.props.data
 
+    const isEllipsis =
+      ((this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'body') &&
+        this.props.column.ellipsis !== false) ||
+      this.props.column.ellipsis === true
+
+
     if (column.type === 'checker') {
       children = this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index })
     }
@@ -74,6 +80,13 @@ class Td extends Component {
       )
     }
 
+    if (isEllipsis) {
+      children = {
+        component: 'Ellipsis',
+        fitContent: true,
+        text: children
+      }
+    }
 
     if (isFunction(column.cellMerge)) {
       spanProps = column.cellMerge({
@@ -97,7 +110,9 @@ class Td extends Component {
           cols: [
             {
               classes: {
-                'nom-grid-column-tools': true
+                'nom-grid-column-tools': true,
+                'nom-grid-column-tools-hover': column.tools.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
               },
               children: this.props.column.tools.render({
                 cell: this,
@@ -116,9 +131,6 @@ class Td extends Component {
       }
       else if (column.tools.align === 'right') {
         children = {
-          classes: {
-            'nom-grid-column-with-tools': true
-          },
           align: 'center',
           component: 'Flex',
           cols: [
@@ -128,7 +140,9 @@ class Td extends Component {
             },
             {
               classes: {
-                'nom-grid-column-tools': true
+                'nom-grid-column-tools': true,
+                'nom-grid-column-tools-hover': column.tools.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
               },
               children: this.props.column.tools.render({
                 cell: this,
@@ -143,9 +157,6 @@ class Td extends Component {
       }
       else {
         children = {
-          classes: {
-            'nom-grid-column-with-tools': true
-          },
           align: 'center',
           component: 'Flex',
           cols: [
@@ -154,7 +165,9 @@ class Td extends Component {
             },
             {
               classes: {
-                'nom-grid-column-tools': true
+                'nom-grid-column-tools': true,
+                'nom-grid-column-tools-hover': column.tools.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
               },
               children: this.props.column.tools.render({
                 cell: this,
@@ -255,19 +268,16 @@ class Td extends Component {
       this.table.hasRowGroup = true
     }
 
-    const isEllipsis =
-      ((this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'body') &&
-        this.props.column.ellipsis !== false) ||
-      this.props.column.ellipsis === true
 
-    // 用span包一层，为了伪元素的展示
-    if (isEllipsis && !column.autoWidth) {
-      children = {
-        tag: 'span',
-        classes: { 'nom-table-cell-content': true },
-        children,
-      }
-    }
+    // // 用span包一层，为了伪元素的展示
+    // if (isEllipsis && !column.autoWidth) {
+    //   debugger
+    //   children = {
+    //     tag: 'span',
+    //     classes: { 'nom-table-cell-content': true },
+    //     children,
+    //   }
+    // }
 
     const showTitle =
       (((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
@@ -318,9 +328,9 @@ class Td extends Component {
     if (fixed) {
       this._setTdsPosition()
     }
-    if (this.props.column.type && (this.props.column.type.includes('checker') || this.props.column.type.includes('order')) && this.props.column.tools && this.props.column.tools.align === 'left') {
-      this._fixThToolsPosition()
-    }
+    // if (this.props.column.tools && this.props.column.tools.align === 'left') {
+    //   this._fixThToolsPosition()
+    // }
   }
 
   _renderRowOrder({ index }) {

@@ -19,8 +19,12 @@ define([], function () {
                         width: 120,
                         tools: {
                             align: 'left', // 工具栏靠左
-                            render: ({ row, cellData, rowData, index }) => {
-                                console.log({ row, cellData, rowData, index })
+                            placement: 'header', // 工具栏位置 header表头 body表身 both表头+表身
+                            hover: true,
+                            render: ({ isHeader, field, row, cellData, rowData, index }) => {
+                                // isHeader表示当前渲染在表头，此时还会传出当前field
+
+                                console.log({ isHeader, field, row, cellData, rowData, index })
                                 return {
                                     component: 'Toolbar',
                                     visibleItems: 0,
@@ -49,10 +53,13 @@ define([], function () {
                         field: 'name',
                         key: 'name',
                         title: '标题',
-                        width: 200,
+                        width: 100,
 
+                        ellipsis: true,
                         tools: {
                             // 不配置align则工具栏跟随内容
+                            hover: true,
+                            placement: 'both',
                             render: ({ row, cellData, rowData, index }) => {
                                 console.log({ row, cellData, rowData, index })
                                 return {
@@ -91,6 +98,7 @@ define([], function () {
                         },
                         tools: {
                             align: 'right', // 工具栏靠右
+                            placement: 'both',
                             render: ({ row, cellData, rowData, index }) => {
                                 console.log({ row, cellData, rowData, index })
                                 return {
@@ -115,10 +123,7 @@ define([], function () {
                             }
                         }
                     },
-                    {
-                        field: 'sales',
-                        title: '销量',
-                    },
+
 
                     {
                         field: 'role',
@@ -126,11 +131,44 @@ define([], function () {
                         width: 500,
                         showTitle: false,
                     },
+
+                    {
+                        field: 'sales',
+                        title: '销量',
+                        width: 150,
+                        tools: {
+                            align: 'left',
+                            placement: 'body',
+                            render: ({ row, cellData, rowData, index }) => {
+                                console.log({ row, cellData, rowData, index })
+                                return {
+                                    component: 'Toolbar',
+                                    visibleItems: 0,
+                                    size: 'small',
+                                    type: 'text',
+                                    items: [
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                        {
+                                            text: '导出Word',
+                                            onClick: () => { },
+                                        },
+                                    ]
+                                }
+                            }
+                        }
+                    },
                 ],
                 data: [
                     { id: 1, name: '笑傲江湖', author: '金庸', sales: 100000, role: '令狐冲' },
                     { id: 4, name: '天龙八部', author: '金庸', sales: 200000, role: '乔峰' },
-                    { id: 5, name: '射雕英雄传', author: '金庸', sales: 0, role: '郭靖' },
+                    { id: 5, name: '射雕英雄传射雕英雄传射雕英雄传射雕英雄传', author: '金庸', sales: 0, role: '郭靖' },
                 ],
             }
         },

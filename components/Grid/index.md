@@ -260,7 +260,9 @@ rows 子对象配置
 
 | 参数             | 说明                                           | 类型              | 默认值  |
 | ---------------- | ---------------------------------------------- | ----------------- | ------- |
-| align          | 工具栏位置 | `'left' \| 'right' \| null`           | -      |
+| align          | 工具栏对齐方式 | `'left' \| 'right' \| null`           | -      |
+| placement          | 工具栏在表格中的位置(表头 表身 表头+表身) | `'header' \| 'body' \| 'both'`           | -      |
+| hover          | 是否悬停才显示工具栏 | `boolean`           | false     |
 | render | 工具栏渲染函数             | `({ row, cellData, rowData, index })=>{}`         | - |
 
 ### treeConfig
