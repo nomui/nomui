@@ -9,6 +9,12 @@ class Checkbox extends Field {
 
   _config() {
     const that = this
+    if (!this.props.value && this.props.partChecked) {
+      this.partChecked = true
+    }
+    else {
+      this.partChecked = false
+    }
     this.setProps({
       // RadioList,CheckboxList等div组件不为 focusable 元素
       // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
@@ -24,7 +30,15 @@ class Checkbox extends Field {
             attrs: {
               type: 'checkbox',
               checked: this.props.value,
+              onclick: (event) => {
+                if (that.partChecked && that.props.uncheckPart) {
+                  that.setValue(false, { triggerChange: false })
+                  that.partChecked = false
+                }
+                event.stopPropagation()
+              },
               onchange() {
+
                 that.removeClass('s-checked-part')
                 that._onValueChange()
               },
@@ -49,6 +63,7 @@ class Checkbox extends Field {
 
   partCheck(triggerChange) {
     this.setValue(false, triggerChange)
+    this.partChecked = true
     this.addClass('s-checked-part')
   }
 
@@ -69,6 +84,7 @@ class Checkbox extends Field {
     } else {
       options = extend({}, options)
     }
+    this.partChecked = false
     this.removeClass('s-checked-part')
     this.input.element.checked = value === true
     options.triggerChange !== false && this._onValueChange()
@@ -89,6 +105,7 @@ Checkbox.defaults = {
     checked: '是',
     unchecked: '否',
   },
+  uncheckPart: false
 }
 Component.register(Checkbox)
 
