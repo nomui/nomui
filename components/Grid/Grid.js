@@ -329,9 +329,12 @@ class Grid extends Component {
     this.removedRowKeys = []
     this.removedRowData = []
 
-    this.element.querySelectorAll('.nom-grid-tr-modified').forEach(n => {
-      n.classList.remove('nom-grid-tr-modified')
-    })
+
+    if (this.element) {
+      this.element.querySelectorAll('.nom-grid-tr-modified').forEach(n => {
+        n.classList.remove('nom-grid-tr-modified')
+      })
+    }
   }
 
   _processModifedRows(key) {
