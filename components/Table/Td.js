@@ -591,10 +591,11 @@ class Td extends Component {
     const needRightPadding =
       !!this.table.grid.props.columnsCustomizable && this.props.column.lastRight
 
+
     Array.from(this.element.children).forEach((child) => {
       const { marginLeft, marginRight } = getStyle(child)
       tdWidth +=
-        child.offsetWidth + this._parseCssNumber(marginLeft) + this._parseCssNumber(marginRight)
+        Math.max(child.offsetWidth, child.scrollWidth) + this._parseCssNumber(marginLeft) + this._parseCssNumber(marginRight)
     })
 
     if (this.table.hasGrid) {
