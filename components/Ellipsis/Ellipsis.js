@@ -8,6 +8,9 @@ class Ellipsis extends Component {
 
   _config() {
     this.setProps({
+      classes: {
+        'nom-ellipsis-fit-content': this.props.fitContent
+      },
       children: {
         classes: {
           'nom-ellipsis-inner': true,
@@ -21,6 +24,7 @@ class Ellipsis extends Component {
           style: {
             '-webkit-line-clamp': this.props.line,
             display: this.props.line > 1 ? '-webkit-box' : '',
+
           },
         },
         children: this.props.text ? this.props.text : this.props.children,
@@ -33,6 +37,7 @@ Ellipsis.defaults = {
   text: null,
   showTitle: true,
   line: null,
+  fitContent: false
 }
 
 Component.register(Ellipsis)

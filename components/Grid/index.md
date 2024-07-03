@@ -108,6 +108,7 @@
 | title | 列头显示标题 | `string` | - |
 | width | 列宽度，单位 px | `boolean` | 120 |
 | align | 文本对齐方式 | `left`\|`center`\|`right` | `left` |
+| tools | 列工具栏配置| `{align,render}` | - |
 | editRender | 单元格编辑模式渲染函数，返回表单类型组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
@@ -186,6 +187,8 @@
 | checkboxOnNodeColumn | 勾选框是否跟随在折叠图标后方 | `boolean` | - |
 | checkedRowKeys | 初始选中行主键数组   | `array`                                      | -      |
 | checkboxRender | 函数返回 Checkbox 的 | `({row, rowData, index})=>{ checkboxProps }` | -      |
+| tools        | 勾选列的工具栏配置，参考column.tools           | `object`                                | -      |
+| width        | 勾选列宽度           | `number`                                | 50      |
 | onCheck        | 行勾选回调           | `({row})=>{}`                                | -      |
 | onUncheck      | 行取消勾选回调       | `({row})=>{}`                                | -      |
 
@@ -250,6 +253,18 @@ rows 子对象配置
 | --- | --- | --- | --- |
 | text | 该行显示的统计名称 | `string` | `总计` |
 | method | 字段统计方法，返回 field 与对应的值 | `({ columns, data }) => { {field:value}}` | `` |
+
+
+### tools
+
+单元格工具栏配置
+
+| 参数             | 说明                                           | 类型              | 默认值  |
+| ---------------- | ---------------------------------------------- | ----------------- | ------- |
+| align          | 工具栏对齐方式 | `'left' \| 'right' \| null`           | -      |
+| placement          | 工具栏在表格中的位置(表头 表身 表头+表身) | `'header' \| 'body' \| 'both'`           | -      |
+| hover          | 是否悬停才显示工具栏 | `boolean`           | false     |
+| render | 工具栏渲染函数             | `({ row, cellData, rowData, index })=>{}`         | - |
 
 ### treeConfig
 
