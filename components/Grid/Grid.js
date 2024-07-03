@@ -1479,8 +1479,11 @@ class Grid extends Component {
     return result;
   }
 
-  filterGroup(arr) {
-    const result = this._generateDataGroup({ data: this.originData || this.props.data, fields: arr })
+  filterGroup({ fields, sorter }) {
+    if (!this.originData) {
+      this.originData = this.props.data
+    }
+    const result = this._generateDataGroup({ data: this.originData, fields, sorter })
 
     this.update({
       _isGrouping: true,

@@ -43,7 +43,7 @@ define([], function () {
                                         })
                                         return
                                     }
-                                    refs.grid.filterGroup(v)
+                                    refs.grid.filterGroup({ fields: v })
                                 }
                             }
                         ]

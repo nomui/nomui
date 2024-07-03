@@ -389,7 +389,7 @@ class Td extends Component {
     row.childrenNodes = {}
     if (rowData[parentField]) {
       row.parentNode = grid.nodeList[`__key${rowData[parentField]}`]
-    } else {
+    } else if (grid.props.rowCheckable.flatData) {
       console.warn(`Row data does not contain the field "${parentField}", which may cause an error.`)
     }
 
