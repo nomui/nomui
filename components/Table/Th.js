@@ -81,7 +81,7 @@ class Th extends Component {
       classes: { 'nom-table-cell-title': true },
       children: isEllipsis ? {
         component: 'Ellipsis',
-        fitContent: true,
+        // fitContent: true,
         text: thContent
       } : thContent
     }

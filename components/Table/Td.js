@@ -87,7 +87,7 @@ class Td extends Component {
     if (isEllipsis) {
       children = {
         component: 'Ellipsis',
-        fitContent: true,
+        // fitContent: true,
         text: children
       }
     }
