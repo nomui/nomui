@@ -36,6 +36,7 @@ define([
   './cascadeUncheckChildren.js',
   './edit.js',
   './excel.js',
+  './grouping.js',
   './sticky.js',
   './sticky-window.js',
 ], function () {

@@ -1424,6 +1424,59 @@ class Grid extends Component {
       })
     return arr
   }
+
+
+  _generateDataGroup({ data, fields, sorter }) {
+    const result = []; // 用于存储最终结果的数组
+
+    // 辅助函数，用于递归地构建分组
+    function buildGroups(items, fieldIndex) {
+      // 如果没有更多字段或数据项为空，则直接返回
+      if (fieldIndex >= fields.length || !items || items.length === 0) {
+        items.forEach(item => result.push(item)); // 将数据项添加到结果数组
+        return;
+      }
+
+      const groups = {}; // 存储当前字段的分组结果
+      items.forEach((item) => {
+        // 获取当前字段的值，如果字段不存在则设为null
+        const key = fields[fieldIndex] in item ? item[fields[fieldIndex]] : null;
+        groups[key] = groups[key] || [];
+        groups[key].push({ ...item, _groupLevel: fieldIndex + 1 });
+      });
+
+      // 为每个分组生成元数据并排序
+      Object.keys(groups).forEach((key) => {
+        const groupItems = groups[key];
+        if (sorter) {
+          groupItems.sort(sorter); // 对分组内的数据进行排序
+        }
+
+        // 插入分组头部信息
+        const filterKey = nomui.utils.newGuid(); // 使用nomui.utils.newGuid()生成GUID
+        const groupMeta = {
+          _isGroup: true,
+          _currentFilter: fields[fieldIndex],
+          _itemsLength: groupItems.length,
+          _filterKey: filterKey,
+          _groupLevel: fieldIndex + 1 // 分组层级从1开始
+        };
+        result.push(groupMeta); // 将分组头部信息添加到结果数组
+
+        // 递归构建下一级分组
+        buildGroups(groupItems, fieldIndex + 1);
+      });
+    }
+
+    // 从第一级分组开始构建
+    buildGroups(data, 0);
+
+    return result;
+  }
+
+
+
+
 }
 
 Grid.defaults = {

@@ -378,12 +378,23 @@ class Td extends Component {
 
     const { keyField } = grid.props
     const { parentField } = grid.props.treeConfig
-    grid.nodeList[`__key${rowData[keyField]}`] = row
-    row.childrenNodes = {}
-    row.parentNode = grid.nodeList[`__key${rowData[parentField]}`]
-    if (row.parentNode) {
-      row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
+
+    if (rowData[keyField]) {
+      grid.nodeList[`__key${rowData[keyField]}`] = row
+      if (row.parentNode) {
+        row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
+      }
+    } else {
+      console.warn(`Row data does not contain the field "${keyField}", which may cause an error.`)
     }
+
+    row.childrenNodes = {}
+    if (rowData[parentField]) {
+      row.parentNode = grid.nodeList[`__key${rowData[parentField]}`]
+    } else {
+      console.warn(`Row data does not contain the field "${parentField}", which may cause an error.`)
+    }
+
 
 
     if (rowCheckable.type === 'checker&order') {
