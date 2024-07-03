@@ -85,6 +85,9 @@ class Tr extends Component {
           _filterKey: data._filterKey,
           _groupLevel: data._groupLevel,
         },
+        classes: {
+          'nom-tr-group': true
+        },
         hidden: hidden,
         children: {
           component: Td,
@@ -93,6 +96,7 @@ class Tr extends Component {
           },
           data: {
             component: 'Flex',
+            align: 'center',
             cols: [
               {
                 children: {

@@ -50,6 +50,7 @@ define([], function () {
                     },
                     {
                         component: 'Grid',
+                        bordered: true,
                         showTitle: true,
                         ref: (c) => {
                             refs.grid = c

@@ -80,7 +80,7 @@
       overflow-x: auto;
     }
 
-    tr+[_filterkey] td {
+    tr:not([_filterkey])+[_filterkey] td {
       padding-top: 2rem;
     }
   }
