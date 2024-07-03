@@ -17233,7 +17233,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           index: this.tr.props.index,
         });
       }
-      if (column.tools) {
+      if (column.tools && isPlainObject(column.tools)) {
         if (column.tools.align === "left") {
           children = {
             classes: { "nom-grid-column-with-tools": true },
@@ -18250,6 +18250,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       const children = [
         this.props.column.tools &&
+          isPlainObject(this.props.tools) &&
           this.props.column.tools.align === "left" && {
             classes: {
               "nom-grid-column-th-tools": true,
@@ -18372,6 +18373,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             },
           },
         this.props.column.tools &&
+          isPlainObject(this.props.tools) &&
           this.props.column.tools.align !== "left" && {
             classes: {
               "nom-grid-column-th-tools": true,
