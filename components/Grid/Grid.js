@@ -9,6 +9,7 @@ import {
 } from '../util/constant'
 import {
   ascCompare,
+  clone,
   defaultSortableOndrop,
   extend,
   isBrowerSupportSticky,
@@ -84,6 +85,9 @@ class Grid extends Component {
     }
     // 更新了data
     if (props.data && this.props) {
+      if (!props._isGrouping) {
+        this.originData = clone(props.data)
+      }
       const { treeConfig } = this.props
       // data更新, flatData需要重新组装成Tree结构
       if (treeConfig && treeConfig.flatData) {
@@ -168,6 +172,7 @@ class Grid extends Component {
       ],
     })
   }
+
 
   _processData() {
     const { treeConfig } = this.props
@@ -1473,6 +1478,16 @@ class Grid extends Component {
 
     return result;
   }
+
+  filterGroup(arr) {
+    const result = this._generateDataGroup({ data: this.originData || this.props.data, fields: arr })
+
+    this.update({
+      _isGrouping: true,
+      data: result
+    })
+  }
+
 
 
 

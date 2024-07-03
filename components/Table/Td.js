@@ -16,7 +16,7 @@ class Td extends Component {
     this.tr = this.parent
     this.table = this.tr.table
     this.col = this.table.colRefs[this.props.column.field]
-    this.col.tdRefs[this.key] = this
+    if (this.col) this.col.tdRefs[this.key] = this
     this.tr.tdRefs[this.props.column.field] = this
   }
 
@@ -255,8 +255,6 @@ class Td extends Component {
 
 
     }
-
-
 
     const colSpan =
       spanProps && spanProps.colSpan !== null && spanProps.colSpan !== undefined

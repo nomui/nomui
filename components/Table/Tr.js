@@ -77,15 +77,49 @@ class Tr extends Component {
         editMode: true
       })
     }
+    if (data._isGroup) {
+      this.setProps({
+        tag: 'tr',
+        key: data._filterKey,
+        attrs: {
+          _filterKey: data._filterKey,
+          _groupLevel: data._groupLevel,
+        },
+        hidden: hidden,
+        children: {
+          component: Td,
+          attrs: {
+            colSpan: grid.props.columns.length
+          },
+          data: {
+            component: 'Flex',
+            cols: [
+              {
+                children: {
+                  component: 'Icon',
+                  type: 'down',
+                }
+              },
+              {
+                children: data._currentFilter
+              }
+            ]
+          },
+        }
+      })
 
-    this.setProps({
-      key: data[this.table.props.keyField],
-      attrs: {
-        level: level,
-      },
-      hidden: hidden,
-      children: children,
-    })
+    }
+    else {
+      this.setProps({
+        key: data[this.table.props.keyField],
+        attrs: {
+          level: level,
+        },
+        hidden: hidden,
+        children: children,
+      })
+    }
+
   }
 
   _rendered() {
