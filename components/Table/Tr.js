@@ -114,6 +114,7 @@ class Tr extends Component {
         key: data[this.table.props.keyField],
         attrs: {
           level: level,
+          _groupLevel: data._groupLevel
         },
         hidden: hidden,
         children: children,

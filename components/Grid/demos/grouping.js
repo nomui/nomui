@@ -8,12 +8,42 @@ define([], function () {
                 component: 'Flex',
                 rows: [
                     {
+                        align: 'center',
                         cols: [
+                            {
+                                component: 'CheckboxList',
+                                ref: (c) => {
+                                    refs.checkboxlist = c
+                                },
+                                options: [
+                                    {
+                                        text: '位置',
+                                        value: 'position',
+                                    },
+                                    {
+                                        text: '球队',
+                                        value: 'team',
+                                    },
+                                    {
+                                        text: '学校',
+                                        value: 'school'
+                                    },
+                                ]
+                            },
                             {
                                 component: 'Button',
                                 text: '筛选',
+                                type: 'primary',
+                                size: 'small',
                                 onClick: () => {
-                                    refs.grid.filterGroup(['position'])
+                                    const v = refs.checkboxlist.getValue()
+                                    if (!v) {
+                                        new nomui.Alert({
+                                            title: '至少需要选择一个筛选项',
+                                        })
+                                        return
+                                    }
+                                    refs.grid.filterGroup(v)
                                 }
                             }
                         ]
