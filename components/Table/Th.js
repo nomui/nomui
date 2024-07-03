@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction, isString } from '../util/index'
+import { isFunction, isPlainObject, isString } from '../util/index'
 
 class Th extends Component {
   constructor(props, ...mixins) {
@@ -108,7 +108,7 @@ class Th extends Component {
     }
 
     const children = [
-      this.props.column.tools && this.props.column.tools.align === 'left' && {
+      this.props.column.tools && isPlainObject(this.props.tools) && this.props.column.tools.align === 'left' && {
         classes: {
           'nom-grid-column-th-tools': true,
           'nom-grid-column-th-tools-hover': this.props.column.tools.hover,
@@ -235,7 +235,7 @@ class Th extends Component {
           that.table.grid.handlePinClick(that.props.column)
         },
       },
-      this.props.column.tools && this.props.column.tools.align !== 'left' && {
+      this.props.column.tools && isPlainObject(this.props.tools) && this.props.column.tools.align !== 'left' && {
         classes: {
           'nom-grid-column-th-tools': true,
           'nom-grid-column-th-tools-float-right': this.props.column.tools.align === 'right',

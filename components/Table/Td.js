@@ -103,7 +103,7 @@ class Td extends Component {
       })
     }
 
-    if (column.tools) {
+    if (column.tools && isPlainObject(column.tools)) {
       if (column.tools.align === 'left') {
         children = {
           classes: {
