@@ -29,6 +29,29 @@ class Td extends Component {
 
     let children = this.props.data
 
+    const isEllipsis =
+      ((this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'body') &&
+        this.props.column.ellipsis !== false) ||
+      this.props.column.ellipsis === true
+
+
+    if (column.type === 'checker') {
+      children = this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index })
+    }
+
+    if (column.type === 'order') {
+      children = this._renderRowOrder({ index: this.tr.props.index })
+    }
+
+    if (column.type === 'checker&order') {
+      children = this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index, renderOrder: true })
+    }
+
+    if (column.isChecker && column.field === 'nom-grid-row-checker' && this.table.hasGrid && this.table.grid.props.rowCheckable && !this.table.grid.props.rowCheckable.checkboxOnNodeColumn) {
+      children = this._renderRowChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index })
+    }
+
+
     if (this.tr.props.editMode && column.editRender) {
       children = {
         ...column.editRender({
@@ -61,6 +84,13 @@ class Td extends Component {
       )
     }
 
+    if (isEllipsis) {
+      children = {
+        component: 'Ellipsis',
+        fitContent: true,
+        text: children
+      }
+    }
 
     if (isFunction(column.cellMerge)) {
       spanProps = column.cellMerge({
@@ -71,6 +101,91 @@ class Td extends Component {
         rowData: this.tr.props.data,
         index: this.tr.props.index,
       })
+    }
+
+    if (column.tools) {
+      if (column.tools.align === 'left') {
+        children = {
+          classes: {
+            'nom-grid-column-with-tools': true
+          },
+          align: 'center',
+          component: 'Flex',
+          cols: [
+            {
+              classes: {
+                'nom-grid-column-tools': true,
+                'nom-grid-column-tools-hover': column.tools.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
+              },
+              children: this.props.column.tools.render({
+                cell: this,
+                row: this.tr,
+                cellData: this.props.data,
+                rowData: this.tr.props.data,
+                index: this.tr.props.index,
+              })
+            },
+            {
+              children: children
+            },
+
+          ]
+        }
+      }
+      else if (column.tools.align === 'right') {
+        children = {
+          align: 'center',
+          component: 'Flex',
+          cols: [
+            {
+              grow: true,
+              children: children
+            },
+            {
+              classes: {
+                'nom-grid-column-tools': true,
+                'nom-grid-column-tools-hover': column.tools.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
+              },
+              children: this.props.column.tools.render({
+                cell: this,
+                row: this.tr,
+                cellData: this.props.data,
+                rowData: this.tr.props.data,
+                index: this.tr.props.index,
+              })
+            },
+          ]
+        }
+      }
+      else {
+        children = {
+          align: 'center',
+          component: 'Flex',
+          cols: [
+            {
+              children: children
+            },
+            {
+              classes: {
+                'nom-grid-column-tools': true,
+                'nom-grid-column-tools-hover': column.tools.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
+              },
+              children: this.props.column.tools.render({
+                cell: this,
+                row: this.tr,
+                cellData: this.props.data,
+                rowData: this.tr.props.data,
+                index: this.tr.props.index,
+              })
+            },
+          ]
+        }
+      }
+
+
     }
 
     const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
@@ -120,6 +235,10 @@ class Td extends Component {
         })
       }
 
+
+
+
+
       children = [
         {
           tag: 'span',
@@ -153,19 +272,16 @@ class Td extends Component {
       this.table.hasRowGroup = true
     }
 
-    const isEllipsis =
-      ((this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'body') &&
-        this.props.column.ellipsis !== false) ||
-      this.props.column.ellipsis === true
 
-    // 用span包一层，为了伪元素的展示
-    if (isEllipsis && !column.autoWidth) {
-      children = {
-        tag: 'span',
-        classes: { 'nom-table-cell-content': true },
-        children,
-      }
-    }
+    // // 用span包一层，为了伪元素的展示
+    // if (isEllipsis && !column.autoWidth) {
+    //   debugger
+    //   children = {
+    //     tag: 'span',
+    //     classes: { 'nom-table-cell-content': true },
+    //     children,
+    //   }
+    // }
 
     const showTitle =
       (((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
@@ -173,6 +289,8 @@ class Td extends Component {
       this.props.column.showTitle === true
 
     const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
+
+
 
     this.setProps({
       children: children,
@@ -214,9 +332,129 @@ class Td extends Component {
     if (fixed) {
       this._setTdsPosition()
     }
+    // if (this.props.column.tools && this.props.column.tools.align === 'left') {
+    //   this._fixThToolsPosition()
+    // }
   }
 
-  _renderCombinedChecker({ row, rowData, index }) {
+  _renderRowOrder({ index }) {
+    return index + 1
+  }
+
+
+  _renderRowChecker({ row, rowData, index }) {
+
+    const grid = this.table.grid
+
+    const { rowCheckable } = grid.props
+
+    let normalizedRowCheckable = rowCheckable
+    if (!isPlainObject(rowCheckable)) {
+      normalizedRowCheckable = {}
+    }
+    const { checkedRowKeys = [], checkboxRender } = normalizedRowCheckable
+    const checkedRowKeysHash = {}
+    checkedRowKeys.forEach((rowKey) => {
+      checkedRowKeysHash[rowKey] = true
+    })
+
+
+    let _checkboxProps = {}
+    // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
+    if (checkboxRender && isFunction(checkboxRender)) {
+      _checkboxProps = checkboxRender({ row, rowData, index })
+    }
+
+    // 计算得到当前的 checkbox的状态
+    _checkboxProps.value = _checkboxProps.value || checkedRowKeysHash[row.key] === true
+
+    if (_checkboxProps.value === true) {
+      row._check()
+    }
+
+    if (checkedRowKeysHash[row.key] === true || _checkboxProps.value) {
+      grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
+    }
+
+    const { keyField } = grid.props
+    const { parentField } = grid.props.treeConfig
+    grid.nodeList[`__key${rowData[keyField]}`] = row
+    row.childrenNodes = {}
+    row.parentNode = grid.nodeList[`__key${rowData[parentField]}`]
+    if (row.parentNode) {
+      row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
+    }
+
+
+    if (rowCheckable.type === 'checker&order') {
+      return {
+        classes: {
+          'nom-grid-checker-and-order': true
+        },
+        children: [
+          {
+            component: 'Checkbox',
+            classes: {
+              'nom-grid-checkbox': true,
+            },
+            plain: true,
+            _created: (inst) => {
+              row._checkboxRef = inst
+            },
+            _config() {
+              this.setProps(_checkboxProps)
+            },
+            attrs: {
+              'data-key': row.key,
+            },
+            onValueChange: (args) => {
+              if (args.newValue === true) {
+                grid.check(row)
+              } else {
+                grid.uncheck(row)
+              }
+              grid.changeCheckAllState()
+            },
+          },
+          {
+            classes: {
+              'nom-grid-order-text': true
+            },
+            children: index + 1
+          }
+        ]
+      }
+    }
+
+    return {
+      component: 'Checkbox',
+      classes: {
+        'nom-grid-checkbox': true,
+      },
+      plain: true,
+      _created: (inst) => {
+        row._checkboxRef = inst
+      },
+      _config() {
+        this.setProps(_checkboxProps)
+      },
+      attrs: {
+        'data-key': row.key,
+      },
+      onValueChange: (args) => {
+        if (args.newValue === true) {
+          grid.check(row)
+        } else {
+          grid.uncheck(row)
+        }
+        grid.changeCheckAllState()
+      },
+    }
+
+
+  }
+
+  _renderCombinedChecker({ row, rowData, index, renderOrder }) {
 
     const grid = this.table.grid
     const { rowCheckable } = grid.props
@@ -252,6 +490,50 @@ class Td extends Component {
       row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
     }
 
+    if (renderOrder) {
+      return {
+        classes: {
+          'nom-grid-checker-and-order': true
+        },
+        children: [
+          {
+            component: 'Checkbox',
+            classes: {
+              'nom-grid-checkbox': true,
+            },
+            plain: true,
+            _created: (inst) => {
+              row._checkboxRef = inst
+            },
+            _config() {
+              this.setProps(_checkboxProps)
+            },
+            attrs: {
+              'data-key': row.key,
+              style: {
+                paddingRight: '.25rem'
+              }
+            },
+            onValueChange: (args) => {
+              if (args.newValue === true) {
+                grid.check(row)
+              } else {
+                grid.uncheck(row)
+              }
+
+              grid._checkboxAllRef && grid.changeCheckAllState()
+            },
+          },
+          {
+            classes: {
+              'nom-grid-order-text': true
+            },
+            children: index + 1
+          }
+        ]
+      }
+    }
+
     return {
       component: 'Checkbox',
       classes: {
@@ -280,6 +562,7 @@ class Td extends Component {
         grid._checkboxAllRef && grid.changeCheckAllState()
       },
     }
+
   }
 
   _setTdsPosition() {
@@ -326,6 +609,14 @@ class Td extends Component {
     } else {
       this.col.setMaxTdWidth(this.element.offsetWidth + tdPaddingWidth)
     }
+  }
+
+  _fixThToolsPosition() {
+    const w = this.element.querySelector('.nom-grid-column-tools').offsetWidth
+    const f = this.props.column.field
+    const target = this.table.grid.header.element.querySelector(`thead [data-field="${f}"]`).querySelector('.nom-grid-column-th-tools')
+    if (target) target.style.width = `${w}px`
+
   }
 
   /**

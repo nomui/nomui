@@ -6553,15 +6553,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         okButton: contentProps.okButton,
       });
       const {
-        noHeader,
-        noFooter,
         okText,
         cancelText,
         fit,
         okButton = {},
         cancelButton = {},
       } = modal.props;
-      const props = {
+      return {
         component: Panel,
         fit: fit,
         uistyle: "plain",
@@ -6609,13 +6607,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
         },
       };
-      if (noHeader === true) {
-        props.header = false;
-      }
-      if (noFooter === true) {
-        delete props.footer;
-      }
-      return props;
     }
     _config() {
       const { content } = this.modal.props;
@@ -12235,6 +12226,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       const that = this;
+      if (!this.props.value && this.props.partChecked) {
+        this.partChecked = true;
+      } else {
+        this.partChecked = false;
+      }
       this.setProps({
         // RadioList,CheckboxList等div组件不为 focusable 元素
         // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
@@ -12250,6 +12246,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               attrs: {
                 type: "checkbox",
                 checked: this.props.value,
+                onclick: (event) => {
+                  if (that.partChecked && that.props.uncheckPart) {
+                    that.setValue(false, { triggerChange: false });
+                    that.partChecked = false;
+                  }
+                  event.stopPropagation();
+                },
                 onchange() {
                   that.removeClass("s-checked-part");
                   that._onValueChange();
@@ -12275,6 +12278,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     partCheck(triggerChange) {
       this.setValue(false, triggerChange);
+      this.partChecked = true;
       this.addClass("s-checked-part");
     }
     _getValue() {
@@ -12292,6 +12296,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else {
         options = extend({}, options);
       }
+      this.partChecked = false;
       this.removeClass("s-checked-part");
       this.input.element.checked = value === true;
       options.triggerChange !== false && this._onValueChange();
@@ -12306,6 +12311,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   Checkbox.defaults = {
     text: null,
     valueText: { checked: "是", unchecked: "否" },
+    uncheckPart: false,
   };
   Component.register(Checkbox);
   var OptionListMixin = {
@@ -17046,6 +17052,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       this.setProps({
+        classes: { "nom-ellipsis-fit-content": this.props.fitContent },
         children: {
           classes: {
             "nom-ellipsis-inner": true,
@@ -17068,7 +17075,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
     }
   }
-  Ellipsis.defaults = { text: null, showTitle: true, line: null };
+  Ellipsis.defaults = {
+    text: null,
+    showTitle: true,
+    line: null,
+    fitContent: false,
+  };
   Component.register(Ellipsis);
   class Form extends Group {
     constructor(props, ...mixins) {
@@ -17138,6 +17150,42 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { treeConfig } = this.table.props;
       let spanProps = null;
       let children = this.props.data;
+      const isEllipsis =
+        ((this.table.props.ellipsis === "both" ||
+          this.table.props.ellipsis === "body") &&
+          this.props.column.ellipsis !== false) ||
+        this.props.column.ellipsis === true;
+      if (column.type === "checker") {
+        children = this._renderCombinedChecker({
+          row: this.tr,
+          rowData: this.tr.props.data,
+          index: this.tr.props.index,
+        });
+      }
+      if (column.type === "order") {
+        children = this._renderRowOrder({ index: this.tr.props.index });
+      }
+      if (column.type === "checker&order") {
+        children = this._renderCombinedChecker({
+          row: this.tr,
+          rowData: this.tr.props.data,
+          index: this.tr.props.index,
+          renderOrder: true,
+        });
+      }
+      if (
+        column.isChecker &&
+        column.field === "nom-grid-row-checker" &&
+        this.table.hasGrid &&
+        this.table.grid.props.rowCheckable &&
+        !this.table.grid.props.rowCheckable.checkboxOnNodeColumn
+      ) {
+        children = this._renderRowChecker({
+          row: this.tr,
+          rowData: this.tr.props.data,
+          index: this.tr.props.index,
+        });
+      }
       if (this.tr.props.editMode && column.editRender) {
         children = Object.assign(
           {},
@@ -17172,6 +17220,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.tr.props.index
         );
       }
+      if (isEllipsis) {
+        children = { component: "Ellipsis", fitContent: true, text: children };
+      }
       if (isFunction(column.cellMerge)) {
         spanProps = column.cellMerge({
           cell: this,
@@ -17181,6 +17232,85 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           rowData: this.tr.props.data,
           index: this.tr.props.index,
         });
+      }
+      if (column.tools) {
+        if (column.tools.align === "left") {
+          children = {
+            classes: { "nom-grid-column-with-tools": true },
+            align: "center",
+            component: "Flex",
+            cols: [
+              {
+                classes: {
+                  "nom-grid-column-tools": true,
+                  "nom-grid-column-tools-hover": column.tools.hover,
+                  "nom-grid-column-tools-hide": !(
+                    this.props.column.tools.placement === "body" ||
+                    this.props.column.tools.placement === "both"
+                  ),
+                },
+                children: this.props.column.tools.render({
+                  cell: this,
+                  row: this.tr,
+                  cellData: this.props.data,
+                  rowData: this.tr.props.data,
+                  index: this.tr.props.index,
+                }),
+              },
+              { children: children },
+            ],
+          };
+        } else if (column.tools.align === "right") {
+          children = {
+            align: "center",
+            component: "Flex",
+            cols: [
+              { grow: true, children: children },
+              {
+                classes: {
+                  "nom-grid-column-tools": true,
+                  "nom-grid-column-tools-hover": column.tools.hover,
+                  "nom-grid-column-tools-hide": !(
+                    this.props.column.tools.placement === "body" ||
+                    this.props.column.tools.placement === "both"
+                  ),
+                },
+                children: this.props.column.tools.render({
+                  cell: this,
+                  row: this.tr,
+                  cellData: this.props.data,
+                  rowData: this.tr.props.data,
+                  index: this.tr.props.index,
+                }),
+              },
+            ],
+          };
+        } else {
+          children = {
+            align: "center",
+            component: "Flex",
+            cols: [
+              { children: children },
+              {
+                classes: {
+                  "nom-grid-column-tools": true,
+                  "nom-grid-column-tools-hover": column.tools.hover,
+                  "nom-grid-column-tools-hide": !(
+                    this.props.column.tools.placement === "body" ||
+                    this.props.column.tools.placement === "both"
+                  ),
+                },
+                children: this.props.column.tools.render({
+                  cell: this,
+                  row: this.tr,
+                  cellData: this.props.data,
+                  rowData: this.tr.props.data,
+                  index: this.tr.props.index,
+                }),
+              },
+            ],
+          };
+        }
       }
       const isTreeNodeColumn =
         treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn;
@@ -17247,19 +17377,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           : this.props.column.rowSpan;
       if (rowSpan > 1) {
         this.table.hasRowGroup = true;
-      }
-      const isEllipsis =
-        ((this.table.props.ellipsis === "both" ||
-          this.table.props.ellipsis === "body") &&
-          this.props.column.ellipsis !== false) ||
-        this.props.column.ellipsis === true; // 用span包一层，为了伪元素的展示
-      if (isEllipsis && !column.autoWidth) {
-        children = {
-          tag: "span",
-          classes: { "nom-table-cell-content": true },
-          children,
-        };
-      }
+      } // // 用span包一层，为了伪元素的展示
+      // if (isEllipsis && !column.autoWidth) {
+      //   debugger
+      //   children = {
+      //     tag: 'span',
+      //     classes: { 'nom-table-cell-content': true },
+      //     children,
+      //   }
+      // }
       const showTitle =
         (((this.table.hasGrid && this.table.grid.props.showTitle) ||
           this.table.props.showTitle) &&
@@ -17305,9 +17431,95 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const fixed = this.props.column.fixed;
       if (fixed) {
         this._setTdsPosition();
-      }
+      } // if (this.props.column.tools && this.props.column.tools.align === 'left') {
+      //   this._fixThToolsPosition()
+      // }
     }
-    _renderCombinedChecker({ row, rowData, index }) {
+    _renderRowOrder({ index }) {
+      return index + 1;
+    }
+    _renderRowChecker({ row, rowData, index }) {
+      const grid = this.table.grid;
+      const { rowCheckable } = grid.props;
+      let normalizedRowCheckable = rowCheckable;
+      if (!isPlainObject(rowCheckable)) {
+        normalizedRowCheckable = {};
+      }
+      const { checkedRowKeys = [], checkboxRender } = normalizedRowCheckable;
+      const checkedRowKeysHash = {};
+      checkedRowKeys.forEach((rowKey) => {
+        checkedRowKeysHash[rowKey] = true;
+      });
+      let _checkboxProps = {}; // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
+      if (checkboxRender && isFunction(checkboxRender)) {
+        _checkboxProps = checkboxRender({ row, rowData, index });
+      } // 计算得到当前的 checkbox的状态
+      _checkboxProps.value =
+        _checkboxProps.value || checkedRowKeysHash[row.key] === true;
+      if (_checkboxProps.value === true) {
+        row._check();
+      }
+      if (checkedRowKeysHash[row.key] === true || _checkboxProps.value) {
+        grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
+      }
+      const { keyField } = grid.props;
+      const { parentField } = grid.props.treeConfig;
+      grid.nodeList[`__key${rowData[keyField]}`] = row;
+      row.childrenNodes = {};
+      row.parentNode = grid.nodeList[`__key${rowData[parentField]}`];
+      if (row.parentNode) {
+        row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
+      }
+      if (rowCheckable.type === "checker&order") {
+        return {
+          classes: { "nom-grid-checker-and-order": true },
+          children: [
+            {
+              component: "Checkbox",
+              classes: { "nom-grid-checkbox": true },
+              plain: true,
+              _created: (inst) => {
+                row._checkboxRef = inst;
+              },
+              _config() {
+                this.setProps(_checkboxProps);
+              },
+              attrs: { "data-key": row.key },
+              onValueChange: (args) => {
+                if (args.newValue === true) {
+                  grid.check(row);
+                } else {
+                  grid.uncheck(row);
+                }
+                grid.changeCheckAllState();
+              },
+            },
+            { classes: { "nom-grid-order-text": true }, children: index + 1 },
+          ],
+        };
+      }
+      return {
+        component: "Checkbox",
+        classes: { "nom-grid-checkbox": true },
+        plain: true,
+        _created: (inst) => {
+          row._checkboxRef = inst;
+        },
+        _config() {
+          this.setProps(_checkboxProps);
+        },
+        attrs: { "data-key": row.key },
+        onValueChange: (args) => {
+          if (args.newValue === true) {
+            grid.check(row);
+          } else {
+            grid.uncheck(row);
+          }
+          grid.changeCheckAllState();
+        },
+      };
+    }
+    _renderCombinedChecker({ row, rowData, index, renderOrder }) {
       const grid = this.table.grid;
       const { rowCheckable } = grid.props;
       let normalizedRowCheckable = rowCheckable;
@@ -17335,6 +17547,34 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       row.parentNode = grid.nodeList[`__key${rowData[parentField]}`];
       if (row.parentNode) {
         row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
+      }
+      if (renderOrder) {
+        return {
+          classes: { "nom-grid-checker-and-order": true },
+          children: [
+            {
+              component: "Checkbox",
+              classes: { "nom-grid-checkbox": true },
+              plain: true,
+              _created: (inst) => {
+                row._checkboxRef = inst;
+              },
+              _config() {
+                this.setProps(_checkboxProps);
+              },
+              attrs: { "data-key": row.key, style: { paddingRight: ".25rem" } },
+              onValueChange: (args) => {
+                if (args.newValue === true) {
+                  grid.check(row);
+                } else {
+                  grid.uncheck(row);
+                }
+                grid._checkboxAllRef && grid.changeCheckAllState();
+              },
+            },
+            { classes: { "nom-grid-order-text": true }, children: index + 1 },
+          ],
+        };
       }
       return {
         component: "Checkbox",
@@ -17396,6 +17636,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else {
         this.col.setMaxTdWidth(this.element.offsetWidth + tdPaddingWidth);
       }
+    }
+    _fixThToolsPosition() {
+      const w = this.element.querySelector(".nom-grid-column-tools")
+        .offsetWidth;
+      const f = this.props.column.field;
+      const target = this.table.grid.header.element
+        .querySelector(`thead [data-field="${f}"]`)
+        .querySelector(".nom-grid-column-th-tools");
+      if (target) target.style.width = `${w}px`;
     }
     /**
      * 解析css宽度字符，取出其中的数字部分
@@ -17951,11 +18200,36 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (!isString(titleStr)) {
         titleStr = null;
       }
+      let thContent = this.props.column.header || this.props.column.title;
+      if (
+        this.props.column.isChecker ||
+        this.props.column.type === "checker" ||
+        this.props.column.type === "checker&order"
+      ) {
+        thContent = {
+          component: "Checkbox",
+          attrs: { style: { display: "inline-flex", paddingRight: ".25rem" } },
+          uncheckPart: true,
+          plain: true,
+          _created: (inst) => {
+            that.table.grid._checkboxAllRef = inst;
+          },
+          onValueChange: (args) => {
+            if (args.newValue === true) {
+              that.table.grid.checkAllRows(false);
+            } else {
+              that.table.grid.uncheckAllRows(false);
+            }
+          },
+        };
+      }
       const headerProps = {
         tag: "span",
         attrs: { title: isEllipsis ? titleStr : null },
         classes: { "nom-table-cell-title": true },
-        children: this.props.column.header || this.props.column.title,
+        children: isEllipsis
+          ? { component: "Ellipsis", fitContent: true, text: thContent }
+          : thContent,
       };
       if (that.props.column.sortable && that.props.column.colSpan > 0) {
         headerProps.onClick = function () {
@@ -17974,7 +18248,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this.resizable = false;
       }
-      let children = [
+      const children = [
+        this.props.column.tools &&
+          this.props.column.tools.align === "left" && {
+            classes: {
+              "nom-grid-column-th-tools": true,
+              "nom-grid-column-th-tools-hover": this.props.column.tools.hover,
+              "nom-grid-column-th-tools-hide": !(
+                this.props.column.tools.placement === "header" ||
+                this.props.column.tools.placement === "both"
+              ),
+            },
+            children: this.props.column.tools.render({
+              isHeader: true,
+              field: this.props.column.field,
+            }),
+          },
         headerProps,
         this.props.column.sortable &&
           this.props.column.colSpan > 0 && {
@@ -18082,6 +18371,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               that.table.grid.handlePinClick(that.props.column);
             },
           },
+        this.props.column.tools &&
+          this.props.column.tools.align !== "left" && {
+            classes: {
+              "nom-grid-column-th-tools": true,
+              "nom-grid-column-th-tools-float-right":
+                this.props.column.tools.align === "right",
+              "nom-grid-column-th-tools-hover": this.props.column.tools.hover,
+              "nom-grid-column-th-tools-hide": !(
+                this.props.column.tools.placement === "header" ||
+                this.props.column.tools.placement === "both"
+              ),
+            },
+            children: this.props.column.tools.render({
+              isHeader: true,
+              field: this.props.column.field,
+            }),
+          },
         that.resizable && {
           // component: 'Icon',
           ref: (c) => {
@@ -18089,14 +18395,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }, // type: 'resize-handler',
           classes: { "nom-table-resize-handler": true },
         },
-      ]; // 用span包一层，为了伪元素的展示
-      if (isEllipsis) {
-        children = {
-          tag: "span",
-          classes: { "nom-table-cell-content": true },
-          children: children,
-        };
-      }
+      ]; // // 用span包一层，为了伪元素的展示
+      // if (isEllipsis) {
+      //   children = {
+      //     tag: 'span',
+      //     classes: { 'nom-table-cell-content': true },
+      //     children: children,
+      //   }
+      // }
       if (that.table.hasGrid) {
         const { column } = this.props;
         const { treeConfig, rowCheckable } = that.table.grid.props;
@@ -18147,6 +18453,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           colspan: this.props.column.colSpan,
           rowspan: this.props.column.rowSpan,
           align: this.props.column.align || columnAlign,
+          "data-field": this.props.column.field,
           onmouseenter:
             this.table.grid &&
             function () {
@@ -20640,7 +20947,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       row.uncheck();
     }
     _processCheckableColumn() {
-      const grid = this;
       const { rowCheckable } = this.props;
       let { columns } = this.props;
       if (rowCheckable) {
@@ -20650,74 +20956,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         if (!isPlainObject(rowCheckable)) {
           normalizedRowCheckable = {};
         }
-        const { checkedRowKeys = [], checkboxRender } = normalizedRowCheckable;
-        const checkedRowKeysHash = {};
-        checkedRowKeys.forEach((rowKey) => {
-          checkedRowKeysHash[rowKey] = true;
-        });
+        const { checkedRowKeys = [], tools } = normalizedRowCheckable;
+        checkedRowKeys.forEach((rowKey) => {});
         if (!rowCheckable.checkboxOnNodeColumn) {
           columns.unshift({
-            width: 50,
+            width: rowCheckable.width || 50,
             isChecker: true,
             resizable: false,
             field: "nom-grid-row-checker",
             classes: { "nom-grid-checkbox": true },
-            header: {
-              component: Checkbox,
-              plain: true,
-              _created: (inst) => {
-                grid._checkboxAllRef = inst;
-              },
-              onValueChange: (args) => {
-                if (args.newValue === true) {
-                  grid.checkAllRows(false);
-                } else {
-                  grid.uncheckAllRows(false);
-                }
-              },
-            },
-            cellRender: ({ row, rowData, index }) => {
-              let _checkboxProps = {}; // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
-              if (checkboxRender && isFunction(checkboxRender)) {
-                _checkboxProps = checkboxRender({ row, rowData, index });
-              } // 计算得到当前的 checkbox的状态
-              _checkboxProps.value =
-                _checkboxProps.value || checkedRowKeysHash[row.key] === true;
-              if (
-                checkedRowKeysHash[row.key] === true ||
-                _checkboxProps.value
-              ) {
-                grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
-              }
-              const { keyField } = this.props;
-              const { parentField } = this.props.treeConfig;
-              this.nodeList[`__key${rowData[keyField]}`] = row;
-              row.childrenNodes = {};
-              row.parentNode = this.nodeList[`__key${rowData[parentField]}`];
-              if (row.parentNode) {
-                row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
-              }
-              return {
-                component: Checkbox,
-                classes: { "nom-grid-checkbox": true },
-                plain: true,
-                _created: (inst) => {
-                  row._checkboxRef = inst;
-                },
-                _config() {
-                  this.setProps(_checkboxProps);
-                },
-                attrs: { "data-key": row.key },
-                onValueChange: (args) => {
-                  if (args.newValue === true) {
-                    grid.check(row);
-                  } else {
-                    grid.uncheck(row);
-                  }
-                  grid.changeCheckAllState();
-                },
-              };
-            },
+            tools,
           });
         }
         this.setProps({ columns: columns });

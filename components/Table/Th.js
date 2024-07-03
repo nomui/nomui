@@ -47,13 +47,43 @@ class Th extends Component {
       titleStr = null
     }
 
+    let thContent = this.props.column.header || this.props.column.title
+
+    if (this.props.column.isChecker || this.props.column.type === 'checker' || this.props.column.type === 'checker&order') {
+      thContent = {
+        component: 'Checkbox',
+        attrs: {
+          style: {
+            display: 'inline-flex',
+            paddingRight: '.25rem'
+          }
+        },
+        uncheckPart: true,
+        plain: true,
+        _created: (inst) => {
+          that.table.grid._checkboxAllRef = inst
+        },
+        onValueChange: (args) => {
+          if (args.newValue === true) {
+            that.table.grid.checkAllRows(false)
+          } else {
+            that.table.grid.uncheckAllRows(false)
+          }
+        },
+      }
+    }
+
     const headerProps = {
       tag: 'span',
       attrs: {
         title: isEllipsis ? titleStr : null,
       },
       classes: { 'nom-table-cell-title': true },
-      children: this.props.column.header || this.props.column.title,
+      children: isEllipsis ? {
+        component: 'Ellipsis',
+        fitContent: true,
+        text: thContent
+      } : thContent
     }
 
     if (that.props.column.sortable && that.props.column.colSpan > 0) {
@@ -77,7 +107,15 @@ class Th extends Component {
       this.resizable = false
     }
 
-    let children = [
+    const children = [
+      this.props.column.tools && this.props.column.tools.align === 'left' && {
+        classes: {
+          'nom-grid-column-th-tools': true,
+          'nom-grid-column-th-tools-hover': this.props.column.tools.hover,
+          'nom-grid-column-th-tools-hide': !(this.props.column.tools.placement === 'header' || this.props.column.tools.placement === 'both')
+        },
+        children: this.props.column.tools.render({ isHeader: true, field: this.props.column.field }),
+      },
       headerProps,
       this.props.column.sortable &&
       this.props.column.colSpan > 0 && {
@@ -104,6 +142,7 @@ class Th extends Component {
           style: {
             cursor: 'pointer',
           },
+
         },
         tooltip: this.filterValue
           ? this.table.grid.filterValueText[this.props.column.field]
@@ -196,6 +235,15 @@ class Th extends Component {
           that.table.grid.handlePinClick(that.props.column)
         },
       },
+      this.props.column.tools && this.props.column.tools.align !== 'left' && {
+        classes: {
+          'nom-grid-column-th-tools': true,
+          'nom-grid-column-th-tools-float-right': this.props.column.tools.align === 'right',
+          'nom-grid-column-th-tools-hover': this.props.column.tools.hover,
+          'nom-grid-column-th-tools-hide': !(this.props.column.tools.placement === 'header' || this.props.column.tools.placement === 'both')
+        },
+        children: this.props.column.tools.render({ isHeader: true, field: this.props.column.field }),
+      },
       that.resizable && {
         // component: 'Icon',
         ref: (c) => {
@@ -205,14 +253,14 @@ class Th extends Component {
         classes: { 'nom-table-resize-handler': true },
       },
     ]
-    // 用span包一层，为了伪元素的展示
-    if (isEllipsis) {
-      children = {
-        tag: 'span',
-        classes: { 'nom-table-cell-content': true },
-        children: children,
-      }
-    }
+    // // 用span包一层，为了伪元素的展示
+    // if (isEllipsis) {
+    //   children = {
+    //     tag: 'span',
+    //     classes: { 'nom-table-cell-content': true },
+    //     children: children,
+    //   }
+    // }
 
     if (that.table.hasGrid) {
       const { column } = this.props
@@ -266,6 +314,7 @@ class Th extends Component {
         colspan: this.props.column.colSpan,
         rowspan: this.props.column.rowSpan,
         align: this.props.column.align || columnAlign,
+        'data-field': this.props.column.field,
         onmouseenter:
           this.table.grid &&
           function () {

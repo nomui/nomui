@@ -4763,14 +4763,12 @@ body .nom-always-dark {
     overflow: auto;
   }
 }
-.markdown-article {
-  max-width: 1300px;
+.markdown-article,
+.nom-precode {
   padding: 20px 60px;
 }
-.markdown-article * {
-  color: #34495e;
-}
-.markdown-article p {
+.markdown-article p,
+.nom-precode p {
   box-sizing: border-box !important;
   min-height: 1em !important;
   margin: 20px 0 !important;
@@ -4779,30 +4777,41 @@ body .nom-always-dark {
   text-align: justify;
   word-wrap: break-word !important;
 }
-.markdown-article blockquote {
+.markdown-article blockquote,
+.nom-precode blockquote {
   margin: 0;
   padding: 0 15px !important;
   border-left: 4px solid var(--nom-color-primary);
 }
-.markdown-article strong {
+.markdown-article strong,
+.nom-precode strong {
   font-weight: bold;
 }
-.markdown-article body {
+.markdown-article body,
+.nom-precode body {
   font-size: 15px;
 }
-.markdown-article pre {
+.markdown-article pre,
+.nom-precode pre {
   padding: 12px 13px;
   font-size: 13px;
   word-wrap: break-word;
-  background: #f8f8f8;
   border-radius: 3px;
+  background: #2a2c2d;
+  color: #e6e6e6;
 }
 .markdown-article h1,
+.nom-precode h1,
 .markdown-article h2,
+.nom-precode h2,
 .markdown-article h3,
+.nom-precode h3,
 .markdown-article h4,
+.nom-precode h4,
 .markdown-article h5,
-.markdown-article h6 {
+.nom-precode h5,
+.markdown-article h6,
+.nom-precode h6 {
   position: relative;
   margin: 20px 0;
   padding-bottom: 0.3em;
@@ -4813,8 +4822,11 @@ body .nom-always-dark {
   word-break: break-all !important;
 }
 .markdown-article h1::before,
+.nom-precode h1::before,
 .markdown-article h2::before,
-.markdown-article h3::before {
+.nom-precode h2::before,
+.markdown-article h3::before,
+.nom-precode h3::before {
   position: absolute;
   top: -2px;
   left: -0.8em;
@@ -4823,71 +4835,75 @@ body .nom-always-dark {
   font-size: 1.2em;
   content: '#';
 }
-.markdown-article h1 {
+.markdown-article h1,
+.nom-precode h1 {
   /* border-bottom: 8px solid #71BA51 !important; */
   font-size: 20px !important;
 }
-.markdown-article h2 {
+.markdown-article h2,
+.nom-precode h2 {
   /* border-bottom: 5px solid #71BA51 !important; */
   font-size: 18px !important;
 }
-.markdown-article h3 {
+.markdown-article h3,
+.nom-precode h3 {
   /* border-bottom: 5px solid #71BA51 !important; */
   font-size: 16px !important;
 }
-.markdown-article a {
+.markdown-article a,
+.nom-precode a {
   color: var(--nom-color-primary) !important;
   text-decoration: none !important;
 }
 .markdown-article ul,
-.markdown-article ol {
+.nom-precode ul,
+.markdown-article ol,
+.nom-precode ol {
   padding-left: 30px;
 }
-.markdown-article li {
+.markdown-article li,
+.nom-precode li {
   line-height: 24px;
 }
-.markdown-article hr {
-  box-sizing: content-box;
-  height: 4px;
-  margin: 16px 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #e7e7e7;
-  border: 0 none;
-  border-bottom: 1px solid #ddd;
-}
-.markdown-article code {
-  margin: 0 2px;
-  padding: 3px 5px;
-  color: #e96900;
-  white-space: inherit;
-  background-color: #f8f8f8;
-  border-radius: 2px;
-}
-.markdown-article table {
+.markdown-article table,
+.nom-precode table {
   width: 100%;
   word-break: break-all;
   table-layout: fixed;
 }
+.markdown-article table code,
+.nom-precode table code {
+  color: #fa0;
+}
 .markdown-article table th,
-.markdown-article table td {
+.nom-precode table th,
+.markdown-article table td,
+.nom-precode table td {
   padding: 10px;
   border-bottom: 1px solid #eee;
 }
 .markdown-article table th:nth-child(1),
-.markdown-article table td:nth-child(1) {
+.nom-precode table th:nth-child(1),
+.markdown-article table td:nth-child(1),
+.nom-precode table td:nth-child(1) {
   width: 15%;
 }
 .markdown-article table th:nth-child(2),
-.markdown-article table td:nth-child(2) {
+.nom-precode table th:nth-child(2),
+.markdown-article table td:nth-child(2),
+.nom-precode table td:nth-child(2) {
   min-width: 40%;
 }
 .markdown-article table th:nth-child(3),
-.markdown-article table td:nth-child(3) {
+.nom-precode table th:nth-child(3),
+.markdown-article table td:nth-child(3),
+.nom-precode table td:nth-child(3) {
   width: 30%;
 }
 .markdown-article table th:nth-child(4),
-.markdown-article table td:nth-child(4) {
+.nom-precode table th:nth-child(4),
+.markdown-article table td:nth-child(4),
+.nom-precode table td:nth-child(4) {
   width: 15%;
 }
 .nom-layout-body > #DemoContent {
@@ -4895,6 +4911,13 @@ body .nom-always-dark {
 }
 .nom-layout-body > #DemoContent > .nom-tab-panel {
   height: 100%;
+}
+.nom-precode-container {
+  padding: 0 10px;
+  color: #333;
+}
+.nom-precode-container > p {
+  margin-top: 0;
 }
 .nom-app {
   width: 100%;
@@ -7564,15 +7587,23 @@ table.nom-table.p-bordered {
 .nom-grid > .nom-grid-header .nom-th.nom-table-parent-th {
   text-align: center;
 }
-.nom-grid > .nom-grid-header .nom-th .nom-icon {
+.nom-grid > .nom-grid-header .nom-th .nom-table-filter-handler,
+.nom-grid > .nom-grid-header .nom-th .nom-table-pin-handler,
+.nom-grid > .nom-grid-header .nom-th .nom-table-sort-handler {
   position: relative;
   top: 2px;
   margin-left: 5px;
   color: var(--nom-grid-icon-color);
 }
-.nom-grid > .nom-grid-header .nom-th .nom-icon.p-type-sort-up,
-.nom-grid > .nom-grid-header .nom-th .nom-icon.p-type-sort-down,
-.nom-grid > .nom-grid-header .nom-th .nom-icon.nom-filter-active {
+.nom-grid > .nom-grid-header .nom-th .nom-table-filter-handler.p-type-sort-up,
+.nom-grid > .nom-grid-header .nom-th .nom-table-pin-handler.p-type-sort-up,
+.nom-grid > .nom-grid-header .nom-th .nom-table-sort-handler.p-type-sort-up,
+.nom-grid > .nom-grid-header .nom-th .nom-table-filter-handler.p-type-sort-down,
+.nom-grid > .nom-grid-header .nom-th .nom-table-pin-handler.p-type-sort-down,
+.nom-grid > .nom-grid-header .nom-th .nom-table-sort-handler.p-type-sort-down,
+.nom-grid > .nom-grid-header .nom-th .nom-table-filter-handler.nom-filter-active,
+.nom-grid > .nom-grid-header .nom-th .nom-table-pin-handler.nom-filter-active,
+.nom-grid > .nom-grid-header .nom-th .nom-table-sort-handler.nom-filter-active {
   color: var(--nom-grid-icon-color-active);
 }
 .nom-grid > .nom-grid-header.nom-grid-highlight-col th:hover {
@@ -7654,6 +7685,41 @@ table.nom-table.p-bordered {
 .nom-grid .nom-table-cell-title .nom-field-content {
   justify-content: center;
 }
+.nom-grid .nom-grid-column-tools {
+  display: inline-flex;
+  padding-right: 0.5rem;
+}
+.nom-grid .nom-grid-column-tools-hover {
+  visibility: hidden;
+  opacity: 0;
+}
+.nom-grid .nom-grid-column-tools-hide {
+  visibility: hidden !important;
+}
+.nom-grid .nom-grid-column-th-tools {
+  display: inline-flex;
+  padding-right: 0.5rem;
+}
+.nom-grid .nom-grid-column-th-tools-float-right {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.nom-grid .nom-grid-column-th-tools-hide {
+  visibility: hidden !important;
+}
+.nom-grid tr:hover > td .nom-grid-column-tools-hover {
+  visibility: visible;
+  opacity: 1;
+}
+.nom-grid .nom-grid-column-th-tools-hover {
+  visibility: hidden;
+  opacity: 1;
+}
+.nom-grid th:hover > .nom-grid-column-th-tools-hover {
+  visibility: visible;
+}
 .nom-grid-setting-panel {
   min-width: 300px;
 }
@@ -7719,6 +7785,35 @@ table.nom-table.p-bordered {
 }
 .nom-grid table.nom-table tbody tr.nom-grid-tr-modified:not(.nom-tr-empty):hover {
   background-color: var(--nom-grid-tr-modified-bg-hover);
+}
+.nom-grid-checker-and-order {
+  position: relative;
+  display: inline-flex;
+}
+.nom-grid-checker-and-order > .nom-checkbox {
+  visibility: hidden;
+  transition: none;
+  opacity: 0;
+}
+.nom-grid-checker-and-order > .nom-grid-order-text {
+  transition: none;
+  position: absolute;
+  top: 6px;
+  left: -4px;
+  width: 24px;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+.nom-tr.s-checked .nom-grid-checker-and-order > .nom-checkbox,
+.nom-tr:hover .nom-grid-checker-and-order > .nom-checkbox {
+  visibility: visible;
+  opacity: 1;
+}
+.nom-tr.s-checked .nom-grid-checker-and-order > .nom-grid-order-text,
+.nom-tr:hover .nom-grid-checker-and-order > .nom-grid-order-text {
+  visibility: hidden;
 }
 .nom-icon {
   display: inline-flex;
@@ -10773,6 +10868,9 @@ textarea .nom-textarea {
   display: table;
   width: 100%;
   table-layout: fixed;
+}
+.nom-ellipsis.nom-ellipsis-fit-content {
+  width: fit-content;
 }
 .nom-ellipsis .nom-ellipsis-inner {
   overflow: hidden;
