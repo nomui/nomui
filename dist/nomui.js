@@ -17621,7 +17621,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       Array.from(this.element.children).forEach((child) => {
         const { marginLeft, marginRight } = getStyle(child);
         tdWidth +=
-          child.offsetWidth +
+          Math.max(child.offsetWidth, child.scrollWidth) +
           this._parseCssNumber(marginLeft) +
           this._parseCssNumber(marginRight);
       });
@@ -20346,9 +20346,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.addedRowKeys = [];
       this.removedRowKeys = [];
       this.removedRowData = [];
-      this.element.querySelectorAll(".nom-grid-tr-modified").forEach((n) => {
-        n.classList.remove("nom-grid-tr-modified");
-      });
+      if (this.element) {
+        this.element.querySelectorAll(".nom-grid-tr-modified").forEach((n) => {
+          n.classList.remove("nom-grid-tr-modified");
+        });
+      }
     }
     _processModifedRows(key) {
       if (
