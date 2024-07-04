@@ -78,6 +78,7 @@ class Tr extends Component {
       })
     }
     if (data._isGroup) {
+      const title = grid.props.columns.filter(x => { return x.field === data._currentFilter })[0].title
       this.setProps({
         tag: 'tr',
         key: data._filterKey,
@@ -105,7 +106,7 @@ class Tr extends Component {
                 }
               },
               {
-                children: data._currentFilter
+                children: title
               }
             ]
           },

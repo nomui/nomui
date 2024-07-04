@@ -1461,7 +1461,7 @@ class Grid extends Component {
         }
 
         // 插入分组头部信息
-        const filterKey = nomui.utils.newGuid(); // 使用nomui.utils.newGuid()生成GUID
+        const filterKey = nomui.utils.newGuid()
         const groupMeta = {
           _isGroup: true,
           _currentFilter: fields[fieldIndex],
@@ -1487,7 +1487,7 @@ class Grid extends Component {
       this.originData = this.props.data
     }
     const result = this._generateDataGroup({ data: this.originData, fields, sorter })
-
+    console.log(result)
     this.update({
       _isGrouping: true,
       data: result

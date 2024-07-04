@@ -43,7 +43,15 @@ define([], function () {
                                         })
                                         return
                                     }
-                                    refs.grid.filterGroup({ fields: v })
+
+                                    refs.grid.update({
+                                        grouping: {
+
+                                        }
+                                    })
+
+
+                                    // refs.grid.filterGroup({ data, fields: v })
                                 }
                             }
                         ]
@@ -56,7 +64,12 @@ define([], function () {
                             refs.grid = c
                             window.gggg = c
                         },
-
+                        grouping: {
+                            fields: ['team'],
+                        },
+                        // onSort: ({ field, direction }) => {
+                        //     refs.grid.update({ data: [] })
+                        // },
                         rowCheckable: {
 
                         },
