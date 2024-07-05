@@ -40,7 +40,10 @@ function getOffsetParent(el) {
   return el.offsetParent || el
 }
 
-function setOffset(elem, coordinates) {
+function setOffset(elem, coordinates, offset) {
+  if (!offset) {
+    offset = [0, 0]
+  }
   const parentOffset = getOffsetParent(elem).getBoundingClientRect()
 
   let props = {
@@ -55,8 +58,9 @@ function setOffset(elem, coordinates) {
   }
 
   if (getComputedStyle(elem).position === 'static') props.position = 'relative'
-  elem.style.top = `${props.top}px`
-  elem.style.left = `${props.left}px`
+
+  elem.style.top = `${props.top + (offset[1] || 0)}px`
+  elem.style.left = `${props.left + (offset[0] || 0)}px`
   elem.style.position = props.position
 }
 
@@ -337,6 +341,8 @@ function position(elem, options) {
   // Make a copy, we don't want to modify arguments
   options = extend({}, options)
 
+
+
   const target = options.of
   const within = positionTool.getWithinInfo(options.within)
   const scrollInfo = positionTool.getScrollInfo(within)
@@ -355,32 +361,32 @@ function position(elem, options) {
   // Clone to reuse original targetOffset later
   const basePosition = extend({}, targetOffset)
 
-  // Force my and at to have valid horizontal and vertical positions
-  // if a value is missing or invalid, it will be converted to center
-  ;['my', 'at'].forEach(function (item) {
-    let pos = (options[item] || '').split(' ')
+    // Force my and at to have valid horizontal and vertical positions
+    // if a value is missing or invalid, it will be converted to center
+    ;['my', 'at'].forEach(function (item) {
+      let pos = (options[item] || '').split(' ')
 
-    if (pos.length === 1) {
-      pos = rhorizontal.test(pos[0])
-        ? pos.concat(['center'])
-        : rvertical.test(pos[0])
-        ? ['center'].concat(pos)
-        : ['center', 'center']
-    }
-    pos[0] = rhorizontal.test(pos[0]) ? pos[0] : 'center'
-    pos[1] = rvertical.test(pos[1]) ? pos[1] : 'center'
+      if (pos.length === 1) {
+        pos = rhorizontal.test(pos[0])
+          ? pos.concat(['center'])
+          : rvertical.test(pos[0])
+            ? ['center'].concat(pos)
+            : ['center', 'center']
+      }
+      pos[0] = rhorizontal.test(pos[0]) ? pos[0] : 'center'
+      pos[1] = rvertical.test(pos[1]) ? pos[1] : 'center'
 
-    // Calculate offsets
-    const horizontalOffset = roffset.exec(pos[0])
-    const verticalOffset = roffset.exec(pos[1])
-    offsets[item] = [
-      horizontalOffset ? horizontalOffset[0] : 0,
-      verticalOffset ? verticalOffset[0] : 0,
-    ]
+      // Calculate offsets
+      const horizontalOffset = roffset.exec(pos[0])
+      const verticalOffset = roffset.exec(pos[1])
+      offsets[item] = [
+        horizontalOffset ? horizontalOffset[0] : 0,
+        verticalOffset ? verticalOffset[0] : 0,
+      ]
 
-    // Reduce to just the positions without the offsets
-    options[item] = [rposition.exec(pos[0])[0], rposition.exec(pos[1])[0]]
-  })
+      // Reduce to just the positions without the offsets
+      options[item] = [rposition.exec(pos[0])[0], rposition.exec(pos[1])[0]]
+    })
 
   // Normalize collision option
   if (collision.length === 1) {
@@ -428,33 +434,35 @@ function position(elem, options) {
   position.left += myOffset[0]
   position.top += myOffset[1]
 
+
   const collisionPosition = {
     marginLeft: marginLeft,
     marginTop: marginTop,
   }
-  ;['left', 'top'].forEach(function (dir, i) {
-    if (positionFns[collision[i]]) {
-      positionFns[collision[i]][dir](position, {
-        targetWidth: targetWidth,
-        targetHeight: targetHeight,
-        elemWidth: elemWidth,
-        elemHeight: elemHeight,
-        collisionPosition: collisionPosition,
-        collisionWidth: collisionWidth,
-        collisionHeight: collisionHeight,
-        offset: [atOffset[0] + myOffset[0], atOffset[1] + myOffset[1]],
-        my: options.my,
-        at: options.at,
-        within: within,
-        elem: elem,
-      })
-    }
-  })
+    ;['left', 'top'].forEach(function (dir, i) {
+      if (positionFns[collision[i]]) {
+        positionFns[collision[i]][dir](position, {
+          targetWidth: targetWidth,
+          targetHeight: targetHeight,
+          elemWidth: elemWidth,
+          elemHeight: elemHeight,
+          collisionPosition: collisionPosition,
+          collisionWidth: collisionWidth,
+          collisionHeight: collisionHeight,
+          offset: [atOffset[0] + myOffset[0], atOffset[1] + myOffset[1]],
+          my: options.my,
+          at: options.at,
+          within: within,
+          elem: elem,
+        })
+      }
+    })
   // 如果元素定位过程中发生了翻转，则将偏移数据记录在其dom属性中
   elem.setAttribute('offset-x', position.offsetX || '0')
   elem.setAttribute('offset-y', position.offsetY || '0')
 
-  setOffset(elem, position)
+
+  setOffset(elem, position, options.offset)
 }
 
 export { positionTool }
