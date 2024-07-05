@@ -16821,7 +16821,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         title,
         closeIcon,
         content,
+        footer,
       } = drawer.props;
+      let footProps = null;
+      if (isPlainObject(footer)) {
+        footProps = footer;
+      } else if (isFunction(footer)) {
+        footProps = footer(drawer);
+      }
       return {
         component: "Panel",
         fit: true,
@@ -16844,33 +16851,37 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 ],
               }
             : false,
-        footer: {
-          classes: { "nom-drawer-footer": true },
-          children: {
-            component: "Flex",
-            fit: true,
-            align: "center",
-            justify: "center",
-            gap: "medium",
-            cols: [
-              {
-                component: "Button",
-                type: "primary",
-                text: okText,
-                onClick: () => {
-                  drawer._callHandler(onOk);
-                },
+        footer: footProps
+          ? Object.assign({}, footProps, {
+              classes: { "nom-drawer-footer": true },
+            })
+          : {
+              classes: { "nom-drawer-footer": true },
+              children: {
+                component: "Flex",
+                fit: true,
+                align: "center",
+                justify: "center",
+                gap: "medium",
+                cols: [
+                  {
+                    component: "Button",
+                    type: "primary",
+                    text: okText,
+                    onClick: () => {
+                      drawer._callHandler(onOk);
+                    },
+                  },
+                  {
+                    component: "Button",
+                    text: cancelText,
+                    onClick: () => {
+                      drawer._callHandler(onCancel);
+                    },
+                  },
+                ],
               },
-              {
-                component: "Button",
-                text: cancelText,
-                onClick: () => {
-                  drawer._callHandler(onCancel);
-                },
-              },
-            ],
-          },
-        },
+            },
       };
     }
     _getRelativePosition(container) {
