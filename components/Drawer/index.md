@@ -20,7 +20,7 @@ Drawer 抽屉
 | size | 模态框预定义尺寸，传入size会覆盖width、height配置 | `string` \|`xsmall \| small \| medium \| large \| xlarge` | - |
 | title | 抽屉的标题 | `string \| Component` | `-` |
 | content | 抽屉的内容 | `string\|Component` | `-` |
-| footer | 抽屉的页脚 | `string\|Component` | `-` |
+| footer | 抽屉的页脚 | `(inst)=>{}\|Component` | `-` |
 | okText | 页脚确认按钮文字 | `string` | `确 定` |
 | onOk | 确认按钮回调 | `({sender})=>void` | `-` |
 | cancelText | 页脚取消按钮文字 | `string\|Component` | `取 消` |
