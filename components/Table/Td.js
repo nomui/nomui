@@ -84,7 +84,7 @@ class Td extends Component {
       )
     }
 
-    if (isEllipsis) {
+    if (isEllipsis && !this.props.column.autoWidth) {
       children = {
         component: 'Ellipsis',
         // fitContent: true,
