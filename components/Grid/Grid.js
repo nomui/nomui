@@ -1034,7 +1034,7 @@ class Grid extends Component {
       if (!isPlainObject(rowCheckable)) {
         normalizedRowCheckable = {}
       }
-      const { checkedRowKeys = [], tools } = normalizedRowCheckable
+      const { checkedRowKeys = [], toolbar } = normalizedRowCheckable
       const checkedRowKeysHash = {}
       checkedRowKeys.forEach((rowKey) => {
         checkedRowKeysHash[rowKey] = true
@@ -1048,7 +1048,7 @@ class Grid extends Component {
           classes: {
             'nom-grid-checkbox': true,
           },
-          tools,
+          toolbar,
         })
       }
       this.setProps({

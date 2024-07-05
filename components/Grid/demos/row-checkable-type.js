@@ -14,7 +14,7 @@ define([], function () {
                             checkedRowKeys: [5],
                             type: 'checker&order',
                             width: 80,
-                            tools: {
+                            toolbar: {
                                 align: 'left', // 工具栏靠左
                                 placement: 'both', // 工具栏位置 header表头 body表身 both表头+表身
                                 hover: true,

@@ -87,7 +87,7 @@ class Td extends Component {
     if (isEllipsis) {
       children = {
         component: 'Ellipsis',
-        fitContent: true,
+        // fitContent: true,
         text: children
       }
     }
@@ -103,8 +103,8 @@ class Td extends Component {
       })
     }
 
-    if (column.tools && isPlainObject(column.tools)) {
-      if (column.tools.align === 'left') {
+    if (column.toolbar) {
+      if (column.toolbar.align === 'left') {
         children = {
           classes: {
             'nom-grid-column-with-tools': true
@@ -115,10 +115,10 @@ class Td extends Component {
             {
               classes: {
                 'nom-grid-column-tools': true,
-                'nom-grid-column-tools-hover': column.tools.hover,
-                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
+                'nom-grid-column-tools-hover': column.toolbar.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
               },
-              children: this.props.column.tools.render({
+              children: this.props.column.toolbar.render({
                 cell: this,
                 row: this.tr,
                 cellData: this.props.data,
@@ -133,7 +133,7 @@ class Td extends Component {
           ]
         }
       }
-      else if (column.tools.align === 'right') {
+      else if (column.toolbar.align === 'right') {
         children = {
           align: 'center',
           component: 'Flex',
@@ -145,10 +145,10 @@ class Td extends Component {
             {
               classes: {
                 'nom-grid-column-tools': true,
-                'nom-grid-column-tools-hover': column.tools.hover,
-                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
+                'nom-grid-column-tools-hover': column.toolbar.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
               },
-              children: this.props.column.tools.render({
+              children: this.props.column.toolbar.render({
                 cell: this,
                 row: this.tr,
                 cellData: this.props.data,
@@ -170,10 +170,10 @@ class Td extends Component {
             {
               classes: {
                 'nom-grid-column-tools': true,
-                'nom-grid-column-tools-hover': column.tools.hover,
-                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
+                'nom-grid-column-tools-hover': column.toolbar.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
               },
-              children: this.props.column.tools.render({
+              children: this.props.column.toolbar.render({
                 cell: this,
                 row: this.tr,
                 cellData: this.props.data,
@@ -332,7 +332,7 @@ class Td extends Component {
     if (fixed) {
       this._setTdsPosition()
     }
-    // if (this.props.column.tools && this.props.column.tools.align === 'left') {
+    // if (this.props.column.toolbar && this.props.column.toolbar.align === 'left') {
     //   this._fixThToolsPosition()
     // }
   }
