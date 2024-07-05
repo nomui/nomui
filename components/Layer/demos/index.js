@@ -3,6 +3,7 @@ define(
         './basic.js',
         './align-inner.js',
         './align-outer.js',
+        './offset.js',
         './backdrop.js',
     ],
     function () {

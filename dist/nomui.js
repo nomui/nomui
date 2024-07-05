@@ -5435,7 +5435,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   function getOffsetParent(el) {
     return el.offsetParent || el;
   }
-  function setOffset(elem, coordinates) {
+  function setOffset(elem, coordinates, offset) {
+    if (!offset) {
+      offset = [0, 0];
+    }
     const parentOffset = getOffsetParent(elem).getBoundingClientRect();
     let props = {
       top: coordinates.top - parentOffset.top,
@@ -5446,8 +5449,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     if (getComputedStyle(elem).position === "static")
       props.position = "relative";
-    elem.style.top = `${props.top}px`;
-    elem.style.left = `${props.left}px`;
+    elem.style.top = `${props.top + (offset[1] || 0)}px`;
+    elem.style.left = `${props.left + (offset[0] || 0)}px`;
     elem.style.position = props.position;
   }
   function getOffset$1(elem) {
@@ -5850,7 +5853,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }); // 如果元素定位过程中发生了翻转，则将偏移数据记录在其dom属性中
     elem.setAttribute("offset-x", position.offsetX || "0");
     elem.setAttribute("offset-y", position.offsetY || "0");
-    setOffset(elem, position);
+    setOffset(elem, position, options.offset);
   }
   class PanelBody extends Component {
     // constructor(props, ...mixins) {
@@ -7740,6 +7743,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           props.position.at = `${pos[0]} ${pos[1]}`;
         }
       }
+      if (props.offset) {
+        props.position = Object.assign({}, props.position, {
+          offset: props.offset,
+        });
+      }
     }
   }
   Layer.defaults = {
@@ -7751,6 +7759,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     onClose: null,
     onHide: null,
     onShow: null,
+    offset: null,
     closeOnClickOutside: false,
     closeToRemove: false,
     position: null,

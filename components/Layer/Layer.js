@@ -257,6 +257,10 @@ class Layer extends Component {
         props.position.at = `${pos[0]} ${pos[1]}`
       }
     }
+
+    if (props.offset) {
+      props.position = { ...props.position, offset: props.offset }
+    }
   }
 }
 
@@ -270,11 +274,11 @@ Layer.defaults = {
   onHide: null,
   onShow: null,
 
+  offset: null,
   closeOnClickOutside: false,
   closeToRemove: false,
 
   position: null,
-
   hidden: false,
 
   backdrop: false,
