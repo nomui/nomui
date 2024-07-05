@@ -19,7 +19,7 @@ define([], function () {
                         title: '标题',
                         width: 100,
                         ellipsis: true,
-                        tools: {
+                        toolbar: {
                             // 不配置align则工具栏跟随内容
                             hover: true,
                             placement: 'both',
@@ -59,7 +59,7 @@ define([], function () {
                                 text: cellData
                             }
                         },
-                        tools: {
+                        toolbar: {
                             align: 'right', // 工具栏靠右
                             placement: 'both',
                             render: ({ row, cellData, rowData, index }) => {
@@ -99,7 +99,7 @@ define([], function () {
                         field: 'sales',
                         title: '销量',
                         width: 150,
-                        tools: {
+                        toolbar: {
                             align: 'left',
                             placement: 'body',
                             render: ({ row, cellData, rowData, index }) => {

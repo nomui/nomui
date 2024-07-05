@@ -17221,7 +17221,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         );
       }
       if (isEllipsis) {
-        children = { component: "Ellipsis", fitContent: true, text: children };
+        children = {
+          component: "Ellipsis", // fitContent: true,
+          text: children,
+        };
       }
       if (isFunction(column.cellMerge)) {
         spanProps = column.cellMerge({
@@ -17233,8 +17236,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           index: this.tr.props.index,
         });
       }
-      if (column.tools && isPlainObject(column.tools)) {
-        if (column.tools.align === "left") {
+      if (column.toolbar) {
+        if (column.toolbar.align === "left") {
           children = {
             classes: { "nom-grid-column-with-tools": true },
             align: "center",
@@ -17243,13 +17246,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               {
                 classes: {
                   "nom-grid-column-tools": true,
-                  "nom-grid-column-tools-hover": column.tools.hover,
+                  "nom-grid-column-tools-hover": column.toolbar.hover,
                   "nom-grid-column-tools-hide": !(
-                    this.props.column.tools.placement === "body" ||
-                    this.props.column.tools.placement === "both"
+                    this.props.column.toolbar.placement === "body" ||
+                    this.props.column.toolbar.placement === "both"
                   ),
                 },
-                children: this.props.column.tools.render({
+                children: this.props.column.toolbar.render({
                   cell: this,
                   row: this.tr,
                   cellData: this.props.data,
@@ -17260,7 +17263,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               { children: children },
             ],
           };
-        } else if (column.tools.align === "right") {
+        } else if (column.toolbar.align === "right") {
           children = {
             align: "center",
             component: "Flex",
@@ -17269,13 +17272,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               {
                 classes: {
                   "nom-grid-column-tools": true,
-                  "nom-grid-column-tools-hover": column.tools.hover,
+                  "nom-grid-column-tools-hover": column.toolbar.hover,
                   "nom-grid-column-tools-hide": !(
-                    this.props.column.tools.placement === "body" ||
-                    this.props.column.tools.placement === "both"
+                    this.props.column.toolbar.placement === "body" ||
+                    this.props.column.toolbar.placement === "both"
                   ),
                 },
-                children: this.props.column.tools.render({
+                children: this.props.column.toolbar.render({
                   cell: this,
                   row: this.tr,
                   cellData: this.props.data,
@@ -17294,13 +17297,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               {
                 classes: {
                   "nom-grid-column-tools": true,
-                  "nom-grid-column-tools-hover": column.tools.hover,
+                  "nom-grid-column-tools-hover": column.toolbar.hover,
                   "nom-grid-column-tools-hide": !(
-                    this.props.column.tools.placement === "body" ||
-                    this.props.column.tools.placement === "both"
+                    this.props.column.toolbar.placement === "body" ||
+                    this.props.column.toolbar.placement === "both"
                   ),
                 },
-                children: this.props.column.tools.render({
+                children: this.props.column.toolbar.render({
                   cell: this,
                   row: this.tr,
                   cellData: this.props.data,
@@ -17431,7 +17434,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const fixed = this.props.column.fixed;
       if (fixed) {
         this._setTdsPosition();
-      } // if (this.props.column.tools && this.props.column.tools.align === 'left') {
+      } // if (this.props.column.toolbar && this.props.column.toolbar.align === 'left') {
       //   this._fixThToolsPosition()
       // }
     }
@@ -18228,7 +18231,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         attrs: { title: isEllipsis ? titleStr : null },
         classes: { "nom-table-cell-title": true },
         children: isEllipsis
-          ? { component: "Ellipsis", fitContent: true, text: thContent }
+          ? {
+              component: "Ellipsis", // fitContent: true,
+              text: thContent,
+            }
           : thContent,
       };
       if (that.props.column.sortable && that.props.column.colSpan > 0) {
@@ -18249,18 +18255,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.resizable = false;
       }
       const children = [
-        this.props.column.tools &&
-          isPlainObject(this.props.tools) &&
-          this.props.column.tools.align === "left" && {
+        this.props.column.toolbar &&
+          this.props.column.toolbar.align === "left" && {
             classes: {
               "nom-grid-column-th-tools": true,
-              "nom-grid-column-th-tools-hover": this.props.column.tools.hover,
+              "nom-grid-column-th-tools-hover": this.props.column.toolbar.hover,
               "nom-grid-column-th-tools-hide": !(
-                this.props.column.tools.placement === "header" ||
-                this.props.column.tools.placement === "both"
+                this.props.column.toolbar.placement === "header" ||
+                this.props.column.toolbar.placement === "both"
               ),
             },
-            children: this.props.column.tools.render({
+            children: this.props.column.toolbar.render({
               isHeader: true,
               field: this.props.column.field,
             }),
@@ -18372,20 +18377,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               that.table.grid.handlePinClick(that.props.column);
             },
           },
-        this.props.column.tools &&
-          isPlainObject(this.props.tools) &&
-          this.props.column.tools.align !== "left" && {
+        this.props.column.toolbar &&
+          this.props.column.toolbar.align !== "left" && {
             classes: {
               "nom-grid-column-th-tools": true,
               "nom-grid-column-th-tools-float-right":
-                this.props.column.tools.align === "right",
-              "nom-grid-column-th-tools-hover": this.props.column.tools.hover,
+                this.props.column.toolbar.align === "right",
+              "nom-grid-column-th-tools-hover": this.props.column.toolbar.hover,
               "nom-grid-column-th-tools-hide": !(
-                this.props.column.tools.placement === "header" ||
-                this.props.column.tools.placement === "both"
+                this.props.column.toolbar.placement === "header" ||
+                this.props.column.toolbar.placement === "both"
               ),
             },
-            children: this.props.column.tools.render({
+            children: this.props.column.toolbar.render({
               isHeader: true,
               field: this.props.column.field,
             }),
@@ -20960,7 +20964,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         if (!isPlainObject(rowCheckable)) {
           normalizedRowCheckable = {};
         }
-        const { checkedRowKeys = [], tools } = normalizedRowCheckable;
+        const { checkedRowKeys = [], toolbar } = normalizedRowCheckable;
         checkedRowKeys.forEach((rowKey) => {});
         if (!rowCheckable.checkboxOnNodeColumn) {
           columns.unshift({
@@ -20969,7 +20973,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             resizable: false,
             field: "nom-grid-row-checker",
             classes: { "nom-grid-checkbox": true },
-            tools,
+            toolbar,
           });
         }
         this.setProps({ columns: columns });
