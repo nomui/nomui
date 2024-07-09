@@ -84,13 +84,13 @@ class Td extends Component {
       )
     }
 
-    if (isEllipsis && !this.props.column.autoWidth) {
-      children = {
-        component: 'Ellipsis',
-        // fitContent: true,
-        text: children
-      }
-    }
+    // if (isEllipsis && !this.props.column.autoWidth) {
+    //   children = {
+    //     component: 'Ellipsis',
+    //     // fitContent: true,
+    //     text: children
+    //   }
+    // }
 
     if (isFunction(column.cellMerge)) {
       spanProps = column.cellMerge({
@@ -140,6 +140,9 @@ class Td extends Component {
           cols: [
             {
               grow: true,
+              classes: {
+                'nom-grid-td-cell-ellipsis': true
+              },
               children: children
             },
             {
@@ -165,6 +168,9 @@ class Td extends Component {
           component: 'Flex',
           cols: [
             {
+              classes: {
+                'nom-grid-td-cell-ellipsis': true
+              },
               children: children
             },
             {
@@ -274,14 +280,13 @@ class Td extends Component {
 
 
     // // 用span包一层，为了伪元素的展示
-    // if (isEllipsis && !column.autoWidth) {
-    //   debugger
-    //   children = {
-    //     tag: 'span',
-    //     classes: { 'nom-table-cell-content': true },
-    //     children,
-    //   }
-    // }
+    if (isEllipsis && !column.autoWidth) {
+      children = {
+        tag: 'span',
+        classes: { 'nom-table-cell-content': true },
+        children,
+      }
+    }
 
     const showTitle =
       (((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
