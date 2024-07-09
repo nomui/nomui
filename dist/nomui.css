@@ -7383,6 +7383,14 @@ table.nom-table th.nom-table-ellipsis {
   text-overflow: ellipsis;
   word-break: keep-all;
 }
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content .nom-grid-td-cell-ellipsis,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-grid-td-cell-ellipsis {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+}
 table.nom-table td.nom-table-ellipsis .nom-table-cell-content .nom-table-cell-title,
 table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-table-cell-title {
   display: block;
@@ -7515,6 +7523,7 @@ table.nom-table th > .nom-table-filter {
   color: var(--nom-grid-icon-color);
 }
 table.nom-table th.nom-table-ellipsis .nom-table-cell-content {
+  align-items: center;
   display: flex !important;
 }
 table.nom-table .nom-tr-expand-indicator {
@@ -7590,8 +7599,6 @@ table.nom-table.p-bordered {
 .nom-grid > .nom-grid-header .nom-th .nom-table-filter-handler,
 .nom-grid > .nom-grid-header .nom-th .nom-table-pin-handler,
 .nom-grid > .nom-grid-header .nom-th .nom-table-sort-handler {
-  position: relative;
-  top: 2px;
   margin-left: 5px;
   color: var(--nom-grid-icon-color);
 }
@@ -7717,7 +7724,7 @@ table.nom-table.p-bordered {
   visibility: hidden;
   opacity: 1;
 }
-.nom-grid th:hover > .nom-grid-column-th-tools-hover {
+.nom-grid th:hover .nom-grid-column-th-tools-hover {
   visibility: visible;
 }
 .nom-grid-setting-panel {

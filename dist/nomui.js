@@ -17072,7 +17072,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       this.setProps({
-        classes: { "nom-ellipsis-fit-content": this.props.fitContent },
         children: {
           classes: {
             "nom-ellipsis-inner": true,
@@ -17239,13 +17238,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.props.record,
           this.tr.props.index
         );
-      }
-      if (isEllipsis && !this.props.column.autoWidth) {
-        children = {
-          component: "Ellipsis", // fitContent: true,
-          text: children,
-        };
-      }
+      } // if (isEllipsis && !this.props.column.autoWidth) {
+      //   children = {
+      //     component: 'Ellipsis',
+      //     // fitContent: true,
+      //     text: children
+      //   }
+      // }
       if (isFunction(column.cellMerge)) {
         spanProps = column.cellMerge({
           cell: this,
@@ -17288,7 +17287,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             align: "center",
             component: "Flex",
             cols: [
-              { grow: true, children: children },
+              {
+                grow: true,
+                classes: { "nom-grid-td-cell-ellipsis": true },
+                children: children,
+              },
               {
                 classes: {
                   "nom-grid-column-tools": true,
@@ -17313,7 +17316,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             align: "center",
             component: "Flex",
             cols: [
-              { children: children },
+              {
+                classes: { "nom-grid-td-cell-ellipsis": true },
+                children: children,
+              },
               {
                 classes: {
                   "nom-grid-column-tools": true,
@@ -17401,14 +17407,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (rowSpan > 1) {
         this.table.hasRowGroup = true;
       } // // 用span包一层，为了伪元素的展示
-      // if (isEllipsis && !column.autoWidth) {
-      //   debugger
-      //   children = {
-      //     tag: 'span',
-      //     classes: { 'nom-table-cell-content': true },
-      //     children,
-      //   }
-      // }
+      if (isEllipsis && !column.autoWidth) {
+        children = {
+          tag: "span",
+          classes: { "nom-table-cell-content": true },
+          children,
+        };
+      }
       const showTitle =
         (((this.table.hasGrid && this.table.grid.props.showTitle) ||
           this.table.props.showTitle) &&
@@ -18249,13 +18254,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const headerProps = {
         tag: "span",
         attrs: { title: isEllipsis ? titleStr : null },
-        classes: { "nom-table-cell-title": true },
-        children: isEllipsis
-          ? {
-              component: "Ellipsis", // fitContent: true,
-              text: thContent,
-            }
-          : thContent,
+        classes: { "nom-table-cell-title": true }, // children: isEllipsis ? {
+        //   classes: {
+        //     'nom-table-cell-ellipsis': true
+        //   },
+        //   children: thContent
+        // } : thContent
+        children: thContent,
       };
       if (that.props.column.sortable && that.props.column.colSpan > 0) {
         headerProps.onClick = function () {
@@ -18274,7 +18279,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this.resizable = false;
       }
-      const children = [
+      let children = [
         this.props.column.toolbar &&
           this.props.column.toolbar.align === "left" && {
             classes: {
@@ -18421,14 +18426,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }, // type: 'resize-handler',
           classes: { "nom-table-resize-handler": true },
         },
-      ]; // // 用span包一层，为了伪元素的展示
-      // if (isEllipsis) {
-      //   children = {
-      //     tag: 'span',
-      //     classes: { 'nom-table-cell-content': true },
-      //     children: children,
-      //   }
-      // }
+      ]; // 用span包一层，为了伪元素的展示
+      if (isEllipsis) {
+        children = {
+          tag: "span",
+          classes: { "nom-table-cell-content": true },
+          children: children,
+        };
+      }
       if (that.table.hasGrid) {
         const { column } = this.props;
         const { treeConfig, rowCheckable } = that.table.grid.props;

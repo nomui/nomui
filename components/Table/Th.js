@@ -79,11 +79,13 @@ class Th extends Component {
         title: isEllipsis ? titleStr : null,
       },
       classes: { 'nom-table-cell-title': true },
-      children: isEllipsis ? {
-        component: 'Ellipsis',
-        // fitContent: true,
-        text: thContent
-      } : thContent
+      // children: isEllipsis ? {
+      //   classes: {
+      //     'nom-table-cell-ellipsis': true
+      //   },
+      //   children: thContent
+      // } : thContent
+      children: thContent
     }
 
     if (that.props.column.sortable && that.props.column.colSpan > 0) {
@@ -108,7 +110,7 @@ class Th extends Component {
     }
 
 
-    const children = [
+    let children = [
       this.props.column.toolbar && this.props.column.toolbar.align === 'left' && {
         classes: {
           'nom-grid-column-th-tools': true,
@@ -254,14 +256,14 @@ class Th extends Component {
         classes: { 'nom-table-resize-handler': true },
       },
     ]
-    // // 用span包一层，为了伪元素的展示
-    // if (isEllipsis) {
-    //   children = {
-    //     tag: 'span',
-    //     classes: { 'nom-table-cell-content': true },
-    //     children: children,
-    //   }
-    // }
+    // 用span包一层，为了伪元素的展示
+    if (isEllipsis) {
+      children = {
+        tag: 'span',
+        classes: { 'nom-table-cell-content': true },
+        children: children,
+      }
+    }
 
     if (that.table.hasGrid) {
       const { column } = this.props
