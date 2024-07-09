@@ -84,13 +84,13 @@ class Td extends Component {
       )
     }
 
-    if (isEllipsis) {
-      children = {
-        component: 'Ellipsis',
-        fitContent: true,
-        text: children
-      }
-    }
+    // if (isEllipsis && !this.props.column.autoWidth) {
+    //   children = {
+    //     component: 'Ellipsis',
+    //     // fitContent: true,
+    //     text: children
+    //   }
+    // }
 
     if (isFunction(column.cellMerge)) {
       spanProps = column.cellMerge({
@@ -103,8 +103,8 @@ class Td extends Component {
       })
     }
 
-    if (column.tools) {
-      if (column.tools.align === 'left') {
+    if (column.toolbar) {
+      if (column.toolbar.align === 'left') {
         children = {
           classes: {
             'nom-grid-column-with-tools': true
@@ -115,10 +115,10 @@ class Td extends Component {
             {
               classes: {
                 'nom-grid-column-tools': true,
-                'nom-grid-column-tools-hover': column.tools.hover,
-                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
+                'nom-grid-column-tools-hover': column.toolbar.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
               },
-              children: this.props.column.tools.render({
+              children: this.props.column.toolbar.render({
                 cell: this,
                 row: this.tr,
                 cellData: this.props.data,
@@ -133,22 +133,25 @@ class Td extends Component {
           ]
         }
       }
-      else if (column.tools.align === 'right') {
+      else if (column.toolbar.align === 'right') {
         children = {
           align: 'center',
           component: 'Flex',
           cols: [
             {
               grow: true,
+              classes: {
+                'nom-grid-td-cell-ellipsis': true
+              },
               children: children
             },
             {
               classes: {
                 'nom-grid-column-tools': true,
-                'nom-grid-column-tools-hover': column.tools.hover,
-                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
+                'nom-grid-column-tools-hover': column.toolbar.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
               },
-              children: this.props.column.tools.render({
+              children: this.props.column.toolbar.render({
                 cell: this,
                 row: this.tr,
                 cellData: this.props.data,
@@ -165,15 +168,18 @@ class Td extends Component {
           component: 'Flex',
           cols: [
             {
+              classes: {
+                'nom-grid-td-cell-ellipsis': true
+              },
               children: children
             },
             {
               classes: {
                 'nom-grid-column-tools': true,
-                'nom-grid-column-tools-hover': column.tools.hover,
-                'nom-grid-column-tools-hide': !(this.props.column.tools.placement === 'body' || this.props.column.tools.placement === 'both')
+                'nom-grid-column-tools-hover': column.toolbar.hover,
+                'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
               },
-              children: this.props.column.tools.render({
+              children: this.props.column.toolbar.render({
                 cell: this,
                 row: this.tr,
                 cellData: this.props.data,
@@ -274,14 +280,13 @@ class Td extends Component {
 
 
     // // 用span包一层，为了伪元素的展示
-    // if (isEllipsis && !column.autoWidth) {
-    //   debugger
-    //   children = {
-    //     tag: 'span',
-    //     classes: { 'nom-table-cell-content': true },
-    //     children,
-    //   }
-    // }
+    if (isEllipsis && !column.autoWidth) {
+      children = {
+        tag: 'span',
+        classes: { 'nom-table-cell-content': true },
+        children,
+      }
+    }
 
     const showTitle =
       (((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
@@ -332,7 +337,7 @@ class Td extends Component {
     if (fixed) {
       this._setTdsPosition()
     }
-    // if (this.props.column.tools && this.props.column.tools.align === 'left') {
+    // if (this.props.column.toolbar && this.props.column.toolbar.align === 'left') {
     //   this._fixThToolsPosition()
     // }
   }
@@ -591,10 +596,11 @@ class Td extends Component {
     const needRightPadding =
       !!this.table.grid.props.columnsCustomizable && this.props.column.lastRight
 
+
     Array.from(this.element.children).forEach((child) => {
       const { marginLeft, marginRight } = getStyle(child)
       tdWidth +=
-        child.offsetWidth + this._parseCssNumber(marginLeft) + this._parseCssNumber(marginRight)
+        Math.max(child.offsetWidth, child.scrollWidth) + this._parseCssNumber(marginLeft) + this._parseCssNumber(marginRight)
     })
 
     if (this.table.hasGrid) {

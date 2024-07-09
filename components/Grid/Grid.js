@@ -324,9 +324,12 @@ class Grid extends Component {
     this.removedRowKeys = []
     this.removedRowData = []
 
-    this.element.querySelectorAll('.nom-grid-tr-modified').forEach(n => {
-      n.classList.remove('nom-grid-tr-modified')
-    })
+
+    if (this.element) {
+      this.element.querySelectorAll('.nom-grid-tr-modified').forEach(n => {
+        n.classList.remove('nom-grid-tr-modified')
+      })
+    }
   }
 
   _processModifedRows(key) {
@@ -1031,7 +1034,7 @@ class Grid extends Component {
       if (!isPlainObject(rowCheckable)) {
         normalizedRowCheckable = {}
       }
-      const { checkedRowKeys = [], tools } = normalizedRowCheckable
+      const { checkedRowKeys = [], toolbar } = normalizedRowCheckable
       const checkedRowKeysHash = {}
       checkedRowKeys.forEach((rowKey) => {
         checkedRowKeysHash[rowKey] = true
@@ -1045,7 +1048,7 @@ class Grid extends Component {
           classes: {
             'nom-grid-checkbox': true,
           },
-          tools,
+          toolbar,
         })
       }
       this.setProps({

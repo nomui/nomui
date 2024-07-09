@@ -8,6 +8,7 @@
 | --- | --- | --- | --- |
 | align | 层对齐位置 | `'top'\|'bottom'\|'left'\|'right'\|'left top'\|'right top'\|'left bottom'\|'right bottom'\|'center' ` | - |
 | alignTo | 层定位的参照元素 | `string` | `window` |
+| offset | 定位偏移量，数组第一位数字是X轴偏移量，第二位是Y轴偏移量 | `array` | - |
 | alignOuter | 层对齐位置相对于参照元素的外部，应先指定`alignTo` | `boolean` | `false` |
 | collision | 层位置超过边缘时候的处理方式 | `string` | `flipfit` |
 | closeOnClickOutside | 是否点击外部区域关闭层 | `boolean` | `false` |

@@ -226,7 +226,14 @@ class Drawer extends Component {
       onCancel: contentProps.onCancel || this.props.onCancel,
     })
 
-    const { okText, cancelText, onOk, onCancel, closable, title, closeIcon, content } = drawer.props
+    const { okText, cancelText, onOk, onCancel, closable, title, closeIcon, content, footer } = drawer.props
+    let footProps = null
+    if (isPlainObject(footer)) {
+      footProps = footer
+    } else if (isFunction(footer)) {
+      footProps = footer(drawer)
+    }
+
     return {
       component: 'Panel',
       fit: true,
@@ -252,7 +259,11 @@ class Drawer extends Component {
           },
         ],
       } : false,
-      footer: {
+      footer: footProps ? {
+        ...footProps, classes: {
+          'nom-drawer-footer': true
+        },
+      } : {
         classes: {
           'nom-drawer-footer': true
         },

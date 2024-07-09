@@ -8,9 +8,6 @@ class Ellipsis extends Component {
 
   _config() {
     this.setProps({
-      classes: {
-        'nom-ellipsis-fit-content': this.props.fitContent
-      },
       children: {
         classes: {
           'nom-ellipsis-inner': true,

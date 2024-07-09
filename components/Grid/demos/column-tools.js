@@ -11,6 +11,8 @@ define([], function () {
                         console.log(args)
                     },
                 },
+                // frozenLeftCols: 1,
+                ellipsis: 'both',
 
                 columns: [
                     {
@@ -18,9 +20,16 @@ define([], function () {
                         key: 'name',
                         title: '标题',
                         width: 100,
+                        sortable: 'string',
+                        cellRender: ({ cellData }) => {
+                            return {
+                                tag: 'a',
+                                children: cellData,
+                            }
+                        },
                         ellipsis: true,
-                        tools: {
-                            // 不配置align则工具栏跟随内容
+                        toolbar: {
+                            // align: 'right',
                             hover: true,
                             placement: 'both',
                             render: ({ row, cellData, rowData, index }) => {
@@ -59,7 +68,7 @@ define([], function () {
                                 text: cellData
                             }
                         },
-                        tools: {
+                        toolbar: {
                             align: 'right', // 工具栏靠右
                             placement: 'both',
                             render: ({ row, cellData, rowData, index }) => {
@@ -99,9 +108,9 @@ define([], function () {
                         field: 'sales',
                         title: '销量',
                         width: 150,
-                        tools: {
+                        toolbar: {
                             align: 'left',
-                            placement: 'body',
+                            placement: 'both',
                             render: ({ row, cellData, rowData, index }) => {
                                 console.log({ row, cellData, rowData, index })
                                 return {
