@@ -22,28 +22,37 @@ class CollapseItem extends Component {
     const { key, title, content, collapsed } = this.props
     const that = this
     this.setProps({
+      classes: {
+        'align-right': that.menu.props.icon.align === 'right'
+      },
       children: [
         {
-          tag: 'div',
+          component: 'Flex',
           classes: {
             'nom-collapse-item-title': true,
             'nom-collapse-item-open': !collapsed,
           },
           key: key,
-          children: [
+          align: 'center',
+          cols: [
             {
-              ...Component.normalizeIconProps(
-                collapsed ? that.menu.props.icon.default : that.menu.props.icon.open,
-              ),
-              classes: {
-                'nom-collapse-right-icon': that.menu.props.icon.align === 'right',
-              },
-              onClick: function () {
-                if (!that.menu.props.iconOnly) return
-                that._handleCollapse()
+              children: {
+                ...Component.normalizeIconProps(
+                  collapsed ? that.menu.props.icon.default : that.menu.props.icon.open,
+                ),
+                // classes: {
+                //   'nom-collapse-right-icon': that.menu.props.icon.align === 'right',
+                // },
+                onClick: function () {
+                  if (!that.menu.props.iconOnly) return
+                  that._handleCollapse()
+                },
               },
             },
-            { tag: 'span', children: title },
+            {
+              grow: true,
+              children: title
+            },
           ],
           onClick: function () {
             if (that.menu.props.iconOnly) return
@@ -54,8 +63,6 @@ class CollapseItem extends Component {
           tag: 'div',
           classes: {
             'nom-collapse-item-content': true,
-            // 'nom-collapse-animate-show': !collapsed,
-            // 'nom-collapse-animate-hide': collapsed,
           },
           hidden: collapsed,
           children: content,
