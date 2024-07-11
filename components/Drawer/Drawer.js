@@ -326,7 +326,16 @@ class Drawer extends Component {
     return null
   }
 
-  close() {
+  close(result) {
+    if (!this.rendered) {
+      return
+    }
+
+    if (this.element === undefined) {
+      return
+    }
+
+    this.props.onClose && this._callHandler(this.props.onClose, { result: result })
     this.props && this.props.animate && this.animateHide()
     this.props && !this.props.animate && this.remove()
   }
@@ -355,6 +364,7 @@ class Drawer extends Component {
 
     return x ? { transform: 'translateX(100%)' } : { transform: 'translateY(100%)' }
   }
+
 }
 
 Drawer.defaults = {
@@ -365,6 +375,7 @@ Drawer.defaults = {
   settle: 'right',
   okText: '确 定',
   cancelText: '取 消',
+  onClose: null,
   onOk: (e) => {
     e.sender.close()
   },
