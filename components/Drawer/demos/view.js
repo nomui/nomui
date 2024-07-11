@@ -18,11 +18,19 @@ define([], function () {
                                 component: 'Button',
                                 name: 'button',
                                 text: '抽屉打开',
+
                                 attrs: {
                                     onclick: function () {
                                         new nomui.Drawer({
                                             content: 'components/Drawer/demos/view-content.js',
                                             width: '30vw',
+                                            onClose: () => {
+                                                console.log('close')
+                                            },
+                                            onOk: ({ sender }) => {
+                                                console.log('ok')
+                                                sender.close()
+                                            },
                                             args: {
                                                 name: '笑傲江湖',
                                                 description:
