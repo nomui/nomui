@@ -6473,6 +6473,11 @@ body .nom-always-dark {
 .nom-modal.p-size-xlarge .nom-modal-dialog {
   width: 100vw;
 }
+.nom-modal.p-size-full .nom-modal-dialog {
+  width: calc(100vw - 1rem);
+  height: calc(100% - 1rem);
+  margin: 0.5rem;
+}
 @media (min-width: 576px) {
   .nom-modal-dialog {
     width: 560px;

@@ -59,10 +59,10 @@ class ModalDialog extends Component {
       okButton: contentProps.okButton,
     })
 
-    const { okText, cancelText, fit, okButton = {}, cancelButton = {} } = modal.props
+    const { okText, cancelText, fit, okButton = {}, cancelButton = {}, size } = modal.props
     return {
       component: Panel,
-      fit: fit,
+      fit: fit || size === 'full',
       uistyle: 'plain',
       header: {
         nav: {},
@@ -84,28 +84,28 @@ class ModalDialog extends Component {
           component: 'Cols',
           items: [
             okButton !== false &&
-              Component.extendProps(
-                {
-                  component: 'Button',
-                  type: 'primary',
-                  text: okText,
-                  onClick: () => {
-                    modal._handleOk()
-                  },
+            Component.extendProps(
+              {
+                component: 'Button',
+                type: 'primary',
+                text: okText,
+                onClick: () => {
+                  modal._handleOk()
                 },
-                okButton,
-              ),
+              },
+              okButton,
+            ),
             cancelButton !== false &&
-              Component.extendProps(
-                {
-                  component: 'Button',
-                  text: cancelText,
-                  onClick: () => {
-                    modal._handleCancel()
-                  },
+            Component.extendProps(
+              {
+                component: 'Button',
+                text: cancelText,
+                onClick: () => {
+                  modal._handleCancel()
                 },
-                cancelButton,
-              ),
+              },
+              cancelButton,
+            ),
           ],
         },
       },

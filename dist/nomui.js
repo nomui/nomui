@@ -6561,10 +6561,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         fit,
         okButton = {},
         cancelButton = {},
+        size,
       } = modal.props;
       return {
         component: Panel,
-        fit: fit,
+        fit: fit || size === "full",
         uistyle: "plain",
         header: {
           nav: {},
