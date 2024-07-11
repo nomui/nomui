@@ -16918,7 +16918,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return null;
     }
-    close() {
+    close(result) {
+      if (!this.rendered) {
+        return;
+      }
+      if (this.element === undefined) {
+        return;
+      }
+      this.props.onClose &&
+        this._callHandler(this.props.onClose, { result: result });
       this.props && this.props.animate && this.animateHide();
       this.props && !this.props.animate && this.remove();
     }
@@ -16953,6 +16961,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     settle: "right",
     okText: "确 定",
     cancelText: "取 消",
+    onClose: null,
     onOk: (e) => {
       e.sender.close();
     },
