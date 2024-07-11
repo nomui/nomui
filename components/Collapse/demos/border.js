@@ -6,6 +6,11 @@ define([], function () {
       return {
         component: 'Collapse',
         bordered: true,
+        icon: {
+          default: 'down',
+          align: 'right',
+          open: 'up'
+        },
         items: [
           {
             key: 1,

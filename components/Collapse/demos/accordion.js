@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: '手风琴',
-    file: 'accordin',
+    file: 'accordion',
     demo: function () {
       return {
         children: {
