@@ -13,8 +13,6 @@ define([], function () {
                         text: '点我',
                         onClick: function () {
                             new nomui.Modal({
-                                noHeader: true,
-                                noFooter: true,
                                 content: {
                                     component: 'Panel',
                                     header: false,
