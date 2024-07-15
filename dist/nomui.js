@@ -17504,9 +17504,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { parentField } = grid.props.treeConfig;
       grid.nodeList[`__key${rowData[keyField]}`] = row;
       row.childrenNodes = {};
-      row.parentNode = grid.nodeList[`__key${rowData[parentField]}`];
+      if (rowData[parentField]) {
+        row.parentNode = grid.nodeList[`__key${rowData[parentField]}`];
+      }
       if (row.parentNode) {
-        row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
+        if (rowData[keyField]) {
+          row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
+        }
       }
       if (rowCheckable.type === "checker&order") {
         return {
@@ -17582,9 +17586,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { parentField } = grid.props.treeConfig;
       grid.nodeList[`__key${rowData[keyField]}`] = row;
       row.childrenNodes = {};
-      row.parentNode = grid.nodeList[`__key${rowData[parentField]}`];
+      if (rowData[parentField]) {
+        row.parentNode = grid.nodeList[`__key${rowData[parentField]}`];
+      }
       if (row.parentNode) {
-        row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
+        if (rowData[keyField]) {
+          row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
+        }
       }
       if (renderOrder) {
         return {
