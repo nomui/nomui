@@ -1,29 +1,32 @@
 .nom-breadcrumb {
-  padding:var(--nom-breadcrumb-padding);
+  padding: var(--nom-breadcrumb-padding);
   color: var(--nom-breadcrumb-font-color);
-  > .nom-breadcrumb-item {
+  display: flex;
+
+  >.nom-breadcrumb-item {
     &.p-with-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
     }
 
-    > .nom-breadcrumb-link + .nom-icon {
+    >.nom-breadcrumb-link+.nom-icon {
       padding-left: @padding-x-xs;
     }
 
-    > .nom-icon + .nom-breadcrumb-link {
+    >.nom-icon+.nom-breadcrumb-link {
       padding-left: @padding-x-xs;
     }
 
-    > .nom-breadcrumb-separator {
+    >.nom-breadcrumb-separator {
       padding: 0 @padding-x-sm;
     }
 
-    > .nom-breadcrumb-link {
+    >.nom-breadcrumb-link {
       a {
         text-decoration: none;
         outline: none;
+
         &:hover {
           color: var(--nom-breadcrumb-link-hover-color);
         }
@@ -32,15 +35,18 @@
 
     &:last-child {
       color: var(--nom-breadcrumb-link-color);
-      > .nom-breadcrumb-link {
-        > a {
+
+      >.nom-breadcrumb-link {
+        >a {
           color: var(--nom-breadcrumb-link-color);
-          &:hover{
+
+          &:hover {
             color: var(--nom-breadcrumb-link-hover-color);
           }
         }
       }
-      > .nom-breadcrumb-separator {
+
+      >.nom-breadcrumb-separator {
         display: none;
       }
     }
