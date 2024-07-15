@@ -12410,6 +12410,7 @@ textarea .nom-textarea {
 .nom-breadcrumb {
   padding: var(--nom-breadcrumb-padding);
   color: var(--nom-breadcrumb-font-color);
+  display: flex;
 }
 .nom-breadcrumb > .nom-breadcrumb-item.p-with-icon {
   display: inline-flex;
