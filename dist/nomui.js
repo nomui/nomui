@@ -22745,6 +22745,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           args.event.stopPropagation();
         };
       }
+      if (this.props.tools) {
+        if (isFunction(this.props.tools)) {
+          tools = this.props.tools(this, menu);
+        } else if (isPlainObject(this.props.tools)) {
+          tools = this.props.tools;
+        }
+      }
       let indicatorIconType = menuProps.compact ? "right" : "down";
       if (menuProps.direction === "horizontal" && this.level > 0) {
         indicatorIconType = "right";
