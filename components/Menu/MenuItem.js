@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isFunction, isPlainObject } from '../util/index'
 
 class MenuItem extends Component {
   constructor(props, ...mixins) {
@@ -52,6 +53,15 @@ class MenuItem extends Component {
       tools = this.wrapper.props.item.toolsRender(this, menu)
       tools.onClick = (args) => {
         args.event.stopPropagation()
+      }
+    }
+
+    if (this.props.tools) {
+      if (isFunction(this.props.tools)) {
+        tools = this.props.tools(this, menu)
+      }
+      else if (isPlainObject(this.props.tools)) {
+        tools = this.props.tools
       }
     }
 
@@ -166,7 +176,7 @@ class MenuItem extends Component {
     }
   }
 
-  handleSelect() {}
+  handleSelect() { }
 
   _collapse() {
     this.indicator && this.indicator.collapse()
