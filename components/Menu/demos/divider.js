@@ -25,43 +25,9 @@ define([], function () {
                   // url: '#!css!',
                 },
                 {
-                  text: '文字很长的标题看看溢出效果(tools)',
+                  text: 'css',
                   id: 'css',
-                  toolsRender: (item, menu) => {
-                    return {
-                      component: 'Cols',
-                      gutter: 'xs',
-                      items: [
-                        {
-                          component: 'Button',
-                          type: 'text',
-                          size: 'xsmall',
-                          icon: 'refresh',
-                          onClick: () => {
-                            console.log(item)
-                          },
-                        },
-                        {
-                          component: 'Button',
-                          type: 'text',
-                          size: 'xsmall',
-                          icon: 'refresh',
-                          onClick: () => {
-                            console.log(menu)
-                          },
-                        },
-                        {
-                          component: 'Button',
-                          type: 'text',
-                          size: 'xsmall',
-                          icon: 'refresh',
-                          onClick: () => {
-                            console.log(menu)
-                          },
-                        },
-                      ],
-                    }
-                  },
+
                   items: [
                     { text: '起步', id: 'css' },
                     {
