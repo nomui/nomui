@@ -28,6 +28,7 @@
 | getCheckedNodeKeys | 获取勾选的节点键值数组 | `(options, checkedNodeKeys, node ) => string[]` | - |
 | getCheckedNodesData | 获取`node`节点下的勾选的节点数据，`flatData: false`则返回树形结构 | `(options, node) => TreeData[]` | `({flatData: false}, this) => []` |
 | selectNode | 选中指定节点 | `(options:getDataOptions) => void` | - |
+| clearSelection | 清空选中 | `function` | - |
 | getSelectedNode | 获取当前选中节点 | `(options:getDataOptions) => node` | - |
 | expandTo | 展开指定节点 | `(options:getDataOptions) => void` | - |
 | scrollTo | 滚动到指定节点 | `(options:getDataOptions) => void` | - |

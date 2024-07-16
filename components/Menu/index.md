@@ -67,6 +67,7 @@
 | selectToItem | 同时 选中,展开,滚动到指定菜单 | - | - |
 | getSelectedItem | 获取当前选中菜单 | - | - |
 | unselectItem | 取消选中指定菜单 | - | - |
+| clearSelection | 清空选中 | - | - |
 
 `menuItemOption`: 获取节点的参数，可以为一下三种情况
 
