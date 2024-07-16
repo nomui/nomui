@@ -136,6 +136,13 @@ class Menu extends Component {
     return item.unselect(unselectOption)
   }
 
+  clearSelection() {
+    const item = this.getSelectedItem()
+    if (item) {
+      this.unselectItem(item)
+    }
+  }
+
   getSelectedItem() {
     return this.selectedItem
   }

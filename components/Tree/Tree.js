@@ -238,6 +238,12 @@ class Tree extends Component {
     }
   }
 
+  clearSelection() {
+    if (this.selectedNode) {
+      this.selectedNode.unselect()
+    }
+  }
+
   checkNodes(param, options) {
     Object.keys(this.nodeRefs).forEach((nodeKey) => {
       if (!param.includes(nodeKey)) {

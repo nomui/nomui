@@ -8,14 +8,17 @@ define([], function () {
           {
             component: 'Menu',
             direction: 'horizontal',
+            itemSelectable: {
+              byClick: true
+            },
             items: [
-              { text: '起步', id: 'css', url: '#!css!' },
+              { text: '起步', id: 'css', },
 
               {
                 text: '样式',
                 id: 'css',
                 items: [
-                  { text: '起步', id: 'css', url: '#!css!' },
+                  { text: '起步', id: 'css', },
                   {
                     text: '样式',
                     id: 'css',
