@@ -13193,6 +13193,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
     }
+    clearSelection() {
+      if (this.selectedNode) {
+        this.selectedNode.unselect();
+      }
+    }
     checkNodes(param, options) {
       Object.keys(this.nodeRefs).forEach((nodeKey) => {
         if (!param.includes(nodeKey)) {
@@ -23164,6 +23169,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         return false;
       }
       return item.unselect(unselectOption);
+    }
+    clearSelection() {
+      const item = this.getSelectedItem();
+      if (item) {
+        this.unselectItem(item);
+      }
     }
     getSelectedItem() {
       return this.selectedItem;
