@@ -14,7 +14,7 @@ class GroupList extends Group {
 
   _config() {
     const that = this
-    const { groupDefaults, value, disabled } = this.props
+    const { groupDefaults, value, disabled, controlAction } = this.props
     const actionRender = groupDefaults.actionRender || null
 
     this.extGroupDefaults = Component.extendProps(groupDefaults, {
@@ -51,10 +51,10 @@ class GroupList extends Group {
       })
     }
 
-    this.setProps({
-      fields: groups,
-      fieldDefaults: that.extGroupDefaults,
-      controlAction: [
+    let realControlAction = controlAction
+
+    if (isNullish(realControlAction)) {
+      realControlAction = [
         {
           component: 'Button',
           type: 'dashed',
@@ -67,7 +67,13 @@ class GroupList extends Group {
           },
           hidden: that.props.hideAction,
         },
-      ],
+      ]
+    }
+
+    this.setProps({
+      fields: groups,
+      fieldDefaults: that.extGroupDefaults,
+      controlAction: realControlAction,
     })
 
     super._config()
@@ -107,12 +113,19 @@ class GroupList extends Group {
     }
   }
 
-  addGroup(value) {
+  addGroup(groupProps) {
+    if (isNullish(groupProps)) {
+      groupProps = {}
+    }
     const { addDefaultValue } = this.props
-    const groupValue = !isNullish(value) ? value : addDefaultValue
-    this.extGroupDefaults.value = isFunction(groupValue)
-      ? groupValue.call(this)
-      : groupValue
+    if (isNullish(groupProps.value)) {
+      groupProps.value = isFunction(addDefaultValue)
+        ? addDefaultValue.call(this)
+        : addDefaultValue
+    }
+
+    this.extGroupDefaults = Component.extendProps(this.extGroupDefaults, groupProps)
+
     this.appendField(this.extGroupDefaults)
     this._onValueChange()
   }

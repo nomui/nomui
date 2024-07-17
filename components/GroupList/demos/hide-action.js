@@ -46,7 +46,7 @@ define([], function () {
             text: '添加一行',
             type: 'primary',
             onClick: () => {
-              group.addGroup({ school: '幼儿园' })
+              group.addGroup({ value: { school: '幼儿园' } })
             },
           },
         ],
