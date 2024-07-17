@@ -32,7 +32,7 @@ class GroupList extends Group {
             action: [
               {
                 component: 'Button',
-                text: this.props.removeText,
+                text: that.props.removeText,
                 disabled: disabled,
                 onClick: () => {
                   that.removeGroup(group)
