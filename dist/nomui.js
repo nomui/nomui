@@ -21967,11 +21967,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
     }
-    addGroup() {
+    addGroup(value) {
       const { addDefaultValue } = this.props;
-      this.extGroupDefaults.value = isFunction(addDefaultValue)
-        ? addDefaultValue.call(this)
-        : addDefaultValue;
+      const groupValue = !isNullish(value) ? value : addDefaultValue;
+      this.extGroupDefaults.value = isFunction(groupValue)
+        ? groupValue.call(this)
+        : groupValue;
       this.appendField(this.extGroupDefaults);
       this._onValueChange();
     }
