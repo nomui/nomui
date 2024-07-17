@@ -21901,7 +21901,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               action: [
                 {
                   component: "Button",
-                  text: this.props.removeText,
+                  text: that.props.removeText,
                   disabled: disabled,
                   onClick: () => {
                     that.removeGroup(group);
