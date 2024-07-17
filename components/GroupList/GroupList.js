@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Group from '../Group/Group'
-import { extend, isFunction } from '../util/index'
+import { extend, isFunction, isNullish } from '../util/index'
 
 class GroupList extends Group {
   constructor(props, ...mixins) {
@@ -107,11 +107,12 @@ class GroupList extends Group {
     }
   }
 
-  addGroup() {
+  addGroup(value) {
     const { addDefaultValue } = this.props
-    this.extGroupDefaults.value = isFunction(addDefaultValue)
-      ? addDefaultValue.call(this)
-      : addDefaultValue
+    const groupValue = !isNullish(value) ? value : addDefaultValue
+    this.extGroupDefaults.value = isFunction(groupValue)
+      ? groupValue.call(this)
+      : groupValue
     this.appendField(this.extGroupDefaults)
     this._onValueChange()
   }
