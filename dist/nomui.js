@@ -21981,11 +21981,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           ? addDefaultValue.call(this)
           : addDefaultValue;
       }
-      this.extGroupDefaults = Component.extendProps(
-        this.extGroupDefaults,
-        groupProps
-      );
-      this.appendField(this.extGroupDefaults);
+      groupProps = Component.extendProps(this.extGroupDefaults, groupProps);
+      this.appendField(groupProps);
       this._onValueChange();
     }
     removeGroup(group) {

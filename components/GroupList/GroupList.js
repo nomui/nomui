@@ -124,9 +124,9 @@ class GroupList extends Group {
         : addDefaultValue
     }
 
-    this.extGroupDefaults = Component.extendProps(this.extGroupDefaults, groupProps)
+    groupProps = Component.extendProps(this.extGroupDefaults, groupProps)
 
-    this.appendField(this.extGroupDefaults)
+    this.appendField(groupProps)
     this._onValueChange()
   }
 
