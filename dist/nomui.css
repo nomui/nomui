@@ -4494,7 +4494,7 @@ body {
   --nom-layer-backdrop-color: rgba(0, 0, 0, 0.55);
   --nom-select-selected-item-bg: var(--nom-color-fill-1);
   --nom-select-selected-item-border-color: transparent;
-  --nom-select-selected-item-padding: 0.3rem 0.3rem 0.3rem 0.5rem;
+  --nom-select-selected-item-padding: 0.1rem 0.3rem 0.1rem 0.5rem;
   --nom-date-picker-divider: 1px solid var(--nom-border-color);
   --nom-date-picker-header-text-color: var(--nom-color-text-2);
   --nom-date-picker-day-muted-text-color: var(--nom-color-text-3);
@@ -8952,7 +8952,7 @@ textarea .nom-textarea {
   text-overflow: ellipsis;
 }
 .nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item-wrapper {
-  padding: 0 0.25rem;
+  padding: 0.15rem 0.25rem;
 }
 .nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item {
   display: flex;
