@@ -7602,7 +7602,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       if (props.align) {
         window.removeEventListener("resize", this._onWindowResize, false);
-        window.addEventListener("resize", this._onWindowResize, false);
+        if (!this.props.ignoreResize) {
+          window.addEventListener("resize", this._onWindowResize, false);
+        }
       }
       this.props.onShow && this._callHandler(this.props.onShow);
     }
@@ -7763,6 +7765,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     offset: null,
     closeOnClickOutside: false,
     closeToRemove: false,
+    ignoreResize: false,
     position: null,
     hidden: false,
     backdrop: false,
