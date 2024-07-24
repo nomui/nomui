@@ -14,4 +14,5 @@
 | closeOnClickOutside | 是否点击外部区域关闭层 | `boolean` | `false` |
 | closeToRemove | 是否关闭的同时移除元素 | `boolean` | `false` |
 | backdrop | 是否显示遮罩层 | `boolean` | `false` |
+| ignoreResize | 不监听窗口resize事件动态计算位置（某些时候这会导致定位不准） | `boolean` | `false` |
 | closeOnClickBackdrop | 是否点击遮罩触发关闭层 | `boolean` | `false` |
