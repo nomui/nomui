@@ -12764,3 +12764,57 @@ textarea .nom-textarea {
 :root {
   font-size: 14px;
 }
+.nom-data-list {
+  display: flex;
+}
+.nom-data-list.p-vertical {
+  flex-direction: column;
+}
+.nom-data-list.p-wrap {
+  flex-wrap: wrap;
+}
+.nom-data-list.p-fills > .nom-data-list-item {
+  flex: 1 1 auto !important;
+}
+.nom-data-list.p-align-start {
+  align-items: flex-start !important;
+}
+.nom-data-list.p-align-end {
+  align-items: flex-end !important;
+}
+.nom-data-list.p-align-center {
+  align-items: center !important;
+}
+.nom-data-list.p-align-stretch {
+  align-items: stretch !important;
+}
+.nom-data-list.p-justify-start {
+  justify-content: flex-start !important;
+}
+.nom-data-list.p-justify-end {
+  justify-content: flex-end !important;
+}
+.nom-data-list.p-justify-center {
+  justify-content: center !important;
+}
+.nom-data-list.p-justify-between {
+  justify-content: space-between !important;
+}
+.nom-data-list.p-justify-around {
+  justify-content: space-around !important;
+}
+.nom-data-list.p-gap-xsmall {
+  gap: 4px;
+}
+.nom-data-list.p-gap-small {
+  gap: 8px;
+}
+.nom-data-list.p-gap-medium {
+  gap: 16px;
+}
+.nom-data-list.p-gap-large {
+  gap: 24px;
+}
+.nom-data-list.p-gap-xlarge {
+  gap: 32px;
+}

@@ -866,6 +866,18 @@ class Component {
     return children
   }
 
+  findChild(key) {
+    let find = null
+    for (let i = 0; i < this.element.childNodes.length; i++) {
+      const child = this.element.childNodes[i].component
+      if (child.key === key) {
+        find = child
+        break
+      }
+    }
+    return find
+  }
+
   _handleAttrs() {
     this._processClick()
     this._processHover()

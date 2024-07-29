@@ -1,4 +1,4 @@
-;(function (win) {
+; (function (win) {
   requirejs.onError = function (err) {
     console.log(err)
     console.log(`modules: ${err.requireModules}`)
@@ -12,6 +12,7 @@
     },
     paths: {
       text: 'libs/text',
+      nanoid: 'docs/nanoid'
     },
   })
 

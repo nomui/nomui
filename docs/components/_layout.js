@@ -326,6 +326,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       url: '#!components!index?type=Countdown',
                     },
                     {
+                      text: 'DataList',
+                      subtext: '数据列表',
+                      id: 'DataList',
+                      url: '#!components!index?type=DataList',
+                    },
+                    {
                       text: 'Grid',
                       subtext: '高级表格',
                       id: 'Grid',
