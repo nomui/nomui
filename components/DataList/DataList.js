@@ -1,0 +1,194 @@
+import Component, { n } from '../Component/index'
+import { extend, isFunction, isPlainObject } from '../util/index'
+import scrollIntoView from '../util/scrollIntoView'
+import DataListItemMixin from './DataListItemMixin'
+
+class DataList extends Component {
+    constructor(props, ...mixins) {
+        super(Component.extendProps(DataList.defaults, props), ...mixins)
+    }
+
+    _config() {
+        this.selectedItem = null
+
+        const { data } = this.props
+
+        this._addPropStyle('gap', 'line', 'align', 'justify', 'wrap', 'vertical', 'fills')
+
+        let empty = null
+
+        if (isPlainObject(this.props.showEmpty)) {
+            empty = {
+                component: 'Empty',
+                ...this.props.showEmpty,
+            }
+        } else {
+            empty = {
+                component: 'Empty',
+            }
+        }
+
+        let children = []
+
+        if (Array.isArray(data) && data.length > 0) {
+            children = data.map((itemData) => {
+                return this._getItemDescriptor(itemData)
+            })
+        }
+        else {
+            children = empty
+        }
+
+        this.setProps({
+            selectable: { byClick: false },
+            children: children,
+        })
+    }
+
+    selectItem(key, selectOption) {
+        const found = this.findItem(key)
+        if (found) {
+            return found.select(selectOption)
+        }
+    }
+
+    selectItems(keys, selectOption) {
+        selectOption = extend(
+            {
+                triggerSelect: true,
+                triggerSelectionChange: true,
+            },
+            selectOption,
+        )
+        let itemSelectionChanged = false
+        keys = Array.isArray(keys) ? keys : [keys]
+        for (let i = 0; i < keys.length; i++) {
+            itemSelectionChanged =
+                this.selectItem(keys[i], {
+                    triggerSelect: selectOption.triggerSelect,
+                    triggerSelectionChange: false,
+                }) || itemSelectionChanged
+        }
+        if (selectOption.triggerSelectionChange === true && itemSelectionChanged) {
+            this._onItemSelectionChange()
+        }
+        return itemSelectionChanged
+    }
+
+    selectAllItems(selectOption) {
+        return this.selectItems(this.content.getChildren(), selectOption)
+    }
+
+    unselectItem(key, selectOption) {
+        const found = this.findItem(key)
+        if (found) {
+            found.unselect(selectOption)
+        }
+    }
+
+    getSelected() {
+        const { itemSelectable } = this.props
+        if (itemSelectable && itemSelectable.multiple === true) {
+            const selectedData = []
+            const children = this.getChildren()
+            for (let i = 0; i < children.length; i++) {
+                const item = children[i]
+                if (item.props.selected) {
+                    selectedData.push(item.props._itemData)
+                }
+            }
+            return selectedData
+        }
+
+        return this.selectedItem.props._itemData
+    }
+
+    appendItem(itemData) {
+        this.appendChild(this._getItemDescriptor(itemData))
+    }
+
+    prependItem(itemData) {
+        this.prependChild(this._getItemDescriptor(itemData))
+    }
+
+    updateItem(key, newItemData) {
+        const item = this.findItem(key)
+        if (item) {
+            item.replace(this._getItemDescriptor(newItemData))
+        }
+    }
+
+    removeItem(key) {
+        const item = this.findItem(key)
+        if (item !== null) {
+            item.remove()
+        }
+    }
+
+    scrollTo(key) {
+        const item = this.findItem(key)
+
+        if (item) {
+            const { itemSelectable } = this.props
+            const itemElement = item.element
+            const scrollOptions =
+                itemSelectable && itemSelectable.scrollIntoView && isPlainObject(itemSelectable.scrollIntoView)
+                    ? itemSelectable.scrollIntoView
+                    : {}
+
+            setTimeout(() => {
+                scrollIntoView(
+                    itemElement,
+                    Component.extendProps(
+                        {
+                            behavior: 'smooth',
+                            scrollMode: 'if-needed',
+                        },
+                        scrollOptions,
+                    ),
+                )
+            }, 200)
+        }
+    }
+
+    findItem(key) {
+        return this.findChild(key)
+    }
+
+    _onItemSelectionChange() {
+        this._callHandler(this.props.onItemSelectionChange)
+    }
+
+    _getItemDescriptor(itemData) {
+        const { dataKey, itemRender } = this.props
+
+        if (isPlainObject(itemData)) {
+            let itemProps = { key: itemData[dataKey], _itemData: itemData }
+            if (isFunction(itemRender)) {
+                itemProps = Component.extendProps(itemProps, itemRender({ itemData, list: this }))
+            }
+            return n(null, itemProps, null, [DataListItemMixin])
+        }
+    }
+}
+
+DataList.defaults = {
+    tag: 'div',
+    data: null,
+    dataKey: 'id',
+
+    selectedKeys: null,
+
+    itemSelectable: {
+        multiple: false,
+        byClick: false,
+        scrollIntoView: false,
+    },
+
+    disabledItemKeys: [],
+    showEmpty: false,
+}
+
+Component.register(DataList)
+
+export default DataList
