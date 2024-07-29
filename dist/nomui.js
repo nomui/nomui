@@ -31355,6 +31355,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _created() {
       this.reqs = {};
       this.failedFileList = [];
+      this.unSupportedFileList = [];
       this.inQueueIds = [];
     }
     _config() {
@@ -31528,6 +31529,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         return e;
       });
       this.failedFileList = [];
+      this.unSupportedFileList = [];
       this.props.onStart &&
         this._callHandler(this.props.onStart, {
           files: fileList,
@@ -31540,7 +31542,34 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _upload(file, fileList) {
       const beforeUpload = this.props.beforeUpload;
       if (!this._checkType(file)) {
-        new nomui.Alert({ title: this.props.unSupportedTypeText });
+        if (this.props.showErrorMsg) {
+          new nomui.Alert({ title: this.props.unSupportedTypeText });
+        }
+        this.unSupportedFileList.push(file);
+        this._callHandler(this.props.onTypeCheckFailed, {
+          file,
+          list: this.unSupportedFileList,
+        });
+        let status = "pending";
+        if (
+          this.fileList.filter((x) => {
+            return x.status === "done" && this.inQueueIds.includes(x.uuid);
+          }).length +
+            this.failedFileList.length +
+            this.unSupportedFileList.length ===
+          this.inQueueIds.length
+        ) {
+          status = "done";
+        }
+        if (this.props.onChange) {
+          this._callHandler(this.props.onChange, {
+            file: file,
+            fileList: [...this.fileList],
+            failedFileList: this.failedFileList,
+            unSupportedFileList: this.unSupportedFileList,
+            status,
+          });
+        }
         return;
       }
       if (!beforeUpload) {
@@ -31616,7 +31645,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.fileList.filter((x) => {
           return x.status === "done" && this.inQueueIds.includes(x.uuid);
         }).length +
-          this.failedFileList.length ===
+          this.failedFileList.length +
+          this.unSupportedFileList.length ===
         this.inQueueIds.length
       ) {
         status = "done";
@@ -31626,6 +31656,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           file,
           fileList: [...this.fileList],
           failedFileList: this.failedFileList,
+          unSupportedFileList: this.unSupportedFileList,
           status,
         });
       }
@@ -31717,6 +31748,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     uploadText: "上传",
     uploadFailText: "上传失败！",
     showErrorMsg: true,
+    onTypeCheckFailed: null,
     unSupportedTypeText: "不支持此格式，请重新上传。",
   };
   Component.register(Upload);

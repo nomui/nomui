@@ -15,6 +15,7 @@
 | multiple | 是否允许多选上传 | `boolean` | `false` |  |
 | folder | 是否支持文件夹上传 | `boolean` | `false` |  |
 | showErrorMsg | 上传失败时是否默认弹出警告 | `boolean` | `true` |  |
+| onTypeCheckFailed | 文件格式检测不通过时的回调 | `(file,list)=>{}` | - |  |
 | method | 上传请求的 http method | string | `post` |  |
 | beforeUpload | 上传文件之前的钩子，参数为上传的文件，若返回 `false` 则停止上传。支持返回一个 Promise 对象，Promise 对象 reject 时则停止上传，resolve 时开始上传（ resolve 传入 `File` 或 `Blob` 对象则上传 resolve 传入对象）。**注意：IE9 不支持该方法** | (file, fileList) => boolean \| Promise | - |  |
 | data | 上传所需额外参数或返回上传额外参数的方法 | object\|(file) => object \| Promise&lt;object> | - |  |
@@ -23,7 +24,7 @@
 | headers | 设置上传的请求头部，IE10 以上有效 | object | - |  |
 | name | 发到后台的文件名字段 | string | `file` |  |
 | withCredentials | 上传请求时是否携带 cookie | boolean | false |  |
-| onChange | 上传文件改变时的状态 | `({file,fileList,failedFileList,status})=>{}` | - |  |
+| onChange | 上传文件改变时的状态 | `({file,fileList,failedFileList,unSupportedFileList,status})=>{}` | - |  |
 | onStart | 准备上传文件的钩子,参数是本次上传文件列表与已上传文件列表 | `({files,uploadedFiles})=>{}` | - |  |
 
 ### methods
