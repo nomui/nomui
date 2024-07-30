@@ -415,6 +415,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       url: '#!components!index?type=CheckboxTree',
                     },
                     {
+                      text: 'ColorPicker',
+                      subtext: '颜色选择器',
+                      id: 'ColorPicker',
+                      url: '#!components!index?type=ColorPicker',
+                    },
+                    {
                       text: 'DatePicker',
                       subtext: '日期选择',
                       id: 'DatePicker',
