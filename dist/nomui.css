@@ -12821,6 +12821,10 @@ textarea .nom-textarea {
 .nom-data-list.p-cols-6 > .nom-data-list-item {
   width: 16.66%;
 }
+.nom-data-list > *.s-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .nom-color-picker-trigger {
   display: flex;
   align-items: center;

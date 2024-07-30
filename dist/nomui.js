@@ -14530,17 +14530,25 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.list = this.parent;
     },
     _config: function () {
-      const { selected } = this.props;
+      const { selected, disabled } = this.props;
       const listProps = this.list.props;
+      const { disabledKeys } = this.list.props;
       const selectedItems =
         listProps.selectedKeys !== null && listProps.selectedKeys !== undefined
           ? Array.isArray(listProps.selectedKeys)
             ? listProps.selectedKeys
             : [listProps.selectedKeys]
           : [];
+      const disabledItems =
+        disabledKeys !== null && disabledKeys !== undefined
+          ? Array.isArray(disabledKeys)
+            ? disabledKeys
+            : [disabledKeys]
+          : [];
       this.setProps({
         classes: { "nom-data-list-item": true },
         selected: selected === true || selectedItems.indexOf(this.key) !== -1,
+        disabled: disabled === true || disabledItems.indexOf(this.key) !== -1,
         selectable: {
           byClick: listProps.itemSelectable.byClick,
           canRevert: listProps.itemSelectable.multiple === true,
@@ -14689,6 +14697,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const item = this.findItem(key);
       if (item !== null) {
         item.remove();
+      }
+    }
+    disableItem(key) {
+      const item = this.findItem(key);
+      if (item !== null) {
+        item.disable();
+      }
+    }
+    enableItem(key) {
+      const item = this.findItem(key);
+      if (item !== null) {
+        item.enable();
       }
     }
     scrollTo(key) {
