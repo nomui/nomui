@@ -13,7 +13,7 @@ class DataList extends Component {
 
         const { data } = this.props
 
-        this._addPropStyle('gap', 'line', 'align', 'justify', 'wrap', 'vertical', 'fills')
+        this._addPropStyle('gap', 'line', 'align', 'justify', 'wrap', 'vertical', 'fills', 'cols')
 
         let empty = null
 
