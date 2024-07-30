@@ -18,11 +18,11 @@ define([], function () {
                             value: false,
                             options: [
                                 { text: 'default', value: false },
-                                { text: 'small', value: 'xsmall' },
+                                { text: 'xsmall', value: 'xsmall' },
                                 { text: 'small', value: 'small' },
                                 { text: 'medium', value: 'medium' },
                                 { text: 'large', value: 'large' },
-                                { text: 'small', value: 'xlarge' },
+                                { text: 'xlarge', value: 'xlarge' },
                             ],
                             onValueChange: ({ newValue }) => {
                                 verticalListRef.update({ gap: newValue })

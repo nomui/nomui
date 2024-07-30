@@ -72,9 +72,12 @@ define([], function () {
                                 styles: {
                                     color: 'lgray',
                                     padding: '2',
-                                    hover: 'lgray-dark',
+                                    cursor: 'pointer',
+                                    hover: {
+                                        color: 'lprimary-light'
+                                    },
                                     selected: {
-                                        color: 'gray',
+                                        color: 'lprimary',
                                     }
                                 },
                                 children: `《${itemData.name}》`

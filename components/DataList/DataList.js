@@ -125,6 +125,20 @@ class DataList extends Component {
         }
     }
 
+    disableItem(key) {
+        const item = this.findItem(key)
+        if (item !== null) {
+            item.disable()
+        }
+    }
+
+    enableItem(key) {
+        const item = this.findItem(key)
+        if (item !== null) {
+            item.enable()
+        }
+    }
+
     scrollTo(key) {
         const item = this.findItem(key)
 
