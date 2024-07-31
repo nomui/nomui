@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction, isString } from '../util/index'
+import { isFunction, isPlainObject, isString } from '../util/index'
 
 class Th extends Component {
   constructor(props, ...mixins) {
@@ -424,8 +424,10 @@ class Th extends Component {
   handleResize() {
     const resizer = this.resizer.element
     const that = this
+    const { columnResizable } = this.table.grid.props
 
     resizer.onmousedown = function (evt) {
+      isPlainObject(columnResizable) && columnResizable.onStart && that.table.grid._callHandler(columnResizable.onStart)
       const startX = evt.clientX
       that.lastDistance = 0
       that._hideHighLightMask()
@@ -457,6 +459,7 @@ class Th extends Component {
         }
         that._triggerGridResize(0)
 
+        isPlainObject(columnResizable) && columnResizable.onEnd && that.table.grid._callHandler(columnResizable.onEnd)
         document.onmousemove = null
         document.onmouseup = null
       }
