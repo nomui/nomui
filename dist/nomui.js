@@ -18961,7 +18961,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     handleResize() {
       const resizer = this.resizer.element;
       const that = this;
+      const { columnResizable } = this.table.grid.props;
       resizer.onmousedown = function (evt) {
+        isPlainObject(columnResizable) &&
+          columnResizable.onStart &&
+          that.table.grid._callHandler(columnResizable.onStart);
         const startX = evt.clientX;
         that.lastDistance = 0;
         that._hideHighLightMask();
@@ -18989,6 +18993,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             header.scrollbar.update({ size });
           }
           that._triggerGridResize(0);
+          isPlainObject(columnResizable) &&
+            columnResizable.onEnd &&
+            that.table.grid._callHandler(columnResizable.onEnd);
           document.onmousemove = null;
           document.onmouseup = null;
         };
