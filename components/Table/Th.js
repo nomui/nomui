@@ -440,6 +440,7 @@ class Th extends Component {
         const distance = moveLen - that.lastDistance
         that._triggerGridResize(distance)
         that.lastDistance = moveLen
+        isPlainObject(columnResizable) && columnResizable.onMove && that.table.grid._callHandler(columnResizable.onMove)
       }
       document.onmouseup = function () {
         that.mouseDowning = false
