@@ -293,6 +293,8 @@ rows 子对象配置
 | --- | --- | --- | --- |
 | cache | 是否缓存自定义列宽设置，为`true`时需配置 Grid 的`key`属性为唯一值 | `boolean` | - |
 | allowFixedCol | 固定列是否允许被拖动(当 data 太多时拖动，会造成渲染卡顿, 此时可设置 false 关闭) | `boolean` | - |
+| onStart | 拖拽列宽开始时的回调 | `()=>{}` | - |
+| onEnd | 拖拽列宽结束时的回调 | `()=>{}` | - |
 
 ### columnFrozenable
 
