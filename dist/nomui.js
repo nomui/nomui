@@ -32073,6 +32073,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.fileList = this.fileList.filter((n) => {
         return n.uuid !== file.uuid;
       });
+      currentFile.error = error;
+      currentFile.status = "error";
+      currentFile.response = response;
       if (
         this.failedFileList.findIndex((x) => {
           return x.uuid === file.uuid;
@@ -32080,9 +32083,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this.failedFileList.push(Object.assign({}, currentFile, { response }));
       }
-      currentFile.error = error;
-      currentFile.status = "error";
-      currentFile.response = response;
       this._watchChange({ file: currentFile, fileList: [...this.fileList] });
     }
     _handleClick() {
