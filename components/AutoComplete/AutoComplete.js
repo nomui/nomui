@@ -273,7 +273,8 @@ AutoComplete.defaults = {
   filterOption: (txt, options) => { return options },
   allowClear: true,
   filterName: 'text', // text,select
-  optionDefaults: {}
+  optionDefaults: {},
+  autoFocus: false, // 自动聚焦搜索框
 }
 
 Component.register(AutoComplete)

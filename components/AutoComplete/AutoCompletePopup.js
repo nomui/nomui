@@ -100,7 +100,7 @@ class AutoCompletePopup extends Popup {
 
   _show() {
     super._show()
-    this.autoCompleteControl.searchRef && this.autoCompleteControl.searchRef.focus()
+    this.autoCompleteControl.props.autoFocus && this.autoCompleteControl.searchRef && this.autoCompleteControl.searchRef.focus()
     this.removeClass('nom-layer-animate-show')
     this.autoCompleteControl.props.animate && this.animateInit()
   }
