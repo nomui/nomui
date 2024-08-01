@@ -10444,7 +10444,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _show() {
       super._show();
-      this.autoCompleteControl.searchRef &&
+      this.autoCompleteControl.props.autoFocus &&
+        this.autoCompleteControl.searchRef &&
         this.autoCompleteControl.searchRef.focus();
       this.removeClass("nom-layer-animate-show");
       this.autoCompleteControl.props.animate && this.animateInit();
@@ -10732,6 +10733,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     allowClear: true,
     filterName: "text", // text,select
     optionDefaults: {},
+    autoFocus: false, // 自动聚焦搜索框
   };
   Component.register(AutoComplete);
   class Avatar extends Component {
