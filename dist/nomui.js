@@ -32078,7 +32078,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           return x.uuid === file.uuid;
         }) === -1
       ) {
-        this.failedFileList.push(Object.assign({}, file, { response }));
+        this.failedFileList.push(Object.assign({}, currentFile, { response }));
       }
       currentFile.error = error;
       currentFile.status = "error";
