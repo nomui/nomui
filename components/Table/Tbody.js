@@ -46,7 +46,7 @@ class Tbody extends Component {
       ),
     }
 
-    if (this.props.showEmpty && this.table.props.data && !this.table.props.data.length) {
+    if (this.props.showEmpty && this.table.props.data && !this.table.props.data.length && !this.table.grid) {
       props = {
         children: {
           tag: 'tr',

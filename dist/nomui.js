@@ -18494,7 +18494,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (
         this.props.showEmpty &&
         this.table.props.data &&
-        !this.table.props.data.length
+        !this.table.props.data.length &&
+        !this.table.grid
       ) {
         props = {
           children: {
@@ -19325,18 +19326,33 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.grid.body = this;
     }
     _config() {
+      let children = {
+        columns: this.grid.props.columns,
+        data: this.grid.props.data,
+        attrs: { style: { minWidth: `${this.grid.minWidth}px` } },
+        onlyBody: true,
+        line: this.props.line,
+        rowDefaults: this.props.rowDefaults,
+        treeConfig: this.grid.props.treeConfig,
+        keyField: this.grid.props.keyField,
+        showEmpty: this.grid.props.showEmpty,
+      };
+      if (
+        this.grid.props.showEmpty &&
+        this.grid.props.data &&
+        !this.grid.props.data.length
+      ) {
+        children = {
+          component: "Component",
+          classes: { "nom-grid-body-empty": true },
+          children: {
+            component: "Empty",
+            description: this.grid.props.emptyText,
+          },
+        };
+      }
       this.setProps({
-        children: {
-          columns: this.grid.props.columns,
-          data: this.grid.props.data,
-          attrs: { style: { minWidth: `${this.grid.minWidth}px` } },
-          onlyBody: true,
-          line: this.props.line,
-          rowDefaults: this.props.rowDefaults,
-          treeConfig: this.grid.props.treeConfig,
-          keyField: this.grid.props.keyField,
-          showEmpty: this.grid.props.showEmpty,
-        },
+        children: children,
         attrs: {
           onscroll: () => {
             const { scrollLeft } = this.element;

@@ -7628,6 +7628,12 @@ table.nom-table.p-bordered {
   height: 100%;
   overflow: auto;
 }
+.nom-grid > .nom-grid-body .nom-grid-body-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 .nom-grid > .nom-grid-body > .nom-grid-body-content {
   overflow-x: auto;
 }
