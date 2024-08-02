@@ -18,22 +18,36 @@ class GridBody extends Component {
   }
 
   _config() {
-    this.setProps({
-      children: {
-        columns: this.grid.props.columns,
-        data: this.grid.props.data,
-        attrs: {
-          style: {
-            minWidth: `${this.grid.minWidth}px`,
-          },
+    let children = {
+      columns: this.grid.props.columns,
+      data: this.grid.props.data,
+      attrs: {
+        style: {
+          minWidth: `${this.grid.minWidth}px`,
         },
-        onlyBody: true,
-        line: this.props.line,
-        rowDefaults: this.props.rowDefaults,
-        treeConfig: this.grid.props.treeConfig,
-        keyField: this.grid.props.keyField,
-        showEmpty: this.grid.props.showEmpty,
       },
+      onlyBody: true,
+      line: this.props.line,
+      rowDefaults: this.props.rowDefaults,
+      treeConfig: this.grid.props.treeConfig,
+      keyField: this.grid.props.keyField,
+      showEmpty: this.grid.props.showEmpty,
+    }
+
+    if (this.grid.props.showEmpty && this.grid.props.data && !this.grid.props.data.length) {
+      children = {
+        component: 'Component',
+        classes: {
+          'nom-grid-body-empty': true
+        },
+        children: {
+          component: 'Empty',
+          description: this.grid.props.emptyText,
+        }
+      }
+    }
+    this.setProps({
+      children: children,
       attrs: {
         onscroll: () => {
           const { scrollLeft } = this.element
