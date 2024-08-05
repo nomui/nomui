@@ -38,8 +38,9 @@ define([], function () {
             },
           },
           {
+            component: 'Flex',
             gap: 'medium',
-            cols: [
+            items: [
               {
                 component: 'Panel',
                 uistyle: 'bordered',
@@ -78,17 +79,18 @@ define([], function () {
                     ref: (c) => {
                       colFlexRef = c
                     },
+                    vertical: true,
                     items: [
                       {
-                        children: '第一列',
+                        children: 'item 1',
                         styles: itemStyles,
                       },
                       {
-                        children: '第二列',
+                        children: 'item 2',
                         styles: itemStyles,
                       },
                       {
-                        children: '第三列',
+                        children: 'item 3',
                         styles: itemStyles,
                       },
                     ],
