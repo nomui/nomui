@@ -155,6 +155,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       url: '#!components!index?type=Flex',
                     },
                     {
+                      text: 'Flex2',
+                      subtext: '弹性布局',
+                      id: 'Flex2',
+                      url: '#!components!index?type=Flex2',
+                    },
+                    {
                       text: 'Layout',
                       subtext: '布局',
                       id: 'Layout',
