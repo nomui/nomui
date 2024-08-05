@@ -1081,11 +1081,6 @@ class Grid extends Component {
 
   // 自动滚动到上次的位置
   _processAutoScroll() {
-    const { data } = this.props
-    if (!data || !data.length) {
-      this._shouldAutoScroll = true
-      this._setScrollPlace(true)
-    }
     // 排序后自动滚动到之前的位置
     this._shouldAutoScroll && this.autoScrollGrid()
     this._shouldAutoScroll = true

@@ -18952,10 +18952,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { table, props } = this;
       const { body, footer } = table.grid;
       const { field } = props.column;
-      if (body) {
+      if (body && body.table) {
         this._setTdsPosition(body.table.colRefs[field].tdRefs);
       }
-      if (footer) {
+      if (footer && footer.table) {
         this._setTdsPosition(footer.table.colRefs[field].tdRefs);
       }
     }
@@ -21436,11 +21436,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
     } // 自动滚动到上次的位置
     _processAutoScroll() {
-      const { data } = this.props;
-      if (!data || !data.length) {
-        this._shouldAutoScroll = true;
-        this._setScrollPlace(true);
-      } // 排序后自动滚动到之前的位置
+      // 排序后自动滚动到之前的位置
       this._shouldAutoScroll && this.autoScrollGrid();
       this._shouldAutoScroll = true;
     }

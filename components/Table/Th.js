@@ -404,10 +404,10 @@ class Th extends Component {
     const { table, props } = this
     const { body, footer } = table.grid
     const { field } = props.column
-    if (body) {
+    if (body && body.table) {
       this._setTdsPosition(body.table.colRefs[field].tdRefs)
     }
-    if (footer) {
+    if (footer && footer.table) {
       this._setTdsPosition(footer.table.colRefs[field].tdRefs)
     }
   }
