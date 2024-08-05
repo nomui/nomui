@@ -14793,10 +14793,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         "gutter",
         "fills",
         "fit",
+        "vertical",
+        "cols",
       ];
-      const { rows, cols, itemDefaults } = this.props;
+      const { rows, cols, itemDefaults, items } = this.props;
       let { direction } = this.props;
       let children = [];
+      if (Array.isArray(items)) {
+        this.setProps({ children: items });
+        return;
+      }
       if (Array.isArray(rows) && rows.length) {
         direction = "column";
         children = rows;
@@ -14847,7 +14853,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   Flex.defaults = {
     rows: null,
     cols: null,
-    direction: "column",
     wrap: false,
     align: null,
     justify: null,

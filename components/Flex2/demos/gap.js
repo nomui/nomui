@@ -7,18 +7,17 @@ define([], function () {
       let rowflexRef = null,
         colFlexRef = null
 
-      const itemDefaults = {
-        styles: {
-          color: 'lprimary-light',
-          border: '1px',
-          padding: '1',
-        },
+      const itemStyles = {
+        color: 'lprimary-light',
+        border: '1px',
+        padding: '1',
       }
 
       return {
         component: 'Flex',
+        vertical: true,
         gap: 'large',
-        rows: [
+        items: [
           {
             children: {
               component: 'RadioList',
@@ -26,9 +25,11 @@ define([], function () {
               value: false,
               options: [
                 { text: 'default', value: false },
+                { text: 'xsmall', value: 'xsmall' },
                 { text: 'small', value: 'small' },
                 { text: 'medium', value: 'medium' },
                 { text: 'large', value: 'large' },
+                { text: 'xlarge', value: 'xlarge' },
               ],
               onValueChange: ({ newValue }) => {
                 rowflexRef.update({ gap: newValue })
@@ -49,18 +50,20 @@ define([], function () {
                     ref: (c) => {
                       rowflexRef = c
                     },
-                    rows: [
+                    items: [
                       {
-                        children: '第一行',
+                        children: 'item 1',
+                        styles: itemStyles,
                       },
                       {
-                        children: '第二行',
+                        children: 'item 2',
+                        styles: itemStyles,
                       },
                       {
-                        children: '第三行',
+                        children: 'item 3',
+                        styles: itemStyles,
                       },
                     ],
-                    itemDefaults: itemDefaults,
                   },
                 },
               },
@@ -75,18 +78,20 @@ define([], function () {
                     ref: (c) => {
                       colFlexRef = c
                     },
-                    cols: [
+                    items: [
                       {
                         children: '第一列',
+                        styles: itemStyles,
                       },
                       {
                         children: '第二列',
+                        styles: itemStyles,
                       },
                       {
                         children: '第三列',
+                        styles: itemStyles,
                       },
                     ],
-                    itemDefaults: itemDefaults,
                   },
                 },
               },

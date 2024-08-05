@@ -1,0 +1,91 @@
+.nom-flex {
+    display: flex;
+
+    &.p-vertical {
+        flex-direction: column;
+    }
+
+    &.p-wrap {
+        flex-wrap: wrap;
+    }
+
+    &.p-cols-1 {
+        >* {
+            width: 100%;
+        }
+    }
+
+    &.p-cols-2 {
+        >* {
+            width: 50%;
+        }
+    }
+
+    &.p-cols-3 {
+        >* {
+            width: 33.33%;
+        }
+    }
+
+    &.p-cols-4 {
+        >* {
+            width: 25%;
+        }
+    }
+
+    &.p-cols-5 {
+        >* {
+            width: 20%;
+        }
+    }
+
+    &.p-cols-6 {
+        >* {
+            width: 16.66%;
+        }
+    }
+
+    &.p-cols-7 {
+        >* {
+            width: 14.28%;
+        }
+    }
+
+    &.p-cols-8 {
+        >* {
+            width: 12.5%;
+        }
+    }
+
+    &.p-cols-9 {
+        >* {
+            width: 11.11%;
+        }
+    }
+
+    &.p-cols-10 {
+        >* {
+            width: 10%;
+        }
+    }
+
+    &.p-gap-xsmall {
+        gap: 4px;
+    }
+
+    &.p-gap-small {
+        gap: 8px;
+    }
+
+    &.p-gap-medium {
+        gap: 16px;
+    }
+
+    &.p-gap-large {
+        gap: 24px;
+    }
+
+    &.p-gap-xlarge {
+        gap: 32px;
+    }
+}
