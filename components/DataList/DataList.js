@@ -2,6 +2,7 @@ import Component, { n } from '../Component/index'
 import { extend, isFunction, isPlainObject } from '../util/index'
 import scrollIntoView from '../util/scrollIntoView'
 import DataListItemMixin from './DataListItemMixin'
+import Sortable from '../util/sortable.core.esm'
 
 class DataList extends Component {
     constructor(props, ...mixins) {
@@ -179,6 +180,16 @@ class DataList extends Component {
         return keys
     }
 
+    getItemDatas() {
+        const datas = []
+        const children = this.getChildren()
+        for (let i = 0; i < children.length; i++) {
+            const item = children[i]
+            datas.push(item.props._itemData)
+        }
+        return datas
+    }
+
     _onItemSelectionChange() {
         this._callHandler(this.props.onItemSelectionChange)
     }
@@ -192,6 +203,23 @@ class DataList extends Component {
                 itemProps = Component.extendProps(itemProps, itemRender({ itemData, list: this }))
             }
             return n(null, itemProps, null, [DataListItemMixin])
+        }
+    }
+
+    _rendered() {
+        const { sortable } = this.props
+
+        if (sortable) {
+            const options = {
+                group: this.key,
+                animation: 150,
+                fallbackOnBody: true,
+                swapThreshold: 0.65,
+                handle: sortable.handle,
+                filter: '.s-disabled',
+            }
+
+            new Sortable(this.element, options)
         }
     }
 }
@@ -211,6 +239,7 @@ DataList.defaults = {
 
     disabledItemKeys: [],
     showEmpty: false,
+    sortable: false,
 }
 
 Component.register(DataList)
