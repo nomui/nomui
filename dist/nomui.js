@@ -18508,13 +18508,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (
         this.props.showEmpty &&
         this.table.props.data &&
-        !this.table.props.data.length &&
-        !this.table.grid
+        !this.table.props.data.length
       ) {
         props = {
           children: {
             tag: "tr",
             classes: { "nom-tr-empty": true },
+            hidden: !!this.table.grid,
             children: {
               tag: "Td",
               attrs: {
@@ -18961,10 +18961,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { table, props } = this;
       const { body, footer } = table.grid;
       const { field } = props.column;
-      if (body && body.table) {
+      if (body) {
         this._setTdsPosition(body.table.colRefs[field].tdRefs);
       }
-      if (footer && footer.table) {
+      if (footer) {
         this._setTdsPosition(footer.table.colRefs[field].tdRefs);
       }
     }
@@ -19341,6 +19341,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       let children = {
+        component: "Table",
         columns: this.grid.props.columns,
         data: this.grid.props.data,
         attrs: { style: { minWidth: `${this.grid.minWidth}px` } },
@@ -19356,14 +19357,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.grid.props.data &&
         !this.grid.props.data.length
       ) {
-        children = {
-          component: "Component",
-          classes: { "nom-grid-body-empty": true },
-          children: {
-            component: "Empty",
-            description: this.grid.props.emptyText,
+        children = [
+          children,
+          {
+            component: "Component",
+            classes: { "nom-grid-body-empty": true },
+            children: {
+              component: "Empty",
+              description: this.grid.props.emptyText,
+            },
           },
-        };
+        ];
       }
       this.setProps({
         children: children,
