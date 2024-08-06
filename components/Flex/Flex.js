@@ -27,6 +27,7 @@ class Flex extends Component {
 
     if (Array.isArray(items)) {
       this.setProps({
+        classes: { 'nom-flex2': true },
         children: items
       })
       return

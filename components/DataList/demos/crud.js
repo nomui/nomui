@@ -19,11 +19,13 @@ define(['nanoid'], function (nanoid) {
             ]
             return {
                 component: 'Flex',
+                vertical: true,
                 gap: 'medium',
-                rows: [
+                items: [
                     {
+                        component: 'Flex',
                         gap: 'medium',
-                        cols: [
+                        items: [
                             {
                                 component: 'Button',
                                 text: '后面新增飞狐外传',
@@ -57,84 +59,94 @@ define(['nanoid'], function (nanoid) {
                                     listRef.removeItem(tlbbId)
                                 },
                             },
+                            {
+                                component: 'Button',
+                                text: '获取所有子元素的键数组',
+                                onClick: () => {
+                                    const keys = JSON.stringify(listRef.getItemKeys(), null, 2)
+                                    new nomui.Message({
+                                        content: `子元素键数组：${keys}`,
+                                        type: 'info',
+                                        duration: 3,
+                                    })
+                                },
+                            },
                         ],
                     },
                     {
-                        children: {
-                            component: 'DataList',
-                            ref: (c) => {
-                                listRef = c
-                            },
-                            wrap: true,
-                            gap: 'large',
-                            data: books,
-                            itemRender: ({ itemData, list }) => {
-                                return {
-                                    component: 'Flex',
-                                    gap: 'small',
-                                    rows: [
-                                        {
-                                            tag: 'img',
-                                            attrs: {
-                                                src: `docs/images/books/${itemData.imageName}.jpg`,
-                                            },
+                        component: 'DataList',
+                        ref: (c) => {
+                            listRef = c
+                        },
+                        wrap: true,
+                        gap: 'large',
+                        data: books,
+                        itemRender: ({ itemData, list }) => {
+                            return {
+                                component: 'Flex',
+                                gap: 'small',
+                                rows: [
+                                    {
+                                        tag: 'img',
+                                        attrs: {
+                                            src: `docs/images/books/${itemData.imageName}.jpg`,
                                         },
-                                        { children: itemData.name },
-                                        {
-                                            children: {
-                                                styles: {
-                                                    text: 'muted',
-                                                },
-                                                children: `${itemData.publisher} / ${itemData.publication_year}`,
+                                    },
+                                    { children: itemData.name },
+                                    {
+                                        children: {
+                                            styles: {
+                                                text: 'muted',
                                             },
+                                            children: `${itemData.publisher} / ${itemData.publication_year}`,
                                         },
-                                        {
-                                            justify: 'between',
-                                            cols: [
-                                                {
-                                                    component: 'Button',
-                                                    text: '修改',
-                                                    onClick: () => {
-                                                        let bookNameRef = null
-                                                        new nomui.Modal({
-                                                            content: {
-                                                                header: {
-                                                                    caption: {
-                                                                        title: '修改',
+                                    },
+                                    {
+                                        justify: 'between',
+                                        cols: [
+                                            {
+                                                component: 'Button',
+                                                text: '修改',
+                                                onClick: () => {
+                                                    let bookNameRef = null
+                                                    new nomui.Modal({
+                                                        content: {
+                                                            header: {
+                                                                caption: {
+                                                                    title: '修改',
+                                                                },
+                                                            },
+                                                            body: {
+                                                                children: {
+                                                                    component: 'Textbox',
+                                                                    ref: (c) => {
+                                                                        bookNameRef = c
                                                                     },
-                                                                },
-                                                                body: {
-                                                                    children: {
-                                                                        component: 'Textbox',
-                                                                        ref: (c) => {
-                                                                            bookNameRef = c
-                                                                        },
-                                                                        name: 'name',
-                                                                        value: itemData.name
-                                                                    }
-                                                                },
-                                                                onOk: ({ sender }) => {
-                                                                    itemData.name = bookNameRef.getValue()
-                                                                    listRef.updateItem(itemData.id, itemData)
-                                                                    sender.close()
+                                                                    name: 'name',
+                                                                    value: itemData.name
                                                                 }
+                                                            },
+                                                            onOk: ({ sender }) => {
+                                                                itemData.name = bookNameRef.getValue()
+                                                                listRef.updateItem(itemData.id, itemData)
+                                                                sender.close()
                                                             }
-                                                        })
-                                                    },
+                                                        }
+                                                    })
                                                 },
-                                                {
-                                                    component: 'Button',
-                                                    text: '删除',
-                                                    danger: true,
-                                                    onClick: () => {
-                                                        list.removeItem(itemData.id)
-                                                    },
+                                            },
+                                            {
+                                                component: 'Button',
+                                                text: '删除',
+                                                danger: true,
+                                                onClick: () => {
+                                                    list.removeItem(itemData.id)
                                                 },
-                                            ],
-                                        },
-                                    ],
-                                }
-                            },
+                                            },
+                                        ],
+                                    },
+                                ],
+                            }
                         },
                     },
                 ],

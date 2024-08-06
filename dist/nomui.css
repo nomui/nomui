@@ -12863,57 +12863,57 @@ textarea .nom-textarea {
   background: no-repeat center center / 1.25rem;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'%3e%3cpath fill='none' stroke='%23182433' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8.5l2.5 2.5l5.5 -5.5'/%3e%3c/svg%3e");
 }
-.nom-flex {
+.nom-flex2 {
   display: flex;
 }
-.nom-flex.p-vertical {
+.nom-flex2.p-vertical {
   flex-direction: column;
 }
-.nom-flex.p-wrap {
+.nom-flex2.p-wrap {
   flex-wrap: wrap;
 }
-.nom-flex.p-cols-1 > * {
+.nom-flex2.p-cols-1 > * {
   width: 100%;
 }
-.nom-flex.p-cols-2 > * {
+.nom-flex2.p-cols-2 > * {
   width: 50%;
 }
-.nom-flex.p-cols-3 > * {
+.nom-flex2.p-cols-3 > * {
   width: 33.33%;
 }
-.nom-flex.p-cols-4 > * {
+.nom-flex2.p-cols-4 > * {
   width: 25%;
 }
-.nom-flex.p-cols-5 > * {
+.nom-flex2.p-cols-5 > * {
   width: 20%;
 }
-.nom-flex.p-cols-6 > * {
+.nom-flex2.p-cols-6 > * {
   width: 16.66%;
 }
-.nom-flex.p-cols-7 > * {
+.nom-flex2.p-cols-7 > * {
   width: 14.28%;
 }
-.nom-flex.p-cols-8 > * {
+.nom-flex2.p-cols-8 > * {
   width: 12.5%;
 }
-.nom-flex.p-cols-9 > * {
+.nom-flex2.p-cols-9 > * {
   width: 11.11%;
 }
-.nom-flex.p-cols-10 > * {
+.nom-flex2.p-cols-10 > * {
   width: 10%;
 }
-.nom-flex.p-gap-xsmall {
+.nom-flex2.p-gap-xsmall {
   gap: 4px;
 }
-.nom-flex.p-gap-small {
+.nom-flex2.p-gap-small {
   gap: 8px;
 }
-.nom-flex.p-gap-medium {
+.nom-flex2.p-gap-medium {
   gap: 16px;
 }
-.nom-flex.p-gap-large {
+.nom-flex2.p-gap-large {
   gap: 24px;
 }
-.nom-flex.p-gap-xlarge {
+.nom-flex2.p-gap-xlarge {
   gap: 32px;
 }

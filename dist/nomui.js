@@ -14660,7 +14660,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return itemSelectionChanged;
     }
     selectAllItems(selectOption) {
-      return this.selectItems(this.content.getChildren(), selectOption);
+      return this.selectItems(this.getChildren(), selectOption);
     }
     unselectItem(key, selectOption) {
       const found = this.findItem(key);
@@ -14738,6 +14738,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     findItem(key) {
       return this.findChild(key);
     }
+    getItemKeys() {
+      const keys = [];
+      const children = this.getChildren();
+      for (let i = 0; i < children.length; i++) {
+        const item = children[i];
+        keys.push(item.key);
+      }
+      return keys;
+    }
     _onItemSelectionChange() {
       this._callHandler(this.props.onItemSelectionChange);
     }
@@ -14800,7 +14809,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       let { direction } = this.props;
       let children = [];
       if (Array.isArray(items)) {
-        this.setProps({ children: items });
+        this.setProps({ classes: { "nom-flex2": true }, children: items });
         return;
       }
       if (Array.isArray(rows) && rows.length) {
