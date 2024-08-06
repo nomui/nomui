@@ -11,6 +11,9 @@ define([], function () {
           ref: (c) => {
             group = c
           },
+          fieldDefaults: {
+            labelAlign: 'left'
+          },
           fields: [
             {
               component: 'Textbox',
