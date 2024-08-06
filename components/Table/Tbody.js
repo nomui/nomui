@@ -46,13 +46,14 @@ class Tbody extends Component {
       ),
     }
 
-    if (this.props.showEmpty && this.table.props.data && !this.table.props.data.length && !this.table.grid) {
+    if (this.props.showEmpty && this.table.props.data && !this.table.props.data.length) {
       props = {
         children: {
           tag: 'tr',
           classes: {
             'nom-tr-empty': true,
           },
+          hidden: !!this.table.grid,
           children: {
             tag: 'Td',
             attrs: {
