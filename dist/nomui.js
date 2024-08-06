@@ -14747,6 +14747,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return keys;
     }
+    getItemDatas() {
+      const datas = [];
+      const children = this.getChildren();
+      for (let i = 0; i < children.length; i++) {
+        const item = children[i];
+        datas.push(item.props._itemData);
+      }
+      return datas;
+    }
     _onItemSelectionChange() {
       this._callHandler(this.props.onItemSelectionChange);
     }
@@ -14763,6 +14772,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         return n$1(null, itemProps, null, [DataListItemMixin]);
       }
     }
+    _rendered() {
+      const { sortable } = this.props;
+      if (sortable) {
+        const options = {
+          group: this.key,
+          animation: 150,
+          fallbackOnBody: true,
+          swapThreshold: 0.65,
+          handle: sortable.handle,
+          filter: ".s-disabled",
+        };
+        new Sortable(this.element, options);
+      }
+    }
   }
   DataList.defaults = {
     tag: "div",
@@ -14772,6 +14795,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     itemSelectable: { multiple: false, byClick: false, scrollIntoView: false },
     disabledItemKeys: [],
     showEmpty: false,
+    sortable: false,
   };
   Component.register(DataList);
   class FlexItem extends Component {
