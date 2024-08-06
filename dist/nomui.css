@@ -9798,6 +9798,15 @@ textarea .nom-textarea {
   .nom-field.p-label-align-left > .nom-field-label {
     text-align: left;
   }
+  .nom-field.p-label-align-left.p-required > .nom-field-label > .nom-label {
+    position: relative;
+  }
+  .nom-field.p-label-align-left.p-required > .nom-field-label > .nom-label::before {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-75%, -50%);
+  }
 }
 .nom-field.p-span-auto {
   width: auto;

@@ -149,6 +149,21 @@
       >.nom-field-label {
         text-align: left;
       }
+
+      &.p-required {
+        >.nom-field-label {
+          >.nom-label {
+            position: relative;
+
+            &::before {
+              position: absolute;
+              left: 0;
+              top: 50%;
+              transform: translate(-75%, -50%);
+            }
+          }
+        }
+      }
     }
   }
 
