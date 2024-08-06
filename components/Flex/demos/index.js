@@ -5,7 +5,6 @@ define([
   './cols-wrap.js',
   './shorthand.js',
   './align-justify-fills.js',
-  './gap.js',
   './gutter.js',
   './flex-item.js',
   './rows-fit.js',

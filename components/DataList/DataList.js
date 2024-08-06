@@ -76,7 +76,7 @@ class DataList extends Component {
     }
 
     selectAllItems(selectOption) {
-        return this.selectItems(this.content.getChildren(), selectOption)
+        return this.selectItems(this.getChildren(), selectOption)
     }
 
     unselectItem(key, selectOption) {
@@ -167,6 +167,16 @@ class DataList extends Component {
 
     findItem(key) {
         return this.findChild(key)
+    }
+
+    getItemKeys() {
+        const keys = []
+        const children = this.getChildren()
+        for (let i = 0; i < children.length; i++) {
+            const item = children[i]
+            keys.push(item.key)
+        }
+        return keys
     }
 
     _onItemSelectionChange() {
