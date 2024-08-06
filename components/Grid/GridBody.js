@@ -19,6 +19,7 @@ class GridBody extends Component {
 
   _config() {
     let children = {
+      component: 'Table',
       columns: this.grid.props.columns,
       data: this.grid.props.data,
       attrs: {
@@ -35,16 +36,19 @@ class GridBody extends Component {
     }
 
     if (this.grid.props.showEmpty && this.grid.props.data && !this.grid.props.data.length) {
-      children = {
-        component: 'Component',
-        classes: {
-          'nom-grid-body-empty': true
-        },
-        children: {
-          component: 'Empty',
-          description: this.grid.props.emptyText,
+      children = [
+        children,
+        {
+          component: 'Component',
+          classes: {
+            'nom-grid-body-empty': true
+          },
+          children: {
+            component: 'Empty',
+            description: this.grid.props.emptyText,
+          }
         }
-      }
+      ]
     }
     this.setProps({
       children: children,
