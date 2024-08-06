@@ -1,5 +1,5 @@
 .nom-confirm {
-  > .nom-modal-dialog {
+  >.nom-modal-dialog {
     width: 430px;
   }
 }
@@ -16,31 +16,33 @@
   box-shadow: var(--nom-layer-box-shadow);
   // counteract the pointer-events: none; in the .modal-dialog
   pointer-events: auto;
-  > .nom-confirm-body {
+
+  >.nom-confirm-body {
     display: flex;
     flex-direction: row;
 
-    > .nom-confirm-icon {
-      padding: 0.125rem 1rem;
+    >.nom-confirm-icon {
+      padding-top: 0.135rem;
+      padding-right: 0.5rem;
       color: var(--nom-color-warning);
-      font-size: 2rem;
+      font-size: 1.65rem;
     }
 
-    > .nom-confirm-body-content {
-      > .nom-confirm-title {
+    >.nom-confirm-body-content {
+      >.nom-confirm-title {
         padding: 0.25rem;
         font-weight: 500;
-        font-size: 1.5rem;
+        font-size: 1.25rem;
       }
 
-      > .nom-confirm-description {
+      >.nom-confirm-description {
         margin: 1rem 0;
         padding: 0.25rem;
       }
     }
   }
 
-  > .nom-confirm-actions {
+  >.nom-confirm-actions {
     margin-top: 1.5rem;
     padding-right: 1rem;
     text-align: right;

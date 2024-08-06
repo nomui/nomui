@@ -142,6 +142,11 @@ class Grid extends Component {
           classes: {
             'nom-grid-setting': true,
           },
+          attrs: {
+            style: {
+              top: this.props.rowCheckable ? '10px' : '7px'
+            }
+          },
           children: {
             component: 'Button',
             ref: (c) => {

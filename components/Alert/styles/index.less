@@ -1,5 +1,5 @@
 .nom-alert {
-  > .nom-modal-dialog {
+  >.nom-modal-dialog {
     width: 430px;
   }
 }
@@ -17,45 +17,45 @@
   // counteract the pointer-events: none; in the .modal-dialog
   pointer-events: auto;
 
-  > .nom-alert-body {
+  >.nom-alert-body {
     display: flex;
     flex-direction: row;
 
-    > .nom-alert-body-icon {
-      padding-top: 0.3rem;
-      padding-right: 0.75rem;
+    >.nom-alert-body-icon {
+      padding-top: 0.9rem;
+      padding-right: 0.5rem;
 
-      > .nom-alert-icon {
-        font-size: 3rem;
+      >.nom-alert-icon {
+        font-size: 1.65rem;
       }
     }
 
-    > .nom-alert-body-content {
+    >.nom-alert-body-content {
       flex-grow: 1;
 
-      > .nom-alert-title {
+      >.nom-alert-title {
         padding: 0.75rem 0.25rem;
         font-weight: 500;
-        font-size: 1.5rem;
+        font-size: 1.25rem;
       }
 
-      > .nom-alert-description {
+      >.nom-alert-description {
         margin: 1rem 0;
         padding: 0.25rem;
       }
     }
   }
 
-  > .nom-alert-actions {
+  >.nom-alert-actions {
     margin-top: 1.5rem;
     padding-right: 1rem;
     text-align: right;
   }
 
   &.p-type-info {
-    > .nom-alert-body {
-      > .nom-alert-body-icon {
-        > .nom-alert-icon {
+    >.nom-alert-body {
+      >.nom-alert-body-icon {
+        >.nom-alert-icon {
           color: var(--nom-color-info);
         }
       }
@@ -63,9 +63,9 @@
   }
 
   &.p-type-success {
-    > .nom-alert-body {
-      > .nom-alert-body-icon {
-        > .nom-alert-icon {
+    >.nom-alert-body {
+      >.nom-alert-body-icon {
+        >.nom-alert-icon {
           color: var(--nom-color-success);
         }
       }
@@ -73,9 +73,9 @@
   }
 
   &.p-type-error {
-    > .nom-alert-body {
-      > .nom-alert-body-icon {
-        > .nom-alert-icon {
+    >.nom-alert-body {
+      >.nom-alert-body-icon {
+        >.nom-alert-icon {
           color: var(--nom-color-danger);
         }
       }
@@ -83,9 +83,9 @@
   }
 
   &.p-type-warning {
-    > .nom-alert-body {
-      > .nom-alert-body-icon {
-        > .nom-alert-icon {
+    >.nom-alert-body {
+      >.nom-alert-body-icon {
+        >.nom-alert-icon {
           color: var(--nom-color-warning);
         }
       }
