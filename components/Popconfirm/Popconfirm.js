@@ -28,11 +28,8 @@ class Popconfirm extends Popup {
                 {
                   component: 'Icon',
                   type: icon,
-                  attrs: {
-                    style: {
-                      'font-size': '2.5rem',
-                      color: '#fa0',
-                    },
+                  classes: {
+                    'nom-popconfirm-icon': true
                   },
                 },
                 { children: isString(content) ? content : content() },
@@ -96,7 +93,7 @@ Popconfirm.defaults = {
   onConfirm: null,
   okText: '是',
   cancelText: '否',
-  icon: 'info-circle',
+  icon: 'info-circle-fill',
   align: 'top left',
 }
 Component.mixin({

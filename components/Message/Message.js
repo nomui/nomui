@@ -9,10 +9,10 @@ class Message extends Layer {
   _config() {
     this._addPropStyle('type')
     const iconMap = {
-      info: 'info-circle',
-      success: 'check-circle',
-      error: 'close-circle',
-      warning: 'exclamation-circle',
+      info: 'info-circle-fill',
+      success: 'check-circle-fill',
+      error: 'close-circle-fill',
+      warning: 'warning-circle-fill',
     }
 
     const icon = this.props.icon || iconMap[this.props.type]

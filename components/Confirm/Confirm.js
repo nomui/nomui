@@ -24,7 +24,7 @@ class Confirm extends Modal {
   }
 }
 Confirm.defaults = {
-  icon: 'question-circle',
+  icon: 'help-circle-fill',
   title: null,
   description: null,
   action: null,
