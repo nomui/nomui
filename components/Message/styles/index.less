@@ -11,38 +11,42 @@
     text-align: center;
   }
 
-  > .nom-message-content {
+  >.nom-message-content {
     padding: 0.75rem;
   }
 
   &.p-type-info {
-    background-color: var(--nom-color-info-light-default);
-    border: 1px solid var(--nom-color-info);
-    > .nom-message-icon {
+    background-color: var(--nom-message-info-bg-color);
+    border: 1px solid var(--nom-message-info-border-color);
+
+    >.nom-message-icon {
       color: var(--nom-color-info);
     }
   }
 
   &.p-type-success {
-    background-color: var(--nom-color-success-light-default);
-    border: 1px solid var(--nom-color-success);
-    > .nom-message-icon {
+    background-color: var(--nom-message-success-bg-color);
+    border: 1px solid var(--nom-message-success-border-color);
+
+    >.nom-message-icon {
       color: var(--nom-color-success);
     }
   }
 
   &.p-type-warning {
-    background-color: var(--nom-color-warning-light-default);
-    border: 1px solid var(--nom-color-warning);
-    > .nom-message-icon {
+    background-color: var(--nom-message-warning-bg-color);
+    border: 1px solid var(--nom-message-warning-border-color);
+
+    >.nom-message-icon {
       color: var(--nom-color-warning);
     }
   }
 
   &.p-type-error {
-    background-color: var(--nom-color-danger-light-default);
-    border: 1px solid var(--nom-color-danger);
-    > .nom-message-icon {
+    background-color: var(--nom-message-danger-bg-color);
+    border: 1px solid var(--nom-message-danger-border-color);
+
+    >.nom-message-icon {
       color: var(--nom-color-danger);
     }
   }
