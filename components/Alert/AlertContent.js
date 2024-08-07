@@ -22,10 +22,10 @@ class AlertContent extends Component {
     const alertInst = this.modal
 
     const iconMap = {
-      info: 'info-circle',
-      success: 'check-circle',
-      error: 'close-circle',
-      warning: 'exclamation-circle',
+      info: 'info-circle-fill',
+      success: 'check-circle-fill',
+      error: 'close-circle-fill',
+      warning: 'warning-circle-fill',
     }
 
     icon = icon || iconMap[type]

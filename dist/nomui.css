@@ -4533,13 +4533,23 @@ body {
   --nom-grid-tr-bg-hover: #f9f9fa;
   --nom-grid-tr-striped-bg: #fdfdfd;
   --nom-grid-tr-striped-bg-hover: var(--nom-grid-tr-bg-hover);
-  --nom-grid-tr-bg-selected: #fffaef;
+  --nom-grid-tr-bg-selected: #f1fcff;
+  --nom-grid-tr-checked-bg: transparent;
+  --nom-grid-tr-checked-bg-hover: var(--nom-grid-tr-bg-hover);
   --nom-grid-col-highlight-bg: rgba(221, 205, 79, 0.1);
   --nom-grid-td-padding: 8px 10px;
   --nom-grid-tr-modified-bg: #f5f2ff;
   --nom-grid-tr-modified-bg-hover: #f2edff;
   --nom-menu-divider-border: 1px solid var(--nom-border-color);
   --nom-menu-group-title-color: var(--nom-color-text-2);
+  --nom-message-info-bg-color: #D4E3FC;
+  --nom-message-info-border-colorr: transparent;
+  --nom-message-success-bg-color: #BCEBDC;
+  --nom-message-success-border-colorr: transparent;
+  --nom-message-warning-bg-color: #F9E0C7;
+  --nom-message-warning-border-colorr: transparent;
+  --nom-message-danger-bg-color: #F9D7D9;
+  --nom-message-danger-border-colorr: transparent;
   --nom-panel-header-bg-color: var(--nom-color-fill-0);
   --nom-panel-border-radius: var(--nom-border-radius);
   --nom-tabs-card-bg-color: var(--nom-panel-header-bg-color);
@@ -5696,11 +5706,11 @@ body .nom-always-dark {
   flex-direction: row;
 }
 .nom-notification-content > .nom-notification-body > .nom-notification-body-icon {
-  padding-top: 0.3rem;
-  padding-right: 1rem;
+  padding-top: 0.35rem;
+  padding-right: 0.5rem;
 }
 .nom-notification-content > .nom-notification-body > .nom-notification-body-icon > .nom-notification-icon {
-  font-size: 2rem;
+  font-size: 1.65rem;
 }
 .nom-notification-content > .nom-notification-body > .nom-notification-body-content {
   flex: 1;
@@ -5708,10 +5718,10 @@ body .nom-always-dark {
 .nom-notification-content > .nom-notification-body > .nom-notification-body-content .nom-notification-title {
   padding: 0.25rem;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 .nom-notification-content > .nom-notification-body > .nom-notification-body-content .nom-notification-description {
-  margin: 1rem 0;
+  margin: 0.5rem 0 0 0;
   padding: 0.25rem;
 }
 .nom-notification-content > .nom-notification-actions {
@@ -6333,29 +6343,29 @@ body .nom-always-dark {
   padding: 0.75rem;
 }
 .nom-message.p-type-info {
-  background-color: var(--nom-color-info-light-default);
-  border: 1px solid var(--nom-color-info);
+  background-color: var(--nom-message-info-bg-color);
+  border: 1px solid var(--nom-message-info-border-color);
 }
 .nom-message.p-type-info > .nom-message-icon {
   color: var(--nom-color-info);
 }
 .nom-message.p-type-success {
-  background-color: var(--nom-color-success-light-default);
-  border: 1px solid var(--nom-color-success);
+  background-color: var(--nom-message-success-bg-color);
+  border: 1px solid var(--nom-message-success-border-color);
 }
 .nom-message.p-type-success > .nom-message-icon {
   color: var(--nom-color-success);
 }
 .nom-message.p-type-warning {
-  background-color: var(--nom-color-warning-light-default);
-  border: 1px solid var(--nom-color-warning);
+  background-color: var(--nom-message-warning-bg-color);
+  border: 1px solid var(--nom-message-warning-border-color);
 }
 .nom-message.p-type-warning > .nom-message-icon {
   color: var(--nom-color-warning);
 }
 .nom-message.p-type-error {
-  background-color: var(--nom-color-danger-light-default);
-  border: 1px solid var(--nom-color-danger);
+  background-color: var(--nom-message-danger-bg-color);
+  border: 1px solid var(--nom-message-danger-border-color);
 }
 .nom-message.p-type-error > .nom-message-icon {
   color: var(--nom-color-danger);
@@ -6605,11 +6615,11 @@ body .nom-always-dark {
   flex-direction: row;
 }
 .nom-alert-content > .nom-alert-body > .nom-alert-body-icon {
-  padding-top: 0.3rem;
-  padding-right: 0.75rem;
+  padding-top: 0.9rem;
+  padding-right: 0.5rem;
 }
 .nom-alert-content > .nom-alert-body > .nom-alert-body-icon > .nom-alert-icon {
-  font-size: 3rem;
+  font-size: 1.65rem;
 }
 .nom-alert-content > .nom-alert-body > .nom-alert-body-content {
   flex-grow: 1;
@@ -6617,7 +6627,7 @@ body .nom-always-dark {
 .nom-alert-content > .nom-alert-body > .nom-alert-body-content > .nom-alert-title {
   padding: 0.75rem 0.25rem;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 .nom-alert-content > .nom-alert-body > .nom-alert-body-content > .nom-alert-description {
   margin: 1rem 0;
@@ -6659,14 +6669,15 @@ body .nom-always-dark {
   flex-direction: row;
 }
 .nom-confirm-content > .nom-confirm-body > .nom-confirm-icon {
-  padding: 0.125rem 1rem;
+  padding-top: 0.135rem;
+  padding-right: 0.5rem;
   color: var(--nom-color-warning);
-  font-size: 2rem;
+  font-size: 1.65rem;
 }
 .nom-confirm-content > .nom-confirm-body > .nom-confirm-body-content > .nom-confirm-title {
   padding: 0.25rem;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 .nom-confirm-content > .nom-confirm-body > .nom-confirm-body-content > .nom-confirm-description {
   margin: 1rem 0;
@@ -7576,7 +7587,7 @@ table.nom-table.p-bordered {
 }
 .nom-grid .nom-grid-setting {
   position: absolute;
-  top: 6px;
+  top: 7px;
   right: 2px;
   z-index: 11;
   background: var(--nom-grid-header-background-color);
@@ -7823,6 +7834,12 @@ table.nom-table.p-bordered {
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
+}
+.nom-tr.s-checked {
+  background-color: var(--nom-grid-tr-checked-bg);
+}
+.nom-tr.s-checked:hover {
+  background-color: var(--nom-grid-tr-checked-bg-hover);
 }
 .nom-tr.s-checked .nom-grid-checker-and-order > .nom-checkbox,
 .nom-tr:hover .nom-grid-checker-and-order > .nom-checkbox {
@@ -12074,17 +12091,10 @@ textarea .nom-textarea {
     opacity: 0;
   }
 }
-.nom-dropdown.nom-split-button > button:first-child {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.nom-dropdown.nom-split-button > button:last-child {
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.nom-dropdown-popup .nom-menu-item-wrapper > a {
-  padding-right: 1.5rem !important;
+.nom-popconfirm .nom-popconfirm-icon {
+  padding-top: 0.225rem;
+  font-size: 1.25rem;
+  color: var(--nom-color-warning);
 }
 .nom-slider .nom-slider-content {
   position: relative;
