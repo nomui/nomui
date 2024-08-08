@@ -7340,7 +7340,15 @@ table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).no
 table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked {
   background-color: var(--nom-grid-tr-checked-bg);
 }
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked .nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-checked-bg);
+}
 table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked:hover {
+  background-color: var(--nom-grid-tr-checked-bg-hover);
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked:hover .nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked:hover .nom-table-fixed-right {
   background-color: var(--nom-grid-tr-checked-bg-hover);
 }
 table.nom-table tbody tr:not(.nom-tr-empty):hover {
