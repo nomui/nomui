@@ -17161,6 +17161,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children,
       });
     }
+    _rendered() {
+      this.setzIndex();
+    }
+    setzIndex() {
+      this.element.style.zIndex = getzIndex();
+    }
     _handleContent() {
       const drawer = this;
       const { content } = this.props;
