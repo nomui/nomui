@@ -7368,6 +7368,20 @@ table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected .nom-table-fixed-rig
 table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected:hover .nom-table-fixed-right {
   background-color: var(--nom-grid-tr-bg-selected);
 }
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked {
+  background-color: var(--nom-grid-tr-checked-bg);
+}
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-checked-bg);
+}
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked:hover {
+  background-color: var(--nom-grid-tr-checked-bg-hover);
+}
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked:hover .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked:hover .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-checked-bg-hover);
+}
 table.nom-table .nom-table-th-hover-mask {
   position: absolute;
   top: 0;
