@@ -1,5 +1,6 @@
 import Component, { n } from '../Component/index'
 import { isFunction, isNumeric, isPlainObject, isString } from '../util/index'
+import getzIndex from '../util/index-manager'
 import { CSS_UNIT } from '../util/reg'
 import { isValidZIndex, settles } from './helper'
 
@@ -103,6 +104,15 @@ class Drawer extends Component {
       children,
     })
   }
+
+  _rendered() {
+    this.setzIndex()
+  }
+
+  setzIndex() {
+    this.element.style.zIndex = getzIndex()
+  }
+
 
   _handleContent() {
     const drawer = this
