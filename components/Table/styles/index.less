@@ -75,6 +75,25 @@ table.nom-table {
         background-color: var(--nom-grid-tr-bg-selected);
       }
     }
+
+    &.s-checked {
+      background-color: var(--nom-grid-tr-checked-bg);
+
+      .nom-table-fixed-left,
+      .nom-table-fixed-right {
+        background-color: var(--nom-grid-tr-checked-bg);
+      }
+
+      &:hover {
+
+        .nom-table-fixed-left,
+        .nom-table-fixed-right {
+          background-color: var(--nom-grid-tr-checked-bg-hover);
+        }
+
+        background-color: var(--nom-grid-tr-checked-bg-hover);
+      }
+    }
   }
 
   .nom-table-th-hover-mask {
