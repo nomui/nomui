@@ -84,6 +84,7 @@ class GridSettingPopup extends Modal {
                 },
               },
             ],
+            items: null
           },
         },
       },

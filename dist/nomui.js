@@ -20475,6 +20475,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   },
                 },
               ],
+              items: null,
             },
           },
         },
