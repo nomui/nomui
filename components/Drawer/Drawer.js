@@ -67,7 +67,7 @@ class Drawer extends Component {
           classes: {
             'nom-drawer-backdrop': true,
             'nom-drawer-backdrop-animate-show': animate,
-            'nom-drawer-backdrop-hidden': !this.props.showBackdrop
+            'nom-drawer-backdrop-hidden': !this.props.showBackdrop || this.props.showMasker === false
           },
           onClick: () => {
             (closeOnClickBackdrop || maskClosable) && this.close()
