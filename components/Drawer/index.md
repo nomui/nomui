@@ -1,27 +1,29 @@
-Drawer 抽屉
-
 ## 何时使用
 
-- 当需要一个附加的面板来控制父窗体内容，这个面板在需要时呼出。比如，控制界面展示样式，往界面中添加内容。
-- 当需要在当前任务流中插入临时任务，创建或预览附加内容。比如展示协议条款，创建子对象。
+- Modal 模态框
 
 ## API
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| closable | 是否显示右上角的关闭按钮 | `boolean` | `false` |
-| closeIcon | 自定义关闭图标 | `Icon` | `close` |
-| maskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` |
-| showMasker | 是否显示蒙层 | `boolean` | `true` |
-| settle | 抽屉弹出的方向 | `top\|right\|bottom\|left` | `right` |
-| getContainer | 指定 Drawer 挂载的节点（默认挂载至`body`） | `-` | `()=>Component\|HTMLElement` |
-| width | 抽屉的宽度，仅当弹出方向为左或右时生效，支持 rem,em,px,% | `-` | `256px` |
-| height | 抽屉的高度，仅当弹出方向为上或下时生效，支持 rem,em,px,% | `-` | `256px` |
-| size | 模态框预定义尺寸，传入size会覆盖width、height配置 | `string` \|`xsmall \| small \| medium \| large \| xlarge` | - |
-| title | 抽屉的标题 | `string \| Component` | `-` |
-| content | 抽屉的内容 | `string\|Component` | `-` |
-| footer | 抽屉的页脚 | `(inst)=>{}\|Component` | `-` |
-| okText | 页脚确认按钮文字 | `string` | `确 定` |
-| onOk | 确认按钮回调 | `({sender})=>void` | `-` |
-| cancelText | 页脚取消按钮文字 | `string\|Component` | `取 消` |
-| onCancel | 页脚取消回调 | `({sender})=>void` | `-` |
+| content | 模态框内容，当传入对象时为内容组件的 props 配置，默认会混入 Panel 的配置；当为字符串时代表按需加载对应 url 地址的模块做为内容 | `Object\|string` | - |
+| args | 参数对象，可在弹窗内容模块的函数里获取 | `object` | null |
+| size | 模态框尺寸，支持预定义以及自定义宽度 | `SizeProps` \|`xsmall \| small \| medium \| large \| xlarge \| full` | small |
+| settle | 抽屉弹出方向 | `top \| bottom \| left \| right` | 'right' |
+| showBackdrop | 是否显示投影层 | `boolean` | true |
+| closeOnClickBackdrop | 是否点击投影层触发关闭 | `boolean` | false |
+| closeOnClickOutside | 是否点击外部文档触发关闭 | `boolean` | false |
+| okText | 确定按钮内容 | `string` | 确 定 |
+| cancelText | 取消按钮内容 | `string` | 取 消 |
+| okButton | 自定义确定按钮的 props，如果为 false 则不显示确定按钮 | `props`\|`boolean` | - |
+| cancelButton | 自定义取消按钮的 props，如果为 false 则不显示取消按钮 | `props`\|`boolean` | - |
+| onOk | 确定回调 | `(e)=>{}` | (e)=>{ e.sender.close()} |
+| onCancel | 取消回调 | `(e)=>{}` | (e)=>{ e.sender.close()} |
+| onClose | 关闭的回调，不管是确定还是取消 | `({result,sender})=>{}` | - |
+
+### SizeProps
+
+| 参数  | 说明     | 类型     | 默认值 |
+| ----- | -------- | -------- | ------ |
+| width | 具体宽度，只在左右弹出时生效 | `number` | -      |
+| height | 具体高度,只在上下弹出时生效 | `number` | -      |

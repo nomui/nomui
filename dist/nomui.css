@@ -11774,123 +11774,188 @@ textarea .nom-textarea {
 .nom-statistic .nom-statistic-content .nom-statistic-content-suffix {
   margin-left: var(--nom-statistic-content-affixes-margin);
 }
+.nom-drawer-open {
+  overflow: hidden;
+}
+.nom-drawer-open .nom-drawer {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 .nom-drawer {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
+  outline: 0;
+  display: flex;
+  pointer-events: none;
 }
-.nom-drawer > .nom-drawer-mask {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: var(--nom-drawer-mask-bg-color);
-  opacity: 1;
-}
-.nom-drawer.nom-drawer-top > .nom-drawer-content-wrapper {
+.nom-drawer .nom-drawer-backdrop {
   position: absolute;
   top: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: var(--nom-drawer-default-size);
-}
-.nom-drawer.nom-drawer-right > .nom-drawer-content-wrapper {
-  position: absolute;
-  top: 0;
   right: 0;
-  width: var(--nom-drawer-default-size);
-  height: 100%;
+  z-index: 2;
+  background-color: var(--nom-layer-backdrop-color);
+  pointer-events: all;
 }
-.nom-drawer.nom-drawer-bottom > .nom-drawer-content-wrapper {
+.nom-drawer .nom-drawer-backdrop.nom-drawer-backdrop-hidden {
+  display: none;
+}
+.nom-drawer.nom-drawer-absolute {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: var(--nom-drawer-default-size);
 }
-.nom-drawer.nom-drawer-left > .nom-drawer-content-wrapper {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: var(--nom-drawer-default-size);
-  height: 100%;
+.nom-drawer.nom-drawer-right {
+  justify-content: flex-end;
 }
-.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents {
+.nom-drawer.nom-drawer-left {
+  justify-content: flex-start;
+}
+.nom-drawer.nom-drawer-top {
+  align-items: flex-start;
+}
+.nom-drawer.nom-drawer-bottom {
+  align-items: flex-end;
+}
+.nom-drawer-dialog {
   position: relative;
-  z-index: 1;
+  width: auto;
+  margin: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+.nom-drawer-content {
+  position: relative;
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
   width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: var(--nom-drawer-body-color);
+  background-color: var(--nom-layer-background-color);
+  background-clip: padding-box;
+  border: var(--nom-layer-border);
+  outline: 0;
+  box-shadow: var(--nom-layer-box-shadow);
+  pointer-events: auto;
+  border-radius: 0;
 }
-.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents .nom-drawer-header {
+.nom-drawer-content > .nom-panel-header {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--nom-border-color);
+}
+.nom-drawer-content > .nom-panel-body {
   position: relative;
-  padding: var(--nom-drawer-header-padding);
-  font-weight: 700;
-  font-size: 1.25rem;
-  border-bottom: 1px solid var(--nom-drawer-line-color);
+  flex: 1 1 auto;
+  padding: 1rem;
 }
-.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents .nom-drawer-header .nom-drawer-close-icon {
-  font-size: 1.25rem;
-  opacity: 0.5;
-  cursor: pointer;
+.nom-drawer-content > .nom-panel-footer {
+  justify-content: flex-end;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--nom-border-color);
 }
-.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents .nom-drawer-header .nom-drawer-close-icon:hover {
-  opacity: 1;
+.nom-drawer-left.p-size-xsmall .nom-drawer-dialog,
+.nom-drawer-right.p-size-xsmall .nom-drawer-dialog {
+  width: 300px;
 }
-.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents .nom-drawer-body {
-  flex-grow: 1;
-  padding: var(--nom-drawer-content-padding);
-  overflow: auto;
-  overflow-wrap: break-word;
+.nom-drawer-left.p-size-small .nom-drawer-dialog,
+.nom-drawer-right.p-size-small .nom-drawer-dialog {
+  width: 560px;
 }
-.nom-drawer > .nom-drawer-content-wrapper .nom-drawer-contents .nom-drawer-footer {
-  flex-shrink: 0;
+.nom-drawer-left.p-size-medium .nom-drawer-dialog,
+.nom-drawer-right.p-size-medium .nom-drawer-dialog {
+  width: 960px;
+}
+.nom-drawer-left.p-size-large .nom-drawer-dialog,
+.nom-drawer-right.p-size-large .nom-drawer-dialog {
+  width: 1200px;
+}
+.nom-drawer-left.p-size-xlarge .nom-drawer-dialog,
+.nom-drawer-right.p-size-xlarge .nom-drawer-dialog {
+  width: calc(100% - 2rem);
+}
+.nom-drawer-left.p-size-full .nom-drawer-dialog,
+.nom-drawer-right.p-size-full .nom-drawer-dialog {
   width: 100%;
-  justify-content: center;
-  align-items: center;
 }
-.nom-drawer-animate-top-show .nom-drawer-content-wrapper {
+.nom-drawer-top .nom-drawer-dialog,
+.nom-drawer-bottom .nom-drawer-dialog {
+  width: 100%;
+}
+.nom-drawer-top.p-size-xsmall .nom-drawer-dialog,
+.nom-drawer-bottom.p-size-xsmall .nom-drawer-dialog {
+  height: 128px;
+}
+.nom-drawer-top.p-size-small .nom-drawer-dialog,
+.nom-drawer-bottom.p-size-small .nom-drawer-dialog {
+  height: 256px;
+}
+.nom-drawer-top.p-size-medium .nom-drawer-dialog,
+.nom-drawer-bottom.p-size-medium .nom-drawer-dialog {
+  height: 50%;
+}
+.nom-drawer-top.p-size-large .nom-drawer-dialog,
+.nom-drawer-bottom.p-size-large .nom-drawer-dialog {
+  height: 75%;
+}
+.nom-drawer-top.p-size-xlarge .nom-drawer-dialog,
+.nom-drawer-bottom.p-size-xlarge .nom-drawer-dialog {
+  height: 90%;
+}
+.nom-drawer-top.p-size-full .nom-drawer-dialog,
+.nom-drawer-bottom.p-size-full .nom-drawer-dialog {
+  height: 100%;
+}
+@media (min-width: 576px) {
+  .nom-drawer-dialog {
+    width: 560px;
+  }
+  .p-fit .nom-drawer-dialog {
+    height: 100%;
+  }
+  .nom-drawer-sm .nom-drawer-dialog {
+    width: 300px;
+  }
+}
+.nom-drawer-animate-top-show .nom-drawer-dialog {
   -webkit-animation: nom-drawer-keyframe-top-show 0.12s ease forwards;
   animation: nom-drawer-keyframe-top-show 0.12s ease forwards;
 }
-.nom-drawer-animate-bottom-show .nom-drawer-content-wrapper {
+.nom-drawer-animate-bottom-show .nom-drawer-dialog {
   -webkit-animation: nom-drawer-keyframe-bottom-show 0.12s ease forwards;
   animation: nom-drawer-keyframe-bottom-show 0.12s ease forwards;
 }
-.nom-drawer-animate-left-show .nom-drawer-content-wrapper {
+.nom-drawer-animate-left-show .nom-drawer-dialog {
   -webkit-animation: nom-drawer-keyframe-left-show 0.12s ease forwards;
   animation: nom-drawer-keyframe-left-show 0.12s ease forwards;
 }
-.nom-drawer-animate-right-show .nom-drawer-content-wrapper {
+.nom-drawer-animate-right-show .nom-drawer-dialog {
   -webkit-animation: nom-drawer-keyframe-right-show 0.12s ease forwards;
   animation: nom-drawer-keyframe-right-show 0.12s ease forwards;
 }
-.nom-drawer-animate-top-hide .nom-drawer-content-wrapper {
+.nom-drawer-animate-top-hide .nom-drawer-dialog {
   -webkit-animation: nom-drawer-keyframe-top-hide 0.24s ease forwards;
   animation: nom-drawer-keyframe-top-hide 0.24s ease forwards;
 }
-.nom-drawer-animate-bottom-hide .nom-drawer-content-wrapper {
+.nom-drawer-animate-bottom-hide .nom-drawer-dialog {
   -webkit-animation: nom-drawer-keyframe-bottom-hide 0.24s ease forwards;
   animation: nom-drawer-keyframe-bottom-hide 0.24s ease forwards;
 }
-.nom-drawer-animate-left-hide .nom-drawer-content-wrapper {
+.nom-drawer-animate-left-hide .nom-drawer-dialog {
   -webkit-animation: nom-drawer-keyframe-left-hide 0.24s ease forwards;
   animation: nom-drawer-keyframe-left-hide 0.24s ease forwards;
 }
-.nom-drawer-animate-right-hide .nom-drawer-content-wrapper {
+.nom-drawer-animate-right-hide .nom-drawer-dialog {
   -webkit-animation: nom-drawer-keyframe-right-hide 0.24s ease forwards;
   animation: nom-drawer-keyframe-right-hide 0.24s ease forwards;
 }
-.nom-drawer-mask-animate-show .nom-drawer-mask {
+.nom-drawer-backdrop-animate-show {
   -webkit-animation: nom-drawer-mask-keyframe-show 90ms ease forwards;
   animation: nom-drawer-mask-keyframe-show 90ms ease forwards;
 }
-.nom-drawer-mask-animate-hide .nom-drawer-mask {
+.nom-drawer-backdrop-animate-hide {
   -webkit-animation: nom-drawer-mask-keyframe-hide 90ms ease forwards;
   animation: nom-drawer-mask-keyframe-hide 90ms ease forwards;
 }

@@ -1,142 +1,254 @@
+// .drawer-open      - body class for killing the scroll
+// .drawer           - container to scroll within
+// .drawer-dialog    - positioning shell for the actual drawer
+// .drawer-content   - actual drawer w/ bg and corners and stuff
+
+.nom-drawer-open {
+  // Kill the scroll on the body
+  overflow: hidden;
+
+  .nom-drawer {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+// Container that the drawer scrolls within
 .nom-drawer {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  // We deliberately don't use `-webkit-overflow-scrolling: touch;` due to a
+  // gnarly iOS Safari bug: https://bugs.webkit.org/show_bug.cgi?id=158342
+  // See also https://github.com/twbs/bootstrap/issues/17695
+  overflow-y: auto;
 
-  >.nom-drawer-mask {
+  // Prevent Chrome on Windows from adding a focus outline. For details, see
+  // https://github.com/twbs/bootstrap/pull/10951.
+  outline: 0;
+  display: flex;
+  pointer-events: none;
+
+  .nom-drawer-backdrop {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: var(--nom-drawer-mask-bg-color);
-    opacity: 1;
-  }
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background-color: var(--nom-layer-backdrop-color);
+    pointer-events: all;
 
-  // top
-  &.nom-drawer-top {
-    >.nom-drawer-content-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: var(--nom-drawer-default-size);
+    &.nom-drawer-backdrop-hidden {
+      display: none;
     }
   }
 
-  // right default
+  &.nom-drawer-absolute {
+    position: absolute;
+  }
+
   &.nom-drawer-right {
-    >.nom-drawer-content-wrapper {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: var(--nom-drawer-default-size);
-      height: 100%;
-    }
+    justify-content: flex-end;
   }
 
-  // bottom
-  &.nom-drawer-bottom {
-    >.nom-drawer-content-wrapper {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: var(--nom-drawer-default-size);
-    }
-  }
-
-  // left
   &.nom-drawer-left {
-    >.nom-drawer-content-wrapper {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: var(--nom-drawer-default-size);
-      height: 100%;
-    }
+    justify-content: flex-start;
   }
 
-  >.nom-drawer-content-wrapper {
-    .nom-drawer-contents {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: var(--nom-drawer-body-color);
-
-      .nom-drawer-header {
-        position: relative;
-        padding: var(--nom-drawer-header-padding);
-        font-weight: @font-weight-bold;
-        font-size: @font-size-lg;
-        border-bottom: @border-width solid var(--nom-drawer-line-color);
-        // border-radius: 2px 2px 0 0;
-
-        .nom-drawer-close-icon {
-          font-size: @font-size-lg;
-          opacity: .5;
-          cursor: pointer;
-
-          &:hover {
-            opacity: 1;
-          }
-        }
-      }
-
-      .nom-drawer-body {
-        flex-grow: 1;
-        padding: var(--nom-drawer-content-padding);
-        overflow: auto;
-        overflow-wrap: break-word;
-      }
-
-      .nom-drawer-footer {
-        flex-shrink: 0;
-        // padding: var(--nom-drawer-footer-padding);
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-      }
-    }
+  &.nom-drawer-top {
+    align-items: flex-start;
   }
 
+  &.nom-drawer-bottom {
+    align-items: flex-end;
+  }
 }
 
+// Shell div to position the drawer with bottom padding
+.nom-drawer-dialog {
+  position: relative;
+  width: auto;
+  margin: 0;
+  height: 100%;
+  // allow clicks to pass through for custom click handling to close drawer
+  pointer-events: none;
+  z-index: 10;
+}
+
+
+// Actual drawer
+.nom-drawer-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%; // Ensure `.drawer-content` extends the full width of the parent `.drawer-dialog`
+  background-color: var(--nom-layer-background-color);
+  background-clip: padding-box;
+  border: var(--nom-layer-border);
+  // Remove focus outline from opened drawer
+  outline: 0;
+  box-shadow: var(--nom-layer-box-shadow);
+  // counteract the pointer-events: none; in the .drawer-dialog
+  pointer-events: auto;
+  border-radius: 0;
+
+  >.nom-panel-header {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--nom-border-color);
+  }
+
+  >.nom-panel-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
+  }
+
+  >.nom-panel-footer {
+    justify-content: flex-end;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid var(--nom-border-color);
+  }
+}
+
+// drawer sizes
+.nom-drawer-left,
+.nom-drawer-right {
+  &.p-size-xsmall {
+    .nom-drawer-dialog {
+      width: 300px;
+    }
+  }
+
+  &.p-size-small {
+    .nom-drawer-dialog {
+      width: 560px;
+    }
+  }
+
+  &.p-size-medium {
+    .nom-drawer-dialog {
+      width: 960px;
+    }
+  }
+
+  &.p-size-large {
+    .nom-drawer-dialog {
+      width: 1200px;
+    }
+  }
+
+  &.p-size-xlarge {
+    .nom-drawer-dialog {
+      width: calc(100% - 2rem);
+    }
+  }
+
+  &.p-size-full {
+    .nom-drawer-dialog {
+      width: 100%;
+    }
+  }
+}
+
+.nom-drawer-top,
+.nom-drawer-bottom {
+
+  .nom-drawer-dialog {
+    width: 100%;
+  }
+
+  &.p-size-xsmall {
+    .nom-drawer-dialog {
+      height: 128px;
+    }
+  }
+
+  &.p-size-small {
+    .nom-drawer-dialog {
+      height: 256px;
+    }
+  }
+
+  &.p-size-medium {
+    .nom-drawer-dialog {
+      height: 50%;
+    }
+  }
+
+  &.p-size-large {
+    .nom-drawer-dialog {
+      height: 75%;
+    }
+  }
+
+  &.p-size-xlarge {
+    .nom-drawer-dialog {
+      height: 90%;
+    }
+  }
+
+  &.p-size-full {
+    .nom-drawer-dialog {
+      height: 100%;
+    }
+  }
+}
+
+// Scale up the drawer
+@media (min-width: @screen-sm-min) {
+
+  // Automatically set drawer's width for larger viewports
+  .nom-drawer-dialog {
+    width: 560px;
+  }
+
+  .p-fit .nom-drawer-dialog {
+    height: 100%;
+  }
+
+  // drawer sizes
+  .nom-drawer-sm {
+    .nom-drawer-dialog {
+      width: 300px;
+    }
+  }
+}
+
+
 .nom-drawer-animate-top-show {
-  .nom-drawer-content-wrapper {
+  .nom-drawer-dialog {
     -webkit-animation: nom-drawer-keyframe-top-show .12s ease forwards;
     animation: nom-drawer-keyframe-top-show .12s ease forwards;
   }
 }
 
 .nom-drawer-animate-bottom-show {
-  .nom-drawer-content-wrapper {
+  .nom-drawer-dialog {
     -webkit-animation: nom-drawer-keyframe-bottom-show .12s ease forwards;
     animation: nom-drawer-keyframe-bottom-show .12s ease forwards;
   }
 }
 
 .nom-drawer-animate-left-show {
-  .nom-drawer-content-wrapper {
+  .nom-drawer-dialog {
     -webkit-animation: nom-drawer-keyframe-left-show .12s ease forwards;
     animation: nom-drawer-keyframe-left-show .12s ease forwards;
   }
 }
 
 .nom-drawer-animate-right-show {
-  .nom-drawer-content-wrapper {
+  .nom-drawer-dialog {
     -webkit-animation: nom-drawer-keyframe-right-show .12s ease forwards;
     animation: nom-drawer-keyframe-right-show .12s ease forwards;
   }
 }
 
 .nom-drawer-animate-top-hide {
-  .nom-drawer-content-wrapper {
+  .nom-drawer-dialog {
     -webkit-animation: nom-drawer-keyframe-top-hide .24s ease forwards;
     animation: nom-drawer-keyframe-top-hide .24s ease forwards;
   }
@@ -144,38 +256,34 @@
 
 
 .nom-drawer-animate-bottom-hide {
-  .nom-drawer-content-wrapper {
+  .nom-drawer-dialog {
     -webkit-animation: nom-drawer-keyframe-bottom-hide .24s ease forwards;
     animation: nom-drawer-keyframe-bottom-hide .24s ease forwards;
   }
 }
 
 .nom-drawer-animate-left-hide {
-  .nom-drawer-content-wrapper {
+  .nom-drawer-dialog {
     -webkit-animation: nom-drawer-keyframe-left-hide .24s ease forwards;
     animation: nom-drawer-keyframe-left-hide .24s ease forwards;
   }
 }
 
 .nom-drawer-animate-right-hide {
-  .nom-drawer-content-wrapper {
+  .nom-drawer-dialog {
     -webkit-animation: nom-drawer-keyframe-right-hide .24s ease forwards;
     animation: nom-drawer-keyframe-right-hide .24s ease forwards;
   }
 }
 
-.nom-drawer-mask-animate-show {
-  .nom-drawer-mask {
-    -webkit-animation: nom-drawer-mask-keyframe-show 90ms ease forwards;
-    animation: nom-drawer-mask-keyframe-show 90ms ease forwards;
-  }
+.nom-drawer-backdrop-animate-show {
+  -webkit-animation: nom-drawer-mask-keyframe-show 90ms ease forwards;
+  animation: nom-drawer-mask-keyframe-show 90ms ease forwards;
 }
 
-.nom-drawer-mask-animate-hide {
-  .nom-drawer-mask {
-    -webkit-animation: nom-drawer-mask-keyframe-hide 90ms ease forwards;
-    animation: nom-drawer-mask-keyframe-hide 90ms ease forwards;
-  }
+.nom-drawer-backdrop-animate-hide {
+  -webkit-animation: nom-drawer-mask-keyframe-hide 90ms ease forwards;
+  animation: nom-drawer-mask-keyframe-hide 90ms ease forwards;
 }
 
 @-webkit-keyframes nom-drawer-keyframe-top-show {
