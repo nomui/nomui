@@ -181,6 +181,10 @@ class Menu extends Component {
     super._rendered()
     this.scrollToSelected()
   }
+
+  _onItemSelect(args) {
+    this._callHandler(this.props.onItemSelect, args)
+  }
 }
 Menu.defaults = {
   tag: 'ul',
