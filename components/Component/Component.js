@@ -278,7 +278,7 @@ class Component {
       this.referenceElement.insertBefore(this.element, this.referenceElement.firstChild)
     } else if (placement === 'replace') {
       if (this.referenceComponent) {
-        this.referenceComponent._removeCore()
+        this.referenceElement = this.referenceComponent._removeCore()
       }
       this.referenceElement.parentNode.replaceChild(this.element, this.referenceElement)
     } else if (placement === 'after') {

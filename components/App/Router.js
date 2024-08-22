@@ -56,7 +56,10 @@ class Router extends Component {
     return subpath
   }
 
-  _removeCore() { }
+  _removeCore() {
+    const el = this.element || this._placeHolderElement
+    return el
+  }
 
   remove() {
     this.$app.off('hashChange', this.handleHashChange)
