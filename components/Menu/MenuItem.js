@@ -120,6 +120,7 @@ class MenuItem extends Component {
         menu.selectedItemKey = this.key
         menuProps.compact && this.wrapper.rootWrapper.item.partSelect()
         this._callHandler(onSelect)
+        menu._onItemSelect({ item: this })
       },
       onUnselect: () => {
         if (menu.selectedItem === this) menu.selectedItem = null

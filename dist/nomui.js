@@ -4528,7 +4528,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         );
       } else if (placement === "replace") {
         if (this.referenceComponent) {
-          this.referenceComponent._removeCore();
+          this.referenceElement = this.referenceComponent._removeCore();
         }
         this.referenceElement.parentNode.replaceChild(
           this.element,
@@ -7326,7 +7326,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return subpath;
     }
-    _removeCore() {}
+    _removeCore() {
+      const el = this.element || this._placeHolderElement;
+      return el;
+    }
     remove() {
       this.$app.off("hashChange", this.handleHashChange);
       delete this.$app.routers[this.level];
@@ -23350,6 +23353,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           menu.selectedItemKey = this.key;
           menuProps.compact && this.wrapper.rootWrapper.item.partSelect();
           this._callHandler(onSelect);
+          menu._onItemSelect({ item: this });
         },
         onUnselect: () => {
           if (menu.selectedItem === this) menu.selectedItem = null;
@@ -23750,6 +23754,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       super._rendered();
       this.scrollToSelected();
+    }
+    _onItemSelect(args) {
+      this._callHandler(this.props.onItemSelect, args);
     }
   }
   Menu.defaults = {
