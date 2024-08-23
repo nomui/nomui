@@ -171,3 +171,26 @@
     width: auto;
   }
 }
+
+.nom-field-invalid-tooltip {
+  padding: .2rem .5rem;
+  font-size: 12px !important;
+
+  .nom-tooltip-arrow {
+    svg {
+      transform: scale(75%);
+    }
+  }
+
+  &[tooltip-align='top'] {
+    .nom-tooltip-arrow {
+      bottom: 2px;
+    }
+  }
+
+  &[tooltip-align='bottom'] {
+    .nom-tooltip-arrow {
+      top: 2px;
+    }
+  }
+}
