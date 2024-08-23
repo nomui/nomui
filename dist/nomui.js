@@ -8551,9 +8551,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             {},
             {
               trigger: this,
+              classes: { "nom-field-invalid-tooltip": true },
               reference: this.content,
               alignTo: this.content,
               hidden: true,
+              offset:
+                !this.props.invalidTip.align ||
+                this.props.invalidTip.align === "top"
+                  ? [0, 10]
+                  : null,
               styles: { color: "danger" },
               children: message,
             },

@@ -4502,7 +4502,7 @@ body {
   --nom-rate-color-muted: rgba(var(--nom-grey-2), 1);
   --nom-tooltip-background-color: rgba(var(--nom-grey-8), 1);
   --nom-tooltip-color: var(--nom-color-bg-0);
-  --nom-tooltip-border-radius: 6px;
+  --nom-tooltip-border-radius: 4px;
   --nom-avatar-color: rgba(var(--nom-white), 1);
   --nom-avatar-background-color: var(--nom-color-primary-light-active);
   --nom-avatar-border-color: rgba(var(--nom-white), 1);
@@ -9855,6 +9855,19 @@ textarea .nom-textarea {
 }
 .nom-field.p-span-auto {
   width: auto;
+}
+.nom-field-invalid-tooltip {
+  padding: 0.2rem 0.5rem;
+  font-size: 12px !important;
+}
+.nom-field-invalid-tooltip .nom-tooltip-arrow svg {
+  transform: scale(75%);
+}
+.nom-field-invalid-tooltip[tooltip-align='top'] .nom-tooltip-arrow {
+  bottom: 2px;
+}
+.nom-field-invalid-tooltip[tooltip-align='bottom'] .nom-tooltip-arrow {
+  top: 2px;
 }
 .nom-group > .nom-field-content {
   padding: 0;
