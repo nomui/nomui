@@ -493,6 +493,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       url: '#!components!index?type=Numberbox',
                     },
                     {
+                      text: 'NumberInput',
+                      subtext: '数字输入框',
+                      id: 'NumberInput',
+                      url: '#!components!index?type=NumberInput',
+                    },
+                    {
                       text: 'NumberSpinner',
                       subtext: '数字微调器',
                       id: 'NumberSpinner',
