@@ -188,9 +188,9 @@ class NumberInput extends Textbox {
     this._setPrecision()
   }
 
-  _getValue(opions) {
-    if (!opions) {
-      opions = {}
+  _getValue(options) {
+    if (!options) {
+      options = {}
     }
     const text = this.input.getText()
     if (!text || !text.length) {
@@ -200,7 +200,7 @@ class NumberInput extends Textbox {
     const value = this.parserFunc(text)
 
 
-    if (this.props.stringMode && !opions.asNumber) {
+    if ((this.props.stringMode || this.props.precision || this.props.formatter) && !options.asNumber) {
       return value
     }
     return Number(value)
