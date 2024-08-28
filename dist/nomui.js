@@ -14632,6 +14632,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     },
   };
+  function isObject(val) {
+    return (
+      val != null && typeof val === "object" && Array.isArray(val) === false
+    );
+  }
   class DataList extends Component {
     constructor(props, ...mixins) {
       super(Component.extendProps(DataList.defaults, props), ...mixins);
@@ -14795,7 +14800,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _getItemDescriptor(itemData) {
       const { dataKey, itemRender } = this.props;
-      if (isPlainObject(itemData)) {
+      if (isObject(itemData)) {
         let itemProps = { key: itemData[dataKey], _itemData: itemData };
         if (isFunction(itemRender)) {
           itemProps = Component.extendProps(
