@@ -1,0 +1,54 @@
+.nom-number-input {
+    .nom-number-input-controler {
+        border: 1px solid var(--nom-border-color);
+        border-top-right-radius: var(--nom-border-radius);
+        border-bottom-right-radius: var(--nom-border-radius);
+        user-select: none;
+
+
+        .nom-flex {
+            justify-content: space-around;
+
+            .divider {
+                height: 1px;
+                background-color: var(--nom-border-color);
+
+            }
+
+            .nom-number-input-controler-button {
+                padding: 0 .5rem;
+                transition: all .25s;
+                cursor: pointer;
+                font-size: .6rem;
+                display: flex;
+                align-items: center;
+
+
+                &:hover {
+                    flex-grow: 1;
+                    background-color: var(--nom-number-input-control-hover-bg);
+                    color: var(--nom-color-primary);
+                }
+
+                &:active {
+                    background-color: var(--nom-number-input-control-active-bg);
+                }
+
+
+            }
+
+
+        }
+
+
+        &.s-disabled {
+            background-color: var(--nom-color-disabled-bg);
+
+            .nom-flex .nom-number-input-controler-button {
+                cursor: not-allowed;
+                pointer-events: none;
+            }
+        }
+
+    }
+}
