@@ -213,7 +213,7 @@ class NumberInput extends Textbox {
     const { precision } = this.props
 
     this.currentValue = this.getValue()
-
+    this.lastValue = this.currentValue
     value = this.formatterFunc(value)
 
     if (Number.isNaN(value)) {
@@ -224,8 +224,6 @@ class NumberInput extends Textbox {
     if (precision && precision >= 0) {
       const n = parseFloat(value)
       value = n.toFixed(precision)
-      this.lastValue = value
-      this.currentValue = value
     }
 
     super._setValue(value, options)
