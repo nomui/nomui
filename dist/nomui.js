@@ -24709,7 +24709,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _setValue(value, options) {
       if (this.props.stringMode || this.props.formatter) {
-        value = value ? `${value}` : "";
+        value = value || value === 0 ? `${value}` : "";
       }
       const { precision } = this.props;
       this.currentValue = this.getValue();
