@@ -68,7 +68,7 @@ class NumberInput extends Textbox {
   }
 
   _getControls() {
-    if (!this.props.controls) {
+    if (!this.props.showSpinner) {
       return false
     }
     return {
@@ -265,7 +265,7 @@ NumberInput.defaults = {
   step: 1,
   min: Number.MIN_SAFE_INTEGER,
   max: Number.MAX_SAFE_INTEGER,
-  controls: true,
+  showSpinner: true,
   stringMode: false,
   precision: -1,
   integerText: '请输入有效整数',

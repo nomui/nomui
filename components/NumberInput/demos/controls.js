@@ -19,7 +19,7 @@ define([], function () {
                                 component: 'NumberInput',
                                 name: '6',
                                 label: '不显示微调按钮',
-                                controls: false,
+                                showSpinner: false,
                             },
 
                             {
