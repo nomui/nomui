@@ -124,14 +124,26 @@ class NumberInput extends Textbox {
     this._setPrecision()
   }
 
+  _isEmptyOrInvalid(v) {
+    return (isNullish(v) || Number.isNaN(v) || v === 'NaN' || v === '')
+  }
+
   _setPrecision() {
     const { precision } = this.props
+    if (!precision || precision === -1) {
+      return
+    }
     let v = this.getValue()
+
+    if (this._isEmptyOrInvalid(v)) {
+      v = 0
+    }
     if (precision && precision > 0) {
       const n = parseFloat(v)
       v = n.toFixed(precision)
       this.lastValue = v
       this.currentValue = v
+
       this.setValue(v, { triggerChange: false })
     }
   }
@@ -165,7 +177,11 @@ class NumberInput extends Textbox {
 
   _onPlus() {
     const { step, max } = this.props;
-    let v = parseFloat(this.getValue({ asNumber: true })) || 0
+    let v = parseFloat(this.getValue({ asNumber: true }))
+
+    if (this._isEmptyOrInvalid(v)) {
+      v = 0
+    }
 
     const decimalPlaces = (v.toString().split('.')[1] || '').length
     v += step
@@ -178,7 +194,11 @@ class NumberInput extends Textbox {
   _onMinus() {
 
     const { step, min } = this.props
-    let v = parseFloat(this.getValue({ asNumber: true })) || 0
+    let v = parseFloat(this.getValue({ asNumber: true }))
+
+    if (this._isEmptyOrInvalid(v)) {
+      v = 0
+    }
 
     const decimalPlaces = (v.toString().split('.')[1] || '').length
     v -= step
@@ -216,12 +236,13 @@ class NumberInput extends Textbox {
     this.lastValue = this.currentValue
     value = this.formatterFunc(value)
 
-    if (Number.isNaN(value)) {
+    if (Number.isNaN(value) || value === 'NaN') {
       value = ''
     }
 
 
-    if (precision && precision > 0) {
+    if (precision && precision > 0 && value !== '') {
+
       const n = parseFloat(value)
       value = n.toFixed(precision)
     }
