@@ -1,5 +1,6 @@
 define([
   './basic.js',
+  './step.js',
   './disabled.js',
   './min-max.js',
   './precision.js',
@@ -8,8 +9,8 @@ define([
   './formatter.js',
 ], function () {
   return {
-    title: 'Numberbox',
-    subtitle: '数字框',
+    title: 'NumberInput',
+    subtitle: '纯数字输入框',
     demos: Array.prototype.slice.call(arguments),
   }
 })

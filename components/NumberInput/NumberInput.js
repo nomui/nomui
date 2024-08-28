@@ -127,7 +127,7 @@ class NumberInput extends Textbox {
   _setPrecision() {
     const { precision } = this.props
     let v = this.getValue()
-    if (precision && precision !== -1) {
+    if (precision && precision > 0) {
       const n = parseFloat(v)
       v = n.toFixed(precision)
       this.lastValue = v
@@ -200,7 +200,7 @@ class NumberInput extends Textbox {
     const value = this.parserFunc(text)
 
 
-    if ((this.props.stringMode || this.props.precision || this.props.formatter) && !options.asNumber) {
+    if ((this.props.stringMode || (this.props.precision && this.props.precision > 0) || this.props.formatter) && !options.asNumber) {
       return value
     }
     return Number(value)
@@ -221,7 +221,7 @@ class NumberInput extends Textbox {
     }
 
 
-    if (precision && precision >= 0) {
+    if (precision && precision > 0) {
       const n = parseFloat(value)
       value = n.toFixed(precision)
     }
