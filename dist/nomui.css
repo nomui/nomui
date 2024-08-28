@@ -4550,6 +4550,8 @@ body {
   --nom-message-warning-border-colorr: transparent;
   --nom-message-danger-bg-color: #F9D7D9;
   --nom-message-danger-border-colorr: transparent;
+  --nom-number-input-control-hover-bg: transparent;
+  --nom-number-input-control-active-bg: var(--nom-color-fill-1);
   --nom-panel-header-bg-color: var(--nom-color-fill-0);
   --nom-panel-border-radius: var(--nom-border-radius);
   --nom-tabs-card-bg-color: var(--nom-panel-header-bg-color);
@@ -11245,6 +11247,42 @@ textarea .nom-textarea {
     transform: translateY(5%);
     opacity: 0;
   }
+}
+.nom-number-input .nom-number-input-controler {
+  border: 1px solid var(--nom-border-color);
+  border-top-right-radius: var(--nom-border-radius);
+  border-bottom-right-radius: var(--nom-border-radius);
+  user-select: none;
+}
+.nom-number-input .nom-number-input-controler .nom-flex {
+  justify-content: space-around;
+}
+.nom-number-input .nom-number-input-controler .nom-flex .divider {
+  height: 1px;
+  background-color: var(--nom-border-color);
+}
+.nom-number-input .nom-number-input-controler .nom-flex .nom-number-input-controler-button {
+  padding: 0 0.5rem;
+  transition: all 0.25s;
+  cursor: pointer;
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+}
+.nom-number-input .nom-number-input-controler .nom-flex .nom-number-input-controler-button:hover {
+  flex-grow: 1;
+  background-color: var(--nom-number-input-control-hover-bg);
+  color: var(--nom-color-primary);
+}
+.nom-number-input .nom-number-input-controler .nom-flex .nom-number-input-controler-button:active {
+  background-color: var(--nom-number-input-control-active-bg);
+}
+.nom-number-input .nom-number-input-controler.s-disabled {
+  background-color: var(--nom-color-disabled-bg);
+}
+.nom-number-input .nom-number-input-controler.s-disabled .nom-flex .nom-number-input-controler-button {
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .nom-number-spinner-icon-opt {
   cursor: pointer;

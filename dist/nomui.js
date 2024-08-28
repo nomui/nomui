@@ -7205,83 +7205,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   }
   AnchorContent.defaults = { key: null, keyField: "key" };
   Component.register(AnchorContent);
-  class Route {
-    constructor(defaultPath) {
-      const that = this;
-      this.hash = window.location.hash;
-      if (!this.hash) {
-        this.hash = `#${defaultPath}`;
-      }
-      this.path = this.hash.substring(1);
-      this.paths = [];
-      this.query = {};
-      this.queryStr = "";
-      const queryIndex = this.hash.indexOf("?");
-      if (this.hash.length > 1) {
-        if (queryIndex > -1) {
-          this.path = this.hash.substring(1, queryIndex);
-          const paramStr = (this.queryStr = this.hash.substring(
-            queryIndex + 1
-          ));
-          const paramArr = paramStr.split("&");
-          paramArr.forEach(function (e) {
-            const item = e.split("=");
-            const key = item[0];
-            const val = item[1];
-            if (key !== "") {
-              that.query[key] = decodeURIComponent(val);
-            }
-          });
-        }
-      }
-      const pathArr = this.path.split("!");
-      this.maxLevel = pathArr.length - 1;
-      pathArr.forEach(function (path, index) {
-        let pathName = path;
-        let pathQuery = null; // 如果path包含--则解析为路由参数
-        if (path.includes("--")) {
-          const arr = path.split("--");
-          pathName = arr[0];
-          const queryPathName = pathName.substring(pathName.indexOf("/") + 1);
-          pathQuery = arr[1];
-          that.queryStr += `&${queryPathName}=${pathQuery}`;
-          that.query[queryPathName] = pathQuery;
-        }
-        that.paths[index] = pathName;
-      });
-    }
-    push(route) {
-      if (isString(route)) {
-        window.location.href = `#${route}`;
-      } else {
-        const pathname = route.pathname || this.path;
-        let strQuery = parseToQueryString(route.query || {});
-        if (strQuery) {
-          strQuery = `?${strQuery}`;
-        }
-        window.location.href = `#${pathname}${strQuery}`;
-      }
-    }
-    iterateHash(callback) {
-      let hash = this.hash;
-      let result = callback(hash);
-      if (!(result === false)) {
-        if (this.queryStr !== "") {
-          hash = `#${this.path}`;
-          result = callback(hash);
-        }
-        if (!(result === false)) {
-          while (hash.indexOf("!") > 0) {
-            hash = hash.substring(0, hash.lastIndexOf("!"));
-            result = callback(`${hash}!`);
-            if (result === false) {
-              hash = "";
-            }
-          }
-        }
-      }
-    }
-  }
   class Router extends Component {
     constructor(props, ...mixins) {
       const defaults = { defaultPath: null };
@@ -7435,6 +7358,83 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   }
   Router.plugins = [];
   Component.register(Router);
+  class Route {
+    constructor(defaultPath) {
+      const that = this;
+      this.hash = window.location.hash;
+      if (!this.hash) {
+        this.hash = `#${defaultPath}`;
+      }
+      this.path = this.hash.substring(1);
+      this.paths = [];
+      this.query = {};
+      this.queryStr = "";
+      const queryIndex = this.hash.indexOf("?");
+      if (this.hash.length > 1) {
+        if (queryIndex > -1) {
+          this.path = this.hash.substring(1, queryIndex);
+          const paramStr = (this.queryStr = this.hash.substring(
+            queryIndex + 1
+          ));
+          const paramArr = paramStr.split("&");
+          paramArr.forEach(function (e) {
+            const item = e.split("=");
+            const key = item[0];
+            const val = item[1];
+            if (key !== "") {
+              that.query[key] = decodeURIComponent(val);
+            }
+          });
+        }
+      }
+      const pathArr = this.path.split("!");
+      this.maxLevel = pathArr.length - 1;
+      pathArr.forEach(function (path, index) {
+        let pathName = path;
+        let pathQuery = null; // 如果path包含--则解析为路由参数
+        if (path.includes("--")) {
+          const arr = path.split("--");
+          pathName = arr[0];
+          const queryPathName = pathName.substring(pathName.indexOf("/") + 1);
+          pathQuery = arr[1];
+          that.queryStr += `&${queryPathName}=${pathQuery}`;
+          that.query[queryPathName] = pathQuery;
+        }
+        that.paths[index] = pathName;
+      });
+    }
+    push(route) {
+      if (isString(route)) {
+        window.location.href = `#${route}`;
+      } else {
+        const pathname = route.pathname || this.path;
+        let strQuery = parseToQueryString(route.query || {});
+        if (strQuery) {
+          strQuery = `?${strQuery}`;
+        }
+        window.location.href = `#${pathname}${strQuery}`;
+      }
+    }
+    iterateHash(callback) {
+      let hash = this.hash;
+      let result = callback(hash);
+      if (!(result === false)) {
+        if (this.queryStr !== "") {
+          hash = `#${this.path}`;
+          result = callback(hash);
+        }
+        if (!(result === false)) {
+          while (hash.indexOf("!") > 0) {
+            hash = hash.substring(0, hash.lastIndexOf("!"));
+            result = callback(`${hash}!`);
+            if (result === false) {
+              hash = "";
+            }
+          }
+        }
+      }
+    }
+  }
   /* eslint-disable no-shadow */ class App extends Component {
     constructor(props, ...mixins) {
       const defaults = {
@@ -24538,114 +24538,184 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
   );
   Component.register(Notification);
-  class Numberbox extends Textbox {
+  class NumberInput extends Textbox {
     constructor(props, ...mixins) {
-      super(Component.extendProps(Numberbox.defaults, props), ...mixins);
+      super(Component.extendProps(NumberInput.defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      this.lastValue = this.props.value;
     }
     _config() {
-      let { precision, maxPrecision } = this.props;
-      const { limitInput } = this.props;
-      if (limitInput) {
-        maxPrecision = null;
-      }
-      if (maxPrecision) {
-        precision = -1;
-        const str = this.props.maxPrecisionText.replace(
-          "{{maxPrecision}}",
-          maxPrecision
-        );
-        this.rules.push({
-          type: "regex",
-          value: { pattern: `^\\d+(\\.\\d{1,${maxPrecision}})?$` },
-          message: str,
-        });
-      }
-      if (precision === -1) {
-        this.rules.push({ type: "number" });
-      } // 允许输入千分位加 , 的格式的数字
-      if (precision === 0) {
-        this.rules.push({
-          type: "regex",
-          value: { pattern: /^-?(\d+|\d{1,3}(,\d{3})+)$/ },
-          message: this.props.integerText,
-        });
-      }
-      if (precision > 0) {
-        const str = this.props.precisionText.replace(
-          "{{precision}}",
-          precision
-        );
-        this.rules.push({
-          type: "regex",
-          value: {
-            // 在上面的规则的基础上添加了小数部分
-            pattern: `^\\-?(\\d+|\\d{1,3}(,\\d{3})+)(\\.\\d{${precision}})$`,
-          },
-          message: str,
-        });
-      }
-      if (this.props.min) {
-        this.rules.push({ type: "min", value: this.props.min });
-      }
-      if (this.props.max) {
-        this.rules.push({ type: "max", value: this.props.max });
-      }
+      this._setFormatter();
+      this.setProps({ button: this._getControls() });
       super._config();
     }
+    _setFormatter() {
+      const { formatter, parser } = this.props;
+      if (!formatter) {
+        this.formatterFunc = (value) => {
+          return value;
+        };
+      } else {
+        this.formatterFunc = formatter;
+      }
+      if (!parser) {
+        this.parserFunc = (value) => {
+          return value;
+        };
+      } else {
+        this.parserFunc = parser;
+      }
+    }
+    _onValueChange() {
+      const text = this.parserFunc(this.getText());
+      const newText = `${this.formatterFunc(text)}`;
+      this.input.setText(newText);
+      if (this.getValue() !== this.oldValue) {
+        this._callHandler(this.props.onValueChange, {
+          name: this.props.name,
+          oldValue: this.oldValue,
+          newValue: text,
+        });
+        this.oldValue = text;
+      }
+    }
+    _getControls() {
+      if (!this.props.showSpinner) {
+        return false;
+      }
+      return {
+        component: "Component",
+        classes: { "nom-number-input-controler": true },
+        disabled: this.props.disabled,
+        children: {
+          component: "Flex",
+          direction: "column",
+          fit: true,
+          items: [
+            {
+              classes: { "nom-number-input-controler-button": true },
+              children: { component: "Icon", type: "up" },
+              onClick: ({ event }) => {
+                event.stopPropagation();
+                this._onPlus();
+              },
+            },
+            { classes: { divider: true }, children: "" },
+            {
+              classes: { "nom-number-input-controler-button": true },
+              children: { component: "Icon", type: "down" },
+              onClick: ({ event }) => {
+                event.stopPropagation();
+                this._onMinus();
+              },
+            },
+          ],
+        },
+      };
+    }
     _onBlur() {
-      if (!this.props.limitInput || this.props.precision < 0) {
+      this._checkValue();
+      this._setPrecision();
+    }
+    _isEmptyOrInvalid(v) {
+      return isNullish(v) || Number.isNaN(v) || v === "NaN" || v === "";
+    }
+    _setPrecision() {
+      const { precision } = this.props;
+      if (!precision || precision === -1) {
         return;
       }
-      this._toFixedValue();
-    }
-    _toFixedValue() {
-      const { precision } = this.props;
-      let r = "";
-      const c = this.input.getText().replace(/[^0-9,.]/gi, "");
-      const i = c.indexOf(".");
-      r = i > -1 ? c.substring(0, i) : c;
-      if (precision > 0) {
-        let dec = i > -1 ? parseFloat(c.substring(i)) : parseFloat(0);
-        if (!isNumeric(dec)) {
-          return;
-        }
-        dec = dec.toFixed(precision);
-        r += dec.substring(1);
+      let v = this.getValue();
+      if (this._isEmptyOrInvalid(v)) {
+        v = 0;
       }
-      this.input.setText(r);
+      if (precision && precision > 0) {
+        const n = parseFloat(v);
+        v = n.toFixed(precision);
+        this.lastValue = v;
+        this.currentValue = v;
+        this.setValue(v, { triggerChange: false });
+      }
     }
-    _getValue() {
-      const { precision = -1 } = this.props;
-      let numberValue = null;
-      const textValue = this.input.getText().replace(/,/g, "");
-      if (precision) {
-        const dotCount = this._dotCount(textValue);
-        if (precision >= 0 && dotCount > precision) {
-          numberValue = this._toDecimal(textValue, precision);
-        } else {
-          numberValue = parseFloat(textValue);
-        }
+    _checkValue() {
+      const { min, max } = this.props;
+      let v = this.getValue();
+      if (Number.isNaN(Number(v))) {
+        this.setValue(this.lastValue, { triggerChange: false });
       } else {
-        numberValue = parseFloat(textValue);
+        let shouldChange = false;
+        if (min && v < min) {
+          v = min;
+          shouldChange = true;
+        }
+        if (max && v > max) {
+          v = max;
+          shouldChange = true;
+        }
+        this.lastValue = v;
+        this.currentValue = v;
+        shouldChange && this.setValue(v, { triggerChange: false });
       }
-      if (Number.isNaN(numberValue)) {
-        numberValue = null;
+    }
+    _onPlus() {
+      const { step, max } = this.props;
+      let v = parseFloat(this.getValue({ asNumber: true }));
+      if (this._isEmptyOrInvalid(v)) {
+        v = 0;
       }
-      return numberValue;
+      const decimalPlaces = (v.toString().split(".")[1] || "").length;
+      v += step;
+      v = parseFloat(v.toFixed(decimalPlaces));
+      this.setValue(max && v > max ? max : v);
+      this._setPrecision();
+    }
+    _onMinus() {
+      const { step, min } = this.props;
+      let v = parseFloat(this.getValue({ asNumber: true }));
+      if (this._isEmptyOrInvalid(v)) {
+        v = 0;
+      }
+      const decimalPlaces = (v.toString().split(".")[1] || "").length;
+      v -= step;
+      v = parseFloat(v.toFixed(decimalPlaces));
+      this.setValue(min && v < min ? min : v);
+      this._setPrecision();
+    }
+    _getValue(options) {
+      if (!options) {
+        options = {};
+      }
+      const text = this.input.getText();
+      if (!text || !text.length) {
+        return null;
+      }
+      const value = this.parserFunc(text);
+      if (
+        (this.props.stringMode ||
+          (this.props.precision && this.props.precision > 0) ||
+          this.props.formatter) &&
+        !options.asNumber
+      ) {
+        return value;
+      }
+      return Number(value);
     }
     _setValue(value, options) {
-      const { precision = -1 } = this.props;
-      this.currentValue = this.getValue();
-      if (precision !== null && precision !== undefined) {
-        if (precision >= 0) {
-          const dotCount = this._dotCount(value);
-          if (dotCount > precision) {
-            value = this._toDecimal(value, precision);
-          }
-        }
+      if (this.props.stringMode || this.props.formatter) {
+        value = value ? `${value}` : "";
       }
-      if (Number.isNaN(value)) {
+      const { precision } = this.props;
+      this.currentValue = this.getValue();
+      this.lastValue = this.currentValue;
+      value = this.formatterFunc(value);
+      if (Number.isNaN(value) || value === "NaN") {
         value = "";
+      }
+      if (precision && precision > 0 && value !== "") {
+        const n = parseFloat(value);
+        value = n.toFixed(precision);
       }
       super._setValue(value, options);
     }
@@ -24675,18 +24745,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return this.input.getText();
     }
   }
-  Numberbox.defaults = {
-    min: null,
-    max: null,
+  NumberInput.defaults = {
+    step: 1,
+    min: Number.MIN_SAFE_INTEGER,
+    max: Number.MAX_SAFE_INTEGER,
+    showSpinner: true,
+    stringMode: false,
     precision: -1,
-    maxPrecision: null,
-    limitInput: false,
-    allowClear: false,
-    maxPrecisionText: "请输入有效数字，且最多包含{{maxPrecision}}位小数",
     integerText: "请输入有效整数",
     precisionText: "请输入有效数字，且包含{{precision}}位小数",
+    allowClear: false,
+    formatter: null,
+    parser: null,
   };
-  Component.register(Numberbox);
+  Component.register(NumberInput);
   const SPINNER_POSITION = {
     left: "left",
     right: "right",
@@ -25156,6 +25228,155 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     precisionText: "请输入有效数字，且包含{{precision}}位小数",
   };
   Component.register(NumberSpinner);
+  class Numberbox extends Textbox {
+    constructor(props, ...mixins) {
+      super(Component.extendProps(Numberbox.defaults, props), ...mixins);
+    }
+    _config() {
+      let { precision, maxPrecision } = this.props;
+      const { limitInput } = this.props;
+      if (limitInput) {
+        maxPrecision = null;
+      }
+      if (maxPrecision) {
+        precision = -1;
+        const str = this.props.maxPrecisionText.replace(
+          "{{maxPrecision}}",
+          maxPrecision
+        );
+        this.rules.push({
+          type: "regex",
+          value: { pattern: `^\\d+(\\.\\d{1,${maxPrecision}})?$` },
+          message: str,
+        });
+      }
+      if (precision === -1) {
+        this.rules.push({ type: "number" });
+      } // 允许输入千分位加 , 的格式的数字
+      if (precision === 0) {
+        this.rules.push({
+          type: "regex",
+          value: { pattern: /^-?(\d+|\d{1,3}(,\d{3})+)$/ },
+          message: this.props.integerText,
+        });
+      }
+      if (precision > 0) {
+        const str = this.props.precisionText.replace(
+          "{{precision}}",
+          precision
+        );
+        this.rules.push({
+          type: "regex",
+          value: {
+            // 在上面的规则的基础上添加了小数部分
+            pattern: `^\\-?(\\d+|\\d{1,3}(,\\d{3})+)(\\.\\d{${precision}})$`,
+          },
+          message: str,
+        });
+      }
+      if (this.props.min) {
+        this.rules.push({ type: "min", value: this.props.min });
+      }
+      if (this.props.max) {
+        this.rules.push({ type: "max", value: this.props.max });
+      }
+      super._config();
+    }
+    _onBlur() {
+      if (!this.props.limitInput || this.props.precision < 0) {
+        return;
+      }
+      this._toFixedValue();
+    }
+    _toFixedValue() {
+      const { precision } = this.props;
+      let r = "";
+      const c = this.input.getText().replace(/[^0-9,.]/gi, "");
+      const i = c.indexOf(".");
+      r = i > -1 ? c.substring(0, i) : c;
+      if (precision > 0) {
+        let dec = i > -1 ? parseFloat(c.substring(i)) : parseFloat(0);
+        if (!isNumeric(dec)) {
+          return;
+        }
+        dec = dec.toFixed(precision);
+        r += dec.substring(1);
+      }
+      this.input.setText(r);
+    }
+    _getValue() {
+      const { precision = -1 } = this.props;
+      let numberValue = null;
+      const textValue = this.input.getText().replace(/,/g, "");
+      if (precision) {
+        const dotCount = this._dotCount(textValue);
+        if (precision >= 0 && dotCount > precision) {
+          numberValue = this._toDecimal(textValue, precision);
+        } else {
+          numberValue = parseFloat(textValue);
+        }
+      } else {
+        numberValue = parseFloat(textValue);
+      }
+      if (Number.isNaN(numberValue)) {
+        numberValue = null;
+      }
+      return numberValue;
+    }
+    _setValue(value, options) {
+      const { precision = -1 } = this.props;
+      this.currentValue = this.getValue();
+      if (precision !== null && precision !== undefined) {
+        if (precision >= 0) {
+          const dotCount = this._dotCount(value);
+          if (dotCount > precision) {
+            value = this._toDecimal(value, precision);
+          }
+        }
+      }
+      if (Number.isNaN(value)) {
+        value = "";
+      }
+      super._setValue(value, options);
+    }
+    _toDecimal(val, precision, notRound) {
+      if (isNullish(val)) return null;
+      if (notRound === undefined) {
+        notRound = false;
+      }
+      let f = parseFloat(val);
+      if (Number.isNaN(f)) {
+        return;
+      }
+      if (notRound === true) {
+        f = Math.floor(val * Math.pow(10, 2)) / Math.pow(10, 2);
+      } else {
+        f = Math.round(val * Math.pow(10, 2)) / Math.pow(10, 2);
+      }
+      return f;
+    }
+    _dotCount(val) {
+      val = String(val);
+      const dotPos = val.indexOf(".");
+      const len = val.substr(dotPos + 1).length;
+      return len;
+    }
+    _getRawValue() {
+      return this.input.getText();
+    }
+  }
+  Numberbox.defaults = {
+    min: null,
+    max: null,
+    precision: -1,
+    maxPrecision: null,
+    limitInput: false,
+    allowClear: false,
+    maxPrecisionText: "请输入有效数字，且最多包含{{maxPrecision}}位小数",
+    integerText: "请输入有效整数",
+    precisionText: "请输入有效数字，且包含{{precision}}位小数",
+  };
+  Component.register(Numberbox);
   class Pager extends Component {
     constructor(props, ...mixins) {
       super(Component.extendProps(Pager.defaults, props), ...mixins);
@@ -29714,139 +29935,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     maxWidth: null,
   };
   Component.register(Tag);
-  class TimelineItem extends Component {
-    constructor(props, ...mixins) {
-      super(Component.extendProps(TimelineItem.defaults, props), ...mixins);
-    }
-    _config() {
-      const { dot, color, label, pending, children } = this.props;
-      this.setProps({
-        classes: {
-          "nom-timeline-item": true,
-          "nom-timeline-item-pending": pending,
-        },
-        children: [
-          label && {
-            tag: "div",
-            classes: { "nom-timeline-item-label": true },
-            children: label,
-          },
-          { tag: "div", classes: { "nom-timeline-item-tail": true } },
-          {
-            tag: "div",
-            classes: {
-              "nom-timeline-item-head": true,
-              "nom-timeline-item-head-custom": !!dot,
-              [`nom-timeline-item-head-${color}`]: true,
-            },
-            attrs: {
-              style: {
-                "border-color": /blue|red|green|gray/.test(color || "")
-                  ? undefined
-                  : color,
-              },
-            },
-            children: [dot],
-          },
-          {
-            tag: "div",
-            classes: { "nom-timeline-item-content": true },
-            children,
-          },
-        ],
-      });
-    }
-  }
-  TimelineItem.defaults = {
-    tag: "li",
-    color: "blue", // 指定圆圈颜色 blue, red, green, gray，或自定义的色值
-    dot: null, // 自定义时间轴点
-    label: null, // 设置标签
-    pending: false, // 是否是幽灵节点
-    children: null, // 内容
-  };
-  Component.register(TimelineItem);
-  class Timeline extends Component {
-    constructor(props, ...mixins) {
-      super(Component.extendProps(Timeline.defaults, props), ...mixins);
-    }
-    _getPositionClass(ele, index) {
-      const { mode } = this.props;
-      if (mode === "alternate") {
-        return index % 2 === 0
-          ? `nom-timeline-item-left`
-          : `nom-timeline-item-right`;
-      }
-      if (mode === "left") {
-        return `nom-timeline-item-left`;
-      }
-      if (mode === "right") {
-        return `nom-timeline-item-right`;
-      }
-      if (ele.props && ele.props.position === "right") {
-        return `nom-timeline-item-right`;
-      }
-      return "";
-    }
-    _config() {
-      const { reverse, pending, mode, pendingDot, items } = this.props;
-      const that = this;
-      const hasLabelItem = items && items.some((item) => item && item.label); // 生成pending节点
-      const pendingItem = pending
-        ? {
-            component: TimelineItem,
-            pending: !!pending,
-            dot: pendingDot || { component: "Icon", type: "loading" },
-            children: typeof pending === "boolean" ? null : pending,
-          }
-        : null; // 获取position
-      const children = [];
-      if (Array.isArray(items) && items.length > 0) {
-        const timeLineItems = [...items];
-        if (pendingItem) {
-          timeLineItems.push(pendingItem);
-        }
-        if (reverse) {
-          timeLineItems.reverse();
-        }
-        const itemsCount = timeLineItems.length;
-        const lastCls = "nom-timeline-item-last";
-        for (let i = 0; i < timeLineItems.length; i++) {
-          const ele = timeLineItems[i];
-          const positionCls = that._getPositionClass(ele, i);
-          const pendingClass = i === itemsCount - 2 ? lastCls : "";
-          const readyClass = i === itemsCount - 1 ? lastCls : "";
-          children.push(
-            Object.assign({ component: TimelineItem }, ele, {
-              classes: Object.assign({}, ele.classes, {
-                [!reverse && !!pending ? pendingClass : readyClass]: true,
-                [positionCls]: true,
-              }),
-            })
-          );
-        }
-      }
-      this.setProps({
-        classes: {
-          [`nom-timeline-pending`]: !!pending,
-          [`nom-timeline-reverse`]: !!reverse,
-          [`nom-timeline-${mode}`]: !!mode && !hasLabelItem,
-          [`nom-timeline-label`]: hasLabelItem,
-        },
-        children,
-      });
-    }
-  }
-  Timeline.defaults = {
-    tag: "ul",
-    mode: "left", // 通过设置 mode 可以改变时间轴和内容的相对位置 left | alternate | right
-    pending: false, // 指定最后一个幽灵节点是否存在或内容,也可以是一个自定义的子元素
-    // 当最后一个幽灵节点存在時，指定其时间图点
-    pendingDot: { component: "Icon", type: "loading" },
-    reverse: false, // 节点排序
-    items: null, // 子元素项列表
-  };
-  Component.register(Timeline);
   class TimePickerList extends List {
     constructor(props, ...mixins) {
       const defaults = {
@@ -30468,6 +30556,139 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     endPickerProps: { placeholder: "结束时间" },
   };
   Component.register(TimeRangePicker);
+  class TimelineItem extends Component {
+    constructor(props, ...mixins) {
+      super(Component.extendProps(TimelineItem.defaults, props), ...mixins);
+    }
+    _config() {
+      const { dot, color, label, pending, children } = this.props;
+      this.setProps({
+        classes: {
+          "nom-timeline-item": true,
+          "nom-timeline-item-pending": pending,
+        },
+        children: [
+          label && {
+            tag: "div",
+            classes: { "nom-timeline-item-label": true },
+            children: label,
+          },
+          { tag: "div", classes: { "nom-timeline-item-tail": true } },
+          {
+            tag: "div",
+            classes: {
+              "nom-timeline-item-head": true,
+              "nom-timeline-item-head-custom": !!dot,
+              [`nom-timeline-item-head-${color}`]: true,
+            },
+            attrs: {
+              style: {
+                "border-color": /blue|red|green|gray/.test(color || "")
+                  ? undefined
+                  : color,
+              },
+            },
+            children: [dot],
+          },
+          {
+            tag: "div",
+            classes: { "nom-timeline-item-content": true },
+            children,
+          },
+        ],
+      });
+    }
+  }
+  TimelineItem.defaults = {
+    tag: "li",
+    color: "blue", // 指定圆圈颜色 blue, red, green, gray，或自定义的色值
+    dot: null, // 自定义时间轴点
+    label: null, // 设置标签
+    pending: false, // 是否是幽灵节点
+    children: null, // 内容
+  };
+  Component.register(TimelineItem);
+  class Timeline extends Component {
+    constructor(props, ...mixins) {
+      super(Component.extendProps(Timeline.defaults, props), ...mixins);
+    }
+    _getPositionClass(ele, index) {
+      const { mode } = this.props;
+      if (mode === "alternate") {
+        return index % 2 === 0
+          ? `nom-timeline-item-left`
+          : `nom-timeline-item-right`;
+      }
+      if (mode === "left") {
+        return `nom-timeline-item-left`;
+      }
+      if (mode === "right") {
+        return `nom-timeline-item-right`;
+      }
+      if (ele.props && ele.props.position === "right") {
+        return `nom-timeline-item-right`;
+      }
+      return "";
+    }
+    _config() {
+      const { reverse, pending, mode, pendingDot, items } = this.props;
+      const that = this;
+      const hasLabelItem = items && items.some((item) => item && item.label); // 生成pending节点
+      const pendingItem = pending
+        ? {
+            component: TimelineItem,
+            pending: !!pending,
+            dot: pendingDot || { component: "Icon", type: "loading" },
+            children: typeof pending === "boolean" ? null : pending,
+          }
+        : null; // 获取position
+      const children = [];
+      if (Array.isArray(items) && items.length > 0) {
+        const timeLineItems = [...items];
+        if (pendingItem) {
+          timeLineItems.push(pendingItem);
+        }
+        if (reverse) {
+          timeLineItems.reverse();
+        }
+        const itemsCount = timeLineItems.length;
+        const lastCls = "nom-timeline-item-last";
+        for (let i = 0; i < timeLineItems.length; i++) {
+          const ele = timeLineItems[i];
+          const positionCls = that._getPositionClass(ele, i);
+          const pendingClass = i === itemsCount - 2 ? lastCls : "";
+          const readyClass = i === itemsCount - 1 ? lastCls : "";
+          children.push(
+            Object.assign({ component: TimelineItem }, ele, {
+              classes: Object.assign({}, ele.classes, {
+                [!reverse && !!pending ? pendingClass : readyClass]: true,
+                [positionCls]: true,
+              }),
+            })
+          );
+        }
+      }
+      this.setProps({
+        classes: {
+          [`nom-timeline-pending`]: !!pending,
+          [`nom-timeline-reverse`]: !!reverse,
+          [`nom-timeline-${mode}`]: !!mode && !hasLabelItem,
+          [`nom-timeline-label`]: hasLabelItem,
+        },
+        children,
+      });
+    }
+  }
+  Timeline.defaults = {
+    tag: "ul",
+    mode: "left", // 通过设置 mode 可以改变时间轴和内容的相对位置 left | alternate | right
+    pending: false, // 指定最后一个幽灵节点是否存在或内容,也可以是一个自定义的子元素
+    // 当最后一个幽灵节点存在時，指定其时间图点
+    pendingDot: { component: "Icon", type: "loading" },
+    reverse: false, // 节点排序
+    items: null, // 子元素项列表
+  };
+  Component.register(Timeline);
   class Tour extends Component {
     constructor(props, ...mixins) {
       super(Component.extendProps(Tour.defaults, props), ...mixins);
@@ -33408,6 +33629,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   exports.MultilineTextbox = MultilineTextbox;
   exports.Navbar = Navbar;
   exports.Notification = Notification;
+  exports.NumberInput = NumberInput;
   exports.NumberSpinner = NumberSpinner;
   exports.Numberbox = Numberbox;
   exports.Pager = Pager;

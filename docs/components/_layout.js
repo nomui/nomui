@@ -493,11 +493,17 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       url: '#!components!index?type=Numberbox',
                     },
                     {
-                      text: 'NumberSpinner',
-                      subtext: '数字微调器',
-                      id: 'NumberSpinner',
-                      url: '#!components!index?type=NumberSpinner',
+                      text: 'NumberInput',
+                      subtext: '数字输入框',
+                      id: 'NumberInput',
+                      url: '#!components!index?type=NumberInput',
                     },
+                    // {
+                    //   text: 'NumberSpinner',
+                    //   subtext: '数字微调器',
+                    //   id: 'NumberSpinner',
+                    //   url: '#!components!index?type=NumberSpinner',
+                    // },
                     {
                       text: 'PartialDatePicker',
                       subtext: '部分日期选择',
