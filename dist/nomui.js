@@ -24622,17 +24622,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _onBlur() {
       this._checkValue();
-      this._setPrecision();
+      this._setPrecision(true);
     }
     _isEmptyOrInvalid(v) {
       return isNullish(v) || Number.isNaN(v) || v === "NaN" || v === "";
     }
-    _setPrecision() {
+    _setPrecision(isBlur) {
       const { precision } = this.props;
-      if (!precision || precision === -1) {
+      let v = this.getValue();
+      if (!precision || precision === -1 || (isNullish(v) && isBlur)) {
         return;
       }
-      let v = this.getValue();
       if (this._isEmptyOrInvalid(v)) {
         v = 0;
       }
