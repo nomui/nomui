@@ -26,15 +26,20 @@ define([], function () {
                                     return `$ ${value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
                                 },
                                 parser: (value) => {
-                                    let result = value.replace(/[^0-9.]/g, '')
+                                    let result = value.replace(/[^0-9.-]/g, '')
 
                                     if (result.indexOf('.') !== -1) {
                                         const integerPart = result.substring(0, result.indexOf('.'))
                                         let decimalPart = result.substring(result.indexOf('.') + 1)
+
                                         decimalPart = decimalPart.substring(0, 1)
+
                                         result = `${integerPart}.${decimalPart}`
                                     }
 
+                                    if (result.startsWith('.')) {
+                                        result = `0${result}`
+                                    }
 
                                     return result
                                 },

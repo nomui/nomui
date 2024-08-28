@@ -197,6 +197,7 @@ class NumberInput extends Textbox {
     const { step, min } = this.props
     let v = parseFloat(this.getValue({ asNumber: true }))
 
+
     if (this._isEmptyOrInvalid(v)) {
       v = 0
     }
@@ -220,7 +221,6 @@ class NumberInput extends Textbox {
 
     const value = this.parserFunc(text)
 
-
     if ((this.props.stringMode || (this.props.precision && this.props.precision > 0) || this.props.formatter) && !options.asNumber) {
       return value
     }
@@ -228,8 +228,9 @@ class NumberInput extends Textbox {
   }
 
   _setValue(value, options) {
+
     if (this.props.stringMode || this.props.formatter) {
-      value = value ? `${value}` : ''
+      value = (value || value === 0) ? `${value}` : ''
     }
     const { precision } = this.props
 
