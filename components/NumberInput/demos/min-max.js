@@ -1,19 +1,63 @@
 define([], function () {
   return {
-    title: '带最大、最小值',
+    title: '最大最小值',
     file: 'min-max',
-    description: '只允许输入 1 - 20之间的值',
     demo: function () {
+      let group = null
+
       return {
-        children: [
+        component: 'Flex',
+        rows: [
           {
-            component: 'Numberbox',
-            value: 10,
-            min: 1,
-            max: 20,
+            component: 'Group',
+            ref: (c) => {
+              group = c
+            },
+            fields: [
+
+              {
+                component: 'NumberInput',
+                name: '5',
+                min: 1,
+                max: 100,
+                label: '最大值最小值',
+              },
+
+
+              {
+                component: 'Field',
+                label: '',
+                control: {
+                  component: 'Cols',
+                  items: [
+
+                    {
+                      component: 'Button',
+                      text: '取值',
+                      onClick: function () {
+                        console.log(group.getValue())
+                      },
+                    },
+                    {
+                      component: 'Button',
+                      text: '赋值',
+                      onClick: function () {
+                        group.setValue({
+                          1: 213,
+                          2: 2312321,
+                          3: 2134,
+                          4: 123
+                        })
+                      },
+                    }
+                  ],
+                },
+              },
+            ],
           },
         ],
       }
+
     },
   }
 })

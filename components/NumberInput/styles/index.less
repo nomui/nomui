@@ -5,6 +5,7 @@
         border-bottom-right-radius: var(--nom-border-radius);
         user-select: none;
 
+
         .nom-flex {
             justify-content: space-around;
 
@@ -35,6 +36,15 @@
 
         }
 
+
+        &.s-disabled {
+            background-color: var(--nom-color-disabled-bg);
+
+            .nom-flex .nom-number-input-controler-button {
+                cursor: not-allowed;
+                pointer-events: none;
+            }
+        }
 
     }
 }

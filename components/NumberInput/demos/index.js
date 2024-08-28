@@ -3,7 +3,9 @@ define([
   './disabled.js',
   './min-max.js',
   './precision.js',
-  './limit-input.js',
+  './string-mode.js',
+  './controls.js',
+  './formatter.js',
 ], function () {
   return {
     title: 'Numberbox',

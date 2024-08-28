@@ -1,4 +1,4 @@
-通过鼠标或键盘，输入范围内的数值。
+纯数字输入组件，可以输入Number或者String类型的合法数字，并附带一个微调器。
 
 ## 何时使用
 
@@ -9,17 +9,11 @@
 | 参数         | 说明                                    | 类型      | 默认值                  |
 | ------------ | --------------------------------------- | --------- | ----------------------- |
 | value        | 输入框内容                              | `number`  | -                       |
+| controls    | 是否显示微调控制器                                | `boolean`  | true                     |
 | min          | 最小值                                  | `number`  | Number.MIN_SAFE_INTEGER |
 | max          | 最大值                                  | `number`  | Number.MAX_SAFE_INTEGER |
+| stringMode    | 是否以字符串模式赋值取值（当有precision或者formatter时强制此模式）                                | `boolean`  | false                      |
 | precision    | 数值精度                                | `number`  | -1                      |
-| limitInput   | 自动处理数值精度，须配合 precision 使用 | `boolean` | false                   |
-| maxPrecision | 最大数值精度                            | `number`  | 0                       |
-
-## 事件
-
-| 参数       | 说明           | 类型                   |
-| ---------- | -------------- | ---------------------- |
-| focus      | 获取焦点       | -                      |
-| blur       | 取消焦点       | -                      |
-| \_getValue | 获取文本框的值 | `()=>string`           |
-| \_setValue | 为文本框设置值 | `(value:string)=>void` |
+| step    | 微调器点击一次的调整步长                                | `number`  | 1                      |
+| formatter    | 控制组件的字面显示的格式化函数                                | `(value)=>{}`  | -                     |
+| parser    | 控制组件的真实取值的格式化函数                                | `(value)=>{}`  | -                     |
