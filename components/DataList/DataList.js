@@ -4,6 +4,10 @@ import scrollIntoView from '../util/scrollIntoView'
 import DataListItemMixin from './DataListItemMixin'
 import Sortable from '../util/sortable.core.esm'
 
+function isObject(val) {
+    return val != null && typeof val === 'object' && Array.isArray(val) === false;
+  };
+
 class DataList extends Component {
     constructor(props, ...mixins) {
         super(Component.extendProps(DataList.defaults, props), ...mixins)
@@ -197,7 +201,7 @@ class DataList extends Component {
     _getItemDescriptor(itemData) {
         const { dataKey, itemRender } = this.props
 
-        if (isPlainObject(itemData)) {
+        if (isObject(itemData)) {
             let itemProps = { key: itemData[dataKey], _itemData: itemData }
             if (isFunction(itemRender)) {
                 itemProps = Component.extendProps(itemProps, itemRender({ itemData, list: this }))
