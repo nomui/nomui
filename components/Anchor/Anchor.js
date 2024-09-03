@@ -181,7 +181,7 @@ class Anchor extends Component {
     let pRect = null
     if (this.props.sticky === true) {
       pRect = {
-        top: 0,
+        top: this.props.offsetTop,
         height: window.innerHeight,
       }
     } else {
@@ -257,9 +257,9 @@ Anchor.defaults = {
   border: 'left',
   onItemClick: null,
   width: 200,
+  offsetTop: 0,
   sticky: false,
   itemDefaults: null,
-  offset: 0,
   activeKey: null,
   onChange: null,
   menuProps: {},
