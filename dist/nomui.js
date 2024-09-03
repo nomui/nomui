@@ -7124,7 +7124,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.element.style.transform = `translateY(0px)`;
       let pRect = null;
       if (this.props.sticky === true) {
-        pRect = { top: 0, height: window.innerHeight };
+        pRect = { top: this.props.offsetTop, height: window.innerHeight };
       } else {
         pRect = this.scrollParent.element.getBoundingClientRect();
       }
@@ -7186,9 +7186,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     border: "left",
     onItemClick: null,
     width: 200,
+    offsetTop: 0,
     sticky: false,
     itemDefaults: null,
-    offset: 0,
     activeKey: null,
     onChange: null,
     menuProps: {},
