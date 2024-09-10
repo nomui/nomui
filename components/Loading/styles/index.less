@@ -1,3 +1,43 @@
 .nom-loading-container {
     position: relative;
+
+    .nom-loading-icon {
+        transform: scale(1.15);
+
+        &.status-success {
+            color: var(--nom-color-success);
+        }
+
+        &.status-fail {
+            color: var(--nom-color-danger);
+        }
+    }
+
+}
+
+.nom-loading-animate-hide {
+    -webkit-animation: nom-loading-icon-hide 200ms ease forwards;
+    animation: nom-loading-icon-hide 200ms ease forwards;
+}
+
+
+@keyframes nom-loading-hide {
+    0% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+
+@-webkit-keyframes nom-loading-hide {
+    0% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
 }
