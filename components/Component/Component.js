@@ -201,6 +201,9 @@ class Component {
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
   remove() {
+    if (!this.props) {
+      return
+    }
     const el = this._removeCore()
     this.parent && this.parent.hasOwnProperty('removeChild') && this.parent.removeChild(this);
     el.parentNode && el.parentNode.removeChild(el)
