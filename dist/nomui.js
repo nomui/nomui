@@ -24253,7 +24253,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       if (Array.isArray(captionBefore)) {
         captionBeforeProps = { component: Cols, items: captionBefore };
-      } else if (isPlainObject(tools)) {
+      } else if (isPlainObject(captionBefore)) {
         captionBeforeProps = Component.extendProps(
           { component: Cols },
           captionBefore
