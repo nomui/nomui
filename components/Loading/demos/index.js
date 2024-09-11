@@ -2,6 +2,7 @@ define(
     [
         './basic.js',
         './container.js',
+        './events.js'
     ],
     function () {
         return {

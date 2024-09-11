@@ -19,7 +19,7 @@ define([], function () {
             text: '加载中',
             onValueChange: function (changed) {
               if (changed.newValue === true) {
-                window.loadingRef = this.Loading = new nomui.Loading({})
+                this.Loading = new nomui.Loading({})
               } else {
                 this.Loading.remove()
               }

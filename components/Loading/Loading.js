@@ -25,7 +25,7 @@ class Loading extends Layer {
         ref: (c) => {
           this.iconRef = c
         },
-        children: {
+        children: this.props.noSpinner ? '' : {
           component: Spinner,
         },
       },
@@ -36,15 +36,29 @@ class Loading extends Layer {
 
     this.referenceElement.classList.add('nom-loading-container')
 
+
+
     super._config()
   }
 
-  close(args) {
-    if (!args || !args.type) {
+  _rendered() {
+    if (this.props.noSpinner && this.firstRender) {
+      this.close({ type: 'success' })
+    }
+  }
+
+  _remove() {
+    this.referenceElement && this.referenceElement.classList.remove('nom-loading-container')
+    super._remove()
+  }
+
+  close(args = {}) {
+    const { type } = args
+    if (!type) {
       this.remove()
     }
     else {
-      const { type } = args
+
       if (type === 'fail' || type === "danger") {
         this.iconRef.update({
           children: {
@@ -60,23 +74,15 @@ class Loading extends Layer {
         })
       }
 
-      setTimeout(() => {
-        this.element.classList.add('nom-loading-animate-hide')
-      }, 1500)
-
+      this.element.classList.add('nom-loading-animate-hide')
       setTimeout(() => {
         this.remove()
-      }, 1500 + 200)
+      }, 3000)
     }
-
-
-
   }
 
-  _remove() {
-    this.referenceElement && this.referenceElement.classList.remove('nom-loading-container')
-
-    super._remove()
+  static success(options = {}) {
+    new nomui.Loading({ ...options, ...{ noSpinner: true } })
   }
 }
 Loading.defaults = {
