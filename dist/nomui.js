@@ -17654,6 +17654,40 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   }
   Spinner.defaults = { spinning: true };
   Component.register(Spinner);
+  class FailIcon extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {};
+      super(
+        Component.extendProps(defaults, FailIcon.defaults, props),
+        ...mixins
+      );
+    }
+    _config() {
+      this.setProps({
+        classes: { "nom-loading-icon": true, "status-fail": true },
+        children: `#<svg width="2rem" height="2rem" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"> <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="6" fill="none" stroke-dasharray="251.2 251.2" stroke-dashoffset="251.2"><animate attributeName="stroke-dashoffset" from="251.2" to="0" dur="0.4s" fill="freeze" /></circle><path d="M30,30 L70,70" stroke="currentColor" stroke-width="6" fill="none" stroke-dasharray="60" stroke-dashoffset="60" opacity="0"><animate attributeName="stroke-dashoffset" from="40" to="0" dur="0.3s" begin="0.4s" fill="freeze" /><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="0.4s" fill="freeze" /></path><path d="M70,30 L30,70" stroke="currentColor" stroke-width="6" fill="none" stroke-dasharray="60" stroke-dashoffset="60" opacity="0"><animate attributeName="stroke-dashoffset" from="40" to="0" dur="0.3s" begin="0.7s" fill="freeze" /><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="0.7s" fill="freeze" /></path></svg>`,
+      });
+    }
+  }
+  FailIcon.defaults = {};
+  Component.register(FailIcon);
+  class SuccessIcon extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {};
+      super(
+        Component.extendProps(defaults, SuccessIcon.defaults, props),
+        ...mixins
+      );
+    }
+    _config() {
+      this.setProps({
+        classes: { "nom-loading-icon": true, "status-success": true },
+        children: `#<svg width="2rem" height="2rem" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"> <!-- 圆环 --> <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="6" fill="none" stroke-dasharray="251.2 251.2" stroke-dashoffset="251.2"> <animate attributeName="stroke-dashoffset" from="251.2" to="0" dur="0.4s" fill="freeze" /> </circle> <path d="M25,50 L45,70 L75,35" stroke="currentColor" stroke-width="6" fill="none" stroke-dasharray="100" stroke-dashoffset="100" opacity="0"> <animate attributeName="stroke-dashoffset" from="100" to="0" dur="0.3s" begin="0.4s" fill="freeze" /> <animate attributeName="opacity" from="0" to="1" dur="0.6s" begin="0.4s" fill="freeze" /> </path> </svg>`,
+      });
+    }
+  }
+  SuccessIcon.defaults = {};
+  Component.register(SuccessIcon);
   class Loading extends Layer {
     constructor(props, ...mixins) {
       const defaults = { container: document.body };
@@ -17670,7 +17704,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       this.setProps({
-        children: { component: Spinner },
+        children: {
+          ref: (c) => {
+            this.iconRef = c;
+          },
+          children: this.props.noSpinner ? "" : { component: Spinner },
+        },
         onClick({ event }) {
           event.stopPropagation();
         },
@@ -17678,10 +17717,34 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.referenceElement.classList.add("nom-loading-container");
       super._config();
     }
+    _rendered() {
+      if (this.props.noSpinner && this.firstRender) {
+        this.close({ type: "success" });
+      }
+    }
     _remove() {
       this.referenceElement &&
         this.referenceElement.classList.remove("nom-loading-container");
       super._remove();
+    }
+    close(args = {}) {
+      const { type } = args;
+      if (!type) {
+        this.remove();
+      } else {
+        if (type === "fail" || type === "danger") {
+          this.iconRef.update({ children: { component: FailIcon } });
+        } else if (type === "success") {
+          this.iconRef.update({ children: { component: SuccessIcon } });
+        }
+        this.element.classList.add("nom-loading-animate-hide");
+        setTimeout(() => {
+          this.remove();
+        }, 3000);
+      }
+    }
+    static success(options = {}) {
+      new nomui.Loading(Object.assign({}, options, { noSpinner: true }));
     }
   }
   Loading.defaults = { align: "center", backdrop: true, collision: "none" };

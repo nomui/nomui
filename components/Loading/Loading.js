@@ -1,6 +1,8 @@
 import Component from '../Component/index'
 import Layer from '../Layer/index'
 import Spinner from '../Spinner/index'
+import FailIcon from './fail-icon'
+import SuccessIcon from './success-icon'
 
 class Loading extends Layer {
   constructor(props, ...mixins) {
@@ -20,7 +22,12 @@ class Loading extends Layer {
   _config() {
     this.setProps({
       children: {
-        component: Spinner,
+        ref: (c) => {
+          this.iconRef = c
+        },
+        children: this.props.noSpinner ? '' : {
+          component: Spinner,
+        },
       },
       onClick({ event }) {
         event.stopPropagation()
@@ -29,13 +36,53 @@ class Loading extends Layer {
 
     this.referenceElement.classList.add('nom-loading-container')
 
+
+
     super._config()
+  }
+
+  _rendered() {
+    if (this.props.noSpinner && this.firstRender) {
+      this.close({ type: 'success' })
+    }
   }
 
   _remove() {
     this.referenceElement && this.referenceElement.classList.remove('nom-loading-container')
-
     super._remove()
+  }
+
+  close(args = {}) {
+    const { type } = args
+    if (!type) {
+      this.remove()
+    }
+    else {
+
+      if (type === 'fail' || type === "danger") {
+        this.iconRef.update({
+          children: {
+            component: FailIcon
+          }
+        })
+      }
+      else if (type === 'success') {
+        this.iconRef.update({
+          children: {
+            component: SuccessIcon
+          }
+        })
+      }
+
+      this.element.classList.add('nom-loading-animate-hide')
+      setTimeout(() => {
+        this.remove()
+      }, 3000)
+    }
+  }
+
+  static success(options = {}) {
+    new nomui.Loading({ ...options, ...{ noSpinner: true } })
   }
 }
 Loading.defaults = {
