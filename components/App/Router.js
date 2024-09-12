@@ -178,6 +178,10 @@ class Router extends Component {
 
     return path
   }
+
+  getParentRouter() {
+    return this.$app.routers[this.level - 1]
+  }
 }
 
 Router.plugins = []
