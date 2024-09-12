@@ -7358,6 +7358,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return path;
     }
+    getParentRouter() {
+      return this.$app.routers[this.level - 1];
+    }
   }
   Router.plugins = [];
   Component.register(Router);
