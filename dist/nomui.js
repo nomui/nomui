@@ -24267,7 +24267,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       if (Array.isArray(captionAfter)) {
         captionAfterProps = { component: Cols, items: captionAfter };
-      } else if (isPlainObject(tools)) {
+      } else if (isPlainObject(captionAfter)) {
         captionAfterProps = Component.extendProps(
           { component: Cols },
           captionAfter

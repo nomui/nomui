@@ -33,7 +33,7 @@ class Navbar extends Component {
     }
     if (Array.isArray(captionAfter)) {
       captionAfterProps = { component: Cols, items: captionAfter }
-    } else if (isPlainObject(tools)) {
+    } else if (isPlainObject(captionAfter)) {
       captionAfterProps = Component.extendProps({ component: Cols }, captionAfter)
     }
 
