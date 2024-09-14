@@ -23475,7 +23475,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               attrs: { style: { "flex-grow": "2" } },
               children: this.props.subtext,
             },
-            menu.props.direction !== "horizontal" && tools && tools,
+            tools && tools,
             this.props.indicator && !this.isLeaf && this.props.indicator,
           ],
         });

@@ -164,7 +164,7 @@ class MenuItem extends Component {
             },
             children: this.props.subtext,
           },
-          menu.props.direction !== 'horizontal' && tools && tools,
+          tools && tools,
           this.props.indicator && !this.isLeaf && this.props.indicator,
         ],
       })
