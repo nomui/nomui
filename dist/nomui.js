@@ -7226,6 +7226,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.routeView();
     }
     handleHashChange(changed) {
+      if (!this.props) {
+        return;
+      }
       this._callHandler(this.props.onHashChange, changed); // 可以在这里做路由变更前处理
       if (
         changed.queryChanged &&
@@ -7264,6 +7267,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           delete this[p];
         }
       }
+    }
+    _removeSubRouter() {
+      const subRouter = this.$app.routers[this.level + 1];
+      if (subRouter) {
+        subRouter._removeSubRouter();
+        subRouter.remove();
+      }
+    }
+    refreshView() {
+      this._removeSubRouter();
+      this.routeView();
     }
     routeView() {
       isFunction(this.props.onViewLeave) && this.props.onViewLeave.call(this);
