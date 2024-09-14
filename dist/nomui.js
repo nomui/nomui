@@ -8446,6 +8446,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       );
       const {
         label,
+        labelAlign,
         labelWidth,
         span,
         notShowLabel,
@@ -8464,7 +8465,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.setProps({ styles: { col: span } });
       }
       let labelProps = showLabel ? { component: FieldLabel } : null;
-      if (labelProps && labelWidth) {
+      if (labelProps && labelWidth && labelAlign !== "top") {
         labelProps = Component.extendProps(labelProps, {
           attrs: {
             style: {
