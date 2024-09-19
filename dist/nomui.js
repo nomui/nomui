@@ -6558,6 +6558,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                     this._getDefaultPanelContent(props),
                     props
                   );
+                  if (isFunction(props.footer)) {
+                    props.footer = props.footer.call(this.modal, this.modal);
+                  }
                   this.update({
                     children: n$1(null, props, null, [ModalContentMixin]),
                   });
@@ -6567,6 +6570,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   this._getDefaultPanelContent(props),
                   props
                 );
+                if (isFunction(props.footer)) {
+                  props.footer = props.footer.call(this.modal, this.modal);
+                }
                 this.update({
                   children: n$1(null, props, null, [ModalContentMixin]),
                 });
@@ -6577,6 +6583,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 this._getDefaultPanelContent(props),
                 props
               );
+              if (isFunction(props.footer)) {
+                props.footer = props.footer.call(this.modal, this.modal);
+              }
               this.update({
                 children: n$1(null, props, null, [ModalContentMixin]),
               });
