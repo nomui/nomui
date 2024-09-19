@@ -27,12 +27,18 @@ class ModalDialog extends Component {
               props.then((result) => {
                 props = result
                 props = Component.extendProps(this._getDefaultPanelContent(props), props)
+                if (isFunction(props.footer)) {
+                  props.footer = props.footer.call(this.modal, this.modal)
+                }
                 this.update({
                   children: n(null, props, null, [ModalContentMixin]),
                 })
               })
             } else {
               props = Component.extendProps(this._getDefaultPanelContent(props), props)
+              if (isFunction(props.footer)) {
+                props.footer = props.footer.call(this.modal, this.modal)
+              }
               this.update({
                 children: n(null, props, null, [ModalContentMixin]),
               })
@@ -40,6 +46,9 @@ class ModalDialog extends Component {
           } else {
             props = contentConfig.call(this, modal)
             props = Component.extendProps(this._getDefaultPanelContent(props), props)
+            if (isFunction(props.footer)) {
+              props.footer = props.footer.call(this.modal, this.modal)
+            }
             this.update({
               children: n(null, props, null, [ModalContentMixin]),
             })
