@@ -14661,6 +14661,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
           if (list.selectedItem === this) {
             list.selectedItem = null;
+            list._onItemUnselected(this.props._itemData);
           }
         },
         onSelectionChange: () => {
@@ -14850,6 +14851,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _onItemSelected(itemData) {
       this._callHandler(this.props.onItemSelected, { itemData });
+    }
+    _onItemUnselected(itemData) {
+      this._callHandler(this.props.onItemUnselected, { itemData });
     }
     _getItemDescriptor(itemData) {
       const { dataKey, itemRender } = this.props;

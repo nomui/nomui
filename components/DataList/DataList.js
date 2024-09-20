@@ -202,6 +202,10 @@ class DataList extends Component {
         this._callHandler(this.props.onItemSelected, { itemData })
     }
 
+    _onItemUnselected(itemData) {
+        this._callHandler(this.props.onItemUnselected, { itemData })
+    }
+
     _getItemDescriptor(itemData) {
         const { dataKey, itemRender } = this.props
 
