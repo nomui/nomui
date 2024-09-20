@@ -34,6 +34,8 @@ export default {
             list.selectedItem.unselect({ triggerSelectionChange: false })
           }
           list.selectedItem = this
+
+          list._onItemSelected(this.parent.props.data)
         }
 
         this._callHandler(onSelect)
