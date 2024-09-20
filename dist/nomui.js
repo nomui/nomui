@@ -9426,6 +9426,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               list.selectedItem.unselect({ triggerSelectionChange: false });
             }
             list.selectedItem = this;
+            list._onItemSelected(this.parent.props.data);
           }
           this._callHandler(onSelect);
         },
@@ -10041,6 +10042,21 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     getSelectedItem() {
       return this.selectedItem;
     }
+    getSelectedData() {
+      const { itemSelectable } = this.props;
+      if (itemSelectable && itemSelectable.multiple === true) {
+        const selectedData = [];
+        const children = this.content.getChildren();
+        for (let i = 0; i < children.length; i++) {
+          const item = children[i];
+          if (item.content.props.selected) {
+            selectedData.push(item.props.data);
+          }
+        }
+        return selectedData;
+      }
+      return this.selectedItem.parent.props.data;
+    }
     getSelectedItems() {
       const selectedItems = [];
       const children = this.content.getChildren();
@@ -10122,6 +10138,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.selectedItem) {
         this.scrollTo(this.selectedItem);
       }
+    }
+    _onItemSelected(itemData) {
+      this._callHandler(this.props.onItemSelected, { itemData });
     }
     _rendered() {
       this.props.sortable && defaultSortableOndrop();

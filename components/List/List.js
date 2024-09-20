@@ -172,6 +172,23 @@ class List extends Component {
     return this.selectedItem
   }
 
+  getSelectedData() {
+    const { itemSelectable } = this.props
+    if (itemSelectable && itemSelectable.multiple === true) {
+      const selectedData = []
+      const children = this.content.getChildren()
+      for (let i = 0; i < children.length; i++) {
+        const item = children[i]
+        if (item.content.props.selected) {
+          selectedData.push(item.props.data)
+        }
+      }
+      return selectedData
+    }
+
+    return this.selectedItem.parent.props.data
+  }
+
   getSelectedItems() {
     const selectedItems = []
     const children = this.content.getChildren()
@@ -268,6 +285,10 @@ class List extends Component {
     if (this.selectedItem) {
       this.scrollTo(this.selectedItem)
     }
+  }
+
+  _onItemSelected(itemData) {
+    this._callHandler(this.props.onItemSelected, { itemData })
   }
 
   _rendered() {
