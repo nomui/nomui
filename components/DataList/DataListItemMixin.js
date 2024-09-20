@@ -52,6 +52,7 @@ export default {
                 }
                 if (list.selectedItem === this) {
                     list.selectedItem = null
+                    list._onItemUnselected(this.props._itemData)
                 }
             },
             onSelectionChange: () => {
