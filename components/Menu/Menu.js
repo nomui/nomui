@@ -182,8 +182,8 @@ class Menu extends Component {
     this.scrollToSelected()
   }
 
-  _onItemSelect(args) {
-    this._callHandler(this.props.onItemSelect, args)
+  _onItemSelected(args) {
+    this._callHandler(this.props.onItemSelected, args)
   }
 }
 Menu.defaults = {

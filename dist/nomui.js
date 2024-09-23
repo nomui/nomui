@@ -23484,7 +23484,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           menu.selectedItemKey = this.key;
           menuProps.compact && this.wrapper.rootWrapper.item.partSelect();
           this._callHandler(onSelect);
-          menu._onItemSelect({ item: this });
+          menu._onItemSelected({ item: this, key: this.key });
         },
         onUnselect: () => {
           if (menu.selectedItem === this) menu.selectedItem = null;
@@ -23886,8 +23886,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super._rendered();
       this.scrollToSelected();
     }
-    _onItemSelect(args) {
-      this._callHandler(this.props.onItemSelect, args);
+    _onItemSelected(args) {
+      this._callHandler(this.props.onItemSelected, args);
     }
   }
   Menu.defaults = {
