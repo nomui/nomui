@@ -79,7 +79,7 @@ class GroupGrid extends Field {
               items: [
                 {
                   component: 'Button',
-                  text: this.props.removeText,
+                  text: that.props.removeText,
                   onClick: () => {
                     row.remove()
                     that._onValueChange()
