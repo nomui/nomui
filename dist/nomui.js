@@ -22394,7 +22394,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 items: [
                   {
                     component: "Button",
-                    text: this.props.removeText,
+                    text: that.props.removeText,
                     onClick: () => {
                       row.remove();
                       that._onValueChange();
