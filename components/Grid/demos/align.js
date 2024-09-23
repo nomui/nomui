@@ -12,6 +12,8 @@ define([], function () {
             columnAlign: 'center', // 全局列对齐配置
             bordered: true,
             line: 'both',
+            columnResizable: true,
+            ellipsis: true,
             columns: [
               {
                 field: 'name',
@@ -29,6 +31,8 @@ define([], function () {
                 field: 'sales',
                 key: 'sales',
                 title: '销量',
+                align: 'right',
+
               },
 
               {

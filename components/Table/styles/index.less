@@ -111,14 +111,26 @@ table.nom-table {
 
     &[align='left'] {
       text-align: left;
+
+      >.nom-table-cell-content {
+        justify-content: flex-start;
+      }
     }
 
     &[align='center'] {
       text-align: center;
+
+      >.nom-table-cell-content {
+        justify-content: center;
+      }
     }
 
     &[align='right'] {
       text-align: right;
+
+      >.nom-table-cell-content {
+        justify-content: flex-end;
+      }
     }
 
     &.nom-table-fixed-left,
