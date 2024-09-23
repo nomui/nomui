@@ -14651,8 +14651,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               list.selectedItem.unselect({ triggerSelectionChange: false });
             }
             list.selectedItem = this;
-            list._onItemSelected(this.props._itemData);
           }
+          list._onItemSelected(this.props._itemData);
         },
         onUnselect: () => {
           const list = this.parent;
@@ -14661,8 +14661,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
           if (list.selectedItem === this) {
             list.selectedItem = null;
-            list._onItemUnselected(this.props._itemData);
           }
+          list._onItemUnselected(this.props._itemData);
         },
         onSelectionChange: () => {
           const list = this.parent;
