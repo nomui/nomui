@@ -757,6 +757,11 @@ class Grid extends Component {
     return result
   }
 
+  removeRow(param) {
+    const row = this.getRow(param)
+    row.remove()
+  }
+
   getCheckedRows() {
     return Object.keys(this.checkedRowRefs)
       .map((key) => {
