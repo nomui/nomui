@@ -21437,6 +21437,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return result;
     }
+    removeRow(param) {
+      const row = this.getRow(param);
+      row.remove();
+    }
     getCheckedRows() {
       return Object.keys(this.checkedRowRefs)
         .map((key) => {
