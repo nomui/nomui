@@ -4464,6 +4464,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         newProps = props.getProps();
         newMixins = props.mixins;
       }
+      this.__inReplace = true;
       return Component.create(
         Component.extendProps(newProps, {
           placement: "replace",
@@ -4588,7 +4589,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.trigger("remove");
       this._off();
       this.off();
-      this.props.ref && this.props.ref(null);
+      if (!this.__inReplace) {
+        this.props.ref && this.props.ref(null);
+      }
       for (const p in this) {
         if (this.hasOwnProperty(p)) {
           delete this[p];
@@ -23478,16 +23481,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
         },
         onSelect: () => {
-          if (menu.selectedItem !== null) menu.selectedItem.unselect();
-          menu.selectedItem = this;
-          menu.expandedRoot = this.wrapper.rootWrapper;
-          menu.selectedItemKey = this.key;
-          menuProps.compact && this.wrapper.rootWrapper.item.partSelect();
           this._callHandler(onSelect);
           menu._onItemSelected({ item: this, key: this.key });
         },
         onUnselect: () => {
-          if (menu.selectedItem === this) menu.selectedItem = null;
           this._callHandler(onUnselect);
         },
       });
@@ -23555,6 +23552,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
       }
       this.element.classList.add("nom-menu-item-submenu-selected");
+    }
+    _select() {
+      const { menu } = this;
+      const menuProps = menu.props;
+      if (menu.selectedItem !== null) menu.selectedItem.unselect();
+      menu.selectedItem = this;
+      menu.expandedRoot = this.wrapper.rootWrapper;
+      menu.selectedItemKey = this.key;
+      menuProps.compact && this.wrapper.rootWrapper.item.partSelect();
+    }
+    _unselect() {
+      const { menu } = this;
+      if (menu.selectedItem === this) menu.selectedItem = null;
     }
     _expand() {
       this.indicator && this.indicator.expand();

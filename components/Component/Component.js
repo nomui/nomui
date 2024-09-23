@@ -226,6 +226,8 @@ class Component {
       newProps = props.getProps()
       newMixins = props.mixins
     }
+
+    this.__inReplace = true
     return Component.create(Component.extendProps(newProps, { placement: 'replace', reference: this }), ...newMixins)
   }
 
@@ -332,7 +334,10 @@ class Component {
     this.trigger('remove')
     this._off()
     this.off()
-    this.props.ref && this.props.ref(null)
+
+    if (!this.__inReplace) {
+      this.props.ref && this.props.ref(null)
+    }
 
     for (const p in this) {
       if (this.hasOwnProperty(p)) {
