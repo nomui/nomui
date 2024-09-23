@@ -114,16 +114,10 @@ class MenuItem extends Component {
         },
       },
       onSelect: () => {
-        if (menu.selectedItem !== null) menu.selectedItem.unselect()
-        menu.selectedItem = this
-        menu.expandedRoot = this.wrapper.rootWrapper
-        menu.selectedItemKey = this.key
-        menuProps.compact && this.wrapper.rootWrapper.item.partSelect()
         this._callHandler(onSelect)
-        menu._onItemSelect({ item: this })
+        menu._onItemSelected({ item: this, key: this.key })
       },
       onUnselect: () => {
-        if (menu.selectedItem === this) menu.selectedItem = null
         this._callHandler(onUnselect)
       },
     })
@@ -195,6 +189,21 @@ class MenuItem extends Component {
       })
     }
     this.element.classList.add('nom-menu-item-submenu-selected')
+  }
+
+  _select() {
+    const { menu } = this
+    const menuProps = menu.props
+    if (menu.selectedItem !== null) menu.selectedItem.unselect()
+    menu.selectedItem = this
+    menu.expandedRoot = this.wrapper.rootWrapper
+    menu.selectedItemKey = this.key
+    menuProps.compact && this.wrapper.rootWrapper.item.partSelect()
+  }
+
+  _unselect() {
+    const { menu } = this
+    if (menu.selectedItem === this) menu.selectedItem = null
   }
 
   _expand() {

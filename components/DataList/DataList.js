@@ -6,7 +6,7 @@ import Sortable from '../util/sortable.core.esm'
 
 function isObject(val) {
     return val != null && typeof val === 'object' && Array.isArray(val) === false;
-  };
+};
 
 class DataList extends Component {
     constructor(props, ...mixins) {
@@ -196,6 +196,14 @@ class DataList extends Component {
 
     _onItemSelectionChange() {
         this._callHandler(this.props.onItemSelectionChange)
+    }
+
+    _onItemSelected(itemData) {
+        this._callHandler(this.props.onItemSelected, { itemData })
+    }
+
+    _onItemUnselected(itemData) {
+        this._callHandler(this.props.onItemUnselected, { itemData })
     }
 
     _getItemDescriptor(itemData) {

@@ -46,6 +46,7 @@ class Field extends Component {
     this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth', 'plain')
     const {
       label,
+      labelAlign,
       labelWidth,
       span,
       notShowLabel,
@@ -71,7 +72,7 @@ class Field extends Component {
     }
 
     let labelProps = showLabel ? { component: FieldLabel } : null
-    if (labelProps && labelWidth) {
+    if (labelProps && labelWidth && labelAlign !== 'top') {
       labelProps = Component.extendProps(labelProps, {
         attrs: {
           style: {
