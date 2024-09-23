@@ -73,6 +73,8 @@
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
 | appendRow | 在后面新增一行 | `(rowProps)=>{}` |
+| getRow | 获取指定行实例 | `(key)=>{}` |
+| removeRow | 移除指定行 | `(key)=>{}` |
 | resetSort | 重置表格的排序状态 | - |
 | resetColumnsCustom | 重置自定义列的展示 | - |
 | resetColsWidth | 重置列的宽度(不传参数则重置所有列宽) | `Funciton(field \| null)` |
