@@ -10,7 +10,7 @@ Object.defineProperty(Component.prototype, '$modal', {
 
       cur = cur.parent
     }
-    return cur.modal
+    return null
   },
 })
 

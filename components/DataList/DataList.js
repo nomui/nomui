@@ -198,12 +198,12 @@ class DataList extends Component {
         this._callHandler(this.props.onItemSelectionChange)
     }
 
-    _onItemSelected(itemData) {
-        this._callHandler(this.props.onItemSelected, { itemData })
+    _onItemSelected(itemData, key) {
+        this._callHandler(this.props.onItemSelected, { itemData, key })
     }
 
-    _onItemUnselected(itemData) {
-        this._callHandler(this.props.onItemUnselected, { itemData })
+    _onItemUnselected(itemData, key) {
+        this._callHandler(this.props.onItemUnselected, { itemData, key })
     }
 
     _getItemDescriptor(itemData) {

@@ -6520,7 +6520,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         cur = cur.parent;
       }
-      return cur.modal;
+      return null;
     },
   });
   var ModalContentMixin = {
@@ -14656,7 +14656,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             }
             list.selectedItem = this;
           }
-          list._onItemSelected(this.props._itemData);
+          list._onItemSelected(this.props._itemData, this.key);
         },
         onUnselect: () => {
           const list = this.parent;
@@ -14666,7 +14666,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           if (list.selectedItem === this) {
             list.selectedItem = null;
           }
-          list._onItemUnselected(this.props._itemData);
+          list._onItemUnselected(this.props._itemData, this.key);
         },
         onSelectionChange: () => {
           const list = this.parent;
@@ -14853,11 +14853,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _onItemSelectionChange() {
       this._callHandler(this.props.onItemSelectionChange);
     }
-    _onItemSelected(itemData) {
-      this._callHandler(this.props.onItemSelected, { itemData });
+    _onItemSelected(itemData, key) {
+      this._callHandler(this.props.onItemSelected, { itemData, key });
     }
-    _onItemUnselected(itemData) {
-      this._callHandler(this.props.onItemUnselected, { itemData });
+    _onItemUnselected(itemData, key) {
+      this._callHandler(this.props.onItemUnselected, { itemData, key });
     }
     _getItemDescriptor(itemData) {
       const { dataKey, itemRender } = this.props;
