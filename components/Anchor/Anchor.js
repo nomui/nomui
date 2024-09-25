@@ -172,7 +172,7 @@ class Anchor extends Component {
   _scrollToKey(target) {
     const ele = this.containerElem.querySelector(`[anchor-key=${target}]`)
     if (ele) {
-      ele.scrollIntoView({ behavior: 'smooth' })
+      ele.scrollIntoView({ behavior: 'smooth', block: this.props.block })
     }
   }
 
@@ -263,7 +263,8 @@ Anchor.defaults = {
   activeKey: null,
   onChange: null,
   menuProps: {},
-  keyField: 'key'
+  keyField: 'key',
+  block: 'start'
 }
 
 Component.register(Anchor)
