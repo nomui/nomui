@@ -7132,7 +7132,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _scrollToKey(target) {
       const ele = this.containerElem.querySelector(`[anchor-key=${target}]`);
       if (ele) {
-        ele.scrollIntoView({ behavior: "smooth" });
+        ele.scrollIntoView({ behavior: "smooth", block: this.props.block });
       }
     }
     _fixPosition() {
@@ -7208,6 +7208,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     onChange: null,
     menuProps: {},
     keyField: "key",
+    block: "start",
   };
   Component.register(Anchor);
   class AnchorContent extends Component {
