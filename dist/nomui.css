@@ -3352,6 +3352,9 @@ h6,
 .u-flex-shrink {
   flex-shrink: 1;
 }
+.u-flex-noshrink {
+  flex-shrink: 0 !important;
+}
 .u-flex-fill {
   flex: 1 1 auto !important;
 }
