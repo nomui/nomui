@@ -43,7 +43,7 @@ export default {
                     }
                     list.selectedItem = this
                 }
-                list._onItemSelected(this.props._itemData)
+                list._onItemSelected(this.props._itemData, this.key)
             },
             onUnselect: () => {
                 const list = this.parent
@@ -53,7 +53,7 @@ export default {
                 if (list.selectedItem === this) {
                     list.selectedItem = null
                 }
-                list._onItemUnselected(this.props._itemData)
+                list._onItemUnselected(this.props._itemData, this.key)
             },
             onSelectionChange: () => {
                 const list = this.parent
