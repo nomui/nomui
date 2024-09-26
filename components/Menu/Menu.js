@@ -18,6 +18,7 @@ class Menu extends Component {
 
   _config() {
     this._addPropStyle('direction')
+    this._addPropStyle('fit')
 
     if (this.props.direction !== 'vertical') {
       this.setProps({
