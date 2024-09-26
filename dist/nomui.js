@@ -23767,6 +23767,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       this._addPropStyle("direction");
+      this._addPropStyle("fit");
       if (this.props.direction !== "vertical") {
         this.setProps({ compact: false });
       }
