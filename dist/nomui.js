@@ -7132,7 +7132,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _scrollToKey(target) {
       const ele = this.containerElem.querySelector(`[anchor-key=${target}]`);
       if (ele) {
-        ele.scrollIntoView({ behavior: "smooth", block: this.props.block });
+        ele.style.position = "relative";
+        let hk = ele.querySelector(".position-hook");
+        if (!hk) {
+          // 如果不存在，则创建一个
+          hk = document.createElement("div");
+          hk.className = "position-hook";
+          ele.appendChild(hk);
+        }
+        hk.style.position = "absolute";
+        hk.style.top = `${0 - this.props.containerOffsetTop}px`;
+        hk.scrollIntoView({ behavior: "smooth" });
       }
     }
     _fixPosition() {
@@ -7175,7 +7185,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       for (let i = 0; i < list.length; i++) {
         const top = list[i].getBoundingClientRect().top;
         const lastTop = i > 0 ? list[i - 1].getBoundingClientRect().top : 0;
-        if (top < pRect.bottom && lastTop < pRect.top) {
+        if (
+          top < pRect.bottom &&
+          lastTop - this.props.containerOffsetTop < pRect.top
+        ) {
           current = i;
         }
       }
@@ -7202,13 +7215,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     onItemClick: null,
     width: 200,
     offsetTop: 0,
+    containerOffsetTop: 0,
     sticky: false,
     itemDefaults: null,
     activeKey: null,
     onChange: null,
     menuProps: {},
     keyField: "key",
-    block: "start",
   };
   Component.register(Anchor);
   class AnchorContent extends Component {

@@ -12361,6 +12361,7 @@ textarea .nom-textarea {
 }
 .nom-anchor-content {
   text-decoration: inherit;
+  position: relative;
 }
 .nom-carousel .nom-carousel-container {
   position: relative;

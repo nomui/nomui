@@ -172,7 +172,19 @@ class Anchor extends Component {
   _scrollToKey(target) {
     const ele = this.containerElem.querySelector(`[anchor-key=${target}]`)
     if (ele) {
-      ele.scrollIntoView({ behavior: 'smooth', block: this.props.block })
+      ele.style.position = 'relative'
+      let hk = ele.querySelector('.position-hook')
+      if (!hk) {
+        // 如果不存在，则创建一个
+        hk = document.createElement('div')
+        hk.className = 'position-hook'
+        ele.appendChild(hk)
+      }
+      hk.style.position = 'absolute'
+      hk.style.top = `${0 - this.props.containerOffsetTop}px`
+
+      hk.scrollIntoView({ behavior: 'smooth', })
+
     }
   }
 
@@ -219,15 +231,14 @@ class Anchor extends Component {
         ? { top: 0, bottom: window.innerHeight }
         : this.containerElem.getBoundingClientRect()
     let current = 0
+
     for (let i = 0; i < list.length; i++) {
       const top = list[i].getBoundingClientRect().top
       const lastTop = i > 0 ? list[i - 1].getBoundingClientRect().top : 0
-      if (top < pRect.bottom && lastTop < pRect.top) {
+      if (top < pRect.bottom && lastTop - this.props.containerOffsetTop < pRect.top) {
         current = i
       }
     }
-
-
 
     const result = list[current] ? list[current].getAttribute('anchor-key') : null
 
@@ -258,13 +269,13 @@ Anchor.defaults = {
   onItemClick: null,
   width: 200,
   offsetTop: 0,
+  containerOffsetTop: 0,
   sticky: false,
   itemDefaults: null,
   activeKey: null,
   onChange: null,
   menuProps: {},
   keyField: 'key',
-  block: 'start'
 }
 
 Component.register(Anchor)
