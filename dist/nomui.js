@@ -14788,7 +14788,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         return selectedData;
       }
-      return this.selectedItem.props._itemData;
+      if (this.selectedItem) {
+        return this.selectedItem.props._itemData;
+      }
+      return null;
     }
     appendItem(itemData) {
       this.appendChild(this._getItemDescriptor(itemData));

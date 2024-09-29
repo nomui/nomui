@@ -105,7 +105,11 @@ class DataList extends Component {
             return selectedData
         }
 
-        return this.selectedItem.props._itemData
+        if (this.selectedItem) {
+            return this.selectedItem.props._itemData
+        }
+        
+        return null
     }
 
     appendItem(itemData) {
