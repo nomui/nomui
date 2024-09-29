@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { extend, isFunction } from '../util/index'
+import { defaultSortableOndrop, extend, isFunction } from '../util/index'
 import scrollIntoView from '../util/scrollIntoView'
 import MenuItem from './MenuItem'
 import MenuItemWrapper from './MenuItemWrapper'
@@ -14,6 +14,7 @@ class Menu extends Component {
     this.selectedItem = null
     this.selectedItemKey = null
     this.expandedRoot = null
+    this.newOrderItems = []
   }
 
   _config() {
@@ -178,9 +179,44 @@ class Menu extends Component {
     }
   }
 
+  _processNewOrder(params) {
+    const { items } = this.props
+    this.newOrderItems = this._rearrangeArray(items, params)
+  }
+
+  getRootItemKeys() {
+    const items = this.newOrderItems.length ? this.newOrderItems : this.props.items
+    return items.map(n => {
+      return n[this.props.keyField]
+    })
+  }
+
+  _rearrangeArray(arr, { oldIndex, newIndex }) {
+    const [movedItem] = arr.splice(oldIndex, 1)
+    arr.splice(newIndex, 0, movedItem)
+
+    return arr
+  }
+
   _rendered() {
-    super._rendered()
+    const me = this
+    const { sortable } = this.props
     this.scrollToSelected()
+    if (sortable) {
+      defaultSortableOndrop()
+      new nomui.utils.Sortable(this.element, {
+        animation: 150,
+        fallbackOnBody: true,
+        swapThreshold: 0.65,
+        onEnd: function (evt) {
+          const data = { oldIndex: evt.oldIndex, newIndex: evt.newIndex }
+          me._processNewOrder(data)
+          if (sortable.onEnd) {
+            me._callHandler(sortable.onEnd, { rootItemKeys: me.getRootItemKeys() })
+          }
+        },
+      })
+    }
   }
 
   _onItemSelected(args) {
@@ -205,6 +241,7 @@ Menu.defaults = {
   indent: 1.5,
   direction: 'vertical',
   keyField: 'key',
+  sortable: false
 }
 Component.register(Menu)
 

@@ -11,9 +11,14 @@ define([], function () {
             itemSelectable: {
               byClick: true
             },
+            keyField: 'id',
+            sortable: {
+              onEnd: (args) => {
+                console.log(args)
+              }
+            },
             items: [
-              { text: '起步', id: 'css', },
-
+              { text: '起步', id: 'start', },
               {
                 text: '样式',
                 id: 'css',
