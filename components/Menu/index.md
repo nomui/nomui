@@ -13,6 +13,7 @@
 | itemExpandable | 菜单的可展开配置                | `boolean` \| `object`      | -        |
 | itemDefaults   | 菜单子项的配置项                | `boolean` \| `object`      | -        |
 | compact        | 紧凑模式(子菜单通过`popup`展示) | `boolean`                  | `false`  |
+| sortable        | 菜单是否允许拖拽(仅限一级菜单) | `boolean`                  | `false`  |
 
 ### MenuItem Props
 
@@ -47,6 +48,14 @@
 | onlyleaf | 仅叶子菜单可选中 | `boolean` | false  |
 | byClick  | 点击菜单时选中   | `boolean` | true   |
 
+### sortable
+
+一级菜单拖拽配置
+
+| 参数     | 说明             | 类型      | 默认值 |
+| -------- | ---------------- | --------- | ------ |
+| onEnd | 拖拽完成后的回调,会返回新的一级菜单排序key数组 | `()=>{}` | -  |
+
 ### itemExpandable
 
 菜单的可展开配置
@@ -68,6 +77,7 @@
 | getSelectedItem | 获取当前选中菜单 | - | - |
 | unselectItem | 取消选中指定菜单 | - | - |
 | clearSelection | 清空选中 | - | - |
+| getRootItemKeys | 获取一级菜单key数组，多用于拖拽后获取新的菜单排序 | - | - |
 
 `menuItemOption`: 获取节点的参数，可以为一下三种情况
 

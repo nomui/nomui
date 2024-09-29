@@ -11,6 +11,7 @@
 | items | 菜单项，其中 key 指向对应内容的 key | `{text,key}` | `[]` |
 | border | 是否显示边框，以及边框位置 | `boolean` \| `left \| right \| bottom` | `left` |
 | offsetTop | 锚点距离顶部位置 | `number` \| `0` |
+| containerOffsetTop | 锚点容器距离顶部留白距离(用于顶部有遮挡或者希望不要滚动到父容器最顶部时) | `number` \| `0` |
 | onItemClick | 点击锚点时回调 | `(args)=>{}` | - |
 | onChange | 高亮锚点内容发生变化时回调 | `(args)=>{}` | - |
 | width | 锚点菜单宽度 | `number` | `180` |
