@@ -30062,6 +30062,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (type === "round") {
         this.setProps({ classes: { "u-shape-round": true } });
       }
+      if (this.props.color && this._isValidColor(this.props.color)) {
+        this.setProps({
+          attrs: {
+            style: {
+              backgroundColor: this.props.color,
+              borderColor: this.props.color,
+              color: this.props.textColor || "#fff",
+            },
+          },
+        });
+      }
       this.setProps({
         classes: {
           "nom-tag-pointer": !!this.props.onClick || this.props.removable,
@@ -30110,6 +30121,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           ],
         },
       });
+    }
+    _isValidColor(str) {
+      const re = /^#([0-9A-F]{3}){1,2}([0-9A-F]{2})?$/i;
+      return re.test(str);
     }
     _disable() {
       this.element.setAttribute("disabled", "disabled");

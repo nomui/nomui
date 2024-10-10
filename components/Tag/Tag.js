@@ -27,6 +27,19 @@ class Tag extends Component {
       })
     }
 
+    if (this.props.color && this._isValidColor(this.props.color)) {
+      this.setProps({
+        attrs: {
+          style: {
+            backgroundColor: this.props.color,
+            borderColor: this.props.color,
+            color: this.props.textColor || '#fff'
+          }
+        }
+      })
+
+    }
+
     this.setProps({
       classes: {
         'nom-tag-pointer': !!this.props.onClick || this.props.removable,
@@ -55,24 +68,29 @@ class Tag extends Component {
 
           Component.normalizeIconProps(rightIcon),
           removable &&
-            Component.normalizeIconProps({
-              type: 'times',
-              classes: {
-                'nom-tag-remove': true,
-                'nom-tag-remove-basic': !that.props.styles,
-              },
-              onClick: function ({ event }) {
-                nomui.utils.isFunction(that.props.removable) && that.props.removable(that.props.key)
-                that.hasOwnProperty('props') &&
-                  that.props.onRemove &&
-                  that._callHandler(that.props.onRemove, { key: that.props.key })
+          Component.normalizeIconProps({
+            type: 'times',
+            classes: {
+              'nom-tag-remove': true,
+              'nom-tag-remove-basic': !that.props.styles,
+            },
+            onClick: function ({ event }) {
+              nomui.utils.isFunction(that.props.removable) && that.props.removable(that.props.key)
+              that.hasOwnProperty('props') &&
+                that.props.onRemove &&
+                that._callHandler(that.props.onRemove, { key: that.props.key })
 
-                event.stopPropagation()
-              },
-            }),
+              event.stopPropagation()
+            },
+          }),
         ],
       },
     })
+  }
+
+  _isValidColor(str) {
+    const re = /^#([0-9A-F]{3}){1,2}([0-9A-F]{2})?$/i
+    return re.test(str)
   }
 
   _disable() {
