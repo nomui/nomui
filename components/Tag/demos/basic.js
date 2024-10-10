@@ -113,6 +113,11 @@ define([], function () {
           },
           {
             component: 'Tag',
+            text: '颜色传递色值',
+            color: '#fa0',
+          },
+          {
+            component: 'Tag',
             text: '可删除',
             type: 'round',
             key: '001',
