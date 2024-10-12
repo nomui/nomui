@@ -10011,6 +10011,12 @@ textarea .nom-textarea {
 .nom-group.p-uistyle-inline > .nom-field-content > .nom-control > .nom-field > .nom-field-content {
   flex-basis: auto;
 }
+.nom-group.nom-group-collapsed {
+  margin-bottom: 0.5rem;
+}
+.nom-group.nom-group-collapsed > .nom-field-content {
+  display: none;
+}
 .nom-group-grid .nom-control-action {
   margin-top: 6px;
 }
