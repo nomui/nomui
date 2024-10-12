@@ -10,7 +10,7 @@
 | striped       | 条纹样式，标签栏有背景色                       | `Boolean`              | -      |
 | line          | 线条样式                                       | `splitline`\|`outline` | -      |
 | valueOptions  | getValue 取值时的默认参数                      | `{}`                   | -      |
-| collapsible  | 群组内容是否可折叠，仅在上对齐时可用                      | `boolean:object`                   | false      |
+| collapsible  | 群组内容是否可折叠，仅在上对齐时可用                      | `boolean`\|`object`                  | false      |
 
 
 ## Method
