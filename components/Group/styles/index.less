@@ -1,37 +1,37 @@
 .nom-group {
-  > .nom-field-content {
+  >.nom-field-content {
     padding: 0;
 
-    > .nom-control {
+    >.nom-control {
       display: flex;
       flex-wrap: wrap;
 
-      > .nom-field {
+      >.nom-field {
         width: 100%;
       }
     }
 
-    > .nom-control-after {
+    >.nom-control-after {
       margin-top: 6px;
     }
 
-    > .nom-control-action {
+    >.nom-control-action {
       padding: 0.875rem;
     }
   }
 
   &.p-nowrap {
-    > .nom-field-content {
-      > .nom-control {
+    >.nom-field-content {
+      >.nom-control {
         flex-wrap: nowrap;
 
-        > .nom-field {
-          > .nom-field-label {
+        >.nom-field {
+          >.nom-field-label {
             flex-basis: auto;
             width: auto;
           }
 
-          > .nom-field-content {
+          >.nom-field-content {
             flex-basis: auto;
           }
         }
@@ -40,18 +40,18 @@
   }
 
   &.p-inline {
-    > .nom-field-content {
-      > .nom-control {
-        > .nom-field {
+    >.nom-field-content {
+      >.nom-control {
+        >.nom-field {
           flex-basis: auto;
           width: auto;
 
-          > .nom-field-label {
+          >.nom-field-label {
             flex-basis: auto;
             width: auto;
           }
 
-          > .nom-field-content {
+          >.nom-field-content {
             flex-basis: auto;
           }
         }
@@ -60,10 +60,10 @@
   }
 
   &.p-striped {
-    > .nom-field-content {
-      > .nom-control {
-        > .nom-field {
-          > .nom-field-label {
+    >.nom-field-content {
+      >.nom-control {
+        >.nom-field {
+          >.nom-field-label {
             .u-color-lgray();
           }
         }
@@ -75,9 +75,9 @@
     margin: 0 !important;
     clip-path: inset(-50px 0 1px 1px);
 
-    > .nom-field-content {
-      > .nom-control {
-        > .nom-field {
+    >.nom-field-content {
+      >.nom-control {
+        >.nom-field {
           .u-border-left();
           .u-border-bottom();
 
@@ -93,12 +93,12 @@
     // clip-path: inset(-50px 0 0 0);
     .u-border();
 
-    > .nom-field-content {
-      > .nom-control {
+    >.nom-field-content {
+      >.nom-control {
         margin-bottom: -1px;
         margin-left: -1px;
 
-        > .nom-field {
+        >.nom-field {
           .u-border-left();
           .u-border-bottom();
         }
@@ -113,5 +113,13 @@
 
   &.p-uistyle-inline {
     .p-inline();
+  }
+
+  &.nom-group-collapsed {
+    margin-bottom: .5rem;
+
+    >.nom-field-content {
+      display: none;
+    }
   }
 }

@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { extend, isPlainObject } from '../util/index'
+import { extend, isFunction, isPlainObject } from '../util/index'
 
 class Group extends Field {
   constructor(props, ...mixins) {
@@ -9,7 +9,7 @@ class Group extends Field {
 
   _config() {
     this._addPropStyle('inline', 'striped', 'line', 'nowrap')
-    const { fields, fieldDefaults, value } = this.props
+    const { fields, fieldDefaults, value, collapsible } = this.props
     const children = []
 
     for (let i = 0; i < fields.length; i++) {
@@ -26,11 +26,68 @@ class Group extends Field {
       children.push(fieldProps)
     }
 
+    if (collapsible && this.props.labelAlign === 'top') {
+      this.setProps({
+        labelContent: {
+          component: 'Flex',
+          align: 'center',
+          cols: [
+            {
+              grow: true,
+              children: {
+                styles: {
+                  padding: 'd5'
+                },
+                children: this.props.label
+              }
+            },
+            {
+              styles: {
+                cursor: 'pointer'
+              },
+              children: isPlainObject(collapsible) && isFunction(collapsible.render) ? {
+                ...collapsible.render(this.props.collapsed),
+                onClick: () => {
+                  this._toggleCollapse()
+                }
+              } : {
+                component: 'Button',
+                type: 'text',
+                size: 'small',
+                rightIcon: this.props.collapsed ? 'right' : 'up',
+                onClick: () => {
+                  this._toggleCollapse()
+                }
+              }
+            }
+          ]
+        }
+      })
+    }
+
+
     this.setProps({
+      classes: {
+        'nom-group-collapsed': collapsible && this.props.collapsed
+      },
       control: { children: children },
     })
 
+
     super._config()
+  }
+
+  _toggleCollapse() {
+    if (!this.props.collapsed) {
+      this.update({
+        collapsed: true
+      })
+    }
+    else {
+      this.update({
+        collapsed: false
+      })
+    }
   }
 
   getValue(options) {
@@ -180,6 +237,7 @@ class Group extends Field {
 Group.defaults = {
   fields: [],
   fieldDefaults: { component: Field },
+  collapsible: false,
 }
 
 Component.register(Group)

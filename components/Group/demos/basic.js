@@ -8,6 +8,7 @@ define([], function () {
         rows: [
           {
             component: 'Group',
+            labelAlign: 'top',
             fields: [
               {
                 component: 'Textbox',
