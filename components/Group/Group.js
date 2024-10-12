@@ -79,14 +79,12 @@ class Group extends Field {
 
   _toggleCollapse() {
     if (!this.props.collapsed) {
-      this.update({
-        collapsed: true
-      })
+      this.props.collapsed = true
+      this.element.classList.add('nom-group-collapsed')
     }
     else {
-      this.update({
-        collapsed: false
-      })
+      this.props.collapsed = false
+      this.element.classList.remove('nom-group-collapsed')
     }
   }
 
