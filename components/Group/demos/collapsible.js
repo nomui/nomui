@@ -52,14 +52,14 @@ define([], function () {
                     {
                         component: 'Group',
                         labelAlign: 'top',
+                        collapsed: true, // 默认折叠
                         collapsible: {
                             render: (collapsed) => {
                                 return {
                                     component: 'Button',
                                     type: 'primary',
                                     size: 'small',
-                                    text: collapsed ? '收起' : '展开',
-                                    icon: collapsed ? 'sort-up' : 'sort-down'
+                                    text: collapsed ? '展开' : '收起',
                                 }
                             }
                         },

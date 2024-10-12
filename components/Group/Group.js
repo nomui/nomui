@@ -7,6 +7,11 @@ class Group extends Field {
     super(Component.extendProps(Group.defaults, props), ...mixins)
   }
 
+  _created() {
+    super._created()
+    this.collapsed = this.props.collapsed
+  }
+
   _config() {
     this._addPropStyle('inline', 'striped', 'line', 'nowrap')
     const { fields, fieldDefaults, value, collapsible } = this.props
@@ -45,20 +50,10 @@ class Group extends Field {
               styles: {
                 cursor: 'pointer'
               },
-              children: isPlainObject(collapsible) && isFunction(collapsible.render) ? {
-                ...collapsible.render(this.props.collapsed),
-                onClick: () => {
-                  this._toggleCollapse()
-                }
-              } : {
-                component: 'Button',
-                type: 'text',
-                size: 'small',
-                rightIcon: this.props.collapsed ? 'right' : 'up',
-                onClick: () => {
-                  this._toggleCollapse()
-                }
-              }
+              ref: (c) => {
+                this.collapseTriggerRef = c
+              },
+              children: this._getCollapseTrigger()
             }
           ]
         }
@@ -68,7 +63,7 @@ class Group extends Field {
 
     this.setProps({
       classes: {
-        'nom-group-collapsed': collapsible && this.props.collapsed
+        'nom-group-collapsed': collapsible && this.collapsed
       },
       control: { children: children },
     })
@@ -77,15 +72,46 @@ class Group extends Field {
     super._config()
   }
 
+  _getCollapseTrigger() {
+    const { collapsible } = this.props
+
+    if (isPlainObject(collapsible) && isFunction(collapsible.render)) {
+      return {
+        ...collapsible.render(this.collapsed),
+        onClick: () => {
+          this._toggleCollapse()
+        },
+
+      }
+    }
+
+    return {
+      component: 'Button',
+      type: 'text',
+      size: 'small',
+      rightIcon: this.collapsed ? 'right' : 'up',
+      onClick: () => {
+        this._toggleCollapse()
+      },
+
+    }
+  }
+
   _toggleCollapse() {
-    if (!this.props.collapsed) {
-      this.props.collapsed = true
+    if (!this.collapsed) {
+      this.collapsed = true
       this.element.classList.add('nom-group-collapsed')
     }
     else {
-      this.props.collapsed = false
+      this.collapsed = false
       this.element.classList.remove('nom-group-collapsed')
+
     }
+
+    this.collapseTriggerRef.update({
+      children: this._getCollapseTrigger()
+    })
+
   }
 
   getValue(options) {
