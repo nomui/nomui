@@ -11965,7 +11965,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       const cascader = this;
-      this.popup = new CascaderPopup({
+      this.__cascaderPopup = new CascaderPopup({
         trigger: this.control,
         popMenu: this.getSelectedMenu(),
         onShow: () => {
@@ -12075,7 +12075,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             // this.selectedOption = []
             // this.checked = true
             // this.content.element.innerText = ''
-            // this.popup.update({
+            // this.__cascaderPopup.update({
             //   popMenu: this.getSelectedMenu(),
             // })
             // this._onValueChange()
@@ -12142,7 +12142,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this._onValueChange();
       }
-      this.popup.update({ popMenu: this.getSelectedMenu(), animate: false });
+      this.__cascaderPopup.update({
+        popMenu: this.getSelectedMenu(),
+        animate: false,
+      });
     }
     _valueChange(changed) {
       if (this.placeholder) {
@@ -12156,11 +12159,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       this._content && this._content.update();
-      this.popup &&
+      this.__cascaderPopup &&
         this._hidePopup &&
         this.props.animate &&
-        this.popup.animateHide();
-      this.popup && this._hidePopup && !this.props.animate && this.popup.hide();
+        this.__cascaderPopup.animateHide();
+      this.__cascaderPopup &&
+        this._hidePopup &&
+        !this.props.animate &&
+        this.__cascaderPopup.hide();
     }
     _getValue() {
       if (!this.checked) {
@@ -12295,7 +12301,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       this.checked = true;
-      if (this.popup) this.popup.update({ popMenu: this.getSelectedMenu() });
+      if (this.__cascaderPopup)
+        this.__cascaderPopup.update({ popMenu: this.getSelectedMenu() });
       if (this._content) this._content.update();
     }
     _disable() {

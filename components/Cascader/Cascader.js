@@ -11,7 +11,7 @@ class Cascader extends Field {
 
   _rendered() {
     const cascader = this
-    this.popup = new CascaderPopup({
+    this.__cascaderPopup = new CascaderPopup({
       trigger: this.control,
       popMenu: this.getSelectedMenu(),
       onShow: () => {
@@ -125,7 +125,7 @@ class Cascader extends Field {
           // this.selectedOption = []
           // this.checked = true
           // this.content.element.innerText = ''
-          // this.popup.update({
+          // this.__cascaderPopup.update({
           //   popMenu: this.getSelectedMenu(),
           // })
           // this._onValueChange()
@@ -198,7 +198,7 @@ class Cascader extends Field {
       this._onValueChange()
     }
 
-    this.popup.update({ popMenu: this.getSelectedMenu(), animate: false })
+    this.__cascaderPopup.update({ popMenu: this.getSelectedMenu(), animate: false })
   }
 
   _valueChange(changed) {
@@ -212,8 +212,8 @@ class Cascader extends Field {
 
     this._content && this._content.update()
 
-    this.popup && this._hidePopup && this.props.animate && this.popup.animateHide()
-    this.popup && this._hidePopup && !this.props.animate && this.popup.hide()
+    this.__cascaderPopup && this._hidePopup && this.props.animate && this.__cascaderPopup.animateHide()
+    this.__cascaderPopup && this._hidePopup && !this.props.animate && this.__cascaderPopup.hide()
   }
 
   _getValue() {
@@ -373,7 +373,7 @@ class Cascader extends Field {
     }
 
     this.checked = true
-    if (this.popup) this.popup.update({ popMenu: this.getSelectedMenu() })
+    if (this.__cascaderPopup) this.__cascaderPopup.update({ popMenu: this.getSelectedMenu() })
     if (this._content) this._content.update()
   }
 
