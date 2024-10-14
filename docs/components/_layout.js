@@ -475,6 +475,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       url: '#!components!index?type=GroupList',
                     },
                     {
+                      text: 'ListSetter',
+                      subtext: '列表设置器',
+                      id: 'ListSetter',
+                      url: '#!components!index?type=ListSetter',
+                    },
+                    {
                       text: 'MaskInfoField',
                       subtext: '敏感信息打码字段',
                       id: 'MaskInfoField',

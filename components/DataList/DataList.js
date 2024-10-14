@@ -108,7 +108,7 @@ class DataList extends Component {
         if (this.selectedItem) {
             return this.selectedItem.props._itemData
         }
-        
+
         return null
     }
 
@@ -222,7 +222,21 @@ class DataList extends Component {
         }
     }
 
+    handleDrag(event) {
+        const { oldIndex, newIndex } = event
+        this._lastDragIndex = newIndex
+
+        const { data } = this.props
+        const _dragerItem = data.splice(oldIndex, 1)[0]
+        data.splice(newIndex, 0, _dragerItem)
+
+        if (this.props.sortable && this.props.sortable.onEnd) {
+            this._callHandler(this.props.sortable.onEnd, { event: event })
+        }
+    }
+
     _rendered() {
+        const that = this
         const { sortable } = this.props
 
         if (sortable) {
@@ -233,6 +247,9 @@ class DataList extends Component {
                 swapThreshold: 0.65,
                 handle: sortable.handle,
                 filter: '.s-disabled',
+                onEnd: function (event) {
+                    that.handleDrag(event)
+                },
             }
 
             new Sortable(this.element, options)
