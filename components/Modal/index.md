@@ -8,7 +8,8 @@
 | --- | --- | --- | --- |
 | content | 模态框内容，当传入对象时为内容组件的 props 配置，默认会混入 Panel 的配置；当为字符串时代表按需加载对应 url 地址的模块做为内容 | `Object\|string` | - |
 | args | 参数对象，可在弹窗内容模块的函数里获取 | `object` | null |
-| fit | 设置是否自适应窗口高度 | `boolean` | false |
+| fit | 设置窗口自适应撑满一屏高度，内容超出屏幕范围时内部显示滚动条 | `boolean` | false |
+| adaptToFit | 设置窗口自适应内容，仅当内容超出屏幕范围时内部显示滚动条| `boolean` | false |
 | centered | 模态框是否垂直居中 | `boolean` | true |
 | size | 模态框尺寸，支持预定义以及自定义宽度 | `SizeProps` \|`xsmall \| small \| medium \| large \| xlarge \| full` | small |
 | okText | 确定按钮内容 | `string` | 确 定 |
