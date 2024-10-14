@@ -16,18 +16,18 @@ class DataList extends Component {
     _config() {
         this.selectedItem = null
 
-        const { data } = this.props
+        const { data, showEmpty } = this.props
 
         this._addPropStyle('gap', 'line', 'align', 'justify', 'wrap', 'vertical', 'fills', 'cols')
 
         let empty = null
 
-        if (isPlainObject(this.props.showEmpty)) {
+        if (isPlainObject(showEmpty)) {
             empty = {
                 component: 'Empty',
-                ...this.props.showEmpty,
+                ...showEmpty,
             }
-        } else {
+        } else if (showEmpty === true) {
             empty = {
                 component: 'Empty',
             }
