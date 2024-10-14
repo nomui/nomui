@@ -10,14 +10,24 @@ class FieldLabel extends Component {
   }
 
   _config() {
-    this.setProps({
-      children: {
-        tag: 'label',
-        classes: {
-          'nom-label': true,
-        },
-        children: this.field.props.label,
+    const { labelActions } = this.props
+    const children = [{
+      tag: 'label',
+      classes: {
+        'nom-label': true,
       },
+      children: this.field.props.label,
+    }]
+    if (labelActions) {
+      children.push(labelActions)
+      this.setProps({
+        classes: {
+          'has-actions': true,
+        },
+      })
+    }
+    this.setProps({
+      children: children,
     })
   }
 }

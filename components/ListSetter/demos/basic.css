@@ -1,0 +1,27 @@
+.field-selector {
+    padding: 5px;
+}
+
+.field-selector>.nom-data-list-item {
+    border: 1px solid #D4E3FC;
+    border-radius: 4px;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+
+.field-selector>.nom-data-list-item:hover {
+    background-color: var(--nom-color-hover);
+}
+
+.field-selector>.nom-data-list-item.s-selected {
+    background-color: #D4E3FC !important;
+    color: var(--nom-color-primary);
+}
+
+.field-selector>.nom-data-list-item>.nom-icon {
+    visibility: hidden;
+}
+
+.field-selector>.nom-data-list-item.s-selected>.nom-icon {
+    visibility: visible;
+}

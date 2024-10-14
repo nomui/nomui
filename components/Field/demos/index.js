@@ -6,6 +6,7 @@ define(
     './extra.js',
     './control-width.js',
     './label-width.js',
+    './label-actions.js',
   ],
   function () {
 

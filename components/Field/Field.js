@@ -54,7 +54,8 @@ class Field extends Component {
       requiredMessage,
       rules = [],
       action,
-      labelContent
+      labelContent,
+      labelActions,
     } = this.props
     const showLabel = notShowLabel === false && label !== undefined && label !== null
 
@@ -72,7 +73,7 @@ class Field extends Component {
       })
     }
 
-    let labelProps = showLabel ? { component: FieldLabel } : null
+    let labelProps = showLabel ? { component: FieldLabel, labelActions: labelActions } : null
     if (labelProps && labelWidth && labelAlign !== 'top') {
       labelProps = Component.extendProps(labelProps, {
         attrs: {
