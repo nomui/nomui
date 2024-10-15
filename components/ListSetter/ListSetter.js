@@ -131,9 +131,8 @@ class ListSetter extends Field {
 }
 
 ListSetter.defaults = {
-  hideAction: false,
-  addText: '添加',
-  removeText: '移除',
+  labelField: 'title',
+  keyField: 'id',
   sortable: {
     handle: '.p-type-drag'
   },

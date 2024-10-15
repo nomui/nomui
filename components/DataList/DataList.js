@@ -223,13 +223,6 @@ class DataList extends Component {
     }
 
     handleDrag(event) {
-        const { oldIndex, newIndex } = event
-        this._lastDragIndex = newIndex
-
-        const { data } = this.props
-        const _dragerItem = data.splice(oldIndex, 1)[0]
-        data.splice(newIndex, 0, _dragerItem)
-
         if (this.props.sortable && this.props.sortable.onEnd) {
             this._callHandler(this.props.sortable.onEnd, { event: event })
         }
