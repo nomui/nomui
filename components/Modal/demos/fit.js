@@ -10,11 +10,44 @@ define([], function () {
           {
             component: 'Button',
             name: 'button',
-            text: '点我',
+            text: '默认撑满一屏高',
             attrs: {
               onclick: function () {
                 new nomui.Modal({
                   fit: true,
+                  content: {
+                    component: 'Panel',
+                    header: {
+                      caption: {
+                        title: 'hello',
+                      },
+                    },
+                    body: {
+                      children: [
+                        {
+                          children: `Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+
+                            Pr ullamcorper nulla non metus auctor fringilla.`,
+                        },
+                      ],
+                    },
+                  },
+                  onOk: (args) => {
+                    new nomui.Message({ type: 'info', content: '点击了确定按钮' })
+                    args.sender.close()
+                  },
+                })
+              },
+            },
+          },
+          {
+            component: 'Button',
+            name: 'button',
+            text: '只有内容超出时一屏时才出现滚动条',
+            attrs: {
+              onclick: function () {
+                new nomui.Modal({
+                  adaptToFit: true,
                   content: {
                     component: 'Panel',
                     header: {

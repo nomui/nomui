@@ -68,10 +68,11 @@ class ModalDialog extends Component {
       okButton: contentProps.okButton,
     })
 
-    const { okText, cancelText, fit, okButton = {}, cancelButton = {}, size } = modal.props
+    const { okText, cancelText, fit, okButton = {}, cancelButton = {}, size, adaptToFit } = modal.props
     return {
       component: Panel,
-      fit: fit || size === 'full',
+      fit: fit || size === 'full' || adaptToFit,
+
       uistyle: 'plain',
       header: {
         nav: {},
