@@ -29,6 +29,19 @@
   // Prevent Chrome on Windows from adding a focus outline. For details, see
   // https://github.com/twbs/bootstrap/pull/10951.
   outline: 0;
+
+  &.nom-modal-adapt-to-fit:not(.p-size-full):not(.p-fit) {
+    height: 100%;
+
+    .nom-modal-dialog {
+      height: calc(100% - 3.5rem);
+
+      >.nom-panel {
+        height: auto;
+        max-height: 100%;
+      }
+    }
+  }
 }
 
 // Shell div to position the modal with bottom padding
@@ -38,6 +51,8 @@
   margin: 0.5rem;
   // allow clicks to pass through for custom click handling to close modal
   pointer-events: none;
+
+
 }
 
 .nom-modal-dialog-scrollable {

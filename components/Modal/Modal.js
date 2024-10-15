@@ -16,7 +16,7 @@ class Modal extends Component {
 
   _config() {
     this._propStyleClasses = ['size', 'fit']
-    const { size, animate } = this.props
+    const { size, animate, adaptToFit } = this.props
 
     let myWidth = null
 
@@ -31,6 +31,7 @@ class Modal extends Component {
     this.setProps({
       classes: {
         'nom-modal-mask-animate-show': animate,
+        'nom-modal-adapt-to-fit': adaptToFit,
       },
       children: {
         component: ModalDialog,
@@ -136,6 +137,8 @@ class Modal extends Component {
 Modal.defaults = {
   content: {},
   closeOnClickOutside: false,
+  fit: false,
+  adaptToFit: false,
   okText: '确 定',
   cancelText: '取 消',
   onOk: (e) => {
