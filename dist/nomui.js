@@ -6613,10 +6613,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         okButton = {},
         cancelButton = {},
         size,
+        adaptToFit,
       } = modal.props;
       return {
         component: Panel,
-        fit: fit || size === "full",
+        fit: fit || size === "full" || adaptToFit,
         uistyle: "plain",
         header: {
           nav: {},
@@ -6702,7 +6703,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       this._propStyleClasses = ["size", "fit"];
-      const { size, animate } = this.props;
+      const { size, animate, adaptToFit } = this.props;
       let myWidth = null;
       if (size) {
         if (isPlainObject(size)) {
@@ -6712,7 +6713,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       this.setProps({
-        classes: { "nom-modal-mask-animate-show": animate },
+        classes: {
+          "nom-modal-mask-animate-show": animate,
+          "nom-modal-adapt-to-fit": adaptToFit,
+        },
         children: {
           component: ModalDialog,
           attrs: { style: { width: myWidth || null } },
@@ -6799,6 +6803,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   Modal.defaults = {
     content: {},
     closeOnClickOutside: false,
+    fit: false,
+    adaptToFit: false,
     okText: "确 定",
     cancelText: "取 消",
     onOk: (e) => {

@@ -6402,6 +6402,16 @@ body .nom-always-dark {
   background-color: var(--nom-layer-backdrop-color);
   outline: 0;
 }
+.nom-modal.nom-modal-adapt-to-fit:not(.p-size-full):not(.p-fit) {
+  height: 100%;
+}
+.nom-modal.nom-modal-adapt-to-fit:not(.p-size-full):not(.p-fit) .nom-modal-dialog {
+  height: calc(100% - 3.5rem);
+}
+.nom-modal.nom-modal-adapt-to-fit:not(.p-size-full):not(.p-fit) .nom-modal-dialog > .nom-panel {
+  height: auto;
+  max-height: 100%;
+}
 .nom-modal-dialog {
   position: relative;
   width: auto;
