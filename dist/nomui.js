@@ -14737,7 +14737,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       this.selectedItem = null;
-      const { data } = this.props;
+      const { data, showEmpty } = this.props;
       this._addPropStyle(
         "gap",
         "line",
@@ -14749,9 +14749,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         "cols"
       );
       let empty = null;
-      if (isPlainObject(this.props.showEmpty)) {
-        empty = Object.assign({ component: "Empty" }, this.props.showEmpty);
-      } else {
+      if (isPlainObject(showEmpty)) {
+        empty = Object.assign({ component: "Empty" }, showEmpty);
+      } else if (showEmpty === true) {
         empty = { component: "Empty" };
       }
       let children = [];
@@ -14915,11 +14915,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     handleDrag(event) {
-      const { oldIndex, newIndex } = event;
-      this._lastDragIndex = newIndex;
-      const { data } = this.props;
-      const _dragerItem = data.splice(oldIndex, 1)[0];
-      data.splice(newIndex, 0, _dragerItem);
       if (this.props.sortable && this.props.sortable.onEnd) {
         this._callHandler(this.props.sortable.onEnd, { event: event });
       }
@@ -23457,9 +23452,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
   }
   ListSetter.defaults = {
-    hideAction: false,
-    addText: "添加",
-    removeText: "移除",
+    labelField: "title",
+    keyField: "id",
     sortable: { handle: ".p-type-drag" },
     actions: null,
   };

@@ -16,18 +16,18 @@ class DataList extends Component {
     _config() {
         this.selectedItem = null
 
-        const { data } = this.props
+        const { data, showEmpty } = this.props
 
         this._addPropStyle('gap', 'line', 'align', 'justify', 'wrap', 'vertical', 'fills', 'cols')
 
         let empty = null
 
-        if (isPlainObject(this.props.showEmpty)) {
+        if (isPlainObject(showEmpty)) {
             empty = {
                 component: 'Empty',
-                ...this.props.showEmpty,
+                ...showEmpty,
             }
-        } else {
+        } else if (showEmpty === true) {
             empty = {
                 component: 'Empty',
             }
@@ -223,13 +223,6 @@ class DataList extends Component {
     }
 
     handleDrag(event) {
-        const { oldIndex, newIndex } = event
-        this._lastDragIndex = newIndex
-
-        const { data } = this.props
-        const _dragerItem = data.splice(oldIndex, 1)[0]
-        data.splice(newIndex, 0, _dragerItem)
-
         if (this.props.sortable && this.props.sortable.onEnd) {
             this._callHandler(this.props.sortable.onEnd, { event: event })
         }
