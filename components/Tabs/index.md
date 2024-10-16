@@ -17,4 +17,6 @@
 | 参数             | 说明                  | 类型               | 默认值 |
 | ---------------- | --------------------- | ------------------ | ------ |
 | selectTab        | 选中某一项            | `(tab)=>void`      | -      |
-| getSelectedTab() | 获取当前选中 tab 对象 | `()=>{key:string}` | -      |
+| getSelectedTab | 获取当前选中tab项 | `()=>{key:string}` | -      |
+| createTab | 新增tab项 | `({key,item,panel})=>{}` | -      |
+| removeTab | 移除tab项 | `(key)=>{` | -      |

@@ -22,6 +22,10 @@ class TabList extends List {
     super._config()
   }
 
+  createItem(param) {
+    this.appendItem(param)
+  }
+
   getTabContent() {
     return this.props.tabContent.call(this)
   }

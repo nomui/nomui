@@ -28,6 +28,14 @@ class TabContent extends Component {
     })
   }
 
+  createPanel(param) {
+    this.props.panels.push(param)
+    new TabPanel({
+      reference: this.element,
+      ...param
+    })
+  }
+
   getPanel(param) {
     let retPanel = null
 
@@ -54,6 +62,17 @@ class TabContent extends Component {
       return false
     }
     panel.show()
+  }
+
+  removePanel(param) {
+    this.panels[param] && delete this.panels[param]
+    this.props.panels = this.props.panels.filter(x => {
+      return x.key !== param
+    })
+    const panel = this.getPanel(param)
+    if (panel) {
+      panel.remove()
+    }
   }
 }
 TabContent.defaults = {
