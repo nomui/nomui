@@ -108,11 +108,19 @@ class Tabs extends Component {
       const newKey = this._getTabSibling(key)
       newKey && this.selectTab(newKey)
     }
+    const item = this.tabList.getItem(key)
+    const panel = this.tabContent.getPanel(key)
+
+    this.props.onTabRemove && this._callHandler(this.props.onTabRemove, { item, panel })
+
     this.tabList.removeItem(key)
     this.tabContent.removePanel(key)
     this.props.tabs = this.props.tabs.filter(x => {
       return x.key !== key
     })
+
+
+
   }
 
   _getTabSibling(key) {
@@ -140,6 +148,7 @@ Tabs.defaults = {
   onTabSelectionChange: null,
   disabledItems: [],
   tools: null,
+  onTabRemove: null
 }
 
 Component.register(Tabs)

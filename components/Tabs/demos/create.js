@@ -45,6 +45,11 @@ define([], function () {
                             onTabSelectionChange: ({ key }) => {
                                 console.log(`选中的key:${key}`)
                             },
+                            onTabRemove: ({ item, panel }) => {
+                                // 参数是移除的item以及panel
+                                console.log(item, panel)
+
+                            },
                             tabs: [
                                 {
                                     key: 'home',

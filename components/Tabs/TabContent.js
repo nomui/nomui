@@ -38,7 +38,6 @@ class TabContent extends Component {
 
   getPanel(param) {
     let retPanel = null
-
     if (isString(param)) {
       return this.panels[param]
     }
@@ -65,14 +64,14 @@ class TabContent extends Component {
   }
 
   removePanel(param) {
-    this.panels[param] && delete this.panels[param]
-    this.props.panels = this.props.panels.filter(x => {
-      return x.key !== param
-    })
     const panel = this.getPanel(param)
     if (panel) {
       panel.remove()
     }
+    this.panels[param] && delete this.panels[param]
+    this.props.panels = this.props.panels.filter(x => {
+      return x.key !== param
+    })
   }
 }
 TabContent.defaults = {

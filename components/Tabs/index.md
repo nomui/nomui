@@ -11,6 +11,7 @@
 | uistyle | 页签的基本样式 | `'plain'\|'hat'\|'card'\|'line'\|'underline'\|'pill'` | plain |
 | tools | 右侧工具栏，仅在一体 tab 时有用 | `component \| function` | - |
 | onTabSelectionChange | tab 被点击时触发 | `({sender,selectedItem,key})=>{console.log('Tab Changed')}` | - |
+| onTabRemove | tab项移除时触发事件 | `({sender,item,panel})=>{}` | - |
 
 ### Method
 
