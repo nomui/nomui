@@ -6,6 +6,8 @@ define([
   './separate.js',
   './fit.js',
   './tools.js',
+  './create.js',
+  './separate-create.js'
 ], function () {
   return {
     title: 'Tabs',
