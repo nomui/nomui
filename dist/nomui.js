@@ -30057,6 +30057,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this.setProps({ children: children });
     }
+    createPanel(param) {
+      this.props.panels.push(param);
+      new TabPanel(Object.assign({ reference: this.element }, param));
+    }
     getPanel(param) {
       let retPanel = null;
       if (isString(param)) {
@@ -30080,6 +30084,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         return false;
       }
       panel.show();
+    }
+    removePanel(param) {
+      const panel = this.getPanel(param);
+      if (panel) {
+        panel.remove();
+      }
+      this.panels[param] && delete this.panels[param];
+      this.props.panels = this.props.panels.filter((x) => {
+        return x.key !== param;
+      });
     }
   }
   TabContent.defaults = { panels: [], panelDefaults: { component: TabPanel } };
@@ -30140,6 +30154,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._addPropStyle("direction", "fit");
       this.setProps({ selectedItems: this.props.selectedTab });
       super._config();
+    }
+    createItem(param) {
+      this.appendItem(param);
     }
     getTabContent() {
       return this.props.tabContent.call(this);
@@ -30253,6 +30270,44 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     selectTab(key) {
       return this.tabList.selectItem(key);
     }
+    createTab(param) {
+      this.props.tabs.push(param);
+      const { key, item, panel } = param;
+      this.tabList.createItem(Object.assign({ key }, item));
+      this.tabContent.createPanel(Object.assign({ key }, panel));
+    }
+    removeTab(key) {
+      if (!this.tabList.getItem(key)) {
+        console.warn(`The specified object was not found.`);
+        return;
+      }
+      if (this.getSelectedTab().key === key) {
+        const newKey = this._getTabSibling(key);
+        newKey && this.selectTab(newKey);
+      }
+      const item = this.tabList.getItem(key);
+      const panel = this.tabContent.getPanel(key);
+      this.props.onTabRemove &&
+        this._callHandler(this.props.onTabRemove, { item, panel });
+      this.tabList.removeItem(key);
+      this.tabContent.removePanel(key);
+      this.props.tabs = this.props.tabs.filter((x) => {
+        return x.key !== key;
+      });
+    }
+    _getTabSibling(key) {
+      const { tabs } = this.props;
+      const idx = tabs.findIndex((x) => {
+        return x.key === key;
+      });
+      if (idx > 0) {
+        return tabs[idx - 1].key;
+      }
+      if (tabs[idx + 1]) {
+        return tabs[idx + 1].key;
+      }
+      return false;
+    }
     updatePanel(key, newPanelProps) {
       const panel = this.tabContent.getPanel(key);
       panel.update(newPanelProps);
@@ -30264,6 +30319,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     onTabSelectionChange: null,
     disabledItems: [],
     tools: null,
+    onTabRemove: null,
   };
   Component.register(Tabs);
   class Tag extends Component {

@@ -11,10 +11,13 @@
 | uistyle | 页签的基本样式 | `'plain'\|'hat'\|'card'\|'line'\|'underline'\|'pill'` | plain |
 | tools | 右侧工具栏，仅在一体 tab 时有用 | `component \| function` | - |
 | onTabSelectionChange | tab 被点击时触发 | `({sender,selectedItem,key})=>{console.log('Tab Changed')}` | - |
+| onTabRemove | tab项移除时触发事件 | `({sender,item,panel})=>{}` | - |
 
 ### Method
 
 | 参数             | 说明                  | 类型               | 默认值 |
 | ---------------- | --------------------- | ------------------ | ------ |
 | selectTab        | 选中某一项            | `(tab)=>void`      | -      |
-| getSelectedTab() | 获取当前选中 tab 对象 | `()=>{key:string}` | -      |
+| getSelectedTab | 获取当前选中tab项 | `()=>{key:string}` | -      |
+| createTab | 新增tab项 | `({key,item,panel})=>{}` | -      |
+| removeTab | 移除tab项 | `(key)=>{` | -      |

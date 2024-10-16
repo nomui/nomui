@@ -66,11 +66,11 @@ class Tabs extends Component {
               this.props.tabList,
               this.props.tools
                 ? {
-                    classes: {
-                      'nom-tabs-tools': true,
-                    },
-                    children: isFunction(this.props.tools) ? this.props.tools() : this.props.tools,
-                  }
+                  classes: {
+                    'nom-tabs-tools': true,
+                  },
+                  children: isFunction(this.props.tools) ? this.props.tools() : this.props.tools,
+                }
                 : null,
             ],
           },
@@ -92,6 +92,50 @@ class Tabs extends Component {
     return this.tabList.selectItem(key)
   }
 
+  createTab(param) {
+    this.props.tabs.push(param)
+    const { key, item, panel } = param
+    this.tabList.createItem({ key, ...item })
+    this.tabContent.createPanel({ key, ...panel })
+  }
+
+  removeTab(key) {
+    if (!this.tabList.getItem(key)) {
+      console.warn(`The specified object was not found.`)
+      return
+    }
+    if (this.getSelectedTab().key === key) {
+      const newKey = this._getTabSibling(key)
+      newKey && this.selectTab(newKey)
+    }
+    const item = this.tabList.getItem(key)
+    const panel = this.tabContent.getPanel(key)
+
+    this.props.onTabRemove && this._callHandler(this.props.onTabRemove, { item, panel })
+
+    this.tabList.removeItem(key)
+    this.tabContent.removePanel(key)
+    this.props.tabs = this.props.tabs.filter(x => {
+      return x.key !== key
+    })
+
+
+
+  }
+
+  _getTabSibling(key) {
+    const { tabs } = this.props
+    const idx = tabs.findIndex(x => { return x.key === key })
+    if (idx > 0) {
+      return tabs[idx - 1].key
+    }
+    if (tabs[idx + 1]) {
+      return tabs[idx + 1].key
+    }
+    return false
+
+  }
+
   updatePanel(key, newPanelProps) {
     const panel = this.tabContent.getPanel(key)
     panel.update(newPanelProps)
@@ -104,6 +148,7 @@ Tabs.defaults = {
   onTabSelectionChange: null,
   disabledItems: [],
   tools: null,
+  onTabRemove: null
 }
 
 Component.register(Tabs)
