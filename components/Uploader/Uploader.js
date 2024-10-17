@@ -300,7 +300,7 @@ class Uploader extends Field {
         action,
         data,
         file,
-        filename: props.name,
+        filename: props.fileFieldName || props.name,
         method,
         headers,
         withCredentials,
@@ -487,6 +487,14 @@ class Uploader extends Field {
   }
 
   _getValue() {
+    const { fileResponseAsValue, multiple } = this.props
+    if (fileResponseAsValue === true) {
+      if (!multiple) {
+        return this.fileList[0].response
+      }
+      return this.fileList.map(item => item.response)
+    }
+
     const _val = isNotEmptyArray(this.fileList)
       ? this.fileList.filter(({ status }) => status === 'done')
       : null
@@ -503,6 +511,7 @@ Uploader.defaults = {
   defaultFileList: [],
   multiple: false,
   name: 'file',
+  fileFieldName: 'file',
   display: true,
   data: {},
   // request option
@@ -522,7 +531,8 @@ Uploader.defaults = {
   unSupportedTypeText: '不支持此格式，请重新上传。',
   removeText: '删除',
   updateText: '更新',
-  updateTimeText: '更新日期'
+  updateTimeText: '更新日期',
+  fileResponseAsValue: false,
 }
 
 Component.register(Uploader)
