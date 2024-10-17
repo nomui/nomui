@@ -65,6 +65,8 @@
 | headers | 设置上传的请求头部，IE10 以上有效 | object | - |  |
 | name | 发到后台的文件参数名 | string | `file` |  |
 | withCredentials | 上传请求时是否携带 cookie | boolean | false |  |
+| fileFieldName | 上传文件所用的字段名，适用于后端接口接收文件的属性名与表单字段名不一致的情况 | string | `file` |  |
+| fileResponseAsValue | 上传接口的返回值做为表单字段值 | boolean | `false` |  |
 | onChange | 上传文件改变时的状态 | function | - |  |
 | onRemove   | 点击移除文件时的回调，返回值为 false 时不移除。支持返回一个 Promise 对象，Promise 对象 resolve(false) 或 reject 时不移除               | `Array<{text:string,action:Function\|Promise}>` | -   |  |
 | allowUpdate | 更新文件 | `boolean` | `({sender,file,fileList,e})=>void` |  |

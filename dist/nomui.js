@@ -33647,7 +33647,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           action,
           data,
           file,
-          filename: props.name,
+          filename: props.fileFieldName || props.name,
           method,
           headers,
           withCredentials,
@@ -33798,6 +33798,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _getValue() {
+      const { fileResponseAsValue, multiple } = this.props;
+      if (fileResponseAsValue === true) {
+        if (!multiple) {
+          return this.fileList[0].response;
+        }
+        return this.fileList.map((item) => item.response);
+      }
       const _val = isNotEmptyArray(this.fileList)
         ? this.fileList.filter(({ status }) => status === "done")
         : null;
@@ -33813,6 +33820,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     defaultFileList: [],
     multiple: false,
     name: "file",
+    fileFieldName: "file",
     display: true,
     data: {}, // request option
     method: "post",
@@ -33832,6 +33840,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     removeText: "删除",
     updateText: "更新",
     updateTimeText: "更新日期",
+    fileResponseAsValue: false,
   };
   Component.register(Uploader);
   const FontGap = 3;
