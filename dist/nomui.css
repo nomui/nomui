@@ -7222,6 +7222,10 @@ body .nom-always-dark {
 .nom-menu.p-uistyle-line.p-direction-horizontal > .nom-menu-item-wrapper > .nom-menu-item {
   padding: 12px 10px 8px;
   border-bottom: 2px solid transparent;
+  transition: all 0.25s;
+}
+.nom-menu.p-uistyle-line.p-direction-horizontal > .nom-menu-item-wrapper > .nom-menu-item:hover {
+  color: var(--nom-color-primary);
 }
 .nom-menu.p-uistyle-line.p-direction-horizontal > .nom-menu-item-wrapper > .nom-menu-item.s-selected {
   color: var(--nom-color-primary);
@@ -7237,6 +7241,10 @@ body .nom-always-dark {
 .nom-menu.p-uistyle-short-line.p-direction-horizontal > .nom-menu-item-wrapper > .nom-menu-item {
   padding: 12px 0 8px;
   border-bottom: 2px solid transparent;
+  transition: all 0.25s;
+}
+.nom-menu.p-uistyle-short-line.p-direction-horizontal > .nom-menu-item-wrapper > .nom-menu-item:hover {
+  color: var(--nom-color-primary);
 }
 .nom-menu.p-uistyle-short-line.p-direction-horizontal > .nom-menu-item-wrapper > .nom-menu-item.s-selected {
   color: var(--nom-color-primary);
