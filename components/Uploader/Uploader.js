@@ -489,10 +489,12 @@ class Uploader extends Field {
   _getValue() {
     const { fileResponseAsValue, multiple } = this.props
     if (fileResponseAsValue === true) {
-      if (!multiple) {
-        return this.fileList[0].response
+      if (isNotEmptyArray(this.fileList)) {
+        if (!multiple) {
+          return this.fileList[0].response
+        }
+        return this.fileList.map(item => item.response)
       }
-      return this.fileList.map(item => item.response)
     }
 
     const _val = isNotEmptyArray(this.fileList)
