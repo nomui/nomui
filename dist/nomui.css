@@ -8090,7 +8090,10 @@ table.nom-table.p-bordered {
 }
 .nom-button {
   /* Structure */
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   color: var(--nom-color-text-0);
   line-height: normal;
   white-space: nowrap;
@@ -8298,10 +8301,6 @@ fieldset[disabled] a.nom-button {
 }
 .nom-button.p-with-icon.p-danger:hover {
   color: var(--nom-color-white);
-}
-.nom-button > .nom-icon + span,
-.nom-button > span + .nom-icon {
-  margin-left: 0.5rem;
 }
 .nom-button-inline {
   display: inline !important;

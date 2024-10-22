@@ -6842,17 +6842,38 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         "block",
         "borderless",
       ];
-      const { icon, text, rightIcon, href, target, inline } = this.props;
+      const {
+        icon,
+        text,
+        rightIcon,
+        href,
+        target,
+        inline,
+        rightBadge,
+      } = this.props;
       if (icon || rightIcon) {
         this.setProps({ classes: { "p-with-icon": true } });
         if (!text) {
           this.setProps({ classes: { "p-only-icon": true } });
         }
       }
+      let badgeProps = null;
+      if (rightBadge) {
+        badgeProps = Component.extendProps(
+          {
+            component: "Badge",
+            ref: (c) => {
+              this.badgeRef = c;
+            },
+          },
+          rightBadge
+        );
+      }
       this.setProps({
         children: [
           Component.normalizeIconProps(icon),
           text && { tag: "span", children: text },
+          badgeProps,
           Component.normalizeIconProps(rightIcon),
         ],
       });
@@ -6868,6 +6889,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }),
         });
       }
+    }
+    updateBadge(props) {
+      this.badgeRef.update(props);
     }
     _disable() {
       this.element.setAttribute("disabled", "disabled");
