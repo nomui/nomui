@@ -15384,7 +15384,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   },
                   !this.props.overList && {
                     component: Icon,
-                    type: "close",
+                    type: "times",
                     classes: { "nom-select-item-remove": true },
                     attrs: { style: { cursor: "pointer" } },
                     onClick: (args) => {

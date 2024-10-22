@@ -4497,7 +4497,7 @@ body {
   --nom-layer-backdrop-color: rgba(0, 0, 0, 0.55);
   --nom-select-selected-item-bg: var(--nom-color-fill-1);
   --nom-select-selected-item-border-color: transparent;
-  --nom-select-selected-item-padding: 0.1rem 0.3rem 0.1rem 0.5rem;
+  --nom-select-selected-item-padding: 0 0.3rem 0 0.5rem;
   --nom-date-picker-divider: 1px solid var(--nom-border-color);
   --nom-date-picker-header-text-color: var(--nom-color-text-2);
   --nom-date-picker-day-muted-text-color: var(--nom-color-text-3);
@@ -9054,7 +9054,7 @@ textarea .nom-textarea {
 }
 .nom-select > .nom-field-content .nom-control {
   position: relative;
-  min-height: calc(1.428571429rem + (0.375rem * 2) + 4.88px);
+  min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   padding: 0.375rem 24px 0.375rem 10px;
   color: var(--nom-input-color);
   line-height: 1.42857143rem;
@@ -9083,7 +9083,7 @@ textarea .nom-textarea {
   border: 1px solid var(--nom-select-selected-item-border-color);
   border-radius: var(--nom-border-radius);
   cursor: default;
-  font-size: 82.5%;
+  font-size: 75%;
 }
 .nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item.nom-select-overtag-trigger {
   border: none;
@@ -10469,7 +10469,7 @@ textarea .nom-textarea {
 .nom-tree-select > .nom-field-content .nom-control {
   position: relative;
   height: 100%;
-  min-height: calc(1.428571429rem + (0.375rem * 2) + 4.88px);
+  min-height: calc(1.428571429rem + (0.375rem * 2) + 2px);
   padding: 0.375rem 24px 0.375rem 12px;
   color: var(--nom-input-color);
   line-height: 1.42857143rem;
@@ -10485,7 +10485,6 @@ textarea .nom-textarea {
   border-color: var(--nom-color-primary);
 }
 .nom-tree-select > .nom-field-content .nom-control .nom-tree-select-placeholder {
-  margin-top: 1.44px;
   overflow: hidden;
   color: var(--nom-input-placeholder-color);
   white-space: nowrap;
@@ -10569,8 +10568,20 @@ textarea .nom-textarea {
 .nom-tree-select-extra-tags .nom-list-item .nom-icon {
   font-size: 8px;
 }
-.nom-tree-select-content .nom-tag {
+.nom-tree-select-content {
+  display: flex;
+}
+.nom-tree-select-content .nom-tag.p-size-xs {
+  padding: 0.11rem 0.25rem;
+  background: var(--nom-select-selected-item-bg);
+  border: 1px solid var(--nom-select-selected-item-border-color);
+  border-radius: var(--nom-border-radius);
+  cursor: default;
+  font-size: 75%;
   margin-right: 0.5rem;
+}
+.nom-tree-select-content .nom-tag.p-size-xs .nom-tag-remove {
+  cursor: pointer;
 }
 .nom-tree-select-animate-top-show {
   -webkit-animation: nom-tree-select-keyframe-top-show 0.16s linear forwards;
