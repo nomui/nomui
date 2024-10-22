@@ -20,7 +20,7 @@ class Button extends Component {
 
   _config() {
     this._propStyleClasses = ['ghost', 'size', 'shape', 'danger', 'block', 'borderless']
-    const { icon, text, rightIcon, href, target, inline } = this.props
+    const { icon, text, rightIcon, href, target, inline, rightBadge } = this.props
 
     if (icon || rightIcon) {
       this.setProps({
@@ -38,10 +38,21 @@ class Button extends Component {
       }
     }
 
+    let badgeProps = null
+    if (rightBadge) {
+      badgeProps = Component.extendProps({
+        component: 'Badge',
+        ref: (c) => {
+          this.badgeRef = c
+        },
+      }, rightBadge)
+    }
+
     this.setProps({
       children: [
         Component.normalizeIconProps(icon),
         text && { tag: 'span', children: text },
+        badgeProps,
         Component.normalizeIconProps(rightIcon),
       ],
     })
@@ -65,6 +76,10 @@ class Button extends Component {
         },
       })
     }
+  }
+
+  updateBadge(props) {
+    this.badgeRef.update(props)
   }
 
   _disable() {

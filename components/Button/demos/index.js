@@ -5,8 +5,8 @@ define([
   './ghost.js',
   './danger.js',
   './with-icon.js',
-
   './link.js',
+  './badge.js',
 ], function () {
   return {
     title: 'Button',
