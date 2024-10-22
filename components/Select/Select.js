@@ -119,11 +119,10 @@ class Select extends Field {
                 },
                 !this.props.overList && {
                   component: Icon,
-                  type: 'close',
+                  type: 'times',
                   classes: {
                     'nom-select-item-remove': true,
                   },
-
                   attrs: {
                     style: {
                       cursor: 'pointer',
