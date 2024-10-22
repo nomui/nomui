@@ -1,13 +1,13 @@
 .nom-tree-select {
-  &.p-label-align-right > .nom-field-label + .nom-field-content {
+  &.p-label-align-right>.nom-field-label+.nom-field-content {
     width: 0;
   }
 
-  > .nom-field-content {
+  >.nom-field-content {
     .nom-control {
       position: relative;
       height: 100%;
-      min-height: @input-height-base-treeSelect;
+      min-height: @input-height-base;
       padding: @padding-y-base 24px @padding-y-base 12px;
       color: var(--nom-input-color);
       line-height: @line-height-computed;
@@ -25,7 +25,6 @@
       }
 
       .nom-tree-select-placeholder {
-        margin-top: 1.44px;
         overflow: hidden;
         color: var(--nom-input-placeholder-color);
         white-space: nowrap;
@@ -41,6 +40,7 @@
         cursor: pointer;
       }
     }
+
     .nom-tree-select-tag-hidden {
       display: none;
     }
@@ -54,6 +54,7 @@
       background: var(--nom-input-bg-disabled);
       border-color: var(--nom-color-border);
     }
+
     .nom-tree-select-clear {
       visibility: hidden;
     }
@@ -82,14 +83,12 @@
 .nom-tree-select-popup {
   padding: 5px 5px;
 
-  > .nom-layout {
+  >.nom-layout {
     max-height: 300px;
   }
 
   .nom-tree {
-    .nom-tree-node:not(.s-disabled).filter-node
-      > .nom-tree-node-content
-      .nom-tree-node-content-text {
+    .nom-tree-node:not(.s-disabled).filter-node>.nom-tree-node-content .nom-tree-node-content-text {
       color: inherit;
       .nom-preset-bold;
     }
@@ -105,6 +104,7 @@
 .nom-tree-select-extra-tags {
   max-width: 50vw;
   padding: 0.5rem;
+
   .nom-list-item {
     display: flex;
     align-items: center;
@@ -129,8 +129,20 @@
 }
 
 .nom-tree-select-content {
-  .nom-tag {
+  display: flex;
+
+  .nom-tag.p-size-xs {
+    padding: .11rem .25rem;
+    background: var(--nom-select-selected-item-bg);
+    border: 1px solid var(--nom-select-selected-item-border-color);
+    border-radius: var(--nom-border-radius);
+    cursor: default;
+    font-size: 75%;
     margin-right: 0.5rem;
+
+    .nom-tag-remove {
+      cursor: pointer;
+    }
   }
 }
 
