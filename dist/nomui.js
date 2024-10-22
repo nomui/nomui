@@ -33800,10 +33800,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _getValue() {
       const { fileResponseAsValue, multiple } = this.props;
       if (fileResponseAsValue === true) {
-        if (!multiple) {
-          return this.fileList[0].response;
+        if (isNotEmptyArray(this.fileList)) {
+          if (!multiple) {
+            return this.fileList[0].response;
+          }
+          return this.fileList.map((item) => item.response);
         }
-        return this.fileList.map((item) => item.response);
       }
       const _val = isNotEmptyArray(this.fileList)
         ? this.fileList.filter(({ status }) => status === "done")
