@@ -16,3 +16,4 @@
 | showNow     | 是否显示此刻按钮 | `boolean` | `true`     |
 | minTime     | 最小可选时间     | `string`  | -          |
 | maxTime     | 最大可选时间     | `string`  | -          |
+| onClear | 点击清空按钮时的回调 | `()=>{}` | - |

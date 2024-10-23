@@ -120,6 +120,7 @@ class Cascader extends Field {
         },
         onClick: ({ event }) => {
           event.stopPropagation()
+          cascader.props.onClear && cascader._callHandler(cascader.props.onClear)
           cascader.setValue(null)
           // if (this.selectedOption.length === 0) return
           // this.selectedOption = []

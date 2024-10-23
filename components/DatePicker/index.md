@@ -17,7 +17,7 @@
 | allowClear | 是否显示清空按钮 | `boolean` | `true` |
 | extraTools | 额外的工具栏，为函数的时候参数是组件实例，可以返回单个对象或者对象数组 | `(inst)=>{} \| array` | - |
 | onChange | 面板关闭且值发生改变时触发回调 | `function` | - |
-
+| onClear | 点击清空按钮时的回调 | `()=>{}` | - |
 
 ## Methods
 

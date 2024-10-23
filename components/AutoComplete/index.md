@@ -20,3 +20,4 @@
 | getSelectedOption | 获取选中的对象 | `function()` | - |
 | optionFields | 自定义 options 中 text value 的字段 | `object` | `{ value: value, }` |
 | optionDefaults | 自定义options默认属性 | `object` | `{ }` |
+| onClear | 点击清空按钮时的回调 | `()=>{}` | - |

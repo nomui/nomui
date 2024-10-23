@@ -263,6 +263,7 @@ class Select extends Field {
           this.setValue(null)
           this.props.allowClear && this.clearIcon.hide()
           this.placeholder && this.placeholder.show()
+          this.props.onClear && this._callHandler(this.props.onClear)
           args.event && args.event.stopPropagation()
         },
       })
