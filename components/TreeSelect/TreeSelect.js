@@ -151,6 +151,7 @@ class TreeSelect extends Field {
             return
           }
           this._setValue(null)
+          this.props.onClear && this._callHandler(this.props.onClear)
           this.props.allowClear && this.clearIcon.hide()
           animate && this.popup && this.popup.animateHide()
           !animate && this.popup && this.popup.hide()

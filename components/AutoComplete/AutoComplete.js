@@ -65,6 +65,7 @@ class AutoComplete extends Textbox {
           onClick: ({ event }) => {
             event.stopPropagation()
             autoCompleteRef.clear()
+            this.props.onClear && this._callHandler(this.props.onClear)
             this.clearIcon.hide()
             autoCompleteRef.popup && autoCompleteRef.popup.hide()
           },

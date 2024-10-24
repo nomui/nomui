@@ -48,9 +48,9 @@ class Textbox extends Field {
 
     const buttonProps = isPlainObject(button)
       ? Component.extendProps(
-          { component: Button, classes: { 'nom-textbox-button': true } },
-          button,
-        )
+        { component: Button, classes: { 'nom-textbox-button': true } },
+        button,
+      )
       : null
 
     const inputProps = {
@@ -83,6 +83,7 @@ class Textbox extends Field {
       },
       onClick: (args) => {
         this.setValue(null)
+        this.props.onClear && this._callHandler(this.props.onClear)
         this.props.allowClear && this.clearIcon.hide()
         args.event && args.event.stopPropagation()
       },
@@ -158,13 +159,13 @@ class Textbox extends Field {
         disabled: disabled,
         children: affixWrapper
           ? [
-              {
-                // 有左右图标，则再用 wrapper包一层，为了展示
-                classes: { 'nom-textbox-affix-wrapper': true },
-                children: baseTextProps,
-              },
-              buttonProps,
-            ]
+            {
+              // 有左右图标，则再用 wrapper包一层，为了展示
+              classes: { 'nom-textbox-affix-wrapper': true },
+              children: baseTextProps,
+            },
+            buttonProps,
+          ]
           : [...baseTextProps, buttonProps],
       },
     })

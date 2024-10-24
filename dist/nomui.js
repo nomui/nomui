@@ -8870,6 +8870,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
         onClick: (args) => {
           this.setValue(null);
+          this.props.onClear && this._callHandler(this.props.onClear);
           this.props.allowClear && this.clearIcon.hide();
           args.event && args.event.stopPropagation();
         },
@@ -10685,6 +10686,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             onClick: ({ event }) => {
               event.stopPropagation();
               autoCompleteRef.clear();
+              this.props.onClear && this._callHandler(this.props.onClear);
               this.clearIcon.hide();
               autoCompleteRef.popup && autoCompleteRef.popup.hide();
             },
@@ -12110,6 +12112,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
           onClick: ({ event }) => {
             event.stopPropagation();
+            cascader.props.onClear &&
+              cascader._callHandler(cascader.props.onClear);
             cascader.setValue(null); // if (this.selectedOption.length === 0) return
             // this.selectedOption = []
             // this.checked = true
@@ -15545,6 +15549,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             this.setValue(null);
             this.props.allowClear && this.clearIcon.hide();
             this.placeholder && this.placeholder.show();
+            this.props.onClear && this._callHandler(this.props.onClear);
             args.event && args.event.stopPropagation();
           },
         });
@@ -32189,6 +32194,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               return;
             }
             this._setValue(null);
+            this.props.onClear && this._callHandler(this.props.onClear);
             this.props.allowClear && this.clearIcon.hide();
             animate && this.popup && this.popup.animateHide();
             !animate && this.popup && this.popup.hide();
