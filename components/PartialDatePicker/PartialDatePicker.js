@@ -670,7 +670,8 @@ PartialDatePicker.defaults = {
   value: null,
   minDate: null,
   maxDate: null,
-  readonly: true,
+  readonly: false,
+  restrictInput: true,
   extraTools: null,
   selectYearText: '请先选择年份',
   formatMap: {

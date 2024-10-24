@@ -11,7 +11,7 @@ class TimePickerPanel extends Component {
       hourStep: 0,
       minuteStep: 0,
       secondStep: 0,
-      readOnly: true,
+      readonly: true,
       placeholder: null,
       showNow: true,
       onValueChange: null,
