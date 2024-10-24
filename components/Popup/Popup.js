@@ -14,6 +14,7 @@ class Popup extends Layer {
 
       autoRender: false,
       hidden: true,
+      content: null,
 
       uistyle: 'default',
     }
@@ -37,6 +38,32 @@ class Popup extends Layer {
     this.hideTimer = null
     this.addRel(this.opener.element)
     this._bindTrigger()
+  }
+
+  _config() {
+    if (this.props.content) {
+      this.setProps({
+        classes: {
+          'nom-popup-adapt-to-screen': true
+        },
+        children: {
+          children: this.props.content
+        }
+      })
+    }
+
+
+    super._config()
+  }
+
+
+  setPosition() {
+    super.setPosition()
+    if (this.props.content) {
+      const t = this.element.style.top || 10
+      const h = `calc(100vh - ${parseInt(t, 10) + 20}px)`
+      this.element.style.maxHeight = h
+    }
   }
 
   _bindTrigger() {
