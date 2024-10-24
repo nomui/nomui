@@ -5983,6 +5983,11 @@ body .nom-always-dark {
   border-radius: var(--nom-layer-border-radius);
   box-shadow: var(--nom-layer-box-shadow);
 }
+.nom-popup.nom-popup-adapt-to-screen {
+  max-height: calc(100vh - 2rem);
+  display: flex;
+  overflow: hidden;
+}
 .modal-scrollbar-measure {
   position: absolute;
   top: -9999px;
