@@ -622,6 +622,7 @@ DatePicker.defaults = {
   onChange: null,
   showNow: true,
   readonly: false,
+  restrictInput: true,
   extraTools: null,
   weekText: '日 一 二 三 四 五 六',
   nowText: '此刻',

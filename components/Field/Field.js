@@ -101,6 +101,9 @@ class Field extends Component {
     }
 
     this.setProps({
+      classes: {
+        's-readonly': this.props.readonly
+      },
       children: [
         labelProps,
         { component: FieldContent, value: this.props.value },
@@ -111,6 +114,17 @@ class Field extends Component {
 
   _update() {
     this.rules = []
+  }
+
+  toggleReadonly(param) {
+    if (this.element.classList.contains('s-readonly')) {
+      if (param !== true) {
+        this.element.classList.remove('s-readonly')
+      }
+    }
+    else if (param !== false) {
+      this.element.classList.add('s-readonly')
+    }
   }
 
   getValue(options) {

@@ -2,6 +2,12 @@
   display: flex;
   outline: none;
 
+  &.s-readonly {
+    cursor: default !important;
+    pointer-events: none !important;
+    user-select: none !important;
+  }
+
   &.p-plain {
     >.nom-field-label {
       padding: 0;
