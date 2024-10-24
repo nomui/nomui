@@ -1,4 +1,4 @@
-define(['./basic.js', './newPopup.js'], function () {
+define(['./basic.js', './content.js', './newPopup.js'], function () {
   return {
     title: 'Popup',
     subtitle: '弹出层',

@@ -4,6 +4,12 @@
     background-clip: padding-box;
     .nom-preset-layer;
   }
+
+  &.nom-popup-adapt-to-screen {
+    max-height: calc(100vh - 2rem);
+    display: flex;
+    overflow: hidden;
+  }
 }
 
 // Measure scrollbar width for padding body during modal show/hide
