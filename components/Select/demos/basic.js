@@ -11,6 +11,9 @@ define([], function () {
             component: 'Select',
             value: 1,
             optionFields: { text: 'name', value: 'value' },
+            onClear: (args) => {
+              console.log(args)
+            },
             options: [
               {
                 name: '金庸',
