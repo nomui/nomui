@@ -87,6 +87,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                           id: 'Component/styles/padding',
                           url: '#!components!index?type=Component&cat=styles/padding',
                         },
+                        {
+                          text: 'Position',
+                          subtext: '定位',
+                          id: 'Component/styles/position',
+                          url: '#!components!index?type=Component&cat=styles/position',
+                        },
                       ],
                     },
                     {
