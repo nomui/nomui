@@ -345,6 +345,7 @@ TimePicker.defaults = {
   minuteStep: null,
   secondStep: null,
   readonly: false,
+  restrictInput: true,
   placeholder: null,
   showNow: true,
   minTime: null,

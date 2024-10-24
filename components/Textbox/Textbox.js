@@ -28,6 +28,7 @@ class Textbox extends Field {
       button,
       readonly,
       disabled,
+      restrictInput
     } = this.props
 
     // 左侧icon
@@ -56,13 +57,14 @@ class Textbox extends Field {
     const inputProps = {
       component: Input,
       name: 'input',
+      // readonly: restrictInput,
       attrs: {
         value: value,
         placeholder: placeholder,
         maxlength,
         minlength,
         type: htmlType,
-        readonly: readonly ? 'readonly' : null,
+        readonly: (readonly || restrictInput) ? 'readonly' : null,
       },
       _created: function () {
         this.textbox = that
@@ -272,6 +274,7 @@ Textbox.defaults = {
   minlength: null,
   showWordLimit: false,
   autofocus: false,
+  restrictInput: false,
   placeholder: null,
   value: null,
   htmlType: 'text',
