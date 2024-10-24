@@ -9808,6 +9808,11 @@ textarea .nom-textarea {
   display: flex;
   outline: none;
 }
+.nom-field.s-readonly {
+  cursor: default !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
 .nom-field.p-plain > .nom-field-label {
   padding: 0;
 }

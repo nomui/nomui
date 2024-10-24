@@ -17,6 +17,8 @@
 | controlWidth | 表单元素项的宽度 | `xsmall\|small\|mediu\|large\|xlarge` | `false` |
 | rules | 配置的验证规则 | `Array` | `[]` |
 | required | 是否必填 | `boolean` | - |
+| disabled | 是否禁用 | `boolean` | - |
+| readonly | 是否只读(仅禁止用户手动输入，仍旧允许通过setValue方法赋值) | `boolean` | - |
 | control | 关联的表单元素项 | `Props` | - |
 | actions | 关联的表单元素项的操作按钮 | `Props[]` | - |
 | onValueChange | 值变化的时候触发 | `(changed:{name:string,newValue:boolean,oldValue:boolean,sender:obj})=>void` | - |
@@ -82,5 +84,6 @@
 | getValue | 获取 value 值 |  |
 | setValue | 设置 value 值, 第一个参数是要设置的值，第二个是一个可选的对象参数，其属性 `triggerChange` 指示该设值操作是否触发 onValueChange 事件 | `(value, options: { triggerChange: boolean } )=>{}` |
 | validate | 验证 | `()=>boolean` |
+| toggleReadonly | 切换只读状态，如果不传参数则在只读与非只读状态之间切换，传参数true则强制只读，传false强制非只读 |  |
 | reset | 重置字段值为初始值 |  |
 | clear | 清除字段值 |  |

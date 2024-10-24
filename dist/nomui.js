@@ -8573,6 +8573,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       this.setProps({
+        classes: { "s-readonly": this.props.readonly },
         children: [
           labelProps,
           { component: FieldContent, value: this.props.value },
@@ -8582,6 +8583,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _update() {
       this.rules = [];
+    }
+    toggleReadonly(param) {
+      if (this.element.classList.contains("s-readonly")) {
+        if (param !== true) {
+          this.element.classList.remove("s-readonly");
+        }
+      } else if (param !== false) {
+        this.element.classList.add("s-readonly");
+      }
     }
     getValue(options) {
       const value = isFunction(this._getValue) ? this._getValue(options) : null;
@@ -8825,6 +8835,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         button,
         readonly,
         disabled,
+        restrictInput,
       } = this.props; // 左侧icon
       let leftIconProps = Component.normalizeIconProps(leftIcon);
       if (leftIconProps != null) {
@@ -8846,14 +8857,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         : null;
       const inputProps = {
         component: Input,
-        name: "input",
+        name: "input", // readonly: restrictInput,
         attrs: {
           value: value,
           placeholder: placeholder,
           maxlength,
           minlength,
           type: htmlType,
-          readonly: readonly ? "readonly" : null,
+          readonly: readonly || restrictInput ? "readonly" : null,
         },
         _created: function () {
           this.textbox = that;
@@ -9031,6 +9042,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     minlength: null,
     showWordLimit: false,
     autofocus: false,
+    restrictInput: false,
     placeholder: null,
     value: null,
     htmlType: "text",
@@ -16060,7 +16072,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         hourStep: 0,
         minuteStep: 0,
         secondStep: 0,
-        readOnly: true,
+        readonly: true,
         placeholder: null,
         showNow: true,
         onValueChange: null,
@@ -16898,6 +16910,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     onChange: null,
     showNow: true,
     readonly: false,
+    restrictInput: true,
     extraTools: null,
     weekText: "日 一 二 三 四 五 六",
     nowText: "此刻",
@@ -26680,7 +26693,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     value: null,
     minDate: null,
     maxDate: null,
-    readonly: true,
+    readonly: false,
+    restrictInput: true,
     extraTools: null,
     selectYearText: "请先选择年份",
     formatMap: {
@@ -30932,6 +30946,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     minuteStep: null,
     secondStep: null,
     readonly: false,
+    restrictInput: true,
     placeholder: null,
     showNow: true,
     minTime: null,

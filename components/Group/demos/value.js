@@ -10,6 +10,7 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
           component: 'Form',
           ref: (c) => {
             group = c
+            window.ggg = c
           },
           value: {
             country: '我是中国人',
