@@ -39,7 +39,9 @@ class Tbody extends Component {
             })
           },
           onClick: (args) => {
-            this.table.selectTr(args.sender)
+            this.table.hasGrid && this.table.grid.props.onRowClick && this.table.grid._callHandler('onRowClick', { rowData: args.sender.props.data })
+
+            this.table.hasGrid && this.table.grid.props.rowSelectable && this.table.selectTr(args.sender)
           },
         },
         rowDefaults,
