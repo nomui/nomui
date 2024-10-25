@@ -39,7 +39,8 @@ class Tbody extends Component {
             })
           },
           onClick: (args) => {
-            this.table.hasGrid && this.table.grid.props.onRowClick && this.table.grid._callHandler('onRowClick', { rowData: args.sender.props.data })
+            const { event, sender } = args
+            this.table.hasGrid && this.table.grid.props.onRowClick && this.table.grid._callHandler('onRowClick', { event, rowData: sender.props.data })
 
             this.table.hasGrid && this.table.grid.props.rowSelectable && this.table.selectTr(args.sender)
           },
