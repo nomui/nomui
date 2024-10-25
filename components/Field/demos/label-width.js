@@ -8,6 +8,10 @@ define([], function () {
                 component: 'Group',
                 fields: [
                     {
+                        component: 'Textbox', label: '自动，标签自身宽度',
+                        labelWidth: 'auto'
+                    },
+                    {
                         component: 'Textbox', label: '60',
                         labelWidth: 60
                     },
