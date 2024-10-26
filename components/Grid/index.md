@@ -63,6 +63,7 @@
 | forceSort | 是否在排序清空时仍触发 onSort 回调 | `boolean` | `false` |
 | sortCacheable | 是否允许缓存排序条件，使用本功能，Grid 必须指定唯一标识`key` | `boolean` | `false` |
 | onFilter | 列头筛选触发回调 | `({params})=>{}` | - |
+| onRowClick | 行点击时触发的回调 | `({params})=>{}` | - |
 | rowSelectable | 是否可选中行 | `false` | - |
 | sticky | 是否开启吸附式表头以及虚拟滚动条,需要指定有滚动条的父容器，设为 true 则指定 window 为滚动容器 | `boolean` \| `component`\| `()=>{}` | false |
 

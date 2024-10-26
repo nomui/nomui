@@ -18952,7 +18952,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               });
             },
             onClick: (args) => {
-              this.table.selectTr(args.sender);
+              const { event, sender } = args;
+              this.table.hasGrid &&
+                this.table.grid.props.onRowClick &&
+                this.table.grid._callHandler("onRowClick", {
+                  event,
+                  rowData: sender.props.data,
+                });
+              this.table.hasGrid &&
+                this.table.grid.props.rowSelectable &&
+                this.table.selectTr(args.sender);
             },
           },
           rowDefaults
@@ -22276,6 +22285,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     maxColumnText: "最多只能冻结{{limit}}项",
     noGroupFronzeText: "不支持冻结群组",
     columnStatsText: "{{current}}/{{total}}项",
+    onRowClick: null,
   };
   Grid._loopSetValue = function (key, arry) {
     if (key === undefined || key.cascade === undefined) return false;
