@@ -276,6 +276,7 @@ AutoComplete.defaults = {
   filterName: 'text', // text,select
   optionDefaults: {},
   autoFocus: false, // 自动聚焦搜索框
+  popupWidth: 'auto'
 }
 
 Component.register(AutoComplete)

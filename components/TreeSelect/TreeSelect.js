@@ -499,6 +499,7 @@ TreeSelect.defaults = {
   onlyleaf: false,
   showArrow: true,
   initExpandLevel: -1,
+  popupWidth: 'auto'
 }
 
 Component.register(TreeSelect)

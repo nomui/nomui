@@ -186,6 +186,10 @@ class List extends Component {
       return selectedData
     }
 
+    if (!this.selectedItem) {
+      return null
+    }
+
     return this.selectedItem.parent.props.data
   }
 

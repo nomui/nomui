@@ -5,40 +5,82 @@ define([], function () {
     demo: function () {
       return {
         children: {
-          component: 'TreeSelect',
-          allowClear: true,
-          treeDataFields: {
-            key: 'value',
-            text: 'title',
-          },
-          options: [
+          component: 'Flex',
+          rows: [
             {
-              title: 'Node1',
-              value: '0-0',
-              children: [
+              component: 'TreeSelect',
+              allowClear: true,
+              treeDataFields: {
+                key: 'value',
+                text: 'title',
+              },
+              options: [
                 {
-                  title: 'Child Node1',
-                  value: '0-0-1',
-                },
-                {
-                  title: 'Child Node2',
-                  value: '0-0-2',
+                  title: 'Node1',
+                  value: '0-0',
                   children: [
                     {
-                      title: 'Child Child Node1',
-                      value: '0-0-0-1',
+                      title: 'Child Node1',
+                      value: '0-0-1',
+                    },
+                    {
+                      title: 'Child Node2',
+                      value: '0-0-2',
+                      children: [
+                        {
+                          title: 'Child Child Node1',
+                          value: '0-0-0-1',
+                        },
+                      ],
                     },
                   ],
                 },
+                {
+                  title: 'Node2',
+                  value: '0-1',
+                },
               ],
-            },
-            {
-              title: 'Node2',
               value: '0-1',
             },
-          ],
-          value: '0-1',
-        },
+            {
+              component: 'TreeSelect',
+              label: '控制浮层宽度',
+              popupWidth: 300,
+              allowClear: true,
+              treeDataFields: {
+                key: 'value',
+                text: 'title',
+              },
+              options: [
+                {
+                  title: 'Node1',
+                  value: '0-0',
+                  children: [
+                    {
+                      title: 'Child Node1',
+                      value: '0-0-1',
+                    },
+                    {
+                      title: 'Child Node2',
+                      value: '0-0-2',
+                      children: [
+                        {
+                          title: 'Child Child Node1',
+                          value: '0-0-0-1',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  title: 'Node2',
+                  value: '0-1',
+                },
+              ],
+              value: '0-1',
+            },
+          ]
+        }
       }
     },
   }

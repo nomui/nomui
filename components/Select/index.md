@@ -15,6 +15,7 @@
 | maxTagWidth | 最大已选中标签宽度 | `number` | 120 |
 | maxTagCount | 最大显示已选中标签数,默认全部显示 | `number` | -1 |
 | showArrow | 是否显示下拉箭头 | `boolean` | true |
+| popupWidth | 下拉框宽度,默认为'auto'（跟随选择框宽度），可以配置为数值控制具体宽度 | `number \| string` | - |
 | searchable | 可搜索配置 | `boolean` \| `object` | - |
 | popupContainer | 下拉菜单渲染父节点。默认渲染到 body 上，如果你遇到菜单滚动定位问题，试试修改为滚动的区域，即可相对其定位。self 为当前组件，返回函数可指定其它组件 | `'self'` \| `()=>{return ref}` | `body` |
 | optionFields | 自定义 options 中 text value 的字段 | `object` | `{ text: text, value: value, }` |
