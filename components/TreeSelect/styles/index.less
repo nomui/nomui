@@ -47,11 +47,9 @@
   }
 
   &.s-disabled,
-  &.s-disabled:hover,
-  &[readonly],
-  &[readonly]:hover {
+  &.s-disabled:hover {
     .nom-control {
-      background: var(--nom-input-bg-disabled);
+      background: var(--nom-input-bg-disabled) !important;
       border-color: var(--nom-color-border);
     }
 
@@ -165,6 +163,8 @@
   -webkit-animation: nom-tree-select-keyframe-bottom-hide 0.16s linear forwards;
   animation: nom-tree-select-keyframe-bottom-hide 0.16s linear forwards;
 }
+
+
 
 @-webkit-keyframes nom-tree-select-keyframe-top-show {
   0% {

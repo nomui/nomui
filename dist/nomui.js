@@ -8535,7 +8535,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         "requiredMark",
         "labelAlign",
         "controlWidth",
-        "plain"
+        "plain",
+        "uistyle"
       );
       const {
         label,
@@ -8547,7 +8548,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         requiredMessage,
         rules = [],
         action,
-        labelContent,
         labelActions,
         labelExpandable,
         labelUiStyle,
@@ -8585,9 +8585,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             },
           });
         }
-      }
-      if (labelContent) {
-        labelProps = labelContent;
       }
       let actionProps = null;
       if (action) {
@@ -8768,6 +8765,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     label: null,
     labelAlign: "right",
     invalidTip: {},
+    uistyle: "default",
     value: null,
     defaultValue: null,
     flatValue: false,
@@ -10735,7 +10733,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.setProps({
           clearProps: {
             component: "Icon",
-            type: "close",
+            type: "times",
             ref: (c) => {
               this.clearIcon = c;
             },
@@ -12164,7 +12162,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (allowClear) {
         children.push({
           component: Icon,
-          type: "close",
+          type: "times",
           classes: { "nom-cascader-icon": true },
           hidden: true,
           _created() {
@@ -16971,11 +16969,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _created() {
       super._created();
-      this.collapsed = this.props.collapsed;
     }
     _config() {
       this._addPropStyle("inline", "striped", "line", "nowrap");
-      const { fields, fieldDefaults, value, collapsible } = this.props;
+      const { fields, fieldDefaults, value } = this.props;
       const children = [];
       for (let i = 0; i < fields.length; i++) {
         let fieldProps = extend(true, {}, fields[i]);
@@ -16993,64 +16990,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         fieldProps = Component.extendProps(fieldDefaults, fieldProps);
         children.push(fieldProps);
       }
-      if (collapsible && this.props.labelAlign === "top") {
-        this.setProps({
-          labelContent: {
-            component: "Flex",
-            align: "center",
-            cols: [
-              {
-                grow: true,
-                children: {
-                  styles: { padding: "d5" },
-                  children: this.props.label,
-                },
-              },
-              {
-                styles: { cursor: "pointer" },
-                ref: (c) => {
-                  this.collapseTriggerRef = c;
-                },
-                children: this._getCollapseTrigger(),
-              },
-            ],
-          },
-        });
-      }
-      this.setProps({
-        classes: { "nom-group-collapsed": collapsible && this.collapsed },
-        control: { children: children },
-      });
+      this.setProps({ control: { children: children } });
       super._config();
-    }
-    _getCollapseTrigger() {
-      const { collapsible } = this.props;
-      if (isPlainObject(collapsible) && isFunction(collapsible.render)) {
-        return Object.assign({}, collapsible.render(this.collapsed), {
-          onClick: () => {
-            this._toggleCollapse();
-          },
-        });
-      }
-      return {
-        component: "Button",
-        type: "text",
-        size: "small",
-        rightIcon: this.collapsed ? "right" : "up",
-        onClick: () => {
-          this._toggleCollapse();
-        },
-      };
-    }
-    _toggleCollapse() {
-      if (!this.collapsed) {
-        this.collapsed = true;
-        this.element.classList.add("nom-group-collapsed");
-      } else {
-        this.collapsed = false;
-        this.element.classList.remove("nom-group-collapsed");
-      }
-      this.collapseTriggerRef.update({ children: this._getCollapseTrigger() });
     }
     getValue(options) {
       const { valueOptions } = this.props;
@@ -17172,11 +17113,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return true;
     }
   }
-  Group.defaults = {
-    fields: [],
-    fieldDefaults: { component: Field },
-    collapsible: false,
-  };
+  Group.defaults = { fields: [], fieldDefaults: { component: Field } };
   Component.register(Group);
   class DateRangePicker extends Group {
     constructor(props, ...mixins) {
@@ -31138,7 +31075,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     hourStep: 0,
     minuteStep: 0,
     secondStep: 0,
-    readonly: true,
+    readonly: false,
     placeholder: null,
     autoPopupEnd: true,
     showNow: true,

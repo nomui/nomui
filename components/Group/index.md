@@ -10,7 +10,7 @@
 | striped       | 条纹样式，标签栏有背景色                       | `Boolean`              | -      |
 | line          | 线条样式                                       | `splitline`\|`outline` | -      |
 | valueOptions  | getValue 取值时的默认参数                      | `{}`                   | -      |
-| collapsible  | 群组内容是否可折叠，仅在上对齐时可用                      | `boolean`\|`object`                  | false      |
+| uistyle | 表单元素风格 | `default\|filled\|borderless` | `default` |
 
 
 ## Method
@@ -18,13 +18,6 @@
 | 方法名称 | 说明                                                                        | 参数 |
 | -------- | --------------------------------------------------------------------------- | ---- |
 | getField | 获取子字段，参数为字段名，可有圆点分隔，例如`foo.bar`来获取多层级的子孙字段 |      |
-
-### collapsible 群组折叠配置
-
-| 方法名称       | 说明                     | 类型      | 默认值  |
-| -------------- | ------------------------ | --------- | ------- |
-| render | 自定义折叠触发器样式 | `(collapsed)=>{}` | - |
-
 
 
 ### valueOptions（也可作为 getValue 方法的参数）

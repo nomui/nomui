@@ -54,7 +54,7 @@ class AutoComplete extends Textbox {
       this.setProps({
         clearProps: {
           component: 'Icon',
-          type: 'close',
+          type: 'times',
           ref: (c) => {
             this.clearIcon = c
           },

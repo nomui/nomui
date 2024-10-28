@@ -4524,6 +4524,8 @@ body {
   --nom-control-icon-color: var(--nom-color-text-1);
   --nom-field-gutter-base: 0.5rem;
   --nom-number-spinner-border-radius: 2px;
+  --nom-input-filled-bg: #f8f8f8;
+  --nom-input-filled-bg-hover: #f2f2f2;
   --nom-checkbox-bg: transparent;
   --nom-checkbox-border-color: var(--nom-border-color);
   --nom-checkbox-border-radius: 1px;
@@ -8415,9 +8417,8 @@ fieldset[disabled] a.nom-button {
   color: var(--nom-color-text-2);
 }
 .nom-input[disabled],
-.nom-input[readonly],
 fieldset[disabled] .nom-input {
-  background-color: var(--nom-input-bg-disabled);
+  background-color: var(--nom-input-bg-disabled) !important;
   opacity: 1;
 }
 .nom-input[disabled],
@@ -8505,22 +8506,82 @@ textarea .nom-input {
 .nom-textbox .nom-textbox-right-icon {
   color: var(--nom-control-icon-color);
 }
+.nom-textbox[readonly] .nom-textbox-affix-wrapper,
 .nom-time-picker[readonly] .nom-textbox-affix-wrapper,
 .nom-date-picker[readonly] .nom-textbox-affix-wrapper,
 .nom-partial-date-picker[readonly] .nom-textbox-affix-wrapper {
   background: transparent;
   border-color: var(--nom-color-border);
 }
+.nom-textbox.s-disabled .nom-textbox-affix-wrapper,
 .nom-time-picker.s-disabled .nom-textbox-affix-wrapper,
 .nom-date-picker.s-disabled .nom-textbox-affix-wrapper,
 .nom-partial-date-picker.s-disabled .nom-textbox-affix-wrapper {
   background: var(--nom-input-bg-disabled);
   border-color: var(--nom-color-border);
 }
+.nom-textbox .nom-input[readonly]:not([disabled]),
 .nom-time-picker .nom-input[readonly]:not([disabled]),
 .nom-date-picker .nom-input[readonly]:not([disabled]),
 .nom-partial-date-picker .nom-input[readonly]:not([disabled]) {
   background-color: transparent;
+}
+.nom-textbox.p-uistyle-filled .nom-textbox-affix-wrapper,
+.nom-time-picker.p-uistyle-filled .nom-textbox-affix-wrapper,
+.nom-date-picker.p-uistyle-filled .nom-textbox-affix-wrapper,
+.nom-partial-date-picker.p-uistyle-filled .nom-textbox-affix-wrapper {
+  border-color: transparent;
+}
+.nom-textbox.p-uistyle-filled > .nom-field-content .nom-control,
+.nom-time-picker.p-uistyle-filled > .nom-field-content .nom-control,
+.nom-date-picker.p-uistyle-filled > .nom-field-content .nom-control,
+.nom-partial-date-picker.p-uistyle-filled > .nom-field-content .nom-control {
+  border-color: transparent;
+  background-color: var(--nom-input-filled-bg);
+}
+.nom-textbox.p-uistyle-filled > .nom-field-content .nom-control:hover:not(:focus-within),
+.nom-time-picker.p-uistyle-filled > .nom-field-content .nom-control:hover:not(:focus-within),
+.nom-date-picker.p-uistyle-filled > .nom-field-content .nom-control:hover:not(:focus-within),
+.nom-partial-date-picker.p-uistyle-filled > .nom-field-content .nom-control:hover:not(:focus-within) {
+  background-color: var(--nom-input-filled-bg-hover);
+}
+.nom-textbox.p-uistyle-filled > .nom-field-content .nom-control .nom-input,
+.nom-time-picker.p-uistyle-filled > .nom-field-content .nom-control .nom-input,
+.nom-date-picker.p-uistyle-filled > .nom-field-content .nom-control .nom-input,
+.nom-partial-date-picker.p-uistyle-filled > .nom-field-content .nom-control .nom-input {
+  border-color: transparent;
+  background-color: var(--nom-input-filled-bg);
+}
+.nom-textbox.p-uistyle-filled > .nom-field-content .nom-control .nom-input:hover:not(:focus-within),
+.nom-time-picker.p-uistyle-filled > .nom-field-content .nom-control .nom-input:hover:not(:focus-within),
+.nom-date-picker.p-uistyle-filled > .nom-field-content .nom-control .nom-input:hover:not(:focus-within),
+.nom-partial-date-picker.p-uistyle-filled > .nom-field-content .nom-control .nom-input:hover:not(:focus-within) {
+  background-color: var(--nom-input-filled-bg-hover);
+}
+.nom-textbox.p-uistyle-filled > .nom-field-content .nom-control .nom-input:focus-within,
+.nom-time-picker.p-uistyle-filled > .nom-field-content .nom-control .nom-input:focus-within,
+.nom-date-picker.p-uistyle-filled > .nom-field-content .nom-control .nom-input:focus-within,
+.nom-partial-date-picker.p-uistyle-filled > .nom-field-content .nom-control .nom-input:focus-within {
+  border-color: var(--nom-color-primary);
+}
+.nom-textbox.p-uistyle-borderless .nom-textbox-affix-wrapper,
+.nom-time-picker.p-uistyle-borderless .nom-textbox-affix-wrapper,
+.nom-date-picker.p-uistyle-borderless .nom-textbox-affix-wrapper,
+.nom-partial-date-picker.p-uistyle-borderless .nom-textbox-affix-wrapper {
+  border-color: transparent;
+}
+.nom-textbox.p-uistyle-borderless > .nom-field-content .nom-control,
+.nom-time-picker.p-uistyle-borderless > .nom-field-content .nom-control,
+.nom-date-picker.p-uistyle-borderless > .nom-field-content .nom-control,
+.nom-partial-date-picker.p-uistyle-borderless > .nom-field-content .nom-control {
+  border-color: transparent !important;
+  background-color: transparent !important;
+}
+.nom-textbox.p-uistyle-borderless > .nom-field-content .nom-control .nom-input,
+.nom-time-picker.p-uistyle-borderless > .nom-field-content .nom-control .nom-input,
+.nom-date-picker.p-uistyle-borderless > .nom-field-content .nom-control .nom-input,
+.nom-partial-date-picker.p-uistyle-borderless > .nom-field-content .nom-control .nom-input {
+  border-color: transparent !important;
 }
 .nom-textarea {
   display: block;
@@ -8548,16 +8609,11 @@ textarea .nom-input {
   border: 0;
 }
 .nom-textarea[disabled],
-.nom-textarea[readonly],
 fieldset[disabled] .nom-textarea {
-  background-color: var(--nom-input-bg-disabled);
-  border-color: var(--nom-border-color);
-  opacity: 1;
-}
-.nom-textarea[disabled],
-fieldset[disabled] .nom-textarea {
+  background-color: var(--nom-input-bg-disabled) !important;
   border-color: var(--nom-border-color);
   cursor: not-allowed;
+  opacity: 1;
 }
 textarea .nom-textarea {
   height: auto;
@@ -9194,7 +9250,7 @@ textarea .nom-textarea {
   text-overflow: ellipsis;
 }
 .s-disabled.nom-select > .nom-field-content .nom-control {
-  background-color: var(--nom-input-bg-disabled);
+  background-color: var(--nom-input-bg-disabled) !important;
   cursor: not-allowed !important;
   opacity: 1;
 }
@@ -10586,16 +10642,12 @@ textarea .nom-textarea {
   display: none;
 }
 .nom-tree-select.s-disabled .nom-control,
-.nom-tree-select.s-disabled:hover .nom-control,
-.nom-tree-select[readonly] .nom-control,
-.nom-tree-select[readonly]:hover .nom-control {
-  background: var(--nom-input-bg-disabled);
+.nom-tree-select.s-disabled:hover .nom-control {
+  background: var(--nom-input-bg-disabled) !important;
   border-color: var(--nom-color-border);
 }
 .nom-tree-select.s-disabled .nom-tree-select-clear,
-.nom-tree-select.s-disabled:hover .nom-tree-select-clear,
-.nom-tree-select[readonly] .nom-tree-select-clear,
-.nom-tree-select[readonly]:hover .nom-tree-select-clear {
+.nom-tree-select.s-disabled:hover .nom-tree-select-clear {
   visibility: hidden;
 }
 .nom-tree-select .nom-tree-select-single {
@@ -11255,6 +11307,9 @@ textarea .nom-textarea {
   cursor: not-allowed !important;
   opacity: 1;
 }
+.nom-cascader > .nom-field-content .nom-control:focus-within {
+  border-color: var(--nom-color-primary) !important;
+}
 .nom-cascader-popup {
   overflow: hidden;
 }
@@ -11427,6 +11482,8 @@ textarea .nom-textarea {
   border-top-right-radius: var(--nom-border-radius);
   border-bottom-right-radius: var(--nom-border-radius);
   user-select: none;
+  opacity: 0;
+  transition: 0.25s;
 }
 .nom-number-input .nom-number-input-controler .nom-flex {
   justify-content: space-around;
@@ -11457,6 +11514,10 @@ textarea .nom-textarea {
 .nom-number-input .nom-number-input-controler.s-disabled .nom-flex .nom-number-input-controler-button {
   cursor: not-allowed;
   pointer-events: none;
+}
+.nom-number-input:hover .nom-number-input-controler,
+.nom-number-input:focus-within .nom-number-input-controler {
+  opacity: 1;
 }
 .nom-number-spinner-icon-opt {
   cursor: pointer;
@@ -13281,4 +13342,153 @@ textarea .nom-textarea {
   padding: 6px;
   cursor: pointer;
   background-color: var(--nom-color-hover);
+}
+.p-uistyle-filled.nom-textbox .nom-textbox-affix-wrapper,
+.p-uistyle-filled.nom-time-picker .nom-textbox-affix-wrapper,
+.p-uistyle-filled.nom-date-picker .nom-textbox-affix-wrapper,
+.p-uistyle-filled.nom-partial-date-picker .nom-textbox-affix-wrapper {
+  border-color: transparent;
+}
+.p-uistyle-filled.nom-textbox .nom-textbox-affix-wrapper:focus-within,
+.p-uistyle-filled.nom-time-picker .nom-textbox-affix-wrapper:focus-within,
+.p-uistyle-filled.nom-date-picker .nom-textbox-affix-wrapper:focus-within,
+.p-uistyle-filled.nom-partial-date-picker .nom-textbox-affix-wrapper:focus-within {
+  border-color: var(--nom-color-primary);
+}
+.p-uistyle-filled.nom-textbox > .nom-field-content .nom-control,
+.p-uistyle-filled.nom-time-picker > .nom-field-content .nom-control,
+.p-uistyle-filled.nom-date-picker > .nom-field-content .nom-control,
+.p-uistyle-filled.nom-partial-date-picker > .nom-field-content .nom-control {
+  border-color: transparent;
+  background-color: var(--nom-input-filled-bg);
+}
+.p-uistyle-filled.nom-textbox > .nom-field-content .nom-control:hover:not(:focus-within),
+.p-uistyle-filled.nom-time-picker > .nom-field-content .nom-control:hover:not(:focus-within),
+.p-uistyle-filled.nom-date-picker > .nom-field-content .nom-control:hover:not(:focus-within),
+.p-uistyle-filled.nom-partial-date-picker > .nom-field-content .nom-control:hover:not(:focus-within) {
+  background-color: var(--nom-input-filled-bg-hover);
+}
+.p-uistyle-filled.nom-textbox > .nom-field-content .nom-control:focus-within,
+.p-uistyle-filled.nom-time-picker > .nom-field-content .nom-control:focus-within,
+.p-uistyle-filled.nom-date-picker > .nom-field-content .nom-control:focus-within,
+.p-uistyle-filled.nom-partial-date-picker > .nom-field-content .nom-control:focus-within {
+  border-color: var(--nom-color-primary);
+}
+.p-uistyle-filled.nom-textbox > .nom-field-content .nom-control .nom-input,
+.p-uistyle-filled.nom-time-picker > .nom-field-content .nom-control .nom-input,
+.p-uistyle-filled.nom-date-picker > .nom-field-content .nom-control .nom-input,
+.p-uistyle-filled.nom-partial-date-picker > .nom-field-content .nom-control .nom-input {
+  border-color: transparent;
+  background-color: var(--nom-input-filled-bg);
+}
+.p-uistyle-filled.nom-textbox > .nom-field-content .nom-control .nom-input:hover:not(:focus-within),
+.p-uistyle-filled.nom-time-picker > .nom-field-content .nom-control .nom-input:hover:not(:focus-within),
+.p-uistyle-filled.nom-date-picker > .nom-field-content .nom-control .nom-input:hover:not(:focus-within),
+.p-uistyle-filled.nom-partial-date-picker > .nom-field-content .nom-control .nom-input:hover:not(:focus-within) {
+  background-color: var(--nom-input-filled-bg-hover);
+}
+.p-uistyle-filled.nom-textbox > .nom-field-content .nom-control .nom-input:focus-within,
+.p-uistyle-filled.nom-time-picker > .nom-field-content .nom-control .nom-input:focus-within,
+.p-uistyle-filled.nom-date-picker > .nom-field-content .nom-control .nom-input:focus-within,
+.p-uistyle-filled.nom-partial-date-picker > .nom-field-content .nom-control .nom-input:focus-within {
+  border-color: var(--nom-color-primary);
+}
+.p-uistyle-filled.nom-select > .nom-field-content .nom-control {
+  border-color: transparent;
+  background-color: var(--nom-input-filled-bg);
+}
+.p-uistyle-filled.nom-select > .nom-field-content .nom-control:focus-within {
+  border-color: var(--nom-color-primary);
+}
+.p-uistyle-filled.nom-select > .nom-field-content .nom-control .nom-select-clear {
+  background: var(--nom-input-filled-bg);
+}
+.p-uistyle-filled.nom-number-input .nom-number-input-controler {
+  border-color: transparent;
+}
+.p-uistyle-filled.nom-number-input .nom-number-input-controler .divider {
+  background-color: transparent;
+}
+.p-uistyle-filled.nom-multiline-textbox .nom-textarea {
+  border-color: transparent;
+  background-color: var(--nom-input-filled-bg);
+}
+.p-uistyle-filled.nom-multiline-textbox .nom-textarea:hover:not(:focus-within) {
+  background-color: var(--nom-input-filled-bg-hover);
+}
+.p-uistyle-filled.nom-multiline-textbox .nom-textarea:focus-within {
+  border-color: var(--nom-color-primary);
+}
+.p-uistyle-filled.nom-cascader > .nom-field-content .nom-control {
+  border-color: transparent;
+  background-color: var(--nom-input-filled-bg);
+}
+.p-uistyle-filled.nom-cascader > .nom-field-content .nom-control:hover:not(:focus-within) {
+  background-color: var(--nom-input-filled-bg-hover);
+}
+.p-uistyle-filled.nom-cascader > .nom-field-content .nom-control:not(.s-disabled).p-uistyle-filled.nom-cascader > .nom-field-content .nom-control:not(:focus-within):hover {
+  border-color: transparent;
+}
+.p-uistyle-filled.nom-tree-select > .nom-field-content .nom-control {
+  border-color: transparent;
+  background-color: var(--nom-input-filled-bg);
+}
+.p-uistyle-filled.nom-tree-select > .nom-field-content .nom-control .nom-tree-select-clear {
+  background: var(--nom-input-filled-bg);
+}
+.p-uistyle-borderless.nom-textbox .nom-textbox-affix-wrapper,
+.p-uistyle-borderless.nom-time-picker .nom-textbox-affix-wrapper,
+.p-uistyle-borderless.nom-date-picker .nom-textbox-affix-wrapper,
+.p-uistyle-borderless.nom-partial-date-picker .nom-textbox-affix-wrapper {
+  border-color: transparent;
+}
+.p-uistyle-borderless.nom-textbox > .nom-field-content .nom-control,
+.p-uistyle-borderless.nom-time-picker > .nom-field-content .nom-control,
+.p-uistyle-borderless.nom-date-picker > .nom-field-content .nom-control,
+.p-uistyle-borderless.nom-partial-date-picker > .nom-field-content .nom-control {
+  border-color: transparent !important;
+  background-color: var(--nom-input-bg);
+}
+.p-uistyle-borderless.nom-textbox > .nom-field-content .nom-control .nom-input,
+.p-uistyle-borderless.nom-time-picker > .nom-field-content .nom-control .nom-input,
+.p-uistyle-borderless.nom-date-picker > .nom-field-content .nom-control .nom-input,
+.p-uistyle-borderless.nom-partial-date-picker > .nom-field-content .nom-control .nom-input {
+  border-color: transparent !important;
+}
+.p-uistyle-borderless.nom-select > .nom-field-content .nom-control {
+  border-color: transparent !important;
+  background-color: var(--nom-input-bg);
+}
+.p-uistyle-borderless.nom-select > .nom-field-content .nom-control .nom-select-clear {
+  background-color: var(--nom-input-bg);
+}
+.p-uistyle-borderless.nom-number-input .nom-number-input-controler {
+  border-color: transparent;
+}
+.p-uistyle-borderless.nom-number-input .nom-number-input-controler .divider {
+  background-color: transparent;
+}
+.p-uistyle-borderless.nom-multiline-textbox .nom-textarea {
+  border-color: transparent;
+  background-color: var(--nom-input-bg);
+}
+.p-uistyle-borderless.nom-multiline-textbox .nom-textarea:focus-within {
+  border-color: transparent;
+}
+.p-uistyle-borderless.nom-cascader > .nom-field-content .nom-control {
+  border-color: transparent !important;
+  background-color: var(--nom-input-bg);
+}
+.p-uistyle-borderless.nom-cascader > .nom-field-content .nom-control:hover:not(:focus-within) {
+  background-color: var(--nom-input-bg);
+}
+.p-uistyle-borderless.nom-cascader > .nom-field-content .nom-control:not(.s-disabled).p-uistyle-borderless.nom-cascader > .nom-field-content .nom-control:not(:focus-within):hover {
+  border-color: transparent;
+}
+.p-uistyle-borderless.nom-tree-select > .nom-field-content .nom-control {
+  border-color: transparent !important;
+  background-color: var(--nom-input-bg);
+}
+.p-uistyle-borderless.nom-tree-select > .nom-field-content .nom-control .nom-tree-select-clear {
+  background-color: var(--nom-input-bg);
 }

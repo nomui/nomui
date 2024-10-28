@@ -110,7 +110,7 @@ class Cascader extends Field {
     if (allowClear) {
       children.push({
         component: Icon,
-        type: 'close',
+        type: 'times',
         classes: {
           'nom-cascader-icon': true,
         },

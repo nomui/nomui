@@ -18,9 +18,7 @@
   background-color: var(--nom-input-bg);
   background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
   border: 1px solid var(--nom-border-color);
-  border-radius: var(
-    --nom-border-radius
-  ); // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+  border-radius: var(--nom-border-radius); // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
   // Customize the `:focus` state to imitate native WebKit styles.
   transition: all 0.3s;
   .nom-textarea-focus();
@@ -41,17 +39,11 @@
   // disabled if the fieldset is disabled. Due to implementation difficulty, we
   // don't honor that edge case; we style them as disabled anyway.
   &[disabled],
-  &[readonly],
   fieldset[disabled] & {
-    background-color: var(--nom-input-bg-disabled);
-    border-color: var(--nom-border-color);
-    opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
-  }
-
-  &[disabled],
-  fieldset[disabled] & {
+    background-color: var(--nom-input-bg-disabled) !important;
     border-color: var(--nom-border-color);
     cursor: @cursor-disabled;
+    opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
   }
 
   // Reset height for `textarea`s
@@ -59,11 +51,11 @@
     height: auto;
   }
 
-  .s-invalid > & {
+  .s-invalid>& {
     .nom-preset-invalid;
   }
 }
 
-.s-invalid > .nom-field-content > .nom-control > textarea {
+.s-invalid>.nom-field-content>.nom-control>textarea {
   .nom-preset-invalid;
 }
