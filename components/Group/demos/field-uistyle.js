@@ -39,7 +39,7 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
                                     onValueChange: (args) => {
                                         group.update({
                                             fieldDefaults: {
-                                                uistyle: args.newValue,
+                                                variant: args.newValue,
                                             }
                                         })
                                     },

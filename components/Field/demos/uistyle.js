@@ -37,7 +37,7 @@ define([], function () {
                                 uistyle: 'button',
                                 onValueChange: (args) => {
                                     field.update({
-                                        uistyle: args.newValue,
+                                        variant: args.newValue,
                                     })
                                 },
                             },
