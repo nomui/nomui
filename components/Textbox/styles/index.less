@@ -44,9 +44,8 @@
   // disabled if the fieldset is disabled. Due to implementation difficulty, we
   // don't honor that edge case; we style them as disabled anyway.
   &[disabled],
-  &[readonly],
   fieldset[disabled] & {
-    background-color: var(--nom-input-bg-disabled);
+    background-color: var(--nom-input-bg-disabled) !important;
     opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
   }
 
@@ -119,7 +118,7 @@
     transition: all .3s;
 
     &:focus-within {
-      border-color: var(--nom-color-primary);
+      border-color: var(--nom-color-primary) !important;
     }
 
     &:hover {
@@ -168,6 +167,7 @@
   }
 }
 
+.nom-textbox,
 .nom-time-picker,
 .nom-date-picker,
 .nom-partial-date-picker {
@@ -188,4 +188,58 @@
   .nom-input[readonly]:not([disabled]) {
     background-color: transparent;
   }
+
+  &.p-uistyle-filled {
+    .nom-textbox-affix-wrapper {
+      border-color: transparent;
+    }
+
+    >.nom-field-content {
+      .nom-control {
+        border-color: transparent;
+        background-color: var(--nom-input-filled-bg);
+
+        &:hover:not(:focus-within) {
+          background-color: var(--nom-input-filled-bg-hover);
+        }
+
+        .nom-input {
+          border-color: transparent;
+          background-color: var(--nom-input-filled-bg);
+
+          &:hover:not(:focus-within) {
+            background-color: var(--nom-input-filled-bg-hover);
+          }
+
+          &:focus-within {
+            border-color: var(--nom-color-primary);
+          }
+        }
+      }
+    }
+
+  }
+
+
+
+  &.p-uistyle-borderless {
+    .nom-textbox-affix-wrapper {
+      border-color: transparent;
+    }
+
+    >.nom-field-content {
+      .nom-control {
+        border-color: transparent !important;
+        background-color: transparent !important;
+
+        .nom-input {
+          border-color: transparent !important;
+
+        }
+      }
+    }
+
+  }
+
+
 }

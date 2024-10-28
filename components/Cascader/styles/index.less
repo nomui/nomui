@@ -41,6 +41,10 @@
         cursor: not-allowed !important;
         opacity: 1;
       }
+
+      &:focus-within {
+        border-color: var(--nom-color-primary) !important;
+      }
     }
   }
 }
@@ -130,6 +134,8 @@
   -webkit-animation: nom-cascader-keyframe-bottom-hide .16s linear forwards;
   animation: nom-cascader-keyframe-bottom-hide .16s linear forwards;
 }
+
+
 
 @-webkit-keyframes nom-cascader-keyframe-top-show {
   0% {

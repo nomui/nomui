@@ -43,7 +43,7 @@ class Field extends Component {
   _config() {
     delete this.errorTip
 
-    this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth', 'plain')
+    this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth', 'plain', 'uistyle')
     const {
       label,
       labelAlign,
@@ -292,6 +292,7 @@ Field.defaults = {
   label: null,
   labelAlign: 'right',
   invalidTip: {},
+  uistyle: 'filled',
   value: null,
   defaultValue: null,
   flatValue: false,

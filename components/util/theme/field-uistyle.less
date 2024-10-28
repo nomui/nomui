@@ -1,0 +1,144 @@
+.nom-cascader {
+    &.p-uistyle-filled {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent;
+                background-color: var(--nom-input-filled-bg);
+
+                &:hover:not(:focus-within) {
+                    background-color: var(--nom-input-filled-bg-hover);
+                }
+
+                &:not(.s-disabled)&:not(:focus-within):hover {
+                    border-color: transparent;
+                }
+            }
+        }
+
+    }
+}
+
+.nom-multiline-textbox {
+    &.p-uistyle-filled {
+
+        .nom-textarea {
+            border-color: transparent;
+            background-color: var(--nom-input-filled-bg);
+
+            &:hover:not(:focus-within) {
+                background-color: var(--nom-input-filled-bg-hover);
+            }
+
+            &:focus-within {
+                border-color: var(--nom-color-primary);
+            }
+        }
+
+
+    }
+}
+
+.nom-number-input {
+    &.p-uistyle-filled {
+        .nom-number-input-controler {
+            border-color: transparent;
+
+            .divider {
+                background-color: transparent;
+            }
+        }
+    }
+}
+
+.nom-select {
+    &.p-uistyle-filled {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent;
+                background-color: var(--nom-input-filled-bg);
+
+                .nom-select-clear {
+                    background: var(--nom-input-filled-bg);
+                }
+            }
+        }
+    }
+}
+
+.nom-textbox,
+.nom-time-picker,
+.nom-date-picker,
+.nom-partial-date-picker {
+
+
+    &.p-uistyle-filled {
+        .nom-textbox-affix-wrapper {
+            border-color: transparent;
+        }
+
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent;
+                background-color: var(--nom-input-filled-bg);
+
+                &:hover:not(:focus-within) {
+                    background-color: var(--nom-input-filled-bg-hover);
+                }
+
+                .nom-input {
+                    border-color: transparent;
+                    background-color: var(--nom-input-filled-bg);
+
+                    &:hover:not(:focus-within) {
+                        background-color: var(--nom-input-filled-bg-hover);
+                    }
+
+                    &:focus-within {
+                        border-color: var(--nom-color-primary);
+                    }
+                }
+            }
+        }
+
+    }
+
+
+
+    &.p-uistyle-borderless {
+        .nom-textbox-affix-wrapper {
+            border-color: transparent;
+        }
+
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent !important;
+                background-color: transparent !important;
+
+                .nom-input {
+                    border-color: transparent !important;
+
+                }
+            }
+        }
+
+    }
+
+
+}
+
+
+.nom-tree-select {
+    &.p-uistyle-filled {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent;
+                background-color: var(--nom-input-filled-bg);
+
+                .nom-tree-select-clear {
+                    background: var(--nom-input-filled-bg);
+
+                }
+            }
+        }
+    }
+}

@@ -99,7 +99,7 @@
       }
 
       .s-disabled& {
-        background-color: var(--nom-input-bg-disabled);
+        background-color: var(--nom-input-bg-disabled) !important;
         cursor: not-allowed !important;
         opacity: 1;
       }
@@ -207,6 +207,8 @@
   -webkit-animation: nom-select-keyframe-bottom-hide 0.16s linear forwards;
   animation: nom-select-keyframe-bottom-hide 0.16s linear forwards;
 }
+
+
 
 @-webkit-keyframes nom-select-keyframe-top-show {
   0% {

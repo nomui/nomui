@@ -130,7 +130,7 @@ TimeRangePicker.defaults = {
   hourStep: 0,
   minuteStep: 0,
   secondStep: 0,
-  readonly: true,
+  readonly: false,
   placeholder: null,
   autoPopupEnd: true,
   showNow: true,
