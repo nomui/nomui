@@ -8536,7 +8536,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         "labelAlign",
         "controlWidth",
         "plain",
-        "uistyle"
+        "variant"
       );
       const {
         label,
