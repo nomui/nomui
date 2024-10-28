@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Textbox from '../Textbox/index'
-import { isNullish } from '../util/index'
+import { clone, extend, isFunction, isNullish } from '../util/index'
 
 class NumberInput extends Textbox {
   constructor(props, ...mixins) {
@@ -9,7 +9,6 @@ class NumberInput extends Textbox {
 
   _created() {
     super._created()
-    this.lastValue = this.props.value
   }
 
   _config() {
@@ -49,22 +48,48 @@ class NumberInput extends Textbox {
     }
   }
 
-  _onValueChange() {
+  _onBlur() {
+    this._checkValue()
+    this._setPrecision(true)
 
-    const text = this.parserFunc(this.getText())
+    this._onValueChange()
 
+  }
 
-    const newText = `${this.formatterFunc(text)}`
+  _onValueChange(args = {}) {
 
-    this.input.setText(newText)
+    const that = this
+    this.oldValue = clone(this.currentValue)
 
-    if (this.getValue() !== this.oldValue) {
-
-      this._callHandler(this.props.onValueChange, { name: this.props.name, oldValue: this.oldValue, newValue: text, })
-      this.oldValue = text
+    if (Number.isNaN(this.getValue())) {
+      return
     }
 
+    this.currentValue = clone(this.getValue())
+    this.props.value = this.currentValue
 
+    this._setInputText()
+
+    args = extend(true, args, {
+      name: this.props.name,
+      oldValue: this.oldValue,
+      newValue: this.currentValue,
+    })
+
+    setTimeout(function () {
+      that.props && that.props.onValueChange && that._callHandler(that.props.onValueChange, args)
+      that.group && that.group._onValueChange({ changedField: args.changedField || that })
+      isFunction(that._valueChange) && that._valueChange(args)
+      if (that.validateTriggered) {
+        that._validate()
+      }
+    }, 0)
+  }
+
+  _setInputText() {
+    const text = this.parserFunc(this.getText())
+    const newText = `${this.formatterFunc(text)}`
+    this.input.setText(newText)
   }
 
   _getControls() {
@@ -119,10 +144,7 @@ class NumberInput extends Textbox {
     }
   }
 
-  _onBlur() {
-    this._checkValue()
-    this._setPrecision(true)
-  }
+
 
   _isEmptyOrInvalid(v) {
     return (isNullish(v) || Number.isNaN(v) || v === 'NaN' || v === '')
@@ -140,10 +162,9 @@ class NumberInput extends Textbox {
       v = 0
     }
     if (precision && precision > 0) {
+
       const n = parseFloat(v)
       v = n.toFixed(precision)
-      this.lastValue = v
-      this.currentValue = v
 
       this.setValue(v, { triggerChange: false })
     }
@@ -154,7 +175,7 @@ class NumberInput extends Textbox {
     let v = this.getValue()
 
     if (Number.isNaN(Number(v))) {
-      this.setValue(this.lastValue, { triggerChange: false })
+      this.setValue(this.oldValue, { triggerChange: false })
     }
     else {
       let shouldChange = false
@@ -167,11 +188,11 @@ class NumberInput extends Textbox {
         shouldChange = true
       }
 
-      this.lastValue = v
-      this.currentValue = v
-
-      shouldChange && this.setValue(v, { triggerChange: false })
+      if (shouldChange) {
+        this.setValue(v, { triggerChange: false })
+      }
     }
+
   }
 
 
@@ -214,6 +235,7 @@ class NumberInput extends Textbox {
     if (!options) {
       options = {}
     }
+
     const text = this.input.getText()
     if (!text || !text.length) {
       return null
@@ -224,6 +246,7 @@ class NumberInput extends Textbox {
     if ((this.props.stringMode || (this.props.precision && this.props.precision > 0) || this.props.formatter) && !options.asNumber) {
       return value
     }
+
     return Number(value)
   }
 
@@ -233,9 +256,9 @@ class NumberInput extends Textbox {
       value = (value || value === 0) ? `${value}` : ''
     }
     const { precision } = this.props
-
-    this.currentValue = this.getValue()
-    this.lastValue = this.currentValue
+    if (!Number.isNaN(this.getValue())) {
+      this.currentValue = this.getValue()
+    }
     value = this.formatterFunc(value)
 
     if (Number.isNaN(value) || value === 'NaN') {
@@ -295,7 +318,8 @@ NumberInput.defaults = {
   precisionText: '请输入有效数字，且包含{{precision}}位小数',
   allowClear: false,
   formatter: null,
-  parser: null
+  parser: null,
+  ignoreInputChange: true
 }
 Component.register(NumberInput)
 

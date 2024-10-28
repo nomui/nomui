@@ -4,7 +4,6 @@
         border-top-right-radius: var(--nom-border-radius);
         border-bottom-right-radius: var(--nom-border-radius);
         user-select: none;
-        opacity: 0;
         transition: .25s;
 
         .nom-flex {
@@ -51,6 +50,13 @@
             }
         }
 
+    }
+
+    &.p-variant-filled,
+    &.p-variant-borderless {
+        .nom-number-input-controler {
+            opacity: 0;
+        }
     }
 
     &:hover,

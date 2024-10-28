@@ -16,8 +16,11 @@ define([], function () {
             fields: [
               {
                 component: 'NumberInput',
-                name: '1',
+                name: 'age',
                 label: '基础',
+                onValueChange: (args) => {
+                  console.log('x', args)
+                },
               },
 
               {
@@ -38,10 +41,7 @@ define([], function () {
                       text: '赋值',
                       onClick: function () {
                         group.setValue({
-                          1: 213,
-                          2: 2312321,
-                          3: 2134,
-                          4: 123
+                          'age': 213,
                         })
                       },
                     }
