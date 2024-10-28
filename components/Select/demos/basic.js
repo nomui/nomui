@@ -58,7 +58,7 @@ define([], function () {
           {
             component: 'Select',
             placeholder: '自定义浮层宽度',
-            popupWidth: 300,
+            popupWidth: 'auto',
             options: [
               {
                 text: '金庸',

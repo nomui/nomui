@@ -692,7 +692,7 @@ Select.defaults = {
   virtual: false,
   allowClear: true,
   popupContainer: 'body',
-  popupWidth: 'auto',
+  popupWidth: null,
 }
 
 Component.register(Select)

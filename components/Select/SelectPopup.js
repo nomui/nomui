@@ -21,10 +21,18 @@ class SelectPopup extends Popup {
   _config() {
     const { searchable, options: originOptions, popupWidth } = this.selectControl.props
 
+    let w = `${this.selectControl.control.offsetWidth()}px`
+    if (isNumeric(popupWidth)) {
+      w = `${popupWidth}px`
+    }
+    else if (popupWidth === 'auto') {
+      w = 'auto'
+    }
+
     this.setProps({
       attrs: {
         style: {
-          width: isNumeric(popupWidth) ? `${popupWidth}px` : `${this.selectControl.control.offsetWidth()}px`,
+          width: w
         },
       },
       children: {
