@@ -8462,7 +8462,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.field = this.parent;
     }
     _config() {
-      const { labelActions } = this.props;
+      this._addPropStyle("uistyle");
+      const { labelExpandable, labelActions } = this.props;
       const children = [
         {
           tag: "label",
@@ -8473,6 +8474,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (labelActions) {
         children.push(labelActions);
         this.setProps({ classes: { "has-actions": true } });
+      }
+      if (labelExpandable) {
+        children.push({
+          component: "Button",
+          type: "text",
+          size: "small",
+          expanded: true,
+          expandable: {
+            byClick: true,
+            target: () => {
+              return this.field.content;
+            },
+            expandedProps: { rightIcon: "up" },
+            collapsedProps: { rightIcon: "down" },
+          },
+        });
       }
       this.setProps({ children: children });
     }
@@ -8532,6 +8549,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         action,
         labelContent,
         labelActions,
+        labelExpandable,
+        labelUiStyle,
       } = this.props;
       const showLabel =
         notShowLabel === false && label !== undefined && label !== null;
@@ -8543,7 +8562,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.setProps({ styles: { col: span } });
       }
       let labelProps = showLabel
-        ? { component: FieldLabel, labelActions: labelActions }
+        ? {
+            component: FieldLabel,
+            labelActions: labelActions,
+            labelExpandable: labelExpandable,
+            uistyle: labelUiStyle,
+          }
         : null;
       if (labelProps && labelWidth && labelAlign !== "top") {
         if (labelWidth === "auto") {
