@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { extend, isFunction, isPlainObject } from '../util/index'
+import { extend, isPlainObject } from '../util/index'
 
 class Group extends Field {
   constructor(props, ...mixins) {
@@ -9,12 +9,11 @@ class Group extends Field {
 
   _created() {
     super._created()
-    this.collapsed = this.props.collapsed
   }
 
   _config() {
     this._addPropStyle('inline', 'striped', 'line', 'nowrap')
-    const { fields, fieldDefaults, value, collapsible } = this.props
+    const { fields, fieldDefaults, value } = this.props
     const children = []
 
     for (let i = 0; i < fields.length; i++) {
@@ -31,40 +30,8 @@ class Group extends Field {
       children.push(fieldProps)
     }
 
-    if (collapsible && this.props.labelAlign === 'top') {
-      this.setProps({
-        labelContent: {
-          component: 'Flex',
-          align: 'center',
-          cols: [
-            {
-              grow: true,
-              children: {
-                styles: {
-                  padding: 'd5'
-                },
-                children: this.props.label
-              }
-            },
-            {
-              styles: {
-                cursor: 'pointer'
-              },
-              ref: (c) => {
-                this.collapseTriggerRef = c
-              },
-              children: this._getCollapseTrigger()
-            }
-          ]
-        }
-      })
-    }
-
 
     this.setProps({
-      classes: {
-        'nom-group-collapsed': collapsible && this.collapsed
-      },
       control: { children: children },
     })
 
@@ -72,47 +39,7 @@ class Group extends Field {
     super._config()
   }
 
-  _getCollapseTrigger() {
-    const { collapsible } = this.props
 
-    if (isPlainObject(collapsible) && isFunction(collapsible.render)) {
-      return {
-        ...collapsible.render(this.collapsed),
-        onClick: () => {
-          this._toggleCollapse()
-        },
-
-      }
-    }
-
-    return {
-      component: 'Button',
-      type: 'text',
-      size: 'small',
-      rightIcon: this.collapsed ? 'right' : 'up',
-      onClick: () => {
-        this._toggleCollapse()
-      },
-
-    }
-  }
-
-  _toggleCollapse() {
-    if (!this.collapsed) {
-      this.collapsed = true
-      this.element.classList.add('nom-group-collapsed')
-    }
-    else {
-      this.collapsed = false
-      this.element.classList.remove('nom-group-collapsed')
-
-    }
-
-    this.collapseTriggerRef.update({
-      children: this._getCollapseTrigger()
-    })
-
-  }
 
   getValue(options) {
     const { valueOptions } = this.props
@@ -261,7 +188,6 @@ class Group extends Field {
 Group.defaults = {
   fields: [],
   fieldDefaults: { component: Field },
-  collapsible: false,
 }
 
 Component.register(Group)

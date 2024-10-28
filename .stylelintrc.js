@@ -6,5 +6,6 @@ module.exports = {
     'declaration-bang-space-before': null,
     'function-name-case': null,
     'plugin/declaration-block-no-ignored-properties': null,
+    'no-duplicate-selectors': null
   },
 }

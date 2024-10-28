@@ -13,8 +13,9 @@
 | flatValue | 是否平面化数据 | `boolean` | `false` |
 | notShowLabel | 不显示标签，不管 label 是否设置 | `boolean` | `false` |
 | extra | 表单元素的拓展展示内容 | `string` | - |
+| uistyle | 表单元素风格 | `default\|filled\|borderless` | `default` |
 | labelWidth | 表单元素项提示文字宽度 | `number` | `126` |
-| controlWidth | 表单元素项的宽度 | `xsmall\|small\|mediu\|large\|xlarge` | `false` |
+| controlWidth | 表单元素项的宽度 | `xsmall\|small\|medium\|large\|xlarge` | `false` |
 | rules | 配置的验证规则 | `Array` | `[]` |
 | required | 是否必填 | `boolean` | - |
 | disabled | 是否禁用 | `boolean` | - |

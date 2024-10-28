@@ -4,7 +4,8 @@
         border-top-right-radius: var(--nom-border-radius);
         border-bottom-right-radius: var(--nom-border-radius);
         user-select: none;
-
+        opacity: 0;
+        transition: .25s;
 
         .nom-flex {
             justify-content: space-around;
@@ -50,5 +51,12 @@
             }
         }
 
+    }
+
+    &:hover,
+    &:focus-within {
+        .nom-number-input-controler {
+            opacity: 1;
+        }
     }
 }

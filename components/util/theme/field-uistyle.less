@@ -1,0 +1,234 @@
+.p-uistyle-filled {
+
+    // Textbox以及继承Textbox类组件
+    &.nom-textbox,
+    &.nom-time-picker,
+    &.nom-date-picker,
+    &.nom-partial-date-picker {
+
+        .nom-textbox-affix-wrapper {
+            border-color: transparent;
+
+            &:focus-within {
+                border-color: var(--nom-color-primary);
+            }
+        }
+
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent;
+                background-color: var(--nom-input-filled-bg);
+
+                &:hover:not(:focus-within) {
+                    background-color: var(--nom-input-filled-bg-hover);
+                }
+
+                &:focus-within {
+                    border-color: var(--nom-color-primary);
+                }
+
+                .nom-input {
+                    border-color: transparent;
+                    background-color: var(--nom-input-filled-bg);
+
+                    &:hover:not(:focus-within) {
+                        background-color: var(--nom-input-filled-bg-hover);
+                    }
+
+                    &:focus-within {
+                        border-color: var(--nom-color-primary);
+                    }
+                }
+            }
+        }
+
+    }
+
+    // Select
+    &.nom-select {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent;
+                background-color: var(--nom-input-filled-bg);
+
+                &:focus-within {
+                    border-color: var(--nom-color-primary);
+                }
+
+                .nom-select-clear {
+                    background: var(--nom-input-filled-bg);
+                }
+            }
+        }
+    }
+
+    // NumberInput
+    &.nom-number-input {
+        .nom-number-input-controler {
+            border-color: transparent;
+
+            .divider {
+                background-color: transparent;
+            }
+        }
+    }
+
+    // MultilineTextbox
+    &.nom-multiline-textbox {
+
+        .nom-textarea {
+            border-color: transparent;
+            background-color: var(--nom-input-filled-bg);
+
+            &:hover:not(:focus-within) {
+                background-color: var(--nom-input-filled-bg-hover);
+            }
+
+            &:focus-within {
+                border-color: var(--nom-color-primary);
+            }
+        }
+
+
+    }
+
+    // Cascader
+    &.nom-cascader {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent;
+                background-color: var(--nom-input-filled-bg);
+
+                &:hover:not(:focus-within) {
+                    background-color: var(--nom-input-filled-bg-hover);
+                }
+
+                &:not(.s-disabled)&:not(:focus-within):hover {
+                    border-color: transparent;
+                }
+            }
+        }
+
+    }
+
+    //  TreeSelect
+    &.nom-tree-select {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent;
+                background-color: var(--nom-input-filled-bg);
+
+                .nom-tree-select-clear {
+                    background: var(--nom-input-filled-bg);
+
+                }
+            }
+        }
+    }
+
+}
+
+
+
+.p-uistyle-borderless {
+
+    // Textbox以及继承Textbox类组件
+    &.nom-textbox,
+    &.nom-time-picker,
+    &.nom-date-picker,
+    &.nom-partial-date-picker {
+
+        .nom-textbox-affix-wrapper {
+            border-color: transparent;
+        }
+
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent !important;
+                background-color: var(--nom-input-bg);
+
+                .nom-input {
+                    border-color: transparent !important;
+
+                }
+            }
+        }
+
+    }
+
+    // Select
+    &.nom-select {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent !important;
+                background-color: var(--nom-input-bg);
+
+                .nom-select-clear {
+                    background-color: var(--nom-input-bg);
+                }
+            }
+        }
+    }
+
+    // NumberInput
+    &.nom-number-input {
+        .nom-number-input-controler {
+            border-color: transparent;
+
+            .divider {
+                background-color: transparent;
+            }
+        }
+    }
+
+    // MultilineTextbox
+    &.nom-multiline-textbox {
+
+        .nom-textarea {
+            border-color: transparent;
+            background-color: var(--nom-input-bg);
+
+            &:focus-within {
+                border-color: transparent;
+            }
+        }
+
+
+    }
+
+    // Cascader
+    &.nom-cascader {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent !important;
+                background-color: var(--nom-input-bg);
+
+                &:hover:not(:focus-within) {
+                    background-color: var(--nom-input-bg);
+                }
+
+                &:not(.s-disabled)&:not(:focus-within):hover {
+                    border-color: transparent;
+                }
+            }
+        }
+
+    }
+
+    //  TreeSelect
+    &.nom-tree-select {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent !important;
+                background-color: var(--nom-input-bg);
+
+                .nom-tree-select-clear {
+                    background-color: var(--nom-input-bg);
+
+                }
+            }
+        }
+    }
+
+
+}
