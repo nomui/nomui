@@ -7,6 +7,8 @@ define(
     './control-width.js',
     './label-width.js',
     './label-actions.js',
+    './label-expandable.js',
+    './label-uistyle.js',
   ],
   function () {
 

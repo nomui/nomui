@@ -56,6 +56,8 @@ class Field extends Component {
       action,
       labelContent,
       labelActions,
+      labelExpandable,
+      labelUiStyle,
     } = this.props
     const showLabel = notShowLabel === false && label !== undefined && label !== null
 
@@ -73,17 +75,29 @@ class Field extends Component {
       })
     }
 
-    let labelProps = showLabel ? { component: FieldLabel, labelActions: labelActions } : null
+    let labelProps = showLabel ? { component: FieldLabel, labelActions: labelActions, labelExpandable: labelExpandable, uistyle: labelUiStyle } : null
     if (labelProps && labelWidth && labelAlign !== 'top') {
-      labelProps = Component.extendProps(labelProps, {
-        attrs: {
-          style: {
-            width: `${labelWidth}px`,
-            maxWidth: `${labelWidth}px`,
-            flexBasis: `${labelWidth}px`,
+      if (labelWidth === 'auto') {
+        labelProps = Component.extendProps(labelProps, {
+          attrs: {
+            style: {
+              maxWidth: `unset`,
+              flexBasis: `auto`,
+            },
           },
-        },
-      })
+        })
+      }
+      else {
+        labelProps = Component.extendProps(labelProps, {
+          attrs: {
+            style: {
+              width: `${labelWidth}px`,
+              maxWidth: `${labelWidth}px`,
+              flexBasis: `${labelWidth}px`,
+            },
+          },
+        })
+      }
     }
 
     if (labelContent) {

@@ -1500,7 +1500,9 @@ Grid.defaults = {
   shownColumnText: '已显示列（拖动可进行排序）',
   maxColumnText: '最多只能冻结{{limit}}项',
   noGroupFronzeText: '不支持冻结群组',
-  columnStatsText: '{{current}}/{{total}}项'
+  columnStatsText: '{{current}}/{{total}}项',
+  onRowClick: null
+
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false

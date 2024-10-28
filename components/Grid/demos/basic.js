@@ -6,6 +6,9 @@ define([], function () {
       return {
         component: 'Grid',
         showTitle: true,
+        onRowClick: (args) => {
+          console.log('row clicked', args)
+        },
         rowSelectable: {
           onSelect: (args) => {
             console.log(args)

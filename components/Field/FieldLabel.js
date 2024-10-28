@@ -10,7 +10,9 @@ class FieldLabel extends Component {
   }
 
   _config() {
-    const { labelActions } = this.props
+    this._addPropStyle('uistyle')
+    
+    const { labelExpandable, labelActions } = this.props
     const children = [{
       tag: 'label',
       classes: {
@@ -18,6 +20,7 @@ class FieldLabel extends Component {
       },
       children: this.field.props.label,
     }]
+
     if (labelActions) {
       children.push(labelActions)
       this.setProps({
@@ -26,6 +29,28 @@ class FieldLabel extends Component {
         },
       })
     }
+
+    if (labelExpandable) {
+      children.push({
+        component: 'Button',
+        type: 'text',
+        size: 'small',
+        expanded: true,
+        expandable: {
+          byClick: true,
+          target: () => {
+            return this.field.content
+          },
+          expandedProps: {
+            rightIcon: 'up',
+          },
+          collapsedProps: {
+            rightIcon: 'down',
+          },
+        },
+      })
+    }
+
     this.setProps({
       children: children,
     })
