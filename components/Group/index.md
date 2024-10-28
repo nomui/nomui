@@ -10,6 +10,7 @@
 | striped       | 条纹样式，标签栏有背景色                       | `Boolean`              | -      |
 | line          | 线条样式                                       | `splitline`\|`outline` | -      |
 | valueOptions  | getValue 取值时的默认参数                      | `{}`                   | -      |
+| uistyle | 表单元素风格 | `default\|filled\|borderless` | `default` |
 
 
 ## Method

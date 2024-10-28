@@ -2,6 +2,7 @@ define(
     [
         './basic.js',
         './nest.js',
+        './field-uistyle.js',
         './get-field.js',
         './value.js',
         './options-value-as-array.js',
