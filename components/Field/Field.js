@@ -54,7 +54,6 @@ class Field extends Component {
       requiredMessage,
       rules = [],
       action,
-      labelContent,
       labelActions,
       labelExpandable,
       labelUiStyle,
@@ -100,9 +99,6 @@ class Field extends Component {
       }
     }
 
-    if (labelContent) {
-      labelProps = labelContent
-    }
 
     let actionProps = null
     if (action) {

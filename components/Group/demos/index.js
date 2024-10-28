@@ -2,7 +2,6 @@ define(
     [
         './basic.js',
         './nest.js',
-        './collapsible.js',
         './get-field.js',
         './value.js',
         './options-value-as-array.js',
