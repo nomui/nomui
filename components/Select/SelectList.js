@@ -7,6 +7,7 @@ class SelectList extends List {
     const defaults = {
       gutter: 'x-md',
       cols: 1,
+      vertical: true
     }
 
     super(Component.extendProps(defaults, props), ...mixins)

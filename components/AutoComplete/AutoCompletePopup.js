@@ -3,7 +3,7 @@ import Empty from '../Empty/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
 import Textbox from '../Textbox/index'
-import { isFunction } from '../util/index'
+import { isFunction, isNumeric } from '../util/index'
 import AutoCompleteList from './AutoCompleteList'
 
 class AutoCompletePopup extends Popup {
@@ -24,11 +24,21 @@ class AutoCompletePopup extends Popup {
   _config() {
     const autoCompletePopupRef = this
     const { options } = this.props
-    const { searchable, debounce, interval } = this.autoCompleteControl.props
+    const { searchable, debounce, interval, popupWidth } = this.autoCompleteControl.props
+
+    let w = `${this.autoCompleteControl.control.offsetWidth()}px`
+    if (isNumeric(popupWidth)) {
+      w = `${popupWidth}px`
+    }
+    else if (popupWidth === 'auto') {
+      w = 'auto'
+    }
+
     this.setProps({
       attrs: {
         style: {
-          width: `${this.autoCompleteControl.control.offsetWidth()}px`,
+          width: w,
+          maxWidth: `${this.autoCompleteControl.control.offsetWidth()}px`
         },
       },
       children: {
