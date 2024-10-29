@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Textbox from '../Textbox/index'
-import { clone, extend, isFunction, isNullish } from '../util/index'
+import { isNullish } from '../util/index'
 
 class NumberInput extends Textbox {
   constructor(props, ...mixins) {
@@ -52,38 +52,21 @@ class NumberInput extends Textbox {
     this._checkValue()
     this._setPrecision(true)
 
-    this._onValueChange()
+    this._onValueChange(true)
 
   }
 
-  _onValueChange(args = {}) {
-
-    const that = this
-    this.oldValue = clone(this.currentValue)
-
+  _onValueChange(isBlur) {
     if (Number.isNaN(this.getValue())) {
       return
     }
 
-    this.currentValue = clone(this.getValue())
-    this.props.value = this.currentValue
+    if (this.props.ignoreInputChange && !isBlur) {
+      return
+    }
 
     this._setInputText()
-
-    args = extend(true, args, {
-      name: this.props.name,
-      oldValue: this.oldValue,
-      newValue: this.currentValue,
-    })
-
-    setTimeout(function () {
-      that.props && that.props.onValueChange && that._callHandler(that.props.onValueChange, args)
-      that.group && that.group._onValueChange({ changedField: args.changedField || that })
-      isFunction(that._valueChange) && that._valueChange(args)
-      if (that.validateTriggered) {
-        that._validate()
-      }
-    }, 0)
+    super._onValueChange()
   }
 
   _setInputText() {
