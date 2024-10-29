@@ -7,6 +7,7 @@ class AutoCompleteList extends List {
     const defaults = {
       gutter: 'x-md',
       cols: 1,
+      vertical: true,
       optionDefaults: {
         key() {
           return this.props.value

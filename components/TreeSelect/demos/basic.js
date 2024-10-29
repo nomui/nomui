@@ -45,7 +45,7 @@ define([], function () {
             {
               component: 'TreeSelect',
               label: '控制浮层宽度',
-              popupWidth: 300,
+              popupWidth: 'auto',
               allowClear: true,
               treeDataFields: {
                 key: 'value',

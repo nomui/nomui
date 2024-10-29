@@ -22,7 +22,7 @@ class List extends Component {
   }
 
   _config() {
-    const { virtual } = this.props
+    const { virtual, vertical } = this.props
     this.itemRefs = {}
     this.selectedItem = null
 
@@ -50,6 +50,9 @@ class List extends Component {
       this.virChildren(children)
     } else {
       this.setProps({
+        classes: {
+          'nom-list-vertical': vertical
+        },
         children: children,
       })
     }
@@ -567,7 +570,8 @@ List.defaults = {
   sortable: false,
   overflow: 'hidden',
   loadMore: false,
-  loadmoreText: '加载更多...'
+  loadmoreText: '加载更多...',
+  vertical: false
 }
 
 Component.register(List)
