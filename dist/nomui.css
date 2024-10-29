@@ -11482,7 +11482,6 @@ textarea .nom-textarea {
   border-top-right-radius: var(--nom-border-radius);
   border-bottom-right-radius: var(--nom-border-radius);
   user-select: none;
-  opacity: 0;
   transition: 0.25s;
 }
 .nom-number-input .nom-number-input-controler .nom-flex {
@@ -11514,6 +11513,10 @@ textarea .nom-textarea {
 .nom-number-input .nom-number-input-controler.s-disabled .nom-flex .nom-number-input-controler-button {
   cursor: not-allowed;
   pointer-events: none;
+}
+.nom-number-input.p-variant-filled .nom-number-input-controler,
+.nom-number-input.p-variant-borderless .nom-number-input-controler {
+  opacity: 0;
 }
 .nom-number-input:hover .nom-number-input-controler,
 .nom-number-input:focus-within .nom-number-input-controler {

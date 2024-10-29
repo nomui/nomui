@@ -25001,7 +25001,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _created() {
       super._created();
-      this.lastValue = this.props.value;
     }
     _config() {
       this._setFormatter();
@@ -25025,18 +25024,25 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.parserFunc = parser;
       }
     }
-    _onValueChange() {
+    _onBlur() {
+      this._checkValue();
+      this._setPrecision(true);
+      this._onValueChange(true);
+    }
+    _onValueChange(isBlur) {
+      if (Number.isNaN(this.getValue())) {
+        return;
+      }
+      if (this.props.ignoreInputChange && !isBlur) {
+        return;
+      }
+      this._setInputText();
+      super._onValueChange();
+    }
+    _setInputText() {
       const text = this.parserFunc(this.getText());
       const newText = `${this.formatterFunc(text)}`;
       this.input.setText(newText);
-      if (this.getValue() !== this.oldValue) {
-        this._callHandler(this.props.onValueChange, {
-          name: this.props.name,
-          oldValue: this.oldValue,
-          newValue: text,
-        });
-        this.oldValue = text;
-      }
     }
     _getControls() {
       if (!this.props.showSpinner) {
@@ -25072,10 +25078,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
       };
     }
-    _onBlur() {
-      this._checkValue();
-      this._setPrecision(true);
-    }
     _isEmptyOrInvalid(v) {
       return isNullish(v) || Number.isNaN(v) || v === "NaN" || v === "";
     }
@@ -25091,8 +25093,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (precision && precision > 0) {
         const n = parseFloat(v);
         v = n.toFixed(precision);
-        this.lastValue = v;
-        this.currentValue = v;
         this.setValue(v, { triggerChange: false });
       }
     }
@@ -25100,7 +25100,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { min, max } = this.props;
       let v = this.getValue();
       if (Number.isNaN(Number(v))) {
-        this.setValue(this.lastValue, { triggerChange: false });
+        this.setValue(this.oldValue, { triggerChange: false });
       } else {
         let shouldChange = false;
         if (min && v < min) {
@@ -25111,9 +25111,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           v = max;
           shouldChange = true;
         }
-        this.lastValue = v;
-        this.currentValue = v;
-        shouldChange && this.setValue(v, { triggerChange: false });
+        if (shouldChange) {
+          this.setValue(v, { triggerChange: false });
+        }
       }
     }
     _onPlus() {
@@ -25164,8 +25164,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         value = value || value === 0 ? `${value}` : "";
       }
       const { precision } = this.props;
-      this.currentValue = this.getValue();
-      this.lastValue = this.currentValue;
+      if (!Number.isNaN(this.getValue())) {
+        this.currentValue = this.getValue();
+      }
       value = this.formatterFunc(value);
       if (Number.isNaN(value) || value === "NaN") {
         value = "";
@@ -25214,6 +25215,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     allowClear: false,
     formatter: null,
     parser: null,
+    ignoreInputChange: true,
   };
   Component.register(NumberInput);
   const SPINNER_POSITION = {
