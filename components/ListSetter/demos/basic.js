@@ -44,6 +44,7 @@ define([
               component: 'ListSetter',
               label: '表格列设置',
               labelAlign: 'top',
+              minItems: 1,
               actions: ({ listSetter }) => {
                 return {
                   component: 'Icon',
