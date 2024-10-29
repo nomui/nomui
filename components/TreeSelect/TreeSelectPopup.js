@@ -2,7 +2,7 @@ import Component from '../Component/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
 import Textbox from '../Textbox/index'
-import { clone } from '../util/index'
+import { clone, isNumeric } from '../util/index'
 
 class TreeSelectPopup extends Popup {
   constructor(props, ...mixins) {
@@ -28,61 +28,71 @@ class TreeSelectPopup extends Popup {
       flatOptions,
       multiple,
       initExpandLevel,
+      popupWidth
     } = this.selectControl.props
+
+    let w = `${this.selectControl.control.offsetWidth()}px`
+    if (isNumeric(popupWidth)) {
+      w = `${popupWidth}px`
+    }
+    else if (popupWidth === 'auto') {
+      w = 'auto'
+    }
 
     this.setProps({
       attrs: {
         style: {
-          width: `${this.selectControl.control.offsetWidth()}px`,
+          width: w,
+          maxWidth: `${this.selectControl.control.offsetWidth()}px`
         },
       },
       children: {
         component: Layout,
         header: searchable
           ? {
-              children: {
-                component: Textbox,
-                placeholder: searchable.placeholder,
-                _created: (inst) => {
-                  this.selectControl.searchBox = inst
-                },
-                onValueChange: ({ newValue }) => {
-                  this.timer && clearTimeout(this.timer)
-                  this.timer = setTimeout(() => {
-                    const loading = new nomui.Loading({
-                      container: this.selectControl.tree.parent,
-                    })
-                    const result = searchable.filter({
-                      inputValue: newValue,
-                      options: options,
-                    })
-
-                    if (result && result.then) {
-                      return result
-                        .then((value) => {
-                          this.selectControl.tree.update({
-                            initExpandLevel: newValue ? -1 : initExpandLevel, // 搜索时展开节点层级
-                            data: value,
-                          })
-                          // 更新 optionsMap
-                          this.selectControl.getOptionsMap()
-                          loading && loading.remove()
-                        })
-                        .catch(() => {
-                          loading && loading.remove()
-                        })
-                    }
-                    loading && loading.remove()
-
-                    result &&
-                      this.selectControl.tree.update({
-                        initExpandLevel: newValue ? -1 : initExpandLevel, // 搜索时展开节点层级
-                        data: result,
-                      })
-                  }, 300)
-                },
+            children: {
+              component: Textbox,
+              placeholder: searchable.placeholder,
+              _created: (inst) => {
+                this.selectControl.searchBox = inst
               },
-            }
+              onValueChange: ({ newValue }) => {
+                this.timer && clearTimeout(this.timer)
+                this.timer = setTimeout(() => {
+                  const loading = new nomui.Loading({
+                    container: this.selectControl.tree.parent,
+                  })
+                  const result = searchable.filter({
+                    inputValue: newValue,
+                    options: options,
+                  })
+
+                  if (result && result.then) {
+                    return result
+                      .then((value) => {
+                        this.selectControl.tree.update({
+                          initExpandLevel: newValue ? -1 : initExpandLevel, // 搜索时展开节点层级
+                          data: value,
+                        })
+                        // 更新 optionsMap
+                        this.selectControl.getOptionsMap()
+                        loading && loading.remove()
+                      })
+                      .catch(() => {
+                        loading && loading.remove()
+                      })
+                  }
+                  loading && loading.remove()
+
+                  result &&
+                    this.selectControl.tree.update({
+                      initExpandLevel: newValue ? -1 : initExpandLevel, // 搜索时展开节点层级
+                      data: result,
+                    })
+                }, 300)
+              },
+            },
+          }
           : null,
         body: {
           children: {

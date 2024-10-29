@@ -13,6 +13,7 @@
 | treeDataFields | `Tree`组件的`dataFields`字段 | `object ` | `{key:'key',text:'text',children:'children',parentKey:'parentKey'}` |
 | maxTagWidth | 最大已选中标签宽度 | `number` | 120 |
 | maxTagCount | 最大显示已选中标签数,默认全部显示 | `number` | -1 |
+| popupWidth | 下拉框宽度,默认为控件宽度，配置为数值可控制具体宽度，配置为'auto'则根据选项内容自适应宽度 | `number \| string` | - |
 | onlyleaf | 是否仅允许选中或者勾选叶子节点 | `boolean` | false |
 | treeSelectable | 树节点的选择事件(同 Tree 组件`nodeSelectable`) | `boolean` \| `object` | - |
 | treeCheckable | 树节点的可勾选配置(同 Tree 组件`nodeCheckable`) | `boolean` \| `object` | - |

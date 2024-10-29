@@ -22,6 +22,7 @@
 | virtual | 开启虚拟渲染，值为 number 则为可视区的高度配置（number 默认为 400） | `boolean\|number` | false |
 | sortable | ListItem 是否可拖拽排序 | `object\|boolean` | false |
 | loadMore | 是否支持加载更多项 | `object\|boolean` | false |
+| vertical | 列表是否纵向排列 | `boolean` | false |
 
 ### itemSelectable
 

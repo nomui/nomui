@@ -6888,6 +6888,9 @@ body .nom-always-dark {
 .nom-list > .nom-list-content .nom-virtual-list-item .nom-list-item > a {
   display: block;
 }
+.nom-list.nom-list-vertical > .nom-list-content {
+  flex-direction: column;
+}
 .nom-list.p-gutter-sm > .nom-list-content {
   margin: -0.25rem -0.25rem;
 }

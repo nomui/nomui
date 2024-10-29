@@ -10031,7 +10031,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _config() {
-      const { virtual } = this.props;
+      const { virtual, vertical } = this.props;
       this.itemRefs = {};
       this.selectedItem = null;
       this._addPropStyle(
@@ -10061,7 +10061,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         this.virChildren(children);
       } else {
-        this.setProps({ children: children });
+        this.setProps({
+          classes: { "nom-list-vertical": vertical },
+          children: children,
+        });
       }
     }
     getItem(param) {
@@ -10173,6 +10176,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         }
         return selectedData;
+      }
+      if (!this.selectedItem) {
+        return null;
       }
       return this.selectedItem.parent.props.data;
     }
@@ -10475,6 +10481,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     overflow: "hidden",
     loadMore: false,
     loadmoreText: "加载更多...",
+    vertical: false,
   };
   Component.register(List);
   var AutoCompleteListItemMixin = {
@@ -10512,6 +10519,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const defaults = {
         gutter: "x-md",
         cols: 1,
+        vertical: true,
         optionDefaults: Object.assign(
           {
             key() {
@@ -10572,11 +10580,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _config() {
       const autoCompletePopupRef = this;
       const { options } = this.props;
-      const { searchable, debounce, interval } = this.autoCompleteControl.props;
+      const {
+        searchable,
+        debounce,
+        interval,
+        popupWidth,
+      } = this.autoCompleteControl.props;
+      let w = `${this.autoCompleteControl.control.offsetWidth()}px`;
+      if (isNumeric(popupWidth)) {
+        w = `${popupWidth}px`;
+      } else if (popupWidth === "auto") {
+        w = "auto";
+      }
       this.setProps({
         attrs: {
           style: {
-            width: `${this.autoCompleteControl.control.offsetWidth()}px`,
+            width: w,
+            maxWidth: `${this.autoCompleteControl.control.offsetWidth()}px`,
           },
         },
         children: {
@@ -10937,6 +10957,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     filterName: "text", // text,select
     optionDefaults: {},
     autoFocus: false, // 自动聚焦搜索框
+    popupWidth: null,
   };
   Component.register(AutoComplete);
   class Avatar extends Component {
@@ -15199,7 +15220,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   };
   class SelectList extends List {
     constructor(props, ...mixins) {
-      const defaults = { gutter: "x-md", cols: 1 };
+      const defaults = { gutter: "x-md", cols: 1, vertical: true };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
@@ -15270,10 +15291,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.selectControl = this.opener.field;
     }
     _config() {
-      const { searchable, options: originOptions } = this.selectControl.props;
+      const {
+        searchable,
+        options: originOptions,
+        popupWidth,
+      } = this.selectControl.props;
+      let w = `${this.selectControl.control.offsetWidth()}px`;
+      if (isNumeric(popupWidth)) {
+        w = `${popupWidth}px`;
+      } else if (popupWidth === "auto") {
+        w = "auto";
+      }
       this.setProps({
         attrs: {
-          style: { width: `${this.selectControl.control.offsetWidth()}px` },
+          style: {
+            width: w,
+            maxWidth: `${this.selectControl.control.offsetWidth()}px`,
+          },
         },
         children: {
           component: Layout,
@@ -15972,6 +16006,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     virtual: false,
     allowClear: true,
     popupContainer: "body",
+    popupWidth: null,
   };
   Component.register(Select);
   class DateTimePickerList extends List {
@@ -31978,10 +32013,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         flatOptions,
         multiple,
         initExpandLevel,
+        popupWidth,
       } = this.selectControl.props;
+      let w = `${this.selectControl.control.offsetWidth()}px`;
+      if (isNumeric(popupWidth)) {
+        w = `${popupWidth}px`;
+      } else if (popupWidth === "auto") {
+        w = "auto";
+      }
       this.setProps({
         attrs: {
-          style: { width: `${this.selectControl.control.offsetWidth()}px` },
+          style: {
+            width: w,
+            maxWidth: `${this.selectControl.control.offsetWidth()}px`,
+          },
         },
         children: {
           component: Layout,
@@ -32531,6 +32576,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     onlyleaf: false,
     showArrow: true,
     initExpandLevel: -1,
+    popupWidth: null,
   };
   Component.register(TreeSelect);
   const DEFAULT_ACCEPT$1 =
