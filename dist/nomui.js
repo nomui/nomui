@@ -4572,15 +4572,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _removeCore() {
+      this.props &&
+        isFunction(this.props._remove) &&
+        this.props._remove.call(this, this);
       let el = this.element;
       if (el) {
         this.emptyChildren();
       } else {
         el = this._placeHolderElement;
       }
-      this.props &&
-        isFunction(this.props._remove) &&
-        this.props._remove.call(this, this);
       this.props &&
         isFunction(this.props.onRemove) &&
         this.props.onRemove({ inst: this, props: this.props });
