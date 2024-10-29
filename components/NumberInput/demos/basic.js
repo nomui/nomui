@@ -13,6 +13,9 @@ define([], function () {
             ref: (c) => {
               group = c
             },
+            onValueChange: (args) => {
+              console.log(args)
+            },
             fields: [
               {
                 component: 'NumberInput',

@@ -9,6 +9,7 @@ class NumberInput extends Textbox {
 
   _created() {
     super._created()
+    this.debounceTimeout = null
   }
 
   _config() {
@@ -52,38 +53,94 @@ class NumberInput extends Textbox {
     this._checkValue()
     this._setPrecision(true)
 
-    this._onValueChange()
+    this._onValueChange({}, true)
 
   }
 
-  _onValueChange(args = {}) {
+  _debounce(func, wait) {
+    let timeout
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout)
+        func(...args)
+      }
+      clearTimeout(timeout)
+      timeout = setTimeout(later, wait)
+    }
+  }
 
-    const that = this
-    this.oldValue = clone(this.currentValue)
+  // _onValueChange(args = {}) {
+
+  //   const that = this
+  //   this.oldValue = clone(this.currentValue)
+
+  //   if (Number.isNaN(this.getValue())) {
+  //     return
+  //   }
+
+
+
+  //   this.currentValue = clone(this.getValue())
+  //   this.props.value = this.currentValue
+
+  //   this._setInputText()
+
+  //   args = extend(true, args, {
+  //     name: this.props.name,
+  //     oldValue: this.oldValue,
+  //     newValue: this.currentValue,
+  //   })
+
+  //   this.timeoutFunc = setTimeout(function () {
+  //     that.props && that.props.onValueChange && that._callHandler(debounce(that.props.onValueChange, 1000), args)
+  //     that.group && that.group._onValueChange({ changedField: args.changedField || that })
+  //     isFunction(that._valueChange) && that._valueChange(args)
+  //     if (that.validateTriggered) {
+  //       that._validate()
+  //     }
+  //   }, 0)
+
+  // }
+
+  _onValueChange(args = {}, immediately) {
+    const that = this;
+    this.oldValue = clone(this.currentValue);
 
     if (Number.isNaN(this.getValue())) {
-      return
+      return;
     }
 
-    this.currentValue = clone(this.getValue())
-    this.props.value = this.currentValue
+    this.currentValue = clone(this.getValue());
+    this.props.value = this.currentValue;
 
-    this._setInputText()
+    this._setInputText();
 
     args = extend(true, args, {
       name: this.props.name,
       oldValue: this.oldValue,
       newValue: this.currentValue,
-    })
+    });
 
-    setTimeout(function () {
-      that.props && that.props.onValueChange && that._callHandler(that.props.onValueChange, args)
-      that.group && that.group._onValueChange({ changedField: args.changedField || that })
-      isFunction(that._valueChange) && that._valueChange(args)
-      if (that.validateTriggered) {
-        that._validate()
+    // 清除上一次的防抖计时器
+    if (this.debounceTimeout) {
+      clearTimeout(this.debounceTimeout);
+    }
+
+    // 设置新的防抖计时器
+    this.debounceTimeout = setTimeout(() => {
+      if (that.props && that.props.onValueChange) {
+        that._callHandler(that.props.onValueChange, args);
       }
-    }, 0)
+      if (that.group) {
+        that.group._onValueChange({ changedField: args.changedField || that });
+      }
+      if (isFunction(that._valueChange)) {
+        that._valueChange(args);
+      }
+      if (that.validateTriggered) {
+        that._validate();
+      }
+    }, immediately ? 0 : that.props.debounce);
   }
 
   _setInputText() {
@@ -319,7 +376,7 @@ NumberInput.defaults = {
   allowClear: false,
   formatter: null,
   parser: null,
-  ignoreInputChange: true
+  debounce: 0
 }
 Component.register(NumberInput)
 
