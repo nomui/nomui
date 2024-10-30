@@ -22,6 +22,9 @@ class MenuItem extends Component {
         type: 'down',
       },
       tools: null,
+      key: function () {
+        return this.props[this.props.keyField]
+      }
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
