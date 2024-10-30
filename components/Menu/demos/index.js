@@ -1,4 +1,4 @@
-define(['./horizontal.js', './uistyle.js', './tools.js', './divider.js', './compact.js', './item-type.js', './fit.js'], function (...demos) {
+define(['./horizontal.js', './uistyle.js', './tools.js', './divider.js', './compact.js', './item-type.js', './fit.js', './resize.js'], function (...demos) {
   return {
     title: 'Menu',
     subtitle: '菜单',

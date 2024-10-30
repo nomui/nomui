@@ -47,7 +47,9 @@ class Dropdown extends Component {
           children: {
             component: 'Menu',
             itemDefaults: {
-              size: size,
+              ...this.props.itemDefaults, ...{
+                size: size,
+              },
             },
             items: items,
           },
