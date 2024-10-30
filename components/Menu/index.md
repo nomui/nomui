@@ -14,6 +14,7 @@
 | itemDefaults   | 菜单子项的配置项                | `boolean` \| `object`      | -        |
 | compact        | 紧凑模式(子菜单通过`popup`展示) | `boolean`                  | `false`  |
 | sortable        | 菜单是否允许拖拽(仅限一级菜单) | `boolean`                  | `false`  |
+| onResize        | 水平菜单在大小改变时的回调，会返回被隐藏的子项 | `()=>{}`                  | -  |
 
 ### MenuItem Props
 
