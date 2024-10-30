@@ -118,13 +118,19 @@ class Td extends Component {
                 'nom-grid-column-tools-hover': column.toolbar.hover,
                 'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
               },
-              children: this.props.column.toolbar.render({
-                cell: this,
-                row: this.tr,
-                cellData: this.props.data,
-                rowData: this.tr.props.data,
-                index: this.tr.props.index,
-              })
+              children: {
+                ...this.props.column.toolbar.render({
+                  cell: this,
+                  row: this.tr,
+                  cellData: this.props.data,
+                  rowData: this.tr.props.data,
+                  index: this.tr.props.index,
+                }), ...{
+                  onClick: ({ event }) => {
+                    event.stopPropagation()
+                  }
+                }
+              }
             },
             {
               children: children
@@ -151,13 +157,19 @@ class Td extends Component {
                 'nom-grid-column-tools-hover': column.toolbar.hover,
                 'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
               },
-              children: this.props.column.toolbar.render({
-                cell: this,
-                row: this.tr,
-                cellData: this.props.data,
-                rowData: this.tr.props.data,
-                index: this.tr.props.index,
-              })
+              children: {
+                ...this.props.column.toolbar.render({
+                  cell: this,
+                  row: this.tr,
+                  cellData: this.props.data,
+                  rowData: this.tr.props.data,
+                  index: this.tr.props.index,
+                }), ...{
+                  onClick: ({ event }) => {
+                    event.stopPropagation()
+                  }
+                }
+              }
             },
           ]
         }
@@ -179,13 +191,19 @@ class Td extends Component {
                 'nom-grid-column-tools-hover': column.toolbar.hover,
                 'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
               },
-              children: this.props.column.toolbar.render({
-                cell: this,
-                row: this.tr,
-                cellData: this.props.data,
-                rowData: this.tr.props.data,
-                index: this.tr.props.index,
-              })
+              children: {
+                ...this.props.column.toolbar.render({
+                  cell: this,
+                  row: this.tr,
+                  cellData: this.props.data,
+                  rowData: this.tr.props.data,
+                  index: this.tr.props.index,
+                }), ...{
+                  onClick: ({ event }) => {
+                    event.stopPropagation()
+                  }
+                }
+              }
             },
           ]
         }
