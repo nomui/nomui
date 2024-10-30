@@ -17774,7 +17774,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             },
             children: {
               component: "Menu",
-              itemDefaults: { size: size },
+              itemDefaults: Object.assign({}, this.props.itemDefaults, {
+                size: size,
+              }),
               items: items,
             },
             onClick: (args) => {
@@ -23731,6 +23733,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           type: "down",
         },
         tools: null,
+        key: function () {
+          return this.props[this.props.keyField];
+        },
       };
       super(Component.extendProps(defaults, props), ...mixins);
     }
@@ -24041,6 +24046,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
         });
       }
+      this.props.item.keyField = this.menu.props.keyField;
       this.setProps({
         classes: {
           "nom-menu-group-container": this.props.item.type === "group",
@@ -24110,9 +24116,32 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         };
       });
       this.setProps({
-        classes: { "nom-menu-compact": this.props.compact },
+        classes: {
+          "nom-menu-compact": this.props.compact,
+          "nom-menu-force-inline": !!this.props.onResize,
+        },
         children: children,
       });
+    }
+    getInvisibleItems() {
+      const el = this.element;
+      const arr = [];
+      const ulRect = el.getBoundingClientRect();
+      const liElements = el.children;
+      for (const li of liElements) {
+        const liRect = li.getBoundingClientRect();
+        const isVisible =
+          liRect.left >= ulRect.left && liRect.right <= ulRect.right;
+        if (!isVisible) {
+          const k = li.component.props.item[this.props.keyField];
+          arr.push(
+            this.props.items.filter((x) => {
+              return x[this.props.keyField] === k;
+            })[0]
+          );
+        }
+      }
+      return arr;
     }
     getItem(param) {
       let retItem = null;
@@ -24157,6 +24186,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.expandToItem(param);
         this.selectItem(param);
         this.scrollTo(param);
+      }
+      if (
+        this.props.direction !== "vertical" &&
+        isFunction(this.props.onResize)
+      ) {
+        // 延迟执行，因为滚动条还没滚动完，获取不到正确的数据
+        setTimeout(() => {
+          this.props &&
+            this._callHandler(this.props.onResize, {
+              items: this.getInvisibleItems(),
+            });
+        }, 500);
       }
     }
     getRootItem(param) {
@@ -24232,7 +24273,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       const me = this;
-      const { sortable } = this.props;
+      const { sortable, direction, onResize } = this.props;
+      if (direction !== "vertical" && isFunction(onResize)) {
+        this._callHandler(this.props.onResize, {
+          items: this.getInvisibleItems(),
+        });
+        const resizeObserver = new ResizeObserver(() => {
+          this._callHandler(this.props.onResize, {
+            items: this.getInvisibleItems(),
+          });
+        });
+        resizeObserver.observe(this.element);
+      }
       this.scrollToSelected();
       if (sortable) {
         defaultSortableOndrop();
@@ -24267,6 +24319,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     direction: "vertical",
     keyField: "key",
     sortable: false,
+    onResize: false,
   };
   Component.register(Menu);
   class Message extends Layer {

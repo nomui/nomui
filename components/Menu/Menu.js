@@ -51,12 +51,38 @@ class Menu extends Component {
       }
     })
 
+
+
     this.setProps({
       classes: {
         'nom-menu-compact': this.props.compact,
+        'nom-menu-force-inline': !!this.props.onResize
       },
       children: children,
     })
+  }
+
+  getInvisibleItems() {
+    const el = this.element
+    const arr = []
+    const ulRect = el.getBoundingClientRect()
+    const liElements = el.children
+    for (const li of liElements) {
+      const liRect = li.getBoundingClientRect()
+      const isVisible = (
+        liRect.left >= ulRect.left &&
+        liRect.right <= ulRect.right
+      )
+
+      if (!isVisible) {
+        const k = li.component.props.item[this.props.keyField]
+        arr.push(this.props.items.filter(x => {
+          return x[this.props.keyField] === k
+        })[0])
+      }
+    }
+
+    return arr
   }
 
   getItem(param) {
@@ -108,6 +134,13 @@ class Menu extends Component {
       this.expandToItem(param)
       this.selectItem(param)
       this.scrollTo(param)
+    }
+
+    if (this.props.direction !== 'vertical' && isFunction(this.props.onResize)) {
+      // 延迟执行，因为滚动条还没滚动完，获取不到正确的数据
+      setTimeout(() => {
+        this.props && this._callHandler(this.props.onResize, { items: this.getInvisibleItems() })
+      }, 500)
     }
   }
 
@@ -200,7 +233,16 @@ class Menu extends Component {
 
   _rendered() {
     const me = this
-    const { sortable } = this.props
+    const { sortable, direction, onResize } = this.props
+
+    if (direction !== 'vertical' && isFunction(onResize)) {
+      this._callHandler(this.props.onResize, { items: this.getInvisibleItems() })
+      const resizeObserver = new ResizeObserver(() => {
+        this._callHandler(this.props.onResize, { items: this.getInvisibleItems() })
+      })
+      resizeObserver.observe(this.element)
+    }
+
     this.scrollToSelected()
     if (sortable) {
       defaultSortableOndrop()
@@ -241,7 +283,8 @@ Menu.defaults = {
   indent: 1.5,
   direction: 'vertical',
   keyField: 'key',
-  sortable: false
+  sortable: false,
+  onResize: false
 }
 Component.register(Menu)
 
