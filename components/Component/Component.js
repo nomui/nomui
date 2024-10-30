@@ -85,6 +85,12 @@ class Component {
       this.root = this.parent.root
     }
 
+    if (this.props.placement === 'replace') {
+      if (this.referenceComponent) {
+        this.referenceElement = this.referenceComponent._removeCore()
+      }
+    }
+
     if (this.props.ref) {
       this.props.ref(this)
     }
@@ -282,9 +288,6 @@ class Component {
     } else if (placement === 'prepend') {
       this.referenceElement.insertBefore(this.element, this.referenceElement.firstChild)
     } else if (placement === 'replace') {
-      if (this.referenceComponent) {
-        this.referenceElement = this.referenceComponent._removeCore()
-      }
       this.referenceElement.parentNode.replaceChild(this.element, this.referenceElement)
     } else if (placement === 'after') {
       this.referenceElement.insertAdjacentElement('afterend', this.element)

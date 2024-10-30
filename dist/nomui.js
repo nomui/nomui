@@ -4333,6 +4333,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else {
         this.root = this.parent.root;
       }
+      if (this.props.placement === "replace") {
+        if (this.referenceComponent) {
+          this.referenceElement = this.referenceComponent._removeCore();
+        }
+      }
       if (this.props.ref) {
         this.props.ref(this);
       }
@@ -4531,9 +4536,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.referenceElement.firstChild
         );
       } else if (placement === "replace") {
-        if (this.referenceComponent) {
-          this.referenceElement = this.referenceComponent._removeCore();
-        }
         this.referenceElement.parentNode.replaceChild(
           this.element,
           this.referenceElement
@@ -23418,6 +23420,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         labelField,
         keyField = "id",
         sortable,
+        minItems,
+        minItemsMessage,
       } = this.props;
       let sortableProps = sortable;
       if (sortable) {
@@ -23467,8 +23471,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 component: "Icon",
                 classes: { "nom-list-setter-item-delete": true },
                 type: "delete",
-                onClick: () => {
-                  that.removeItem(itemData[keyField]);
+                onClick: ({ sender, event }) => {
+                  const currentValue = this.getValue();
+                  if (minItems && currentValue.length === minItems) {
+                    new nomui.Message({
+                      content: minItemsMessage.replace("{minItems}", minItems),
+                      type: "warning",
+                      align: "top right",
+                      alignTo: sender,
+                      alignOuter: true,
+                    });
+                    event.stopPropagation();
+                  } else {
+                    that.removeItem(itemData[keyField]);
+                  }
                 },
               },
             ],
@@ -23530,6 +23546,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     keyField: "id",
     sortable: { handle: ".p-type-drag" },
     actions: null,
+    minItems: null,
+    minItemsMessage: "至少保留 {minItems} 项",
   };
   Component.register(ListSetter);
   class MaskInfo extends Component {

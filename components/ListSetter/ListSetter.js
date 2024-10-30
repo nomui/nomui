@@ -11,7 +11,7 @@ class ListSetter extends Field {
 
   _config() {
     const that = this
-    const { itemForm, actions, value, labelField, keyField = 'id', sortable } = this.props
+    const { itemForm, actions, value, labelField, keyField = 'id', sortable, minItems, minItemsMessage } = this.props
 
     let sortableProps = sortable
     if (sortable) {
@@ -63,8 +63,21 @@ class ListSetter extends Field {
               component: 'Icon',
               classes: { 'nom-list-setter-item-delete': true },
               type: 'delete',
-              onClick: () => {
-                that.removeItem(itemData[keyField])
+              onClick: ({ sender, event }) => {
+                const currentValue = this.getValue()
+                if (minItems && currentValue.length === minItems) {
+                  new nomui.Message({
+                    content: minItemsMessage.replace('{minItems}', minItems),
+                    type: 'warning',
+                    align: 'top right',
+                    alignTo: sender,
+                    alignOuter: true,
+                  })
+                  event.stopPropagation()
+                }
+                else {
+                  that.removeItem(itemData[keyField])
+                }
               }
             }
           ],
@@ -137,6 +150,8 @@ ListSetter.defaults = {
     handle: '.p-type-drag'
   },
   actions: null,
+  minItems: null,
+  minItemsMessage: '至少保留 {minItems} 项',
 }
 
 Component.register(ListSetter)

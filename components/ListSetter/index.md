@@ -8,6 +8,8 @@
 | --- | --- | --- | --- |
 | labelField | 列表项显示字段 | `string` | - |
 | keyField | 列表项键字段 | `string` | `id` |
+| minItems | 至少保留多少项目 | `number` | null |
+| minItemsMessage | 至少保留多少项目提示信息 | `string` | `至少保留 {minItems} 项` |
 | itemForm | 点击列表项弹出的表单的配置 | `object` | - |
 | actions | 操作栏配置 | `object` \| `({ listSetter }) => { return props }` | - |
 | value | 字段值，对象数组 | `object[]` | - |
