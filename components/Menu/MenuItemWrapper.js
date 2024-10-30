@@ -56,11 +56,11 @@ class MenuItemWrapper extends Component {
         name: 'submenu',
         attrs: menuProps.compact
           ? {
-              style: {
-                maxHeight: 'calc( 100vh - 5px )',
-                'overflow-y': 'auto',
-              },
-            }
+            style: {
+              maxHeight: 'calc( 100vh - 5px )',
+              'overflow-y': 'auto',
+            },
+          }
           : {},
         items: this.props.item.items,
         hidden: !expanded,
@@ -106,7 +106,7 @@ class MenuItemWrapper extends Component {
         },
       })
     }
-
+    this.props.item.keyField = this.menu.props.keyField
     this.setProps({
       classes: {
         'nom-menu-group-container': this.props.item.type === 'group',
@@ -114,9 +114,9 @@ class MenuItemWrapper extends Component {
       children: [
         this.props.item,
         !this.isLeaf &&
-          menuProps.direction === 'vertical' &&
-          !menuProps.compact &&
-          this.props.submenu,
+        menuProps.direction === 'vertical' &&
+        !menuProps.compact &&
+        this.props.submenu,
       ],
     })
   }
