@@ -268,7 +268,10 @@ class Menu extends Component {
   _onItemSelected(args) {
 
     this._callHandler(this.props.onItemSelected, args)
-      (this.props.direction !== 'vertical' && isFunction(this.props.onResize)) && this.scrollToSelected()
+    if (this.props && !!this.props.onResize && this.props.direction !== 'vertical') {
+      this.scrollToSelected()
+    }
+
   }
 
 }
