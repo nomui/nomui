@@ -22331,6 +22331,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           gutter: gutter,
           items: [...before, items.length > visibleItems && dropdowns],
         },
+        onClick: ({ event }) => {
+          event.stopPropagation();
+        },
       });
     }
   }

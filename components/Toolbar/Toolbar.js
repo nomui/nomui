@@ -33,6 +33,9 @@ class Toolbar extends Component {
         gutter: gutter,
         items: [...before, items.length > visibleItems && dropdowns],
       },
+      onClick: ({ event }) => {
+        event.stopPropagation()
+      }
     })
   }
 }
