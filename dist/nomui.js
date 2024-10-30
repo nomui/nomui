@@ -24296,12 +24296,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._callHandler(this.props.onResize, {
           items: this.getInvisibleItems(),
         });
-        const resizeObserver = new ResizeObserver(() => {
-          this._callHandler(this.props.onResize, {
-            items: this.getInvisibleItems(),
-          });
+        this.resizeObserver = new ResizeObserver(() => {
+          this.props &&
+            this._callHandler(this.props.onResize, {
+              items: this.getInvisibleItems(),
+            });
         });
-        resizeObserver.observe(this.element);
+        this.resizeObserver.observe(this.element);
       }
       this.scrollToSelected();
       if (sortable) {
@@ -24322,8 +24323,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
       }
     }
+    _remove() {
+      this.resizeObserver && this.resizeObserver.unobserve(this.element);
+    }
     _onItemSelected(args) {
       this._callHandler(this.props.onItemSelected, args);
+      if (
+        this.props &&
+        !!this.props.onResize &&
+        this.props.direction !== "vertical"
+      ) {
+        this.scrollToSelected();
+      }
     }
   }
   Menu.defaults = {
