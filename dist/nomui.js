@@ -9223,7 +9223,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._bindTrigger();
     }
     _config() {
-      if (this.props.content) {
+      if (this.props.content && this.componentType === "Popup") {
         this.setProps({
           classes: { "nom-popup-adapt-to-screen": true },
           children: { children: this.props.content },
