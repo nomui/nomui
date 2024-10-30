@@ -237,10 +237,10 @@ class Menu extends Component {
 
     if (direction !== 'vertical' && isFunction(onResize)) {
       this._callHandler(this.props.onResize, { items: this.getInvisibleItems() })
-      const resizeObserver = new ResizeObserver(() => {
-        this._callHandler(this.props.onResize, { items: this.getInvisibleItems() })
+      this.resizeObserver = new ResizeObserver(() => {
+        this.props && this._callHandler(this.props.onResize, { items: this.getInvisibleItems() })
       })
-      resizeObserver.observe(this.element)
+      this.resizeObserver.observe(this.element)
     }
 
     this.scrollToSelected()
@@ -261,9 +261,16 @@ class Menu extends Component {
     }
   }
 
-  _onItemSelected(args) {
-    this._callHandler(this.props.onItemSelected, args)
+  _remove() {
+    this.resizeObserver && this.resizeObserver.unobserve(this.element)
   }
+
+  _onItemSelected(args) {
+
+    this._callHandler(this.props.onItemSelected, args)
+      (this.props.direction !== 'vertical' && isFunction(this.props.onResize)) && this.scrollToSelected()
+  }
+
 }
 Menu.defaults = {
   tag: 'ul',
