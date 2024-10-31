@@ -281,11 +281,28 @@ class Td extends Component {
 
     // // 用span包一层，为了伪元素的展示
     if (isEllipsis && !column.autoWidth) {
-      children = {
-        tag: 'span',
-        classes: { 'nom-table-cell-content': true },
-        children,
+      if (!!column.cellRender || !!column.render) {
+        children = {
+          tag: 'span',
+          classes: {
+            'nom-table-cell-content': true,
+            'nom-table-cell-content-flex': true
+          },
+          children: {
+            children
+          },
+        }
       }
+      else {
+        children = {
+          tag: 'span',
+          classes: {
+            'nom-table-cell-content': true,
+          },
+          children,
+        }
+      }
+
     }
 
     const showTitle =
