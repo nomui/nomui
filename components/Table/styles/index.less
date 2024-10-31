@@ -155,12 +155,14 @@ table.nom-table {
       word-break: keep-all;
 
       .nom-table-cell-content {
-        &.nom-table-cell-content-render {
+        &.nom-table-cell-content-flex {
           display: flex;
 
           >div {
             width: 0;
             flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
 
