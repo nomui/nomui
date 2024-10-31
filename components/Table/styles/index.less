@@ -155,6 +155,15 @@ table.nom-table {
       word-break: keep-all;
 
       .nom-table-cell-content {
+        &.nom-table-cell-content-render {
+          display: flex;
+
+          >div {
+            width: 0;
+            flex-grow: 1;
+          }
+        }
+
         .nom-grid-td-cell-ellipsis {
           display: block;
           overflow: hidden;
