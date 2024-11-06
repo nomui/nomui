@@ -346,7 +346,7 @@ class IconPicker extends Field {
     this.popup.element.querySelectorAll('.nom-icon-picker-list-item.s-selected').forEach(n => {
       n.component.unselect()
     })
-    if (value) {
+    if (value && this.itemsRef[value]) {
       this.itemsRef[value].select()
       setTimeout(() => {
         value && this.itemsRef[value].element.scrollIntoView({ behavior: 'smooth' })
