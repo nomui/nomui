@@ -10588,6 +10588,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         interval,
         popupWidth,
       } = this.autoCompleteControl.props;
+      let { maxPopupWidth } = this.autoCompleteControl.props;
+      if (isNumeric(maxPopupWidth)) {
+        maxPopupWidth = `${maxPopupWidth}px`;
+      }
       let w = `${this.autoCompleteControl.control.offsetWidth()}px`;
       if (isNumeric(popupWidth)) {
         w = `${popupWidth}px`;
@@ -10598,7 +10602,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         attrs: {
           style: {
             width: w,
-            maxWidth: `${this.autoCompleteControl.control.offsetWidth()}px`,
+            maxWidth:
+              maxPopupWidth ||
+              `${this.autoCompleteControl.control.offsetWidth()}px`,
           },
         },
         children: {
@@ -15298,6 +15304,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         options: originOptions,
         popupWidth,
       } = this.selectControl.props;
+      let { maxPopupWidth } = this.selectControl.props;
+      if (isNumeric(maxPopupWidth)) {
+        maxPopupWidth = `${maxPopupWidth}px`;
+      }
       let w = `${this.selectControl.control.offsetWidth()}px`;
       if (isNumeric(popupWidth)) {
         w = `${popupWidth}px`;
@@ -15308,7 +15318,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         attrs: {
           style: {
             width: w,
-            maxWidth: `${this.selectControl.control.offsetWidth()}px`,
+            maxWidth:
+              maxPopupWidth || `${this.selectControl.control.offsetWidth()}px`,
           },
         },
         children: {
@@ -32111,6 +32122,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         initExpandLevel,
         popupWidth,
       } = this.selectControl.props;
+      let { maxPopupWidth } = this.selectControl.props;
+      if (isNumeric(maxPopupWidth)) {
+        maxPopupWidth = `${maxPopupWidth}px`;
+      }
       let w = `${this.selectControl.control.offsetWidth()}px`;
       if (isNumeric(popupWidth)) {
         w = `${popupWidth}px`;
@@ -32121,7 +32136,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         attrs: {
           style: {
             width: w,
-            maxWidth: `${this.selectControl.control.offsetWidth()}px`,
+            maxWidth:
+              maxPopupWidth || `${this.selectControl.control.offsetWidth()}px`,
           },
         },
         children: {

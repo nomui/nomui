@@ -21,6 +21,12 @@ class SelectPopup extends Popup {
   _config() {
     const { searchable, options: originOptions, popupWidth } = this.selectControl.props
 
+    let { maxPopupWidth } = this.selectControl.props
+    if (isNumeric(maxPopupWidth)) {
+      maxPopupWidth = `${maxPopupWidth}px`
+    }
+
+
     let w = `${this.selectControl.control.offsetWidth()}px`
     if (isNumeric(popupWidth)) {
       w = `${popupWidth}px`
@@ -33,7 +39,7 @@ class SelectPopup extends Popup {
       attrs: {
         style: {
           width: w,
-          maxWidth: `${this.selectControl.control.offsetWidth()}px`
+          maxWidth: maxPopupWidth || `${this.selectControl.control.offsetWidth()}px`
         },
       },
       children: {

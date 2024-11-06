@@ -21,4 +21,5 @@
 | optionFields | 自定义 options 中 text value 的字段 | `object` | `{ value: value, }` |
 | optionDefaults | 自定义options默认属性 | `object` | `{ }` |
 | popupWidth | 下拉框宽度,默认为控件宽度，配置为数值可控制具体宽度，配置为'auto'则根据选项内容自适应宽度 | `number \| string` | - |
+| maxPopupWidth | 下拉框宽度最大宽度 | `number \| string` | - |
 | onClear | 点击清空按钮时的回调 | `()=>{}` | - |
