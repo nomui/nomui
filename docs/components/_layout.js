@@ -481,6 +481,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                       url: '#!components!index?type=GroupList',
                     },
                     {
+                      text: 'IconPicker',
+                      subtext: '图标选择器',
+                      id: 'IconPicker',
+                      url: '#!components!index?type=IconPicker',
+                    },
+                    {
                       text: 'ListSetter',
                       subtext: '列表设置器',
                       id: 'ListSetter',

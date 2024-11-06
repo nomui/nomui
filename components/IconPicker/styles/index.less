@@ -1,0 +1,127 @@
+.nom-icon-picker {
+  &.nom-icon-picker-simple {
+    width: auto !important;
+
+
+    >.nom-field-content {
+      min-width: 60px;
+
+      .nom-control {
+        color: var(--nom-input-color);
+        background: transparent;
+        border: none;
+        border-radius: var(--nom-border-radius);
+        cursor: pointer;
+        transition: all 0.3s;
+
+      }
+    }
+
+
+  }
+
+  >.nom-field-content {
+    .nom-control {
+      position: relative;
+      min-height: @input-height-base;
+      padding: @padding-y-base 24px @padding-y-base 10px;
+      color: var(--nom-input-color);
+      line-height: @line-height-computed;
+      background: var(--nom-input-bg);
+      border: 1px solid var(--nom-border-color);
+      border-radius: var(--nom-border-radius);
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      gap: .5rem;
+
+      &:not(.s-disabled):hover {
+        border-color: var(--nom-color-primary);
+      }
+
+      .nom-icon-picker-text {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 0;
+        flex-grow: 1;
+      }
+
+
+      .nom-icon-picker-text-placeholder {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 0;
+        flex-grow: 1;
+        color: var(--nom-color-text-2);
+      }
+
+      .nom-icon-picker-clear {
+        position: absolute;
+        top: 0;
+        right: 8px;
+        bottom: 0;
+        background: var(--nom-input-bg);
+        cursor: pointer;
+      }
+
+      .nom-icon-picker-arrow {
+        position: absolute;
+        top: 0;
+        right: 8px;
+        bottom: 0;
+      }
+    }
+  }
+}
+
+.nom-icon-picker-popup {
+  padding: 1rem;
+  width: 335px;
+
+  >div {
+    width: 100%;
+  }
+
+  .nom-icon-picker-list {
+    flex: 1;
+    max-height: 320px;
+    overflow-y: auto;
+
+    h6 {
+      color: var(--nom-color-text-2);
+      font-size: 12px;
+      padding: .5rem;
+    }
+
+    .nom-icon-picker-list-item {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      text-align: center;
+      cursor: pointer;
+
+      .nom-icon {
+        font-size: 1rem;
+      }
+
+      &:hover {
+        background-color: var(--nom-icon-picker-hover-bg);
+      }
+
+      &.s-selected {
+        background-color: var(--nom-color-primary);
+        color: #fff;
+      }
+    }
+  }
+
+  .nom-icon-picker-popup-tools {
+    padding-top: .5rem;
+  }
+
+}

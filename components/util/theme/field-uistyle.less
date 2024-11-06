@@ -126,6 +126,24 @@
         }
     }
 
+    // Select
+    &.nom-icon-picker {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent;
+                background-color: var(--nom-input-filled-bg);
+
+                &:focus-within {
+                    border-color: var(--nom-color-primary);
+                }
+
+                .nom-icon-picker-clear {
+                    background: var(--nom-input-filled-bg);
+                }
+            }
+        }
+    }
+
 }
 
 
@@ -225,6 +243,20 @@
                 .nom-tree-select-clear {
                     background-color: var(--nom-input-bg);
 
+                }
+            }
+        }
+    }
+
+    // Select
+    &.nom-icon-picker {
+        >.nom-field-content {
+            .nom-control {
+                border-color: transparent !important;
+                background-color: var(--nom-input-bg);
+
+                .nom-icon-picker-clear {
+                    background-color: var(--nom-input-bg);
                 }
             }
         }
