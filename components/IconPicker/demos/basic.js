@@ -26,22 +26,6 @@ define([], function () {
             label: '带搜索框',
           },
           {
-            component: 'IconPicker',
-            name: 'ip2',
-            iconRender: (value) => {
-              return {
-                component: 'Avatar',
-                size: 'xlarge',
-                styles: {
-                  shape: 'square',
-                  color: 'indigo'
-                },
-                icon: value || 'down'
-              }
-            },
-            label: '自定义渲染',
-          },
-          {
             component: 'Field',
             label: '',
             control: {
