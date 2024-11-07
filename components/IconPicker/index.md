@@ -12,5 +12,7 @@
 | data | 图标数据源           | `array`     |
 | allowClear       | 是否允许显示清空按钮 | `boolean`                 | `true`      |
 | searchable       | 是否允许搜索 | `boolean`                 | `false`      |
-| iconRender        | 自定义图标展示函数，为true时不再以默认字段风格显示           | `()=>{}`  | - |
+| iconRender        | 自定义control图标渲染           | `()=>{}`  | - |
+| itemRender        | 自定义下拉框选项渲染函数          | `()=>{}`  | - |
+| popupWidth        | 下拉框宽度          | `number`  | 340 |
 

@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { debounce, extend } from '../util/index'
+import { debounce, extend, isNumeric } from '../util/index'
 
 class IconPicker extends Field {
   constructor(props, ...mixins) {
@@ -186,7 +186,7 @@ class IconPicker extends Field {
   _rendered() {
     const me = this
 
-    const { data, popupContainer, iconRender, clearText } = this.props
+    const { data, popupContainer, iconRender, clearText, popupWidth } = this.props
     let container
     if (popupContainer === 'self') {
       this.element.style.position = 'relative'
@@ -196,9 +196,18 @@ class IconPicker extends Field {
       ref.element.style.position = 'relative'
       container = ref.element
     }
+    let w = popupWidth
+    if (isNumeric(popupWidth)) {
+      w = `${popupWidth}px`
+    }
     this.popup = new nomui.Popup({
       classes: {
         'nom-icon-picker-popup': true
+      },
+      attrs: {
+        style: {
+          width: w
+        }
       },
       reference: container,
       trigger: this.control,
@@ -233,6 +242,9 @@ class IconPicker extends Field {
                   {
                     component: 'List',
                     items: itemData.icons,
+                    classes: {
+                      'nom-icon-picker-sub-list': true
+                    },
                     itemDefaults: {
                       onCreated: ({ inst }) => {
                         me.itemsRef[inst.props.type] = inst
@@ -249,9 +261,14 @@ class IconPicker extends Field {
                           },
                           onClick: () => {
                             me._handleIconClick(inst.props.type, inst.props.text)
-
                           },
-                          children: {
+                          children: me.props.itemRender ? me.props.itemRender(inst.props.type) : {
+                            attrs: {
+                              style: {
+                                padding: '1rem',
+                                fontSize: '1.2rem'
+                              }
+                            },
                             component: 'Icon',
                             type: inst.props.type,
                           }
@@ -405,7 +422,8 @@ IconPicker.defaults = {
   searchable: false,
   allowClear: true,
   placeholder: '请选择图标',
-  clearText: '清空'
+  clearText: '清空',
+  popupWidth: 340
 
 }
 Component.register(IconPicker)
