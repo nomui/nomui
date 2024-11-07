@@ -23498,7 +23498,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       const me = this;
-      const { data, popupContainer, iconRender, clearText } = this.props;
+      const {
+        data,
+        popupContainer,
+        iconRender,
+        clearText,
+        popupWidth,
+      } = this.props;
       let container;
       if (popupContainer === "self") {
         this.element.style.position = "relative";
@@ -23510,8 +23516,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         ref.element.style.position = "relative";
         container = ref.element;
       }
+      let w = popupWidth;
+      if (isNumeric(popupWidth)) {
+        w = `${popupWidth}px`;
+      }
       this.popup = new nomui.Popup({
         classes: { "nom-icon-picker-popup": true },
+        attrs: { style: { width: w } },
         reference: container,
         trigger: this.control,
         content: {
@@ -23541,6 +23552,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                     {
                       component: "List",
                       items: itemData.icons,
+                      classes: { "nom-icon-picker-sub-list": true },
                       itemDefaults: {
                         onCreated: ({ inst }) => {
                           me.itemsRef[inst.props.type] = inst;
@@ -23559,10 +23571,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                 inst.props.text
                               );
                             },
-                            children: {
-                              component: "Icon",
-                              type: inst.props.type,
-                            },
+                            children: me.props.itemRender
+                              ? me.props.itemRender(inst.props.type)
+                              : {
+                                  attrs: {
+                                    style: {
+                                      padding: "1rem",
+                                      fontSize: "1.2rem",
+                                    },
+                                  },
+                                  component: "Icon",
+                                  type: inst.props.type,
+                                },
                           });
                         },
                       },
@@ -23699,6 +23719,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     allowClear: true,
     placeholder: "请选择图标",
     clearText: "清空",
+    popupWidth: 340,
   };
   Component.register(IconPicker);
   class Image extends Component {

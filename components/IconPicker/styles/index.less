@@ -78,7 +78,6 @@
 
 .nom-icon-picker-popup {
   padding: 1rem;
-  width: 335px;
 
   >div {
     width: 100%;
@@ -95,29 +94,38 @@
       padding: .5rem;
     }
 
-    .nom-icon-picker-list-item {
-      width: 3rem;
-      height: 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 4px;
-      text-align: center;
-      cursor: pointer;
+    .nom-icon-picker-sub-list {
+      .nom-list-item-wrapper {
+        width: calc((100% / 6));
 
-      .nom-icon {
-        font-size: 1rem;
-      }
+        .nom-icon-picker-list-item {
+          // width: 3rem;
+          // height: 3rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          text-align: center;
+          cursor: pointer;
 
-      &:hover {
-        background-color: var(--nom-icon-picker-hover-bg);
-      }
 
-      &.s-selected {
-        background-color: var(--nom-color-primary);
-        color: #fff;
+          .nom-icon {
+            font-size: 1rem;
+          }
+
+          &:hover {
+            background-color: var(--nom-icon-picker-hover-bg);
+          }
+
+          &.s-selected {
+            background-color: var(--nom-color-primary);
+            color: #fff;
+          }
+        }
       }
     }
+
+
   }
 
   .nom-icon-picker-popup-tools {

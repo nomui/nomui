@@ -1,4 +1,4 @@
-define(['./basic.js', './custom.js', './data.js',], function () {
+define(['./basic.js', './custom.js', './item-render.js', './data.js',], function () {
   return {
     title: 'IconPicker',
     subtitle: '图标选择器',
