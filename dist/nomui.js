@@ -13890,6 +13890,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super(Component.extendProps(ColorPicker.defaults, props), ...mixins);
     }
     _config() {
+      const { dataKey } = this.props;
       const colors = [
         "red",
         "orange",
@@ -13940,6 +13941,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               itemSelectable: { byClick: true },
               selectedKeys: this.initValue,
               data: data,
+              dataKey,
               itemRender: ({ itemData }) => {
                 return {
                   styles: { color: itemData.id },
@@ -23662,7 +23664,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         .forEach((n) => {
           n.component.unselect();
         });
-      if (value) {
+      if (value && this.itemsRef[value]) {
         this.itemsRef[value].select();
         setTimeout(() => {
           value &&
