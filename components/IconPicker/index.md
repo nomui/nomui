@@ -14,4 +14,5 @@
 | searchable       | 是否允许搜索 | `boolean`                 | `false`      |
 | iconRender        | 自定义control图标渲染           | `()=>{}`  | - |
 | itemRender        | 自定义下拉框选项渲染函数          | `()=>{}`  | - |
+| popupWidth        | 下拉框宽度          | `number`  | 340 |
 
