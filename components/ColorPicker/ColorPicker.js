@@ -7,6 +7,7 @@ class ColorPicker extends Field {
     }
 
     _config() {
+        const { dataKey } = this.props
         const colors = [
             'red',
             'orange',
@@ -69,6 +70,7 @@ class ColorPicker extends Field {
                         },
                         selectedKeys: this.initValue,
                         data: data,
+                        dataKey,
                         itemRender: ({ itemData }) => {
                             return {
                                 styles: {
