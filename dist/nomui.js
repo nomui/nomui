@@ -18306,7 +18306,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _getAttrTitle(children, isEllipsis, showTitle) {
       // 因为isEllipsis = true时，已经使用span包了一层，所以具体的title为children.children
       if (isEllipsis || showTitle) {
-        const _title = isEllipsis ? children.children : children;
+        let _title = "";
+        if (isEllipsis && isPlainObject(children) && children.children) {
+          _title = children.children;
+        } else {
+          _title = children;
+        }
         if (isString(_title) || isNumeric(_title)) {
           // 字符#开头 children将以 html格式输出
           return _title[0] === "#" ? null : _title;
