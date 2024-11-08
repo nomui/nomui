@@ -174,23 +174,27 @@ class Component {
   _config() { }
 
   render() {
-    if (this.rendered === true) {
-      this.emptyChildren()
-    } else {
-      this._mountElement()
+    try {
+      if (this.rendered === true) {
+        this.emptyChildren()
+      } else {
+        this._mountElement()
+      }
+
+      this._handleAttrs()
+      this._handleStyles()
+
+      this._renderChildren()
+
+      this.props.disabled === true && isFunction(this._disable) && this._disable()
+      this.props.selected === true && isFunction(this._select) && this._select()
+      this.props.hidden === false && isFunction(this._show) && this._show()
+      this.props.expanded === true && isFunction(this._expand) && this._expand()
+
+      this._callRendered()
+    } catch (error) {
+      console.error('Render failed for component', this, error)
     }
-
-    this._handleAttrs()
-    this._handleStyles()
-
-    this._renderChildren()
-
-    this.props.disabled === true && isFunction(this._disable) && this._disable()
-    this.props.selected === true && isFunction(this._select) && this._select()
-    this.props.hidden === false && isFunction(this._show) && this._show()
-    this.props.expanded === true && isFunction(this._expand) && this._expand()
-
-    this._callRendered()
   }
 
   _callRendered() {
