@@ -10864,9 +10864,9 @@ textarea .nom-textarea {
   outline: none;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
-  min-width: 64px;
-  height: 32px;
-  font-size: 1rem;
+  min-width: 44px;
+  height: 22px;
+  font-size: calc(1rem*0.9);
 }
 .nom-switch > .nom-field-content .nom-switch-control i {
   position: absolute;
@@ -10916,44 +10916,44 @@ textarea .nom-textarea {
   animation: nom-switch-keyframe-left-show 0.24s linear forwards;
 }
 .nom-switch > .nom-field-content .nom-switch-control .nom-switch-indicator {
-  width: calc(32px - 4px);
-  height: calc(32px - 4px);
+  width: calc(22px - 4px);
+  height: calc(22px - 4px);
 }
 .nom-switch.p-size-small > .nom-field-content .nom-switch-control {
-  min-width: 48px;
-  height: 24px;
-  font-size: 0.875rem;
-}
-.nom-switch.p-size-small > .nom-field-content .nom-switch-control .nom-switch-indicator {
-  width: calc(24px - 4px);
-  height: calc(24px - 4px);
-}
-.nom-switch.p-size-xsmall > .nom-field-content .nom-switch-control {
   min-width: 32px;
   height: 16px;
-  font-size: var(--nom-switch-font-size-xs);
+  font-size: calc(0.875rem*0.9);
 }
-.nom-switch.p-size-xsmall > .nom-field-content .nom-switch-control .nom-switch-indicator {
+.nom-switch.p-size-small > .nom-field-content .nom-switch-control .nom-switch-indicator {
   width: calc(16px - 4px);
   height: calc(16px - 4px);
 }
+.nom-switch.p-size-xsmall > .nom-field-content .nom-switch-control {
+  min-width: 24px;
+  height: 12px;
+  font-size: calc(var(--nom-switch-font-size-xs)*0.9);
+}
+.nom-switch.p-size-xsmall > .nom-field-content .nom-switch-control .nom-switch-indicator {
+  width: calc(12px - 4px);
+  height: calc(12px - 4px);
+}
 .nom-switch.p-size-large > .nom-field-content .nom-switch-control {
-  min-width: 80px;
-  height: 40px;
-  font-size: 1.25rem;
+  min-width: 52px;
+  height: 26px;
+  font-size: calc(1.25rem*0.9);
 }
 .nom-switch.p-size-large > .nom-field-content .nom-switch-control .nom-switch-indicator {
-  width: calc(40px - 4px);
-  height: calc(40px - 4px);
+  width: calc(26px - 4px);
+  height: calc(26px - 4px);
 }
 .nom-switch.p-size-xlarge > .nom-field-content .nom-switch-control {
-  min-width: 96px;
-  height: 48px;
-  font-size: 1.5rem;
+  min-width: 60px;
+  height: 30px;
+  font-size: calc(1.5rem*0.9);
 }
 .nom-switch.p-size-xlarge > .nom-field-content .nom-switch-control .nom-switch-indicator {
-  width: calc(48px - 4px);
-  height: calc(48px - 4px);
+  width: calc(30px - 4px);
+  height: calc(30px - 4px);
 }
 .nom-switch.s-disabled > .nom-field-content .nom-switch-control {
   background-color: var(--nom-switch-disable-color);
