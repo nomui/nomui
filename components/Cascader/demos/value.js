@@ -20,6 +20,7 @@ define(['./data.js'], function (options) {
               children: 'Childs',
             },
             valueType: 'single',
+            singleShowFullPath: true,
             showArrow: false,
             value: 'aaa',
             options,

@@ -12135,6 +12135,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         separator,
         valueType,
         allowClear,
+        singleShowFullPath,
       } = this.props;
       const { value, options, disabled } = this.props;
       this.internalOption = JSON.parse(JSON.stringify(options));
@@ -12157,7 +12158,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             c = null;
           } else {
             c =
-              valueType === "cascade"
+              valueType === "cascade" || singleShowFullPath
                 ? selectedOpt.map((e) => e.label).join(separator)
                 : selectedOpt[selectedOpt.length - 1].label;
           }
@@ -12478,6 +12479,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       children: "children",
       disabled: "disabled",
     },
+    singleShowFullPath: false, // valueType 为 'single' 时，是否显示全路径
     valueType: "cascade",
     changeOnSelect: true,
     width: 200,
