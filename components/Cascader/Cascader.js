@@ -41,7 +41,7 @@ class Cascader extends Field {
   _config() {
     const cascader = this
     const children = []
-    const { showArrow, placeholder, separator, valueType, allowClear } = this.props
+    const { showArrow, placeholder, separator, valueType, allowClear, singleShowFullPath } = this.props
 
     const { value, options, disabled } = this.props
     this.internalOption = JSON.parse(JSON.stringify(options))
@@ -67,7 +67,7 @@ class Cascader extends Field {
           c = null
         } else {
           c =
-            valueType === 'cascade'
+            valueType === 'cascade' || singleShowFullPath
               ? selectedOpt.map((e) => e.label).join(separator)
               : selectedOpt[selectedOpt.length - 1].label
         }
@@ -422,6 +422,7 @@ Cascader.defaults = {
   showArrow: true,
   separator: ' / ',
   fieldsMapping: { label: 'label', value: 'value', children: 'children', disabled: 'disabled' },
+  singleShowFullPath: false, // valueType 为 'single' 时，是否显示全路径
   valueType: 'cascade',
   changeOnSelect: true,
   width: 200,
