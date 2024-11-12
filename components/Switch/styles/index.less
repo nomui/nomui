@@ -1,13 +1,13 @@
-@height-base: 32px;
-@height-xl: 48px;
-@height-lg: 40px;
-@height-sm: 24px;
-@height-xs: 16px;
+@height-xl: 30px;
+@height-lg: 26px;
+@height-base: 22px;
+@height-sm: 16px;
+@height-xs: 12px;
 
 .switch-size(@h; @font-size) {
   min-width: @h*2;
   height: @h;
-  font-size: @font-size;
+  font-size: calc(@font-size*0.9);
 
   .nom-switch-indicator {
     width: calc(@h - 4px);
