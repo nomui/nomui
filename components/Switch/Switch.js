@@ -88,10 +88,10 @@ class Switch extends Field {
 }
 
 Switch.defaults = {
-  unselectedText: '关',
-  selectedText: '开',
+  unselectedText: '',
+  selectedText: '',
   value: false,
-  size: 'small',
+  size: 'default',
 }
 
 Component.register(Switch)
