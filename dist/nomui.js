@@ -3748,6 +3748,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     return result;
   };
+  String.prototype.contains = function (search, ignoreCase = true) {
+    // 转义输入的搜索字符串
+    const escapedSearchString = escapeRegExp(search); // 创建不区分大小写的正则表达式
+    const regex = new RegExp(escapedSearchString, ignoreCase ? "igm" : "gm"); // 使用 exec 方法查找匹配
+    return regex.test(this);
+  };
   /**
    * Strict object type check. Only returns true
    * for plain JavaScript objects.
@@ -4040,6 +4046,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       event.stopPropagation();
     };
   }
+  function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // 转义正则元字符
+  }
   var index = /*#__PURE__*/ Object.freeze({
     __proto__: null,
     isPlainObject: isPlainObject,
@@ -4068,6 +4077,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     isNotEmptyArray: isNotEmptyArray,
     getStyle: getStyle,
     defaultSortableOndrop: defaultSortableOndrop,
+    escapeRegExp: escapeRegExp,
     AutoScroll: AutoScrollPlugin,
     MultiDrag: MultiDragPlugin,
     OnSpill: OnSpill,
@@ -15940,18 +15950,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return filterOption(text, options);
     }
     _normalizeSearchable() {
-      const { searchable } = this.props;
+      const { searchable, optionFields } = this.props;
       if (searchable) {
         this.setProps({
           searchable: Component.extendProps(
             {
               placeholder: null,
               filter: ({ inputValue, options }) => {
-                if (!inputValue) return options;
-                const reg = new RegExp(inputValue, "i");
+                if (!inputValue) {
+                  return options;
+                }
                 const filteredOptions = [];
                 options.forEach((option) => {
-                  if (reg.test(option.text)) {
+                  if (option[optionFields.text].contains(inputValue)) {
                     filteredOptions.push(option);
                   }
                 });
