@@ -26,6 +26,9 @@ class Progress extends Component {
   getProgressStatus() {
     const { status } = this.props
     const successPercent = this.getPercentNumber()
+    if (status === 'exception') {
+      return 'exception'
+    }
     if (
       (status === undefined || Progress._progressStatuses.indexOf(status) !== 0) &&
       successPercent >= 100
@@ -127,6 +130,15 @@ class Progress extends Component {
     } else {
       throw new Error(`${type} is not supported`)
     }
+
+    this.setProps({
+      classes: {
+        [`${Progress._prefixClass}-status-normal`]: false,
+        [`${Progress._prefixClass}-status-success`]: false,
+        [`${Progress._prefixClass}-status-exception`]: false,
+        [`${Progress._prefixClass}-status-active`]: false,
+      }
+    })
 
     this.setProps({
       classes: {

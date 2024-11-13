@@ -28183,6 +28183,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     getProgressStatus() {
       const { status } = this.props;
       const successPercent = this.getPercentNumber();
+      if (status === "exception") {
+        return "exception";
+      }
       if (
         (status === undefined ||
           Progress._progressStatuses.indexOf(status) !== 0) &&
@@ -28280,6 +28283,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else {
         throw new Error(`${type} is not supported`);
       }
+      this.setProps({
+        classes: {
+          [`${Progress._prefixClass}-status-normal`]: false,
+          [`${Progress._prefixClass}-status-success`]: false,
+          [`${Progress._prefixClass}-status-exception`]: false,
+          [`${Progress._prefixClass}-status-active`]: false,
+        },
+      });
       this.setProps({
         classes: {
           [`${Progress._prefixClass}-${
