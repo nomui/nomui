@@ -593,22 +593,22 @@ class Select extends Field {
   }
 
   _normalizeSearchable() {
-    const { searchable } = this.props
+    const { searchable, optionFields } = this.props
     if (searchable) {
       this.setProps({
         searchable: Component.extendProps(
           {
             placeholder: null,
             filter: ({ inputValue, options }) => {
-              if (!inputValue) return options
-              const reg = new RegExp(inputValue, 'i')
+              if (!inputValue) {
+                return options;
+              }
               const filteredOptions = []
               options.forEach((option) => {
-                if (reg.test(option.text)) {
+                if (option[optionFields.text].contains(inputValue)) {
                   filteredOptions.push(option)
                 }
               })
-
               return filteredOptions
             },
           },
