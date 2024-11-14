@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/nomui/nomui/compare/v1.4.0...v1.4.1) (2024-11-14)
+
+
+### Docs
+
+* 更新文档案例 ([c3e9ccc](https://github.com/nomui/nomui/commit/c3e9ccc9742443b4263f894a4ab51bf262af7f88))
+
 ## [1.4.0](https://github.com/nomui/nomui/compare/v1.3.3...v1.4.0) (2024-11-14)
 
 
