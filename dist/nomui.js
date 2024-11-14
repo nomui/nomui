@@ -23864,6 +23864,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         sortable,
         minItems,
         minItemsMessage,
+        itemRender,
+        formPopupAlign,
       } = this.props;
       let sortableProps = sortable;
       if (sortable) {
@@ -23887,7 +23889,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         dataKey: keyField,
         sortable: sortableProps,
         itemRender: ({ itemData }) => {
-          const itemFormProps = Component.extendProps(itemForm, {
+          let myFormProps = itemForm;
+          if (isFunction(itemForm)) {
+            myFormProps = itemForm({ itemData });
+          }
+          const itemFormProps = Component.extendProps(myFormProps, {
             component: Form,
             fieldDefaults: { labelAlign: "left" },
             value: itemData,
@@ -23907,7 +23913,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               },
               {
                 classes: { "nom-list-setter-item-label": true },
-                children: itemData[labelField],
+                children: itemRender
+                  ? itemRender({ itemData })
+                  : itemData[labelField],
               },
               {
                 component: "Icon",
@@ -23936,7 +23944,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 closeOnClickOutside: true,
                 closeToRemove: true,
                 children: itemFormProps,
-                align: "left top",
+                align: formPopupAlign,
                 alignTo: sender.element,
                 alignOuter: true,
               });
@@ -23990,6 +23998,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     actions: null,
     minItems: null,
     minItemsMessage: "至少保留 {minItems} 项",
+    itemRender: null,
+    formPopupAlign: "left top",
   };
   Component.register(ListSetter);
   class MaskInfo extends Component {

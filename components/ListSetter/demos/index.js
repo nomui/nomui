@@ -1,5 +1,5 @@
 define([
-  './basic.js',
+  './basic.js', './custom.js',
 ], function () {
   return {
     title: 'ListSetter',
