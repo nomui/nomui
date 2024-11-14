@@ -11,8 +11,14 @@ define([], function () {
                 { type: 'fixed', label: '固定字符串', value: null },
             ]
 
-            const convertValueString = (obj) => {
-                return `起始值:${obj.start}, 长度：${obj.length}, 自动补零:${obj.fillZero ? '是' : '否'}`
+            const convertValueString = (val) => {
+                if (!val) {
+                    return '-'
+                }
+                if (nomui.utils.isString(val)) {
+                    return val
+                }
+                return `起始值:${val.start || '-'}, 长度：${val.length || '-'}, 自动补零:${val.fillZero ? '是' : '否'}`
             }
 
             return {
@@ -40,7 +46,7 @@ define([], function () {
                                     children: `${itemData.label} :`
                                 },
                                 {
-                                    children: nomui.utils.isPlainObject(itemData.value) ? convertValueString(itemData.value) : itemData.value
+                                    children: convertValueString(itemData.value)
                                 },
                             ]
                         }
@@ -97,9 +103,6 @@ define([], function () {
                         })
                         fieldSelectorRef.update({ data: data.filter(x => { return !types.includes(x.type) || x.type === 'fixed' }) })
 
-                    },
-                    onItemRemoved: ({ key }) => {
-                        fieldSelectorRef.unselectItem(key, { triggerUnselect: false })
                     },
                     itemForm: ({ itemData }) => {
                         // 根据type渲染不同表单内容
@@ -177,7 +180,8 @@ define([], function () {
                         {
                             type: 'fixed',
                             label: '固定字符串',
-                            value: 'wt-'
+                            value: 'wt-',
+                            id: nomui.utils.newGuid() // 初始value也要带id作为唯一key
                         }
                     ]
                 },
