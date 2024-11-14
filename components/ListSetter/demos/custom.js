@@ -23,7 +23,7 @@ define([], function () {
                 },
                 children: {
                     component: 'ListSetter',
-                    label: '表格列设置',
+                    label: '编号规则设置',
                     labelAlign: 'top',
                     // minItems: 1,
                     listItemRender: ({ itemData }) => {
