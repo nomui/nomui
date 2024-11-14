@@ -11,7 +11,7 @@ class ListSetter extends Field {
 
   _config() {
     const that = this
-    const { itemForm, actions, value, labelField, keyField = 'id', sortable, minItems, minItemsMessage } = this.props
+    const { itemForm, actions, value, labelField, keyField = 'id', sortable, minItems, minItemsMessage, listItemRender } = this.props
 
     let sortableProps = sortable
     if (sortable) {
@@ -33,7 +33,11 @@ class ListSetter extends Field {
       dataKey: keyField,
       sortable: sortableProps,
       itemRender: ({ itemData }) => {
-        const itemFormProps = Component.extendProps(itemForm,
+        let myFormProps = itemForm
+        if (isFunction(itemForm)) {
+          myFormProps = itemForm(itemData)
+        }
+        const itemFormProps = Component.extendProps(myFormProps,
           {
             component: Form,
             fieldDefaults: {
@@ -57,7 +61,7 @@ class ListSetter extends Field {
             },
             {
               classes: { 'nom-list-setter-item-label': true },
-              children: itemData[labelField],
+              children: listItemRender ? listItemRender({ itemData }) : itemData[labelField],
             },
             {
               component: 'Icon',
