@@ -10,11 +10,13 @@
 | keyField | 列表项键字段 | `string` | `id` |
 | minItems | 至少保留多少项目 | `number` | null |
 | minItemsMessage | 至少保留多少项目提示信息 | `string` | `至少保留 {minItems} 项` |
-| itemForm | 点击列表项弹出的表单的配置 | `object` | - |
+| itemForm | 点击列表项弹出的表单的配置，也可以配置为函数，返回form组件props | `object \| ({itemData})=>{}` | - |
 | actions | 操作栏配置 | `object` \| `({ listSetter }) => { return props }` | - |
 | value | 字段值，对象数组 | `object[]` | - |
 | sortable | 列表项是否可拖拽排序 | `object` \| `boolean` | - |
 | onItemRemoved | 项删除事件 | `({ key }) => {}` | - |
+| itemRender | 自定义组件列表渲染 | `({ itemData }) => {}` | - |
+| formPopupAlign | 表单层默认对齐方式 | `left top` | - |
 
 ### methods
 
