@@ -15,7 +15,7 @@
 | value | 字段值，对象数组 | `object[]` | - |
 | sortable | 列表项是否可拖拽排序 | `object` \| `boolean` | - |
 | onItemRemoved | 项删除事件 | `({ key }) => {}` | - |
-| listItemRender | 自定义组件列表渲染 | `({ itemData }) => {}` | - |
+| itemRender | 自定义组件列表渲染 | `({ itemData }) => {}` | - |
 | formPopupAlign | 表单层默认对齐方式 | `left top` | - |
 
 ### methods

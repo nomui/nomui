@@ -26,7 +26,7 @@ define([], function () {
                     label: '编号规则设置',
                     labelAlign: 'top',
                     // minItems: 1,
-                    listItemRender: ({ itemData }) => {
+                    itemRender: ({ itemData }) => {
                         return {
                             component: 'Flex',
                             items: [

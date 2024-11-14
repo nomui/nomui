@@ -11,7 +11,7 @@ class ListSetter extends Field {
 
   _config() {
     const that = this
-    const { itemForm, actions, value, labelField, keyField = 'id', sortable, minItems, minItemsMessage, listItemRender, formPopupAlign } = this.props
+    const { itemForm, actions, value, labelField, keyField = 'id', sortable, minItems, minItemsMessage, itemRender, formPopupAlign } = this.props
 
     let sortableProps = sortable
     if (sortable) {
@@ -61,7 +61,7 @@ class ListSetter extends Field {
             },
             {
               classes: { 'nom-list-setter-item-label': true },
-              children: listItemRender ? listItemRender({ itemData }) : itemData[labelField],
+              children: itemRender ? itemRender({ itemData }) : itemData[labelField],
             },
             {
               component: 'Icon',
@@ -156,7 +156,7 @@ ListSetter.defaults = {
   actions: null,
   minItems: null,
   minItemsMessage: '至少保留 {minItems} 项',
-  listItemRender: null,
+  itemRender: null,
   formPopupAlign: 'left top',
 }
 
