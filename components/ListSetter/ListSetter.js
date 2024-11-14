@@ -11,7 +11,7 @@ class ListSetter extends Field {
 
   _config() {
     const that = this
-    const { itemForm, actions, value, labelField, keyField = 'id', sortable, minItems, minItemsMessage, listItemRender } = this.props
+    const { itemForm, actions, value, labelField, keyField = 'id', sortable, minItems, minItemsMessage, listItemRender, formPopupAlign } = this.props
 
     let sortableProps = sortable
     if (sortable) {
@@ -35,7 +35,7 @@ class ListSetter extends Field {
       itemRender: ({ itemData }) => {
         let myFormProps = itemForm
         if (isFunction(itemForm)) {
-          myFormProps = itemForm(itemData)
+          myFormProps = itemForm({ itemData })
         }
         const itemFormProps = Component.extendProps(myFormProps,
           {
@@ -91,7 +91,7 @@ class ListSetter extends Field {
               closeOnClickOutside: true,
               closeToRemove: true,
               children: itemFormProps,
-              align: 'left top',
+              align: formPopupAlign,
               alignTo: sender.element,
               alignOuter: true,
             })
@@ -156,6 +156,8 @@ ListSetter.defaults = {
   actions: null,
   minItems: null,
   minItemsMessage: '至少保留 {minItems} 项',
+  listItemRender: null,
+  formPopupAlign: 'left top',
 }
 
 Component.register(ListSetter)

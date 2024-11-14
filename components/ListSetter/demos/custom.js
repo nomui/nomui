@@ -1,26 +1,31 @@
-define(['css!./custom.css'], function () {
+define([], function () {
     return {
         title: '自定义',
         file: 'custom',
         demo: function () {
             let fieldSelectorRef = null
 
-            const columns = [
+            const data = [
                 { type: 'createTime', label: '创建时间', value: null },
                 { type: 'code', label: '编号', value: null },
                 { type: 'fixed', label: '固定字符串', value: null },
             ]
 
-            const covertValueString = (obj) => {
+            const convertValueString = (obj) => {
                 return `起始值:${obj.start}, 长度：${obj.length}, 自动补零:${obj.fillZero ? '是' : '否'}`
             }
 
             return {
+                attrs: {
+                    style: {
+                        width: '400px'
+                    }
+                },
                 children: {
                     component: 'ListSetter',
                     label: '表格列设置',
                     labelAlign: 'top',
-                    minItems: 1,
+                    // minItems: 1,
                     listItemRender: ({ itemData }) => {
                         return {
                             component: 'Flex',
@@ -35,7 +40,7 @@ define(['css!./custom.css'], function () {
                                     children: `${itemData.label} :`
                                 },
                                 {
-                                    children: nomui.utils.isPlainObject(itemData.value) ? covertValueString(itemData.value) : itemData.value
+                                    children: nomui.utils.isPlainObject(itemData.value) ? convertValueString(itemData.value) : itemData.value
                                 },
                             ]
                         }
@@ -45,6 +50,9 @@ define(['css!./custom.css'], function () {
                         return {
                             component: 'Icon',
                             type: 'plus',
+                            styles: {
+                                cursor: 'pointer'
+                            },
                             popup: {
                                 autoRender: true,
                                 children: {
@@ -55,23 +63,24 @@ define(['css!./custom.css'], function () {
                                     vertical: true,
                                     gap: 'xsmall',
                                     dataKey: 'field',
-                                    data: columns,
+                                    data: data,
                                     itemRender: ({ itemData }) => {
                                         return {
-                                            component: 'Flex',
-                                            justify: 'between',
-                                            gap: 'large',
-                                            onClick: () => {
-                                                listSetter.appendItem(itemData)
-                                            },
-                                            items: [
-                                                {
-                                                    children: itemData.label
-                                                },
-                                                {
-                                                    children: '添加'
+                                            styles: {
+                                                cursor: 'pointer',
+                                                hover: {
+                                                    color: 'lgray'
                                                 }
-                                            ]
+                                            },
+                                            attrs: {
+                                                style: {
+                                                    padding: '.5rem 1rem'
+                                                }
+                                            },
+                                            onClick: () => {
+                                                listSetter.appendItem({ ...itemData, ...{ id: nomui.utils.newGuid() } })
+                                            },
+                                            children: itemData.label
 
                                         }
                                     }
@@ -81,12 +90,19 @@ define(['css!./custom.css'], function () {
                     },
                     onValueChange: ({ newValue }) => {
                         console.log(newValue)
+                        // 动态控制 selector数据源
+                        const types = []
+                        newValue.forEach(n => {
+                            types.push(n.type)
+                        })
+                        fieldSelectorRef.update({ data: data.filter(x => { return !types.includes(x.type) || x.type === 'fixed' }) })
 
                     },
                     onItemRemoved: ({ key }) => {
                         fieldSelectorRef.unselectItem(key, { triggerUnselect: false })
                     },
-                    itemForm: (itemData) => {
+                    itemForm: ({ itemData }) => {
+                        // 根据type渲染不同表单内容
                         if (itemData.type === 'createTime') {
                             return {
                                 fieldDefaults: {
@@ -156,7 +172,7 @@ define(['css!./custom.css'], function () {
                         }
                     },
                     labelField: 'label',
-                    keyField: 'type',
+                    keyField: 'id',
                     value: [
                         {
                             type: 'fixed',
