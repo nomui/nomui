@@ -44,6 +44,16 @@ String.prototype.format = function (args) {
   return result
 }
 
+String.prototype.contains = function (search, ignoreCase = true) {
+  // 转义输入的搜索字符串
+  const escapedSearchString = escapeRegExp(search);
+  // 创建不区分大小写的正则表达式
+  const regex = new RegExp(escapedSearchString, ignoreCase ? 'igm' : 'gm');
+  // 使用 exec 方法查找匹配
+  return regex.test(this);
+}
+
+
 /**
  * Strict object type check. Only returns true
  * for plain JavaScript objects.
@@ -393,4 +403,8 @@ export function defaultSortableOndrop() {
     event.preventDefault()
     event.stopPropagation()
   }
+}
+
+export function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // 转义正则元字符
 }
