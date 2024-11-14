@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/nomui/nomui/compare/v1.3.3...v1.4.0) (2024-11-14)
+
+
+### Features
+
+* 下拉框组件支持定义最大下拉框宽度 ([b1afe1c](https://github.com/nomui/nomui/commit/b1afe1cb3f78fb1f97157c5865640267db77acfd))
+* 新增IconPicker组件 ([5d74aee](https://github.com/nomui/nomui/commit/5d74aee317bb1b7c3ab1a0fbf749a456d8de26b8))
+* cascade valueType 为 single 的时候支持显示全路径 label ([b6afbb2](https://github.com/nomui/nomui/commit/b6afbb2512ea0c497560298b0af8cde919c5e926))
+* **IconPicker:** 新增自定义选项渲染函数 ([e03ced2](https://github.com/nomui/nomui/commit/e03ced2cb02e3f64043e6bba55f5e5fe6de45a3c))
+* **ListSetter:** 支持复杂场景自定义itemForm与listItemRender ([5fe378c](https://github.com/nomui/nomui/commit/5fe378cca6211802fcba0c1c6d60df35a9c77a51))
+
+
+### Bug Fixes
+
+* 解决搜索有正则元字符注入问题&配置了optionFields.text 的情况下搜索失效的问题 ([46b448b](https://github.com/nomui/nomui/commit/46b448b5753bf5912cbed13cdf2ca7e84bc05c44))
+* **ColorPicker:** 修复 dataKey 属性不生效的 bug ([966101a](https://github.com/nomui/nomui/commit/966101a206cc9f5c42013fda8d55faf948faf993))
+* **Grid:** 某些情况下获取title报错问题 ([e1c7b9c](https://github.com/nomui/nomui/commit/e1c7b9c9840c5932dcbb33345886597308d9015a))
+* **IconPicker:** 修复默认赋值不存在于图标数据时的 bug。 ([9e5b1f0](https://github.com/nomui/nomui/commit/9e5b1f06c55cdc97a9f6fd3b6ee0c85ad1c9ece1))
+* **PopConfirm:** 显示bug ([0285156](https://github.com/nomui/nomui/commit/0285156cd0685601ee96674cbc44f75b1d0bdb3f))
+* **Progress:** 状态中途发生变化时不会正确显示的bug ([203a74c](https://github.com/nomui/nomui/commit/203a74cd7adf2fdf6998d507568f542298ba2e22))
+* **Toolbar:** Toolbar容器本身不再触发点击事件 ([24a8814](https://github.com/nomui/nomui/commit/24a881495691f3185c7db494fba1653dd730eed3))
+
+
+### Performance Improvements
+
+* 基类渲染方法增加try catch容错 ([6df8ab7](https://github.com/nomui/nomui/commit/6df8ab77b38c029c54b2ffd96d36d12a8859dfd0))
+
+
+### Docs
+
+* 调整案例 ([9a89bed](https://github.com/nomui/nomui/commit/9a89bed073480f12ef95426516f6935bc98679dd))
+* 添加文档 ([99fb90d](https://github.com/nomui/nomui/commit/99fb90d5f2cd778be6d174d5ea5cae7c556342b6))
+* 文档补充 ([1ad585e](https://github.com/nomui/nomui/commit/1ad585eda767d9fb65cef7ee42c47fdaf8e54ef9))
+* 文档更新 ([267bcb9](https://github.com/nomui/nomui/commit/267bcb947ad00bf0515a429678570e756880272d))
+* api命名修改 ([8e357c1](https://github.com/nomui/nomui/commit/8e357c18866acb2907ed9ab5c8b40269d88af664))
+* **IconPicker:** 新增案例 ([f6645dd](https://github.com/nomui/nomui/commit/f6645dda1704b55fa3534c6392b6f851aada4cef))
+
 ### [1.3.3](https://github.com/nomui/nomui/compare/v1.3.2...v1.3.3) (2024-10-30)
 
 
