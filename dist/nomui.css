@@ -7771,10 +7771,17 @@ table.nom-table.p-bordered {
 }
 .nom-grid .nom-grid-setting {
   position: absolute;
-  top: 7px;
-  right: 2px;
+  top: 0;
+  right: 0;
+  bottom: 1px;
   z-index: 11;
   background: var(--nom-grid-header-background-color);
+  display: flex;
+  align-items: center;
+}
+.nom-grid .nom-grid-setting.p-line-col,
+.nom-grid .nom-grid-setting.p-line-both {
+  border-left: 1px solid var(--nom-border-color);
 }
 .nom-grid > .nom-grid-header {
   position: relative;

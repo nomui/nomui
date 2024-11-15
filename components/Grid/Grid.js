@@ -128,7 +128,7 @@ class Grid extends Component {
 
     this._calcMinWidth()
 
-    const { line, rowDefaults, columnSettingText, scrollbarWidth } = this.props
+    const { line, rowDefaults, scrollbarWidth } = this.props
     if (!scrollbarWidth || !isNumeric(scrollbarWidth)) {
       this.props.scrollbarWidth = this._getScrollbarWidth() || 8
     }
@@ -138,35 +138,6 @@ class Grid extends Component {
         'm-with-setting': !!this.props.columnsCustomizable,
       },
       children: [
-        {
-          classes: {
-            'nom-grid-setting': true,
-          },
-          attrs: {
-            style: {
-              top: this.props.rowCheckable ? '10px' : '7px'
-            }
-          },
-          children: {
-            component: 'Button',
-            ref: (c) => {
-              this.settingBtn = c
-            },
-            icon: 'setting',
-            size: 'small',
-            renderIf: this.props.columnsCustomizable,
-            // type: 'text',
-            classes: {
-              'nom-grid-setting-btn': true,
-            },
-            attrs: {
-              title: columnSettingText,
-            },
-            onClick: () => {
-              this.showSetting()
-            },
-          },
-        },
         { component: GridHeader, line: line },
         { component: GridBody, line: line, rowDefaults: rowDefaults },
         this.props.summary && { component: GridFooter, line: line },

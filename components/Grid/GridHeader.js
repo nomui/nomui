@@ -24,21 +24,48 @@ class GridHeader extends Component {
 
     this._summaryHeight = summary ? 36 : 0
 
-    this.setProps({
-      classes: { 'nom-grid-highlight-col': this.grid.props.highlightCol },
-      children: {
-        component: Table,
-        columns: this.grid.props.columns,
-        data: this.grid.data,
-        attrs: {
-          style: {
-            minWidth: `${minWidth}px`,
+    this.setProps(
+      {
+        classes: { 'nom-grid-highlight-col': this.grid.props.highlightCol },
+        children: [{
+          component: Table,
+          columns: this.grid.props.columns,
+          data: this.grid.data,
+          attrs: {
+            style: {
+              minWidth: `${minWidth}px`,
+            },
+          },
+          onlyHead: true,
+          line: this.props.line,
+        },
+        {
+          classes: {
+            'nom-grid-setting': true,
+            [`p-line-${this.grid.props.line}`]: true
+          },
+          renderIf: !!this.grid.props.columnsCustomizable,
+          children: {
+            component: 'Button',
+            ref: (c) => {
+              this.grid.settingBtn = c
+            },
+            icon: 'setting',
+            size: 'small',
+            type: 'text',
+            classes: {
+              'nom-grid-setting-btn': true,
+            },
+            attrs: {
+              title: this.grid.props.columnSettingText,
+            },
+            onClick: () => {
+              this.grid.showSetting()
+            },
           },
         },
-        onlyHead: true,
-        line: this.props.line,
-      },
-    })
+        ]
+      })
   }
 
   _rendered() {

@@ -6,6 +6,8 @@
 
   .nom-grid-header {
     z-index: 10;
+
+
   }
 
   .hidden {
@@ -14,11 +16,18 @@
 
   .nom-grid-setting {
     position: absolute;
-    top: 7px;
-    right: 2px;
+    top: 0;
+    right: 0;
+    bottom: 1px;
     z-index: 11;
     background: var(--nom-grid-header-background-color);
+    display: flex;
+    align-items: center;
 
+    &.p-line-col,
+    &.p-line-both {
+      border-left: 1px solid var(--nom-border-color);
+    }
   }
 
   >.nom-grid-header {
@@ -126,6 +135,7 @@
       flex-shrink: 0;
       overflow-y: scroll;
       background-color: var(--nom-grid-header-background-color);
+
 
       >.nom-table {
         background-color: var(--nom-grid-header-background-color);

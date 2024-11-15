@@ -20098,14 +20098,37 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._summaryHeight = summary ? 36 : 0;
       this.setProps({
         classes: { "nom-grid-highlight-col": this.grid.props.highlightCol },
-        children: {
-          component: Table,
-          columns: this.grid.props.columns,
-          data: this.grid.data,
-          attrs: { style: { minWidth: `${minWidth}px` } },
-          onlyHead: true,
-          line: this.props.line,
-        },
+        children: [
+          {
+            component: Table,
+            columns: this.grid.props.columns,
+            data: this.grid.data,
+            attrs: { style: { minWidth: `${minWidth}px` } },
+            onlyHead: true,
+            line: this.props.line,
+          },
+          {
+            classes: {
+              "nom-grid-setting": true,
+              [`p-line-${this.grid.props.line}`]: true,
+            },
+            renderIf: !!this.grid.props.columnsCustomizable,
+            children: {
+              component: "Button",
+              ref: (c) => {
+                this.grid.settingBtn = c;
+              },
+              icon: "setting",
+              size: "small",
+              type: "text",
+              classes: { "nom-grid-setting-btn": true },
+              attrs: { title: this.grid.props.columnSettingText },
+              onClick: () => {
+                this.grid.showSetting();
+              },
+            },
+          },
+        ],
       });
     }
     _rendered() {
@@ -21142,12 +21165,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.checkSortInfo();
       this._processColumns();
       this._calcMinWidth();
-      const {
-        line,
-        rowDefaults,
-        columnSettingText,
-        scrollbarWidth,
-      } = this.props;
+      const { line, rowDefaults, scrollbarWidth } = this.props;
       if (!scrollbarWidth || !isNumeric(scrollbarWidth)) {
         this.props.scrollbarWidth = this._getScrollbarWidth() || 8;
       }
@@ -21157,24 +21175,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "m-with-setting": !!this.props.columnsCustomizable,
         },
         children: [
-          {
-            classes: { "nom-grid-setting": true },
-            attrs: { style: { top: this.props.rowCheckable ? "10px" : "7px" } },
-            children: {
-              component: "Button",
-              ref: (c) => {
-                this.settingBtn = c;
-              },
-              icon: "setting",
-              size: "small",
-              renderIf: this.props.columnsCustomizable, // type: 'text',
-              classes: { "nom-grid-setting-btn": true },
-              attrs: { title: columnSettingText },
-              onClick: () => {
-                this.showSetting();
-              },
-            },
-          },
           { component: GridHeader, line: line },
           { component: GridBody, line: line, rowDefaults: rowDefaults },
           this.props.summary && { component: GridFooter, line: line },
