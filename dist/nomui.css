@@ -7779,6 +7779,9 @@ table.nom-table.p-bordered {
   display: flex;
   align-items: center;
 }
+.nom-grid .nom-grid-setting > .nom-grid-setting-btn {
+  background-color: transparent;
+}
 .nom-grid .nom-grid-setting.p-line-col,
 .nom-grid .nom-grid-setting.p-line-both {
   border-left: 1px solid var(--nom-border-color);
