@@ -138,6 +138,34 @@ class Grid extends Component {
         'm-with-setting': !!this.props.columnsCustomizable,
       },
       children: [
+        {
+          ref: (c) => {
+            this.settingContainer = c
+          },
+          classes: {
+            'nom-grid-setting': true,
+            [`p-line-${this.props.line}`]: true
+          },
+          renderIf: !!this.props.columnsCustomizable,
+          children: {
+            component: 'Button',
+            ref: (c) => {
+              this.settingBtn = c
+            },
+            icon: 'setting',
+            size: 'small',
+            type: 'text',
+            classes: {
+              'nom-grid-setting-btn': true,
+            },
+            attrs: {
+              title: this.props.columnSettingText,
+            },
+            onClick: () => {
+              this.showSetting()
+            },
+          },
+        },
         { component: GridHeader, line: line },
         { component: GridBody, line: line, rowDefaults: rowDefaults },
         this.props.summary && { component: GridFooter, line: line },
@@ -1433,7 +1461,7 @@ Grid.defaults = {
     cascadeUncheckChildren: true,
     cascade: false,
   },
-  columnsCustomizable: false,
+  columnsCustomizable: true,
   // columnsCustomizable.selected: 若存在，则展示selected 的列数据
   // columnsCustomizable.cache: 设置列的结果保存至localstorage，cache的值为对应的key
   // columnsCustomizable.callback: 设置列保存回调

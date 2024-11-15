@@ -27,7 +27,7 @@ class GridHeader extends Component {
     this.setProps(
       {
         classes: { 'nom-grid-highlight-col': this.grid.props.highlightCol },
-        children: [{
+        children: {
           component: Table,
           columns: this.grid.props.columns,
           data: this.grid.data,
@@ -39,37 +39,15 @@ class GridHeader extends Component {
           onlyHead: true,
           line: this.props.line,
         },
-        {
-          classes: {
-            'nom-grid-setting': true,
-            [`p-line-${this.grid.props.line}`]: true
-          },
-          renderIf: !!this.grid.props.columnsCustomizable,
-          children: {
-            component: 'Button',
-            ref: (c) => {
-              this.grid.settingBtn = c
-            },
-            icon: 'setting',
-            size: 'small',
-            type: 'text',
-            classes: {
-              'nom-grid-setting-btn': true,
-            },
-            attrs: {
-              title: this.grid.props.columnSettingText,
-            },
-            onClick: () => {
-              this.grid.showSetting()
-            },
-          },
-        },
-        ]
+
+
       })
   }
 
   _rendered() {
     const that = this
+
+    this._fixSettingHeight()
 
     this._fixRightPadding()
     if (!this.grid.props.sticky) {
@@ -110,6 +88,11 @@ class GridHeader extends Component {
 
   _remove() {
     this.scrollbar && this.scrollbar._remove()
+  }
+
+  _fixSettingHeight() {
+    const h = this.element.offsetHeight
+    this.grid.element.querySelector('.nom-grid-setting').style.height = `${h - 1}px`
   }
 
   _fixRightPadding() {
@@ -189,11 +172,11 @@ class GridHeader extends Component {
 
     if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
       this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
-      if (this.grid.settingBtn) {
-        this.grid.settingBtn.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
+      if (this.grid.settingContainer) {
+        this.grid.settingContainer.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
       }
-    } else if (this.grid.settingBtn) {
-      this.grid.settingBtn.element.style.transform = `translateY(0px)`
+    } else if (this.grid.settingContainer) {
+      this.grid.settingContainer.element.style.transform = `translateY(0px)`
     }
 
     if (
