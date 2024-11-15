@@ -8620,6 +8620,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         ],
       });
     }
+    _rendered() {
+      if (this.props.readonly) {
+        const postion = this.element.style.position;
+        if (!postion || !postion.length || postion === "static") {
+          this.element.style.position = "relative";
+        }
+      }
+    }
     _update() {
       this.rules = [];
     }
@@ -20098,41 +20106,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._summaryHeight = summary ? 36 : 0;
       this.setProps({
         classes: { "nom-grid-highlight-col": this.grid.props.highlightCol },
-        children: [
-          {
-            component: Table,
-            columns: this.grid.props.columns,
-            data: this.grid.data,
-            attrs: { style: { minWidth: `${minWidth}px` } },
-            onlyHead: true,
-            line: this.props.line,
-          },
-          {
-            classes: {
-              "nom-grid-setting": true,
-              [`p-line-${this.grid.props.line}`]: true,
-            },
-            renderIf: !!this.grid.props.columnsCustomizable,
-            children: {
-              component: "Button",
-              ref: (c) => {
-                this.grid.settingBtn = c;
-              },
-              icon: "setting",
-              size: "small",
-              type: "text",
-              classes: { "nom-grid-setting-btn": true },
-              attrs: { title: this.grid.props.columnSettingText },
-              onClick: () => {
-                this.grid.showSetting();
-              },
-            },
-          },
-        ],
+        children: {
+          component: Table,
+          columns: this.grid.props.columns,
+          data: this.grid.data,
+          attrs: { style: { minWidth: `${minWidth}px` } },
+          onlyHead: true,
+          line: this.props.line,
+        },
       });
     }
     _rendered() {
       const that = this;
+      this._fixSettingHeight();
       this._fixRightPadding();
       if (!this.grid.props.sticky) {
         return;
@@ -20167,6 +20153,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _remove() {
       this.scrollbar && this.scrollbar._remove();
+    }
+    _fixSettingHeight() {
+      const h = this.element.offsetHeight;
+      this.grid.element.querySelector(".nom-grid-setting").style.height = `${
+        h - 1
+      }px`;
     }
     _fixRightPadding() {
       setTimeout(() => {
@@ -20221,13 +20213,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.element.style.transform = `translateY(${
           pRect.top - gRect.top - 2
         }px)`;
-        if (this.grid.settingBtn) {
-          this.grid.settingBtn.element.style.transform = `translateY(${
+        if (this.grid.settingContainer) {
+          this.grid.settingContainer.element.style.transform = `translateY(${
             pRect.top - gRect.top - 2
           }px)`;
         }
-      } else if (this.grid.settingBtn) {
-        this.grid.settingBtn.element.style.transform = `translateY(0px)`;
+      } else if (this.grid.settingContainer) {
+        this.grid.settingContainer.element.style.transform = `translateY(0px)`;
       }
       if (
         gRect.top < pRect.height + pRect.top &&
@@ -21175,6 +21167,30 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "m-with-setting": !!this.props.columnsCustomizable,
         },
         children: [
+          {
+            ref: (c) => {
+              this.settingContainer = c;
+            },
+            classes: {
+              "nom-grid-setting": true,
+              [`p-line-${this.props.line}`]: true,
+            },
+            renderIf: !!this.props.columnsCustomizable,
+            children: {
+              component: "Button",
+              ref: (c) => {
+                this.settingBtn = c;
+              },
+              icon: "setting",
+              size: "small",
+              type: "text",
+              classes: { "nom-grid-setting-btn": true },
+              attrs: { title: this.props.columnSettingText },
+              onClick: () => {
+                this.showSetting();
+              },
+            },
+          },
           { component: GridHeader, line: line },
           { component: GridBody, line: line, rowDefaults: rowDefaults },
           this.props.summary && { component: GridFooter, line: line },
@@ -22291,7 +22307,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       cascadeUncheckChildren: true,
       cascade: false,
     },
-    columnsCustomizable: false, // columnsCustomizable.selected: 若存在，则展示selected 的列数据
+    columnsCustomizable: true, // columnsCustomizable.selected: 若存在，则展示selected 的列数据
     // columnsCustomizable.cache: 设置列的结果保存至localstorage，cache的值为对应的key
     // columnsCustomizable.callback: 设置列保存回调
     autoMergeColumns: null,

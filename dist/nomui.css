@@ -6750,9 +6750,10 @@ body .nom-always-dark {
 .nom-confirm-content > .nom-confirm-body {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
 }
 .nom-confirm-content > .nom-confirm-body > .nom-confirm-icon {
-  padding-top: 0.135rem;
+  padding-top: 0.4rem;
   padding-right: 0.5rem;
   color: var(--nom-color-warning);
   font-size: 1.65rem;
@@ -7773,7 +7774,6 @@ table.nom-table.p-bordered {
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 1px;
   z-index: 11;
   background: var(--nom-grid-header-background-color);
   display: flex;
@@ -9960,8 +9960,16 @@ textarea .nom-textarea {
 }
 .nom-field.s-readonly {
   cursor: default !important;
-  pointer-events: none !important;
-  user-select: none !important;
+}
+.nom-field.s-readonly::after {
+  content: '';
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  z-index: 1;
 }
 .nom-field.p-plain > .nom-field-label {
   padding: 0;

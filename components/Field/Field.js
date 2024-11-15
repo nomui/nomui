@@ -122,6 +122,16 @@ class Field extends Component {
     })
   }
 
+  _rendered() {
+
+    if (this.props.readonly) {
+      const postion = this.element.style.position
+      if (!postion || !postion.length || postion === 'static') {
+        this.element.style.position = 'relative'
+      }
+    }
+  }
+
   _update() {
     this.rules = []
   }
