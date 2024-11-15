@@ -15,6 +15,7 @@ define([], function () {
                             onclick: function () {
                                 new nomui.Confirm({
                                     title: '确定删除吗 ？',
+                                    description: '请注意，删除后数据内容不可恢复。',
                                     okText: '是 的',
                                     cancelText: '不 要'
                                 })
