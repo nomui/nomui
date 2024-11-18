@@ -25,28 +25,6 @@ define([], function () {
                                     })
                                 }
                             },
-                            {
-                                component: 'RadioList',
-                                uistyle: 'button',
-                                options: [
-                                    {
-                                        text: '禁用',
-                                        value: true,
-                                    },
-                                    {
-                                        text: '启用',
-                                        value: false,
-                                    },
-                                ],
-                                value: false,
-                                onValueChange: (args) => {
-                                    if (args.newValue === true) {
-                                        colorPickerRef.disable()
-                                    } else {
-                                        colorPickerRef.enable()
-                                    }
-                                },
-                            },
                         ]
                     },
                     {

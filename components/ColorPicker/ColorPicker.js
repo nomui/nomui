@@ -81,6 +81,10 @@ class ColorPicker extends Field {
                                         color: useHex ? '#fff' : undefined,
                                     }
                                 },
+                                children: {
+                                    component: 'Icon',
+                                    type: 'check',
+                                },
                                 onClick: () => {
                                     if (useHex) {
                                         this.colorBlock.update({
