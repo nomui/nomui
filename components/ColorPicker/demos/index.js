@@ -1,6 +1,7 @@
 define([
     './basic.js',
     './value.js',
+    './data.js',
 ], function () {
     return {
         title: 'ColorPicker',
