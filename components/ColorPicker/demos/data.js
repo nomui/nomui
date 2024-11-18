@@ -33,7 +33,7 @@ define([], function () {
                             ref: (c) => {
                                 colorPickerRef = c
                             },
-                            useStyles: false,
+                            useHex: true, // useHex为true时支持hex色值数据源，如果不配置data此时启用内置hex数据源
                         }
                     }
                 ]

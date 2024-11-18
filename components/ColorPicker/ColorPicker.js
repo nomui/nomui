@@ -12,17 +12,103 @@ class ColorPicker extends Field {
     }
 
     _config() {
-        const { dataKey, useStyles } = this.props
+        const { dataKey, useHex } = this.props
         let { data, popupWidth } = this.props
 
-        if (!useStyles && data.length === 80 && data[0].id === '#c6cacc') {
+        if (!useHex) {
+            data = this._generateDefaultData()
+        }
+        else if (!data || !data.length) {
+            data = [
+                { id: '#c6cacc' },
+                { id: '#feda98' },
+                { id: '#f9e89e' },
+                { id: '#fde996' },
+                { id: '#cbe394' },
+                { id: '#c8e2a5' },
+                { id: '#a4e0a7' },
+                { id: '#87e0d3' },
+                { id: '#8ad3e2' },
+                { id: '#95d8f8' },
+                { id: '#98cdf3' },
+                { id: '#a7b3e1' },
+                { id: '#c4a7e9' },
+                { id: '#dd9bc0' },
+                { id: '#f6a0b5' },
+                { id: '#fdb7a5' },
+                { id: '#a7abb0' },
+                { id: '#fdd565' },
+                { id: '#f6d871' },
+                { id: '#fcde65' },
+                { id: '#b7e365' },
+                { id: '#add37e' },
+                { id: '#7dd182' },
+                { id: '#54d1c1' },
+                { id: '#58cfd3' },
+                { id: '#62c3f5' },
+                { id: '#65b2fc' },
+                { id: '#8072d3' },
+                { id: '#a675dd' },
+                { id: '#c975d1' },
+                { id: '#f2739a' },
+                { id: '#fba07c' },
+                { id: '#888d92' },
+                { id: '#fda635' },
+                { id: '#f3c645' },
+                { id: '#fbd032' },
+                { id: '#a7da2c' },
+                { id: '#93c55a' },
+                { id: '#5ac264' },
+                { id: '#27c2b0' },
+                { id: '#2cb8c5' },
+                { id: '#30ace1' },
+                { id: '#32a5fb' },
+                { id: '#5e73c4' },
+                { id: '#885bd2' },
+                { id: '#b44a9a' },
+                { id: '#ed4a7b' },
+                { id: '#fa6648' },
+                { id: '#6b7279' },
+                { id: '#fc8800' },
+                { id: '#f0b112' },
+                { id: '#fac800' },
+                { id: '#9bd100' },
+                { id: '#7bb63c' },
+                { id: '#3bb346' },
+                { id: '#00b3a1' },
+                { id: '#05a4b6' },
+                { id: '#0095ee' },
+                { id: '#0077fa' },
+                { id: '#3f51b5' },
+                { id: '#6a3ac7' },
+                { id: '#9e2cb3' },
+                { id: '#e91e63' },
+                { id: '#f93a20' },
+                { id: '#555B61' },
+                { id: '#D26700' },
+                { id: '#C88A0F' },
+                { id: '#D0AA00' },
+                { id: '#7EAE00' },
+                { id: '#649830' },
+                { id: '#30953B' },
+                { id: '#009589' },
+                { id: '#038698' },
+                { id: '#007BCA' },
+                { id: '#0062D6' },
+                { id: '#3342A1' },
+                { id: '#572FB3' },
+                { id: '#871E9E' },
+                { id: '#C51356' },
+                { id: '#D52515' }
+            ]
+        }
+
+
+        if (useHex && data.length === 80 && data[0].id === '#c6cacc') {
             // 给预设hex数据源一个合适的浮层宽度
             popupWidth = 468
         }
 
-        if (!data || useStyles) {
-            data = this._generateDefaultData()
-        }
 
         this.setProps({
             attrs: { tabindex: this.props.tabindex || 0 },
@@ -34,12 +120,12 @@ class ColorPicker extends Field {
                     },
                     classes: { 'nom-color-picker-color-block': true },
                     styles: {
-                        color: useStyles ? this.initValue : undefined
+                        color: !useHex ? this.initValue : undefined
                     },
                     attrs: {
                         style: {
-                            backgroundColor: isHexColor(this.initValue) ? this.initValue : undefined,
-                            color: isHexColor(this.initValue) ? '#fff' : undefined,
+                            backgroundColor: useHex && isHexColor(this.initValue) ? this.initValue : undefined,
+                            color: useHex && isHexColor(this.initValue) ? '#fff' : undefined,
                         }
                     },
                 },
@@ -67,18 +153,18 @@ class ColorPicker extends Field {
                         dataKey,
                         itemRender: ({ itemData }) => {
                             const color = itemData[dataKey]
-                            const useHex = isHexColor(color)
+                            const isHex = isHexColor(color)
                             return {
                                 classes: {
                                     'nom-color-picker-list-item': true
                                 },
                                 styles: {
-                                    color: useStyles ? color : undefined,
+                                    color: !useHex ? color : undefined,
                                 },
                                 attrs: {
                                     style: {
-                                        backgroundColor: useHex ? color : undefined,
-                                        color: useHex ? '#fff' : undefined,
+                                        backgroundColor: isHex ? color : undefined,
+                                        color: isHex ? '#fff' : undefined,
                                     }
                                 },
                                 children: {
@@ -86,7 +172,7 @@ class ColorPicker extends Field {
                                     type: 'check',
                                 },
                                 onClick: () => {
-                                    if (useHex) {
+                                    if (isHex) {
                                         this.colorBlock.update({
                                             attrs: {
                                                 style: {
@@ -99,7 +185,7 @@ class ColorPicker extends Field {
                                     else {
                                         this.colorBlock.update({
                                             styles: {
-                                                color: useStyles ? color : undefined
+                                                color: !useHex ? color : undefined
                                             }
                                         })
 
@@ -166,7 +252,7 @@ class ColorPicker extends Field {
 
     _setValue(value) {
         this.currentValue = value
-        if (this.props.useStyles) {
+        if (!this.props.useHex) {
             this.colorBlock.update({
                 styles: {
                     color: value
@@ -210,89 +296,8 @@ ColorPicker.defaults = {
     disabledItemKeys: [],
     showEmpty: false,
     popupWidth: 192,
-    useStyles: true,
-    data: [
-        { id: '#c6cacc' },
-        { id: '#feda98' },
-        { id: '#f9e89e' },
-        { id: '#fde996' },
-        { id: '#cbe394' },
-        { id: '#c8e2a5' },
-        { id: '#a4e0a7' },
-        { id: '#87e0d3' },
-        { id: '#8ad3e2' },
-        { id: '#95d8f8' },
-        { id: '#98cdf3' },
-        { id: '#a7b3e1' },
-        { id: '#c4a7e9' },
-        { id: '#dd9bc0' },
-        { id: '#f6a0b5' },
-        { id: '#fdb7a5' },
-        { id: '#a7abb0' },
-        { id: '#fdd565' },
-        { id: '#f6d871' },
-        { id: '#fcde65' },
-        { id: '#b7e365' },
-        { id: '#add37e' },
-        { id: '#7dd182' },
-        { id: '#54d1c1' },
-        { id: '#58cfd3' },
-        { id: '#62c3f5' },
-        { id: '#65b2fc' },
-        { id: '#8072d3' },
-        { id: '#a675dd' },
-        { id: '#c975d1' },
-        { id: '#f2739a' },
-        { id: '#fba07c' },
-        { id: '#888d92' },
-        { id: '#fda635' },
-        { id: '#f3c645' },
-        { id: '#fbd032' },
-        { id: '#a7da2c' },
-        { id: '#93c55a' },
-        { id: '#5ac264' },
-        { id: '#27c2b0' },
-        { id: '#2cb8c5' },
-        { id: '#30ace1' },
-        { id: '#32a5fb' },
-        { id: '#5e73c4' },
-        { id: '#885bd2' },
-        { id: '#b44a9a' },
-        { id: '#ed4a7b' },
-        { id: '#fa6648' },
-        { id: '#6b7279' },
-        { id: '#fc8800' },
-        { id: '#f0b112' },
-        { id: '#fac800' },
-        { id: '#9bd100' },
-        { id: '#7bb63c' },
-        { id: '#3bb346' },
-        { id: '#00b3a1' },
-        { id: '#05a4b6' },
-        { id: '#0095ee' },
-        { id: '#0077fa' },
-        { id: '#3f51b5' },
-        { id: '#6a3ac7' },
-        { id: '#9e2cb3' },
-        { id: '#e91e63' },
-        { id: '#f93a20' },
-        { id: '#555B61' },
-        { id: '#D26700' },
-        { id: '#C88A0F' },
-        { id: '#D0AA00' },
-        { id: '#7EAE00' },
-        { id: '#649830' },
-        { id: '#30953B' },
-        { id: '#009589' },
-        { id: '#038698' },
-        { id: '#007BCA' },
-        { id: '#0062D6' },
-        { id: '#3342A1' },
-        { id: '#572FB3' },
-        { id: '#871E9E' },
-        { id: '#C51356' },
-        { id: '#D52515' }
-    ]
+    useHex: false,
+    data: null
 }
 
 Component.register(ColorPicker)
