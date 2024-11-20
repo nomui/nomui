@@ -125,9 +125,13 @@ class AutoComplete extends Textbox {
   _getValue() {
     const { options, filterName, optionFields } = this.props
     const inputText = this._getInputText()
-    if (filterName === 'select') {
+
+    if (filterName === 'select' || (optionFields.text && optionFields.value)) {
+
       const currOption = options.find(item => item[optionFields.text] === inputText)
-      return currOption ? currOption[optionFields.value] : null
+      if (currOption) {
+        return currOption[optionFields.value] || currOption[optionFields.text]
+      }
     }
     if (inputText === '') {
       return null

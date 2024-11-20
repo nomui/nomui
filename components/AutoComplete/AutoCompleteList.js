@@ -13,10 +13,18 @@ class AutoCompleteList extends List {
           return this.props.value
         },
         _config: function () {
-          const { filterName } = this.parent.parent.parent.autoCompleteControl.props
-          this.setProps({
-            children: filterName === 'text' ? this.props.value : this.props.text,
-          })
+          const { filterName, optionFields } = this.parent.parent.parent.autoCompleteControl.props
+          if (optionFields.text && optionFields.value) {
+            this.setProps({
+              children: this.props[optionFields.text]
+            })
+          }
+          else {
+            this.setProps({
+              children: filterName === 'text' ? this.props.value : this.props.text,
+            })
+          }
+
         },
         ...props.optionDefaults
       },
