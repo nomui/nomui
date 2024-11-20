@@ -92,7 +92,8 @@ class GridHeader extends Component {
 
   _fixSettingHeight() {
     const h = this.element.offsetHeight
-    this.grid.element.querySelector('.nom-grid-setting').style.height = `${h - 1}px`
+    const settingEl = this.grid.element.querySelector('.nom-grid-setting')
+    if (settingEl) settingEl.style.height = `${h - 1}px`
   }
 
   _fixRightPadding() {
