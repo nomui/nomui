@@ -10661,7 +10661,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                             inputValue: newValue,
                             options,
                           });
-                          if (autoCompletePopupRef._isPromise(searchPromise)) {
+                          if (isPromiseLike$1(searchPromise)) {
                             return searchPromise
                               .then((val) => {
                                 autoCompletePopupRef.autoCompleteControl.props.options = val;
@@ -10743,10 +10743,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         component: Layout,
         body: { styles: { padding: 1 }, children: { component: Empty } },
       };
-    }
-    _isPromise(p) {
-      if (!p) return false;
-      return p instanceof Promise;
     }
   }
   class AutoComplete extends Textbox {
@@ -10945,10 +10941,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         autoComplete._doSearch(txt);
       }
     }
-    _isPromise(p) {
-      if (!p) return false;
-      return p instanceof Promise;
-    }
     _doSearch(txt) {
       this.searchMode = true;
       const { onSearch, filterOption, searchable } = this.props;
@@ -10963,7 +10955,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           container: this.optionList.parent,
         });
         const searchPromise = searchable.onSearch({ inputValue: txt, options });
-        if (this._isPromise(searchPromise)) {
+        if (isPromiseLike$1(searchPromise)) {
           return searchPromise
             .then((val) => {
               this.props.options = val;
