@@ -383,6 +383,14 @@ export function isNotEmptyArray(array) {
   return Array.isArray(array) && array.length > 0
 }
 
+export function isHexColor(str) {
+  if (!isString(str)) {
+    return false
+  }
+  const regex = /^#([0-9A-Fa-f]{3}){1,2}([0-9A-Fa-f]{2})?$/
+  return regex.test(str)
+}
+
 /**
  *
  * @param {HTMLElement} el dom元素

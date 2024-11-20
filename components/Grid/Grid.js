@@ -1461,7 +1461,7 @@ Grid.defaults = {
     cascadeUncheckChildren: true,
     cascade: false,
   },
-  columnsCustomizable: true,
+  columnsCustomizable: false,
   // columnsCustomizable.selected: 若存在，则展示selected 的列数据
   // columnsCustomizable.cache: 设置列的结果保存至localstorage，cache的值为对应的key
   // columnsCustomizable.callback: 设置列保存回调
