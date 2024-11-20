@@ -10517,6 +10517,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { onSelect, onUnselect } = this.props;
       const {
         filterName,
+        optionFields,
       } = this.parent.parent.parent.autoCompleteControl.props;
       this.setProps({
         selectable: {
@@ -10529,6 +10530,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             value: filterName === "select" ? this.props.text : this.props.value,
             option: this.props,
           };
+          if (optionFields && optionFields.value && optionFields.text) {
+            autoCompleteOption.value = this.props[optionFields.text];
+          }
           autoCompleteControl.input.update(autoCompleteOption);
           this._callHandler(onSelect);
         },
@@ -10559,11 +10563,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             _config: function () {
               const {
                 filterName,
+                optionFields,
               } = this.parent.parent.parent.autoCompleteControl.props;
-              this.setProps({
-                children:
-                  filterName === "text" ? this.props.value : this.props.text,
-              });
+              if (optionFields.text && optionFields.value) {
+                this.setProps({ children: this.props[optionFields.text] });
+              } else {
+                this.setProps({
+                  children:
+                    filterName === "text" ? this.props.value : this.props.text,
+                });
+              }
             },
           },
           props.optionDefaults
@@ -10855,11 +10864,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _getValue() {
       const { options, filterName, optionFields } = this.props;
       const inputText = this._getInputText();
-      if (filterName === "select") {
+      if (
+        filterName === "select" ||
+        (optionFields.text && optionFields.value)
+      ) {
         const currOption = options.find(
           (item) => item[optionFields.text] === inputText
         );
-        return currOption ? currOption[optionFields.value] : null;
+        if (currOption) {
+          return (
+            currOption[optionFields.value] || currOption[optionFields.text]
+          );
+        }
       }
       if (inputText === "") {
         return null;

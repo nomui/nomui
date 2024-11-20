@@ -1,7 +1,7 @@
 export default {
   _config: function () {
     const { onSelect, onUnselect } = this.props
-    const { filterName, } = this.parent.parent.parent.autoCompleteControl.props
+    const { filterName, optionFields } = this.parent.parent.parent.autoCompleteControl.props
 
     this.setProps({
       selectable: {
@@ -15,6 +15,10 @@ export default {
           value: filterName === 'select' ? this.props.text : this.props.value,
           option: this.props,
         }
+        if (optionFields && optionFields.value && optionFields.text) {
+          autoCompleteOption.value = this.props[optionFields.text]
+        }
+
         autoCompleteControl.input.update(autoCompleteOption)
         this._callHandler(onSelect)
       },
