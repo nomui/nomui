@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Textbox from '../Textbox/index'
-import { clone, extend, isFunction } from '../util/index'
+import { clone, extend, isFunction, isPromiseLike } from '../util/index'
 import AutoCompletePopup from './AutoCompletePopup'
 
 class AutoComplete extends Textbox {
@@ -219,11 +219,6 @@ class AutoComplete extends Textbox {
     }
   }
 
-  _isPromise(p) {
-    if (!p) return false
-    return p instanceof Promise
-  }
-
   _doSearch(txt) {
     this.searchMode = true
     const { onSearch, filterOption, searchable } = this.props
@@ -240,7 +235,7 @@ class AutoComplete extends Textbox {
         inputValue: txt,
         options,
       })
-      if (this._isPromise(searchPromise)) {
+      if (isPromiseLike(searchPromise)) {
         return searchPromise
           .then((val) => {
             this.props.options = val
