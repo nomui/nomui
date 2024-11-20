@@ -22,7 +22,7 @@ class AutoComplete extends Textbox {
 
   _rendered() {
     const { searchable } = this.props
-    !searchable && this.input && this._init()
+    if ((!searchable || searchable.sharedInput) && this.input) { this._init() }
     const { options } = this.props
     this.popup = new AutoCompletePopup({
       trigger: this.control,
@@ -219,12 +219,50 @@ class AutoComplete extends Textbox {
     }
   }
 
+  _isPromise(p) {
+    if (!p) return false
+    return p instanceof Promise
+  }
+
   _doSearch(txt) {
     this.searchMode = true
-    const { onSearch, filterOption } = this.props
+    const { onSearch, filterOption, searchable } = this.props
+
     const options = this.internalOptions
     this.setProps({ text: txt })
-    isFunction(filterOption) && this.popup.update({ options: filterOption(txt, options) })
+
+    if (searchable && searchable.sharedInput && isFunction(searchable.onSearch)) {
+
+      const loading = new nomui.Loading({
+        container: this.optionList.parent,
+      })
+      const searchPromise = searchable.onSearch({
+        inputValue: txt,
+        options,
+      })
+      if (this._isPromise(searchPromise)) {
+        return searchPromise
+          .then((val) => {
+            this.props.options = val
+            this.optionList.update()
+            loading && loading.remove()
+          })
+          .catch(() => {
+            loading && loading.remove()
+          })
+      }
+
+      loading && loading.remove()
+      this.props.options = searchPromise
+      searchPromise && this.optionList.update()
+    }
+
+    else if (isFunction(filterOption)) {
+      this.popup.update({ options: filterOption(txt, options) })
+    }
+
+
+
     isFunction(onSearch) && onSearch({ text: txt, sender: this })
   }
 
