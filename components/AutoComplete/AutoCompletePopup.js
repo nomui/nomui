@@ -48,7 +48,7 @@ class AutoCompletePopup extends Popup {
       },
       children: {
         component: Layout,
-        header: searchable
+        header: searchable && !searchable.sharedInput
           ? {
             children: {
               component: Textbox,

@@ -47,6 +47,7 @@ class AutoCompleteList extends List {
       selectedItems: value,
 
       onItemSelectionChange: () => {
+
         this.autoCompleteControl._onValueChange()
       },
     })

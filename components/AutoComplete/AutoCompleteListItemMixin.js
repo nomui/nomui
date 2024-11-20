@@ -16,14 +16,16 @@ export default {
           option: this.props,
         }
         autoCompleteControl.input.update(autoCompleteOption)
-        autoCompleteControl.props.animate && autoCompleteControl.popup.animateHide()
-        !autoCompleteControl.props.animate && autoCompleteControl.popup.hide()
-
         this._callHandler(onSelect)
       },
       onUnselect: () => {
         this._callHandler(onUnselect)
       },
+      onClick: () => {
+        const { autoCompleteControl } = this.list
+        autoCompleteControl.props.animate && autoCompleteControl.popup.animateHide()
+        !autoCompleteControl.props.animate && autoCompleteControl.popup.hide()
+      }
     })
   },
 }
