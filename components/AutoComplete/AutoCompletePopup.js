@@ -3,7 +3,7 @@ import Empty from '../Empty/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
 import Textbox from '../Textbox/index'
-import { isFunction, isNumeric } from '../util/index'
+import { isFunction, isNumeric, isPromiseLike } from '../util/index'
 import AutoCompleteList from './AutoCompleteList'
 
 class AutoCompletePopup extends Popup {
@@ -67,7 +67,7 @@ class AutoCompletePopup extends Popup {
                       inputValue: newValue,
                       options,
                     })
-                    if (autoCompletePopupRef._isPromise(searchPromise)) {
+                    if (isPromiseLike(searchPromise)) {
                       return searchPromise
                         .then((val) => {
                           autoCompletePopupRef.autoCompleteControl.props.options = val
@@ -161,10 +161,6 @@ class AutoCompletePopup extends Popup {
     }
   }
 
-  _isPromise(p) {
-    if (!p) return false
-    return p instanceof Promise
-  }
 }
 
 export default AutoCompletePopup
