@@ -10530,14 +10530,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             option: this.props,
           };
           autoCompleteControl.input.update(autoCompleteOption);
-          autoCompleteControl.props.animate &&
-            autoCompleteControl.popup.animateHide();
-          !autoCompleteControl.props.animate &&
-            autoCompleteControl.popup.hide();
           this._callHandler(onSelect);
         },
         onUnselect: () => {
           this._callHandler(onUnselect);
+        },
+        onClick: () => {
+          const { autoCompleteControl } = this.list;
+          autoCompleteControl.props.animate &&
+            autoCompleteControl.popup.animateHide();
+          !autoCompleteControl.props.animate &&
+            autoCompleteControl.popup.hide();
         },
       });
     },
@@ -10635,49 +10638,50 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
         children: {
           component: Layout,
-          header: searchable
-            ? {
-                children: {
-                  component: Textbox,
-                  placeholder: searchable.placeholder,
-                  _created: (inst) => {
-                    autoCompletePopupRef.autoCompleteControl.searchRef = inst;
+          header:
+            searchable && !searchable.sharedInput
+              ? {
+                  children: {
+                    component: Textbox,
+                    placeholder: searchable.placeholder,
+                    _created: (inst) => {
+                      autoCompletePopupRef.autoCompleteControl.searchRef = inst;
+                    },
+                    onValueChange({ newValue }) {
+                      if (debounce) {
+                        autoCompletePopupRef.timer &&
+                          clearTimeout(autoCompletePopupRef.timer);
+                        autoCompletePopupRef.timer = setTimeout(() => {
+                          const loading = new nomui.Loading({
+                            container:
+                              autoCompletePopupRef.autoCompleteControl
+                                .optionList.parent,
+                          });
+                          const searchPromise = searchable.onSearch({
+                            inputValue: newValue,
+                            options,
+                          });
+                          if (autoCompletePopupRef._isPromise(searchPromise)) {
+                            return searchPromise
+                              .then((val) => {
+                                autoCompletePopupRef.autoCompleteControl.props.options = val;
+                                autoCompletePopupRef.autoCompleteControl.optionList.update();
+                                loading && loading.remove();
+                              })
+                              .catch(() => {
+                                loading && loading.remove();
+                              });
+                          }
+                          loading && loading.remove();
+                          autoCompletePopupRef.autoCompleteControl.props.options = searchPromise;
+                          searchPromise &&
+                            autoCompletePopupRef.autoCompleteControl.optionList.update();
+                        }, interval);
+                      }
+                    },
                   },
-                  onValueChange({ newValue }) {
-                    if (debounce) {
-                      autoCompletePopupRef.timer &&
-                        clearTimeout(autoCompletePopupRef.timer);
-                      autoCompletePopupRef.timer = setTimeout(() => {
-                        const loading = new nomui.Loading({
-                          container:
-                            autoCompletePopupRef.autoCompleteControl.optionList
-                              .parent,
-                        });
-                        const searchPromise = searchable.onSearch({
-                          inputValue: newValue,
-                          options,
-                        });
-                        if (autoCompletePopupRef._isPromise(searchPromise)) {
-                          return searchPromise
-                            .then((val) => {
-                              autoCompletePopupRef.autoCompleteControl.props.options = val;
-                              autoCompletePopupRef.autoCompleteControl.optionList.update();
-                              loading && loading.remove();
-                            })
-                            .catch(() => {
-                              loading && loading.remove();
-                            });
-                        }
-                        loading && loading.remove();
-                        autoCompletePopupRef.autoCompleteControl.props.options = searchPromise;
-                        searchPromise &&
-                          autoCompletePopupRef.autoCompleteControl.optionList.update();
-                      }, interval);
-                    }
-                  },
-                },
-              }
-            : null,
+                }
+              : null,
           body: { children: autoCompletePopupRef._getOptionList() },
         },
       });
@@ -10762,7 +10766,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       const { searchable } = this.props;
-      !searchable && this.input && this._init();
+      if ((!searchable || searchable.sharedInput) && this.input) {
+        this._init();
+      }
       const { options } = this.props;
       this.popup = new AutoCompletePopup({
         trigger: this.control,
@@ -10939,13 +10945,41 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         autoComplete._doSearch(txt);
       }
     }
+    _isPromise(p) {
+      if (!p) return false;
+      return p instanceof Promise;
+    }
     _doSearch(txt) {
       this.searchMode = true;
-      const { onSearch, filterOption } = this.props;
+      const { onSearch, filterOption, searchable } = this.props;
       const options = this.internalOptions;
       this.setProps({ text: txt });
-      isFunction(filterOption) &&
+      if (
+        searchable &&
+        searchable.sharedInput &&
+        isFunction(searchable.onSearch)
+      ) {
+        const loading = new nomui.Loading({
+          container: this.optionList.parent,
+        });
+        const searchPromise = searchable.onSearch({ inputValue: txt, options });
+        if (this._isPromise(searchPromise)) {
+          return searchPromise
+            .then((val) => {
+              this.props.options = val;
+              this.optionList.update();
+              loading && loading.remove();
+            })
+            .catch(() => {
+              loading && loading.remove();
+            });
+        }
+        loading && loading.remove();
+        this.props.options = searchPromise;
+        searchPromise && this.optionList.update();
+      } else if (isFunction(filterOption)) {
         this.popup.update({ options: filterOption(txt, options) });
+      }
       isFunction(onSearch) && onSearch({ text: txt, sender: this });
     }
     _normalizeSearchable() {
