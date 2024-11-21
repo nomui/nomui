@@ -37,6 +37,10 @@ define([], function () {
               text: 'text',
               value: 'value'
             },
+            delayValueChange: true,
+            onValueChange: ({ newValue }) => {
+              console.log(newValue)
+            },
             searchable: {
               sharedInput: true,
               placeholder: '请输入',

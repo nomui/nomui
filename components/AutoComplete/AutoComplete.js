@@ -14,7 +14,7 @@ class AutoComplete extends Textbox {
   _created() {
     super._created()
     this.placeholder = this.props.placeholder
-    this.capsLock = false
+    this.imeInputing = false
     this.searchMode = false
     this.clearContent = true
     this.internalOptions = {}
@@ -84,6 +84,7 @@ class AutoComplete extends Textbox {
     const autoComplete = this
 
     this.input.element.addEventListener('focus', function () {
+
       autoComplete.currentValue = this.value
       if (autoComplete.clearContent) {
         this.placeholder = this.value
@@ -94,7 +95,7 @@ class AutoComplete extends Textbox {
       autoComplete.popup && autoComplete.popup.update({ options: autoComplete.props.options })
     })
     this.input.element.addEventListener('input', function () {
-      if (!autoComplete.capsLock) {
+      if (!autoComplete.imeInputing) {
         autoComplete._handleSearch(this.value)
       }
     })
@@ -111,13 +112,18 @@ class AutoComplete extends Textbox {
         autoComplete.setProps({ text: '' });
         autoComplete.clear()
       }
+      if (autoComplete.props.delayValueChange) {
+        setTimeout(() => {
+          !autoComplete.optionClicked && autoComplete._onValueChange({ fromBlur: true })
+        }, 200)
+      }
     })
     // 中文介入   
     this.input.element.addEventListener('compositionstart', function () {
-      autoComplete.capsLock = true
+      autoComplete.imeInputing = true
     })
     this.input.element.addEventListener('compositionend', function () {
-      autoComplete.capsLock = false
+      autoComplete.imeInputing = false
       autoComplete._handleSearch(this.value)
     })
   }
@@ -195,6 +201,48 @@ class AutoComplete extends Textbox {
     filterName === 'select' && this.setProps({ text: this._getInputText() })
   }
 
+
+  _onValueChange(args = {}) {
+
+    if (args.fromSelect) {
+      this.optionClicked = true
+    }
+    else {
+      this.optionClicked = false
+    }
+
+
+
+    const that = this
+    this.oldValue = clone(this.currentValue)
+
+    this.currentValue = clone(this.getValue())
+    this.props.value = this.currentValue
+
+    args = extend(true, args, {
+      name: this.props.name,
+      oldValue: this.oldValue,
+      newValue: this.currentValue,
+    })
+
+
+    if (!this.props.delayValueChange || (args.fromSelect || args.fromBlur)) {
+      setTimeout(function () {
+        that.props && that.props.onValueChange && that._callHandler(that.props.onValueChange, args)
+        that.group && that.group._onValueChange({ changedField: args.changedField || that })
+
+        isFunction(that._valueChange) && that._valueChange(args)
+        if (that.validateTriggered) {
+          that._validate()
+        }
+      }, 0)
+    }
+
+
+
+  }
+
+
   blur() {
     super.blur()
   }
@@ -211,6 +259,7 @@ class AutoComplete extends Textbox {
 
   _handleSearch(txt) {
     const autoComplete = this
+    this.popup && this.popup.show()
     const { debounce, interval } = this.props
     // 防抖
     this.timer && clearTimeout(this.timer)
@@ -313,7 +362,8 @@ AutoComplete.defaults = {
   filterName: 'text', // text,select
   optionDefaults: {},
   autoFocus: false, // 自动聚焦搜索框
-  popupWidth: null
+  popupWidth: null,
+  delayValueChange: false
 }
 
 Component.register(AutoComplete)
