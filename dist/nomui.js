@@ -17273,22 +17273,43 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return value;
     }
     setValue(value, options) {
-      options = extend({ ignoreDisabled: false, ignoreHidden: false }, options);
-      const len = this.fields.length;
-      for (let i = 0; i < len; i++) {
-        const field = this.fields[i];
-        if (field.setValue && this._needHandleValue(field, options)) {
-          let fieldValue = value;
-          if (field.props.flatValue === false) {
-            if (isPlainObject(value)) {
-              fieldValue = value[field.name];
+      options = extend(
+        { ignoreDisabled: false, ignoreHidden: false, ignoreNone: false },
+        options
+      );
+      if (options.ignoreNone === false) {
+        const len = this.fields.length;
+        for (let i = 0; i < len; i++) {
+          const field = this.fields[i];
+          if (field.setValue && this._needHandleValue(field, options)) {
+            let fieldValue = value;
+            if (field.props.flatValue === false) {
+              if (isPlainObject(value)) {
+                fieldValue = value[field.name];
+              }
             }
+            if (fieldValue === undefined) {
+              fieldValue = null;
+            }
+            field.setValue(fieldValue);
           }
-          if (fieldValue === undefined) {
-            fieldValue = null;
-          }
-          field.setValue(fieldValue);
         }
+      } else if (isPlainObject(value)) {
+        Object.keys(value).forEach((key) => {
+          const field = this.getField(key);
+          if (field) {
+            let fieldValue = value;
+            if (field.props.flatValue === false) {
+              if (isPlainObject(value)) {
+                fieldValue = value[key];
+              }
+            }
+            if (fieldValue === undefined) {
+              fieldValue = null;
+            }
+            field.setValue(fieldValue);
+          }
+        });
       }
     }
     validate(options) {
