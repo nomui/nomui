@@ -55,8 +55,7 @@ class AutoCompleteList extends List {
       selectedItems: value,
 
       onItemSelectionChange: () => {
-
-        this.autoCompleteControl._onValueChange()
+        this.autoCompleteControl._onValueChange({ fromSelect: true })
       },
     })
 
