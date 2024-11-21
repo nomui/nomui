@@ -10602,7 +10602,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
         selectedItems: value,
         onItemSelectionChange: () => {
-          this.autoCompleteControl._onValueChange();
+          this.autoCompleteControl._onValueChange({ fromSelect: true });
         },
       });
       super._config();
@@ -10764,7 +10764,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _created() {
       super._created();
       this.placeholder = this.props.placeholder;
-      this.capsLock = false;
+      this.imeInputing = false;
       this.searchMode = false;
       this.clearContent = true;
       this.internalOptions = {};
@@ -10835,7 +10835,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           autoComplete.popup.update({ options: autoComplete.props.options });
       });
       this.input.element.addEventListener("input", function () {
-        if (!autoComplete.capsLock) {
+        if (!autoComplete.imeInputing) {
           autoComplete._handleSearch(this.value);
         }
       });
@@ -10852,12 +10852,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           autoComplete.setProps({ text: "" });
           autoComplete.clear();
         }
+        if (autoComplete.props.delayValueChange) {
+          setTimeout(() => {
+            !autoComplete.optionClicked &&
+              autoComplete._onValueChange({ fromBlur: true });
+          }, 200);
+        }
       }); // 中文介入
       this.input.element.addEventListener("compositionstart", function () {
-        autoComplete.capsLock = true;
+        autoComplete.imeInputing = true;
       });
       this.input.element.addEventListener("compositionend", function () {
-        autoComplete.capsLock = false;
+        autoComplete.imeInputing = false;
         autoComplete._handleSearch(this.value);
       });
     }
@@ -10934,6 +10940,37 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { filterName } = this.props;
       filterName === "select" && this.setProps({ text: this._getInputText() });
     }
+    _onValueChange(args = {}) {
+      if (args.fromSelect) {
+        this.optionClicked = true;
+      } else {
+        this.optionClicked = false;
+      }
+      const that = this;
+      this.oldValue = clone(this.currentValue);
+      this.currentValue = clone(this.getValue());
+      this.props.value = this.currentValue;
+      args = extend(true, args, {
+        name: this.props.name,
+        oldValue: this.oldValue,
+        newValue: this.currentValue,
+      });
+      if (!this.props.delayValueChange || args.fromSelect || args.fromBlur) {
+        setTimeout(function () {
+          that.props &&
+            that.props.onValueChange &&
+            that._callHandler(that.props.onValueChange, args);
+          that.group &&
+            that.group._onValueChange({
+              changedField: args.changedField || that,
+            });
+          isFunction(that._valueChange) && that._valueChange(args);
+          if (that.validateTriggered) {
+            that._validate();
+          }
+        }, 0);
+      }
+    }
     blur() {
       super.blur();
     }
@@ -10947,6 +10984,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _handleSearch(txt) {
       const autoComplete = this;
+      this.popup && this.popup.show();
       const { debounce, interval } = this.props; // 防抖
       this.timer && clearTimeout(this.timer);
       if (debounce) {
@@ -11034,6 +11072,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     optionDefaults: {},
     autoFocus: false, // 自动聚焦搜索框
     popupWidth: null,
+    delayValueChange: false,
   };
   Component.register(AutoComplete);
   class Avatar extends Component {
