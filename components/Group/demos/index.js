@@ -6,6 +6,7 @@ define(
         './get-field.js',
         './value.js',
         './options-value-as-array.js',
+        './set-value-ignore-none.js',
         './validate.js',
         './nowrap.js',
         './inline.js',
