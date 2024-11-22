@@ -96,7 +96,7 @@ class GroupGridTr extends Tr {
         if (fieldValue === undefined) {
           fieldValue = null
         }
-        field.setValue(fieldValue)
+        field.setValue(fieldValue, options)
       }
     }
   }
