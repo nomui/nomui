@@ -11,3 +11,4 @@
 | inline       | 是否为行内元素，参考 Button 组件       | `boolean`              | `false`   |
 | items        | 按钮列表数组                           | `array`                | []        |
 | itemDefaults | 自定义单个按钮属性                     | `{}`                   | -         |
+| stopPropagation | 是否阻止组件自身的点击冒泡                     | `boolean`                   | true         |

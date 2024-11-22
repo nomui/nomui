@@ -34,7 +34,7 @@ class Toolbar extends Component {
         items: [...before, items.length > visibleItems && dropdowns],
       },
       onClick: ({ event }) => {
-        event.stopPropagation()
+        this.props.stopPropagation && event.stopPropagation()
       }
     })
   }
@@ -46,6 +46,7 @@ Toolbar.defaults = {
   size: null,
   items: [],
   itemDefaults: {},
+  stopPropagation: true
 }
 Component.register(Toolbar)
 
