@@ -6,7 +6,7 @@ class Avatar extends Component {
   }
 
   _config() {
-    const { text, icon, src, alt, } = this.props
+    const { text, icon, src, alt, children } = this.props
     this._propStyleClasses = ['size']
 
     this.setProps({
@@ -38,6 +38,7 @@ class Avatar extends Component {
           classes: { 'nom-avatar-string': true },
           children: text || 'NA',
         },
+        children,
       ],
     })
   }
