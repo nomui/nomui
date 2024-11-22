@@ -22632,7 +22632,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           items: [...before, items.length > visibleItems && dropdowns],
         },
         onClick: ({ event }) => {
-          event.stopPropagation();
+          this.props.stopPropagation && event.stopPropagation();
         },
       });
     }
@@ -22644,6 +22644,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     size: null,
     items: [],
     itemDefaults: {},
+    stopPropagation: true,
   };
   Component.register(Toolbar);
   let nameSeq = 0;
