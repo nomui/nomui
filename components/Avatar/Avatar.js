@@ -14,6 +14,7 @@ class Avatar extends Component {
         'avatar-image': !!src,
       },
       children: [
+        children,
         src && {
           tag: 'img',
           ref: (c) => {
@@ -38,7 +39,6 @@ class Avatar extends Component {
           classes: { 'nom-avatar-string': true },
           children: text || 'NA',
         },
-        children,
       ],
     })
   }
