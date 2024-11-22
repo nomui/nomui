@@ -22721,7 +22721,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           if (fieldValue === undefined) {
             fieldValue = null;
           }
-          field.setValue(fieldValue);
+          field.setValue(fieldValue, options);
         }
       }
     }
