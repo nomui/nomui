@@ -6,7 +6,7 @@ class Avatar extends Component {
   }
 
   _config() {
-    const { text, icon, src, alt, children } = this.props
+    const { text, icon, src, alt, extra } = this.props
     this._propStyleClasses = ['size']
 
     this.setProps({
@@ -14,7 +14,7 @@ class Avatar extends Component {
         'avatar-image': !!src,
       },
       children: [
-        children,
+        extra,
         src && {
           tag: 'img',
           ref: (c) => {

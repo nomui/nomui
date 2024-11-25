@@ -10,7 +10,7 @@ define([], function () {
             component: 'Avatar',
             icon: 'user',
             text: '小马',
-            children: {
+            extra: {
               component: 'Icon',
               type: 'times',
               attrs: {
