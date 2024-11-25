@@ -1275,9 +1275,12 @@ class Grid extends Component {
             isTreeMark: true,
             resizable: false,
             cellRender: ({ row, rowData }) => {
+              const { render } = rowExpandable
+              const expandContent = render({ rowData, grid: this })
 
               return {
                 component: Icon,
+                hidden: expandContent === false,
                 expandable: {
                   byClick: true,
                   expandedProps: {

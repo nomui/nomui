@@ -20,21 +20,27 @@ class ExpandedTr extends Component {
 
   _config() {
     const { rowExpandable, columns } = this.table.grid.props
+
     if (rowExpandable) {
       let normalizedRowExpandable = rowExpandable
       if (!isPlainObject(rowExpandable)) {
         normalizedRowExpandable = {}
       }
 
-      const { render = () => {} } = normalizedRowExpandable
+      const { render = () => { } } = normalizedRowExpandable
 
+      const content = render({ row: this, rowData: this.props.data, grid: this.grid })
+
+      if (!content) {
+        return
+      }
       this.setProps({
         children: {
           component: ExpandedTrTd,
           attrs: {
             colspan: columns.length,
           },
-          children: render({ row: this, rowData: this.props.data, grid: this.grid }),
+          children: content,
         },
       })
     }
