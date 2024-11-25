@@ -20,11 +20,18 @@ define([], function () {
               gridRef = c
             },
             rowExpandable: {
-              render: ({ rowData }) => {
+              render: ({ rowData, row }) => {
+
+
                 if (!rowData.description) {
                   return false
                 }
-                return { children: rowData.description }
+                return {
+                  ref: (c) => {
+                    row.subContent = c
+                  },
+                  children: rowData.description
+                }
               },
             },
             columns: [
