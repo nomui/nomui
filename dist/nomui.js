@@ -11080,11 +11080,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super(Component.extendProps(Avatar.defaults, props), ...mixins);
     }
     _config() {
-      const { text, icon, src, alt } = this.props;
+      const { text, icon, src, alt, extra } = this.props;
       this._propStyleClasses = ["size"];
       this.setProps({
         classes: { "avatar-image": !!src },
         children: [
+          extra,
           src && {
             tag: "img",
             ref: (c) => {
