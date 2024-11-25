@@ -3,6 +3,7 @@ define([
   './shape.js',
   './size.js',
   './with-icon.js',
+  './with-children.js',
   './with-img.js',
   './change-gap.js',
 ], function () {
