@@ -1276,8 +1276,27 @@ class Grid extends Component {
             resizable: false,
             cellRender: ({ row, rowData }) => {
 
+
+
+              if (!row.expandedRow) {
+                row.expandedRow = row.after({
+                  component: ExpandedTr,
+                  data: rowData,
+                  hidden: true,
+                  parentRow: row
+                })
+              }
+              else {
+                row.expandedRow.update({ data: rowData })
+              }
+
+
               return {
                 component: Icon,
+                ref: (c) => {
+                  row.expandIndicotorIconRef = c
+                },
+                hidden: true,
                 expandable: {
                   byClick: true,
                   expandedProps: {

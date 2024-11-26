@@ -18852,23 +18852,41 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.tbody = this.parent;
       this.table = this.tbody.table;
       this.grid = this.table.grid;
+      this.hasContent = true;
     }
     _config() {
       const { rowExpandable, columns } = this.table.grid.props;
+      const { parentRow } = this.props;
       if (rowExpandable) {
         let normalizedRowExpandable = rowExpandable;
         if (!isPlainObject(rowExpandable)) {
           normalizedRowExpandable = {};
         }
         const { render = () => {} } = normalizedRowExpandable;
+        const content = render({
+          parentRow,
+          row: this,
+          rowData: this.props.data,
+          grid: this.grid,
+        });
+        if (!content) {
+          this.hasContent = false;
+          return;
+        } // 有内容才显示展开图标
+        setTimeout(() => {
+          parentRow.expandIndicotorIconRef.show();
+          parentRow.expandIndicotorIconRef.update({
+            expanded: !this.props.hidden,
+          });
+        }, 0);
         this.setProps({
           children: {
             component: ExpandedTrTd,
             attrs: { colspan: columns.length },
-            children: render({
-              row: this,
-              rowData: this.props.data,
-              grid: this.grid,
+            children: Object.assign({}, content, {
+              onCreated: ({ inst }) => {
+                this.subContent = inst;
+              },
             }),
           },
         });
@@ -22390,8 +22408,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               isTreeMark: true,
               resizable: false,
               cellRender: ({ row, rowData }) => {
+                if (!row.expandedRow) {
+                  row.expandedRow = row.after({
+                    component: ExpandedTr,
+                    data: rowData,
+                    hidden: true,
+                    parentRow: row,
+                  });
+                } else {
+                  row.expandedRow.update({ data: rowData });
+                }
                 return {
                   component: Icon,
+                  ref: (c) => {
+                    row.expandIndicotorIconRef = c;
+                  },
+                  hidden: true,
                   expandable: {
                     byClick: true,
                     expandedProps: { type: "down-circle" },
