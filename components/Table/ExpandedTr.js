@@ -41,6 +41,9 @@ class ExpandedTr extends Component {
       // 有内容才显示展开图标
       setTimeout(() => {
         parentRow.expandIndicotorIconRef.show()
+        parentRow.expandIndicotorIconRef.update({
+          expanded: !this.props.hidden
+        })
       }, 0)
       this.setProps({
         children: {
