@@ -122,7 +122,13 @@ define([], function () {
                         ref: (c) => {
                             gridRef = c
                         },
-                        excelMode: true,
+                        bordered: true,
+                        line: 'both',
+                        excelMode: {
+                            onCellValueChange: (args) => {
+                                console.log(args)
+                            }
+                        },
                         columns: [
                             {
                                 field: 'name',
@@ -222,7 +228,9 @@ define([], function () {
                         ],
                         data: [
                             { id: 1, name: '张小花', date: '2020-03-15', role: '2', dept: '0-1-2', sex: '1' },
-
+                            { id: 2, name: '任盈盈', date: '2021-11-20', role: '1', dept: '0-0', sex: '2' },
+                            { id: 3, name: '东方不败', date: '2022-5-05', role: '3', dept: '0-1-1-1', sex: '2' },
+                            { id: 4, name: '任我行', date: '2020-02-20', role: '4', dept: '0-0-2', sex: '1' },
                         ],
                     }
                 ]

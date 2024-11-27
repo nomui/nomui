@@ -136,7 +136,7 @@ class Grid extends Component {
       classes: {
         'm-frozen-header': this.props.frozenHeader,
         'm-with-setting': !!this.props.columnsCustomizable,
-        'm-excel-mode': this.props.excelMode
+        'm-excel-mode': !!this.props.excelMode
       },
       children: [
         {

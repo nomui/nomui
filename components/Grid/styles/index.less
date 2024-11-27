@@ -192,15 +192,15 @@
       height: min(3rem);
       padding: 0 1rem;
 
-      &:hover,
-      &:focus-within,
-      &.nom-td-excel-mode-active {
+      &:hover {
         cursor: pointer;
         box-shadow: var(--nom-grid-td-excel-mode-hover-box-shadow);
       }
 
       &.nom-td-excel-mode-active {
         padding: 0 .25rem;
+        cursor: pointer;
+        box-shadow: var(--nom-grid-td-excel-mode-active-hover-box-shadow);
       }
 
       .nom-field {

@@ -56,11 +56,13 @@ class Td extends Component {
       const propsMinxin = {
         ref: (c) => {
           this.editor = c
-        }
+        },
       }
-      if (this.table.hasGrid && this.table.grid.props.excelMode) {
-        propsMinxin.variant = 'borderless'
+      if (this.table.hasGrid) {
+        if (this.table.grid.props.excelMode) propsMinxin.variant = 'borderless'
+
       }
+
       children = {
         ...column.editRender({
           cell: this,
@@ -742,6 +744,8 @@ class Td extends Component {
 
     const newData = this.editor.getValue()
 
+    this._onCellValueChange({ newValue: newData })
+
     if (this.props.data !== newData) {
 
       this.update({ data: newData })
@@ -762,13 +766,10 @@ class Td extends Component {
     }
   }
 
-
-  toggleEdit() {
-    this.update({
-      editMode: !this.props.editMode
-    })
-
+  _onCellValueChange({ newValue }) {
+    this.table.grid.props.excelMode.onCellValueChange && this.table.grid._callHandler(this.table.grid.props.excelMode.onCellValueChange, { newValue, field: this.props.column.field, rowKey: this.tr.props.data[this.table.grid.props.keyField] })
   }
+
 }
 
 Component.register(Td)
