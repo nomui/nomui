@@ -417,7 +417,6 @@ class Grid extends Component {
       data: this._defaultData,
       isSelfUpdate: true
     })
-    this.restoreChange()
   }
 
   getChangedData() {
@@ -936,9 +935,12 @@ class Grid extends Component {
     }
   }
 
-  getData() {
+  getData(options = {}) {
     if (!this.props.data || !this.props.data.length) {
       return []
+    }
+    if (options.saveEdit) {
+      this.saveEditData()
     }
     const that = this
     const keys = this.getDataKeys()

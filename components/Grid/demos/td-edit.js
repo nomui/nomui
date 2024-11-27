@@ -94,6 +94,13 @@ define([], function () {
                             },
                             {
                                 component: 'Button',
+                                text: '获取数据',
+                                onClick: () => {
+                                    console.log(gridRef.getData({ saveEdit: true }))
+                                }
+                            },
+                            {
+                                component: 'Button',
                                 text: '获取修改数据',
                                 onClick: () => {
                                     console.log(gridRef.getChangedData())
