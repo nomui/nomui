@@ -721,6 +721,9 @@ class Td extends Component {
   }
 
   endEdit(options) {
+    if (!this.props.editMode) {
+      return
+    }
     if (!options) {
       options = { ignoreChange: false }
     }
@@ -744,10 +747,8 @@ class Td extends Component {
 
     const newData = this.editor.getValue()
 
-    this._onCellValueChange({ newValue: newData })
-
     if (this.props.data !== newData) {
-
+      this._onCellValueChange({ newValue: newData })
       this.update({ data: newData })
 
       const { data } = this.tr.props

@@ -498,6 +498,7 @@ class Grid extends Component {
   }
 
   _rendered() {
+    const me = this
     if (this.loadingInst) {
       this.loadingInst.remove()
       this.loadingInst = null
@@ -509,6 +510,26 @@ class Grid extends Component {
 
     if (this.props.data && this.props.autoMergeColumns && this.props.autoMergeColumns.length > 0) {
       this.autoMergeCols()
+    }
+
+    // 点击表格外部结束单元格编辑
+    if (this.props.excelMode) {
+      document.addEventListener('click', ({ target }) => {
+        if (!me || !me.props) {
+          return
+        }
+        let outSider = true
+        if (target.closest('.nom-grid') && target.closest('.nom-grid') === this.element) {
+          outSider = false
+        }
+        else if (target.closest('.nom-popup')) {
+          const popupRef = target.closest('.nom-popup').component
+          if (popupRef.opener && popupRef.opener.element && popupRef.opener.element.closest('.nom-grid') === this.element) {
+            outSider = false
+          }
+        }
+        outSider && this.lastEditTd && this.lastEditTd.props && this.lastEditTd.endEdit()
+      })
     }
 
     this._processColumnsWidth()
