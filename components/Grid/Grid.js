@@ -544,11 +544,12 @@ class Grid extends Component {
   _findPopupRoot(target) {
     let flag = true
     const popupRef = target.closest('.nom-popup').component
-    if (popupRef.opener) {
-      if (popupRef.opener.element && popupRef.opener.element.closest('.nom-grid') === this.element) {
+    if (popupRef.opener && popupRef.opener.element) {
+      const ele = popupRef.opener.element
+      if (ele.closest('.nom-grid') === this.element) {
         flag = false
       }
-      else if (popupRef.opener.element && popupRef.opener.element.closest('.nom-popup')) {
+      else if (ele.closest('.nom-popup')) {
         flag = this._findPopupRoot(popupRef.opener.element)
       }
     }
