@@ -550,7 +550,7 @@ class Grid extends Component {
         flag = false
       }
       else if (ele.closest('.nom-popup')) {
-        flag = this._findPopupRoot(popupRef.opener.element)
+        flag = this._findPopupRoot(ele)
       }
     }
     return flag
