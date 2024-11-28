@@ -37,7 +37,7 @@ define([
   './cascadeUncheckChildren.js',
   './td-edit.js',
   './edit.js',
-  './excel.js',
+  './full-edit.js',
   './sticky.js',
   './sticky-window.js',
 ], function () {

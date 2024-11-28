@@ -1,6 +1,6 @@
 define([], function () {
     return {
-        title: '单元格编辑',
+        title: 'Excel模式编辑',
         file: 'td-edit',
         demo: function () {
             let gridRef = null
@@ -87,32 +87,12 @@ define([], function () {
 
                             {
                                 component: 'Button',
-                                text: '校验表格',
-                                onClick: () => {
-                                    gridRef.validate()
-                                }
-                            },
-                            {
-                                component: 'Button',
                                 text: '获取数据',
                                 onClick: () => {
                                     console.log(gridRef.getData({ saveEdit: true }))
                                 }
                             },
-                            {
-                                component: 'Button',
-                                text: '获取修改数据',
-                                onClick: () => {
-                                    console.log(gridRef.getChangedData())
-                                }
-                            },
-                            {
-                                component: 'Button',
-                                text: '重置回默认数据',
-                                onClick: () => {
-                                    gridRef.reset()
-                                }
-                            },
+
 
 
                         ]

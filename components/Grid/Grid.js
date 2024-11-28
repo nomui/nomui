@@ -528,7 +528,11 @@ class Grid extends Component {
             outSider = false
           }
         }
-        outSider && this.lastEditTd && this.lastEditTd.props && this.lastEditTd.endEdit()
+        if (outSider && this.lastEditTd) {
+          this.lastEditTd.props && this.lastEditTd.endEdit()
+          this.lastEditTd = null
+        }
+
       })
     }
 
