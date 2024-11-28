@@ -337,7 +337,7 @@ class Td extends Component {
           if (grid.lastEditTd && grid.lastEditTd === this) {
             return
           }
-          this.element.classList.add('nom-td-excel-mode-active')
+
           this.edit()
           grid.lastEditTd = this
           event.stopPropagation()
