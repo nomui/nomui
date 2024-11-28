@@ -523,11 +523,9 @@ class Grid extends Component {
           outSider = false
         }
         else if (target.closest('.nom-popup')) {
-          const popupRef = target.closest('.nom-popup').component
-          if (popupRef.opener && popupRef.opener.element && popupRef.opener.element.closest('.nom-grid') === this.element) {
-            outSider = false
-          }
+          outSider = this._findPopupRoot(target)
         }
+
         if (outSider && this.lastEditTd) {
           this.lastEditTd.props && this.lastEditTd.endEdit()
           this.lastEditTd = null
@@ -540,6 +538,23 @@ class Grid extends Component {
     this._processAutoScroll()
 
     this.props.rowSortable && defaultSortableOndrop()
+
+  }
+
+  _findPopupRoot(target) {
+    let flag = true
+    if (target.closest('.nom-popup')) {
+      const popupRef = target.closest('.nom-popup').component
+      if (popupRef.opener) {
+        if (popupRef.opener.element && popupRef.opener.element.closest('.nom-grid') === this.element) {
+          flag = false
+        }
+        else if (popupRef.opener.element && popupRef.opener.element.closest('.nom-popup')) {
+          flag = this._findPopupRoot(popupRef.opener.element)
+        }
+      }
+    }
+    return flag
   }
 
   getColumns() {
