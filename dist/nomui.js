@@ -20136,6 +20136,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           {
             component: "Component",
             classes: { "nom-grid-body-empty": true },
+            ref: (c) => {
+              this.grid.emptyRef = c;
+            },
             children: {
               component: "Empty",
               description: this.grid.props.emptyText,
@@ -22127,6 +22130,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return order;
     }
     appendRow(rowProps) {
+      this.emptyRef && this.emptyRef.props && this.emptyRef.hide();
       this.body.table.appendRow(rowProps);
       if (rowProps.data && rowProps.data[this.props.keyField]) {
         this._processAddedRows(rowProps.data[this.props.keyField]);

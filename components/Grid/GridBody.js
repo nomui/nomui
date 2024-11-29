@@ -43,6 +43,7 @@ class GridBody extends Component {
           classes: {
             'nom-grid-body-empty': true
           },
+          ref: (c) => { this.grid.emptyRef = c },
           children: {
             component: 'Empty',
             description: this.grid.props.emptyText,
