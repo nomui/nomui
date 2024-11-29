@@ -959,6 +959,7 @@ class Grid extends Component {
   }
 
   appendRow(rowProps) {
+    this.emptyRef && this.emptyRef.props && this.emptyRef.hide()
     this.body.table.appendRow(rowProps)
     if (rowProps.data && rowProps.data[this.props.keyField]) {
       this._processAddedRows(rowProps.data[this.props.keyField])
