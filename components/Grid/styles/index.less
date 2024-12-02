@@ -178,6 +178,41 @@
     }
   }
 
+  &.m-excel-mode {
+    --nom-grid-tr-bg-hover: transparent;
+    --nom-grid-tr-striped-bg: transparent;
+    --nom-grid-tr-striped-bg-hover: transparent;
+    --nom-grid-tr-bg-selected: transparent;
+    --nom-grid-tr-checked-bg: transparent;
+    --nom-grid-tr-checked-bg-hover: transparent;
+    --nom-grid-tr-modified-bg: transparent;
+    --nom-grid-tr-modified-bg-hover: transparent;
+
+    .nom-td-excel-mode {
+      height: min(3rem);
+      padding: 0 1rem;
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: var(--nom-grid-td-excel-mode-hover-box-shadow);
+      }
+
+      &.nom-td-excel-mode-active {
+        padding: 0 .25rem;
+        cursor: pointer;
+        box-shadow: var(--nom-grid-td-excel-mode-active-hover-box-shadow);
+      }
+
+      .nom-field {
+        .nom-field-content {
+          padding: 0;
+        }
+      }
+    }
+
+
+  }
+
   .nom-grid-checkbox {
     display: inline-flex;
 

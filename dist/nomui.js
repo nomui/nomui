@@ -18327,7 +18327,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           index: this.tr.props.index,
         });
       }
-      if (this.tr.props.editMode && column.editRender) {
+      if (
+        (this.tr.props.editMode || this.props.editMode) &&
+        column.editRender
+      ) {
+        const propsMinxin = {
+          ref: (c) => {
+            this.editor = c;
+          },
+        };
+        if (this.table.hasGrid) {
+          if (this.table.grid.props.excelMode)
+            propsMinxin.variant = "borderless";
+        }
         children = Object.assign(
           {},
           column.editRender({
@@ -18338,11 +18350,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             rowData: this.tr.props.data,
             index: this.tr.props.index,
           }),
-          {
-            ref: (c) => {
-              this.editor = c;
-            },
-          }
+          propsMinxin
         );
       } else if (isFunction(column.cellRender)) {
         children = column.cellRender({
@@ -18555,6 +18563,28 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const columnAlign = this.table.hasGrid
         ? this.table.grid.props.columnAlign
         : "left";
+      const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode;
+      if (isExcelMode) {
+        this.setProps({
+          classes: { "nom-td-excel-mode": true },
+          onClick: ({ event }) => {
+            const grid = this.table.grid;
+            if (
+              grid.lastEditTd &&
+              grid.lastEditTd.props &&
+              grid.lastEditTd !== this
+            ) {
+              grid.lastEditTd.endEdit();
+            }
+            if (grid.lastEditTd && grid.lastEditTd === this) {
+              return;
+            }
+            this.edit();
+            grid.lastEditTd = this;
+            event.stopPropagation();
+          },
+        });
+      }
       this.setProps({
         children: children,
         attrs: {
@@ -18832,6 +18862,67 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _collapse() {
       this.tr._onCollapse();
+    }
+    edit() {
+      this.update({
+        editMode: true,
+        classes: { "nom-td-excel-mode-active": true },
+      });
+    }
+    endEdit(options) {
+      if (!this.props.editMode) {
+        return;
+      }
+      if (!options) {
+        options = { ignoreChange: false };
+      }
+      if (options.ignoreChange !== true) {
+        this._updateTdData();
+      }
+      this.update({
+        editMode: false,
+        classes: { "nom-td-excel-mode-active": false },
+      });
+    }
+    saveEditData() {
+      this._updateTdData();
+    }
+    _updateTdData() {
+      const newData = this.editor.getValue();
+      if (this.props.data !== newData) {
+        this._onCellValueChange({
+          newValue: newData,
+          oldValue: this.props.data,
+        });
+        this.update({ data: newData });
+        const { data } = this.tr.props;
+        const field = this.props.column.field;
+        data[field] = newData;
+        const grid = this.table.grid;
+        if (grid.props.data.length) {
+          for (let i = 0; i < grid.props.data.length; i++) {
+            if (
+              grid.props.data[i][grid.props.keyField] ===
+              data[grid.props.keyField]
+            ) {
+              grid.props.data[i] = data;
+            }
+          }
+        }
+        grid._processModifedRows(data[grid.props.keyField]);
+      }
+    }
+    _onCellValueChange({ newValue, oldValue }) {
+      this.table.grid.props.excelMode.onCellValueChange &&
+        this.table.grid._callHandler(
+          this.table.grid.props.excelMode.onCellValueChange,
+          {
+            newValue,
+            oldValue,
+            field: this.props.column.field,
+            rowKey: this.tr.props.data[this.table.grid.props.keyField],
+          }
+        );
     }
   }
   Component.register(Td);
@@ -21433,6 +21524,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         classes: {
           "m-frozen-header": this.props.frozenHeader,
           "m-with-setting": !!this.props.columnsCustomizable,
+          "m-excel-mode": !!this.props.excelMode,
         },
         children: [
           {
@@ -21666,7 +21758,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     reset() {
       this.update({ data: this._defaultData, isSelfUpdate: true });
-      this.restoreChange();
     }
     getChangedData() {
       this.saveEditData();
@@ -21742,6 +21833,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _rendered() {
+      const me = this;
       if (this.loadingInst) {
         this.loadingInst.remove();
         this.loadingInst = null;
@@ -21755,10 +21847,43 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.props.autoMergeColumns.length > 0
       ) {
         this.autoMergeCols();
+      } // 点击表格外部结束单元格编辑
+      if (this.props.excelMode) {
+        document.addEventListener("click", ({ target }) => {
+          if (!me || !me.props) {
+            return;
+          }
+          let outSider = true;
+          if (
+            target.closest(".nom-grid") &&
+            target.closest(".nom-grid") === this.element
+          ) {
+            outSider = false;
+          } else if (target.closest(".nom-popup")) {
+            outSider = this._findPopupRoot(target);
+          }
+          if (outSider && this.lastEditTd) {
+            this.lastEditTd.props && this.lastEditTd.endEdit();
+            this.lastEditTd = null;
+          }
+        });
       }
       this._processColumnsWidth();
       this._processAutoScroll();
       this.props.rowSortable && defaultSortableOndrop();
+    }
+    _findPopupRoot(target) {
+      let flag = true;
+      const popupRef = target.closest(".nom-popup").component;
+      if (popupRef.opener && popupRef.opener.element) {
+        const ele = popupRef.opener.element;
+        if (ele.closest(".nom-grid") === this.element) {
+          flag = false;
+        } else if (ele.closest(".nom-popup")) {
+          flag = this._findPopupRoot(ele);
+        }
+      }
+      return flag;
     }
     getColumns() {
       return this.props.columns;
@@ -22112,9 +22237,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._callHandler(this.props.rowSortable.onEnd);
       }
     }
-    getData() {
+    getData(options = {}) {
       if (!this.props.data || !this.props.data.length) {
         return [];
+      }
+      if (options.saveEdit) {
+        this.saveEditData();
       }
       const that = this;
       const keys = this.getDataKeys();
