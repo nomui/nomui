@@ -207,6 +207,7 @@ class Tr extends Component {
   _updateRowData() {
     let dataChanged = false
     const { data } = this.props
+
     for (const key in this.tdRefs) {
       const item = this.tdRefs[key]
       const { editor } = item
@@ -215,6 +216,7 @@ class Tr extends Component {
         data[key] = editor.getValue()
       }
     }
+
 
     if (dataChanged) {
       this.update({ data: data })

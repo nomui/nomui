@@ -136,6 +136,7 @@ class Grid extends Component {
       classes: {
         'm-frozen-header': this.props.frozenHeader,
         'm-with-setting': !!this.props.columnsCustomizable,
+        'm-excel-mode': !!this.props.excelMode
       },
       children: [
         {
@@ -416,7 +417,6 @@ class Grid extends Component {
       data: this._defaultData,
       isSelfUpdate: true
     })
-    this.restoreChange()
   }
 
   getChangedData() {
@@ -498,6 +498,7 @@ class Grid extends Component {
   }
 
   _rendered() {
+    const me = this
     if (this.loadingInst) {
       this.loadingInst.remove()
       this.loadingInst = null
@@ -511,10 +512,48 @@ class Grid extends Component {
       this.autoMergeCols()
     }
 
+    // 点击表格外部结束单元格编辑
+    if (this.props.excelMode) {
+      document.addEventListener('click', ({ target }) => {
+        if (!me || !me.props) {
+          return
+        }
+        let outSider = true
+        if (target.closest('.nom-grid') && target.closest('.nom-grid') === this.element) {
+          outSider = false
+        }
+        else if (target.closest('.nom-popup')) {
+          outSider = this._findPopupRoot(target)
+        }
+
+        if (outSider && this.lastEditTd) {
+          this.lastEditTd.props && this.lastEditTd.endEdit()
+          this.lastEditTd = null
+        }
+
+      })
+    }
+
     this._processColumnsWidth()
     this._processAutoScroll()
 
     this.props.rowSortable && defaultSortableOndrop()
+
+  }
+
+  _findPopupRoot(target) {
+    let flag = true
+    const popupRef = target.closest('.nom-popup').component
+    if (popupRef.opener && popupRef.opener.element) {
+      const ele = popupRef.opener.element
+      if (ele.closest('.nom-grid') === this.element) {
+        flag = false
+      }
+      else if (ele.closest('.nom-popup')) {
+        flag = this._findPopupRoot(ele)
+      }
+    }
+    return flag
   }
 
   getColumns() {
@@ -935,9 +974,12 @@ class Grid extends Component {
     }
   }
 
-  getData() {
+  getData(options = {}) {
     if (!this.props.data || !this.props.data.length) {
       return []
+    }
+    if (options.saveEdit) {
+      this.saveEditData()
     }
     const that = this
     const keys = this.getDataKeys()

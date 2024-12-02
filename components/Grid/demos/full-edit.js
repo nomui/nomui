@@ -1,7 +1,7 @@
 define([], function () {
     return {
         title: '全局编辑模式',
-        file: 'excel',
+        file: 'full-edit',
         demo: function () {
             let gridRef = null
 

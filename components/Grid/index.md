@@ -37,6 +37,7 @@
 | columnAlign | 所有列的默认文本对齐方式 | `left`\|`center`\|`right` | `left` |
 | data | 表格数据数组 | `array` | `[]` |
 | editMode | 表格编辑模式 | `boolean` | `false` |
+| excelMode | Excel表格编辑模式 | `boolean \| object` | `false` |
 | frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
 | frozenRightCols | 指定冻结右侧多少列 | `number` | - |
@@ -121,6 +122,16 @@
 | filter | 是否启用列头筛选，启用的时候传入表单组件如：Textbox Select Checkbox，组件自动使用当前列的 field 作为表单 name | `component` | `false` |
 | customizable | 可配置该列是否需要加入可配置项中，配置 false 则不加入 | `boolean` | `true` |
 | frozenable | 可配置该列是否能被固定，配置 false 则不展示固定图标 | `boolean` | `true` |
+
+
+
+### excelMode
+
+| 名称 | 说明 | 类型 |
+| --- | --- | --- |
+| onCellValueChange | 单元格值被修改且失去焦点时的回调 | `({newValue,field,rowKey})=>{}` |
+
+
 
 #### `cellRender` 使用示例及参数说明
 

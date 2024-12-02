@@ -52,7 +52,17 @@ class Td extends Component {
     }
 
 
-    if (this.tr.props.editMode && column.editRender) {
+    if ((this.tr.props.editMode || this.props.editMode) && column.editRender) {
+      const propsMinxin = {
+        ref: (c) => {
+          this.editor = c
+        },
+      }
+      if (this.table.hasGrid) {
+        if (this.table.grid.props.excelMode) propsMinxin.variant = 'borderless'
+
+      }
+
       children = {
         ...column.editRender({
           cell: this,
@@ -61,9 +71,8 @@ class Td extends Component {
           cellData: this.props.data,
           rowData: this.tr.props.data,
           index: this.tr.props.index,
-        }), ref: (c) => {
-          this.editor = c
-        }
+        }),
+        ...propsMinxin
       }
     }
     else if (isFunction(column.cellRender)) {
@@ -312,7 +321,29 @@ class Td extends Component {
 
     const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
 
+    const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode
 
+    if (isExcelMode) {
+      this.setProps({
+        classes: {
+          'nom-td-excel-mode': true
+        },
+        onClick: ({ event }) => {
+          const grid = this.table.grid
+
+          if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
+            grid.lastEditTd.endEdit()
+          }
+          if (grid.lastEditTd && grid.lastEditTd === this) {
+            return
+          }
+
+          this.edit()
+          grid.lastEditTd = this
+          event.stopPropagation()
+        },
+      })
+    }
 
     this.setProps({
       children: children,
@@ -677,6 +708,69 @@ class Td extends Component {
   _collapse() {
     this.tr._onCollapse()
   }
+
+
+
+  edit() {
+    this.update({
+      editMode: true,
+      classes: {
+        'nom-td-excel-mode-active': true
+      },
+    })
+  }
+
+  endEdit(options) {
+    if (!this.props.editMode) {
+      return
+    }
+    if (!options) {
+      options = { ignoreChange: false }
+    }
+    if (options.ignoreChange !== true) {
+      this._updateTdData()
+    }
+    this.update({
+      editMode: false,
+      classes: {
+        'nom-td-excel-mode-active': false
+      },
+    })
+  }
+
+  saveEditData() {
+    this._updateTdData()
+  }
+
+
+  _updateTdData() {
+
+    const newData = this.editor.getValue()
+
+    if (this.props.data !== newData) {
+      this._onCellValueChange({ newValue: newData, oldValue: this.props.data })
+      this.update({ data: newData })
+
+      const { data } = this.tr.props
+      const field = this.props.column.field
+      data[field] = newData
+
+      const grid = this.table.grid
+      if (grid.props.data.length) {
+        for (let i = 0; i < grid.props.data.length; i++) {
+          if (grid.props.data[i][grid.props.keyField] === data[grid.props.keyField]) {
+            grid.props.data[i] = data
+          }
+        }
+      }
+      grid._processModifedRows(data[grid.props.keyField])
+    }
+  }
+
+  _onCellValueChange({ newValue, oldValue }) {
+    this.table.grid.props.excelMode.onCellValueChange && this.table.grid._callHandler(this.table.grid.props.excelMode.onCellValueChange, { newValue, oldValue, field: this.props.column.field, rowKey: this.tr.props.data[this.table.grid.props.keyField] })
+  }
+
 }
 
 Component.register(Td)
