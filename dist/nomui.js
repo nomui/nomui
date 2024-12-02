@@ -12830,9 +12830,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         optionsArry.push(ele.value);
       });
       Array.isArray(value) &&
-        value.forEach((ele) => {
-          if (optionsArry.includes(ele)) {
-            _that.optionList.selectItem(ele, {
+        optionsArry.forEach((item) => {
+          if (value.includes(item)) {
+            _that.optionList.selectItem(item, {
+              triggerSelectionChange: options.triggerChange,
+            });
+          } else {
+            _that.optionList.unselectItem(item, {
               triggerSelectionChange: options.triggerChange,
             });
           }
