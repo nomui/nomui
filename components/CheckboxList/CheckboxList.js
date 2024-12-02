@@ -91,6 +91,7 @@ class CheckboxList extends Field {
 
   _setValue(value, options) {
     const { valueOptions } = this.props
+
     if (options === false) {
       options = { triggerChange: false }
     } else {
@@ -110,12 +111,15 @@ class CheckboxList extends Field {
     this.props.options.forEach((ele) => {
       optionsArry.push(ele.value)
     })
-    Array.isArray(value) &&
-      value.forEach((ele) => {
-        if (optionsArry.includes(ele)) {
-          _that.optionList.selectItem(ele, { triggerSelectionChange: options.triggerChange })
-        }
-      })
+    Array.isArray(value) && optionsArry.forEach((item) => {
+      if (value.includes(item)) {
+        _that.optionList.selectItem(item, { triggerSelectionChange: options.triggerChange })
+      }
+      else {
+        _that.optionList.unselectItem(item, { triggerSelectionChange: options.triggerChange })
+      }
+    })
+
   }
 
   _disable() {
