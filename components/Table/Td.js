@@ -748,7 +748,7 @@ class Td extends Component {
     const newData = this.editor.getValue()
 
     if (this.props.data !== newData) {
-      this._onCellValueChange({ newValue: newData })
+      this._onCellValueChange({ newValue: newData, oldValue: this.props.data })
       this.update({ data: newData })
 
       const { data } = this.tr.props
@@ -767,8 +767,8 @@ class Td extends Component {
     }
   }
 
-  _onCellValueChange({ newValue }) {
-    this.table.grid.props.excelMode.onCellValueChange && this.table.grid._callHandler(this.table.grid.props.excelMode.onCellValueChange, { newValue, field: this.props.column.field, rowKey: this.tr.props.data[this.table.grid.props.keyField] })
+  _onCellValueChange({ newValue, oldValue }) {
+    this.table.grid.props.excelMode.onCellValueChange && this.table.grid._callHandler(this.table.grid.props.excelMode.onCellValueChange, { newValue, oldValue, field: this.props.column.field, rowKey: this.tr.props.data[this.table.grid.props.keyField] })
   }
 
 }

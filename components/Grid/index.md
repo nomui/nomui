@@ -37,7 +37,7 @@
 | columnAlign | 所有列的默认文本对齐方式 | `left`\|`center`\|`right` | `left` |
 | data | 表格数据数组 | `array` | `[]` |
 | editMode | 表格编辑模式 | `boolean` | `false` |
-| excelMode | Excel表格编辑模式 | `boolean` | `false` |
+| excelMode | Excel表格编辑模式 | `boolean \| object` | `false` |
 | frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
 | frozenRightCols | 指定冻结右侧多少列 | `number` | - |
