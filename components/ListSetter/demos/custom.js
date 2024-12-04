@@ -32,6 +32,9 @@ define([], function () {
                     label: '编号规则设置',
                     labelAlign: 'top',
                     // minItems: 1,
+                    itemRemovable: ({ itemData }) => {
+                        return itemData.type !== 'fixed'
+                    },
                     itemRender: ({ itemData }) => {
                         return {
                             component: 'Flex',

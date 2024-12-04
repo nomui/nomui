@@ -24294,6 +24294,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         minItemsMessage,
         itemRender,
         formPopupAlign,
+        itemRemovable,
       } = this.props;
       let sortableProps = sortable;
       if (sortable) {
@@ -24349,6 +24350,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 component: "Icon",
                 classes: { "nom-list-setter-item-delete": true },
                 type: "delete",
+                renderIf: itemRemovable ? itemRemovable({ itemData }) : true,
                 onClick: ({ sender, event }) => {
                   const currentValue = this.getValue();
                   if (minItems && currentValue.length === minItems) {
