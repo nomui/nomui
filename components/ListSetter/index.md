@@ -14,6 +14,7 @@
 | actions | 操作栏配置 | `object` \| `({ listSetter }) => { return props }` | - |
 | value | 字段值，对象数组 | `object[]` | - |
 | sortable | 列表项是否可拖拽排序 | `object` \| `boolean` | - |
+| itemRemovable | 项是否允许删除判断函数 | `({ itemData }) => { return boolean }` | - |
 | onItemRemoved | 项删除事件 | `({ key }) => {}` | - |
 | itemRender | 自定义组件列表渲染 | `({ itemData }) => {}` | - |
 | formPopupAlign | 表单层默认对齐方式 | `left top` | - |
