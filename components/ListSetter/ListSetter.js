@@ -11,7 +11,7 @@ class ListSetter extends Field {
 
   _config() {
     const that = this
-    const { itemForm, actions, value, labelField, keyField = 'id', sortable, minItems, minItemsMessage, itemRender, formPopupAlign } = this.props
+    const { itemForm, actions, value, labelField, keyField = 'id', sortable, minItems, minItemsMessage, itemRender, formPopupAlign, itemRemovable } = this.props
 
     let sortableProps = sortable
     if (sortable) {
@@ -67,6 +67,7 @@ class ListSetter extends Field {
               component: 'Icon',
               classes: { 'nom-list-setter-item-delete': true },
               type: 'delete',
+              renderIf: itemRemovable ? itemRemovable({ itemData }) : true,
               onClick: ({ sender, event }) => {
                 const currentValue = this.getValue()
                 if (minItems && currentValue.length === minItems) {
