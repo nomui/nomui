@@ -15,6 +15,7 @@ define([], function () {
             },
             label: '独立搜索框',
             searchable: {
+              sharedInput: false, // 配置此项独立显示搜索框
               placeholder: '请输入',
               onSearch: ({ inputValue }) => {
                 return new Promise((resolve) => {
@@ -42,7 +43,6 @@ define([], function () {
               console.log(newValue)
             },
             searchable: {
-              sharedInput: true,
               placeholder: '请输入',
               onSearch: ({ inputValue }) => {
                 return new Promise((resolve) => {
