@@ -10648,7 +10648,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children: {
           component: Layout,
           header:
-            searchable && !searchable.sharedInput
+            searchable && searchable.sharedInput === false
               ? {
                   children: {
                     component: Textbox,
@@ -10771,7 +10771,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       const { searchable } = this.props;
-      if ((!searchable || searchable.sharedInput) && this.input) {
+      if ((!searchable || searchable.sharedInput !== false) && this.input) {
         this._init();
       }
       const { options } = this.props;
@@ -11002,7 +11002,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.setProps({ text: txt });
       if (
         searchable &&
-        searchable.sharedInput &&
+        searchable.sharedInput !== false &&
         isFunction(searchable.onSearch)
       ) {
         const loading = new nomui.Loading({
