@@ -22,7 +22,7 @@ class AutoComplete extends Textbox {
 
   _rendered() {
     const { searchable } = this.props
-    if ((!searchable || searchable.sharedInput) && this.input) { this._init() }
+    if ((!searchable || searchable.sharedInput !== false) && this.input) { this._init() }
     const { options } = this.props
     this.popup = new AutoCompletePopup({
       trigger: this.control,
@@ -279,7 +279,7 @@ class AutoComplete extends Textbox {
     const options = this.internalOptions
     this.setProps({ text: txt })
 
-    if (searchable && searchable.sharedInput && isFunction(searchable.onSearch)) {
+    if (searchable && searchable.sharedInput !== false && isFunction(searchable.onSearch)) {
 
       const loading = new nomui.Loading({
         container: this.optionList.parent,
