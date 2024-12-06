@@ -31399,7 +31399,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           attrs: {
             style: {
               backgroundColor: this.props.color,
-              borderColor: this.props.color,
+              borderColor: this.props.borderColor || this.props.color,
               color: this.props.textColor || "#fff",
             },
           },

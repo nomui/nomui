@@ -118,6 +118,14 @@ define([], function () {
           },
           {
             component: 'Tag',
+            text: '自定义边框颜色',
+            type: 'round',
+            color: '#e6f4ff',
+            textColor: '#1677ff',
+            borderColor: '#91caff',
+          },
+          {
+            component: 'Tag',
             text: '可删除',
             type: 'round',
             key: '001',
