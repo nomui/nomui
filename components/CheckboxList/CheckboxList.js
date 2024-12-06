@@ -9,10 +9,11 @@ class CheckboxList extends Field {
   }
 
   _config() {
+    const me = this
     this.setProps({
       optionDefaults: {
         key: function () {
-          return this.props.value
+          return this.props[me.props.fieldName.value]
         },
       },
     })
@@ -20,6 +21,7 @@ class CheckboxList extends Field {
     this.setProps({
       optionList: {
         component: List,
+        fieldName: this.props.fieldName,
         cols: this.props.cols,
       },
     })
@@ -54,6 +56,7 @@ class CheckboxList extends Field {
   }
 
   _getValue(options) {
+    const me = this
     const { valueOptions } = this.props
     options = extend(
       {
@@ -66,7 +69,7 @@ class CheckboxList extends Field {
     const selected = this.getSelectedOptions()
     if (selected !== null && Array.isArray(selected) && selected.length > 0) {
       const vals = selected.map(function (item) {
-        return item.props.value
+        return item.props[me.props.fieldName.value]
       })
 
       return options.asArray ? vals : vals.join(',')
@@ -80,7 +83,7 @@ class CheckboxList extends Field {
       value !== undefined ? this._getOptionsByValue(value) : this.getSelectedOptions()
     if (selected !== null && Array.isArray(selected) && selected.length > 0) {
       const vals = selected.map(function (item) {
-        return item.props ? item.props.text : item.text
+        return item.props ? item.props[this.props.fieldName.text] : item[this.props.fieldName.text]
       })
 
       return vals
@@ -90,6 +93,7 @@ class CheckboxList extends Field {
   }
 
   _setValue(value, options) {
+    const me = this
     const { valueOptions } = this.props
 
     if (options === false) {
@@ -109,7 +113,7 @@ class CheckboxList extends Field {
     const _that = this
     const optionsArry = []
     this.props.options.forEach((ele) => {
-      optionsArry.push(ele.value)
+      optionsArry.push(ele[me.props.fieldName.value])
     })
     Array.isArray(value) && optionsArry.forEach((item) => {
       if (value.includes(item)) {
@@ -135,12 +139,13 @@ class CheckboxList extends Field {
   }
 
   _getOptionsByValue(value) {
+    const me = this
     let retOptions = null
     const { options } = this.props
     if (Array.isArray(value)) {
       retOptions = []
       for (let i = 0; i < options.length; i++) {
-        if (value.indexOf(options[i].value) !== -1) {
+        if (value.indexOf(options[i][me.props.fieldName.value]) !== -1) {
           retOptions.push(options[i])
         }
       }
@@ -153,6 +158,10 @@ CheckboxList.defaults = {
   options: [],
   valueOptions: {
     asArray: true,
+  },
+  fieldName: {
+    text: 'text',
+    value: 'value',
   },
 }
 
