@@ -6,20 +6,21 @@
   .generate-colors(@name, @i: 1) when (@i =< length(@colors)) {
     @name: extract(@colors, @i);
     @color: var(~'--nom-color-@{name}');
-    @lcolor:  var(~'--nom-color-l@{name}');
+    @lcolor: var(~'--nom-color-l@{name}');
     @color-lighten: var(~'--nom-color-@{name}-lighten');
     @color-darken: var(~'--nom-color-@{name}-darken');
     @color-saturate-light: var(~'--nom-color-@{name}-saturate-light');
     @color-saturate-dark: var(~'--nom-color-@{name}-saturate-dark');
     @lcolor-saturate-light: var(~'--nom-color-l@{name}-saturate-light');
-    @lcolor-saturate-dark:  var(~'--nom-color-l@{name}-saturate-dark');
+    @lcolor-saturate-dark: var(~'--nom-color-l@{name}-saturate-dark');
 
     .u-color-@{name},
     .u-hover-color-@{name}:hover,
     .u-selected-color-@{name}.s-selected {
-      color: @color-lighten !important;
+      color: #fff !important;
       background-color: @color !important;
       border-color: @color-darken !important;
+
       a {
         color: inherit !important;
       }
@@ -28,7 +29,7 @@
     .u-color-@{name}-dark,
     .u-hover-color-@{name}-dark:hover,
     .u-selected-color-@{name}-dark.s-selected {
-      color: @color-lighten !important;
+      color: #fff !important;
       background-color: @color-saturate-dark !important;
       border-color: @color-darken !important;
     }
@@ -36,7 +37,7 @@
     .u-color-@{name}-light,
     .u-hover-color-@{name}-light:hover,
     .u-selected-color-@{name}-light.s-selected {
-      color: @color-lighten !important;
+      color: #fff !important;
       background-color: @color-saturate-light !important;
       border-color: @color-darken !important;
     }
