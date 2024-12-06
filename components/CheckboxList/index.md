@@ -7,6 +7,7 @@
 | options      | 单选项数据列表     | `[{text:string,value:number\|string}]` | -                   |
 | cols         | 展示列数           | `number`                               | -                   |
 | valueOptions | value 值，配置详情 | `{asArray: boolean}`                   | `{ asArray: true }` |
+| fieldName | 数据源字段名 | `object` | `{text:'text',value:'value'}`         |
 
 ## Method
 

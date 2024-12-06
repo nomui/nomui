@@ -24,7 +24,7 @@ class OptionList extends List {
                 classes: {
                   text: true,
                 },
-                children: this.props.text,
+                children: this.props[props.fieldName.text],
               },
             ],
           })
