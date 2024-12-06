@@ -12736,7 +12736,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 {
                   tag: "span",
                   classes: { text: true },
-                  children: this.props.text,
+                  children: this.props[props.fieldName.text],
                 },
               ],
             });
@@ -12751,15 +12751,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super(Component.extendProps(CheckboxList.defaults, props), ...mixins);
     }
     _config() {
+      const me = this;
       this.setProps({
         optionDefaults: {
           key: function () {
-            return this.props.value;
+            return this.props[me.props.fieldName.value];
           },
         },
       });
       this.setProps({
-        optionList: { component: OptionList, cols: this.props.cols },
+        optionList: {
+          component: OptionList,
+          fieldName: this.props.fieldName,
+          cols: this.props.cols,
+        },
       });
       this.setProps({
         // RadioList,CheckboxList等div组件不为 focusable 元素
@@ -12785,12 +12790,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.optionList.showItem(value);
     }
     _getValue(options) {
+      const me = this;
       const { valueOptions } = this.props;
       options = extend({ asArray: true }, valueOptions, options);
       const selected = this.getSelectedOptions();
       if (selected !== null && Array.isArray(selected) && selected.length > 0) {
         const vals = selected.map(function (item) {
-          return item.props.value;
+          return item.props[me.props.fieldName.value];
         });
         return options.asArray ? vals : vals.join(",");
       }
@@ -12803,13 +12809,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           : this.getSelectedOptions();
       if (selected !== null && Array.isArray(selected) && selected.length > 0) {
         const vals = selected.map(function (item) {
-          return item.props ? item.props.text : item.text;
+          return item.props
+            ? item.props[this.props.fieldName.text]
+            : item[this.props.fieldName.text];
         });
         return vals;
       }
       return null;
     }
     _setValue(value, options) {
+      const me = this;
       const { valueOptions } = this.props;
       if (options === false) {
         options = { triggerChange: false };
@@ -12827,7 +12836,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const _that = this;
       const optionsArry = [];
       this.props.options.forEach((ele) => {
-        optionsArry.push(ele.value);
+        optionsArry.push(ele[me.props.fieldName.value]);
       });
       Array.isArray(value) &&
         optionsArry.forEach((item) => {
@@ -12853,12 +12862,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _getOptionsByValue(value) {
+      const me = this;
       let retOptions = null;
       const { options } = this.props;
       if (Array.isArray(value)) {
         retOptions = [];
         for (let i = 0; i < options.length; i++) {
-          if (value.indexOf(options[i].value) !== -1) {
+          if (value.indexOf(options[i][me.props.fieldName.value]) !== -1) {
             retOptions.push(options[i]);
           }
         }
@@ -12866,7 +12876,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return retOptions;
     }
   }
-  CheckboxList.defaults = { options: [], valueOptions: { asArray: true } };
+  CheckboxList.defaults = {
+    options: [],
+    valueOptions: { asArray: true },
+    fieldName: { text: "text", value: "value" },
+  };
   Component.register(CheckboxList);
   class TreeNodeContent extends Component {
     constructor(props, ...mixins) {
