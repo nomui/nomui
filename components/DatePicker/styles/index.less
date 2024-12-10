@@ -8,7 +8,7 @@
 
   .nom-datepicker-popup-bd {
     padding: .5rem 1rem 0 1rem;
-    height: 280px;
+    height: auto;
   }
 
   .nom-datepicker-footer {
@@ -49,10 +49,10 @@
         padding: .2rem;
 
         .nom-datepicker-day-item {
-          width: 2.4rem;
-          height: 2.4rem;
+          width: 2rem;
+          height: 2rem;
           text-align: center;
-          line-height: 2.4rem;
+          line-height: 2rem;
           border-radius: 200px;
           transition: all .5s;
 
@@ -81,8 +81,8 @@
               bottom: 0;
               left: 50%;
               transform: translateX(-50%);
-              width: 6px;
-              height: 6px;
+              width: 4px;
+              height: 4px;
               border-radius: 200px;
               background: var(--nom-color-primary);
 
@@ -108,9 +108,12 @@
   }
 
   .timepicker-group {
+    height: 280px;
+
     >.nom-col {
       width: 60px;
-      max-height: 280px;
+      max-height: 100%;
+      height: 100%;
       overflow-y: auto;
       text-align: center;
       scroll-behavior: smooth;
