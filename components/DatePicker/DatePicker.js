@@ -107,7 +107,7 @@ class DatePicker extends Textbox {
                 {
                   attrs: {
                     style: {
-                      width: '300px',
+                      width: '280px',
                     },
                   },
                   rows: [
@@ -147,6 +147,7 @@ class DatePicker extends Textbox {
                             that.days.update({
                               items: that._getDays(that.year, that.month),
                             })
+                            that._fixTimePickerHeight()
                           },
                         },
                       ],
@@ -283,7 +284,10 @@ class DatePicker extends Textbox {
 
                               that.updateValue()
 
-                              that.timePicker && that.timePicker.onShow()
+                              if (that.timePicker) {
+                                that.timePicker.onShow()
+                                that._fixTimePickerHeight()
+                              }
                               !that.props.showTime && that.popup.hide()
                             },
                           },
@@ -343,6 +347,12 @@ class DatePicker extends Textbox {
     })
 
     super._config()
+  }
+
+  _fixTimePickerHeight() {
+    const h = this.popup.element.querySelector('.nom-datepicker-popup-bd').offsetHeight
+    this.popup.element.querySelector('.timepicker-group').style.height = `${h}px`
+
   }
 
   // 更新 timePicker的禁用情况(内部个根据 startTime endTime计算)
