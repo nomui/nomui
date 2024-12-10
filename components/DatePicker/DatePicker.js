@@ -284,7 +284,10 @@ class DatePicker extends Textbox {
 
                               that.updateValue()
 
-                              that.timePicker && that.timePicker.onShow()
+                              if (that.timePicker) {
+                                that.timePicker.onShow()
+                                that._fixTimePickerHeight()
+                              }
                               !that.props.showTime && that.popup.hide()
                             },
                           },
@@ -347,7 +350,6 @@ class DatePicker extends Textbox {
   }
 
   _fixTimePickerHeight() {
-
     const h = this.popup.element.querySelector('.nom-datepicker-popup-bd').offsetHeight
     this.popup.element.querySelector('.timepicker-group').style.height = `${h}px`
 
