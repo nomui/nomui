@@ -11,10 +11,6 @@ define([], function () {
           {
             component: 'GroupList',
             label: '教育经历',
-
-            ref: (c) => {
-              window.group = c
-            },
             onValueChange: (args) => {
               // eslint-disable-next-line
               console.log(args)
