@@ -161,6 +161,9 @@ class GroupGrid extends Field {
   }
 
   validate() {
+    if (this.props.required && !this.fields.length) {
+      return false
+    }
     const invalids = []
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i],

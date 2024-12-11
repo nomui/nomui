@@ -113,6 +113,29 @@ class GroupList extends Group {
     }
   }
 
+  validate(options) {
+    if (this.props.required && !this.fields.length) {
+      return false
+    }
+    const invalids = []
+    for (let i = 0; i < this.fields.length; i++) {
+      const field = this.fields[i],
+        { disabled, hidden } = field.props
+      if (!(disabled || hidden) && field.validate) {
+        const valResult = field.validate(options)
+        if (valResult !== true) {
+          invalids.push(field)
+        }
+      }
+    }
+
+    if (invalids.length > 0) {
+      invalids[0].focus()
+    }
+
+    return invalids.length === 0
+  }
+
   addGroup(groupProps) {
     if (isNullish(groupProps)) {
       groupProps = {}
