@@ -16856,7 +16856,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                               that.days.update({
                                 items: that._getDays(that.year, that.month),
                               });
-                              that._fixTimePickerHeight();
+                              that.timePicker && that._fixTimePickerHeight();
                             },
                           },
                         ],
@@ -18919,7 +18919,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           newValue: newData,
           oldValue: this.props.data,
         });
-        this.update({ data: newData });
+        this.props.data = newData;
         const { data } = this.tr.props;
         const field = this.props.column.field;
         data[field] = newData;
