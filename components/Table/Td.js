@@ -749,7 +749,7 @@ class Td extends Component {
 
     if (this.props.data !== newData) {
       this._onCellValueChange({ newValue: newData, oldValue: this.props.data })
-      this.update({ data: newData })
+      this.props.data = newData
 
       const { data } = this.tr.props
       const field = this.props.column.field
