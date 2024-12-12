@@ -19277,7 +19277,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       if (dataChanged) {
-        this.update({ data: data });
+        this.props.data = data;
         const grid = this.table.grid;
         if (grid.props.data.length) {
           for (let i = 0; i < grid.props.data.length; i++) {
