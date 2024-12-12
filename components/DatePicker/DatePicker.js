@@ -147,7 +147,7 @@ class DatePicker extends Textbox {
                             that.days.update({
                               items: that._getDays(that.year, that.month),
                             })
-                            that._fixTimePickerHeight()
+                            that.timePicker && that._fixTimePickerHeight()
                           },
                         },
                       ],
