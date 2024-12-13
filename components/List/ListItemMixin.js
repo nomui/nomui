@@ -22,7 +22,7 @@ export default {
       selected: selected === true || selectedItems.indexOf(this.key) !== -1,
       selectable: {
         byClick: listProps.itemSelectable.byClick,
-        canRevert: listProps.itemSelectable.multiple === true,
+        canRevert: listProps.itemSelectable.canRevert || listProps.itemSelectable.multiple === true,
       },
       _shouldHandleClick: function () {
         if (listProps.disabled === true) {

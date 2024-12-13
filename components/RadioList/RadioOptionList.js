@@ -42,6 +42,7 @@ class RadioOptionList extends List {
 
   _config() {
     const listProps = this.radioList.props
+
     if (listProps.type === 'radio') {
       this.setProps({
         gutter: 'x-md',
@@ -58,6 +59,7 @@ class RadioOptionList extends List {
       itemDefaults: listProps.optionDefaults,
       itemSelectable: {
         byClick: true,
+        canRevert: listProps.canRevert,
       },
       selectedItems: listProps.value,
       onItemSelectionChange: () => {
