@@ -18588,7 +18588,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const columnAlign = this.table.hasGrid
         ? this.table.grid.props.columnAlign
         : "left";
-      const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode;
+      const isExcelMode =
+        this.table.hasGrid &&
+        this.table.grid.props.excelMode &&
+        column.editRender;
       if (isExcelMode) {
         this.setProps({
           classes: { "nom-td-excel-mode": true },
