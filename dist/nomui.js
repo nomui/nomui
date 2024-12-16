@@ -7924,7 +7924,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.hideTimer = null;
       this.delay = 100;
       this.addRel(this.opener.element);
-      this._bindHover();
+      if (!this.props.ignoreMouseEvent) {
+        this._bindHover();
+      }
     }
     _config() {
       this.setProps({
@@ -8037,12 +8039,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _show() {
       super._show();
-      this._off("mouseenter");
-      this._on("mouseenter", function () {
-        clearTimeout(this.hideTimer);
-      });
-      this._off("mouseleave", this._hideHandler);
-      this._on("mouseleave", this._hideHandler);
+      if (!this.props.ignoreMouseEvent) {
+        this._off("mouseenter");
+        this._on("mouseenter", function () {
+          clearTimeout(this.hideTimer);
+        });
+        this._off("mouseleave", this._hideHandler);
+        this._on("mouseleave", this._hideHandler);
+      }
       const docTop = this.getScrollTop();
       if (docTop !== 0) {
         this.element.style.top = `${
@@ -8065,6 +8069,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     trigger: null,
     align: "top",
     alignOuter: true,
+    ignoreMouseEvent: false,
     closeOnClickOutside: true,
     autoRender: false,
     hidden: false,
@@ -18360,6 +18365,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           ref: (c) => {
             this.editor = c;
           },
+          invalidTip: {
+            align: "bottom",
+            reference: document.body,
+            ignoreMouseEvent: true,
+          },
         };
         if (this.table.hasGrid) {
           if (this.table.grid.props.excelMode)
@@ -18896,6 +18906,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         editMode: true,
         classes: { "nom-td-excel-mode-active": true },
       });
+      this.editor.validate();
     }
     endEdit(options) {
       if (!this.props.editMode) {

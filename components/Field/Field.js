@@ -17,8 +17,11 @@ class Field extends Component {
     const { name, defaultValue } = this.props
     if (isNullish(this.props.value) && !isNullish(defaultValue)) {
       this.props.value = defaultValue
-    }
-    else if (isPlainObject(this.props.value) && !isNullish(defaultValue) && isPlainObject(defaultValue)) {
+    } else if (
+      isPlainObject(this.props.value) &&
+      !isNullish(defaultValue) &&
+      isPlainObject(defaultValue)
+    ) {
       this.props.value = { ...defaultValue, ...this.props.value }
     }
     this.oldValue = null
@@ -74,7 +77,14 @@ class Field extends Component {
       })
     }
 
-    let labelProps = showLabel ? { component: FieldLabel, labelActions: labelActions, labelExpandable: labelExpandable, uistyle: labelUiStyle } : null
+    let labelProps = showLabel
+      ? {
+          component: FieldLabel,
+          labelActions: labelActions,
+          labelExpandable: labelExpandable,
+          uistyle: labelUiStyle,
+        }
+      : null
     if (labelProps && labelWidth && labelAlign !== 'top') {
       if (labelWidth === 'auto') {
         labelProps = Component.extendProps(labelProps, {
@@ -85,8 +95,7 @@ class Field extends Component {
             },
           },
         })
-      }
-      else {
+      } else {
         labelProps = Component.extendProps(labelProps, {
           attrs: {
             style: {
@@ -98,7 +107,6 @@ class Field extends Component {
         })
       }
     }
-
 
     let actionProps = null
     if (action) {
@@ -112,7 +120,7 @@ class Field extends Component {
 
     this.setProps({
       classes: {
-        's-readonly': this.props.readonly
+        's-readonly': this.props.readonly,
       },
       children: [
         labelProps,
@@ -123,7 +131,6 @@ class Field extends Component {
   }
 
   _rendered() {
-
     if (this.props.readonly) {
       const postion = this.element.style.position
       if (!postion || !postion.length || postion === 'static') {
@@ -141,8 +148,7 @@ class Field extends Component {
       if (param !== true) {
         this.element.classList.remove('s-readonly')
       }
-    }
-    else if (param !== false) {
+    } else if (param !== false) {
       this.element.classList.add('s-readonly')
     }
   }
@@ -218,7 +224,10 @@ class Field extends Component {
             reference: this.content,
             alignTo: this.content,
             hidden: true,
-            offset: !this.props.invalidTip.align || this.props.invalidTip.align === 'top' ? [0, 10] : null,
+            offset:
+              !this.props.invalidTip.align || this.props.invalidTip.align === 'top'
+                ? [0, 10]
+                : null,
             styles: {
               color: 'danger',
             },

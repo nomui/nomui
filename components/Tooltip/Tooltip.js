@@ -22,7 +22,9 @@ class Tooltip extends Layer {
     this.hideTimer = null
     this.delay = 100
     this.addRel(this.opener.element)
-    this._bindHover()
+    if (!this.props.ignoreMouseEvent) {
+      this._bindHover()
+    }
   }
 
   _config() {
@@ -141,12 +143,16 @@ class Tooltip extends Layer {
 
   _show() {
     super._show()
-    this._off('mouseenter')
-    this._on('mouseenter', function () {
-      clearTimeout(this.hideTimer)
-    })
-    this._off('mouseleave', this._hideHandler)
-    this._on('mouseleave', this._hideHandler)
+
+    if (!this.props.ignoreMouseEvent) {
+      this._off('mouseenter')
+      this._on('mouseenter', function () {
+        clearTimeout(this.hideTimer)
+      })
+      this._off('mouseleave', this._hideHandler)
+      this._on('mouseleave', this._hideHandler)
+    }
+
     const docTop = this.getScrollTop()
     if (docTop !== 0) {
       this.element.style.top = `${this.element.style.top.replace('px', '') - docTop}px`
@@ -168,7 +174,7 @@ Tooltip.defaults = {
   trigger: null,
   align: 'top',
   alignOuter: true,
-
+  ignoreMouseEvent: false,
   closeOnClickOutside: true,
 
   autoRender: false,
