@@ -341,7 +341,7 @@ class Td extends Component {
 
     const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
 
-    const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode && column.editRender
+    const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode
 
     if (isExcelMode) {
       this.setProps({
@@ -358,8 +358,13 @@ class Td extends Component {
             return
           }
 
-          this.edit()
-          grid.lastEditTd = this
+          if (column.editRender) {
+            this.edit()
+            grid.lastEditTd = this
+          } else {
+            grid.lastEditTd = null
+          }
+
           event.stopPropagation()
         },
       })

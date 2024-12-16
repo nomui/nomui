@@ -18599,10 +18599,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const columnAlign = this.table.hasGrid
         ? this.table.grid.props.columnAlign
         : "left";
-      const isExcelMode =
-        this.table.hasGrid &&
-        this.table.grid.props.excelMode &&
-        column.editRender;
+      const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode;
       if (isExcelMode) {
         this.setProps({
           classes: { "nom-td-excel-mode": true },
@@ -18618,8 +18615,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             if (grid.lastEditTd && grid.lastEditTd === this) {
               return;
             }
-            this.edit();
-            grid.lastEditTd = this;
+            if (column.editRender) {
+              this.edit();
+              grid.lastEditTd = this;
+            } else {
+              grid.lastEditTd = null;
+            }
             event.stopPropagation();
           },
         });
