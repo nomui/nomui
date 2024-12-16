@@ -748,6 +748,15 @@ class Td extends Component {
   }
 
   _updateTdData() {
+    if (!this.editor.validate()) {
+      this.table.grid.props.excelMode.onValidateFailed &&
+        this.table.grid._callHandler(this.table.grid.props.excelMode.onValidateFailed, {
+          field: this.editor,
+          value: this.editor.getValue(),
+        })
+      return
+    }
+
     const newData = this.editor.getValue()
 
     if (this.props.data !== newData) {
