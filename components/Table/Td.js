@@ -74,6 +74,11 @@ class Td extends Component {
         ref: (c) => {
           this.editor = c
         },
+        invalidTip: {
+          align: 'bottom',
+          reference: document.body,
+          ignoreMouseEvent: true,
+        },
       }
       if (this.table.hasGrid) {
         if (this.table.grid.props.excelMode) propsMinxin.variant = 'borderless'
@@ -723,6 +728,7 @@ class Td extends Component {
         'nom-td-excel-mode-active': true,
       },
     })
+    this.editor.validate()
   }
 
   endEdit(options) {
