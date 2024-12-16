@@ -37,12 +37,12 @@
 | columnAlign | 所有列的默认文本对齐方式 | `left`\|`center`\|`right` | `left` |
 | data | 表格数据数组 | `array` | `[]` |
 | editMode | 表格编辑模式 | `boolean` | `false` |
-| excelMode | Excel表格编辑模式 | `boolean \| object` | `false` |
+| excelMode | Excel 表格编辑模式 | `boolean \| object` | `false` |
 | frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
 | frozenRightCols | 指定冻结右侧多少列 | `number` | - |
 | allowFrozenCols | 是否允许用户手动固定列(有多级表头时无效) | `{showPinner}`\|`boolean` | `true` |
-| frozenLimit | 最大可固定在左侧的列数 | `number` | 5      |
+| frozenLimit | 最大可固定在左侧的列数 | `number` | 5 |
 | keyField | 表格行数据的主键字段 | `string` | `id` |
 | rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
 | rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |
@@ -88,19 +88,18 @@
 | endEdit | 结束编辑状态(如果传参`{ignoreChange:true}`忽略数据更改) | `function` |
 | validate | 编辑模式下校验表格 | `()=>boolean` |
 | getDataKeys | 获取当前顺序的 keyField 数组 | - |
-| getData | 获取当前顺序的表格数据| - |
+| getData | 获取当前顺序的表格数据 | - |
 | getChangedData | 获取当前表格数据中被修改的部分（包括新增 编辑 删除） | - |
-| acceptChange | 接受Grid所有数据修改 | - |
-| reset | 重置回Grid原始数据 | - |
-
+| acceptChange | 接受 Grid 所有数据修改 | - |
+| reset | 重置回 Grid 原始数据 | - |
 
 ### row methods
 
-| 名称 | 说明 | 类型 |
-| --- | --- | --- |
-| edit | 编辑当前行 | `function` |
-| endEdit | 结束编辑状态(如果传参`{ignoreChange:true}`忽略数据更改) | `function` |
-| validate | 校验当前行 | `()=>boolean` |
+| 名称     | 说明                                                    | 类型          |
+| -------- | ------------------------------------------------------- | ------------- |
+| edit     | 编辑当前行                                              | `function`    |
+| endEdit  | 结束编辑状态(如果传参`{ignoreChange:true}`忽略数据更改) | `function`    |
+| validate | 校验当前行                                              | `()=>boolean` |
 
 ### column
 
@@ -112,7 +111,7 @@
 | title | 列头显示标题 | `string` | - |
 | width | 列宽度，单位 px | `boolean` | 120 |
 | align | 文本对齐方式 | `left`\|`center`\|`right` | `left` |
-| toolbar | 列工具栏配置| `{align,render}` | - |
+| toolbar | 列工具栏配置 | `{align,render}` | - |
 | editRender | 单元格编辑模式渲染函数，返回表单类型组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
@@ -123,15 +122,12 @@
 | customizable | 可配置该列是否需要加入可配置项中，配置 false 则不加入 | `boolean` | `true` |
 | frozenable | 可配置该列是否能被固定，配置 false 则不展示固定图标 | `boolean` | `true` |
 
-
-
 ### excelMode
 
-| 名称 | 说明 | 类型 |
-| --- | --- | --- |
+| 名称              | 说明                             | 类型                            |
+| ----------------- | -------------------------------- | ------------------------------- |
 | onCellValueChange | 单元格值被修改且失去焦点时的回调 | `({newValue,field,rowKey})=>{}` |
-
-
+| onValidateFailed  | 单元格值校验失败的回调           | `({field,value})=>{}`           |
 
 #### `cellRender` 使用示例及参数说明
 
@@ -180,9 +176,9 @@
 
 手动固定列配置
 
-| 参数     | 说明       | 类型                  | 默认值 |
-| -------- | ---------- | --------------------- | ------ |
-| showPinner | 是否在表头显示固定按钮 | `boolean` | false      |
+| 参数       | 说明                   | 类型      | 默认值 |
+| ---------- | ---------------------- | --------- | ------ |
+| showPinner | 是否在表头显示固定按钮 | `boolean` | false  |
 
 ### rowSelectable
 
@@ -196,15 +192,15 @@
 
 表格行可勾选配置
 
-| 参数           | 说明                 | 类型                                         | 默认值 |
-| -------------- | -------------------- | -------------------------------------------- | ------ |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
 | checkboxOnNodeColumn | 勾选框是否跟随在折叠图标后方 | `boolean` | - |
-| checkedRowKeys | 初始选中行主键数组   | `array`                                      | -      |
-| checkboxRender | 函数返回 Checkbox 的 | `({row, rowData, index})=>{ checkboxProps }` | -      |
-| toolbar        | 勾选列的工具栏配置，参考column.toolbar           | `object`                                | -      |
-| width        | 勾选列宽度           | `number`                                | 50      |
-| onCheck        | 行勾选回调           | `({row})=>{}`                                | -      |
-| onUncheck      | 行取消勾选回调       | `({row})=>{}`                                | -      |
+| checkedRowKeys | 初始选中行主键数组 | `array` | - |
+| checkboxRender | 函数返回 Checkbox 的 | `({row, rowData, index})=>{ checkboxProps }` | - |
+| toolbar | 勾选列的工具栏配置，参考 column.toolbar | `object` | - |
+| width | 勾选列宽度 | `number` | 50 |
+| onCheck | 行勾选回调 | `({row})=>{}` | - |
+| onUncheck | 行取消勾选回调 | `({row})=>{}` | - |
 
 #### `checkboxRender` 使用示例及参数说明
 
@@ -268,17 +264,16 @@ rows 子对象配置
 | text | 该行显示的统计名称 | `string` | `总计` |
 | method | 字段统计方法，返回 field 与对应的值 | `({ columns, data }) => { {field:value}}` | `` |
 
-
 ### toolbar
 
 单元格工具栏配置
 
-| 参数             | 说明                                           | 类型              | 默认值  |
-| ---------------- | ---------------------------------------------- | ----------------- | ------- |
-| align          | 工具栏对齐方式 | `'left' \| 'right' \| null`           | -      |
-| placement          | 工具栏在表格中的位置(表头 表身 表头+表身) | `'header' \| 'body' \| 'both'`           | -      |
-| hover          | 是否悬停才显示工具栏 | `boolean`           | false     |
-| render | 工具栏渲染函数             | `({ row, cellData, rowData, index })=>{}`         | - |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| align | 工具栏对齐方式 | `'left' \| 'right' \| null` | - |
+| placement | 工具栏在表格中的位置(表头 表身 表头+表身) | `'header' \| 'body' \| 'both'` | - |
+| hover | 是否悬停才显示工具栏 | `boolean` | false |
+| render | 工具栏渲染函数 | `({ row, cellData, rowData, index })=>{}` | - |
 
 ### treeConfig
 
