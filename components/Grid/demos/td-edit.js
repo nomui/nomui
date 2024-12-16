@@ -118,7 +118,6 @@ define([], function () {
                   return {
                     component: 'Textbox',
                     value: cellData,
-                    rules: [{ type: 'number', message: '请输入有效的数字' }],
                   }
                 },
                 cellRender: ({ cellData }) => {
