@@ -17,7 +17,7 @@ import {
   isNumeric,
   isPlainObject,
   isString,
-  localeCompareString
+  localeCompareString,
 } from '../util/index'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
@@ -66,7 +66,9 @@ class Grid extends Component {
     this.removedRowData = []
 
     if (this.props.frozenLeftCols > 0) {
-      this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn && this.props.frozenLeftCols++
+      this.props.rowCheckable &&
+        !this.props.rowCheckable.checkboxOnNodeColumn &&
+        this.props.frozenLeftCols++
       this.props.rowExpandable && this.props.frozenLeftCols++
     }
   }
@@ -92,9 +94,11 @@ class Grid extends Component {
       // 重置modifiedRowKeys
       this._resetChangeCache()
       this._defaultData = extend([], props.data)
-
     }
-    if ((props.hasOwnProperty('rowCheckable') && !props.rowCheckable.checkboxOnNodeColumn) || props.hasOwnProperty('rowExpandable')) {
+    if (
+      (props.hasOwnProperty('rowCheckable') && !props.rowCheckable.checkboxOnNodeColumn) ||
+      props.hasOwnProperty('rowExpandable')
+    ) {
       this._resetFixCount()
     }
   }
@@ -136,7 +140,7 @@ class Grid extends Component {
       classes: {
         'm-frozen-header': this.props.frozenHeader,
         'm-with-setting': !!this.props.columnsCustomizable,
-        'm-excel-mode': !!this.props.excelMode
+        'm-excel-mode': !!this.props.excelMode,
       },
       children: [
         {
@@ -145,7 +149,7 @@ class Grid extends Component {
           },
           classes: {
             'nom-grid-setting': true,
-            [`p-line-${this.props.line}`]: true
+            [`p-line-${this.props.line}`]: true,
           },
           renderIf: !!this.props.columnsCustomizable,
           children: {
@@ -218,9 +222,9 @@ class Grid extends Component {
   }
 
   _getScrollbarWidth() {
-    const outer = document.createElement("div")
-    outer.style.visibility = "hidden"
-    outer.style.overflow = "scroll"
+    const outer = document.createElement('div')
+    outer.style.visibility = 'hidden'
+    outer.style.overflow = 'scroll'
 
     document.body.appendChild(outer)
 
@@ -313,7 +317,7 @@ class Grid extends Component {
         // 存在则表示当前数据不是最顶层数据
 
         // 这里的map中的数据是引用了arr的它的指向还是arr，当mapItem改变时arr也会改变
-        ; (mapItem[childrenField] || (mapItem[childrenField] = [])).push(child) // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
+        ;(mapItem[childrenField] || (mapItem[childrenField] = [])).push(child) // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
       } else {
         // 不存在则是组顶层数据
         treeData.push(child)
@@ -329,9 +333,8 @@ class Grid extends Component {
     this.removedRowKeys = []
     this.removedRowData = []
 
-
     if (this.element) {
-      this.element.querySelectorAll('.nom-grid-tr-modified').forEach(n => {
+      this.element.querySelectorAll('.nom-grid-tr-modified').forEach((n) => {
         n.classList.remove('nom-grid-tr-modified')
       })
     }
@@ -352,13 +355,12 @@ class Grid extends Component {
   _processRemovedRows(data) {
     const key = data[this.props.keyField]
     if (this.addedRowKeys.includes(key)) {
-      this.addedRowKeys = this.addedRowKeys.filter(n => {
+      this.addedRowKeys = this.addedRowKeys.filter((n) => {
         return n !== key
       })
-    }
-    else if (!this.removedRowKeys.includes(key)) {
+    } else if (!this.removedRowKeys.includes(key)) {
       if (this.modifiedRowKeys.includes(key)) {
-        this.modifiedRowKeys = this.modifiedRowKeys.filter(n => {
+        this.modifiedRowKeys = this.modifiedRowKeys.filter((n) => {
           return n !== key
         })
       }
@@ -367,16 +369,14 @@ class Grid extends Component {
     }
   }
 
-
   getRemovedRowKeys() {
     return this.removedRowKeys
   }
 
-
   validate() {
     const keys = Object.keys(this.rowsRefs)
     let validated = true
-    keys.forEach(n => {
+    keys.forEach((n) => {
       if (validated === true && this.rowsRefs[n].validate() === false) {
         validated = false
       }
@@ -386,7 +386,7 @@ class Grid extends Component {
 
   edit() {
     const keys = Object.keys(this.rowsRefs)
-    keys.forEach(n => {
+    keys.forEach((n) => {
       this.rowsRefs[n].edit()
     })
   }
@@ -396,14 +396,14 @@ class Grid extends Component {
       options = { ignoreChange: false }
     }
     const keys = Object.keys(this.rowsRefs)
-    keys.forEach(n => {
+    keys.forEach((n) => {
       this.rowsRefs[n].endEdit({ ignoreChange: options.ignoreChange })
     })
   }
 
   saveEditData() {
     const keys = Object.keys(this.rowsRefs)
-    keys.forEach(n => {
+    keys.forEach((n) => {
       this.rowsRefs[n].saveEditData()
     })
   }
@@ -415,7 +415,7 @@ class Grid extends Component {
   reset() {
     this.update({
       data: this._defaultData,
-      isSelfUpdate: true
+      isSelfUpdate: true,
     })
   }
 
@@ -423,17 +423,16 @@ class Grid extends Component {
     this.saveEditData()
     const data = this.getData()
     const result = {}
-    result.addedData = data.filter(n => {
+    result.addedData = data.filter((n) => {
       return this.addedRowKeys.includes(n[this.props.keyField])
     })
-    result.modifiedData = data.filter(n => {
+    result.modifiedData = data.filter((n) => {
       return this.modifiedRowKeys.includes(n[this.props.keyField])
     })
     result.removedData = this.removedRowData
 
     return result
   }
-
 
   _parseBrowerVersion() {
     // 不支持sticky，需要将frozen 置为null
@@ -468,7 +467,9 @@ class Grid extends Component {
     if (storeFields && storeFields.length) {
       storeFields = JSON.parse(storeFields)
 
-      this.setProps({ columns: this._sortColumnsOrder(this._getColsFromFields(this.originColumns, storeFields)) })
+      this.setProps({
+        columns: this._sortColumnsOrder(this._getColsFromFields(this.originColumns, storeFields)),
+      })
       this._customColumnFlag = true
     }
   }
@@ -521,8 +522,7 @@ class Grid extends Component {
         let outSider = true
         if (target.closest('.nom-grid') && target.closest('.nom-grid') === this.element) {
           outSider = false
-        }
-        else if (target.closest('.nom-popup')) {
+        } else if (target.closest('.nom-popup')) {
           outSider = this._findPopupRoot(target)
         }
 
@@ -530,7 +530,6 @@ class Grid extends Component {
           this.lastEditTd.props && this.lastEditTd.endEdit()
           this.lastEditTd = null
         }
-
       })
     }
 
@@ -538,7 +537,6 @@ class Grid extends Component {
     this._processAutoScroll()
 
     this.props.rowSortable && defaultSortableOndrop()
-
   }
 
   _findPopupRoot(target) {
@@ -548,8 +546,7 @@ class Grid extends Component {
       const ele = popupRef.opener.element
       if (ele.closest('.nom-grid') === this.element) {
         flag = false
-      }
-      else if (ele.closest('.nom-popup')) {
+      } else if (ele.closest('.nom-popup')) {
         flag = this._findPopupRoot(ele)
       }
     }
@@ -868,7 +865,6 @@ class Grid extends Component {
         return props && !props.disabled && !props.hidden
       }).length
 
-
       if (allRowsLength <= checkedRowsLength) {
         this._checkboxAllRef.setValue(true, false)
       } else {
@@ -937,13 +933,14 @@ class Grid extends Component {
     if (this._gridColumsStoreKey) {
       localStorage.setItem(this._gridColumsStoreKey, JSON.stringify(this.getMappedColumns(tree)))
     }
-    const rowCheckerCount = this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn ? 1 : 0
+    const rowCheckerCount =
+      this.props.rowCheckable && !this.props.rowCheckable.checkboxOnNodeColumn ? 1 : 0
     this._customColumnFlag = false
     this._processPinColumnFromSetting(tree)
     this.setProps({ columns: tree })
     if (this.props.allowFrozenCols) {
       this.setProps({
-        frozenLeftCols: frozenCount < 1 ? 0 : frozenCount + rowCheckerCount
+        frozenLeftCols: frozenCount < 1 ? 0 : frozenCount + rowCheckerCount,
       })
     }
 
@@ -1028,7 +1025,8 @@ class Grid extends Component {
     const { checked } = row.props
     const { cascadeCheckParent, cascadeCheckChildren } = this.props.treeConfig
 
-    cascadeCheckChildren === true && !fromChild &&
+    cascadeCheckChildren === true &&
+      !fromChild &&
       Object.keys(row.childrenNodes).forEach((key) => {
         this.checkChildren(row.childrenNodes[key])
       })
@@ -1046,7 +1044,8 @@ class Grid extends Component {
     const { checked } = row.props
     const { cascadeUncheckParent, cascadeUncheckChildren } = this.props.treeConfig
 
-    cascadeUncheckChildren === true && !fromChild &&
+    cascadeUncheckChildren === true &&
+      !fromChild &&
       Object.keys(row.childrenNodes).forEach((key) => {
         this.uncheck(row.childrenNodes[key])
       })
@@ -1056,16 +1055,13 @@ class Grid extends Component {
       const siblings = row.parentNode.childrenNodes
       let n = 0
       for (const k in siblings) {
-
         if (siblings[k].props.checked) {
           n += 1
         }
-
       }
       if (n <= 1) {
         this.uncheck(row.parentNode, true)
       }
-
     }
 
     if (checked === false) {
@@ -1104,7 +1100,7 @@ class Grid extends Component {
         })
       }
       this.setProps({
-        columns: columns
+        columns: columns,
       })
     }
   }
@@ -1318,21 +1314,16 @@ class Grid extends Component {
             isTreeMark: true,
             resizable: false,
             cellRender: ({ row, rowData }) => {
-
-
-
               if (!row.expandedRow) {
                 row.expandedRow = row.after({
                   component: ExpandedTr,
                   data: rowData,
                   hidden: true,
-                  parentRow: row
+                  parentRow: row,
                 })
-              }
-              else {
+              } else {
                 row.expandedRow.update({ data: rowData })
               }
-
 
               return {
                 component: Icon,
@@ -1359,17 +1350,13 @@ class Grid extends Component {
                   },
                 },
               }
-
             },
           },
           ...columns,
         ],
       })
     }
-
   }
-
-
 
   _onRowCheck(row) {
     const { rowCheckable } = this.props
@@ -1400,7 +1387,6 @@ class Grid extends Component {
   }
 
   handlePinClick(data) {
-
     if (this.pinColumns.length >= this.props.frozenLimit && !data.fixed) {
       new nomui.Message({
         content: `最多只能冻结${this.props.frozenLimit}项`,
@@ -1408,7 +1394,6 @@ class Grid extends Component {
       })
       return
     }
-
 
     // 取消初始化固定列时(无缓存配置时)
     if (data.fixed && this.pinColumns.length < 1) {
@@ -1562,8 +1547,7 @@ Grid.defaults = {
   maxColumnText: '最多只能冻结{{limit}}项',
   noGroupFronzeText: '不支持冻结群组',
   columnStatsText: '{{current}}/{{total}}项',
-  onRowClick: null
-
+  onRowClick: null,
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false
