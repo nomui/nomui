@@ -34,9 +34,12 @@ class Td extends Component {
         this.props.column.ellipsis !== false) ||
       this.props.column.ellipsis === true
 
-
     if (column.type === 'checker') {
-      children = this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index })
+      children = this._renderCombinedChecker({
+        row: this.tr,
+        rowData: this.tr.props.data,
+        index: this.tr.props.index,
+      })
     }
 
     if (column.type === 'order') {
@@ -44,13 +47,27 @@ class Td extends Component {
     }
 
     if (column.type === 'checker&order') {
-      children = this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index, renderOrder: true })
+      children = this._renderCombinedChecker({
+        row: this.tr,
+        rowData: this.tr.props.data,
+        index: this.tr.props.index,
+        renderOrder: true,
+      })
     }
 
-    if (column.isChecker && column.field === 'nom-grid-row-checker' && this.table.hasGrid && this.table.grid.props.rowCheckable && !this.table.grid.props.rowCheckable.checkboxOnNodeColumn) {
-      children = this._renderRowChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index })
+    if (
+      column.isChecker &&
+      column.field === 'nom-grid-row-checker' &&
+      this.table.hasGrid &&
+      this.table.grid.props.rowCheckable &&
+      !this.table.grid.props.rowCheckable.checkboxOnNodeColumn
+    ) {
+      children = this._renderRowChecker({
+        row: this.tr,
+        rowData: this.tr.props.data,
+        index: this.tr.props.index,
+      })
     }
-
 
     if ((this.tr.props.editMode || this.props.editMode) && column.editRender) {
       const propsMinxin = {
@@ -60,7 +77,6 @@ class Td extends Component {
       }
       if (this.table.hasGrid) {
         if (this.table.grid.props.excelMode) propsMinxin.variant = 'borderless'
-
       }
 
       children = {
@@ -72,10 +88,9 @@ class Td extends Component {
           rowData: this.tr.props.data,
           index: this.tr.props.index,
         }),
-        ...propsMinxin
+        ...propsMinxin,
       }
-    }
-    else if (isFunction(column.cellRender)) {
+    } else if (isFunction(column.cellRender)) {
       children = column.cellRender({
         cell: this,
         row: this.tr,
@@ -116,7 +131,7 @@ class Td extends Component {
       if (column.toolbar.align === 'left') {
         children = {
           classes: {
-            'nom-grid-column-with-tools': true
+            'nom-grid-column-with-tools': true,
           },
           align: 'center',
           component: 'Flex',
@@ -125,7 +140,10 @@ class Td extends Component {
               classes: {
                 'nom-grid-column-tools': true,
                 'nom-grid-column-tools-hover': column.toolbar.hover,
-                'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
+                'nom-grid-column-tools-hide': !(
+                  this.props.column.toolbar.placement === 'body' ||
+                  this.props.column.toolbar.placement === 'both'
+                ),
               },
               children: this.props.column.toolbar.render({
                 cell: this,
@@ -133,16 +151,14 @@ class Td extends Component {
                 cellData: this.props.data,
                 rowData: this.tr.props.data,
                 index: this.tr.props.index,
-              })
+              }),
             },
             {
-              children: children
+              children: children,
             },
-
-          ]
+          ],
         }
-      }
-      else if (column.toolbar.align === 'right') {
+      } else if (column.toolbar.align === 'right') {
         children = {
           align: 'center',
           component: 'Flex',
@@ -150,15 +166,18 @@ class Td extends Component {
             {
               grow: true,
               classes: {
-                'nom-grid-td-cell-ellipsis': true
+                'nom-grid-td-cell-ellipsis': true,
               },
-              children: children
+              children: children,
             },
             {
               classes: {
                 'nom-grid-column-tools': true,
                 'nom-grid-column-tools-hover': column.toolbar.hover,
-                'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
+                'nom-grid-column-tools-hide': !(
+                  this.props.column.toolbar.placement === 'body' ||
+                  this.props.column.toolbar.placement === 'both'
+                ),
               },
               children: this.props.column.toolbar.render({
                 cell: this,
@@ -166,27 +185,29 @@ class Td extends Component {
                 cellData: this.props.data,
                 rowData: this.tr.props.data,
                 index: this.tr.props.index,
-              })
+              }),
             },
-          ]
+          ],
         }
-      }
-      else {
+      } else {
         children = {
           align: 'center',
           component: 'Flex',
           cols: [
             {
               classes: {
-                'nom-grid-td-cell-ellipsis': true
+                'nom-grid-td-cell-ellipsis': true,
               },
-              children: children
+              children: children,
             },
             {
               classes: {
                 'nom-grid-column-tools': true,
                 'nom-grid-column-tools-hover': column.toolbar.hover,
-                'nom-grid-column-tools-hide': !(this.props.column.toolbar.placement === 'body' || this.props.column.toolbar.placement === 'both')
+                'nom-grid-column-tools-hide': !(
+                  this.props.column.toolbar.placement === 'body' ||
+                  this.props.column.toolbar.placement === 'both'
+                ),
               },
               children: this.props.column.toolbar.render({
                 cell: this,
@@ -194,13 +215,11 @@ class Td extends Component {
                 cellData: this.props.data,
                 rowData: this.tr.props.data,
                 index: this.tr.props.index,
-              })
+              }),
             },
-          ]
+          ],
         }
       }
-
-
     }
 
     const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
@@ -250,10 +269,6 @@ class Td extends Component {
         })
       }
 
-
-
-
-
       children = [
         {
           tag: 'span',
@@ -264,14 +279,17 @@ class Td extends Component {
           },
         },
         this.getExpandableIndicatorProps(),
-        this.table.hasGrid && this.table.grid.props.rowCheckable && this.table.grid.props.rowCheckable.checkboxOnNodeColumn && this._renderCombinedChecker({ row: this.tr, rowData: this.tr.props.data, index: this.tr.props.index }),
+        this.table.hasGrid &&
+          this.table.grid.props.rowCheckable &&
+          this.table.grid.props.rowCheckable.checkboxOnNodeColumn &&
+          this._renderCombinedChecker({
+            row: this.tr,
+            rowData: this.tr.props.data,
+            index: this.tr.props.index,
+          }),
         { tag: 'span', children: children },
       ]
-
-
     }
-
-
 
     const colSpan =
       spanProps && spanProps.colSpan !== null && spanProps.colSpan !== undefined
@@ -287,7 +305,6 @@ class Td extends Component {
       this.table.hasRowGroup = true
     }
 
-
     // // 用span包一层，为了伪元素的展示
     if (isEllipsis && !column.autoWidth) {
       if (!!column.cellRender || !!column.render) {
@@ -295,14 +312,13 @@ class Td extends Component {
           tag: 'span',
           classes: {
             'nom-table-cell-content': true,
-            'nom-table-cell-content-flex': true
+            'nom-table-cell-content-flex': true,
           },
           children: {
-            children
+            children,
           },
         }
-      }
-      else {
+      } else {
         children = {
           tag: 'span',
           classes: {
@@ -311,7 +327,6 @@ class Td extends Component {
           children,
         }
       }
-
     }
 
     const showTitle =
@@ -321,12 +336,12 @@ class Td extends Component {
 
     const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
 
-    const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode
+    const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode && column.editRender
 
     if (isExcelMode) {
       this.setProps({
         classes: {
-          'nom-td-excel-mode': true
+          'nom-td-excel-mode': true,
         },
         onClick: ({ event }) => {
           const grid = this.table.grid
@@ -374,8 +389,7 @@ class Td extends Component {
       let _title = ''
       if (isEllipsis && isPlainObject(children) && children.children) {
         _title = children.children
-      }
-      else {
+      } else {
         _title = children
       }
 
@@ -402,9 +416,7 @@ class Td extends Component {
     return index + 1
   }
 
-
   _renderRowChecker({ row, rowData, index }) {
-
     const grid = this.table.grid
 
     const { rowCheckable } = grid.props
@@ -418,7 +430,6 @@ class Td extends Component {
     checkedRowKeys.forEach((rowKey) => {
       checkedRowKeysHash[rowKey] = true
     })
-
 
     let _checkboxProps = {}
     // 根据传入的 checkboxRender 计算出对应的 props: {hidden, value, disabled}
@@ -451,11 +462,10 @@ class Td extends Component {
       }
     }
 
-
     if (rowCheckable.type === 'checker&order') {
       return {
         classes: {
-          'nom-grid-checker-and-order': true
+          'nom-grid-checker-and-order': true,
         },
         children: [
           {
@@ -484,11 +494,11 @@ class Td extends Component {
           },
           {
             classes: {
-              'nom-grid-order-text': true
+              'nom-grid-order-text': true,
             },
-            children: index + 1
-          }
-        ]
+            children: index + 1,
+          },
+        ],
       }
     }
 
@@ -516,12 +526,9 @@ class Td extends Component {
         grid.changeCheckAllState()
       },
     }
-
-
   }
 
   _renderCombinedChecker({ row, rowData, index, renderOrder }) {
-
     const grid = this.table.grid
     const { rowCheckable } = grid.props
 
@@ -561,11 +568,10 @@ class Td extends Component {
       }
     }
 
-
     if (renderOrder) {
       return {
         classes: {
-          'nom-grid-checker-and-order': true
+          'nom-grid-checker-and-order': true,
         },
         children: [
           {
@@ -583,8 +589,8 @@ class Td extends Component {
             attrs: {
               'data-key': row.key,
               style: {
-                paddingRight: '.25rem'
-              }
+                paddingRight: '.25rem',
+              },
             },
             onValueChange: (args) => {
               if (args.newValue === true) {
@@ -598,11 +604,11 @@ class Td extends Component {
           },
           {
             classes: {
-              'nom-grid-order-text': true
+              'nom-grid-order-text': true,
             },
-            children: index + 1
-          }
-        ]
+            children: index + 1,
+          },
+        ],
       }
     }
 
@@ -621,8 +627,8 @@ class Td extends Component {
       attrs: {
         'data-key': row.key,
         style: {
-          paddingRight: '.25rem'
-        }
+          paddingRight: '.25rem',
+        },
       },
       onValueChange: (args) => {
         if (args.newValue === true) {
@@ -634,7 +640,6 @@ class Td extends Component {
         grid._checkboxAllRef && grid.changeCheckAllState()
       },
     }
-
   }
 
   _setTdsPosition() {
@@ -663,11 +668,12 @@ class Td extends Component {
     const needRightPadding =
       !!this.table.grid.props.columnsCustomizable && this.props.column.lastRight
 
-
     Array.from(this.element.children).forEach((child) => {
       const { marginLeft, marginRight } = getStyle(child)
       tdWidth +=
-        Math.max(child.offsetWidth, child.scrollWidth) + this._parseCssNumber(marginLeft) + this._parseCssNumber(marginRight)
+        Math.max(child.offsetWidth, child.scrollWidth) +
+        this._parseCssNumber(marginLeft) +
+        this._parseCssNumber(marginRight)
     })
 
     if (this.table.hasGrid) {
@@ -687,9 +693,10 @@ class Td extends Component {
   _fixThToolsPosition() {
     const w = this.element.querySelector('.nom-grid-column-tools').offsetWidth
     const f = this.props.column.field
-    const target = this.table.grid.header.element.querySelector(`thead [data-field="${f}"]`).querySelector('.nom-grid-column-th-tools')
+    const target = this.table.grid.header.element
+      .querySelector(`thead [data-field="${f}"]`)
+      .querySelector('.nom-grid-column-th-tools')
     if (target) target.style.width = `${w}px`
-
   }
 
   /**
@@ -709,13 +716,11 @@ class Td extends Component {
     this.tr._onCollapse()
   }
 
-
-
   edit() {
     this.update({
       editMode: true,
       classes: {
-        'nom-td-excel-mode-active': true
+        'nom-td-excel-mode-active': true,
       },
     })
   }
@@ -733,7 +738,7 @@ class Td extends Component {
     this.update({
       editMode: false,
       classes: {
-        'nom-td-excel-mode-active': false
+        'nom-td-excel-mode-active': false,
       },
     })
   }
@@ -742,9 +747,7 @@ class Td extends Component {
     this._updateTdData()
   }
 
-
   _updateTdData() {
-
     const newData = this.editor.getValue()
 
     if (this.props.data !== newData) {
@@ -768,9 +771,14 @@ class Td extends Component {
   }
 
   _onCellValueChange({ newValue, oldValue }) {
-    this.table.grid.props.excelMode.onCellValueChange && this.table.grid._callHandler(this.table.grid.props.excelMode.onCellValueChange, { newValue, oldValue, field: this.props.column.field, rowKey: this.tr.props.data[this.table.grid.props.keyField] })
+    this.table.grid.props.excelMode.onCellValueChange &&
+      this.table.grid._callHandler(this.table.grid.props.excelMode.onCellValueChange, {
+        newValue,
+        oldValue,
+        field: this.props.column.field,
+        rowKey: this.tr.props.data[this.table.grid.props.keyField],
+      })
   }
-
 }
 
 Component.register(Td)
