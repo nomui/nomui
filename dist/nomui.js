@@ -12096,7 +12096,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 "nom-cascader-menu-item-active": item.key === currentVal,
                 "nom-cascader-menu-item-disabled": item.disabled === true,
               },
-              onClick: () => {
+              onClick: ({ event }) => {
+                event.stopPropagation();
                 item.disabled !== true &&
                   cascaderList._handleNoLeafClick(item.key);
               },
