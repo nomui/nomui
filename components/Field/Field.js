@@ -221,6 +221,7 @@ class Field extends Component {
             classes: {
               'nom-field-invalid-tooltip': true,
             },
+            isInvalidTip: true,
             reference: this.content,
             alignTo: this.content,
             hidden: true,

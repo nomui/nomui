@@ -49,6 +49,21 @@ class Tooltip extends Layer {
   _rendered() {
     const bg = getComputedStyle(this.element)['background-color']
     this.arrow.element.style.color = bg
+    if (this.props.align === 'top' && this.props.isInvalidTip) {
+      this._checkVisible()
+    }
+  }
+
+  _checkVisible() {
+    const parentEle = this.element.closest('.nom-panel-body')
+    if (parentEle) {
+      const parentRect = parentEle.getBoundingClientRect()
+      const elementRect = this.element.getBoundingClientRect()
+      if (elementRect.top >= parentRect.top) {
+        this.props.position = { ...this.props.position, offset: [0, 20] }
+        this.setPosition()
+      }
+    }
   }
 
   _fixDirection() {
