@@ -7952,9 +7952,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _checkVisible() {
-      const parentEle = this.element.closest(".nom-panel-body");
-      if (parentEle) {
-        const parentRect = parentEle.getBoundingClientRect();
+      let currentElement = this.element;
+      let overflowAncestor = null;
+      while (currentElement !== null) {
+        const style = window.getComputedStyle(currentElement);
+        if (style.overflowY !== "visible") {
+          overflowAncestor = currentElement;
+          break;
+        }
+        currentElement = currentElement.parentNode;
+      }
+      if (overflowAncestor) {
+        const parentRect = overflowAncestor.getBoundingClientRect();
         const elementRect = this.element.getBoundingClientRect();
         if (elementRect.top >= parentRect.top) {
           this.props.position = Object.assign({}, this.props.position, {
