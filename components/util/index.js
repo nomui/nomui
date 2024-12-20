@@ -46,13 +46,12 @@ String.prototype.format = function (args) {
 
 String.prototype.contains = function (search, ignoreCase = true) {
   // 转义输入的搜索字符串
-  const escapedSearchString = escapeRegExp(search);
+  const escapedSearchString = escapeRegExp(search)
   // 创建不区分大小写的正则表达式
-  const regex = new RegExp(escapedSearchString, ignoreCase ? 'igm' : 'gm');
+  const regex = new RegExp(escapedSearchString, ignoreCase ? 'igm' : 'gm')
   // 使用 exec 方法查找匹配
-  return regex.test(this);
+  return regex.test(this)
 }
-
 
 /**
  * Strict object type check. Only returns true
@@ -236,8 +235,8 @@ export function normalizeKey(key) {
   return key[0] === '-' && key[1] === '-'
     ? key
     : key === 'cssFloat'
-      ? 'float'
-      : key.replace(uppercaseRegex, toLowerCase)
+    ? 'float'
+    : key.replace(uppercaseRegex, toLowerCase)
 }
 
 export function isNumeric(val) {
@@ -414,5 +413,59 @@ export function defaultSortableOndrop() {
 }
 
 export function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // 转义正则元字符
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // 转义正则元字符
+}
+
+// 比较对象是否内容相同
+export function deepEqual(obj1, obj2) {
+  if (obj1 === obj2) {
+    return true
+  }
+
+  if (typeof obj1 !== typeof obj2) {
+    return false
+  }
+
+  if (Array.isArray(obj1) && Array.isArray(obj2)) {
+    // 如果两个都是数组，比较数组元素
+    return compareArrays(obj1, obj2)
+  }
+
+  if (typeof obj1 === 'object' && obj1 !== null && typeof obj2 === 'object' && obj2 !== null) {
+    // 如果两个都是对象，比较对象的键值对
+    const keys1 = Object.keys(obj1),
+      keys2 = Object.keys(obj2)
+    if (keys1.length !== keys2.length) {
+      return false
+    }
+    for (const key of keys1) {
+      if (!Object.prototype.hasOwnProperty.call(obj2, key) || deepEqual(obj1[key], obj2[key])) {
+        return false
+      }
+    }
+    return true
+  }
+  // 基本类型比较
+  return false
+}
+
+function compareArrays(arr1, arr2) {
+  // 检查两个数组长度是否相同
+  if (arr1.length !== arr2.length) {
+    return false
+  }
+  // 创建一个包含所有元素的集合
+  const set1 = new Set(arr1.map((item) => JSON.stringify(item)))
+  const set2 = new Set(arr2.map((item) => JSON.stringify(item)))
+  // 比较集合的大小
+  if (set1.size !== set2.size) {
+    return false
+  }
+  // 比较集合中的元素
+  for (const item of set1) {
+    if (!set2.has(item)) {
+      return false
+    }
+  }
+  return true
 }
