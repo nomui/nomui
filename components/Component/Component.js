@@ -6,7 +6,7 @@ import {
   isNumeric,
   isPlainObject,
   isString,
-  normalizeKey
+  normalizeKey,
 } from '../util/index'
 import ComponentDescriptor from './ComponentDescriptor'
 
@@ -107,8 +107,7 @@ class Component {
           this._mountPlaceHolder()
         }
       })
-    }
-    else if (this.props.autoRender === true) {
+    } else if (this.props.autoRender === true) {
       this.config()
       this.render()
     } else {
@@ -140,7 +139,7 @@ class Component {
     }
   }
 
-  _created() { }
+  _created() {}
 
   _setKey() {
     if (this.props.key) {
@@ -171,7 +170,7 @@ class Component {
     this._setStatusProps()
   }
 
-  _config() { }
+  _config() {}
 
   render() {
     try {
@@ -207,7 +206,7 @@ class Component {
     this.firstRender = false
   }
 
-  _rendered() { }
+  _rendered() {}
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
   remove() {
@@ -215,7 +214,7 @@ class Component {
       return
     }
     const el = this._removeCore()
-    this.parent && this.parent.hasOwnProperty('removeChild') && this.parent.removeChild(this);
+    this.parent && this.parent.hasOwnProperty('removeChild') && this.parent.removeChild(this)
     el.parentNode && el.parentNode.removeChild(el)
   }
 
@@ -238,7 +237,10 @@ class Component {
     }
 
     this.__inReplace = true
-    return Component.create(Component.extendProps(newProps, { placement: 'replace', reference: this }), ...newMixins)
+    return Component.create(
+      Component.extendProps(newProps, { placement: 'replace', reference: this }),
+      ...newMixins,
+    )
   }
 
   emptyChildren() {
@@ -246,8 +248,7 @@ class Component {
       const el = this.element.firstChild
       if (el.component) {
         el.component.remove()
-      }
-      else {
+      } else {
         el.parentNode && el.parentNode.removeChild(el)
       }
     }
@@ -283,7 +284,8 @@ class Component {
     this.element.component = this
 
     if (this._placeHolderElement) {
-      this._placeHolderElement.parentNode && this._placeHolderElement.parentNode.replaceChild(this.element, this._placeHolderElement)
+      this._placeHolderElement.parentNode &&
+        this._placeHolderElement.parentNode.replaceChild(this.element, this._placeHolderElement)
       return
     }
 
@@ -357,7 +359,7 @@ class Component {
     return el
   }
 
-  _remove() { }
+  _remove() {}
 
   _callMixin(hookType) {
     const mixinsList = [...MIXINS, ...this.mixins]
@@ -593,7 +595,6 @@ class Component {
     this.addClass('s-hidden')
     this._callHandler(this.props.onHide)
     isFunction(this._hide) && this._hide()
-
   }
 
   select(selectOption) {

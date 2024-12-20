@@ -7,6 +7,9 @@ define([], function () {
         children: [
           {
             component: 'RadioList',
+            onValueChange: ({ newValue }) => {
+              console.log(newValue)
+            },
             options: [
               {
                 text: '金庸',

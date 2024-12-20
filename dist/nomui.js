@@ -9698,7 +9698,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         selected: selected === true || selectedItems.indexOf(this.key) !== -1,
         selectable: {
           byClick: listProps.itemSelectable.byClick,
-          canRevert: listProps.itemSelectable.multiple === true,
+          canRevert:
+            listProps.itemSelectable.canRevert ||
+            listProps.itemSelectable.multiple === true,
         },
         _shouldHandleClick: function () {
           if (listProps.disabled === true) {
@@ -28913,7 +28915,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         disabled: listProps.disabled,
         items: listProps.options,
         itemDefaults: listProps.optionDefaults,
-        itemSelectable: { byClick: true },
+        itemSelectable: { byClick: true, canRevert: listProps.canRevert },
         selectedItems: listProps.value,
         onItemSelectionChange: () => {
           this.radioList._onValueChange();
@@ -29030,6 +29032,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     options: [],
     uistyle: "radio",
     fieldName: { text: "text", value: "value" },
+    canRevert: true,
   };
   Component.register(RadioList);
   function getValidMax(value) {

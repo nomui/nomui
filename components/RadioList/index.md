@@ -6,12 +6,13 @@
 
 ## API
 
-| 参数    | 说明       | 类型                                   | 默认值    |
-| ------- | ---------- | -------------------------------------- | --------- |
-| options | 单选项配置 | `[{text:string,value:number\|string}]` | -         |
-| fieldName | 数据源字段名 | `object` | `{text:'text',value:'value'}`         |
-| uistyle | 展示形式   | `'button'\|'radio'`                    | `'radio'` |
-| cols    | 展示列数   | `number`                               | -         |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| options | 单选项配置 | `[{text:string,value:number\|string}]` | - |
+| canRevert | 选项是否可以再次点击反选 | `boolean` | true |
+| fieldName | 数据源字段名 | `object` | `{text:'text',value:'value'}` |
+| uistyle | 展示形式 | `'button'\|'radio'` | `'radio'` |
+| cols | 展示列数 | `number` | - |
 
 ## Events
 
