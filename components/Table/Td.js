@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { getStyle, isFunction, isNumeric, isPlainObject, isString } from '../util/index'
+import { deepEqual, getStyle, isFunction, isNumeric, isPlainObject, isString } from '../util/index'
 
 class Td extends Component {
   constructor(props, ...mixins) {
@@ -770,7 +770,7 @@ class Td extends Component {
 
     const newData = this.editor.getValue()
 
-    if (this.props.data !== newData) {
+    if (!deepEqual(this.props.data, newData)) {
       this._onCellValueChange({ newValue: newData, oldValue: this.props.data })
       this.props.data = newData
 
