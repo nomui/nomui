@@ -4055,6 +4055,58 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   }
   function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // 转义正则元字符
+  } // 比较对象是否内容相同
+  function deepEqual(obj1, obj2) {
+    if (obj1 === obj2) {
+      return true;
+    }
+    if (typeof obj1 !== typeof obj2) {
+      return false;
+    }
+    if (Array.isArray(obj1) && Array.isArray(obj2)) {
+      // 如果两个都是数组，比较数组元素
+      return compareArrays(obj1, obj2);
+    }
+    if (
+      typeof obj1 === "object" &&
+      obj1 !== null &&
+      typeof obj2 === "object" &&
+      obj2 !== null
+    ) {
+      // 如果两个都是对象，比较对象的键值对
+      const keys1 = Object.keys(obj1),
+        keys2 = Object.keys(obj2);
+      if (keys1.length !== keys2.length) {
+        return false;
+      }
+      for (const key of keys1) {
+        if (
+          !Object.prototype.hasOwnProperty.call(obj2, key) ||
+          deepEqual(obj1[key], obj2[key])
+        ) {
+          return false;
+        }
+      }
+      return true;
+    } // 基本类型比较
+    return false;
+  }
+  function compareArrays(arr1, arr2) {
+    // 检查两个数组长度是否相同
+    if (arr1.length !== arr2.length) {
+      return false;
+    } // 创建一个包含所有元素的集合
+    const set1 = new Set(arr1.map((item) => JSON.stringify(item)));
+    const set2 = new Set(arr2.map((item) => JSON.stringify(item))); // 比较集合的大小
+    if (set1.size !== set2.size) {
+      return false;
+    } // 比较集合中的元素
+    for (const item of set1) {
+      if (!set2.has(item)) {
+        return false;
+      }
+    }
+    return true;
   }
   var index = /*#__PURE__*/ Object.freeze({
     __proto__: null,
@@ -4086,6 +4138,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     getStyle: getStyle,
     defaultSortableOndrop: defaultSortableOndrop,
     escapeRegExp: escapeRegExp,
+    deepEqual: deepEqual,
     AutoScroll: AutoScrollPlugin,
     MultiDrag: MultiDragPlugin,
     OnSpill: OnSpill,
@@ -18966,7 +19019,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         return;
       }
       const newData = this.editor.getValue();
-      if (this.props.data !== newData) {
+      if (!deepEqual(this.props.data, newData)) {
         this._onCellValueChange({
           newValue: newData,
           oldValue: this.props.data,
