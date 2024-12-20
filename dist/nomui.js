@@ -23392,7 +23392,29 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     validate(options) {
-      if (this.props.required && !this.fields.length) {
+      if (this.props.required) {
+        const rules = [
+          { type: "required", message: this._propStyleClasses.requiredMessage },
+        ];
+        const validationResult = RuleManager.validate(
+          rules,
+          this.fields.length ? true : null
+        );
+        if (validationResult === true) {
+          this.removeClass("s-invalid");
+          this.trigger("valid");
+          if (this.errorTip) {
+            this.errorTip.remove();
+            delete this.errorTip;
+          }
+          return true;
+        }
+        this.addClass("s-invalid");
+        this.trigger("invalid", validationResult);
+        this._invalid(validationResult);
+        setTimeout(() => {
+          this.errorTip && this.errorTip.show();
+        }, 0);
         return false;
       }
       const invalids = [];
@@ -23424,6 +23446,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       groupProps = Component.extendProps(this.extGroupDefaults, groupProps);
       this.appendField(groupProps);
       this._onValueChange();
+      this.removeClass("s-invalid");
+      if (this.errorTip) {
+        this.errorTip.remove();
+        delete this.errorTip;
+      }
     }
     removeGroup(group) {
       group.remove();
