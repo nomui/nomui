@@ -135,6 +135,7 @@ RadioList.defaults = {
     text: 'text',
     value: 'value',
   },
+  canRevert: true,
 }
 Component.register(RadioList)
 
