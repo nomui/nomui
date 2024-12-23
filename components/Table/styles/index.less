@@ -390,3 +390,32 @@ table.nom-table {
     border: 1px solid var(--nom-border-color);
   }
 }
+
+.nom-td-editable {
+  .nom-td-editable-inner {
+    display: flex;
+    >div:first-child {
+      flex-grow: 1;
+      width: 0;
+    }
+    .nom-grid-td-edit-trigger {
+      display: none;
+    }
+    &:hover {
+      .nom-grid-td-edit-trigger {
+        display: inline-flex;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &.nom-td-editable-active {
+    .nom-td-editable-inner {
+      .nom-grid-td-edit-trigger {
+        display: none;
+      }
+    }
+  }
+
+}
+
