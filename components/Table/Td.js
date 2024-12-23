@@ -353,7 +353,7 @@ class Td extends Component {
             attrs: {
               title: '修改',
             },
-            type: 'edit',
+            type: this._getEditIconType(),
             onClick: ({ event }) => {
               const grid = this.table.grid
 
@@ -366,6 +366,9 @@ class Td extends Component {
 
               if (column.editRender) {
                 this.edit({ type: 'editable' })
+                setTimeout(() => {
+                  this.editor.triggerEdit()
+                }, 200)
                 grid.lastEditTd = this
               } else {
                 grid.lastEditTd = null
@@ -788,6 +791,56 @@ class Td extends Component {
 
   _collapse() {
     this.tr._onCollapse()
+  }
+
+  _getEditIconType() {
+    const { column } = this.props
+    const { editRender } = column
+    if (!editRender) {
+      return null
+    }
+
+    const regex = /component:\s*'(\w+)'/
+    const match = editRender.toString().match(regex)
+
+    const iconMap = {
+      AutoComplete: 'down',
+      Cascader: 'down',
+      Checkbox: 'edit',
+      CheckboxList: 'edit',
+      CheckboxTree: 'edit',
+      ColorPicker: 'down',
+      DatePicker: 'calendar',
+      DateRangePicker: 'calendar',
+      Field: 'edit',
+      Form: 'edit',
+      Group: 'edit',
+      GroupGrid: 'edit',
+      GroupTree: 'edit',
+      GroupList: 'edit',
+      IconPicker: 'down',
+      ListSetter: 'edit',
+      MultilineTextbox: 'edit',
+      Numberbox: 'edit',
+      NumberInput: 'edit',
+      PartialDatePicker: 'calendar',
+      PartialDateRangePicker: 'calendar',
+      Password: 'edit',
+      RadioList: 'edit',
+      Rate: 'edit',
+      Select: 'down',
+      Slider: 'edit',
+      StaticText: 'edit',
+      Switch: 'edit',
+      Textbox: 'edit',
+      TimePicker: 'clock',
+      TimeRangePicker: 'clock',
+      Transfer: 'edit',
+      TreeSelect: 'down',
+      Uploader: 'upload',
+      Upload: 'upload',
+    }
+    return iconMap[match[1]] || 'edit'
   }
 
   edit({ type = 'excel' }) {
