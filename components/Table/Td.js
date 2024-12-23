@@ -840,7 +840,7 @@ class Td extends Component {
       Uploader: 'upload',
       Upload: 'upload',
     }
-    return iconMap[match[1]] || 'edit'
+    return column.editorIcon || iconMap[match[1]] || 'edit'
   }
 
   edit({ type = 'excel' }) {

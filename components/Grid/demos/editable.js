@@ -115,6 +115,7 @@ define([], function () {
               {
                 field: 'name',
                 title: '姓名',
+                editorIcon: 'user', // 自定义编辑模式图标
                 editRender: ({ cellData }) => {
                   return {
                     component: 'Textbox',
@@ -155,6 +156,7 @@ define([], function () {
               {
                 field: 'age',
                 title: '年龄',
+
                 editRender: ({ cellData }) => {
                   return {
                     component: 'Textbox',
