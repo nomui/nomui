@@ -70,7 +70,7 @@ class Tooltip extends Layer {
       const parentRect = overflowAncestor.getBoundingClientRect()
       const elementRect = this.element.getBoundingClientRect()
       if (elementRect.top < parentRect.top) {
-        this.props.position = { ...this.props.position, offset: [0, 20] }
+        this.props.position = { ...this.props.position, offset: [0, 25] }
         this.setPosition()
       }
     }
