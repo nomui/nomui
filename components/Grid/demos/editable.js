@@ -129,8 +129,7 @@ define([], function () {
                 toolbar: {
                   align: 'right', // 工具栏靠右
                   placement: 'body',
-                  render: ({ row, cellData, rowData, index }) => {
-                    console.log({ row, cellData, rowData, index })
+                  render: () => {
                     return {
                       component: 'Toolbar',
                       visibleItems: 1,

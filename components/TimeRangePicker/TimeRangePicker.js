@@ -95,6 +95,10 @@ class TimeRangePicker extends Group {
     this.props.onChange && this._callHandler(this.props.onChange)
   }
 
+  triggerEdit() {
+    this.startPicker.triggerEdit()
+  }
+
   checkRange(type) {
     const that = this
     const active = type === this.props.fieldName.start ? this.startPicker : this.endPicker
