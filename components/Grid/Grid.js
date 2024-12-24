@@ -124,6 +124,11 @@ class Grid extends Component {
       this.props.ellipsis = 'both'
     }
 
+    // 同时配置excelMode和editable时, editable视为无效
+    if (this.props.excelMode && this.props.editable) {
+      this.props.editable = false
+    }
+
     this._processData()
     // 更新列的排序部分内容
     this.checkSortInfo()
@@ -141,6 +146,7 @@ class Grid extends Component {
         'm-frozen-header': this.props.frozenHeader,
         'm-with-setting': !!this.props.columnsCustomizable,
         'm-excel-mode': !!this.props.excelMode,
+        'm-editable': !!this.props.editable,
       },
       children: [
         {
@@ -514,7 +520,7 @@ class Grid extends Component {
     }
 
     // 点击表格外部结束单元格编辑
-    if (this.props.excelMode) {
+    if (this.props.excelMode || this.props.editable) {
       document.addEventListener('click', ({ target }) => {
         if (!me || !me.props) {
           return
@@ -1548,6 +1554,8 @@ Grid.defaults = {
   noGroupFronzeText: '不支持冻结群组',
   columnStatsText: '{{current}}/{{total}}项',
   onRowClick: null,
+  excelMode: false, // excel编辑模式
+  editable: false, // 传统编辑模式
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false

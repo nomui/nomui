@@ -36,7 +36,7 @@
 | columns | 表格列的配置描述，具体项见下表 | `array` | `[]` |
 | columnAlign | 所有列的默认文本对齐方式 | `left`\|`center`\|`right` | `left` |
 | data | 表格数据数组 | `array` | `[]` |
-| editMode | 表格编辑模式 | `boolean` | `false` |
+| editable | 传统单元格编辑模式 | `boolean \| object` | `false` |
 | excelMode | Excel 表格编辑模式 | `boolean \| object` | `false` |
 | frozenHeader | 冻结表头（注意配置列宽, 见下面的`注意事项`） | `boolean` | `false` |
 | frozenLeftCols | 指定冻结左侧多少列 | `number` | - |
@@ -109,6 +109,7 @@
 | --- | --- | --- | --- |
 | field | 行数据（对象）的字段名 | `string` | - |
 | title | 列头显示标题 | `string` | - |
+| editorIcon | 自定义编辑模式下的提示图标,仅在 Grid 配置 editable:true 时生效 | `string` | 'edit' |
 | width | 列宽度，单位 px | `boolean` | 120 |
 | align | 文本对齐方式 | `left`\|`center`\|`right` | `left` |
 | toolbar | 列工具栏配置 | `{align,render}` | - |
@@ -123,6 +124,13 @@
 | frozenable | 可配置该列是否能被固定，配置 false 则不展示固定图标 | `boolean` | `true` |
 
 ### excelMode
+
+| 名称              | 说明                             | 类型                            |
+| ----------------- | -------------------------------- | ------------------------------- |
+| onCellValueChange | 单元格值被修改且失去焦点时的回调 | `({newValue,field,rowKey})=>{}` |
+| onValidateFailed  | 单元格值校验失败的回调           | `({field,value})=>{}`           |
+
+### editable
 
 | 名称              | 说明                             | 类型                            |
 | ----------------- | -------------------------------- | ------------------------------- |

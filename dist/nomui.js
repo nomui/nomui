@@ -8837,6 +8837,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _clear() {
       this.setValue(null);
     }
+    triggerEdit() {
+      const element = this.control.element;
+      const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+      });
+      element.dispatchEvent(event);
+      this.focus();
+    }
     _remove() {
       if (this.group && Array.isArray(this.group.fields)) {
         const fields = this.group.fields;
@@ -17626,6 +17635,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
       super._config();
     }
+    triggerEdit() {
+      this.startPicker.triggerEdit();
+    }
     handleChange() {
       this.props.onChange && this._callHandler(this.props.onChange);
     }
@@ -18454,7 +18466,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
         };
         if (this.table.hasGrid) {
-          if (this.table.grid.props.excelMode)
+          if (this.table.grid.props.excelMode || this.table.grid.props.editable)
             propsMinxin.variant = "borderless";
         }
         children = Object.assign(
@@ -18672,6 +18684,43 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           };
         }
       }
+      if (this.table.hasGrid && this.table.grid.props.editable) {
+        children = {
+          classes: { "nom-td-editable-inner": true },
+          children: [
+            { grow: true, children },
+            {
+              component: "Icon",
+              classes: { "nom-grid-td-edit-trigger": true },
+              attrs: { title: "修改" },
+              type: this._getEditIconType(),
+              onClick: ({ event }) => {
+                const grid = this.table.grid;
+                if (
+                  grid.lastEditTd &&
+                  grid.lastEditTd.props &&
+                  grid.lastEditTd !== this
+                ) {
+                  grid.lastEditTd.endEdit();
+                }
+                if (grid.lastEditTd && grid.lastEditTd === this) {
+                  return;
+                }
+                if (column.editRender) {
+                  this.edit({ type: "editable" });
+                  setTimeout(() => {
+                    this.editor.triggerEdit();
+                  }, 200);
+                  grid.lastEditTd = this;
+                } else {
+                  grid.lastEditTd = null;
+                }
+                event.stopPropagation();
+              },
+            },
+          ],
+        };
+      }
       const showTitle =
         (((this.table.hasGrid && this.table.grid.props.showTitle) ||
           this.table.props.showTitle) &&
@@ -18697,11 +18746,30 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               return;
             }
             if (column.editRender) {
-              this.edit();
+              this.edit({ type: "excel" });
               grid.lastEditTd = this;
             } else {
               grid.lastEditTd = null;
             }
+            event.stopPropagation();
+          },
+        });
+      } else if (this.table.hasGrid && this.table.grid.props.editable) {
+        this.setProps({
+          classes: { "nom-td-editable": true },
+          onClick: ({ event }) => {
+            const grid = this.table.grid;
+            if (
+              grid.lastEditTd &&
+              grid.lastEditTd.props &&
+              grid.lastEditTd !== this
+            ) {
+              grid.lastEditTd.endEdit();
+            }
+            if (grid.lastEditTd && grid.lastEditTd === this) {
+              return;
+            }
+            grid.lastEditTd = null;
             event.stopPropagation();
           },
         });
@@ -18984,10 +19052,60 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _collapse() {
       this.tr._onCollapse();
     }
-    edit() {
+    _getEditIconType() {
+      const { column } = this.props;
+      const { editRender } = column;
+      if (!editRender) {
+        return null;
+      }
+      const regex = /component:\s*'(\w+)'/;
+      const match = editRender.toString().match(regex);
+      const iconMap = {
+        AutoComplete: "down",
+        Cascader: "down",
+        Checkbox: "edit",
+        CheckboxList: "edit",
+        CheckboxTree: "edit",
+        ColorPicker: "down",
+        DatePicker: "calendar",
+        DateRangePicker: "calendar",
+        Field: "edit",
+        Form: "edit",
+        Group: "edit",
+        GroupGrid: "edit",
+        GroupTree: "edit",
+        GroupList: "edit",
+        IconPicker: "down",
+        ListSetter: "edit",
+        MultilineTextbox: "edit",
+        Numberbox: "edit",
+        NumberInput: "edit",
+        PartialDatePicker: "calendar",
+        PartialDateRangePicker: "calendar",
+        Password: "edit",
+        RadioList: "edit",
+        Rate: "edit",
+        Select: "down",
+        Slider: "edit",
+        StaticText: "edit",
+        Switch: "edit",
+        Textbox: "edit",
+        TimePicker: "clock",
+        TimeRangePicker: "clock",
+        Transfer: "edit",
+        TreeSelect: "down",
+        Uploader: "upload",
+        Upload: "upload",
+      };
+      return column.editorIcon || iconMap[match[1]] || "edit";
+    }
+    edit({ type = "excel" }) {
       this.update({
         editMode: true,
-        classes: { "nom-td-excel-mode-active": true },
+        classes: {
+          "nom-td-excel-mode-active": type === "excel",
+          "nom-td-editable-active": type === "editable",
+        },
       });
       this.editor.validate();
     }
@@ -19003,7 +19121,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this.update({
         editMode: false,
-        classes: { "nom-td-excel-mode-active": false },
+        classes: {
+          "nom-td-excel-mode-active": false,
+          "nom-td-editable-active": false,
+        },
       });
     }
     saveEditData() {
@@ -19011,6 +19132,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _updateTdData() {
       if (!this.editor.validate()) {
+        this.table.grid.props.editable.onValidateFailed &&
+          this.table.grid._callHandler(
+            this.table.grid.props.editable.onValidateFailed,
+            { field: this.editor, value: this.editor.getValue() }
+          );
         this.table.grid.props.excelMode.onValidateFailed &&
           this.table.grid._callHandler(
             this.table.grid.props.excelMode.onValidateFailed,
@@ -19043,6 +19169,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _onCellValueChange({ newValue, oldValue }) {
+      this.table.grid.props.editable.onCellValueChange &&
+        this.table.grid._callHandler(
+          this.table.grid.props.editable.onCellValueChange,
+          {
+            newValue,
+            oldValue,
+            field: this.props.column.field,
+            rowKey: this.tr.props.data[this.table.grid.props.keyField],
+          }
+        );
       this.table.grid.props.excelMode.onCellValueChange &&
         this.table.grid._callHandler(
           this.table.grid.props.excelMode.onCellValueChange,
@@ -21641,6 +21777,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._propStyleClasses = ["bordered"];
       if (this.props.ellipsis === true) {
         this.props.ellipsis = "both";
+      } // 同时配置excelMode和editable时, editable视为无效
+      if (this.props.excelMode && this.props.editable) {
+        this.props.editable = false;
       }
       this._processData(); // 更新列的排序部分内容
       this.checkSortInfo();
@@ -21655,6 +21794,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "m-frozen-header": this.props.frozenHeader,
           "m-with-setting": !!this.props.columnsCustomizable,
           "m-excel-mode": !!this.props.excelMode,
+          "m-editable": !!this.props.editable,
         },
         children: [
           {
@@ -21978,7 +22118,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this.autoMergeCols();
       } // 点击表格外部结束单元格编辑
-      if (this.props.excelMode) {
+      if (this.props.excelMode || this.props.editable) {
         document.addEventListener("click", ({ target }) => {
           if (!me || !me.props) {
             return;
@@ -22885,6 +23025,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     noGroupFronzeText: "不支持冻结群组",
     columnStatsText: "{{current}}/{{total}}项",
     onRowClick: null,
+    excelMode: false, // excel编辑模式
+    editable: false, // 传统编辑模式
   };
   Grid._loopSetValue = function (key, arry) {
     if (key === undefined || key.cascade === undefined) return false;
@@ -27981,6 +28123,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     handleChange() {
       this.props.onChange && this._callHandler(this.props.onChange);
     }
+    triggerEdit() {
+      this.startPicker.triggerEdit();
+    }
     _getValueText() {
       const val = this.getValue();
       const valText = {
@@ -32231,6 +32376,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     handleChange() {
       this.props.onChange && this._callHandler(this.props.onChange);
+    }
+    triggerEdit() {
+      this.startPicker.triggerEdit();
     }
     checkRange(type) {
       const that = this;

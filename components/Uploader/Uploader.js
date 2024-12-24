@@ -134,9 +134,9 @@ class Uploader extends Field {
             renderer,
             onRemove: onRemove &&
               isFunction(onRemove.action) && {
-              ...onRemove,
-              action: that.handleRemove.bind(that),
-            },
+                ...onRemove,
+                action: that.handleRemove.bind(that),
+              },
             allowUpdate,
             extraAction,
             customizeInfo,
@@ -258,7 +258,7 @@ class Uploader extends Field {
     const beforeUpload = this.props.beforeUpload
     if (!this.checkType(file)) {
       new nomui.Alert({
-        title: this.props.unSupportedTypeText
+        title: this.props.unSupportedTypeText,
       })
       return
     }
@@ -427,7 +427,7 @@ class Uploader extends Field {
     // removing
     file.status = 'removing'
     this.fileList = this.fileList.map((f) =>
-      (f.uuid === file.uuid ? { ...f, status: 'removing' } : f),
+      f.uuid === file.uuid ? { ...f, status: 'removing' } : f,
     )
     this.onChange({
       file,
@@ -493,7 +493,7 @@ class Uploader extends Field {
         if (!multiple) {
           return this.fileList[0].response
         }
-        return this.fileList.map(item => item.response)
+        return this.fileList.map((item) => item.response)
       }
     }
 

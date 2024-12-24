@@ -81,7 +81,8 @@ class Td extends Component {
         },
       }
       if (this.table.hasGrid) {
-        if (this.table.grid.props.excelMode) propsMinxin.variant = 'borderless'
+        if (this.table.grid.props.excelMode || this.table.grid.props.editable)
+          propsMinxin.variant = 'borderless'
       }
 
       children = {
@@ -334,6 +335,52 @@ class Td extends Component {
       }
     }
 
+    if (this.table.hasGrid && this.table.grid.props.editable) {
+      children = {
+        classes: {
+          'nom-td-editable-inner': true,
+        },
+        children: [
+          {
+            grow: true,
+            children,
+          },
+          {
+            component: 'Icon',
+            classes: {
+              'nom-grid-td-edit-trigger': true,
+            },
+            attrs: {
+              title: '修改',
+            },
+            type: this._getEditIconType(),
+            onClick: ({ event }) => {
+              const grid = this.table.grid
+
+              if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
+                grid.lastEditTd.endEdit()
+              }
+              if (grid.lastEditTd && grid.lastEditTd === this) {
+                return
+              }
+
+              if (column.editRender) {
+                this.edit({ type: 'editable' })
+                setTimeout(() => {
+                  this.editor.triggerEdit()
+                }, 200)
+                grid.lastEditTd = this
+              } else {
+                grid.lastEditTd = null
+              }
+
+              event.stopPropagation()
+            },
+          },
+        ],
+      }
+    }
+
     const showTitle =
       (((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
         this.props.column.showTitle !== false) ||
@@ -359,11 +406,31 @@ class Td extends Component {
           }
 
           if (column.editRender) {
-            this.edit()
+            this.edit({ type: 'excel' })
             grid.lastEditTd = this
           } else {
             grid.lastEditTd = null
           }
+
+          event.stopPropagation()
+        },
+      })
+    } else if (this.table.hasGrid && this.table.grid.props.editable) {
+      this.setProps({
+        classes: {
+          'nom-td-editable': true,
+        },
+        onClick: ({ event }) => {
+          const grid = this.table.grid
+
+          if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
+            grid.lastEditTd.endEdit()
+          }
+          if (grid.lastEditTd && grid.lastEditTd === this) {
+            return
+          }
+
+          grid.lastEditTd = null
 
           event.stopPropagation()
         },
@@ -726,11 +793,62 @@ class Td extends Component {
     this.tr._onCollapse()
   }
 
-  edit() {
+  _getEditIconType() {
+    const { column } = this.props
+    const { editRender } = column
+    if (!editRender) {
+      return null
+    }
+
+    const regex = /component:\s*'(\w+)'/
+    const match = editRender.toString().match(regex)
+
+    const iconMap = {
+      AutoComplete: 'down',
+      Cascader: 'down',
+      Checkbox: 'edit',
+      CheckboxList: 'edit',
+      CheckboxTree: 'edit',
+      ColorPicker: 'down',
+      DatePicker: 'calendar',
+      DateRangePicker: 'calendar',
+      Field: 'edit',
+      Form: 'edit',
+      Group: 'edit',
+      GroupGrid: 'edit',
+      GroupTree: 'edit',
+      GroupList: 'edit',
+      IconPicker: 'down',
+      ListSetter: 'edit',
+      MultilineTextbox: 'edit',
+      Numberbox: 'edit',
+      NumberInput: 'edit',
+      PartialDatePicker: 'calendar',
+      PartialDateRangePicker: 'calendar',
+      Password: 'edit',
+      RadioList: 'edit',
+      Rate: 'edit',
+      Select: 'down',
+      Slider: 'edit',
+      StaticText: 'edit',
+      Switch: 'edit',
+      Textbox: 'edit',
+      TimePicker: 'clock',
+      TimeRangePicker: 'clock',
+      Transfer: 'edit',
+      TreeSelect: 'down',
+      Uploader: 'upload',
+      Upload: 'upload',
+    }
+    return column.editorIcon || iconMap[match[1]] || 'edit'
+  }
+
+  edit({ type = 'excel' }) {
     this.update({
       editMode: true,
       classes: {
-        'nom-td-excel-mode-active': true,
+        'nom-td-excel-mode-active': type === 'excel',
+        'nom-td-editable-active': type === 'editable',
       },
     })
     this.editor.validate()
@@ -750,6 +868,7 @@ class Td extends Component {
       editMode: false,
       classes: {
         'nom-td-excel-mode-active': false,
+        'nom-td-editable-active': false,
       },
     })
   }
@@ -760,6 +879,11 @@ class Td extends Component {
 
   _updateTdData() {
     if (!this.editor.validate()) {
+      this.table.grid.props.editable.onValidateFailed &&
+        this.table.grid._callHandler(this.table.grid.props.editable.onValidateFailed, {
+          field: this.editor,
+          value: this.editor.getValue(),
+        })
       this.table.grid.props.excelMode.onValidateFailed &&
         this.table.grid._callHandler(this.table.grid.props.excelMode.onValidateFailed, {
           field: this.editor,
@@ -791,6 +915,13 @@ class Td extends Component {
   }
 
   _onCellValueChange({ newValue, oldValue }) {
+    this.table.grid.props.editable.onCellValueChange &&
+      this.table.grid._callHandler(this.table.grid.props.editable.onCellValueChange, {
+        newValue,
+        oldValue,
+        field: this.props.column.field,
+        rowKey: this.tr.props.data[this.table.grid.props.keyField],
+      })
     this.table.grid.props.excelMode.onCellValueChange &&
       this.table.grid._callHandler(this.table.grid.props.excelMode.onCellValueChange, {
         newValue,

@@ -85,6 +85,10 @@ class DateRangePicker extends Group {
     super._config()
   }
 
+  triggerEdit() {
+    this.startPicker.triggerEdit()
+  }
+
   handleChange() {
     this.props.onChange && this._callHandler(this.props.onChange)
   }

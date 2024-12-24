@@ -4594,6 +4594,7 @@ body {
   --nom-grid-th-bg-image: none;
   --nom-grid-th-color: rgba(0, 0, 0, 0.4);
   --nom-grid-th-font-weight: 600;
+  --nom-grid-icon-color-muted: var(--nom-color-text-2);
   --nom-grid-icon-color: var(--nom-control-icon-color);
   --nom-grid-icon-color-active: var(--nom-color-primary);
   --nom-grid-highlight-bg: #fcfaee;
@@ -7763,6 +7764,27 @@ table.nom-table.p-line-both td:last-child {
 table.nom-table.p-bordered {
   border: 1px solid var(--nom-border-color);
 }
+.nom-td-editable .nom-td-editable-inner {
+  display: flex;
+}
+.nom-td-editable .nom-td-editable-inner > div:first-child {
+  flex-grow: 1;
+  width: 0;
+}
+.nom-td-editable .nom-td-editable-inner .nom-grid-td-edit-trigger {
+  display: none;
+}
+.nom-td-editable .nom-td-editable-inner:hover .nom-grid-td-edit-trigger {
+  display: inline-flex;
+  cursor: pointer;
+  color: var(--nom-grid-icon-color-muted);
+}
+.nom-td-editable .nom-td-editable-inner:hover .nom-grid-td-edit-trigger:hover {
+  color: var(--nom-color-primary);
+}
+.nom-td-editable.nom-td-editable-active .nom-td-editable-inner .nom-grid-td-edit-trigger {
+  display: none;
+}
 .nom-grid {
   position: relative;
   display: flex;
@@ -7925,6 +7947,30 @@ table.nom-table.p-bordered {
   box-shadow: var(--nom-grid-td-excel-mode-active-hover-box-shadow);
 }
 .nom-grid.m-excel-mode .nom-td-excel-mode .nom-field .nom-field-content {
+  padding: 0;
+}
+.nom-grid.m-editable {
+  --nom-grid-tr-bg-hover: #fff;
+  --nom-grid-tr-striped-bg: #fff;
+  --nom-grid-tr-striped-bg-hover: #fff;
+  --nom-grid-tr-bg-selected: #fff;
+  --nom-grid-tr-checked-bg: #fff;
+  --nom-grid-tr-checked-bg-hover: #fff;
+  --nom-grid-tr-modified-bg: #fff;
+  --nom-grid-tr-modified-bg-hover: #fff;
+}
+.nom-grid.m-editable .nom-td-editable {
+  height: 3rem;
+  padding: 0 1rem;
+}
+.nom-grid.m-editable .nom-td-editable:hover {
+  cursor: pointer;
+}
+.nom-grid.m-editable .nom-td-editable.nom-td-editable-active {
+  padding: 0 0.25rem;
+  cursor: pointer;
+}
+.nom-grid.m-editable .nom-td-editable .nom-field .nom-field-content {
   padding: 0;
 }
 .nom-grid .nom-grid-checkbox {
