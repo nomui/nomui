@@ -4107,6 +4107,26 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     return true;
+  } // 复制字符串到剪贴板
+  function copyToClipboard(text) {
+    if (navigator.clipboard) {
+      // 使用Clipboard API
+      navigator.clipboard.writeText(text);
+    } else {
+      // 备用方法：使用文本区域
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed"; // 防止滚动
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+        console.error("Failed to copy text", err);
+      } finally {
+        document.body.removeChild(textarea); // 移除文本区域
+      }
+    }
   }
   var index = /*#__PURE__*/ Object.freeze({
     __proto__: null,
@@ -4139,6 +4159,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     defaultSortableOndrop: defaultSortableOndrop,
     escapeRegExp: escapeRegExp,
     deepEqual: deepEqual,
+    copyToClipboard: copyToClipboard,
     AutoScroll: AutoScrollPlugin,
     MultiDrag: MultiDragPlugin,
     OnSpill: OnSpill,
