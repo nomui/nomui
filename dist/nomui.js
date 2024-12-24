@@ -8039,7 +8039,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (overflowAncestor) {
         const parentRect = overflowAncestor.getBoundingClientRect();
         const elementRect = this.element.getBoundingClientRect();
-        if (elementRect.top >= parentRect.top) {
+        if (elementRect.top < parentRect.top) {
           this.props.position = Object.assign({}, this.props.position, {
             offset: [0, 20],
           });
