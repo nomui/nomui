@@ -280,6 +280,16 @@ class Field extends Component {
     this.setValue(null)
   }
 
+  triggerEdit() {
+    const element = this.control.element
+    const event = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+    })
+    element.dispatchEvent(event)
+    this.focus()
+  }
+
   _remove() {
     if (this.group && Array.isArray(this.group.fields)) {
       const fields = this.group.fields

@@ -86,6 +86,10 @@ class PartialDateRangePicker extends Group {
     this.props.onChange && this._callHandler(this.props.onChange)
   }
 
+  triggerEdit() {
+    this.startPicker.triggerEdit()
+  }
+
   _getValueText() {
     const val = this.getValue()
     const valText = {
