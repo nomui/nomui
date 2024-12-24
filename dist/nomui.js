@@ -8041,7 +8041,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         const elementRect = this.element.getBoundingClientRect();
         if (elementRect.top < parentRect.top) {
           this.props.position = Object.assign({}, this.props.position, {
-            offset: [0, 20],
+            offset: [0, 25],
           });
           this.setPosition();
         }
