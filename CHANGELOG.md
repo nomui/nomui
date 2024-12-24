@@ -2,6 +2,62 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/nomui/nomui/compare/v1.4.1...v1.5.0) (2024-12-24)
+
+
+### Features
+
+* 公共方法新增deepEqual判断两个对象是否内容相同 ([5b96786](https://github.com/nomui/nomui/commit/5b96786a2a39c18ca67fd4ebec6e405435f34a81))
+* 修改children为 extra ([ad84a65](https://github.com/nomui/nomui/commit/ad84a65526ef29aed54ca58dfaaf4e78f954636d))
+* 针对GroupList GroupGrid必填校验做特殊处理 ([62bfefb](https://github.com/nomui/nomui/commit/62bfefb0d916df6ad77d10ecb2dd97286fbd68c1))
+* **AutoComplete:** 启用搜索时默认用自身组件作为搜索框 ([1922f3d](https://github.com/nomui/nomui/commit/1922f3d774d54de3d81cf7303b8b130cc09681b7))
+* **AutoComplete:** 完善optionFields使用逻辑 ([7e00eb0](https://github.com/nomui/nomui/commit/7e00eb0c75ed17e491f25c2fbb14cacc3a2bacfa))
+* **AutoComplete:** 新增配置项延迟触发valueChange ([c26ef34](https://github.com/nomui/nomui/commit/c26ef340b9b90aebe7bfb952490e78d56ccf190f))
+* **AutoComplete:** 远程搜索支持使用共享输入框作为搜索框 ([e26379c](https://github.com/nomui/nomui/commit/e26379c50b35cf4f6801353791b1f45ed17dcc2e))
+* avatar 支持追加自定义children ([a02c4ec](https://github.com/nomui/nomui/commit/a02c4eccb04e536f075429c4774d4c97ef029e73))
+* **CheckboxList:** 新增fieldName配置 ([4649b0a](https://github.com/nomui/nomui/commit/4649b0af355b31d1a69f5630baeafe4643354001))
+* **ColorPicker:** 支持hex色值以及自定义数据源 ([905cf78](https://github.com/nomui/nomui/commit/905cf78e27b1c6b266415cbce7ea5c892f46db24))
+* **Grid:** 实现类似excel的单元格编辑功能 ([4c6b4a5](https://github.com/nomui/nomui/commit/4c6b4a535547ae97877afa0d1f9849f247695f74))
+* **Grid:** 新增editable传统单元格编辑模式 & 字段类型组件新增triggetEdit方法 ([60a5385](https://github.com/nomui/nomui/commit/60a5385c9fc134128dde5ec844a35c76c3d788be))
+* **Grid:** 行展开支持动态控制，并且无内容时不现实展开箭头 ([e3274ba](https://github.com/nomui/nomui/commit/e3274baead0e66f2213c710654b3442325234e5f))
+* **Grid:** excelMode单元格编辑支持规则校验 ([ef5c572](https://github.com/nomui/nomui/commit/ef5c5729b00396e57952d779232c12bdf75907b5))
+* **Grid:** excelMode回调同时传出旧值，优化文档 ([7aefa92](https://github.com/nomui/nomui/commit/7aefa9221b70335a1ec77cb58ef6d48e773ea2e9))
+* **Grid:** excelMode支持部分单元格不编辑 ([79eaa83](https://github.com/nomui/nomui/commit/79eaa83b7808a9aaec0ec1c3abdfe8f6f9848739))
+* **Group:** 通过设置 setValue 方法的 options 的 ignoreNone 值为 true，则未提供值的字段不会被设置。 ([596fea8](https://github.com/nomui/nomui/commit/596fea85378315c826cc9d8f0f287067047764eb))
+* **ListSetter:** 新增选项是否可以删除的判断函数 ([7f017cb](https://github.com/nomui/nomui/commit/7f017cb66144f111038382e74578796127ba3add))
+* **RadioList:** 新增canRevert取消选中配置,并默认为true ([edbdefd](https://github.com/nomui/nomui/commit/edbdefdcaa1f254a5c99dc49f929e40abf8915ef))
+* Tag 组件新增边框颜色配置项 ([be01fda](https://github.com/nomui/nomui/commit/be01fda23539c5bf6430779cee4d56195e2a46ea))
+* **Toolbar:** 新增配置是否阻止冒泡 ([e85983b](https://github.com/nomui/nomui/commit/e85983b0aaa35882fbd80a587404db75a906fd15))
+* **Tooltip:** 新增配置忽略鼠标移入移出事件 ([f18e924](https://github.com/nomui/nomui/commit/f18e924cc5064c03795d5aa695d2e6b9f580c97f))
+
+
+### Bug Fixes
+
+* 计算 scale的时候使用的是 lastChildren 导致计算错位 ([6995417](https://github.com/nomui/nomui/commit/69954176cd9b4d05ad93f38dc9c94e60337c02e2))
+* **AutoComplete:** 远程搜索判断函数 ([e7134e4](https://github.com/nomui/nomui/commit/e7134e435d6386040459d8793e2a238062b78db9))
+* **Cascader:** excelMode下点击事件bug ([b76e83d](https://github.com/nomui/nomui/commit/b76e83dfac705755911b05f77d5ef17deea82827))
+* **CheckboxList:** 修复赋值会合并旧值的问题 ([6dd2ae1](https://github.com/nomui/nomui/commit/6dd2ae15bd08635e4db58923df4119ec2123cde7))
+* **Grid:** 列设置按钮引发的报错问题 ([14fd6e4](https://github.com/nomui/nomui/commit/14fd6e4668b19c70538fbcc981226793d1845500))
+* **Grid:** appendRow时空提示不消失问题 ([bbbfe40](https://github.com/nomui/nomui/commit/bbbfe40d7ee79a4781512d72e36a9a24b3d7fae1))
+* **Grid:** excel模式失焦判定优化 ([5fc9b2d](https://github.com/nomui/nomui/commit/5fc9b2db5b4addef278afda3360178885cd01bd6))
+* **Grid:** excelMode结束编辑不再立刻更新单元格 ([f813e5d](https://github.com/nomui/nomui/commit/f813e5db4fc957f82f0ad36c6d7dffa642717692))
+* **GroupGrid:** setValue方法options未生效问题 ([43176da](https://github.com/nomui/nomui/commit/43176dad38ccb950d9d0e9be7c32e6f4eac1be44))
+* **GroupList:** 必填校验不会提示校验信息的问题 ([6d54d52](https://github.com/nomui/nomui/commit/6d54d52fbb0b8d7670a643a4fbcac746908b36ce))
+
+
+### Performance Improvements
+
+* **Field:** 优化字段组件验证提示在Panel以及弹窗内的显示不全的问题 ([e4a4e89](https://github.com/nomui/nomui/commit/e4a4e895f840c52554f36de69bbb7cd86ec195a8))
+* **Group:** 优化excelMode新旧值比较 ([cfd1bc3](https://github.com/nomui/nomui/commit/cfd1bc312e0d7c898039e6633a1d072c71803c31))
+* **Tooltip:** 优化Tooltip在字段组件当中的位置判断 ([07a0d09](https://github.com/nomui/nomui/commit/07a0d092895f40ad30590da1dd65140048ced380))
+
+
+### Docs
+
+* 文档更新 ([22408f9](https://github.com/nomui/nomui/commit/22408f9b4a2995d4293e139731d4b67e15c7bc77))
+* 文档以及案例更新 ([a9e2f23](https://github.com/nomui/nomui/commit/a9e2f23692e47a5618e339bed6821035f80e8da5))
+* 新增excelMode文档案例 ([7fd3707](https://github.com/nomui/nomui/commit/7fd3707750114d6f127dd81b62f989d8eb1ce926))
+
 ### [1.4.1](https://github.com/nomui/nomui/compare/v1.4.0...v1.4.1) (2024-11-14)
 
 
