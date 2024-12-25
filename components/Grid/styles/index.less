@@ -233,29 +233,56 @@
       height: min(3rem);
       padding: 0 1rem;
 
-      &:hover {
-        cursor: pointer;
-        // box-shadow: var(--nom-grid-td-excel-mode-hover-box-shadow);
-      }
-
-      &.nom-td-editable-active {
-        
-        &:not(.nom-td-tree-node) {
-          padding: 0 .25rem;
-        }
-
-        cursor: pointer;
-      }
-
       .nom-field {
         .nom-field-content {
           padding: 0;
         }
       }
+      .nom-td-editable-inner {
+        display: flex;
+        min-height: 1rem;
+        >div:first-child {
+          flex-grow: 1;
+          width: 0;
+          display: flex;
+          >span:last-child {
+            flex-grow: 1;
+            width: 0;
+          }
+        }
+        .nom-grid-td-edit-trigger {
+          display: none;
+        }
+        &:hover {
+          .nom-grid-td-edit-trigger {
+            display: inline-flex;
+            cursor: pointer;
+            color: var(--nom-grid-icon-color-muted);
+            &:hover {
+              color: var(--nom-color-primary);
+            }
+          }
+        }
+      }
+    
+      &.nom-td-editable-active {
+        &:not(.nom-td-tree-node) {
+          padding: 0 .25rem;
+        }
+
+        cursor: pointer;
+        .nom-td-editable-inner {
+          .nom-grid-td-edit-trigger {
+            display: none;
+          }
+        }
+      }
+    
     }
-
-
+    
   }
+
+
 
   .nom-grid-checkbox {
     display: inline-flex;
