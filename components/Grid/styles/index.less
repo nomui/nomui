@@ -191,12 +191,20 @@
     .nom-td-excel-mode {
       height: min(3rem);
       padding: 0 1rem;
-
+      
+      >.nom-td-excel-mode-inner {
+        display: flex;
+        align-items: center;
+        >span:last-child {
+          flex-grow: 1;
+          width: 0;
+        }
+      }
       &:hover {
         cursor: pointer;
         box-shadow: var(--nom-grid-td-excel-mode-hover-box-shadow);
       }
-
+      
       &.nom-td-excel-mode-active {
         padding: 0 .25rem;
         cursor: pointer;
@@ -231,7 +239,11 @@
       }
 
       &.nom-td-editable-active {
-        padding: 0 .25rem;
+        
+        &:not(.nom-td-tree-node) {
+          padding: 0 .25rem;
+        }
+
         cursor: pointer;
       }
 
