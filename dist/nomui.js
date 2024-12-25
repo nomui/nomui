@@ -30808,7 +30808,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } = this.props;
       const that = this;
       this.setProps({
-        attrs: { style: { height: `${height + 34}px`, width: `${width}px` } },
+        attrs: { style: { height: `${height + 44}px`, width: `${width}px` } },
         children: [
           {
             tag: "div",

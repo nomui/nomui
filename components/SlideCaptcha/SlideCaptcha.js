@@ -192,11 +192,12 @@ class SlideCaptcha extends Component {
 
   _config() {
     const { width, height, bgSrc, captchSrc, top, tip, refreshTitle, state } = this.props
+
     const that = this
     this.setProps({
       attrs: {
         style: {
-          height: `${height + 34}px`,
+          height: `${height + 44}px`,
           width: `${width}px`,
         },
       },

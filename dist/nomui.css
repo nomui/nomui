@@ -9551,6 +9551,7 @@ textarea .nom-textarea {
 .nom-slide-captcha {
   position: relative;
   display: inline-block;
+  overflow: hidden;
   /* 验证成功前可拖动部分 */
   /* 验证成功后可拖动部分 */
   /* 大图 */
@@ -9563,6 +9564,7 @@ textarea .nom-textarea {
   line-height: 30px;
   text-align: center;
   background-color: var(--nom-slide-captcha-drag-bg);
+  margin-top: 10px;
   /* 底部 */
   /* 底部文字 */
 }
