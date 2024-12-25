@@ -164,7 +164,7 @@ define([], function () {
                   }
                 },
                 cellRender: ({ cellData }) => {
-                  if (!cellData) return '-'
+                  // if (!cellData) return '-'
                   return cellData
                 },
               },
