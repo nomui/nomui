@@ -7764,27 +7764,6 @@ table.nom-table.p-line-both td:last-child {
 table.nom-table.p-bordered {
   border: 1px solid var(--nom-border-color);
 }
-.nom-td-editable .nom-td-editable-inner {
-  display: flex;
-}
-.nom-td-editable .nom-td-editable-inner > div:first-child {
-  flex-grow: 1;
-  width: 0;
-}
-.nom-td-editable .nom-td-editable-inner .nom-grid-td-edit-trigger {
-  display: none;
-}
-.nom-td-editable .nom-td-editable-inner:hover .nom-grid-td-edit-trigger {
-  display: inline-flex;
-  cursor: pointer;
-  color: var(--nom-grid-icon-color-muted);
-}
-.nom-td-editable .nom-td-editable-inner:hover .nom-grid-td-edit-trigger:hover {
-  color: var(--nom-color-primary);
-}
-.nom-td-editable.nom-td-editable-active .nom-td-editable-inner .nom-grid-td-edit-trigger {
-  display: none;
-}
 .nom-grid {
   position: relative;
   display: flex;
@@ -7937,6 +7916,14 @@ table.nom-table.p-bordered {
   height: 3rem;
   padding: 0 1rem;
 }
+.nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner {
+  display: flex;
+  align-items: center;
+}
+.nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner > span:last-child {
+  flex-grow: 1;
+  width: 0;
+}
 .nom-grid.m-excel-mode .nom-td-excel-mode:hover {
   cursor: pointer;
   box-shadow: var(--nom-grid-td-excel-mode-hover-box-shadow);
@@ -7963,15 +7950,41 @@ table.nom-table.p-bordered {
   height: 3rem;
   padding: 0 1rem;
 }
-.nom-grid.m-editable .nom-td-editable:hover {
-  cursor: pointer;
-}
-.nom-grid.m-editable .nom-td-editable.nom-td-editable-active {
-  padding: 0 0.25rem;
-  cursor: pointer;
-}
 .nom-grid.m-editable .nom-td-editable .nom-field .nom-field-content {
   padding: 0;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner {
+  display: flex;
+  min-height: 1rem;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child {
+  flex-grow: 1;
+  width: 0;
+  display: flex;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span:last-child {
+  flex-grow: 1;
+  width: 0;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner .nom-grid-td-edit-trigger {
+  display: none;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner:hover .nom-grid-td-edit-trigger {
+  display: inline-flex;
+  cursor: pointer;
+  color: var(--nom-grid-icon-color-muted);
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner:hover .nom-grid-td-edit-trigger:hover {
+  color: var(--nom-color-primary);
+}
+.nom-grid.m-editable .nom-td-editable.nom-td-editable-active {
+  cursor: pointer;
+}
+.nom-grid.m-editable .nom-td-editable.nom-td-editable-active:not(.nom-td-tree-node) {
+  padding: 0 0.25rem;
+}
+.nom-grid.m-editable .nom-td-editable.nom-td-editable-active .nom-td-editable-inner .nom-grid-td-edit-trigger {
+  display: none;
 }
 .nom-grid .nom-grid-checkbox {
   display: inline-flex;

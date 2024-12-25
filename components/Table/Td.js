@@ -238,6 +238,7 @@ class Td extends Component {
           target: () => {
             return this.tr.props.childTrs
           },
+          byIndicator: treeConfig.byIndicator,
           indicator: {
             component: 'Icon',
             classes: { 'nom-tr-expand-indicator': true },
@@ -355,6 +356,7 @@ class Td extends Component {
             },
             type: this._getEditIconType(),
             onClick: ({ event }) => {
+              event.stopPropagation()
               const grid = this.table.grid
 
               if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
@@ -373,8 +375,6 @@ class Td extends Component {
               } else {
                 grid.lastEditTd = null
               }
-
-              event.stopPropagation()
             },
           },
         ],
@@ -391,11 +391,19 @@ class Td extends Component {
     const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode
 
     if (isExcelMode) {
+      children = {
+        tag: 'span',
+        classes: {
+          'nom-td-excel-mode-inner': true,
+        },
+        children,
+      }
       this.setProps({
         classes: {
           'nom-td-excel-mode': true,
         },
         onClick: ({ event }) => {
+          event.stopPropagation()
           const grid = this.table.grid
 
           if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
@@ -411,8 +419,6 @@ class Td extends Component {
           } else {
             grid.lastEditTd = null
           }
-
-          event.stopPropagation()
         },
       })
     } else if (this.table.hasGrid && this.table.grid.props.editable) {
@@ -421,6 +427,7 @@ class Td extends Component {
           'nom-td-editable': true,
         },
         onClick: ({ event }) => {
+          event.stopPropagation()
           const grid = this.table.grid
 
           if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
@@ -431,8 +438,6 @@ class Td extends Component {
           }
 
           grid.lastEditTd = null
-
-          event.stopPropagation()
         },
       })
     }

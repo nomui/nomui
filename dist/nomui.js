@@ -18633,6 +18633,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             target: () => {
               return this.tr.props.childTrs;
             },
+            byIndicator: treeConfig.byIndicator,
             indicator: {
               component: "Icon",
               classes: { "nom-tr-expand-indicator": true },
@@ -18716,6 +18717,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               attrs: { title: "修改" },
               type: this._getEditIconType(),
               onClick: ({ event }) => {
+                event.stopPropagation();
                 const grid = this.table.grid;
                 if (
                   grid.lastEditTd &&
@@ -18736,7 +18738,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 } else {
                   grid.lastEditTd = null;
                 }
-                event.stopPropagation();
               },
             },
           ],
@@ -18752,9 +18753,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         : "left";
       const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode;
       if (isExcelMode) {
+        children = {
+          tag: "span",
+          classes: { "nom-td-excel-mode-inner": true },
+          children,
+        };
         this.setProps({
           classes: { "nom-td-excel-mode": true },
           onClick: ({ event }) => {
+            event.stopPropagation();
             const grid = this.table.grid;
             if (
               grid.lastEditTd &&
@@ -18772,13 +18779,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             } else {
               grid.lastEditTd = null;
             }
-            event.stopPropagation();
           },
         });
       } else if (this.table.hasGrid && this.table.grid.props.editable) {
         this.setProps({
           classes: { "nom-td-editable": true },
           onClick: ({ event }) => {
+            event.stopPropagation();
             const grid = this.table.grid;
             if (
               grid.lastEditTd &&
@@ -18791,7 +18798,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               return;
             }
             grid.lastEditTd = null;
-            event.stopPropagation();
           },
         });
       }
