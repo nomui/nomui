@@ -104,8 +104,8 @@ class Avatar extends Component {
           this._setScale();
         }
       });
-      this.intersectionObserver.observe(this.referenceElement);
     });
+    this.intersectionObserver.observe(this.referenceElement);
   }
   _remove() {
     this.intersectionObserver && this.intersectionObserver.unobserve(this.referenceElement);
