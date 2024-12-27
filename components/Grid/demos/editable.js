@@ -111,6 +111,9 @@ define([], function () {
                 })
               },
             },
+            onRowClick: (args) => {
+              console.log(args)
+            },
             columns: [
               {
                 field: 'name',
