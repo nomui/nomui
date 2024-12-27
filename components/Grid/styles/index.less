@@ -245,10 +245,22 @@
           flex-grow: 1;
           width: 0;
           display: flex;
-          >span:last-child {
+          >span:last-child:not(.nom-table-cell-content) {
             flex-grow: 1;
             width: 0;
           }
+
+          >span.nom-table-cell-content {
+            display: flex;
+            width: 100%;
+            >span:last-child {
+              flex-grow: 1;
+              width: 0;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+         }
         }
         .nom-grid-td-edit-trigger {
           display: none;
