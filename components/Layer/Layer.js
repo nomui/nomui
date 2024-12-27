@@ -16,9 +16,10 @@ class Layer extends Component {
     this._onDocumentMousedown = this._onDocumentMousedown.bind(this)
     this._onWindowResize = this._onWindowResize.bind(this)
     this.attachTo = this.props.attachTo
-    this.attachTo && this.attachTo.on('remove', () => {
-      this.remove()
-    })
+    this.attachTo &&
+      this.attachTo.on('remove', () => {
+        this.remove()
+      })
   }
 
   _config() {
@@ -108,7 +109,6 @@ class Layer extends Component {
       if (!this.props.ignoreResize) {
         window.addEventListener('resize', this._onWindowResize, false)
       }
-
     }
     this.props.onShow && this._callHandler(this.props.onShow)
   }
@@ -121,7 +121,6 @@ class Layer extends Component {
       this.removeClass('nom-layer-animate-show')
       this.removeClass('nom-layer-animate-hide')
     }
-
 
     if (forceRemove === true || this.props.closeToRemove) {
       this.props.onClose && this._callHandler(this.props.onClose)
@@ -250,8 +249,8 @@ class Layer extends Component {
           pos = rhorizontal.test(pos[0])
             ? pos.concat(['center'])
             : rvertical.test(pos[0])
-              ? ['center'].concat(pos)
-              : ['center', 'center']
+            ? ['center'].concat(pos)
+            : ['center', 'center']
         }
         pos[0] = rhorizontal.test(pos[0]) ? pos[0] : 'center'
         pos[1] = rvertical.test(pos[1]) ? pos[1] : 'center'
