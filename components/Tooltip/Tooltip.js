@@ -49,9 +49,6 @@ class Tooltip extends Layer {
   _rendered() {
     const bg = getComputedStyle(this.element)['background-color']
     this.arrow.element.style.color = bg
-    if (this.props.align === 'top' && this.props.isInvalidTip) {
-      this._checkVisible()
-    }
   }
 
   _checkVisible() {
@@ -69,7 +66,9 @@ class Tooltip extends Layer {
     if (overflowAncestor) {
       const parentRect = overflowAncestor.getBoundingClientRect()
       const elementRect = this.element.getBoundingClientRect()
-      if (elementRect.top < parentRect.top) {
+
+      if (elementRect.top < parentRect.top || this.shouldFixPosition) {
+        this.shouldFixPosition = true
         this.props.position = { ...this.props.position, offset: [0, 25] }
         this.setPosition()
       }
@@ -92,12 +91,7 @@ class Tooltip extends Layer {
       }
     }
     if (this.props.animate) {
-      let align = this.element.getAttribute('tooltip-align')
-      const s = align.indexOf(' ')
-      if (s !== -1) {
-        align = align.substring(0, s)
-      }
-      this.addClass(`nom-tooltip-animate-${align}-show`)
+      this.addClass(`nom-tooltip-animate-show`)
     }
   }
 
@@ -183,6 +177,9 @@ class Tooltip extends Layer {
       this.element.style.top = `${this.element.style.top.replace('px', '') - docTop}px`
     }
     this._fixDirection()
+    if (this.props.align === 'top' && this.props.isInvalidTip) {
+      this._checkVisible()
+    }
   }
 
   getScrollTop() {
