@@ -8021,9 +8021,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       const bg = getComputedStyle(this.element)["background-color"];
       this.arrow.element.style.color = bg;
-      if (this.props.align === "top" && this.props.isInvalidTip) {
-        this._checkVisible();
-      }
     }
     _checkVisible() {
       let currentElement = this.element;
@@ -8039,7 +8036,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (overflowAncestor) {
         const parentRect = overflowAncestor.getBoundingClientRect();
         const elementRect = this.element.getBoundingClientRect();
-        if (elementRect.top < parentRect.top) {
+        if (elementRect.top < parentRect.top || this.shouldFixPosition) {
+          this.shouldFixPosition = true;
           this.props.position = Object.assign({}, this.props.position, {
             offset: [0, 25],
           });
@@ -8069,12 +8067,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       if (this.props.animate) {
-        let align = this.element.getAttribute("tooltip-align");
-        const s = align.indexOf(" ");
-        if (s !== -1) {
-          align = align.substring(0, s);
-        }
-        this.addClass(`nom-tooltip-animate-${align}-show`);
+        this.addClass(`nom-tooltip-animate-show`);
       }
     }
     _remove() {
@@ -8153,6 +8146,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }px`;
       }
       this._fixDirection();
+      if (this.props.align === "top" && this.props.isInvalidTip) {
+        this._checkVisible();
+      }
     }
     getScrollTop() {
       let scroll_top = 0;

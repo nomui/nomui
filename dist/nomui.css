@@ -6224,161 +6224,13 @@ body .nom-always-dark {
   left: 0;
   transform: translate(-12px, -50%) rotate(90deg);
 }
-.nom-tooltip-animate-top-show {
-  -webkit-animation: nom-tooltip-keyframe-bounce-in-top 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-  animation: nom-tooltip-keyframe-bounce-in-top 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-}
-.nom-tooltip-animate-bottom-show {
-  -webkit-animation: nom-tooltip-keyframe-bounce-in-bottom 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-  animation: nom-tooltip-keyframe-bounce-in-bottom 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-}
-.nom-tooltip-animate-left-show {
-  -webkit-animation: nom-tooltip-keyframe-bounce-in-left 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-  animation: nom-tooltip-keyframe-bounce-in-left 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-}
-.nom-tooltip-animate-right-show {
-  -webkit-animation: nom-tooltip-keyframe-bounce-in-right 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-  animation: nom-tooltip-keyframe-bounce-in-right 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+.nom-tooltip-animate-show {
+  -webkit-animation: nom-tooltip-keyframe-zoom-in 90ms linear forwards;
+  animation: nom-tooltip-keyframe-zoom-in 90ms linear forwards;
 }
 .nom-tooltip-animate-hide {
-  -webkit-animation: nom-tooltip-keyframe-zoom-out 90ms linear forwards;
-  animation: nom-tooltip-keyframe-zoom-out 90ms linear forwards;
-}
-@-webkit-keyframes nom-tooltip-keyframe-bounce-in-top {
-  0% {
-    -webkit-transform: scale(0.6) translateY(-8px);
-    transform: scale(0.6) translateY(-8px);
-    opacity: 0;
-  }
-  70% {
-    -webkit-transform: scale(1.01) translateY(-8px);
-    transform: scale(1.01) translateY(-8px);
-    opacity: 1;
-  }
-  to {
-    -webkit-transform: scale(1) translateY(-8px);
-    transform: scale(1) translateY(-8px);
-    opacity: 1;
-  }
-}
-@keyframes nom-tooltip-keyframe-bounce-in-top {
-  0% {
-    -webkit-transform: scale(0.6) translateY(-8px);
-    transform: scale(0.6) translateY(-8px);
-    opacity: 0;
-  }
-  70% {
-    -webkit-transform: scale(1.01) translateY(-8px);
-    transform: scale(1.01) translateY(-8px);
-    opacity: 1;
-  }
-  to {
-    -webkit-transform: scale(1) translateY(-8px);
-    transform: scale(1) translateY(-8px);
-    opacity: 1;
-  }
-}
-@-webkit-keyframes nom-tooltip-keyframe-bounce-in-bottom {
-  0% {
-    -webkit-transform: scale(0.6) translateY(8px);
-    transform: scale(0.6) translateY(8px);
-    opacity: 0;
-  }
-  70% {
-    -webkit-transform: scale(1.01) translateY(8px);
-    transform: scale(1.01) translateY(8px);
-    opacity: 1;
-  }
-  to {
-    -webkit-transform: scale(1) translateY(8px);
-    transform: scale(1) translateY(8px);
-    opacity: 1;
-  }
-}
-@keyframes nom-tooltip-keyframe-bounce-in-bottom {
-  0% {
-    -webkit-transform: scale(0.6) translateY(8px);
-    transform: scale(0.6) translateY(8px);
-    opacity: 0;
-  }
-  70% {
-    -webkit-transform: scale(1.01) translateY(8px);
-    transform: scale(1.01) translateY(8px);
-    opacity: 1;
-  }
-  to {
-    -webkit-transform: scale(1) translateY(8px);
-    transform: scale(1) translateY(8px);
-    opacity: 1;
-  }
-}
-@-webkit-keyframes nom-tooltip-keyframe-bounce-in-left {
-  0% {
-    -webkit-transform: scale(0.6) translateX(-8px);
-    transform: scale(0.6) translateX(-8px);
-    opacity: 0;
-  }
-  70% {
-    -webkit-transform: scale(1.01) translateX(-8px);
-    transform: scale(1.01) translateX(-8px);
-    opacity: 1;
-  }
-  to {
-    -webkit-transform: scale(1) translateX(-8px);
-    transform: scale(1) translateX(-8px);
-    opacity: 1;
-  }
-}
-@keyframes nom-tooltip-keyframe-bounce-in-left {
-  0% {
-    -webkit-transform: scale(0.6) translateX(-8px);
-    transform: scale(0.6) translateX(-8px);
-    opacity: 0;
-  }
-  70% {
-    -webkit-transform: scale(1.01) translateX(-8px);
-    transform: scale(1.01) translateX(-8px);
-    opacity: 1;
-  }
-  to {
-    -webkit-transform: scale(1) translateX(-8px);
-    transform: scale(1) translateX(-8px);
-    opacity: 1;
-  }
-}
-@-webkit-keyframes nom-tooltip-keyframe-bounce-in-right {
-  0% {
-    -webkit-transform: scale(0.6) translateX(8px);
-    transform: scale(0.6) translateX(8px);
-    opacity: 0;
-  }
-  70% {
-    -webkit-transform: scale(1.01) translateX(8px);
-    transform: scale(1.01) translateX(8px);
-    opacity: 1;
-  }
-  to {
-    -webkit-transform: scale(1) translateX(8px);
-    transform: scale(1) translateX(8px);
-    opacity: 1;
-  }
-}
-@keyframes nom-tooltip-keyframe-bounce-in-right {
-  0% {
-    -webkit-transform: scale(0.6) translateX(8px);
-    transform: scale(0.6) translateX(8px);
-    opacity: 0;
-  }
-  70% {
-    -webkit-transform: scale(1.01) translateX(8px);
-    transform: scale(1.01) translateX(8px);
-    opacity: 1;
-  }
-  to {
-    -webkit-transform: scale(1) translateX(8px);
-    transform: scale(1) translateX(8px);
-    opacity: 1;
-  }
+  -webkit-animation: nom-tooltip-keyframe-zoom-in 90ms linear forwards;
+  animation: nom-tooltip-keyframe-zoom-in 90ms linear forwards;
 }
 @-webkit-keyframes nom-tooltip-keyframe-zoom-out {
   0% {
@@ -6404,6 +6256,32 @@ body .nom-always-dark {
   }
   to {
     opacity: 0;
+  }
+}
+@-webkit-keyframes nom-tooltip-keyframe-zoom-in {
+  0% {
+    opacity: 0;
+  }
+  60% {
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes nom-tooltip-keyframe-zoom-in {
+  0% {
+    opacity: 0;
+  }
+  60% {
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 .nom-message {
@@ -7962,9 +7840,20 @@ table.nom-table.p-bordered {
   width: 0;
   display: flex;
 }
-.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span:last-child {
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span:last-child:not(.nom-table-cell-content) {
   flex-grow: 1;
   width: 0;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span.nom-table-cell-content {
+  display: flex;
+  width: 100%;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span.nom-table-cell-content > span:last-child {
+  flex-grow: 1;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner .nom-grid-td-edit-trigger {
   display: none;
