@@ -54,7 +54,7 @@ class Tooltip extends Layer {
   _checkVisible() {
     let currentElement = this.element
     let overflowAncestor = null
-    while (currentElement !== null) {
+    while (currentElement !== null && currentElement instanceof Element) {
       const style = window.getComputedStyle(currentElement)
       if (style.overflowY !== 'visible') {
         overflowAncestor = currentElement
