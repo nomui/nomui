@@ -10210,6 +10210,9 @@ textarea .nom-textarea {
   display: flex;
   align-items: end;
 }
+.nom-group-list > .nom-field-content > .nom-control {
+  min-height: 3.2rem;
+}
 .nom-file-list {
   margin-top: 2em;
 }
@@ -10729,6 +10732,8 @@ textarea .nom-textarea {
 }
 .nom-tree-select-content {
   display: flex;
+  flex-wrap: wrap;
+  gap: 2.5px 0;
 }
 .nom-tree-select-content .nom-tag.p-size-xs {
   padding: 0.11rem 0.25rem;
