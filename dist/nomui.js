@@ -11277,6 +11277,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.props.src && this._loadImageAsync();
       this._setScale();
     }
+    _created() {
+      super._created();
+      this.intersectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this._setScale();
+          }
+        });
+      });
+      this.intersectionObserver.observe(this.referenceElement);
+    }
+    _remove() {
+      this.intersectionObserver &&
+        this.intersectionObserver.unobserve(this.referenceElement);
+      super._remove();
+    }
   }
   Avatar.defaults = {
     tag: "span",
