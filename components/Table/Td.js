@@ -405,7 +405,9 @@ class Td extends Component {
         onClick: ({ event }) => {
           event.stopPropagation()
           const grid = this.table.grid
-
+          grid.props.onRowClick &&
+            !this.props.editMode &&
+            grid._callHandler(grid.props.onRowClick, { event, rowData: this.tr.props.data })
           if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
             grid.lastEditTd.endEdit()
           }
@@ -429,6 +431,9 @@ class Td extends Component {
         onClick: ({ event }) => {
           event.stopPropagation()
           const grid = this.table.grid
+          grid.props.onRowClick &&
+            !this.props.editMode &&
+            grid._callHandler(grid.props.onRowClick, { event, rowData: this.tr.props.data })
 
           if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
             grid.lastEditTd.endEdit()
