@@ -54,7 +54,7 @@ class GroupList extends Group {
 
     let realControlAction = controlAction
 
-    if (isNullish(realControlAction)) {
+    if (isNullish(realControlAction) && !that.props.hideAction) {
       realControlAction = [
         {
           component: 'Button',
@@ -66,7 +66,6 @@ class GroupList extends Group {
           onClick: () => {
             that.addGroup()
           },
-          hidden: that.props.hideAction,
         },
       ]
     }
@@ -115,7 +114,8 @@ class GroupList extends Group {
   }
 
   validate(options) {
-    if (this.props.required) {
+    let selfValid = true
+    if (this.props.required || !this.fields.length) {
       const rules = [{ type: 'required', message: this._propStyleClasses.requiredMessage }]
 
       const validationResult = RuleManager.validate(rules, this.fields.length ? true : null)
@@ -123,22 +123,15 @@ class GroupList extends Group {
       if (validationResult === true) {
         this.removeClass('s-invalid')
         this.trigger('valid')
-        if (this.errorTip) {
-          this.errorTip.remove()
-          delete this.errorTip
-        }
-        return true
+        selfValid = true
+      } else {
+        this.addClass('s-invalid')
+        this.trigger('invalid', validationResult)
+        this._invalid(validationResult)
+        selfValid = false
       }
-
-      this.addClass('s-invalid')
-      this.trigger('invalid', validationResult)
-      this._invalid(validationResult)
-
-      setTimeout(() => {
-        this.errorTip && this.errorTip.show()
-      }, 0)
-      return false
     }
+
     const invalids = []
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i],
@@ -155,7 +148,7 @@ class GroupList extends Group {
       invalids[0].focus()
     }
 
-    return invalids.length === 0
+    return invalids.length === 0 && selfValid === true
   }
 
   addGroup(groupProps) {

@@ -5,6 +5,7 @@ define([], function () {
     description:
       '配置了 `multiple`或`treeCheckable` 则开启多选。`treeCheckable`配置同`Tree`组件的`nodeCheckable`',
     demo: function () {
+      let treeSelectRef = null
       return {
         component: 'Flex',
         gap: 'small',
@@ -84,7 +85,8 @@ define([], function () {
                 },
               },
             ],
-          },]
+          },
+        ],
       }
     },
   }
