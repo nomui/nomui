@@ -6,6 +6,7 @@ define([
   './with-children.js',
   './with-img.js',
   './change-gap.js',
+  './tabs.js',
 ], function () {
   return {
     title: 'Avatar',
