@@ -7811,9 +7811,6 @@ table.nom-table.p-bordered {
   cursor: pointer;
   box-shadow: var(--nom-grid-td-excel-mode-active-hover-box-shadow);
 }
-.nom-grid.m-excel-mode .nom-td-excel-mode .nom-field .nom-field-content {
-  padding: 0;
-}
 .nom-grid.m-editable {
   --nom-grid-tr-bg-hover: #fff;
   --nom-grid-tr-striped-bg: #fff;
@@ -7827,9 +7824,6 @@ table.nom-table.p-bordered {
 .nom-grid.m-editable .nom-td-editable {
   height: 3rem;
   padding: 0 1rem;
-}
-.nom-grid.m-editable .nom-td-editable .nom-field .nom-field-content {
-  padding: 0;
 }
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner {
   display: flex;
@@ -10060,6 +10054,9 @@ textarea .nom-textarea {
   background: var(--nom-color-primary);
   display: inline-block;
   margin-right: 10px;
+}
+.nom-field.s-compact > .nom-field-content {
+  padding: 0;
 }
 @media (min-width: 576px) {
   .nom-field.p-label-align-top {

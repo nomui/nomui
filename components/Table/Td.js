@@ -79,6 +79,7 @@ class Td extends Component {
           reference: document.body,
           ignoreMouseEvent: true,
         },
+        compact: true,
       }
       if (this.table.hasGrid) {
         if (this.table.grid.props.excelMode || this.table.grid.props.editable)

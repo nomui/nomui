@@ -8720,7 +8720,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       this.setProps({
-        classes: { "s-readonly": this.props.readonly },
+        classes: {
+          "s-readonly": this.props.readonly,
+          "s-compact": this.props.compact,
+        },
         children: [
           labelProps,
           { component: FieldContent, value: this.props.value },
@@ -8912,6 +8915,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     rules: [],
     extra: null,
     tabindex: null,
+    compact: false,
   };
   Object.defineProperty(Field.prototype, "fields", {
     get: function () {
@@ -18497,6 +18501,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             reference: document.body,
             ignoreMouseEvent: true,
           },
+          compact: true,
         };
         if (this.table.hasGrid) {
           if (this.table.grid.props.excelMode || this.table.grid.props.editable)
