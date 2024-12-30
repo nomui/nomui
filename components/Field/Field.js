@@ -121,6 +121,7 @@ class Field extends Component {
     this.setProps({
       classes: {
         's-readonly': this.props.readonly,
+        's-compact': this.props.compact,
       },
       children: [
         labelProps,
@@ -341,6 +342,7 @@ Field.defaults = {
   rules: [],
   extra: null,
   tabindex: null,
+  compact: false,
 }
 
 Object.defineProperty(Field.prototype, 'fields', {
