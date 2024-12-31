@@ -9939,6 +9939,7 @@ textarea .nom-textarea {
 }
 .nom-field.s-readonly {
   cursor: default !important;
+  position: relative;
 }
 .nom-field.s-readonly::after {
   content: '';
