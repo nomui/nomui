@@ -3,7 +3,7 @@ import Flex from '../Flex/index'
 import List from '../List/index'
 import Select from '../Select/index'
 import Textbox from '../Textbox/index'
-import { } from '../util/date'
+import {} from '../util/date'
 import { formatDate, isFunction, isNumeric, isValidDate } from '../util/index'
 import TimePickerPanel from './TimePickerPanel'
 
@@ -113,7 +113,7 @@ class DatePicker extends Textbox {
                   rows: [
                     {
                       classes: {
-                        'nom-datepicker-popup-hd': true
+                        'nom-datepicker-popup-hd': true,
                       },
                       justify: 'between',
                       fills: true,
@@ -154,7 +154,7 @@ class DatePicker extends Textbox {
                     },
                     {
                       classes: {
-                        'nom-datepicker-popup-bd': true
+                        'nom-datepicker-popup-bd': true,
                       },
                       rows: [
                         {
@@ -207,7 +207,7 @@ class DatePicker extends Textbox {
                             //   },
                             // },
                             classes: {
-                              'nom-datepicker-day-item': true
+                              'nom-datepicker-day-item': true,
                             },
                             attrs: {
                               role: 'button',
@@ -249,25 +249,28 @@ class DatePicker extends Textbox {
 
                                 this.setProps({
                                   classes: {
-                                    'nom-datepicker-today-item': true
-                                  }
+                                    'nom-datepicker-today-item': true,
+                                  },
                                 })
                               }
-
 
                               this.setProps({
                                 styles: {
                                   text: 'center',
                                 },
                                 classes: {
-                                  'nom-datepicker-item-muted': isMuted
+                                  'nom-datepicker-item-muted': isMuted,
                                 },
                                 children: this.props.day,
                                 disabled: !!isDisabled,
                               })
                             },
                             onClick: function (args) {
-                              const { year: selYear, month: selMonth, day: selDay } = args.sender.props
+                              const {
+                                year: selYear,
+                                month: selMonth,
+                                day: selDay,
+                              } = args.sender.props
 
                               that.dateInfo = {
                                 ...that.dateInfo,
@@ -292,9 +295,8 @@ class DatePicker extends Textbox {
                             },
                           },
                         },
-                      ]
-                    }
-
+                      ],
+                    },
                   ],
                 },
                 this.props.showTime && {
@@ -322,7 +324,7 @@ class DatePicker extends Textbox {
             (this.props.showNow || extra.length) && {
               component: Flex,
               classes: {
-                'nom-datepicker-footer': true
+                'nom-datepicker-footer': true,
               },
               cols: [
                 ...extra,
@@ -352,7 +354,6 @@ class DatePicker extends Textbox {
   _fixTimePickerHeight() {
     const h = this.popup.element.querySelector('.nom-datepicker-popup-bd').offsetHeight
     this.popup.element.querySelector('.timepicker-group').style.height = `${h}px`
-
   }
 
   // 更新 timePicker的禁用情况(内部个根据 startTime endTime计算)
@@ -460,7 +461,7 @@ class DatePicker extends Textbox {
     const me = this
     setTimeout(() => {
       const h = me.days.element.offsetHeight
-      me.timePickerRef.element.querySelectorAll('.nom-datepicker-time-overcont').forEach(n => {
+      me.timePickerRef.element.querySelectorAll('.nom-datepicker-time-overcont').forEach((n) => {
         n.style.maxHeight = `${h + 40}px`
       })
     }, 0)
