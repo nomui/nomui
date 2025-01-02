@@ -7849,6 +7849,17 @@ table.nom-table.p-bordered {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span.nom-table-cell-content > div:only-child {
+  display: flex;
+  width: 100%;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span.nom-table-cell-content > div:only-child > span:last-child {
+  flex-grow: 1;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner .nom-grid-td-edit-trigger {
   display: none;
 }
