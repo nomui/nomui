@@ -20207,6 +20207,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             };
             header.scrollbar.update({ size });
           }
+          header && header._processFixedColumnSticky(that);
           that._triggerGridResize(0);
           isPlainObject(columnResizable) &&
             columnResizable.onEnd &&
