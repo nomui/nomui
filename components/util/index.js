@@ -274,16 +274,21 @@ export function formatDate(date, format) {
   if (!date) {
     return null
   }
+
   let mydate = null
+
+  // 直接处理 ISO 8601 日期字符串（包括时区信息）
   if (typeof date === 'string') {
-    const arr = date
-      .replace(/\d+(?=\/[^/]+$)|\d+(?=-[^-]+$)/, function (a) {
-        return parseInt(a, 10) - 1
-      })
-      .match(/\d+/g)
-    mydate = new Date(...arr)
+    mydate = new Date(date) // 直接使用构造函数解析字符串
   } else if (typeof date === 'number') {
-    mydate = new Date(date)
+    mydate = new Date(date) // 时间戳
+  } else if (date instanceof Date) {
+    mydate = date // 已是 Date 对象
+  }
+
+  // 检查是否是有效日期
+  if (Number.isNaN(mydate.getTime())) {
+    throw new Error('Invalid date')
   }
 
   return new Date(mydate).format(format)
