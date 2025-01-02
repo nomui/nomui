@@ -49,14 +49,18 @@ class Th extends Component {
 
     let thContent = this.props.column.header || this.props.column.title
 
-    if (this.props.column.isChecker || this.props.column.type === 'checker' || this.props.column.type === 'checker&order') {
+    if (
+      this.props.column.isChecker ||
+      this.props.column.type === 'checker' ||
+      this.props.column.type === 'checker&order'
+    ) {
       thContent = {
         component: 'Checkbox',
         attrs: {
           style: {
             display: 'inline-flex',
-            paddingRight: '.25rem'
-          }
+            paddingRight: '.25rem',
+          },
         },
         uncheckPart: true,
         plain: true,
@@ -85,7 +89,7 @@ class Th extends Component {
       //   },
       //   children: thContent
       // } : thContent
-      children: thContent
+      children: thContent,
     }
 
     if (that.props.column.sortable && that.props.column.colSpan > 0) {
@@ -109,144 +113,158 @@ class Th extends Component {
       this.resizable = false
     }
 
-
     let children = [
-      this.props.column.toolbar && this.props.column.toolbar.align === 'left' && {
-        classes: {
-          'nom-grid-column-th-tools': true,
-          'nom-grid-column-th-tools-hover': this.props.column.toolbar.hover,
-          'nom-grid-column-th-tools-hide': !(this.props.column.toolbar.placement === 'header' || this.props.column.toolbar.placement === 'both')
+      this.props.column.toolbar &&
+        this.props.column.toolbar.align === 'left' && {
+          classes: {
+            'nom-grid-column-th-tools': true,
+            'nom-grid-column-th-tools-hover': this.props.column.toolbar.hover,
+            'nom-grid-column-th-tools-hide': !(
+              this.props.column.toolbar.placement === 'header' ||
+              this.props.column.toolbar.placement === 'both'
+            ),
+          },
+          children: this.props.column.toolbar.render({
+            isHeader: true,
+            field: this.props.column.field,
+          }),
         },
-        children: this.props.column.toolbar.render({ isHeader: true, field: this.props.column.field }),
-      },
       headerProps,
       this.props.column.sortable &&
-      this.props.column.colSpan > 0 && {
-        component: 'Icon',
-        classes: {
-          'nom-table-sort-handler': true,
+        this.props.column.colSpan > 0 && {
+          component: 'Icon',
+          classes: {
+            'nom-table-sort-handler': true,
+          },
+          type: sortIcon,
+          onClick: function () {
+            that.onSortChange()
+          },
         },
-        type: sortIcon,
-        onClick: function () {
-          that.onSortChange()
-        },
-      },
       this.props.column.filter &&
-      this.props.column.colSpan > 0 && {
-        component: 'Icon',
-        type: 'filter',
-        ref: (c) => {
-          this.filterBtn = c
-        },
-        classes: {
-          'nom-table-filter-handler': true,
-        },
-        attrs: {
-          style: {
-            cursor: 'pointer',
-          },
-
-        },
-        tooltip: this.filterValue
-          ? this.table.grid.filterValueText[this.props.column.field]
-          : null,
-        popup: {
-          align: 'bottom right',
+        this.props.column.colSpan > 0 && {
+          component: 'Icon',
+          type: 'filter',
           ref: (c) => {
-            this.filterPopup = c
+            this.filterBtn = c
           },
-          onShow: () => {
-            that.filterGroup && that.filterGroup.setValue(that.filterValue)
+          classes: {
+            'nom-table-filter-handler': true,
           },
-          children: {
-            attrs: {
-              style: {
-                padding: '10px',
-                'min-width': '180px',
-                'max-width': '250px',
-              },
+          attrs: {
+            style: {
+              cursor: 'pointer',
             },
-            children: [
-              {
-                component: 'Group',
-                ref: (c) => {
-                  this.filterGroup = c
+          },
+          tooltip: this.filterValue
+            ? this.table.grid.filterValueText[this.props.column.field]
+            : null,
+          popup: {
+            align: 'bottom right',
+            ref: (c) => {
+              this.filterPopup = c
+            },
+            onShow: () => {
+              that.filterGroup && that.filterGroup.setValue(that.filterValue)
+            },
+            children: {
+              attrs: {
+                style: {
+                  padding: '10px',
+                  'min-width': '180px',
+                  'max-width': '250px',
                 },
-
-                fields: [
-                  {
-                    ...(isFunction(that.props.column.filter)
-                      ? that.props.column.filter()
-                      : that.props.column.filter),
-                    name: that.props.column.field,
-                  },
-                ],
               },
-              {
-                attrs: {
-                  style: {
-                    'text-align': 'right',
-                    padding: '0 10px',
+              children: [
+                {
+                  component: 'Group',
+                  ref: (c) => {
+                    this.filterGroup = c
                   },
-                },
-                children: {
-                  component: 'Cols',
-                  justify: 'end',
-                  gutter: 'sm',
-                  items: [
+
+                  fields: [
                     {
-                      component: 'Button',
-                      text: this.table.props.okText,
-                      size: 'small',
-                      onClick: () => {
-                        this.onFilterChange()
-                      },
-                    },
-                    {
-                      component: 'Button',
-                      text: this.table.props.resetText,
-                      size: 'small',
-                      onClick: () => {
-                        this.onFilterReset()
-                      },
+                      ...(isFunction(that.props.column.filter)
+                        ? that.props.column.filter()
+                        : that.props.column.filter),
+                      name: that.props.column.field,
                     },
                   ],
                 },
-              },
-            ],
+                {
+                  attrs: {
+                    style: {
+                      'text-align': 'right',
+                      padding: '0 10px',
+                    },
+                  },
+                  children: {
+                    component: 'Cols',
+                    justify: 'end',
+                    gutter: 'sm',
+                    items: [
+                      {
+                        component: 'Button',
+                        text: this.table.props.okText,
+                        size: 'small',
+                        onClick: () => {
+                          this.onFilterChange()
+                        },
+                      },
+                      {
+                        component: 'Button',
+                        text: this.table.props.resetText,
+                        size: 'small',
+                        onClick: () => {
+                          this.onFilterReset()
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
           },
         },
-      },
       that.table.hasGrid &&
-      that.table.grid.props.allowFrozenCols &&
-      that.table.grid.props.allowFrozenCols.showPinner &&
-      !this.table.hasMultipleThead &&
-      !(this.props.column.width && this.props.column.width > 600) &&
-      !this.props.column.isChecker &&
-      !this.props.column.isTreeMark &&
-      this.props.column.fixed !== 'right' &&
-      this.props.column.frozenable !== false && {
-        component: 'Icon',
-        type: this.props.column.fixed ? 'pin-fill' : 'pin',
-        attrs: {
-          title: this.props.column.fixed ? this.table.props.unfreezeText : this.table.props.freezeText,
+        that.table.grid.props.allowFrozenCols &&
+        that.table.grid.props.allowFrozenCols.showPinner &&
+        !this.table.hasMultipleThead &&
+        !(this.props.column.width && this.props.column.width > 600) &&
+        !this.props.column.isChecker &&
+        !this.props.column.isTreeMark &&
+        this.props.column.fixed !== 'right' &&
+        this.props.column.frozenable !== false && {
+          component: 'Icon',
+          type: this.props.column.fixed ? 'pin-fill' : 'pin',
+          attrs: {
+            title: this.props.column.fixed
+              ? this.table.props.unfreezeText
+              : this.table.props.freezeText,
+          },
+          classes: {
+            'nom-table-pin-handler': true,
+          },
+          onClick: function () {
+            that.table.grid.handlePinClick(that.props.column)
+          },
         },
-        classes: {
-          'nom-table-pin-handler': true,
+      this.props.column.toolbar &&
+        this.props.column.toolbar.align !== 'left' && {
+          classes: {
+            'nom-grid-column-th-tools': true,
+            'nom-grid-column-th-tools-float-right': this.props.column.toolbar.align === 'right',
+            'nom-grid-column-th-tools-hover': this.props.column.toolbar.hover,
+            'nom-grid-column-th-tools-hide': !(
+              this.props.column.toolbar.placement === 'header' ||
+              this.props.column.toolbar.placement === 'both'
+            ),
+          },
+          children: this.props.column.toolbar.render({
+            isHeader: true,
+            field: this.props.column.field,
+          }),
         },
-        onClick: function () {
-          that.table.grid.handlePinClick(that.props.column)
-        },
-      },
-      this.props.column.toolbar && this.props.column.toolbar.align !== 'left' && {
-        classes: {
-          'nom-grid-column-th-tools': true,
-          'nom-grid-column-th-tools-float-right': this.props.column.toolbar.align === 'right',
-          'nom-grid-column-th-tools-hover': this.props.column.toolbar.hover,
-          'nom-grid-column-th-tools-hide': !(this.props.column.toolbar.placement === 'header' || this.props.column.toolbar.placement === 'both')
-        },
-        children: this.props.column.toolbar.render({ isHeader: true, field: this.props.column.field }),
-      },
       that.resizable && {
         // component: 'Icon',
         ref: (c) => {
@@ -270,15 +288,16 @@ class Th extends Component {
       const { treeConfig, rowCheckable } = that.table.grid.props
 
       if (rowCheckable && rowCheckable.checkboxOnNodeColumn) {
-        const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
+        const isTreeNodeColumn =
+          treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
         if (isTreeNodeColumn) {
           children.unshift({
             component: 'Checkbox',
             attrs: {
               style: {
                 display: 'inline-flex',
-                paddingRight: '.25rem'
-              }
+                paddingRight: '.25rem',
+              },
             },
             plain: true,
             _created: (inst) => {
@@ -294,10 +313,7 @@ class Th extends Component {
           })
         }
       }
-
     }
-
-
 
     this.setProps({
       children: children,
@@ -427,7 +443,9 @@ class Th extends Component {
     const { columnResizable } = this.table.grid.props
 
     resizer.onmousedown = function (evt) {
-      isPlainObject(columnResizable) && columnResizable.onStart && that.table.grid._callHandler(columnResizable.onStart)
+      isPlainObject(columnResizable) &&
+        columnResizable.onStart &&
+        that.table.grid._callHandler(columnResizable.onStart)
       const startX = evt.clientX
       that.lastDistance = 0
       that._hideHighLightMask()
@@ -440,7 +458,9 @@ class Th extends Component {
         const distance = moveLen - that.lastDistance
         that._triggerGridResize(distance)
         that.lastDistance = moveLen
-        isPlainObject(columnResizable) && columnResizable.onMove && that.table.grid._callHandler(columnResizable.onMove)
+        isPlainObject(columnResizable) &&
+          columnResizable.onMove &&
+          that.table.grid._callHandler(columnResizable.onMove)
       }
       document.onmouseup = function () {
         that.mouseDowning = false
@@ -458,9 +478,12 @@ class Th extends Component {
           }
           header.scrollbar.update({ size })
         }
+        header && header._processFixedColumnSticky(that)
         that._triggerGridResize(0)
 
-        isPlainObject(columnResizable) && columnResizable.onEnd && that.table.grid._callHandler(columnResizable.onEnd)
+        isPlainObject(columnResizable) &&
+          columnResizable.onEnd &&
+          that.table.grid._callHandler(columnResizable.onEnd)
         document.onmousemove = null
         document.onmouseup = null
       }
