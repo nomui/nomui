@@ -92,23 +92,28 @@ class Avatar extends Component {
   }
 
   _rendered() {
-    this.props.src && this._loadImageAsync()
+    if (this.props.src) {
+      this._loadImageAsync().catch((error) => {
+        console.warn('Failed to load image:', error)
+      })
+    }
     this._setScale()
   }
 
   _created() {
-    super._created();
+    super._created()
     this.intersectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          this._setScale();
+          this._setScale()
         }
-      });
-    });
-    this.intersectionObserver.observe(this.referenceElement);
+      })
+    })
+    this.intersectionObserver.observe(this.referenceElement)
   }
+
   _remove() {
-    this.intersectionObserver && this.intersectionObserver.unobserve(this.referenceElement);
+    this.intersectionObserver && this.intersectionObserver.unobserve(this.referenceElement)
     super._remove()
   }
 }

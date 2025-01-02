@@ -11274,7 +11274,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
     }
     _rendered() {
-      this.props.src && this._loadImageAsync();
+      if (this.props.src) {
+        this._loadImageAsync().catch((error) => {
+          console.warn("Failed to load image:", error);
+        });
+      }
       this._setScale();
     }
     _created() {
