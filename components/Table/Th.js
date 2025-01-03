@@ -74,6 +74,9 @@ class Th extends Component {
             that.table.grid.uncheckAllRows(false)
           }
         },
+        onClick: ({ event }) => {
+          event.stopPropagation()
+        },
       }
     }
 
