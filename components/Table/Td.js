@@ -579,6 +579,9 @@ class Td extends Component {
               }
               grid.changeCheckAllState()
             },
+            onClick: ({ event }) => {
+              event.stopPropagation()
+            },
           },
           {
             classes: {

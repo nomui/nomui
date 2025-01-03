@@ -18942,6 +18942,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 }
                 grid.changeCheckAllState();
               },
+              onClick: ({ event }) => {
+                event.stopPropagation();
+              },
             },
             { classes: { "nom-grid-order-text": true }, children: index + 1 },
           ],
@@ -19839,6 +19842,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             } else {
               that.table.grid.uncheckAllRows(false);
             }
+          },
+          onClick: ({ event }) => {
+            event.stopPropagation();
           },
         };
       }
