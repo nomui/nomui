@@ -16568,7 +16568,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (month === 1) {
         lastDayCount = this._getDaysInMonth(year - 1, 12);
         lastMonthYear = year - 1;
-        lastMonthMonth = 11;
+        lastMonthMonth = 12;
       }
       if (firstDay > 0) {
         for (i = lastDayCount - firstDay + 1; i < lastDayCount + 1; i++) {
