@@ -6058,6 +6058,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     cat
   );
   Icon.add(
+    "double-left",
+    `<svg t="1736157642143" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3204" width="1em" height="1em" fill="currentColor"><path d="M893.76 132.8l-45.12-45.12L448 489.28a32 32 0 0 0 0 45.44l400.64 401.6 45.12-45.12L514.56 512z" p-id="3205"></path><path d="M573.76 132.8l-45.12-45.12L128 489.28a32 32 0 0 0 0 45.44l400.64 401.6 45.12-45.12L194.56 512z" p-id="3206"></path></svg>`,
+    cat
+  );
+  Icon.add(
+    "double-right",
+    `<svg t="1736157698135" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6415" width="1em" height="1em" fill="currentColor"><path d="M576 489.28L173.76 87.68 128 132.8 507.52 512 128 891.2l45.12 45.12L576 534.72a32 32 0 0 0 0-45.44z" p-id="6416"></path><path d="M896 489.28L493.76 87.68 448 132.8 827.52 512 448 891.2l45.12 45.12L896 534.72a32 32 0 0 0 0-45.44z" p-id="6417"></path></svg>`,
+    cat
+  );
+  Icon.add(
     "swap",
     `<svg t="1623828423357" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3532" width="1em" height="1em" fill="currentColor"><path d="M922.345786 372.183628l-39.393195 38.687114L676.138314 211.079416l0 683.909301-54.713113 0L621.425202 129.010259l53.320393 0L922.345786 372.183628zM349.254406 894.989741 101.654214 651.815349l39.393195-38.687114 206.814276 199.792349L347.861686 129.010259l54.713113 0 0 765.978459L349.254406 894.988718z" p-id="3533"></path></svg>`,
     cat
@@ -15562,867 +15572,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     fit: false,
   };
   Component.register(Flex);
-  var SelectListItemMixin = {
-    _config: function () {
-      const { onSelect, onUnselect } = this.props;
-      this.setProps({
-        selectable: {
-          byClick: true,
-          canRevert: this.list.selectControl.props.multiple === true,
-        },
-        hidden: !!this.props.isExtra,
-        onSelect: () => {
-          const { selectControl } = this.list;
-          const selectProps = selectControl.props;
-          const selectedOption = { option: this.props };
-          Object.keys(this.wrapper.props.children).forEach((item) => {
-            selectedOption[item] = this.props[item];
-          });
-          selectControl.placeholder && selectControl.placeholder.hide();
-          if (selectProps.multiple === false) {
-            selectControl.selectedSingle.update(selectedOption);
-            selectControl.props.animate && selectControl.popup.animateHide();
-            !selectControl.props.animate && selectControl.popup.hide();
-          } else {
-            selectControl.selectedMultiple.update({
-              items: [
-                ...selectControl.selectedMultiple.props.items,
-                {
-                  [selectControl.props.optionFields.text]: selectedOption.text,
-                  [selectControl.props.optionFields.value]:
-                    selectedOption.value,
-                },
-              ],
-            });
-          }
-          if (selectProps.virtual === true) {
-            this.list.virtual.selectedItems.push(selectedOption);
-          }
-          this._callHandler(onSelect);
-        },
-        onUnselect: () => {
-          const { selectControl } = this.list;
-          const selectProps = selectControl.props;
-          if (selectProps.multiple === true) {
-            selectControl.selectedMultiple.update({
-              items: selectControl.selectedMultiple.props.items.filter((n) => {
-                return n[selectControl.props.optionFields.value] !== this.key;
-              }),
-            });
-          }
-          if (selectProps.virtual === true) {
-            const { selectedItems } = this.list.virtual;
-            selectedItems.splice(
-              selectedItems.findIndex(
-                (item) =>
-                  item[selectControl.props.optionFields.value] ===
-                  this.props[selectControl.props.optionFields.value]
-              ),
-              1
-            );
-          }
-          this._callHandler(onUnselect);
-        },
-      });
-    },
-  };
-  class SelectList extends List {
-    constructor(props, ...mixins) {
-      const defaults = { gutter: "x-md", cols: 1, vertical: true };
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      super._created();
-      this.selectControl = this.parent.parent.parent.selectControl;
-      this.selectControl.optionList = this;
-    }
-    _config() {
-      const {
-        showSearch,
-        optionDefaults,
-        value,
-        multiple,
-        filterOption,
-        optionFields,
-        options,
-      } = this.selectControl.props;
-      const { text } = this.props;
-      const { checked, checkedOption } = this.selectControl;
-      let filterStr = checked ? checkedOption && checkedOption.text : text; // null或undefined处理
-      filterStr = filterStr || "";
-      this.selectControl._normalizeInternalOptions(options);
-      const filterOptions =
-        showSearch &&
-        filterOption(filterStr, this.selectControl.internalOptions);
-      const items = showSearch
-        ? filterOptions
-        : this.selectControl.internalOptions; // value唯一值校验提示
-      this._wranOptionsValue(items, optionFields.value);
-      this.setProps({
-        items,
-        itemDefaults: n$1(null, optionDefaults, null, [SelectListItemMixin]),
-        itemSelectable: {
-          multiple: multiple,
-          byClick: true,
-          scrollIntoView: true,
-        },
-        selectedItems: showSearch
-          ? checkedOption && checkedOption.value
-          : value,
-        onItemSelectionChange: () => {
-          this.selectControl._onValueChange();
-        },
-      });
-      super._config();
-    }
-    _wranOptionsValue(options, value) {
-      const map = new Map();
-      for (let index = 0; index < options.length; index++) {
-        const opt = options[index];
-        if (map.get(opt[value])) {
-          console.warn(
-            `Warning: Encountered two children with the same key, \`${opt[value]}\`.`
-          );
-          return false;
-        }
-        map.set(opt[value], true);
-      }
-    }
-  }
-  class SelectPopup extends Popup {
-    constructor(props, ...mixins) {
-      const defaults = {};
-      super(Component.extendProps(defaults, props), ...mixins);
-    }
-    _created() {
-      super._created();
-      this.selectControl = this.opener.field;
-    }
-    _config() {
-      const {
-        searchable,
-        options: originOptions,
-        popupWidth,
-      } = this.selectControl.props;
-      let { maxPopupWidth } = this.selectControl.props;
-      if (isNumeric(maxPopupWidth)) {
-        maxPopupWidth = `${maxPopupWidth}px`;
-      }
-      let w = `${this.selectControl.control.offsetWidth()}px`;
-      if (isNumeric(popupWidth)) {
-        w = `${popupWidth}px`;
-      } else if (popupWidth === "auto") {
-        w = "auto";
-      }
-      this.setProps({
-        attrs: {
-          style: {
-            width: w,
-            maxWidth:
-              maxPopupWidth || `${this.selectControl.control.offsetWidth()}px`,
-          },
-        },
-        children: {
-          component: Layout,
-          header: searchable
-            ? {
-                children: {
-                  component: Textbox,
-                  placeholder: searchable.placeholder,
-                  _created: (inst) => {
-                    this.selectControl.searchBox = inst;
-                  },
-                  onValueChange: ({ newValue }) => {
-                    this.timer && clearTimeout(this.timer);
-                    this.timer = setTimeout(() => {
-                      const loading = new nomui.Loading({
-                        container: this.selectControl.optionList.parent,
-                      });
-                      const result = searchable.filter({
-                        inputValue: newValue,
-                        options: originOptions,
-                      });
-                      if (result && result.then) {
-                        return result
-                          .then((value) => {
-                            this.selectControl.props.options = value;
-                            this.selectControl.optionList.update();
-                            loading && loading.remove();
-                          })
-                          .catch(() => {
-                            loading && loading.remove();
-                          });
-                      }
-                      loading && loading.remove();
-                      this.selectControl.props.options = result;
-                      result && this.selectControl.optionList.update();
-                    }, 300);
-                  },
-                },
-              }
-            : null,
-          body: {
-            children: { component: SelectList, virtual: this.props.virtual },
-          },
-        },
-      });
-      super._config();
-    }
-    _rendered() {
-      this.removeClass("nom-layer-animate-show");
-      this.selectControl.props.animate && this.animateInit();
-    }
-    animateInit() {
-      if (!this.element) return false;
-      if (this.element.getAttribute("offset-y") !== "0") {
-        this.addClass("nom-select-animate-bottom-show");
-      } else {
-        this.addClass("nom-select-animate-top-show");
-      }
-    }
-    _show() {
-      super._show();
-      this.removeClass("nom-layer-animate-show");
-      const { searchBox, props } = this.selectControl;
-      if (searchBox) {
-        searchBox.focus(); // 上一次搜索无数据，则清除搜索条件
-        if (!props.options || !props.options.length) {
-          searchBox.clear();
-        }
-      }
-    }
-    animateHide() {
-      if (!this.element) return false;
-      let animateName;
-      if (this.element.getAttribute("offset-y") !== "0") {
-        animateName = "nom-select-animate-bottom-hide";
-      } else {
-        animateName = "nom-select-animate-top-hide";
-      }
-      this.addClass(animateName);
-      setTimeout(() => {
-        if (!this.element) return false;
-        this.hide();
-        this.removeClass(animateName);
-      }, 160);
-    }
-  }
-  Component.register(SelectPopup);
-  class Select extends Field {
-    constructor(props, ...mixins) {
-      super(Component.extendProps(Select.defaults, props), ...mixins);
-    }
-    _created() {
-      super._created();
-      this.internalOptions = [];
-      this.multipleItems = [];
-      if (this.props.extraOptions) {
-        const extraOptions = this.props.extraOptions.map((n) => {
-          return Object.assign({}, n, { isExtra: true });
-        });
-        this.props.options = [...this.props.options, ...extraOptions];
-      }
-    }
-    _config() {
-      const that = this;
-      const {
-        multiple,
-        showArrow,
-        disabled,
-        showSearch,
-        allowClear,
-        options,
-      } = this.props;
-      const children = [];
-      const placeholder = this.props.placeholder; // if (!placeholder && (!Array.isArray(options) || !options.length)) {
-      //   this.props.value = ''
-      //   placeholder = '暂无数据'
-      // }
-      this._normalizeInternalOptions(options);
-      this._normalizeSearchable();
-      this.setProps({
-        selectedSingle: {
-          _created() {
-            that.selectedSingle = this;
-          },
-        },
-        selectedMultiple: {
-          itemDefaults: {
-            key() {
-              return this.props[that.props.optionFields.value];
-            },
-            _config: function () {
-              this.setProps({
-                tag: "span",
-                onClick: (args) => {
-                  args.event.stopPropagation();
-                },
-                hidden: this.props.isOverTag,
-                classes: {
-                  "nom-select-overtag-trigger": !!this.props.overList,
-                },
-                attrs: { title: this.props[that.props.optionFields.text] },
-                popup: this.props.overList
-                  ? {
-                      triggerAction: "hover",
-                      align: "top center",
-                      classes: { "nom-select-extra-tags": true },
-                      children: {
-                        component: "List",
-                        gutter: "sm",
-                        itemDefaults: {
-                          key() {
-                            return this.props[that.props.optionFields.value];
-                          },
-                          _config: function () {
-                            this.setProps({
-                              tag: "span",
-                              onClick: (args) => {
-                                args.event.stopPropagation();
-                              },
-                              attrs: {
-                                title: this.props[that.props.optionFields.text],
-                              },
-                              children: [
-                                {
-                                  tag: "span",
-                                  classes: { "nom-select-item-content": true },
-                                  attrs: {
-                                    style: {
-                                      maxWidth: `${that.props.maxTagWidth}px`,
-                                    },
-                                  },
-                                  children: this.props[
-                                    that.props.optionFields.text
-                                  ],
-                                },
-                              ],
-                            });
-                          },
-                        },
-                        items: this.props.overList,
-                      },
-                    }
-                  : null,
-                children: [
-                  {
-                    tag: "span",
-                    classes: { "nom-select-item-content": true },
-                    attrs: {
-                      style: { maxWidth: `${that.props.maxTagWidth}px` },
-                    },
-                    children: this.props.overList
-                      ? `+${this.props.overNum}`
-                      : this.props[that.props.optionFields.text],
-                  },
-                  !this.props.overList && {
-                    component: Icon,
-                    type: "times",
-                    classes: { "nom-select-item-remove": true },
-                    attrs: { style: { cursor: "pointer" } },
-                    onClick: (args) => {
-                      const key = args.sender.parent.key;
-                      that.selectedMultiple.removeItem(key);
-                      const oldValue = that.getValue();
-                      oldValue &&
-                        oldValue.length &&
-                        that.setValue(
-                          oldValue.filter((n) => {
-                            return n !== key;
-                          })
-                        );
-                      that.optionList && that.optionList.unselectItem(key);
-                      args.event && args.event.stopPropagation();
-                    },
-                  },
-                ],
-              });
-            },
-          },
-          _config() {
-            this.setProps({
-              items: this.props.items.map((n) => {
-                n.overList = null;
-                n.overNum = null;
-                return n;
-              }),
-            });
-            if (
-              that.props.maxTagCount > 0 &&
-              this.props.items.length > that.props.maxTagCount
-            ) {
-              const before = this.props.items.slice(
-                0,
-                that.props.maxTagCount + 1
-              );
-              const after = this.props.items.slice(
-                that.props.maxTagCount + 1,
-                this.props.items.length
-              );
-              const overTags = this.props.items.slice(
-                that.props.maxTagCount,
-                this.props.items.length
-              );
-              const num = this.props.items.length - that.props.maxTagCount;
-              const newItems = [
-                ...before.map((n, i) => {
-                  n.isOverTag = false;
-                  if (i === before.length - 1) {
-                    n.overList = overTags;
-                    n.overNum = num;
-                  } else {
-                    n.overList = null;
-                    n.overNum = null;
-                  }
-                  return n;
-                }),
-                ...after.map((n) => {
-                  n.isOverTag = true;
-                  return n;
-                }),
-              ];
-              this.setProps({ items: newItems });
-            }
-          },
-          _created() {
-            that.selectedMultiple = this;
-          },
-        },
-      });
-      if (multiple) {
-        children.push(this.props.selectedMultiple);
-      } else if (showSearch) {
-        const { onSearch } = this.props;
-        that.checked = true;
-        that.checkedOption = that._getOption(this.props.value);
-        const searchInput = {
-          tag: "input",
-          classes: { "nom-select-search-input": true },
-          _created() {
-            that.selectedSingle = this;
-          },
-          _rendered() {
-            this.element.value = this.props.text || "";
-          },
-          attrs: {
-            autocomplete: "false",
-            oninput() {
-              that.checked = false;
-              that.updateSearchPopup(this.value);
-              isFunction(onSearch) && onSearch(this.value);
-            },
-            onchange() {
-              if (that.checked) return;
-              this.value = that.checkedOption ? that.checkedOption.text : null;
-              that.updateSearchPopup(this.value);
-            },
-          },
-        };
-        children.push(searchInput);
-      } else {
-        children.push(this.props.selectedSingle);
-      }
-      if (isString(placeholder)) {
-        children.push({
-          _created() {
-            that.placeholder = this;
-          },
-          classes: { "nom-select-placeholder": true },
-          children: placeholder,
-        });
-      }
-      if (showArrow) {
-        children.push({
-          component: Icon,
-          type: "down",
-          classes: { "nom-select-arrow": true },
-        });
-      }
-      if (allowClear) {
-        children.push({
-          component: Icon,
-          type: "times",
-          classes: {
-            "nom-select-clear": true,
-            "nom-field-clear-handler": true,
-          },
-          hidden: true,
-          ref: (c) => {
-            this.clearIcon = c;
-          },
-          onClick: (args) => {
-            this.setValue(null);
-            this.props.allowClear && this.clearIcon.hide();
-            this.placeholder && this.placeholder.show();
-            this.props.onClear && this._callHandler(this.props.onClear);
-            args.event && args.event.stopPropagation();
-          },
-        });
-      }
-      this.setProps({
-        control: { disabled: disabled, children: children },
-        onClick: () => {
-          showSearch && this.selectedSingle.element.focus();
-        },
-      });
-      super._config();
-    }
-    _rendered() {
-      const { value, virtual, popupContainer } = this.props;
-      let container;
-      if (popupContainer === "self") {
-        this.element.style.position = "relative";
-        container = this.element;
-      } else if (
-        Object.prototype.toString.call(popupContainer) === "[object Function]"
-      ) {
-        const ref = popupContainer();
-        ref.element.style.position = "relative";
-        container = ref.element;
-      }
-      this.popup = new SelectPopup({
-        reference: container,
-        trigger: this.control,
-        virtual,
-        onShow: () => {
-          this.optionList.update({ selectedItems: this.getValue() });
-          this.optionList.scrollToSelected();
-        },
-      });
-      this._directSetValue(value);
-      this._valueChange({ newValue: this.currentValue });
-    }
-    _directSetValue(value, options) {
-      const { valueOptions } = this.props;
-      options = extend(
-        { asArray: false, nullWhenNotExists: false },
-        valueOptions,
-        options
-      );
-      const { multiple } = this.props;
-      if (multiple === true) {
-        const selValueOptions = this._getOptions(value);
-        if (Array.isArray(selValueOptions) && selValueOptions.length) {
-          this.multipleItems = selValueOptions;
-          this.selectedMultiple.update({ items: this.multipleItems });
-          this.currentValue = selValueOptions.map(function (item) {
-            return item.value;
-          });
-        } else {
-          this.selectedMultiple.update({ items: [] });
-          this.currentValue = null;
-        }
-      } else {
-        if (options.asArray === true) {
-          value = Array.isArray(value) ? value[0] : value;
-        }
-        const selValueOption = this._getOption(value);
-        if (selValueOption !== null) {
-          this.selectedSingle.update(selValueOption);
-          this.currentValue = selValueOption.value;
-          if (options.asArray === true) {
-            this.currentValue = [selValueOption.value];
-          }
-        } else if (options.nullWhenNotExists) {
-          this.selectedSingle.element.innerText = null;
-          this.currentValue = null;
-        } else {
-          this.selectedSingle.element.innerText = value;
-          this.currentValue = value;
-        }
-      } // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
-      if (this.searchBox && this.searchBox.props && value === null) {
-        this.searchBox._setValue("");
-      }
-    }
-    selectOption(option) {
-      this.optionList.selectItem(option);
-    }
-    selectOptions(options) {
-      this.optionList.selectItems(options);
-    }
-    getMultipleValue(obj) {
-      return ((target) =>
-        Object.keys(target).map((key) => target[key]))(obj.itemRefs);
-    }
-    getSelectedOption() {
-      if (!this.optionList || !this.optionList.props) {
-        return null;
-      }
-      if (this.props.multiple === false) {
-        return this.optionList.getSelectedItem();
-      } // console.log('旧---', this.optionList.getSelectedItems())
-      // console.log('新---', this.getMultipleValue(this.optionList.selectControl.selectedMultiple))
-      return this.getMultipleValue(
-        this.optionList.selectControl.selectedMultiple
-      ); // return this.optionList.getSelectedItems()
-    }
-    _getOptionsByValue(value) {
-      if (this.props.multiple === false) {
-        return this._getOption(value);
-      }
-      return this._getOptions(value);
-    }
-    _getValueText(options, value) {
-      const { valueOptions } = this.props;
-      const that = this;
-      options = extend({ asArray: false }, valueOptions, options);
-      if (!this.optionList) {
-        value = this.currentValue;
-      }
-      const selected =
-        value !== undefined
-          ? this._getOptionsByValue(value)
-          : this.getSelectedOption();
-      if (selected !== null) {
-        if (Array.isArray(selected) && selected.length > 0) {
-          const vals = selected.map(function (item) {
-            return item.props
-              ? item.props[that.props.optionFields.text]
-              : item.text;
-          });
-          return vals;
-        }
-        if (options.asArray === true && !Array.isArray(selected)) {
-          return selected.props
-            ? [selected.props[that.props.optionFields.text]]
-            : [selected.text];
-        }
-        if (!Array.isArray(selected)) {
-          return selected.props
-            ? selected.props[that.props.optionFields.text]
-            : selected.text;
-        }
-      }
-      return null;
-    }
-    _getValue(options) {
-      const { valueOptions, showSearch } = this.props;
-      const that = this;
-      options = extend({ asArray: false }, valueOptions, options);
-      if (!this.optionList || !this.optionList.props) {
-        return this.currentValue;
-      }
-      if (showSearch) {
-        const selectedSearch = this.getSelectedOption();
-        if (selectedSearch && selectedSearch.props)
-          return selectedSearch.props.value;
-        return this.currentValue;
-      }
-      const selected = this.getSelectedOption();
-      if (selected !== null) {
-        if (Array.isArray(selected) && selected.length > 0) {
-          const vals = selected.map(function (item) {
-            return item.props[that.props.optionFields.value];
-          });
-          return vals;
-        }
-        if (options.asArray === true && !Array.isArray(selected)) {
-          return [selected.props[that.props.optionFields.value]];
-        }
-        if (!Array.isArray(selected)) {
-          return selected.props[that.props.optionFields.value];
-        }
-      }
-      return null;
-    }
-    _setValue(value, options) {
-      if (options === false) {
-        options = { triggerChange: false };
-      } else {
-        options = extend({ triggerChange: true }, options);
-      }
-      if (this.props.showSearch) {
-        const selectedOption = this.internalOptions.find(
-          (e) => e.value === value
-        );
-        if (selectedOption) {
-          this.checked = true;
-          this.checkedOption = selectedOption;
-          this.updateSearchPopup(selectedOption && selectedOption.text);
-          this._directSetValue(value);
-        }
-      } else {
-        // 每次都会更新popup弹窗里面的 list的数据
-        // 但如果当前实例 update过了, optionList会被销毁
-        if (this.optionList && this.optionList.props) {
-          this.optionList.unselectAllItems({ triggerSelectionChange: false });
-          this.selectOptions(value, {
-            triggerSelectionChange: options.triggerChange,
-          });
-        }
-        this._directSetValue(value);
-        if (options.triggerChange) {
-          this._onValueChange();
-        } // if (this.optionList) {
-        //   this.optionList.unselectAllItems({ triggerSelectionChange: false })
-        //   this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
-        // } else {
-        //   this._directSetValue(value)
-        //   if (options.triggerChange) {
-        //     this._onValueChange()
-        //   }
-        // }
-      }
-    }
-    _getOption(value) {
-      let option = null;
-      const options = this.internalOptions;
-      if (Array.isArray(value)) {
-        value = value[0];
-      }
-      for (let i = 0; i < options.length; i++) {
-        if (options[i].value === value) {
-          option = options[i];
-          break;
-        }
-      }
-      return option;
-    }
-    _getOptions(value) {
-      let retOptions = null;
-      const options = this.internalOptions;
-      if (Array.isArray(value)) {
-        retOptions = [];
-        for (let i = 0; i < options.length; i++) {
-          if (value.indexOf(options[i].value) !== -1) {
-            retOptions.push(options[i]);
-          }
-        }
-      }
-      return retOptions;
-    }
-    _valueChange(changed) {
-      if (!this.props) return; // 有值则展示 clearIcon, 无值隐藏
-      changed.newValue
-        ? this.props.allowClear && this.clearIcon.show()
-        : this.props.allowClear && this.clearIcon.hide();
-      if (this.placeholder) {
-        // 多选时为空数组 || 单选时在options中无数据
-        if (
-          (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
-          !this._getOption(changed.newValue)
-        ) {
-          this.placeholder.show();
-        } else {
-          this.placeholder.hide();
-        }
-      } // 此处有问题，暂时添加判断屏蔽报错，问题原因是调用了已销毁组件的方法导致this是个空对象
-      if (this.props && this.props.showSearch) {
-        const selectedOption = this.internalOptions.find(
-          (e) => e.value === changed.newValue
-        );
-        this.checkedOption = selectedOption;
-        this.updateSearchPopup(selectedOption && selectedOption.text);
-        this.checked = true;
-      }
-    }
-    _disable() {
-      if (this.firstRender === false) {
-        this.control.disable();
-      }
-    }
-    _enable() {
-      if (this.firstRender === false) {
-        this.control.enable();
-      }
-    }
-    appendOption() {}
-    updateSearchPopup(text) {
-      if (this.optionList) this.optionList.update({ text });
-    }
-    handleFilter(text, options) {
-      const { filterOption } = this.props;
-      return filterOption(text, options);
-    }
-    _normalizeSearchable() {
-      const { searchable, optionFields } = this.props;
-      if (searchable) {
-        this.setProps({
-          searchable: Component.extendProps(
-            {
-              placeholder: null,
-              filter: ({ inputValue, options }) => {
-                if (!inputValue) {
-                  return options;
-                }
-                const filteredOptions = [];
-                options.forEach((option) => {
-                  if (option[optionFields.text].contains(inputValue)) {
-                    filteredOptions.push(option);
-                  }
-                });
-                return filteredOptions;
-              },
-            },
-            searchable
-          ),
-        });
-      }
-    }
-    _normalizeInternalOptions(options) {
-      if (!Array.isArray(options) || !options.length) {
-        this.internalOptions = [];
-        return;
-      } // if (this.props.extraOptions) {
-      //   this.initHiddenOptions = this.props.extraOptions.map((n) => {
-      //     return n[this.props.optionFields.value]
-      //   })
-      //   options = [...options, ...this.props.extraOptions]
-      // }
-      const { optionFields } = this.props;
-      this.internalOptions = clone(options);
-      this.handleOptions(this.internalOptions, optionFields);
-    }
-    handleOptions(options, optionFields) {
-      const { text: textField, value: valueField } = optionFields;
-      if (!Array.isArray(options)) return [];
-      const internalOptions = options;
-      for (let i = 0; i < internalOptions.length; i++) {
-        const item = internalOptions[i];
-        item.text = item[textField];
-        item.value = item[valueField];
-      }
-    }
-  }
-  Select.defaults = {
-    options: [],
-    optionFields: { text: "text", value: "value" },
-    optionDefaults: {
-      key() {
-        return this.props.value;
-      },
-      _config: function () {
-        this.setProps({ children: this.props.text });
-      },
-    },
-    selectedSingle: {
-      classes: { "nom-select-single": true },
-      _config: function () {
-        this.setProps({ children: this.props.text });
-      },
-    },
-    selectedMultiple: {
-      classes: { "nom-select-multiple": true },
-      component: List,
-      itemDefaults: {},
-      itemSelectable: { scrollIntoView: true },
-      gutter: "sm",
-    },
-    extraOptions: [],
-    multiple: false,
-    showArrow: true,
-    maxTagWidth: 120,
-    maxTagCount: -1,
-    minItemsForSearch: 20,
-    filterOption: (text, options) =>
-      options.filter((o) => o.text.indexOf(text) >= 0),
-    virtual: false,
-    allowClear: true,
-    popupContainer: "body",
-    popupWidth: null,
-  };
-  Component.register(Select);
   class DateTimePickerList extends List {
     constructor(props, ...mixins) {
       const defaults = {
@@ -16941,7 +16090,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             },
             onShow: () => {
               this.getCurrentDate();
-              this.reActiveList(); // that.props.showTime && that.timePicker.onShow()
+              this.reActiveList();
+              this.yearMonthContainerRef.hide(); // that.props.showTime && that.timePicker.onShow()
+              this._fixTimePickerHeight();
             },
             onHide: () => {
               that.onPopupHide();
@@ -16962,38 +16113,84 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                       {
                         classes: { "nom-datepicker-popup-hd": true },
                         justify: "between",
-                        fills: true,
+                        align: "center",
+                        gap: "small",
                         cols: [
-                          {
-                            component: Select,
-                            allowClear: false,
-                            value: that.year,
-                            _created: function () {
-                              that.years = this;
-                            },
-                            animate: false,
-                            options: this._getYears(),
-                            onValueChange: (changed) => {
-                              that.year = changed.newValue;
-                              that.days.update({
-                                items: that._getDays(that.year, that.month),
-                              });
+                          that.props.showYearSkip && {
+                            children: {
+                              component: "Button",
+                              icon: "double-left",
+                              type: "text",
+                              onClick: ({ event }) => {
+                                event.stopPropagation();
+                                that._yearMinus();
+                              },
                             },
                           },
                           {
-                            component: Select,
-                            allowClear: false,
-                            value: that.month,
-                            _created: function () {
-                              that.months = this;
+                            children: {
+                              component: "Button",
+                              icon: "left",
+                              type: "text",
+                              onClick: ({ event }) => {
+                                event.stopPropagation();
+                                that._monthMinus();
+                              },
                             },
-                            options: this._getMonths(),
-                            onValueChange: function (changed) {
-                              that.month = changed.newValue;
-                              that.days.update({
-                                items: that._getDays(that.year, that.month),
-                              });
-                              that.timePicker && that._fixTimePickerHeight();
+                          },
+                          {
+                            grow: true,
+                            align: "center",
+                            children: {
+                              component: "Flex",
+                              onClick: () => {
+                                that.yearMonthContainerRef.show();
+                                that.yearRef.selectItem(that.year);
+                                that.monthRef.selectItem(that.month);
+                              },
+                              gap: "small",
+                              cols: [
+                                {
+                                  tag: "h5",
+                                  ref: (c) => {
+                                    that.yearTextRef = c;
+                                  },
+                                  children: that.props.yearTextFormatter(
+                                    that.year
+                                  ),
+                                },
+                                {
+                                  tag: "h5",
+                                  ref: (c) => {
+                                    that.monthTextRef = c;
+                                  },
+                                  children: that.props.monthTextFormatter(
+                                    that.month
+                                  ),
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            children: {
+                              component: "Button",
+                              icon: "right",
+                              type: "text",
+                              onClick: ({ event }) => {
+                                event.stopPropagation();
+                                that._monthPlus();
+                              },
+                            },
+                          },
+                          that.props.showYearSkip && {
+                            children: {
+                              component: "Button",
+                              icon: "double-right",
+                              type: "text",
+                              onClick: ({ event }) => {
+                                event.stopPropagation();
+                                that._yearPlus();
+                              },
                             },
                           },
                         ],
@@ -17014,9 +16211,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                             //   that._recountHeight()
                             // },
                             cols: 7,
-                            classes: { "nom-datepicker-panel-days": true }, // selectedItems: that.props.value
-                            //   ? `${that.year}-${that.month}-${that.day}`
-                            //   : null,
+                            classes: { "nom-datepicker-panel-days": true },
                             itemSelectable: {
                               byClick: true,
                               multiple: false,
@@ -17031,15 +16226,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   this.props.day
                                 ).format("yyyy-M-d");
                                 return this.props.date;
-                              }, // styles: {
-                              //   padding: 'd375',
-                              //   hover: {
-                              //     color: 'darken',
-                              //   },
-                              //   selected: {
-                              //     color: 'primary',
-                              //   },
-                              // },
+                              },
                               classes: { "nom-datepicker-day-item": true },
                               attrs: { role: "button" },
                               _config: function () {
@@ -17168,6 +16355,111 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   },
                 ],
               },
+              {
+                ref: (c) => {
+                  that.yearMonthContainerRef = c;
+                },
+                classes: { "nom-datepicker-year-month": true },
+                hidden: true,
+                children: {
+                  component: "Flex",
+                  vertical: true,
+                  items: [
+                    {
+                      classes: { "nom-datepicker-year-month-back": true },
+                      children: {
+                        component: "Button",
+                        icon: "left",
+                        text: "返回",
+                        type: "text",
+                        onClick: ({ event }) => {
+                          event.stopPropagation();
+                          that.yearMonthContainerRef.hide();
+                          that.timePicker && that._fixTimePickerHeight();
+                        },
+                      },
+                    },
+                    {
+                      component: "Flex",
+                      classes: { "nom-datepicker-year-month-container": true },
+                      items: [
+                        {
+                          component: "List",
+                          cols: 1,
+                          itemSelectable: {
+                            byClick: true,
+                            scrollIntoView: true,
+                            multiple: false,
+                          },
+                          ref: (c) => {
+                            that.yearRef = c;
+                          },
+                          itemDefaults: {
+                            key: function () {
+                              return this.props.value;
+                            },
+                            onConfig: ({ inst }) => {
+                              inst.setProps({ children: inst.props.text });
+                            },
+                          },
+                          onItemSelectionChange: () => {
+                            const y = that.yearRef.getSelectedItem();
+                            that.year = y.key;
+                            that.yearTextRef.update({
+                              children: that.props.yearTextFormatter(that.year),
+                            });
+                            y.element.scrollIntoView({
+                              block: "center",
+                              behavior: "smooth",
+                            });
+                            that.days.update({
+                              items: that._getDays(that.year, that.month),
+                            });
+                          },
+                          items: this._getYears(),
+                        },
+                        {
+                          component: "List",
+                          ref: (c) => {
+                            that.monthRef = c;
+                          },
+                          cols: 1,
+                          itemSelectable: {
+                            byClick: true,
+                            scrollIntoView: true,
+                            multiple: false,
+                          },
+                          itemDefaults: {
+                            key: function () {
+                              return this.props.value;
+                            },
+                            onConfig: ({ inst }) => {
+                              inst.setProps({ children: inst.props.text });
+                            },
+                          },
+                          onItemSelectionChange: () => {
+                            const m = that.monthRef.getSelectedItem();
+                            that.month = m.key;
+                            that.monthTextRef.update({
+                              children: that.props.monthTextFormatter(
+                                that.month
+                              ),
+                            });
+                            m.element.scrollIntoView({
+                              block: "center",
+                              behavior: "smooth",
+                            });
+                            that.days.update({
+                              items: that._getDays(that.year, that.month),
+                            });
+                          },
+                          items: this._getMonths(),
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
             ],
           },
         },
@@ -17194,6 +16486,54 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         timeProps.endTime = this.endTime;
       }
       this.timePicker.update(timeProps);
+    }
+    _yearMinus() {
+      this.year -= 1;
+      this.yearTextRef.update({
+        children: this.props.yearTextFormatter(this.year),
+      });
+      this.days.update({ items: this._getDays(this.year, this.month) });
+      this.timePicker && this._fixTimePickerHeight();
+    }
+    _yearPlus() {
+      this.year += 1;
+      this.yearTextRef.update({
+        children: this.props.yearTextFormatter(this.year),
+      });
+      this.days.update({ items: this._getDays(this.year, this.month) });
+      this.timePicker && this._fixTimePickerHeight();
+    }
+    _monthMinus() {
+      if (this.month === 1) {
+        this.month = 12;
+        this.year -= 1;
+        this.yearTextRef.update({
+          children: this.props.yearTextFormatter(this.year),
+        });
+      } else {
+        this.month -= 1;
+      }
+      this.monthTextRef.update({
+        children: this.props.monthTextFormatter(this.month),
+      });
+      this.days.update({ items: this._getDays(this.year, this.month) });
+      this.timePicker && this._fixTimePickerHeight();
+    }
+    _monthPlus() {
+      if (this.month === 12) {
+        this.month = 1;
+        this.year += 1;
+        this.yearTextRef.update({
+          children: this.props.yearTextFormatter(this.year),
+        });
+      } else {
+        this.month += 1;
+      }
+      this.monthTextRef.update({
+        children: this.props.monthTextFormatter(this.month),
+      });
+      this.days.update({ items: this._getDays(this.year, this.month) });
+      this.timePicker && this._fixTimePickerHeight();
     }
     _getYears() {
       const years = [];
@@ -17306,8 +16646,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     reActiveList() {
-      this.years.setValue(this.year);
-      this.months.setValue(this.month);
+      this.yearRef.selectItem(this.year);
+      this.monthRef.selectItem(this.month);
       this.props.value &&
         this.days.update({
           selectedItems: `${this.year}-${this.month}-${this.day}`,
@@ -17421,6 +16761,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     weekText: "日 一 二 三 四 五 六",
     nowText: "此刻",
     todayText: "今天",
+    showYearSkip: false,
+    yearTextFormatter: (val) => {
+      return `${val}年`;
+    },
+    monthTextFormatter: (val) => {
+      return `${val}月`;
+    },
   };
   Component.register(DatePicker);
   class Group extends Field {
@@ -30489,6 +29836,867 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
   }
   Component.register(Rows);
+  var SelectListItemMixin = {
+    _config: function () {
+      const { onSelect, onUnselect } = this.props;
+      this.setProps({
+        selectable: {
+          byClick: true,
+          canRevert: this.list.selectControl.props.multiple === true,
+        },
+        hidden: !!this.props.isExtra,
+        onSelect: () => {
+          const { selectControl } = this.list;
+          const selectProps = selectControl.props;
+          const selectedOption = { option: this.props };
+          Object.keys(this.wrapper.props.children).forEach((item) => {
+            selectedOption[item] = this.props[item];
+          });
+          selectControl.placeholder && selectControl.placeholder.hide();
+          if (selectProps.multiple === false) {
+            selectControl.selectedSingle.update(selectedOption);
+            selectControl.props.animate && selectControl.popup.animateHide();
+            !selectControl.props.animate && selectControl.popup.hide();
+          } else {
+            selectControl.selectedMultiple.update({
+              items: [
+                ...selectControl.selectedMultiple.props.items,
+                {
+                  [selectControl.props.optionFields.text]: selectedOption.text,
+                  [selectControl.props.optionFields.value]:
+                    selectedOption.value,
+                },
+              ],
+            });
+          }
+          if (selectProps.virtual === true) {
+            this.list.virtual.selectedItems.push(selectedOption);
+          }
+          this._callHandler(onSelect);
+        },
+        onUnselect: () => {
+          const { selectControl } = this.list;
+          const selectProps = selectControl.props;
+          if (selectProps.multiple === true) {
+            selectControl.selectedMultiple.update({
+              items: selectControl.selectedMultiple.props.items.filter((n) => {
+                return n[selectControl.props.optionFields.value] !== this.key;
+              }),
+            });
+          }
+          if (selectProps.virtual === true) {
+            const { selectedItems } = this.list.virtual;
+            selectedItems.splice(
+              selectedItems.findIndex(
+                (item) =>
+                  item[selectControl.props.optionFields.value] ===
+                  this.props[selectControl.props.optionFields.value]
+              ),
+              1
+            );
+          }
+          this._callHandler(onUnselect);
+        },
+      });
+    },
+  };
+  class SelectList extends List {
+    constructor(props, ...mixins) {
+      const defaults = { gutter: "x-md", cols: 1, vertical: true };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      this.selectControl = this.parent.parent.parent.selectControl;
+      this.selectControl.optionList = this;
+    }
+    _config() {
+      const {
+        showSearch,
+        optionDefaults,
+        value,
+        multiple,
+        filterOption,
+        optionFields,
+        options,
+      } = this.selectControl.props;
+      const { text } = this.props;
+      const { checked, checkedOption } = this.selectControl;
+      let filterStr = checked ? checkedOption && checkedOption.text : text; // null或undefined处理
+      filterStr = filterStr || "";
+      this.selectControl._normalizeInternalOptions(options);
+      const filterOptions =
+        showSearch &&
+        filterOption(filterStr, this.selectControl.internalOptions);
+      const items = showSearch
+        ? filterOptions
+        : this.selectControl.internalOptions; // value唯一值校验提示
+      this._wranOptionsValue(items, optionFields.value);
+      this.setProps({
+        items,
+        itemDefaults: n$1(null, optionDefaults, null, [SelectListItemMixin]),
+        itemSelectable: {
+          multiple: multiple,
+          byClick: true,
+          scrollIntoView: true,
+        },
+        selectedItems: showSearch
+          ? checkedOption && checkedOption.value
+          : value,
+        onItemSelectionChange: () => {
+          this.selectControl._onValueChange();
+        },
+      });
+      super._config();
+    }
+    _wranOptionsValue(options, value) {
+      const map = new Map();
+      for (let index = 0; index < options.length; index++) {
+        const opt = options[index];
+        if (map.get(opt[value])) {
+          console.warn(
+            `Warning: Encountered two children with the same key, \`${opt[value]}\`.`
+          );
+          return false;
+        }
+        map.set(opt[value], true);
+      }
+    }
+  }
+  class SelectPopup extends Popup {
+    constructor(props, ...mixins) {
+      const defaults = {};
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      this.selectControl = this.opener.field;
+    }
+    _config() {
+      const {
+        searchable,
+        options: originOptions,
+        popupWidth,
+      } = this.selectControl.props;
+      let { maxPopupWidth } = this.selectControl.props;
+      if (isNumeric(maxPopupWidth)) {
+        maxPopupWidth = `${maxPopupWidth}px`;
+      }
+      let w = `${this.selectControl.control.offsetWidth()}px`;
+      if (isNumeric(popupWidth)) {
+        w = `${popupWidth}px`;
+      } else if (popupWidth === "auto") {
+        w = "auto";
+      }
+      this.setProps({
+        attrs: {
+          style: {
+            width: w,
+            maxWidth:
+              maxPopupWidth || `${this.selectControl.control.offsetWidth()}px`,
+          },
+        },
+        children: {
+          component: Layout,
+          header: searchable
+            ? {
+                children: {
+                  component: Textbox,
+                  placeholder: searchable.placeholder,
+                  _created: (inst) => {
+                    this.selectControl.searchBox = inst;
+                  },
+                  onValueChange: ({ newValue }) => {
+                    this.timer && clearTimeout(this.timer);
+                    this.timer = setTimeout(() => {
+                      const loading = new nomui.Loading({
+                        container: this.selectControl.optionList.parent,
+                      });
+                      const result = searchable.filter({
+                        inputValue: newValue,
+                        options: originOptions,
+                      });
+                      if (result && result.then) {
+                        return result
+                          .then((value) => {
+                            this.selectControl.props.options = value;
+                            this.selectControl.optionList.update();
+                            loading && loading.remove();
+                          })
+                          .catch(() => {
+                            loading && loading.remove();
+                          });
+                      }
+                      loading && loading.remove();
+                      this.selectControl.props.options = result;
+                      result && this.selectControl.optionList.update();
+                    }, 300);
+                  },
+                },
+              }
+            : null,
+          body: {
+            children: { component: SelectList, virtual: this.props.virtual },
+          },
+        },
+      });
+      super._config();
+    }
+    _rendered() {
+      this.removeClass("nom-layer-animate-show");
+      this.selectControl.props.animate && this.animateInit();
+    }
+    animateInit() {
+      if (!this.element) return false;
+      if (this.element.getAttribute("offset-y") !== "0") {
+        this.addClass("nom-select-animate-bottom-show");
+      } else {
+        this.addClass("nom-select-animate-top-show");
+      }
+    }
+    _show() {
+      super._show();
+      this.removeClass("nom-layer-animate-show");
+      const { searchBox, props } = this.selectControl;
+      if (searchBox) {
+        searchBox.focus(); // 上一次搜索无数据，则清除搜索条件
+        if (!props.options || !props.options.length) {
+          searchBox.clear();
+        }
+      }
+    }
+    animateHide() {
+      if (!this.element) return false;
+      let animateName;
+      if (this.element.getAttribute("offset-y") !== "0") {
+        animateName = "nom-select-animate-bottom-hide";
+      } else {
+        animateName = "nom-select-animate-top-hide";
+      }
+      this.addClass(animateName);
+      setTimeout(() => {
+        if (!this.element) return false;
+        this.hide();
+        this.removeClass(animateName);
+      }, 160);
+    }
+  }
+  Component.register(SelectPopup);
+  class Select extends Field {
+    constructor(props, ...mixins) {
+      super(Component.extendProps(Select.defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      this.internalOptions = [];
+      this.multipleItems = [];
+      if (this.props.extraOptions) {
+        const extraOptions = this.props.extraOptions.map((n) => {
+          return Object.assign({}, n, { isExtra: true });
+        });
+        this.props.options = [...this.props.options, ...extraOptions];
+      }
+    }
+    _config() {
+      const that = this;
+      const {
+        multiple,
+        showArrow,
+        disabled,
+        showSearch,
+        allowClear,
+        options,
+      } = this.props;
+      const children = [];
+      const placeholder = this.props.placeholder; // if (!placeholder && (!Array.isArray(options) || !options.length)) {
+      //   this.props.value = ''
+      //   placeholder = '暂无数据'
+      // }
+      this._normalizeInternalOptions(options);
+      this._normalizeSearchable();
+      this.setProps({
+        selectedSingle: {
+          _created() {
+            that.selectedSingle = this;
+          },
+        },
+        selectedMultiple: {
+          itemDefaults: {
+            key() {
+              return this.props[that.props.optionFields.value];
+            },
+            _config: function () {
+              this.setProps({
+                tag: "span",
+                onClick: (args) => {
+                  args.event.stopPropagation();
+                },
+                hidden: this.props.isOverTag,
+                classes: {
+                  "nom-select-overtag-trigger": !!this.props.overList,
+                },
+                attrs: { title: this.props[that.props.optionFields.text] },
+                popup: this.props.overList
+                  ? {
+                      triggerAction: "hover",
+                      align: "top center",
+                      classes: { "nom-select-extra-tags": true },
+                      children: {
+                        component: "List",
+                        gutter: "sm",
+                        itemDefaults: {
+                          key() {
+                            return this.props[that.props.optionFields.value];
+                          },
+                          _config: function () {
+                            this.setProps({
+                              tag: "span",
+                              onClick: (args) => {
+                                args.event.stopPropagation();
+                              },
+                              attrs: {
+                                title: this.props[that.props.optionFields.text],
+                              },
+                              children: [
+                                {
+                                  tag: "span",
+                                  classes: { "nom-select-item-content": true },
+                                  attrs: {
+                                    style: {
+                                      maxWidth: `${that.props.maxTagWidth}px`,
+                                    },
+                                  },
+                                  children: this.props[
+                                    that.props.optionFields.text
+                                  ],
+                                },
+                              ],
+                            });
+                          },
+                        },
+                        items: this.props.overList,
+                      },
+                    }
+                  : null,
+                children: [
+                  {
+                    tag: "span",
+                    classes: { "nom-select-item-content": true },
+                    attrs: {
+                      style: { maxWidth: `${that.props.maxTagWidth}px` },
+                    },
+                    children: this.props.overList
+                      ? `+${this.props.overNum}`
+                      : this.props[that.props.optionFields.text],
+                  },
+                  !this.props.overList && {
+                    component: Icon,
+                    type: "times",
+                    classes: { "nom-select-item-remove": true },
+                    attrs: { style: { cursor: "pointer" } },
+                    onClick: (args) => {
+                      const key = args.sender.parent.key;
+                      that.selectedMultiple.removeItem(key);
+                      const oldValue = that.getValue();
+                      oldValue &&
+                        oldValue.length &&
+                        that.setValue(
+                          oldValue.filter((n) => {
+                            return n !== key;
+                          })
+                        );
+                      that.optionList && that.optionList.unselectItem(key);
+                      args.event && args.event.stopPropagation();
+                    },
+                  },
+                ],
+              });
+            },
+          },
+          _config() {
+            this.setProps({
+              items: this.props.items.map((n) => {
+                n.overList = null;
+                n.overNum = null;
+                return n;
+              }),
+            });
+            if (
+              that.props.maxTagCount > 0 &&
+              this.props.items.length > that.props.maxTagCount
+            ) {
+              const before = this.props.items.slice(
+                0,
+                that.props.maxTagCount + 1
+              );
+              const after = this.props.items.slice(
+                that.props.maxTagCount + 1,
+                this.props.items.length
+              );
+              const overTags = this.props.items.slice(
+                that.props.maxTagCount,
+                this.props.items.length
+              );
+              const num = this.props.items.length - that.props.maxTagCount;
+              const newItems = [
+                ...before.map((n, i) => {
+                  n.isOverTag = false;
+                  if (i === before.length - 1) {
+                    n.overList = overTags;
+                    n.overNum = num;
+                  } else {
+                    n.overList = null;
+                    n.overNum = null;
+                  }
+                  return n;
+                }),
+                ...after.map((n) => {
+                  n.isOverTag = true;
+                  return n;
+                }),
+              ];
+              this.setProps({ items: newItems });
+            }
+          },
+          _created() {
+            that.selectedMultiple = this;
+          },
+        },
+      });
+      if (multiple) {
+        children.push(this.props.selectedMultiple);
+      } else if (showSearch) {
+        const { onSearch } = this.props;
+        that.checked = true;
+        that.checkedOption = that._getOption(this.props.value);
+        const searchInput = {
+          tag: "input",
+          classes: { "nom-select-search-input": true },
+          _created() {
+            that.selectedSingle = this;
+          },
+          _rendered() {
+            this.element.value = this.props.text || "";
+          },
+          attrs: {
+            autocomplete: "false",
+            oninput() {
+              that.checked = false;
+              that.updateSearchPopup(this.value);
+              isFunction(onSearch) && onSearch(this.value);
+            },
+            onchange() {
+              if (that.checked) return;
+              this.value = that.checkedOption ? that.checkedOption.text : null;
+              that.updateSearchPopup(this.value);
+            },
+          },
+        };
+        children.push(searchInput);
+      } else {
+        children.push(this.props.selectedSingle);
+      }
+      if (isString(placeholder)) {
+        children.push({
+          _created() {
+            that.placeholder = this;
+          },
+          classes: { "nom-select-placeholder": true },
+          children: placeholder,
+        });
+      }
+      if (showArrow) {
+        children.push({
+          component: Icon,
+          type: "down",
+          classes: { "nom-select-arrow": true },
+        });
+      }
+      if (allowClear) {
+        children.push({
+          component: Icon,
+          type: "times",
+          classes: {
+            "nom-select-clear": true,
+            "nom-field-clear-handler": true,
+          },
+          hidden: true,
+          ref: (c) => {
+            this.clearIcon = c;
+          },
+          onClick: (args) => {
+            this.setValue(null);
+            this.props.allowClear && this.clearIcon.hide();
+            this.placeholder && this.placeholder.show();
+            this.props.onClear && this._callHandler(this.props.onClear);
+            args.event && args.event.stopPropagation();
+          },
+        });
+      }
+      this.setProps({
+        control: { disabled: disabled, children: children },
+        onClick: () => {
+          showSearch && this.selectedSingle.element.focus();
+        },
+      });
+      super._config();
+    }
+    _rendered() {
+      const { value, virtual, popupContainer } = this.props;
+      let container;
+      if (popupContainer === "self") {
+        this.element.style.position = "relative";
+        container = this.element;
+      } else if (
+        Object.prototype.toString.call(popupContainer) === "[object Function]"
+      ) {
+        const ref = popupContainer();
+        ref.element.style.position = "relative";
+        container = ref.element;
+      }
+      this.popup = new SelectPopup({
+        reference: container,
+        trigger: this.control,
+        virtual,
+        onShow: () => {
+          this.optionList.update({ selectedItems: this.getValue() });
+          this.optionList.scrollToSelected();
+        },
+      });
+      this._directSetValue(value);
+      this._valueChange({ newValue: this.currentValue });
+    }
+    _directSetValue(value, options) {
+      const { valueOptions } = this.props;
+      options = extend(
+        { asArray: false, nullWhenNotExists: false },
+        valueOptions,
+        options
+      );
+      const { multiple } = this.props;
+      if (multiple === true) {
+        const selValueOptions = this._getOptions(value);
+        if (Array.isArray(selValueOptions) && selValueOptions.length) {
+          this.multipleItems = selValueOptions;
+          this.selectedMultiple.update({ items: this.multipleItems });
+          this.currentValue = selValueOptions.map(function (item) {
+            return item.value;
+          });
+        } else {
+          this.selectedMultiple.update({ items: [] });
+          this.currentValue = null;
+        }
+      } else {
+        if (options.asArray === true) {
+          value = Array.isArray(value) ? value[0] : value;
+        }
+        const selValueOption = this._getOption(value);
+        if (selValueOption !== null) {
+          this.selectedSingle.update(selValueOption);
+          this.currentValue = selValueOption.value;
+          if (options.asArray === true) {
+            this.currentValue = [selValueOption.value];
+          }
+        } else if (options.nullWhenNotExists) {
+          this.selectedSingle.element.innerText = null;
+          this.currentValue = null;
+        } else {
+          this.selectedSingle.element.innerText = value;
+          this.currentValue = value;
+        }
+      } // 解决select组件searchable模式，点清除、重置无法清掉原输入数据
+      if (this.searchBox && this.searchBox.props && value === null) {
+        this.searchBox._setValue("");
+      }
+    }
+    selectOption(option) {
+      this.optionList.selectItem(option);
+    }
+    selectOptions(options) {
+      this.optionList.selectItems(options);
+    }
+    getMultipleValue(obj) {
+      return ((target) =>
+        Object.keys(target).map((key) => target[key]))(obj.itemRefs);
+    }
+    getSelectedOption() {
+      if (!this.optionList || !this.optionList.props) {
+        return null;
+      }
+      if (this.props.multiple === false) {
+        return this.optionList.getSelectedItem();
+      } // console.log('旧---', this.optionList.getSelectedItems())
+      // console.log('新---', this.getMultipleValue(this.optionList.selectControl.selectedMultiple))
+      return this.getMultipleValue(
+        this.optionList.selectControl.selectedMultiple
+      ); // return this.optionList.getSelectedItems()
+    }
+    _getOptionsByValue(value) {
+      if (this.props.multiple === false) {
+        return this._getOption(value);
+      }
+      return this._getOptions(value);
+    }
+    _getValueText(options, value) {
+      const { valueOptions } = this.props;
+      const that = this;
+      options = extend({ asArray: false }, valueOptions, options);
+      if (!this.optionList) {
+        value = this.currentValue;
+      }
+      const selected =
+        value !== undefined
+          ? this._getOptionsByValue(value)
+          : this.getSelectedOption();
+      if (selected !== null) {
+        if (Array.isArray(selected) && selected.length > 0) {
+          const vals = selected.map(function (item) {
+            return item.props
+              ? item.props[that.props.optionFields.text]
+              : item.text;
+          });
+          return vals;
+        }
+        if (options.asArray === true && !Array.isArray(selected)) {
+          return selected.props
+            ? [selected.props[that.props.optionFields.text]]
+            : [selected.text];
+        }
+        if (!Array.isArray(selected)) {
+          return selected.props
+            ? selected.props[that.props.optionFields.text]
+            : selected.text;
+        }
+      }
+      return null;
+    }
+    _getValue(options) {
+      const { valueOptions, showSearch } = this.props;
+      const that = this;
+      options = extend({ asArray: false }, valueOptions, options);
+      if (!this.optionList || !this.optionList.props) {
+        return this.currentValue;
+      }
+      if (showSearch) {
+        const selectedSearch = this.getSelectedOption();
+        if (selectedSearch && selectedSearch.props)
+          return selectedSearch.props.value;
+        return this.currentValue;
+      }
+      const selected = this.getSelectedOption();
+      if (selected !== null) {
+        if (Array.isArray(selected) && selected.length > 0) {
+          const vals = selected.map(function (item) {
+            return item.props[that.props.optionFields.value];
+          });
+          return vals;
+        }
+        if (options.asArray === true && !Array.isArray(selected)) {
+          return [selected.props[that.props.optionFields.value]];
+        }
+        if (!Array.isArray(selected)) {
+          return selected.props[that.props.optionFields.value];
+        }
+      }
+      return null;
+    }
+    _setValue(value, options) {
+      if (options === false) {
+        options = { triggerChange: false };
+      } else {
+        options = extend({ triggerChange: true }, options);
+      }
+      if (this.props.showSearch) {
+        const selectedOption = this.internalOptions.find(
+          (e) => e.value === value
+        );
+        if (selectedOption) {
+          this.checked = true;
+          this.checkedOption = selectedOption;
+          this.updateSearchPopup(selectedOption && selectedOption.text);
+          this._directSetValue(value);
+        }
+      } else {
+        // 每次都会更新popup弹窗里面的 list的数据
+        // 但如果当前实例 update过了, optionList会被销毁
+        if (this.optionList && this.optionList.props) {
+          this.optionList.unselectAllItems({ triggerSelectionChange: false });
+          this.selectOptions(value, {
+            triggerSelectionChange: options.triggerChange,
+          });
+        }
+        this._directSetValue(value);
+        if (options.triggerChange) {
+          this._onValueChange();
+        } // if (this.optionList) {
+        //   this.optionList.unselectAllItems({ triggerSelectionChange: false })
+        //   this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
+        // } else {
+        //   this._directSetValue(value)
+        //   if (options.triggerChange) {
+        //     this._onValueChange()
+        //   }
+        // }
+      }
+    }
+    _getOption(value) {
+      let option = null;
+      const options = this.internalOptions;
+      if (Array.isArray(value)) {
+        value = value[0];
+      }
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value === value) {
+          option = options[i];
+          break;
+        }
+      }
+      return option;
+    }
+    _getOptions(value) {
+      let retOptions = null;
+      const options = this.internalOptions;
+      if (Array.isArray(value)) {
+        retOptions = [];
+        for (let i = 0; i < options.length; i++) {
+          if (value.indexOf(options[i].value) !== -1) {
+            retOptions.push(options[i]);
+          }
+        }
+      }
+      return retOptions;
+    }
+    _valueChange(changed) {
+      if (!this.props) return; // 有值则展示 clearIcon, 无值隐藏
+      changed.newValue
+        ? this.props.allowClear && this.clearIcon.show()
+        : this.props.allowClear && this.clearIcon.hide();
+      if (this.placeholder) {
+        // 多选时为空数组 || 单选时在options中无数据
+        if (
+          (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
+          !this._getOption(changed.newValue)
+        ) {
+          this.placeholder.show();
+        } else {
+          this.placeholder.hide();
+        }
+      } // 此处有问题，暂时添加判断屏蔽报错，问题原因是调用了已销毁组件的方法导致this是个空对象
+      if (this.props && this.props.showSearch) {
+        const selectedOption = this.internalOptions.find(
+          (e) => e.value === changed.newValue
+        );
+        this.checkedOption = selectedOption;
+        this.updateSearchPopup(selectedOption && selectedOption.text);
+        this.checked = true;
+      }
+    }
+    _disable() {
+      if (this.firstRender === false) {
+        this.control.disable();
+      }
+    }
+    _enable() {
+      if (this.firstRender === false) {
+        this.control.enable();
+      }
+    }
+    appendOption() {}
+    updateSearchPopup(text) {
+      if (this.optionList) this.optionList.update({ text });
+    }
+    handleFilter(text, options) {
+      const { filterOption } = this.props;
+      return filterOption(text, options);
+    }
+    _normalizeSearchable() {
+      const { searchable, optionFields } = this.props;
+      if (searchable) {
+        this.setProps({
+          searchable: Component.extendProps(
+            {
+              placeholder: null,
+              filter: ({ inputValue, options }) => {
+                if (!inputValue) {
+                  return options;
+                }
+                const filteredOptions = [];
+                options.forEach((option) => {
+                  if (option[optionFields.text].contains(inputValue)) {
+                    filteredOptions.push(option);
+                  }
+                });
+                return filteredOptions;
+              },
+            },
+            searchable
+          ),
+        });
+      }
+    }
+    _normalizeInternalOptions(options) {
+      if (!Array.isArray(options) || !options.length) {
+        this.internalOptions = [];
+        return;
+      } // if (this.props.extraOptions) {
+      //   this.initHiddenOptions = this.props.extraOptions.map((n) => {
+      //     return n[this.props.optionFields.value]
+      //   })
+      //   options = [...options, ...this.props.extraOptions]
+      // }
+      const { optionFields } = this.props;
+      this.internalOptions = clone(options);
+      this.handleOptions(this.internalOptions, optionFields);
+    }
+    handleOptions(options, optionFields) {
+      const { text: textField, value: valueField } = optionFields;
+      if (!Array.isArray(options)) return [];
+      const internalOptions = options;
+      for (let i = 0; i < internalOptions.length; i++) {
+        const item = internalOptions[i];
+        item.text = item[textField];
+        item.value = item[valueField];
+      }
+    }
+  }
+  Select.defaults = {
+    options: [],
+    optionFields: { text: "text", value: "value" },
+    optionDefaults: {
+      key() {
+        return this.props.value;
+      },
+      _config: function () {
+        this.setProps({ children: this.props.text });
+      },
+    },
+    selectedSingle: {
+      classes: { "nom-select-single": true },
+      _config: function () {
+        this.setProps({ children: this.props.text });
+      },
+    },
+    selectedMultiple: {
+      classes: { "nom-select-multiple": true },
+      component: List,
+      itemDefaults: {},
+      itemSelectable: { scrollIntoView: true },
+      gutter: "sm",
+    },
+    extraOptions: [],
+    multiple: false,
+    showArrow: true,
+    maxTagWidth: 120,
+    maxTagCount: -1,
+    minItemsForSearch: 20,
+    filterOption: (text, options) =>
+      options.filter((o) => o.text.indexOf(text) >= 0),
+    virtual: false,
+    allowClear: true,
+    popupContainer: "body",
+    popupWidth: null,
+  };
+  Component.register(Select);
   class SkeletonAvatar extends Avatar {
     constructor(props, ...mixins) {
       super(Component.extendProps(SkeletonAvatar.defaults, props), ...mixins);

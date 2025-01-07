@@ -52,6 +52,18 @@ Icon.add(
 )
 
 Icon.add(
+  'double-left',
+  `<svg t="1736157642143" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3204" width="1em" height="1em" fill="currentColor"><path d="M893.76 132.8l-45.12-45.12L448 489.28a32 32 0 0 0 0 45.44l400.64 401.6 45.12-45.12L514.56 512z" p-id="3205"></path><path d="M573.76 132.8l-45.12-45.12L128 489.28a32 32 0 0 0 0 45.44l400.64 401.6 45.12-45.12L194.56 512z" p-id="3206"></path></svg>`,
+  cat,
+)
+
+Icon.add(
+  'double-right',
+  `<svg t="1736157698135" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6415" width="1em" height="1em" fill="currentColor"><path d="M576 489.28L173.76 87.68 128 132.8 507.52 512 128 891.2l45.12 45.12L576 534.72a32 32 0 0 0 0-45.44z" p-id="6416"></path><path d="M896 489.28L493.76 87.68 448 132.8 827.52 512 448 891.2l45.12 45.12L896 534.72a32 32 0 0 0 0-45.44z" p-id="6417"></path></svg>`,
+  cat,
+)
+
+Icon.add(
   'swap',
   `<svg t="1623828423357" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3532" width="1em" height="1em" fill="currentColor"><path d="M922.345786 372.183628l-39.393195 38.687114L676.138314 211.079416l0 683.909301-54.713113 0L621.425202 129.010259l53.320393 0L922.345786 372.183628zM349.254406 894.989741 101.654214 651.815349l39.393195-38.687114 206.814276 199.792349L347.861686 129.010259l54.713113 0 0 765.978459L349.254406 894.988718z" p-id="3533"></path></svg>`,
   cat,

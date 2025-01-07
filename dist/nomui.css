@@ -9680,11 +9680,14 @@ textarea .nom-textarea {
   text-align: center;
   scroll-behavior: smooth;
   border-left: 1px solid var(--nom-border-color);
-  scrollbar-width: none;
   -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-.timepicker-group > .nom-col ::-webkit-scrollbar {
+.timepicker-group > .nom-col::-webkit-scrollbar {
   display: none;
+}
+.timepicker-group > .nom-col .nom-time-picker-list > ul {
+  padding: 97px 0;
 }
 .timepicker-group > .nom-col:first-child {
   border-left: none;
@@ -9728,10 +9731,22 @@ textarea .nom-textarea {
   font-size: 1rem;
   line-height: 1.42857143rem;
 }
+.nom-date-picker-popup {
+  overflow: hidden;
+}
 .nom-date-picker-popup .nom-datepicker-popup-hd {
-  height: 4.5rem;
-  padding: 0.5rem 1rem;
+  height: 3.25rem;
   border-bottom: 1px solid var(--nom-color-border);
+  user-select: none;
+}
+.nom-date-picker-popup .nom-datepicker-popup-hd > .p-grow {
+  justify-content: center;
+}
+.nom-date-picker-popup .nom-datepicker-popup-hd > .p-grow > .nom-flex {
+  cursor: pointer;
+}
+.nom-date-picker-popup .nom-datepicker-popup-hd > .p-grow > .nom-flex h5 {
+  font-size: 1.15rem;
 }
 .nom-date-picker-popup .nom-datepicker-popup-bd {
   padding: 0.5rem 1rem 0 1rem;
@@ -9741,11 +9756,56 @@ textarea .nom-textarea {
   padding: 0.75rem 1.5rem;
   border-top: 1px solid var(--nom-color-border);
 }
+.nom-date-picker-popup .nom-datepicker-year-month {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background-color: white;
+}
+.nom-date-picker-popup .nom-datepicker-year-month > .nom-flex {
+  height: 100%;
+}
+.nom-date-picker-popup .nom-datepicker-year-month > .nom-flex .nom-datepicker-year-month-back {
+  height: 3.25rem;
+  border-bottom: 1px solid var(--nom-border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+.nom-date-picker-popup .nom-datepicker-year-month > .nom-flex .nom-datepicker-year-month-container {
+  height: calc(100% - 3.25rem);
+}
+.nom-date-picker-popup .nom-datepicker-year-month > .nom-flex .nom-datepicker-year-month-container > .nom-list {
+  width: 50%;
+  overflow-y: auto;
+}
+.nom-date-picker-popup .nom-datepicker-year-month > .nom-flex .nom-datepicker-year-month-container > .nom-list .nom-list-item {
+  padding: 0.45rem;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+.nom-date-picker-popup .nom-datepicker-year-month > .nom-flex .nom-datepicker-year-month-container > .nom-list .nom-list-item:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.nom-date-picker-popup .nom-datepicker-year-month > .nom-flex .nom-datepicker-year-month-container > .nom-list .nom-list-item.s-selected {
+  background-color: var(--nom-color-primary);
+  color: white;
+}
+.nom-date-picker-popup .nom-datepicker-year-month > .nom-flex .nom-datepicker-year-month-container > .nom-list:first-child {
+  border-right: 1px solid var(--nom-border-color);
+}
+.nom-date-picker-popup .nom-datepicker-year-month > .nom-flex .nom-datepicker-year-month-container > .nom-list:last-child ul {
+  padding: 10rem 0;
+}
 .nom-date-picker-popup .time-display {
   border-bottom: 1px solid var(--nom-color-border);
-  line-height: 4.5rem;
-  height: 4.5rem;
-  font-size: 2rem;
+  line-height: 3.25rem;
+  height: 3.25rem;
+  font-size: 1.5rem;
   text-align: center;
 }
 .nom-date-picker-popup .nom-select .nom-select-single {
@@ -9821,6 +9881,9 @@ textarea .nom-textarea {
 }
 .nom-date-picker-popup .timepicker-group > .nom-col ::-webkit-scrollbar {
   display: none;
+}
+.nom-date-picker-popup .timepicker-group > .nom-col .nom-date-time-picker-list > ul {
+  padding: 106px 0;
 }
 .nom-date-picker-popup .timepicker-group > .nom-col .nom-list-item {
   padding: 0.25rem;
