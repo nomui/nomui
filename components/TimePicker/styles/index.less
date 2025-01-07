@@ -6,11 +6,16 @@
     text-align: center;
     scroll-behavior: smooth;
     border-left: 1px solid var(--nom-border-color);
-    scrollbar-width: none; // 隐藏滚动条
     -ms-overflow-style: none;
-
-    ::-webkit-scrollbar {
+    scrollbar-width: none; // 隐藏滚动条
+    &::-webkit-scrollbar {
       display: none;
+    }
+
+    .nom-time-picker-list {
+      >ul {
+        padding:97px 0;
+      }
     }
 
     &:first-child {

@@ -1,7 +1,6 @@
 import Component from '../Component/index'
 import Flex from '../Flex/index'
 import List from '../List/index'
-import Select from '../Select/index'
 import Textbox from '../Textbox/index'
 import {} from '../util/date'
 import { formatDate, isFunction, isNumeric, isValidDate } from '../util/index'
@@ -88,7 +87,9 @@ class DatePicker extends Textbox {
           onShow: () => {
             this.getCurrentDate()
             this.reActiveList()
+            this.yearMonthContainerRef.hide()
             // that.props.showTime && that.timePicker.onShow()
+            this._fixTimePickerHeight()
           },
           onHide: () => {
             that.onPopupHide()
@@ -116,38 +117,81 @@ class DatePicker extends Textbox {
                         'nom-datepicker-popup-hd': true,
                       },
                       justify: 'between',
-                      fills: true,
+                      align: 'center',
+
+                      gap: 'small',
                       cols: [
-                        {
-                          component: Select,
-                          allowClear: false,
-                          value: that.year,
-                          _created: function () {
-                            that.years = this
-                          },
-                          animate: false,
-                          options: this._getYears(),
-                          onValueChange: (changed) => {
-                            that.year = changed.newValue
-                            that.days.update({
-                              items: that._getDays(that.year, that.month),
-                            })
+                        that.props.showYearSkip && {
+                          children: {
+                            component: 'Button',
+                            icon: 'double-left',
+                            type: 'text',
+                            onClick: ({ event }) => {
+                              event.stopPropagation()
+                              that._yearMinus()
+                            },
                           },
                         },
                         {
-                          component: Select,
-                          allowClear: false,
-                          value: that.month,
-                          _created: function () {
-                            that.months = this
+                          children: {
+                            component: 'Button',
+                            icon: 'left',
+                            type: 'text',
+                            onClick: ({ event }) => {
+                              event.stopPropagation()
+                              that._monthMinus()
+                            },
                           },
-                          options: this._getMonths(),
-                          onValueChange: function (changed) {
-                            that.month = changed.newValue
-                            that.days.update({
-                              items: that._getDays(that.year, that.month),
-                            })
-                            that.timePicker && that._fixTimePickerHeight()
+                        },
+                        {
+                          grow: true,
+                          align: 'center',
+                          children: {
+                            component: 'Flex',
+                            onClick: () => {
+                              that.yearMonthContainerRef.show()
+                              that.yearRef.selectItem(that.year)
+                              that.monthRef.selectItem(that.month)
+                            },
+                            gap: 'small',
+                            cols: [
+                              {
+                                tag: 'h5',
+                                ref: (c) => {
+                                  that.yearTextRef = c
+                                },
+                                children: that.props.yearTextFormatter(that.year),
+                              },
+                              {
+                                tag: 'h5',
+                                ref: (c) => {
+                                  that.monthTextRef = c
+                                },
+                                children: that.props.monthTextFormatter(that.month),
+                              },
+                            ],
+                          },
+                        },
+                        {
+                          children: {
+                            component: 'Button',
+                            icon: 'right',
+                            type: 'text',
+                            onClick: ({ event }) => {
+                              event.stopPropagation()
+                              that._monthPlus()
+                            },
+                          },
+                        },
+                        that.props.showYearSkip && {
+                          children: {
+                            component: 'Button',
+                            icon: 'double-right',
+                            type: 'text',
+                            onClick: ({ event }) => {
+                              event.stopPropagation()
+                              that._yearPlus()
+                            },
                           },
                         },
                       ],
@@ -178,9 +222,6 @@ class DatePicker extends Textbox {
                           classes: {
                             'nom-datepicker-panel-days': true,
                           },
-                          // selectedItems: that.props.value
-                          //   ? `${that.year}-${that.month}-${that.day}`
-                          //   : null,
                           itemSelectable: {
                             byClick: true,
                             multiple: false,
@@ -197,15 +238,6 @@ class DatePicker extends Textbox {
 
                               return this.props.date
                             },
-                            // styles: {
-                            //   padding: 'd375',
-                            //   hover: {
-                            //     color: 'darken',
-                            //   },
-                            //   selected: {
-                            //     color: 'primary',
-                            //   },
-                            // },
                             classes: {
                               'nom-datepicker-day-item': true,
                             },
@@ -321,6 +353,7 @@ class DatePicker extends Textbox {
                 },
               ],
             },
+
             (this.props.showNow || extra.length) && {
               component: Flex,
               classes: {
@@ -342,6 +375,115 @@ class DatePicker extends Textbox {
                   },
                 },
               ],
+            },
+
+            {
+              ref: (c) => {
+                that.yearMonthContainerRef = c
+              },
+              classes: {
+                'nom-datepicker-year-month': true,
+              },
+              hidden: true,
+              children: {
+                component: 'Flex',
+                vertical: true,
+                items: [
+                  {
+                    classes: {
+                      'nom-datepicker-year-month-back': true,
+                    },
+                    children: {
+                      component: 'Button',
+                      icon: 'left',
+                      text: '返回',
+                      type: 'text',
+                      onClick: ({ event }) => {
+                        event.stopPropagation()
+                        that.yearMonthContainerRef.hide()
+                        that.timePicker && that._fixTimePickerHeight()
+                      },
+                    },
+                  },
+                  {
+                    component: 'Flex',
+                    classes: {
+                      'nom-datepicker-year-month-container': true,
+                    },
+                    items: [
+                      {
+                        component: 'List',
+                        cols: 1,
+                        itemSelectable: {
+                          byClick: true,
+                          scrollIntoView: true,
+                          multiple: false,
+                        },
+                        ref: (c) => {
+                          that.yearRef = c
+                        },
+                        itemDefaults: {
+                          key: function () {
+                            return this.props.value
+                          },
+                          onConfig: ({ inst }) => {
+                            inst.setProps({
+                              children: inst.props.text,
+                            })
+                          },
+                        },
+                        onItemSelectionChange: () => {
+                          const y = that.yearRef.getSelectedItem()
+                          that.year = y.key
+                          that.yearTextRef.update({
+                            children: that.props.yearTextFormatter(that.year),
+                          })
+                          y.element.scrollIntoView({ block: 'center', behavior: 'smooth' })
+
+                          that.days.update({
+                            items: that._getDays(that.year, that.month),
+                          })
+                        },
+                        items: this._getYears(),
+                      },
+                      {
+                        component: 'List',
+                        ref: (c) => {
+                          that.monthRef = c
+                        },
+                        cols: 1,
+                        itemSelectable: {
+                          byClick: true,
+                          scrollIntoView: true,
+                          multiple: false,
+                        },
+                        itemDefaults: {
+                          key: function () {
+                            return this.props.value
+                          },
+                          onConfig: ({ inst }) => {
+                            inst.setProps({
+                              children: inst.props.text,
+                            })
+                          },
+                        },
+                        onItemSelectionChange: () => {
+                          const m = that.monthRef.getSelectedItem()
+                          that.month = m.key
+                          that.monthTextRef.update({
+                            children: that.props.monthTextFormatter(that.month),
+                          })
+                          m.element.scrollIntoView({ block: 'center', behavior: 'smooth' })
+                          that.days.update({
+                            items: that._getDays(that.year, that.month),
+                          })
+                        },
+                        items: this._getMonths(),
+                      },
+                    ],
+                  },
+                ],
+              },
             },
           ],
         },
@@ -376,6 +518,69 @@ class DatePicker extends Textbox {
     }
 
     this.timePicker.update(timeProps)
+  }
+
+  _yearMinus() {
+    this.year -= 1
+
+    this.yearTextRef.update({
+      children: this.props.yearTextFormatter(this.year),
+    })
+    this.days.update({
+      items: this._getDays(this.year, this.month),
+    })
+    this.timePicker && this._fixTimePickerHeight()
+  }
+
+  _yearPlus() {
+    this.year += 1
+
+    this.yearTextRef.update({
+      children: this.props.yearTextFormatter(this.year),
+    })
+    this.days.update({
+      items: this._getDays(this.year, this.month),
+    })
+    this.timePicker && this._fixTimePickerHeight()
+  }
+
+  _monthMinus() {
+    if (this.month === 1) {
+      this.month = 12
+      this.year -= 1
+      this.yearTextRef.update({
+        children: this.props.yearTextFormatter(this.year),
+      })
+    } else {
+      this.month -= 1
+    }
+
+    this.monthTextRef.update({
+      children: this.props.monthTextFormatter(this.month),
+    })
+    this.days.update({
+      items: this._getDays(this.year, this.month),
+    })
+    this.timePicker && this._fixTimePickerHeight()
+  }
+
+  _monthPlus() {
+    if (this.month === 12) {
+      this.month = 1
+      this.year += 1
+      this.yearTextRef.update({
+        children: this.props.yearTextFormatter(this.year),
+      })
+    } else {
+      this.month += 1
+    }
+    this.monthTextRef.update({
+      children: this.props.monthTextFormatter(this.month),
+    })
+    this.days.update({
+      items: this._getDays(this.year, this.month),
+    })
+    this.timePicker && this._fixTimePickerHeight()
   }
 
   _getYears() {
@@ -512,8 +717,9 @@ class DatePicker extends Textbox {
   }
 
   reActiveList() {
-    this.years.setValue(this.year)
-    this.months.setValue(this.month)
+    this.yearRef.selectItem(this.year)
+    this.monthRef.selectItem(this.month)
+
     this.props.value &&
       this.days.update({ selectedItems: `${this.year}-${this.month}-${this.day}` })
   }
@@ -638,6 +844,13 @@ DatePicker.defaults = {
   weekText: '日 一 二 三 四 五 六',
   nowText: '此刻',
   todayText: '今天',
+  showYearSkip: false,
+  yearTextFormatter: (val) => {
+    return `${val}年`
+  },
+  monthTextFormatter: (val) => {
+    return `${val}月`
+  },
 }
 Component.register(DatePicker)
 
