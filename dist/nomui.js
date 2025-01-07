@@ -16164,9 +16164,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   ref: (c) => {
                                     that.monthTextRef = c;
                                   },
-                                  children: that.props.monthTextFormatter(
-                                    that.month
-                                  ),
+                                  children: that.props.monthMap[that.month],
                                 },
                               ],
                             },
@@ -16370,7 +16368,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                       children: {
                         component: "Button",
                         icon: "left",
-                        text: "返回",
+                        text: that.props.backText,
                         type: "text",
                         onClick: ({ event }) => {
                           event.stopPropagation();
@@ -16399,7 +16397,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                               return this.props.value;
                             },
                             onConfig: ({ inst }) => {
-                              inst.setProps({ children: inst.props.text });
+                              inst.setProps({
+                                children: that.props.yearTextFormatter(
+                                  inst.props.text
+                                ),
+                              });
                             },
                           },
                           onItemSelectionChange: () => {
@@ -16434,16 +16436,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                               return this.props.value;
                             },
                             onConfig: ({ inst }) => {
-                              inst.setProps({ children: inst.props.text });
+                              inst.setProps({
+                                children: that.props.monthMap[inst.props.value],
+                              });
                             },
                           },
                           onItemSelectionChange: () => {
                             const m = that.monthRef.getSelectedItem();
                             that.month = m.key;
                             that.monthTextRef.update({
-                              children: that.props.monthTextFormatter(
-                                that.month
-                              ),
+                              children: that.props.monthMap[that.month],
                             });
                             m.element.scrollIntoView({
                               block: "center",
@@ -16513,9 +16515,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else {
         this.month -= 1;
       }
-      this.monthTextRef.update({
-        children: this.props.monthTextFormatter(this.month),
-      });
+      this.monthTextRef.update({ children: this.props.monthMap[this.month] });
       this.days.update({ items: this._getDays(this.year, this.month) });
       this.timePicker && this._fixTimePickerHeight();
     }
@@ -16529,9 +16529,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else {
         this.month += 1;
       }
-      this.monthTextRef.update({
-        children: this.props.monthTextFormatter(this.month),
-      });
+      this.monthTextRef.update({ children: this.props.monthMap[this.month] });
       this.days.update({ items: this._getDays(this.year, this.month) });
       this.timePicker && this._fixTimePickerHeight();
     }
@@ -16762,11 +16760,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     nowText: "此刻",
     todayText: "今天",
     showYearSkip: false,
+    backText: "返回",
+    monthMap: {
+      1: "一月",
+      2: "二月",
+      3: "三月",
+      4: "四月",
+      5: "五月",
+      6: "六月",
+      7: "七月",
+      8: "八月",
+      9: "九月",
+      10: "十月",
+      11: "十一月",
+      12: "十二月",
+    },
     yearTextFormatter: (val) => {
       return `${val}年`;
-    },
-    monthTextFormatter: (val) => {
-      return `${val}月`;
     },
   };
   Component.register(DatePicker);
