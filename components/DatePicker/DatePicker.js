@@ -627,7 +627,7 @@ class DatePicker extends Textbox {
     if (month === 1) {
       lastDayCount = this._getDaysInMonth(year - 1, 12)
       lastMonthYear = year - 1
-      lastMonthMonth = 11
+      lastMonthMonth = 12
     }
 
     if (firstDay > 0) {
@@ -661,6 +661,7 @@ class DatePicker extends Textbox {
         nextMonth: true,
       })
     }
+
     return daysList
   }
 
