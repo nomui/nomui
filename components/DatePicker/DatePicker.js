@@ -401,7 +401,7 @@ class DatePicker extends Textbox {
                       onClick: ({ event }) => {
                         event.stopPropagation()
                         that.yearMonthContainerRef.hide()
-                        that.timePicker && that._fixTimePickerHeight()
+                        that._fixTimePickerHeight()
                       },
                     },
                   },
@@ -494,6 +494,9 @@ class DatePicker extends Textbox {
   }
 
   _fixTimePickerHeight() {
+    if (!this.timePicker) {
+      return
+    }
     const h = this.popup.element.querySelector('.nom-datepicker-popup-bd').offsetHeight
     this.popup.element.querySelector('.timepicker-group').style.height = `${h}px`
   }
@@ -529,7 +532,7 @@ class DatePicker extends Textbox {
     this.days.update({
       items: this._getDays(this.year, this.month),
     })
-    this.timePicker && this._fixTimePickerHeight()
+    this._fixTimePickerHeight()
   }
 
   _yearPlus() {
@@ -541,7 +544,7 @@ class DatePicker extends Textbox {
     this.days.update({
       items: this._getDays(this.year, this.month),
     })
-    this.timePicker && this._fixTimePickerHeight()
+    this._fixTimePickerHeight()
   }
 
   _monthMinus() {
@@ -561,7 +564,7 @@ class DatePicker extends Textbox {
     this.days.update({
       items: this._getDays(this.year, this.month),
     })
-    this.timePicker && this._fixTimePickerHeight()
+    this._fixTimePickerHeight()
   }
 
   _monthPlus() {
@@ -580,7 +583,7 @@ class DatePicker extends Textbox {
     this.days.update({
       items: this._getDays(this.year, this.month),
     })
-    this.timePicker && this._fixTimePickerHeight()
+    this._fixTimePickerHeight()
   }
 
   _getYears() {

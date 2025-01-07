@@ -16373,7 +16373,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                         onClick: ({ event }) => {
                           event.stopPropagation();
                           that.yearMonthContainerRef.hide();
-                          that.timePicker && that._fixTimePickerHeight();
+                          that._fixTimePickerHeight();
                         },
                       },
                     },
@@ -16469,6 +16469,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super._config();
     }
     _fixTimePickerHeight() {
+      if (!this.timePicker) {
+        return;
+      }
       const h = this.popup.element.querySelector(".nom-datepicker-popup-bd")
         .offsetHeight;
       this.popup.element.querySelector(
@@ -16495,7 +16498,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children: this.props.yearTextFormatter(this.year),
       });
       this.days.update({ items: this._getDays(this.year, this.month) });
-      this.timePicker && this._fixTimePickerHeight();
+      this._fixTimePickerHeight();
     }
     _yearPlus() {
       this.year += 1;
@@ -16503,7 +16506,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children: this.props.yearTextFormatter(this.year),
       });
       this.days.update({ items: this._getDays(this.year, this.month) });
-      this.timePicker && this._fixTimePickerHeight();
+      this._fixTimePickerHeight();
     }
     _monthMinus() {
       if (this.month === 1) {
@@ -16517,7 +16520,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this.monthTextRef.update({ children: this.props.monthMap[this.month] });
       this.days.update({ items: this._getDays(this.year, this.month) });
-      this.timePicker && this._fixTimePickerHeight();
+      this._fixTimePickerHeight();
     }
     _monthPlus() {
       if (this.month === 12) {
@@ -16531,7 +16534,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this.monthTextRef.update({ children: this.props.monthMap[this.month] });
       this.days.update({ items: this._getDays(this.year, this.month) });
-      this.timePicker && this._fixTimePickerHeight();
+      this._fixTimePickerHeight();
     }
     _getYears() {
       const years = [];
