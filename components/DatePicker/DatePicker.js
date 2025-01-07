@@ -89,6 +89,7 @@ class DatePicker extends Textbox {
             this.reActiveList()
             this.yearMonthContainerRef.hide()
             // that.props.showTime && that.timePicker.onShow()
+            this._fixTimePickerHeight()
           },
           onHide: () => {
             that.onPopupHide()
