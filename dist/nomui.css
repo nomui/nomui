@@ -7856,7 +7856,7 @@ table.nom-table.p-bordered {
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span.nom-table-cell-content > div:only-child > .nom-field {
   flex-grow: 1;
 }
-.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span.nom-table-cell-content > div:only-child > span:last-child {
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span.nom-table-cell-content > div:only-child > .nom-tree-grid-td {
   flex-grow: 1;
   width: 0;
   overflow: hidden;

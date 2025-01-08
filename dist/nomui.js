@@ -18051,7 +18051,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               rowData: this.tr.props.data,
               index: this.tr.props.index,
             }),
-          { tag: "span", children: children },
+          {
+            tag: "span",
+            classes: { "nom-tree-grid-td": true },
+            children: children,
+          },
         ];
       }
       const colSpan =

@@ -295,7 +295,7 @@ class Td extends Component {
             rowData: this.tr.props.data,
             index: this.tr.props.index,
           }),
-        { tag: 'span', children: children },
+        { tag: 'span', classes: { 'nom-tree-grid-td': true }, children: children },
       ]
     }
 
