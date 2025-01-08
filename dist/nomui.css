@@ -7853,6 +7853,9 @@ table.nom-table.p-bordered {
   display: flex;
   width: 100%;
 }
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span.nom-table-cell-content > div:only-child > .nom-field {
+  flex-grow: 1;
+}
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span.nom-table-cell-content > div:only-child > span:last-child {
   flex-grow: 1;
   width: 0;
