@@ -9,6 +9,7 @@ define([], function () {
           text: 'switch',
           name: 'x',
           value: true,
+          label: '选择器',
           // disabled: true,
           onValueChange(changed) {
             // eslint-disable-next-line
