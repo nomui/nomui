@@ -5998,6 +5998,9 @@ body .nom-always-dark {
   display: flex;
   overflow: hidden;
 }
+.nom-popup.nom-popup-adapt-to-screen > div {
+  width: 100%;
+}
 .modal-scrollbar-measure {
   position: absolute;
   top: -9999px;
