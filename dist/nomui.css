@@ -10946,6 +10946,10 @@ textarea .nom-textarea {
     opacity: 0;
   }
 }
+.nom-switch > .nom-field-content {
+  display: flex;
+  align-items: center;
+}
 .nom-switch > .nom-field-content .nom-switch-control {
   position: relative;
   display: flex;
