@@ -11,8 +11,16 @@ define([], function () {
             component: 'Button',
             text: '动态添加',
             onClick: () => {
-              gridRef.getRow(5).update({ data: { id: 5, name: '绝代双骄', author: '古龙', description: '《绝代双骄》：古龙武侠巨著，讲述孪生兄弟江小鱼与花无缺，历经江湖恩怨，最终相认的故事。' } })
-            }
+              gridRef.getRow(5).update({
+                data: {
+                  id: 5,
+                  name: '绝代双骄',
+                  author: '古龙',
+                  description:
+                    '《绝代双骄》：古龙武侠巨著，讲述孪生兄弟江小鱼与花无缺，历经江湖恩怨，最终相认的故事。',
+                },
+              })
+            },
           },
           {
             component: 'Grid',
@@ -21,8 +29,6 @@ define([], function () {
             },
             rowExpandable: {
               render: ({ rowData, row }) => {
-
-
                 if (!rowData.description) {
                   return false
                 }
@@ -30,7 +36,7 @@ define([], function () {
                   ref: (c) => {
                     row.subContent = c
                   },
-                  children: rowData.description
+                  children: rowData.description,
                 }
               },
             },
@@ -47,6 +53,19 @@ define([], function () {
                 key: 'author',
                 title: '作者',
               },
+              {
+                field: 'actions',
+                title: '操作',
+                cellRender: ({ row }) => {
+                  return {
+                    component: 'Button',
+                    text: '删除',
+                    onClick: () => {
+                      gridRef.removeRow(row, { removeExpandedRow: true })
+                    },
+                  }
+                },
+              },
             ],
             data: [
               {
@@ -59,8 +78,8 @@ define([], function () {
               { id: 4, name: '天龙八部', author: '金庸' },
               { id: 5, name: '绝代双骄', author: '古龙' },
             ],
-          }
-        ]
+          },
+        ],
       }
     },
   }

@@ -19011,6 +19011,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
       }
     }
+    remove(options = {}) {
+      if (options.removeExpandedRow) {
+        this.expandedRow.remove();
+      }
+      super.remove();
+    }
     _remove() {
       const dataHaskeyField = !isNullish(
         this.props.data[this.table.props.keyField]
@@ -21780,9 +21786,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return result;
     }
-    removeRow(param) {
+    removeRow(param, options = {}) {
       const row = this.getRow(param);
-      row.remove();
+      row.remove(options);
     }
     getCheckedRows() {
       return Object.keys(this.checkedRowRefs)

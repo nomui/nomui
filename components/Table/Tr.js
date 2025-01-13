@@ -74,7 +74,7 @@ class Tr extends Component {
 
     if (this.table.hasGrid && this.table.grid.props && this.table.grid.props.editMode) {
       this.setProps({
-        editMode: true
+        editMode: true,
       })
     }
 
@@ -199,7 +199,11 @@ class Tr extends Component {
       return
     }
 
-    if (grid.props && grid.props.highlightModifiedRows && grid.modifiedRowKeys.includes(data[grid.props.keyField])) {
+    if (
+      grid.props &&
+      grid.props.highlightModifiedRows &&
+      grid.modifiedRowKeys.includes(data[grid.props.keyField])
+    ) {
       this.element.classList.add('nom-grid-tr-modified')
     }
   }
@@ -216,7 +220,6 @@ class Tr extends Component {
         data[key] = editor.getValue()
       }
     }
-
 
     if (dataChanged) {
       this.props.data = data
@@ -250,7 +253,7 @@ class Tr extends Component {
 
   edit() {
     this.update({
-      editMode: true
+      editMode: true,
     })
   }
 
@@ -262,7 +265,7 @@ class Tr extends Component {
       this._updateRowData()
     }
     this.update({
-      editMode: false
+      editMode: false,
     })
   }
 
@@ -296,6 +299,13 @@ class Tr extends Component {
         _childTr.hide && _childTr.hide()
       })
     }
+  }
+
+  remove(options = {}) {
+    if (options.removeExpandedRow) {
+      this.expandedRow.remove()
+    }
+    super.remove()
   }
 
   _remove() {

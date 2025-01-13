@@ -798,9 +798,9 @@ class Grid extends Component {
     return result
   }
 
-  removeRow(param) {
+  removeRow(param, options = {}) {
     const row = this.getRow(param)
-    row.remove()
+    row.remove(options)
   }
 
   getCheckedRows() {
