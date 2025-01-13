@@ -76,7 +76,7 @@
 | --- | --- | --- |
 | appendRow | 在后面新增一行 | `(rowProps)=>{}` |
 | getRow | 获取指定行实例 | `(key)=>{}` |
-| removeRow | 移除指定行 | `(key)=>{}` |
+| removeRow | 移除指定行,第二位参数传入{removeExpandedRow:true}时则会同时删除指定行的展开内容 | `(key,{removeExpandedRow})=>{}` |
 | resetSort | 重置表格的排序状态 | - |
 | resetColumnsCustom | 重置自定义列的展示 | - |
 | resetColsWidth | 重置列的宽度(不传参数则重置所有列宽) | `Funciton(field \| null)` |
