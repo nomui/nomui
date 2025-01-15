@@ -33,6 +33,7 @@ define([], function () {
           },
           {
             text: '按钮5',
+            disabled: true,
             onClick: () => {
               console.log('按钮5')
             },
