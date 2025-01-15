@@ -33772,6 +33772,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             this.tree.update({
               nodeSelectable: this._getPopupNodeSelectable(),
             });
+          } else {
+            this.tree.setCheckedNodeKeys(this.getValue());
           }
         },
       });
@@ -33808,7 +33810,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return optionMap;
     }
     _getContentChildren() {
-      const { showArrow, placeholder, allowClear, animate } = this.props;
+      const { showArrow, placeholder, allowClear } = this.props;
       const that = this;
       const children = [];
       this._normalizeSearchable(); // _content: 所选择的数据的展示
@@ -33851,12 +33853,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             if (this.props.disabled) {
               return;
             }
+            args.event && args.event.stopPropagation();
             this._setValue(null);
             this.props.onClear && this._callHandler(this.props.onClear);
-            this.props.allowClear && this.clearIcon.hide();
-            animate && this.popup && this.popup.animateHide();
-            !animate && this.popup && this.popup.hide();
-            args.event && args.event.stopPropagation();
+            this.props.allowClear && this.clearIcon.hide(); // this.tree && this.props.multiple && this.tree.setCheckedNodeKeys(null)
+            this.popup && this.popup.hide();
           },
         });
       }
@@ -34038,35 +34039,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         treeCheckable,
         {
           checkedNodeKeys: currentValue,
-          onCheckChange: ({ sender }) => {
-            let allValue = this._getValue() || [];
-            const parentNode = this._getParentNode(sender);
-            const childNodes = parentNode.getChildNodes();
-            if (!sender.isChecked()) {
-              const checkedChildNodes = this._getCheckedChildNodes(childNodes);
-              !parentNode.isChecked() && checkedChildNodes.push(parentNode.key);
-              const newAllValue = allValue.filter(
-                (item) => checkedChildNodes.indexOf(item) === -1
-              );
-              allValue = newAllValue;
-            }
-            const checkedKeys = this._removeDuplicates([
-              ...allValue,
-              ...this.tree.getCheckedNodeKeys(),
-            ]);
+          onCheckChange: () => {
+            const checkedKeys = this.tree.getCheckedNodeKeys();
             this._setValue(checkedKeys);
           },
         }
       );
-    }
-    _removeDuplicates(arr) {
-      for (let i = 0; i < arr.length; i++) {
-        if (arr.indexOf(arr[i]) !== i) {
-          arr.splice(i, 1);
-          i--;
-        }
-      }
-      return arr;
     }
     _getParentNode(node) {
       if (node.parentNode) {
@@ -34108,7 +34086,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this._content.update({ children: this._getContentBadges() }); // 多选: 每次setValue后更新选中状态
       if (this.props.multiple) {
-        this.popup.selectControl.tree.checkNodes(value);
+        this.popup.selectControl.tree &&
+          this.popup.selectControl.tree.setCheckedNodeKeys(value);
       } else {
         // 单选: 点击后即关闭popup,在onShow中更新
         this.props.animate && this.popup.animateHide();
