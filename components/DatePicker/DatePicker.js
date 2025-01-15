@@ -150,7 +150,8 @@ class DatePicker extends Textbox {
                             component: 'Flex',
                             onClick: () => {
                               that.yearMonthContainerRef.show()
-                              that.yearMonthClickCount = 0
+                              that.yearClicked = false
+                              that.monthClicked = false
                               that.yearRef.selectItem(that.year)
                               that.monthRef.selectItem(that.month)
                             },
@@ -436,8 +437,8 @@ class DatePicker extends Textbox {
                             if (!that.props.autoHideYearMonthPicker) {
                               return
                             }
-                            that.yearMonthClickCount += 1
-                            if (that.yearMonthClickCount === 2) {
+                            that.yearClicked = true
+                            if (that.yearClicked && that.monthClicked) {
                               setTimeout(() => {
                                 that.yearMonthContainerRef.hide()
                               }, 400)
@@ -482,8 +483,8 @@ class DatePicker extends Textbox {
                             if (!that.props.autoHideYearMonthPicker) {
                               return
                             }
-                            that.yearMonthClickCount += 1
-                            if (that.yearMonthClickCount === 2) {
+                            that.monthClicked = true
+                            if (that.yearClicked && that.monthClicked) {
                               setTimeout(() => {
                                 that.yearMonthContainerRef.hide()
                               }, 400)
