@@ -9787,6 +9787,9 @@ textarea .nom-textarea {
   align-items: center;
   padding: 0 0.5rem;
 }
+.nom-date-picker-popup .nom-datepicker-year-month > .nom-flex .nom-datepicker-year-month-back .nom-button {
+  color: var(--nom-color-primary);
+}
 .nom-date-picker-popup .nom-datepicker-year-month > .nom-flex .nom-datepicker-year-month-container {
   height: calc(100% - 3.25rem);
 }

@@ -16145,6 +16145,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                               component: "Flex",
                               onClick: () => {
                                 that.yearMonthContainerRef.show();
+                                that.yearMonthClickCount = 0;
                                 that.yearRef.selectItem(that.year);
                                 that.monthRef.selectItem(that.month);
                               },
@@ -16403,6 +16404,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                 ),
                               });
                             },
+                            onClick: () => {
+                              if (!that.props.autoHideYearMonthPicker) {
+                                return;
+                              }
+                              that.yearMonthClickCount += 1;
+                              if (that.yearMonthClickCount === 2) {
+                                setTimeout(() => {
+                                  that.yearMonthContainerRef.hide();
+                                }, 400);
+                              }
+                            },
                           },
                           onItemSelectionChange: () => {
                             const y = that.yearRef.getSelectedItem();
@@ -16439,6 +16451,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                               inst.setProps({
                                 children: that.props.monthMap[inst.props.value],
                               });
+                            },
+                            onClick: () => {
+                              if (!that.props.autoHideYearMonthPicker) {
+                                return;
+                              }
+                              that.yearMonthClickCount += 1;
+                              if (that.yearMonthClickCount === 2) {
+                                setTimeout(() => {
+                                  that.yearMonthContainerRef.hide();
+                                }, 400);
+                              }
                             },
                           },
                           onItemSelectionChange: () => {
@@ -16748,6 +16771,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   }
   DatePicker.defaults = {
     format: "yyyy-MM-dd",
+    autoHideYearMonthPicker: true,
     disabledTime: null,
     minDate: null,
     maxDate: null,
@@ -16763,7 +16787,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     nowText: "此刻",
     todayText: "今天",
     showYearSkip: false,
-    backText: "返回",
+    backText: "返回选择日期",
     monthMap: {
       1: "1月",
       2: "2月",
