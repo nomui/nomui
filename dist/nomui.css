@@ -10995,7 +10995,7 @@ textarea .nom-textarea {
   justify-content: center;
   height: 100%;
   font-size: 80%;
-  padding: 0 0.5rem 0 0.25rem;
+  padding: 0 0.5rem;
 }
 .nom-switch > .nom-field-content .nom-switch-control .nom-switch-indicator {
   width: calc(var(--nom-switch-height-base) - 4px);
