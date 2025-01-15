@@ -13,6 +13,7 @@
 | minDate | 最小可选日期 | `string` | - |
 | maxDate | 最大可选日期 | `string` | - |
 | yearRange | 前后年显示范围 | `array` | `[50,20]` |
+| autoHideYearMonthPicker | 当选择年月之后自动切换回日期选择界面 | `boolean` | true |
 | showYearSkip | 是否显示年份增减按钮 | `boolean` | false |
 | showTime | 是否显示时间，需要显示的时候建议传一个对象，内部包含 TimePicker 的 props | `object` | false |
 | allowClear | 是否显示清空按钮 | `boolean` | `true` |
