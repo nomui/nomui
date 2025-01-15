@@ -9,27 +9,27 @@ define([], function () {
             component: 'Menu',
             direction: 'horizontal',
             itemSelectable: {
-              byClick: true
+              byClick: true,
             },
             keyField: 'id',
             sortable: {
               onEnd: (args) => {
                 console.log(args)
-              }
+              },
             },
             items: [
-              { text: '起步', id: 'start', },
+              { text: '起步', id: 'start' },
               {
                 text: '样式',
                 id: 'css',
                 items: [
-                  { text: '起步', id: 'css', },
+                  { text: '起步', id: 'css' },
                   {
                     text: '样式',
                     id: 'css',
                     url: '#!css!',
                     items: [
-                      { text: '起步', id: 'css', url: '#!css!' },
+                      { text: '起步', id: 'css', url: '#!css!', disabled: true },
                       { text: '样式', id: 'css', url: '#!css!' },
                     ],
                   },

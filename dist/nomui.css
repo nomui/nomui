@@ -7143,6 +7143,10 @@ body .nom-always-dark {
   padding: 10px 0;
   font-size: 85%;
 }
+.nom-menu .nom-menu-item.s-disabled > .nom-menu-item-title {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .nom-menu.p-direction-horizontal {
   display: flex;
   flex-wrap: wrap;
