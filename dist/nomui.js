@@ -8681,6 +8681,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         labelActions,
         labelExpandable,
         labelUiStyle,
+        actionAlign,
       } = this.props;
       const showLabel =
         notShowLabel === false && label !== undefined && label !== null;
@@ -8733,6 +8734,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         classes: {
           "s-readonly": this.props.readonly,
           "s-compact": this.props.compact,
+          [`nom-field-action-align-${actionAlign}`]: true,
         },
         children: [
           labelProps,

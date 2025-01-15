@@ -9,6 +9,7 @@
 | value | 字段值 | `string` | - |
 | label | 标签文本，当未定义或为 null 时不显示标签栏 | `string` | - |
 | labelAlign | 标签对齐方式 | `left`\|`right`\|`top` | `right` |
+| actionAlign | 操作按钮对齐方式,配置为 end 时即使 labelAlign 是 top,操作按钮也会保持在字段右侧 | `default` | `end` |
 | invalidTip | 验证错误信息提示的配置（Tooltip 组件） | `object` | `参考Tooltip` |
 | flatValue | 是否平面化数据 | `boolean` | `false` |
 | notShowLabel | 不显示标签，不管 label 是否设置 | `boolean` | `false` |
