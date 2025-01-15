@@ -60,6 +60,7 @@ class Field extends Component {
       labelActions,
       labelExpandable,
       labelUiStyle,
+      actionAlign,
     } = this.props
     const showLabel = notShowLabel === false && label !== undefined && label !== null
 
@@ -122,6 +123,7 @@ class Field extends Component {
       classes: {
         's-readonly': this.props.readonly,
         's-compact': this.props.compact,
+        [`nom-field-action-align-${actionAlign}`]: true,
       },
       children: [
         labelProps,
