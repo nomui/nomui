@@ -134,6 +134,81 @@ class Td extends Component {
       })
     }
 
+    const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
+
+    if (isTreeNodeColumn) {
+      this.setProps({
+        expanded: treeConfig.initExpandLevel === -1 || treeConfig.initExpandLevel > level,
+        expandable: {
+          byClick: true,
+          target: () => {
+            return this.tr.props.childTrs
+          },
+          byIndicator: treeConfig.byIndicator,
+          indicator: {
+            component: 'Icon',
+            classes: { 'nom-tr-expand-indicator': true },
+            expandable: {
+              expandedProps: {
+                type: 'sort-down',
+              },
+              collapsedProps: {
+                type: 'sort-right',
+              },
+            },
+          },
+        },
+      })
+
+      if (isPlainObject(treeConfig.indicator)) {
+        this.setProps({
+          expandable: {
+            indicator: treeConfig.indicator,
+          },
+        })
+      }
+
+      if (isLeaf) {
+        this.setProps({
+          expandable: {
+            indicator: {
+              attrs: {
+                style: {
+                  visibility: 'hidden',
+                },
+              },
+            },
+          },
+        })
+      }
+
+      children = {
+        classes: {
+          'nom-grid-td-cell-tree': true,
+        },
+        children: [
+          {
+            tag: 'span',
+            attrs: {
+              style: {
+                paddingLeft: `${level * treeConfig.indentSize}px`,
+              },
+            },
+          },
+          this.getExpandableIndicatorProps(),
+          this.table.hasGrid &&
+            this.table.grid.props.rowCheckable &&
+            this.table.grid.props.rowCheckable.checkboxOnNodeColumn &&
+            this._renderCombinedChecker({
+              row: this.tr,
+              rowData: this.tr.props.data,
+              index: this.tr.props.index,
+            }),
+          { tag: 'span', classes: { 'nom-tree-grid-td': true }, children: children },
+        ],
+      }
+    }
+
     if (column.toolbar) {
       if (column.toolbar.align === 'left') {
         children = {
@@ -229,76 +304,6 @@ class Td extends Component {
       }
     }
 
-    const isTreeNodeColumn = treeConfig.treeNodeColumn && column.field === treeConfig.treeNodeColumn
-
-    if (isTreeNodeColumn) {
-      this.setProps({
-        expanded: treeConfig.initExpandLevel === -1 || treeConfig.initExpandLevel > level,
-        expandable: {
-          byClick: true,
-          target: () => {
-            return this.tr.props.childTrs
-          },
-          byIndicator: treeConfig.byIndicator,
-          indicator: {
-            component: 'Icon',
-            classes: { 'nom-tr-expand-indicator': true },
-            expandable: {
-              expandedProps: {
-                type: 'sort-down',
-              },
-              collapsedProps: {
-                type: 'sort-right',
-              },
-            },
-          },
-        },
-      })
-
-      if (isPlainObject(treeConfig.indicator)) {
-        this.setProps({
-          expandable: {
-            indicator: treeConfig.indicator,
-          },
-        })
-      }
-
-      if (isLeaf) {
-        this.setProps({
-          expandable: {
-            indicator: {
-              attrs: {
-                style: {
-                  visibility: 'hidden',
-                },
-              },
-            },
-          },
-        })
-      }
-
-      children = [
-        {
-          tag: 'span',
-          attrs: {
-            style: {
-              paddingLeft: `${level * treeConfig.indentSize}px`,
-            },
-          },
-        },
-        this.getExpandableIndicatorProps(),
-        this.table.hasGrid &&
-          this.table.grid.props.rowCheckable &&
-          this.table.grid.props.rowCheckable.checkboxOnNodeColumn &&
-          this._renderCombinedChecker({
-            row: this.tr,
-            rowData: this.tr.props.data,
-            index: this.tr.props.index,
-          }),
-        { tag: 'span', classes: { 'nom-tree-grid-td': true }, children: children },
-      ]
-    }
-
     const colSpan =
       spanProps && spanProps.colSpan !== null && spanProps.colSpan !== undefined
         ? spanProps.colSpan
@@ -312,6 +317,15 @@ class Td extends Component {
     if (rowSpan > 1) {
       this.table.hasRowGroup = true
     }
+
+    const showTitle =
+      (((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
+        this.props.column.showTitle !== false) ||
+      this.props.column.showTitle === true
+
+    const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
+
+    const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode
 
     // // 用span包一层，为了伪元素的展示
     if (isEllipsis && !column.autoWidth) {
@@ -381,15 +395,6 @@ class Td extends Component {
         ],
       }
     }
-
-    const showTitle =
-      (((this.table.hasGrid && this.table.grid.props.showTitle) || this.table.props.showTitle) &&
-        this.props.column.showTitle !== false) ||
-      this.props.column.showTitle === true
-
-    const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
-
-    const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode
 
     if (isExcelMode) {
       children = {

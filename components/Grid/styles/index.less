@@ -200,6 +200,12 @@
           flex-grow: 1;
           width: 0;
         }
+        >.nom-flex {
+          flex-grow: 1;
+          .nom-grid-td-cell-tree {
+            flex-grow: 1;
+          }
+        }
       }
 
       &:hover {
@@ -239,6 +245,13 @@
           flex-grow: 1;
           width: 0;
           display: flex;
+
+          >.nom-flex {
+            flex-grow: 1;
+            .nom-grid-td-cell-tree {
+              flex-grow: 1;
+            }
+          }
 
           >span:last-child:not(.nom-table-cell-content) {
             flex-grow: 1;
@@ -531,6 +544,16 @@
 
     >.nom-grid-order-text {
       visibility: hidden;
+    }
+  }
+}
+
+
+.nom-td {
+  .nom-grid-td-cell-tree {
+    display: flex;
+    >.nom-tree-grid-td {
+      flex-grow: 1;
     }
   }
 }
