@@ -548,9 +548,11 @@
   .nom-grid-td-cell-tree {
     display: flex;
     align-items: center;
+    flex-grow: 1;
     >.nom-tree-grid-td {
       flex-grow: 1;
-      
+      width: 0;
+      overflow: hidden;
     }
   }
   &.nom-table-ellipsis {
