@@ -13,11 +13,13 @@ define([], function () {
               initExpandLevel: 1,
               byIndicator: true,
             },
+            frozenLeftCols: 1,
             columns: [
               {
                 field: 'class',
                 title: '班级',
-                ellipsis: true,
+                // ellipsis: true,
+                width: 400,
                 toolbar: {
                   align: 'right', // 工具栏靠右
                   placement: 'both',
@@ -44,6 +46,9 @@ define([], function () {
                     }
                   },
                 },
+                // cellRender: ({ cellData }) => {
+                //   return cellData
+                // },
                 editRender: ({ cellData }) => {
                   return {
                     component: 'Textbox',
@@ -54,7 +59,7 @@ define([], function () {
               {
                 field: 'count',
                 title: '人数',
-                width: 200,
+                // width: 200,
               },
             ],
             // editable: true,
