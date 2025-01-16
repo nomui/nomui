@@ -18041,11 +18041,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             align: "center",
             component: "Flex",
             cols: [
-              {
-                grow: true,
-                classes: { "nom-grid-td-cell-ellipsis": true },
-                children: children,
-              },
+              { grow: true, children: children },
               {
                 classes: {
                   "nom-grid-column-tools": true,

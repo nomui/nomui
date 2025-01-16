@@ -8053,9 +8053,12 @@ table.nom-table.p-bordered {
 .nom-td .nom-grid-td-cell-tree {
   display: flex;
   align-items: center;
+  flex-grow: 1;
 }
 .nom-td .nom-grid-td-cell-tree > .nom-tree-grid-td {
   flex-grow: 1;
+  width: 0;
+  overflow: hidden;
 }
 .nom-td.nom-table-ellipsis .nom-tree-grid-td {
   width: 0;
