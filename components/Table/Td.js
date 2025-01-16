@@ -336,9 +336,7 @@ class Td extends Component {
             'nom-table-cell-content': true,
             'nom-table-cell-content-flex': true,
           },
-          children: {
-            children,
-          },
+          children,
         }
       } else {
         children = {
