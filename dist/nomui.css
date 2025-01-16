@@ -7483,6 +7483,13 @@ table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-grid-td-cell-
   text-overflow: ellipsis;
   word-break: keep-all;
 }
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content .nom-grid-td-cell-ellipsis .nom-tree-grid-td,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-grid-td-cell-ellipsis .nom-tree-grid-td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+}
 table.nom-table td.nom-table-ellipsis .nom-table-cell-content .nom-table-cell-title,
 table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-table-cell-title {
   display: block;
@@ -7809,6 +7816,12 @@ table.nom-table.p-bordered {
   flex-grow: 1;
   width: 0;
 }
+.nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner > .nom-flex {
+  flex-grow: 1;
+}
+.nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner > .nom-flex .nom-grid-td-cell-tree {
+  flex-grow: 1;
+}
 .nom-grid.m-excel-mode .nom-td-excel-mode:hover {
   cursor: pointer;
   box-shadow: var(--nom-grid-td-excel-mode-hover-box-shadow);
@@ -7840,6 +7853,12 @@ table.nom-table.p-bordered {
   flex-grow: 1;
   width: 0;
   display: flex;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > .nom-flex {
+  flex-grow: 1;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > .nom-flex .nom-grid-td-cell-tree {
+  flex-grow: 1;
 }
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span:last-child:not(.nom-table-cell-content) {
   flex-grow: 1;
@@ -8037,6 +8056,12 @@ table.nom-table.p-bordered {
 .nom-tr.s-checked .nom-grid-checker-and-order > .nom-grid-order-text,
 .nom-tr:hover .nom-grid-checker-and-order > .nom-grid-order-text {
   visibility: hidden;
+}
+.nom-td .nom-grid-td-cell-tree {
+  display: flex;
+}
+.nom-td .nom-grid-td-cell-tree > .nom-tree-grid-td {
+  flex-grow: 1;
 }
 .nom-icon {
   display: inline-flex;
