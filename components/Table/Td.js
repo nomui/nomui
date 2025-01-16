@@ -247,9 +247,6 @@ class Td extends Component {
           cols: [
             {
               grow: true,
-              classes: {
-                'nom-grid-td-cell-ellipsis': true,
-              },
               children: children,
             },
             {

@@ -18,7 +18,7 @@ define([], function () {
               {
                 field: 'class',
                 title: '班级',
-                ellipsis: true,
+                // ellipsis: true,
                 width: 400,
                 toolbar: {
                   align: 'right', // 工具栏靠右
@@ -78,7 +78,7 @@ define([], function () {
                 },
               },
             ],
-            editable: true,
+            // editable: true,
             // excelMode: true,
             data: [
               {
