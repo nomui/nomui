@@ -265,14 +265,6 @@
             display: flex;
             width: 100%;
 
-            >span:last-child {
-              flex-grow: 1;
-              width: 0;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-            }
-
             >div:only-child {
               display: flex;
               width: 100%;
@@ -558,6 +550,15 @@
     align-items: center;
     >.nom-tree-grid-td {
       flex-grow: 1;
+      
+    }
+  }
+  &.nom-table-ellipsis {
+    .nom-tree-grid-td {
+      width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 }
