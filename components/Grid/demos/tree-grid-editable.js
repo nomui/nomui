@@ -18,7 +18,7 @@ define([], function () {
               {
                 field: 'class',
                 title: '班级',
-                // ellipsis: true,
+                ellipsis: true,
                 width: 400,
                 toolbar: {
                   align: 'right', // 工具栏靠右
@@ -47,7 +47,10 @@ define([], function () {
                   },
                 },
                 cellRender: ({ cellData }) => {
-                  return cellData
+                  return {
+                    component: 'Tag',
+                    text: cellData,
+                  }
                 },
                 editRender: ({ cellData }) => {
                   return {
@@ -60,6 +63,13 @@ define([], function () {
                 field: 'count',
                 title: '人数',
                 // width: 200,
+                // ellipsis: true,
+                editRender: ({ cellData }) => {
+                  return {
+                    component: 'Textbox',
+                    value: cellData,
+                  }
+                },
                 cellRender: () => {
                   return {
                     component: 'Tag',
@@ -68,7 +78,7 @@ define([], function () {
                 },
               },
             ],
-            // editable: true,
+            editable: true,
             // excelMode: true,
             data: [
               {
