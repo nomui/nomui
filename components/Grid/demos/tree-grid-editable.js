@@ -46,9 +46,9 @@ define([], function () {
                     }
                   },
                 },
-                // cellRender: ({ cellData }) => {
-                //   return cellData
-                // },
+                cellRender: ({ cellData }) => {
+                  return cellData
+                },
                 editRender: ({ cellData }) => {
                   return {
                     component: 'Textbox',
@@ -60,10 +60,16 @@ define([], function () {
                 field: 'count',
                 title: '人数',
                 // width: 200,
+                cellRender: () => {
+                  return {
+                    component: 'Tag',
+                    text: 'abc',
+                  }
+                },
               },
             ],
             // editable: true,
-            excelMode: true,
+            // excelMode: true,
             data: [
               {
                 id: '1',
