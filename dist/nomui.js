@@ -4063,6 +4063,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     if (typeof obj1 !== typeof obj2) {
       return false;
     }
+    if (
+      isString(obj1) &&
+      isValidDate$1(obj1) &&
+      Date.parse(obj1) === Date.parse(obj2)
+    ) {
+      return true;
+    }
     if (Array.isArray(obj1) && Array.isArray(obj2)) {
       // 如果两个都是数组，比较数组元素
       return compareArrays(obj1, obj2);
@@ -4082,7 +4089,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       for (const key of keys1) {
         if (
           !Object.prototype.hasOwnProperty.call(obj2, key) ||
-          deepEqual(obj1[key], obj2[key])
+          !deepEqual(obj1[key], obj2[key])
         ) {
           return false;
         }
