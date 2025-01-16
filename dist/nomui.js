@@ -18120,7 +18120,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               "nom-table-cell-content": true,
               "nom-table-cell-content-flex": true,
             },
-            children: { children },
+            children,
           };
         } else {
           children = {

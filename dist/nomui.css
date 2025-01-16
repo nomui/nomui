@@ -7819,7 +7819,7 @@ table.nom-table.p-bordered {
 .nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner > .nom-flex {
   flex-grow: 1;
 }
-.nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner > .nom-flex .nom-grid-td-cell-tree {
+.nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner .nom-grid-td-cell-tree {
   flex-grow: 1;
 }
 .nom-grid.m-excel-mode .nom-td-excel-mode:hover {
@@ -7857,7 +7857,7 @@ table.nom-table.p-bordered {
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > .nom-flex {
   flex-grow: 1;
 }
-.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > .nom-flex .nom-grid-td-cell-tree {
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child .nom-grid-td-cell-tree {
   flex-grow: 1;
 }
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner > div:first-child > span:last-child:not(.nom-table-cell-content) {
