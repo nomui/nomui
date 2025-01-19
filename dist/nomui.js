@@ -18041,7 +18041,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             align: "center",
             component: "Flex",
             cols: [
-              { grow: true, children: children },
+              {
+                classes: { "nom-grid-td-cell-ellipsis": true },
+                grow: true,
+                children: children,
+              },
               {
                 classes: {
                   "nom-grid-column-tools": true,
@@ -18120,6 +18124,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         classes: {
           "nom-table-cell-content": !!column.cellRender || !!column.render,
           "nom-table-cell-content-flex": isEllipsis && !column.autoWidth,
+          "nom-table-cell-static-ellipsis":
+            isEllipsis && !column.cellRender && !column.render,
         },
         children,
       };
@@ -18261,7 +18267,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       this.props.column.autoWidth && this._parseTdWidth();
       const fixed = this.props.column.fixed;
-      if (fixed) {
+      if (fixed && !this._skipFixed) {
         this._setTdsPosition();
       } // if (this.props.column.toolbar && this.props.column.toolbar.align === 'left') {
       //   this._fixThToolsPosition()
@@ -18550,6 +18556,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return column.editorIcon || iconMap[match[1]] || "edit";
     }
     edit({ type = "excel" }) {
+      this._skipFixed = true;
       this.update({
         editMode: true,
         classes: {
@@ -18557,6 +18564,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "nom-td-editable-active": type === "editable",
         },
       });
+      this._skipFixed = false;
       this.editor.validate();
     }
     endEdit(options) {
@@ -18569,6 +18577,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (options.ignoreChange !== true) {
         this._updateTdData();
       }
+      this._skipFixed = true;
       this.update({
         editMode: false,
         classes: {
@@ -18576,6 +18585,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "nom-td-editable-active": false,
         },
       });
+      this._skipFixed = false;
     }
     saveEditData() {
       this._updateTdData();

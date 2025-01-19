@@ -244,8 +244,12 @@ class Td extends Component {
         children = {
           align: 'center',
           component: 'Flex',
+
           cols: [
             {
+              classes: {
+                'nom-grid-td-cell-ellipsis': true,
+              },
               grow: true,
               children: children,
             },
@@ -329,6 +333,7 @@ class Td extends Component {
       classes: {
         'nom-table-cell-content': !!column.cellRender || !!column.render,
         'nom-table-cell-content-flex': isEllipsis && !column.autoWidth,
+        'nom-table-cell-static-ellipsis': isEllipsis && !column.cellRender && !column.render,
       },
       children,
     }
@@ -479,7 +484,7 @@ class Td extends Component {
   _rendered() {
     this.props.column.autoWidth && this._parseTdWidth()
     const fixed = this.props.column.fixed
-    if (fixed) {
+    if (fixed && !this._skipFixed) {
       this._setTdsPosition()
     }
     // if (this.props.column.toolbar && this.props.column.toolbar.align === 'left') {
@@ -845,6 +850,7 @@ class Td extends Component {
   }
 
   edit({ type = 'excel' }) {
+    this._skipFixed = true
     this.update({
       editMode: true,
       classes: {
@@ -852,6 +858,7 @@ class Td extends Component {
         'nom-td-editable-active': type === 'editable',
       },
     })
+    this._skipFixed = false
     this.editor.validate()
   }
 
@@ -865,6 +872,7 @@ class Td extends Component {
     if (options.ignoreChange !== true) {
       this._updateTdData()
     }
+    this._skipFixed = true
     this.update({
       editMode: false,
       classes: {
@@ -872,6 +880,7 @@ class Td extends Component {
         'nom-td-editable-active': false,
       },
     })
+    this._skipFixed = false
   }
 
   saveEditData() {

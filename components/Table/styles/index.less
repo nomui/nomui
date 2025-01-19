@@ -153,11 +153,15 @@ table.nom-table {
       white-space: nowrap;
       text-overflow: ellipsis;
       word-break: keep-all;
-
+      .nom-table-cell-static-ellipsis {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
       .nom-table-cell-content {
         &.nom-table-cell-content-flex {
           display: flex;
-
+          
           >div {
             width: 0;
             flex-grow: 1;
