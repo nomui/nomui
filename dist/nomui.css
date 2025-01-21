@@ -7469,6 +7469,7 @@ table.nom-table th.nom-table-ellipsis .nom-table-cell-static-ellipsis {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  display: block !important;
 }
 table.nom-table td.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-flex,
 table.nom-table th.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-flex {
