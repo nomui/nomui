@@ -123,7 +123,8 @@ class Field extends Component {
       classes: {
         's-readonly': this.props.readonly,
         's-compact': this.props.compact,
-        [`nom-field-action-align-${actionAlign}`]: true,
+        [`nom-field-action-align-${actionAlign || 'default'}`]: true,
+        'nom-field-with-action': !!actionProps,
       },
       children: [
         labelProps,
