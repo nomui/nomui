@@ -333,7 +333,8 @@ class Td extends Component {
       classes: {
         'nom-table-cell-content': !!column.cellRender || !!column.render,
         'nom-table-cell-content-flex': isEllipsis && !column.autoWidth,
-        'nom-table-cell-static-ellipsis': isEllipsis && !column.cellRender && !column.render,
+        'nom-table-cell-static-ellipsis':
+          isEllipsis && (nomui.utils.isString(children) || nomui.utils.isNumeric(children)),
       },
       children,
     }
