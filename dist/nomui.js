@@ -16503,7 +16503,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super._config();
     }
     _fixTimePickerHeight() {
-      if (!this.timePicker) {
+      if (!this.timePicker || !this.popup.rendered) {
         return;
       }
       const h = this.popup.element.querySelector(".nom-datepicker-popup-bd")
