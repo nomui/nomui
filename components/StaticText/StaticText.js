@@ -33,7 +33,7 @@ class StaticText extends Field {
 }
 StaticText.defaults = {
   value: null,
-  appearance: 'input',
+  appearance: 'text',
 }
 Component.register(StaticText)
 
