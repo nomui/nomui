@@ -16102,7 +16102,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               this.getCurrentDate();
               this.reActiveList();
               this.yearMonthContainerRef.hide(); // that.props.showTime && that.timePicker.onShow()
-              this._fixTimePickerHeight();
+              setTimeout(() => {
+                this._fixTimePickerHeight && this._fixTimePickerHeight();
+              }, 0);
             },
             onHide: () => {
               that.onPopupHide();
