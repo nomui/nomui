@@ -1,18 +1,19 @@
 .nom-static-text {
-  &.p-label-align-right>.nom-field-label+.nom-field-content {
+  &.p-label-align-right > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
-  &.p-label-align-left>.nom-field-label+.nom-field-content {
+  &.p-label-align-left > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
   > .nom-field-content {
     > .nom-control {
-      min-height: @input-height-base;
-      padding: 0.375rem 0;
-      font-size: 1rem;
+      min-height: @input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+      padding: @padding-y-base @padding-x-base;
+      font-size: @font-size-base;
       line-height: @line-height-computed;
+      color: var(--nom-input-color);
     }
   }
 }
