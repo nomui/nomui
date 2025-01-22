@@ -336,7 +336,7 @@ Field.defaults = {
   label: null,
   labelAlign: 'right',
   invalidTip: {},
-  uistyle: 'default',
+  variant: 'default',
   value: null,
   defaultValue: null,
   flatValue: false,

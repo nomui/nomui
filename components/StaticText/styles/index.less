@@ -1,18 +1,50 @@
 .nom-static-text {
-  &.p-label-align-right>.nom-field-label+.nom-field-content {
+  &.p-label-align-right > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
-  &.p-label-align-left>.nom-field-label+.nom-field-content {
+  &.p-label-align-left > .nom-field-label + .nom-field-content {
     width: 0;
+  }
+
+  &.nom-static-text-input-mode {
+    &.p-variant-default {
+      > .nom-field-content {
+        > .nom-control {
+          cursor: not-allowed;
+          width: 100%;
+          background-color: var(--nom-input-bg-disabled);
+          border: 1px solid var(--nom-color-border);
+          border-radius: var(
+            --nom-border-radius
+          ); // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+        }
+      }
+    }
+
+    &.p-variant-filled {
+      > .nom-field-content {
+        > .nom-control {
+          cursor: not-allowed;
+          width: 100%;
+          color: var(--nom-input-color);
+          border-color: transparent;
+          background-color: var(--nom-input-filled-bg);
+          border-radius: var(
+            --nom-border-radius
+          ); // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+        }
+      }
+    }
   }
 
   > .nom-field-content {
     > .nom-control {
-      min-height: @input-height-base;
-      padding: 0.375rem 0;
-      font-size: 1rem;
+      min-height: @input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+      padding: @padding-y-base @padding-x-base;
+      font-size: @font-size-base;
       line-height: @line-height-computed;
+      color: var(--nom-input-color);
     }
   }
 }

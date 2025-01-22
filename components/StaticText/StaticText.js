@@ -10,6 +10,9 @@ class StaticText extends Field {
     this.setProps({
       // RadioList,CheckboxList等div组件不为 focusable 元素
       // 需设置 tabindex才有 fouces方法，进而触发校验的 Tooltip
+      classes: {
+        'nom-static-text-input-mode': this.props.appearance === 'input',
+      },
       attrs: { tabindex: this.props.tabindex || 0 },
       control: {
         children: this.props.value,
@@ -30,6 +33,7 @@ class StaticText extends Field {
 }
 StaticText.defaults = {
   value: null,
+  appearance: 'input',
 }
 Component.register(StaticText)
 

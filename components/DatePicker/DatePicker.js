@@ -518,7 +518,7 @@ class DatePicker extends Textbox {
   }
 
   _fixTimePickerHeight() {
-    if (!this.timePicker) {
+    if (!this.timePicker || !this.popup.rendered) {
       return
     }
     const h = this.popup.element.querySelector('.nom-datepicker-popup-bd').offsetHeight
