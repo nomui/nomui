@@ -4584,7 +4584,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     emptyChildren() {
       while (this.element.firstChild) {
         const el = this.element.firstChild;
-        if (el.component) {
+        if (el.component && el.props) {
           el.component.remove();
         } else {
           el.parentNode && el.parentNode.removeChild(el);
