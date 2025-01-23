@@ -26,16 +26,19 @@ class Toolbar extends Component {
       inline,
       size,
     }
-
+    const arr = [...before]
+    if (items.length > visibleItems) {
+      arr.push(dropdowns)
+    }
     this.setProps({
       children: {
         component: 'Cols',
         gutter: gutter,
-        items: [...before, items.length > visibleItems && dropdowns],
+        items: arr,
       },
       onClick: ({ event }) => {
         this.props.stopPropagation && event.stopPropagation()
-      }
+      },
     })
   }
 }
@@ -46,7 +49,7 @@ Toolbar.defaults = {
   size: null,
   items: [],
   itemDefaults: {},
-  stopPropagation: true
+  stopPropagation: true,
 }
 Component.register(Toolbar)
 
