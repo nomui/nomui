@@ -22540,12 +22540,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         inline,
         size,
       };
+      const arr = [...before];
+      if (items.length > visibleItems) {
+        arr.push(dropdowns);
+      }
       this.setProps({
-        children: {
-          component: "Cols",
-          gutter: gutter,
-          items: [...before, items.length > visibleItems && dropdowns],
-        },
+        children: { component: "Cols", gutter: gutter, items: arr },
         onClick: ({ event }) => {
           this.props.stopPropagation && event.stopPropagation();
         },
