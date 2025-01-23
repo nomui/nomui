@@ -502,6 +502,11 @@ class Uploader extends Field {
       : null
     return isNotEmptyArray(_val) ? _val : null
   }
+
+  focus() {
+    this.element.scrollIntoView()
+    super.focus()
+  }
 }
 
 Uploader.defaults = {
