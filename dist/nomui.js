@@ -35517,6 +35517,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         : null;
       return isNotEmptyArray(_val) ? _val : null;
     }
+    focus() {
+      this.element.scrollIntoView();
+      super.focus();
+    }
   }
   Uploader.defaults = {
     // 测试地址
