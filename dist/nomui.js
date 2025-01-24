@@ -4447,10 +4447,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           if (this.props.autoRender === true) {
             this.config();
             this.render();
-          } else {
-            this._mountPlaceHolder();
           }
         });
+        this._mountPlaceHolder();
       } else if (this.props.autoRender === true) {
         this.config();
         this.render();
