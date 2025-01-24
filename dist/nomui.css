@@ -7471,12 +7471,12 @@ table.nom-table th.nom-table-ellipsis .nom-table-cell-static-ellipsis {
   text-overflow: ellipsis;
   display: block !important;
 }
-table.nom-table td.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-flex,
-table.nom-table th.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-flex {
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-ellipsis-wrapper,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-ellipsis-wrapper {
   display: flex;
 }
-table.nom-table td.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-flex > div,
-table.nom-table th.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-flex > div {
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-ellipsis-wrapper > *,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-ellipsis-wrapper > * {
   width: 0;
   flex-grow: 1;
   overflow: hidden;

@@ -18126,7 +18126,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         tag: "span",
         classes: {
           "nom-table-cell-content": !!column.cellRender || !!column.render,
-          "nom-table-cell-content-flex": isEllipsis && !column.autoWidth,
+          "nom-table-cell-content-ellipsis-wrapper":
+            isEllipsis && !column.autoWidth,
           "nom-table-cell-static-ellipsis":
             isEllipsis &&
             (nomui.utils.isString(children) || nomui.utils.isNumeric(children)),
