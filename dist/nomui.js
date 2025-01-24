@@ -17905,8 +17905,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           compact: true,
         };
         if (this.table.hasGrid) {
-          if (this.table.grid.props.excelMode || this.table.grid.props.editable)
+          const grid = this.table.grid;
+          if (grid.props.excelMode || grid.props.editable)
             propsMinxin.variant = "borderless";
+          if (column.immediateChange) {
+            propsMinxin.onValueChange = () => {
+              this.endEdit();
+              grid.lastEditTd = null;
+            };
+          }
         }
         children = Object.assign(
           {},
