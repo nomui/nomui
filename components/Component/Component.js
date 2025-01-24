@@ -103,10 +103,9 @@ class Component {
         if (this.props.autoRender === true) {
           this.config()
           this.render()
-        } else {
-          this._mountPlaceHolder()
         }
       })
+      this._mountPlaceHolder()
     } else if (this.props.autoRender === true) {
       this.config()
       this.render()
