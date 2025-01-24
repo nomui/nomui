@@ -110,10 +110,11 @@
 | field | 行数据（对象）的字段名 | `string` | - |
 | title | 列头显示标题 | `string` | - |
 | editorIcon | 自定义编辑模式下的提示图标,仅在 Grid 配置 editable:true 时生效 | `string` | 'edit' |
-| width | 列宽度，单位 px | `boolean` | 120 |
+| width | 列宽度，单位 px | `number` | 120 |
 | align | 文本对齐方式 | `left`\|`center`\|`right` | `left` |
 | toolbar | 列工具栏配置 | `{align,render}` | - |
 | editRender | 单元格编辑模式渲染函数，返回表单类型组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
+| immediateChange | 编辑模式修改值后是否立即更新数据 | `boolean` | - |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
 | resizable | 是否允许拖动列宽 | `boolean` | `false` |

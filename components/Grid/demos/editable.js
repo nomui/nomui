@@ -175,6 +175,7 @@ define([], function () {
               {
                 field: 'date',
                 title: '入职日期',
+                immediateChange: true, // 字段组件值发生改变时立即更新数据
                 editRender: ({ cellData }) => {
                   return {
                     component: 'DatePicker',

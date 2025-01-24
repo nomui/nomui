@@ -82,8 +82,14 @@ class Td extends Component {
         compact: true,
       }
       if (this.table.hasGrid) {
-        if (this.table.grid.props.excelMode || this.table.grid.props.editable)
-          propsMinxin.variant = 'borderless'
+        const grid = this.table.grid
+        if (grid.props.excelMode || grid.props.editable) propsMinxin.variant = 'borderless'
+        if (column.immediateChange) {
+          propsMinxin.onValueChange = () => {
+            this.endEdit()
+            grid.lastEditTd = null
+          }
+        }
       }
 
       children = {
