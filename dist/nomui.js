@@ -8939,7 +8939,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   Object.defineProperty(Field.prototype, "fields", {
     get: function () {
       if (!this.control) return [];
-      return this.control.getChildren();
+      return this.control.getChildren().filter((x) => {
+        return !!x;
+      });
     },
   });
   Component.register(Field);
