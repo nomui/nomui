@@ -10419,6 +10419,7 @@ textarea .nom-textarea {
   border-color: var(--nom-border-color);
   border-radius: 2px;
   user-select: none;
+  flex-grow: 0 !important;
   zoom: 0.95;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
@@ -11215,6 +11216,8 @@ textarea .nom-textarea {
   display: inline-block;
   color: #495057;
   line-height: normal;
+  flex-grow: 0 !important;
+  width: auto !important;
   white-space: nowrap;
   text-align: center;
   text-decoration: none;
