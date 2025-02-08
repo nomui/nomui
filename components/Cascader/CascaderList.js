@@ -173,26 +173,27 @@ class CascaderList extends List {
     const isLeaf = !item.props.hasChildren
     const { cascaderControl } = this
     const { changeOnSelect } = cascaderControl.props
-    if (level === 0) {
-      cascaderControl.valueMap = {}
-    } else {
-      // 点击二级以上栏目是需要取到前面栏目的value text
-      for (let i = 0; i < level; i++) {
-        cascaderControl.valueMap[i] = this.tempValueMap[i]
-      }
-    }
+    // if (level === 0) {
+    //   cascaderControl.valueMap = {}
+    // } else {
+    //   // 点击二级以上栏目是需要取到前面栏目的value text
+    //   for (let i = 0; i < level; i++) {
+    //     cascaderControl.valueMap[i] = this.tempValueMap[i]
+    //   }
+    // }
     // 保持当前栏目的value text
-    cascaderControl.valueMap[level] = {
+    this.tempValueMap[level] = {
       value: item.props.value,
       text: item.props.label,
     }
 
     // 清除历史的栏目数据
     for (let i = level + 1; i < 20; i++) {
-      delete cascaderControl.valueMap[i]
+      delete this.tempValueMap[i]
     }
 
     if (isLeaf || changeOnSelect) {
+      cascaderControl.valueMap = this.tempValueMap
       cascaderControl._onValueChange()
     }
     if (isLeaf) {

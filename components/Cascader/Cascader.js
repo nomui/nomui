@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
-import { clone, isFunction, isString } from '../util/index'
+import { clone, isFunction, isNullish, isString } from '../util/index'
 import CascaderPopup from './CascaderPopup'
 
 class Cascader extends Field {
@@ -12,30 +12,23 @@ class Cascader extends Field {
   _created() {
     super._created()
     this.valueMap = {}
-    // this._hidePopup = true
   }
 
   _config() {
     const me = this
 
     const children = []
-    const {
-      showArrow,
-      placeholder,
-      // separator,
-      // valueType,
-      allowClear,
-      // singleShowFullPath,
-    } = this.props
+    const { showArrow, placeholder, allowClear } = this.props
 
     const { value, options, disabled } = this.props
+    this.initValue = clone(value)
     this.internalOption = JSON.parse(JSON.stringify(options))
     this._flatItems()
+
     if (value && value.length) {
+      this.valueMap = {}
       this._setValueMap()
     }
-
-    this.initValue = value
 
     this.currentValue = this.initValue
 
@@ -44,6 +37,7 @@ class Cascader extends Field {
       ref: (c) => {
         me._content = c
       },
+      children: this.getValueText(),
     })
 
     if (isString(placeholder)) {
@@ -53,6 +47,7 @@ class Cascader extends Field {
         },
         classes: { 'nom-cascader-placeholder': true },
         children: placeholder,
+        hidden: !!this.props.value,
       })
     }
 
@@ -125,6 +120,9 @@ class Cascader extends Field {
 
   _setValueMap() {
     let { value } = this.props
+    if (isNullish(value)) {
+      return
+    }
     if (!Array.isArray(value)) {
       value = []
     }
@@ -180,6 +178,10 @@ class Cascader extends Field {
       t.push(this.valueMap[k].text)
     }
 
+    if (this.props.singleShowFullPath) {
+      return t.length ? t[t.length - 1] : ''
+    }
+
     return t.length ? t.join(this.props.separator) : ''
   }
 
@@ -187,7 +189,14 @@ class Cascader extends Field {
     if (!value && this._content) {
       this._content.element.innerText = ''
     }
+    this.props.value = value
+    this.valueMap = {}
+    this._setValueMap()
     this._onValueChange()
+  }
+
+  _reset() {
+    this.setValue(this.initValue)
   }
 
   _onValueChange() {
@@ -239,7 +248,7 @@ Cascader.defaults = {
   fieldsMapping: { label: 'label', value: 'value', children: 'children', disabled: 'disabled' },
   singleShowFullPath: false, // valueType 为 'single' 时，是否显示全路径
   valueType: 'cascade',
-  changeOnSelect: false,
+  changeOnSelect: true,
   width: 200,
   height: 250,
   disabled: false,
