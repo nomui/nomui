@@ -11,6 +11,7 @@ class Cascader extends Field {
 
   _created() {
     super._created()
+    this.valueMap = {}
     // this._hidePopup = true
   }
 
@@ -224,37 +225,36 @@ class Cascader extends Field {
   // }
 
   _getValue() {
-    if (!this.checked) {
-      return this.currentValue
+    const result = []
+    for (const k in this.valueMap) {
+      result.push(this.valueMap[k].value)
     }
 
     if (this.props.valueType === 'cascade') {
-      const result = this.selectedOption.map((e) => e.value)
       return result.length ? result : null
     }
 
-    return this.selectedOption.length
-      ? this.selectedOption[this.selectedOption.length - 1].value
-      : null
+    return result.length ? result[result.length - 1] : null
   }
 
   _getValueText() {
-    let str = ''
-    this.selectedOption.forEach(function (n) {
-      str += `${n.label}/`
-    })
-    const result = str.substring(0, str.length - 1)
-    return result
+    const result = []
+    for (const k in this.valueMap) {
+      result.push(this.valueMap[k].text)
+    }
+
+    if (this.props.valueType === 'cascade') {
+      return result.length ? result : null
+    }
+
+    return result.length ? result[result.length - 1] : null
   }
 
   _setValue(value) {
     if (!value && this._content) {
       this._content.element.innerText = ''
     }
-    if (this.triggerChange(value)) {
-      this.handleOptionSelected(value)
-      this._onValueChange()
-    }
+    this._onValueChange()
   }
 
   _onValueChange() {
@@ -284,53 +284,53 @@ class Cascader extends Field {
   //   return this.currentValue.toString() !== value.toString()
   // }
 
-  // handleOptions(options, fieldsMapping) {
-  handleOptions(options, fieldsMapping, pid) {
-    const {
-      key: keyField,
-      label: labelField,
-      value: valueField,
-      children: childrenField,
-      disabled: disabledField,
-    } = fieldsMapping
+  // // handleOptions(options, fieldsMapping) {
+  // handleOptions(options, fieldsMapping, pid) {
+  //   const {
+  //     key: keyField,
+  //     label: labelField,
+  //     value: valueField,
+  //     children: childrenField,
+  //     disabled: disabledField,
+  //   } = fieldsMapping
 
-    const key = keyField || valueField
+  //   const key = keyField || valueField
 
-    if (!Array.isArray(options)) return []
-    const internalOption = options
-    for (let i = 0; i < internalOption.length; i++) {
-      const item = internalOption[i]
-      item.label = item[labelField]
-      item.value = item[valueField]
-      item.key = item[key]
-      item.children = item[childrenField]
-      item.disabled = item[disabledField] === true
-      item.pid = pid
-      if (Array.isArray(item.children) && item.children.length > 0) {
-        this.handleOptions(item.children, fieldsMapping, item.key)
-      }
-    }
-  }
+  //   if (!Array.isArray(options)) return []
+  //   const internalOption = options
+  //   for (let i = 0; i < internalOption.length; i++) {
+  //     const item = internalOption[i]
+  //     item.label = item[labelField]
+  //     item.value = item[valueField]
+  //     item.key = item[key]
+  //     item.children = item[childrenField]
+  //     item.disabled = item[disabledField] === true
+  //     item.pid = pid
+  //     if (Array.isArray(item.children) && item.children.length > 0) {
+  //       this.handleOptions(item.children, fieldsMapping, item.key)
+  //     }
+  //   }
+  // }
 
-  flatItems(options, level = 0, pid = null) {
-    if (!options || !Array.isArray(options)) {
-      return null
-    }
+  // flatItems(options, level = 0, pid = null) {
+  //   if (!options || !Array.isArray(options)) {
+  //     return null
+  //   }
 
-    if (level === 0) {
-      this.items = []
-    }
+  //   if (level === 0) {
+  //     this.items = []
+  //   }
 
-    for (let i = 0; i < options.length; i++) {
-      const { key, value, label, children } = options[i]
+  //   for (let i = 0; i < options.length; i++) {
+  //     const { key, value, label, children } = options[i]
 
-      this.items.push({ key, label, value, pid, level, leaf: !children })
+  //     this.items.push({ key, label, value, pid, level, leaf: !children })
 
-      if (children) {
-        this.flatItems(children, level + 1, key)
-      }
-    }
-  }
+  //     if (children) {
+  //       this.flatItems(children, level + 1, key)
+  //     }
+  //   }
+  // }
 
   // handleOptionSelected(value) {
   //   let key = null

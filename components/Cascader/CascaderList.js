@@ -28,6 +28,9 @@ class CascaderList extends List {
           level: itemData.level,
           cols: 1,
           itemDefaults: {
+            key: function () {
+              return this.props.value
+            },
             onConfig: ({ inst }) => {
               inst.setProps({
                 children: {
@@ -53,14 +56,19 @@ class CascaderList extends List {
           },
           itemSelectable: {
             byClick: true,
+            scrollIntoView: true,
           },
-          onItemSelectionChange: ({ sender }) => {
-            const selectedItem = sender.getSelectedItem()
+          onItemSelectionChange: ({ selectedItem }) => {
             this._drawNextLevel({ level: itemData.level, value: selectedItem.props.value })
+            this._handleItemSelect({ item: selectedItem, level: parseInt(itemData.level, 10) })
           },
           onRendered: ({ inst }) => {
-            if (this.cascaderControl && !!this.cascaderControl.props.value && inst.firstRender) {
-              console.log(inst) // todo
+            if (this.cascaderControl && !!this.cascaderControl.props.value) {
+              this.cascaderControl.props.value.forEach((n, i) => {
+                if (i === parseInt(itemData.level, 10)) {
+                  inst.selectItem(n)
+                }
+              })
             }
           },
         }
@@ -147,6 +155,20 @@ class CascaderList extends List {
       }
     })
     return arr
+  }
+
+  _handleItemSelect({ item, level }) {
+    const isLeaf = !item.props.hasChildren
+    const { cascaderControl } = this
+
+    if (level === 0) {
+      cascaderControl.valueMap = {}
+    }
+    cascaderControl.valueMap[level] = {
+      value: item.props.value,
+      text: item.props.label,
+    }
+    cascaderControl._onSelectionChange({ isLeaf })
   }
 }
 

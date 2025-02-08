@@ -65,9 +65,20 @@
       }
     }
     .nom-cascader-option-list {
+      overflow-y: auto;
       .nom-list-item {
         &:not(.s-disabled) {
           cursor: pointer;
+        }
+
+        &:hover {
+          background-color: var(--nom-color-hover);
+        }
+
+        &.s-selected,
+        .s-selected:hover {
+          color: var(--nom-cascader-item-active-color);
+          background-color: var(--nom-cascader-item-active-bg);
         }
 
         padding: 0.5rem 1rem;

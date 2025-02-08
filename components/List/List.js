@@ -51,7 +51,7 @@ class List extends Component {
     } else {
       this.setProps({
         classes: {
-          'nom-list-vertical': vertical
+          'nom-list-vertical': vertical,
         },
         children: children,
       })
@@ -168,7 +168,7 @@ class List extends Component {
   }
 
   _onItemSelectionChange() {
-    this._callHandler(this.props.onItemSelectionChange)
+    this._callHandler(this.props.onItemSelectionChange, { selectedItem: this.selectedItem })
   }
 
   getSelectedItem() {
@@ -268,8 +268,8 @@ class List extends Component {
       const itemElement = item.wrapper ? item.wrapper.element : item.element
       const scrollOptions =
         this.props.itemSelectable &&
-          this.props.itemSelectable.scrollIntoView &&
-          isPlainObject(this.props.itemSelectable.scrollIntoView)
+        this.props.itemSelectable.scrollIntoView &&
+        isPlainObject(this.props.itemSelectable.scrollIntoView)
           ? this.props.itemSelectable.scrollIntoView
           : {}
 
@@ -571,7 +571,7 @@ List.defaults = {
   overflow: 'hidden',
   loadMore: false,
   loadmoreText: '加载更多...',
-  vertical: false
+  vertical: false,
 }
 
 Component.register(List)
