@@ -112,14 +112,16 @@ class Cascader extends Field {
     const { fieldsMapping } = this.props
     const findTree = (data, pid = null, level = 0) => {
       data.forEach((n) => {
+        const hasChildren = n[fieldsMapping.children] && n[fieldsMapping.children].length
         this.items.push({
           level: level,
           label: n[fieldsMapping.label],
           value: n[fieldsMapping.value],
           pid: pid,
           disabled: n[fieldsMapping.disabled],
+          hasChildren,
         })
-        if (n[fieldsMapping.children] && n[fieldsMapping.children].length) {
+        if (hasChildren) {
           findTree(n[fieldsMapping.children], n[fieldsMapping.value], level + 1)
         }
       })
@@ -128,7 +130,7 @@ class Cascader extends Field {
   }
 
   _rendered() {
-    this.__cascaderPopup = new CascaderPopup({
+    this.popup = new CascaderPopup({
       trigger: this.control,
       onShow: () => {
         this.optionList && this._drawOptionLists()
@@ -225,29 +227,25 @@ class Cascader extends Field {
   // }
 
   _getValue() {
-    const result = []
+    const v = []
     for (const k in this.valueMap) {
-      result.push(this.valueMap[k].value)
+      v.push(this.valueMap[k].value)
     }
 
     if (this.props.valueType === 'cascade') {
-      return result.length ? result : null
+      return v.length ? v : null
     }
 
-    return result.length ? result[result.length - 1] : null
+    return v.length ? v[v.length - 1] : null
   }
 
   _getValueText() {
-    const result = []
+    const t = []
     for (const k in this.valueMap) {
-      result.push(this.valueMap[k].text)
+      t.push(this.valueMap[k].text)
     }
 
-    if (this.props.valueType === 'cascade') {
-      return result.length ? result : null
-    }
-
-    return result.length ? result[result.length - 1] : null
+    return t.length ? t.join(this.props.separator) : ''
   }
 
   _setValue(value) {
@@ -262,6 +260,13 @@ class Cascader extends Field {
     this.oldValue = clone(this.currentValue)
     this.currentValue = clone(this.getValue())
     this.props.value = this.currentValue
+
+    if (this._getValueText().length) {
+      this._content.element.innerText = this._getValueText()
+      this.placeholder && this.placeholder.hide()
+    } else {
+      this.placeholder && this.placeholder.show()
+    }
 
     const changed = {
       name: this.props.name,

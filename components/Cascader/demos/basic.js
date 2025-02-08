@@ -3,7 +3,6 @@ define(['./data.js'], function (options) {
     title: '基本用法',
     file: 'basic',
     demo: function () {
-      console.log(options)
       let cascader = null
       setTimeout(() => {
         cascader.update({ options })

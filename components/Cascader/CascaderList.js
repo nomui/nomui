@@ -33,6 +33,13 @@ class CascaderList extends List {
             },
             onConfig: ({ inst }) => {
               inst.setProps({
+                onClick: () => {
+                  !inst.props.disabled &&
+                    this._handleItemSelect({
+                      item: inst,
+                      level: parseInt(itemData.level, 10),
+                    })
+                },
                 children: {
                   component: 'Flex',
                   align: 'center',
@@ -60,7 +67,12 @@ class CascaderList extends List {
           },
           onItemSelectionChange: ({ selectedItem }) => {
             this._drawNextLevel({ level: itemData.level, value: selectedItem.props.value })
-            this._handleItemSelect({ item: selectedItem, level: parseInt(itemData.level, 10) })
+
+            // 代码自动选中时临时保存valueMap
+            this.tempValueMap[parseInt(itemData.level, 10)] = {
+              value: selectedItem.props.value,
+              text: selectedItem.props.label,
+            }
           },
           onRendered: ({ inst }) => {
             if (this.cascaderControl && !!this.cascaderControl.props.value) {
@@ -85,6 +97,7 @@ class CascaderList extends List {
   }
 
   _drawLists() {
+    this.tempValueMap = {}
     const { cascaderControl } = this
     const { options, fieldsMapping } = cascaderControl.props
     const firstCol = {
@@ -147,28 +160,45 @@ class CascaderList extends List {
   _getNextLevelItems({ value, level }) {
     const arr = []
     const { cascaderControl } = this
-    const { fieldsMapping } = cascaderControl.props
     cascaderControl.items.forEach((x) => {
       if (parseInt(level, 10) + 1 === x.level && x.pid === value) {
-        x.hasChildren = x[fieldsMapping.children] && x[fieldsMapping.children].length > 0
         arr.push(x)
       }
     })
     return arr
   }
 
+  // 手动点击选项时触发
   _handleItemSelect({ item, level }) {
     const isLeaf = !item.props.hasChildren
     const { cascaderControl } = this
-
+    const { changeOnSelect } = cascaderControl.props
     if (level === 0) {
       cascaderControl.valueMap = {}
+    } else {
+      // 点击二级以上栏目是需要取到前面栏目的value text
+      for (let i = 0; i < level; i++) {
+        cascaderControl.valueMap[i] = this.tempValueMap[i]
+      }
     }
+    // 保持当前栏目的value text
     cascaderControl.valueMap[level] = {
       value: item.props.value,
       text: item.props.label,
     }
-    cascaderControl._onSelectionChange({ isLeaf })
+
+    // 清除历史的栏目数据
+    for (let i = level + 1; i < 20; i++) {
+      delete cascaderControl.valueMap[i]
+    }
+
+    if (isLeaf || changeOnSelect) {
+      cascaderControl._onValueChange()
+    }
+    if (isLeaf) {
+      cascaderControl.popup.animateHide()
+    }
+    // cascaderControl._onSelectionChange({ isLeaf })
   }
 }
 
