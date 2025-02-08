@@ -1,152 +1,152 @@
 import Component from '../Component/index'
-import Icon from '../Icon/index'
-import { isNumeric } from '../util/index'
+import List from '../List/index'
+import { isString } from '../util/index'
 
-class CascaderList extends Component {
+class CascaderList extends List {
   constructor(props, ...mixins) {
-    const defaults = {}
+    const defaults = {
+      classes: {
+        'nom-cascader-option-wrapper': true,
+      },
+      itemRender: ({ itemData }) => {
+        return {
+          component: 'List',
+          classes: {
+            'nom-cascader-option-list': true,
+          },
+          attrs: {
+            style: {
+              width: isString(this.cascaderControl.props.width)
+                ? this.cascaderControl.props.width
+                : `${this.cascaderControl.props.width}px`,
+              height: isString(this.cascaderControl.props.height)
+                ? this.cascaderControl.props.height
+                : `${this.cascaderControl.props.height}px`,
+            },
+          },
+          items: itemData.items,
+          level: itemData.level,
+          cols: 1,
+          itemDefaults: {
+            onConfig: ({ inst }) => {
+              inst.setProps({
+                children: {
+                  component: 'Flex',
+                  align: 'center',
+                  cols: [
+                    {
+                      grow: true,
+                      children: {
+                        component: 'Ellipsis',
+                        text: inst.props.label,
+                      },
+                    },
+                    {
+                      component: 'Icon',
+                      type: 'right',
+                      hidden: !inst.props.hasChildren,
+                    },
+                  ],
+                },
+              })
+            },
+          },
+          itemSelectable: {
+            byClick: true,
+          },
+          onItemSelectionChange: ({ sender }) => {
+            const selectedItem = sender.getSelectedItem()
+            this._drawNextLevel({ level: itemData.level, value: selectedItem.props.value })
+          },
+          onRendered: ({ inst }) => {
+            if (this.cascaderControl && !!this.cascaderControl.props.value && inst.firstRender) {
+              console.log(inst) // todo
+            }
+          },
+        }
+      },
+    }
 
     super(Component.extendProps(defaults, props), ...mixins)
   }
 
   _created() {
-    this._timer = null
-    this._clickedKey = null
-    this._clickTime = null
+    super._created()
     this.cascaderControl = this.parent.parent.parent.cascaderControl
     this.cascaderControl.optionList = this
   }
 
-  _remove() {
-    this._timer && clearTimeout(this._timer)
-  }
-
-  _config() {
-    const { popMenu } = this.props
-    const value = this.cascaderControl.selectedOption.map((e) => e.key)
-
-    this.selected = []
-
-    this.setProps({
-      children: popMenu
-        ? popMenu.map((menu, index) => {
-            return this.getMenuItems(menu, value[index])
-          })
-        : null,
-    })
-
-    super._config()
-  }
-
-  // 处理非叶子节点点击事件
-  _handleNoLeafClick(key) {
-    const cascaderList = this
-    const changeOnSelect = this.cascaderControl.props.changeOnSelect
-
-    if (changeOnSelect) {
-      const triggerTime = Date.now()
-
-      let interval = Number.MAX_SAFE_INTEGER
-      if (key === this._clickedKey && isNumeric(this._clickTime)) {
-        interval = triggerTime - this._clickTime
-      }
-
-      this._clickTime = triggerTime
-      this._clickedKey = key
-
-      if (interval < 300) {
-        // 双击事件
-        cascaderList.cascaderControl._itemSelected(key, true)
-        this._timer && clearTimeout(this._timer)
-      } else {
-        // 单击事件
-        this._timer = setTimeout(() => {
-          cascaderList.cascaderControl._itemSelected(key, true, false)
-        }, 300)
-      }
-    } else {
-      // 单击
-      cascaderList.cascaderControl._itemSelected(key)
-    }
-  }
-
-  getMenuItems(menu, currentVal) {
-    const cascaderList = this
-    if (!menu) {
-      return null
-    }
-
-    return {
-      tag: 'ul',
-      classes: {
-        'nom-cascader-menu': true,
-      },
-      attrs: {
-        style: {
-          width: `${this.cascaderControl.props.width}px`,
-          height: `${this.cascaderControl.props.height}px`,
-        },
-      },
-      children: menu.map((item) => {
-        if (item.children) {
-          return {
-            tag: 'li',
-            _rendered() {
-              item.key === currentVal && cascaderList.selected.push(this)
-            },
-            classes: {
-              'nom-cascader-menu-item': true,
-              'nom-cascader-menu-item-active': item.key === currentVal,
-              'nom-cascader-menu-item-disabled': item.disabled === true,
-            },
-            onClick: ({ event }) => {
-              event.stopPropagation()
-              item.disabled !== true && cascaderList._handleNoLeafClick(item.key)
-            },
-            children: [
-              {
-                tag: 'span',
-                children: {
-                  component: 'Ellipsis',
-                  text: item.label,
-                },
-              },
-              {
-                component: Icon,
-                type: 'right',
-                classes: {
-                  'nom-cascader-menu-item-expand-icon': true,
-                },
-              },
-            ],
-          }
-        }
-
+  _drawLists() {
+    const { cascaderControl } = this
+    const { options, fieldsMapping } = cascaderControl.props
+    const firstCol = {
+      items: options.map((x) => {
         return {
-          tag: 'li',
-          _rendered() {
-            item.key === currentVal && cascaderList.selected.push(this)
-          },
-          classes: {
-            'nom-cascader-menu-item': true,
-            'nom-cascader-menu-item-active': item.key === currentVal,
-            'nom-cascader-menu-item-disabled': item.disabled === true,
-          },
-          onClick: () => {
-            item.disabled !== true && cascaderList.cascaderControl._itemSelected(item.key, true)
-          },
-          children: [
-            {
-              tag: 'span',
-              children: {
-                component: 'Ellipsis',
-                text: item.label,
-              },
-            },
-          ],
+          label: x[fieldsMapping.label],
+          value: x[fieldsMapping.value],
+          disabled: x[fieldsMapping.disabled],
+          hasChildren: x[fieldsMapping.children] && x[fieldsMapping.children].length > 0,
         }
       }),
+      level: '0',
+      key: '0',
     }
+
+    this.update({
+      data: [firstCol],
+    })
+  }
+
+  _drawNextLevel({ value, level }) {
+    const { cascaderControl } = this
+    const { fieldsMapping } = cascaderControl.props
+    const allItems = this.getAllItems().map((x) => {
+      return x.key
+    })
+    this.removeItems(allItems.filter((x) => x > level))
+    if (cascaderControl.remoteGetOptions) {
+      cascaderControl.remoteGetOptions({
+        value,
+        level,
+        callback: (options) => {
+          if (!options || !options.length) {
+            return
+          }
+          this.appendDataItem({
+            items: options.map((x) => {
+              return {
+                label: x[fieldsMapping.label],
+                value: x[fieldsMapping.value],
+                disabled: x[fieldsMapping.disabled],
+                hasChildren: x[fieldsMapping.children] && x[fieldsMapping.children].length > 0,
+              }
+            }),
+            level: `${parseInt(level, 10) + 1}`,
+          })
+        },
+      })
+    } else {
+      const arr = this._getNextLevelItems({ value, level })
+      arr.length &&
+        this.appendDataItem({
+          items: arr,
+          level: `${parseInt(level, 10) + 1}`,
+          key: `${parseInt(level, 10) + 1}`,
+        })
+    }
+  }
+
+  _getNextLevelItems({ value, level }) {
+    const arr = []
+    const { cascaderControl } = this
+    const { fieldsMapping } = cascaderControl.props
+    cascaderControl.items.forEach((x) => {
+      if (parseInt(level, 10) + 1 === x.level && x.pid === value) {
+        x.hasChildren = x[fieldsMapping.children] && x[fieldsMapping.children].length > 0
+        arr.push(x)
+      }
+    })
+    return arr
   }
 }
 

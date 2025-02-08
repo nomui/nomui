@@ -20,8 +20,8 @@ class CascaderPopup extends Popup {
   }
 
   _config() {
-    const { popMenu } = this.props
-    if (popMenu && popMenu.length) {
+    const { cascaderControl } = this
+    if (cascaderControl.props.options && cascaderControl.props.options.length) {
       this.setProps({
         children: {
           classes: {
@@ -31,7 +31,6 @@ class CascaderPopup extends Popup {
           body: {
             children: {
               component: CascaderList,
-              popMenu,
             },
           },
         },
