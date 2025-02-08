@@ -110,6 +110,19 @@ class Cascader extends Field {
     super._config()
   }
 
+  _rendered() {
+    this.popup = new CascaderPopup({
+      trigger: this.control,
+      onShow: () => {
+        this.optionList && this._drawOptionLists()
+      },
+    })
+  }
+
+  _drawOptionLists() {
+    this.optionList._drawLists()
+  }
+
   _setValueMap() {
     let { value } = this.props
     if (!Array.isArray(value)) {
@@ -147,103 +160,6 @@ class Cascader extends Field {
     }
     findTree(this.internalOption)
   }
-
-  _rendered() {
-    this.popup = new CascaderPopup({
-      trigger: this.control,
-      onShow: () => {
-        this.optionList && this._drawOptionLists()
-        // const { optionList } = me
-        // if (optionList && optionList.selected && optionList.selected.length > 0) {
-        //   optionList.selected.forEach((item) => {
-        //     // 解决非SPA页面，滚动条自动滚动至底部问题
-        //     if (!(document.querySelector('body').scrollHeight > window.innerHeight + 20)) {
-        //       item.element.scrollIntoView({
-        //         behavior: 'auto',
-        //         scrollMode: 'if-needed',
-        //       })
-        //     }
-        //   })
-        // }
-      },
-    })
-
-    // this._valueChange({ newValue: this.currentValue })
-  }
-
-  _drawOptionLists() {
-    this.optionList._drawLists()
-  }
-
-  // _normalizeInternalOptions(options) {
-  //   if (!Array.isArray(options) || !options.length) return options
-
-  //   const { fieldsMapping } = this.props
-  //   const { children } = this.props.fieldsMapping
-  //   this.internalOption = clone(options)
-  //   this.internalOption = this._filterEmptyChild(options, children)
-  //   this.handleOptions(this.internalOption, fieldsMapping)
-  // }
-
-  // _filterEmptyChild(options, childrenMapping) {
-  //   return options.map((option) => {
-  //     if (Array.isArray(option[childrenMapping]) && option[childrenMapping].length) {
-  //       return {
-  //         ...option,
-  //         childrenMapping: this._filterEmptyChild(option[childrenMapping], childrenMapping),
-  //       }
-  //     }
-
-  //     option[childrenMapping] = null
-  //     return option
-  //   })
-  // }
-
-  // _itemSelected({ selectedKey, checked = false, hidePopup = true, pid }) {
-  //   if (!this.items || !this.items.length) return
-  //   this.selectedOption = []
-
-  //   let recur = this.items.filter((x) => {
-  //     return x.key === selectedKey && (x.pid === pid || !x.pid)
-  //   })[0]
-  //   while (recur) {
-  //     this.selectedOption.unshift(recur)
-  //     const parentItem = this.items.filter((y) => {
-  //       return y.key === recur.pid
-  //     })
-
-  //     recur = parentItem
-  //   }
-
-  //   this.checked = checked
-  //   this._hidePopup = hidePopup
-
-  //   const selectedItem = this.items.get(itemKey)
-  //   if (!selectedItem) return
-  //   if ((this.checked && this.triggerChange(selectedItem.value)) || this.props.changeOnSelect) {
-  //     this._onValueChange()
-  //   }
-
-  //   this.__cascaderPopup.update({ popMenu: this.getSelectedMenu(), animate: false })
-  // }
-
-  // _valueChange(changed) {
-  //   if (this.placeholder) {
-  //     if ((Array.isArray(changed.newValue) && changed.newValue.length === 0) || !changed.newValue) {
-  //       this.placeholder.show()
-  //     } else {
-  //       this.placeholder.hide()
-  //     }
-  //   }
-
-  //   this._content && this._content.update()
-
-  //   this.__cascaderPopup &&
-  //     this._hidePopup &&
-  //     this.props.animate &&
-  //     this.__cascaderPopup.animateHide()
-  //   this.__cascaderPopup && this._hidePopup && !this.props.animate && this.__cascaderPopup.hide()
-  // }
 
   _getValue() {
     const v = []
@@ -303,110 +219,6 @@ class Cascader extends Field {
     }, 0)
   }
 
-  // triggerChange(value) {
-  //   if (!value || !this.currentValue || !Array.isArray(value)) return value !== this.currentValue
-  //   return this.currentValue.toString() !== value.toString()
-  // }
-
-  // // handleOptions(options, fieldsMapping) {
-  // handleOptions(options, fieldsMapping, pid) {
-  //   const {
-  //     key: keyField,
-  //     label: labelField,
-  //     value: valueField,
-  //     children: childrenField,
-  //     disabled: disabledField,
-  //   } = fieldsMapping
-
-  //   const key = keyField || valueField
-
-  //   if (!Array.isArray(options)) return []
-  //   const internalOption = options
-  //   for (let i = 0; i < internalOption.length; i++) {
-  //     const item = internalOption[i]
-  //     item.label = item[labelField]
-  //     item.value = item[valueField]
-  //     item.key = item[key]
-  //     item.children = item[childrenField]
-  //     item.disabled = item[disabledField] === true
-  //     item.pid = pid
-  //     if (Array.isArray(item.children) && item.children.length > 0) {
-  //       this.handleOptions(item.children, fieldsMapping, item.key)
-  //     }
-  //   }
-  // }
-
-  // flatItems(options, level = 0, pid = null) {
-  //   if (!options || !Array.isArray(options)) {
-  //     return null
-  //   }
-
-  //   if (level === 0) {
-  //     this.items = []
-  //   }
-
-  //   for (let i = 0; i < options.length; i++) {
-  //     const { key, value, label, children } = options[i]
-
-  //     this.items.push({ key, label, value, pid, level, leaf: !children })
-
-  //     if (children) {
-  //       this.flatItems(children, level + 1, key)
-  //     }
-  //   }
-  // }
-
-  // handleOptionSelected(value) {
-  //   let key = null
-
-  //   const { valueType, onlyleaf } = this.props
-
-  //   this.checked = false
-  //   const oldCheckedOption = this.selectedOption
-  //   this.selectedOption = []
-
-  //   if (!value) this.checked = true
-
-  //   if (!this.items || !this.items.length) return
-
-  //   if (valueType === 'single') {
-  //     for (const v of this.items.values()) {
-  //       if (onlyleaf) {
-  //         if (v.leaf && v.value === value) {
-  //           key = v.key
-  //         }
-  //       } else if (v.value === value) {
-  //         key = v.key
-  //       }
-  //     }
-
-  //     if (!key) return
-
-  //     while (key) {
-  //       this.selectedOption.unshift(this.items.get(key))
-  //       key = this.items.get(key).pid
-  //     }
-  //   } else {
-  //     if (!Array.isArray(value)) return
-  //     let opt = null
-  //     let options = this.internalOption
-  //     for (let i = 0; i < value.length; i++) {
-  //       opt = options ? options.find((e) => e.value === value[i]) : null
-
-  //       if (!opt) {
-  //         this.selectedOption = oldCheckedOption
-  //         return
-  //       }
-  //       this.selectedOption.push(this.items.get(opt.key))
-  //       options = opt.children
-  //     }
-  //   }
-
-  //   this.checked = true
-  //   if (this.__cascaderPopup) this.__cascaderPopup.update({ popMenu: this.getSelectedMenu() })
-  //   if (this._content) this._content.update()
-  // }
-
   _disable() {
     if (this.firstRender === false) {
       this.control.disable()
@@ -418,32 +230,6 @@ class Cascader extends Field {
       this.control.enable()
     }
   }
-
-  // getSelectedMenu() {
-  //   if (!this.selectedOption) {
-  //     return null
-  //   }
-
-  //   const val = this.selectedOption.map((e) => e.value)
-  //   const internalOption = this.internalOption
-  //   let recur = internalOption
-
-  //   const options = internalOption && internalOption.length ? [internalOption] : []
-
-  //   for (let i = 0; i < val.length; i++) {
-  //     for (let j = 0; j < recur.length; j++) {
-  //       if (val[i] === recur[j].value) {
-  //         if (recur[j].children) {
-  //           options.push([...recur[j].children])
-  //           recur = recur[j].children
-  //           break
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   return options
-  // }
 }
 
 Cascader.defaults = {
