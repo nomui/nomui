@@ -76,11 +76,11 @@ class CascaderList extends List {
           },
           onRendered: ({ inst }) => {
             if (this.cascaderControl && !!this.cascaderControl.props.value) {
-              this.cascaderControl.props.value.forEach((n, i) => {
-                if (i === parseInt(itemData.level, 10)) {
-                  inst.selectItem(n)
+              for (const k in this.cascaderControl.valueMap) {
+                if (parseInt(k, 10) === parseInt(itemData.level, 10)) {
+                  inst.selectItem(this.cascaderControl.valueMap[k].value)
                 }
-              })
+              }
             }
           },
         }
@@ -198,7 +198,6 @@ class CascaderList extends List {
     if (isLeaf) {
       cascaderControl.popup.animateHide()
     }
-    // cascaderControl._onSelectionChange({ isLeaf })
   }
 }
 

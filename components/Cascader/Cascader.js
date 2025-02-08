@@ -31,6 +31,9 @@ class Cascader extends Field {
     const { value, options, disabled } = this.props
     this.internalOption = JSON.parse(JSON.stringify(options))
     this._flatItems()
+    if (value && value.length) {
+      this._setValueMap()
+    }
 
     this.initValue = value
 
@@ -105,6 +108,22 @@ class Cascader extends Field {
     })
 
     super._config()
+  }
+
+  _setValueMap() {
+    let { value } = this.props
+    if (!Array.isArray(value)) {
+      value = []
+    }
+    value.forEach((n, i) => {
+      const item = this.items.find((x) => x.value === n)
+      if (item) {
+        this.valueMap[i] = {
+          value: item.value,
+          text: item.label,
+        }
+      }
+    })
   }
 
   _flatItems() {
@@ -434,7 +453,7 @@ Cascader.defaults = {
   fieldsMapping: { label: 'label', value: 'value', children: 'children', disabled: 'disabled' },
   singleShowFullPath: false, // valueType 为 'single' 时，是否显示全路径
   valueType: 'cascade',
-  changeOnSelect: true,
+  changeOnSelect: false,
   width: 200,
   height: 250,
   disabled: false,
