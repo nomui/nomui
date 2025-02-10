@@ -54,7 +54,9 @@ class CascaderList extends List {
                     {
                       component: 'Icon',
                       type: 'right',
-                      hidden: !inst.props.hasChildren,
+                      hidden:
+                        inst.props.isLeaf !== false &&
+                        (!!inst.props.isLeaf || !inst.props.hasChildren),
                     },
                   ],
                 },
@@ -107,12 +109,12 @@ class CascaderList extends List {
           value: x[fieldsMapping.value],
           disabled: x[fieldsMapping.disabled],
           hasChildren: x[fieldsMapping.children] && x[fieldsMapping.children].length > 0,
+          isLeaf: x[fieldsMapping.isLeaf],
         }
       }),
       level: '0',
       key: '0',
     }
-
     this.update({
       data: [firstCol],
     })
@@ -121,18 +123,23 @@ class CascaderList extends List {
   _drawNextLevel({ value, level }) {
     const { cascaderControl } = this
     const { fieldsMapping } = cascaderControl.props
+
     const allItems = this.getAllItems().map((x) => {
       return x.key
     })
-    this.removeItems(allItems.filter((x) => x > level))
-    if (cascaderControl.remoteGetOptions) {
-      cascaderControl.remoteGetOptions({
-        value,
-        level,
-        callback: (options) => {
+    this.removeItems(allItems.filter((x) => parseInt(x, 10) > parseInt(level, 10)))
+
+    if (cascaderControl.props.loadData) {
+      cascaderControl.props
+        .loadData({
+          value,
+          level,
+        })
+        .then((options) => {
           if (!options || !options.length) {
             return
           }
+
           this.appendDataItem({
             items: options.map((x) => {
               return {
@@ -140,12 +147,13 @@ class CascaderList extends List {
                 value: x[fieldsMapping.value],
                 disabled: x[fieldsMapping.disabled],
                 hasChildren: x[fieldsMapping.children] && x[fieldsMapping.children].length > 0,
+                isLeaf: x[fieldsMapping.isLeaf],
               }
             }),
             level: `${parseInt(level, 10) + 1}`,
+            key: `${parseInt(level, 10) + 1}`,
           })
-        },
-      })
+        })
     } else {
       const arr = this._getNextLevelItems({ value, level })
       arr.length &&
@@ -170,17 +178,10 @@ class CascaderList extends List {
 
   // 手动点击选项时触发
   _handleItemSelect({ item, level }) {
-    const isLeaf = !item.props.hasChildren
+    const isLeaf = item.props.isLeaf !== false && !item.props.hasChildren
     const { cascaderControl } = this
     const { changeOnSelect } = cascaderControl.props
-    // if (level === 0) {
-    //   cascaderControl.valueMap = {}
-    // } else {
-    //   // 点击二级以上栏目是需要取到前面栏目的value text
-    //   for (let i = 0; i < level; i++) {
-    //     cascaderControl.valueMap[i] = this.tempValueMap[i]
-    //   }
-    // }
+
     // 保持当前栏目的value text
     this.tempValueMap[level] = {
       value: item.props.value,
@@ -197,7 +198,7 @@ class CascaderList extends List {
       cascaderControl._onValueChange()
     }
     if (isLeaf) {
-      cascaderControl.popup.animateHide()
+      // cascaderControl.popup.animateHide()
     }
   }
 }

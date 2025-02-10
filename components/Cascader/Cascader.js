@@ -109,6 +109,7 @@ class Cascader extends Field {
     this.popup = new CascaderPopup({
       trigger: this.control,
       onShow: () => {
+        console.log('show')
         this.optionList && this._drawOptionLists()
       },
     })
@@ -123,8 +124,11 @@ class Cascader extends Field {
     if (isNullish(value)) {
       return
     }
+    if (isString(value)) {
+      value = this._getCascadeValue(value)
+    }
     if (!Array.isArray(value)) {
-      value = []
+      value = [value]
     }
     value.forEach((n, i) => {
       const item = this.items.find((x) => x.value === n)
@@ -135,6 +139,25 @@ class Cascader extends Field {
         }
       }
     })
+  }
+
+  _getCascadeValue(val) {
+    const me = this
+    const arr = []
+
+    function getParentNodeValue(id) {
+      for (let i = 0; i < me.items.length; i++) {
+        const item = me.items[i]
+        if (id === item.value) {
+          arr.unshift(item.value)
+          getParentNodeValue(item.pid)
+          break
+        }
+      }
+    }
+
+    getParentNodeValue(val)
+    return arr
   }
 
   _flatItems() {
@@ -178,7 +201,7 @@ class Cascader extends Field {
       t.push(this.valueMap[k].text)
     }
 
-    if (this.props.singleShowFullPath) {
+    if (!this.props.singleShowFullPath) {
       return t.length ? t[t.length - 1] : ''
     }
 
@@ -197,6 +220,10 @@ class Cascader extends Field {
 
   _reset() {
     this.setValue(this.initValue)
+  }
+
+  _clear() {
+    this.setValue(null)
   }
 
   _onValueChange() {
@@ -245,8 +272,14 @@ Cascader.defaults = {
   options: [],
   showArrow: true,
   separator: ' / ',
-  fieldsMapping: { label: 'label', value: 'value', children: 'children', disabled: 'disabled' },
-  singleShowFullPath: false, // valueType 为 'single' 时，是否显示全路径
+  fieldsMapping: {
+    label: 'label',
+    value: 'value',
+    children: 'children',
+    disabled: 'disabled',
+    isLeaf: 'isLeaf',
+  },
+  singleShowFullPath: true, // valueType 为 'single' 时，是否显示全路径
   valueType: 'cascade',
   changeOnSelect: true,
   width: 200,

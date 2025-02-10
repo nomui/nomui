@@ -2,9 +2,9 @@ define([
   './basic.js',
   './value.js',
   './field.js',
-  './other.js',
   './partial.js',
   './disabled.js',
+  './remote.js',
 ], function () {
   return {
     title: 'Cascader',
