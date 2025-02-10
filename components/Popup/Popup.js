@@ -116,10 +116,6 @@ class Popup extends Layer {
     }
   }
 
-  isShowing() {
-    return this.isShowing
-  }
-
   _show() {
     super._show()
     if (this.props.triggerAction === 'hover') {

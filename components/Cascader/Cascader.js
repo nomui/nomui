@@ -109,7 +109,6 @@ class Cascader extends Field {
     this.popup = new CascaderPopup({
       trigger: this.control,
       onShow: () => {
-        console.log('show')
         this.optionList && this._drawOptionLists()
       },
     })

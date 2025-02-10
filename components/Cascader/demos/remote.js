@@ -20,8 +20,7 @@ define([], function () {
               value: 'value',
               children: 'children',
             },
-            loadData: ({ value, level }) => {
-              console.log(value, level)
+            loadData: ({ level }) => {
               return new Promise((resolve) => {
                 setTimeout(() => {
                   if (level < 1) {
