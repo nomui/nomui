@@ -12611,15 +12611,21 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         data.forEach((n) => {
           const hasChildren =
             n[fieldsMapping.children] && n[fieldsMapping.children].length;
-          this.items.push({
-            level: level,
-            label: n[fieldsMapping.label],
-            value: n[fieldsMapping.value],
-            pid: pid,
-            disabled: n[fieldsMapping.disabled],
-            hasChildren,
-            itemData: n,
-          });
+          if (
+            this.items.filter((x) => {
+              return x.value === n[fieldsMapping.value] && x.pid === pid;
+            }).length === 0
+          ) {
+            this.items.push({
+              level: level,
+              label: n[fieldsMapping.label],
+              value: n[fieldsMapping.value],
+              pid: pid,
+              disabled: n[fieldsMapping.disabled],
+              hasChildren,
+              itemData: n,
+            });
+          }
           if (hasChildren) {
             findTree(
               n[fieldsMapping.children],
