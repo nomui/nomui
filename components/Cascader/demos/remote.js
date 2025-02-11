@@ -20,12 +20,32 @@ define([], function () {
               value: 'value',
               children: 'children',
             },
-            loadData: ({ level, itemData }) => {
+            value: ['PQK9DZSTrQtu4TAvlPWcc', 'QQWE89123LKJA'],
+            loadData: ({ level, itemData, value }) => {
               console.log('params:', itemData)
               return new Promise((resolve) => {
                 setTimeout(() => {
-                  if (level < 1 && itemData.isLeaf !== true) {
-                    resolve([
+                  let arr = []
+                  if (!value) {
+                    arr = [
+                      {
+                        value: 'PQK9DZSTrQtu4TAvlPWcc',
+                        text: '广州医科大学附属番禺中心医院',
+                        isLeaf: false,
+                      },
+                      {
+                        value: 'dEd7SUB1qwLx_pVIjihLW',
+                        text: '北京市平谷区医院',
+                        isLeaf: false,
+                      },
+                      {
+                        value: 'SYpXnRzpr4gAq8UEi3qG1',
+                        text: '厦门弘爱医院',
+                        isLeaf: true,
+                      },
+                    ]
+                  } else {
+                    arr = [
                       {
                         value: 'KJLKAF9120301230',
                         text: '999感冒灵颗粒',
@@ -34,28 +54,16 @@ define([], function () {
                         value: 'QQWE89123LKJA',
                         text: '小柴胡颗粒',
                       },
-                    ])
+                    ]
+                  }
+                  if (level <= 1 && itemData.isLeaf !== true) {
+                    resolve(arr)
+                  } else {
+                    resolve([])
                   }
                 }, 500)
               })
             },
-            options: [
-              {
-                value: 'PQK9DZSTrQtu4TAvlPWcc',
-                text: '广州医科大学附属番禺中心医院',
-                isLeaf: false,
-              },
-              {
-                value: 'dEd7SUB1qwLx_pVIjihLW',
-                text: '北京市平谷区医院',
-                isLeaf: false,
-              },
-              {
-                value: 'SYpXnRzpr4gAq8UEi3qG1',
-                text: '厦门弘爱医院',
-                isLeaf: true,
-              },
-            ],
           },
 
           {

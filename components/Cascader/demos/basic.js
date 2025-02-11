@@ -20,6 +20,7 @@ define([], function () {
               value: 'value',
               children: 'children',
             },
+            value: ['PQK9DZSTrQtu4TAvlPWcc', 'YqNnRlbGksR7pS8Z0ajfi'],
             options: [
               {
                 value: 'PQK9DZSTrQtu4TAvlPWcc',

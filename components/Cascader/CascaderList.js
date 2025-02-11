@@ -163,7 +163,7 @@ class CascaderList extends List {
         .loadData({
           value,
           level,
-          itemData: item.props.itemData,
+          itemData: item ? item.props.itemData : {},
         })
         .then((options) => {
           if (item && item.iconRef) {

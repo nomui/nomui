@@ -106,12 +106,48 @@ class Cascader extends Field {
   }
 
   _rendered() {
+    if (this.props.value && this.props.value.length && this.props.loadData) {
+      this._loopLoadValueData()
+    }
     this.popup = new CascaderPopup({
       trigger: this.control,
       onShow: () => {
         this.optionList && this._drawOptionLists()
       },
     })
+  }
+
+  // 数据异步加载且有默认值时需要先调请求加载value对应的字面值
+  _loopLoadValueData() {
+    const me = this
+    let { value } = this.props
+    const { fieldsMapping } = this.props
+    if (!Array.isArray(value)) {
+      value = [value]
+    }
+    value.unshift('')
+
+    const promises = value.map((v, i) =>
+      this.props.loadData({
+        value: i === 0 ? null : v,
+        itemData: i === 0 ? {} : { [fieldsMapping.value]: v },
+        level: `${i}`,
+      }),
+    )
+
+    Promise.all(promises)
+      .then((results) => {
+        results.forEach((res) => {
+          if (res?.length) {
+            me._flatItems(res)
+          }
+        })
+        me._setValueMap()
+        me._content.update({ children: me.getValueText() })
+      })
+      .catch((error) => {
+        console.error('load data failed:', error)
+      })
   }
 
   _drawOptionLists() {
@@ -159,8 +195,12 @@ class Cascader extends Field {
     return arr
   }
 
-  _flatItems() {
-    this.items = []
+  _flatItems(source) {
+    if (!source) {
+      this.items = []
+      source = this.internalOption
+    }
+
     const { fieldsMapping } = this.props
     const findTree = (data, pid = null, level = 0) => {
       data.forEach((n) => {
@@ -179,7 +219,7 @@ class Cascader extends Field {
         }
       })
     }
-    findTree(this.internalOption)
+    findTree(source)
   }
 
   _getValue() {
