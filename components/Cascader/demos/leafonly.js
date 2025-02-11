@@ -1,7 +1,8 @@
 define([], function () {
   return {
-    title: '基本用法',
-    file: 'basic',
+    title: '仅叶子节点',
+    file: 'leafonly',
+    description: '当changeOnSelect配置为false时,仅选择叶子节点会触发改变',
     demo: function () {
       let cascader = null
 
@@ -14,6 +15,7 @@ define([], function () {
               cascader = c
             },
             placeholder: '请选择',
+            changeOnSelect: false,
             fieldsMapping: {
               key: 'value',
               label: 'text',

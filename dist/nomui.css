@@ -4517,6 +4517,7 @@ body {
   --nom-bg-color: var(--nom-color-bg-0);
   --nom-cascader-item-active-color: var(--nom-color-primary);
   --nom-cascader-item-active-bg: rgba(var(--nom-color-primary-base), 0.15);
+  --nom-cascader-icon-color: rgba(0, 0, 0, 0.5);
   --nom-color-picker-control-size: 24px;
   --nom-color-picker-item-size: 16px;
   --nom-color-picker-list-item-size: 24px;
@@ -4612,13 +4613,13 @@ body {
   --nom-grid-td-excel-mode-active-hover-box-shadow: inset 0 0 0 2px var(--nom-color-primary);
   --nom-menu-divider-border: 1px solid var(--nom-border-color);
   --nom-menu-group-title-color: var(--nom-color-text-2);
-  --nom-message-info-bg-color: #D4E3FC;
+  --nom-message-info-bg-color: #d4e3fc;
   --nom-message-info-border-colorr: transparent;
-  --nom-message-success-bg-color: #BCEBDC;
+  --nom-message-success-bg-color: #bcebdc;
   --nom-message-success-border-colorr: transparent;
-  --nom-message-warning-bg-color: #F9E0C7;
+  --nom-message-warning-bg-color: #f9e0c7;
   --nom-message-warning-border-colorr: transparent;
-  --nom-message-danger-bg-color: #F9D7D9;
+  --nom-message-danger-bg-color: #f9d7d9;
   --nom-message-danger-border-colorr: transparent;
   --nom-number-input-control-hover-bg: transparent;
   --nom-number-input-control-active-bg: var(--nom-color-fill-1);
@@ -11490,6 +11491,36 @@ textarea .nom-textarea {
 .nom-cascader-popup {
   overflow: hidden;
 }
+.nom-cascader-popup .nom-cascader-empty {
+  padding: 2rem 1rem;
+  min-height: 200px;
+}
+.nom-cascader-popup .nom-cascader-option-wrapper > .nom-list-content > .nom-list-item {
+  border-right: 1px dashed var(--nom-border-color);
+}
+.nom-cascader-popup .nom-cascader-option-wrapper > .nom-list-content > .nom-list-item:last-child {
+  border-right: none;
+}
+.nom-cascader-popup .nom-cascader-option-wrapper .nom-cascader-option-list {
+  overflow-y: auto;
+}
+.nom-cascader-popup .nom-cascader-option-wrapper .nom-cascader-option-list .nom-list-item {
+  padding: 0.5rem 1rem;
+}
+.nom-cascader-popup .nom-cascader-option-wrapper .nom-cascader-option-list .nom-list-item:not(.s-disabled) {
+  cursor: pointer;
+}
+.nom-cascader-popup .nom-cascader-option-wrapper .nom-cascader-option-list .nom-list-item:hover {
+  background-color: var(--nom-color-hover);
+}
+.nom-cascader-popup .nom-cascader-option-wrapper .nom-cascader-option-list .nom-list-item.s-selected,
+.nom-cascader-popup .nom-cascader-option-wrapper .nom-cascader-option-list .nom-list-item .s-selected:hover {
+  color: var(--nom-cascader-item-active-color);
+  background-color: var(--nom-cascader-item-active-bg);
+}
+.nom-cascader-popup .nom-cascader-option-wrapper .nom-cascader-option-list .nom-list-item .nom-icon.p-type-right {
+  color: var(--nom-cascader-icon-color);
+}
 .nom-cascader-popup > .nom-layout {
   max-height: 300px;
 }
@@ -11539,8 +11570,8 @@ textarea .nom-textarea {
   user-select: none;
 }
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item > .nom-cascader-menu-item-expand-icon {
-  font-size: 85%;
   padding-left: 1rem;
+  font-size: 85%;
 }
 .nom-cascader-animate-top-show {
   -webkit-animation: nom-cascader-keyframe-top-show 0.16s linear forwards;

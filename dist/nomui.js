@@ -4895,7 +4895,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.props.hidden = false;
       this.removeClass("s-hidden");
       isFunction(this._show) && this._show();
-      this._callHandler(this.props.onShow);
     }
     hide() {
       if (!this.rendered || this.props.hidden === true) {
@@ -10324,7 +10323,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return items;
     }
     _onItemSelectionChange() {
-      this._callHandler(this.props.onItemSelectionChange);
+      this._callHandler(this.props.onItemSelectionChange, {
+        selectedItem: this.selectedItem,
+      });
     }
     getSelectedItem() {
       return this.selectedItem;
@@ -12168,127 +12169,212 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     triggerType: "click",
   };
   Component.register(Carousel);
-  class CascaderList extends Component {
+  class CascaderList extends List {
     constructor(props, ...mixins) {
-      const defaults = {};
+      const defaults = {
+        // showEmpty: {
+        //   size: 'large',
+        // },
+        classes: { "nom-cascader-option-wrapper": true },
+        itemRender: ({ itemData }) => {
+          return {
+            component: "List",
+            classes: { "nom-cascader-option-list": true },
+            attrs: {
+              style: {
+                width: isString(this.cascaderControl.props.width)
+                  ? this.cascaderControl.props.width
+                  : `${this.cascaderControl.props.width}px`,
+                height: isString(this.cascaderControl.props.height)
+                  ? this.cascaderControl.props.height
+                  : `${this.cascaderControl.props.height}px`,
+              },
+            },
+            items: itemData.items,
+            level: itemData.level,
+            cols: 1,
+            itemDefaults: {
+              key: function () {
+                return this.props.value;
+              },
+              onConfig: ({ inst }) => {
+                inst.setProps({
+                  onClick: () => {
+                    !inst.props.disabled &&
+                      this._handleItemSelect({
+                        item: inst,
+                        level: parseInt(itemData.level, 10),
+                      });
+                  },
+                  children: {
+                    component: "Flex",
+                    align: "center",
+                    cols: [
+                      {
+                        grow: true,
+                        children: {
+                          component: "Ellipsis",
+                          text: inst.props.label,
+                        },
+                      },
+                      {
+                        component: "Icon",
+                        type: "right",
+                        ref: (c) => {
+                          inst.iconRef = c;
+                        },
+                        hidden:
+                          inst.props.isLeaf !== false &&
+                          (!!inst.props.isLeaf || !inst.props.hasChildren),
+                      },
+                    ],
+                  },
+                });
+              },
+            },
+            itemSelectable: { byClick: true, scrollIntoView: true },
+            onItemSelectionChange: ({ selectedItem }) => {
+              this._drawNextLevel({
+                level: itemData.level,
+                value: selectedItem.props.value,
+                item: selectedItem,
+              }); // 代码自动选中时临时保存valueMap
+              this.tempValueMap[parseInt(itemData.level, 10)] = {
+                value: selectedItem.props.value,
+                text: selectedItem.props.label,
+              };
+            },
+            onRendered: ({ inst }) => {
+              if (this.cascaderControl && !!this.cascaderControl.props.value) {
+                for (const k in this.cascaderControl.valueMap) {
+                  if (parseInt(k, 10) === parseInt(itemData.level, 10)) {
+                    inst.selectItem(this.cascaderControl.valueMap[k].value);
+                  }
+                }
+              }
+            },
+          };
+        },
+      };
       super(Component.extendProps(defaults, props), ...mixins);
     }
     _created() {
-      this._timer = null;
-      this._clickedKey = null;
-      this._clickTime = null;
+      super._created();
       this.cascaderControl = this.parent.parent.parent.cascaderControl;
       this.cascaderControl.optionList = this;
     }
-    _remove() {
-      this._timer && clearTimeout(this._timer);
-    }
-    _config() {
-      const { popMenu } = this.props;
-      const value = this.cascaderControl.selectedOption.map((e) => e.key);
-      this.selected = [];
-      this.setProps({
-        children: popMenu
-          ? popMenu.map((menu, index) => {
-              return this.getMenuItems(menu, value[index]);
-            })
-          : null,
-      });
-      super._config();
-    } // 处理非叶子节点点击事件
-    _handleNoLeafClick(key) {
-      const cascaderList = this;
-      const changeOnSelect = this.cascaderControl.props.changeOnSelect;
-      if (changeOnSelect) {
-        const triggerTime = Date.now();
-        let interval = Number.MAX_SAFE_INTEGER;
-        if (key === this._clickedKey && isNumeric(this._clickTime)) {
-          interval = triggerTime - this._clickTime;
-        }
-        this._clickTime = triggerTime;
-        this._clickedKey = key;
-        if (interval < 300) {
-          // 双击事件
-          cascaderList.cascaderControl._itemSelected(key, true);
-          this._timer && clearTimeout(this._timer);
-        } else {
-          // 单击事件
-          this._timer = setTimeout(() => {
-            cascaderList.cascaderControl._itemSelected(key, true, false);
-          }, 300);
-        }
+    _rendered() {
+      if (!this.props.data || !this.props.data.length) {
+        this.cascaderControl.emptyRef.show();
       } else {
-        // 单击
-        cascaderList.cascaderControl._itemSelected(key);
+        this.cascaderControl.emptyRef.hide();
       }
     }
-    getMenuItems(menu, currentVal) {
-      const cascaderList = this;
-      if (!menu) {
-        return null;
+    _drawLists() {
+      this.tempValueMap = {};
+      const { cascaderControl } = this;
+      const { options, fieldsMapping } = cascaderControl.props;
+      if (!options || !options.length) {
+        this._drawNextLevel({ level: "0", value: "" });
+        return;
       }
-      return {
-        tag: "ul",
-        classes: { "nom-cascader-menu": true },
-        attrs: {
-          style: {
-            width: `${this.cascaderControl.props.width}px`,
-            height: `${this.cascaderControl.props.height}px`,
-          },
-        },
-        children: menu.map((item) => {
-          if (item.children) {
-            return {
-              tag: "li",
-              _rendered() {
-                item.key === currentVal && cascaderList.selected.push(this);
-              },
-              classes: {
-                "nom-cascader-menu-item": true,
-                "nom-cascader-menu-item-active": item.key === currentVal,
-                "nom-cascader-menu-item-disabled": item.disabled === true,
-              },
-              onClick: ({ event }) => {
-                event.stopPropagation();
-                item.disabled !== true &&
-                  cascaderList._handleNoLeafClick(item.key);
-              },
-              children: [
-                {
-                  tag: "span",
-                  children: { component: "Ellipsis", text: item.label },
-                },
-                {
-                  component: Icon,
-                  type: "right",
-                  classes: { "nom-cascader-menu-item-expand-icon": true },
-                },
-              ],
-            };
-          }
+      const firstCol = {
+        items: options.map((x) => {
           return {
-            tag: "li",
-            _rendered() {
-              item.key === currentVal && cascaderList.selected.push(this);
-            },
-            classes: {
-              "nom-cascader-menu-item": true,
-              "nom-cascader-menu-item-active": item.key === currentVal,
-              "nom-cascader-menu-item-disabled": item.disabled === true,
-            },
-            onClick: () => {
-              item.disabled !== true &&
-                cascaderList.cascaderControl._itemSelected(item.key, true);
-            },
-            children: [
-              {
-                tag: "span",
-                children: { component: "Ellipsis", text: item.label },
-              },
-            ],
+            label: x[fieldsMapping.label],
+            value: x[fieldsMapping.value],
+            disabled: x[fieldsMapping.disabled],
+            hasChildren:
+              x[fieldsMapping.children] && x[fieldsMapping.children].length > 0,
+            isLeaf: x[fieldsMapping.isLeaf],
+            itemData: x,
           };
         }),
+        level: "0",
+        key: "0",
       };
+      this.update({ data: [firstCol] });
+    }
+    _drawNextLevel({ value, level, item }) {
+      const { cascaderControl } = this;
+      const { fieldsMapping } = cascaderControl.props;
+      const allItems = this.getAllItems().map((x) => {
+        return x.key;
+      });
+      this.removeItems(
+        allItems.filter((x) => parseInt(x, 10) > parseInt(level, 10))
+      );
+      if (cascaderControl.props.loadData) {
+        if (item && item.iconRef) {
+          item.iconRef.update({ type: "loading" });
+        }
+        cascaderControl.props
+          .loadData({ value, level, itemData: item ? item.props.itemData : {} })
+          .then((options) => {
+            if (item && item.iconRef) {
+              item.iconRef.update({ type: "right" });
+            }
+            if (!options || !options.length) {
+              return;
+            }
+            this.cascaderControl.emptyRef.hide();
+            this.appendDataItem({
+              items: options.map((x) => {
+                return {
+                  label: x[fieldsMapping.label],
+                  value: x[fieldsMapping.value],
+                  disabled: x[fieldsMapping.disabled],
+                  hasChildren:
+                    x[fieldsMapping.children] &&
+                    x[fieldsMapping.children].length > 0,
+                  isLeaf: x[fieldsMapping.isLeaf],
+                  itemData: x,
+                };
+              }),
+              level: `${parseInt(level, 10) + 1}`,
+              key: `${parseInt(level, 10) + 1}`,
+            });
+          });
+      } else {
+        const arr = this._getNextLevelItems({ value, level });
+        if (arr.length) {
+          this.cascaderControl.emptyRef.hide();
+          this.appendDataItem({
+            items: arr,
+            level: `${parseInt(level, 10) + 1}`,
+            key: `${parseInt(level, 10) + 1}`,
+          });
+        }
+      }
+    }
+    _getNextLevelItems({ value, level }) {
+      const arr = [];
+      const { cascaderControl } = this;
+      cascaderControl.items.forEach((x) => {
+        if (parseInt(level, 10) + 1 === x.level && x.pid === value) {
+          arr.push(x);
+        }
+      });
+      return arr;
+    } // 手动点击选项时触发
+    _handleItemSelect({ item, level }) {
+      const isLeaf = item.props.isLeaf !== false && !item.props.hasChildren;
+      const { cascaderControl } = this;
+      const { changeOnSelect } = cascaderControl.props; // 保持当前栏目的value text
+      this.tempValueMap[level] = {
+        value: item.props.value,
+        text: item.props.label,
+      }; // 清除历史的栏目数据
+      for (let i = level + 1; i < 20; i++) {
+        delete this.tempValueMap[i];
+      }
+      if (isLeaf || changeOnSelect) {
+        cascaderControl.valueMap = this.tempValueMap;
+        cascaderControl._onValueChange();
+      }
+      if (isLeaf) {
+        cascaderControl.popup.animateHide();
+      }
     }
   }
   class CascaderPopup extends Popup {
@@ -12301,24 +12387,28 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.cascaderControl = this.opener.field;
     }
     _config() {
-      const { popMenu } = this.props;
-      if (popMenu && popMenu.length) {
-        this.setProps({
-          children: {
-            classes: { "nom-cascader-pop-container": true },
-            component: Layout,
-            body: { children: { component: CascaderList, popMenu } },
+      const { cascaderControl } = this;
+      this.setProps({
+        children: {
+          classes: { "nom-cascader-pop-container": true },
+          component: Layout,
+          fit: true,
+          body: {
+            children: [
+              {
+                ref: (c) => {
+                  cascaderControl.emptyRef = c;
+                },
+                classes: { "nom-cascader-empty": true },
+                hidden: true,
+                component: Layout,
+                body: { children: { component: "Empty" } },
+              },
+              { component: CascaderList },
+            ],
           },
-        });
-      } else {
-        this.setProps({
-          children: {
-            styles: { padding: 2 },
-            component: Layout,
-            body: { children: { component: Empty } },
-          },
-        });
-      }
+        },
+      });
       super._config();
     }
     _rendered() {
@@ -12357,92 +12447,38 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     constructor(props, ...mixins) {
       super(Component.extendProps(Cascader.defaults, props), ...mixins);
     }
-    _rendered() {
-      const cascader = this;
-      this.__cascaderPopup = new CascaderPopup({
-        trigger: this.control,
-        popMenu: this.getSelectedMenu(),
-        onShow: () => {
-          const { optionList } = cascader;
-          if (
-            optionList &&
-            optionList.selected &&
-            optionList.selected.length > 0
-          ) {
-            optionList.selected.forEach((item) => {
-              // 解决非SPA页面，滚动条自动滚动至底部问题
-              if (
-                !(
-                  document.querySelector("body").scrollHeight >
-                  window.innerHeight + 20
-                )
-              ) {
-                item.element.scrollIntoView({
-                  behavior: "auto",
-                  scrollMode: "if-needed",
-                });
-              }
-            });
-          }
-        },
-      });
-      this._valueChange({ newValue: this.currentValue });
-    }
     _created() {
       super._created();
-      this._hidePopup = true;
+      this.valueMap = {};
     }
     _config() {
-      const cascader = this;
+      const me = this;
       const children = [];
-      const {
-        showArrow,
-        placeholder,
-        separator,
-        valueType,
-        allowClear,
-        singleShowFullPath,
-      } = this.props;
+      const { showArrow, placeholder, allowClear } = this.props;
       const { value, options, disabled } = this.props;
+      this.initValue = clone(value);
       this.internalOption = JSON.parse(JSON.stringify(options));
-      this._normalizeInternalOptions(options);
-      this.flatItems(this.internalOption);
-      this.initValue = isFunction(value) ? value() : value;
-      this.selectedOption = [];
-      this.handleOptionSelected(this.initValue);
+      this._flatItems();
+      if (value && value.length) {
+        this.valueMap = {};
+        this._setValueMap();
+      }
       this.currentValue = this.initValue;
-      this.checked = true;
       children.push({
         classes: { "nom-cascader-content": true },
-        _created() {
-          cascader._content = this;
+        ref: (c) => {
+          me._content = c;
         },
-        _config() {
-          const selectedOpt = cascader.selectedOption;
-          let c;
-          if (selectedOpt.length === 0) {
-            c = null;
-          } else {
-            c =
-              valueType === "cascade" || singleShowFullPath
-                ? selectedOpt.map((e) => e.label).join(separator)
-                : selectedOpt[selectedOpt.length - 1].label;
-          }
-          if (!c && cascader.props.value) {
-            c = nomui.utils.isString(cascader.props.value)
-              ? cascader.props.value
-              : cascader.props.value.join(separator);
-          }
-          this.setProps({ children: c });
-        },
+        children: this.getValueText(),
       });
       if (isString(placeholder)) {
         children.push({
           _created() {
-            cascader.placeholder = this;
+            me.placeholder = this;
           },
           classes: { "nom-cascader-placeholder": true },
           children: placeholder,
+          hidden: !!this.props.value,
         });
       }
       if (showArrow) {
@@ -12451,7 +12487,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           type: "down",
           classes: { "nom-cascader-icon": true },
           _created() {
-            cascader.down = this;
+            me.down = this;
           },
         });
       }
@@ -12462,20 +12498,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           classes: { "nom-cascader-icon": true },
           hidden: true,
           _created() {
-            cascader.close = this;
+            me.close = this;
           },
           onClick: ({ event }) => {
             event.stopPropagation();
-            cascader.props.onClear &&
-              cascader._callHandler(cascader.props.onClear);
-            cascader.setValue(null); // if (this.selectedOption.length === 0) return
-            // this.selectedOption = []
-            // this.checked = true
-            // this.content.element.innerText = ''
-            // this.__cascaderPopup.update({
-            //   popMenu: this.getSelectedMenu(),
-            // })
-            // this._onValueChange()
+            me.props.onClear && me._callHandler(me.props.onClear);
+            me.setValue(null);
           },
         });
       }
@@ -12484,129 +12512,175 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         attrs: {
           onmouseover() {
             if (disabled) return;
-            cascader.close.show();
-            showArrow && cascader.down.hide();
+            me.close.show();
+            showArrow && me.down.hide();
           },
           onmouseleave() {
             if (disabled) return;
-            showArrow && cascader.down.show();
-            cascader.close.hide();
+            showArrow && me.down.show();
+            me.close.hide();
           },
         },
       });
       super._config();
     }
-    _normalizeInternalOptions(options) {
-      if (!Array.isArray(options) || !options.length) return options;
+    _rendered() {
+      if (this.props.value && this.props.value.length && this.props.loadData) {
+        this._loopLoadValueData();
+      }
+      this.popup = new CascaderPopup({
+        trigger: this.control,
+        onShow: () => {
+          this.optionList && this._drawOptionLists();
+        },
+      });
+    } // 数据异步加载且有默认值时需要先调请求加载value对应的字面值
+    _loopLoadValueData() {
+      const me = this;
+      let { value } = this.props;
       const { fieldsMapping } = this.props;
-      const { children } = this.props.fieldsMapping;
-      this.internalOption = clone(options);
-      this.internalOption = this._filterEmptyChild(options, children);
-      this.handleOptions(this.internalOption, fieldsMapping);
-    }
-    _filterEmptyChild(options, childrenMapping) {
-      return options.map((option) => {
-        if (
-          Array.isArray(option[childrenMapping]) &&
-          option[childrenMapping].length
-        ) {
-          return Object.assign({}, option, {
-            childrenMapping: this._filterEmptyChild(
-              option[childrenMapping],
-              childrenMapping
-            ),
+      if (!Array.isArray(value)) {
+        value = [value];
+      }
+      value.unshift("");
+      const promises = value.map((v, i) =>
+        this.props.loadData({
+          value: i === 0 ? null : v,
+          itemData: i === 0 ? {} : { [fieldsMapping.value]: v },
+          level: `${i}`,
+        })
+      );
+      Promise.all(promises)
+        .then((results) => {
+          results.forEach((res) => {
+            if (res?.length) {
+              me._flatItems(res);
+            }
           });
+          me._setValueMap();
+          me._content.update({ children: me.getValueText() });
+        })
+        .catch((error) => {
+          console.error("load data failed:", error);
+        });
+    }
+    _drawOptionLists() {
+      this.optionList._drawLists();
+    }
+    _setValueMap() {
+      let { value } = this.props;
+      if (isNullish(value)) {
+        return;
+      }
+      if (isString(value)) {
+        value = this._getCascadeValue(value);
+      }
+      if (!Array.isArray(value)) {
+        value = [value];
+      }
+      value.forEach((n, i) => {
+        const item = this.items.find((x) => x.value === n);
+        if (item) {
+          this.valueMap[i] = { value: item.value, text: item.label };
         }
-        option[childrenMapping] = null;
-        return option;
       });
     }
-    _itemSelected(selectedKey, checked = false, hidePopup = true) {
-      if (!this.items) return;
-      this.selectedOption = [];
-      let recur = this.items.get(selectedKey);
-      while (recur) {
-        this.selectedOption.unshift(recur);
-        recur = this.items.get(recur.pid);
-      }
-      this.checked = checked;
-      this._hidePopup = hidePopup;
-      const selectedItem = this.items.get(selectedKey);
-      if (!selectedItem) return;
-      if (
-        (this.checked && this.triggerChange(selectedItem.value)) ||
-        this.props.changeOnSelect
-      ) {
-        this._onValueChange();
-      }
-      this.__cascaderPopup.update({
-        popMenu: this.getSelectedMenu(),
-        animate: false,
-      });
-    }
-    _valueChange(changed) {
-      if (this.placeholder) {
-        if (
-          (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
-          !changed.newValue
-        ) {
-          this.placeholder.show();
-        } else {
-          this.placeholder.hide();
+    _getCascadeValue(val) {
+      const me = this;
+      const arr = [];
+      function getParentNodeValue(id) {
+        for (let i = 0; i < me.items.length; i++) {
+          const item = me.items[i];
+          if (id === item.value) {
+            arr.unshift(item.value);
+            getParentNodeValue(item.pid);
+            break;
+          }
         }
       }
-      this._content && this._content.update();
-      this.__cascaderPopup &&
-        this._hidePopup &&
-        this.props.animate &&
-        this.__cascaderPopup.animateHide();
-      this.__cascaderPopup &&
-        this._hidePopup &&
-        !this.props.animate &&
-        this.__cascaderPopup.hide();
+      getParentNodeValue(val);
+      return arr;
+    }
+    _flatItems(source) {
+      if (!source) {
+        this.items = [];
+        source = this.internalOption;
+      }
+      const { fieldsMapping } = this.props;
+      const findTree = (data, pid = null, level = 0) => {
+        data.forEach((n) => {
+          const hasChildren =
+            n[fieldsMapping.children] && n[fieldsMapping.children].length;
+          this.items.push({
+            level: level,
+            label: n[fieldsMapping.label],
+            value: n[fieldsMapping.value],
+            pid: pid,
+            disabled: n[fieldsMapping.disabled],
+            hasChildren,
+            itemData: n,
+          });
+          if (hasChildren) {
+            findTree(
+              n[fieldsMapping.children],
+              n[fieldsMapping.value],
+              level + 1
+            );
+          }
+        });
+      };
+      findTree(source);
     }
     _getValue() {
-      if (!this.checked) {
-        return this.currentValue;
+      const v = [];
+      for (const k in this.valueMap) {
+        v.push(this.valueMap[k].value);
       }
       if (this.props.valueType === "cascade") {
-        const result = this.selectedOption.map((e) => e.value);
-        return result.length ? result : null;
+        return v.length ? v : null;
       }
-      return this.selectedOption.length
-        ? this.selectedOption[this.selectedOption.length - 1].value
-        : null;
+      return v.length ? v[v.length - 1] : null;
     }
     _getValueText() {
-      let str = "";
-      this.selectedOption.forEach(function (n) {
-        str += `${n.label}/`;
-      });
-      const result = str.substring(0, str.length - 1);
-      return result;
+      const t = [];
+      for (const k in this.valueMap) {
+        t.push(this.valueMap[k].text);
+      }
+      if (!this.props.singleShowFullPath) {
+        return t.length ? t[t.length - 1] : "";
+      }
+      return t.length ? t.join(this.props.separator) : "";
     }
     _setValue(value) {
       if (!value && this._content) {
         this._content.element.innerText = "";
       }
-      if (this.triggerChange(value)) {
-        this.handleOptionSelected(value);
-        this._onValueChange();
-      }
+      this.props.value = value;
+      this.valueMap = {};
+      this._setValueMap();
+      this._onValueChange();
+    }
+    _reset() {
+      this.setValue(this.initValue);
+    }
+    _clear() {
+      this.setValue(null);
     }
     _onValueChange() {
       const that = this;
       this.oldValue = clone(this.currentValue);
       this.currentValue = clone(this.getValue());
       this.props.value = this.currentValue;
+      if (this._getValueText().length) {
+        this._content.element.innerText = this._getValueText();
+        this.placeholder && this.placeholder.hide();
+      } else {
+        this.placeholder && this.placeholder.show();
+      }
       const changed = {
         name: this.props.name,
         oldValue: this.oldValue,
         newValue: this.currentValue,
-        checkedOption:
-          this.props.valueType === "cascade"
-            ? this.selectedOption
-            : this.selectedOption[this.selectedOption.length - 1],
       };
       setTimeout(function () {
         that._callHandler(that.props.onValueChange, changed);
@@ -12616,91 +12690,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           that._validate();
         }
       }, 0);
-    }
-    triggerChange(value) {
-      if (!value || !this.currentValue || !Array.isArray(value))
-        return value !== this.currentValue;
-      return this.currentValue.toString() !== value.toString();
-    } // handleOptions(options, fieldsMapping) {
-    handleOptions(options, fieldsMapping) {
-      const {
-        key: keyField,
-        label: labelField,
-        value: valueField,
-        children: childrenField,
-        disabled: disabledField,
-      } = fieldsMapping;
-      const key = keyField || valueField;
-      if (!Array.isArray(options)) return [];
-      const internalOption = options;
-      for (let i = 0; i < internalOption.length; i++) {
-        const item = internalOption[i];
-        item.label = item[labelField];
-        item.value = item[valueField];
-        item.key = item[key];
-        item.children = item[childrenField];
-        item.disabled = item[disabledField] === true;
-        if (Array.isArray(item.children) && item.children.length > 0) {
-          this.handleOptions(item.children, fieldsMapping);
-        }
-      }
-    }
-    flatItems(options, level = 0, pid = null) {
-      if (!options || !Array.isArray(options)) {
-        return null;
-      }
-      if (level === 0) {
-        this.items = new Map();
-      }
-      for (let i = 0; i < options.length; i++) {
-        const { key, value, label, children } = options[i];
-        this.items.set(key, { key, label, value, pid, level, leaf: !children });
-        if (children) {
-          this.flatItems(children, level + 1, key);
-        }
-      }
-    }
-    handleOptionSelected(value) {
-      let key = null;
-      const { valueType, onlyleaf } = this.props;
-      this.checked = false;
-      const oldCheckedOption = this.selectedOption;
-      this.selectedOption = [];
-      if (!value) this.checked = true;
-      if (!this.items || this.items.size === 0) return;
-      if (valueType === "single") {
-        for (const v of this.items.values()) {
-          if (onlyleaf) {
-            if (v.leaf && v.value === value) {
-              key = v.key;
-            }
-          } else if (v.value === value) {
-            key = v.key;
-          }
-        }
-        if (!key) return;
-        while (key) {
-          this.selectedOption.unshift(this.items.get(key));
-          key = this.items.get(key).pid;
-        }
-      } else {
-        if (!Array.isArray(value)) return;
-        let opt = null;
-        let options = this.internalOption;
-        for (let i = 0; i < value.length; i++) {
-          opt = options ? options.find((e) => e.value === value[i]) : null;
-          if (!opt) {
-            this.selectedOption = oldCheckedOption;
-            return;
-          }
-          this.selectedOption.push(this.items.get(opt.key));
-          options = opt.children;
-        }
-      }
-      this.checked = true;
-      if (this.__cascaderPopup)
-        this.__cascaderPopup.update({ popMenu: this.getSelectedMenu() });
-      if (this._content) this._content.update();
     }
     _disable() {
       if (this.firstRender === false) {
@@ -12712,28 +12701,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.control.enable();
       }
     }
-    getSelectedMenu() {
-      if (!this.selectedOption) {
-        return null;
-      }
-      const val = this.selectedOption.map((e) => e.value);
-      const internalOption = this.internalOption;
-      let recur = internalOption;
-      const options =
-        internalOption && internalOption.length ? [internalOption] : [];
-      for (let i = 0; i < val.length; i++) {
-        for (let j = 0; j < recur.length; j++) {
-          if (val[i] === recur[j].value) {
-            if (recur[j].children) {
-              options.push([...recur[j].children]);
-              recur = recur[j].children;
-              break;
-            }
-          }
-        }
-      }
-      return options;
-    }
   }
   Cascader.defaults = {
     options: [],
@@ -12744,14 +12711,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       value: "value",
       children: "children",
       disabled: "disabled",
+      isLeaf: "isLeaf",
     },
-    singleShowFullPath: false, // valueType 为 'single' 时，是否显示全路径
+    singleShowFullPath: true, // valueType 为 'single' 时，是否显示全路径
     valueType: "cascade",
     changeOnSelect: true,
     width: 200,
     height: 250,
     disabled: false,
-    onlyleaf: true,
     allowClear: true,
   };
   Component.register(Cascader);
