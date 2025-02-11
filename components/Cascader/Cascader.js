@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
-import { clone, isFunction, isString } from '../util/index'
+import { clone, isFunction, isNullish, isString } from '../util/index'
 import CascaderPopup from './CascaderPopup'
 
 class Cascader extends Field {
@@ -9,88 +9,45 @@ class Cascader extends Field {
     super(Component.extendProps(Cascader.defaults, props), ...mixins)
   }
 
-  _rendered() {
-    const cascader = this
-    this.__cascaderPopup = new CascaderPopup({
-      trigger: this.control,
-      popMenu: this.getSelectedMenu(),
-      onShow: () => {
-        const { optionList } = cascader
-        if (optionList && optionList.selected && optionList.selected.length > 0) {
-          optionList.selected.forEach((item) => {
-            // 解决非SPA页面，滚动条自动滚动至底部问题
-            if (!(document.querySelector('body').scrollHeight > window.innerHeight + 20)) {
-              item.element.scrollIntoView({
-                behavior: 'auto',
-                scrollMode: 'if-needed',
-              })
-            }
-          })
-        }
-      },
-    })
-
-    this._valueChange({ newValue: this.currentValue })
-  }
-
   _created() {
     super._created()
-    this._hidePopup = true
+    this.valueMap = {}
   }
 
   _config() {
-    const cascader = this
+    const me = this
+
     const children = []
-    const { showArrow, placeholder, separator, valueType, allowClear, singleShowFullPath } = this.props
+    const { showArrow, placeholder, allowClear } = this.props
 
     const { value, options, disabled } = this.props
+    this.initValue = clone(value)
     this.internalOption = JSON.parse(JSON.stringify(options))
-    this._normalizeInternalOptions(options)
-    this.flatItems(this.internalOption)
+    this._flatItems()
 
-    this.initValue = isFunction(value) ? value() : value
-    this.selectedOption = []
-    this.handleOptionSelected(this.initValue)
+    if (value && value.length) {
+      this.valueMap = {}
+      this._setValueMap()
+    }
+
     this.currentValue = this.initValue
-    this.checked = true
 
     children.push({
       classes: { 'nom-cascader-content': true },
-      _created() {
-        cascader._content = this
+      ref: (c) => {
+        me._content = c
       },
-      _config() {
-        const selectedOpt = cascader.selectedOption
-        let c
-
-        if (selectedOpt.length === 0) {
-          c = null
-        } else {
-          c =
-            valueType === 'cascade' || singleShowFullPath
-              ? selectedOpt.map((e) => e.label).join(separator)
-              : selectedOpt[selectedOpt.length - 1].label
-        }
-
-        if (!c && cascader.props.value) {
-          c = nomui.utils.isString(cascader.props.value)
-            ? cascader.props.value
-            : cascader.props.value.join(separator)
-        }
-
-        this.setProps({
-          children: c,
-        })
-      },
+      children: this.getValueText(),
     })
 
     if (isString(placeholder)) {
       children.push({
         _created() {
-          cascader.placeholder = this
+          me.placeholder = this
         },
         classes: { 'nom-cascader-placeholder': true },
         children: placeholder,
+        hidden: !!this.props.value,
       })
     }
 
@@ -102,7 +59,7 @@ class Cascader extends Field {
           'nom-cascader-icon': true,
         },
         _created() {
-          cascader.down = this
+          me.down = this
         },
       })
     }
@@ -116,20 +73,12 @@ class Cascader extends Field {
         },
         hidden: true,
         _created() {
-          cascader.close = this
+          me.close = this
         },
         onClick: ({ event }) => {
           event.stopPropagation()
-          cascader.props.onClear && cascader._callHandler(cascader.props.onClear)
-          cascader.setValue(null)
-          // if (this.selectedOption.length === 0) return
-          // this.selectedOption = []
-          // this.checked = true
-          // this.content.element.innerText = ''
-          // this.__cascaderPopup.update({
-          //   popMenu: this.getSelectedMenu(),
-          // })
-          // this._onValueChange()
+          me.props.onClear && me._callHandler(me.props.onClear)
+          me.setValue(null)
         },
       })
     }
@@ -142,13 +91,13 @@ class Cascader extends Field {
       attrs: {
         onmouseover() {
           if (disabled) return
-          cascader.close.show()
-          showArrow && cascader.down.hide()
+          me.close.show()
+          showArrow && me.down.hide()
         },
         onmouseleave() {
           if (disabled) return
-          showArrow && cascader.down.show()
-          cascader.close.hide()
+          showArrow && me.down.show()
+          me.close.hide()
         },
       },
     })
@@ -156,99 +105,165 @@ class Cascader extends Field {
     super._config()
   }
 
-  _normalizeInternalOptions(options) {
-    if (!Array.isArray(options) || !options.length) return options
-
-    const { fieldsMapping } = this.props
-    const { children } = this.props.fieldsMapping
-    this.internalOption = clone(options)
-    this.internalOption = this._filterEmptyChild(options, children)
-    this.handleOptions(this.internalOption, fieldsMapping)
-  }
-
-  _filterEmptyChild(options, childrenMapping) {
-    return options.map((option) => {
-      if (Array.isArray(option[childrenMapping]) && option[childrenMapping].length) {
-        return {
-          ...option,
-          childrenMapping: this._filterEmptyChild(option[childrenMapping], childrenMapping),
-        }
-      }
-
-      option[childrenMapping] = null
-      return option
+  _rendered() {
+    if (this.props.value && this.props.value.length && this.props.loadData) {
+      this._loopLoadValueData()
+    }
+    this.popup = new CascaderPopup({
+      trigger: this.control,
+      onShow: () => {
+        this.optionList && this._drawOptionLists()
+      },
     })
   }
 
-  _itemSelected(selectedKey, checked = false, hidePopup = true) {
-    if (!this.items) return
-    this.selectedOption = []
-    let recur = this.items.get(selectedKey)
-    while (recur) {
-      this.selectedOption.unshift(recur)
-
-      recur = this.items.get(recur.pid)
+  // 数据异步加载且有默认值时需要先调请求加载value对应的字面值
+  _loopLoadValueData() {
+    const me = this
+    let { value } = this.props
+    const { fieldsMapping } = this.props
+    if (!Array.isArray(value)) {
+      value = [value]
     }
+    value.unshift('')
 
-    this.checked = checked
-    this._hidePopup = hidePopup
+    const promises = value.map((v, i) =>
+      this.props.loadData({
+        value: i === 0 ? null : v,
+        itemData: i === 0 ? {} : { [fieldsMapping.value]: v },
+        level: `${i}`,
+      }),
+    )
 
-    const selectedItem = this.items.get(selectedKey)
-    if (!selectedItem) return
-    if ((this.checked && this.triggerChange(selectedItem.value)) || this.props.changeOnSelect) {
-      this._onValueChange()
-    }
-
-    this.__cascaderPopup.update({ popMenu: this.getSelectedMenu(), animate: false })
+    Promise.all(promises)
+      .then((results) => {
+        results.forEach((res) => {
+          if (res?.length) {
+            me._flatItems(res)
+          }
+        })
+        me._setValueMap()
+        me._content.update({ children: me.getValueText() })
+      })
+      .catch((error) => {
+        console.error('load data failed:', error)
+      })
   }
 
-  _valueChange(changed) {
-    if (this.placeholder) {
-      if ((Array.isArray(changed.newValue) && changed.newValue.length === 0) || !changed.newValue) {
-        this.placeholder.show()
-      } else {
-        this.placeholder.hide()
+  _drawOptionLists() {
+    this.optionList._drawLists()
+  }
+
+  _setValueMap() {
+    let { value } = this.props
+    if (isNullish(value)) {
+      return
+    }
+    if (isString(value)) {
+      value = this._getCascadeValue(value)
+    }
+    if (!Array.isArray(value)) {
+      value = [value]
+    }
+    value.forEach((n, i) => {
+      const item = this.items.find((x) => x.value === n)
+      if (item) {
+        this.valueMap[i] = {
+          value: item.value,
+          text: item.label,
+        }
+      }
+    })
+  }
+
+  _getCascadeValue(val) {
+    const me = this
+    const arr = []
+
+    function getParentNodeValue(id) {
+      for (let i = 0; i < me.items.length; i++) {
+        const item = me.items[i]
+        if (id === item.value) {
+          arr.unshift(item.value)
+          getParentNodeValue(item.pid)
+          break
+        }
       }
     }
 
-    this._content && this._content.update()
+    getParentNodeValue(val)
+    return arr
+  }
 
-    this.__cascaderPopup && this._hidePopup && this.props.animate && this.__cascaderPopup.animateHide()
-    this.__cascaderPopup && this._hidePopup && !this.props.animate && this.__cascaderPopup.hide()
+  _flatItems(source) {
+    if (!source) {
+      this.items = []
+      source = this.internalOption
+    }
+
+    const { fieldsMapping } = this.props
+    const findTree = (data, pid = null, level = 0) => {
+      data.forEach((n) => {
+        const hasChildren = n[fieldsMapping.children] && n[fieldsMapping.children].length
+        this.items.push({
+          level: level,
+          label: n[fieldsMapping.label],
+          value: n[fieldsMapping.value],
+          pid: pid,
+          disabled: n[fieldsMapping.disabled],
+          hasChildren,
+          itemData: n,
+        })
+        if (hasChildren) {
+          findTree(n[fieldsMapping.children], n[fieldsMapping.value], level + 1)
+        }
+      })
+    }
+    findTree(source)
   }
 
   _getValue() {
-    if (!this.checked) {
-      return this.currentValue
+    const v = []
+    for (const k in this.valueMap) {
+      v.push(this.valueMap[k].value)
     }
 
     if (this.props.valueType === 'cascade') {
-      const result = this.selectedOption.map((e) => e.value)
-      return result.length ? result : null
+      return v.length ? v : null
     }
 
-    return this.selectedOption.length
-      ? this.selectedOption[this.selectedOption.length - 1].value
-      : null
+    return v.length ? v[v.length - 1] : null
   }
 
   _getValueText() {
-    let str = ''
-    this.selectedOption.forEach(function (n) {
-      str += `${n.label}/`
-    })
-    const result = str.substring(0, str.length - 1)
-    return result
+    const t = []
+    for (const k in this.valueMap) {
+      t.push(this.valueMap[k].text)
+    }
+
+    if (!this.props.singleShowFullPath) {
+      return t.length ? t[t.length - 1] : ''
+    }
+
+    return t.length ? t.join(this.props.separator) : ''
   }
 
   _setValue(value) {
     if (!value && this._content) {
       this._content.element.innerText = ''
     }
-    if (this.triggerChange(value)) {
-      this.handleOptionSelected(value)
-      this._onValueChange()
-    }
+    this.props.value = value
+    this.valueMap = {}
+    this._setValueMap()
+    this._onValueChange()
+  }
+
+  _reset() {
+    this.setValue(this.initValue)
+  }
+
+  _clear() {
+    this.setValue(null)
   }
 
   _onValueChange() {
@@ -257,14 +272,17 @@ class Cascader extends Field {
     this.currentValue = clone(this.getValue())
     this.props.value = this.currentValue
 
+    if (this._getValueText().length) {
+      this._content.element.innerText = this._getValueText()
+      this.placeholder && this.placeholder.hide()
+    } else {
+      this.placeholder && this.placeholder.show()
+    }
+
     const changed = {
       name: this.props.name,
       oldValue: this.oldValue,
       newValue: this.currentValue,
-      checkedOption:
-        this.props.valueType === 'cascade'
-          ? this.selectedOption
-          : this.selectedOption[this.selectedOption.length - 1],
     }
 
     setTimeout(function () {
@@ -275,107 +293,6 @@ class Cascader extends Field {
         that._validate()
       }
     }, 0)
-  }
-
-  triggerChange(value) {
-    if (!value || !this.currentValue || !Array.isArray(value)) return value !== this.currentValue
-    return this.currentValue.toString() !== value.toString()
-  }
-
-  // handleOptions(options, fieldsMapping) {
-  handleOptions(options, fieldsMapping) {
-    const {
-      key: keyField,
-      label: labelField,
-      value: valueField,
-      children: childrenField,
-      disabled: disabledField,
-    } = fieldsMapping
-
-    const key = keyField || valueField
-
-    if (!Array.isArray(options)) return []
-    const internalOption = options
-    for (let i = 0; i < internalOption.length; i++) {
-      const item = internalOption[i]
-      item.label = item[labelField]
-      item.value = item[valueField]
-      item.key = item[key]
-      item.children = item[childrenField]
-      item.disabled = item[disabledField] === true
-      if (Array.isArray(item.children) && item.children.length > 0) {
-        this.handleOptions(item.children, fieldsMapping)
-      }
-    }
-  }
-
-  flatItems(options, level = 0, pid = null) {
-    if (!options || !Array.isArray(options)) {
-      return null
-    }
-
-    if (level === 0) {
-      this.items = new Map()
-    }
-
-    for (let i = 0; i < options.length; i++) {
-      const { key, value, label, children } = options[i]
-      this.items.set(key, { key, label, value, pid, level, leaf: !children })
-      if (children) {
-        this.flatItems(children, level + 1, key)
-      }
-    }
-  }
-
-  handleOptionSelected(value) {
-    let key = null
-
-    const { valueType, onlyleaf } = this.props
-
-    this.checked = false
-    const oldCheckedOption = this.selectedOption
-    this.selectedOption = []
-
-    if (!value) this.checked = true
-
-    if (!this.items || this.items.size === 0) return
-
-    if (valueType === 'single') {
-      for (const v of this.items.values()) {
-        if (onlyleaf) {
-          if (v.leaf && v.value === value) {
-            key = v.key
-          }
-        } else if (v.value === value) {
-          key = v.key
-        }
-      }
-
-      if (!key) return
-
-      while (key) {
-        this.selectedOption.unshift(this.items.get(key))
-        key = this.items.get(key).pid
-      }
-    } else {
-      if (!Array.isArray(value)) return
-      let opt = null
-      let options = this.internalOption
-      for (let i = 0; i < value.length; i++) {
-        opt = options ? options.find((e) => e.value === value[i]) : null
-
-        if (!opt) {
-          this.selectedOption = oldCheckedOption
-          return
-        }
-        this.selectedOption.push(this.items.get(opt.key))
-        options = opt.children
-      }
-    }
-
-    this.checked = true
-    if (this.__cascaderPopup) this.__cascaderPopup.update({ popMenu: this.getSelectedMenu() })
-    if (this._content) this._content.update()
   }
 
   _disable() {
@@ -389,46 +306,25 @@ class Cascader extends Field {
       this.control.enable()
     }
   }
-
-  getSelectedMenu() {
-    if (!this.selectedOption) {
-      return null
-    }
-
-    const val = this.selectedOption.map((e) => e.value)
-    const internalOption = this.internalOption
-    let recur = internalOption
-
-    const options = internalOption && internalOption.length ? [internalOption] : []
-
-    for (let i = 0; i < val.length; i++) {
-      for (let j = 0; j < recur.length; j++) {
-        if (val[i] === recur[j].value) {
-          if (recur[j].children) {
-            options.push([...recur[j].children])
-            recur = recur[j].children
-            break
-          }
-        }
-      }
-    }
-
-    return options
-  }
 }
 
 Cascader.defaults = {
   options: [],
   showArrow: true,
   separator: ' / ',
-  fieldsMapping: { label: 'label', value: 'value', children: 'children', disabled: 'disabled' },
-  singleShowFullPath: false, // valueType 为 'single' 时，是否显示全路径
+  fieldsMapping: {
+    label: 'label',
+    value: 'value',
+    children: 'children',
+    disabled: 'disabled',
+    isLeaf: 'isLeaf',
+  },
+  singleShowFullPath: true, // valueType 为 'single' 时，是否显示全路径
   valueType: 'cascade',
   changeOnSelect: true,
   width: 200,
   height: 250,
   disabled: false,
-  onlyleaf: true,
   allowClear: true,
 }
 

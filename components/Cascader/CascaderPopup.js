@@ -1,5 +1,4 @@
 import Component from '../Component/index'
-import Empty from '../Empty/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
 import CascaderList from './CascaderList'
@@ -20,37 +19,39 @@ class CascaderPopup extends Popup {
   }
 
   _config() {
-    const { popMenu } = this.props
-    if (popMenu && popMenu.length) {
-      this.setProps({
-        children: {
-          classes: {
-            'nom-cascader-pop-container': true,
-          },
-          component: Layout,
-          body: {
-            children: {
+    const { cascaderControl } = this
+
+    this.setProps({
+      children: {
+        classes: {
+          'nom-cascader-pop-container': true,
+        },
+        component: Layout,
+        fit: true,
+        body: {
+          children: [
+            {
+              ref: (c) => {
+                cascaderControl.emptyRef = c
+              },
+              classes: {
+                'nom-cascader-empty': true,
+              },
+              hidden: true,
+              component: Layout,
+              body: {
+                children: {
+                  component: 'Empty',
+                },
+              },
+            },
+            {
               component: CascaderList,
-              popMenu,
             },
-          },
+          ],
         },
-      })
-    } else {
-      this.setProps({
-        children: {
-          styles: {
-            padding: 2,
-          },
-          component: Layout,
-          body: {
-            children: {
-              component: Empty,
-            },
-          },
-        },
-      })
-    }
+      },
+    })
 
     super._config()
   }

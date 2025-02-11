@@ -1,13 +1,13 @@
 .nom-cascader {
-  &.p-label-align-right>.nom-field-label+.nom-field-content {
+  &.p-label-align-right > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
-  &.p-label-align-left>.nom-field-label+.nom-field-content {
+  &.p-label-align-left > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
-  >.nom-field-content {
+  > .nom-field-content {
     .nom-control {
       &:not(.s-disabled):hover {
         border: 1px solid var(--nom-color-primary);
@@ -53,19 +53,56 @@
   }
 }
 
-
 .nom-cascader-popup {
   overflow: hidden;
+  .nom-cascader-empty {
+    padding: 2rem 1rem;
+    min-height: 200px;
+  }
+  .nom-cascader-option-wrapper {
+    > .nom-list-content {
+      > .nom-list-item {
+        border-right: 1px dashed var(--nom-border-color);
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+    .nom-cascader-option-list {
+      overflow-y: auto;
+      .nom-list-item {
+        &:not(.s-disabled) {
+          cursor: pointer;
+        }
+
+        &:hover {
+          background-color: var(--nom-color-hover);
+        }
+
+        &.s-selected,
+        .s-selected:hover {
+          color: var(--nom-cascader-item-active-color);
+          background-color: var(--nom-cascader-item-active-bg);
+        }
+
+        padding: 0.5rem 1rem;
+
+        .nom-icon.p-type-right {
+          color: var(--nom-cascader-icon-color);
+        }
+      }
+    }
+  }
 }
 
-.nom-cascader-popup>.nom-layout {
+.nom-cascader-popup > .nom-layout {
   max-height: 300px;
 
   &.nom-cascader-pop-container {
     display: block;
   }
 
-  >.nom-layout-body {
+  > .nom-layout-body {
     overflow-x: hidden;
 
     .nom-cascader-menu {
@@ -81,13 +118,13 @@
       vertical-align: top;
       list-style: none;
       border-right: 1px dashed var(--nom-border-color);
-      transition: all .3s;
+      transition: all 0.3s;
 
       &:last-child {
         border-right: none;
       }
 
-      >.nom-cascader-menu-item {
+      > .nom-cascader-menu-item {
         &:hover {
           cursor: pointer;
           .nom-preset-hover;
@@ -110,9 +147,9 @@
         justify-content: space-between;
         padding: 0.5rem 1rem;
 
-        >.nom-cascader-menu-item-expand-icon {
-          font-size: 85%;
+        > .nom-cascader-menu-item-expand-icon {
           padding-left: 1rem;
+          font-size: 85%;
         }
       }
     }
@@ -120,26 +157,24 @@
 }
 
 .nom-cascader-animate-top-show {
-  -webkit-animation: nom-cascader-keyframe-top-show .16s linear forwards;
-  animation: nom-cascader-keyframe-top-show .16s linear forwards;
+  -webkit-animation: nom-cascader-keyframe-top-show 0.16s linear forwards;
+  animation: nom-cascader-keyframe-top-show 0.16s linear forwards;
 }
 
 .nom-cascader-animate-bottom-show {
-  -webkit-animation: nom-cascader-keyframe-bottom-show .16s linear forwards;
-  animation: nom-cascader-keyframe-bottom-show .16s linear forwards;
+  -webkit-animation: nom-cascader-keyframe-bottom-show 0.16s linear forwards;
+  animation: nom-cascader-keyframe-bottom-show 0.16s linear forwards;
 }
 
 .nom-cascader-animate-top-hide {
-  -webkit-animation: nom-cascader-keyframe-top-hide .16s linear forwards;
-  animation: nom-cascader-keyframe-top-hide .16s linear forwards;
+  -webkit-animation: nom-cascader-keyframe-top-hide 0.16s linear forwards;
+  animation: nom-cascader-keyframe-top-hide 0.16s linear forwards;
 }
 
 .nom-cascader-animate-bottom-hide {
-  -webkit-animation: nom-cascader-keyframe-bottom-hide .16s linear forwards;
-  animation: nom-cascader-keyframe-bottom-hide .16s linear forwards;
+  -webkit-animation: nom-cascader-keyframe-bottom-hide 0.16s linear forwards;
+  animation: nom-cascader-keyframe-bottom-hide 0.16s linear forwards;
 }
-
-
 
 @-webkit-keyframes nom-cascader-keyframe-top-show {
   0% {
@@ -153,7 +188,6 @@
     transform: translateY(0%);
     opacity: 1;
   }
-
 }
 
 @keyframes nom-cascader-keyframe-top-show {
@@ -182,7 +216,6 @@
     transform: translateY(0%);
     opacity: 1;
   }
-
 }
 
 @keyframes nom-cascader-keyframe-bottom-show {

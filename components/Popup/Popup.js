@@ -44,18 +44,16 @@ class Popup extends Layer {
     if (this.props.content && this.componentType === 'Popup') {
       this.setProps({
         classes: {
-          'nom-popup-adapt-to-screen': true
+          'nom-popup-adapt-to-screen': true,
         },
         children: {
-          children: this.props.content
-        }
+          children: this.props.content,
+        },
       })
     }
 
-
     super._config()
   }
-
 
   setPosition() {
     super.setPosition()
