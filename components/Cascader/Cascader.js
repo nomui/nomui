@@ -172,6 +172,7 @@ class Cascader extends Field {
           pid: pid,
           disabled: n[fieldsMapping.disabled],
           hasChildren,
+          itemData: n,
         })
         if (hasChildren) {
           findTree(n[fieldsMapping.children], n[fieldsMapping.value], level + 1)

@@ -57,6 +57,9 @@ class CascaderList extends List {
                     {
                       component: 'Icon',
                       type: 'right',
+                      ref: (c) => {
+                        inst.iconRef = c
+                      },
                       hidden:
                         inst.props.isLeaf !== false &&
                         (!!inst.props.isLeaf || !inst.props.hasChildren),
@@ -71,7 +74,11 @@ class CascaderList extends List {
             scrollIntoView: true,
           },
           onItemSelectionChange: ({ selectedItem }) => {
-            this._drawNextLevel({ level: itemData.level, value: selectedItem.props.value })
+            this._drawNextLevel({
+              level: itemData.level,
+              value: selectedItem.props.value,
+              item: selectedItem,
+            })
 
             // 代码自动选中时临时保存valueMap
             this.tempValueMap[parseInt(itemData.level, 10)] = {
@@ -126,6 +133,7 @@ class CascaderList extends List {
           disabled: x[fieldsMapping.disabled],
           hasChildren: x[fieldsMapping.children] && x[fieldsMapping.children].length > 0,
           isLeaf: x[fieldsMapping.isLeaf],
+          itemData: x,
         }
       }),
       level: '0',
@@ -136,7 +144,7 @@ class CascaderList extends List {
     })
   }
 
-  _drawNextLevel({ value, level }) {
+  _drawNextLevel({ value, level, item }) {
     const { cascaderControl } = this
     const { fieldsMapping } = cascaderControl.props
 
@@ -146,12 +154,24 @@ class CascaderList extends List {
     this.removeItems(allItems.filter((x) => parseInt(x, 10) > parseInt(level, 10)))
 
     if (cascaderControl.props.loadData) {
+      if (item && item.iconRef) {
+        item.iconRef.update({
+          type: 'loading',
+        })
+      }
       cascaderControl.props
         .loadData({
           value,
           level,
+          itemData: item.props.itemData,
         })
         .then((options) => {
+          if (item && item.iconRef) {
+            item.iconRef.update({
+              type: 'right',
+            })
+          }
+
           if (!options || !options.length) {
             return
           }
@@ -164,6 +184,7 @@ class CascaderList extends List {
                 disabled: x[fieldsMapping.disabled],
                 hasChildren: x[fieldsMapping.children] && x[fieldsMapping.children].length > 0,
                 isLeaf: x[fieldsMapping.isLeaf],
+                itemData: x,
               }
             }),
             level: `${parseInt(level, 10) + 1}`,

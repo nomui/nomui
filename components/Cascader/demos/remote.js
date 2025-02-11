@@ -20,10 +20,11 @@ define([], function () {
               value: 'value',
               children: 'children',
             },
-            loadData: ({ level }) => {
+            loadData: ({ level, itemData }) => {
+              console.log('params:', itemData)
               return new Promise((resolve) => {
                 setTimeout(() => {
-                  if (level < 1) {
+                  if (level < 1 && itemData.isLeaf !== true) {
                     resolve([
                       {
                         value: 'KJLKAF9120301230',
@@ -38,23 +39,23 @@ define([], function () {
                 }, 500)
               })
             },
-            // options: [
-            //   {
-            //     value: 'PQK9DZSTrQtu4TAvlPWcc',
-            //     text: '广州医科大学附属番禺中心医院',
-            //     isLeaf: false,
-            //   },
-            //   {
-            //     value: 'dEd7SUB1qwLx_pVIjihLW',
-            //     text: '北京市平谷区医院',
-            //     isLeaf: false,
-            //   },
-            //   {
-            //     value: 'SYpXnRzpr4gAq8UEi3qG1',
-            //     text: '厦门弘爱医院',
-            //     isLeaf: false,
-            //   },
-            // ],
+            options: [
+              {
+                value: 'PQK9DZSTrQtu4TAvlPWcc',
+                text: '广州医科大学附属番禺中心医院',
+                isLeaf: false,
+              },
+              {
+                value: 'dEd7SUB1qwLx_pVIjihLW',
+                text: '北京市平谷区医院',
+                isLeaf: false,
+              },
+              {
+                value: 'SYpXnRzpr4gAq8UEi3qG1',
+                text: '厦门弘爱医院',
+                isLeaf: true,
+              },
+            ],
           },
 
           {
