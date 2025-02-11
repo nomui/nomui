@@ -5,6 +5,9 @@ import { isString } from '../util/index'
 class CascaderList extends List {
   constructor(props, ...mixins) {
     const defaults = {
+      // showEmpty: {
+      //   size: 'large',
+      // },
       classes: {
         'nom-cascader-option-wrapper': true,
       },
@@ -98,10 +101,23 @@ class CascaderList extends List {
     this.cascaderControl.optionList = this
   }
 
+  _rendered() {
+    if (!this.props.data || !this.props.data.length) {
+      this.cascaderControl.emptyRef.show()
+    } else {
+      this.cascaderControl.emptyRef.hide()
+    }
+  }
+
   _drawLists() {
     this.tempValueMap = {}
     const { cascaderControl } = this
     const { options, fieldsMapping } = cascaderControl.props
+
+    if (!options || !options.length) {
+      this._drawNextLevel({ level: '0', value: '' })
+      return
+    }
     const firstCol = {
       items: options.map((x) => {
         return {
@@ -139,7 +155,7 @@ class CascaderList extends List {
           if (!options || !options.length) {
             return
           }
-
+          this.cascaderControl.emptyRef.hide()
           this.appendDataItem({
             items: options.map((x) => {
               return {
@@ -156,12 +172,14 @@ class CascaderList extends List {
         })
     } else {
       const arr = this._getNextLevelItems({ value, level })
-      arr.length &&
+      if (arr.length) {
+        this.cascaderControl.emptyRef.hide()
         this.appendDataItem({
           items: arr,
           level: `${parseInt(level, 10) + 1}`,
           key: `${parseInt(level, 10) + 1}`,
         })
+      }
     }
   }
 
@@ -198,7 +216,7 @@ class CascaderList extends List {
       cascaderControl._onValueChange()
     }
     if (isLeaf) {
-      // cascaderControl.popup.animateHide()
+      cascaderControl.popup.animateHide()
     }
   }
 }
