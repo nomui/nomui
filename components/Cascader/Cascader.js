@@ -325,7 +325,6 @@ Cascader.defaults = {
   width: 200,
   height: 250,
   disabled: false,
-  onlyleaf: true,
   allowClear: true,
 }
 
