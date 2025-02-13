@@ -7676,6 +7676,10 @@ table.nom-table.p-bordered {
 .nom-grid .hidden {
   display: none;
 }
+.nom-grid .nom-table-checker-with-toolbar {
+  padding-left: 0;
+  padding-right: 0;
+}
 .nom-grid .nom-grid-setting {
   position: absolute;
   top: 0;
@@ -7924,7 +7928,7 @@ table.nom-table.p-bordered {
 }
 .nom-grid .nom-grid-column-tools {
   display: inline-flex;
-  padding-right: 0.5rem;
+  padding-right: 0.25rem;
 }
 .nom-grid .nom-grid-column-tools-hover {
   visibility: hidden;
@@ -7935,7 +7939,7 @@ table.nom-table.p-bordered {
 }
 .nom-grid .nom-grid-column-th-tools {
   display: inline-flex;
-  padding-right: 0.5rem;
+  padding-right: 0.25rem;
 }
 .nom-grid .nom-grid-column-th-tools-float-right {
   position: absolute;

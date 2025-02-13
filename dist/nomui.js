@@ -18251,6 +18251,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "nom-table-fixed-right": this.props.column.fixed === "right",
           "nom-table-fixed-right-first": this.props.column.firstRight,
           "nom-table-ellipsis": isEllipsis,
+          "nom-table-checker-with-toolbar":
+            !!this.props.column.toolbar && this.props.column.isChecker,
         },
       });
     }
@@ -19485,6 +19487,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           ),
           "nom-table-ellipsis": isEllipsis,
           "nom-table-checker-column": !!this.props.column.isChecker,
+          "nom-table-checker-with-toolbar":
+            !!this.props.column.toolbar && this.props.column.isChecker,
         },
         attrs: {
           colspan: this.props.column.colSpan,
