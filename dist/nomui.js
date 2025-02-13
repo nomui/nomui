@@ -8870,10 +8870,26 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return super.after(props);
     }
     _reset() {
+      this._resetValidStatus();
       this.setValue(this.initValue);
     }
     _clear() {
+      this._resetValidStatus();
       this.setValue(null);
+    }
+    _resetValidStatus() {
+      this.removeClass("s-invalid");
+      if (this.errorTip) {
+        this.errorTip.remove();
+        delete this.errorTip;
+      }
+      this.validateTriggered = false;
+      if (this.fields && this.fields.length) {
+        for (let i = 0; i < this.fields.length; i++) {
+          this.fields[i]._resetValidStatus &&
+            this.fields[i]._resetValidStatus();
+        }
+      }
     }
     triggerEdit() {
       const element = this.control.element;
