@@ -12459,6 +12459,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.initValue = clone(value);
       this.internalOption = JSON.parse(JSON.stringify(options));
       this._flatItems();
+      if (this.props.leafOnly || this.props.onlyleaf) {
+        this.props.changeOnSelect = false;
+      }
       if (value && value.length) {
         this.valueMap = {};
         this._setValueMap();
@@ -23728,6 +23731,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         iconRender,
         clearText,
         popupWidth,
+        searchPlaceholder,
       } = this.props;
       let container;
       if (popupContainer === "self") {
@@ -23756,7 +23760,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           items: [
             me.props.searchable && {
               component: "Textbox",
-              placeholder: "请输入...",
+              placeholder: searchPlaceholder,
               leftIcon: "search",
               onValueChange: debounce(function ({ newValue }) {
                 me._filterItem(newValue);
@@ -23942,6 +23946,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     searchable: false,
     allowClear: true,
     placeholder: "请选择图标",
+    searchPlaceholder: "请输入",
     clearText: "清空",
     popupWidth: 340,
   };
