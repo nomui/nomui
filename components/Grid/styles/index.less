@@ -6,12 +6,15 @@
 
   .nom-grid-header {
     z-index: 10;
-
-
   }
 
   .hidden {
     display: none;
+  }
+
+  .nom-table-checker-with-toolbar {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .nom-grid-setting {
@@ -23,7 +26,7 @@
     display: flex;
     align-items: center;
 
-    >.nom-grid-setting-btn {
+    > .nom-grid-setting-btn {
       background-color: transparent;
     }
 
@@ -33,7 +36,7 @@
     }
   }
 
-  >.nom-grid-header {
+  > .nom-grid-header {
     position: relative;
     overflow: hidden;
 
@@ -80,7 +83,7 @@
     }
   }
 
-  >.nom-grid-body {
+  > .nom-grid-body {
     position: relative;
     flex: 1;
     height: 100%;
@@ -93,12 +96,12 @@
       height: 100%;
     }
 
-    >.nom-grid-body-content {
+    > .nom-grid-body-content {
       overflow-x: auto;
     }
   }
 
-  >.nom-grid-footer {
+  > .nom-grid-footer {
     position: relative;
     overflow: hidden;
 
@@ -110,18 +113,17 @@
   &.p-bordered {
     border: 1px solid var(--nom-border-color);
 
-    >.nom-grid-body {
+    > .nom-grid-body {
       margin-bottom: -1px;
     }
 
-    >.nom-grid-body+.nom-grid-footer {
+    > .nom-grid-body + .nom-grid-footer {
       margin-top: 1px;
       margin-bottom: -1px;
     }
   }
 
   &.nom-table-has-row-group {
-
     tbody tr,
     tbody tr:hover {
       background-color: inherit;
@@ -134,13 +136,12 @@
     display: flex;
     flex-direction: column;
 
-    >.nom-grid-header {
+    > .nom-grid-header {
       flex-shrink: 0;
       overflow-y: scroll;
       background-color: var(--nom-grid-header-background-color);
 
-
-      >.nom-table {
+      > .nom-table {
         background-color: var(--nom-grid-header-background-color);
 
         &::after {
@@ -149,17 +150,17 @@
         }
       }
 
-      >.nom-grid-header-content {
+      > .nom-grid-header-content {
         overflow: hidden;
       }
     }
 
-    >.nom-grid-body {
+    > .nom-grid-body {
       flex: 1;
       height: 100%;
       overflow-y: scroll;
 
-      >.nom-grid-body-content {
+      > .nom-grid-body-content {
         overflow-x: auto;
         overflow-y: scroll;
       }
@@ -192,17 +193,16 @@
       height: min(3rem);
       padding: 0 1rem;
 
-      >.nom-td-excel-mode-inner {
+      > .nom-td-excel-mode-inner {
         display: flex;
         align-items: center;
 
-        >span:last-child {
+        > span:last-child {
           flex-grow: 1;
           width: 0;
         }
-        >.nom-flex {
+        > .nom-flex {
           flex-grow: 1;
-          
         }
         .nom-grid-td-cell-tree {
           flex-grow: 1;
@@ -215,12 +215,10 @@
       }
 
       &.nom-td-excel-mode-active {
-        padding: 0 .25rem;
+        padding: 0 0.25rem;
         cursor: pointer;
         box-shadow: var(--nom-grid-td-excel-mode-active-hover-box-shadow);
       }
-
-
     }
   }
 
@@ -242,38 +240,37 @@
         display: flex;
         min-height: 1rem;
 
-        >div:first-child {
+        > div:first-child {
           flex-grow: 1;
           width: 0;
           display: flex;
 
-          >.nom-flex {
+          > .nom-flex {
             flex-grow: 1;
-            
           }
 
           .nom-grid-td-cell-tree {
             flex-grow: 1;
           }
 
-          >span:last-child:not(.nom-table-cell-content) {
+          > span:last-child:not(.nom-table-cell-content) {
             flex-grow: 1;
             width: 0;
           }
 
-          >span.nom-table-cell-content {
+          > span.nom-table-cell-content {
             display: flex;
             width: 100%;
 
-            >div:only-child {
+            > div:only-child {
               display: flex;
               width: 100%;
-            
-              >.nom-field {
+
+              > .nom-field {
                 flex-grow: 1;
               }
 
-              >.nom-tree-grid-td {
+              > .nom-tree-grid-td {
                 flex-grow: 1;
                 width: 0;
                 overflow: hidden;
@@ -303,7 +300,7 @@
 
       &.nom-td-editable-active {
         &:not(.nom-td-tree-node) {
-          padding: 0 .25rem;
+          padding: 0 0.25rem;
         }
 
         cursor: pointer;
@@ -314,12 +311,8 @@
           }
         }
       }
-
     }
-
   }
-
-
 
   .nom-grid-checkbox {
     display: inline-flex;
@@ -330,12 +323,12 @@
   }
 
   .nom-table-cell-title {
-    .nom-grid-checkbox()
+    .nom-grid-checkbox();
   }
 
   .nom-grid-column-tools {
     display: inline-flex;
-    padding-right: .5rem;
+    padding-right: 0.25rem;
   }
 
   .nom-grid-column-tools-hover {
@@ -347,10 +340,9 @@
     visibility: hidden !important;
   }
 
-
   .nom-grid-column-th-tools {
     display: inline-flex;
-    padding-right: .5rem;
+    padding-right: 0.25rem;
   }
 
   .nom-grid-column-th-tools-float-right {
@@ -364,8 +356,7 @@
     visibility: hidden !important;
   }
 
-
-  tr:hover>td .nom-grid-column-tools-hover {
+  tr:hover > td .nom-grid-column-tools-hover {
     visibility: visible;
     opacity: 1;
   }
@@ -378,7 +369,6 @@
   th:hover .nom-grid-column-th-tools-hover {
     visibility: visible;
   }
-
 }
 
 .nom-grid-setting-panel {
@@ -415,25 +405,25 @@
         width: 24px;
       }
 
-      >.nom-layout-header {
+      > .nom-layout-header {
         height: 40px;
         padding: 0 10px;
 
         .nom-checkbox {
-          >.nom-field-content {
+          > .nom-field-content {
             line-height: 100%;
           }
         }
       }
 
-      >.nom-layout-body {
+      > .nom-layout-body {
         .nom-layout-header {
           height: 42px;
           border-bottom: none;
         }
       }
 
-      >.nom-layout-footer {
+      > .nom-layout-footer {
         height: 40px;
         min-height: 40px;
         padding: 0 10px;
@@ -444,23 +434,21 @@
   .nom-tree-node-content {
     position: relative;
 
-    >.nom-grid-setting-item-pin {
+    > .nom-grid-setting-item-pin {
       position: absolute;
       top: 5px;
       right: 5px;
     }
-
   }
 
   .nom-grid-setting-group-title {
     .nom-tree-node-content {
-
-      >.nom-icon,
-      >.nom-tree-node-checkbox {
+      > .nom-icon,
+      > .nom-tree-node-checkbox {
         display: none;
       }
 
-      >.nom-tree-node-content-text {
+      > .nom-tree-node-content-text {
         padding-left: 1rem;
         color: var(--nom-text-color-muted);
       }
@@ -469,7 +457,7 @@
 
   .nom-grid-setting-target-node {
     &.s-disabled {
-      opacity: .65;
+      opacity: 0.65;
     }
 
     .nom-tree-node-content {
@@ -483,7 +471,7 @@
         }
       }
 
-      >.nom-tree-node-content-text {
+      > .nom-tree-node-content-text {
         flex-grow: 1;
       }
     }
@@ -502,13 +490,13 @@
   position: relative;
   display: inline-flex;
 
-  >.nom-checkbox {
+  > .nom-checkbox {
     visibility: hidden;
     transition: none;
     opacity: 0;
   }
 
-  >.nom-grid-order-text {
+  > .nom-grid-order-text {
     transition: none;
     position: absolute;
     top: 6px;
@@ -532,24 +520,23 @@
 .nom-tr.s-checked,
 .nom-tr:hover {
   .nom-grid-checker-and-order {
-    >.nom-checkbox {
+    > .nom-checkbox {
       visibility: visible;
       opacity: 1;
     }
 
-    >.nom-grid-order-text {
+    > .nom-grid-order-text {
       visibility: hidden;
     }
   }
 }
-
 
 .nom-td {
   .nom-grid-td-cell-tree {
     display: flex;
     align-items: center;
     flex-grow: 1;
-    >.nom-tree-grid-td {
+    > .nom-tree-grid-td {
       flex-grow: 1;
       width: 0;
       overflow: hidden;
