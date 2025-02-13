@@ -16959,6 +16959,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return null;
     }
     _clear() {
+      this._resetValidStatus();
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i];
         if (field.setValue) {
