@@ -30,16 +30,12 @@ class Group extends Field {
       children.push(fieldProps)
     }
 
-
     this.setProps({
       control: { children: children },
     })
 
-
     super._config()
   }
-
-
 
   getValue(options) {
     const { valueOptions } = this.props
@@ -99,9 +95,8 @@ class Group extends Field {
           field.setValue(fieldValue)
         }
       }
-    }
-    else if (isPlainObject(value)) {
-      Object.keys(value).forEach(key => {
+    } else if (isPlainObject(value)) {
+      Object.keys(value).forEach((key) => {
         const field = this.getField(key)
         if (field) {
           let fieldValue = value
@@ -178,6 +173,7 @@ class Group extends Field {
   }
 
   _clear() {
+    this._resetValidStatus()
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i]
       if (field.setValue) {
