@@ -25,6 +25,10 @@ class Cascader extends Field {
     this.internalOption = JSON.parse(JSON.stringify(options))
     this._flatItems()
 
+    if (this.props.leafOnly || this.props.onlyleaf) {
+      this.props.changeOnSelect = false
+    }
+
     if (value && value.length) {
       this.valueMap = {}
       this._setValueMap()
