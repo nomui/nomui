@@ -26,6 +26,8 @@ class PartialDatePicker extends Textbox {
       this.props.format = formatMap[mode]
     }
 
+    this._fixValue()
+
     if (this.props.value) {
       this.year = this.props.mode === 'year' ? this.props.value : this.props.value.substring(0, 4)
     }
@@ -537,8 +539,22 @@ class PartialDatePicker extends Textbox {
     }
   }
 
+  _fixValue() {
+    let { value } = this.props
+    if (value instanceof Date || (typeof value === 'string' && !Number.isNaN(Date.parse(value)))) {
+      const date = new Date(value)
+      if (this.props.mode === 'year') {
+        value = date.getFullYear().toString()
+      } else if (this.props.mode === 'month') {
+        value = date.format('yyyy-MM')
+      }
+    }
+    this.props.value = value
+  }
+
   resolveValue(value) {
     const v = value || this.getValue() || this.year
+
     const strArr = v.match(/\d+/g)
     if (!strArr) {
       return
