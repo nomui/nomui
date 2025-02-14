@@ -1026,6 +1026,9 @@ class Grid extends Component {
     const order = []
     const trs = this.body.table.element.rows
     for (let i = 0; i < trs.length; i++) {
+      if (!!this.props.rowExpandable && order.indexOf(trs[i].dataset.key) > -1) {
+        continue
+      }
       order.push(trs[i].dataset.key)
     }
     return order
