@@ -40,9 +40,13 @@ class Tbody extends Component {
           },
           onClick: (args) => {
             const { event, sender } = args
-            this.table.hasGrid && this.table.grid.props.onRowClick && this.table.grid._callHandler('onRowClick', { event, rowData: sender.props.data })
+            this.table.hasGrid &&
+              this.table.grid.props.onRowClick &&
+              this.table.grid._callHandler('onRowClick', { event, rowData: sender.props.data })
 
-            this.table.hasGrid && this.table.grid.props.rowSelectable && this.table.selectTr(args.sender)
+            this.table.hasGrid &&
+              this.table.grid.props.rowSelectable &&
+              this.table.selectTr(args.sender)
           },
         },
         rowDefaults,
@@ -79,17 +83,22 @@ class Tbody extends Component {
   }
 
   _rendered() {
-    const that = this
     if (this.table.hasGrid && this.table.grid.props.rowSortable) {
+      const me = this
+      const { grid } = this.table
       new Sortable(this.element, {
         group: this.key,
         animation: 150,
         fallbackOnBody: true,
         swapThreshold: 0.65,
         handle: '.nom-grid-drag-handler',
-        onEnd: function () {
-          // const data = { oldIndex: evt.oldIndex, newIndex: evt.newIndex }
-          that.table.grid.handleDrag()
+        filter: '.nom-grid-tr-no-drag',
+        onEnd: function ({ item, oldIndex, newIndex }) {
+          me.table._showExpandedTr()
+          grid.handleDrag({ item, oldIndex, newIndex })
+        },
+        onStart: function () {
+          me.table._hideExpandedTr()
         },
       })
     }

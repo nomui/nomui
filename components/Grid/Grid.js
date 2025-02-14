@@ -971,10 +971,38 @@ class Grid extends Component {
     }
   }
 
-  handleDrag() {
+  handleDrag({ item, oldIndex, newIndex }) {
+    this._resortExpandedTr({ item, oldIndex, newIndex })
     if (this.props.rowSortable && this.props.rowSortable.onEnd) {
       this._callHandler(this.props.rowSortable.onEnd)
     }
+  }
+
+  _resortExpandedTr({ item }) {
+    const row = item.component
+    if (!row) {
+      return
+    }
+    // 重新调整 expandedRows的位置
+    this._adjustExpandedRows()
+  }
+
+  _adjustExpandedRows() {
+    const table = this.body.table.element
+    const mainRows = Array.from(table.querySelectorAll('tr[data-key]'))
+    const expandedRows = Array.from(table.querySelectorAll('tr.nom-expanded-tr'))
+
+    mainRows.forEach((mainRow) => {
+      const dataKey = mainRow.getAttribute('data-key')
+
+      const correspondingExpandedRow = expandedRows.find(
+        (row) => row.getAttribute('data-key') === dataKey,
+      )
+
+      if (correspondingExpandedRow) {
+        mainRow.insertAdjacentElement('afterend', correspondingExpandedRow)
+      }
+    })
   }
 
   getData(options = {}) {

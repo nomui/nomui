@@ -47,13 +47,13 @@ class Table extends Component {
         this.props.onlyBody !== true && { component: Thead },
         this.props.onlyHead !== true && { component: Tbody },
         hasMask &&
-        this.parent.componentType === 'GridBody' && {
-          tag: 'div',
-          classes: { 'nom-table-th-hover-mask': true },
-          _created() {
-            that.grid.highlightMask = this
+          this.parent.componentType === 'GridBody' && {
+            tag: 'div',
+            classes: { 'nom-table-th-hover-mask': true },
+            _created() {
+              that.grid.highlightMask = this
+            },
           },
-        },
       ],
     })
   }
@@ -71,6 +71,26 @@ class Table extends Component {
         },
       })
     }
+  }
+
+  _hideExpandedTr() {
+    const ele = this.tbody.element
+    const sibs = ele.childNodes
+    sibs.forEach((sib) => {
+      if (sib.classList.contains('nom-expanded-tr')) {
+        sib.classList.add('nom-grid-tr-hidden')
+      }
+    })
+  }
+
+  _showExpandedTr() {
+    const ele = this.tbody.element
+    const sibs = ele.childNodes
+    sibs.forEach((sib) => {
+      if (sib.classList.contains('nom-expanded-tr')) {
+        sib.classList.remove('nom-grid-tr-hidden')
+      }
+    })
   }
 
   loading() {
@@ -137,7 +157,7 @@ Table.defaults = {
   okText: '确定',
   resetText: '重置',
   freezeText: '固定列',
-  unfreezeText: '取消固定'
+  unfreezeText: '取消固定',
 }
 
 Component.register(Table)
