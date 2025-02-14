@@ -26923,6 +26923,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (!this.props.format) {
         this.props.format = formatMap[mode];
       }
+      this._fixValue();
       if (this.props.value) {
         this.year =
           this.props.mode === "year"
@@ -27366,6 +27367,21 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           break;
         }
       }
+    }
+    _fixValue() {
+      let { value } = this.props;
+      if (
+        value instanceof Date ||
+        (typeof value === "string" && !Number.isNaN(Date.parse(value)))
+      ) {
+        const date = new Date(value);
+        if (this.props.mode === "year") {
+          value = date.getFullYear().toString();
+        } else if (this.props.mode === "month") {
+          value = date.format("yyyy-MM");
+        }
+      }
+      this.props.value = value;
     }
     resolveValue(value) {
       const v = value || this.getValue() || this.year;
