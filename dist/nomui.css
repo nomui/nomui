@@ -7680,6 +7680,10 @@ table.nom-table.p-bordered {
   padding-left: 0;
   padding-right: 0;
 }
+.nom-grid .nom-grid-tr-hidden {
+  display: none;
+  pointer-events: none;
+}
 .nom-grid .nom-grid-setting {
   position: absolute;
   top: 0;

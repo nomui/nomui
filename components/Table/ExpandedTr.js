@@ -30,7 +30,7 @@ class ExpandedTr extends Component {
         normalizedRowExpandable = {}
       }
 
-      const { render = () => { } } = normalizedRowExpandable
+      const { render = () => {} } = normalizedRowExpandable
 
       const content = render({ parentRow, row: this, rowData: this.props.data, grid: this.grid })
 
@@ -42,25 +42,29 @@ class ExpandedTr extends Component {
       setTimeout(() => {
         parentRow.expandIndicotorIconRef.show()
         parentRow.expandIndicotorIconRef.update({
-          expanded: !this.props.hidden
+          expanded: !this.props.hidden,
         })
       }, 0)
+      let colspan = columns.length
+      if (this.grid && this.grid.props.rowSortable) {
+        colspan += 1
+      }
       this.setProps({
         children: {
           component: ExpandedTrTd,
           attrs: {
-            colspan: columns.length,
+            colspan: colspan,
           },
           children: {
-            ...content, onCreated: ({ inst }) => {
+            ...content,
+            onCreated: ({ inst }) => {
               this.subContent = inst
-            }
+            },
           },
         },
       })
     }
   }
-
 }
 
 Component.register(ExpandedTr)

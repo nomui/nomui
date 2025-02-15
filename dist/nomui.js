@@ -18708,10 +18708,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             expanded: !this.props.hidden,
           });
         }, 0);
+        let colspan = columns.length;
+        if (this.grid && this.grid.props.rowSortable) {
+          colspan += 1;
+        }
         this.setProps({
           children: {
             component: ExpandedTrTd,
-            attrs: { colspan: columns.length },
+            attrs: { colspan: colspan },
             children: Object.assign({}, content, {
               onCreated: ({ inst }) => {
                 this.subContent = inst;
@@ -19141,17 +19145,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.setProps(props);
     }
     _rendered() {
-      const that = this;
       if (this.table.hasGrid && this.table.grid.props.rowSortable) {
+        const me = this;
+        const { grid } = this.table;
         new Sortable(this.element, {
           group: this.key,
           animation: 150,
           fallbackOnBody: true,
           swapThreshold: 0.65,
           handle: ".nom-grid-drag-handler",
-          onEnd: function () {
-            // const data = { oldIndex: evt.oldIndex, newIndex: evt.newIndex }
-            that.table.grid.handleDrag();
+          filter: ".nom-grid-tr-no-drag",
+          onEnd: function ({ item, oldIndex, newIndex }) {
+            me.table._showExpandedTr();
+            grid.handleDrag({ item, oldIndex, newIndex });
+          },
+          onStart: function () {
+            me.table._hideExpandedTr();
           },
         });
       }
@@ -19857,6 +19866,24 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this.grid.setProps({ classes: { "nom-table-has-row-group": true } });
       }
+    }
+    _hideExpandedTr() {
+      const ele = this.tbody.element;
+      const sibs = ele.childNodes;
+      sibs.forEach((sib) => {
+        if (sib.classList.contains("nom-expanded-tr")) {
+          sib.classList.add("nom-grid-tr-hidden");
+        }
+      });
+    }
+    _showExpandedTr() {
+      const ele = this.tbody.element;
+      const sibs = ele.childNodes;
+      sibs.forEach((sib) => {
+        if (sib.classList.contains("nom-expanded-tr")) {
+          sib.classList.remove("nom-grid-tr-hidden");
+        }
+      });
     }
     loading() {
       this.loadingInst = new Loading({ container: this.parent });
@@ -21982,10 +22009,34 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         );
       }
     }
-    handleDrag() {
+    handleDrag({ item, oldIndex, newIndex }) {
+      this._resortExpandedTr({ item, oldIndex, newIndex });
       if (this.props.rowSortable && this.props.rowSortable.onEnd) {
         this._callHandler(this.props.rowSortable.onEnd);
       }
+    }
+    _resortExpandedTr({ item }) {
+      const row = item.component;
+      if (!row) {
+        return;
+      } // 重新调整 expandedRows的位置
+      this._adjustExpandedRows();
+    }
+    _adjustExpandedRows() {
+      const table = this.body.table.element;
+      const mainRows = Array.from(table.querySelectorAll("tr[data-key]"));
+      const expandedRows = Array.from(
+        table.querySelectorAll("tr.nom-expanded-tr")
+      );
+      mainRows.forEach((mainRow) => {
+        const dataKey = mainRow.getAttribute("data-key");
+        const correspondingExpandedRow = expandedRows.find(
+          (row) => row.getAttribute("data-key") === dataKey
+        );
+        if (correspondingExpandedRow) {
+          mainRow.insertAdjacentElement("afterend", correspondingExpandedRow);
+        }
+      });
     }
     getData(options = {}) {
       if (!this.props.data || !this.props.data.length) {
@@ -22007,6 +22058,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const order = [];
       const trs = this.body.table.element.rows;
       for (let i = 0; i < trs.length; i++) {
+        if (
+          !!this.props.rowExpandable &&
+          order.indexOf(trs[i].dataset.key) > -1
+        ) {
+          continue;
+        }
         order.push(trs[i].dataset.key);
       }
       return order;
