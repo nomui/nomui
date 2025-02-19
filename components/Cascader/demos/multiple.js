@@ -1,4 +1,4 @@
-define([], function () {
+define(['./data.js'], function (data) {
   return {
     title: '多选',
     file: 'multiple',
@@ -13,68 +13,17 @@ define([], function () {
             ref: (c) => {
               cascader = c
             },
-            multiple: true,
+            multiple: {
+              cascade: true,
+            },
             placeholder: '请选择',
             fieldsMapping: {
-              key: 'value',
-              label: 'text',
-              value: 'value',
-              children: 'children',
+              key: 'Id',
+              label: 'Name',
+              value: 'Id',
+              children: 'Childs',
             },
-            value: [
-              'PQK9DZSTrQtu4TAvlPWcc',
-              'YqNnRlbGksR7pS8Z0ajfi',
-              'TdtIrbqMsGT2pG-_tSH3D',
-              'dEd7SUB1qwLx_pVIjihLW',
-            ],
-            options: [
-              {
-                value: 'PQK9DZSTrQtu4TAvlPWcc',
-                text: '广州医科大学附属番禺中心医院',
-                children: [
-                  {
-                    value: 'TdtIrbqMsGT2pG-_tSH3D',
-                    text: '板蓝根颗粒',
-                    children: null,
-                    label: '板蓝根颗粒',
-                    disabled: false,
-                  },
-                  {
-                    value: 'YqNnRlbGksR7pS8Z0ajfi',
-                    text: '999感冒灵颗粒',
-                    children: null,
-                    label: '999感冒灵颗粒',
-                    disabled: false,
-                  },
-                ],
-              },
-              {
-                value: 'dEd7SUB1qwLx_pVIjihLW',
-                text: '北京市平谷区医院',
-                children: [
-                  {
-                    value: 'TdtIrbqMsGT2pG-_tSH3D',
-                    text: '板蓝根颗粒',
-                    children: null,
-                    label: '板蓝根颗粒',
-                    disabled: true,
-                  },
-                ],
-              },
-              {
-                value: 'SYpXnRzpr4gAq8UEi3qG1',
-                text: '厦门弘爱医院',
-                children: [
-                  {
-                    value: 'YqNnRlbGksR7pS8Z0ajfi',
-                    text: '999感冒灵颗粒',
-                    children: null,
-                    label: '999感冒灵颗粒',
-                    disabled: false,
-                  },
-                ],
-              },
-            ],
+            options: data,
           },
 
           {

@@ -411,6 +411,11 @@ class Cascader extends Field {
 
       this.placeholder && this.placeholder.hide()
     } else {
+      if (this.props.multiple) {
+        this._content.update({ children: '' })
+      } else {
+        this._content.element.innerText = ''
+      }
       this.placeholder && this.placeholder.show()
     }
 
