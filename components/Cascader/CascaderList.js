@@ -62,6 +62,9 @@ class CascaderList extends List {
                     ref: (c) => {
                       inst.checkerRef = c
                     },
+                    hidden:
+                      this.cascaderControl.props.onlyleaf &&
+                      (inst.props.isLeaf === false || inst.props.hasChildren),
                     value: this._isNodeChecked(inst.props.value),
                     onValueChange: ({ newValue }) => {
                       this._handleNodeCheck({
@@ -250,7 +253,7 @@ class CascaderList extends List {
   _handleItemSelect({ item, level }) {
     const isLeaf = item.props.isLeaf !== false && !item.props.hasChildren
     const { cascaderControl } = this
-    const { changeOnSelect } = cascaderControl.props
+    const { changeOnSelect, multiple } = cascaderControl.props
 
     // 保持当前栏目的value text
     this.tempValueMap[level] = {
@@ -261,6 +264,10 @@ class CascaderList extends List {
     // 清除历史的栏目数据
     for (let i = level + 1; i < 20; i++) {
       delete this.tempValueMap[i]
+    }
+
+    if (multiple) {
+      return
     }
 
     if (isLeaf || changeOnSelect) {

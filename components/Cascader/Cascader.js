@@ -26,7 +26,7 @@ class Cascader extends Field {
     this.internalOption = JSON.parse(JSON.stringify(options))
     this._flatItems()
 
-    if (this.props.leafOnly || this.props.onlyleaf) {
+    if (this.props.onlyleaf && !this.props.multiple) {
       this.props.changeOnSelect = false
     }
 
@@ -359,8 +359,8 @@ class Cascader extends Field {
   }
 
   _removeItem(value) {
-    console.log(value)
-    // todo
+    this.multiValueMap = this.multiValueMap.filter((x) => x.value !== value)
+    this._onValueChange()
   }
 
   _onNodeCheckChange({ item, newValue }) {
@@ -461,7 +461,7 @@ Cascader.defaults = {
   height: 250,
   disabled: false,
   allowClear: true,
-  maxTagCount: 2,
+  maxTagCount: 5,
 }
 
 Component.register(Cascader)
