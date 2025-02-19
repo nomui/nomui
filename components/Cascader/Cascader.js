@@ -12,13 +12,14 @@ class Cascader extends Field {
   _created() {
     super._created()
     this.valueMap = {}
+    this.multiValueMap = []
   }
 
   _config() {
     const me = this
 
     const children = []
-    const { showArrow, placeholder, allowClear } = this.props
+    const { showArrow, placeholder, allowClear, multiple } = this.props
 
     const { value, options, disabled } = this.props
     this.initValue = clone(value)
@@ -31,6 +32,7 @@ class Cascader extends Field {
 
     if (value && value.length) {
       this.valueMap = {}
+      this.multiValueMap = []
       this._setValueMap()
     }
 
@@ -41,7 +43,7 @@ class Cascader extends Field {
       ref: (c) => {
         me._content = c
       },
-      children: this.getValueText(),
+      children: multiple ? this._getMultipleText() : this.getValueText(),
     })
 
     if (isString(placeholder)) {
@@ -125,7 +127,7 @@ class Cascader extends Field {
   _loopLoadValueData() {
     const me = this
     let { value } = this.props
-    const { fieldsMapping } = this.props
+    const { fieldsMapping, multiple } = this.props
     if (!Array.isArray(value)) {
       value = [value]
     }
@@ -147,7 +149,7 @@ class Cascader extends Field {
           }
         })
         me._setValueMap()
-        me._content.update({ children: me.getValueText() })
+        me._content.update({ children: multiple ? me._getMultipleText() : me.getValueText() })
       })
       .catch((error) => {
         console.error('load data failed:', error)
@@ -163,6 +165,7 @@ class Cascader extends Field {
     if (isNullish(value)) {
       return
     }
+
     if (isString(value)) {
       value = this._getCascadeValue(value)
     }
@@ -172,9 +175,16 @@ class Cascader extends Field {
     value.forEach((n, i) => {
       const item = this.items.find((x) => x.value === n)
       if (item) {
-        this.valueMap[i] = {
-          value: item.value,
-          text: item.label,
+        if (this.props.multiple) {
+          this.multiValueMap.push({
+            value: item.value,
+            text: item.label,
+          })
+        } else {
+          this.valueMap[i] = {
+            value: item.value,
+            text: item.label,
+          }
         }
       }
     })
@@ -233,20 +243,32 @@ class Cascader extends Field {
   }
 
   _getValue() {
-    const v = []
-    for (const k in this.valueMap) {
-      v.push(this.valueMap[k].value)
+    let v = []
+    if (this.props.multiple) {
+      v = this.multiValueMap.map((x) => x.value)
+    } else {
+      for (const k in this.valueMap) {
+        v.push(this.valueMap[k].value)
+      }
     }
-
     if (this.props.valueType === 'cascade') {
       return v.length ? v : null
     }
-
     return v.length ? v[v.length - 1] : null
   }
 
   _getValueText() {
     const t = []
+    if (this.props.multiple) {
+      if (!this.multiValueMap.length) {
+        return ''
+      }
+      const arr = this.multiValueMap.map((n) => {
+        return n.text
+      })
+      return arr.join(',')
+    }
+
     for (const k in this.valueMap) {
       t.push(this.valueMap[k].text)
     }
@@ -258,12 +280,56 @@ class Cascader extends Field {
     return t.length ? t.join(this.props.separator) : ''
   }
 
+  _getMultipleText() {
+    if (!this.multiValueMap.length) {
+      return ''
+    }
+    return {
+      component: 'List',
+      classes: {
+        'nom-cascader-multiple-content-list': true,
+      },
+      onClick: ({ event }) => {
+        event.stopPropagation()
+      },
+      data: this.multiValueMap,
+      itemRender: ({ itemData }) => {
+        return {
+          classes: {
+            'nom-cascader-multiple-content-list-text': true,
+          },
+          children: [
+            {
+              attrs: {
+                title: itemData.text,
+              },
+              children: itemData.text,
+            },
+            {
+              component: 'Icon',
+              type: 'times',
+              onClick: () => {
+                this._removeItem(itemData.value)
+              },
+            },
+          ],
+        }
+      },
+    }
+  }
+
+  _removeItem(value) {
+    console.log(value)
+    // todo
+  }
+
   _setValue(value) {
     if (!value && this._content) {
       this._content.element.innerText = ''
     }
     this.props.value = value
     this.valueMap = {}
+    this.multiValueMap = []
     this._setValueMap()
     this._onValueChange()
   }
@@ -283,7 +349,12 @@ class Cascader extends Field {
     this.props.value = this.currentValue
 
     if (this._getValueText().length) {
-      this._content.element.innerText = this._getValueText()
+      if (this.props.multiple) {
+        this._content.update({ children: this._getMultipleText() })
+      } else {
+        this._content.element.innerText = this._getValueText()
+      }
+
       this.placeholder && this.placeholder.hide()
     } else {
       this.placeholder && this.placeholder.show()

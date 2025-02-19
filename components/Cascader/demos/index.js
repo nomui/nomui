@@ -1,6 +1,7 @@
 define([
   './basic.js',
   './leafonly.js',
+  './multiple.js',
   './value.js',
   './field.js',
   './partial.js',

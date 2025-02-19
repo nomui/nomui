@@ -49,6 +49,35 @@
       &:focus-within {
         border-color: var(--nom-color-primary) !important;
       }
+
+      .nom-cascader-multiple-content-list {
+        .nom-list-item {
+          padding: 0 5px 0 0;
+          .nom-cascader-multiple-content-list-text {
+            padding: var(--nom-select-selected-item-padding);
+            background: var(--nom-select-selected-item-bg);
+            border: 1px solid var(--nom-select-selected-item-border-color);
+            border-radius: var(--nom-border-radius);
+            display: inline-flex;
+            cursor: default;
+            font-size: 75%;
+            > div:first-child {
+              max-width: 120px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              padding-right: 0.25rem;
+            }
+            .nom-icon {
+              opacity: 0.5;
+              cursor: pointer;
+              &:hover {
+                opacity: 1;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -89,6 +118,10 @@
 
         .nom-icon.p-type-right {
           color: var(--nom-cascader-icon-color);
+        }
+
+        .nom-cascader-option-checker {
+          padding-right: 0.25rem;
         }
       }
     }

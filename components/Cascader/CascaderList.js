@@ -35,6 +35,48 @@ class CascaderList extends List {
               return this.props.value
             },
             onConfig: ({ inst }) => {
+              const arr = [
+                {
+                  grow: true,
+                  children: {
+                    component: 'Ellipsis',
+                    text: inst.props.label,
+                  },
+                },
+                {
+                  component: 'Icon',
+                  type: 'right',
+                  ref: (c) => {
+                    inst.iconRef = c
+                  },
+                  hidden:
+                    inst.props.isLeaf !== false && (!!inst.props.isLeaf || !inst.props.hasChildren),
+                },
+              ]
+
+              if (this.cascaderControl.props.multiple) {
+                arr.unshift({
+                  classes: {
+                    'nom-cascader-option-checker': true,
+                  },
+                  children: {
+                    component: 'Checkbox',
+                    compact: true,
+                    ref: (c) => {
+                      inst.checkerRef = c
+                    },
+                    value: this._isNodeChecked(inst.props.value),
+                    onValueChange: ({ newValue }) => {
+                      this._onNodeCheckChange({
+                        item: inst,
+                        level: parseInt(itemData.level, 10),
+                        value: newValue,
+                      })
+                    },
+                  },
+                })
+              }
+
               inst.setProps({
                 onClick: () => {
                   !inst.props.disabled &&
@@ -46,25 +88,7 @@ class CascaderList extends List {
                 children: {
                   component: 'Flex',
                   align: 'center',
-                  cols: [
-                    {
-                      grow: true,
-                      children: {
-                        component: 'Ellipsis',
-                        text: inst.props.label,
-                      },
-                    },
-                    {
-                      component: 'Icon',
-                      type: 'right',
-                      ref: (c) => {
-                        inst.iconRef = c
-                      },
-                      hidden:
-                        inst.props.isLeaf !== false &&
-                        (!!inst.props.isLeaf || !inst.props.hasChildren),
-                    },
-                  ],
+                  cols: arr,
                 },
               })
             },
@@ -236,10 +260,19 @@ class CascaderList extends List {
       cascaderControl.valueMap = this.tempValueMap
       cascaderControl._onValueChange()
     }
-    if (isLeaf) {
+
+    if (isLeaf && !cascaderControl.props.multiple) {
       cascaderControl.popup.animateHide()
     }
   }
+
+  // _isNodeChecked(val) {
+  //   // return this.cascaderControl.valueMap
+  // }
+
+  // _onNodeCheckChange({ item, level, value }) {
+  //   debugger
+  // }
 }
 
 export default CascaderList
