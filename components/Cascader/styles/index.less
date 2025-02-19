@@ -189,6 +189,31 @@
   }
 }
 
+.nom-cascader-over-tags-trigger {
+  font-size: 75%;
+  padding-left: 0.5rem;
+}
+
+.nom-cascader-over-tags-list {
+  padding: 0.5rem;
+  .nom-list-item-wrapper {
+    padding-right: 0.5rem;
+    &:last-child {
+      padding-right: 0;
+    }
+    .nom-list-item {
+      padding: var(--nom-select-selected-item-padding);
+      background: var(--nom-select-selected-item-bg);
+      border: 1px solid var(--nom-select-selected-item-border-color);
+      border-radius: var(--nom-border-radius);
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
 .nom-cascader-animate-top-show {
   -webkit-animation: nom-cascader-keyframe-top-show 0.16s linear forwards;
   animation: nom-cascader-keyframe-top-show 0.16s linear forwards;

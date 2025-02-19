@@ -12,6 +12,7 @@ define([], function () {
             component: 'Cascader',
             ref: (c) => {
               cascader = c
+              window.cascader = c
             },
             multiple: true,
             placeholder: '请选择',

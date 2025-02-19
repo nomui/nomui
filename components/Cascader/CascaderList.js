@@ -5,9 +5,6 @@ import { isString } from '../util/index'
 class CascaderList extends List {
   constructor(props, ...mixins) {
     const defaults = {
-      // showEmpty: {
-      //   size: 'large',
-      // },
       classes: {
         'nom-cascader-option-wrapper': true,
       },
@@ -67,10 +64,10 @@ class CascaderList extends List {
                     },
                     value: this._isNodeChecked(inst.props.value),
                     onValueChange: ({ newValue }) => {
-                      this._onNodeCheckChange({
+                      this._handleNodeCheck({
                         item: inst,
                         level: parseInt(itemData.level, 10),
-                        value: newValue,
+                        newValue,
                       })
                     },
                   },
@@ -112,9 +109,19 @@ class CascaderList extends List {
           },
           onRendered: ({ inst }) => {
             if (this.cascaderControl && !!this.cascaderControl.props.value) {
-              for (const k in this.cascaderControl.valueMap) {
-                if (parseInt(k, 10) === parseInt(itemData.level, 10)) {
-                  inst.selectItem(this.cascaderControl.valueMap[k].value)
+              if (this.cascaderControl.props.multiple) {
+                for (let i = 0; i < this.cascaderControl.multiValueMap.length; i++) {
+                  const item = this.cascaderControl.multiValueMap[i]
+                  if (inst.getItem(item.value)) {
+                    inst.selectItem(item.value)
+                    break
+                  }
+                }
+              } else {
+                for (const k in this.cascaderControl.valueMap) {
+                  if (parseInt(k, 10) === parseInt(itemData.level, 10)) {
+                    inst.selectItem(this.cascaderControl.valueMap[k].value)
+                  }
                 }
               }
             }
@@ -266,13 +273,13 @@ class CascaderList extends List {
     }
   }
 
-  // _isNodeChecked(val) {
-  //   // return this.cascaderControl.valueMap
-  // }
+  _isNodeChecked(val) {
+    return this.cascaderControl.multiValueMap.some((x) => x.value === val)
+  }
 
-  // _onNodeCheckChange({ item, level, value }) {
-  //   debugger
-  // }
+  _handleNodeCheck({ item, newValue }) {
+    this.cascaderControl._onNodeCheckChange({ item, newValue })
+  }
 }
 
 export default CascaderList

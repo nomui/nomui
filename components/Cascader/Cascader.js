@@ -284,19 +284,59 @@ class Cascader extends Field {
     if (!this.multiValueMap.length) {
       return ''
     }
+    let data = this.multiValueMap
+    const hasOverTag =
+      this.props.maxTagCount > 0 && this.multiValueMap.length > this.props.maxTagCount
+
+    if (hasOverTag) {
+      const overTags = this.multiValueMap.slice(this.props.maxTagCount, this.multiValueMap.length)
+      const num = this.multiValueMap.length - this.props.maxTagCount
+      data = this.multiValueMap.slice(0, this.props.maxTagCount)
+      data.push({
+        isOverCount: true,
+        overList: overTags,
+        overNum: num,
+      })
+    }
     return {
       component: 'List',
       classes: {
         'nom-cascader-multiple-content-list': true,
       },
-      onClick: ({ event }) => {
-        event.stopPropagation()
-      },
-      data: this.multiValueMap,
+      data: data,
       itemRender: ({ itemData }) => {
+        if (itemData.isOverCount) {
+          return {
+            classes: {
+              'nom-cascader-over-tags-trigger': true,
+            },
+            children: `+${itemData.overNum}`,
+            popup: {
+              triggerAction: 'hover',
+              align: 'top left',
+              children: {
+                component: 'List',
+                classes: {
+                  'nom-cascader-over-tags-list': true,
+                },
+                items: itemData.overList,
+                itemDefaults: {
+                  onConfig: ({ inst }) => {
+                    inst.setProps({
+                      children: inst.props.text,
+                    })
+                  },
+                },
+              },
+            },
+          }
+        }
         return {
           classes: {
             'nom-cascader-multiple-content-list-text': true,
+          },
+          onClick: ({ event }) => {
+            event.stopPropagation()
           },
           children: [
             {
@@ -321,6 +361,20 @@ class Cascader extends Field {
   _removeItem(value) {
     console.log(value)
     // todo
+  }
+
+  _onNodeCheckChange({ item, newValue }) {
+    if (newValue === true) {
+      if (!this.multiValueMap.some((x) => x.value === item.props.value)) {
+        this.multiValueMap.push({
+          value: item.props.value,
+          text: item.props.label,
+        })
+      }
+    } else {
+      this.multiValueMap = this.multiValueMap.filter((x) => x.value !== item.props.value)
+    }
+    this._onValueChange()
   }
 
   _setValue(value) {
@@ -407,6 +461,7 @@ Cascader.defaults = {
   height: 250,
   disabled: false,
   allowClear: true,
+  maxTagCount: 2,
 }
 
 Component.register(Cascader)
