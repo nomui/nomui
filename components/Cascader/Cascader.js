@@ -396,6 +396,87 @@ class Cascader extends Field {
     this.setValue(null)
   }
 
+  _processCascade({ item, newValue, level }) {
+    if (newValue === true) {
+      this._cascadeCheckChildren(item.key, level)
+      this._cascadeCheckParent(item.key, level)
+    } else {
+      this._cascadeUncheckChildren(item.key, level)
+      this._cascadeUncheckParent(item.key, level)
+    }
+    this._onValueChange()
+  }
+
+  _cascadeCheckChildren(key, level) {
+    const children = this.items.filter((n) => n.pid === key && n.level === level + 1)
+    children.forEach((child) => {
+      if (!this.multiValueMap.some((x) => x.value === child.value)) {
+        this.multiValueMap.push({ text: child.label, value: child.value })
+      }
+      // 递归处理下一级
+      this._cascadeCheckChildren(child.value, child.level)
+    })
+  }
+
+  _cascadeUncheckChildren(key, level) {
+    const children = this.items.filter((n) => n.pid === key && n.level === level + 1)
+    children.forEach((child) => {
+      const index = this.multiValueMap.findIndex((x) => x.value === child.value)
+      if (index !== -1) {
+        this.multiValueMap.splice(index, 1)
+      }
+      // 递归处理下一级
+      this._cascadeUncheckChildren(child.value, child.level)
+    })
+  }
+
+  _cascadeCheckParent(key, level) {
+    if (level === 0) return // 如果已经是根节点，则停止递归
+
+    const currentItem = this.items.find((x) => x.value === key)
+    if (!currentItem) return
+
+    const parentItem = this.items.find((x) => x.value === currentItem.pid)
+    if (!parentItem) return
+
+    const siblings = this.items.filter((x) => x.pid === parentItem.value && x.level === level)
+    const allSiblingsChecked = siblings.every((sibling) =>
+      this.multiValueMap.some((x) => x.value === sibling.value),
+    )
+
+    if (allSiblingsChecked) {
+      if (!this.multiValueMap.some((x) => x.value === parentItem.value)) {
+        this.multiValueMap.push({ text: parentItem.label, value: parentItem.value })
+      }
+      // 递归向上检查父级
+      this._cascadeCheckParent(parentItem.value, parentItem.level)
+    }
+  }
+
+  _cascadeUncheckParent(key, level) {
+    if (level === 0) return // 如果已经是根节点，则停止递归
+
+    const currentItem = this.items.find((x) => x.value === key)
+    if (!currentItem) return
+
+    const parentItem = this.items.find((x) => x.value === currentItem.pid)
+    if (!parentItem) return
+
+    const siblings = this.items.filter((x) => x.pid === parentItem.value && x.level === level)
+    const allSiblingsUnchecked = siblings.every(
+      (sibling) => !this.multiValueMap.some((x) => x.value === sibling.value),
+    )
+
+    if (allSiblingsUnchecked) {
+      const index = this.multiValueMap.findIndex((x) => x.value === parentItem.value)
+      if (index !== -1) {
+        this.multiValueMap.splice(index, 1)
+      }
+      // 递归向上检查父级
+      this._cascadeUncheckParent(parentItem.value, parentItem.level)
+    }
+  }
+
   _onValueChange() {
     const that = this
     this.oldValue = clone(this.currentValue)

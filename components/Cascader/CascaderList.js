@@ -69,6 +69,9 @@ class CascaderList extends List {
                       this.cascaderControl.props.onlyleaf &&
                       (inst.props.isLeaf === false || inst.props.hasChildren),
                     value: this._isNodeChecked(inst.props.value),
+                    onClick: ({ event }) => {
+                      event.stopPropagation()
+                    },
                     onValueChange: ({ newValue }) => {
                       this._handleNodeCheck({
                         item: inst,
@@ -291,116 +294,7 @@ class CascaderList extends List {
   _handleNodeCheck({ item, newValue, level }) {
     this.cascaderControl._onNodeCheckChange({ item, newValue })
     if (this.cascaderControl.props.multiple.cascade) {
-      // this._cascadeHandleParent({ item, newValue, level })
-      this._cascadeHandleChildren({ item, newValue, level })
-    }
-  }
-
-  // _cascadeHandleParent({ item, newValue, level }) {
-  //   const sibs = item.list.getAllItems()
-  //   let processParent = true
-  //   for (let i = 0; i < sibs.length; i++) {
-  //     const sibChecker = sibs[i].checkerRef
-  //     if (sibChecker.getValue() !== newValue) {
-  //       processParent = false
-  //       break
-  //     }
-  //   }
-  //   if (processParent) {
-  //     // 如果所有兄弟节点的值都相等，则更新父节点
-  //     console.log(level)
-  //   }
-  // }
-
-  _cascadeHandleChildren({ item, newValue, level }) {
-    if (newValue === true) {
-      this._cascadeCheckChildren(item.key, level)
-      this._cascadeCheckParent(item.key, level) // 新增：级联处理父级
-    } else {
-      this._cascadeUncheckChildren(item.key, level)
-      this._cascadeUncheckParent(item.key, level) // 新增：级联处理父级
-    }
-  }
-
-  _cascadeCheckChildren(key, level) {
-    this.cascaderControl.items.forEach((n) => {
-      if (n.pid === key && n.level === level + 1) {
-        if (!this.cascaderControl.multiValueMap.some((x) => x.value === n.value)) {
-          this.cascaderControl.multiValueMap.push({ text: n.label, value: n.value })
-        }
-        // 递归处理下一级
-        this._cascadeCheckChildren(n.value, n.level)
-      }
-    })
-  }
-
-  _cascadeUncheckChildren(key, level) {
-    this.cascaderControl.items.forEach((n) => {
-      if (n.pid === key && n.level === level + 1) {
-        const index = this.cascaderControl.multiValueMap.findIndex((x) => x.value === n.value)
-        if (index !== -1) {
-          this.cascaderControl.multiValueMap.splice(index, 1)
-        }
-        // 递归处理下一级
-        this._cascadeUncheckChildren(n.value, n.level)
-      }
-    })
-  }
-
-  _cascadeCheckParent(key, level) {
-    if (level === 0) return // 如果已经是根节点，则停止递归
-
-    const currentItem = this.cascaderControl.items.find((x) => x.value === key)
-    if (!currentItem) return
-
-    const parentItem = this.cascaderControl.items.find((x) => x.value === currentItem.pid)
-    if (!parentItem) return
-
-    // 检查所有兄弟节点是否都被勾选
-    const siblings = this.cascaderControl.items.filter(
-      (x) => x.pid === parentItem.value && x.level === level,
-    )
-    const allSiblingsChecked = siblings.every((sibling) =>
-      this.cascaderControl.multiValueMap.some((x) => x.value === sibling.value),
-    )
-
-    // 如果所有兄弟节点都被勾选，则勾选父节点
-    if (allSiblingsChecked) {
-      if (!this.cascaderControl.multiValueMap.some((x) => x.value === parentItem.value)) {
-        this.cascaderControl.multiValueMap.push({ text: parentItem.label, value: parentItem.value })
-      }
-      // 递归向上检查父级
-      this._cascadeCheckParent(parentItem.value, parentItem.level)
-    }
-  }
-
-  _cascadeUncheckParent(key, level) {
-    if (level === 0) return // 如果已经是根节点，则停止递归
-
-    const currentItem = this.cascaderControl.items.find((x) => x.value === key)
-    if (!currentItem) return
-
-    const parentItem = this.cascaderControl.items.find((x) => x.value === currentItem.pid)
-    if (!parentItem) return
-
-    // 检查所有兄弟节点是否都被取消勾选
-    const siblings = this.cascaderControl.items.filter(
-      (x) => x.pid === parentItem.value && x.level === level,
-    )
-    const allSiblingsUnchecked = siblings.every(
-      (sibling) => !this.cascaderControl.multiValueMap.some((x) => x.value === sibling.value),
-    )
-
-    // 如果所有兄弟节点都被取消勾选，则取消勾选父节点
-    if (allSiblingsUnchecked) {
-      const index = this.cascaderControl.multiValueMap.findIndex(
-        (x) => x.value === parentItem.value,
-      )
-      if (index !== -1) {
-        this.cascaderControl.multiValueMap.splice(index, 1)
-      }
-      // 递归向上检查父级
-      this._cascadeUncheckParent(parentItem.value, parentItem.level)
+      this.cascaderControl._processCascade({ item, newValue, level })
     }
   }
 }
