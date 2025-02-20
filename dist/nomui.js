@@ -11926,25 +11926,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     constructor(props, ...mixins) {
       super(Component.extendProps(Carousel.defaults, props), ...mixins);
     }
-    _created() {
+    _config() {
+      this.dotsRef = [];
+      this.positions = [];
+      this.slideWidth = null;
+      this.autoplayInterval = null;
+      this.sildeRefs = [];
       const { imgs, defaultActiveIndex } = this.props;
       const cloneImgs = [...imgs];
       cloneImgs.push(imgs[0]);
       this.loopImgs = cloneImgs;
-      this.positions = [
-        // {
-        //   left:0,
-        //   width:100
-        // }
-      ];
       this.activeId = defaultActiveIndex;
       this.activeIdOld = defaultActiveIndex;
-      this.sildeRefs = [];
-      this.dotsRef = [];
-      this.slideWidth = null;
-      this.autoplayInterval = null;
-    }
-    _config() {
       this.setProps({
         children: {
           ref: (c) => {
