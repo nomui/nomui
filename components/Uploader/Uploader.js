@@ -402,6 +402,7 @@ class Uploader extends Field {
       file: uploadFile,
       fileList: [...this.fileList],
     })
+    this._onValueChange()
   }
 
   onError(error, response, file) {
@@ -453,6 +454,7 @@ class Uploader extends Field {
         file,
         fileList: remainsFileList,
       })
+      this._onValueChange()
     })
   }
 

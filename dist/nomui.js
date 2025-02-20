@@ -35519,6 +35519,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       uploadFile.status = "done";
       uploadFile.xhr = xhr;
       this.onChange({ file: uploadFile, fileList: [...this.fileList] });
+      this._onValueChange();
     }
     onError(error, response, file) {
       const uploadFile = getFileFromList(file, this.fileList);
@@ -35555,6 +35556,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         }
         this.onChange({ file, fileList: remainsFileList });
+        this._onValueChange();
       });
     }
     _handleUpdate({ file }) {
