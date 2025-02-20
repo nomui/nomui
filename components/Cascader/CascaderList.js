@@ -65,6 +65,8 @@ class CascaderList extends List {
                     ref: (c) => {
                       inst.checkerRef = c
                     },
+                    itemKey: inst.props.value,
+                    animate: false,
                     hidden:
                       this.cascaderControl.props.onlyleaf &&
                       (inst.props.isLeaf === false || inst.props.hasChildren),
@@ -295,6 +297,18 @@ class CascaderList extends List {
     this.cascaderControl._onNodeCheckChange({ item, newValue })
     if (this.cascaderControl.props.multiple.cascade) {
       this.cascaderControl._processCascade({ item, newValue, level })
+      this._refreshCurrentLists()
+    }
+  }
+
+  _refreshCurrentLists() {
+    for (const i in this.listRefs) {
+      const list = this.listRefs[i]
+      list.getAllItems().forEach((x) => {
+        x.checkerRef.update({
+          value: this._isNodeChecked(x.checkerRef.props.itemKey),
+        })
+      })
     }
   }
 }

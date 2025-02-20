@@ -1,7 +1,7 @@
 define(['./data.js'], function (data) {
   return {
-    title: '多选',
-    file: 'multiple',
+    title: '多选级联',
+    file: 'cascade',
     demo: function () {
       let cascader = null
 
@@ -13,7 +13,9 @@ define(['./data.js'], function (data) {
             ref: (c) => {
               cascader = c
             },
-            multiple: true,
+            multiple: {
+              cascade: true,
+            },
             placeholder: '请选择',
             fieldsMapping: {
               key: 'Id',

@@ -547,6 +547,7 @@ Cascader.defaults = {
   height: 250,
   disabled: false,
   allowClear: true,
+  multiple: false,
   maxTagCount: 5,
 }
 
