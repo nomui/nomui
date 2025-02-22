@@ -3,7 +3,6 @@ define(['./data.js'], function (options) {
   return {
     title: 'value类型',
     file: 'value',
-    description: '异步获取数据时不支持single赋值，请使用cascade赋值',
     demo: function () {
       return {
         component: 'Rows',

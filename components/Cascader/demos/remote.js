@@ -2,6 +2,7 @@ define([], function () {
   return {
     title: '异步获取下一级',
     file: 'remote',
+    description: '异步获取数据时不支持single赋值，请使用cascade赋值',
     demo: function () {
       let cascader = null
 
