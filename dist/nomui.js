@@ -13131,7 +13131,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 {
                   tag: "span",
                   classes: { text: true },
-                  children: this.props[props.fieldName.text],
+                  children: this.list.controlRef.props.itemRender
+                    ? this.list.controlRef.props.itemRender({
+                        itemData: this.props,
+                      })
+                    : this.props[props.fieldName.text],
                 },
               ],
             });
@@ -13157,6 +13161,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.setProps({
         optionList: {
           component: OptionList,
+          onCreated: ({ inst }) => {
+            inst.controlRef = me;
+          },
           fieldName: this.props.fieldName,
           cols: this.props.cols,
         },
@@ -13275,6 +13282,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     options: [],
     valueOptions: { asArray: true },
     fieldName: { text: "text", value: "value" },
+    itemRender: null,
   };
   Component.register(CheckboxList);
   class TreeNodeContent extends Component {
@@ -28908,9 +28916,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 {
                   tag: "span",
                   classes: { text: true },
-                  children: this.props[
-                    this.parent.parent.parent.parent.parent.props.fieldName.text
-                  ],
+                  children: this.list.controlRef.props.itemRender
+                    ? this.list.controlRef.props.itemRender({
+                        itemData: this.props,
+                      })
+                    : this.props[props.fieldName.text],
                 },
               ],
             });
@@ -28957,7 +28967,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
       });
       this.setProps({
-        optionList: { component: RadioOptionList, cols: this.props.cols },
+        optionList: {
+          component: RadioOptionList,
+          onCreated: ({ inst }) => {
+            inst.controlRef = this;
+          },
+          cols: this.props.cols,
+          fieldName,
+        },
       });
       this.setProps({
         // RadioList,CheckboxList等div组件不为 focusable 元素

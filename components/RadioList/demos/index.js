@@ -1,5 +1,6 @@
 define([
   './basic.js',
+  './render.js',
   './disabled-option.js',
   './disabled.js',
   './type-button.js',
