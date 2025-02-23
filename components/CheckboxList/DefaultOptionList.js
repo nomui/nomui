@@ -24,7 +24,9 @@ class OptionList extends List {
                 classes: {
                   text: true,
                 },
-                children: this.props[props.fieldName.text],
+                children: this.list.controlRef.props.itemRender
+                  ? this.list.controlRef.props.itemRender({ itemData: this.props })
+                  : this.props[props.fieldName.text],
               },
             ],
           })

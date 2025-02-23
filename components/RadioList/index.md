@@ -13,6 +13,7 @@
 | fieldName | 数据源字段名 | `object` | `{text:'text',value:'value'}` |
 | uistyle | 展示形式 | `'button'\|'radio'` | `'radio'` |
 | cols | 展示列数 | `number` | - |
+| itemRender | 自定义选项渲染函数(仅支持内容部分的自定义) | `({itemData})=>{}` | - |
 
 ## Events
 

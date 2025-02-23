@@ -21,7 +21,11 @@ class RadioList extends Field {
     this.setProps({
       optionList: {
         component: RadioOptionList,
+        onCreated: ({ inst }) => {
+          inst.controlRef = this
+        },
         cols: this.props.cols,
+        fieldName,
       },
     })
 
