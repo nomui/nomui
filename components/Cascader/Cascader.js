@@ -12,25 +12,27 @@ class Cascader extends Field {
   _created() {
     super._created()
     this.valueMap = {}
+    this.multiValueMap = []
   }
 
   _config() {
     const me = this
 
     const children = []
-    const { showArrow, placeholder, allowClear } = this.props
+    const { showArrow, placeholder, allowClear, multiple } = this.props
 
     const { value, options, disabled } = this.props
     this.initValue = clone(value)
     this.internalOption = JSON.parse(JSON.stringify(options))
     this._flatItems()
 
-    if (this.props.leafOnly || this.props.onlyleaf) {
+    if (this.props.onlyleaf && !this.props.multiple) {
       this.props.changeOnSelect = false
     }
 
     if (value && value.length) {
       this.valueMap = {}
+      this.multiValueMap = []
       this._setValueMap()
     }
 
@@ -41,7 +43,7 @@ class Cascader extends Field {
       ref: (c) => {
         me._content = c
       },
-      children: this.getValueText(),
+      children: multiple ? this._getMultipleText() : this.getValueText(),
     })
 
     if (isString(placeholder)) {
@@ -125,7 +127,7 @@ class Cascader extends Field {
   _loopLoadValueData() {
     const me = this
     let { value } = this.props
-    const { fieldsMapping } = this.props
+    const { fieldsMapping, multiple } = this.props
     if (!Array.isArray(value)) {
       value = [value]
     }
@@ -147,7 +149,7 @@ class Cascader extends Field {
           }
         })
         me._setValueMap()
-        me._content.update({ children: me.getValueText() })
+        me._content.update({ children: multiple ? me._getMultipleText() : me.getValueText() })
       })
       .catch((error) => {
         console.error('load data failed:', error)
@@ -163,6 +165,7 @@ class Cascader extends Field {
     if (isNullish(value)) {
       return
     }
+
     if (isString(value)) {
       value = this._getCascadeValue(value)
     }
@@ -172,9 +175,16 @@ class Cascader extends Field {
     value.forEach((n, i) => {
       const item = this.items.find((x) => x.value === n)
       if (item) {
-        this.valueMap[i] = {
-          value: item.value,
-          text: item.label,
+        if (this.props.multiple) {
+          this.multiValueMap.push({
+            value: item.value,
+            text: item.label,
+          })
+        } else {
+          this.valueMap[i] = {
+            value: item.value,
+            text: item.label,
+          }
         }
       }
     })
@@ -233,20 +243,32 @@ class Cascader extends Field {
   }
 
   _getValue() {
-    const v = []
-    for (const k in this.valueMap) {
-      v.push(this.valueMap[k].value)
+    let v = []
+    if (this.props.multiple) {
+      v = this.multiValueMap.map((x) => x.value)
+    } else {
+      for (const k in this.valueMap) {
+        v.push(this.valueMap[k].value)
+      }
     }
-
     if (this.props.valueType === 'cascade') {
       return v.length ? v : null
     }
-
     return v.length ? v[v.length - 1] : null
   }
 
   _getValueText() {
     const t = []
+    if (this.props.multiple) {
+      if (!this.multiValueMap.length) {
+        return ''
+      }
+      const arr = this.multiValueMap.map((n) => {
+        return n.text
+      })
+      return arr.join(',')
+    }
+
     for (const k in this.valueMap) {
       t.push(this.valueMap[k].text)
     }
@@ -258,12 +280,110 @@ class Cascader extends Field {
     return t.length ? t.join(this.props.separator) : ''
   }
 
+  _getMultipleText() {
+    if (!this.multiValueMap.length) {
+      return ''
+    }
+    let data = this.multiValueMap
+    const hasOverTag =
+      this.props.maxTagCount > 0 && this.multiValueMap.length > this.props.maxTagCount
+
+    if (hasOverTag) {
+      const overTags = this.multiValueMap.slice(this.props.maxTagCount, this.multiValueMap.length)
+      const num = this.multiValueMap.length - this.props.maxTagCount
+      data = this.multiValueMap.slice(0, this.props.maxTagCount)
+      data.push({
+        isOverCount: true,
+        overList: overTags,
+        overNum: num,
+      })
+    }
+    return {
+      component: 'List',
+      classes: {
+        'nom-cascader-multiple-content-list': true,
+      },
+      data: data,
+      itemRender: ({ itemData }) => {
+        if (itemData.isOverCount) {
+          return {
+            classes: {
+              'nom-cascader-over-tags-trigger': true,
+            },
+            children: `+${itemData.overNum}`,
+            popup: {
+              triggerAction: 'hover',
+              align: 'top left',
+              children: {
+                component: 'List',
+                classes: {
+                  'nom-cascader-over-tags-list': true,
+                },
+                items: itemData.overList,
+                itemDefaults: {
+                  onConfig: ({ inst }) => {
+                    inst.setProps({
+                      children: inst.props.text,
+                    })
+                  },
+                },
+              },
+            },
+          }
+        }
+        return {
+          classes: {
+            'nom-cascader-multiple-content-list-text': true,
+          },
+          onClick: ({ event }) => {
+            event.stopPropagation()
+          },
+          children: [
+            {
+              attrs: {
+                title: itemData.text,
+              },
+              children: itemData.text,
+            },
+            {
+              component: 'Icon',
+              type: 'times',
+              onClick: () => {
+                this._removeItem(itemData.value)
+              },
+            },
+          ],
+        }
+      },
+    }
+  }
+
+  _removeItem(value) {
+    this.multiValueMap = this.multiValueMap.filter((x) => x.value !== value)
+    this._onValueChange()
+  }
+
+  _onNodeCheckChange({ item, newValue }) {
+    if (newValue === true) {
+      if (!this.multiValueMap.some((x) => x.value === item.props.value)) {
+        this.multiValueMap.push({
+          value: item.props.value,
+          text: item.props.label,
+        })
+      }
+    } else {
+      this.multiValueMap = this.multiValueMap.filter((x) => x.value !== item.props.value)
+    }
+    this._onValueChange()
+  }
+
   _setValue(value) {
     if (!value && this._content) {
       this._content.element.innerText = ''
     }
     this.props.value = value
     this.valueMap = {}
+    this.multiValueMap = []
     this._setValueMap()
     this._onValueChange()
   }
@@ -276,6 +396,87 @@ class Cascader extends Field {
     this.setValue(null)
   }
 
+  _processCascade({ item, newValue, level }) {
+    if (newValue === true) {
+      this._cascadeCheckChildren(item.key, level)
+      this._cascadeCheckParent(item.key, level)
+    } else {
+      this._cascadeUncheckChildren(item.key, level)
+      this._cascadeUncheckParent(item.key, level)
+    }
+    this._onValueChange()
+  }
+
+  _cascadeCheckChildren(key, level) {
+    const children = this.items.filter((n) => n.pid === key && n.level === level + 1)
+    children.forEach((child) => {
+      if (!this.multiValueMap.some((x) => x.value === child.value)) {
+        this.multiValueMap.push({ text: child.label, value: child.value })
+      }
+      // 递归处理下一级
+      this._cascadeCheckChildren(child.value, child.level)
+    })
+  }
+
+  _cascadeUncheckChildren(key, level) {
+    const children = this.items.filter((n) => n.pid === key && n.level === level + 1)
+    children.forEach((child) => {
+      const index = this.multiValueMap.findIndex((x) => x.value === child.value)
+      if (index !== -1) {
+        this.multiValueMap.splice(index, 1)
+      }
+      // 递归处理下一级
+      this._cascadeUncheckChildren(child.value, child.level)
+    })
+  }
+
+  _cascadeCheckParent(key, level) {
+    if (level === 0) return // 如果已经是根节点，则停止递归
+
+    const currentItem = this.items.find((x) => x.value === key)
+    if (!currentItem) return
+
+    const parentItem = this.items.find((x) => x.value === currentItem.pid)
+    if (!parentItem) return
+
+    const siblings = this.items.filter((x) => x.pid === parentItem.value && x.level === level)
+    const allSiblingsChecked = siblings.every((sibling) =>
+      this.multiValueMap.some((x) => x.value === sibling.value),
+    )
+
+    if (allSiblingsChecked) {
+      if (!this.multiValueMap.some((x) => x.value === parentItem.value)) {
+        this.multiValueMap.push({ text: parentItem.label, value: parentItem.value })
+      }
+      // 递归向上检查父级
+      this._cascadeCheckParent(parentItem.value, parentItem.level)
+    }
+  }
+
+  _cascadeUncheckParent(key, level) {
+    if (level === 0) return // 如果已经是根节点，则停止递归
+
+    const currentItem = this.items.find((x) => x.value === key)
+    if (!currentItem) return
+
+    const parentItem = this.items.find((x) => x.value === currentItem.pid)
+    if (!parentItem) return
+
+    const siblings = this.items.filter((x) => x.pid === parentItem.value && x.level === level)
+    const allSiblingsUnchecked = siblings.every(
+      (sibling) => !this.multiValueMap.some((x) => x.value === sibling.value),
+    )
+
+    if (allSiblingsUnchecked) {
+      const index = this.multiValueMap.findIndex((x) => x.value === parentItem.value)
+      if (index !== -1) {
+        this.multiValueMap.splice(index, 1)
+      }
+      // 递归向上检查父级
+      this._cascadeUncheckParent(parentItem.value, parentItem.level)
+    }
+  }
+
   _onValueChange() {
     const that = this
     this.oldValue = clone(this.currentValue)
@@ -283,9 +484,19 @@ class Cascader extends Field {
     this.props.value = this.currentValue
 
     if (this._getValueText().length) {
-      this._content.element.innerText = this._getValueText()
+      if (this.props.multiple) {
+        this._content.update({ children: this._getMultipleText() })
+      } else {
+        this._content.element.innerText = this._getValueText()
+      }
+
       this.placeholder && this.placeholder.hide()
     } else {
+      if (this.props.multiple) {
+        this._content.update({ children: '' })
+      } else {
+        this._content.element.innerText = ''
+      }
       this.placeholder && this.placeholder.show()
     }
 
@@ -336,6 +547,8 @@ Cascader.defaults = {
   height: 250,
   disabled: false,
   allowClear: true,
+  multiple: false,
+  maxTagCount: 5,
 }
 
 Component.register(Cascader)

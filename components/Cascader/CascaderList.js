@@ -5,9 +5,6 @@ import { isString } from '../util/index'
 class CascaderList extends List {
   constructor(props, ...mixins) {
     const defaults = {
-      // showEmpty: {
-      //   size: 'large',
-      // },
       classes: {
         'nom-cascader-option-wrapper': true,
       },
@@ -16,6 +13,9 @@ class CascaderList extends List {
           component: 'List',
           classes: {
             'nom-cascader-option-list': true,
+          },
+          ref: (c) => {
+            this.listRefs[itemData.level] = c
           },
           attrs: {
             style: {
@@ -35,6 +35,56 @@ class CascaderList extends List {
               return this.props.value
             },
             onConfig: ({ inst }) => {
+              const arr = [
+                {
+                  grow: true,
+                  children: {
+                    component: 'Ellipsis',
+                    text: inst.props.label,
+                  },
+                },
+                {
+                  component: 'Icon',
+                  type: 'right',
+                  ref: (c) => {
+                    inst.iconRef = c
+                  },
+                  hidden:
+                    inst.props.isLeaf !== false && (!!inst.props.isLeaf || !inst.props.hasChildren),
+                },
+              ]
+
+              if (this.cascaderControl.props.multiple) {
+                arr.unshift({
+                  classes: {
+                    'nom-cascader-option-checker': true,
+                  },
+                  children: {
+                    component: 'Checkbox',
+                    compact: true,
+                    ref: (c) => {
+                      inst.checkerRef = c
+                    },
+                    itemKey: inst.props.value,
+                    animate: false,
+                    hidden:
+                      this.cascaderControl.props.onlyleaf &&
+                      (inst.props.isLeaf === false || inst.props.hasChildren),
+                    value: this._isNodeChecked(inst.props.value),
+                    onClick: ({ event }) => {
+                      event.stopPropagation()
+                    },
+                    onValueChange: ({ newValue }) => {
+                      this._handleNodeCheck({
+                        item: inst,
+                        level: parseInt(itemData.level, 10),
+                        newValue,
+                      })
+                    },
+                  },
+                })
+              }
+
               inst.setProps({
                 onClick: () => {
                   !inst.props.disabled &&
@@ -46,25 +96,7 @@ class CascaderList extends List {
                 children: {
                   component: 'Flex',
                   align: 'center',
-                  cols: [
-                    {
-                      grow: true,
-                      children: {
-                        component: 'Ellipsis',
-                        text: inst.props.label,
-                      },
-                    },
-                    {
-                      component: 'Icon',
-                      type: 'right',
-                      ref: (c) => {
-                        inst.iconRef = c
-                      },
-                      hidden:
-                        inst.props.isLeaf !== false &&
-                        (!!inst.props.isLeaf || !inst.props.hasChildren),
-                    },
-                  ],
+                  cols: arr,
                 },
               })
             },
@@ -88,9 +120,19 @@ class CascaderList extends List {
           },
           onRendered: ({ inst }) => {
             if (this.cascaderControl && !!this.cascaderControl.props.value) {
-              for (const k in this.cascaderControl.valueMap) {
-                if (parseInt(k, 10) === parseInt(itemData.level, 10)) {
-                  inst.selectItem(this.cascaderControl.valueMap[k].value)
+              if (this.cascaderControl.props.multiple) {
+                for (let i = 0; i < this.cascaderControl.multiValueMap.length; i++) {
+                  const item = this.cascaderControl.multiValueMap[i]
+                  if (inst.getItem(item.value)) {
+                    inst.selectItem(item.value)
+                    break
+                  }
+                }
+              } else {
+                for (const k in this.cascaderControl.valueMap) {
+                  if (parseInt(k, 10) === parseInt(itemData.level, 10)) {
+                    inst.selectItem(this.cascaderControl.valueMap[k].value)
+                  }
                 }
               }
             }
@@ -104,6 +146,7 @@ class CascaderList extends List {
 
   _created() {
     super._created()
+    this.listRefs = {}
     this.cascaderControl = this.parent.parent.parent.cascaderControl
     this.cascaderControl.optionList = this
   }
@@ -219,7 +262,7 @@ class CascaderList extends List {
   _handleItemSelect({ item, level }) {
     const isLeaf = item.props.isLeaf !== false && !item.props.hasChildren
     const { cascaderControl } = this
-    const { changeOnSelect } = cascaderControl.props
+    const { changeOnSelect, multiple } = cascaderControl.props
 
     // 保持当前栏目的value text
     this.tempValueMap[level] = {
@@ -232,12 +275,40 @@ class CascaderList extends List {
       delete this.tempValueMap[i]
     }
 
+    if (multiple) {
+      return
+    }
+
     if (isLeaf || changeOnSelect) {
       cascaderControl.valueMap = this.tempValueMap
       cascaderControl._onValueChange()
     }
-    if (isLeaf) {
+
+    if (isLeaf && !cascaderControl.props.multiple) {
       cascaderControl.popup.animateHide()
+    }
+  }
+
+  _isNodeChecked(val) {
+    return this.cascaderControl.multiValueMap.some((x) => x.value === val)
+  }
+
+  _handleNodeCheck({ item, newValue, level }) {
+    this.cascaderControl._onNodeCheckChange({ item, newValue })
+    if (this.cascaderControl.props.multiple.cascade) {
+      this.cascaderControl._processCascade({ item, newValue, level })
+      this._refreshCurrentLists()
+    }
+  }
+
+  _refreshCurrentLists() {
+    for (const i in this.listRefs) {
+      const list = this.listRefs[i]
+      list.getAllItems().forEach((x) => {
+        x.checkerRef.update({
+          value: this._isNodeChecked(x.checkerRef.props.itemKey),
+        })
+      })
     }
   }
 }
