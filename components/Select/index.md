@@ -18,9 +18,10 @@
 | popupWidth | 下拉框宽度,默认为控件宽度，配置为数值可控制具体宽度，配置为'auto'则根据选项内容自适应宽度 | `number \| string` | - |
 | maxPopupWidth | 下拉框宽度最大宽度 | `number \| string` | - |
 | searchable | 可搜索配置 | `boolean` \| `object` | - |
+| extraTools | 底部额外工具栏配置 | `({inst,popup})=>{}` \| `object` | - |
 | popupContainer | 下拉菜单渲染父节点。默认渲染到 body 上，如果你遇到菜单滚动定位问题，试试修改为滚动的区域，即可相对其定位。self 为当前组件，返回函数可指定其它组件 | `'self'` \| `()=>{return ref}` | `body` |
 | optionFields | 自定义 options 中 text value 的字段 | `object` | `{ text: text, value: value, }` |
-| valueOptions  | value 值，配置详情                       | `{}`                   | -      |
+| valueOptions | value 值，配置详情 | `{}` | - |
 | onClear | 点击清空按钮时的回调 | `()=>{}` | - |
 
 ### searchable
@@ -41,9 +42,9 @@
 | text  | 文本 | `string`             | -      |
 | value | 值   | `string` \| `number` | -      |
 
-### valueOptions 
+### valueOptions
 
-| 方法名称       | 说明                                          | 类型      | 默认值  |
-| -------------- | --------------------------------------------- | --------- | ------- |
-| asArray |  value值类型（默认为字符串）                            | `boolean` | `false`  |
-| nullWhenNotExists   | 当value不存在于options源时，value是否重置为null   | `boolean` | `false`  | 
+| 方法名称          | 说明                                                  | 类型      | 默认值  |
+| ----------------- | ----------------------------------------------------- | --------- | ------- |
+| asArray           | value 值类型（默认为字符串）                          | `boolean` | `false` |
+| nullWhenNotExists | 当 value 不存在于 options 源时，value 是否重置为 null | `boolean` | `false` |

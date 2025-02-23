@@ -30363,6 +30363,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         searchable,
         options: originOptions,
         popupWidth,
+        extraTools,
       } = this.selectControl.props;
       let { maxPopupWidth } = this.selectControl.props;
       if (isNumeric(maxPopupWidth)) {
@@ -30424,6 +30425,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           body: {
             children: { component: SelectList, virtual: this.props.virtual },
           },
+          footer: extraTools
+            ? {
+                attrs: { style: { minHeight: "2rem", padding: ".75rem" } },
+                children: isFunction(extraTools)
+                  ? extraTools({ popup: this, inst: this.selectControl })
+                  : extraTools,
+              }
+            : null,
         },
       });
       super._config();
