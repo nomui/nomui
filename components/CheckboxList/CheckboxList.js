@@ -21,6 +21,9 @@ class CheckboxList extends Field {
     this.setProps({
       optionList: {
         component: List,
+        onCreated: ({ inst }) => {
+          inst.controlRef = me
+        },
         fieldName: this.props.fieldName,
         cols: this.props.cols,
       },
@@ -115,15 +118,14 @@ class CheckboxList extends Field {
     this.props.options.forEach((ele) => {
       optionsArry.push(ele[me.props.fieldName.value])
     })
-    Array.isArray(value) && optionsArry.forEach((item) => {
-      if (value.includes(item)) {
-        _that.optionList.selectItem(item, { triggerSelectionChange: options.triggerChange })
-      }
-      else {
-        _that.optionList.unselectItem(item, { triggerSelectionChange: options.triggerChange })
-      }
-    })
-
+    Array.isArray(value) &&
+      optionsArry.forEach((item) => {
+        if (value.includes(item)) {
+          _that.optionList.selectItem(item, { triggerSelectionChange: options.triggerChange })
+        } else {
+          _that.optionList.unselectItem(item, { triggerSelectionChange: options.triggerChange })
+        }
+      })
   }
 
   _disable() {
@@ -163,6 +165,7 @@ CheckboxList.defaults = {
     text: 'text',
     value: 'value',
   },
+  itemRender: null,
 }
 
 Component.register(CheckboxList)
