@@ -12181,14 +12181,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   class CascaderList extends List {
     constructor(props, ...mixins) {
       const defaults = {
-        // showEmpty: {
-        //   size: 'large',
-        // },
         classes: { "nom-cascader-option-wrapper": true },
         itemRender: ({ itemData }) => {
           return {
             component: "List",
             classes: { "nom-cascader-option-list": true },
+            ref: (c) => {
+              this.listRefs[itemData.level] = c;
+            },
             attrs: {
               style: {
                 width: isString(this.cascaderControl.props.width)
@@ -12207,6 +12207,50 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 return this.props.value;
               },
               onConfig: ({ inst }) => {
+                const arr = [
+                  {
+                    grow: true,
+                    children: { component: "Ellipsis", text: inst.props.label },
+                  },
+                  {
+                    component: "Icon",
+                    type: "right",
+                    ref: (c) => {
+                      inst.iconRef = c;
+                    },
+                    hidden:
+                      inst.props.isLeaf !== false &&
+                      (!!inst.props.isLeaf || !inst.props.hasChildren),
+                  },
+                ];
+                if (this.cascaderControl.props.multiple) {
+                  arr.unshift({
+                    classes: { "nom-cascader-option-checker": true },
+                    children: {
+                      component: "Checkbox",
+                      compact: true,
+                      ref: (c) => {
+                        inst.checkerRef = c;
+                      },
+                      itemKey: inst.props.value,
+                      animate: false,
+                      hidden:
+                        this.cascaderControl.props.onlyleaf &&
+                        (inst.props.isLeaf === false || inst.props.hasChildren),
+                      value: this._isNodeChecked(inst.props.value),
+                      onClick: ({ event }) => {
+                        event.stopPropagation();
+                      },
+                      onValueChange: ({ newValue }) => {
+                        this._handleNodeCheck({
+                          item: inst,
+                          level: parseInt(itemData.level, 10),
+                          newValue,
+                        });
+                      },
+                    },
+                  });
+                }
                 inst.setProps({
                   onClick: () => {
                     !inst.props.disabled &&
@@ -12215,29 +12259,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                         level: parseInt(itemData.level, 10),
                       });
                   },
-                  children: {
-                    component: "Flex",
-                    align: "center",
-                    cols: [
-                      {
-                        grow: true,
-                        children: {
-                          component: "Ellipsis",
-                          text: inst.props.label,
-                        },
-                      },
-                      {
-                        component: "Icon",
-                        type: "right",
-                        ref: (c) => {
-                          inst.iconRef = c;
-                        },
-                        hidden:
-                          inst.props.isLeaf !== false &&
-                          (!!inst.props.isLeaf || !inst.props.hasChildren),
-                      },
-                    ],
-                  },
+                  children: { component: "Flex", align: "center", cols: arr },
                 });
               },
             },
@@ -12255,9 +12277,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             },
             onRendered: ({ inst }) => {
               if (this.cascaderControl && !!this.cascaderControl.props.value) {
-                for (const k in this.cascaderControl.valueMap) {
-                  if (parseInt(k, 10) === parseInt(itemData.level, 10)) {
-                    inst.selectItem(this.cascaderControl.valueMap[k].value);
+                if (this.cascaderControl.props.multiple) {
+                  for (
+                    let i = 0;
+                    i < this.cascaderControl.multiValueMap.length;
+                    i++
+                  ) {
+                    const item = this.cascaderControl.multiValueMap[i];
+                    if (inst.getItem(item.value)) {
+                      inst.selectItem(item.value);
+                      break;
+                    }
+                  }
+                } else {
+                  for (const k in this.cascaderControl.valueMap) {
+                    if (parseInt(k, 10) === parseInt(itemData.level, 10)) {
+                      inst.selectItem(this.cascaderControl.valueMap[k].value);
+                    }
                   }
                 }
               }
@@ -12269,6 +12305,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _created() {
       super._created();
+      this.listRefs = {};
       this.cascaderControl = this.parent.parent.parent.cascaderControl;
       this.cascaderControl.optionList = this;
     }
@@ -12369,7 +12406,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _handleItemSelect({ item, level }) {
       const isLeaf = item.props.isLeaf !== false && !item.props.hasChildren;
       const { cascaderControl } = this;
-      const { changeOnSelect } = cascaderControl.props; // 保持当前栏目的value text
+      const { changeOnSelect, multiple } = cascaderControl.props; // 保持当前栏目的value text
       this.tempValueMap[level] = {
         value: item.props.value,
         text: item.props.label,
@@ -12377,12 +12414,35 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       for (let i = level + 1; i < 20; i++) {
         delete this.tempValueMap[i];
       }
+      if (multiple) {
+        return;
+      }
       if (isLeaf || changeOnSelect) {
         cascaderControl.valueMap = this.tempValueMap;
         cascaderControl._onValueChange();
       }
-      if (isLeaf) {
+      if (isLeaf && !cascaderControl.props.multiple) {
         cascaderControl.popup.animateHide();
+      }
+    }
+    _isNodeChecked(val) {
+      return this.cascaderControl.multiValueMap.some((x) => x.value === val);
+    }
+    _handleNodeCheck({ item, newValue, level }) {
+      this.cascaderControl._onNodeCheckChange({ item, newValue });
+      if (this.cascaderControl.props.multiple.cascade) {
+        this.cascaderControl._processCascade({ item, newValue, level });
+        this._refreshCurrentLists();
+      }
+    }
+    _refreshCurrentLists() {
+      for (const i in this.listRefs) {
+        const list = this.listRefs[i];
+        list.getAllItems().forEach((x) => {
+          x.checkerRef.update({
+            value: this._isNodeChecked(x.checkerRef.props.itemKey),
+          });
+        });
       }
     }
   }
@@ -12459,20 +12519,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _created() {
       super._created();
       this.valueMap = {};
+      this.multiValueMap = [];
     }
     _config() {
       const me = this;
       const children = [];
-      const { showArrow, placeholder, allowClear } = this.props;
+      const { showArrow, placeholder, allowClear, multiple } = this.props;
       const { value, options, disabled } = this.props;
       this.initValue = clone(value);
       this.internalOption = JSON.parse(JSON.stringify(options));
       this._flatItems();
-      if (this.props.leafOnly || this.props.onlyleaf) {
+      if (this.props.onlyleaf && !this.props.multiple) {
         this.props.changeOnSelect = false;
       }
       if (value && value.length) {
         this.valueMap = {};
+        this.multiValueMap = [];
         this._setValueMap();
       }
       this.currentValue = this.initValue;
@@ -12481,7 +12543,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         ref: (c) => {
           me._content = c;
         },
-        children: this.getValueText(),
+        children: multiple ? this._getMultipleText() : this.getValueText(),
       });
       if (isString(placeholder)) {
         children.push({
@@ -12550,7 +12612,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _loopLoadValueData() {
       const me = this;
       let { value } = this.props;
-      const { fieldsMapping } = this.props;
+      const { fieldsMapping, multiple } = this.props;
       if (!Array.isArray(value)) {
         value = [value];
       }
@@ -12570,7 +12632,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             }
           });
           me._setValueMap();
-          me._content.update({ children: me.getValueText() });
+          me._content.update({
+            children: multiple ? me._getMultipleText() : me.getValueText(),
+          });
         })
         .catch((error) => {
           console.error("load data failed:", error);
@@ -12593,7 +12657,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       value.forEach((n, i) => {
         const item = this.items.find((x) => x.value === n);
         if (item) {
-          this.valueMap[i] = { value: item.value, text: item.label };
+          if (this.props.multiple) {
+            this.multiValueMap.push({ value: item.value, text: item.label });
+          } else {
+            this.valueMap[i] = { value: item.value, text: item.label };
+          }
         }
       });
     }
@@ -12650,9 +12718,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       findTree(source);
     }
     _getValue() {
-      const v = [];
-      for (const k in this.valueMap) {
-        v.push(this.valueMap[k].value);
+      let v = [];
+      if (this.props.multiple) {
+        v = this.multiValueMap.map((x) => x.value);
+      } else {
+        for (const k in this.valueMap) {
+          v.push(this.valueMap[k].value);
+        }
       }
       if (this.props.valueType === "cascade") {
         return v.length ? v : null;
@@ -12661,6 +12733,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _getValueText() {
       const t = [];
+      if (this.props.multiple) {
+        if (!this.multiValueMap.length) {
+          return "";
+        }
+        const arr = this.multiValueMap.map((n) => {
+          return n.text;
+        });
+        return arr.join(",");
+      }
       for (const k in this.valueMap) {
         t.push(this.valueMap[k].text);
       }
@@ -12669,12 +12750,93 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return t.length ? t.join(this.props.separator) : "";
     }
+    _getMultipleText() {
+      if (!this.multiValueMap.length) {
+        return "";
+      }
+      let data = this.multiValueMap;
+      const hasOverTag =
+        this.props.maxTagCount > 0 &&
+        this.multiValueMap.length > this.props.maxTagCount;
+      if (hasOverTag) {
+        const overTags = this.multiValueMap.slice(
+          this.props.maxTagCount,
+          this.multiValueMap.length
+        );
+        const num = this.multiValueMap.length - this.props.maxTagCount;
+        data = this.multiValueMap.slice(0, this.props.maxTagCount);
+        data.push({ isOverCount: true, overList: overTags, overNum: num });
+      }
+      return {
+        component: "List",
+        classes: { "nom-cascader-multiple-content-list": true },
+        data: data,
+        itemRender: ({ itemData }) => {
+          if (itemData.isOverCount) {
+            return {
+              classes: { "nom-cascader-over-tags-trigger": true },
+              children: `+${itemData.overNum}`,
+              popup: {
+                triggerAction: "hover",
+                align: "top left",
+                children: {
+                  component: "List",
+                  classes: { "nom-cascader-over-tags-list": true },
+                  items: itemData.overList,
+                  itemDefaults: {
+                    onConfig: ({ inst }) => {
+                      inst.setProps({ children: inst.props.text });
+                    },
+                  },
+                },
+              },
+            };
+          }
+          return {
+            classes: { "nom-cascader-multiple-content-list-text": true },
+            onClick: ({ event }) => {
+              event.stopPropagation();
+            },
+            children: [
+              { attrs: { title: itemData.text }, children: itemData.text },
+              {
+                component: "Icon",
+                type: "times",
+                onClick: () => {
+                  this._removeItem(itemData.value);
+                },
+              },
+            ],
+          };
+        },
+      };
+    }
+    _removeItem(value) {
+      this.multiValueMap = this.multiValueMap.filter((x) => x.value !== value);
+      this._onValueChange();
+    }
+    _onNodeCheckChange({ item, newValue }) {
+      if (newValue === true) {
+        if (!this.multiValueMap.some((x) => x.value === item.props.value)) {
+          this.multiValueMap.push({
+            value: item.props.value,
+            text: item.props.label,
+          });
+        }
+      } else {
+        this.multiValueMap = this.multiValueMap.filter(
+          (x) => x.value !== item.props.value
+        );
+      }
+      this._onValueChange();
+    }
     _setValue(value) {
       if (!value && this._content) {
         this._content.element.innerText = "";
       }
       this.props.value = value;
       this.valueMap = {};
+      this.multiValueMap = [];
       this._setValueMap();
       this._onValueChange();
     }
@@ -12684,15 +12846,103 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _clear() {
       this.setValue(null);
     }
+    _processCascade({ item, newValue, level }) {
+      if (newValue === true) {
+        this._cascadeCheckChildren(item.key, level);
+        this._cascadeCheckParent(item.key, level);
+      } else {
+        this._cascadeUncheckChildren(item.key, level);
+        this._cascadeUncheckParent(item.key, level);
+      }
+      this._onValueChange();
+    }
+    _cascadeCheckChildren(key, level) {
+      const children = this.items.filter(
+        (n) => n.pid === key && n.level === level + 1
+      );
+      children.forEach((child) => {
+        if (!this.multiValueMap.some((x) => x.value === child.value)) {
+          this.multiValueMap.push({ text: child.label, value: child.value });
+        } // 递归处理下一级
+        this._cascadeCheckChildren(child.value, child.level);
+      });
+    }
+    _cascadeUncheckChildren(key, level) {
+      const children = this.items.filter(
+        (n) => n.pid === key && n.level === level + 1
+      );
+      children.forEach((child) => {
+        const index = this.multiValueMap.findIndex(
+          (x) => x.value === child.value
+        );
+        if (index !== -1) {
+          this.multiValueMap.splice(index, 1);
+        } // 递归处理下一级
+        this._cascadeUncheckChildren(child.value, child.level);
+      });
+    }
+    _cascadeCheckParent(key, level) {
+      if (level === 0) return; // 如果已经是根节点，则停止递归
+      const currentItem = this.items.find((x) => x.value === key);
+      if (!currentItem) return;
+      const parentItem = this.items.find((x) => x.value === currentItem.pid);
+      if (!parentItem) return;
+      const siblings = this.items.filter(
+        (x) => x.pid === parentItem.value && x.level === level
+      );
+      const allSiblingsChecked = siblings.every((sibling) =>
+        this.multiValueMap.some((x) => x.value === sibling.value)
+      );
+      if (allSiblingsChecked) {
+        if (!this.multiValueMap.some((x) => x.value === parentItem.value)) {
+          this.multiValueMap.push({
+            text: parentItem.label,
+            value: parentItem.value,
+          });
+        } // 递归向上检查父级
+        this._cascadeCheckParent(parentItem.value, parentItem.level);
+      }
+    }
+    _cascadeUncheckParent(key, level) {
+      if (level === 0) return; // 如果已经是根节点，则停止递归
+      const currentItem = this.items.find((x) => x.value === key);
+      if (!currentItem) return;
+      const parentItem = this.items.find((x) => x.value === currentItem.pid);
+      if (!parentItem) return;
+      const siblings = this.items.filter(
+        (x) => x.pid === parentItem.value && x.level === level
+      );
+      const allSiblingsUnchecked = siblings.every(
+        (sibling) => !this.multiValueMap.some((x) => x.value === sibling.value)
+      );
+      if (allSiblingsUnchecked) {
+        const index = this.multiValueMap.findIndex(
+          (x) => x.value === parentItem.value
+        );
+        if (index !== -1) {
+          this.multiValueMap.splice(index, 1);
+        } // 递归向上检查父级
+        this._cascadeUncheckParent(parentItem.value, parentItem.level);
+      }
+    }
     _onValueChange() {
       const that = this;
       this.oldValue = clone(this.currentValue);
       this.currentValue = clone(this.getValue());
       this.props.value = this.currentValue;
       if (this._getValueText().length) {
-        this._content.element.innerText = this._getValueText();
+        if (this.props.multiple) {
+          this._content.update({ children: this._getMultipleText() });
+        } else {
+          this._content.element.innerText = this._getValueText();
+        }
         this.placeholder && this.placeholder.hide();
       } else {
+        if (this.props.multiple) {
+          this._content.update({ children: "" });
+        } else {
+          this._content.element.innerText = "";
+        }
         this.placeholder && this.placeholder.show();
       }
       const changed = {
@@ -12738,6 +12988,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     height: 250,
     disabled: false,
     allowClear: true,
+    multiple: false,
+    maxTagCount: 5,
   };
   Component.register(Cascader);
   class Checkbox extends Field {

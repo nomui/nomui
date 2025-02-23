@@ -8726,8 +8726,8 @@ textarea .nom-textarea {
   background-color: var(--nom-checkbox-checked-bg);
   border: 1px solid var(--nom-checkbox-checked-border-color);
   border-radius: var(--nom-checkbox-border-radius);
-  -webkit-animation: nom-checkbox-keyframe-show 0.36s ease-in-out backwards;
-  animation: nom-checkbox-keyframe-show 0.36s ease-in-out backwards;
+  -webkit-animation: nom-checkbox-keyframe-show 0s ease-in-out backwards;
+  animation: nom-checkbox-keyframe-show 0s ease-in-out backwards;
   content: '';
 }
 .nom-checkbox > .nom-field-content > .nom-control > input {
@@ -8786,8 +8786,8 @@ textarea .nom-textarea {
   border: solid var(--nom-checkbox-checker-color);
   border-width: 0 2px 2px 0 !important;
   box-shadow: var(--nom-checkbox-checker-box-shadow);
-  -webkit-animation: nom-checkbox-keyframe-bounce-in 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
-  animation: nom-checkbox-keyframe-bounce-in 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
+  -webkit-animation: nom-checkbox-keyframe-bounce-in 0s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
+  animation: nom-checkbox-keyframe-bounce-in 0s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
   content: '';
 }
 .nom-checkbox > .nom-field-content > .nom-control > input:checked ~ i {
@@ -11496,6 +11496,34 @@ textarea .nom-textarea {
 .nom-cascader > .nom-field-content .nom-control:focus-within {
   border-color: var(--nom-color-primary) !important;
 }
+.nom-cascader > .nom-field-content .nom-control .nom-cascader-multiple-content-list .nom-list-item {
+  padding: 0 5px 0 0;
+}
+.nom-cascader > .nom-field-content .nom-control .nom-cascader-multiple-content-list .nom-list-item .nom-cascader-multiple-content-list-text {
+  padding: var(--nom-select-selected-item-padding);
+  background: var(--nom-select-selected-item-bg);
+  border: 1px solid var(--nom-select-selected-item-border-color);
+  border-radius: var(--nom-border-radius);
+  display: inline-flex;
+  cursor: default;
+  font-size: 75%;
+}
+.nom-cascader > .nom-field-content .nom-control .nom-cascader-multiple-content-list .nom-list-item .nom-cascader-multiple-content-list-text > div:first-child {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 0.25rem;
+  height: 16px;
+  line-height: 16px;
+}
+.nom-cascader > .nom-field-content .nom-control .nom-cascader-multiple-content-list .nom-list-item .nom-cascader-multiple-content-list-text .nom-icon {
+  opacity: 0.5;
+  cursor: pointer;
+}
+.nom-cascader > .nom-field-content .nom-control .nom-cascader-multiple-content-list .nom-list-item .nom-cascader-multiple-content-list-text .nom-icon:hover {
+  opacity: 1;
+}
 .nom-cascader-popup {
   overflow: hidden;
 }
@@ -11528,6 +11556,9 @@ textarea .nom-textarea {
 }
 .nom-cascader-popup .nom-cascader-option-wrapper .nom-cascader-option-list .nom-list-item .nom-icon.p-type-right {
   color: var(--nom-cascader-icon-color);
+}
+.nom-cascader-popup .nom-cascader-option-wrapper .nom-cascader-option-list .nom-list-item .nom-cascader-option-checker {
+  padding-right: 0.25rem;
 }
 .nom-cascader-popup > .nom-layout {
   max-height: 300px;
@@ -11580,6 +11611,29 @@ textarea .nom-textarea {
 .nom-cascader-popup > .nom-layout > .nom-layout-body .nom-cascader-menu > .nom-cascader-menu-item > .nom-cascader-menu-item-expand-icon {
   padding-left: 1rem;
   font-size: 85%;
+}
+.nom-cascader-over-tags-trigger {
+  font-size: 75%;
+  padding-left: 0.5rem;
+}
+.nom-cascader-over-tags-list {
+  padding: 0.5rem;
+}
+.nom-cascader-over-tags-list > .nom-list-content {
+  gap: 0.25rem;
+}
+.nom-cascader-over-tags-list .nom-list-item-wrapper:last-child {
+  padding-right: 0;
+}
+.nom-cascader-over-tags-list .nom-list-item-wrapper .nom-list-item {
+  padding: var(--nom-select-selected-item-padding);
+  background: var(--nom-select-selected-item-bg);
+  border: 1px solid var(--nom-select-selected-item-border-color);
+  border-radius: var(--nom-border-radius);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .nom-cascader-animate-top-show {
   -webkit-animation: nom-cascader-keyframe-top-show 0.16s linear forwards;
