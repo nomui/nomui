@@ -115,7 +115,7 @@ class GroupList extends Group {
 
   validate(options) {
     let selfValid = true
-    if (this.props.required || !this.fields.length) {
+    if (this.props.required && !this.fields.length) {
       const rules = [{ type: 'required', message: this._propStyleClasses.requiredMessage }]
 
       const validationResult = RuleManager.validate(rules, this.fields.length ? true : null)
