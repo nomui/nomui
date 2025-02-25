@@ -6,6 +6,9 @@ class Carousel extends Component {
   }
 
   _config() {
+    if (this.autoplayInterval) {
+      clearInterval(this.autoplayInterval)
+    }
     this.dotsRef = []
     this.positions = []
     this.slideWidth = null
