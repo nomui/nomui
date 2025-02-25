@@ -11,15 +11,30 @@ class ListSetter extends Field {
 
   _config() {
     const that = this
-    const { itemForm, actions, value, labelField, keyField = 'id', sortable, minItems, minItemsMessage, itemRender, formPopupAlign, itemRemovable } = this.props
+    const {
+      itemForm,
+      actions,
+      value,
+      labelField,
+      keyField = 'id',
+      sortable,
+      minItems,
+      minItemsMessage,
+      itemRender,
+      formPopupAlign,
+      itemRemovable,
+    } = this.props
 
     let sortableProps = sortable
     if (sortable) {
-      sortableProps = Component.extendProps({
-        onEnd: () => {
-          this._onValueChange()
-        }
-      }, sortable)
+      sortableProps = Component.extendProps(
+        {
+          onEnd: () => {
+            this._onValueChange()
+          },
+        },
+        sortable,
+      )
     }
 
     const dataList = {
@@ -37,19 +52,18 @@ class ListSetter extends Field {
         if (isFunction(itemForm)) {
           myFormProps = itemForm({ itemData })
         }
-        const itemFormProps = Component.extendProps(myFormProps,
-          {
-            component: Form,
-            fieldDefaults: {
-              labelAlign: 'left',
-            },
-            value: itemData,
-            onValueChange: ({ newValue }) => {
-              newValue = Component.extendProps(itemData, newValue)
-              this.listRef.updateItem(itemData[keyField], newValue)
-              this._onValueChange()
-            }
-          })
+        const itemFormProps = Component.extendProps(myFormProps, {
+          component: Form,
+          fieldDefaults: {
+            labelAlign: 'left',
+          },
+          value: itemData,
+          onValueChange: ({ newValue }) => {
+            newValue = Component.extendProps(itemData, newValue)
+            this.listRef.updateItem(itemData[keyField], newValue)
+            this._onValueChange()
+          },
+        })
 
         return {
           component: 'Flex',
@@ -79,14 +93,16 @@ class ListSetter extends Field {
                     alignOuter: true,
                   })
                   event.stopPropagation()
-                }
-                else {
+                } else {
                   that.removeItem(itemData[keyField])
                 }
-              }
-            }
+              },
+            },
           ],
           onClick: ({ sender }) => {
+            if (itemForm === false) {
+              return
+            }
             new nomui.Layer({
               classes: { 'nom-list-setter-layer': true, 'nom-popup': true },
               closeOnClickOutside: true,
@@ -96,9 +112,9 @@ class ListSetter extends Field {
               alignTo: sender.element,
               alignOuter: true,
             })
-          }
+          },
         }
-      }
+      },
     }
 
     let actionsProps = actions
@@ -152,7 +168,7 @@ ListSetter.defaults = {
   labelField: 'title',
   keyField: 'id',
   sortable: {
-    handle: '.p-type-drag'
+    handle: '.p-type-drag',
   },
   actions: null,
   minItems: null,
