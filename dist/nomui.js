@@ -11927,6 +11927,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super(Component.extendProps(Carousel.defaults, props), ...mixins);
     }
     _config() {
+      if (this.autoplayInterval) {
+        clearInterval(this.autoplayInterval);
+      }
       this.dotsRef = [];
       this.positions = [];
       this.slideWidth = null;
@@ -24477,6 +24480,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               },
             ],
             onClick: ({ sender }) => {
+              if (itemForm === false) {
+                return;
+              }
               new nomui.Layer({
                 classes: { "nom-list-setter-layer": true, "nom-popup": true },
                 closeOnClickOutside: true,
