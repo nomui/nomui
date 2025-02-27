@@ -25,9 +25,11 @@ class Loading extends Layer {
         ref: (c) => {
           this.iconRef = c
         },
-        children: this.props.noSpinner ? '' : {
-          component: Spinner,
-        },
+        children: this.props.noSpinner
+          ? ''
+          : {
+              component: Spinner,
+            },
       },
       onClick({ event }) {
         event.stopPropagation()
@@ -35,9 +37,6 @@ class Loading extends Layer {
     })
 
     this.referenceElement.classList.add('nom-loading-container')
-
-
-
     super._config()
   }
 
@@ -45,6 +44,7 @@ class Loading extends Layer {
     if (this.props.noSpinner && this.firstRender) {
       this.close({ type: 'success' })
     }
+    super._rendered()
   }
 
   _remove() {
@@ -56,21 +56,18 @@ class Loading extends Layer {
     const { type } = args
     if (!type) {
       this.remove()
-    }
-    else {
-
-      if (type === 'fail' || type === "danger") {
+    } else {
+      if (type === 'fail' || type === 'danger') {
         this.iconRef.update({
           children: {
-            component: FailIcon
-          }
+            component: FailIcon,
+          },
         })
-      }
-      else if (type === 'success') {
+      } else if (type === 'success') {
         this.iconRef.update({
           children: {
-            component: SuccessIcon
-          }
+            component: SuccessIcon,
+          },
         })
       }
 
