@@ -18057,6 +18057,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.props.noSpinner && this.firstRender) {
         this.close({ type: "success" });
       }
+      super._rendered();
     }
     _remove() {
       this.referenceElement &&
