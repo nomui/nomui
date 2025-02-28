@@ -27019,6 +27019,30 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
           pager._onPageChange();
         },
+        popup: this.props.simple
+          ? {
+              children: {
+                component: "Select",
+                showSearch: false,
+                classes: { "nom-pager-select": true },
+                value: pager.props.pageSize || 10,
+                onValueChange: (data) => {
+                  pager._handleCache({ pageSize: data.newValue });
+                  pager.props.pageSize = data.newValue;
+                  pager.props.pageIndex = 1;
+                  pager._onPageChange(true);
+                },
+                allowClear: false,
+                options: [
+                  { text: this.props.texts.pageText10, value: 10 },
+                  { text: this.props.texts.pageText20, value: 20 },
+                  { text: this.props.texts.pageText30, value: 30 },
+                  { text: this.props.texts.pageText40, value: 40 },
+                  { text: this.props.texts.pageText50, value: 50 },
+                ],
+              },
+            }
+          : undefined,
       };
     }
     _rendersizes(pager) {
