@@ -12395,6 +12395,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           });
         }
       }
+      this.cascaderControl.popup.setPosition();
     }
     _getNextLevelItems({ value, level }) {
       const arr = [];

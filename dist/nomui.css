@@ -11531,6 +11531,9 @@ textarea .nom-textarea {
   padding: 2rem 1rem;
   min-height: 200px;
 }
+.nom-cascader-popup .nom-cascader-option-wrapper > .nom-list-content {
+  flex-wrap: nowrap;
+}
 .nom-cascader-popup .nom-cascader-option-wrapper > .nom-list-content > .nom-list-item {
   border-right: 1px dashed var(--nom-border-color);
 }
