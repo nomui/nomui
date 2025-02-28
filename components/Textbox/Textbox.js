@@ -28,8 +28,18 @@ class Textbox extends Field {
       button,
       readonly,
       disabled,
-      restrictInput
+      restrictInput,
     } = this.props
+
+    if (
+      minlength &&
+      minlength > 0 &&
+      this.rules.findIndex((rule) => rule.type === 'minlength') === -1
+    ) {
+      this.setProps({
+        rules: [{ type: 'minlength', value: minlength }, ...this.props.rules],
+      })
+    }
 
     // 左侧icon
     let leftIconProps = Component.normalizeIconProps(leftIcon)
@@ -49,9 +59,9 @@ class Textbox extends Field {
 
     const buttonProps = isPlainObject(button)
       ? Component.extendProps(
-        { component: Button, classes: { 'nom-textbox-button': true } },
-        button,
-      )
+          { component: Button, classes: { 'nom-textbox-button': true } },
+          button,
+        )
       : null
 
     const inputProps = {
@@ -64,7 +74,7 @@ class Textbox extends Field {
         maxlength,
         minlength,
         type: htmlType,
-        readonly: (readonly || restrictInput) ? 'readonly' : null,
+        readonly: readonly || restrictInput ? 'readonly' : null,
       },
       _created: function () {
         this.textbox = that
@@ -161,13 +171,13 @@ class Textbox extends Field {
         disabled: disabled,
         children: affixWrapper
           ? [
-            {
-              // 有左右图标，则再用 wrapper包一层，为了展示
-              classes: { 'nom-textbox-affix-wrapper': true },
-              children: baseTextProps,
-            },
-            buttonProps,
-          ]
+              {
+                // 有左右图标，则再用 wrapper包一层，为了展示
+                classes: { 'nom-textbox-affix-wrapper': true },
+                children: baseTextProps,
+              },
+              buttonProps,
+            ]
           : [...baseTextProps, buttonProps],
       },
     })
