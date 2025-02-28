@@ -9042,7 +9042,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         readonly,
         disabled,
         restrictInput,
-      } = this.props; // 左侧icon
+      } = this.props;
+      if (
+        minlength &&
+        minlength > 0 &&
+        this.rules.findIndex((rule) => rule.type === "minlength") === -1
+      ) {
+        this.setProps({
+          rules: [{ type: "minlength", value: minlength }, ...this.props.rules],
+        });
+      } // 左侧icon
       let leftIconProps = Component.normalizeIconProps(leftIcon);
       if (leftIconProps != null) {
         leftIconProps = Component.extendProps(leftIconProps, {
