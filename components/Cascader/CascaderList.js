@@ -245,6 +245,8 @@ class CascaderList extends List {
         })
       }
     }
+
+    this.cascaderControl.popup.setPosition()
   }
 
   _getNextLevelItems({ value, level }) {
