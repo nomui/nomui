@@ -71,57 +71,25 @@ class Pager extends Component {
       },
       popup: this.props.simple
         ? {
-            children: {
-              component: 'Select',
-              showSearch: false,
-              classes: {
-                'nom-pager-select': true,
-              },
-              value: pager.props.pageSize || 10,
-              onValueChange: (data) => {
-                pager._handleCache({ pageSize: data.newValue })
-                pager.props.pageSize = data.newValue
-                pager.props.pageIndex = 1
-                pager._onPageChange(true)
-              },
-              allowClear: false,
-              options: [
-                {
-                  text: this.props.texts.pageText10,
-                  value: 10,
-                },
-                {
-                  text: this.props.texts.pageText20,
-                  value: 20,
-                },
-                {
-                  text: this.props.texts.pageText30,
-                  value: 30,
-                },
-                {
-                  text: this.props.texts.pageText40,
-                  value: 40,
-                },
-                {
-                  text: this.props.texts.pageText50,
-                  value: 50,
-                },
-              ],
+            styles: {
+              padding: 'd5',
             },
+            children: this._rendersizes(pager, true),
           }
         : undefined,
     }
   }
 
-  _rendersizes(pager) {
+  _rendersizes(pager, force) {
     return (
-      !pager.props.simple && {
+      (force || !pager.props.simple) && {
         component: 'Select',
         showSearch: false,
+        compact: true,
         classes: {
           'nom-pager-select': true,
         },
-        value: pager.props.pageSize || 10,
+        value: pager.props.pageSize || this.props.pageSizeOptions[0].value,
         onValueChange: (data) => {
           pager._handleCache({ pageSize: data.newValue })
           pager.props.pageSize = data.newValue
@@ -129,28 +97,7 @@ class Pager extends Component {
           pager._onPageChange(true)
         },
         allowClear: false,
-        options: [
-          {
-            text: this.props.texts.pageText10,
-            value: 10,
-          },
-          {
-            text: this.props.texts.pageText20,
-            value: 20,
-          },
-          {
-            text: this.props.texts.pageText30,
-            value: 30,
-          },
-          {
-            text: this.props.texts.pageText40,
-            value: 40,
-          },
-          {
-            text: this.props.texts.pageText50,
-            value: 50,
-          },
-        ],
+        options: this.props.pageSizeOptions,
       }
     )
   }
@@ -326,7 +273,28 @@ Pager.defaults = {
   paramsType: 'default',
   justify: 'end',
   itemsSort: ['count', 'pages', 'sizes'], // 排列顺序 1.count 共xx条数据 2.分页数List 3.分页大小Select
-
+  pageSizeOptions: [
+    {
+      text: '10条/页',
+      value: 10,
+    },
+    {
+      text: '20条/页',
+      value: 20,
+    },
+    {
+      text: '30条/页',
+      value: 30,
+    },
+    {
+      text: '40条/页',
+      value: 40,
+    },
+    {
+      text: '50条/页',
+      value: 50,
+    },
+  ],
   texts: {
     // prev: '上一页',
     // next: '下一页',
@@ -340,11 +308,6 @@ Pager.defaults = {
     },
     ellipse: '...',
     totalText: '共有数据{{totalCount}}条',
-    pageText10: '10条/页',
-    pageText20: '20条/页',
-    pageText30: '30条/页',
-    pageText40: '40条/页',
-    pageText50: '50条/页',
   },
 
   getPageParams: function () {

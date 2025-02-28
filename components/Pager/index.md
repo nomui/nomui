@@ -7,6 +7,7 @@
 | paramsType | 切换页码的方式,默认是 pageSize pageIndex 分页，配置为`skiptake`则以 skip & take 进行分页 | `string` | `default` |
 | pageIndex | 默认的当前页数 | `number` | 1 |
 | pageSize | 默认的每页条数 | `number` | 10 |
+| pageSizeOptions 自定义每页条数数据源 | `array` | - |
 | totalCount | 数据总数 | `number` | 0 |
 | displayItemCount | 缩略字符左边显示的页数 | `number` | 5 |
 | edgeItemCount | 缩略字符右边显示的页数 | `number` | 1 |
@@ -21,6 +22,35 @@
 | texts.ellipse | 缩略字符 | `string` | ... |
 | cacheable | 是否缓存分页大小设置(需对实例设置唯一值`key`) | `boolean` | false |
 | onPageChange | 页码改变的回调，返回改变后的对象 | `function (e)=>{e.sender.update(e);console.log(e)}` | - |
+
+## pageSizeOptions
+
+配置每页显示条数以及其显示的文字,格式如下
+
+```
+[
+    {
+      text: '10条/页',
+      value: 10,
+    },
+    {
+      text: '20条/页',
+      value: 20,
+    },
+    {
+      text: '30条/页',
+      value: 30,
+    },
+    {
+      text: '40条/页',
+      value: 40,
+    },
+    {
+      text: '50条/页',
+      value: 50,
+    },
+  ]
+```
 
 ## itemsSort
 
