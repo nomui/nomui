@@ -1,5 +1,6 @@
 define([
   './basic.js',
+  './page-size.js',
   './prev-show.js',
   './icon-text.js',
   './simple.js',
