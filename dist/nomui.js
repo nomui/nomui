@@ -26993,6 +26993,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return { children: str };
     }
     _renderpages(pager) {
+      const me = this;
       return {
         component: List,
         gutter: this.props.compact ? "sm" : "sm",
@@ -27003,7 +27004,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             return this.props.pageNumber;
           },
           _config: function () {
-            this.setProps({ children: this.props.text });
+            this.setProps({
+              children: this.props.text,
+              popup:
+                !this.props.isArrow && me.props.simple
+                  ? {
+                      styles: { padding: "d5" },
+                      children: me._rendersizes(pager, true),
+                    }
+                  : undefined,
+            });
           },
         },
         itemSelectable: { byClick: true },
@@ -27019,12 +27029,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
           pager._onPageChange();
         },
-        popup: this.props.simple
-          ? {
-              styles: { padding: "d5" },
-              children: this._rendersizes(pager, true),
-            }
-          : undefined,
       };
     }
     _rendersizes(pager, force) {
@@ -27117,6 +27121,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           text: props.texts.prev,
           disabled: pageIndex <= 1,
           classes: { prev: true },
+          isArrow: true,
         });
       }
       this._getMiddleItems(items, pageCount); // 产生 "Next"-链接
@@ -27126,6 +27131,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           text: props.texts.next,
           disabled: pageIndex >= pageCount,
           classes: { next: true },
+          isArrow: true,
         });
       }
       return items;

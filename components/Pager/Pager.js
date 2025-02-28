@@ -37,6 +37,7 @@ class Pager extends Component {
   }
 
   _renderpages(pager) {
+    const me = this
     return {
       component: List,
       gutter: this.props.compact ? 'sm' : 'sm',
@@ -49,6 +50,15 @@ class Pager extends Component {
         _config: function () {
           this.setProps({
             children: this.props.text,
+            popup:
+              !this.props.isArrow && me.props.simple
+                ? {
+                    styles: {
+                      padding: 'd5',
+                    },
+                    children: me._rendersizes(pager, true),
+                  }
+                : undefined,
           })
         },
       },
@@ -69,14 +79,6 @@ class Pager extends Component {
 
         pager._onPageChange()
       },
-      popup: this.props.simple
-        ? {
-            styles: {
-              padding: 'd5',
-            },
-            children: this._rendersizes(pager, true),
-          }
-        : undefined,
     }
   }
 
@@ -178,6 +180,7 @@ class Pager extends Component {
         text: props.texts.prev,
         disabled: pageIndex <= 1,
         classes: { prev: true },
+        isArrow: true,
       })
     }
 
@@ -190,6 +193,7 @@ class Pager extends Component {
         text: props.texts.next,
         disabled: pageIndex >= pageCount,
         classes: { next: true },
+        isArrow: true,
       })
     }
 
