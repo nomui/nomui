@@ -8736,6 +8736,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       this.setProps({
+        attrs: { "data-field-name": this.name },
         classes: {
           "s-readonly": this.props.readonly,
           "s-compact": this.props.compact,
@@ -17195,7 +17196,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return invalids.length === 0;
     }
-    getField(fieldName) {
+    getField(fieldName, options = {}) {
+      if (options.byDom) {
+        const name = fieldName.split(".").pop();
+        return this.findField(name);
+      }
       if (typeof fieldName === "string") {
         // Handle nested keys, e.g., "foo.bar" "foo[1].bar" "foo[key].bar"
         const parts = fieldName.split(".");
@@ -17211,6 +17216,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         return curField;
       }
+    }
+    findField(fieldName) {
+      const el = this.element.querySelector(`[data-field-name="${fieldName}"]`);
+      if (el && el.component) {
+        return el.component;
+      }
+      return null;
     }
     appendField(fieldProps) {
       const { fieldDefaults } = this.props;
