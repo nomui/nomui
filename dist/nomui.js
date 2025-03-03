@@ -14638,7 +14638,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return data;
     }
     _getValue() {
-      if (!this.colorList || !this.colorList.props) {
+      if (
+        !this.colorList ||
+        !this.colorList.props ||
+        !this.colorList.getSelected()
+      ) {
         return this.currentValue;
       }
       return this.colorList.getSelected().id;
@@ -23905,103 +23909,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super._created();
       this.itemsRef = {};
       if (!this.props.data) {
-        this.props.data = [
-          {
-            category: "Direction",
-            text: "方向",
-            icons: [
-              { type: "up", text: "向上" },
-              { type: "down", text: "向下" },
-              { type: "left", text: "向左" },
-              { type: "right", text: "向右" },
-              { type: "swap", text: "交换" },
-            ],
-          },
-          {
-            category: "Prompt",
-            text: "提示",
-            icons: [
-              { type: "square", text: "正方形" },
-              { type: "info-circle", text: "信息" },
-              { type: "question-circle", text: "疑问" },
-              { type: "exclamation-circle", text: "警告" },
-              { type: "close-circle", text: "关闭" },
-              { type: "check-circle", text: "勾选" },
-              { type: "check-circle-fill", text: "填充勾选" },
-              { type: "info-circle-fill", text: "填充信息" },
-              { type: "warning-circle-fill", text: "填充警告" },
-              { type: "help-circle-fill", text: "填充帮助" },
-              { type: "close-circle-fill", text: "填充关闭" },
-              { type: "up-circle", text: "向上圆圈" },
-              { type: "down-circle", text: "向下圆圈" },
-              { type: "check", text: "勾选" },
-              { type: "close", text: "关闭" },
-              { type: "ellipsis", text: "省略号" },
-              { type: "eye", text: "眼睛" },
-              { type: "eye-invisible", text: "隐藏眼睛" },
-              { type: "pin", text: "图钉" },
-              { type: "pin-fill", text: "填充图钉" },
-            ],
-          },
-          {
-            category: "Editor",
-            text: "编辑器",
-            icons: [
-              { type: "form", text: "表单" },
-              { type: "plus", text: "加号" },
-              { type: "minus", text: "减号" },
-              { type: "edit", text: "编辑" },
-              { type: "delete", text: "删除" },
-              { type: "blank-square", text: "空白正方形" },
-              { type: "checked-square", text: "勾选正方形" },
-              { type: "half-square", text: "半选正方形" },
-              { type: "times", text: "乘号" },
-              { type: "search", text: "搜索" },
-              { type: "filter", text: "过滤" },
-              { type: "filter-remove", text: "移除过滤" },
-              { type: "sort", text: "排序" },
-              { type: "sort-down", text: "向下排序" },
-              { type: "sort-up", text: "向上排序" },
-              { type: "sort-right", text: "向右排序" },
-              { type: "sort-left", text: "向左排序" },
-            ],
-          },
-          {
-            category: "Common",
-            text: "常用",
-            icons: [
-              { type: "cloud-upload", text: "云上传" },
-              { type: "upload", text: "上传" },
-              { type: "download", text: "下载" },
-              { type: "star", text: "星标" },
-              { type: "refresh", text: "刷新" },
-            ],
-          },
-          {
-            category: "FileType",
-            text: "文件类型",
-            icons: [
-              { type: "folder", text: "文件夹" },
-              { type: "folder-filled", text: "填充文件夹" },
-              { type: "file", text: "文件" },
-            ],
-          },
-          {
-            category: "Uncategorized",
-            text: "未分类",
-            icons: [
-              { type: "clock", text: "时钟" },
-              { type: "calendar", text: "日历" },
-              { type: "image", text: "图片" },
-              { type: "table", text: "表格" },
-              { type: "profile", text: "个人资料" },
-              { type: "user", text: "用户" },
-              { type: "company", text: "公司" },
-              { type: "image-pending", text: "图片" },
-              { type: "sandbox", text: "沙盒" },
-            ],
-          },
-        ];
+        this.props.data = this.props.interalData;
       }
     }
     _config() {
@@ -24294,6 +24202,103 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     searchPlaceholder: "请输入",
     clearText: "清空",
     popupWidth: 340,
+    interalData: [
+      {
+        category: "Direction",
+        text: "方向",
+        icons: [
+          { type: "up", text: "向上" },
+          { type: "down", text: "向下" },
+          { type: "left", text: "向左" },
+          { type: "right", text: "向右" },
+          { type: "swap", text: "交换" },
+        ],
+      },
+      {
+        category: "Prompt",
+        text: "提示",
+        icons: [
+          { type: "square", text: "正方形" },
+          { type: "info-circle", text: "信息" },
+          { type: "question-circle", text: "疑问" },
+          { type: "exclamation-circle", text: "警告" },
+          { type: "close-circle", text: "关闭" },
+          { type: "check-circle", text: "勾选" },
+          { type: "check-circle-fill", text: "填充勾选" },
+          { type: "info-circle-fill", text: "填充信息" },
+          { type: "warning-circle-fill", text: "填充警告" },
+          { type: "help-circle-fill", text: "填充帮助" },
+          { type: "close-circle-fill", text: "填充关闭" },
+          { type: "up-circle", text: "向上圆圈" },
+          { type: "down-circle", text: "向下圆圈" },
+          { type: "check", text: "勾选" },
+          { type: "close", text: "关闭" },
+          { type: "ellipsis", text: "省略号" },
+          { type: "eye", text: "眼睛" },
+          { type: "eye-invisible", text: "隐藏眼睛" },
+          { type: "pin", text: "图钉" },
+          { type: "pin-fill", text: "填充图钉" },
+        ],
+      },
+      {
+        category: "Editor",
+        text: "编辑器",
+        icons: [
+          { type: "form", text: "表单" },
+          { type: "plus", text: "加号" },
+          { type: "minus", text: "减号" },
+          { type: "edit", text: "编辑" },
+          { type: "delete", text: "删除" },
+          { type: "blank-square", text: "空白正方形" },
+          { type: "checked-square", text: "勾选正方形" },
+          { type: "half-square", text: "半选正方形" },
+          { type: "times", text: "乘号" },
+          { type: "search", text: "搜索" },
+          { type: "filter", text: "过滤" },
+          { type: "filter-remove", text: "移除过滤" },
+          { type: "sort", text: "排序" },
+          { type: "sort-down", text: "向下排序" },
+          { type: "sort-up", text: "向上排序" },
+          { type: "sort-right", text: "向右排序" },
+          { type: "sort-left", text: "向左排序" },
+        ],
+      },
+      {
+        category: "Common",
+        text: "常用",
+        icons: [
+          { type: "cloud-upload", text: "云上传" },
+          { type: "upload", text: "上传" },
+          { type: "download", text: "下载" },
+          { type: "star", text: "星标" },
+          { type: "refresh", text: "刷新" },
+        ],
+      },
+      {
+        category: "FileType",
+        text: "文件类型",
+        icons: [
+          { type: "folder", text: "文件夹" },
+          { type: "folder-filled", text: "填充文件夹" },
+          { type: "file", text: "文件" },
+        ],
+      },
+      {
+        category: "Uncategorized",
+        text: "未分类",
+        icons: [
+          { type: "clock", text: "时钟" },
+          { type: "calendar", text: "日历" },
+          { type: "image", text: "图片" },
+          { type: "table", text: "表格" },
+          { type: "profile", text: "个人资料" },
+          { type: "user", text: "用户" },
+          { type: "company", text: "公司" },
+          { type: "image-pending", text: "图片" },
+          { type: "sandbox", text: "沙盒" },
+        ],
+      },
+    ],
   };
   Component.register(IconPicker);
   class Image extends Component {
