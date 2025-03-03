@@ -120,6 +120,9 @@ class Field extends Component {
     }
 
     this.setProps({
+      attrs: {
+        'data-field-name': this.name,
+      },
       classes: {
         's-readonly': this.props.readonly,
         's-compact': this.props.compact,
