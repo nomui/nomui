@@ -6676,6 +6676,9 @@ body .nom-always-dark {
   -webkit-animation: nom-loading-hide 1800ms ease forwards;
   animation: nom-loading-hide 1800ms ease forwards;
 }
+.nom-loading-animate-hide + .nom-layer-backdrop {
+  display: none;
+}
 @keyframes nom-loading-hide {
   75% {
     opacity: 1;
