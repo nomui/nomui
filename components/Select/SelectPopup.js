@@ -94,16 +94,17 @@ class SelectPopup extends Popup {
                 }
               },
             },
-            searchable.emptyTip && {
-              ref: (c) => {
-                this.emptyTipRef = c
+            searchable &&
+              searchable.emptyTip && {
+                ref: (c) => {
+                  this.emptyTipRef = c
+                },
+                hidden: true,
+                classes: {
+                  'nom-select-popup-empty-tip': true,
+                },
+                children: searchable.emptyTip,
               },
-              hidden: true,
-              classes: {
-                'nom-select-popup-empty-tip': true,
-              },
-              children: searchable.emptyTip,
-            },
           ],
         },
         footer: extraTools
