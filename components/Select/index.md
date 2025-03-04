@@ -31,6 +31,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | placeholder | 搜索框占位文字 | `string` | false |
+| emptyTip | 当搜索结果为空时的提示文字 | `string` | - |
 | filter | 过滤方法，返回选项数组，或者 Promise。参数 inputValue 为搜索框输入的文本，options 为配置的选项数组 | `({inputValue,options}) => {return Option[]}` | - |
 
 ### Option

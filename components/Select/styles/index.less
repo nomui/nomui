@@ -1,14 +1,13 @@
 .nom-select {
-  &.p-label-align-right>.nom-field-label+.nom-field-content {
+  &.p-label-align-right > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
-  &.p-label-align-left>.nom-field-label+.nom-field-content {
+  &.p-label-align-left > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
-
-  >.nom-field-content {
+  > .nom-field-content {
     .nom-control {
       position: relative;
       min-height: @input-height-base;
@@ -33,7 +32,7 @@
 
       .nom-select-multiple {
         .nom-list-item-wrapper {
-          padding: 0.15rem .25rem;
+          padding: 0.15rem 0.25rem;
         }
 
         .nom-list-item {
@@ -61,7 +60,7 @@
 
           .nom-icon {
             // font-size: 85%;
-            opacity: .5;
+            opacity: 0.5;
 
             &:hover {
               opacity: 1;
@@ -139,11 +138,24 @@
   }
 }
 
-.nom-select-popup>.nom-layout {
-  max-height: 300px;
+.nom-select-popup {
+  > .nom-layout {
+    max-height: 300px;
 
-  >.nom-layout-body {
-    overflow-x: hidden;
+    > .nom-layout-body {
+      overflow-x: hidden;
+    }
+  }
+
+  .nom-select-popup-extra-tools {
+    min-height: 0 !important;
+    padding: 0.5rem;
+  }
+
+  .nom-select-popup-empty-tip {
+    padding: 0.75rem 1rem;
+    color: var(--nom-color-text-2);
+    font-size: 13px;
   }
 }
 
@@ -212,8 +224,6 @@
   -webkit-animation: nom-select-keyframe-bottom-hide 0.16s linear forwards;
   animation: nom-select-keyframe-bottom-hide 0.16s linear forwards;
 }
-
-
 
 @-webkit-keyframes nom-select-keyframe-top-show {
   0% {

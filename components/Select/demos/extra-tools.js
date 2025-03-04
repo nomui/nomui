@@ -14,18 +14,39 @@ define([], function () {
             onClear: (args) => {
               console.log(args)
             },
+            searchable: {
+              placeholder: '输入 a 或 b 或 c ...',
+              emptyTip: '没有找到匹配的选项,可以点击新建项目或新建关联',
+            },
             extraTools: ({ inst, popup }) => {
               return {
-                component: 'Button',
-                size: 'small',
-                type: 'link',
-                icon: 'plus',
-                text: '新建关联',
-                onClick: () => {
-                  // do something
-                  console.log(inst.props)
-                  popup.hide()
-                },
+                component: 'Flex',
+                cols: [
+                  {
+                    component: 'Button',
+                    size: 'small',
+                    type: 'link',
+                    icon: 'plus',
+                    text: '新建项目',
+                    onClick: () => {
+                      // do something
+                      console.log(inst.props)
+                      popup.hide()
+                    },
+                  },
+                  {
+                    component: 'Button',
+                    size: 'small',
+                    type: 'link',
+                    icon: 'plus',
+                    text: '新建关联',
+                    onClick: () => {
+                      // do something
+                      console.log(inst.props)
+                      popup.hide()
+                    },
+                  },
+                ],
               }
             },
             options: [
