@@ -62,46 +62,46 @@ class Select extends Field {
               attrs: { title: this.props[that.props.optionFields.text] },
               popup: this.props.overList
                 ? {
-                  triggerAction: 'hover',
-                  align: 'top center',
-                  classes: {
-                    'nom-select-extra-tags': true,
-                  },
-                  children: {
-                    component: 'List',
-                    gutter: 'sm',
-                    itemDefaults: {
-                      key() {
-                        return this.props[that.props.optionFields.value]
-                      },
-                      _config: function () {
-                        this.setProps({
-                          tag: 'span',
-                          onClick: (args) => {
-                            args.event.stopPropagation()
-                          },
-
-                          attrs: { title: this.props[that.props.optionFields.text] },
-
-                          children: [
-                            {
-                              tag: 'span',
-                              classes: { 'nom-select-item-content': true },
-                              attrs: {
-                                style: {
-                                  maxWidth: `${that.props.maxTagWidth}px`,
-                                },
-                              },
-
-                              children: this.props[that.props.optionFields.text],
-                            },
-                          ],
-                        })
-                      },
+                    triggerAction: 'hover',
+                    align: 'top center',
+                    classes: {
+                      'nom-select-extra-tags': true,
                     },
-                    items: this.props.overList,
-                  },
-                }
+                    children: {
+                      component: 'List',
+                      gutter: 'sm',
+                      itemDefaults: {
+                        key() {
+                          return this.props[that.props.optionFields.value]
+                        },
+                        _config: function () {
+                          this.setProps({
+                            tag: 'span',
+                            onClick: (args) => {
+                              args.event.stopPropagation()
+                            },
+
+                            attrs: { title: this.props[that.props.optionFields.text] },
+
+                            children: [
+                              {
+                                tag: 'span',
+                                classes: { 'nom-select-item-content': true },
+                                attrs: {
+                                  style: {
+                                    maxWidth: `${that.props.maxTagWidth}px`,
+                                  },
+                                },
+
+                                children: this.props[that.props.optionFields.text],
+                              },
+                            ],
+                          })
+                        },
+                      },
+                      items: this.props.overList,
+                    },
+                  }
                 : null,
               children: [
                 {
@@ -581,7 +581,7 @@ class Select extends Field {
     }
   }
 
-  appendOption() { }
+  appendOption() {}
 
   updateSearchPopup(text) {
     if (this.optionList) this.optionList.update({ text })
@@ -601,7 +601,7 @@ class Select extends Field {
             placeholder: null,
             filter: ({ inputValue, options }) => {
               if (!inputValue) {
-                return options;
+                return options
               }
               const filteredOptions = []
               options.forEach((option) => {

@@ -30483,11 +30483,32 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               }
             : null,
           body: {
-            children: { component: SelectList, virtual: this.props.virtual },
+            children: [
+              {
+                component: SelectList,
+                virtual: this.props.virtual,
+                onRendered: ({ inst }) => {
+                  if (!this.emptyTipRef) return;
+                  if (inst.props.items && inst.props.items.length) {
+                    this.emptyTipRef.hide();
+                  } else {
+                    this.emptyTipRef.show();
+                  }
+                },
+              },
+              searchable.emptyTip && {
+                ref: (c) => {
+                  this.emptyTipRef = c;
+                },
+                hidden: true,
+                classes: { "nom-select-popup-empty-tip": true },
+                children: searchable.emptyTip,
+              },
+            ],
           },
           footer: extraTools
             ? {
-                attrs: { style: { minHeight: "2rem", padding: ".75rem" } },
+                classes: { "nom-select-popup-extra-tools": true },
                 children: isFunction(extraTools)
                   ? extraTools({ popup: this, inst: this.selectControl })
                   : extraTools,

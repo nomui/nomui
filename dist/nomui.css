@@ -9357,6 +9357,15 @@ textarea .nom-textarea {
 .nom-select-popup > .nom-layout > .nom-layout-body {
   overflow-x: hidden;
 }
+.nom-select-popup .nom-select-popup-extra-tools {
+  min-height: 0 !important;
+  padding: 0.5rem;
+}
+.nom-select-popup .nom-select-popup-empty-tip {
+  padding: 0.75rem 1rem;
+  color: var(--nom-color-text-2);
+  font-size: 13px;
+}
 .nom-select-list .nom-list-item {
   padding: 5px 16px;
   user-select: none;
