@@ -138,7 +138,7 @@ class Component {
     }
   }
 
-  _created() { }
+  _created() {}
 
   _setKey() {
     if (this.props.key) {
@@ -169,7 +169,7 @@ class Component {
     this._setStatusProps()
   }
 
-  _config() { }
+  _config() {}
 
   render() {
     try {
@@ -214,7 +214,7 @@ class Component {
     this.firstRender = false
   }
 
-  _rendered() { }
+  _rendered() {}
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
   remove() {
@@ -271,6 +271,19 @@ class Component {
 
     this._placeHolderElement = document.createElement('div')
     this._placeHolderElement.classList.add('placeholder')
+    const { placeholderProps } = this.props
+    if (isPlainObject(placeholderProps)) {
+      const { width, height, loading } = placeholderProps
+      if (width) {
+        this._placeHolderElement.style.width = isNumeric(width) ? `${width}px` : width
+      }
+      if (height) {
+        this._placeHolderElement.style.height = isNumeric(height) ? `${height}px` : height
+      }
+      if (loading) {
+        this._placeHolderElement.classList.add('nom-placeholder-element-loading')
+      }
+    }
 
     if (placement === 'append') {
       this.referenceElement.appendChild(this._placeHolderElement)
@@ -367,7 +380,7 @@ class Component {
     return el
   }
 
-  _remove() { }
+  _remove() {}
 
   _callMixin(hookType) {
     const mixinsList = [...MIXINS, ...this.mixins]

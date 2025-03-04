@@ -4604,6 +4604,25 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { placement } = this.props;
       this._placeHolderElement = document.createElement("div");
       this._placeHolderElement.classList.add("placeholder");
+      const { placeholderProps } = this.props;
+      if (isPlainObject(placeholderProps)) {
+        const { width, height, loading } = placeholderProps;
+        if (width) {
+          this._placeHolderElement.style.width = isNumeric(width)
+            ? `${width}px`
+            : width;
+        }
+        if (height) {
+          this._placeHolderElement.style.height = isNumeric(height)
+            ? `${height}px`
+            : height;
+        }
+        if (loading) {
+          this._placeHolderElement.classList.add(
+            "nom-placeholder-element-loading"
+          );
+        }
+      }
       if (placement === "append") {
         this.referenceElement.appendChild(this._placeHolderElement);
       } else if (placement === "prepend") {
