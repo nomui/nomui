@@ -1,5 +1,6 @@
 define([
   './basic.js',
+  './placeholder.js',
   './elements.js',
   './children.js',
   './update.js',
