@@ -31,6 +31,7 @@ Component 组件是所有组件的基类组件，它定义了描述 html 元素�
 | onSelect | 选中回调 | `({ sender }) => { }` | - |
 | onUnselect | 取消选中回调 | `({ sender }) => { }` | - |
 | onSelectionChange | 选则状态变更回调 | `({ sender }) => { }` | - |
+| placeholderProps | 组件渲染完成前的占位元素属性配置 | `object` | - |
 
 ### methods
 
@@ -137,3 +138,13 @@ Component 组件是所有组件的基类组件，它定义了描述 html 元素�
 | byIndicator | 通过指示器触发展开折叠操作，默认为 false，点击当前组件触发展开折叠操作 | `boolean` | `false` |
 | expandedProps | 展开状态的属性配置 | `props` \| `boolean` | `false` |
 | collapsedProps | 折叠状态的属性配置 | `props` \| `boolean` | `false` |
+
+### placeholder props
+
+每个组件在渲染完成前会在页面上拥有一个占位元素，该占位元素会在组件渲染完成后消失，通过本属性可以配置占位元素的宽高以及加载动效。
+
+| 参数    | 说明                                                   | 类型      | 默认值 |
+| ------- | ------------------------------------------------------ | --------- | ------ |
+| width   | 宽度                                                   | `number`  | -      |
+| height  | 高度                                                   | `number`  | -      |
+| loading | 是否显示加载动画，为 true 时占位容器至少会占据 1rem 高 | `boolean` | -      |
