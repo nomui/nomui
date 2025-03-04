@@ -16,7 +16,7 @@ class DataList extends Component {
     _config() {
         this.selectedItem = null
 
-        const { data, showEmpty } = this.props
+        const { data, showEmpty, itemSelectable, dataKey } = this.props
 
         this._addPropStyle('gap', 'line', 'align', 'justify', 'wrap', 'vertical', 'fills', 'cols')
 
@@ -36,6 +36,9 @@ class DataList extends Component {
         let children = []
 
         if (Array.isArray(data) && data.length > 0) {
+            if (itemSelectable.defaultSelectFirst) {
+                this.props.selectedKeys = data[0][dataKey]
+            }
             children = data.map((itemData) => {
                 return this._getItemDescriptor(itemData)
             })
@@ -261,6 +264,8 @@ DataList.defaults = {
         multiple: false,
         byClick: false,
         scrollIntoView: false,
+        defaultSelectFirst: false,
+        triggerOnInit: false,
     },
 
     disabledItemKeys: [],

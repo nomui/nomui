@@ -7,6 +7,7 @@ define([
     './crud.js',
     './empty.js',
     './item-selectable',
+    './default-select-first',
     './sortable',
     './item-disabled',
 ], function () {
