@@ -4526,9 +4526,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.props.expanded === true &&
           isFunction(this._expand) &&
           this._expand();
+        this.props.selected === true && this._triggerSelectOnInit();
         this._callRendered();
       } catch (error) {
         console.error("Render failed for component", this, error);
+      }
+    }
+    _triggerSelectOnInit() {
+      if (this.props.selectable.triggerOnInit === true) {
+        this._callHandler(this.props.onSelect, null);
+        this._callHandler(this.props.onSelectionChange);
       }
     }
     _callRendered() {
@@ -15479,6 +15486,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         selectable: {
           byClick: listProps.itemSelectable.byClick,
           canRevert: listProps.itemSelectable.multiple === true,
+          triggerOnInit: listProps.itemSelectable.triggerOnInit,
         },
         _shouldHandleClick: function () {
           if (listProps.disabled === true) {
@@ -15536,7 +15544,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       this.selectedItem = null;
-      const { data, showEmpty } = this.props;
+      const { data, showEmpty, itemSelectable, dataKey } = this.props;
       this._addPropStyle(
         "gap",
         "line",
@@ -15555,6 +15563,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       let children = [];
       if (Array.isArray(data) && data.length > 0) {
+        if (itemSelectable.defaultSelectFirst) {
+          this.props.selectedKeys = data[0][dataKey];
+        }
         children = data.map((itemData) => {
           return this._getItemDescriptor(itemData);
         });
@@ -15742,7 +15753,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     data: null,
     dataKey: "id",
     selectedKeys: null,
-    itemSelectable: { multiple: false, byClick: false, scrollIntoView: false },
+    itemSelectable: {
+      multiple: false,
+      byClick: false,
+      scrollIntoView: false,
+      defaultSelectFirst: false,
+      triggerOnInit: false,
+    },
     disabledItemKeys: [],
     showEmpty: false,
     sortable: false,

@@ -28,6 +28,7 @@ export default {
             selectable: {
                 byClick: listProps.itemSelectable.byClick,
                 canRevert: listProps.itemSelectable.multiple === true,
+                triggerOnInit: listProps.itemSelectable.triggerOnInit,
             },
             _shouldHandleClick: function () {
                 if (listProps.disabled === true) {

@@ -138,7 +138,7 @@ class Component {
     }
   }
 
-  _created() {}
+  _created() { }
 
   _setKey() {
     if (this.props.key) {
@@ -169,7 +169,7 @@ class Component {
     this._setStatusProps()
   }
 
-  _config() {}
+  _config() { }
 
   render() {
     try {
@@ -189,9 +189,18 @@ class Component {
       this.props.hidden === false && isFunction(this._show) && this._show()
       this.props.expanded === true && isFunction(this._expand) && this._expand()
 
+      this.props.selected === true && this._triggerSelectOnInit()
+
       this._callRendered()
     } catch (error) {
       console.error('Render failed for component', this, error)
+    }
+  }
+
+  _triggerSelectOnInit() {
+    if (this.props.selectable.triggerOnInit === true) {
+      this._callHandler(this.props.onSelect, null)
+      this._callHandler(this.props.onSelectionChange)
     }
   }
 
@@ -205,7 +214,7 @@ class Component {
     this.firstRender = false
   }
 
-  _rendered() {}
+  _rendered() { }
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
   remove() {
@@ -358,7 +367,7 @@ class Component {
     return el
   }
 
-  _remove() {}
+  _remove() { }
 
   _callMixin(hookType) {
     const mixinsList = [...MIXINS, ...this.mixins]
