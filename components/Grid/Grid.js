@@ -1248,10 +1248,10 @@ class Grid extends Component {
     }
 
     if (_headerScrollInfo) {
-      this.header.scrollParent.element.scrollTop =
-        _headerScrollInfo && _headerScrollInfo.top ? _headerScrollInfo.top : 0
-      this.header.element.scrollLeft =
-        _headerScrollInfo && _headerScrollInfo.left ? _headerScrollInfo.left : 0
+      if (this.header.scrollParent) {
+        this.header.scrollParent.element.scrollTop = _headerScrollInfo.top || 0
+      }
+      this.header.element.scrollLeft = _headerScrollInfo.left || 0
     }
 
     if (_bodyScrollInfo) {
