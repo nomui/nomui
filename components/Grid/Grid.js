@@ -1639,6 +1639,7 @@ Grid.defaults = {
   excelMode: false, // excel编辑模式
   editable: false, // 传统编辑模式
   loadData: false,
+  lazyLoadLimit: false,
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false
