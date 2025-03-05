@@ -541,8 +541,43 @@ class Grid extends Component {
 
     this._processColumnsWidth()
     this._processAutoScroll()
+    this.overflowAncestor = this._checkOverflowAncestor()
 
     this.props.rowSortable && defaultSortableOndrop()
+    isFunction(this.props.loadData) && this._initLazyLoad()
+  }
+
+  _checkOverflowAncestor() {
+    let currentElement = this.element
+    let overflowAncestor = null
+
+    while (currentElement !== null && currentElement instanceof Element) {
+      const style = window.getComputedStyle(currentElement)
+
+      // 检查 overflow-y 或 overflow 是否为 auto 或 scroll
+      if (
+        ['auto', 'scroll'].includes(style.overflowY) ||
+        ['auto', 'scroll'].includes(style.overflow)
+      ) {
+        overflowAncestor = currentElement
+        break
+      }
+
+      // 如果当前元素是 <html>，提前退出循环
+      if (currentElement === document.documentElement) {
+        break
+      }
+
+      // 继续向上查找父节点
+      currentElement = currentElement.parentNode
+    }
+    if (overflowAncestor) {
+      return overflowAncestor
+    }
+  }
+
+  _initLazyLoad() {
+    // todo
   }
 
   _findPopupRoot(target) {
@@ -712,29 +747,29 @@ class Grid extends Component {
   }
 
   // 记录上一次滚动到的位置
-  _setScrollPlace(isEmpty) {
+  _setScrollPlace() {
     // grid自身的 header和body的宽度
     const headerEl = this.header.element
     const bodyEl = this.body.element
     // grid设置了 sticky相对父元素
     const { scrollParent } = this.header
 
-    // body的body的宽度
-    const tableBodyEl = this.body.table.element
-
-    // 表格的竖向滚动分为两种
+    // 表格的竖向滚动分为3种
     // 1.设置了sticky, 此时的scrollTop 需从 header.scrollParent中获取
     // 2.Grid自身设置了height, scrollTop从 body中取
-    let headerLeft = headerEl.scrollLeft
+    // 3.以上两种情况都不成立, 则从表格最近的overflow元素中取
+
+    const headerLeft = headerEl.scrollLeft
     const headerTop = scrollParent && scrollParent.element ? scrollParent.element.scrollTop : 0
-    let bodyLeft = bodyEl.scrollLeft
+    const bodyLeft = bodyEl.scrollLeft
     const bodyTop = bodyEl.scrollTop
 
-    // 表格的宽度 / 2 - svg图标的一半
-    if (isEmpty) {
-      headerLeft = (tableBodyEl.offsetWidth - headerEl.offsetWidth) / 2
-      bodyLeft = (tableBodyEl.offsetWidth - bodyEl.offsetWidth) / 2
+    let parentTop = null
+
+    if (!this.props.sticky && !this.element.style.height && this.overflowAncestor) {
+      parentTop = this.overflowAncestor.scrollTop
     }
+
     this._headerScrollInfo = {
       top: headerTop,
       left: headerLeft,
@@ -744,9 +779,14 @@ class Grid extends Component {
       left: bodyLeft,
     }
 
+    this._parentScrollInfo = {
+      top: parentTop,
+    }
+
     return {
       header: this._headerScrollInfo,
       body: this._bodyScrollInfo,
+      parent: this._parentScrollInfo,
     }
   }
 
@@ -1200,21 +1240,32 @@ class Grid extends Component {
   }
 
   autoScrollGrid(param) {
-    let { _headerScrollInfo, _bodyScrollInfo } = this
+    let { _headerScrollInfo, _bodyScrollInfo, _parentScrollInfo } = this
     if (param) {
       _headerScrollInfo = param.header
       _bodyScrollInfo = param.body
+      _parentScrollInfo = param.parent
     }
-    if (!_headerScrollInfo || !_bodyScrollInfo) return
-    if (_headerScrollInfo.top) {
-      this.header.scrollParent.element.scrollTop = _headerScrollInfo.top || 0
+
+    if (_headerScrollInfo) {
+      this.header.scrollParent.element.scrollTop =
+        _headerScrollInfo && _headerScrollInfo.top ? _headerScrollInfo.top : 0
+      this.header.element.scrollLeft =
+        _headerScrollInfo && _headerScrollInfo.left ? _headerScrollInfo.left : 0
     }
-    this.header.element.scrollLeft = _headerScrollInfo.left || 0
-    this.body.element.scrollLeft = _bodyScrollInfo.left || 0
-    this.body.element.scrollTop = _bodyScrollInfo.top || 0
+
+    if (_bodyScrollInfo) {
+      this.body.element.scrollLeft = _bodyScrollInfo.left || 0
+      this.body.element.scrollTop = _bodyScrollInfo.top || 0
+    }
+
+    if (_parentScrollInfo && this.overflowAncestor) {
+      this.overflowAncestor.scrollTop = _parentScrollInfo.top || 0
+    }
 
     this._headerScrollInfo = null
     this._bodyScrollInfo = null
+    this._parentScrollInfo = null
   }
 
   /**
@@ -1587,6 +1638,7 @@ Grid.defaults = {
   onRowClick: null,
   excelMode: false, // excel编辑模式
   editable: false, // 传统编辑模式
+  loadData: false,
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false
