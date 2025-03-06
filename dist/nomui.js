@@ -31027,6 +31027,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       return null;
+    } // 外部更新options时要同步更新optionList的选项
+    _update(props) {
+      if (props.options && this.optionList && this.optionList.props) {
+        this.props.options = props.options;
+        this.optionList.update({});
+      }
     }
     _getValue(options) {
       const { valueOptions, showSearch } = this.props;
