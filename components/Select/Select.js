@@ -337,6 +337,7 @@ class Select extends Field {
         value = Array.isArray(value) ? value[0] : value
       }
       const selValueOption = this._getOption(value)
+
       if (selValueOption !== null) {
         this.selectedSingle.update(selValueOption)
         this.currentValue = selValueOption.value
@@ -430,6 +431,14 @@ class Select extends Field {
     return null
   }
 
+  // 外部更新options时要同步更新optionList的选项
+  _update(props) {
+    if (props.options && this.optionList && this.optionList.props) {
+      this.props.options = props.options
+      this.optionList.update({})
+    }
+  }
+
   _getValue(options) {
     const { valueOptions, showSearch } = this.props
     const that = this
@@ -479,6 +488,7 @@ class Select extends Field {
     } else {
       options = extend({ triggerChange: true }, options)
     }
+
     if (this.props.showSearch) {
       const selectedOption = this.internalOptions.find((e) => e.value === value)
       if (selectedOption) {
