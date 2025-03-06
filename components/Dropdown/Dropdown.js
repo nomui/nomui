@@ -12,7 +12,7 @@ class Dropdown extends Component {
 
   _config() {
     const that = this
-    const { items, triggerAction, split, text, type, size } = this.props
+    const { items, triggerAction, split, text, type, size, menuClasses } = this.props
 
     const children = [
       split && {
@@ -46,8 +46,10 @@ class Dropdown extends Component {
           },
           children: {
             component: 'Menu',
+            classes: menuClasses,
             itemDefaults: {
-              ...this.props.itemDefaults, ...{
+              ...this.props.itemDefaults,
+              ...{
                 size: size,
               },
             },
