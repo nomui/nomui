@@ -17901,7 +17901,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       const that = this;
-      const { items, triggerAction, split, text, type, size } = this.props;
+      const {
+        items,
+        triggerAction,
+        split,
+        text,
+        type,
+        size,
+        menuClasses,
+      } = this.props;
       const children = [
         split && {
           component: "Button",
@@ -17932,6 +17940,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             },
             children: {
               component: "Menu",
+              classes: menuClasses,
               itemDefaults: Object.assign({}, this.props.itemDefaults, {
                 size: size,
               }),
@@ -22951,6 +22960,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         visibleItems,
         inline,
         itemDefaults,
+        menuClasses,
       } = this.props;
       const before = items.slice(0, visibleItems).map((item) => {
         return Object.assign(
@@ -22966,6 +22976,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         type,
         inline,
         size,
+        menuClasses,
       };
       const arr = [...before];
       if (items.length > visibleItems) {
@@ -22987,6 +22998,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     items: [],
     itemDefaults: {},
     stopPropagation: true,
+    menuClasses: null,
   };
   Component.register(Toolbar);
   let nameSeq = 0;
