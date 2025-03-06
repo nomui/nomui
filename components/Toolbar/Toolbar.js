@@ -6,7 +6,16 @@ class Toolbar extends Component {
   }
 
   _config() {
-    const { items, type, gutter, size, visibleItems, inline, itemDefaults } = this.props
+    const {
+      items,
+      type,
+      gutter,
+      size,
+      visibleItems,
+      inline,
+      itemDefaults,
+      menuClasses,
+    } = this.props
 
     const before = items.slice(0, visibleItems).map((item) => {
       return {
@@ -25,6 +34,7 @@ class Toolbar extends Component {
       type,
       inline,
       size,
+      menuClasses,
     }
     const arr = [...before]
     if (items.length > visibleItems) {
@@ -50,6 +60,7 @@ Toolbar.defaults = {
   items: [],
   itemDefaults: {},
   stopPropagation: true,
+  menuClasses: null,
 }
 Component.register(Toolbar)
 

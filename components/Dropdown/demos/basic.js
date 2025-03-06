@@ -18,11 +18,11 @@ define([], function () {
             items: [
               {
                 text: '导出Word',
-                onClick: () => { },
+                onClick: () => {},
               },
               {
                 text: '导出Word',
-                onClick: () => { },
+                onClick: () => {},
               },
             ],
           },
@@ -65,18 +65,18 @@ define([], function () {
             items: [
               {
                 text: '导出Word',
-                onClick: () => { },
+                onClick: () => {},
               },
               {
                 text: '导出Word',
-                onClick: () => { },
+                onClick: () => {},
               },
               {
-                component: 'Divider'
+                component: 'Divider',
               },
               {
                 text: '导出Word',
-                onClick: () => { },
+                onClick: () => {},
               },
             ],
           },
@@ -93,15 +93,15 @@ define([], function () {
             items: [
               {
                 text: '导出Word',
-                onClick: () => { },
+                onClick: () => {},
               },
               {
                 text: '导出Word',
-                onClick: () => { },
+                onClick: () => {},
               },
               {
                 text: '导出Word',
-                onClick: () => { },
+                onClick: () => {},
               },
             ],
           },
