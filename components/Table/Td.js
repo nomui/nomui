@@ -24,6 +24,25 @@ class Td extends Component {
     const { level, isLeaf } = this.tr.props
     const { column } = this.props
     const { treeConfig } = this.table.props
+    const { grid } = this.table
+
+    // 处理树结构关联关系
+
+    const { keyField } = grid.props
+    const { parentField } = treeConfig
+    grid.nodeList[`__key${this.tr.props.data[keyField]}`] = this.tr
+    this.tr.childrenNodes = {}
+
+    if (this.tr.props.parentKey || this.tr.props.data[parentField]) {
+      const key = this.tr.props.parentKey || this.tr.props.data[parentField]
+      this.tr.parentNode = grid.nodeList[`__key${key}`]
+    }
+
+    if (this.tr.parentNode) {
+      if (this.tr.props.data[keyField]) {
+        this.tr.parentNode.childrenNodes[`__key${this.tr.props.data[keyField]}`] = this.tr
+      }
+    }
 
     let spanProps = null
 
@@ -82,7 +101,6 @@ class Td extends Component {
         compact: true,
       }
       if (this.table.hasGrid) {
-        const grid = this.table.grid
         if (grid.props.excelMode || grid.props.editable) propsMinxin.variant = 'borderless'
         if (column.immediateChange) {
           propsMinxin.onValueChange = () => {
@@ -360,13 +378,14 @@ class Td extends Component {
             classes: {
               'nom-grid-td-edit-trigger': true,
             },
-            attrs: {
-              title: '修改',
-            },
+            hidden:
+              (this.table.grid.props.editable &&
+                this.table.grid.props.editable.onlyleaf &&
+                !isLeaf) ||
+              this.table.parent.componentType === 'GridFooter',
             type: this._getEditIconType(),
             onClick: ({ event }) => {
               event.stopPropagation()
-              const grid = this.table.grid
 
               if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
                 grid.lastEditTd.endEdit()
@@ -404,7 +423,7 @@ class Td extends Component {
         },
         onClick: ({ event }) => {
           event.stopPropagation()
-          const grid = this.table.grid
+
           grid.props.onRowClick &&
             !this.props.editMode &&
             grid._callHandler(grid.props.onRowClick, { event, rowData: this.tr.props.data })
@@ -430,7 +449,7 @@ class Td extends Component {
         },
         onClick: ({ event }) => {
           event.stopPropagation()
-          const grid = this.table.grid
+
           grid.props.onRowClick &&
             !this.props.editMode &&
             grid._callHandler(grid.props.onRowClick, { event, rowData: this.tr.props.data })
@@ -537,19 +556,20 @@ class Td extends Component {
       grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
     }
 
-    const { keyField } = grid.props
-    const { parentField } = grid.props.treeConfig
-    grid.nodeList[`__key${rowData[keyField]}`] = row
-    row.childrenNodes = {}
-    if (rowData[parentField]) {
-      row.parentNode = grid.nodeList[`__key${rowData[parentField]}`]
-    }
+    // const { keyField } = grid.props
+    // const { parentField } = grid.props.treeConfig
+    // grid.nodeList[`__key${rowData[keyField]}`] = row
+    // row.childrenNodes = {}
 
-    if (row.parentNode) {
-      if (rowData[keyField]) {
-        row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
-      }
-    }
+    // if (rowData[parentField]) {
+    //   row.parentNode = grid.nodeList[`__key${rowData[parentField]}`]
+    // }
+
+    // if (row.parentNode) {
+    //   if (rowData[keyField]) {
+    //     row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
+    //   }
+    // }
 
     if (rowCheckable.type === 'checker&order') {
       return {
@@ -644,20 +664,6 @@ class Td extends Component {
 
     if (checkedRowKeysHash[row.key] === true || _checkboxProps.value) {
       grid.checkedRowRefs[grid.getKeyValue(rowData)] = row
-    }
-
-    const { keyField } = grid.props
-    const { parentField } = grid.props.treeConfig
-    grid.nodeList[`__key${rowData[keyField]}`] = row
-    row.childrenNodes = {}
-    if (rowData[parentField]) {
-      row.parentNode = grid.nodeList[`__key${rowData[parentField]}`]
-    }
-
-    if (row.parentNode) {
-      if (rowData[keyField]) {
-        row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
-      }
     }
 
     if (renderOrder) {
@@ -943,6 +949,7 @@ class Td extends Component {
         oldValue,
         field: this.props.column.field,
         rowKey: this.tr.props.data[this.table.grid.props.keyField],
+        cell: this,
       })
     this.table.grid.props.excelMode.onCellValueChange &&
       this.table.grid._callHandler(this.table.grid.props.excelMode.onCellValueChange, {
@@ -950,6 +957,7 @@ class Td extends Component {
         oldValue,
         field: this.props.column.field,
         rowKey: this.tr.props.data[this.table.grid.props.keyField],
+        cell: this,
       })
   }
 }
