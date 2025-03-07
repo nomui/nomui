@@ -890,6 +890,9 @@ class Td extends Component {
       },
     })
     this._skipFixed = false
+    if (this.table.grid.props.summary) {
+      this.table.grid.updateSummary()
+    }
   }
 
   saveEditData() {
