@@ -112,6 +112,12 @@ class Grid extends Component {
   _config() {
     this.nodeList = {}
 
+    if (this.props.lazyLoadLimit && this.props.lazyLoadLimit > 0) {
+      const current = this.props.data.slice(0, this.props.lazyLoadLimit)
+      this._storedData = this.props.data.slice(this.props.lazyLoadLimit)
+      this.props.data = current
+    }
+
     if (this.props.frozenLeftCols || this.props.frozenRightCols) {
       this.props.forceSort = true
     }
@@ -544,7 +550,30 @@ class Grid extends Component {
     this.overflowAncestor = this._checkOverflowAncestor()
 
     this.props.rowSortable && defaultSortableOndrop()
-    isFunction(this.props.loadData) && this._initLazyLoad()
+
+    if (this.props.lazyLoadLimit > 0 || this.props.loadData) {
+      this._watchLazyLoad()
+    }
+  }
+
+  _watchLazyLoad() {
+    let ele = this.body.element
+    if (!this.element.style.height && this.overflowAncestor) {
+      ele = this.overflowAncestor
+    }
+    ele.addEventListener('scroll', () => {
+      if (ele.scrollHeight - ele.scrollTop === ele.clientHeight) {
+        this._storedData.length > 0 && this._addFromStoredData()
+      }
+    })
+  }
+
+  _addFromStoredData() {
+    const arr = this._storedData.slice(0, this.props.lazyLoadLimit)
+    this._storedData = this._storedData.slice(this.props.lazyLoadLimit)
+    arr.forEach((n) => {
+      this.appendRow({ data: n })
+    })
   }
 
   _checkOverflowAncestor() {
@@ -574,10 +603,6 @@ class Grid extends Component {
     if (overflowAncestor) {
       return overflowAncestor
     }
-  }
-
-  _initLazyLoad() {
-    // todo
   }
 
   _findPopupRoot(target) {
@@ -1059,6 +1084,9 @@ class Grid extends Component {
         return `${item[that.props.keyField]}` === `${key}`
       })[0]
     })
+    if (this.props.lazyLoadLimit && this._storedData.length) {
+      return [...data, ...this._storedData]
+    }
     return data
   }
 

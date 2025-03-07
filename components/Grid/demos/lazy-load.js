@@ -2,6 +2,8 @@ define([], function () {
   return {
     title: '懒加载(前端)',
     file: 'lazy-load',
+    description:
+      '通过配置 `lazyLoadLimit` 实现前端懒加载，注意：前端懒加载时表格props的data将被修改，此时要获取表格完整data需要用getData()方法',
     demo: function () {
       function generateData(num) {
         const authors = ['金庸', '古龙', '梁羽生', '温瑞安']
@@ -37,55 +39,42 @@ define([], function () {
 
       const arr = generateData(300)
       return {
-        component: 'Layout',
+        component: 'Grid',
+        showTitle: true,
+        lazyLoadLimit: 15,
         attrs: {
           style: {
-            height: '80vh',
+            height: '400px',
           },
         },
-        body: {
-          children: {
-            component: 'Grid',
-            showTitle: true,
-            lazyLoadLimit: 15,
-            onRowClick: (args) => {
-              console.log('row clicked', args)
-            },
-            rowSelectable: {
-              onSelect: (args) => {
-                console.log(args)
-              },
-            },
 
-            columns: [
-              {
-                field: 'name',
-                key: 'name',
-                title: '标题',
-                width: 200,
-              },
-              {
-                field: 'author',
-                key: 'author',
-                title: '作者',
-              },
-              {
-                field: 'sales',
-                key: 'sales',
-                title: '销量',
-              },
-
-              {
-                field: 'role',
-                key: 'role',
-                title: '主角',
-                width: 500,
-                showTitle: false,
-              },
-            ],
-            data: arr,
+        columns: [
+          {
+            field: 'name',
+            key: 'name',
+            title: '标题',
+            width: 200,
           },
-        },
+          {
+            field: 'author',
+            key: 'author',
+            title: '作者',
+          },
+          {
+            field: 'sales',
+            key: 'sales',
+            title: '销量',
+          },
+
+          {
+            field: 'role',
+            key: 'role',
+            title: '主角',
+            width: 500,
+            showTitle: false,
+          },
+        ],
+        data: arr,
       }
     },
   }
