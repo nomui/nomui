@@ -4,6 +4,7 @@ define([
   './styles.js',
   './align.js',
   './ellipsis.js',
+  './lazy-load.js',
   './sort.js',
   './sort-cacheable.js',
   './filter.js',
