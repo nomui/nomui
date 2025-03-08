@@ -190,6 +190,26 @@ define([], function () {
             field: 'name',
             title: '类别',
             width: 200,
+            cellRender: ({ cellData, row }) => {
+              if (row.props.isLeaf) {
+                return {
+                  attrs: {
+                    style: {
+                      color: '#555',
+                    },
+                  },
+                  children: cellData,
+                }
+              }
+              return {
+                attrs: {
+                  style: {
+                    fontWeight: 'bold',
+                  },
+                },
+                children: cellData,
+              }
+            },
           },
           {
             field: 'quantity',
