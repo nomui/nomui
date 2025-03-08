@@ -58,26 +58,29 @@ define([], function () {
         },
       ]
 
+      const levelBg = {
+        0: 'rgba(0,0,0,.075)',
+        1: 'rgba(0,0,0,.025)',
+        2: 'rgba(0,0,0,.005)',
+      }
       // 根据单元格值更新整个data
       const updateDataByCell = ({ source, id, field, newValue }) => {
         // 递归更新函数
         const updateRecursive = (items) => {
           for (const item of items) {
-            // 如果找到目标节点，更新其字段
             if (item.id === id) {
               item[field] = newValue
-              return true // 返回 true 表示更新成功
+              return true
             }
 
-            // 如果有子节点，递归查找和更新
             if (item.children && item.children.length > 0) {
               const isUpdated = updateRecursive(item.children)
               if (isUpdated) {
-                return true // 如果子节点更新成功，返回 true
+                return true
               }
             }
           }
-          return false // 如果没有找到目标节点，返回 false
+          return false
         }
 
         // 调用递归函数
@@ -88,18 +91,15 @@ define([], function () {
           throw new Error(`未找到 id 为 ${id} 的节点`)
         }
 
-        // 返回更新后的数据
         return source
       }
 
       // 递归计算某个字段的合计
       const calculateTotal = (children, field) => {
         return children.reduce((sum, child) => {
-          // 如果子节点还有子节点，递归计算
           if (child.children && child.children.length > 0) {
             return sum + calculateTotal(child.children, field)
           }
-          // 否则累加当前子节点的值
           return sum + (child[field] || 0)
         }, 0)
       }
@@ -110,29 +110,29 @@ define([], function () {
           window.grid = c
           grid = c
         },
-        rowCheckable: {
-          checkedRowKeys: [5],
-          width: 80,
-          toolbar: {
-            align: 'left', // 工具栏靠左
-            placement: 'both', // 工具栏位置 header表头 body表身 both表头+表身
-            hover: true,
-            render: () => {
-              return {
-                component: 'Toolbar',
-                visibleItems: 0,
-                size: 'small',
-                type: 'text',
-                items: [
-                  {
-                    text: '导出Word',
-                    onClick: () => {},
-                  },
-                ],
-              }
-            },
-          },
-        },
+        // rowCheckable: {
+        //   checkedRowKeys: [5],
+        //   width: 80,
+        //   toolbar: {
+        //     align: 'left', // 工具栏靠左
+        //     placement: 'both', // 工具栏位置 header表头 body表身 both表头+表身
+        //     hover: true,
+        //     render: () => {
+        //       return {
+        //         component: 'Toolbar',
+        //         visibleItems: 0,
+        //         size: 'small',
+        //         type: 'text',
+        //         items: [
+        //           {
+        //             text: '导出Word',
+        //             onClick: () => {},
+        //           },
+        //         ],
+        //       }
+        //     },
+        //   },
+        // },
         treeConfig: {
           treeNodeColumn: 'name',
           initExpandLevel: -1,
@@ -145,6 +145,7 @@ define([], function () {
               if (col.field === 'nom-grid-row-checker') {
                 res[col.field] = ''
               } else {
+                // 统计表格内所有该字段值的合计
                 const total = calculateTotal(data, col.field)
                 res[col.field] = total
               }
@@ -161,18 +162,6 @@ define([], function () {
             // 父级tr数据
             const parentTr = cell.tr.parentNode
             const parentData = parentTr.props.data
-
-            // // 更新父级数据
-            // parentData.children.forEach((x) => {
-            //   if (x.id === trData.id) {
-            //     const num = newValue - x[field]
-            //     x[field] = newValue
-
-            //     parentData[field] += num
-            //   }
-            // })
-
-            // parentTr.update({ data: parentData })
 
             // 更新Grid数据
             updateDataByCell({
@@ -209,8 +198,9 @@ define([], function () {
               if (row.props.isLeaf) {
                 return cellData
               }
+
               // 高亮父节点背景色
-              row.element.style.backgroundColor = 'rgba(0,0,0,.025)'
+              row.element.style.backgroundColor = levelBg[row.props.level]
               const total = calculateTotal(rowData.children, 'quantity')
               return `共：${total} 件`
             },
