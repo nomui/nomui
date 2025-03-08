@@ -3,6 +3,7 @@ define([], function () {
     title: '多级表格的小计与合计',
     file: 'nested-summary',
     demo: function () {
+      let grid = null
       const data = [
         {
           id: 1,
@@ -66,8 +67,54 @@ define([], function () {
         },
       ]
 
+      const updateItemById = ({ source, id, field, newValue, targetId }) => {
+        let targetNode = null // 用于存储目标节点数据
+
+        // 递归更新函数
+        const updateRecursive = (items) => {
+          for (const item of items) {
+            // 如果找到目标节点，更新其字段
+            if (item.id === id) {
+              item[field] = newValue
+            }
+
+            // 如果当前节点是目标节点，存储其数据
+            if (item.id === targetId) {
+              targetNode = item
+            }
+
+            // 如果有子节点，递归查找和更新
+            if (item.children && item.children.length > 0) {
+              const isUpdated = updateRecursive(item.children)
+              if (isUpdated) {
+                // 如果子节点更新成功，更新当前父节点的合计值
+                item[field] = item.children.reduce((sum, child) => sum + (child[field] || 0), 0)
+              }
+            }
+          }
+          return id !== undefined // 如果传入了 id，表示需要更新
+        }
+
+        // 调用递归函数
+        updateRecursive(source)
+
+        // 如果没有找到目标节点，抛出错误
+        if (targetId !== undefined && !targetNode) {
+          throw new Error(`未找到 id 为 ${targetId} 的节点`)
+        }
+
+        // 返回更新后的数据和目标节点
+        return {
+          updatedData: source,
+          targetNode: targetNode,
+        }
+      }
       return {
         component: 'Grid',
+        ref: (c) => {
+          window.grid = c
+          grid = c
+        },
         rowCheckable: {
           checkedRowKeys: [5],
           width: 80,
@@ -75,24 +122,13 @@ define([], function () {
             align: 'left', // 工具栏靠左
             placement: 'both', // 工具栏位置 header表头 body表身 both表头+表身
             hover: true,
-            render: ({ isHeader, field, row, cellData, rowData, index }) => {
-              // isHeader表示当前渲染在表头，此时还会传出当前field
-
-              console.log({ isHeader, field, row, cellData, rowData, index })
+            render: () => {
               return {
                 component: 'Toolbar',
                 visibleItems: 0,
                 size: 'small',
                 type: 'text',
                 items: [
-                  {
-                    text: '导出Word',
-                    onClick: () => {},
-                  },
-                  {
-                    text: '导出Word',
-                    onClick: () => {},
-                  },
                   {
                     text: '导出Word',
                     onClick: () => {},
@@ -106,26 +142,43 @@ define([], function () {
           treeNodeColumn: 'name',
           initExpandLevel: -1,
         },
+        summary: {},
         editable: {
           onlyleaf: true, // 只允许编辑叶子节点
-          onCellValueChange: ({ cell, newValue }) => {
-            // 修改完成后同步更新自己父节点数据
+          onCellValueChange: ({ cell, newValue, sender }) => {
+            // 当前tr数据
             const field = cell.props.column.field
+            const trData = cell.tr.props.data
+            // 父级tr数据
             const parentTr = cell.tr.parentNode
-            setTimeout(() => {
-              const parentData = parentTr.props.data
-              const trData = cell.tr.props.data
-              parentData.children.forEach((x) => {
-                if (x.id === trData.id) {
-                  const num = newValue - x[field]
-                  x[field] = newValue
+            const parentData = parentTr.props.data
 
-                  parentData[field] += num
-                }
-              })
+            // 更新父级数据
+            parentData.children.forEach((x) => {
+              if (x.id === trData.id) {
+                const num = newValue - x[field]
+                x[field] = newValue
 
-              parentTr.update({ data: parentData })
-            }, 0)
+                parentData[field] += num
+              }
+            })
+
+            parentTr.update({ data: parentData })
+
+            // 更新Grid数据
+            const result = updateItemById({
+              source: grid.props.data,
+              id: trData.id,
+              field,
+              newValue,
+              targetId: parentData.id,
+            })
+
+            const parentTrData = result.targetNode
+
+            parentTr.update({ data: parentTrData })
+
+            sender.updateSummary()
           },
         },
         attrs: {

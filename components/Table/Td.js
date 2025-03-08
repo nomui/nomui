@@ -1,5 +1,13 @@
 import Component from '../Component/index'
-import { deepEqual, getStyle, isFunction, isNumeric, isPlainObject, isString } from '../util/index'
+import {
+  clone,
+  deepEqual,
+  getStyle,
+  isFunction,
+  isNumeric,
+  isPlainObject,
+  isString,
+} from '../util/index'
 
 class Td extends Component {
   constructor(props, ...mixins) {
@@ -923,7 +931,8 @@ class Td extends Component {
     const newData = this.editor.getValue()
 
     if (!deepEqual(this.props.data, newData)) {
-      this._onCellValueChange({ newValue: newData, oldValue: this.props.data })
+      const oldData = clone(this.props.data)
+
       this.props.data = newData
 
       const { data } = this.tr.props
@@ -939,6 +948,7 @@ class Td extends Component {
         }
       }
       grid._processModifedRows(data[grid.props.keyField])
+      this._onCellValueChange({ newValue: newData, oldValue: oldData })
     }
   }
 

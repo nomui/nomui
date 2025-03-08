@@ -53,7 +53,7 @@ class GridFooter extends Component {
       }) === -1
     ) {
       footColumns.splice(0, 1, {
-        width: 50,
+        width: this.grid.props.rowCheckable.width || 50,
         resizable: false,
         isCheckerSpace: true,
         field: 'nom-grid-row-checker',
