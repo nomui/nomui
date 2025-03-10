@@ -18173,6 +18173,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { level, isLeaf } = this.tr.props;
       const { column } = this.props;
       const { treeConfig } = this.table.props;
+      const { grid } = this.table; // 处理树结构关联关系
+      const { keyField } = grid.props;
+      const { parentField } = treeConfig;
+      grid.nodeList[`__key${this.tr.props.data[keyField]}`] = this.tr;
+      this.tr.childrenNodes = {};
+      if (this.tr.props.parentKey || this.tr.props.data[parentField]) {
+        const key = this.tr.props.parentKey || this.tr.props.data[parentField];
+        this.tr.parentNode = grid.nodeList[`__key${key}`];
+      }
+      if (this.tr.parentNode) {
+        if (this.tr.props.data[keyField]) {
+          this.tr.parentNode.childrenNodes[
+            `__key${this.tr.props.data[keyField]}`
+          ] = this.tr;
+        }
+      }
       let spanProps = null;
       let children = this.props.data;
       const isEllipsis =
@@ -18227,7 +18243,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           compact: true,
         };
         if (this.table.hasGrid) {
-          const grid = this.table.grid;
           if (grid.props.excelMode || grid.props.editable)
             propsMinxin.variant = "borderless";
           if (column.immediateChange) {
@@ -18471,11 +18486,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             {
               component: "Icon",
               classes: { "nom-grid-td-edit-trigger": true },
-              attrs: { title: "修改" },
+              hidden:
+                (this.table.grid.props.editable &&
+                  this.table.grid.props.editable.onlyleaf &&
+                  !isLeaf) ||
+                this.table.parent.componentType === "GridFooter",
               type: this._getEditIconType(),
               onClick: ({ event }) => {
                 event.stopPropagation();
-                const grid = this.table.grid;
                 if (
                   grid.lastEditTd &&
                   grid.lastEditTd.props &&
@@ -18510,7 +18528,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           classes: { "nom-td-excel-mode": true },
           onClick: ({ event }) => {
             event.stopPropagation();
-            const grid = this.table.grid;
             grid.props.onRowClick &&
               !this.props.editMode &&
               grid._callHandler(grid.props.onRowClick, {
@@ -18540,7 +18557,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           classes: { "nom-td-editable": true },
           onClick: ({ event }) => {
             event.stopPropagation();
-            const grid = this.table.grid;
             grid.props.onRowClick &&
               !this.props.editMode &&
               grid._callHandler(grid.props.onRowClick, {
@@ -18635,19 +18651,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       if (checkedRowKeysHash[row.key] === true || _checkboxProps.value) {
         grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
-      }
-      const { keyField } = grid.props;
-      const { parentField } = grid.props.treeConfig;
-      grid.nodeList[`__key${rowData[keyField]}`] = row;
-      row.childrenNodes = {};
-      if (rowData[parentField]) {
-        row.parentNode = grid.nodeList[`__key${rowData[parentField]}`];
-      }
-      if (row.parentNode) {
-        if (rowData[keyField]) {
-          row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
-        }
-      }
+      } // const { keyField } = grid.props
+      // const { parentField } = grid.props.treeConfig
+      // grid.nodeList[`__key${rowData[keyField]}`] = row
+      // row.childrenNodes = {}
+      // if (rowData[parentField]) {
+      //   row.parentNode = grid.nodeList[`__key${rowData[parentField]}`]
+      // }
+      // if (row.parentNode) {
+      //   if (rowData[keyField]) {
+      //     row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row
+      //   }
+      // }
       if (rowCheckable.type === "checker&order") {
         return {
           classes: { "nom-grid-checker-and-order": true },
@@ -18720,18 +18735,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         _checkboxProps.value || checkedRowKeysHash[row.key] === true;
       if (checkedRowKeysHash[row.key] === true || _checkboxProps.value) {
         grid.checkedRowRefs[grid.getKeyValue(rowData)] = row;
-      }
-      const { keyField } = grid.props;
-      const { parentField } = grid.props.treeConfig;
-      grid.nodeList[`__key${rowData[keyField]}`] = row;
-      row.childrenNodes = {};
-      if (rowData[parentField]) {
-        row.parentNode = grid.nodeList[`__key${rowData[parentField]}`];
-      }
-      if (row.parentNode) {
-        if (rowData[keyField]) {
-          row.parentNode.childrenNodes[`__key${rowData[keyField]}`] = row;
-        }
       }
       if (renderOrder) {
         return {
@@ -18922,6 +18925,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
       });
       this._skipFixed = false;
+      if (this.table.grid.props.summary) {
+        this.table.grid.updateSummary();
+      }
     }
     saveEditData() {
       this._updateTdData();
@@ -18942,10 +18948,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       const newData = this.editor.getValue();
       if (!deepEqual(this.props.data, newData)) {
-        this._onCellValueChange({
-          newValue: newData,
-          oldValue: this.props.data,
-        });
+        const oldData = clone(this.props.data);
         this.props.data = newData;
         const { data } = this.tr.props;
         const field = this.props.column.field;
@@ -18962,6 +18965,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         }
         grid._processModifedRows(data[grid.props.keyField]);
+        this._onCellValueChange({ newValue: newData, oldValue: oldData });
       }
     }
     _onCellValueChange({ newValue, oldValue }) {
@@ -18973,6 +18977,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             oldValue,
             field: this.props.column.field,
             rowKey: this.tr.props.data[this.table.grid.props.keyField],
+            cell: this,
           }
         );
       this.table.grid.props.excelMode.onCellValueChange &&
@@ -18983,6 +18988,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             oldValue,
             field: this.props.column.field,
             rowKey: this.tr.props.data[this.table.grid.props.keyField],
+            cell: this,
           }
         );
     }
@@ -19041,9 +19047,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           colspan += 1;
         }
         this.setProps({
+          hidden: !normalizedRowExpandable.expanded,
           children: {
             component: ExpandedTrTd,
             attrs: { colspan: colspan },
+            classes: {
+              "nom-table-expanded-tr-td-compact":
+                normalizedRowExpandable.compact,
+            },
             children: Object.assign({}, content, {
               onCreated: ({ inst }) => {
                 this.subContent = inst;
@@ -19493,9 +19504,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
       }
     }
-    _getRows(data, rows, index, level, lastRowRef = {}) {
+    _getRows(data, rows, index, level, lastRowRef = {}, parentKey = null) {
       const curLevel = level;
-      const { treeConfig } = this.table.props;
+      const { treeConfig, keyField } = this.table.props;
       const { childrenField } = treeConfig; // currRowRef: 当前的tr实例
       // lastRowRef: 自身的上一个level的tr
       // 将自身 data.children 产生的tr实例，使用childTrs存下来
@@ -19505,15 +19516,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         let currRowRef = { childTrs: [] };
         rows.push({
           // component: Tr,
+          parentKey,
           data: item,
           index: index++,
           level: curLevel,
           isLeaf: !(item[childrenField] && item[childrenField].length > 0),
           childTrs: currRowRef.childTrs,
-          ref: (c) => {
-            currRowRef = c;
+          _created: function () {
+            currRowRef = this;
             if (!lastRowRef.childTrs) lastRowRef.childTrs = [];
-            lastRowRef.childTrs.push(c);
+            lastRowRef.childTrs.push(this);
           },
         });
         if (
@@ -19526,7 +19538,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             rows,
             index,
             curLevel + 1,
-            currRowRef
+            currRowRef,
+            item[keyField]
           );
         }
       });
@@ -20403,7 +20416,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }) === -1
       ) {
         footColumns.splice(0, 1, {
-          width: 50,
+          width: this.grid.props.rowCheckable.width || 50,
           resizable: false,
           isCheckerSpace: true,
           field: "nom-grid-row-checker",
@@ -21661,7 +21674,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               },
             },
           },
-          { component: GridHeader, line: line },
+          this.props.header !== false && { component: GridHeader, line: line },
           { component: GridBody, line: line, rowDefaults: rowDefaults },
           this.props.summary && { component: GridFooter, line: line },
         ],
@@ -21827,6 +21840,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         this.removedRowKeys.push(key);
         this.removedRowData.push(data);
+      }
+    }
+    updateSummary() {
+      if (this.props.summary) {
+        this.footer.update({});
       }
     }
     getRemovedRowKeys() {
@@ -22766,6 +22784,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   hidden: true,
                   expandable: {
                     byClick: true,
+                    expanded: rowExpandable.expanded,
                     expandedProps: { type: "down-circle" },
                     collapsedProps: { type: "up-circle" },
                     target: () => {

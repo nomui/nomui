@@ -104,9 +104,9 @@ class Tbody extends Component {
     }
   }
 
-  _getRows(data, rows, index, level, lastRowRef = {}) {
+  _getRows(data, rows, index, level, lastRowRef = {}, parentKey = null) {
     const curLevel = level
-    const { treeConfig } = this.table.props
+    const { treeConfig, keyField } = this.table.props
     const { childrenField } = treeConfig
 
     // currRowRef: 当前的tr实例
@@ -118,20 +118,21 @@ class Tbody extends Component {
       let currRowRef = { childTrs: [] }
       rows.push({
         // component: Tr,
+        parentKey,
         data: item,
         index: index++,
         level: curLevel,
         isLeaf: !(item[childrenField] && item[childrenField].length > 0),
         childTrs: currRowRef.childTrs,
-        ref: (c) => {
-          currRowRef = c
+        _created: function () {
+          currRowRef = this
           if (!lastRowRef.childTrs) lastRowRef.childTrs = []
-          lastRowRef.childTrs.push(c)
+          lastRowRef.childTrs.push(this)
         },
       })
 
       if (treeConfig.treeNodeColumn && item[childrenField] && item[childrenField].length > 0) {
-        this._getRows(item[childrenField], rows, index, curLevel + 1, currRowRef)
+        this._getRows(item[childrenField], rows, index, curLevel + 1, currRowRef, item[keyField])
       }
     })
   }

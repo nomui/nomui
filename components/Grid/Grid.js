@@ -183,7 +183,7 @@ class Grid extends Component {
             },
           },
         },
-        { component: GridHeader, line: line },
+        this.props.header !== false && { component: GridHeader, line: line },
         { component: GridBody, line: line, rowDefaults: rowDefaults },
         this.props.summary && { component: GridFooter, line: line },
       ],
@@ -378,6 +378,12 @@ class Grid extends Component {
       }
       this.removedRowKeys.push(key)
       this.removedRowData.push(data)
+    }
+  }
+
+  updateSummary() {
+    if (this.props.summary) {
+      this.footer.update({})
     }
   }
 
@@ -1449,6 +1455,7 @@ class Grid extends Component {
                 hidden: true,
                 expandable: {
                   byClick: true,
+                  expanded: rowExpandable.expanded,
                   expandedProps: {
                     type: 'down-circle',
                   },
