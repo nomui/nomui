@@ -82,6 +82,7 @@ class Tr extends Component {
       key: data[this.table.props.keyField],
       attrs: {
         level: level,
+        isLeaf: this.props.isLeaf ? 'true' : undefined,
       },
       hidden: hidden,
       children: children,

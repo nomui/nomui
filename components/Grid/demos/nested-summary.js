@@ -60,12 +60,6 @@ define(['css!./nested-summary'], function () {
         },
       ]
 
-      const levelBg = {
-        0: 'rgba(0,0,0,.075)',
-        1: 'rgba(0,0,0,.025)',
-        2: 'rgba(0,0,0,.005)',
-      }
-
       const formatNumber = (value) => {
         value = String(value)
 
@@ -265,8 +259,6 @@ define(['css!./nested-summary'], function () {
                 return cellData
               }
 
-              // 高亮父节点背景色
-              row.element.style.backgroundColor = levelBg[row.props.level]
               const total = calculateTotal(rowData.children, 'quantity')
               return {
                 attrs: {
