@@ -19,8 +19,10 @@ define([], function () {
         },
         {
           id: 2,
-          name: '家居用品',
+          name: '家居软装',
           children: [
+            { id: 21, name: '开荒清洁', quantity: 2, cost: 1200 },
+            { id: 22, name: '封窗', quantity: 1, cost: 22000 },
             {
               id: 200,
               name: '家具',
@@ -239,7 +241,7 @@ define([], function () {
                 return cellData
               }
               const total = calculateTotal(rowData.children, 'cost')
-              return `共：${total} 件`
+              return `共：${total} 元`
             },
             editRender: ({ cellData }) => {
               return {
