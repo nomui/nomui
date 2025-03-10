@@ -3,3 +3,15 @@
   border-top: 1px solid #ccc;
   font-weight: bold;
 }
+
+.nested-summary-grid tr:not([isLeaf='true'])[level='0'] {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.nested-summary-grid tr:not([isLeaf='true'])[level='1'] {
+  background-color: rgba(0, 0, 0, 0.025);
+}
+
+.nested-summary-grid tr:not([isLeaf='true'])[level='2'] {
+  background-color: rgba(0, 0, 0, 0.005);
+}

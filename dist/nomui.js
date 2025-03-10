@@ -18173,20 +18173,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { level, isLeaf } = this.tr.props;
       const { column } = this.props;
       const { treeConfig } = this.table.props;
-      const { grid } = this.table; // 处理树结构关联关系
-      const { keyField } = grid.props;
       const { parentField } = treeConfig;
-      grid.nodeList[`__key${this.tr.props.data[keyField]}`] = this.tr;
-      this.tr.childrenNodes = {};
-      if (this.tr.props.parentKey || this.tr.props.data[parentField]) {
-        const key = this.tr.props.parentKey || this.tr.props.data[parentField];
-        this.tr.parentNode = grid.nodeList[`__key${key}`];
-      }
-      if (this.tr.parentNode) {
-        if (this.tr.props.data[keyField]) {
-          this.tr.parentNode.childrenNodes[
-            `__key${this.tr.props.data[keyField]}`
-          ] = this.tr;
+      const { grid } = this.table; // 处理树结构关联关系
+      if (grid) {
+        const { keyField } = grid.props;
+        grid.nodeList[`__key${this.tr.props.data[keyField]}`] = this.tr;
+        this.tr.childrenNodes = {};
+        if (this.tr.props.parentKey || this.tr.props.data[parentField]) {
+          const key =
+            this.tr.props.parentKey || this.tr.props.data[parentField];
+          this.tr.parentNode = grid.nodeList[`__key${key}`];
+        }
+        if (this.tr.parentNode) {
+          if (this.tr.props.data[keyField]) {
+            this.tr.parentNode.childrenNodes[
+              `__key${this.tr.props.data[keyField]}`
+            ] = this.tr;
+          }
         }
       }
       let spanProps = null;
@@ -19225,7 +19228,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this.setProps({
         key: data[this.table.props.keyField],
-        attrs: { level: level },
+        attrs: { level: level, isLeaf: this.props.isLeaf ? "true" : undefined },
         hidden: hidden,
         children: children,
       });

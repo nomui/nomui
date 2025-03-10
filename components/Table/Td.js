@@ -32,23 +32,27 @@ class Td extends Component {
     const { level, isLeaf } = this.tr.props
     const { column } = this.props
     const { treeConfig } = this.table.props
+
+    const { parentField } = treeConfig
     const { grid } = this.table
 
     // 处理树结构关联关系
 
-    const { keyField } = grid.props
-    const { parentField } = treeConfig
-    grid.nodeList[`__key${this.tr.props.data[keyField]}`] = this.tr
-    this.tr.childrenNodes = {}
+    if (grid) {
+      const { keyField } = grid.props
 
-    if (this.tr.props.parentKey || this.tr.props.data[parentField]) {
-      const key = this.tr.props.parentKey || this.tr.props.data[parentField]
-      this.tr.parentNode = grid.nodeList[`__key${key}`]
-    }
+      grid.nodeList[`__key${this.tr.props.data[keyField]}`] = this.tr
+      this.tr.childrenNodes = {}
 
-    if (this.tr.parentNode) {
-      if (this.tr.props.data[keyField]) {
-        this.tr.parentNode.childrenNodes[`__key${this.tr.props.data[keyField]}`] = this.tr
+      if (this.tr.props.parentKey || this.tr.props.data[parentField]) {
+        const key = this.tr.props.parentKey || this.tr.props.data[parentField]
+        this.tr.parentNode = grid.nodeList[`__key${key}`]
+      }
+
+      if (this.tr.parentNode) {
+        if (this.tr.props.data[keyField]) {
+          this.tr.parentNode.childrenNodes[`__key${this.tr.props.data[keyField]}`] = this.tr
+        }
       }
     }
 
