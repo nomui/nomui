@@ -1,4 +1,4 @@
-define([], function () {
+define(['css!./nested-summary'], function () {
   return {
     title: '多级表格的小计与合计',
     file: 'nested-summary',
@@ -65,6 +65,25 @@ define([], function () {
         1: 'rgba(0,0,0,.025)',
         2: 'rgba(0,0,0,.005)',
       }
+
+      const formatNumber = (value) => {
+        value = String(value)
+
+        // 移除所有非数字字符（除了小数点）
+        const numericValue = value.replace(/[^0-9.]/g, '')
+
+        // 分割整数部分和小数部分
+        let [integerPart, decimalPart = ''] = numericValue.split('.')
+
+        // 格式化整数部分，每三位加逗号
+        integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+        // 确保小数部分有两位
+        decimalPart = decimalPart.padEnd(2, '0').substring(0, 2)
+
+        // 返回格式化后的金额
+        return `￥ ${integerPart}.${decimalPart}`
+      }
       // 根据单元格值更新整个data
       const updateDataByCell = ({ source, id, field, newValue }) => {
         // 递归更新函数
@@ -99,18 +118,45 @@ define([], function () {
       // 递归计算某个字段的合计
       const calculateTotal = (children, field) => {
         return children.reduce((sum, child) => {
+          let value = 0
+
+          // 如果子节点还有子节点，递归计算
           if (child.children && child.children.length > 0) {
-            return sum + calculateTotal(child.children, field)
+            value = calculateTotal(child.children, field)
+          } else {
+            // 否则获取当前子节点的字段值
+            const fieldValue = child[field]
+
+            // 如果字段值是字符串，转换为数字
+            if (typeof fieldValue === 'string') {
+              value = parseFloat(fieldValue) || 0
+            } else if (typeof fieldValue === 'number') {
+              value = fieldValue
+            } else {
+              value = 0 // 其他情况默认为 0
+            }
           }
-          return sum + (child[field] || 0)
+
+          // 累加值
+          return sum + value
         }, 0)
+      }
+
+      // 递归更新父级tr数据
+      const updateParentTrs = (tr) => {
+        tr.update({})
+        if (tr.parentNode) {
+          updateParentTrs(tr.parentNode)
+        }
       }
 
       return {
         component: 'Grid',
         ref: (c) => {
-          window.grid = c
           grid = c
+        },
+        classes: {
+          'nested-summary-grid': true,
         },
         // rowCheckable: {
         //   checkedRowKeys: [5],
@@ -174,10 +220,8 @@ define([], function () {
               targetId: parentData.id,
             })
 
-            parentTr.update({})
-            if (parentTr.parentNode) {
-              parentTr.parentNode.update({})
-            }
+            // 递归更新父级tr数据
+            updateParentTrs(parentTr)
 
             sender.updateSummary()
           },
@@ -197,7 +241,7 @@ define([], function () {
                 return {
                   attrs: {
                     style: {
-                      color: '#555',
+                      color: '#888',
                     },
                   },
                   children: cellData,
@@ -224,7 +268,14 @@ define([], function () {
               // 高亮父节点背景色
               row.element.style.backgroundColor = levelBg[row.props.level]
               const total = calculateTotal(rowData.children, 'quantity')
-              return `共：${total} 件`
+              return {
+                attrs: {
+                  style: {
+                    fontWeight: 'bold',
+                  },
+                },
+                children: `共：${total} 件`,
+              }
             },
             editRender: ({ cellData }) => {
               return {
@@ -238,15 +289,71 @@ define([], function () {
             title: '价格',
             cellRender: ({ cellData, row, rowData }) => {
               if (row.props.isLeaf) {
-                return cellData
+                return formatNumber(cellData)
               }
               const total = calculateTotal(rowData.children, 'cost')
-              return `共：${total} 元`
+
+              return {
+                attrs: {
+                  style: {
+                    fontWeight: 'bold',
+                  },
+                },
+                children: `共：${formatNumber(total)}元`,
+              }
             },
             editRender: ({ cellData }) => {
               return {
                 component: 'NumberInput',
                 value: cellData,
+                formatter: (value) => {
+                  // 确保输入是字符串
+                  value = String(value)
+
+                  // 移除所有非数字字符（除了小数点）
+                  const numericValue = value.replace(/[^0-9.]/g, '')
+
+                  // 分割整数部分和小数部分
+                  let [integerPart, decimalPart = ''] = numericValue.split('.')
+
+                  // 格式化整数部分，每三位加逗号
+                  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+                  // 确保小数部分有两位
+                  decimalPart = decimalPart.padEnd(2, '0').substring(0, 2)
+
+                  // 返回格式化后的金额
+                  return `￥ ${integerPart}.${decimalPart}`
+                },
+
+                parser: (value) => {
+                  // 移除所有非数字字符（除了小数点）
+                  const result = value.replace(/[^0-9.]/g, '')
+
+                  // 分割整数部分和小数部分
+                  const [integerPart, decimalPart = ''] = result.split('.')
+
+                  // 如果小数部分为空或为 0，则返回整数
+                  if (!decimalPart || /^0+$/.test(decimalPart)) {
+                    return integerPart // 返回整数部分
+                  }
+
+                  // 四舍五入到小数点后两位
+                  const roundedValue =
+                    Math.round(parseFloat(`${integerPart}.${decimalPart}`) * 100) / 100
+
+                  // 将四舍五入后的值转换为字符串
+                  const roundedString = String(roundedValue)
+
+                  // eslint-disable-next-line
+                  let [roundedInteger, roundedDecimal = ''] = roundedString.split('.')
+
+                  // 如果小数部分为空，补全为 '00'
+                  roundedDecimal = roundedDecimal.padEnd(2, '0').substring(0, 2)
+
+                  // 返回解析后的金额
+                  return roundedDecimal ? `${roundedInteger}.${roundedDecimal}` : roundedInteger
+                },
               }
             },
           },
