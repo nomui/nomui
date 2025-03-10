@@ -40,6 +40,7 @@ define([
   './td-edit.js',
   './edit.js',
   './full-edit.js',
+  './nested-summary.js',
   './sticky.js',
   './sticky-window.js',
 ], function () {

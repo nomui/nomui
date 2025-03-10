@@ -50,10 +50,14 @@ class ExpandedTr extends Component {
         colspan += 1
       }
       this.setProps({
+        hidden: !normalizedRowExpandable.expanded,
         children: {
           component: ExpandedTrTd,
           attrs: {
             colspan: colspan,
+          },
+          classes: {
+            'nom-table-expanded-tr-td-compact': normalizedRowExpandable.compact,
           },
           children: {
             ...content,
