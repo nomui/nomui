@@ -88,10 +88,20 @@ class Image extends Component {
 
   _rendered() {
     let urlList = []
+
     if (!Array.isArray(this.props.src)) {
       urlList = [this.props.src]
     } else {
       urlList = this.props.src
+    }
+
+    if (!this.props.src || !this.props.src.length) {
+      this.pendingRef.update({
+        classes: {
+          'nom-image-pending-done': true,
+        },
+      })
+      return
     }
     this._dealImageList(urlList)
       .then(() => {
