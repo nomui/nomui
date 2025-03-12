@@ -24534,6 +24534,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else {
         urlList = this.props.src;
       }
+      if (!this.props.src || !this.props.src.length) {
+        this.pendingRef.update({ classes: { "nom-image-pending-done": true } });
+        return;
+      }
       this._dealImageList(urlList)
         .then(() => {
           this.pendingRef.remove();

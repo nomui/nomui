@@ -13264,16 +13264,16 @@ textarea .nom-textarea {
   color: rgba(255, 255, 255, 0.85);
   background: #eee;
 }
-.nom-image .nom-image-pending::after {
+.nom-image .nom-image-pending:not(.nom-image-pending-done)::after {
   position: absolute;
   top: 75%;
   left: 50%;
   display: block;
-  color: #868e96;
-  font-size: 14px;
-  letter-spacing: 2px;
-  transform: translateX(-42%);
-  content: '图片加载中...';
+  color: #fff;
+  font-size: 12px;
+  letter-spacing: 1px;
+  transform: translateX(-45%);
+  content: 'Loading...';
 }
 .nom-image .nom-image-fail::after {
   content: '';
