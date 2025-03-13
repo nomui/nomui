@@ -18174,7 +18174,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { column } = this.props;
       const { treeConfig } = this.table.props;
       const { parentField } = treeConfig;
-      const { grid } = this.table; // 处理树结构关联关系
+      const { grid } = this.table;
+      this.props.children = ""; // 处理树结构关联关系
       if (grid) {
         const { keyField } = grid.props;
         grid.nodeList[`__key${this.tr.props.data[keyField]}`] = this.tr;
