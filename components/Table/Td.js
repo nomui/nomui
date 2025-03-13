@@ -450,6 +450,9 @@ class Td extends Component {
 
           if (column.editRender) {
             this.edit({ type: 'excel' })
+            setTimeout(() => {
+              this.editor.triggerEdit()
+            }, 200)
             grid.lastEditTd = this
           } else {
             grid.lastEditTd = null
