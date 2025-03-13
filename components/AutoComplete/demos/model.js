@@ -1,7 +1,7 @@
 define([], function () {
   return {
     title: 'select 模式',
-    file: 'remote',
+    file: 'model',
     demo: function () {
       let autoCompleteRef = null
       return {
@@ -11,6 +11,7 @@ define([], function () {
             component: 'AutoComplete',
             onCreated: ({ inst }) => {
               autoCompleteRef = inst
+              window.aaa = inst
             },
             filterName: 'select',
             optionFields: { value: 'age', text: 'name' },

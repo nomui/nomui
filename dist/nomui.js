@@ -11007,7 +11007,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
       }
       if (options && this.popup) {
-        this.popup.update({ options, hidden: false });
+        this.popup.update({ options });
       }
       super._config();
     }

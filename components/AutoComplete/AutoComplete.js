@@ -22,15 +22,18 @@ class AutoComplete extends Textbox {
 
   _rendered() {
     const { searchable } = this.props
-    if ((!searchable || searchable.sharedInput !== false) && this.input) { this._init() }
+    if ((!searchable || searchable.sharedInput !== false) && this.input) {
+      this._init()
+    }
     const { options } = this.props
+
     this.popup = new AutoCompletePopup({
       trigger: this.control,
       options,
       onShow: () => {
         if (this.optionList) {
           this.optionList.update({
-            selectedItems: this.getValue()
+            selectedItems: this.getValue(),
           })
           this.optionList.scrollToSelected()
         }
@@ -43,7 +46,6 @@ class AutoComplete extends Textbox {
   }
 
   _config() {
-
     const autoCompleteRef = this
     const { allowClear, options } = this.props
     this._normalizeSearchable()
@@ -60,7 +62,7 @@ class AutoComplete extends Textbox {
           },
           classes: {
             'nom-auto-complete-clear': true,
-            'nom-field-clear-handler': true
+            'nom-field-clear-handler': true,
           },
           onClick: ({ event }) => {
             event.stopPropagation()
@@ -74,7 +76,7 @@ class AutoComplete extends Textbox {
     }
 
     if (options && this.popup) {
-      this.popup.update({ options, hidden: false })
+      this.popup.update({ options })
     }
 
     super._config()
@@ -84,7 +86,6 @@ class AutoComplete extends Textbox {
     const autoComplete = this
 
     this.input.element.addEventListener('focus', function () {
-
       autoComplete.currentValue = this.value
       if (autoComplete.clearContent) {
         this.placeholder = this.value
@@ -109,7 +110,7 @@ class AutoComplete extends Textbox {
       autoComplete.searchMode = false
       const { filterName } = autoComplete.props
       if (filterName === 'select' && !autoComplete._getValue()) {
-        autoComplete.setProps({ text: '' });
+        autoComplete.setProps({ text: '' })
         autoComplete.clear()
       }
       if (autoComplete.props.delayValueChange) {
@@ -118,7 +119,7 @@ class AutoComplete extends Textbox {
         }, 200)
       }
     })
-    // 中文介入   
+    // 中文介入
     this.input.element.addEventListener('compositionstart', function () {
       autoComplete.imeInputing = true
     })
@@ -133,8 +134,7 @@ class AutoComplete extends Textbox {
     const inputText = this._getInputText()
 
     if (filterName === 'select' || (optionFields.text && optionFields.value)) {
-
-      const currOption = options.find(item => item[optionFields.text] === inputText)
+      const currOption = options.find((item) => item[optionFields.text] === inputText)
       if (currOption) {
         return currOption[optionFields.value] || currOption[optionFields.text]
       }
@@ -187,7 +187,7 @@ class AutoComplete extends Textbox {
   getSelectedOption() {
     const { options, value, optionFields } = this.props
     if (value) {
-      const currOption = options.find(item => item[optionFields.value] === value)
+      const currOption = options.find((item) => item[optionFields.value] === value)
       return currOption
     }
     return null
@@ -201,17 +201,12 @@ class AutoComplete extends Textbox {
     filterName === 'select' && this.setProps({ text: this._getInputText() })
   }
 
-
   _onValueChange(args = {}) {
-
     if (args.fromSelect) {
       this.optionClicked = true
-    }
-    else {
+    } else {
       this.optionClicked = false
     }
-
-
 
     const that = this
     this.oldValue = clone(this.currentValue)
@@ -225,8 +220,7 @@ class AutoComplete extends Textbox {
       newValue: this.currentValue,
     })
 
-
-    if (!this.props.delayValueChange || (args.fromSelect || args.fromBlur)) {
+    if (!this.props.delayValueChange || args.fromSelect || args.fromBlur) {
       setTimeout(function () {
         that.props && that.props.onValueChange && that._callHandler(that.props.onValueChange, args)
         that.group && that.group._onValueChange({ changedField: args.changedField || that })
@@ -237,11 +231,7 @@ class AutoComplete extends Textbox {
         }
       }, 0)
     }
-
-
-
   }
-
 
   blur() {
     super.blur()
@@ -280,7 +270,6 @@ class AutoComplete extends Textbox {
     this.setProps({ text: txt })
 
     if (searchable && searchable.sharedInput !== false && isFunction(searchable.onSearch)) {
-
       const loading = new nomui.Loading({
         container: this.optionList.parent,
       })
@@ -303,13 +292,9 @@ class AutoComplete extends Textbox {
       loading && loading.remove()
       this.props.options = searchPromise
       searchPromise && this.optionList.update()
-    }
-
-    else if (isFunction(filterOption)) {
+    } else if (isFunction(filterOption)) {
       this.popup.update({ options: filterOption(txt, options) })
     }
-
-
 
     isFunction(onSearch) && onSearch({ text: txt, sender: this })
   }
@@ -328,7 +313,6 @@ class AutoComplete extends Textbox {
       })
     }
   }
-
 
   _normalizeInternalOptions(options) {
     if (!Array.isArray(options) || !options.length) {
@@ -357,13 +341,15 @@ AutoComplete.defaults = {
   debounce: true,
   interval: 300,
   optionFields: { value: 'value' },
-  filterOption: (txt, options) => { return options },
+  filterOption: (txt, options) => {
+    return options
+  },
   allowClear: true,
   filterName: 'text', // text,select
   optionDefaults: {},
   autoFocus: false, // 自动聚焦搜索框
   popupWidth: null,
-  delayValueChange: false
+  delayValueChange: false,
 }
 
 Component.register(AutoComplete)
