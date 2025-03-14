@@ -9927,17 +9927,17 @@ textarea .nom-textarea {
   background: var(--nom-color-primary);
   color: white;
 }
-.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item {
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.nom-datepicker-item-week-selected) {
   position: relative;
   background: transparent;
 }
-.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.s-selected):not(.nom-datepicker-item-week-active) {
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.nom-datepicker-item-week-selected):not(.s-selected):not(.nom-datepicker-item-week-hover) {
   color: var(--nom-color-primary);
 }
-.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.s-selected):not(.nom-datepicker-item-week-active):hover {
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.nom-datepicker-item-week-selected):not(.s-selected):not(.nom-datepicker-item-week-hover):hover {
   background: var(--nom-datepicker-item-hover-bg);
 }
-.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item::after {
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.nom-datepicker-item-week-selected)::after {
   content: '';
   display: block;
   position: absolute;
@@ -9949,8 +9949,13 @@ textarea .nom-textarea {
   border-radius: 200px;
   background: var(--nom-color-primary);
 }
-.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-active:not(.s-selected) {
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-hover:not(.s-selected):not(.nom-datepicker-item-week-selected) {
   background: var(--nom-datepicker-item-hover-bg) !important;
+}
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-selected {
+  background: var(--nom-color-primary);
+  color: white !important;
+  position: static;
 }
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-item-muted {
   color: var(--nom-date-picker-day-muted-text-color);
