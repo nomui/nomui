@@ -4135,6 +4135,50 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
   }
+  /**
+   * 计算传入日期属于哪一年的第几周  (根据当前后端计算规则：本年1月1日如果不是周一，则第一周从上一年12月XX号开始；同样如果本年12月31日不是周日，则这一周不算入本年，而算作来年第一周。)
+   * @param {Date} date - 传入的日期   startWeekOnMonday - 每周是否从周一到周日，否则是周日到周六
+   * @returns {Object} - 返回包含年份和周数的对象，如 { year: 2023, week: 12 }
+   */ function getWeekCount({ date, startWeekOnMonday = true }) {
+    date = new Date(date);
+    let year = date.getFullYear();
+    const firstDayOfYear = new Date(year, 0, 1); // 本年1月1日
+    // const lastDayOfYear = new Date(year, 11, 31) // 本年12月31日
+    // 找到本年第一个周一或周日
+    let firstWeekStart;
+    if (startWeekOnMonday) {
+      // 第一周从本年第一个周一开始
+      const firstMondayOfYear = new Date(firstDayOfYear);
+      firstMondayOfYear.setDate(
+        firstDayOfYear.getDate() + ((1 - firstDayOfYear.getDay() + 7) % 7)
+      );
+      firstWeekStart = new Date(firstMondayOfYear);
+    } else {
+      // 第一周从本年第一个周日开始
+      const firstSundayOfYear = new Date(firstDayOfYear);
+      firstSundayOfYear.setDate(
+        firstDayOfYear.getDate() + ((7 - firstDayOfYear.getDay()) % 7)
+      );
+      firstWeekStart = new Date(firstSundayOfYear);
+    } // 如果1月1日不是周一（或周日），则第一周从上一年开始
+    if (startWeekOnMonday && firstDayOfYear.getDay() !== 1) {
+      firstWeekStart.setDate(firstWeekStart.getDate() - 7);
+    } else if (!startWeekOnMonday && firstDayOfYear.getDay() !== 0) {
+      firstWeekStart.setDate(firstWeekStart.getDate() - 7);
+    } // 如果给定日期在第一周开始之前，则属于上一年的最后一周
+    if (date < firstWeekStart) {
+      return { year: year - 1, week: 52 }; // 假设上一年的最后一周是第52周
+    } // 计算给定日期所在的周数
+    const delta = Math.floor(
+      (date - firstWeekStart) / (7 * 24 * 60 * 60 * 1000)
+    );
+    let weekNumber = delta + 1; // 如果日期在下一年的第一周，则调整年份和周数
+    if (weekNumber > 52) {
+      weekNumber = 1;
+      year++;
+    }
+    return { year, week: weekNumber };
+  }
   var index = /*#__PURE__*/ Object.freeze({
     __proto__: null,
     isPlainObject: isPlainObject,
@@ -4167,6 +4211,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     escapeRegExp: escapeRegExp,
     deepEqual: deepEqual,
     copyToClipboard: copyToClipboard,
+    getWeekCount: getWeekCount,
     AutoScroll: AutoScrollPlugin,
     MultiDrag: MultiDragPlugin,
     OnSpill: OnSpill,
@@ -16618,12 +16663,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   });
                                 }
                                 if (that.props.weekMode) {
-                                  this.weekCount = that._getWeekNumber(date);
+                                  this.weekCount = nomui.utils.getWeekCount({
+                                    date,
+                                    startWeekOnMonday:
+                                      that.props.startWeekOnMonday,
+                                  }).week;
                                   this.setProps({
-                                    tooltip: that.props.weekCountText.replace(
-                                      "{week}",
-                                      this.weekCount
-                                    ),
+                                    attrs: {
+                                      title: that.props.weekCountText.replace(
+                                        "{week}",
+                                        this.weekCount
+                                      ),
+                                    },
                                   });
                                 }
                                 this.setProps({
@@ -16663,12 +16714,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   );
                                 }
                               },
-                              onClick: function (args) {
+                              onClick: function ({ sender }) {
                                 const {
                                   year: selYear,
                                   month: selMonth,
                                   day: selDay,
-                                } = args.sender.props;
+                                } = sender.props;
                                 that.dateInfo = Object.assign(
                                   {},
                                   that.dateInfo,
@@ -16681,20 +16732,21 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                 if (that.props.weekMode) {
                                   // 周模式下选择日期，将选择的日期设置为当前周的第一天
                                   const firstDayOfWeek = new Date(
-                                    args.sender.weekDays[0]
+                                    sender.weekDays[0]
                                   );
                                   that.dateInfo = {
                                     year: firstDayOfWeek.getFullYear(),
                                     month: firstDayOfWeek.getMonth(),
                                     day: firstDayOfWeek.getDate(),
                                   };
+                                  that.selectedWeekCount = sender.weekCount;
                                   that.updateValue();
                                   that.popup.hide();
                                   return;
                                 }
                                 if (that.props.showTime) {
                                   that._updateTimePickerStartEndTime(
-                                    args.sender.props.day
+                                    sender.props.day
                                   );
                                 }
                                 that.updateValue();
@@ -16782,6 +16834,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                           month: startOfWeek.getMonth(), // 注意：getMonth() 返回 0-11
                           day: startOfWeek.getDate(),
                         };
+                        that.selectedWeekCount = nomui.utils.getWeekCount({
+                          date: new Date(),
+                          startWeekOnMonday: that.props.startWeekOnMonday,
+                        }).week;
                         that.updateValue();
                         that.popup.hide();
                         return;
@@ -17153,56 +17209,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else if (!this.props.value && this.props.showTime && this.timePicker) {
         this.timePicker.clearTime();
       }
-    }
-    /**
-     * 计算传入日期属于哪一年的第几周
-     * @param {Date} date - 传入的日期
-     * @returns {Object} - 返回包含年份和周数的对象，如 { year: 2023, week: 12 }
-     */ _getWeekNumber(date) {
-      date = new Date(date);
-      const year = date.getFullYear(); // 获取年份
-      const firstDayOfYear = new Date(year, 0, 1); // 本年1月1日
-      const lastDayOfYear = new Date(year, 11, 31); // 本年12月31日
-      const firstDayOfYearWeekday = firstDayOfYear.getDay();
-      const lastDayOfYearWeekday = lastDayOfYear.getDay(); // 根据 startWeekOnMonday 配置项调整周的计算逻辑
-      const isStartWeekOnMonday = this.props.startWeekOnMonday; // 计算第一周的起始日期
-      let firstWeekStart;
-      if (isStartWeekOnMonday) {
-        if (firstDayOfYearWeekday === 1) {
-          firstWeekStart = new Date(year, 0, 1);
-        } else {
-          firstWeekStart = new Date(
-            year,
-            0,
-            1 + ((1 - firstDayOfYearWeekday + 7) % 7)
-          );
-        }
-      } else if (firstDayOfYearWeekday === 0) {
-        firstWeekStart = new Date(year, 0, 1);
-      } else {
-        firstWeekStart = new Date(year, 0, 1 - firstDayOfYearWeekday);
-      }
-      let lastWeekEnd;
-      if (isStartWeekOnMonday) {
-        if (lastDayOfYearWeekday === 0) {
-          lastWeekEnd = new Date(year, 11, 31);
-        } else {
-          lastWeekEnd = new Date(year, 11, 31 + (7 - lastDayOfYearWeekday));
-        }
-      } else if (lastDayOfYearWeekday === 6) {
-        lastWeekEnd = new Date(year, 11, 31);
-      } else {
-        lastWeekEnd = new Date(year, 11, 31 + (6 - lastDayOfYearWeekday));
-      }
-      if (date < firstWeekStart) {
-        return this.getWeekNumber(new Date(year - 1, 11, 31));
-      }
-      if (date > lastWeekEnd) {
-        return this.getWeekNumber(new Date(year + 1, 0, 1));
-      }
-      const timeDiff = date.getTime() - firstWeekStart.getTime();
-      const weekDiff = Math.floor(timeDiff / (7 * 24 * 60 * 60 * 1000)) + 1;
-      return weekDiff;
     }
     _getNowText() {
       if (this.props.weekMode) {
