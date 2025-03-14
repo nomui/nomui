@@ -4566,7 +4566,9 @@ body {
   --nom-date-picker-divider: 1px solid var(--nom-border-color);
   --nom-date-picker-header-text-color: var(--nom-color-text-2);
   --nom-date-picker-day-muted-text-color: var(--nom-color-text-3);
-  --nom-datepicker-item-hover-bg: rgba(var(--nom-color-primary-base), 0.1);
+  --nom-datepicker-item-hover-bg: rgba(var(--nom-color-primary-base), 0.05);
+  --nom-datepicker-item-hover-bg-dark: rgba(var(--nom-color-primary-base), 0.15);
+  --nom-date-picker-day-week-selected-bg: rgba(var(--nom-color-primary-base), 0.1);
   --nom-rate-color: rgba(var(--nom-yellow-5), 1);
   --nom-rate-color-muted: rgba(var(--nom-grey-2), 1);
   --nom-tooltip-background-color: rgba(var(--nom-grey-8), 1);
@@ -9919,6 +9921,7 @@ textarea .nom-textarea {
   align-items: center;
   padding: 0.25rem;
   font-size: 13px;
+  border-radius: 0.25rem;
 }
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item:hover {
   background: var(--nom-datepicker-item-hover-bg);
@@ -9937,8 +9940,10 @@ textarea .nom-textarea {
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.nom-datepicker-item-week-selected):not(.s-selected):not(.nom-datepicker-item-week-hover):hover {
   background: var(--nom-datepicker-item-hover-bg);
 }
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.nom-datepicker-item-week-selected).s-selected {
+  background: var(--nom-color-primary);
+}
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.nom-datepicker-item-week-selected)::after {
-  content: '';
   display: block;
   position: absolute;
   bottom: 0;
@@ -9952,10 +9957,28 @@ textarea .nom-textarea {
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-hover:not(.s-selected):not(.nom-datepicker-item-week-selected) {
   background: var(--nom-datepicker-item-hover-bg) !important;
 }
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-hover:not(.s-selected):not(.nom-datepicker-item-week-selected).nom-datepicker-item-first-day-of-week {
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-hover:not(.s-selected):not(.nom-datepicker-item-week-selected).nom-datepicker-item-last-day-of-week {
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-hover:not(.s-selected):not(.nom-datepicker-item-week-selected):not(.nom-datepicker-item-last-day-of-week):not(.nom-datepicker-item-first-day-of-week) {
+  border-radius: 0;
+}
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-selected {
   background: var(--nom-color-primary);
   color: white !important;
   position: static;
+}
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-selected.nom-datepicker-item-first-day-of-week {
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-selected.nom-datepicker-item-last-day-of-week {
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-selected:not(.nom-datepicker-item-last-day-of-week):not(.nom-datepicker-item-first-day-of-week) {
+  border-radius: 0;
 }
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-item-muted {
   color: var(--nom-date-picker-day-muted-text-color);

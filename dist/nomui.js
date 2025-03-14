@@ -16391,7 +16391,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this.showNow = false;
       }
-      const { weekText, nowText, todayText } = this.props;
+      const { weekText } = this.props;
       this.setProps({
         leftIcon: "calendar",
         clearProps: {
@@ -16579,6 +16579,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   weekDays.push(_day.format("yyyy-MM-dd"));
                                 }
                                 this.weekDays = weekDays;
+                                const isFirstDayOfWeek = date === weekDays[0];
+                                const isLastDayOfWeek = date === weekDays[6];
                                 const isToday =
                                   date === new Date().format("yyyy-MM-dd");
                                 let isDisabled = false;
@@ -16620,6 +16622,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   attrs: { "data-date": date },
                                   classes: {
                                     "nom-datepicker-item-muted": isMuted,
+                                    "nom-datepicker-item-first-day-of-week": isFirstDayOfWeek,
+                                    "nom-datepicker-item-last-day-of-week": isLastDayOfWeek,
                                   },
                                   children: this.props.day,
                                   disabled: !!isDisabled,
@@ -16694,6 +16698,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                             },
                             onRendered: ({ inst }) => {
                               if (
+                                that.props.weekMode &&
                                 inst.props.selectedItems &&
                                 inst.props.selectedItems.length
                               ) {
@@ -16746,10 +16751,32 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   {
                     component: "Button",
                     size: "small",
-                    text: this.props.showTime ? nowText : todayText,
+                    text: that._getNowText(),
                     disabled: !this.showNow,
                     renderIf: this.props.showNow,
                     onClick: () => {
+                      if (that.props.weekMode) {
+                        // 周模式下选择日期，将选择的日期设置为当前周的第一天
+                        const today = new Date();
+                        const currentDay = today.getDay();
+                        const startOfWeekOffset = that.props.startWeekOnMonday
+                          ? currentDay === 0
+                            ? -6 // 如果今天是周日，则回到上周一
+                            : 1 - currentDay // 否则回到本周一
+                          : -currentDay; // 如果从周日开始，则回到本周日
+                        const startOfWeek = new Date(today);
+                        startOfWeek.setDate(
+                          today.getDate() + startOfWeekOffset
+                        );
+                        that.dateInfo = {
+                          year: startOfWeek.getFullYear(),
+                          month: startOfWeek.getMonth(), // 注意：getMonth() 返回 0-11
+                          day: startOfWeek.getDate(),
+                        };
+                        that.updateValue();
+                        that.popup.hide();
+                        return;
+                      }
                       if (that.props.showTime) {
                         that._updateTimePickerStartEndTime(
                           new Date().getDate()
@@ -17118,6 +17145,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.timePicker.clearTime();
       }
     }
+    _getNowText() {
+      if (this.props.weekMode) {
+        return this.props.currentWeekText;
+      }
+      return this.props.showTime ? this.props.nowText : this.props.todayText;
+    }
     handleTimeChange(param) {
       if (
         !this.days.getSelectedItem() &&
@@ -17196,6 +17229,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     extraTools: null,
     startWeekOnMonday: true, // 将周一算作一周的开始
     weekText: "日 一 二 三 四 五 六",
+    currentWeekText: "本周",
     nowText: "此刻",
     todayText: "今天",
     showYearSkip: false,
