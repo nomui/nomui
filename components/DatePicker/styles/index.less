@@ -4,9 +4,9 @@
     height: 3.25rem;
     border-bottom: 1px solid var(--nom-color-border);
     user-select: none;
-    >.p-grow {
+    > .p-grow {
       justify-content: center;
-      >.nom-flex {
+      > .nom-flex {
         cursor: pointer;
         h5 {
           font-size: 1.15rem;
@@ -16,47 +16,47 @@
   }
 
   .nom-datepicker-popup-bd {
-    padding: .5rem 1rem 0 1rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
     height: auto;
   }
 
   .nom-datepicker-footer {
-    padding: .75rem 1.5rem;
+    padding: 0.5rem 1.5rem;
     border-top: 1px solid var(--nom-color-border);
   }
 
   .nom-datepicker-year-month {
     position: absolute;
-    top:0;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 1;
     background-color: white;
-    >.nom-flex {
+    > .nom-flex {
       height: 100%;
       .nom-datepicker-year-month-back {
         height: 3.25rem;
         border-bottom: 1px solid var(--nom-border-color);
         display: flex;
         align-items: center;
-        padding: 0 .5rem;
+        padding: 0 0.5rem;
         .nom-button {
           color: var(--nom-color-primary);
         }
       }
-      .nom-datepicker-year-month-container  {
+      .nom-datepicker-year-month-container {
         height: calc(100% - 3.25rem);
-        >.nom-list {
+        > .nom-list {
           width: 50%;
           overflow-y: auto;
           .nom-list-item {
-            padding: .45rem;
+            padding: 0.45rem;
             text-align: center;
             cursor: pointer;
             user-select: none;
             &:hover {
-              background-color: rgba(0,0,0,.1);
+              background-color: rgba(0, 0, 0, 0.1);
             }
             &.s-selected {
               background-color: var(--nom-color-primary);
@@ -64,7 +64,7 @@
             }
           }
           &:first-child {
-            border-right:1px solid var(--nom-border-color);
+            border-right: 1px solid var(--nom-border-color);
           }
           &:last-child {
             ul {
@@ -74,7 +74,6 @@
         }
       }
     }
-
   }
 
   .time-display {
@@ -85,10 +84,9 @@
     text-align: center;
   }
 
-
   .nom-select {
     .nom-select-single {
-      padding-left: .5rem;
+      padding-left: 0.5rem;
     }
   }
 
@@ -96,6 +94,7 @@
     text-align: center;
     padding: 5px 0 2px 0;
     color: var(--nom-date-picker-header-text-color);
+    font-size: 13px;
 
     .nom-flex-item {
       width: 2.4rem;
@@ -105,18 +104,19 @@
   }
 
   .nom-datepicker-panel-days {
-    >ul {
-      >.nom-list-item-wrapper {
-        padding: .2rem;
+    > ul {
+      > .nom-list-item-wrapper {
+        // padding: 0.2rem;
 
         .nom-datepicker-day-item {
-          width: 2rem;
-          height: 2rem;
+          aspect-ratio: 1 / 0.85;
           text-align: center;
-          line-height: 2rem;
-          border-radius: 200px;
-          transition: all .5s;
-
+          transition: all 0.5s;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0.25rem;
+          font-size: 13px;
           &:hover {
             background: var(--nom-color-fill-1);
           }
@@ -126,13 +126,15 @@
             color: white;
           }
 
-          &.nom-datepicker-today-item:not(.s-selected) {
+          &.nom-datepicker-today-item {
             position: relative;
             background: transparent;
-            color: var(--nom-color-primary);
 
-            &:hover {
-              background: var(--nom-color-fill-1);
+            &:not(.s-selected):not(.nom-datepicker-item-week-active) {
+              color: var(--nom-color-primary);
+              &:hover {
+                background: var(--nom-color-fill-1);
+              }
             }
 
             &::after {
@@ -146,23 +148,21 @@
               height: 4px;
               border-radius: 200px;
               background: var(--nom-color-primary);
-
             }
+          }
 
+          &.nom-datepicker-item-week-active {
+            color: var(--nom-text-color);
+            background: var(--nom-color-fill-1) !important;
           }
         }
 
         .nom-datepicker-item-muted {
-          color: var(--nom-date-picker-day-muted-text-color)
+          color: var(--nom-date-picker-day-muted-text-color);
         }
-
       }
-
     }
-
   }
-
-
 
   .nom-list .nom-list-content .nom-list-item-wrapper .nom-list-item.s-disabled {
     opacity: 0.5;
@@ -171,7 +171,7 @@
   .timepicker-group {
     height: 280px;
 
-    >.nom-col {
+    > .nom-col {
       width: 60px;
       max-height: 100%;
       height: 100%;
@@ -187,8 +187,8 @@
       }
 
       .nom-date-time-picker-list {
-        >ul {
-          padding:106px 0;
+        > ul {
+          padding: 106px 0;
         }
       }
 
