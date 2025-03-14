@@ -4566,8 +4566,7 @@ body {
   --nom-date-picker-divider: 1px solid var(--nom-border-color);
   --nom-date-picker-header-text-color: var(--nom-color-text-2);
   --nom-date-picker-day-muted-text-color: var(--nom-color-text-3);
-  --nom-datepicker-item-hover-bg: rgba(var(--nom-color-primary-base), 0.05);
-  --nom-datepicker-item-hover-bg-dark: rgba(var(--nom-color-primary-base), 0.15);
+  --nom-datepicker-item-hover-bg: rgba(var(--nom-color-primary-base), 0.1);
   --nom-date-picker-day-week-selected-bg: rgba(var(--nom-color-primary-base), 0.1);
   --nom-rate-color: rgba(var(--nom-yellow-5), 1);
   --nom-rate-color-muted: rgba(var(--nom-grey-2), 1);
@@ -9840,7 +9839,7 @@ textarea .nom-textarea {
   height: auto;
 }
 .nom-date-picker-popup .nom-datepicker-footer {
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1rem;
   border-top: 1px solid var(--nom-color-border);
 }
 .nom-date-picker-popup .nom-datepicker-year-month {
