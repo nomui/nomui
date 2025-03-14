@@ -11,6 +11,7 @@
 | format | 格式 | `string` | `yyyy-MM-dd` |
 | disabledTime | 禁用日期函数 | `(data)=>{ return true/false }` | - |
 | startWeekOnMonday | 是否将周一视作一周的开始，(否则按照国际习惯将周日视作起始 ) | `boolean` | true |
+| weekMode | 周选择模式，此时取值为当周的第一天所在日期，界面上则显示未整个周 | `boolean` | false |
 | minDate | 最小可选日期 | `string` | - |
 | maxDate | 最大可选日期 | `string` | - |
 | yearRange | 前后年显示范围 | `array` | `[50,20]` |

@@ -6,6 +6,7 @@ define([
   './with-format.js',
   './with-time.js',
   './mindate-mintime.js',
+  './week-mode.js',
 ], function () {
   return {
     title: 'DatePicker',

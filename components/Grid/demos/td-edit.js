@@ -137,7 +137,9 @@ define([], function () {
                 },
                 cellRender: ({ cellData }) => {
                   if (!cellData) return '-'
-                  return cellData
+                  return {
+                    children: cellData,
+                  }
                 },
               },
               {

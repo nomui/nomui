@@ -118,7 +118,7 @@
           padding: 0.25rem;
           font-size: 13px;
           &:hover {
-            background: var(--nom-color-fill-1);
+            background: var(--nom-datepicker-item-hover-bg);
           }
 
           &.s-selected {
@@ -133,7 +133,7 @@
             &:not(.s-selected):not(.nom-datepicker-item-week-active) {
               color: var(--nom-color-primary);
               &:hover {
-                background: var(--nom-color-fill-1);
+                background: var(--nom-datepicker-item-hover-bg);
               }
             }
 
@@ -151,9 +151,8 @@
             }
           }
 
-          &.nom-datepicker-item-week-active {
-            color: var(--nom-text-color);
-            background: var(--nom-color-fill-1) !important;
+          &.nom-datepicker-item-week-active:not(.s-selected) {
+            background: var(--nom-datepicker-item-hover-bg) !important;
           }
         }
 

@@ -269,14 +269,30 @@ class DatePicker extends Textbox {
                                 this.props.day,
                               )
 
-                              // 根据当前日期获取周几，然后将跟它相邻的同一周日期添加到数组中 (按周一至周日为一周)
+                              // 根据当前日期获取周几，然后将跟它相邻的同一周日期添加到数组中
+
                               const weekDays = []
-                              const currentDay = new Date(date).getDay()
-                              for (let i = 1; i <= 7; i++) {
-                                const _day = new Date(date)
-                                _day.setDate(_day.getDate() - currentDay + i)
+                              const currentDate = new Date(date)
+                              const currentDay = currentDate.getDay()
+
+                              // 根据 startWeekOnMonday 配置项决定周的起点是周一还是周日
+                              const startOfWeekOffset = that.props.startWeekOnMonday
+                                ? currentDay === 0
+                                  ? -6
+                                  : 1 - currentDay
+                                : -currentDay
+
+                              // 计算当前周的起始日期
+                              const startOfWeek = new Date(currentDate)
+                              startOfWeek.setDate(currentDate.getDate() + startOfWeekOffset)
+
+                              // 计算当前周的每一天
+                              for (let i = 0; i < 7; i++) {
+                                const _day = new Date(startOfWeek)
+                                _day.setDate(startOfWeek.getDate() + i)
                                 weekDays.push(_day.format('yyyy-MM-dd'))
                               }
+
                               this.weekDays = weekDays
 
                               const isToday = date === new Date().format('yyyy-MM-dd')
