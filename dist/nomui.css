@@ -4566,6 +4566,7 @@ body {
   --nom-date-picker-divider: 1px solid var(--nom-border-color);
   --nom-date-picker-header-text-color: var(--nom-color-text-2);
   --nom-date-picker-day-muted-text-color: var(--nom-color-text-3);
+  --nom-datepicker-item-hover-bg: rgba(var(--nom-color-primary-base), 0.1);
   --nom-rate-color: rgba(var(--nom-yellow-5), 1);
   --nom-rate-color-muted: rgba(var(--nom-grey-2), 1);
   --nom-tooltip-background-color: rgba(var(--nom-grey-8), 1);
@@ -9920,7 +9921,7 @@ textarea .nom-textarea {
   font-size: 13px;
 }
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item:hover {
-  background: var(--nom-color-fill-1);
+  background: var(--nom-datepicker-item-hover-bg);
 }
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.s-selected {
   background: var(--nom-color-primary);
@@ -9934,7 +9935,7 @@ textarea .nom-textarea {
   color: var(--nom-color-primary);
 }
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.s-selected):not(.nom-datepicker-item-week-active):hover {
-  background: var(--nom-color-fill-1);
+  background: var(--nom-datepicker-item-hover-bg);
 }
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item::after {
   content: '';
@@ -9948,9 +9949,8 @@ textarea .nom-textarea {
   border-radius: 200px;
   background: var(--nom-color-primary);
 }
-.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-active {
-  color: var(--nom-text-color);
-  background: var(--nom-color-fill-1) !important;
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-active:not(.s-selected) {
+  background: var(--nom-datepicker-item-hover-bg) !important;
 }
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-item-muted {
   color: var(--nom-date-picker-day-muted-text-color);

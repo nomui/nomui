@@ -36,8 +36,6 @@ class Td extends Component {
     const { parentField } = treeConfig
     const { grid } = this.table
 
-    this.props.children = ''
-
     // 处理树结构关联关系
 
     if (grid) {
