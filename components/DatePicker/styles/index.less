@@ -126,11 +126,11 @@
             color: white;
           }
 
-          &.nom-datepicker-today-item {
+          &.nom-datepicker-today-item:not(.nom-datepicker-item-week-selected) {
             position: relative;
             background: transparent;
 
-            &:not(.s-selected):not(.nom-datepicker-item-week-active) {
+            &:not(.s-selected):not(.nom-datepicker-item-week-hover) {
               color: var(--nom-color-primary);
               &:hover {
                 background: var(--nom-datepicker-item-hover-bg);
@@ -151,8 +151,14 @@
             }
           }
 
-          &.nom-datepicker-item-week-active:not(.s-selected) {
+          &.nom-datepicker-item-week-hover:not(.s-selected):not(.nom-datepicker-item-week-selected) {
             background: var(--nom-datepicker-item-hover-bg) !important;
+          }
+
+          &.nom-datepicker-item-week-selected {
+            background: var(--nom-color-primary);
+            color: white !important;
+            position: static;
           }
         }
 

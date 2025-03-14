@@ -346,14 +346,15 @@ class DatePicker extends Textbox {
                             _rendered: function () {
                               if (that.props.weekMode) {
                                 const { weekDays } = this
+
                                 this.element.addEventListener('mouseenter', () => {
                                   that.days.element
                                     .querySelectorAll(`[data-date]`)
                                     .forEach((item) => {
                                       if (weekDays.includes(item.dataset.date)) {
-                                        item.classList.add('nom-datepicker-item-week-active')
+                                        item.classList.add('nom-datepicker-item-week-hover')
                                       } else {
-                                        item.classList.remove('nom-datepicker-item-week-active')
+                                        item.classList.remove('nom-datepicker-item-week-hover')
                                       }
                                     })
                                 })
@@ -376,7 +377,17 @@ class DatePicker extends Textbox {
                               }
 
                               if (that.props.weekMode) {
-                                // debugger
+                                // 周模式下选择日期，将选择的日期设置为当前周的第一天
+                                const firstDayOfWeek = new Date(args.sender.weekDays[0])
+                                that.dateInfo = {
+                                  year: firstDayOfWeek.getFullYear(),
+                                  month: firstDayOfWeek.getMonth(),
+                                  day: firstDayOfWeek.getDate(),
+                                }
+
+                                that.updateValue()
+                                that.popup.hide()
+                                return
                               }
 
                               if (that.props.showTime) {
@@ -391,6 +402,20 @@ class DatePicker extends Textbox {
                               }
                               !that.props.showTime && that.popup.hide()
                             },
+                          },
+                          onRendered: ({ inst }) => {
+                            if (inst.props.selectedItems && inst.props.selectedItems.length) {
+                              const item = inst.getSelectedItem()
+                              const { weekDays } = item
+                              // 遍历this.element的子元素，查找[data-date]属性值在sibs中的元素，给它们加上nom-datepicker-item-week-selected类，同时移除其他元素的nom-datepicker-item-week-selected类
+                              inst.element.querySelectorAll(`[data-date]`).forEach((n) => {
+                                if (weekDays.includes(n.dataset.date)) {
+                                  n.classList.add('nom-datepicker-item-week-selected')
+                                } else {
+                                  n.classList.remove('nom-datepicker-item-week-selected')
+                                }
+                              })
+                            }
                           },
                         },
                       ],
