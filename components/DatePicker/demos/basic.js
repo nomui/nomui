@@ -7,6 +7,7 @@ define([], function () {
         children: {
           component: 'DatePicker',
           placeholder: 'basic usage',
+          weekMode: true,
         },
       }
     },

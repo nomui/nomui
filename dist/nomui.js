@@ -16340,7 +16340,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (isValidDate$1(this.props.value)) {
         this.props.value = formatDate(this.props.value, this.props.format);
       }
-      const { disabled, extraTools } = this.props;
+      const { disabled, extraTools, startWeekOnMonday } = this.props; // 如果设置了从周一开始，则将周日移动到最后
+      if (startWeekOnMonday) {
+        const weekTextArray = this.props.weekText.split(" ");
+        const firstDay = weekTextArray.shift();
+        weekTextArray.push(firstDay);
+        this.props.weekText = weekTextArray.join(" ");
+      }
+      if (this.props.weekMode) {
+        this.props.showTime = false;
+      }
       let extra = [];
       if (isFunction(extraTools)) {
         extra = Array.isArray(extraTools(this))
@@ -16547,7 +16556,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   this.props.year,
                                   this.props.month,
                                   this.props.day
-                                );
+                                ); // 根据当前日期获取周几，然后将跟它相邻的同一周日期添加到数组中 (按周一至周日为一周)
+                                const weekDays = [];
+                                const currentDay = new Date(date).getDay();
+                                for (let i = 1; i <= 7; i++) {
+                                  const _day = new Date(date);
+                                  _day.setDate(_day.getDate() - currentDay + i);
+                                  weekDays.push(_day.format("yyyy-MM-dd"));
+                                }
+                                this.weekDays = weekDays;
                                 const isToday =
                                   date === new Date().format("yyyy-MM-dd");
                                 let isDisabled = false;
@@ -16586,12 +16603,38 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                 }
                                 this.setProps({
                                   styles: { text: "center" },
+                                  attrs: { "data-date": date },
                                   classes: {
                                     "nom-datepicker-item-muted": isMuted,
                                   },
                                   children: this.props.day,
                                   disabled: !!isDisabled,
                                 });
+                              },
+                              _rendered: function () {
+                                if (that.props.weekMode) {
+                                  const { weekDays } = this;
+                                  this.element.addEventListener(
+                                    "mouseenter",
+                                    () => {
+                                      that.days.element
+                                        .querySelectorAll(`[data-date]`)
+                                        .forEach((item) => {
+                                          if (
+                                            weekDays.includes(item.dataset.date)
+                                          ) {
+                                            item.classList.add(
+                                              "nom-datepicker-item-week-active"
+                                            );
+                                          } else {
+                                            item.classList.remove(
+                                              "nom-datepicker-item-week-active"
+                                            );
+                                          }
+                                        });
+                                    }
+                                  );
+                                }
                               },
                               onClick: function (args) {
                                 const {
@@ -16608,6 +16651,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                     day: selDay,
                                   }
                                 );
+                                if (that.props.weekMode);
                                 if (that.props.showTime) {
                                   that._updateTimePickerStartEndTime(
                                     args.sender.props.day
@@ -16947,7 +16991,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }, 0);
     }
     /* 求XX年XX月1号是星期几 */ _getFirstDayOfMonth(year, month) {
-      return new Date(year, month - 1, 1).getDay();
+      const firstDay = new Date(year, month - 1, 1).getDay(); // 0 (Sunday) to 6 (Saturday)
+      if (this.props.startWeekOnMonday) {
+        // 如果从周一开始，将 Sunday (0) 转换为 7，其他减 1
+        return firstDay === 0 ? 6 : firstDay - 1;
+      }
+      return firstDay; // 默认情况，直接返回
     }
     /* 求XX年XX月有多少天 */ _getDaysInMonth(year, month) {
       return (
@@ -17096,11 +17145,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     readonly: false,
     restrictInput: true,
     extraTools: null,
+    startWeekOnMonday: true, // 将周一算作一周的开始
     weekText: "日 一 二 三 四 五 六",
     nowText: "此刻",
     todayText: "今天",
     showYearSkip: false,
     backText: "返回选择日期",
+    weekMode: false,
     monthMap: {
       1: "1月",
       2: "2月",

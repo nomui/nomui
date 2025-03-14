@@ -9833,11 +9833,11 @@ textarea .nom-textarea {
   font-size: 1.15rem;
 }
 .nom-date-picker-popup .nom-datepicker-popup-bd {
-  padding: 0.5rem 1rem 0 1rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
   height: auto;
 }
 .nom-date-picker-popup .nom-datepicker-footer {
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   border-top: 1px solid var(--nom-color-border);
 }
 .nom-date-picker-popup .nom-datepicker-year-month {
@@ -9902,22 +9902,22 @@ textarea .nom-textarea {
   text-align: center;
   padding: 5px 0 2px 0;
   color: var(--nom-date-picker-header-text-color);
+  font-size: 13px;
 }
 .nom-date-picker-popup .nom-datepicker-panel-header .nom-flex-item {
   width: 2.4rem;
   height: 1.6rem;
   text-align: center;
 }
-.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper {
-  padding: 0.2rem;
-}
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item {
-  width: 2rem;
-  height: 2rem;
+  aspect-ratio: 1.17647059;
   text-align: center;
-  line-height: 2rem;
-  border-radius: 200px;
   transition: all 0.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem;
+  font-size: 13px;
 }
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item:hover {
   background: var(--nom-color-fill-1);
@@ -9926,15 +9926,17 @@ textarea .nom-textarea {
   background: var(--nom-color-primary);
   color: white;
 }
-.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.s-selected) {
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item {
   position: relative;
   background: transparent;
+}
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.s-selected):not(.nom-datepicker-item-week-active) {
   color: var(--nom-color-primary);
 }
-.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.s-selected):hover {
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.s-selected):not(.nom-datepicker-item-week-active):hover {
   background: var(--nom-color-fill-1);
 }
-.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item:not(.s-selected)::after {
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-today-item::after {
   content: '';
   display: block;
   position: absolute;
@@ -9945,6 +9947,10 @@ textarea .nom-textarea {
   height: 4px;
   border-radius: 200px;
   background: var(--nom-color-primary);
+}
+.nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-day-item.nom-datepicker-item-week-active {
+  color: var(--nom-text-color);
+  background: var(--nom-color-fill-1) !important;
 }
 .nom-date-picker-popup .nom-datepicker-panel-days > ul > .nom-list-item-wrapper .nom-datepicker-item-muted {
   color: var(--nom-date-picker-day-muted-text-color);
