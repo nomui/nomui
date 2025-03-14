@@ -11306,6 +11306,10 @@ textarea .nom-textarea {
 .nom-tag.p-type-round {
   min-width: 1.75rem;
 }
+.nom-tag .nom-flex-item {
+  min-width: 0;
+  flex-shrink: 1;
+}
 .nom-tag .nom-tag-content {
   overflow: hidden;
   text-overflow: ellipsis;
