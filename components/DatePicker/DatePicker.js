@@ -333,12 +333,17 @@ class DatePicker extends Textbox {
                               }
 
                               if (that.props.weekMode) {
-                                this.weekCount = that._getWeekNumber(date)
+                                this.weekCount = nomui.utils.getWeekCount({
+                                  date,
+                                  startWeekOnMonday: that.props.startWeekOnMonday,
+                                }).week
                                 this.setProps({
-                                  tooltip: that.props.weekCountText.replace(
-                                    '{week}',
-                                    this.weekCount,
-                                  ),
+                                  attrs: {
+                                    title: that.props.weekCountText.replace(
+                                      '{week}',
+                                      this.weekCount,
+                                    ),
+                                  },
                                 })
                               }
 
@@ -375,12 +380,8 @@ class DatePicker extends Textbox {
                                 })
                               }
                             },
-                            onClick: function (args) {
-                              const {
-                                year: selYear,
-                                month: selMonth,
-                                day: selDay,
-                              } = args.sender.props
+                            onClick: function ({ sender }) {
+                              const { year: selYear, month: selMonth, day: selDay } = sender.props
 
                               that.dateInfo = {
                                 ...that.dateInfo,
@@ -393,20 +394,20 @@ class DatePicker extends Textbox {
 
                               if (that.props.weekMode) {
                                 // 周模式下选择日期，将选择的日期设置为当前周的第一天
-                                const firstDayOfWeek = new Date(args.sender.weekDays[0])
+                                const firstDayOfWeek = new Date(sender.weekDays[0])
                                 that.dateInfo = {
                                   year: firstDayOfWeek.getFullYear(),
                                   month: firstDayOfWeek.getMonth(),
                                   day: firstDayOfWeek.getDate(),
                                 }
-
+                                that.selectedWeekCount = sender.weekCount
                                 that.updateValue()
                                 that.popup.hide()
                                 return
                               }
 
                               if (that.props.showTime) {
-                                that._updateTimePickerStartEndTime(args.sender.props.day)
+                                that._updateTimePickerStartEndTime(sender.props.day)
                               }
 
                               that.updateValue()
@@ -496,6 +497,11 @@ class DatePicker extends Textbox {
                         month: startOfWeek.getMonth(), // 注意：getMonth() 返回 0-11
                         day: startOfWeek.getDate(),
                       }
+
+                      that.selectedWeekCount = nomui.utils.getWeekCount({
+                        date: new Date(),
+                        startWeekOnMonday: that.props.startWeekOnMonday,
+                      }).week
 
                       that.updateValue()
                       that.popup.hide()
@@ -927,65 +933,6 @@ class DatePicker extends Textbox {
     } else if (!this.props.value && this.props.showTime && this.timePicker) {
       this.timePicker.clearTime()
     }
-  }
-
-  /**
-   * 计算传入日期属于哪一年的第几周
-   * @param {Date} date - 传入的日期
-   * @returns {Object} - 返回包含年份和周数的对象，如 { year: 2023, week: 12 }
-   */
-  _getWeekNumber(date) {
-    date = new Date(date)
-    const year = date.getFullYear() // 获取年份
-    const firstDayOfYear = new Date(year, 0, 1) // 本年1月1日
-    const lastDayOfYear = new Date(year, 11, 31) // 本年12月31日
-
-    const firstDayOfYearWeekday = firstDayOfYear.getDay()
-
-    const lastDayOfYearWeekday = lastDayOfYear.getDay()
-
-    // 根据 startWeekOnMonday 配置项调整周的计算逻辑
-    const isStartWeekOnMonday = this.props.startWeekOnMonday
-
-    // 计算第一周的起始日期
-    let firstWeekStart
-    if (isStartWeekOnMonday) {
-      if (firstDayOfYearWeekday === 1) {
-        firstWeekStart = new Date(year, 0, 1)
-      } else {
-        firstWeekStart = new Date(year, 0, 1 + ((1 - firstDayOfYearWeekday + 7) % 7))
-      }
-    } else if (firstDayOfYearWeekday === 0) {
-      firstWeekStart = new Date(year, 0, 1)
-    } else {
-      firstWeekStart = new Date(year, 0, 1 - firstDayOfYearWeekday)
-    }
-
-    let lastWeekEnd
-    if (isStartWeekOnMonday) {
-      if (lastDayOfYearWeekday === 0) {
-        lastWeekEnd = new Date(year, 11, 31)
-      } else {
-        lastWeekEnd = new Date(year, 11, 31 + (7 - lastDayOfYearWeekday))
-      }
-    } else if (lastDayOfYearWeekday === 6) {
-      lastWeekEnd = new Date(year, 11, 31)
-    } else {
-      lastWeekEnd = new Date(year, 11, 31 + (6 - lastDayOfYearWeekday))
-    }
-
-    if (date < firstWeekStart) {
-      return this.getWeekNumber(new Date(year - 1, 11, 31))
-    }
-
-    if (date > lastWeekEnd) {
-      return this.getWeekNumber(new Date(year + 1, 0, 1))
-    }
-
-    const timeDiff = date.getTime() - firstWeekStart.getTime()
-    const weekDiff = Math.floor(timeDiff / (7 * 24 * 60 * 60 * 1000)) + 1
-
-    return weekDiff
   }
 
   _getNowText() {
