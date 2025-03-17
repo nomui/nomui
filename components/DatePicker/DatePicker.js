@@ -1020,7 +1020,7 @@ class DatePicker extends Textbox {
   }
 
   getWeekDetails() {
-    if (!this.props.weekMode) {
+    if (!this.props.weekMode || !this.getValue()) {
       return null
     }
     return this._weekInfo
@@ -1037,7 +1037,7 @@ class DatePicker extends Textbox {
   }
 
   setValue(value, options = {}) {
-    if (this.props.weekMode) {
+    if (value && this.props.weekMode) {
       if (this.props.weekMode.format) {
         const { year, week } = this._extractYearAndWeek(value)
         const dates = nomui.utils.getWeekDates({ year, week })
