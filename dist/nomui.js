@@ -4139,7 +4139,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
    * 计算传入日期属于哪一年的第几周  (根据当前后端计算规则：本年1月1日如果不是周一，则第一周从上一年12月XX号开始；同样如果本年12月31日不是周日，则这一周不算入本年，而算作来年第一周。)
    * @param {Date} date - 传入的日期   startWeekOnMonday - 每周是否从周一到周日，否则是周日到周六
    * @returns {Object} - 返回包含年份和周数的对象，如 { year: 2023, week: 12 }
-   */ function getWeekCount({ date, startWeekOnMonday = true }) {
+   */ function getWeekInYear({ date, startWeekOnMonday = true }) {
     date = new Date(date);
     let year = date.getFullYear();
     const firstDayOfYear = new Date(year, 0, 1); // 本年1月1日
@@ -4179,6 +4179,34 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     return { year, week: weekNumber };
   }
+  /**
+   * 根据年份和周数，计算该周对应的7天日期
+   * @param {number} year - 年份
+   * @param {number} week - 周数
+   * @returns {Array} - 返回包含7天日期的数组，格式为 'yyyy-MM-dd'
+   */ function getWeekDates({ year, week, startWeekOnMonday = true }) {
+    const isStartWeekOnMonday = startWeekOnMonday; // 计算本年1月1日
+    const firstDayOfYear = new Date(year, 0, 1); // 计算本年1月1日是周几（0=周日，1=周一，...，6=周六）
+    const firstDayOfYearWeekday = firstDayOfYear.getDay(); // 计算第一周的起始日期
+    const firstWeekStart = new Date(year, 0, 1); // 调整第一周的起始日期
+    if (isStartWeekOnMonday) {
+      // 如果从周一开始
+      if (firstDayOfYearWeekday !== 1) {
+        // 如果1月1日不是周一，则第一周从上一年12月的最后一个周一开始
+        firstWeekStart.setDate(1 - ((firstDayOfYearWeekday + 6) % 7));
+      }
+    } else if (firstDayOfYearWeekday !== 0) {
+      // 如果1月1日不是周日，则第一周从上一年12月的最后一个周日开始
+      firstWeekStart.setDate(1 - firstDayOfYearWeekday);
+    } // 计算目标周的起始日期
+    const targetWeekStart = new Date(firstWeekStart);
+    targetWeekStart.setDate(firstWeekStart.getDate() + (week - 1) * 7); // 计算目标周的7天日期
+    return Array.from({ length: 7 }, (_, i) => {
+      const currentDate = new Date(targetWeekStart);
+      currentDate.setDate(targetWeekStart.getDate() + i);
+      return currentDate.format("yyyy-MM-dd");
+    });
+  }
   var index = /*#__PURE__*/ Object.freeze({
     __proto__: null,
     isPlainObject: isPlainObject,
@@ -4211,7 +4239,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     escapeRegExp: escapeRegExp,
     deepEqual: deepEqual,
     copyToClipboard: copyToClipboard,
-    getWeekCount: getWeekCount,
+    getWeekInYear: getWeekInYear,
+    getWeekDates: getWeekDates,
     AutoScroll: AutoScrollPlugin,
     MultiDrag: MultiDragPlugin,
     OnSpill: OnSpill,
@@ -16382,6 +16411,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.todayItem = null;
       this.startTime = null;
       this.originValue = null;
+      this._weekInfo = {};
     }
     _config() {
       const that = this;
@@ -16395,9 +16425,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         weekTextArray.push(firstDay);
         this.props.weekText = weekTextArray.join(" ");
       }
-      if (this.props.weekMode) {
-        this.props.showTime = false;
-      }
       let extra = [];
       if (isFunction(extraTools)) {
         extra = Array.isArray(extraTools(this))
@@ -16405,6 +16432,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           : [extraTools(this)];
       } else if (Array.isArray(extraTools)) {
         extra = extraTools;
+      }
+      if (this.props.weekMode && this.props.value) {
+        this.props.showTime = false;
       }
       this.getCurrentDate();
       const minTime =
@@ -16607,13 +16637,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                 ); // 根据当前日期获取周几，然后将跟它相邻的同一周日期添加到数组中
                                 const weekDays = [];
                                 const currentDate = new Date(date);
-                                const currentDay = currentDate.getDay(); // 根据 startWeekOnMonday 配置项决定周的起点是周一还是周日
-                                const startOfWeekOffset = that.props
-                                  .startWeekOnMonday
-                                  ? currentDay === 0
-                                    ? -6
-                                    : 1 - currentDay
-                                  : -currentDay; // 计算当前周的起始日期
+                                const currentDay = currentDate.getDay();
+                                const startOfWeekOffset =
+                                  currentDay === 0 ? -6 : 1 - currentDay; // 计算当前周的起始日期
                                 const startOfWeek = new Date(currentDate);
                                 startOfWeek.setDate(
                                   currentDate.getDate() + startOfWeekOffset
@@ -16663,10 +16689,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                   });
                                 }
                                 if (that.props.weekMode) {
-                                  this.weekCount = nomui.utils.getWeekCount({
+                                  this.weekCount = nomui.utils.getWeekInYear({
                                     date,
-                                    startWeekOnMonday:
-                                      that.props.startWeekOnMonday,
                                   }).week;
                                   this.setProps({
                                     attrs: {
@@ -16739,7 +16763,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                     month: firstDayOfWeek.getMonth(),
                                     day: firstDayOfWeek.getDate(),
                                   };
-                                  that.selectedWeekCount = sender.weekCount;
+                                  that._weekInfo = {
+                                    year: selYear,
+                                    week: sender.weekCount,
+                                    dates: sender.weekDays,
+                                  };
                                   that.updateValue();
                                   that.popup.hide();
                                   return;
@@ -16764,6 +16792,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                                 inst.props.selectedItems.length
                               ) {
                                 const item = inst.getSelectedItem();
+                                if (!item) {
+                                  return;
+                                }
                                 const { weekDays } = item; // 遍历this.element的子元素，查找[data-date]属性值在sibs中的元素，给它们加上nom-datepicker-item-week-selected类，同时移除其他元素的nom-datepicker-item-week-selected类
                                 inst.element
                                   .querySelectorAll(`[data-date]`)
@@ -16820,11 +16851,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                         // 周模式下选择日期，将选择的日期设置为当前周的第一天
                         const today = new Date();
                         const currentDay = today.getDay();
-                        const startOfWeekOffset = that.props.startWeekOnMonday
-                          ? currentDay === 0
+                        const startOfWeekOffset =
+                          currentDay === 0
                             ? -6 // 如果今天是周日，则回到上周一
-                            : 1 - currentDay // 否则回到本周一
-                          : -currentDay; // 如果从周日开始，则回到本周日
+                            : 1 - currentDay; // 否则回到本周一
                         const startOfWeek = new Date(today);
                         startOfWeek.setDate(
                           today.getDate() + startOfWeekOffset
@@ -16834,10 +16864,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                           month: startOfWeek.getMonth(), // 注意：getMonth() 返回 0-11
                           day: startOfWeek.getDate(),
                         };
-                        that.selectedWeekCount = nomui.utils.getWeekCount({
+                        const { year, week } = nomui.utils.getWeekInYear({
                           date: new Date(),
-                          startWeekOnMonday: that.props.startWeekOnMonday,
-                        }).week;
+                        });
+                        that._weekInfo = {
+                          year,
+                          week,
+                          dates: nomui.utils.getWeekDates({ year, week }),
+                        };
                         that.updateValue();
                         that.popup.hide();
                         return;
@@ -17160,6 +17194,25 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       date.setHours(date.getHours() > 12 ? date.getHours() + 2 : 0);
       return date;
     }
+    _extractYearAndWeek(input) {
+      // 将格式模板转换为正则表达式
+      const regexPattern = this.props.weekDetailText
+        .replace(/{year}/g, "(\\d{4})") // 匹配4位数字（年份）
+        .replace(/{week}/g, "(\\d{1,2})"); // 匹配1到2位数字（周数）
+      const regex = new RegExp(`^${regexPattern}$`); // 使用正则表达式匹配输入字符串
+      const match = input.match(regex);
+      if (!match) {
+        throw new Error(
+          `输入的字符串格式不正确，应为 "${this.props.weekDetailText}"`
+        );
+      } // 提取年份和周数
+      const year = parseInt(match[1], 10);
+      const week = parseInt(match[2], 10); // 校验周数是否合法（1 到 53）
+      if (week < 1 || week > 53) {
+        throw new Error("周数必须在 1 到 53 之间");
+      }
+      return { year, week };
+    }
     _disable() {
       super._disable();
       if (this.firstRender === false) {
@@ -17183,7 +17236,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     getCurrentDate() {
       let currentDate = new Date();
       if (this.props.value !== null) {
-        currentDate = Date.parseString(this.props.value, this.props.format);
+        if (this.props.weekMode && this.props.weekMode.details) {
+          const { year, week } = this._extractYearAndWeek(this.props.value);
+          const dates = nomui.utils.getWeekDates({ year, week });
+          this._weekInfo = { year, week, dates };
+          currentDate = new Date(dates[0]);
+        }
       } else if (this.minDateDay) {
         currentDate = new Date(this.minDateDay);
       } // let currentDate =
@@ -17248,17 +17306,25 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.popup.hide();
     }
     updateValue() {
-      const date = new Date(
-        this.dateInfo.year || new Date().format("yyyy"),
-        isNumeric(this.dateInfo.month)
-          ? this.dateInfo.month
-          : new Date().format("MM") - 1,
-        this.dateInfo.day || new Date().format("dd"),
-        this.dateInfo.hour || "00",
-        this.dateInfo.minute || "00",
-        this.dateInfo.second || "00"
-      );
-      this.setValue(date.format(this.props.format));
+      if (this.props.weekMode && this.props.weekMode.details) {
+        const { weekDetailText } = this.props;
+        const str = weekDetailText
+          .replace("{week}", this._weekInfo.week)
+          .replace("{year}", this._weekInfo.year);
+        this.setValue(str);
+      } else {
+        const date = new Date(
+          this.dateInfo.year || new Date().format("yyyy"),
+          isNumeric(this.dateInfo.month)
+            ? this.dateInfo.month
+            : new Date().format("MM") - 1,
+          this.dateInfo.day || new Date().format("dd"),
+          this.dateInfo.hour || "00",
+          this.dateInfo.minute || "00",
+          this.dateInfo.second || "00"
+        );
+        this.setValue(date.format(this.props.format));
+      }
     }
     showPopup() {
       this.popup.show();
@@ -17298,6 +17364,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     weekCountText: `第{week}周`,
     nowText: "此刻",
     todayText: "今天",
+    weekDetailText: "{year}年{week}周",
     showYearSkip: false,
     backText: "返回选择日期",
     weekMode: false,

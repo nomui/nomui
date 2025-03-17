@@ -506,7 +506,7 @@ export function copyToClipboard(text) {
  * @param {Date} date - 传入的日期   startWeekOnMonday - 每周是否从周一到周日，否则是周日到周六
  * @returns {Object} - 返回包含年份和周数的对象，如 { year: 2023, week: 12 }
  */
-export function getWeekCount({ date, startWeekOnMonday = true }) {
+export function getWeekInYear({ date, startWeekOnMonday = true }) {
   date = new Date(date)
   let year = date.getFullYear()
   const firstDayOfYear = new Date(year, 0, 1) // 本年1月1日
@@ -549,4 +549,46 @@ export function getWeekCount({ date, startWeekOnMonday = true }) {
   }
 
   return { year, week: weekNumber }
+}
+
+/**
+ * 根据年份和周数，计算该周对应的7天日期
+ * @param {number} year - 年份
+ * @param {number} week - 周数
+ * @returns {Array} - 返回包含7天日期的数组，格式为 'yyyy-MM-dd'
+ */
+export function getWeekDates({ year, week, startWeekOnMonday = true }) {
+  const isStartWeekOnMonday = startWeekOnMonday
+
+  // 计算本年1月1日
+  const firstDayOfYear = new Date(year, 0, 1)
+
+  // 计算本年1月1日是周几（0=周日，1=周一，...，6=周六）
+  const firstDayOfYearWeekday = firstDayOfYear.getDay()
+
+  // 计算第一周的起始日期
+  const firstWeekStart = new Date(year, 0, 1)
+
+  // 调整第一周的起始日期
+  if (isStartWeekOnMonday) {
+    // 如果从周一开始
+    if (firstDayOfYearWeekday !== 1) {
+      // 如果1月1日不是周一，则第一周从上一年12月的最后一个周一开始
+      firstWeekStart.setDate(1 - ((firstDayOfYearWeekday + 6) % 7))
+    }
+  } else if (firstDayOfYearWeekday !== 0) {
+    // 如果1月1日不是周日，则第一周从上一年12月的最后一个周日开始
+    firstWeekStart.setDate(1 - firstDayOfYearWeekday)
+  }
+
+  // 计算目标周的起始日期
+  const targetWeekStart = new Date(firstWeekStart)
+  targetWeekStart.setDate(firstWeekStart.getDate() + (week - 1) * 7)
+
+  // 计算目标周的7天日期
+  return Array.from({ length: 7 }, (_, i) => {
+    const currentDate = new Date(targetWeekStart)
+    currentDate.setDate(targetWeekStart.getDate() + i)
+    return currentDate.format('yyyy-MM-dd')
+  })
 }

@@ -7,10 +7,26 @@ define([], function () {
     demo: function () {
       return {
         children: {
-          component: 'DatePicker',
-          placeholder: 'choose a week',
-          weekMode: true,
-          value: '2025-03-14',
+          component: 'Flex',
+          rows: [
+            {
+              component: 'DatePicker',
+              placeholder: 'choose a week',
+              weekMode: true,
+              value: '2025-03-14',
+            },
+            {
+              component: 'DatePicker',
+              ref: (c) => {
+                window.ddd = c
+              },
+              placeholder: 'choose a week',
+              weekMode: {
+                details: true,
+              },
+              value: '2025年12周',
+            },
+          ],
         },
       }
     },
