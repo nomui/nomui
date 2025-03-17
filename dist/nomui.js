@@ -17323,6 +17323,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.timePicker.clearTime();
       }
     }
+    setValue(value, options = {}) {
+      if (this.props.weekMode) {
+        if (this.props.weekMode.format) {
+          const { year, week } = this._extractYearAndWeek(value);
+          const dates = nomui.utils.getWeekDates({ year, week });
+          this._weekInfo = { year, week, dates };
+        } else {
+          const { year, week } = nomui.utils.getWeekInYear({ date: value });
+          this._weekInfo = {
+            year,
+            week,
+            dates: nomui.utils.getWeekDates({ year, week }),
+          };
+        }
+      }
+      super.setValue(value, options);
+    }
     setNow() {
       this.setValue(new Date().format(this.props.format));
       this.popup.hide();

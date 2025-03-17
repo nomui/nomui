@@ -15,16 +15,10 @@ define([], function () {
               placeholder: 'choose a week',
               weekMode: true,
               value: '2025-03-14',
-              ref: (c) => {
-                window.ccc = c
-              },
             },
             {
               component: 'DatePicker',
               label: '取值为某年某周',
-              ref: (c) => {
-                window.ddd = c
-              },
               placeholder: 'choose a week',
               weekMode: {
                 format: '{year}年{week}周',
