@@ -17309,7 +17309,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.updateValue();
     }
     getWeekDetails() {
-      if (!this.props.weekMode) {
+      if (!this.props.weekMode || !this.getValue()) {
         return null;
       }
       return this._weekInfo;
@@ -17324,7 +17324,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     setValue(value, options = {}) {
-      if (this.props.weekMode) {
+      if (value && this.props.weekMode) {
         if (this.props.weekMode.format) {
           const { year, week } = this._extractYearAndWeek(value);
           const dates = nomui.utils.getWeekDates({ year, week });
