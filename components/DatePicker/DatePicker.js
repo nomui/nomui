@@ -879,7 +879,7 @@ class DatePicker extends Textbox {
 
   _extractYearAndWeek(input) {
     // 将格式模板转换为正则表达式
-    const regexPattern = this.props.weekDetailText
+    const regexPattern = this.props.weekMode.format
       .replace(/{year}/g, '(\\d{4})') // 匹配4位数字（年份）
       .replace(/{week}/g, '(\\d{1,2})') // 匹配1到2位数字（周数）
 
@@ -889,7 +889,7 @@ class DatePicker extends Textbox {
     const match = input.match(regex)
 
     if (!match) {
-      throw new Error(`输入的字符串格式不正确，应为 "${this.props.weekDetailText}"`)
+      throw new Error(`输入的字符串格式不正确，应为 "${this.props.weekMode.format}"`)
     }
 
     // 提取年份和周数
@@ -932,15 +932,20 @@ class DatePicker extends Textbox {
   getCurrentDate() {
     let currentDate = new Date()
     if (this.props.value !== null) {
-      if (this.props.weekMode && this.props.weekMode.details) {
-        const { year, week } = this._extractYearAndWeek(this.props.value)
-        const dates = nomui.utils.getWeekDates({ year, week })
-        this._weekInfo = {
-          year,
-          week,
-          dates,
+      if (this.props.weekMode) {
+        if (this.props.weekMode.format) {
+          const { year, week } = this._extractYearAndWeek(this.props.value)
+          const dates = nomui.utils.getWeekDates({ year, week })
+          this._weekInfo = {
+            year,
+            week,
+            dates,
+          }
+          currentDate = new Date(dates[0])
+        } else {
+          const { year, week } = nomui.utils.getWeekInYear({ date: this.props.value })
+          this._weekInfo = { year, week, dates: nomui.utils.getWeekDates({ year, week }) }
         }
-        currentDate = new Date(dates[0])
       }
     } else if (this.minDateDay) {
       currentDate = new Date(this.minDateDay)
@@ -986,6 +991,18 @@ class DatePicker extends Textbox {
     return this.props.showTime ? this.props.nowText : this.props.todayText
   }
 
+  _checkFormat(input) {
+    // 将格式模板转换为正则表达式
+    const regexPattern = this.props.weekMode.format
+      .replace(/{year}/g, '\\d{4}') // 匹配4位数字（年份）
+      .replace(/{week}/g, '\\d{1,2}') // 匹配1到2位数字（周数）
+
+    const regex = new RegExp(`^${regexPattern}$`)
+
+    // 使用正则表达式检测输入字符串
+    return regex.test(input)
+  }
+
   handleTimeChange(param) {
     if (!this.days.getSelectedItem() && this.todayItem && this.todayItem.props) {
       this.days.selectItem(this.todayItem)
@@ -1000,6 +1017,13 @@ class DatePicker extends Textbox {
     }
 
     this.updateValue()
+  }
+
+  getWeekDetails() {
+    if (!this.props.weekMode) {
+      return null
+    }
+    return this._weekInfo
   }
 
   clearTime() {
@@ -1022,9 +1046,9 @@ class DatePicker extends Textbox {
   }
 
   updateValue() {
-    if (this.props.weekMode && this.props.weekMode.details) {
-      const { weekDetailText } = this.props
-      const str = weekDetailText
+    if (this.props.weekMode && this.props.weekMode.format) {
+      const { format } = this.props.weekMode
+      const str = format
         .replace('{week}', this._weekInfo.week)
         .replace('{year}', this._weekInfo.year)
       this.setValue(str)
@@ -1051,8 +1075,12 @@ class DatePicker extends Textbox {
   }
 
   _onBlur() {
-    if (this.getValue() && !Date.isValid(this.getValue(), this.props.format)) {
-      this.clearTime()
+    if (this.getValue()) {
+      if (this.props.weekMode && this.props.weekMode.format) {
+        !this._checkFormat(this.getValue()) && this.clearTime()
+      } else {
+        !Date.isValid(this.getValue(), this.props.format) && this.clearTime()
+      }
     }
     super._onBlur()
   }
@@ -1077,7 +1105,6 @@ DatePicker.defaults = {
   weekCountText: `第{week}周`,
   nowText: '此刻',
   todayText: '今天',
-  weekDetailText: '{year}年{week}周',
   showYearSkip: false,
   backText: '返回选择日期',
   weekMode: false,
