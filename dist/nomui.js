@@ -17251,6 +17251,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               week,
               dates: nomui.utils.getWeekDates({ year, week }),
             };
+            currentDate = new Date(this._weekInfo.dates[0]);
           }
         }
       } else if (this.minDateDay) {

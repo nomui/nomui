@@ -945,6 +945,7 @@ class DatePicker extends Textbox {
         } else {
           const { year, week } = nomui.utils.getWeekInYear({ date: this.props.value })
           this._weekInfo = { year, week, dates: nomui.utils.getWeekDates({ year, week }) }
+          currentDate = new Date(this._weekInfo.dates[0])
         }
       }
     } else if (this.minDateDay) {

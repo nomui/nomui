@@ -15,7 +15,7 @@ define([], function () {
               label: '取值仍是日期',
               placeholder: 'choose a week',
               weekMode: true,
-              value: '2025-03-14',
+              value: '2025-03-03',
             },
             {
               component: 'DatePicker',
