@@ -16415,6 +16415,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       const that = this;
+      this._parseObjectValue();
       if (isValidDate$1(this.props.value)) {
         this.props.value = formatDate(this.props.value, this.props.format);
       }
@@ -17023,6 +17024,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
       super._config();
     }
+    _parseObjectValue() {
+      if (
+        this.props.valueOptions &&
+        this.props.valueOptions.asObject === true &&
+        this.props.weekMode &&
+        this.props.weekMode.format &&
+        nomui.utils.isPlainObject(this.props.value)
+      ) {
+        const val = this.props.weekMode.format
+          .replace("{year}", this.props.value.year)
+          .replace("{week}", this.props.value.week);
+        this.props.value = val;
+      }
+    }
     _fixTimePickerHeight() {
       if (!this.timePicker || !this.popup.rendered) {
         return;
@@ -17236,6 +17251,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     getCurrentDate() {
       let currentDate = new Date();
       if (this.props.value !== null) {
+        this._parseObjectValue();
         if (this.props.weekMode) {
           if (this.props.weekMode.format) {
             const { year, week } = this._extractYearAndWeek(this.props.value);
@@ -17287,7 +17303,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return this.props.showTime ? this.props.nowText : this.props.todayText;
     }
     _checkFormat(input) {
-      // 将格式模板转换为正则表达式
+      if (
+        nomui.utils.isPlainObject(input) &&
+        input.year &&
+        input.week &&
+        input.dates
+      ) {
+        return true;
+      } // 将格式模板转换为正则表达式
       const regexPattern = this.props.weekMode.format
         .replace(/{year}/g, "\\d{4}") // 匹配4位数字（年份）
         .replace(/{week}/g, "\\d{1,2}"); // 匹配1到2位数字（周数）
@@ -17325,13 +17348,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     getValue(options = {}) {
-      if (this.props.weekMode && options.asObject === true) {
+      if (
+        this.props.weekMode &&
+        this.props.valueOptions &&
+        this.props.valueOptions.asObject === true
+      ) {
         if (Object.keys(this._weekInfo).length === 0) {
           return null;
         }
         return this._weekInfo;
       }
-      return super._getValue();
+      return super._getValue(options);
     }
     setValue(value, options = {}) {
       if (this.props.weekMode) {
