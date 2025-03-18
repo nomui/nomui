@@ -401,7 +401,7 @@ class Component {
   }
 
   setProps(newProps) {
-    if (newProps.children) {
+    if (newProps && newProps.children) {
       this.props.children = null
     }
     this.props = Component.extendProps(this.props, newProps)
