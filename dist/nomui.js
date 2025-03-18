@@ -25008,7 +25008,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             onClick: ({ sender }) => {
               if (
                 itemForm === false ||
-                (isFunction(itemForm) && itemForm() === false)
+                (isFunction(itemForm) && itemForm({ itemData }) === false)
               ) {
                 return;
               }
