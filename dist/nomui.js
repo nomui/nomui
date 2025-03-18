@@ -4139,7 +4139,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
    * 计算传入日期属于哪一年的第几周  (根据当前后端计算规则：本年1月1日如果不是周一，则第一周从上一年12月XX号开始；同样如果本年12月31日不是周日，则这一周不算入本年，而算作来年第一周。)
    * @param {Date} date - 传入的日期   startWeekOnMonday - 每周是否从周一到周日，否则是周日到周六
    * @returns {Object} - 返回包含年份和周数的对象，如 { year: 2023, week: 12 }
-   */ function getWeekInYear({ date, startWeekOnMonday = true }) {
+   */ function getWeekInYear({
+    date,
+    weekFormat = "{year}年{week}周",
+    startWeekOnMonday = true,
+  }) {
     date = new Date(date);
     let year = date.getFullYear();
     const firstDayOfYear = new Date(year, 0, 1); // 本年1月1日
@@ -4177,19 +4181,26 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       weekNumber = 1;
       year++;
     }
-    return { year, week: weekNumber };
+    return {
+      year,
+      week: weekNumber,
+      weekText: weekFormat
+        .replace("{year}", year)
+        .replace("{week}", weekNumber),
+    };
   }
   /**
-   * 根据年份和周数，计算该周对应的7天日期
+   * 根据年份和周数计算目标周的起始日期
    * @param {number} year - 年份
    * @param {number} week - 周数
-   * @returns {Array} - 返回包含7天日期的数组，格式为 'yyyy-MM-dd'
-   */ function getWeekDates({ year, week, startWeekOnMonday = true }) {
-    const isStartWeekOnMonday = startWeekOnMonday; // 计算本年1月1日
+   * @param {boolean} startWeekOnMonday - 是否从周一开始计算
+   * @returns {Date} - 目标周的起始日期
+   */ function getDateFromYearAndWeek(year, week, startWeekOnMonday) {
+    // 计算本年1月1日
     const firstDayOfYear = new Date(year, 0, 1); // 计算本年1月1日是周几（0=周日，1=周一，...，6=周六）
     const firstDayOfYearWeekday = firstDayOfYear.getDay(); // 计算第一周的起始日期
-    const firstWeekStart = new Date(year, 0, 1); // 调整第一周的起始日期
-    if (isStartWeekOnMonday) {
+    const firstWeekStart = new Date(firstDayOfYear);
+    if (startWeekOnMonday) {
       // 如果从周一开始
       if (firstDayOfYearWeekday !== 1) {
         // 如果1月1日不是周一，则第一周从上一年12月的最后一个周一开始
@@ -4200,11 +4211,48 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       firstWeekStart.setDate(1 - firstDayOfYearWeekday);
     } // 计算目标周的起始日期
     const targetWeekStart = new Date(firstWeekStart);
-    targetWeekStart.setDate(firstWeekStart.getDate() + (week - 1) * 7); // 计算目标周的7天日期
+    targetWeekStart.setDate(firstWeekStart.getDate() + (week - 1) * 7);
+    return targetWeekStart;
+  }
+  /**
+   * 根据年份和周数，或者直接传入的日期，计算该周对应的7天日期
+   * @param {Object} params - 参数对象
+   * @param {number} [params.year] - 年份
+   * @param {number} [params.week] - 周数
+   * @param {string} [params.date] - 日期字符串（格式：'yyyy-MM-dd'）
+   * @param {boolean} [params.startWeekOnMonday=true] - 是否从周一开始计算（默认是）
+   * @returns {Array} - 返回包含7天日期的数组，格式为 'yyyy-MM-dd'
+   */ function getWeekDates({ year, week, date, startWeekOnMonday = true }) {
+    let targetDate;
+    if (date) {
+      // 如果传入了日期字符串，则直接解析为 Date 对象
+      targetDate = new Date(date);
+      if (Number.isNaN(targetDate.getTime())) {
+        throw new Error("Invalid date string");
+      }
+    } else if (year !== undefined && week !== undefined) {
+      // 如果传入了 year 和 week，则计算目标周的起始日期
+      targetDate = getDateFromYearAndWeek(year, week, startWeekOnMonday);
+    } else {
+      throw new Error(
+        "Invalid parameters: must provide either { year, week } or { date }"
+      );
+    } // 获取传入日期的星期几（0=周日，1=周一，...，6=周六）
+    const dayOfWeek = targetDate.getDay(); // 计算本周的起始日期（周一或周日）
+    const weekStart = new Date(targetDate);
+    if (startWeekOnMonday) {
+      // 如果从周一开始
+      weekStart.setDate(
+        targetDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)
+      );
+    } else {
+      // 如果从周日开始
+      weekStart.setDate(targetDate.getDate() - dayOfWeek);
+    } // 生成本周的7天日期
     return Array.from({ length: 7 }, (_, i) => {
-      const currentDate = new Date(targetWeekStart);
-      currentDate.setDate(targetWeekStart.getDate() + i);
-      return currentDate.format("yyyy-MM-dd");
+      const currentDate = new Date(weekStart);
+      currentDate.setDate(weekStart.getDate() + i);
+      return new Date(currentDate).format("yyyy-MM-dd"); // 格式化日期
     });
   }
   var index = /*#__PURE__*/ Object.freeze({
@@ -16901,13 +16949,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                           month: startOfWeek.getMonth(), // 注意：getMonth() 返回 0-11
                           day: startOfWeek.getDate(),
                         };
+                        const _date = new Date();
                         const { year, week } = nomui.utils.getWeekInYear({
-                          date: new Date(),
+                          date: _date,
                         });
                         that._weekInfo = {
                           year,
                           week,
-                          dates: nomui.utils.getWeekDates({ year, week }),
+                          dates: nomui.utils.getWeekDates({ date: _date }),
                         };
                         that.updateValue();
                         that.popup.hide();
