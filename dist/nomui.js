@@ -4820,7 +4820,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     setProps(newProps) {
-      if (newProps.children) {
+      if (newProps && newProps.children) {
         this.props.children = null;
       }
       this.props = Component.extendProps(this.props, newProps);
