@@ -3,7 +3,7 @@ define([], function () {
     title: '周选择模式',
     file: 'week-mode',
     description:
-      '周选择模式下，界面上显示的是以周为单位，但取值的日期为当周的第一天，如果传入format则以format作为格式，取值为某年某周（此时该取值不符合合法日期校验规则）。',
+      '周选择模式下，界面上显示的是以周为单位，但取值的日期为当周的第一天，如果传入format则以format作为格式，取值为某年某周（此时该取值不符合合法日期校验规则）。周模式下getValue({asObject:true})可以获取对象值',
     demo: function () {
       let dateRef = null
       return {
@@ -45,6 +45,13 @@ define([], function () {
                   text: '赋值',
                   onClick: () => {
                     console.log(dateRef.setValue('2024年1周'))
+                  },
+                },
+                {
+                  component: 'Button',
+                  text: '取对象值',
+                  onClick: () => {
+                    console.log(dateRef.getValue({ asObject: true }))
                   },
                 },
               ],
