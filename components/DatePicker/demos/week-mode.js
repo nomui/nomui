@@ -3,42 +3,39 @@ define([], function () {
     title: '周选择模式',
     file: 'week-mode',
     description:
-      '周选择模式下，界面上显示的是以周为单位，但取值的日期为当周的第一天，如果传入format则以format作为格式，取值为某年某周（此时该取值不符合合法日期校验规则）。周模式下getValue({asObject:true})可以获取对象值',
+      '周选择模式下，界面上显示的是以周为单位，但取值的日期为当周的第一天。周模式下getValue({asObject:true})可以获取更详细的对象值。',
     demo: function () {
-      let dateRef = null
+      let dateRef = null,
+        dateRef1 = null
       return {
         children: {
           component: 'Flex',
           rows: [
             {
               component: 'DatePicker',
+              ref: (c) => {
+                dateRef1 = c
+              },
               label: '取值仍是日期',
               placeholder: 'choose a week',
               weekMode: true,
               value: '2025-03-03',
-            },
-            {
-              component: 'DatePicker',
-              label: '取值为某年某周',
-              placeholder: 'choose a week',
-              weekMode: {
-                format: '{year}年{week}周',
+              onValueChange: (args) => {
+                console.log(args)
               },
-              value: '2025年22周',
             },
+
             {
               component: 'StaticText',
               label: '',
               value:
-                '注意，配置valueOptions:{asObject:true}时，取值是一个包含了年，周，当周日期数组的对象，此时必须同时配置weekMode.format，同时原则上赋值也应该是相同格式的对象。',
+                '注意，配置valueOptions:{asObject:true}时，取值是一个包含了年，周，当周日期数组的对象，原则上赋值也应该是相同格式的对象。',
             },
             {
               component: 'DatePicker',
               label: '取值为对象',
               placeholder: 'choose a week',
-              weekMode: {
-                format: '{year}年{week}周', // 配置显示模式为某年某周
-              },
+              weekMode: true,
               valueOptions: {
                 asObject: true, // 以对象形式取值以及赋值
               },
@@ -58,11 +55,21 @@ define([], function () {
               ref: (c) => {
                 dateRef = c
               },
+              onValueChange: (args) => {
+                console.log(args)
+              },
             },
             {
               justify: 'center',
               gutter: 'medium',
               cols: [
+                {
+                  component: 'Button',
+                  text: '取第一个字段的值',
+                  onClick: () => {
+                    console.log(dateRef1.getValue())
+                  },
+                },
                 {
                   component: 'Button',
                   text: '获取周详情',

@@ -2,7 +2,7 @@ import Button from '../Button/index'
 import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
-import { extend, isPlainObject, isString } from '../util/index'
+import { extend, isNullish, isPlainObject, isString } from '../util/index'
 import Input from './Input'
 
 class Textbox extends Field {
@@ -76,11 +76,32 @@ class Textbox extends Field {
         type: htmlType,
         readonly: readonly || restrictInput ? 'readonly' : null,
       },
+      hidden: !!this.props.displayValue,
       _created: function () {
         this.textbox = that
         this.textbox.input = this
       },
     }
+
+    const textRefProps = this.props.displayValue
+      ? {
+          component: Input,
+          name: 'input',
+          // readonly: restrictInput,
+          attrs: {
+            value: isString(this.props.displayValue) ? this.props.displayValue : '',
+            placeholder: placeholder,
+            maxlength,
+            minlength,
+            type: htmlType,
+            readonly: readonly || restrictInput ? 'readonly' : null,
+          },
+          _created: function () {
+            this.textbox = that
+            this.textbox.displayTextRef = this
+          },
+        }
+      : undefined
 
     const selfClearProps = {
       component: Icon,
@@ -158,6 +179,7 @@ class Textbox extends Field {
       leftIcon && leftIconProps,
       !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),
       inputProps,
+      textRefProps,
       getSuffix(),
       this.hasWordLimit && getWordLimitSpan(),
     ]
@@ -199,6 +221,15 @@ class Textbox extends Field {
           that._callHandler(that.props.onEnter, { value: that.getValue() })
         }
       })
+    }
+  }
+
+  _setDisplayValue(value) {
+    this.displayTextRef && this.displayTextRef.props && this.displayTextRef.setText(value)
+    if (isNullish(value)) {
+      this.displayValue = ''
+    } else {
+      this.displayValue = value
     }
   }
 

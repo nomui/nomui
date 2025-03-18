@@ -9185,11 +9185,32 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           type: htmlType,
           readonly: readonly || restrictInput ? "readonly" : null,
         },
+        hidden: !!this.props.displayValue,
         _created: function () {
           this.textbox = that;
           this.textbox.input = this;
         },
       };
+      const textRefProps = this.props.displayValue
+        ? {
+            component: Input,
+            name: "input", // readonly: restrictInput,
+            attrs: {
+              value: isString(this.props.displayValue)
+                ? this.props.displayValue
+                : "",
+              placeholder: placeholder,
+              maxlength,
+              minlength,
+              type: htmlType,
+              readonly: readonly || restrictInput ? "readonly" : null,
+            },
+            _created: function () {
+              this.textbox = that;
+              this.textbox.displayTextRef = this;
+            },
+          }
+        : undefined;
       const selfClearProps = {
         component: Icon,
         type: "times",
@@ -9255,6 +9276,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         leftIcon && leftIconProps,
         !leftIcon && prefix && isString(prefix) && getAffixSpan(prefix),
         inputProps,
+        textRefProps,
         getSuffix(),
         this.hasWordLimit && getWordLimitSpan(),
       ];
@@ -9290,6 +9312,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             that._callHandler(that.props.onEnter, { value: that.getValue() });
           }
         });
+      }
+    }
+    _setDisplayValue(value) {
+      this.displayTextRef &&
+        this.displayTextRef.props &&
+        this.displayTextRef.setText(value);
+      if (isNullish(value)) {
+        this.displayValue = "";
+      } else {
+        this.displayValue = value;
       }
     }
     _updateWodLimit() {
@@ -16415,16 +16447,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       const that = this;
-      this._parseObjectValue();
+      if (this.props.weekMode) {
+        this.props.showTime = false;
+        this.props.displayValue = true;
+        this._parseWeekValueType(); // 如果是对象值，先转成年周字符串
+      } else {
+        this.props.displayValue = false;
+      }
       if (isValidDate$1(this.props.value)) {
         this.props.value = formatDate(this.props.value, this.props.format);
       }
       const { disabled, extraTools, startWeekOnMonday } = this.props; // 如果设置了从周一开始，则将周日移动到最后
-      if (startWeekOnMonday) {
+      if (startWeekOnMonday && !this.weekNumberChanged) {
         const weekTextArray = this.props.weekText.split(" ");
         const firstDay = weekTextArray.shift();
         weekTextArray.push(firstDay);
         this.props.weekText = weekTextArray.join(" ");
+        this.weekNumberChanged = true;
       }
       let extra = [];
       if (isFunction(extraTools)) {
@@ -16433,9 +16472,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           : [extraTools(this)];
       } else if (Array.isArray(extraTools)) {
         extra = extraTools;
-      }
-      if (this.props.weekMode && this.props.value) {
-        this.props.showTime = false;
       }
       this.getCurrentDate();
       const minTime =
@@ -17024,18 +17060,29 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
       super._config();
     }
-    _parseObjectValue() {
+    _parseWeekValueType() {
+      if (!Number.isNaN(Date.parse(this.props.value))) {
+        const { year, week } = nomui.utils.getWeekInYear({
+          date: this.props.value,
+        });
+        const weekStr = this.props.weekFormat
+          .replace("{year}", year)
+          .replace("{week}", week);
+        this.props.displayValue = weekStr;
+        return;
+      }
+      if (!this.props.weekMode || !this.props.valueOptions) {
+        return;
+      }
       if (
         this.props.valueOptions &&
         this.props.valueOptions.asObject === true &&
         this.props.weekMode &&
-        this.props.weekMode.format &&
         nomui.utils.isPlainObject(this.props.value)
       ) {
-        const val = this.props.weekMode.format
-          .replace("{year}", this.props.value.year)
-          .replace("{week}", this.props.value.week);
-        this.props.value = val;
+        this.props.value = new Date(this.props.value.dates[0]).format(
+          this.props.format
+        );
       }
     }
     _fixTimePickerHeight() {
@@ -17210,15 +17257,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return date;
     }
     _extractYearAndWeek(input) {
-      // 将格式模板转换为正则表达式
-      const regexPattern = this.props.weekMode.format
+      if (!Number.isNaN(Date.parse(input))) {
+        const { year, week } = nomui.utils.getWeekInYear({ date: input });
+        return { year, week };
+      } // 将格式模板转换为正则表达式
+      const regexPattern = this.props.weekFormat
         .replace(/{year}/g, "(\\d{4})") // 匹配4位数字（年份）
         .replace(/{week}/g, "(\\d{1,2})"); // 匹配1到2位数字（周数）
       const regex = new RegExp(`^${regexPattern}$`); // 使用正则表达式匹配输入字符串
       const match = input.match(regex);
       if (!match) {
         throw new Error(
-          `输入的字符串格式不正确，应为 "${this.props.weekMode.format}"`
+          `输入的字符串格式不正确，应为 "${this.props.weekFormat}"`
         );
       } // 提取年份和周数
       const year = parseInt(match[1], 10);
@@ -17251,29 +17301,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     getCurrentDate() {
       let currentDate = new Date();
       if (this.props.value !== null) {
-        this._parseObjectValue();
         if (this.props.weekMode) {
-          if (this.props.weekMode.format) {
-            const { year, week } = this._extractYearAndWeek(this.props.value);
-            const dates = nomui.utils.getWeekDates({ year, week });
-            this._weekInfo = { year, week, dates };
-            currentDate = new Date(dates[0]);
-          } else {
-            const { year, week } = nomui.utils.getWeekInYear({
-              date: this.props.value,
-            });
-            this._weekInfo = {
-              year,
-              week,
-              dates: nomui.utils.getWeekDates({ year, week }),
-            };
-            currentDate = new Date(this._weekInfo.dates[0]);
-          }
+          this._parseWeekValueType(); // 周模式下对象值转成年周字符串
+          const { year, week } = this._extractYearAndWeek(this.props.value);
+          const dates = nomui.utils.getWeekDates({ year, week });
+          this._weekInfo = { year, week, dates };
+          currentDate = new Date(dates[0]);
         }
       } else if (this.minDateDay) {
         currentDate = new Date(this.minDateDay);
-      } // let currentDate =
-      //   this.props.value !== null ? Date.parseString(this.props.value, this.props.format) : new Date()
+      }
       if (!currentDate) {
         currentDate = new Date();
       }
@@ -17303,6 +17340,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return this.props.showTime ? this.props.nowText : this.props.todayText;
     }
     _checkFormat(input) {
+      if (!Number.isNaN(Date.parse(input))) {
+        return true;
+      }
       if (
         nomui.utils.isPlainObject(input) &&
         input.year &&
@@ -17311,7 +17351,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         return true;
       } // 将格式模板转换为正则表达式
-      const regexPattern = this.props.weekMode.format
+      const regexPattern = this.props.weekFormat
         .replace(/{year}/g, "\\d{4}") // 匹配4位数字（年份）
         .replace(/{week}/g, "\\d{1,2}"); // 匹配1到2位数字（周数）
       const regex = new RegExp(`^${regexPattern}$`); // 使用正则表达式检测输入字符串
@@ -17342,41 +17382,58 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.props.value = null;
       this.setValue(null);
       this.dateInfo = null;
-      this.days && this.days.props && this.days.unselectAllItems();
+      if (this.days && this.days.props) {
+        this.days.unselectAllItems();
+        this.days.element
+          .querySelectorAll(`.nom-datepicker-item-week-selected`)
+          .forEach((n) => {
+            n.classList.remove("nom-datepicker-item-week-selected");
+          });
+      }
       if (this.props.showTime && this.timePicker && this.timePicker.props) {
         this.timePicker.clearTime();
       }
     }
-    getValue(options = {}) {
-      if (
-        this.props.weekMode &&
-        this.props.valueOptions &&
-        this.props.valueOptions.asObject === true
-      ) {
-        if (Object.keys(this._weekInfo).length === 0) {
-          return null;
-        }
-        return this._weekInfo;
+    _getTextValue() {
+      const { trimValue } = this.props;
+      let inputText = this.getText();
+      inputText = trimValue ? inputText.trimLeft().trimRight() : inputText;
+      if (inputText === "") {
+        return null;
       }
-      return super._getValue(options);
+      return inputText;
+    }
+    getValue(options = {}) {
+      if (this.props.weekMode) {
+        if (
+          (this.props.valueOptions &&
+            this.props.valueOptions.asObject === true) ||
+          options.asObject === true
+        ) {
+          if (Object.keys(this._weekInfo).length === 0) {
+            return null;
+          }
+          return this._weekInfo;
+        }
+        return this._getTextValue();
+      }
+      return this._getTextValue();
     }
     setValue(value, options = {}) {
       if (this.props.weekMode) {
         if (value) {
-          if (this.props.weekMode.format) {
-            const { year, week } = this._extractYearAndWeek(value);
-            const dates = nomui.utils.getWeekDates({ year, week });
-            this._weekInfo = { year, week, dates };
-          } else {
-            const { year, week } = nomui.utils.getWeekInYear({ date: value });
-            this._weekInfo = {
-              year,
-              week,
-              dates: nomui.utils.getWeekDates({ year, week }),
-            };
-          }
+          const { year, week } = this._extractYearAndWeek(value);
+          const dates = nomui.utils.getWeekDates({ year, week });
+          this._weekInfo = { year, week, dates };
+          this._setDisplayValue(
+            this.props.weekFormat
+              .replace("{year}", year)
+              .replace("{week}", week)
+          );
         } else {
+          this.dateInfo = null;
           this._weekInfo = {};
+          this._setDisplayValue("");
         }
       }
       super.setValue(value, options);
@@ -17389,12 +17446,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.popup.hide();
     }
     updateValue() {
-      if (this.props.weekMode && this.props.weekMode.format) {
-        const { format } = this.props.weekMode;
-        const str = format
+      if (this.props.weekMode) {
+        const { weekFormat } = this.props;
+        const weekStr = weekFormat
           .replace("{week}", this._weekInfo.week)
           .replace("{year}", this._weekInfo.year);
-        this.setValue(str);
+        const dateStr = new Date(this._weekInfo.dates[0]).format(
+          this.props.format
+        );
+        this._setDisplayValue(weekStr);
+        this.setValue(dateStr);
       } else {
         const date = new Date(
           this.dateInfo.year || new Date().format("yyyy"),
@@ -17419,7 +17480,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _onBlur() {
       if (this.getValue()) {
-        if (this.props.weekMode && this.props.weekMode.format) {
+        if (this.props.weekMode) {
           !this._checkFormat(this.getValue()) && this.clearTime();
         } else {
           !Date.isValid(this.getValue(), this.props.format) && this.clearTime();
@@ -17446,6 +17507,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     weekText: "日 一 二 三 四 五 六",
     currentWeekText: "本周",
     weekCountText: `第{week}周`,
+    weekFormat: "{year}年{week}周",
     nowText: "此刻",
     todayText: "今天",
     showYearSkip: false,
