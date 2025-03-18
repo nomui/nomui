@@ -81,7 +81,7 @@ define([], function () {
                   component: 'Button',
                   text: '赋值',
                   onClick: () => {
-                    console.log(dateRef.setValue('2024年1周'))
+                    console.log(dateRef.setValue('2024-12-12'))
                   },
                 },
                 {
