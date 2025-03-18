@@ -503,14 +503,15 @@ class DatePicker extends Textbox {
                         month: startOfWeek.getMonth(), // 注意：getMonth() 返回 0-11
                         day: startOfWeek.getDate(),
                       }
+                      const _date = new Date()
                       const { year, week } = nomui.utils.getWeekInYear({
-                        date: new Date(),
+                        date: _date,
                       })
 
                       that._weekInfo = {
                         year,
                         week,
-                        dates: nomui.utils.getWeekDates({ year, week }),
+                        dates: nomui.utils.getWeekDates({ date: _date }),
                       }
                       that.updateValue()
                       that.popup.hide()
