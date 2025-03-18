@@ -17324,19 +17324,32 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.timePicker.clearTime();
       }
     }
+    getValue(options = {}) {
+      if (this.props.weekMode && options.asObject === true) {
+        if (Object.keys(this._weekInfo).length === 0) {
+          return null;
+        }
+        return this._weekInfo;
+      }
+      return super._getValue();
+    }
     setValue(value, options = {}) {
-      if (value && this.props.weekMode) {
-        if (this.props.weekMode.format) {
-          const { year, week } = this._extractYearAndWeek(value);
-          const dates = nomui.utils.getWeekDates({ year, week });
-          this._weekInfo = { year, week, dates };
+      if (this.props.weekMode) {
+        if (value) {
+          if (this.props.weekMode.format) {
+            const { year, week } = this._extractYearAndWeek(value);
+            const dates = nomui.utils.getWeekDates({ year, week });
+            this._weekInfo = { year, week, dates };
+          } else {
+            const { year, week } = nomui.utils.getWeekInYear({ date: value });
+            this._weekInfo = {
+              year,
+              week,
+              dates: nomui.utils.getWeekDates({ year, week }),
+            };
+          }
         } else {
-          const { year, week } = nomui.utils.getWeekInYear({ date: value });
-          this._weekInfo = {
-            year,
-            week,
-            dates: nomui.utils.getWeekDates({ year, week }),
-          };
+          this._weekInfo = {};
         }
       }
       super.setValue(value, options);
