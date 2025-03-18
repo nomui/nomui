@@ -12,13 +12,13 @@ class TreeSelect extends Field {
   _created() {
     super._created()
     this.items = []
-    if (this.props.treeCheckable) {
-      this.props.multiple = true
-    }
     this.tempValue = this.props.value
   }
 
   _config() {
+    if (this.props.treeCheckable) {
+      this.props.multiple = true
+    }
     this.getOptionsMap()
     const children = this._getContentChildren()
     this.setProps({
