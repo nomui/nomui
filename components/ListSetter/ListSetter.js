@@ -100,7 +100,7 @@ class ListSetter extends Field {
             },
           ],
           onClick: ({ sender }) => {
-            if (itemForm === false || itemForm() === false) {
+            if (itemForm === false || (isFunction(itemForm) && itemForm() === false)) {
               return
             }
             new nomui.Layer({
