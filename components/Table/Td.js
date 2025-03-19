@@ -29,6 +29,7 @@ class Td extends Component {
   }
 
   _config() {
+    this.props.children = ''
     const { level, isLeaf } = this.tr.props
     const { column } = this.props
     const { treeConfig } = this.table.props
