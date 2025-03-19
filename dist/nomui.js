@@ -4868,9 +4868,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     setProps(newProps) {
-      if (newProps && newProps.children) {
-        this.props.children = null;
-      }
       this.props = Component.extendProps(this.props, newProps);
     }
     assignProps(newProps) {
@@ -18631,6 +18628,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.tr.tdRefs[this.props.column.field] = this;
     }
     _config() {
+      this.props.children = "";
       const { level, isLeaf } = this.tr.props;
       const { column } = this.props;
       const { treeConfig } = this.table.props;
