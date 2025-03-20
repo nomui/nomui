@@ -26,6 +26,22 @@ define([], function () {
             },
 
             {
+              component: 'DatePicker',
+              ref: (c) => {
+                dateRef1 = c
+              },
+              label: '带日期范围',
+              placeholder: 'choose a week',
+              weekMode: {
+                showDateRange: true,
+              },
+              value: '2025-03-03',
+              onValueChange: (args) => {
+                console.log(args)
+              },
+            },
+
+            {
               component: 'StaticText',
               label: '',
               value:
