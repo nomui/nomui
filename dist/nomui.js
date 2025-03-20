@@ -17111,10 +17111,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         const { year, week } = nomui.utils.getWeekInYear({
           date: this.props.value,
         });
-        const weekStr = this.props.weekFormat
+        const dates = nomui.utils.getWeekDates({ year, week });
+        this._weekInfo = { year, week, dates };
+        let dateStr = this.props.weekFormat
           .replace("{year}", year)
           .replace("{week}", week);
-        this.props.displayValue = weekStr;
+        if (this.props.weekMode.showDateRange) {
+          dateStr += ` (${this._weekInfo.dates[0]} ~ ${this._weekInfo.dates[6]})`;
+        }
+        this.props.displayValue = dateStr;
         return;
       }
       if (!this.props.weekMode || !this.props.valueOptions) {
@@ -17471,11 +17476,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           const { year, week } = this._extractYearAndWeek(value);
           const dates = nomui.utils.getWeekDates({ year, week });
           this._weekInfo = { year, week, dates };
-          this._setDisplayValue(
-            this.props.weekFormat
-              .replace("{year}", year)
-              .replace("{week}", week)
-          );
+          let dateStr = this.props.weekFormat
+            .replace("{year}", year)
+            .replace("{week}", week);
+          if (this.props.weekMode.showDateRange) {
+            dateStr += ` (${this._weekInfo.dates[0]} ~ ${this._weekInfo.dates[6]})`;
+          }
+          this._setDisplayValue(dateStr);
         } else {
           this.dateInfo = null;
           this._weekInfo = {};
@@ -17497,9 +17504,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         const weekStr = weekFormat
           .replace("{week}", this._weekInfo.week)
           .replace("{year}", this._weekInfo.year);
-        const dateStr = new Date(this._weekInfo.dates[0]).format(
+        let dateStr = new Date(this._weekInfo.dates[0]).format(
           this.props.format
         );
+        if (this.props.weekMode.showDateRange) {
+          dateStr += ` (${this._weekInfo.dates[0]} ~ ${this._weekInfo.dates[6]})`;
+        }
         this._setDisplayValue(weekStr);
         this.setValue(dateStr);
       } else {
