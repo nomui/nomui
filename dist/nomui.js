@@ -17113,13 +17113,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
         const dates = nomui.utils.getWeekDates({ year, week });
         this._weekInfo = { year, week, dates };
-        let dateStr = this.props.weekFormat
-          .replace("{year}", year)
-          .replace("{week}", week);
-        if (this.props.weekMode.showDateRange) {
-          dateStr += ` (${this._weekInfo.dates[0]} ~ ${this._weekInfo.dates[6]})`;
-        }
-        this.props.displayValue = dateStr;
+        this.props.displayValue = this._getWeekText();
         return;
       }
       if (!this.props.weekMode || !this.props.valueOptions) {
@@ -17454,6 +17448,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return inputText;
     }
+    _getWeekText() {
+      const weekStr = this.props.weekFormat
+        .replace("{week}", this._weekInfo.week)
+        .replace("{year}", this._weekInfo.year)
+        .replace("{start}", this._weekInfo.dates[0])
+        .replace("{end}", this._weekInfo.dates[6]);
+      return weekStr;
+    }
     getValue(options = {}) {
       if (this.props.weekMode) {
         if (
@@ -17476,13 +17478,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           const { year, week } = this._extractYearAndWeek(value);
           const dates = nomui.utils.getWeekDates({ year, week });
           this._weekInfo = { year, week, dates };
-          let dateStr = this.props.weekFormat
-            .replace("{year}", year)
-            .replace("{week}", week);
-          if (this.props.weekMode.showDateRange) {
-            dateStr += ` (${this._weekInfo.dates[0]} ~ ${this._weekInfo.dates[6]})`;
-          }
-          this._setDisplayValue(dateStr);
+          this._setDisplayValue(this._getWeekText());
         } else {
           this.dateInfo = null;
           this._weekInfo = {};
@@ -17500,17 +17496,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     updateValue() {
       if (this.props.weekMode) {
-        const { weekFormat } = this.props;
-        const weekStr = weekFormat
-          .replace("{week}", this._weekInfo.week)
-          .replace("{year}", this._weekInfo.year);
-        let dateStr = new Date(this._weekInfo.dates[0]).format(
+        const dateStr = new Date(this._weekInfo.dates[0]).format(
           this.props.format
         );
-        if (this.props.weekMode.showDateRange) {
-          dateStr += ` (${this._weekInfo.dates[0]} ~ ${this._weekInfo.dates[6]})`;
-        }
-        this._setDisplayValue(weekStr);
+        this._setDisplayValue(this._getWeekText());
         this.setValue(dateStr);
       } else {
         const date = new Date(
