@@ -32,9 +32,8 @@ define([], function () {
               },
               label: '带日期范围',
               placeholder: 'choose a week',
-              weekMode: {
-                showDateRange: true,
-              },
+              weekMode: true,
+              weekFormat: `{year}年{week}周（{start} ~ {end}）`,
               value: '2025-03-03',
               onValueChange: (args) => {
                 console.log(args)
