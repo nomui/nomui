@@ -548,10 +548,17 @@ export function getWeekInYear({ date, weekFormat = '{year}年{week}周', startWe
     year++
   }
 
+  const dates = getWeekDates({ date })
+
   return {
     year,
     week: weekNumber,
-    weekText: weekFormat.replace('{year}', year).replace('{week}', weekNumber),
+    dates,
+    weekText: weekFormat
+      .replace('{year}', year)
+      .replace('{week}', weekNumber)
+      .replace('{start}', dates[0])
+      .replace(`{end}`, dates[6]),
   }
 }
 

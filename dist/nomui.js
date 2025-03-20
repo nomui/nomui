@@ -4181,12 +4181,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       weekNumber = 1;
       year++;
     }
+    const dates = getWeekDates({ date });
     return {
       year,
       week: weekNumber,
+      dates,
       weekText: weekFormat
         .replace("{year}", year)
-        .replace("{week}", weekNumber),
+        .replace("{week}", weekNumber)
+        .replace("{start}", dates[0])
+        .replace(`{end}`, dates[6]),
     };
   }
   /**
@@ -17108,10 +17112,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _parseWeekValueType() {
       if (!Number.isNaN(Date.parse(this.props.value))) {
-        const { year, week } = nomui.utils.getWeekInYear({
+        const { year, week, dates } = nomui.utils.getWeekInYear({
           date: this.props.value,
-        });
-        const dates = nomui.utils.getWeekDates({ year, week });
+        }); // const dates = nomui.utils.getWeekDates({ year, week })
         this._weekInfo = { year, week, dates };
         this.props.displayValue = this._getWeekText();
         return;
@@ -17303,8 +17306,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _extractYearAndWeek(input) {
       if (!Number.isNaN(Date.parse(input))) {
-        const { year, week } = nomui.utils.getWeekInYear({ date: input });
-        return { year, week };
+        const { year, week, dates } = nomui.utils.getWeekInYear({
+          date: input,
+        });
+        return { year, week, dates };
       } // 将格式模板转换为正则表达式
       const regexPattern = this.props.weekFormat
         .replace(/{year}/g, "(\\d{4})") // 匹配4位数字（年份）
@@ -17321,7 +17326,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (week < 1 || week > 53) {
         throw new Error("周数必须在 1 到 53 之间");
       }
-      return { year, week };
+      const dates = nomui.utils.getWeekDates({ year, week });
+      return { year, week, dates };
     }
     _disable() {
       super._disable();
@@ -17348,8 +17354,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.props.value !== null) {
         if (this.props.weekMode) {
           this._parseWeekValueType(); // 周模式下对象值转成年周字符串
-          const { year, week } = this._extractYearAndWeek(this.props.value);
-          const dates = nomui.utils.getWeekDates({ year, week });
+          const { year, week, dates } = this._extractYearAndWeek(
+            this.props.value
+          );
           this._weekInfo = { year, week, dates };
           currentDate = new Date(dates[0]);
         }
@@ -17475,8 +17482,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     setValue(value, options = {}) {
       if (this.props.weekMode) {
         if (value) {
-          const { year, week } = this._extractYearAndWeek(value);
-          const dates = nomui.utils.getWeekDates({ year, week });
+          const { year, week, dates } = this._extractYearAndWeek(value);
           this._weekInfo = { year, week, dates };
           this._setDisplayValue(this._getWeekText());
         } else {

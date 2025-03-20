@@ -666,8 +666,8 @@ class DatePicker extends Textbox {
 
   _parseWeekValueType() {
     if (!Number.isNaN(Date.parse(this.props.value))) {
-      const { year, week } = nomui.utils.getWeekInYear({ date: this.props.value })
-      const dates = nomui.utils.getWeekDates({ year, week })
+      const { year, week, dates } = nomui.utils.getWeekInYear({ date: this.props.value })
+      // const dates = nomui.utils.getWeekDates({ year, week })
       this._weekInfo = {
         year,
         week,
@@ -910,8 +910,8 @@ class DatePicker extends Textbox {
 
   _extractYearAndWeek(input) {
     if (!Number.isNaN(Date.parse(input))) {
-      const { year, week } = nomui.utils.getWeekInYear({ date: input })
-      return { year, week }
+      const { year, week, dates } = nomui.utils.getWeekInYear({ date: input })
+      return { year, week, dates }
     }
 
     // 将格式模板转换为正则表达式
@@ -937,9 +937,11 @@ class DatePicker extends Textbox {
       throw new Error('周数必须在 1 到 53 之间')
     }
 
+    const dates = nomui.utils.getWeekDates({ year, week })
     return {
       year,
       week,
+      dates,
     }
   }
 
@@ -970,8 +972,8 @@ class DatePicker extends Textbox {
     if (this.props.value !== null) {
       if (this.props.weekMode) {
         this._parseWeekValueType() // 周模式下对象值转成年周字符串
-        const { year, week } = this._extractYearAndWeek(this.props.value)
-        const dates = nomui.utils.getWeekDates({ year, week })
+        const { year, week, dates } = this._extractYearAndWeek(this.props.value)
+
         this._weekInfo = {
           year,
           week,
@@ -1115,8 +1117,8 @@ class DatePicker extends Textbox {
   setValue(value, options = {}) {
     if (this.props.weekMode) {
       if (value) {
-        const { year, week } = this._extractYearAndWeek(value)
-        const dates = nomui.utils.getWeekDates({ year, week })
+        const { year, week, dates } = this._extractYearAndWeek(value)
+
         this._weekInfo = {
           year,
           week,
