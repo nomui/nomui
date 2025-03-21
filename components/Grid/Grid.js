@@ -587,7 +587,7 @@ class Grid extends Component {
     if (!isFunction(loadData)) {
       return
     }
-    loadData({ pageSize, pageIndex: this.pageIndex }).then((res) => {
+    loadData({ pageSize, pageIndex: this.pageIndex + 1 }).then((res) => {
       if (!res || !res.length) {
         return
       }
