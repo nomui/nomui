@@ -17359,6 +17359,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           );
           this._weekInfo = { year, week, dates };
           currentDate = new Date(dates[0]);
+        } else {
+          currentDate = Date.parseString(this.props.value, this.props.format);
         }
       } else if (this.minDateDay) {
         currentDate = new Date(this.minDateDay);
