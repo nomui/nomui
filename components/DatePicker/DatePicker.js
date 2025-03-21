@@ -980,6 +980,8 @@ class DatePicker extends Textbox {
           dates,
         }
         currentDate = new Date(dates[0])
+      } else {
+        currentDate = Date.parseString(this.props.value, this.props.format)
       }
     } else if (this.minDateDay) {
       currentDate = new Date(this.minDateDay)
