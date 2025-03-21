@@ -5,6 +5,7 @@ define([
   './align.js',
   './ellipsis.js',
   './lazy-load.js',
+  './lazy-load-remote.js',
   './sort.js',
   './sort-cacheable.js',
   './filter.js',

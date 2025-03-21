@@ -60,6 +60,8 @@ class Grid extends Component {
     this.filterValueText = {}
     this._resetFixCount()
 
+    this.pageIndex = 1
+
     this.modifiedRowKeys = []
     this.addedRowKeys = []
     this.removedRowKeys = []
@@ -86,6 +88,7 @@ class Grid extends Component {
     }
     // 更新了data
     if (props.data && this.props) {
+      this.pageIndex = 1
       const { treeConfig } = this.props
       // data更新, flatData需要重新组装成Tree结构
       if (treeConfig && treeConfig.flatData) {
@@ -557,7 +560,7 @@ class Grid extends Component {
 
     this.props.rowSortable && defaultSortableOndrop()
 
-    if (this.props.lazyLoadLimit > 0 || this.props.loadData) {
+    if (this.props.lazyLoadLimit > 0 || this.props.lazyLoadRemote) {
       this._watchLazyLoad()
     }
   }
@@ -569,8 +572,29 @@ class Grid extends Component {
     }
     ele.addEventListener('scroll', () => {
       if (ele.scrollHeight - ele.scrollTop === ele.clientHeight) {
-        this._storedData.length > 0 && this._addFromStoredData()
+        if (this.props.lazyLoadLimit) {
+          this._storedData.length > 0 && this._addFromStoredData()
+        }
+        if (this.props.lazyLoadRemote) {
+          this._addFromRemote()
+        }
       }
+    })
+  }
+
+  _addFromRemote() {
+    const { pageSize, loadData } = this.props.lazyLoadRemote
+    if (!isFunction(loadData)) {
+      return
+    }
+    loadData({ pageSize, pageIndex: this.pageIndex + 1 }).then((res) => {
+      if (!res || !res.length) {
+        return
+      }
+      this.pageIndex += 1
+      res.forEach((n) => {
+        this.appendRow({ data: n })
+      })
     })
   }
 
@@ -1673,7 +1697,7 @@ Grid.defaults = {
   onRowClick: null,
   excelMode: false, // excel编辑模式
   editable: false, // 传统编辑模式
-  loadData: false,
+  lazyLoadRemote: false,
   lazyLoadLimit: false,
 }
 Grid._loopSetValue = function (key, arry) {
