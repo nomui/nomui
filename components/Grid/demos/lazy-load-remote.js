@@ -2,7 +2,8 @@ define([], function () {
   return {
     title: '懒加载(后端)',
     file: 'lazy-load-remote',
-    description: '通过配置 `loadData` 实现后端懒加载',
+    description:
+      '通过配置 `lazyLoadRemote` 实现后端懒加载，loadData方法接受两个参数，pageSize和pageIndex，其中pageIndex由组件自动计算，返回一个promise，promise返回的数组将作为表格数据',
     demo: function () {
       function generateData({ pageSize }) {
         const num = pageSize || 20
