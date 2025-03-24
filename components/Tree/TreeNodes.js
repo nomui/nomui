@@ -23,8 +23,13 @@ class TreeNodes extends Component {
   _config() {
     const { nodes, childrenData } = this.props
     const { initExpandLevel } = this.tree.props
-    const expanded =
+    let expanded =
       initExpandLevel === -1 || initExpandLevel > (this.parentNode ? this.parentNode.level : -1)
+
+    if (this.parentNode && this.tree.expandedNodeRefs[this.parentNode.key] !== undefined) {
+      expanded = true
+    }
+
     let nodesProps = nodes
     if (Array.isArray(childrenData)) {
       nodesProps = childrenData.map((item) => {

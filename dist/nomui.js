@@ -13500,9 +13500,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const isNotEmptyNode =
         this.node._isNotEmptyArray(nodes) ||
         this.node._isNotEmptyArray(childrenData);
-      const expanded =
+      let expanded =
         (initExpandLevel === -1 || initExpandLevel > this.level) &&
         isNotEmptyNode;
+      if (this.tree.expandedNodeRefs[this.node.key] !== undefined) {
+        expanded = true;
+      }
       const tree = this.tree;
       const indicatorProps = {
         component: Icon,
@@ -13626,6 +13629,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.tree._onNodeClick({ node: this.node });
         },
       });
+    }
+    expand() {
+      this.tree.expandedNodeRefs[this.node.key] = this.node;
+      super.expand();
+    }
+    collapse() {
+      delete this.tree.expandedNodeRefs[this.node.key];
+      super.collapse();
     }
     _handleLoadData() {
       const r = this.tree.props.loadData({
@@ -13912,9 +13923,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _config() {
       const { nodes, childrenData } = this.props;
       const { initExpandLevel } = this.tree.props;
-      const expanded =
+      let expanded =
         initExpandLevel === -1 ||
         initExpandLevel > (this.parentNode ? this.parentNode.level : -1);
+      if (
+        this.parentNode &&
+        this.tree.expandedNodeRefs[this.parentNode.key] !== undefined
+      ) {
+        expanded = true;
+      }
       let nodesProps = nodes;
       if (Array.isArray(childrenData)) {
         nodesProps = childrenData.map((item) => {
@@ -13988,6 +14005,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _created() {
       this.nodeRefs = {};
+      this.expandedNodeRefs = {};
       this._alreadyProcessedFlat = false;
       this.selectedNode = null;
     }
