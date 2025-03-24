@@ -22042,6 +22042,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.filter = {};
       this.filterValueText = {};
       this._resetFixCount();
+      this.pageIndex = 1;
       this.modifiedRowKeys = [];
       this.addedRowKeys = [];
       this.removedRowKeys = [];
@@ -22065,6 +22066,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.originColumns = [...c];
       } // 更新了data
       if (props.data && this.props) {
+        this.pageIndex = 1;
         const { treeConfig } = this.props; // data更新, flatData需要重新组装成Tree结构
         if (treeConfig && treeConfig.flatData) {
           this._alreadyProcessedFlat = false;
@@ -22472,7 +22474,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._processAutoScroll();
       this.overflowAncestor = this._checkOverflowAncestor();
       this.props.rowSortable && defaultSortableOndrop();
-      if (this.props.lazyLoadLimit > 0 || this.props.loadData) {
+      if (this.props.lazyLoadLimit > 0 || this.props.lazyLoadRemote) {
         this._watchLazyLoad();
       }
     }
@@ -22483,8 +22485,28 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       ele.addEventListener("scroll", () => {
         if (ele.scrollHeight - ele.scrollTop === ele.clientHeight) {
-          this._storedData.length > 0 && this._addFromStoredData();
+          if (this.props.lazyLoadLimit) {
+            this._storedData.length > 0 && this._addFromStoredData();
+          }
+          if (this.props.lazyLoadRemote) {
+            this._addFromRemote();
+          }
         }
+      });
+    }
+    _addFromRemote() {
+      const { pageSize, loadData } = this.props.lazyLoadRemote;
+      if (!isFunction(loadData)) {
+        return;
+      }
+      loadData({ pageSize, pageIndex: this.pageIndex + 1 }).then((res) => {
+        if (!res || !res.length) {
+          return;
+        }
+        this.pageIndex += 1;
+        res.forEach((n) => {
+          this.appendRow({ data: n });
+        });
       });
     }
     _addFromStoredData() {
@@ -23452,7 +23474,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     onRowClick: null,
     excelMode: false, // excel编辑模式
     editable: false, // 传统编辑模式
-    loadData: false,
+    lazyLoadRemote: false,
     lazyLoadLimit: false,
   };
   Grid._loopSetValue = function (key, arry) {
