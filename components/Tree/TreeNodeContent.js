@@ -22,7 +22,11 @@ class TreeNodeContent extends Component {
 
     const isNotEmptyNode =
       this.node._isNotEmptyArray(nodes) || this.node._isNotEmptyArray(childrenData)
-    const expanded = (initExpandLevel === -1 || initExpandLevel > this.level) && isNotEmptyNode
+    let expanded = (initExpandLevel === -1 || initExpandLevel > this.level) && isNotEmptyNode
+
+    if (this.tree.expandedNodeRefs[this.node.key] !== undefined) {
+      expanded = true
+    }
 
     const tree = this.tree
 
@@ -100,25 +104,25 @@ class TreeNodeContent extends Component {
     this.setProps({
       children: [
         this.tree.props.sortable &&
-        this.tree.props.sortable.showHandler && {
-          attrs: {
-            style: {
-              paddingLeft: '1rem',
+          this.tree.props.sortable.showHandler && {
+            attrs: {
+              style: {
+                paddingLeft: '1rem',
+              },
+            },
+            children: {
+              component: 'Icon',
+              type: 'swap',
+              classes: { 'nom-tree-drag-handler': true },
             },
           },
-          children: {
-            component: 'Icon',
-            type: 'swap',
-            classes: { 'nom-tree-drag-handler': true },
-          },
-        },
         this.getExpandableIndicatorProps(expanded),
         nodeCheckable && this._getCheckbox(),
         icon &&
-        Component.extendProps(
-          { classes: { 'nom-tree-node-content-icon': true } },
-          Component.normalizeIconProps(icon),
-        ),
+          Component.extendProps(
+            { classes: { 'nom-tree-node-content-icon': true } },
+            Component.normalizeIconProps(icon),
+          ),
         Component.extendProps(
           {
             tag: 'span',
@@ -130,34 +134,44 @@ class TreeNodeContent extends Component {
           Component.normalizeTemplateProps(text),
         ),
         tools &&
-        (isNewToolProp
-          ? {
-            classes: {
-              'nom-tree-node-content-tools': true,
-              'nom-tree-node-content-tools-flex': true,
-              'nom-tree-node-content-tools-hover': !!tools.hover,
-            },
-            children: {
-              component: 'Flex',
-              justify: toolProps.justify,
-              fit: true,
-              cols: toolProps.items,
-            },
-          }
-          : Component.extendProps(
-            {
-              classes: {
-                'nom-tree-node-content-tools': true,
-                'nom-tree-node-content-tools-hover': !!tools.hover,
-              },
-            },
-            toolProps,
-          )),
+          (isNewToolProp
+            ? {
+                classes: {
+                  'nom-tree-node-content-tools': true,
+                  'nom-tree-node-content-tools-flex': true,
+                  'nom-tree-node-content-tools-hover': !!tools.hover,
+                },
+                children: {
+                  component: 'Flex',
+                  justify: toolProps.justify,
+                  fit: true,
+                  cols: toolProps.items,
+                },
+              }
+            : Component.extendProps(
+                {
+                  classes: {
+                    'nom-tree-node-content-tools': true,
+                    'nom-tree-node-content-tools-hover': !!tools.hover,
+                  },
+                },
+                toolProps,
+              )),
       ],
       onClick: () => {
         this.tree._onNodeClick({ node: this.node })
       },
     })
+  }
+
+  expand() {
+    this.tree.expandedNodeRefs[this.node.key] = this.node
+    super.expand()
+  }
+
+  collapse() {
+    delete this.tree.expandedNodeRefs[this.node.key]
+    super.collapse()
   }
 
   _handleLoadData() {
