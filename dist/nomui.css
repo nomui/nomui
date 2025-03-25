@@ -7437,24 +7437,24 @@ table.nom-table td[align='left'],
 table.nom-table th[align='left'] {
   text-align: left;
 }
-table.nom-table td[align='left'] > .nom-table-cell-content,
-table.nom-table th[align='left'] > .nom-table-cell-content {
+table.nom-table td[align='left'] .nom-table-cell-content,
+table.nom-table th[align='left'] .nom-table-cell-content {
   justify-content: flex-start;
 }
 table.nom-table td[align='center'],
 table.nom-table th[align='center'] {
   text-align: center;
 }
-table.nom-table td[align='center'] > .nom-table-cell-content,
-table.nom-table th[align='center'] > .nom-table-cell-content {
+table.nom-table td[align='center'] .nom-table-cell-content,
+table.nom-table th[align='center'] .nom-table-cell-content {
   justify-content: center;
 }
 table.nom-table td[align='right'],
 table.nom-table th[align='right'] {
   text-align: right;
 }
-table.nom-table td[align='right'] > .nom-table-cell-content,
-table.nom-table th[align='right'] > .nom-table-cell-content {
+table.nom-table td[align='right'] .nom-table-cell-content,
+table.nom-table th[align='right'] .nom-table-cell-content {
   justify-content: flex-end;
 }
 table.nom-table td.nom-table-fixed-left,
