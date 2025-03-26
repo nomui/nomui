@@ -64,6 +64,9 @@ define([], function () {
                 new nomui.Message({ type: 'info', content: '点击了确定按钮' })
                 sender.close()
               },
+              onClose: () => {
+                new nomui.Message({ type: 'info', content: '点击了关闭按钮' })
+              },
             })
           },
         },
