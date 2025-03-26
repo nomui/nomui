@@ -225,6 +225,7 @@ define(['css!./nested-summary'], function () {
             height: '500px',
           },
         },
+
         columns: [
           {
             field: 'name',

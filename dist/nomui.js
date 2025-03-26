@@ -20923,6 +20923,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _getSummaryDataList() {
       const { summary } = this.grid.props;
       let list = [];
+      if (!this.grid.props.columns.length) {
+        return list;
+      }
       if (Array.isArray(summary)) {
         list = summary.map((i) => {
           return this._getSummaryData(i);
