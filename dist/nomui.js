@@ -21131,13 +21131,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (settingEl) settingEl.style.height = `${h - 1}px`;
     }
     _fixRightPadding() {
+      this.element.style.overflowY = "auto";
       setTimeout(() => {
         if (!this.element) {
           return;
         }
         const offset = this.element.offsetWidth - this.element.scrollWidth;
-        if (offset > 1) {
-          this.element.style.overflowY = "auto";
+        if (!offset > 1) {
+          this.element.style.overflowY = "hidden";
         }
       }, 200);
     }
