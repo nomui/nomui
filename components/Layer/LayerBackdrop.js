@@ -32,6 +32,7 @@ class LayerBackdrop extends Component {
       },
       classes: {
         'nom-layer-mask-animate-show': this.props.animate,
+        'nom-layer-backdrop-transparent': this.props.transparent,
       },
       onClick({ event }) {
         event.stopPropagation()
