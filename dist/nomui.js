@@ -7891,7 +7891,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _config() {
       this.setProps({
         attrs: { style: { zIndex: this.props.zIndex } },
-        classes: { "nom-layer-mask-animate-show": this.props.animate },
+        classes: {
+          "nom-layer-mask-animate-show": this.props.animate,
+          "nom-layer-backdrop-transparent": this.props.transparent,
+        },
         onClick({ event }) {
           event.stopPropagation();
         },
@@ -7944,6 +7947,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.backdrop = new LayerBackdrop({
           zIndex: this._zIndex - 1,
           reference: this.props.reference,
+          transparent: this.props.backdrop.transparent,
           animate: this.props.animate,
         });
         if (this.props.closeOnClickBackdrop) {

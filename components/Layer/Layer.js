@@ -60,6 +60,7 @@ class Layer extends Component {
       this.backdrop = new LayerBackdrop({
         zIndex: this._zIndex - 1,
         reference: this.props.reference,
+        transparent: this.props.backdrop.transparent,
         animate: this.props.animate,
       })
 

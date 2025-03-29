@@ -5611,6 +5611,9 @@ body .nom-always-dark {
 .nom-layer-backdrop {
   background-color: rgba(0, 0, 0, 0.05);
 }
+.nom-layer-backdrop.nom-layer-backdrop-transparent {
+  background-color: transparent;
+}
 .nom-layer-animate-show {
   -webkit-animation: nom-layer-keyframe-bounce-in 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
   animation: nom-layer-keyframe-bounce-in 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
