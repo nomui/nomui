@@ -24,31 +24,27 @@ class GridHeader extends Component {
 
     this._summaryHeight = summary ? 36 : 0
 
-    this.setProps(
-      {
-        classes: { 'nom-grid-highlight-col': this.grid.props.highlightCol },
-        children: {
-          component: Table,
-          columns: this.grid.props.columns,
-          data: this.grid.data,
-          attrs: {
-            style: {
-              minWidth: `${minWidth}px`,
-            },
+    this.setProps({
+      classes: { 'nom-grid-highlight-col': this.grid.props.highlightCol },
+      children: {
+        component: Table,
+        columns: this.grid.props.columns,
+        data: this.grid.data,
+        attrs: {
+          style: {
+            minWidth: `${minWidth}px`,
           },
-          onlyHead: true,
-          line: this.props.line,
         },
-
-
-      })
+        onlyHead: true,
+        line: this.props.line,
+      },
+    })
   }
 
   _rendered() {
     const that = this
 
     this._fixSettingHeight()
-
     this._fixRightPadding()
     if (!this.grid.props.sticky) {
       return
@@ -97,13 +93,14 @@ class GridHeader extends Component {
   }
 
   _fixRightPadding() {
+    this.element.style.overflowY = 'auto'
     setTimeout(() => {
       if (!this.element) {
         return
       }
       const offset = this.element.offsetWidth - this.element.scrollWidth
-      if (offset > 1) {
-        this.element.style.overflowY = 'auto'
+      if (!offset > 1) {
+        this.element.style.overflowY = 'hidden'
       }
     }, 200)
   }
@@ -174,7 +171,9 @@ class GridHeader extends Component {
     if (gRect.top < pRect.top && gRect.top + gRect.height > pRect.top) {
       this.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
       if (this.grid.settingContainer) {
-        this.grid.settingContainer.element.style.transform = `translateY(${pRect.top - gRect.top - 2}px)`
+        this.grid.settingContainer.element.style.transform = `translateY(${
+          pRect.top - gRect.top - 2
+        }px)`
       }
     } else if (this.grid.settingContainer) {
       this.grid.settingContainer.element.style.transform = `translateY(0px)`
