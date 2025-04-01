@@ -64,6 +64,11 @@ class Field extends Component {
     } = this.props
     const showLabel = notShowLabel === false && label !== undefined && label !== null
 
+    // 处理关联字段
+    if (Array.isArray(this.props.dependencies) && this.props.dependencies.length) {
+      this._handleDependencies()
+    }
+
     this.rules = this.rules.concat(rules)
 
     if (required === true) {
@@ -144,6 +149,41 @@ class Field extends Component {
         this.element.style.position = 'relative'
       }
     }
+  }
+
+  _handleDependencies() {
+    const { dependencies } = this.props
+    dependencies.forEach((item) => {
+      const field = this.rootField.getField(item)
+
+      if (field) {
+        field._addRelatedField(this)
+      }
+    })
+  }
+
+  _onSourceValueChange(args) {
+    for (const item in this._relatedFields) {
+      const field = this._relatedFields[item]
+
+      if (field) {
+        field._onDependencyValueChange(args, this)
+      }
+    }
+  }
+
+  _onDependencyValueChange(args, field) {
+    this._callHandler(this.props.onDependecyValueChange, {
+      ...args,
+      ...{ source: field },
+    })
+  }
+
+  _addRelatedField(field) {
+    if (!this._relatedFields) {
+      this._relatedFields = {}
+    }
+    this._relatedFields[field.name] = field
   }
 
   _update() {
@@ -348,6 +388,8 @@ class Field extends Component {
         that._validate()
       }
     }, 0)
+
+    this._onSourceValueChange(args)
   }
 }
 

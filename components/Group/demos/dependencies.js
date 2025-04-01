@@ -19,40 +19,46 @@ define([], function () {
                 name: 'hasUsedName',
                 label: '是否有曾用名',
                 options: [
-                  { text: '无', value: '1' },
-                  { text: '有', value: '2' },
+                  { text: '是', value: '1' },
+                  { text: '否', value: '2' },
                 ],
               },
               {
                 component: 'Textbox',
                 name: 'usedName',
                 dependencies: ['hasUsedName'],
+                onDependecyValueChange: (args) => {
+                  console.log(args)
+                },
+                hidden: true,
                 label: '曾用名',
               },
               {
                 component: 'RadioList',
-
                 name: 'hasCriminalHistory',
                 label: '本人是否有犯罪历史',
                 options: [
-                  { text: '否', value: '1' },
-                  { text: '是', value: '2' },
+                  { text: '是', value: '1' },
+                  { text: '否', value: '2' },
                 ],
               },
               {
                 component: 'RadioList',
-
                 name: 'hasCriminalHistoryOfFamily',
                 label: '直系亲属是否有犯罪历史',
                 options: [
-                  { text: '否', value: '1' },
-                  { text: '是', value: '2' },
+                  { text: '是', value: '1' },
+                  { text: '否', value: '2' },
                 ],
               },
               {
                 component: 'MultilineTextbox',
                 name: 'criminalHistory',
                 dependencies: ['hasCriminalHistory', 'hasCriminalHistoryOfFamily'],
+                onDependecyValueChange: (args) => {
+                  console.log(args)
+                },
+                hidden: true,
                 label: '犯罪历史描述',
                 placeholder: '请填写犯罪历史',
               },
@@ -77,16 +83,19 @@ define([], function () {
                 ],
               },
               {
-                component: 'Button',
-                dependencies: ['otherInfo.agree', 'otherInfo.isAdult'],
+                component: 'Field',
                 name: 'submit',
-                text: '提交',
-                attrs: {
-                  style: {
-                    marginLeft: '190px',
-                  },
+                label: '',
+                dependencies: ['otherInfo.agree', 'otherInfo.isAdult'],
+                onDependecyValueChange: (args) => {
+                  console.log(args)
                 },
-                type: 'primary',
+                hidden: true,
+                control: {
+                  component: 'Button',
+                  text: '提交',
+                  type: 'primary',
+                },
               },
             ],
           },
