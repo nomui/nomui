@@ -124,7 +124,6 @@ define([], function () {
                     } else {
                       agreeCount--
                       if (agreeCount < 2) {
-                        agreeCount = 0
                         args.sender.hide()
                       }
                     }
