@@ -173,7 +173,7 @@ class Field extends Component {
   }
 
   _onDependencyValueChange(args, field) {
-    this._callHandler(this.props.onDependecyValueChange, {
+    this._callHandler(this.props.onDependencyValueChange, {
       ...args,
       ...{ source: field },
     })

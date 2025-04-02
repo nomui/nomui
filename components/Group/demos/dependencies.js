@@ -3,6 +3,8 @@ define([], function () {
     title: '监听其他字段值变化',
     file: 'dependencies',
     demo: function () {
+      let criminalCount = 0,
+        agreeCount = 0
       return {
         component: 'Flex',
         rows: [
@@ -27,8 +29,15 @@ define([], function () {
                 component: 'Textbox',
                 name: 'usedName',
                 dependencies: ['hasUsedName'],
-                onDependecyValueChange: (args) => {
-                  console.log(args)
+                onDependencyValueChange: (args) => {
+                  // 监听hasUsedName字段的值变化，显示或隐藏usedName字段
+                  if (args.name === 'hasUsedName') {
+                    if (args.newValue === '1') {
+                      args.sender.show()
+                    } else {
+                      args.sender.hide()
+                    }
+                  }
                 },
                 hidden: true,
                 label: '曾用名',
@@ -55,8 +64,25 @@ define([], function () {
                 component: 'MultilineTextbox',
                 name: 'criminalHistory',
                 dependencies: ['hasCriminalHistory', 'hasCriminalHistoryOfFamily'],
-                onDependecyValueChange: (args) => {
-                  console.log(args)
+                onDependencyValueChange: (args) => {
+                  // 两个依赖字段任意一个选中时，显示犯罪历史描述
+                  if (
+                    args.name === 'hasCriminalHistory' ||
+                    args.name === 'hasCriminalHistoryOfFamily'
+                  ) {
+                    if (args.newValue === '1') {
+                      criminalCount++
+                      if (criminalCount > 0) {
+                        args.sender.show()
+                      }
+                    } else {
+                      criminalCount--
+                      if (criminalCount <= 0) {
+                        criminalCount = 0
+                        args.sender.hide()
+                      }
+                    }
+                  }
                 },
                 hidden: true,
                 label: '犯罪历史描述',
@@ -87,8 +113,22 @@ define([], function () {
                 name: 'submit',
                 label: '',
                 dependencies: ['otherInfo.agree', 'otherInfo.isAdult'],
-                onDependecyValueChange: (args) => {
-                  console.log(args)
+                onDependencyValueChange: (args) => {
+                  // 两个依赖勾选框都选中时，才显示提交按钮
+                  if (args.name === 'agree' || args.name === 'isAdult') {
+                    if (args.newValue === true) {
+                      agreeCount++
+                      if (agreeCount === 2) {
+                        args.sender.show()
+                      }
+                    } else {
+                      agreeCount--
+                      if (agreeCount < 2) {
+                        agreeCount = 0
+                        args.sender.hide()
+                      }
+                    }
+                  }
                 },
                 hidden: true,
                 control: {
