@@ -78,7 +78,6 @@ define([], function () {
                     } else {
                       criminalCount--
                       if (criminalCount <= 0) {
-                        criminalCount = 0
                         args.sender.hide()
                       }
                     }
