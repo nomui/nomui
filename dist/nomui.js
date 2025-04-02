@@ -25,7 +25,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
 }
 /**
  *
- *       nomui v1.5.0
+ *       nomui v1.7.0
  *       License: MIT
  *       Copyright (c) 2021-2021, Wetrial
  *
