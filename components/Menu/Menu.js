@@ -249,7 +249,12 @@ class Menu extends Component {
             if (evt.from !== evt.to) return
             // 同步DOM顺序到数据
 
-            me.props.direction === 'vertical' && me._syncItemsFromDOM()
+            if (me.props.direction === 'vertical') {
+              me._syncItemsFromDOM()
+            } else {
+              const data = { oldIndex: evt.oldIndex, newIndex: evt.newIndex }
+              me._processNewOrder(data)
+            }
             const itemData = evt.item.component.props.item
             delete itemData.component
             delete itemData.keyField
@@ -313,6 +318,18 @@ class Menu extends Component {
     }
 
     return items
+  }
+
+  _processNewOrder(params) {
+    const { items } = this.props
+    this.newOrderItems = this._rearrangeArray(items, params)
+  }
+
+  _rearrangeArray(arr, { oldIndex, newIndex }) {
+    const [movedItem] = arr.splice(oldIndex, 1)
+    arr.splice(newIndex, 0, movedItem)
+
+    return arr
   }
 
   _remove() {
