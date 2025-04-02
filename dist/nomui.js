@@ -25997,10 +25997,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.scrollTo(this.selectedItem);
       }
     }
-    _processNewOrder(params) {
-      const { items } = this.props;
-      this.newOrderItems = this._rearrangeArray(items, params);
-    }
     getRootItemKeys() {
       const items = this.newOrderItems.length
         ? this.newOrderItems
@@ -26008,11 +26004,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return items.map((n) => {
         return n[this.props.keyField];
       });
-    }
-    _rearrangeArray(arr, { oldIndex, newIndex }) {
-      const [movedItem] = arr.splice(oldIndex, 1);
-      arr.splice(newIndex, 0, movedItem);
-      return arr;
     }
     _rendered() {
       const me = this;
@@ -26032,21 +26023,69 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.scrollToSelected();
       if (sortable) {
         defaultSortableOndrop();
-        new nomui.utils.Sortable(this.element, {
-          animation: 150,
-          fallbackOnBody: true,
-          swapThreshold: 0.65,
-          onEnd: function (evt) {
-            const data = { oldIndex: evt.oldIndex, newIndex: evt.newIndex };
-            me._processNewOrder(data);
-            if (sortable.onEnd) {
-              me._callHandler(sortable.onEnd, {
-                rootItemKeys: me.getRootItemKeys(),
-              });
-            }
-          },
-        });
+        const nestedSortables = [].slice.call(
+          this.element.querySelectorAll(".nom-menu-sub")
+        );
+        nestedSortables.unshift(this.element);
+        for (let i = 0; i < nestedSortables.length; i++) {
+          new nomui.utils.Sortable(nestedSortables[i], {
+            group: {
+              name: this.key, // 保留组名用于识别
+              pull: "clone", // 或 false 禁止从其他组拉取
+              put: false, // 禁止放入其他组
+            },
+            animation: 150,
+            fallbackOnBody: true,
+            swapThreshold: 0.65,
+            handle: ".nom-menu-item",
+            onEnd: function (evt) {
+              if (evt.from !== evt.to) return; // 同步DOM顺序到数据
+              me.props.direction === "vertical" && me._syncItemsFromDOM();
+              if (me.props.sortable.onEnd) {
+                me._callHandler(me.props.sortable.onEnd, {
+                  rootItemKeys: me.getRootItemKeys(),
+                  items: me.props.items,
+                });
+              }
+            },
+          });
+        }
       }
+    }
+    _syncItemsFromDOM() {
+      // 1. 从根菜单元素开始遍历
+      const rootElement = this.element;
+      const newItems = this._buildItemsFromDOM(rootElement); // 2. 更新props
+      this.props.items = newItems;
+    }
+    /**
+     * 递归构建菜单项数据
+     */ _buildItemsFromDOM(parentElement) {
+      const items = []; // 遍历所有直接子元素（包括分隔线）
+      const childElements = parentElement.children;
+      for (const element of childElements) {
+        // 处理分隔线
+        if (element.classList.contains("nom-menu-divider")) {
+          items.push({ type: "divider" });
+          continue;
+        } // 处理普通菜单项
+        if (element.classList.contains("nom-menu-item-wrapper")) {
+          // 获取菜单项数据
+          const itemWrapper = element.component;
+          const itemData = itemWrapper
+            ? Object.assign({}, itemWrapper.props.item)
+            : {}; // 移除不需要的字段
+          delete itemData.component;
+          delete itemData.keyField; // 处理子菜单
+          const subMenu = element.querySelector(":scope > ul.nom-menu-sub");
+          if (subMenu) {
+            // 使用与原始数据相同的字段名(items)
+            itemData.items = this._buildItemsFromDOM(subMenu);
+          }
+          items.push(itemData);
+        }
+      }
+      return items;
     }
     _remove() {
       this.resizeObserver && this.resizeObserver.unobserve(this.element);

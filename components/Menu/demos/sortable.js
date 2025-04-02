@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '带分割线',
-    file: 'divider',
+    title: '菜单排序',
+    file: 'sortable',
     demo: function () {
       return {
         children: {
@@ -15,6 +15,11 @@ define([], function () {
               attrs: {
                 style: {
                   width: '250px',
+                },
+              },
+              sortable: {
+                onEnd: (args) => {
+                  console.log('onEnd', args)
                 },
               },
               items: [
