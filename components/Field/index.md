@@ -25,6 +25,8 @@
 | control | 关联的表单元素项 | `Props` | - |
 | actions | 关联的表单元素项的操作按钮 | `Props[]` | - |
 | onValueChange | 值变化的时候触发 | `(changed:{name:string,newValue:boolean,oldValue:boolean,sender:obj})=>void` | - |
+| dependencies | 监听兄弟字段值变化 | `[name]` | - |
+| onDependencyValueChange | 监听字段值发生变化触发事件，与`dependencies`结合使用 | `({name:string,newValue:boolean,oldValue:boolean,sender:obj,source:obj})=>void` | - |
 
 ## Rules item
 

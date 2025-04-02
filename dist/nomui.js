@@ -8845,7 +8845,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         actionAlign,
       } = this.props;
       const showLabel =
-        notShowLabel === false && label !== undefined && label !== null;
+        notShowLabel === false && label !== undefined && label !== null; // 处理关联字段
+      if (
+        Array.isArray(this.props.dependencies) &&
+        this.props.dependencies.length
+      ) {
+        this._handleDependencies();
+      }
       this.rules = this.rules.concat(rules);
       if (required === true) {
         this.rules.unshift({ type: "required", message: requiredMessage });
@@ -8913,6 +8919,35 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.element.style.position = "relative";
         }
       }
+    }
+    _handleDependencies() {
+      const { dependencies } = this.props;
+      dependencies.forEach((item) => {
+        const field = this.rootField.getField(item);
+        if (field) {
+          field._addRelatedField(this);
+        }
+      });
+    }
+    _onSourceValueChange(args) {
+      for (const item in this._relatedFields) {
+        const field = this._relatedFields[item];
+        if (field) {
+          field._onDependencyValueChange(args, this);
+        }
+      }
+    }
+    _onDependencyValueChange(args, field) {
+      this._callHandler(
+        this.props.onDependencyValueChange,
+        Object.assign({}, args, { source: field })
+      );
+    }
+    _addRelatedField(field) {
+      if (!this._relatedFields) {
+        this._relatedFields = {};
+      }
+      this._relatedFields[field.name] = field;
     }
     _update() {
       this.rules = [];
@@ -9091,6 +9126,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           that._validate();
         }
       }, 0);
+      this._onSourceValueChange(args);
     }
   }
   Field.defaults = {
