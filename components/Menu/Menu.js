@@ -250,11 +250,14 @@ class Menu extends Component {
             // 同步DOM顺序到数据
 
             me.props.direction === 'vertical' && me._syncItemsFromDOM()
-
+            const itemData = evt.item.component.props.item
+            delete itemData.component
+            delete itemData.keyField
             if (me.props.sortable.onEnd) {
               me._callHandler(me.props.sortable.onEnd, {
                 rootItemKeys: me.getRootItemKeys(),
                 items: me.props.items,
+                currentItemData: itemData,
               })
             }
           },
