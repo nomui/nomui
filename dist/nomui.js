@@ -7867,6 +7867,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         app: this,
       });
     }
+    getLastRouter() {
+      if (this.lastLevel > 0) {
+        return this.routers[this.lastLevel - 1];
+      }
+    }
+    /**
+     * 刷新最后一个路由对象的视图
+     */ refreshLastRouter() {
+      const lastRouter = this.getLastRouter();
+      if (lastRouter) {
+        try {
+          lastRouter.refreshView();
+        } catch (error) {
+          console.error("Failed to refresh last router view:", error);
+        }
+      }
+    }
   }
   Component.register(App);
   class LayerBackdrop extends Component {
