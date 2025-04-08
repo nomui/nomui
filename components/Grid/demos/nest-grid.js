@@ -1,11 +1,31 @@
-define([], function () {
+define(['css!./nested-grid'], function () {
   return {
-    title: '可展开-嵌套 Grid',
+    title: '可展开-其他配置',
     file: 'nest-grid',
     demo: function () {
       return {
         component: 'Grid',
         rowExpandable: {
+          // 自定义展开图标
+          expandedProps: {
+            type: 'up',
+          },
+          collapsedProps: {
+            type: 'down',
+          },
+          expandSingle: true, // 手风琴模式
+          onExpand: ({ sender, row }) => {
+            // 行展开回调
+            sender.element.querySelectorAll('.expand-highlight').forEach((el) => {
+              el.classList.remove('expand-highlight')
+            })
+            row.element.classList.add('expand-highlight')
+            row.expandedRow.element.classList.add('expand-highlight')
+          },
+          onCollapse: (args) => {
+            // 行折叠回调
+            console.log('onCollapse', args)
+          },
           render: ({ rowData }) => {
             return {
               component: 'Grid',
