@@ -570,7 +570,15 @@ class Grid extends Component {
     if (!this.element.style.height && this.overflowAncestor) {
       ele = this.overflowAncestor
     }
-    ele.addEventListener('scroll', () => {
+
+    // Remove previous listener if it exists
+    if (this._lazyLoadScrollHandler) {
+      ele.removeEventListener('scroll', this._lazyLoadScrollHandler)
+      this._lazyLoadScrollHandler = null
+    }
+
+    // Create new handler
+    this._lazyLoadScrollHandler = () => {
       if (ele.scrollHeight - ele.scrollTop === ele.clientHeight) {
         if (this.props.lazyLoadLimit) {
           this._storedData.length > 0 && this._addFromStoredData()
@@ -579,7 +587,18 @@ class Grid extends Component {
           this._addFromRemote()
         }
       }
-    })
+    }
+
+    // Add new listener
+    ele.addEventListener('scroll', this._lazyLoadScrollHandler)
+
+    // Return cleanup function
+    return () => {
+      if (this._lazyLoadScrollHandler) {
+        ele.removeEventListener('scroll', this._lazyLoadScrollHandler)
+        this._lazyLoadScrollHandler = null
+      }
+    }
   }
 
   _addFromRemote() {
