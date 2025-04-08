@@ -4705,6 +4705,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         newMixins = props.mixins;
       }
       this.__inReplace = true;
+      if (!newProps.component) {
+        newProps.component = this.props.component;
+      }
       return Component.create(
         Component.extendProps(newProps, {
           placement: "replace",
