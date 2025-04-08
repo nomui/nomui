@@ -4259,6 +4259,69 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return new Date(currentDate).format("yyyy-MM-dd"); // 格式化日期
     });
   }
+  function checkOverflowAncestor(ele, direction = "vertical") {
+    let currentElement = ele;
+    let overflowAncestor = null;
+    while (currentElement !== null && currentElement instanceof Element) {
+      const style = window.getComputedStyle(currentElement);
+      const hasOverflow =
+        direction === "vertical"
+          ? ["auto", "scroll"].includes(style.overflowY) ||
+            ["auto", "scroll"].includes(style.overflow)
+          : ["auto", "scroll"].includes(style.overflowX) ||
+            ["auto", "scroll"].includes(style.overflow);
+      if (hasOverflow) {
+        overflowAncestor = currentElement;
+        break;
+      }
+      if (currentElement === document.documentElement) {
+        break;
+      }
+      currentElement = currentElement.parentNode;
+    }
+    return overflowAncestor;
+  }
+  const _nomScrollToEndCleanupMap = new WeakMap();
+  /**
+   * 监听元素滚动到底部/右侧的事件
+   * @param {Object} params - 参数对象
+   * @param {Element|Object} params.target - 要监听的目标元素（或包含element属性的对象）
+   * @param {Function} params.callback - 滚动到底部/右侧时触发的回调函数
+   * @param {string} [params.direction='vertical'] - 滚动方向（'vertical'|'horizontal'）
+   * @returns {Function} - 返回清除监听的函数
+   */ function watchScrollToEnd({ target, callback, direction = "vertical" }) {
+    if (target.element) {
+      target = target.element;
+    } // 清理现有监听器
+    if (_nomScrollToEndCleanupMap.has(target)) {
+      _nomScrollToEndCleanupMap.get(target)();
+    }
+    let ele = target; // 只有在目标本身不是滚动容器时才查找祖先
+    const style = window.getComputedStyle(target);
+    const isSelfScrollable =
+      direction === "vertical"
+        ? ["auto", "scroll"].includes(style.overflowY) ||
+          ["auto", "scroll"].includes(style.overflow)
+        : ["auto", "scroll"].includes(style.overflowX) ||
+          ["auto", "scroll"].includes(style.overflow);
+    if (!isSelfScrollable) {
+      ele = checkOverflowAncestor(target, direction) || target;
+    }
+    const handleScroll = () => {
+      const isAtEnd =
+        direction === "vertical"
+          ? Math.abs(ele.scrollHeight - ele.scrollTop - ele.clientHeight) < 1
+          : Math.abs(ele.scrollWidth - ele.scrollLeft - ele.clientWidth) < 1;
+      if (isAtEnd) callback();
+    };
+    ele.addEventListener("scroll", handleScroll);
+    const cleanup = () => {
+      ele.removeEventListener("scroll", handleScroll);
+      _nomScrollToEndCleanupMap.delete(target);
+    };
+    _nomScrollToEndCleanupMap.set(target, cleanup);
+    return cleanup;
+  }
   var index = /*#__PURE__*/ Object.freeze({
     __proto__: null,
     isPlainObject: isPlainObject,
@@ -4293,6 +4356,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     copyToClipboard: copyToClipboard,
     getWeekInYear: getWeekInYear,
     getWeekDates: getWeekDates,
+    watchScrollToEnd: watchScrollToEnd,
     AutoScroll: AutoScrollPlugin,
     MultiDrag: MultiDragPlugin,
     OnSpill: OnSpill,
@@ -22601,8 +22665,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       let ele = this.body.element;
       if (!this.element.style.height && this.overflowAncestor) {
         ele = this.overflowAncestor;
-      }
-      ele.addEventListener("scroll", () => {
+      } // Remove previous listener if it exists
+      if (this._lazyLoadScrollHandler) {
+        ele.removeEventListener("scroll", this._lazyLoadScrollHandler);
+        this._lazyLoadScrollHandler = null;
+      } // Create new handler
+      this._lazyLoadScrollHandler = () => {
         if (ele.scrollHeight - ele.scrollTop === ele.clientHeight) {
           if (this.props.lazyLoadLimit) {
             this._storedData.length > 0 && this._addFromStoredData();
@@ -22611,7 +22679,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             this._addFromRemote();
           }
         }
-      });
+      }; // Add new listener
+      ele.addEventListener("scroll", this._lazyLoadScrollHandler); // Return cleanup function
+      return () => {
+        if (this._lazyLoadScrollHandler) {
+          ele.removeEventListener("scroll", this._lazyLoadScrollHandler);
+          this._lazyLoadScrollHandler = null;
+        }
+      };
     }
     _addFromRemote() {
       const { pageSize, loadData } = this.props.lazyLoadRemote;

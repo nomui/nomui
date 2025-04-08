@@ -5,6 +5,7 @@ define([], function () {
     description:
       '通过配置 `lazyLoadRemote` 实现后端懒加载，loadData方法接受两个参数，pageSize和pageIndex，其中pageIndex由组件自动计算，返回一个promise，promise返回的数组将作为表格数据',
     demo: function () {
+      let loadRef = null
       function generateData({ pageSize }) {
         const num = pageSize || 20
         const authors = ['金庸', '古龙', '梁羽生', '温瑞安']
@@ -46,9 +47,11 @@ define([], function () {
           pageSize: 20,
           loadData: ({ pageSize, pageIndex }) => {
             console.log({ pageSize, pageIndex })
+            loadRef = new nomui.Loading()
             // 由于组件内部无法判断异步请求返回数据格式，这里需要保证返回符合grid.props.data的数组
             return new Promise((resolve) => {
               setTimeout(() => {
+                loadRef.remove()
                 resolve(generateData({ pageSize, pageIndex }))
               }, 1000)
             })
