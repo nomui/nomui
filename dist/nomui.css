@@ -10149,7 +10149,7 @@ textarea .nom-textarea {
   left: 0;
   right: 0;
   position: absolute;
-  z-index: 1;
+  z-index: 10;
 }
 .nom-field.p-plain > .nom-field-label {
   padding: 0;
