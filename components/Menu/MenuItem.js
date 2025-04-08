@@ -24,7 +24,7 @@ class MenuItem extends Component {
       tools: null,
       key: function () {
         return this.props[this.props.keyField]
-      }
+      },
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -62,8 +62,7 @@ class MenuItem extends Component {
     if (this.props.tools) {
       if (isFunction(this.props.tools)) {
         tools = this.props.tools(this, menu)
-      }
-      else if (isPlainObject(this.props.tools)) {
+      } else if (isPlainObject(this.props.tools)) {
         tools = this.props.tools
       }
     }
@@ -174,7 +173,7 @@ class MenuItem extends Component {
     }
   }
 
-  handleSelect() { }
+  handleSelect() {}
 
   _collapse() {
     this.indicator && this.indicator.collapse()
