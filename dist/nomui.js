@@ -19617,6 +19617,43 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   const STORAGE_KEY_GRID_COLS_WIDTH = "NOM_STORAGE_KEY_GRID_COLS_WIDTH"; // 表格固定列的 key
   const STORAGE_KEY_GRID_COLS_FIXED = "NOM_STORAGE_KEY_GRID_COLS_FIXED"; // 分页器缓存分大小的 key
   const STORAGE_KEY_PAGER_CACHEABLE = "NOM_STORAGE_KEY_PAGER_CACHE";
+  class ExpandIcon extends Icon {
+    constructor(props, ...mixins) {
+      const defaults = {};
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      super._created();
+      this.grid = this.props.grid;
+      this.row = this.props.row;
+    }
+    expand() {
+      if (this.grid.props.rowExpandable.expandSingle === true) {
+        if (this.grid.expandedTrItem) {
+          this.grid.expandedTrItem.collapse();
+        }
+        this.grid.expandedTrItem = this;
+      }
+      super.expand();
+      if (this.grid.props.rowExpandable.onExpand) {
+        this.grid._callHandler(this.grid.props.rowExpandable.onExpand, {
+          row: this.row,
+        });
+      }
+    }
+    collapse() {
+      if (this.grid.props.rowExpandable.expandSingle === true) {
+        this.grid.expandedTrItem = null;
+      }
+      super.collapse();
+      if (this.grid.props.rowExpandable.onCollapse) {
+        this.grid._callHandler(this.grid.props.rowExpandable.onCollapse, {
+          row: this.row,
+        });
+      }
+    }
+  }
+  Component.register(ExpandIcon);
   class ColGroupCol extends Component {
     constructor(props, ...mixins) {
       const defaults = { tag: "col", column: {} };
@@ -23350,26 +23387,34 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   row.expandedRow.update({ data: rowData });
                 }
                 return {
-                  component: Icon,
+                  component: ExpandIcon,
                   ref: (c) => {
                     row.expandIndicotorIconRef = c;
                   },
+                  grid: this,
+                  row,
                   hidden: true,
-                  expandable: {
-                    byClick: true,
-                    expanded: rowExpandable.expanded,
-                    expandedProps: { type: "down-circle" },
-                    collapsedProps: { type: "up-circle" },
-                    target: () => {
-                      if (!row.expandedRow) {
-                        row.expandedRow = row.after({
-                          component: ExpandedTr,
-                          data: rowData,
-                        });
-                      }
-                      return row.expandedRow;
+                  expandable: Object.assign(
+                    {},
+                    {
+                      expandedProps: { type: "up-circle" },
+                      collapsedProps: { type: "down-circle" },
                     },
-                  },
+                    rowExpandable,
+                    {
+                      byClick: true,
+                      expanded: rowExpandable.expanded,
+                      target: () => {
+                        if (!row.expandedRow) {
+                          row.expandedRow = row.after({
+                            component: ExpandedTr,
+                            data: rowData,
+                          });
+                        }
+                        return row.expandedRow;
+                      },
+                    }
+                  ),
                 };
               },
             },

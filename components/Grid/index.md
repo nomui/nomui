@@ -253,9 +253,14 @@
 
 表格行可展开
 
-| 参数   | 说明             | 类型                  | 默认值 |
-| ------ | ---------------- | --------------------- | ------ |
-| render | 被展开行渲染函数 | `({rowData,row})=>{}` | -      |
+| 参数           | 说明                 | 类型                  | 默认值                 |
+| -------------- | -------------------- | --------------------- | ---------------------- |
+| expandedProps  | 展开状态图标属性定义 | `object`              | `{type:'up-circle'}`   |
+| collapsedProps | 折叠状态图标属性定义 | `object`              | `{type:'down-circle'}` |
+| render         | 被展开行渲染函数     | `({rowData,row})=>{}` | -                      |
+| expandSingle   | 是否只允许展开一项   | `boolean`             | `false`                |
+| onExpand       | 行展开回调           | `({row})=>{}`         | -                      |
+| onCollapse     | 行展开回调           | `({row})=>{}`         | -                      |
 
 ### rowSortable
 

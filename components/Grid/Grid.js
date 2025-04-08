@@ -1,5 +1,4 @@
 import Component from '../Component/index'
-import Icon from '../Icon/index'
 import Loading from '../Loading/index'
 import ExpandedTr from '../Table/ExpandedTr'
 import {
@@ -19,6 +18,7 @@ import {
   isString,
   localeCompareString,
 } from '../util/index'
+import ExpandIndicator from './expandIndicator'
 import GridBody from './GridBody'
 import GridFooter from './GridFooter'
 import GridHeader from './GridHeader'
@@ -1472,28 +1472,35 @@ class Grid extends Component {
               }
 
               return {
-                component: Icon,
+                component: ExpandIndicator,
                 ref: (c) => {
                   row.expandIndicotorIconRef = c
                 },
+                grid: this,
+                row,
                 hidden: true,
                 expandable: {
-                  byClick: true,
-                  expanded: rowExpandable.expanded,
-                  expandedProps: {
-                    type: 'down-circle',
+                  ...{
+                    expandedProps: {
+                      type: 'up-circle',
+                    },
+                    collapsedProps: {
+                      type: 'down-circle',
+                    },
                   },
-                  collapsedProps: {
-                    type: 'up-circle',
-                  },
-                  target: () => {
-                    if (!row.expandedRow) {
-                      row.expandedRow = row.after({
-                        component: ExpandedTr,
-                        data: rowData,
-                      })
-                    }
-                    return row.expandedRow
+                  ...rowExpandable,
+                  ...{
+                    byClick: true,
+                    expanded: rowExpandable.expanded,
+                    target: () => {
+                      if (!row.expandedRow) {
+                        row.expandedRow = row.after({
+                          component: ExpandedTr,
+                          data: rowData,
+                        })
+                      }
+                      return row.expandedRow
+                    },
                   },
                 },
               }

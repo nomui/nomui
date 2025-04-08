@@ -7692,6 +7692,9 @@ table.nom-table.p-bordered {
 .nom-grid .hidden {
   display: none;
 }
+.nom-grid .nom-expand-icon {
+  cursor: pointer;
+}
 .nom-grid .nom-table-checker-with-toolbar {
   padding-left: 0 !important;
   padding-right: 0 !important;
