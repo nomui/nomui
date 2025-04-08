@@ -716,6 +716,7 @@ class Component {
     if (expandedProps) {
       this.update(expandedProps)
     }
+
     isFunction(this._expand) && this._expand()
   }
 
