@@ -248,6 +248,9 @@ class Component {
     if (!newProps.component) {
       newProps.component = this.props.component
     }
+    if (!newProps.ref) {
+      newProps.ref = this.props.ref
+    }
     return Component.create(
       Component.extendProps(newProps, { placement: 'replace', reference: this }),
       ...newMixins,

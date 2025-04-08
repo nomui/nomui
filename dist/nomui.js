@@ -4772,6 +4772,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (!newProps.component) {
         newProps.component = this.props.component;
       }
+      if (!newProps.ref) {
+        newProps.ref = this.props.ref;
+      }
       return Component.create(
         Component.extendProps(newProps, {
           placement: "replace",
