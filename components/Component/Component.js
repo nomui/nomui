@@ -8,6 +8,8 @@ import {
   isString,
   normalizeKey,
 } from '../util/index'
+
+import { getAncestorContexts, nomComponentStack, nomGlobalContexts } from '../util/context-manager'
 import ComponentDescriptor from './ComponentDescriptor'
 
 const components = {}
@@ -60,6 +62,9 @@ class Component {
     mixins && this._mixin(mixins)
 
     this._setKey()
+
+    this._context = {}
+    this._handleContext(props)
 
     isFunction(this._create) && this._create()
 
@@ -138,7 +143,7 @@ class Component {
     }
   }
 
-  _created() { }
+  _created() {}
 
   _setKey() {
     if (this.props.key) {
@@ -169,7 +174,7 @@ class Component {
     this._setStatusProps()
   }
 
-  _config() { }
+  _config() {}
 
   render() {
     try {
@@ -214,7 +219,7 @@ class Component {
     this.firstRender = false
   }
 
-  _rendered() { }
+  _rendered() {}
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
   remove() {
@@ -357,6 +362,15 @@ class Component {
   _removeCore() {
     this.props && isFunction(this.props._remove) && this.props._remove.call(this, this)
 
+    // 清理 context 相关
+    if (this._context) {
+      nomGlobalContexts.delete(this.key)
+      const index = nomComponentStack.indexOf(this)
+      if (index !== -1) {
+        nomComponentStack.splice(index, 1)
+      }
+    }
+
     let el = this.element
     if (el) {
       this.emptyChildren()
@@ -386,7 +400,7 @@ class Component {
     return el
   }
 
-  _remove() { }
+  _remove() {}
 
   _callMixin(hookType) {
     const mixinsList = [...MIXINS, ...this.mixins]
@@ -1195,6 +1209,55 @@ class Component {
     }
   }
 
+  // 处理 context 相关逻辑
+  _handleContext(props) {
+    if (props.context) {
+      // 将当前组件的 context 存入全局 Map
+      this._context = isFunction(props.context) ? props.context.call(this, this) : props.context
+
+      nomGlobalContexts.set(this.key, this._context)
+      nomComponentStack.push(this)
+    }
+  }
+
+  // 获取指定 context 值（从当前组件向上查找）
+  getContext(contextKey) {
+    if (this._context && this._context[contextKey] !== undefined) {
+      return this._context[contextKey]
+    }
+
+    const ancestors = getAncestorContexts(this, contextKey)
+    if (ancestors.length > 0) {
+      return ancestors[0][contextKey]
+    }
+
+    return undefined
+  }
+
+  // 获取所有匹配的 context（从当前组件向上查找）
+  getAllContexts(contextKey) {
+    const result = []
+
+    // 自身 context
+    if (this._context && this._context[contextKey] !== undefined) {
+      result.push({
+        component: this,
+        context: this._context[contextKey],
+      })
+    }
+
+    // 祖先 context
+    const ancestors = getAncestorContexts(this, contextKey)
+    ancestors.forEach((context) => {
+      result.push({
+        component: this, // 注意：这里需要改进以获取实际拥有该 context 的组件
+        context: context[contextKey],
+      })
+    })
+
+    return result
+  }
+
   _trigger(eventName) {
     const event = new Event(eventName)
     this.element.dispatchEvent(event)
@@ -1250,6 +1313,31 @@ class Component {
 
   static mixin(mixin) {
     MIXINS.push(mixin)
+  }
+
+  // 静态方法：根据 key 获取组件 context
+  static getContextByKey(key) {
+    return nomGlobalContexts.get(key)
+  }
+
+  // 静态方法：获取当前组件栈
+  static getComponentStack() {
+    return [...nomComponentStack]
+  }
+
+  // 静态方法：查找最近的包含指定 context 的组件
+  static findNearestContext(key, contextKey) {
+    for (let i = nomComponentStack.length - 1; i >= 0; i--) {
+      const component = nomComponentStack[i]
+      const context = nomGlobalContexts.get(component.key)
+      if (context && (!contextKey || context[contextKey] !== undefined)) {
+        return {
+          component,
+          context: contextKey ? context[contextKey] : context,
+        }
+      }
+    }
+    return null
   }
 }
 
