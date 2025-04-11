@@ -9,7 +9,12 @@ import {
   normalizeKey,
 } from '../util/index'
 
-import { getAncestorContexts, nomComponentStack, nomGlobalContexts } from '../util/context-manager'
+import {
+  cleanupStaleContexts,
+  nomComponentStack,
+  nomGlobalContexts,
+  registerComponentContext,
+} from '../util/context-manager'
 import ComponentDescriptor from './ComponentDescriptor'
 
 const components = {}
@@ -63,7 +68,7 @@ class Component {
 
     this._setKey()
 
-    this._context = {}
+    this._componentContext = {}
     this._handleContext(props)
 
     isFunction(this._create) && this._create()
@@ -359,17 +364,22 @@ class Component {
     }
   }
 
-  _removeCore() {
-    this.props && isFunction(this.props._remove) && this.props._remove.call(this, this)
-
-    // 清理 context 相关
-    if (this._context) {
-      nomGlobalContexts.delete(this.key)
-      const index = nomComponentStack.indexOf(this)
+  _cleanupUnusedContexts() {
+    // 清理当前组件的context
+    if (this._componentContext) {
+      nomGlobalContexts.delete(this)
+      const index = nomComponentStack.findIndex((ref) => ref.deref() === this)
       if (index !== -1) {
         nomComponentStack.splice(index, 1)
       }
     }
+    cleanupStaleContexts() // 清理全局context当中组件元素已经不存在于文档上的部分
+  }
+
+  _removeCore() {
+    this._cleanupUnusedContexts() // 清理context
+
+    this.props && isFunction(this.props._remove) && this.props._remove.call(this, this)
 
     let el = this.element
     if (el) {
@@ -1212,50 +1222,33 @@ class Component {
   // 处理 context 相关逻辑
   _handleContext(props) {
     if (props.context) {
-      // 将当前组件的 context 存入全局 Map
-      this._context = isFunction(props.context) ? props.context.call(this, this) : props.context
+      this._componentContext = isFunction(props.context)
+        ? props.context.call(this, this)
+        : props.context
 
-      nomGlobalContexts.set(this.key, this._context)
-      nomComponentStack.push(this)
+      // 使用新的注册方法
+      registerComponentContext(this, this._componentContext)
     }
   }
 
   // 获取指定 context 值（从当前组件向上查找）
   getContext(contextKey) {
-    if (this._context && this._context[contextKey] !== undefined) {
-      return this._context[contextKey]
+    // 1. 检查自身 Context
+    if (this._componentContext?.[contextKey] !== undefined) {
+      return this._componentContext[contextKey]
     }
 
-    const ancestors = getAncestorContexts(this, contextKey)
-    if (ancestors.length > 0) {
-      return ancestors[0][contextKey]
+    // 2. 从祖先组件查找
+    let current = this.parent
+    while (current) {
+      const context = nomGlobalContexts.get(current)
+      if (context?.[contextKey] !== undefined) {
+        return context[contextKey]
+      }
+      current = current.parent
     }
 
     return undefined
-  }
-
-  // 获取所有匹配的 context（从当前组件向上查找）
-  getAllContexts(contextKey) {
-    const result = []
-
-    // 自身 context
-    if (this._context && this._context[contextKey] !== undefined) {
-      result.push({
-        component: this,
-        context: this._context[contextKey],
-      })
-    }
-
-    // 祖先 context
-    const ancestors = getAncestorContexts(this, contextKey)
-    ancestors.forEach((context) => {
-      result.push({
-        component: this, // 注意：这里需要改进以获取实际拥有该 context 的组件
-        context: context[contextKey],
-      })
-    })
-
-    return result
   }
 
   _trigger(eventName) {
@@ -1326,15 +1319,17 @@ class Component {
   }
 
   // 静态方法：查找最近的包含指定 context 的组件
-  static findNearestContext(key, contextKey) {
+  static findNearestContext(key) {
     for (let i = nomComponentStack.length - 1; i >= 0; i--) {
-      const component = nomComponentStack[i]
-      const context = nomGlobalContexts.get(component.key)
-      if (context && (!contextKey || context[contextKey] !== undefined)) {
-        return {
-          component,
-          context: contextKey ? context[contextKey] : context,
-        }
+      const componentRef = nomComponentStack[i]
+      const component = componentRef.deref()
+      if (!component) {
+        nomComponentStack.splice(i, 1) // 自动清理无效引用
+        continue
+      }
+      const context = nomGlobalContexts.get(component)
+      if (context && context[key]) {
+        return context[key]
       }
     }
     return null
