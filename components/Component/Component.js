@@ -8,6 +8,13 @@ import {
   isString,
   normalizeKey,
 } from '../util/index'
+
+import {
+  cleanupStaleContexts,
+  nomComponentStack,
+  nomGlobalContexts,
+  registerComponentContext,
+} from '../util/context-manager'
 import ComponentDescriptor from './ComponentDescriptor'
 
 const components = {}
@@ -60,6 +67,9 @@ class Component {
     mixins && this._mixin(mixins)
 
     this._setKey()
+
+    this._componentContext = {}
+    this._handleContext(props)
 
     isFunction(this._create) && this._create()
 
@@ -138,7 +148,7 @@ class Component {
     }
   }
 
-  _created() { }
+  _created() {}
 
   _setKey() {
     if (this.props.key) {
@@ -169,7 +179,7 @@ class Component {
     this._setStatusProps()
   }
 
-  _config() { }
+  _config() {}
 
   render() {
     try {
@@ -214,7 +224,7 @@ class Component {
     this.firstRender = false
   }
 
-  _rendered() { }
+  _rendered() {}
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
   remove() {
@@ -354,7 +364,21 @@ class Component {
     }
   }
 
+  _cleanupUnusedContexts() {
+    // 清理当前组件的context
+    if (this._componentContext) {
+      nomGlobalContexts.delete(this)
+      const index = nomComponentStack.findIndex((ref) => ref.deref() === this)
+      if (index !== -1) {
+        nomComponentStack.splice(index, 1)
+      }
+    }
+    cleanupStaleContexts() // 清理全局context当中组件元素已经不存在于文档上的部分
+  }
+
   _removeCore() {
+    this._cleanupUnusedContexts() // 清理context
+
     this.props && isFunction(this.props._remove) && this.props._remove.call(this, this)
 
     let el = this.element
@@ -386,7 +410,7 @@ class Component {
     return el
   }
 
-  _remove() { }
+  _remove() {}
 
   _callMixin(hookType) {
     const mixinsList = [...MIXINS, ...this.mixins]
@@ -1195,6 +1219,68 @@ class Component {
     }
   }
 
+  // 处理 context 相关逻辑
+  _handleContext(props) {
+    if (props.context) {
+      this._componentContext = isFunction(props.context)
+        ? props.context.call(this, this)
+        : props.context
+
+      // 使用新的注册方法
+      registerComponentContext(this, this._componentContext)
+    }
+  }
+
+  /**
+   * 获取指定context值（支持多字段查询）
+   * @param {string|string[]} contextKeys 要查询的字段（单个字符串或数组）
+   * @returns {any|Object} 单个字段返回对应值，多个字段返回键值对对象
+   */
+  getContext(contextKeys) {
+    // 标准化输入参数（支持字符串或数组）
+    const keys = Array.isArray(contextKeys) ? contextKeys : [contextKeys]
+    const result = {}
+
+    // 1. 检查自身Context
+    for (const key of keys) {
+      if (this._componentContext && this._componentContext[key] !== undefined) {
+        result[key] = this._componentContext[key]
+      }
+    }
+
+    // 如果已经找到全部需要的key，提前返回
+    if (Object.keys(result).length === keys.length) {
+      return Array.isArray(contextKeys) ? result : result[contextKeys]
+    }
+
+    const visited = new Set() // 防止循环引用
+    let current = this.parent
+
+    while (current && !visited.has(current)) {
+      visited.add(current)
+
+      // 检查当前组件的context
+      const context = nomGlobalContexts.get(current)
+      if (context) {
+        for (const key of keys) {
+          if (result[key] === undefined && context[key] !== undefined) {
+            result[key] = context[key]
+
+            // 如果已经找到全部需要的key，提前返回
+            if (Object.keys(result).length === keys.length) {
+              return Array.isArray(contextKeys) ? result : result[contextKeys]
+            }
+          }
+        }
+      }
+
+      // Popup以及其派生组件，向上查找其opener
+      current = current.opener || current.parent
+    }
+
+    return Array.isArray(contextKeys) ? result : result[contextKeys]
+  }
+
   _trigger(eventName) {
     const event = new Event(eventName)
     this.element.dispatchEvent(event)
@@ -1250,6 +1336,33 @@ class Component {
 
   static mixin(mixin) {
     MIXINS.push(mixin)
+  }
+
+  // 静态方法：根据 key 获取组件 context
+  static getContextByKey(key) {
+    return nomGlobalContexts.get(key)
+  }
+
+  // 静态方法：获取当前组件栈
+  static getComponentStack() {
+    return [...nomComponentStack]
+  }
+
+  // 静态方法：查找最近的包含指定 context 的组件
+  static findNearestContext(key) {
+    for (let i = nomComponentStack.length - 1; i >= 0; i--) {
+      const componentRef = nomComponentStack[i]
+      const component = componentRef.deref()
+      if (!component) {
+        nomComponentStack.splice(i, 1) // 自动清理无效引用
+        continue
+      }
+      const context = nomGlobalContexts.get(component)
+      if (context && context[key]) {
+        return context[key]
+      }
+    }
+    return null
   }
 }
 

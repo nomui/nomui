@@ -4534,6 +4534,52 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     } // trigger will return false if one of the callbacks return false
     return pass;
   }
+  const nomGlobalContexts = new WeakMap();
+  const nomComponentStack = [];
+  /**
+   * 清理不存在于DOM树中的组件context
+   * 使用防抖避免频繁调用
+   */ let cleanupDebounce;
+  function cleanupStaleContexts() {
+    clearTimeout(cleanupDebounce);
+    cleanupDebounce = setTimeout(() => {
+      _performCleanup();
+    }, 500);
+  }
+  /**
+   * 实际执行清理的方法
+   */ function _performCleanup() {
+    // 遍历组件栈(从后往前)
+    for (let i = nomComponentStack.length - 1; i >= 0; i--) {
+      const componentRef = nomComponentStack[i];
+      const component = componentRef.deref(); // 获取组件实例
+      // 检查组件是否应该被清理
+      if (!component || !_isComponentInDOM(component)) {
+        // 从全局context中移除
+        if (component) {
+          nomGlobalContexts.delete(component);
+        } // 从栈中移除
+        nomComponentStack.splice(i, 1);
+      }
+    }
+  }
+  /**
+   * 检查组件是否仍在DOM树中
+   */ function _isComponentInDOM(component) {
+    try {
+      // 检查组件是否有element并且仍在文档中
+      return component.element && document.contains(component.element);
+    } catch (e) {
+      // 某些情况下可能会抛出异常，视为不在DOM中
+      return false;
+    }
+  }
+  /**
+   * 注册新组件的context
+   */ function registerComponentContext(component, context) {
+    nomGlobalContexts.set(component, context); // eslint-disable-next-line no-undef
+    nomComponentStack.push(new WeakRef(component));
+  }
   class ComponentDescriptor {
     constructor(tagOrComponent, props, children, mixins) {
       this.tagOrComponent = tagOrComponent;
@@ -4598,6 +4644,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._propStyleClasses = [];
       mixins && this._mixin(mixins);
       this._setKey();
+      this._componentContext = {};
+      this._handleContext(props);
       isFunction(this._create) && this._create();
       this.referenceComponent =
         this.props.reference instanceof Component
@@ -4897,7 +4945,21 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.appendChild(children);
       }
     }
+    _cleanupUnusedContexts() {
+      // 清理当前组件的context
+      if (this._componentContext) {
+        nomGlobalContexts.delete(this);
+        const index = nomComponentStack.findIndex(
+          (ref) => ref.deref() === this
+        );
+        if (index !== -1) {
+          nomComponentStack.splice(index, 1);
+        }
+      }
+      cleanupStaleContexts(); // 清理全局context当中组件元素已经不存在于文档上的部分
+    }
     _removeCore() {
+      this._cleanupUnusedContexts(); // 清理context
       this.props &&
         isFunction(this.props._remove) &&
         this.props._remove.call(this, this);
@@ -5658,6 +5720,54 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.element.removeEventListener(event, callback, false);
         }
       }
+    } // 处理 context 相关逻辑
+    _handleContext(props) {
+      if (props.context) {
+        this._componentContext = isFunction(props.context)
+          ? props.context.call(this, this)
+          : props.context; // 使用新的注册方法
+        registerComponentContext(this, this._componentContext);
+      }
+    }
+    /**
+     * 获取指定context值（支持多字段查询）
+     * @param {string|string[]} contextKeys 要查询的字段（单个字符串或数组）
+     * @returns {any|Object} 单个字段返回对应值，多个字段返回键值对对象
+     */ getContext(contextKeys) {
+      // 标准化输入参数（支持字符串或数组）
+      const keys = Array.isArray(contextKeys) ? contextKeys : [contextKeys];
+      const result = {}; // 1. 检查自身Context
+      for (const key of keys) {
+        if (
+          this._componentContext &&
+          this._componentContext[key] !== undefined
+        ) {
+          result[key] = this._componentContext[key];
+        }
+      } // 如果已经找到全部需要的key，提前返回
+      if (Object.keys(result).length === keys.length) {
+        return Array.isArray(contextKeys) ? result : result[contextKeys];
+      }
+      const visited = new Set(); // 防止循环引用
+      let current = this.parent;
+      while (current && !visited.has(current)) {
+        visited.add(current); // 检查当前组件的context
+        const context = nomGlobalContexts.get(current);
+        if (context) {
+          for (const key of keys) {
+            if (result[key] === undefined && context[key] !== undefined) {
+              result[key] = context[key]; // 如果已经找到全部需要的key，提前返回
+              if (Object.keys(result).length === keys.length) {
+                return Array.isArray(contextKeys)
+                  ? result
+                  : result[contextKeys];
+              }
+            }
+          }
+        } // Popup以及其派生组件，向上查找其opener
+        current = current.opener || current.parent;
+      }
+      return Array.isArray(contextKeys) ? result : result[contextKeys];
     }
     _trigger(eventName) {
       const event = new Event(eventName);
@@ -5705,6 +5815,27 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     static mixin(mixin) {
       MIXINS.push(mixin);
+    } // 静态方法：根据 key 获取组件 context
+    static getContextByKey(key) {
+      return nomGlobalContexts.get(key);
+    } // 静态方法：获取当前组件栈
+    static getComponentStack() {
+      return [...nomComponentStack];
+    } // 静态方法：查找最近的包含指定 context 的组件
+    static findNearestContext(key) {
+      for (let i = nomComponentStack.length - 1; i >= 0; i--) {
+        const componentRef = nomComponentStack[i];
+        const component = componentRef.deref();
+        if (!component) {
+          nomComponentStack.splice(i, 1); // 自动清理无效引用
+          continue;
+        }
+        const context = nomGlobalContexts.get(component);
+        if (context && context[key]) {
+          return context[key];
+        }
+      }
+      return null;
     }
   }
   Component.normalizeTemplateProps = function (props) {

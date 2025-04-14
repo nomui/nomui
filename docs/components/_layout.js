@@ -16,24 +16,24 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
       const doc_suffix = '&tab=docs'
       return Array.isArray(cmps)
         ? cmps.reduce((prevs, { text, subtext, url, items }) => {
-          if (url) {
-            return [
-              ...prevs,
-              {
-                key: text,
-                text: subtext,
-                search: `${text}${subtext}`,
-                url: `${url}${doc_suffix}`,
-              },
-            ]
-          }
+            if (url) {
+              return [
+                ...prevs,
+                {
+                  key: text,
+                  text: subtext,
+                  search: `${text}${subtext}`,
+                  url: `${url}${doc_suffix}`,
+                },
+              ]
+            }
 
-          if (items) {
-            return [...prevs, ...getAllDocs(items)]
-          }
+            if (items) {
+              return [...prevs, ...getAllDocs(items)]
+            }
 
-          return [...prevs]
-        }, [])
+            return [...prevs]
+          }, [])
         : []
     }
 
@@ -119,6 +119,12 @@ define(['docs/helper.js'], function ({ DOC_URL_KEY }) {
                           url: '#!components!index?type=Component&cat=behavior/expandable',
                         },
                       ],
+                    },
+                    {
+                      text: 'Contexts',
+                      subtext: '上下文管理',
+                      id: 'Component/contexts',
+                      url: '#!components!index?type=Component&cat=contexts',
                     },
                   ],
                 },
