@@ -39,7 +39,7 @@ define([], function () {
             fields: [
               {
                 component: 'StaticText',
-                value: '组件2(未设置theme)',
+                value: '组件2(未设置上下文)',
               },
               {
                 component: 'Button',
@@ -58,7 +58,7 @@ define([], function () {
             fields: [
               {
                 component: 'StaticText',
-                value: '组件3(有popup)',
+                value: '组件3(点我弹出popup)',
                 context: {
                   lang: 'en',
                 },
@@ -86,17 +86,6 @@ define([], function () {
                 },
               },
             ],
-          },
-          {
-            component: 'StaticText',
-            value: '1',
-            onRendered: ({ inst }) => {
-              if (inst.firstRender) {
-                inst.update({
-                  value: '2',
-                })
-              }
-            },
           },
         ],
       }
