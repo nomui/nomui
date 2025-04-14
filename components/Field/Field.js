@@ -39,7 +39,7 @@ class Field extends Component {
     if (this.parent && this.parent.__isControl === true) {
       this.group = this.parent.field
     }
-    this.rootField = this.group === null ? this : this.group.rootField
+    this.rootField = this.group === null || this.props.asRootField ? this : this.group.rootField
     this.rules = []
   }
 

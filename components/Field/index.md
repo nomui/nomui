@@ -21,6 +21,7 @@
 | required | 是否必填 | `boolean` | - |
 | disabled | 是否禁用 | `boolean` | - |
 | compact | 一种界面显示更加紧凑的模式 | `boolean` | - |
+| asRootField | 是否将当前字段视作根字段（非特殊情况不使用次配置） | `boolean` | - |
 | readonly | 是否只读(仅禁止用户手动输入，仍旧允许通过 setValue 方法赋值) | `boolean` | - |
 | control | 关联的表单元素项 | `Props` | - |
 | actions | 关联的表单元素项的操作按钮 | `Props[]` | - |
