@@ -1231,24 +1231,54 @@ class Component {
     }
   }
 
-  // 获取指定 context 值（从当前组件向上查找）
-  getContext(contextKey) {
-    // 1. 检查自身 Context
-    if (this._componentContext?.[contextKey] !== undefined) {
-      return this._componentContext[contextKey]
-    }
+  /**
+   * 获取指定context值（支持多字段查询）
+   * @param {string|string[]} contextKeys 要查询的字段（单个字符串或数组）
+   * @returns {any|Object} 单个字段返回对应值，多个字段返回键值对对象
+   */
+  getContext(contextKeys) {
+    // 标准化输入参数（支持字符串或数组）
+    const keys = Array.isArray(contextKeys) ? contextKeys : [contextKeys]
+    const result = {}
 
-    // 2. 从祖先组件查找
-    let current = this.parent
-    while (current) {
-      const context = nomGlobalContexts.get(current)
-      if (context?.[contextKey] !== undefined) {
-        return context[contextKey]
+    // 1. 检查自身Context
+    for (const key of keys) {
+      if (this._componentContext && this._componentContext[key] !== undefined) {
+        result[key] = this._componentContext[key]
       }
-      current = current.parent
     }
 
-    return undefined
+    // 如果已经找到全部需要的key，提前返回
+    if (Object.keys(result).length === keys.length) {
+      return Array.isArray(contextKeys) ? result : result[contextKeys]
+    }
+
+    const visited = new Set() // 防止循环引用
+    let current = this.parent
+
+    while (current && !visited.has(current)) {
+      visited.add(current)
+
+      // 检查当前组件的context
+      const context = nomGlobalContexts.get(current)
+      if (context) {
+        for (const key of keys) {
+          if (result[key] === undefined && context[key] !== undefined) {
+            result[key] = context[key]
+
+            // 如果已经找到全部需要的key，提前返回
+            if (Object.keys(result).length === keys.length) {
+              return Array.isArray(contextKeys) ? result : result[contextKeys]
+            }
+          }
+        }
+      }
+
+      // Popup以及其派生组件，向上查找其opener
+      current = current.opener || current.parent
+    }
+
+    return Array.isArray(contextKeys) ? result : result[contextKeys]
   }
 
   _trigger(eventName) {

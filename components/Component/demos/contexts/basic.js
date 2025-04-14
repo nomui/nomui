@@ -24,10 +24,10 @@ define([], function () {
               },
               {
                 component: 'Button',
+                text: '获取上下文:theme & lang',
                 type: 'link',
-                text: '获取上下文:theme',
                 onClick: ({ sender }) => {
-                  const context = sender.getContext('theme')
+                  const context = sender.getContext(['theme', 'lang'])
                   console.log(context)
                 },
               },
@@ -43,14 +43,60 @@ define([], function () {
               },
               {
                 component: 'Button',
-                text: '获取上下文:theme',
+                text: '获取上下文:theme & lang',
                 type: 'link',
                 onClick: ({ sender }) => {
-                  const context = sender.getContext('theme')
+                  const context = sender.getContext(['theme', 'lang'])
                   console.log(context)
                 },
               },
             ],
+          },
+          {
+            component: 'Group',
+            inline: true,
+            fields: [
+              {
+                component: 'StaticText',
+                value: '组件3(有popup)',
+                context: {
+                  lang: 'en',
+                },
+                popup: {
+                  children: {
+                    component: 'Flex',
+                    align: 'center',
+                    cols: [
+                      {
+                        component: 'StaticText',
+                        value:
+                          'Popup会先查找自身祖先组件的上下文，没有则从自己触发组件开始向上查找',
+                      },
+                      {
+                        component: 'Button',
+                        text: '获取上下文:theme & lang',
+                        type: 'link',
+                        onClick: ({ sender }) => {
+                          const context = sender.getContext(['theme', 'lang'])
+                          console.log(context)
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+            ],
+          },
+          {
+            component: 'StaticText',
+            value: '1',
+            onRendered: ({ inst }) => {
+              if (inst.firstRender) {
+                inst.update({
+                  value: '2',
+                })
+              }
+            },
           },
         ],
       }
