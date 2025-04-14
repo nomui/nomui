@@ -50,6 +50,8 @@ Component 组件是所有组件的基类组件，它定义了描述 html 元素�
 | unselect | 取消选中 | `({triggerSelect, triggerSelectionChange}) => {}` |
 | expand | 展开 | `() => {}` |
 | collapse | 折叠 | `() => {}` |
+| getContext | 获取上下文 | `() => {}` |
+| collapse | 折叠 | `() => {}` |
 
 ### attrs props
 
@@ -148,3 +150,7 @@ Component 组件是所有组件的基类组件，它定义了描述 html 元素�
 | width   | 宽度                                                   | `number`  | -      |
 | height  | 高度                                                   | `number`  | -      |
 | loading | 是否显示加载动画，为 true 时占位容器至少会占据 1rem 高 | `boolean` | -      |
+
+### context props
+
+每个组件可以传入 context，context 是一个对象，可以配置任意属性，例如 context:{theme:'light'}，当对一个组件实例调用 getContext 方法时，会从它以及它父级节点往上查找，返回第一个符合参数条件的 context，此配置通常用于避免逐层传递参数的麻烦。注意如果组件存在于 Modal 或者 Layer 等浮窗元素，它无法访问文档上不属于浮窗的 DOM 节点的 context。此时仍然需要在创建浮窗时将需要的 context 作为参数传给 Modal 或者 Layer。
