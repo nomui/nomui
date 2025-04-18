@@ -1,14 +1,13 @@
 .nom-tree-select {
-  &.p-label-align-right>.nom-field-label+.nom-field-content {
+  &.p-label-align-right > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
-  &.p-label-align-left>.nom-field-label+.nom-field-content {
+  &.p-label-align-left > .nom-field-label + .nom-field-content {
     width: 0;
   }
 
-
-  >.nom-field-content {
+  > .nom-field-content {
     .nom-control {
       position: relative;
       height: 100%;
@@ -86,12 +85,14 @@
 .nom-tree-select-popup {
   padding: 5px 5px;
 
-  >.nom-layout {
+  > .nom-layout {
     max-height: 300px;
   }
 
   .nom-tree {
-    .nom-tree-node:not(.s-disabled).filter-node>.nom-tree-node-content .nom-tree-node-content-text {
+    .nom-tree-node:not(.s-disabled).filter-node
+      > .nom-tree-node-content
+      .nom-tree-node-content-text {
       color: inherit;
       .nom-preset-bold;
     }
@@ -134,9 +135,9 @@
 .nom-tree-select-content {
   display: flex;
   flex-wrap: wrap;
-  gap:2.5px 0;
+  gap: 2.5px 0;
   .nom-tag.p-size-xs {
-    padding: .11rem .25rem;
+    padding: 0.11rem 0.25rem;
     background: var(--nom-select-selected-item-bg);
     border: 1px solid var(--nom-select-selected-item-border-color);
     border-radius: var(--nom-border-radius);
@@ -147,6 +148,16 @@
     .nom-tag-remove {
       cursor: pointer;
     }
+  }
+}
+
+.p-inline > .nom-field-content > .nom-control > .nom-tree-select {
+  &.p-label-align-right > .nom-field-label + .nom-field-content {
+    width: 100%;
+  }
+
+  &.p-label-align-left > .nom-field-label + .nom-field-content {
+    width: 100%;
   }
 }
 
@@ -169,8 +180,6 @@
   -webkit-animation: nom-tree-select-keyframe-bottom-hide 0.16s linear forwards;
   animation: nom-tree-select-keyframe-bottom-hide 0.16s linear forwards;
 }
-
-
 
 @-webkit-keyframes nom-tree-select-keyframe-top-show {
   0% {
