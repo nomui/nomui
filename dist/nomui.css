@@ -9431,6 +9431,12 @@ textarea .nom-textarea {
   transform: translate(-50%, -50%);
   content: '\E632';
 }
+.p-inline > .nom-field-content > .nom-control > .nom-select.p-label-align-right > .nom-field-label + .nom-field-content {
+  width: 100%;
+}
+.p-inline > .nom-field-content > .nom-control > .nom-select.p-label-align-left > .nom-field-label + .nom-field-content {
+  width: 100%;
+}
 .nom-select-animate-top-show {
   -webkit-animation: nom-select-keyframe-top-show 0.16s linear forwards;
   animation: nom-select-keyframe-top-show 0.16s linear forwards;
@@ -9822,6 +9828,12 @@ textarea .nom-textarea {
   font-size: 1rem;
   line-height: 1.42857143rem;
   color: var(--nom-input-color);
+}
+.p-inline > .nom-field-content > .nom-control > .nom-static-text.p-label-align-right > .nom-field-label + .nom-field-content {
+  width: 100%;
+}
+.p-inline > .nom-field-content > .nom-control > .nom-static-text.p-label-align-left > .nom-field-label + .nom-field-content {
+  width: 100%;
 }
 .nom-date-picker-popup {
   overflow: hidden;
@@ -10956,6 +10968,12 @@ textarea .nom-textarea {
 .nom-tree-select-content .nom-tag.p-size-xs .nom-tag-remove {
   cursor: pointer;
 }
+.p-inline > .nom-field-content > .nom-control > .nom-tree-select.p-label-align-right > .nom-field-label + .nom-field-content {
+  width: 100%;
+}
+.p-inline > .nom-field-content > .nom-control > .nom-tree-select.p-label-align-left > .nom-field-label + .nom-field-content {
+  width: 100%;
+}
 .nom-tree-select-animate-top-show {
   -webkit-animation: nom-tree-select-keyframe-top-show 0.16s linear forwards;
   animation: nom-tree-select-keyframe-top-show 0.16s linear forwards;
@@ -11703,6 +11721,12 @@ textarea .nom-textarea {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.p-inline > .nom-field-content > .nom-control > .nom-cascader.p-label-align-right > .nom-field-label + .nom-field-content {
+  width: 100%;
+}
+.p-inline > .nom-field-content > .nom-control > .nom-cascader.p-label-align-left > .nom-field-label + .nom-field-content {
+  width: 100%;
 }
 .nom-cascader-animate-top-show {
   -webkit-animation: nom-cascader-keyframe-top-show 0.16s linear forwards;
