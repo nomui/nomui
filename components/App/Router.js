@@ -150,6 +150,18 @@ class Router extends Component {
     if (isFunction(routerProps.view)) {
       routerProps.view = routerProps.view.call(this)
     }
+    if (routerProps.view && routerProps.view.then) {
+      routerProps.view.then((result) => {
+        routerProps.view = result
+        this._renderView(routerProps, defaultPath, element, that)
+      })
+    }
+    else {
+      this._renderView(routerProps, defaultPath, element, that)
+    }
+  }
+
+  _renderView(routerProps, defaultPath, element, that) {
     const viewOptions = Component.extendProps(routerProps.view, {
       reference: element,
       placement: 'replace',
