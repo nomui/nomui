@@ -31731,6 +31731,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 ],
               });
             },
+            _rendered: function () {
+              if (this.props.isOverTag) {
+                this.element
+                  .closest(".nom-list-item-wrapper")
+                  .classList.add("s-hidden");
+              } else {
+                this.element
+                  .closest(".nom-list-item-wrapper")
+                  .classList.remove("s-hidden");
+              }
+            },
           },
           _config() {
             this.setProps({
