@@ -11735,7 +11735,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (icon) {
         return;
       }
-      const childrenWidth = this.element.lastChild.offsetWidth;
+      if (!this.element.querySelector(".nom-avatar-string")) {
+        return;
+      }
+      const childrenWidth = this.element.querySelector(".nom-avatar-string")
+        .offsetWidth;
       const nodeWidth = this.element.offsetWidth;
       if (childrenWidth !== 0 && nodeWidth !== 0) {
         if (gap * 2 < nodeWidth) {
@@ -11744,16 +11748,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               ? (nodeWidth - gap * 2) / childrenWidth
               : 1;
           const transformString = `scale(${scale}) translateX(-50%)`;
-          const child = this.children[this.children.length - 1];
-          child.update({
-            attrs: {
-              style: {
-                "-ms-transform": transformString,
-                "-webkit-transform": transformString,
-                transform: transformString,
+          this.textRef &&
+            this.textRef.update({
+              attrs: {
+                style: {
+                  "-ms-transform": transformString,
+                  "-webkit-transform": transformString,
+                  transform: transformString,
+                },
               },
-            },
-          });
+            });
         }
       }
     }
