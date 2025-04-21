@@ -10925,7 +10925,8 @@ textarea .nom-textarea {
 }
 .nom-tree-select-overtag-trigger {
   border: none !important;
-  background: transparent;
+  background: transparent !important;
+  color: inherit !important;
   cursor: default;
 }
 .nom-tree-select-extra-tags {
