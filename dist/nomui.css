@@ -9377,7 +9377,7 @@ textarea .nom-textarea {
   overflow-x: hidden;
 }
 .nom-select-popup .nom-select-popup-extra-tools {
-  min-height: 0 !important;
+  min-height: 3rem !important;
   padding: 0.5rem;
 }
 .nom-select-popup .nom-select-popup-empty-tip {
