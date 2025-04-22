@@ -19131,13 +19131,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                     this.props.column.toolbar.placement === "both"
                   ),
                 },
-                children: this.props.column.toolbar.render({
-                  cell: this,
-                  row: this.tr,
-                  cellData: this.props.data,
-                  rowData: this.tr.props.data,
-                  index: this.tr.props.index,
-                }),
+                children: Object.assign(
+                  { forceVisible: true },
+                  this.props.column.toolbar.render({
+                    cell: this,
+                    row: this.tr,
+                    cellData: this.props.data,
+                    rowData: this.tr.props.data,
+                    index: this.tr.props.index,
+                  })
+                ),
               },
               { children: children },
             ],
@@ -19161,13 +19164,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                     this.props.column.toolbar.placement === "both"
                   ),
                 },
-                children: this.props.column.toolbar.render({
-                  cell: this,
-                  row: this.tr,
-                  cellData: this.props.data,
-                  rowData: this.tr.props.data,
-                  index: this.tr.props.index,
-                }),
+                children: Object.assign(
+                  { forceVisible: true },
+                  this.props.column.toolbar.render({
+                    cell: this,
+                    row: this.tr,
+                    cellData: this.props.data,
+                    rowData: this.tr.props.data,
+                    index: this.tr.props.index,
+                  })
+                ),
               },
             ],
           };
@@ -19189,13 +19195,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                     this.props.column.toolbar.placement === "both"
                   ),
                 },
-                children: this.props.column.toolbar.render({
-                  cell: this,
-                  row: this.tr,
-                  cellData: this.props.data,
-                  rowData: this.tr.props.data,
-                  index: this.tr.props.index,
-                }),
+                children: Object.assign(
+                  { forceVisible: true },
+                  this.props.column.toolbar.render({
+                    cell: this,
+                    row: this.tr,
+                    cellData: this.props.data,
+                    rowData: this.tr.props.data,
+                    index: this.tr.props.index,
+                  })
+                ),
               },
             ],
           };
@@ -20447,10 +20456,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 this.props.column.toolbar.placement === "both"
               ),
             },
-            children: this.props.column.toolbar.render({
-              isHeader: true,
-              field: this.props.column.field,
-            }),
+            children: Object.assign(
+              { forceVisible: true },
+              this.props.column.toolbar.render({
+                isHeader: true,
+                field: this.props.column.field,
+              })
+            ),
           },
         headerProps,
         this.props.column.sortable &&
@@ -20571,10 +20583,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 this.props.column.toolbar.placement === "both"
               ),
             },
-            children: this.props.column.toolbar.render({
-              isHeader: true,
-              field: this.props.column.field,
-            }),
+            children: Object.assign(
+              { forceVisible: true },
+              this.props.column.toolbar.render({
+                isHeader: true,
+                field: this.props.column.field,
+              })
+            ),
           },
         that.resizable && {
           // component: 'Icon',
@@ -23850,6 +23865,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         inline,
         itemDefaults,
         menuClasses,
+        forceVisible,
       } = this.props;
       const before = items.slice(0, visibleItems).map((item) => {
         return Object.assign(
@@ -23868,7 +23884,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         menuClasses,
       };
       const arr = [...before];
-      if (items.length > visibleItems) {
+      if (items.length > visibleItems || forceVisible) {
         arr.push(dropdowns);
       }
       this.setProps({

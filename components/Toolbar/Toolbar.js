@@ -15,6 +15,7 @@ class Toolbar extends Component {
       inline,
       itemDefaults,
       menuClasses,
+      forceVisible,
     } = this.props
 
     const before = items.slice(0, visibleItems).map((item) => {
@@ -37,7 +38,7 @@ class Toolbar extends Component {
       menuClasses,
     }
     const arr = [...before]
-    if (items.length > visibleItems) {
+    if (items.length > visibleItems || forceVisible) {
       arr.push(dropdowns)
     }
     this.setProps({
