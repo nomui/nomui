@@ -127,10 +127,13 @@ class Th extends Component {
               this.props.column.toolbar.placement === 'both'
             ),
           },
-          children: this.props.column.toolbar.render({
-            isHeader: true,
-            field: this.props.column.field,
-          }),
+          children: {
+            forceVisible: true,
+            ...this.props.column.toolbar.render({
+              isHeader: true,
+              field: this.props.column.field,
+            }),
+          },
         },
       headerProps,
       this.props.column.sortable &&
@@ -263,10 +266,13 @@ class Th extends Component {
               this.props.column.toolbar.placement === 'both'
             ),
           },
-          children: this.props.column.toolbar.render({
-            isHeader: true,
-            field: this.props.column.field,
-          }),
+          children: {
+            forceVisible: true,
+            ...this.props.column.toolbar.render({
+              isHeader: true,
+              field: this.props.column.field,
+            }),
+          },
         },
       that.resizable && {
         // component: 'Icon',
