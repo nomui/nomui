@@ -264,13 +264,16 @@ class Td extends Component {
                   this.props.column.toolbar.placement === 'both'
                 ),
               },
-              children: this.props.column.toolbar.render({
-                cell: this,
-                row: this.tr,
-                cellData: this.props.data,
-                rowData: this.tr.props.data,
-                index: this.tr.props.index,
-              }),
+              children: {
+                forceVisible: true,
+                ...this.props.column.toolbar.render({
+                  cell: this,
+                  row: this.tr,
+                  cellData: this.props.data,
+                  rowData: this.tr.props.data,
+                  index: this.tr.props.index,
+                }),
+              },
             },
             {
               children: children,
@@ -299,13 +302,16 @@ class Td extends Component {
                   this.props.column.toolbar.placement === 'both'
                 ),
               },
-              children: this.props.column.toolbar.render({
-                cell: this,
-                row: this.tr,
-                cellData: this.props.data,
-                rowData: this.tr.props.data,
-                index: this.tr.props.index,
-              }),
+              children: {
+                forceVisible: true,
+                ...this.props.column.toolbar.render({
+                  cell: this,
+                  row: this.tr,
+                  cellData: this.props.data,
+                  rowData: this.tr.props.data,
+                  index: this.tr.props.index,
+                }),
+              },
             },
           ],
         }
@@ -329,13 +335,16 @@ class Td extends Component {
                   this.props.column.toolbar.placement === 'both'
                 ),
               },
-              children: this.props.column.toolbar.render({
-                cell: this,
-                row: this.tr,
-                cellData: this.props.data,
-                rowData: this.tr.props.data,
-                index: this.tr.props.index,
-              }),
+              children: {
+                forceVisible: true,
+                ...this.props.column.toolbar.render({
+                  cell: this,
+                  row: this.tr,
+                  cellData: this.props.data,
+                  rowData: this.tr.props.data,
+                  index: this.tr.props.index,
+                }),
+              },
             },
           ],
         }
