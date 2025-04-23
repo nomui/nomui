@@ -7655,11 +7655,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _onContainerScroll() {
       if (this.menu.element.offsetParent === null) {
         return;
-      }
+      } // 获取所有锚点内容元素
       const domlist = this.containerElem.getElementsByClassName(
         "nom-anchor-content"
       );
-      if (!domlist.length) return;
+      if (!domlist.length) return; // 过滤有效的锚点元素
       const list = [];
       for (let i = 0; i < domlist.length; i++) {
         if (
@@ -7669,25 +7669,96 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           list.push(domlist[i]);
         }
       }
+      if (!list.length) return; // 获取视口尺寸
       const pRect =
         this.container === window
           ? { top: 0, bottom: window.innerHeight }
           : this.containerElem.getBoundingClientRect();
-      let current = 0;
-      for (let i = 0; i < list.length; i++) {
-        const top = list[i].getBoundingClientRect().top;
-        const lastTop = i > 0 ? list[i - 1].getBoundingClientRect().top : 0;
-        if (
-          top < pRect.bottom &&
-          lastTop - this.props.containerOffsetTop < pRect.top
-        ) {
-          current = i;
+      const viewportHeight = pRect.bottom - pRect.top;
+      const centerLine = pRect.top + viewportHeight / 2;
+      const upperQuarter = pRect.top + viewportHeight / 4;
+      const lowerQuarter = pRect.top + (viewportHeight * 3) / 4;
+      let bestMatch = null;
+      let maxScore = -Infinity; // 特殊检查：是否滚动到最顶部
+      const firstItem = list[0];
+      const firstItemRect = firstItem.getBoundingClientRect();
+      const isAtTop =
+        firstItemRect.top >= pRect.top && firstItemRect.top <= pRect.top + 10; // 允许10px误差
+      // 特殊检查：是否滚动到最底部
+      const lastItem = list[list.length - 1];
+      const lastItemRect = lastItem.getBoundingClientRect();
+      const isAtBottom =
+        lastItemRect.bottom <= pRect.bottom &&
+        lastItemRect.bottom >= pRect.bottom - 10; // 如果到达顶部，直接高亮第一项
+      if (isAtTop) {
+        bestMatch = firstItem;
+      } // 如果到达底部，直接高亮最后一项
+      else if (isAtBottom) {
+        bestMatch = lastItem;
+      } else {
+        // 正常情况：计算每个可见项的评分
+        for (let i = 0; i < list.length; i++) {
+          const elem = list[i];
+          const rect = elem.getBoundingClientRect(); // 跳过完全不可见的元素
+          if (rect.bottom <= pRect.top || rect.top >= pRect.bottom) continue; // 计算可见比例
+          const visibleHeight =
+            Math.min(rect.bottom, pRect.bottom) - Math.max(rect.top, pRect.top);
+          const visibleRatio = visibleHeight / rect.height; // 计算元素中心位置
+          const elementCenter = rect.top + rect.height / 2; // 中心距离分数（0-1，越接近中心越高）
+          const centerDistanceScore =
+            1 -
+            Math.min(
+              1,
+              Math.abs(elementCenter - centerLine) / (viewportHeight / 2)
+            ); // 区域权重（上部1.2，中部1.0，下部0.8）
+          let positionWeight = 1.0;
+          if (elementCenter < upperQuarter) positionWeight = 1.2;
+          else if (elementCenter > lowerQuarter) positionWeight = 0.8; // 首尾项额外加分（但不主导决策）
+          const isFirstItem = i === 0;
+          const isLastItem = i === list.length - 1;
+          const edgeBonus =
+            isFirstItem || isLastItem ? Math.min(0.15, visibleRatio * 0.2) : 0; // 综合评分
+          const score =
+            visibleRatio * centerDistanceScore * positionWeight + edgeBonus; // 记录最高分项
+          if (score > maxScore) {
+            maxScore = score;
+            bestMatch = elem;
+          }
+        } // 渐进式高亮保障：确保不会跳过中间项
+        if (bestMatch && this.currentKey) {
+          const currentIndex = this.itemKeyList.indexOf(this.currentKey);
+          const newIndex = this.itemKeyList.indexOf(
+            bestMatch.getAttribute("anchor-key")
+          );
+          if (Math.abs(newIndex - currentIndex) > 1) {
+            const step = newIndex > currentIndex ? 1 : -1;
+            let intermediateIndex = currentIndex + step;
+            while (intermediateIndex !== newIndex) {
+              const intermediateKey = this.itemKeyList[intermediateIndex];
+              const intermediateElem = list.find(
+                (el) => el.getAttribute("anchor-key") === intermediateKey
+              );
+              if (intermediateElem) {
+                const rect = intermediateElem.getBoundingClientRect();
+                if (rect.bottom > pRect.top && rect.top < pRect.bottom) {
+                  const intermediateVisible =
+                    Math.min(rect.bottom, pRect.bottom) -
+                    Math.max(rect.top, pRect.top);
+                  if (intermediateVisible >= 30) {
+                    bestMatch = intermediateElem;
+                    break;
+                  }
+                }
+              }
+              intermediateIndex += step;
+            }
+          }
         }
+      } // 执行高亮
+      const result = bestMatch ? bestMatch.getAttribute("anchor-key") : null;
+      if (result && result !== this.currentKey) {
+        this._activeAnchor(result);
       }
-      const result = list[current]
-        ? list[current].getAttribute("anchor-key")
-        : null;
-      result && this._activeAnchor(result);
     }
     _activeAnchor(key) {
       this.menu.selectItem(key, { scrollIntoView: false });
