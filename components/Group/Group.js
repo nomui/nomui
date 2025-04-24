@@ -128,7 +128,7 @@ class Group extends Field {
     }
 
     if (invalids.length > 0) {
-      invalids[0].focus()
+      invalids[0].focus({ checkVisibility: true })
     }
 
     return invalids.length === 0

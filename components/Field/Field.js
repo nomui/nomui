@@ -1,6 +1,13 @@
 import Component, { n } from '../Component/index'
 import Tooltip from '../Tooltip/index'
-import { clone, extend, isFunction, isNullish, isPlainObject } from '../util/index'
+import {
+  clone,
+  extend,
+  isFunction,
+  isNullish,
+  isPlainObject,
+  isTargetInViewport,
+} from '../util/index'
 import RuleManager from '../util/rule-manager'
 import FieldActionMixin from './FieldActionMixin'
 import FieldContent from './FieldContent'
@@ -295,9 +302,19 @@ class Field extends Component {
     }
   }
 
-  focus() {
+  focus(options = {}) {
     isFunction(this._focus) && this._focus()
     this.element.focus()
+    // 校验方法触发的focus才会检测可见性
+    if (options.checkVisibility) {
+      this._debounceTimer && clearTimeout(this._debounceTimer)
+      this._debounceTimer = setTimeout(() => {
+        if (!isTargetInViewport(this)) {
+          this.element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+        this._debounceTimer = null // 清除定时器引用
+      }, 300)
+    }
   }
 
   blur() {
