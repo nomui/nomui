@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { extend, isPlainObject } from '../util/index'
+import { extend, isPlainObject, isTargetInViewport } from '../util/index'
 
 class Group extends Field {
   constructor(props, ...mixins) {
@@ -129,6 +129,12 @@ class Group extends Field {
 
     if (invalids.length > 0) {
       invalids[0].focus()
+      // 如果invalids[0].element不在可视区域，则滚动到可视区域
+      if (!isTargetInViewport(invalids[0])) {
+        invalids[0].element.scrollIntoView({
+          behavior: 'smooth',
+        })
+      }
     }
 
     return invalids.length === 0
