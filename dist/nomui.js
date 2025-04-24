@@ -4322,6 +4322,21 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _nomScrollToEndCleanupMap.set(target, cleanup);
     return cleanup;
   }
+  function isTargetInViewport(target) {
+    let el = target;
+    if (target.element) {
+      el = target.element;
+    }
+    if (!el) return false;
+    const rect = el.getBoundingClientRect();
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <=
+        (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+  }
   var index = /*#__PURE__*/ Object.freeze({
     __proto__: null,
     isPlainObject: isPlainObject,
@@ -4357,6 +4372,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     getWeekInYear: getWeekInYear,
     getWeekDates: getWeekDates,
     watchScrollToEnd: watchScrollToEnd,
+    isTargetInViewport: isTargetInViewport,
     AutoScroll: AutoScrollPlugin,
     MultiDrag: MultiDragPlugin,
     OnSpill: OnSpill,
@@ -18054,7 +18070,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       if (invalids.length > 0) {
-        invalids[0].focus();
+        invalids[0].focus(); // 如果invalids[0].element不在可视区域，则滚动到可视区域
+        if (!isTargetInViewport(invalids[0])) {
+          invalids[0].element.scrollIntoView({ behavior: "smooth" });
+        }
       }
       return invalids.length === 0;
     }
