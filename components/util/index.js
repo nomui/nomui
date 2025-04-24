@@ -722,3 +722,18 @@ export function watchScrollToEnd({ target, callback, direction = 'vertical' }) {
   _nomScrollToEndCleanupMap.set(target, cleanup)
   return cleanup
 }
+
+export function isTargetInViewport(target) {
+  let el = target
+  if (target.element) {
+    el = target.element
+  }
+  if (!el) return false
+  const rect = el.getBoundingClientRect()
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  )
+}
