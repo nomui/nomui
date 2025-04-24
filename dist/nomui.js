@@ -18070,10 +18070,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       if (invalids.length > 0) {
-        invalids[0].focus(); // 如果invalids[0].element不在可视区域，则滚动到可视区域
-        if (!isTargetInViewport(invalids[0])) {
-          invalids[0].element.scrollIntoView({ behavior: "smooth" });
-        }
+        invalids[0].focus();
       }
       return invalids.length === 0;
     }
