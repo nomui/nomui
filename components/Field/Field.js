@@ -306,11 +306,12 @@ class Field extends Component {
   focusField(target) {
     this._debounceTimer && clearTimeout(this._debounceTimer)
     this._debounceTimer = setTimeout(() => {
+      target.focus()
       if (!isTargetInViewport(target)) {
-        target.element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        target.element.scrollIntoView({ block: 'center' })
       }
       this._debounceTimer = null
-    }, 300)
+    }, 100)
   }
 
   focus() {
