@@ -522,7 +522,7 @@ class Uploader extends Field {
       ? this.fileList.filter(({ status }) => status === 'done')
       : null
 
-    return _val.length ? _val : null
+    return _val
   }
 
   focus() {
