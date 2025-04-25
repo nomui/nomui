@@ -9356,6 +9356,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else {
         this.errorTip.update({ children: message });
       }
+    } // 添加防抖，确保同一个rootField同一时间只会聚焦一个field
+    focusField(target) {
+      this._debounceTimer && clearTimeout(this._debounceTimer);
+      this._debounceTimer = setTimeout(() => {
+        if (!isTargetInViewport(target)) {
+          target.element.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+        this._debounceTimer = null;
+      }, 300);
     }
     focus() {
       isFunction(this._focus) && this._focus();
@@ -18070,7 +18082,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       if (invalids.length > 0) {
-        invalids[0].focus();
+        this.rootField.focusField(invalids[0]);
       }
       return invalids.length === 0;
     }
