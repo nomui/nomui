@@ -1,6 +1,13 @@
 import Component, { n } from '../Component/index'
 import Tooltip from '../Tooltip/index'
-import { clone, extend, isFunction, isNullish, isPlainObject } from '../util/index'
+import {
+  clone,
+  extend,
+  isFunction,
+  isNullish,
+  isPlainObject,
+  isTargetInViewport,
+} from '../util/index'
 import RuleManager from '../util/rule-manager'
 import FieldActionMixin from './FieldActionMixin'
 import FieldContent from './FieldContent'
@@ -293,6 +300,17 @@ class Field extends Component {
         children: message,
       })
     }
+  }
+
+  // 添加防抖，确保同一个rootField同一时间只会聚焦一个field
+  focusField(target) {
+    this._debounceTimer && clearTimeout(this._debounceTimer)
+    this._debounceTimer = setTimeout(() => {
+      if (!isTargetInViewport(target)) {
+        target.element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+      this._debounceTimer = null
+    }, 300)
   }
 
   focus() {
