@@ -44,25 +44,29 @@ class Uploader extends Field {
       customizeInfo,
       actionRender,
       showList,
+      value,
     } = this.props
     const customTrigger = actionRender || button
     this.fileList = this.props.fileList || this.props.defaultFileList
-    let { value } = this.props
+
     if (value) {
-      if (!Array.isArray(value)) {
-        value = [value]
-      }
-      value.forEach((file) => {
-        file.status = 'done'
+      // 统一转为数组
+      const files = Array.isArray(value) ? value : [value]
+
+      files.forEach((file) => {
+        if (!file || typeof file !== 'object') return
+
+        // 直接传入原始file对象，_isInArray内部会处理比较逻辑
         if (!this._isInArray(this.fileList, file)) {
-          this.fileList.push(file)
+          const newFile = { ...file }
+          if (newFile.status === undefined) {
+            newFile.status = 'done'
+          }
+          this.fileList.push(newFile)
         }
       })
     }
 
-    if (this.fileList && this.fileList.length > 0) {
-      this.fileList = showList ? this.fileList : this.fileList.slice(-1)
-    }
     this.acceptList = accept ? this.getAcceptList() : ''
 
     let initializing = true
@@ -142,7 +146,7 @@ class Uploader extends Field {
               that.list = c
             },
             initializing,
-            files: display === 'replace' && !multiple ? this.fileList.slice(-1) : this.fileList,
+            files: this._getDisplayFileList,
             renderer,
             onRemove: onRemove &&
               isFunction(onRemove.action) && {
@@ -195,9 +199,50 @@ class Uploader extends Field {
     super._config()
   }
 
+  _getDisplayFileList() {
+    const { display, multiple, showList } = this.props
+
+    if ((display === 'replace' && !multiple) || !showList) {
+      return this.fileList.length > 0 ? this.fileList.slice(-1) : []
+    }
+
+    return this.fileList
+  }
+
   _isInArray(arr, target) {
-    arr.some((item) => {
-      return Object.keys(target).every((key) => item[key] === target[key])
+    const { fileResponseAsValue } = this.props
+
+    return arr.some((item) => {
+      if (fileResponseAsValue) {
+        // 直接比较整个对象
+        return this._isEqual(item, target)
+      }
+      // 比较response对象
+      return (
+        item.response !== undefined &&
+        target.response !== undefined &&
+        this._isEqual(item.response, target.response)
+      )
+    })
+  }
+
+  /**
+   * 检查对象 a 是否包含对象 b 的所有字段且值相同
+   * @param {Object} a - 源对象
+   * @param {Object} b - 目标对象（以它的 keys 为基准）
+   * @returns {boolean} 是否匹配
+   */
+  _isEqual(a, b) {
+    // 如果 b 是 undefined/null，直接返回 false
+    if (b === undefined || b === null) return false
+
+    const keys = Object.keys(b)
+    // 如果 b 是空对象，默认返回 false
+    if (keys.length === 0) return false
+
+    return keys.every((key) => {
+      // 检查 a 是否存在该 key，且值是否与 b 相同
+      return a !== undefined && a !== null && a[key] === b[key]
     })
   }
 
@@ -513,16 +558,15 @@ class Uploader extends Field {
         if (!multiple) {
           return this.fileList[0].response || null
         }
-        const _val = this.fileList.map((item) => item.response)
-        return _val.length ? _val : null
+        return this.fileList.map((item) => item.response)
       }
     }
 
-    const _val = isNotEmptyArray(this.fileList)
-      ? this.fileList.filter(({ status }) => status === 'done')
-      : null
-
-    return _val
+    const _result = this.fileList.filter(({ status }) => status === 'done')
+    if (!_result.length) {
+      return null
+    }
+    return _result
   }
 
   focus() {
@@ -562,6 +606,7 @@ Uploader.defaults = {
   updateText: '更新',
   updateTimeText: '更新日期',
   fileResponseAsValue: false,
+  getValueAsArray: true,
 }
 
 Component.register(Uploader)
