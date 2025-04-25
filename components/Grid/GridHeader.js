@@ -58,18 +58,28 @@ class GridHeader extends Component {
     this.position = null
     this.size = null
 
-    if (this.grid.props.sticky === true) {
+    // 处理表头的吸附滚动条
+    if (!this.grid.props.sticky) {
+      return
+    }
+
+    this.overflowAncestor = this.grid._checkOverflowAncestor()
+
+    if (this.grid.props.sticky === 'window') {
       this.scrollParent = window
+    } else if (this.grid.props.sticky === true) {
+      this.scrollParent = (this.overflowAncestor && this.overflowAncestor.component) || window
+    } else if (isFunction(this.grid.props.sticky)) {
+      this.scrollParent = this.grid.props.sticky()
+    } else {
+      this.scrollParent = this.grid.props.sticky
+    }
+
+    if (this.scrollParent === window) {
       this.scrollParent.onscroll = function () {
         that._onPageScroll()
       }
-    } else {
-      if (isFunction(this.grid.props.sticky)) {
-        this.scrollParent = this.grid.props.sticky()
-      } else {
-        this.scrollParent = this.grid.props.sticky
-      }
-
+    } else if (this.scrollParent._on) {
       this.scrollParent._on('scroll', function () {
         that._onPageScroll()
       })
@@ -119,12 +129,23 @@ class GridHeader extends Component {
     if (!this.props) {
       return
     }
+
     this.element.style.transform = `translateY(0px)`
     let pRect = null
-    if (this.grid.props.sticky === true) {
+    if (this.grid.props.sticky === 'window') {
       pRect = {
         top: 0,
         height: window.innerHeight,
+      }
+    } else if (this.grid.props.sticky === true) {
+      // sticky===true时，先检表格格的overflowAncestor是否存在，存在则使用其rect，否则使用window的rect
+      if (this.overflowAncestor) {
+        pRect = this.overflowAncestor.getBoundingClientRect()
+      } else {
+        pRect = {
+          top: 0,
+          height: window.innerHeight,
+        }
       }
     } else {
       pRect = this.scrollParent.element.getBoundingClientRect()

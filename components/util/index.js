@@ -642,7 +642,7 @@ export function getWeekDates({ year, week, date, startWeekOnMonday = true }) {
   })
 }
 
-function checkOverflowAncestor(ele, direction = 'vertical') {
+export function checkOverflowAncestor(ele, direction = 'vertical') {
   let currentElement = ele
   let overflowAncestor = null
 
