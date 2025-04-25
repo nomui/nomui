@@ -554,9 +554,10 @@ class Grid extends Component {
       })
     }
 
+    this.overflowAncestor = this._checkOverflowAncestor()
+
     this._processColumnsWidth()
     this._processAutoScroll()
-    this.overflowAncestor = this._checkOverflowAncestor()
 
     this.props.rowSortable && defaultSortableOndrop()
 
