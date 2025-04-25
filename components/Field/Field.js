@@ -302,19 +302,20 @@ class Field extends Component {
     }
   }
 
-  focus(options = {}) {
+  // 添加防抖，确保同一个rootField同一时间只会聚焦一个field
+  focusField(target) {
+    this._debounceTimer && clearTimeout(this._debounceTimer)
+    this._debounceTimer = setTimeout(() => {
+      if (!isTargetInViewport(target)) {
+        target.element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+      this._debounceTimer = null
+    }, 300)
+  }
+
+  focus() {
     isFunction(this._focus) && this._focus()
     this.element.focus()
-    // 校验方法触发的focus才会检测可见性
-    if (options.checkVisibility) {
-      this._debounceTimer && clearTimeout(this._debounceTimer)
-      this._debounceTimer = setTimeout(() => {
-        if (!isTargetInViewport(this)) {
-          this.element.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
-        this._debounceTimer = null // 清除定时器引用
-      }, 300)
-    }
   }
 
   blur() {
