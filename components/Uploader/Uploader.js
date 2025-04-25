@@ -47,6 +47,18 @@ class Uploader extends Field {
     } = this.props
     const customTrigger = actionRender || button
     this.fileList = this.props.fileList || this.props.defaultFileList
+    let { value } = this.props
+    if (value) {
+      if (!Array.isArray(value)) {
+        value = [value]
+      }
+      value.forEach((file) => {
+        file.status = 'done'
+        if (!this._isInArray(this.fileList, file)) {
+          this.fileList.push(file)
+        }
+      })
+    }
 
     if (this.fileList && this.fileList.length > 0) {
       this.fileList = showList ? this.fileList : this.fileList.slice(-1)
@@ -181,6 +193,12 @@ class Uploader extends Field {
     })
 
     super._config()
+  }
+
+  _isInArray(arr, target) {
+    arr.some((item) => {
+      return Object.keys(target).every((key) => item[key] === target[key])
+    })
   }
 
   deleteIcon(name, file) {
@@ -493,16 +511,18 @@ class Uploader extends Field {
     if (fileResponseAsValue === true) {
       if (isNotEmptyArray(this.fileList)) {
         if (!multiple) {
-          return this.fileList[0].response
+          return this.fileList[0].response || null
         }
-        return this.fileList.map((item) => item.response)
+        const _val = this.fileList.map((item) => item.response)
+        return _val.length ? _val : null
       }
     }
 
     const _val = isNotEmptyArray(this.fileList)
       ? this.fileList.filter(({ status }) => status === 'done')
       : null
-    return isNotEmptyArray(_val) ? _val : null
+
+    return _val.length ? _val : null
   }
 
   focus() {
