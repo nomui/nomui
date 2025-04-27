@@ -1192,52 +1192,58 @@ class Grid extends Component {
 
   // 统一的状态传播方法
   propagateParentState(node, isCheckOperation) {
-    const { cascadeCheckParent, cascadeUncheckParent, indeterminate } = this.props.treeConfig
+    const { indeterminate } = this.props.treeConfig
     if (!node.parentNode || !indeterminate) return
 
     const parent = node.parentNode
+
+    // 计算当前父节点应该具有的状态
+    const newState = this.calculateParentState(parent, isCheckOperation)
+
+    // 应用状态变化
+    if (newState === 'checked' && !parent.props.checked) {
+      this.check(parent, true, false)
+    } else if (newState === 'unchecked' && (parent.props.checked || parent.props.partChecked)) {
+      this.uncheck(parent, true)
+    } else if (newState === 'partial' && !parent.props.partChecked) {
+      parent.partCheck()
+    }
+
+    // 继续向上传播
+    this.propagateParentState(parent, isCheckOperation)
+  }
+
+  calculateParentState(parent, isCheckOperation) {
     const siblings = parent.childrenNodes
-    const cascadeParent = isCheckOperation ? cascadeCheckParent : cascadeUncheckParent
+    let hasChecked = false
+    let hasUnchecked = false
 
-    if (!cascadeParent) return
-
-    let allChecked = true
-    let allUnchecked = true
-    let anyPartial = false
-
-    // 一次性计算所有状态
     for (const k in siblings) {
       const sibling = siblings[k]
       if (sibling.props.checked) {
-        allUnchecked = false
+        hasChecked = true
       } else if (sibling.props.partChecked) {
-        allChecked = false
-        anyPartial = true
+        return 'partial' // 发现任何半选中子节点立即返回
       } else {
-        allChecked = false
-        allUnchecked = false
+        hasUnchecked = true
       }
 
-      // 提前退出条件
-      if (!allChecked && !allUnchecked && anyPartial) break
+      // 发现混合状态立即返回
+      if (hasChecked && hasUnchecked) {
+        return 'partial'
+      }
     }
 
-    if (isCheckOperation) {
-      if (allChecked && !parent.props.checked) {
-        this.check(parent, true, false)
-      } else if (!parent.props.partChecked && (anyPartial || !allUnchecked)) {
-        parent.partCheck()
-        this.propagateParentState(parent, true)
-      }
-    } else if (allUnchecked && parent.props.checked) {
-      this.uncheck(parent, true)
-    } else if (!parent.props.partChecked && !allChecked) {
-      parent.partCheck()
-      this.propagateParentState(parent, false)
-    }
+    // 根据操作类型决定最终状态
+    return isCheckOperation
+      ? hasChecked
+        ? 'checked'
+        : 'unchecked'
+      : hasUnchecked
+      ? 'unchecked'
+      : 'checked'
   }
 
-  // 精简后的check方法
   check(row, fromChild, isPartCheck) {
     const { checked, partChecked } = row.props
     const { cascadeCheckChildren } = this.props.treeConfig
