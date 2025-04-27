@@ -14,8 +14,9 @@ define([], function () {
               parentField: 'parentKey',
               treeNodeColumn: 'class',
               showCheckAll: true,
-              cascade: false,
-              cascadeCheckParent: true,
+              cascade: true,
+              // cascadeCheckParent: true,
+              indeterminate: true,
             },
             columns: [
               {

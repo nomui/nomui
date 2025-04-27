@@ -41,6 +41,7 @@ class Grid extends Component {
     this._alreadyProcessedFlat = false
     this.rowsRefs = {}
     this.checkedRowRefs = {}
+    this.partCheckedRowRefs = {}
     this._shouldAutoScroll = true
     this._customColumnFlag = false // 是否已经自定义处理过列
     this._pinColumnFlag = false // 是否已经处理过列缓存
@@ -917,20 +918,34 @@ class Grid extends Component {
     row.remove(options)
   }
 
-  getCheckedRows() {
-    return Object.keys(this.checkedRowRefs)
-      .map((key) => {
-        return this.checkedRowRefs[key]
+  getCheckedRows(options = {}) {
+    const arr = Object.keys(this.checkedRowRefs).map((key) => {
+      return this.checkedRowRefs[key]
+    })
+
+    if (options.includePartChecked || (this.props.rowCheckable && this.props.includePartChecked)) {
+      const partCheckedRows = Object.keys(this.partCheckedRowRefs).map((key) => {
+        return this.partCheckedRowRefs[key]
       })
-      .filter((rowRef) => !isNullish(rowRef.key))
+      arr.push(...partCheckedRows)
+    }
+
+    return arr.filter((rowRef) => !isNullish(rowRef.key))
   }
 
-  getCheckedRowKeys() {
-    return Object.keys(this.checkedRowRefs)
-      .map((key) => {
-        return this.checkedRowRefs[key].key
+  getCheckedRowKeys(options = {}) {
+    const arr = Object.keys(this.checkedRowRefs).map((key) => {
+      return this.checkedRowRefs[key].key
+    })
+
+    if (options.includePartChecked || (this.props.rowCheckable && this.props.includePartChecked)) {
+      const partCheckedKeys = Object.keys(this.partCheckedRowRefs).map((key) => {
+        return this.partCheckedRowRefs[key].key
       })
-      .filter((key) => !isNullish(key))
+      arr.push(...partCheckedKeys)
+    }
+
+    return arr.filter((key) => !isNullish(key))
   }
 
   // 遍历 rowTr 实例，调用其check方法
@@ -1175,9 +1190,9 @@ class Grid extends Component {
     row.check()
   }
 
-  check(row, fromChild) {
-    const { checked } = row.props
-    const { cascadeCheckParent, cascadeCheckChildren } = this.props.treeConfig
+  check(row, fromChild, isPartCheck) {
+    const { checked, partChecked } = row.props
+    const { cascadeCheckParent, cascadeCheckChildren, indeterminate } = this.props.treeConfig
 
     cascadeCheckChildren === true &&
       !fromChild &&
@@ -1185,17 +1200,29 @@ class Grid extends Component {
         this.checkChildren(row.childrenNodes[key])
       })
 
-    cascadeCheckParent === true && row.parentNode && this.check(row.parentNode, true)
-
-    if (checked === true) {
-      return false
+    if (cascadeCheckParent === true && row.parentNode) {
+      if (indeterminate) {
+        this.check(row.parentNode, true, true)
+      } else {
+        this.check(row.parentNode, true)
+      }
     }
 
-    row.check()
+    if (isPartCheck) {
+      if (partChecked === true) {
+        return false
+      }
+      row.partCheck()
+    } else {
+      if (checked === true) {
+        return false
+      }
+      row.check()
+    }
   }
 
   uncheck(row, fromChild) {
-    const { checked } = row.props
+    const { checked, partChecked } = row.props
     const { cascadeUncheckParent, cascadeUncheckChildren } = this.props.treeConfig
 
     cascadeUncheckChildren === true &&
@@ -1218,7 +1245,7 @@ class Grid extends Component {
       }
     }
 
-    if (checked === false) {
+    if (checked === false && partChecked === false) {
       return false
     }
 
