@@ -1190,66 +1190,93 @@ class Grid extends Component {
     row.check()
   }
 
-  check(row, fromChild, isPartCheck) {
-    const { checked, partChecked } = row.props
-    const { cascadeCheckParent, cascadeCheckChildren, indeterminate } = this.props.treeConfig
+  // 统一的状态传播方法
+  propagateParentState(node, isCheckOperation) {
+    const { cascadeCheckParent, cascadeUncheckParent, indeterminate } = this.props.treeConfig
+    if (!node.parentNode || !indeterminate) return
 
-    cascadeCheckChildren === true &&
-      !fromChild &&
-      Object.keys(row.childrenNodes).forEach((key) => {
-        this.checkChildren(row.childrenNodes[key])
-      })
+    const parent = node.parentNode
+    const siblings = parent.childrenNodes
+    const cascadeParent = isCheckOperation ? cascadeCheckParent : cascadeUncheckParent
 
-    if (cascadeCheckParent === true && row.parentNode) {
-      if (indeterminate) {
-        this.check(row.parentNode, true, true)
+    if (!cascadeParent) return
+
+    let allChecked = true
+    let allUnchecked = true
+    let anyPartial = false
+
+    // 一次性计算所有状态
+    for (const k in siblings) {
+      const sibling = siblings[k]
+      if (sibling.props.checked) {
+        allUnchecked = false
+      } else if (sibling.props.partChecked) {
+        allChecked = false
+        anyPartial = true
       } else {
-        this.check(row.parentNode, true)
+        allChecked = false
+        allUnchecked = false
       }
+
+      // 提前退出条件
+      if (!allChecked && !allUnchecked && anyPartial) break
     }
 
-    if (isPartCheck) {
-      if (partChecked === true) {
-        return false
+    if (isCheckOperation) {
+      if (allChecked && !parent.props.checked) {
+        this.check(parent, true, false)
+      } else if (!parent.props.partChecked && (anyPartial || !allUnchecked)) {
+        parent.partCheck()
+        this.propagateParentState(parent, true)
       }
-      row.partCheck()
-    } else {
-      if (checked === true) {
-        return false
-      }
-      row.check()
+    } else if (allUnchecked && parent.props.checked) {
+      this.uncheck(parent, true)
+    } else if (!parent.props.partChecked && !allChecked) {
+      parent.partCheck()
+      this.propagateParentState(parent, false)
     }
   }
 
-  uncheck(row, fromChild) {
+  // 精简后的check方法
+  check(row, fromChild, isPartCheck) {
     const { checked, partChecked } = row.props
-    const { cascadeUncheckParent, cascadeUncheckChildren } = this.props.treeConfig
+    const { cascadeCheckChildren } = this.props.treeConfig
 
-    cascadeUncheckChildren === true &&
+    // 级联向下
+    cascadeCheckChildren &&
       !fromChild &&
-      Object.keys(row.childrenNodes).forEach((key) => {
-        this.uncheck(row.childrenNodes[key])
-      })
+      Object.keys(row.childrenNodes).forEach((key) => this.checkChildren(row.childrenNodes[key]))
 
-    // 如果兄弟节点没有被选中的，则级联取消勾选父级节点
-    if (cascadeUncheckParent === true && row.parentNode) {
-      const siblings = row.parentNode.childrenNodes
-      let n = 0
-      for (const k in siblings) {
-        if (siblings[k].props.checked) {
-          n += 1
-        }
-      }
-      if (n <= 1) {
-        this.uncheck(row.parentNode, true)
-      }
-    }
-
-    if (checked === false && partChecked === false) {
+    // 更新当前节点
+    if (isPartCheck ? !partChecked : !checked) {
+      isPartCheck ? row.partCheck() : row.check()
+    } else {
       return false
     }
 
-    row.uncheck()
+    // 级联向上
+    this.propagateParentState(row, true)
+  }
+
+  // 精简后的uncheck方法
+  uncheck(row, fromChild) {
+    const { checked, partChecked } = row.props
+    const { cascadeUncheckChildren } = this.props.treeConfig
+
+    // 级联向下
+    cascadeUncheckChildren &&
+      !fromChild &&
+      Object.keys(row.childrenNodes).forEach((key) => this.uncheck(row.childrenNodes[key]))
+
+    // 更新当前节点
+    if (checked || partChecked) {
+      row.uncheck()
+    } else {
+      return false
+    }
+
+    // 级联向上
+    this.propagateParentState(row, false)
   }
 
   _processCheckableColumn() {
