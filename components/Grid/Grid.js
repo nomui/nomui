@@ -1192,8 +1192,7 @@ class Grid extends Component {
 
   // 统一的状态传播方法
   propagateParentState(node, isCheckOperation) {
-    const { indeterminate } = this.props.treeConfig
-    if (!node.parentNode || !indeterminate) return
+    if (!node || !node.parentNode) return
 
     const parent = node.parentNode
 
