@@ -1243,9 +1243,10 @@ class Grid extends Component {
       : 'checked'
   }
 
+  // check方法
   check(row, fromChild, isPartCheck) {
     const { checked, partChecked } = row.props
-    const { cascadeCheckChildren } = this.props.treeConfig
+    const { cascadeCheckChildren, cascadeCheckParent } = this.props.treeConfig
 
     // 级联向下
     cascadeCheckChildren &&
@@ -1259,14 +1260,14 @@ class Grid extends Component {
       return false
     }
 
-    // 级联向上
-    this.propagateParentState(row, true)
+    // 级联向上（受cascadeCheckParent控制）
+    cascadeCheckParent && this.propagateParentState(row, true)
   }
 
-  // 精简后的uncheck方法
+  // uncheck方法
   uncheck(row, fromChild) {
     const { checked, partChecked } = row.props
-    const { cascadeUncheckChildren } = this.props.treeConfig
+    const { cascadeUncheckChildren, cascadeUncheckParent } = this.props.treeConfig
 
     // 级联向下
     cascadeUncheckChildren &&
@@ -1280,8 +1281,8 @@ class Grid extends Component {
       return false
     }
 
-    // 级联向上
-    this.propagateParentState(row, false)
+    // 级联向上（受cascadeUncheckParent控制）
+    cascadeUncheckParent && this.propagateParentState(row, false)
   }
 
   _processCheckableColumn() {
