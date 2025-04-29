@@ -37,6 +37,7 @@ define([
   './cascadeCheckParent.js',
   './cascadeCheckChildren.js',
   './cascadeUncheckChildren.js',
+  './partial-checked.js',
   './editable.js',
   './td-edit.js',
   './edit.js',

@@ -918,12 +918,15 @@ class Grid extends Component {
     row.remove(options)
   }
 
-  getCheckedRows(options = {}) {
+  getCheckedRows(options = { includePartialChecked: true }) {
     const arr = Object.keys(this.checkedRowRefs).map((key) => {
       return this.checkedRowRefs[key]
     })
 
-    if (options.includePartChecked || (this.props.rowCheckable && this.props.includePartChecked)) {
+    if (
+      options.includePartialChecked !== false &&
+      (this.props.rowCheckable || this.props.rowCheckable.includePartialChecked !== false)
+    ) {
       const partCheckedRows = Object.keys(this.partCheckedRowRefs).map((key) => {
         return this.partCheckedRowRefs[key]
       })
@@ -933,12 +936,15 @@ class Grid extends Component {
     return arr.filter((rowRef) => !isNullish(rowRef.key))
   }
 
-  getCheckedRowKeys(options = {}) {
+  getCheckedRowKeys(options = { includePartialChecked: true }) {
     const arr = Object.keys(this.checkedRowRefs).map((key) => {
       return this.checkedRowRefs[key].key
     })
 
-    if (options.includePartChecked || (this.props.rowCheckable && this.props.includePartChecked)) {
+    if (
+      options.includePartialChecked !== false &&
+      (this.props.rowCheckable || this.props.rowCheckable.includePartialChecked !== false)
+    ) {
       const partCheckedKeys = Object.keys(this.partCheckedRowRefs).map((key) => {
         return this.partCheckedRowRefs[key].key
       })
