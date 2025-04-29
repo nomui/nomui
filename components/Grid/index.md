@@ -82,8 +82,8 @@
 | resetSort | 重置表格的排序状态 | - |
 | resetColumnsCustom | 重置自定义列的展示 | - |
 | resetColsWidth | 重置列的宽度(不传参数则重置所有列宽) | `Funciton(field \| null)` |
-| getCheckedRows | 获取当前选中行数组 | - |
-| getCheckedRowKeys | 获取当前选中行的 key 数组 | - |
+| getCheckedRows | 获取当前选中行数组，参数 includePartialChecked 表示包括半勾选状态的节点 | `({includePartialChecked:true})=>{}` |
+| getCheckedRowKeys | 获取当前选中行的 key 数组，参数 includePartialChecked 表示包括半勾选状态的节点 | `({includePartialChecked:true})=>{}` |
 | setScrollPlace | 记录当前表格滚动位置(下次 update 时会自动滚动), 若传入回调函数，则参数是当前滚动位置信息`{header,body}` | - |
 | autoScrollGrid | 主动触发滚动条自动滚动到上次的位置 | `({header,body})=>{} ` |
 | edit | 全局编辑模式 | `function` |
@@ -219,6 +219,7 @@
 | width | 勾选列宽度 | `number` | 50 |
 | onCheck | 行勾选回调 | `({row})=>{}` | - |
 | onUncheck | 行取消勾选回调 | `({row})=>{}` | - |
+| includePartialChecked | 获取勾选行是否包括半勾选状态的 | `boolean` | true |
 
 #### `checkboxRender` 使用示例及参数说明
 

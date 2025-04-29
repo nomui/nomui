@@ -1,14 +1,42 @@
 define([], function () {
   return {
-    title: '级联勾选',
-    file: 'cascadeCheckParent',
+    title: '获取勾选节点',
+    file: 'partial-checked',
     demo: function () {
+      let grid_ref = null
       return {
         children: [
           {
+            component: 'Flex',
+            cols: [
+              {
+                children: {
+                  component: 'Button',
+                  text: '获取勾选节点key',
+                  onClick: function () {
+                    const checkedRows = grid_ref.getCheckedRowKeys()
+                    console.log(checkedRows)
+                  },
+                },
+              },
+              {
+                children: {
+                  component: 'Button',
+                  text: '获取勾选节点key(不包括半勾选)',
+                  onClick: function () {
+                    const checkedRows = grid_ref.getCheckedRowKeys({ includePartialChecked: false })
+                    console.log(checkedRows)
+                  },
+                },
+              },
+            ],
+          },
+          {
             component: 'Grid',
+            ref: (c) => {
+              grid_ref = c
+            },
             rowCheckable: true,
-            allowFrozenCols: true,
             treeConfig: {
               flatData: true,
               parentField: 'parentKey',

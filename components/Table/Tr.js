@@ -113,15 +113,27 @@ class Tr extends Component {
     }
   }
 
+  partCheck() {
+    const grid = this.table.grid
+    this._checkboxRef.partCheck(false)
+    this.props.checked = false
+    this.props.partChecked = true
+    this.removeClass('s-checked')
+    delete grid.checkedRowRefs[this.key]
+    grid.partCheckedRowRefs[this.key] = this
+  }
+
   _onCheck() {
     this._callHandler('onCheck')
   }
 
   _check() {
     this.props.checked = true
+    this.props.partChecked = false
     this.addClass('s-checked')
     const grid = this.table.grid
     grid.checkedRowRefs[this.key] = this
+    delete grid.partCheckedRowRefs[this.key]
   }
 
   uncheck(uncheckOptions) {
@@ -143,9 +155,11 @@ class Tr extends Component {
 
   _uncheck() {
     this.props.checked = false
+    this.props.partChecked = false
     this.removeClass('s-checked')
     const grid = this.table.grid
     delete grid.checkedRowRefs[this.key]
+    delete grid.partCheckedRowRefs[this.key]
   }
 
   _onUncheck() {

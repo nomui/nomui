@@ -20153,14 +20153,25 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         grid._onRowCheck(this);
       }
     }
+    partCheck() {
+      const grid = this.table.grid;
+      this._checkboxRef.partCheck(false);
+      this.props.checked = false;
+      this.props.partChecked = true;
+      this.removeClass("s-checked");
+      delete grid.checkedRowRefs[this.key];
+      grid.partCheckedRowRefs[this.key] = this;
+    }
     _onCheck() {
       this._callHandler("onCheck");
     }
     _check() {
       this.props.checked = true;
+      this.props.partChecked = false;
       this.addClass("s-checked");
       const grid = this.table.grid;
       grid.checkedRowRefs[this.key] = this;
+      delete grid.partCheckedRowRefs[this.key];
     }
     uncheck(uncheckOptions) {
       const grid = this.table.grid;
@@ -20175,9 +20186,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _uncheck() {
       this.props.checked = false;
+      this.props.partChecked = false;
       this.removeClass("s-checked");
       const grid = this.table.grid;
       delete grid.checkedRowRefs[this.key];
+      delete grid.partCheckedRowRefs[this.key];
     }
     _onUncheck() {
       this._callHandler("onUncheck");
@@ -22473,6 +22486,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._alreadyProcessedFlat = false;
       this.rowsRefs = {};
       this.checkedRowRefs = {};
+      this.partCheckedRowRefs = {};
       this._shouldAutoScroll = true;
       this._customColumnFlag = false; // 是否已经自定义处理过列
       this._pinColumnFlag = false; // 是否已经处理过列缓存
@@ -23213,19 +23227,41 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const row = this.getRow(param);
       row.remove(options);
     }
-    getCheckedRows() {
-      return Object.keys(this.checkedRowRefs)
-        .map((key) => {
-          return this.checkedRowRefs[key];
-        })
-        .filter((rowRef) => !isNullish(rowRef.key));
+    getCheckedRows(options = { includePartialChecked: true }) {
+      const arr = Object.keys(this.checkedRowRefs).map((key) => {
+        return this.checkedRowRefs[key];
+      });
+      if (
+        options.includePartialChecked !== false &&
+        (this.props.rowCheckable ||
+          this.props.rowCheckable.includePartialChecked !== false)
+      ) {
+        const partCheckedRows = Object.keys(this.partCheckedRowRefs).map(
+          (key) => {
+            return this.partCheckedRowRefs[key];
+          }
+        );
+        arr.push(...partCheckedRows);
+      }
+      return arr.filter((rowRef) => !isNullish(rowRef.key));
     }
-    getCheckedRowKeys() {
-      return Object.keys(this.checkedRowRefs)
-        .map((key) => {
-          return this.checkedRowRefs[key].key;
-        })
-        .filter((key) => !isNullish(key));
+    getCheckedRowKeys(options = { includePartialChecked: true }) {
+      const arr = Object.keys(this.checkedRowRefs).map((key) => {
+        return this.checkedRowRefs[key].key;
+      });
+      if (
+        options.includePartialChecked !== false &&
+        (this.props.rowCheckable ||
+          this.props.rowCheckable.includePartialChecked !== false)
+      ) {
+        const partCheckedKeys = Object.keys(this.partCheckedRowRefs).map(
+          (key) => {
+            return this.partCheckedRowRefs[key].key;
+          }
+        );
+        arr.push(...partCheckedKeys);
+      }
+      return arr.filter((key) => !isNullish(key));
     } // 遍历 rowTr 实例，调用其check方法
     checkAllRows(options) {
       const { rowsRefs } = this;
@@ -23442,53 +23478,83 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         return;
       }
       row.check();
+    } // 统一的状态传播方法
+    propagateParentState(node, isCheckOperation) {
+      if (!node || !node.parentNode) return;
+      const parent = node.parentNode; // 计算当前父节点应该具有的状态
+      const newState = this.calculateParentState(parent, isCheckOperation); // 应用状态变化
+      if (newState === "checked" && !parent.props.checked) {
+        this.check(parent, true, false);
+      } else if (
+        newState === "unchecked" &&
+        (parent.props.checked || parent.props.partChecked)
+      ) {
+        this.uncheck(parent, true);
+      } else if (newState === "partial" && !parent.props.partChecked) {
+        parent.partCheck();
+      } // 继续向上传播
+      this.propagateParentState(parent, isCheckOperation);
     }
-    check(row, fromChild) {
-      const { checked } = row.props;
+    calculateParentState(parent, isCheckOperation) {
+      const siblings = parent.childrenNodes;
+      let hasChecked = false;
+      let hasUnchecked = false;
+      for (const k in siblings) {
+        const sibling = siblings[k];
+        if (sibling.props.checked) {
+          hasChecked = true;
+        } else if (sibling.props.partChecked) {
+          return "partial"; // 发现任何半选中子节点立即返回
+        } else {
+          hasUnchecked = true;
+        } // 发现混合状态立即返回
+        if (hasChecked && hasUnchecked) {
+          return "partial";
+        }
+      } // 根据操作类型决定最终状态
+      return isCheckOperation
+        ? hasChecked
+          ? "checked"
+          : "unchecked"
+        : hasUnchecked
+        ? "unchecked"
+        : "checked";
+    } // check方法
+    check(row, fromChild, isPartCheck) {
+      const { checked, partChecked } = row.props;
       const {
-        cascadeCheckParent,
         cascadeCheckChildren,
-      } = this.props.treeConfig;
-      cascadeCheckChildren === true &&
+        cascadeCheckParent,
+      } = this.props.treeConfig; // 级联向下
+      cascadeCheckChildren &&
         !fromChild &&
-        Object.keys(row.childrenNodes).forEach((key) => {
-          this.checkChildren(row.childrenNodes[key]);
-        });
-      cascadeCheckParent === true &&
-        row.parentNode &&
-        this.check(row.parentNode, true);
-      if (checked === true) {
+        Object.keys(row.childrenNodes).forEach((key) =>
+          this.checkChildren(row.childrenNodes[key])
+        ); // 更新当前节点
+      if (isPartCheck ? !partChecked : !checked) {
+        isPartCheck ? row.partCheck() : row.check();
+      } else {
         return false;
-      }
-      row.check();
-    }
+      } // 级联向上（受cascadeCheckParent控制）
+      cascadeCheckParent && this.propagateParentState(row, true);
+    } // uncheck方法
     uncheck(row, fromChild) {
-      const { checked } = row.props;
+      const { checked, partChecked } = row.props;
       const {
-        cascadeUncheckParent,
         cascadeUncheckChildren,
-      } = this.props.treeConfig;
-      cascadeUncheckChildren === true &&
+        cascadeUncheckParent,
+      } = this.props.treeConfig; // 级联向下
+      cascadeUncheckChildren &&
         !fromChild &&
-        Object.keys(row.childrenNodes).forEach((key) => {
-          this.uncheck(row.childrenNodes[key]);
-        }); // 如果兄弟节点没有被选中的，则级联取消勾选父级节点
-      if (cascadeUncheckParent === true && row.parentNode) {
-        const siblings = row.parentNode.childrenNodes;
-        let n = 0;
-        for (const k in siblings) {
-          if (siblings[k].props.checked) {
-            n += 1;
-          }
-        }
-        if (n <= 1) {
-          this.uncheck(row.parentNode, true);
-        }
-      }
-      if (checked === false) {
+        Object.keys(row.childrenNodes).forEach((key) =>
+          this.uncheck(row.childrenNodes[key])
+        ); // 更新当前节点
+      if (checked || partChecked) {
+        row.uncheck();
+      } else {
         return false;
-      }
-      row.uncheck();
+      } // 级联向上（受cascadeUncheckParent控制）
+      cascadeUncheckParent && this.propagateParentState(row, false);
     }
     _processCheckableColumn() {
       const { rowCheckable } = this.props;
