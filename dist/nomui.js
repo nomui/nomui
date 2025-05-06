@@ -16255,7 +16255,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const children = this.getChildren();
       for (let i = 0; i < children.length; i++) {
         const item = children[i];
-        keys.push(item.key);
+        if (item.componentType !== "Empty") {
+          keys.push(item.key);
+        }
       }
       return keys;
     }
@@ -16264,7 +16266,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const children = this.getChildren();
       for (let i = 0; i < children.length; i++) {
         const item = children[i];
-        datas.push(item.props._itemData);
+        if (item.componentType !== "Empty") {
+          datas.push(item.props._itemData);
+        }
       }
       return datas;
     }
