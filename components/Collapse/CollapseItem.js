@@ -23,7 +23,7 @@ class CollapseItem extends Component {
     const that = this
     this.setProps({
       classes: {
-        'align-right': that.menu.props.icon.align === 'right'
+        'align-right': that.menu.props.icon.align === 'right',
       },
       children: [
         {
@@ -40,10 +40,15 @@ class CollapseItem extends Component {
                 ...Component.normalizeIconProps(
                   collapsed ? that.menu.props.icon.default : that.menu.props.icon.open,
                 ),
-                // classes: {
-                //   'nom-collapse-right-icon': that.menu.props.icon.align === 'right',
-                // },
-                onClick: function () {
+                ref: (c) => {
+                  that.iconRef = c
+                },
+                onClick: ({ sender }) => {
+                  if (sender.props.type === that.menu.props.icon.default) {
+                    sender.update({ type: that.menu.props.icon.open })
+                  } else {
+                    sender.update({ type: that.menu.props.icon.default })
+                  }
                   if (!that.menu.props.iconOnly) return
                   that._handleCollapse()
                 },
@@ -51,7 +56,7 @@ class CollapseItem extends Component {
             },
             {
               grow: true,
-              children: title
+              children: title,
             },
           ],
           onClick: function () {
@@ -64,6 +69,9 @@ class CollapseItem extends Component {
           classes: {
             'nom-collapse-item-content': true,
           },
+          ref: (c) => {
+            that.contentRef = c
+          },
           hidden: collapsed,
           children: content,
         },
@@ -72,17 +80,21 @@ class CollapseItem extends Component {
   }
 
   close() {
-    this.update({
-      collapsed: true,
-    })
+    this.contentRef.hide()
+    this.props.collapsed = true
+    this.iconRef.update({ type: this.menu.props.icon.default })
   }
 
   _handleCollapse() {
     this.setProps({
       collapsed: this.props.collapsed !== true,
     })
+    if (this.props.collapsed) {
+      this.contentRef.hide()
+    } else {
+      this.contentRef.show()
+    }
 
-    this.update(this.props.collapsed)
     this.menu._onCollapse(this.props.key, !this.props.collapsed)
   }
 
