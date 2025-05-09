@@ -84,6 +84,7 @@ class Switch extends Field {
 
   _setValue(value) {
     this.ck.element.checked = value === true
+    this.update({ value })
   }
 }
 

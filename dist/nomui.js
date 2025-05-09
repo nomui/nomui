@@ -33374,6 +33374,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _setValue(value) {
       this.ck.element.checked = value === true;
+      this.update({ value });
     }
   }
   Switch.defaults = {
