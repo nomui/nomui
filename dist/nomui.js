@@ -14907,10 +14907,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                       : that.menu.props.icon.open
                   ),
                   {
-                    // classes: {
-                    //   'nom-collapse-right-icon': that.menu.props.icon.align === 'right',
-                    // },
-                    onClick: function () {
+                    ref: (c) => {
+                      that.iconRef = c;
+                    },
+                    onClick: ({ sender }) => {
+                      if (sender.props.type === that.menu.props.icon.default) {
+                        sender.update({ type: that.menu.props.icon.open });
+                      } else {
+                        sender.update({ type: that.menu.props.icon.default });
+                      }
                       if (!that.menu.props.iconOnly) return;
                       that._handleCollapse();
                     },
@@ -14927,6 +14932,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           {
             tag: "div",
             classes: { "nom-collapse-item-content": true },
+            ref: (c) => {
+              that.contentRef = c;
+            },
             hidden: collapsed,
             children: content,
           },
@@ -14934,11 +14942,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
     }
     close() {
-      this.update({ collapsed: true });
+      this.contentRef.hide();
+      this.props.collapsed = true;
+      this.iconRef.update({ type: this.menu.props.icon.default });
     }
     _handleCollapse() {
       this.setProps({ collapsed: this.props.collapsed !== true });
-      this.update(this.props.collapsed);
+      if (this.props.collapsed) {
+        this.contentRef.hide();
+      } else {
+        this.contentRef.show();
+      }
       this.menu._onCollapse(this.props.key, !this.props.collapsed);
     }
     _disable() {
