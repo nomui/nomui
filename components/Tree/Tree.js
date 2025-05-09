@@ -98,6 +98,7 @@ class Tree extends Component {
   _rendered() {
     this.autoCheckAll()
     this.props.sortable && defaultSortableOndrop()
+    this.firstRender && this._initializePartCheckedNodes()
   }
 
   autoCheckAll() {
@@ -344,6 +345,23 @@ class Tree extends Component {
   _onNodeSelect(args) {
     const { onNodeSelect } = this.props.nodeSelectable
     this._callHandler(onNodeSelect, args)
+  }
+
+  _initializePartCheckedNodes() {
+    Object.keys(this.checkedNodeKeysHash).forEach((key) => {
+      const node = this.nodeRefs[key]
+      if (node) {
+        // 确保当前节点被选中
+        node.check({ checkCheckbox: false, triggerCheckChange: false })
+
+        // 递归更新祖先节点的状态
+        let parentNode = node.parentNode
+        while (parentNode) {
+          parentNode.updateParentCheckState()
+          parentNode = parentNode.parentNode
+        }
+      }
+    })
   }
 
   _setTreeData(arr) {

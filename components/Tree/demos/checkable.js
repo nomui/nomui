@@ -84,7 +84,7 @@ define([], function () {
               treeRef = c
             },
             nodeCheckable: {
-              // checkedNodeKeys: ['节点 1', '节点 1.1', '节点 2.1'],
+              checkedNodeKeys: ['节点 1', '节点 1.1', '节点 2.1'],
             },
             dataFields: {
               key: 'text',
