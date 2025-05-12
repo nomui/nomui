@@ -70,10 +70,27 @@ define([], function () {
               },
               {
                 component: 'Button',
+                text: '获取选中节点键值数组(不包括半勾选)',
+                onClick: () => {
+                  console.log(treeRef.getCheckedNodeKeys({ includePartialChecked: false }))
+                },
+              },
+              {
+                component: 'Button',
                 text: '获取选中节点数据（树形）',
                 onClick: () => {
                   // eslint-disable-next-line
                   console.log(treeRef.getCheckedNodesData())
+                },
+              },
+              {
+                component: 'Button',
+                text: '获取选中节点数据（扁平）(不包括半勾选)',
+                onClick: () => {
+                  // eslint-disable-next-line
+                  console.log(
+                    treeRef.getCheckedNodesData({ flatData: true, includePartialChecked: false }),
+                  )
                 },
               },
             ],
@@ -84,7 +101,7 @@ define([], function () {
               treeRef = c
             },
             nodeCheckable: {
-              checkedNodeKeys: ['节点 1', '节点 1.1', '节点 2.1'],
+              // checkedNodeKeys: ['节点 1', '节点 1.1', '节点 2.1'],
             },
             dataFields: {
               key: 'text',

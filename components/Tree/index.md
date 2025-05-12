@@ -42,6 +42,7 @@
 > - node 的 `key`
 > - node 的对应实例 `nodeRef`
 > - 以 nodeRef 为参数的`函数`，返回结果为`true`
+> - getCheckedNodesData 默认返回的树形数据，切默认包括半勾选的节点，如果要忽略半勾选的节点，必须配置`flatData:true`，返回扁平数组
 
 ### nodeSelectable
 
