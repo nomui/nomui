@@ -25,8 +25,8 @@
 | --- | --- | --- | --- |
 | setCheckedNodeKeys | 设置选中节点数据键数组 | `(options:array) => void` | - |
 | getData | 获取所有节点数据 | `(options:getDataOptions) => TreeData[]` | - |
-| getCheckedNodeKeys | 获取勾选的节点键值数组 | `(options, checkedNodeKeys, node ) => string[]` | - |
-| getCheckedNodesData | 获取`node`节点下的勾选的节点数据，`flatData: false`则返回树形结构 | `(options, node) => TreeData[]` | `({flatData: false}, this) => []` |
+| getCheckedNodeKeys | 获取勾选的节点键值数组，参数 includePartialChecked 表示包括半勾选状态的节点 | `({includePartialChecked:true}) => []` | - |
+| getCheckedNodesData | 获取`node`节点下的勾选的节点数据，`flatData: false`则返回树形结构,参数 includePartialChecked 表示包括半勾选状态的节点 | `(options, node) => TreeData[]` | `({flatData: false,includePartialChecked:true}) => []` |
 | selectNode | 选中指定节点 | `(options:getDataOptions) => void` | - |
 | clearSelection | 清空选中 | `function` | - |
 | getSelectedNode | 获取当前选中节点 | `(options:getDataOptions) => node` | - |

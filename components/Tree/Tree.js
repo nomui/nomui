@@ -157,45 +157,51 @@ class Tree extends Component {
     return checkedNodes
   }
 
-  getCheckedNodeKeys(getOptions, checkedNodeKeys, node) {
-    getOptions = getOptions || {}
-    checkedNodeKeys = checkedNodeKeys || []
+  getCheckedNodeKeys(getOptions = {}, checkedNodeKeys = [], node) {
+    const { includePartialChecked = true } = getOptions
     node = node || this
+
     const childNodes = node.getChildNodes()
     childNodes.forEach((childNode) => {
-      if (childNode.isChecked() === true) {
-        checkedNodeKeys.push(childNode.key)
+      if (
+        childNode.isChecked() === true ||
+        (includePartialChecked && childNode.props.partChecked === true)
+      ) {
+        checkedNodeKeys.push(childNode.props.key)
+
+        // 递归获取子节点的键值
+        this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode)
       }
-      this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode)
     })
 
     return checkedNodeKeys
   }
 
-  getCheckedNodesData(getOptions, node) {
-    getOptions = getOptions || { flatData: false }
+  getCheckedNodesData(getOptions = { flatData: false, includePartialChecked: true }, node) {
+    const { flatData, includePartialChecked } = getOptions
     node = node || this
-    let checkedNodesData = []
+
+    const nodesData = []
     const childNodes = node.getChildNodes()
     childNodes.forEach((childNode) => {
-      if (childNode.isChecked() === true) {
+      if (
+        childNode.isChecked() === true ||
+        (includePartialChecked && childNode.props.partChecked === true)
+      ) {
         const childNodeData = { ...childNode.props.data }
-        checkedNodesData.push(childNodeData)
+        nodesData.push(childNodeData)
 
-        if (getOptions.flatData === true) {
-          checkedNodesData = checkedNodesData.concat(
-            this.getCheckedNodesData(getOptions, childNode),
-          )
-        } else {
-          const children = this.getCheckedNodesData(getOptions, childNode)
-          if (children && children.length) {
-            childNodeData.children = children
-          }
+        // 递归获取子节点数据
+        const children = this.getCheckedNodesData(getOptions, childNode)
+        if (!flatData && children.length > 0) {
+          childNodeData.children = children
+        } else if (flatData) {
+          nodesData.push(...children)
         }
       }
     })
 
-    return checkedNodesData
+    return nodesData
   }
 
   getNode(param) {
