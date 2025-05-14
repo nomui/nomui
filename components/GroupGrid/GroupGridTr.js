@@ -178,7 +178,6 @@ class GroupGridTr extends Tr {
         that._validate()
       }
     }, 0)
-    this._triggerDependencyValueChange()
   }
 
   focus() {
