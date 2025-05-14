@@ -57,7 +57,7 @@ class GroupGridTr extends Tr {
         }
       }
     }
-    hiddenColumns.forEach(element => {
+    hiddenColumns.forEach((element) => {
       if (!options.ignoreHidden) {
         if (this.currentData.hasOwnProperty(element.field)) {
           value[element.field] = this.currentData[element.field]
@@ -65,7 +65,7 @@ class GroupGridTr extends Tr {
           value[element.field] = element.value
         }
       }
-    });
+    })
     if (options.merge === true) {
       return extend(this.currentValue, value)
     }
@@ -84,7 +84,6 @@ class GroupGridTr extends Tr {
     const len = this.fields.length
     for (let i = 0; i < len; i++) {
       const field = this.fields[i]
-
 
       if (field.setValue && this._needHandleValue(field, options)) {
         let fieldValue = value
@@ -179,6 +178,7 @@ class GroupGridTr extends Tr {
         that._validate()
       }
     }, 0)
+    this._triggerDependencyValueChange()
   }
 
   focus() {
