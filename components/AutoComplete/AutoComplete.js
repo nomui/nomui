@@ -231,6 +231,7 @@ class AutoComplete extends Textbox {
         }
       }, 0)
     }
+    this._triggerDependencyValueChange()
   }
 
   blur() {

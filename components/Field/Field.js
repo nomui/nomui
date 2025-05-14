@@ -160,6 +160,7 @@ class Field extends Component {
 
   _handleDependencies() {
     const { dependencies } = this.props
+
     dependencies.forEach((item) => {
       const field = this.rootField.getField(item)
 
@@ -389,6 +390,11 @@ class Field extends Component {
     }
   }
 
+  _triggerDependencyValueChange() {
+    const args = { name: this.props.name, oldValue: this.oldValue, newValue: this.currentValue }
+    this._onSourceValueChange(args)
+  }
+
   // 派生的控件子类内部适当位置调用
   _onValueChange(args) {
     const that = this
@@ -412,7 +418,7 @@ class Field extends Component {
       }
     }, 0)
 
-    this._onSourceValueChange(args)
+    this._triggerDependencyValueChange()
   }
 }
 
