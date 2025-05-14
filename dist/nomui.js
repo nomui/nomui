@@ -24247,7 +24247,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           that._validate();
         }
       }, 0);
-      this._triggerDependencyValueChange();
     }
     focus() {
       this.element.focus();
