@@ -98,9 +98,8 @@ class Tree extends Component {
   _rendered() {
     this.autoCheckAll()
     this.props.sortable && defaultSortableOndrop()
-    this.firstRender &&
-      this.props.nodeCheckable &&
-      this.props.nodeCheckable.includePartialChecked &&
+    this.props.nodeCheckable &&
+      this.props.nodeCheckable.includePartialChecked !== false &&
       this._initializePartCheckedNodes()
   }
 
