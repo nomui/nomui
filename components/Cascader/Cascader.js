@@ -514,6 +514,7 @@ class Cascader extends Field {
         that._validate()
       }
     }, 0)
+    this._triggerDependencyValueChange()
   }
 
   _disable() {

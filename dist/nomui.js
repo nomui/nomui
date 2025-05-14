@@ -9429,6 +9429,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         }
       }
+    }
+    _triggerDependencyValueChange() {
+      const args = {
+        name: this.props.name,
+        oldValue: this.oldValue,
+        newValue: this.currentValue,
+      };
+      this._onSourceValueChange(args);
     } // 派生的控件子类内部适当位置调用
     _onValueChange(args) {
       const that = this;
@@ -9453,7 +9461,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           that._validate();
         }
       }, 0);
-      this._onSourceValueChange(args);
+      this._triggerDependencyValueChange();
     }
   }
   Field.defaults = {
@@ -11685,6 +11693,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         }, 0);
       }
+      this._triggerDependencyValueChange();
     }
     blur() {
       super.blur();
@@ -13527,6 +13536,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           that._validate();
         }
       }, 0);
+      this._triggerDependencyValueChange();
     }
     _disable() {
       if (this.firstRender === false) {
@@ -24237,6 +24247,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           that._validate();
         }
       }, 0);
+      this._triggerDependencyValueChange();
     }
     focus() {
       this.element.focus();
