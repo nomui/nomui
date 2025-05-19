@@ -25,8 +25,8 @@
 | --- | --- | --- | --- |
 | setCheckedNodeKeys | 设置选中节点数据键数组 | `(options:array) => void` | - |
 | getData | 获取所有节点数据 | `(options:getDataOptions) => TreeData[]` | - |
-| getCheckedNodeKeys | 获取勾选的节点键值数组 | `(options, checkedNodeKeys, node ) => string[]` | - |
-| getCheckedNodesData | 获取`node`节点下的勾选的节点数据，`flatData: false`则返回树形结构 | `(options, node) => TreeData[]` | `({flatData: false}, this) => []` |
+| getCheckedNodeKeys | 获取勾选的节点键值数组，参数 includePartialChecked 表示包括半勾选状态的节点 | `({includePartialChecked:true}) => []` | - |
+| getCheckedNodesData | 获取`node`节点下的勾选的节点数据，`flatData: false`则返回树形结构,参数 includePartialChecked 表示包括半勾选状态的节点 | `(options, node) => TreeData[]` | `({flatData: false,includePartialChecked:true}) => []` |
 | selectNode | 选中指定节点 | `(options:getDataOptions) => void` | - |
 | clearSelection | 清空选中 | `function` | - |
 | getSelectedNode | 获取当前选中节点 | `(options:getDataOptions) => node` | - |
@@ -42,6 +42,7 @@
 > - node 的 `key`
 > - node 的对应实例 `nodeRef`
 > - 以 nodeRef 为参数的`函数`，返回结果为`true`
+> - getCheckedNodesData 默认返回的树形数据，切默认包括半勾选的节点，如果要忽略半勾选的节点，必须配置`flatData:true`，返回扁平数组
 
 ### nodeSelectable
 
@@ -70,8 +71,9 @@
 | checkedNodeKeys | 初始选中节点数据键数组 | `array` | - |
 | onlyleaf | 是否只允许选择叶子节点 | `boolean` | false |
 | showCheckAll | 显示全选复选框 | `boolean` | false |
-| checkAllText | 全选复选框文本 | `boolean` | 全选 |
+| checkAllText | 全选复选框文本 | `string` | 全选 |
 | onCheckChange | 节点勾选回调 | `({node}) => {}` | - |
+| enablePartChecked | 是否启用初始数据自动半勾选祖先节点 | `boolean` | false |
 
 ### TreeData
 

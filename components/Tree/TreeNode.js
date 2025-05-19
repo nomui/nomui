@@ -91,6 +91,39 @@ class TreeNode extends Component {
     }
   }
 
+  partCheck() {
+    // Set the checkbox to a "partially checked" state
+    this.checkboxRef.partCheck(false)
+
+    this.props.partChecked = true
+    this.props.checked = false
+  }
+
+  updateParentCheckState() {
+    const childKeys = Object.keys(this.subnodeRefs)
+
+    // 判断子节点的状态
+    const allChecked = childKeys.every((key) => this.subnodeRefs[key].props.checked === true)
+    const noneChecked = childKeys.every(
+      (key) =>
+        this.subnodeRefs[key].props.checked === false && !this.subnodeRefs[key].props.partChecked,
+    )
+
+    // 根据子节点状态更新当前节点状态
+    if (allChecked) {
+      this.check({ checkCheckbox: true, triggerCheckChange: false, fromChildren: true })
+    } else if (noneChecked) {
+      this.uncheck({ uncheckCheckbox: true, triggerCheckChange: false, skipChildren: true })
+    } else {
+      this.partCheck()
+    }
+
+    // 递归更新祖先节点状态
+    if (this.parentNode) {
+      this.parentNode.updateParentCheckState()
+    }
+  }
+
   check({ checkCheckbox = true, triggerCheckChange = true, fromChildren = false } = {}) {
     const { checked } = this.props
     const {
@@ -104,25 +137,26 @@ class TreeNode extends Component {
       return
     }
 
-    // 级联选中子节点 && 当前节点的选中不是因为 children 级联上来的
-    !onlyleaf &&
-      cascadeCheckChildren === true &&
-      !fromChildren &&
-      Object.keys(this.subnodeRefs).forEach((key) => {
-        this.subnodeRefs[key].checkChildren({ checkCheckbox: true, triggerCheckChange: false })
-      })
-
-    // 级联选中父节点: fromChildren传值true
-    !onlyleaf &&
-      cascadeCheckParent === true &&
-      this.parentNode &&
-      this.parentNode.check({ checkCheckbox: true, triggerCheckChange: false, fromChildren: true })
-
+    // 更新当前节点状态
     if (checkCheckbox === true) {
       this.checkboxRef.setValue(true, { triggerChange: false })
     }
 
     this.props.checked = true
+    this.props.partChecked = false // 确保不是半选状态
+
+    // 级联更新子节点状态
+    if (!onlyleaf && cascadeCheckChildren === true && !fromChildren) {
+      Object.keys(this.subnodeRefs).forEach((key) => {
+        this.subnodeRefs[key].check({ checkCheckbox: true, triggerCheckChange: false })
+      })
+    }
+
+    // 级联更新父节点状态
+    if (!onlyleaf && cascadeCheckParent === true && this.parentNode) {
+      this.parentNode.updateParentCheckState()
+    }
+
     if (triggerCheckChange === true) {
       this._callHandler(onCheckChange)
     }
@@ -137,25 +171,30 @@ class TreeNode extends Component {
       onlyleaf,
     } = this.tree.props.nodeCheckable
 
-    if (checked === false) {
+    if (checked === false && this.props.partChecked === false) {
       return
     }
 
-    uncheckCheckbox && this.checkboxRef.setValue(false, { triggerChange: false })
+    // 更新当前节点状态
+    if (uncheckCheckbox === true) {
+      this.checkboxRef.setValue(false, { triggerChange: false })
+    }
 
-    !onlyleaf &&
-      cascadeUncheckChildren === true &&
-      skipChildren === false &&
+    this.props.checked = false
+    this.props.partChecked = false // 确保不是半选状态
+
+    // 级联更新子节点状态
+    if (!onlyleaf && cascadeUncheckChildren === true && !skipChildren) {
       Object.keys(this.subnodeRefs).forEach((key) => {
         this.subnodeRefs[key].uncheck({ uncheckCheckbox: true, triggerCheckChange: false })
       })
+    }
 
-    !onlyleaf &&
-      cascadeUncheckParent === true &&
-      this.parentNode &&
-      this.parentNode.checkNodes({ childKey: this.key })
+    // 级联更新父节点状态
+    if (!onlyleaf && cascadeUncheckParent === true && this.parentNode) {
+      this.parentNode.updateParentCheckState()
+    }
 
-    this.props.checked = false
     if (triggerCheckChange === true) {
       this._callHandler(onCheckChange)
     }
