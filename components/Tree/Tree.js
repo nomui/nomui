@@ -98,6 +98,9 @@ class Tree extends Component {
   _rendered() {
     this.autoCheckAll()
     this.props.sortable && defaultSortableOndrop()
+    this.props.nodeCheckable &&
+      this.props.nodeCheckable.enablePartChecked === true &&
+      this._initializePartCheckedNodes()
   }
 
   autoCheckAll() {
@@ -156,45 +159,59 @@ class Tree extends Component {
     return checkedNodes
   }
 
-  getCheckedNodeKeys(getOptions, checkedNodeKeys, node) {
-    getOptions = getOptions || {}
-    checkedNodeKeys = checkedNodeKeys || []
+  getCheckedNodeKeys(getOptions = {}, checkedNodeKeys = [], node) {
+    const { includePartialChecked = true } = getOptions
     node = node || this
+
     const childNodes = node.getChildNodes()
     childNodes.forEach((childNode) => {
-      if (childNode.isChecked() === true) {
-        checkedNodeKeys.push(childNode.key)
+      // 如果节点是选中状态，或者是半选状态且 includePartialChecked 为 true，则记录键值
+      if (
+        childNode.isChecked() === true ||
+        (includePartialChecked && childNode.props.partChecked === true)
+      ) {
+        checkedNodeKeys.push(childNode.props.key)
       }
+
+      // 无论当前节点是否被记录，都递归检查其子节点
       this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode)
     })
 
     return checkedNodeKeys
   }
 
-  getCheckedNodesData(getOptions, node) {
-    getOptions = getOptions || { flatData: false }
+  getCheckedNodesData(getOptions = { flatData: false, includePartialChecked: true }, node) {
+    const { flatData, includePartialChecked } = getOptions
     node = node || this
-    let checkedNodesData = []
+
+    const nodesData = []
     const childNodes = node.getChildNodes()
     childNodes.forEach((childNode) => {
-      if (childNode.isChecked() === true) {
+      // 如果节点是选中状态，或者是半选状态且 includePartialChecked 为 true，则记录数据
+      if (
+        childNode.isChecked() === true ||
+        (includePartialChecked && childNode.props.partChecked === true)
+      ) {
         const childNodeData = { ...childNode.props.data }
-        checkedNodesData.push(childNodeData)
+        nodesData.push(childNodeData)
 
-        if (getOptions.flatData === true) {
-          checkedNodesData = checkedNodesData.concat(
-            this.getCheckedNodesData(getOptions, childNode),
-          )
-        } else {
+        // 如果不是扁平化数据，递归获取子节点数据
+        if (!flatData) {
           const children = this.getCheckedNodesData(getOptions, childNode)
-          if (children && children.length) {
+          if (children.length > 0) {
             childNodeData.children = children
           }
         }
       }
+
+      // 如果是扁平化数据，递归获取子节点数据并直接添加到结果中
+      if (flatData) {
+        const children = this.getCheckedNodesData(getOptions, childNode)
+        nodesData.push(...children)
+      }
     })
 
-    return checkedNodesData
+    return nodesData
   }
 
   getNode(param) {
@@ -344,6 +361,23 @@ class Tree extends Component {
   _onNodeSelect(args) {
     const { onNodeSelect } = this.props.nodeSelectable
     this._callHandler(onNodeSelect, args)
+  }
+
+  _initializePartCheckedNodes() {
+    Object.keys(this.checkedNodeKeysHash).forEach((key) => {
+      const node = this.nodeRefs[key]
+      if (node) {
+        // 确保当前节点被选中
+        node.check({ checkCheckbox: false, triggerCheckChange: false })
+
+        // 递归更新祖先节点的状态
+        let parentNode = node.parentNode
+        while (parentNode) {
+          parentNode.updateParentCheckState()
+          parentNode = parentNode.parentNode
+        }
+      }
+    })
   }
 
   _setTreeData(arr) {

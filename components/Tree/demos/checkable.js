@@ -13,68 +13,96 @@ define([], function () {
           {
             component: 'Flex',
             gap: 'small',
-            align: 'center',
-            cols: [
+            rows: [
               {
-                component: 'Checkbox',
-                text: '显示全选',
-                onValueChange: ({ newValue }) => {
-                  treeRef.update({ nodeCheckable: { showCheckAll: newValue } })
-                },
+                cols: [
+                  {
+                    component: 'Checkbox',
+                    text: '显示全选',
+                    onValueChange: ({ newValue }) => {
+                      treeRef.update({ nodeCheckable: { showCheckAll: newValue } })
+                    },
+                  },
+                  {
+                    component: 'Checkbox',
+                    text: '只允许勾选叶子节点',
+                    onValueChange: ({ newValue }) => {
+                      treeRef.update({ nodeCheckable: { onlyleaf: newValue } })
+                    },
+                  },
+                  {
+                    component: 'Checkbox',
+                    text: '级联选中父节点',
+                    value: true,
+                    onValueChange: ({ newValue }) => {
+                      treeRef.update({ nodeCheckable: { cascadeCheckParent: newValue } })
+                    },
+                  },
+                  {
+                    component: 'Checkbox',
+                    text: '级联选中子节点',
+                    value: true,
+                    onValueChange: ({ newValue }) => {
+                      treeRef.update({ nodeCheckable: { cascadeCheckChildren: newValue } })
+                    },
+                  },
+                  {
+                    component: 'Checkbox',
+                    text: '级联取消选中子节点',
+                    value: true,
+                    onValueChange: ({ newValue }) => {
+                      treeRef.update({ nodeCheckable: { cascadeUncheckChildren: newValue } })
+                    },
+                  },
+                  {
+                    component: 'Checkbox',
+                    text: '级联取消选中父节点',
+                    value: true,
+                    onValueChange: ({ newValue }) => {
+                      treeRef.update({ nodeCheckable: { cascadeUncheckParent: newValue } })
+                    },
+                  },
+                ],
               },
               {
-                component: 'Checkbox',
-                text: '只允许勾选叶子节点',
-                onValueChange: ({ newValue }) => {
-                  treeRef.update({ nodeCheckable: { onlyleaf: newValue } })
-                },
-              },
-              {
-                component: 'Checkbox',
-                text: '级联选中父节点',
-                value: true,
-                onValueChange: ({ newValue }) => {
-                  treeRef.update({ nodeCheckable: { cascadeCheckParent: newValue } })
-                },
-              },
-              {
-                component: 'Checkbox',
-                text: '级联选中子节点',
-                value: true,
-                onValueChange: ({ newValue }) => {
-                  treeRef.update({ nodeCheckable: { cascadeCheckChildren: newValue } })
-                },
-              },
-              {
-                component: 'Checkbox',
-                text: '级联取消选中子节点',
-                value: true,
-                onValueChange: ({ newValue }) => {
-                  treeRef.update({ nodeCheckable: { cascadeUncheckChildren: newValue } })
-                },
-              },
-              {
-                component: 'Checkbox',
-                text: '级联取消选中父节点',
-                value: true,
-                onValueChange: ({ newValue }) => {
-                  treeRef.update({ nodeCheckable: { cascadeUncheckParent: newValue } })
-                },
-              },
-              {
-                component: 'Button',
-                text: '获取选中节点键值数组',
-                onClick: () => {
-                  console.log(treeRef.getCheckedNodeKeys())
-                },
-              },
-              {
-                component: 'Button',
-                text: '获取选中节点数据（树形）',
-                onClick: () => {
-                  // eslint-disable-next-line
-                  console.log(treeRef.getCheckedNodesData())
-                },
+                gap: 'small',
+                cols: [
+                  {
+                    component: 'Button',
+                    text: '获取选中节点键值数组',
+                    onClick: () => {
+                      console.log(treeRef.getCheckedNodeKeys())
+                    },
+                  },
+                  {
+                    component: 'Button',
+                    text: '获取选中节点键值数组(不包括半勾选)',
+                    onClick: () => {
+                      console.log(treeRef.getCheckedNodeKeys({ includePartialChecked: false }))
+                    },
+                  },
+                  {
+                    component: 'Button',
+                    text: '获取选中节点数据（树形）',
+                    onClick: () => {
+                      // eslint-disable-next-line
+                      console.log(treeRef.getCheckedNodesData())
+                    },
+                  },
+                  {
+                    component: 'Button',
+                    text: '获取选中节点数据（扁平）(不包括半勾选)',
+                    onClick: () => {
+                      // eslint-disable-next-line
+                      console.log(
+                        treeRef.getCheckedNodesData({
+                          flatData: true,
+                          includePartialChecked: false,
+                        }),
+                      )
+                    },
+                  },
+                ],
               },
             ],
           },
@@ -84,7 +112,7 @@ define([], function () {
               treeRef = c
             },
             nodeCheckable: {
-              // checkedNodeKeys: ['节点 1', '节点 1.1', '节点 2.1'],
+              checkedNodeKeys: ['节点 1', '节点 1.1', '节点 2.1'],
             },
             dataFields: {
               key: 'text',

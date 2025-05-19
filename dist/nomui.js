@@ -14035,11 +14035,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _getCheckbox() {
       const { disabled: treeDisabled, nodeCheckable } = this.tree.props;
-      const { disabled: nodeDisabled } = this.node.props;
+      const { disabled: nodeDisabled, partChecked } = this.node.props;
       return {
         component: Checkbox,
         plain: true,
         classes: { "nom-tree-node-checkbox": true },
+        partChecked,
         hidden: nodeCheckable && nodeCheckable.onlyleaf && !this.node.isLeaf,
         disabled: treeDisabled || nodeDisabled,
         _created: (inst) => {
@@ -14142,6 +14143,41 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._callHandler(onCheckChange);
       }
     }
+    partCheck() {
+      // Set the checkbox to a "partially checked" state
+      this.checkboxRef.partCheck(false);
+      this.props.partChecked = true;
+      this.props.checked = false;
+    }
+    updateParentCheckState() {
+      const childKeys = Object.keys(this.subnodeRefs); // 判断子节点的状态
+      const allChecked = childKeys.every(
+        (key) => this.subnodeRefs[key].props.checked === true
+      );
+      const noneChecked = childKeys.every(
+        (key) =>
+          this.subnodeRefs[key].props.checked === false &&
+          !this.subnodeRefs[key].props.partChecked
+      ); // 根据子节点状态更新当前节点状态
+      if (allChecked) {
+        this.check({
+          checkCheckbox: true,
+          triggerCheckChange: false,
+          fromChildren: true,
+        });
+      } else if (noneChecked) {
+        this.uncheck({
+          uncheckCheckbox: true,
+          triggerCheckChange: false,
+          skipChildren: true,
+        });
+      } else {
+        this.partCheck();
+      } // 递归更新祖先节点状态
+      if (this.parentNode) {
+        this.parentNode.updateParentCheckState();
+      }
+    }
     check({
       checkCheckbox = true,
       triggerCheckChange = true,
@@ -14156,28 +14192,24 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } = this.tree.props.nodeCheckable;
       if (checked === true) {
         return;
-      } // 级联选中子节点 && 当前节点的选中不是因为 children 级联上来的
-      !onlyleaf &&
-        cascadeCheckChildren === true &&
-        !fromChildren &&
-        Object.keys(this.subnodeRefs).forEach((key) => {
-          this.subnodeRefs[key].checkChildren({
-            checkCheckbox: true,
-            triggerCheckChange: false,
-          });
-        }); // 级联选中父节点: fromChildren传值true
-      !onlyleaf &&
-        cascadeCheckParent === true &&
-        this.parentNode &&
-        this.parentNode.check({
-          checkCheckbox: true,
-          triggerCheckChange: false,
-          fromChildren: true,
-        });
+      } // 更新当前节点状态
       if (checkCheckbox === true) {
         this.checkboxRef.setValue(true, { triggerChange: false });
       }
       this.props.checked = true;
+      this.props.partChecked = false; // 确保不是半选状态
+      // 级联更新子节点状态
+      if (!onlyleaf && cascadeCheckChildren === true && !fromChildren) {
+        Object.keys(this.subnodeRefs).forEach((key) => {
+          this.subnodeRefs[key].check({
+            checkCheckbox: true,
+            triggerCheckChange: false,
+          });
+        });
+      } // 级联更新父节点状态
+      if (!onlyleaf && cascadeCheckParent === true && this.parentNode) {
+        this.parentNode.updateParentCheckState();
+      }
       if (triggerCheckChange === true) {
         this._callHandler(onCheckChange);
       }
@@ -14194,25 +14226,26 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         cascadeUncheckParent,
         onlyleaf,
       } = this.tree.props.nodeCheckable;
-      if (checked === false) {
+      if (checked === false && this.props.partChecked === false) {
         return;
-      }
-      uncheckCheckbox &&
+      } // 更新当前节点状态
+      if (uncheckCheckbox === true) {
         this.checkboxRef.setValue(false, { triggerChange: false });
-      !onlyleaf &&
-        cascadeUncheckChildren === true &&
-        skipChildren === false &&
+      }
+      this.props.checked = false;
+      this.props.partChecked = false; // 确保不是半选状态
+      // 级联更新子节点状态
+      if (!onlyleaf && cascadeUncheckChildren === true && !skipChildren) {
         Object.keys(this.subnodeRefs).forEach((key) => {
           this.subnodeRefs[key].uncheck({
             uncheckCheckbox: true,
             triggerCheckChange: false,
           });
         });
-      !onlyleaf &&
-        cascadeUncheckParent === true &&
-        this.parentNode &&
-        this.parentNode.checkNodes({ childKey: this.key });
-      this.props.checked = false;
+      } // 级联更新父节点状态
+      if (!onlyleaf && cascadeUncheckParent === true && this.parentNode) {
+        this.parentNode.updateParentCheckState();
+      }
       if (triggerCheckChange === true) {
         this._callHandler(onCheckChange);
       }
@@ -14462,6 +14495,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       this.autoCheckAll();
       this.props.sortable && defaultSortableOndrop();
+      this.props.nodeCheckable &&
+        this.props.nodeCheckable.enablePartChecked === true &&
+        this._initializePartCheckedNodes();
     }
     autoCheckAll() {
       if (!this.checkAllRef) return false;
@@ -14508,41 +14544,51 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
       return checkedNodes;
     }
-    getCheckedNodeKeys(getOptions, checkedNodeKeys, node) {
-      getOptions = getOptions || {};
-      checkedNodeKeys = checkedNodeKeys || [];
+    getCheckedNodeKeys(getOptions = {}, checkedNodeKeys = [], node) {
+      const { includePartialChecked = true } = getOptions;
       node = node || this;
       const childNodes = node.getChildNodes();
       childNodes.forEach((childNode) => {
-        if (childNode.isChecked() === true) {
-          checkedNodeKeys.push(childNode.key);
-        }
+        // 如果节点是选中状态，或者是半选状态且 includePartialChecked 为 true，则记录键值
+        if (
+          childNode.isChecked() === true ||
+          (includePartialChecked && childNode.props.partChecked === true)
+        ) {
+          checkedNodeKeys.push(childNode.props.key);
+        } // 无论当前节点是否被记录，都递归检查其子节点
         this.getCheckedNodeKeys(getOptions, checkedNodeKeys, childNode);
       });
       return checkedNodeKeys;
     }
-    getCheckedNodesData(getOptions, node) {
-      getOptions = getOptions || { flatData: false };
+    getCheckedNodesData(
+      getOptions = { flatData: false, includePartialChecked: true },
+      node
+    ) {
+      const { flatData, includePartialChecked } = getOptions;
       node = node || this;
-      let checkedNodesData = [];
+      const nodesData = [];
       const childNodes = node.getChildNodes();
       childNodes.forEach((childNode) => {
-        if (childNode.isChecked() === true) {
+        // 如果节点是选中状态，或者是半选状态且 includePartialChecked 为 true，则记录数据
+        if (
+          childNode.isChecked() === true ||
+          (includePartialChecked && childNode.props.partChecked === true)
+        ) {
           const childNodeData = Object.assign({}, childNode.props.data);
-          checkedNodesData.push(childNodeData);
-          if (getOptions.flatData === true) {
-            checkedNodesData = checkedNodesData.concat(
-              this.getCheckedNodesData(getOptions, childNode)
-            );
-          } else {
+          nodesData.push(childNodeData); // 如果不是扁平化数据，递归获取子节点数据
+          if (!flatData) {
             const children = this.getCheckedNodesData(getOptions, childNode);
-            if (children && children.length) {
+            if (children.length > 0) {
               childNodeData.children = children;
             }
           }
+        } // 如果是扁平化数据，递归获取子节点数据并直接添加到结果中
+        if (flatData) {
+          const children = this.getCheckedNodesData(getOptions, childNode);
+          nodesData.push(...children);
         }
       });
-      return checkedNodesData;
+      return nodesData;
     }
     getNode(param) {
       let retNode = null;
@@ -14667,6 +14713,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _onNodeSelect(args) {
       const { onNodeSelect } = this.props.nodeSelectable;
       this._callHandler(onNodeSelect, args);
+    }
+    _initializePartCheckedNodes() {
+      Object.keys(this.checkedNodeKeysHash).forEach((key) => {
+        const node = this.nodeRefs[key];
+        if (node) {
+          // 确保当前节点被选中
+          node.check({ checkCheckbox: false, triggerCheckChange: false }); // 递归更新祖先节点的状态
+          let parentNode = node.parentNode;
+          while (parentNode) {
+            parentNode.updateParentCheckState();
+            parentNode = parentNode.parentNode;
+          }
+        }
+      });
     }
     _setTreeData(arr) {
       const { key, parentKey, children } = this.props.dataFields;
