@@ -71,8 +71,9 @@
 | checkedNodeKeys | 初始选中节点数据键数组 | `array` | - |
 | onlyleaf | 是否只允许选择叶子节点 | `boolean` | false |
 | showCheckAll | 显示全选复选框 | `boolean` | false |
-| checkAllText | 全选复选框文本 | `boolean` | 全选 |
+| checkAllText | 全选复选框文本 | `string` | 全选 |
 | onCheckChange | 节点勾选回调 | `({node}) => {}` | - |
+| enablePartChecked | 是否启用初始数据自动半勾选祖先节点 | `boolean` | false |
 
 ### TreeData
 

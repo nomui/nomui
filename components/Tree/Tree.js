@@ -99,7 +99,7 @@ class Tree extends Component {
     this.autoCheckAll()
     this.props.sortable && defaultSortableOndrop()
     this.props.nodeCheckable &&
-      this.props.nodeCheckable.includePartialChecked !== false &&
+      this.props.nodeCheckable.enablePartChecked === true &&
       this._initializePartCheckedNodes()
   }
 
