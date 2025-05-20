@@ -24,10 +24,11 @@ define([], function () {
               },
               {
                 component: 'Button',
-                text: '获取上下文:theme & lang',
+                text: '获取上下文:theme（获取单个上下文时直接返回其值）',
                 type: 'link',
                 onClick: ({ sender }) => {
-                  const context = sender.getContext(['theme', 'lang'])
+                  // 获取单个上下文时直接返回其值
+                  const context = sender.getContext('theme')
                   console.log(context)
                 },
               },
@@ -43,9 +44,20 @@ define([], function () {
               },
               {
                 component: 'Button',
-                text: '获取上下文:theme & lang',
+                text: '设置上下文(theme:purple)',
                 type: 'link',
                 onClick: ({ sender }) => {
+                  sender.setContext({
+                    theme: 'purple',
+                  })
+                },
+              },
+              {
+                component: 'Button',
+                text: '获取多个上下文:theme & lang',
+                type: 'link',
+                onClick: ({ sender }) => {
+                  // 获取多个上下文时返回一个对象
                   const context = sender.getContext(['theme', 'lang'])
                   console.log(context)
                 },
@@ -72,6 +84,7 @@ define([], function () {
                         value:
                           'Popup会先查找自身祖先组件的上下文，没有则从自己触发组件开始向上查找',
                       },
+
                       {
                         component: 'Button',
                         text: '获取上下文:theme & lang',

@@ -1281,6 +1281,55 @@ class Component {
     return Array.isArray(contextKeys) ? result : result[contextKeys]
   }
 
+  /**
+   * 设置指定 context 值（支持多个键值对）
+   * @param {Object} contextData 要设置的 context 键值对
+   */
+  setContext(contextData) {
+    if (!isPlainObject(contextData)) {
+      throw new Error('setContext 参数必须是一个对象')
+    }
+
+    const visited = new Set() // 防止循环引用
+    let current = this
+
+    // 遍历 contextData 中的每个 key
+    for (const [key, value] of Object.entries(contextData)) {
+      let contextSet = false
+
+      // 从当前组件开始向上查找
+      while (current && !visited.has(current)) {
+        visited.add(current)
+
+        // 检查当前组件是否有 _componentContext
+        if (current._componentContext && current._componentContext[key] !== undefined) {
+          current._componentContext[key] = value // 更新 context 值
+          contextSet = true
+          break
+        }
+
+        // 检查全局 context
+        const globalContext = nomGlobalContexts.get(current)
+        if (globalContext && globalContext[key] !== undefined) {
+          globalContext[key] = value // 更新全局 context 值
+          contextSet = true
+          break
+        }
+
+        // Popup 组件及其派生组件，向上查找其 opener
+        current = current.opener || current.parent
+      }
+
+      // 如果没有找到对应的 context，则抛出警告
+      if (!contextSet) {
+        console.warn(`未找到可以设置 key 为 "${key}" 的 context`)
+      }
+
+      // 重置 current 为当前组件，继续处理下一个 key
+      current = this
+    }
+  }
+
   _trigger(eventName) {
     const event = new Event(eventName)
     this.element.dispatchEvent(event)
