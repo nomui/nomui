@@ -21,6 +21,11 @@ define([], function () {
               {
                 component: 'StaticText',
                 value: '组件1(theme:dark)',
+                contextListeners: {
+                  theme: (args) => {
+                    console.log('组件1的上下文theme发生变化', args)
+                  },
+                },
               },
               {
                 component: 'Button',

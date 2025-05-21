@@ -13,6 +13,7 @@ import {
   cleanupStaleContexts,
   nomComponentStack,
   nomGlobalContexts,
+  nomuiContextWatchers,
   registerComponentContext,
 } from '../util/context-manager'
 import ComponentDescriptor from './ComponentDescriptor'
@@ -121,6 +122,15 @@ class Component {
       this.render()
     } else {
       this._mountPlaceHolder()
+    }
+
+    // 检查当前组件有无context监听器，有则注册
+    if (this.props.contextListeners && isPlainObject(this.props.contextListeners)) {
+      Object.entries(this.props.contextListeners).forEach(([key, callback]) => {
+        if (isFunction(callback)) {
+          this.addContextListener(key, callback)
+        }
+      })
     }
   }
 
@@ -377,6 +387,7 @@ class Component {
   }
 
   _removeCore() {
+    this._removeContextWatcher() // 清理context watcher
     this._cleanupUnusedContexts() // 清理context
 
     this.props && isFunction(this.props._remove) && this.props._remove.call(this, this)
@@ -1229,6 +1240,15 @@ class Component {
       // 使用新的注册方法
       registerComponentContext(this, this._componentContext)
     }
+
+    // // 支持 props.contextListeners: { key1: callback1, key2: callback2, ... }
+    // if (props.contextListeners && isPlainObject(props.contextListeners)) {
+    //   Object.entries(props.contextListeners).forEach(([key, callback]) => {
+    //     if (isFunction(callback)) {
+    //       this.addContextListener(key, callback)
+    //     }
+    //   })
+    // }
   }
 
   /**
@@ -1296,37 +1316,117 @@ class Component {
     // 遍历 contextData 中的每个 key
     for (const [key, value] of Object.entries(contextData)) {
       let contextSet = false
+      let targetRef = null // 新增
 
       // 从当前组件开始向上查找
       while (current && !visited.has(current)) {
         visited.add(current)
 
-        // 检查当前组件是否有 _componentContext
         if (current._componentContext && current._componentContext[key] !== undefined) {
-          current._componentContext[key] = value // 更新 context 值
+          current._componentContext[key] = value
           contextSet = true
+          targetRef = current // 记录被修改的组件实例
           break
         }
 
-        // 检查全局 context
         const globalContext = nomGlobalContexts.get(current)
         if (globalContext && globalContext[key] !== undefined) {
-          globalContext[key] = value // 更新全局 context 值
+          globalContext[key] = value
           contextSet = true
+          targetRef = current // 记录被修改的组件实例
           break
         }
 
-        // Popup 组件及其派生组件，向上查找其 opener
         current = current.opener || current.parent
       }
 
-      // 如果没有找到对应的 context，则抛出警告
       if (!contextSet) {
         console.warn(`未找到可以设置 key 为 "${key}" 的 context`)
       }
 
-      // 重置 current 为当前组件，继续处理下一个 key
+      // 新增：全局触发监听
+      if (nomuiContextWatchers[key]) {
+        nomuiContextWatchers[key].forEach(({ callback }) => {
+          try {
+            callback({ key, value, ref: targetRef })
+          } catch (e) {
+            console.error('contextChange global listener error:', e)
+          }
+        })
+      }
+
       current = this
+    }
+  }
+
+  /**
+   * 在组件树自身或祖先（含popup穿透）找到存在该key的context组件后，添加全局context监听
+   * @param {string|string[]} contextKeys
+   * @param {function} callback
+   */
+  addContextListener(contextKeys, callback) {
+    const keys = Array.isArray(contextKeys) ? contextKeys : [contextKeys]
+    keys.forEach((key) => {
+      let current = this
+      const visited = new Set()
+      let found = false
+      while (current && !visited.has(current)) {
+        visited.add(current)
+        // 检查自身context
+        if (current._componentContext && current._componentContext[key] !== undefined) {
+          found = true
+          break
+        }
+        // 检查全局context
+        const globalContext = nomGlobalContexts.get(current)
+
+        if (globalContext && globalContext[key] !== undefined) {
+          found = true
+          break
+        }
+        // Popup组件及其派生组件，向上查找其opener
+        current = current.opener || current.parent
+      }
+
+      if (found) {
+        if (!nomuiContextWatchers[key]) {
+          nomuiContextWatchers[key] = []
+        }
+        nomuiContextWatchers[key].push({ watcher: this, callback })
+      }
+      // 未找到则不添加监听
+    })
+  }
+
+  /**
+   * 移除全局context监听
+   * @param {string|string[]} contextKeys
+   * @param {function} callback
+   */
+  removeContextListener(contextKeys, callback) {
+    const keys = Array.isArray(contextKeys) ? contextKeys : [contextKeys]
+    keys.forEach((key) => {
+      if (nomuiContextWatchers[key]) {
+        nomuiContextWatchers[key] = nomuiContextWatchers[key].filter(
+          (item) => item.watcher !== this || item.callback !== callback,
+        )
+      }
+    })
+  }
+
+  _removeContextWatcher() {
+    // 清理context监听关系
+    // 1. 如果当前组件是监听端，则移除所有以this为watcher的监听
+    for (const key in nomuiContextWatchers) {
+      if (!Array.isArray(nomuiContextWatchers[key])) continue
+      // 移除当前组件作为监听端的监听
+      nomuiContextWatchers[key] = nomuiContextWatchers[key].filter((item) => item.watcher !== this)
+      // 如果当前组件是被监听端（即targetRef），也移除所有相关监听
+      nomuiContextWatchers[key] = nomuiContextWatchers[key].filter((item) => item.ref !== this)
+      // 如果该key下没有监听了，清理掉
+      if (nomuiContextWatchers[key].length === 0) {
+        delete nomuiContextWatchers[key]
+      }
     }
   }
 
