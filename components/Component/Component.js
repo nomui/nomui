@@ -1316,7 +1316,7 @@ class Component {
     // 遍历 contextData 中的每个 key
     for (const [key, value] of Object.entries(contextData)) {
       let contextSet = false
-      let targetRef = null // 新增
+      let targetRef = null // 记录被修改的组件实例
 
       // 从当前组件开始向上查找
       while (current && !visited.has(current)) {
@@ -1325,7 +1325,7 @@ class Component {
         if (current._componentContext && current._componentContext[key] !== undefined) {
           current._componentContext[key] = value
           contextSet = true
-          targetRef = current // 记录被修改的组件实例
+          targetRef = current
           break
         }
 
@@ -1333,7 +1333,7 @@ class Component {
         if (globalContext && globalContext[key] !== undefined) {
           globalContext[key] = value
           contextSet = true
-          targetRef = current // 记录被修改的组件实例
+          targetRef = current
           break
         }
 
@@ -1344,13 +1344,15 @@ class Component {
         console.warn(`未找到可以设置 key 为 "${key}" 的 context`)
       }
 
-      // 新增：全局触发监听
+      // 只触发与 targetRef 匹配的监听
       if (nomuiContextWatchers[key]) {
-        nomuiContextWatchers[key].forEach(({ callback }) => {
-          try {
-            callback({ key, value, ref: targetRef })
-          } catch (e) {
-            console.error('contextChange global listener error:', e)
+        nomuiContextWatchers[key].forEach(({ callback, ref }) => {
+          if (ref === targetRef) {
+            try {
+              callback({ key, value, ref: targetRef })
+            } catch (e) {
+              console.error('contextChange global listener error:', e)
+            }
           }
         })
       }
@@ -1369,32 +1371,26 @@ class Component {
     keys.forEach((key) => {
       let current = this
       const visited = new Set()
-      let found = false
+      let foundRef = null
       while (current && !visited.has(current)) {
         visited.add(current)
-        // 检查自身context
         if (current._componentContext && current._componentContext[key] !== undefined) {
-          found = true
+          foundRef = current
           break
         }
-        // 检查全局context
         const globalContext = nomGlobalContexts.get(current)
-
         if (globalContext && globalContext[key] !== undefined) {
-          found = true
+          foundRef = current
           break
         }
-        // Popup组件及其派生组件，向上查找其opener
         current = current.opener || current.parent
       }
-
-      if (found) {
+      if (foundRef) {
         if (!nomuiContextWatchers[key]) {
           nomuiContextWatchers[key] = []
         }
-        nomuiContextWatchers[key].push({ watcher: this, callback })
+        nomuiContextWatchers[key].push({ watcher: this, callback, ref: foundRef })
       }
-      // 未找到则不添加监听
     })
   }
 
