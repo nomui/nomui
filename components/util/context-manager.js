@@ -2,6 +2,8 @@ export const nomGlobalContexts = new WeakMap()
 
 export const nomComponentStack = []
 
+export const nomuiContextWatchers = {}
+
 /**
  * 清理不存在于DOM树中的组件context
  * 使用防抖避免频繁调用
