@@ -4552,6 +4552,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   }
   const nomGlobalContexts = new WeakMap();
   const nomComponentStack = [];
+  const nomuiContextWatchers = {};
   /**
    * 清理不存在于DOM树中的组件context
    * 使用防抖避免频繁调用
@@ -4709,6 +4710,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.render();
       } else {
         this._mountPlaceHolder();
+      } // 检查当前组件有无context监听器，有则注册
+      if (
+        this.props.contextListeners &&
+        isPlainObject(this.props.contextListeners)
+      ) {
+        ((target) => Object.keys(target).map((key) => [key, target[key]]))(
+          this.props.contextListeners
+        ).forEach(([key, callback]) => {
+          if (isFunction(callback)) {
+            this.addContextListener(key, callback);
+          }
+        });
       }
     }
     create() {
@@ -4975,6 +4988,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       cleanupStaleContexts(); // 清理全局context当中组件元素已经不存在于文档上的部分
     }
     _removeCore() {
+      this._removeContextWatcher(); // 清理context watcher
       this._cleanupUnusedContexts(); // 清理context
       this.props &&
         isFunction(this.props._remove) &&
@@ -5743,7 +5757,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           ? props.context.call(this, this)
           : props.context; // 使用新的注册方法
         registerComponentContext(this, this._componentContext);
-      }
+      } // // 支持 props.contextListeners: { key1: callback1, key2: callback2, ... }
+      // if (props.contextListeners && isPlainObject(props.contextListeners)) {
+      //   Object.entries(props.contextListeners).forEach(([key, callback]) => {
+      //     if (isFunction(callback)) {
+      //       this.addContextListener(key, callback)
+      //     }
+      //   })
+      // }
     }
     /**
      * 获取指定context值（支持多字段查询）
@@ -5784,6 +5805,125 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         current = current.opener || current.parent;
       }
       return Array.isArray(contextKeys) ? result : result[contextKeys];
+    }
+    /**
+     * 设置指定 context 值（支持多个键值对）
+     * @param {Object} contextData 要设置的 context 键值对
+     */ setContext(contextData) {
+      if (!isPlainObject(contextData)) {
+        throw new Error("setContext 参数必须是一个对象");
+      }
+      const visited = new Set(); // 防止循环引用
+      let current = this; // 遍历 contextData 中的每个 key
+      for (const [key, value] of ((target) =>
+        Object.keys(target).map((key) => [key, target[key]]))(contextData)) {
+        let contextSet = false;
+        let targetRef = null; // 记录被修改的组件实例
+        // 从当前组件开始向上查找
+        while (current && !visited.has(current)) {
+          visited.add(current);
+          if (
+            current._componentContext &&
+            current._componentContext[key] !== undefined
+          ) {
+            current._componentContext[key] = value;
+            contextSet = true;
+            targetRef = current;
+            break;
+          }
+          const globalContext = nomGlobalContexts.get(current);
+          if (globalContext && globalContext[key] !== undefined) {
+            globalContext[key] = value;
+            contextSet = true;
+            targetRef = current;
+            break;
+          }
+          current = current.opener || current.parent;
+        }
+        if (!contextSet) {
+          console.warn(`未找到可以设置 key 为 "${key}" 的 context`);
+        } // 只触发与 targetRef 匹配的监听
+        if (nomuiContextWatchers[key]) {
+          nomuiContextWatchers[key].forEach(({ callback, ref }) => {
+            if (ref === targetRef) {
+              try {
+                callback({ key, value, ref: targetRef });
+              } catch (e) {
+                console.error("contextChange global listener error:", e);
+              }
+            }
+          });
+        }
+        current = this;
+      }
+    }
+    /**
+     * 在组件树自身或祖先（含popup穿透）找到存在该key的context组件后，添加全局context监听
+     * @param {string|string[]} contextKeys
+     * @param {function} callback
+     */ addContextListener(contextKeys, callback) {
+      const keys = Array.isArray(contextKeys) ? contextKeys : [contextKeys];
+      keys.forEach((key) => {
+        let current = this;
+        const visited = new Set();
+        let foundRef = null;
+        while (current && !visited.has(current)) {
+          visited.add(current);
+          if (
+            current._componentContext &&
+            current._componentContext[key] !== undefined
+          ) {
+            foundRef = current;
+            break;
+          }
+          const globalContext = nomGlobalContexts.get(current);
+          if (globalContext && globalContext[key] !== undefined) {
+            foundRef = current;
+            break;
+          }
+          current = current.opener || current.parent;
+        }
+        if (foundRef) {
+          if (!nomuiContextWatchers[key]) {
+            nomuiContextWatchers[key] = [];
+          }
+          nomuiContextWatchers[key].push({
+            watcher: this,
+            callback,
+            ref: foundRef,
+          });
+        }
+      });
+    }
+    /**
+     * 移除全局context监听
+     * @param {string|string[]} contextKeys
+     * @param {function} callback
+     */ removeContextListener(contextKeys, callback) {
+      const keys = Array.isArray(contextKeys) ? contextKeys : [contextKeys];
+      keys.forEach((key) => {
+        if (nomuiContextWatchers[key]) {
+          nomuiContextWatchers[key] = nomuiContextWatchers[key].filter(
+            (item) => item.watcher !== this || item.callback !== callback
+          );
+        }
+      });
+    }
+    _removeContextWatcher() {
+      // 清理context监听关系
+      // 1. 如果当前组件是监听端，则移除所有以this为watcher的监听
+      for (const key in nomuiContextWatchers) {
+        if (!Array.isArray(nomuiContextWatchers[key])) continue; // 移除当前组件作为监听端的监听
+        nomuiContextWatchers[key] = nomuiContextWatchers[key].filter(
+          (item) => item.watcher !== this
+        ); // 如果当前组件是被监听端（即targetRef），也移除所有相关监听
+        nomuiContextWatchers[key] = nomuiContextWatchers[key].filter(
+          (item) => item.ref !== this
+        ); // 如果该key下没有监听了，清理掉
+        if (nomuiContextWatchers[key].length === 0) {
+          delete nomuiContextWatchers[key];
+        }
+      }
     }
     _trigger(eventName) {
       const event = new Event(eventName);

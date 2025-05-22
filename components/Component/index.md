@@ -32,6 +32,7 @@ Component 组件是所有组件的基类组件，它定义了描述 html 元素�
 | onUnselect | 取消选中回调 | `({ sender }) => { }` | - |
 | onSelectionChange | 选则状态变更回调 | `({ sender }) => { }` | - |
 | placeholderProps | 组件渲染完成前的占位元素属性配置 | `object` | - |
+| contextListeners | 组件 context 监听器 | `{key:function}` | - |
 
 ### methods
 
@@ -51,6 +52,7 @@ Component 组件是所有组件的基类组件，它定义了描述 html 元素�
 | expand | 展开 | `() => {}` |
 | collapse | 折叠 | `() => {}` |
 | getContext | 获取上下文 | `() => {}` |
+| setContext | 修改上下文 | `({key, value}) => {}` |
 | collapse | 折叠 | `() => {}` |
 
 ### attrs props
