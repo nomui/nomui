@@ -113,6 +113,175 @@ define(['css!./style.css'], function () {
           totolHour: 47,
         },
       ]
+
+      const columns = [
+        {
+          field: 'title',
+          title: '任务名称',
+          width: 200,
+        },
+        {
+          field: 'day1',
+          title: '10月1日',
+          width: 120,
+          align: 'center',
+          cellRender: ({ rowData }) => {
+            return `#${
+              rowData.dates[0].hours || 0
+            }<span style="color:#999; margin-left:2px"> h</span>`
+          },
+          editRender: ({ rowData }) => {
+            return {
+              component: 'NumberInput',
+              step: 0.5,
+              value: rowData.dates[0].hours,
+            }
+          },
+        },
+        {
+          field: 'day2',
+          title: '10月2日',
+          width: 120,
+          align: 'center',
+          cellRender: ({ rowData }) => {
+            return `#${
+              rowData.dates[1].hours || 0
+            }<span style="color:#999; margin-left:2px"> h</span>`
+          },
+          editRender: ({ rowData }) => {
+            return {
+              component: 'NumberInput',
+              step: 0.5,
+              value: rowData.dates[1].hours,
+            }
+          },
+        },
+        {
+          field: 'day3',
+          title: '10月3日',
+          width: 120,
+          align: 'center',
+          cellRender: ({ rowData }) => {
+            return `#${
+              rowData.dates[2].hours || 0
+            }<span style="color:#999; margin-left:2px"> h</span>`
+          },
+          editRender: ({ rowData }) => {
+            return {
+              component: 'NumberInput',
+              step: 0.5,
+              value: rowData.dates[2].hours,
+            }
+          },
+        },
+        {
+          field: 'day4',
+          title: '10月4日',
+          width: 120,
+          align: 'center',
+          cellRender: ({ rowData }) => {
+            return `#${
+              rowData.dates[3].hours || 0
+            }<span style="color:#999; margin-left:2px"> h</span>`
+          },
+          editRender: ({ rowData }) => {
+            return {
+              component: 'NumberInput',
+              step: 0.5,
+              value: rowData.dates[3].hours,
+            }
+          },
+        },
+        {
+          field: 'day5',
+          title: '10月5日',
+          width: 120,
+          align: 'center',
+          cellRender: ({ rowData }) => {
+            return `#${
+              rowData.dates[4].hours || 0
+            }<span style="color:#999; margin-left:2px"> h</span>`
+          },
+          editRender: ({ rowData }) => {
+            return {
+              component: 'NumberInput',
+              step: 0.5,
+              value: rowData.dates[4].hours,
+            }
+          },
+        },
+        {
+          field: 'day6',
+          title: '10月6日',
+          width: 120,
+          align: 'center',
+          cellRender: ({ rowData }) => {
+            return `#${
+              rowData.dates[5].hours || 0
+            }<span style="color:#999; margin-left:2px"> h</span>`
+          },
+          editRender: ({ rowData }) => {
+            return {
+              component: 'NumberInput',
+              step: 0.5,
+              value: rowData.dates[5].hours,
+            }
+          },
+        },
+        {
+          field: 'day7',
+          title: '10月7日',
+          width: 120,
+          align: 'center',
+          cellRender: ({ rowData }) => {
+            return `#${
+              rowData.dates[6].hours || 0
+            }<span style="color:#999; margin-left:2px"> h</span>`
+          },
+          editRender: ({ rowData }) => {
+            return {
+              component: 'NumberInput',
+              step: 0.5,
+              value: rowData.dates[6].hours,
+            }
+          },
+        },
+        {
+          field: 'description',
+          title: '备注',
+          width: 200,
+          cellRender: ({ cellData }) => {
+            return cellData || '-'
+          },
+          editRender: ({ cellData }) => {
+            return {
+              component: 'MultilineTextbox',
+              value: cellData,
+              placeholder: '请输入描述信息',
+            }
+          },
+        },
+        {
+          field: 'totolHour',
+          title: '总工时',
+          align: 'center',
+          cellRender: ({ cellData }) => {
+            return `#${cellData || 0}<span style="color:#999; margin-left:2px"> h</span>`
+          },
+        },
+      ]
+
+      const calculateTotal = (dataArr, field) => {
+        const index = field.replace('day', '') - 1 // day1 -> 0, day2 -> 1, ...
+
+        return dataArr.reduce((sum, item) => {
+          const dateData = item.dates[index]
+          if (dateData && dateData.hours) {
+            return sum + dateData.hours
+          }
+          return sum
+        }, 0)
+      }
       return {
         component: 'Grid',
         editable: {
@@ -142,163 +311,49 @@ define(['css!./style.css'], function () {
         classes: {
           'wt-work-hour-grid': true,
         },
-
-        columns: [
-          {
-            field: 'title',
-            title: '任务名称',
-            width: 200,
-          },
-          {
-            field: 'day1',
-            title: '10月1日',
-            width: 120,
-            align: 'center',
-            cellRender: ({ rowData }) => {
-              return `#${
-                rowData.dates[0].hours || 0
-              }<span style="color:#999; margin-left:2px"> h</span>`
-            },
-            editRender: ({ rowData }) => {
-              return {
-                component: 'NumberInput',
-                step: 0.5,
-                value: rowData.dates[0].hours,
+        summary: {
+          text: '日合计',
+          // method 返回 { field: 需要展示的总结的数据 } 格式的对象
+          columns: JSON.parse(JSON.stringify(columns)).map((x) => {
+            delete x.editRender
+            x.cellRender = ({ cellData }) => {
+              if (!cellData || x.field === 'description') {
+                return '-'
               }
-            },
-          },
-          {
-            field: 'day2',
-            title: '10月2日',
-            width: 120,
-            align: 'center',
-            cellRender: ({ rowData }) => {
-              return `#${
-                rowData.dates[1].hours || 0
-              }<span style="color:#999; margin-left:2px"> h</span>`
-            },
-            editRender: ({ rowData }) => {
-              return {
-                component: 'NumberInput',
-                step: 0.5,
-                value: rowData.dates[1].hours,
+              if (x.field === 'title') {
+                return cellData
               }
-            },
-          },
-          {
-            field: 'day3',
-            title: '10月3日',
-            width: 120,
-            align: 'center',
-            cellRender: ({ rowData }) => {
-              return `#${
-                rowData.dates[2].hours || 0
-              }<span style="color:#999; margin-left:2px"> h</span>`
-            },
-            editRender: ({ rowData }) => {
-              return {
-                component: 'NumberInput',
-                step: 0.5,
-                value: rowData.dates[2].hours,
-              }
-            },
-          },
-          {
-            field: 'day4',
-            title: '10月4日',
-            width: 120,
-            align: 'center',
-            cellRender: ({ rowData }) => {
-              return `#${
-                rowData.dates[3].hours || 0
-              }<span style="color:#999; margin-left:2px"> h</span>`
-            },
-            editRender: ({ rowData }) => {
-              return {
-                component: 'NumberInput',
-                step: 0.5,
-                value: rowData.dates[3].hours,
-              }
-            },
-          },
-          {
-            field: 'day5',
-            title: '10月5日',
-            width: 120,
-            align: 'center',
-            cellRender: ({ rowData }) => {
-              return `#${
-                rowData.dates[4].hours || 0
-              }<span style="color:#999; margin-left:2px"> h</span>`
-            },
-            editRender: ({ rowData }) => {
-              return {
-                component: 'NumberInput',
-                step: 0.5,
-                value: rowData.dates[4].hours,
-              }
-            },
-          },
-          {
-            field: 'day6',
-            title: '10月6日',
-            width: 120,
-            align: 'center',
-            cellRender: ({ rowData }) => {
-              return `#${
-                rowData.dates[5].hours || 0
-              }<span style="color:#999; margin-left:2px"> h</span>`
-            },
-            editRender: ({ rowData }) => {
-              return {
-                component: 'NumberInput',
-                step: 0.5,
-                value: rowData.dates[5].hours,
-              }
-            },
-          },
-          {
-            field: 'day7',
-            title: '10月7日',
-            width: 120,
-            align: 'center',
-            cellRender: ({ rowData }) => {
-              return `#${
-                rowData.dates[6].hours || 0
-              }<span style="color:#999; margin-left:2px"> h</span>`
-            },
-            editRender: ({ rowData }) => {
-              return {
-                component: 'NumberInput',
-                step: 0.5,
-                value: rowData.dates[6].hours,
-              }
-            },
-          },
-          {
-            field: 'description',
-            title: '备注',
-            width: 200,
-            cellRender: ({ cellData }) => {
-              return cellData || '-'
-            },
-            editRender: ({ cellData }) => {
-              return {
-                component: 'MultilineTextbox',
-                value: cellData,
-                placeholder: '请输入描述信息',
-              }
-            },
-          },
-          {
-            field: 'totolHour',
-            title: '总工时',
-            align: 'center',
-            cellRender: ({ cellData }) => {
               return `#${cellData || 0}<span style="color:#999; margin-left:2px"> h</span>`
-            },
+            }
+            return x
+          }),
+          // eslint-disable-next-line
+          method: ({ columns, data }) => {
+            const res = {}
+            columns.forEach((col) => {
+              if (
+                col.field === 'nom-grid-row-checker' ||
+                col.field === 'title' ||
+                col.field === 'description'
+              ) {
+                res[col.field] = ''
+              } else if (col.field === 'totolHour') {
+                // 统计表格内所有该字段值的合计
+                const total = data.reduce((sum, item) => {
+                  return sum + (item.totolHour || 0)
+                }, 0)
+                res[col.field] = total
+              } else {
+                // 统计表格内所有该字段值的合计
+                const total = calculateTotal(data, col.field)
+                res[col.field] = total
+              }
+            })
+
+            return res
           },
-        ],
+        },
+        columns: columns,
         data: data,
       }
     },
