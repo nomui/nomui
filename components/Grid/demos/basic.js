@@ -152,7 +152,9 @@ define(['css!./style.css'], function () {
             width: 120,
             align: 'center',
             cellRender: ({ rowData }) => {
-              return `${rowData.dates[0].hours || 0}h`
+              return `#${
+                rowData.dates[0].hours || 0
+              }<span style="color:#999; margin-left:2px"> h</span>`
             },
             editRender: ({ rowData }) => {
               return {
@@ -168,7 +170,9 @@ define(['css!./style.css'], function () {
             width: 120,
             align: 'center',
             cellRender: ({ rowData }) => {
-              return `${rowData.dates[1].hours || 0}h`
+              return `#${
+                rowData.dates[1].hours || 0
+              }<span style="color:#999; margin-left:2px"> h</span>`
             },
             editRender: ({ rowData }) => {
               return {
@@ -184,7 +188,9 @@ define(['css!./style.css'], function () {
             width: 120,
             align: 'center',
             cellRender: ({ rowData }) => {
-              return `${rowData.dates[2].hours}h`
+              return `#${
+                rowData.dates[2].hours || 0
+              }<span style="color:#999; margin-left:2px"> h</span>`
             },
             editRender: ({ rowData }) => {
               return {
@@ -200,7 +206,9 @@ define(['css!./style.css'], function () {
             width: 120,
             align: 'center',
             cellRender: ({ rowData }) => {
-              return `${rowData.dates[3].hours}h`
+              return `#${
+                rowData.dates[3].hours || 0
+              }<span style="color:#999; margin-left:2px"> h</span>`
             },
             editRender: ({ rowData }) => {
               return {
@@ -216,7 +224,9 @@ define(['css!./style.css'], function () {
             width: 120,
             align: 'center',
             cellRender: ({ rowData }) => {
-              return `${rowData.dates[4].hours}h`
+              return `#${
+                rowData.dates[4].hours || 0
+              }<span style="color:#999; margin-left:2px"> h</span>`
             },
             editRender: ({ rowData }) => {
               return {
@@ -232,7 +242,9 @@ define(['css!./style.css'], function () {
             width: 120,
             align: 'center',
             cellRender: ({ rowData }) => {
-              return `${rowData.dates[5].hours}h`
+              return `#${
+                rowData.dates[5].hours || 0
+              }<span style="color:#999; margin-left:2px"> h</span>`
             },
             editRender: ({ rowData }) => {
               return {
@@ -248,7 +260,9 @@ define(['css!./style.css'], function () {
             width: 120,
             align: 'center',
             cellRender: ({ rowData }) => {
-              return `${rowData.dates[6].hours}h`
+              return `#${
+                rowData.dates[6].hours || 0
+              }<span style="color:#999; margin-left:2px"> h</span>`
             },
             editRender: ({ rowData }) => {
               return {
@@ -262,8 +276,8 @@ define(['css!./style.css'], function () {
             field: 'totolHour',
             title: '总工时',
             align: 'center',
-            cellRender: ({ rowData }) => {
-              return `${rowData.totolHour}h`
+            cellRender: ({ cellData }) => {
+              return `#${cellData || 0}<span style="color:#999; margin-left:2px"> h</span>`
             },
           },
         ],
