@@ -23461,8 +23461,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
       if (
         options.includePartialChecked !== false &&
-        (this.props.rowCheckable ||
-          this.props.rowCheckable.includePartialChecked !== false)
+        this.props.rowCheckable &&
+        this.props.rowCheckable.includePartialChecked !== false
       ) {
         const partCheckedRows = Object.keys(this.partCheckedRowRefs).map(
           (key) => {
@@ -23479,8 +23479,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
       if (
         options.includePartialChecked !== false &&
-        (this.props.rowCheckable ||
-          this.props.rowCheckable.includePartialChecked !== false)
+        this.props.rowCheckable &&
+        this.props.rowCheckable.includePartialChecked !== false
       ) {
         const partCheckedKeys = Object.keys(this.partCheckedRowRefs).map(
           (key) => {
