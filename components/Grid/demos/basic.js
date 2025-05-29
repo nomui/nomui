@@ -249,7 +249,6 @@ define(['css!./style.css'], function () {
         {
           field: 'description',
           title: '备注',
-          width: 200,
           cellRender: ({ cellData }) => {
             return cellData || '-'
           },
@@ -265,6 +264,7 @@ define(['css!./style.css'], function () {
           field: 'totolHour',
           title: '总工时',
           align: 'center',
+          width: 120,
           cellRender: ({ cellData }) => {
             return `#${cellData || 0}<span style="color:#999; margin-left:2px"> h</span>`
           },
