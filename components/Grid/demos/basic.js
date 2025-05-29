@@ -296,7 +296,8 @@ define(['css!./style.css'], function () {
             return {
               component: 'MultilineTextbox',
               value: cellData,
-              placeholder: '请输入描述信息',
+              placeholder: '请输入备注',
+              rows: 1,
             }
           },
         },
