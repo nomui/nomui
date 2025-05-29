@@ -1,3 +1,26 @@
 .wt-work-hour-grid .nom-number-input input {
   text-align: center;
 }
+
+.wt-work-hour-grid .wt-work-hour-grid-hour {
+  background: #ccc;
+  border-radius: 4px;
+  position: relative;
+}
+
+.wt-work-hour-grid .wt-work-hour-grid-hour .nom-icon {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  color: #fff;
+  visibility: hidden;
+}
+
+.wt-work-hour-grid .wt-work-hour-grid-hour.wt-work-hour-grid-hour-approved .nom-icon {
+  visibility: visible;
+}
+
+.wt-work-hour-grid .nom-grid-footer .nom-td-excel-mode:hover {
+  box-shadow: none;
+  cursor: default;
+}
