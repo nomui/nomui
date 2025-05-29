@@ -112,10 +112,34 @@ define(['css!./style.css'], function () {
       ]
       return {
         component: 'Grid',
-        editable: true,
+        editable: {
+          onCellValueChange: (args) => {
+            // 更新对应日期的工时
+
+            const { newValue, rowKey, field, cell } = args
+            const row = cell.parent
+            const rowData = data.find((item) => item.id === rowKey)
+            if (rowData) {
+              const dateIndex = field.replace('day', '') - 1 // day1 -> 0, day2 -> 1, ...
+              if (rowData.dates[dateIndex]) {
+                rowData.dates[dateIndex].hours = newValue
+                // 重新计算总工时
+                rowData.totolHour = rowData.dates.reduce((sum, date) => {
+                  return sum + (date.hours || 0)
+                }, 0)
+              }
+            }
+
+            row.props.data = rowData
+            setTimeout(() => {
+              row.update()
+            }, 0)
+          },
+        },
         classes: {
           'wt-work-hour-grid': true,
         },
+
         columns: [
           {
             field: 'title',
