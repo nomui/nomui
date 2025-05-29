@@ -27866,10 +27866,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       let v = parseFloat(this.getValue({ asNumber: true }));
       if (this._isEmptyOrInvalid(v)) {
         v = 0;
-      }
-      const decimalPlaces = (v.toString().split(".")[1] || "").length;
-      v += step;
-      v = parseFloat(v.toFixed(decimalPlaces));
+      } // 修复：确保小数步长时精度正确
+      const stepDecimal = (step.toString().split(".")[1] || "").length;
+      const valueDecimal = (v.toString().split(".")[1] || "").length;
+      const decimalPlaces = Math.max(stepDecimal, valueDecimal);
+      v = parseFloat((v + step).toFixed(decimalPlaces));
       this.setValue(max && v > max ? max : v);
       this._setPrecision();
     }
@@ -27878,10 +27879,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       let v = parseFloat(this.getValue({ asNumber: true }));
       if (this._isEmptyOrInvalid(v)) {
         v = 0;
-      }
-      const decimalPlaces = (v.toString().split(".")[1] || "").length;
-      v -= step;
-      v = parseFloat(v.toFixed(decimalPlaces));
+      } // 修复：确保小数步长时精度正确
+      const stepDecimal = (step.toString().split(".")[1] || "").length;
+      const valueDecimal = (v.toString().split(".")[1] || "").length;
+      const decimalPlaces = Math.max(stepDecimal, valueDecimal);
+      v = parseFloat((v - step).toFixed(decimalPlaces));
       this.setValue(min && v < min ? min : v);
       this._setPrecision();
     }

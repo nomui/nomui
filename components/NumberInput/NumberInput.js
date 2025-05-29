@@ -12,38 +12,30 @@ class NumberInput extends Textbox {
   }
 
   _config() {
-
     this._setFormatter()
 
     this.setProps({
       button: this._getControls(),
-
     })
-
 
     super._config()
   }
-
 
   _setFormatter() {
     const { formatter, parser } = this.props
 
     if (!formatter) {
-
       this.formatterFunc = (value) => {
         return value
       }
-
-    }
-    else {
+    } else {
       this.formatterFunc = formatter
     }
     if (!parser) {
       this.parserFunc = (value) => {
         return value
       }
-    }
-    else {
+    } else {
       this.parserFunc = parser
     }
   }
@@ -53,7 +45,6 @@ class NumberInput extends Textbox {
     this._setPrecision(true)
 
     this._onValueChange(true)
-
   }
 
   _onValueChange(isBlur) {
@@ -92,7 +83,7 @@ class NumberInput extends Textbox {
         items: [
           {
             classes: {
-              'nom-number-input-controler-button': true
+              'nom-number-input-controler-button': true,
             },
             children: {
               component: 'Icon',
@@ -101,36 +92,34 @@ class NumberInput extends Textbox {
             onClick: ({ event }) => {
               event.stopPropagation()
               this._onPlus()
-            }
-          },
-          {
-            classes: {
-              'divider': true
             },
-            children: ''
           },
           {
             classes: {
-              'nom-number-input-controler-button': true
+              divider: true,
+            },
+            children: '',
+          },
+          {
+            classes: {
+              'nom-number-input-controler-button': true,
             },
             children: {
               component: 'Icon',
-              type: 'down'
+              type: 'down',
             },
             onClick: ({ event }) => {
               event.stopPropagation()
               this._onMinus()
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     }
   }
 
-
-
   _isEmptyOrInvalid(v) {
-    return (isNullish(v) || Number.isNaN(v) || v === 'NaN' || v === '')
+    return isNullish(v) || Number.isNaN(v) || v === 'NaN' || v === ''
   }
 
   _setPrecision(isBlur) {
@@ -140,12 +129,10 @@ class NumberInput extends Textbox {
       return
     }
 
-
     if (this._isEmptyOrInvalid(v)) {
       v = 0
     }
     if (precision && precision > 0) {
-
       const n = parseFloat(v)
       v = n.toFixed(precision)
 
@@ -159,8 +146,7 @@ class NumberInput extends Textbox {
 
     if (Number.isNaN(Number(v))) {
       this.setValue(this.oldValue, { triggerChange: false })
-    }
-    else {
+    } else {
       let shouldChange = false
       if (min && v < min) {
         v = min
@@ -175,42 +161,41 @@ class NumberInput extends Textbox {
         this.setValue(v, { triggerChange: false })
       }
     }
-
   }
 
-
-
   _onPlus() {
-    const { step, max } = this.props;
+    const { step, max } = this.props
     let v = parseFloat(this.getValue({ asNumber: true }))
 
     if (this._isEmptyOrInvalid(v)) {
       v = 0
     }
 
-    const decimalPlaces = (v.toString().split('.')[1] || '').length
-    v += step
-    v = parseFloat(v.toFixed(decimalPlaces))
-    this.setValue((max && v > max) ? max : v)
-    this._setPrecision()
+    // 修复：确保小数步长时精度正确
+    const stepDecimal = (step.toString().split('.')[1] || '').length
+    const valueDecimal = (v.toString().split('.')[1] || '').length
+    const decimalPlaces = Math.max(stepDecimal, valueDecimal)
 
+    v = parseFloat((v + step).toFixed(decimalPlaces))
+    this.setValue(max && v > max ? max : v)
+    this._setPrecision()
   }
 
   _onMinus() {
-
     const { step, min } = this.props
     let v = parseFloat(this.getValue({ asNumber: true }))
-
 
     if (this._isEmptyOrInvalid(v)) {
       v = 0
     }
 
-    const decimalPlaces = (v.toString().split('.')[1] || '').length
-    v -= step
-    v = parseFloat(v.toFixed(decimalPlaces))
+    // 修复：确保小数步长时精度正确
+    const stepDecimal = (step.toString().split('.')[1] || '').length
+    const valueDecimal = (v.toString().split('.')[1] || '').length
+    const decimalPlaces = Math.max(stepDecimal, valueDecimal)
 
-    this.setValue((min && v < min) ? min : v)
+    v = parseFloat((v - step).toFixed(decimalPlaces))
+    this.setValue(min && v < min ? min : v)
     this._setPrecision()
   }
 
@@ -226,7 +211,12 @@ class NumberInput extends Textbox {
 
     const value = this.parserFunc(text)
 
-    if ((this.props.stringMode || (this.props.precision && this.props.precision > 0) || this.props.formatter) && !options.asNumber) {
+    if (
+      (this.props.stringMode ||
+        (this.props.precision && this.props.precision > 0) ||
+        this.props.formatter) &&
+      !options.asNumber
+    ) {
       return value
     }
 
@@ -234,9 +224,8 @@ class NumberInput extends Textbox {
   }
 
   _setValue(value, options) {
-
     if (this.props.stringMode || this.props.formatter) {
-      value = (value || value === 0) ? `${value}` : ''
+      value = value || value === 0 ? `${value}` : ''
     }
     const { precision } = this.props
     if (!Number.isNaN(this.getValue())) {
@@ -248,16 +237,12 @@ class NumberInput extends Textbox {
       value = ''
     }
 
-
     if (precision && precision > 0 && value !== '') {
-
       const n = parseFloat(value)
       value = n.toFixed(precision)
     }
 
     super._setValue(value, options)
-
-
   }
 
   _toDecimal(val, precision, notRound) {
@@ -302,7 +287,7 @@ NumberInput.defaults = {
   allowClear: false,
   formatter: null,
   parser: null,
-  ignoreInputChange: true
+  ignoreInputChange: true,
 }
 Component.register(NumberInput)
 
