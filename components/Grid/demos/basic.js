@@ -37,6 +37,7 @@ define(['css!./style.css'], function () {
               hours: 6,
             },
           ],
+          description: '这是工时名称1的描述信息',
           totolHour: 48,
         },
         {
@@ -72,6 +73,7 @@ define(['css!./style.css'], function () {
               hours: 8,
             },
           ],
+          description: '这是工时名称2的描述信息',
           totolHour: 49,
         },
         {
@@ -107,6 +109,7 @@ define(['css!./style.css'], function () {
               hours: 5,
             },
           ],
+          description: null,
           totolHour: 47,
         },
       ]
@@ -269,6 +272,21 @@ define(['css!./style.css'], function () {
                 component: 'NumberInput',
                 step: 0.5,
                 value: rowData.dates[6].hours,
+              }
+            },
+          },
+          {
+            field: 'description',
+            title: '备注',
+            width: 200,
+            cellRender: ({ cellData }) => {
+              return cellData || '-'
+            },
+            editRender: ({ cellData }) => {
+              return {
+                component: 'MultilineTextbox',
+                value: cellData,
+                placeholder: '请输入描述信息',
               }
             },
           },
