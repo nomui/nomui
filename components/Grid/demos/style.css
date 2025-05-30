@@ -20,6 +20,10 @@
   visibility: visible;
 }
 
+.wt-work-hour-grid .nom-grid-footer td {
+  background-color: #fafafa;
+}
+
 .wt-work-hour-grid .nom-grid-footer .nom-td-excel-mode:hover {
   box-shadow: none;
   cursor: default;

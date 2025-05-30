@@ -335,6 +335,11 @@ define(['css!./style.css'], function () {
       return {
         component: 'Layout',
         header: {
+          attrs: {
+            style: {
+              border: 'none',
+            },
+          },
           children: {
             component: 'Flex',
             align: 'center',
@@ -410,6 +415,7 @@ define(['css!./style.css'], function () {
         body: {
           children: {
             component: 'Grid',
+            bordered: true,
             attrs: {
               style: {
                 height: '360px',
