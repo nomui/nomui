@@ -3,6 +3,7 @@ define(['css!./style.css'], function () {
     title: '基础用法',
     file: 'basic',
     demo: function () {
+      let dateRef = null
       const data = [
         {
           id: 1,
@@ -173,6 +174,14 @@ define(['css!./style.css'], function () {
           field: 'title',
           title: '任务名称',
           width: 200,
+          cellRender: ({ cellData }) => {
+            return {
+              component: 'Button',
+              text: cellData,
+              type: 'link',
+              inline: true,
+            }
+          },
         },
         {
           field: 'day1',
@@ -338,9 +347,19 @@ define(['css!./style.css'], function () {
                     icon: 'left',
                     size: 'small',
                     type: 'text',
+                    onClick: () => {
+                      let date = dateRef.getValue()
+                      date = new Date(date)
+                      date.setDate(date.getDate() - 7)
+                      date = date.format('yyyy-MM-dd')
+                      dateRef.setValue(date)
+                    },
                   },
                   {
                     component: 'DatePicker',
+                    ref: (c) => {
+                      dateRef = c
+                    },
                     weekMode: true,
                     controlWidth: 210,
                     weekFormat: `{start} 至 {end}`,
@@ -353,6 +372,13 @@ define(['css!./style.css'], function () {
                     icon: 'right',
                     size: 'small',
                     type: 'text',
+                    onClick: () => {
+                      let date = dateRef.getValue()
+                      date = new Date(date)
+                      date.setDate(date.getDate() + 7)
+                      date = date.format('yyyy-MM-dd')
+                      dateRef.setValue(date)
+                    },
                   },
                 ],
               },
@@ -361,11 +387,22 @@ define(['css!./style.css'], function () {
                 children: '',
               },
               {
-                component: 'Button',
-                type: 'primary',
-                text: '新建工时',
-                icon: 'plus',
-                size: 'small',
+                align: 'center',
+                gutter: 'small',
+                cols: [
+                  {
+                    component: 'Button',
+                    text: '新增工时',
+                    icon: 'plus',
+                    size: 'small',
+                  },
+                  {
+                    component: 'Button',
+                    type: 'primary',
+                    text: '提交工时',
+                    size: 'small',
+                  },
+                ],
               },
             ],
           },
@@ -375,7 +412,7 @@ define(['css!./style.css'], function () {
             component: 'Grid',
             attrs: {
               style: {
-                height: '400px',
+                height: '360px',
               },
             },
             excelMode: {
