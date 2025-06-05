@@ -4712,6 +4712,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._mountPlaceHolder();
       } // 检查当前组件有无context监听器，有则注册
       if (
+        this.props &&
         this.props.contextListeners &&
         isPlainObject(this.props.contextListeners)
       ) {
@@ -5757,14 +5758,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           ? props.context.call(this, this)
           : props.context; // 使用新的注册方法
         registerComponentContext(this, this._componentContext);
-      } // // 支持 props.contextListeners: { key1: callback1, key2: callback2, ... }
-      // if (props.contextListeners && isPlainObject(props.contextListeners)) {
-      //   Object.entries(props.contextListeners).forEach(([key, callback]) => {
-      //     if (isFunction(callback)) {
-      //       this.addContextListener(key, callback)
-      //     }
-      //   })
-      // }
+      }
     }
     /**
      * 获取指定context值（支持多字段查询）

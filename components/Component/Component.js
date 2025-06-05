@@ -125,7 +125,7 @@ class Component {
     }
 
     // 检查当前组件有无context监听器，有则注册
-    if (this.props.contextListeners && isPlainObject(this.props.contextListeners)) {
+    if (this.props && this.props.contextListeners && isPlainObject(this.props.contextListeners)) {
       Object.entries(this.props.contextListeners).forEach(([key, callback]) => {
         if (isFunction(callback)) {
           this.addContextListener(key, callback)
@@ -158,7 +158,7 @@ class Component {
     }
   }
 
-  _created() { }
+  _created() {}
 
   _setKey() {
     if (this.props.key) {
@@ -189,7 +189,7 @@ class Component {
     this._setStatusProps()
   }
 
-  _config() { }
+  _config() {}
 
   render() {
     try {
@@ -234,7 +234,7 @@ class Component {
     this.firstRender = false
   }
 
-  _rendered() { }
+  _rendered() {}
 
   // todo: 需要优化，现在循环删除节点，太耗时，计划改成只移除本节点，子节点只做清理操作
   remove() {
@@ -421,7 +421,7 @@ class Component {
     return el
   }
 
-  _remove() { }
+  _remove() {}
 
   _callMixin(hookType) {
     const mixinsList = [...MIXINS, ...this.mixins]
@@ -1240,15 +1240,6 @@ class Component {
       // 使用新的注册方法
       registerComponentContext(this, this._componentContext)
     }
-
-    // // 支持 props.contextListeners: { key1: callback1, key2: callback2, ... }
-    // if (props.contextListeners && isPlainObject(props.contextListeners)) {
-    //   Object.entries(props.contextListeners).forEach(([key, callback]) => {
-    //     if (isFunction(callback)) {
-    //       this.addContextListener(key, callback)
-    //     }
-    //   })
-    // }
   }
 
   /**
