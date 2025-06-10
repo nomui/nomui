@@ -23,6 +23,7 @@
 | maxlength | 原生属性，最大输入长度 | `number` | - |
 | minlength | 原生属性，最小输入长度 | `number` | - |
 | showWordLimit | 是否显示输入字数统计长度，只在 htmlType = "text" | `boolean` | false |
+| onEnter | 敲下回车键时的回调 | `()=>{}` | - |
 | onClear | 点击清空按钮时的回调 | `()=>{}` | - |
 
 ## 事件

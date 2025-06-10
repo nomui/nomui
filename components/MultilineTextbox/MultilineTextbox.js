@@ -1,6 +1,6 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
-import { extend } from '../util/index'
+import { extend, isFunction } from '../util/index'
 import Textarea from './Textarea'
 
 class MultilineTextbox extends Field {
@@ -10,7 +10,7 @@ class MultilineTextbox extends Field {
 
   _config() {
     const that = this
-    const { autoSize, value, placeholder, autofocus, readonly, rows } = this.props
+    const { autoSize, value, placeholder, autofocus, readonly, rows, onEnter } = this.props
     const maxlength = this.props.maxlength || this.props.maxLength
 
     this.setProps({
@@ -29,6 +29,11 @@ class MultilineTextbox extends Field {
           _created: function () {
             this.multilineTextbox = that
             this.multilineTextbox.textarea = this
+          },
+          onKeyDown: function (event) {
+            if (event.key === 'Enter' && isFunction(onEnter)) {
+              that._callHandler(onEnter, { value: that.getValue(), event })
+            }
           },
         },
       },
@@ -95,6 +100,7 @@ MultilineTextbox.defaults = {
   maxlength: null,
   rows: null,
   readonly: false,
+  onEnter: null,
 }
 
 Component.register(MultilineTextbox)
