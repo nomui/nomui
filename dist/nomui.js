@@ -27111,7 +27111,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         autofocus,
         readonly,
         rows,
-        onEnter,
       } = this.props;
       const maxlength = this.props.maxlength || this.props.maxLength;
       this.setProps({
@@ -27125,15 +27124,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               this.multilineTextbox = that;
               this.multilineTextbox.textarea = this;
             },
-            onKeyDown: function (event) {
-              if (event.key === "Enter" && isFunction(onEnter)) {
-                that._callHandler(onEnter, { value: that.getValue(), event });
-              }
-            },
           },
         },
       });
       super._config();
+    }
+    _rendered() {
+      const that = this;
+      if (this.props.onEnter) {
+        this.textarea._on("keydown", function (event) {
+          if (event.keyCode && event.keyCode === 13) {
+            that._callHandler(that.props.onEnter, { value: that.getValue() });
+          }
+        });
+      }
     }
     getText() {
       return this.textarea.getText();
