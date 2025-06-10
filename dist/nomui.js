@@ -27134,7 +27134,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.props.onEnter) {
         this.textarea._on("keydown", function (event) {
           if (event.keyCode && event.keyCode === 13) {
-            that._callHandler(that.props.onEnter, { value: that.getValue() });
+            that._callHandler(that.props.onEnter, {
+              value: that.getValue(),
+              event,
+            });
           }
         });
       }
