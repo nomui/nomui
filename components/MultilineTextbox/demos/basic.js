@@ -15,6 +15,10 @@ define([], function () {
           // eslint-disable-next-line
           console.log(args.value)
         },
+        onEnter: (args) => {
+          // eslint-disable-next-line
+          console.log(args.value)
+        },
       }
     },
   }

@@ -27111,6 +27111,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         autofocus,
         readonly,
         rows,
+        onEnter,
       } = this.props;
       const maxlength = this.props.maxlength || this.props.maxLength;
       this.setProps({
@@ -27123,6 +27124,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             _created: function () {
               this.multilineTextbox = that;
               this.multilineTextbox.textarea = this;
+            },
+            onKeyDown: function (event) {
+              if (event.key === "Enter" && isFunction(onEnter)) {
+                that._callHandler(onEnter, { value: that.getValue(), event });
+              }
             },
           },
         },
@@ -27179,6 +27185,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     maxlength: null,
     rows: null,
     readonly: false,
+    onEnter: null,
   };
   Component.register(MultilineTextbox);
   class NavbarCaption extends Component {
