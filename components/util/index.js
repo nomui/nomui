@@ -737,3 +737,38 @@ export function isTargetInViewport(target) {
     rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   )
 }
+
+// 格式化svg图标，建议在控制台上使用，快速格式化成标准svg格式
+export function formatSvg(svg, isColored) {
+  if (!svg || typeof svg !== 'string') return ''
+
+  // 去掉所有换行和多余空格，拼成连续字符串
+  let result = svg
+    .replace(/\s{2,}/g, ' ')
+    .replace(/[\r\n]/g, '')
+    .trim()
+
+  // 统一设置svg标签的width和height为1em
+  result = result.replace(/<svg\b([^>]*)>/i, (match, attrs) => {
+    // 移除原有width/height/fill属性
+    const newAttrs = attrs
+      .replace(/\swidth="[^"]*"/i, '')
+      .replace(/\sheight="[^"]*"/i, '')
+      .replace(/\sfill="[^"]*"/i, '')
+    // 添加width和height
+    return `<svg${newAttrs} width="1em" height="1em">`
+  })
+
+  if (!isColored) {
+    // 给svg标签加fill="currentColor"
+    result = result.replace(/<svg\b([^>]*)>/i, (match, attrs) => {
+      // 保证没有重复fill
+      const newAttrs = attrs.replace(/\sfill="[^"]*"/i, '')
+      return `<svg${newAttrs} fill="currentColor">`
+    })
+    // 删除所有非svg标签上的fill属性
+    result = result.replace(/(<(?!svg\b)[^>]+)\sfill="[^"]*"/gi, '$1')
+  }
+
+  return result
+}
