@@ -11,14 +11,14 @@
   line-height: @line-height;
   border-radius: @border-radius;
 
-  >.nom-icon {
+  > .nom-icon {
     height: @iconsize;
   }
 
   &.p-only-icon.p-shape-circle {
     padding: @padding-y;
 
-    >.nom-icon {
+    > .nom-icon {
       width: @iconsize;
     }
   }
@@ -41,7 +41,7 @@
   border-color: var(--nom-color-border);
   border-radius: 2px;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
   user-select: none;
   zoom: 1;
   -webkit-user-drag: none;
@@ -67,7 +67,6 @@
   }
 
   a& {
-
     &.disabled,
     fieldset[disabled] & {
       pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
@@ -222,7 +221,9 @@
       color: var(--nom-color-danger);
 
       &:hover {
-        color: var(--nom-color-white);
+        &:not(.p-type-text):not(.p-type-link) {
+          color: var(--nom-color-white);
+        }
       }
     }
   }

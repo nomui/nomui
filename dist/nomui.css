@@ -8455,7 +8455,7 @@ fieldset[disabled] a.nom-button {
 .nom-button.p-with-icon.p-danger {
   color: var(--nom-color-danger);
 }
-.nom-button.p-with-icon.p-danger:hover {
+.nom-button.p-with-icon.p-danger:hover:not(.p-type-text):not(.p-type-link) {
   color: var(--nom-color-white);
 }
 .nom-button-inline {
