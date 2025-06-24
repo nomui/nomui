@@ -107,16 +107,39 @@ class SelectPopup extends Popup {
               },
           ],
         },
-        footer: extraTools
-          ? {
-              classes: {
-                'nom-select-popup-extra-tools': true,
-              },
-              children: isFunction(extraTools)
-                ? extraTools({ popup: this, inst: this.selectControl })
-                : extraTools,
-            }
-          : null,
+        footer:
+          extraTools ||
+          (this.selectControl.props.multiple && this.selectControl.props.showSelectAll)
+            ? {
+                classes: {
+                  'nom-select-popup-extra-tools': true,
+                },
+                children: [
+                  this.selectControl.props.multiple &&
+                    this.selectControl.props.showSelectAll && {
+                      component: 'Button',
+                      classes: {
+                        'nom-select-selectall': true,
+                      },
+                      text: this.selectControl.props.selectAllText,
+                      // type: 'text',
+                      size: 'small',
+                      onClick: ({ sender }) => {
+                        if (sender.props.text === this.selectControl.props.selectAllText) {
+                          this.selectControl.selectAll()
+                          sender.update({ text: this.selectControl.props.clearText })
+                        } else {
+                          this.selectControl.clear()
+                          sender.update({ text: this.selectControl.props.selectAllText })
+                        }
+                      },
+                    },
+                  isFunction(extraTools)
+                    ? extraTools({ popup: this, inst: this.selectControl })
+                    : extraTools,
+                ],
+              }
+            : null,
       },
     })
     super._config()
