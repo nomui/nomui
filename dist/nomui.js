@@ -7698,7 +7698,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   const key = args.sender.key;
                   that.props.onItemClick &&
                     that._callHandler(that.props.onItemClick, key);
-                  that._scrollToKey(key);
+                  that._scrollToKey(key, true);
                 },
               }
             ),
@@ -7797,8 +7797,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     scrollToKey(key) {
       this._scrollToKey(key);
     }
-    _scrollToKey(target) {
-      const ele = this.containerElem.querySelector(`[anchor-key=${target}]`);
+    _scrollToKey(target, skipScrollWatching) {
+      const ele = this.containerElem.querySelector(
+        `[anchor-key="${String(target).replace(/"/g, '\\"')}"]`
+      );
       if (ele) {
         ele.style.position = "relative";
         let hk = ele.querySelector(".position-hook");
@@ -7810,7 +7812,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         hk.style.position = "absolute";
         hk.style.top = `${0 - this.props.containerOffsetTop}px`;
-        hk.scrollIntoView({ behavior: "smooth" });
+        hk.scrollIntoView({ behavior: "smooth" }); // 控制是否临时跳过滚动监听高亮
+        if (skipScrollWatching) {
+          this._skipScrollWatching = true; // 一段时间后恢复监听
+          setTimeout(() => {
+            this._skipScrollWatching = false;
+          }, 1000);
+        }
       }
     }
     _fixPosition() {
@@ -7830,6 +7838,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _onContainerScroll() {
       if (this.menu.element.offsetParent === null) {
+        return;
+      }
+      if (this._skipScrollWatching) {
+        // 如果临时跳过滚动监听，则不执行高亮逻辑
         return;
       } // 获取所有锚点内容元素
       const domlist = this.containerElem.getElementsByClassName(

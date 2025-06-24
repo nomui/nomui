@@ -57,7 +57,7 @@ class Anchor extends Component {
             onClick: function (args) {
               const key = args.sender.key
               that.props.onItemClick && that._callHandler(that.props.onItemClick, key)
-              that._scrollToKey(key)
+              that._scrollToKey(key, true)
             },
           },
         },
@@ -168,8 +168,10 @@ class Anchor extends Component {
     this._scrollToKey(key)
   }
 
-  _scrollToKey(target) {
-    const ele = this.containerElem.querySelector(`[anchor-key=${target}]`)
+  _scrollToKey(target, skipScrollWatching) {
+    const ele = this.containerElem.querySelector(
+      `[anchor-key="${String(target).replace(/"/g, '\\"')}"]`,
+    )
     if (ele) {
       ele.style.position = 'relative'
       let hk = ele.querySelector('.position-hook')
@@ -183,6 +185,15 @@ class Anchor extends Component {
       hk.style.top = `${0 - this.props.containerOffsetTop}px`
 
       hk.scrollIntoView({ behavior: 'smooth' })
+
+      // 控制是否临时跳过滚动监听高亮
+      if (skipScrollWatching) {
+        this._skipScrollWatching = true
+        // 一段时间后恢复监听
+        setTimeout(() => {
+          this._skipScrollWatching = false
+        }, 1000)
+      }
     }
   }
 
@@ -207,6 +218,11 @@ class Anchor extends Component {
 
   _onContainerScroll() {
     if (this.menu.element.offsetParent === null) {
+      return
+    }
+
+    if (this._skipScrollWatching) {
+      // 如果临时跳过滚动监听，则不执行高亮逻辑
       return
     }
 
