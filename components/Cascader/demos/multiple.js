@@ -21,6 +21,10 @@ define(['./data.js'], function (data) {
               value: 'Id',
               children: 'Childs',
             },
+            onValueChange: () => {
+              console.log(cascader.getValue())
+            },
+            changeOnClose: true, // 浮层关闭的时候才触发 onValueChange
             options: data,
           },
 

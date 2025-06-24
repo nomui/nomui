@@ -17,6 +17,10 @@ define([], function () {
                 treeSelectRef = c
               },
               maxTagCount: 3,
+              changeOnClose: true,
+              onValueChange: ({ newValue }) => {
+                console.log('onValueChange', newValue)
+              },
               options: [
                 {
                   text: '总经办',

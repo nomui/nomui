@@ -7,7 +7,7 @@ class SelectList extends List {
     const defaults = {
       gutter: 'x-md',
       cols: 1,
-      vertical: true
+      vertical: true,
     }
 
     super(Component.extendProps(defaults, props), ...mixins)
@@ -54,7 +54,9 @@ class SelectList extends List {
       selectedItems: showSearch ? checkedOption && checkedOption.value : value,
 
       onItemSelectionChange: () => {
-        this.selectControl._onValueChange()
+        if (!this.selectControl.props.multiple || !this.selectControl.props.changeOnClose) {
+          this.selectControl._onValueChange()
+        }
       },
     })
 

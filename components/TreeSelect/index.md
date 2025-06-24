@@ -16,6 +16,7 @@
 | popupWidth | 下拉框宽度,默认为控件宽度，配置为数值可控制具体宽度，配置为'auto'则根据选项内容自适应宽度 | `number \| string` | - |
 | maxPopupWidth | 下拉框宽度最大宽度 | `number \| string` | - |
 | onlyleaf | 是否仅允许选中或者勾选叶子节点 | `boolean` | false |
+| changeOnClose | 浮层关闭的时候才触发 onValueChange(仅在多选时生效) | `boolean` | false |
 | treeSelectable | 树节点的选择事件(同 Tree 组件`nodeSelectable`) | `boolean` \| `object` | - |
 | treeCheckable | 树节点的可勾选配置(同 Tree 组件`nodeCheckable`) | `boolean` \| `object` | - |
 | multiple | 支持多选（当设置 `treeCheckable` 时自动变为 true） | `boolean ` | `true` |

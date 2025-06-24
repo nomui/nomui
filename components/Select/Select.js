@@ -309,6 +309,11 @@ class Select extends Field {
         })
         this.optionList.scrollToSelected()
       },
+      onHide: () => {
+        if (this.props.multiple && this.props.changeOnClose) {
+          this._onValueChange()
+        }
+      },
     })
 
     this._directSetValue(value)
