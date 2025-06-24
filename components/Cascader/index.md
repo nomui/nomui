@@ -18,6 +18,7 @@
 | height | 列表高度 | `number` | `250` |
 | maxTagCount | 多选模式下最多显示标签数量 | `number` | `5` |
 | showArrow | 是否显示下拉箭头 | `boolean` | true |
+| changeOnClose | 浮层关闭的时候才触发 onValueChange(仅在多选时生效) | `boolean` | false |
 | valueType | 设/取值类型 | `cascade\|single` | `cascade` |
 | fieldsMapping | 自定义 options 中 label value children isLeaf 的字段 | `object` | 参考下方说明 |
 | changeOnSelect | 当此项为 true 时，点选每级菜单选项值都会发生变化(参见示例`选择即改变`) | `boolean` | `false` |

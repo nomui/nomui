@@ -309,6 +309,11 @@ class Select extends Field {
         })
         this.optionList.scrollToSelected()
       },
+      onHide: () => {
+        if (this.props.multiple && this.props.changeOnClose) {
+          this._onValueChange()
+        }
+      },
     })
 
     this._directSetValue(value)
@@ -609,6 +614,14 @@ class Select extends Field {
     return filterOption(text, options)
   }
 
+  selectAll() {
+    if (!this.optionList) return
+    const allKeys = this.optionList.getAllItems().map((n) => {
+      return n.key
+    })
+    this.setValue(allKeys, { triggerChange: !this.props.changeOnClose })
+  }
+
   _normalizeSearchable() {
     const { searchable, optionFields } = this.props
     if (searchable) {
@@ -710,6 +723,9 @@ Select.defaults = {
   allowClear: true,
   popupContainer: 'body',
   popupWidth: null,
+  showSelectAll: false,
+  selectAllText: '全选',
+  clearText: '清空',
 }
 
 Component.register(Select)

@@ -55,6 +55,11 @@ class TreeSelect extends Field {
           this.tree.setCheckedNodeKeys(this.getValue())
         }
       },
+      onHide: () => {
+        if (this.props.multiple && this.props.changeOnClose) {
+          this._onValueChange()
+        }
+      },
     })
 
     this._valueChange({ newValue: this.currentValue })
@@ -351,7 +356,8 @@ class TreeSelect extends Field {
       checkedNodeKeys: currentValue,
       onCheckChange: () => {
         const checkedKeys = this.tree.getCheckedNodeKeys()
-        this._setValue(checkedKeys)
+
+        this._setValue(checkedKeys, { triggerChange: !this.props.changeOnClose })
       },
     })
   }
