@@ -2,7 +2,7 @@ import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
 import List from '../List/index'
-import { clone, extend, isFunction, isString } from '../util/index'
+import { clone, deepEqual, extend, isFunction, isString } from '../util/index'
 import SelectPopup from './SelectPopup'
 
 class Select extends Field {
@@ -307,11 +307,17 @@ class Select extends Field {
         this.optionList.update({
           selectedItems: this.getValue(),
         })
+        if (this.props.multiple) {
+          this._lastShowValue = this.getValue()
+        }
         this.optionList.scrollToSelected()
       },
       onHide: () => {
         if (this.props.multiple && this.props.changeOnClose) {
-          this._onValueChange()
+          const _currentValue = this.getValue()
+          if (!deepEqual(_currentValue, this._lastShowValue)) {
+            this._onValueChange()
+          }
         }
       },
     })
