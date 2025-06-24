@@ -120,6 +120,9 @@ class Cascader extends Field {
       onShow: () => {
         this.optionList && this._drawOptionLists()
       },
+      onHide: () => {
+        this.props.changeOnClose && this._onValueChange()
+      },
     })
   }
 
@@ -374,7 +377,7 @@ class Cascader extends Field {
     } else {
       this.multiValueMap = this.multiValueMap.filter((x) => x.value !== item.props.value)
     }
-    this._onValueChange()
+    !this.props.changeOnClose && this._onValueChange()
   }
 
   _setValue(value) {
@@ -549,6 +552,7 @@ Cascader.defaults = {
   disabled: false,
   allowClear: true,
   multiple: false,
+  changeOnClose: false, // 浮层关闭的时候才触发 onValueChange
   maxTagCount: 5,
 }
 

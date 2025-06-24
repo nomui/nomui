@@ -9377,8 +9377,15 @@ textarea .nom-textarea {
   overflow-x: hidden;
 }
 .nom-select-popup .nom-select-popup-extra-tools {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   min-height: 3rem !important;
   padding: 0.5rem;
+}
+.nom-select-popup .nom-select-popup-extra-tools > div:not(.nom-select-selectall) {
+  flex-grow: 1;
 }
 .nom-select-popup .nom-select-popup-empty-tip {
   padding: 0.75rem 1rem;

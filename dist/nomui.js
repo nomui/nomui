@@ -13345,6 +13345,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         onShow: () => {
           this.optionList && this._drawOptionLists();
         },
+        onHide: () => {
+          this.props.changeOnClose && this._onValueChange();
+        },
       });
     } // 数据异步加载且有默认值时需要先调请求加载value对应的字面值
     _loopLoadValueData() {
@@ -13566,7 +13569,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           (x) => x.value !== item.props.value
         );
       }
-      this._onValueChange();
+      !this.props.changeOnClose && this._onValueChange();
     }
     _setValue(value) {
       if (!value && this._content) {
@@ -13728,6 +13731,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     disabled: false,
     allowClear: true,
     multiple: false,
+    changeOnClose: false, // 浮层关闭的时候才触发 onValueChange
     maxTagCount: 5,
   };
   Component.register(Cascader);
@@ -31881,7 +31885,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           ? checkedOption && checkedOption.value
           : value,
         onItemSelectionChange: () => {
-          this.selectControl._onValueChange();
+          if (
+            !this.selectControl.props.multiple ||
+            !this.selectControl.props.changeOnClose
+          ) {
+            this.selectControl._onValueChange();
+          }
         },
       });
       super._config();
@@ -31998,14 +32007,42 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 },
             ],
           },
-          footer: extraTools
-            ? {
-                classes: { "nom-select-popup-extra-tools": true },
-                children: isFunction(extraTools)
-                  ? extraTools({ popup: this, inst: this.selectControl })
-                  : extraTools,
-              }
-            : null,
+          footer:
+            extraTools ||
+            (this.selectControl.props.multiple &&
+              this.selectControl.props.showSelectAll)
+              ? {
+                  classes: { "nom-select-popup-extra-tools": true },
+                  children: [
+                    this.selectControl.props.multiple &&
+                      this.selectControl.props.showSelectAll && {
+                        component: "Button",
+                        classes: { "nom-select-selectall": true },
+                        text: this.selectControl.props.selectAllText, // type: 'text',
+                        size: "small",
+                        onClick: ({ sender }) => {
+                          if (
+                            sender.props.text ===
+                            this.selectControl.props.selectAllText
+                          ) {
+                            this.selectControl.selectAll();
+                            sender.update({
+                              text: this.selectControl.props.clearText,
+                            });
+                          } else {
+                            this.selectControl.clear();
+                            sender.update({
+                              text: this.selectControl.props.selectAllText,
+                            });
+                          }
+                        },
+                      },
+                    isFunction(extraTools)
+                      ? extraTools({ popup: this, inst: this.selectControl })
+                      : extraTools,
+                  ],
+                }
+              : null,
         },
       });
       super._config();
@@ -32341,6 +32378,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.optionList.update({ selectedItems: this.getValue() });
           this.optionList.scrollToSelected();
         },
+        onHide: () => {
+          if (this.props.multiple && this.props.changeOnClose) {
+            this._onValueChange();
+          }
+        },
       });
       this._directSetValue(value);
       this._valueChange({ newValue: this.currentValue });
@@ -32594,6 +32636,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { filterOption } = this.props;
       return filterOption(text, options);
     }
+    selectAll() {
+      if (!this.optionList) return;
+      const allKeys = this.optionList.getAllItems().map((n) => {
+        return n.key;
+      });
+      this.setValue(allKeys, { triggerChange: !this.props.changeOnClose });
+    }
     _normalizeSearchable() {
       const { searchable, optionFields } = this.props;
       if (searchable) {
@@ -32680,6 +32729,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     allowClear: true,
     popupContainer: "body",
     popupWidth: null,
+    showSelectAll: false,
+    selectAllText: "全选",
+    clearText: "清空",
   };
   Component.register(Select);
   class SkeletonAvatar extends Avatar {
@@ -35739,6 +35791,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             this.tree.setCheckedNodeKeys(this.getValue());
           }
         },
+        onHide: () => {
+          if (this.props.multiple && this.props.changeOnClose) {
+            this._onValueChange();
+          }
+        },
       });
       this._valueChange({ newValue: this.currentValue });
     } // 存一份 {key: optionItem} 的数据
@@ -36004,7 +36061,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           checkedNodeKeys: currentValue,
           onCheckChange: () => {
             const checkedKeys = this.tree.getCheckedNodeKeys();
-            this._setValue(checkedKeys);
+            this._setValue(checkedKeys, {
+              triggerChange: !this.props.changeOnClose,
+            });
           },
         }
       );

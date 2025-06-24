@@ -28,6 +28,10 @@ define([], function () {
               },
             ],
             multiple: true,
+            changeOnClose: true,
+            onValueChange: ({ newValue }) => {
+              console.log('onValueChange', newValue)
+            },
           },
           {
             component: 'Select',
