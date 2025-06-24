@@ -13356,9 +13356,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         trigger: this.control,
         onShow: () => {
           this.optionList && this._drawOptionLists();
+          if (this.props.multiple) {
+            this._lastShowValue = this.getValue();
+          }
         },
         onHide: () => {
-          this.props.changeOnClose && this._onValueChange();
+          if (this.props.changeOnClose && this.props.multiple) {
+            const _currentValue = this.getValue();
+            if (!deepEqual(_currentValue, this._lastShowValue)) {
+              this._onValueChange();
+            }
+          }
         },
       });
     } // 数据异步加载且有默认值时需要先调请求加载value对应的字面值
@@ -32388,11 +32396,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         virtual,
         onShow: () => {
           this.optionList.update({ selectedItems: this.getValue() });
+          if (this.props.multiple) {
+            this._lastShowValue = this.getValue();
+          }
           this.optionList.scrollToSelected();
         },
         onHide: () => {
           if (this.props.multiple && this.props.changeOnClose) {
-            this._onValueChange();
+            const _currentValue = this.getValue();
+            if (!deepEqual(_currentValue, this._lastShowValue)) {
+              this._onValueChange();
+            }
           }
         },
       });
@@ -35801,11 +35815,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             });
           } else {
             this.tree.setCheckedNodeKeys(this.getValue());
+            this._lastShowValue = this.getValue();
           }
         },
         onHide: () => {
           if (this.props.multiple && this.props.changeOnClose) {
-            this._onValueChange();
+            const _currentValue = this.getValue();
+            if (!deepEqual(_currentValue, this._lastShowValue)) {
+              this._onValueChange();
+            }
           }
         },
       });

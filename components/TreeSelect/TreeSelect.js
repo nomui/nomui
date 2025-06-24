@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
-import { extend, isNullish, isString } from '../util/index'
+import { deepEqual, extend, isNullish, isString } from '../util/index'
 import TreeSelectPopup from './TreeSelectPopup'
 
 class TreeSelect extends Field {
@@ -53,11 +53,15 @@ class TreeSelect extends Field {
           })
         } else {
           this.tree.setCheckedNodeKeys(this.getValue())
+          this._lastShowValue = this.getValue()
         }
       },
       onHide: () => {
         if (this.props.multiple && this.props.changeOnClose) {
-          this._onValueChange()
+          const _currentValue = this.getValue()
+          if (!deepEqual(_currentValue, this._lastShowValue)) {
+            this._onValueChange()
+          }
         }
       },
     })

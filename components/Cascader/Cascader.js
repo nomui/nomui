@@ -1,7 +1,7 @@
 import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
-import { clone, isFunction, isNullish, isString } from '../util/index'
+import { clone, deepEqual, isFunction, isNullish, isString } from '../util/index'
 import CascaderPopup from './CascaderPopup'
 
 class Cascader extends Field {
@@ -119,9 +119,17 @@ class Cascader extends Field {
       trigger: this.control,
       onShow: () => {
         this.optionList && this._drawOptionLists()
+        if (this.props.multiple) {
+          this._lastShowValue = this.getValue()
+        }
       },
       onHide: () => {
-        this.props.changeOnClose && this._onValueChange()
+        if (this.props.changeOnClose && this.props.multiple) {
+          const _currentValue = this.getValue()
+          if (!deepEqual(_currentValue, this._lastShowValue)) {
+            this._onValueChange()
+          }
+        }
       },
     })
   }
