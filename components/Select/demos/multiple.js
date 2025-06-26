@@ -29,6 +29,7 @@ define([], function () {
             ],
             multiple: true,
             changeOnClose: true,
+            showSelectAll: true,
             onValueChange: ({ newValue }) => {
               console.log('onValueChange', newValue)
             },

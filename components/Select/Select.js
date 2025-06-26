@@ -628,6 +628,11 @@ class Select extends Field {
     this.setValue(allKeys, { triggerChange: !this.props.changeOnClose })
   }
 
+  clear(options = { triggerChange: true }) {
+    this._resetValidStatus()
+    this.setValue(null, options)
+  }
+
   _normalizeSearchable() {
     const { searchable, optionFields } = this.props
     if (searchable) {
