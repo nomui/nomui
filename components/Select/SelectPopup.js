@@ -129,7 +129,9 @@ class SelectPopup extends Popup {
                           this.selectControl.selectAll()
                           sender.update({ text: this.selectControl.props.clearText })
                         } else {
-                          this.selectControl.clear()
+                          this.selectControl.clear({
+                            triggerChange: !this.selectControl.props.changeOnClose,
+                          })
                           sender.update({ text: this.selectControl.props.selectAllText })
                         }
                       },
