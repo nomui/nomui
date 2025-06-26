@@ -32050,7 +32050,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                               text: this.selectControl.props.clearText,
                             });
                           } else {
-                            this.selectControl.clear();
+                            this.selectControl.clear({
+                              triggerChange: !this.selectControl.props
+                                .changeOnClose,
+                            });
                             sender.update({
                               text: this.selectControl.props.selectAllText,
                             });
@@ -32668,6 +32671,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         return n.key;
       });
       this.setValue(allKeys, { triggerChange: !this.props.changeOnClose });
+    }
+    clear(options = { triggerChange: true }) {
+      this._resetValidStatus();
+      this.setValue(null, options);
     }
     _normalizeSearchable() {
       const { searchable, optionFields } = this.props;
