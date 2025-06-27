@@ -70,6 +70,7 @@ class TreeSelectPopup extends Popup {
                   const result = searchable.filter({
                     inputValue: newValue,
                     options: options,
+                    sender: this.selectControl,
                   })
 
                   if (result && result.then) {
