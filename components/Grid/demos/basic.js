@@ -421,6 +421,7 @@ define(['css!./style.css'], function () {
                 height: '360px',
               },
             },
+            frozenRightCols: 1,
             excelMode: {
               onCellValueChange: (args) => {
                 // 更新对应日期的工时

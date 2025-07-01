@@ -28,3 +28,21 @@
   box-shadow: none;
   cursor: default;
 }
+
+.wt-work-hour-grid .nom-grid-footer td:last-child {
+  position: sticky;
+}
+
+.wt-work-hour-grid .nom-grid-footer td:last-child:after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.15);
+  transform: translate(-100%);
+  transition: -webkit-box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
+  content: '';
+}
