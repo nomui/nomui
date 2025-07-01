@@ -543,7 +543,11 @@ class Grid extends Component {
         }
         let outSider = true
         if (target.closest('.nom-grid') && target.closest('.nom-grid') === this.element) {
-          outSider = false
+          if (target.classList.contains('nom-grid-body') || target.classList.contains('nom-th')) {
+            outSider = true
+          } else {
+            outSider = false
+          }
         } else if (target.closest('.nom-popup')) {
           outSider = this._findPopupRoot(target)
         }
