@@ -44,41 +44,42 @@ class SelectPopup extends Popup {
         component: Layout,
         header: searchable
           ? {
-              children: {
-                component: Textbox,
-                placeholder: searchable.placeholder,
-                _created: (inst) => {
-                  this.selectControl.searchBox = inst
-                },
-                onValueChange: ({ newValue }) => {
-                  this.timer && clearTimeout(this.timer)
-                  this.timer = setTimeout(() => {
-                    const loading = new nomui.Loading({
-                      container: this.selectControl.optionList.parent,
-                    })
-                    const result = searchable.filter({
-                      inputValue: newValue,
-                      options: originOptions,
-                    })
-                    if (result && result.then) {
-                      return result
-                        .then((value) => {
-                          this.selectControl.props.options = value
-                          this.selectControl.optionList.update()
-                          loading && loading.remove()
-                        })
-                        .catch(() => {
-                          loading && loading.remove()
-                        })
-                    }
-                    loading && loading.remove()
-
-                    this.selectControl.props.options = result
-                    result && this.selectControl.optionList.update()
-                  }, 300)
-                },
+            children: {
+              component: Textbox,
+              placeholder: searchable.placeholder,
+              _created: (inst) => {
+                this.selectControl.searchBox = inst
               },
-            }
+              onValueChange: ({ newValue }) => {
+                this.timer && clearTimeout(this.timer)
+                this.timer = setTimeout(() => {
+                  const loading = new nomui.Loading({
+                    container: this.selectControl.optionList.parent,
+                  })
+                  const result = searchable.filter({
+                    inputValue: newValue,
+                    options: originOptions,
+                    sender: this.selectControl,
+                  })
+                  if (result && result.then) {
+                    return result
+                      .then((value) => {
+                        this.selectControl.props.options = value
+                        this.selectControl.optionList.update()
+                        loading && loading.remove()
+                      })
+                      .catch(() => {
+                        loading && loading.remove()
+                      })
+                  }
+                  loading && loading.remove()
+
+                  this.selectControl.props.options = result
+                  result && this.selectControl.optionList.update()
+                }, 300)
+              },
+            },
+          }
           : null,
         body: {
           children: [
@@ -95,52 +96,52 @@ class SelectPopup extends Popup {
               },
             },
             searchable &&
-              searchable.emptyTip && {
-                ref: (c) => {
-                  this.emptyTipRef = c
-                },
-                hidden: true,
-                classes: {
-                  'nom-select-popup-empty-tip': true,
-                },
-                children: searchable.emptyTip,
+            searchable.emptyTip && {
+              ref: (c) => {
+                this.emptyTipRef = c
               },
+              hidden: true,
+              classes: {
+                'nom-select-popup-empty-tip': true,
+              },
+              children: searchable.emptyTip,
+            },
           ],
         },
         footer:
           extraTools ||
-          (this.selectControl.props.multiple && this.selectControl.props.showSelectAll)
+            (this.selectControl.props.multiple && this.selectControl.props.showSelectAll)
             ? {
-                classes: {
-                  'nom-select-popup-extra-tools': true,
+              classes: {
+                'nom-select-popup-extra-tools': true,
+              },
+              children: [
+                this.selectControl.props.multiple &&
+                this.selectControl.props.showSelectAll && {
+                  component: 'Button',
+                  classes: {
+                    'nom-select-selectall': true,
+                  },
+                  text: this.selectControl.props.selectAllText,
+                  // type: 'text',
+                  size: 'small',
+                  onClick: ({ sender }) => {
+                    if (sender.props.text === this.selectControl.props.selectAllText) {
+                      this.selectControl.selectAll()
+                      sender.update({ text: this.selectControl.props.clearText })
+                    } else {
+                      this.selectControl.clear({
+                        triggerChange: !this.selectControl.props.changeOnClose,
+                      })
+                      sender.update({ text: this.selectControl.props.selectAllText })
+                    }
+                  },
                 },
-                children: [
-                  this.selectControl.props.multiple &&
-                    this.selectControl.props.showSelectAll && {
-                      component: 'Button',
-                      classes: {
-                        'nom-select-selectall': true,
-                      },
-                      text: this.selectControl.props.selectAllText,
-                      // type: 'text',
-                      size: 'small',
-                      onClick: ({ sender }) => {
-                        if (sender.props.text === this.selectControl.props.selectAllText) {
-                          this.selectControl.selectAll()
-                          sender.update({ text: this.selectControl.props.clearText })
-                        } else {
-                          this.selectControl.clear({
-                            triggerChange: !this.selectControl.props.changeOnClose,
-                          })
-                          sender.update({ text: this.selectControl.props.selectAllText })
-                        }
-                      },
-                    },
-                  isFunction(extraTools)
-                    ? extraTools({ popup: this, inst: this.selectControl })
-                    : extraTools,
-                ],
-              }
+                isFunction(extraTools)
+                  ? extraTools({ popup: this, inst: this.selectControl })
+                  : extraTools,
+              ],
+            }
             : null,
       },
     })
