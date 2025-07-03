@@ -299,13 +299,18 @@ export function isDate(date) {
 }
 
 export function isValidDate(date) {
-  // date是纯数字的话在1000-3000区间是合法年份值
-  if (isNumeric(date) && date < 3000 && date > 999) {
+  if (!isString(date)) return false
+  // 纯数字且在1000-3000之间，视为年份
+  if (/^\d{4}$/.test(date) && +date >= 1000 && +date <= 3000) {
     return true
   }
-  // date非纯数字则判断是否能转换成毫秒
-  if (!isNumeric(date) && isNumeric(Date.parse(date))) {
-    return true
+  // 标准日期格式
+  if (
+    /^\d{4}([-/]\d{1,2}){1,2}/.test(date) || // YYYY-MM-DD 或 YYYY/MM/DD
+    /^\d{4}-\d{2}-\d{2}T/.test(date) // ISO格式
+  ) {
+    const d = Date.parse(date)
+    return !Number.isNaN(d)
   }
   return false
 }
@@ -431,7 +436,13 @@ export function deepEqual(obj1, obj2) {
     return false
   }
 
-  if (isString(obj1) && isValidDate(obj1) && Date.parse(obj1) === Date.parse(obj2)) {
+  if (
+    isString(obj1) &&
+    isString(obj2) &&
+    isValidDate(obj1) &&
+    isValidDate(obj2) &&
+    Date.parse(obj1) === Date.parse(obj2)
+  ) {
     return true
   }
 
