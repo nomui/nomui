@@ -7688,6 +7688,11 @@ table.nom-table.p-bordered {
 }
 .nom-grid .nom-grid-header {
   z-index: 10;
+  flex-shrink: 0;
+}
+.nom-grid .nom-grid-footer {
+  z-index: 10;
+  flex-shrink: 0;
 }
 .nom-grid .hidden {
   display: none;
