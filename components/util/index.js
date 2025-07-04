@@ -298,21 +298,53 @@ export function isDate(date) {
   return toString.call(date) === '[object Date]'
 }
 
+/**
+ * 校验日期字符串是否合法
+ * @param {string} date - 待校验的日期字符串
+ * @returns {boolean} 是否合法
+ */
 export function isValidDate(date) {
-  if (!isString(date)) return false
-  // 纯数字且在1000-3000之间，视为年份
-  if (/^\d{4}$/.test(date) && +date >= 1000 && +date <= 3000) {
+  if (typeof date !== 'string') return false
+
+  // 1. 只允许数字、T、Z、-、/、:、.、+、空格
+  if (/[^0-9TZ\-/:.+\\s]/.test(date)) {
+    return false
+  }
+
+  // 2. 纯年份检查
+  if (/^\d{4}$/.test(date)) {
+    const year = parseInt(date, 10)
+    return year >= 1000 && year <= 3000
+  }
+
+  // 3. 校验微秒位数（1-6位）
+  if (/\.\d{7,}/.test(date)) return false
+
+  // 4. 校验时区格式
+  const timezoneMatch = date.match(/[+-]\d{2}:\d{2}$/)
+  if (timezoneMatch) {
+    const hours = parseInt(timezoneMatch[1], 10)
+    const minutes = parseInt(timezoneMatch[2], 10)
+    if (hours > 23 || minutes > 59) return false
+  }
+
+  // 5. 使用 Date 解析并校验
+  try {
+    const d = new Date(date)
+    if (d.toString() === 'Invalid Date') return false
+
+    // 可选：校验年月日是否合法
+    const dateParts = date.split(/[^\d]/).filter(Boolean)
+    if (dateParts.length >= 3) {
+      const month = parseInt(dateParts[1], 10)
+      const day = parseInt(dateParts[2], 10)
+      if (month < 1 || month > 12 || day < 1 || day > 31) return false
+    }
+
     return true
+  } catch {
+    return false
   }
-  // 标准日期格式
-  if (
-    /^\d{4}([-/]\d{1,2}){1,2}/.test(date) || // YYYY-MM-DD 或 YYYY/MM/DD
-    /^\d{4}-\d{2}-\d{2}T/.test(date) // ISO格式
-  ) {
-    const d = Date.parse(date)
-    return !Number.isNaN(d)
-  }
-  return false
 }
 
 /**
