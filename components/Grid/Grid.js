@@ -520,12 +520,36 @@ class Grid extends Component {
     }
   }
 
+  _setScrollbarOnResize() {
+    const updateScrollbarCol = () => {
+      const body = this.element.querySelector('.nom-grid-body')
+      // 判断纵向滚动条
+      const hasVScrollbar = body && body.scrollHeight > body.clientHeight
+      // 头部和footer的colgroup都可能有 nomui-grid-scrollbar-col
+      const scrollbarCols = this.element.querySelectorAll('.nomui-grid-scrollbar-col')
+      scrollbarCols.forEach((col) => {
+        col.style.display = hasVScrollbar ? '' : 'none'
+      })
+    }
+
+    // 首次执行
+    updateScrollbarCol()
+
+    // 监听尺寸变化
+    if (!this._resizeObserver) {
+      this._resizeObserver = new ResizeObserver(updateScrollbarCol)
+      this._resizeObserver.observe(this.element)
+    }
+  }
+
   _rendered() {
     const me = this
     if (this.loadingInst) {
       this.loadingInst.remove()
       this.loadingInst = null
     }
+
+    this._setScrollbarOnResize()
 
     if (this.props.rowCheckable && this._checkboxAllRef) {
       this.changeCheckAllState()

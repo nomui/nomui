@@ -37,12 +37,10 @@ class ColGroup extends Component {
 
     this.table.colLength = children.length
 
-    if (
-      this.table.parent.componentType === 'GridHeader' &&
-      this.table.parent.parent.props.frozenHeader
-    ) {
+    if (this.table.parent.componentType !== 'GridBody') {
       children.push({
         component: ColGroupCol,
+        classes: { 'nomui-grid-scrollbar-col': true },
         column: {
           width: this.table.grid.props.scrollbarWidth,
         },

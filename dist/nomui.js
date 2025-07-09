@@ -20333,12 +20333,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children.push(...this.createCols(this.columns));
       }
       this.table.colLength = children.length;
-      if (
-        this.table.parent.componentType === "GridHeader" &&
-        this.table.parent.parent.props.frozenHeader
-      ) {
+      if (this.table.parent.componentType !== "GridBody") {
         children.push({
           component: ColGroupCol,
+          classes: { "nomui-grid-scrollbar-col": true },
           column: { width: this.table.grid.props.scrollbarWidth },
         });
       }
@@ -21800,10 +21798,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.grid.header = this;
     }
     _config() {
-      const { frozenHeader, summary, scrollbarWidth } = this.grid.props;
-      const minWidth = frozenHeader
-        ? this.grid.minWidth + scrollbarWidth
-        : this.grid.minWidth;
+      const { summary } = this.grid.props;
+      const minWidth = this.grid.minWidth;
       this._summaryHeight = summary ? 36 : 0;
       this.setProps({
         classes: { "nom-grid-highlight-col": this.grid.props.highlightCol },
@@ -23191,12 +23187,30 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
     }
+    _setScrollbarOnResize() {
+      const updateScrollbarCol = () => {
+        const body = this.element.querySelector(".nom-grid-body"); // 判断纵向滚动条
+        const hasVScrollbar = body && body.scrollHeight > body.clientHeight; // 头部和footer的colgroup都可能有 nomui-grid-scrollbar-col
+        const scrollbarCols = this.element.querySelectorAll(
+          ".nomui-grid-scrollbar-col"
+        );
+        scrollbarCols.forEach((col) => {
+          col.style.display = hasVScrollbar ? "" : "none";
+        });
+      }; // 首次执行
+      updateScrollbarCol(); // 监听尺寸变化
+      if (!this._resizeObserver) {
+        this._resizeObserver = new ResizeObserver(updateScrollbarCol);
+        this._resizeObserver.observe(this.element);
+      }
+    }
     _rendered() {
       const me = this;
       if (this.loadingInst) {
         this.loadingInst.remove();
         this.loadingInst = null;
       }
+      this._setScrollbarOnResize();
       if (this.props.rowCheckable && this._checkboxAllRef) {
         this.changeCheckAllState();
       }

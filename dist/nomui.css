@@ -7809,7 +7809,6 @@ table.nom-table.p-bordered {
 }
 .nom-grid.m-frozen-header > .nom-grid-header {
   flex-shrink: 0;
-  overflow-y: scroll;
   background-color: var(--nom-grid-header-background-color);
 }
 .nom-grid.m-frozen-header > .nom-grid-header > .nom-table {
@@ -7825,11 +7824,9 @@ table.nom-table.p-bordered {
 .nom-grid.m-frozen-header > .nom-grid-body {
   flex: 1;
   height: 100%;
-  overflow-y: scroll;
 }
 .nom-grid.m-frozen-header > .nom-grid-body > .nom-grid-body-content {
   overflow-x: auto;
-  overflow-y: scroll;
 }
 .nom-grid.m-with-setting .nom-table .nom-thead-tr:first-child th:last-child {
   padding-right: 40px;
