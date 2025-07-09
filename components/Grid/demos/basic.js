@@ -115,6 +115,226 @@ define(['css!./style.css'], function () {
           description: null,
           totolHour: 15,
         },
+        {
+          id: 1,
+          title: '工时名称1',
+          dates: [
+            {
+              date: '2023-10-02', // Monday
+              hours: 4,
+            },
+            {
+              date: '2023-10-03', // Tuesday
+              hours: 1,
+            },
+            {
+              date: '2023-10-04', // Wednesday
+              hours: 0,
+            },
+            {
+              date: '2023-10-05', // Thursday
+              hours: 2,
+            },
+            {
+              date: '2023-10-06', // Friday
+              hours: 3,
+            },
+            {
+              date: '2023-10-07', // Saturday
+              hours: 0,
+            },
+            {
+              date: '2023-10-08', // Sunday
+              hours: 0,
+            },
+          ],
+          description: '这是工时名称1的描述信息',
+          totolHour: 18,
+        },
+        {
+          id: 2,
+          title: '工时名称2',
+          dates: [
+            {
+              date: '2023-10-02',
+              hours: 3,
+            },
+            {
+              date: '2023-10-03',
+              hours: 4,
+              approved: true,
+            },
+            {
+              date: '2023-10-04',
+              hours: 3,
+            },
+            {
+              date: '2023-10-05',
+              hours: 4,
+            },
+            {
+              date: '2023-10-06',
+              hours: 3,
+            },
+            {
+              date: '2023-10-07',
+              hours: 0,
+            },
+            {
+              date: '2023-10-08',
+              hours: 0,
+            },
+          ],
+          description: '这是工时名称2的描述信息',
+          totolHour: 17,
+        },
+        {
+          id: 3,
+          title: '工时名称3',
+          dates: [
+            {
+              date: '2023-10-02',
+              hours: 3,
+              approved: true,
+            },
+            {
+              date: '2023-10-03',
+              hours: 3,
+            },
+            {
+              date: '2023-10-04',
+              hours: 3,
+            },
+            {
+              date: '2023-10-05',
+              hours: 3,
+            },
+            {
+              date: '2023-10-06',
+              hours: 3,
+            },
+            {
+              date: '2023-10-07',
+              hours: 0,
+            },
+            {
+              date: '2023-10-08',
+              hours: 0,
+            },
+          ],
+          description: null,
+          totolHour: 15,
+        },
+        {
+          id: 1,
+          title: '工时名称1',
+          dates: [
+            {
+              date: '2023-10-02', // Monday
+              hours: 4,
+            },
+            {
+              date: '2023-10-03', // Tuesday
+              hours: 1,
+            },
+            {
+              date: '2023-10-04', // Wednesday
+              hours: 0,
+            },
+            {
+              date: '2023-10-05', // Thursday
+              hours: 2,
+            },
+            {
+              date: '2023-10-06', // Friday
+              hours: 3,
+            },
+            {
+              date: '2023-10-07', // Saturday
+              hours: 0,
+            },
+            {
+              date: '2023-10-08', // Sunday
+              hours: 0,
+            },
+          ],
+          description: '这是工时名称1的描述信息',
+          totolHour: 18,
+        },
+        {
+          id: 2,
+          title: '工时名称2',
+          dates: [
+            {
+              date: '2023-10-02',
+              hours: 3,
+            },
+            {
+              date: '2023-10-03',
+              hours: 4,
+              approved: true,
+            },
+            {
+              date: '2023-10-04',
+              hours: 3,
+            },
+            {
+              date: '2023-10-05',
+              hours: 4,
+            },
+            {
+              date: '2023-10-06',
+              hours: 3,
+            },
+            {
+              date: '2023-10-07',
+              hours: 0,
+            },
+            {
+              date: '2023-10-08',
+              hours: 0,
+            },
+          ],
+          description: '这是工时名称2的描述信息',
+          totolHour: 17,
+        },
+        {
+          id: 3,
+          title: '工时名称3',
+          dates: [
+            {
+              date: '2023-10-02',
+              hours: 3,
+              approved: true,
+            },
+            {
+              date: '2023-10-03',
+              hours: 3,
+            },
+            {
+              date: '2023-10-04',
+              hours: 3,
+            },
+            {
+              date: '2023-10-05',
+              hours: 3,
+            },
+            {
+              date: '2023-10-06',
+              hours: 3,
+            },
+            {
+              date: '2023-10-07',
+              hours: 0,
+            },
+            {
+              date: '2023-10-08',
+              hours: 0,
+            },
+          ],
+          description: null,
+          totolHour: 15,
+        },
       ]
 
       const renderHour = ({ hours, approved }) => {
@@ -421,6 +641,7 @@ define(['css!./style.css'], function () {
                 height: '360px',
               },
             },
+            frozenHeader: true,
             frozenRightCols: 1,
             excelMode: {
               onCellValueChange: (args) => {
