@@ -19,8 +19,8 @@ class GridHeader extends Component {
   }
 
   _config() {
-    const { frozenHeader, summary, scrollbarWidth } = this.grid.props
-    const minWidth = frozenHeader ? this.grid.minWidth + scrollbarWidth : this.grid.minWidth
+    const { summary } = this.grid.props
+    const minWidth = this.grid.minWidth
 
     this._summaryHeight = summary ? 36 : 0
 
