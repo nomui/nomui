@@ -23189,6 +23189,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _setScrollbarOnResize() {
       const updateScrollbarCol = () => {
+        if (this.element) {
+          return;
+        }
         const body = this.element.querySelector(".nom-grid-body"); // 判断纵向滚动条
         const hasVScrollbar = body && body.scrollHeight > body.clientHeight; // 头部和footer的colgroup都可能有 nomui-grid-scrollbar-col
         const scrollbarCols = this.element.querySelectorAll(
