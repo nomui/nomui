@@ -32,6 +32,7 @@ class Toolbar extends Component {
       component: 'Dropdown',
       rightIcon: 'ellipsis',
       items: items.slice(visibleItems),
+      itemDefaults,
       type,
       inline,
       size,
