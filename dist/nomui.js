@@ -24365,6 +24365,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         component: "Dropdown",
         rightIcon: "ellipsis",
         items: items.slice(visibleItems),
+        itemDefaults,
         type,
         inline,
         size,
@@ -26287,6 +26288,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.handleSelect = this.handleSelect.bind(this);
     }
     _config() {
+      this._propStyleClasses = [
+        "ghost",
+        "size",
+        "shape",
+        "danger",
+        "block",
+        "borderless",
+      ];
       const { menu } = this;
       const { onSelect, onUnselect } = this.props;
       const menuProps = menu.props;

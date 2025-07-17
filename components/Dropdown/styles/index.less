@@ -2,7 +2,7 @@
   white-space: nowrap;
 
   &.nom-split-button {
-    >button {
+    > button {
       &:first-child {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
@@ -19,14 +19,40 @@
 
 .nom-dropdown-popup {
   .nom-menu-item-wrapper {
-    >a {
+    > .nom-menu-item {
       padding-right: 1.5rem !important;
       .nom-preset-hover;
+      &.p-type-primary {
+        color: var(--nom-color-primary);
+      }
+      &.p-danger {
+        color: var(--nom-color-danger);
+      }
+
+      &.p-size-small {
+        // line-height: ensure proper height of button next to small input
+        .button-size(@padding-y-sm; @padding-x-sm; @font-size-sm; @line-height-sm; @border-radius-sm);
+      }
+
+      &.p-size-xsmall {
+        // line-height: ensure proper height of button next to small input
+        .button-size(@padding-y-xs; @padding-x-xs; @font-size-sm; @line-height-sm; @border-radius-sm);
+      }
+
+      &.p-size-large {
+        // line-height: ensure proper height of button next to small input
+        .button-size(@padding-y-lg; @padding-x-lg; @font-size-lg; @line-height-lg; @border-radius-lg);
+      }
+
+      &.p-size-xlarge {
+        // line-height: ensure proper height of button next to small input
+        .button-size(@padding-y-xl; @padding-x-xl; @font-size-xl; @line-height-lg; @border-radius-lg);
+      }
     }
   }
 
   .nom-menu-divider {
-    padding: .5rem 0 !important;
+    padding: 0.5rem 0 !important;
 
     &::after {
       left: 0 !important;
@@ -41,26 +67,25 @@
   }
 
   &.nom-dropdown-animate-top-show {
-    -webkit-animation: nom-dropdown-keyframe-top-show .16s linear forwards;
-    animation: nom-dropdown-keyframe-top-show .16s linear forwards;
+    -webkit-animation: nom-dropdown-keyframe-top-show 0.16s linear forwards;
+    animation: nom-dropdown-keyframe-top-show 0.16s linear forwards;
   }
 
   &.nom-dropdown-animate-bottom-show {
-    -webkit-animation: nom-dropdown-keyframe-bottom-show .16s linear forwards;
-    animation: nom-dropdown-keyframe-bottom-show .16s linear forwards;
+    -webkit-animation: nom-dropdown-keyframe-bottom-show 0.16s linear forwards;
+    animation: nom-dropdown-keyframe-bottom-show 0.16s linear forwards;
   }
 
   &.nom-dropdown-animate-top-hide {
-    -webkit-animation: nom-dropdown-keyframe-top-hide .16s linear forwards;
-    animation: nom-dropdown-keyframe-top-hide .16s linear forwards;
+    -webkit-animation: nom-dropdown-keyframe-top-hide 0.16s linear forwards;
+    animation: nom-dropdown-keyframe-top-hide 0.16s linear forwards;
   }
 
   &.nom-dropdown-animate-bottom-hide {
-    -webkit-animation: nom-dropdown-keyframe-bottom-hide .16s linear forwards;
-    animation: nom-dropdown-keyframe-bottom-hide .16s linear forwards;
+    -webkit-animation: nom-dropdown-keyframe-bottom-hide 0.16s linear forwards;
+    animation: nom-dropdown-keyframe-bottom-hide 0.16s linear forwards;
   }
 }
-
 
 @-webkit-keyframes nom-dropdown-keyframe-top-show {
   0% {
@@ -74,7 +99,6 @@
     transform: translateY(0%);
     opacity: 1;
   }
-
 }
 
 @keyframes nom-dropdown-keyframe-top-show {
@@ -103,7 +127,6 @@
     transform: translateY(0%);
     opacity: 1;
   }
-
 }
 
 @keyframes nom-dropdown-keyframe-bottom-show {
