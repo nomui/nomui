@@ -12,6 +12,18 @@ class NumberInput extends Textbox {
   }
 
   _config() {
+    const { maxPrecision } = this.props
+    if (maxPrecision) {
+      this.props.precision = -1
+      const str = this.props.maxPrecisionText.replace('{{maxPrecision}}', maxPrecision)
+      this.rules.push({
+        type: 'regex',
+        value: {
+          pattern: `^\\d+(\\.\\d{1,${maxPrecision}})?$`,
+        },
+        message: str,
+      })
+    }
     this._setFormatter()
 
     this.setProps({
@@ -148,11 +160,11 @@ class NumberInput extends Textbox {
       this.setValue(this.oldValue, { triggerChange: false })
     } else {
       let shouldChange = false
-      if (min && v < min) {
+      if ((min || min === 0) && v < min) {
         v = min
         shouldChange = true
       }
-      if (max && v > max) {
+      if ((max || max === 0) && v > max) {
         v = max
         shouldChange = true
       }
@@ -288,6 +300,8 @@ NumberInput.defaults = {
   formatter: null,
   parser: null,
   ignoreInputChange: true,
+  maxPrecision: null,
+  maxPrecisionText: '请输入有效数字，且最多包含{{maxPrecision}}位小数',
 }
 Component.register(NumberInput)
 
