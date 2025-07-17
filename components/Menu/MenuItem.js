@@ -45,6 +45,7 @@ class MenuItem extends Component {
   }
 
   _config() {
+    this._propStyleClasses = ['ghost', 'size', 'shape', 'danger', 'block', 'borderless']
     const { menu } = this
 
     const { onSelect, onUnselect } = this.props

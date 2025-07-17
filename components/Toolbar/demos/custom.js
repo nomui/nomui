@@ -5,7 +5,7 @@ define([], function () {
     demo: function () {
       return {
         component: 'Toolbar',
-        visibleItems: 3,
+        visibleItems: 1,
         items: [
           {
             text: '按钮1',
@@ -23,19 +23,21 @@ define([], function () {
           },
           {
             text: '按钮3',
+            disabled: true,
             onClick: () => {
               console.log('按钮3')
             },
           },
           {
             text: '按钮4',
-
+            type: 'primary',
             onClick: () => {
               console.log('按钮4')
             },
           },
           {
             text: '按钮5',
+            danger: true,
             onClick: () => {
               console.log('按钮5')
             },
