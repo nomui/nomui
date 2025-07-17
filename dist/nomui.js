@@ -27866,6 +27866,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super._created();
     }
     _config() {
+      const { maxPrecision } = this.props;
+      if (maxPrecision) {
+        this.props.precision = -1;
+        const str = this.props.maxPrecisionText.replace(
+          "{{maxPrecision}}",
+          maxPrecision
+        );
+        this.rules.push({
+          type: "regex",
+          value: { pattern: `^\\d+(\\.\\d{1,${maxPrecision}})?$` },
+          message: str,
+        });
+      }
       this._setFormatter();
       this.setProps({ button: this._getControls() });
       super._config();
@@ -27966,11 +27979,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.setValue(this.oldValue, { triggerChange: false });
       } else {
         let shouldChange = false;
-        if (min && v < min) {
+        if ((min || min === 0) && v < min) {
           v = min;
           shouldChange = true;
         }
-        if (max && v > max) {
+        if ((max || max === 0) && v > max) {
           v = max;
           shouldChange = true;
         }
@@ -28081,6 +28094,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     formatter: null,
     parser: null,
     ignoreInputChange: true,
+    maxPrecision: null,
+    maxPrecisionText: "请输入有效数字，且最多包含{{maxPrecision}}位小数",
   };
   Component.register(NumberInput);
   const SPINNER_POSITION = {
