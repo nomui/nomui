@@ -509,6 +509,7 @@ class Td extends Component {
         'nom-table-fixed-right': this.props.column.fixed === 'right',
         'nom-table-fixed-right-first': this.props.column.firstRight,
         'nom-table-ellipsis': isEllipsis,
+        'nom-table-checker': this.props.column.isChecker,
         'nom-table-checker-with-toolbar':
           !!this.props.column.toolbar && this.props.column.isChecker,
       },

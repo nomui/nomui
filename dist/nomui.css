@@ -7841,29 +7841,29 @@ table.nom-table.p-bordered {
   --nom-grid-tr-modified-bg: #fff;
   --nom-grid-tr-modified-bg-hover: #fff;
 }
-.nom-grid.m-excel-mode .nom-td-excel-mode {
+.nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker) {
   height: 3rem;
   padding: 0 1rem;
 }
-.nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner {
+.nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker) > .nom-td-excel-mode-inner {
   display: flex;
   align-items: center;
 }
-.nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner > span:last-child {
+.nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker) > .nom-td-excel-mode-inner > span:last-child {
   flex-grow: 1;
   width: 0;
 }
-.nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner > .nom-flex {
+.nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker) > .nom-td-excel-mode-inner > .nom-flex {
   flex-grow: 1;
 }
-.nom-grid.m-excel-mode .nom-td-excel-mode > .nom-td-excel-mode-inner .nom-grid-td-cell-tree {
+.nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker) > .nom-td-excel-mode-inner .nom-grid-td-cell-tree {
   flex-grow: 1;
 }
-.nom-grid.m-excel-mode .nom-td-excel-mode:hover {
+.nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker):hover {
   cursor: pointer;
   box-shadow: var(--nom-grid-td-excel-mode-hover-box-shadow);
 }
-.nom-grid.m-excel-mode .nom-td-excel-mode.nom-td-excel-mode-active {
+.nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker).nom-td-excel-mode-active {
   padding: 0 0.25rem;
   cursor: pointer;
   box-shadow: var(--nom-grid-td-excel-mode-active-hover-box-shadow);
