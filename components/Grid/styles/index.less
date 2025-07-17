@@ -246,7 +246,10 @@
 
     .nom-td-editable {
       height: min(3rem);
-      padding: 0 1rem;
+
+      &:not(.nom-table-checker) {
+        padding: 0 1rem;
+      }
 
       .nom-td-editable-inner {
         display: flex;

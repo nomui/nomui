@@ -7880,6 +7880,8 @@ table.nom-table.p-bordered {
 }
 .nom-grid.m-editable .nom-td-editable {
   height: 3rem;
+}
+.nom-grid.m-editable .nom-td-editable:not(.nom-table-checker) {
   padding: 0 1rem;
 }
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner {
