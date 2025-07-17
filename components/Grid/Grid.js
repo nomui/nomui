@@ -522,7 +522,7 @@ class Grid extends Component {
 
   _setScrollbarOnResize() {
     const updateScrollbarCol = () => {
-      if (this.element) {
+      if (!this.element) {
         return
       }
       const body = this.element.querySelector('.nom-grid-body')
