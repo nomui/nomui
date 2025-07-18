@@ -4,227 +4,8 @@ define(['css!./style.css'], function () {
     file: 'basic',
     demo: function () {
       let dateRef = null
+      let gridRef = null
       const data = [
-        {
-          id: 1,
-          title: '工时名称1',
-          dates: [
-            {
-              date: '2023-10-02', // Monday
-              hours: 4,
-            },
-            {
-              date: '2023-10-03', // Tuesday
-              hours: 1,
-            },
-            {
-              date: '2023-10-04', // Wednesday
-              hours: 0,
-            },
-            {
-              date: '2023-10-05', // Thursday
-              hours: 2,
-            },
-            {
-              date: '2023-10-06', // Friday
-              hours: 3,
-            },
-            {
-              date: '2023-10-07', // Saturday
-              hours: 0,
-            },
-            {
-              date: '2023-10-08', // Sunday
-              hours: 0,
-            },
-          ],
-          description: '这是工时名称1的描述信息',
-          totolHour: 18,
-        },
-        {
-          id: 2,
-          title: '工时名称2',
-          dates: [
-            {
-              date: '2023-10-02',
-              hours: 3,
-            },
-            {
-              date: '2023-10-03',
-              hours: 4,
-              approved: true,
-            },
-            {
-              date: '2023-10-04',
-              hours: 3,
-            },
-            {
-              date: '2023-10-05',
-              hours: 4,
-            },
-            {
-              date: '2023-10-06',
-              hours: 3,
-            },
-            {
-              date: '2023-10-07',
-              hours: 0,
-            },
-            {
-              date: '2023-10-08',
-              hours: 0,
-            },
-          ],
-          description: '这是工时名称2的描述信息',
-          totolHour: 17,
-        },
-        {
-          id: 3,
-          title: '工时名称3',
-          dates: [
-            {
-              date: '2023-10-02',
-              hours: 3,
-              approved: true,
-            },
-            {
-              date: '2023-10-03',
-              hours: 3,
-            },
-            {
-              date: '2023-10-04',
-              hours: 3,
-            },
-            {
-              date: '2023-10-05',
-              hours: 3,
-            },
-            {
-              date: '2023-10-06',
-              hours: 3,
-            },
-            {
-              date: '2023-10-07',
-              hours: 0,
-            },
-            {
-              date: '2023-10-08',
-              hours: 0,
-            },
-          ],
-          description: null,
-          totolHour: 15,
-        },
-        {
-          id: 1,
-          title: '工时名称1',
-          dates: [
-            {
-              date: '2023-10-02', // Monday
-              hours: 4,
-            },
-            {
-              date: '2023-10-03', // Tuesday
-              hours: 1,
-            },
-            {
-              date: '2023-10-04', // Wednesday
-              hours: 0,
-            },
-            {
-              date: '2023-10-05', // Thursday
-              hours: 2,
-            },
-            {
-              date: '2023-10-06', // Friday
-              hours: 3,
-            },
-            {
-              date: '2023-10-07', // Saturday
-              hours: 0,
-            },
-            {
-              date: '2023-10-08', // Sunday
-              hours: 0,
-            },
-          ],
-          description: '这是工时名称1的描述信息',
-          totolHour: 18,
-        },
-        {
-          id: 2,
-          title: '工时名称2',
-          dates: [
-            {
-              date: '2023-10-02',
-              hours: 3,
-            },
-            {
-              date: '2023-10-03',
-              hours: 4,
-              approved: true,
-            },
-            {
-              date: '2023-10-04',
-              hours: 3,
-            },
-            {
-              date: '2023-10-05',
-              hours: 4,
-            },
-            {
-              date: '2023-10-06',
-              hours: 3,
-            },
-            {
-              date: '2023-10-07',
-              hours: 0,
-            },
-            {
-              date: '2023-10-08',
-              hours: 0,
-            },
-          ],
-          description: '这是工时名称2的描述信息',
-          totolHour: 17,
-        },
-        {
-          id: 3,
-          title: '工时名称3',
-          dates: [
-            {
-              date: '2023-10-02',
-              hours: 3,
-              approved: true,
-            },
-            {
-              date: '2023-10-03',
-              hours: 3,
-            },
-            {
-              date: '2023-10-04',
-              hours: 3,
-            },
-            {
-              date: '2023-10-05',
-              hours: 3,
-            },
-            {
-              date: '2023-10-06',
-              hours: 3,
-            },
-            {
-              date: '2023-10-07',
-              hours: 0,
-            },
-            {
-              date: '2023-10-08',
-              hours: 0,
-            },
-          ],
-          description: null,
-          totolHour: 15,
-        },
         {
           id: 1,
           title: '工时名称1',
@@ -401,6 +182,24 @@ define(['css!./style.css'], function () {
               type: 'link',
               inline: true,
             }
+          },
+          toolbar: {
+            placement: 'body',
+            render: ({ rowData }) => {
+              return {
+                component: 'Button',
+                text: '删除',
+                type: 'link',
+                inline: true,
+                onClick() {
+                  // eslint-disable-next-line
+
+                  gridRef.removeRow(rowData.id)
+                  gridRef.props.data = gridRef.props.data.filter((item) => item.id !== rowData.id)
+                  gridRef.updateSummary()
+                },
+              }
+            },
           },
         },
         {
@@ -635,6 +434,10 @@ define(['css!./style.css'], function () {
         body: {
           children: {
             component: 'Grid',
+            ref: (c) => {
+              gridRef = c
+            },
+            keyField: 'id',
             bordered: true,
             attrs: {
               style: {
@@ -675,6 +478,7 @@ define(['css!./style.css'], function () {
               // method 返回 { field: 需要展示的总结的数据 } 格式的对象
               columns: JSON.parse(JSON.stringify(columns)).map((x) => {
                 delete x.editRender
+                delete x.toolbar
                 x.cellRender = ({ cellData }) => {
                   if (!cellData || x.field === 'description') {
                     return '-'
