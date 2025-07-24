@@ -126,6 +126,7 @@
 | immediateChange | 编辑模式修改值后是否立即更新数据 | `boolean` | - |
 | cellRender | 单元格渲染函数，返回组件配置 | `({cellData,cell,row,rowData,table})=>{}` | - |
 | autoWidth | 是否自适应宽度（最终列显示的宽度，由`Td`子元素计算得出。若`column.width`小于子元素宽度，Td 会被撑大，否则不操作） | `boolean` | `false` |
+| flatData | 字段值是否扁平取值，例如'user.name'，配置 flatValue 时会直接访问行数据的'user.name'这个字段，而不是访问 user 字段下的 name 子字段 | `boolean` | `false` |
 | resizable | 是否允许拖动列宽 | `boolean` | `false` |
 | ellipsis | 单元格是否文字超出自动省略 | `boolean` | `false` |
 | sortable | 是否启用排序，为`true`时后端排序，为`string`时自动对字符串进行中文前端排序，为`number`对数字进行前端排序，也可以传自定义排序函数进行前端排序，如：`(a, b) => a.sales - b.sales` | `boolean` \| `function`\| `'string'`\| `'number'` | `false` |
