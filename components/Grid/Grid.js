@@ -1027,23 +1027,33 @@ class Grid extends Component {
   }
 
   changeCheckAllState() {
-    const checkedRowsLength = Object.keys(this.checkedRowRefs).length
-    if (checkedRowsLength === 0) {
+    // 获取所有可操作行（非禁用、非隐藏）
+    const operableRows = Object.keys(this.rowsRefs).filter((key) => {
+      const refItem = this.rowsRefs[key]
+      const { props } = refItem._checkboxRef
+      return props && !props.disabled && !props.hidden
+    })
+
+    // 获取当前选中行中可操作的行（排除禁用但选中的行）
+    const checkedOperableRows = Object.keys(this.checkedRowRefs).filter((key) => {
+      const refItem = this.rowsRefs[key]?._checkboxRef
+      return refItem?.props && !refItem.props.disabled && !refItem.props.hidden
+    })
+
+    const operableRowsLength = operableRows.length
+    const checkedOperableRowsLength = checkedOperableRows.length
+
+    if (operableRowsLength === 0) {
+      // 没有可操作行时，全选框不做处理
+    } else if (checkedOperableRowsLength === 0) {
+      // 可操作行都没有被选中
       this._checkboxAllRef.setValue(false, false)
+    } else if (operableRowsLength === checkedOperableRowsLength) {
+      // 所有可操作行都被选中
+      this._checkboxAllRef.setValue(true, false)
     } else {
-      const allRowsLength = Object.keys(this.rowsRefs).filter((key) => {
-        const refItem = this.rowsRefs[key]
-        const { props } = refItem._checkboxRef
-
-        // 过滤 _checkboxRef 存在 && disabled 和 hidden为false
-        return props && !props.disabled && !props.hidden
-      }).length
-
-      if (allRowsLength <= checkedRowsLength) {
-        this._checkboxAllRef.setValue(true, false)
-      } else {
-        this._checkboxAllRef.partCheck(false)
-      }
+      // 部分可操作行被选中
+      this._checkboxAllRef.partCheck(false)
     }
   }
 
