@@ -24,6 +24,7 @@ class DatePicker extends Textbox {
     const that = this
 
     if (this.props.weekMode) {
+      this.props.format = 'yyyy-MM-dd'
       this.props.showTime = false
       this.props.displayValue = true
       this._parseWeekValueType() // 如果是对象值，先转成年周字符串
