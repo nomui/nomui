@@ -179,7 +179,7 @@ class Tr extends Component {
           name: column.field,
           column: column,
           record: data,
-          data: accessProp(data, column.field),
+          data: column.flatData ? data[column.field] : accessProp(data, column.field),
         })
       }
     })
