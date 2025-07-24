@@ -19061,11 +19061,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         type,
         size,
         menuClasses,
+        icon,
       } = this.props;
       const children = [
         split && {
           component: "Button",
           text: text,
+          icon,
           type: type,
           size: size,
           inline: type === "link",
@@ -19077,6 +19079,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         {
           component: "Button",
           text: split ? null : that.props.text,
+          icon: split ? null : icon,
           rightIcon: that.props.rightIcon,
           type: type,
           size: size,
