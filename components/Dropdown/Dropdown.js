@@ -12,12 +12,13 @@ class Dropdown extends Component {
 
   _config() {
     const that = this
-    const { items, triggerAction, split, text, type, size, menuClasses } = this.props
+    const { items, triggerAction, split, text, type, size, menuClasses, icon } = this.props
 
     const children = [
       split && {
         component: 'Button',
         text: text,
+        icon,
         type: type,
         size: size,
         inline: type === 'link',
@@ -29,6 +30,7 @@ class Dropdown extends Component {
       {
         component: 'Button',
         text: split ? null : that.props.text,
+        icon: split ? null : icon,
         rightIcon: that.props.rightIcon,
         type: type,
         size: size,
