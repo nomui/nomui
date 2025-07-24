@@ -1301,6 +1301,8 @@ class Component {
       throw new Error('setContext 参数必须是一个对象')
     }
 
+    const sender = this
+
     const visited = new Set() // 防止循环引用
     let current = this
 
@@ -1340,7 +1342,7 @@ class Component {
         nomuiContextWatchers[key].forEach(({ callback, ref }) => {
           if (ref === targetRef) {
             try {
-              callback({ key, value, ref: targetRef })
+              callback({ key, value, ref: targetRef, sender })
             } catch (e) {
               console.error('contextChange global listener error:', e)
             }
