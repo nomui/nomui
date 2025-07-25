@@ -64,7 +64,7 @@ class Carousel extends Component {
                   this.prevClick()
                 },
                 component: 'Icon',
-                type: 'left',
+                type: 'prev',
               },
               {
                 classes: {
@@ -74,7 +74,7 @@ class Carousel extends Component {
                   this.nextClick()
                 },
                 component: 'Icon',
-                type: 'right',
+                type: 'next',
               },
             ],
           },

@@ -13,6 +13,7 @@ class Password extends Textbox {
     this.hasDefaultValue = false
     this.capsLock = false
     this.firstWrite = false
+    this.props.rightIconType = this.props.icons[0]
     if (this.props.value) {
       this.realValue = this.props.value
 
@@ -23,6 +24,7 @@ class Password extends Textbox {
   _config() {
     const that = this
     const { onValueChange } = this.props
+
     if (that.tooltip) {
       that.tooltip.remove()
       delete that.tooltip
@@ -40,7 +42,10 @@ class Password extends Textbox {
             return
           }
           that.update({
-            rightIconType: that.props.rightIconType === 'eye-invisible' ? 'eye' : 'eye-invisible',
+            rightIconType:
+              that.props.rightIconType === that.props.icons[0]
+                ? that.props.icons[1]
+                : that.props.icons[0],
           })
           that.setValue(that.props.value)
         },
@@ -158,8 +163,8 @@ class Password extends Textbox {
   }
 
   _setValue(value) {
-    const { rightIconType, value: oldValue } = this.props
-    const pass = value ? (rightIconType === 'eye' ? value.replace(/./g, '*') : value) : null
+    const { rightIconType, value: oldValue, icons } = this.props
+    const pass = value ? (rightIconType === icons[0] ? value.replace(/./g, '*') : value) : null
     this.input.setText(pass)
     if (oldValue !== value) {
       this.setProps({
@@ -173,8 +178,8 @@ class Password extends Textbox {
 Password.defaults = {
   allowClear: false,
   visibilityToggle: true,
-  rightIconType: 'eye',
-  capslockText: '大写已开启'
+  capslockText: '大写已开启',
+  icons: ['eye', 'eye-invisible'],
 }
 Component.register(Password)
 
