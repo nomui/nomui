@@ -1339,10 +1339,10 @@ class Component {
 
       // 只触发与 targetRef 匹配的监听
       if (nomuiContextWatchers[key]) {
-        nomuiContextWatchers[key].forEach(({ callback, ref }) => {
+        nomuiContextWatchers[key].forEach(({ callback, ref, watcher }) => {
           if (ref === targetRef) {
             try {
-              callback({ key, value, ref: targetRef, sender })
+              callback({ key, value, ref: targetRef, sender, watcher })
             } catch (e) {
               console.error('contextChange global listener error:', e)
             }
