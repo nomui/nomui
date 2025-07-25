@@ -28021,7 +28021,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const valueDecimal = (v.toString().split(".")[1] || "").length;
       const decimalPlaces = Math.max(stepDecimal, valueDecimal);
       v = parseFloat((v + step).toFixed(decimalPlaces));
-      this.setValue(max && v > max ? max : v);
+      this.setValue((max || max === 0) && v > max ? max : v);
       this._setPrecision();
     }
     _onMinus() {
@@ -28034,7 +28034,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const valueDecimal = (v.toString().split(".")[1] || "").length;
       const decimalPlaces = Math.max(stepDecimal, valueDecimal);
       v = parseFloat((v - step).toFixed(decimalPlaces));
-      this.setValue(min && v < min ? min : v);
+      this.setValue((min || min === 0) && v < min ? min : v);
       this._setPrecision();
     }
     _getValue(options) {
