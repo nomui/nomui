@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isNumeric } from '../util/index'
 
 class Carousel extends Component {
   constructor(props, ...mixins) {
@@ -149,7 +150,7 @@ class Carousel extends Component {
         },
         attrs: {
           style: {
-            height: `${_that.props.height}px`,
+            height: isNumeric(_that.props.height) ? `${_that.props.height}px` : _that.props.height,
           },
         },
         children: {
