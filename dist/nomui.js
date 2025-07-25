@@ -12750,7 +12750,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                     this.prevClick();
                   },
                   component: "Icon",
-                  type: "left",
+                  type: "prev",
                 },
                 {
                   classes: { "nom-carousel-button-next": true },
@@ -12758,7 +12758,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                     this.nextClick();
                   },
                   component: "Icon",
-                  type: "right",
+                  type: "next",
                 },
               ],
             },
@@ -29695,6 +29695,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.hasDefaultValue = false;
       this.capsLock = false;
       this.firstWrite = false;
+      this.props.rightIconType = this.props.icons[0];
       if (this.props.value) {
         this.realValue = this.props.value;
         this.hasDefaultValue = true;
@@ -29724,9 +29725,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             }
             that.update({
               rightIconType:
-                that.props.rightIconType === "eye-invisible"
-                  ? "eye"
-                  : "eye-invisible",
+                that.props.rightIconType === that.props.icons[0]
+                  ? that.props.icons[1]
+                  : that.props.icons[0],
             });
             that.setValue(that.props.value);
           },
@@ -29833,9 +29834,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return this.realValue ? this.realValue.trim(" ") : null;
     }
     _setValue(value) {
-      const { rightIconType, value: oldValue } = this.props;
+      const { rightIconType, value: oldValue, icons } = this.props;
       const pass = value
-        ? rightIconType === "eye"
+        ? rightIconType === icons[0]
           ? value.replace(/./g, "*")
           : value
         : null;
@@ -29849,8 +29850,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   Password.defaults = {
     allowClear: false,
     visibilityToggle: true,
-    rightIconType: "eye",
     capslockText: "大写已开启",
+    icons: ["eye", "eye-invisible"],
   };
   Component.register(Password);
   class Popconfirm extends Popup {
