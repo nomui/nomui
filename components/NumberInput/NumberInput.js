@@ -189,7 +189,7 @@ class NumberInput extends Textbox {
     const decimalPlaces = Math.max(stepDecimal, valueDecimal)
 
     v = parseFloat((v + step).toFixed(decimalPlaces))
-    this.setValue(max && v > max ? max : v)
+    this.setValue((max || max === 0) && v > max ? max : v)
     this._setPrecision()
   }
 
@@ -207,7 +207,7 @@ class NumberInput extends Textbox {
     const decimalPlaces = Math.max(stepDecimal, valueDecimal)
 
     v = parseFloat((v - step).toFixed(decimalPlaces))
-    this.setValue(min && v < min ? min : v)
+    this.setValue((min || min === 0) && v < min ? min : v)
     this._setPrecision()
   }
 
