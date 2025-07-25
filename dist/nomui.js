@@ -12824,7 +12824,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             if (c) _that.sildeRefs.push(c);
           },
           classes: { "nom-carousel-slide": true },
-          attrs: { style: { height: `${_that.props.height}px` } },
+          attrs: {
+            style: {
+              height: isNumeric(_that.props.height)
+                ? `${_that.props.height}px`
+                : _that.props.height,
+            },
+          },
           children: { tag: "img", attrs: { src: item }, children: "" },
         };
       });
