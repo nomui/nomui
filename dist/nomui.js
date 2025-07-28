@@ -13369,13 +13369,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         attrs: {
           onmouseover() {
             if (disabled) return;
-            me.close.show();
+            me.close && me.close.show();
             showArrow && me.down.hide();
           },
           onmouseleave() {
             if (disabled) return;
             showArrow && me.down.show();
-            me.close.hide();
+            me.close && me.close.hide();
           },
         },
       });
