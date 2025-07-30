@@ -19698,14 +19698,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 ) {
                   return;
                 }
-                if (cellDisabled) {
-                  return;
-                }
                 if (column.editRender) {
-                  this.edit({ type: "editable" });
-                  setTimeout(() => {
-                    this.editor.triggerEdit();
-                  }, 200);
+                  if (!cellDisabled) {
+                    this.edit({ type: "editable" });
+                    setTimeout(() => {
+                      this.editor.triggerEdit();
+                    }, 200);
+                  }
                   grid.lastEditTd = this;
                 } else {
                   grid.lastEditTd = null;
@@ -19754,10 +19753,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               return;
             }
             if (column.editRender) {
-              this.edit({ type: "excel" });
-              setTimeout(() => {
-                this.editor.triggerEdit();
-              }, 200);
+              if (!cellDisabled) {
+                this.edit({ type: "excel" });
+                setTimeout(() => {
+                  this.editor.triggerEdit();
+                }, 200);
+              }
               grid.lastEditTd = this;
             } else {
               grid.lastEditTd = null;
