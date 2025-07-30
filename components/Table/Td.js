@@ -386,9 +386,17 @@ class Td extends Component {
     }
 
     if (this.table.hasGrid && this.table.grid.props.editable) {
+      const cellDisabled =
+        this.table.grid.props.editable.isCellEditable &&
+        this.table.grid.props.editable.isCellEditable({
+          rowData: this.tr.props.data,
+          field: this.props.column.field,
+        }) === false
+
       children = {
         classes: {
           'nom-td-editable-inner': true,
+          'nom-td-edit-disabled': cellDisabled,
         },
         children: [
           {
@@ -416,6 +424,20 @@ class Td extends Component {
                 return
               }
 
+              if (
+                this.table.grid.props.editable.isCellEditable &&
+                this.table.grid.props.editable.isCellEditable({
+                  rowData: this.tr.props.data,
+                  field: this.props.column.field,
+                }) === false
+              ) {
+                return
+              }
+
+              if (cellDisabled) {
+                return
+              }
+
               if (column.editRender) {
                 this.edit({ type: 'editable' })
                 setTimeout(() => {
@@ -432,6 +454,13 @@ class Td extends Component {
     }
 
     if (isExcelMode) {
+      const cellDisabled =
+        this.table.grid.props.excelMode.isCellEditable &&
+        this.table.grid.props.excelMode.isCellEditable({
+          rowData: this.tr.props.data,
+          field: this.props.column.field,
+        }) === false
+
       children = {
         tag: 'span',
         classes: {
@@ -442,6 +471,7 @@ class Td extends Component {
       this.setProps({
         classes: {
           'nom-td-excel-mode': true,
+          'nom-td-edit-disabled': cellDisabled,
         },
         onClick: ({ event }) => {
           event.stopPropagation()
@@ -453,6 +483,10 @@ class Td extends Component {
             grid.lastEditTd.endEdit()
           }
           if (grid.lastEditTd && grid.lastEditTd === this) {
+            return
+          }
+
+          if (cellDisabled) {
             return
           }
 
