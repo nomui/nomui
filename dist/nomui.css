@@ -7633,6 +7633,17 @@ table.nom-table th.nom-table-fixed-right {
   background-color: var(--nom-grid-th-bg);
   background-image: var(--nom-grid-th-bg-image);
 }
+table.nom-table th.nom-table-fixed-left:last-child::after,
+table.nom-table th.nom-table-fixed-right:last-child::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -8px;
+  width: 8px;
+  background-color: var(--nom-grid-th-bg);
+  background-image: var(--nom-grid-th-bg-image);
+}
 table.nom-table th > .nom-table-filter {
   position: absolute;
   top: 0;
