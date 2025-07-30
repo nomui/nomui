@@ -21162,9 +21162,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           el.offsetWidth -
           this.table.grid.props.scrollbarWidth;
       }
-      this._setStyle({
-        [fixed]: `${this._stickyPos + this.table.grid.props.scrollbarWidth}px`,
-      });
+      const addjustWidth =
+        fixed === "right" ? this.table.grid.props.scrollbarWidth : 0;
+      this._setStyle({ [fixed]: `${this._stickyPos + addjustWidth}px` });
     } // 外部更新，通过 preEl 或 nextEl 的offsetWidth 计算得出
     _setPositionByExter() {
       const fixed = this.props.column.fixed;

@@ -408,7 +408,8 @@ class Th extends Component {
       this._stickyPos =
         parentEl.offsetWidth - el.offsetLeft - el.offsetWidth - this.table.grid.props.scrollbarWidth
     }
-    this._setStyle({ [fixed]: `${this._stickyPos + this.table.grid.props.scrollbarWidth}px` })
+    const addjustWidth = fixed === 'right' ? this.table.grid.props.scrollbarWidth : 0
+    this._setStyle({ [fixed]: `${this._stickyPos + addjustWidth}px` })
   }
 
   // 外部更新，通过 preEl 或 nextEl 的offsetWidth 计算得出
