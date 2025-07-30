@@ -100,6 +100,11 @@ define([], function () {
             bordered: true,
             line: 'both',
             excelMode: {
+              isCellEditable: ({ rowData, field }) => {
+                if (rowData.sex === '1' && field === 'name') {
+                  return false
+                }
+              },
               onCellValueChange: (args) => {
                 console.log(args)
               },
