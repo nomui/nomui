@@ -320,7 +320,13 @@ table.nom-table {
     -webkit-user-select: none;
     user-select: none;
 
-    &.nom-table-fixed-left,
+    &.nom-table-fixed-left {
+      position: sticky;
+      z-index: 2;
+      background-color: var(--nom-grid-th-bg);
+      background-image: var(--nom-grid-th-bg-image);
+    }
+
     &.nom-table-fixed-right {
       position: sticky;
       z-index: 2;
