@@ -211,12 +211,14 @@ class Field extends Component {
   expand() {
     if (this.expandBtnRef) {
       this.expandBtnRef.expand()
+      this.props.expanded = true
     }
   }
 
   collapse() {
     if (this.expandBtnRef) {
       this.expandBtnRef.collapse()
+      this.props.expanded = false
     }
   }
 
