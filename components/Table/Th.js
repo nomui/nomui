@@ -405,12 +405,10 @@ class Th extends Component {
     if (fixed === 'left') {
       this._stickyPos = el.offsetLeft
     } else if (fixed === 'right') {
-      this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth
-      if (this.table.hasGrid && this.table.grid.props.frozenHeader) {
-        this._stickyPos -= this.table.grid.props.scrollbarWidth
-      }
+      this._stickyPos =
+        parentEl.offsetWidth - el.offsetLeft - el.offsetWidth - this.table.grid.props.scrollbarWidth
     }
-    this._setStyle({ [fixed]: `${this._stickyPos}px` })
+    this._setStyle({ [fixed]: `${this._stickyPos + this.table.grid.props.scrollbarWidth}px` })
   }
 
   // 外部更新，通过 preEl 或 nextEl 的offsetWidth 计算得出

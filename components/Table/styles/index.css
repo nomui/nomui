@@ -1,0 +1,340 @@
+table.nom-table {
+  position: relative;
+  width: 100%;
+  table-layout: fixed;
+  background-color: var(--nom-grid-background-color);
+  border-spacing: 0;
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) {
+  background-color: var(--nom-grid-tr-striped-bg);
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) td.nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty) td.nom-table-fixed-right {
+  background: var(--nom-grid-tr-striped-bg);
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty):hover {
+  background-color: var(--nom-grid-tr-striped-bg-hover);
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty):hover .nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty):hover .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-striped-bg-hover);
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).nom-tr-selected {
+  background-color: var(--nom-grid-tr-bg-selected);
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).nom-tr-selected .nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).nom-tr-selected .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-bg-selected);
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked {
+  background-color: var(--nom-grid-tr-checked-bg);
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked .nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-checked-bg);
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked:hover {
+  background-color: var(--nom-grid-tr-checked-bg-hover);
+}
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked:hover .nom-table-fixed-left,
+table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-checked:hover .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-checked-bg-hover);
+}
+table.nom-table tbody tr:not(.nom-tr-empty):hover {
+  background-color: var(--nom-grid-tr-bg-hover);
+}
+table.nom-table tbody tr:not(.nom-tr-empty):hover .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty):hover .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-bg-hover);
+}
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected,
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected:hover {
+  background-color: var(--nom-grid-tr-bg-selected);
+}
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected:hover .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected .nom-table-fixed-right,
+table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected:hover .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-bg-selected);
+}
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked {
+  background-color: var(--nom-grid-tr-checked-bg);
+}
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-checked-bg);
+}
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked:hover {
+  background-color: var(--nom-grid-tr-checked-bg-hover);
+}
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked:hover .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty).s-checked:hover .nom-table-fixed-right {
+  background-color: var(--nom-grid-tr-checked-bg-hover);
+}
+table.nom-table .nom-table-th-hover-mask {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background-color: var(--nom-grid-col-highlight-bg);
+}
+table.nom-table td,
+table.nom-table th {
+  position: relative;
+  padding: var(--nom-grid-td-padding);
+  word-break: break-all;
+}
+table.nom-table td[align='left'],
+table.nom-table th[align='left'] {
+  text-align: left;
+}
+table.nom-table td[align='left'] .nom-table-cell-content,
+table.nom-table th[align='left'] .nom-table-cell-content {
+  justify-content: flex-start;
+}
+table.nom-table td[align='center'],
+table.nom-table th[align='center'] {
+  text-align: center;
+}
+table.nom-table td[align='center'] .nom-table-cell-content,
+table.nom-table th[align='center'] .nom-table-cell-content {
+  justify-content: center;
+}
+table.nom-table td[align='right'],
+table.nom-table th[align='right'] {
+  text-align: right;
+}
+table.nom-table td[align='right'] .nom-table-cell-content,
+table.nom-table th[align='right'] .nom-table-cell-content {
+  justify-content: flex-end;
+}
+table.nom-table td.nom-table-fixed-left,
+table.nom-table th.nom-table-fixed-left,
+table.nom-table td.nom-table-fixed-right,
+table.nom-table th.nom-table-fixed-right {
+  position: sticky;
+  z-index: 2;
+  background: var(--nom-grid-background-color);
+}
+table.nom-table td.nom-table-sortable > span,
+table.nom-table th.nom-table-sortable > span,
+table.nom-table td.nom-table-sortable > .nom-icon,
+table.nom-table th.nom-table-sortable > .nom-icon {
+  cursor: pointer;
+}
+table.nom-table td.nom-table-ellipsis,
+table.nom-table th.nom-table-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+}
+table.nom-table td.nom-table-ellipsis .nom-table-cell-static-ellipsis,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-static-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block !important;
+}
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-ellipsis-wrapper,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-ellipsis-wrapper {
+  display: flex;
+}
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-ellipsis-wrapper > *,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content.nom-table-cell-content-ellipsis-wrapper > * {
+  width: 0;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content .nom-grid-td-cell-ellipsis,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-grid-td-cell-ellipsis {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+}
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content .nom-grid-td-cell-ellipsis .nom-tree-grid-td,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-grid-td-cell-ellipsis .nom-tree-grid-td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+}
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content .nom-table-cell-title,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-table-cell-title {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+}
+table.nom-table td.nom-table-ellipsis .nom-table-cell-content .nom-ellipsis .nom-ellipsis-inner,
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content .nom-ellipsis .nom-ellipsis-inner {
+  display: table-cell;
+}
+table.nom-table td .nom-table-resize-handler,
+table.nom-table th .nom-table-resize-handler {
+  position: absolute !important;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  height: 100%;
+  border-right: 1px dotted var(--nom-grid-icon-color);
+  visibility: hidden;
+  cursor: col-resize;
+}
+table.nom-table td .nom-table-sort-handler.p-type-sort,
+table.nom-table th .nom-table-sort-handler.p-type-sort {
+  visibility: hidden;
+}
+table.nom-table td .nom-table-filter-handler,
+table.nom-table th .nom-table-filter-handler {
+  visibility: hidden;
+}
+table.nom-table td .nom-table-filter-handler.nom-filter-active,
+table.nom-table th .nom-table-filter-handler.nom-filter-active {
+  visibility: visible;
+}
+table.nom-table td .nom-table-pin-handler,
+table.nom-table th .nom-table-pin-handler {
+  color: var(--nom-grid-icon-color);
+  visibility: hidden;
+  cursor: pointer;
+}
+table.nom-table td .nom-table-pin-handler.p-type-pin-fill,
+table.nom-table th .nom-table-pin-handler.p-type-pin-fill {
+  visibility: visible;
+}
+table.nom-table td:hover .nom-table-resize-handler,
+table.nom-table th:hover .nom-table-resize-handler {
+  visibility: visible;
+}
+table.nom-table td:hover .nom-table-pin-handler,
+table.nom-table th:hover .nom-table-pin-handler {
+  visibility: visible;
+}
+table.nom-table td:hover .nom-table-sort-handler,
+table.nom-table th:hover .nom-table-sort-handler {
+  visibility: visible;
+}
+table.nom-table td:hover .nom-table-filter-handler,
+table.nom-table th:hover .nom-table-filter-handler {
+  visibility: visible;
+}
+table.nom-table .nom-table-ellipsis.nom-table-fixed-left .nom-table-cell-content,
+table.nom-table .nom-table-ellipsis.nom-table-fixed-right .nom-table-cell-content {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+table.nom-table .nom-table-ellipsis.nom-table-fixed-left-last,
+table.nom-table .nom-table-ellipsis.nom-table-fixed-right-first {
+  overflow: visible;
+}
+table.nom-table .nom-table-fixed-left-last::after {
+  position: absolute;
+  top: 0;
+  right: -30px;
+  bottom: 0;
+  width: 30px;
+  box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.15);
+  transition: -webkit-box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
+  content: '';
+  pointer-events: none;
+}
+table.nom-table .nom-table-fixed-right-first {
+  padding-left: 15px;
+}
+table.nom-table .nom-table-fixed-right-first::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.15);
+  transform: translate(-100%);
+  transition: -webkit-box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
+  content: '';
+  pointer-events: none;
+}
+table.nom-table th {
+  position: relative;
+  color: var(--nom-grid-th-color);
+  font-weight: var(--nom-grid-th-font-weight);
+  line-height: 24px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: var(--nom-grid-th-bg);
+  background-image: var(--nom-grid-th-bg-image);
+  -webkit-user-select: none;
+  user-select: none;
+}
+table.nom-table th.nom-table-fixed-left,
+table.nom-table th.nom-table-fixed-right {
+  position: sticky;
+  z-index: 2;
+  background-color: var(--nom-grid-th-bg);
+  background-image: var(--nom-grid-th-bg-image);
+}
+table.nom-table th.nom-table-fixed-left:last-child::after,
+table.nom-table th.nom-table-fixed-right:last-child::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -8px;
+  width: 8px;
+  background-color: var(--nom-grid-th-bg);
+  background-image: var(--nom-grid-th-bg-image);
+}
+table.nom-table th > .nom-table-filter {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 100%;
+  color: var(--nom-grid-icon-color);
+}
+table.nom-table th.nom-table-ellipsis .nom-table-cell-content {
+  align-items: center;
+  display: flex !important;
+}
+table.nom-table .nom-tr-expand-indicator {
+  margin-right: 6px;
+}
+table.nom-table .nom-td-tree-node:not(.nom-td-tree-node-leaf) {
+  cursor: pointer;
+}
+table.nom-table.p-line-row td,
+table.nom-table.p-line-row th {
+  border-bottom: 1px solid var(--nom-border-color);
+}
+table.nom-table.p-line-col td,
+table.nom-table.p-line-col th {
+  border-right: 1px solid var(--nom-border-color);
+}
+table.nom-table.p-line-col > th:last-child {
+  border-right: 0;
+}
+table.nom-table.p-line-both td,
+table.nom-table.p-line-both th {
+  border-right: 1px solid var(--nom-border-color);
+  border-bottom: 1px solid var(--nom-border-color);
+}
+table.nom-table.p-line-both thead > tr:first-child th:last-child {
+  border-right: 0;
+}
+table.nom-table.p-line-both td:last-child {
+  border-right: 0;
+}
+table.nom-table.p-bordered {
+  border: 1px solid var(--nom-border-color);
+}
