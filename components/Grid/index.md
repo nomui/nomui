@@ -136,17 +136,19 @@
 
 ### excelMode
 
-| 名称              | 说明                             | 类型                            |
-| ----------------- | -------------------------------- | ------------------------------- |
+| 名称 | 说明 | 类型 |
+| --- | --- | --- |
 | onCellValueChange | 单元格值被修改且失去焦点时的回调 | `({newValue,field,rowKey})=>{}` |
-| onValidateFailed  | 单元格值校验失败的回调           | `({field,value})=>{}`           |
+| onValidateFailed | 单元格值校验失败的回调 | `({field,value})=>{}` |
+| isCellEditable | 单元格是否允许编辑，如果返回 false 则此单元格不允许编辑 | `({field,rowData})=>{ return boolean}` |
 
 ### editable
 
-| 名称              | 说明                             | 类型                            |
-| ----------------- | -------------------------------- | ------------------------------- |
+| 名称 | 说明 | 类型 |
+| --- | --- | --- |
 | onCellValueChange | 单元格值被修改且失去焦点时的回调 | `({newValue,field,rowKey})=>{}` |
-| onValidateFailed  | 单元格值校验失败的回调           | `({field,value})=>{}`           |
+| onValidateFailed | 单元格值校验失败的回调 | `({field,value})=>{}` |
+| isCellEditable | 单元格是否允许编辑，如果返回 false 则此单元格不允许编辑 | `({field,rowData})=>{ return boolean}` |
 
 #### `cellRender` 使用示例及参数说明
 

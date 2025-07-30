@@ -7863,6 +7863,9 @@ table.nom-table.p-bordered {
   cursor: pointer;
   box-shadow: var(--nom-grid-td-excel-mode-hover-box-shadow);
 }
+.nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker):hover.nom-td-edit-disabled {
+  box-shadow: none;
+}
 .nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker).nom-td-excel-mode-active {
   padding: 0 0.25rem;
   cursor: pointer;
@@ -8088,6 +8091,9 @@ table.nom-table.p-bordered {
 .nom-tr.s-checked .nom-grid-checker-and-order > .nom-grid-order-text,
 .nom-tr:hover .nom-grid-checker-and-order > .nom-grid-order-text {
   visibility: hidden;
+}
+.nom-td.nom-td-edit-disabled * {
+  cursor: not-allowed;
 }
 .nom-td .nom-grid-td-cell-tree {
   display: flex;

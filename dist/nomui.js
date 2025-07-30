@@ -19655,8 +19655,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children,
       };
       if (this.table.hasGrid && this.table.grid.props.editable) {
+        const cellDisabled =
+          this.table.grid.props.editable.isCellEditable &&
+          this.table.grid.props.editable.isCellEditable({
+            rowData: this.tr.props.data,
+            field: this.props.column.field,
+          }) === false;
         children = {
-          classes: { "nom-td-editable-inner": true },
+          classes: {
+            "nom-td-editable-inner": true,
+            "nom-td-edit-disabled": cellDisabled,
+          },
           children: [
             { grow: true, children },
             {
@@ -19680,6 +19689,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 if (grid.lastEditTd && grid.lastEditTd === this) {
                   return;
                 }
+                if (
+                  this.table.grid.props.editable.isCellEditable &&
+                  this.table.grid.props.editable.isCellEditable({
+                    rowData: this.tr.props.data,
+                    field: this.props.column.field,
+                  }) === false
+                ) {
+                  return;
+                }
+                if (cellDisabled) {
+                  return;
+                }
                 if (column.editRender) {
                   this.edit({ type: "editable" });
                   setTimeout(() => {
@@ -19695,13 +19716,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         };
       }
       if (isExcelMode) {
+        const cellDisabled =
+          this.table.grid.props.excelMode.isCellEditable &&
+          this.table.grid.props.excelMode.isCellEditable({
+            rowData: this.tr.props.data,
+            field: this.props.column.field,
+          }) === false;
         children = {
           tag: "span",
           classes: { "nom-td-excel-mode-inner": true },
           children,
         };
         this.setProps({
-          classes: { "nom-td-excel-mode": true },
+          classes: {
+            "nom-td-excel-mode": true,
+            "nom-td-edit-disabled": cellDisabled,
+          },
           onClick: ({ event }) => {
             event.stopPropagation();
             grid.props.onRowClick &&
@@ -19718,6 +19748,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               grid.lastEditTd.endEdit();
             }
             if (grid.lastEditTd && grid.lastEditTd === this) {
+              return;
+            }
+            if (cellDisabled) {
               return;
             }
             if (column.editRender) {
