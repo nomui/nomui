@@ -7626,14 +7626,18 @@ table.nom-table th {
   -webkit-user-select: none;
   user-select: none;
 }
-table.nom-table th.nom-table-fixed-left,
+table.nom-table th.nom-table-fixed-left {
+  position: sticky;
+  z-index: 2;
+  background-color: var(--nom-grid-th-bg);
+  background-image: var(--nom-grid-th-bg-image);
+}
 table.nom-table th.nom-table-fixed-right {
   position: sticky;
   z-index: 2;
   background-color: var(--nom-grid-th-bg);
   background-image: var(--nom-grid-th-bg-image);
 }
-table.nom-table th.nom-table-fixed-left:last-child::after,
 table.nom-table th.nom-table-fixed-right:last-child::after {
   content: '';
   position: absolute;
