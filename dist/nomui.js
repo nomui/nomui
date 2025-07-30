@@ -9283,6 +9283,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (labelExpandable) {
         children.push({
           component: "Button",
+          ref: (c) => {
+            this.field.expandBtnRef = c;
+          },
           type: "text",
           size: "small",
           expanded: true,
@@ -9473,6 +9476,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       } else if (param !== false) {
         this.element.classList.add("s-readonly");
+      }
+    }
+    expand() {
+      if (this.expandBtnRef) {
+        this.expandBtnRef.expand();
+        this.props.expanded = true;
+      }
+    }
+    collapse() {
+      if (this.expandBtnRef) {
+        this.expandBtnRef.collapse();
+        this.props.expanded = false;
       }
     }
     getValue(options) {

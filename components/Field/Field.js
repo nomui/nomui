@@ -208,6 +208,20 @@ class Field extends Component {
     }
   }
 
+  expand() {
+    if (this.expandBtnRef) {
+      this.expandBtnRef.expand()
+      this.props.expanded = true
+    }
+  }
+
+  collapse() {
+    if (this.expandBtnRef) {
+      this.expandBtnRef.collapse()
+      this.props.expanded = false
+    }
+  }
+
   getValue(options) {
     const value = isFunction(this._getValue) ? this._getValue(options) : null
     return value
