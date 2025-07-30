@@ -434,15 +434,13 @@ class Td extends Component {
                 return
               }
 
-              if (cellDisabled) {
-                return
-              }
-
               if (column.editRender) {
-                this.edit({ type: 'editable' })
-                setTimeout(() => {
-                  this.editor.triggerEdit()
-                }, 200)
+                if (!cellDisabled) {
+                  this.edit({ type: 'editable' })
+                  setTimeout(() => {
+                    this.editor.triggerEdit()
+                  }, 200)
+                }
                 grid.lastEditTd = this
               } else {
                 grid.lastEditTd = null
@@ -491,10 +489,12 @@ class Td extends Component {
           }
 
           if (column.editRender) {
-            this.edit({ type: 'excel' })
-            setTimeout(() => {
-              this.editor.triggerEdit()
-            }, 200)
+            if (!cellDisabled) {
+              this.edit({ type: 'excel' })
+              setTimeout(() => {
+                this.editor.triggerEdit()
+              }, 200)
+            }
             grid.lastEditTd = this
           } else {
             grid.lastEditTd = null
