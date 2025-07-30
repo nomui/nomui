@@ -424,16 +424,6 @@ class Td extends Component {
                 return
               }
 
-              if (
-                this.table.grid.props.editable.isCellEditable &&
-                this.table.grid.props.editable.isCellEditable({
-                  rowData: this.tr.props.data,
-                  field: this.props.column.field,
-                }) === false
-              ) {
-                return
-              }
-
               if (column.editRender) {
                 if (!cellDisabled) {
                   this.edit({ type: 'editable' })
@@ -481,10 +471,6 @@ class Td extends Component {
             grid.lastEditTd.endEdit()
           }
           if (grid.lastEditTd && grid.lastEditTd === this) {
-            return
-          }
-
-          if (cellDisabled) {
             return
           }
 

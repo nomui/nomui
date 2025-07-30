@@ -19689,15 +19689,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 if (grid.lastEditTd && grid.lastEditTd === this) {
                   return;
                 }
-                if (
-                  this.table.grid.props.editable.isCellEditable &&
-                  this.table.grid.props.editable.isCellEditable({
-                    rowData: this.tr.props.data,
-                    field: this.props.column.field,
-                  }) === false
-                ) {
-                  return;
-                }
                 if (column.editRender) {
                   if (!cellDisabled) {
                     this.edit({ type: "editable" });
@@ -19747,9 +19738,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               grid.lastEditTd.endEdit();
             }
             if (grid.lastEditTd && grid.lastEditTd === this) {
-              return;
-            }
-            if (cellDisabled) {
               return;
             }
             if (column.editRender) {
