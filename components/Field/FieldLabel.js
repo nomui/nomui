@@ -40,7 +40,7 @@ class FieldLabel extends Component {
         },
         type: 'text',
         size: 'small',
-        expanded: this.field.props.labelExpanded,
+        expanded: labelExpandable.expanded !== false,
         expandable: {
           byClick: true,
           target: () => {
