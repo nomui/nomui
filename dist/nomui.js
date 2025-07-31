@@ -9288,7 +9288,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
           type: "text",
           size: "small",
-          expanded: this.field.props.labelExpanded,
+          expanded: labelExpandable.expanded !== false,
           expandable: {
             byClick: true,
             target: () => {
@@ -9427,7 +9427,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           {
             component: FieldContent,
             value: this.props.value,
-            hidden: this.props.labelExpandable && !this.props.labelExpanded,
+            hidden:
+              this.props.labelExpandable &&
+              this.props.labelExpandable.expanded === false,
           },
           actionProps && n$1(actionProps, [FieldActionMixin]),
         ],
@@ -9485,17 +9487,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     expand() {
       if (this.expandBtnRef) {
         this.expandBtnRef.expand();
-        this.props.labelExpanded = true;
       }
     }
     collapse() {
       if (this.expandBtnRef) {
         this.expandBtnRef.collapse();
-        this.props.labelExpanded = false;
       }
     }
     toggleExpand() {
-      this.props.labelExpanded === true ? this.collapse() : this.expand();
+      if (!this.props.labelExpandable) {
+        return;
+      }
+      this.expandBtnRef.props.expanded === true
+        ? this.collapse()
+        : this.expand();
     }
     getValue(options) {
       const value = isFunction(this._getValue) ? this._getValue(options) : null;

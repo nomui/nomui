@@ -146,7 +146,7 @@ class Field extends Component {
         {
           component: FieldContent,
           value: this.props.value,
-          hidden: this.props.labelExpandable && !this.props.labelExpanded,
+          hidden: this.props.labelExpandable && this.props.labelExpandable.expanded === false,
         },
         actionProps && n(actionProps, [FieldActionMixin]),
       ],
@@ -215,19 +215,20 @@ class Field extends Component {
   expand() {
     if (this.expandBtnRef) {
       this.expandBtnRef.expand()
-      this.props.labelExpanded = true
     }
   }
 
   collapse() {
     if (this.expandBtnRef) {
       this.expandBtnRef.collapse()
-      this.props.labelExpanded = false
     }
   }
 
   toggleExpand() {
-    this.props.labelExpanded === true ? this.collapse() : this.expand()
+    if (!this.props.labelExpandable) {
+      return
+    }
+    this.expandBtnRef.props.expanded === true ? this.collapse() : this.expand()
   }
 
   getValue(options) {
