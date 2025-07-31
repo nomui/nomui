@@ -16,6 +16,7 @@
 | extra | 表单元素的拓展展示内容 | `string` | - |
 | variant | 表单风格类型 | `default\|filled\|borderless` | `default` |
 | labelWidth | 表单元素项提示文字宽度 | `number` | `126` |
+| labelExpanded | 表单可折叠时，内容默认是否展开状态 | `boolean` | `true` |
 | controlWidth | 表单元素项的宽度 | `xsmall\|small\|medium\|large\|xlarge` | `false` |
 | rules | 配置的验证规则 | `Array` | `[]` |
 | required | 是否必填 | `boolean` | - |
