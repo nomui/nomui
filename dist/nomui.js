@@ -9288,7 +9288,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
           type: "text",
           size: "small",
-          expanded: true,
+          expanded: this.field.props.labelExpanded,
           expandable: {
             byClick: true,
             target: () => {
@@ -9424,7 +9424,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
         children: [
           labelProps,
-          { component: FieldContent, value: this.props.value },
+          {
+            component: FieldContent,
+            value: this.props.value,
+            hidden: this.props.labelExpandable && !this.props.labelExpanded,
+          },
           actionProps && n$1(actionProps, [FieldActionMixin]),
         ],
       });
@@ -9481,14 +9485,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     expand() {
       if (this.expandBtnRef) {
         this.expandBtnRef.expand();
-        this.props.expanded = true;
+        this.props.labelExpanded = true;
       }
     }
     collapse() {
       if (this.expandBtnRef) {
         this.expandBtnRef.collapse();
-        this.props.expanded = false;
+        this.props.labelExpanded = false;
       }
+    }
+    toggleExpand() {
+      this.props.labelExpanded === true ? this.collapse() : this.expand();
     }
     getValue(options) {
       const value = isFunction(this._getValue) ? this._getValue(options) : null;
@@ -9692,6 +9699,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     extra: null,
     tabindex: null,
     compact: false,
+    labelExpanded: true,
   };
   Object.defineProperty(Field.prototype, "fields", {
     get: function () {
