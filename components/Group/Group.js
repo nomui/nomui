@@ -158,6 +158,9 @@ class Group extends Field {
   }
 
   findField(fieldName) {
+    if (!this.element) {
+      return null
+    }
     const el = this.element.querySelector(`[data-field-name="${fieldName}"]`)
     if (el && el.component) {
       return el.component
