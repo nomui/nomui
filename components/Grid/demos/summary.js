@@ -27,7 +27,7 @@ define([], function () {
             line: 'both',
             columns: gridColumns,
             data: options,
-            frozenLeftCols: 2,
+            frozenLeftCols: 1,
           },
           { component: 'Divider' },
           { component: 'StaticText', value: '自定义summary' },
