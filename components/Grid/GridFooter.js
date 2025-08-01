@@ -52,11 +52,14 @@ class GridFooter extends Component {
         return n.isCheckerSpace
       }) === -1
     ) {
+      const col = footColumns[0]
+      const { fixed } = col
       footColumns.splice(0, 1, {
         width: this.grid.props.rowCheckable.width || 50,
         resizable: false,
         isCheckerSpace: true,
         field: 'nom-grid-row-checker',
+        fixed,
       })
     }
 

@@ -794,11 +794,12 @@ class Td extends Component {
     if (fixed === 'left') {
       this._stickyPos = el.offsetLeft
     } else if (fixed === 'right') {
-      this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth
-      if (this.table.hasGrid && this.table.grid.props.frozenHeader) {
-        this._stickyPos -= this.table.grid.props.scrollbarWidth
-      }
+      this._stickyPos =
+        parentEl.clientWidth - el.offsetLeft - el.offsetWidth - this.table.grid.props.scrollbarWidth
     }
+
+    const addjustWidth = fixed === 'right' ? this.table.grid.props.scrollbarWidth : 0
+    this._stickyPos += addjustWidth
     this._setStyle({ [fixed]: `${this._stickyPos}px` })
   }
 
