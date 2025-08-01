@@ -54,6 +54,11 @@ class Field extends Component {
     delete this.errorTip
 
     this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth', 'plain', 'variant')
+
+    if (this.props.labelAlign !== 'top' || !this.props.label) {
+      this.props.labelExpandable = false
+    }
+
     const {
       label,
       labelAlign,

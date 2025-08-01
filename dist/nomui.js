@@ -9346,6 +9346,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         "plain",
         "variant"
       );
+      if (this.props.labelAlign !== "top" || !this.props.label) {
+        this.props.labelExpandable = false;
+      }
       const {
         label,
         labelAlign,
