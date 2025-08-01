@@ -20025,11 +20025,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (fixed === "left") {
         this._stickyPos = el.offsetLeft;
       } else if (fixed === "right") {
-        this._stickyPos = parentEl.offsetWidth - el.offsetLeft - el.offsetWidth;
-        if (this.table.hasGrid && this.table.grid.props.frozenHeader) {
-          this._stickyPos -= this.table.grid.props.scrollbarWidth;
-        }
+        this._stickyPos =
+          parentEl.clientWidth -
+          el.offsetLeft -
+          el.offsetWidth -
+          this.table.grid.props.scrollbarWidth;
       }
+      const addjustWidth =
+        fixed === "right" ? this.table.grid.props.scrollbarWidth : 0;
+      this._stickyPos += addjustWidth;
       this._setStyle({ [fixed]: `${this._stickyPos}px` });
     }
     _parseTdWidth() {
@@ -21188,14 +21192,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._stickyPos = el.offsetLeft;
       } else if (fixed === "right") {
         this._stickyPos =
-          parentEl.offsetWidth -
+          parentEl.clientWidth -
           el.offsetLeft -
           el.offsetWidth -
           this.table.grid.props.scrollbarWidth;
       }
       const addjustWidth =
         fixed === "right" ? this.table.grid.props.scrollbarWidth : 0;
-      this._setStyle({ [fixed]: `${this._stickyPos + addjustWidth}px` });
+      this._stickyPos += addjustWidth;
+      this._setStyle({ [fixed]: `${this._stickyPos}px` });
     } // 外部更新，通过 preEl 或 nextEl 的offsetWidth 计算得出
     _setPositionByExter() {
       const fixed = this.props.column.fixed;
@@ -21707,11 +21712,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           return n.isCheckerSpace;
         }) === -1
       ) {
+        const col = footColumns[0];
+        const { fixed } = col;
         footColumns.splice(0, 1, {
           width: this.grid.props.rowCheckable.width || 50,
           resizable: false,
           isCheckerSpace: true,
           field: "nom-grid-row-checker",
+          fixed,
         });
       }
       const ignoreCellRender = !!(summary && summary.ignoreCellRender);
