@@ -26475,7 +26475,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               classes: { text: true, "nom-menu-item-title": true },
               attrs: {
                 style: { "flex-grow": this.props.subtext ? null : "2" },
-                title: this.props.text,
+                title: isString(this.props.text) ? this.props.text : null,
               },
               children: this.props.text,
             },
