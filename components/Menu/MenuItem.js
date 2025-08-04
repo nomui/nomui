@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction, isPlainObject } from '../util/index'
+import { isFunction, isPlainObject, isString } from '../util/index'
 
 class MenuItem extends Component {
   constructor(props, ...mixins) {
@@ -149,7 +149,7 @@ class MenuItem extends Component {
             classes: { text: true, 'nom-menu-item-title': true },
             attrs: {
               style: { 'flex-grow': this.props.subtext ? null : '2' },
-              title: this.props.text,
+              title: isString(this.props.text) ? this.props.text : null,
             },
             children: this.props.text,
           },
