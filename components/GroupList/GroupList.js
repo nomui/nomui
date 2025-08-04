@@ -54,7 +54,9 @@ class GroupList extends Group {
 
     let realControlAction = controlAction
 
-    if (isNullish(realControlAction) && !that.props.hideAction) {
+    if (that.props.hideAction) {
+      realControlAction = null
+    } else if (isNullish(realControlAction)) {
       realControlAction = [
         {
           component: 'Button',
