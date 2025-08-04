@@ -3,21 +3,21 @@
 ## API
 
 | 名称 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | name | 字段名称，未设置时会自动设置一个自增格式 | `string` | `__field` + 自增长序号 |
 | defaultValue | 默认值，仅在初始化组件时设置 | `string` | - |
 | value | 字段值 | `string` | - |
 | label | 标签文本，当未定义或为 null 时不显示标签栏 | `string` | - |
 | labelAlign | 标签对齐方式 | `left`\|`right`\|`top` | `right` |
 | actionAlign | 操作按钮对齐方式,配置为 end 时即使 labelAlign 是 top,操作按钮也会保持在字段右侧 | `default`\|`end` | `default` |
-| invalidTip | 验证错误信息提示的配置（Tooltip 组件） | `object` | `参考Tooltip` |
+| invalidTip | 验证错误信息提示的配置（Tooltip 组件） | `object` | 参考 Tooltip |
 | flatValue | 是否平面化数据 | `boolean` | `false` |
 | notShowLabel | 不显示标签，不管 label 是否设置 | `boolean` | `false` |
 | extra | 表单元素的拓展展示内容 | `string` | - |
-| variant | 表单风格类型 | `default\|filled\|borderless` | `default` |
+| variant | 表单风格类型 | `default`\|`filled`\|`borderless` | `default` |
 | labelWidth | 表单元素项提示文字宽度 | `number` | `126` |
-| labelExpandable | 表单是否可折叠 | `boolean ` | {expanded:boolean}` | - |
-| controlWidth | 表单元素项的宽度 | `xsmall\|small\|medium\|large\|xlarge` | `false` |
+| labelExpandable | 表单是否可折叠 | `boolean` \| `{expanded:boolean}` | - |
+| controlWidth | 表单元素项的宽度 | `xsmall`\|`small`\|`medium`\|`large`\|`xlarge` | `false` |
 | rules | 配置的验证规则 | `Array` | `[]` |
 | required | 是否必填 | `boolean` | - |
 | disabled | 是否禁用 | `boolean` | - |
