@@ -2,6 +2,80 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/nomui/nomui/compare/v1.7.0...v1.8.0) (2025-08-04)
+
+
+### Features
+
+* 多选类字段组件新增changeOnClose配置，在浮层关闭时才触发值变化事件 ([15cc92f](https://github.com/nomui/nomui/commit/15cc92f577ff005c843031dd7afd06a00be2231e))
+* 公共库新增svg图标格式化方法 ([e8c0ab9](https://github.com/nomui/nomui/commit/e8c0ab9c86cf63d3c3a315fb7a89097e013afbc6))
+* 全局上下文新增修改上下文与监听上下文变化 ([8b05b73](https://github.com/nomui/nomui/commit/8b05b73045e26e03f8a46f450c8a65428864ad35))
+* 全局上下文优化功能 ([6abc49e](https://github.com/nomui/nomui/commit/6abc49efaa2d19a6490e21f64e7cc67dc2326a87))
+* 上下文监听回调新增sender ([b2af2c5](https://github.com/nomui/nomui/commit/b2af2c5ee7c583c40a5a5980e06d351fa233a5f9))
+* **App:** 新增 getLastRouter 和 refreshLastRouter 方法。 ([1f89d62](https://github.com/nomui/nomui/commit/1f89d62487ed7a8c8e67f70f0302e81c7de2253e))
+* **Field:** 新增默认展开配置 ([0d50b76](https://github.com/nomui/nomui/commit/0d50b762bf02629f2be84339e8d55324086bf530))
+* Field组件新增expand collapse方法 ([1a4797c](https://github.com/nomui/nomui/commit/1a4797c8718b58ff1e79b4f381bfbd81bcdc3cbd))
+* **Grid:** 编辑模式新增每个单元格是否可编辑的判断函数 ([782547a](https://github.com/nomui/nomui/commit/782547af9ce64cb61f5b7b3808657db35db48ed0))
+* **Grid:** 级联选择实现中间态(半勾选) ([cf4d267](https://github.com/nomui/nomui/commit/cf4d2672de5b7191be0620001c6caaba47918d20))
+* **Grid:** 行展开功能丰富多项api ([d2c369b](https://github.com/nomui/nomui/commit/d2c369b83e375ca579de50ccfb900873bbdd5f8d))
+* **Grid:** column配置新增扁平字段配置 ([e656e3e](https://github.com/nomui/nomui/commit/e656e3e89006d67da45c6a3fdf7af10b17cd70f1))
+* **MultilineTextbox:** 新增敲击回车键回调 ([8802d35](https://github.com/nomui/nomui/commit/8802d35c5ac8361265a64de66da911f786ba5940))
+* **NumberInpuit:** 新增maxPrecision配置 ([e57d18c](https://github.com/nomui/nomui/commit/e57d18ce47793fc90a82b7939964e4cdf967f8c4))
+* Password支持自定义图标 ([3de9ba7](https://github.com/nomui/nomui/commit/3de9ba79a695a526571bb285c7c695b7fe145283))
+* **Router:** 页面返回的 view 可以是 promise。 ([29cdf26](https://github.com/nomui/nomui/commit/29cdf2680f65aff683515f1d6080b547c5a2aae8))
+* select、treeSelect filter 方法暴露当前组件实例 ([5200e2b](https://github.com/nomui/nomui/commit/5200e2b6585adf6afe81bc0236d2f0230424d916))
+* **Select:** 浮层点击清空时不再立即触发值变化 ([c8422ba](https://github.com/nomui/nomui/commit/c8422ba080edd4d67909ea4b1866c8b490819e35))
+* **Select:** 新增配置显示全选按钮 ([42f6711](https://github.com/nomui/nomui/commit/42f6711fba77f3b04d7071f3edff772fccece8ed))
+* **Toolbar:** 新增强制显示下拉图标配置 ([77326db](https://github.com/nomui/nomui/commit/77326db42dc7365e58d618cf92163b37c585d965))
+* **Toolbar:** 支持定义下拉项的type与size ([6ffd4cc](https://github.com/nomui/nomui/commit/6ffd4ccf4a072293080bf107dd8a56eacdd3016e))
+* **Utils:** 新增监听滚动到尽头的公共方法 ([4fe684b](https://github.com/nomui/nomui/commit/4fe684b14da19ea143e88f1bb445dcf7c65fda48))
+
+
+### Bug Fixes
+
+* 部分组件未触发dependencyChange的问题 ([0b3b0e3](https://github.com/nomui/nomui/commit/0b3b0e3e6b200aa038dd50c233834c30a8ef1268))
+* 幻灯片不能设置字符串高度 ([7512427](https://github.com/nomui/nomui/commit/7512427db7213e28fe389ae446bc687ad3179425))
+* 解决一个context功能导致的js报错 ([e0e55bf](https://github.com/nomui/nomui/commit/e0e55bf81a5c5f934e7d53157f4992a47997bc04))
+* 解决组件内部的子组件未能正常走_remove 方法的问题 ([4ef5b8a](https://github.com/nomui/nomui/commit/4ef5b8af4d1f7bc18e3c98b71a4c82f442c14143))
+* 解决Grid一个bug ([191a866](https://github.com/nomui/nomui/commit/191a866af464a4fdd32d3da6bf9c3c5ddc237706))
+* **Anchor:** 优化滚动高亮逻辑 ([96bdb25](https://github.com/nomui/nomui/commit/96bdb2524417d1feea17f6fa9352a3ad9818a46e))
+* **Cascader:** 特殊场景报错问题 ([817b3b0](https://github.com/nomui/nomui/commit/817b3b0ea36e345f5355e3828594e220e7c403b2))
+* **Collapse:** 修复内容刷新bug ([bb22c9b](https://github.com/nomui/nomui/commit/bb22c9b8f7b0cbee27d1362fb1eab4d2a7e21d8f))
+* **DataList:** showEmpty时获取错误data ([69f31ce](https://github.com/nomui/nomui/commit/69f31ce2e109f77c258b72c0e6762e1eaca58537))
+* **DatePicker:** 修复一个js报错问题 ([25ae864](https://github.com/nomui/nomui/commit/25ae864f5206ae06a6e548633f0d4045f5553a17))
+* **Dropdown:** 图标不显示问题 ([ec09781](https://github.com/nomui/nomui/commit/ec09781088e53cd8199530922b71c9c1270a428f))
+* **Field:** 标签可折叠在部分情况不应该启用 ([dbe13eb](https://github.com/nomui/nomui/commit/dbe13eb5beabb568015ba2ef16571836960ac8a0))
+* **Grid:** 合计行勾选列不固定问题 ([82e8c70](https://github.com/nomui/nomui/commit/82e8c70d732e9e0dd1f6bb6356d09bb57264de02))
+* **Grid:** 忽略半勾选的配置不生效的问题 ([064ccc9](https://github.com/nomui/nomui/commit/064ccc90cf348c62e69e19b809e030b2d4a1d1a0))
+* **Grid:** 优化列对齐方式 ([1b767d7](https://github.com/nomui/nomui/commit/1b767d710a23a056e8044a3d3b4b1698ecc26b99))
+* **Group:** 修复js报错问题 ([c3bd97c](https://github.com/nomui/nomui/commit/c3bd97ca68cd2219ac5e0a1344a4a4725071073d))
+* **GroupList:** 无法更新hideAction的问题 ([32aa038](https://github.com/nomui/nomui/commit/32aa0386bff6e3ec45745ca410233c7b314c3f1d))
+* **Menu:** title是对象的时候不应该显示title ([5d064f8](https://github.com/nomui/nomui/commit/5d064f8e6fb9074b66e17ac4420aa2e4630bca5e))
+* **NumberInput:** 最大最小值不能为0的问题 ([dfd9b4e](https://github.com/nomui/nomui/commit/dfd9b4e631f6f8bb20d8b9b70bd525fa4777110c))
+* **NumberInput:** step小于1时不起作用 ([a9592ac](https://github.com/nomui/nomui/commit/a9592ac5e168ec016968da02e7e62fd7ccb150ba))
+* **Switch:** setValue不会触发界面刷新 ([4b77498](https://github.com/nomui/nomui/commit/4b774981724bf10e173994c9012d6ef3aa1dad2b))
+* **Table:** 修复一处bug ([6087cd1](https://github.com/nomui/nomui/commit/6087cd1e1f65cfa219cc0d98ea3b17ee0b647e98))
+* **Utils:** 修复判断合法日期的公共方法 ([5a012f8](https://github.com/nomui/nomui/commit/5a012f83a3a618be30ad173fcfe1470abe2e4767))
+
+
+### Performance Improvements
+
+* 优化表单校验行为 ([7b9c64e](https://github.com/nomui/nomui/commit/7b9c64edd3a3294a6b32b2eb855350a039bb988d))
+* 优化表单校验行为 ([cb0e046](https://github.com/nomui/nomui/commit/cb0e0468f29e7f2a2bcd880da6a4169440e0ec05))
+* **Grid:** 优化excel模式点击外部区域的判断 ([1ca4b1b](https://github.com/nomui/nomui/commit/1ca4b1b70218cfb3a76e8bbe5b66bcb1cdb1c018))
+* **Group:** 优化校验失败字段不滚入视图的问题 ([debe83a](https://github.com/nomui/nomui/commit/debe83ad66d287953e14d322fcbc7d380708ae3f))
+
+
+### Docs
+
+* 文档案例更新 ([097c8ae](https://github.com/nomui/nomui/commit/097c8ae879e69afbe582c9b87bcd2c6fa6c24fe7))
+* 文档补充 ([660d111](https://github.com/nomui/nomui/commit/660d11117b1c064e47612659a8cbc642e267b1af))
+* 文档更新 ([94e13ba](https://github.com/nomui/nomui/commit/94e13ba5365f3971c57c9128dffab791a37d1e8f))
+* 文档更新 ([7e01d28](https://github.com/nomui/nomui/commit/7e01d286b12fe9474e7ec05e4c7e203101abf87c))
+* 文档更新 ([8edaa6c](https://github.com/nomui/nomui/commit/8edaa6cbd63adf4acfb782dd4e073c352ace098a))
+* 文档更新 ([47ba474](https://github.com/nomui/nomui/commit/47ba47453ba58f5ae6cec319843c5d323dab654f))
+* 修复文档格式错误 ([503dd19](https://github.com/nomui/nomui/commit/503dd19d1436ce0b3d20b7e01ff0e890f191ff04))
+
 ## [1.7.0](https://github.com/nomui/nomui/compare/v1.5.0...v1.7.0) (2025-04-02)
 
 
