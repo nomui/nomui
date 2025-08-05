@@ -21221,6 +21221,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this._setStyle({ [fixed]: `${this._stickyPos}px` });
     }
+    _gridBodyHasScrollbar() {
+      if (!this.table.grid) {
+        return false;
+      }
+      const body = this.table.grid.element.querySelector(".nom-grid-body"); // 判断纵向滚动条
+      const hasVScrollbar = body && body.scrollHeight > body.clientHeight;
+      return hasVScrollbar;
+    }
     _setAllTdsPosition() {
       const { table, props } = this;
       const { body, footer } = table.grid;
@@ -21235,8 +21243,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _setTdsPosition(tdRefs) {
       const { props, _stickyPos } = this;
       const { fixed } = props.column;
+      let addjustWidth = 0;
+      if (this._gridBodyHasScrollbar() && fixed === "right") {
+        addjustWidth -= this.table.grid.props.scrollWidth || 8;
+      }
       Object.keys(tdRefs).forEach((key) => {
-        tdRefs[key]._setStyle({ [fixed]: `${_stickyPos}px` });
+        tdRefs[key]._setStyle({ [fixed]: `${_stickyPos + addjustWidth}px` });
       });
     }
     handleResize() {
