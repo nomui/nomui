@@ -61,8 +61,8 @@ class Modal extends Component {
       return
     }
 
-    if (result !== undefined) {
-      that.returnValue = result
+    if (result === undefined) {
+      result = that.returnValue
     }
 
     let { modalCount } = this.bodyElem

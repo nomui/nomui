@@ -113,8 +113,8 @@ class Drawer extends Component {
       return
     }
 
-    if (result !== undefined) {
-      that.returnValue = result
+    if (result === undefined) {
+      result = that.returnValue
     }
 
     let { drawerCount } = this.bodyElem
