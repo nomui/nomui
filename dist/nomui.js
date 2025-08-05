@@ -7401,8 +7401,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.element === undefined) {
         return;
       }
-      if (result !== undefined) {
-        that.returnValue = result;
+      if (result === undefined) {
+        result = that.returnValue;
       }
       let { modalCount } = this.bodyElem;
       if (modalCount) {
@@ -18957,8 +18957,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.element === undefined) {
         return;
       }
-      if (result !== undefined) {
-        that.returnValue = result;
+      if (result === undefined) {
+        result = that.returnValue;
       }
       let { drawerCount } = this.bodyElem;
       if (drawerCount) {
