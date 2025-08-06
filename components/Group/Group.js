@@ -115,9 +115,6 @@ class Group extends Field {
   }
 
   validate(options) {
-    if (this.props.labelExpandable && this.props.labelAlign === 'top') {
-      this.expand()
-    }
     const invalids = []
     for (let i = 0; i < this.fields.length; i++) {
       const field = this.fields[i],
@@ -132,6 +129,10 @@ class Group extends Field {
 
     if (invalids.length > 0) {
       this.rootField.focusField(invalids[0])
+    }
+
+    if (this.expandBtnRef && invalids.length > 0) {
+      this.expand()
     }
 
     return invalids.length === 0
