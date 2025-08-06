@@ -104,7 +104,7 @@ Badge.defaults = {
   icon: null,
   number: null,
   overflowCount: 99,
-  size: 'xs',
+  size: 'sm',
 }
 Component.register(Badge)
 

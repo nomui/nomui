@@ -48,6 +48,11 @@ define([], function () {
           },
           {
             component: 'Badge',
+            text: 'xs',
+            size: 'xs',
+          },
+          {
+            component: 'Badge',
             number: 0,
             color: 'olive',
           },

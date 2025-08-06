@@ -12653,7 +12653,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     icon: null,
     number: null,
     overflowCount: 99,
-    size: "xs",
+    size: "sm",
   };
   Component.register(Badge);
   class BreadcrumbItem extends Component {

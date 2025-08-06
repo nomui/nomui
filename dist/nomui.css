@@ -10522,51 +10522,30 @@ textarea .nom-textarea {
 }
 .nom-badge {
   /* Structure */
-  display: inline-block;
-  color: #495057;
-  line-height: normal;
+  display: inline-flex;
+  color: var(--nom-text-color);
+  height: 1.5rem;
+  min-width: 1.5rem;
+  align-items: center;
+  justify-content: center;
   white-space: nowrap;
   text-align: center;
   text-decoration: none;
-  vertical-align: middle;
   background-color: var(--nom-badge-background-color);
   border: 1px solid transparent;
   border-color: var(--nom-border-color);
   border-radius: 2px;
   user-select: none;
   flex-grow: 0 !important;
-  zoom: 0.95;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.42857143;
-  border-radius: var(--nom-border-radius);
+  padding: 0 0.25rem;
 }
 .nom-badge.nom-badge-pointer {
   cursor: pointer;
 }
-.nom-badge.p-size-sm {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  border-radius: var(--nom-border-radius-sm);
-}
 .nom-badge.p-size-xs {
-  padding: 0.125rem 0.25rem;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  border-radius: var(--nom-border-radius-sm);
-}
-.nom-badge.p-size-lg {
-  padding: 0.5rem 1rem;
-  font-size: 1.25rem;
-  line-height: 1.3333333;
-  border-radius: var(--nom-border-radius-lg);
-}
-.nom-badge.p-size-xl {
-  padding: 0.75rem 1.25rem;
-  font-size: 1.5rem;
-  line-height: 1.3333333;
-  border-radius: var(--nom-border-radius-lg);
+  height: 1.25rem;
+  min-width: 1.25rem;
+  font-size: 80%;
 }
 .nom-badge.p-plain {
   background-color: transparent;
@@ -10658,15 +10637,13 @@ textarea .nom-textarea {
 .nom-badge > span + .nom-icon {
   margin-left: 0.1rem;
 }
-.nom-badge.p-type-round {
-  min-width: 1.75rem;
-}
 .nom-badge.p-type-dot {
   position: absolute;
   top: 0;
   right: 0;
   width: 8px;
   height: 8px;
+  min-width: 0 !important;
   padding: 0 !important;
   border-radius: 200px;
   transform: translate(50%, -50%);
