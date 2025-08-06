@@ -9523,6 +9523,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         : this.getValue();
     }
     validate(options) {
+      if (this.props.labelExpandable && this.props.labelAlign === "top") {
+        this.expand();
+      }
       this.validateTriggered = true;
       return this._validate(options);
     }
@@ -18407,6 +18410,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     validate(options) {
+      if (this.props.labelExpandable && this.props.labelAlign === "top") {
+        this.expand();
+      }
       const invalids = [];
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i],
