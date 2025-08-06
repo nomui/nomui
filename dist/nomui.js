@@ -9523,11 +9523,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         : this.getValue();
     }
     validate(options) {
-      if (this.props.labelExpandable && this.props.labelAlign === "top") {
+      this.validateTriggered = true;
+      const valid = this._validate(options);
+      if (this.expandBtnRef && !valid) {
         this.expand();
       }
-      this.validateTriggered = true;
-      return this._validate(options);
+      return valid;
     }
     _validate(options) {
       const { disabled, hidden } = this.props;
@@ -18410,9 +18411,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     validate(options) {
-      if (this.props.labelExpandable && this.props.labelAlign === "top") {
-        this.expand();
-      }
       const invalids = [];
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i],
@@ -18426,6 +18424,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       if (invalids.length > 0) {
         this.rootField.focusField(invalids[0]);
+      }
+      if (this.expandBtnRef && invalids.length > 0) {
+        this.expand();
       }
       return invalids.length === 0;
     }

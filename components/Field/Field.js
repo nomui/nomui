@@ -255,11 +255,12 @@ class Field extends Component {
   }
 
   validate(options) {
-    if (this.props.labelExpandable && this.props.labelAlign === 'top') {
+    this.validateTriggered = true
+    const valid = this._validate(options)
+    if (this.expandBtnRef && !valid) {
       this.expand()
     }
-    this.validateTriggered = true
-    return this._validate(options)
+    return valid
   }
 
   _validate(options) {
