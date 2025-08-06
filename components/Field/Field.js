@@ -255,6 +255,9 @@ class Field extends Component {
   }
 
   validate(options) {
+    if (this.props.labelExpandable && this.props.labelAlign === 'top') {
+      this.expand()
+    }
     this.validateTriggered = true
     return this._validate(options)
   }
