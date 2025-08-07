@@ -48,7 +48,7 @@ define([], function () {
           },
           {
             component: 'Badge',
-            text: 'xs',
+            text: '小号尺寸',
             size: 'xs',
           },
           {
