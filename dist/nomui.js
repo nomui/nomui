@@ -13778,10 +13778,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         name: this.props.name,
         oldValue: this.oldValue,
         newValue: this.currentValue,
+        changedField: this,
       };
       setTimeout(function () {
         that._callHandler(that.props.onValueChange, changed);
-        that.group && that.group._onValueChange(changed);
+        that.group &&
+          that.group._onValueChange({
+            changedField: changed.changedField || that,
+          });
         isFunction(that._valueChange) && that._valueChange(changed);
         if (that.validateTriggered) {
           that._validate();
