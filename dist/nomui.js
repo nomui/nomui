@@ -24101,9 +24101,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
      * 根据偏移量计算出width后再赋值
      * @param {*} data {field, distance}
      */ calcResizeCol(data, thRef) {
-      this.header && this.header.calcResizeCol(data, thRef);
+      this.header &&
+        this.header.props &&
+        this.header.calcResizeCol(data, thRef);
       if (this.props.data && this.props.data.length) {
-        this.body && this.body.calcResizeCol(data, thRef);
+        this.body && this.body.props && this.body.calcResizeCol(data, thRef);
       }
       this.footer && this.footer.calcResizeCol(data, thRef);
     }
@@ -24111,17 +24113,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
      * 直接传入width设置宽度
      * @param {*} data {field, width}
      */ resizeCol(data) {
-      this.header && this.header.resizeCol(data);
-      this.body && this.body.resizeCol(data);
-      this.footer && this.footer.resizeCol(data);
+      this.header && this.header.props && this.header.resizeCol(data);
+      this.body && this.body.props && this.body.resizeCol(data);
+      this.footer && this.footer.props && this.footer.resizeCol(data);
     }
     /**
      * 由设置了 autoWidth的Td触发，刷新对应的col的maxTdWidth变量
      * @param {*} data {field, maxTdWidth}
      */ setAllTableColMaxTdWidth(data) {
-      this.header && this.header.setColMaxTdWidth(data);
-      this.body && this.body.setColMaxTdWidth(data);
-      this.footer && this.footer.setColMaxTdWidth(data);
+      this.header && this.header.props && this.header.setColMaxTdWidth(data);
+      this.body && this.body.props && this.body.setColMaxTdWidth(data);
+      this.footer && this.footer.props && this.footer.setColMaxTdWidth(data);
     } // 存储设置的列的宽度
     storeColsWidth(field) {
       const { _gridColumsWidthStoreKey: _storeKey } = this;
