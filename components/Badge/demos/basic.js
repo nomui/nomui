@@ -71,6 +71,14 @@ define([], function () {
           },
           {
             component: 'Button',
+            text: '按钮带圆点数字',
+            badge: {
+              number: 1,
+              overflowCount: 99,
+            },
+          },
+          {
+            component: 'Button',
             text: '自定义角标颜色',
             badge: {
               styles: {
