@@ -48,23 +48,6 @@ class ListSetter extends Field {
       dataKey: keyField,
       sortable: sortableProps,
       itemRender: ({ itemData }) => {
-        let myFormProps = itemForm
-        if (isFunction(itemForm)) {
-          myFormProps = itemForm({ itemData })
-        }
-        const itemFormProps = Component.extendProps(myFormProps, {
-          component: Form,
-          fieldDefaults: {
-            labelAlign: 'left',
-          },
-          value: itemData,
-          onValueChange: ({ newValue }) => {
-            newValue = Component.extendProps(itemData, newValue)
-            this.listRef.updateItem(itemData[keyField], newValue)
-            this._onValueChange()
-          },
-        })
-
         return {
           component: 'Flex',
           items: [
@@ -103,6 +86,23 @@ class ListSetter extends Field {
             if (itemForm === false || (isFunction(itemForm) && itemForm({ itemData }) === false)) {
               return
             }
+            let myFormProps = itemForm
+            if (isFunction(itemForm)) {
+              myFormProps = itemForm({ itemData })
+            }
+            const itemFormProps = Component.extendProps(myFormProps, {
+              component: Form,
+              fieldDefaults: {
+                labelAlign: 'left',
+              },
+              value: itemData,
+              onValueChange: ({ newValue }) => {
+                newValue = Component.extendProps(itemData, newValue)
+                this.listRef.updateItem(itemData[keyField], newValue)
+                this._onValueChange()
+              },
+            })
+
             new nomui.Layer({
               classes: { 'nom-list-setter-layer': true, 'nom-popup': true },
               closeOnClickOutside: true,
