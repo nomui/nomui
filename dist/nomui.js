@@ -12105,24 +12105,41 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _loadImageAsync() {
       const { src } = this.props;
+      if (!src) {
+        return Promise.reject(new Error("No image source provided"));
+      } // Convert single string src to array for consistent handling
+      const srcArray = Array.isArray(src) ? [...src] : [src];
+      if (srcArray.length === 0) {
+        return Promise.reject();
+      }
+      let currentIndex = 0;
+      const image = this.imgRef.element;
       return new Promise((resolve, reject) => {
-        const image = this.imgRef.element;
-        this.imgRef.element.src = src;
-        image.onload = () => {
-          this.textRef && this.textRef.hide();
-          this.iconRef && this.iconRef.hide();
-          resolve();
+        const tryNextImage = () => {
+          if (currentIndex >= srcArray.length) {
+            reject();
+            return;
+          }
+          const currentSrc = srcArray[currentIndex];
+          currentIndex++;
+          image.src = currentSrc;
+          image.onload = () => {
+            this.textRef && this.textRef.hide();
+            this.iconRef && this.iconRef.hide();
+            resolve();
+          };
+          image.onerror = () => {
+            tryNextImage();
+          };
         };
-        image.onerror = () => {
-          this.imgRef.hide();
-          reject();
-        };
+        tryNextImage();
       });
     }
     _rendered() {
-      if (this.props.src) {
-        this._loadImageAsync().catch((error) => {
-          console.warn("Failed to load image:", error);
+      if (this.props.src && this.props.src.length) {
+        this._loadImageAsync().catch(() => {
+          console.warn("Failed to load avatar images:");
+          this.imgRef && this.imgRef.hide();
         });
       }
       this._setScale();
@@ -26104,16 +26121,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               },
             ],
             onClick: ({ sender }) => {
-              if (
-                itemForm === false ||
-                (isFunction(itemForm) && itemForm({ itemData }) === false)
-              ) {
-                return;
-              }
-              let myFormProps = itemForm;
-              if (isFunction(itemForm)) {
-                myFormProps = itemForm({ itemData });
-              }
+              if (itemForm === false) return;
+              const myFormProps = isFunction(itemForm)
+                ? itemForm({ itemData })
+                : itemForm;
+              if (myFormProps === false) return;
               const itemFormProps = Component.extendProps(myFormProps, {
                 component: Form,
                 fieldDefaults: { labelAlign: "left" },
