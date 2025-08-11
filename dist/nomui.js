@@ -26067,20 +26067,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         dataKey: keyField,
         sortable: sortableProps,
         itemRender: ({ itemData }) => {
-          let myFormProps = itemForm;
-          if (isFunction(itemForm)) {
-            myFormProps = itemForm({ itemData });
-          }
-          const itemFormProps = Component.extendProps(myFormProps, {
-            component: Form,
-            fieldDefaults: { labelAlign: "left" },
-            value: itemData,
-            onValueChange: ({ newValue }) => {
-              newValue = Component.extendProps(itemData, newValue);
-              this.listRef.updateItem(itemData[keyField], newValue);
-              this._onValueChange();
-            },
-          });
           return {
             component: "Flex",
             items: [
@@ -26124,6 +26110,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               ) {
                 return;
               }
+              let myFormProps = itemForm;
+              if (isFunction(itemForm)) {
+                myFormProps = itemForm({ itemData });
+              }
+              const itemFormProps = Component.extendProps(myFormProps, {
+                component: Form,
+                fieldDefaults: { labelAlign: "left" },
+                value: itemData,
+                onValueChange: ({ newValue }) => {
+                  newValue = Component.extendProps(itemData, newValue);
+                  this.listRef.updateItem(itemData[keyField], newValue);
+                  this._onValueChange();
+                },
+              });
               new nomui.Layer({
                 classes: { "nom-list-setter-layer": true, "nom-popup": true },
                 closeOnClickOutside: true,
