@@ -83,13 +83,12 @@ class ListSetter extends Field {
             },
           ],
           onClick: ({ sender }) => {
-            if (itemForm === false || (isFunction(itemForm) && itemForm({ itemData }) === false)) {
-              return
-            }
-            let myFormProps = itemForm
-            if (isFunction(itemForm)) {
-              myFormProps = itemForm({ itemData })
-            }
+            if (itemForm === false) return
+
+            const myFormProps = isFunction(itemForm) ? itemForm({ itemData }) : itemForm
+
+            if (myFormProps === false) return
+
             const itemFormProps = Component.extendProps(myFormProps, {
               component: Form,
               fieldDefaults: {
