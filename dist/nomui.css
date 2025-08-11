@@ -7350,6 +7350,8 @@ body .nom-always-dark {
 }
 .nom-menu-toggler {
   margin-left: auto;
+  font-size: 12px;
+  opacity: 0.75;
 }
 table.nom-table {
   position: relative;
