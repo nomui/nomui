@@ -10538,6 +10538,7 @@ textarea .nom-textarea {
   user-select: none;
   flex-grow: 0 !important;
   padding: 0 0.25rem;
+  line-height: normal;
 }
 .nom-badge.nom-badge-pointer {
   cursor: pointer;
@@ -10554,6 +10555,68 @@ textarea .nom-textarea {
 .nom-badge.p-plain:hover {
   background-color: var(--nom-color-primary-hover);
   outline: none;
+}
+.nom-badge > .nom-icon {
+  display: inline-flex;
+}
+.nom-badge > .nom-icon + span,
+.nom-badge > span + .nom-icon {
+  margin-left: 0.1rem;
+}
+.nom-badge.p-type-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border-radius: 200px;
+  transform: translate(50%, -50%);
+  zoom: 1;
+}
+.nom-badge.p-type-dot.p-with-number {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: auto;
+  min-width: 15px !important;
+  max-width: 30px;
+  height: 15px;
+  line-height: 12px;
+  padding: 1px 3px;
+  overflow: hidden;
+  font-size: 10px;
+  white-space: nowrap;
+  text-align: center;
+  text-overflow: ellipsis;
+  border-radius: 200px;
+  transform: translate(50%, -50%);
+}
+.nom-badge.p-type-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: auto;
+  min-width: 16px;
+  max-width: 60px;
+  height: 16px;
+  padding: 1px 3px;
+  overflow: hidden;
+  line-height: 13px;
+  white-space: nowrap;
+  text-align: center;
+  text-overflow: ellipsis;
+  border-radius: 200px;
+  transform: translate(50%, -50%);
+}
+.nom-badge .nom-badge-remove {
+  position: relative;
+  top: 2px;
+  margin-left: 1px !important;
+}
+.nom-badge .nom-badge-remove svg {
+  fill: rgb(var(--nom-white));
 }
 .nom-badge.p-color-red {
   color: rgb(var(--nom-white));
@@ -10629,69 +10692,6 @@ textarea .nom-textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-.nom-badge > .nom-icon {
-  display: inline-flex;
-}
-.nom-badge > .nom-icon + span,
-.nom-badge > span + .nom-icon {
-  margin-left: 0.1rem;
-}
-.nom-badge.p-type-dot {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 8px;
-  height: 8px;
-  min-width: 0 !important;
-  padding: 0 !important;
-  border-radius: 200px;
-  transform: translate(50%, -50%);
-  zoom: 1;
-}
-.nom-badge.p-type-dot.p-with-number {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: auto;
-  min-width: 15px !important;
-  max-width: 30px;
-  height: 15px;
-  padding: 1px 3px;
-  overflow: hidden;
-  font-size: 10px;
-  line-height: 13px;
-  white-space: nowrap;
-  text-align: center;
-  text-overflow: ellipsis;
-  border-radius: 200px;
-  transform: translate(50%, -50%);
-}
-.nom-badge.p-type-tag {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: auto;
-  min-width: 16px;
-  max-width: 60px;
-  height: 16px;
-  padding: 1px 3px;
-  overflow: hidden;
-  font-size: 10px;
-  line-height: 13px;
-  white-space: nowrap;
-  text-align: center;
-  text-overflow: ellipsis;
-  border-radius: 200px;
-  transform: translate(50%, -50%);
-}
-.nom-badge .nom-badge-remove {
-  position: relative;
-  top: 2px;
-  margin-left: 1px !important;
-}
-.nom-badge .nom-badge-remove svg {
-  fill: rgb(var(--nom-white));
 }
 .s-with-badge {
   position: relative;
