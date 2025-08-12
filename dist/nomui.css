@@ -10538,7 +10538,6 @@ textarea .nom-textarea {
   user-select: none;
   flex-grow: 0 !important;
   padding: 0 0.25rem;
-  line-height: normal;
 }
 .nom-badge.nom-badge-pointer {
   cursor: pointer;
