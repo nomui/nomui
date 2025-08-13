@@ -396,6 +396,7 @@ class Td extends Component {
       children = {
         classes: {
           'nom-td-editable-inner': true,
+          'nom-td-auto-width': column.autoWidth,
           'nom-td-edit-disabled': cellDisabled,
         },
         children: [
@@ -453,6 +454,7 @@ class Td extends Component {
         tag: 'span',
         classes: {
           'nom-td-excel-mode-inner': true,
+          'nom-td-auto-width': column.autoWidth,
         },
         children,
       }
