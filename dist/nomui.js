@@ -19726,6 +19726,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children = {
           classes: {
             "nom-td-editable-inner": true,
+            "nom-td-auto-width": column.autoWidth,
             "nom-td-edit-disabled": cellDisabled,
           },
           children: [
@@ -19776,7 +19777,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }) === false;
         children = {
           tag: "span",
-          classes: { "nom-td-excel-mode-inner": true },
+          classes: {
+            "nom-td-excel-mode-inner": true,
+            "nom-td-auto-width": column.autoWidth,
+          },
           children,
         };
         this.setProps({

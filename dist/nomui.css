@@ -7870,6 +7870,14 @@ table.nom-table.p-bordered {
   flex-grow: 1;
   width: 0;
 }
+.nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker) > .nom-td-excel-mode-inner.nom-td-auto-width > * {
+  width: auto !important;
+  flex-shrink: 0 !important;
+}
+.nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker) > .nom-td-excel-mode-inner.nom-td-auto-width > * > * {
+  width: auto !important;
+  flex-shrink: 0 !important;
+}
 .nom-grid.m-excel-mode .nom-td-excel-mode:not(.nom-table-checker) > .nom-td-excel-mode-inner > .nom-flex {
   flex-grow: 1;
 }
@@ -7940,6 +7948,14 @@ table.nom-table.p-bordered {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner.nom-td-auto-width > div:first-child {
+  width: auto !important;
+  flex-shrink: 0 !important;
+}
+.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner.nom-td-auto-width > div:first-child > * {
+  width: auto !important;
+  flex-shrink: 0 !important;
 }
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner .nom-grid-td-edit-trigger {
   display: none;
