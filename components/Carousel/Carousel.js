@@ -207,6 +207,7 @@ class Carousel extends Component {
 
   animate(val) {
     this.updateSlideSize()
+
     if (
       this.activeId === this.loopImgs.length - 1 &&
       this.activeIdOld === 1 &&
@@ -246,7 +247,7 @@ class Carousel extends Component {
           'style',
           `transform:translate3d(0, 0, 0);transition: transform 0ms;`,
         )
-      }, 300)
+      }, this.props.speed + this.props.resetDelayCompensation)
     } else {
       this.dotsRef[this.activeId - 1].element.classList.add('nom-carousel-pagination-bullet-active')
       this.activeIdOld = this.activeId
@@ -288,6 +289,7 @@ Carousel.defaults = {
   autoplay: false,
   autoplaySpeed: 1000,
   speed: 300,
+  resetDelayCompensation: 50,
   dots: true,
   defaultActiveIndex: 1,
   easing: 'linear',
