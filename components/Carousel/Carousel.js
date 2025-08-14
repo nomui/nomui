@@ -132,10 +132,24 @@ class Carousel extends Component {
         }
       })
     }
+
+    // 处理缩放导致的错位
+    this.resizeObserver = new ResizeObserver(() => {
+      this.updateSlideSize()
+      const wrapper = this.wrapperRef.element
+      const pos = (idx) => -Math.round(this.positions[idx].left)
+      const idx = this.activeId === this.loopImgs.length ? 0 : this.activeId - 1
+      wrapper.style.transform = `translate3d(${pos(idx)}px, 0, 0)`
+    })
+
+    this.resizeObserver.observe(this.containerRef.element)
   }
 
   _remove() {
     clearInterval(this.autoplayInterval)
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect()
+    }
   }
 
   slideList() {
@@ -298,7 +312,7 @@ Carousel.defaults = {
   height: 100,
   arrows: false,
   autoplay: false,
-  autoplaySpeed: 1000,
+  autoplaySpeed: 2000,
   speed: 300,
   resetDelayCompensation: 50,
   dots: true,
