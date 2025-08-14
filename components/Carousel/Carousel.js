@@ -132,10 +132,24 @@ class Carousel extends Component {
         }
       })
     }
+
+    // 处理缩放导致的错位
+    this.resizeObserver = new ResizeObserver(() => {
+      this.updateSlideSize()
+      const wrapper = this.wrapperRef.element
+      const pos = (idx) => -Math.round(this.positions[idx].left)
+      const idx = this.activeId === this.loopImgs.length ? 0 : this.activeId - 1
+      wrapper.style.transform = `translate3d(${pos(idx)}px, 0, 0)`
+    })
+
+    this.resizeObserver.observe(this.containerRef.element)
   }
 
   _remove() {
     clearInterval(this.autoplayInterval)
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect()
+    }
   }
 
   slideList() {
@@ -207,46 +221,58 @@ class Carousel extends Component {
 
   animate(val) {
     this.updateSlideSize()
+    const wrapper = this.wrapperRef.element
+    const duration = `${this.props.speed}ms ${this.props.easing}`
+    const pos = (idx) => -Math.round(this.positions[idx].left) // 像素取整
+    const to = (idx, withTransition = true) => {
+      wrapper.style.transition = withTransition ? `transform ${duration}` : 'none'
+      wrapper.style.transform = `translate3d(${pos(idx)}px, 0, 0)`
+    }
+
+    // 正常切换 or 首去末的倒带起始
     if (
       this.activeId === this.loopImgs.length - 1 &&
       this.activeIdOld === 1 &&
       val !== 'pagination'
     ) {
-      // 首去末
-      this.wrapperRef.element.setAttribute(
-        'style',
-        `transform:translate3d(${-this.positions[this.loopImgs.length - 1]
-          .left}px, 0, 0);transition: transform 0ms;`,
-      )
-      setTimeout(() => {
-        this.wrapperRef.element.setAttribute(
-          'style',
-          `transform:translate3d(${-this.positions[this.loopImgs.length - 2]
-            .left}px, 0, 0);transition: transform ${this.props.speed}ms ${this.props.easing};`,
-        )
-      }, 0)
+      // 先无过渡瞬时放到“克隆首图”
+      to(this.loopImgs.length - 1, false)
+      // 强制回流，确保下一次过渡生效
+      // eslint-disable-next-line no-void
+      void wrapper.offsetWidth
+      // 再带过渡滑到“真实最后一张”
+      to(this.loopImgs.length - 2, true)
     } else {
-      this.wrapperRef.element.setAttribute(
-        'style',
-        `transform:translate3d(${-this.positions[this.activeId - 1]
-          .left}px, 0, 0);transition: transform ${this.props.speed}ms ${this.props.easing};`,
-      )
+      to(this.activeId - 1, true)
     }
+
     // 分页器
     this.dotsRef[this.activeIdOld - 1].element.classList.remove(
       'nom-carousel-pagination-bullet-active',
     )
 
     if (this.activeId === this.loopImgs.length) {
-      // 末去首
+      // 末去首：动画结束后做“隐形复位”
       this.dotsRef[0].element.classList.add('nom-carousel-pagination-bullet-active')
       this.activeIdOld = 1
-      setTimeout(() => {
-        this.wrapperRef.element.setAttribute(
-          'style',
-          `transform:translate3d(0, 0, 0);transition: transform 0ms;`,
-        )
-      }, 300)
+
+      const onEnd = (e) => {
+        if (e.target !== wrapper || e.propertyName !== 'transform') return
+
+        // 1) 关过渡，避免复位产生动画
+        wrapper.style.transition = 'none'
+        // 2) 双 raf：把复位安排到两个帧之后，避开同帧的重绘抖动
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            wrapper.style.transform = 'translate3d(0px, 0px, 0px)'
+            // 3) 再下一个帧恢复过渡，保证后续交互正常
+            requestAnimationFrame(() => {
+              wrapper.style.transition = `transform ${duration}`
+            })
+          })
+        })
+      }
+      wrapper.addEventListener('transitionend', onEnd, { once: true })
     } else {
       this.dotsRef[this.activeId - 1].element.classList.add('nom-carousel-pagination-bullet-active')
       this.activeIdOld = this.activeId
@@ -286,8 +312,9 @@ Carousel.defaults = {
   height: 100,
   arrows: false,
   autoplay: false,
-  autoplaySpeed: 1000,
-  speed: 300,
+  autoplaySpeed: 3000,
+  speed: 500,
+  resetDelayCompensation: 50,
   dots: true,
   defaultActiveIndex: 1,
   easing: 'linear',
