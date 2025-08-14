@@ -55,6 +55,20 @@
     position: relative;
     overflow: hidden;
 
+    table th:last-child::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: auto;
+      right: -8px;
+      width: 8px;
+      background-color: var(--nom-grid-th-bg);
+      background-image: var(--nom-grid-th-bg-image);
+      z-index: 5;
+    }
+
+
     .nom-table {
       position: relative;
       z-index: inherit;
@@ -121,8 +135,25 @@
     position: relative;
     overflow: hidden;
 
+    table td:last-child::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: auto;
+      right: -8px;
+      width: 8px;
+      background-color: var(--nom-grid-footer-td-bg);
+      z-index: 5;
+    }
+
+
     .nom-table {
       overflow: auto;
+
+      td {
+        background-color: var(--nom-grid-footer-td-bg);
+      }
     }
   }
 
@@ -152,6 +183,9 @@
     position: relative;
     display: flex;
     flex-direction: column;
+
+
+
 
     >.nom-grid-header {
       flex-shrink: 0;
