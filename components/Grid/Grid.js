@@ -187,9 +187,15 @@ class Grid extends Component {
             },
           },
         },
-        this.props.header !== false && { component: GridHeader, line: line },
+        this.props.header !== false && {
+          component: GridHeader,
+          line: line,
+        },
         { component: GridBody, line: line, rowDefaults: rowDefaults },
-        this.props.summary && { component: GridFooter, line: line },
+        this.props.summary && {
+          component: GridFooter,
+          line: line,
+        },
       ],
     })
   }
@@ -552,7 +558,8 @@ class Grid extends Component {
       this.loadingInst = null
     }
 
-    this._setScrollbarOnResize()
+    this._handleScrollbarVisibility()
+    // this._setScrollbarOnResize()
 
     if (this.props.rowCheckable && this._checkboxAllRef) {
       this.changeCheckAllState()
@@ -595,6 +602,30 @@ class Grid extends Component {
     if (this.props.lazyLoadLimit > 0 || this.props.lazyLoadRemote) {
       this._watchLazyLoad()
     }
+  }
+
+  _handleScrollbarVisibility() {
+    const body = this.element.querySelector('.nom-grid-body')
+
+    const checkScroll = () => {
+      const hasScroll = body.scrollHeight > body.clientHeight
+      if (hasScroll) {
+        body.style.overflowY = 'scroll'
+        body.style.paddingRight = '0'
+      } else {
+        body.style.overflowY = 'hidden'
+        body.style.paddingRight = `${this.props.scrollbarWidth}px`
+      }
+    }
+
+    checkScroll()
+
+    if (!this._scrollResizeObserver) {
+      this._scrollResizeObserver = new ResizeObserver(checkScroll)
+      this._scrollResizeObserver.observe(body)
+    }
+
+    body.addEventListener('scroll', checkScroll)
   }
 
   _watchLazyLoad() {
