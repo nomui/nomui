@@ -20,12 +20,7 @@ define([], function () {
             height: 500,
             arrows: true,
             autoplay: true,
-            autoplaySpeed: 2000,
-            speed: 300,
-            dots: true,
-            defaultActiveIndex: 1,
-            easing: 'linear',
-            pauseOnHover: true,
+
             triggerType: 'click',
           },
           {
