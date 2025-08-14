@@ -558,7 +558,7 @@ class Grid extends Component {
       this.loadingInst = null
     }
 
-    this._handleScrollbarVisibility()
+    // this._handleScrollbarVisibility()
     // this._setScrollbarOnResize()
 
     if (this.props.rowCheckable && this._checkboxAllRef) {

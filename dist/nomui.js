@@ -23332,8 +23332,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.loadingInst) {
         this.loadingInst.remove();
         this.loadingInst = null;
-      }
-      this._handleScrollbarVisibility(); // this._setScrollbarOnResize()
+      } // this._handleScrollbarVisibility()
+      // this._setScrollbarOnResize()
       if (this.props.rowCheckable && this._checkboxAllRef) {
         this.changeCheckAllState();
       }

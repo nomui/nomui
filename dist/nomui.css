@@ -7740,7 +7740,7 @@ table.nom-table.p-bordered {
   content: '';
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: -1px;
   left: auto;
   right: -8px;
   width: 8px;
@@ -7808,7 +7808,7 @@ table.nom-table.p-bordered {
 .nom-grid > .nom-grid-footer table td:last-child::before {
   content: '';
   position: absolute;
-  top: 0;
+  top: -1px;
   bottom: 0;
   left: auto;
   right: -8px;
