@@ -405,11 +405,9 @@ class Th extends Component {
     if (fixed === 'left') {
       this._stickyPos = el.offsetLeft
     } else if (fixed === 'right') {
-      this._stickyPos =
-        parentEl.clientWidth - el.offsetLeft - el.offsetWidth - this.table.grid.props.scrollbarWidth
+      this._stickyPos = parentEl.clientWidth - el.offsetLeft - el.offsetWidth
     }
-    const addjustWidth = fixed === 'right' ? this.table.grid.props.scrollbarWidth : 0
-    this._stickyPos += addjustWidth
+
     this._setStyle({ [fixed]: `${this._stickyPos}px` })
   }
 
@@ -453,13 +451,9 @@ class Th extends Component {
   _setTdsPosition(tdRefs) {
     const { props, _stickyPos } = this
     const { fixed } = props.column
-    let addjustWidth = 0
-    if (this._gridBodyHasScrollbar() && fixed === 'right') {
-      addjustWidth -= this.table.grid.props.scrollWidth || 8
-    }
 
     Object.keys(tdRefs).forEach((key) => {
-      tdRefs[key]._setStyle({ [fixed]: `${_stickyPos + addjustWidth}px` })
+      tdRefs[key]._setStyle({ [fixed]: `${_stickyPos}px` })
     })
   }
 

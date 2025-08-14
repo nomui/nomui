@@ -19,6 +19,11 @@ class GridFooter extends Component {
 
   _config() {
     this.setProps({
+      attrs: {
+        style: {
+          paddingRight: `${this.grid.props.scrollbarWidth}px`,
+        },
+      },
       children: {
         columns: this._getSummaryColumns(),
         data: this._getSummaryDataList(),

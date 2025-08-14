@@ -4594,6 +4594,7 @@ body {
   --nom-grid-header-background-color: var(--nom-color-white);
   --nom-grid-header-border: 0 solid var(--nom-border-color);
   --nom-grid-th-bg: var(--nom-color-white);
+  --nom-grid-footer-td-bg: var(--nom-color-white);
   --nom-grid-th-bg-image: none;
   --nom-grid-th-color: rgba(0, 0, 0, 0.4);
   --nom-grid-th-font-weight: 600;
@@ -7640,16 +7641,6 @@ table.nom-table th.nom-table-fixed-right {
   background-color: var(--nom-grid-th-bg);
   background-image: var(--nom-grid-th-bg-image);
 }
-table.nom-table th.nom-table-fixed-right:last-child::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: -8px;
-  width: 8px;
-  background-color: var(--nom-grid-th-bg);
-  background-image: var(--nom-grid-th-bg-image);
-}
 table.nom-table th > .nom-table-filter {
   position: absolute;
   top: 0;
@@ -7745,6 +7736,18 @@ table.nom-table.p-bordered {
   position: relative;
   overflow: hidden;
 }
+.nom-grid > .nom-grid-header table th:last-child::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: auto;
+  right: -8px;
+  width: 8px;
+  background-color: var(--nom-grid-th-bg);
+  background-image: var(--nom-grid-th-bg-image);
+  z-index: 5;
+}
 .nom-grid > .nom-grid-header .nom-table {
   position: relative;
   z-index: inherit;
@@ -7787,6 +7790,7 @@ table.nom-table.p-bordered {
   flex: 1;
   height: 100%;
   overflow: auto;
+  overflow-y: scroll;
 }
 .nom-grid > .nom-grid-body .nom-grid-body-empty {
   display: flex;
@@ -7801,8 +7805,22 @@ table.nom-table.p-bordered {
   position: relative;
   overflow: hidden;
 }
+.nom-grid > .nom-grid-footer table td:last-child::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: auto;
+  right: -8px;
+  width: 8px;
+  background-color: var(--nom-grid-footer-td-bg);
+  z-index: 5;
+}
 .nom-grid > .nom-grid-footer .nom-table {
   overflow: auto;
+}
+.nom-grid > .nom-grid-footer .nom-table td {
+  background-color: var(--nom-grid-footer-td-bg);
 }
 .nom-grid.p-bordered {
   border: 1px solid var(--nom-border-color);

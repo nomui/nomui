@@ -26,6 +26,11 @@ class GridHeader extends Component {
 
     this.setProps({
       classes: { 'nom-grid-highlight-col': this.grid.props.highlightCol },
+      attrs: {
+        style: {
+          paddingRight: `${this.grid.props.scrollbarWidth}px`,
+        },
+      },
       children: {
         component: Table,
         columns: this.grid.props.columns,
@@ -45,7 +50,7 @@ class GridHeader extends Component {
     const that = this
 
     this._fixSettingHeight()
-    this._fixRightPadding()
+    // this._fixRightPadding()
     if (!this.grid.props.sticky) {
       return
     }

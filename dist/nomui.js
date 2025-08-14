@@ -20436,14 +20436,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.colList = [];
         children.push(...this.createCols(this.columns));
       }
-      this.table.colLength = children.length;
-      if (this.table.grid && this.table.parent.componentType !== "GridBody") {
-        children.push({
-          component: ColGroupCol,
-          classes: { "nomui-grid-scrollbar-col": true },
-          column: { width: this.table.grid.props.scrollbarWidth },
-        });
-      }
+      this.table.colLength = children.length; // if (this.table.grid && this.table.parent.componentType !== 'GridBody') {
+      //   children.push({
+      //     component: ColGroupCol,
+      //     classes: { 'nomui-grid-scrollbar-col': true },
+      //     column: {
+      //       width: this.table.grid.props.scrollbarWidth,
+      //     },
+      //   })
+      // }
       this.setProps({ children: children });
     }
     createCols(data) {
@@ -21226,15 +21227,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (fixed === "left") {
         this._stickyPos = el.offsetLeft;
       } else if (fixed === "right") {
-        this._stickyPos =
-          parentEl.clientWidth -
-          el.offsetLeft -
-          el.offsetWidth -
-          this.table.grid.props.scrollbarWidth;
+        this._stickyPos = parentEl.clientWidth - el.offsetLeft - el.offsetWidth;
       }
-      const addjustWidth =
-        fixed === "right" ? this.table.grid.props.scrollbarWidth : 0;
-      this._stickyPos += addjustWidth;
       this._setStyle({ [fixed]: `${this._stickyPos}px` });
     } // 外部更新，通过 preEl 或 nextEl 的offsetWidth 计算得出
     _setPositionByExter() {
@@ -21275,12 +21269,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _setTdsPosition(tdRefs) {
       const { props, _stickyPos } = this;
       const { fixed } = props.column;
-      let addjustWidth = 0;
-      if (this._gridBodyHasScrollbar() && fixed === "right") {
-        addjustWidth -= this.table.grid.props.scrollWidth || 8;
-      }
       Object.keys(tdRefs).forEach((key) => {
-        tdRefs[key]._setStyle({ [fixed]: `${_stickyPos + addjustWidth}px` });
+        tdRefs[key]._setStyle({ [fixed]: `${_stickyPos}px` });
       });
     }
     handleResize() {
@@ -21733,6 +21723,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       this.setProps({
+        attrs: {
+          style: { paddingRight: `${this.grid.props.scrollbarWidth}px` },
+        },
         children: {
           columns: this._getSummaryColumns(),
           data: this._getSummaryDataList(),
@@ -21928,6 +21921,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._summaryHeight = summary ? 36 : 0;
       this.setProps({
         classes: { "nom-grid-highlight-col": this.grid.props.highlightCol },
+        attrs: {
+          style: { paddingRight: `${this.grid.props.scrollbarWidth}px` },
+        },
         children: {
           component: Table,
           columns: this.grid.props.columns,
@@ -21940,8 +21936,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       const that = this;
-      this._fixSettingHeight();
-      this._fixRightPadding();
+      this._fixSettingHeight(); // this._fixRightPadding()
       if (!this.grid.props.sticky) {
         return;
       }
@@ -23338,7 +23333,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.loadingInst.remove();
         this.loadingInst = null;
       }
-      this._setScrollbarOnResize();
+      this._handleScrollbarVisibility(); // this._setScrollbarOnResize()
       if (this.props.rowCheckable && this._checkboxAllRef) {
         this.changeCheckAllState();
       }
@@ -23383,6 +23378,25 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.props.lazyLoadLimit > 0 || this.props.lazyLoadRemote) {
         this._watchLazyLoad();
       }
+    }
+    _handleScrollbarVisibility() {
+      const body = this.element.querySelector(".nom-grid-body");
+      const checkScroll = () => {
+        const hasScroll = body.scrollHeight > body.clientHeight;
+        if (hasScroll) {
+          body.style.overflowY = "scroll";
+          body.style.paddingRight = "0";
+        } else {
+          body.style.overflowY = "hidden";
+          body.style.paddingRight = `${this.props.scrollbarWidth}px`;
+        }
+      };
+      checkScroll();
+      if (!this._scrollResizeObserver) {
+        this._scrollResizeObserver = new ResizeObserver(checkScroll);
+        this._scrollResizeObserver.observe(body);
+      }
+      body.addEventListener("scroll", checkScroll);
     }
     _watchLazyLoad() {
       let ele = this.body.element;
