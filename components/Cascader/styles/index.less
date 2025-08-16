@@ -1,13 +1,13 @@
 .nom-cascader {
-  &.p-label-align-right > .nom-field-label + .nom-field-content {
+  &.p-label-align-right>.nom-field-label+.nom-field-content {
     width: 0;
   }
 
-  &.p-label-align-left > .nom-field-label + .nom-field-content {
+  &.p-label-align-left>.nom-field-label+.nom-field-content {
     width: 0;
   }
 
-  > .nom-field-content {
+  >.nom-field-content {
     .nom-control {
       &:not(.s-disabled):hover {
         border: 1px solid var(--nom-color-primary);
@@ -28,6 +28,14 @@
         white-space: nowrap;
         text-overflow: ellipsis;
       }
+
+      .nom-cascader-input {
+        border: none;
+        outline: none;
+        width: 100%;
+        padding: 0;
+      }
+
 
       .nom-cascader-icon {
         position: absolute;
@@ -53,6 +61,7 @@
       .nom-cascader-multiple-content-list {
         .nom-list-item {
           padding: 0 5px 0 0;
+
           .nom-cascader-multiple-content-list-text {
             padding: var(--nom-select-selected-item-padding);
             background: var(--nom-select-selected-item-bg);
@@ -61,7 +70,8 @@
             display: inline-flex;
             cursor: default;
             font-size: 75%;
-            > div:first-child {
+
+            >div:first-child {
               max-width: 120px;
               overflow: hidden;
               text-overflow: ellipsis;
@@ -70,9 +80,11 @@
               height: 16px;
               line-height: 16px;
             }
+
             .nom-icon {
               opacity: 0.5;
               cursor: pointer;
+
               &:hover {
                 opacity: 1;
               }
@@ -86,22 +98,62 @@
 
 .nom-cascader-popup {
   overflow: hidden;
+
   .nom-cascader-empty {
     padding: 2rem 1rem;
     min-height: 200px;
   }
+
+  .nom-cascader-search-option-list {
+    max-width: 500px;
+    width: auto;
+
+
+    .nom-list-item {
+      &:not(.s-disabled) {
+        cursor: pointer;
+      }
+
+      &:hover {
+        background-color: var(--nom-color-hover);
+      }
+
+      &.s-selected,
+      .s-selected:hover {
+        color: var(--nom-cascader-item-active-color);
+        background-color: var(--nom-cascader-item-active-bg);
+      }
+
+      padding: 0.5rem 1rem;
+
+      .nom-cascader-highlight {
+        color: var(--nom-cascader-item-hilight-color);
+
+      }
+
+      .nom-cascader-option-checker {
+        padding-right: 0.25rem;
+      }
+    }
+
+  }
+
   .nom-cascader-option-wrapper {
-    > .nom-list-content {
+    >.nom-list-content {
       flex-wrap: nowrap;
-      > .nom-list-item {
+
+      >.nom-list-item {
         border-right: 1px dashed var(--nom-border-color);
+
         &:last-child {
           border-right: none;
         }
       }
     }
+
     .nom-cascader-option-list {
       overflow-y: auto;
+
       .nom-list-item {
         &:not(.s-disabled) {
           cursor: pointer;
@@ -131,14 +183,14 @@
   }
 }
 
-.nom-cascader-popup > .nom-layout {
+.nom-cascader-popup>.nom-layout {
   max-height: 300px;
 
   &.nom-cascader-pop-container {
     display: block;
   }
 
-  > .nom-layout-body {
+  >.nom-layout-body {
     overflow-x: hidden;
 
     .nom-cascader-menu {
@@ -160,7 +212,7 @@
         border-right: none;
       }
 
-      > .nom-cascader-menu-item {
+      >.nom-cascader-menu-item {
         &:hover {
           cursor: pointer;
           .nom-preset-hover;
@@ -183,7 +235,7 @@
         justify-content: space-between;
         padding: 0.5rem 1rem;
 
-        > .nom-cascader-menu-item-expand-icon {
+        >.nom-cascader-menu-item-expand-icon {
           padding-left: 1rem;
           font-size: 85%;
         }
@@ -199,13 +251,16 @@
 
 .nom-cascader-over-tags-list {
   padding: 0.5rem;
-  > .nom-list-content {
+
+  >.nom-list-content {
     gap: 0.25rem;
   }
+
   .nom-list-item-wrapper {
     &:last-child {
       padding-right: 0;
     }
+
     .nom-list-item {
       padding: var(--nom-select-selected-item-padding);
       background: var(--nom-select-selected-item-bg);
@@ -219,12 +274,12 @@
   }
 }
 
-.p-inline > .nom-field-content > .nom-control > .nom-cascader {
-  &.p-label-align-right > .nom-field-label + .nom-field-content {
+.p-inline>.nom-field-content>.nom-control>.nom-cascader {
+  &.p-label-align-right>.nom-field-label+.nom-field-content {
     width: 100%;
   }
 
-  &.p-label-align-left > .nom-field-label + .nom-field-content {
+  &.p-label-align-left>.nom-field-label+.nom-field-content {
     width: 100%;
   }
 }
