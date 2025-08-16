@@ -4518,6 +4518,7 @@ body {
   --nom-cascader-item-active-color: var(--nom-color-primary);
   --nom-cascader-item-active-bg: rgba(var(--nom-color-primary-base), 0.15);
   --nom-cascader-icon-color: rgba(0, 0, 0, 0.5);
+  --nom-cascader-item-hilight-color: var(--nom-color-warning);
   --nom-color-picker-control-size: 24px;
   --nom-color-picker-item-size: 16px;
   --nom-color-picker-list-item-size: 24px;
@@ -11606,6 +11607,12 @@ textarea .nom-textarea {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.nom-cascader > .nom-field-content .nom-control .nom-cascader-input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 0;
+}
 .nom-cascader > .nom-field-content .nom-control .nom-cascader-icon {
   position: absolute;
   top: 0;
@@ -11657,6 +11664,30 @@ textarea .nom-textarea {
 .nom-cascader-popup .nom-cascader-empty {
   padding: 2rem 1rem;
   min-height: 200px;
+}
+.nom-cascader-popup .nom-cascader-search-option-list {
+  max-width: 500px;
+  width: auto;
+}
+.nom-cascader-popup .nom-cascader-search-option-list .nom-list-item {
+  padding: 0.5rem 1rem;
+}
+.nom-cascader-popup .nom-cascader-search-option-list .nom-list-item:not(.s-disabled) {
+  cursor: pointer;
+}
+.nom-cascader-popup .nom-cascader-search-option-list .nom-list-item:hover {
+  background-color: var(--nom-color-hover);
+}
+.nom-cascader-popup .nom-cascader-search-option-list .nom-list-item.s-selected,
+.nom-cascader-popup .nom-cascader-search-option-list .nom-list-item .s-selected:hover {
+  color: var(--nom-cascader-item-active-color);
+  background-color: var(--nom-cascader-item-active-bg);
+}
+.nom-cascader-popup .nom-cascader-search-option-list .nom-list-item .nom-cascader-highlight {
+  color: var(--nom-cascader-item-hilight-color);
+}
+.nom-cascader-popup .nom-cascader-search-option-list .nom-list-item .nom-cascader-option-checker {
+  padding-right: 0.25rem;
 }
 .nom-cascader-popup .nom-cascader-option-wrapper > .nom-list-content {
   flex-wrap: nowrap;

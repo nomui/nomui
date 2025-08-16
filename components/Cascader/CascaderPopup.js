@@ -48,6 +48,65 @@ class CascaderPopup extends Popup {
             {
               component: CascaderList,
             },
+            {
+              component: 'List',
+              classes: {
+                'nom-cascader-search-option-list': true,
+              },
+              ref: (c) => {
+                cascaderControl.searchOptionList = c
+              },
+              hidden: true,
+              cols: 1,
+              itemDefaults: {
+                onConfig: ({ inst }) => {
+                  const fullText = inst.props.label.join(cascaderControl.props.separator)
+                  const searchText = cascaderControl._currentSearchText || ''
+
+                  const childrenArray = []
+
+                  if (searchText && fullText.toLowerCase().includes(searchText.toLowerCase())) {
+                    const index = fullText.indexOf(searchText)
+                    const before = fullText.slice(0, index)
+                    const match = fullText.slice(index, index + searchText.length)
+                    const after = fullText.slice(index + searchText.length)
+
+                    if (before) {
+                      childrenArray.push({ tag: 'span', children: before })
+                    }
+                    if (match) {
+                      childrenArray.push({
+                        tag: 'span',
+                        children: match,
+                        classes: {
+                          'nom-cascader-highlight': true,
+                        },
+                      })
+                    }
+                    if (after) {
+                      childrenArray.push({ tag: 'span', children: after })
+                    }
+                  } else {
+                    childrenArray.push({ tag: 'span', children: fullText })
+                  }
+                  inst.setProps({
+                    children: {
+                      classes: {
+                        's-disable1d': !!inst.props.disabled,
+                      },
+                      children: childrenArray,
+                      onClick: () => {
+                        if (inst.props.disabled) {
+                          return
+                        }
+                        const { label, value } = inst.props
+                        cascaderControl.onSearchItemClick({ label, value })
+                      },
+                    },
+                  })
+                },
+              },
+            },
           ],
         },
       },

@@ -13025,6 +13025,65 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     triggerType: "click",
   };
   Component.register(Carousel);
+  class CascaderInput extends Component {
+    constructor(props, ...mixins) {
+      const defaults = {
+        tag: "input",
+        attrs: { type: "text", autocomplete: "off" },
+      };
+      super(Component.extendProps(defaults, props), ...mixins);
+    }
+    _created() {
+      this.capsLock = false;
+    }
+    _config() {
+      this.setProps({
+        attrs: Object.assign({}, this.props.attrs, {
+          value: this.props.value,
+          placeholder: this.props.placeholder,
+          oninput: () => {
+            this._callHandler(this.props.onInput, { text: this.getText() });
+          },
+          onblur: () => {
+            this._callHandler(this.props.onBlur, { text: this.getText() });
+          },
+          onfocus: () => {
+            this._callHandler(this.props.onFocus);
+          },
+        }),
+      });
+    }
+    _rendered() {
+      if (this.props.autofocus === true) {
+        this.focus();
+      }
+    }
+    getText() {
+      return this.element.value;
+    }
+    setPlaceholder(text) {
+      this.element.setAttribute("placeholder", text);
+    }
+    setText(text) {
+      this.element.value = text;
+    }
+    clear() {
+      this.element.value = "";
+      this.element.setAttribute("placeholder", this.props.placeholder);
+    }
+    focus() {
+      this.element.focus();
+    }
+    blur() {
+      this.element.blur();
+    }
+    disable() {
+      this.element.setAttribute("disabled", "disabled");
+    }
+    enable() {
+      this.element.removeAttribute("disabled", "disabled");
+    }
+  }
   class CascaderList extends List {
     constructor(props, ...mixins) {
       const defaults = {
@@ -13322,6 +13381,64 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 body: { children: { component: "Empty" } },
               },
               { component: CascaderList },
+              {
+                component: "List",
+                classes: { "nom-cascader-search-option-list": true },
+                ref: (c) => {
+                  cascaderControl.searchOptionList = c;
+                },
+                hidden: true,
+                cols: 1,
+                itemDefaults: {
+                  onConfig: ({ inst }) => {
+                    const fullText = inst.props.label.join(
+                      cascaderControl.props.separator
+                    );
+                    const searchText = cascaderControl._currentSearchText || "";
+                    const childrenArray = [];
+                    if (
+                      searchText &&
+                      fullText.toLowerCase().includes(searchText.toLowerCase())
+                    ) {
+                      const index = fullText.indexOf(searchText);
+                      const before = fullText.slice(0, index);
+                      const match = fullText.slice(
+                        index,
+                        index + searchText.length
+                      );
+                      const after = fullText.slice(index + searchText.length);
+                      if (before) {
+                        childrenArray.push({ tag: "span", children: before });
+                      }
+                      if (match) {
+                        childrenArray.push({
+                          tag: "span",
+                          children: match,
+                          classes: { "nom-cascader-highlight": true },
+                        });
+                      }
+                      if (after) {
+                        childrenArray.push({ tag: "span", children: after });
+                      }
+                    } else {
+                      childrenArray.push({ tag: "span", children: fullText });
+                    }
+                    inst.setProps({
+                      children: {
+                        classes: { "s-disable1d": !!inst.props.disabled },
+                        children: childrenArray,
+                        onClick: () => {
+                          if (inst.props.disabled) {
+                            return;
+                          }
+                          const { label, value } = inst.props;
+                          cascaderControl.onSearchItemClick({ label, value });
+                        },
+                      },
+                    });
+                  },
+                },
+              },
             ],
           },
         },
@@ -13372,7 +13489,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _config() {
       const me = this;
       const children = [];
-      const { showArrow, placeholder, allowClear, multiple } = this.props;
+      const {
+        showArrow,
+        placeholder,
+        allowClear,
+        multiple,
+        searchable,
+      } = this.props;
       const { value, options, disabled } = this.props;
       this.initValue = clone(value);
       this.internalOption = JSON.parse(JSON.stringify(options));
@@ -13386,20 +13509,40 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._setValueMap();
       }
       this.currentValue = this.initValue;
+      const showInput = !multiple && searchable;
       children.push({
         classes: { "nom-cascader-content": true },
         ref: (c) => {
           me._content = c;
         },
+        hidden: showInput,
         children: multiple ? this._getMultipleText() : this.getValueText(),
       });
-      if (isString(placeholder)) {
+      if (showInput) {
+        children.push({
+          component: CascaderInput,
+          _created: function () {
+            me.inputRef = this;
+            this.cascader = me;
+          },
+          attrs: { value: this.getValueText() },
+          placeholder,
+          onFocus: ({ sender }) => {
+            sender.setText("");
+            sender.setPlaceholder(me.getValueText());
+          },
+          onInput: ({ text }) => {
+            this._handleSearch(text || "");
+          },
+        });
+      } else if (isString(placeholder)) {
         children.push({
           _created() {
             me.placeholder = this;
           },
           classes: { "nom-cascader-placeholder": true },
           children: placeholder,
+          value: multiple ? this._getMultipleText() : this.getValueText,
           hidden: !!this.props.value,
         });
       }
@@ -13425,6 +13568,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           onClick: ({ event }) => {
             event.stopPropagation();
             me.props.onClear && me._callHandler(me.props.onClear);
+            me.inputRef && me.inputRef.clear();
             me.setValue(null);
           },
         });
@@ -13459,14 +13603,80 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         },
         onHide: () => {
+          if (this._showingSearch) {
+            this._showingSearch = false;
+            this.optionList && this.optionList.show();
+            this.searchOptionList && this.searchOptionList.hide();
+          }
           if (this.props.changeOnClose && this.props.multiple) {
             const _currentValue = this.getValue();
             if (!deepEqual(_currentValue, this._lastShowValue)) {
               this._onValueChange();
             }
           }
+          if (this.props.value && this.inputRef) {
+            this.inputRef.setText(this.getValueText());
+          }
         },
       });
+    }
+    _handleSearch(text) {
+      this._currentSearchText = text;
+      if (text.length) {
+        this._showingSearch = true;
+        this.popup.show();
+        this.optionList.hide();
+        this.searchOptionList.show();
+        this.searchOptionList.update({ items: this._getFilterOptions(text) });
+      } else {
+        this.popup.show();
+        this.optionList.show();
+        this.searchOptionList.hide();
+        this.searchOptionList.update({ items: [] });
+      }
+    }
+    onSearchItemClick(item) {
+      this._showingSearch = false;
+      this.popup.hide();
+      this.optionList.show();
+      this.searchOptionList.hide();
+      this.searchOptionList.update({ items: [] });
+      this.setValue(item.value);
+    }
+    _getFilterOptions(text) {
+      const { fieldsMapping } = this.props;
+      const result = []; // 递归搜索函数
+      function search(node, parentPath) {
+        const currentPath = [...parentPath, node];
+        const label = node[fieldsMapping.label]; // 判断是否匹配
+        if (label && label.toLowerCase().includes(text.toLowerCase())) {
+          // 拼接路径的 text 和 value
+          const textPath = currentPath.map((item) => item[fieldsMapping.label]);
+          const valuePath = currentPath.map(
+            (item) => item[fieldsMapping.value]
+          ); // 判断路径中是否有 disabled
+          const isDisabled = currentPath.some(
+            (item) => item[fieldsMapping.disabled]
+          );
+          result.push({
+            label: textPath,
+            value: valuePath,
+            disabled: isDisabled,
+          });
+        } // 如果有 children，继续递归
+        if (
+          Array.isArray(node[fieldsMapping.children]) &&
+          node[fieldsMapping.children].length
+        ) {
+          node[fieldsMapping.children].forEach((child) => {
+            search(child, currentPath);
+          });
+        }
+      } // 遍历根节点
+      this.internalOption.forEach((rootNode) => {
+        search(rootNode, []);
+      });
+      return result;
     } // 数据异步加载且有默认值时需要先调请求加载value对应的字面值
     _loopLoadValueData() {
       const me = this;
@@ -13494,6 +13704,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           me._content.update({
             children: multiple ? me._getMultipleText() : me.getValueText(),
           });
+          me.inputRef && me.inputRef.setText(me.getValueText());
         })
         .catch((error) => {
           console.error("load data failed:", error);
@@ -13690,8 +13901,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       !this.props.changeOnClose && this._onValueChange();
     }
     _setValue(value) {
-      if (!value && this._content) {
-        this._content.element.innerText = "";
+      if (!value) {
+        if (this._content) {
+          this._content.element.innerText = "";
+        }
+        this.inputRef && this.inputRef.clear();
       }
       this.props.value = value;
       this.valueMap = {};
@@ -13794,6 +14008,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this._content.update({ children: this._getMultipleText() });
         } else {
           this._content.element.innerText = this._getValueText();
+          this.inputRef && this.inputRef.setText(this._getValueText());
         }
         this.placeholder && this.placeholder.hide();
       } else {
@@ -13801,6 +14016,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this._content.update({ children: "" });
         } else {
           this._content.element.innerText = "";
+          this.inputRef && this.inputRef.clear();
         }
         this.placeholder && this.placeholder.show();
       }
