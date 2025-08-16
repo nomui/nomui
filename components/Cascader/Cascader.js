@@ -2,6 +2,7 @@ import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
 import { clone, deepEqual, isFunction, isNullish, isString } from '../util/index'
+import CascaderInput from './CascaderInput'
 import CascaderPopup from './CascaderPopup'
 
 class Cascader extends Field {
@@ -19,7 +20,7 @@ class Cascader extends Field {
     const me = this
 
     const children = []
-    const { showArrow, placeholder, allowClear, multiple } = this.props
+    const { showArrow, placeholder, allowClear, multiple, searchable } = this.props
 
     const { value, options, disabled } = this.props
     this.initValue = clone(value)
@@ -38,21 +39,44 @@ class Cascader extends Field {
 
     this.currentValue = this.initValue
 
+    const showInput = !multiple && searchable
+
     children.push({
       classes: { 'nom-cascader-content': true },
       ref: (c) => {
         me._content = c
       },
+      hidden: showInput,
       children: multiple ? this._getMultipleText() : this.getValueText(),
     })
 
-    if (isString(placeholder)) {
+    if (showInput) {
+      children.push({
+        component: CascaderInput,
+        _created: function () {
+          me.inputRef = this
+          this.cascader = me
+        },
+        attrs: {
+          value: this.getValueText(),
+        },
+        placeholder,
+        onFocus: ({ sender }) => {
+          sender.setText('')
+          sender.setPlaceholder(me.getValueText())
+        },
+        onInput: ({ text }) => {
+          this._handleSearch(text || '')
+        },
+      })
+    } else if (isString(placeholder)) {
       children.push({
         _created() {
           me.placeholder = this
         },
         classes: { 'nom-cascader-placeholder': true },
         children: placeholder,
+        value: multiple ? this._getMultipleText() : this.getValueText,
         hidden: !!this.props.value,
       })
     }
@@ -84,6 +108,7 @@ class Cascader extends Field {
         onClick: ({ event }) => {
           event.stopPropagation()
           me.props.onClear && me._callHandler(me.props.onClear)
+          me.inputRef && me.inputRef.clear()
           me.setValue(null)
         },
       })
@@ -124,14 +149,89 @@ class Cascader extends Field {
         }
       },
       onHide: () => {
+        if (this._showingSearch) {
+          this._showingSearch = false
+          this.optionList && this.optionList.show()
+          this.searchOptionList && this.searchOptionList.hide()
+        }
         if (this.props.changeOnClose && this.props.multiple) {
           const _currentValue = this.getValue()
           if (!deepEqual(_currentValue, this._lastShowValue)) {
             this._onValueChange()
           }
         }
+        if (this.props.value && this.inputRef) {
+          this.inputRef.setText(this.getValueText())
+        }
       },
     })
+  }
+
+  _handleSearch(text) {
+    this._currentSearchText = text
+    if (text.length) {
+      this._showingSearch = true
+      this.popup.show()
+      this.optionList.hide()
+      this.searchOptionList.show()
+      this.searchOptionList.update({ items: this._getFilterOptions(text) })
+    } else {
+      this.popup.show()
+      this.optionList.show()
+      this.searchOptionList.hide()
+      this.searchOptionList.update({ items: [] })
+    }
+  }
+
+  onSearchItemClick(item) {
+    this._showingSearch = false
+    this.popup.hide()
+    this.optionList.show()
+    this.searchOptionList.hide()
+    this.searchOptionList.update({ items: [] })
+
+    this.setValue(item.value)
+  }
+
+  _getFilterOptions(text) {
+    const { fieldsMapping } = this.props
+    const result = []
+
+    // 递归搜索函数
+    function search(node, parentPath) {
+      const currentPath = [...parentPath, node]
+      const label = node[fieldsMapping.label]
+
+      // 判断是否匹配
+      if (label && label.toLowerCase().includes(text.toLowerCase())) {
+        // 拼接路径的 text 和 value
+        const textPath = currentPath.map((item) => item[fieldsMapping.label])
+        const valuePath = currentPath.map((item) => item[fieldsMapping.value])
+
+        // 判断路径中是否有 disabled
+        const isDisabled = currentPath.some((item) => item[fieldsMapping.disabled])
+
+        result.push({
+          label: textPath,
+          value: valuePath,
+          disabled: isDisabled,
+        })
+      }
+
+      // 如果有 children，继续递归
+      if (Array.isArray(node[fieldsMapping.children]) && node[fieldsMapping.children].length) {
+        node[fieldsMapping.children].forEach((child) => {
+          search(child, currentPath)
+        })
+      }
+    }
+
+    // 遍历根节点
+    this.internalOption.forEach((rootNode) => {
+      search(rootNode, [])
+    })
+
+    return result
   }
 
   // 数据异步加载且有默认值时需要先调请求加载value对应的字面值
@@ -161,6 +261,7 @@ class Cascader extends Field {
         })
         me._setValueMap()
         me._content.update({ children: multiple ? me._getMultipleText() : me.getValueText() })
+        me.inputRef && me.inputRef.setText(me.getValueText())
       })
       .catch((error) => {
         console.error('load data failed:', error)
@@ -389,9 +490,13 @@ class Cascader extends Field {
   }
 
   _setValue(value) {
-    if (!value && this._content) {
-      this._content.element.innerText = ''
+    if (!value) {
+      if (this._content) {
+        this._content.element.innerText = ''
+      }
+      this.inputRef && this.inputRef.clear()
     }
+
     this.props.value = value
     this.valueMap = {}
     this.multiValueMap = []
@@ -499,6 +604,7 @@ class Cascader extends Field {
         this._content.update({ children: this._getMultipleText() })
       } else {
         this._content.element.innerText = this._getValueText()
+        this.inputRef && this.inputRef.setText(this._getValueText())
       }
 
       this.placeholder && this.placeholder.hide()
@@ -507,6 +613,7 @@ class Cascader extends Field {
         this._content.update({ children: '' })
       } else {
         this._content.element.innerText = ''
+        this.inputRef && this.inputRef.clear()
       }
       this.placeholder && this.placeholder.show()
     }

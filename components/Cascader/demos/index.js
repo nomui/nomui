@@ -2,6 +2,7 @@ define([
   './basic.js',
   './leafonly.js',
   './multiple.js',
+  './search.js',
   './cascade.js',
   './value.js',
   './field.js',

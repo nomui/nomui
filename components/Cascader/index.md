@@ -11,6 +11,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | allowClear | 可以点击清除图标删除内容 | `boolean` | `true` |
+| searchable | 是否可搜索（仅单选模式并且不支持远程搜索） | `boolean` | `true` |
 | options | 选项配置 | `[{label:string,value:number\|string,children:array}]` | - |
 | loadData | 异步获取下一级数据 | `(value,level,itemData)=>{ promise.resolve([]) }` | - |
 | separator | 分隔符 | `String` | `/` |
