@@ -15,7 +15,13 @@ class Carousel extends Component {
     this.slideWidth = null
     this.autoplayInterval = null
     this.sildeRefs = []
-    const { imgs, defaultActiveIndex } = this.props
+    const { defaultActiveIndex } = this.props
+
+    let { imgs } = this.props
+    this.origLen = imgs.length
+    if (imgs && imgs.length === 2) {
+      imgs = [...imgs, ...imgs]
+    }
     const cloneImgs = [...imgs]
     cloneImgs.push(imgs[0])
     this.loopImgs = cloneImgs
@@ -180,22 +186,22 @@ class Carousel extends Component {
 
   paginationList() {
     const _that = this
-    return this.props.imgs.map(function (d, index) {
-      return {
-        ref: (c) => {
-          if (c) _that.dotsRef.push(c)
-        },
-        classes: {
-          'nom-carousel-pagination-bullet': true,
-          'nom-carousel-pagination-bullet-active': index === _that.defaultActiveIndex - 1,
-        },
-        tag: 'span',
-        attrs: {
-          'data-index': index + 1,
-        },
-        children: index + 1,
-      }
-    })
+    // 使用原始 imgs 数组的长度生成 dots
+    const dotsCount = this.origLen
+    return Array.from({ length: dotsCount }, (_, index) => ({
+      ref: (c) => {
+        if (c) _that.dotsRef.push(c)
+      },
+      classes: {
+        'nom-carousel-pagination-bullet': true,
+        'nom-carousel-pagination-bullet-active': index === _that.defaultActiveIndex - 1,
+      },
+      tag: 'span',
+      attrs: {
+        'data-index': index + 1,
+      },
+      children: index + 1,
+    }))
   }
 
   paginationClick(index) {
@@ -246,26 +252,32 @@ class Carousel extends Component {
       to(this.activeId - 1, true)
     }
 
-    // 分页器
-    this.dotsRef[this.activeIdOld - 1].element.classList.remove(
-      'nom-carousel-pagination-bullet-active',
+    // 分页器高亮处理
+    const origLen = this.origLen
+    // 计算当前高亮索引（0-based）
+    let dotIndex = (this.activeId - 1) % origLen
+    if (dotIndex < 0) dotIndex += origLen
+
+    // 移除旧高亮
+    this.dotsRef.forEach((dot) =>
+      dot.element.classList.remove('nom-carousel-pagination-bullet-active'),
     )
+    // 添加新高亮
+    if (this.dotsRef[dotIndex] && this.dotsRef[dotIndex].element) {
+      this.dotsRef[dotIndex].element.classList.add('nom-carousel-pagination-bullet-active')
+    }
 
+    // 更新 activeIdOld
+    this.activeIdOld = this.activeId
+
+    // 末去首动画复位逻辑（保持原来的动画）
     if (this.activeId === this.loopImgs.length) {
-      // 末去首：动画结束后做“隐形复位”
-      this.dotsRef[0].element.classList.add('nom-carousel-pagination-bullet-active')
-      this.activeIdOld = 1
-
       const onEnd = (e) => {
         if (e.target !== wrapper || e.propertyName !== 'transform') return
-
-        // 1) 关过渡，避免复位产生动画
         wrapper.style.transition = 'none'
-        // 2) 双 raf：把复位安排到两个帧之后，避开同帧的重绘抖动
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            wrapper.style.transform = 'translate3d(0px, 0px, 0px)'
-            // 3) 再下一个帧恢复过渡，保证后续交互正常
+            wrapper.style.transform = 'translate3d(0px, 0, 0)'
             requestAnimationFrame(() => {
               wrapper.style.transition = `transform ${duration}`
             })
@@ -273,9 +285,6 @@ class Carousel extends Component {
         })
       }
       wrapper.addEventListener('transitionend', onEnd, { once: true })
-    } else {
-      this.dotsRef[this.activeId - 1].element.classList.add('nom-carousel-pagination-bullet-active')
-      this.activeIdOld = this.activeId
     }
   }
 
@@ -318,7 +327,7 @@ Carousel.defaults = {
   dots: true,
   defaultActiveIndex: 1,
   easing: 'linear',
-  pauseOnHover: true,
+  pauseOnHover: false,
   triggerType: 'click',
 }
 Component.register(Carousel)
