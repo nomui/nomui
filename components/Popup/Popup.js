@@ -133,7 +133,8 @@ Component.mixin({
   _rendered: function () {
     if (this.props.popup) {
       this.props.popup.trigger = this
-      this.popup = new Popup(this.props.popup)
+      const refName = this.props.popup.refName || 'popup'
+      this[refName] = new Popup(this.props.popup)
     }
   },
 })
