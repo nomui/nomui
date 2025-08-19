@@ -22,6 +22,15 @@ define([], function () {
               children: 'hello',
             },
           },
+          {
+            component: 'Button',
+            text: '自定义refName',
+            popup: {
+              refName: '_popup',
+              triggerAction: 'hover',
+              children: 'hello',
+            },
+          },
         ],
       }
     },
