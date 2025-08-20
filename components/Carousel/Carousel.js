@@ -90,15 +90,13 @@ class Carousel extends Component {
   }
 
   _rendered() {
-    const { autoplay, autoplaySpeed, pauseOnHover, defaultActiveIndex, triggerType } = this.props
+    const { autoplay, pauseOnHover, defaultActiveIndex, triggerType } = this.props
 
     this.initPositions()
 
     // 是否自动播放
     if (autoplay) {
-      this.autoplayInterval = setInterval(() => {
-        this.nextClick()
-      }, autoplaySpeed)
+      this.initAutoplay()
     }
 
     // 在鼠标悬浮时自动停止轮播
@@ -108,9 +106,7 @@ class Carousel extends Component {
       })
       this.containerRef.element.addEventListener('mouseout', () => {
         if (autoplay) {
-          this.autoplayInterval = setInterval(() => {
-            this.nextClick()
-          }, autoplaySpeed)
+          this.initAutoplay()
         }
       })
     }
@@ -149,6 +145,22 @@ class Carousel extends Component {
     })
 
     this.resizeObserver.observe(this.containerRef.element)
+  }
+
+  initAutoplay() {
+    const { autoplay, autoplaySpeed } = this.props
+
+    // 清除现有计时器
+    if (this.autoplayInterval) {
+      clearInterval(this.autoplayInterval)
+    }
+
+    // 如果启用自动播放，设置新的计时器
+    if (autoplay) {
+      this.autoplayInterval = setInterval(() => {
+        this.nextClick()
+      }, autoplaySpeed)
+    }
   }
 
   _remove() {
@@ -207,6 +219,7 @@ class Carousel extends Component {
   paginationClick(index) {
     this.activeId = index
     this.animate('pagination')
+    this.initAutoplay()
   }
 
   prevClick() {
@@ -215,6 +228,7 @@ class Carousel extends Component {
       this.activeId = this.loopImgs.length - 1
     }
     this.animate()
+    this.initAutoplay()
   }
 
   nextClick() {
@@ -223,6 +237,7 @@ class Carousel extends Component {
       this.activeId = 2
     }
     this.animate()
+    this.initAutoplay()
   }
 
   animate(val) {

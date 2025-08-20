@@ -12827,16 +12827,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       const {
         autoplay,
-        autoplaySpeed,
         pauseOnHover,
         defaultActiveIndex,
         triggerType,
       } = this.props;
       this.initPositions(); // 是否自动播放
       if (autoplay) {
-        this.autoplayInterval = setInterval(() => {
-          this.nextClick();
-        }, autoplaySpeed);
+        this.initAutoplay();
       } // 在鼠标悬浮时自动停止轮播
       if (pauseOnHover) {
         this.containerRef.element.addEventListener("mouseover", () => {
@@ -12844,9 +12841,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
         this.containerRef.element.addEventListener("mouseout", () => {
           if (autoplay) {
-            this.autoplayInterval = setInterval(() => {
-              this.nextClick();
-            }, autoplaySpeed);
+            this.initAutoplay();
           }
         });
       } // 初始被激活的轮播图
@@ -12879,6 +12874,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         wrapper.style.transform = `translate3d(${pos(idx)}px, 0, 0)`;
       });
       this.resizeObserver.observe(this.containerRef.element);
+    }
+    initAutoplay() {
+      const { autoplay, autoplaySpeed } = this.props; // 清除现有计时器
+      if (this.autoplayInterval) {
+        clearInterval(this.autoplayInterval);
+      } // 如果启用自动播放，设置新的计时器
+      if (autoplay) {
+        this.autoplayInterval = setInterval(() => {
+          this.nextClick();
+        }, autoplaySpeed);
+      }
     }
     _remove() {
       clearInterval(this.autoplayInterval);
@@ -12925,6 +12931,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     paginationClick(index) {
       this.activeId = index;
       this.animate("pagination");
+      this.initAutoplay();
     }
     prevClick() {
       this.activeId -= 1;
@@ -12932,6 +12939,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.activeId = this.loopImgs.length - 1;
       }
       this.animate();
+      this.initAutoplay();
     }
     nextClick() {
       this.activeId += 1;
@@ -12939,6 +12947,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.activeId = 2;
       }
       this.animate();
+      this.initAutoplay();
     }
     animate(val) {
       this.updateSlideSize();
@@ -18363,9 +18372,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.dateInfo = { year: this.year, month: this.month - 1, day: this.day };
       if (this.props.value && this.props.showTime && this.timePicker) {
         this.timePicker.setValue(
-          new Date(this.props.value.replace(/-/g, "/")).format(
-            this.props.showTime.format || "HH:mm:ss"
-          )
+          new Date(currentDate).format(this.props.showTime.format || "HH:mm:ss")
         );
       } else if (!this.props.value && this.props.showTime && this.timePicker) {
         this.timePicker.clearTime();
@@ -37731,7 +37738,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     deleteIcon(name, file) {
       this._updateFileIcon.splice(this._updateFileIcon.indexOf(name), 1);
-      const index = file.children.findIndex((element) => element.type === name);
+      const index = file.children.findIndex(
+        (element) => element && element.type === name
+      );
       if (index > 0) file.children.splice(index, 1);
     }
     getAcceptList() {
