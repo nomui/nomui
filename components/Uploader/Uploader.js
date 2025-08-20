@@ -185,7 +185,7 @@ class Uploader extends Field {
 
   deleteIcon(name, file) {
     this._updateFileIcon.splice(this._updateFileIcon.indexOf(name), 1)
-    const index = file.children.findIndex((element) => element.type === name)
+    const index = file.children.findIndex((element) => element && element.type === name)
     if (index > 0) file.children.splice(index, 1)
   }
 
