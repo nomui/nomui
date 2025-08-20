@@ -106,6 +106,7 @@ class DatePicker extends Textbox {
           onShow: () => {
             this.getCurrentDate()
             this.reActiveList()
+
             this.yearMonthContainerRef.hide()
             // that.props.showTime && that.timePicker.onShow()
             setTimeout(() => {
@@ -970,6 +971,7 @@ class DatePicker extends Textbox {
 
   getCurrentDate() {
     let currentDate = new Date()
+
     if (this.props.value !== null) {
       if (this.props.weekMode) {
         this._parseWeekValueType() // 周模式下对象值转成年周字符串
@@ -1009,9 +1011,7 @@ class DatePicker extends Textbox {
 
     if (this.props.value && this.props.showTime && this.timePicker) {
       this.timePicker.setValue(
-        new Date(this.props.value.replace(/-/g, '/')).format(
-          this.props.showTime.format || 'HH:mm:ss',
-        ),
+        new Date(currentDate).format(this.props.showTime.format || 'HH:mm:ss'),
       )
     } else if (!this.props.value && this.props.showTime && this.timePicker) {
       this.timePicker.clearTime()

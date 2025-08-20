@@ -20,6 +20,7 @@ define([], function () {
             height: 500,
             arrows: true,
             autoplay: true,
+            autoplaySpeed: 8000,
 
             triggerType: 'click',
           },
