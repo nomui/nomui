@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/nomui/nomui/compare/v1.8.0...v1.9.0) (2025-08-22)
+
+
+### Features
+
+* 群组校验时会先展开群组 ([27de3de](https://github.com/nomui/nomui/commit/27de3de625009a28ce448fd7c3f84b3d02d9c7b8))
+* **Avatar:** 图片支持数组 ([b0fca23](https://github.com/nomui/nomui/commit/b0fca23303b4a86662d5b1b9c47adf201362c6d6))
+* **Cascader:** 支持前端搜索 ([d15eb51](https://github.com/nomui/nomui/commit/d15eb51125da7ffd2ba5c24b0fde3a4292bfae39))
+* DatePicker新增配置允许输入非法日期 ([e4e0f67](https://github.com/nomui/nomui/commit/e4e0f677fd1d369c64530070c9bcd551ab77de07))
+* Popup组件支持自定义refName以避免跟其他组件冲突 ([1643122](https://github.com/nomui/nomui/commit/164312250e2e4bcc6eedf6d1728f06c31277f282))
+
+
+### Bug Fixes
+
+* 处理轮播图容器缩放时会错位的问题 ([286e0d9](https://github.com/nomui/nomui/commit/286e0d9d9a1c1cbd66481dad7a539b597c264299))
+* 解决幻灯片在2张图是切换动画问题 ([3cb732f](https://github.com/nomui/nomui/commit/3cb732f9ec2150c3cc4be06e1f3a11945b3e07c1))
+* 解决轮播图闪烁问题 ([6264fc9](https://github.com/nomui/nomui/commit/6264fc9280c674e4e1c5ed0baa4a662969ba8cd7))
+* 修复Grid一些不影响流程的js报错 ([1595ddf](https://github.com/nomui/nomui/commit/1595ddf56c873e4f300f25a2141aa7b6e7eb05ce))
+* **Cascader:** 修复值变化相关处理 ([13f76a9](https://github.com/nomui/nomui/commit/13f76a9be956c5f36f413744f1766996c8aa70be))
+* **DatePicker:** 年月日时模式下非法值问题 ([6d934ed](https://github.com/nomui/nomui/commit/6d934ed69859ec2e2a708382575fbf021e1d5c0d))
+* **Grid:** 表格可能产生的不对齐问题 ([beedd0a](https://github.com/nomui/nomui/commit/beedd0ac0ba5b28267ac988e7993e891bf9a2f29))
+* **Grid:** 自动列宽在编辑模式下可能有问题 ([21214af](https://github.com/nomui/nomui/commit/21214afaf224f2b4e40511c7eb7c13f27a2620b1))
+* **ListSetter:** 表单不会动态根据条件变化的问题 ([59d3e3c](https://github.com/nomui/nomui/commit/59d3e3cae72eb2970a7c7a3da5b78da10852ed8a))
+* **Modal:** 修改模态框与抽屉的返回值 returnValue 的逻辑。解决在弹窗中修改了返回值，但是按关闭或取消按钮关闭的弹窗，导致在关闭回调里得不到修改值的问题。 ([4035929](https://github.com/nomui/nomui/commit/403592903626a1bb4a855bdad90de4ccb9faa1c3))
+
 ## [1.8.0](https://github.com/nomui/nomui/compare/v1.7.0...v1.8.0) (2025-08-04)
 
 
