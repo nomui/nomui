@@ -32,6 +32,14 @@ define([], function () {
                 dpref = c
               },
               showNow: false,
+              showTime: {
+                format: 'HH:mm:ss',
+                // minTime: '08:08:08',
+                // maxTime: '20:20:20',
+              },
+              format: 'yyyy-MM-dd HH:mm:ss',
+              value: '2021-05-05 11:15:00',
+              allowInValid: true,
               extraTools: [
                 {
                   component: 'Button',
@@ -48,6 +56,15 @@ define([], function () {
                   text: '圣诞节',
                   onClick: () => {
                     dpref.setValue('2022-12-25')
+                    dpref.close()
+                  },
+                },
+                {
+                  component: 'Button',
+                  size: 'small',
+                  text: 'NA',
+                  onClick: () => {
+                    dpref.setValue('NA')
                     dpref.close()
                   },
                 },

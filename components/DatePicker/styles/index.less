@@ -1,13 +1,17 @@
 .nom-date-picker-popup {
   overflow: hidden;
+
   .nom-datepicker-popup-hd {
     height: 3.25rem;
     border-bottom: 1px solid var(--nom-color-border);
     user-select: none;
-    > .p-grow {
+
+    >.p-grow {
       justify-content: center;
-      > .nom-flex {
+
+      >.nom-flex {
         cursor: pointer;
+
         h5 {
           font-size: 1.15rem;
         }
@@ -21,6 +25,7 @@
   }
 
   .nom-datepicker-footer {
+    gap: 4px;
     padding: 0.5rem 1rem;
     border-top: 1px solid var(--nom-color-border);
   }
@@ -33,39 +38,49 @@
     right: 0;
     z-index: 1;
     background-color: white;
-    > .nom-flex {
+
+    >.nom-flex {
       height: 100%;
+
       .nom-datepicker-year-month-back {
         height: 3.25rem;
         border-bottom: 1px solid var(--nom-border-color);
         display: flex;
         align-items: center;
         padding: 0 0.5rem;
+
         .nom-button {
           color: var(--nom-color-primary);
         }
       }
+
       .nom-datepicker-year-month-container {
         height: calc(100% - 3.25rem);
-        > .nom-list {
+
+        >.nom-list {
           width: 50%;
           overflow-y: auto;
+
           .nom-list-item {
             padding: 0.45rem;
             text-align: center;
             cursor: pointer;
             user-select: none;
+
             &:hover {
               background-color: rgba(0, 0, 0, 0.1);
             }
+
             &.s-selected {
               background-color: var(--nom-color-primary);
               color: white;
             }
           }
+
           &:first-child {
             border-right: 1px solid var(--nom-border-color);
           }
+
           &:last-child {
             ul {
               padding: 10rem 0;
@@ -104,8 +119,8 @@
   }
 
   .nom-datepicker-panel-days {
-    > ul {
-      > .nom-list-item-wrapper {
+    >ul {
+      >.nom-list-item-wrapper {
         // padding: 0.2rem;
 
         .nom-datepicker-day-item {
@@ -118,6 +133,7 @@
           padding: 0.25rem;
           font-size: 13px;
           border-radius: 0.25rem;
+
           &:hover {
             background: var(--nom-datepicker-item-hover-bg);
           }
@@ -133,6 +149,7 @@
 
             &:not(.s-selected):not(.nom-datepicker-item-week-hover) {
               color: var(--nom-color-primary);
+
               &:hover {
                 background: var(--nom-datepicker-item-hover-bg);
               }
@@ -158,12 +175,15 @@
 
           &.nom-datepicker-item-week-hover:not(.s-selected):not(.nom-datepicker-item-week-selected) {
             background: var(--nom-datepicker-item-hover-bg) !important;
+
             &.nom-datepicker-item-first-day-of-week {
               border-radius: 0.25rem 0 0 0.25rem;
             }
+
             &.nom-datepicker-item-last-day-of-week {
               border-radius: 0 0.25rem 0.25rem 0;
             }
+
             &:not(.nom-datepicker-item-last-day-of-week):not(.nom-datepicker-item-first-day-of-week) {
               border-radius: 0;
             }
@@ -173,12 +193,15 @@
             background: var(--nom-color-primary);
             color: white !important;
             position: static;
+
             &.nom-datepicker-item-first-day-of-week {
               border-radius: 0.25rem 0 0 0.25rem;
             }
+
             &.nom-datepicker-item-last-day-of-week {
               border-radius: 0 0.25rem 0.25rem 0;
             }
+
             &:not(.nom-datepicker-item-last-day-of-week):not(.nom-datepicker-item-first-day-of-week) {
               border-radius: 0;
             }
@@ -199,7 +222,7 @@
   .timepicker-group {
     height: 280px;
 
-    > .nom-col {
+    >.nom-col {
       width: 60px;
       max-height: 100%;
       height: 100%;
@@ -215,7 +238,7 @@
       }
 
       .nom-date-time-picker-list {
-        > ul {
+        >ul {
           padding: 106px 0;
         }
       }
