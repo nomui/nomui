@@ -9926,6 +9926,7 @@ textarea .nom-textarea {
   height: auto;
 }
 .nom-date-picker-popup .nom-datepicker-footer {
+  gap: 4px;
   padding: 0.5rem 1rem;
   border-top: 1px solid var(--nom-color-border);
 }

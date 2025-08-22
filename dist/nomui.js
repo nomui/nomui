@@ -18371,6 +18371,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.maxDateDay && currentDate.isAfter(new Date(this.maxDateDay));
       this.dateInfo = { year: this.year, month: this.month - 1, day: this.day };
       if (this.props.value && this.props.showTime && this.timePicker) {
+        if (!Date.isValid(this.props.value)) {
+          return;
+        }
         this.timePicker.setValue(
           new Date(currentDate).format(this.props.showTime.format || "HH:mm:ss")
         );
@@ -18527,7 +18530,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         if (this.props.weekMode) {
           !this._checkFormat(this.getValue()) && this.clearTime();
         } else {
-          !Date.isValid(this.getValue(), this.props.format) && this.clearTime();
+          !Date.isValid(this.getValue(), this.props.format) &&
+            !this.props.allowInValid &&
+            this.clearTime();
         }
       }
       super._onBlur();
@@ -18557,6 +18562,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     showYearSkip: false,
     backText: "返回选择日期",
     weekMode: false,
+    allowInValid: false, // 允许非法日期值
     monthMap: {
       1: "1月",
       2: "2月",
