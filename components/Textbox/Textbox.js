@@ -188,6 +188,7 @@ class Textbox extends Field {
       attrs: { readonly: readonly || null },
       classes: {
         'p-with-button': buttonProps !== null,
+        'p-auto-width': !!this.props.autoWidth,
       },
       control: {
         disabled: disabled,
@@ -214,6 +215,10 @@ class Textbox extends Field {
 
   _rendered() {
     const that = this
+
+    if (this.props.autoWidth) {
+      this._initAutoWidth()
+    }
 
     if (this.props.onEnter) {
       this.input._on('keydown', function (event) {
@@ -277,6 +282,10 @@ class Textbox extends Field {
       }
     }
     this.currentValue = newValue
+
+    if (this.props.autoWidth) {
+      this._updateAutoWidth()
+    }
   }
 
   focus() {
@@ -291,6 +300,9 @@ class Textbox extends Field {
     if (this.hasWordLimit) {
       this._updateWodLimit()
     }
+    if (this.props.autoWidth) {
+      this._updateAutoWidth()
+    }
   }
 
   _onBlur() {
@@ -303,6 +315,28 @@ class Textbox extends Field {
 
   _enable() {
     this.input.enable()
+  }
+
+  _initAutoWidth() {
+    const inputEl = this.input.element
+    this.measureSpan = document.createElement('span')
+    this.measureSpan.style.cssText = `
+      position:absolute;
+      visibility:hidden;
+      white-space:pre;
+      font-size:${window.getComputedStyle(inputEl).fontSize};
+      font-family:${window.getComputedStyle(inputEl).fontFamily};
+    `
+    document.body.appendChild(this.measureSpan)
+    this._updateAutoWidth()
+  }
+
+  _updateAutoWidth() {
+    const text = this.getText() || this.props.placeholder || ''
+    this.measureSpan.textContent = text
+    const width = this.measureSpan.offsetWidth + 12
+    const minWidth = this.props.autoWidth.minWidth || 200
+    this.input.element.style.width = `${Math.max(width, minWidth)}px`
   }
 }
 
@@ -318,6 +352,7 @@ Textbox.defaults = {
   restrictInput: false,
   placeholder: null,
   value: null,
+  autoWidth: false, // 宽度自适应内容
   htmlType: 'text',
   onEnter: null,
   allowClear: true,

@@ -4,6 +4,7 @@ define([
   './disabled.js',
   './readonly.js',
   './autofocus.js',
+  './auto-width.js',
   './with-icon.js',
   './with-button.js',
   './word-limit.js',
