@@ -14738,6 +14738,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         cascadeCheckChildren,
         onlyleaf,
       } = this.tree.props.nodeCheckable;
+      if (onlyleaf && !this.isLeaf) {
+        return;
+      }
       if (checked === true) {
         return;
       } // 更新当前节点状态
@@ -14774,6 +14777,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         cascadeUncheckParent,
         onlyleaf,
       } = this.tree.props.nodeCheckable;
+      if (onlyleaf && !this.isLeaf) {
+        return;
+      }
       if (checked === false && this.props.partChecked === false) {
         return;
       } // 更新当前节点状态
@@ -19979,9 +19985,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.table.props.showTitle) &&
           this.props.column.showTitle !== false) ||
         this.props.column.showTitle === true;
-      const columnAlign = this.table.hasGrid
+      let columnAlign = this.table.hasGrid
         ? this.table.grid.props.columnAlign
         : "left";
+      if (
+        column.isChecker &&
+        !column.toolbar &&
+        this.table.grid.props.rowCheckable.align
+      ) {
+        columnAlign = this.table.grid.props.rowCheckable.align;
+      }
       const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode;
       children = {
         tag: "span",
@@ -20594,7 +20607,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           });
         }, 0);
         let colspan = columns.length;
-        if (this.grid && this.grid.props.rowSortable) {
+        if (
+          this.grid &&
+          this.grid.props.rowSortable &&
+          !this.grid.props.rowSortable.customHandler
+        ) {
           colspan += 1;
         }
         this.setProps({
@@ -20708,7 +20725,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       const children = [];
-      if (this.table.grid && this.table.grid.props.rowSortable) {
+      if (
+        this.table.grid &&
+        this.table.grid.props.rowSortable &&
+        !this.table.grid.props.rowSortable.customHandler
+      ) {
         children.push({ component: ColGroupCol, column: { width: 30 } });
       }
       if (Array.isArray(this.columns)) {
@@ -20788,13 +20809,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           treeConfig.initExpandLevel !== -1 &&
           treeConfig.initExpandLevel < level;
       }
-      if (grid && grid.props.rowSortable) {
+      if (
+        grid &&
+        grid.props.rowSortable &&
+        !grid.props.rowSortable.customHandler
+      ) {
         children.push({
           component: Td,
           classes: { "nom-grid-drag-handler": true },
           data: {
             component: "Icon",
-            type: "swap",
+            type: "drag",
             attrs: { style: { cursor: "pointer" } },
           },
         });
@@ -21167,9 +21192,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.filterValue = this.table.hasGrid
         ? this.table.grid.filter[this.props.column.field]
         : null;
-      const columnAlign = this.table.hasGrid
+      let columnAlign = this.table.hasGrid
         ? this.table.grid.props.columnAlign
         : "left";
+      if (
+        this.props.column.isChecker &&
+        !this.props.column.toolbar &&
+        this.table.grid.props.rowCheckable.align
+      ) {
+        columnAlign = this.table.grid.props.rowCheckable.align;
+      }
       let sortIcon = "sort";
       if (this.props.column.sortDirection === "asc") {
         sortIcon = "sort-up";
@@ -21680,7 +21712,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _config() {
       const { columns } = this.props;
       const thArr = [];
-      if (this.table.grid && this.table.grid.props.rowSortable) {
+      if (
+        this.table.grid &&
+        this.table.grid.props.rowSortable &&
+        !this.table.grid.props.rowSortable.customHandler
+      ) {
         thArr.push({ component: Th });
       }
       const children =
@@ -24689,6 +24725,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           arr.unshift(n);
         });
       return arr;
+    }
+    static getRowSortableHandler() {
+      return {
+        component: "Icon",
+        classes: { "nom-grid-drag-handler": true },
+        type: "drag",
+      };
     }
   }
   Grid.defaults = {

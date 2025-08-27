@@ -27,7 +27,14 @@ class Th extends Component {
 
     this.filterValue = this.table.hasGrid ? this.table.grid.filter[this.props.column.field] : null
 
-    const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
+    let columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
+    if (
+      this.props.column.isChecker &&
+      !this.props.column.toolbar &&
+      this.table.grid.props.rowCheckable.align
+    ) {
+      columnAlign = this.table.grid.props.rowCheckable.align
+    }
 
     let sortIcon = 'sort'
     if (this.props.column.sortDirection === 'asc') {

@@ -49,7 +49,7 @@ class Tr extends Component {
       hidden = treeConfig.initExpandLevel !== -1 && treeConfig.initExpandLevel < level
     }
 
-    if (grid && grid.props.rowSortable) {
+    if (grid && grid.props.rowSortable && !grid.props.rowSortable.customHandler) {
       children.push({
         component: Td,
         classes: {
@@ -57,7 +57,7 @@ class Tr extends Component {
         },
         data: {
           component: 'Icon',
-          type: 'swap',
+          type: 'drag',
           attrs: {
             style: {
               cursor: 'pointer',

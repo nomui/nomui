@@ -8166,6 +8166,10 @@ table.nom-table.p-bordered {
 .nom-grid .nom-expanded-tr .nom-table-expanded-tr-td-compact {
   padding: 0;
 }
+.nom-grid-drag-handler {
+  cursor: pointer;
+  width: 24px;
+}
 .nom-icon {
   display: inline-flex;
   align-items: center;
@@ -8614,13 +8618,16 @@ textarea .nom-input {
 .nom-textbox.p-auto-width > .nom-field-content {
   flex: none;
   width: auto;
+  max-width: 100%;
 }
 .nom-textbox.p-auto-width .nom-textbox-affix-wrapper {
   width: auto;
   flex: none;
+  max-width: 100%;
 }
 .nom-textbox.p-auto-width .nom-textbox-affix-wrapper .nom-input {
   width: auto;
+  max-width: calc(100% - 16px);
   flex: none;
   box-sizing: content-box;
 }

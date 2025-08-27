@@ -10,6 +10,7 @@ define([
   './sort-cacheable.js',
   './filter.js',
   './row-sortable.js',
+  './row-sortable-custom.js',
   './resizable.js',
   './frozen-header.js',
   './pin.js',

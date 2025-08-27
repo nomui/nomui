@@ -21,7 +21,11 @@ class ColGroup extends Component {
   _config() {
     const children = []
 
-    if (this.table.grid && this.table.grid.props.rowSortable) {
+    if (
+      this.table.grid &&
+      this.table.grid.props.rowSortable &&
+      !this.table.grid.props.rowSortable.customHandler
+    ) {
       children.push({
         component: ColGroupCol,
         column: {

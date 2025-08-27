@@ -20,7 +20,11 @@ class TheadTr extends Component {
     const { columns } = this.props
     const thArr = []
 
-    if (this.table.grid && this.table.grid.props.rowSortable) {
+    if (
+      this.table.grid &&
+      this.table.grid.props.rowSortable &&
+      !this.table.grid.props.rowSortable.customHandler
+    ) {
       thArr.push({
         component: Th,
       })

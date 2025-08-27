@@ -1791,6 +1791,16 @@ class Grid extends Component {
       })
     return arr
   }
+
+  static getRowSortableHandler() {
+    return {
+      component: 'Icon',
+      classes: {
+        'nom-grid-drag-handler': true,
+      },
+      type: 'drag',
+    }
+  }
 }
 
 Grid.defaults = {
