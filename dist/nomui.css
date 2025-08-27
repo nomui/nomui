@@ -8611,6 +8611,19 @@ textarea .nom-input {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+.nom-textbox.p-auto-width > .nom-field-content {
+  flex: none;
+  width: auto;
+}
+.nom-textbox.p-auto-width .nom-textbox-affix-wrapper {
+  width: auto;
+  flex: none;
+}
+.nom-textbox.p-auto-width .nom-textbox-affix-wrapper .nom-input {
+  width: auto;
+  flex: none;
+  box-sizing: content-box;
+}
 .nom-textbox .nom-textbox-affix-wrapper {
   display: flex;
   flex: 1;

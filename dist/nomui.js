@@ -9940,7 +9940,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ];
       this.setProps({
         attrs: { readonly: readonly || null },
-        classes: { "p-with-button": buttonProps !== null },
+        classes: {
+          "p-with-button": buttonProps !== null,
+          "p-auto-width": !!this.props.autoWidth,
+        },
         control: {
           disabled: disabled,
           children: affixWrapper
@@ -9964,6 +9967,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       const that = this;
+      if (this.props.autoWidth) {
+        this._initAutoWidth();
+      }
       if (this.props.onEnter) {
         this.input._on("keydown", function (event) {
           if (event.keyCode && event.keyCode === 13) {
@@ -10020,6 +10026,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       this.currentValue = newValue;
+      if (this.props.autoWidth) {
+        this._updateAutoWidth();
+      }
     }
     focus() {
       this.input.focus();
@@ -10031,6 +10040,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.hasWordLimit) {
         this._updateWodLimit();
       }
+      if (this.props.autoWidth) {
+        this._updateAutoWidth();
+      }
     }
     _onBlur() {
       this._callHandler(this.props.onBlur);
@@ -10040,6 +10052,26 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _enable() {
       this.input.enable();
+    }
+    _initAutoWidth() {
+      const inputEl = this.input.element;
+      this.measureSpan = document.createElement("span");
+      this.measureSpan.style.cssText = `
+      position:absolute;
+      visibility:hidden;
+      white-space:pre;
+      font-size:${window.getComputedStyle(inputEl).fontSize};
+      font-family:${window.getComputedStyle(inputEl).fontFamily};
+    `;
+      document.body.appendChild(this.measureSpan);
+      this._updateAutoWidth();
+    }
+    _updateAutoWidth() {
+      const text = this.getText() || this.props.placeholder || "";
+      this.measureSpan.textContent = text;
+      const width = this.measureSpan.offsetWidth + 12;
+      const minWidth = this.props.autoWidth.minWidth || 200;
+      this.input.element.style.width = `${Math.max(width, minWidth)}px`;
     }
   }
   Textbox.defaults = {
@@ -10054,6 +10086,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     restrictInput: false,
     placeholder: null,
     value: null,
+    autoWidth: false, // 宽度自适应内容
     htmlType: "text",
     onEnter: null,
     allowClear: true,

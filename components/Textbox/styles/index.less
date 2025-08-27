@@ -108,6 +108,25 @@
     }
   }
 
+  &.p-auto-width {
+
+    >.nom-field-content {
+      flex: none;
+      width: auto;
+    }
+
+    .nom-textbox-affix-wrapper {
+      width: auto;
+      flex: none;
+
+      .nom-input {
+        width: auto;
+        flex: none;
+        box-sizing: content-box;
+      }
+    }
+  }
+
   .nom-textbox-affix-wrapper {
     display: flex;
     flex: 1;
