@@ -46,7 +46,7 @@ class ExpandedTr extends Component {
         })
       }, 0)
       let colspan = columns.length
-      if (this.grid && this.grid.props.rowSortable) {
+      if (this.grid && this.grid.props.rowSortable && !this.grid.props.rowSortable.customHandler) {
         colspan += 1
       }
       this.setProps({
