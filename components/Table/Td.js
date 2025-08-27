@@ -370,7 +370,10 @@ class Td extends Component {
         this.props.column.showTitle !== false) ||
       this.props.column.showTitle === true
 
-    const columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
+    let columnAlign = this.table.hasGrid ? this.table.grid.props.columnAlign : 'left'
+    if (column.isChecker && !column.toolbar && this.table.grid.props.rowCheckable.align) {
+      columnAlign = this.table.grid.props.rowCheckable.align
+    }
 
     const isExcelMode = this.table.hasGrid && this.table.grid.props.excelMode
 
