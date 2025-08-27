@@ -133,6 +133,10 @@ class TreeNode extends Component {
       onlyleaf,
     } = this.tree.props.nodeCheckable
 
+    if (onlyleaf && !this.isLeaf) {
+      return
+    }
+
     if (checked === true) {
       return
     }
@@ -170,6 +174,10 @@ class TreeNode extends Component {
       cascadeUncheckParent,
       onlyleaf,
     } = this.tree.props.nodeCheckable
+
+    if (onlyleaf && !this.isLeaf) {
+      return
+    }
 
     if (checked === false && this.props.partChecked === false) {
       return
