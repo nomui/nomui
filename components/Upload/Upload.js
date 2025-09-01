@@ -71,9 +71,15 @@ class Upload extends Component {
 
     const triggerProps = Component.extendProps(defaults, trigger || defaultBtn)
 
-    const folderAttrs = this.props.folder ? {
-      webkitdirectory: true, mozdirectory: true, msdirectory: true, odirectory: true, directory: true
-    } : {}
+    const folderAttrs = this.props.folder
+      ? {
+          webkitdirectory: true,
+          mozdirectory: true,
+          msdirectory: true,
+          odirectory: true,
+          directory: true,
+        }
+      : {}
 
     this.setProps({
       children: [
@@ -91,7 +97,7 @@ class Upload extends Component {
             onclick: (e) => {
               e.stopPropagation()
             },
-            ...folderAttrs
+            ...folderAttrs,
           },
         },
         triggerProps,
@@ -131,14 +137,15 @@ class Upload extends Component {
         this._cancleLoading(noUploading)
         if (this.props.showErrorMsg) {
           new nomui.Message({
-            content: isString(file.response) && file.response.length ? file.response : this.props.uploadFailText,
+            content:
+              isString(file.response) && file.response.length
+                ? file.response
+                : this.props.uploadFailText,
             type: 'error',
           })
         }
-
       }
-    }
-    else {
+    } else {
       this._cancleLoading(true)
     }
   }
@@ -186,6 +193,10 @@ class Upload extends Component {
     const { files } = e.target
     const uploadedFiles = this.fileList
     this._uploadFiles(files, uploadedFiles)
+
+    if (this.inputFile && this.inputFile.element) {
+      this.inputFile.element.value = ''
+    }
   }
 
   _uploadFiles(files, uploadedFiles) {
@@ -195,7 +206,6 @@ class Upload extends Component {
     const uploadedFileList = Array.from(uploadedFiles)
 
     fileList = fileList.map((e) => {
-
       if (!e.uuid) {
         e.uuid = getUUID()
       }
@@ -227,9 +237,14 @@ class Upload extends Component {
 
       let status = 'pending'
 
-      if (this.fileList.filter(x => {
-        return x.status === 'done' && this.inQueueIds.includes(x.uuid)
-      }).length + this.failedFileList.length + this.unSupportedFileList.length === this.inQueueIds.length) {
+      if (
+        this.fileList.filter((x) => {
+          return x.status === 'done' && this.inQueueIds.includes(x.uuid)
+        }).length +
+          this.failedFileList.length +
+          this.unSupportedFileList.length ===
+        this.inQueueIds.length
+      ) {
         status = 'done'
       }
 
@@ -239,7 +254,7 @@ class Upload extends Component {
           fileList: [...this.fileList],
           failedFileList: this.failedFileList,
           unSupportedFileList: this.unSupportedFileList,
-          status
+          status,
         })
       }
 
@@ -320,9 +335,14 @@ class Upload extends Component {
 
     let status = 'pending'
 
-    if (this.fileList.filter(x => {
-      return x.status === 'done' && this.inQueueIds.includes(x.uuid)
-    }).length + this.failedFileList.length + this.unSupportedFileList.length === this.inQueueIds.length) {
+    if (
+      this.fileList.filter((x) => {
+        return x.status === 'done' && this.inQueueIds.includes(x.uuid)
+      }).length +
+        this.failedFileList.length +
+        this.unSupportedFileList.length ===
+      this.inQueueIds.length
+    ) {
       status = 'done'
     }
 
@@ -332,7 +352,7 @@ class Upload extends Component {
         fileList: [...this.fileList],
         failedFileList: this.failedFileList,
         unSupportedFileList: this.unSupportedFileList,
-        status
+        status,
       })
     }
   }
@@ -409,12 +429,13 @@ class Upload extends Component {
     currentFile.status = 'error'
     currentFile.response = response
 
-    if (this.failedFileList.findIndex(x => {
-      return x.uuid === file.uuid
-    }) === -1) {
+    if (
+      this.failedFileList.findIndex((x) => {
+        return x.uuid === file.uuid
+      }) === -1
+    ) {
       this.failedFileList.push({ ...currentFile, response })
     }
-
 
     this._watchChange({
       file: currentFile,
@@ -464,8 +485,7 @@ Upload.defaults = {
   uploadFailText: '上传失败！',
   showErrorMsg: true,
   onTypeCheckFailed: null,
-  unSupportedTypeText: '不支持此格式，请重新上传。'
-
+  unSupportedTypeText: '不支持此格式，请重新上传。',
 }
 
 Component.register(Upload)
