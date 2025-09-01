@@ -37047,6 +37047,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { files } = e.target;
       const uploadedFiles = this.fileList;
       this._uploadFiles(files, uploadedFiles);
+      if (this.inputFile && this.inputFile.element) {
+        this.inputFile.element.value = "";
+      }
     }
     _uploadFiles(files, uploadedFiles) {
       this.inQueueIds = []; // 转为数组
