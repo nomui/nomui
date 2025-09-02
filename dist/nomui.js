@@ -36206,6 +36206,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         multiple,
         initExpandLevel,
         popupWidth,
+        extraTools,
       } = this.selectControl.props;
       let { maxPopupWidth } = this.selectControl.props;
       if (isNumeric(maxPopupWidth)) {
@@ -36287,6 +36288,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               },
             },
           },
+          footer: extraTools
+            ? {
+                classes: { "nom-tree-select-popup-extra-tools": true },
+                children: isFunction(extraTools)
+                  ? extraTools({ popup: this, inst: this.selectControl })
+                  : extraTools,
+              }
+            : false,
         },
       });
       super._config();

@@ -10983,6 +10983,14 @@ textarea .nom-textarea {
 .nom-tree-select-popup > .nom-layout {
   max-height: 300px;
 }
+.nom-tree-select-popup > .nom-layout .nom-tree-select-popup-extra-tools {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3rem !important;
+  padding: 0.5rem;
+}
 .nom-tree-select-popup .nom-tree .nom-tree-node:not(.s-disabled).filter-node > .nom-tree-node-content .nom-tree-node-content-text {
   color: inherit;
   font-weight: 500;

@@ -2,7 +2,7 @@ import Component from '../Component/index'
 import Layout from '../Layout/index'
 import Popup from '../Popup/index'
 import Textbox from '../Textbox/index'
-import { clone, isNumeric } from '../util/index'
+import { clone, isFunction, isNumeric } from '../util/index'
 
 class TreeSelectPopup extends Popup {
   constructor(props, ...mixins) {
@@ -29,6 +29,7 @@ class TreeSelectPopup extends Popup {
       multiple,
       initExpandLevel,
       popupWidth,
+      extraTools,
     } = this.selectControl.props
 
     let { maxPopupWidth } = this.selectControl.props
@@ -39,8 +40,7 @@ class TreeSelectPopup extends Popup {
     let w = `${this.selectControl.control.offsetWidth()}px`
     if (isNumeric(popupWidth)) {
       w = `${popupWidth}px`
-    }
-    else if (popupWidth === 'auto') {
+    } else if (popupWidth === 'auto') {
       w = 'auto'
     }
 
@@ -48,57 +48,57 @@ class TreeSelectPopup extends Popup {
       attrs: {
         style: {
           width: w,
-          maxWidth: maxPopupWidth || `${this.selectControl.control.offsetWidth()}px`
+          maxWidth: maxPopupWidth || `${this.selectControl.control.offsetWidth()}px`,
         },
       },
       children: {
         component: Layout,
         header: searchable
           ? {
-            children: {
-              component: Textbox,
-              placeholder: searchable.placeholder,
-              _created: (inst) => {
-                this.selectControl.searchBox = inst
-              },
-              onValueChange: ({ newValue }) => {
-                this.timer && clearTimeout(this.timer)
-                this.timer = setTimeout(() => {
-                  const loading = new nomui.Loading({
-                    container: this.selectControl.tree.parent,
-                  })
-                  const result = searchable.filter({
-                    inputValue: newValue,
-                    options: options,
-                    sender: this.selectControl,
-                  })
-
-                  if (result && result.then) {
-                    return result
-                      .then((value) => {
-                        this.selectControl.tree.update({
-                          initExpandLevel: newValue ? -1 : initExpandLevel, // 搜索时展开节点层级
-                          data: value,
-                        })
-                        // 更新 optionsMap
-                        this.selectControl.getOptionsMap()
-                        loading && loading.remove()
-                      })
-                      .catch(() => {
-                        loading && loading.remove()
-                      })
-                  }
-                  loading && loading.remove()
-
-                  result &&
-                    this.selectControl.tree.update({
-                      initExpandLevel: newValue ? -1 : initExpandLevel, // 搜索时展开节点层级
-                      data: result,
+              children: {
+                component: Textbox,
+                placeholder: searchable.placeholder,
+                _created: (inst) => {
+                  this.selectControl.searchBox = inst
+                },
+                onValueChange: ({ newValue }) => {
+                  this.timer && clearTimeout(this.timer)
+                  this.timer = setTimeout(() => {
+                    const loading = new nomui.Loading({
+                      container: this.selectControl.tree.parent,
                     })
-                }, 300)
+                    const result = searchable.filter({
+                      inputValue: newValue,
+                      options: options,
+                      sender: this.selectControl,
+                    })
+
+                    if (result && result.then) {
+                      return result
+                        .then((value) => {
+                          this.selectControl.tree.update({
+                            initExpandLevel: newValue ? -1 : initExpandLevel, // 搜索时展开节点层级
+                            data: value,
+                          })
+                          // 更新 optionsMap
+                          this.selectControl.getOptionsMap()
+                          loading && loading.remove()
+                        })
+                        .catch(() => {
+                          loading && loading.remove()
+                        })
+                    }
+                    loading && loading.remove()
+
+                    result &&
+                      this.selectControl.tree.update({
+                        initExpandLevel: newValue ? -1 : initExpandLevel, // 搜索时展开节点层级
+                        data: result,
+                      })
+                  }, 300)
+                },
               },
-            },
-          }
+            }
           : null,
         body: {
           children: {
@@ -118,6 +118,16 @@ class TreeSelectPopup extends Popup {
             },
           },
         },
+        footer: extraTools
+          ? {
+              classes: {
+                'nom-tree-select-popup-extra-tools': true,
+              },
+              children: isFunction(extraTools)
+                ? extraTools({ popup: this, inst: this.selectControl })
+                : extraTools,
+            }
+          : false,
       },
     })
 

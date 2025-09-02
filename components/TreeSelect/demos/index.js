@@ -2,6 +2,7 @@ define([
   './basic.js',
   './onlyleaf.js',
   './multiple.js',
+  './extra-tools.js',
   './allow-clear.js',
   './flat-options.js',
   './searchable-local.js',
