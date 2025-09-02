@@ -1,13 +1,13 @@
 .nom-tree-select {
-  &.p-label-align-right > .nom-field-label + .nom-field-content {
+  &.p-label-align-right>.nom-field-label+.nom-field-content {
     width: 0;
   }
 
-  &.p-label-align-left > .nom-field-label + .nom-field-content {
+  &.p-label-align-left>.nom-field-label+.nom-field-content {
     width: 0;
   }
 
-  > .nom-field-content {
+  >.nom-field-content {
     .nom-control {
       position: relative;
       height: 100%;
@@ -85,14 +85,22 @@
 .nom-tree-select-popup {
   padding: 5px 5px;
 
-  > .nom-layout {
+  >.nom-layout {
     max-height: 300px;
+
+    .nom-tree-select-popup-extra-tools {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 3rem !important;
+      padding: 0.5rem;
+
+    }
   }
 
   .nom-tree {
-    .nom-tree-node:not(.s-disabled).filter-node
-      > .nom-tree-node-content
-      .nom-tree-node-content-text {
+    .nom-tree-node:not(.s-disabled).filter-node>.nom-tree-node-content .nom-tree-node-content-text {
       color: inherit;
       .nom-preset-bold;
     }
@@ -137,6 +145,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 2.5px 0;
+
   .nom-tag.p-size-xs {
     padding: 0.11rem 0.25rem;
     background: var(--nom-select-selected-item-bg);
@@ -152,12 +161,12 @@
   }
 }
 
-.p-inline > .nom-field-content > .nom-control > .nom-tree-select {
-  &.p-label-align-right > .nom-field-label + .nom-field-content {
+.p-inline>.nom-field-content>.nom-control>.nom-tree-select {
+  &.p-label-align-right>.nom-field-label+.nom-field-content {
     width: 100%;
   }
 
-  &.p-label-align-left > .nom-field-label + .nom-field-content {
+  &.p-label-align-left>.nom-field-label+.nom-field-content {
     width: 100%;
   }
 }
