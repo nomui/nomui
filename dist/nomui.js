@@ -20730,7 +20730,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.table.grid.props.rowSortable &&
         !this.table.grid.props.rowSortable.customHandler
       ) {
-        children.push({ component: ColGroupCol, column: { width: 30 } });
+        children.push({ component: ColGroupCol, column: { width: 36 } });
       }
       if (Array.isArray(this.columns)) {
         this.colList = [];
