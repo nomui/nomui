@@ -29,7 +29,7 @@ class ColGroup extends Component {
       children.push({
         component: ColGroupCol,
         column: {
-          width: 30,
+          width: 36,
         },
       })
     }
