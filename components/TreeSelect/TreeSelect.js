@@ -19,6 +19,9 @@ class TreeSelect extends Field {
     if (this.props.treeCheckable) {
       this.props.multiple = true
     }
+    if (this.tree && this.props && this.props.options) {
+      this.tree.update({ data: this.props.options })
+    }
     this.getOptionsMap()
     const children = this._getContentChildren()
     this.setProps({
