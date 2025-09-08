@@ -36602,7 +36602,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               gutter: "sm",
               itemDefaults: {
                 key() {
-                  return this.props[that.props.treeDataFields.value];
+                  return this.props[that.props.treeDataFields.key];
                 },
                 _config: function () {
                   this.setProps({
@@ -36675,7 +36675,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _getCheckedChildNodes(nodes) {
       const checkedNodes = [];
       nodes.forEach((node) => {
-        if (!node.isChecked()) {
+        if (node.isChecked()) {
           checkedNodes.push(node.key);
         }
         if (node.getChildNodes().length) {

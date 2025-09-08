@@ -303,7 +303,7 @@ class TreeSelect extends Field {
               gutter: 'sm',
               itemDefaults: {
                 key() {
-                  return this.props[that.props.treeDataFields.value]
+                  return this.props[that.props.treeDataFields.key]
                 },
                 _config: function () {
                   this.setProps({
@@ -379,7 +379,7 @@ class TreeSelect extends Field {
   _getCheckedChildNodes(nodes) {
     const checkedNodes = []
     nodes.forEach((node) => {
-      if (!node.isChecked()) {
+      if (node.isChecked()) {
         checkedNodes.push(node.key)
       }
       if (node.getChildNodes().length) {
