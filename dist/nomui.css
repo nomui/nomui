@@ -9341,10 +9341,12 @@ textarea .nom-textarea {
   }
 }
 .nom-select.p-label-align-right > .nom-field-label + .nom-field-content {
-  width: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .nom-select.p-label-align-left > .nom-field-label + .nom-field-content {
-  width: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .nom-select > .nom-field-content .nom-control {
   position: relative;
@@ -10912,10 +10914,12 @@ textarea .nom-textarea {
   overflow: auto;
 }
 .nom-tree-select.p-label-align-right > .nom-field-label + .nom-field-content {
-  width: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .nom-tree-select.p-label-align-left > .nom-field-label + .nom-field-content {
-  width: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .nom-tree-select > .nom-field-content .nom-control {
   position: relative;
@@ -11612,10 +11616,12 @@ textarea .nom-textarea {
   color: var(--nom-color-warning);
 }
 .nom-cascader.p-label-align-right > .nom-field-label + .nom-field-content {
-  width: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .nom-cascader.p-label-align-left > .nom-field-label + .nom-field-content {
-  width: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .nom-cascader > .nom-field-content .nom-control {
   position: relative;
