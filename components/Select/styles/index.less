@@ -1,13 +1,13 @@
 .nom-select {
-  &.p-label-align-right > .nom-field-label + .nom-field-content {
-    width: 0;
+  &.p-label-align-right>.nom-field-label+.nom-field-content {
+    width: min-content;
   }
 
-  &.p-label-align-left > .nom-field-label + .nom-field-content {
-    width: 0;
+  &.p-label-align-left>.nom-field-label+.nom-field-content {
+    width: min-content;
   }
 
-  > .nom-field-content {
+  >.nom-field-content {
     .nom-control {
       position: relative;
       min-height: @input-height-base;
@@ -139,10 +139,10 @@
 }
 
 .nom-select-popup {
-  > .nom-layout {
+  >.nom-layout {
     max-height: 300px;
 
-    > .nom-layout-body {
+    >.nom-layout-body {
       overflow-x: hidden;
     }
   }
@@ -154,7 +154,8 @@
     justify-content: space-between;
     min-height: 3rem !important;
     padding: 0.5rem;
-    > div:not(.nom-select-selectall) {
+
+    >div:not(.nom-select-selectall) {
       flex-grow: 1;
     }
   }
@@ -212,12 +213,12 @@
   }
 }
 
-.p-inline > .nom-field-content > .nom-control > .nom-select {
-  &.p-label-align-right > .nom-field-label + .nom-field-content {
+.p-inline>.nom-field-content>.nom-control>.nom-select {
+  &.p-label-align-right>.nom-field-label+.nom-field-content {
     width: 100%;
   }
 
-  &.p-label-align-left > .nom-field-label + .nom-field-content {
+  &.p-label-align-left>.nom-field-label+.nom-field-content {
     width: 100%;
   }
 }
