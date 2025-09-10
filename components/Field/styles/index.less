@@ -184,6 +184,7 @@
   @media (min-width: @screen-sm-min) {
     &.p-label-align-top {
       flex-direction: column;
+
     }
 
     &.p-label-align-right,
@@ -258,13 +259,30 @@
 
 .nom-field {
 
-  // &.s-allow-read-mode {
-  //   >.nom-field-content {
-  //     flex-grow: 0;
-  //     min-width: fit-content;
-  //     flex-shrink: 0;
-  //   }
-  // }
+  &.s-allow-read-mode {
+    &.p-label-align-top {
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      >.nom-field-label {
+        flex-basis: 100%;
+      }
+
+      &:not(.nom-field-action-align-end) {
+        >.nom-field-action {
+          flex-basis: 100%;
+        }
+
+      }
+
+    }
+
+    // >.nom-field-content {
+    //   flex-grow: 0;
+    //   min-width: fit-content;
+    //   flex-shrink: 0;
+    // }
+  }
 
   >.nom-field-read-mode-btns {
     flex-shrink: 0;

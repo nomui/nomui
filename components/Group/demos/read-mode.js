@@ -16,6 +16,7 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
             name: 'Jerry',
           },
           fieldDefaults: {
+            labelAlign: 'top',
             toggleReadMode: true,
           },
           fields: [

@@ -200,8 +200,8 @@ class Field extends Component {
           value: this.props.value,
           hidden: this.props.labelExpandable && this.props.labelExpandable.expanded === false,
         },
-        actionProps && n(actionProps, [FieldActionMixin]),
         toggleReadonlyProps,
+        actionProps && n(actionProps, [FieldActionMixin]),
       ],
     })
   }
