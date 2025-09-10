@@ -16,6 +16,7 @@ define([
   './outline.js',
   './styles.js',
   './uistyle.js',
+  './read-mode.js',
 ], function () {
   return {
     title: 'Group',

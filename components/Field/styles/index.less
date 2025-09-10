@@ -256,29 +256,58 @@
 }
 
 
-.nom-field.s-read-mode {
+.nom-field {
+
+  // &.s-allow-read-mode {
+  //   >.nom-field-content {
+  //     flex-grow: 0;
+  //     min-width: fit-content;
+  //     flex-shrink: 0;
+  //   }
+  // }
 
   >.nom-field-read-mode-btns {
-    .nom-field-read-mode-btns-reset {
-      display: none;
-    }
+    flex-shrink: 0;
   }
 
-  >.nom-field-content {
-    pointer-events: none;
-    flex-grow: 0 !important;
+  &.s-read-mode {
 
-    >.nom-control {
-      border-color: transparent !important;
+    >.nom-field-read-mode-btns {
 
-      input[type='text'] {
-        border-color: transparent !important;
+      .nom-field-read-mode-btns-reset {
+        display: none;
       }
     }
 
-    .p-type-times,
-    .p-type-down {
-      display: none;
+    >.nom-field-content {
+      pointer-events: none;
+      // flex-grow: 0;
+      // min-width: fit-content;
+      // flex-shrink: 0;
+
+      >.nom-control {
+        border-color: transparent !important;
+
+        >input[type='text'] {
+          border-color: transparent !important;
+        }
+
+        >.nom-textbox-affix-wrapper {
+          border-color: transparent !important;
+
+          >input[type='text'] {
+            border-color: transparent !important;
+          }
+        }
+
+      }
+
+      .p-type-times,
+      .p-type-down {
+        display: none;
+      }
     }
+
   }
+
 }

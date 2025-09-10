@@ -62,6 +62,10 @@ class Field extends Component {
       this.props.labelExpandable = false
     }
 
+    if (this.props.readonly) {
+      this.props.toggleReadMode = false
+    }
+
     const {
       label,
       labelAlign,
@@ -186,7 +190,8 @@ class Field extends Component {
         's-compact': this.props.compact,
         [`nom-field-action-align-${actionAlign || 'default'}`]: true,
         'nom-field-with-action': !!actionProps,
-        's-read-mode': this.isReadMode === true,
+        's-read-mode': !!toggleReadMode && this.isReadMode === true,
+        's-allow-read-mode': !!toggleReadMode,
       },
       children: [
         labelProps,
