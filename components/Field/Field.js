@@ -48,6 +48,9 @@ class Field extends Component {
     }
     this.rootField = this.group === null ? this : this.group.rootField
     this.rules = []
+    if (this.props.toggleReadMode) {
+      this.isReadMode = true
+    }
   }
 
   _config() {
@@ -73,6 +76,7 @@ class Field extends Component {
       labelExpandable,
       labelUiStyle,
       actionAlign,
+      toggleReadMode,
     } = this.props
     const showLabel = notShowLabel === false && label !== undefined && label !== null
 
@@ -136,6 +140,43 @@ class Field extends Component {
       }
     }
 
+    let toggleReadonlyProps = null
+
+    if (toggleReadMode) {
+      toggleReadonlyProps = {
+        classes: { 'nom-field-read-mode-btns': true },
+        children: [
+          {
+            component: 'Button',
+            ref: (c) => {
+              this.toggleReadModeBtnRef = c
+            },
+            icon: this.isReadMode ? 'edit' : 'check',
+            type: 'text',
+            onClick: () => {
+              if (this.isReadMode) {
+                this._setReadMode(false)
+              } else {
+                this._setReadMode(true)
+              }
+            },
+          },
+          {
+            component: 'Button',
+            type: 'text',
+            icon: 'close',
+            classes: {
+              'nom-field-read-mode-btns-reset': true,
+            },
+            onClick: () => {
+              this.reset()
+              this._setReadMode(true)
+            },
+          },
+        ],
+      }
+    }
+
     this.setProps({
       attrs: {
         'data-field-name': this.name,
@@ -145,6 +186,7 @@ class Field extends Component {
         's-compact': this.props.compact,
         [`nom-field-action-align-${actionAlign || 'default'}`]: true,
         'nom-field-with-action': !!actionProps,
+        's-read-mode': this.isReadMode === true,
       },
       children: [
         labelProps,
@@ -154,6 +196,7 @@ class Field extends Component {
           hidden: this.props.labelExpandable && this.props.labelExpandable.expanded === false,
         },
         actionProps && n(actionProps, [FieldActionMixin]),
+        toggleReadonlyProps,
       ],
     })
   }
@@ -164,6 +207,18 @@ class Field extends Component {
       if (!postion || !postion.length || postion === 'static') {
         this.element.style.position = 'relative'
       }
+    }
+  }
+
+  _setReadMode(isReadMode) {
+    if (isReadMode) {
+      this.toggleReadModeBtnRef.update({ icon: 'edit' })
+      this.isReadMode = true
+      this.element.classList.add('s-read-mode')
+    } else {
+      this.toggleReadModeBtnRef.update({ icon: 'check' })
+      this.isReadMode = false
+      this.element.classList.remove('s-read-mode')
     }
   }
 

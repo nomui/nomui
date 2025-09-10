@@ -2,9 +2,17 @@
   display: flex;
   outline: none;
 
+  >.nom-field-read-mode-btns {
+    align-self: center;
+    vertical-align: middle;
+
+
+  }
+
   &.s-readonly {
     cursor: default !important;
     position: relative;
+
     &::after {
       content: '';
       display: block;
@@ -18,16 +26,16 @@
   }
 
   &.p-plain {
-    > .nom-field-label {
+    >.nom-field-label {
       padding: 0;
     }
 
-    > .nom-field-content {
+    >.nom-field-content {
       padding: 0;
     }
   }
 
-  > .nom-field-label {
+  >.nom-field-label {
     padding: 0.5rem 0.5rem;
 
     &.has-actions {
@@ -36,12 +44,12 @@
       justify-content: space-between;
     }
 
-    > .nom-label {
+    >.nom-label {
       display: block;
     }
   }
 
-  > .nom-field-content {
+  >.nom-field-content {
     position: relative;
     flex: 1;
     flex-grow: 1;
@@ -60,7 +68,7 @@
       opacity: 1;
     }
 
-    > .nom-control {
+    >.nom-control {
       &:focus-within {
         border-color: var(--nom-color-primary);
       }
@@ -86,11 +94,11 @@
       }
     }
 
-    > .nom-control-before.nom-list {
+    >.nom-control-before.nom-list {
       padding: 0.5rem 0.5rem;
     }
 
-    > .nom-control-after.nom-list {
+    >.nom-control-after.nom-list {
       padding: 0.5rem 0.5rem;
     }
 
@@ -101,7 +109,7 @@
     }
   }
 
-  > .nom-field-action.nom-list {
+  >.nom-field-action.nom-list {
     padding: 0.5rem 0.5rem;
   }
 
@@ -110,8 +118,8 @@
   }
 
   &.p-required:not(.p-required-mark-optional) {
-    > .nom-field-label {
-      > .nom-label::before {
+    >.nom-field-label {
+      >.nom-label::before {
         display: inline-block;
         margin-right: 4px;
         color: var(--nom-color-danger);
@@ -124,14 +132,14 @@
   }
 
   &.s-invalid {
-    > .nom-field-content {
+    >.nom-field-content {
       color: var(--nom-color-text-0);
 
-      > .nom-control {
+      >.nom-control {
         background-color: rgba(var(--nom-red-5), 0.1);
         border-color: var(--nom-color-danger) !important;
 
-        > input {
+        >input {
           background: transparent;
           border-color: var(--nom-color-danger);
         }
@@ -139,11 +147,11 @@
     }
   }
 
-  &.p-label-align-top > .nom-field-label {
+  &.p-label-align-top>.nom-field-label {
     display: flex;
     align-items: center;
 
-    > .nom-label {
+    >.nom-label {
       flex: 1;
       flex-grow: 1 !important;
     }
@@ -161,13 +169,14 @@
   &.p-label-align-top.nom-field-action-align-end {
     flex-direction: row;
     flex-wrap: wrap;
-    > .nom-field-label {
+
+    >.nom-field-label {
       flex-basis: 100%;
     }
   }
 
   &.s-compact {
-    > .nom-field-content {
+    >.nom-field-content {
       padding: 0;
     }
   }
@@ -179,31 +188,31 @@
 
     &.p-label-align-right,
     &.p-label-align-left {
-      > .nom-field-label {
+      >.nom-field-label {
         flex: 0 0 13rem;
         max-width: 13rem;
         margin-bottom: 0;
 
-        > .nom-label {
+        >.nom-label {
           padding: (@padding-y-base);
         }
       }
     }
 
     &.p-label-align-right {
-      > .nom-field-label {
+      >.nom-field-label {
         text-align: right;
       }
     }
 
     &.p-label-align-left {
-      > .nom-field-label {
+      >.nom-field-label {
         text-align: left;
       }
 
       &.p-required {
-        > .nom-field-label {
-          > .nom-label {
+        >.nom-field-label {
+          >.nom-label {
             position: relative;
 
             &::before {
@@ -242,6 +251,34 @@
   &[tooltip-align='bottom'] {
     .nom-tooltip-arrow {
       top: 2px;
+    }
+  }
+}
+
+
+.nom-field.s-read-mode {
+
+  >.nom-field-read-mode-btns {
+    .nom-field-read-mode-btns-reset {
+      display: none;
+    }
+  }
+
+  >.nom-field-content {
+    pointer-events: none;
+    flex-grow: 0 !important;
+
+    >.nom-control {
+      border-color: transparent !important;
+
+      input[type='text'] {
+        border-color: transparent !important;
+      }
+    }
+
+    .p-type-times,
+    .p-type-down {
+      display: none;
     }
   }
 }
