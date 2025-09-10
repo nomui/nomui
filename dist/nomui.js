@@ -9335,6 +9335,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this.rootField = this.group === null ? this : this.group.rootField;
       this.rules = [];
+      if (this.props.enableReadMode) {
+        this.isReadMode = true;
+      }
     }
     _config() {
       delete this.errorTip;
@@ -9348,6 +9351,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       );
       if (this.props.labelAlign !== "top" || !this.props.label) {
         this.props.labelExpandable = false;
+      }
+      if (this.props.readonly) {
+        this.props.enableReadMode = false;
       }
       const {
         label,
@@ -9363,6 +9369,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         labelExpandable,
         labelUiStyle,
         actionAlign,
+        enableReadMode,
       } = this.props;
       const showLabel =
         notShowLabel === false && label !== undefined && label !== null; // 处理关联字段
@@ -9417,6 +9424,39 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           actionProps = Component.extendProps(actionProps, action);
         }
       }
+      let toggleReadonlyProps = null;
+      if (enableReadMode) {
+        toggleReadonlyProps = {
+          classes: { "nom-field-read-mode-btns": true },
+          children: [
+            {
+              component: "Button",
+              ref: (c) => {
+                this.enableReadModeBtnRef = c;
+              },
+              icon: this.isReadMode ? "edit" : "check",
+              type: "text",
+              onClick: () => {
+                if (this.isReadMode) {
+                  this._setReadMode(false);
+                } else {
+                  this._setReadMode(true);
+                }
+              },
+            },
+            {
+              component: "Button",
+              type: "text",
+              icon: "close",
+              classes: { "nom-field-read-mode-btns-reset": true },
+              onClick: () => {
+                this.reset();
+                this._setReadMode(true);
+              },
+            },
+          ],
+        };
+      }
       this.setProps({
         attrs: { "data-field-name": this.name },
         classes: {
@@ -9424,6 +9464,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "s-compact": this.props.compact,
           [`nom-field-action-align-${actionAlign || "default"}`]: true,
           "nom-field-with-action": !!actionProps,
+          "s-read-mode": !!enableReadMode && this.isReadMode === true,
+          "s-allow-read-mode": !!enableReadMode,
+          "s-allow-read-mode-hover":
+            enableReadMode && enableReadMode.hover === true,
         },
         children: [
           labelProps,
@@ -9434,6 +9478,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               this.props.labelExpandable &&
               this.props.labelExpandable.expanded === false,
           },
+          toggleReadonlyProps,
           actionProps && n$1(actionProps, [FieldActionMixin]),
         ],
       });
@@ -9444,6 +9489,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         if (!postion || !postion.length || postion === "static") {
           this.element.style.position = "relative";
         }
+      }
+    }
+    _setReadMode(isReadMode) {
+      if (isReadMode) {
+        this.enableReadModeBtnRef.update({ icon: "edit" });
+        this.isReadMode = true;
+        this.element.classList.add("s-read-mode");
+      } else {
+        this.enableReadModeBtnRef.update({ icon: "check" });
+        this.isReadMode = false;
+        this.element.classList.remove("s-read-mode");
       }
     }
     _handleDependencies() {

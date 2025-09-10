@@ -10241,6 +10241,19 @@ textarea .nom-textarea {
   display: flex;
   outline: none;
 }
+.nom-field > .nom-field-read-mode-btns {
+  align-self: center;
+  vertical-align: middle;
+}
+.nom-field.s-allow-read-mode-hover > .nom-field-read-mode-btns {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity ease-in 0.1s;
+}
+.nom-field.s-allow-read-mode-hover:hover > .nom-field-read-mode-btns {
+  visibility: visible;
+  opacity: 1;
+}
 .nom-field.s-readonly {
   cursor: default !important;
   position: relative;
@@ -10415,6 +10428,41 @@ textarea .nom-textarea {
 }
 .nom-field-invalid-tooltip[tooltip-align='bottom'] .nom-tooltip-arrow {
   top: 2px;
+}
+.nom-field.s-allow-read-mode.p-label-align-top {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.nom-field.s-allow-read-mode.p-label-align-top > .nom-field-label {
+  flex-basis: 100%;
+}
+.nom-field.s-allow-read-mode.p-label-align-top:not(.nom-field-action-align-end) > .nom-field-action {
+  flex-basis: 100%;
+}
+.nom-field > .nom-field-read-mode-btns {
+  flex-shrink: 0;
+}
+.nom-field.s-read-mode > .nom-field-read-mode-btns .nom-field-read-mode-btns-reset {
+  display: none;
+}
+.nom-field.s-read-mode > .nom-field-content {
+  pointer-events: none;
+}
+.nom-field.s-read-mode > .nom-field-content > .nom-control {
+  border-color: transparent !important;
+}
+.nom-field.s-read-mode > .nom-field-content > .nom-control > input[type='text'] {
+  border-color: transparent !important;
+}
+.nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-textbox-affix-wrapper {
+  border-color: transparent !important;
+}
+.nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-textbox-affix-wrapper > input[type='text'] {
+  border-color: transparent !important;
+}
+.nom-field.s-read-mode > .nom-field-content .p-type-times,
+.nom-field.s-read-mode > .nom-field-content .p-type-down {
+  display: none;
 }
 .nom-group > .nom-field-content {
   padding: 0;
@@ -13391,6 +13439,9 @@ textarea .nom-textarea {
 }
 .nom-breadcrumb > .nom-breadcrumb-item:last-child > .nom-breadcrumb-separator {
   display: none;
+}
+.nom-rate > .nom-field-content {
+  align-self: center;
 }
 .nom-rate .nom-rate-content {
   display: flex;

@@ -48,6 +48,9 @@ class Field extends Component {
     }
     this.rootField = this.group === null ? this : this.group.rootField
     this.rules = []
+    if (this.props.enableReadMode) {
+      this.isReadMode = true
+    }
   }
 
   _config() {
@@ -57,6 +60,10 @@ class Field extends Component {
 
     if (this.props.labelAlign !== 'top' || !this.props.label) {
       this.props.labelExpandable = false
+    }
+
+    if (this.props.readonly) {
+      this.props.enableReadMode = false
     }
 
     const {
@@ -73,6 +80,7 @@ class Field extends Component {
       labelExpandable,
       labelUiStyle,
       actionAlign,
+      enableReadMode,
     } = this.props
     const showLabel = notShowLabel === false && label !== undefined && label !== null
 
@@ -136,6 +144,43 @@ class Field extends Component {
       }
     }
 
+    let toggleReadonlyProps = null
+
+    if (enableReadMode) {
+      toggleReadonlyProps = {
+        classes: { 'nom-field-read-mode-btns': true },
+        children: [
+          {
+            component: 'Button',
+            ref: (c) => {
+              this.enableReadModeBtnRef = c
+            },
+            icon: this.isReadMode ? 'edit' : 'check',
+            type: 'text',
+            onClick: () => {
+              if (this.isReadMode) {
+                this._setReadMode(false)
+              } else {
+                this._setReadMode(true)
+              }
+            },
+          },
+          {
+            component: 'Button',
+            type: 'text',
+            icon: 'close',
+            classes: {
+              'nom-field-read-mode-btns-reset': true,
+            },
+            onClick: () => {
+              this.reset()
+              this._setReadMode(true)
+            },
+          },
+        ],
+      }
+    }
+
     this.setProps({
       attrs: {
         'data-field-name': this.name,
@@ -145,6 +190,9 @@ class Field extends Component {
         's-compact': this.props.compact,
         [`nom-field-action-align-${actionAlign || 'default'}`]: true,
         'nom-field-with-action': !!actionProps,
+        's-read-mode': !!enableReadMode && this.isReadMode === true,
+        's-allow-read-mode': !!enableReadMode,
+        's-allow-read-mode-hover': enableReadMode && enableReadMode.hover === true,
       },
       children: [
         labelProps,
@@ -153,6 +201,7 @@ class Field extends Component {
           value: this.props.value,
           hidden: this.props.labelExpandable && this.props.labelExpandable.expanded === false,
         },
+        toggleReadonlyProps,
         actionProps && n(actionProps, [FieldActionMixin]),
       ],
     })
@@ -164,6 +213,18 @@ class Field extends Component {
       if (!postion || !postion.length || postion === 'static') {
         this.element.style.position = 'relative'
       }
+    }
+  }
+
+  _setReadMode(isReadMode) {
+    if (isReadMode) {
+      this.enableReadModeBtnRef.update({ icon: 'edit' })
+      this.isReadMode = true
+      this.element.classList.add('s-read-mode')
+    } else {
+      this.enableReadModeBtnRef.update({ icon: 'check' })
+      this.isReadMode = false
+      this.element.classList.remove('s-read-mode')
     }
   }
 
