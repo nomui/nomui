@@ -22,6 +22,7 @@
 | required | 是否必填 | `boolean` | - |
 | disabled | 是否禁用 | `boolean` | - |
 | compact | 一种界面显示更加紧凑的模式 | `boolean` | - |
+| enableReadMode | 是否开启阅读模式（默认不可编辑，点击修改按钮才切换编辑状态），配置`hover:true`则悬停才显示 | `boolean`\|`{hover:true}` | - |
 | readonly | 是否只读(仅禁止用户手动输入，仍旧允许通过 setValue 方法赋值) | `boolean` | - |
 | control | 关联的表单元素项 | `Props` | - |
 | actions | 关联的表单元素项的操作按钮 | `Props[]` | - |

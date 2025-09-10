@@ -48,7 +48,7 @@ class Field extends Component {
     }
     this.rootField = this.group === null ? this : this.group.rootField
     this.rules = []
-    if (this.props.toggleReadMode) {
+    if (this.props.enableReadMode) {
       this.isReadMode = true
     }
   }
@@ -63,7 +63,7 @@ class Field extends Component {
     }
 
     if (this.props.readonly) {
-      this.props.toggleReadMode = false
+      this.props.enableReadMode = false
     }
 
     const {
@@ -80,7 +80,7 @@ class Field extends Component {
       labelExpandable,
       labelUiStyle,
       actionAlign,
-      toggleReadMode,
+      enableReadMode,
     } = this.props
     const showLabel = notShowLabel === false && label !== undefined && label !== null
 
@@ -146,14 +146,14 @@ class Field extends Component {
 
     let toggleReadonlyProps = null
 
-    if (toggleReadMode) {
+    if (enableReadMode) {
       toggleReadonlyProps = {
         classes: { 'nom-field-read-mode-btns': true },
         children: [
           {
             component: 'Button',
             ref: (c) => {
-              this.toggleReadModeBtnRef = c
+              this.enableReadModeBtnRef = c
             },
             icon: this.isReadMode ? 'edit' : 'check',
             type: 'text',
@@ -190,8 +190,9 @@ class Field extends Component {
         's-compact': this.props.compact,
         [`nom-field-action-align-${actionAlign || 'default'}`]: true,
         'nom-field-with-action': !!actionProps,
-        's-read-mode': !!toggleReadMode && this.isReadMode === true,
-        's-allow-read-mode': !!toggleReadMode,
+        's-read-mode': !!enableReadMode && this.isReadMode === true,
+        's-allow-read-mode': !!enableReadMode,
+        's-allow-read-mode-hover': enableReadMode && enableReadMode.hover === true,
       },
       children: [
         labelProps,
@@ -217,11 +218,11 @@ class Field extends Component {
 
   _setReadMode(isReadMode) {
     if (isReadMode) {
-      this.toggleReadModeBtnRef.update({ icon: 'edit' })
+      this.enableReadModeBtnRef.update({ icon: 'edit' })
       this.isReadMode = true
       this.element.classList.add('s-read-mode')
     } else {
-      this.toggleReadModeBtnRef.update({ icon: 'check' })
+      this.enableReadModeBtnRef.update({ icon: 'check' })
       this.isReadMode = false
       this.element.classList.remove('s-read-mode')
     }

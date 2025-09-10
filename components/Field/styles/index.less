@@ -5,8 +5,21 @@
   >.nom-field-read-mode-btns {
     align-self: center;
     vertical-align: middle;
+  }
 
+  &.s-allow-read-mode-hover {
+    >.nom-field-read-mode-btns {
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity ease-in 0.1s;
+    }
 
+    &:hover {
+      >.nom-field-read-mode-btns {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
   }
 
   &.s-readonly {
@@ -277,11 +290,6 @@
 
     }
 
-    // >.nom-field-content {
-    //   flex-grow: 0;
-    //   min-width: fit-content;
-    //   flex-shrink: 0;
-    // }
   }
 
   >.nom-field-read-mode-btns {
