@@ -10450,15 +10450,25 @@ textarea .nom-textarea {
 }
 .nom-field.s-read-mode > .nom-field-content > .nom-control {
   border-color: transparent !important;
+  padding-left: 0 !important;
+  transition: none;
 }
 .nom-field.s-read-mode > .nom-field-content > .nom-control > input[type='text'] {
   border-color: transparent !important;
+  padding-left: 0 !important;
+  transform: translateY(-2px);
+  transition: none;
 }
 .nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-textbox-affix-wrapper {
   border-color: transparent !important;
+  padding-left: 0;
+  transition: none;
 }
 .nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-textbox-affix-wrapper > input[type='text'] {
   border-color: transparent !important;
+  transform: translateY(-2px);
+  padding-left: 0 !important;
+  transition: none;
 }
 .nom-field.s-read-mode > .nom-field-content .p-type-times,
 .nom-field.s-read-mode > .nom-field-content .p-type-down {
