@@ -35,10 +35,10 @@ class Slider extends Field {
           onClick: disable
             ? null
             : ({ event }) => {
-              event.target.focus()
-              const _offset = getOffset(sliderRef._bar, event.clientX, sliderRef._max)
-              sliderRef.setValue(Math.round(_offset))
-            },
+                event.target.focus()
+                const _offset = getOffset(sliderRef._bar, event.clientX, sliderRef._max)
+                sliderRef.setValue(Math.round(_offset))
+              },
           attrs: {
             tabindex: '0',
             onkeydown: sliderRef._handleKeyDown.bind(sliderRef),
@@ -87,16 +87,15 @@ class Slider extends Field {
                     title: tooltip,
                     style: { left: `${_offset * 100}%` },
                     onmousedown: (event) => {
-                      if (sliderRef.props.disable) return;
+                      if (sliderRef.props.disable) return
                       // 记录初始位置
-                      sliderRef._startX = event.clientX;
-                      sliderRef._isDragging = true;
+                      sliderRef._startX = event.clientX
+                      sliderRef._isDragging = true
 
                       sliderRef._initEvents()
                       event.preventDefault()
                     },
                   },
-
                 })
               },
             },
@@ -108,29 +107,30 @@ class Slider extends Field {
     super._config()
   }
 
-
-
   _initEvents() {
     window.removeEventListener('mousemove', this._handleMouseMove)
     window.removeEventListener('mouseup', this._handleMouseUp)
-    window.addEventListener('mousemove', this._handleMouseMove);
-    window.addEventListener('mouseup', this._handleMouseUp);
+    window.addEventListener('mousemove', this._handleMouseMove)
+    window.addEventListener('mouseup', this._handleMouseUp)
+  }
+
+  triggerEdit() {
+    return false
   }
 
   _handleMouseMove = (event) => {
-    if (!this._isDragging) return;
+    if (!this._isDragging) return
 
     const barWdith = this._bar.element.offsetWidth
     const deltaX = event.clientX - this._startX
 
-    this._newOffset = this._offset + Math.round(deltaX / barWdith * this._max)
-    const left = Math.round(barWdith * this._newOffset / this._max)
+    this._newOffset = this._offset + Math.round((deltaX / barWdith) * this._max)
+    const left = Math.round((barWdith * this._newOffset) / this._max)
     if (this._newOffset < 0 || this._newOffset > this._max) {
       return
     }
 
     this._handler.element.style.left = `${left}px`
-
   }
 
   _handleMouseUp = () => {
