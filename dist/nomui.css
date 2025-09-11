@@ -7469,7 +7469,7 @@ table.nom-table th.nom-table-fixed-left,
 table.nom-table td.nom-table-fixed-right,
 table.nom-table th.nom-table-fixed-right {
   position: sticky;
-  z-index: 2;
+  z-index: 10;
   background: var(--nom-grid-background-color);
 }
 table.nom-table td.nom-table-sortable > span,
@@ -7743,8 +7743,8 @@ table.nom-table.p-bordered {
   top: 0;
   bottom: -1px;
   left: auto;
-  right: -8px;
-  width: 8px;
+  right: -10px;
+  width: 10px;
   background-color: var(--nom-grid-th-bg);
   background-image: var(--nom-grid-th-bg-image);
   z-index: 5;
