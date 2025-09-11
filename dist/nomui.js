@@ -20359,6 +20359,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             {
               component: "Checkbox",
               classes: { "nom-grid-checkbox": true },
+              onClick: ({ event }) => {
+                event.stopPropagation();
+              },
               plain: true,
               _created: (inst) => {
                 row._checkboxRef = inst;
@@ -20389,6 +20392,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
         _config() {
           this.setProps(_checkboxProps);
+        },
+        onClick: ({ event }) => {
+          event.stopPropagation();
         },
         attrs: { "data-key": row.key, style: { paddingRight: ".25rem" } },
         onValueChange: (args) => {

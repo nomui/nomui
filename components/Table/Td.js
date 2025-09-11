@@ -728,6 +728,9 @@ class Td extends Component {
             classes: {
               'nom-grid-checkbox': true,
             },
+            onClick: ({ event }) => {
+              event.stopPropagation()
+            },
             plain: true,
             _created: (inst) => {
               row._checkboxRef = inst
@@ -772,6 +775,9 @@ class Td extends Component {
       },
       _config() {
         this.setProps(_checkboxProps)
+      },
+      onClick: ({ event }) => {
+        event.stopPropagation()
       },
       attrs: {
         'data-key': row.key,
