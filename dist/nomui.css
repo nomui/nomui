@@ -10463,10 +10463,10 @@ textarea .nom-textarea {
   border-color: transparent !important;
   padding-left: 0;
   transition: none;
+  transform: translateY(-1px);
 }
 .nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-textbox-affix-wrapper > input[type='text'] {
   border-color: transparent !important;
-  transform: translateY(-2px);
   padding-left: 0 !important;
   transition: none;
 }
