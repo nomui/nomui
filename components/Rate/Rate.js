@@ -73,6 +73,10 @@ class Rate extends Field {
       })
   }
 
+  triggerEdit() {
+    return false
+  }
+
   handleValueChange(value) {
     this._setValue(value)
   }

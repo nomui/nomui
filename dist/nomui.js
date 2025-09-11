@@ -14239,6 +14239,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _getValue() {
       return this.input.element.checked;
     }
+    triggerEdit() {
+      return false;
+    }
     _getValueText() {
       if (this.getValue() === true) {
         return this.props.valueText.checked;
@@ -31389,6 +31392,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           };
         });
     }
+    triggerEdit() {
+      return false;
+    }
     handleValueChange(value) {
       this._setValue(value);
     }
@@ -33977,6 +33983,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       window.addEventListener("mousemove", this._handleMouseMove);
       window.addEventListener("mouseup", this._handleMouseUp);
     }
+    triggerEdit() {
+      return false;
+    }
     _remove() {
       window.removeEventListener("mousemove", this._handleMouseMove);
       window.removeEventListener("mouseup", this._handleMouseUp);
@@ -34323,6 +34332,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.ck) {
         this.ck.element.click();
       }
+    }
+    triggerEdit() {
+      return false;
     }
     _getValue() {
       return this.ck.element.checked;
@@ -38153,6 +38165,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (e.eky === "Enter") {
         this._handleClick();
       }
+    }
+    triggerEdit() {
+      return false;
     }
     _getValue() {
       const { fileResponseAsValue, multiple } = this.props;

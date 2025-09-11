@@ -11,8 +11,7 @@ class Checkbox extends Field {
     const that = this
     if (!this.props.value && this.props.partChecked) {
       this.partChecked = true
-    }
-    else {
+    } else {
       this.partChecked = false
     }
     this.setProps({
@@ -38,7 +37,6 @@ class Checkbox extends Field {
                 event.stopPropagation()
               },
               onchange() {
-
                 that.removeClass('s-checked-part')
                 that._onValueChange()
               },
@@ -69,6 +67,10 @@ class Checkbox extends Field {
 
   _getValue() {
     return this.input.element.checked
+  }
+
+  triggerEdit() {
+    return false
   }
 
   _getValueText() {
@@ -105,7 +107,7 @@ Checkbox.defaults = {
     checked: '是',
     unchecked: '否',
   },
-  uncheckPart: false
+  uncheckPart: false,
 }
 Component.register(Checkbox)
 

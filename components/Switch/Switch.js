@@ -78,6 +78,10 @@ class Switch extends Field {
     }
   }
 
+  triggerEdit() {
+    return false
+  }
+
   _getValue() {
     return this.ck.element.checked
   }

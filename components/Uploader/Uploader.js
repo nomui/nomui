@@ -488,6 +488,10 @@ class Uploader extends Field {
     }
   }
 
+  triggerEdit() {
+    return false
+  }
+
   _getValue() {
     const { fileResponseAsValue, multiple } = this.props
     if (fileResponseAsValue === true) {
