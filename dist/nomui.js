@@ -19057,7 +19057,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         cur = cur.parent;
       }
-      return cur.drawer;
+      return null;
     },
   });
   var DrawerContentMixin = {

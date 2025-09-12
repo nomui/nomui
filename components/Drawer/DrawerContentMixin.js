@@ -10,7 +10,7 @@ Object.defineProperty(Component.prototype, '$drawer', {
 
       cur = cur.parent
     }
-    return cur.drawer
+    return null
   },
 })
 
