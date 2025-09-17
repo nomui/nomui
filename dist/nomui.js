@@ -9441,6 +9441,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                   this._setReadMode(false);
                 } else {
                   this._setReadMode(true);
+                  if (this.props.enableReadMode.onChange) {
+                    this._callHandler(this.props.enableReadMode.onChange, {
+                      newValue: this.currentValue,
+                      oldValue: this.oldValue,
+                    });
+                  }
                 }
               },
             },
