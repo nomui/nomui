@@ -17,7 +17,11 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
           },
           fieldDefaults: {
             // labelAlign: 'top',
-            enableReadMode: true,
+            enableReadMode: {
+              onChange: (args) => {
+                console.log(args)
+              },
+            },
           },
           fields: [
             {

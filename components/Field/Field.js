@@ -162,6 +162,12 @@ class Field extends Component {
                 this._setReadMode(false)
               } else {
                 this._setReadMode(true)
+                if (this.props.enableReadMode.onChange) {
+                  this._callHandler(this.props.enableReadMode.onChange, {
+                    newValue: this.currentValue,
+                    oldValue: this.oldValue,
+                  })
+                }
               }
             },
           },
