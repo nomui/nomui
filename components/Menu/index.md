@@ -9,6 +9,7 @@
 | items | 子菜单`MenuItem`的数据 | `'itemSelectable'` | - |
 | direction | 菜单类型，可选值为水平和垂直 | `'horizontal'\|'vertical'` | vertical |
 | uistyle | 鼠标悬浮在菜单上的效果 | `'pill'` | - |
+| dropdown | 以传统下拉菜单的形式展现 | `boolean` \| `object` | - |
 | itemSelectable | 菜单的可选中配置 | `boolean` \| `object` | - |
 | itemExpandable | 菜单的可展开配置 | `boolean` \| `object` | - |
 | itemDefaults | 菜单子项的配置项 | `boolean` \| `object` | - |

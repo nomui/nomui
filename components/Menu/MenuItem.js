@@ -68,15 +68,16 @@ class MenuItem extends Component {
       }
     }
 
-    let indicatorIconType = menuProps.compact
-      ? this.props.indicatorIcon.right
-      : this.props.indicatorIcon.down
+    let indicatorIconType =
+      menuProps.compact || menuProps.dropdown
+        ? this.props.indicatorIcon.right
+        : this.props.indicatorIcon.down
 
     if (menuProps.direction === 'horizontal' && this.level > 0) {
       indicatorIconType = this.props.indicatorIcon.right
     }
 
-    if (menuProps.direction === 'horizontal') {
+    if (menuProps.direction === 'horizontal' || menuProps.dropdown || menuProps.compact) {
       this.setProps({
         indicator: {
           expandable: false,
@@ -103,7 +104,7 @@ class MenuItem extends Component {
         byClick: menuProps.itemSelectable.byClick,
       },
       expandable: {
-        byClick: !menuProps.compact,
+        byClick: !menuProps.compact && !menuProps.dropdown,
         target: function () {
           return this.wrapper.submenu
         },
@@ -113,7 +114,7 @@ class MenuItem extends Component {
         target: this.props.target,
         style: {
           paddingLeft:
-            menuProps.direction === 'vertical' && !menuProps.compact
+            menuProps.direction === 'vertical' && !menuProps.compact && !menuProps.dropdown
               ? `${(this.level + 1 - groupOffset) * menuProps.indent}rem`
               : null,
         },

@@ -26856,13 +26856,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           tools = this.props.tools;
         }
       }
-      let indicatorIconType = menuProps.compact
-        ? this.props.indicatorIcon.right
-        : this.props.indicatorIcon.down;
+      let indicatorIconType =
+        menuProps.compact || menuProps.dropdown
+          ? this.props.indicatorIcon.right
+          : this.props.indicatorIcon.down;
       if (menuProps.direction === "horizontal" && this.level > 0) {
         indicatorIconType = this.props.indicatorIcon.right;
       }
-      if (menuProps.direction === "horizontal") {
+      if (
+        menuProps.direction === "horizontal" ||
+        menuProps.dropdown ||
+        menuProps.compact
+      ) {
         this.setProps({ indicator: { expandable: false } });
       }
       const groupOffset = this.wrapper.props.isGroupItem ? 0.5 : 0;
@@ -26877,7 +26882,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
         selectable: { byClick: menuProps.itemSelectable.byClick },
         expandable: {
-          byClick: !menuProps.compact,
+          byClick: !menuProps.compact && !menuProps.dropdown,
           target: function () {
             return this.wrapper.submenu;
           },
@@ -26887,7 +26892,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           target: this.props.target,
           style: {
             paddingLeft:
-              menuProps.direction === "vertical" && !menuProps.compact
+              menuProps.direction === "vertical" &&
+              !menuProps.compact &&
+              !menuProps.dropdown
                 ? `${(this.level + 1 - groupOffset) * menuProps.indent}rem`
                 : null,
           },
@@ -27081,6 +27088,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.props.item.type === "group" ||
         menuProps.direction === "horizontal" ||
         menuProps.compact ||
+        menuProps.dropdown ||
         menuProps.itemExpandable.initExpandLevel === -1 ||
         menuProps.itemExpandable.initExpandLevel > this.level;
       this.setProps({ submenu: menuProps.submenu });
@@ -27101,7 +27109,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
       });
       if (
-        (menuProps.direction === "horizontal" || menuProps.compact) &&
+        (menuProps.direction === "horizontal" ||
+          menuProps.compact ||
+          menuProps.dropdown) &&
         !this.isLeaf
       ) {
         let reference = document.body;
@@ -27115,17 +27125,28 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         if (this.level > 0) {
           align = "right top";
         }
+        if (menuProps.dropdown) {
+          align = menuProps.dropdown.align || "right top";
+        }
         this.setProps({ submenu: { wrapper: that } });
+        let width = null;
+        if (menuProps.popupWidth) {
+          width = nomui.utils.isString(menuProps.popupWidth)
+            ? menuProps.popupWidth
+            : `${menuProps.popupWidth}px`;
+        }
         this.setProps({
           item: {
             popup: {
               animate: this.props.animate,
               triggerAction: "hover",
               align: align,
+              offest: menuProps.popupOffset,
               reference: reference,
               children: Object.assign({}, this.props.submenu, {
                 isPopup: true,
                 classes: { "nom-menu-popup-sub": true },
+                attrs: { style: { width } },
               }),
               onShow: () => {
                 this.onPopupMenuShow();
@@ -27144,6 +27165,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           !this.isLeaf &&
             menuProps.direction === "vertical" &&
             !menuProps.compact &&
+            !menuProps.dropdown &&
             this.props.submenu,
         ],
       });
@@ -27482,6 +27504,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     keyField: "key",
     sortable: false,
     onResize: false,
+    popupWidth: 160,
   };
   Component.register(Menu);
   class Message extends Layer {

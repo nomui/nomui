@@ -1,5 +1,6 @@
 define([
   './horizontal.js',
+  './dropdown.js',
   './uistyle.js',
   './tools.js',
   './divider.js',

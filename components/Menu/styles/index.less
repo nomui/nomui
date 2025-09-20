@@ -282,6 +282,12 @@
 
   &.nom-menu-popup-sub {
     >.nom-menu-item-wrapper>.nom-menu-item {
+      >.nom-menu-item-title {
+        width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       &.s-selected {
         color: var(--nom-color-primary);
       }
