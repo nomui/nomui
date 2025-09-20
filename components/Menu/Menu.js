@@ -373,6 +373,7 @@ Menu.defaults = {
   keyField: 'key',
   sortable: false,
   onResize: false,
+  popupWidth: 160,
 }
 Component.register(Menu)
 

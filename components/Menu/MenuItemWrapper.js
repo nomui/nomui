@@ -44,6 +44,7 @@ class MenuItemWrapper extends Component {
       this.props.item.type === 'group' ||
       menuProps.direction === 'horizontal' ||
       menuProps.compact ||
+      menuProps.dropdown ||
       menuProps.itemExpandable.initExpandLevel === -1 ||
       menuProps.itemExpandable.initExpandLevel > this.level
     this.setProps({
@@ -56,18 +57,21 @@ class MenuItemWrapper extends Component {
         name: 'submenu',
         attrs: menuProps.compact
           ? {
-            style: {
-              maxHeight: 'calc( 100vh - 5px )',
-              'overflow-y': 'auto',
-            },
-          }
+              style: {
+                maxHeight: 'calc( 100vh - 5px )',
+                'overflow-y': 'auto',
+              },
+            }
           : {},
         items: this.props.item.items,
         hidden: !expanded,
       },
     })
 
-    if ((menuProps.direction === 'horizontal' || menuProps.compact) && !this.isLeaf) {
+    if (
+      (menuProps.direction === 'horizontal' || menuProps.compact || menuProps.dropdown) &&
+      !this.isLeaf
+    ) {
       let reference = document.body
       if (this.level > 0) {
         reference = this
@@ -81,11 +85,22 @@ class MenuItemWrapper extends Component {
         align = 'right top'
       }
 
+      if (menuProps.dropdown) {
+        align = menuProps.dropdown.align || 'right top'
+      }
+
       this.setProps({
         submenu: {
           wrapper: that,
         },
       })
+
+      let width = null
+      if (menuProps.popupWidth) {
+        width = nomui.utils.isString(menuProps.popupWidth)
+          ? menuProps.popupWidth
+          : `${menuProps.popupWidth}px`
+      }
 
       this.setProps({
         item: {
@@ -93,11 +108,17 @@ class MenuItemWrapper extends Component {
             animate: this.props.animate,
             triggerAction: 'hover',
             align: align,
+            offest: menuProps.popupOffset,
             reference: reference,
             children: {
               ...this.props.submenu,
               isPopup: true,
               classes: { 'nom-menu-popup-sub': true },
+              attrs: {
+                style: {
+                  width,
+                },
+              },
             },
             onShow: () => {
               this.onPopupMenuShow()
@@ -114,9 +135,10 @@ class MenuItemWrapper extends Component {
       children: [
         this.props.item,
         !this.isLeaf &&
-        menuProps.direction === 'vertical' &&
-        !menuProps.compact &&
-        this.props.submenu,
+          menuProps.direction === 'vertical' &&
+          !menuProps.compact &&
+          !menuProps.dropdown &&
+          this.props.submenu,
       ],
     })
   }
