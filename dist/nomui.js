@@ -26805,10 +26805,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         indicator: {
           component: "Icon",
           expandable: {
-            expandedProps: { type: "up" },
-            collapsedProps: { type: "down" },
+            expandedProps: { type: props.indicatorIcon.up },
+            collapsedProps: { type: props.indicatorIcon.down },
           },
-          type: "down",
+          type: props.indicatorIcon.down,
         },
         tools: null,
         key: function () {
@@ -26856,9 +26856,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           tools = this.props.tools;
         }
       }
-      let indicatorIconType = menuProps.compact ? "right" : "down";
+      let indicatorIconType = menuProps.compact
+        ? this.props.indicatorIcon.right
+        : this.props.indicatorIcon.down;
       if (menuProps.direction === "horizontal" && this.level > 0) {
-        indicatorIconType = "right";
+        indicatorIconType = this.props.indicatorIcon.right;
       }
       if (menuProps.direction === "horizontal") {
         this.setProps({ indicator: { expandable: false } });
@@ -27175,6 +27177,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _config() {
       this._addPropStyle("direction");
       this._addPropStyle("fit");
+      this.setProps({
+        itemDefaults: {
+          component: MenuItem,
+          indicatorIcon: this.props.indicatorIcon,
+        },
+      });
       if (this.props.direction !== "vertical") {
         this.setProps({ compact: false });
       }
@@ -27465,7 +27473,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   Menu.defaults = {
     tag: "ul",
     items: [],
-    itemDefaults: { component: MenuItem },
+    indicatorIcon: { right: "right", down: "down", up: "up" },
     itemSelectable: { onlyleaf: false, byClick: false },
     itemExpandable: { expandSingle: true, initExpandLevel: 0 },
     compact: false,

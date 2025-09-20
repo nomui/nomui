@@ -12,6 +12,7 @@
 | itemSelectable | 菜单的可选中配置 | `boolean` \| `object` | - |
 | itemExpandable | 菜单的可展开配置 | `boolean` \| `object` | - |
 | itemDefaults | 菜单子项的配置项 | `boolean` \| `object` | - |
+| indicatorIcon | 自定义展开折叠图标 | `object` \| `{up:'up',down:'down',right:'right'}` | - |
 | compact | 紧凑模式(子菜单通过`popup`展示) | `boolean` | `false` |
 | sortable | 菜单是否允许拖拽(仅垂直菜单允许多级排序) | `boolean,{onEnd:()=>{}}` | `false` |
 | onResize | 水平菜单在大小改变时的回调，会返回被隐藏的子项 | `()=>{}` | - |

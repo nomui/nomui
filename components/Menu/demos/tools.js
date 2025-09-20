@@ -12,7 +12,6 @@ define([], function () {
               itemSelectable: {
                 byClick: true,
               },
-
               attrs: {
                 style: {
                   width: '250px',

@@ -13,13 +13,13 @@ class MenuItem extends Component {
         component: 'Icon',
         expandable: {
           expandedProps: {
-            type: 'up',
+            type: props.indicatorIcon.up,
           },
           collapsedProps: {
-            type: 'down',
+            type: props.indicatorIcon.down,
           },
         },
-        type: 'down',
+        type: props.indicatorIcon.down,
       },
       tools: null,
       key: function () {
@@ -68,10 +68,12 @@ class MenuItem extends Component {
       }
     }
 
-    let indicatorIconType = menuProps.compact ? 'right' : 'down'
+    let indicatorIconType = menuProps.compact
+      ? this.props.indicatorIcon.right
+      : this.props.indicatorIcon.down
 
     if (menuProps.direction === 'horizontal' && this.level > 0) {
-      indicatorIconType = 'right'
+      indicatorIconType = this.props.indicatorIcon.right
     }
 
     if (menuProps.direction === 'horizontal') {
