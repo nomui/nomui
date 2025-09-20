@@ -21,6 +21,13 @@ class Menu extends Component {
     this._addPropStyle('direction')
     this._addPropStyle('fit')
 
+    this.setProps({
+      itemDefaults: {
+        component: MenuItem,
+        indicatorIcon: this.props.indicatorIcon,
+      },
+    })
+
     if (this.props.direction !== 'vertical') {
       this.setProps({
         compact: false,
@@ -346,8 +353,11 @@ class Menu extends Component {
 Menu.defaults = {
   tag: 'ul',
   items: [],
-  itemDefaults: {
-    component: MenuItem,
+
+  indicatorIcon: {
+    right: 'right',
+    down: 'down',
+    up: 'up',
   },
   itemSelectable: {
     onlyleaf: false,
