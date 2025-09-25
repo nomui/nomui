@@ -19750,7 +19750,32 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const { column } = this.props;
       const { treeConfig } = this.table.props;
       const { parentField } = treeConfig;
-      const { grid } = this.table; // 处理树结构关联关系
+      const { grid } = this.table;
+      const { editable, excelMode } = grid?.props || {};
+      if (excelMode && excelMode.alwaysEdit) {
+        this.props.editMode = true;
+      }
+      let cellDisabled = false;
+      if (
+        editable &&
+        editable.isCellEditable &&
+        editable.isCellEditable({
+          rowData: this.tr.props.data,
+          field: this.props.column.field,
+        }) === false
+      ) {
+        cellDisabled = true;
+      }
+      if (
+        excelMode &&
+        excelMode.isCellEditable &&
+        excelMode.isCellEditable({
+          rowData: this.tr.props.data,
+          field: this.props.column.field,
+        }) === false
+      ) {
+        cellDisabled = true;
+      } // 处理树结构关联关系
       if (grid) {
         const { keyField } = grid.props;
         grid.nodeList[`__key${this.tr.props.data[keyField]}`] = this.tr;
@@ -19808,6 +19833,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       if (
         (this.tr.props.editMode || this.props.editMode) &&
+        !cellDisabled &&
         column.editRender
       ) {
         const propsMinxin = {
@@ -19822,7 +19848,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           compact: true,
         };
         if (this.table.hasGrid) {
-          if (grid.props.excelMode || grid.props.editable)
+          if (
+            (grid.props.excelMode && !grid.props.excelMode.alwaysEdit) ||
+            grid.props.editable
+          )
             propsMinxin.variant = "borderless";
           if (column.immediateChange) {
             propsMinxin.onValueChange = () => {
@@ -20074,12 +20103,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children,
       };
       if (this.table.hasGrid && this.table.grid.props.editable) {
-        const cellDisabled =
-          this.table.grid.props.editable.isCellEditable &&
-          this.table.grid.props.editable.isCellEditable({
-            rowData: this.tr.props.data,
-            field: this.props.column.field,
-          }) === false;
         children = {
           classes: {
             "nom-td-editable-inner": true,
@@ -20126,12 +20149,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         };
       }
       if (isExcelMode) {
-        const cellDisabled =
-          this.table.grid.props.excelMode.isCellEditable &&
-          this.table.grid.props.excelMode.isCellEditable({
-            rowData: this.tr.props.data,
-            field: this.props.column.field,
-          }) === false;
         children = {
           tag: "span",
           classes: {
@@ -20222,6 +20239,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "nom-table-checker": this.props.column.isChecker,
           "nom-table-checker-with-toolbar":
             !!this.props.column.toolbar && this.props.column.isChecker,
+          "nom-td-always-edit": excelMode && excelMode.alwaysEdit,
         },
       });
     }
@@ -20542,7 +20560,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.editor.validate();
     }
     endEdit(options) {
-      if (!this.props.editMode) {
+      if (!this.props.editMode || !this.editor) {
         return;
       }
       if (!options) {
