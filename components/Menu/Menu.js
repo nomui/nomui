@@ -72,17 +72,16 @@ class Menu extends Component {
     const arr = []
     const ulRect = el.getBoundingClientRect()
     const liElements = el.children
+    const tolerance = 10 // 容差像素，可按需调整
+
     for (const li of liElements) {
       const liRect = li.getBoundingClientRect()
-      const isVisible = liRect.left >= ulRect.left && liRect.right <= ulRect.right
+      const isVisible =
+        liRect.left >= ulRect.left - tolerance && liRect.right <= ulRect.right + tolerance
 
       if (!isVisible) {
         const k = li.component.props.item[this.props.keyField]
-        arr.push(
-          this.props.items.filter((x) => {
-            return x[this.props.keyField] === k
-          })[0],
-        )
+        arr.push(this.props.items.find((x) => x[this.props.keyField] === k))
       }
     }
 
