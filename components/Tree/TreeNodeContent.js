@@ -16,6 +16,7 @@ class TreeNodeContent extends Component {
   }
 
   _config() {
+    const me = this
     const { text, icon, tools } = this.node.props
     const { initExpandLevel, nodeCheckable, expandable } = this.tree.props
     const { nodes, childrenData } = this.node.props
@@ -127,8 +128,8 @@ class TreeNodeContent extends Component {
           {
             tag: 'span',
             classes: { 'nom-tree-node-content-text': true },
-            onCreated: ({ inst }) => {
-              this.node.contentText = inst
+            created: function () {
+              me.node.contentText = this
             },
           },
           Component.normalizeTemplateProps(text),
