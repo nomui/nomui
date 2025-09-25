@@ -72,7 +72,7 @@ class Menu extends Component {
     const arr = []
     const ulRect = el.getBoundingClientRect()
     const liElements = el.children
-    const tolerance = 10 // 容差像素，可按需调整
+    const tolerance = 6 // 容差像素，可按需调整
 
     for (const li of liElements) {
       const liRect = li.getBoundingClientRect()
