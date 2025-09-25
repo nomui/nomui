@@ -141,6 +141,7 @@
 | onCellValueChange | 单元格值被修改且失去焦点时的回调 | `({newValue,field,rowKey})=>{}` |
 | onValidateFailed | 单元格值校验失败的回调 | `({field,value})=>{}` |
 | isCellEditable | 单元格是否允许编辑，如果返回 false 则此单元格不允许编辑 | `({field,rowData})=>{ return boolean}` |
+| alwaysEdit | 始终显示编辑框而不用鼠标点击 | `boolean` |
 
 ### editable
 
