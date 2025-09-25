@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '单元格编辑模式',
-    file: 'editable',
+    title: 'Excel模式(始终编辑)',
+    file: 'td-edit-always',
     demo: function () {
       let gridRef = null
 
@@ -97,10 +97,15 @@ define([], function () {
             ref: (c) => {
               gridRef = c
             },
-            ellipsis: 'both',
             bordered: true,
             line: 'both',
-            editable: {
+            excelMode: {
+              alwaysEdit: true,
+              isCellEditable: ({ rowData, field }) => {
+                if (rowData.sex === '1' && field === 'name') {
+                  return false
+                }
+              },
               onCellValueChange: (args) => {
                 console.log(args)
               },
@@ -111,12 +116,10 @@ define([], function () {
                 })
               },
             },
-
             columns: [
               {
                 field: 'name',
                 title: '姓名',
-                editorIcon: 'user', // 自定义编辑模式图标
                 editRender: ({ cellData }) => {
                   return {
                     component: 'Textbox',
@@ -127,37 +130,10 @@ define([], function () {
                   if (!cellData) return '-'
                   return cellData
                 },
-                toolbar: {
-                  align: 'right', // 工具栏靠右
-                  placement: 'body',
-                  render: () => {
-                    return {
-                      component: 'Toolbar',
-                      visibleItems: 1,
-                      type: 'link',
-                      items: [
-                        {
-                          text: '导出',
-                          onClick: () => {},
-                        },
-                        {
-                          text: '导出Word',
-                          onClick: () => {},
-                        },
-                        {
-                          text: '导出Word',
-                          onClick: () => {},
-                        },
-                      ],
-                    }
-                  },
-                },
               },
               {
                 field: 'age',
                 title: '年龄',
-                width: 110,
-                ellipsis: true,
                 editRender: ({ cellData }) => {
                   return {
                     component: 'Textbox',
@@ -165,15 +141,16 @@ define([], function () {
                     rules: [{ type: 'number', message: '请输入有效的数字' }],
                   }
                 },
-                // cellRender: ({ cellData }) => {
-                //   // if (!cellData) return '-'
-                //   return cellData
-                // },
+                cellRender: ({ cellData }) => {
+                  if (!cellData) return '-'
+                  return {
+                    children: cellData,
+                  }
+                },
               },
               {
                 field: 'date',
                 title: '入职日期',
-                immediateChange: true, // 字段组件值发生改变时立即更新数据
                 editRender: ({ cellData }) => {
                   return {
                     component: 'DatePicker',
@@ -249,15 +226,7 @@ define([], function () {
               },
             ],
             data: [
-              {
-                id: 1,
-                name: '张小花',
-                date: '2020-03-15',
-                role: '2',
-                dept: '0-1-2',
-                sex: '1',
-                age: 11111111111,
-              },
+              { id: 1, name: '张小花', date: '2020-03-15', role: '2', dept: '0-1-2', sex: '1' },
               { id: 2, name: '任盈盈', date: '2021-11-20', role: '1', dept: '0-0', sex: '2' },
               { id: 3, name: '东方不败', date: '2022-5-05', role: '3', dept: '0-1-1-1', sex: '2' },
               { id: 4, name: '任我行', date: '2020-02-20', role: '4', dept: '0-0-2', sex: '1' },
