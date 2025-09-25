@@ -38,8 +38,8 @@ class GroupTree extends Field {
               classes: {
                 'nom-group-tree-hd': true,
               },
-              onCreated: ({ inst }) => {
-                this.headerRef = inst
+              _created: function () {
+                me.headerRef = this
               },
               items: [{ width: 276 }, ...hd],
               itemDefaults: {
@@ -430,7 +430,7 @@ GroupTree.defaults = {
   removeNodeText: '删除节点',
   addRowText: '在下方插入行',
   newNodeText: '新节点',
-  addNodeText: '新增子节点'
+  addNodeText: '新增子节点',
 }
 
 Component.register(GroupTree)

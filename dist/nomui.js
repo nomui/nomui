@@ -14488,6 +14488,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.tree = this.node.tree;
     }
     _config() {
+      const me = this;
       const { text, icon, tools } = this.node.props;
       const { initExpandLevel, nodeCheckable, expandable } = this.tree.props;
       const { nodes, childrenData } = this.node.props;
@@ -14588,8 +14589,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             {
               tag: "span",
               classes: { "nom-tree-node-content-text": true },
-              onCreated: ({ inst }) => {
-                this.node.contentText = inst;
+              created: function () {
+                me.node.contentText = this;
               },
             },
             Component.normalizeTemplateProps(text)
@@ -25166,8 +25167,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 value: cellData,
                 __group: row,
                 invalidTip: { reference: this },
-                onCreated: ({ inst }) => {
-                  row.fields.push(inst);
+                _created: function () {
+                  row.fields.push(this);
                 },
               });
             },
@@ -25554,8 +25555,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               {
                 component: "List",
                 classes: { "nom-group-tree-hd": true },
-                onCreated: ({ inst }) => {
-                  this.headerRef = inst;
+                _created: function () {
+                  me.headerRef = this;
                 },
                 items: [{ width: 276 }, ...hd],
                 itemDefaults: {

@@ -36,8 +36,8 @@ class GroupGrid extends Field {
               invalidTip: {
                 reference: this,
               },
-              onCreated: ({ inst }) => {
-                row.fields.push(inst)
+              _created: function () {
+                row.fields.push(this)
               },
             })
           },
@@ -47,7 +47,7 @@ class GroupGrid extends Field {
           field: f.name,
           title: f.label,
           width: f.width,
-          value: f.value
+          value: f.value,
         })
       }
     })
@@ -101,7 +101,7 @@ class GroupGrid extends Field {
           line: 'both',
           rowDefaults: {
             component: GroupGridTr,
-            hiddenColumns: this.hiddenColumns
+            hiddenColumns: this.hiddenColumns,
           },
           onCreated: ({ inst }) => {
             that.grid = inst
@@ -213,7 +213,7 @@ class GroupGrid extends Field {
     return null
   }
 
-  focus() { }
+  focus() {}
 
   addGroup() {
     const gridData = this.grid.props.data || []
@@ -245,7 +245,7 @@ class GroupGrid extends Field {
 GroupGrid.defaults = {
   hideAction: false,
   addText: '添加',
-  removeText: '移除'
+  removeText: '移除',
 }
 Object.defineProperty(GroupGrid.prototype, 'fields', {
   get: function () {
