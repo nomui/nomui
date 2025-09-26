@@ -12443,6 +12443,18 @@ textarea .nom-textarea {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+.nom-dropdown .nom-dropdown-right-icon-group {
+  padding: 3px;
+}
+.nom-dropdown .nom-dropdown-right-icon-group .nom-icon:last-child {
+  display: none;
+}
+.nom-dropdown.nom-dropdown-opened .nom-dropdown-right-icon-group .nom-icon:first-child {
+  display: none;
+}
+.nom-dropdown.nom-dropdown-opened .nom-dropdown-right-icon-group .nom-icon:last-child {
+  display: flex;
+}
 .nom-dropdown-popup .nom-menu-item-wrapper > .nom-menu-item {
   padding-right: 1.5rem !important;
 }

@@ -35,7 +35,9 @@ Component.normalizeIconProps = function (props) {
   } else {
     return null
   }
-  iconProps.component = Icon
+  if (!iconProps.component) {
+    iconProps.component = Icon
+  }
 
   return iconProps
 }
