@@ -19529,6 +19529,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 args.sender.hide();
               }
             },
+            onShow: () => {
+              that.element.classList.add("nom-dropdown-opened");
+            },
+            onHide: () => {
+              that.element.classList.remove("nom-dropdown-opened");
+            },
           },
         },
       ];
@@ -24918,6 +24924,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         itemDefaults,
         menuClasses,
         forceVisible,
+        dropdownProps,
       } = this.props;
       const before = items.slice(0, visibleItems).map((item) => {
         return Object.assign(
@@ -24926,16 +24933,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           item
         );
       });
-      const dropdowns = {
-        component: "Dropdown",
-        rightIcon: "ellipsis",
-        items: items.slice(visibleItems),
-        itemDefaults,
-        type,
-        inline,
-        size,
-        menuClasses,
-      };
+      const dropdowns = Object.assign(
+        {
+          component: "Dropdown",
+          rightIcon: "ellipsis",
+          items: items.slice(visibleItems),
+          itemDefaults,
+          type,
+          inline,
+          size,
+          menuClasses,
+        },
+        dropdownProps
+      );
       const arr = [...before];
       if (items.length > visibleItems || forceVisible) {
         arr.push(dropdowns);
@@ -24957,6 +24967,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     itemDefaults: {},
     stopPropagation: true,
     menuClasses: null,
+    dropdownProps: {},
   };
   Component.register(Toolbar);
   let nameSeq = 0;
