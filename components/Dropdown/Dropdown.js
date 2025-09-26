@@ -35,6 +35,7 @@ class Dropdown extends Component {
         type: type,
         size: size,
         inline: type === 'link',
+
         popup: {
           triggerAction: triggerAction,
           classes: {
@@ -63,6 +64,12 @@ class Dropdown extends Component {
             } else {
               args.sender.hide()
             }
+          },
+          onShow: () => {
+            that.element.classList.add('nom-dropdown-opened')
+          },
+          onHide: () => {
+            that.element.classList.remove('nom-dropdown-opened')
           },
         },
       },
