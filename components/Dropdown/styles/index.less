@@ -2,7 +2,7 @@
   white-space: nowrap;
 
   &.nom-split-button {
-    > button {
+    >button {
       &:first-child {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
@@ -15,16 +15,37 @@
       }
     }
   }
+
+  .nom-dropdown-right-icon-group {
+    padding: 3px;
+  }
+
+  .nom-dropdown-right-icon-group .nom-icon:last-child {
+    display: none;
+  }
+
+  &.nom-dropdown-opened {
+    .nom-dropdown-right-icon-group .nom-icon:first-child {
+      display: none;
+    }
+
+    .nom-dropdown-right-icon-group .nom-icon:last-child {
+      display: flex;
+    }
+  }
+
 }
 
 .nom-dropdown-popup {
   .nom-menu-item-wrapper {
-    > .nom-menu-item {
+    >.nom-menu-item {
       padding-right: 1.5rem !important;
       .nom-preset-hover;
+
       &.p-type-primary {
         color: var(--nom-color-primary);
       }
+
       &.p-danger {
         color: var(--nom-color-danger);
       }

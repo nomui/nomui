@@ -1,4 +1,5 @@
 import Component from '../Component/index'
+import { isString } from '../util/index'
 
 class Dropdown extends Component {
   constructor(props, ...mixins) {
@@ -31,7 +32,20 @@ class Dropdown extends Component {
         component: 'Button',
         text: split ? null : that.props.text,
         icon: split ? null : icon,
-        rightIcon: that.props.rightIcon,
+        rightIcon: isString(that.props.rightIcon)
+          ? that.props.rightIcon
+          : {
+              component: 'Flex',
+              classes: {
+                'nom-dropdown-right-icon-group': true,
+              },
+              items: that.props.rightIcon.map((n) => {
+                return {
+                  component: 'Icon',
+                  type: n,
+                }
+              }),
+            },
         type: type,
         size: size,
         inline: type === 'link',
@@ -117,7 +131,7 @@ Dropdown.defaults = {
   animateName: 'top',
   tag: 'span',
   triggerAction: 'click',
-  rightIcon: 'down',
+  rightIcon: ['down', 'up'],
   split: false,
   onClick: null,
   items: [],
