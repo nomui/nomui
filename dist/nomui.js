@@ -7214,6 +7214,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const modal = (this.modal = this.parent);
       const { content } = this.modal.props;
       if (isString(content)) {
+        this.modal.element &&
+          this.modal.element.setAttribute("data-url", content);
         require([content], (contentConfig) => {
           let props = contentConfig;
           if (isFunction(props)) {
@@ -19093,6 +19095,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const drawer = (this.drawer = this.parent);
       const { content } = this.drawer.props;
       if (isString(content)) {
+        this.drawer.element &&
+          this.drawer.element.setAttribute("data-url", content);
         require([content], (contentConfig) => {
           let props = contentConfig;
           if (isFunction(props)) {

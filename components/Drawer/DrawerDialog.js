@@ -16,6 +16,7 @@ class DrawerDialog extends Component {
     const drawer = (this.drawer = this.parent)
     const { content } = this.drawer.props
     if (isString(content)) {
+      this.drawer.element && this.drawer.element.setAttribute('data-url', content)
       require([content], (contentConfig) => {
         let props = contentConfig
         if (isFunction(props)) {
@@ -59,7 +60,7 @@ class DrawerDialog extends Component {
       okButton: contentProps.okButton,
     })
 
-    const { okText, cancelText, okButton = {}, cancelButton = {}, } = drawer.props
+    const { okText, cancelText, okButton = {}, cancelButton = {} } = drawer.props
     return {
       component: Panel,
       fit: true,
@@ -87,28 +88,28 @@ class DrawerDialog extends Component {
           component: 'Cols',
           items: [
             okButton !== false &&
-            Component.extendProps(
-              {
-                component: 'Button',
-                type: 'primary',
-                text: okText,
-                onClick: () => {
-                  drawer._handleOk()
+              Component.extendProps(
+                {
+                  component: 'Button',
+                  type: 'primary',
+                  text: okText,
+                  onClick: () => {
+                    drawer._handleOk()
+                  },
                 },
-              },
-              okButton,
-            ),
+                okButton,
+              ),
             cancelButton !== false &&
-            Component.extendProps(
-              {
-                component: 'Button',
-                text: cancelText,
-                onClick: () => {
-                  drawer._handleCancel()
+              Component.extendProps(
+                {
+                  component: 'Button',
+                  text: cancelText,
+                  onClick: () => {
+                    drawer._handleCancel()
+                  },
                 },
-              },
-              cancelButton,
-            ),
+                cancelButton,
+              ),
           ],
         },
       },
@@ -119,7 +120,6 @@ class DrawerDialog extends Component {
     const { content, settle } = this.drawer.props
     const { size } = this.props
     if (isPlainObject(content)) {
-
       const extendContent = {}
       if (isFunction(content.footer)) {
         extendContent.footer = content.footer.call(this.drawer, this.drawer)
@@ -140,18 +140,17 @@ class DrawerDialog extends Component {
         this.setProps({
           attrs: {
             style: {
-              width: size.width
-            }
-          }
+              width: size.width,
+            },
+          },
         })
-      }
-      else {
+      } else {
         this.setProps({
           attrs: {
             style: {
-              height: size.height
-            }
-          }
+              height: size.height,
+            },
+          },
         })
       }
     }
