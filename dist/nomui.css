@@ -7742,7 +7742,7 @@ table.nom-table.p-bordered {
   position: relative;
   overflow: hidden;
 }
-.nom-grid > .nom-grid-header table th:last-child::before {
+.nom-grid > .nom-grid-header table th.nom-table-fixed-right-first > :first-child::before {
   content: '';
   position: absolute;
   top: 0;

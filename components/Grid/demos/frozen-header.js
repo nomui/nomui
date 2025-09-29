@@ -19,7 +19,7 @@ define([], function () {
               {
                 field: 'brand',
                 title: '出版方',
-                width: 200,
+                width: 1200,
               },
               {
                 field: 'author',
@@ -42,7 +42,7 @@ define([], function () {
             ],
             frozenHeader: true,
             frozenLeftCols: 1,
-            frozenRightCols: 0,
+            frozenRightCols: 1,
             columnsCustomizable: true,
             attrs: {
               style: {
