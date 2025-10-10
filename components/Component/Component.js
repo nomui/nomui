@@ -70,7 +70,6 @@ class Component {
     this._setKey()
 
     this._componentContext = {}
-    this._handleContext(props)
 
     isFunction(this._create) && this._create()
 
@@ -112,12 +111,14 @@ class Component {
     if (Array.isArray(ret)) {
       Promise.all(ret).then(() => {
         if (this.props.autoRender === true) {
+          this._handleContext(props)
           this.config()
           this.render()
         }
       })
       this._mountPlaceHolder()
     } else if (this.props.autoRender === true) {
+      this._handleContext(props)
       this.config()
       this.render()
     } else {
