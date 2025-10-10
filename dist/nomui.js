@@ -4714,7 +4714,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       mixins && this._mixin(mixins);
       this._setKey();
       this._componentContext = {};
-      this._handleContext(props);
       isFunction(this._create) && this._create();
       this.referenceComponent =
         this.props.reference instanceof Component
@@ -4752,12 +4751,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (Array.isArray(ret)) {
         Promise.all(ret).then(() => {
           if (this.props.autoRender === true) {
+            this._handleContext(props);
             this.config();
             this.render();
           }
         });
         this._mountPlaceHolder();
       } else if (this.props.autoRender === true) {
+        this._handleContext(props);
         this.config();
         this.render();
       } else {
