@@ -817,17 +817,22 @@ class Td extends Component {
   _setTdsPosition() {
     const fixed = this.props.column.fixed
     const el = this.element
-    const parentEl = this.parent.element
+    const tableWrapper = el.closest('.nom-grid-body')
+    if (!tableWrapper) return
+
+    const scrollbarWidth = this.table.grid.props.scrollbarWidth
 
     if (fixed === 'left') {
-      this._stickyPos = el.offsetLeft
+      const elRect = el.getBoundingClientRect()
+      const wrapperRect = tableWrapper.getBoundingClientRect()
+      this._stickyPos = elRect.left - wrapperRect.left
     } else if (fixed === 'right') {
-      this._stickyPos =
-        parentEl.clientWidth - el.offsetLeft - el.offsetWidth - this.table.grid.props.scrollbarWidth
+      const elRect = el.getBoundingClientRect()
+      const wrapperRect = tableWrapper.getBoundingClientRect()
+      this._stickyPos = wrapperRect.right - elRect.right - scrollbarWidth
     }
 
-    const addjustWidth = fixed === 'right' ? this.table.grid.props.scrollbarWidth : 0
-    this._stickyPos += addjustWidth
+    this._stickyPos = Math.max(0, this._stickyPos)
     this._setStyle({ [fixed]: `${this._stickyPos}px` })
   }
 
