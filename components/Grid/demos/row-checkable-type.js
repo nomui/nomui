@@ -15,45 +15,51 @@ define([], function () {
               type: 'checker&order',
               width: 80,
               //   align: 'center',
-              toolbar: {
-                align: 'left', // 工具栏靠左
-                placement: 'both', // 工具栏位置 header表头 body表身 both表头+表身
-                hover: true,
-                render: ({ isHeader, field, row, cellData, rowData, index }) => {
-                  // isHeader表示当前渲染在表头，此时还会传出当前field
+              // toolbar: {
+              //   align: 'left', // 工具栏靠左
+              //   placement: 'both', // 工具栏位置 header表头 body表身 both表头+表身
+              //   hover: true,
+              //   render: ({ isHeader, field, row, cellData, rowData, index }) => {
+              //     // isHeader表示当前渲染在表头，此时还会传出当前field
 
-                  console.log({ isHeader, field, row, cellData, rowData, index })
-                  return {
-                    component: 'Toolbar',
-                    visibleItems: 0,
-                    size: 'small',
-                    type: 'text',
-                    items: [
-                      {
-                        text: '导出Word',
-                        onClick: () => {},
-                      },
-                      {
-                        text: '导出Word',
-                        onClick: () => {},
-                      },
-                      {
-                        text: '导出Word',
-                        onClick: () => {},
-                      },
-                    ],
-                  }
-                },
-              },
+              //     console.log({ isHeader, field, row, cellData, rowData, index })
+
+              //     if (index === 1) {
+              //       return false
+              //     }
+              //     return {
+              //       component: 'Toolbar',
+              //       visibleItems: 0,
+              //       size: 'small',
+              //       type: 'text',
+              //       items: [
+              //         {
+              //           text: '导出Word',
+              //           onClick: () => {},
+              //         },
+              //         {
+              //           text: '导出Word',
+              //           onClick: () => {},
+              //         },
+              //         {
+              //           text: '导出Word',
+              //           onClick: () => {},
+              //         },
+              //       ],
+              //     }
+              //   },
+              // },
             },
             allowFrozenCols: {
               showPinner: true,
             },
             columnsCustomizable: true,
+            frozenLeftCols: 1,
             columns: [
               {
                 field: 'name',
                 title: '标题',
+                width: 120,
                 key: '001',
               },
               {
@@ -65,7 +71,7 @@ define([], function () {
               {
                 field: 'role',
                 title: '主角',
-                width: 200,
+                width: 2200,
                 key: '003',
               },
               {
