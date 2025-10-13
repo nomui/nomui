@@ -8118,7 +8118,7 @@ table.nom-table.p-bordered {
 }
 th[data-field="nom-grid-row-checker"],
 td[data-field="nom-grid-row-checker"] {
-  padding-left: 12px !important;
+  padding-left: 16px !important;
 }
 .nom-grid-checker-and-order {
   position: relative;

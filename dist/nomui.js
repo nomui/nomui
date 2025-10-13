@@ -19820,7 +19820,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const isEllipsis =
         ((this.table.props.ellipsis === "both" ||
           this.table.props.ellipsis === "body") &&
-          this.props.column.ellipsis !== false) ||
+          this.props.column.ellipsis !== false &&
+          this.props.column.field !== "nom-grid-row-checker") ||
         this.props.column.ellipsis === true;
       if (column.type === "checker") {
         children = this._renderCombinedChecker({
@@ -20297,7 +20298,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.table.grid.element
           .querySelectorAll('[data-field="nom-grid-row-checker"]')
           .forEach((n) => {
-            n.style.width = "40px";
+            n.style.width = "48px";
           });
       }
     }
@@ -21334,7 +21335,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const isEllipsis =
         (this.table.props.ellipsis === "both" ||
           this.table.props.ellipsis === "header") &&
-        this.props.column.ellipsis !== false;
+        this.props.column.ellipsis !== false &&
+        this.props.column.field !== "nom-grid-row-checker";
       let titleStr = this.props.column.header || this.props.column.title;
       if (!isString(titleStr)) {
         titleStr = null;
@@ -21646,7 +21648,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.table.grid.element
           .querySelectorAll('[data-field="nom-grid-row-checker"]')
           .forEach((n) => {
-            n.style.width = "40px";
+            n.style.width = "48px";
           });
       }
     }

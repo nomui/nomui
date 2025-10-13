@@ -47,7 +47,8 @@ class Th extends Component {
 
     const isEllipsis =
       (this.table.props.ellipsis === 'both' || this.table.props.ellipsis === 'header') &&
-      this.props.column.ellipsis !== false
+      this.props.column.ellipsis !== false &&
+      this.props.column.field !== 'nom-grid-row-checker'
 
     let titleStr = this.props.column.header || this.props.column.title
     if (!isString(titleStr)) {
@@ -395,7 +396,7 @@ class Th extends Component {
       this.table.grid.element
         .querySelectorAll('[data-field="nom-grid-row-checker"]')
         .forEach((n) => {
-          n.style.width = '40px'
+          n.style.width = '48px'
         })
     }
   }
