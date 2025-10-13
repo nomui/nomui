@@ -4607,8 +4607,8 @@ body {
   --nom-grid-tr-striped-bg: #fdfdfd;
   --nom-grid-tr-striped-bg-hover: var(--nom-grid-tr-bg-hover);
   --nom-grid-tr-bg-selected: #f1fcff;
-  --nom-grid-tr-checked-bg: transparent;
-  --nom-grid-tr-checked-bg-hover: var(--nom-grid-tr-bg-hover);
+  --nom-grid-tr-checked-bg: #f4f8ff;
+  --nom-grid-tr-checked-bg-hover: #f4f8ff;
   --nom-grid-col-highlight-bg: rgba(221, 205, 79, 0.1);
   --nom-grid-td-padding: 8px 10px;
   --nom-grid-tr-modified-bg: #f5f2ff;
@@ -8016,6 +8016,7 @@ table.nom-table.p-bordered {
 .nom-grid .nom-grid-column-tools {
   display: inline-flex;
   padding-right: 0.25rem;
+  min-width: 32px;
 }
 .nom-grid .nom-grid-column-tools-hover {
   visibility: hidden;
@@ -8027,6 +8028,7 @@ table.nom-table.p-bordered {
 .nom-grid .nom-grid-column-th-tools {
   display: inline-flex;
   padding-right: 0.25rem;
+  min-width: 32px;
 }
 .nom-grid .nom-grid-column-th-tools-float-right {
   position: absolute;
@@ -8113,6 +8115,10 @@ table.nom-table.p-bordered {
 }
 .nom-grid table.nom-table tbody tr.nom-grid-tr-modified:not(.nom-tr-empty):hover {
   background-color: var(--nom-grid-tr-modified-bg-hover);
+}
+th[data-field="nom-grid-row-checker"],
+td[data-field="nom-grid-row-checker"] {
+  padding-left: 12px !important;
 }
 .nom-grid-checker-and-order {
   position: relative;

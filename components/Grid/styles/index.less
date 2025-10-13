@@ -412,6 +412,7 @@
   .nom-grid-column-tools {
     display: inline-flex;
     padding-right: 0.25rem;
+    min-width: 32px;
   }
 
   .nom-grid-column-tools-hover {
@@ -426,6 +427,7 @@
   .nom-grid-column-th-tools {
     display: inline-flex;
     padding-right: 0.25rem;
+    min-width: 32px;
   }
 
   .nom-grid-column-th-tools-float-right {
@@ -568,6 +570,11 @@
   &:hover {
     background-color: var(--nom-grid-tr-modified-bg-hover);
   }
+}
+
+th[data-field="nom-grid-row-checker"],
+td[data-field="nom-grid-row-checker"] {
+  padding-left: 12px !important;
 }
 
 .nom-grid-checker-and-order {

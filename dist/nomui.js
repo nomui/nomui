@@ -20289,6 +20289,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } // if (this.props.column.toolbar && this.props.column.toolbar.align === 'left') {
       //   this._fixThToolsPosition()
       // }
+      this._adjustCheckerWidth();
+    }
+    _adjustCheckerWidth() {
+      const needAdjust = this.props.column.field === "nom-grid-row-checker";
+      if (this.table.grid && needAdjust && !this.props.column.toolbar) {
+        this.table.grid.element
+          .querySelectorAll('[data-field="nom-grid-row-checker"]')
+          .forEach((n) => {
+            n.style.width = "40px";
+          });
+      }
     }
     _renderRowOrder({ index }) {
       return index + 1;
@@ -21626,7 +21637,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.setStickyPosition();
         }, 0);
       }
+      this._adjustCheckerWidth();
       this.resizer && this.handleResize();
+    }
+    _adjustCheckerWidth() {
+      const needAdjust = this.props.column.field === "nom-grid-row-checker";
+      if (this.table.grid && needAdjust && !this.props.column.toolbar) {
+        this.table.grid.element
+          .querySelectorAll('[data-field="nom-grid-row-checker"]')
+          .forEach((n) => {
+            n.style.width = "40px";
+          });
+      }
     }
     /**
      * 当拖拽固定列后，往后的th width都需要更新 style.left
