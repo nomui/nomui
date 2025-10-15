@@ -7739,11 +7739,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         ),
       });
-      if (this.props.activeKey) {
-        setTimeout(() => {
-          this.scrollToKey(this.props.activeKey);
-        }, 500);
-      }
     }
     _rendered() {
       const that = this;
@@ -7783,6 +7778,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         }, 500);
       }
+      if (this.props.activeKey) {
+        setTimeout(() => {
+          this.scrollToKey(this.props.activeKey);
+        }, 500);
+      }
     }
     scrollToItem(key) {
       this._scrollToKey(key);
@@ -7809,7 +7809,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         this.container = this.props.container;
         if (isFunction(this.props.container)) {
-          this.container = this.props.container;
+          this.container = this.props.container();
         }
         if (this.props.container === "auto") {
           this.container = checkOverflowAncestor(this.element).component;
@@ -7838,6 +7838,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._scrollToKey(key);
     }
     _scrollToKey(target, skipScrollWatching) {
+      const scrollContainer = this.containerElem;
+      if (!scrollContainer) {
+        setTimeout(() => this._scrollToKey(target, skipScrollWatching), 50);
+        return;
+      }
       const ele = this.containerElem.querySelector(
         `[anchor-key="${String(target).replace(/"/g, '\\"')}"]`
       );
@@ -7852,7 +7857,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         hk.style.position = "absolute";
         hk.style.top = `${0 - this.props.containerOffsetTop}px`;
-        hk.scrollIntoView({ behavior: "smooth" }); // 控制是否临时跳过滚动监听高亮
+        const beforeScrollTop = scrollContainer.scrollTop;
+        hk.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(() => {
+          const afterScrollTop = scrollContainer.scrollTop;
+          if (afterScrollTop === beforeScrollTop) {
+            // 强制轻微滚动触发重绘
+            scrollContainer.scrollTop += 1; // 再次调用 scrollIntoView
+            hk.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 50); // 控制是否临时跳过滚动监听高亮
         if (skipScrollWatching) {
           this._skipScrollWatching = true; // 一段时间后恢复监听
           setTimeout(() => {
