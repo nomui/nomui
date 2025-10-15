@@ -130,7 +130,15 @@ class Anchor extends Component {
 
   _bindScroll() {
     const that = this
-    that.containerElem = that.container.element
+    if (this.container === window || this.container === document) {
+      // 对于 window，使用 scrollingElement 或 documentElement
+      that.containerElem = document.scrollingElement || document.documentElement
+    } else if (this.container && this.container.element) {
+      that.containerElem = this.container.element
+    } else {
+      that.containerElem = null
+    }
+
     this.container._on('scroll', function () {
       that.containerElem = that.container.element
       that._onContainerScroll()
