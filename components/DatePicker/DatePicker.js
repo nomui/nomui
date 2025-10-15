@@ -1047,9 +1047,6 @@ class DatePicker extends Textbox {
   }
 
   handleTimeChange(param) {
-    if (!this.days.getSelectedItem() && this.todayItem && this.todayItem.props) {
-      this.days.selectItem(this.todayItem)
-    }
     this.dateInfo = {
       ...this.dateInfo,
       ...{
@@ -1057,6 +1054,14 @@ class DatePicker extends Textbox {
         minute: param.minute,
         second: param.second,
       },
+    }
+
+    if (!this.days.getSelectedItem() && this.todayItem && this.todayItem.props) {
+      if (!this.todayItem.props.disabled) {
+        this.days.selectItem(this.todayItem)
+      } else {
+        return
+      }
     }
 
     this.updateValue()
