@@ -7797,6 +7797,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _bindScroll() {
       const that = this;
+      that.containerElem = that.container.element;
       this.container._on("scroll", function () {
         that.containerElem = that.container.element;
         that._onContainerScroll();
