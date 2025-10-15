@@ -18539,18 +18539,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return regex.test(input);
     }
     handleTimeChange(param) {
-      if (
-        !this.days.getSelectedItem() &&
-        this.todayItem &&
-        this.todayItem.props
-      ) {
-        this.days.selectItem(this.todayItem);
-      }
       this.dateInfo = Object.assign({}, this.dateInfo, {
         hour: param.hour,
         minute: param.minute,
         second: param.second,
       });
+      if (
+        !this.days.getSelectedItem() &&
+        this.todayItem &&
+        this.todayItem.props
+      ) {
+        if (!this.todayItem.props.disabled) {
+          this.days.selectItem(this.todayItem);
+        } else {
+          return;
+        }
+      }
       this.updateValue();
     }
     getWeekDetails() {
