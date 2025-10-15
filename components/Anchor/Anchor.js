@@ -130,7 +130,7 @@ class Anchor extends Component {
 
   _bindScroll() {
     const that = this
-
+    that.containerElem = that.container.element
     this.container._on('scroll', function () {
       that.containerElem = that.container.element
       that._onContainerScroll()
