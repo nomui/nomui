@@ -64,12 +64,6 @@ class Anchor extends Component {
         },
       },
     })
-
-    if (this.props.activeKey) {
-      setTimeout(() => {
-        this.scrollToKey(this.props.activeKey)
-      }, 500)
-    }
   }
 
   _rendered() {
@@ -115,6 +109,12 @@ class Anchor extends Component {
         }
       }, 500)
     }
+
+    if (this.props.activeKey) {
+      setTimeout(() => {
+        this.scrollToKey(this.props.activeKey)
+      }, 500)
+    }
   }
 
   scrollToItem(key) {
@@ -130,6 +130,7 @@ class Anchor extends Component {
 
   _bindScroll() {
     const that = this
+
     this.container._on('scroll', function () {
       that.containerElem = that.container.element
       that._onContainerScroll()
@@ -144,7 +145,7 @@ class Anchor extends Component {
 
       this.container = this.props.container
       if (isFunction(this.props.container)) {
-        this.container = this.props.container
+        this.container = this.props.container()
       }
 
       if (this.props.container === 'auto') {
@@ -179,6 +180,12 @@ class Anchor extends Component {
   }
 
   _scrollToKey(target, skipScrollWatching) {
+    const scrollContainer = this.containerElem
+    if (!scrollContainer) {
+      setTimeout(() => this._scrollToKey(target, skipScrollWatching), 50)
+      return
+    }
+
     const ele = this.containerElem.querySelector(
       `[anchor-key="${String(target).replace(/"/g, '\\"')}"]`,
     )
@@ -194,7 +201,18 @@ class Anchor extends Component {
       hk.style.position = 'absolute'
       hk.style.top = `${0 - this.props.containerOffsetTop}px`
 
-      hk.scrollIntoView({ behavior: 'smooth' })
+      const beforeScrollTop = scrollContainer.scrollTop
+      hk.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      setTimeout(() => {
+        const afterScrollTop = scrollContainer.scrollTop
+        if (afterScrollTop === beforeScrollTop) {
+          // 强制轻微滚动触发重绘
+          scrollContainer.scrollTop += 1
+
+          // 再次调用 scrollIntoView
+          hk.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }, 50)
 
       // 控制是否临时跳过滚动监听高亮
       if (skipScrollWatching) {
