@@ -10,8 +10,8 @@ define([], function () {
         cols: [
           {
             component: 'Anchor',
-            sticky: this.parent.parent.parent,
-            container: this.parent.parent.parent,
+            sticky: 'auto',
+            container: 'auto',
             activeKey: 'div3', // 默认高亮的key
             onChange: (args) => {
               // 高亮内容发生变化时回调

@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction, isNumeric } from '../util/index'
+import { checkOverflowAncestor, isFunction, isNumeric } from '../util/index'
 
 class Anchor extends Component {
   constructor(props, ...mixins) {
@@ -7,9 +7,10 @@ class Anchor extends Component {
   }
 
   _created() {
-    this.container = isFunction(this.props.container)
-      ? this.props.container()
-      : this.props.container
+    this.container = this.props.container
+    if (isFunction(this.props.container)) {
+      this.container = this.props.container()
+    }
 
     this.containerElem = document
 
@@ -85,6 +86,8 @@ class Anchor extends Component {
       } else {
         if (isFunction(this.props.sticky)) {
           this.scrollParent = this.props.sticky()
+        } else if (this.props.sticky === 'auto') {
+          this.scrollParent = checkOverflowAncestor(this.element).component
         } else {
           this.scrollParent = this.props.sticky
         }
@@ -138,9 +141,16 @@ class Anchor extends Component {
       if (!this.props) {
         return
       }
-      this.container = isFunction(this.props.container)
-        ? this.props.container()
-        : this.props.container
+
+      this.container = this.props.container
+      if (isFunction(this.props.container)) {
+        this.container = this.props.container
+      }
+
+      if (this.props.container === 'auto') {
+        this.container = checkOverflowAncestor(this.element).component
+      }
+
       if (this.container) {
         clearInterval(this.intervalFunc)
         this._bindScroll()
@@ -350,6 +360,25 @@ class Anchor extends Component {
     const result = bestMatch ? bestMatch.getAttribute('anchor-key') : null
     if (result && result !== this.currentKey) {
       this._activeAnchor(result)
+    }
+
+    // --- 检查是否有元素在可视区域内 ---
+    let anyVisible = false
+    for (let i = 0; i < list.length; i++) {
+      const r = list[i].getBoundingClientRect()
+      // 有交集则认为可见（部分可见也算）
+      if (r.bottom > pRect.top && r.top < pRect.bottom) {
+        anyVisible = true
+        break
+      }
+    }
+
+    if (!anyVisible && this.props.sticky && this.props.autoHide) {
+      // 全部不可见：取消吸附（清空 transform，让元素随文档流）
+      this.element.style.transform = ''
+    } else {
+      // 有可见项：恢复吸附逻辑（使用现有的 _fixPosition）
+      this._fixPosition()
     }
   }
 
