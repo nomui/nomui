@@ -15,22 +15,23 @@
 | onItemClick | 点击锚点时回调 | `(args)=>{}` | - |
 | onChange | 高亮锚点内容发生变化时回调 | `(args)=>{}` | - |
 | width | 锚点菜单宽度 | `number` | `180` |
-| sticky | 是否固定锚点菜单，为`true`时以`window`作为滚动容器，否则传入锚点依附的滚动容器，false 的时候锚点菜单不固定 | `object \| function \| boolean` | - |
-| container | 锚点内容依附的滚动容器 | `object` | - |
+| sticky | 是否固定锚点菜单，为`true`时以`window`作为滚动容器，否则传入锚点依附的滚动容器，false 的时候锚点菜单不固定，'auto'则自动判断 | `'auto' \| object \| function \| boolean` | - |
+| container | 锚点内容依附的滚动容器，'auto'则自动判断滚动容器 | `'auto' \| object \| function \| boolean` | - |
 | activeKey | 默认高亮锚点的 key | `string` | - |
-| menuProps | 锚点菜单的配置，参考Menu组件 | `object` | - |
-| keyField | key字段名配置 | `string` | `'key'` |
+| menuProps | 锚点菜单的配置，参考 Menu 组件 | `object` | - |
+| keyField | key 字段名配置 | `string` | `'key'` |
+| autoHide | 所有内容都不在可视区域则不会固定锚点导航 | `boolean` \| - |
 
 ### AnchorContent 锚点内容组件
 
-| 参数 | 说明               | 类型     | 默认值 |
-| ---- | ------------------ | -------- | ------ |
-| key  | 对应锚点菜单的 key | `string` | -      |
-| keyField | key字段名配置 | `string` | `'key'` |
+| 参数     | 说明               | 类型     | 默认值  |
+| -------- | ------------------ | -------- | ------- |
+| key      | 对应锚点菜单的 key | `string` | -       |
+| keyField | key 字段名配置     | `string` | `'key'` |
 
 ## Methods
 
-| 名称        | 说明           | 类型        |
-| ----------- | -------------- | ----------- |
-| scrollToItem | 滚动到指定锚点 | `(key)=>{}` |
-| getCurrentItem | 获取当前高亮锚点 | `()=>{}` |
+| 名称           | 说明             | 类型        |
+| -------------- | ---------------- | ----------- |
+| scrollToItem   | 滚动到指定锚点   | `(key)=>{}` |
+| getCurrentItem | 获取当前高亮锚点 | `()=>{}`    |
