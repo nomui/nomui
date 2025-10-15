@@ -7846,12 +7846,37 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     scrollToKey(key) {
       this._scrollToKey(key);
     }
+    _flagLastContent() {
+      const keys = this.itemKeyList || [];
+      if (keys.length) {
+        const root =
+          this.container === window || this.container === document
+            ? document
+            : this.containerElem || document;
+        const lastContentKey = keys[keys.length - 1];
+        const lastContent = root.querySelector(
+          `[anchor-key="${lastContentKey.replace(/"/g, '\\"')}"]`
+        );
+        if (lastContent) {
+          let endHook = lastContent.querySelector(".end-position-hook");
+          if (!endHook) {
+            endHook = document.createElement("div");
+            endHook.className = "end-position-hook";
+            lastContent.appendChild(endHook);
+          }
+          endHook.style.position = "absolute";
+          endHook.style.bottom = "0";
+          endHook.style.height = `${this.element.offsetHeight}px`; // ✅ Anchor 高度
+          endHook.style.width = "1px";
+        }
+      }
+    }
     _scrollToKey(target, skipScrollWatching) {
       const scrollContainer = this.containerElem;
       if (!scrollContainer) {
         setTimeout(() => this._scrollToKey(target, skipScrollWatching), 50);
         return;
-      }
+      } // this._flagLastContent()
       const ele = this.containerElem.querySelector(
         `[anchor-key="${String(target).replace(/"/g, '\\"')}"]`
       );
@@ -7885,19 +7910,43 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _fixPosition() {
+      if (!this.element || !this.scrollParent) return;
       this.element.style.transform = `translateY(0px)`;
-      let pRect = null;
-      if (this.props.sticky === true) {
-        pRect = { top: this.props.offsetTop, height: window.innerHeight };
-      } else {
-        pRect = this.scrollParent.element.getBoundingClientRect();
-      }
-      const gRect = this.element.getBoundingClientRect();
+      const pRect =
+        this.props.sticky === true
+          ? { top: this.props.offsetTop }
+          : this.scrollParent.element.getBoundingClientRect();
+      const gRect = this.element.getBoundingClientRect(); // ✅ 核心：检查当前 Anchor 的所有内容是否有任何在可视区域
+      if (!this._isAnyContentVisible()) {
+        this.element.style.transform = "";
+        return;
+      } // 吸附逻辑
       if (gRect.top < pRect.top) {
         this.element.style.transform = `translateY(${
           pRect.top - gRect.top - 2
         }px)`;
       }
+    }
+    _isAnyContentVisible() {
+      const keys = this.itemKeyList || [];
+      if (!keys.length) return false;
+      const root =
+        this.container === window || this.container === document
+          ? null
+          : this.containerElem || null; // 容器的可视范围
+      const rootRect = root
+        ? root.getBoundingClientRect()
+        : { top: 0, bottom: window.innerHeight };
+      for (const k of keys) {
+        const sel = `[anchor-key="${String(k).replace(/"/g, '\\"')}"]`;
+        const el = root ? root.querySelector(sel) : document.querySelector(sel);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect(); // 判断元素是否与容器可视区域有交集
+        if (rect.bottom > rootRect.top && rect.top < rootRect.bottom) {
+          return true;
+        }
+      }
+      return false;
     }
     _onContainerScroll() {
       if (this.menu.element.offsetParent === null) {

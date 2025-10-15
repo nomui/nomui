@@ -1,4 +1,4 @@
-define(['./basic.js', './window.js'], function () {
+define(['./basic.js', './in-modal.js'], function () {
   return {
     title: 'Anchor',
     subtitle: '锚点',
