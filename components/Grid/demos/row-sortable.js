@@ -18,6 +18,8 @@ define([], function () {
             console.log(grid.getData()) // 获取整个data对应新排序的数组
           },
         },
+        frozenLeftCols: 1,
+        rowCheckable: {},
         columns: [
           {
             field: 'name',
@@ -33,6 +35,7 @@ define([], function () {
           {
             field: 'sales',
             key: 'sales',
+            width: 3000,
             title: '销量',
           },
 

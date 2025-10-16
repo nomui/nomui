@@ -21039,6 +21039,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children.push({
           component: Td,
           classes: { "nom-grid-drag-handler": true },
+          isDragHandler: true,
+          column: {
+            fixed:
+              grid && grid.props.frozenLeftCols && grid.props.frozenLeftCols > 1
+                ? "left"
+                : undefined,
+          },
           data: {
             component: "Icon",
             type: "drag",
@@ -21951,7 +21958,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.table.grid.props.rowSortable &&
         !this.table.grid.props.rowSortable.customHandler
       ) {
-        thArr.push({ component: Th });
+        const grid = this.table.grid;
+        thArr.push({
+          component: Th,
+          isDragHandler: true,
+          column: {
+            fixed:
+              grid && grid.props.frozenLeftCols && grid.props.frozenLeftCols > 1
+                ? "left"
+                : undefined,
+          },
+        });
       }
       const children =
         Array.isArray(columns) &&

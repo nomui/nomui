@@ -25,8 +25,14 @@ class TheadTr extends Component {
       this.table.grid.props.rowSortable &&
       !this.table.grid.props.rowSortable.customHandler
     ) {
+      const grid = this.table.grid
       thArr.push({
         component: Th,
+        isDragHandler: true,
+        column: {
+          fixed:
+            grid && grid.props.frozenLeftCols && grid.props.frozenLeftCols > 1 ? 'left' : undefined,
+        },
       })
     }
 

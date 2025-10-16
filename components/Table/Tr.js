@@ -52,8 +52,14 @@ class Tr extends Component {
     if (grid && grid.props.rowSortable && !grid.props.rowSortable.customHandler) {
       children.push({
         component: Td,
+
         classes: {
           'nom-grid-drag-handler': true,
+        },
+        isDragHandler: true,
+        column: {
+          fixed:
+            grid && grid.props.frozenLeftCols && grid.props.frozenLeftCols > 1 ? 'left' : undefined,
         },
         data: {
           component: 'Icon',
