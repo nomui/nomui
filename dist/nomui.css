@@ -10368,9 +10368,13 @@ textarea .nom-textarea {
   background: transparent;
   border-color: var(--nom-color-danger);
 }
+.nom-field.p-label-align-top > .nom-field-content {
+  padding-top: 2px;
+}
 .nom-field.p-label-align-top > .nom-field-label {
   display: flex;
   align-items: center;
+  padding-bottom: 0;
 }
 .nom-field.p-label-align-top > .nom-field-label > .nom-label {
   flex: 1;
