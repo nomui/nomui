@@ -120,6 +120,7 @@ class DatePicker extends Textbox {
           classes: {
             'nom-date-picker-popup': true,
             'nom-date-picker-with-time': this.props.showTime,
+            'nom-field-popup': true,
           },
           triggerAction: 'click',
 

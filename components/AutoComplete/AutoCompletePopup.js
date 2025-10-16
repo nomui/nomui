@@ -8,7 +8,6 @@ import AutoCompleteList from './AutoCompleteList'
 
 class AutoCompletePopup extends Popup {
   constructor(props, ...mixins) {
-
     const defaults = {
       autoRender: false,
     }
@@ -34,8 +33,7 @@ class AutoCompletePopup extends Popup {
     let w = `${this.autoCompleteControl.control.offsetWidth()}px`
     if (isNumeric(popupWidth)) {
       w = `${popupWidth}px`
-    }
-    else if (popupWidth === 'auto') {
+    } else if (popupWidth === 'auto') {
       w = 'auto'
     }
 
@@ -43,51 +41,53 @@ class AutoCompletePopup extends Popup {
       attrs: {
         style: {
           width: w,
-          maxWidth: maxPopupWidth || `${this.autoCompleteControl.control.offsetWidth()}px`
+          maxWidth: maxPopupWidth || `${this.autoCompleteControl.control.offsetWidth()}px`,
         },
       },
       children: {
         component: Layout,
-        header: searchable && searchable.sharedInput === false
-          ? {
-            children: {
-              component: Textbox,
-              placeholder: searchable.placeholder,
-              _created: (inst) => {
-                autoCompletePopupRef.autoCompleteControl.searchRef = inst
-              },
-              onValueChange({ newValue }) {
-                if (debounce) {
-                  autoCompletePopupRef.timer && clearTimeout(autoCompletePopupRef.timer)
-                  autoCompletePopupRef.timer = setTimeout(() => {
-                    const loading = new nomui.Loading({
-                      container: autoCompletePopupRef.autoCompleteControl.optionList.parent,
-                    })
-                    const searchPromise = searchable.onSearch({
-                      inputValue: newValue,
-                      options,
-                    })
-                    if (isPromiseLike(searchPromise)) {
-                      return searchPromise
-                        .then((val) => {
-                          autoCompletePopupRef.autoCompleteControl.props.options = val
-                          autoCompletePopupRef.autoCompleteControl.optionList.update()
-                          loading && loading.remove()
+        header:
+          searchable && searchable.sharedInput === false
+            ? {
+                children: {
+                  component: Textbox,
+                  placeholder: searchable.placeholder,
+                  _created: (inst) => {
+                    autoCompletePopupRef.autoCompleteControl.searchRef = inst
+                  },
+                  onValueChange({ newValue }) {
+                    if (debounce) {
+                      autoCompletePopupRef.timer && clearTimeout(autoCompletePopupRef.timer)
+                      autoCompletePopupRef.timer = setTimeout(() => {
+                        const loading = new nomui.Loading({
+                          container: autoCompletePopupRef.autoCompleteControl.optionList.parent,
                         })
-                        .catch(() => {
-                          loading && loading.remove()
+                        const searchPromise = searchable.onSearch({
+                          inputValue: newValue,
+                          options,
                         })
-                    }
+                        if (isPromiseLike(searchPromise)) {
+                          return searchPromise
+                            .then((val) => {
+                              autoCompletePopupRef.autoCompleteControl.props.options = val
+                              autoCompletePopupRef.autoCompleteControl.optionList.update()
+                              loading && loading.remove()
+                            })
+                            .catch(() => {
+                              loading && loading.remove()
+                            })
+                        }
 
-                    loading && loading.remove()
-                    autoCompletePopupRef.autoCompleteControl.props.options = searchPromise
-                    searchPromise && autoCompletePopupRef.autoCompleteControl.optionList.update()
-                  }, interval)
-                }
-              },
-            },
-          }
-          : null,
+                        loading && loading.remove()
+                        autoCompletePopupRef.autoCompleteControl.props.options = searchPromise
+                        searchPromise &&
+                          autoCompletePopupRef.autoCompleteControl.optionList.update()
+                      }, interval)
+                    }
+                  },
+                },
+              }
+            : null,
         body: {
           children: autoCompletePopupRef._getOptionList(),
         },
@@ -115,7 +115,9 @@ class AutoCompletePopup extends Popup {
 
   _show() {
     super._show()
-    this.autoCompleteControl.props.autoFocus && this.autoCompleteControl.searchRef && this.autoCompleteControl.searchRef.focus()
+    this.autoCompleteControl.props.autoFocus &&
+      this.autoCompleteControl.searchRef &&
+      this.autoCompleteControl.searchRef.focus()
     this.removeClass('nom-layer-animate-show')
     this.autoCompleteControl.props.animate && this.animateInit()
   }
@@ -131,7 +133,14 @@ class AutoCompletePopup extends Popup {
 
   _getOptionList() {
     const options = this.autoCompleteControl.internalOptions
-    const { searchable, value, filterOption, filterName, optionDefaults, text = '' } = this.autoCompleteControl.props
+    const {
+      searchable,
+      value,
+      filterOption,
+      filterName,
+      optionDefaults,
+      text = '',
+    } = this.autoCompleteControl.props
     const _value = filterName === 'text' ? value : text
     const opts = isFunction(filterOption) ? filterOption(_value || '', options) : options
     if (searchable) {
@@ -160,7 +169,6 @@ class AutoCompletePopup extends Popup {
       },
     }
   }
-
 }
 
 export default AutoCompletePopup
