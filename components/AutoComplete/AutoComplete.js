@@ -28,9 +28,6 @@ class AutoComplete extends Textbox {
     const { options } = this.props
 
     this.popup = new AutoCompletePopup({
-      classes: {
-        'nom-field-popup': true,
-      },
       trigger: this.control,
       options,
       onShow: () => {

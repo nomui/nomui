@@ -32,9 +32,13 @@ class TreeSelectPopup extends Popup {
       extraTools,
     } = this.selectControl.props
 
-    let { maxPopupWidth } = this.selectControl.props
+    let { maxPopupWidth, minPopupWidth } = this.selectControl.props
     if (isNumeric(maxPopupWidth)) {
       maxPopupWidth = `${maxPopupWidth}px`
+    }
+
+    if (isNumeric(minPopupWidth)) {
+      minPopupWidth = `${minPopupWidth}px`
     }
 
     let w = `${this.selectControl.control.offsetWidth()}px`
@@ -49,6 +53,7 @@ class TreeSelectPopup extends Popup {
         style: {
           width: w,
           maxWidth: maxPopupWidth || `${this.selectControl.control.offsetWidth()}px`,
+          minWidth: minPopupWidth,
         },
       },
       children: {

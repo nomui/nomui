@@ -66,7 +66,6 @@ class PartialDatePicker extends Textbox {
           classes: {
             'nom-partial-date-picker-popup': true,
             'nom-partial-date-picker-popup-hasfooter': extraTools !== null,
-            'nom-field-popup': true,
           },
 
           attrs: {

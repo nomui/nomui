@@ -141,9 +141,6 @@ class Cascader extends Field {
       this._loopLoadValueData()
     }
     this.popup = new CascaderPopup({
-      classes: {
-        'nom-field-popup': true,
-      },
       trigger: this.control,
       onShow: () => {
         this.optionList && this._drawOptionLists()

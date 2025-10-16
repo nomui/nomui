@@ -11779,9 +11779,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         interval,
         popupWidth,
       } = this.autoCompleteControl.props;
-      let { maxPopupWidth } = this.autoCompleteControl.props;
+      let { maxPopupWidth, minPopupWidth } = this.autoCompleteControl.props;
       if (isNumeric(maxPopupWidth)) {
         maxPopupWidth = `${maxPopupWidth}px`;
+      }
+      if (isNumeric(minPopupWidth)) {
+        minPopupWidth = `${minPopupWidth}px`;
       }
       let w = `${this.autoCompleteControl.control.offsetWidth()}px`;
       if (isNumeric(popupWidth)) {
@@ -11796,6 +11799,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             maxWidth:
               maxPopupWidth ||
               `${this.autoCompleteControl.control.offsetWidth()}px`,
+            minWidth: minPopupWidth,
           },
         },
         children: {
@@ -11929,7 +11933,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       const { options } = this.props;
       this.popup = new AutoCompletePopup({
-        classes: { "nom-field-popup": true },
         trigger: this.control,
         options,
         onShow: () => {
@@ -13804,7 +13807,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._loopLoadValueData();
       }
       this.popup = new CascaderPopup({
-        classes: { "nom-field-popup": true },
         trigger: this.control,
         onShow: () => {
           this.optionList && this._drawOptionLists();
@@ -17786,7 +17788,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             classes: {
               "nom-date-picker-popup": true,
               "nom-date-picker-with-time": this.props.showTime,
-              "nom-field-popup": true,
             },
             triggerAction: "click",
             children: [
@@ -19971,6 +19972,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             ignoreMouseEvent: true,
           },
           compact: true,
+          minPopupWidth:
+            this.table.hasGrid && this.table.grid.props.minPopupWidth,
         };
         if (this.table.hasGrid) {
           if (
@@ -26236,7 +26239,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         w = `${popupWidth}px`;
       }
       this.popup = new nomui.Popup({
-        classes: { "nom-icon-picker-popup": true, "nom-field-popup": true },
+        classes: { "nom-icon-picker-popup": true },
         attrs: { style: { width: w } },
         reference: container,
         trigger: this.control,
@@ -29664,7 +29667,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             classes: {
               "nom-partial-date-picker-popup": true,
               "nom-partial-date-picker-popup-hasfooter": extraTools !== null,
-              "nom-field-popup": true,
             },
             attrs: { style: { width: "auto", minHeight: "240px" } },
             triggerAction: "click",
@@ -32784,9 +32786,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         popupWidth,
         extraTools,
       } = this.selectControl.props;
-      let { maxPopupWidth } = this.selectControl.props;
+      let { maxPopupWidth, minPopupWidth } = this.selectControl.props;
       if (isNumeric(maxPopupWidth)) {
         maxPopupWidth = `${maxPopupWidth}px`;
+      }
+      if (isNumeric(minPopupWidth)) {
+        minPopupWidth = `${minPopupWidth}px`;
       }
       let w = `${this.selectControl.control.offsetWidth()}px`;
       if (isNumeric(popupWidth)) {
@@ -32800,6 +32805,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             width: w,
             maxWidth:
               maxPopupWidth || `${this.selectControl.control.offsetWidth()}px`,
+            minWidth: minPopupWidth,
           },
         },
         children: {
@@ -33234,7 +33240,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         container = ref.element;
       }
       this.popup = new SelectPopup({
-        classes: { "nom-field-popup": true },
         reference: container,
         trigger: this.control,
         virtual,
@@ -35382,7 +35387,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       const that = this;
       this.popup = new TimePickerPopup({
-        classes: { "nom-field-popup": true },
         trigger: this.control,
         onHide: () => {
           that.getValue() !== that.defaultValue && that.handleChange();
@@ -36508,9 +36512,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         popupWidth,
         extraTools,
       } = this.selectControl.props;
-      let { maxPopupWidth } = this.selectControl.props;
+      let { maxPopupWidth, minPopupWidth } = this.selectControl.props;
       if (isNumeric(maxPopupWidth)) {
         maxPopupWidth = `${maxPopupWidth}px`;
+      }
+      if (isNumeric(minPopupWidth)) {
+        minPopupWidth = `${minPopupWidth}px`;
       }
       let w = `${this.selectControl.control.offsetWidth()}px`;
       if (isNumeric(popupWidth)) {
@@ -36524,6 +36531,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             width: w,
             maxWidth:
               maxPopupWidth || `${this.selectControl.control.offsetWidth()}px`,
+            minWidth: minPopupWidth,
           },
         },
         children: {
@@ -36671,7 +36679,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       this.popup = new TreeSelectPopup({
-        classes: { "nom-field-popup": true },
         trigger: this.control,
         nodeCheckable: this.props.multiple && this._getPopupNodeCheckable(),
         onShow: () => {
