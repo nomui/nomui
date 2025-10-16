@@ -94,6 +94,9 @@ class TimePicker extends Textbox {
     const that = this
 
     this.popup = new TimePickerPopup({
+      classes: {
+        'nom-field-popup': true,
+      },
       trigger: this.control,
       onHide: () => {
         that.getValue() !== that.defaultValue && that.handleChange()
@@ -351,7 +354,7 @@ TimePicker.defaults = {
   minTime: null,
   maxTime: null,
   nowText: '此刻',
-  resetText: '重置'
+  resetText: '重置',
 }
 
 Component.register(TimePicker)

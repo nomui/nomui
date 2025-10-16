@@ -117,6 +117,7 @@ class IconPicker extends Field {
     this.popup = new nomui.Popup({
       classes: {
         'nom-icon-picker-popup': true,
+        'nom-field-popup': true,
       },
       attrs: {
         style: {
