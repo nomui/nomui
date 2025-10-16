@@ -300,9 +300,6 @@ class Select extends Field {
       container = ref.element
     }
     this.popup = new SelectPopup({
-      classes: {
-        'nom-field-popup': true,
-      },
       reference: container,
       trigger: this.control,
       virtual,

@@ -142,6 +142,7 @@ class Td extends Component {
           ignoreMouseEvent: true,
         },
         compact: true,
+        minPopupWidth: this.table.hasGrid && this.table.grid.props.minPopupWidth,
       }
       if (this.table.hasGrid) {
         if ((grid.props.excelMode && !grid.props.excelMode.alwaysEdit) || grid.props.editable)

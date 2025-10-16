@@ -25,9 +25,13 @@ class AutoCompletePopup extends Popup {
     const { options } = this.props
     const { searchable, debounce, interval, popupWidth } = this.autoCompleteControl.props
 
-    let { maxPopupWidth } = this.autoCompleteControl.props
+    let { maxPopupWidth, minPopupWidth } = this.autoCompleteControl.props
     if (isNumeric(maxPopupWidth)) {
       maxPopupWidth = `${maxPopupWidth}px`
+    }
+
+    if (isNumeric(minPopupWidth)) {
+      minPopupWidth = `${minPopupWidth}px`
     }
 
     let w = `${this.autoCompleteControl.control.offsetWidth()}px`
@@ -42,6 +46,7 @@ class AutoCompletePopup extends Popup {
         style: {
           width: w,
           maxWidth: maxPopupWidth || `${this.autoCompleteControl.control.offsetWidth()}px`,
+          minWidth: minPopupWidth,
         },
       },
       children: {

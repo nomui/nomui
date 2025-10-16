@@ -44,9 +44,6 @@ class TreeSelect extends Field {
 
   _rendered() {
     this.popup = new TreeSelectPopup({
-      classes: {
-        'nom-field-popup': true,
-      },
       trigger: this.control,
       nodeCheckable: this.props.multiple && this._getPopupNodeCheckable(),
       onShow: () => {
