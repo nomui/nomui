@@ -385,20 +385,7 @@ class Th extends Component {
       }, 0)
     }
 
-    this._adjustCheckerWidth()
     this.resizer && this.handleResize()
-  }
-
-  _adjustCheckerWidth() {
-    const needAdjust = this.props.column.field === 'nom-grid-row-checker'
-
-    if (this.table.grid && needAdjust && !this.props.column.toolbar) {
-      this.table.grid.element
-        .querySelectorAll('[data-field="nom-grid-row-checker"]')
-        .forEach((n) => {
-          n.style.width = '48px'
-        })
-    }
   }
 
   /**

@@ -20395,17 +20395,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } // if (this.props.column.toolbar && this.props.column.toolbar.align === 'left') {
       //   this._fixThToolsPosition()
       // }
-      this._adjustCheckerWidth();
-    }
-    _adjustCheckerWidth() {
-      const needAdjust = this.props.column.field === "nom-grid-row-checker";
-      if (this.table.grid && needAdjust && !this.props.column.toolbar) {
-        this.table.grid.element
-          .querySelectorAll('[data-field="nom-grid-row-checker"]')
-          .forEach((n) => {
-            n.style.width = "48px";
-          });
-      }
     }
     _renderRowOrder({ index }) {
       return index + 1;
@@ -21751,18 +21740,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.setStickyPosition();
         }, 0);
       }
-      this._adjustCheckerWidth();
       this.resizer && this.handleResize();
-    }
-    _adjustCheckerWidth() {
-      const needAdjust = this.props.column.field === "nom-grid-row-checker";
-      if (this.table.grid && needAdjust && !this.props.column.toolbar) {
-        this.table.grid.element
-          .querySelectorAll('[data-field="nom-grid-row-checker"]')
-          .forEach((n) => {
-            n.style.width = "48px";
-          });
-      }
     }
     /**
      * 当拖拽固定列后，往后的th width都需要更新 style.left
@@ -23904,7 +23882,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.loadingInst) {
         this.loadingInst.remove();
         this.loadingInst = null;
-      } // this._handleScrollbarVisibility()
+      }
+      this._adjustCheckerWidth(); // this._handleScrollbarVisibility()
       // this._setScrollbarOnResize()
       if (this.props.rowCheckable && this._checkboxAllRef) {
         this.changeCheckAllState();
@@ -23949,6 +23928,24 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.props.rowSortable && defaultSortableOndrop();
       if (this.props.lazyLoadLimit > 0 || this.props.lazyLoadRemote) {
         this._watchLazyLoad();
+      }
+    }
+    _adjustCheckerWidth() {
+      // 找出所有 checker 列对应的 <col> 元素
+      const checkerCols = this.element.querySelectorAll(
+        'col[data-field="nom-grid-row-checker"]'
+      );
+      if (!checkerCols.length) return; // 找出同字段下的 th / td，用于判断是否存在 toolbar
+      const checkerCells = this.element.querySelectorAll(
+        'th[data-field="nom-grid-row-checker"], td[data-field="nom-grid-row-checker"]'
+      );
+      const hasToolbar = Array.from(checkerCells).some((tdEl) =>
+        tdEl.querySelector(".nom-grid-column-tools")
+      ); // 如果没有 toolbar → 缩小整列宽度
+      if (!hasToolbar) {
+        checkerCols.forEach((col) => {
+          col.style.width = "48px";
+        });
       }
     }
     _handleScrollbarVisibility() {

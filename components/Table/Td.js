@@ -588,19 +588,6 @@ class Td extends Component {
     // if (this.props.column.toolbar && this.props.column.toolbar.align === 'left') {
     //   this._fixThToolsPosition()
     // }
-    this._adjustCheckerWidth()
-  }
-
-  _adjustCheckerWidth() {
-    const needAdjust = this.props.column.field === 'nom-grid-row-checker'
-
-    if (this.table.grid && needAdjust && !this.props.column.toolbar) {
-      this.table.grid.element
-        .querySelectorAll('[data-field="nom-grid-row-checker"]')
-        .forEach((n) => {
-          n.style.width = '48px'
-        })
-    }
   }
 
   _renderRowOrder({ index }) {
