@@ -616,8 +616,10 @@ class Grid extends Component {
       'th[data-field="nom-grid-row-checker"], td[data-field="nom-grid-row-checker"]',
     )
 
-    const hasToolbar = Array.from(checkerCells).some((tdEl) =>
-      tdEl.querySelector('.nom-grid-column-tools'),
+    const hasToolbar = Array.from(checkerCells).some(
+      (tdEl) =>
+        tdEl.querySelector('.nom-grid-column-tools') ||
+        tdEl.querySelector('.nom-grid-column-th-tools'),
     )
 
     // 如果没有 toolbar → 缩小整列宽度
