@@ -558,6 +558,8 @@ class Grid extends Component {
       this.loadingInst = null
     }
 
+    this._adjustCheckerWidth()
+
     // this._handleScrollbarVisibility()
     // this._setScrollbarOnResize()
 
@@ -601,6 +603,28 @@ class Grid extends Component {
 
     if (this.props.lazyLoadLimit > 0 || this.props.lazyLoadRemote) {
       this._watchLazyLoad()
+    }
+  }
+
+  _adjustCheckerWidth() {
+    // 找出所有 checker 列对应的 <col> 元素
+    const checkerCols = this.element.querySelectorAll('col[data-field="nom-grid-row-checker"]')
+    if (!checkerCols.length) return
+
+    // 找出同字段下的 th / td，用于判断是否存在 toolbar
+    const checkerCells = this.element.querySelectorAll(
+      'th[data-field="nom-grid-row-checker"], td[data-field="nom-grid-row-checker"]',
+    )
+
+    const hasToolbar = Array.from(checkerCells).some((tdEl) =>
+      tdEl.querySelector('.nom-grid-column-tools'),
+    )
+
+    // 如果没有 toolbar → 缩小整列宽度
+    if (!hasToolbar) {
+      checkerCols.forEach((col) => {
+        col.style.width = '48px'
+      })
     }
   }
 
