@@ -10401,6 +10401,16 @@ textarea .nom-textarea {
 @media (min-width: 576px) {
   .nom-field.p-label-align-top {
     flex-direction: column;
+    padding-left: 0.375rem;
+  }
+  .nom-field.p-label-align-top.p-required > .nom-field-label > .nom-label {
+    position: relative;
+  }
+  .nom-field.p-label-align-top.p-required > .nom-field-label > .nom-label::before {
+    position: absolute;
+    left: -0.375rem;
+    top: 50%;
+    transform: translate(-75%, -50%);
   }
   .nom-field.p-label-align-right > .nom-field-label,
   .nom-field.p-label-align-left > .nom-field-label {
