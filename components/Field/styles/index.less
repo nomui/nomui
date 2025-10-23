@@ -310,6 +310,8 @@
       }
     }
 
+
+
     >.nom-field-content {
       pointer-events: none;
       // flex-grow: 0;
@@ -321,11 +323,14 @@
         padding-left: 0 !important;
         transition: none;
 
-        >input[type='text'] {
+
+        >input[type='text'],
+        >textarea {
           border-color: transparent !important;
           padding-left: 0 !important;
           transform: translateY(-2px);
           transition: none;
+          resize: none
         }
 
         >.nom-textbox-affix-wrapper {
@@ -339,6 +344,42 @@
             padding-left: 0 !important;
             transition: none;
           }
+        }
+
+
+        >.nom-field {
+
+
+          .nom-control {
+            border-color: transparent !important;
+            padding-left: 0 !important;
+            transition: none;
+
+
+            >input[type='text'],
+            >textarea {
+              border-color: transparent !important;
+              padding-left: 0 !important;
+              transform: translateY(-2px);
+              transition: none;
+              resize: none
+            }
+
+            >.nom-textbox-affix-wrapper {
+              border-color: transparent !important;
+              padding-left: 0;
+              transition: none;
+              transform: translateY(-1px);
+
+              >input[type='text'] {
+                border-color: transparent !important;
+                padding-left: 0 !important;
+                transition: none;
+              }
+            }
+          }
+
+
         }
 
       }

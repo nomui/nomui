@@ -10468,11 +10468,13 @@ textarea .nom-textarea {
   padding-left: 0 !important;
   transition: none;
 }
-.nom-field.s-read-mode > .nom-field-content > .nom-control > input[type='text'] {
+.nom-field.s-read-mode > .nom-field-content > .nom-control > input[type='text'],
+.nom-field.s-read-mode > .nom-field-content > .nom-control > textarea {
   border-color: transparent !important;
   padding-left: 0 !important;
   transform: translateY(-2px);
   transition: none;
+  resize: none;
 }
 .nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-textbox-affix-wrapper {
   border-color: transparent !important;
@@ -10481,6 +10483,30 @@ textarea .nom-textarea {
   transform: translateY(-1px);
 }
 .nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-textbox-affix-wrapper > input[type='text'] {
+  border-color: transparent !important;
+  padding-left: 0 !important;
+  transition: none;
+}
+.nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-field .nom-control {
+  border-color: transparent !important;
+  padding-left: 0 !important;
+  transition: none;
+}
+.nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-field .nom-control > input[type='text'],
+.nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-field .nom-control > textarea {
+  border-color: transparent !important;
+  padding-left: 0 !important;
+  transform: translateY(-2px);
+  transition: none;
+  resize: none;
+}
+.nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-field .nom-control > .nom-textbox-affix-wrapper {
+  border-color: transparent !important;
+  padding-left: 0;
+  transition: none;
+  transform: translateY(-1px);
+}
+.nom-field.s-read-mode > .nom-field-content > .nom-control > .nom-field .nom-control > .nom-textbox-affix-wrapper > input[type='text'] {
   border-color: transparent !important;
   padding-left: 0 !important;
   transition: none;
