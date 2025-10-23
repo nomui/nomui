@@ -15,6 +15,9 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
             country: '我是中国人',
             name: 'Jerry',
           },
+          fieldDefaults: {
+            labelAlign: 'left',
+          },
           fields: [
             {
               component: 'StaticText',
@@ -42,6 +45,7 @@ define(['../../Cascader/demos/data.js'], function (cascaderOptions) {
               precision: 2,
               min: 999,
               max: 10000,
+              labelAlign: 'top',
             },
             {
               component: 'Textbox',

@@ -202,7 +202,22 @@
   @media (min-width: @screen-sm-min) {
     &.p-label-align-top {
       flex-direction: column;
+      padding-left: .375rem;
 
+      &.p-required {
+        >.nom-field-label {
+          >.nom-label {
+            position: relative;
+
+            &::before {
+              position: absolute;
+              left: -.375rem;
+              top: 50%;
+              transform: translate(-75%, -50%);
+            }
+          }
+        }
+      }
     }
 
     &.p-label-align-right,
@@ -244,6 +259,8 @@
         }
       }
     }
+
+
   }
 
   &.p-span-auto {
