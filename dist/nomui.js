@@ -20235,6 +20235,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           classes: {
             "nom-td-editable-inner": true,
             "nom-td-auto-width": column.autoWidth,
+            "nom-td-with-editor": !!column.editRender,
             "nom-td-edit-disabled": cellDisabled,
           },
           children: [
@@ -20288,6 +20289,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.setProps({
           classes: {
             "nom-td-excel-mode": true,
+            "nom-td-with-editor": !!column.editRender,
             "nom-td-edit-disabled": cellDisabled,
           },
           onClick: ({ event }) => {
