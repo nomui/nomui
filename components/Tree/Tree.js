@@ -316,6 +316,7 @@ class Tree extends Component {
       scrollIntoView(node.element, {
         behavior: 'smooth',
         scrollMode: 'if-needed',
+        block: this.props.scrollBlock || 'center',
       })
     }
   }
@@ -455,6 +456,7 @@ Tree.defaults = {
   initExpandLevel: -1,
   loadData: false,
   checkAllText: '全选',
+  scrollBlock: 'center',
 }
 Component.register(Tree)
 
