@@ -10156,6 +10156,12 @@ textarea .nom-textarea {
 .nom-date-range-picker > .nom-field-content > .nom-control > .nom-field.nom-date-picker {
   flex-grow: 1;
 }
+.nom-date-range-picker.s-compact .nom-date-picker .nom-field-content {
+  padding: 0;
+}
+.nom-date-range-picker.p-variant-borderless > .nom-field-content .nom-date-picker .nom-textbox-affix-wrapper {
+  border: none;
+}
 .nom-divider {
   box-sizing: border-box;
   margin: 0;

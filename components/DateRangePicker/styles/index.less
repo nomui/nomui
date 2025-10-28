@@ -1,11 +1,33 @@
 // 不允许空less文件，添加一个无用的样式保留此文件。
 .nom-date-range-picker {
   text-decoration: inherit;
-  > .nom-field-content {
-    > .nom-control {
+
+  >.nom-field-content {
+    >.nom-control {
       flex-wrap: nowrap !important;
-      > .nom-field.nom-date-picker {
+
+      >.nom-field.nom-date-picker {
         flex-grow: 1;
+      }
+    }
+  }
+
+  &.s-compact {
+    .nom-date-picker {
+      .nom-field-content {
+        padding: 0;
+      }
+    }
+
+  }
+
+  &.p-variant-borderless {
+    >.nom-field-content {
+      .nom-date-picker {
+        .nom-textbox-affix-wrapper {
+          border: none;
+
+        }
       }
     }
   }
