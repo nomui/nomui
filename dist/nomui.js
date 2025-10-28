@@ -15400,6 +15400,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         scrollIntoView(node.element, {
           behavior: "smooth",
           scrollMode: "if-needed",
+          block: this.props.scrollBlock || "center",
         });
       }
     }
@@ -15514,6 +15515,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     initExpandLevel: -1,
     loadData: false,
     checkAllText: "全选",
+    scrollBlock: "center",
   };
   Component.register(Tree);
   var OptionTreeMixin = {

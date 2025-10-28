@@ -71,6 +71,11 @@ define([], function () {
             dataFields: {
               key: 'text',
             },
+            attrs: {
+              style: {
+                height: '500px',
+              },
+            },
             data: [
               {
                 text: '节点 1',
@@ -84,6 +89,7 @@ define([], function () {
                 children: [{ text: '节点 2.1' }, { text: '节点 2.2' }],
               },
             ],
+            scrollBlock: 'start',
             nodeSelectable: {
               selectedNodeKey: '节点 1.2',
               onNodeSelect: ({ node }) => {
