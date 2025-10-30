@@ -819,20 +819,33 @@ class Td extends Component {
 
   _setTdsPosition() {
     const fixed = this.props.column.fixed
+    if (!fixed) return
+
     const el = this.element
     const tableWrapper = el.closest('.nom-grid-body')
     if (!tableWrapper) return
 
-    const scrollbarWidth = this.table.grid.props.scrollbarWidth
+    const field = this.props.column.field
+    const scrollbarWidth = this.table.grid?.props?.scrollbarWidth || 0
+
+    // 找到参考元素（优先 th，其次同列首个 td）
+    let refEl = this.table?.element?.querySelector(`th[data-field="${field}"]`)
+    if (!refEl) {
+      refEl = this.table?.element?.querySelector(`td[data-field="${field}"]`)
+    }
+    if (!refEl) {
+      // 没找到（比如当前是唯一单元格），用自身
+      refEl = el
+    }
+
+    // 计算相对位置
+    const wrapperRect = tableWrapper.getBoundingClientRect()
+    const refRect = refEl.getBoundingClientRect()
 
     if (fixed === 'left') {
-      const elRect = el.getBoundingClientRect()
-      const wrapperRect = tableWrapper.getBoundingClientRect()
-      this._stickyPos = elRect.left - wrapperRect.left
-    } else if (fixed === 'right') {
-      const elRect = el.getBoundingClientRect()
-      const wrapperRect = tableWrapper.getBoundingClientRect()
-      this._stickyPos = wrapperRect.right - elRect.right - scrollbarWidth
+      this._stickyPos = refRect.left - wrapperRect.left + tableWrapper.scrollLeft
+    } else {
+      this._stickyPos = wrapperRect.right - refRect.right + tableWrapper.scrollLeft - scrollbarWidth
     }
 
     this._stickyPos = Math.max(0, this._stickyPos)
