@@ -7748,8 +7748,8 @@ table.nom-table.p-bordered {
   top: 0;
   bottom: -1px;
   left: auto;
-  right: -10px;
-  width: 10px;
+  right: -12px;
+  width: 12px;
   background-color: var(--nom-grid-th-bg);
   background-image: var(--nom-grid-th-bg-image);
   z-index: 5;
@@ -7817,8 +7817,8 @@ table.nom-table.p-bordered {
   top: -1px;
   bottom: 0;
   left: auto;
-  right: -8px;
-  width: 8px;
+  right: -12px;
+  width: 12px;
   background-color: var(--nom-grid-footer-td-bg);
   z-index: 5;
 }
