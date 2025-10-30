@@ -20594,14 +20594,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const wrapperRect = tableWrapper.getBoundingClientRect();
       const refRect = refEl.getBoundingClientRect();
       if (fixed === "left") {
-        this._stickyPos =
-          refRect.left - wrapperRect.left + tableWrapper.scrollLeft;
+        this._stickyPos = refRect.left - wrapperRect.left;
       } else {
-        this._stickyPos =
-          wrapperRect.right -
-          refRect.right +
-          tableWrapper.scrollLeft -
-          scrollbarWidth;
+        this._stickyPos = wrapperRect.right - refRect.right - scrollbarWidth;
       }
       this._stickyPos = Math.max(0, this._stickyPos);
       this._setStyle({ [fixed]: `${this._stickyPos}px` });
