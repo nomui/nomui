@@ -10696,28 +10696,50 @@ textarea .nom-textarea {
   transform: translate(-50%, -50%);
 }
 .nom-badge {
-  /* Structure */
   display: inline-block;
-  color: var(--nom-text-color);
-  height: 1.5rem;
+  vertical-align: middle;
+  box-sizing: border-box;
   min-width: 1.5rem;
+  height: 1.5rem;
+  flex-grow: 0 !important;
+  color: var(--nom-text-color);
+  background-color: var(--nom-badge-background-color);
+  border: 1px solid var(--nom-border-color);
+  border-radius: 2px;
+  padding: 0 0.125rem;
   white-space: nowrap;
   text-align: center;
   text-decoration: none;
-  background-color: var(--nom-badge-background-color);
-  border: 1px solid transparent;
-  border-color: var(--nom-border-color);
-  border-radius: 2px;
   user-select: none;
-  flex-grow: 0 !important;
-  padding: 0 0.25rem;
+}
+.nom-badge > .nom-badge-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: inherit;
+  color: inherit;
+  background-color: transparent;
+  border-radius: inherit;
+  font: inherit;
+  white-space: inherit;
+  text-align: inherit;
+}
+.nom-badge > .nom-badge-content > .nom-icon {
+  display: inline-flex;
+}
+.nom-badge > .nom-badge-content > .nom-icon + span,
+.nom-badge > .nom-badge-content > span + .nom-icon {
+  margin-left: 0.1rem;
 }
 .nom-badge.nom-badge-pointer {
   cursor: pointer;
 }
 .nom-badge.p-size-xs {
-  height: 1.25rem;
   min-width: 1.25rem;
+  height: 1.25rem;
   font-size: 80%;
 }
 .nom-badge.p-plain {
@@ -10727,13 +10749,6 @@ textarea .nom-textarea {
 .nom-badge.p-plain:hover {
   background-color: var(--nom-color-primary-hover);
   outline: none;
-}
-.nom-badge > .nom-icon {
-  display: inline-flex;
-}
-.nom-badge > .nom-icon + span,
-.nom-badge > span + .nom-icon {
-  margin-left: 0.1rem;
 }
 .nom-badge.p-type-dot {
   position: absolute;
@@ -10752,10 +10767,9 @@ textarea .nom-textarea {
   top: 0;
   right: 0;
   width: auto;
-  min-width: 15px !important;
+  min-width: 14px !important;
   max-width: 30px;
-  height: 15px;
-  line-height: 12px;
+  height: 14px;
   padding: 1px 3px;
   overflow: hidden;
   font-size: 10px;
@@ -10775,7 +10789,6 @@ textarea .nom-textarea {
   height: 16px;
   padding: 1px 3px;
   overflow: hidden;
-  line-height: 13px;
   white-space: nowrap;
   text-align: center;
   text-overflow: ellipsis;

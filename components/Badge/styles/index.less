@@ -1,31 +1,55 @@
 .nom-badge {
-  /* Structure */
+  // ===== 外层容器：负责布局、对齐 =====
   display: inline-block;
-  color: var(--nom-text-color);
-  height: 1.5rem;
+  vertical-align: middle;
+  box-sizing: border-box;
   min-width: 1.5rem;
+  height: 1.5rem;
+  flex-grow: 0 !important;
+  color: var(--nom-text-color);
+  background-color: var(--nom-badge-background-color);
+  border: 1px solid var(--nom-border-color);
+  border-radius: 2px;
+  padding: 0 .125rem;
   white-space: nowrap;
   text-align: center;
   text-decoration: none;
-  background-color: var(--nom-badge-background-color);
-  border: 1px solid transparent;
-  border-color: var(--nom-border-color);
-  border-radius: 2px;
   user-select: none;
-  flex-grow: 0 !important;
-  padding: 0 .25rem;
+
+  >.nom-badge-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: inherit;
+    color: inherit;
+    background-color: transparent;
+    border-radius: inherit;
+    font: inherit;
+    white-space: inherit;
+    text-align: inherit;
+
+    >.nom-icon {
+      display: inline-flex;
+    }
+
+    >.nom-icon+span,
+    >span+.nom-icon {
+      margin-left: 0.1rem;
+    }
+  }
 
   &.nom-badge-pointer {
     cursor: pointer;
   }
 
   &.p-size-xs {
-    // line-height: ensure proper height of button next to small input
-    height: 1.25rem;
     min-width: 1.25rem;
+    height: 1.25rem;
     font-size: 80%;
   }
-
 
   &.p-plain {
     background-color: transparent;
@@ -37,19 +61,7 @@
     }
   }
 
-
-
-  >.nom-icon {
-    display: inline-flex;
-  }
-
-  >.nom-icon+span,
-  >span+.nom-icon {
-    margin-left: 0.1rem;
-  }
-
-
-
+  // ===== 各种类型 =====
   &.p-type-dot {
     position: absolute;
     top: 0;
@@ -68,10 +80,9 @@
     top: 0;
     right: 0;
     width: auto;
-    min-width: 15px !important;
+    min-width: 14px !important;
     max-width: 30px;
-    height: 15px;
-    line-height: 12px;
+    height: 14px;
     padding: 1px 3px;
     overflow: hidden;
     font-size: 10px;
@@ -80,8 +91,6 @@
     text-overflow: ellipsis;
     border-radius: 200px;
     transform: translate(50%, -50%);
-
-
   }
 
   &.p-type-tag {
@@ -94,14 +103,11 @@
     height: 16px;
     padding: 1px 3px;
     overflow: hidden;
-    line-height: 13px;
     white-space: nowrap;
     text-align: center;
     text-overflow: ellipsis;
     border-radius: 200px;
     transform: translate(50%, -50%);
-
-
   }
 
   .nom-badge-remove {
@@ -114,6 +120,7 @@
     }
   }
 
+  // ===== 颜色类型 =====
   &.p-color-red {
     color: rgb(var(--nom-white));
     background-color: rgb(var(--nom-red-8));

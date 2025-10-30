@@ -12817,14 +12817,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this.setProps({
         classes: { "nom-badge-pointer": !!this.props.onClick },
-        children: [
-          Component.normalizeIconProps(icon),
-          { tag: "span", children: text },
-          (number || number === 0) && {
-            tag: "span",
-            children: number > overflowCount ? `${overflowCount}+` : number,
-          },
-        ],
+        children: {
+          classes: { "nom-badge-content": true },
+          children: [
+            Component.normalizeIconProps(icon),
+            { tag: "span", children: text },
+            (number || number === 0) && {
+              tag: "span",
+              children: number > overflowCount ? `${overflowCount}+` : number,
+            },
+          ],
+        },
       });
     }
     _disable() {
