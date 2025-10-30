@@ -9693,6 +9693,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return valid;
     }
     _validate(options) {
+      options = options || {};
       const { disabled, hidden } = this.props;
       if (disabled || hidden) {
         return true;
@@ -9700,7 +9701,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       let rules = this.rules;
       const value = this._getRawValue ? this._getRawValue() : this.getValue();
       if (Array.isArray(rules) && rules.length > 0) {
-        if (options && options.ignoreRequired) {
+        if (options.ignoreRequired) {
           rules = rules.filter((item) => {
             return item.type !== "required";
           });
@@ -9715,9 +9716,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
           return true;
         }
-        this.addClass("s-invalid");
-        this.trigger("invalid", validationResult);
-        this._invalid(validationResult);
+        if (options.showInvalidTip !== false) {
+          this.addClass("s-invalid");
+          this.trigger("invalid", validationResult);
+          this._invalid(validationResult);
+        }
         return false;
       }
       return true;
@@ -18896,18 +18899,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     validate(options) {
+      options = options || {};
       const invalids = [];
       for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i],
-          { disabled, hidden } = field.props;
+        const field = this.fields[i];
+        if (!field) continue;
+        const { disabled, hidden } = field.props;
         if (!(disabled || hidden) && field.validate) {
           const valResult = field.validate(options);
           if (valResult !== true) {
             invalids.push(field);
           }
         }
-      }
-      if (invalids.length > 0) {
+      } // 仅当显示校验提示时才自动聚焦第一个无效字段
+      if (invalids.length > 0 && options.showInvalidTip !== false) {
         this.rootField.focusField(invalids[0]);
       }
       if (this.expandBtnRef && invalids.length > 0) {

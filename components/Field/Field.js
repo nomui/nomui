@@ -331,6 +331,7 @@ class Field extends Component {
   }
 
   _validate(options) {
+    options = options || {}
     const { disabled, hidden } = this.props
     if (disabled || hidden) {
       return true
@@ -339,7 +340,7 @@ class Field extends Component {
     const value = this._getRawValue ? this._getRawValue() : this.getValue()
 
     if (Array.isArray(rules) && rules.length > 0) {
-      if (options && options.ignoreRequired) {
+      if (options.ignoreRequired) {
         rules = rules.filter((item) => {
           return item.type !== 'required'
         })
@@ -356,9 +357,11 @@ class Field extends Component {
         return true
       }
 
-      this.addClass('s-invalid')
-      this.trigger('invalid', validationResult)
-      this._invalid(validationResult)
+      if (options.showInvalidTip !== false) {
+        this.addClass('s-invalid')
+        this.trigger('invalid', validationResult)
+        this._invalid(validationResult)
+      }
       return false
     }
 
