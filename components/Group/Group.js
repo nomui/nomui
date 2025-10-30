@@ -115,10 +115,14 @@ class Group extends Field {
   }
 
   validate(options) {
+    options = options || {}
     const invalids = []
+
     for (let i = 0; i < this.fields.length; i++) {
-      const field = this.fields[i],
-        { disabled, hidden } = field.props
+      const field = this.fields[i]
+      if (!field) continue
+
+      const { disabled, hidden } = field.props
       if (!(disabled || hidden) && field.validate) {
         const valResult = field.validate(options)
         if (valResult !== true) {
@@ -127,7 +131,8 @@ class Group extends Field {
       }
     }
 
-    if (invalids.length > 0) {
+    // 仅当显示校验提示时才自动聚焦第一个无效字段
+    if (invalids.length > 0 && options.showInvalidTip !== false) {
       this.rootField.focusField(invalids[0])
     }
 
