@@ -110,7 +110,7 @@ class Anchor extends Component {
       }, 500)
     }
 
-    if (this.props.activeKey) {
+    if (this.props.activeKey && this.props.autoScroll !== false) {
       setTimeout(() => {
         this.scrollToKey(this.props.activeKey)
       }, 500)
@@ -492,6 +492,7 @@ Anchor.defaults = {
   onChange: null,
   menuProps: {},
   keyField: 'key',
+  autoScroll: false,
 }
 
 Component.register(Anchor)

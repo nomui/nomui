@@ -7778,7 +7778,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         }, 500);
       }
-      if (this.props.activeKey) {
+      if (this.props.activeKey && this.props.autoScroll !== false) {
         setTimeout(() => {
           this.scrollToKey(this.props.activeKey);
         }, 500);
@@ -8100,6 +8100,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     onChange: null,
     menuProps: {},
     keyField: "key",
+    autoScroll: false,
   };
   Component.register(Anchor);
   class AnchorContent extends Component {
