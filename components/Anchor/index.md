@@ -21,6 +21,7 @@
 | menuProps | 锚点菜单的配置，参考 Menu 组件 | `object` | - |
 | keyField | key 字段名配置 | `string` | `'key'` |
 | autoHide | 所有内容都不在可视区域则不会固定锚点导航 | `boolean` \| - |
+| autoScroll | 默认选中一项时是否自动滚动到它的为止 | `boolean` \| false |
 
 ### AnchorContent 锚点内容组件
 
