@@ -99,16 +99,7 @@ class GridHeader extends Component {
     const grid = this.grid
 
     let startIndex = -1
-    let indicatorLine = null
-    let lastTargetTh = null // 记录上一次 hover 的 th
-
-    // 创建全局拖拽指示线
-    function createIndicatorLine() {
-      const line = document.createElement('div')
-      line.className = 'nom-grid-drag-indicator'
-      table.element.parentElement.appendChild(line)
-      return line
-    }
+    let lastTargetTh = null // 当前被高亮的 th
 
     thList.forEach((th, index) => {
       const el = th.element
@@ -116,58 +107,54 @@ class GridHeader extends Component {
 
       el.setAttribute('draggable', true)
 
+      // 拖拽开始
       el.addEventListener('dragstart', (e) => {
         startIndex = index
         e.dataTransfer.effectAllowed = 'move'
         e.dataTransfer.setData('text/plain', '')
         el.classList.add('dragging')
-
-        // 蓝色分割线紧贴当前 th 左侧
-        indicatorLine = createIndicatorLine()
-        const rect = el.getBoundingClientRect()
-        const parentRect = table.element.getBoundingClientRect()
-        indicatorLine.style.left = `${rect.left - parentRect.left}px`
       })
 
+      // 拖拽经过（关键：根据左右半区决定 left/right 高亮）
       el.addEventListener('dragover', (e) => {
         e.preventDefault()
         const rect = el.getBoundingClientRect()
-        const parentRect = table.element.getBoundingClientRect()
         const offset = e.clientX - rect.left
         const middle = rect.width / 2
-        const left = offset < middle
+        const insertBefore = offset < middle
 
-        // 移动灰色指示线
-        if (indicatorLine) {
-          indicatorLine.style.background = '#ccc'
-          indicatorLine.style.left = left
-            ? `${rect.left - parentRect.left}px`
-            : `${rect.right - parentRect.left}px`
-        }
-
-        // 🔹 更新 hover 高亮的 th
+        // 清理上一次目标（如果不是当前）
         if (lastTargetTh && lastTargetTh !== el) {
-          lastTargetTh.classList.remove('drag-over')
+          lastTargetTh.classList.remove('drag-over-left')
+          lastTargetTh.classList.remove('drag-over-right')
         }
-        el.classList.add('drag-over')
-        lastTargetTh = el
+
+        if (insertBefore) {
+          el.classList.add('drag-over-left')
+          el.classList.remove('drag-over-right')
+          lastTargetTh = el
+        } else {
+          el.classList.add('drag-over-right')
+          el.classList.remove('drag-over-left')
+          lastTargetTh = el
+        }
       })
 
+      // 离开目标
       el.addEventListener('dragleave', () => {
-        // 若快速离开目标列，清除高亮
         if (lastTargetTh === el) {
-          el.classList.remove('drag-over')
+          el.classList.remove('drag-over-left')
+          el.classList.remove('drag-over-right')
           lastTargetTh = null
         }
       })
 
+      // 放下时执行重排
       el.addEventListener('drop', (e) => {
         e.preventDefault()
-        if (!indicatorLine) return
-
-        const dropRect = el.getBoundingClientRect()
-        const offset = e.clientX - dropRect.left
-        const middle = dropRect.width / 2
+        const rect = el.getBoundingClientRect()
+        const offset = e.clientX - rect.left
+        const middle = rect.width / 2
         const insertBefore = offset < middle
 
         const thArray = Object.values(table.thRefs)
@@ -177,32 +164,30 @@ class GridHeader extends Component {
           return
         }
 
-        // 重排列配置
+        // 重新计算列顺序（使用 grid.props.columns）
         const reordered = grid.props.columns.slice()
         const [moved] = reordered.splice(startIndex, 1)
         const insertIndex = insertBefore ? endIndex : endIndex + 1
         reordered.splice(insertIndex > reordered.length ? reordered.length : insertIndex, 0, moved)
 
-        // ✅ 保留原 frozenCount
+        // 调用 grid 的列更新逻辑，并保留左冻结列数
         if (grid && typeof grid.handleColumnsSetting === 'function') {
-          const frozenCount = grid.props.frozenLeftCols || 0
-          grid.handleColumnsSetting(reordered, frozenCount)
+          const frozenLeft = grid.props.frozenLeftCols || 0
+          grid.handleColumnsSetting(reordered, frozenLeft)
         }
 
         cleanup()
       })
 
+      // 拖拽结束
       el.addEventListener('dragend', cleanup)
 
       function cleanup() {
         el.classList.remove('dragging')
         if (lastTargetTh) {
-          lastTargetTh.classList.remove('drag-over')
+          lastTargetTh.classList.remove('drag-over-left')
+          lastTargetTh.classList.remove('drag-over-right')
           lastTargetTh = null
-        }
-        if (indicatorLine) {
-          indicatorLine.remove()
-          indicatorLine = null
         }
       }
     })
