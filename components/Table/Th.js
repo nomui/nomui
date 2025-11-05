@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { isFunction, isPlainObject, isString } from '../util/index'
+import { isFunction, isString } from '../util/index'
 
 class Th extends Component {
   constructor(props, ...mixins) {
@@ -466,54 +466,80 @@ class Th extends Component {
   }
 
   handleResize() {
-    const resizer = this.resizer.element
+    const resizer = this.resizer?.element
     const that = this
-    const { columnResizable } = this.table.grid.props
+    const grid = this.table?.grid
+    if (!resizer || !grid) return
+    const { columnResizable } = grid.props || {}
 
-    resizer.onmousedown = function (evt) {
-      isPlainObject(columnResizable) &&
-        columnResizable.onStart &&
-        that.table.grid._callHandler(columnResizable.onStart)
+    // 给每个区域加锁宽度（只在拖拽开始时执行一次）
+    const lockAllColsWidth = () => {
+      const lock = (section) => {
+        if (!section?.element) return
+        const cols = section.element.querySelectorAll('col')
+        cols.forEach((col, i) => {
+          if (!col.style.width) {
+            const th = grid.header.element.querySelectorAll('th')[i]
+            const w = th?.offsetWidth
+            if (w) col.style.width = `${w}px`
+          }
+        })
+      }
+      lock(grid.header)
+      lock(grid.body)
+      lock(grid.footer)
+    }
+
+    resizer.onmousedown = (evt) => {
+      evt.preventDefault()
+      lockAllColsWidth()
       const startX = evt.clientX
       that.lastDistance = 0
-      that._hideHighLightMask()
       that.mouseDowning = true
+      that._hideHighLightMask()
+      columnResizable?.onStart && grid._callHandler(columnResizable.onStart)
 
-      document.onmousemove = function (e) {
-        const endX = e.clientX
-        const moveLen = endX - startX
-
+      document.onmousemove = (e) => {
+        const moveLen = e.clientX - startX
         const distance = moveLen - that.lastDistance
-        that._triggerGridResize(distance)
         that.lastDistance = moveLen
-        isPlainObject(columnResizable) &&
-          columnResizable.onMove &&
-          that.table.grid._callHandler(columnResizable.onMove)
+        that._triggerGridResize(distance)
+        columnResizable?.onMove && grid._callHandler(columnResizable.onMove)
       }
-      document.onmouseup = function () {
+
+      document.onmouseup = () => {
         that.mouseDowning = false
-        const grid = that.table.grid
-        if (that.resizable && grid.props.columnResizable.cache) {
+        if (that.resizable && columnResizable?.cache) {
           grid.storeColsWidth(that.props.column.field)
         }
-        // 移动列宽，需重新计算渲染 scroller 的宽度
-        const header = grid.header
-        if (header.scrollbar) {
-          const gRect = grid.element.getBoundingClientRect()
-          const size = {
-            width: `${gRect.width}px`,
-            innerWidth: `${header.element.scrollWidth}px`,
-          }
-          header.scrollbar.update({ size })
-        }
-        header && header._processFixedColumnSticky(that)
-        that._triggerGridResize(0)
 
-        isPlainObject(columnResizable) &&
-          columnResizable.onEnd &&
-          that.table.grid._callHandler(columnResizable.onEnd)
-        document.onmousemove = null
-        document.onmouseup = null
+        // 同步所有区域的目标列宽
+        const field = that.props.column.field
+        const headerCol = grid.header.element.querySelector(`col[data-field="${field}"]`)
+        const newWidth = headerCol?.style.width
+        if (newWidth) {
+          ;[grid.body, grid.footer].forEach((part) => {
+            const col = part?.element?.querySelector(`col[data-field="${field}"]`)
+            if (col) col.style.width = newWidth
+          })
+        }
+
+        // 更新滚动条与布局
+        const header = grid.header
+        if (header?.scrollbar) {
+          const gRect = grid.element.getBoundingClientRect()
+          header.scrollbar.update({
+            size: {
+              width: `${gRect.width}px`,
+              innerWidth: `${header.element.scrollWidth}px`,
+            },
+          })
+        }
+
+        header?._processFixedColumnSticky?.(that)
+        that._triggerGridResize(0)
+        columnResizable?.onEnd && grid._callHandler(columnResizable.onEnd)
+        document.onmousemove = document.onmouseup = null
       }
     }
   }

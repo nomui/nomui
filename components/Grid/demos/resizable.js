@@ -12,7 +12,7 @@ define([], function () {
           key: 'name',
           title: '标题',
           width: 200,
-          resizable: false,
+          // resizable: false,
         },
         {
           field: 'author',
