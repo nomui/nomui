@@ -670,24 +670,18 @@ td[data-field="nom-grid-row-checker"] {
     &.dragging {
       opacity: 1; // 保持不透明
       z-index: 10;
-
-      &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: rgba(var(--nom-color-primary-base), 0.15);
-        pointer-events: none;
-      }
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     &.drag-over-left {
       border-left: 3px solid var(--nom-color-primary);
-      background: rgba(var(--nom-color-primary-base), 0.05);
+      background: rgba(var(--nom-color-primary-base), 0.1);
     }
 
     &.drag-over-right {
       border-right: 3px solid var(--nom-color-primary);
-      background: rgba(var(--nom-color-primary-base), 0.05);
+      background: rgba(var(--nom-color-primary-base), 0.1);
     }
   }
 }
