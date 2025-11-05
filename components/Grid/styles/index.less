@@ -659,3 +659,36 @@ td[data-field="nom-grid-row-checker"] {
   cursor: pointer;
   width: 24px;
 }
+
+.nom-grid {
+  th {
+    position: relative;
+    user-select: none;
+    transition: background 0.2s, opacity 0.2s, box-shadow 0.2s;
+
+    &.dragging {
+      opacity: 0.6;
+      background: rgba(64, 158, 255, 0.15);
+    }
+
+    &.drag-over {
+      // background: #ccc;
+      border-left: 3px solid var(--nom-color-primary);
+    }
+
+    &:hover {
+      background: rgba(64, 158, 255, 0.05);
+    }
+  }
+
+  .nom-grid-drag-indicator {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: #ccc;
+    z-index: 9999;
+    pointer-events: none;
+    transition: left 0.05s linear;
+  }
+}

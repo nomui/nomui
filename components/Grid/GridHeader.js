@@ -50,6 +50,10 @@ class GridHeader extends Component {
     const that = this
 
     this._fixSettingHeight()
+
+    if (this.grid.props.allowSortColumns) {
+      this._initColumnSorting()
+    }
     // this._fixRightPadding()
     if (!this.grid.props.sticky) {
       return
@@ -85,6 +89,123 @@ class GridHeader extends Component {
         }
       }, 0)
     }
+  }
+
+  _initColumnSorting() {
+    const { table } = this
+    if (!table || !table.thRefs) return
+
+    const thList = Object.values(table.thRefs)
+    const grid = this.grid
+
+    let startIndex = -1
+    let indicatorLine = null
+    let lastTargetTh = null // 记录上一次 hover 的 th
+
+    // 创建全局拖拽指示线
+    function createIndicatorLine() {
+      const line = document.createElement('div')
+      line.className = 'nom-grid-drag-indicator'
+      table.element.parentElement.appendChild(line)
+      return line
+    }
+
+    thList.forEach((th, index) => {
+      const el = th.element
+      if (!el) return
+
+      el.setAttribute('draggable', true)
+
+      el.addEventListener('dragstart', (e) => {
+        startIndex = index
+        e.dataTransfer.effectAllowed = 'move'
+        e.dataTransfer.setData('text/plain', '')
+        el.classList.add('dragging')
+
+        // 蓝色分割线紧贴当前 th 左侧
+        indicatorLine = createIndicatorLine()
+        const rect = el.getBoundingClientRect()
+        const parentRect = table.element.getBoundingClientRect()
+        indicatorLine.style.left = `${rect.left - parentRect.left}px`
+      })
+
+      el.addEventListener('dragover', (e) => {
+        e.preventDefault()
+        const rect = el.getBoundingClientRect()
+        const parentRect = table.element.getBoundingClientRect()
+        const offset = e.clientX - rect.left
+        const middle = rect.width / 2
+        const left = offset < middle
+
+        // 移动灰色指示线
+        if (indicatorLine) {
+          indicatorLine.style.background = '#ccc'
+          indicatorLine.style.left = left
+            ? `${rect.left - parentRect.left}px`
+            : `${rect.right - parentRect.left}px`
+        }
+
+        // 🔹 更新 hover 高亮的 th
+        if (lastTargetTh && lastTargetTh !== el) {
+          lastTargetTh.classList.remove('drag-over')
+        }
+        el.classList.add('drag-over')
+        lastTargetTh = el
+      })
+
+      el.addEventListener('dragleave', () => {
+        // 若快速离开目标列，清除高亮
+        if (lastTargetTh === el) {
+          el.classList.remove('drag-over')
+          lastTargetTh = null
+        }
+      })
+
+      el.addEventListener('drop', (e) => {
+        e.preventDefault()
+        if (!indicatorLine) return
+
+        const dropRect = el.getBoundingClientRect()
+        const offset = e.clientX - dropRect.left
+        const middle = dropRect.width / 2
+        const insertBefore = offset < middle
+
+        const thArray = Object.values(table.thRefs)
+        const endIndex = thArray.indexOf(th)
+        if (startIndex === endIndex) {
+          cleanup()
+          return
+        }
+
+        // 重排列配置
+        const reordered = grid.props.columns.slice()
+        const [moved] = reordered.splice(startIndex, 1)
+        const insertIndex = insertBefore ? endIndex : endIndex + 1
+        reordered.splice(insertIndex > reordered.length ? reordered.length : insertIndex, 0, moved)
+
+        // ✅ 保留原 frozenCount
+        if (grid && typeof grid.handleColumnsSetting === 'function') {
+          const frozenCount = grid.props.frozenLeftCols || 0
+          grid.handleColumnsSetting(reordered, frozenCount)
+        }
+
+        cleanup()
+      })
+
+      el.addEventListener('dragend', cleanup)
+
+      function cleanup() {
+        el.classList.remove('dragging')
+        if (lastTargetTh) {
+          lastTargetTh.classList.remove('drag-over')
+          lastTargetTh = null
+        }
+        if (indicatorLine) {
+          indicatorLine.remove()
+          indicatorLine = null
+        }
+      }
+    })
   }
 
   _remove() {

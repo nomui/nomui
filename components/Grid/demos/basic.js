@@ -14,7 +14,8 @@ define([], function () {
             console.log(args)
           },
         },
-
+        allowSortColumns: true,
+        frozenLeftCols: 1,
         columns: [
           {
             field: 'name',
