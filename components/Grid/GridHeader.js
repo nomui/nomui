@@ -50,6 +50,10 @@ class GridHeader extends Component {
     const that = this
 
     this._fixSettingHeight()
+
+    if (this.grid.props.allowSortColumns) {
+      this._initColumnSorting()
+    }
     // this._fixRightPadding()
     if (!this.grid.props.sticky) {
       return
@@ -85,6 +89,130 @@ class GridHeader extends Component {
         }
       }, 0)
     }
+  }
+
+  _initColumnSorting() {
+    const { table } = this
+    if (!table || !table.thRefs) return
+
+    const thList = Object.values(table.thRefs)
+    const grid = this.grid
+
+    let startIndex = -1
+    let lastTargetTh = null // 当前高亮的目标 th
+
+    thList.forEach((th, index) => {
+      const el = th.element
+      if (!el) return
+
+      el.setAttribute('draggable', true)
+
+      // === 拖拽开始 ===
+      el.addEventListener('dragstart', (e) => {
+        startIndex = index
+        e.dataTransfer.effectAllowed = 'move'
+        e.dataTransfer.setData('text/plain', '')
+        el.classList.add('dragging')
+      })
+
+      // === 拖拽经过（根据鼠标位置高亮左右边框）===
+      el.addEventListener('dragover', (e) => {
+        e.preventDefault()
+        const rect = el.getBoundingClientRect()
+        const offset = e.clientX - rect.left
+        const middle = rect.width / 2
+        const insertBefore = offset < middle
+
+        // 清理上一个目标
+        if (lastTargetTh && lastTargetTh !== el) {
+          clearHighlight(lastTargetTh)
+          lastTargetTh = null
+        }
+
+        // 当前目标添加高亮
+        if (insertBefore) {
+          el.classList.add('drag-over-left')
+          el.classList.remove('drag-over-right')
+          highlightCells(el, 'left')
+        } else {
+          el.classList.add('drag-over-right')
+          el.classList.remove('drag-over-left')
+          highlightCells(el, 'right')
+        }
+        lastTargetTh = el
+      })
+
+      // === 离开目标 ===
+      el.addEventListener('dragleave', () => {
+        if (lastTargetTh === el) {
+          clearHighlight(el)
+          lastTargetTh = null
+        }
+      })
+
+      // === 放下执行重排 ===
+      el.addEventListener('drop', (e) => {
+        e.preventDefault()
+        const rect = el.getBoundingClientRect()
+        const offset = e.clientX - rect.left
+        const middle = rect.width / 2
+        const insertBefore = offset < middle
+
+        const thArray = Object.values(table.thRefs)
+        const endIndex = thArray.indexOf(th)
+        if (startIndex === endIndex) {
+          cleanup()
+          return
+        }
+
+        const reordered = grid.props.columns.slice()
+        const [moved] = reordered.splice(startIndex, 1)
+        const insertIndex = insertBefore ? endIndex : endIndex + 1
+        reordered.splice(insertIndex > reordered.length ? reordered.length : insertIndex, 0, moved)
+
+        if (grid && typeof grid.handleColumnsSetting === 'function') {
+          const frozenLeft = grid.props.frozenLeftCols || 0
+          grid.handleColumnsSetting(reordered, frozenLeft)
+        }
+
+        cleanup()
+      })
+
+      // === 拖拽结束 ===
+      el.addEventListener('dragend', cleanup)
+
+      // ==== 内部函数 ====
+      function highlightCells(thEl, side) {
+        const field = thEl.getAttribute('data-field')
+        if (!field || !grid || !grid.element) return
+        const cells = grid.element.querySelectorAll(`[data-field="${field}"]`)
+        cells.forEach((td) => {
+          if (side === 'left') {
+            td.classList.add('drag-over-left')
+            td.classList.remove('drag-over-right')
+          } else {
+            td.classList.add('drag-over-right')
+            td.classList.remove('drag-over-left')
+          }
+        })
+      }
+
+      function clearHighlight(thEl) {
+        thEl.classList.remove('drag-over-left', 'drag-over-right')
+        const field = thEl.getAttribute('data-field')
+        if (!field || !grid || !grid.element) return
+        const cells = grid.element.querySelectorAll(`[data-field="${field}"]`)
+        cells.forEach((td) => td.classList.remove('drag-over-left', 'drag-over-right'))
+      }
+
+      function cleanup() {
+        el.classList.remove('dragging')
+        if (lastTargetTh) {
+          clearHighlight(lastTargetTh)
+          lastTargetTh = null
+        }
+      }
+    })
   }
 
   _remove() {

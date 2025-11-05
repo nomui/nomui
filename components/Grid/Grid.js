@@ -1188,7 +1188,7 @@ class Grid extends Component {
     this._processColumns()
     this._calcMinWidth()
     this.render()
-    this.popup.hide()
+    this.popup && this.popup.hide()
     columnsCustomizable.callback && this._callHandler(columnsCustomizable.callback(tree))
   }
 
@@ -1901,6 +1901,7 @@ Grid.defaults = {
   editable: false, // 传统编辑模式
   lazyLoadRemote: false,
   lazyLoadLimit: false,
+  maxAutoTdWidth: null, // 自动宽度的td最大宽度限制
 }
 Grid._loopSetValue = function (key, arry) {
   if (key === undefined || key.cascade === undefined) return false

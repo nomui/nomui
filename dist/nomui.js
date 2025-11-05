@@ -20619,7 +20619,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.table.hasGrid) {
         let maxTdWidth = tdWidth + tdPaddingWidth; // fix: td宽度不够导致 操作 二字换行
         maxTdWidth =
-          maxTdWidth < 80 && needRightPadding ? maxTdWidth + 30 : maxTdWidth; // 需要同时更新header,body,footer
+          maxTdWidth < 80 && needRightPadding ? maxTdWidth + 30 : maxTdWidth; // === 新增逻辑：宽度上限控制 ===
+        const { maxAutoTdWidth } = this.table.grid.props || {};
+        if (isNumeric(maxAutoTdWidth) && maxTdWidth > maxAutoTdWidth) {
+          maxTdWidth = maxAutoTdWidth;
+        } // 需要同时更新header,body,footer
         this.table.grid.setAllTableColMaxTdWidth({
           field: this.props.column.field,
           maxTdWidth,
@@ -21832,49 +21836,74 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
     }
     handleResize() {
-      const resizer = this.resizer.element;
+      const resizer = this.resizer?.element;
       const that = this;
-      const { columnResizable } = this.table.grid.props;
-      resizer.onmousedown = function (evt) {
-        isPlainObject(columnResizable) &&
-          columnResizable.onStart &&
-          that.table.grid._callHandler(columnResizable.onStart);
+      const grid = this.table?.grid;
+      if (!resizer || !grid) return;
+      const { columnResizable } = grid.props || {}; // 给每个区域加锁宽度（只在拖拽开始时执行一次）
+      const lockAllColsWidth = () => {
+        const lock = (section) => {
+          if (!section?.element) return;
+          const cols = section.element.querySelectorAll("col");
+          cols.forEach((col, i) => {
+            if (!col.style.width) {
+              const th = grid.header.element.querySelectorAll("th")[i];
+              const w = th?.offsetWidth;
+              if (w) col.style.width = `${w}px`;
+            }
+          });
+        };
+        lock(grid.header);
+        lock(grid.body);
+        lock(grid.footer);
+      };
+      resizer.onmousedown = (evt) => {
+        evt.preventDefault();
+        lockAllColsWidth();
         const startX = evt.clientX;
         that.lastDistance = 0;
-        that._hideHighLightMask();
         that.mouseDowning = true;
-        document.onmousemove = function (e) {
-          const endX = e.clientX;
-          const moveLen = endX - startX;
+        that._hideHighLightMask();
+        columnResizable?.onStart && grid._callHandler(columnResizable.onStart);
+        document.onmousemove = (e) => {
+          const moveLen = e.clientX - startX;
           const distance = moveLen - that.lastDistance;
-          that._triggerGridResize(distance);
           that.lastDistance = moveLen;
-          isPlainObject(columnResizable) &&
-            columnResizable.onMove &&
-            that.table.grid._callHandler(columnResizable.onMove);
+          that._triggerGridResize(distance);
+          columnResizable?.onMove && grid._callHandler(columnResizable.onMove);
         };
-        document.onmouseup = function () {
+        document.onmouseup = () => {
           that.mouseDowning = false;
-          const grid = that.table.grid;
-          if (that.resizable && grid.props.columnResizable.cache) {
+          if (that.resizable && columnResizable?.cache) {
             grid.storeColsWidth(that.props.column.field);
-          } // 移动列宽，需重新计算渲染 scroller 的宽度
+          } // 同步所有区域的目标列宽
+          const field = that.props.column.field;
+          const headerCol = grid.header.element.querySelector(
+            `col[data-field="${field}"]`
+          );
+          const newWidth = headerCol?.style.width;
+          if (newWidth) {
+            [grid.body, grid.footer].forEach((part) => {
+              const col = part?.element?.querySelector(
+                `col[data-field="${field}"]`
+              );
+              if (col) col.style.width = newWidth;
+            });
+          } // 更新滚动条与布局
           const header = grid.header;
-          if (header.scrollbar) {
+          if (header?.scrollbar) {
             const gRect = grid.element.getBoundingClientRect();
-            const size = {
-              width: `${gRect.width}px`,
-              innerWidth: `${header.element.scrollWidth}px`,
-            };
-            header.scrollbar.update({ size });
+            header.scrollbar.update({
+              size: {
+                width: `${gRect.width}px`,
+                innerWidth: `${header.element.scrollWidth}px`,
+              },
+            });
           }
-          header && header._processFixedColumnSticky(that);
+          header?._processFixedColumnSticky?.(that);
           that._triggerGridResize(0);
-          isPlainObject(columnResizable) &&
-            columnResizable.onEnd &&
-            that.table.grid._callHandler(columnResizable.onEnd);
-          document.onmousemove = null;
-          document.onmouseup = null;
+          columnResizable?.onEnd && grid._callHandler(columnResizable.onEnd);
+          document.onmousemove = document.onmouseup = null;
         };
       };
     }
@@ -22508,7 +22537,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       const that = this;
-      this._fixSettingHeight(); // this._fixRightPadding()
+      this._fixSettingHeight();
+      if (this.grid.props.allowSortColumns) {
+        this._initColumnSorting();
+      } // this._fixRightPadding()
       if (!this.grid.props.sticky) {
         return;
       }
@@ -22539,6 +22571,115 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         }, 0);
       }
+    }
+    _initColumnSorting() {
+      const { table } = this;
+      if (!table || !table.thRefs) return;
+      const thList = ((target) =>
+        Object.keys(target).map((key) => target[key]))(table.thRefs);
+      const grid = this.grid;
+      let startIndex = -1;
+      let lastTargetTh = null; // 当前高亮的目标 th
+      thList.forEach((th, index) => {
+        const el = th.element;
+        if (!el) return;
+        el.setAttribute("draggable", true); // === 拖拽开始 ===
+        el.addEventListener("dragstart", (e) => {
+          startIndex = index;
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", "");
+          el.classList.add("dragging");
+        }); // === 拖拽经过（根据鼠标位置高亮左右边框）===
+        el.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          const rect = el.getBoundingClientRect();
+          const offset = e.clientX - rect.left;
+          const middle = rect.width / 2;
+          const insertBefore = offset < middle; // 清理上一个目标
+          if (lastTargetTh && lastTargetTh !== el) {
+            clearHighlight(lastTargetTh);
+            lastTargetTh = null;
+          } // 当前目标添加高亮
+          if (insertBefore) {
+            el.classList.add("drag-over-left");
+            el.classList.remove("drag-over-right");
+            highlightCells(el, "left");
+          } else {
+            el.classList.add("drag-over-right");
+            el.classList.remove("drag-over-left");
+            highlightCells(el, "right");
+          }
+          lastTargetTh = el;
+        }); // === 离开目标 ===
+        el.addEventListener("dragleave", () => {
+          if (lastTargetTh === el) {
+            clearHighlight(el);
+            lastTargetTh = null;
+          }
+        }); // === 放下执行重排 ===
+        el.addEventListener("drop", (e) => {
+          e.preventDefault();
+          const rect = el.getBoundingClientRect();
+          const offset = e.clientX - rect.left;
+          const middle = rect.width / 2;
+          const insertBefore = offset < middle;
+          const thArray = ((target) =>
+            Object.keys(target).map((key) => target[key]))(table.thRefs);
+          const endIndex = thArray.indexOf(th);
+          if (startIndex === endIndex) {
+            cleanup();
+            return;
+          }
+          const reordered = grid.props.columns.slice();
+          const [moved] = reordered.splice(startIndex, 1);
+          const insertIndex = insertBefore ? endIndex : endIndex + 1;
+          reordered.splice(
+            insertIndex > reordered.length ? reordered.length : insertIndex,
+            0,
+            moved
+          );
+          if (grid && typeof grid.handleColumnsSetting === "function") {
+            const frozenLeft = grid.props.frozenLeftCols || 0;
+            grid.handleColumnsSetting(reordered, frozenLeft);
+          }
+          cleanup();
+        }); // === 拖拽结束 ===
+        el.addEventListener("dragend", cleanup); // ==== 内部函数 ====
+        function highlightCells(thEl, side) {
+          const field = thEl.getAttribute("data-field");
+          if (!field || !grid || !grid.element) return;
+          const cells = grid.element.querySelectorAll(
+            `[data-field="${field}"]`
+          );
+          cells.forEach((td) => {
+            if (side === "left") {
+              td.classList.add("drag-over-left");
+              td.classList.remove("drag-over-right");
+            } else {
+              td.classList.add("drag-over-right");
+              td.classList.remove("drag-over-left");
+            }
+          });
+        }
+        function clearHighlight(thEl) {
+          thEl.classList.remove("drag-over-left", "drag-over-right");
+          const field = thEl.getAttribute("data-field");
+          if (!field || !grid || !grid.element) return;
+          const cells = grid.element.querySelectorAll(
+            `[data-field="${field}"]`
+          );
+          cells.forEach((td) =>
+            td.classList.remove("drag-over-left", "drag-over-right")
+          );
+        }
+        function cleanup() {
+          el.classList.remove("dragging");
+          if (lastTargetTh) {
+            clearHighlight(lastTargetTh);
+            lastTargetTh = null;
+          }
+        }
+      });
     }
     _remove() {
       this.scrollbar && this.scrollbar._remove();
@@ -24449,7 +24590,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._processColumns();
       this._calcMinWidth();
       this.render();
-      this.popup.hide();
+      this.popup && this.popup.hide();
       columnsCustomizable.callback &&
         this._callHandler(columnsCustomizable.callback(tree));
     } // 自定义列设置后。更新 pinColumns
@@ -25081,6 +25222,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     editable: false, // 传统编辑模式
     lazyLoadRemote: false,
     lazyLoadLimit: false,
+    maxAutoTdWidth: null, // 自动宽度的td最大宽度限制
   };
   Grid._loopSetValue = function (key, arry) {
     if (key === undefined || key.cascade === undefined) return false;

@@ -874,6 +874,13 @@ class Td extends Component {
       let maxTdWidth = tdWidth + tdPaddingWidth
       // fix: td宽度不够导致 操作 二字换行
       maxTdWidth = maxTdWidth < 80 && needRightPadding ? maxTdWidth + 30 : maxTdWidth
+
+      // === 新增逻辑：宽度上限控制 ===
+      const { maxAutoTdWidth } = this.table.grid.props || {}
+      if (isNumeric(maxAutoTdWidth) && maxTdWidth > maxAutoTdWidth) {
+        maxTdWidth = maxAutoTdWidth
+      }
+
       // 需要同时更新header,body,footer
       this.table.grid.setAllTableColMaxTdWidth({
         field: this.props.column.field,

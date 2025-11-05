@@ -8181,6 +8181,25 @@ td[data-field="nom-grid-row-checker"] {
   cursor: pointer;
   width: 24px;
 }
+.nom-grid th,
+.nom-grid td {
+  position: relative;
+  user-select: none;
+}
+.nom-grid th.dragging,
+.nom-grid td.dragging {
+  opacity: 1;
+}
+.nom-grid th.drag-over-left,
+.nom-grid td.drag-over-left {
+  border-left: 2px solid var(--nom-color-primary);
+  background: rgba(64, 158, 255, 0.04);
+}
+.nom-grid th.drag-over-right,
+.nom-grid td.drag-over-right {
+  border-right: 2px solid var(--nom-color-primary);
+  background: rgba(64, 158, 255, 0.04);
+}
 .nom-icon {
   display: inline-flex;
   align-items: center;

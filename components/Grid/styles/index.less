@@ -659,3 +659,27 @@ td[data-field="nom-grid-row-checker"] {
   cursor: pointer;
   width: 24px;
 }
+
+
+.nom-grid {
+
+  th,
+  td {
+    position: relative;
+    user-select: none;
+
+    &.dragging {
+      opacity: 1;
+    }
+
+    &.drag-over-left {
+      border-left: 2px solid var(--nom-color-primary);
+      background: rgba(64, 158, 255, 0.04);
+    }
+
+    &.drag-over-right {
+      border-right: 2px solid var(--nom-color-primary);
+      background: rgba(64, 158, 255, 0.04);
+    }
+  }
+}
