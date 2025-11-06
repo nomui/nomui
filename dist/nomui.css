@@ -8200,6 +8200,11 @@ td[data-field="nom-grid-row-checker"] {
   border-right: 2px solid var(--nom-color-primary);
   background: rgba(64, 158, 255, 0.04);
 }
+.nom-grid-td-tooltip {
+  pointer-events: none;
+  padding: 6px 8px;
+  border-radius: 4px;
+}
 .nom-icon {
   display: inline-flex;
   align-items: center;

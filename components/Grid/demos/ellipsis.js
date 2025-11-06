@@ -6,7 +6,7 @@ define([], function () {
       return {
         component: 'Grid',
         ellipsis: 'both', // 'header' | 'body'
-
+        showTooltip: true,
         columns: [
           {
             field: 'name',

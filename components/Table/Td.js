@@ -542,7 +542,13 @@ class Td extends Component {
         rowspan: rowSpan,
         align: this.props.column.align || columnAlign,
         'data-field': this.props.column.field,
-        title: this._getAttrTitle(children, isEllipsis, showTitle),
+        title:
+          this.props.column.showTooltip ||
+          (this.table.hasGrid &&
+            this.table.grid.props.showTooltip &&
+            this.props.column.showTooltip !== false)
+            ? null
+            : this._getAttrTitle(children, isEllipsis, showTitle),
       },
       hidden: colSpan === 0 || rowSpan === 0,
       classes: {
@@ -580,15 +586,159 @@ class Td extends Component {
     return null
   }
 
+  _getTooltipContent() {
+    const tdEl = this.element
+    if (!tdEl) return ''
+
+    // 优先获取内容容器（渲染后结构是固定的）
+    const contentEl =
+      tdEl.querySelector('.nom-table-cell-content-ellipsis-wrapper') ||
+      tdEl.querySelector('.nom-table-cell-static-ellipsis') ||
+      tdEl.querySelector('.nom-table-cell-content')
+
+    if (!contentEl) {
+      // 没找到内容容器，兜底为纯文本
+      return isString(this.props.data) || isNumeric(this.props.data)
+        ? this.props.data.toString()
+        : ''
+    }
+
+    // ⚠️ 注意：不要直接返回原节点，否则 tooltip 会把节点移出文档
+    // cloneNode(true) 深拷贝 DOM 树
+    const cloned = contentEl.cloneNode(true)
+
+    // 去掉一些在 tooltip 中不必要的交互元素
+    cloned
+      .querySelectorAll('.nom-table-cell-toolbar, .nom-table-cell-edit')
+      .forEach((el) => el.remove())
+
+    // 清除不必要的类（避免 tooltip 自身被识别成 ellipsis 容器）
+    cloned.classList.remove('nom-table-cell-content-ellipsis-wrapper')
+    cloned.classList.remove('nom-table-cell-static-ellipsis')
+
+    return cloned
+  }
+
   _rendered() {
+    if (this._tooltipRef) {
+      this._tooltipRef.remove()
+      delete this._tooltipRef
+    }
     this.props.column.autoWidth && this._parseTdWidth()
     const fixed = this.props.column.fixed
     if (fixed && !this._skipFixed) {
       this._setTdsPosition()
     }
-    // if (this.props.column.toolbar && this.props.column.toolbar.align === 'left') {
-    //   this._fixThToolsPosition()
-    // }
+
+    if (this._shouldShowTooltip()) {
+      const tooltipEl = this._getTooltipContent()
+      const tooltipHTML = tooltipEl instanceof HTMLElement ? `#${tooltipEl.outerHTML}` : tooltipEl
+      this._tooltipRef = new nomui.Popup({
+        classes: {
+          'nom-grid-td-tooltip': true,
+        },
+        trigger: this,
+        align: 'top left',
+        offset: [0, 6],
+        triggerAction: 'hover',
+        content: tooltipHTML,
+      })
+    }
+  }
+
+  _checkContentOverflow() {
+    const tdEl = this.element
+    if (!tdEl) return false
+
+    const { column } = this.props
+    const table = this.table
+
+    // 全局 or 列级配置
+    const configAllows =
+      column.showTooltip ||
+      (table.hasGrid && table.grid.props.showTooltip && column.showTooltip !== false)
+    if (!configAllows) return false
+
+    // 获取内容容器
+    const contentEl =
+      tdEl.querySelector('.nom-table-cell-content-ellipsis-wrapper') ||
+      tdEl.querySelector('.nom-table-cell-static-ellipsis') ||
+      tdEl.querySelector('.nom-table-cell-content')
+    if (!contentEl) return false
+
+    // 计算可见宽度（去掉 padding / edit / toolbar）
+    const tdStyle = getComputedStyle(tdEl)
+    let visibleWidth =
+      tdEl.clientWidth -
+      parseFloat(tdStyle.paddingLeft || 0) -
+      parseFloat(tdStyle.paddingRight || 0)
+
+    const toolbar = tdEl.querySelector('.nom-table-cell-toolbar')
+    if (toolbar) visibleWidth -= toolbar.getBoundingClientRect().width
+
+    const editIcon = tdEl.querySelector('.nom-table-cell-edit')
+    if (editIcon) visibleWidth -= editIcon.getBoundingClientRect().width
+
+    if (visibleWidth <= 0) return false
+
+    // ⚙️ 情况1：复杂结构（多个子元素，flex 布局）
+    const children = Array.from(contentEl.children)
+    if (children.length > 1) {
+      const totalWidth = children.reduce(
+        (sum, child) => sum + child.getBoundingClientRect().width,
+        0,
+      )
+      if (totalWidth - visibleWidth > 1) return true
+    }
+
+    // ⚙️ 情况2：单节点文本或单元素
+    const scrollOverflow = contentEl.scrollWidth - contentEl.clientWidth > 1
+    if (scrollOverflow) return true
+
+    // ⚙️ 情况3：严格的文本裁剪检测
+    const style = getComputedStyle(contentEl)
+    const isEllipsis =
+      style.textOverflow === 'ellipsis' &&
+      style.overflow === 'hidden' &&
+      /nowrap/.test(style.whiteSpace)
+
+    if (isEllipsis && contentEl.scrollWidth > visibleWidth + 1) return true
+
+    // ⚙️ 情况4：特殊嵌套结构（例如 .nom-data-list）
+    const listEl = contentEl.querySelector('.nom-data-list')
+    if (listEl) {
+      const listChildren = Array.from(listEl.children)
+      if (listChildren.length > 1) {
+        const totalWidth = listChildren.reduce((sum, c) => sum + c.getBoundingClientRect().width, 0)
+        if (totalWidth - visibleWidth > 1) return true
+      }
+    }
+
+    return false
+  }
+
+  _shouldShowTooltip() {
+    const { column } = this.props
+    const table = this.table
+    if (!column) return false
+
+    // ✅ 保留 configAllows
+    const configAllows =
+      column.showTooltip ||
+      (table.hasGrid && table.grid.props.showTooltip && column.showTooltip !== false)
+    if (!configAllows) return false
+
+    // ✅ ellipsis 启用检测
+    const isEllipsis =
+      ((table.props.ellipsis === 'both' || table.props.ellipsis === 'body') &&
+        column.ellipsis !== false &&
+        column.field !== 'nom-grid-row-checker') ||
+      column.ellipsis === true
+
+    if (!isEllipsis) return false
+
+    // ✅ 溢出检测
+    return this._checkContentOverflow()
   }
 
   _renderRowOrder({ index }) {

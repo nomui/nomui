@@ -62,6 +62,7 @@ define([], function () {
             ref: (c) => {
               table = c
             },
+            showTooltip: true,
             columns: [
               {
                 field: 'name',
@@ -80,27 +81,29 @@ define([], function () {
               {
                 field: 'tags',
                 title: '标签',
-                width: 200,
+                width: 100,
+                ellipsis: true,
                 render: function (tags) {
                   const tagItems = tags.map(function (tag) {
                     return {
-                      tagobj: tag,
+                      text: tag,
                     }
                   })
                   return {
-                    component: 'List',
+                    component: 'DataList',
                     gutter: 'md',
-                    items: tagItems,
-                    itemDefaults: {
-                      styles: {
-                        border: '1px',
-                        padding: ['x-1', 'y-d125'],
-                      },
-                      _config: function () {
-                        return this.setProps({
-                          children: this.props.tagobj,
-                        })
-                      },
+                    data: tagItems,
+                    wrap: false,
+                    itemRender: ({ itemData }) => {
+                      return {
+                        component: 'Tag',
+                        attrs: {
+                          style: {
+                            padding: '2px 16px',
+                          },
+                        },
+                        text: itemData.text,
+                      }
                     },
                   }
                 },
