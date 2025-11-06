@@ -12820,7 +12820,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.setProps({ classes: { "u-shape-tag": true } });
       }
       this.setProps({
-        classes: { "nom-badge-pointer": !!this.props.onClick },
+        classes: {
+          "nom-badge-pointer": !!this.props.onClick,
+          "nom-badge-hidden":
+            (((text === 0 || text === "0") &&
+              (number === undefined || number === null)) ||
+              ((number === 0 || number === "0") &&
+                (text === undefined || text === null || text === ""))) &&
+            !!this.props.autoHideZero,
+        },
         children: {
           classes: { "nom-badge-content": true },
           children: [
@@ -12882,6 +12890,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     number: null,
     overflowCount: 99,
     size: "sm",
+    autoHideZero: false,
   };
   Component.register(Badge);
   class BreadcrumbItem extends Component {

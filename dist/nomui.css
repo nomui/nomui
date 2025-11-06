@@ -10827,6 +10827,9 @@ textarea .nom-textarea {
 .nom-badge .nom-badge-remove svg {
   fill: rgb(var(--nom-white));
 }
+.nom-badge.nom-badge-hidden {
+  display: none;
+}
 .nom-badge.p-color-red {
   color: rgb(var(--nom-white));
   background-color: rgb(var(--nom-red-8));

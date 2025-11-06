@@ -10,6 +10,7 @@
 | --- | --- | --- | --- |
 | icon | 带图标 | `string` | - |
 | text | 设置状态点的文本 | `string` | - |
+| autoHideZero | 数值为 0 时自动隐藏徽标 | `boolean` | false |
 | number | 展示的数字，大于 overflowCount 时显示为 ${overflowCount}+，为 0 时隐藏 | `'number'` | - |
 | overflowCount | 展示封顶的数字值 | `number` | 99 |
 | size | 设置小圆点的大小 | `xs\|sm\|lg\|xl` | xs |
