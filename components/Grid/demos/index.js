@@ -40,6 +40,7 @@ define([
   './cascadeUncheckChildren.js',
   './partial-checked.js',
   './editable.js',
+  './editable-click.js',
   './td-edit.js',
   './td-edit-always.js',
   // './edit.js',

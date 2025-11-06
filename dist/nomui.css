@@ -7995,6 +7995,9 @@ table.nom-table.p-bordered {
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner:hover .nom-grid-td-edit-trigger:hover {
   color: var(--nom-color-primary);
 }
+.nom-grid.m-editable .nom-td-editable.nom-td-editable-selected {
+  box-shadow: inset 0 0 0 2px var(--nom-color-primary);
+}
 .nom-grid.m-editable .nom-td-editable.nom-td-editable-active {
   cursor: pointer;
 }
