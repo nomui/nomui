@@ -519,6 +519,18 @@ class Td extends Component {
         onClick: ({ event }) => {
           event.stopPropagation()
 
+          if (!cellDisabled && !!column.editRender && this.table.grid.props.editable.clickToEdit) {
+            if (this.element.classList.contains('nom-td-editable-selected')) {
+              this.edit({ type: 'editable' })
+              setTimeout(() => {
+                this.editor.triggerEdit()
+              }, 200)
+              grid.lastEditTd = this
+            } else {
+              this._showSelectedStyle()
+            }
+          }
+
           grid.props.onRowClick &&
             !this.props.editMode &&
             grid._callHandler(grid.props.onRowClick, { event, rowData: this.tr.props.data })
@@ -617,6 +629,14 @@ class Td extends Component {
     cloned.classList.remove('nom-table-cell-static-ellipsis')
 
     return cloned
+  }
+
+  _showSelectedStyle() {
+    this.table.grid.element.querySelectorAll('.nom-td-editable-selected').forEach((td) => {
+      td.classList.remove('nom-td-editable-selected')
+    })
+
+    this.element.classList.add('nom-td-editable-selected')
   }
 
   _rendered() {
