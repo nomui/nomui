@@ -20464,6 +20464,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
       this.element.classList.add("nom-td-editable-selected");
     }
+    _remove() {
+      if (this._resizeObserver) {
+        this._resizeObserver.disconnect();
+        this._resizeObserver = null;
+      }
+      if (this._tooltipRef) {
+        this._tooltipRef.remove();
+        delete this._tooltipRef;
+      }
+    }
     _rendered() {
       if (this._tooltipRef) {
         this._tooltipRef.remove();
@@ -20473,28 +20483,56 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const fixed = this.props.column.fixed;
       if (fixed && !this._skipFixed) {
         this._setTdsPosition();
-      }
+      } // ⚙️ 双层 requestAnimationFrame 确保 DOM 布局稳定
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          if (this._shouldDisplayTooltip()) {
-            const tooltipContent = this._getTooltipContent();
-            const tooltipHTML =
-              tooltipContent instanceof HTMLElement
-                ? `#${tooltipContent.outerHTML}`
-                : isString(tooltipContent)
-                ? tooltipContent
-                : "";
-            this._tooltipRef = new nomui.Popup({
-              classes: { "nom-grid-td-tooltip": true },
-              trigger: this,
-              align: "top left",
-              offset: [0, 6],
-              triggerAction: "hover",
-              content: tooltipHTML,
-            });
-          }
+          this._updateTooltip();
+          this._initResizeObserver();
         });
       });
+    }
+    /**
+     * 初始化 ResizeObserver，监听 td 尺寸变化
+     */ _initResizeObserver() {
+      if (!this.element) return; // 清理旧的 observer
+      if (this._resizeObserver) {
+        this._resizeObserver.disconnect();
+        this._resizeObserver = null;
+      }
+      let resizeTimer = null;
+      this._resizeObserver = new ResizeObserver(() => {
+        if (resizeTimer) clearTimeout(resizeTimer); // 防抖，等待 resize 结束
+        resizeTimer = setTimeout(() => {
+          this._updateTooltip();
+        }, 150);
+      });
+      this._resizeObserver.observe(this.element);
+    }
+    /**
+     * 统一更新 tooltip 显示逻辑
+     */ _updateTooltip() {
+      // 清理旧 tooltip
+      if (this._tooltipRef) {
+        this._tooltipRef.remove();
+        delete this._tooltipRef;
+      }
+      if (this._shouldDisplayTooltip()) {
+        const tooltipContent = this._getTooltipContent();
+        const tooltipHTML =
+          tooltipContent instanceof HTMLElement
+            ? `#${tooltipContent.outerHTML}`
+            : isString(tooltipContent)
+            ? tooltipContent
+            : "";
+        this._tooltipRef = new nomui.Popup({
+          classes: { "nom-grid-td-tooltip": true },
+          trigger: this,
+          align: "top left",
+          offset: [0, 6],
+          triggerAction: "hover",
+          content: tooltipHTML,
+        });
+      }
     }
     /**
      * 判断是否需要显示 tooltip（智能检测溢出）
