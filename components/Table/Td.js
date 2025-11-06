@@ -630,34 +630,45 @@ class Td extends Component {
       this._setTdsPosition()
     }
 
-    if (this._shouldShowTooltip()) {
-      const tooltipEl = this._getTooltipContent()
-      const tooltipHTML = tooltipEl instanceof HTMLElement ? `#${tooltipEl.outerHTML}` : tooltipEl
-      this._tooltipRef = new nomui.Popup({
-        classes: {
-          'nom-grid-td-tooltip': true,
-        },
-        trigger: this,
-        align: 'top left',
-        offset: [0, 6],
-        triggerAction: 'hover',
-        content: tooltipHTML,
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (this._shouldDisplayTooltip()) {
+          const tooltipContent = this._getTooltipContent()
+          const tooltipHTML =
+            tooltipContent instanceof HTMLElement
+              ? `#${tooltipContent.outerHTML}`
+              : isString(tooltipContent)
+              ? tooltipContent
+              : ''
+
+          this._tooltipRef = new nomui.Popup({
+            classes: { 'nom-grid-td-tooltip': true },
+            trigger: this,
+            align: 'top left',
+            offset: [0, 6],
+            triggerAction: 'hover',
+            content: tooltipHTML,
+          })
+        }
       })
-    }
+    })
   }
 
-  _checkContentOverflow() {
+  /**
+   * 判断是否需要显示 tooltip（智能检测溢出）
+   */
+  _shouldDisplayTooltip() {
     const tdEl = this.element
     if (!tdEl) return false
 
     const { column } = this.props
     const table = this.table
 
-    // 全局 or 列级配置
-    const configAllows =
+    // 判断配置是否允许
+    const allowTooltip =
       column.showTooltip ||
       (table.hasGrid && table.grid.props.showTooltip && column.showTooltip !== false)
-    if (!configAllows) return false
+    if (!allowTooltip) return false
 
     // 获取内容容器
     const contentEl =
@@ -666,79 +677,47 @@ class Td extends Component {
       tdEl.querySelector('.nom-table-cell-content')
     if (!contentEl) return false
 
-    // 计算可见宽度（去掉 padding / edit / toolbar）
+    // 使用自动宽度逻辑检测真实宽度
+    const measuredWidth = this._measureRenderedContentWidth(contentEl)
     const tdStyle = getComputedStyle(tdEl)
-    let visibleWidth =
+    const visibleWidth =
       tdEl.clientWidth -
       parseFloat(tdStyle.paddingLeft || 0) -
       parseFloat(tdStyle.paddingRight || 0)
 
-    const toolbar = tdEl.querySelector('.nom-table-cell-toolbar')
-    if (toolbar) visibleWidth -= toolbar.getBoundingClientRect().width
-
-    const editIcon = tdEl.querySelector('.nom-table-cell-edit')
-    if (editIcon) visibleWidth -= editIcon.getBoundingClientRect().width
-
-    if (visibleWidth <= 0) return false
-
-    // ⚙️ 情况1：复杂结构（多个子元素，flex 布局）
-    const children = Array.from(contentEl.children)
-    if (children.length > 1) {
-      const totalWidth = children.reduce(
-        (sum, child) => sum + child.getBoundingClientRect().width,
-        0,
-      )
-      if (totalWidth - visibleWidth > 1) return true
-    }
-
-    // ⚙️ 情况2：单节点文本或单元素
-    const scrollOverflow = contentEl.scrollWidth - contentEl.clientWidth > 1
-    if (scrollOverflow) return true
-
-    // ⚙️ 情况3：严格的文本裁剪检测
-    const style = getComputedStyle(contentEl)
-    const isEllipsis =
-      style.textOverflow === 'ellipsis' &&
-      style.overflow === 'hidden' &&
-      /nowrap/.test(style.whiteSpace)
-
-    if (isEllipsis && contentEl.scrollWidth > visibleWidth + 1) return true
-
-    // ⚙️ 情况4：特殊嵌套结构（例如 .nom-data-list）
-    const listEl = contentEl.querySelector('.nom-data-list')
-    if (listEl) {
-      const listChildren = Array.from(listEl.children)
-      if (listChildren.length > 1) {
-        const totalWidth = listChildren.reduce((sum, c) => sum + c.getBoundingClientRect().width, 0)
-        if (totalWidth - visibleWidth > 1) return true
-      }
-    }
-
-    return false
+    return measuredWidth - visibleWidth > 1
   }
 
-  _shouldShowTooltip() {
-    const { column } = this.props
-    const table = this.table
-    if (!column) return false
+  /**
+   * 智能计算内容真实宽度
+   * 模仿 _parseTdWidth 的宽度测量逻辑，可处理复杂嵌套结构 / flex / nowrap / text-overflow 等情况
+   */
+  _measureRenderedContentWidth(contentEl) {
+    if (!contentEl) return 0
 
-    // ✅ 保留 configAllows
-    const configAllows =
-      column.showTooltip ||
-      (table.hasGrid && table.grid.props.showTooltip && column.showTooltip !== false)
-    if (!configAllows) return false
+    // 直接克隆一份节点放进隐藏容器计算真实宽度
+    const cloneEl = contentEl.cloneNode(true)
+    const tmp = document.createElement('div')
 
-    // ✅ ellipsis 启用检测
-    const isEllipsis =
-      ((table.props.ellipsis === 'both' || table.props.ellipsis === 'body') &&
-        column.ellipsis !== false &&
-        column.field !== 'nom-grid-row-checker') ||
-      column.ellipsis === true
+    Object.assign(tmp.style, {
+      position: 'absolute',
+      visibility: 'hidden',
+      height: 'auto',
+      width: 'auto',
+      whiteSpace: 'nowrap',
+      pointerEvents: 'none',
+      zIndex: -9999,
+    })
 
-    if (!isEllipsis) return false
+    tmp.appendChild(cloneEl)
+    document.body.appendChild(tmp)
 
-    // ✅ 溢出检测
-    return this._checkContentOverflow()
+    // 读取真实宽度
+    const realWidth =
+      tmp.scrollWidth || cloneEl.scrollWidth || cloneEl.getBoundingClientRect().width
+
+    tmp.remove()
+    return realWidth
   }
 
   _renderRowOrder({ index }) {
