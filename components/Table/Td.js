@@ -520,7 +520,10 @@ class Td extends Component {
           event.stopPropagation()
 
           if (!cellDisabled && !!column.editRender && this.table.grid.props.editable.clickToEdit) {
-            if (this.element.classList.contains('nom-td-editable-selected')) {
+            if (
+              this.element.classList.contains('nom-td-editable-selected') &&
+              this.props.editMode !== true
+            ) {
               this.edit({ type: 'editable' })
               setTimeout(() => {
                 this.editor.triggerEdit()
