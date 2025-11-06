@@ -641,111 +641,98 @@ class Td extends Component {
     }
   }
 
-  /**
-   * 对复杂内容判断是否被截断
-   * @param {HTMLElement} contentEl
-   * @returns {boolean}
-   */
   _checkContentOverflow() {
     const tdEl = this.element
     if (!tdEl) return false
 
-    const column = this.props.column
+    const { column } = this.props
     const table = this.table
 
-    // 1️⃣ 判断全局或列级配置是否允许显示 tooltip
+    // 全局 or 列级配置
     const configAllows =
       column.showTooltip ||
       (table.hasGrid && table.grid.props.showTooltip && column.showTooltip !== false)
     if (!configAllows) return false
 
-    // 2️⃣ 获取真正的内容元素
-    // 优先顺序：ellipsis-wrapper > static-ellipsis > table-cell-content > td 本身
+    // 获取内容容器
     const contentEl =
       tdEl.querySelector('.nom-table-cell-content-ellipsis-wrapper') ||
       tdEl.querySelector('.nom-table-cell-static-ellipsis') ||
-      tdEl.querySelector('.nom-table-cell-content') ||
-      tdEl
+      tdEl.querySelector('.nom-table-cell-content')
+    if (!contentEl) return false
 
-    // 3️⃣ 计算内容宽度
-    const contentWidth = contentEl.scrollWidth
+    // 计算可见宽度（去掉 padding / edit / toolbar）
+    const tdStyle = getComputedStyle(tdEl)
+    let visibleWidth =
+      tdEl.clientWidth -
+      parseFloat(tdStyle.paddingLeft || 0) -
+      parseFloat(tdStyle.paddingRight || 0)
 
-    // 4️⃣ 计算可用宽度
-    let availableWidth = tdEl.clientWidth
+    const toolbar = tdEl.querySelector('.nom-table-cell-toolbar')
+    if (toolbar) visibleWidth -= toolbar.getBoundingClientRect().width
 
-    // 4a. 如果有 toolbar，需要减去工具栏占用的宽度
-    const toolbarEl = tdEl.querySelector('.nom-grid-column-tools')
-    if (toolbarEl) {
-      availableWidth -= toolbarEl.offsetWidth
+    const editIcon = tdEl.querySelector('.nom-table-cell-edit')
+    if (editIcon) visibleWidth -= editIcon.getBoundingClientRect().width
+
+    if (visibleWidth <= 0) return false
+
+    // ⚙️ 情况1：复杂结构（多个子元素，flex 布局）
+    const children = Array.from(contentEl.children)
+    if (children.length > 1) {
+      const totalWidth = children.reduce(
+        (sum, child) => sum + child.getBoundingClientRect().width,
+        0,
+      )
+      if (totalWidth - visibleWidth > 1) return true
     }
 
-    // 4b. 如果有 editable/trigger icon，需要减去图标宽度
-    const editTriggerEl = tdEl.querySelector('.nom-grid-td-edit-trigger')
-    if (editTriggerEl && !editTriggerEl.hidden) {
-      availableWidth -= editTriggerEl.offsetWidth
+    // ⚙️ 情况2：单节点文本或单元素
+    const scrollOverflow = contentEl.scrollWidth - contentEl.clientWidth > 1
+    if (scrollOverflow) return true
+
+    // ⚙️ 情况3：严格的文本裁剪检测
+    const style = getComputedStyle(contentEl)
+    const isEllipsis =
+      style.textOverflow === 'ellipsis' &&
+      style.overflow === 'hidden' &&
+      /nowrap/.test(style.whiteSpace)
+
+    if (isEllipsis && contentEl.scrollWidth > visibleWidth + 1) return true
+
+    // ⚙️ 情况4：特殊嵌套结构（例如 .nom-data-list）
+    const listEl = contentEl.querySelector('.nom-data-list')
+    if (listEl) {
+      const listChildren = Array.from(listEl.children)
+      if (listChildren.length > 1) {
+        const totalWidth = listChildren.reduce((sum, c) => sum + c.getBoundingClientRect().width, 0)
+        if (totalWidth - visibleWidth > 1) return true
+      }
     }
 
-    // 4c. 减去 td 自身 padding
-    const style = getComputedStyle(tdEl)
-    const paddingH = parseFloat(style.paddingLeft || 0) + parseFloat(style.paddingRight || 0)
-    availableWidth -= paddingH
-
-    // 5️⃣ 判断是否溢出
-    return contentWidth > availableWidth + 1
+    return false
   }
 
-  /**
-   * 判断当前单元格是否应该显示 tooltip
-   */
   _shouldShowTooltip() {
-    const tdEl = this.element
-    if (!tdEl) return false
-
-    const column = this.props.column
+    const { column } = this.props
     const table = this.table
+    if (!column) return false
 
-    // 1️⃣ 列或全局是否允许显示 tooltip
+    // ✅ 保留 configAllows
     const configAllows =
       column.showTooltip ||
       (table.hasGrid && table.grid.props.showTooltip && column.showTooltip !== false)
     if (!configAllows) return false
 
-    // 2️⃣ 是否启用 ellipsis
+    // ✅ ellipsis 启用检测
     const isEllipsis =
       ((table.props.ellipsis === 'both' || table.props.ellipsis === 'body') &&
         column.ellipsis !== false &&
         column.field !== 'nom-grid-row-checker') ||
       column.ellipsis === true
 
-    // 3️⃣ 判断 cellRender 内容类型
-    let isSimpleContent = true
-    if (isFunction(column.cellRender)) {
-      const rendered = column.cellRender({
-        cell: this,
-        row: this.tr,
-        talbe: this.table,
-        cellData: this.props.data,
-        rowData: this.tr.props.data,
-        index: this.tr.props.index,
-      })
+    if (!isEllipsis) return false
 
-      // 非字符串或非行内标签，视为复杂内容
-      if (
-        rendered &&
-        typeof rendered !== 'string' &&
-        !(rendered.tag && ['span', 'i', 'b', 'em', 'strong', 'a'].includes(rendered.tag))
-      ) {
-        isSimpleContent = false
-      }
-    }
-
-    // 4️⃣ 决定是否显示 tooltip
-    if (!isEllipsis && isSimpleContent) {
-      // ellipsis 未启用 且内容简单 → 不显示 tooltip
-      return false
-    }
-
-    // 其余情况都要检测实际溢出
+    // ✅ 溢出检测
     return this._checkContentOverflow()
   }
 
