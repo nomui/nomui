@@ -441,7 +441,9 @@ class Td extends Component {
               (this.table.grid.props.editable &&
                 this.table.grid.props.editable.onlyleaf &&
                 !isLeaf) ||
-              this.table.parent.componentType === 'GridFooter',
+              this.table.parent.componentType === 'GridFooter' ||
+              cellDisabled ||
+              !column.editRender,
             type: this._getEditIconType(),
             onClick: ({ event }) => {
               event.stopPropagation()
