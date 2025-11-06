@@ -587,33 +587,36 @@ class Td extends Component {
   }
 
   _getTooltipContent() {
-    const { column } = this.props
-    let tooltipContent = ''
+    const tdEl = this.element
+    if (!tdEl) return ''
 
-    // 判断列是否有自定义的cellRender方法
-    if (isFunction(column.cellRender)) {
-      // 调用cellRender方法获取显示内容（可以是文本，也可以是组件或其他内容）
-      tooltipContent = column.cellRender({
-        cell: this,
-        row: this.tr,
-        talbe: this.table,
-        cellData: this.props.data,
-        rowData: this.tr.props.data,
-        index: this.tr.props.index,
-      })
+    // 优先获取内容容器（渲染后结构是固定的）
+    const contentEl =
+      tdEl.querySelector('.nom-table-cell-content-ellipsis-wrapper') ||
+      tdEl.querySelector('.nom-table-cell-static-ellipsis') ||
+      tdEl.querySelector('.nom-table-cell-content')
+
+    if (!contentEl) {
+      // 没找到内容容器，兜底为纯文本
+      return isString(this.props.data) || isNumeric(this.props.data)
+        ? this.props.data.toString()
+        : ''
     }
 
-    // 如果cellRender没有返回内容，则使用默认的文本内容（仅当cellRender未配置时）
-    if (!tooltipContent) {
-      tooltipContent = this.props.data
-    }
+    // ⚠️ 注意：不要直接返回原节点，否则 tooltip 会把节点移出文档
+    // cloneNode(true) 深拷贝 DOM 树
+    const cloned = contentEl.cloneNode(true)
 
-    // 如果tooltipContent是字符串或数字，确保它是纯文本内容
-    if (isString(tooltipContent) || isNumeric(tooltipContent)) {
-      tooltipContent = tooltipContent.toString()
-    }
+    // 去掉一些在 tooltip 中不必要的交互元素
+    cloned
+      .querySelectorAll('.nom-table-cell-toolbar, .nom-table-cell-edit')
+      .forEach((el) => el.remove())
 
-    return tooltipContent
+    // 清除不必要的类（避免 tooltip 自身被识别成 ellipsis 容器）
+    cloned.classList.remove('nom-table-cell-content-ellipsis-wrapper')
+    cloned.classList.remove('nom-table-cell-static-ellipsis')
+
+    return cloned
   }
 
   _rendered() {
@@ -628,6 +631,8 @@ class Td extends Component {
     }
 
     if (this._shouldShowTooltip()) {
+      const tooltipEl = this._getTooltipContent()
+      const tooltipHTML = tooltipEl instanceof HTMLElement ? `#${tooltipEl.outerHTML}` : tooltipEl
       this._tooltipRef = new nomui.Popup({
         classes: {
           'nom-grid-td-tooltip': true,
@@ -636,7 +641,7 @@ class Td extends Component {
         align: 'top left',
         offset: [0, 6],
         triggerAction: 'hover',
-        content: this._getTooltipContent(),
+        content: tooltipHTML,
       })
     }
   }
