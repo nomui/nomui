@@ -7594,6 +7594,9 @@ table.nom-table .nom-table-ellipsis.nom-table-fixed-left-last,
 table.nom-table .nom-table-ellipsis.nom-table-fixed-right-first {
   overflow: visible;
 }
+table.nom-table .nom-table-fixed-left-last {
+  border-right-color: transparent !important;
+}
 table.nom-table .nom-table-fixed-left-last::after {
   position: absolute;
   top: 0;
