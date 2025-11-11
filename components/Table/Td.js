@@ -501,8 +501,9 @@ class Td extends Component {
           }
 
           if (column.editRender) {
-            if (!cellDisabled) {
+            if (!cellDisabled && !excelMode.alwaysEdit) {
               this.edit({ type: 'excel' })
+
               setTimeout(() => {
                 this.editor.triggerEdit()
               }, 200)
