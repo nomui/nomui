@@ -10430,6 +10430,25 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._bindHover();
       }
     }
+    _unbindTrigger() {
+      if (!this.opener) return;
+      const { triggerAction } = this.props;
+      if (triggerAction === "click") {
+        this.opener._off("click", this._onOpenerClickHandler);
+      }
+      if (triggerAction === "hover") {
+        this.opener._off("mouseenter", this._showHandler);
+        this.opener._off("mouseleave", this._hideHandler);
+      }
+      if (triggerAction === "both") {
+        this.opener._off("click", this._onOpenerClickHandler);
+        this.opener._off("mouseenter", this._showHandler);
+        this.opener._off("mouseleave", this._hideHandler);
+      }
+    }
+    _remove() {
+      this._unbindTrigger();
+    }
     _bindClick() {
       this.opener._on("click", this._onOpenerClickHandler);
     }
