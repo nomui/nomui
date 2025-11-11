@@ -35,7 +35,10 @@ class Grid extends Component {
     super(Component.extendProps(Grid.defaults, props), ...mixins)
   }
 
+  static allInstances = new Set()
+
   _created() {
+    Grid.allInstances.add(this)
     this.minWidth = 0
     this.lastSortField = null
     this._alreadyProcessedFlat = false
@@ -74,6 +77,19 @@ class Grid extends Component {
         this.props.frozenLeftCols++
       this.props.rowExpandable && this.props.frozenLeftCols++
     }
+
+    if (!window.__nomui_grid_click_listener__) {
+      window.__nomui_grid_click_listener__ = true
+      document.addEventListener('click', (e) => {
+        for (const n of Grid.allInstances) {
+          n._handleDocumentClick(e)
+        }
+      })
+    }
+  }
+
+  _remove() {
+    Grid.allInstances.delete(this)
   }
 
   _update(props) {
@@ -552,7 +568,6 @@ class Grid extends Component {
   }
 
   _rendered() {
-    const me = this
     if (this.loadingInst) {
       this.loadingInst.remove()
       this.loadingInst = null
@@ -571,36 +586,6 @@ class Grid extends Component {
       this.autoMergeCols()
     }
 
-    // 点击表格外部结束单元格编辑
-    if (this.props.excelMode || this.props.editable) {
-      document.addEventListener('click', ({ target }) => {
-        if (!me || !me.props) {
-          return
-        }
-        let outSider = true
-        if (target.closest('.nom-grid') && target.closest('.nom-grid') === this.element) {
-          if (
-            target.classList.contains('nom-grid-body') ||
-            target.classList.contains('nom-th') ||
-            target.closest('.nom-th')
-          ) {
-            outSider = true
-          } else {
-            outSider = false
-          }
-        } else if (target.closest('.nom-popup')) {
-          outSider = this._findPopupRoot(target)
-        }
-
-        this.props.detectOutsideClick &&
-          this._callHandler(this.props.detectOutsideClick, { outSide: outSider })
-        if (outSider && this.lastEditTd) {
-          this.lastEditTd.props && this.lastEditTd.endEdit()
-          this.lastEditTd = null
-        }
-      })
-    }
-
     this._processColumnsWidth()
     this._processAutoScroll()
     this.overflowAncestor = this._checkOverflowAncestor()
@@ -609,6 +594,30 @@ class Grid extends Component {
 
     if (this.props.lazyLoadLimit > 0 || this.props.lazyLoadRemote) {
       this._watchLazyLoad()
+    }
+  }
+
+  _handleDocumentClick({ target }) {
+    if (!this || !this.props) return
+    let outSider = true
+
+    if (target.closest('.nom-grid') && target.closest('.nom-grid') === this.element) {
+      if (
+        target.classList.contains('nom-grid-body') ||
+        target.classList.contains('nom-th') ||
+        target.closest('.nom-th')
+      ) {
+        outSider = true
+      } else {
+        outSider = false
+      }
+    } else if (target.closest('.nom-popup')) {
+      outSider = this._findPopupRoot(target)
+    }
+
+    if (outSider && this.lastEditTd) {
+      this.lastEditTd.props && this.lastEditTd.endEdit()
+      this.lastEditTd = null
     }
   }
 

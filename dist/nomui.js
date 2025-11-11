@@ -20358,6 +20358,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 }, 200);
               }
               grid.lastEditTd = this;
+              console.log(grid.lastEditTd);
             } else {
               grid.lastEditTd = null;
             }
@@ -23803,6 +23804,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       super(Component.extendProps(Grid.defaults, props), ...mixins);
     }
     _created() {
+      Grid.allInstances.add(this);
       this.minWidth = 0;
       this.lastSortField = null;
       this._alreadyProcessedFlat = false;
@@ -23834,6 +23836,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           this.props.frozenLeftCols++;
         this.props.rowExpandable && this.props.frozenLeftCols++;
       }
+      if (!window.__nomui_grid_click_listener__) {
+        window.__nomui_grid_click_listener__ = true;
+        document.addEventListener("click", (e) => {
+          for (const n of Grid.allInstances) {
+            n._handleDocumentClick(e);
+          }
+        });
+      }
+    }
+    _remove() {
+      Grid.allInstances.delete(this);
     }
     _update(props) {
       // 外部 update了columns, 需要重新计算得到
@@ -24236,7 +24249,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _rendered() {
-      const me = this;
       if (this.loadingInst) {
         this.loadingInst.remove();
         this.loadingInst = null;
@@ -24252,38 +24264,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.props.autoMergeColumns.length > 0
       ) {
         this.autoMergeCols();
-      } // 点击表格外部结束单元格编辑
-      if (this.props.excelMode || this.props.editable) {
-        document.addEventListener("click", ({ target }) => {
-          if (!me || !me.props) {
-            return;
-          }
-          let outSider = true;
-          if (
-            target.closest(".nom-grid") &&
-            target.closest(".nom-grid") === this.element
-          ) {
-            if (
-              target.classList.contains("nom-grid-body") ||
-              target.classList.contains("nom-th") ||
-              target.closest(".nom-th")
-            ) {
-              outSider = true;
-            } else {
-              outSider = false;
-            }
-          } else if (target.closest(".nom-popup")) {
-            outSider = this._findPopupRoot(target);
-          }
-          this.props.detectOutsideClick &&
-            this._callHandler(this.props.detectOutsideClick, {
-              outSide: outSider,
-            });
-          if (outSider && this.lastEditTd) {
-            this.lastEditTd.props && this.lastEditTd.endEdit();
-            this.lastEditTd = null;
-          }
-        });
       }
       this._processColumnsWidth();
       this._processAutoScroll();
@@ -24291,6 +24271,30 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.props.rowSortable && defaultSortableOndrop();
       if (this.props.lazyLoadLimit > 0 || this.props.lazyLoadRemote) {
         this._watchLazyLoad();
+      }
+    }
+    _handleDocumentClick({ target }) {
+      if (!this || !this.props) return;
+      let outSider = true;
+      if (
+        target.closest(".nom-grid") &&
+        target.closest(".nom-grid") === this.element
+      ) {
+        if (
+          target.classList.contains("nom-grid-body") ||
+          target.classList.contains("nom-th") ||
+          target.closest(".nom-th")
+        ) {
+          outSider = true;
+        } else {
+          outSider = false;
+        }
+      } else if (target.closest(".nom-popup")) {
+        outSider = this._findPopupRoot(target);
+      }
+      if (outSider && this.lastEditTd) {
+        this.lastEditTd.props && this.lastEditTd.endEdit();
+        this.lastEditTd = null;
       }
     }
     _adjustCheckerWidth() {
@@ -25353,6 +25357,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       };
     }
   }
+  _defineProperty2(Grid, "allInstances", new Set());
   Grid.defaults = {
     columns: [],
     data: null,

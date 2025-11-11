@@ -508,7 +508,9 @@ class Td extends Component {
                 this.editor.triggerEdit()
               }, 200)
             }
+
             grid.lastEditTd = this
+            console.log(grid.lastEditTd)
           } else {
             grid.lastEditTd = null
           }
