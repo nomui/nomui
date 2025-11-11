@@ -105,6 +105,7 @@ class Grid extends Component {
     }
     // 更新了data
     if (props.data && this.props) {
+      this.lastEditTd = null
       this.pageIndex = 1
       const { treeConfig } = this.props
       // data更新, flatData需要重新组装成Tree结构
