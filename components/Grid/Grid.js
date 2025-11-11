@@ -422,7 +422,12 @@ class Grid extends Component {
     const keys = Object.keys(this.rowsRefs)
     let validated = true
     keys.forEach((n) => {
-      if (validated === true && this.rowsRefs[n].validate() === false) {
+      if (
+        validated === true &&
+        this.rowsRefs[n] &&
+        this.rowsRefs[n].validate &&
+        this.rowsRefs[n].validate() === false
+      ) {
         validated = false
       }
     })
