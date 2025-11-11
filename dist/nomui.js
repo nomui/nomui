@@ -20351,7 +20351,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               return;
             }
             if (column.editRender) {
-              if (!cellDisabled) {
+              if (!cellDisabled && !excelMode.alwaysEdit) {
                 this.edit({ type: "excel" });
                 setTimeout(() => {
                   this.editor.triggerEdit();
