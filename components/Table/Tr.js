@@ -1,5 +1,5 @@
 import Component from '../Component/index'
-import { accessProp, extend, isNullish } from '../util/index'
+import { accessProp, extend, isFunction, isNullish } from '../util/index'
 import Td from './Td'
 
 class Tr extends Component {
@@ -262,7 +262,12 @@ class Tr extends Component {
       const item = this.tdRefs[key]
       const { editor } = item
       if (editor) {
-        const result = editor.validate()
+        let result = null
+        if (!editor.validate || !isFunction(editor.validate)) {
+          result = true
+        } else {
+          result = editor.validate()
+        }
         if (result !== true) {
           validated = result
         }

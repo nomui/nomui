@@ -21424,7 +21424,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         const item = this.tdRefs[key];
         const { editor } = item;
         if (editor) {
-          const result = editor.validate();
+          let result = null;
+          if (!editor.validate || !isFunction(editor.validate)) {
+            result = true;
+          } else {
+            result = editor.validate();
+          }
           if (result !== true) {
             validated = result;
           }
