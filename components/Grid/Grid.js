@@ -579,7 +579,11 @@ class Grid extends Component {
         }
         let outSider = true
         if (target.closest('.nom-grid') && target.closest('.nom-grid') === this.element) {
-          if (target.classList.contains('nom-grid-body') || target.classList.contains('nom-th')) {
+          if (
+            target.classList.contains('nom-grid-body') ||
+            target.classList.contains('nom-th') ||
+            target.closest('.nom-th')
+          ) {
             outSider = true
           } else {
             outSider = false
@@ -588,6 +592,8 @@ class Grid extends Component {
           outSider = this._findPopupRoot(target)
         }
 
+        this.props.detectOutsideClick &&
+          this._callHandler(this.props.detectOutsideClick, { outSide: outSider })
         if (outSider && this.lastEditTd) {
           this.lastEditTd.props && this.lastEditTd.endEdit()
           this.lastEditTd = null

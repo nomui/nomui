@@ -595,10 +595,8 @@ class Th extends Component {
     }
 
     this.table.grid.filter = { ...this.table.grid.filter, ...this.filterGroup.getValue() }
-    this.table.grid.filterValueText[this.props.column.field] = this.filterGroup
-      .getField(this.props.column.field)
-      .getValueText()
-      .toString()
+    this.table.grid.filterValueText[this.props.column.field] =
+      this.filterGroup.getField(this.props.column.field).getValueText()?.toString() || ''
 
     this.filterPopup.hide()
     this.table.grid.handleFilter(isReset)
