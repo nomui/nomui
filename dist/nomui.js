@@ -22151,12 +22151,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.table.grid.filter,
         this.filterGroup.getValue()
       );
-      this.table.grid.filterValueText[
-        this.props.column.field
-      ] = this.filterGroup
-        .getField(this.props.column.field)
-        .getValueText()
-        .toString();
+      this.table.grid.filterValueText[this.props.column.field] =
+        this.filterGroup
+          .getField(this.props.column.field)
+          .getValueText()
+          ?.toString() || "";
       this.filterPopup.hide();
       this.table.grid.handleFilter(isReset);
     }
@@ -24266,7 +24265,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           ) {
             if (
               target.classList.contains("nom-grid-body") ||
-              target.classList.contains("nom-th")
+              target.classList.contains("nom-th") ||
+              target.closest(".nom-th")
             ) {
               outSider = true;
             } else {
@@ -24275,6 +24275,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           } else if (target.closest(".nom-popup")) {
             outSider = this._findPopupRoot(target);
           }
+          this.props.detectOutsideClick &&
+            this._callHandler(this.props.detectOutsideClick, {
+              outSide: outSider,
+            });
           if (outSider && this.lastEditTd) {
             this.lastEditTd.props && this.lastEditTd.endEdit();
             this.lastEditTd = null;
