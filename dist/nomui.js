@@ -20369,12 +20369,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           classes: { "nom-td-editable": true },
           onClick: ({ event }) => {
             event.stopPropagation();
-            if (this.table.grid.props.editable.clickToEdit) {
+            if (
+              this.table.grid.props.editable.clickToEdit &&
+              !cellDisabled &&
+              !!column.editRender
+            ) {
               if (
                 this.element.classList.contains("nom-td-editable-selected") &&
-                this.props.editMode !== true &&
-                !cellDisabled &&
-                !!column.editRender
+                this.props.editMode !== true
               ) {
                 this.edit({ type: "editable" });
                 setTimeout(() => {
@@ -20562,7 +20564,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const tdEl = this.element;
       if (!tdEl) return false;
       const { column } = this.props;
-      const table = this.table; // 判断配置是否允许
+      const table = this.table;
+      if (
+        column.field === "nom-grid-row-checker" ||
+        column.type === "checker" ||
+        tdEl.classList.contains("nom-grid-drag-handler")
+      ) {
+        return false;
+      } // 判断配置是否允许
       const allowTooltip =
         column.showTooltip ||
         (table.hasGrid &&
@@ -20580,7 +20589,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         tdEl.clientWidth -
         parseFloat(tdStyle.paddingLeft || 0) -
         parseFloat(tdStyle.paddingRight || 0);
-      return measuredWidth + 14 - visibleWidth > 1;
+      return measuredWidth - visibleWidth > 1;
     }
     /**
      * 智能计算内容真实宽度
@@ -20604,8 +20613,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         tmp.scrollWidth ||
         cloneEl.scrollWidth ||
         cloneEl.getBoundingClientRect().width;
+      let isSimple = false;
+      if (cloneEl.childNodes.length === 1) {
+        const node = cloneEl.childNodes[0];
+        if (node.nodeType === Node.TEXT_NODE) {
+          isSimple = true;
+        } else if (
+          node.nodeType === Node.ELEMENT_NODE &&
+          node.childElementCount === 0
+        ) {
+          isSimple = true;
+        }
+      }
       tmp.remove();
-      return realWidth;
+      return isSimple ? realWidth : realWidth + 14;
     }
     _renderRowOrder({ index }) {
       return index + 1;

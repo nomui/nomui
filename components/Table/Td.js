@@ -524,12 +524,10 @@ class Td extends Component {
         onClick: ({ event }) => {
           event.stopPropagation()
 
-          if (this.table.grid.props.editable.clickToEdit) {
+          if (this.table.grid.props.editable.clickToEdit && !cellDisabled && !!column.editRender) {
             if (
               this.element.classList.contains('nom-td-editable-selected') &&
-              this.props.editMode !== true &&
-              !cellDisabled &&
-              !!column.editRender
+              this.props.editMode !== true
             ) {
               this.edit({ type: 'editable' })
               setTimeout(() => {
@@ -748,6 +746,14 @@ class Td extends Component {
     const { column } = this.props
     const table = this.table
 
+    if (
+      column.field === 'nom-grid-row-checker' ||
+      column.type === 'checker' ||
+      tdEl.classList.contains('nom-grid-drag-handler')
+    ) {
+      return false
+    }
+
     // 判断配置是否允许
     const allowTooltip =
       column.showTooltip ||
@@ -770,7 +776,7 @@ class Td extends Component {
       parseFloat(tdStyle.paddingLeft || 0) -
       parseFloat(tdStyle.paddingRight || 0)
 
-    return measuredWidth + 14 - visibleWidth > 1
+    return measuredWidth - visibleWidth > 1
   }
 
   /**
@@ -801,8 +807,18 @@ class Td extends Component {
     const realWidth =
       tmp.scrollWidth || cloneEl.scrollWidth || cloneEl.getBoundingClientRect().width
 
+    let isSimple = false
+    if (cloneEl.childNodes.length === 1) {
+      const node = cloneEl.childNodes[0]
+      if (node.nodeType === Node.TEXT_NODE) {
+        isSimple = true
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.childElementCount === 0) {
+        isSimple = true
+      }
+    }
+
     tmp.remove()
-    return realWidth
+    return isSimple ? realWidth : realWidth + 14
   }
 
   _renderRowOrder({ index }) {
