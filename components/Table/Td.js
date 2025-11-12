@@ -776,7 +776,7 @@ class Td extends Component {
       parseFloat(tdStyle.paddingLeft || 0) -
       parseFloat(tdStyle.paddingRight || 0)
 
-    return measuredWidth + 14 - visibleWidth > 1
+    return measuredWidth - visibleWidth > 1
   }
 
   /**
@@ -807,8 +807,18 @@ class Td extends Component {
     const realWidth =
       tmp.scrollWidth || cloneEl.scrollWidth || cloneEl.getBoundingClientRect().width
 
+    let isSimple = false
+    if (cloneEl.childNodes.length === 1) {
+      const node = cloneEl.childNodes[0]
+      if (node.nodeType === Node.TEXT_NODE) {
+        isSimple = true
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.childElementCount === 0) {
+        isSimple = true
+      }
+    }
+
     tmp.remove()
-    return realWidth
+    return isSimple ? realWidth : realWidth + 14
   }
 
   _renderRowOrder({ index }) {
