@@ -524,12 +524,10 @@ class Td extends Component {
         onClick: ({ event }) => {
           event.stopPropagation()
 
-          if (this.table.grid.props.editable.clickToEdit) {
+          if (this.table.grid.props.editable.clickToEdit && !cellDisabled && !!column.editRender) {
             if (
               this.element.classList.contains('nom-td-editable-selected') &&
-              this.props.editMode !== true &&
-              !cellDisabled &&
-              !!column.editRender
+              this.props.editMode !== true
             ) {
               this.edit({ type: 'editable' })
               setTimeout(() => {
@@ -747,6 +745,14 @@ class Td extends Component {
 
     const { column } = this.props
     const table = this.table
+
+    if (
+      column.field === 'nom-grid-row-checker' ||
+      column.type === 'checker' ||
+      tdEl.classList.contains('nom-grid-drag-handler')
+    ) {
+      return false
+    }
 
     // 判断配置是否允许
     const allowTooltip =
