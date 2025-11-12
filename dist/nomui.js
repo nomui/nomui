@@ -20482,6 +20482,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
       this.element.classList.add("nom-td-editable-selected");
     }
+    updateCellData(newData) {
+      this.update({ data: newData });
+      this.tr._updateRowData({ field: this.props.column.field, data: newData });
+    }
     _remove() {
       if (this._resizeObserver) {
         this._resizeObserver.disconnect();
@@ -20576,7 +20580,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         tdEl.clientWidth -
         parseFloat(tdStyle.paddingLeft || 0) -
         parseFloat(tdStyle.paddingRight || 0);
-      return measuredWidth - visibleWidth > 1;
+      return measuredWidth + 14 - visibleWidth > 1;
     }
     /**
      * 智能计算内容真实宽度
@@ -21389,15 +21393,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.element.classList.add("nom-grid-tr-modified");
       }
     }
-    _updateRowData() {
+    _updateRowData(cellData) {
       let dataChanged = false;
       const { data } = this.props;
-      for (const key in this.tdRefs) {
-        const item = this.tdRefs[key];
-        const { editor } = item;
-        if (editor && data[key] !== editor.getValue()) {
-          dataChanged = true;
-          data[key] = editor.getValue();
+      if (cellData) {
+        dataChanged = true;
+        data[cellData.field] = cellData.data;
+      } else {
+        for (const key in this.tdRefs) {
+          const item = this.tdRefs[key];
+          const { editor } = item;
+          if (editor && data[key] !== editor.getValue()) {
+            dataChanged = true;
+            data[key] = editor.getValue();
+          }
         }
       }
       if (dataChanged) {

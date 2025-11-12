@@ -4131,11 +4131,6 @@ body {
   text-align: left;
   background-color: var(--nom-color-bg-0);
 }
-html,
-body,
-* {
-  scrollbar-width: thin;
-}
 html::-webkit-scrollbar,
 body::-webkit-scrollbar,
 *::-webkit-scrollbar {
