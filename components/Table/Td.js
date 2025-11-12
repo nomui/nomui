@@ -524,10 +524,12 @@ class Td extends Component {
         onClick: ({ event }) => {
           event.stopPropagation()
 
-          if (!cellDisabled && !!column.editRender && this.table.grid.props.editable.clickToEdit) {
+          if (this.table.grid.props.editable.clickToEdit) {
             if (
               this.element.classList.contains('nom-td-editable-selected') &&
-              this.props.editMode !== true
+              this.props.editMode !== true &&
+              !cellDisabled &&
+              !!column.editRender
             ) {
               this.edit({ type: 'editable' })
               setTimeout(() => {
