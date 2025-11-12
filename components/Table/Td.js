@@ -649,6 +649,11 @@ class Td extends Component {
     this.element.classList.add('nom-td-editable-selected')
   }
 
+  updateCellData(newData) {
+    this.update({ data: newData })
+    this.tr._updateRowData({ field: this.props.column.field, data: newData })
+  }
+
   _remove() {
     if (this._resizeObserver) {
       this._resizeObserver.disconnect()
@@ -759,12 +764,13 @@ class Td extends Component {
     // 使用自动宽度逻辑检测真实宽度
     const measuredWidth = this._measureRenderedContentWidth(contentEl)
     const tdStyle = getComputedStyle(tdEl)
+
     const visibleWidth =
       tdEl.clientWidth -
       parseFloat(tdStyle.paddingLeft || 0) -
       parseFloat(tdStyle.paddingRight || 0)
 
-    return measuredWidth - visibleWidth > 1
+    return measuredWidth + 14 - visibleWidth > 1
   }
 
   /**

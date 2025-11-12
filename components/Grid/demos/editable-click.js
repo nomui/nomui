@@ -98,6 +98,7 @@ define([], function () {
               gridRef = c
             },
             ellipsis: 'both',
+            showTooltip: true,
             bordered: true,
             line: 'both',
             editable: {

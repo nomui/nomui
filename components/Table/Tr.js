@@ -229,16 +229,21 @@ class Tr extends Component {
     }
   }
 
-  _updateRowData() {
+  _updateRowData(cellData) {
     let dataChanged = false
     const { data } = this.props
 
-    for (const key in this.tdRefs) {
-      const item = this.tdRefs[key]
-      const { editor } = item
-      if (editor && data[key] !== editor.getValue()) {
-        dataChanged = true
-        data[key] = editor.getValue()
+    if (cellData) {
+      dataChanged = true
+      data[cellData.field] = cellData.data
+    } else {
+      for (const key in this.tdRefs) {
+        const item = this.tdRefs[key]
+        const { editor } = item
+        if (editor && data[key] !== editor.getValue()) {
+          dataChanged = true
+          data[key] = editor.getValue()
+        }
       }
     }
 
