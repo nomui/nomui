@@ -583,6 +583,7 @@ class Td extends Component {
         'nom-table-checker-with-toolbar':
           !!this.props.column.toolbar && this.props.column.isChecker,
         'nom-td-always-edit': excelMode && excelMode.alwaysEdit,
+        'nom-td-editing': this.props.editMode === true,
       },
     })
   }
@@ -749,7 +750,8 @@ class Td extends Component {
     if (
       column.field === 'nom-grid-row-checker' ||
       column.type === 'checker' ||
-      tdEl.classList.contains('nom-grid-drag-handler')
+      tdEl.classList.contains('nom-grid-drag-handler') ||
+      tdEl.classList.contains('nom-td-editing')
     ) {
       return false
     }
