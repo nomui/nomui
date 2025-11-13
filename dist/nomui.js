@@ -20435,6 +20435,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "nom-table-checker-with-toolbar":
             !!this.props.column.toolbar && this.props.column.isChecker,
           "nom-td-always-edit": excelMode && excelMode.alwaysEdit,
+          "nom-td-editing": this.props.editMode === true,
         },
       });
     }
@@ -20568,7 +20569,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (
         column.field === "nom-grid-row-checker" ||
         column.type === "checker" ||
-        tdEl.classList.contains("nom-grid-drag-handler")
+        tdEl.classList.contains("nom-grid-drag-handler") ||
+        tdEl.classList.contains("nom-td-editing")
       ) {
         return false;
       } // 判断配置是否允许
