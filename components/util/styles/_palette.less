@@ -70,15 +70,105 @@
 
 // 颜色变量 通过以上Less代码生成
 :root {
+  // red
+  --nom-color-lred: #FEE3E2; //1
+  --nom-color-lred-saturate-dark: #FDC6C4; //2
+  --nom-color-red-saturate-light: #FF7570; //3
+  --nom-color-red: #F54A45; //4
+  --nom-color-red-saturate-dark: #C02A26; //5
+  --nom-color-red-lighten: #fffbfb; //6
+  --nom-color-lred-saturate-light: #fff; //7
+  --nom-color-red-darken: #ee2626; //8
+  // orange
+  --nom-color-lorange: #FEE7CD; //1
+  --nom-color-lorange-saturate-dark: #FEC48B; //2
+  --nom-color-orange-saturate-light: #FF811A; //3
+  --nom-color-orange: #ED6D0C; //4
+  --nom-color-orange-saturate-dark: #A44904; //5
+  --nom-color-orange-lighten: #fee0cc; //6
+  --nom-color-lorange-saturate-light: #fffaf3; //7
+  --nom-color-orange-darken: #de5d06; //8
+  // yellow
+  --nom-color-lyellow: #FAEDC2; //1
+  --nom-color-lyellow-saturate-dark: #FCDF7E; //2
+  --nom-color-yellow-saturate-light: #FFC60A; //3
+  --nom-color-yellow: #D99904; //4
+  --nom-color-yellow-saturate-dark: #865B03; //5
+  --nom-color-yellow-lighten: #ffeac2; //6
+  --nom-color-lyellow-saturate-light: #fffbe8; //7
+  --nom-color-yellow-darken: #dc8e00; //8
+  // green
+  --nom-color-lgreen: #E3F0A3; //1
+  --nom-color-lgreen-saturate-dark: #C8DD5F; //2
+  --nom-color-green-saturate-light: #91AD00; //3
+  --nom-color-green: #7B9207; //4
+  --nom-color-green-saturate-dark: #5C6D08; //5
+  --nom-color-green-lighten: #c7eece; //6
+  --nom-color-lgreen-saturate-light: #f6fdf7; //7
+  --nom-color-green-darken: #319f45; //8
+  // cyan
+  --nom-color-lcyan: #D0F5CE; //1
+  --nom-color-lcyan-saturate-dark: #95E599; //2
+  --nom-color-cyan-saturate-light: #35BD4B; //3
+  --nom-color-cyan: #32A645; //4
+  --nom-color-cyan-saturate-dark: #1A7526; //5
+  --nom-color-cyan-lighten: #94e8f5; //6
+  --nom-color-lcyan-saturate-light: #effcfd; //7
+  --nom-color-cyan-darken: #0e8396; //8
+  // teal
+  --nom-color-lteal: #C4F2EC; //1
+  --nom-color-lteal-saturate-dark: #6FE8D8; //2
+  --nom-color-teal-saturate-light: #2DBEAB; //3
+  --nom-color-teal: #10A893; //4
+  --nom-color-teal-saturate-dark: #067062; //5
+  --nom-color-teal-lighten: #88f6d5; //6
+  --nom-color-lteal-saturate-light: #f2fdf9; //7
+  --nom-color-teal-darken: #0a8e67; //8
+  // blue
+  --nom-color-lblue: #CAEFFC; //1
+  --nom-color-lblue-saturate-dark: #97DCFC; //2
+  --nom-color-blue-saturate-light: #25B0E7; //3
+  --nom-color-blue: #1295CA; //4
+  --nom-color-blue-saturate-dark: #076A94; //5
+  --nom-color-blue-lighten: #c6e0f8; //6
+  --nom-color-lblue-saturate-light: #f4faff; //7
+  --nom-color-blue-darken: #1971bf; //8
+  // indigo
+  --nom-color-lindigo: #E0E9FF; //1
+  --nom-color-lindigo-saturate-dark: #C2D4FF; //2
+  --nom-color-indigo-saturate-light: #7AA2FF; //3
+  --nom-color-indigo: #5083FB; //4
+  --nom-color-indigo-saturate-dark: #1456F0; //5
+  --nom-color-indigo-lighten: #fafbff; //6
+  --nom-color-lindigo-saturate-light: #fafbff; //7
+  --nom-color-indigo-darken: #2b50e9; //8
+  // pink
+  --nom-color-lpink: #FEE2F2; //1
+  --nom-color-lpink-saturate-dark: #F8C4E1; //2
+  --nom-color-pink-saturate-light: #EB78B8; //3
+  --nom-color-pink: #DF58A5; //4
+  --nom-color-pink-saturate-dark: #B82879; //5
+  --nom-color-pink-lighten: #f8dde6; //6
+  --nom-color-lpink-saturate-light: #fffdfe; //7
+  --nom-color-pink-darken: #c72860; //8
+  // purple
+  --nom-color-lpurple: #EFE6FE; //1
+  --nom-color-lpurple-saturate-dark: #DCC9FD; //2
+  --nom-color-purple-saturate-light: #B791FA; //3
+  --nom-color-purple: #9F6FF1; //4
+  --nom-color-purple-saturate-dark: #7A35F0; //5
+  --nom-color-purple-lighten: #f1ddf6; //6
+  --nom-color-lpurple-saturate-light: #fdfbfe; //7
+  --nom-color-purple-darken: #a034ba; //8
   // gray
-  --nom-color-gray: #868e96; // 基础颜色
-  --nom-color-lgray: #f8f9fa; // 浅色模式
-  --nom-color-gray-lighten: #f3f4f5; // 浅色模式 增加亮度
-  --nom-color-gray-saturate-light: #a3a8ac; // 添加亮度,减少饱和度 
-  --nom-color-lgray-saturate-light: #fff; // 在lcolor基础上 添加亮度,减少饱和度
-  --nom-color-gray-darken: #78818a; // 深色模式 减少亮度
-  --nom-color-gray-saturate-dark: #697580; // 减少亮度,添加饱和度 
-  --nom-color-lgray-saturate-dark: #e9ecf0; // 在lcolor基础上 减少亮度,添加饱和度
+  --nom-color-lgray: #EFF0F1; //1
+  --nom-color-lgray-saturate-dark: #DEE0E3; //2
+  --nom-color-gray-saturate-light: #8F959E; //3
+  --nom-color-gray: #646A73; //4
+  --nom-color-gray-saturate-dark: #373C43; //5
+  --nom-color-gray-lighten: #f3f4f5; //6
+  --nom-color-lgray-saturate-light: #fff; //7
+  --nom-color-gray-darken: #646a73; //8
   // brown
   --nom-color-brown: #a57868;
   --nom-color-lbrown: #e8dcd8;
@@ -88,96 +178,6 @@
   --nom-color-brown-darken: #996b5b;
   --nom-color-brown-saturate-dark: #8b5f4f;
   --nom-color-lbrown-saturate-dark: #e0cdc7;
-  // red
-  --nom-color-red: #f03e3e;
-  --nom-color-lred: #fff5f5;
-  --nom-color-red-lighten: #fffbfb;
-  --nom-color-red-saturate-light: #f26f6f;
-  --nom-color-lred-saturate-light: #fff;
-  --nom-color-red-darken: #ee2626;
-  --nom-color-red-saturate-dark: #ec0f0f;
-  --nom-color-lred-saturate-dark: #ffdcdc;
-  // orange
-  --nom-color-orange: #f76707;
-  --nom-color-lorange: #fff4e6;
-  --nom-color-orange-lighten: #fee0cc;
-  --nom-color-orange-saturate-light: #f7863a;
-  --nom-color-lorange-saturate-light: #fffaf3;
-  --nom-color-orange-darken: #de5d06;
-  --nom-color-orange-saturate-dark: #c85203;
-  --nom-color-lorange-saturate-dark: #ffe9cc;
-  // yellow
-  --nom-color-yellow: #f59f00;
-  --nom-color-lyellow: #fff9db;
-  --nom-color-yellow-lighten: #ffeac2;
-  --nom-color-yellow-saturate-light: #fcb32c;
-  --nom-color-lyellow-saturate-light: #fffbe8;
-  --nom-color-yellow-darken: #dc8e00;
-  --nom-color-yellow-saturate-dark: #c27e00;
-  --nom-color-lyellow-saturate-dark: #fff5c2;
-  // green
-  --nom-color-green: #37b24d;
-  --nom-color-lgreen: #ebfbee;
-  --nom-color-green-lighten: #c7eece;
-  --nom-color-green-saturate-light: #55c76a;
-  --nom-color-lgreen-saturate-light: #f6fdf7;
-  --nom-color-green-darken: #319f45;
-  --nom-color-green-saturate-dark: #298d3b;
-  --nom-color-lgreen-saturate-dark: #d5f7dc;
-  // teal
-  --nom-color-teal: #0ca678;
-  --nom-color-lteal: #e6fcf5;
-  --nom-color-teal-lighten: #88f6d5;
-  --nom-color-teal-saturate-light: #12d399;
-  --nom-color-lteal-saturate-light: #f2fdf9;
-  --nom-color-teal-darken: #0a8e67;
-  --nom-color-teal-saturate-dark: #077856;
-  --nom-color-lteal-saturate-dark: #cffaec;
-  // blue
-  --nom-color-blue: #1c7ed6;
-  --nom-color-lblue: #e7f5ff;
-  --nom-color-blue-lighten: #c6e0f8;
-  --nom-color-blue-saturate-light: #4297e3;
-  --nom-color-lblue-saturate-light: #f4faff;
-  --nom-color-blue-darken: #1971bf;
-  --nom-color-blue-saturate-dark: #1464ab;
-  --nom-color-lblue-saturate-dark: #cdeaff;
-  // indigo
-  --nom-color-indigo: #4263eb;
-  --nom-color-lindigo: #edf2ff;
-  --nom-color-indigo-lighten: #fafbff;
-  --nom-color-indigo-saturate-light: #728aee;
-  --nom-color-lindigo-saturate-light: #fafbff;
-  --nom-color-indigo-darken: #2b50e9;
-  --nom-color-indigo-saturate-dark: #153de5;
-  --nom-color-lindigo-saturate-dark: #d4e0ff;
-  // purple
-  --nom-color-purple: #ae3ec9;
-  --nom-color-lpurple: #f8f0fc;
-  --nom-color-purple-lighten: #f1ddf6;
-  --nom-color-purple-saturate-light: #bd68d2;
-  --nom-color-lpurple-saturate-light: #fdfbfe;
-  --nom-color-purple-darken: #a034ba;
-  --nom-color-purple-saturate-dark: #902ca8;
-  --nom-color-lpurple-saturate-dark: #eedaf8;
-  // pink
-  --nom-color-pink: #d6336c;
-  --nom-color-lpink: #fff0f6;
-  --nom-color-pink-lighten: #f8dde6;
-  --nom-color-pink-saturate-light: #dc608b;
-  --nom-color-lpink-saturate-light: #fffdfe;
-  --nom-color-pink-darken: #c72860;
-  --nom-color-pink-saturate-dark: #b52155;
-  --nom-color-lpink-saturate-dark: #ffd7e7;
-  // cyan
-  --nom-color-cyan: #1098ad;
-  --nom-color-lcyan: #e3fafc;
-  --nom-color-cyan-lighten: #94e8f5;
-  --nom-color-cyan-saturate-light: #17bfd9;
-  --nom-color-lcyan-saturate-light: #effcfd;
-  --nom-color-cyan-darken: #0e8396;
-  --nom-color-cyan-saturate-dark: #0a7080;
-  --nom-color-lcyan-saturate-dark: #cbf6fa;
   // primary
   --nom-color-primary: #1c7ed6;
   --nom-color-lprimary: #e7f5ff;
