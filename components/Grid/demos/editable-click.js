@@ -87,7 +87,7 @@ define([], function () {
                 component: 'Button',
                 text: '获取数据',
                 onClick: () => {
-                  console.log(gridRef.getData({ saveEdit: true }))
+                  console.log(gridRef.getData())
                 },
               },
             ],

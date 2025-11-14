@@ -80,7 +80,7 @@ class Grid extends Component {
 
     if (!window.__nomui_grid_click_listener__) {
       window.__nomui_grid_click_listener__ = true
-      document.addEventListener('click', (e) => {
+      document.addEventListener('pointerdown', (e) => {
         for (const n of Grid.allInstances) {
           n._handleDocumentClick(e)
         }

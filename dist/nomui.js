@@ -10431,6 +10431,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _unbindTrigger() {
+      document.removeEventListener(
+        "mousedown",
+        this._onDocumentMousedown,
+        false
+      );
       if (!this.opener) return;
       const { triggerAction } = this.props;
       if (triggerAction === "click") {
@@ -23873,7 +23878,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       if (!window.__nomui_grid_click_listener__) {
         window.__nomui_grid_click_listener__ = true;
-        document.addEventListener("click", (e) => {
+        document.addEventListener("pointerdown", (e) => {
           for (const n of Grid.allInstances) {
             n._handleDocumentClick(e);
           }
