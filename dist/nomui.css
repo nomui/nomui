@@ -7982,14 +7982,6 @@ table.nom-table.p-bordered {
 .nom-grid.m-editable .nom-td-editable .nom-td-editable-inner .nom-grid-td-edit-trigger {
   display: none;
 }
-.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner:hover .nom-grid-td-edit-trigger {
-  display: inline-flex;
-  cursor: pointer;
-  color: var(--nom-grid-icon-color-muted);
-}
-.nom-grid.m-editable .nom-td-editable .nom-td-editable-inner:hover .nom-grid-td-edit-trigger:hover {
-  color: var(--nom-color-primary);
-}
 .nom-grid.m-editable .nom-td-editable.nom-td-editable-selected {
   box-shadow: inset 0 0 0 2px var(--nom-color-primary);
 }
@@ -8001,6 +7993,14 @@ table.nom-table.p-bordered {
 }
 .nom-grid.m-editable .nom-td-editable.nom-td-editable-active .nom-td-editable-inner .nom-grid-td-edit-trigger {
   display: none;
+}
+.nom-grid.m-editable .nom-td-editable:hover .nom-grid-td-edit-trigger {
+  display: inline-flex;
+  cursor: pointer;
+  color: var(--nom-grid-icon-color-muted);
+}
+.nom-grid.m-editable .nom-td-editable:hover .nom-grid-td-edit-trigger:hover {
+  color: var(--nom-color-primary);
 }
 .nom-grid .nom-grid-checkbox {
   display: inline-flex;

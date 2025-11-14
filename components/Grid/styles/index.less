@@ -368,17 +368,7 @@
           display: none;
         }
 
-        &:hover {
-          .nom-grid-td-edit-trigger {
-            display: inline-flex;
-            cursor: pointer;
-            color: var(--nom-grid-icon-color-muted);
 
-            &:hover {
-              color: var(--nom-color-primary);
-            }
-          }
-        }
       }
 
       &.nom-td-editable-selected {
@@ -397,6 +387,18 @@
         .nom-td-editable-inner {
           .nom-grid-td-edit-trigger {
             display: none;
+          }
+        }
+      }
+
+      &:hover {
+        .nom-grid-td-edit-trigger {
+          display: inline-flex;
+          cursor: pointer;
+          color: var(--nom-grid-icon-color-muted);
+
+          &:hover {
+            color: var(--nom-color-primary);
           }
         }
       }
