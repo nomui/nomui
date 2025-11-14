@@ -15869,6 +15869,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       let { data, popupWidth } = this.props;
       if (!useHex) {
         data = this._generateDefaultData();
+        popupWidth = 160;
       } else if (!data || !data.length) {
         data = [
           { id: "#c6cacc" },
@@ -15984,7 +15985,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               ref: (c) => {
                 this.colorList = c;
               },
-              classes: { "nom-color-picker-list": true }, // cols: 6,
+              classes: {
+                "nom-color-picker-list": true,
+                "non-hex-colos": !useHex,
+              },
               wrap: true,
               gap: "xsmall",
               attrs: { style: { width: `${popupWidth}px`, padding: "12px" } },
@@ -16040,18 +16044,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         "orange",
         "yellow",
         "green",
+        "cyan",
         "teal",
         "blue",
         "indigo",
-        "purple",
         "pink",
-        "cyan",
-        "brown",
+        "purple",
         "gray",
       ];
       colors.forEach((color) => {
         data = data.concat([
-          { id: `l${color}-light` },
           { id: `l${color}` },
           { id: `l${color}-dark` },
           { id: `${color}-light` },
