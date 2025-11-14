@@ -79,6 +79,7 @@ class Popup extends Layer {
   }
 
   _unbindTrigger() {
+    document.removeEventListener('mousedown', this._onDocumentMousedown, false)
     if (!this.opener) return
     const { triggerAction } = this.props
 
