@@ -1155,6 +1155,9 @@ class Component {
 
   _setStyle(style) {
     const { element } = this
+    if (!element) {
+      return
+    }
     if (typeof style !== 'object') {
       // New style is a string, let engine deal with patching.
       element.style.cssText = style
