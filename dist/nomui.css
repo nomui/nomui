@@ -7400,8 +7400,8 @@ table.nom-table.nom-table-striped tbody tr:nth-child(even):not(.nom-tr-empty).s-
 table.nom-table tbody tr:not(.nom-tr-empty):hover {
   background-color: var(--nom-grid-tr-bg-hover);
 }
-table.nom-table tbody tr:not(.nom-tr-empty):hover .nom-table-fixed-left,
-table.nom-table tbody tr:not(.nom-tr-empty):hover .nom-table-fixed-right {
+table.nom-table tbody tr:not(.nom-tr-empty):hover > .nom-table-fixed-left,
+table.nom-table tbody tr:not(.nom-tr-empty):hover > .nom-table-fixed-right {
   background-color: var(--nom-grid-tr-bg-hover);
 }
 table.nom-table tbody tr:not(.nom-tr-empty).nom-tr-selected,
