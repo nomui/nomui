@@ -241,6 +241,9 @@ class Carousel extends Component {
   }
 
   animate(val) {
+    if (!this.props.imgs || !this.props.imgs.length) {
+      return
+    }
     this.updateSlideSize()
     const wrapper = this.wrapperRef.element
     const duration = `${this.props.speed}ms ${this.props.easing}`
