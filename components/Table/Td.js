@@ -1222,15 +1222,25 @@ class Td extends Component {
     if (options.ignoreChange !== true) {
       this._updateTdData()
     }
-    this._skipFixed = true
-    this.update({
-      editMode: false,
-      classes: {
-        'nom-td-excel-mode-active': false,
-        'nom-td-editable-active': false,
-      },
-    })
-    this._skipFixed = false
+    if (
+      this.table.hasGrid &&
+      this.table.grid.props.excelMode &&
+      this.table.grid.props.excelMode.alwaysEdit
+    ) {
+      this.element.classList.remove('nom-td-excel-mode-active')
+      this.element.classList.remove('nom-td-editable-active')
+    } else {
+      this._skipFixed = true
+      this.update({
+        editMode: false,
+        classes: {
+          'nom-td-excel-mode-active': false,
+          'nom-td-editable-active': false,
+        },
+      })
+      this._skipFixed = false
+    }
+
     if (this.table.grid.props.summary) {
       this.table.grid.updateSummary()
     }
