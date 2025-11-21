@@ -25,6 +25,8 @@
 | initExpandLevel | 默认展开节点层级，不传则展开所有层级 | `number` | -1 |
 | valueOptions | 取值默认参数，如果 asArray 设为 true 则任何时候都以数组形式返回值 | `{asArray:false}` | - |
 | onClear | 点击清空按钮时的回调 | `()=>{}` | - |
+| enablePartChecked | 开启半选中 | `boolean` | true |
+| includePartialChecked | 取值默认带上半选中的节点 | `boolean` | true |
 
 ### TreeSelect methods
 
