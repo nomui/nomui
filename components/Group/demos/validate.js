@@ -21,8 +21,8 @@ define([], function () {
               label: '姓名',
               // required: true,
               rules: [
-                { type: 'required', block: false },
-                { type: 'minlength', value: 2, block: false },
+                { type: 'required', soft: true },
+                { type: 'minlength', value: 2, soft: true },
                 { type: 'maxlength', value: 12 },
               ],
               invalidTip: {

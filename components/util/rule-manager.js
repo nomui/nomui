@@ -188,7 +188,7 @@ RuleManager.validate = function (rules, controlValue, returnDetail = false) {
 
     if (result === true) continue
 
-    if (nomui.utils.isPlainObject(result) && result.block === false) {
+    if (nomui.utils.isPlainObject(result) && result.soft === true) {
       // 非阻断规则，收集
       nonBlockErrors.push(result)
       continue
@@ -225,9 +225,9 @@ function checkRule(ruleSettings, controlValue, returnDetail = false) {
     }
 
     // 非阻断规则 + returnDetail 时返回对象
-    if (ruleSettings.block === false && returnDetail) {
+    if (ruleSettings.soft === true && returnDetail) {
       return {
-        block: false,
+        soft: true,
         name: ruleSettings.name || null,
         rule: ruleSettings.type,
         message,

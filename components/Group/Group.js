@@ -114,7 +114,7 @@ class Group extends Field {
     }
   }
 
-  // 软校验，配置了block:false的规则将不会影响校验结果，但会返回校验失败的信息
+  // 软校验，配置了soft:true的规则将不会影响校验结果，但会返回校验失败的信息
   softValidate(options = { showInvalidTip: true }) {
     const details = {}
     let groupValid = true
