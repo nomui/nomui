@@ -9157,13 +9157,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       },
     },
   };
-  RuleManager.validate = function (rules, controlValue) {
+  RuleManager.validate = function (rules, controlValue, returnDetail = false) {
+    const nonBlockErrors = [];
     for (let i = 0; i < rules.length; i++) {
-      const checkResult = checkRule(rules[i], controlValue);
-      if (checkResult !== true) {
-        return checkResult;
-      }
-    }
+      const result = checkRule(rules[i], controlValue, returnDetail);
+      if (result === true) continue;
+      if (nomui.utils.isPlainObject(result) && result.soft === true) {
+        // 非阻断规则，收集
+        nonBlockErrors.push(result);
+        continue;
+      } // 阻断规则：直接返回 message（兼容旧逻辑）
+      return result;
+    } // 有非阻断规则，返回它们（getValidDetail 用）
+    if (nonBlockErrors.length) return nonBlockErrors;
     return true;
   };
   function isEmpty(val) {
@@ -9174,25 +9180,30 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       (Array.isArray(val) && !val.length)
     );
   }
-  function checkRule(ruleSettings, controlValue) {
+  function checkRule(ruleSettings, controlValue, returnDetail = false) {
     const rule = RuleManager.ruleTypes[ruleSettings.type];
-    if (rule) {
-      let ruleValue = ruleSettings.value || null;
-      if (!rule.validate(controlValue, ruleValue)) {
-        let message = ruleSettings.message || rule.message;
-        if (ruleValue !== null) {
-          if (!Array.isArray(ruleValue)) {
-            ruleValue = [ruleValue];
-          }
-          for (let i = 0; i < ruleValue.length; i++) {
-            message = message.replace(
-              new RegExp(`\\{${i}\\}`, "g"),
-              ruleValue[i]
-            );
-          }
+    if (!rule) return true;
+    let ruleValue = ruleSettings.value ?? null;
+    if (!rule.validate(controlValue, ruleValue)) {
+      let message = ruleSettings.message || rule.message;
+      if (ruleValue !== null) {
+        if (!Array.isArray(ruleValue)) ruleValue = [ruleValue];
+        for (let i = 0; i < ruleValue.length; i++) {
+          message = message.replace(
+            new RegExp(`\\{${i}\\}`, "g"),
+            ruleValue[i]
+          );
         }
-        return message;
-      }
+      } // 非阻断规则 + returnDetail 时返回对象
+      if (ruleSettings.soft === true && returnDetail) {
+        return {
+          soft: true,
+          name: ruleSettings.name || null,
+          rule: ruleSettings.type,
+          message,
+        };
+      } // 阻断规则（或非阻断 + 不要求 detail）返回字符串（兼容原_validate）
+      return message;
     }
     return true;
   }
@@ -9695,6 +9706,46 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.expand();
       }
       return valid;
+    } // 软校验，配置了soft:true的规则将不会影响校验结果，但会返回校验失败的信息
+    softValidate(options = { showInvalidTip: true }) {
+      const { disabled, hidden } = this.props;
+      if (disabled || hidden) {
+        return { valid: true, errors: [] };
+      }
+      const value = this._getRawValue ? this._getRawValue() : this.getValue();
+      const rules = this.rules || []; // 拆分阻断规则和非阻断规则
+      const nonBlockRules = rules.filter((r) => r.soft === true);
+      const blockRules = rules.filter((r) => r.soft !== true); // 1️⃣ 阻断规则交给 _validate 处理，决定最终 valid
+      let valid = true;
+      if (blockRules.length > 0) {
+        valid = this._validate({ showInvalidTip: options.showInvalidTip });
+      } // 2️⃣ 非阻断规则单独校验，显示 tooltip，但不影响 valid
+      let errors = [];
+      if (nonBlockRules.length > 0) {
+        const nonBlockResult = RuleManager.validate(nonBlockRules, value, true);
+        if (Array.isArray(nonBlockResult) && nonBlockResult.length > 0) {
+          // 构建返回的 errors
+          errors = nonBlockResult.map((item) => ({
+            rule: item.rule,
+            message: item.message,
+          }));
+          if (valid) {
+            const firstError = nonBlockResult[0];
+            this._invalid(firstError.message);
+            if (!this.element.classList.contains("s-invalid")) {
+              this.addClass("s-invalid");
+            }
+          }
+        }
+      } else if (valid) {
+        this.removeClass("s-invalid");
+        this.trigger("valid");
+        if (this.errorTip) {
+          this.errorTip.remove();
+          delete this.errorTip;
+        }
+      }
+      return { valid, errors };
     }
     _validate(options) {
       options = options || {};
@@ -9720,11 +9771,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
           return true;
         }
-        if (options.showInvalidTip !== false) {
-          this.addClass("s-invalid");
-          this.trigger("invalid", validationResult);
-          this._invalid(validationResult);
-        }
+        this.addClass("s-invalid");
+        this.trigger("invalid", validationResult);
+        this._invalid(validationResult);
         return false;
       }
       return true;
@@ -18939,6 +18988,26 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
         });
       }
+    } // 软校验，配置了soft:true的规则将不会影响校验结果，但会返回校验失败的信息
+    softValidate(options = { showInvalidTip: true }) {
+      const details = {};
+      let groupValid = true;
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i];
+        if (!field || !field.softValidate) continue; // 调用每个 Field 的 softValidate
+        const result = field.softValidate(
+          Object.assign({}, options, {
+            showInvalidTip: options.showInvalidTip !== false, // 让 field 自己显示 tooltip
+          })
+        ); // 阻断规则的 valid 决定整体 groupValid
+        if (!result.valid) {
+          groupValid = false;
+        } // 非阻断规则的错误明细收集
+        if (result.errors && result.errors.length > 0) {
+          details[field.name] = result.errors;
+        }
+      }
+      return { valid: groupValid, fields: details };
     }
     validate(options) {
       options = options || {};

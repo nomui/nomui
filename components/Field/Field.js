@@ -330,6 +330,58 @@ class Field extends Component {
     return valid
   }
 
+  // 软校验，配置了soft:true的规则将不会影响校验结果，但会返回校验失败的信息
+  softValidate(options = { showInvalidTip: true }) {
+    const { disabled, hidden } = this.props
+    if (disabled || hidden) {
+      return { valid: true, errors: [] }
+    }
+
+    const value = this._getRawValue ? this._getRawValue() : this.getValue()
+    const rules = this.rules || []
+
+    // 拆分阻断规则和非阻断规则
+    const nonBlockRules = rules.filter((r) => r.soft === true)
+    const blockRules = rules.filter((r) => r.soft !== true)
+
+    // 1️⃣ 阻断规则交给 _validate 处理，决定最终 valid
+    let valid = true
+    if (blockRules.length > 0) {
+      valid = this._validate({ showInvalidTip: options.showInvalidTip })
+    }
+
+    // 2️⃣ 非阻断规则单独校验，显示 tooltip，但不影响 valid
+    let errors = []
+    if (nonBlockRules.length > 0) {
+      const nonBlockResult = RuleManager.validate(nonBlockRules, value, true)
+
+      if (Array.isArray(nonBlockResult) && nonBlockResult.length > 0) {
+        // 构建返回的 errors
+        errors = nonBlockResult.map((item) => ({
+          rule: item.rule,
+          message: item.message,
+        }))
+
+        if (valid) {
+          const firstError = nonBlockResult[0]
+          this._invalid(firstError.message)
+          if (!this.element.classList.contains('s-invalid')) {
+            this.addClass('s-invalid')
+          }
+        }
+      }
+    } else if (valid) {
+      this.removeClass('s-invalid')
+      this.trigger('valid')
+      if (this.errorTip) {
+        this.errorTip.remove()
+        delete this.errorTip
+      }
+    }
+
+    return { valid, errors }
+  }
+
   _validate(options) {
     options = options || {}
     const { disabled, hidden } = this.props
@@ -357,11 +409,9 @@ class Field extends Component {
         return true
       }
 
-      if (options.showInvalidTip !== false) {
-        this.addClass('s-invalid')
-        this.trigger('invalid', validationResult)
-        this._invalid(validationResult)
-      }
+      this.addClass('s-invalid')
+      this.trigger('invalid', validationResult)
+      this._invalid(validationResult)
       return false
     }
 

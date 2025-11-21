@@ -12,17 +12,17 @@ define([], function () {
             group = c
           },
           fieldDefaults: {
-            labelAlign: 'left'
+            labelAlign: 'left',
           },
           fields: [
             {
               component: 'Textbox',
               name: 'name',
               label: '姓名',
-              required: true,
+              // required: true,
               rules: [
-                { type: 'identifier' },
-                { type: 'minlength', value: 2 },
+                { type: 'required', soft: true },
+                { type: 'minlength', value: 2, soft: true },
                 { type: 'maxlength', value: 12 },
               ],
               invalidTip: {
@@ -98,7 +98,7 @@ define([], function () {
                     text: '校验',
                     type: 'Primary',
                     onClick: function () {
-                      group.validate()
+                      console.log(group.validate())
                     },
                   },
                   {
@@ -106,7 +106,16 @@ define([], function () {
                     text: '校验但忽略必填',
                     tooltip: '用于某些特殊场景，需要忽略必填验证时使用',
                     onClick: function () {
-                      group.validate({ ignoreRequired: true })
+                      group.validate()
+                    },
+                  },
+                  {
+                    component: 'Button',
+                    text: '软校验',
+                    tooltip:
+                      '校验结果会忽略那些配置了block:false的非阻断规则，但会返回这些规则不通过的字段信息',
+                    onClick: function () {
+                      console.log(group.softValidate())
                     },
                   },
                 ],
