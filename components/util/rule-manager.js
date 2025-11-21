@@ -180,13 +180,26 @@ RuleManager.ruleTypes = {
   },
 }
 
-RuleManager.validate = function (rules, controlValue) {
+RuleManager.validate = function (rules, controlValue, returnDetail = false) {
+  const nonBlockErrors = []
+
   for (let i = 0; i < rules.length; i++) {
-    const checkResult = checkRule(rules[i], controlValue)
-    if (checkResult !== true) {
-      return checkResult
+    const result = checkRule(rules[i], controlValue, returnDetail)
+
+    if (result === true) continue
+
+    if (nomui.utils.isPlainObject(result) && result.block === false) {
+      // 非阻断规则，收集
+      nonBlockErrors.push(result)
+      continue
     }
+
+    // 阻断规则：直接返回 message（兼容旧逻辑）
+    return result
   }
+
+  // 有非阻断规则，返回它们（getValidDetail 用）
+  if (nonBlockErrors.length) return nonBlockErrors
 
   return true
 }
@@ -195,24 +208,36 @@ function isEmpty(val) {
   return val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length)
 }
 
-function checkRule(ruleSettings, controlValue) {
+function checkRule(ruleSettings, controlValue, returnDetail = false) {
   const rule = RuleManager.ruleTypes[ruleSettings.type]
 
-  if (rule) {
-    let ruleValue = ruleSettings.value || null
-    if (!rule.validate(controlValue, ruleValue)) {
-      let message = ruleSettings.message || rule.message
-      if (ruleValue !== null) {
-        if (!Array.isArray(ruleValue)) {
-          ruleValue = [ruleValue]
-        }
-        for (let i = 0; i < ruleValue.length; i++) {
-          message = message.replace(new RegExp(`\\{${i}\\}`, 'g'), ruleValue[i])
-        }
+  if (!rule) return true
+
+  let ruleValue = ruleSettings.value ?? null
+  if (!rule.validate(controlValue, ruleValue)) {
+    let message = ruleSettings.message || rule.message
+
+    if (ruleValue !== null) {
+      if (!Array.isArray(ruleValue)) ruleValue = [ruleValue]
+      for (let i = 0; i < ruleValue.length; i++) {
+        message = message.replace(new RegExp(`\\{${i}\\}`, 'g'), ruleValue[i])
       }
-      return message
     }
+
+    // 非阻断规则 + returnDetail 时返回对象
+    if (ruleSettings.block === false && returnDetail) {
+      return {
+        block: false,
+        name: ruleSettings.name || null,
+        rule: ruleSettings.type,
+        message,
+      }
+    }
+
+    // 阻断规则（或非阻断 + 不要求 detail）返回字符串（兼容原_validate）
+    return message
   }
+
   return true
 }
 

@@ -114,6 +114,38 @@ class Group extends Field {
     }
   }
 
+  // 软校验，配置了block:false的规则将不会影响校验结果，但会返回校验失败的信息
+  softValidate(options = { showInvalidTip: true }) {
+    const details = {}
+    let groupValid = true
+
+    for (let i = 0; i < this.fields.length; i++) {
+      const field = this.fields[i]
+      if (!field || !field.softValidate) continue
+
+      // 调用每个 Field 的 softValidate
+      const result = field.softValidate({
+        ...options,
+        showInvalidTip: options.showInvalidTip !== false, // 让 field 自己显示 tooltip
+      })
+
+      // 阻断规则的 valid 决定整体 groupValid
+      if (!result.valid) {
+        groupValid = false
+      }
+
+      // 非阻断规则的错误明细收集
+      if (result.errors && result.errors.length > 0) {
+        details[field.name] = result.errors
+      }
+    }
+
+    return {
+      valid: groupValid,
+      fields: details,
+    }
+  }
+
   validate(options) {
     options = options || {}
     const invalids = []
