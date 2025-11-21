@@ -61,12 +61,11 @@ define([], function () {
                   ],
                 },
               ],
-              value: ['0-0', '0-0-1', '0-1-1'],
+              value: ['0-0-1', '0-1-1'],
               treeCheckable: {
-                cascadeCheckParent: true,
                 showCheckAll: true,
-                // cascadeUncheckChildren: false
               },
+              includePartialChecked: false,
             },
           },
           {

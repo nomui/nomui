@@ -361,8 +361,11 @@ class TreeSelect extends Field {
     // 多选则展示复选框
     return Component.extendProps({ onlyleaf: this.props.onlyleaf }, treeCheckable, {
       checkedNodeKeys: currentValue,
+      enablePartChecked: this.props.enablePartChecked,
       onCheckChange: () => {
-        const checkedKeys = this.tree.getCheckedNodeKeys()
+        const checkedKeys = this.tree.getCheckedNodeKeys({
+          includePartialChecked: this.props.includePartialChecked,
+        })
 
         this._setValue(checkedKeys, { triggerChange: !this.props.changeOnClose })
       },
@@ -496,6 +499,8 @@ TreeSelect.defaults = {
   showArrow: true,
   initExpandLevel: -1,
   popupWidth: null,
+  enablePartChecked: true,
+  includePartialChecked: true,
 }
 
 Component.register(TreeSelect)

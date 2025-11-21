@@ -37396,8 +37396,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         treeCheckable,
         {
           checkedNodeKeys: currentValue,
+          enablePartChecked: this.props.enablePartChecked,
           onCheckChange: () => {
-            const checkedKeys = this.tree.getCheckedNodeKeys();
+            const checkedKeys = this.tree.getCheckedNodeKeys({
+              includePartialChecked: this.props.includePartialChecked,
+            });
             this._setValue(checkedKeys, {
               triggerChange: !this.props.changeOnClose,
             });
@@ -37516,6 +37519,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     showArrow: true,
     initExpandLevel: -1,
     popupWidth: null,
+    enablePartChecked: true,
+    includePartialChecked: true,
   };
   Component.register(TreeSelect);
   const DEFAULT_ACCEPT$1 =
