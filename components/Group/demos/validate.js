@@ -59,7 +59,7 @@ define([], function () {
               name: 'IDCard',
               label: '身份证号码',
               required: true,
-              // rules: [{ type: 'IDCard' }],
+              rules: [{ type: 'IDCard' }],
             },
             {
               component: 'Textbox',
