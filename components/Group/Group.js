@@ -129,21 +129,31 @@ class Group extends Field {
         showInvalidTip: options.showInvalidTip !== false, // 让 field 自己显示 tooltip
       })
 
-      // 阻断规则的 valid 决定整体 groupValid
-      if (!result.valid) {
+      // 结果是false或者结果的valid是false
+      if (result === false || result.valid === false) {
         groupValid = false
       }
 
-      // 非阻断规则的错误明细收集
+      // 结果是对象则收集error信息
       if (result.errors && result.errors.length > 0) {
         details[field.name] = result.errors
       }
     }
 
-    return {
-      valid: groupValid,
-      fields: details,
+    const hasSoftError = Object.keys(details).length > 0
+
+    if (groupValid === false) {
+      return false
     }
+
+    if (hasSoftError) {
+      return {
+        valid: groupValid,
+        fields: details,
+      }
+    }
+
+    return true
   }
 
   validate(options) {
