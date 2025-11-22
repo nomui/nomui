@@ -10399,6 +10399,17 @@ textarea .nom-textarea {
   background: transparent;
   border-color: var(--nom-color-danger);
 }
+.nom-field.s-invalid-warning > .nom-field-content {
+  color: var(--nom-color-text-0);
+}
+.nom-field.s-invalid-warning > .nom-field-content > .nom-control {
+  background-color: rgba(var(--nom-orange-5), 0.1);
+  border-color: var(--nom-color-warning) !important;
+}
+.nom-field.s-invalid-warning > .nom-field-content > .nom-control > input {
+  background: transparent;
+  border-color: var(--nom-color-warning);
+}
 .nom-field.p-label-align-top > .nom-field-content {
   padding-top: 2px;
 }

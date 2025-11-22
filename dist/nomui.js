@@ -9714,38 +9714,52 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       const value = this._getRawValue ? this._getRawValue() : this.getValue();
       const rules = this.rules || []; // 拆分阻断规则和非阻断规则
-      const nonBlockRules = rules.filter((r) => r.soft === true);
-      const blockRules = rules.filter((r) => r.soft !== true); // 1️⃣ 阻断规则交给 _validate 处理，决定最终 valid
+      const softRules = rules.filter((r) => r.soft === true);
+      const hardRules = rules.filter((r) => r.soft !== true); // 1️⃣ 阻断规则交给 _validate 处理，决定最终 valid
       let valid = true;
-      if (blockRules.length > 0) {
-        valid = this._validate({ showInvalidTip: options.showInvalidTip });
+      if (hardRules.length > 0) {
+        valid = this._validate({
+          showInvalidTip: options.showInvalidTip,
+          rules: hardRules,
+        });
       } // 2️⃣ 非阻断规则单独校验，显示 tooltip，但不影响 valid
       let errors = [];
-      if (nonBlockRules.length > 0) {
-        const nonBlockResult = RuleManager.validate(nonBlockRules, value, true);
-        if (Array.isArray(nonBlockResult) && nonBlockResult.length > 0) {
+      if (softRules.length > 0) {
+        const softResult = RuleManager.validate(softRules, value, true); // 硬规则不通过返回false
+        if (valid !== true) {
+          return false;
+        } // 硬规则通过但存在软规则
+        if (Array.isArray(softResult) && softResult.length > 0) {
           // 构建返回的 errors
-          errors = nonBlockResult.map((item) => ({
+          errors = softResult.map((item) => ({
             rule: item.rule,
             message: item.message,
           }));
-          if (valid) {
-            const firstError = nonBlockResult[0];
-            this._invalid(firstError.message);
-            if (!this.element.classList.contains("s-invalid")) {
-              this.addClass("s-invalid");
-            }
-          }
+          const firstError = softResult[0];
+          this._invalid(firstError.message, true);
+          if (!this.element.classList.contains("s-invalid-warning")) {
+            this.addClass("s-invalid-warning");
+          } // 硬规则通过且软规则存在不通过的，返回对象结果
+          return { valid, errors };
         }
-      } else if (valid) {
+        this.removeClass("s-invalid-warning");
+        this.trigger("valid");
+        if (this.errorTip) {
+          this.errorTip.remove();
+          delete this.errorTip;
+        } // 硬规则通过且软规则通过返回true
+        return true;
+      }
+      if (valid) {
         this.removeClass("s-invalid");
+        this.removeClass("s-invalid-warning");
         this.trigger("valid");
         if (this.errorTip) {
           this.errorTip.remove();
           delete this.errorTip;
         }
-      }
-      return { valid, errors };
+      } // 没有软规则且硬规则通过，返回valid布尔值
+      return valid;
     }
     _validate(options) {
       options = options || {};
@@ -9753,7 +9767,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (disabled || hidden) {
         return true;
       }
-      let rules = this.rules;
+      let rules = options.rules || this.rules;
       const value = this._getRawValue ? this._getRawValue() : this.getValue();
       if (Array.isArray(rules) && rules.length > 0) {
         if (options.ignoreRequired) {
@@ -9778,14 +9792,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return true;
     }
-    _invalid(message) {
+    _invalid(message, warning) {
       if (!this.errorTip) {
         this.errorTip = new Tooltip(
           extend(
             {},
             {
               trigger: this,
-              classes: { "nom-field-invalid-tooltip": true },
+              classes: {
+                "nom-field-invalid-tooltip": true,
+                "nom-field-invalid-tooltip-warning": warning,
+              },
               isInvalidTip: true,
               reference: this.content,
               alignTo: this.content,
@@ -9795,7 +9812,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 this.props.invalidTip.align === "top"
                   ? [0, 10]
                   : null,
-              styles: { color: "danger" },
+              styles: { color: warning ? "warning" : "danger" },
               children: message,
             },
             this.props.invalidTip
@@ -9849,6 +9866,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _resetValidStatus() {
       this.removeClass("s-invalid");
+      this.removeClass("s-invalid-warning");
       if (this.errorTip) {
         this.errorTip.remove();
         delete this.errorTip;
@@ -18999,15 +19017,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           Object.assign({}, options, {
             showInvalidTip: options.showInvalidTip !== false, // 让 field 自己显示 tooltip
           })
-        ); // 阻断规则的 valid 决定整体 groupValid
-        if (!result.valid) {
+        ); // 结果是false或者结果的valid是false
+        if (result === false || result.valid === false) {
           groupValid = false;
-        } // 非阻断规则的错误明细收集
+        } // 结果是对象则收集error信息
         if (result.errors && result.errors.length > 0) {
           details[field.name] = result.errors;
         }
       }
-      return { valid: groupValid, fields: details };
+      const hasSoftError = Object.keys(details).length > 0;
+      if (groupValid === false) {
+        return false;
+      }
+      if (hasSoftError) {
+        return { valid: groupValid, fields: details };
+      }
+      return true;
     }
     validate(options) {
       options = options || {};

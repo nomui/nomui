@@ -160,6 +160,24 @@
     }
   }
 
+
+  &.s-invalid-warning {
+    >.nom-field-content {
+      color: var(--nom-color-text-0);
+
+      >.nom-control {
+        background-color: rgba(var(--nom-orange-5), 0.1);
+        border-color: var(--nom-color-warning) !important;
+
+        >input {
+          background: transparent;
+          border-color: var(--nom-color-warning);
+        }
+      }
+    }
+  }
+
+
   &.p-label-align-top>.nom-field-content {
     padding-top: 2px;
   }
@@ -290,6 +308,8 @@
     }
   }
 }
+
+
 
 
 .nom-field {
