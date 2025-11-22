@@ -91,6 +91,7 @@
 | getValue | 获取 value 值 |  |
 | setValue | 设置 value 值, 第一个参数是要设置的值，第二个是一个可选的对象参数，其属性 `triggerChange` 指示该设值操作是否触发 onValueChange 事件 | `(value, options: { triggerChange: boolean } )=>{}` |
 | validate | 验证 | `()=>boolean` |
+| softValidate | 软验证（对设置了 soft:true 的软规则只会返回详细信息但不会影响校验结果） | `()=>boolean` |
 | toggleReadonly | 切换只读状态，如果不传参数则在只读与非只读状态之间切换，传参数 true 则强制只读，传 false 强制非只读 |  |
 | reset | 重置字段值为初始值 |  |
 | clear | 清除字段值 |  |

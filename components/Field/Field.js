@@ -330,8 +330,17 @@ class Field extends Component {
     return valid
   }
 
-  // 软校验，配置了soft:true的规则将不会影响校验结果，但会返回校验失败的信息
   softValidate(options = { showInvalidTip: true }) {
+    this.softValidateTriggered = true
+    const valid = this._softValidate(options)
+    if (this.expandBtnRef && !valid) {
+      this.expand()
+    }
+    return valid
+  }
+
+  // 软校验，配置了soft:true的规则将不会影响校验结果，但会返回校验失败的信息
+  _softValidate(options = { showInvalidTip: true }) {
     const { disabled, hidden } = this.props
     if (disabled || hidden) {
       return { valid: true, errors: [] }
@@ -535,6 +544,7 @@ class Field extends Component {
       delete this.errorTip
     }
     this.validateTriggered = false
+    this.softValidateTriggered = false
     if (this.fields && this.fields.length) {
       for (let i = 0; i < this.fields.length; i++) {
         this.fields[i]._resetValidStatus && this.fields[i]._resetValidStatus()
@@ -590,6 +600,9 @@ class Field extends Component {
       isFunction(that._valueChange) && that._valueChange(args)
       if (that.validateTriggered) {
         that._validate()
+      }
+      if (that.softValidateTriggered) {
+        that._softValidate()
       }
     }, 0)
 
