@@ -4490,6 +4490,11 @@ body .nom-always-dark {
   background-color: rgba(var(--nom-red-5), 0.1);
   border-color: var(--nom-color-danger) !important;
 }
+.nom-preset-invalid-warning {
+  color: var(--nom-color-text-0);
+  background-color: rgba(var(--nom-orange-5), 0.1);
+  border-color: var(--nom-color-warning) !important;
+}
 .nom-preset-bold {
   font-weight: 500;
 }
@@ -8626,6 +8631,11 @@ textarea .nom-input {
   background-color: rgba(var(--nom-red-5), 0.1);
   border-color: var(--nom-color-danger) !important;
 }
+.s-invalid-warning > .nom-input {
+  color: var(--nom-color-text-0);
+  background-color: rgba(var(--nom-orange-5), 0.1);
+  border-color: var(--nom-color-warning) !important;
+}
 .nom-textbox > .nom-field-content .nom-control {
   position: relative;
   background-color: var(--nom-input-bg);
@@ -8634,10 +8644,18 @@ textarea .nom-input {
 .nom-textbox.s-invalid.p-plain > .nom-field-content > .nom-control > .nom-input {
   border-color: var(--nom-color-danger);
 }
+.nom-textbox.s-invalid-warning.p-plain > .nom-field-content > .nom-control > .nom-input {
+  border-color: var(--nom-color-warning);
+}
 .nom-textbox.s-invalid .nom-textbox-affix-wrapper {
   color: var(--nom-color-text-0);
   background-color: rgba(var(--nom-red-5), 0.1);
   border-color: var(--nom-color-danger) !important;
+}
+.nom-textbox.s-invalid-warning .nom-textbox-affix-wrapper {
+  color: var(--nom-color-text-0);
+  background-color: rgba(var(--nom-orange-5), 0.1);
+  border-color: var(--nom-color-warning) !important;
 }
 .nom-textbox.p-with-button > .nom-field-content > .nom-control {
   display: flex;
@@ -8831,10 +8849,20 @@ textarea .nom-textarea {
   background-color: rgba(var(--nom-red-5), 0.1);
   border-color: var(--nom-color-danger) !important;
 }
+.s-invalid-warning > .nom-textarea {
+  color: var(--nom-color-text-0);
+  background-color: rgba(var(--nom-orange-5), 0.1);
+  border-color: var(--nom-color-warning) !important;
+}
 .s-invalid > .nom-field-content > .nom-control > textarea {
   color: var(--nom-color-text-0);
   background-color: rgba(var(--nom-red-5), 0.1);
   border-color: var(--nom-color-danger) !important;
+}
+.s-invalid-warning > .nom-field-content > .nom-control > textarea {
+  color: var(--nom-color-text-0);
+  background-color: rgba(var(--nom-orange-5), 0.1);
+  border-color: var(--nom-color-warning) !important;
 }
 .nom-checkbox > .nom-field-content {
   line-height: 2.28571429;

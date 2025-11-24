@@ -9185,7 +9185,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     if (!rule) return true;
     let ruleValue = ruleSettings.value ?? null;
     if (!rule.validate(controlValue, ruleValue)) {
-      let message = ruleSettings.message || rule.message;
+      let message = ruleSettings.message || rule.message || "输入不合法";
       if (ruleValue !== null) {
         if (!Array.isArray(ruleValue)) ruleValue = [ruleValue];
         for (let i = 0; i < ruleValue.length; i++) {

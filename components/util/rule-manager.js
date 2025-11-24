@@ -215,7 +215,7 @@ function checkRule(ruleSettings, controlValue, returnDetail = false) {
 
   let ruleValue = ruleSettings.value ?? null
   if (!rule.validate(controlValue, ruleValue)) {
-    let message = ruleSettings.message || rule.message
+    let message = ruleSettings.message || rule.message || '输入不合法'
 
     if (ruleValue !== null) {
       if (!Array.isArray(ruleValue)) ruleValue = [ruleValue]
