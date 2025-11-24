@@ -64,6 +64,10 @@
     .nom-preset-invalid;
   }
 
+  .s-invalid-warning>& {
+    .nom-preset-invalid-warning;
+  }
+
 }
 
 .nom-textbox {
@@ -83,9 +87,24 @@
     }
   }
 
+  &.s-invalid-warning.p-plain {
+    >.nom-field-content {
+      >.nom-control>.nom-input {
+        border-color: var(--nom-color-warning);
+      }
+    }
+  }
+
   &.s-invalid {
     .nom-textbox-affix-wrapper {
       .nom-preset-invalid;
+    }
+  }
+
+
+  &.s-invalid-warning {
+    .nom-textbox-affix-wrapper {
+      .nom-preset-invalid-warning;
     }
   }
 
