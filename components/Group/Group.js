@@ -123,6 +123,13 @@ class Group extends Field {
       const field = this.fields[i]
       if (!field || !field.softValidate) continue
 
+      const { disabled, hidden } = field.props
+
+      // 💡 忽略 disabled 或 hidden 的字段
+      if (disabled || hidden) {
+        continue
+      }
+
       // 调用每个 Field 的 softValidate
       const result = field.softValidate({
         ...options,
