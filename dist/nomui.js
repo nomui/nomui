@@ -8635,7 +8635,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _onWindowResize() {
-      if (this.props.hidden === false) {
+      if (this.props?.hidden === false) {
         this.setPosition();
       }
     }

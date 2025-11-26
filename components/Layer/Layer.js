@@ -140,7 +140,7 @@ class Layer extends Component {
   }
 
   _onWindowResize() {
-    if (this.props.hidden === false) {
+    if (this.props?.hidden === false) {
       this.setPosition()
     }
   }
