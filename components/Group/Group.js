@@ -117,6 +117,7 @@ class Group extends Field {
   // 软校验，配置了soft:true的规则将不会影响校验结果，但会返回校验失败的信息
   softValidate(options = { showInvalidTip: true }) {
     const details = {}
+    const invalids = []
     let groupValid = true
 
     for (let i = 0; i < this.fields.length; i++) {
@@ -139,6 +140,7 @@ class Group extends Field {
       // 结果是false或者结果的valid是false
       if (result === false || result.valid === false) {
         groupValid = false
+        invalids.push(field)
       }
 
       // 结果是对象则收集error信息
@@ -148,6 +150,14 @@ class Group extends Field {
     }
 
     const hasSoftError = Object.keys(details).length > 0
+
+    if (invalids.length > 0 && options.showInvalidTip !== false) {
+      this.rootField.focusField(invalids[0])
+    }
+
+    if (this.expandBtnRef && invalids.length > 0) {
+      this.expand()
+    }
 
     if (groupValid === false) {
       return false
