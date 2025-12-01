@@ -90,7 +90,11 @@ class Carousel extends Component {
   }
 
   _rendered() {
-    const { autoplay, pauseOnHover, defaultActiveIndex, triggerType } = this.props
+    const { pauseOnHover, defaultActiveIndex, triggerType, imgs } = this.props
+    let { autoplay } = this.props
+    if (!imgs || imgs.length === 0) {
+      autoplay = false
+    }
 
     this.initPositions()
 
