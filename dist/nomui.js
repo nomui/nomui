@@ -13147,11 +13147,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       const {
-        autoplay,
         pauseOnHover,
         defaultActiveIndex,
         triggerType,
+        imgs,
       } = this.props;
+      let { autoplay } = this.props;
+      if (!imgs || imgs.length === 0) {
+        autoplay = false;
+      }
       this.initPositions(); // 是否自动播放
       if (autoplay) {
         this.initAutoplay();
