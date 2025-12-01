@@ -97,7 +97,7 @@ class Tr extends Component {
 
   _rendered() {
     setTimeout(() => {
-      this._processModifiedStyle()
+      this.props && this._processModifiedStyle()
     }, 0)
   }
 
