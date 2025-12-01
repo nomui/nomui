@@ -21456,7 +21456,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       setTimeout(() => {
-        this._processModifiedStyle();
+        this.props && this._processModifiedStyle();
       }, 0);
     }
     check(checkOptions) {
