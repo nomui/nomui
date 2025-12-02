@@ -492,32 +492,37 @@ class Td extends Component {
           'nom-td-with-editor': !!column.editRender,
           'nom-td-edit-disabled': cellDisabled,
         },
-        onClick: ({ event }) => {
-          event.stopPropagation()
+        attrs: {
+          onpointerdown: function (e) {
+            e.stopPropagation()
+            const tdRef = this.component
+            if (!tdRef) return
 
-          grid.props.onRowClick &&
-            !this.props.editMode &&
-            grid._callHandler(grid.props.onRowClick, { event, rowData: this.tr.props.data })
-          if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
-            grid.lastEditTd.endEdit()
-          }
-          if (grid.lastEditTd && grid.lastEditTd === this) {
-            return
-          }
+            grid.props.onRowClick &&
+              !tdRef.props.editMode &&
+              grid._callHandler(grid.props.onRowClick, { event: e, rowData: tdRef.tr.props.data })
 
-          if (column.editRender) {
-            if (!cellDisabled && !excelMode.alwaysEdit) {
-              this.edit({ type: 'excel' })
-
-              setTimeout(() => {
-                this.editor.triggerEdit()
-              }, 200)
+            if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== tdRef) {
+              grid.lastEditTd.endEdit()
+            }
+            if (grid.lastEditTd && grid.lastEditTd === tdRef) {
+              return
             }
 
-            grid.lastEditTd = this
-          } else {
-            grid.lastEditTd = null
-          }
+            if (column.editRender) {
+              if (!cellDisabled && !excelMode.alwaysEdit) {
+                tdRef.edit({ type: 'excel' })
+
+                setTimeout(() => {
+                  tdRef.editor.triggerEdit()
+                }, 200)
+              }
+
+              grid.lastEditTd = tdRef
+            } else {
+              grid.lastEditTd = null
+            }
+          },
         },
       })
     } else if (this.table.hasGrid && this.table.grid.props.editable) {
