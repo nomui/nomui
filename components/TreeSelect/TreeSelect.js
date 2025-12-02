@@ -18,6 +18,10 @@ class TreeSelect extends Field {
   _config() {
     if (this.props.treeCheckable) {
       this.props.multiple = true
+      if (this.props.treeCheckable.cascade === false) {
+        this.props.enablePartChecked = false
+        this.props.includePartialChecked = false
+      }
     }
     if (this.tree && this.props && this.props.options) {
       this.tree.update({ data: this.props.options })
