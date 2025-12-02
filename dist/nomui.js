@@ -20150,6 +20150,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             this.table.hasGrid && this.table.grid.props.minPopupWidth,
         };
         if (this.table.hasGrid) {
+          if (grid.props.excelMode && grid.props.excelMode.alwaysEdit) {
+            propsMinxin.onValueChange = () => {
+              grid.lastEditTd = this;
+            };
+          }
           if (
             (grid.props.excelMode && !grid.props.excelMode.alwaysEdit) ||
             grid.props.editable
@@ -20493,7 +20498,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 }, 200);
               }
               grid.lastEditTd = this;
-              console.log(grid.lastEditTd);
             } else {
               grid.lastEditTd = null;
             }

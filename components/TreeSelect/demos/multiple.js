@@ -34,6 +34,14 @@ define([], function () {
                       text: '行政部',
                       value: '0-0-2',
                     },
+                    {
+                      text: '行政部1',
+                      value: '0-0-3',
+                    },
+                    {
+                      text: '行政部2',
+                      value: '0-0-4',
+                    },
                   ],
                 },
                 {
