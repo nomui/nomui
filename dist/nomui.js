@@ -15294,6 +15294,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this._addPropStyle("fit");
       if (nodeCheckable) {
+        if (nodeCheckable.cascade === false) {
+          this.props.includePartialChecked = false;
+        }
         this._loopSetValue(nodeCheckable, [
           "cascadeCheckParent",
           "cascadeCheckChildren",
@@ -15398,7 +15401,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return checkedNodes;
     }
     getCheckedNodeKeys(getOptions = {}, checkedNodeKeys = [], node) {
-      const { includePartialChecked = true } = getOptions;
+      const {
+        includePartialChecked = this.props.includePartialChecked,
+      } = getOptions;
       node = node || this;
       const childNodes = node.getChildNodes();
       childNodes.forEach((childNode) => {
@@ -15414,7 +15419,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return checkedNodeKeys;
     }
     getCheckedNodesData(
-      getOptions = { flatData: false, includePartialChecked: true },
+      getOptions = {
+        flatData: false,
+        includePartialChecked: this.props.includePartialChecked,
+      },
       node
     ) {
       const { flatData, includePartialChecked } = getOptions;
@@ -15645,6 +15653,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     loadData: false,
     checkAllText: "全选",
     scrollBlock: "center",
+    includePartialChecked: true,
   };
   Component.register(Tree);
   var OptionTreeMixin = {
