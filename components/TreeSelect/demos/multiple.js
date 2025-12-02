@@ -69,11 +69,12 @@ define([], function () {
                   ],
                 },
               ],
-              value: ['0-0-1', '0-1-1'],
+              // value: ['0-0-1', '0-1-1'],
               treeCheckable: {
-                showCheckAll: true,
+                // showCheckAll: true,
+                cascade: false,
               },
-              includePartialChecked: false,
+              // includePartialChecked: false,
             },
           },
           {
