@@ -493,32 +493,30 @@ class Td extends Component {
           'nom-td-edit-disabled': cellDisabled,
         },
         attrs: {
-          onpointerdown: function (e) {
+          onpointerdown: (e) => {
             e.stopPropagation()
-            const tdRef = this.component
-            if (!tdRef) return
 
             grid.props.onRowClick &&
-              !tdRef.props.editMode &&
-              grid._callHandler(grid.props.onRowClick, { event: e, rowData: tdRef.tr.props.data })
+              !this.props.editMode &&
+              grid._callHandler(grid.props.onRowClick, { event: e, rowData: this.tr.props.data })
 
-            if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== tdRef) {
+            if (grid.lastEditTd && grid.lastEditTd.props && grid.lastEditTd !== this) {
               grid.lastEditTd.endEdit()
             }
-            if (grid.lastEditTd && grid.lastEditTd === tdRef) {
+            if (grid.lastEditTd && grid.lastEditTd === this) {
               return
             }
 
             if (column.editRender) {
               if (!cellDisabled && !excelMode.alwaysEdit) {
-                tdRef.edit({ type: 'excel' })
+                this.edit({ type: 'excel' })
 
                 setTimeout(() => {
-                  tdRef.editor.triggerEdit()
+                  this.editor.triggerEdit()
                 }, 200)
               }
 
-              grid.lastEditTd = tdRef
+              grid.lastEditTd = this
             } else {
               grid.lastEditTd = null
             }
