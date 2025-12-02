@@ -40,6 +40,10 @@ class Tree extends Component {
     this._addPropStyle('fit')
 
     if (nodeCheckable) {
+      if (nodeCheckable.cascade === false) {
+        this.props.includePartialChecked = false
+      }
+
       this._loopSetValue(nodeCheckable, [
         'cascadeCheckParent',
         'cascadeCheckChildren',
@@ -160,7 +164,7 @@ class Tree extends Component {
   }
 
   getCheckedNodeKeys(getOptions = {}, checkedNodeKeys = [], node) {
-    const { includePartialChecked = true } = getOptions
+    const { includePartialChecked = this.props.includePartialChecked } = getOptions
     node = node || this
 
     const childNodes = node.getChildNodes()
@@ -180,7 +184,10 @@ class Tree extends Component {
     return checkedNodeKeys
   }
 
-  getCheckedNodesData(getOptions = { flatData: false, includePartialChecked: true }, node) {
+  getCheckedNodesData(
+    getOptions = { flatData: false, includePartialChecked: this.props.includePartialChecked },
+    node,
+  ) {
     const { flatData, includePartialChecked } = getOptions
     node = node || this
 
@@ -457,6 +464,7 @@ Tree.defaults = {
   loadData: false,
   checkAllText: '全选',
   scrollBlock: 'center',
+  includePartialChecked: true,
 }
 Component.register(Tree)
 
