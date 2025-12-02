@@ -145,6 +145,11 @@ class Td extends Component {
         minPopupWidth: this.table.hasGrid && this.table.grid.props.minPopupWidth,
       }
       if (this.table.hasGrid) {
+        if (grid.props.excelMode && grid.props.excelMode.alwaysEdit) {
+          propsMinxin.onValueChange = () => {
+            grid.lastEditTd = this
+          }
+        }
         if ((grid.props.excelMode && !grid.props.excelMode.alwaysEdit) || grid.props.editable)
           propsMinxin.variant = 'borderless'
         if (column.immediateChange) {
@@ -510,7 +515,6 @@ class Td extends Component {
             }
 
             grid.lastEditTd = this
-            console.log(grid.lastEditTd)
           } else {
             grid.lastEditTd = null
           }
