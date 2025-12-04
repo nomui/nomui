@@ -39,11 +39,24 @@ define([], function () {
           loadData: ({ key }) => {
             console.log(key)
             // 可以通过key查找对应的子集
+
+            if (key === '3.1') {
+              return new Promise(function (resolve) {
+                this.timer && clearTimeout(this.timer)
+                this.timer = setTimeout(function () {
+                  resolve([])
+                }, 500)
+              })
+            }
+
             return new Promise(function (resolve) {
               this.timer && clearTimeout(this.timer)
               this.timer = setTimeout(function () {
-                resolve([{ text: '节点 3.1' }, { text: '节点 3.2' }])
-              }, 1000)
+                resolve([
+                  { text: '节点 3.1', key: '3.1', isLeaf: false },
+                  { text: '节点 3.2', key: '3.2', isLeaf: true },
+                ])
+              }, 500)
             })
           },
         },
