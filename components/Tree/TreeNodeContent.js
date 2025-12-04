@@ -183,9 +183,17 @@ class TreeNodeContent extends Component {
     })
     if (nomui.utils.isPromiseLike(r)) {
       r.then((res) => {
+        if (!Array.isArray(res) || res.length === 0) {
+          this.node.update({ data: { ...this.node.props.data, isLeaf: true } })
+          return
+        }
         this.node.addNodes(res)
       })
     } else if (Array.isArray(r)) {
+      if (r.length === 0) {
+        this.node.update({ data: { ...this.node.props.data, isLeaf: true } })
+        return
+      }
       this.node.addNodes(r)
     }
   }
