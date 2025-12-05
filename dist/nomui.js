@@ -15145,7 +15145,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     addNodes(param) {
       this.update({
-        data: { children: [...this.props.data.children, ...param] },
+        data: { children: [...(this.props.data.children || []), ...param] },
       });
     }
     getData(getOptions, node) {
