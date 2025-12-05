@@ -235,7 +235,7 @@ class TreeNode extends Component {
   }
 
   addNodes(param) {
-    this.update({ data: { children: [...this.props.data.children, ...param] } })
+    this.update({ data: { children: [...(this.props.data.children || []), ...param] } })
   }
 
   getData(getOptions, node) {

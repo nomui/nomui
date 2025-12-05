@@ -187,6 +187,7 @@ class TreeNodeContent extends Component {
           this.node.update({ data: { ...this.node.props.data, isLeaf: true } })
           return
         }
+
         this.node.addNodes(res)
       })
     } else if (Array.isArray(r)) {
