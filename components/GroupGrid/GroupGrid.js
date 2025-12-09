@@ -160,7 +160,7 @@ class GroupGrid extends Field {
     }
   }
 
-  validate() {
+  _validate() {
     if (this.props.required && !this.fields.length) {
       return false
     }
