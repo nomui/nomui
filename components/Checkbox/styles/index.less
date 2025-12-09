@@ -1,14 +1,14 @@
 .nom-checkbox {
-  > .nom-field-content {
+  >.nom-field-content {
     line-height: @line-height-base*1.6;
 
-    > .nom-control {
+    >.nom-control {
       .s-disabled& {
         cursor: not-allowed;
         opacity: 0.7;
 
-        > input {
-          + span {
+        >input {
+          +span {
             background-color: var(--nom-input-bg-disabled);
             border-color: var(--nom-checkbox-border-color) !important;
           }
@@ -38,13 +38,13 @@
         content: '';
       }
 
-      > input {
+      >input {
         position: absolute;
         z-index: -1;
         opacity: 0;
         filter: alpha(opacity=0);
 
-        + span {
+        +span {
           position: absolute;
           top: 2px;
           left: 0;
@@ -79,7 +79,7 @@
           }
         }
 
-        &:checked + span {
+        &:checked+span {
           background-color: var(--nom-checkbox-checked-bg);
           border-color: var(--nom-checkbox-checked-border-color);
 
@@ -101,20 +101,18 @@
             box-shadow: var(--nom-checkbox-checker-box-shadow);
             // -webkit-transform: rotate(45deg);
             // transform: rotate(45deg);
-            -webkit-animation: nom-checkbox-keyframe-bounce-in 0s
-              cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
-            animation: nom-checkbox-keyframe-bounce-in 0s cubic-bezier(0.12, 0.4, 0.29, 1.46)
-              forwards;
+            -webkit-animation: nom-checkbox-keyframe-bounce-in 0s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
+            animation: nom-checkbox-keyframe-bounce-in 0s cubic-bezier(0.12, 0.4, 0.29, 1.46) forwards;
             content: '';
           }
         }
 
-        &:checked ~ i {
+        &:checked~i {
           display: block;
         }
       }
 
-      > .checkbox-text {
+      >.checkbox-text {
         display: inline-block;
 
         &:not(.checkbox-text-none) {
@@ -123,6 +121,38 @@
 
         &.checkbox-text-none {
           width: 20px;
+        }
+      }
+    }
+  }
+
+  &.s-round {
+    >.nom-field-content {
+      >.nom-control {
+        >input {
+          +span {
+            border-radius: 50%;
+          }
+
+          &:checked+span {
+            border-radius: 50%;
+            background-color: #fff;
+
+            &::after {
+              display: none;
+            }
+
+            &::before {
+              content: '';
+              display: block;
+              width: 6px;
+              height: 6px;
+              margin-top: 4px;
+              margin-left: 4px;
+              border-radius: 50%;
+              background-color: var(--nom-color-primary);
+            }
+          }
         }
       }
     }
