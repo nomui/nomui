@@ -331,6 +331,11 @@ class Field extends Component {
   }
 
   softValidate(options = { showInvalidTip: true }) {
+    // 如果组件自定义了_validate，那么直接调 validate 返回结果
+    if (this._validate !== Field.prototype._validate) {
+      return this.validate(options)
+    }
+    // 否则进行软校验
     this.softValidateTriggered = true
     const valid = this._softValidate(options)
     if (this.expandBtnRef && !valid) {
