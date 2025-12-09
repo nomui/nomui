@@ -8970,6 +8970,26 @@ textarea .nom-textarea {
 .nom-checkbox > .nom-field-content > .nom-control > .checkbox-text.checkbox-text-none {
   width: 20px;
 }
+.nom-checkbox.s-round > .nom-field-content > .nom-control > input + span {
+  border-radius: 50%;
+}
+.nom-checkbox.s-round > .nom-field-content > .nom-control > input:checked + span {
+  border-radius: 50%;
+  background-color: #fff;
+}
+.nom-checkbox.s-round > .nom-field-content > .nom-control > input:checked + span::after {
+  display: none;
+}
+.nom-checkbox.s-round > .nom-field-content > .nom-control > input:checked + span::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  margin-top: 4px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background-color: var(--nom-color-primary);
+}
 @-webkit-keyframes nom-checkbox-keyframe-bounce-in {
   0% {
     -webkit-transform: scale(0.6) rotate(45deg);

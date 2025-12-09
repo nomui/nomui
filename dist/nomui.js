@@ -14431,6 +14431,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         attrs: { tabindex: this.props.tabindex || 0 },
         classes: {
           "s-checked-part": !this.props.value && this.props.partChecked,
+          "s-round": this.props.uistyle === "round",
         },
         control: {
           tag: "label",
