@@ -14752,7 +14752,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
       };
       if (nomui.utils.isFunction(this.tree.props.loadData) && !isNotEmptyNode) {
-        indicatorProps.onClick = () => {
+        indicatorProps.onClick = ({ event }) => {
+          event.stopPropagation();
           this._handleLoadData();
         };
       }
