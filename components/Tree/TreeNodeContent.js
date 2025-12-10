@@ -48,7 +48,8 @@ class TreeNodeContent extends Component {
     }
 
     if (nomui.utils.isFunction(this.tree.props.loadData) && !isNotEmptyNode) {
-      indicatorProps.onClick = () => {
+      indicatorProps.onClick = ({ event }) => {
+        event.stopPropagation()
         this._handleLoadData()
       }
     }
