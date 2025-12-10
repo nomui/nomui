@@ -19167,6 +19167,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     _needHandleValue(field, options) {
+      if (!field.props) {
+        return false;
+      }
       const { disabled, hidden } = field.props;
       const { ignoreFields = [] } = options;
       if (field._autoName) {
