@@ -15,19 +15,38 @@ class Select extends Field {
     this.internalOptions = []
 
     this.multipleItems = []
-    if (this.props.extraOptions) {
-      const extraOptions = this.props.extraOptions.map((n) => {
-        return { ...n, isExtra: true }
-      })
-      this.props.options = [...this.props.options, ...extraOptions]
-    }
   }
 
   _config() {
     const that = this
-    const { multiple, showArrow, disabled, showSearch, allowClear, options } = this.props
+    const {
+      multiple,
+      showArrow,
+      disabled,
+      showSearch,
+      allowClear,
+      options,
+      optionFields,
+    } = this.props
     const children = []
     const placeholder = this.props.placeholder
+
+    if (this.props.extraOptions?.length) {
+      const valueKey = optionFields.value
+      const existedValueSet = new Set(options.map((opt) => opt[valueKey]))
+
+      this.props.extraOptions.forEach((n) => {
+        const val = n[valueKey]
+
+        if (!existedValueSet.has(val)) {
+          options.push({
+            ...n,
+            isExtra: true,
+          })
+          existedValueSet.add(val) // 同步更新，防止 extraOptions 自己重复
+        }
+      })
+    }
 
     // if (!placeholder && (!Array.isArray(options) || !options.length)) {
     //   this.props.value = ''
