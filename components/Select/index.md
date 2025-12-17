@@ -24,6 +24,7 @@
 | optionFields | 自定义 options 中 text value 的字段 | `object` | `{ text: text, value: value, }` |
 | valueOptions | value 值，配置详情 | `{}` | - |
 | onClear | 点击清空按钮时的回调 | `()=>{}` | - |
+| onClear | 搜索框按下回车时的回调 | `()=>{}` | - |
 
 ### searchable
 
