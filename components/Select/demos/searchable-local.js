@@ -20,6 +20,10 @@ define([], function () {
             ref: (c) => {
               selectRef = c
             },
+            onEnter: (args) => {
+              // 按下回车的事件
+              console.log(args)
+            },
             options: [
               { text: 'aaaaa', value: 0 },
               { text: 'aaaaaaaa', value: 1 },
