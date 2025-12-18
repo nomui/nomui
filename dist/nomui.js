@@ -5074,19 +5074,28 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _remove() {}
     _callMixin(hookType) {
-      const mixinsList = [...MIXINS, ...this.mixins];
-      let abort = false; // 钩子函数执行完如果return false则判定跳过后续代码
+      const mixins = this.mixins;
+      if (!Array.isArray(mixins)) return;
+      const mixinsList = [...MIXINS, ...mixins];
+      let abort = false;
       for (let i = 0; i < mixinsList.length; i++) {
         const mixin = mixinsList[i];
-        const hookContinue =
-          mixin[hookType] && mixin[hookType].call(this, this);
-        if (hookContinue === false) {
-          abort = true;
+        if (!mixin) continue;
+        const hook = mixin[hookType];
+        if (!hook) continue;
+        try {
+          const hookContinue = hook.call(this, this);
+          if (hookContinue === false) abort = true;
+        } catch (e) {
+          console.warn(
+            `[Component mixin error] hook=${hookType}`,
+            mixin,
+            this,
+            e
+          );
         }
       }
-      if (abort) {
-        return false;
-      }
+      if (abort) return false;
     }
     setProps(newProps) {
       this.props = Component.extendProps(this.props, newProps);
@@ -9606,10 +9615,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _rendered() {
       if (this.props.readonly) {
-        const postion = this.element.style.position;
-        if (!postion || !postion.length || postion === "static") {
-          this.element.style.position = "relative";
-        }
+        this._installReadonlyGuard();
+      } else {
+        this._uninstallReadonlyGuard();
       }
     }
     _setReadMode(isReadMode) {
@@ -9919,6 +9927,110 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         newValue: this.currentValue,
       };
       this._onSourceValueChange(args);
+    }
+    _installReadonlyGuard() {
+      if (this._readonlyGuardInstalled) return;
+      this._readonlyGuardInstalled = true;
+      const el = this.element;
+      const BLOCK_EVENTS = [
+        // 鼠标
+        "click",
+        "dblclick",
+        "mousedown",
+        "mouseup", // 键盘
+        "keydown",
+        "keypress",
+        "keyup", // 表单输入（非常关键）
+        "beforeinput",
+        "input",
+        "change", // 拖拽 / 粘贴
+        "paste",
+        "cut",
+        "drop", // 焦点
+        "focusin",
+        "focusout", // touch
+        "touchstart",
+        "touchend",
+      ];
+      this._readonlyGuardHandler = (e) => {
+        if (!this.props.readonly) return;
+        if (this._shouldIgnoreReadonlyEvent(e)) {
+          return;
+        } //  放行滚轮 & 滚动
+        if (e.type === "wheel" || e.type === "scroll") {
+          return;
+        } // 放行 scrollbar 拖拽
+        if (this._isScrollbarEvent(e)) {
+          return;
+        } // 阻断一切“可能改变值”的行为
+        e.preventDefault();
+        e.stopPropagation();
+      };
+      BLOCK_EVENTS.forEach((type) => {
+        el.addEventListener(type, this._readonlyGuardHandler, true); // 👈 capture
+      });
+    }
+    _uninstallReadonlyGuard() {
+      if (!this._readonlyGuardInstalled) return;
+      const el = this.element;
+      const handler = this._readonlyGuardHandler;
+      if (handler) {
+        const EVENTS = [
+          "click",
+          "dblclick",
+          "mousedown",
+          "mouseup",
+          "keydown",
+          "keypress",
+          "keyup",
+          "beforeinput",
+          "input",
+          "change",
+          "paste",
+          "cut",
+          "drop",
+          "focusin",
+          "focusout",
+          "touchstart",
+          "touchend",
+        ];
+        EVENTS.forEach((type) => {
+          el.removeEventListener(type, handler, true);
+        });
+      }
+      this._readonlyGuardInstalled = false;
+      this._readonlyGuardHandler = null;
+    }
+    _shouldIgnoreReadonlyEvent(e) {
+      const readonly = this.props.readonly;
+      if (!readonly || typeof readonly !== "object") return false;
+      const { ignoreClasses } = readonly;
+      if (!Array.isArray(ignoreClasses) || ignoreClasses.length === 0) {
+        return false;
+      }
+      const target = e.target;
+      if (!(target instanceof Element)) return false;
+      const selector = ignoreClasses.map((c) => `.${c}`).join(",");
+      const el = target.closest(selector);
+      return !!(el && this.element.contains(el));
+    }
+    _isScrollbarEvent(e) {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return false;
+      const rect = target.getBoundingClientRect(); // 垂直滚动条
+      if (
+        target.scrollHeight > target.clientHeight &&
+        e.clientX >= rect.right - 16
+      ) {
+        return true;
+      } // 水平滚动条
+      if (
+        target.scrollWidth > target.clientWidth &&
+        e.clientY >= rect.bottom - 16
+      ) {
+        return true;
+      }
+      return false;
     } // 派生的控件子类内部适当位置调用
     _onValueChange(args) {
       const that = this;
@@ -9964,6 +10076,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     tabindex: null,
     compact: false,
     labelExpanded: true,
+    readonly: false, // { ignoreClasses:['className']}  配置成对象时，className以及其子元素的交互事件会被放行
   };
   Object.defineProperty(Field.prototype, "fields", {
     get: function () {

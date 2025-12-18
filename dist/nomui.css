@@ -10346,17 +10346,6 @@ textarea .nom-textarea {
 }
 .nom-field.s-readonly {
   cursor: default !important;
-  position: relative;
-}
-.nom-field.s-readonly::after {
-  content: '';
-  display: block;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
-  z-index: 10;
 }
 .nom-field.p-plain > .nom-field-label {
   padding: 0;
