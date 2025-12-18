@@ -230,7 +230,7 @@ class Field extends Component {
       this.element.querySelectorAll('textarea').forEach((t) => {
         const alreadyReadonly = t.getAttribute('readonly')
         if (alreadyReadonly === 'readonly') {
-          t.setAttribute('readonly', null)
+          t.removeAttribute('readonly')
         }
       })
     }
