@@ -425,21 +425,28 @@ class Component {
   _remove() {}
 
   _callMixin(hookType) {
-    const mixinsList = [...MIXINS, ...this.mixins]
+    const mixins = this.mixins
+    if (!Array.isArray(mixins)) return
+
+    const mixinsList = [...MIXINS, ...mixins]
     let abort = false
 
-    // 钩子函数执行完如果return false则判定跳过后续代码
     for (let i = 0; i < mixinsList.length; i++) {
       const mixin = mixinsList[i]
-      const hookContinue = mixin[hookType] && mixin[hookType].call(this, this)
-      if (hookContinue === false) {
-        abort = true
+      if (!mixin) continue
+
+      const hook = mixin[hookType]
+      if (!hook) continue
+
+      try {
+        const hookContinue = hook.call(this, this)
+        if (hookContinue === false) abort = true
+      } catch (e) {
+        console.warn(`[Component mixin error] hook=${hookType}`, mixin, this, e)
       }
     }
 
-    if (abort) {
-      return false
-    }
+    if (abort) return false
   }
 
   setProps(newProps) {
