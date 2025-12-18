@@ -9462,6 +9462,26 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this.props.enableReadMode) {
         this.isReadMode = true;
       }
+      this.blockEvents = [
+        // 鼠标
+        "click",
+        "dblclick",
+        "mousedown",
+        "mouseup", // 键盘
+        "keydown",
+        "keypress",
+        "keyup", // 表单输入（非常关键）
+        "beforeinput",
+        "input",
+        "change", // 拖拽 / 粘贴
+        "paste",
+        "cut",
+        "drop", // 焦点
+        "focusin",
+        "focusout", // touch
+        "touchstart",
+        "touchend",
+      ];
     }
     _config() {
       delete this.errorTip;
@@ -9932,26 +9952,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (this._readonlyGuardInstalled) return;
       this._readonlyGuardInstalled = true;
       const el = this.element;
-      const BLOCK_EVENTS = [
-        // 鼠标
-        "click",
-        "dblclick",
-        "mousedown",
-        "mouseup", // 键盘
-        "keydown",
-        "keypress",
-        "keyup", // 表单输入（非常关键）
-        "beforeinput",
-        "input",
-        "change", // 拖拽 / 粘贴
-        "paste",
-        "cut",
-        "drop", // 焦点
-        "focusin",
-        "focusout", // touch
-        "touchstart",
-        "touchend",
-      ];
       this._readonlyGuardHandler = (e) => {
         if (!this.props.readonly) return;
         if (this._shouldIgnoreReadonlyEvent(e)) {
@@ -9966,7 +9966,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         e.preventDefault();
         e.stopPropagation();
       };
-      BLOCK_EVENTS.forEach((type) => {
+      this.blockEvents.forEach((type) => {
         el.addEventListener(type, this._readonlyGuardHandler, true); // 👈 capture
       });
     }
@@ -9975,26 +9975,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const el = this.element;
       const handler = this._readonlyGuardHandler;
       if (handler) {
-        const EVENTS = [
-          "click",
-          "dblclick",
-          "mousedown",
-          "mouseup",
-          "keydown",
-          "keypress",
-          "keyup",
-          "beforeinput",
-          "input",
-          "change",
-          "paste",
-          "cut",
-          "drop",
-          "focusin",
-          "focusout",
-          "touchstart",
-          "touchend",
-        ];
-        EVENTS.forEach((type) => {
+        this.blockEvents.forEach((type) => {
           el.removeEventListener(type, handler, true);
         });
       }

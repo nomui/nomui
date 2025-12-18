@@ -51,6 +51,36 @@ class Field extends Component {
     if (this.props.enableReadMode) {
       this.isReadMode = true
     }
+    this.blockEvents = [
+      // 鼠标
+      'click',
+      'dblclick',
+      'mousedown',
+      'mouseup',
+
+      // 键盘
+      'keydown',
+      'keypress',
+      'keyup',
+
+      // 表单输入（非常关键）
+      'beforeinput',
+      'input',
+      'change',
+
+      // 拖拽 / 粘贴
+      'paste',
+      'cut',
+      'drop',
+
+      // 焦点
+      'focusin',
+      'focusout',
+
+      // touch
+      'touchstart',
+      'touchend',
+    ]
   }
 
   _config() {
@@ -590,37 +620,6 @@ class Field extends Component {
 
     const el = this.element
 
-    const BLOCK_EVENTS = [
-      // 鼠标
-      'click',
-      'dblclick',
-      'mousedown',
-      'mouseup',
-
-      // 键盘
-      'keydown',
-      'keypress',
-      'keyup',
-
-      // 表单输入（非常关键）
-      'beforeinput',
-      'input',
-      'change',
-
-      // 拖拽 / 粘贴
-      'paste',
-      'cut',
-      'drop',
-
-      // 焦点
-      'focusin',
-      'focusout',
-
-      // touch
-      'touchstart',
-      'touchend',
-    ]
-
     this._readonlyGuardHandler = (e) => {
       if (!this.props.readonly) return
 
@@ -643,7 +642,7 @@ class Field extends Component {
       e.stopPropagation()
     }
 
-    BLOCK_EVENTS.forEach((type) => {
+    this.blockEvents.forEach((type) => {
       el.addEventListener(type, this._readonlyGuardHandler, true) // 👈 capture
     })
   }
@@ -655,27 +654,7 @@ class Field extends Component {
     const handler = this._readonlyGuardHandler
 
     if (handler) {
-      const EVENTS = [
-        'click',
-        'dblclick',
-        'mousedown',
-        'mouseup',
-        'keydown',
-        'keypress',
-        'keyup',
-        'beforeinput',
-        'input',
-        'change',
-        'paste',
-        'cut',
-        'drop',
-        'focusin',
-        'focusout',
-        'touchstart',
-        'touchend',
-      ]
-
-      EVENTS.forEach((type) => {
+      this.blockEvents.forEach((type) => {
         el.removeEventListener(type, handler, true)
       })
     }
