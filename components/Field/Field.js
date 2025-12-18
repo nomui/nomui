@@ -664,6 +664,17 @@ class Field extends Component {
   }
 
   _shouldIgnoreReadonlyEvent(e) {
+    const target = e.target
+    if (!(target instanceof Element)) return false
+
+    // 1️⃣ 默认忽略 readonly 的 class（始终生效）
+    const DEFAULT_IGNORE_CLASS = 'nom-field-ignore-readonly'
+    const defaultEl = target.closest(`.${DEFAULT_IGNORE_CLASS}`)
+    if (defaultEl && this.element.contains(defaultEl)) {
+      return true
+    }
+
+    // 2️⃣ readonly 为对象时，读取配置的 ignoreClasses
     const readonly = this.props.readonly
     if (!readonly || typeof readonly !== 'object') return false
 
@@ -671,9 +682,6 @@ class Field extends Component {
     if (!Array.isArray(ignoreClasses) || ignoreClasses.length === 0) {
       return false
     }
-
-    const target = e.target
-    if (!(target instanceof Element)) return false
 
     const selector = ignoreClasses.map((c) => `.${c}`).join(',')
     const el = target.closest(selector)
