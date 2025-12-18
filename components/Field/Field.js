@@ -51,36 +51,6 @@ class Field extends Component {
     if (this.props.enableReadMode) {
       this.isReadMode = true
     }
-    this.blockEvents = [
-      // 鼠标
-      'click',
-      'dblclick',
-      'mousedown',
-      'mouseup',
-
-      // 键盘
-      'keydown',
-      'keypress',
-      'keyup',
-
-      // 表单输入（非常关键）
-      'beforeinput',
-      'input',
-      'change',
-
-      // 拖拽 / 粘贴
-      'paste',
-      'cut',
-      'drop',
-
-      // 焦点
-      'focusin',
-      'focusout',
-
-      // touch
-      'touchstart',
-      'touchend',
-    ]
   }
 
   _config() {
@@ -244,10 +214,25 @@ class Field extends Component {
   }
 
   _rendered() {
+    // 临时解决方案
     if (this.props.readonly) {
-      this._installReadonlyGuard()
+      const postion = this.element.style.position
+      if (!postion || !postion.length || postion === 'static') {
+        this.element.style.position = 'relative'
+      }
+      this.element.querySelectorAll('textarea').forEach((t) => {
+        const alreadyReadonly = t.getAttribute('readonly')
+        if (!alreadyReadonly) {
+          t.setAttribute('readonly', 'readonly')
+        }
+      })
     } else {
-      this._uninstallReadonlyGuard()
+      this.element.querySelectorAll('textarea').forEach((t) => {
+        const alreadyReadonly = t.getAttribute('readonly')
+        if (alreadyReadonly === 'readonly') {
+          t.setAttribute('readonly', null)
+        }
+      })
     }
   }
 
@@ -614,100 +599,6 @@ class Field extends Component {
     this._onSourceValueChange(args)
   }
 
-  _installReadonlyGuard() {
-    if (this._readonlyGuardInstalled) return
-    this._readonlyGuardInstalled = true
-
-    const el = this.element
-
-    this._readonlyGuardHandler = (e) => {
-      if (!this.props.readonly) return
-
-      if (this._shouldIgnoreReadonlyEvent(e)) {
-        return
-      }
-
-      //  放行滚轮 & 滚动
-      if (e.type === 'wheel' || e.type === 'scroll') {
-        return
-      }
-
-      // 放行 scrollbar 拖拽
-      if (this._isScrollbarEvent(e)) {
-        return
-      }
-
-      // 阻断一切“可能改变值”的行为
-      e.preventDefault()
-      e.stopPropagation()
-    }
-
-    this.blockEvents.forEach((type) => {
-      el.addEventListener(type, this._readonlyGuardHandler, true) // 👈 capture
-    })
-  }
-
-  _uninstallReadonlyGuard() {
-    if (!this._readonlyGuardInstalled) return
-
-    const el = this.element
-    const handler = this._readonlyGuardHandler
-
-    if (handler) {
-      this.blockEvents.forEach((type) => {
-        el.removeEventListener(type, handler, true)
-      })
-    }
-
-    this._readonlyGuardInstalled = false
-    this._readonlyGuardHandler = null
-  }
-
-  _shouldIgnoreReadonlyEvent(e) {
-    const target = e.target
-    if (!(target instanceof Element)) return false
-
-    // 1️⃣ 默认忽略 readonly 的 class（始终生效）
-    const DEFAULT_IGNORE_CLASS = 'nom-field-ignore-readonly'
-    const defaultEl = target.closest(`.${DEFAULT_IGNORE_CLASS}`)
-    if (defaultEl && this.element.contains(defaultEl)) {
-      return true
-    }
-
-    // 2️⃣ readonly 为对象时，读取配置的 ignoreClasses
-    const readonly = this.props.readonly
-    if (!readonly || typeof readonly !== 'object') return false
-
-    const { ignoreClasses } = readonly
-    if (!Array.isArray(ignoreClasses) || ignoreClasses.length === 0) {
-      return false
-    }
-
-    const selector = ignoreClasses.map((c) => `.${c}`).join(',')
-    const el = target.closest(selector)
-
-    return !!(el && this.element.contains(el))
-  }
-
-  _isScrollbarEvent(e) {
-    const target = e.target
-    if (!(target instanceof HTMLElement)) return false
-
-    const rect = target.getBoundingClientRect()
-
-    // 垂直滚动条
-    if (target.scrollHeight > target.clientHeight && e.clientX >= rect.right - 16) {
-      return true
-    }
-
-    // 水平滚动条
-    if (target.scrollWidth > target.clientWidth && e.clientY >= rect.bottom - 16) {
-      return true
-    }
-
-    return false
-  }
-
   // 派生的控件子类内部适当位置调用
   _onValueChange(args) {
     const that = this
@@ -753,7 +644,6 @@ Field.defaults = {
   tabindex: null,
   compact: false,
   labelExpanded: true,
-  readonly: false, // { ignoreClasses:['className']}  配置成对象时，className以及其子元素的交互事件会被放行
 }
 
 Object.defineProperty(Field.prototype, 'fields', {
