@@ -494,7 +494,9 @@ class Td extends Component {
         },
         attrs: {
           onpointerdown: (e) => {
-            e.stopPropagation()
+            if (column.editRender) {
+              e.stopPropagation()
+            }
 
             grid.props.onRowClick &&
               !this.props.editMode &&

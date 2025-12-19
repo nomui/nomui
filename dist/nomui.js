@@ -20604,7 +20604,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
           attrs: {
             onpointerdown: (e) => {
-              e.stopPropagation();
+              if (column.editRender) {
+                e.stopPropagation();
+              }
               grid.props.onRowClick &&
                 !this.props.editMode &&
                 grid._callHandler(grid.props.onRowClick, {
