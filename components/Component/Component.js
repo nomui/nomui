@@ -388,6 +388,7 @@ class Component {
   }
 
   _removeCore() {
+    this.__destroyed = true
     this._removeContextWatcher() // 清理context watcher
     this._cleanupUnusedContexts() // 清理context
 

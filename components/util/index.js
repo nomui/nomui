@@ -767,18 +767,15 @@ export function watchScrollToEnd({ target, callback, direction = 'vertical' }) {
 }
 
 export function isTargetInViewport(target) {
-  let el = target
-  if (target.element) {
-    el = target.element
-  }
+  const el = target?.element || target
   if (!el) return false
+
   const rect = el.getBoundingClientRect()
-  return (
-    rect.top >= 0 &&
-    rect.left >= 0 &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-  )
+
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth
+
+  return rect.bottom > 0 && rect.right > 0 && rect.top < viewportHeight && rect.left < viewportWidth
 }
 
 // 格式化svg图标，建议在控制台上使用，快速格式化成标准svg格式
