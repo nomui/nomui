@@ -525,7 +525,7 @@ class Field extends Component {
     if (!this._debounceTimer) {
       target.focus()
       if (!isTargetInViewport(target)) {
-        target.element.scrollIntoView({ block: 'center' })
+        target.element.scrollIntoView({ block: 'center', behavior: 'auto' })
       }
     }
 
@@ -538,6 +538,7 @@ class Field extends Component {
 
   focus() {
     isFunction(this._focus) && this._focus()
+    this.errorTip && this.errorTip.show()
     this.element.focus()
   }
 
