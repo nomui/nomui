@@ -538,8 +538,8 @@ class Field extends Component {
 
   focus() {
     isFunction(this._focus) && this._focus()
-    this.errorTip && this.errorTip.show()
     this.element.focus()
+    this.errorTip && this.errorTip.show()
   }
 
   blur() {

@@ -9879,8 +9879,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     focus() {
       isFunction(this._focus) && this._focus();
-      this.errorTip && this.errorTip.show();
       this.element.focus();
+      this.errorTip && this.errorTip.show();
     }
     blur() {
       isFunction(this._blur) && this._blur();
