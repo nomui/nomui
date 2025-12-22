@@ -172,7 +172,7 @@ class GridHeader extends Component {
 
         if (grid && typeof grid.handleColumnsSetting === 'function') {
           const frozenLeft = grid.props.frozenLeftCols || 0
-          grid.handleColumnsSetting(reordered, frozenLeft)
+          grid.handleColumnsSetting(reordered, frozenLeft, true)
         }
 
         cleanup()

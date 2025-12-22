@@ -23153,7 +23153,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           );
           if (grid && typeof grid.handleColumnsSetting === "function") {
             const frozenLeft = grid.props.frozenLeftCols || 0;
-            grid.handleColumnsSetting(reordered, frozenLeft);
+            grid.handleColumnsSetting(reordered, frozenLeft, true);
           }
           cleanup();
         }); // === 拖拽结束 ===
@@ -25064,7 +25064,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _updateOriginColumns(data) {
       this.popupTreeData = this.originColumns = data;
     }
-    handleColumnsSetting(params, frozenCount) {
+    handleColumnsSetting(params, frozenCount, fromColumnSort) {
       const tree = params;
       const that = this;
       let treeInfo = null;
@@ -25118,6 +25118,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._calcMinWidth();
       this.render();
       this.popup && this.popup.hide();
+      if (
+        fromColumnSort &&
+        this.props.allowSortColumns &&
+        this.props.allowSortColumns.onEnd
+      ) {
+        this._callHandler(this.props.allowSortColumns.onEnd, { columns: tree });
+      }
       columnsCustomizable.callback &&
         this._callHandler(columnsCustomizable.callback(tree));
     } // 自定义列设置后。更新 pinColumns

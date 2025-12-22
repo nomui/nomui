@@ -1154,7 +1154,7 @@ class Grid extends Component {
     this.popupTreeData = this.originColumns = data
   }
 
-  handleColumnsSetting(params, frozenCount) {
+  handleColumnsSetting(params, frozenCount, fromColumnSort) {
     const tree = params
 
     const that = this
@@ -1210,6 +1210,9 @@ class Grid extends Component {
     this._calcMinWidth()
     this.render()
     this.popup && this.popup.hide()
+    if (fromColumnSort && this.props.allowSortColumns && this.props.allowSortColumns.onEnd) {
+      this._callHandler(this.props.allowSortColumns.onEnd, { columns: tree })
+    }
     columnsCustomizable.callback && this._callHandler(columnsCustomizable.callback(tree))
   }
 

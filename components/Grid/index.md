@@ -47,6 +47,7 @@
 | rowCheckable | 表格行是否可选择 | `object` \| `boolean` |  |
 | rowExpandable | 表格行是否可展开 | `object` \| `boolean` |  |
 | rowSortable | 表格行是否可拖动顺序 | `object` \| `boolean` | `false` |
+| allowSortColumns | 是否允许拖动表头进行排序 | `{onEnd}` \| `boolean` | - |
 | summary | 表尾总计行配置,多行统计则传入 summary 配置项数组 | `{ columns:[],rows:[],ignoreCellRender:boolean }` \| `boolean` | `false` |
 | treeConfig | 树形表格配置 | `object` | - |
 | bordered | 是否显示边框 | `boolean` | `false` |
