@@ -1,7 +1,7 @@
 define([], function () {
   return {
-    title: '基础用法',
-    file: 'basic',
+    title: '表头拖拽排序',
+    file: 'sort-columns',
     demo: function () {
       return {
         component: 'Grid',
@@ -11,6 +11,11 @@ define([], function () {
         },
         rowSelectable: {
           onSelect: (args) => {
+            console.log(args)
+          },
+        },
+        allowSortColumns: {
+          onEnd: (args) => {
             console.log(args)
           },
         },
