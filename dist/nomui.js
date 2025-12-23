@@ -8836,8 +8836,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         const elementRect = this.element.getBoundingClientRect();
         if (elementRect.top < parentRect.top || this.shouldFixPosition) {
           this.shouldFixPosition = true;
+          let n = 0;
+          if (Array.isArray(this.props.offset)) {
+            n += this.props.offset[1];
+          }
+          n += Math.max(20, parseInt(parentRect.top - elementRect.top, 10));
           this.props.position = Object.assign({}, this.props.position, {
-            offset: [0, 25],
+            offset: [0, n],
           });
           this.setPosition();
         }
