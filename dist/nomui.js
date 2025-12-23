@@ -8942,12 +8942,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._off("mouseleave", this._hideHandler);
         this._on("mouseleave", this._hideHandler);
       }
-      const docTop = this.getScrollTop();
-      if (docTop !== 0) {
-        this.element.style.top = `${
-          this.element.style.top.replace("px", "") - docTop
-        }px`;
-      }
       this._fixDirection();
       if (this.props.align === "top" && this.props.isInvalidTip) {
         this._checkVisible();
