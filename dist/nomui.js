@@ -27241,7 +27241,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _created() {}
     _config() {
-      const { alt, width, height, iconWidth, iconHeight } = this.props;
+      const {
+        alt,
+        width,
+        height,
+        iconWidth,
+        iconHeight,
+        showPending,
+      } = this.props;
       const size = this._sizeComputing([iconWidth, iconHeight]);
       this.setProps({
         children: [
@@ -27250,6 +27257,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             ref: (c) => {
               this.pendingRef = c;
             },
+            hidden: !showPending,
             classes: { "nom-image-pending": true },
             type: "image-pending",
             attrs: {
@@ -27340,6 +27348,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     height: null,
     iconWidth: 200,
     iconHeight: 100,
+    showPending: false,
   };
   Component.register(Image);
   class ListSetter extends Field {

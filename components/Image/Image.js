@@ -9,7 +9,7 @@ class Image extends Component {
   _created() {}
 
   _config() {
-    const { alt, width, height, iconWidth, iconHeight } = this.props
+    const { alt, width, height, iconWidth, iconHeight, showPending } = this.props
     const size = this._sizeComputing([iconWidth, iconHeight])
     this.setProps({
       children: [
@@ -18,6 +18,7 @@ class Image extends Component {
           ref: (c) => {
             this.pendingRef = c
           },
+          hidden: !showPending,
           classes: {
             'nom-image-pending': true,
           },
@@ -126,6 +127,7 @@ Image.defaults = {
   height: null,
   iconWidth: 200,
   iconHeight: 100,
+  showPending: false,
 }
 
 Component.register(Image)
