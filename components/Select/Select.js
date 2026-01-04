@@ -224,6 +224,7 @@ class Select extends Field {
       children.push({
         component: 'Textbox',
         variant: 'borderless',
+        classes: { 'nom-select-search-box': true },
         compact: true,
         placeholder: this.props.placeholder || searchable.placeholder,
         _created: (inst) => {
@@ -273,7 +274,7 @@ class Select extends Field {
       })
     }
 
-    if (isString(placeholder)) {
+    if (isString(placeholder) && !(searchable && searchable.sharedInput)) {
       children.push({
         _created() {
           that.placeholder = this
