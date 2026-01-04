@@ -2,7 +2,7 @@ import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
 import List from '../List/index'
-import { clone, deepEqual, extend, isFunction, isString } from '../util/index'
+import { clone, deepEqual, extend, isString } from '../util/index'
 import SelectPopup from './SelectPopup'
 
 class Select extends Field {
@@ -23,10 +23,10 @@ class Select extends Field {
       multiple,
       showArrow,
       disabled,
-      showSearch,
       allowClear,
       options,
       optionFields,
+      searchable,
     } = this.props
     const children = []
     const placeholder = this.props.placeholder
@@ -47,11 +47,6 @@ class Select extends Field {
         }
       })
     }
-
-    // if (!placeholder && (!Array.isArray(options) || !options.length)) {
-    //   this.props.value = ''
-    //   placeholder = '暂无数据'
-    // }
 
     this._normalizeInternalOptions(options)
 
@@ -220,38 +215,64 @@ class Select extends Field {
 
     if (multiple) {
       children.push(this.props.selectedMultiple)
-    } else if (showSearch) {
-      const { onSearch } = this.props
-      that.checked = true
-      that.checkedOption = that._getOption(this.props.value)
-      const searchInput = {
-        tag: 'input',
-        classes: { 'nom-select-search-input': true },
-        _created() {
-          that.selectedSingle = this
-        },
-        _rendered() {
-          this.element.value = this.props.text || ''
-        },
-        attrs: {
-          autocomplete: 'false',
-          oninput() {
-            that.checked = false
-            that.updateSearchPopup(this.value)
-            isFunction(onSearch) && onSearch(this.value)
-          },
-          onchange() {
-            if (that.checked) return
-            this.value = that.checkedOption ? that.checkedOption.text : null
-            that.updateSearchPopup(this.value)
-          },
-        },
-      }
-
-      children.push(searchInput)
     } else {
       children.push(this.props.selectedSingle)
     }
+
+    if (searchable && searchable.sharedInput) {
+      const originOptions = this.props.options
+      children.push({
+        component: 'Textbox',
+        variant: 'borderless',
+        compact: true,
+        placeholder: this.props.placeholder || searchable.placeholder,
+        _created: (inst) => {
+          this.searchBox = inst
+        },
+        onEnter: ({ value }) => {
+          this._callHandler(this.props.onEnter, { value })
+        },
+        onValueChange: ({ newValue }) => {
+          if (newValue) {
+            this.popup.show()
+          }
+          this.timer && clearTimeout(this.timer)
+          this.timer = setTimeout(() => {
+            const loading = new nomui.Loading({
+              container: this.optionList.parent,
+            })
+            const result = this.props.searchable.filter({
+              inputValue: newValue,
+              options: originOptions,
+              sender: this,
+            })
+            if (result && result.then) {
+              return result
+                .then((value) => {
+                  this.props.options = value
+                  this.optionList.update()
+                  loading && loading.remove()
+                })
+                .catch(() => {
+                  loading && loading.remove()
+                })
+            }
+            loading && loading.remove()
+
+            this.props.options = result
+            result && this.optionList.update()
+          }, 300)
+        },
+        attrs: {
+          onmousedown: (e) => {
+            // 阻止冒泡，避免触发 popup 关闭
+
+            e.stopPropagation()
+          },
+        },
+      })
+    }
+
     if (isString(placeholder)) {
       children.push({
         _created() {
@@ -300,7 +321,7 @@ class Select extends Field {
         children: children,
       },
       onClick: () => {
-        showSearch && this.selectedSingle.element.focus()
+        // todo
       },
     })
 
@@ -477,7 +498,7 @@ class Select extends Field {
   }
 
   _getValue(options) {
-    const { valueOptions, showSearch } = this.props
+    const { valueOptions } = this.props
     const that = this
     options = extend(
       {
@@ -488,12 +509,6 @@ class Select extends Field {
     )
 
     if (!this.optionList || !this.optionList.props) {
-      return this.currentValue
-    }
-
-    if (showSearch) {
-      const selectedSearch = this.getSelectedOption()
-      if (selectedSearch && selectedSearch.props) return selectedSearch.props.value
       return this.currentValue
     }
 
@@ -526,37 +541,15 @@ class Select extends Field {
       options = extend({ triggerChange: true }, options)
     }
 
-    if (this.props.showSearch) {
-      const selectedOption = this.internalOptions.find((e) => e.value === value)
-      if (selectedOption) {
-        this.checked = true
-        this.checkedOption = selectedOption
-        this.updateSearchPopup(selectedOption && selectedOption.text)
-        this._directSetValue(value)
-      }
-    } else {
-      // 每次都会更新popup弹窗里面的 list的数据
-      // 但如果当前实例 update过了, optionList会被销毁
-      if (this.optionList && this.optionList.props) {
-        this.optionList.unselectAllItems({ triggerSelectionChange: false })
-        this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
-      }
+    if (this.optionList && this.optionList.props) {
+      this.optionList.unselectAllItems({ triggerSelectionChange: false })
+      this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
+    }
 
-      this._directSetValue(value)
+    this._directSetValue(value)
 
-      if (options.triggerChange) {
-        this._onValueChange()
-      }
-
-      // if (this.optionList) {
-      //   this.optionList.unselectAllItems({ triggerSelectionChange: false })
-      //   this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
-      // } else {
-      //   this._directSetValue(value)
-      //   if (options.triggerChange) {
-      //     this._onValueChange()
-      //   }
-      // }
+    if (options.triggerChange) {
+      this._onValueChange()
     }
   }
 
@@ -606,13 +599,6 @@ class Select extends Field {
       } else {
         this.placeholder.hide()
       }
-    }
-    // 此处有问题，暂时添加判断屏蔽报错，问题原因是调用了已销毁组件的方法导致this是个空对象
-    if (this.props && this.props.showSearch) {
-      const selectedOption = this.internalOptions.find((e) => e.value === changed.newValue)
-      this.checkedOption = selectedOption
-      this.updateSearchPopup(selectedOption && selectedOption.text)
-      this.checked = true
     }
   }
 

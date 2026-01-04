@@ -12,9 +12,11 @@ define([], function () {
         rows: [
           {
             component: 'Select',
+            placeholder: '请选择',
             searchable: {
               placeholder: '输入 a 或 b 或 c ...',
               emptyTip: '没有找到匹配的选项',
+              sharedInput: true,
             },
             // value: 6,
             ref: (c) => {
