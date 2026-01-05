@@ -33,8 +33,14 @@
       }
 
       .nom-select-multiple {
+        display: inline-flex;
+
         .nom-list-item-wrapper {
           padding: 0.15rem 0.25rem;
+
+          &:last-child {
+            padding-right: 1rem;
+          }
         }
 
         .nom-list-item {
@@ -72,20 +78,18 @@
       }
 
       .nom-select-search-box {
-
+        display: inline-flex;
 
         .nom-control {
           padding: 0 !important;
           min-height: auto !important;
           border: none !important;
 
-          .nom-textbox-affix-wrapper {
+          input {
+            height: auto !important;
             padding: 0 !important;
             border: none !important;
 
-            input {
-              height: auto !important;
-            }
           }
         }
       }

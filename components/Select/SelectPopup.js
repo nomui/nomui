@@ -47,7 +47,7 @@ class SelectPopup extends Popup {
       children: {
         component: Layout,
         header:
-          searchable && !searchable.sharedInput
+          searchable && !this.selectControl.showSharedInput
             ? {
                 children: {
                   component: Textbox,

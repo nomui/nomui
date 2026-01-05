@@ -31,6 +31,8 @@ class Select extends Field {
     const children = []
     const placeholder = this.props.placeholder
 
+    this.showSharedInput = searchable && searchable.sharedInput
+
     if (this.props.extraOptions?.length) {
       const valueKey = optionFields.value
       const existedValueSet = new Set(options.map((opt) => opt[valueKey]))
@@ -219,11 +221,12 @@ class Select extends Field {
       children.push(this.props.selectedSingle)
     }
 
-    if (searchable && searchable.sharedInput) {
+    if (this.showSharedInput) {
       const originOptions = this.props.options
       children.push({
         component: 'Textbox',
         variant: 'borderless',
+        allowClear: false,
         classes: { 'nom-select-search-box': true },
         compact: true,
         placeholder: this.props.placeholder || searchable.placeholder,
@@ -274,7 +277,7 @@ class Select extends Field {
       })
     }
 
-    if (isString(placeholder) && !(searchable && searchable.sharedInput)) {
+    if (isString(placeholder) && !this.showSharedInput) {
       children.push({
         _created() {
           that.placeholder = this
@@ -310,6 +313,10 @@ class Select extends Field {
           this.setValue(null)
           this.props.allowClear && this.clearIcon.hide()
           this.placeholder && this.placeholder.show()
+          if (this.searchBox) {
+            this.searchBox.show()
+            this.searchBox.clear()
+          }
           this.props.onClear && this._callHandler(this.props.onClear)
           args.event && args.event.stopPropagation()
         },
@@ -583,23 +590,30 @@ class Select extends Field {
     return retOptions
   }
 
-  _valueChange(changed) {
+  _valueChange({ newValue }) {
     if (!this.props) return
-    // 有值则展示 clearIcon, 无值隐藏
-    changed.newValue
-      ? this.props.allowClear && this.clearIcon.show()
-      : this.props.allowClear && this.clearIcon.hide()
 
+    const { allowClear, multiple } = this.props
+
+    const hasValue = Array.isArray(newValue)
+      ? newValue.length > 0
+      : newValue !== null && newValue !== undefined
+
+    const isValidOption = hasValue && !!this._getOption(newValue)
+
+    /* clear icon */
+    if (allowClear && this.clearIcon) {
+      hasValue ? this.clearIcon.show() : this.clearIcon.hide()
+    }
+
+    /* placeholder */
     if (this.placeholder) {
-      // 多选时为空数组 || 单选时在options中无数据
-      if (
-        (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
-        !this._getOption(changed.newValue)
-      ) {
-        this.placeholder.show()
-      } else {
-        this.placeholder.hide()
-      }
+      hasValue && isValidOption ? this.placeholder.hide() : this.placeholder.show()
+    }
+
+    /* searchBox（单选时） */
+    if (this.searchBox && !multiple) {
+      hasValue ? this.searchBox.hide() : this.searchBox.show()
     }
   }
 
