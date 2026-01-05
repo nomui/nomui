@@ -275,6 +275,7 @@ class Select extends Field {
             loading && loading.remove()
 
             this.props.options = result
+
             result && this.optionList.update()
           }, 300)
         },
@@ -517,14 +518,23 @@ class Select extends Field {
       }
     }
 
+    if (value || this.currentValue) {
+      const opt = this._getOptionsByValue(value || this.currentValue)
+      if (Array.isArray(opt) && opt.length) {
+        return opt.map((o) => o[that.props.optionFields.text] || o.text)
+      }
+      if (opt && !Array.isArray(opt)) {
+        return opt[that.props.optionFields.text] || opt.text
+      }
+    }
     return null
   }
 
   // 外部更新options时要同步更新optionList的选项
   _update(props) {
-    if (props.options && this.optionList && this.optionList.props) {
-      this.props.options = props.options
-      this.optionList.update({})
+    if (props.options) {
+      this._normalizeInternalOptions(props.options)
+      this.optionList && this.optionList.update({})
     }
   }
 
@@ -562,7 +572,7 @@ class Select extends Field {
       }
     }
 
-    return null
+    return this.currentValue
   }
 
   _setValue(value, options) {
