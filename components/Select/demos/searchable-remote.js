@@ -11,7 +11,7 @@ define([], function () {
           {
             component: 'Select',
             searchable: {
-              sharedInput: true,
+              // sharedInput: true,
               placeholder: '输入 a 或 b 或 c ...',
               filter: ({ inputValue }) => {
                 return new Promise(function (resolve) {

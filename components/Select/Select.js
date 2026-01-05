@@ -653,10 +653,13 @@ class Select extends Field {
         if (multiple) {
           this.searchBox.update({ placeholder: null })
         }
-      } else if (multiple) {
-        this.searchBox.update({
-          placeholder: this.props.placeholder || this.props.searchable.placeholder,
-        })
+      } else {
+        this.searchBox.show()
+        if (multiple) {
+          this.searchBox.update({
+            placeholder: this.props.placeholder || this.props.searchable.placeholder,
+          })
+        }
       }
     }
   }
