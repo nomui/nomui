@@ -35,6 +35,7 @@ class SelectList extends List {
 
     // value唯一值校验提示
     this._wranOptionsValue(items, optionFields.value)
+
     this.setProps({
       items,
       itemDefaults: n(null, optionDefaults, null, [SelectListItemMixin]),

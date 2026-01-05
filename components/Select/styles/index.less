@@ -204,10 +204,18 @@
 
     &.s-selected {
       .nom-preset-primary;
+
+      .nom-select-highlight-keyword {
+        color: inherit;
+      }
     }
 
     &.s-disabled:hover {
       cursor: not-allowed;
+    }
+
+    .nom-select-highlight-keyword {
+      color: var(--nom-color-primary);
     }
   }
 }

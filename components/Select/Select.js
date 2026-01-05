@@ -758,6 +758,21 @@ class Select extends Field {
   }
 }
 
+function highlightSelectKeyword(text, kw) {
+  if (!text || !kw) return text
+
+  // 转义正则特殊字符
+  const escapedKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const reg = new RegExp(escapedKw, 'gi')
+
+  // 如果没匹配到，直接返回原文本
+  if (!reg.test(text)) return text
+
+  return `#${text.replace(reg, (match) => {
+    return `<span class="nom-select-highlight-keyword">${match}</span>`
+  })}`
+}
+
 Select.defaults = {
   options: [],
   optionFields: { text: 'text', value: 'value' },
@@ -766,8 +781,15 @@ Select.defaults = {
       return this.props.value
     },
     _config: function () {
+      let strFormat = this.props.text
+      if (this?.list?.selectControl?.props?.searchable?.highlight !== false) {
+        const keyStr = this.list.selectControl.searchBox.getValue()
+        if (keyStr) {
+          strFormat = highlightSelectKeyword(this.props.text, keyStr)
+        }
+      }
       this.setProps({
-        children: this.props.text,
+        children: strFormat,
       })
     },
   },
