@@ -12,9 +12,12 @@ define([], function () {
         rows: [
           {
             component: 'Select',
+            placeholder: '请选择',
+            // multiple: true,
             searchable: {
+              // highlight: false, // 配置false不高亮关键词
               placeholder: '输入 a 或 b 或 c ...',
-              emptyTip: '没有找到匹配的选项',
+              sharedInput: true, // 配置true的话使用组件本身作为搜索框
             },
             // value: 6,
             ref: (c) => {

@@ -46,48 +46,49 @@ class SelectPopup extends Popup {
       },
       children: {
         component: Layout,
-        header: searchable
-          ? {
-              children: {
-                component: Textbox,
-                placeholder: searchable.placeholder,
-                _created: (inst) => {
-                  this.selectControl.searchBox = inst
-                },
-                onEnter: ({ value }) => {
-                  this.selectControl._callHandler(this.selectControl.props.onEnter, { value })
-                },
-                onValueChange: ({ newValue }) => {
-                  this.timer && clearTimeout(this.timer)
-                  this.timer = setTimeout(() => {
-                    const loading = new nomui.Loading({
-                      container: this.selectControl.optionList.parent,
-                    })
-                    const result = searchable.filter({
-                      inputValue: newValue,
-                      options: originOptions,
-                      sender: this.selectControl,
-                    })
-                    if (result && result.then) {
-                      return result
-                        .then((value) => {
-                          this.selectControl.props.options = value
-                          this.selectControl.optionList.update()
-                          loading && loading.remove()
-                        })
-                        .catch(() => {
-                          loading && loading.remove()
-                        })
-                    }
-                    loading && loading.remove()
+        header:
+          searchable && !this.selectControl.showSharedInput
+            ? {
+                children: {
+                  component: Textbox,
+                  placeholder: searchable.placeholder,
+                  _created: (inst) => {
+                    this.selectControl.searchBox = inst
+                  },
+                  onEnter: ({ value }) => {
+                    this.selectControl._callHandler(this.selectControl.props.onEnter, { value })
+                  },
+                  onValueChange: ({ newValue }) => {
+                    this.timer && clearTimeout(this.timer)
+                    this.timer = setTimeout(() => {
+                      const loading = new nomui.Loading({
+                        container: this.selectControl.optionList.parent,
+                      })
+                      const result = searchable.filter({
+                        inputValue: newValue,
+                        options: originOptions,
+                        sender: this.selectControl,
+                      })
+                      if (result && result.then) {
+                        return result
+                          .then((value) => {
+                            this.selectControl.props.options = value
+                            this.selectControl.optionList.update()
+                            loading && loading.remove()
+                          })
+                          .catch(() => {
+                            loading && loading.remove()
+                          })
+                      }
+                      loading && loading.remove()
 
-                    this.selectControl.props.options = result
-                    result && this.selectControl.optionList.update()
-                  }, 300)
+                      this.selectControl.props.options = result
+                      result && this.selectControl.optionList.update()
+                    }, 300)
+                  },
                 },
-              },
-            }
-          : null,
+              }
+            : null,
         body: {
           children: [
             {

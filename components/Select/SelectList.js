@@ -22,27 +22,20 @@ class SelectList extends List {
 
   _config() {
     const {
-      showSearch,
+      searchable,
       optionDefaults,
       value,
       multiple,
-      filterOption,
+
       optionFields,
       options,
     } = this.selectControl.props
-    const { text } = this.props
-    const { checked, checkedOption } = this.selectControl
-    let filterStr = checked ? checkedOption && checkedOption.text : text
-    // null或undefined处理
-    filterStr = filterStr || ''
 
-    this.selectControl._normalizeInternalOptions(options)
-
-    const filterOptions = showSearch && filterOption(filterStr, this.selectControl.internalOptions)
-    const items = showSearch ? filterOptions : this.selectControl.internalOptions
+    const items = searchable ? options : this.selectControl.internalOptions
 
     // value唯一值校验提示
     this._wranOptionsValue(items, optionFields.value)
+
     this.setProps({
       items,
       itemDefaults: n(null, optionDefaults, null, [SelectListItemMixin]),
@@ -51,7 +44,7 @@ class SelectList extends List {
         byClick: true,
         scrollIntoView: true,
       },
-      selectedItems: showSearch ? checkedOption && checkedOption.value : value,
+      selectedItems: value,
 
       onItemSelectionChange: () => {
         if (!this.selectControl.props.multiple || !this.selectControl.props.changeOnClose) {
