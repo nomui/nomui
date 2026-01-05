@@ -9452,8 +9452,14 @@ textarea .nom-textarea {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.nom-select > .nom-field-content .nom-control .nom-select-multiple {
+  display: inline-flex;
+}
 .nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item-wrapper {
   padding: 0.15rem 0.25rem;
+}
+.nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item-wrapper:last-child {
+  padding-right: 1rem;
 }
 .nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item {
   display: flex;
@@ -9482,6 +9488,19 @@ textarea .nom-textarea {
 .nom-select > .nom-field-content .nom-control .nom-select-multiple .nom-list-item .nom-icon:hover {
   opacity: 1;
 }
+.nom-select > .nom-field-content .nom-control .nom-select-search-box {
+  display: inline-flex;
+}
+.nom-select > .nom-field-content .nom-control .nom-select-search-box .nom-control {
+  padding: 0 !important;
+  min-height: auto !important;
+  border: none !important;
+}
+.nom-select > .nom-field-content .nom-control .nom-select-search-box .nom-control input {
+  height: auto !important;
+  padding: 0 !important;
+  border: none !important;
+}
 .nom-select > .nom-field-content .nom-control .nom-select-search-input {
   width: 100%;
   border: none;
@@ -9505,6 +9524,7 @@ textarea .nom-textarea {
   visibility: hidden;
 }
 .nom-select > .nom-field-content .nom-control .nom-select-placeholder {
+  display: inline-flex;
   overflow: hidden;
   color: var(--nom-color-text-2);
   white-space: nowrap;
@@ -9581,8 +9601,14 @@ textarea .nom-textarea {
 .nom-select-list .nom-list-item.s-selected[disabled] {
   background-color: var(--nom-color-primary-disabled);
 }
+.nom-select-list .nom-list-item.s-selected .nom-select-highlight-keyword {
+  color: inherit;
+}
 .nom-select-list .nom-list-item.s-disabled:hover {
   cursor: not-allowed;
+}
+.nom-select-list .nom-list-item .nom-select-highlight-keyword {
+  color: var(--nom-color-primary);
 }
 .nom-select-checker .nom-list-item {
   position: relative;

@@ -2,7 +2,7 @@ import Component from '../Component/index'
 import Field from '../Field/index'
 import Icon from '../Icon/index'
 import List from '../List/index'
-import { clone, deepEqual, extend, isFunction, isString } from '../util/index'
+import { clone, deepEqual, extend, isString } from '../util/index'
 import SelectPopup from './SelectPopup'
 
 class Select extends Field {
@@ -23,13 +23,15 @@ class Select extends Field {
       multiple,
       showArrow,
       disabled,
-      showSearch,
       allowClear,
       options,
       optionFields,
+      searchable,
     } = this.props
     const children = []
     const placeholder = this.props.placeholder
+
+    this.showSharedInput = searchable && searchable.sharedInput
 
     if (this.props.extraOptions?.length) {
       const valueKey = optionFields.value
@@ -48,11 +50,6 @@ class Select extends Field {
       })
     }
 
-    // if (!placeholder && (!Array.isArray(options) || !options.length)) {
-    //   this.props.value = ''
-    //   placeholder = '暂无数据'
-    // }
-
     this._normalizeInternalOptions(options)
 
     this._normalizeSearchable()
@@ -61,6 +58,17 @@ class Select extends Field {
       selectedSingle: {
         _created() {
           that.selectedSingle = this
+        },
+        onClick: ({ event }) => {
+          if (this.showSharedInput && this.getValue()) {
+            event.stopPropagation()
+            this.selectedSingle.hide()
+            this.searchBox.show()
+            this.searchBox.update({ placeholder: this.getValueText() })
+
+            this.searchBox.focus()
+            this.popup.show()
+          }
         },
       },
       selectedMultiple: {
@@ -220,39 +228,68 @@ class Select extends Field {
 
     if (multiple) {
       children.push(this.props.selectedMultiple)
-    } else if (showSearch) {
-      const { onSearch } = this.props
-      that.checked = true
-      that.checkedOption = that._getOption(this.props.value)
-      const searchInput = {
-        tag: 'input',
-        classes: { 'nom-select-search-input': true },
-        _created() {
-          that.selectedSingle = this
-        },
-        _rendered() {
-          this.element.value = this.props.text || ''
-        },
-        attrs: {
-          autocomplete: 'false',
-          oninput() {
-            that.checked = false
-            that.updateSearchPopup(this.value)
-            isFunction(onSearch) && onSearch(this.value)
-          },
-          onchange() {
-            if (that.checked) return
-            this.value = that.checkedOption ? that.checkedOption.text : null
-            that.updateSearchPopup(this.value)
-          },
-        },
-      }
-
-      children.push(searchInput)
     } else {
       children.push(this.props.selectedSingle)
     }
-    if (isString(placeholder)) {
+
+    if (this.showSharedInput) {
+      const originOptions = this.props.options
+      children.push({
+        component: 'Textbox',
+        variant: 'borderless',
+        allowClear: false,
+        classes: { 'nom-select-search-box': true },
+        compact: true,
+        placeholder: this.props.placeholder || searchable.placeholder,
+        _created: (inst) => {
+          this.searchBox = inst
+        },
+        onEnter: ({ value }) => {
+          this._callHandler(this.props.onEnter, { value })
+        },
+        onValueChange: ({ newValue }) => {
+          if (newValue) {
+            this.popup.show()
+          }
+          this.timer && clearTimeout(this.timer)
+          this.timer = setTimeout(() => {
+            const loading = new nomui.Loading({
+              container: this.optionList.parent,
+            })
+            const result = this.props.searchable.filter({
+              inputValue: newValue,
+              options: originOptions,
+              sender: this,
+            })
+            if (result && result.then) {
+              return result
+                .then((value) => {
+                  this.props.options = value
+                  this.optionList.update()
+                  loading && loading.remove()
+                })
+                .catch(() => {
+                  loading && loading.remove()
+                })
+            }
+            loading && loading.remove()
+
+            this.props.options = result
+
+            result && this.optionList.update()
+          }, 300)
+        },
+        attrs: {
+          onmousedown: (e) => {
+            // 阻止冒泡，避免触发 popup 关闭
+
+            e.stopPropagation()
+          },
+        },
+      })
+    }
+
+    if (isString(placeholder) && !this.showSharedInput) {
       children.push({
         _created() {
           that.placeholder = this
@@ -288,6 +325,14 @@ class Select extends Field {
           this.setValue(null)
           this.props.allowClear && this.clearIcon.hide()
           this.placeholder && this.placeholder.show()
+          if (this.showSharedInput) {
+            this.searchBox.show()
+            this.searchBox.clear()
+            this.searchBox.update({
+              placeholder: this.props.placeholder || this.props.searchable.placeholder,
+            })
+            this.popup && this.popup.hide()
+          }
           this.props.onClear && this._callHandler(this.props.onClear)
           args.event && args.event.stopPropagation()
         },
@@ -300,7 +345,7 @@ class Select extends Field {
         children: children,
       },
       onClick: () => {
-        showSearch && this.selectedSingle.element.focus()
+        // todo
       },
     })
 
@@ -323,6 +368,10 @@ class Select extends Field {
       trigger: this.control,
       virtual,
       onShow: () => {
+        if (this.selectedSingle && this.showSharedInput) {
+          this.selectedSingle.hide()
+          this.searchBox.show()
+        }
         this.optionList.update({
           selectedItems: this.getValue(),
         })
@@ -332,6 +381,10 @@ class Select extends Field {
         this.optionList.scrollToSelected()
       },
       onHide: () => {
+        if (this.selectedSingle && this.showSharedInput) {
+          this.selectedSingle.show()
+          this.searchBox.hide()
+        }
         if (this.props.multiple && this.props.changeOnClose) {
           const _currentValue = this.getValue()
           if (!deepEqual(_currentValue, this._lastShowValue)) {
@@ -465,19 +518,28 @@ class Select extends Field {
       }
     }
 
+    if (value || this.currentValue) {
+      const opt = this._getOptionsByValue(value || this.currentValue)
+      if (Array.isArray(opt) && opt.length) {
+        return opt.map((o) => o[that.props.optionFields.text] || o.text)
+      }
+      if (opt && !Array.isArray(opt)) {
+        return opt[that.props.optionFields.text] || opt.text
+      }
+    }
     return null
   }
 
   // 外部更新options时要同步更新optionList的选项
   _update(props) {
-    if (props.options && this.optionList && this.optionList.props) {
-      this.props.options = props.options
-      this.optionList.update({})
+    if (props.options) {
+      this._normalizeInternalOptions(props.options)
+      this.optionList && this.optionList.update({})
     }
   }
 
   _getValue(options) {
-    const { valueOptions, showSearch } = this.props
+    const { valueOptions } = this.props
     const that = this
     options = extend(
       {
@@ -488,12 +550,6 @@ class Select extends Field {
     )
 
     if (!this.optionList || !this.optionList.props) {
-      return this.currentValue
-    }
-
-    if (showSearch) {
-      const selectedSearch = this.getSelectedOption()
-      if (selectedSearch && selectedSearch.props) return selectedSearch.props.value
       return this.currentValue
     }
 
@@ -516,7 +572,7 @@ class Select extends Field {
       }
     }
 
-    return null
+    return this.currentValue
   }
 
   _setValue(value, options) {
@@ -526,43 +582,22 @@ class Select extends Field {
       options = extend({ triggerChange: true }, options)
     }
 
-    if (this.props.showSearch) {
-      const selectedOption = this.internalOptions.find((e) => e.value === value)
-      if (selectedOption) {
-        this.checked = true
-        this.checkedOption = selectedOption
-        this.updateSearchPopup(selectedOption && selectedOption.text)
-        this._directSetValue(value)
-      }
-    } else {
-      // 每次都会更新popup弹窗里面的 list的数据
-      // 但如果当前实例 update过了, optionList会被销毁
-      if (this.optionList && this.optionList.props) {
-        this.optionList.unselectAllItems({ triggerSelectionChange: false })
-        this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
-      }
+    if (this.optionList && this.optionList.props) {
+      this.optionList.unselectAllItems({ triggerSelectionChange: false })
+      this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
+    }
 
-      this._directSetValue(value)
+    this._directSetValue(value)
 
-      if (options.triggerChange) {
-        this._onValueChange()
-      }
-
-      // if (this.optionList) {
-      //   this.optionList.unselectAllItems({ triggerSelectionChange: false })
-      //   this.selectOptions(value, { triggerSelectionChange: options.triggerChange })
-      // } else {
-      //   this._directSetValue(value)
-      //   if (options.triggerChange) {
-      //     this._onValueChange()
-      //   }
-      // }
+    if (options.triggerChange) {
+      this._onValueChange()
     }
   }
 
   _getOption(value) {
     let option = null
     const options = this.internalOptions
+
     if (Array.isArray(value)) {
       value = value[0]
     }
@@ -578,8 +613,10 @@ class Select extends Field {
   _getOptions(value) {
     let retOptions = null
     const options = this.internalOptions
+
     if (Array.isArray(value)) {
       retOptions = []
+
       for (let i = 0; i < options.length; i++) {
         if (value.indexOf(options[i].value) !== -1) {
           retOptions.push(options[i])
@@ -589,30 +626,41 @@ class Select extends Field {
     return retOptions
   }
 
-  _valueChange(changed) {
+  _valueChange({ newValue }) {
     if (!this.props) return
-    // 有值则展示 clearIcon, 无值隐藏
-    changed.newValue
-      ? this.props.allowClear && this.clearIcon.show()
-      : this.props.allowClear && this.clearIcon.hide()
 
-    if (this.placeholder) {
-      // 多选时为空数组 || 单选时在options中无数据
-      if (
-        (Array.isArray(changed.newValue) && changed.newValue.length === 0) ||
-        !this._getOption(changed.newValue)
-      ) {
-        this.placeholder.show()
-      } else {
-        this.placeholder.hide()
-      }
+    const { allowClear, multiple } = this.props
+
+    const hasValue = Array.isArray(newValue)
+      ? newValue.length > 0
+      : newValue !== null && newValue !== undefined
+
+    // const isValidOption = hasValue && !!this._getOption(newValue)
+
+    /* clear icon */
+    if (allowClear && this.clearIcon) {
+      hasValue ? this.clearIcon.show() : this.clearIcon.hide()
     }
-    // 此处有问题，暂时添加判断屏蔽报错，问题原因是调用了已销毁组件的方法导致this是个空对象
-    if (this.props && this.props.showSearch) {
-      const selectedOption = this.internalOptions.find((e) => e.value === changed.newValue)
-      this.checkedOption = selectedOption
-      this.updateSearchPopup(selectedOption && selectedOption.text)
-      this.checked = true
+
+    /* placeholder */
+    if (this.placeholder) {
+      hasValue ? this.placeholder.hide() : this.placeholder.show()
+    }
+
+    /* searchBox（单选时） */
+    if (this.searchBox) {
+      if (hasValue) {
+        if (multiple) {
+          this.searchBox.update({ placeholder: null })
+        }
+      } else {
+        this.searchBox.show()
+        if (multiple) {
+          this.searchBox.update({
+            placeholder: this.props.placeholder || this.props.searchable.placeholder,
+          })
+        }
+      }
     }
   }
 
@@ -694,6 +742,7 @@ class Select extends Field {
 
     const { optionFields } = this.props
     this.internalOptions = clone(options)
+
     this.handleOptions(this.internalOptions, optionFields)
   }
 
@@ -709,6 +758,21 @@ class Select extends Field {
   }
 }
 
+function highlightSelectKeyword(text, kw) {
+  if (!text || !kw) return text
+
+  // 转义正则特殊字符
+  const escapedKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const reg = new RegExp(escapedKw, 'gi')
+
+  // 如果没匹配到，直接返回原文本
+  if (!reg.test(text)) return text
+
+  return `#${text.replace(reg, (match) => {
+    return `<span class="nom-select-highlight-keyword">${match}</span>`
+  })}`
+}
+
 Select.defaults = {
   options: [],
   optionFields: { text: 'text', value: 'value' },
@@ -717,8 +781,15 @@ Select.defaults = {
       return this.props.value
     },
     _config: function () {
+      let strFormat = this.props.text
+      if (this?.list?.selectControl?.props?.searchable?.highlight !== false) {
+        const keyStr = this.list.selectControl.searchBox.getValue()
+        if (keyStr) {
+          strFormat = highlightSelectKeyword(this.props.text, keyStr)
+        }
+      }
       this.setProps({
-        children: this.props.text,
+        children: strFormat,
       })
     },
   },
