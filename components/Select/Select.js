@@ -59,6 +59,17 @@ class Select extends Field {
         _created() {
           that.selectedSingle = this
         },
+        onClick: ({ event }) => {
+          if (this.showSharedInput && this.getValue()) {
+            event.stopPropagation()
+            this.selectedSingle.hide()
+            this.searchBox.show()
+            this.searchBox.update({ placeholder: this.getValueText() })
+
+            this.searchBox.focus()
+            this.popup.show()
+          }
+        },
       },
       selectedMultiple: {
         itemDefaults: {
@@ -313,9 +324,13 @@ class Select extends Field {
           this.setValue(null)
           this.props.allowClear && this.clearIcon.hide()
           this.placeholder && this.placeholder.show()
-          if (this.searchBox) {
+          if (this.showSharedInput) {
             this.searchBox.show()
             this.searchBox.clear()
+            this.searchBox.update({
+              placeholder: this.props.placeholder || this.props.searchable.placeholder,
+            })
+            this.popup && this.popup.hide()
           }
           this.props.onClear && this._callHandler(this.props.onClear)
           args.event && args.event.stopPropagation()
@@ -352,6 +367,10 @@ class Select extends Field {
       trigger: this.control,
       virtual,
       onShow: () => {
+        if (this.selectedSingle && this.showSharedInput) {
+          this.selectedSingle.hide()
+          this.searchBox.show()
+        }
         this.optionList.update({
           selectedItems: this.getValue(),
         })
@@ -361,6 +380,10 @@ class Select extends Field {
         this.optionList.scrollToSelected()
       },
       onHide: () => {
+        if (this.selectedSingle && this.showSharedInput) {
+          this.selectedSingle.show()
+          this.searchBox.hide()
+        }
         if (this.props.multiple && this.props.changeOnClose) {
           const _currentValue = this.getValue()
           if (!deepEqual(_currentValue, this._lastShowValue)) {
@@ -564,6 +587,7 @@ class Select extends Field {
   _getOption(value) {
     let option = null
     const options = this.internalOptions
+
     if (Array.isArray(value)) {
       value = value[0]
     }
@@ -579,8 +603,10 @@ class Select extends Field {
   _getOptions(value) {
     let retOptions = null
     const options = this.internalOptions
+
     if (Array.isArray(value)) {
       retOptions = []
+
       for (let i = 0; i < options.length; i++) {
         if (value.indexOf(options[i].value) !== -1) {
           retOptions.push(options[i])
@@ -599,7 +625,7 @@ class Select extends Field {
       ? newValue.length > 0
       : newValue !== null && newValue !== undefined
 
-    const isValidOption = hasValue && !!this._getOption(newValue)
+    // const isValidOption = hasValue && !!this._getOption(newValue)
 
     /* clear icon */
     if (allowClear && this.clearIcon) {
@@ -608,12 +634,20 @@ class Select extends Field {
 
     /* placeholder */
     if (this.placeholder) {
-      hasValue && isValidOption ? this.placeholder.hide() : this.placeholder.show()
+      hasValue ? this.placeholder.hide() : this.placeholder.show()
     }
 
     /* searchBox（单选时） */
-    if (this.searchBox && !multiple) {
-      hasValue ? this.searchBox.hide() : this.searchBox.show()
+    if (this.searchBox) {
+      if (hasValue) {
+        if (multiple) {
+          this.searchBox.update({ placeholder: null })
+        }
+      } else if (multiple) {
+        this.searchBox.update({
+          placeholder: this.props.placeholder || this.props.searchable.placeholder,
+        })
+      }
     }
   }
 
@@ -695,6 +729,7 @@ class Select extends Field {
 
     const { optionFields } = this.props
     this.internalOptions = clone(options)
+
     this.handleOptions(this.internalOptions, optionFields)
   }
 

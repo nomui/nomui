@@ -13,7 +13,7 @@ define([], function () {
           {
             component: 'Select',
             placeholder: '请选择',
-            multiple: true,
+            // multiple: true,
             searchable: {
               placeholder: '输入 a 或 b 或 c ...',
               emptyTip: '没有找到匹配的选项',
