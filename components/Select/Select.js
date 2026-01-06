@@ -785,7 +785,7 @@ Select.defaults = {
 
       if (
         this?.list?.selectControl?.props?.searchable &&
-        this?.list?.selectControl?.props?.searchable.highlight !== false
+        this.list.selectControl.props.searchable.highlight !== false
       ) {
         const keyStr = this.list.selectControl.searchBox.getValue()
         if (keyStr) {
