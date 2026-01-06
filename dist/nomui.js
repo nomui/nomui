@@ -34708,6 +34708,34 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     handleMouseUp() {
       this.dragEnd();
+    } // ===== NEW: 判断是否触屏设备
+    isTouchDevice() {
+      return "ontouchstart" in window;
+    } // ===== NEW: 触屏点击触发校验
+    handleTapVerify(distance) {
+      const max = this.getMaxSlideWidth();
+      const target = Math.max(0, Math.min(distance, max));
+      this.dispatch({
+        type: "change",
+        payload: { isMove: true, startTime: new Date() },
+      });
+      this.animateTo(target, () => {
+        this.dispatch({ type: "setDistance", payload: target });
+        this.dragEnd();
+      });
+    } // ===== NEW: 简单动画移动
+    animateTo(target, done) {
+      const step = () => {
+        const { distance } = this.props.state;
+        const diff = target - distance;
+        if (Math.abs(diff) < 1) {
+          done && done();
+          return;
+        }
+        this.dispatch({ type: "setDistance", payload: distance + diff * 0.3 });
+        requestAnimationFrame(step);
+      };
+      step();
     }
     handleRefreshCaptcha(e) {
       this.refresh();
@@ -34723,6 +34751,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         captchSrc,
         top,
         tip,
+        touchTip,
         refreshTitle,
         state,
       } = this.props;
@@ -34737,6 +34766,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 width: `${width}px`,
                 height: `${height}px`,
                 background: "#e8e8e8",
+              }, // ===== NEW: 触屏设备点击图片触发校验
+              ontouchstart(e) {
+                if (!that.isTouchDevice()) return;
+                const rect = e.currentTarget.getBoundingClientRect();
+                const pageX = e.touches[0].pageX - rect.left - 20;
+                setTimeout(() => {
+                  that.handleTapVerify(pageX);
+                }, 300);
               },
             },
             children: [
@@ -34778,7 +34815,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                 tag: "div",
                 classes: { "drag-text": true },
                 attrs: { style: { width: `${width}px` }, unselectable: "on" },
-                children: tip,
+                children: that.isTouchDevice() ? touchTip : tip,
               },
               {
                 tag: "div",
@@ -34843,6 +34880,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     // onFinishFailed:()=>{},
     refreshTitle: "换一张",
     tip: "向右滑动完成拼图",
+    touchTip: "点击正确的位置完成拼图",
     autoRefreshOnFail: true, // 失败后是否自动刷新图片
   };
   Component.register(SlideCaptcha);
