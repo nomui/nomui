@@ -1,5 +1,6 @@
 import Component, { n } from '../Component/index'
 import List from '../List/index'
+import { clone } from '../util/index'
 import SelectListItemMixin from './SelectListItemMixin'
 
 class SelectList extends List {
@@ -31,7 +32,9 @@ class SelectList extends List {
       options,
     } = this.selectControl.props
 
-    const items = searchable ? options : this.selectControl.internalOptions
+    const items = searchable
+      ? this._normalizeInternalOptions(options)
+      : this.selectControl.internalOptions
 
     // value唯一值校验提示
     this._wranOptionsValue(items, optionFields.value)
@@ -54,6 +57,30 @@ class SelectList extends List {
     })
 
     super._config()
+  }
+
+  _normalizeInternalOptions(options) {
+    let arr = []
+    if (!Array.isArray(options) || !options.length) {
+      return arr
+    }
+
+    const { optionFields } = this.selectControl.props
+    arr = clone(options)
+
+    this.handleOptions(arr, optionFields)
+    return arr
+  }
+
+  handleOptions(options, optionFields) {
+    const { text: textField, value: valueField } = optionFields
+    if (!Array.isArray(options)) return []
+    const internalOptions = options
+    for (let i = 0; i < internalOptions.length; i++) {
+      const item = internalOptions[i]
+      item.text = item[textField]
+      item.value = item[valueField]
+    }
   }
 
   _wranOptionsValue(options, value) {

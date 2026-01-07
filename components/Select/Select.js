@@ -782,7 +782,11 @@ Select.defaults = {
     },
     _config: function () {
       let strFormat = this.props.text
-      if (this?.list?.selectControl?.props?.searchable?.highlight !== false) {
+
+      if (
+        this?.list?.selectControl?.props?.searchable &&
+        this.list.selectControl.props.searchable.highlight !== false
+      ) {
         const keyStr = this.list.selectControl.searchBox.getValue()
         if (keyStr) {
           strFormat = highlightSelectKeyword(this.props.text, keyStr)
