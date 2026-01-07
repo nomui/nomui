@@ -33427,7 +33427,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         optionFields,
         options,
       } = this.selectControl.props;
-      const items = searchable ? options : this.selectControl.internalOptions; // value唯一值校验提示
+      const items = searchable
+        ? this._normalizeInternalOptions(options)
+        : this.selectControl.internalOptions; // value唯一值校验提示
       this._wranOptionsValue(items, optionFields.value);
       this.setProps({
         items,
@@ -33448,6 +33450,26 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
       });
       super._config();
+    }
+    _normalizeInternalOptions(options) {
+      let arr = [];
+      if (!Array.isArray(options) || !options.length) {
+        return arr;
+      }
+      const { optionFields } = this.selectControl.props;
+      arr = clone(options);
+      this.handleOptions(arr, optionFields);
+      return arr;
+    }
+    handleOptions(options, optionFields) {
+      const { text: textField, value: valueField } = optionFields;
+      if (!Array.isArray(options)) return [];
+      const internalOptions = options;
+      for (let i = 0; i < internalOptions.length; i++) {
+        const item = internalOptions[i];
+        item.text = item[textField];
+        item.value = item[valueField];
+      }
     }
     _wranOptionsValue(options, value) {
       const map = new Map();
@@ -34330,7 +34352,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       },
       _config: function () {
         let strFormat = this.props.text;
-        if (this?.list?.selectControl?.props?.searchable?.highlight !== false) {
+        if (
+          this?.list?.selectControl?.props?.searchable &&
+          this.list.selectControl.props.searchable.highlight !== false
+        ) {
           const keyStr = this.list.selectControl.searchBox.getValue();
           if (keyStr) {
             strFormat = highlightSelectKeyword(this.props.text, keyStr);
