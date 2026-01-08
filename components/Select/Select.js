@@ -244,6 +244,7 @@ class Select extends Field {
         _created: (inst) => {
           this.searchBox = inst
         },
+        hidden: !!this.props.value,
         onEnter: ({ value }) => {
           this._callHandler(this.props.onEnter, { value })
         },

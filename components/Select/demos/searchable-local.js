@@ -19,7 +19,7 @@ define([], function () {
               placeholder: '输入 a 或 b 或 c ...',
               sharedInput: true, // 配置true的话使用组件本身作为搜索框
             },
-            // value: 6,
+            value: 6,
             ref: (c) => {
               selectRef = c
             },
