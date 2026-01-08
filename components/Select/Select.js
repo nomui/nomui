@@ -240,6 +240,7 @@ class Select extends Field {
         allowClear: false,
         classes: { 'nom-select-search-box': true },
         compact: true,
+        hidden: !!this.props.value,
         placeholder: this.props.placeholder || searchable.placeholder,
         _created: (inst) => {
           this.searchBox = inst
