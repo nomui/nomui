@@ -34190,6 +34190,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } else {
         options = extend({ triggerChange: true }, options);
       }
+      if (this.showSharedInput) {
+        if (value) {
+          this.searchBox.hide();
+        } else {
+          this.searchBox.show();
+        }
+      }
       if (this.optionList && this.optionList.props) {
         this.optionList.unselectAllItems({ triggerSelectionChange: false });
         this.selectOptions(value, {
