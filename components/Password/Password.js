@@ -19,6 +19,37 @@ class Password extends Textbox {
 
       this.hasDefaultValue = true
     }
+
+    this.FULLWIDTH_MAP = {
+      '！': '!',
+      '＠': '@',
+      '＃': '#',
+      '＄': '$',
+      '％': '%',
+      '＾': '^',
+      '＆': '&',
+      '＊': '*',
+      '（': '(',
+      '）': ')',
+      '，': ',',
+      '。': '.',
+      '、': '/',
+      '？': '?',
+      '：': ':',
+      '；': ';',
+      '“': '"',
+      '”': '"',
+      '‘': "'",
+      '’': "'",
+      '＜': '<',
+      '＞': '>',
+      '－': '-',
+      '＝': '=',
+      '＿': '_',
+      '＋': '+',
+      '—': '', // 直接丢弃
+      '…': '', // 直接丢弃
+    }
   }
 
   _config() {
@@ -52,6 +83,11 @@ class Password extends Textbox {
       },
       onValueChange: () => {
         const pass = that.getText()
+
+        if (/[\u4e00-\u9fa5]/.test(pass)) {
+          that.hasChineseInput = true
+        }
+
         const start = that.input.element.selectionStart // 光标位置
         const fake = pass ? pass.split('') : []
         let real = that.realValue ? that.realValue.split('') : []
@@ -105,11 +141,16 @@ class Password extends Textbox {
       this.setValue(this.realValue)
     }
     this.popup = new PasswordPopup({
-      capslockText,
+      text: capslockText,
       trigger: this.control,
       animate: false,
       triggerAction: 'click',
       PasswordPopupHidden: true,
+    })
+
+    this.input.element.addEventListener('keydown', () => {
+      // 新一轮输入开始
+      that.hasChineseInput = false
     })
 
     this.input.element.addEventListener('keyup', (event) => {
@@ -157,50 +198,33 @@ class Password extends Textbox {
     if (!input) return input
 
     const str = Array.isArray(input) ? input.join('') : String(input)
-
-    const map = {
-      '！': '!',
-      '＠': '@',
-      '＃': '#',
-      '＄': '$',
-      '％': '%',
-      '＾': '^',
-      '＆': '&',
-      '＊': '*',
-      '（': '(',
-      '）': ')',
-      '，': ',',
-      '。': '.',
-      '、': '/',
-      '？': '?',
-      '：': ':',
-      '；': ';',
-      '“': '"',
-      '”': '"',
-      '‘': "'",
-      '’': "'",
-      '＜': '<',
-      '＞': '>',
-      '－': '-',
-      '＝': '=',
-      '＿': '_',
-      '＋': '+',
-      '—': '', // 直接丢弃
-      '…': '', // 直接丢弃
-    }
-
     let result = ''
+
     for (let i = 0; i < str.length; i++) {
       const ch = str[i]
-      result += Object.prototype.hasOwnProperty.call(map, ch) ? map[ch] : ch
+
+      if (Object.prototype.hasOwnProperty.call(this.FULLWIDTH_MAP, ch)) {
+        // 一旦命中，标记中文输入
+
+        this.hasChineseInput = true
+        result += this.FULLWIDTH_MAP[ch]
+      } else {
+        result += ch
+      }
     }
 
     return result
   }
 
   popupSetProps() {
-    this.capsLock ? this.popup.show() : this.popup.hide()
-    this.popup.setProps({ PasswordPopupHidden: !this.capsLock })
+    const show = this.capsLock || this.hasChineseInput
+
+    this.popup.update({
+      PasswordPopupHidden: !show,
+      text: this.hasChineseInput ? this.props.chineseImeText : this.props.capslockText,
+    })
+
+    show ? this.popup.show() : this.popup.hide()
   }
 
   _getValue() {
@@ -224,6 +248,7 @@ Password.defaults = {
   allowClear: false,
   visibilityToggle: true,
   capslockText: '大写已开启',
+  chineseImeText: '检测到中文输入，请切换为英文输入法',
   icons: ['eye', 'eye-invisible'],
 }
 Component.register(Password)
