@@ -61,8 +61,8 @@ class Password extends Textbox {
           that.realValue = null
         } else {
           if (clen > 0) {
-            // const middle = fake.join('').replace(/\*/g, '').split('')
-            const middle = fake.slice(start - clen, start)
+            const middle = this._toHalfWidth(fake.slice(start - clen, start))
+            // const middle = fake.slice(start - clen, start)
 
             const right = fake.length - start > 0 ? real.slice(-(fake.length - start)) : []
             real = [].concat(real.slice(0, start - middle.length), middle, right)
@@ -73,7 +73,7 @@ class Password extends Textbox {
           }
           fake.forEach(function (value, index) {
             if (value !== '*') {
-              real[index] = value
+              real[index] = that._toHalfWidth(value)
             }
           })
           that.realValue = real.join('')
@@ -151,6 +151,51 @@ class Password extends Textbox {
       const shifKey = e.shiftKey ? e.shiftKey : keyvalue === 16
       this.shifKey = shifKey
     })
+  }
+
+  _toHalfWidth(input) {
+    if (!input) return input
+
+    const str = Array.isArray(input) ? input.join('') : String(input)
+
+    const map = {
+      '！': '!',
+      '＠': '@',
+      '＃': '#',
+      '＄': '$',
+      '％': '%',
+      '＾': '^',
+      '＆': '&',
+      '＊': '*',
+      '（': '(',
+      '）': ')',
+      '，': ',',
+      '。': '.',
+      '、': '/',
+      '？': '?',
+      '：': ':',
+      '；': ';',
+      '“': '"',
+      '”': '"',
+      '‘': "'",
+      '’': "'",
+      '＜': '<',
+      '＞': '>',
+      '－': '-',
+      '＝': '=',
+      '＿': '_',
+      '＋': '+',
+      '—': '', // 直接丢弃
+      '…': '', // 直接丢弃
+    }
+
+    let result = ''
+    for (let i = 0; i < str.length; i++) {
+      const ch = str[i]
+      result += Object.prototype.hasOwnProperty.call(map, ch) ? map[ch] : ch
+    }
+
+    return result
   }
 
   popupSetProps() {
