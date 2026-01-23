@@ -494,7 +494,7 @@ class Field extends Component {
         ),
       )
 
-      if (this.element.contains(document.activeElement)) {
+      if (this.props.inGrid || this.element.contains(document.activeElement)) {
         this.errorTip.show()
       }
     } else {

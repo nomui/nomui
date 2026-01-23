@@ -136,6 +136,7 @@ class Td extends Component {
         ref: (c) => {
           this.editor = c
         },
+        inGrid: true,
         invalidTip: {
           align: 'bottom',
           reference: document.body,
