@@ -55,6 +55,7 @@ class Field extends Component {
 
   _config() {
     delete this.errorTip
+    this.rules = (this.rules || []).filter((r) => !r.__fromField) // 极少数情况rules重复，在这里先清理之前的规则（不清理派生组件的规则）
 
     this._addPropStyle('required', 'requiredMark', 'labelAlign', 'controlWidth', 'plain', 'variant')
 
@@ -89,10 +90,10 @@ class Field extends Component {
       this._handleDependencies()
     }
 
-    this.rules = this.rules.concat(rules)
+    this.rules = this.rules.concat(rules.map((r) => ({ ...r, __fromField: true })))
 
     if (required === true) {
-      this.rules.unshift({ type: 'required', message: requiredMessage })
+      this.rules.unshift({ type: 'required', message: requiredMessage, __fromField: true })
     }
 
     if (span) {
