@@ -1223,6 +1223,9 @@ class Td extends Component {
   }
 
   endEdit(options) {
+    if (!this || !this.props) {
+      return
+    }
     if (!this.props.editMode || !this.editor) {
       return
     }
@@ -1252,7 +1255,7 @@ class Td extends Component {
       this._skipFixed = false
     }
 
-    if (this.table.grid.props.summary) {
+    if (this.table && this.table.grid.props.summary) {
       this.table.grid.updateSummary()
     }
   }
