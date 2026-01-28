@@ -1233,6 +1233,7 @@ class Td extends Component {
       this._updateTdData()
     }
     if (
+      this.table &&
       this.table.hasGrid &&
       this.table.grid.props.excelMode &&
       this.table.grid.props.excelMode.alwaysEdit

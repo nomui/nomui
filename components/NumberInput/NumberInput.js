@@ -34,8 +34,17 @@ class NumberInput extends Textbox {
   }
 
   _rendered() {
+    const that = this
     if (this.firstRender && !!this.props.formatter && !!this.formatterFunc && this.props.value) {
       this.setValue(this.props.value, { triggerChange: false })
+    }
+
+    if (this.props.onEnter) {
+      this.input._on('keydown', function (event) {
+        if (event.keyCode && event.keyCode === 13) {
+          that._callHandler(that.props.onEnter, { value: that.getValue() })
+        }
+      })
     }
   }
 
