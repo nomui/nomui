@@ -33,6 +33,12 @@ class NumberInput extends Textbox {
     super._config()
   }
 
+  _rendered() {
+    if (this.firstRender && !!this.props.formatter && !!this.formatterFunc && this.props.value) {
+      this.setValue(this.props.value, { triggerChange: false })
+    }
+  }
+
   _setFormatter() {
     const { formatter, parser } = this.props
 
