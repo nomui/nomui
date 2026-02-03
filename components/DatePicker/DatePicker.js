@@ -702,20 +702,20 @@ class DatePicker extends Textbox {
 
   // 更新 timePicker的禁用情况(内部个根据 startTime endTime计算)
   _updateTimePickerStartEndTime(day) {
-    this.currentDateBeforeMin = false
-    this.currentDateAfterMax = false
+    const selectedDate = this._getDateString(this.year, this.month, day)
 
-    const minDay = parseInt(new Date(this.minDateDay).format('d'), 10)
-    const maxDay = parseInt(new Date(this.maxDateDay).format('d'), 10)
     const timeProps = {
       startTime: '00:00:00',
       endTime: '23:59:59',
     }
 
-    if (minDay === day) {
+    // 只有在“完全相同的日期”才应用 minDate 的时间
+    if (this.minDateDay && selectedDate === this.minDateDay) {
       timeProps.startTime = this.startTime
     }
-    if (maxDay === day) {
+
+    // 只有在“完全相同的日期”才应用 maxDate 的时间
+    if (this.maxDateDay && selectedDate === this.maxDateDay) {
       timeProps.endTime = this.endTime
     }
 
