@@ -9867,12 +9867,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             this.props.invalidTip
           )
         );
-        if (
-          this.props.inGrid ||
-          this.element.contains(document.activeElement)
-        ) {
-          this.errorTip.show();
-        }
+        setTimeout(() => {
+          if (
+            (this.errorTip.props && this.props.inGrid) ||
+            this.element.contains(document.activeElement)
+          ) {
+            this.errorTip.show();
+          }
+        }, 0);
       } else {
         this.errorTip.update({ children: message });
       }
