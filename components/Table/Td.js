@@ -136,6 +136,7 @@ class Td extends Component {
         ref: (c) => {
           this.editor = c
         },
+        inGrid: true,
         invalidTip: {
           align: 'bottom',
           reference: document.body,
@@ -1222,6 +1223,9 @@ class Td extends Component {
   }
 
   endEdit(options) {
+    if (!this || !this.props) {
+      return
+    }
     if (!this.props.editMode || !this.editor) {
       return
     }
@@ -1232,6 +1236,7 @@ class Td extends Component {
       this._updateTdData()
     }
     if (
+      this.table &&
       this.table.hasGrid &&
       this.table.grid.props.excelMode &&
       this.table.grid.props.excelMode.alwaysEdit
@@ -1250,7 +1255,7 @@ class Td extends Component {
       this._skipFixed = false
     }
 
-    if (this.table.grid.props.summary) {
+    if (this.table && this.table.grid.props.summary) {
       this.table.grid.updateSummary()
     }
   }

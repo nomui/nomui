@@ -119,10 +119,10 @@ class Field extends Component {
       this._handleDependencies()
     }
 
-    this.rules = this.rules.concat(rules)
+    this.rules = this.rules.concat(rules.map((r) => ({ ...r, __fromField: true })))
 
     if (required === true) {
-      this.rules.unshift({ type: 'required', message: requiredMessage })
+      this.rules.unshift({ type: 'required', message: requiredMessage, __fromField: true })
     }
 
     if (span) {
@@ -510,7 +510,7 @@ class Field extends Component {
         ),
       )
 
-      if (this.element.contains(document.activeElement)) {
+      if (this.props.inGrid || this.element.contains(document.activeElement)) {
         this.errorTip.show()
       }
     } else {

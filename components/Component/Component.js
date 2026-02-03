@@ -249,6 +249,9 @@ class Component {
 
   update(props) {
     isFunction(this._update) && this._update(props)
+    if (!this || !this.props) {
+      return
+    }
     this._propStyleClasses.length = 0
     this.setProps(props)
     this._off()
@@ -388,6 +391,7 @@ class Component {
   }
 
   _removeCore() {
+    this.__destroyed = true
     this._removeContextWatcher() // 清理context watcher
     this._cleanupUnusedContexts() // 清理context
 

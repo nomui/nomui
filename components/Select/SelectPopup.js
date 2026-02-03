@@ -55,9 +55,10 @@ class SelectPopup extends Popup {
                   _created: (inst) => {
                     this.selectControl.searchBox = inst
                   },
-                  onEnter: ({ value }) => {
-                    this.selectControl._callHandler(this.selectControl.props.onEnter, { value })
-                  },
+                  // 一个产品要加这个功能，通用那边又当bug提出来，只能先干掉
+                  // onEnter: ({ value }) => {
+                  //   this.selectControl._callHandler(this.selectControl.props.onEnter, { value })
+                  // },
                   onValueChange: ({ newValue }) => {
                     this.timer && clearTimeout(this.timer)
                     this.timer = setTimeout(() => {
