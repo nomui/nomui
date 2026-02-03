@@ -510,9 +510,14 @@ class Field extends Component {
         ),
       )
 
-      if (this.props.inGrid || this.element.contains(document.activeElement)) {
-        this.errorTip.show()
-      }
+      setTimeout(() => {
+        if (
+          (this.errorTip.props && this.props.inGrid) ||
+          this.element.contains(document.activeElement)
+        ) {
+          this.errorTip.show()
+        }
+      }, 0)
     } else {
       this.errorTip.update({
         children: message,
