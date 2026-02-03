@@ -702,6 +702,9 @@ class DatePicker extends Textbox {
 
   // 更新 timePicker的禁用情况(内部个根据 startTime endTime计算)
   _updateTimePickerStartEndTime(day) {
+    this.currentDateBeforeMin = false
+    this.currentDateAfterMax = false
+
     const selectedDate = this._getDateString(this.year, this.month, day)
 
     const timeProps = {
