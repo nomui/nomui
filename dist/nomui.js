@@ -4886,6 +4886,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     update(props) {
       isFunction(this._update) && this._update(props);
+      if (!this || !this.props) {
+        return;
+      }
       this._propStyleClasses.length = 0;
       this.setProps(props);
       this._off();
@@ -5043,6 +5046,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       cleanupStaleContexts(); // 清理全局context当中组件元素已经不存在于文档上的部分
     }
     _removeCore() {
+      this.__destroyed = true;
       this._removeContextWatcher(); // 清理context watcher
       this._cleanupUnusedContexts(); // 清理context
       this.props &&
@@ -9522,9 +9526,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this._handleDependencies();
       }
-      this.rules = this.rules.concat(rules);
+      this.rules = this.rules.concat(
+        rules.map((r) => Object.assign({}, r, { __fromField: true }))
+      );
       if (required === true) {
-        this.rules.unshift({ type: "required", message: requiredMessage });
+        this.rules.unshift({
+          type: "required",
+          message: requiredMessage,
+          __fromField: true,
+        });
       }
       if (span) {
         this.setProps({ styles: { col: span } });
@@ -9857,7 +9867,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             this.props.invalidTip
           )
         );
-        if (this.element.contains(document.activeElement)) {
+        if (
+          this.props.inGrid ||
+          this.element.contains(document.activeElement)
+        ) {
           this.errorTip.show();
         }
       } else {
@@ -18607,13 +18620,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _updateTimePickerStartEndTime(day) {
       this.currentDateBeforeMin = false;
       this.currentDateAfterMax = false;
-      const minDay = parseInt(new Date(this.minDateDay).format("d"), 10);
-      const maxDay = parseInt(new Date(this.maxDateDay).format("d"), 10);
-      const timeProps = { startTime: "00:00:00", endTime: "23:59:59" };
-      if (minDay === day) {
+      const selectedDate = this._getDateString(this.year, this.month, day);
+      const timeProps = { startTime: "00:00:00", endTime: "23:59:59" }; // 只有在“完全相同的日期”才应用 minDate 的时间
+      if (this.minDateDay && selectedDate === this.minDateDay) {
         timeProps.startTime = this.startTime;
-      }
-      if (maxDay === day) {
+      } // 只有在“完全相同的日期”才应用 maxDate 的时间
+      if (this.maxDateDay && selectedDate === this.maxDateDay) {
         timeProps.endTime = this.endTime;
       }
       this.timePicker.update(timeProps);
@@ -20269,6 +20281,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           ref: (c) => {
             this.editor = c;
           },
+          inGrid: true,
           invalidTip: {
             align: "bottom",
             reference: document.body,
@@ -21208,6 +21221,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.editor.validate();
     }
     endEdit(options) {
+      if (!this || !this.props) {
+        return;
+      }
       if (!this.props.editMode || !this.editor) {
         return;
       }
@@ -21218,6 +21234,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._updateTdData();
       }
       if (
+        this.table &&
         this.table.hasGrid &&
         this.table.grid.props.excelMode &&
         this.table.grid.props.excelMode.alwaysEdit
@@ -21235,7 +21252,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         });
         this._skipFixed = false;
       }
-      if (this.table.grid.props.summary) {
+      if (this.table && this.table.grid.props.summary) {
         this.table.grid.updateSummary();
       }
     }
@@ -29351,6 +29368,24 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.setProps({ button: this._getControls() });
       super._config();
     }
+    _rendered() {
+      const that = this;
+      if (
+        this.firstRender &&
+        !!this.props.formatter &&
+        !!this.formatterFunc &&
+        this.props.value
+      ) {
+        this.setValue(this.props.value, { triggerChange: false });
+      }
+      if (this.props.onEnter) {
+        this.input._on("keydown", function (event) {
+          if (event.keyCode && event.keyCode === 13) {
+            that._callHandler(that.props.onEnter, { value: that.getValue() });
+          }
+        });
+      }
+    }
     _setFormatter() {
       const { formatter, parser } = this.props;
       if (!formatter) {
@@ -31106,7 +31141,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _config() {
       this.setProps({
         children: [
-          this.props.capslockText,
+          this.props.text,
           {
             ref: (c) => {
               this.arrow = c;
@@ -31143,6 +31178,36 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.realValue = this.props.value;
         this.hasDefaultValue = true;
       }
+      this.FULLWIDTH_MAP = {
+        "！": "!",
+        "＠": "@",
+        "＃": "#",
+        "＄": "$",
+        "％": "%",
+        "＾": "^",
+        "＆": "&",
+        "＊": "*",
+        "（": "(",
+        "）": ")",
+        "，": ",",
+        "。": ".",
+        "、": "/",
+        "？": "?",
+        "：": ":",
+        "；": ";",
+        "“": '"',
+        "”": '"',
+        "‘": "'",
+        "’": "'",
+        "＜": "<",
+        "＞": ">",
+        "－": "-",
+        "＝": "=",
+        "＿": "_",
+        "＋": "+",
+        "—": "", // 直接丢弃
+        "…": "", // 直接丢弃
+      };
     }
     _config() {
       const that = this;
@@ -31177,6 +31242,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
         onValueChange: () => {
           const pass = that.getText();
+          if (/[\u4e00-\u9fa5]/.test(pass)) {
+            that.hasChineseInput = true;
+          }
           const start = that.input.element.selectionStart; // 光标位置
           const fake = pass ? pass.split("") : [];
           let real = that.realValue ? that.realValue.split("") : [];
@@ -31185,8 +31253,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             that.realValue = null;
           } else {
             if (clen > 0) {
-              // const middle = fake.join('').replace(/\*/g, '').split('')
-              const middle = fake.slice(start - clen, start);
+              const middle = this._toHalfWidth(fake.slice(start - clen, start)); // const middle = fake.slice(start - clen, start)
               const right =
                 fake.length - start > 0
                   ? real.slice(-(fake.length - start))
@@ -31202,7 +31269,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             }
             fake.forEach(function (value, index) {
               if (value !== "*") {
-                real[index] = value;
+                real[index] = that._toHalfWidth(value);
               }
             });
             that.realValue = real.join("");
@@ -31227,11 +31294,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.setValue(this.realValue);
       }
       this.popup = new PasswordPopup({
-        capslockText,
+        text: capslockText,
         trigger: this.control,
         animate: false,
         triggerAction: "click",
         PasswordPopupHidden: true,
+      });
+      this.input.element.addEventListener("keydown", () => {
+        // 新一轮输入开始
+        that.hasChineseInput = false;
       });
       this.input.element.addEventListener("keyup", (event) => {
         // 判断是否按键为caps Lock
@@ -31269,9 +31340,31 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.shifKey = shifKey;
       });
     }
+    _toHalfWidth(input) {
+      if (!input) return input;
+      const str = Array.isArray(input) ? input.join("") : String(input);
+      let result = "";
+      for (let i = 0; i < str.length; i++) {
+        const ch = str[i];
+        if (Object.prototype.hasOwnProperty.call(this.FULLWIDTH_MAP, ch)) {
+          // 一旦命中，标记中文输入
+          this.hasChineseInput = true;
+          result += this.FULLWIDTH_MAP[ch];
+        } else {
+          result += ch;
+        }
+      }
+      return result;
+    }
     popupSetProps() {
-      this.capsLock ? this.popup.show() : this.popup.hide();
-      this.popup.setProps({ PasswordPopupHidden: !this.capsLock });
+      const show = this.capsLock || this.hasChineseInput;
+      this.popup.update({
+        PasswordPopupHidden: !show,
+        text: this.hasChineseInput
+          ? this.props.chineseImeText
+          : this.props.capslockText,
+      });
+      show ? this.popup.show() : this.popup.hide();
     }
     _getValue() {
       return this.realValue ? this.realValue.trim(" ") : null;
@@ -31294,6 +31387,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     allowClear: false,
     visibilityToggle: true,
     capslockText: "大写已开启",
+    chineseImeText: "检测到中文输入，请切换为英文输入法",
     icons: ["eye", "eye-invisible"],
   };
   Component.register(Password);
@@ -33533,13 +33627,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                     placeholder: searchable.placeholder,
                     _created: (inst) => {
                       this.selectControl.searchBox = inst;
-                    },
-                    onEnter: ({ value }) => {
-                      this.selectControl._callHandler(
-                        this.selectControl.props.onEnter,
-                        { value }
-                      );
-                    },
+                    }, // 一个产品要加这个功能，通用那边又当bug提出来，只能先干掉
+                    // onEnter: ({ value }) => {
+                    //   this.selectControl._callHandler(this.selectControl.props.onEnter, { value })
+                    // },
                     onValueChange: ({ newValue }) => {
                       this.timer && clearTimeout(this.timer);
                       this.timer = setTimeout(() => {
@@ -33897,14 +33988,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           allowClear: false,
           classes: { "nom-select-search-box": true },
           compact: true,
-          hidden: !!this.props.value,
           placeholder: this.props.placeholder || searchable.placeholder,
           _created: (inst) => {
             this.searchBox = inst;
           },
-          onEnter: ({ value }) => {
-            this._callHandler(this.props.onEnter, { value });
-          },
+          hidden: !!this.props.value, // 暂时屏蔽此功能
+          // onEnter: ({ value }) => {
+          //   this._callHandler(this.props.onEnter, { value })
+          // },
           onValueChange: ({ newValue }) => {
             if (newValue) {
               this.popup.show();
