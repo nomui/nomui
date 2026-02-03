@@ -30,8 +30,12 @@
   // https://github.com/twbs/bootstrap/pull/10951.
   outline: 0;
 
+
+
+
   &.nom-modal-adapt-to-fit:not(.p-size-full):not(.p-fit) {
     height: 100%;
+
 
     .nom-modal-dialog {
       height: calc(100% - 3.5rem);
@@ -180,8 +184,9 @@
 
   &.p-size-xlarge {
     .nom-modal-dialog {
-      width: 100vw;
+      width: calc(100vw - 3.5rem);
     }
+
   }
 
   &.p-size-full {
