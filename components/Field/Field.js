@@ -522,6 +522,7 @@ class Field extends Component {
       this.errorTip.update({
         children: message,
       })
+      this.errorTip.show()
     }
   }
 
