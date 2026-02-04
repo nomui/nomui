@@ -21262,13 +21262,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._updateTdData();
     }
     _updateTdData() {
-      if (!this.editor.validate()) {
-        this.table.grid.props.editable.onValidateFailed &&
+      if (
+        !this.editor.validate() &&
+        !(
+          this.table.grid.props.editable?.changeDataOnFailed ||
+          this.table.grid.props.excelMode?.changeDataOnFailed
+        )
+      ) {
+        this.table.grid.props.editable?.onValidateFailed &&
           this.table.grid._callHandler(
             this.table.grid.props.editable.onValidateFailed,
             { field: this.editor, value: this.editor.getValue() }
           );
-        this.table.grid.props.excelMode.onValidateFailed &&
+        this.table.grid.props.excelMode?.onValidateFailed &&
           this.table.grid._callHandler(
             this.table.grid.props.excelMode.onValidateFailed,
             { field: this.editor, value: this.editor.getValue() }
