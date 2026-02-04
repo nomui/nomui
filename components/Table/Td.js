@@ -1268,8 +1268,8 @@ class Td extends Component {
     if (
       !this.editor.validate() &&
       !(
-        this.table.grid.props.editable.changeDataOnFailed ||
-        this.table.grid.props.excelMode.changeDataOnFailed
+        this.table.grid.props.editable?.changeDataOnFailed ||
+        this.table.grid.props.excelMode?.changeDataOnFailed
       )
     ) {
       this.table.grid.props.editable.onValidateFailed &&
