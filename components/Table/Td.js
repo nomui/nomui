@@ -1265,7 +1265,13 @@ class Td extends Component {
   }
 
   _updateTdData() {
-    if (!this.editor.validate()) {
+    if (
+      !this.editor.validate() &&
+      !(
+        this.table.grid.props.editable.changeDataOnFailed ||
+        this.table.grid.props.excelMode.changeDataOnFailed
+      )
+    ) {
       this.table.grid.props.editable.onValidateFailed &&
         this.table.grid._callHandler(this.table.grid.props.editable.onValidateFailed, {
           field: this.editor,
