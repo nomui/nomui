@@ -9877,6 +9877,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }, 0);
       } else {
         this.errorTip.update({ children: message });
+        this.errorTip.show();
       }
     } // 添加防抖，确保同一个rootField同一时间只会聚焦一个field(优先子层级聚焦)
     focusField(target) {
