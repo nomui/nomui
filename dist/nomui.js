@@ -10001,8 +10001,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _shouldIgnoreReadonlyEvent(e) {
       const target = e.target;
       if (!(target instanceof Element)) return false; // 1️⃣ 默认忽略 readonly 的 class（始终生效）
-      const DEFAULT_IGNORE_CLASS = "nom-field-ignore-readonly";
-      const defaultEl = target.closest(`.${DEFAULT_IGNORE_CLASS}`);
+      const defaultSelector = this.props.ignoreReadonlyClasses
+        .map((c) => `.${c}`)
+        .join(",");
+      const defaultEl = target.closest(defaultSelector);
       if (defaultEl && this.element.contains(defaultEl)) {
         return true;
       } // 2️⃣ readonly 为对象时，读取配置的 ignoreClasses
@@ -10079,6 +10081,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     compact: false,
     labelExpanded: true,
     readonly: false, // { ignoreClasses:['className']}  配置成对象时，className以及其子元素的交互事件会被放行
+    ignoreReadonlyClasses: [
+      "nom-field-ignore-readonly",
+      "control-type-in-design",
+    ],
   };
   Object.defineProperty(Field.prototype, "fields", {
     get: function () {
