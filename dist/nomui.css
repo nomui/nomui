@@ -10676,7 +10676,7 @@ textarea .nom-textarea {
 .nom-group.p-inline > .nom-field-content > .nom-control > .nom-field > .nom-field-content {
   flex-basis: auto;
 }
-.nom-group.p-striped > .nom-field-content > .nom-control > .nom-field > .nom-field-label {
+.nom-group.p-striped > .nom-field-content > .nom-control > .nom-field:not(.p-label-align-top) > .nom-field-label {
   color: inherit !important;
   background-color: var(--nom-color-lgray) !important;
 }
@@ -10714,7 +10714,7 @@ textarea .nom-textarea {
   border-left: 1px solid var(--nom-border-color);
   border-bottom: 1px solid var(--nom-border-color);
 }
-.nom-group.p-uistyle-table > .nom-field-content > .nom-control > .nom-field > .nom-field-label {
+.nom-group.p-uistyle-table > .nom-field-content > .nom-control > .nom-field:not(.p-label-align-top) > .nom-field-label {
   color: inherit !important;
   background-color: var(--nom-color-lgray) !important;
 }
