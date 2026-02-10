@@ -12,8 +12,9 @@ define([], function () {
             group = c
           },
           fieldDefaults: {
-            labelAlign: 'left',
+            labelAlign: 'top',
           },
+          striped: true,
           fields: [
             {
               component: 'Textbox',

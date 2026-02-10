@@ -10478,9 +10478,6 @@ textarea .nom-textarea {
   background: transparent;
   border-color: var(--nom-color-warning);
 }
-.nom-field.p-label-align-top > .nom-field-content {
-  padding-top: 2px;
-}
 .nom-field.p-label-align-top > .nom-field-label {
   display: flex;
   align-items: center;
@@ -10515,7 +10512,6 @@ textarea .nom-textarea {
 @media (min-width: 576px) {
   .nom-field.p-label-align-top {
     flex-direction: column;
-    padding-left: 0.375rem;
   }
   .nom-field.p-label-align-top.p-required > .nom-field-label > .nom-label {
     position: relative;
