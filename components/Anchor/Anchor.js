@@ -260,6 +260,7 @@ class Anchor extends Component {
   }
 
   _fixPosition() {
+    if (this.props.sticky === false) return
     if (!this.element || !this.scrollParent) return
     this.element.style.transform = `translateY(0px)`
 
@@ -456,9 +457,12 @@ class Anchor extends Component {
     if (!anyVisible && this.props.sticky && this.props.autoHide) {
       // 全部不可见：取消吸附（清空 transform，让元素随文档流）
       this.element.style.transform = ''
-    } else {
-      // 有可见项：恢复吸附逻辑（使用现有的 _fixPosition）
-      this._fixPosition()
+    } else if (!this._fixPositionTicking) {
+      this._fixPositionTicking = true
+      requestAnimationFrame(() => {
+        this._fixPosition()
+        this._fixPositionTicking = false
+      })
     }
   }
 
