@@ -8560,7 +8560,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.props.position = null;
       }
       this._normalizePosition();
-      this._zIndex = getzIndex();
+      this._zIndex = this.props.zindex ?? getzIndex();
       this.setProps({ attrs: { style: { zIndex: this._zIndex } } });
       if (this.props.align || this.props.position) {
         this.setProps({

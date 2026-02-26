@@ -28,7 +28,7 @@ class Layer extends Component {
     }
 
     this._normalizePosition()
-    this._zIndex = getzIndex()
+    this._zIndex = this.props.zindex ?? getzIndex()
     this.setProps({
       attrs: {
         style: {
