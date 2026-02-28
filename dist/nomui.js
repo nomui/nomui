@@ -9838,9 +9838,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           }
           return true;
         }
-        this.addClass("s-invalid");
+        if (options.showInvalidTip !== false) {
+          this.addClass("s-invalid");
+          this._invalid(validationResult);
+        }
         this.trigger("invalid", validationResult);
-        this._invalid(validationResult);
         return false;
       }
       return true;
