@@ -10434,21 +10434,26 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _initAutoWidth() {
       const inputEl = this.input.element;
+      const computedStyle = window.getComputedStyle(inputEl);
       this.measureSpan = document.createElement("span");
       this.measureSpan.style.cssText = `
-      position:absolute;
-      visibility:hidden;
-      white-space:pre;
-      font-size:${window.getComputedStyle(inputEl).fontSize};
-      font-family:${window.getComputedStyle(inputEl).fontFamily};
-    `;
+    position:absolute;
+    visibility:hidden;
+    white-space:pre;
+    font-size:${computedStyle.fontSize};
+    font-family:${computedStyle.fontFamily};
+  `; // 缓存 input 左右 padding，用于真实宽度计算
+      this._autoWidthPadding =
+        parseFloat(computedStyle.paddingLeft) +
+        parseFloat(computedStyle.paddingRight);
       document.body.appendChild(this.measureSpan);
       this._updateAutoWidth();
     }
     _updateAutoWidth() {
       const text = this.getText() || this.props.placeholder || "";
       this.measureSpan.textContent = text;
-      const width = this.measureSpan.offsetWidth + 12;
+      const width =
+        this.measureSpan.offsetWidth + (this._autoWidthPadding || 0) + 6;
       const minWidth = this.props.autoWidth.minWidth || 200;
       this.input.element.style.width = `${Math.max(width, minWidth)}px`;
     }
