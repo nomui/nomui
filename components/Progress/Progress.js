@@ -83,20 +83,22 @@ class Progress extends Component {
       success,
       strokeColor,
       strokeLinecap,
-      percent,
       strokeWidth,
       trailColor,
+      percent,
       gapDegree,
       width,
     } = this.props
     const progressStatus = this.getProgressStatus()
     const progressInfo = this.renderProcessInfo(progressStatus)
 
+    const percentNumber = parseFloat(percent) || 0
+
     let children = {
       children: progressInfo,
       strokeColor: strokeColor,
       size,
-      percent,
+      percent: percentNumber,
       strokeWidth,
       strokeLinecap,
       trailColor,
@@ -137,13 +139,14 @@ class Progress extends Component {
         [`${Progress._prefixClass}-status-success`]: false,
         [`${Progress._prefixClass}-status-exception`]: false,
         [`${Progress._prefixClass}-status-active`]: false,
-      }
+      },
     })
 
     this.setProps({
       classes: {
-        [`${Progress._prefixClass}-${(type === 'dashboard' && 'circle') || (steps && 'steps') || type
-          }`]: true,
+        [`${Progress._prefixClass}-${
+          (type === 'dashboard' && 'circle') || (steps && 'steps') || type
+        }`]: true,
         [`${Progress._prefixClass}-status-${progressStatus}`]: true,
         [`${Progress._prefixClass}-show-info`]: showInfo,
         [`${Progress._prefixClass}-${size}`]: size,
