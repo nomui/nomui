@@ -32030,19 +32030,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         success,
         strokeColor,
         strokeLinecap,
-        percent,
         strokeWidth,
         trailColor,
+        percent,
         gapDegree,
         width,
       } = this.props;
       const progressStatus = this.getProgressStatus();
       const progressInfo = this.renderProcessInfo(progressStatus);
+      const percentNumber = parseFloat(percent) || 0;
       let children = {
         children: progressInfo,
         strokeColor: strokeColor,
         size,
-        percent,
+        percent: percentNumber,
         strokeWidth,
         strokeLinecap,
         trailColor,
