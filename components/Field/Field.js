@@ -229,6 +229,7 @@ class Field extends Component {
         's-read-mode': !!enableReadMode && this.isReadMode === true,
         's-allow-read-mode': !!enableReadMode,
         's-allow-read-mode-hover': enableReadMode && enableReadMode.hover === true,
+        's-without-label': !showLabel,
       },
       children: [
         labelProps,
