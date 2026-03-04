@@ -9631,6 +9631,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "s-allow-read-mode": !!enableReadMode,
           "s-allow-read-mode-hover":
             enableReadMode && enableReadMode.hover === true,
+          "s-without-label": !showLabel,
         },
         children: [
           labelProps,
