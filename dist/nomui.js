@@ -34276,7 +34276,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _update(props) {
       if (props.options) {
         this._normalizeInternalOptions(props.options);
-        this.optionList && this.optionList.update({});
+        this.optionList?.props && this.optionList.update({});
       }
     }
     _getValue(options) {

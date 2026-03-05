@@ -536,7 +536,7 @@ class Select extends Field {
   _update(props) {
     if (props.options) {
       this._normalizeInternalOptions(props.options)
-      this.optionList && this.optionList.update({})
+      this.optionList?.props && this.optionList.update({})
     }
   }
 
