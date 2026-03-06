@@ -1233,13 +1233,24 @@ class DatePicker extends Textbox {
       this._setDisplayValue(this._getWeekText())
       this.setValue(dateStr)
     } else {
+      let minHour = '00'
+      let minMinute = '00'
+      let minSecond = '00'
+      const { showTime } = this.props
+      if (showTime && showTime.minTime) {
+        const parts = showTime.minTime.split(':')
+        minHour = parts[0] || '00'
+        minMinute = parts[1] || '00'
+        minSecond = parts[2] || '00'
+      }
+
       const date = new Date(
         this.dateInfo.year || new Date().format('yyyy'),
         isNumeric(this.dateInfo.month) ? this.dateInfo.month : new Date().format('MM') - 1,
         this.dateInfo.day || new Date().format('dd'),
-        this.dateInfo.hour || '00',
-        this.dateInfo.minute || '00',
-        this.dateInfo.second || '00',
+        this.dateInfo.hour || minHour,
+        this.dateInfo.minute || minMinute,
+        this.dateInfo.second || minSecond,
       )
 
       this.setValue(date.format(this.props.format))
