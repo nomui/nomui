@@ -485,7 +485,7 @@ class DatePicker extends Textbox {
                   component: 'Button',
                   size: 'small',
                   text: that._getNowText(),
-                  disabled: !this.showNow,
+                  disabled: !this.showNow || !this._checkValidDateRange(),
                   renderIf: this.props.showNow,
                   onClick: () => {
                     if (that.props.weekMode) {
@@ -664,6 +664,75 @@ class DatePicker extends Textbox {
     })
 
     super._config()
+  }
+
+  _checkValidDateRange() {
+    const { minDate, maxDate, showTime } = this.props
+
+    const now = new Date()
+    const today = now.format('yyyy-MM-dd')
+    const nowTime = now.format('HH:mm:ss')
+
+    const globalMinTime = showTime && showTime.minTime ? showTime.minTime : '00:00:00'
+    const globalMaxTime = showTime && showTime.maxTime ? showTime.maxTime : '23:59:59'
+
+    let minDay = null
+    let maxDay = null
+    let minDayTime = null
+    let maxDayTime = null
+
+    if (minDate) {
+      const d = new Date(minDate)
+      minDay = d.format('yyyy-MM-dd')
+      minDayTime = d.format('HH:mm:ss')
+    }
+
+    if (maxDate) {
+      const d = new Date(maxDate)
+      maxDay = d.format('yyyy-MM-dd')
+      maxDayTime = d.format('HH:mm:ss')
+    }
+
+    // ---------- 日期范围判断 ----------
+
+    if (minDay && today < minDay) {
+      return false
+    }
+
+    if (maxDay && today > maxDay) {
+      return false
+    }
+
+    // ---------- 计算当天有效时间范围 ----------
+
+    let effectiveMinTime = globalMinTime
+    let effectiveMaxTime = globalMaxTime
+
+    // minDate 当天
+    if (minDay && today === minDay) {
+      if (minDayTime) {
+        effectiveMinTime = minDayTime > globalMinTime ? minDayTime : globalMinTime
+      }
+    }
+
+    // maxDate 当天
+    if (maxDay && today === maxDay) {
+      if (maxDayTime) {
+        effectiveMaxTime = maxDayTime < globalMaxTime ? maxDayTime : globalMaxTime
+      }
+    }
+
+    // ---------- 时间范围判断 ----------
+
+    if (nowTime < effectiveMinTime) {
+      return false
+    }
+
+    if (nowTime > effectiveMaxTime) {
+      return false
+    }
+
+    return true
   }
 
   _parseWeekValueType() {
