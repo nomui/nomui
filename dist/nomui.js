@@ -18428,6 +18428,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
                     disabled: !this.showNow || !this._checkValidDateRange(),
                     renderIf: this.props.showNow,
                     onClick: () => {
+                      if (!this._checkValidDateRange()) {
+                        return;
+                      }
                       if (that.props.weekMode) {
                         // 周模式下选择日期，将选择的日期设置为当前周的第一天
                         const today = new Date();
