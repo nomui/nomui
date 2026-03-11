@@ -12624,7 +12624,7 @@ textarea .nom-textarea {
   display: none;
 }
 .nom-dropdown.nom-dropdown-opened .nom-dropdown-right-icon-group .nom-icon:last-child {
-  display: flex;
+  display: inline-flex;
 }
 .nom-dropdown-popup .nom-menu-item-wrapper > .nom-menu-item {
   padding-right: 1.5rem !important;
