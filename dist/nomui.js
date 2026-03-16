@@ -22181,72 +22181,79 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             },
             classes: { "nom-table-filter-handler": true },
             attrs: { style: { cursor: "pointer" } },
+            onClick: () => {
+              if (isFunction(this.props.column.filter)) return;
+              this.onFilterChange();
+            },
             tooltip: this.filterValue
               ? this.table.grid.filterValueText[this.props.column.field]
               : null,
-            popup: {
-              align: "bottom right",
-              ref: (c) => {
-                this.filterPopup = c;
-              },
-              onShow: () => {
-                that.filterGroup && that.filterGroup.setValue(that.filterValue);
-              },
-              children: {
-                attrs: {
-                  style: {
-                    padding: "10px",
-                    "min-width": "180px",
-                    "max-width": "250px",
+            popup: isFunction(this.props.column.filter)
+              ? {
+                  align: "bottom right",
+                  ref: (c) => {
+                    this.filterPopup = c;
                   },
-                },
-                children: [
-                  {
-                    component: "Group",
-                    ref: (c) => {
-                      this.filterGroup = c;
+                  onShow: () => {
+                    that.filterGroup &&
+                      that.filterGroup.setValue(that.filterValue);
+                  },
+                  children: {
+                    attrs: {
+                      style: {
+                        padding: "10px",
+                        "min-width": "180px",
+                        "max-width": "250px",
+                      },
                     },
-                    fields: [
-                      Object.assign(
-                        {},
-                        isFunction(that.props.column.filter)
-                          ? that.props.column.filter()
-                          : that.props.column.filter,
-                        { name: that.props.column.field }
-                      ),
+                    children: [
+                      {
+                        component: "Group",
+                        ref: (c) => {
+                          this.filterGroup = c;
+                        },
+                        fields: [
+                          Object.assign(
+                            {},
+                            isFunction(that.props.column.filter)
+                              ? that.props.column.filter()
+                              : that.props.column.filter,
+                            { name: that.props.column.field }
+                          ),
+                        ],
+                      },
+                      {
+                        attrs: {
+                          style: { "text-align": "right", padding: "0 10px" },
+                        },
+                        children: {
+                          component: "Cols",
+                          justify: "end",
+                          gutter: "sm",
+                          items: [
+                            {
+                              component: "Button",
+                              text: this.table.props.okText,
+                              size: "small",
+                              onClick: () => {
+                                this.onFilterChange();
+                              },
+                            },
+                            {
+                              component: "Button",
+                              text: this.table.props.resetText,
+                              size: "small",
+                              onClick: () => {
+                                this.onFilterReset();
+                              },
+                            },
+                          ],
+                        },
+                      },
                     ],
                   },
-                  {
-                    attrs: {
-                      style: { "text-align": "right", padding: "0 10px" },
-                    },
-                    children: {
-                      component: "Cols",
-                      justify: "end",
-                      gutter: "sm",
-                      items: [
-                        {
-                          component: "Button",
-                          text: this.table.props.okText,
-                          size: "small",
-                          onClick: () => {
-                            this.onFilterChange();
-                          },
-                        },
-                        {
-                          component: "Button",
-                          text: this.table.props.resetText,
-                          size: "small",
-                          onClick: () => {
-                            this.onFilterReset();
-                          },
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
+                }
+              : null,
           },
         that.table.hasGrid &&
           that.table.grid.props.allowFrozenCols &&
@@ -22568,13 +22575,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.table.grid && this.table.grid.setSortDirection();
     }
     onFilterChange(isReset) {
-      if (this.filterGroup.getValue()[this.props.column.field]) {
+      if (this.props.column.filter === true) {
+        this.table.grid._callHandler(this.table.grid.props.onFilter, {
+          field: this.props.column.field,
+        });
+        return;
+      }
+      if (this.filterGroup?.getValue()[this.props.column.field]) {
         this.filterValue = Object.assign({}, this.filterGroup.getValue());
       }
       this.table.grid.filter = Object.assign(
         {},
         this.table.grid.filter,
-        this.filterGroup.getValue()
+        this.filterGroup?.getValue()
       );
       this.table.grid.filterValueText[this.props.column.field] =
         this.filterGroup
