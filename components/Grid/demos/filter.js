@@ -26,12 +26,8 @@ define([], function () {
 
             title: '标题',
             width: 200,
-            filter: () => {
-              return {
-                component: 'Textbox',
-              }
-            },
-            sortable: true,
+            filter: true,
+            sortable: true, // 配置为true则只穿出field的值
           },
           {
             field: 'author',
