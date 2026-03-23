@@ -832,6 +832,10 @@ class Grid extends Component {
     }
   }
 
+  _onStraightFilter({ field }) {
+    this._callHandler(this.props.onFilter, { field })
+  }
+
   handleSort(sorter) {
     this.props.sortCacheable && this.saveSortInfo(sorter)
     const key = sorter.field

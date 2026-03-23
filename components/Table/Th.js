@@ -595,9 +595,7 @@ class Th extends Component {
 
   onFilterChange(isReset) {
     if (this.props.column.filter === true) {
-      this.table.grid._callHandler(this.table.grid.props.onFilter, {
-        field: this.props.column.field,
-      })
+      this.table.grid._onStraightFilter({ field: this.props.column.field })
       return
     }
     if (this.filterGroup?.getValue()[this.props.column.field]) {
