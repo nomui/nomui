@@ -22576,9 +22576,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     onFilterChange(isReset) {
       if (this.props.column.filter === true) {
-        this.table.grid._callHandler(this.table.grid.props.onFilter, {
-          field: this.props.column.field,
-        });
+        this.table.grid._onStraightFilter({ field: this.props.column.field });
         return;
       }
       if (this.filterGroup?.getValue()[this.props.column.field]) {
@@ -24907,6 +24905,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         return Object.assign({}, item, { sortDirection: null });
       };
+    }
+    _onStraightFilter({ field }) {
+      this._callHandler(this.props.onFilter, { field });
     }
     handleSort(sorter) {
       this.props.sortCacheable && this.saveSortInfo(sorter);
