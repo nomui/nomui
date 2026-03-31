@@ -134,9 +134,10 @@ class Field extends Component {
                 number: annotation.number,
               }
             : null,
-        },
-        onClick: () => {
-          this._callHandler(annotation.onClick, { field: this })
+          onClick: ({ event }) => {
+            this._callHandler(annotation.handler, { field: this })
+            event.stopPropagation()
+          },
         },
       })
     }
