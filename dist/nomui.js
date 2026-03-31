@@ -6994,6 +6994,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     `<svg viewBox="64 64 896 896" focusable="false" data-icon="file" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494z"></path></svg>`,
     cat
   );
+  Icon.add(
+    "annotation",
+    `<svg t="1774947465056" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13899" width="1em" height="1em" fill="currentColor"><path d="M938.730667 768V448a21.333333 21.333333 0 0 0-21.333334-21.333333h-42.666666a21.333333 21.333333 0 0 0-21.333334 21.333333v298.666667h-184.618666c-7.381333 0-14.357333 1.130667-20.949334 3.413333-6.613333 2.282667-12.8 5.696-18.602666 10.261333l-117.162667 92.074667-117.162667-92.074667a63.637333 63.637333 0 0 0-18.602666-10.24 63.573333 63.573333 0 0 0-20.949334-3.434666H170.730667V234.666667h341.333333a21.333333 21.333333 0 0 0 21.333333-21.333334V170.666667a21.333333 21.333333 0 0 0-21.333333-21.333334h-362.666667c-21.333333 0-37.333333 5.333333-48 16S85.397333 192 85.397333 213.333333v554.666667c0 21.333333 5.333333 37.333333 16 48s26.666667 16 48 16h198.570667l124.544 97.856c13.184 10.368 26.368 15.530667 39.552 15.530667 13.184 0 26.368-5.162667 39.530667-15.530667L676.16 832h198.570667c21.333333 0 37.333333-5.333333 48-16s16-26.666667 16-48zM839.210667 95.082667l89.834666 90.453333c16.554667 16.661333 11.413333 48.853333-11.498666 71.893333l-345.6 344.256c-11.072 11.093333-24.853333 18.56-38.293334 20.693334l-106.752 16.981333c-27.733333 4.416-46.570667-14.570667-42.197333-42.496l16.853333-107.434667c2.133333-13.525333 9.536-27.392 20.608-38.506666L767.765333 106.666667c22.933333-23.04 54.890667-28.266667 71.445334-11.605334z m-25.557334 91.733333L476.586667 517.888l-8.362667 38.613333 38.314667-8.469333 337.066666-331.050667-29.930666-30.165333z" p-id="13900"></path></svg>`,
+    cat
+  );
   class Caption extends Component {
     constructor(props, ...mixins) {
       const tagProp = props.href ? { tag: "a" } : {};
@@ -9521,6 +9526,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         labelUiStyle,
         actionAlign,
         enableReadMode,
+        annotation,
       } = this.props;
       const showLabel =
         notShowLabel === false && label !== undefined && label !== null; // 处理关联字段
@@ -9529,6 +9535,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.props.dependencies.length
       ) {
         this._handleDependencies();
+      }
+      if (annotation) {
+        this.setProps({
+          controlAfter: {
+            component: "Icon",
+            type: "annotation",
+            classes: {
+              "nom-field-annotation": true,
+              "nom-field-annotation-filled": !!annotation.number,
+            },
+            badge: annotation.number ? { number: annotation.number } : null,
+          },
+          onClick: () => {
+            this._callHandler(annotation.onClick, { field: this });
+          },
+        });
       }
       this.rules = this.rules.concat(
         rules.map((r) => Object.assign({}, r, { __fromField: true }))
@@ -9632,6 +9654,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           "s-allow-read-mode-hover":
             enableReadMode && enableReadMode.hover === true,
           "s-without-label": !showLabel,
+          "s-with-control-after": !!this.props.controlAfter,
         },
         children: [
           labelProps,

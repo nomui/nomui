@@ -423,3 +423,43 @@
   }
 
 }
+
+.nom-field.s-with-control-after {
+  >.nom-field-content {
+    display: flex;
+    align-items: center;
+
+    >.nom-control {
+      flex: 1;
+      flex-grow: 1;
+    }
+
+    >.nom-control-after {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+
+      &.nom-field-annotation {
+        visibility: hidden;
+        cursor: pointer;
+        color: var(--nom-color-text-2);
+
+        &:hover {
+          color: var(--nom-color-text);
+        }
+      }
+
+      &.nom-field-annotation-filled {
+        visibility: visible;
+      }
+    }
+  }
+
+  &:hover {
+    >.nom-field-content {
+      >.nom-control-after.nom-field-annotation {
+        visibility: visible;
+      }
+    }
+  }
+
+}

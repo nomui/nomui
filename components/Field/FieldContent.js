@@ -1,9 +1,9 @@
 import Component, { n } from '../Component/index'
+import { isNumeric } from '../util/index'
 import ControlActionMixin from './ControlActionMixin'
 import ControlAfterMixin from './ControlAfterMixin'
 import ControlBeforeMixin from './ControlBeforeMixin'
 import ControlMixin from './ControlMixin'
-import { isNumeric } from '../util/index'
 
 class FieldContent extends Component {
   // eslint-disable-next-line no-useless-constructor
