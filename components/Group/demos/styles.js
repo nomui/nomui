@@ -104,7 +104,7 @@ define([], function () {
                 label: '姓名',
                 annotation: {
                   number: 2,
-                  onClick: (args) => {
+                  handler: (args) => {
                     console.log(args)
                     new nomui.Alert({
                       title: '批注内容',
@@ -117,7 +117,7 @@ define([], function () {
                 name: 'age',
                 label: '年龄',
                 annotation: {
-                  onClick: (args) => {
+                  handler: (args) => {
                     console.log(args)
                     new nomui.Alert({
                       title: '批注内容',

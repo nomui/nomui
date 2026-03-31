@@ -10655,10 +10655,8 @@ textarea .nom-textarea {
 .nom-field.s-with-control-after > .nom-field-content > .nom-control-after.nom-field-annotation:hover {
   color: var(--nom-color-text);
 }
-.nom-field.s-with-control-after > .nom-field-content > .nom-control-after.nom-field-annotation-filled {
-  visibility: visible;
-}
-.nom-field.s-with-control-after:hover > .nom-field-content > .nom-control-after.nom-field-annotation {
+.nom-field.s-with-control-after:hover > .nom-field-content > .nom-control-after.nom-field-annotation,
+.nom-field.s-with-control-after.nom-field-annotation-filled > .nom-field-content > .nom-control-after.nom-field-annotation {
   visibility: visible;
 }
 .nom-group > .nom-field-content {

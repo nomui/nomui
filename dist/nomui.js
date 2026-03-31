@@ -9540,15 +9540,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.setProps({
           controlAfter: {
             component: "Icon",
-            type: "annotation",
-            classes: {
-              "nom-field-annotation": true,
-              "nom-field-annotation-filled": !!annotation.number,
+            ref: (c) => {
+              this.annotationIconRef = c;
             },
+            type: "annotation",
+            classes: { "nom-field-annotation": true },
             badge: annotation.number ? { number: annotation.number } : null,
-          },
-          onClick: () => {
-            this._callHandler(annotation.onClick, { field: this });
+            onClick: ({ event }) => {
+              this._callHandler(annotation.handler, { field: this });
+              event.stopPropagation();
+            },
           },
         });
       }
@@ -9655,6 +9656,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             enableReadMode && enableReadMode.hover === true,
           "s-without-label": !showLabel,
           "s-with-control-after": !!this.props.controlAfter,
+          "nom-field-annotation-filled": !!this.props.annotation?.number,
         },
         children: [
           labelProps,
@@ -9668,6 +9670,15 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           toggleReadonlyProps,
           actionProps && n$1(actionProps, [FieldActionMixin]),
         ],
+      });
+    }
+    setAnnotationStatus(number) {
+      if (!number || number <= 0) {
+        this.element.classList.remove("nom-field-annotation-filled");
+      }
+      if (!this.annotationIconRef) return;
+      this.annotationIconRef.update({
+        badge: number && number > 0 ? { number } : null,
       });
     }
     _rendered() {
