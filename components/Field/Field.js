@@ -111,12 +111,34 @@ class Field extends Component {
       labelUiStyle,
       actionAlign,
       enableReadMode,
+      annotation,
     } = this.props
     const showLabel = notShowLabel === false && label !== undefined && label !== null
 
     // 处理关联字段
     if (Array.isArray(this.props.dependencies) && this.props.dependencies.length) {
       this._handleDependencies()
+    }
+
+    if (annotation) {
+      this.setProps({
+        controlAfter: {
+          component: 'Icon',
+          type: 'annotation',
+          classes: {
+            'nom-field-annotation': true,
+            'nom-field-annotation-filled': !!annotation.number,
+          },
+          badge: annotation.number
+            ? {
+                number: annotation.number,
+              }
+            : null,
+        },
+        onClick: () => {
+          this._callHandler(annotation.onClick, { field: this })
+        },
+      })
     }
 
     this.rules = this.rules.concat(rules.map((r) => ({ ...r, __fromField: true })))
@@ -230,6 +252,7 @@ class Field extends Component {
         's-allow-read-mode': !!enableReadMode,
         's-allow-read-mode-hover': enableReadMode && enableReadMode.hover === true,
         's-without-label': !showLabel,
+        's-with-control-after': !!this.props.controlAfter,
       },
       children: [
         labelProps,

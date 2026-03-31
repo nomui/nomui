@@ -102,11 +102,28 @@ define([], function () {
                 component: 'Textbox',
                 name: 'name',
                 label: '姓名',
+                annotation: {
+                  number: 2,
+                  onClick: (args) => {
+                    console.log(args)
+                    new nomui.Alert({
+                      title: '批注内容',
+                    })
+                  },
+                },
               },
               {
                 component: 'Numberbox',
                 name: 'age',
                 label: '年龄',
+                annotation: {
+                  onClick: (args) => {
+                    console.log(args)
+                    new nomui.Alert({
+                      title: '批注内容',
+                    })
+                  },
+                },
               },
               {
                 component: 'Textbox',
