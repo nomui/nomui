@@ -41,7 +41,7 @@ class Steps extends Component {
   }
 
   _handleChild() {
-    const { options, onChange, simple, direction } = this.props
+    const { options, onChange, simple, direction, onStepClick } = this.props
 
     if (!options || !Array.isArray(options) || options.length === 0) return []
 
@@ -54,6 +54,7 @@ class Steps extends Component {
       component: Step,
       stepList: this,
       onChange: isFunction(onChange) ? onChange : undefined,
+      onStepClick: isFunction(onStepClick) ? onStepClick : undefined,
     }))
   }
 

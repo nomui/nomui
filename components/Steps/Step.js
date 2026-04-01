@@ -24,6 +24,7 @@ class Step extends Component {
       iconRender,
       simple,
       direction,
+      onStepClick,
     } = this.props
 
     let icon
@@ -45,14 +46,13 @@ class Step extends Component {
             'nom-step-item-container': true,
           },
           _config() {
-            if (onChange) {
-              this.setProps({
-                attrs: { role: 'button' },
-                onClick: () => {
-                  onChange(index)
-                },
-              })
-            }
+            this.setProps({
+              attrs: onChange || onStepClick ? { role: 'button' } : null,
+              onClick: () => {
+                onChange && onChange(index)
+                onStepClick && onStepClick(index)
+              },
+            })
           },
           children: [
             {
