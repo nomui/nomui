@@ -103,7 +103,10 @@ define([], function () {
                 name: 'name',
                 label: '姓名',
                 annotation: {
-                  number: 2,
+                  number: 3,
+                  init: ({ field }) => {
+                    field.setAnnotationStatus(5) // 更新批注数量
+                  },
                   handler: (args) => {
                     console.log(args)
                     new nomui.Alert({
