@@ -7,6 +7,10 @@ class Step extends Component {
     super(Component.extendProps(Step.defaults, props), ...mixins)
   }
 
+  _created() {
+    this.stepList = this.props.stepList
+  }
+
   _config() {
     // status wait process finish error
     const {
@@ -19,7 +23,7 @@ class Step extends Component {
       icon: i,
       iconRender,
       simple,
-      direction
+      direction,
     } = this.props
 
     let icon
@@ -33,53 +37,81 @@ class Step extends Component {
       classes: {
         [`nom-step-item-${status}`]: true,
         'nom-step-item-icon-render-mode': isFunction(iconRender),
-        'nom-step-simple': simple
+        'nom-step-simple': simple,
       },
-      children: [{
-        classes: {
-          'nom-step-item-container': true,
-        },
-        _config() {
-          if (onChange) {
-            this.setProps({
-              attrs: { role: 'button' },
-              onClick: () => {
-                onChange(index)
+      children: [
+        {
+          classes: {
+            'nom-step-item-container': true,
+          },
+          _config() {
+            if (onChange) {
+              this.setProps({
+                attrs: { role: 'button' },
+                onClick: () => {
+                  onChange(index)
+                },
+              })
+            }
+          },
+          children: [
+            {
+              classes: {
+                'nom-step-item-tail': true,
               },
-            })
-          }
+            },
+            {
+              classes: {
+                'nom-step-item-icon': true,
+                'nom-step-item-icon-customer': !!i || isFunction(iconRender),
+                'nom-step-item-icon-whole-customer': isFunction(iconRender),
+              },
+              children: icon,
+            },
+            {
+              classes: {
+                'nom-step-item-content': true,
+              },
+              renderIf: !simple || direction === 'vertical',
+              children: [
+                {
+                  classes: {
+                    'nom-step-item-title': true,
+                  },
+                  children: title,
+                },
+                !simple && {
+                  classes: {
+                    'nom-step-item-subtitle': true,
+                  },
+                  children: subTitle,
+                },
+                {
+                  classes: {
+                    'nom-step-item-description': true,
+                  },
+                  children: description,
+                },
+              ],
+            },
+            direction === 'horizontal' && {
+              classes: {
+                'nom-step-item-line-horizontal': true,
+              },
+            },
+          ],
         },
-        children: [
-          {
-            classes: {
-              'nom-step-item-tail': true,
-            },
-          },
-          {
-            classes: {
-              'nom-step-item-icon': true,
-              'nom-step-item-icon-customer': !!i || isFunction(iconRender),
-              'nom-step-item-icon-whole-customer': isFunction(iconRender),
-            },
-            children: icon,
-          },
-          {
+        simple &&
+          direction === 'horizontal' && {
             classes: {
               'nom-step-item-content': true,
             },
-            renderIf: !simple || direction === 'vertical',
             children: [
               {
                 classes: {
                   'nom-step-item-title': true,
                 },
                 children: title,
-              },
-              !simple && {
-                classes: {
-                  'nom-step-item-subtitle': true,
-                },
-                children: subTitle,
               },
               {
                 classes: {
@@ -89,33 +121,7 @@ class Step extends Component {
               },
             ],
           },
-          direction === 'horizontal' && {
-            classes: {
-              'nom-step-item-line-horizontal': true,
-            },
-          },
-        ],
-      },
-      simple && direction === 'horizontal' && {
-        classes: {
-          'nom-step-item-content': true,
-        },
-        children: [
-          {
-            classes: {
-              'nom-step-item-title': true,
-            },
-            children: title,
-          },
-          {
-            classes: {
-              'nom-step-item-description': true,
-            },
-            children: description,
-          },
-        ],
-      },
-      ]
+      ],
     })
 
     super._config()
@@ -151,12 +157,11 @@ class Step extends Component {
       }
     }
 
-
     if (i) {
       return Component.normalizeIconProps(i)
     }
 
-    if (status === FINISH) {
+    if (status === FINISH && this.stepList?.props?.useIcon !== false) {
       return {
         component: 'Icon',
         type: 'check-light',
@@ -165,7 +170,7 @@ class Step extends Component {
         },
       }
     }
-    if (status === ERROR) {
+    if (status === ERROR && this.stepList?.props?.useIcon !== false) {
       return {
         component: 'Icon',
         type: 'close',

@@ -19,7 +19,7 @@ class Steps extends Component {
       classes: {
         'nom-steps-horizontal': direction === 'horizontal',
         'nom-steps-vertical': direction === 'vertical',
-        'nom-steps-simple': this.props.simple
+        'nom-steps-simple': this.props.simple,
       },
     })
 
@@ -38,7 +38,6 @@ class Steps extends Component {
       const w = me.element.querySelector('.nom-step > .nom-step-item-content').offsetWidth / 2
       this.element.style.paddingLeft = `${parseInt(w, 10) + 14}px`
     }, 0)
-
   }
 
   _handleChild() {
@@ -53,6 +52,7 @@ class Steps extends Component {
       simple,
       direction,
       component: Step,
+      stepList: this,
       onChange: isFunction(onChange) ? onChange : undefined,
     }))
   }
@@ -77,7 +77,7 @@ Steps.defaults = {
   current: 0,
   options: [],
   onChange: null,
-  simple: false
+  simple: false,
 }
 Component.register(Steps)
 export default Steps

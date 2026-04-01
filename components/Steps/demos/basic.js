@@ -7,6 +7,7 @@ define([], function () {
         children: {
           component: 'Steps',
           current: 1,
+          // useIcon: false, // 配置false则不显示打勾图标,保留数字
           options: [
             {
               title: 'Finished',
