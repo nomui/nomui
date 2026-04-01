@@ -242,6 +242,12 @@ class Field extends Component {
       }
     }
 
+    if (this.props.annotation && isFunction(this.props.annotation.init)) {
+      requestAnimationFrame(() => {
+        this.props.annotation.init({ field: this })
+      })
+    }
+
     this.setProps({
       attrs: {
         'data-field-name': this.name,
