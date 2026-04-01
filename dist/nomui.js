@@ -35349,6 +35349,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     constructor(props, ...mixins) {
       super(Component.extendProps(Step.defaults, props), ...mixins);
     }
+    _created() {
+      this.stepList = this.props.stepList;
+    }
     _config() {
       // status wait process finish error
       const {
@@ -35463,14 +35466,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (i) {
         return Component.normalizeIconProps(i);
       }
-      if (status === FINISH) {
+      if (status === FINISH && this.stepList?.props?.useIcon !== false) {
         return {
           component: "Icon",
           type: "check-light",
           classes: { [`nom-step-${status}-icon`]: true },
         };
       }
-      if (status === ERROR) {
+      if (status === ERROR && this.stepList?.props?.useIcon !== false) {
         return {
           component: "Icon",
           type: "close",
@@ -35534,6 +35537,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           simple,
           direction,
           component: Step,
+          stepList: this,
           onChange: isFunction(onChange) ? onChange : undefined,
         })
       );
