@@ -274,6 +274,8 @@ class Field extends Component {
   setAnnotationStatus(number) {
     if (!number || number <= 0) {
       this.element.classList.remove('nom-field-annotation-filled')
+    } else {
+      this.element.classList.add('nom-field-annotation-filled')
     }
     if (!this.annotationIconRef) return
     this.annotationIconRef.update({
