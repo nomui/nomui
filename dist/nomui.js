@@ -35365,6 +35365,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         iconRender,
         simple,
         direction,
+        onStepClick,
       } = this.props;
       let icon;
       if (isFunction(iconRender)) {
@@ -35382,14 +35383,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           {
             classes: { "nom-step-item-container": true },
             _config() {
-              if (onChange) {
-                this.setProps({
-                  attrs: { role: "button" },
-                  onClick: () => {
-                    onChange(index);
-                  },
-                });
-              }
+              this.setProps({
+                attrs: onChange || onStepClick ? { role: "button" } : null,
+                onClick: () => {
+                  onChange && onChange(index);
+                  onStepClick && onStepClick(index);
+                },
+              });
             },
             children: [
               { classes: { "nom-step-item-tail": true } },
@@ -35528,7 +35528,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }, 0);
     }
     _handleChild() {
-      const { options, onChange, simple, direction } = this.props;
+      const { options, onChange, simple, direction, onStepClick } = this.props;
       if (!options || !Array.isArray(options) || options.length === 0)
         return [];
       return options.map((item, index) =>
@@ -35539,6 +35539,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           component: Step,
           stepList: this,
           onChange: isFunction(onChange) ? onChange : undefined,
+          onStepClick: isFunction(onStepClick) ? onStepClick : undefined,
         })
       );
     }

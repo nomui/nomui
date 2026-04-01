@@ -7,6 +7,9 @@ define([], function () {
         children: {
           component: 'Steps',
           current: 1,
+          // onStepClick: (index) => {
+          //   console.log('click step', index)
+          // },
           // useIcon: false, // 配置false则不显示打勾图标,保留数字
           options: [
             {
