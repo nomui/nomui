@@ -12223,6 +12223,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.popup = new AutoCompletePopup({
         trigger: this.control,
         options,
+        classes: this.props.popupClasses,
         onShow: () => {
           if (this.optionList) {
             this.optionList.update({ selectedItems: this.getValue() });
@@ -14115,6 +14116,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       this.popup = new CascaderPopup({
         trigger: this.control,
+        classes: this.props.popupClasses,
         onShow: () => {
           this.optionList && this._drawOptionLists();
           if (this.props.multiple) {
@@ -27099,7 +27101,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         w = `${popupWidth}px`;
       }
       this.popup = new nomui.Popup({
-        classes: { "nom-icon-picker-popup": true },
+        classes: Object.assign({}, this.props.popupClasses, {
+          "nom-icon-picker-popup": true,
+        }),
         attrs: { style: { width: w } },
         reference: container,
         trigger: this.control,
@@ -34251,6 +34255,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this.popup = new SelectPopup({
         reference: container,
         trigger: this.control,
+        classes: this.props.popupClasses,
         virtual,
         onShow: () => {
           if (this.selectedSingle && this.showSharedInput) {
@@ -36457,6 +36462,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       const that = this;
       this.popup = new TimePickerPopup({
+        classes: this.props.popupClasses,
         trigger: this.control,
         onHide: () => {
           that.getValue() !== that.defaultValue && that.handleChange();
@@ -37754,6 +37760,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       this.popup = new TreeSelectPopup({
         trigger: this.control,
+        classes: this.props.popupClasses,
         nodeCheckable: this.props.multiple && this._getPopupNodeCheckable(),
         onShow: () => {
           if (this.props.disabled) {

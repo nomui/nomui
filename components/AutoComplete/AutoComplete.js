@@ -30,6 +30,7 @@ class AutoComplete extends Textbox {
     this.popup = new AutoCompletePopup({
       trigger: this.control,
       options,
+      classes: this.props.popupClasses,
       onShow: () => {
         if (this.optionList) {
           this.optionList.update({

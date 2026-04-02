@@ -1,0 +1,17 @@
+.wt-tag-select-popup .nom-list-item .nom-icon.p-type-check-circle {
+    visibility: hidden;
+    color: var(--nom-color-primary)
+}
+
+.wt-tag-select-popup .nom-list-item.s-selected .nom-icon.p-type-check-circle {
+    visibility: visible;
+}
+
+.wt-tag-select-popup .nom-list-item.s-selected,
+.wt-tag-select-popup .nom-list-item.s-selected:hover {
+    background-color: rgba(var(--nom-color-primary-base), 0.1);
+}
+
+.wt-tag-select-popup .nom-list-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
