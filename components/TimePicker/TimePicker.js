@@ -94,6 +94,7 @@ class TimePicker extends Textbox {
     const that = this
 
     this.popup = new TimePickerPopup({
+      classes: this.props.popupClasses,
       trigger: this.control,
       onHide: () => {
         that.getValue() !== that.defaultValue && that.handleChange()

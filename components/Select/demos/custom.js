@@ -1,4 +1,4 @@
-define([], function () {
+define(['css!./style.css'], function () {
   return {
     title: '自定义选项及选中项的呈现',
     file: 'custom',
@@ -10,41 +10,41 @@ define([], function () {
           {
             component: 'Select',
             options: [
-              { color: '#5484ED', vlaue: 1 },
-              { color: '#A4BDFC', vlaue: 2 },
-              { color: '#7AE7BF', vlaue: 3 },
-              { color: '#51B749', vlaue: 4 },
-              { color: '#FBD75B', vlaue: 5 },
+              { color: '#5484ED', value: 1, text: 'Option 1' },
+              { color: '#A4BDFC', value: 2, text: 'Option 2' },
+              { color: '#7AE7BF', value: 3, text: 'Option 3' },
+              { color: '#51B749', value: 4, text: 'Option 4' },
+              { color: '#FBD75B', value: 5, text: 'Option 5' },
             ],
+            popupClasses: {
+              'wt-tag-select-popup': true,
+            },
             optionDefaults: {
-              _config: function () {
-                const { color } = this.props
-                this.setProps({
-                  attrs: {
-                    style: {
-                      height: '30px',
-                      backgroundColor: color,
-                    },
-                  },
-                  styles: {
-                    margin: '1',
+              onConfig: ({ inst }) => {
+                const { color, text } = inst.props
+                inst.setProps({
+                  children: {
+                    component: 'Flex',
+                    items: [
+                      {
+                        attrs: {
+                          style: {
+                            flexGrow: 1,
+                          },
+                        },
+                        children: {
+                          component: 'Tag',
+                          color: color,
+                          text: text,
+                        },
+                      },
+                      {
+                        component: 'Icon',
+                        type: 'check-circle',
+                      },
+                    ],
                   },
                 })
-              },
-            },
-            selectedSingle: {
-              _config: function () {
-                const { option } = this.props
-                if (option) {
-                  this.setProps({
-                    attrs: {
-                      style: {
-                        height: '20px',
-                        backgroundColor: option.color,
-                      },
-                    },
-                  })
-                }
               },
             },
           },

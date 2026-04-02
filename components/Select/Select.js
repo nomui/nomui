@@ -368,6 +368,7 @@ class Select extends Field {
     this.popup = new SelectPopup({
       reference: container,
       trigger: this.control,
+      classes: this.props.popupClasses,
       virtual,
       onShow: () => {
         if (this.selectedSingle && this.showSharedInput) {
