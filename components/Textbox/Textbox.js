@@ -342,7 +342,7 @@ class Textbox extends Field {
     const text = this.getText() || this.props.placeholder || ''
     this.measureSpan.textContent = text
 
-    const width = this.measureSpan.offsetWidth + (this._autoWidthPadding || 0) + 6
+    const width = this.measureSpan.offsetWidth + (this._autoWidthPadding || 0) + 16
 
     const minWidth = this.props.autoWidth.minWidth || 200
     this.input.element.style.width = `${Math.max(width, minWidth)}px`
