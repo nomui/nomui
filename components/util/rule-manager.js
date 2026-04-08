@@ -148,7 +148,7 @@ RuleManager.ruleTypes = {
   },
   phoneNumber: {
     validate: function (value) {
-      return !isEmpty(value) ? /^1[1-9][0-9]{9}$/.test(value) : true
+      return !isEmpty(value) ? /^1[3-9]\d{9}$/.test(value) : true
     },
     message: '请输入正确的手机号',
   },
