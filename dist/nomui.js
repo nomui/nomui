@@ -35035,6 +35035,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const that = this;
       this.setProps({
         attrs: { style: { height: `${height + 44}px`, width: `${width}px` } },
+        classes: { "nom-slide-captcha-touch": that.isTouchDevice() },
         children: [
           {
             tag: "div",
@@ -35157,7 +35158,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     // onFinishFailed:()=>{},
     refreshTitle: "换一张",
     tip: "向右滑动完成拼图",
-    touchTip: "点击正确的位置完成拼图",
+    touchTip: "点击图中正确的位置完成拼图",
     autoRefreshOnFail: true, // 失败后是否自动刷新图片
   };
   Component.register(SlideCaptcha);

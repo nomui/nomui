@@ -9826,6 +9826,12 @@ textarea .nom-textarea {
   height: 28px;
   background-color: var(--nom-slide-captcha-refresh-bg);
 }
+.nom-slide-captcha.nom-slide-captcha-touch .drag {
+  background: transparent;
+}
+.nom-slide-captcha.nom-slide-captcha-touch .drag .handler {
+  display: none;
+}
 .nom-timeline {
   margin: 0;
   padding: 0;
