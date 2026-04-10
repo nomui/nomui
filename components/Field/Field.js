@@ -809,7 +809,7 @@ Field.defaults = {
   compact: false,
   labelExpanded: true,
   readonly: false, // { ignoreClasses:['className']}  配置成对象时，className以及其子元素的交互事件会被放行
-  ignoreReadonlyClasses: ['nom-field-ignore-readonly', 'control-type-in-design'],
+  ignoreReadonlyClasses: ['nom-field-ignore-readonly', 'nom-anchor', 'control-type-in-design'],
 }
 
 Object.defineProperty(Field.prototype, 'fields', {
