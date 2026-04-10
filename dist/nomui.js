@@ -10131,6 +10131,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     readonly: false, // { ignoreClasses:['className']}  配置成对象时，className以及其子元素的交互事件会被放行
     ignoreReadonlyClasses: [
       "nom-field-ignore-readonly",
+      "nom-anchor",
       "control-type-in-design",
     ],
   };
