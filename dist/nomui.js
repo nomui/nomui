@@ -26331,7 +26331,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (invalids.length > 0) {
         invalids[0]._focusInvalid();
       }
-      return invalids.length === 0;
+      if (invalids.length > 0) {
+        return false;
+      } // 子字段的验证通过后，再验证自己的验证规则
+      const superResult = super._validate();
+      if (superResult !== true) {
+        return superResult;
+      }
+      return true;
     }
     getField(fieldName) {
       if (typeof fieldName === "string") {
