@@ -35371,6 +35371,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         icon: i,
         iconRender,
         simple,
+        splite,
         direction,
         onStepClick,
       } = this.props;
@@ -35410,7 +35411,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               },
               {
                 classes: { "nom-step-item-content": true },
-                renderIf: !simple || direction === "vertical",
+                renderIf: (!splite && !simple) || direction === "vertical",
                 children: [
                   { classes: { "nom-step-item-title": true }, children: title },
                   !simple && {
@@ -35428,7 +35429,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
               },
             ],
           },
-          simple &&
+          (simple || splite) &&
             direction === "horizontal" && {
               classes: { "nom-step-item-content": true },
               children: [
@@ -35535,13 +35536,21 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }, 0);
     }
     _handleChild() {
-      const { options, onChange, simple, direction, onStepClick } = this.props;
+      const {
+        options,
+        onChange,
+        simple,
+        splite,
+        direction,
+        onStepClick,
+      } = this.props;
       if (!options || !Array.isArray(options) || options.length === 0)
         return [];
       return options.map((item, index) =>
         Object.assign({ status: this._getStatus(index, this.current) }, item, {
           index,
           simple,
+          splite,
           direction,
           component: Step,
           stepList: this,

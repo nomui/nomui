@@ -41,7 +41,7 @@ class Steps extends Component {
   }
 
   _handleChild() {
-    const { options, onChange, simple, direction, onStepClick } = this.props
+    const { options, onChange, simple, splite, direction, onStepClick } = this.props
 
     if (!options || !Array.isArray(options) || options.length === 0) return []
 
@@ -50,6 +50,7 @@ class Steps extends Component {
       ...item,
       index,
       simple,
+      splite,
       direction,
       component: Step,
       stepList: this,
