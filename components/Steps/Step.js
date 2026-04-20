@@ -23,6 +23,7 @@ class Step extends Component {
       icon: i,
       iconRender,
       simple,
+      splite,
       direction,
       onStepClick,
     } = this.props
@@ -72,7 +73,7 @@ class Step extends Component {
               classes: {
                 'nom-step-item-content': true,
               },
-              renderIf: !simple || direction === 'vertical',
+              renderIf: (!splite && !simple) || direction === 'vertical',
               children: [
                 {
                   classes: {
@@ -101,7 +102,7 @@ class Step extends Component {
             },
           ],
         },
-        simple &&
+        (simple || splite) &&
           direction === 'horizontal' && {
             classes: {
               'nom-step-item-content': true,

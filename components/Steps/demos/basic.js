@@ -7,6 +7,8 @@ define([], function () {
         children: {
           component: 'Steps',
           current: 1,
+          splite: true,
+          // direction: 'vertical',
           // onStepClick: (index) => {
           //   console.log('click step', index)
           // },
