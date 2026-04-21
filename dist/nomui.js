@@ -10133,6 +10133,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       "nom-field-ignore-readonly",
       "nom-anchor",
       "control-type-in-design",
+      "nom-field-annotation",
     ],
   };
   Object.defineProperty(Field.prototype, "fields", {
