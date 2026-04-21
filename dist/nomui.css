@@ -12504,60 +12504,60 @@ textarea .nom-textarea {
   height: calc(1rem - 1px);
   border-bottom: 1px solid var(--nom-step-line-color);
 }
-.nom-steps > .nom-step.nom-step-item-wait .nom-step-item-icon {
+.nom-steps > .nom-step.nom-step-item-wait > .nom-step-item-container > .nom-step-item-icon {
   color: var(--nom-step-item-icon-color);
   background-color: var(--nom-step-item-icon-bg-color);
   border-color: var(--nom-step-border-color);
 }
-.nom-steps > .nom-step.nom-step-item-process .nom-step-item-icon {
+.nom-steps > .nom-step.nom-step-item-process > .nom-step-item-container > .nom-step-item-icon {
   color: var(--nom-step-item-icon-color);
   background-color: var(--nom-color-primary);
   border-color: var(--nom-color-primary);
 }
-.nom-steps > .nom-step.nom-step-item-process .nom-step-item-container > .nom-step-item-icon-customer {
+.nom-steps > .nom-step.nom-step-item-process > .nom-step-item-container > .nom-step-item-icon-customer {
   color: var(--nom-step-item-icon-color);
   background-color: var(--nom-color-primary);
 }
-.nom-steps > .nom-step.nom-step-item-finish .nom-step-item-icon {
+.nom-steps > .nom-step.nom-step-item-finish > .nom-step-item-container > .nom-step-item-icon {
   color: var(--nom-step-item-icon-color);
   background-color: var(--nom-color-primary);
   border-color: var(--nom-color-primary);
 }
-.nom-steps > .nom-step.nom-step-item-error .nom-step-item-icon {
+.nom-steps > .nom-step.nom-step-item-error > .nom-step-item-container > .nom-step-item-icon {
   background-color: var(--nom-color-danger);
   color: var(--nom-step-item-icon-color);
   border-color: var(--nom-color-danger);
 }
-.nom-steps > .nom-step.nom-step-item-error .nom-step-item-content .nom-step-item-title {
+.nom-steps > .nom-step.nom-step-item-error > .nom-step-item-content > .nom-step-item-title {
   color: var(--nom-color-danger);
   opacity: 0.85;
 }
-.nom-steps > .nom-step.nom-step-item-error .nom-step-item-content .nom-step-item-subtitle {
+.nom-steps > .nom-step.nom-step-item-error > .nom-step-item-content > .nom-step-item-subtitle {
   color: var(--nom-color-danger);
   opacity: 0.45;
 }
-.nom-steps > .nom-step.nom-step-item-error .nom-step-item-content .nom-step-item-description {
+.nom-steps > .nom-step.nom-step-item-error > .nom-step-item-content > .nom-step-item-description {
   color: var(--nom-color-danger);
   opacity: 0.85;
 }
-.nom-steps > .nom-step.nom-step-simple .nom-step-item-icon {
+.nom-steps > .nom-step.nom-step-simple > .nom-step-item-container > .nom-step-item-icon {
   background: transparent;
   border: none;
 }
-.nom-steps > .nom-step.nom-step-simple .nom-step-item-icon .nom-step-icon-mini {
+.nom-steps > .nom-step.nom-step-simple > .nom-step-item-container > .nom-step-item-icon .nom-step-icon-mini {
   width: 0.65rem;
   height: 0.65rem;
   border-radius: 200px;
   border: 2px solid var(--nom-step-item-icon-mini-color);
 }
-.nom-steps > .nom-step.nom-step-simple .nom-step-item-icon .nom-step-icon-mini.nom-step-finish-icon {
+.nom-steps > .nom-step.nom-step-simple > .nom-step-item-container > .nom-step-item-icon .nom-step-icon-mini.nom-step-finish-icon {
   border-color: var(--nom-color-primary);
 }
-.nom-steps > .nom-step.nom-step-simple .nom-step-item-icon .nom-step-icon-mini.nom-step-process-icon {
+.nom-steps > .nom-step.nom-step-simple > .nom-step-item-container > .nom-step-item-icon .nom-step-icon-mini.nom-step-process-icon {
   border-color: var(--nom-color-primary);
   background-color: var(--nom-color-primary);
 }
-.nom-steps > .nom-step.nom-step-simple .nom-step-item-icon .nom-step-icon-mini.nom-step-error-icon {
+.nom-steps > .nom-step.nom-step-simple > .nom-step-item-container > .nom-step-item-icon .nom-step-icon-mini.nom-step-error-icon {
   border-color: var(--nom-color-danger);
 }
 .nom-steps > .nom-step.nom-step-simple .nom-step-item-container + .nom-step-item-content {
