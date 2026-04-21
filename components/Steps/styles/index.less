@@ -107,7 +107,7 @@
     }
 
     &.nom-step-item-wait {
-      .nom-step-item-icon {
+      >.nom-step-item-container>.nom-step-item-icon {
         color: var(--nom-step-item-icon-color);
         background-color: var(--nom-step-item-icon-bg-color);
         border-color: var(--nom-step-border-color);
@@ -115,13 +115,13 @@
     }
 
     &.nom-step-item-process {
-      .nom-step-item-icon {
+      >.nom-step-item-container>.nom-step-item-icon {
         color: var(--nom-step-item-icon-color);
         background-color: var(--nom-color-primary);
         border-color: var(--nom-color-primary);
       }
 
-      .nom-step-item-container {
+      >.nom-step-item-container {
         >.nom-step-item-icon-customer {
           color: var(--nom-step-item-icon-color);
           background-color: var(--nom-color-primary);
@@ -130,7 +130,7 @@
     }
 
     &.nom-step-item-finish {
-      .nom-step-item-icon {
+      >.nom-step-item-container>.nom-step-item-icon {
         color: var(--nom-step-item-icon-color);
         background-color: var(--nom-color-primary);
         border-color: var(--nom-color-primary);
@@ -138,24 +138,24 @@
     }
 
     &.nom-step-item-error {
-      .nom-step-item-icon {
+      >.nom-step-item-container>.nom-step-item-icon {
         background-color: var(--nom-color-danger);
         color: var(--nom-step-item-icon-color);
         border-color: var(--nom-color-danger);
       }
 
-      .nom-step-item-content {
-        .nom-step-item-title {
+      >.nom-step-item-content {
+        >.nom-step-item-title {
           color: var(--nom-color-danger);
           opacity: 0.85;
         }
 
-        .nom-step-item-subtitle {
+        >.nom-step-item-subtitle {
           color: var(--nom-color-danger);
           opacity: 0.45;
         }
 
-        .nom-step-item-description {
+        >.nom-step-item-description {
           color: var(--nom-color-danger);
           opacity: 0.85;
         }
@@ -163,7 +163,7 @@
     }
 
     &.nom-step-simple {
-      .nom-step-item-icon {
+      >.nom-step-item-container>.nom-step-item-icon {
         background: transparent;
         border: none;
 
