@@ -1,21 +1,21 @@
 .nom-steps {
-  &:not(.nom-step-label-vertical) .nom-step:first-child {
+  &:not(.nom-step-label-vertical)>.nom-step:first-child {
     padding-left: 0;
   }
 
-  &:not(.nom-step-label-vertical) .nom-step {
+  &:not(.nom-step-label-vertical)>.nom-step {
     padding-left: 1rem;
     white-space: nowrap;
   }
 
-  &.nom-steps-horizontal .nom-step:last-child {
+  &.nom-steps-horizontal>.nom-step:last-child {
     flex-grow: 1;
   }
 
   &.nom-steps-simple {
 
 
-    &:not(.nom-step-label-vertical) .nom-step {
+    &:not(.nom-step-label-vertical)>.nom-step {
       padding-left: .5rem;
     }
   }
@@ -30,7 +30,7 @@
   text-align: initial;
   list-style: none;
 
-  .nom-step {
+  >.nom-step {
     position: relative;
     flex: 1;
     flex-grow: 2;
@@ -204,10 +204,14 @@
       }
 
       &:last-child {
-        .nom-step-item-line-horizontal {
-          display: none;
-          flex-grow: 0;
+
+        >.nom-step-item-container {
+          >.nom-step-item-line-horizontal {
+            display: none;
+            flex-grow: 0;
+          }
         }
+
       }
     }
   }
