@@ -26,10 +26,16 @@ class DataList extends Component {
       empty = {
         component: 'Empty',
         ...showEmpty,
+        ref: (c) => {
+          this.emptyRef = c
+        },
       }
     } else if (showEmpty === true) {
       empty = {
         component: 'Empty',
+        ref: (c) => {
+          this.emptyRef = c
+        },
       }
     }
 
@@ -42,8 +48,11 @@ class DataList extends Component {
       children = data.map((itemData) => {
         return this._getItemDescriptor(itemData)
       })
+      if (empty) {
+        children.unshift(empty)
+      }
     } else {
-      children = empty
+      children = [empty]
     }
 
     this.setProps({
@@ -116,10 +125,12 @@ class DataList extends Component {
 
   appendItem(itemData) {
     this.appendChild(this._getItemDescriptor(itemData))
+    this._setEmptyVisible()
   }
 
   prependItem(itemData) {
     this.prependChild(this._getItemDescriptor(itemData))
+    this._setEmptyVisible()
   }
 
   updateItem(key, newItemData) {
@@ -133,6 +144,18 @@ class DataList extends Component {
     const item = this.findItem(key)
     if (item !== null) {
       item.remove()
+    }
+    this._setEmptyVisible()
+  }
+
+  _setEmptyVisible() {
+    if (!this.props.showEmpty) {
+      return
+    }
+    if (this.getItemDatas().length) {
+      this.emptyRef.hide()
+    } else {
+      this.emptyRef.show()
     }
   }
 

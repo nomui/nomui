@@ -9,6 +9,13 @@ define([], function () {
         showEmpty: {
           size: 'large',
         },
+        itemDefaults: {
+          _config: function () {
+            this.setProps({
+              children: this.props.text,
+            })
+          },
+        },
       }
     },
   }

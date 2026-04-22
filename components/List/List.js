@@ -34,15 +34,23 @@ class List extends Component {
       empty = {
         component: 'Empty',
         ...this.props.showEmpty,
+        ref: (c) => {
+          this.emptyRef = c
+        },
       }
     } else {
       empty = {
         component: 'Empty',
+        ref: (c) => {
+          this.emptyRef = c
+        },
       }
     }
 
-    const children =
-      !this.props.items.length && this.props.showEmpty ? empty : { component: ListContent }
+    const children = !this.props.items.length && this.props.showEmpty ? [empty] : []
+
+    children.push({ component: ListContent })
+
     if (this.props.items.length > 20 && (virtual === true || typeof virtual === 'number')) {
       if (!this.virtual || this.firstRender) {
         this.virCreated()
@@ -222,14 +230,17 @@ class List extends Component {
 
   appendItem(itemProps) {
     this.content.appendItem(itemProps)
+    this._setEmptyVisible()
   }
 
   appendDataItem(itemData) {
     this.content.appendDataItem(itemData)
+    this._setEmptyVisible()
   }
 
   prependDataItem(itemData) {
     this.content.prependDataItem(itemData)
+    this._setEmptyVisible()
   }
 
   removeItem(param) {
@@ -237,6 +248,7 @@ class List extends Component {
     if (item !== null) {
       item.wrapper ? item.wrapper.remove() : item.remove()
     }
+    this._setEmptyVisible()
   }
 
   removeItems(param) {
@@ -244,6 +256,19 @@ class List extends Component {
       for (let i = 0; i < param.length; i++) {
         this.removeItem(param[i])
       }
+    }
+    this._setEmptyVisible()
+  }
+
+  _setEmptyVisible() {
+    if (!this.props.showEmpty) {
+      return
+    }
+
+    if (this.content.getAllItems().length) {
+      this.emptyRef.hide()
+    } else {
+      this.emptyRef.show()
     }
   }
 
