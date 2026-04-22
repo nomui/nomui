@@ -17316,7 +17316,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         if (empty) {
           children.unshift(empty);
         }
-      } else {
+      } else if (this.props.showEmpty) {
         children = [empty];
       }
       this.setProps({ selectable: { byClick: false }, children: children });

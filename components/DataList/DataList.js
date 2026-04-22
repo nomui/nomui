@@ -51,7 +51,7 @@ class DataList extends Component {
       if (empty) {
         children.unshift(empty)
       }
-    } else {
+    } else if (this.props.showEmpty) {
       children = [empty]
     }
 
