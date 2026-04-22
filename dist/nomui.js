@@ -11513,14 +11513,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       );
       let empty = null;
       if (isPlainObject(this.props.showEmpty)) {
-        empty = Object.assign({ component: "Empty" }, this.props.showEmpty);
+        empty = Object.assign({ component: "Empty" }, this.props.showEmpty, {
+          ref: (c) => {
+            this.emptyRef = c;
+          },
+        });
       } else {
-        empty = { component: "Empty" };
+        empty = {
+          component: "Empty",
+          ref: (c) => {
+            this.emptyRef = c;
+          },
+        };
       }
       const children =
-        !this.props.items.length && this.props.showEmpty
-          ? empty
-          : { component: ListContent };
+        !this.props.items.length && this.props.showEmpty ? [empty] : [];
+      children.push({ component: ListContent });
       if (
         this.props.items.length > 20 &&
         (virtual === true || typeof virtual === "number")
@@ -11677,24 +11685,39 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     appendItem(itemProps) {
       this.content.appendItem(itemProps);
+      this._setEmptyVisible();
     }
     appendDataItem(itemData) {
       this.content.appendDataItem(itemData);
+      this._setEmptyVisible();
     }
     prependDataItem(itemData) {
       this.content.prependDataItem(itemData);
+      this._setEmptyVisible();
     }
     removeItem(param) {
       const item = this.getItem(param);
       if (item !== null) {
         item.wrapper ? item.wrapper.remove() : item.remove();
       }
+      this._setEmptyVisible();
     }
     removeItems(param) {
       if (Array.isArray(param)) {
         for (let i = 0; i < param.length; i++) {
           this.removeItem(param[i]);
         }
+      }
+      this._setEmptyVisible();
+    }
+    _setEmptyVisible() {
+      if (!this.props.showEmpty) {
+        return;
+      }
+      if (this.content.getAllItems().length) {
+        this.emptyRef.hide();
+      } else {
+        this.emptyRef.show();
       }
     }
     hideItem(param) {
@@ -17269,9 +17292,18 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       );
       let empty = null;
       if (isPlainObject(showEmpty)) {
-        empty = Object.assign({ component: "Empty" }, showEmpty);
+        empty = Object.assign({ component: "Empty" }, showEmpty, {
+          ref: (c) => {
+            this.emptyRef = c;
+          },
+        });
       } else if (showEmpty === true) {
-        empty = { component: "Empty" };
+        empty = {
+          component: "Empty",
+          ref: (c) => {
+            this.emptyRef = c;
+          },
+        };
       }
       let children = [];
       if (Array.isArray(data) && data.length > 0) {
@@ -17281,8 +17313,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children = data.map((itemData) => {
           return this._getItemDescriptor(itemData);
         });
+        if (empty) {
+          children.unshift(empty);
+        }
       } else {
-        children = empty;
+        children = [empty];
       }
       this.setProps({ selectable: { byClick: false }, children: children });
     }
@@ -17343,9 +17378,11 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     appendItem(itemData) {
       this.appendChild(this._getItemDescriptor(itemData));
+      this._setEmptyVisible();
     }
     prependItem(itemData) {
       this.prependChild(this._getItemDescriptor(itemData));
+      this._setEmptyVisible();
     }
     updateItem(key, newItemData) {
       const item = this.findItem(key);
@@ -17357,6 +17394,17 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const item = this.findItem(key);
       if (item !== null) {
         item.remove();
+      }
+      this._setEmptyVisible();
+    }
+    _setEmptyVisible() {
+      if (!this.props.showEmpty) {
+        return;
+      }
+      if (this.getItemDatas().length) {
+        this.emptyRef.hide();
+      } else {
+        this.emptyRef.show();
       }
     }
     disableItem(key) {
