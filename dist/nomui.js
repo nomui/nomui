@@ -26098,7 +26098,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       });
       if (options.merge === true) {
-        return extend(this.currentValue, value);
+        return extend(this.props.data, this.currentValue, value);
       }
       return value;
     }
