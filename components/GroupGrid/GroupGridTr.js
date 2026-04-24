@@ -19,8 +19,10 @@ class GroupGridTr extends Tr {
     const { name, value, data } = this.props
     this.currentData = data
     this.initValue = value !== undefined ? clone(this.props.value) : null
+
     this.oldValue = null
     this.currentValue = this.initValue
+
     if (name) {
       this.name = name
       this._autoName = false
@@ -67,7 +69,7 @@ class GroupGridTr extends Tr {
       }
     })
     if (options.merge === true) {
-      return extend(this.currentValue, value)
+      return extend(this.props.data, this.currentValue, value)
     }
     return value
   }

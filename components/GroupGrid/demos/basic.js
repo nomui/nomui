@@ -39,8 +39,8 @@ define([], function () {
             },
 
             value: [
-              { school: '小学', startYear: '2000' },
-              { school: '大学', startYear: '2012' },
+              { school: '小学', startYear: '2000', id: 1 },
+              { school: '大学', startYear: '2012', id: 2 },
             ],
           },
         ],
@@ -50,7 +50,7 @@ define([], function () {
             text: 'getValue',
             onClick: () => {
               // eslint-disable-next-line
-              console.log(formRef.getValue())
+              console.log(formRef.getValue({ merge: true }))
             },
           },
           {
