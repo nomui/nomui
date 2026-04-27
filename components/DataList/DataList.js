@@ -49,7 +49,7 @@ class DataList extends Component {
         return this._getItemDescriptor(itemData)
       })
       if (empty) {
-        children.unshift(empty)
+        children.unshift({ ...empty, hidden: true })
       }
     } else if (this.props.showEmpty) {
       children = [empty]

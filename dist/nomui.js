@@ -17314,7 +17314,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           return this._getItemDescriptor(itemData);
         });
         if (empty) {
-          children.unshift(empty);
+          children.unshift(Object.assign({}, empty, { hidden: true }));
         }
       } else if (this.props.showEmpty) {
         children = [empty];
