@@ -83,7 +83,7 @@ class TreeNodeContent extends Component {
         },
         indicator: indicatorProps,
       }),
-      selectable: this.node.props.data[this.tree.props.nodeSelectable.disableField]
+      selectable: this.node.props.data[this.tree.props.nodeSelectable?.disableField]
         ? false
         : {
             byClick: this.tree.props.nodeSelectable.byClick,
