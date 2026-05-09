@@ -86,12 +86,13 @@ define([], function () {
               },
               {
                 text: '节点 2',
-                children: [{ text: '节点 2.1' }, { text: '节点 2.2' }],
+                children: [{ text: '节点 2.1' }, { text: '节点 2.2', unSelectable: true }],
               },
             ],
             scrollBlock: 'start',
             nodeSelectable: {
               selectedNodeKey: '节点 1.2',
+              disableField: 'unSelectable', // 此字段有值则禁止选中
               onNodeSelect: ({ node }) => {
                 selectedNode = node
                 updateSelectedInfo()
