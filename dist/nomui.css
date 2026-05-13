@@ -12432,7 +12432,7 @@ textarea .nom-textarea {
   white-space: nowrap;
 }
 .nom-steps.nom-steps-horizontal > .nom-step:last-child {
-  flex-grow: 1;
+  flex-grow: 0;
 }
 .nom-steps.nom-steps-simple:not(.nom-step-label-vertical) > .nom-step {
   padding-left: 0.5rem;
