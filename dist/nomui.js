@@ -29424,7 +29424,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         );
         this.rules.push({
           type: "regex",
-          value: { pattern: `^\\d+(\\.\\d{1,${maxPrecision}})?$` },
+          value: { pattern: `^-?\\d+(\\.\\d{1,${maxPrecision}})?$` },
           message: str,
         });
       }

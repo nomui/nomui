@@ -21,9 +21,9 @@ class Numberbox extends Textbox {
       this.rules.push({
         type: 'regex',
         value: {
-          pattern: `^\\d+(\\.\\d{1,${maxPrecision}})?$`,
+          pattern: `^-?\\d+(\\.\\d{1,${maxPrecision}})?$`,
         },
-        message: str
+        message: str,
       })
     }
 
@@ -181,7 +181,7 @@ Numberbox.defaults = {
   allowClear: false,
   maxPrecisionText: '请输入有效数字，且最多包含{{maxPrecision}}位小数',
   integerText: '请输入有效整数',
-  precisionText: '请输入有效数字，且包含{{precision}}位小数'
+  precisionText: '请输入有效数字，且包含{{precision}}位小数',
 }
 Component.register(Numberbox)
 
