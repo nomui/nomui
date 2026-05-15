@@ -699,7 +699,9 @@ export function checkOverflowAncestor(ele, direction = 'vertical') {
         : ['auto', 'scroll'].includes(style.overflowX) ||
           ['auto', 'scroll'].includes(style.overflow)
 
-    if (hasOverflow) {
+    const shouldIgnore = currentElement.hasAttribute('ignoreOverflowCheck')
+
+    if (hasOverflow && !shouldIgnore) {
       overflowAncestor = currentElement
       break
     }

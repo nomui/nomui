@@ -4296,7 +4296,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             ["auto", "scroll"].includes(style.overflow)
           : ["auto", "scroll"].includes(style.overflowX) ||
             ["auto", "scroll"].includes(style.overflow);
-      if (hasOverflow) {
+      const shouldIgnore = currentElement.hasAttribute("ignoreOverflowCheck");
+      if (hasOverflow && !shouldIgnore) {
         overflowAncestor = currentElement;
         break;
       }
