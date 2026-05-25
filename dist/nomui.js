@@ -10482,9 +10482,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const computedStyle = window.getComputedStyle(inputEl);
       this.measureSpan = document.createElement("span");
       this.measureSpan.style.cssText = `
-    position:absolute;
+    position:fixed;
+      left:-999999px;
+        top:0;
     visibility:hidden;
     white-space:pre;
+      pointer-events:none;
+  contain:layout;
     font-size:${computedStyle.fontSize};
     font-family:${computedStyle.fontFamily};
   `; // 缓存 input 左右 padding，用于真实宽度计算
@@ -21069,7 +21073,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const cloneEl = contentEl.cloneNode(true);
       const tmp = document.createElement("div");
       Object.assign(tmp.style, {
-        position: "absolute",
+        position: "fixed",
+        left: "-999999px",
+        top: "0",
         visibility: "hidden",
         height: "auto",
         width: "auto",

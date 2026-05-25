@@ -803,7 +803,9 @@ class Td extends Component {
     const tmp = document.createElement('div')
 
     Object.assign(tmp.style, {
-      position: 'absolute',
+      position: 'fixed',
+      left: '-999999px',
+      top: '0',
       visibility: 'hidden',
       height: 'auto',
       width: 'auto',
