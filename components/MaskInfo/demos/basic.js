@@ -5,7 +5,7 @@ define([], function () {
     demo: function () {
       return {
         component: 'Flex',
-        cols: [
+        rows: [
           {
             component: 'MaskInfo',
             type: 'mail',
@@ -22,6 +22,7 @@ define([], function () {
             component: 'MaskInfo',
             type: 'mobile',
             text: '13548612345',
+            iconPlace: 'right',
           },
           {
             component: 'MaskInfo',

@@ -27776,19 +27776,28 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
         };
       }
-      const children = [
-        this.props.mask &&
-          !!icon &&
-          this.props.text &&
-          this.props.toggle &&
-          Component.normalizeIconProps({
-            type: "eye",
-            onClick: function () {
-              that.handleClick();
-            },
-          }),
-        textNode,
-      ];
+      const children = [textNode];
+      if (this.props.mask && !!icon && this.props.text && this.props.toggle) {
+        if (this.props.iconPlace === "right") {
+          children.push(
+            Component.normalizeIconProps({
+              type: "eye",
+              onClick: function () {
+                that.handleClick();
+              },
+            })
+          );
+        } else {
+          children.unshift(
+            Component.normalizeIconProps({
+              type: "eye",
+              onClick: function () {
+                that.handleClick();
+              },
+            })
+          );
+        }
+      }
       this.setProps({
         children: this.props.text ? children : this.props.empty,
       });
@@ -27899,6 +27908,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         empty,
         showTitle,
         toggle,
+        iconPlace,
       } = this.props;
       this.setProps({
         control: {
@@ -27912,6 +27922,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             empty,
             showTitle,
             toggle,
+            iconPlace,
           },
         },
       });

@@ -49,19 +49,29 @@ class MaskInfo extends Component {
       }
     }
 
-    const children = [
-      this.props.mask &&
-      !!icon &&
-      this.props.text &&
-      this.props.toggle &&
-      Component.normalizeIconProps({
-        type: 'eye',
-        onClick: function () {
-          that.handleClick()
-        },
-      }),
-      textNode,
-    ]
+    const children = [textNode]
+
+    if (this.props.mask && !!icon && this.props.text && this.props.toggle) {
+      if (this.props.iconPlace === 'right') {
+        children.push(
+          Component.normalizeIconProps({
+            type: 'eye',
+            onClick: function () {
+              that.handleClick()
+            },
+          }),
+        )
+      } else {
+        children.unshift(
+          Component.normalizeIconProps({
+            type: 'eye',
+            onClick: function () {
+              that.handleClick()
+            },
+          }),
+        )
+      }
+    }
 
     this.setProps({
       children: this.props.text ? children : this.props.empty,
@@ -175,7 +185,7 @@ MaskInfo.defaults = {
   empty: null,
   showTitle: true,
   toggle: true,
-  showText: '点击显示完整信息'
+  showText: '点击显示完整信息',
 }
 Component.register(MaskInfo)
 
