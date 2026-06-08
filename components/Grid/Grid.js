@@ -1265,7 +1265,7 @@ class Grid extends Component {
     }
   }
 
-  handleDrag({ key, item, oldIndex, newIndex, relatedTrKeys }) {
+  handleDrag({ key, item, oldIndex, newIndex }) {
     this._resortExpandedTr({ item, oldIndex, newIndex })
     if (this.props.rowSortable && this.props.rowSortable.onEnd) {
       this._callHandler(this.props.rowSortable.onEnd, { key, item })
@@ -1273,12 +1273,13 @@ class Grid extends Component {
     if (this.isTreeData) {
       this._resortTree({ item })
     }
-    if (relatedTrKeys && relatedTrKeys.length) {
-      this._resortRelatedTr({ item, oldIndex, newIndex, relatedTrKeys })
+    if (this._relatedMap?.size) {
+      this._adjustRelatedRows()
     }
   }
 
   _handleDragStart({ key, item }) {
+    this._saveRelateMap()
     if (this.props.rowSortable && this.props.rowSortable.onStart) {
       this._callHandler(this.props.rowSortable.onStart, { key, item })
     }
@@ -1340,6 +1341,76 @@ class Grid extends Component {
     })
 
     item.parentNode.insertBefore(fragment, item.nextSibling)
+  }
+
+  _saveRelateMap() {
+    this._relatedMap = new Map()
+
+    const rows = Array.from(this.body.table.element.querySelectorAll('tr[data-key]'))
+
+    let currentMainKey = null
+
+    rows.forEach((tr) => {
+      const key = tr.getAttribute('data-key')
+      const isRelated = tr.getAttribute('hideondrag') === 'true'
+
+      // 普通行作为新的关联主节点
+      if (!isRelated) {
+        currentMainKey = key
+        return
+      }
+
+      // hideondrag 行归属于前一个非 hideondrag 行
+      if (!currentMainKey) {
+        return
+      }
+
+      if (!this._relatedMap.has(currentMainKey)) {
+        this._relatedMap.set(currentMainKey, [])
+      }
+
+      this._relatedMap.get(currentMainKey).push(key)
+    })
+  }
+
+  _adjustRelatedRows() {
+    if (!this._relatedMap?.size) {
+      return
+    }
+
+    const table = this.body.table.element
+
+    // 先建立索引，避免反复 querySelector
+    const rowMap = new Map()
+
+    table.querySelectorAll('tr[data-key]').forEach((tr) => {
+      rowMap.set(tr.getAttribute('data-key'), tr)
+    })
+
+    // 按当前 DOM 顺序遍历所有主节点
+    const rows = Array.from(table.querySelectorAll('tr[data-key]'))
+
+    rows.forEach((mainRow) => {
+      const mainKey = mainRow.getAttribute('data-key')
+
+      const relatedKeys = this._relatedMap.get(mainKey)
+
+      if (!relatedKeys?.length) {
+        return
+      }
+
+      const fragment = document.createDocumentFragment()
+
+      relatedKeys.forEach((key) => {
+        const relatedRow = rowMap.get(key)
+
+        if (relatedRow) {
+          fragment.appendChild(relatedRow)
+        }
+      })
+
+      mainRow.parentNode.insertBefore(fragment, mainRow.nextSibling)
+    })
   }
 
   _resortRelatedTr({ item, relatedTrKeys }) {
@@ -1993,7 +2064,7 @@ Grid.defaults = {
   rowSelectable: false,
   rowCheckable: false,
   keyField: 'id',
-  hideOnDragField: 'hideOnDrag',
+  relatedRowField: 'isRelatedRow',
   treeConfig: {
     flatData: false, // 数据源是否为一维数组
     parentField: 'parentKey',

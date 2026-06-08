@@ -101,8 +101,7 @@ class Tbody extends Component {
           }
 
           me.table._showExpandedTr()
-          grid.handleDrag({ key, item, oldIndex, newIndex, relatedTrKeys: me.table.relatedTrKeys })
-          me.table.relatedTrKeys = []
+          grid.handleDrag({ key, item, oldIndex, newIndex })
         },
         onMove: function (evt) {
           if (typeof grid.props.rowSortable?.onMove === 'function') {
@@ -113,10 +112,6 @@ class Tbody extends Component {
         onStart: function ({ item }) {
           const key = item.getAttribute('data-key')
           grid._handleDragStart({ key, item })
-          me.table.relatedTrKeys = []
-          if (grid.props.rowSortable?.getRelatedItems) {
-            me.table.relatedTrKeys = grid.props.rowSortable.getRelatedItems(key)
-          }
 
           if (grid.isTreeData) {
             me.table._hideTreeTr({ key, item })

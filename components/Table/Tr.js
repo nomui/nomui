@@ -85,7 +85,7 @@ class Tr extends Component {
     }
 
     const hideOnDrag =
-      grid && grid.props && grid.props.hideOnDragField && !!data[grid.props.hideOnDragField]
+      grid && grid.props && grid.props.relatedRowField && !!data[grid.props.relatedRowField]
 
     this.setProps({
       key: data[this.table.props.keyField],
