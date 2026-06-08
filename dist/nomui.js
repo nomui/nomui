@@ -21800,9 +21800,19 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this.setProps({ editMode: true });
       }
+      const hideOnDrag =
+        grid &&
+        grid.props &&
+        grid.props.relatedRowField &&
+        !!data[grid.props.relatedRowField];
       this.setProps({
         key: data[this.table.props.keyField],
-        attrs: { level: level, isLeaf: this.props.isLeaf ? "true" : undefined },
+        attrs: {
+          level: level,
+          isLeaf: this.props.isLeaf ? "true" : undefined,
+          parentNodeKey: data.parentNodeKey,
+          hideOnDrag,
+        },
         hidden: hidden,
         children: children,
       });
@@ -22097,10 +22107,27 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           handle: ".nom-grid-drag-handler",
           filter: ".nom-grid-tr-no-drag",
           onEnd: function ({ item, oldIndex, newIndex }) {
+            const key = item.getAttribute("data-key");
+            grid.element.classList.remove("nom-grid-dragging");
+            if (grid.isTreeData) {
+              me.table._showTreeTr({ key, item });
+            }
             me.table._showExpandedTr();
-            grid.handleDrag({ item, oldIndex, newIndex });
+            grid.handleDrag({ key, item, oldIndex, newIndex });
           },
-          onStart: function () {
+          onMove: function (evt) {
+            if (typeof grid.props.rowSortable?.onMove === "function") {
+              return grid.props.rowSortable.onMove(evt);
+            }
+            return true;
+          },
+          onStart: function ({ item }) {
+            const key = item.getAttribute("data-key");
+            grid._handleDragStart({ key, item });
+            if (grid.isTreeData) {
+              me.table._hideTreeTr({ key, item });
+            }
+            grid.element.classList.add("nom-grid-dragging");
             me.table._hideExpandedTr();
           },
         });
@@ -22880,20 +22907,36 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _hideExpandedTr() {
       const ele = this.tbody.element;
-      const sibs = ele.childNodes;
-      sibs.forEach((sib) => {
-        if (sib.classList.contains("nom-expanded-tr")) {
-          sib.classList.add("nom-grid-tr-hidden");
-        }
+      const expandedRows = ele.querySelectorAll(":scope > tr.nom-expanded-tr");
+      expandedRows.forEach((row) => {
+        row.classList.add("nom-grid-tr-hidden");
       });
     }
     _showExpandedTr() {
       const ele = this.tbody.element;
-      const sibs = ele.childNodes;
-      sibs.forEach((sib) => {
-        if (sib.classList.contains("nom-expanded-tr")) {
-          sib.classList.remove("nom-grid-tr-hidden");
-        }
+      const hiddenExpandedRows = ele.querySelectorAll(
+        ":scope > tr.nom-expanded-tr.nom-grid-tr-hidden"
+      );
+      hiddenExpandedRows.forEach((row) => {
+        row.classList.remove("nom-grid-tr-hidden");
+      });
+    }
+    _hideTreeTr({ item }) {
+      const ele = this.tbody.element;
+      const currentLevel = Number(item.getAttribute("level"));
+      const subNodes = Array.from(
+        ele.querySelectorAll(":scope > tr[level]")
+      ).filter((tr) => {
+        return Number(tr.getAttribute("level")) > currentLevel;
+      });
+      subNodes.forEach((sub) => {
+        sub.classList.add("nom-grid-tr-hidden");
+      });
+    }
+    _showTreeTr() {
+      const ele = this.tbody.element;
+      ele.querySelectorAll("tr.nom-grid-tr-hidden").forEach((sub) => {
+        sub.classList.remove("nom-grid-tr-hidden");
       });
     }
     loading() {
@@ -24493,6 +24536,30 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       if (treeConfig && treeConfig.flatData && !this._alreadyProcessedFlat) {
         this.setProps({ data: this._setTreeGridData(this.props.data) });
         this._alreadyProcessedFlat = true;
+      } // 注入 parentNodeKey, 用于树形表格的层级关系判断
+      this.isTreeData = false;
+      const data = this.props.data;
+      if (Array.isArray(data) && data.length > 0) {
+        this._walkAndInject(data, null);
+      }
+    }
+    /**
+     * 单次递归遍历：判断是否为树形数据，并注入 parentNodeKey
+     * @param {Array} nodes - 当前层级的节点数组
+     * @param {String|Number|null} parentKey - 父节点的 Key
+     */ _walkAndInject(nodes, parentKey) {
+      const keyField = this.props.keyField || "id";
+      for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i]; // 注入父节点 Key
+        node.parentNodeKey = parentKey; // 如果存在子节点，标记为树形数据，并继续向下递归
+        if (
+          node.children &&
+          Array.isArray(node.children) &&
+          node.children.length > 0
+        ) {
+          this.isTreeData = true;
+          this._walkAndInject(node.children, node[keyField]);
+        }
       }
     } // 列部分的各种处理
     _processColumns() {
@@ -24798,6 +24865,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.loadingInst.remove();
         this.loadingInst = null;
       }
+      this._saveRelateMap();
       this._adjustCheckerWidth(); // this._handleScrollbarVisibility()
       // this._setScrollbarOnResize()
       if (this.props.rowCheckable && this._checkboxAllRef) {
@@ -25364,11 +25432,109 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         );
       }
     }
-    handleDrag({ item, oldIndex, newIndex }) {
+    handleDrag({ key, item, oldIndex, newIndex }) {
       this._resortExpandedTr({ item, oldIndex, newIndex });
       if (this.props.rowSortable && this.props.rowSortable.onEnd) {
-        this._callHandler(this.props.rowSortable.onEnd);
+        this._callHandler(this.props.rowSortable.onEnd, { key, item });
       }
+      if (this.isTreeData) {
+        this._resortTree({ item });
+      }
+      if (this._relatedMap?.size) {
+        this._adjustRelatedRows();
+      }
+    }
+    _handleDragStart({ key, item }) {
+      if (this.props.rowSortable && this.props.rowSortable.onStart) {
+        this._callHandler(this.props.rowSortable.onStart, { key, item });
+      }
+    }
+    _resortTree({ item }) {
+      if (!item) {
+        return;
+      }
+      const table = this.body.table.element;
+      const allRows = Array.from(table.querySelectorAll("tr[data-key]"));
+      const rootKey = item.getAttribute("data-key");
+      const childrenMap = new Map();
+      allRows.forEach((tr) => {
+        const parentKey = tr.getAttribute("parentnodekey");
+        if (!parentKey) {
+          return;
+        }
+        if (!childrenMap.has(parentKey)) {
+          childrenMap.set(parentKey, []);
+        }
+        childrenMap.get(parentKey).push(tr);
+      });
+      const descendants = [];
+      const collect = (parentKey) => {
+        const children = childrenMap.get(parentKey);
+        if (!children) {
+          return;
+        }
+        children.forEach((child) => {
+          descendants.push(child);
+          collect(child.getAttribute("data-key"));
+        });
+      };
+      collect(rootKey);
+      if (!descendants.length) {
+        return;
+      }
+      const fragment = document.createDocumentFragment();
+      descendants.forEach((tr) => {
+        fragment.appendChild(tr);
+      });
+      item.parentNode.insertBefore(fragment, item.nextSibling);
+    }
+    _saveRelateMap() {
+      this._relatedMap = new Map();
+      const rows = Array.from(
+        this.body.table.element.querySelectorAll("tr[data-key]")
+      );
+      let currentMainKey = null;
+      rows.forEach((tr) => {
+        const key = tr.getAttribute("data-key");
+        const isRelated = tr.getAttribute("hideondrag") === "true"; // 普通行作为新的关联主节点
+        if (!isRelated) {
+          currentMainKey = key;
+          return;
+        } // hideondrag 行归属于前一个非 hideondrag 行
+        if (!currentMainKey) {
+          return;
+        }
+        if (!this._relatedMap.has(currentMainKey)) {
+          this._relatedMap.set(currentMainKey, []);
+        }
+        this._relatedMap.get(currentMainKey).push(key);
+      });
+    }
+    _adjustRelatedRows() {
+      if (!this._relatedMap?.size) {
+        return;
+      }
+      const table = this.body.table.element; // 先建立索引，避免反复 querySelector
+      const rowMap = new Map();
+      table.querySelectorAll("tr[data-key]").forEach((tr) => {
+        rowMap.set(tr.getAttribute("data-key"), tr);
+      }); // 按当前 DOM 顺序遍历所有主节点
+      const rows = Array.from(table.querySelectorAll("tr[data-key]"));
+      rows.forEach((mainRow) => {
+        const mainKey = mainRow.getAttribute("data-key");
+        const relatedKeys = this._relatedMap.get(mainKey);
+        if (!relatedKeys?.length) {
+          return;
+        }
+        const fragment = document.createDocumentFragment();
+        relatedKeys.forEach((key) => {
+          const relatedRow = rowMap.get(key);
+          if (relatedRow) {
+            fragment.appendChild(relatedRow);
+          }
+        });
+        mainRow.parentNode.insertBefore(fragment, mainRow.nextSibling);
+      });
     }
     _resortExpandedTr({ item }) {
       const row = item.component;
@@ -25928,6 +26094,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     rowSelectable: false,
     rowCheckable: false,
     keyField: "id",
+    relatedRowField: "isRelatedRow",
     treeConfig: {
       flatData: false, // 数据源是否为一维数组
       parentField: "parentKey",

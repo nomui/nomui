@@ -94,10 +94,29 @@ class Tbody extends Component {
         handle: '.nom-grid-drag-handler',
         filter: '.nom-grid-tr-no-drag',
         onEnd: function ({ item, oldIndex, newIndex }) {
+          const key = item.getAttribute('data-key')
+          grid.element.classList.remove('nom-grid-dragging')
+          if (grid.isTreeData) {
+            me.table._showTreeTr({ key, item })
+          }
+
           me.table._showExpandedTr()
-          grid.handleDrag({ item, oldIndex, newIndex })
+          grid.handleDrag({ key, item, oldIndex, newIndex })
         },
-        onStart: function () {
+        onMove: function (evt) {
+          if (typeof grid.props.rowSortable?.onMove === 'function') {
+            return grid.props.rowSortable.onMove(evt)
+          }
+          return true
+        },
+        onStart: function ({ item }) {
+          const key = item.getAttribute('data-key')
+          grid._handleDragStart({ key, item })
+
+          if (grid.isTreeData) {
+            me.table._hideTreeTr({ key, item })
+          }
+          grid.element.classList.add('nom-grid-dragging')
           me.table._hideExpandedTr()
         },
       })

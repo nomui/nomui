@@ -227,6 +227,37 @@ class Grid extends Component {
       })
       this._alreadyProcessedFlat = true
     }
+
+    // 注入 parentNodeKey, 用于树形表格的层级关系判断
+
+    this.isTreeData = false
+    const data = this.props.data
+
+    if (Array.isArray(data) && data.length > 0) {
+      this._walkAndInject(data, null)
+    }
+  }
+
+  /**
+   * 单次递归遍历：判断是否为树形数据，并注入 parentNodeKey
+   * @param {Array} nodes - 当前层级的节点数组
+   * @param {String|Number|null} parentKey - 父节点的 Key
+   */
+  _walkAndInject(nodes, parentKey) {
+    const keyField = this.props.keyField || 'id'
+
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i]
+
+      // 注入父节点 Key
+      node.parentNodeKey = parentKey
+
+      // 如果存在子节点，标记为树形数据，并继续向下递归
+      if (node.children && Array.isArray(node.children) && node.children.length > 0) {
+        this.isTreeData = true
+        this._walkAndInject(node.children, node[keyField])
+      }
+    }
   }
 
   // 列部分的各种处理
@@ -578,6 +609,8 @@ class Grid extends Component {
       this.loadingInst.remove()
       this.loadingInst = null
     }
+
+    this._saveRelateMap()
 
     this._adjustCheckerWidth()
 
@@ -1234,11 +1267,151 @@ class Grid extends Component {
     }
   }
 
-  handleDrag({ item, oldIndex, newIndex }) {
+  handleDrag({ key, item, oldIndex, newIndex }) {
     this._resortExpandedTr({ item, oldIndex, newIndex })
     if (this.props.rowSortable && this.props.rowSortable.onEnd) {
-      this._callHandler(this.props.rowSortable.onEnd)
+      this._callHandler(this.props.rowSortable.onEnd, { key, item })
     }
+    if (this.isTreeData) {
+      this._resortTree({ item })
+    }
+    if (this._relatedMap?.size) {
+      this._adjustRelatedRows()
+    }
+  }
+
+  _handleDragStart({ key, item }) {
+    if (this.props.rowSortable && this.props.rowSortable.onStart) {
+      this._callHandler(this.props.rowSortable.onStart, { key, item })
+    }
+  }
+
+  _resortTree({ item }) {
+    if (!item) {
+      return
+    }
+
+    const table = this.body.table.element
+
+    const allRows = Array.from(table.querySelectorAll('tr[data-key]'))
+
+    const rootKey = item.getAttribute('data-key')
+
+    const childrenMap = new Map()
+
+    allRows.forEach((tr) => {
+      const parentKey = tr.getAttribute('parentnodekey')
+
+      if (!parentKey) {
+        return
+      }
+
+      if (!childrenMap.has(parentKey)) {
+        childrenMap.set(parentKey, [])
+      }
+
+      childrenMap.get(parentKey).push(tr)
+    })
+
+    const descendants = []
+
+    const collect = (parentKey) => {
+      const children = childrenMap.get(parentKey)
+
+      if (!children) {
+        return
+      }
+
+      children.forEach((child) => {
+        descendants.push(child)
+
+        collect(child.getAttribute('data-key'))
+      })
+    }
+
+    collect(rootKey)
+
+    if (!descendants.length) {
+      return
+    }
+
+    const fragment = document.createDocumentFragment()
+
+    descendants.forEach((tr) => {
+      fragment.appendChild(tr)
+    })
+
+    item.parentNode.insertBefore(fragment, item.nextSibling)
+  }
+
+  _saveRelateMap() {
+    this._relatedMap = new Map()
+
+    const rows = Array.from(this.body.table.element.querySelectorAll('tr[data-key]'))
+
+    let currentMainKey = null
+
+    rows.forEach((tr) => {
+      const key = tr.getAttribute('data-key')
+      const isRelated = tr.getAttribute('hideondrag') === 'true'
+
+      // 普通行作为新的关联主节点
+      if (!isRelated) {
+        currentMainKey = key
+        return
+      }
+
+      // hideondrag 行归属于前一个非 hideondrag 行
+      if (!currentMainKey) {
+        return
+      }
+
+      if (!this._relatedMap.has(currentMainKey)) {
+        this._relatedMap.set(currentMainKey, [])
+      }
+
+      this._relatedMap.get(currentMainKey).push(key)
+    })
+  }
+
+  _adjustRelatedRows() {
+    if (!this._relatedMap?.size) {
+      return
+    }
+
+    const table = this.body.table.element
+
+    // 先建立索引，避免反复 querySelector
+    const rowMap = new Map()
+
+    table.querySelectorAll('tr[data-key]').forEach((tr) => {
+      rowMap.set(tr.getAttribute('data-key'), tr)
+    })
+
+    // 按当前 DOM 顺序遍历所有主节点
+    const rows = Array.from(table.querySelectorAll('tr[data-key]'))
+
+    rows.forEach((mainRow) => {
+      const mainKey = mainRow.getAttribute('data-key')
+
+      const relatedKeys = this._relatedMap.get(mainKey)
+
+      if (!relatedKeys?.length) {
+        return
+      }
+
+      const fragment = document.createDocumentFragment()
+
+      relatedKeys.forEach((key) => {
+        const relatedRow = rowMap.get(key)
+
+        if (relatedRow) {
+          fragment.appendChild(relatedRow)
+        }
+      })
+
+      mainRow.parentNode.insertBefore(fragment, mainRow.nextSibling)
+    })
   }
 
   _resortExpandedTr({ item }) {
@@ -1872,6 +2045,7 @@ Grid.defaults = {
   rowSelectable: false,
   rowCheckable: false,
   keyField: 'id',
+  relatedRowField: 'isRelatedRow',
   treeConfig: {
     flatData: false, // 数据源是否为一维数组
     parentField: 'parentKey',

@@ -75,21 +75,43 @@ class Table extends Component {
 
   _hideExpandedTr() {
     const ele = this.tbody.element
-    const sibs = ele.childNodes
-    sibs.forEach((sib) => {
-      if (sib.classList.contains('nom-expanded-tr')) {
-        sib.classList.add('nom-grid-tr-hidden')
-      }
+
+    const expandedRows = ele.querySelectorAll(':scope > tr.nom-expanded-tr')
+
+    expandedRows.forEach((row) => {
+      row.classList.add('nom-grid-tr-hidden')
     })
   }
 
   _showExpandedTr() {
     const ele = this.tbody.element
-    const sibs = ele.childNodes
-    sibs.forEach((sib) => {
-      if (sib.classList.contains('nom-expanded-tr')) {
-        sib.classList.remove('nom-grid-tr-hidden')
-      }
+
+    const hiddenExpandedRows = ele.querySelectorAll(
+      ':scope > tr.nom-expanded-tr.nom-grid-tr-hidden',
+    )
+
+    hiddenExpandedRows.forEach((row) => {
+      row.classList.remove('nom-grid-tr-hidden')
+    })
+  }
+
+  _hideTreeTr({ item }) {
+    const ele = this.tbody.element
+    const currentLevel = Number(item.getAttribute('level'))
+
+    const subNodes = Array.from(ele.querySelectorAll(':scope > tr[level]')).filter((tr) => {
+      return Number(tr.getAttribute('level')) > currentLevel
+    })
+
+    subNodes.forEach((sub) => {
+      sub.classList.add('nom-grid-tr-hidden')
+    })
+  }
+
+  _showTreeTr() {
+    const ele = this.tbody.element
+    ele.querySelectorAll('tr.nom-grid-tr-hidden').forEach((sub) => {
+      sub.classList.remove('nom-grid-tr-hidden')
     })
   }
 
