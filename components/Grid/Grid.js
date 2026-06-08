@@ -610,6 +610,8 @@ class Grid extends Component {
       this.loadingInst = null
     }
 
+    this._saveRelateMap()
+
     this._adjustCheckerWidth()
 
     // this._handleScrollbarVisibility()
@@ -1279,7 +1281,6 @@ class Grid extends Component {
   }
 
   _handleDragStart({ key, item }) {
-    this._saveRelateMap()
     if (this.props.rowSortable && this.props.rowSortable.onStart) {
       this._callHandler(this.props.rowSortable.onStart, { key, item })
     }
@@ -1411,26 +1412,6 @@ class Grid extends Component {
 
       mainRow.parentNode.insertBefore(fragment, mainRow.nextSibling)
     })
-  }
-
-  _resortRelatedTr({ item, relatedTrKeys }) {
-    if (!item || !relatedTrKeys?.length) {
-      return
-    }
-
-    const table = this.body.table.element
-
-    const fragment = document.createDocumentFragment()
-
-    relatedTrKeys.forEach((key) => {
-      const tr = table.querySelector(`tr[data-key="${key}"]`)
-
-      if (tr) {
-        fragment.appendChild(tr)
-      }
-    })
-
-    item.parentNode.insertBefore(fragment, item.nextSibling)
   }
 
   _resortExpandedTr({ item }) {
