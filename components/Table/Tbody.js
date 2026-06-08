@@ -113,6 +113,7 @@ class Tbody extends Component {
         },
         onStart: function ({ item }) {
           const key = item.getAttribute('data-key')
+          grid._handleDragStart(key)
           me.table.relatedTrs = []
           if (grid.props.rowSortable?.getRelatedItems) {
             me.table.relatedTrs = grid.props.rowSortable.getRelatedItems(key)
