@@ -89,6 +89,7 @@ class Tr extends Component {
       attrs: {
         level: level,
         isLeaf: this.props.isLeaf ? 'true' : undefined,
+        parentNodeKey: data.parentNodeKey,
       },
       hidden: hidden,
       children: children,

@@ -93,6 +93,14 @@ class Table extends Component {
     })
   }
 
+  _hideTreeTr() {}
+
+  _showTreeTr() {}
+
+  _hideRelatedTr() {}
+
+  _showRelatedTr() {}
+
   loading() {
     this.loadingInst = new Loading({
       container: this.parent,

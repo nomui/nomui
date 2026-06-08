@@ -227,6 +227,37 @@ class Grid extends Component {
       })
       this._alreadyProcessedFlat = true
     }
+
+    // 注入 parentNodeKey, 用于树形表格的层级关系判断
+
+    this.isTreeData = false
+    const data = this.props.data
+
+    if (Array.isArray(data) && data.length > 0) {
+      this._walkAndInject(data, null)
+    }
+  }
+
+  /**
+   * 单次递归遍历：判断是否为树形数据，并注入 parentNodeKey
+   * @param {Array} nodes - 当前层级的节点数组
+   * @param {String|Number|null} parentKey - 父节点的 Key
+   */
+  _walkAndInject(nodes, parentKey) {
+    const keyField = this.props.keyField || 'id'
+
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i]
+
+      // 注入父节点 Key
+      node.parentNodeKey = parentKey
+
+      // 如果存在子节点，标记为树形数据，并继续向下递归
+      if (node.children && Array.isArray(node.children) && node.children.length > 0) {
+        this.isTreeData = true
+        this._walkAndInject(node.children, node[keyField])
+      }
+    }
   }
 
   // 列部分的各种处理
@@ -1239,6 +1270,13 @@ class Grid extends Component {
     if (this.props.rowSortable && this.props.rowSortable.onEnd) {
       this._callHandler(this.props.rowSortable.onEnd)
     }
+    if (this.isTreeData) {
+      this._resortTree()
+    }
+  }
+
+  _resortTree() {
+    // debugger
   }
 
   _resortExpandedTr({ item }) {
