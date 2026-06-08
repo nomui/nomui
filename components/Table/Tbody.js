@@ -96,14 +96,14 @@ class Tbody extends Component {
         onEnd: function ({ item, oldIndex, newIndex }) {
           const key = item.getAttribute('data-key')
           if (grid.isTreeData) {
-            me.table._showTreeTr(key)
+            me.table._showTreeTr({ key, item })
             me.table.relatedTrs = []
           }
           if (grid.props.rowSortable?.getRelatedItems) {
-            me.table._showRelatedTr(key)
+            me.table._showRelatedTr({ key, item })
           }
           me.table._showExpandedTr()
-          grid.handleDrag({ item, oldIndex, newIndex })
+          grid.handleDrag({ key, item, oldIndex, newIndex })
         },
         onMove: function (evt) {
           if (typeof grid.props.rowSortable?.onMove === 'function') {
@@ -113,14 +113,14 @@ class Tbody extends Component {
         },
         onStart: function ({ item }) {
           const key = item.getAttribute('data-key')
-          grid._handleDragStart(key)
+          grid._handleDragStart({ key, item })
           me.table.relatedTrs = []
           if (grid.props.rowSortable?.getRelatedItems) {
             me.table.relatedTrs = grid.props.rowSortable.getRelatedItems(key)
-            me.table._hideRelatedTr(key)
+            me.table._hideRelatedTr({ key, item })
           }
           if (grid.isTreeData) {
-            me.table._hideTreeTr(key)
+            me.table._hideTreeTr({ key, item })
           }
           me.table._hideExpandedTr()
         },

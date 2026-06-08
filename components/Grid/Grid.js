@@ -1265,21 +1265,19 @@ class Grid extends Component {
     }
   }
 
-  handleDrag({ item, oldIndex, newIndex }) {
-    const key = item.getAttribute('data-key')
-
+  handleDrag({ key, item, oldIndex, newIndex }) {
     this._resortExpandedTr({ item, oldIndex, newIndex })
     if (this.props.rowSortable && this.props.rowSortable.onEnd) {
-      this._callHandler(this.props.rowSortable.onEnd, { key })
+      this._callHandler(this.props.rowSortable.onEnd, { key, item })
     }
     if (this.isTreeData) {
       this._resortTree()
     }
   }
 
-  _handleDragStart(key) {
+  _handleDragStart({ key, item }) {
     if (this.props.rowSortable && this.props.rowSortable.onStart) {
-      this._callHandler(this.props.rowSortable.onStart, { key })
+      this._callHandler(this.props.rowSortable.onStart, { key, item })
     }
   }
 
