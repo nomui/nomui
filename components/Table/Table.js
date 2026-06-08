@@ -115,9 +115,25 @@ class Table extends Component {
     })
   }
 
-  // _hideRelatedTr({ key, item }) {}
+  _hideRelatedTr() {
+    const keys = this.relatedTrKeys || []
+    const ele = this.tbody.element
+    if (keys.length) {
+      keys.forEach((k) => {
+        const tr = ele.querySelector(`:scope > tr[data-key="${k}"]`)
+        if (tr) {
+          tr.classList.add('nom-grid-tr-hidden')
+        }
+      })
+    }
+  }
 
-  // _showRelatedTr({ key, item }) {}
+  _showRelatedTr() {
+    const ele = this.tbody.element
+    ele.querySelectorAll('tr.nom-grid-tr-hidden').forEach((tr) => {
+      tr.classList.remove('nom-grid-tr-hidden')
+    })
+  }
 
   loading() {
     this.loadingInst = new Loading({
