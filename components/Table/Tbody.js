@@ -95,12 +95,11 @@ class Tbody extends Component {
         filter: '.nom-grid-tr-no-drag',
         onEnd: function ({ item, oldIndex, newIndex }) {
           const key = item.getAttribute('data-key')
+          grid.element.classList.remove('nom-grid-dragging')
           if (grid.isTreeData) {
             me.table._showTreeTr({ key, item })
           }
-          if (grid.props.rowSortable?.getRelatedItems) {
-            me.table._showRelatedTr()
-          }
+
           me.table._showExpandedTr()
           grid.handleDrag({ key, item, oldIndex, newIndex, relatedTrKeys: me.table.relatedTrKeys })
           me.table.relatedTrKeys = []
@@ -117,11 +116,12 @@ class Tbody extends Component {
           me.table.relatedTrKeys = []
           if (grid.props.rowSortable?.getRelatedItems) {
             me.table.relatedTrKeys = grid.props.rowSortable.getRelatedItems(key)
-            me.table._hideRelatedTr()
           }
+
           if (grid.isTreeData) {
             me.table._hideTreeTr({ key, item })
           }
+          grid.element.classList.add('nom-grid-dragging')
           me.table._hideExpandedTr()
         },
       })

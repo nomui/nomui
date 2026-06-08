@@ -1993,6 +1993,7 @@ Grid.defaults = {
   rowSelectable: false,
   rowCheckable: false,
   keyField: 'id',
+  hideOnDragField: 'hideOnDrag',
   treeConfig: {
     flatData: false, // 数据源是否为一维数组
     parentField: 'parentKey',

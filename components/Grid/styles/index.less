@@ -698,3 +698,15 @@ td[data-field="nom-grid-row-checker"] {
   border-radius: 4px;
   // background-color: rgba(255, 255, 255, .95) !important;
 }
+
+.nom-grid.nom-grid-dragging {
+  >.nom-grid-body {
+    >.nom-table {
+      >.nom-tbody {
+        >.nom-tr[hideOnDrag="true"] {
+          display: none;
+        }
+      }
+    }
+  }
+}
