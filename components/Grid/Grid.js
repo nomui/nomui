@@ -1265,13 +1265,16 @@ class Grid extends Component {
     }
   }
 
-  handleDrag({ key, item, oldIndex, newIndex }) {
+  handleDrag({ key, item, oldIndex, newIndex, relatedTrKeys }) {
     this._resortExpandedTr({ item, oldIndex, newIndex })
     if (this.props.rowSortable && this.props.rowSortable.onEnd) {
       this._callHandler(this.props.rowSortable.onEnd, { key, item })
     }
     if (this.isTreeData) {
-      this._resortTree()
+      this._resortTree({ item })
+    }
+    if (relatedTrKeys && relatedTrKeys.length) {
+      this._resortRelatedTr({ item, oldIndex, newIndex, relatedTrKeys })
     }
   }
 
@@ -1281,8 +1284,82 @@ class Grid extends Component {
     }
   }
 
-  _resortTree() {
-    // debugger
+  _resortTree({ item }) {
+    if (!item) {
+      return
+    }
+
+    const table = this.body.table.element
+
+    const allRows = Array.from(table.querySelectorAll('tr[data-key]'))
+
+    const rootKey = item.getAttribute('data-key')
+
+    const childrenMap = new Map()
+
+    allRows.forEach((tr) => {
+      const parentKey = tr.getAttribute('parentnodekey')
+
+      if (!parentKey) {
+        return
+      }
+
+      if (!childrenMap.has(parentKey)) {
+        childrenMap.set(parentKey, [])
+      }
+
+      childrenMap.get(parentKey).push(tr)
+    })
+
+    const descendants = []
+
+    const collect = (parentKey) => {
+      const children = childrenMap.get(parentKey)
+
+      if (!children) {
+        return
+      }
+
+      children.forEach((child) => {
+        descendants.push(child)
+
+        collect(child.getAttribute('data-key'))
+      })
+    }
+
+    collect(rootKey)
+
+    if (!descendants.length) {
+      return
+    }
+
+    const fragment = document.createDocumentFragment()
+
+    descendants.forEach((tr) => {
+      fragment.appendChild(tr)
+    })
+
+    item.parentNode.insertBefore(fragment, item.nextSibling)
+  }
+
+  _resortRelatedTr({ item, relatedTrKeys }) {
+    if (!item || !relatedTrKeys?.length) {
+      return
+    }
+
+    const table = this.body.table.element
+
+    const fragment = document.createDocumentFragment()
+
+    relatedTrKeys.forEach((key) => {
+      const tr = table.querySelector(`tr[data-key="${key}"]`)
+
+      if (tr) {
+        fragment.appendChild(tr)
+      }
+    })
+
+    item.parentNode.insertBefore(fragment, item.nextSibling)
   }
 
   _resortExpandedTr({ item }) {

@@ -97,13 +97,13 @@ class Tbody extends Component {
           const key = item.getAttribute('data-key')
           if (grid.isTreeData) {
             me.table._showTreeTr({ key, item })
-            me.table.relatedTrKeys = []
           }
           if (grid.props.rowSortable?.getRelatedItems) {
             me.table._showRelatedTr()
           }
           me.table._showExpandedTr()
-          grid.handleDrag({ key, item, oldIndex, newIndex })
+          grid.handleDrag({ key, item, oldIndex, newIndex, relatedTrKeys: me.table.relatedTrKeys })
+          me.table.relatedTrKeys = []
         },
         onMove: function (evt) {
           if (typeof grid.props.rowSortable?.onMove === 'function') {
