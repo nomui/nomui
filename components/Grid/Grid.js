@@ -8,6 +8,7 @@ import {
 } from '../util/constant'
 import {
   ascCompare,
+  clone,
   defaultSortableOndrop,
   extend,
   isBrowerSupportSticky,
@@ -1441,23 +1442,50 @@ class Grid extends Component {
     })
   }
 
+  _sortTreeData(nodes, orderMap) {
+    if (!nodes || !nodes.length) {
+      return
+    }
+
+    nodes.sort((a, b) => {
+      const aIndex = orderMap[a[this.props.keyField]] ?? Number.MAX_SAFE_INTEGER
+      const bIndex = orderMap[b[this.props.keyField]] ?? Number.MAX_SAFE_INTEGER
+
+      return aIndex - bIndex
+    })
+
+    nodes.forEach((node) => {
+      if (node.children && node.children.length) {
+        this._sortTreeData(node.children, orderMap)
+      }
+    })
+  }
+
   getData(options = {}) {
     if (!this.props.data || !this.props.data.length) {
       return []
     }
+
     if (options.saveEdit) {
       this.saveEditData()
     }
-    const that = this
+
+    const data = clone(this.props.data)
+
     const keys = this.getDataKeys()
-    const data = keys.map(function (key) {
-      return that.props.data.filter(function (item) {
-        return `${item[that.props.keyField]}` === `${key}`
-      })[0]
+
+    const orderMap = {}
+
+    keys.forEach((key, index) => {
+      orderMap[key] = index
     })
+
+    this._sortTreeData(data, orderMap)
+
     if (this.props.lazyLoadLimit && this._storedData.length) {
       return [...data, ...this._storedData]
     }
+
     return data
   }
 

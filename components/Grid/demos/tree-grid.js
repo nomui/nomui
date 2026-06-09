@@ -8,6 +8,9 @@ define([], function () {
         children: [
           {
             component: 'Grid',
+            ref: (c) => {
+              window.treeGridRef = c
+            },
             treeConfig: {
               treeNodeColumn: 'class',
               initExpandLevel: 1,
