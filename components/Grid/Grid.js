@@ -1298,10 +1298,14 @@ class Grid extends Component {
 
     const rootKey = item.getAttribute('data-key')
 
+    if (!rootKey) {
+      return
+    }
+
     const childrenMap = new Map()
 
     allRows.forEach((tr) => {
-      const parentKey = tr.getAttribute('parentnodekey')
+      const parentKey = tr.getAttribute('parentNodeKey')
 
       if (!parentKey) {
         return
