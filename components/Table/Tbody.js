@@ -104,9 +104,19 @@ class Tbody extends Component {
           grid.handleDrag({ key, item, oldIndex, newIndex })
         },
         onMove: function (evt) {
-          if (typeof grid.props.rowSortable?.onMove === 'function') {
-            return grid.props.rowSortable.onMove(evt)
+          const { rowSortable } = grid.props
+
+          if (rowSortable?.allowCrossParent !== true) {
+            const { dragged, related } = evt
+            if (dragged.getAttribute('parentNodeKey') !== related.getAttribute('parentNodeKey')) {
+              return false
+            }
           }
+
+          if (typeof rowSortable?.onMove === 'function') {
+            return rowSortable.onMove(evt)
+          }
+
           return true
         },
         onStart: function ({ item }) {

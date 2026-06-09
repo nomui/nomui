@@ -16,6 +16,7 @@ define([], function () {
               initExpandLevel: 1,
             },
             rowSortable: {
+              allowCrossParent: false, // 配置false禁止跨父级拖拽
               onEnd: () => {
                 // eslint-disable-next-line
                 // console.log(grid.getDataKeys()) // 获取keyField对应新排序的数组
@@ -23,7 +24,7 @@ define([], function () {
                 // console.log(grid.getData()) // 获取整个data对应新排序的数组
               },
               onMove: (evt) => {
-                // 简单的示例如何限制拖拽
+                // 简单的示例如何限制拖拽,实际上本身就不允许跨层级拖拽
                 const { dragged, related } = evt
                 if (
                   dragged.getAttribute('parentNodeKey') !== related.getAttribute('parentNodeKey')
