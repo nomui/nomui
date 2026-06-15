@@ -29,7 +29,7 @@ class ColGroup extends Component {
       children.push({
         component: ColGroupCol,
         column: {
-          width: 36,
+          width: this.table.grid.props.rowSortable.width || 36,
         },
       })
     }

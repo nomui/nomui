@@ -58,6 +58,7 @@ class Tr extends Component {
         },
         isDragHandler: true,
         column: {
+          width: grid.props.rowSortable.width,
           fixed:
             grid && grid.props.frozenLeftCols && grid.props.frozenLeftCols > 1 ? 'left' : undefined,
         },
@@ -84,8 +85,7 @@ class Tr extends Component {
       })
     }
 
-    const hideOnDrag =
-      grid && grid.props && grid.props.relatedRowField && !!data[grid.props.relatedRowField]
+    const relatedTo = data[grid?.props?.relatedRowField] || undefined
 
     this.setProps({
       key: data[this.table.props.keyField],
@@ -93,7 +93,7 @@ class Tr extends Component {
         level: level,
         isLeaf: this.props.isLeaf ? 'true' : undefined,
         parentNodeKey: data.parentNodeKey,
-        hideOnDrag,
+        'data-related-to': relatedTo,
       },
       hidden: hidden,
       children: children,

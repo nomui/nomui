@@ -100,15 +100,26 @@ class Tbody extends Component {
             me.table._showTreeTr({ key, item })
           }
 
+          if (grid.isRelatedData) {
+            me.table._showRelatedTr()
+          }
+
           me.table._showExpandedTr()
           grid.handleDrag({ key, item, oldIndex, newIndex })
         },
         onMove: function (evt) {
           const { rowSortable } = grid.props
-
+          const { dragged, related } = evt
           if (rowSortable?.allowCrossParent !== true) {
-            const { dragged, related } = evt
             if (dragged.getAttribute('parentNodeKey') !== related.getAttribute('parentNodeKey')) {
+              return false
+            }
+          }
+
+          if (grid.isRelatedData) {
+            if (
+              dragged.getAttribute('data-related-to') !== related.getAttribute('data-related-to')
+            ) {
               return false
             }
           }
@@ -122,6 +133,10 @@ class Tbody extends Component {
         onStart: function ({ item }) {
           const key = item.getAttribute('data-key')
           grid._handleDragStart({ key, item })
+
+          if (grid.isRelatedData) {
+            me.table._hideRelatedTr({ key, item })
+          }
 
           if (grid.isTreeData) {
             me.table._hideTreeTr({ key, item })
