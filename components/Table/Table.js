@@ -73,6 +73,102 @@ class Table extends Component {
     }
   }
 
+  _hideRelatedTr({ item }) {
+    const grid = this.grid
+    const relatedMap = grid._relatedMap
+
+    if (!grid || !grid.props.relatedRowField) {
+      return
+    }
+
+    const ele = this.tbody.element
+
+    const relatedTrs = ele.querySelectorAll(`:scope > tr[data-related-to]`)
+
+    const showKeys = new Set()
+    const hideKeys = new Set()
+
+    const currentKey = item.getAttribute('data-key')
+    const parentKey = item.getAttribute('data-related-to')
+
+    // 查找父节点
+    const findParent = (targetKey) => {
+      for (const [key, children] of relatedMap) {
+        if (children.includes(targetKey)) {
+          return key
+        }
+      }
+
+      return null
+    }
+
+    // 1. 当前节点 + 所有祖先显示
+
+    let key = currentKey
+
+    while (key) {
+      showKeys.add(key)
+
+      key = findParent(key)
+    }
+
+    // 2. 当前节点兄弟显示
+
+    const siblings = relatedMap.get(parentKey) || []
+
+    siblings.forEach((n) => {
+      showKeys.add(n)
+    })
+
+    // 3. 当前节点子孙隐藏
+    // 4. 兄弟节点子孙隐藏
+
+    const addHideChildren = (n) => {
+      const children = relatedMap.get(n)
+
+      if (!children?.length) {
+        return
+      }
+
+      children.forEach((childKey) => {
+        hideKeys.add(childKey)
+
+        addHideChildren(childKey)
+      })
+    }
+
+    // 当前节点下面
+    addHideChildren(currentKey)
+
+    // 兄弟节点下面
+    siblings.forEach((siblingKey) => {
+      if (siblingKey !== currentKey) {
+        addHideChildren(siblingKey)
+      }
+    })
+
+    // 5. 控制显示隐藏
+
+    relatedTrs.forEach((tr) => {
+      const k = tr.getAttribute('data-key')
+
+      if (showKeys.has(k) && !hideKeys.has(k)) {
+        tr.classList.remove('nom-grid-tr-hidden')
+      } else {
+        tr.classList.add('nom-grid-tr-hidden')
+      }
+    })
+  }
+
+  _showRelatedTr() {
+    const ele = this.tbody.element
+    const hiddenExpandedRows = ele.querySelectorAll(':scope > tr.nom-grid-tr-hidden')
+
+    hiddenExpandedRows.forEach((row) => {
+      row.classList.remove('nom-grid-tr-hidden')
+    })
+  }
+
   _hideExpandedTr() {
     const ele = this.tbody.element
 

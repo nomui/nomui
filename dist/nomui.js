@@ -21688,7 +21688,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.table.grid.props.rowSortable &&
         !this.table.grid.props.rowSortable.customHandler
       ) {
-        children.push({ component: ColGroupCol, column: { width: 36 } });
+        children.push({
+          component: ColGroupCol,
+          column: { width: this.table.grid.props.rowSortable.width || 36 },
+        });
       }
       if (Array.isArray(this.columns)) {
         this.colList = [];
@@ -21777,6 +21780,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           classes: { "nom-grid-drag-handler": true },
           isDragHandler: true,
           column: {
+            width: grid.props.rowSortable.width,
             fixed:
               grid && grid.props.frozenLeftCols && grid.props.frozenLeftCols > 1
                 ? "left"
@@ -21800,18 +21804,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this.setProps({ editMode: true });
       }
-      const hideOnDrag =
-        grid &&
-        grid.props &&
-        grid.props.relatedRowField &&
-        !!data[grid.props.relatedRowField];
+      const relatedTo = data[grid?.props?.relatedRowField] || undefined;
       this.setProps({
         key: data[this.table.props.keyField],
         attrs: {
           level: level,
           isLeaf: this.props.isLeaf ? "true" : undefined,
           parentNodeKey: data.parentNodeKey,
-          hideOnDrag,
+          "data-related-to": relatedTo,
         },
         hidden: hidden,
         children: children,
@@ -22112,16 +22112,27 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             if (grid.isTreeData) {
               me.table._showTreeTr({ key, item });
             }
+            if (grid.isRelatedData) {
+              me.table._showRelatedTr();
+            }
             me.table._showExpandedTr();
             grid.handleDrag({ key, item, oldIndex, newIndex });
           },
           onMove: function (evt) {
             const { rowSortable } = grid.props;
+            const { dragged, related } = evt;
             if (rowSortable?.allowCrossParent !== true) {
-              const { dragged, related } = evt;
               if (
                 dragged.getAttribute("parentNodeKey") !==
                 related.getAttribute("parentNodeKey")
+              ) {
+                return false;
+              }
+            }
+            if (grid.isRelatedData) {
+              if (
+                dragged.getAttribute("data-related-to") !==
+                related.getAttribute("data-related-to")
               ) {
                 return false;
               }
@@ -22134,6 +22145,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           onStart: function ({ item }) {
             const key = item.getAttribute("data-key");
             grid._handleDragStart({ key, item });
+            if (grid.isRelatedData) {
+              me.table._hideRelatedTr({ key, item });
+            }
             if (grid.isTreeData) {
               me.table._hideTreeTr({ key, item });
             }
@@ -22770,6 +22784,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           component: Th,
           isDragHandler: true,
           column: {
+            title: grid.props.rowSortable.title,
+            width: grid.props.rowSortable.width,
             fixed:
               grid && grid.props.frozenLeftCols && grid.props.frozenLeftCols > 1
                 ? "left"
@@ -22914,6 +22930,70 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this.grid.setProps({ classes: { "nom-table-has-row-group": true } });
       }
+    }
+    _hideRelatedTr({ item }) {
+      const grid = this.grid;
+      const relatedMap = grid._relatedMap;
+      if (!grid || !grid.props.relatedRowField) {
+        return;
+      }
+      const ele = this.tbody.element;
+      const relatedTrs = ele.querySelectorAll(`:scope > tr[data-related-to]`);
+      const showKeys = new Set();
+      const hideKeys = new Set();
+      const currentKey = item.getAttribute("data-key");
+      const parentKey = item.getAttribute("data-related-to"); // 查找父节点
+      const findParent = (targetKey) => {
+        for (const [key, children] of relatedMap) {
+          if (children.includes(targetKey)) {
+            return key;
+          }
+        }
+        return null;
+      }; // 1. 当前节点 + 所有祖先显示
+      let key = currentKey;
+      while (key) {
+        showKeys.add(key);
+        key = findParent(key);
+      } // 2. 当前节点兄弟显示
+      const siblings = relatedMap.get(parentKey) || [];
+      siblings.forEach((n) => {
+        showKeys.add(n);
+      }); // 3. 当前节点子孙隐藏
+      // 4. 兄弟节点子孙隐藏
+      const addHideChildren = (n) => {
+        const children = relatedMap.get(n);
+        if (!children?.length) {
+          return;
+        }
+        children.forEach((childKey) => {
+          hideKeys.add(childKey);
+          addHideChildren(childKey);
+        });
+      }; // 当前节点下面
+      addHideChildren(currentKey); // 兄弟节点下面
+      siblings.forEach((siblingKey) => {
+        if (siblingKey !== currentKey) {
+          addHideChildren(siblingKey);
+        }
+      }); // 5. 控制显示隐藏
+      relatedTrs.forEach((tr) => {
+        const k = tr.getAttribute("data-key");
+        if (showKeys.has(k) && !hideKeys.has(k)) {
+          tr.classList.remove("nom-grid-tr-hidden");
+        } else {
+          tr.classList.add("nom-grid-tr-hidden");
+        }
+      });
+    }
+    _showRelatedTr() {
+      const ele = this.tbody.element;
+      const hiddenExpandedRows = ele.querySelectorAll(
+        ":scope > tr.nom-grid-tr-hidden"
+      );
+      hiddenExpandedRows.forEach((row) => {
+        row.classList.remove("nom-grid-tr-hidden");
+      });
     }
     _hideExpandedTr() {
       const ele = this.tbody.element;
@@ -24548,6 +24628,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this._alreadyProcessedFlat = true;
       } // 注入 parentNodeKey, 用于树形表格的层级关系判断
       this.isTreeData = false;
+      this.isRelatedData = false;
       const data = this.props.data;
       if (Array.isArray(data) && data.length > 0) {
         this._walkAndInject(data, null);
@@ -24561,7 +24642,10 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       const keyField = this.props.keyField || "id";
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i]; // 注入父节点 Key
-        node.parentNodeKey = parentKey; // 如果存在子节点，标记为树形数据，并继续向下递归
+        node.parentNodeKey = parentKey;
+        if (node[this.props.relatedRowField]) {
+          this.isRelatedData = true;
+        } // 如果存在子节点，标记为树形数据，并继续向下递归
         if (
           node.children &&
           Array.isArray(node.children) &&
@@ -25505,48 +25589,68 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       this._relatedMap = new Map();
       const rows = Array.from(
         this.body.table.element.querySelectorAll("tr[data-key]")
-      );
-      let currentMainKey = null;
+      ); // 第一遍：初始化所有节点
       rows.forEach((tr) => {
         const key = tr.getAttribute("data-key");
-        const isRelated = tr.getAttribute("hideondrag") === "true"; // 普通行作为新的关联主节点
-        if (!isRelated) {
-          currentMainKey = key;
-          return;
-        } // hideondrag 行归属于前一个非 hideondrag 行
-        if (!currentMainKey) {
+        this._relatedMap.set(key, []);
+      }); // 第二遍：建立父子关系
+      rows.forEach((tr) => {
+        const key = tr.getAttribute("data-key");
+        const parentKey = tr.getAttribute("data-related-to"); // 顶级节点
+        if (!parentKey) {
           return;
         }
-        if (!this._relatedMap.has(currentMainKey)) {
-          this._relatedMap.set(currentMainKey, []);
+        if (!this._relatedMap.has(parentKey)) {
+          this._relatedMap.set(parentKey, []);
         }
-        this._relatedMap.get(currentMainKey).push(key);
+        this._relatedMap.get(parentKey).push(key);
       });
     }
     _adjustRelatedRows() {
-      if (!this._relatedMap?.size) {
+      const relatedMap = this._relatedMap;
+      if (!relatedMap?.size) {
         return;
       }
-      const table = this.body.table.element; // 先建立索引，避免反复 querySelector
+      const table = this.body.table.element;
       const rowMap = new Map();
       table.querySelectorAll("tr[data-key]").forEach((tr) => {
         rowMap.set(tr.getAttribute("data-key"), tr);
-      }); // 按当前 DOM 顺序遍历所有主节点
-      const rows = Array.from(table.querySelectorAll("tr[data-key]"));
-      rows.forEach((mainRow) => {
-        const mainKey = mainRow.getAttribute("data-key");
-        const relatedKeys = this._relatedMap.get(mainKey);
-        if (!relatedKeys?.length) {
+      }); // 保存当前DOM顺序
+      const order = new Map();
+      Array.from(table.querySelectorAll("tr[data-key]")).forEach(
+        (tr, index) => {
+          order.set(tr.getAttribute("data-key"), index);
+        }
+      );
+      const getChildren = (key) => {
+        const children = relatedMap.get(key);
+        if (!children?.length) {
+          return [];
+        } // 保留拖拽后的兄弟顺序
+        return children.slice().sort((a, b) => order.get(a) - order.get(b));
+      };
+      const moveChildren = (parentKey) => {
+        const parentRow = rowMap.get(parentKey);
+        if (!parentRow) {
           return;
         }
-        const fragment = document.createDocumentFragment();
-        relatedKeys.forEach((key) => {
-          const relatedRow = rowMap.get(key);
-          if (relatedRow) {
-            fragment.appendChild(relatedRow);
-          }
+        let anchor = parentRow;
+        const children = getChildren(parentKey);
+        children.forEach((childKey) => {
+          const childRow = rowMap.get(childKey);
+          if (!childRow) {
+            return;
+          } // 只移动节点，不重建
+          anchor.after(childRow);
+          anchor = childRow; // 递归处理子孙
+          moveChildren(childKey);
         });
-        mainRow.parentNode.insertBefore(fragment, mainRow.nextSibling);
+      }; // 只处理顶级节点
+      relatedMap.forEach((_, key) => {
+        const row = rowMap.get(key);
+        if (row && !row.getAttribute("data-related-to")) {
+          moveChildren(key);
+        }
       });
     }
     _resortExpandedTr({ item }) {
@@ -26124,7 +26228,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     rowSelectable: false,
     rowCheckable: false,
     keyField: "id",
-    relatedRowField: "isRelatedRow",
+    relatedRowField: "relatedRowId",
     treeConfig: {
       flatData: false, // 数据源是否为一维数组
       parentField: "parentKey",

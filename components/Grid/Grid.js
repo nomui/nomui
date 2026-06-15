@@ -232,6 +232,7 @@ class Grid extends Component {
     // 注入 parentNodeKey, 用于树形表格的层级关系判断
 
     this.isTreeData = false
+    this.isRelatedData = false
     const data = this.props.data
 
     if (Array.isArray(data) && data.length > 0) {
@@ -252,6 +253,10 @@ class Grid extends Component {
 
       // 注入父节点 Key
       node.parentNodeKey = parentKey
+
+      if (node[this.props.relatedRowField]) {
+        this.isRelatedData = true
+      }
 
       // 如果存在子节点，标记为树形数据，并继续向下递归
       if (node.children && Array.isArray(node.children) && node.children.length > 0) {
@@ -1354,68 +1359,100 @@ class Grid extends Component {
 
     const rows = Array.from(this.body.table.element.querySelectorAll('tr[data-key]'))
 
-    let currentMainKey = null
-
+    // 第一遍：初始化所有节点
     rows.forEach((tr) => {
       const key = tr.getAttribute('data-key')
-      const isRelated = tr.getAttribute('hideondrag') === 'true'
 
-      // 普通行作为新的关联主节点
-      if (!isRelated) {
-        currentMainKey = key
+      this._relatedMap.set(key, [])
+    })
+
+    // 第二遍：建立父子关系
+    rows.forEach((tr) => {
+      const key = tr.getAttribute('data-key')
+      const parentKey = tr.getAttribute('data-related-to')
+
+      // 顶级节点
+      if (!parentKey) {
         return
       }
 
-      // hideondrag 行归属于前一个非 hideondrag 行
-      if (!currentMainKey) {
-        return
+      if (!this._relatedMap.has(parentKey)) {
+        this._relatedMap.set(parentKey, [])
       }
 
-      if (!this._relatedMap.has(currentMainKey)) {
-        this._relatedMap.set(currentMainKey, [])
-      }
-
-      this._relatedMap.get(currentMainKey).push(key)
+      this._relatedMap.get(parentKey).push(key)
     })
   }
 
   _adjustRelatedRows() {
-    if (!this._relatedMap?.size) {
+    const relatedMap = this._relatedMap
+
+    if (!relatedMap?.size) {
       return
     }
 
     const table = this.body.table.element
 
-    // 先建立索引，避免反复 querySelector
     const rowMap = new Map()
 
     table.querySelectorAll('tr[data-key]').forEach((tr) => {
       rowMap.set(tr.getAttribute('data-key'), tr)
     })
 
-    // 按当前 DOM 顺序遍历所有主节点
-    const rows = Array.from(table.querySelectorAll('tr[data-key]'))
+    // 保存当前DOM顺序
+    const order = new Map()
 
-    rows.forEach((mainRow) => {
-      const mainKey = mainRow.getAttribute('data-key')
+    Array.from(table.querySelectorAll('tr[data-key]')).forEach((tr, index) => {
+      order.set(tr.getAttribute('data-key'), index)
+    })
 
-      const relatedKeys = this._relatedMap.get(mainKey)
+    const getChildren = (key) => {
+      const children = relatedMap.get(key)
 
-      if (!relatedKeys?.length) {
+      if (!children?.length) {
+        return []
+      }
+
+      // 保留拖拽后的兄弟顺序
+      return children.slice().sort((a, b) => order.get(a) - order.get(b))
+    }
+
+    const moveChildren = (parentKey) => {
+      const parentRow = rowMap.get(parentKey)
+
+      if (!parentRow) {
         return
       }
 
-      const fragment = document.createDocumentFragment()
+      let anchor = parentRow
 
-      relatedKeys.forEach((key) => {
-        const relatedRow = rowMap.get(key)
+      const children = getChildren(parentKey)
 
-        if (relatedRow) {
-          fragment.appendChild(relatedRow)
+      children.forEach((childKey) => {
+        const childRow = rowMap.get(childKey)
+
+        if (!childRow) {
+          return
         }
-      })
 
-      mainRow.parentNode.insertBefore(fragment, mainRow.nextSibling)
+        // 只移动节点，不重建
+        anchor.after(childRow)
+
+        anchor = childRow
+
+        // 递归处理子孙
+        moveChildren(childKey)
+      })
+    }
+
+    // 只处理顶级节点
+
+    relatedMap.forEach((_, key) => {
+      const row = rowMap.get(key)
+
+      if (row && !row.getAttribute('data-related-to')) {
+        moveChildren(key)
+      }
     })
   }
 
@@ -2077,7 +2114,7 @@ Grid.defaults = {
   rowSelectable: false,
   rowCheckable: false,
   keyField: 'id',
-  relatedRowField: 'isRelatedRow',
+  relatedRowField: 'relatedRowId',
   treeConfig: {
     flatData: false, // 数据源是否为一维数组
     parentField: 'parentKey',

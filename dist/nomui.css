@@ -8216,9 +8216,6 @@ td[data-field="nom-grid-row-checker"] {
   padding: 6px 8px;
   border-radius: 4px;
 }
-.nom-grid.nom-grid-dragging > .nom-grid-body > .nom-table > .nom-tbody > .nom-tr[hideOnDrag="true"] {
-  display: none;
-}
 .nom-icon {
   display: inline-flex;
   align-items: center;
