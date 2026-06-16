@@ -15165,6 +15165,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         this.key = this.props.key;
       }
       this.tree.nodeRefs[this.key] = this;
+      this.setProps({ attrs: { "data-key": this.key } });
       if (this.tree.props.nodeSelectable.selectedNodeKey === this.key) {
         this.tree.selectedNode = this;
       }
@@ -15458,36 +15459,67 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       const { sortable } = this.tree.props;
       if (sortable !== false) {
-        const options = isPlainObject(sortable)
-          ? Object.assign(
-              {},
-              {
-                group: this.key,
-                animation: 150,
-                fallbackOnBody: true,
-                swapThreshold: 0.65,
-                handle:
-                  this.tree.props.sortable &&
-                  this.tree.props.sortable.showHandler &&
-                  this.tree.props.sortable.byHandler
-                    ? ".nom-tree-drag-handler"
-                    : null,
-              },
-              sortable
-            )
-          : {
-              group: this.key,
-              animation: 150,
-              fallbackOnBody: true,
-              swapThreshold: 0.65,
-              handle:
-                this.tree.props.sortable &&
-                this.tree.props.sortable.showHandler &&
-                this.tree.props.sortable.byHandler
-                  ? ".nom-tree-drag-handler"
-                  : null,
-            };
+        const sortableOptions = isPlainObject(sortable) ? sortable : {};
+        const { onEnd, onStart } = sortableOptions;
+        const options = Object.assign(
+          {
+            group: this.key,
+            animation: 150,
+            fallbackOnBody: true,
+            swapThreshold: 0.65,
+            handle:
+              this.tree.props.sortable &&
+              this.tree.props.sortable.showHandler &&
+              this.tree.props.sortable.byHandler
+                ? ".nom-tree-drag-handler"
+                : null,
+          },
+          sortableOptions,
+          {
+            onEnd: ({ item }) => {
+              const key = item.getAttribute("data-key");
+              this._syncChildrenData();
+              if (onEnd) {
+                this.tree._callHandler(onEnd, { key, item });
+              }
+            },
+            onStart: ({ item }) => {
+              const key = item.getAttribute("data-key");
+              if (onStart) {
+                this.tree._callHandler(onStart, { key, item });
+              }
+            },
+          }
+        );
         new Sortable(this.element, options);
+      }
+    }
+    _syncChildrenData() {
+      const childrenData = this.getChildren()
+        .filter((node) => node && node.props)
+        .map((node) => node.props.data);
+      if (Array.isArray(this.props.childrenData)) {
+        this.props.childrenData.splice(
+          0,
+          this.props.childrenData.length,
+          ...childrenData
+        );
+      }
+      if (this.parentNode) {
+        const { children } = this.tree.props.dataFields;
+        if (Array.isArray(this.parentNode.props.data[children])) {
+          this.parentNode.props.data[children].splice(
+            0,
+            this.parentNode.props.data[children].length,
+            ...childrenData
+          );
+        }
+      } else if (Array.isArray(this.tree.props.data)) {
+        this.tree.props.data.splice(
+          0,
+          this.tree.props.data.length,
+          ...childrenData
+        );
       }
     }
     iterateNodes() {}

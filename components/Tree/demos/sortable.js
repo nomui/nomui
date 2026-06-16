@@ -37,7 +37,12 @@ define([], function () {
               treeRef = c
             },
             initExpandLevel: -1,
-            sortable: true,
+            sortable: {
+              onEnd: () => {
+                // eslint-disable-next-line
+                console.log(treeRef.getData())
+              },
+            },
             nodeCheckable: true,
             dataFields: {
               key: 'text',
