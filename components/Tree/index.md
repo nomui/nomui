@@ -19,6 +19,7 @@
 | fit | 自适应父容器高度，当树超出高度时出现滚动条，如果有全选框，该全选框会固定 | `boolean` | false |
 | onNodeClick | 点击节点的回调 | `({node}) => {}` | - |
 | loadData | 异步加载子节点数据(仅在该节点子数据为空且 isLeaf:false 时才能触发,该方法返回值为子节点数据数组或者返回该子节点数据的 promise) | `({key,node,data}) => { return array(promise) }` | - |
+| sortable | 节点是否可拖动排序 | `object` \| `boolean` | `false` |
 
 ## Tree methods
 
@@ -93,3 +94,5 @@
 | ----------- | ------------------------------ | --------- | ------ |
 | showHandler | 是否显示拖拽图标               | `boolean` | -      |
 | byHandler   | 是否仅允许通过拖拽图标进行排序 | `boolean` | -      |
+| onStart     | 节点开始拖拽的回调             | `({key,item})=>{}` | - |
+| onEnd       | 节点每次拖拽完成的回调         | `({key,item})=>{}` | - |

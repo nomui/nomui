@@ -28,6 +28,11 @@ class TreeNode extends Component {
       this.key = this.props.key
     }
     this.tree.nodeRefs[this.key] = this
+    this.setProps({
+      attrs: {
+        'data-key': this.key,
+      },
+    })
     if (this.tree.props.nodeSelectable.selectedNodeKey === this.key) {
       this.tree.selectedNode = this
     }
