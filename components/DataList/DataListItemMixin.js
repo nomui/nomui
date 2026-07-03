@@ -1,6 +1,6 @@
 export default {
     _created: function () {
-        this.list = this.parent
+        this.list = this.parent.props._list || this.parent
     },
     _config: function () {
         const { selected, disabled } = this.props
@@ -37,7 +37,19 @@ export default {
             },
             onSelect: () => {
                 const list = this.list
-                if (listProps.itemSelectable.multiple === false) {
+                if (listProps.itemSelectable.multiple === true) {
+                    const selectedKeys =
+                        listProps.selectedKeys !== null && listProps.selectedKeys !== undefined
+                            ? Array.isArray(listProps.selectedKeys)
+                                ? listProps.selectedKeys
+                                : [listProps.selectedKeys]
+                            : []
+                    if (selectedKeys.indexOf(this.key) === -1) {
+                        selectedKeys.push(this.key)
+                    }
+                    listProps.selectedKeys = selectedKeys
+                    list._unselectedKeys = list._getUnselectedKeys().filter((key) => key !== this.key)
+                } else {
                     listProps.selectedKeys = this.key
                     if (list.selectedItem !== null) {
                         list.selectedItem.unselect({ triggerSelectionChange: false })
@@ -47,8 +59,16 @@ export default {
                 list._onItemSelected(this.props._itemData, this.key)
             },
             onUnselect: () => {
-                const list = this.parent
-                if (listProps.selectedKeys === this.key) {
+                const list = this.list
+                if (listProps.itemSelectable.multiple === true) {
+                    const selectedKeys = Array.isArray(listProps.selectedKeys) ? listProps.selectedKeys : []
+                    listProps.selectedKeys = selectedKeys.filter((key) => key !== this.key)
+                    const unselectedKeys = list._getUnselectedKeys()
+                    if (unselectedKeys.indexOf(this.key) === -1) {
+                        unselectedKeys.push(this.key)
+                    }
+                    list._unselectedKeys = unselectedKeys
+                } else if (listProps.selectedKeys === this.key) {
                     listProps.selectedKeys = null
                 }
                 if (list.selectedItem === this) {
@@ -57,13 +77,13 @@ export default {
                 list._onItemUnselected(this.props._itemData, this.key)
             },
             onSelectionChange: () => {
-                const list = this.parent
+                const list = this.list
                 list._onItemSelectionChange()
             },
         })
     },
     _rendered: function () {
-        const list = this.parent
+        const list = this.list
         const listProps = list.props
         if (listProps.itemSelectable.multiple === false) {
             if (this.props.selected) {

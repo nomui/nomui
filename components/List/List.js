@@ -7,7 +7,7 @@ class List extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       virtualSupport: {
-        height: typeof props.virtual === 'number' ? props.virtual : 300, // 容器高度
+        height: typeof props.virtual === 'number' ? props.virtual : 310, // 容器高度
         size: 30, // 每个列表项高度预估值
         bufferScale: 1, // 缓冲区比例
       },
@@ -52,7 +52,7 @@ class List extends Component {
 
     children.push({ component: ListContent })
 
-    if (listData.length > 40 && (virtual === true || typeof virtual === 'number')) {
+    if (listData.length > 80 && (virtual === true || typeof virtual === 'number')) {
       if (!this.virtual || this.firstRender) {
         this.virCreated(listData)
       }
