@@ -61,7 +61,7 @@ class ListContent extends Component {
       }
     }
     // 开启虚拟列表功能
-    if ((virtual === true || typeof virtual === 'number') && children.length > 20) {
+    if ((virtual === true || typeof virtual === 'number') && children.length > 40) {
       this.list.virtual.listData = children
       this.setProps({
         classes: {

@@ -7,6 +7,7 @@ define([
   './with-img.js',
   './change-gap.js',
   './tabs.js',
+  './larger-data.js',
 ], function () {
   return {
     title: 'Avatar',
