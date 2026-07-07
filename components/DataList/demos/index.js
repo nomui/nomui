@@ -10,6 +10,7 @@ define([
     './default-select-first',
     './sortable',
     './item-disabled',
+    './virtual',
 ], function () {
     return {
         title: 'DataList',

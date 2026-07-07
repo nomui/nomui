@@ -393,7 +393,7 @@ class Grid extends Component {
         // 存在则表示当前数据不是最顶层数据
 
         // 这里的map中的数据是引用了arr的它的指向还是arr，当mapItem改变时arr也会改变
-        ;(mapItem[childrenField] || (mapItem[childrenField] = [])).push(child) // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
+        ; (mapItem[childrenField] || (mapItem[childrenField] = [])).push(child) // 这里判断mapItem中是否存在childrenField, 存在则插入当前数据, 不存在则赋值childrenField为[]然后再插入当前数据
       } else {
         // 不存在则是组顶层数据
         treeData.push(child)
@@ -1503,16 +1503,24 @@ class Grid extends Component {
   }
 
   getData(options = {}) {
+    options.actual = options.actual ?? false
     if (!this.props.data || !this.props.data.length) {
       return []
     }
 
-    if (options.saveEdit) {
+    if (options.saveEdit || options.actual) {
       this.saveEditData()
     }
 
-    const data = clone(this.props.data)
-
+    let data = null
+    if (options.actual) {
+      data = Object.keys(this.rowsRefs).map(key => {
+        return clone(this.rowsRefs[key]?.props?.data)
+      }).filter(item => item)
+    }
+    else {
+      data = clone(this.props.data)
+    }
     const keys = this.getDataKeys()
 
     const orderMap = {}
@@ -1615,8 +1623,8 @@ class Grid extends Component {
         ? 'checked'
         : 'unchecked'
       : hasUnchecked
-      ? 'unchecked'
-      : 'checked'
+        ? 'unchecked'
+        : 'checked'
   }
 
   // check方法

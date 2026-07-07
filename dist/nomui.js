@@ -11251,7 +11251,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       } // 开启虚拟列表功能
       if (
         (virtual === true || typeof virtual === "number") &&
-        children.length > 20
+        children.length > 80
       ) {
         this.list.virtual.listData = children;
         this.setProps({
@@ -11492,7 +11492,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     constructor(props, ...mixins) {
       const defaults = {
         virtualSupport: {
-          height: typeof props.virtual === "number" ? props.virtual : 300, // 容器高度
+          height: typeof props.virtual === "number" ? props.virtual : 310, // 容器高度
           size: 30, // 每个列表项高度预估值
           bufferScale: 1, // 缓冲区比例
         },
@@ -11506,6 +11506,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _config() {
       const { virtual, vertical } = this.props;
+      const listData = this._getListData();
       this.itemRefs = {};
       this.selectedItem = null;
       this._addPropStyle(
@@ -11531,15 +11532,14 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           },
         };
       }
-      const children =
-        !this.props.items.length && this.props.showEmpty ? [empty] : [];
+      const children = !listData.length && this.props.showEmpty ? [empty] : [];
       children.push({ component: ListContent });
       if (
-        this.props.items.length > 20 &&
+        listData.length > 80 &&
         (virtual === true || typeof virtual === "number")
       ) {
         if (!this.virtual || this.firstRender) {
-          this.virCreated();
+          this.virCreated(listData);
         }
         this.virChildren(children);
       } else {
@@ -11548,6 +11548,16 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           children: children,
         });
       }
+    }
+    _getListData() {
+      const { data, wrappers, items } = this.props;
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
+      if (Array.isArray(wrappers) && wrappers.length > 0) {
+        return wrappers;
+      }
+      return Array.isArray(items) ? items : [];
     }
     getItem(param) {
       let retItem = null;
@@ -11769,8 +11779,8 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     _rendered() {
       this.props.sortable && defaultSortableOndrop();
     }
-    /* 虚拟列表支持函数-start */ virCreated() {
-      const { items, virtualSupport } = this.props;
+    /* 虚拟列表支持函数-start */ virCreated(listData = this._getListData()) {
+      const { virtualSupport } = this.props;
       this.virtual = {
         virtualTimer: null,
         start: 0,
@@ -11784,7 +11794,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         ],
         selectedItems: [], // 下拉选择中选中数据
         itemsRefs: [], // 当前列表项arry
-        listData: items, // 所有列表数据
+        listData, // 所有列表数据
         ListHeight: virtualSupport.height, // 可视区域高度
         estimatedSize: virtualSupport.size, // 预估高度
         bufferScale: virtualSupport.bufferScale, // 缓冲区比例
@@ -11812,7 +11822,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
             attrs: { style: { height: `${toolDivHeight}px` } },
             children: "",
           },
-          childObj,
+          ...childObj,
         ],
       });
     }
@@ -12556,6 +12566,39 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     constructor(props, ...mixins) {
       super(Component.extendProps(Avatar.defaults, props), ...mixins);
     }
+    static _queueSetScale(instance) {
+      Avatar._scaleQueue.add(instance);
+      if (Avatar._scaleRaf) {
+        return;
+      }
+      Avatar._scaleRaf = requestAnimationFrame(() => {
+        Avatar._scaleRaf = null;
+        const queue = [...Avatar._scaleQueue];
+        Avatar._scaleQueue.clear();
+        const measurements = queue
+          .map((avatar) => avatar._measureScale())
+          .filter(Boolean);
+        measurements.forEach(({ textElement, transformString, cacheKey }) => {
+          textElement.style.msTransform = transformString;
+          textElement.style.webkitTransform = transformString;
+          textElement.style.transform = transformString;
+          textElement.__avatarScaleCacheKey = cacheKey;
+        });
+      });
+    }
+    static _getIntersectionObserver() {
+      if (!Avatar._intersectionObserver) {
+        Avatar._intersectionObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const avatar = Avatar._observerTargets.get(entry.target);
+            if (avatar && entry.isIntersecting) {
+              avatar._setScale();
+            }
+          });
+        });
+      }
+      return Avatar._intersectionObserver;
+    }
     _config() {
       const { text, icon, src, alt, extra } = this.props;
       this._propStyleClasses = ["size"];
@@ -12589,38 +12632,31 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
     }
     _setScale() {
-      if (!this.props) {
-        return;
+      Avatar._queueSetScale(this);
+    }
+    _measureScale() {
+      if (!this.props || this.props.icon || !this.element || !this.textRef) {
+        return null;
       }
-      const { gap, icon } = this.props;
-      if (icon) {
-        return;
+      const textElement = this.textRef.element;
+      if (!textElement) {
+        return null;
       }
-      if (!this.element.querySelector(".nom-avatar-string")) {
-        return;
-      }
-      const childrenWidth = this.element.querySelector(".nom-avatar-string")
-        .offsetWidth;
+      const { gap } = this.props;
+      const childrenWidth = textElement.offsetWidth;
       const nodeWidth = this.element.offsetWidth;
-      if (childrenWidth !== 0 && nodeWidth !== 0) {
-        if (gap * 2 < nodeWidth) {
-          const scale =
-            nodeWidth - gap * 2 < childrenWidth
-              ? (nodeWidth - gap * 2) / childrenWidth
-              : 1;
-          const transformString = `scale(${scale}) translateX(-50%)`;
-          this.textRef &&
-            this.textRef.update({
-              attrs: {
-                style: {
-                  "-ms-transform": transformString,
-                  "-webkit-transform": transformString,
-                  transform: transformString,
-                },
-              },
-            });
-        }
+      if (childrenWidth === 0 || nodeWidth === 0 || gap * 2 >= nodeWidth) {
+        return null;
       }
+      const availableWidth = nodeWidth - gap * 2;
+      const scale =
+        availableWidth < childrenWidth ? availableWidth / childrenWidth : 1;
+      const transformString = `scale(${scale}) translateX(-50%)`;
+      const cacheKey = `${childrenWidth}-${nodeWidth}-${gap}-${transformString}`;
+      if (textElement.__avatarScaleCacheKey === cacheKey) {
+        return null;
+      }
+      return { textElement, transformString, cacheKey };
     }
     _loadImageAsync() {
       const { src } = this.props;
@@ -12665,21 +12701,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
     }
     _created() {
       super._created();
-      this.intersectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this._setScale();
-          }
-        });
-      });
-      this.intersectionObserver.observe(this.referenceElement);
+      Avatar._observerTargets.set(this.referenceElement, this);
+      Avatar._getIntersectionObserver().observe(this.referenceElement);
     }
     _remove() {
-      this.intersectionObserver &&
-        this.intersectionObserver.unobserve(this.referenceElement);
+      Avatar._scaleQueue.delete(this);
+      if (Avatar._intersectionObserver) {
+        Avatar._intersectionObserver.unobserve(this.referenceElement);
+      }
+      Avatar._observerTargets.delete(this.referenceElement);
       super._remove();
     }
   }
+  Avatar._scaleQueue = new Set();
+  Avatar._scaleRaf = null;
+  Avatar._observerTargets = new Map();
+  Avatar._intersectionObserver = null;
   Avatar.defaults = {
     tag: "span",
     size: "default",
@@ -17237,7 +17274,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   Component.register(Countdown);
   var DataListItemMixin = {
     _created: function () {
-      this.list = this.parent;
+      this.list = this.parent.props._list || this.parent;
     },
     _config: function () {
       const { selected, disabled } = this.props;
@@ -17271,7 +17308,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         },
         onSelect: () => {
           const list = this.list;
-          if (listProps.itemSelectable.multiple === false) {
+          if (listProps.itemSelectable.multiple === true) {
+            const selectedKeys =
+              listProps.selectedKeys !== null &&
+              listProps.selectedKeys !== undefined
+                ? Array.isArray(listProps.selectedKeys)
+                  ? listProps.selectedKeys
+                  : [listProps.selectedKeys]
+                : [];
+            if (selectedKeys.indexOf(this.key) === -1) {
+              selectedKeys.push(this.key);
+            }
+            listProps.selectedKeys = selectedKeys;
+            list._unselectedKeys = list
+              ._getUnselectedKeys()
+              .filter((key) => key !== this.key);
+          } else {
             listProps.selectedKeys = this.key;
             if (list.selectedItem !== null) {
               list.selectedItem.unselect({ triggerSelectionChange: false });
@@ -17281,8 +17333,20 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           list._onItemSelected(this.props._itemData, this.key);
         },
         onUnselect: () => {
-          const list = this.parent;
-          if (listProps.selectedKeys === this.key) {
+          const list = this.list;
+          if (listProps.itemSelectable.multiple === true) {
+            const selectedKeys = Array.isArray(listProps.selectedKeys)
+              ? listProps.selectedKeys
+              : [];
+            listProps.selectedKeys = selectedKeys.filter(
+              (key) => key !== this.key
+            );
+            const unselectedKeys = list._getUnselectedKeys();
+            if (unselectedKeys.indexOf(this.key) === -1) {
+              unselectedKeys.push(this.key);
+            }
+            list._unselectedKeys = unselectedKeys;
+          } else if (listProps.selectedKeys === this.key) {
             listProps.selectedKeys = null;
           }
           if (list.selectedItem === this) {
@@ -17291,13 +17355,13 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
           list._onItemUnselected(this.props._itemData, this.key);
         },
         onSelectionChange: () => {
-          const list = this.parent;
+          const list = this.list;
           list._onItemSelectionChange();
         },
       });
     },
     _rendered: function () {
-      const list = this.parent;
+      const list = this.list;
       const listProps = list.props;
       if (listProps.itemSelectable.multiple === false) {
         if (this.props.selected) {
@@ -17316,11 +17380,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
   }
   class DataList extends Component {
     constructor(props, ...mixins) {
-      super(Component.extendProps(DataList.defaults, props), ...mixins);
+      props = props || {};
+      const defaults = {
+        virtualSupport: {
+          height: typeof props.virtual === "number" ? props.virtual : 310,
+          size: 30,
+          bufferScale: 1,
+        },
+      };
+      super(
+        Component.extendProps(DataList.defaults, defaults, props),
+        ...mixins
+      );
     }
     _config() {
       this.selectedItem = null;
-      const { data, showEmpty, itemSelectable, dataKey } = this.props;
+      const { data, showEmpty, itemSelectable, dataKey, virtual } = this.props;
       this._addPropStyle(
         "gap",
         "line",
@@ -17354,19 +17429,80 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         children = data.map((itemData) => {
           return this._getItemDescriptor(itemData);
         });
+        if (
+          children.length > 80 &&
+          (virtual === true || typeof virtual === "number")
+        ) {
+          if (!this.virtual || this.firstRender) {
+            this.virCreated(children);
+          } else {
+            this.virUpdateListData(children);
+            this.virtual.start =
+              this.virGetStartIndex(
+                this.element ? this.element.scrollTop : 0
+              ) || 0;
+            this.virtual.end = this.virtual.start + this.virVisibleCount();
+          }
+          this.virChildren();
+          return;
+        }
         if (empty) {
           children.unshift(Object.assign({}, empty, { hidden: true }));
         }
       } else if (this.props.showEmpty) {
         children = [empty];
       }
-      this.setProps({ selectable: { byClick: false }, children: children });
+      this.virtual = null;
+      this.setProps({
+        selectable: { byClick: false },
+        classes: { "nom-virtual-list-container": false },
+        attrs: { style: "", onscroll: null },
+        children: children,
+      });
     }
     selectItem(key, selectOption) {
       const found = this.findItem(key);
       if (found) {
         return found.select(selectOption);
       }
+      const itemData = this._getItemData(key);
+      if (!itemData) {
+        return false;
+      }
+      selectOption = extend(
+        { triggerSelect: true, triggerSelectionChange: true },
+        selectOption
+      );
+      const { itemSelectable } = this.props;
+      if (itemSelectable.multiple === true) {
+        const selectedKeys = this._getSelectedKeys();
+        if (selectedKeys.indexOf(key) !== -1) {
+          return false;
+        }
+        selectedKeys.push(key);
+        this.props.selectedKeys = selectedKeys;
+        this._unselectedKeys = this._getUnselectedKeys().filter(
+          (unselectedKey) => unselectedKey !== key
+        );
+      } else {
+        if (this.props.selectedKeys === key) {
+          return false;
+        }
+        const selectedItem =
+          this.selectedItem || this.findItem(this.props.selectedKeys);
+        if (selectedItem) {
+          selectedItem.unselect({ triggerSelectionChange: false });
+        }
+        this.props.selectedKeys = key;
+        this.selectedItem = null;
+      }
+      if (selectOption.triggerSelect === true) {
+        this._onItemSelected(itemData, key);
+      }
+      if (selectOption.triggerSelectionChange === true) {
+        this._onItemSelectionChange();
+      }
+      return true;
     }
     selectItems(keys, selectOption) {
       selectOption = extend(
@@ -17391,19 +17527,68 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return itemSelectionChanged;
     }
     selectAllItems(selectOption) {
-      return this.selectItems(this.getChildren(), selectOption);
+      return this.selectItems(this.getItemKeys(), selectOption);
     }
     unselectItem(key, selectOption) {
       const found = this.findItem(key);
       if (found) {
-        found.unselect(selectOption);
+        return found.unselect(selectOption);
       }
+      const itemData = this._getItemData(key);
+      if (!itemData) {
+        return false;
+      }
+      selectOption = extend(
+        { triggerUnselect: true, triggerSelectionChange: true },
+        selectOption
+      );
+      const { itemSelectable } = this.props;
+      let changed = false;
+      if (itemSelectable.multiple === true) {
+        const selectedKeys = this._getSelectedKeys();
+        const newSelectedKeys = selectedKeys.filter(
+          (selectedKey) => selectedKey !== key
+        );
+        changed =
+          newSelectedKeys.length !== selectedKeys.length ||
+          this._isItemSelected(itemData);
+        this.props.selectedKeys = newSelectedKeys;
+        const unselectedKeys = this._getUnselectedKeys();
+        if (unselectedKeys.indexOf(key) === -1) {
+          unselectedKeys.push(key);
+        }
+        this._unselectedKeys = unselectedKeys;
+      } else if (this.props.selectedKeys === key) {
+        this.props.selectedKeys = null;
+        this.selectedItem = null;
+        changed = true;
+      }
+      if (!changed) {
+        return false;
+      }
+      if (selectOption.triggerUnselect === true) {
+        this._onItemUnselected(itemData, key);
+      }
+      if (selectOption.triggerSelectionChange === true) {
+        this._onItemSelectionChange();
+      }
+      return true;
     }
     getSelected() {
-      const { itemSelectable } = this.props;
+      const { data, dataKey, itemSelectable, selectedKeys } = this.props;
       if (itemSelectable && itemSelectable.multiple === true) {
+        if (Array.isArray(data)) {
+          const keys = this._getSelectedKeys();
+          return data.filter((itemData) => {
+            return (
+              keys.indexOf(itemData[dataKey]) !== -1 ||
+              (this._getUnselectedKeys().indexOf(itemData[dataKey]) === -1 &&
+                this._isItemSelected(itemData))
+            );
+          });
+        }
         const selectedData = [];
-        const children = this.getChildren();
+        const children = this._getItemsContainerChildren();
         for (let i = 0; i < children.length; i++) {
           const item = children[i];
           if (item.props.selected) {
@@ -17412,34 +17597,73 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
         return selectedData;
       }
+      if (
+        Array.isArray(data) &&
+        selectedKeys !== null &&
+        selectedKeys !== undefined
+      ) {
+        return (
+          data.find((itemData) => itemData[dataKey] === selectedKeys) || null
+        );
+      }
       if (this.selectedItem) {
         return this.selectedItem.props._itemData;
       }
       return null;
     }
     appendItem(itemData) {
-      this.appendChild(this._getItemDescriptor(itemData));
+      if (Array.isArray(this.props.data)) {
+        this.props.data.push(itemData);
+      }
+      if (this.virtual) {
+        this.update({ data: this.props.data });
+      } else {
+        this.appendChild(this._getItemDescriptor(itemData));
+      }
       this._setEmptyVisible();
     }
     prependItem(itemData) {
-      this.prependChild(this._getItemDescriptor(itemData));
+      if (Array.isArray(this.props.data)) {
+        this.props.data.unshift(itemData);
+      }
+      if (this.virtual) {
+        this.update({ data: this.props.data });
+      } else {
+        this.prependChild(this._getItemDescriptor(itemData));
+      }
       this._setEmptyVisible();
     }
     updateItem(key, newItemData) {
+      const index = this._getItemIndex(key);
+      if (index !== -1) {
+        this.props.data.splice(index, 1, newItemData);
+      }
+      if (this.virtual) {
+        this.update({ data: this.props.data });
+        return;
+      }
       const item = this.findItem(key);
       if (item) {
         item.replace(this._getItemDescriptor(newItemData));
       }
     }
     removeItem(key) {
-      const item = this.findItem(key);
-      if (item !== null) {
-        item.remove();
+      const index = this._getItemIndex(key);
+      if (index !== -1) {
+        this.props.data.splice(index, 1);
+      }
+      if (this.virtual) {
+        this.update({ data: this.props.data });
+      } else {
+        const item = this.findItem(key);
+        if (item !== null) {
+          item.remove();
+        }
       }
       this._setEmptyVisible();
     }
     _setEmptyVisible() {
-      if (!this.props.showEmpty) {
+      if (!this.props.showEmpty || !this.emptyRef) {
         return;
       }
       if (this.getItemDatas().length) {
@@ -17449,19 +17673,38 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     disableItem(key) {
+      const disabledKeys = this._getDisabledKeys();
+      if (disabledKeys.indexOf(key) === -1) {
+        disabledKeys.push(key);
+        this.props.disabledKeys = disabledKeys;
+      }
       const item = this.findItem(key);
       if (item !== null) {
         item.disable();
       }
     }
     enableItem(key) {
+      const disabledKeys = this._getDisabledKeys().filter(
+        (disabledKey) => disabledKey !== key
+      );
+      this.props.disabledKeys = disabledKeys;
       const item = this.findItem(key);
       if (item !== null) {
         item.enable();
       }
     }
     scrollTo(key) {
-      const item = this.findItem(key);
+      let item = key instanceof Component ? key : this.findItem(key);
+      if (!item && this.virtual) {
+        const index = this._getItemIndex(key);
+        if (index !== -1) {
+          this.element.scrollTop = this.virtual.positions[index].top;
+          this.virtual.start = this.virGetStartIndex(this.element.scrollTop);
+          this.virtual.end = this.virtual.start + this.virVisibleCount();
+          this.virUpdated();
+          item = this.findItem(key);
+        }
+      }
       if (item) {
         const { itemSelectable } = this.props;
         const itemElement = item.element;
@@ -17483,11 +17726,22 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
     }
     findItem(key) {
-      return this.findChild(key);
+      const children = this._getItemsContainerChildren();
+      for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        if (child.key === key) {
+          return child;
+        }
+      }
+      return null;
     }
     getItemKeys() {
+      const { data, dataKey } = this.props;
+      if (Array.isArray(data)) {
+        return data.map((itemData) => itemData[dataKey]);
+      }
       const keys = [];
-      const children = this.getChildren();
+      const children = this._getItemsContainerChildren();
       for (let i = 0; i < children.length; i++) {
         const item = children[i];
         if (item.componentType !== "Empty") {
@@ -17497,8 +17751,12 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       return keys;
     }
     getItemDatas() {
+      const { data } = this.props;
+      if (Array.isArray(data)) {
+        return data.slice();
+      }
       const datas = [];
-      const children = this.getChildren();
+      const children = this._getItemsContainerChildren();
       for (let i = 0; i < children.length; i++) {
         const item = children[i];
         if (item.componentType !== "Empty") {
@@ -17506,6 +17764,52 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       return datas;
+    }
+    _getItemsContainerChildren() {
+      if (this.virtual && this.virtual.itemsContentRef) {
+        return this.virtual.itemsContentRef.getChildren();
+      }
+      return this.getChildren();
+    }
+    _getItemIndex(key) {
+      const { data, dataKey } = this.props;
+      if (!Array.isArray(data)) {
+        return -1;
+      }
+      return data.findIndex((itemData) => itemData[dataKey] === key);
+    }
+    _getItemData(key) {
+      const index = this._getItemIndex(key);
+      return index === -1 ? null : this.props.data[index];
+    }
+    _getSelectedKeys() {
+      const { selectedKeys } = this.props;
+      if (selectedKeys === null || selectedKeys === undefined) {
+        return [];
+      }
+      return Array.isArray(selectedKeys)
+        ? selectedKeys.slice()
+        : [selectedKeys];
+    }
+    _getDisabledKeys() {
+      const { disabledKeys } = this.props;
+      if (disabledKeys === null || disabledKeys === undefined) {
+        return [];
+      }
+      return Array.isArray(disabledKeys)
+        ? disabledKeys.slice()
+        : [disabledKeys];
+    }
+    _getUnselectedKeys() {
+      return Array.isArray(this._unselectedKeys)
+        ? this._unselectedKeys.slice()
+        : [];
+    }
+    _isItemSelected(itemData) {
+      const descriptor = this._getItemDescriptor(itemData);
+      const itemProps =
+        descriptor && descriptor.getProps ? descriptor.getProps() : descriptor;
+      return itemProps && itemProps.selected === true;
     }
     _onItemSelectionChange() {
       this._callHandler(this.props.onItemSelectionChange);
@@ -17529,15 +17833,271 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         return n$1(null, itemProps, null, [DataListItemMixin]);
       }
     }
-    handleDrag(event) {
+    /* 虚拟列表支持函数-start */ virCreated(listData) {
+      const { virtualSupport } = this.props;
+      this.virtual = {
+        virtualTimer: null,
+        start: 0,
+        end: 0,
+        positions: [],
+        itemsRefs: [],
+        listData,
+        ListHeight: virtualSupport.height,
+        estimatedSize: virtualSupport.size,
+        bufferScale: virtualSupport.bufferScale,
+        toolDivRef: null,
+        itemsContentRef: null,
+      };
+      this.virInitPositions();
+    }
+    virUpdateListData(listData) {
+      const { estimatedSize, positions } = this.virtual;
+      let top = 0;
+      this.virtual.listData = listData;
+      this.virtual.positions = listData.map((d, index) => {
+        const height = positions[index]
+          ? positions[index].height
+          : estimatedSize;
+        const itemPosition = { index, height, top, bottom: top + height };
+        top = itemPosition.bottom;
+        return itemPosition;
+      });
+    }
+    virChildren() {
+      const { positions, ListHeight } = this.virtual;
+      const toolDivHeight = positions[positions.length - 1].bottom;
+      this.setProps({
+        selectable: { byClick: false },
+        classes: { "nom-virtual-list-container": true },
+        attrs: {
+          style: { height: `${ListHeight}px` },
+          onscroll: () => {
+            this.virScrollEvent();
+          },
+        },
+        children: [
+          {
+            ref: (c) => {
+              if (this.virtual) {
+                this.virtual.toolDivRef = c;
+              }
+            },
+            classes: { "nom-virtual-list-tooldiv": true },
+            attrs: { style: { height: `${toolDivHeight}px` } },
+            children: "",
+          },
+          {
+            ref: (c) => {
+              if (this.virtual) {
+                this.virtual.itemsContentRef = c;
+              }
+            },
+            _list: this,
+            classes: this._getVirtualContentClasses(),
+            attrs: {
+              style: {
+                transform: `translate3d(0,${this.virSetStartOffset()}px,0)`,
+              },
+            },
+            children: this.virGetList(this.virVisibleData()),
+          },
+        ],
+      });
+    }
+    _getVirtualContentClasses() {
+      const classes = {
+        "nom-data-list": true,
+        "nom-virtual-list-content": true,
+      };
+      [
+        "gap",
+        "line",
+        "align",
+        "justify",
+        "wrap",
+        "vertical",
+        "fills",
+        "cols",
+      ].forEach((prop) => {
+        const value = this.props[prop];
+        if (value !== null && value !== undefined) {
+          if (value === true) {
+            classes[`p-${hyphenate(prop)}`] = true;
+          } else if (typeof value === "string" || typeof value === "number") {
+            classes[`p-${hyphenate(prop)}-${hyphenate(String(value))}`] = true;
+          }
+        }
+      });
+      return classes;
+    }
+    virGetList(arry) {
+      this.virtual.itemsRefs = [];
+      return arry.map((obj) => {
+        const descriptor = obj.item;
+        const itemProps = descriptor.getProps
+          ? descriptor.getProps()
+          : descriptor;
+        const mixins = descriptor.mixins || [];
+        return n$1(
+          null,
+          Component.extendProps({}, itemProps, {
+            ref: (c) => {
+              if (c) this.virtual.itemsRefs.push(c);
+            },
+            classes: Object.assign({}, itemProps.classes, {
+              "nom-virtual-list-item": true,
+            }),
+            attrs: Object.assign({}, itemProps.attrs, {
+              "data-key": obj._index,
+            }),
+          }),
+          null,
+          mixins
+        );
+      });
+    }
+    virUpdated() {
+      if (!this.virtual.itemsRefs || !this.virtual.itemsRefs.length) {
+        return;
+      }
+      const { positions, toolDivRef, itemsContentRef } = this.virtual;
+      this.virUpdateItemsSize();
+      const toolDivHeight = positions[positions.length - 1].bottom;
+      toolDivRef.element.style.height = `${toolDivHeight}px`;
+      itemsContentRef.update({
+        attrs: {
+          style: {
+            transform: `translate3d(0,${this.virSetStartOffset()}px,0)`,
+          },
+        },
+        children: this.virGetList(this.virVisibleData()),
+      });
+    }
+    virInitPositions() {
+      const { estimatedSize, listData } = this.virtual;
+      this.virtual.positions = listData.map((d, index) => ({
+        index,
+        height: estimatedSize,
+        top: index * estimatedSize,
+        bottom: (index + 1) * estimatedSize,
+      }));
+    }
+    virGetStartIndex(scrollTop = 0) {
+      return this.virBinarySearch(this.virtual.positions, scrollTop);
+    }
+    virBinarySearch(list, value) {
+      let start = 0;
+      let end = list.length - 1;
+      let tempIndex = null;
+      while (start <= end) {
+        const midIndex = parseInt((start + end) / 2, 10);
+        const midValue = list[midIndex].bottom;
+        if (midValue === value) {
+          return midIndex + 1;
+        }
+        if (midValue < value) {
+          start = midIndex + 1;
+        } else if (midValue > value) {
+          if (tempIndex === null || tempIndex > midIndex) {
+            tempIndex = midIndex;
+          }
+          end -= 1;
+        }
+      }
+      return tempIndex;
+    }
+    virUpdateItemsSize() {
+      const { itemsRefs, positions } = this.virtual;
+      const gapSize = this.virGetGapSize();
+      itemsRefs.forEach((node) => {
+        if (!node.rendered) return;
+        const rect = node.element.getBoundingClientRect();
+        const index = +node.element.dataset.key.slice(1);
+        const height =
+          rect.height + (index < positions.length - 1 ? gapSize : 0);
+        const oldHeight = positions[index].height;
+        const dValue = oldHeight - height;
+        if (dValue) {
+          positions[index].bottom -= dValue;
+          positions[index].height = height;
+          for (let k = index + 1; k < positions.length; k++) {
+            positions[k].top = positions[k - 1].bottom;
+            positions[k].bottom -= dValue;
+          }
+        }
+      });
+    }
+    virGetGapSize() {
+      const { itemsContentRef } = this.virtual;
+      if (
+        !itemsContentRef ||
+        !itemsContentRef.element ||
+        typeof window === "undefined"
+      ) {
+        return 0;
+      }
+      const style = window.getComputedStyle(itemsContentRef.element);
+      const gap = parseFloat(style.rowGap || style.gap);
+      return Number.isNaN(gap) ? 0 : gap;
+    }
+    virSetStartOffset() {
+      const { start, positions } = this.virtual;
+      let startOffset;
+      if (start >= 1 && positions[start]) {
+        const size =
+          positions[start].top -
+          (positions[start - this.virAboveCount()]
+            ? positions[start - this.virAboveCount()].top
+            : 0);
+        startOffset = positions[start - 1].bottom - size;
+      } else {
+        startOffset = 0;
+      }
+      return startOffset;
+    }
+    virScrollEvent() {
+      const scrollTop = this.element.scrollTop;
+      this.virtual.virtualTimer && clearTimeout(this.virtual.virtualTimer);
+      this.virtual.virtualTimer = setTimeout(() => {
+        this.virtual.start = this.virGetStartIndex(scrollTop);
+        this.virtual.end = this.virtual.start + this.virVisibleCount();
+        this.virUpdated();
+      }, 100);
+    }
+    virListData() {
+      return this.virtual.listData.map((item, index) => {
+        return { item, _index: `_${index}` };
+      });
+    }
+    virVisibleCount() {
+      return Math.ceil(this.virtual.ListHeight / this.virtual.estimatedSize);
+    }
+    virAboveCount() {
+      return Math.min(
+        this.virtual.start,
+        this.virtual.bufferScale * this.virVisibleCount()
+      );
+    }
+    virBelowCount() {
+      return Math.min(
+        this.virtual.listData.length - this.virtual.end,
+        this.virtual.bufferScale * this.virVisibleCount()
+      );
+    }
+    virVisibleData() {
+      const start = this.virtual.start - this.virAboveCount();
+      const end = this.virtual.end + this.virBelowCount();
+      return this.virListData().slice(start, end);
+    }
+    /* 虚拟列表支持函数-end */ handleDrag(event) {
       if (this.props.sortable && this.props.sortable.onEnd) {
         this._callHandler(this.props.sortable.onEnd, { event: event });
       }
     }
     _rendered() {
       const that = this;
-      const { sortable } = this.props;
-      if (sortable) {
+      const { sortable, virtual } = this.props;
+      if (sortable && !virtual) {
         const options = {
           group: this.key,
           animation: 150,
@@ -17566,6 +18126,7 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       triggerOnInit: false,
     },
     disabledItemKeys: [],
+    virtual: false,
     showEmpty: false,
     sortable: false,
   };
@@ -25726,13 +26287,23 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       });
     }
     getData(options = {}) {
+      options.actual = options.actual ?? false;
       if (!this.props.data || !this.props.data.length) {
         return [];
       }
-      if (options.saveEdit) {
+      if (options.saveEdit || options.actual) {
         this.saveEditData();
       }
-      const data = clone(this.props.data);
+      let data = null;
+      if (options.actual) {
+        data = Object.keys(this.rowsRefs)
+          .map((key) => {
+            return clone(this.rowsRefs[key]?.props?.data);
+          })
+          .filter((item) => item);
+      } else {
+        data = clone(this.props.data);
+      }
       const keys = this.getDataKeys();
       const orderMap = {};
       keys.forEach((key, index) => {
