@@ -5,6 +5,43 @@ class Avatar extends Component {
     super(Component.extendProps(Avatar.defaults, props), ...mixins)
   }
 
+  static _queueSetScale(instance) {
+    Avatar._scaleQueue.add(instance)
+
+    if (Avatar._scaleRaf) {
+      return
+    }
+
+    Avatar._scaleRaf = requestAnimationFrame(() => {
+      Avatar._scaleRaf = null
+      const queue = [...Avatar._scaleQueue]
+      Avatar._scaleQueue.clear()
+
+      const measurements = queue.map((avatar) => avatar._measureScale()).filter(Boolean)
+      measurements.forEach(({ textElement, transformString, cacheKey }) => {
+        textElement.style.msTransform = transformString
+        textElement.style.webkitTransform = transformString
+        textElement.style.transform = transformString
+        textElement.__avatarScaleCacheKey = cacheKey
+      })
+    })
+  }
+
+  static _getIntersectionObserver() {
+    if (!Avatar._intersectionObserver) {
+      Avatar._intersectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const avatar = Avatar._observerTargets.get(entry.target)
+          if (avatar && entry.isIntersecting) {
+            avatar._setScale()
+          }
+        })
+      })
+    }
+
+    return Avatar._intersectionObserver
+  }
+
   _config() {
     const { text, icon, src, alt, extra } = this.props
     this._propStyleClasses = ['size']
@@ -44,38 +81,37 @@ class Avatar extends Component {
   }
 
   _setScale() {
-    if (!this.props) {
-      return
-    }
-    const { gap, icon } = this.props
+    Avatar._queueSetScale(this)
+  }
 
-    if (icon) {
-      return
-    }
-
-    if (!this.element.querySelector('.nom-avatar-string')) {
-      return
+  _measureScale() {
+    if (!this.props || this.props.icon || !this.element || !this.textRef) {
+      return null
     }
 
-    const childrenWidth = this.element.querySelector('.nom-avatar-string').offsetWidth
+    const textElement = this.textRef.element
+    if (!textElement) {
+      return null
+    }
+
+    const { gap } = this.props
+    const childrenWidth = textElement.offsetWidth
     const nodeWidth = this.element.offsetWidth
-    if (childrenWidth !== 0 && nodeWidth !== 0) {
-      if (gap * 2 < nodeWidth) {
-        const scale =
-          nodeWidth - gap * 2 < childrenWidth ? (nodeWidth - gap * 2) / childrenWidth : 1
-        const transformString = `scale(${scale}) translateX(-50%)`
-        this.textRef &&
-          this.textRef.update({
-            attrs: {
-              style: {
-                '-ms-transform': transformString,
-                '-webkit-transform': transformString,
-                transform: transformString,
-              },
-            },
-          })
-      }
+
+    if (childrenWidth === 0 || nodeWidth === 0 || gap * 2 >= nodeWidth) {
+      return null
     }
+
+    const availableWidth = nodeWidth - gap * 2
+    const scale = availableWidth < childrenWidth ? availableWidth / childrenWidth : 1
+    const transformString = `scale(${scale}) translateX(-50%)`
+    const cacheKey = `${childrenWidth}-${nodeWidth}-${gap}-${transformString}`
+
+    if (textElement.__avatarScaleCacheKey === cacheKey) {
+      return null
+    }
+
+    return { textElement, transformString, cacheKey }
   }
 
   _loadImageAsync() {
@@ -130,21 +166,23 @@ class Avatar extends Component {
 
   _created() {
     super._created()
-    this.intersectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          this._setScale()
-        }
-      })
-    })
-    this.intersectionObserver.observe(this.referenceElement)
+    Avatar._observerTargets.set(this.referenceElement, this)
+    Avatar._getIntersectionObserver().observe(this.referenceElement)
   }
 
   _remove() {
-    this.intersectionObserver && this.intersectionObserver.unobserve(this.referenceElement)
+    Avatar._scaleQueue.delete(this)
+    if (Avatar._intersectionObserver) {
+      Avatar._intersectionObserver.unobserve(this.referenceElement)
+    }
+    Avatar._observerTargets.delete(this.referenceElement)
     super._remove()
   }
 }
+Avatar._scaleQueue = new Set()
+Avatar._scaleRaf = null
+Avatar._observerTargets = new Map()
+Avatar._intersectionObserver = null
 Avatar.defaults = {
   tag: 'span',
   size: 'default',

@@ -78,8 +78,31 @@
 
     >* {
         &.s-disabled {
-            opacity: 0.5;
             cursor: not-allowed;
+            opacity: 0.5;
         }
+    }
+}
+
+.nom-data-list.nom-virtual-list-container {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    .nom-virtual-list-tooldiv {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+    .nom-virtual-list-content {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
     }
 }

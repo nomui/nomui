@@ -85,9 +85,39 @@ define([], function () {
             cols: [
               {
                 component: 'Button',
-                text: '获取数据',
+                text: '添加 "张三"',
                 onClick: () => {
-                  console.log(gridRef.getData({ saveEdit: true }))
+                  gridRef.appendRow({
+                    editMode: true,
+                    data: {
+                      id: 10000,
+                      name: '张三',
+                      date: '2020-02-20',
+                      role: '4',
+                      dept: '0-0-2',
+                      sex: '1'
+                    },
+                  })
+                },
+              },
+              {
+                component: 'Button',
+                text: '移除 "张三"',
+                onClick: () => {
+                  const row = gridRef.getRow(10000)
+                  if (row) {
+                    gridRef.removeRow(10000)
+                  } else {
+                    console.log('张三 不存在')
+                  }
+                },
+              },
+              {
+                component: 'Button',
+                text: '获取实际数据',
+                type: 'danger',
+                onClick: () => {
+                  console.log(gridRef.getData({ actual: true }))
                 },
               },
             ],
@@ -222,6 +252,21 @@ define([], function () {
                   if (!cellData) return '-'
                   if (cellData === '1') return '男'
                   if (cellData === '2') return '女'
+                },
+              },
+              {
+                field: 'option',
+                title: '操作',
+                cellRender: ({ row }) => {
+                  return [
+                    {
+                      component: 'Button',
+                      icon: 'minus',
+                      onClick: () => {
+                        row.remove()
+                      },
+                    },
+                  ]
                 },
               },
             ],

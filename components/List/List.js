@@ -7,7 +7,7 @@ class List extends Component {
   constructor(props, ...mixins) {
     const defaults = {
       virtualSupport: {
-        height: typeof props.virtual === 'number' ? props.virtual : 300, // 容器高度
+        height: typeof props.virtual === 'number' ? props.virtual : 310, // 容器高度
         size: 30, // 每个列表项高度预估值
         bufferScale: 1, // 缓冲区比例
       },
@@ -23,6 +23,7 @@ class List extends Component {
 
   _config() {
     const { virtual, vertical } = this.props
+    const listData = this._getListData()
     this.itemRefs = {}
     this.selectedItem = null
 
@@ -47,13 +48,13 @@ class List extends Component {
       }
     }
 
-    const children = !this.props.items.length && this.props.showEmpty ? [empty] : []
+    const children = !listData.length && this.props.showEmpty ? [empty] : []
 
     children.push({ component: ListContent })
 
-    if (this.props.items.length > 20 && (virtual === true || typeof virtual === 'number')) {
+    if (listData.length > 80 && (virtual === true || typeof virtual === 'number')) {
       if (!this.virtual || this.firstRender) {
-        this.virCreated()
+        this.virCreated(listData)
       }
       this.virChildren(children)
     } else {
@@ -64,6 +65,20 @@ class List extends Component {
         children: children,
       })
     }
+  }
+
+  _getListData() {
+    const { data, wrappers, items } = this.props
+
+    if (Array.isArray(data) && data.length > 0) {
+      return data
+    }
+
+    if (Array.isArray(wrappers) && wrappers.length > 0) {
+      return wrappers
+    }
+
+    return Array.isArray(items) ? items : []
   }
 
   getItem(param) {
@@ -293,8 +308,8 @@ class List extends Component {
       const itemElement = item.wrapper ? item.wrapper.element : item.element
       const scrollOptions =
         this.props.itemSelectable &&
-        this.props.itemSelectable.scrollIntoView &&
-        isPlainObject(this.props.itemSelectable.scrollIntoView)
+          this.props.itemSelectable.scrollIntoView &&
+          isPlainObject(this.props.itemSelectable.scrollIntoView)
           ? this.props.itemSelectable.scrollIntoView
           : {}
 
@@ -329,8 +344,8 @@ class List extends Component {
 
   /* 虚拟列表支持函数-start */
 
-  virCreated() {
-    const { items, virtualSupport } = this.props
+  virCreated(listData = this._getListData()) {
+    const { virtualSupport } = this.props
     this.virtual = {
       virtualTimer: null,
       start: 0,
@@ -344,7 +359,7 @@ class List extends Component {
       ],
       selectedItems: [], // 下拉选择中选中数据
       itemsRefs: [], // 当前列表项arry
-      listData: items, // 所有列表数据
+      listData, // 所有列表数据
       ListHeight: virtualSupport.height, // 可视区域高度
       estimatedSize: virtualSupport.size, // 预估高度
       bufferScale: virtualSupport.bufferScale, // 缓冲区比例
@@ -383,7 +398,7 @@ class List extends Component {
           },
           children: '',
         },
-        childObj,
+        ...childObj,
       ],
     })
   }
