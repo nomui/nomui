@@ -10,6 +10,7 @@ define(
     './label-actions.js',
     './label-expandable.js',
     './label-uistyle.js',
+    './annotation.js',
   ],
   function () {
 

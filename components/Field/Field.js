@@ -120,30 +120,6 @@ class Field extends Component {
       this._handleDependencies()
     }
 
-    if (annotation) {
-      this.setProps({
-        controlAfter: {
-          component: 'Icon',
-          ref: (c) => {
-            this.annotationIconRef = c
-          },
-          type: 'annotation',
-          classes: {
-            'nom-field-annotation': true,
-          },
-          badge: annotation.number
-            ? {
-                number: annotation.number,
-              }
-            : null,
-          onClick: ({ event }) => {
-            this._callHandler(annotation.handler, { field: this })
-            event.stopPropagation()
-          },
-        },
-      })
-    }
-
     this.rules = this.rules.concat(rules.map((r) => ({ ...r, __fromField: true })))
 
     if (required === true) {
@@ -160,11 +136,11 @@ class Field extends Component {
 
     let labelProps = showLabel
       ? {
-          component: FieldLabel,
-          labelActions: labelActions,
-          labelExpandable: labelExpandable,
-          uistyle: labelUiStyle,
-        }
+        component: FieldLabel,
+        labelActions: labelActions,
+        labelExpandable: labelExpandable,
+        uistyle: labelUiStyle,
+      }
       : null
     if (labelProps && labelWidth && labelAlign !== 'top') {
       if (labelWidth === 'auto') {
@@ -190,12 +166,30 @@ class Field extends Component {
     }
 
     let actionProps = null
-    if (action) {
-      actionProps = { component: 'List', classes: { 'nom-field-action': true }, gutter: 'sm' }
+    if (action || annotation) {
+      actionProps = { component: 'List', classes: { 'nom-field-action': true }, gutter: 'sm', items: [] }
+      if (annotation) {
+        actionProps.items.push({
+          component: 'Icon',
+          type: 'annotation',
+          classes: {
+            'nom-field-annotation': true,
+          },
+          badge: annotation.number
+            ? {
+              number: annotation.number,
+            }
+            : null,
+          onClick: ({ event }) => {
+            this._callHandler(annotation.handler, { field: this })
+            event.stopPropagation()
+          },
+        })
+      }
       if (Array.isArray(action)) {
-        actionProps = Component.extendProps(actionProps, { items: action })
+        actionProps.items = actionProps.items.concat(action)
       } else {
-        actionProps = Component.extendProps(actionProps, action)
+        actionProps.items.push(action)
       }
     }
 
