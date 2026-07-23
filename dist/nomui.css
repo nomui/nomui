@@ -10641,28 +10641,16 @@ textarea .nom-textarea {
 .nom-field.s-read-mode > .nom-field-content .p-type-down {
   display: none;
 }
-.nom-field.s-with-control-after > .nom-field-content {
-  display: flex;
-  align-items: center;
-}
-.nom-field.s-with-control-after > .nom-field-content > .nom-control {
-  flex: 1;
-  flex-grow: 1;
-}
-.nom-field.s-with-control-after > .nom-field-content > .nom-control-after {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-}
-.nom-field.s-with-control-after > .nom-field-content > .nom-control-after.nom-field-annotation {
+.nom-field > .nom-field-action .nom-field-annotation {
   visibility: hidden;
   cursor: pointer;
   color: var(--nom-color-text-2);
 }
-.nom-field.s-with-control-after > .nom-field-content > .nom-control-after.nom-field-annotation:hover {
+.nom-field > .nom-field-action .nom-field-annotation:hover {
   color: var(--nom-color-text);
 }
-.nom-field.s-with-control-after:hover > .nom-field-content > .nom-control-after.nom-field-annotation,
-.nom-field.s-with-control-after.nom-field-annotation-filled > .nom-field-content > .nom-control-after.nom-field-annotation {
+.nom-field:hover > .nom-field-action .nom-field-annotation,
+.nom-field.nom-field-annotation-filled > .nom-field-action .nom-field-annotation {
   visibility: visible;
 }
 .nom-group > .nom-field-content {

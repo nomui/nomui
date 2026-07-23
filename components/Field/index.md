@@ -14,6 +14,7 @@
 | flatValue | 是否平面化数据 | `boolean` | `false` |
 | notShowLabel | 不显示标签，不管 label 是否设置 | `boolean` | `false` |
 | extra | 表单元素的拓展展示内容 | `string` | - |
+| annotation | 批注 | `object { number, handler }` | - |
 | variant | 表单风格类型 | `default`\|`filled`\|`borderless` | `default` |
 | labelWidth | 表单元素项提示文字宽度 | `number` | `126` |
 | labelExpandable | 表单是否可折叠 | `boolean` \| `{expanded:boolean}` | - |

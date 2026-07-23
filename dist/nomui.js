@@ -9537,23 +9537,6 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       ) {
         this._handleDependencies();
       }
-      if (annotation) {
-        this.setProps({
-          controlAfter: {
-            component: "Icon",
-            ref: (c) => {
-              this.annotationIconRef = c;
-            },
-            type: "annotation",
-            classes: { "nom-field-annotation": true },
-            badge: annotation.number ? { number: annotation.number } : null,
-            onClick: ({ event }) => {
-              this._callHandler(annotation.handler, { field: this });
-              event.stopPropagation();
-            },
-          },
-        });
-      }
       this.rules = this.rules.concat(
         rules.map((r) => Object.assign({}, r, { __fromField: true }))
       );
@@ -9593,16 +9576,33 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
         }
       }
       let actionProps = null;
-      if (action) {
+      if (action || annotation) {
         actionProps = {
           component: "List",
           classes: { "nom-field-action": true },
           gutter: "sm",
+          align: "middle",
+          items: [],
         };
+        if (annotation) {
+          actionProps.items.push({
+            component: "Icon",
+            ref: (c) => {
+              this.annotationIconRef = c;
+            },
+            type: "annotation",
+            classes: { "nom-field-annotation": true },
+            badge: annotation.number ? { number: annotation.number } : null,
+            onClick: ({ event }) => {
+              this._callHandler(annotation.handler, { field: this });
+              event.stopPropagation();
+            },
+          });
+        }
         if (Array.isArray(action)) {
-          actionProps = Component.extendProps(actionProps, { items: action });
-        } else {
-          actionProps = Component.extendProps(actionProps, action);
+          actionProps.items = actionProps.items.concat(action);
+        } else if (isPlainObject(action)) {
+          actionProps.items.push(action);
         }
       }
       let toggleReadonlyProps = null;

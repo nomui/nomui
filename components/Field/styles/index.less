@@ -424,42 +424,25 @@
 
 }
 
-.nom-field.s-with-control-after {
-  >.nom-field-content {
-    display: flex;
-    align-items: center;
+.nom-field {
+  >.nom-field-action {
+    .nom-field-annotation {
+      visibility: hidden;
+      cursor: pointer;
+      color: var(--nom-color-text-2);
 
-    >.nom-control {
-      flex: 1;
-      flex-grow: 1;
-    }
-
-    >.nom-control-after {
-      margin-left: 0.5rem;
-      margin-right: 0.5rem;
-
-      &.nom-field-annotation {
-        visibility: hidden;
-        cursor: pointer;
-        color: var(--nom-color-text-2);
-
-        &:hover {
-          color: var(--nom-color-text);
-        }
+      &:hover {
+        color: var(--nom-color-text);
       }
-
-
     }
   }
 
-
   &:hover,
   &.nom-field-annotation-filled {
-    >.nom-field-content {
-      >.nom-control-after.nom-field-annotation {
+    >.nom-field-action {
+      .nom-field-annotation {
         visibility: visible;
       }
     }
   }
-
 }
