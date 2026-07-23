@@ -167,10 +167,13 @@ class Field extends Component {
 
     let actionProps = null
     if (action || annotation) {
-      actionProps = { component: 'List', classes: { 'nom-field-action': true }, gutter: 'sm', items: [] }
+      actionProps = { component: 'List', classes: { 'nom-field-action': true }, gutter: 'sm', align: 'middle', items: [] }
       if (annotation) {
         actionProps.items.push({
           component: 'Icon',
+          ref: (c) => {
+            this.annotationIconRef = c
+          },
           type: 'annotation',
           classes: {
             'nom-field-annotation': true,
@@ -188,7 +191,7 @@ class Field extends Component {
       }
       if (Array.isArray(action)) {
         actionProps.items = actionProps.items.concat(action)
-      } else {
+      } else if (isPlainObject(action)) {
         actionProps.items.push(action)
       }
     }
