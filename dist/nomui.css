@@ -11825,6 +11825,9 @@ textarea .nom-textarea {
 }
 .nom-empty-footer {
   margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .nom-empty-normal {
   margin: 32px 0;
@@ -13963,9 +13966,11 @@ textarea .nom-textarea {
 .nom-tour-navi .nom-button {
   margin-left: 0.5rem;
 }
+.nom-watermark-mask-container,
 .nom-watermark {
   position: relative;
 }
+.nom-watermark-mask-container .nom-watermark-mask,
 .nom-watermark .nom-watermark-mask {
   pointer-events: none;
   position: absolute;
