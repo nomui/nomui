@@ -24,6 +24,8 @@
 | vertical | 是否纵向排列 | `boolean` | `false` |
 | fills | 数据项是否自动填充剩余空间 | `boolean` | `false` |
 | cols | 列数 | `number` | - |
+| onItemSelected | 项选择回调 | `({ itemData, key })=>{}` | - |
+| onItemUnselected | 项取消选择回调 | `({ itemData, key })=>{}` | - |
 
 ### itemSelectable
 

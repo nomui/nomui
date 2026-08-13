@@ -19,7 +19,7 @@ define([], function () {
                                 component: 'Button',
                                 text: '获取所有数据',
                                 onClick: () => {
-                                    const datas = JSON.stringify(listRef.getItemDatas())
+                                    const datas = JSON.stringify(listRef.getItemDatas(true))
                                     new nomui.Message({
                                         content: `所有数据：${datas}`,
                                         type: 'info',
@@ -31,7 +31,7 @@ define([], function () {
                                 component: 'Button',
                                 text: '获取子元素键数组',
                                 onClick: () => {
-                                    const datas = JSON.stringify(listRef.getItemKeys())
+                                    const datas = JSON.stringify(listRef.getItemKeys(true))
                                     new nomui.Message({
                                         content: `所有数据：${datas}`,
                                         type: 'info',
