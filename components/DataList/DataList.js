@@ -386,9 +386,9 @@ class DataList extends Component {
     return null
   }
 
-  getItemKeys() {
+  getItemKeys(usedom) {
     const { data, dataKey } = this.props
-    if (Array.isArray(data)) {
+    if (usedom !== true && Array.isArray(data)) {
       return data.map((itemData) => itemData[dataKey])
     }
 
@@ -403,9 +403,9 @@ class DataList extends Component {
     return keys
   }
 
-  getItemDatas() {
+  getItemDatas(usedom) {
     const { data } = this.props
-    if (Array.isArray(data)) {
+    if (usedom !== true && Array.isArray(data)) {
       return data.slice()
     }
 

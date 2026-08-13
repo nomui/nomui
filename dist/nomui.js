@@ -17735,9 +17735,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return null;
     }
-    getItemKeys() {
+    getItemKeys(usedom) {
       const { data, dataKey } = this.props;
-      if (Array.isArray(data)) {
+      if (usedom !== true && Array.isArray(data)) {
         return data.map((itemData) => itemData[dataKey]);
       }
       const keys = [];
@@ -17750,9 +17750,9 @@ function _objectWithoutPropertiesLoose2(source, excluded) {
       }
       return keys;
     }
-    getItemDatas() {
+    getItemDatas(usedom) {
       const { data } = this.props;
-      if (Array.isArray(data)) {
+      if (usedom !== true && Array.isArray(data)) {
         return data.slice();
       }
       const datas = [];
