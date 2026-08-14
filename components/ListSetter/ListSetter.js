@@ -27,13 +27,18 @@ class ListSetter extends Field {
 
     let sortableProps = sortable
     if (sortable) {
+      const sortableOnEnd = isFunction(sortable.onEnd) ? sortable.onEnd : null
       sortableProps = Component.extendProps(
+        sortable,
         {
-          onEnd: () => {
+          onEnd: (args) => {
+            const { oldIndex, newIndex } = args.event
+            const data = this.listRef.props.data
+            data.splice(newIndex, 0, data.splice(oldIndex, 1)[0])
             this._onValueChange()
+            sortableOnEnd && sortableOnEnd(args)
           },
         },
-        sortable,
       )
     }
 
